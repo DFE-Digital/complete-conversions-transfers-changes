@@ -1,0 +1,797 @@
+{
+  "format": 1,
+  "restore": {
+    "C:\\Users\\EAREMU\\source\\repos\\complete-api\\src\\Tests\\Dfe.Complete.Application.Tests\\Dfe.Complete.Application.Tests.csproj": {}
+  },
+  "projects": {
+    "C:\\Users\\EAREMU\\source\\repos\\complete-api\\src\\Dfe.Complete.Api.Client\\Dfe.Complete.Api.Client.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\EAREMU\\source\\repos\\complete-api\\src\\Dfe.Complete.Api.Client\\Dfe.Complete.Api.Client.csproj",
+        "projectName": "Dfe.Complete.Api.Client",
+        "projectPath": "C:\\Users\\EAREMU\\source\\repos\\complete-api\\src\\Dfe.Complete.Api.Client\\Dfe.Complete.Api.Client.csproj",
+        "packagesPath": "C:\\Users\\EAREMU\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\EAREMU\\source\\repos\\complete-api\\src\\Dfe.Complete.Api.Client\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\EAREMU\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net8.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {},
+          "https://nuget.pkg.github.com/DFE-Digital/index.json": {}
+        },
+        "frameworks": {
+          "net8.0": {
+            "targetAlias": "net8.0",
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net8.0": {
+          "targetAlias": "net8.0",
+          "dependencies": {
+            "Microsoft.Extensions.Configuration.Abstractions": {
+              "target": "Package",
+              "version": "[8.0.0, )"
+            },
+            "Microsoft.Extensions.Configuration.Binder": {
+              "target": "Package",
+              "version": "[8.0.2, )"
+            },
+            "Microsoft.Extensions.DependencyInjection": {
+              "target": "Package",
+              "version": "[8.0.1, )"
+            },
+            "Microsoft.Extensions.DependencyInjection.Abstractions": {
+              "target": "Package",
+              "version": "[8.0.2, )"
+            },
+            "Microsoft.Extensions.Http": {
+              "target": "Package",
+              "version": "[8.0.1, )"
+            },
+            "Microsoft.Identity.Client": {
+              "target": "Package",
+              "version": "[4.65.0, )"
+            },
+            "Newtonsoft.Json": {
+              "target": "Package",
+              "version": "[13.0.3, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.110/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "C:\\Users\\EAREMU\\source\\repos\\complete-api\\src\\Dfe.Complete.Api\\Dfe.Complete.Api.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\EAREMU\\source\\repos\\complete-api\\src\\Dfe.Complete.Api\\Dfe.Complete.Api.csproj",
+        "projectName": "Dfe.Complete.Api",
+        "projectPath": "C:\\Users\\EAREMU\\source\\repos\\complete-api\\src\\Dfe.Complete.Api\\Dfe.Complete.Api.csproj",
+        "packagesPath": "C:\\Users\\EAREMU\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\EAREMU\\source\\repos\\complete-api\\src\\Dfe.Complete.Api\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\EAREMU\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net8.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {},
+          "https://nuget.pkg.github.com/DFE-Digital/index.json": {}
+        },
+        "frameworks": {
+          "net8.0": {
+            "targetAlias": "net8.0",
+            "projectReferences": {
+              "C:\\Users\\EAREMU\\source\\repos\\complete-api\\src\\Dfe.Complete.Application\\Dfe.Complete.Application.csproj": {
+                "projectPath": "C:\\Users\\EAREMU\\source\\repos\\complete-api\\src\\Dfe.Complete.Application\\Dfe.Complete.Application.csproj"
+              },
+              "C:\\Users\\EAREMU\\source\\repos\\complete-api\\src\\Dfe.Complete.Infrastructure\\Dfe.Complete.Infrastructure.csproj": {
+                "projectPath": "C:\\Users\\EAREMU\\source\\repos\\complete-api\\src\\Dfe.Complete.Infrastructure\\Dfe.Complete.Infrastructure.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net8.0": {
+          "targetAlias": "net8.0",
+          "dependencies": {
+            "Asp.Versioning.Mvc": {
+              "target": "Package",
+              "version": "[8.1.0, )"
+            },
+            "Asp.Versioning.Mvc.ApiExplorer": {
+              "target": "Package",
+              "version": "[8.1.0, )"
+            },
+            "DfE.CoreLibs.Http": {
+              "target": "Package",
+              "version": "[1.0.5, )"
+            },
+            "FluentValidation": {
+              "target": "Package",
+              "version": "[11.10.0, )"
+            },
+            "Microsoft.ApplicationInsights.AspNetCore": {
+              "target": "Package",
+              "version": "[2.22.0, )"
+            },
+            "Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[8.0.10, )"
+            },
+            "Microsoft.AspNetCore.HeaderPropagation": {
+              "target": "Package",
+              "version": "[8.0.10, )"
+            },
+            "Microsoft.Bcl.AsyncInterfaces": {
+              "target": "Package",
+              "version": "[8.0.0, )"
+            },
+            "Microsoft.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[8.0.10, )"
+            },
+            "Microsoft.EntityFrameworkCore.Design": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[8.0.10, )"
+            },
+            "Microsoft.EntityFrameworkCore.SqlServer": {
+              "target": "Package",
+              "version": "[8.0.10, )"
+            },
+            "Microsoft.FeatureManagement.AspNetCore": {
+              "target": "Package",
+              "version": "[3.5.0, )"
+            },
+            "NSwag.AspNetCore": {
+              "target": "Package",
+              "version": "[14.1.0, )"
+            },
+            "NSwag.MSBuild": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[14.1.0, )"
+            },
+            "NetEscapades.AspNetCore.SecurityHeaders": {
+              "target": "Package",
+              "version": "[0.24.0, )"
+            },
+            "Newtonsoft.Json": {
+              "target": "Package",
+              "version": "[13.0.3, )"
+            },
+            "Serilog.AspNetCore": {
+              "target": "Package",
+              "version": "[8.0.2, )"
+            },
+            "Serilog.Sinks.ApplicationInsights": {
+              "target": "Package",
+              "version": "[4.0.0, )"
+            },
+            "Swashbuckle.AspNetCore": {
+              "target": "Package",
+              "version": "[6.8.1, )"
+            },
+            "Swashbuckle.AspNetCore.Annotations": {
+              "target": "Package",
+              "version": "[6.8.1, )"
+            },
+            "TimeZoneConverter": {
+              "target": "Package",
+              "version": "[6.1.0, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.AspNetCore.App": {
+              "privateAssets": "none"
+            },
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.110/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "C:\\Users\\EAREMU\\source\\repos\\complete-api\\src\\Dfe.Complete.Application\\Dfe.Complete.Application.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\EAREMU\\source\\repos\\complete-api\\src\\Dfe.Complete.Application\\Dfe.Complete.Application.csproj",
+        "projectName": "Dfe.Complete.Application",
+        "projectPath": "C:\\Users\\EAREMU\\source\\repos\\complete-api\\src\\Dfe.Complete.Application\\Dfe.Complete.Application.csproj",
+        "packagesPath": "C:\\Users\\EAREMU\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\EAREMU\\source\\repos\\complete-api\\src\\Dfe.Complete.Application\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\EAREMU\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net8.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {},
+          "https://nuget.pkg.github.com/DFE-Digital/index.json": {}
+        },
+        "frameworks": {
+          "net8.0": {
+            "targetAlias": "net8.0",
+            "projectReferences": {
+              "C:\\Users\\EAREMU\\source\\repos\\complete-api\\src\\Dfe.Complete.Domain\\Dfe.Complete.Domain.csproj": {
+                "projectPath": "C:\\Users\\EAREMU\\source\\repos\\complete-api\\src\\Dfe.Complete.Domain\\Dfe.Complete.Domain.csproj"
+              },
+              "C:\\Users\\EAREMU\\source\\repos\\complete-api\\src\\Dfe.Complete.Utils\\Dfe.Complete.Utils.csproj": {
+                "projectPath": "C:\\Users\\EAREMU\\source\\repos\\complete-api\\src\\Dfe.Complete.Utils\\Dfe.Complete.Utils.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net8.0": {
+          "targetAlias": "net8.0",
+          "dependencies": {
+            "AutoMapper": {
+              "target": "Package",
+              "version": "[13.0.1, )"
+            },
+            "DfE.CoreLibs.AsyncProcessing": {
+              "target": "Package",
+              "version": "[1.0.5, )"
+            },
+            "DfE.CoreLibs.Caching": {
+              "target": "Package",
+              "version": "[1.0.7, )"
+            },
+            "FluentValidation": {
+              "target": "Package",
+              "version": "[11.10.0, )"
+            },
+            "FluentValidation.AspNetCore": {
+              "target": "Package",
+              "version": "[11.3.0, )"
+            },
+            "Microsoft.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[8.0.10, )"
+            },
+            "Microsoft.Extensions.Configuration.Abstractions": {
+              "target": "Package",
+              "version": "[8.0.0, )"
+            },
+            "Microsoft.Extensions.DependencyInjection.Abstractions": {
+              "target": "Package",
+              "version": "[8.0.2, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.110/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "C:\\Users\\EAREMU\\source\\repos\\complete-api\\src\\Dfe.Complete.Domain\\Dfe.Complete.Domain.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\EAREMU\\source\\repos\\complete-api\\src\\Dfe.Complete.Domain\\Dfe.Complete.Domain.csproj",
+        "projectName": "Dfe.Complete.Domain",
+        "projectPath": "C:\\Users\\EAREMU\\source\\repos\\complete-api\\src\\Dfe.Complete.Domain\\Dfe.Complete.Domain.csproj",
+        "packagesPath": "C:\\Users\\EAREMU\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\EAREMU\\source\\repos\\complete-api\\src\\Dfe.Complete.Domain\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\EAREMU\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net8.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {},
+          "https://nuget.pkg.github.com/DFE-Digital/index.json": {}
+        },
+        "frameworks": {
+          "net8.0": {
+            "targetAlias": "net8.0",
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net8.0": {
+          "targetAlias": "net8.0",
+          "dependencies": {
+            "DfE.CoreLibs.Caching": {
+              "target": "Package",
+              "version": "[1.0.7, )"
+            },
+            "FluentValidation": {
+              "target": "Package",
+              "version": "[11.10.0, )"
+            },
+            "MediatR": {
+              "target": "Package",
+              "version": "[12.4.1, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.110/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "C:\\Users\\EAREMU\\source\\repos\\complete-api\\src\\Dfe.Complete.Infrastructure\\Dfe.Complete.Infrastructure.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\EAREMU\\source\\repos\\complete-api\\src\\Dfe.Complete.Infrastructure\\Dfe.Complete.Infrastructure.csproj",
+        "projectName": "Dfe.Complete.Infrastructure",
+        "projectPath": "C:\\Users\\EAREMU\\source\\repos\\complete-api\\src\\Dfe.Complete.Infrastructure\\Dfe.Complete.Infrastructure.csproj",
+        "packagesPath": "C:\\Users\\EAREMU\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\EAREMU\\source\\repos\\complete-api\\src\\Dfe.Complete.Infrastructure\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\EAREMU\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net8.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {},
+          "https://nuget.pkg.github.com/DFE-Digital/index.json": {}
+        },
+        "frameworks": {
+          "net8.0": {
+            "targetAlias": "net8.0",
+            "projectReferences": {
+              "C:\\Users\\EAREMU\\source\\repos\\complete-api\\src\\Dfe.Complete.Application\\Dfe.Complete.Application.csproj": {
+                "projectPath": "C:\\Users\\EAREMU\\source\\repos\\complete-api\\src\\Dfe.Complete.Application\\Dfe.Complete.Application.csproj"
+              },
+              "C:\\Users\\EAREMU\\source\\repos\\complete-api\\src\\Dfe.Complete.Domain\\Dfe.Complete.Domain.csproj": {
+                "projectPath": "C:\\Users\\EAREMU\\source\\repos\\complete-api\\src\\Dfe.Complete.Domain\\Dfe.Complete.Domain.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net8.0": {
+          "targetAlias": "net8.0",
+          "dependencies": {
+            "Microsoft.AspNetCore.Authentication.JwtBearer": {
+              "target": "Package",
+              "version": "[8.0.10, )"
+            },
+            "Microsoft.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[8.0.10, )"
+            },
+            "Microsoft.EntityFrameworkCore.Design": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[8.0.10, )"
+            },
+            "Microsoft.EntityFrameworkCore.SqlServer": {
+              "target": "Package",
+              "version": "[8.0.10, )"
+            },
+            "Microsoft.EntityFrameworkCore.Sqlite": {
+              "target": "Package",
+              "version": "[8.0.10, )"
+            },
+            "Microsoft.Extensions.Options.ConfigurationExtensions": {
+              "target": "Package",
+              "version": "[8.0.0, )"
+            },
+            "Microsoft.Identity.Web": {
+              "target": "Package",
+              "version": "[3.2.2, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.110/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "C:\\Users\\EAREMU\\source\\repos\\complete-api\\src\\Dfe.Complete.Utils\\Dfe.Complete.Utils.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\EAREMU\\source\\repos\\complete-api\\src\\Dfe.Complete.Utils\\Dfe.Complete.Utils.csproj",
+        "projectName": "Dfe.Complete.Utils",
+        "projectPath": "C:\\Users\\EAREMU\\source\\repos\\complete-api\\src\\Dfe.Complete.Utils\\Dfe.Complete.Utils.csproj",
+        "packagesPath": "C:\\Users\\EAREMU\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\EAREMU\\source\\repos\\complete-api\\src\\Dfe.Complete.Utils\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\EAREMU\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net8.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {},
+          "https://nuget.pkg.github.com/DFE-Digital/index.json": {}
+        },
+        "frameworks": {
+          "net8.0": {
+            "targetAlias": "net8.0",
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net8.0": {
+          "targetAlias": "net8.0",
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.110/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "C:\\Users\\EAREMU\\source\\repos\\complete-api\\src\\Tests\\Dfe.Complete.Application.Tests\\Dfe.Complete.Application.Tests.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\EAREMU\\source\\repos\\complete-api\\src\\Tests\\Dfe.Complete.Application.Tests\\Dfe.Complete.Application.Tests.csproj",
+        "projectName": "Dfe.Complete.Application.Tests",
+        "projectPath": "C:\\Users\\EAREMU\\source\\repos\\complete-api\\src\\Tests\\Dfe.Complete.Application.Tests\\Dfe.Complete.Application.Tests.csproj",
+        "packagesPath": "C:\\Users\\EAREMU\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\EAREMU\\source\\repos\\complete-api\\src\\Tests\\Dfe.Complete.Application.Tests\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\EAREMU\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net8.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {},
+          "https://nuget.pkg.github.com/DFE-Digital/index.json": {}
+        },
+        "frameworks": {
+          "net8.0": {
+            "targetAlias": "net8.0",
+            "projectReferences": {
+              "C:\\Users\\EAREMU\\source\\repos\\complete-api\\src\\Tests\\Dfe.Complete.Tests.Common\\Dfe.Complete.Tests.Common.csproj": {
+                "projectPath": "C:\\Users\\EAREMU\\source\\repos\\complete-api\\src\\Tests\\Dfe.Complete.Tests.Common\\Dfe.Complete.Tests.Common.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net8.0": {
+          "targetAlias": "net8.0",
+          "dependencies": {
+            "AutoFixture": {
+              "target": "Package",
+              "version": "[4.18.1, )"
+            },
+            "FluentAssertions": {
+              "target": "Package",
+              "version": "[6.12.1, )"
+            },
+            "Microsoft.NET.Test.Sdk": {
+              "target": "Package",
+              "version": "[17.11.1, )"
+            },
+            "System.Net.Http": {
+              "target": "Package",
+              "version": "[4.3.4, )"
+            },
+            "coverlet.collector": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[6.0.2, )"
+            },
+            "xunit.runner.visualstudio": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[2.8.2, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.110/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "C:\\Users\\EAREMU\\source\\repos\\complete-api\\src\\Tests\\Dfe.Complete.Tests.Common\\Dfe.Complete.Tests.Common.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\EAREMU\\source\\repos\\complete-api\\src\\Tests\\Dfe.Complete.Tests.Common\\Dfe.Complete.Tests.Common.csproj",
+        "projectName": "Dfe.Complete.Tests.Common",
+        "projectPath": "C:\\Users\\EAREMU\\source\\repos\\complete-api\\src\\Tests\\Dfe.Complete.Tests.Common\\Dfe.Complete.Tests.Common.csproj",
+        "packagesPath": "C:\\Users\\EAREMU\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\EAREMU\\source\\repos\\complete-api\\src\\Tests\\Dfe.Complete.Tests.Common\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\EAREMU\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net8.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {},
+          "https://nuget.pkg.github.com/DFE-Digital/index.json": {}
+        },
+        "frameworks": {
+          "net8.0": {
+            "targetAlias": "net8.0",
+            "projectReferences": {
+              "C:\\Users\\EAREMU\\source\\repos\\complete-api\\src\\Dfe.Complete.Api.Client\\Dfe.Complete.Api.Client.csproj": {
+                "projectPath": "C:\\Users\\EAREMU\\source\\repos\\complete-api\\src\\Dfe.Complete.Api.Client\\Dfe.Complete.Api.Client.csproj"
+              },
+              "C:\\Users\\EAREMU\\source\\repos\\complete-api\\src\\Dfe.Complete.Api\\Dfe.Complete.Api.csproj": {
+                "projectPath": "C:\\Users\\EAREMU\\source\\repos\\complete-api\\src\\Dfe.Complete.Api\\Dfe.Complete.Api.csproj"
+              },
+              "C:\\Users\\EAREMU\\source\\repos\\complete-api\\src\\Dfe.Complete.Application\\Dfe.Complete.Application.csproj": {
+                "projectPath": "C:\\Users\\EAREMU\\source\\repos\\complete-api\\src\\Dfe.Complete.Application\\Dfe.Complete.Application.csproj"
+              },
+              "C:\\Users\\EAREMU\\source\\repos\\complete-api\\src\\Dfe.Complete.Infrastructure\\Dfe.Complete.Infrastructure.csproj": {
+                "projectPath": "C:\\Users\\EAREMU\\source\\repos\\complete-api\\src\\Dfe.Complete.Infrastructure\\Dfe.Complete.Infrastructure.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net8.0": {
+          "targetAlias": "net8.0",
+          "dependencies": {
+            "AutoFixture": {
+              "target": "Package",
+              "version": "[4.18.1, )"
+            },
+            "AutoFixture.AutoNSubstitute": {
+              "target": "Package",
+              "version": "[4.18.1, )"
+            },
+            "AutoFixture.Xunit2": {
+              "target": "Package",
+              "version": "[4.18.1, )"
+            },
+            "AutoMapper": {
+              "target": "Package",
+              "version": "[13.0.1, )"
+            },
+            "DfE.CoreLibs.Testing": {
+              "target": "Package",
+              "version": "[1.1.4, )"
+            },
+            "Microsoft.AspNetCore.Mvc.Testing": {
+              "target": "Package",
+              "version": "[8.0.10, )"
+            },
+            "Microsoft.Data.Sqlite.Core": {
+              "target": "Package",
+              "version": "[8.0.10, )"
+            },
+            "Microsoft.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[8.0.10, )"
+            },
+            "Microsoft.EntityFrameworkCore.Sqlite": {
+              "target": "Package",
+              "version": "[8.0.10, )"
+            },
+            "Microsoft.NET.Test.Sdk": {
+              "target": "Package",
+              "version": "[17.11.1, )"
+            },
+            "MockQueryable.NSubstitute": {
+              "target": "Package",
+              "version": "[7.0.3, )"
+            },
+            "Moq": {
+              "target": "Package",
+              "version": "[4.20.72, )"
+            },
+            "NSubstitute": {
+              "target": "Package",
+              "version": "[5.1.0, )"
+            },
+            "coverlet.collector": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[6.0.2, )"
+            },
+            "xunit": {
+              "target": "Package",
+              "version": "[2.9.2, )"
+            },
+            "xunit.runner.visualstudio": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[2.8.2, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.110/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    }
+  }
+}
