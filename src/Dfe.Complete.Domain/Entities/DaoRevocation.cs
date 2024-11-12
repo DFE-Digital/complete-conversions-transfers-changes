@@ -1,11 +1,12 @@
-﻿using System;
+﻿using Dfe.Complete.Domain.ValueObjects;
+using System;
 using System.Collections.Generic;
 
 namespace Dfe.Complete.Infrastructure.Models;
 
 public partial class DaoRevocation
 {
-    public Guid Id { get; set; }
+    public DaoRevocationId Id { get; set; }
 
     public DateTime CreatedAt { get; set; }
 

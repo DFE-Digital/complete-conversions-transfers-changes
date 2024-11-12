@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Dfe.Complete.Infrastructure.Models;
 
-public partial class ArInternalMetadatum
+public partial class ArInternalMetadata
 {
     public string Key { get; set; } = null!;
 

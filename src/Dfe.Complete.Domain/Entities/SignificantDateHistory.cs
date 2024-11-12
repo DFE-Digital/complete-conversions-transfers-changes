@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Dfe.Complete.Domain.ValueObjects;
+using System;
 using System.Collections.Generic;
 
 namespace Dfe.Complete.Infrastructure.Models;
@@ -11,11 +12,11 @@ public partial class SignificantDateHistory
 
     public DateOnly? PreviousDate { get; set; }
 
-    public Guid? ProjectId { get; set; }
+    public ProjectId? ProjectId { get; set; }
 
     public DateTime CreatedAt { get; set; }
 
     public DateTime UpdatedAt { get; set; }
 
-    public Guid? UserId { get; set; }
+    public UserId? UserId { get; set; }
 }

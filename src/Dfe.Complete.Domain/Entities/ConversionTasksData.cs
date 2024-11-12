@@ -1,8 +1,10 @@
-﻿namespace Dfe.Complete.Domain.Entities;
+﻿using Dfe.Complete.Domain.ValueObjects;
 
-public partial class ConversionTasksDatum
+namespace Dfe.Complete.Domain.Entities;
+
+public partial class ConversionTasksData
 {
-    public Guid Id { get; set; }
+    public TaskDataId Id { get; set; }
 
     public bool? HandoverReview { get; set; }
 

@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using Dfe.Complete.Domain.Entities;
+using Dfe.Complete.Domain.ValueObjects;
 
 namespace Dfe.Complete.Infrastructure.Models;
 
 public partial class User
 {
-    public Guid Id { get; set; }
+    public UserId Id { get; set; }
 
     public string? Email { get; set; }
 

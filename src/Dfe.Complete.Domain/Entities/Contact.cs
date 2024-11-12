@@ -1,10 +1,12 @@
-﻿namespace Dfe.Complete.Domain.Entities;
+﻿using Dfe.Complete.Domain.ValueObjects;
+
+namespace Dfe.Complete.Domain.Entities;
 
 public class Contact
 {
-    public Guid Id { get; set; }
+    public ContactId Id { get; set; }
 
-    public Guid? ProjectId { get; set; }
+    public ProjectId? ProjectId { get; set; }
 
     public string Name { get; set; } = null!;
 

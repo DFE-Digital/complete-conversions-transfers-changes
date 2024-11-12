@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Dfe.Complete.Domain.ValueObjects;
+using System;
 using System.Collections.Generic;
 
 namespace Dfe.Complete.Infrastructure.Models;
@@ -7,9 +8,9 @@ public partial class GiasEstablishment
 {
     public Guid Id { get; set; }
 
-    public int? Urn { get; set; }
+    public Urn? Urn { get; set; }
 
-    public int? Ukprn { get; set; }
+    public Ukprn? Ukprn { get; set; }
 
     public string? Name { get; set; }
 

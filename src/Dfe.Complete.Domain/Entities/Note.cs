@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Dfe.Complete.Domain.Entities;
+using Dfe.Complete.Domain.ValueObjects;
 
 namespace Dfe.Complete.Infrastructure.Models;
 
@@ -10,9 +11,9 @@ public partial class Note
 
     public string? Body { get; set; }
 
-    public Guid? ProjectId { get; set; }
+    public ProjectId? ProjectId { get; set; }
 
-    public Guid? UserId { get; set; }
+    public UserId? UserId { get; set; }
 
     public DateTime CreatedAt { get; set; }
 

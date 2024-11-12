@@ -1,4 +1,5 @@
 ﻿using Dfe.Complete.Domain.Common;
+using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Domain.ValueObjects;
 using Dfe.Complete.Infrastructure.Models;
 
@@ -8,17 +9,17 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
 {
     public ProjectId Id { get; set; }
 
-    public int Urn { get; set; }
+    public Urn Urn { get; set; }
 
     public DateTime CreatedAt { get; set; }
 
     public DateTime UpdatedAt { get; set; }
 
-    public int? IncomingTrustUkprn { get; set; }
+    public Ukprn? IncomingTrustUkprn { get; set; }
 
-    public Guid? RegionalDeliveryOfficerId { get; set; }
+    public UserId? RegionalDeliveryOfficerId { get; set; }
 
-    public Guid? CaseworkerId { get; set; }
+    public UserId? CaseworkerId { get; set; }
 
     public DateTime? AssignedAt { get; set; }
 
@@ -34,7 +35,7 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
 
     public string? Type { get; set; }
 
-    public Guid? AssignedToId { get; set; }
+    public UserId? AssignedToId { get; set; }
 
     public DateOnly? SignificantDate { get; set; }
 
@@ -44,13 +45,13 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
 
     public string? Region { get; set; }
 
-    public int? AcademyUrn { get; set; }
+    public Urn? AcademyUrn { get; set; }
 
     public Guid? TasksDataId { get; set; }
 
-    public string? TasksDataType { get; set; }
+    public TaskType? TasksDataType { get; set; }
 
-    public int? OutgoingTrustUkprn { get; set; }
+    public Ukprn? OutgoingTrustUkprn { get; set; }
 
     public string? Team { get; set; }
 
@@ -60,13 +61,13 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
 
     public bool? AllConditionsMet { get; set; }
 
-    public Guid? MainContactId { get; set; }
+    public UserId? MainContactId { get; set; }
 
-    public Guid? EstablishmentMainContactId { get; set; }
+    public UserId? EstablishmentMainContactId { get; set; }
 
-    public Guid? IncomingTrustMainContactId { get; set; }
+    public UserId? IncomingTrustMainContactId { get; set; }
 
-    public Guid? OutgoingTrustMainContactId { get; set; }
+    public UserId? OutgoingTrustMainContactId { get; set; }
 
     public string? NewTrustReferenceNumber { get; set; }
 
@@ -76,7 +77,7 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
 
     public int? PrepareId { get; set; }
 
-    public Guid? LocalAuthorityMainContactId { get; set; }
+    public UserId? LocalAuthorityMainContactId { get; set; }
 
     public Guid? GroupId { get; set; }
 

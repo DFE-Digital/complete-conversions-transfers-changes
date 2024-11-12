@@ -1,11 +1,12 @@
-﻿using System;
+﻿using Dfe.Complete.Domain.ValueObjects;
+using System;
 using System.Collections.Generic;
 
 namespace Dfe.Complete.Infrastructure.Models;
 
-public partial class TransferTasksDatum
+public partial class TransferTasksData
 {
-    public Guid Id { get; set; }
+    public TaskDataId Id { get; set; }
 
     public DateTime CreatedAt { get; set; }
 
