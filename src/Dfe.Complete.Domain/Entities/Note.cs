@@ -5,9 +5,9 @@ using Dfe.Complete.Domain.ValueObjects;
 
 namespace Dfe.Complete.Infrastructure.Models;
 
-public partial class Note
+public class Note
 {
-    public Guid Id { get; set; }
+    public NoteId Id { get; set; }
 
     public string? Body { get; set; }
 

@@ -162,6 +162,7 @@ namespace Dfe.Complete.Client.Contracts
         public System.Guid TasksDataId { get; set; }
 
         [Newtonsoft.Json.JsonProperty("significantDate", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonConverter(typeof(DateFormatConverter))]
         public System.DateTime SignificantDate { get; set; }
 
         [Newtonsoft.Json.JsonProperty("isSignificantDateProvisional", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
@@ -181,6 +182,7 @@ namespace Dfe.Complete.Client.Contracts
         public bool HasAcademyOrderBeenIssued { get; set; }
 
         [Newtonsoft.Json.JsonProperty("advisoryBoardDate", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonConverter(typeof(DateFormatConverter))]
         public System.DateTime AdvisoryBoardDate { get; set; }
 
         [Newtonsoft.Json.JsonProperty("advisoryBoardConditions", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]

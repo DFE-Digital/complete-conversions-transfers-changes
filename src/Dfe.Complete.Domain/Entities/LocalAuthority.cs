@@ -1,11 +1,12 @@
-﻿using System;
+﻿using Dfe.Complete.Domain.ValueObjects;
+using System;
 using System.Collections.Generic;
 
 namespace Dfe.Complete.Infrastructure.Models;
 
-public partial class LocalAuthority
+public class LocalAuthority
 {
-    public Guid Id { get; set; }
+    public LocalAuthorityId Id { get; set; }
 
     public string Name { get; set; } = null!;
 

@@ -1,23 +1,24 @@
-﻿using System;
+﻿using Dfe.Complete.Domain.ValueObjects;
+using System;
 using System.Collections.Generic;
 
 namespace Dfe.Complete.Infrastructure.Models;
 
-public partial class KeyContact
+public class KeyContact
 {
-    public Guid Id { get; set; }
+    public KeyContactId Id { get; set; }
 
-    public Guid? ProjectId { get; set; }
+    public ProjectId? ProjectId { get; set; }
 
-    public Guid? HeadteacherId { get; set; }
+    public ContactId? HeadteacherId { get; set; }
 
     public DateTime CreatedAt { get; set; }
 
     public DateTime UpdatedAt { get; set; }
 
-    public Guid? ChairOfGovernorsId { get; set; }
+    public ContactId? ChairOfGovernorsId { get; set; }
 
-    public Guid? IncomingTrustCeoId { get; set; }
+    public ContactId? IncomingTrustCeoId { get; set; }
 
-    public Guid? OutgoingTrustCeoId { get; set; }
+    public ContactId? OutgoingTrustCeoId { get; set; }
 }

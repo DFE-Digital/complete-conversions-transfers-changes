@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace Dfe.Complete.Infrastructure.Models;
 
-public partial class TransferTasksData
+public class TransferTasksData
 {
     public TaskDataId Id { get; set; }
 

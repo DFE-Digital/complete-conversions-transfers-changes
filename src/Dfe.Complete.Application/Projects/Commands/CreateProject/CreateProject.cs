@@ -2,7 +2,7 @@ using MediatR;
 using Dfe.Complete.Domain.ValueObjects;
 using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Domain.Interfaces.Repositories;
-using Dfe.Complete.Domain.Entities.Projects;
+using Dfe.Complete.Domain.Entities;
 
 namespace Dfe.Complete.Application.Projects.Commands.CreateProject
 {
@@ -12,13 +12,13 @@ namespace Dfe.Complete.Application.Projects.Commands.CreateProject
             TaskType taskType,
             ProjectType projectType,
             Guid tasksDataId,
-            DateTime significantDate,
+            DateOnly significantDate,
             bool isSignificantDateProvisional,
             Ukprn incomingTrustUkprn,
             Region region,
             bool isDueTo2RI,
             bool hasAcademyOrderBeenIssued,
-            DateTime advisoryBoardDate,
+            DateOnly advisoryBoardDate,
             string advisoryBoardConditions,
             string establishmentSharepointLink,
             string incomingTrustSharepointLink) : IRequest<ProjectId>;

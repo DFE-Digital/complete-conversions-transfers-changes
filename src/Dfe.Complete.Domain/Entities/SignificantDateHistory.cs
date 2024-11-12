@@ -4,9 +4,9 @@ using System.Collections.Generic;
 
 namespace Dfe.Complete.Infrastructure.Models;
 
-public partial class SignificantDateHistory
+public class SignificantDateHistory
 {
-    public Guid Id { get; set; }
+    public SignificantDateHistoryId Id { get; set; }
 
     public DateOnly? RevisedDate { get; set; }
 

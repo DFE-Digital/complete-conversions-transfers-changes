@@ -1,10 +1,8 @@
 ﻿using Dfe.Complete.Domain.ValueObjects;
-using System;
-using System.Collections.Generic;
 
 namespace Dfe.Complete.Infrastructure.Models;
 
-public partial class DaoRevocation
+public class DaoRevocation
 {
     public DaoRevocationId Id { get; set; }
 
@@ -16,5 +14,5 @@ public partial class DaoRevocation
 
     public string? DecisionMakersName { get; set; }
 
-    public Guid? ProjectId { get; set; }
+    public ProjectId? ProjectId { get; set; }
 }

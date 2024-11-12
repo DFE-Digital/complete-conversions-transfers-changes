@@ -1,11 +1,12 @@
-﻿using System;
+﻿using Dfe.Complete.Domain.ValueObjects;
+using System;
 using System.Collections.Generic;
 
 namespace Dfe.Complete.Infrastructure.Models;
 
-public partial class GiasGroup
+public class GiasGroup
 {
-    public Guid Id { get; set; }
+    public GiasGroupId Id { get; set; }
 
     public int? Ukprn { get; set; }
 

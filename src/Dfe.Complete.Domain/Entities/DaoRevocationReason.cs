@@ -1,13 +1,14 @@
-﻿using System;
+﻿using Dfe.Complete.Domain.ValueObjects;
+using System;
 using System.Collections.Generic;
 
 namespace Dfe.Complete.Infrastructure.Models;
 
-public partial class DaoRevocationReason
+public class DaoRevocationReason
 {
-    public Guid Id { get; set; }
+    public DaoRevocationReasonId Id { get; set; }
 
-    public Guid? DaoRevocationId { get; set; }
+    public DaoRevocationId? DaoRevocationId { get; set; }
 
     public string? ReasonType { get; set; }
 }

@@ -236,7 +236,7 @@
           },
           "significantDate": {
             "type": "string",
-            "format": "date-time"
+            "format": "date"
           },
           "isSignificantDateProvisional": {
             "type": "boolean"
@@ -255,7 +255,7 @@
           },
           "advisoryBoardDate": {
             "type": "string",
-            "format": "date-time"
+            "format": "date"
           },
           "advisoryBoardConditions": {
             "type": "string"

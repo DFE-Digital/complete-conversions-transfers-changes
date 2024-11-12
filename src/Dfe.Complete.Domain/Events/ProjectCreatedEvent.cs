@@ -1,6 +1,5 @@
 using Dfe.Complete.Domain.Common;
-using Dfe.Complete.Domain.Entities.Projects;
-using Dfe.Complete.Domain.Entities.Schools;
+using Dfe.Complete.Domain.Entities;
 
 namespace Dfe.Complete.Domain.Events
 {

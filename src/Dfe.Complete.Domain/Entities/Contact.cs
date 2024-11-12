@@ -26,7 +26,7 @@ public class Contact
 
     public string? Type { get; set; }
 
-    public Guid? LocalAuthorityId { get; set; }
+    public LocalAuthorityId? LocalAuthorityId { get; set; }
 
     public int? EstablishmentUrn { get; set; }
 

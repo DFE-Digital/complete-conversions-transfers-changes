@@ -4,9 +4,9 @@ using System.Collections.Generic;
 
 namespace Dfe.Complete.Infrastructure.Models;
 
-public partial class ProjectGroup
+public class ProjectGroup
 {
-    public Guid Id { get; set; }
+    public ProjectGroupId Id { get; set; }
 
     public string? GroupIdentifier { get; set; }
 

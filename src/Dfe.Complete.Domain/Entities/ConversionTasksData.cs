@@ -2,7 +2,7 @@
 
 namespace Dfe.Complete.Domain.Entities;
 
-public partial class ConversionTasksData
+public class ConversionTasksData
 {
     public TaskDataId Id { get; set; }
 

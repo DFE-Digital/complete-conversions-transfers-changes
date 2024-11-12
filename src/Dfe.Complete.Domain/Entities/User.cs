@@ -5,7 +5,7 @@ using Dfe.Complete.Domain.ValueObjects;
 
 namespace Dfe.Complete.Infrastructure.Models;
 
-public partial class User
+public class User
 {
     public UserId Id { get; set; }
 

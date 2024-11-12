@@ -1,11 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Dfe.Complete.Domain.ValueObjects;
 
 namespace Dfe.Complete.Infrastructure.Models;
 
-public partial class SignificantDateHistoryReason
+public class SignificantDateHistoryReason
 {
-    public Guid Id { get; set; }
+    public SignificantDateHistoryReasonId Id { get; set; }
 
     public DateTime CreatedAt { get; set; }
 
@@ -13,5 +12,5 @@ public partial class SignificantDateHistoryReason
 
     public string? ReasonType { get; set; }
 
-    public Guid? SignificantDateHistoryId { get; set; }
+    public SignificantDateHistoryId? SignificantDateHistoryId { get; set; }
 }

@@ -1,12 +1,10 @@
 ﻿using Dfe.Complete.Domain.ValueObjects;
-using System;
-using System.Collections.Generic;
 
 namespace Dfe.Complete.Infrastructure.Models;
 
-public partial class GiasEstablishment
+public class GiasEstablishment
 {
-    public Guid Id { get; set; }
+    public GiasEstablishmentId Id { get; set; }
 
     public Urn? Urn { get; set; }
 
