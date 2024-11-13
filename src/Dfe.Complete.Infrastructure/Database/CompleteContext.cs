@@ -284,26 +284,25 @@ public partial class CompleteContext : DbContext
               v => v!.Value,
               v => new ContactId(v));
 
-        projectConfiguration
-            .HasOne(c => c.MainContactId)
-            .WithOne()
-            .HasForeignKey<User>(c => c.Id);
+        //projectConfiguration
+        //    .HasOne(c => c.MainContactId)
+        //    .WithOne()
+        //    .HasForeignKey<Contact>(c => c.Id);
 
-        projectConfiguration
-            .HasOne(c => c.EstablishmentMainContactId)
-            .WithOne()
-            .HasForeignKey<User>(c => c.Id);
+        //projectConfiguration
+        //    .HasOne(c => c.EstablishmentMainContactId)
+        //    .WithOne()
+        //    .HasForeignKey<Contact>(c => c.Id);
 
+        //projectConfiguration
+        //    .HasOne(c => c.IncomingTrustMainContactId)
+        //    .WithOne()
+        //    .HasForeignKey<Contact>(c => c.Id);
 
-        projectConfiguration
-            .HasOne(c => c.IncomingTrustMainContactId)
-            .WithOne()
-            .HasForeignKey<User>(c => c.Id);
-
-        projectConfiguration
-            .HasOne(c => c.OutgoingTrustMainContactId)
-            .WithOne()
-            .HasForeignKey<User>(c => c.Id);
+        //projectConfiguration
+        //    .HasOne(c => c.OutgoingTrustMainContactId)
+        //    .WithOne()
+        //    .HasForeignKey<Contact>(c => c.Id);
     }
 
     private static void ConfigureUser(EntityTypeBuilder<User> projectConfiguration)
