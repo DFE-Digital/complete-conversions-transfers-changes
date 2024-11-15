@@ -15,6 +15,7 @@ namespace Microsoft.Extensions.DependencyInjection
             //Repos
             services.AddScoped<ISchoolRepository, SchoolRepository>();
             services.AddScoped(typeof(ISclRepository<>), typeof(SclRepository<>));
+            services.AddScoped(typeof(ICompleteRepository<>), typeof(CompleteRepository<>));
 
             //Cache service
             services.AddServiceCaching(config);
@@ -23,6 +24,9 @@ namespace Microsoft.Extensions.DependencyInjection
             var connectionString = config.GetConnectionString("DefaultConnection");
 
             services.AddDbContext<SclContext>(options =>
+                options.UseSqlServer(connectionString));
+
+            services.AddDbContext<CompleteContext>(options =>
                 options.UseSqlServer(connectionString));
 
             // Authentication

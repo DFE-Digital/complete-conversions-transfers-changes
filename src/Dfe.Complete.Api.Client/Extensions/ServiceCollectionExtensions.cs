@@ -9,7 +9,7 @@ namespace Dfe.Complete.Api.Client.Extensions
     [ExcludeFromCodeCoverage]
     public static class ServiceCollectionExtensions
     {
-        public static IServiceCollection AddApiClient<TClientInterface, TClientImplementation>(
+        public static IServiceCollection AddCompleteApiClient<TClientInterface, TClientImplementation>(
             this IServiceCollection services,
             IConfiguration configuration,
             HttpClient? existingHttpClient = null)
@@ -17,7 +17,7 @@ namespace Dfe.Complete.Api.Client.Extensions
             where TClientImplementation : class, TClientInterface
         {
             var apiSettings = new ApiClientSettings();
-            configuration.GetSection("ApiClient").Bind(apiSettings);
+            configuration.GetSection("CompleteApiClient").Bind(apiSettings);
 
             services.AddSingleton(apiSettings);
             services.AddSingleton<ITokenAcquisitionService, TokenAcquisitionService>();
