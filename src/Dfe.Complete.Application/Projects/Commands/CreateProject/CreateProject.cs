@@ -29,11 +29,13 @@ namespace Dfe.Complete.Application.Projects.Commands.CreateProject
     {
         public async Task<ProjectId> Handle(CreateProjectCommand request, CancellationToken cancellationToken)
         {
+            var createdAt = DateTime.UtcNow;
+
             var project = Project.Create(request.urn,
-                                     request.createdAt,
-                                     request.updatedAt,
+                                     createdAt,
+                                     createdAt,
                                      request.taskType,
-                                     request.projectType,
+                                     ProjectType.Conversion,
                                      request.tasksDataId,
                                      request.significantDate,
                                      request.isSignificantDateProvisional,
