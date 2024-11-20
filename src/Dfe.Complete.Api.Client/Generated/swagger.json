@@ -6,6 +6,43 @@
     "version": "1.0.0"
   },
   "paths": {
+    "/v1/Projects": {
+      "post": {
+        "tags": [
+          "Projects"
+        ],
+        "summary": "Creates a new Project",
+        "operationId": "Projects_CreateProject_",
+        "requestBody": {
+          "x-name": "request",
+          "description": "The request.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateProjectCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "201": {
+            "description": "Project created successfully.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProjectId"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request data."
+          }
+        }
+      }
+    },
     "/v1/Schools/{schoolName}/principal": {
       "get": {
         "tags": [
@@ -162,6 +199,145 @@
   },
   "components": {
     "schemas": {
+      "ProjectId": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "value": {
+            "type": "string",
+            "format": "guid"
+          }
+        }
+      },
+      "CreateProjectCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "urn": {
+            "$ref": "#/components/schemas/Urn"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "taskType": {
+            "$ref": "#/components/schemas/TaskType"
+          },
+          "projectType": {
+            "$ref": "#/components/schemas/ProjectType"
+          },
+          "tasksDataId": {
+            "type": "string",
+            "format": "guid"
+          },
+          "significantDate": {
+            "type": "string",
+            "format": "date"
+          },
+          "isSignificantDateProvisional": {
+            "type": "boolean"
+          },
+          "incomingTrustUkprn": {
+            "$ref": "#/components/schemas/Ukprn"
+          },
+          "region": {
+            "$ref": "#/components/schemas/Region"
+          },
+          "isDueTo2RI": {
+            "type": "boolean"
+          },
+          "hasAcademyOrderBeenIssued": {
+            "type": "boolean"
+          },
+          "advisoryBoardDate": {
+            "type": "string",
+            "format": "date"
+          },
+          "advisoryBoardConditions": {
+            "type": "string"
+          },
+          "establishmentSharepointLink": {
+            "type": "string"
+          },
+          "incomingTrustSharepointLink": {
+            "type": "string"
+          }
+        }
+      },
+      "Urn": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "value": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "TaskType": {
+        "type": "string",
+        "description": "",
+        "x-enumNames": [
+          "Conversion",
+          "Transfer"
+        ],
+        "enum": [
+          "Conversion",
+          "Transfer"
+        ]
+      },
+      "ProjectType": {
+        "type": "string",
+        "description": "",
+        "x-enumNames": [
+          "Conversion",
+          "Transfer"
+        ],
+        "enum": [
+          "Conversion",
+          "Transfer"
+        ]
+      },
+      "Ukprn": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "value": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "Region": {
+        "type": "string",
+        "description": "",
+        "x-enumNames": [
+          "London",
+          "SouthEast",
+          "YorkshireAndTheHumber",
+          "NorthWest",
+          "EastOfEngland",
+          "WestMidlands",
+          "NorthEast",
+          "SouthWest",
+          "EastMidlands"
+        ],
+        "enum": [
+          "London",
+          "SouthEast",
+          "YorkshireAndTheHumber",
+          "NorthWest",
+          "EastOfEngland",
+          "WestMidlands",
+          "NorthEast",
+          "SouthWest",
+          "EastMidlands"
+        ]
+      },
       "Principal": {
         "allOf": [
           {
