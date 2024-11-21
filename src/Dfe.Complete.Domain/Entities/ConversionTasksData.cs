@@ -5,7 +5,7 @@ using Dfe.Complete.Domain.ValueObjects;
 
 namespace Dfe.Complete.Domain.Entities;
 
-public class ConversionTasksData : IEntity<TaskDataId>
+public class ConversionTasksData : BaseAggregateRoot, IEntity<TaskDataId>
 {
     public TaskDataId Id { get; set; }
 
@@ -250,10 +250,12 @@ public class ConversionTasksData : IEntity<TaskDataId>
     private ConversionTasksData() { }
 
     public ConversionTasksData(
+        TaskDataId id,
         DateTime createdAt,
         DateTime updatedAt
         )
     {
+        Id = id;
         CreatedAt = createdAt;
         UpdatedAt = updatedAt;
     }

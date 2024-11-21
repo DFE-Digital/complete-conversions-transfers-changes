@@ -149,9 +149,6 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
         string establishmentSharepointLink,
         string incomingTrustSharepointLink)
     {
-
-        var conversionTask = new ConversionTasksData(createdAt, updatedAt);
-
         var project = new Project(urn,
                                  createdAt,
                                  updatedAt,
