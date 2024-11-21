@@ -1,8 +1,11 @@
-﻿using Dfe.Complete.Domain.ValueObjects;
+﻿using Dfe.Complete.Domain.Common;
+using Dfe.Complete.Domain.Enums;
+using Dfe.Complete.Domain.Events;
+using Dfe.Complete.Domain.ValueObjects;
 
 namespace Dfe.Complete.Domain.Entities;
 
-public class ConversionTasksData
+public class ConversionTasksData : IEntity<TaskDataId>
 {
     public TaskDataId Id { get; set; }
 
@@ -243,4 +246,15 @@ public class ConversionTasksData
     public bool? CommercialTransferAgreementQuestionsChecked { get; set; }
 
     public bool? CommercialTransferAgreementSaved { get; set; }
+
+    private ConversionTasksData() { }
+
+    public ConversionTasksData(
+        DateTime createdAt,
+        DateTime updatedAt
+        )
+    {
+        CreatedAt = createdAt;
+        UpdatedAt = updatedAt;
+    }
 }

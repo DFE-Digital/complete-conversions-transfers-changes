@@ -49,6 +49,8 @@ namespace Dfe.Complete.Application.Projects.Commands.CreateProject
                                      request.incomingTrustSharepointLink);
 
 
+
+            //await projectRepository.AddAsync(conversionTaskData, cancellationToken);
             await projectRepository.AddAsync(project, cancellationToken);
 
             return project.Id!;
