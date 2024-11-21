@@ -254,6 +254,7 @@ public class ConversionTasksData : IEntity<TaskDataId>
         DateTime updatedAt
         )
     {
+        Id = new TaskDataId(Guid.NewGuid());
         CreatedAt = createdAt;
         UpdatedAt = updatedAt;
     }

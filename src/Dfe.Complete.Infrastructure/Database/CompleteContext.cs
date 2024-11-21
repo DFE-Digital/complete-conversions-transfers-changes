@@ -284,6 +284,9 @@ public partial class CompleteContext : DbContext
               v => v!.Value,
               v => new ContactId(v));
 
+        projectConfiguration.Ignore(p => p.ConversionTasksData);
+        projectConfiguration.Ignore(p => p.TransferTasksData);
+
         //projectConfiguration
         //    .HasOne(c => c.MainContactId)
         //    .WithOne()
@@ -303,6 +306,7 @@ public partial class CompleteContext : DbContext
         //    .HasOne(c => c.OutgoingTrustMainContactId)
         //    .WithOne()
         //    .HasForeignKey<Contact>(c => c.Id);
+
     }
 
     private static void ConfigureUser(EntityTypeBuilder<User> projectConfiguration)
@@ -435,7 +439,7 @@ public partial class CompleteContext : DbContext
         projectConfiguration.ToTable("conversion_tasks_data", DefaultSchema);
 
         projectConfiguration.Property(e => e.Id)
-            .ValueGeneratedOnAdd()
+            .ValueGeneratedNever()
             .HasConversion(
                 v => v!.Value,
                 v => new TaskDataId(v))
@@ -596,6 +600,7 @@ public partial class CompleteContext : DbContext
         projectConfiguration.ToTable("transfer_tasks_data", DefaultSchema);
 
         projectConfiguration.Property(e => e.Id)
+            .ValueGeneratedNever()
             .HasConversion(
                 v => v!.Value,
                 v => new TaskDataId(v))

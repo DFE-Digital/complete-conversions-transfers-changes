@@ -48,7 +48,7 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
 
     public Urn? AcademyUrn { get; set; }
 
-    public Guid? TasksDataId { get; set; }
+    public TaskDataId? TasksDataId { get; set; }
 
     public TaskType? TasksDataType { get; set; }
 
@@ -92,6 +92,9 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
 
     public virtual User? RegionalDeliveryOfficer { get; set; }
 
+    public ConversionTasksData ConversionTasksData { get; private set; }
+    public TransferTasksData TransferTasksData { get; private set; }
+
     private Project() { }
 
     public Project(
@@ -100,7 +103,6 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
         DateTime updatedAt,
         TaskType taskType,
         ProjectType projectType,
-        Guid tasksDataId,
         DateOnly significantDate,
         bool isSignificantDateProvisional,
         Ukprn incomingTrustUkprn,
@@ -118,7 +120,6 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
         UpdatedAt = updatedAt != default ? updatedAt : throw new ArgumentNullException(nameof(updatedAt));
         TasksDataType = taskType;
         Type = projectType; //TOD EA: Comeback and validate the rest
-        TasksDataId = tasksDataId;
         SignificantDate = significantDate;
         SignificantDateProvisional = isSignificantDateProvisional;
         IncomingTrustUkprn = incomingTrustUkprn;
@@ -129,6 +130,20 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
         AdvisoryBoardConditions = advisoryBoardConditions;
         EstablishmentSharepointLink = establishmentSharepointLink;
         IncomingTrustSharepointLink = incomingTrustSharepointLink;
+
+        switch (taskType)
+        {
+            case TaskType.Conversion:
+                ConversionTasksData = new ConversionTasksData(createdAt, updatedAt);
+                TasksDataId = ConversionTasksData.Id;
+                break;
+            case TaskType.Transfer:
+                TransferTasksData = new TransferTasksData(createdAt, updatedAt);
+                TasksDataId = TransferTasksData.Id;
+                break;
+            default:
+                throw new ArgumentException("Invalid TaskType", nameof(taskType));
+        }
     }
 
 
@@ -137,7 +152,6 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
         DateTime updatedAt,
         TaskType taskType,
         ProjectType projectType,
-        Guid tasksDataId,
         DateOnly significantDate,
         bool isSignificantDateProvisional,
         Ukprn incomingTrustUkprn,
@@ -149,15 +163,11 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
         string establishmentSharepointLink,
         string incomingTrustSharepointLink)
     {
-
-        var conversionTask = new ConversionTasksData(createdAt, updatedAt);
-
         var project = new Project(urn,
                                  createdAt,
                                  updatedAt,
                                  taskType,
                                  projectType,
-                                 tasksDataId,
                                  significantDate,
                                  isSignificantDateProvisional,
                                  incomingTrustUkprn,

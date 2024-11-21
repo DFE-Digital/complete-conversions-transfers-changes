@@ -229,4 +229,13 @@ public class TransferTasksData
     public bool? CommercialTransferAgreementQuestionsReceived { get; set; }
 
     public bool? CommercialTransferAgreementQuestionsChecked { get; set; }
+
+    public TransferTasksData(DateTime createdAt, DateTime updatedAt)
+    {
+        Id = new TaskDataId(Guid.NewGuid());
+        CreatedAt = createdAt;
+        UpdatedAt = updatedAt;
+    }
+
+    private TransferTasksData() { }
 }
