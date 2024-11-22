@@ -1,6 +1,4 @@
 ﻿using Dfe.Complete.Domain.Common;
-using Dfe.Complete.Domain.Enums;
-using Dfe.Complete.Domain.Events;
 using Dfe.Complete.Domain.ValueObjects;
 
 namespace Dfe.Complete.Domain.Entities;
@@ -256,7 +254,7 @@ public class ConversionTasksData : BaseAggregateRoot, IEntity<TaskDataId>
         )
     {
         Id = id;
-        CreatedAt = createdAt;
-        UpdatedAt = updatedAt;
+        CreatedAt = createdAt != default ? createdAt : throw new ArgumentNullException(nameof(createdAt));
+        UpdatedAt = updatedAt != default ? updatedAt : throw new ArgumentNullException(nameof(updatedAt));
     }
 }
