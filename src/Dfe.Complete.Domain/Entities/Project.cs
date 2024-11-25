@@ -149,7 +149,6 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
         string establishmentSharepointLink,
         string incomingTrustSharepointLink)
     {
-
         var project = new Project(urn,
                                  createdAt,
                                  updatedAt,

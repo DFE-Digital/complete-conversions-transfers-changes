@@ -24,19 +24,22 @@ namespace Dfe.Complete.Application.Projects.Commands.CreateProject
             string incomingTrustSharepointLink) : IRequest<ProjectId>;
 
 
-    public class CreateProjectCommandHandler(ICompleteRepository<Project> projectRepository)
+    public class CreateProjectCommandHandler(ICompleteRepository<Project> projectRepository, ICompleteRepository<ConversionTasksData> conversionTaskRepository)
         : IRequestHandler<CreateProjectCommand, ProjectId>
     {
         public async Task<ProjectId> Handle(CreateProjectCommand request, CancellationToken cancellationToken)
         {
             var createdAt = DateTime.UtcNow;
+            var conversionTaskId = Guid.NewGuid();
+
+            var conversionTask = new ConversionTasksData(new TaskDataId(conversionTaskId), createdAt, createdAt);
 
             var project = Project.Create(request.urn,
                                      createdAt,
                                      createdAt,
                                      request.taskType,
                                      ProjectType.Conversion,
-                                     request.tasksDataId,
+                                     conversionTaskId,
                                      request.significantDate,
                                      request.isSignificantDateProvisional,
                                      request.incomingTrustUkprn,
@@ -48,7 +51,7 @@ namespace Dfe.Complete.Application.Projects.Commands.CreateProject
                                      request.establishmentSharepointLink,
                                      request.incomingTrustSharepointLink);
 
-
+            await conversionTaskRepository.AddAsync(conversionTask, cancellationToken);
             await projectRepository.AddAsync(project, cancellationToken);
 
             return project.Id!;

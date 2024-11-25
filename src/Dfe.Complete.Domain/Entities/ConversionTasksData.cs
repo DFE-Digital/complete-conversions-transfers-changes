@@ -1,8 +1,9 @@
-﻿using Dfe.Complete.Domain.ValueObjects;
+﻿using Dfe.Complete.Domain.Common;
+using Dfe.Complete.Domain.ValueObjects;
 
 namespace Dfe.Complete.Domain.Entities;
 
-public class ConversionTasksData
+public class ConversionTasksData : BaseAggregateRoot, IEntity<TaskDataId>
 {
     public TaskDataId Id { get; set; }
 
@@ -243,4 +244,17 @@ public class ConversionTasksData
     public bool? CommercialTransferAgreementQuestionsChecked { get; set; }
 
     public bool? CommercialTransferAgreementSaved { get; set; }
+
+    private ConversionTasksData() { }
+
+    public ConversionTasksData(
+        TaskDataId id,
+        DateTime createdAt,
+        DateTime updatedAt
+        )
+    {
+        Id = id;
+        CreatedAt = createdAt != default ? createdAt : throw new ArgumentNullException(nameof(createdAt));
+        UpdatedAt = updatedAt != default ? updatedAt : throw new ArgumentNullException(nameof(updatedAt));
+    }
 }
