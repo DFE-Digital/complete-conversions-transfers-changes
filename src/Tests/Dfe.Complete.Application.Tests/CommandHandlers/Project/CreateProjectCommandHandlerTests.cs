@@ -12,14 +12,14 @@ using DfE.CoreLibs.Testing.AutoFixture.Customizations;
 
 namespace Dfe.Complete.Application.Tests.CommandHandlers.Project
 {
-    public class CreateProjectCommandHandlerTests
+    public class CreatConversionProjectCommandHandlerTests
     {
         [Theory]
         [CustomAutoData(typeof(DateOnlyCustomization))]
         public async Task Handle_ShouldCreateAndReturnProjectId_WhenCommandIsValid(
             [Frozen] ICompleteRepository<Domain.Entities.Project> mockProjectRepository,
-            CreateProjectCommandHandler handler,
-            CreateProjectCommand command
+            CreatConversionProjectCommandHandler handler,
+            CreateConversionProjectCommand command
             )
         {
             var now = DateTime.UtcNow;
@@ -49,7 +49,7 @@ namespace Dfe.Complete.Application.Tests.CommandHandlers.Project
             await handler.Handle(command, default);
 
             // Assert
-            await mockProjectRepository.Received(1).AddAsync(Arg.Is<Domain.Entities.Project>(s => s.Urn == command.urn), default);
+            await mockProjectRepository.Received(1).AddAsync(Arg.Is<Domain.Entities.Project>(s => s.Urn == command.Urn), default);
         }
     }
 }

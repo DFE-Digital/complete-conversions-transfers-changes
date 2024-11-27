@@ -22,7 +22,7 @@ namespace Dfe.Complete.Api.Controllers
         [HttpPost]
         [SwaggerResponse(201, "Project created successfully.", typeof(ProjectId))]
         [SwaggerResponse(400, "Invalid request data.")]
-        public async Task<IActionResult> CreateProject_Async([FromBody] CreateProjectCommand request, CancellationToken cancellationToken)
+        public async Task<IActionResult> CreateProject_Async([FromBody] CreateConversionProjectCommand request, CancellationToken cancellationToken)
         {
             var projectId = await sender.Send(request, cancellationToken);
             return Created("", projectId);
