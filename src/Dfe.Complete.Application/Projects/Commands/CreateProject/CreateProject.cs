@@ -25,7 +25,7 @@ namespace Dfe.Complete.Application.Projects.Commands.CreateProject
         string IncomingTrustSharepointLink) : IRequest<ProjectId>;
 
 
-    public class CreatConversionProjectCommandHandler(ICompleteRepository<Project> projectRepository, ICompleteRepository<ConversionTasksData> conversionTaskRepository)
+    public class CreateConversionProjectCommandHandler(ICompleteRepository<Project> projectRepository, ICompleteRepository<ConversionTasksData> conversionTaskRepository)
         : IRequestHandler<CreateConversionProjectCommand, ProjectId>
     {
         public async Task<ProjectId> Handle(CreateConversionProjectCommand request, CancellationToken cancellationToken)

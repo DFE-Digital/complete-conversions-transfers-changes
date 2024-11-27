@@ -12,13 +12,13 @@ using DfE.CoreLibs.Testing.AutoFixture.Customizations;
 
 namespace Dfe.Complete.Application.Tests.CommandHandlers.Project
 {
-    public class CreatConversionProjectCommandHandlerTests
+    public class CreateConversionProjectCommandHandlerTests
     {
         [Theory]
         [CustomAutoData(typeof(DateOnlyCustomization))]
         public async Task Handle_ShouldCreateAndReturnProjectId_WhenCommandIsValid(
             [Frozen] ICompleteRepository<Domain.Entities.Project> mockProjectRepository,
-            CreatConversionProjectCommandHandler handler,
+            CreateConversionProjectCommandHandler handler,
             CreateConversionProjectCommand command
             )
         {
