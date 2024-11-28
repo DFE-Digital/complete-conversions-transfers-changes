@@ -38,7 +38,7 @@ namespace Dfe.Complete.Application.Projects.Commands.CreateProject
             var project = Project.Create(request.Urn,
                 createdAt,
                 createdAt,
-                request.TaskType,
+                TaskType.Conversion,
                 ProjectType.Conversion,
                 conversionTaskId,
                 request.SignificantDate,
