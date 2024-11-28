@@ -6,7 +6,7 @@ namespace Dfe.Complete.Api.Client.Security
     [ExcludeFromCodeCoverage]
     public class BearerTokenHandler(ITokenAcquisitionService tokenAcquisitionService) : DelegatingHandler
     {
-        protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, System.Threading.CancellationToken cancellationToken)
+        protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
         {
             var token = await tokenAcquisitionService.GetTokenAsync();
 
