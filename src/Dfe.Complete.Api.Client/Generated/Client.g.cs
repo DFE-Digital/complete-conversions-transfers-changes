@@ -80,7 +80,7 @@ namespace Dfe.Complete.Client
         /// <param name="request">The request.</param>
         /// <returns>Project created successfully.</returns>
         /// <exception cref="PersonsApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<ProjectId> Projects_CreateProject_Async(CreateProjectCommand request)
+        public virtual System.Threading.Tasks.Task<ProjectId> Projects_CreateProject_Async(CreateConversionProjectCommand request)
         {
             return Projects_CreateProject_Async(request, System.Threading.CancellationToken.None);
         }
@@ -92,7 +92,7 @@ namespace Dfe.Complete.Client
         /// <param name="request">The request.</param>
         /// <returns>Project created successfully.</returns>
         /// <exception cref="PersonsApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<ProjectId> Projects_CreateProject_Async(CreateProjectCommand request, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<ProjectId> Projects_CreateProject_Async(CreateConversionProjectCommand request, System.Threading.CancellationToken cancellationToken)
         {
             if (request == null)
                 throw new System.ArgumentNullException("request");

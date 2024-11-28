@@ -19,7 +19,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/CreateProjectCommand"
+                "$ref": "#/components/schemas/CreateConversionProjectCommand"
               }
             }
           },
@@ -209,7 +209,7 @@
           }
         }
       },
-      "CreateProjectCommand": {
+      "CreateConversionProjectCommand": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
@@ -247,7 +247,7 @@
           "region": {
             "$ref": "#/components/schemas/Region"
           },
-          "isDueTo2RI": {
+          "isDueTo2Ri": {
             "type": "boolean"
           },
           "hasAcademyOrderBeenIssued": {

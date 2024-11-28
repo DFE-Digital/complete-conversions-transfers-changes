@@ -33,7 +33,7 @@ namespace Dfe.Complete.Client.Contracts
         /// <param name="request">The request.</param>
         /// <returns>Project created successfully.</returns>
         /// <exception cref="PersonsApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<ProjectId> Projects_CreateProject_Async(CreateProjectCommand request);
+        System.Threading.Tasks.Task<ProjectId> Projects_CreateProject_Async(CreateConversionProjectCommand request);
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>
@@ -42,7 +42,7 @@ namespace Dfe.Complete.Client.Contracts
         /// <param name="request">The request.</param>
         /// <returns>Project created successfully.</returns>
         /// <exception cref="PersonsApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<ProjectId> Projects_CreateProject_Async(CreateProjectCommand request, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<ProjectId> Projects_CreateProject_Async(CreateConversionProjectCommand request, System.Threading.CancellationToken cancellationToken);
 
     }
 
@@ -141,7 +141,7 @@ namespace Dfe.Complete.Client.Contracts
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.1.0.0 (NJsonSchema v11.0.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    public partial class CreateProjectCommand
+    public partial class CreateConversionProjectCommand
     {
         [Newtonsoft.Json.JsonProperty("urn", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public Urn? Urn { get; set; } = default!;
@@ -177,8 +177,8 @@ namespace Dfe.Complete.Client.Contracts
         [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
         public Region? Region { get; set; } = default!;
 
-        [Newtonsoft.Json.JsonProperty("isDueTo2RI", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public bool? IsDueTo2RI { get; set; } = default!;
+        [Newtonsoft.Json.JsonProperty("isDueTo2Ri", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? IsDueTo2Ri { get; set; } = default!;
 
         [Newtonsoft.Json.JsonProperty("hasAcademyOrderBeenIssued", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public bool? HasAcademyOrderBeenIssued { get; set; } = default!;
@@ -202,10 +202,10 @@ namespace Dfe.Complete.Client.Contracts
             return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonSerializerSettings());
 
         }
-        public static CreateProjectCommand FromJson(string data)
+        public static CreateConversionProjectCommand FromJson(string data)
         {
 
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<CreateProjectCommand>(data, new Newtonsoft.Json.JsonSerializerSettings());
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<CreateConversionProjectCommand>(data, new Newtonsoft.Json.JsonSerializerSettings());
 
         }
 
