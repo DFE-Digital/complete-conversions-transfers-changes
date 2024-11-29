@@ -25,10 +25,10 @@ namespace Dfe.Complete.Tests.Common.Customizations
 
                 var factory = new CustomWebApplicationDbContextFactory<Program>()
                 {
-                    SeedData = new Dictionary<Type, Action<DbContext>>
-                    {
-                        { typeof(SclContext), context => SclContextSeeder.Seed((SclContext)context) },
-                    },
+                    // SeedData = new Dictionary<Type, Action<DbContext>>
+                    // {
+                    //     { typeof(SclContext), context => SclContextSeeder.Seed((SclContext)context) },
+                    // },
                     ExternalServicesConfiguration = services =>
                     {
                         services.PostConfigure<AuthenticationOptions>(options =>
@@ -57,14 +57,16 @@ namespace Dfe.Complete.Tests.Common.Customizations
 
                 var services = new ServiceCollection();
                 services.AddSingleton<IConfiguration>(config);
-                services.AddCompleteApiClient<ISchoolsClient, SchoolsClient>(config, client);
-
+                // services.AddCompleteApiClient<ISchoolsClient, SchoolsClient>(config, client);
+                services.AddCompleteApiClient<ICreateProjectClient, CreateProjectClient>(config, client);
+                
                 var serviceProvider = services.BuildServiceProvider();
 
                 fixture.Inject(factory);
                 fixture.Inject(serviceProvider);
                 fixture.Inject(client);
-                fixture.Inject(serviceProvider.GetRequiredService<ISchoolsClient>());
+                // fixture.Inject(serviceProvider.GetRequiredService<ISchoolsClient>());
+                fixture.Inject(serviceProvider.GetRequiredService<ICreateProjectClient>());
                 fixture.Inject(new List<Claim>());
 
                 return factory;

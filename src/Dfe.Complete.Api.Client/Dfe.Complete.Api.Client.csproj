@@ -9,6 +9,7 @@
 	<Title>API Client</Title>
 	<Description>The API description.</Description>
 	<Authors>DFE-Digital</Authors>
+	<UserSecretsId>9d380f80-743c-4d55-bfb8-0b7b366bb5ab</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
