@@ -16,7 +16,8 @@ namespace Dfe.Complete.Api.Client.Extensions
             where TClientInterface : class
             where TClientImplementation : class, TClientInterface
         {
-            var apiSettings = new ApiClientSettings();
+            var apiSettings = new ApiClientSettings(); 
+            
             configuration.GetSection("CompleteApiClient").Bind(apiSettings);
 
             services.AddSingleton(apiSettings);
@@ -46,6 +47,7 @@ namespace Dfe.Complete.Api.Client.Extensions
                     return new BearerTokenHandler(tokenService);
                 });
             }
+            
             return services;
         }
     }
