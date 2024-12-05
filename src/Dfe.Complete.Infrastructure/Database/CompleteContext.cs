@@ -27,8 +27,7 @@ public partial class CompleteContext : DbContext
         _configuration = configuration;
         _serviceProvider = serviceProvider;
     }
-
-
+    
     public virtual DbSet<Contact> Contacts { get; set; }
 
     public virtual DbSet<ConversionTasksData> ConversionTasksData { get; set; }
