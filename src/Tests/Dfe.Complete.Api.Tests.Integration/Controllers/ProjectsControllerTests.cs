@@ -1,3 +1,4 @@
+using System.Net;
 using Dfe.Complete.Client.Contracts;
 using Dfe.Complete.Tests.Common.Customizations;
 using Dfe.Complete.Tests.Common.Customizations.Commands;
@@ -23,5 +24,25 @@ public class ProjectsControllerTests
 
         Assert.NotNull(result);
         Assert.IsType<ProjectId>(result);
+    }
+
+    [Theory]
+    [CustomAutoData(typeof(CustomWebApplicationDbContextFactoryCustomization))]
+    public async Task CreateProject_WithNullRequest_ThrowsException(
+        CustomWebApplicationDbContextFactory<Program> factory,
+        CreateConversionProjectCommand createConversionProjectCommand,
+        ICreateProjectClient createProjectClient)
+    {
+        //todo: when auth is done, add this back in
+        // factory.TestClaims = [new Claim(ClaimTypes.Role, "API.Write")];
+
+        createConversionProjectCommand.Urn = null;
+
+
+        //todo: change exception type? 
+        var exception = await Assert.ThrowsAsync<PersonsApiException>(async () =>
+            await createProjectClient.Projects_CreateProject_Async(createConversionProjectCommand));
+        
+        Assert.Equal(HttpStatusCode.BadRequest, (HttpStatusCode)exception.StatusCode);
     }
 }
