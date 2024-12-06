@@ -2,8 +2,11 @@ using Dfe.Complete.Domain.Interfaces.Repositories;
 using Dfe.Complete.Infrastructure.Database;
 using Dfe.Complete.Infrastructure.Repositories;
 using Dfe.Complete.Infrastructure.Security.Authorization;
+using DfE.CoreLibs.Security.Authorization;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Identity.Web;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
@@ -30,7 +33,10 @@ namespace Microsoft.Extensions.DependencyInjection
                 options.UseSqlServer(connectionString));
 
             // Authentication
-            services.AddCustomAuthorization(config);
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddMicrosoftIdentityWebApi(config.GetSection("AzureAd"));
+
+            services.AddApplicationAuthorization(config);
 
             return services;
         }

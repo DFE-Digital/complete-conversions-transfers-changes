@@ -18,7 +18,7 @@ namespace Dfe.Complete.Api.Controllers
         /// </summary>
         /// <param name="request">The request.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
-        //[Authorize(Policy = "API.Write")]
+        [Authorize(Policy = "CanRead")]
         [HttpPost]
         [SwaggerResponse(201, "Project created successfully.", typeof(ProjectId))]
         [SwaggerResponse(400, "Invalid request data.")]
