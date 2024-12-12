@@ -30,7 +30,7 @@ namespace Microsoft.Extensions.DependencyInjection
                 options.UseSqlServer(connectionString));
 
             // Authentication
-            services.AddCustomAuthorization(config);
+            //services.AddCustomAuthorization(config);
 
             return services;
         }
