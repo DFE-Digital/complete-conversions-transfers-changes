@@ -8,11 +8,6 @@ namespace Dfe.Complete.Application.Projects.Commands.CreateProject
 {
     public record CreateConversionProjectCommand(
         Urn Urn,
-        DateTime CreatedAt,
-        DateTime UpdatedAt,
-        TaskType TaskType,
-        ProjectType ProjectType,
-        Guid TasksDataId,
         DateOnly SignificantDate,
         bool IsSignificantDateProvisional,
         Ukprn IncomingTrustUkprn,

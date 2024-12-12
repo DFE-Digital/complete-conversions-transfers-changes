@@ -1,7 +1,5 @@
 using Azure.Storage.Blobs;
 using Dfe.Complete.Authorization;
-using Dfe.Complete.Client;
-using Dfe.Complete.Client.Contracts;
 using Dfe.Complete.Configuration;
 using Dfe.Complete.Security;
 using Dfe.Complete.Services;
@@ -9,23 +7,12 @@ using Dfe.Complete.StartupConfiguration;
 using GovUk.Frontend.AspNetCore;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.DataProtection;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpOverrides;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 using Microsoft.FeatureManagement;
 using Microsoft.Identity.Web;
 using Microsoft.Identity.Web.UI;
-using System;
 using System.Security.Claims;
-using Dfe.Complete.Api.Client.Extensions;
-
-//TODO: remove this
-// using Dfe.Complete.API.Configuration;
 
 namespace Dfe.Complete;
 
@@ -102,7 +89,10 @@ public class Startup
         services.AddGovUkFrontend();
 
         // New API client
-        services.AddCompleteApiClient<ICreateProjectClient, CreateProjectClient>(Configuration);
+        //services.AddCompleteApiClient<ICreateProjectClient, CreateProjectClient>(Configuration);
+
+        services.AddApplicationDependencyGroup(Configuration);
+        services.AddInfrastructureDependencyGroup(Configuration);
     }
 
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

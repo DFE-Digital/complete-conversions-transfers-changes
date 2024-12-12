@@ -53,7 +53,7 @@
 	  <PackageReference Include="DocumentFormat.OpenXml" Version="2.20.0" />
 	  <PackageReference Include="ExcelDataReader" Version="3.6.0" />
 	  <PackageReference Include="ExcelDataReader.DataSet" Version="3.6.0" />
-	  <PackageReference Include="FluentValidation" Version="11.7.1" />
+	  <PackageReference Include="FluentValidation" Version="11.10.0" />
 	  <PackageReference Include="GovUk.Frontend.AspNetCore" Version="2.2.0" />
 	  <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.22.0" />
 	  <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="8.0.6" />
@@ -81,7 +81,8 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <ProjectReference Condition="Exists('..\..\..\complete-api\src\Dfe.Complete.Api.Client\Dfe.Complete.Api.Client.csproj')" Include="..\..\..\complete-api\src\Dfe.Complete.Api.Client\Dfe.Complete.Api.Client.csproj" />
+	  <ProjectReference Include="..\Dfe.Complete.Application\Dfe.Complete.Application.csproj" />
+	  <ProjectReference Include="..\Dfe.Complete.Infrastructure\Dfe.Complete.Infrastructure.csproj" />
 	  <ProjectReference Include="..\Dfe.Complete.Logging\Dfe.Complete.Logging.csproj" />
 	  <ProjectReference Include="..\Dfe.Complete.UserContext\Dfe.Complete.UserContext.csproj" />
 	</ItemGroup>
