@@ -2,8 +2,7 @@
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.AspNetCore.Razor.TagHelpers;
-using Dfe.Complete.Client.Contracts;
-using System;
+using Dfe.Complete.Domain.Enums;
 
 namespace Dfe.Complete.TagHelpers
 {
