@@ -37,8 +37,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Dfe.Complete.Application\Dfe.Complete.Application.csproj" />
-    <ProjectReference Include="..\Dfe.Complete.Infrastructure\Dfe.Complete.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\Dfe.Complete.Application\Dfe.Complete.Application.csproj" />
+    <ProjectReference Include="..\..\Dfe.Complete.Infrastructure\Dfe.Complete.Infrastructure.csproj" />
   </ItemGroup>
 
   <ItemGroup>
