@@ -27,7 +27,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Dfe.Complete.UserContext\Dfe.Complete.UserContext.csproj" />
+    <ProjectReference Include="..\..\Frontend\Dfe.Complete.UserContext\Dfe.Complete.UserContext.csproj" />
   </ItemGroup>
 
 </Project>

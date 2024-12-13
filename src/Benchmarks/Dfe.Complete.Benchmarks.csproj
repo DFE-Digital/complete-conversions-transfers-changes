@@ -20,7 +20,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <ProjectReference Include="..\Dfe.Complete.Domain\Dfe.Complete.Domain.csproj" />
+	  <ProjectReference Include="..\Application\Dfe.Complete.Domain\Dfe.Complete.Domain.csproj" />
 	  <ProjectReference Include="..\Tests\Dfe.Complete.Tests.Common\Dfe.Complete.Tests.Common.csproj" />
 	</ItemGroup>
 
