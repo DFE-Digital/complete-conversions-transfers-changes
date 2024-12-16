@@ -4,21 +4,17 @@ VisualStudioVersion = 17.10.35122.118
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{0BD5A3FB-191B-43C6-A983-C9663BCFAF31}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Benchmarks", "Benchmarks", "{0FA78F67-DDAA-45A8-A740-84B82D469D90}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dfe.Complete.Api", "src\Api\Dfe.Complete.Api\Dfe.Complete.Api.csproj", "{73E78F4A-9044-4D65-A759-9DD807023173}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dfe.Complete.Api.Client", "src\Api\Dfe.Complete.Api.Client\Dfe.Complete.Api.Client.csproj", "{BDF158E6-B155-4DA2-BB64-8FE189E3D799}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dfe.Complete.Application", "src\Application\Dfe.Complete.Application\Dfe.Complete.Application.csproj", "{E0680611-5014-4E61-B4E6-02E4B5FDD8C2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dfe.Complete.Application", "src\Core\Dfe.Complete.Application\Dfe.Complete.Application.csproj", "{E0680611-5014-4E61-B4E6-02E4B5FDD8C2}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dfe.Complete.Domain", "src\Application\Dfe.Complete.Domain\Dfe.Complete.Domain.csproj", "{EBC913B1-0E7F-4699-8A66-974C2178026F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dfe.Complete.Domain", "src\Core\Dfe.Complete.Domain\Dfe.Complete.Domain.csproj", "{EBC913B1-0E7F-4699-8A66-974C2178026F}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dfe.Complete.Infrastructure", "src\Application\Dfe.Complete.Infrastructure\Dfe.Complete.Infrastructure.csproj", "{019A1601-D970-4CDE-A33F-F2E1416AB705}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dfe.Complete.Infrastructure", "src\Core\Dfe.Complete.Infrastructure\Dfe.Complete.Infrastructure.csproj", "{019A1601-D970-4CDE-A33F-F2E1416AB705}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dfe.Complete.Utils", "src\Application\Dfe.Complete.Utils\Dfe.Complete.Utils.csproj", "{B3336B47-A5D4-4894-A121-8C78C6A46F25}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dfe.Complete.Benchmarks", "src\Benchmarks\Dfe.Complete.Benchmarks.csproj", "{EF9A5350-7966-4044-824A-68F2BA525CB5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dfe.Complete.Utils", "src\Core\Dfe.Complete.Utils\Dfe.Complete.Utils.csproj", "{B3336B47-A5D4-4894-A121-8C78C6A46F25}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dfe.Complete.Api.Tests.Integration", "src\Tests\Dfe.Complete.Api.Tests.Integration\Dfe.Complete.Api.Tests.Integration.csproj", "{62AABBB9-73D4-43BB-ACFD-367DDFE27E6C}"
 EndProject
@@ -40,7 +36,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Api", "Api", "{3F3F6A50-0E2
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Frontend", "Frontend", "{46FF0EE8-A787-493C-9C64-823A3D392CA1}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Application", "Application", "{C9375D92-AB24-40AF-B3E3-1578E9FEA2B0}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{C9375D92-AB24-40AF-B3E3-1578E9FEA2B0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -72,10 +68,6 @@ Global
 		{B3336B47-A5D4-4894-A121-8C78C6A46F25}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B3336B47-A5D4-4894-A121-8C78C6A46F25}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B3336B47-A5D4-4894-A121-8C78C6A46F25}.Release|Any CPU.Build.0 = Release|Any CPU
-		{EF9A5350-7966-4044-824A-68F2BA525CB5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{EF9A5350-7966-4044-824A-68F2BA525CB5}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{EF9A5350-7966-4044-824A-68F2BA525CB5}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{EF9A5350-7966-4044-824A-68F2BA525CB5}.Release|Any CPU.Build.0 = Release|Any CPU
 		{62AABBB9-73D4-43BB-ACFD-367DDFE27E6C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{62AABBB9-73D4-43BB-ACFD-367DDFE27E6C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{62AABBB9-73D4-43BB-ACFD-367DDFE27E6C}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -119,7 +111,6 @@ Global
 		{EBC913B1-0E7F-4699-8A66-974C2178026F} = {C9375D92-AB24-40AF-B3E3-1578E9FEA2B0}
 		{019A1601-D970-4CDE-A33F-F2E1416AB705} = {C9375D92-AB24-40AF-B3E3-1578E9FEA2B0}
 		{B3336B47-A5D4-4894-A121-8C78C6A46F25} = {C9375D92-AB24-40AF-B3E3-1578E9FEA2B0}
-		{EF9A5350-7966-4044-824A-68F2BA525CB5} = {0FA78F67-DDAA-45A8-A740-84B82D469D90}
 		{62AABBB9-73D4-43BB-ACFD-367DDFE27E6C} = {0BD5A3FB-191B-43C6-A983-C9663BCFAF31}
 		{EBD53896-11C7-4C3E-BDB2-08C7F41937F7} = {0BD5A3FB-191B-43C6-A983-C9663BCFAF31}
 		{24013A30-D950-4025-B1F1-B8A7AC23DE6F} = {0BD5A3FB-191B-43C6-A983-C9663BCFAF31}
