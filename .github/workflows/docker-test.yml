@@ -13,14 +13,6 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        stage: [
-          "final",
-          "initcontainer"
-        ]
-    outputs:
-      image: ${{ steps.build.outputs.imageid }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -33,8 +25,6 @@ jobs:
         id: build
         with:
           secrets: github_token=${{ secrets.GITHUB_TOKEN }}
-          load: true
           cache-from: type=gha
           cache-to: type=gha
-          target: ${{ matrix.stage }}
           push: false
