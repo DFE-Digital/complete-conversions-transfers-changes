@@ -18,8 +18,7 @@ namespace Dfe.Complete.Application.Projects.Commands.CreateProject
         string AdvisoryBoardConditions,
         string EstablishmentSharepointLink,
         string IncomingTrustSharepointLink) : IRequest<ProjectId>;
-
-
+    
     public class CreateConversionProjectCommandHandler(ICompleteRepository<Project> projectRepository, ICompleteRepository<ConversionTasksData> conversionTaskRepository)
         : IRequestHandler<CreateConversionProjectCommand, ProjectId>
     {
@@ -46,7 +45,7 @@ namespace Dfe.Complete.Application.Projects.Commands.CreateProject
                 request.AdvisoryBoardConditions,
                 request.EstablishmentSharepointLink,
                 request.IncomingTrustSharepointLink);
-
+            
             await conversionTaskRepository.AddAsync(conversionTask, cancellationToken);
             await projectRepository.AddAsync(project, cancellationToken);
 

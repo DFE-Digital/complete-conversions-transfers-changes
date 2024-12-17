@@ -92,7 +92,9 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
 
     public virtual User? RegionalDeliveryOfficer { get; set; }
 
-    private Project() { }
+    private Project()
+    {
+    }
 
     public Project(
         Urn urn,
@@ -111,7 +113,7 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
         string advisoryBoardConditions,
         string establishmentSharepointLink,
         string incomingTrustSharepointLink
-        )
+    )
     {
         Urn = urn ?? throw new ArgumentNullException(nameof(urn));
         CreatedAt = createdAt != default ? createdAt : throw new ArgumentNullException(nameof(createdAt));
@@ -150,27 +152,25 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
         string incomingTrustSharepointLink)
     {
         var project = new Project(urn,
-                                 createdAt,
-                                 updatedAt,
-                                 taskType,
-                                 projectType,
-                                 tasksDataId,
-                                 significantDate,
-                                 isSignificantDateProvisional,
-                                 incomingTrustUkprn,
-                                 region,
-                                 isDueTo2RI,
-                                 hasAcademyOrderBeenIssued,
-                                 advisoryBoardDate,
-                                 advisoryBoardConditions,
-                                 establishmentSharepointLink,
-                                 incomingTrustSharepointLink);
+            createdAt,
+            updatedAt,
+            taskType,
+            projectType,
+            tasksDataId,
+            significantDate,
+            isSignificantDateProvisional,
+            incomingTrustUkprn,
+            region,
+            isDueTo2RI,
+            hasAcademyOrderBeenIssued,
+            advisoryBoardDate,
+            advisoryBoardConditions,
+            establishmentSharepointLink,
+            incomingTrustSharepointLink);
 
         project.AddDomainEvent(new ProjectCreatedEvent(project));
 
 
         return project;
     }
-
-
 }

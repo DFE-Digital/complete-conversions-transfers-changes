@@ -19,7 +19,6 @@ namespace Dfe.Complete.Tests.Common.Customizations
         {
             fixture.Customize<CustomWebApplicationFactory<TProgram>>(composer => composer.FromFactory(() =>
             {
-
                 var factory = new CustomWebApplicationFactory<TProgram>()
                 {
                     ExternalServicesConfiguration = services =>
@@ -31,12 +30,11 @@ namespace Dfe.Complete.Tests.Common.Customizations
                         });
 
                         services.AddAuthentication("TestScheme")
-                            .AddScheme<AuthenticationSchemeOptions, MockJwtBearerHandler>("TestScheme", options => { });
+                            .AddScheme<AuthenticationSchemeOptions, MockJwtBearerHandler>("TestScheme", _ => { });
                     },
                     ExternalHttpClientConfiguration = client =>
                     {
-                        client.DefaultRequestHeaders.Authorization =
-                            new AuthenticationHeaderValue("Bearer", "external-mock-token");
+                        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", "external-mock-token");
                     }
                 };
 

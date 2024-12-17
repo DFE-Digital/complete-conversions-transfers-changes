@@ -20,9 +20,8 @@ namespace Dfe.Complete.Api
     {
         public static async Task Main(string[] args)
         {
-
             var builder = WebApplication.CreateBuilder(args);
-
+            
             builder.Host.UseSerilog((context, services, loggerConfiguration) =>
             {
                 loggerConfiguration

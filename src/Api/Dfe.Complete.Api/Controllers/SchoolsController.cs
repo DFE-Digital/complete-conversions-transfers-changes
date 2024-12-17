@@ -57,7 +57,7 @@ namespace Dfe.Complete.Api.Controllers
         /// </summary>
         /// <param name="request">The request.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
-        [Authorize(Policy = "API.Write")]
+        // [Authorize(Policy = "API.Write")]
         [HttpPost]
         [SwaggerResponse(201, "School created successfully.", typeof(SchoolId))]
         [SwaggerResponse(400, "Invalid request data.")]
