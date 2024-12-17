@@ -11,12 +11,7 @@ namespace Dfe.Complete.Tests.Common.Customizations.Commands
         {
             fixture.Customize<CreateConversionProjectCommand>(composer => composer.FromFactory(() =>
             {
-                var urn = fixture.Create<int>();
-                var createdAt = fixture.Create<DateTime>().ToUniversalTime(); 
-                var updatedAt = createdAt.AddMinutes(fixture.Create<int>() % 100);
-                var taskType = fixture.Create<TaskType>();
-                var projectType = fixture.Create<ProjectType>();
-                var tasksDataId = fixture.Create<Guid>();
+                var urn = new Urn(fixture.Create<int>());
                 var significantDate = fixture.Create<DateOnly>();
                 var isSignificantDateProvisional = fixture.Create<bool>();
                 var incomingTrustUkprn = new Ukprn(fixture.Create<int>());
@@ -29,12 +24,7 @@ namespace Dfe.Complete.Tests.Common.Customizations.Commands
                 var incomingTrustSharepointLink = fixture.Create<Uri>().ToString();
 
                 return new CreateConversionProjectCommand(
-                    new Urn(urn),
-                    createdAt,
-                    updatedAt,
-                    taskType,
-                    projectType,
-                    tasksDataId,
+                    urn,
                     significantDate,
                     isSignificantDateProvisional,
                     incomingTrustUkprn,
