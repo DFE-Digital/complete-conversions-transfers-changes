@@ -14,7 +14,7 @@
 
         // Conversion
         public const string ConversionProject = "/conversion-projects/{0}";
-        public const string CreateNewConversionProject = "/projects/conversion-projects/new";
+        public const string CreateNewConversionProject = "/projects/conversions/new";
         public const string ConversionProjectTaskList = ConversionProject + "/tasks";
         public const string ConversionProjectAbout = ConversionProject + "/information";
 
