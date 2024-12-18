@@ -5,57 +5,46 @@ using Dfe.Complete.Extensions;
 using Dfe.Complete.Validators;
 using Dfe.Complete.Services;
 using System.ComponentModel.DataAnnotations;
+using System.Globalization;
 using Dfe.Complete.Application.Projects.Commands.CreateProject;
 using MediatR;
 using Dfe.Complete.Domain.ValueObjects;
 
 namespace Dfe.Complete.Pages.Projects.Conversion
 {
-    public class CreateNewProjectModel(ISender sender,
-        IErrorService errorService) : PageModel
+    public class CreateNewProjectModel(ISender sender, IErrorService errorService) : PageModel
     {
+        [BindProperty] public string URN { get; set; }
 
-        [BindProperty]
-        public string URN { get; set; } 
+        [BindProperty] public string UKPRN { get; set; }
 
-        [BindProperty]
-        public string UKPRN { get; set; }
+        [BindProperty] public string GroupReferenceNumber { get; set; }
 
-        [BindProperty]
-        public string GroupReferenceNumber { get; set; }
+        [BindProperty] public DateTime? AdvisoryBoardDate { get; set; }
 
-        [BindProperty]
-        public DateTime? AdvisoryBoardDate { get; set; } 
+        [BindProperty] public string AdvisoryBoardConditions { get; set; }
 
-        [BindProperty]
-        public string AdvisoryBoardConditions { get; set; } 
-
-        [BindProperty]
-        public DateTime? ProvisionalConversionDate { get; set; }
+        [BindProperty] public DateTime? ProvisionalConversionDate { get; set; }
 
         [BindProperty]
         [SharePointLink]
         [Required]
         [Display(Name = "School or academy SharePoint link")]
-        public string SchoolSharePointLink { get; set; } 
+        public string SchoolSharePointLink { get; set; }
 
         [BindProperty]
         [SharePointLink]
         [Required]
         [Display(Name = "Incoming trust SharePoint link")]
-        public string IncomingTrustSharePointLink { get; set; } 
+        public string IncomingTrustSharePointLink { get; set; }
 
-        [BindProperty]
-        public bool? IsHandingToRCS { get; set; }
+        [BindProperty] public bool? IsHandingToRCS { get; set; }
 
-        [BindProperty]
-        public string HandoverComments { get; set; }
+        [BindProperty] public string HandoverComments { get; set; }
 
-        [BindProperty]
-        public bool? DirectiveAcademyOrder { get; set; } 
+        [BindProperty] public bool? DirectiveAcademyOrder { get; set; }
 
-        [BindProperty]
-        public bool? IsDueTo2RI { get; set; }
+        [BindProperty] public bool? IsDueTo2RI { get; set; }
 
         public async Task<IActionResult> OnGet()
         {
@@ -65,7 +54,7 @@ namespace Dfe.Complete.Pages.Projects.Conversion
         public async Task<IActionResult> OnPost()
         {
             //Validate
-            //await ValidateAllFields();
+            await ValidateAllFields();
 
             if (!ModelState.IsValid)
             {
@@ -91,23 +80,6 @@ namespace Dfe.Complete.Pages.Projects.Conversion
 
             var projectId = createResponse.Value;
 
-            //Test Data
-            //var createProjectCommand = new CreateProjectCommand();
-            //createProjectCommand.Urn = new Urn() { Value = 2 };
-            //createProjectCommand.SignificantDate = DateTime.UtcNow;
-            //createProjectCommand.IsSignificantDateProvisional = true; // will be set to false in the stakeholder kick off task 
-            //createProjectCommand.IncomingTrustSharepointLink = "https://www.sharepointlink.com/test";
-            //createProjectCommand.EstablishmentSharepointLink = "https://www.sharepointlink.com/test";
-            //createProjectCommand.IsDueTo2RI = IsDueTo2RI;
-            //createProjectCommand.AdvisoryBoardDate = DateTime.UtcNow;
-            //createProjectCommand.AdvisoryBoardConditions = "test conditions";
-            //createProjectCommand.IncomingTrustUkprn = new Ukprn() { Value = 2 };
-            //createProjectCommand.HasAcademyOrderBeenIssued = true;
-
-            //var createResponse = await projectsClient.Projects_CreateProject_Async(createProjectCommand);
-
-            //var projectId = createResponse.Value;
-            
             return Redirect($"/projects/conversion-projects/{projectId}/created");
         }
 
@@ -115,6 +87,7 @@ namespace Dfe.Complete.Pages.Projects.Conversion
         {
             await ValidateUrn();
             ValidateUKPRN();
+            ValidateGroupReferenceNumber();
             ValidateAdvisoryBoardDate();
             ValidateProvisionalConversionDate();
             //TODO:EA needs fixing
@@ -124,7 +97,27 @@ namespace Dfe.Complete.Pages.Projects.Conversion
             ValidateAcademyOrder();
             ValidateDueTo2RI();
         }
-    
+
+        private void ValidateGroupReferenceNumber()
+        {
+            const string fieldName = nameof(GroupReferenceNumber);
+            var value = GroupReferenceNumber;
+
+            const string errorMessage = "A group group reference number must start GRP_ and contain 8 numbers, like GRP_00000001";
+
+            if (!value.StartsWith("GRP_"))
+            {
+                ModelState.AddModelError($"{fieldName}", errorMessage);
+                return;
+            }
+
+            var numberPortionOfRefNumber = value.Split("GRP_")[1];
+
+            if (!int.TryParse(numberPortionOfRefNumber, NumberStyles.None, CultureInfo.InvariantCulture, out _) 
+                || numberPortionOfRefNumber.Length < 8)
+                ModelState.AddModelError($"{fieldName}", errorMessage);
+        }
+
         private async Task ValidateUrn()
         {
             var fieldName = nameof(URN);
@@ -158,14 +151,11 @@ namespace Dfe.Complete.Pages.Projects.Conversion
 
         private void ValidateUKPRN()
         {
-            var fieldName = nameof(UKPRN);
+            const string fieldName = nameof(UKPRN);
             var value = UKPRN;
 
             if (string.IsNullOrEmpty(value))
-            {
                 ModelState.AddModelError($"{fieldName}", "Enter a UKPRN");
-                return;
-            }
         }
 
         private void ValidateAdvisoryBoardDate()
@@ -187,7 +177,8 @@ namespace Dfe.Complete.Pages.Projects.Conversion
 
             if (value == null || value == DateTime.MinValue)
             {
-                ModelState.AddModelError($"{fieldName}", "Enter a month and year for the provisional conversion date, like 9 2023");
+                ModelState.AddModelError($"{fieldName}",
+                    "Enter a month and year for the provisional conversion date, like 9 2023");
                 return;
             }
         }
@@ -208,9 +199,11 @@ namespace Dfe.Complete.Pages.Projects.Conversion
                 return;
             }
 
-            if (!value.Contains("https://educationgovuk.sharepoint.com") || !value.Contains("https://educationgovuk-my.sharepoint.com/"))
+            if (!value.Contains("https://educationgovuk.sharepoint.com") ||
+                !value.Contains("https://educationgovuk-my.sharepoint.com/"))
             {
-                ModelState.AddModelError($"{fieldName}", $"Enter an incoming trust sharepoint link in the correct format. SharePoint links start with 'https://educationgovuk.sharepoint.com' or 'https://educationgovuk-my.sharepoint.com/'");
+                ModelState.AddModelError($"{fieldName}",
+                    $"Enter an incoming trust sharepoint link in the correct format. SharePoint links start with 'https://educationgovuk.sharepoint.com' or 'https://educationgovuk-my.sharepoint.com/'");
                 return;
             }
         }
@@ -222,7 +215,8 @@ namespace Dfe.Complete.Pages.Projects.Conversion
 
             if (value == null)
             {
-                ModelState.AddModelError($"{fieldName}", "State if this project will be handed over to the Regional casework services team. Choose yes or no");
+                ModelState.AddModelError($"{fieldName}",
+                    "State if this project will be handed over to the Regional casework services team. Choose yes or no");
                 return;
             }
         }
@@ -234,7 +228,8 @@ namespace Dfe.Complete.Pages.Projects.Conversion
 
             if (value == null)
             {
-                ModelState.AddModelError($"{fieldName}", "Select directive academy order or academy order, whichever has been used for this conversion");
+                ModelState.AddModelError($"{fieldName}",
+                    "Select directive academy order or academy order, whichever has been used for this conversion");
                 return;
             }
         }

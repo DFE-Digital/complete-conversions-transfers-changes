@@ -10,23 +10,23 @@
         Error = ms.Value.Errors.FirstOrDefault().ErrorMessage
     });
 
-    var urnField = nameof(Model.URN);
-    var ukprnField = nameof(Model.UKPRN);
-    var advisoryBoardDateField = nameof(Model.AdvisoryBoardDate);
-    var provisionalConversionDateField = nameof(Model.ProvisionalConversionDate);
-    var schoolSharePointLinkField = nameof(Model.SchoolSharePointLink);
-    var incomingTrustSharePointLinkField = nameof(Model.IncomingTrustSharePointLink);
-    var handingToRSCField = nameof(Model.IsHandingToRCS);
-    var directiveAcademyOrderField = nameof(Model.DirectiveAcademyOrder);
-    var isDueTo2RIField = nameof(Model.IsDueTo2RI);
+    const string urnField = nameof(Model.URN);
+    const string ukprnField = nameof(Model.UKPRN);
+    const string groupRefNumber = nameof(Model.GroupReferenceNumber);
+    const string advisoryBoardDateField = nameof(Model.AdvisoryBoardDate);
+    const string provisionalConversionDateField = nameof(Model.ProvisionalConversionDate);
+    const string schoolSharePointLinkField = nameof(Model.SchoolSharePointLink);
+    const string incomingTrustSharePointLinkField = nameof(Model.IncomingTrustSharePointLink);
+    const string handingToRSCField = nameof(Model.IsHandingToRCS);
+    const string directiveAcademyOrderField = nameof(Model.DirectiveAcademyOrder);
+    const string isDueTo2RIField = nameof(Model.IsDueTo2RI);
 }
 
 
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
-       
-        @{
 
+        @{
             <form method="post">
                 <h2 class="govuk-heading-l">Add a conversion</h2>
 
@@ -55,9 +55,9 @@
                             </a>
                         </p>
                     </govuk-input-hint>
-                    @if (invalidEntries.Any(e => e.Key == ukprnField))
+                    @if (errorService.HasErrorForKey(@ukprnField))
                     {
-                        <govuk-input-error-message>@(invalidEntries.FirstOrDefault(e => e.Key == ukprnField).Error)</govuk-input-error-message>
+                        <govuk-input-error-message>@(errorService.GetErrorMessage(ukprnField))</govuk-input-error-message>
                     }
                 </govuk-input>
 
@@ -71,6 +71,10 @@
                             The reference number begins with the letters GRP and contains up to 8 numbers, like GRP_XXXXXXXX. You can find this on the group’s page in Prepare conversions and transfers.
                         </p>
                     </govuk-input-hint>
+                    @if (errorService.HasErrorForKey(groupRefNumber))
+                    {
+                    <govuk-input-error-message>@(errorService.GetErrorMessage(groupRefNumber))</govuk-input-error-message>
+                    }
                 </govuk-input>
 
                 <govuk-date-input id="@advisoryBoardDateField" name-prefix="@advisoryBoardDateField" asp-for="@Model.AdvisoryBoardDate">
@@ -88,7 +92,7 @@
                                 @(invalidEntries.FirstOrDefault(e => e.Key == advisoryBoardDateField).Error)
                             </govuk-date-input-error-message>
                         }
-                    
+
                     </govuk-date-input-fieldset>
                 </govuk-date-input>
 
@@ -156,7 +160,7 @@
                         <govuk-radios-item value="true">Yes</govuk-radios-item>
                         <govuk-radios-item value="false">No</govuk-radios-item>
 
-                        
+
                     </govuk-radios-fieldset>
                 </govuk-radios>
 
