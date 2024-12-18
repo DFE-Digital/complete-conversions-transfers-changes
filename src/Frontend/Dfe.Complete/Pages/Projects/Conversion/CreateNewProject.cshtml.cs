@@ -213,11 +213,8 @@ namespace Dfe.Complete.Pages.Projects.Conversion
             var value = IsHandingToRCS;
 
             if (value == null)
-            {
                 ModelState.AddModelError($"{fieldName}",
                     "State if this project will be handed over to the Regional casework services team. Choose yes or no");
-                return;
-            }
         }
 
         private void ValidateAcademyOrder()
@@ -229,7 +226,6 @@ namespace Dfe.Complete.Pages.Projects.Conversion
             {
                 ModelState.AddModelError($"{fieldName}",
                     "Select directive academy order or academy order, whichever has been used for this conversion");
-                return;
             }
         }
 
@@ -241,7 +237,6 @@ namespace Dfe.Complete.Pages.Projects.Conversion
             if (value == null)
             {
                 ModelState.AddModelError($"{fieldName}", "State if the conversion is due to 2RI. Choose yes or no");
-                return;
             }
         }
     }

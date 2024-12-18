@@ -106,14 +106,12 @@
                         <govuk-date-input-hint>
                             You can find this in the advisory board template.
                         </govuk-date-input-hint>
-                        @if (invalidEntries.Any(e => e.Key == provisionalConversionDateField))
+                        @if (errorService.HasErrorForKey(@provisionalConversionDateField))
                         {
-                            <govuk-date-input-error-message>
-                                @(invalidEntries.FirstOrDefault(e => e.Key == provisionalConversionDateField).Error)
-                            </govuk-date-input-error-message>
+                        <govuk-date-input-error-message>@(errorService.GetErrorMessage(provisionalConversionDateField))</govuk-date-input-error-message>
                         }
                     </govuk-date-input-fieldset>
-                </govuk-date-input>
+                </govuk-date-input >
 
                 <govuk-input name="@schoolSharePointLinkField" asp-for="@Model.SchoolSharePointLink">
                     <govuk-input-label class="govuk-label--m">School or academy SharePoint link</govuk-input-label>
@@ -145,12 +143,10 @@
                         <govuk-radios-fieldset-legend class="govuk-fieldset__legend--m">
                             Are you handing this project over to RCS (Regional Casework Services)?
                         </govuk-radios-fieldset-legend>
-
-                        @if (invalidEntries.Any(e => e.Key == handingToRSCField))
+                        
+                        @if (errorService.HasErrorForKey(handingToRSCField))
                         {
-                            <govuk-radios-error-message>
-                                @(invalidEntries.FirstOrDefault(e => e.Key == handingToRSCField).Error)
-                            </govuk-radios-error-message>
+                            <govuk-radios-error-message>@(errorService.GetErrorMessage(handingToRSCField))</govuk-radios-error-message>
                         }
 
                         <govuk-radios-item value="true">Yes</govuk-radios-item>
@@ -187,11 +183,9 @@
                             What kind of academy order has been used?
                         </govuk-radios-fieldset-legend>
 
-                        @if (invalidEntries.Any(e => e.Key == directiveAcademyOrderField))
+                        @if (errorService.HasErrorForKey(directiveAcademyOrderField))
                         {
-                            <govuk-radios-error-message>
-                                @(invalidEntries.FirstOrDefault(e => e.Key == directiveAcademyOrderField).Error)
-                            </govuk-radios-error-message>
+                        <govuk-radios-error-message>@(errorService.GetErrorMessage(directiveAcademyOrderField))</govuk-radios-error-message>
                         }
 
                         @* This value should be enums *@
@@ -210,11 +204,9 @@
                             A 2RI conversion is when a local authority maintained school becomes an academy after getting at least 2 overall Requires Improvement ratings from Ofsted.
                         </govuk-radios-hint>
 
-                        @if (invalidEntries.Any(e => e.Key == isDueTo2RIField))
+                        @if (errorService.HasErrorForKey(isDueTo2RIField))
                         {
-                            <govuk-radios-error-message>
-                                @(invalidEntries.FirstOrDefault(e => e.Key == isDueTo2RIField).Error)
-                            </govuk-radios-error-message>
+                        <govuk-radios-error-message>@(errorService.GetErrorMessage(isDueTo2RIField))</govuk-radios-error-message>
                         }
 
                         <govuk-radios-item value="true">Yes</govuk-radios-item>
