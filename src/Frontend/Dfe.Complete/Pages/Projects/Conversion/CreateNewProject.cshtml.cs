@@ -103,8 +103,11 @@ namespace Dfe.Complete.Pages.Projects.Conversion
             const string fieldName = nameof(GroupReferenceNumber);
             var value = GroupReferenceNumber;
 
-            const string errorMessage = "A group group reference number must start GRP_ and contain 8 numbers, like GRP_00000001";
+            if (string.IsNullOrEmpty(value))
+                return;
 
+            const string errorMessage = "A group reference number must start GRP_ and contain 8 numbers, like GRP_00000001";
+            
             if (!value.StartsWith("GRP_"))
             {
                 ModelState.AddModelError($"{fieldName}", errorMessage);
@@ -113,8 +116,7 @@ namespace Dfe.Complete.Pages.Projects.Conversion
 
             var numberPortionOfRefNumber = value.Split("GRP_")[1];
 
-            if (!int.TryParse(numberPortionOfRefNumber, NumberStyles.None, CultureInfo.InvariantCulture, out _) 
-                || numberPortionOfRefNumber.Length < 8)
+            if (!int.TryParse(numberPortionOfRefNumber, NumberStyles.None, CultureInfo.InvariantCulture, out _) || numberPortionOfRefNumber.Length < 8)
                 ModelState.AddModelError($"{fieldName}", errorMessage);
         }
 
@@ -163,11 +165,8 @@ namespace Dfe.Complete.Pages.Projects.Conversion
             var fieldName = nameof(AdvisoryBoardDate);
             var value = AdvisoryBoardDate;
 
-            if (value == null || value == DateTime.MinValue)
-            {
+            if (value == null || value == DateTime.MinValue) 
                 ModelState.AddModelError($"{fieldName}", "Enter a date for the advisory board, like 1 4 2023");
-                return;
-            }
         }
 
         private void ValidateProvisionalConversionDate()
