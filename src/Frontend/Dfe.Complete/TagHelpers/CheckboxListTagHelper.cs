@@ -37,9 +37,9 @@ namespace Dfe.Complete.TagHelpers
 		[HtmlAttributeName("test-ids")]
 		public string[] TestIds { get; set; } = [];
 
-		private readonly ErrorService _errorService;
+		private readonly IErrorService _errorService;
 
-		public CheckboxListTagHelper(IHtmlHelper htmlHelper, ErrorService errorService) : base(htmlHelper)
+		public CheckboxListTagHelper(IHtmlHelper htmlHelper, IErrorService errorService) : base(htmlHelper)
 		{
 			_errorService = errorService;
 		}

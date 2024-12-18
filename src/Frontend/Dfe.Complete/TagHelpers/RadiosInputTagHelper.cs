@@ -38,9 +38,9 @@ namespace Dfe.Complete.TagHelpers
 		[HtmlAttributeName("test-ids")]
 		public string[] TestIds { get; set; } = new string[] { };
 
-		private readonly ErrorService _errorService;
+		private readonly IErrorService _errorService;
 
-		public RadiosInputTagHelper(IHtmlHelper htmlHelper, ErrorService errorService) : base(htmlHelper) 
+		public RadiosInputTagHelper(IHtmlHelper htmlHelper, IErrorService errorService) : base(htmlHelper) 
 		{
             _errorService = errorService;
         }

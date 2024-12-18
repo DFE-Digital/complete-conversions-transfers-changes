@@ -15,7 +15,7 @@ namespace Dfe.Complete.Services
     public class AnalyticsConsentService : IAnalyticsConsentService
     {
         private readonly IHttpContextAccessor _httpContextAccessor;
-        private const string ConsentCookieName = ".Complete.Consent";
+        private const string ConsentCookieName = ".ManageFreeSchoolProjects.Consent";
         private bool? Consent { get; set; }
         private string AnalyticsDomain = ".education.gov.uk";
 

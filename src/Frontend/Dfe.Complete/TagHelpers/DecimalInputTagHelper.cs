@@ -12,13 +12,13 @@ namespace Dfe.Complete.TagHelpers
 	[HtmlTargetElement("govuk-decimal-input", TagStructure = TagStructure.WithoutEndTag)]
 	public class DecimalInputTagHelper : InputTagHelperBase
 	{
-		private readonly ErrorService _errorService;
+		private readonly IErrorService _errorService;
 		public bool HeadingLabel { get; set; }
 
 		[HtmlAttributeName("isMonetary")]
 		public bool IsMonetary { get; set; }
 
-		public DecimalInputTagHelper(IHtmlHelper htmlHelper, ErrorService errorService) : base(htmlHelper)
+		public DecimalInputTagHelper(IHtmlHelper htmlHelper, IErrorService errorService) : base(htmlHelper)
 		{
 			_errorService = errorService;
 		}

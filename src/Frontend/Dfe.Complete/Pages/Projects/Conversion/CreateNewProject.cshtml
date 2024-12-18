@@ -1,5 +1,6 @@
-﻿@page "/projects/conversions/new"
+﻿@page "/projects/conversion-projects/new"
 @model Dfe.Complete.Pages.Projects.Conversion.CreateNewProjectModel
+@inject Dfe.Complete.Services.IErrorService errorService
 @{
     ViewData["Title"] = "Add a conversion";
 
@@ -9,36 +10,36 @@
         Error = ms.Value.Errors.FirstOrDefault().ErrorMessage
     });
 
-    var urnField = "URN";
-    var ukprnField = "UKPRN";
-    var advisoryBoardDateField = "AdvisoryBoardDate";
-    var provisionalConversionDateField = "ProvisionalConversionDate";
-    var schoolSharePointLinkField = "SchoolSharePointLink";
-    var incomingTrustSharePointLinkField = "IncomingTrustSharePointLink";
-    var handingToRSCField = "IsHandingToRCS";
-    var directiveAcademyOrderField = "DirectiveAcademyOrder";
-    var isDueTo2RIField = "IsDueTo2RI";
+    var urnField = nameof(Model.URN);
+    var ukprnField = nameof(Model.UKPRN);
+    var advisoryBoardDateField = nameof(Model.AdvisoryBoardDate);
+    var provisionalConversionDateField = nameof(Model.ProvisionalConversionDate);
+    var schoolSharePointLinkField = nameof(Model.SchoolSharePointLink);
+    var incomingTrustSharePointLinkField = nameof(Model.IncomingTrustSharePointLink);
+    var handingToRSCField = nameof(Model.IsHandingToRCS);
+    var directiveAcademyOrderField = nameof(Model.DirectiveAcademyOrder);
+    var isDueTo2RIField = nameof(Model.IsDueTo2RI);
 }
 
 
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
-        <h2 class="govuk-heading-l">Add a conversion</h2>
-
-        <p class="govuk-body">Enter information about the school, trust and the advisory board decision.</p>
-
-        <p class="govuk-body">This will create a new conversion project.</p>
-
+       
         @{
 
             <form method="post">
+                <h2 class="govuk-heading-l">Add a conversion</h2>
+
+                <p class="govuk-body">Enter information about the school, trust and the advisory board decision.</p>
+
+                <p class="govuk-body">This will create a new conversion project.</p>
 
                 <govuk-input id="@urnField" name="@urnField" input-class="govuk-input--width-10" asp-for="@Model.URN">
                     <govuk-input-label class="govuk-label--m">School URN (Unique Reference Number)</govuk-input-label>
                     <govuk-input-hint>This is the URN of the existing school which is converting to an academy. A URN is a 6-digit number. You can find it in the advisory board template.</govuk-input-hint>
-                    @if (invalidEntries.Any(e => e.Key == urnField))
+                    @if (errorService.HasErrorForKey(@urnField))
                     {
-                        <govuk-input-error-message>@(invalidEntries.FirstOrDefault(e => e.Key == urnField).Error)</govuk-input-error-message>
+                        <govuk-input-error-message>@(errorService.GetErrorMessage(urnField))</govuk-input-error-message>
                     }
                 </govuk-input>
 
@@ -124,18 +125,18 @@
                             You must also save the academy order and advisory board template. Do this whether the school applied to convert or not.
                         </p>
                     </govuk-input-hint>
-                    @if (invalidEntries.Any(e => e.Key == schoolSharePointLinkField))
+                    @if (errorService.HasErrorForKey(schoolSharePointLinkField))
                     {
-                        <govuk-input-error-message>@(invalidEntries.FirstOrDefault(e => e.Key == schoolSharePointLinkField).Error)</govuk-input-error-message>
+                        <govuk-input-error-message>@(errorService.GetErrorMessage(schoolSharePointLinkField))</govuk-input-error-message>
                     }
                 </govuk-input>
 
                 <govuk-input name="@incomingTrustSharePointLinkField" asp-for="@Model.IncomingTrustSharePointLink">
                     <govuk-input-label class="govuk-label--m">Incoming trust SharePoint link</govuk-input-label>
                     <govuk-input-hint>Provide a link to the SharePoint folder for the incoming trust. This is where you save all the relevant trust documents.</govuk-input-hint>
-                    @if (invalidEntries.Any(e => e.Key == incomingTrustSharePointLinkField))
+                    @if (errorService.HasErrorForKey(incomingTrustSharePointLinkField))
                     {
-                        <govuk-input-error-message>@(invalidEntries.FirstOrDefault(e => e.Key == incomingTrustSharePointLinkField).Error)</govuk-input-error-message>
+                        <govuk-input-error-message>@(errorService.GetErrorMessage(incomingTrustSharePointLinkField))</govuk-input-error-message>
                     }
                 </govuk-input>
 

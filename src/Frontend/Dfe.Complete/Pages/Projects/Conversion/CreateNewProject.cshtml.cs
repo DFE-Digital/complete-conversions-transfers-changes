@@ -3,14 +3,18 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Text.RegularExpressions;
 using Dfe.Complete.Extensions;
 using Dfe.Complete.Validators;
-using MediatR;
+using Dfe.Complete.Services;
+using System.ComponentModel.DataAnnotations;
 using Dfe.Complete.Application.Projects.Commands.CreateProject;
+using MediatR;
 using Dfe.Complete.Domain.ValueObjects;
 
 namespace Dfe.Complete.Pages.Projects.Conversion
 {
-    public class CreateNewProjectModel(ISender sender) : PageModel
+    public class CreateNewProjectModel(ISender sender,
+        IErrorService errorService) : PageModel
     {
+
         [BindProperty]
         public string URN { get; set; } 
 
@@ -30,11 +34,15 @@ namespace Dfe.Complete.Pages.Projects.Conversion
         public DateTime? ProvisionalConversionDate { get; set; }
 
         [BindProperty]
-     //   [SharePointLink]
+        [SharePointLink]
+        [Required]
+        [Display(Name = "School or academy SharePoint link")]
         public string SchoolSharePointLink { get; set; } 
 
         [BindProperty]
-     //   [SharePointLink]
+        [SharePointLink]
+        [Required]
+        [Display(Name = "Incoming trust SharePoint link")]
         public string IncomingTrustSharePointLink { get; set; } 
 
         [BindProperty]
@@ -59,17 +67,17 @@ namespace Dfe.Complete.Pages.Projects.Conversion
             //Validate
             //await ValidateAllFields();
 
-            //if (!ModelState.IsValid)
-            //{
-            //    return Page();
-            //}
+            if (!ModelState.IsValid)
+            {
+                errorService.AddErrors(ModelState);
+                return Page();
+            }
 
-            //Test Data
             var createProjectCommand = new CreateConversionProjectCommand(
-                Urn : new Urn(2),
+                Urn: new Urn(2),
                 SignificantDate: DateOnly.FromDateTime(DateTime.UtcNow),
                 IsSignificantDateProvisional: true, // will be set to false in the stakeholder kick off task 
-                IncomingTrustSharepointLink : "https://www.sharepointlink.com/test",
+                IncomingTrustSharepointLink: "https://www.sharepointlink.com/test",
                 EstablishmentSharepointLink: "https://www.sharepointlink.com/test",
                 IsDueTo2Ri: false,
                 AdvisoryBoardDate: DateOnly.FromDateTime(DateTime.UtcNow),
@@ -83,6 +91,23 @@ namespace Dfe.Complete.Pages.Projects.Conversion
 
             var projectId = createResponse.Value;
 
+            //Test Data
+            //var createProjectCommand = new CreateProjectCommand();
+            //createProjectCommand.Urn = new Urn() { Value = 2 };
+            //createProjectCommand.SignificantDate = DateTime.UtcNow;
+            //createProjectCommand.IsSignificantDateProvisional = true; // will be set to false in the stakeholder kick off task 
+            //createProjectCommand.IncomingTrustSharepointLink = "https://www.sharepointlink.com/test";
+            //createProjectCommand.EstablishmentSharepointLink = "https://www.sharepointlink.com/test";
+            //createProjectCommand.IsDueTo2RI = IsDueTo2RI;
+            //createProjectCommand.AdvisoryBoardDate = DateTime.UtcNow;
+            //createProjectCommand.AdvisoryBoardConditions = "test conditions";
+            //createProjectCommand.IncomingTrustUkprn = new Ukprn() { Value = 2 };
+            //createProjectCommand.HasAcademyOrderBeenIssued = true;
+
+            //var createResponse = await projectsClient.Projects_CreateProject_Async(createProjectCommand);
+
+            //var projectId = createResponse.Value;
+            
             return Redirect($"/projects/conversion-projects/{projectId}/created");
         }
 

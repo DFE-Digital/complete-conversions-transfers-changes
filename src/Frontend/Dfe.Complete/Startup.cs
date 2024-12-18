@@ -78,7 +78,6 @@ public class Startup
 
         services.AddApplicationInsightsTelemetry();
 
-        services.AddScoped<ErrorService>();
         services.AddSingleton<IAuthorizationHandler, HeaderRequirementHandler>();
         services.AddSingleton<IAuthorizationHandler, ClaimsRequirementHandler>();
 
