@@ -6,9 +6,11 @@ using Dfe.Complete.Validators;
 using MediatR;
 using Dfe.Complete.Application.Projects.Commands.CreateProject;
 using Dfe.Complete.Domain.ValueObjects;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Dfe.Complete.Pages.Projects.Conversion
 {
+    [Authorize(policy: "CanCreateProjects")]
     public class CreateNewProjectModel(ISender sender) : PageModel
     {
         [BindProperty]

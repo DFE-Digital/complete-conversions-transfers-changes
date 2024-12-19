@@ -71,8 +71,8 @@ public class Startup
         });
         services.AddHttpContextAccessor();
 
-        services.AddAuthorization(options => { options.DefaultPolicy = SetupAuthorizationPolicyBuilder().Build(); });
-
+        services.AddAuthorization(SetupAuthorization);
+        
         services.AddMicrosoftIdentityWebAppAuthentication(Configuration);
         ConfigureCookies(services);
 
@@ -132,8 +132,6 @@ public class Startup
         app.UseEndpoints(endpoints =>
         {
             endpoints.MapRazorPages();
-            // endpoints.MapControllerRoute("default", "{controller}/{action}/");
-            // endpoints.MapControllers();
         });
     }
 
@@ -157,14 +155,6 @@ public class Startup
 
     private void RegisterClients(IServiceCollection services)
     {
-        //TODO: AcademiesOptions is from Api proj, need to move or remove
-        // services.AddHttpClient("AcademiesClient", (_, client) =>
-        // {
-        //     AcademiesOptions academiesOptions = GetTypedConfigurationFor<AcademiesOptions>();
-        //     client.BaseAddress = new Uri(academiesOptions.ApiEndpoint);
-        //     client.DefaultRequestHeaders.Add("ApiKey", academiesOptions.ApiKey);
-        // });
-
         services.AddHttpClient("CompleteClient", (_, client) =>
         {
             CompleteOptions completeOptions = GetTypedConfigurationFor<CompleteOptions>();
@@ -208,5 +198,11 @@ public class Startup
         }
 
         return policyBuilder;
+    }
+
+    private void SetupAuthorization(AuthorizationOptions options)
+    {
+        options.AddPolicy("DefaultPolicy", SetupAuthorizationPolicyBuilder().Build());
+        options.AddPolicy("CanCreateProjects", policy => policy.RequireClaim(ClaimTypes.Role, "RegionalDeliveryOfficer"));
     }
 }
