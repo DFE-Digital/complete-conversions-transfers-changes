@@ -2,8 +2,8 @@
 @inject Microsoft.Extensions.Configuration.IConfiguration _configuration
 
 @{
-	var analyticsConsent = Context.Request.Cookies.ContainsKey(".Complete.Consent")
-	                       && bool.Parse(Context.Request.Cookies[".Complete.Consent"]);
+	var analyticsConsent = Context.Request.Cookies.ContainsKey("ACCEPT_OPTIONAL_COOKIES")
+	                       && bool.Parse(Context.Request.Cookies["ACCEPT_OPTIONAL_COOKIES"]);
 
 	var showAnalytics = _configuration["GoogleAnalytics:Enable"] == "Yes" && analyticsConsent;
 }
