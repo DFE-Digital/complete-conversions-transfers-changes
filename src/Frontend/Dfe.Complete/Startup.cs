@@ -4,6 +4,7 @@ using Dfe.Complete.Configuration;
 using Dfe.Complete.Security;
 using Dfe.Complete.Services;
 using Dfe.Complete.StartupConfiguration;
+using DfE.CoreLibs.Security.Authorization;
 using GovUk.Frontend.AspNetCore;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
@@ -71,7 +72,8 @@ public class Startup
         });
         services.AddHttpContextAccessor();
 
-        services.AddAuthorization(SetupAuthorization);
+        //services.AddAuthorization(SetupAuthorization);
+        services.AddApplicationAuthorization(Configuration);
         
         services.AddMicrosoftIdentityWebAppAuthentication(Configuration);
         ConfigureCookies(services);
@@ -202,7 +204,7 @@ public class Startup
 
     private void SetupAuthorization(AuthorizationOptions options)
     {
-        options.AddPolicy("DefaultPolicy", SetupAuthorizationPolicyBuilder().Build());
+        //options.AddPolicy("DefaultPolicy", SetupAuthorizationPolicyBuilder().Build());
         options.AddPolicy("CanCreateProjects", policy => policy.RequireClaim(ClaimTypes.Role, "RegionalDeliveryOfficer"));
     }
 }
