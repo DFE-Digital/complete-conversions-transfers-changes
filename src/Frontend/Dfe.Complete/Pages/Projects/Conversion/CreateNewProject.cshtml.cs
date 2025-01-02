@@ -25,7 +25,7 @@ namespace Dfe.Complete.Pages.Projects.Conversion
         public string GroupReferenceNumber { get; set; }
 
         [BindProperty] 
-        public DateTime AdvisoryBoardDate { get; set; }
+        public DateTime? AdvisoryBoardDate { get; set; }
 
         [BindProperty] 
         public string AdvisoryBoardConditions { get; set; }
@@ -74,17 +74,21 @@ namespace Dfe.Complete.Pages.Projects.Conversion
             }
 
             var createProjectCommand = new CreateConversionProjectCommand(
-                Urn: new Urn(2),
+                Urn: new Urn(int.Parse(URN)),
                 SignificantDate: DateOnly.FromDateTime(DateTime.UtcNow),
                 IsSignificantDateProvisional: true, // will be set to false in the stakeholder kick off task 
                 IncomingTrustSharepointLink: IncomingTrustSharePointLink,
                 EstablishmentSharepointLink: SchoolSharePointLink, //todo: is this correct?
                 IsDueTo2Ri: IsDueTo2RI ?? false,
-                AdvisoryBoardDate: DateOnly.FromDateTime(AdvisoryBoardDate),
+                AdvisoryBoardDate: AdvisoryBoardDate.HasValue ? DateOnly.FromDateTime(AdvisoryBoardDate.Value) : default,
                 Region: Domain.Enums.Region.NorthWest,
                 AdvisoryBoardConditions: AdvisoryBoardConditions,
-                IncomingTrustUkprn: new Ukprn(2),
-                HasAcademyOrderBeenIssued: true
+                IncomingTrustUkprn: new Ukprn(int.Parse(UKPRN)),
+                HasAcademyOrderBeenIssued: DirectiveAcademyOrder ?? default, 
+                GroupReferenceNumber: GroupReferenceNumber,
+                ProvisionalConversionDate: ProvisionalConversionDate.HasValue ? DateOnly.FromDateTime(ProvisionalConversionDate.Value) : default,
+                HandoverComments: HandoverComments, 
+                HandingOverToRegionalCaseworkService: IsHandingToRCS ?? default
             );
 
             var createResponse = await sender.Send(createProjectCommand);

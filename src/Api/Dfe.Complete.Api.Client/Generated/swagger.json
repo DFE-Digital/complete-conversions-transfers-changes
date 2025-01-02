@@ -247,6 +247,13 @@
           },
           "incomingTrustSharepointLink": {
             "type": "string"
+          },
+          "groupReferenceNumber": {
+            "type": "string"
+          },
+          "provisionalConversionDate": {
+            "type": "string",
+            "format": "date"
           }
         }
       },
