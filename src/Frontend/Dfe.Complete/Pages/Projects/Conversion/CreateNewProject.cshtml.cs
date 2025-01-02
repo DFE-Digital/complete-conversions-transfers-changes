@@ -22,6 +22,7 @@ namespace Dfe.Complete.Pages.Projects.Conversion
 
         [BindProperty]
         [Display(Name = "Group Reference Number")]
+        [GroupReferenceNumber]
         public string GroupReferenceNumber { get; set; }
 
         [BindProperty] 
@@ -64,6 +65,8 @@ namespace Dfe.Complete.Pages.Projects.Conversion
 
         public async Task<IActionResult> OnPost()
         {
+            ManuallyValidateGroupReferenceNumber();
+
             //Validate
             await ValidateAllFields();
 
@@ -98,11 +101,17 @@ namespace Dfe.Complete.Pages.Projects.Conversion
             return Redirect($"/projects/conversion-projects/{projectId}/created");
         }
 
+        private void ManuallyValidateGroupReferenceNumber()
+        {
+            //This is a workaround for this field being required by default.
+            ModelState.Remove(nameof(GroupReferenceNumber));
+            new GroupReferenceNumberAttribute().Validate(GroupReferenceNumber, new ValidationContext(this));
+        }
+
         public async Task ValidateAllFields()
         {
             await ValidateUrn();
             ValidateUKPRN();
-            ValidateGroupReferenceNumber();
             ValidateAdvisoryBoardDate();
             ValidateProvisionalConversionDate();
             //TODO:EA needs fixing
@@ -111,28 +120,6 @@ namespace Dfe.Complete.Pages.Projects.Conversion
             ValidateHandingToRCS();
             ValidateAcademyOrder();
             ValidateDueTo2RI();
-        }
-
-        private void ValidateGroupReferenceNumber()
-        {
-            const string fieldName = nameof(GroupReferenceNumber);
-            var value = GroupReferenceNumber;
-
-            if (string.IsNullOrEmpty(value))
-                return;
-
-            const string errorMessage = "A group reference number must start GRP_ and contain 8 numbers, like GRP_00000001";
-            
-            if (!value.StartsWith("GRP_"))
-            {
-                ModelState.AddModelError($"{fieldName}", errorMessage);
-                return;
-            }
-
-            var numberPortionOfRefNumber = value.Split("GRP_")[1];
-
-            if (!int.TryParse(numberPortionOfRefNumber, NumberStyles.None, CultureInfo.InvariantCulture, out _) || numberPortionOfRefNumber.Length < 8)
-                ModelState.AddModelError($"{fieldName}", errorMessage);
         }
 
         private async Task ValidateUrn()
