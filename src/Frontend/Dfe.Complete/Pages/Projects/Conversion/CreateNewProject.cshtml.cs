@@ -14,17 +14,24 @@ namespace Dfe.Complete.Pages.Projects.Conversion
 {
     public class CreateNewProjectModel(ISender sender, IErrorService errorService) : PageModel
     {
-        [BindProperty] public string URN { get; set; }
+        [BindProperty] 
+        public string URN { get; set; }
 
-        [BindProperty] public string UKPRN { get; set; }
+        [BindProperty] 
+        public string UKPRN { get; set; }
 
-        [BindProperty] public string GroupReferenceNumber { get; set; }
+        [BindProperty]
+        [Display(Name = "Group Reference Number")]
+        public string GroupReferenceNumber { get; set; }
 
-        [BindProperty] public DateTime? AdvisoryBoardDate { get; set; }
+        [BindProperty] 
+        public DateTime? AdvisoryBoardDate { get; set; }
 
-        [BindProperty] public string AdvisoryBoardConditions { get; set; }
+        [BindProperty] 
+        public string AdvisoryBoardConditions { get; set; }
 
-        [BindProperty] public DateTime? ProvisionalConversionDate { get; set; }
+        [BindProperty] 
+        public DateTime? ProvisionalConversionDate { get; set; }
 
         [BindProperty]
         [SharePointLink]
@@ -38,13 +45,17 @@ namespace Dfe.Complete.Pages.Projects.Conversion
         [Display(Name = "Incoming trust SharePoint link")]
         public string IncomingTrustSharePointLink { get; set; }
 
-        [BindProperty] public bool? IsHandingToRCS { get; set; }
+        [BindProperty] 
+        public bool? IsHandingToRCS { get; set; }
 
-        [BindProperty] public string HandoverComments { get; set; }
+        [BindProperty] 
+        public string HandoverComments { get; set; }
 
-        [BindProperty] public bool? DirectiveAcademyOrder { get; set; }
+        [BindProperty] 
+        public bool? DirectiveAcademyOrder { get; set; }
 
-        [BindProperty] public bool? IsDueTo2RI { get; set; }
+        [BindProperty]
+        public bool? IsDueTo2RI { get; set; }
 
         public async Task<IActionResult> OnGet()
         {
