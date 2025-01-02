@@ -25,7 +25,7 @@ namespace Dfe.Complete.Validators
             if (!int.TryParse(numberPortionOfRefNumber, NumberStyles.None, CultureInfo.InvariantCulture, out _))
                 return new ValidationResult(errorMessage);
 
-            if(numberPortionOfRefNumber.Length != 8)
+            if (numberPortionOfRefNumber.Length != 8)
                 return new ValidationResult(errorMessage);
 
             return ValidationResult.Success;

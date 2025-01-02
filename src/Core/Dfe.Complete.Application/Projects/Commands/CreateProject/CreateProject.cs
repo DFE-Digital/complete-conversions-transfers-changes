@@ -48,7 +48,11 @@ namespace Dfe.Complete.Application.Projects.Commands.CreateProject
                 request.AdvisoryBoardDate,
                 request.AdvisoryBoardConditions,
                 request.EstablishmentSharepointLink,
-                request.IncomingTrustSharepointLink);
+                request.IncomingTrustSharepointLink, 
+                request.GroupReferenceNumber,
+                request.ProvisionalConversionDate, 
+                request.HandingOverToRegionalCaseworkService, 
+                request.HandoverComments);
             
             await conversionTaskRepository.AddAsync(conversionTask, cancellationToken);
             await projectRepository.AddAsync(project, cancellationToken);
