@@ -169,8 +169,7 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
             incomingTrustSharepointLink);
 
         project.AddDomainEvent(new ProjectCreatedEvent(project));
-
-
+        
         return project;
     }
 }

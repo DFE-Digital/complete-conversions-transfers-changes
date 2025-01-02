@@ -25,7 +25,7 @@ namespace Dfe.Complete.Pages.Projects.Conversion
         public string GroupReferenceNumber { get; set; }
 
         [BindProperty] 
-        public DateTime? AdvisoryBoardDate { get; set; }
+        public DateTime AdvisoryBoardDate { get; set; }
 
         [BindProperty] 
         public string AdvisoryBoardConditions { get; set; }
@@ -77,12 +77,12 @@ namespace Dfe.Complete.Pages.Projects.Conversion
                 Urn: new Urn(2),
                 SignificantDate: DateOnly.FromDateTime(DateTime.UtcNow),
                 IsSignificantDateProvisional: true, // will be set to false in the stakeholder kick off task 
-                IncomingTrustSharepointLink: "https://www.sharepointlink.com/test",
-                EstablishmentSharepointLink: "https://www.sharepointlink.com/test",
-                IsDueTo2Ri: false,
-                AdvisoryBoardDate: DateOnly.FromDateTime(DateTime.UtcNow),
+                IncomingTrustSharepointLink: IncomingTrustSharePointLink,
+                EstablishmentSharepointLink: SchoolSharePointLink, //todo: is this correct?
+                IsDueTo2Ri: IsDueTo2RI ?? false,
+                AdvisoryBoardDate: DateOnly.FromDateTime(AdvisoryBoardDate),
                 Region: Domain.Enums.Region.NorthWest,
-                AdvisoryBoardConditions: "test conditions",
+                AdvisoryBoardConditions: AdvisoryBoardConditions,
                 IncomingTrustUkprn: new Ukprn(2),
                 HasAcademyOrderBeenIssued: true
             );
@@ -214,7 +214,6 @@ namespace Dfe.Complete.Pages.Projects.Conversion
             {
                 ModelState.AddModelError($"{fieldName}",
                     $"Enter an incoming trust sharepoint link in the correct format. SharePoint links start with 'https://educationgovuk.sharepoint.com' or 'https://educationgovuk-my.sharepoint.com/'");
-                return;
             }
         }
 
