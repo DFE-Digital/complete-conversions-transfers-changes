@@ -72,7 +72,6 @@ public class Startup
         });
         services.AddHttpContextAccessor();
 
-        //services.AddAuthorization(SetupAuthorization);
         services.AddApplicationAuthorization(Configuration);
         
         services.AddMicrosoftIdentityWebAppAuthentication(Configuration);
@@ -91,7 +90,6 @@ public class Startup
         services.AddGovUkFrontend();
 
         // New API client
-        //services.AddCompleteApiClient<ICreateProjectClient, CreateProjectClient>(Configuration);
 
         services.AddApplicationDependencyGroup(Configuration);
         services.AddInfrastructureDependencyGroup(Configuration);
@@ -200,11 +198,5 @@ public class Startup
         }
 
         return policyBuilder;
-    }
-
-    private void SetupAuthorization(AuthorizationOptions options)
-    {
-        //options.AddPolicy("DefaultPolicy", SetupAuthorizationPolicyBuilder().Build());
-        options.AddPolicy("CanCreateProjects", policy => policy.RequireClaim(ClaimTypes.Role, "RegionalDeliveryOfficer"));
     }
 }
