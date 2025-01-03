@@ -97,6 +97,7 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
     }
 
     public Project(
+        ProjectId Id,
         Urn urn,
         DateTime createdAt,
         DateTime updatedAt,
@@ -134,7 +135,9 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
         // NewTrustReferenceNumber = groupReferenceNumber;
     }
     
-    public static Project CreateConversionProject(Urn urn,
+    public static Project CreateConversionProject(
+        ProjectId Id,
+        Urn urn,
         DateTime createdAt,
         DateTime updatedAt,
         TaskType taskType,
@@ -152,7 +155,9 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
         string incomingTrustSharepointLink,
         string groupReferenceNumber)
     {
-        var project = new Project(urn,
+        var project = new Project(
+            Id,
+            urn,
             createdAt,
             updatedAt,
             taskType,
