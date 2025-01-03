@@ -48,7 +48,6 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
                 "",
                 null,
                 null, 
-                null, 
                 null);
 
             var cacheKey = $"Project_{CacheKeyHelper.GenerateHashedCacheKey(urn.ToString())}";

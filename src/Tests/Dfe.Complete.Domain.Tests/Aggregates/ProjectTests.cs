@@ -1,3 +1,4 @@
+using Dfe.Complete.Domain.Entities;
 using Dfe.Complete.Infrastructure.Models;
 using DfE.CoreLibs.Testing.AutoFixture.Attributes;
 using Dfe.Complete.Tests.Common.Customizations.Models;

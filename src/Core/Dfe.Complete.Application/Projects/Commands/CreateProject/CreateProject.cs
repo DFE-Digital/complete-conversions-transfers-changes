@@ -46,16 +46,6 @@ namespace Dfe.Complete.Application.Projects.Commands.CreateProject
             string team;
             DateTime? assignedAt = null;
             User? assignedTo = null;
-            Note? note = null;
-
-            if (!string.IsNullOrEmpty(request.HandoverComments))
-            {
-                note = new Note
-                {
-                    Id = new NoteId(Guid.NewGuid()), CreatedAt = createdAt, Body = request.HandoverComments,
-                    ProjectId = projectId, TaskIdentifier = "handover", UserId = request.RegionalDeliveryOfficer?.Id
-                };
-            }
 
             if (request.HandingOverToRegionalCaseworkService)
             {
@@ -90,8 +80,16 @@ namespace Dfe.Complete.Application.Projects.Commands.CreateProject
                 team, 
                 assignedAt, 
                 assignedTo, 
-                note, 
                 request.RegionalDeliveryOfficer);
+            
+            if (!string.IsNullOrEmpty(request.HandoverComments))
+            {
+                project.Notes.Add(new Note
+                {
+                    Id = new NoteId(Guid.NewGuid()), CreatedAt = createdAt, Body = request.HandoverComments,
+                    ProjectId = projectId, TaskIdentifier = "handover", UserId = request.RegionalDeliveryOfficer?.Id
+                });
+            }
             
             await conversionTaskRepository.AddAsync(conversionTask, cancellationToken);
             await projectRepository.AddAsync(project, cancellationToken);

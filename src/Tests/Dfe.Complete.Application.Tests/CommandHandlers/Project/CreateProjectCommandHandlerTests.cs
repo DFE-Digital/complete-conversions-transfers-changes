@@ -42,7 +42,6 @@ namespace Dfe.Complete.Application.Tests.CommandHandlers.Project
                 "",
                 null,
                 null,
-                null, 
                 null);
 
             // Arrange

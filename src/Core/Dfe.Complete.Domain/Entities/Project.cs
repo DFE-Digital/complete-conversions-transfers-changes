@@ -117,7 +117,6 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
         string team,
         DateTime? assignedAt,
         User? assignedTo,
-        Note? note,
         User? regionalDeliveryOfficer)
     {
         Id = id ?? throw new ArgumentNullException(nameof(id));
@@ -142,7 +141,6 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
         Region = GetRegionCharValue(region);
 
         AssignTo(assignedTo, assignedAt);
-        AddNote(note);
     }
 
     public static Project CreateConversionProject(
@@ -167,7 +165,6 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
         string team,
         DateTime? assignedAt,
         User? assignedTo,
-        Note? note,
         User? regionalDeliveryOfficer)
     {
         var project = new Project(
@@ -192,7 +189,6 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
             team,
             assignedAt,
             assignedTo,
-            note,
             regionalDeliveryOfficer);
 
         project.AddDomainEvent(new ProjectCreatedEvent(project));
@@ -209,11 +205,5 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
     {
         AssignedTo = user;
         AssignedAt = assignedAt;
-    }
-
-    private void AddNote(Note? note)
-    {
-        if (note != null)
-            Notes.Add(note);
     }
 }
