@@ -1,44 +1,38 @@
-﻿@page "/projects/conversions/new"
+﻿@page "/projects/conversion-projects/new"
 @model Dfe.Complete.Pages.Projects.Conversion.CreateNewProjectModel
+@inject Dfe.Complete.Services.IErrorService ErrorService
 @{
     ViewData["Title"] = "Add a conversion";
 
-    var invalidEntries = ViewContext.ModelState.Where(e => e.Value.Errors.Any()).Select(ms => new
-    {
-        Key = ms.Key,
-        Error = ms.Value.Errors.FirstOrDefault().ErrorMessage
-    });
-
-    var urnField = "URN";
-    var ukprnField = "UKPRN";
-    var advisoryBoardDateField = "AdvisoryBoardDate";
-    var provisionalConversionDateField = "ProvisionalConversionDate";
-    var schoolSharePointLinkField = "SchoolSharePointLink";
-    var incomingTrustSharePointLinkField = "IncomingTrustSharePointLink";
-    var handingToRSCField = "IsHandingToRCS";
-    var directiveAcademyOrderField = "DirectiveAcademyOrder";
-    var isDueTo2RIField = "IsDueTo2RI";
+    const string urnField = nameof(Model.URN);
+    const string ukprnField = nameof(Model.UKPRN);
+    const string advisoryBoardDateField = nameof(Model.AdvisoryBoardDate);
+    const string provisionalConversionDateField = nameof(Model.ProvisionalConversionDate);
+    const string schoolSharePointLinkField = nameof(Model.SchoolSharePointLink);
+    const string incomingTrustSharePointLinkField = nameof(Model.IncomingTrustSharePointLink);
+    const string handingToRSCField = nameof(Model.IsHandingToRCS);
+    const string directiveAcademyOrderField = nameof(Model.DirectiveAcademyOrder);
+    const string isDueTo2RIField = nameof(Model.IsDueTo2RI);
 }
 
 
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
-        <h2 class="govuk-heading-l">Add a conversion</h2>
-
-        <p class="govuk-body">Enter information about the school, trust and the advisory board decision.</p>
-
-        <p class="govuk-body">This will create a new conversion project.</p>
 
         @{
-
             <form method="post">
+                <h2 class="govuk-heading-l">Add a conversion</h2>
+
+                <p class="govuk-body">Enter information about the school, trust and the advisory board decision.</p>
+
+                <p class="govuk-body">This will create a new conversion project.</p>
 
                 <govuk-input id="@urnField" name="@urnField" input-class="govuk-input--width-10" asp-for="@Model.URN">
                     <govuk-input-label class="govuk-label--m">School URN (Unique Reference Number)</govuk-input-label>
                     <govuk-input-hint>This is the URN of the existing school which is converting to an academy. A URN is a 6-digit number. You can find it in the advisory board template.</govuk-input-hint>
-                    @if (invalidEntries.Any(e => e.Key == urnField))
+                    @if (ErrorService.HasErrorForKey(@urnField))
                     {
-                        <govuk-input-error-message>@(invalidEntries.FirstOrDefault(e => e.Key == urnField).Error)</govuk-input-error-message>
+                        <govuk-input-error-message>@(ErrorService.GetErrorMessage(urnField))</govuk-input-error-message>
                     }
                 </govuk-input>
 
@@ -54,13 +48,13 @@
                             </a>
                         </p>
                     </govuk-input-hint>
-                    @if (invalidEntries.Any(e => e.Key == ukprnField))
+                    @if (ErrorService.HasErrorForKey(@ukprnField))
                     {
-                        <govuk-input-error-message>@(invalidEntries.FirstOrDefault(e => e.Key == ukprnField).Error)</govuk-input-error-message>
+                        <govuk-input-error-message>@(ErrorService.GetErrorMessage(ukprnField))</govuk-input-error-message>
                     }
                 </govuk-input>
 
-                <govuk-input name="GroupReferenceNumber" input-class="govuk-input--width-10" asp-for="@Model.GroupReferenceNumber">
+                <govuk-input input-class="govuk-input--width-10" asp-for="@Model.GroupReferenceNumber">
                     <govuk-input-label class="govuk-label--m">Group reference number</govuk-input-label>
                     <govuk-input-hint>
                         <p>
@@ -80,14 +74,10 @@
                         <govuk-date-input-hint>
                             You can find this in the advisory board template.
                         </govuk-date-input-hint>
-
-                        @if (invalidEntries.Any(e => e.Key == advisoryBoardDateField))
+                        @if (ErrorService.HasErrorForKey(@advisoryBoardDateField))
                         {
-                            <govuk-date-input-error-message>
-                                @(invalidEntries.FirstOrDefault(e => e.Key == advisoryBoardDateField).Error)
-                            </govuk-date-input-error-message>
+                        <govuk-date-input-error-message>@(ErrorService.GetErrorMessage(advisoryBoardDateField))</govuk-date-input-error-message>
                         }
-                    
                     </govuk-date-input-fieldset>
                 </govuk-date-input>
 
@@ -105,14 +95,12 @@
                         <govuk-date-input-hint>
                             You can find this in the advisory board template.
                         </govuk-date-input-hint>
-                        @if (invalidEntries.Any(e => e.Key == provisionalConversionDateField))
+                        @if (ErrorService.HasErrorForKey(@provisionalConversionDateField))
                         {
-                            <govuk-date-input-error-message>
-                                @(invalidEntries.FirstOrDefault(e => e.Key == provisionalConversionDateField).Error)
-                            </govuk-date-input-error-message>
+                        <govuk-date-input-error-message>@(ErrorService.GetErrorMessage(provisionalConversionDateField))</govuk-date-input-error-message>
                         }
                     </govuk-date-input-fieldset>
-                </govuk-date-input>
+                </govuk-date-input >
 
                 <govuk-input name="@schoolSharePointLinkField" asp-for="@Model.SchoolSharePointLink">
                     <govuk-input-label class="govuk-label--m">School or academy SharePoint link</govuk-input-label>
@@ -124,18 +112,18 @@
                             You must also save the academy order and advisory board template. Do this whether the school applied to convert or not.
                         </p>
                     </govuk-input-hint>
-                    @if (invalidEntries.Any(e => e.Key == schoolSharePointLinkField))
+                    @if (ErrorService.HasErrorForKey(schoolSharePointLinkField))
                     {
-                        <govuk-input-error-message>@(invalidEntries.FirstOrDefault(e => e.Key == schoolSharePointLinkField).Error)</govuk-input-error-message>
+                        <govuk-input-error-message>@(ErrorService.GetErrorMessage(schoolSharePointLinkField))</govuk-input-error-message>
                     }
                 </govuk-input>
 
                 <govuk-input name="@incomingTrustSharePointLinkField" asp-for="@Model.IncomingTrustSharePointLink">
                     <govuk-input-label class="govuk-label--m">Incoming trust SharePoint link</govuk-input-label>
                     <govuk-input-hint>Provide a link to the SharePoint folder for the incoming trust. This is where you save all the relevant trust documents.</govuk-input-hint>
-                    @if (invalidEntries.Any(e => e.Key == incomingTrustSharePointLinkField))
+                    @if (ErrorService.HasErrorForKey(incomingTrustSharePointLinkField))
                     {
-                        <govuk-input-error-message>@(invalidEntries.FirstOrDefault(e => e.Key == incomingTrustSharePointLinkField).Error)</govuk-input-error-message>
+                        <govuk-input-error-message>@(ErrorService.GetErrorMessage(incomingTrustSharePointLinkField))</govuk-input-error-message>
                     }
                 </govuk-input>
 
@@ -144,18 +132,16 @@
                         <govuk-radios-fieldset-legend class="govuk-fieldset__legend--m">
                             Are you handing this project over to RCS (Regional Casework Services)?
                         </govuk-radios-fieldset-legend>
-
-                        @if (invalidEntries.Any(e => e.Key == handingToRSCField))
+                        
+                        @if (ErrorService.HasErrorForKey(handingToRSCField))
                         {
-                            <govuk-radios-error-message>
-                                @(invalidEntries.FirstOrDefault(e => e.Key == handingToRSCField).Error)
-                            </govuk-radios-error-message>
+                            <govuk-radios-error-message>@(ErrorService.GetErrorMessage(handingToRSCField))</govuk-radios-error-message>
                         }
 
                         <govuk-radios-item value="true">Yes</govuk-radios-item>
                         <govuk-radios-item value="false">No</govuk-radios-item>
 
-                        
+
                     </govuk-radios-fieldset>
                 </govuk-radios>
 
@@ -186,11 +172,9 @@
                             What kind of academy order has been used?
                         </govuk-radios-fieldset-legend>
 
-                        @if (invalidEntries.Any(e => e.Key == directiveAcademyOrderField))
+                        @if (ErrorService.HasErrorForKey(directiveAcademyOrderField))
                         {
-                            <govuk-radios-error-message>
-                                @(invalidEntries.FirstOrDefault(e => e.Key == directiveAcademyOrderField).Error)
-                            </govuk-radios-error-message>
+                        <govuk-radios-error-message>@(ErrorService.GetErrorMessage(directiveAcademyOrderField))</govuk-radios-error-message>
                         }
 
                         @* This value should be enums *@
@@ -209,11 +193,9 @@
                             A 2RI conversion is when a local authority maintained school becomes an academy after getting at least 2 overall Requires Improvement ratings from Ofsted.
                         </govuk-radios-hint>
 
-                        @if (invalidEntries.Any(e => e.Key == isDueTo2RIField))
+                        @if (ErrorService.HasErrorForKey(isDueTo2RIField))
                         {
-                            <govuk-radios-error-message>
-                                @(invalidEntries.FirstOrDefault(e => e.Key == isDueTo2RIField).Error)
-                            </govuk-radios-error-message>
+                        <govuk-radios-error-message>@(ErrorService.GetErrorMessage(isDueTo2RIField))</govuk-radios-error-message>
                         }
 
                         <govuk-radios-item value="true">Yes</govuk-radios-item>

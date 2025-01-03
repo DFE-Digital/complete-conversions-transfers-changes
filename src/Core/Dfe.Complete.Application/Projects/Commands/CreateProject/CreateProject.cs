@@ -17,7 +17,11 @@ namespace Dfe.Complete.Application.Projects.Commands.CreateProject
         DateOnly AdvisoryBoardDate,
         string AdvisoryBoardConditions,
         string EstablishmentSharepointLink,
-        string IncomingTrustSharepointLink) : IRequest<ProjectId>;
+        string IncomingTrustSharepointLink,
+        string GroupReferenceNumber,
+        DateOnly ProvisionalConversionDate,
+        bool HandingOverToRegionalCaseworkService, 
+        string HandoverComments) : IRequest<ProjectId>;
     
     public class CreateConversionProjectCommandHandler(ICompleteRepository<Project> projectRepository, ICompleteRepository<ConversionTasksData> conversionTaskRepository)
         : IRequestHandler<CreateConversionProjectCommand, ProjectId>
@@ -29,7 +33,7 @@ namespace Dfe.Complete.Application.Projects.Commands.CreateProject
 
             var conversionTask = new ConversionTasksData(new TaskDataId(conversionTaskId), createdAt, createdAt);
 
-            var project = Project.Create(request.Urn,
+            var project = Project.CreateConversionProject(request.Urn,
                 createdAt,
                 createdAt,
                 TaskType.Conversion,
@@ -44,7 +48,11 @@ namespace Dfe.Complete.Application.Projects.Commands.CreateProject
                 request.AdvisoryBoardDate,
                 request.AdvisoryBoardConditions,
                 request.EstablishmentSharepointLink,
-                request.IncomingTrustSharepointLink);
+                request.IncomingTrustSharepointLink, 
+                request.GroupReferenceNumber,
+                request.ProvisionalConversionDate, 
+                request.HandingOverToRegionalCaseworkService, 
+                request.HandoverComments);
             
             await conversionTaskRepository.AddAsync(conversionTask, cancellationToken);
             await projectRepository.AddAsync(project, cancellationToken);

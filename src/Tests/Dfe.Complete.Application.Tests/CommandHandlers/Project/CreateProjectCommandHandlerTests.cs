@@ -24,7 +24,7 @@ namespace Dfe.Complete.Application.Tests.CommandHandlers.Project
         {
             var now = DateTime.UtcNow;
 
-            var project = Domain.Entities.Project.Create(new Domain.ValueObjects.Urn(2),
+            var project = Domain.Entities.Project.CreateConversionProject(new Domain.ValueObjects.Urn(2),
                 now,
                 now, 
                 Domain.Enums.TaskType.Conversion, 

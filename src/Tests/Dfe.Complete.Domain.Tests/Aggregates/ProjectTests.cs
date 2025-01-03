@@ -200,7 +200,7 @@ namespace Dfe.Complete.Domain.Tests.Aggregates
           )
         {
             // Act & Assert
-            var project = Project.Create(urn,
+            var project = Project.CreateConversionProject(urn,
                                  createdAt,
                                  updatedAt,
                                  taskType,
