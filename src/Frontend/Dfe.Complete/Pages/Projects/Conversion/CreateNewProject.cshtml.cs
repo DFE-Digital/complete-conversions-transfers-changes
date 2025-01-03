@@ -14,10 +14,15 @@ namespace Dfe.Complete.Pages.Projects.Conversion
 {
     public class CreateNewProjectModel(ISender sender, IErrorService errorService) : PageModel
     {
-        [BindProperty] 
+        [BindProperty]
+        [Required]
+        [Display(Name = "Urn")]
         public string URN { get; set; }
 
-        [BindProperty] 
+        [BindProperty]
+        [Ukprn]
+        [Required]
+        [Display(Name = "UKPRN")]
         public string UKPRN { get; set; }
 
         [BindProperty]
@@ -25,13 +30,17 @@ namespace Dfe.Complete.Pages.Projects.Conversion
         [GroupReferenceNumber]
         public string GroupReferenceNumber { get; set; }
 
-        [BindProperty] 
+        [BindProperty]
+        [Required(ErrorMessage = "Enter a date for the Advisory Board Date, like 1 4 2023")]
+        [Display(Name = "Advisory Board Date")]
         public DateTime AdvisoryBoardDate { get; set; }
 
         [BindProperty] 
         public string AdvisoryBoardConditions { get; set; }
 
-        [BindProperty] 
+        [BindProperty]
+        [Required(ErrorMessage = "Enter a date for the Provisional Conversion Date, like 1 4 2023")]
+        [Display(Name = "Provisional Conversion Date")]
         public DateTime? ProvisionalConversionDate { get; set; }
 
         [BindProperty]
@@ -46,16 +55,22 @@ namespace Dfe.Complete.Pages.Projects.Conversion
         [Display(Name = "Incoming trust SharePoint link")]
         public string IncomingTrustSharePointLink { get; set; }
 
-        [BindProperty] 
+        [BindProperty]
+        [Required(ErrorMessage = "State if this project will be handed over to the Regional casework services team. Choose yes or no")]
+        [Display(Name = "Is Handing To RCS")]
         public bool? IsHandingToRCS { get; set; }
 
         [BindProperty] 
         public string HandoverComments { get; set; }
 
-        [BindProperty] 
+        [BindProperty]
+        [Required(ErrorMessage = "Select directive academy order or academy order, whichever has been used for this conversion")]
+        [Display(Name = "Directive Academy Order")]
         public bool? DirectiveAcademyOrder { get; set; }
 
         [BindProperty]
+        [Required(ErrorMessage = "State if the conversion is due to 2RI. Choose yes or no")]
+        [Display(Name = "IsDueTo2RI")]
         public bool? IsDueTo2RI { get; set; }
 
         public async Task<IActionResult> OnGet()
@@ -107,15 +122,6 @@ namespace Dfe.Complete.Pages.Projects.Conversion
         public async Task ValidateAllFields()
         {
             await ValidateUrn();
-            ValidateUKPRN();
-            ValidateAdvisoryBoardDate();
-            ValidateProvisionalConversionDate();
-            //TODO:EA needs fixing
-            //ValidateSharePointLink(nameof(SchoolSharePointLink));
-            //ValidateSharePointLink(nameof(IncomingTrustSharePointLink));
-            ValidateHandingToRCS();
-            ValidateAcademyOrder();
-            ValidateDueTo2RI();
         }
 
         private async Task ValidateUrn()
@@ -149,92 +155,5 @@ namespace Dfe.Complete.Pages.Projects.Conversion
             // }
         }
 
-        private void ValidateUKPRN()
-        {
-            const string fieldName = nameof(UKPRN);
-            var value = UKPRN;
-
-            if (string.IsNullOrEmpty(value))
-                ModelState.AddModelError($"{fieldName}", "Enter a UKPRN");
-        }
-
-        private void ValidateAdvisoryBoardDate()
-        {
-            var fieldName = nameof(AdvisoryBoardDate);
-            var value = AdvisoryBoardDate;
-
-            if (value == null || value == DateTime.MinValue) 
-                ModelState.AddModelError($"{fieldName}", "Enter a date for the advisory board, like 1 4 2023");
-        }
-
-        private void ValidateProvisionalConversionDate()
-        {
-            var fieldName = nameof(ProvisionalConversionDate);
-            var value = ProvisionalConversionDate;
-
-            if (value == null || value == DateTime.MinValue)
-            {
-                ModelState.AddModelError($"{fieldName}",
-                    "Enter a month and year for the provisional conversion date, like 9 2023");
-                return;
-            }
-        }
-
-        private void ValidateSharePointLink(string fieldName)
-        {
-            var value = fieldName == nameof(SchoolSharePointLink) ? SchoolSharePointLink : IncomingTrustSharePointLink;
-
-            if (string.IsNullOrEmpty(value))
-            {
-                ModelState.AddModelError($"{fieldName}", $"Enter a {fieldName} SharePoint link");
-                return;
-            }
-
-            if (!value.Contains("https"))
-            {
-                ModelState.AddModelError($"{fieldName}", $"The SharePoint link must have the https scheme");
-                return;
-            }
-
-            if (!value.Contains("https://educationgovuk.sharepoint.com") ||
-                !value.Contains("https://educationgovuk-my.sharepoint.com/"))
-            {
-                ModelState.AddModelError($"{fieldName}",
-                    $"Enter an incoming trust sharepoint link in the correct format. SharePoint links start with 'https://educationgovuk.sharepoint.com' or 'https://educationgovuk-my.sharepoint.com/'");
-            }
-        }
-
-        private void ValidateHandingToRCS()
-        {
-            var fieldName = nameof(IsHandingToRCS);
-            var value = IsHandingToRCS;
-
-            if (value == null)
-                ModelState.AddModelError($"{fieldName}",
-                    "State if this project will be handed over to the Regional casework services team. Choose yes or no");
-        }
-
-        private void ValidateAcademyOrder()
-        {
-            var fieldName = nameof(DirectiveAcademyOrder);
-            var value = DirectiveAcademyOrder;
-
-            if (value == null)
-            {
-                ModelState.AddModelError($"{fieldName}",
-                    "Select directive academy order or academy order, whichever has been used for this conversion");
-            }
-        }
-
-        private void ValidateDueTo2RI()
-        {
-            var fieldName = nameof(IsDueTo2RI);
-            var value = IsDueTo2RI;
-
-            if (value == null)
-            {
-                ModelState.AddModelError($"{fieldName}", "State if the conversion is due to 2RI. Choose yes or no");
-            }
-        }
     }
 }
