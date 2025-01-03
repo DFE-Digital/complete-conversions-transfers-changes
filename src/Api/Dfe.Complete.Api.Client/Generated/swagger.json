@@ -247,6 +247,19 @@
           },
           "incomingTrustSharepointLink": {
             "type": "string"
+          },
+          "groupReferenceNumber": {
+            "type": "string"
+          },
+          "provisionalConversionDate": {
+            "type": "string",
+            "format": "date"
+          },
+          "handingOverToRegionalCaseworkService": {
+            "type": "boolean"
+          },
+          "handoverComments": {
+            "type": "string"
           }
         }
       },
