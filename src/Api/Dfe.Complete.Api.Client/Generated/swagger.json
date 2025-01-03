@@ -254,6 +254,12 @@
           "provisionalConversionDate": {
             "type": "string",
             "format": "date"
+          },
+          "handingOverToRegionalCaseworkService": {
+            "type": "boolean"
+          },
+          "handoverComments": {
+            "type": "string"
           }
         }
       },

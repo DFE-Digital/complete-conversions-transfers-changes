@@ -186,6 +186,12 @@ namespace Dfe.Complete.Client.Contracts
         [Newtonsoft.Json.JsonConverter(typeof(DateFormatConverter))]
         public System.DateTime? ProvisionalConversionDate { get; set; } = default!;
 
+        [Newtonsoft.Json.JsonProperty("handingOverToRegionalCaseworkService", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? HandingOverToRegionalCaseworkService { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("handoverComments", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string? HandoverComments { get; set; } = default!;
+
         public string ToJson()
         {
 
