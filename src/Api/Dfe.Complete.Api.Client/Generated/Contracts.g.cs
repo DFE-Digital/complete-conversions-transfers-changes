@@ -182,10 +182,6 @@ namespace Dfe.Complete.Client.Contracts
         [Newtonsoft.Json.JsonProperty("groupReferenceNumber", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string? GroupReferenceNumber { get; set; } = default!;
 
-        [Newtonsoft.Json.JsonProperty("provisionalConversionDate", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        [Newtonsoft.Json.JsonConverter(typeof(DateFormatConverter))]
-        public System.DateTime? ProvisionalConversionDate { get; set; } = default!;
-
         [Newtonsoft.Json.JsonProperty("handingOverToRegionalCaseworkService", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public bool? HandingOverToRegionalCaseworkService { get; set; } = default!;
 

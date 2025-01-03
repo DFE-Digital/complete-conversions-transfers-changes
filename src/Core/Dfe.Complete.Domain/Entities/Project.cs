@@ -131,10 +131,7 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
         AdvisoryBoardConditions = advisoryBoardConditions;
         EstablishmentSharepointLink = establishmentSharepointLink;
         IncomingTrustSharepointLink = incomingTrustSharepointLink;
-        NewTrustReferenceNumber = groupReferenceNumber;
-        
-        
-        
+        // NewTrustReferenceNumber = groupReferenceNumber;
     }
     
     public static Project CreateConversionProject(Urn urn,

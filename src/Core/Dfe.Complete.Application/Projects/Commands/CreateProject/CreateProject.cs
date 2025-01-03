@@ -3,6 +3,7 @@ using Dfe.Complete.Domain.ValueObjects;
 using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Domain.Interfaces.Repositories;
 using Dfe.Complete.Domain.Entities;
+using Dfe.Complete.Infrastructure.Models;
 
 namespace Dfe.Complete.Application.Projects.Commands.CreateProject
 {
@@ -49,6 +50,13 @@ namespace Dfe.Complete.Application.Projects.Commands.CreateProject
                 request.EstablishmentSharepointLink,
                 request.IncomingTrustSharepointLink, 
                 request.GroupReferenceNumber);
+
+            project.Id = new ProjectId(Guid.NewGuid());
+            
+            project.Notes.Add(new Note
+            {
+                Id = new NoteId(Guid.NewGuid()), ProjectId = project.Id, CreatedAt = createdAt, Body = request.HandoverComments
+            });
             
             await conversionTaskRepository.AddAsync(conversionTask, cancellationToken);
             await projectRepository.AddAsync(project, cancellationToken);
