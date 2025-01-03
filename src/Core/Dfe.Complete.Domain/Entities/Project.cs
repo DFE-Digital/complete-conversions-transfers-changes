@@ -112,8 +112,8 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
         DateOnly advisoryBoardDate,
         string advisoryBoardConditions,
         string establishmentSharepointLink,
-        string incomingTrustSharepointLink
-    )
+        string incomingTrustSharepointLink,
+        string groupReferenceNumber)
     {
         Urn = urn ?? throw new ArgumentNullException(nameof(urn));
         CreatedAt = createdAt != default ? createdAt : throw new ArgumentNullException(nameof(createdAt));
@@ -131,9 +131,12 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
         AdvisoryBoardConditions = advisoryBoardConditions;
         EstablishmentSharepointLink = establishmentSharepointLink;
         IncomingTrustSharepointLink = incomingTrustSharepointLink;
+        NewTrustReferenceNumber = groupReferenceNumber;
+        
+        
+        
     }
-
-
+    
     public static Project CreateConversionProject(Urn urn,
         DateTime createdAt,
         DateTime updatedAt,
@@ -149,11 +152,8 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
         DateOnly advisoryBoardDate,
         string advisoryBoardConditions,
         string establishmentSharepointLink,
-        string incomingTrustSharepointLink,  
-        string groupReferenceNumber,
-        DateOnly provisionalConversionDate,
-        bool handingOverToRegionalCaseworkService, 
-        string handoverComments)
+        string incomingTrustSharepointLink,
+        string groupReferenceNumber)
     {
         var project = new Project(urn,
             createdAt,
@@ -170,10 +170,11 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
             advisoryBoardDate,
             advisoryBoardConditions,
             establishmentSharepointLink,
-            incomingTrustSharepointLink);
+            incomingTrustSharepointLink,
+            groupReferenceNumber);
 
         project.AddDomainEvent(new ProjectCreatedEvent(project));
-        
+
         return project;
     }
 }

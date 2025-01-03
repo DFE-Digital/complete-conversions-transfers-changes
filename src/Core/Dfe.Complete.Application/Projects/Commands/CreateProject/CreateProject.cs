@@ -19,7 +19,6 @@ namespace Dfe.Complete.Application.Projects.Commands.CreateProject
         string EstablishmentSharepointLink,
         string IncomingTrustSharepointLink,
         string GroupReferenceNumber,
-        DateOnly ProvisionalConversionDate,
         bool HandingOverToRegionalCaseworkService, 
         string HandoverComments) : IRequest<ProjectId>;
     
@@ -49,10 +48,7 @@ namespace Dfe.Complete.Application.Projects.Commands.CreateProject
                 request.AdvisoryBoardConditions,
                 request.EstablishmentSharepointLink,
                 request.IncomingTrustSharepointLink, 
-                request.GroupReferenceNumber,
-                request.ProvisionalConversionDate, 
-                request.HandingOverToRegionalCaseworkService, 
-                request.HandoverComments);
+                request.GroupReferenceNumber);
             
             await conversionTaskRepository.AddAsync(conversionTask, cancellationToken);
             await projectRepository.AddAsync(project, cancellationToken);

@@ -250,11 +250,13 @@ public class ConversionTasksData : BaseAggregateRoot, IEntity<TaskDataId>
     public ConversionTasksData(
         TaskDataId id,
         DateTime createdAt,
-        DateTime updatedAt
+        DateTime updatedAt,
+        string handoverNotes
         )
     {
         Id = id;
         CreatedAt = createdAt != default ? createdAt : throw new ArgumentNullException(nameof(createdAt));
         UpdatedAt = updatedAt != default ? updatedAt : throw new ArgumentNullException(nameof(updatedAt));
+        HandoverNotes
     }
 }
