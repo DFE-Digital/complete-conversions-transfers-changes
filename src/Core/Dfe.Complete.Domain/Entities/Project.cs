@@ -114,7 +114,8 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
         string advisoryBoardConditions,
         string establishmentSharepointLink,
         string incomingTrustSharepointLink,
-        string groupReferenceNumber)
+        string groupReferenceNumber,
+        string handoverComments)
     {
         Urn = urn ?? throw new ArgumentNullException(nameof(urn));
         CreatedAt = createdAt != default ? createdAt : throw new ArgumentNullException(nameof(createdAt));
@@ -134,7 +135,7 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
         IncomingTrustSharepointLink = incomingTrustSharepointLink;
         // NewTrustReferenceNumber = groupReferenceNumber;
     }
-    
+
     public static Project CreateConversionProject(
         ProjectId Id,
         Urn urn,
@@ -153,7 +154,8 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
         string advisoryBoardConditions,
         string establishmentSharepointLink,
         string incomingTrustSharepointLink,
-        string groupReferenceNumber)
+        string groupReferenceNumber,
+        string handoverCommentsNote)
     {
         var project = new Project(
             Id,
@@ -173,7 +175,15 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
             advisoryBoardConditions,
             establishmentSharepointLink,
             incomingTrustSharepointLink,
-            groupReferenceNumber);
+            groupReferenceNumber,
+            handoverCommentsNote);
+
+        if (!string.IsNullOrEmpty(handoverCommentsNote))
+            project.Notes.Add(new Note
+            {
+                Id = new NoteId(Guid.NewGuid()), CreatedAt = project.CreatedAt, Body = handoverCommentsNote,
+                ProjectId = Id, TaskIdentifier = "handover", UserId = project.RegionalDeliveryOfficerId
+            });
 
         project.AddDomainEvent(new ProjectCreatedEvent(project));
 

@@ -30,10 +30,13 @@ namespace Dfe.Complete.Application.Projects.Commands.CreateProject
         {
             var createdAt = DateTime.UtcNow;
             var conversionTaskId = Guid.NewGuid();
-
+            var projectId = new ProjectId(Guid.NewGuid());
+            
             var conversionTask = new ConversionTasksData(new TaskDataId(conversionTaskId), createdAt, createdAt);
 
-            var project = Project.CreateConversionProject(request.Urn,
+            var project = Project.CreateConversionProject(
+                projectId,
+                request.Urn,
                 createdAt,
                 createdAt,
                 TaskType.Conversion,
@@ -49,14 +52,8 @@ namespace Dfe.Complete.Application.Projects.Commands.CreateProject
                 request.AdvisoryBoardConditions,
                 request.EstablishmentSharepointLink,
                 request.IncomingTrustSharepointLink, 
-                request.GroupReferenceNumber);
-
-            project.Id = new ProjectId(Guid.NewGuid());
-            
-            project.Notes.Add(new Note
-            {
-                Id = new NoteId(Guid.NewGuid()), ProjectId = project.Id, CreatedAt = createdAt, Body = request.HandoverComments
-            });
+                request.GroupReferenceNumber,
+                request.HandoverComments);
             
             await conversionTaskRepository.AddAsync(conversionTask, cancellationToken);
             await projectRepository.AddAsync(project, cancellationToken);
