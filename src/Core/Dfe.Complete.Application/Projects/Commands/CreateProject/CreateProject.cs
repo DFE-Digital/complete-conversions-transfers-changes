@@ -20,10 +20,11 @@ namespace Dfe.Complete.Application.Projects.Commands.CreateProject
         string EstablishmentSharepointLink,
         string IncomingTrustSharepointLink,
         string GroupReferenceNumber,
-        bool HandingOverToRegionalCaseworkService, 
+        bool HandingOverToRegionalCaseworkService,
         string HandoverComments) : IRequest<ProjectId>;
-    
-    public class CreateConversionProjectCommandHandler(ICompleteRepository<Project> projectRepository, ICompleteRepository<ConversionTasksData> conversionTaskRepository)
+
+    public class CreateConversionProjectCommandHandler(ICompleteRepository<Project> projectRepository,
+        ICompleteRepository<ConversionTasksData> conversionTaskRepository)
         : IRequestHandler<CreateConversionProjectCommand, ProjectId>
     {
         public async Task<ProjectId> Handle(CreateConversionProjectCommand request, CancellationToken cancellationToken)
@@ -33,7 +34,12 @@ namespace Dfe.Complete.Application.Projects.Commands.CreateProject
             var projectId = new ProjectId(Guid.NewGuid());
             
             var conversionTask = new ConversionTasksData(new TaskDataId(conversionTaskId), createdAt, createdAt);
-
+            
+            
+            var groupId =
+                await projectRepository.GetProjectGroupIdByIdentifierAsync(request.GroupReferenceNumber,
+                    cancellationToken);
+            
             var project = Project.CreateConversionProject(
                 projectId,
                 request.Urn,
@@ -46,14 +52,33 @@ namespace Dfe.Complete.Application.Projects.Commands.CreateProject
                 request.IsSignificantDateProvisional,
                 request.IncomingTrustUkprn,
                 request.Region,
-                request.IsDueTo2Ri,
+                request.IsDueTo2Ri, 
                 request.HasAcademyOrderBeenIssued,
                 request.AdvisoryBoardDate,
                 request.AdvisoryBoardConditions,
                 request.EstablishmentSharepointLink,
-                request.IncomingTrustSharepointLink, 
-                request.GroupReferenceNumber,
-                request.HandoverComments);
+                request.IncomingTrustSharepointLink,
+                groupId?.Value);
+
+            if (!string.IsNullOrEmpty(request.HandoverComments))
+            {
+                project.Notes.Add(new Note
+                {
+                    Id = new NoteId(Guid.NewGuid()), CreatedAt = project.CreatedAt, Body = request.HandoverComments,
+                    ProjectId = project.Id, TaskIdentifier = "handover", UserId = project.RegionalDeliveryOfficerId
+                });
+            }
+
+            if (request.HandingOverToRegionalCaseworkService)
+            {
+                project.Team = "regional_casework_services";
+            }
+            else
+            {
+                project.Team = request.Region.ToString();
+                project.AssignedAt = DateTime.UtcNow;
+                project.AssignedTo = project.RegionalDeliveryOfficer;
+            }
             
             await conversionTaskRepository.AddAsync(conversionTask, cancellationToken);
             await projectRepository.AddAsync(project, cancellationToken);

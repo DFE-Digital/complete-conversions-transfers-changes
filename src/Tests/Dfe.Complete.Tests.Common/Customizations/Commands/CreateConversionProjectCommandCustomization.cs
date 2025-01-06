@@ -34,7 +34,7 @@ namespace Dfe.Complete.Tests.Common.Customizations.Commands
                     advisoryBoardDate,
                     advisoryBoardConditions,
                     establishmentSharepointLink,
-                    incomingTrustSharepointLink
+                    incomingTrustSharepointLink, 
                 );
             }));
         }
