@@ -196,7 +196,11 @@ namespace Dfe.Complete.Domain.Tests.Aggregates
           DateOnly advisoryBoardDate,
           string advisoryBoardConditions,
           string establishmentSharepointLink,
-          string incomingTrustSharepointLink
+          string incomingTrustSharepointLink,
+          string groupReferenceNumber,
+          DateOnly provisionalConversionDate,
+          bool handingOverToRegionalCaseworkService,
+          string handoverComments
           )
         {
             // Act & Assert
@@ -215,7 +219,11 @@ namespace Dfe.Complete.Domain.Tests.Aggregates
                                  advisoryBoardDate,
                                  advisoryBoardConditions,
                                  establishmentSharepointLink,
-                                 incomingTrustSharepointLink);
+                                 incomingTrustSharepointLink,
+                                 groupReferenceNumber,
+                                 provisionalConversionDate,
+                                 handingOverToRegionalCaseworkService,
+                                 handoverComments);
 
             Assert.Equal(urn, project.Urn);
             Assert.Equal(createdAt, project.CreatedAt);
@@ -233,6 +241,8 @@ namespace Dfe.Complete.Domain.Tests.Aggregates
             Assert.Equal(advisoryBoardConditions, project.AdvisoryBoardConditions);
             Assert.Equal(establishmentSharepointLink, project.EstablishmentSharepointLink);
             Assert.Equal(incomingTrustSharepointLink, project.IncomingTrustSharepointLink);
+
+
         }
     }
 }
