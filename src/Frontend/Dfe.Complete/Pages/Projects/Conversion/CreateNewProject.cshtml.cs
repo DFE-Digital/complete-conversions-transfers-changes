@@ -98,7 +98,7 @@ namespace Dfe.Complete.Pages.Projects.Conversion
                 IncomingTrustSharepointLink: IncomingTrustSharePointLink,
                 EstablishmentSharepointLink: SchoolSharePointLink, //todo: is this correct?
                 IsDueTo2Ri: IsDueTo2RI ?? false,
-                AdvisoryBoardDate: AdvisoryBoardDate.HasValue ? DateOnly.FromDateTime(AdvisoryBoardDate.Value) : default,
+                AdvisoryBoardDate: DateOnly.FromDateTime(AdvisoryBoardDate),
                 Region: Domain.Enums.Region.NorthWest,
                 AdvisoryBoardConditions: AdvisoryBoardConditions,
                 IncomingTrustUkprn: new Ukprn(int.Parse(UKPRN)),

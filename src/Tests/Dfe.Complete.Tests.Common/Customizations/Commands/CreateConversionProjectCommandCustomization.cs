@@ -22,6 +22,10 @@ namespace Dfe.Complete.Tests.Common.Customizations.Commands
                 var advisoryBoardConditions = fixture.Create<string>();
                 var establishmentSharepointLink = fixture.Create<Uri>().ToString();
                 var incomingTrustSharepointLink = fixture.Create<Uri>().ToString();
+                var groupReferenceNumber = fixture.Create<string>();
+                var provisionalConversionDate = fixture.Create<DateOnly>();
+                var handingOverToRegionalCaseworkService = fixture.Create<bool>();
+                var handoverComments = fixture.Create<string>();
 
                 return new CreateConversionProjectCommand(
                     urn,
@@ -34,7 +38,11 @@ namespace Dfe.Complete.Tests.Common.Customizations.Commands
                     advisoryBoardDate,
                     advisoryBoardConditions,
                     establishmentSharepointLink,
-                    incomingTrustSharepointLink
+                    incomingTrustSharepointLink,
+                    groupReferenceNumber,
+                    provisionalConversionDate,
+                    handingOverToRegionalCaseworkService,
+                    handoverComments
                 );
             }));
         }
