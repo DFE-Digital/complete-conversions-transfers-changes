@@ -3,6 +3,8 @@ using Dfe.Complete.Domain.ValueObjects;
 using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Domain.Interfaces.Repositories;
 using Dfe.Complete.Domain.Entities;
+using Dfe.Complete.Domain.Validators.ProjectValidators;
+using FluentValidation;
 
 namespace Dfe.Complete.Application.Projects.Commands.CreateProject
 {
@@ -53,7 +55,9 @@ namespace Dfe.Complete.Application.Projects.Commands.CreateProject
                 request.ProvisionalConversionDate, 
                 request.HandingOverToRegionalCaseworkService, 
                 request.HandoverComments);
-            
+
+            await new ProjectCreateValidator().ValidateAndThrowAsync(project);
+
             await conversionTaskRepository.AddAsync(conversionTask, cancellationToken);
             await projectRepository.AddAsync(project, cancellationToken);
 

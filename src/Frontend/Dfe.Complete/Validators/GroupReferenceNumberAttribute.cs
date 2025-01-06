@@ -1,7 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.Globalization;
-using System.Reflection;
-
+using Dfe.Complete.Domain.Validators.Project;
 namespace Dfe.Complete.Validators
 {
     public class GroupReferenceNumberAttribute : ValidationAttribute
@@ -13,24 +11,17 @@ namespace Dfe.Complete.Validators
             if (string.IsNullOrEmpty(groupReferenceNumber))
                 return ValidationResult.Success;
 
-            const string errorMessage = "A group reference number must start GRP_ and contain 8 numbers, like GRP_00000001";
 
-            if (!groupReferenceNumber.StartsWith("GRP_"))
+            var validator = new GroupReferenceNumberValidator();
+            var result = validator.Validate(groupReferenceNumber);
+            if (result.IsValid)
             {
-                return new ValidationResult(errorMessage);
+                return ValidationResult.Success;
             }
-
-            var numberPortionOfRefNumber = groupReferenceNumber.Split("GRP_")[1];
-
-            if (!int.TryParse(numberPortionOfRefNumber, NumberStyles.None, CultureInfo.InvariantCulture, out _))
-                return new ValidationResult(errorMessage);
-
-            if (numberPortionOfRefNumber.Length != 8)
-                return new ValidationResult(errorMessage);
-
-            return ValidationResult.Success;
+            else
+            {
+                return new ValidationResult(result.Errors[0].ErrorMessage);
+            }
         }
-
-
     }
 }
