@@ -38,7 +38,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Frontend", "Frontend", "{46
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{C9375D92-AB24-40AF-B3E3-1578E9FEA2B0}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dfe.Complete.Tests", "..\..\_git\complete-api\src\Tests\Dfe.Complete.Tests\Dfe.Complete.Tests.csproj", "{A85ECAED-EAF7-458F-A3A7-11A30AE871D0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dfe.Complete.Tests", "src\Tests\Dfe.Complete.Tests\Dfe.Complete.Tests.csproj", "{A85ECAED-EAF7-458F-A3A7-11A30AE871D0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -39,6 +39,10 @@ namespace Dfe.Complete.Application.Tests.CommandHandlers.Project
                 DateOnly.MinValue, 
                 "", 
                 "", 
+                "",
+                "",
+                DateOnly.MinValue,
+                false,
                 "");
 
             // Arrange
