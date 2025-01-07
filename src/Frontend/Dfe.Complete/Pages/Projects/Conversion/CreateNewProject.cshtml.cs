@@ -9,9 +9,11 @@ using System.Globalization;
 using Dfe.Complete.Application.Projects.Commands.CreateProject;
 using MediatR;
 using Dfe.Complete.Domain.ValueObjects;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Dfe.Complete.Pages.Projects.Conversion
 {
+    [Authorize(policy: "CanCreateProjects")]
     public class CreateNewProjectModel(ISender sender, IErrorService errorService) : PageModel
     {
         [BindProperty]
