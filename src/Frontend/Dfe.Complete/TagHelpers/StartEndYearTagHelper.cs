@@ -14,9 +14,9 @@ namespace Dfe.Complete.TagHelpers
     {
         public bool HeadingLabel { get; set; }
 
-        private readonly ErrorService _errorService;
+        private readonly IErrorService _errorService;
 
-        public StartEndYearTagHelper(IHtmlHelper htmlHelper, ErrorService errorService) : base(htmlHelper)
+        public StartEndYearTagHelper(IHtmlHelper htmlHelper, IErrorService errorService) : base(htmlHelper)
         {
             _errorService = errorService;
         }

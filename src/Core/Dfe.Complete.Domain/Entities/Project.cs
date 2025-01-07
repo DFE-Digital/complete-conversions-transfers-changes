@@ -134,7 +134,7 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
     }
 
 
-    public static Project Create(Urn urn,
+    public static Project CreateConversionProject(Urn urn,
         DateTime createdAt,
         DateTime updatedAt,
         TaskType taskType,
@@ -149,7 +149,11 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
         DateOnly advisoryBoardDate,
         string advisoryBoardConditions,
         string establishmentSharepointLink,
-        string incomingTrustSharepointLink)
+        string incomingTrustSharepointLink,  
+        string groupReferenceNumber,
+        DateOnly provisionalConversionDate,
+        bool handingOverToRegionalCaseworkService, 
+        string handoverComments)
     {
         var project = new Project(urn,
             createdAt,
@@ -169,8 +173,7 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
             incomingTrustSharepointLink);
 
         project.AddDomainEvent(new ProjectCreatedEvent(project));
-
-
+        
         return project;
     }
 }

@@ -60,10 +60,10 @@ namespace Dfe.Complete.Pages.Demonstration
         [BindProperty(Name = "stamps")]
         public string[] Stamps { get; set; }
 
-        public ErrorService _errorService;
+        public IErrorService _errorService;
 
         public TagHelperModel(
-            ErrorService errorService
+            IErrorService errorService
             )
         {
             _errorService = errorService;

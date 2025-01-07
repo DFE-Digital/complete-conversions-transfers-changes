@@ -17,9 +17,9 @@ namespace Dfe.Complete.TagHelpers
         [HtmlAttributeName("add-margin")]
 		public bool AddMargin { get; set; } = true;
 		
-		private readonly ErrorService _errorService;
+		private readonly IErrorService _errorService;
 
-		public DateInputTagHelper(IHtmlHelper htmlHelper, ErrorService errorService) : base(htmlHelper)
+		public DateInputTagHelper(IHtmlHelper htmlHelper, IErrorService errorService) : base(htmlHelper)
 		{
 			_errorService = errorService;
 		}
