@@ -4,23 +4,23 @@ namespace Dfe.Complete.Domain.Enums
 {
     public enum Region
     {
-        [Description("London")]
+        [Description("london")]
         London = 1,
-        [Description("South East")]
+        [Description("south_east")]
         SouthEast = 2,
-        [Description("Yorkshire and the Humber")]
+        [Description("yorkshire_and_the_humber")]
         YorkshireAndTheHumber = 3,
-        [Description("North West")]
+        [Description("north_west")]
         NorthWest = 4,
-        [Description("East of England")]
+        [Description("east_of_england")]
         EastOfEngland = 5,
-        [Description("West Midlands")]
+        [Description("west_midlands")]
         WestMidlands = 6,
-        [Description("North East")]
+        [Description("north_east")]
         NorthEast = 7,
-        [Description("South West")]
+        [Description("south_west")]
         SouthWest = 8,
-        [Description("East Midlands")]
+        [Description("east_midlands")]
         EastMidlands = 9
     }
 }

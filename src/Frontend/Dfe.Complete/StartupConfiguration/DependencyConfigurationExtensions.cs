@@ -1,6 +1,6 @@
-﻿using Dfe.Complete.Services;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Dfe.Complete.Domain.Interfaces.Repositories;
+using Dfe.Complete.Infrastructure.Repositories;
+using Dfe.Complete.Services;
 
 namespace Dfe.Complete.StartupConfiguration
 {
@@ -8,11 +8,11 @@ namespace Dfe.Complete.StartupConfiguration
     {
         public static IServiceCollection AddClientDependencies(this IServiceCollection services)
         {
-
             services.AddScoped<IErrorService, ErrorService>();
             services.AddScoped<CompleteApiClient, CompleteApiClient>();
             services.AddScoped<IAnalyticsConsentService, AnalyticsConsentService>();
-
+            
+            //            services.AddScoped(typeof(ICompleteRepository<>), typeof(CompleteRepository<>));
             return services;
         }
     }

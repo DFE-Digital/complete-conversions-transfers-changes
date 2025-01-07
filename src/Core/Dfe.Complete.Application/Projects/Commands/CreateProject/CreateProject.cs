@@ -4,6 +4,7 @@ using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Domain.Interfaces.Repositories;
 using Dfe.Complete.Domain.Entities;
 using Dfe.Complete.Infrastructure.Models;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace Dfe.Complete.Application.Projects.Commands.CreateProject
 {
@@ -21,9 +22,11 @@ namespace Dfe.Complete.Application.Projects.Commands.CreateProject
         string IncomingTrustSharepointLink,
         string GroupReferenceNumber,
         bool HandingOverToRegionalCaseworkService,
-        string HandoverComments) : IRequest<ProjectId>;
+        string HandoverComments,
+        User? RegionalDeliveryOfficer) : IRequest<ProjectId>;
 
-    public class CreateConversionProjectCommandHandler(ICompleteRepository<Project> projectRepository,
+    public class CreateConversionProjectCommandHandler(
+        ICompleteRepository<Project> projectRepository,
         ICompleteRepository<ConversionTasksData> conversionTaskRepository)
         : IRequestHandler<CreateConversionProjectCommand, ProjectId>
     {
@@ -32,14 +35,38 @@ namespace Dfe.Complete.Application.Projects.Commands.CreateProject
             var createdAt = DateTime.UtcNow;
             var conversionTaskId = Guid.NewGuid();
             var projectId = new ProjectId(Guid.NewGuid());
-            
+
             var conversionTask = new ConversionTasksData(new TaskDataId(conversionTaskId), createdAt, createdAt);
-            
-            
+
             var groupId =
                 await projectRepository.GetProjectGroupIdByIdentifierAsync(request.GroupReferenceNumber,
                     cancellationToken);
-            
+
+            string team;
+            DateTime? assignedAt = null;
+            User? assignedTo = null;
+            Note? note = null;
+
+            if (!string.IsNullOrEmpty(request.HandoverComments))
+            {
+                note = new Note
+                {
+                    Id = new NoteId(Guid.NewGuid()), CreatedAt = createdAt, Body = request.HandoverComments,
+                    ProjectId = projectId, TaskIdentifier = "handover", UserId = request.RegionalDeliveryOfficer?.Id
+                };
+            }
+
+            if (request.HandingOverToRegionalCaseworkService)
+            {
+                team = "regional_casework_services";
+            }
+            else
+            {
+                team = request.Region.ToDescription();
+                assignedAt = DateTime.UtcNow;
+                assignedTo = request.RegionalDeliveryOfficer;
+            }
+
             var project = Project.CreateConversionProject(
                 projectId,
                 request.Urn,
@@ -52,33 +79,17 @@ namespace Dfe.Complete.Application.Projects.Commands.CreateProject
                 request.IsSignificantDateProvisional,
                 request.IncomingTrustUkprn,
                 request.Region,
-                request.IsDueTo2Ri, 
+                request.IsDueTo2Ri,
                 request.HasAcademyOrderBeenIssued,
                 request.AdvisoryBoardDate,
                 request.AdvisoryBoardConditions,
                 request.EstablishmentSharepointLink,
                 request.IncomingTrustSharepointLink,
-                groupId?.Value);
-
-            if (!string.IsNullOrEmpty(request.HandoverComments))
-            {
-                project.Notes.Add(new Note
-                {
-                    Id = new NoteId(Guid.NewGuid()), CreatedAt = project.CreatedAt, Body = request.HandoverComments,
-                    ProjectId = project.Id, TaskIdentifier = "handover", UserId = project.RegionalDeliveryOfficerId
-                });
-            }
-
-            if (request.HandingOverToRegionalCaseworkService)
-            {
-                project.Team = "regional_casework_services";
-            }
-            else
-            {
-                project.Team = request.Region.ToString();
-                project.AssignedAt = DateTime.UtcNow;
-                project.AssignedTo = project.RegionalDeliveryOfficer;
-            }
+                groupId?.Value,
+                team, 
+                assignedAt, 
+                assignedTo, 
+                note);
             
             await conversionTaskRepository.AddAsync(conversionTask, cancellationToken);
             await projectRepository.AddAsync(project, cancellationToken);

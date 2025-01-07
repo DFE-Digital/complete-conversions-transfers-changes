@@ -19,8 +19,4 @@
     <ProjectReference Include="..\Dfe.Complete.Utils\Dfe.Complete.Utils.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Extensions\" />
-  </ItemGroup>
-
 </Project>

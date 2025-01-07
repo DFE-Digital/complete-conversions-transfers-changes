@@ -1,4 +1,5 @@
 using Dfe.Complete.Domain.Common;
+using Dfe.Complete.Domain.Entities;
 using Dfe.Complete.Domain.ValueObjects;
 
 namespace Dfe.Complete.Domain.Interfaces.Repositories
@@ -7,5 +8,7 @@ namespace Dfe.Complete.Domain.Interfaces.Repositories
         where TAggregate : class, IAggregateRoot
     {
         Task<ProjectGroupId?> GetProjectGroupIdByIdentifierAsync(string groupIdentifier, CancellationToken cancellationToken);
+
+        Task<User?> GetUserByEmail(string? email, CancellationToken cancellationToken);
     }
 }

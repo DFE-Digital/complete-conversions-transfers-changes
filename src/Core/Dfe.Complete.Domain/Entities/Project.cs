@@ -91,13 +91,12 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
     public virtual ICollection<Note> Notes { get; set; } = new List<Note>();
 
     public virtual User? RegionalDeliveryOfficer { get; set; }
-
+    
     private Project()
     {
     }
 
-    public Project(
-        ProjectId Id,
+    public Project(ProjectId Id,
         Urn urn,
         DateTime createdAt,
         DateTime updatedAt,
@@ -114,7 +113,11 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
         string advisoryBoardConditions,
         string establishmentSharepointLink,
         string incomingTrustSharepointLink,
-        Guid? groupId)
+        Guid? groupId,
+        string team,
+        DateTime? assignedAt = null,
+        User? assignedTo = null,
+        Note? note = null)
     {
         Urn = urn ?? throw new ArgumentNullException(nameof(urn));
         CreatedAt = createdAt != default ? createdAt : throw new ArgumentNullException(nameof(createdAt));
@@ -133,10 +136,14 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
         EstablishmentSharepointLink = establishmentSharepointLink;
         IncomingTrustSharepointLink = incomingTrustSharepointLink;
         GroupId = groupId;
+
+        Team = team;
+
+        AssignTo(assignedTo, assignedAt);
+        AddNote(note);
     }
 
-    public static Project CreateConversionProject(
-        ProjectId Id,
+    public static Project CreateConversionProject(ProjectId Id,
         Urn urn,
         DateTime createdAt,
         DateTime updatedAt,
@@ -153,7 +160,11 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
         string advisoryBoardConditions,
         string establishmentSharepointLink,
         string incomingTrustSharepointLink,
-        Guid? groupId)
+        Guid? groupId,
+        string team, 
+        DateTime? assignedAt, 
+        User? assignedTo, 
+        Note? note)
     {
         var project = new Project(
             Id,
@@ -173,10 +184,26 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
             advisoryBoardConditions,
             establishmentSharepointLink,
             incomingTrustSharepointLink,
-            groupId);
+            groupId, 
+            team, 
+            assignedAt, 
+            assignedTo, 
+            note);
 
         project.AddDomainEvent(new ProjectCreatedEvent(project));
 
         return project;
+    }
+    
+    private void AssignTo(User? user, DateTime? assignedAt)
+    {
+        AssignedTo = user;
+        AssignedAt = assignedAt;
+    }
+
+    private void AddNote(Note? note)
+    {
+        if (note != null)
+            Notes.Add(note);
     }
 }
