@@ -5,7 +5,6 @@ using Dfe.Complete.Extensions;
 using Dfe.Complete.Validators;
 using Dfe.Complete.Services;
 using System.ComponentModel.DataAnnotations;
-using System.Globalization;
 using Dfe.Complete.Application.Projects.Commands.CreateProject;
 using MediatR;
 using Dfe.Complete.Domain.ValueObjects;
