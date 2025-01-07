@@ -4,6 +4,7 @@ using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Domain.Interfaces.Repositories;
 using Dfe.Complete.Domain.Entities;
 using Dfe.Complete.Infrastructure.Models;
+using Dfe.Complete.Utils;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace Dfe.Complete.Application.Projects.Commands.CreateProject
@@ -13,7 +14,7 @@ namespace Dfe.Complete.Application.Projects.Commands.CreateProject
         DateOnly SignificantDate,
         bool IsSignificantDateProvisional,
         Ukprn IncomingTrustUkprn,
-        Region Region,
+        Region? Region,
         bool IsDueTo2Ri,
         bool HasAcademyOrderBeenIssued,
         DateOnly AdvisoryBoardDate,
@@ -23,7 +24,8 @@ namespace Dfe.Complete.Application.Projects.Commands.CreateProject
         string GroupReferenceNumber,
         bool HandingOverToRegionalCaseworkService,
         string HandoverComments,
-        User? RegionalDeliveryOfficer) : IRequest<ProjectId>;
+        User? RegionalDeliveryOfficer, 
+        Team? Team) : IRequest<ProjectId>;
 
     public class CreateConversionProjectCommandHandler(
         ICompleteRepository<Project> projectRepository,
@@ -62,7 +64,7 @@ namespace Dfe.Complete.Application.Projects.Commands.CreateProject
             }
             else
             {
-                team = request.Region.ToDescription();
+                team = request.Team.ToDescription();
                 assignedAt = DateTime.UtcNow;
                 assignedTo = request.RegionalDeliveryOfficer;
             }
@@ -89,7 +91,8 @@ namespace Dfe.Complete.Application.Projects.Commands.CreateProject
                 team, 
                 assignedAt, 
                 assignedTo, 
-                note);
+                note, 
+                request.RegionalDeliveryOfficer);
             
             await conversionTaskRepository.AddAsync(conversionTask, cancellationToken);
             await projectRepository.AddAsync(project, cancellationToken);

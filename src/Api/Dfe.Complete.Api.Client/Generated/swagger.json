@@ -227,7 +227,12 @@
             "$ref": "#/components/schemas/Ukprn"
           },
           "region": {
-            "$ref": "#/components/schemas/Region"
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/Region"
+              }
+            ]
           },
           "isDueTo2Ri": {
             "type": "boolean"
@@ -264,6 +269,14 @@
                 "$ref": "#/components/schemas/User"
               }
             ]
+          },
+          "team": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/Team"
+              }
+            ]
           }
         }
       },
@@ -291,26 +304,26 @@
         "type": "string",
         "description": "",
         "x-enumNames": [
+          "NorthEast",
+          "NorthWest",
+          "YorkshireAndTheHumber",
+          "EastMidlands",
+          "WestMidlands",
+          "EastOfEngland",
           "London",
           "SouthEast",
-          "YorkshireAndTheHumber",
-          "NorthWest",
-          "EastOfEngland",
-          "WestMidlands",
-          "NorthEast",
-          "SouthWest",
-          "EastMidlands"
+          "SouthWest"
         ],
         "enum": [
+          "NorthEast",
+          "NorthWest",
+          "YorkshireAndTheHumber",
+          "EastMidlands",
+          "WestMidlands",
+          "EastOfEngland",
           "London",
           "SouthEast",
-          "YorkshireAndTheHumber",
-          "NorthWest",
-          "EastOfEngland",
-          "WestMidlands",
-          "NorthEast",
-          "SouthWest",
-          "EastMidlands"
+          "SouthWest"
         ]
       },
       "User": {
@@ -601,12 +614,8 @@
                 "nullable": true
               },
               "region": {
-                "nullable": true,
-                "oneOf": [
-                  {
-                    "$ref": "#/components/schemas/Region"
-                  }
-                ]
+                "type": "string",
+                "nullable": true
               },
               "academyUrn": {
                 "nullable": true,
@@ -894,6 +903,36 @@
             "format": "date-time"
           }
         }
+      },
+      "Team": {
+        "type": "string",
+        "description": "",
+        "x-enumNames": [
+          "RegionalCaseWorkerServices",
+          "ServiceSupport",
+          "London",
+          "SouthEast",
+          "YorkshireAndTheHumber",
+          "NorthWest",
+          "EastOfEngland",
+          "WestMidlands",
+          "NorthEast",
+          "SouthWest",
+          "EastMidlands"
+        ],
+        "enum": [
+          "RegionalCaseWorkerServices",
+          "ServiceSupport",
+          "London",
+          "SouthEast",
+          "YorkshireAndTheHumber",
+          "NorthWest",
+          "EastOfEngland",
+          "WestMidlands",
+          "NorthEast",
+          "SouthWest",
+          "EastMidlands"
+        ]
       },
       "Principal": {
         "allOf": [

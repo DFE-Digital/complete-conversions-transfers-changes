@@ -5,22 +5,22 @@ namespace Dfe.Complete.Domain.Enums
     public enum Region
     {
         [Description("london")]
-        London = 1,
+        London = 'H',
         [Description("south_east")]
-        SouthEast = 2,
+        SouthEast = 'J',
         [Description("yorkshire_and_the_humber")]
-        YorkshireAndTheHumber = 3,
+        YorkshireAndTheHumber = 'D',
         [Description("north_west")]
-        NorthWest = 4,
+        NorthWest = 'B',
         [Description("east_of_england")]
-        EastOfEngland = 5,
+        EastOfEngland = 'G',
         [Description("west_midlands")]
-        WestMidlands = 6,
+        WestMidlands = 'F',
         [Description("north_east")]
-        NorthEast = 7,
+        NorthEast = 'A',
         [Description("south_west")]
-        SouthWest = 8,
+        SouthWest = 'K',
         [Description("east_midlands")]
-        EastMidlands = 9
+        EastMidlands = 'E'
     }
 }

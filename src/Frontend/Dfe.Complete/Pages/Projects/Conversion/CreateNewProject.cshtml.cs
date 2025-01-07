@@ -8,9 +8,11 @@ using System.ComponentModel.DataAnnotations;
 using System.Globalization;
 using Dfe.Complete.Application.Projects.Commands.CreateProject;
 using Dfe.Complete.Domain.Entities;
+using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Domain.Interfaces.Repositories;
 using MediatR;
 using Dfe.Complete.Domain.ValueObjects;
+using Dfe.Complete.Utils;
 
 namespace Dfe.Complete.Pages.Projects.Conversion
 {
@@ -94,7 +96,12 @@ namespace Dfe.Complete.Pages.Projects.Conversion
             }
 
             var currentUser = await completeRepository.GetUserByEmail(User.Identity?.Name?.ToLower(), cancellationToken);
+            var userTeam = currentUser?.Team;
+
+            var projectTeam = EnumExtensions.FromDescription<Team>(userTeam);
             
+            var region = EnumMapper.MapTeamToRegion(projectTeam);
+
             var createProjectCommand = new CreateConversionProjectCommand(
                 Urn: new Urn(int.Parse(URN)),
                 SignificantDate: ProvisionalConversionDate.HasValue ? DateOnly.FromDateTime(ProvisionalConversionDate.Value) : default,
@@ -103,17 +110,18 @@ namespace Dfe.Complete.Pages.Projects.Conversion
                 EstablishmentSharepointLink: SchoolSharePointLink, //todo: is this correct?
                 IsDueTo2Ri: IsDueTo2RI ?? false,
                 AdvisoryBoardDate: AdvisoryBoardDate.HasValue ? DateOnly.FromDateTime(AdvisoryBoardDate.Value) : default,
-                Region: Domain.Enums.Region.NorthWest,
+                Region: region,
                 AdvisoryBoardConditions: AdvisoryBoardConditions,
                 IncomingTrustUkprn: new Ukprn(int.Parse(UKPRN)),
                 HasAcademyOrderBeenIssued: DirectiveAcademyOrder ?? default, 
                 GroupReferenceNumber: GroupReferenceNumber,
                 HandoverComments: HandoverComments, 
                 HandingOverToRegionalCaseworkService: IsHandingToRCS ?? default, 
-                RegionalDeliveryOfficer: null //todo: query to get delivery officer user
+                RegionalDeliveryOfficer: currentUser, 
+                Team: projectTeam
             );
 
-            var createResponse = await sender.Send(createProjectCommand);
+            var createResponse = await sender.Send(createProjectCommand, cancellationToken);
 
             var projectId = createResponse.Value;
 

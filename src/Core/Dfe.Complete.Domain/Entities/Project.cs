@@ -44,7 +44,7 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
 
     public bool? DirectiveAcademyOrder { get; set; }
 
-    public Region? Region { get; set; }
+    public string? Region { get; set; }
 
     public Urn? AcademyUrn { get; set; }
 
@@ -106,7 +106,7 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
         DateOnly significantDate,
         bool isSignificantDateProvisional,
         Ukprn incomingTrustUkprn,
-        Region region,
+        string? region,
         bool isDueTo2RI,
         bool hasAcademyOrderBeenIssued,
         DateOnly advisoryBoardDate,
@@ -115,9 +115,10 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
         string incomingTrustSharepointLink,
         Guid? groupId,
         string team,
-        DateTime? assignedAt = null,
-        User? assignedTo = null,
-        Note? note = null)
+        DateTime? assignedAt,
+        User? assignedTo,
+        Note? note, 
+        User? regionalDeliveryOfficer)
     {
         Urn = urn ?? throw new ArgumentNullException(nameof(urn));
         CreatedAt = createdAt != default ? createdAt : throw new ArgumentNullException(nameof(createdAt));
@@ -136,9 +137,9 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
         EstablishmentSharepointLink = establishmentSharepointLink;
         IncomingTrustSharepointLink = incomingTrustSharepointLink;
         GroupId = groupId;
-
         Team = team;
-
+        RegionalDeliveryOfficerId = regionalDeliveryOfficer?.Id;
+        
         AssignTo(assignedTo, assignedAt);
         AddNote(note);
     }
@@ -153,7 +154,7 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
         DateOnly significantDate,
         bool isSignificantDateProvisional,
         Ukprn incomingTrustUkprn,
-        Region region,
+        Region? region,
         bool isDueTo2RI,
         bool hasAcademyOrderBeenIssued,
         DateOnly advisoryBoardDate,
@@ -164,8 +165,11 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
         string team, 
         DateTime? assignedAt, 
         User? assignedTo, 
-        Note? note)
+        Note? note,
+        User? regionalDeliveryOfficer)
     {
+        var regionCharValue = ((char) region).ToString();
+        
         var project = new Project(
             Id,
             urn,
@@ -177,7 +181,7 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
             significantDate,
             isSignificantDateProvisional,
             incomingTrustUkprn,
-            region,
+            regionCharValue,
             isDueTo2RI,
             hasAcademyOrderBeenIssued,
             advisoryBoardDate,
@@ -188,7 +192,8 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
             team, 
             assignedAt, 
             assignedTo, 
-            note);
+            note, 
+            regionalDeliveryOfficer);
 
         project.AddDomainEvent(new ProjectCreatedEvent(project));
 
