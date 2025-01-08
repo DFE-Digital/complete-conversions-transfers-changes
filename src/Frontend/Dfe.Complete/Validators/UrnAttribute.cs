@@ -1,9 +1,13 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Dfe.Complete.Application.Projects.Commands.CreateProject;
+using Dfe.Complete.Domain.ValueObjects;
+using Dfe.Complete.Extensions;
+using MediatR;
+using System.ComponentModel.DataAnnotations;
 using System.Reflection;
 
 namespace Dfe.Complete.Validators
 {
-    public class SharePointLinkAttribute : ValidationAttribute
+    public class UrnAttribute : ValidationAttribute
     {
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {
@@ -12,23 +16,23 @@ namespace Dfe.Complete.Validators
             var displayAttribute = property?.GetCustomAttribute<DisplayAttribute>();
             var displayName = displayAttribute?.GetName() ?? validationContext.DisplayName;
 
-            var link = value as string;
+            var urn = value as string;
 
-            if (string.IsNullOrEmpty(link))
+            if (string.IsNullOrEmpty(urn) || urn.Length != 6)
             {
-                return ValidationResult.Success;
-            }
-
-            if (!link.StartsWith("https://"))
-            {
-                var errorMessage = $"The {displayName} must have the https scheme";
+                var errorMessage = $"The {displayName} must be 6 digits long. For example, 123456.";
 
                 return new ValidationResult(errorMessage);
             }
 
-            if (!link.StartsWith("https://educationgovuk.sharepoint.com") && !link.StartsWith("https://educationgovuk-my.sharepoint.com/"))
+            var sender = (ISender)validationContext.GetService(typeof(ISender));
+
+            var result = sender.Send(new GetProjectByUrnCommand(new Urn(urn.ToInt())));
+
+            if (result.Result != null)
             {
-                var errorMessage = $"Enter {displayName} in the correct format. SharePoint links start with 'https://educationgovuk.sharepoint.com' or 'https://educationgovuk-my.sharepoint.com/'";
+                var errorMessage = $"A project with the urn: {urn} already exists";
+
                 return new ValidationResult(errorMessage);
             }
 

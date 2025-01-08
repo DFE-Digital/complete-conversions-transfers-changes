@@ -85,7 +85,7 @@ namespace Dfe.Complete.Infrastructure.Repositories
         /// <inheritdoc />
         public virtual async Task<TAggregate> GetAsync(Expression<Func<TAggregate, bool>> predicate)
         {
-            return await EntityFrameworkQueryableExtensions.SingleAsync<TAggregate>((IQueryable<TAggregate>)this.DbSet(), predicate, new CancellationToken());
+            return await EntityFrameworkQueryableExtensions.FirstOrDefaultAsync<TAggregate>((IQueryable<TAggregate>)this.DbSet(), predicate, new CancellationToken());
         }
 
         /// <inheritdoc />
