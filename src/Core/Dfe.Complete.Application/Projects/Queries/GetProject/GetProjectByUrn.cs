@@ -6,19 +6,19 @@ using DfE.CoreLibs.Caching.Helpers;
 using DfE.CoreLibs.Caching.Interfaces;
 using Dfe.Complete.Application.Common.Models;
 
-namespace Dfe.Complete.Application.Projects.Commands.CreateProject
+namespace Dfe.Complete.Application.Projects.Queries.GetProject
 {
-    public record GetProjectByUrnCommand(Urn Urn) : IRequest<Result<Project?>>;
-    
-    public class GetProjectByUrnCommandHandler(ICompleteRepository<Project> projectRepository, 
+    public record GetProjectByUrnQuery(Urn Urn) : IRequest<Result<Project?>>;
+
+    public class GetProjectByUrnQueryHandler(ICompleteRepository<Project> projectRepository,
         ICacheService<IMemoryCacheType> cacheService)
-        : IRequestHandler<GetProjectByUrnCommand, Result<Project?>>
+        : IRequestHandler<GetProjectByUrnQuery, Result<Project?>>
     {
-        public async Task<Result<Project?>> Handle(GetProjectByUrnCommand request, CancellationToken cancellationToken)
+        public async Task<Result<Project?>> Handle(GetProjectByUrnQuery request, CancellationToken cancellationToken)
         {
             var cacheKey = $"Project_{CacheKeyHelper.GenerateHashedCacheKey(request.Urn.Value.ToString())}";
 
-            var methodName = nameof(GetProjectByUrnCommandHandler);
+            var methodName = nameof(GetProjectByUrnQueryHandler);
 
             return await cacheService.GetOrAddAsync(cacheKey, async () =>
             {

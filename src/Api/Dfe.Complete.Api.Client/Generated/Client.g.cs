@@ -339,7 +339,7 @@ namespace Dfe.Complete.Client
         /// <param name="request">The request.</param>
         /// <returns>Project</returns>
         /// <exception cref="PersonsApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<Project> Projects_GetProject_Async(GetProjectByUrnCommand request)
+        public virtual System.Threading.Tasks.Task<Project> Projects_GetProject_Async(GetProjectByUrnQuery request)
         {
             return Projects_GetProject_Async(request, System.Threading.CancellationToken.None);
         }
@@ -351,7 +351,7 @@ namespace Dfe.Complete.Client
         /// <param name="request">The request.</param>
         /// <returns>Project</returns>
         /// <exception cref="PersonsApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<Project> Projects_GetProject_Async(GetProjectByUrnCommand request, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<Project> Projects_GetProject_Async(GetProjectByUrnQuery request, System.Threading.CancellationToken cancellationToken)
         {
             if (request == null)
                 throw new System.ArgumentNullException("request");

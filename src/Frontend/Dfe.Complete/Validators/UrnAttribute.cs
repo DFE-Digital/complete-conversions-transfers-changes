@@ -1,4 +1,4 @@
-﻿using Dfe.Complete.Application.Projects.Commands.CreateProject;
+﻿using Dfe.Complete.Application.Projects.Queries.GetProject;
 using Dfe.Complete.Domain.ValueObjects;
 using Dfe.Complete.Extensions;
 using MediatR;
@@ -27,7 +27,7 @@ namespace Dfe.Complete.Validators
 
             var sender = (ISender)validationContext.GetService(typeof(ISender));
 
-            var result = sender.Send(new GetProjectByUrnCommand(new Urn(urn.ToInt())));
+            var result = sender.Send(new GetProjectByUrnQuery(new Urn(urn.ToInt())));
 
             if (result.Result != null)
             {

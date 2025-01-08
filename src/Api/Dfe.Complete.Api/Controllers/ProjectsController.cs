@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 using Dfe.Complete.Application.Projects.Commands.CreateProject;
 using Dfe.Complete.Domain.Entities;
+using Dfe.Complete.Application.Projects.Queries.GetProject;
 
 namespace Dfe.Complete.Api.Controllers
 {
@@ -38,7 +39,7 @@ namespace Dfe.Complete.Api.Controllers
         [HttpGet]
         [SwaggerResponse(200, "Project", typeof(Project))]
         [SwaggerResponse(400, "Invalid request data.")]
-        public async Task<IActionResult> GetProject_Async([FromBody] GetProjectByUrnCommand request, CancellationToken cancellationToken)
+        public async Task<IActionResult> GetProject_Async([FromBody] GetProjectByUrnQuery request, CancellationToken cancellationToken)
         {
             var project = await sender.Send(request, cancellationToken);
             return Ok(project);

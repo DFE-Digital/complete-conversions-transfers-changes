@@ -1,29 +1,24 @@
 using AutoFixture.Xunit2;
 using DfE.CoreLibs.Testing.AutoFixture.Attributes;
-using Dfe.Complete.Application.Schools.Commands.CreateSchool;
 using Dfe.Complete.Domain.Interfaces.Repositories;
-using Dfe.Complete.Domain.Entities;
-using Dfe.Complete.Tests.Common.Customizations.Commands;
-using Dfe.Complete.Tests.Common.Customizations.Entities;
-using Dfe.Complete.Tests.Common.Customizations.Models;
 using NSubstitute;
-using Dfe.Complete.Application.Projects.Commands.CreateProject;
 using DfE.CoreLibs.Testing.AutoFixture.Customizations;
 using DfE.CoreLibs.Caching.Interfaces;
 using Dfe.Complete.Application.Common.Models;
 using DfE.CoreLibs.Caching.Helpers;
+using Dfe.Complete.Application.Projects.Queries.GetProject;
 
-namespace Dfe.Complete.Application.Tests.CommandHandlers.Project
+namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
 {
-    public class GetProjectByUrnCommandHandlerTests
+    public class GetProjectByUrnQueryHandlerTests
     {
         [Theory]
         [CustomAutoData(typeof(DateOnlyCustomization))]
         public async Task Handle_ShouldGetAProjectByUrn_WhenCommandIsValid(
             [Frozen] ICompleteRepository<Domain.Entities.Project> mockProjectRepository,
             [Frozen] ICacheService<IMemoryCacheType> mockCacheService,
-            GetProjectByUrnCommandHandler handler,
-            GetProjectByUrnCommand command
+            GetProjectByUrnQueryHandler handler,
+            GetProjectByUrnQuery command
             )
         {
             var now = DateTime.UtcNow;
@@ -32,19 +27,19 @@ namespace Dfe.Complete.Application.Tests.CommandHandlers.Project
 
             var project = Domain.Entities.Project.CreateConversionProject(new Domain.ValueObjects.Urn(urn),
                 now,
-                now, 
-                Domain.Enums.TaskType.Conversion, 
-                Domain.Enums.ProjectType.Conversion, 
-                Guid.NewGuid(), 
-                DateOnly.MinValue, 
-                true, 
-                new Domain.ValueObjects.Ukprn(2), 
-                Domain.Enums.Region.YorkshireAndTheHumber, 
-                true, 
+                now,
+                Domain.Enums.TaskType.Conversion,
+                Domain.Enums.ProjectType.Conversion,
+                Guid.NewGuid(),
+                DateOnly.MinValue,
                 true,
-                DateOnly.MinValue, 
-                "", 
-                "", 
+                new Domain.ValueObjects.Ukprn(2),
+                Domain.Enums.Region.YorkshireAndTheHumber,
+                true,
+                true,
+                DateOnly.MinValue,
+                "",
+                "",
                 "",
                 "",
                 DateOnly.MinValue,

@@ -54,7 +54,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/GetProjectByUrnCommand"
+                "$ref": "#/components/schemas/GetProjectByUrnQuery"
               }
             }
           },
@@ -926,7 +926,7 @@
           }
         }
       },
-      "GetProjectByUrnCommand": {
+      "GetProjectByUrnQuery": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
