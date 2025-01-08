@@ -22,7 +22,7 @@ namespace Dfe.Complete.Application.Tests.CommandHandlers.Project
 
             var project = Domain.Entities.Project.CreateConversionProject(
                 new ProjectId(Guid.NewGuid()),
-                new Domain.ValueObjects.Urn(2),
+                new Urn(2),
                 now, 
                 now, 
                 Domain.Enums.TaskType.Conversion,

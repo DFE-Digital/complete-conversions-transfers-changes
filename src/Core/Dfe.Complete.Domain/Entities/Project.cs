@@ -120,7 +120,7 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
         Note? note,
         User? regionalDeliveryOfficer)
     {
-        Id = id;
+        Id = id ?? throw new ArgumentNullException(nameof(id));
         Urn = urn ?? throw new ArgumentNullException(nameof(urn));
         CreatedAt = createdAt != default ? createdAt : throw new ArgumentNullException(nameof(createdAt));
         UpdatedAt = updatedAt != default ? updatedAt : throw new ArgumentNullException(nameof(updatedAt));
