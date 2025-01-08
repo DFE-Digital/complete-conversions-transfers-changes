@@ -83,7 +83,7 @@ namespace Dfe.Complete.Pages.Projects.Conversion
             return Page();
         }
 
-        public async Task<IActionResult> OnPost()
+        public async Task<IActionResult> OnPost(CancellationToken cancellationToken)
         {
             ManuallyValidateGroupReferenceNumber();
 

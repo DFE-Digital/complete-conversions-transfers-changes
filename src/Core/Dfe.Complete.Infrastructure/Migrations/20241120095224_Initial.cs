@@ -507,7 +507,7 @@ namespace Dfe.Complete.Infrastructure.Migrations
                     significant_date = table.Column<DateOnly>(type: "date", nullable: true),
                     significant_date_provisional = table.Column<bool>(type: "bit", nullable: true, defaultValue: true),
                     directive_academy_order = table.Column<bool>(type: "bit", nullable: true, defaultValue: false),
-                    region = table.Column<int>(type: "int", maxLength: 4000, nullable: true),
+                    region = table.Column<int>(type: "nvarchar(4000)", maxLength: 4000, nullable: true),
                     academy_urn = table.Column<int>(type: "int", nullable: true),
                     tasks_data_id = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     tasks_data_type = table.Column<int>(type: "int", maxLength: 4000, nullable: true),
