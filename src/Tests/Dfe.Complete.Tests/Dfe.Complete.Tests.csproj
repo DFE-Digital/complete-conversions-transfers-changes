@@ -13,7 +13,7 @@
     <PackageReference Include="AutoFixture" Version="4.18.0" />
     <PackageReference Include="FluentAssertions" Version="6.12.0" />
     <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.2.2" />
-    <PackageReference Include="Microsoft.Extensions.Hosting" Version="6.0.1" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.1" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.7.2" />
     <PackageReference Include="NSubstitute" Version="5.0.0" />
     <PackageReference Include="xunit" Version="2.5.3" />
@@ -28,7 +28,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Dfe.Complete\Dfe.Complete.csproj" />
+    <ProjectReference Include="..\..\Frontend\Dfe.Complete\Dfe.Complete.csproj" />
   </ItemGroup>
 
 </Project>

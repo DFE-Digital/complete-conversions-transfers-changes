@@ -16,7 +16,7 @@ namespace Dfe.Complete.Application.Tests.CommandHandlers.Project
             [Frozen] ICompleteRepository<Domain.Entities.Project> mockProjectRepository,
             CreateConversionProjectCommandHandler handler,
             CreateConversionProjectCommand command
-        )
+            )
         {
             var now = DateTime.UtcNow;
 
@@ -53,8 +53,7 @@ namespace Dfe.Complete.Application.Tests.CommandHandlers.Project
             await handler.Handle(command, default);
 
             // Assert
-            await mockProjectRepository.Received(1)
-                .AddAsync(Arg.Is<Domain.Entities.Project>(s => s.Urn == command.Urn), default);
+            await mockProjectRepository.Received(1).AddAsync(Arg.Is<Domain.Entities.Project>(s => s.Urn == command.Urn), default);
         }
     }
 }

@@ -11,10 +11,12 @@ using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Domain.Interfaces.Repositories;
 using MediatR;
 using Dfe.Complete.Domain.ValueObjects;
+using Microsoft.AspNetCore.Authorization;
 using Dfe.Complete.Utils;
 
 namespace Dfe.Complete.Pages.Projects.Conversion
 {
+    [Authorize(policy: "CanCreateProjects")]
     public class CreateNewProjectModel(ISender sender, IErrorService errorService, ICompleteRepository<Project> completeRepository) : PageModel
     {
         [BindProperty]
@@ -76,15 +78,16 @@ namespace Dfe.Complete.Pages.Projects.Conversion
         [Display(Name = "IsDueTo2RI")]
         public bool? IsDueTo2RI { get; set; }
 
-        public Task<IActionResult> OnGet()
+        public async Task<IActionResult> OnGet()
         {
-            return Task.FromResult<IActionResult>(Page());
+            return Page();
         }
 
-        public async Task<IActionResult> OnPost(CancellationToken cancellationToken)
+        public async Task<IActionResult> OnPost()
         {
             ManuallyValidateGroupReferenceNumber();
 
+            //Validate
             await ValidateAllFields();
 
             if (!ModelState.IsValid)

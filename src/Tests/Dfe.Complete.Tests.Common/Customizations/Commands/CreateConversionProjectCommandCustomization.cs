@@ -1,6 +1,4 @@
 using AutoFixture;
-using Dfe.Complete.Client.Contracts;
-using Dfe.Complete.Domain.Enums;
 using CreateConversionProjectCommand = Dfe.Complete.Application.Projects.Commands.CreateProject.CreateConversionProjectCommand;
 using ProjectTeam = Dfe.Complete.Domain.Enums.ProjectTeam;
 using Region = Dfe.Complete.Domain.Enums.Region;
