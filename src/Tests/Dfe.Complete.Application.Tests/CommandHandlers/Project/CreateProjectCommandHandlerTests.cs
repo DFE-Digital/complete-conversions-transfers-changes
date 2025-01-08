@@ -1,13 +1,9 @@
 using AutoFixture.Xunit2;
 using DfE.CoreLibs.Testing.AutoFixture.Attributes;
-using Dfe.Complete.Application.Schools.Commands.CreateSchool;
 using Dfe.Complete.Domain.Interfaces.Repositories;
-using Dfe.Complete.Domain.Entities;
-using Dfe.Complete.Tests.Common.Customizations.Commands;
-using Dfe.Complete.Tests.Common.Customizations.Entities;
-using Dfe.Complete.Tests.Common.Customizations.Models;
 using NSubstitute;
 using Dfe.Complete.Application.Projects.Commands.CreateProject;
+using Dfe.Complete.Domain.ValueObjects;
 using DfE.CoreLibs.Testing.AutoFixture.Customizations;
 
 namespace Dfe.Complete.Application.Tests.CommandHandlers.Project
@@ -20,26 +16,34 @@ namespace Dfe.Complete.Application.Tests.CommandHandlers.Project
             [Frozen] ICompleteRepository<Domain.Entities.Project> mockProjectRepository,
             CreateConversionProjectCommandHandler handler,
             CreateConversionProjectCommand command
-            )
+        )
         {
             var now = DateTime.UtcNow;
 
-            var project = Domain.Entities.Project.CreateConversionProject(new Domain.ValueObjects.Urn(2),
-                now,
+            var project = Domain.Entities.Project.CreateConversionProject(
+                new ProjectId(Guid.NewGuid()),
+                new Domain.ValueObjects.Urn(2),
                 now, 
-                Domain.Enums.TaskType.Conversion, 
-                Domain.Enums.ProjectType.Conversion, 
-                Guid.NewGuid(), 
-                DateOnly.MinValue, 
-                true, 
-                new Domain.ValueObjects.Ukprn(2), 
-                Domain.Enums.Region.YorkshireAndTheHumber, 
-                true, 
+                now, 
+                Domain.Enums.TaskType.Conversion,
+                Domain.Enums.ProjectType.Conversion,
+                Guid.NewGuid(),
+                DateOnly.MinValue,
                 true,
-                DateOnly.MinValue, 
-                "", 
-                "", 
-                "");
+                new Domain.ValueObjects.Ukprn(2),
+                Domain.Enums.Region.YorkshireAndTheHumber,
+                true,
+                true,
+                DateOnly.MinValue,
+                "",
+                "",
+                "",
+                Guid.Empty, 
+                "",
+                null,
+                null,
+                null, 
+                null);
 
             // Arrange
             mockProjectRepository.AddAsync(Arg.Any<Domain.Entities.Project>(), Arg.Any<CancellationToken>())
@@ -49,7 +53,8 @@ namespace Dfe.Complete.Application.Tests.CommandHandlers.Project
             await handler.Handle(command, default);
 
             // Assert
-            await mockProjectRepository.Received(1).AddAsync(Arg.Is<Domain.Entities.Project>(s => s.Urn == command.Urn), default);
+            await mockProjectRepository.Received(1)
+                .AddAsync(Arg.Is<Domain.Entities.Project>(s => s.Urn == command.Urn), default);
         }
     }
 }

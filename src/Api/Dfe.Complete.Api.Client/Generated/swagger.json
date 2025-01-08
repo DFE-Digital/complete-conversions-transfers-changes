@@ -274,7 +274,7 @@
             "nullable": true,
             "oneOf": [
               {
-                "$ref": "#/components/schemas/Team"
+                "$ref": "#/components/schemas/ProjectTeam"
               }
             ]
           }
@@ -904,7 +904,7 @@
           }
         }
       },
-      "Team": {
+      "ProjectTeam": {
         "type": "string",
         "description": "",
         "x-enumNames": [

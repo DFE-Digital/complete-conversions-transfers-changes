@@ -193,7 +193,7 @@ namespace Dfe.Complete.Client.Contracts
 
         [Newtonsoft.Json.JsonProperty("team", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
-        public Team? Team { get; set; } = default!;
+        public ProjectTeam? Team { get; set; } = default!;
 
         public string ToJson()
         {
@@ -776,7 +776,7 @@ namespace Dfe.Complete.Client.Contracts
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.1.0.0 (NJsonSchema v11.0.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    public enum Team
+    public enum ProjectTeam
     {
 
         [System.Runtime.Serialization.EnumMember(Value = @"RegionalCaseWorkerServices")]

@@ -2,22 +2,22 @@ namespace Dfe.Complete.Domain.Enums;
 
 public static class EnumMapper
 {
-    public static Region? MapTeamToRegion(Team team)
+    public static Region? MapTeamToRegion(ProjectTeam projectTeam)
     {
-        return team switch
+        return projectTeam switch
         {
-            Team.RegionalCaseWorkerServices => default,
-            Team.ServiceSupport => default,
-            Team.London => Region.London,
-            Team.SouthEast => Region.SouthEast,
-            Team.YorkshireAndTheHumber => Region.YorkshireAndTheHumber,
-            Team.NorthWest => Region.NorthWest,
-            Team.EastOfEngland => Region.EastOfEngland,
-            Team.WestMidlands => Region.WestMidlands,
-            Team.NorthEast => Region.NorthEast,
-            Team.SouthWest => Region.SouthWest,
-            Team.EastMidlands => Region.EastMidlands,
-            _ => throw new ArgumentOutOfRangeException(nameof(team), team, null)
+            ProjectTeam.RegionalCaseWorkerServices => default,
+            ProjectTeam.ServiceSupport => default,
+            ProjectTeam.London => Region.London,
+            ProjectTeam.SouthEast => Region.SouthEast,
+            ProjectTeam.YorkshireAndTheHumber => Region.YorkshireAndTheHumber,
+            ProjectTeam.NorthWest => Region.NorthWest,
+            ProjectTeam.EastOfEngland => Region.EastOfEngland,
+            ProjectTeam.WestMidlands => Region.WestMidlands,
+            ProjectTeam.NorthEast => Region.NorthEast,
+            ProjectTeam.SouthWest => Region.SouthWest,
+            ProjectTeam.EastMidlands => Region.EastMidlands,
+            _ => throw new ArgumentOutOfRangeException(nameof(projectTeam), projectTeam, null)
         };
     }
 }

@@ -91,60 +91,12 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
     public virtual ICollection<Note> Notes { get; set; } = new List<Note>();
 
     public virtual User? RegionalDeliveryOfficer { get; set; }
-    
+
     private Project()
     {
     }
 
-    public Project(ProjectId Id,
-        Urn urn,
-        DateTime createdAt,
-        DateTime updatedAt,
-        TaskType taskType,
-        ProjectType projectType,
-        Guid tasksDataId,
-        DateOnly significantDate,
-        bool isSignificantDateProvisional,
-        Ukprn incomingTrustUkprn,
-        string? region,
-        bool isDueTo2RI,
-        bool hasAcademyOrderBeenIssued,
-        DateOnly advisoryBoardDate,
-        string advisoryBoardConditions,
-        string establishmentSharepointLink,
-        string incomingTrustSharepointLink,
-        Guid? groupId,
-        string team,
-        DateTime? assignedAt,
-        User? assignedTo,
-        Note? note, 
-        User? regionalDeliveryOfficer)
-    {
-        Urn = urn ?? throw new ArgumentNullException(nameof(urn));
-        CreatedAt = createdAt != default ? createdAt : throw new ArgumentNullException(nameof(createdAt));
-        UpdatedAt = updatedAt != default ? updatedAt : throw new ArgumentNullException(nameof(updatedAt));
-        TasksDataType = taskType;
-        Type = projectType; //TOD EA: Comeback and validate the rest
-        TasksDataId = tasksDataId;
-        SignificantDate = significantDate;
-        SignificantDateProvisional = isSignificantDateProvisional;
-        IncomingTrustUkprn = incomingTrustUkprn;
-        Region = region;
-        TwoRequiresImprovement = isDueTo2RI;
-        DirectiveAcademyOrder = hasAcademyOrderBeenIssued;
-        AdvisoryBoardDate = advisoryBoardDate;
-        AdvisoryBoardConditions = advisoryBoardConditions;
-        EstablishmentSharepointLink = establishmentSharepointLink;
-        IncomingTrustSharepointLink = incomingTrustSharepointLink;
-        GroupId = groupId;
-        Team = team;
-        RegionalDeliveryOfficerId = regionalDeliveryOfficer?.Id;
-        
-        AssignTo(assignedTo, assignedAt);
-        AddNote(note);
-    }
-
-    public static Project CreateConversionProject(ProjectId Id,
+    public Project(ProjectId id,
         Urn urn,
         DateTime createdAt,
         DateTime updatedAt,
@@ -162,14 +114,62 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
         string establishmentSharepointLink,
         string incomingTrustSharepointLink,
         Guid? groupId,
-        string team, 
-        DateTime? assignedAt, 
-        User? assignedTo, 
+        string team,
+        DateTime? assignedAt,
+        User? assignedTo,
         Note? note,
         User? regionalDeliveryOfficer)
     {
-        var regionCharValue = ((char) region).ToString();
-        
+        Id = id;
+        Urn = urn ?? throw new ArgumentNullException(nameof(urn));
+        CreatedAt = createdAt != default ? createdAt : throw new ArgumentNullException(nameof(createdAt));
+        UpdatedAt = updatedAt != default ? updatedAt : throw new ArgumentNullException(nameof(updatedAt));
+        TasksDataType = taskType;
+        Type = projectType; //TOD EA: Comeback and validate the rest
+        TasksDataId = tasksDataId;
+        SignificantDate = significantDate;
+        SignificantDateProvisional = isSignificantDateProvisional;
+        IncomingTrustUkprn = incomingTrustUkprn;
+        TwoRequiresImprovement = isDueTo2RI;
+        DirectiveAcademyOrder = hasAcademyOrderBeenIssued;
+        AdvisoryBoardDate = advisoryBoardDate;
+        AdvisoryBoardConditions = advisoryBoardConditions;
+        EstablishmentSharepointLink = establishmentSharepointLink;
+        IncomingTrustSharepointLink = incomingTrustSharepointLink;
+        GroupId = groupId;
+        Team = team;
+        RegionalDeliveryOfficerId = regionalDeliveryOfficer?.Id;
+        Region = GetRegionCharValue(region);
+
+        AssignTo(assignedTo, assignedAt);
+        AddNote(note);
+    }
+
+    public static Project CreateConversionProject(
+        ProjectId Id,
+        Urn urn,
+        DateTime createdAt,
+        DateTime updatedAt,
+        TaskType taskType,
+        ProjectType projectType,
+        Guid tasksDataId,
+        DateOnly significantDate,
+        bool isSignificantDateProvisional,
+        Ukprn incomingTrustUkprn,
+        Region? region,
+        bool isDueTo2RI,
+        bool hasAcademyOrderBeenIssued,
+        DateOnly advisoryBoardDate,
+        string advisoryBoardConditions,
+        string establishmentSharepointLink,
+        string incomingTrustSharepointLink,
+        Guid? groupId,
+        string team,
+        DateTime? assignedAt,
+        User? assignedTo,
+        Note? note,
+        User? regionalDeliveryOfficer)
+    {
         var project = new Project(
             Id,
             urn,
@@ -181,25 +181,30 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
             significantDate,
             isSignificantDateProvisional,
             incomingTrustUkprn,
-            regionCharValue,
+            region,
             isDueTo2RI,
             hasAcademyOrderBeenIssued,
             advisoryBoardDate,
             advisoryBoardConditions,
             establishmentSharepointLink,
             incomingTrustSharepointLink,
-            groupId, 
-            team, 
-            assignedAt, 
-            assignedTo, 
-            note, 
+            groupId,
+            team,
+            assignedAt,
+            assignedTo,
+            note,
             regionalDeliveryOfficer);
 
         project.AddDomainEvent(new ProjectCreatedEvent(project));
 
         return project;
     }
-    
+
+    private static string GetRegionCharValue(Region? region)
+    {
+        return region != null ? ((char)region).ToString() : string.Empty;
+    }
+
     private void AssignTo(User? user, DateTime? assignedAt)
     {
         AssignedTo = user;

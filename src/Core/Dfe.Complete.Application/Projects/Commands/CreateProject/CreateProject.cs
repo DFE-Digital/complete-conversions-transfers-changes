@@ -5,7 +5,6 @@ using Dfe.Complete.Domain.Interfaces.Repositories;
 using Dfe.Complete.Domain.Entities;
 using Dfe.Complete.Infrastructure.Models;
 using Dfe.Complete.Utils;
-using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace Dfe.Complete.Application.Projects.Commands.CreateProject
 {
@@ -25,7 +24,7 @@ namespace Dfe.Complete.Application.Projects.Commands.CreateProject
         bool HandingOverToRegionalCaseworkService,
         string HandoverComments,
         User? RegionalDeliveryOfficer, 
-        Team? Team) : IRequest<ProjectId>;
+        ProjectTeam? Team) : IRequest<ProjectId>;
 
     public class CreateConversionProjectCommandHandler(
         ICompleteRepository<Project> projectRepository,

@@ -1,7 +1,12 @@
 using AutoFixture;
-using Dfe.Complete.Application.Projects.Commands.CreateProject;
-using Dfe.Complete.Domain.ValueObjects;
+using Dfe.Complete.Client.Contracts;
 using Dfe.Complete.Domain.Enums;
+using CreateConversionProjectCommand = Dfe.Complete.Application.Projects.Commands.CreateProject.CreateConversionProjectCommand;
+using ProjectTeam = Dfe.Complete.Domain.Enums.ProjectTeam;
+using Region = Dfe.Complete.Domain.Enums.Region;
+using Ukprn = Dfe.Complete.Domain.ValueObjects.Ukprn;
+using Urn = Dfe.Complete.Domain.ValueObjects.Urn;
+using User = Dfe.Complete.Domain.Entities.User;
 
 namespace Dfe.Complete.Tests.Common.Customizations.Commands
 {
@@ -22,7 +27,12 @@ namespace Dfe.Complete.Tests.Common.Customizations.Commands
                 var advisoryBoardConditions = fixture.Create<string>();
                 var establishmentSharepointLink = fixture.Create<Uri>().ToString();
                 var incomingTrustSharepointLink = fixture.Create<Uri>().ToString();
-
+                var groupReferenceNumber = fixture.Create<string>();
+                var handingOverToRegionalCaseworkService = fixture.Create<bool>();
+                var handoverComments = fixture.Create<string>();
+                var regionalDeliveryOfficer = fixture.Create<User>();
+                var team = fixture.Create<ProjectTeam>();
+                
                 return new CreateConversionProjectCommand(
                     urn,
                     significantDate,
@@ -34,7 +44,12 @@ namespace Dfe.Complete.Tests.Common.Customizations.Commands
                     advisoryBoardDate,
                     advisoryBoardConditions,
                     establishmentSharepointLink,
-                    incomingTrustSharepointLink, 
+                    incomingTrustSharepointLink,
+                    groupReferenceNumber,
+                    handingOverToRegionalCaseworkService,
+                    handoverComments,
+                    regionalDeliveryOfficer, 
+                    team
                 );
             }));
         }

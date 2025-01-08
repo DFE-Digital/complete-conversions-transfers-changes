@@ -5,7 +5,6 @@ using Dfe.Complete.Extensions;
 using Dfe.Complete.Validators;
 using Dfe.Complete.Services;
 using System.ComponentModel.DataAnnotations;
-using System.Globalization;
 using Dfe.Complete.Application.Projects.Commands.CreateProject;
 using Dfe.Complete.Domain.Entities;
 using Dfe.Complete.Domain.Enums;
@@ -77,16 +76,15 @@ namespace Dfe.Complete.Pages.Projects.Conversion
         [Display(Name = "IsDueTo2RI")]
         public bool? IsDueTo2RI { get; set; }
 
-        public async Task<IActionResult> OnGet()
+        public Task<IActionResult> OnGet()
         {
-            return Page();
+            return Task.FromResult<IActionResult>(Page());
         }
 
         public async Task<IActionResult> OnPost(CancellationToken cancellationToken)
         {
             ManuallyValidateGroupReferenceNumber();
 
-            //Validate
             await ValidateAllFields();
 
             if (!ModelState.IsValid)
@@ -98,7 +96,7 @@ namespace Dfe.Complete.Pages.Projects.Conversion
             var currentUser = await completeRepository.GetUserByEmail(User.Identity?.Name?.ToLower(), cancellationToken);
             var userTeam = currentUser?.Team;
 
-            var projectTeam = EnumExtensions.FromDescription<Team>(userTeam);
+            var projectTeam = EnumExtensions.FromDescription<ProjectTeam>(userTeam);
             
             var region = EnumMapper.MapTeamToRegion(projectTeam);
 
