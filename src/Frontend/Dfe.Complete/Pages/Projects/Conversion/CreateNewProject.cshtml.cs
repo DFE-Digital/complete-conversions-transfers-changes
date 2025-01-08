@@ -21,6 +21,7 @@ namespace Dfe.Complete.Pages.Projects.Conversion
     {
         [BindProperty]
         [Required]
+        [Urn]
         [Display(Name = "Urn")]
         public string URN { get; set; }
 
@@ -87,9 +88,6 @@ namespace Dfe.Complete.Pages.Projects.Conversion
         {
             ManuallyValidateGroupReferenceNumber();
 
-            //Validate
-            await ValidateAllFields();
-
             if (!ModelState.IsValid)
             {
                 errorService.AddErrors(ModelState);
@@ -135,42 +133,5 @@ namespace Dfe.Complete.Pages.Projects.Conversion
             ModelState.Remove(nameof(GroupReferenceNumber));
             new GroupReferenceNumberAttribute().Validate(GroupReferenceNumber, new ValidationContext(this));
         }
-
-        public async Task ValidateAllFields()
-        {
-            await ValidateUrn();
-        }
-
-        private async Task ValidateUrn()
-        {
-            var fieldName = nameof(URN);
-            var value = URN;
-
-            if (string.IsNullOrEmpty(value))
-            {
-                ModelState.AddModelError($"{fieldName}", "Enter a school URN");
-                return;
-            }
-
-            string pattern = "^[0-9]{6}$";
-
-            var isAMatch = Regex.IsMatch(value, pattern);
-
-            if (!isAMatch)
-            {
-                ModelState.AddModelError($"{fieldName}", "must be 6 digits");
-                return;
-            }
-
-            var parsedUrn = value.ToInt();
-
-            // var existingProject = await _getConversionProjectService.GetConversionProjectByUrn(parsedUrn);
-            //
-            // if (existingProject != null)
-            // {
-            //     ModelState.AddModelError($"{fieldName}", "project with this URN already exists");
-            // }
-        }
-
     }
 }
