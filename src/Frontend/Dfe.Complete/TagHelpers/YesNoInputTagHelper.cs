@@ -16,9 +16,9 @@ namespace Dfe.Complete.TagHelpers
 		[HtmlAttributeName("heading-label")]
 		public bool HeadingLabel { get; set; }
 
-		private readonly ErrorService _errorService;
+		private readonly IErrorService _errorService;
 
-		public YesNoInputTagHelper(IHtmlHelper htmlHelper, ErrorService errorService) : base(htmlHelper) 
+		public YesNoInputTagHelper(IHtmlHelper htmlHelper, IErrorService errorService) : base(htmlHelper) 
 		{
             _errorService = errorService;
         }

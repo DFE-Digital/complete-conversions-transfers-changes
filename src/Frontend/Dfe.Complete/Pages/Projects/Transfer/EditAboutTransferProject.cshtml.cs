@@ -12,7 +12,7 @@ using static Dfe.Complete.Services.DateRangeValidationService;
 
 namespace Dfe.Complete.Pages.Projects.Transfer
 {
-    public class EditAboutTransferProjectModel : PageModel
+    public class EditAboutTransferProjectModel(IErrorService errorService) : PageModel
     {
         [BindProperty(SupportsGet = true, Name = "projectId")]
         public string ProjectId { get; set; }
@@ -71,13 +71,11 @@ namespace Dfe.Complete.Pages.Projects.Transfer
         [DisplayName("is due to issues")]
         public bool? IsDueToIssues { get; set; }
 
-        private readonly ErrorService _errorService;
-
         public async Task<IActionResult> OnPost()
         {
             if (!ModelState.IsValid)
             {
-                _errorService.AddErrors(ModelState.Keys, ModelState);
+                errorService.AddErrors(ModelState.Keys, ModelState);
                 return Page();
             }
             
