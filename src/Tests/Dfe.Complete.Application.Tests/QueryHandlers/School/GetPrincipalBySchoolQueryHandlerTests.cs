@@ -39,8 +39,7 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.School
 
             var cacheKey = $"Principal_{CacheKeyHelper.GenerateHashedCacheKey(query.SchoolName)}";
 
-            mockSchoolRepository.GetPrincipalBySchoolAsync(query.SchoolName, default)
-                .Returns(school);
+            mockSchoolRepository.GetPrincipalBySchoolAsync(query.SchoolName, default).Returns(school);
 
             mockCacheService.GetOrAddAsync(
                     cacheKey,

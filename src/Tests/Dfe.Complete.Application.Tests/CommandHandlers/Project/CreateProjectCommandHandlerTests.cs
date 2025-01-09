@@ -6,6 +6,7 @@ using Dfe.Complete.Application.Projects.Commands.CreateProject;
 using Dfe.Complete.Domain.Entities;
 using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Domain.ValueObjects;
+using Dfe.Complete.Utils;
 using DfE.CoreLibs.Testing.AutoFixture.Customizations;
 
 namespace Dfe.Complete.Application.Tests.CommandHandlers.Project
@@ -20,9 +21,9 @@ namespace Dfe.Complete.Application.Tests.CommandHandlers.Project
             CreateConversionProjectCommand command
             )
         {
-            mockProjectRepository.GetUserByAdId("randomid", CancellationToken.None).Returns(new User
+            mockProjectRepository.GetUserByAdId(Arg.Any<string>(), Arg.Any<CancellationToken>()).Returns(new User
             {
-                Id = new UserId(Guid.NewGuid()), Team = "someteam"
+                Id = new UserId(Guid.NewGuid()), Team = ProjectTeam.WestMidlands.ToDescription()
             });
             
             var now = DateTime.UtcNow;
