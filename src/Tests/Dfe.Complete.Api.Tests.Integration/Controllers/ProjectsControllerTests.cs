@@ -1,18 +1,11 @@
 using System.Net;
-using AutoFixture.Xunit2;
 using Dfe.Complete.Client.Contracts;
-using Dfe.Complete.Domain.Enums;
-using Dfe.Complete.Domain.Interfaces.Repositories;
 using Dfe.Complete.Infrastructure.Database;
 using Dfe.Complete.Tests.Common.Customizations;
 using Dfe.Complete.Tests.Common.Customizations.Commands;
-using Dfe.Complete.Utils;
 using DfE.CoreLibs.Testing.AutoFixture.Attributes;
 using DfE.CoreLibs.Testing.Mocks.WebApplicationFactory;
 using Microsoft.EntityFrameworkCore;
-using NSubstitute;
-using UserId = Dfe.Complete.Domain.ValueObjects.UserId;
-using User = Dfe.Complete.Domain.Entities.User;
 
 namespace Dfe.Complete.Api.Tests.Integration.Controllers;
 
