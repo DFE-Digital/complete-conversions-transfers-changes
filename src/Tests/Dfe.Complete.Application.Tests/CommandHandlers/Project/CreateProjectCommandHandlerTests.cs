@@ -19,20 +19,18 @@ namespace Dfe.Complete.Application.Tests.CommandHandlers.Project
             [Frozen] ICompleteRepository<Domain.Entities.Project> mockProjectRepository,
             CreateConversionProjectCommandHandler handler,
             CreateConversionProjectCommand command
-            )
+        )
         {
-            mockProjectRepository.GetUserByAdId(Arg.Any<string>(), Arg.Any<CancellationToken>()).Returns(new User
-            {
-                Id = new UserId(Guid.NewGuid()), Team = ProjectTeam.WestMidlands.ToDescription()
-            });
-            
+            mockProjectRepository.GetUserByAdId(Arg.Any<string>(), Arg.Any<CancellationToken>()).Returns(
+                new User { Id = new UserId(Guid.NewGuid()), Team = ProjectTeam.WestMidlands.ToDescription() });
+
             var now = DateTime.UtcNow;
-            
+
             var project = Domain.Entities.Project.CreateConversionProject(
                 new ProjectId(Guid.NewGuid()),
                 new Urn(2),
-                now, 
-                now, 
+                now,
+                now,
                 Domain.Enums.TaskType.Conversion,
                 Domain.Enums.ProjectType.Conversion,
                 Guid.NewGuid(),
@@ -46,7 +44,7 @@ namespace Dfe.Complete.Application.Tests.CommandHandlers.Project
                 "",
                 "",
                 "",
-                Guid.Empty, 
+                Guid.Empty,
                 "",
                 null,
                 null,
@@ -60,7 +58,8 @@ namespace Dfe.Complete.Application.Tests.CommandHandlers.Project
             await handler.Handle(command, default);
 
             // Assert
-            await mockProjectRepository.Received(1).AddAsync(Arg.Is<Domain.Entities.Project>(s => s.Urn == command.Urn), default);
+            await mockProjectRepository.Received(1)
+                .AddAsync(Arg.Is<Domain.Entities.Project>(s => s.Urn == command.Urn), default);
         }
     }
 }

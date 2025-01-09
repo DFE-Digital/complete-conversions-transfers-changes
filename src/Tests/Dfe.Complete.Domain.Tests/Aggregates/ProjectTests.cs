@@ -1,8 +1,9 @@
-using Dfe.Complete.Domain.Entities;
+using Dfe.Complete.Client.Contracts;
 using Dfe.Complete.Infrastructure.Models;
 using DfE.CoreLibs.Testing.AutoFixture.Attributes;
 using Dfe.Complete.Tests.Common.Customizations.Models;
 using DfE.CoreLibs.Testing.AutoFixture.Customizations;
+using Note = Dfe.Complete.Domain.Entities.Note;
 using Project = Dfe.Complete.Domain.Entities.Project;
 using ProjectId = Dfe.Complete.Domain.ValueObjects.ProjectId;
 using ProjectType = Dfe.Complete.Domain.Enums.ProjectType;
@@ -11,6 +12,7 @@ using TaskType = Dfe.Complete.Domain.Enums.TaskType;
 using Ukprn = Dfe.Complete.Domain.ValueObjects.Ukprn;
 using Urn = Dfe.Complete.Domain.ValueObjects.Urn;
 using User = Dfe.Complete.Domain.Entities.User;
+using UserId = Dfe.Complete.Domain.ValueObjects.UserId;
 
 namespace Dfe.Complete.Domain.Tests.Aggregates
 {
@@ -28,7 +30,7 @@ namespace Dfe.Complete.Domain.Tests.Aggregates
             DateOnly significantDate,
             bool isSignificantDateProvisional,
             Ukprn incomingTrustUkprn,
-            Region region,
+            string region,
             bool isDueTo2RI,
             bool hasAcademyOrderBeenIssued,
             DateOnly advisoryBoardDate,
@@ -59,7 +61,6 @@ namespace Dfe.Complete.Domain.Tests.Aggregates
                     incomingTrustSharepointLink,
                     null,
                     "",
-                    null,
                     null,
                     null,
                     null));
@@ -79,7 +80,7 @@ namespace Dfe.Complete.Domain.Tests.Aggregates
             DateOnly significantDate,
             bool isSignificantDateProvisional,
             Ukprn incomingTrustUkprn,
-            Region region,
+            string region,
             bool isDueTo2RI,
             bool hasAcademyOrderBeenIssued,
             DateOnly advisoryBoardDate,
@@ -112,7 +113,6 @@ namespace Dfe.Complete.Domain.Tests.Aggregates
                     "",
                     null,
                     null,
-                    null,
                     null));
 
             Assert.Equal("createdAt", exception.ParamName);
@@ -130,7 +130,7 @@ namespace Dfe.Complete.Domain.Tests.Aggregates
             DateOnly significantDate,
             bool isSignificantDateProvisional,
             Ukprn incomingTrustUkprn,
-            Region region,
+            string region,
             bool isDueTo2RI,
             bool hasAcademyOrderBeenIssued,
             DateOnly advisoryBoardDate,
@@ -161,7 +161,6 @@ namespace Dfe.Complete.Domain.Tests.Aggregates
                     incomingTrustSharepointLink,
                     null,
                     "",
-                    null,
                     null,
                     null,
                     null));
@@ -183,7 +182,7 @@ namespace Dfe.Complete.Domain.Tests.Aggregates
             DateOnly significantDate,
             bool isSignificantDateProvisional,
             Ukprn incomingTrustUkprn,
-            Region region,
+            string region,
             bool isDueTo2RI,
             bool hasAcademyOrderBeenIssued,
             DateOnly advisoryBoardDate,
@@ -195,7 +194,7 @@ namespace Dfe.Complete.Domain.Tests.Aggregates
             DateTime? assignedAt,
             User? assignedTo,
             Note? note,
-            User? regionalDeliveryOfficer
+            UserId? regionalDeliveryOfficer
         )
         {
             // Act & Assert
@@ -219,10 +218,9 @@ namespace Dfe.Complete.Domain.Tests.Aggregates
                 incomingTrustSharepointLink,
                 groupId,
                 team,
-                assignedAt,
+                regionalDeliveryOfficer,
                 assignedTo,
-                note,
-                regionalDeliveryOfficer);
+                assignedAt);
 
             Assert.Equal(urn, project.Urn);
         }
@@ -240,7 +238,7 @@ namespace Dfe.Complete.Domain.Tests.Aggregates
             DateOnly significantDate,
             bool isSignificantDateProvisional,
             Ukprn incomingTrustUkprn,
-            Region region,
+            string region,
             bool isDueTo2RI,
             bool hasAcademyOrderBeenIssued,
             DateOnly advisoryBoardDate,
@@ -255,7 +253,7 @@ namespace Dfe.Complete.Domain.Tests.Aggregates
             DateTime? assignedAt,
             User? assignedTo,
             Note? note,
-            User? regionalDeliveryOfficer
+            UserId? regionalDeliveryOfficer
         )
         {
             // Act & Assert
@@ -279,10 +277,9 @@ namespace Dfe.Complete.Domain.Tests.Aggregates
                 incomingTrustSharepointLink,
                 groupId,
                 team,
-                assignedAt,
-                assignedTo, 
-                note, 
-                regionalDeliveryOfficer);
+                regionalDeliveryOfficer,
+                assignedTo,
+                assignedAt);
 
             Assert.Equal(urn, project.Urn);
             Assert.Equal(createdAt, project.CreatedAt);
