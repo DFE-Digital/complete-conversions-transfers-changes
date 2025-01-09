@@ -115,9 +115,9 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
         string incomingTrustSharepointLink,
         Guid? groupId,
         string team,
-        DateTime? assignedAt,
-        User? assignedTo,
-        User? regionalDeliveryOfficer)
+        UserId? regionalDeliveryOfficerId, 
+        User assignedTo, 
+        DateTime? assignedAt)
     {
         Id = id ?? throw new ArgumentNullException(nameof(id));
         Urn = urn ?? throw new ArgumentNullException(nameof(urn));
@@ -137,10 +137,11 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
         IncomingTrustSharepointLink = incomingTrustSharepointLink;
         GroupId = groupId;
         Team = team;
-        RegionalDeliveryOfficerId = regionalDeliveryOfficer?.Id;
+        RegionalDeliveryOfficerId = regionalDeliveryOfficerId;
         Region = GetRegionCharValue(region);
 
-        AssignTo(assignedTo, assignedAt);
+        AssignedAt = assignedAt;
+        AssignedTo = assignedTo;
     }
 
     public static Project CreateConversionProject(
@@ -162,10 +163,10 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
         string establishmentSharepointLink,
         string incomingTrustSharepointLink,
         Guid? groupId,
-        string team,
-        DateTime? assignedAt,
-        User? assignedTo,
-        User? regionalDeliveryOfficer)
+        string team, 
+        UserId? regionalDeliveryOfficerId,
+        User? assignedTo, 
+        DateTime? assignedAt)
     {
         var project = new Project(
             Id,
@@ -187,9 +188,7 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
             incomingTrustSharepointLink,
             groupId,
             team,
-            assignedAt,
-            assignedTo,
-            regionalDeliveryOfficer);
+            regionalDeliveryOfficerId, assignedTo, assignedAt);
 
         project.AddDomainEvent(new ProjectCreatedEvent(project));
 
@@ -199,11 +198,5 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
     private static string GetRegionCharValue(Region? region)
     {
         return region != null ? ((char)region).ToString() : string.Empty;
-    }
-
-    private void AssignTo(User? user, DateTime? assignedAt)
-    {
-        AssignedTo = user;
-        AssignedAt = assignedAt;
     }
 }

@@ -25,11 +25,11 @@ namespace Dfe.Complete.Infrastructure.Repositories
             return projectGroup?.Id; 
         }
 
-        public async Task<User?> GetUserByEmail(string? email, CancellationToken cancellationToken)
+        public async Task<User?> GetUserByAdId(string? userAdId, CancellationToken cancellationToken)
         {
             return await _dbContext.Users
                 .AsNoTracking()
-                .Where(u => u.Email == email)
+                .Where(u => u.ActiveDirectoryUserId == userAdId)
                 .FirstOrDefaultAsync(cancellationToken);
         }
     }

@@ -261,14 +261,6 @@
           "incomingTrustUkprn": {
             "$ref": "#/components/schemas/Ukprn"
           },
-          "region": {
-            "nullable": true,
-            "oneOf": [
-              {
-                "$ref": "#/components/schemas/Region"
-              }
-            ]
-          },
           "isDueTo2Ri": {
             "type": "boolean"
           },
@@ -297,21 +289,9 @@
           "handoverComments": {
             "type": "string"
           },
-          "regionalDeliveryOfficer": {
-            "nullable": true,
-            "oneOf": [
-              {
-                "$ref": "#/components/schemas/User"
-              }
-            ]
-          },
-          "team": {
-            "nullable": true,
-            "oneOf": [
-              {
-                "$ref": "#/components/schemas/ProjectTeam"
-              }
-            ]
+          "userAdId": {
+            "type": "string",
+            "nullable": true
           }
         }
       },
@@ -332,216 +312,6 @@
           "value": {
             "type": "integer",
             "format": "int32"
-          }
-        }
-      },
-      "Region": {
-        "type": "string",
-        "description": "",
-        "x-enumNames": [
-          "NorthEast",
-          "NorthWest",
-          "YorkshireAndTheHumber",
-          "EastMidlands",
-          "WestMidlands",
-          "EastOfEngland",
-          "London",
-          "SouthEast",
-          "SouthWest"
-        ],
-        "enum": [
-          "NorthEast",
-          "NorthWest",
-          "YorkshireAndTheHumber",
-          "EastMidlands",
-          "WestMidlands",
-          "EastOfEngland",
-          "London",
-          "SouthEast",
-          "SouthWest"
-        ]
-      },
-      "User": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-          "id": {
-            "$ref": "#/components/schemas/UserId"
-          },
-          "email": {
-            "type": "string",
-            "nullable": true
-          },
-          "createdAt": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "updatedAt": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "manageTeam": {
-            "type": "boolean",
-            "nullable": true
-          },
-          "addNewProject": {
-            "type": "boolean"
-          },
-          "firstName": {
-            "type": "string",
-            "nullable": true
-          },
-          "lastName": {
-            "type": "string",
-            "nullable": true
-          },
-          "activeDirectoryUserId": {
-            "type": "string",
-            "nullable": true
-          },
-          "assignToProject": {
-            "type": "boolean",
-            "nullable": true
-          },
-          "manageUserAccounts": {
-            "type": "boolean",
-            "nullable": true
-          },
-          "activeDirectoryUserGroupIds": {
-            "type": "string",
-            "nullable": true
-          },
-          "team": {
-            "type": "string",
-            "nullable": true
-          },
-          "deactivatedAt": {
-            "type": "string",
-            "format": "date-time",
-            "nullable": true
-          },
-          "manageConversionUrns": {
-            "type": "boolean",
-            "nullable": true
-          },
-          "manageLocalAuthorities": {
-            "type": "boolean",
-            "nullable": true
-          },
-          "latestSession": {
-            "type": "string",
-            "format": "date-time",
-            "nullable": true
-          },
-          "notes": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Note"
-            }
-          },
-          "projectAssignedTos": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Project"
-            }
-          },
-          "projectCaseworkers": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Project"
-            }
-          },
-          "projectRegionalDeliveryOfficers": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Project"
-            }
-          }
-        }
-      },
-      "UserId": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-          "value": {
-            "type": "string",
-            "format": "guid"
-          }
-        }
-      },
-      "Note": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-          "id": {
-            "$ref": "#/components/schemas/NoteId"
-          },
-          "body": {
-            "type": "string",
-            "nullable": true
-          },
-          "projectId": {
-            "nullable": true,
-            "oneOf": [
-              {
-                "$ref": "#/components/schemas/ProjectId"
-              }
-            ]
-          },
-          "userId": {
-            "nullable": true,
-            "oneOf": [
-              {
-                "$ref": "#/components/schemas/UserId"
-              }
-            ]
-          },
-          "createdAt": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "updatedAt": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "taskIdentifier": {
-            "type": "string",
-            "nullable": true
-          },
-          "notableId": {
-            "type": "string",
-            "format": "guid",
-            "nullable": true
-          },
-          "notableType": {
-            "type": "string",
-            "nullable": true
-          },
-          "project": {
-            "nullable": true,
-            "oneOf": [
-              {
-                "$ref": "#/components/schemas/Project"
-              }
-            ]
-          },
-          "user": {
-            "nullable": true,
-            "oneOf": [
-              {
-                "$ref": "#/components/schemas/User"
-              }
-            ]
-          }
-        }
-      },
-      "NoteId": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-          "value": {
-            "type": "string",
-            "format": "guid"
           }
         }
       },
@@ -799,6 +569,16 @@
           }
         ]
       },
+      "UserId": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "value": {
+            "type": "string",
+            "format": "guid"
+          }
+        }
+      },
       "ProjectType": {
         "type": "string",
         "description": "",
@@ -824,6 +604,180 @@
         ]
       },
       "ContactId": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "value": {
+            "type": "string",
+            "format": "guid"
+          }
+        }
+      },
+      "User": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "$ref": "#/components/schemas/UserId"
+          },
+          "email": {
+            "type": "string",
+            "nullable": true
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "manageTeam": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "addNewProject": {
+            "type": "boolean"
+          },
+          "firstName": {
+            "type": "string",
+            "nullable": true
+          },
+          "lastName": {
+            "type": "string",
+            "nullable": true
+          },
+          "activeDirectoryUserId": {
+            "type": "string",
+            "nullable": true
+          },
+          "assignToProject": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "manageUserAccounts": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "activeDirectoryUserGroupIds": {
+            "type": "string",
+            "nullable": true
+          },
+          "team": {
+            "type": "string",
+            "nullable": true
+          },
+          "deactivatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "manageConversionUrns": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "manageLocalAuthorities": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "latestSession": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "notes": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Note"
+            }
+          },
+          "projectAssignedTos": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Project"
+            }
+          },
+          "projectCaseworkers": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Project"
+            }
+          },
+          "projectRegionalDeliveryOfficers": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Project"
+            }
+          }
+        }
+      },
+      "Note": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "$ref": "#/components/schemas/NoteId"
+          },
+          "body": {
+            "type": "string",
+            "nullable": true
+          },
+          "projectId": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/ProjectId"
+              }
+            ]
+          },
+          "userId": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/UserId"
+              }
+            ]
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "taskIdentifier": {
+            "type": "string",
+            "nullable": true
+          },
+          "notableId": {
+            "type": "string",
+            "format": "guid",
+            "nullable": true
+          },
+          "notableType": {
+            "type": "string",
+            "nullable": true
+          },
+          "project": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/Project"
+              }
+            ]
+          },
+          "user": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/User"
+              }
+            ]
+          }
+        }
+      },
+      "NoteId": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
@@ -938,36 +892,6 @@
             "format": "date-time"
           }
         }
-      },
-      "ProjectTeam": {
-        "type": "string",
-        "description": "",
-        "x-enumNames": [
-          "RegionalCaseWorkerServices",
-          "ServiceSupport",
-          "London",
-          "SouthEast",
-          "YorkshireAndTheHumber",
-          "NorthWest",
-          "EastOfEngland",
-          "WestMidlands",
-          "NorthEast",
-          "SouthWest",
-          "EastMidlands"
-        ],
-        "enum": [
-          "RegionalCaseWorkerServices",
-          "ServiceSupport",
-          "London",
-          "SouthEast",
-          "YorkshireAndTheHumber",
-          "NorthWest",
-          "EastOfEngland",
-          "WestMidlands",
-          "NorthEast",
-          "SouthWest",
-          "EastMidlands"
-        ]
       },
       "GetProjectByUrnQuery": {
         "type": "object",

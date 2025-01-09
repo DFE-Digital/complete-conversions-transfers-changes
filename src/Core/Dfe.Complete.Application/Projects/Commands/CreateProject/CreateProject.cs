@@ -13,7 +13,6 @@ namespace Dfe.Complete.Application.Projects.Commands.CreateProject
         DateOnly SignificantDate,
         bool IsSignificantDateProvisional,
         Ukprn IncomingTrustUkprn,
-        Region? Region,
         bool IsDueTo2Ri,
         bool HasAcademyOrderBeenIssued,
         DateOnly AdvisoryBoardDate,
@@ -23,8 +22,7 @@ namespace Dfe.Complete.Application.Projects.Commands.CreateProject
         string GroupReferenceNumber,
         bool HandingOverToRegionalCaseworkService,
         string HandoverComments,
-        User? RegionalDeliveryOfficer, 
-        ProjectTeam? Team) : IRequest<ProjectId>;
+        string? UserAdId) : IRequest<ProjectId>;
 
     public class CreateConversionProjectCommandHandler(
         ICompleteRepository<Project> projectRepository,
@@ -33,6 +31,12 @@ namespace Dfe.Complete.Application.Projects.Commands.CreateProject
     {
         public async Task<ProjectId> Handle(CreateConversionProjectCommand request, CancellationToken cancellationToken)
         {
+            var user = await projectRepository.GetUserByAdId(request.UserAdId, cancellationToken);
+            var userTeam = user?.Team;
+            
+            var projectTeam = EnumExtensions.FromDescription<ProjectTeam>(userTeam);
+            var region = EnumMapper.MapTeamToRegion(projectTeam);
+            
             var createdAt = DateTime.UtcNow;
             var conversionTaskId = Guid.NewGuid();
             var projectId = new ProjectId(Guid.NewGuid());
@@ -53,9 +57,9 @@ namespace Dfe.Complete.Application.Projects.Commands.CreateProject
             }
             else
             {
-                team = request.Team.ToDescription();
+                team = projectTeam.ToDescription();
                 assignedAt = DateTime.UtcNow;
-                assignedTo = request.RegionalDeliveryOfficer;
+                assignedTo = user;
             }
 
             var project = Project.CreateConversionProject(
@@ -69,7 +73,7 @@ namespace Dfe.Complete.Application.Projects.Commands.CreateProject
                 request.SignificantDate,
                 request.IsSignificantDateProvisional,
                 request.IncomingTrustUkprn,
-                request.Region,
+                region,
                 request.IsDueTo2Ri,
                 request.HasAcademyOrderBeenIssued,
                 request.AdvisoryBoardDate,
@@ -77,17 +81,17 @@ namespace Dfe.Complete.Application.Projects.Commands.CreateProject
                 request.EstablishmentSharepointLink,
                 request.IncomingTrustSharepointLink,
                 groupId?.Value,
-                team, 
-                assignedAt, 
-                assignedTo, 
-                request.RegionalDeliveryOfficer);
+                team,
+                user?.Id,
+                assignedTo,
+                assignedAt); 
             
             if (!string.IsNullOrEmpty(request.HandoverComments))
             {
                 project.Notes.Add(new Note
                 {
                     Id = new NoteId(Guid.NewGuid()), CreatedAt = createdAt, Body = request.HandoverComments,
-                    ProjectId = projectId, TaskIdentifier = "handover", UserId = request.RegionalDeliveryOfficer?.Id
+                    ProjectId = projectId, TaskIdentifier = "handover", UserId = user?.Id
                 });
             }
             

@@ -28,15 +28,13 @@ namespace Dfe.Complete.Tests.Common.Customizations.Commands
                 var groupReferenceNumber = fixture.Create<string>();
                 var handingOverToRegionalCaseworkService = fixture.Create<bool>();
                 var handoverComments = fixture.Create<string>();
-                var regionalDeliveryOfficer = fixture.Create<User>();
-                var team = fixture.Create<ProjectTeam>();
+                var userAdId = fixture.Create<string>();
                 
                 return new CreateConversionProjectCommand(
                     urn,
                     significantDate,
                     isSignificantDateProvisional,
                     incomingTrustUkprn,
-                    region,
                     isDueTo2Ri,
                     hasAcademyOrderBeenIssued,
                     advisoryBoardDate,
@@ -46,8 +44,7 @@ namespace Dfe.Complete.Tests.Common.Customizations.Commands
                     groupReferenceNumber,
                     handingOverToRegionalCaseworkService,
                     handoverComments,
-                    regionalDeliveryOfficer, 
-                    team
+                    userAdId
                 );
             }));
         }

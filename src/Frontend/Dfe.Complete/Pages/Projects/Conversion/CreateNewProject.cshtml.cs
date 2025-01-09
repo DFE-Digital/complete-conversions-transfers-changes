@@ -1,27 +1,21 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using System.Text.RegularExpressions;
-using Dfe.Complete.Extensions;
 using Dfe.Complete.Validators;
 using Dfe.Complete.Services;
 using System.ComponentModel.DataAnnotations;
 using Dfe.Complete.Application.Projects.Commands.CreateProject;
-using Dfe.Complete.Domain.Entities;
-using Dfe.Complete.Domain.Enums;
-using Dfe.Complete.Domain.Interfaces.Repositories;
 using MediatR;
 using Dfe.Complete.Domain.ValueObjects;
 using Microsoft.AspNetCore.Authorization;
-using Dfe.Complete.Utils;
 
 namespace Dfe.Complete.Pages.Projects.Conversion
 {
     [Authorize(policy: "CanCreateProjects")]
-    public class CreateNewProjectModel(ISender sender, IErrorService errorService, ICompleteRepository<Project> completeRepository) : PageModel
+    public class CreateNewProjectModel(ISender sender, IErrorService errorService) : PageModel
     {
         [BindProperty]
         [Required]
-        [Urn]
+        // [Urn]
         [Display(Name = "Urn")]
         public string URN { get; set; }
 
@@ -94,13 +88,8 @@ namespace Dfe.Complete.Pages.Projects.Conversion
                 return Page();
             }
 
-            var currentUser = await completeRepository.GetUserByEmail(User.Identity?.Name?.ToLower(), cancellationToken);
-            var userTeam = currentUser?.Team;
-
-            var projectTeam = EnumExtensions.FromDescription<ProjectTeam>(userTeam);
+            var userAdId = User.Claims.SingleOrDefault(c => c.Type.Contains("objectidentifier"))?.Value;
             
-            var region = EnumMapper.MapTeamToRegion(projectTeam);
-
             var createProjectCommand = new CreateConversionProjectCommand(
                 Urn: new Urn(int.Parse(URN)),
                 SignificantDate: ProvisionalConversionDate.HasValue ? DateOnly.FromDateTime(ProvisionalConversionDate.Value) : default,
@@ -109,15 +98,13 @@ namespace Dfe.Complete.Pages.Projects.Conversion
                 EstablishmentSharepointLink: SchoolSharePointLink, //todo: is this correct?
                 IsDueTo2Ri: IsDueTo2RI ?? false,
                 AdvisoryBoardDate: AdvisoryBoardDate.HasValue ? DateOnly.FromDateTime(AdvisoryBoardDate.Value) : default,
-                Region: region,
                 AdvisoryBoardConditions: AdvisoryBoardConditions,
                 IncomingTrustUkprn: new Ukprn(int.Parse(UKPRN)),
                 HasAcademyOrderBeenIssued: DirectiveAcademyOrder ?? default, 
                 GroupReferenceNumber: GroupReferenceNumber,
+                HandingOverToRegionalCaseworkService: IsHandingToRCS ?? default,
                 HandoverComments: HandoverComments, 
-                HandingOverToRegionalCaseworkService: IsHandingToRCS ?? default, 
-                RegionalDeliveryOfficer: currentUser, 
-                Team: projectTeam
+                UserAdId: userAdId
             );
 
             var createResponse = await sender.Send(createProjectCommand, cancellationToken);

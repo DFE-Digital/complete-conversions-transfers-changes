@@ -82,8 +82,6 @@ namespace Dfe.Complete.Tests.Common.Customizations.Models
 
         public Guid? GroupId { get; set; }
         
-        public ICollection<Note>? Notes { get; set; }
-
         public void Customize(IFixture fixture)
         {
             fixture.Customize<Project>(composer => composer
@@ -113,8 +111,7 @@ namespace Dfe.Complete.Tests.Common.Customizations.Models
                 .With(x => x.NewTrustReferenceNumber, NewTrustReferenceNumber ?? fixture.Create<string>())
                 .With(x => x.NewTrustName, NewTrustName ?? fixture.Create<string>())
                 .With(x => x.GroupId, GroupId ?? fixture.Create<Guid?>())
-                .With(x => x.AssignedAt, AssignedAt ?? fixture.Create<DateTime?>())
-                .With(x => x.Notes, Notes ?? fixture.Create<ICollection<Note>>()));
+                .With(x => x.AssignedAt, AssignedAt ?? fixture.Create<DateTime?>()));
         }
     }
 }
