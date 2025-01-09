@@ -106,7 +106,7 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
         DateOnly significantDate,
         bool isSignificantDateProvisional,
         Ukprn incomingTrustUkprn,
-        Region? region,
+        string? region,
         bool isDueTo2RI,
         bool hasAcademyOrderBeenIssued,
         DateOnly advisoryBoardDate,
@@ -138,7 +138,7 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
         GroupId = groupId;
         Team = team;
         RegionalDeliveryOfficerId = regionalDeliveryOfficerId;
-        Region = GetRegionCharValue(region);
+        Region = region;
 
         AssignedAt = assignedAt;
         AssignedTo = assignedTo;
@@ -155,7 +155,7 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
         DateOnly significantDate,
         bool isSignificantDateProvisional,
         Ukprn incomingTrustUkprn,
-        Region? region,
+        string? region,
         bool isDueTo2RI,
         bool hasAcademyOrderBeenIssued,
         DateOnly advisoryBoardDate,
@@ -188,15 +188,12 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
             incomingTrustSharepointLink,
             groupId,
             team,
-            regionalDeliveryOfficerId, assignedTo, assignedAt);
+            regionalDeliveryOfficerId, 
+            assignedTo, 
+            assignedAt);
 
         project.AddDomainEvent(new ProjectCreatedEvent(project));
 
         return project;
-    }
-
-    private static string GetRegionCharValue(Region? region)
-    {
-        return region != null ? ((char)region).ToString() : string.Empty;
     }
 }

@@ -3,6 +3,8 @@ using DfE.CoreLibs.Testing.AutoFixture.Attributes;
 using Dfe.Complete.Domain.Interfaces.Repositories;
 using NSubstitute;
 using Dfe.Complete.Application.Projects.Commands.CreateProject;
+using Dfe.Complete.Domain.Entities;
+using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Domain.ValueObjects;
 using DfE.CoreLibs.Testing.AutoFixture.Customizations;
 
@@ -18,8 +20,13 @@ namespace Dfe.Complete.Application.Tests.CommandHandlers.Project
             CreateConversionProjectCommand command
             )
         {
+            mockProjectRepository.GetUserByAdId("randomid", CancellationToken.None).Returns(new User
+            {
+                Id = new UserId(Guid.NewGuid()), Team = "someteam"
+            });
+            
             var now = DateTime.UtcNow;
-
+            
             var project = Domain.Entities.Project.CreateConversionProject(
                 new ProjectId(Guid.NewGuid()),
                 new Urn(2),
@@ -31,7 +38,7 @@ namespace Dfe.Complete.Application.Tests.CommandHandlers.Project
                 DateOnly.MinValue,
                 true,
                 new Domain.ValueObjects.Ukprn(2),
-                Domain.Enums.Region.YorkshireAndTheHumber,
+                "region",
                 true,
                 true,
                 DateOnly.MinValue,

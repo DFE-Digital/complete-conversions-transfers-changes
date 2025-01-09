@@ -5,6 +5,11 @@ namespace Dfe.Complete.Utils
 {
 	public static class EnumExtensions
 	{
+		public static string GetCharValue<TEnum>(this TEnum? enumValue) where TEnum : struct, Enum
+		{
+			return enumValue.HasValue ? ((char)Convert.ToUInt16(enumValue.Value)).ToString() : string.Empty;
+		}
+		
 		public static string ToDescription<T>(this T source)
 		{
 			if (source == null) 

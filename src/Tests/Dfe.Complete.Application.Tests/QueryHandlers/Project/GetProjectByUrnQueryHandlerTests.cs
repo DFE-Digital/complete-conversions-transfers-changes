@@ -25,7 +25,7 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
             var now = DateTime.UtcNow;
 
             var urn = 123456;
-
+            
             var project = Domain.Entities.Project.CreateConversionProject(
                 new ProjectId(Guid.NewGuid()),
                 new Domain.ValueObjects.Urn(urn),
@@ -37,7 +37,7 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
                 DateOnly.MinValue,
                 true,
                 new Domain.ValueObjects.Ukprn(2),
-                Domain.Enums.Region.YorkshireAndTheHumber,
+                "region",
                 true,
                 true,
                 DateOnly.MinValue,

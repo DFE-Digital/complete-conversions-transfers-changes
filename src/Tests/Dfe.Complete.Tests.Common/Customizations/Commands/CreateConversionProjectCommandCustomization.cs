@@ -18,7 +18,6 @@ namespace Dfe.Complete.Tests.Common.Customizations.Commands
                 var significantDate = fixture.Create<DateOnly>();
                 var isSignificantDateProvisional = fixture.Create<bool>();
                 var incomingTrustUkprn = new Ukprn(fixture.Create<int>());
-                var region = fixture.Create<Region>();
                 var isDueTo2Ri = fixture.Create<bool>();
                 var hasAcademyOrderBeenIssued = fixture.Create<bool>();
                 var advisoryBoardDate = fixture.Create<DateOnly>();
