@@ -66,7 +66,45 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
 
             // Assert
             await mockProjectRepository.Received(1).GetAsync(Arg.Any<Expression<Func<Domain.Entities.Project, bool>>>());
+            Assert.True(result.IsSuccess == true);
             Assert.True(result.Value?.Urn == command.Urn);
+        }
+
+
+        [Theory]
+        [CustomAutoData(typeof(DateOnlyCustomization))]
+        public async Task ONEONEHandle_ShouldGetAProjectByUrn_WhenCommandIsValid(
+            [Frozen] ICompleteRepository<Domain.Entities.Project> mockProjectRepository,
+            [Frozen] ICacheService<IMemoryCacheType> mockCacheService,
+            GetProjectByUrnQueryHandler handler,
+            GetProjectByUrnQuery command
+            )
+        {
+            var now = DateTime.UtcNow;
+
+            var cacheKey = $"Project_{CacheKeyHelper.GenerateHashedCacheKey(command.Urn.Value.ToString())}";
+
+            // Arrange
+            mockProjectRepository.GetAsync(Arg.Any<Expression<Func<Domain.Entities.Project?, bool>>>())
+                .Returns((Domain.Entities.Project?)null);
+
+            mockCacheService.GetOrAddAsync(
+                cacheKey,
+                Arg.Any<Func<Task<Result<Domain.Entities.Project?>>>>(),
+                Arg.Any<string>())
+            .Returns(callInfo =>
+            {
+                var callback = callInfo.ArgAt<Func<Task<Result<Domain.Entities.Project?>>>>(1);
+                return callback();
+            });
+
+            // Act
+            var result = await handler.Handle(command, default);
+
+            // Assert
+            await mockProjectRepository.Received(1).GetAsync(Arg.Any<Expression<Func<Domain.Entities.Project, bool>>>());
+            Assert.True(result.IsSuccess == true);
+            Assert.True(result.Value == null);
         }
     }
 }
