@@ -1,10 +1,7 @@
 using AutoFixture;
 using CreateConversionProjectCommand = Dfe.Complete.Application.Projects.Commands.CreateProject.CreateConversionProjectCommand;
-using ProjectTeam = Dfe.Complete.Domain.Enums.ProjectTeam;
-using Region = Dfe.Complete.Domain.Enums.Region;
 using Ukprn = Dfe.Complete.Domain.ValueObjects.Ukprn;
 using Urn = Dfe.Complete.Domain.ValueObjects.Urn;
-using User = Dfe.Complete.Domain.Entities.User;
 
 namespace Dfe.Complete.Tests.Common.Customizations.Commands
 {

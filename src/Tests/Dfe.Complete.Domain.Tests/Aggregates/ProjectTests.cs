@@ -1,17 +1,12 @@
-using Dfe.Complete.Client.Contracts;
-using Dfe.Complete.Infrastructure.Models;
 using DfE.CoreLibs.Testing.AutoFixture.Attributes;
 using Dfe.Complete.Tests.Common.Customizations.Models;
 using DfE.CoreLibs.Testing.AutoFixture.Customizations;
-using Note = Dfe.Complete.Domain.Entities.Note;
 using Project = Dfe.Complete.Domain.Entities.Project;
 using ProjectId = Dfe.Complete.Domain.ValueObjects.ProjectId;
 using ProjectType = Dfe.Complete.Domain.Enums.ProjectType;
-using Region = Dfe.Complete.Domain.Enums.Region;
 using TaskType = Dfe.Complete.Domain.Enums.TaskType;
 using Ukprn = Dfe.Complete.Domain.ValueObjects.Ukprn;
 using Urn = Dfe.Complete.Domain.ValueObjects.Urn;
-using User = Dfe.Complete.Domain.Entities.User;
 using UserId = Dfe.Complete.Domain.ValueObjects.UserId;
 
 namespace Dfe.Complete.Domain.Tests.Aggregates
@@ -193,7 +188,6 @@ namespace Dfe.Complete.Domain.Tests.Aggregates
             string team,
             DateTime? assignedAt,
             UserId? assignedToId,
-            Note? note,
             UserId? regionalDeliveryOfficer
         )
         {
@@ -252,7 +246,6 @@ namespace Dfe.Complete.Domain.Tests.Aggregates
             string team,
             DateTime? assignedAt,
             UserId? assignedToId,
-            Note? note,
             UserId? regionalDeliveryOfficer
         )
         {
