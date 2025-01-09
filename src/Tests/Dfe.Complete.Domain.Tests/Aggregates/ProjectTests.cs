@@ -1,3 +1,4 @@
+using Dfe.Complete.Infrastructure.Models;
 using DfE.CoreLibs.Testing.AutoFixture.Attributes;
 using Dfe.Complete.Tests.Common.Customizations.Models;
 using DfE.CoreLibs.Testing.AutoFixture.Customizations;
@@ -9,7 +10,6 @@ using TaskType = Dfe.Complete.Domain.Enums.TaskType;
 using Ukprn = Dfe.Complete.Domain.ValueObjects.Ukprn;
 using Urn = Dfe.Complete.Domain.ValueObjects.Urn;
 using User = Dfe.Complete.Domain.Entities.User;
-using Note = Dfe.Complete.Domain.Entities.Note;
 
 namespace Dfe.Complete.Domain.Tests.Aggregates
 {

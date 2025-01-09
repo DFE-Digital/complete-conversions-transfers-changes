@@ -7,6 +7,7 @@ using DfE.CoreLibs.Caching.Interfaces;
 using Dfe.Complete.Application.Common.Models;
 using DfE.CoreLibs.Caching.Helpers;
 using Dfe.Complete.Application.Projects.Queries.GetProject;
+using Dfe.Complete.Domain.ValueObjects;
 
 namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
 {
@@ -25,7 +26,9 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
 
             var urn = 123456;
 
-            var project = Domain.Entities.Project.CreateConversionProject(new Domain.ValueObjects.Urn(urn),
+            var project = Domain.Entities.Project.CreateConversionProject(
+                new ProjectId(Guid.NewGuid()),
+                new Domain.ValueObjects.Urn(urn),
                 now,
                 now,
                 Domain.Enums.TaskType.Conversion,
@@ -41,10 +44,12 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
                 "",
                 "",
                 "",
+                null,
                 "",
-                DateOnly.MinValue,
-                false,
-                "");
+                null,
+                null, 
+                null, 
+                null);
 
             var cacheKey = $"Project_{CacheKeyHelper.GenerateHashedCacheKey(urn.ToString())}";
 
