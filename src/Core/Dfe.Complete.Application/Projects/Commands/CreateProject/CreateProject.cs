@@ -3,7 +3,6 @@ using Dfe.Complete.Domain.ValueObjects;
 using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Domain.Interfaces.Repositories;
 using Dfe.Complete.Domain.Entities;
-using Dfe.Complete.Infrastructure.Models;
 using Dfe.Complete.Utils;
 
 namespace Dfe.Complete.Application.Projects.Commands.CreateProject
@@ -31,10 +30,11 @@ namespace Dfe.Complete.Application.Projects.Commands.CreateProject
     {
         public async Task<ProjectId> Handle(CreateConversionProjectCommand request, CancellationToken cancellationToken)
         {
-            var user = await projectRepository.GetUserByAdId(request.UserAdId, cancellationToken);
-            var userTeam = user?.Team;
+            var projectUser = await projectRepository.GetUserByAdId(request.UserAdId, cancellationToken);
+            var projectUserTeam = projectUser?.Team;
+            var projectUserId = projectUser?.Id; 
             
-            var projectTeam = EnumExtensions.FromDescription<ProjectTeam>(userTeam);
+            var projectTeam = EnumExtensions.FromDescription<ProjectTeam>(projectUserTeam);
             var region = EnumMapper.MapTeamToRegion(projectTeam);
             var regionCharValue = region.GetCharValue();
             
@@ -50,7 +50,7 @@ namespace Dfe.Complete.Application.Projects.Commands.CreateProject
 
             string team;
             DateTime? assignedAt = null;
-            User? assignedTo = null;
+            UserId? projectUserAssignedToId = null;
 
             if (request.HandingOverToRegionalCaseworkService)
             {
@@ -60,9 +60,9 @@ namespace Dfe.Complete.Application.Projects.Commands.CreateProject
             {
                 team = projectTeam.ToDescription();
                 assignedAt = DateTime.UtcNow;
-                assignedTo = user;
+                projectUserAssignedToId = projectUserId;
             }
-
+            
             var project = Project.CreateConversionProject(
                 projectId,
                 request.Urn,
@@ -83,8 +83,8 @@ namespace Dfe.Complete.Application.Projects.Commands.CreateProject
                 request.IncomingTrustSharepointLink,
                 groupId?.Value,
                 team,
-                user?.Id,
-                assignedTo,
+                projectUser?.Id,
+                projectUserAssignedToId,
                 assignedAt); 
             
             if (!string.IsNullOrEmpty(request.HandoverComments))
@@ -92,7 +92,7 @@ namespace Dfe.Complete.Application.Projects.Commands.CreateProject
                 project.Notes.Add(new Note
                 {
                     Id = new NoteId(Guid.NewGuid()), CreatedAt = createdAt, Body = request.HandoverComments,
-                    ProjectId = projectId, TaskIdentifier = "handover", UserId = user?.Id
+                    ProjectId = projectId, TaskIdentifier = "handover", UserId = projectUser?.Id
                 });
             }
             

@@ -192,7 +192,7 @@ namespace Dfe.Complete.Domain.Tests.Aggregates
             Guid? groupId,
             string team,
             DateTime? assignedAt,
-            User? assignedTo,
+            UserId? assignedToId,
             Note? note,
             UserId? regionalDeliveryOfficer
         )
@@ -219,7 +219,7 @@ namespace Dfe.Complete.Domain.Tests.Aggregates
                 groupId,
                 team,
                 regionalDeliveryOfficer,
-                assignedTo,
+                assignedToId,
                 assignedAt);
 
             Assert.Equal(urn, project.Urn);
@@ -251,7 +251,7 @@ namespace Dfe.Complete.Domain.Tests.Aggregates
             Guid? groupId,
             string team,
             DateTime? assignedAt,
-            User? assignedTo,
+            UserId? assignedToId,
             Note? note,
             UserId? regionalDeliveryOfficer
         )
@@ -278,7 +278,7 @@ namespace Dfe.Complete.Domain.Tests.Aggregates
                 groupId,
                 team,
                 regionalDeliveryOfficer,
-                assignedTo,
+                assignedToId,
                 assignedAt);
 
             Assert.Equal(urn, project.Urn);
@@ -290,7 +290,7 @@ namespace Dfe.Complete.Domain.Tests.Aggregates
             Assert.Equal(significantDate, project.SignificantDate);
             Assert.Equal(isSignificantDateProvisional, project.SignificantDateProvisional);
             Assert.Equal(incomingTrustUkprn, project.IncomingTrustUkprn);
-            Assert.Equal(region.ToString(), project.Region);
+            Assert.Equal(region, project.Region);
             Assert.Equal(isDueTo2RI, project.TwoRequiresImprovement);
             Assert.Equal(hasAcademyOrderBeenIssued, project.DirectiveAcademyOrder);
             Assert.Equal(advisoryBoardDate, project.AdvisoryBoardDate);

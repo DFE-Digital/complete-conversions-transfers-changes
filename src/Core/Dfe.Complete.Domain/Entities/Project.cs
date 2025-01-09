@@ -116,7 +116,7 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
         Guid? groupId,
         string team,
         UserId? regionalDeliveryOfficerId, 
-        User assignedTo, 
+        UserId? assignedTo, 
         DateTime? assignedAt)
     {
         Id = id ?? throw new ArgumentNullException(nameof(id));
@@ -141,7 +141,7 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
         Region = region;
 
         AssignedAt = assignedAt;
-        AssignedTo = assignedTo;
+        AssignedToId = assignedTo;
     }
 
     public static Project CreateConversionProject(
@@ -165,7 +165,7 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
         Guid? groupId,
         string team, 
         UserId? regionalDeliveryOfficerId,
-        User? assignedTo, 
+        UserId? assignedToId, 
         DateTime? assignedAt)
     {
         var project = new Project(
@@ -189,7 +189,7 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
             groupId,
             team,
             regionalDeliveryOfficerId, 
-            assignedTo, 
+            assignedToId, 
             assignedAt);
 
         project.AddDomainEvent(new ProjectCreatedEvent(project));
