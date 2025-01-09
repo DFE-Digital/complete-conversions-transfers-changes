@@ -28,8 +28,8 @@ namespace Dfe.Complete.Tests.Common.Customizations
                     SeedData = new Dictionary<Type, Action<DbContext>>
                     {
                         //TODO: add this but for CompleteContext when needed:
-                        //typeof(CompleteContext), context => CompleteContextSeeder.Seed((CompleteContext)context)
-                        { typeof(CompleteContext), context => {} },
+                        { typeof(CompleteContext), context => CompleteContextSeeder.Seed((CompleteContext)context) }
+                        // { typeof(CompleteContext), context => {} },
                     },
                     ExternalServicesConfiguration = services =>
                     {
