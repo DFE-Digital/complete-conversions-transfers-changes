@@ -87,20 +87,12 @@
                     </govuk-textarea-label>
                 </govuk-textarea>
 
-                <govuk-date-input id="@provisionalConversionDateField" name-prefix="@provisionalConversionDateField" asp-for="@Model.ProvisionalConversionDate">
-                    <govuk-date-input-fieldset>
-                        <govuk-date-input-fieldset-legend class="govuk-fieldset__legend--m">
-                            Provisional conversion date
-                        </govuk-date-input-fieldset-legend>
-                        <govuk-date-input-hint>
-                            You can find this in the advisory board template.
-                        </govuk-date-input-hint>
-                        @if (ErrorService.HasErrorForKey(@provisionalConversionDateField))
-                        {
-                        <govuk-date-input-error-message>@(ErrorService.GetErrorMessage(provisionalConversionDateField))</govuk-date-input-error-message>
-                        }
-                    </govuk-date-input-fieldset>
-                </govuk-date-input >
+                <govuk-date-month-input 
+                    id="ProvisionalConversionDate" 
+                    name="ProvisionalConversionDate" 
+                    asp-for="@Model.ProvisionalConversionDate"
+                    label="Provisional Conversion Date"
+                    />
 
                 <govuk-input name="@schoolSharePointLinkField" asp-for="@Model.SchoolSharePointLink">
                     <govuk-input-label class="govuk-label--m">School or academy SharePoint link</govuk-input-label>

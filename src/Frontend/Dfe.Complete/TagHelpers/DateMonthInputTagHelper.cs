@@ -8,8 +8,8 @@ using System.Threading.Tasks;
 
 namespace Dfe.Complete.TagHelpers
 {
-	[HtmlTargetElement("govuk-date-input", TagStructure = TagStructure.WithoutEndTag)]
-	public class DateInputTagHelper : InputTagHelperBase
+	[HtmlTargetElement("govuk-date-month-input", TagStructure = TagStructure.WithoutEndTag)]
+	public class DateMonthInputTagHelper : InputTagHelperBase
 	{
 		public bool HeadingLabel { get; set; }
         public bool SmallLabel { get; set; }
@@ -19,7 +19,7 @@ namespace Dfe.Complete.TagHelpers
 		
 		private readonly IErrorService _errorService;
 
-		public DateInputTagHelper(IHtmlHelper htmlHelper, IErrorService errorService) : base(htmlHelper)
+		public DateMonthInputTagHelper(IHtmlHelper htmlHelper, IErrorService errorService) : base(htmlHelper)
 		{
 			_errorService = errorService;
 		}
@@ -28,7 +28,7 @@ namespace Dfe.Complete.TagHelpers
 		{
 			DateInputViewModel model = ValidateRequest();
 
-			return await _htmlHelper.PartialAsync("_DateInput", model);
+			return await _htmlHelper.PartialAsync("_DateMonthInput", model);
 		}
 
 		private DateInputViewModel ValidateRequest()
@@ -46,7 +46,7 @@ namespace Dfe.Complete.TagHelpers
 				Label = Label,
 				HeadingLabel = HeadingLabel,
                 SmallLabel = SmallLabel,
-                Hint = Hint ?? "For example, 27 3 2021",
+                Hint = Hint ?? "For example, 1 2025",
 				AddMargin = AddMargin
 			};
 

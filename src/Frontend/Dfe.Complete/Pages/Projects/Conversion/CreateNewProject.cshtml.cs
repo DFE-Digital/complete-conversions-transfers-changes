@@ -1,15 +1,13 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using System.Text.RegularExpressions;
-using Dfe.Complete.Extensions;
 using Dfe.Complete.Validators;
 using Dfe.Complete.Services;
 using System.ComponentModel.DataAnnotations;
-using System.Globalization;
 using Dfe.Complete.Application.Projects.Commands.CreateProject;
 using MediatR;
 using Dfe.Complete.Domain.ValueObjects;
 using Microsoft.AspNetCore.Authorization;
+using Dfe.Complete.Models;
 
 namespace Dfe.Complete.Pages.Projects.Conversion
 {
@@ -41,7 +39,7 @@ namespace Dfe.Complete.Pages.Projects.Conversion
         [BindProperty] 
         public string AdvisoryBoardConditions { get; set; }
 
-        [BindProperty]
+        [BindProperty(Name = "ProvisionalConversionDate", BinderType = typeof(DateInputModelBinder))]
         [Required(ErrorMessage = "Enter a date for the Provisional Conversion Date, like 1 4 2023")]
         [Display(Name = "Provisional Conversion Date")]
         public DateTime? ProvisionalConversionDate { get; set; }
