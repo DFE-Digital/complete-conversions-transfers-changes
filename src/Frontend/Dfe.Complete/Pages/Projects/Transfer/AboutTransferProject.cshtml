@@ -17,11 +17,11 @@
     //             LinkText = "View the school's information in GIAS"
     //         };
 
-    var schoolSharePointLink = new LinkSummaryItem()
-            {
-                // Link = schoolDetails.SharePointLink,
-                LinkText = "View the academy SharePoint folder"
-            };
+    // var schoolSharePointLink = new LinkSummaryItem()
+    //         {
+    //             // Link = schoolDetails.SharePointLink,
+    //             LinkText = "View the academy SharePoint folder"
+    //         };
 
     var editLink = string.Format(RouteConstants.TransferProjectEditAbout, Model.ProjectId);
 }
@@ -234,7 +234,7 @@
                         SharePoint folder
                     </govuk-summary-list-row-key>
                     <govuk-summary-list-row-value>
-                        @schoolSharePointLink
+                      @*   @schoolSharePointLink *@
                     </govuk-summary-list-row-value>
                     <govuk-summary-list-row-actions>
                         <govuk-summary-list-row-action href="@editLink" visually-hidden-text="SharePoint folder">Change</govuk-summary-list-row-action>
