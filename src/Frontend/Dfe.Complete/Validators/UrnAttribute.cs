@@ -29,7 +29,7 @@ namespace Dfe.Complete.Validators
 
             var result = sender.Send(new GetProjectByUrnQuery(new Urn(urn.ToInt())));
 
-            if (result.Result != null)
+            if (result.Result?.Value != null)
             {
                 var errorMessage = $"A project with the urn: {urn} already exists";
 
