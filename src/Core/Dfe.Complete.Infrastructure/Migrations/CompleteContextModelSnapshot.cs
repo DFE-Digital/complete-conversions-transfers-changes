@@ -712,9 +712,9 @@ namespace Dfe.Complete.Infrastructure.Migrations
                         .HasColumnType("int")
                         .HasColumnName("prepare_id");
 
-                    b.Property<int?>("Region")
+                    b.Property<string>("Region")
                         .HasMaxLength(4000)
-                        .HasColumnType("int")
+                        .HasColumnType("nvarchar(4000)")
                         .HasColumnName("region");
 
                     b.Property<Guid?>("RegionalDeliveryOfficerId")

@@ -1,9 +1,11 @@
 using System.Net;
 using Dfe.Complete.Client.Contracts;
+using Dfe.Complete.Infrastructure.Database;
 using Dfe.Complete.Tests.Common.Customizations;
 using Dfe.Complete.Tests.Common.Customizations.Commands;
 using DfE.CoreLibs.Testing.AutoFixture.Attributes;
 using DfE.CoreLibs.Testing.Mocks.WebApplicationFactory;
+using Microsoft.EntityFrameworkCore;
 
 namespace Dfe.Complete.Api.Tests.Integration.Controllers;
 
@@ -20,6 +22,16 @@ public class ProjectsControllerTests
         //todo: when auth is done, add this back in
         // factory.TestClaims = [new Claim(ClaimTypes.Role, "API.Write")];
 
+        var testUserAdId = createConversionProjectCommand.UserAdId;
+        
+        var dbContext = factory.GetDbContext<CompleteContext>();
+
+        var testUser = await dbContext.Users.FirstOrDefaultAsync();
+        testUser.ActiveDirectoryUserId = testUserAdId;
+
+        dbContext.Users.Update(testUser);
+        await dbContext.SaveChangesAsync();
+        
         var result = await createProjectClient.Projects_CreateProject_Async(createConversionProjectCommand);
 
         Assert.NotNull(result);
@@ -37,7 +49,6 @@ public class ProjectsControllerTests
         // factory.TestClaims = [new Claim(ClaimTypes.Role, "API.Write")];
 
         createConversionProjectCommand.Urn = null;
-
 
         //todo: change exception type? 
         var exception = await Assert.ThrowsAsync<PersonsApiException>(async () =>

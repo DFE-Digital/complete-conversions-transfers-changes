@@ -1,7 +1,7 @@
 using AutoFixture;
-using Dfe.Complete.Application.Projects.Commands.CreateProject;
-using Dfe.Complete.Domain.ValueObjects;
-using Dfe.Complete.Domain.Enums;
+using CreateConversionProjectCommand = Dfe.Complete.Application.Projects.Commands.CreateProject.CreateConversionProjectCommand;
+using Ukprn = Dfe.Complete.Domain.ValueObjects.Ukprn;
+using Urn = Dfe.Complete.Domain.ValueObjects.Urn;
 
 namespace Dfe.Complete.Tests.Common.Customizations.Commands
 {
@@ -15,7 +15,6 @@ namespace Dfe.Complete.Tests.Common.Customizations.Commands
                 var significantDate = fixture.Create<DateOnly>();
                 var isSignificantDateProvisional = fixture.Create<bool>();
                 var incomingTrustUkprn = new Ukprn(fixture.Create<int>());
-                var region = fixture.Create<Region>();
                 var isDueTo2Ri = fixture.Create<bool>();
                 var hasAcademyOrderBeenIssued = fixture.Create<bool>();
                 var advisoryBoardDate = fixture.Create<DateOnly>();
@@ -23,16 +22,15 @@ namespace Dfe.Complete.Tests.Common.Customizations.Commands
                 var establishmentSharepointLink = fixture.Create<Uri>().ToString();
                 var incomingTrustSharepointLink = fixture.Create<Uri>().ToString();
                 var groupReferenceNumber = fixture.Create<string>();
-                var provisionalConversionDate = fixture.Create<DateOnly>();
                 var handingOverToRegionalCaseworkService = fixture.Create<bool>();
                 var handoverComments = fixture.Create<string>();
-
+                var userAdId = fixture.Create<string>();
+                
                 return new CreateConversionProjectCommand(
                     urn,
                     significantDate,
                     isSignificantDateProvisional,
                     incomingTrustUkprn,
-                    region,
                     isDueTo2Ri,
                     hasAcademyOrderBeenIssued,
                     advisoryBoardDate,
@@ -40,9 +38,9 @@ namespace Dfe.Complete.Tests.Common.Customizations.Commands
                     establishmentSharepointLink,
                     incomingTrustSharepointLink,
                     groupReferenceNumber,
-                    provisionalConversionDate,
                     handingOverToRegionalCaseworkService,
-                    handoverComments
+                    handoverComments,
+                    userAdId
                 );
             }));
         }

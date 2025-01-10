@@ -2,6 +2,7 @@ using AutoFixture;
 using Dfe.Complete.Domain.Entities;
 using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Domain.ValueObjects;
+using Dfe.Complete.Infrastructure.Models;
 
 namespace Dfe.Complete.Tests.Common.Customizations.Models
 {
@@ -80,7 +81,7 @@ namespace Dfe.Complete.Tests.Common.Customizations.Models
         public ContactId? LocalAuthorityMainContactId { get; set; }
 
         public Guid? GroupId { get; set; }
-
+        
         public void Customize(IFixture fixture)
         {
             fixture.Customize<Project>(composer => composer
@@ -94,7 +95,7 @@ namespace Dfe.Complete.Tests.Common.Customizations.Models
                 .With(x => x.AssignedToId, AssignedToId ?? fixture.Create<UserId>())
                 .With(x => x.SignificantDateProvisional, SignificantDateProvisional ?? fixture.Create<bool>())
                 .With(x => x.DirectiveAcademyOrder, DirectiveAcademyOrder ?? fixture.Create<bool>())
-                .With(x => x.Region, Region ?? fixture.Create<Region>())
+                .With(x => x.Region, (Region ?? fixture.Create<Region>()).ToString())
                 .With(x => x.AcademyUrn, AcademyUrn ?? fixture.Create<Urn>())
                 .With(x => x.TasksDataId, TasksDataId ?? fixture.Create<Guid>())
                 .With(x => x.TasksDataType, TasksDataType ?? fixture.Create<TaskType>())
@@ -108,7 +109,9 @@ namespace Dfe.Complete.Tests.Common.Customizations.Models
                 .With(x => x.IncomingTrustMainContactId, IncomingTrustMainContactId ?? fixture.Create<ContactId>())
                 .With(x => x.OutgoingTrustMainContactId, OutgoingTrustMainContactId ?? fixture.Create<ContactId>())
                 .With(x => x.NewTrustReferenceNumber, NewTrustReferenceNumber ?? fixture.Create<string>())
-                .With(x => x.NewTrustName, NewTrustName ?? fixture.Create<string>()));
+                .With(x => x.NewTrustName, NewTrustName ?? fixture.Create<string>())
+                .With(x => x.GroupId, GroupId ?? fixture.Create<Guid?>())
+                .With(x => x.AssignedAt, AssignedAt ?? fixture.Create<DateTime?>()));
         }
     }
 }

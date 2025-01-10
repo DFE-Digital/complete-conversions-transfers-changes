@@ -44,7 +44,7 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
 
     public bool? DirectiveAcademyOrder { get; set; }
 
-    public Region? Region { get; set; }
+    public string? Region { get; set; }
 
     public Urn? AcademyUrn { get; set; }
 
@@ -96,7 +96,7 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
     {
     }
 
-    public Project(
+    public Project(ProjectId id,
         Urn urn,
         DateTime createdAt,
         DateTime updatedAt,
@@ -106,15 +106,20 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
         DateOnly significantDate,
         bool isSignificantDateProvisional,
         Ukprn incomingTrustUkprn,
-        Region region,
+        string? region,
         bool isDueTo2RI,
         bool hasAcademyOrderBeenIssued,
         DateOnly advisoryBoardDate,
         string advisoryBoardConditions,
         string establishmentSharepointLink,
-        string incomingTrustSharepointLink
-    )
+        string incomingTrustSharepointLink,
+        Guid? groupId,
+        string team,
+        UserId? regionalDeliveryOfficerId, 
+        UserId? assignedTo, 
+        DateTime? assignedAt)
     {
+        Id = id ?? throw new ArgumentNullException(nameof(id));
         Urn = urn ?? throw new ArgumentNullException(nameof(urn));
         CreatedAt = createdAt != default ? createdAt : throw new ArgumentNullException(nameof(createdAt));
         UpdatedAt = updatedAt != default ? updatedAt : throw new ArgumentNullException(nameof(updatedAt));
@@ -124,17 +129,24 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
         SignificantDate = significantDate;
         SignificantDateProvisional = isSignificantDateProvisional;
         IncomingTrustUkprn = incomingTrustUkprn;
-        Region = region;
         TwoRequiresImprovement = isDueTo2RI;
         DirectiveAcademyOrder = hasAcademyOrderBeenIssued;
         AdvisoryBoardDate = advisoryBoardDate;
         AdvisoryBoardConditions = advisoryBoardConditions;
         EstablishmentSharepointLink = establishmentSharepointLink;
         IncomingTrustSharepointLink = incomingTrustSharepointLink;
+        GroupId = groupId;
+        Team = team;
+        RegionalDeliveryOfficerId = regionalDeliveryOfficerId;
+        Region = region;
+
+        AssignedAt = assignedAt;
+        AssignedToId = assignedTo;
     }
 
-
-    public static Project CreateConversionProject(Urn urn,
+    public static Project CreateConversionProject(
+        ProjectId Id,
+        Urn urn,
         DateTime createdAt,
         DateTime updatedAt,
         TaskType taskType,
@@ -143,19 +155,22 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
         DateOnly significantDate,
         bool isSignificantDateProvisional,
         Ukprn incomingTrustUkprn,
-        Region region,
+        string? region,
         bool isDueTo2RI,
         bool hasAcademyOrderBeenIssued,
         DateOnly advisoryBoardDate,
         string advisoryBoardConditions,
         string establishmentSharepointLink,
-        string incomingTrustSharepointLink,  
-        string groupReferenceNumber,
-        DateOnly provisionalConversionDate,
-        bool handingOverToRegionalCaseworkService, 
-        string handoverComments)
+        string incomingTrustSharepointLink,
+        Guid? groupId,
+        string team, 
+        UserId? regionalDeliveryOfficerId,
+        UserId? assignedToId, 
+        DateTime? assignedAt)
     {
-        var project = new Project(urn,
+        var project = new Project(
+            Id,
+            urn,
             createdAt,
             updatedAt,
             taskType,
@@ -170,10 +185,15 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
             advisoryBoardDate,
             advisoryBoardConditions,
             establishmentSharepointLink,
-            incomingTrustSharepointLink);
+            incomingTrustSharepointLink,
+            groupId,
+            team,
+            regionalDeliveryOfficerId, 
+            assignedToId, 
+            assignedAt);
 
         project.AddDomainEvent(new ProjectCreatedEvent(project));
-        
+
         return project;
     }
 }

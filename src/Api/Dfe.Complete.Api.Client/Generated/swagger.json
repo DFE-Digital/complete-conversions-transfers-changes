@@ -261,9 +261,6 @@
           "incomingTrustUkprn": {
             "$ref": "#/components/schemas/Ukprn"
           },
-          "region": {
-            "$ref": "#/components/schemas/Region"
-          },
           "isDueTo2Ri": {
             "type": "boolean"
           },
@@ -286,15 +283,15 @@
           "groupReferenceNumber": {
             "type": "string"
           },
-          "provisionalConversionDate": {
-            "type": "string",
-            "format": "date"
-          },
           "handingOverToRegionalCaseworkService": {
             "type": "boolean"
           },
           "handoverComments": {
             "type": "string"
+          },
+          "userAdId": {
+            "type": "string",
+            "nullable": true
           }
         }
       },
@@ -317,32 +314,6 @@
             "format": "int32"
           }
         }
-      },
-      "Region": {
-        "type": "string",
-        "description": "",
-        "x-enumNames": [
-          "London",
-          "SouthEast",
-          "YorkshireAndTheHumber",
-          "NorthWest",
-          "EastOfEngland",
-          "WestMidlands",
-          "NorthEast",
-          "SouthWest",
-          "EastMidlands"
-        ],
-        "enum": [
-          "London",
-          "SouthEast",
-          "YorkshireAndTheHumber",
-          "NorthWest",
-          "EastOfEngland",
-          "WestMidlands",
-          "NorthEast",
-          "SouthWest",
-          "EastMidlands"
-        ]
       },
       "Project": {
         "allOf": [
@@ -448,12 +419,8 @@
                 "nullable": true
               },
               "region": {
-                "nullable": true,
-                "oneOf": [
-                  {
-                    "$ref": "#/components/schemas/Region"
-                  }
-                ]
+                "type": "string",
+                "nullable": true
               },
               "academyUrn": {
                 "nullable": true,

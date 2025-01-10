@@ -1,26 +1,29 @@
-﻿using System.ComponentModel;
+using System.ComponentModel;
 
-namespace Dfe.Complete.Domain.Enums
+namespace Dfe.Complete.Domain.Enums;
+
+public enum ProjectTeam
 {
-    public enum ProjectTeam
-    {
-        [Description("London")]
-        London = 1,
-        [Description("South East")]
-        SouthEast = 2,
-        [Description("Yorkshire and the Humber")]
-        YorkshireAndTheHumber = 3,
-        [Description("North West")]
-        NorthWest = 4,
-        [Description("East of England")]
-        EastOfEngland = 5,
-        [Description("West Midlands")]
-        WestMidlands = 6,
-        [Description("North East")]
-        NorthEast = 7,
-        [Description("South West")]
-        SouthWest = 8,
-        [Description("East Midlands")]
-        EastMidlands = 9
-    }
+    [Description("regional_casework_services")]
+    RegionalCaseWorkerServices,
+    [Description("service_support")]
+    ServiceSupport,
+    [Description("london")]
+    London,
+    [Description("south_east")]
+    SouthEast,
+    [Description("yorkshire_and_the_humber")]
+    YorkshireAndTheHumber,
+    [Description("north_west")]
+    NorthWest,
+    [Description("east_of_england")]
+    EastOfEngland,
+    [Description("west_midlands")]
+    WestMidlands,
+    [Description("north_east")]
+    NorthEast,
+    [Description("south_west")]
+    SouthWest,
+    [Description("east_midlands")]
+    EastMidlands,
 }

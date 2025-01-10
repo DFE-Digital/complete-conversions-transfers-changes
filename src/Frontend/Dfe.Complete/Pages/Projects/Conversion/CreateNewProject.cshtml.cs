@@ -1,11 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using System.Text.RegularExpressions;
-using Dfe.Complete.Extensions;
 using Dfe.Complete.Validators;
 using Dfe.Complete.Services;
 using System.ComponentModel.DataAnnotations;
-using System.Globalization;
 using Dfe.Complete.Application.Projects.Commands.CreateProject;
 using MediatR;
 using Dfe.Complete.Domain.ValueObjects;
@@ -18,7 +15,7 @@ namespace Dfe.Complete.Pages.Projects.Conversion
     {
         [BindProperty]
         [Required]
-        [Urn]
+        // [Urn]
         [Display(Name = "Urn")]
         public string URN { get; set; }
 
@@ -36,7 +33,7 @@ namespace Dfe.Complete.Pages.Projects.Conversion
         [BindProperty]
         [Required(ErrorMessage = "Enter a date for the Advisory Board Date, like 1 4 2023")]
         [Display(Name = "Advisory Board Date")]
-        public DateTime AdvisoryBoardDate { get; set; }
+        public DateTime? AdvisoryBoardDate { get; set; }
 
         [BindProperty] 
         public string AdvisoryBoardConditions { get; set; }
@@ -81,7 +78,7 @@ namespace Dfe.Complete.Pages.Projects.Conversion
             return Page();
         }
 
-        public async Task<IActionResult> OnPost()
+        public async Task<IActionResult> OnPost(CancellationToken cancellationToken)
         {
             ManuallyValidateGroupReferenceNumber();
 
@@ -91,25 +88,26 @@ namespace Dfe.Complete.Pages.Projects.Conversion
                 return Page();
             }
 
+            var userAdId = User.Claims.SingleOrDefault(c => c.Type.Contains("objectidentifier"))?.Value;
+            
             var createProjectCommand = new CreateConversionProjectCommand(
                 Urn: new Urn(int.Parse(URN)),
-                SignificantDate: DateOnly.FromDateTime(DateTime.UtcNow),
+                SignificantDate: ProvisionalConversionDate.HasValue ? DateOnly.FromDateTime(ProvisionalConversionDate.Value) : default,
                 IsSignificantDateProvisional: true, // will be set to false in the stakeholder kick off task 
                 IncomingTrustSharepointLink: IncomingTrustSharePointLink,
                 EstablishmentSharepointLink: SchoolSharePointLink, //todo: is this correct?
                 IsDueTo2Ri: IsDueTo2RI ?? false,
-                AdvisoryBoardDate: DateOnly.FromDateTime(AdvisoryBoardDate),
-                Region: Domain.Enums.Region.NorthWest,
+                AdvisoryBoardDate: AdvisoryBoardDate.HasValue ? DateOnly.FromDateTime(AdvisoryBoardDate.Value) : default,
                 AdvisoryBoardConditions: AdvisoryBoardConditions,
                 IncomingTrustUkprn: new Ukprn(int.Parse(UKPRN)),
                 HasAcademyOrderBeenIssued: DirectiveAcademyOrder ?? default, 
                 GroupReferenceNumber: GroupReferenceNumber,
-                ProvisionalConversionDate: ProvisionalConversionDate.HasValue ? DateOnly.FromDateTime(ProvisionalConversionDate.Value) : default,
+                HandingOverToRegionalCaseworkService: IsHandingToRCS ?? default,
                 HandoverComments: HandoverComments, 
-                HandingOverToRegionalCaseworkService: IsHandingToRCS ?? default
+                UserAdId: userAdId
             );
 
-            var createResponse = await sender.Send(createProjectCommand);
+            var createResponse = await sender.Send(createProjectCommand, cancellationToken);
 
             var projectId = createResponse.Value;
 

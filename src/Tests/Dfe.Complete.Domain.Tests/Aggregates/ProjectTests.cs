@@ -1,9 +1,13 @@
 using DfE.CoreLibs.Testing.AutoFixture.Attributes;
-using Dfe.Complete.Domain.Entities;
-using Dfe.Complete.Domain.Enums;
-using Dfe.Complete.Domain.ValueObjects;
 using Dfe.Complete.Tests.Common.Customizations.Models;
 using DfE.CoreLibs.Testing.AutoFixture.Customizations;
+using Project = Dfe.Complete.Domain.Entities.Project;
+using ProjectId = Dfe.Complete.Domain.ValueObjects.ProjectId;
+using ProjectType = Dfe.Complete.Domain.Enums.ProjectType;
+using TaskType = Dfe.Complete.Domain.Enums.TaskType;
+using Ukprn = Dfe.Complete.Domain.ValueObjects.Ukprn;
+using Urn = Dfe.Complete.Domain.ValueObjects.Urn;
+using UserId = Dfe.Complete.Domain.ValueObjects.UserId;
 
 namespace Dfe.Complete.Domain.Tests.Aggregates
 {
@@ -12,6 +16,7 @@ namespace Dfe.Complete.Domain.Tests.Aggregates
         [Theory]
         [CustomAutoData(typeof(ProjectCustomization), typeof(DateOnlyCustomization))]
         public void Constructor_ShouldThrowArgumentNullException_WhenProjectUrnIsNull(
+            ProjectId id,
             DateTime createdAt,
             DateTime updatedAt,
             TaskType taskType,
@@ -20,33 +25,40 @@ namespace Dfe.Complete.Domain.Tests.Aggregates
             DateOnly significantDate,
             bool isSignificantDateProvisional,
             Ukprn incomingTrustUkprn,
-            Region region,
+            string region,
             bool isDueTo2RI,
             bool hasAcademyOrderBeenIssued,
             DateOnly advisoryBoardDate,
             string advisoryBoardConditions,
             string establishmentSharepointLink,
             string incomingTrustSharepointLink
-            )
+        )
         {
             // Act & Assert
             var exception = Assert.Throws<ArgumentNullException>(() =>
-                new Project(null,
-                                 createdAt,
-                                 updatedAt,
-                                 taskType,
-                                 projectType,
-                                 tasksDataId,
-                                 significantDate,
-                                 isSignificantDateProvisional,
-                                 incomingTrustUkprn,
-                                 region,
-                                 isDueTo2RI,
-                                 hasAcademyOrderBeenIssued,
-                                 advisoryBoardDate,
-                                 advisoryBoardConditions,
-                                 establishmentSharepointLink,
-                                 incomingTrustSharepointLink));
+                new Project(
+                    id,
+                    null,
+                    createdAt,
+                    updatedAt,
+                    taskType,
+                    projectType,
+                    tasksDataId,
+                    significantDate,
+                    isSignificantDateProvisional,
+                    incomingTrustUkprn,
+                    region,
+                    isDueTo2RI,
+                    hasAcademyOrderBeenIssued,
+                    advisoryBoardDate,
+                    advisoryBoardConditions,
+                    establishmentSharepointLink,
+                    incomingTrustSharepointLink,
+                    null,
+                    "",
+                    null,
+                    null,
+                    null));
 
             Assert.Equal("urn", exception.ParamName);
         }
@@ -54,6 +66,7 @@ namespace Dfe.Complete.Domain.Tests.Aggregates
         [Theory]
         [CustomAutoData(typeof(ProjectCustomization), typeof(DateOnlyCustomization))]
         public void Constructor_ShouldThrowArgumentNullException_WhenProjectCreatedAtIsDefault(
+            ProjectId id,
             Urn urn,
             DateTime updatedAt,
             TaskType taskType,
@@ -62,33 +75,40 @@ namespace Dfe.Complete.Domain.Tests.Aggregates
             DateOnly significantDate,
             bool isSignificantDateProvisional,
             Ukprn incomingTrustUkprn,
-            Region region,
+            string region,
             bool isDueTo2RI,
             bool hasAcademyOrderBeenIssued,
             DateOnly advisoryBoardDate,
             string advisoryBoardConditions,
             string establishmentSharepointLink,
             string incomingTrustSharepointLink
-            )
+        )
         {
             // Act & Assert
             var exception = Assert.Throws<ArgumentNullException>(() =>
-                new Project(urn,
-                                 default,
-                                 updatedAt,
-                                 taskType,
-                                 projectType,
-                                 tasksDataId,
-                                 significantDate,
-                                 isSignificantDateProvisional,
-                                 incomingTrustUkprn,
-                                 region,
-                                 isDueTo2RI,
-                                 hasAcademyOrderBeenIssued,
-                                 advisoryBoardDate,
-                                 advisoryBoardConditions,
-                                 establishmentSharepointLink,
-                                 incomingTrustSharepointLink));
+                new Project(
+                    id,
+                    urn,
+                    default,
+                    updatedAt,
+                    taskType,
+                    projectType,
+                    tasksDataId,
+                    significantDate,
+                    isSignificantDateProvisional,
+                    incomingTrustUkprn,
+                    region,
+                    isDueTo2RI,
+                    hasAcademyOrderBeenIssued,
+                    advisoryBoardDate,
+                    advisoryBoardConditions,
+                    establishmentSharepointLink,
+                    incomingTrustSharepointLink,
+                    null,
+                    "",
+                    null,
+                    null,
+                    null));
 
             Assert.Equal("createdAt", exception.ParamName);
         }
@@ -96,6 +116,7 @@ namespace Dfe.Complete.Domain.Tests.Aggregates
         [Theory]
         [CustomAutoData(typeof(ProjectCustomization), typeof(DateOnlyCustomization))]
         public void Constructor_ShouldThrowArgumentNullException_WhenProjectUpdatedAtIsDefault(
+            ProjectId id,
             Urn urn,
             DateTime createdAt,
             TaskType taskType,
@@ -104,33 +125,40 @@ namespace Dfe.Complete.Domain.Tests.Aggregates
             DateOnly significantDate,
             bool isSignificantDateProvisional,
             Ukprn incomingTrustUkprn,
-            Region region,
+            string region,
             bool isDueTo2RI,
             bool hasAcademyOrderBeenIssued,
             DateOnly advisoryBoardDate,
             string advisoryBoardConditions,
             string establishmentSharepointLink,
             string incomingTrustSharepointLink
-            )
+        )
         {
             // Act & Assert
             var exception = Assert.Throws<ArgumentNullException>(() =>
-                new Project(urn,
-                                 createdAt,
-                                 default,
-                                 taskType,
-                                 projectType,
-                                 tasksDataId,
-                                 significantDate,
-                                 isSignificantDateProvisional,
-                                 incomingTrustUkprn,
-                                 region,
-                                 isDueTo2RI,
-                                 hasAcademyOrderBeenIssued,
-                                 advisoryBoardDate,
-                                 advisoryBoardConditions,
-                                 establishmentSharepointLink,
-                                 incomingTrustSharepointLink));
+                new Project(
+                    id,
+                    urn,
+                    createdAt,
+                    default,
+                    taskType,
+                    projectType,
+                    tasksDataId,
+                    significantDate,
+                    isSignificantDateProvisional,
+                    incomingTrustUkprn,
+                    region,
+                    isDueTo2RI,
+                    hasAcademyOrderBeenIssued,
+                    advisoryBoardDate,
+                    advisoryBoardConditions,
+                    establishmentSharepointLink,
+                    incomingTrustSharepointLink,
+                    null,
+                    "",
+                    null,
+                    null,
+                    null));
 
             Assert.Equal("updatedAt", exception.ParamName);
         }
@@ -139,6 +167,7 @@ namespace Dfe.Complete.Domain.Tests.Aggregates
         [Theory]
         [CustomAutoData(typeof(ProjectCustomization), typeof(DateOnlyCustomization))]
         public void Constructor_ShouldCorrectlySetFields(
+            ProjectId id,
             Urn urn,
             DateTime createdAt,
             DateTime updatedAt,
@@ -148,32 +177,44 @@ namespace Dfe.Complete.Domain.Tests.Aggregates
             DateOnly significantDate,
             bool isSignificantDateProvisional,
             Ukprn incomingTrustUkprn,
-            Region region,
+            string region,
             bool isDueTo2RI,
             bool hasAcademyOrderBeenIssued,
             DateOnly advisoryBoardDate,
             string advisoryBoardConditions,
             string establishmentSharepointLink,
-            string incomingTrustSharepointLink
-            )
+            string incomingTrustSharepointLink,
+            Guid? groupId,
+            string team,
+            DateTime? assignedAt,
+            UserId? assignedToId,
+            UserId? regionalDeliveryOfficer
+        )
         {
             // Act & Assert
-            var project = new Project(urn,
-                                 createdAt,
-                                 updatedAt,
-                                 taskType,
-                                 projectType,
-                                 tasksDataId,
-                                 significantDate,
-                                 isSignificantDateProvisional,
-                                 incomingTrustUkprn,
-                                 region,
-                                 isDueTo2RI,
-                                 hasAcademyOrderBeenIssued,
-                                 advisoryBoardDate,
-                                 advisoryBoardConditions,
-                                 establishmentSharepointLink,
-                                 incomingTrustSharepointLink);
+            var project = new Project(
+                id,
+                urn,
+                createdAt,
+                updatedAt,
+                taskType,
+                projectType,
+                tasksDataId,
+                significantDate,
+                isSignificantDateProvisional,
+                incomingTrustUkprn,
+                region,
+                isDueTo2RI,
+                hasAcademyOrderBeenIssued,
+                advisoryBoardDate,
+                advisoryBoardConditions,
+                establishmentSharepointLink,
+                incomingTrustSharepointLink,
+                groupId,
+                team,
+                regionalDeliveryOfficer,
+                assignedToId,
+                assignedAt);
 
             Assert.Equal(urn, project.Urn);
         }
@@ -181,49 +222,57 @@ namespace Dfe.Complete.Domain.Tests.Aggregates
         [Theory]
         [CustomAutoData(typeof(ProjectCustomization), typeof(DateOnlyCustomization))]
         public void Factory_Create_ShouldCorrectlySetFields(
-          Urn urn,
-          DateTime createdAt,
-          DateTime updatedAt,
-          TaskType taskType,
-          ProjectType projectType,
-          Guid tasksDataId,
-          DateOnly significantDate,
-          bool isSignificantDateProvisional,
-          Ukprn incomingTrustUkprn,
-          Region region,
-          bool isDueTo2RI,
-          bool hasAcademyOrderBeenIssued,
-          DateOnly advisoryBoardDate,
-          string advisoryBoardConditions,
-          string establishmentSharepointLink,
-          string incomingTrustSharepointLink,
-          string groupReferenceNumber,
-          DateOnly provisionalConversionDate,
-          bool handingOverToRegionalCaseworkService,
-          string handoverComments
-          )
+            ProjectId id,
+            Urn urn,
+            DateTime createdAt,
+            DateTime updatedAt,
+            TaskType taskType,
+            ProjectType projectType,
+            Guid tasksDataId,
+            DateOnly significantDate,
+            bool isSignificantDateProvisional,
+            Ukprn incomingTrustUkprn,
+            string region,
+            bool isDueTo2RI,
+            bool hasAcademyOrderBeenIssued,
+            DateOnly advisoryBoardDate,
+            string advisoryBoardConditions,
+            string establishmentSharepointLink,
+            string incomingTrustSharepointLink,
+            DateOnly provisionalConversionDate,
+            bool handingOverToRegionalCaseworkService,
+            string handoverComments,
+            Guid? groupId,
+            string team,
+            DateTime? assignedAt,
+            UserId? assignedToId,
+            UserId? regionalDeliveryOfficer
+        )
         {
             // Act & Assert
-            var project = Project.CreateConversionProject(urn,
-                                 createdAt,
-                                 updatedAt,
-                                 taskType,
-                                 projectType,
-                                 tasksDataId,
-                                 significantDate,
-                                 isSignificantDateProvisional,
-                                 incomingTrustUkprn,
-                                 region,
-                                 isDueTo2RI,
-                                 hasAcademyOrderBeenIssued,
-                                 advisoryBoardDate,
-                                 advisoryBoardConditions,
-                                 establishmentSharepointLink,
-                                 incomingTrustSharepointLink,
-                                 groupReferenceNumber,
-                                 provisionalConversionDate,
-                                 handingOverToRegionalCaseworkService,
-                                 handoverComments);
+            var project = Project.CreateConversionProject(
+                id,
+                urn,
+                createdAt,
+                updatedAt,
+                taskType,
+                projectType,
+                tasksDataId,
+                significantDate,
+                isSignificantDateProvisional,
+                incomingTrustUkprn,
+                region,
+                isDueTo2RI,
+                hasAcademyOrderBeenIssued,
+                advisoryBoardDate,
+                advisoryBoardConditions,
+                establishmentSharepointLink,
+                incomingTrustSharepointLink,
+                groupId,
+                team,
+                regionalDeliveryOfficer,
+                assignedToId,
+                assignedAt);
 
             Assert.Equal(urn, project.Urn);
             Assert.Equal(createdAt, project.CreatedAt);
@@ -241,8 +290,6 @@ namespace Dfe.Complete.Domain.Tests.Aggregates
             Assert.Equal(advisoryBoardConditions, project.AdvisoryBoardConditions);
             Assert.Equal(establishmentSharepointLink, project.EstablishmentSharepointLink);
             Assert.Equal(incomingTrustSharepointLink, project.IncomingTrustSharepointLink);
-
-
         }
     }
 }

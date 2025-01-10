@@ -178,10 +178,6 @@ namespace Dfe.Complete.Client.Contracts
         [Newtonsoft.Json.JsonProperty("incomingTrustUkprn", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public Ukprn? IncomingTrustUkprn { get; set; } = default!;
 
-        [Newtonsoft.Json.JsonProperty("region", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
-        public Region? Region { get; set; } = default!;
-
         [Newtonsoft.Json.JsonProperty("isDueTo2Ri", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public bool? IsDueTo2Ri { get; set; } = default!;
 
@@ -204,15 +200,14 @@ namespace Dfe.Complete.Client.Contracts
         [Newtonsoft.Json.JsonProperty("groupReferenceNumber", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string? GroupReferenceNumber { get; set; } = default!;
 
-        [Newtonsoft.Json.JsonProperty("provisionalConversionDate", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        [Newtonsoft.Json.JsonConverter(typeof(DateFormatConverter))]
-        public System.DateTime? ProvisionalConversionDate { get; set; } = default!;
-
         [Newtonsoft.Json.JsonProperty("handingOverToRegionalCaseworkService", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public bool? HandingOverToRegionalCaseworkService { get; set; } = default!;
 
         [Newtonsoft.Json.JsonProperty("handoverComments", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string? HandoverComments { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("userAdId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string? UserAdId { get; set; } = default!;
 
         public string ToJson()
         {
@@ -268,39 +263,6 @@ namespace Dfe.Complete.Client.Contracts
             return Newtonsoft.Json.JsonConvert.DeserializeObject<Ukprn>(data, new Newtonsoft.Json.JsonSerializerSettings());
 
         }
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.1.0.0 (NJsonSchema v11.0.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    public enum Region
-    {
-
-        [System.Runtime.Serialization.EnumMember(Value = @"London")]
-        London = 0,
-
-        [System.Runtime.Serialization.EnumMember(Value = @"SouthEast")]
-        SouthEast = 1,
-
-        [System.Runtime.Serialization.EnumMember(Value = @"YorkshireAndTheHumber")]
-        YorkshireAndTheHumber = 2,
-
-        [System.Runtime.Serialization.EnumMember(Value = @"NorthWest")]
-        NorthWest = 3,
-
-        [System.Runtime.Serialization.EnumMember(Value = @"EastOfEngland")]
-        EastOfEngland = 4,
-
-        [System.Runtime.Serialization.EnumMember(Value = @"WestMidlands")]
-        WestMidlands = 5,
-
-        [System.Runtime.Serialization.EnumMember(Value = @"NorthEast")]
-        NorthEast = 6,
-
-        [System.Runtime.Serialization.EnumMember(Value = @"SouthWest")]
-        SouthWest = 7,
-
-        [System.Runtime.Serialization.EnumMember(Value = @"EastMidlands")]
-        EastMidlands = 8,
 
     }
 
@@ -365,8 +327,7 @@ namespace Dfe.Complete.Client.Contracts
         public bool? DirectiveAcademyOrder { get; set; } = default!;
 
         [Newtonsoft.Json.JsonProperty("region", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
-        public Region? Region { get; set; } = default!;
+        public string? Region { get; set; } = default!;
 
         [Newtonsoft.Json.JsonProperty("academyUrn", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public Urn? AcademyUrn { get; set; } = default!;

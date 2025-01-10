@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using Dfe.Complete.Domain.Entities;
-using Dfe.Complete.Domain.ValueObjects;
+﻿using Dfe.Complete.Domain.ValueObjects;
 
-namespace Dfe.Complete.Infrastructure.Models;
+namespace Dfe.Complete.Domain.Entities;
 
 public class Note
 {

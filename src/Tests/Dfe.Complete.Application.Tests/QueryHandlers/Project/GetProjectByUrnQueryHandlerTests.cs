@@ -8,6 +8,7 @@ using Dfe.Complete.Application.Common.Models;
 using DfE.CoreLibs.Caching.Helpers;
 using Dfe.Complete.Application.Projects.Queries.GetProject;
 using System.Linq.Expressions;
+using Dfe.Complete.Domain.ValueObjects;
 
 namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
 {
@@ -24,7 +25,9 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
         {
             var now = DateTime.UtcNow;
 
-            var project = Domain.Entities.Project.CreateConversionProject(command.Urn,
+            var project = Domain.Entities.Project.CreateConversionProject(
+                new ProjectId(Guid.NewGuid()),
+                command.Urn,
                 now,
                 now,
                 Domain.Enums.TaskType.Conversion,
@@ -33,17 +36,18 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
                 DateOnly.MinValue,
                 true,
                 new Domain.ValueObjects.Ukprn(2),
-                Domain.Enums.Region.YorkshireAndTheHumber,
+                "region",
                 true,
                 true,
                 DateOnly.MinValue,
                 "",
                 "",
                 "",
+                null,
                 "",
-                DateOnly.MinValue,
-                false,
-                "");
+                null,
+                null, 
+                null);
 
             var cacheKey = $"Project_{CacheKeyHelper.GenerateHashedCacheKey(command.Urn.Value.ToString())}";
 
