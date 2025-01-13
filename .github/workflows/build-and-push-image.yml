@@ -88,3 +88,12 @@ jobs:
             } catch (error) {
               core.setFailed(error.message);
             }
+
+  cypress-tests:
+    name: Run Cypress Tests
+    if: needs.set-env.outputs.environment == 'test' || needs.set-env.outputs.environment == 'development'
+    needs: [ deploy-image, set-env ]
+    uses: ./.github/workflows/cypress.yml
+    with:
+      environment: ${{ needs.set-env.outputs.environment }}
+    secrets: inherit
