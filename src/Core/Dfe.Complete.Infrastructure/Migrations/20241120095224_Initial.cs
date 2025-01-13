@@ -502,7 +502,7 @@ namespace Dfe.Complete.Infrastructure.Migrations
                     establishment_sharepoint_link = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     completed_at = table.Column<DateTime>(type: "datetime2(6)", precision: 6, nullable: true),
                     incoming_trust_sharepoint_link = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    type = table.Column<int>(type: "int", maxLength: 4000, nullable: true),
+                    type = table.Column<string>(type: "nvarchar(4000)", maxLength: 4000, nullable: true),
                     assigned_to_id = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     significant_date = table.Column<DateOnly>(type: "date", nullable: true),
                     significant_date_provisional = table.Column<bool>(type: "bit", nullable: true, defaultValue: true),

@@ -71,7 +71,7 @@ public class CreateConversionProjectCommandHandlerTests
 
         // Assert
         await mockProjectRepository.Received(1)
-            .AddAsync(Arg.Is<Domain.Entities.Project>(s => s.Team == "regional_casework_services"), default);
+            .AddAsync(Arg.Is<Domain.Entities.Project>(s => s.Team == ProjectTeam.RegionalCaseWorkerServices.ToDescription()), default);
     }
 
     [Theory]
@@ -180,7 +180,7 @@ public class CreateConversionProjectCommandHandlerTests
             now,
             now,
             TaskType.Conversion,
-            ProjectType.Conversion,
+            ProjectType.Conversion.ToDescription(),
             Guid.NewGuid(),
             DateOnly.MinValue,
             true,

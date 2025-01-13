@@ -1,5 +1,6 @@
 using DfE.CoreLibs.Testing.AutoFixture.Attributes;
 using Dfe.Complete.Tests.Common.Customizations.Models;
+using Dfe.Complete.Utils;
 using DfE.CoreLibs.Testing.AutoFixture.Customizations;
 using Project = Dfe.Complete.Domain.Entities.Project;
 using ProjectId = Dfe.Complete.Domain.ValueObjects.ProjectId;
@@ -42,7 +43,7 @@ namespace Dfe.Complete.Domain.Tests.Aggregates
                     createdAt,
                     updatedAt,
                     taskType,
-                    projectType,
+                    projectType.ToDescription(),
                     tasksDataId,
                     significantDate,
                     isSignificantDateProvisional,
@@ -92,7 +93,7 @@ namespace Dfe.Complete.Domain.Tests.Aggregates
                     default,
                     updatedAt,
                     taskType,
-                    projectType,
+                    projectType.ToDescription(),
                     tasksDataId,
                     significantDate,
                     isSignificantDateProvisional,
@@ -142,7 +143,7 @@ namespace Dfe.Complete.Domain.Tests.Aggregates
                     createdAt,
                     default,
                     taskType,
-                    projectType,
+                    projectType.ToDescription(),
                     tasksDataId,
                     significantDate,
                     isSignificantDateProvisional,
@@ -198,7 +199,7 @@ namespace Dfe.Complete.Domain.Tests.Aggregates
                 createdAt,
                 updatedAt,
                 taskType,
-                projectType,
+                projectType.ToDescription(),
                 tasksDataId,
                 significantDate,
                 isSignificantDateProvisional,
@@ -256,7 +257,7 @@ namespace Dfe.Complete.Domain.Tests.Aggregates
                 createdAt,
                 updatedAt,
                 taskType,
-                projectType,
+                projectType.ToDescription(),
                 tasksDataId,
                 significantDate,
                 isSignificantDateProvisional,
@@ -278,7 +279,7 @@ namespace Dfe.Complete.Domain.Tests.Aggregates
             Assert.Equal(createdAt, project.CreatedAt);
             Assert.Equal(updatedAt, project.UpdatedAt);
             Assert.Equal(taskType, project.TasksDataType);
-            Assert.Equal(projectType, project.Type);
+            Assert.Equal(projectType.ToDescription(), project.Type);
             Assert.Equal(tasksDataId, project.TasksDataId);
             Assert.Equal(significantDate, project.SignificantDate);
             Assert.Equal(isSignificantDateProvisional, project.SignificantDateProvisional);
