@@ -1,5 +1,5 @@
 @{
-	var showBanner = !Context.Request.Cookies.ContainsKey(".Complete.Consent");
+	var showBanner = !Context.Request.Cookies.ContainsKey("ACCEPT_OPTIONAL_COOKIES");
 }
 
 @if (showBanner)

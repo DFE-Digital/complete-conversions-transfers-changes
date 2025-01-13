@@ -27,7 +27,7 @@ module.exports = {
 						loader: 'file-loader',
 						options: {
 							emitFile: false,
-							name: '/assets/fonts/[name].[ext]'
+							name: '/dist/assets/fonts/[name].[ext]'
 						}
 					}
 				]
@@ -39,7 +39,7 @@ module.exports = {
 						loader: 'file-loader',
 						options: {
 							emitFile: false,
-							name: '/assets/images/[name].[ext]'
+							name: '/dist/assets/images/[name].[ext]'
 						}
 					}
 				]

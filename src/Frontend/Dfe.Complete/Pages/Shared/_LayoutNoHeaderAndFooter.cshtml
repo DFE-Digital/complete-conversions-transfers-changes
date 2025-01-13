@@ -2,8 +2,8 @@
 @inject Microsoft.Extensions.Configuration.IConfiguration _configuration
 
 @{
-	var analyticsConsent = Context.Request.Cookies.ContainsKey(".Complete.Consent")
-	                       && bool.Parse(Context.Request.Cookies[".Complete.Consent"]);
+	var analyticsConsent = Context.Request.Cookies.ContainsKey("ACCEPT_OPTIONAL_COOKIES")
+	                       && bool.Parse(Context.Request.Cookies["ACCEPT_OPTIONAL_COOKIES"]);
 
 	var showAnalytics = _configuration["GoogleAnalytics:Enable"] == "Yes" && analyticsConsent;
 }
@@ -18,12 +18,12 @@
 	<meta name="robots" content="noindex, nofollow">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 
-	<link rel="shortcut icon" sizes="16x16 32x32 48x48" href="/assets/images/favicon.ico" type="image/x-icon">
-	<link rel="mask-icon" href="/assets/images/govuk-mask-icon.svg" color="#0b0c0c">
-	<link rel="apple-touch-icon" sizes="180x180" href="/assets/images/govuk-apple-touch-icon-180x180.png">
-	<link rel="apple-touch-icon" sizes="167x167" href="/assets/images/govuk-apple-touch-icon-167x167.png">
-	<link rel="apple-touch-icon" sizes="152x152" href="/assets/images/govuk-apple-touch-icon-152x152.png">
-	<link rel="apple-touch-icon" href="/assets/images/govuk-apple-touch-icon.png">
+	<link rel="shortcut icon" sizes="16x16 32x32 48x48" href="/dist/assets/images/favicon.ico" type="image/x-icon">
+	<link rel="mask-icon" href="/dist/assets/images/govuk-mask-icon.svg" color="#0b0c0c">
+	<link rel="apple-touch-icon" sizes="180x180" href="/dist/assets/images/govuk-apple-touch-icon-180x180.png">
+	<link rel="apple-touch-icon" sizes="167x167" href="/dist/assets/images/govuk-apple-touch-icon-167x167.png">
+	<link rel="apple-touch-icon" sizes="152x152" href="/dist/assets/images/govuk-apple-touch-icon-152x152.png">
+	<link rel="apple-touch-icon" href="/dist/assets/images/govuk-apple-touch-icon.png">
 
 	<title>@ViewData["Title"] - Manage an academy conversion</title>
 	<link rel="stylesheet" href="~/dist/site.css"/>
