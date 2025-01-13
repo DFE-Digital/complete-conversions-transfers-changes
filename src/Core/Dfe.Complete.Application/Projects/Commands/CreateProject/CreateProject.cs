@@ -54,7 +54,7 @@ namespace Dfe.Complete.Application.Projects.Commands.CreateProject
 
             if (request.HandingOverToRegionalCaseworkService)
             {
-                team = "regional_casework_services";
+                team = ProjectTeam.RegionalCaseWorkerServices.ToDescription();
             }
             else
             {
