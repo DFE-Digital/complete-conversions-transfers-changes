@@ -69,7 +69,7 @@ namespace Dfe.Complete.Application.Projects.Commands.CreateProject
                 createdAt,
                 createdAt,
                 TaskType.Conversion,
-                ProjectType.Conversion,
+                ProjectType.Conversion.ToDescription(),
                 conversionTaskId,
                 request.SignificantDate,
                 request.IsSignificantDateProvisional,

@@ -180,7 +180,7 @@ public class CreateConversionProjectCommandHandlerTests
             now,
             now,
             TaskType.Conversion,
-            ProjectType.Conversion,
+            ProjectType.Conversion.ToDescription(),
             Guid.NewGuid(),
             DateOnly.MinValue,
             true,

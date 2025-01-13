@@ -34,7 +34,7 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
 
     public string? IncomingTrustSharepointLink { get; set; }
 
-    public ProjectType? Type { get; set; }
+    public string? Type { get; set; }
 
     public UserId? AssignedToId { get; set; }
 
@@ -101,7 +101,7 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
         DateTime createdAt,
         DateTime updatedAt,
         TaskType taskType,
-        ProjectType projectType,
+        string? projectType,
         Guid tasksDataId,
         DateOnly significantDate,
         bool isSignificantDateProvisional,
@@ -150,7 +150,7 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
         DateTime createdAt,
         DateTime updatedAt,
         TaskType taskType,
-        ProjectType projectType,
+        string? projectType,
         Guid tasksDataId,
         DateOnly significantDate,
         bool isSignificantDateProvisional,

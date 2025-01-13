@@ -9,6 +9,7 @@ using DfE.CoreLibs.Caching.Helpers;
 using Dfe.Complete.Application.Projects.Queries.GetProject;
 using System.Linq.Expressions;
 using Dfe.Complete.Domain.ValueObjects;
+using Dfe.Complete.Utils;
 
 namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
 {
@@ -31,7 +32,7 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
                 now,
                 now,
                 Domain.Enums.TaskType.Conversion,
-                Domain.Enums.ProjectType.Conversion,
+                Domain.Enums.ProjectType.Conversion.ToDescription(),
                 Guid.NewGuid(),
                 DateOnly.MinValue,
                 true,
