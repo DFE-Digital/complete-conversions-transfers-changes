@@ -1,0 +1,90 @@
+name: Cypress
+
+on:
+  workflow_call:
+    inputs:
+      environment:
+        required: true
+        type: string
+    secrets:
+      CYPRESS_URL:
+        required: true
+      CYPRESS_API:
+        required: true
+      CYPRESS_APIKEY:
+        required: true
+      CYPRESS_USERNAME:
+        required: true
+      CYPRESS_AUTHKEY:
+        required: true
+      SLACK_WEBHOOK_URL:
+        required: true
+
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Environment to run tests against'
+        required: true
+        type: environment
+
+concurrency:
+  group: ${{ github.workflow }}
+
+jobs:
+  cypress-tests:
+    name: Run Cypress Tests
+    runs-on: ubuntu-latest
+    environment: ${{ inputs.environment }}
+    strategy:
+      matrix:
+        browser: [
+          "edge"
+        ]
+    container:
+      image: cypress/browsers:22.12.0
+    defaults:
+      run:
+        working-directory: src/Tests/Dfe.Complete.CypressTests
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref }}
+
+      - name: Run
+        uses: cypress-io/github-action@v6
+        env:
+          CYPRESS_url: ${{ secrets.CYPRESS_URL }}
+          CYPRESS_api: ${{ secrets.CYPRESS_API }}
+          CYPRESS_apiKey: ${{ secrets.CYPRESS_APIKEY }}
+          CYPRESS_username: ${{ secrets.CYPRESS_USERNAME }}
+          CYPRESS_authKey: ${{ secrets.CYPRESS_AUTHKEY }}
+        with:
+          browser: ${{ matrix.browser }}
+          working-directory: ./src/Tests/Dfe.Complete.CypressTests
+          wait-on: ${{ secrets.URL }}
+
+      - name: Upload screenshots
+        if: ${{ failure() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: screenshots-${{ inputs.environment }}-${{ matrix.browser }}
+          path: src/Tests/Dfe.Complete.CypressTests/cypress/screenshots
+
+      - name: Generate report
+        if: always()
+        run: |
+          mkdir mochareports
+          npm run generate:html:report
+
+      - name: Upload report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: reports-${{ inputs.environment }}-${{ matrix.browser }}
+          path: src/Tests/Dfe.Complete.CypressTests/mochareports
+
+      - name: Report results
+        if: always()
+        run: npm run cy:notify -- --custom-text="Environment ${{ inputs.environment }}, See more information https://github.com/DFE-Digital/complete-api/actions/runs/${{github.run_id}}"
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
