@@ -29,18 +29,35 @@ public class CreateConversionProjectCommandHandlerTests
         };
         mockProjectRepository.GetUserByAdId(Arg.Any<string>(), Arg.Any<CancellationToken>()).Returns(user);
 
+        var groupId = new ProjectGroupId(Guid.NewGuid());
+        mockProjectRepository.GetProjectGroupIdByIdentifierAsync(Arg.Any<string>(), Arg.Any<CancellationToken>())
+            .Returns(groupId);
+
         var now = DateTime.UtcNow;
         var project = CreateTestProject(user.Team, now);
 
         mockProjectRepository.AddAsync(Arg.Any<Domain.Entities.Project>(), Arg.Any<CancellationToken>())
             .Returns(Task.FromResult(project));
-
+        
         // Act
-        await handler.Handle(command, default);
-
+        var projectId = await handler.Handle(command, default);
+        
+        Assert.NotNull(projectId);
+        Assert.IsType<ProjectId>(projectId);
+        
         // Assert
         await mockProjectRepository.Received(1)
-            .AddAsync(Arg.Is<Domain.Entities.Project>(s => s.Urn == command.Urn), default);
+            .AddAsync(Arg.Is<Domain.Entities.Project>(p =>
+                p.Urn == command.Urn 
+                && p.SignificantDate == command.SignificantDate 
+                && p.SignificantDateProvisional == command.IsSignificantDateProvisional
+                && p.IncomingTrustUkprn == command.IncomingTrustUkprn
+                && p.TwoRequiresImprovement == command.IsDueTo2Ri
+                && p.DirectiveAcademyOrder == command.HasAcademyOrderBeenIssued
+                && p.EstablishmentSharepointLink == command.EstablishmentSharepointLink 
+                && p.IncomingTrustSharepointLink == command.IncomingTrustSharepointLink
+                && p.GroupId == groupId.Value
+                && p.Notes.FirstOrDefault().Body == command.HandoverComments), default);
     }
 
     [Theory]
