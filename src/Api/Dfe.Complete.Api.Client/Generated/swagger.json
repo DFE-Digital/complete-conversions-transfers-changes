@@ -390,8 +390,12 @@
                 "nullable": true
               },
               "type": {
-                "type": "string",
-                "nullable": true
+                "nullable": true,
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/ProjectType"
+                  }
+                ]
               },
               "assignedToId": {
                 "nullable": true,
@@ -574,6 +578,18 @@
             "format": "guid"
           }
         }
+      },
+      "ProjectType": {
+        "type": "string",
+        "description": "",
+        "x-enumNames": [
+          "Conversion",
+          "Transfer"
+        ],
+        "enum": [
+          "Conversion",
+          "Transfer"
+        ]
       },
       "TaskType": {
         "type": "string",
