@@ -510,7 +510,7 @@ namespace Dfe.Complete.Infrastructure.Migrations
                     region = table.Column<string>(type: "nvarchar(4000)", maxLength: 4000, nullable: true),
                     academy_urn = table.Column<int>(type: "int", nullable: true),
                     tasks_data_id = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    tasks_data_type = table.Column<int>(type: "int", maxLength: 4000, nullable: true),
+                    tasks_data_type = table.Column<string>(type: "nvarchar(4000)", maxLength: 4000, nullable: true),
                     outgoing_trust_ukprn = table.Column<int>(type: "int", nullable: true),
                     team = table.Column<string>(type: "nvarchar(4000)", maxLength: 4000, nullable: true),
                     two_requires_improvement = table.Column<bool>(type: "bit", nullable: true, defaultValue: false),

@@ -91,7 +91,7 @@ namespace Dfe.Complete.Tests.Common.Customizations.Models
                 .With(x => x.AdvisoryBoardConditions, AdvisoryBoardConditions ?? fixture.Create<string>())
                 .With(x => x.EstablishmentSharepointLink, EstablishmentSharepointLink ?? fixture.Create<string>())
                 .With(x => x.IncomingTrustSharepointLink, IncomingTrustSharepointLink ?? fixture.Create<string>())
-                .With(x => x.Type, Type ?? fixture.Create<string>())
+                .With(x => x.Type, fixture.Create<ProjectType>())
                 .With(x => x.AssignedToId, AssignedToId ?? fixture.Create<UserId>())
                 .With(x => x.SignificantDateProvisional, SignificantDateProvisional ?? fixture.Create<bool>())
                 .With(x => x.DirectiveAcademyOrder, DirectiveAcademyOrder ?? fixture.Create<bool>())
