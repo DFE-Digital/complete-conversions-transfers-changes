@@ -19,4 +19,8 @@
     <ProjectReference Include="..\Dfe.Complete.Utils\Dfe.Complete.Utils.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="MappingProfiles\" />
+  </ItemGroup>
+
 </Project>

@@ -1,5 +1,4 @@
 using Dfe.Complete.Application.Common.Behaviours;
-using Dfe.Complete.Application.MappingProfiles;
 using FluentValidation;
 using MediatR;
 using Microsoft.Extensions.Configuration;
@@ -27,8 +26,6 @@ namespace Microsoft.Extensions.DependencyInjection
                     cfg.AddBehavior(typeof(IPipelineBehavior<,>), typeof(PerformanceBehaviour<,>));
                 }
             });
-
-            services.AddAutoMapper(typeof(SchoolProfile));
 
             services.AddBackgroundService();
 
