@@ -71,7 +71,9 @@ public class CreateConversionProjectCommandHandlerTests
 
         // Assert
         await mockProjectRepository.Received(1)
-            .AddAsync(Arg.Is<Domain.Entities.Project>(s => s.Team == ProjectTeam.RegionalCaseWorkerServices.ToDescription()), default);
+            .AddAsync(
+                Arg.Is<Domain.Entities.Project>(s => s.Team == ProjectTeam.RegionalCaseWorkerServices.ToDescription()),
+                default);
     }
 
     [Theory]
@@ -89,24 +91,26 @@ public class CreateConversionProjectCommandHandlerTests
             Id = new UserId(Guid.NewGuid()),
             Team = team
         };
-        
+
         mockProjectRepository.GetUserByAdId(Arg.Any<string>(), Arg.Any<CancellationToken>()).Returns(user);
-    
+
         var now = DateTime.UtcNow;
         var project = CreateTestProject(team, now);
         command = command with { HandingOverToRegionalCaseworkService = false };
-    
+
         mockProjectRepository.AddAsync(Arg.Any<Domain.Entities.Project>(), Arg.Any<CancellationToken>())
             .Returns(Task.FromResult(project));
-    
+
         // Act
         await handler.Handle(command, default);
-    
+
         // Assert
         await mockProjectRepository.Received(1)
-            .AddAsync(Arg.Is<Domain.Entities.Project>(p => p.Team == team && p.AssignedToId == user.Id && p.AssignedAt.HasValue), default);
+            .AddAsync(
+                Arg.Is<Domain.Entities.Project>(p =>
+                    p.Team == team && p.AssignedToId == user.Id && p.AssignedAt.HasValue), default);
     }
-    
+
     [Theory]
     [CustomAutoData(typeof(DateOnlyCustomization))]
     public async Task Handle_ShouldSetHandover(
@@ -122,24 +126,26 @@ public class CreateConversionProjectCommandHandlerTests
             Id = new UserId(Guid.NewGuid()),
             Team = team
         };
-        
+
         mockProjectRepository.GetUserByAdId(Arg.Any<string>(), Arg.Any<CancellationToken>()).Returns(user);
-    
+
         var now = DateTime.UtcNow;
         var project = CreateTestProject(team, now);
         command = command with { HandingOverToRegionalCaseworkService = false };
-    
+
         mockProjectRepository.AddAsync(Arg.Any<Domain.Entities.Project>(), Arg.Any<CancellationToken>())
             .Returns(Task.FromResult(project));
-    
+
         // Act
         await handler.Handle(command, default);
-    
+
         // Assert
         await mockProjectRepository.Received(1)
-            .AddAsync(Arg.Is<Domain.Entities.Project>(p => p.Team == team && p.AssignedToId == user.Id && p.AssignedAt.HasValue), default);
+            .AddAsync(
+                Arg.Is<Domain.Entities.Project>(p =>
+                    p.Team == team && p.AssignedToId == user.Id && p.AssignedAt.HasValue), default);
     }
-    
+
     [Theory]
     [CustomAutoData(typeof(DateOnlyCustomization))]
     public async Task Handle_ShouldAddNotes_WhenHandoverComments(
@@ -156,46 +162,62 @@ public class CreateConversionProjectCommandHandlerTests
             Team = team
         };
         mockProjectRepository.GetUserByAdId(Arg.Any<string>(), Arg.Any<CancellationToken>()).Returns(user);
-    
+
         var now = DateTime.UtcNow;
         var project = CreateTestProject(team, now);
-        command = command with { HandingOverToRegionalCaseworkService = false, HandoverComments = "this is a test note"};
-        
-    
+        command = command with
+        {
+            HandingOverToRegionalCaseworkService = false, HandoverComments = "this is a test note"
+        };
+
+
         mockProjectRepository.AddAsync(Arg.Any<Domain.Entities.Project>(), Arg.Any<CancellationToken>())
             .Returns(Task.FromResult(project));
-    
+
         // Act
         await handler.Handle(command, default);
-    
+
         // Assert
         await mockProjectRepository.Received(1)
-            .AddAsync(Arg.Is<Domain.Entities.Project>(p => p.Notes.FirstOrDefault().Body == command.HandoverComments), default);
+            .AddAsync(Arg.Is<Domain.Entities.Project>(p => p.Notes.FirstOrDefault().Body == command.HandoverComments),
+                default);
     }
-        
-    private static Domain.Entities.Project CreateTestProject(string team, DateTime now) =>
-        Domain.Entities.Project.CreateConversionProject(
-            new ProjectId(Guid.NewGuid()),
-            new Urn(2),
-            now,
-            now,
-            TaskType.Conversion,
-            ProjectType.Conversion,
-            Guid.NewGuid(),
-            DateOnly.MinValue,
-            true,
-            new Ukprn(2),
-            "region",
-            true,
-            true,
-            DateOnly.MinValue,
-            "",
-            "",
-            "",
-            Guid.Empty,
-            "",
-            null,
-            null,
-            null
+
+    private static Domain.Entities.Project CreateTestProject(string team, DateTime now)
+    {
+        var projectId = new ProjectId(Guid.NewGuid());
+        var urn = new Urn(123456);
+        var tasksDataId = Guid.NewGuid();
+        var region = "West Midlands";
+        var rdoId = new UserId(Guid.NewGuid()); 
+        var assignedTo = new UserId(Guid.NewGuid()); 
+        var assignedAt = now; 
+
+        var project = Domain.Entities.Project.CreateConversionProject(
+            Id: projectId,
+            urn: urn,
+            createdAt: now,
+            updatedAt: now,
+            taskType: TaskType.Conversion,
+            projectType: ProjectType.Conversion,
+            tasksDataId: tasksDataId,
+            significantDate: new DateOnly(2025, 01, 01),
+            isSignificantDateProvisional: true,
+            incomingTrustUkprn: new Ukprn(99999999),
+            region: region,
+            isDueTo2RI: true,
+            hasAcademyOrderBeenIssued: true,
+            advisoryBoardDate: new DateOnly(2025, 06, 15),
+            advisoryBoardConditions: "Some conditions",
+            establishmentSharepointLink: "EstablishmentLink",
+            incomingTrustSharepointLink: "IncomingTrustLink",
+            groupId: Guid.NewGuid(),
+            team: team,
+            regionalDeliveryOfficerId: rdoId,
+            assignedToId: assignedTo,
+            assignedAt: assignedAt
         );
+
+        return project;
+    }
 }
