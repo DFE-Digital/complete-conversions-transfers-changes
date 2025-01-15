@@ -91,9 +91,7 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
     public virtual ICollection<Note> Notes { get; set; } = new List<Note>();
 
     public virtual User? RegionalDeliveryOfficer { get; set; }
-
-    private string? _typeValue;
-
+    
     private Project()
     {
     }
