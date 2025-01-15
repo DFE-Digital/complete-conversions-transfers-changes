@@ -47,6 +47,40 @@ namespace Dfe.Complete.Utils
 			return default;
 		}
 		
+		public static TEnum FromDescriptionValue<TEnum>(this string? description)
+			where TEnum : struct, Enum
+		{
+			if (string.IsNullOrEmpty(description))
+			{
+				// Decide whether you want to throw, or return a default value
+				// return default;
+				throw new ArgumentNullException(nameof(description));
+			}
+
+			// Look for an enum value whose [Description] matches the input string
+			foreach (var value in Enum.GetValues(typeof(TEnum)))
+			{
+				var enumValue = (TEnum)value;
+				var fieldInfo = typeof(TEnum).GetField(enumValue.ToString());
+				var descriptionAttribute = fieldInfo
+					?.GetCustomAttributes(typeof(DescriptionAttribute), false)
+					.FirstOrDefault() as DescriptionAttribute;
+
+				if (descriptionAttribute?.Description == description)
+				{
+					return enumValue;
+				}
+			}
+
+			// Fallback: maybe it matches the enum name?
+			if (Enum.TryParse(description, out TEnum parsed))
+			{
+				return parsed;
+			}
+
+			throw new ArgumentException($"No matching enum value found for '{description}'.");
+		}
+		
 		public static string ToIntString(this Enum value)
 		{
 			if (value == null) return string.Empty;

@@ -32,7 +32,7 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
                 now,
                 now,
                 Domain.Enums.TaskType.Conversion,
-                Domain.Enums.ProjectType.Conversion.ToDescription(),
+                Domain.Enums.ProjectType.Conversion,
                 Guid.NewGuid(),
                 DateOnly.MinValue,
                 true,

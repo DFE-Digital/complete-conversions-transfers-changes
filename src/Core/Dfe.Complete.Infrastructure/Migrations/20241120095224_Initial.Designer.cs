@@ -744,7 +744,7 @@ namespace Dfe.Complete.Infrastructure.Migrations
 
                     b.Property<int?>("TasksDataType")
                         .HasMaxLength(4000)
-                        .HasColumnType("int")
+                        .HasColumnType("nvarchar(4000)")
                         .HasColumnName("tasks_data_type");
 
                     b.Property<string>("Team")

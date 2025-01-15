@@ -2,7 +2,7 @@
 using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Domain.Events;
 using Dfe.Complete.Domain.ValueObjects;
-using Dfe.Complete.Infrastructure.Models;
+using Dfe.Complete.Utils;
 
 namespace Dfe.Complete.Domain.Entities;
 
@@ -34,7 +34,7 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
 
     public string? IncomingTrustSharepointLink { get; set; }
 
-    public string? Type { get; set; }
+    public ProjectType? Type { get; set; }
 
     public UserId? AssignedToId { get; set; }
 
@@ -91,7 +91,7 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
     public virtual ICollection<Note> Notes { get; set; } = new List<Note>();
 
     public virtual User? RegionalDeliveryOfficer { get; set; }
-
+    
     private Project()
     {
     }
@@ -101,7 +101,7 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
         DateTime createdAt,
         DateTime updatedAt,
         TaskType taskType,
-        string? projectType,
+        ProjectType projectType,
         Guid tasksDataId,
         DateOnly significantDate,
         bool isSignificantDateProvisional,
@@ -150,7 +150,7 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
         DateTime createdAt,
         DateTime updatedAt,
         TaskType taskType,
-        string? projectType,
+        ProjectType projectType,
         Guid tasksDataId,
         DateOnly significantDate,
         bool isSignificantDateProvisional,

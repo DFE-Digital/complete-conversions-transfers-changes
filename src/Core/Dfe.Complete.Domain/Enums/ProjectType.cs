@@ -4,9 +4,9 @@ namespace Dfe.Complete.Domain.Enums
 {
     public enum ProjectType
     {
-        [Description("Conversion::TasksData")]
+        [Description("Conversion::Project")]
         Conversion = 1,
-        [Description("Transfer::TasksData")]
+        [Description("Transfer::Project")]
         Transfer = 2
     }
 }

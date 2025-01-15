@@ -1,8 +1,9 @@
-﻿using Dfe.Complete.Domain.Common;
-using Dfe.Complete.Domain.Entities;
+﻿using Dfe.Complete.Domain.Entities;
+using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Domain.ValueObjects;
 using Dfe.Complete.Infrastructure.Database.Interceptors;
 using Dfe.Complete.Infrastructure.Models;
+using Dfe.Complete.Utils;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -198,7 +199,10 @@ public partial class CompleteContext : DbContext
         projectConfiguration.Property(e => e.TasksDataId).HasColumnName("tasks_data_id");
         projectConfiguration.Property(e => e.TasksDataType)
             .HasMaxLength(4000)
-            .HasColumnName("tasks_data_type");
+            .HasColumnName("tasks_data_type")
+            .HasConversion(
+                tasksType => tasksType.ToDescription(), 
+                tasksTypeDbValue => tasksTypeDbValue.FromDescriptionValue<TaskType>());
         projectConfiguration.Property(e => e.Team)
             .HasMaxLength(4000)
             .HasColumnName("team");
@@ -207,7 +211,10 @@ public partial class CompleteContext : DbContext
             .HasColumnName("two_requires_improvement");
         projectConfiguration.Property(e => e.Type)
             .HasMaxLength(4000)
-            .HasColumnName("type");
+            .HasColumnName("type")
+            .HasConversion(
+                projectType => projectType.ToDescription(), 
+                projectTypeDbValue => projectTypeDbValue.FromDescriptionValue<ProjectType>());
         projectConfiguration.Property(e => e.UpdatedAt)
             .HasPrecision(6)
             .HasColumnName("updated_at");

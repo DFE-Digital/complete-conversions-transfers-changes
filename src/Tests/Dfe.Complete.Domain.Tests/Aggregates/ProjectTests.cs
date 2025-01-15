@@ -43,7 +43,7 @@ namespace Dfe.Complete.Domain.Tests.Aggregates
                     createdAt,
                     updatedAt,
                     taskType,
-                    projectType.ToDescription(),
+                    projectType,
                     tasksDataId,
                     significantDate,
                     isSignificantDateProvisional,
@@ -93,7 +93,7 @@ namespace Dfe.Complete.Domain.Tests.Aggregates
                     default,
                     updatedAt,
                     taskType,
-                    projectType.ToDescription(),
+                    projectType,
                     tasksDataId,
                     significantDate,
                     isSignificantDateProvisional,
@@ -143,7 +143,7 @@ namespace Dfe.Complete.Domain.Tests.Aggregates
                     createdAt,
                     default,
                     taskType,
-                    projectType.ToDescription(),
+                    projectType,
                     tasksDataId,
                     significantDate,
                     isSignificantDateProvisional,
@@ -199,7 +199,7 @@ namespace Dfe.Complete.Domain.Tests.Aggregates
                 createdAt,
                 updatedAt,
                 taskType,
-                projectType.ToDescription(),
+                projectType,
                 tasksDataId,
                 significantDate,
                 isSignificantDateProvisional,
@@ -257,7 +257,7 @@ namespace Dfe.Complete.Domain.Tests.Aggregates
                 createdAt,
                 updatedAt,
                 taskType,
-                projectType.ToDescription(),
+                projectType,
                 tasksDataId,
                 significantDate,
                 isSignificantDateProvisional,
@@ -279,7 +279,7 @@ namespace Dfe.Complete.Domain.Tests.Aggregates
             Assert.Equal(createdAt, project.CreatedAt);
             Assert.Equal(updatedAt, project.UpdatedAt);
             Assert.Equal(taskType, project.TasksDataType);
-            Assert.Equal(projectType.ToDescription(), project.Type);
+            Assert.Equal(projectType, project.Type);
             Assert.Equal(tasksDataId, project.TasksDataId);
             Assert.Equal(significantDate, project.SignificantDate);
             Assert.Equal(isSignificantDateProvisional, project.SignificantDateProvisional);
