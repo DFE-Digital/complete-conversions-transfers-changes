@@ -5,25 +5,25 @@ namespace Dfe.Complete.Domain.Enums;
 public enum ProjectTeam
 {
     [Description("regional_casework_services")]
-    RegionalCaseWorkerServices,
+    RegionalCaseWorkerServices = 1,
     [Description("service_support")]
-    ServiceSupport,
+    ServiceSupport = 2,
     [Description("london")]
-    London,
+    London = 3,
     [Description("south_east")]
-    SouthEast,
+    SouthEast = 4,
     [Description("yorkshire_and_the_humber")]
-    YorkshireAndTheHumber,
+    YorkshireAndTheHumber = 5,
     [Description("north_west")]
-    NorthWest,
+    NorthWest = 6,
     [Description("east_of_england")]
-    EastOfEngland,
+    EastOfEngland = 7,
     [Description("west_midlands")]
-    WestMidlands,
+    WestMidlands = 8,
     [Description("north_east")]
-    NorthEast,
+    NorthEast = 9,
     [Description("south_west")]
-    SouthWest,
+    SouthWest = 10,
     [Description("east_midlands")]
-    EastMidlands,
+    EastMidlands = 11,
 }
