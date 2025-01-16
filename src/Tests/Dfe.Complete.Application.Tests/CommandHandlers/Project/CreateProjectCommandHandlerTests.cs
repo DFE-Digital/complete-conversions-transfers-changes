@@ -69,7 +69,6 @@ public class CreateConversionProjectCommandHandlerTests
         CreateConversionProjectCommand command
     )
     {
-            
         // Arrange
         var team = ProjectTeam.WestMidlands;
         var user = new User
@@ -128,7 +127,9 @@ public class CreateConversionProjectCommandHandlerTests
         await mockProjectRepository.Received(1)
             .AddAsync(
                 Arg.Is<Domain.Entities.Project>(p =>
-                    p.Team == team && p.AssignedToId == user.Id && p.AssignedAt.HasValue), default);
+                    p.Team == team 
+                    && p.AssignedToId == user.Id 
+                    && p.AssignedAt.HasValue), default);
     }
 
     [Theory]
@@ -163,7 +164,9 @@ public class CreateConversionProjectCommandHandlerTests
         await mockProjectRepository.Received(1)
             .AddAsync(
                 Arg.Is<Domain.Entities.Project>(p =>
-                    p.Team == team && p.AssignedToId == user.Id && p.AssignedAt.HasValue), default);
+                    p.Team == team 
+                    && p.AssignedToId == user.Id 
+                    && p.AssignedAt.HasValue), default);
     }
 
     [Theory]
@@ -208,7 +211,7 @@ public class CreateConversionProjectCommandHandlerTests
         var projectId = new ProjectId(Guid.NewGuid());
         var urn = new Urn(123456);
         var tasksDataId = Guid.NewGuid();
-        var region = "West Midlands";
+        var region = Region.NorthWest;
         var rdoId = new UserId(Guid.NewGuid()); 
         var assignedTo = new UserId(Guid.NewGuid()); 
         var assignedAt = now; 

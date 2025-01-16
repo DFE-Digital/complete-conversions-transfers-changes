@@ -44,7 +44,7 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
 
     public bool? DirectiveAcademyOrder { get; set; }
 
-    public string? Region { get; set; }
+    public Region? Region { get; set; }
 
     public Urn? AcademyUrn { get; set; }
 
@@ -106,7 +106,7 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
         DateOnly significantDate,
         bool isSignificantDateProvisional,
         Ukprn incomingTrustUkprn,
-        string? region,
+        Region? region,
         bool isDueTo2RI,
         bool hasAcademyOrderBeenIssued,
         DateOnly advisoryBoardDate,
@@ -155,7 +155,7 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
         DateOnly significantDate,
         bool isSignificantDateProvisional,
         Ukprn incomingTrustUkprn,
-        string? region,
+        Region? region,
         bool isDueTo2RI,
         bool hasAcademyOrderBeenIssued,
         DateOnly advisoryBoardDate,

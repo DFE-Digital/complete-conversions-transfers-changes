@@ -36,7 +36,7 @@ namespace Dfe.Complete.Application.Projects.Commands.CreateProject
             
             var projectTeam = EnumExtensions.FromDescription<ProjectTeam>(projectUserTeam);
             var region = EnumMapper.MapTeamToRegion(projectTeam);
-            var regionCharValue = region.GetCharValue();
+            // var regionCharValue = region.GetCharValue();
             
             var createdAt = DateTime.UtcNow;
             var conversionTaskId = Guid.NewGuid();
@@ -74,7 +74,7 @@ namespace Dfe.Complete.Application.Projects.Commands.CreateProject
                 request.SignificantDate,
                 request.IsSignificantDateProvisional,
                 request.IncomingTrustUkprn,
-                regionCharValue,
+                region,
                 request.IsDueTo2Ri,
                 request.HasAcademyOrderBeenIssued,
                 request.AdvisoryBoardDate,

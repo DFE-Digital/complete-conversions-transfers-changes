@@ -185,7 +185,10 @@ public partial class CompleteContext : DbContext
         projectConfiguration.Property(e => e.PrepareId).HasColumnName("prepare_id");
         projectConfiguration.Property(e => e.Region)
             .HasMaxLength(4000)
-            .HasColumnName("region");
+            .HasColumnName("region")
+            .HasConversion(
+                r => r.GetCharValue(), 
+                regionDbValue => regionDbValue.ToEnumFromChar<Region>());
         projectConfiguration.Property(e => e.RegionalDeliveryOfficerId)
             .HasColumnName("regional_delivery_officer_id")
             .HasConversion(

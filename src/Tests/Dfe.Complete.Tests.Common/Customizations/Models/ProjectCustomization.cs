@@ -95,7 +95,7 @@ namespace Dfe.Complete.Tests.Common.Customizations.Models
                 .With(x => x.AssignedToId, AssignedToId ?? fixture.Create<UserId>())
                 .With(x => x.SignificantDateProvisional, SignificantDateProvisional ?? fixture.Create<bool>())
                 .With(x => x.DirectiveAcademyOrder, DirectiveAcademyOrder ?? fixture.Create<bool>())
-                .With(x => x.Region, (Region ?? fixture.Create<Region>()).ToString())
+                .With(x => x.Region, Region ?? fixture.Create<Region>())
                 .With(x => x.AcademyUrn, AcademyUrn ?? fixture.Create<Urn>())
                 .With(x => x.TasksDataId, TasksDataId ?? fixture.Create<Guid>())
                 .With(x => x.TasksDataType, TasksDataType ?? fixture.Create<TaskType>())
