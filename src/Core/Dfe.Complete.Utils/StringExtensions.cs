@@ -2,8 +2,7 @@ namespace Dfe.Complete.Utils;
 
 public static class StringExtensions
 {
-    public static TEnum ToEnumFromChar<TEnum>(this string value) 
-        where TEnum : struct, Enum
+    public static TEnum ToEnumFromChar<TEnum>(this string value) where TEnum : struct, Enum
     {
         if (string.IsNullOrEmpty(value))
             throw new ArgumentException("Input cannot be null or empty.", nameof(value));
