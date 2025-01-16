@@ -44,4 +44,8 @@
     <ProjectReference Include="..\..\Core\Dfe.Complete.Infrastructure\Dfe.Complete.Infrastructure.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Customizations\Entities\" />
+  </ItemGroup>
+
 </Project>

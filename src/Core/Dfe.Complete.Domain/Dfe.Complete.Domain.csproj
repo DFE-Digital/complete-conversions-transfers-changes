@@ -10,6 +10,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Validators\" />
     <ProjectReference Include="..\Dfe.Complete.Utils\Dfe.Complete.Utils.csproj" />
   </ItemGroup>
 
