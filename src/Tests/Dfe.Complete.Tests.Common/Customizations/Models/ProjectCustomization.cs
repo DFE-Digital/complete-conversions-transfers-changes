@@ -54,7 +54,7 @@ namespace Dfe.Complete.Tests.Common.Customizations.Models
 
         public Ukprn? OutgoingTrustUkprn { get; set; }
 
-        public string? Team { get; set; }
+        public ProjectTeam? Team { get; set; }
 
         public bool? TwoRequiresImprovement { get; set; }
 
@@ -100,7 +100,7 @@ namespace Dfe.Complete.Tests.Common.Customizations.Models
                 .With(x => x.TasksDataId, TasksDataId ?? fixture.Create<Guid>())
                 .With(x => x.TasksDataType, TasksDataType ?? fixture.Create<TaskType>())
                 .With(x => x.OutgoingTrustUkprn, OutgoingTrustUkprn ?? fixture.Create<Ukprn>())
-                .With(x => x.Team, Team ?? fixture.Create<string>())
+                .With(x => x.Team, Team ?? fixture.Create<ProjectTeam>())
                 .With(x => x.TwoRequiresImprovement, TwoRequiresImprovement ?? fixture.Create<bool>())
                 .With(x => x.OutgoingTrustSharepointLink, OutgoingTrustSharepointLink ?? fixture.Create<string>())
                 .With(x => x.AllConditionsMet, AllConditionsMet ?? fixture.Create<bool>())

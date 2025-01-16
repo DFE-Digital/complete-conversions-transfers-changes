@@ -452,8 +452,12 @@
                 ]
               },
               "team": {
-                "type": "string",
-                "nullable": true
+                "nullable": true,
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/ProjectTeam"
+                  }
+                ]
               },
               "twoRequiresImprovement": {
                 "type": "boolean",
@@ -601,6 +605,36 @@
         "enum": [
           "Conversion",
           "Transfer"
+        ]
+      },
+      "ProjectTeam": {
+        "type": "string",
+        "description": "",
+        "x-enumNames": [
+          "RegionalCaseWorkerServices",
+          "ServiceSupport",
+          "London",
+          "SouthEast",
+          "YorkshireAndTheHumber",
+          "NorthWest",
+          "EastOfEngland",
+          "WestMidlands",
+          "NorthEast",
+          "SouthWest",
+          "EastMidlands"
+        ],
+        "enum": [
+          "RegionalCaseWorkerServices",
+          "ServiceSupport",
+          "London",
+          "SouthEast",
+          "YorkshireAndTheHumber",
+          "NorthWest",
+          "EastOfEngland",
+          "WestMidlands",
+          "NorthEast",
+          "SouthWest",
+          "EastMidlands"
         ]
       },
       "ContactId": {

@@ -48,17 +48,17 @@ namespace Dfe.Complete.Application.Projects.Commands.CreateProject
                 await projectRepository.GetProjectGroupIdByIdentifierAsync(request.GroupReferenceNumber,
                     cancellationToken);
 
-            string team;
+            ProjectTeam team;
             DateTime? assignedAt = null;
             UserId? projectUserAssignedToId = null;
 
             if (request.HandingOverToRegionalCaseworkService)
             {
-                team = ProjectTeam.RegionalCaseWorkerServices.ToDescription();
+                team = ProjectTeam.RegionalCaseWorkerServices;
             }
             else
             {
-                team = projectTeam.ToDescription();
+                team = projectTeam;
                 assignedAt = DateTime.UtcNow;
                 projectUserAssignedToId = projectUserId;
             }

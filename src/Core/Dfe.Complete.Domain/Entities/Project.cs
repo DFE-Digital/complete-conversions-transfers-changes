@@ -54,7 +54,7 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
 
     public Ukprn? OutgoingTrustUkprn { get; set; }
 
-    public string? Team { get; set; }
+    public ProjectTeam? Team { get; set; }
 
     public bool? TwoRequiresImprovement { get; set; }
 
@@ -114,7 +114,7 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
         string establishmentSharepointLink,
         string incomingTrustSharepointLink,
         Guid? groupId,
-        string team,
+        ProjectTeam? team,
         UserId? regionalDeliveryOfficerId, 
         UserId? assignedTo, 
         DateTime? assignedAt)
@@ -163,7 +163,7 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
         string establishmentSharepointLink,
         string incomingTrustSharepointLink,
         Guid? groupId,
-        string team, 
+        ProjectTeam? team, 
         UserId? regionalDeliveryOfficerId,
         UserId? assignedToId, 
         DateTime? assignedAt)

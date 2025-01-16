@@ -51,11 +51,7 @@ namespace Dfe.Complete.Utils
 			where TEnum : struct, Enum
 		{
 			if (string.IsNullOrEmpty(description))
-			{
-				// Decide whether you want to throw, or return a default value
-				// return default;
 				throw new ArgumentNullException(nameof(description));
-			}
 
 			// Look for an enum value whose [Description] matches the input string
 			foreach (var value in Enum.GetValues(typeof(TEnum)))
@@ -67,16 +63,12 @@ namespace Dfe.Complete.Utils
 					.FirstOrDefault() as DescriptionAttribute;
 
 				if (descriptionAttribute?.Description == description)
-				{
 					return enumValue;
-				}
 			}
 
 			// Fallback: maybe it matches the enum name?
 			if (Enum.TryParse(description, out TEnum parsed))
-			{
 				return parsed;
-			}
 
 			throw new ArgumentException($"No matching enum value found for '{description}'.");
 		}

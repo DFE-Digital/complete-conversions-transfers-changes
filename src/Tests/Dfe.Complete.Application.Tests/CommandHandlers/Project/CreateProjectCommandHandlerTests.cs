@@ -22,10 +22,11 @@ public class CreateConversionProjectCommandHandlerTests
     )
     {
         // Arrange
+        var team = ProjectTeam.WestMidlands;
         var user = new User
         {
             Id = new UserId(Guid.NewGuid()),
-            Team = ProjectTeam.WestMidlands.ToDescription()
+            Team = team.ToDescription()
         };
         mockProjectRepository.GetUserByAdId(Arg.Any<string>(), Arg.Any<CancellationToken>()).Returns(user);
 
@@ -34,7 +35,7 @@ public class CreateConversionProjectCommandHandlerTests
             .Returns(groupId);
 
         var now = DateTime.UtcNow;
-        var project = CreateTestProject(user.Team, now);
+        var project = CreateTestProject(team, now);
 
         mockProjectRepository.AddAsync(Arg.Any<Domain.Entities.Project>(), Arg.Any<CancellationToken>())
             .Returns(Task.FromResult(project));
@@ -68,16 +69,18 @@ public class CreateConversionProjectCommandHandlerTests
         CreateConversionProjectCommand command
     )
     {
+            
         // Arrange
+        var team = ProjectTeam.WestMidlands;
         var user = new User
         {
             Id = new UserId(Guid.NewGuid()),
-            Team = ProjectTeam.WestMidlands.ToDescription()
+            Team = team.ToDescription()
         };
         mockProjectRepository.GetUserByAdId(Arg.Any<string>(), Arg.Any<CancellationToken>()).Returns(user);
 
         var now = DateTime.UtcNow;
-        var project = CreateTestProject(user.Team, now);
+        var project = CreateTestProject(team, now);
         command = command with { HandingOverToRegionalCaseworkService = true };
 
         mockProjectRepository.AddAsync(Arg.Any<Domain.Entities.Project>(), Arg.Any<CancellationToken>())
@@ -89,7 +92,7 @@ public class CreateConversionProjectCommandHandlerTests
         // Assert
         await mockProjectRepository.Received(1)
             .AddAsync(
-                Arg.Is<Domain.Entities.Project>(s => s.Team == ProjectTeam.RegionalCaseWorkerServices.ToDescription()),
+                Arg.Is<Domain.Entities.Project>(s => s.Team == ProjectTeam.RegionalCaseWorkerServices),
                 default);
     }
 
@@ -102,11 +105,11 @@ public class CreateConversionProjectCommandHandlerTests
     )
     {
         // Arrange
-        var team = ProjectTeam.WestMidlands.ToDescription();
+        var team = ProjectTeam.WestMidlands;
         var user = new User
         {
             Id = new UserId(Guid.NewGuid()),
-            Team = team
+            Team = team.ToDescription()
         };
 
         mockProjectRepository.GetUserByAdId(Arg.Any<string>(), Arg.Any<CancellationToken>()).Returns(user);
@@ -137,11 +140,11 @@ public class CreateConversionProjectCommandHandlerTests
     )
     {
         // Arrange
-        var team = ProjectTeam.WestMidlands.ToDescription();
+        var team = ProjectTeam.WestMidlands;
         var user = new User
         {
             Id = new UserId(Guid.NewGuid()),
-            Team = team
+            Team = team.ToDescription()
         };
 
         mockProjectRepository.GetUserByAdId(Arg.Any<string>(), Arg.Any<CancellationToken>()).Returns(user);
@@ -172,11 +175,11 @@ public class CreateConversionProjectCommandHandlerTests
     )
     {
         // Arrange
-        var team = ProjectTeam.WestMidlands.ToDescription();
+        var team = ProjectTeam.WestMidlands;
         var user = new User
         {
             Id = new UserId(Guid.NewGuid()),
-            Team = team
+            Team = team.ToDescription()
         };
         mockProjectRepository.GetUserByAdId(Arg.Any<string>(), Arg.Any<CancellationToken>()).Returns(user);
 
@@ -200,7 +203,7 @@ public class CreateConversionProjectCommandHandlerTests
                 default);
     }
 
-    private static Domain.Entities.Project CreateTestProject(string team, DateTime now)
+    private static Domain.Entities.Project CreateTestProject(ProjectTeam team, DateTime now)
     {
         var projectId = new ProjectId(Guid.NewGuid());
         var urn = new Urn(123456);

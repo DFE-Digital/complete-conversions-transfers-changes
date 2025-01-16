@@ -205,7 +205,10 @@ public partial class CompleteContext : DbContext
                 tasksTypeDbValue => tasksTypeDbValue.FromDescriptionValue<TaskType>());
         projectConfiguration.Property(e => e.Team)
             .HasMaxLength(4000)
-            .HasColumnName("team");
+            .HasColumnName("team")
+            .HasConversion(
+                team => team.ToDescription(), 
+                teamDbValue => teamDbValue.FromDescriptionValue<ProjectTeam>());
         projectConfiguration.Property(e => e.TwoRequiresImprovement)
             .HasDefaultValue(false)
             .HasColumnName("two_requires_improvement");

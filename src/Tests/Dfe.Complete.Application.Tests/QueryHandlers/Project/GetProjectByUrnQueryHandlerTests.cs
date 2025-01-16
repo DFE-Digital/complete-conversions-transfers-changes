@@ -45,7 +45,7 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
                 "",
                 "",
                 null,
-                "",
+                default,
                 null,
                 null, 
                 null);
