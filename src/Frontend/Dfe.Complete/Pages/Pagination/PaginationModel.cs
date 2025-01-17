@@ -2,6 +2,34 @@
 {
     public class PaginationModel
     {
+        public PaginationModel(string url, int pageNumber, int recordCount, int pageSize, string? elementIdPrefix = null)
+        {
+            Url = url;
+            PageNumber = pageNumber;
+            RecordCount = recordCount;
+            TotalPages = (int)Math.Ceiling((double)recordCount / pageSize);
+            if (pageNumber > 1)
+            {
+                HasPrevious = true;
+                Previous = pageNumber - 1;
+            }
+            else
+            {
+                HasPrevious = false;
+            }
+            
+            if (pageNumber < TotalPages)
+            {
+                HasNext = true;
+                Next = pageNumber + 1;
+            }
+            else
+            {
+                HasNext = false;
+            }
+
+            ElementIdPrefix = elementIdPrefix;
+        }
         public string Url { get; set; }
 
         public bool HasNext { get; set; }
@@ -23,12 +51,12 @@
         /// This is for partial page reloads when pagination is invoked
         /// When we only want to refresh the content container, not the entire page
         /// </summary>
-        public string ContentContainerId { get; set; }
+        // public string ContentContainerId { get; set; }
 
         /// <summary>
         /// Prefix so that we can have multiple pagination elements on screen
         /// Ensures we can uniquely identify the pagination for separate content containers
         /// </summary>
-        public string ElementIdPrefix { get; set; }
+        public string? ElementIdPrefix { get; set; }
     }
 }
