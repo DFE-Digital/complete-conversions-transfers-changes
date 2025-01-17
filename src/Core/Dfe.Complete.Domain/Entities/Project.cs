@@ -83,7 +83,7 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
 
     // This should be set to value object as you have already done this in ProjectGroup
 
-    public ProjectGroup? GroupId { get; set; }
+    public Guid? GroupId { get; set; }
 
     public virtual User? AssignedTo { get; set; }
 
@@ -103,7 +103,11 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
     {
     }
 
-    // Please ensure proper validation is done at domain level before the object is constructed 
+    // Please ensure proper validation is done at domain level and in the factory methods before the object is constructed 
+
+    // You typically need only one constructor, which has nullable parameters if they are needed for different cases.
+    // Factory methods should be tailored to different operations and calling the same constructor.
+    // However in this case, if the difference between Conversion and Transfer is substantial then we can consider creating a specialized constructor for each of them.
 
     public Project(ProjectId id,
         Urn urn,
