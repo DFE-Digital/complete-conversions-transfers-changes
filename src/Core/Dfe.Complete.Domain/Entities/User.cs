@@ -2,6 +2,7 @@
 using Dfe.Complete.Infrastructure.Models;
 
 namespace Dfe.Complete.Domain.Entities;
+// Same here missing implementation of IEntity
 
 public class User
 {

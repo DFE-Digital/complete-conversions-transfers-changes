@@ -30,6 +30,10 @@ namespace Dfe.Complete.Application.Projects.Commands.CreateProject
     {
         public async Task<ProjectId> Handle(CreateConversionProjectCommand request, CancellationToken cancellationToken)
         {
+
+            // The user Team should be moved as a Claim or Group to the Entra (MS AD)
+
+
             var projectUser = await projectRepository.GetUserByAdId(request.UserAdId, cancellationToken);
             var projectUserTeam = projectUser?.Team;
             var projectUserId = projectUser?.Id; 
@@ -87,6 +91,9 @@ namespace Dfe.Complete.Application.Projects.Commands.CreateProject
                 projectUserAssignedToId,
                 assignedAt); 
             
+
+            // Please ensure all modifications to the aggregate root is done via factory methods inside the aggregate class
+
             if (!string.IsNullOrEmpty(request.HandoverComments))
             {
                 project.Notes.Add(new Note

@@ -2,6 +2,8 @@
 
 namespace Dfe.Complete.Domain.Entities;
 
+// Please make sure all other aggregates implement IEntity, e.g. : IEntity<ContactId>
+
 public class Contact
 {
     public ContactId Id { get; set; }

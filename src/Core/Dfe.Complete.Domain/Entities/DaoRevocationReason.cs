@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 
 namespace Dfe.Complete.Infrastructure.Models;
+// Same here missing implementation of IEntity
 
 public class DaoRevocationReason
 {

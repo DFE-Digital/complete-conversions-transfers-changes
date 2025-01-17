@@ -1,6 +1,7 @@
 ﻿using Dfe.Complete.Domain.ValueObjects;
 
 namespace Dfe.Complete.Domain.Entities;
+// Same here missing implementation of IEntity
 
 public class Note
 {

@@ -3,6 +3,9 @@ using System;
 using System.Collections.Generic;
 
 namespace Dfe.Complete.Infrastructure.Models;
+// Same here missing implementation of IEntity
+
+// This is considered an aggregate root as it is not managed by the Project , it should have its own repository/ generic repo
 
 public class ProjectGroup
 {

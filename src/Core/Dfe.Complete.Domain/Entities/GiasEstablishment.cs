@@ -1,6 +1,7 @@
 ﻿using Dfe.Complete.Domain.ValueObjects;
 
 namespace Dfe.Complete.Infrastructure.Models;
+// Same here missing implementation of IEntity
 
 public class GiasEstablishment
 {

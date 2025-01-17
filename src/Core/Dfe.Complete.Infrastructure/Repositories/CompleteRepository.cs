@@ -8,11 +8,20 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Dfe.Complete.Infrastructure.Repositories
 {
+    // same as the interface, this should not contain any methods, please move the methods into their own repository
+
+    // Aggregate root (Project) should have its own repository e.g. ProjectRepository.cs  please refer to
+    // https://github.com/DFE-Digital/rsd-ddd-clean-architecture/blob/main/src/DfE.DomainDrivenDesignTemplate.Infrastructure/Repositories/SchoolRepository.cs
+    // to see how it is implemented
+
     [ExcludeFromCodeCoverage]
     public class CompleteRepository<TAggregate>(CompleteContext dbContext) : Repository<TAggregate, CompleteContext>(dbContext), ICompleteRepository<TAggregate>
         where TAggregate : class, IAggregateRoot
     {
         private readonly CompleteContext _dbContext = dbContext;
+
+        // if the repository method or the query is not complex, please use the generic repository, this reduces code duplication and less coupling with other classes,
+        // As mentioned in the ProjectGroup aggregate class this need to be an aggregate root, either to have its own repository or use the generic repo 
 
         public async Task<ProjectGroupId?> GetProjectGroupIdByIdentifierAsync(string groupIdentifier,
             CancellationToken cancellationToken)
@@ -24,6 +33,16 @@ namespace Dfe.Complete.Infrastructure.Repositories
 
             return projectGroup?.Id; 
         }
+
+        // you can use the generic repo in the above case, like below
+
+        //var projectGroup = await _projectGroupRepository.FindAsync(
+        //    g => g.GroupIdentifier == groupIdentifier,
+        //    cancellationToken);
+
+
+
+        // what do we need from this table, can this be taken from the AD groups/claims?
 
         public async Task<User?> GetUserByAdId(string? userAdId, CancellationToken cancellationToken)
         {
