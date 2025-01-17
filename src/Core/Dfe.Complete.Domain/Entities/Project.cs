@@ -2,7 +2,6 @@
 using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Domain.Events;
 using Dfe.Complete.Domain.ValueObjects;
-using Dfe.Complete.Utils;
 
 namespace Dfe.Complete.Domain.Entities;
 
@@ -74,7 +73,7 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
 
     public string? NewTrustName { get; set; }
 
-    public int State { get; set; }
+    public ProjectState State { get; set; }
 
     public int? PrepareId { get; set; }
 
