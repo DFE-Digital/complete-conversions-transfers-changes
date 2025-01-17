@@ -10,7 +10,7 @@ namespace Dfe.Complete.Infrastructure.Database
     {
         public TContext CreateDbContext(string[] args)
         {
-            var basePath = Path.Combine(Directory.GetCurrentDirectory(), "../Dfe.Complete.Api");
+            var basePath = Path.Combine(Directory.GetCurrentDirectory(), "../../Api/Dfe.Complete.Api");
 
             var environmentName = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? "Production";
 
