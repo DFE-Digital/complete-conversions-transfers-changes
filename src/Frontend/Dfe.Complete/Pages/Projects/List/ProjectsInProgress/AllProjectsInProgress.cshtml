@@ -1,10 +1,15 @@
 ﻿@page "/projects/all/in-progress/all"
-@using Dfe.Complete.Constants;
-@using Dfe.Complete.Domain.Enums
-@model Dfe.Complete.Pages.Projects.List.ProjectsInProgress.AllProjectsInProgressViewModel
+@using Dfe.Complete.Pages.Projects.List
+@model Dfe.Complete.Pages.Projects.List.ProjectsInProgress.ProjectsInProgressInProgressViewModel
 @{
-    Layout = "List/_AllProjectsLayout";
+    Layout = "List/ProjectsInProgress/_ProjectsInProgressLayout";
     ViewData["Title"] = "All projects in progress";
+}
+@section PageHeading
+{
+<h1 class="govuk-heading-xl">
+    All projects in progress
+</h1>
 }
 
 <div class="govuk-grid-column-full">
@@ -23,20 +28,9 @@
 
             @foreach(var project in Model.Projects)
             {
-                string projectSummaryUrl;
-            
-                if (project.ProjectType == ProjectType.Conversion)
-                {
-                    projectSummaryUrl = string.Format(RouteConstants.ConversionProjectTaskList, project.ProjectId);
-                }
-                else
-                {
-                    projectSummaryUrl = string.Format(RouteConstants.TransferProjectTaskList, project.ProjectId);
-                }
-            
                 <tr class="govuk-table__row">
                     <td class="govuk-table__header govuk-table__cell">
-                        <a class="govuk-link" href="@projectSummaryUrl">@project.EstablishmentName</a>
+                        <a class="govuk-link" href="@ProjectsInProgressViewModel.GetProjectSummaryUrl(project)">@project.EstablishmentName</a>
                     </td>
                     <td class="govuk-table__cell">@project.Urn.Value</td>
                     <td class="govuk-table__cell">@project.ConversionOrTransferDate.ToDateMonthYearString()</td>

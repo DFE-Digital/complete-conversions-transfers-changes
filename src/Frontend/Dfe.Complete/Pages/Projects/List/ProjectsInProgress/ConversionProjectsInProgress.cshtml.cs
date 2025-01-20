@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace Dfe.Complete.Pages.Projects.List.ProjectsInProgress
 {
-    public class ConversionProjectsInProgressModel(ISender sender) : AllProjectsViewModel
+    public class ConversionProjectsInProgressInProgressModel(ISender sender) : ProjectsInProgressViewModel
     {
         public List<ListAllProjectsResultModel> Projects { get; set; } = default!;
 

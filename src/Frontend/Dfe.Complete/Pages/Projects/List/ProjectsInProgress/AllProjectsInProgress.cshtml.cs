@@ -7,7 +7,7 @@ using MediatR;
 
 namespace Dfe.Complete.Pages.Projects.List.ProjectsInProgress
 {
-    public class AllProjectsInProgressViewModel(ISender sender) : AllProjectsViewModel
+    public class ProjectsInProgressInProgressViewModel(ISender sender) : ProjectsInProgressViewModel
     {
         public List<ListAllProjectsResultModel> Projects { get; set; } = default!;
 
