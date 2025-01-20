@@ -1,11 +1,12 @@
-using Dfe.Complete.Domain.Enums;
 using DfE.CoreLibs.Testing.AutoFixture.Attributes;
 using Dfe.Complete.Tests.Common.Customizations.Models;
-using Dfe.Complete.Utils;
 using DfE.CoreLibs.Testing.AutoFixture.Customizations;
+using Note = Dfe.Complete.Domain.Entities.Note;
 using Project = Dfe.Complete.Domain.Entities.Project;
 using ProjectId = Dfe.Complete.Domain.ValueObjects.ProjectId;
+using ProjectTeam = Dfe.Complete.Domain.Enums.ProjectTeam;
 using ProjectType = Dfe.Complete.Domain.Enums.ProjectType;
+using Region = Dfe.Complete.Domain.Enums.Region;
 using TaskType = Dfe.Complete.Domain.Enums.TaskType;
 using Ukprn = Dfe.Complete.Domain.ValueObjects.Ukprn;
 using Urn = Dfe.Complete.Domain.ValueObjects.Urn;
@@ -243,15 +244,15 @@ namespace Dfe.Complete.Domain.Tests.Aggregates
             string incomingTrustSharepointLink,
             DateOnly provisionalConversionDate,
             bool handingOverToRegionalCaseworkService,
-            string handoverComments,
             Guid? groupId,
             ProjectTeam team,
             DateTime? assignedAt,
             UserId? assignedToId,
-            UserId? regionalDeliveryOfficer
-        )
+            UserId? regionalDeliveryOfficer)
         {
             // Act & Assert
+            var handoverComment = "handover comment";
+            
             var project = Project.CreateConversionProject(
                 id,
                 urn,
@@ -274,7 +275,8 @@ namespace Dfe.Complete.Domain.Tests.Aggregates
                 team,
                 regionalDeliveryOfficer,
                 assignedToId,
-                assignedAt);
+                assignedAt,
+                handoverComment);
 
             Assert.Equal(urn, project.Urn);
             Assert.Equal(createdAt, project.CreatedAt);
@@ -292,6 +294,7 @@ namespace Dfe.Complete.Domain.Tests.Aggregates
             Assert.Equal(advisoryBoardConditions, project.AdvisoryBoardConditions);
             Assert.Equal(establishmentSharepointLink, project.EstablishmentSharepointLink);
             Assert.Equal(incomingTrustSharepointLink, project.IncomingTrustSharepointLink);
+            Assert.Equal(handoverComment, project.Notes.FirstOrDefault()?.Body);
         }
     }
 }

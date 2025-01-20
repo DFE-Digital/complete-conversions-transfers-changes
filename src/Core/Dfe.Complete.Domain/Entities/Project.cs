@@ -89,17 +89,15 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
 
     public virtual User? Caseworker { get; set; }
 
-
     public virtual ICollection<Contact> Contacts { get; set; } = new List<Contact>();
 
     public virtual ICollection<Note> Notes { get; set; } = new List<Note>();
 
     public virtual User? RegionalDeliveryOfficer { get; set; }
-    
+
     private Project()
     {
     }
-
 
     public Project(ProjectId id,
         Urn urn,
@@ -197,7 +195,7 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
             regionalDeliveryOfficerId,
             assignedToId,
             assignedAt);
-        
+
         if (!string.IsNullOrEmpty(handoverComments))
         {
             project.AddNote(new Note
@@ -218,8 +216,12 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
         {
             Notes.Add(new Note
             {
-                Id = new NoteId(Guid.NewGuid()), CreatedAt = note.CreatedAt, Body = note.Body,
-                ProjectId = note.ProjectId, TaskIdentifier = note.TaskIdentifier, UserId = note.User?.Id
+                Id = new NoteId(Guid.NewGuid()),
+                CreatedAt = note.CreatedAt,
+                Body = note.Body,
+                ProjectId = note.ProjectId,
+                TaskIdentifier = note.TaskIdentifier,
+                UserId = note.User?.Id
             });
         }
     }

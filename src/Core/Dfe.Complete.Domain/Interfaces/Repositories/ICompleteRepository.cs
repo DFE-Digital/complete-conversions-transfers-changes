@@ -7,11 +7,6 @@ namespace Dfe.Complete.Domain.Interfaces.Repositories;
 // This is interface to the generic repository, it should not contain any methods!
 // Please remove the methods and either use the generic version of them or create them in their own repo
 
-public interface ICompleteRepository<TAggregate> : IRepository<TAggregate>
-    where TAggregate : class, IAggregateRoot
+public interface ICompleteRepository<TAggregate> : IRepository<TAggregate> where TAggregate : class, IAggregateRoot
 {
-    Task<ProjectGroupId?> GetProjectGroupIdByIdentifierAsync(string groupIdentifier,
-        CancellationToken cancellationToken);
-
-    Task<User?> GetUserByAdId(string? userAdId, CancellationToken cancellationToken);
 }
