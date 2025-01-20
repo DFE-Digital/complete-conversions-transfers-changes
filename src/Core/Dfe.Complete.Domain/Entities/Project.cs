@@ -96,18 +96,10 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
 
     public virtual User? RegionalDeliveryOfficer { get; set; }
     
-    // Please make sure any modification to the properties or related aggregated is done inside aggregate root via factory methods
-    // this will ensure we always generate a valid and complete object and add it to the events
-
     private Project()
     {
     }
 
-    // Please ensure proper validation is done at domain level and in the factory methods before the object is constructed 
-
-    // You typically need only one constructor, which has nullable parameters if they are needed for different cases.
-    // Factory methods should be tailored to different operations and calling the same constructor.
-    // However in this case, if the difference between Conversion and Transfer is substantial then we can consider creating a specialized constructor for each of them.
 
     public Project(ProjectId id,
         Urn urn,
@@ -128,8 +120,8 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
         string incomingTrustSharepointLink,
         Guid? groupId,
         ProjectTeam? team,
-        UserId? regionalDeliveryOfficerId, 
-        UserId? assignedTo, 
+        UserId? regionalDeliveryOfficerId,
+        UserId? assignedTo,
         DateTime? assignedAt)
     {
         Id = id ?? throw new ArgumentNullException(nameof(id));
@@ -176,10 +168,11 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
         string establishmentSharepointLink,
         string incomingTrustSharepointLink,
         Guid? groupId,
-        ProjectTeam? team, 
+        ProjectTeam? team,
         UserId? regionalDeliveryOfficerId,
-        UserId? assignedToId, 
-        DateTime? assignedAt)
+        UserId? assignedToId,
+        DateTime? assignedAt,
+        string? handoverComments)
     {
         var project = new Project(
             Id,
@@ -201,14 +194,33 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
             incomingTrustSharepointLink,
             groupId,
             team,
-            regionalDeliveryOfficerId, 
-            assignedToId, 
+            regionalDeliveryOfficerId,
+            assignedToId,
             assignedAt);
-
-        // The object added to the events should always match what we will save into the database
+        
+        if (!string.IsNullOrEmpty(handoverComments))
+        {
+            project.AddNote(new Note
+            {
+                CreatedAt = project.CreatedAt, ProjectId = project.Id, Body = handoverComments,
+                TaskIdentifier = "handover", UserId = assignedToId
+            });
+        }
 
         project.AddDomainEvent(new ProjectCreatedEvent(project));
 
         return project;
+    }
+
+    private void AddNote(Note? note)
+    {
+        if (note != null)
+        {
+            Notes.Add(new Note
+            {
+                Id = new NoteId(Guid.NewGuid()), CreatedAt = note.CreatedAt, Body = note.Body,
+                ProjectId = note.ProjectId, TaskIdentifier = note.TaskIdentifier, UserId = note.User?.Id
+            });
+        }
     }
 }

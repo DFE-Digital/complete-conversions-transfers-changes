@@ -25,32 +25,28 @@ namespace Dfe.Complete.Application.Projects.Commands.CreateProject
 
     public class CreateConversionProjectCommandHandler(
         ICompleteRepository<Project> projectRepository,
-        ICompleteRepository<ConversionTasksData> conversionTaskRepository)
+        ICompleteRepository<ConversionTasksData> conversionTaskRepository,
+        ICompleteRepository<ProjectGroup> projectGroupRepository)
         : IRequestHandler<CreateConversionProjectCommand, ProjectId>
     {
         public async Task<ProjectId> Handle(CreateConversionProjectCommand request, CancellationToken cancellationToken)
         {
-
             // The user Team should be moved as a Claim or Group to the Entra (MS AD)
-
-
             var projectUser = await projectRepository.GetUserByAdId(request.UserAdId, cancellationToken);
+
             var projectUserTeam = projectUser?.Team;
-            var projectUserId = projectUser?.Id; 
-            
+            var projectUserId = projectUser?.Id;
+
             var projectTeam = EnumExtensions.FromDescription<ProjectTeam>(projectUserTeam);
             var region = EnumMapper.MapTeamToRegion(projectTeam);
-            // var regionCharValue = region.GetCharValue();
-            
+
             var createdAt = DateTime.UtcNow;
             var conversionTaskId = Guid.NewGuid();
             var projectId = new ProjectId(Guid.NewGuid());
 
             var conversionTask = new ConversionTasksData(new TaskDataId(conversionTaskId), createdAt, createdAt);
 
-            var groupId =
-                await projectRepository.GetProjectGroupIdByIdentifierAsync(request.GroupReferenceNumber,
-                    cancellationToken);
+            var groupId = await GetProjectGroupIdByIdentifierAsync(request.GroupReferenceNumber);
 
             ProjectTeam team;
             DateTime? assignedAt = null;
@@ -66,7 +62,7 @@ namespace Dfe.Complete.Application.Projects.Commands.CreateProject
                 assignedAt = DateTime.UtcNow;
                 projectUserAssignedToId = projectUserId;
             }
-            
+
             var project = Project.CreateConversionProject(
                 projectId,
                 request.Urn,
@@ -89,24 +85,18 @@ namespace Dfe.Complete.Application.Projects.Commands.CreateProject
                 team,
                 projectUser?.Id,
                 projectUserAssignedToId,
-                assignedAt); 
-            
+                assignedAt,
+                request.HandoverComments);
 
-            // Please ensure all modifications to the aggregate root is done via factory methods inside the aggregate class
-
-            if (!string.IsNullOrEmpty(request.HandoverComments))
-            {
-                project.Notes.Add(new Note
-                {
-                    Id = new NoteId(Guid.NewGuid()), CreatedAt = createdAt, Body = request.HandoverComments,
-                    ProjectId = projectId, TaskIdentifier = "handover", UserId = projectUser?.Id
-                });
-            }
-            
             await conversionTaskRepository.AddAsync(conversionTask, cancellationToken);
             await projectRepository.AddAsync(project, cancellationToken);
 
             return project.Id;
         }
+
+        // private async Task<User> GetUserByAdId(string userAdId) => (await projectRepository.FindAsync(x => x.AssignedTo.))
+
+        private async Task<ProjectGroupId> GetProjectGroupIdByIdentifierAsync(string groupReferenceNumber) =>
+            (await projectGroupRepository.FindAsync(x => x.GroupIdentifier == groupReferenceNumber)).Id;
     }
 }

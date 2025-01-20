@@ -33,15 +33,7 @@ namespace Dfe.Complete.Infrastructure.Repositories
 
             return projectGroup?.Id; 
         }
-
-        // you can use the generic repo in the above case, like below
-
-        //var projectGroup = await _projectGroupRepository.FindAsync(
-        //    g => g.GroupIdentifier == groupIdentifier,
-        //    cancellationToken);
-
-
-
+        
         // what do we need from this table, can this be taken from the AD groups/claims?
 
         public async Task<User?> GetUserByAdId(string? userAdId, CancellationToken cancellationToken)

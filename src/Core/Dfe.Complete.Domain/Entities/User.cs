@@ -1,10 +1,9 @@
-﻿using Dfe.Complete.Domain.ValueObjects;
-using Dfe.Complete.Infrastructure.Models;
+﻿using Dfe.Complete.Domain.Common;
+using Dfe.Complete.Domain.ValueObjects;
 
 namespace Dfe.Complete.Domain.Entities;
-// Same here missing implementation of IEntity
 
-public class User
+public class User : IEntity<UserId>
 {
     public UserId Id { get; set; }
 

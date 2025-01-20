@@ -1,13 +1,11 @@
-﻿using Dfe.Complete.Domain.ValueObjects;
-using System;
-using System.Collections.Generic;
+﻿using Dfe.Complete.Domain.Common;
+using Dfe.Complete.Domain.ValueObjects;
 
-namespace Dfe.Complete.Infrastructure.Models;
-// Same here missing implementation of IEntity
+namespace Dfe.Complete.Domain.Entities;
 
 // This is considered an aggregate root as it is not managed by the Project , it should have its own repository/ generic repo
 
-public class ProjectGroup
+public class ProjectGroup : BaseAggregateRoot, IEntity<ProjectGroupId>
 {
     public ProjectGroupId Id { get; set; }
 
