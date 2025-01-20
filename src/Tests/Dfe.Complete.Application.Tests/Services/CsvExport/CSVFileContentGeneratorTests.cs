@@ -4,7 +4,7 @@ namespace Dfe.Complete.Application.Tests.Services.CsvExport
 {
     internal record TestModel(string SchoolName, int SchoolUrn, string ProjectType, string AcademyName, int AcademyUrn);
 
-    internal class TestHeaderGenerator : HeaderGenerator<TestModel>
+    internal class TestHeaderGenerator : IHeaderGenerator<TestModel>
     {
         public string GenerateHeader()
         {
@@ -12,7 +12,7 @@ namespace Dfe.Complete.Application.Tests.Services.CsvExport
         }
     }
 
-    internal class TestRowGenerator : RowGenerator<TestModel>
+    internal class TestRowGenerator : IRowGenerator<TestModel>
     {
         public string GenerateRow(TestModel model)
         {

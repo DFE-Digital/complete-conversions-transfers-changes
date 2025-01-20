@@ -6,18 +6,12 @@ using System.Threading.Tasks;
 
 namespace Dfe.Complete.Application.Services.CsvExport
 {
-    public interface HeaderGenerator<TModel>
+    public interface ICSVFileContentGenerator<TModel>
     {
-        string GenerateHeader();
+        string Generate(IEnumerable<TModel> models);
     }
 
-    public interface RowGenerator<TModel>
-    {
-        string GenerateRow(TModel model);
-    }
-
-
-    public class CSVFileContentGenerator<TModel>(HeaderGenerator<TModel> header, RowGenerator<TModel> rowGenerator)
+    public class CSVFileContentGenerator<TModel>(IHeaderGenerator<TModel> header, IRowGenerator<TModel> rowGenerator) : ICSVFileContentGenerator<TModel>
     {
         public string Generate(IEnumerable<TModel> models)
         {
