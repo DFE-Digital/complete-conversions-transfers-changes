@@ -266,8 +266,12 @@
                 "nullable": true
               },
               "region": {
-                "type": "string",
-                "nullable": true
+                "nullable": true,
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/Region"
+                  }
+                ]
               },
               "academyUrn": {
                 "nullable": true,
@@ -299,8 +303,12 @@
                 ]
               },
               "team": {
-                "type": "string",
-                "nullable": true
+                "nullable": true,
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/ProjectTeam"
+                  }
+                ]
               },
               "twoRequiresImprovement": {
                 "type": "boolean",
@@ -438,6 +446,32 @@
           "Transfer"
         ]
       },
+      "Region": {
+        "type": "string",
+        "description": "",
+        "x-enumNames": [
+          "NorthEast",
+          "NorthWest",
+          "YorkshireAndTheHumber",
+          "EastMidlands",
+          "WestMidlands",
+          "EastOfEngland",
+          "London",
+          "SouthEast",
+          "SouthWest"
+        ],
+        "enum": [
+          "NorthEast",
+          "NorthWest",
+          "YorkshireAndTheHumber",
+          "EastMidlands",
+          "WestMidlands",
+          "EastOfEngland",
+          "London",
+          "SouthEast",
+          "SouthWest"
+        ]
+      },
       "TaskType": {
         "type": "string",
         "description": "",
@@ -448,6 +482,36 @@
         "enum": [
           "Conversion",
           "Transfer"
+        ]
+      },
+      "ProjectTeam": {
+        "type": "string",
+        "description": "",
+        "x-enumNames": [
+          "RegionalCaseWorkerServices",
+          "ServiceSupport",
+          "London",
+          "SouthEast",
+          "YorkshireAndTheHumber",
+          "NorthWest",
+          "EastOfEngland",
+          "WestMidlands",
+          "NorthEast",
+          "SouthWest",
+          "EastMidlands"
+        ],
+        "enum": [
+          "RegionalCaseWorkerServices",
+          "ServiceSupport",
+          "London",
+          "SouthEast",
+          "YorkshireAndTheHumber",
+          "NorthWest",
+          "EastOfEngland",
+          "WestMidlands",
+          "NorthEast",
+          "SouthWest",
+          "EastMidlands"
         ]
       },
       "ContactId": {

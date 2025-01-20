@@ -2,7 +2,6 @@
 using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Domain.Events;
 using Dfe.Complete.Domain.ValueObjects;
-using Dfe.Complete.Utils;
 
 namespace Dfe.Complete.Domain.Entities;
 
@@ -44,7 +43,7 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
 
     public bool? DirectiveAcademyOrder { get; set; }
 
-    public string? Region { get; set; }
+    public Region? Region { get; set; }
 
     public Urn? AcademyUrn { get; set; }
 
@@ -54,7 +53,7 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
 
     public Ukprn? OutgoingTrustUkprn { get; set; }
 
-    public string? Team { get; set; }
+    public ProjectTeam? Team { get; set; }
 
     public bool? TwoRequiresImprovement { get; set; }
 
@@ -74,7 +73,7 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
 
     public string? NewTrustName { get; set; }
 
-    public int State { get; set; }
+    public ProjectState State { get; set; }
 
     public int? PrepareId { get; set; }
 
@@ -106,7 +105,7 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
         DateOnly significantDate,
         bool isSignificantDateProvisional,
         Ukprn incomingTrustUkprn,
-        string? region,
+        Region? region,
         bool isDueTo2RI,
         bool hasAcademyOrderBeenIssued,
         DateOnly advisoryBoardDate,
@@ -114,7 +113,7 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
         string establishmentSharepointLink,
         string incomingTrustSharepointLink,
         Guid? groupId,
-        string team,
+        ProjectTeam? team,
         UserId? regionalDeliveryOfficerId, 
         UserId? assignedTo, 
         DateTime? assignedAt)
@@ -155,7 +154,7 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
         DateOnly significantDate,
         bool isSignificantDateProvisional,
         Ukprn incomingTrustUkprn,
-        string? region,
+        Region? region,
         bool isDueTo2RI,
         bool hasAcademyOrderBeenIssued,
         DateOnly advisoryBoardDate,
@@ -163,7 +162,7 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
         string establishmentSharepointLink,
         string incomingTrustSharepointLink,
         Guid? groupId,
-        string team, 
+        ProjectTeam? team, 
         UserId? regionalDeliveryOfficerId,
         UserId? assignedToId, 
         DateTime? assignedAt)

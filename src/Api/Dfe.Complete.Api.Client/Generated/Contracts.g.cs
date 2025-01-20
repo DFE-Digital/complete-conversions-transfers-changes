@@ -254,7 +254,8 @@ namespace Dfe.Complete.Client.Contracts
         public bool? DirectiveAcademyOrder { get; set; } = default!;
 
         [Newtonsoft.Json.JsonProperty("region", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string? Region { get; set; } = default!;
+        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
+        public Region? Region { get; set; } = default!;
 
         [Newtonsoft.Json.JsonProperty("academyUrn", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public Urn? AcademyUrn { get; set; } = default!;
@@ -270,7 +271,8 @@ namespace Dfe.Complete.Client.Contracts
         public Ukprn? OutgoingTrustUkprn { get; set; } = default!;
 
         [Newtonsoft.Json.JsonProperty("team", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string? Team { get; set; } = default!;
+        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
+        public ProjectTeam? Team { get; set; } = default!;
 
         [Newtonsoft.Json.JsonProperty("twoRequiresImprovement", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public bool? TwoRequiresImprovement { get; set; } = default!;
@@ -375,6 +377,39 @@ namespace Dfe.Complete.Client.Contracts
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.1.0.0 (NJsonSchema v11.0.2.0 (Newtonsoft.Json v13.0.0.0))")]
+    public enum Region
+    {
+
+        [System.Runtime.Serialization.EnumMember(Value = @"NorthEast")]
+        NorthEast = 0,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"NorthWest")]
+        NorthWest = 1,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"YorkshireAndTheHumber")]
+        YorkshireAndTheHumber = 2,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"EastMidlands")]
+        EastMidlands = 3,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"WestMidlands")]
+        WestMidlands = 4,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"EastOfEngland")]
+        EastOfEngland = 5,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"London")]
+        London = 6,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"SouthEast")]
+        SouthEast = 7,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"SouthWest")]
+        SouthWest = 8,
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.1.0.0 (NJsonSchema v11.0.2.0 (Newtonsoft.Json v13.0.0.0))")]
     public enum TaskType
     {
 
@@ -383,6 +418,45 @@ namespace Dfe.Complete.Client.Contracts
 
         [System.Runtime.Serialization.EnumMember(Value = @"Transfer")]
         Transfer = 1,
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.1.0.0 (NJsonSchema v11.0.2.0 (Newtonsoft.Json v13.0.0.0))")]
+    public enum ProjectTeam
+    {
+
+        [System.Runtime.Serialization.EnumMember(Value = @"RegionalCaseWorkerServices")]
+        RegionalCaseWorkerServices = 0,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"ServiceSupport")]
+        ServiceSupport = 1,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"London")]
+        London = 2,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"SouthEast")]
+        SouthEast = 3,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"YorkshireAndTheHumber")]
+        YorkshireAndTheHumber = 4,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"NorthWest")]
+        NorthWest = 5,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"EastOfEngland")]
+        EastOfEngland = 6,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"WestMidlands")]
+        WestMidlands = 7,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"NorthEast")]
+        NorthEast = 8,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"SouthWest")]
+        SouthWest = 9,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"EastMidlands")]
+        EastMidlands = 10,
 
     }
 

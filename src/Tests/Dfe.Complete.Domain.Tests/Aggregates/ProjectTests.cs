@@ -1,3 +1,4 @@
+using Dfe.Complete.Domain.Enums;
 using DfE.CoreLibs.Testing.AutoFixture.Attributes;
 using Dfe.Complete.Tests.Common.Customizations.Models;
 using Dfe.Complete.Utils;
@@ -26,7 +27,7 @@ namespace Dfe.Complete.Domain.Tests.Aggregates
             DateOnly significantDate,
             bool isSignificantDateProvisional,
             Ukprn incomingTrustUkprn,
-            string region,
+            Region region,
             bool isDueTo2RI,
             bool hasAcademyOrderBeenIssued,
             DateOnly advisoryBoardDate,
@@ -56,7 +57,7 @@ namespace Dfe.Complete.Domain.Tests.Aggregates
                     establishmentSharepointLink,
                     incomingTrustSharepointLink,
                     null,
-                    "",
+                    default,
                     null,
                     null,
                     null));
@@ -76,7 +77,7 @@ namespace Dfe.Complete.Domain.Tests.Aggregates
             DateOnly significantDate,
             bool isSignificantDateProvisional,
             Ukprn incomingTrustUkprn,
-            string region,
+            Region region,
             bool isDueTo2RI,
             bool hasAcademyOrderBeenIssued,
             DateOnly advisoryBoardDate,
@@ -106,7 +107,7 @@ namespace Dfe.Complete.Domain.Tests.Aggregates
                     establishmentSharepointLink,
                     incomingTrustSharepointLink,
                     null,
-                    "",
+                    default,
                     null,
                     null,
                     null));
@@ -126,7 +127,7 @@ namespace Dfe.Complete.Domain.Tests.Aggregates
             DateOnly significantDate,
             bool isSignificantDateProvisional,
             Ukprn incomingTrustUkprn,
-            string region,
+            Region region,
             bool isDueTo2RI,
             bool hasAcademyOrderBeenIssued,
             DateOnly advisoryBoardDate,
@@ -156,7 +157,7 @@ namespace Dfe.Complete.Domain.Tests.Aggregates
                     establishmentSharepointLink,
                     incomingTrustSharepointLink,
                     null,
-                    "",
+                    default,
                     null,
                     null,
                     null));
@@ -178,7 +179,7 @@ namespace Dfe.Complete.Domain.Tests.Aggregates
             DateOnly significantDate,
             bool isSignificantDateProvisional,
             Ukprn incomingTrustUkprn,
-            string region,
+            Region region,
             bool isDueTo2RI,
             bool hasAcademyOrderBeenIssued,
             DateOnly advisoryBoardDate,
@@ -186,7 +187,7 @@ namespace Dfe.Complete.Domain.Tests.Aggregates
             string establishmentSharepointLink,
             string incomingTrustSharepointLink,
             Guid? groupId,
-            string team,
+            ProjectTeam team,
             DateTime? assignedAt,
             UserId? assignedToId,
             UserId? regionalDeliveryOfficer
@@ -233,7 +234,7 @@ namespace Dfe.Complete.Domain.Tests.Aggregates
             DateOnly significantDate,
             bool isSignificantDateProvisional,
             Ukprn incomingTrustUkprn,
-            string region,
+            Region region,
             bool isDueTo2RI,
             bool hasAcademyOrderBeenIssued,
             DateOnly advisoryBoardDate,
@@ -244,7 +245,7 @@ namespace Dfe.Complete.Domain.Tests.Aggregates
             bool handingOverToRegionalCaseworkService,
             string handoverComments,
             Guid? groupId,
-            string team,
+            ProjectTeam team,
             DateTime? assignedAt,
             UserId? assignedToId,
             UserId? regionalDeliveryOfficer

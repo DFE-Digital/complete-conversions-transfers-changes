@@ -1,11 +1,13 @@
+using Dfe.Complete.Application.Projects.Interfaces;
 using Dfe.Complete.Domain.Interfaces.Repositories;
 using Dfe.Complete.Infrastructure.Database;
+using Dfe.Complete.Infrastructure.QueryServices;
 using Dfe.Complete.Infrastructure.Repositories;
-using Dfe.Complete.Infrastructure.Security.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 
-namespace Microsoft.Extensions.DependencyInjection
+namespace Dfe.Complete.Infrastructure
 {
     public static class InfrastructureServiceCollectionExtensions
     {
@@ -22,6 +24,10 @@ namespace Microsoft.Extensions.DependencyInjection
             var connectionString = config.GetConnectionString("DefaultConnection");
 
             services.AddDbContext<CompleteContext>(options => options.UseSqlServer(connectionString));
+            
+            
+            //Queries
+            services.AddScoped<IListAllProjectsQueryService, ListAllProjectsQueryService>();
 
             // Authentication
             //services.AddCustomAuthorization(config);

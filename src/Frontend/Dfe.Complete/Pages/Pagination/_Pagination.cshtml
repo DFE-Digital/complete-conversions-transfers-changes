@@ -5,12 +5,12 @@
 
     var ariaDisabled = "aria-disabled=true";
 
-    var nextPageLink = $"{Model.Url}&pageNumber={Model.Next}";
+    var nextPageLink = $"{Model.Url}?pageNumber={Model.Next}";
     var nextDisabled = !Model.Next.HasValue;
     var nextDisabledStyle = nextDisabled ? "govuk-pagination__link-disabled aria-disabled=true" : "";
     var nextDisabledAria = nextDisabled ? ariaDisabled : "";
 
-    var previousPageLink = $"{Model.Url}&pageNumber={Model.Previous}";
+    var previousPageLink = $"{Model.Url}?pageNumber={Model.Previous}";
     var previousDisabled = !Model.Previous.HasValue;
     var previousDisabledStyle = previousDisabled ? "govuk-pagination__link-disabled aria-disabled=true" : "";
     var previousDisabledAria = previousDisabled ? ariaDisabled : "";
@@ -67,7 +67,7 @@
                             </li>
                         }
                         <li class="govuk-pagination__item @markAsSelected">
-                            <a class="govuk-link govuk-pagination__link" href="@Model.Url&pageNumber=@pageNumber" @ariaCurrentPage
+                            <a class="govuk-link govuk-pagination__link" href="@Model.Url?pageNumber=@pageNumber" @ariaCurrentPage
                                aria-label="@ariaLabel" id="@pageNumberLinkId" data-testid="@pageNumberLinkId"
                                data-page-number-link="@pageNumber">
                                 @pageNumber
@@ -100,55 +100,55 @@
         </div>
     </nav>
     // When pagination is used on the screen without a full page refresh
-    if (!string.IsNullOrEmpty(Model.ContentContainerId))
-    {
-        <script type="application/javascript" nonce="@nonce">
-
-            $(function () {
-                onPageMoved();
-
-                function onPageMoved() {
-                    $("#@nextButtonId").on("click", function (e) {
-                        e.preventDefault();
-
-                        const pageNumber = $('#@nextPageValueId').val();
-
-                        refreshContent(pageNumber);
-                    });
-
-                    $("#@previousButtonId").on("click", function (e) {
-                        e.preventDefault();
-
-                        const pageNumber = $('#@previousPageValueId').val();
-
-                        refreshContent(pageNumber);
-                    });
-
-                    var numberedPageLinks = $('#@paginationContainerId').find('[data-page-number-link]');
-
-                    numberedPageLinks.each(function () {
-                        const pageNumber = $(this).data('page-number-link');
-
-                        $(this).click(function (e) {
-
-                            e.preventDefault();
-
-                            refreshContent(pageNumber);
-                        });
-                    });
-                }
-
-                function refreshContent(pageNumber) {
-
-                    const url = `@Html.Raw(Model.Url)&pageNumber=${pageNumber}`;
-
-                    $.get(url)
-                        .done(function (response) {
-                            $("#@Model.ContentContainerId").html(response);
-                            onPageMoved();
-                        });
-                }
-            });
-        </script>
-    }
+    @* if (!string.IsNullOrEmpty(Model.ContentContainerId)) *@
+    @* { *@
+    @*     <script type="application/javascript" nonce="@nonce"> *@
+    @* *@
+    @*         $(function () { *@
+    @*             onPageMoved(); *@
+    @* *@
+    @*             function onPageMoved() { *@
+    @*                 $("#@nextButtonId").on("click", function (e) { *@
+    @*                     e.preventDefault(); *@
+    @* *@
+    @*                     const pageNumber = $('#@nextPageValueId').val(); *@
+    @* *@
+    @*                     refreshContent(pageNumber); *@
+    @*                 }); *@
+    @* *@
+    @*                 $("#@previousButtonId").on("click", function (e) { *@
+    @*                     e.preventDefault(); *@
+    @* *@
+    @*                     const pageNumber = $('#@previousPageValueId').val(); *@
+    @* *@
+    @*                     refreshContent(pageNumber); *@
+    @*                 }); *@
+    @* *@
+    @*                 var numberedPageLinks = $('#@paginationContainerId').find('[data-page-number-link]'); *@
+    @* *@
+    @*                 numberedPageLinks.each(function () { *@
+    @*                     const pageNumber = $(this).data('page-number-link'); *@
+    @* *@
+    @*                     $(this).click(function (e) { *@
+    @* *@
+    @*                         e.preventDefault(); *@
+    @* *@
+    @*                         refreshContent(pageNumber); *@
+    @*                     }); *@
+    @*                 }); *@
+    @*             } *@
+    @* *@
+    @*             function refreshContent(pageNumber) { *@
+    @* *@
+    @*                 const url = `@Html.Raw(Model.Url)?pageNumber=${pageNumber}`; *@
+    @* *@
+    @*                 $.get(url) *@
+    @*                     .done(function (response) { *@
+    @*                         $("#@Model.ContentContainerId").html(response); *@
+    @*                         onPageMoved(); *@
+    @*                     }); *@
+    @*             } *@
+    @*         }); *@
+    @*     </script> *@
+    @* } *@
 }

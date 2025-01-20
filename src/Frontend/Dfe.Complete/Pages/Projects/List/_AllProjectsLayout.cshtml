@@ -1,0 +1,33 @@
+﻿@model Dfe.Complete.Pages.Projects.List.AllProjectsViewModel
+@{
+  Layout = "Shared/_Layout";
+}
+
+<nav class="moj-sub-navigation" aria-label="Project sub-navigation">
+  <ul class="moj-sub-navigation__list">
+
+    <li class="moj-sub-navigation__item">
+      <a class="moj-sub-navigation__link" href="/projects/all/in-progress/all">All projects</a>
+    </li>
+
+    <li class="moj-sub-navigation__item">
+      <a class="moj-sub-navigation__link" href="/projects/all/in-progress/conversions">Conversions</a>
+    </li>
+
+    <li class="moj-sub-navigation__item">
+      <a class="moj-sub-navigation__link" href="/projects/all/in-progress/transfers">Transfers</a>
+    </li>
+
+    <li class="moj-sub-navigation__item">
+      <a class="moj-sub-navigation__link" href="/projects/all/in-progress/form-a-multi-academy-trust">Form a MAT</a>
+    </li>
+
+
+  </ul>
+</nav>
+<div>
+  @RenderBody()
+</div>
+
+@await Html.PartialAsync("/Pages/Pagination/_Pagination.cshtml", model: Model.Pagination)
+@* <partial name="/Pages/Pagination/_Pagination.cshtml" model="Model.Pagination" /> *@
