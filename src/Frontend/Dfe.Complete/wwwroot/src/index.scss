@@ -1,6 +1,19 @@
 ﻿/* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
 for details on configuring this project to bundle and minify static web assets. */
-@import "node_modules/govuk-frontend/govuk/all.scss";
+
+// override the default page width
+$govuk-page-width: 1200px;
+$moj-page-width: $govuk-page-width;
+
+
+// get the Inter font
+@import url("https://rsms.me/inter/inter.css");
+
+// Use the DfE font 'Inter', do not user GDS Transport
+$govuk-font-family: "Inter", sans-serif;
+
+
+@import "node_modules/govuk-frontend/dist/govuk/all.scss";
 @import "node_modules/@ministryofjustice/frontend/moj/all.scss";
 @import "./css/attachment.scss";
 @import "./css/related-items.scss";
@@ -11,7 +24,7 @@ for details on configuring this project to bundle and minify static web assets. 
 @import "./css/risk.scss";
 @import "./css/project-overview.scss";
 @import "./css/pupil-numbers.scss";
-@import "./css//pagination.scss";
+@import "./css/pagination.scss";
 
 .moj-sub-navigation__link {
 	font-weight: bold;
