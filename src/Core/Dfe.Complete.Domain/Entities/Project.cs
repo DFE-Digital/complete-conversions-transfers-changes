@@ -2,6 +2,7 @@
 using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Domain.Events;
 using Dfe.Complete.Domain.ValueObjects;
+using Dfe.Complete.Infrastructure.Models;
 using Dfe.Complete.Utils;
 
 namespace Dfe.Complete.Domain.Entities;
@@ -80,11 +81,14 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
 
     public ContactId? LocalAuthorityMainContactId { get; set; }
 
+    // This should be set to value object as you have already done this in ProjectGroup
+
     public Guid? GroupId { get; set; }
 
     public virtual User? AssignedTo { get; set; }
 
     public virtual User? Caseworker { get; set; }
+
 
     public virtual ICollection<Contact> Contacts { get; set; } = new List<Contact>();
 
@@ -92,9 +96,18 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
 
     public virtual User? RegionalDeliveryOfficer { get; set; }
     
+    // Please make sure any modification to the properties or related aggregated is done inside aggregate root via factory methods
+    // this will ensure we always generate a valid and complete object and add it to the events
+
     private Project()
     {
     }
+
+    // Please ensure proper validation is done at domain level and in the factory methods before the object is constructed 
+
+    // You typically need only one constructor, which has nullable parameters if they are needed for different cases.
+    // Factory methods should be tailored to different operations and calling the same constructor.
+    // However in this case, if the difference between Conversion and Transfer is substantial then we can consider creating a specialized constructor for each of them.
 
     public Project(ProjectId id,
         Urn urn,
@@ -191,6 +204,8 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
             regionalDeliveryOfficerId, 
             assignedToId, 
             assignedAt);
+
+        // The object added to the events should always match what we will save into the database
 
         project.AddDomainEvent(new ProjectCreatedEvent(project));
 
