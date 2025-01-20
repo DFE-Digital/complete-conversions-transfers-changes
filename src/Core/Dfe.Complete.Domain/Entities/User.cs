@@ -3,7 +3,7 @@ using Dfe.Complete.Domain.ValueObjects;
 
 namespace Dfe.Complete.Domain.Entities;
 
-public class User : IEntity<UserId>
+public class User : BaseAggregateRoot, IEntity<UserId>
 {
     public UserId Id { get; set; }
 

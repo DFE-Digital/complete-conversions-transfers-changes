@@ -26,15 +26,16 @@ namespace Dfe.Complete.Application.Projects.Commands.CreateProject
     public class CreateConversionProjectCommandHandler(
         ICompleteRepository<Project> projectRepository,
         ICompleteRepository<ConversionTasksData> conversionTaskRepository,
-        ICompleteRepository<ProjectGroup> projectGroupRepository)
+        ICompleteRepository<ProjectGroup> projectGroupRepository,
+        ICompleteRepository<User> userRepository)
         : IRequestHandler<CreateConversionProjectCommand, ProjectId>
     {
         public async Task<ProjectId> Handle(CreateConversionProjectCommand request, CancellationToken cancellationToken)
         {
             // The user Team should be moved as a Claim or Group to the Entra (MS AD)
-            var projectUser = await projectRepository.GetUserByAdId(request.UserAdId, cancellationToken);
+            var projectUser = await GetUserByAdId(request.UserAdId);
 
-            var projectUserTeam = projectUser?.Team;
+            var projectUserTeam = projectUser.Team;
             var projectUserId = projectUser?.Id;
 
             var projectTeam = EnumExtensions.FromDescription<ProjectTeam>(projectUserTeam);
@@ -51,7 +52,7 @@ namespace Dfe.Complete.Application.Projects.Commands.CreateProject
             ProjectTeam team;
             DateTime? assignedAt = null;
             UserId? projectUserAssignedToId = null;
-
+            
             if (request.HandingOverToRegionalCaseworkService)
             {
                 team = ProjectTeam.RegionalCaseWorkerServices;
@@ -94,9 +95,8 @@ namespace Dfe.Complete.Application.Projects.Commands.CreateProject
             return project.Id;
         }
 
-        // private async Task<User> GetUserByAdId(string userAdId) => (await projectRepository.FindAsync(x => x.AssignedTo.))
+        private async Task<User> GetUserByAdId(string? userAdId) => await userRepository.FindAsync(x => x.ActiveDirectoryUserId == userAdId);
 
-        private async Task<ProjectGroupId> GetProjectGroupIdByIdentifierAsync(string groupReferenceNumber) =>
-            (await projectGroupRepository.FindAsync(x => x.GroupIdentifier == groupReferenceNumber)).Id;
+        private async Task<ProjectGroupId> GetProjectGroupIdByIdentifierAsync(string groupReferenceNumber) => (await projectGroupRepository.FindAsync(x => x.GroupIdentifier == groupReferenceNumber)).Id;
     }
 }
