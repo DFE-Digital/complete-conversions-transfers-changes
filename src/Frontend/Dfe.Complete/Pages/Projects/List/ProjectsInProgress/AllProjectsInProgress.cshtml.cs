@@ -19,7 +19,7 @@ namespace Dfe.Complete.Pages.Projects.List.ProjectsInProgress
             var listResponse = await sender.Send(listProjectQuery);
             Projects = listResponse.Value ?? [];
             
-            var countProjectQuery = new CountProjectQuery(ProjectState.Active, null);
+            var countProjectQuery = new CountAllProjectsQuery(ProjectState.Active, null);
             var countResponse = await sender.Send(countProjectQuery);
 
             Pagination = new PaginationModel("/projects/all/in-progress/all" ,PageNumber, countResponse.Value, PageSize);

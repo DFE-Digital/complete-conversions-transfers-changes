@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Dfe.Complete.Application.Projects.Queries.CountProjects
 {
-    public record CountProjectQuery(ProjectState? ProjectStatus, ProjectType? Type)
+    public record CountAllProjectsQuery(ProjectState? ProjectStatus, ProjectType? Type)
         : IRequest<Result<int>>
     {
         public override string ToString()
@@ -17,15 +17,15 @@ namespace Dfe.Complete.Application.Projects.Queries.CountProjects
         }
     }
 
-    public class CountProjectsQueryHandler(
+    public class CountAllProjectsQueryHandler(
         IListAllProjectsQueryService listAllProjectsQueryService,
         ICacheService<IMemoryCacheType> cacheService)
-        : IRequestHandler<CountProjectQuery, Result<int>>
+        : IRequestHandler<CountAllProjectsQuery, Result<int>>
     {
-        public async Task<Result<int>> Handle(CountProjectQuery request, CancellationToken cancellationToken)
+        public async Task<Result<int>> Handle(CountAllProjectsQuery request, CancellationToken cancellationToken)
         {
             var cacheKey = $"Project_{CacheKeyHelper.GenerateHashedCacheKey(request.ToString())}";
-            var methodName = nameof(CountProjectsQueryHandler);
+            var methodName = nameof(CountAllProjectsQueryHandler);
             return await cacheService.GetOrAddAsync(cacheKey, async () =>
             {
                 try
