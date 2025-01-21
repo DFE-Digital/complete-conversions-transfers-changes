@@ -1,55 +1,21 @@
 ﻿using Dfe.Complete.Application.Common.Models;
+using Dfe.Complete.Application.Services.CsvExport.Builders;
 using System.Text;
 
 namespace Dfe.Complete.Application.Services.CsvExport.Conversion
 {
-
-    public interface IColumnBuilder<T>
-    {
-        string Build(T value);
-    }
-
-    public class BlankIfEmpty<T>(Func<T, object?> func): IColumnBuilder<T>
-    {
-        public string Build(T input)
-        {
-            object? value = func(input);
-
-            if(value == null)
-            {
-                return string.Empty;
-            }
-            else
-            {
-                return value.ToString();
-            }
-        }
-    }
-
-    public class FormAMat() : IColumnBuilder<ConversionCsvModel>
-    {
-        public string Build(ConversionCsvModel input)
-        {
-            var projectType = input.Project.Type;
-
-            if (projectType == Domain.Enums.ProjectType.Conversion)
-            {
-                return "join a MAT";
-            }
-            else
-            {
-                return "form a MAT";
-            }
-        }
-    }
-
     public class ConversionRowGenerator : IRowGenerator<ConversionCsvModel>
     {
+        private const string Unconfirmed = "unconfirmed";
+
         private IColumnBuilder<ConversionCsvModel>[] _columnBuilders =
             [
-                new BlankIfEmpty<ConversionCsvModel>(x => x.Establishment.Name),
+                new BlankIfEmpty<ConversionCsvModel>(x => x.CurrentSchool.Name),
                 new BlankIfEmpty<ConversionCsvModel>(x => x.Project.Urn),
-                
+                new ProjectTypeBuilder(),
+                new DefaultIf<ConversionCsvModel>(x => x.Project.AcademyUrn == null, x => x.Academy.Name, Unconfirmed),
+                new DefaultIf<ConversionCsvModel>(x => x.Project.AcademyUrn == null, x => x.Academy.Urn, Unconfirmed),
+                new DfeNumberLAESTABBuilder(),
             ];
 
 

@@ -2,7 +2,7 @@
 
 namespace Dfe.Complete.Application.Common.Models
 {
-    public record ConversionCsvModel(Project Project, GiasEstablishment Establishment);
+    public record ConversionCsvModel(Project Project, GiasEstablishment CurrentSchool, GiasEstablishment Academy);
 
     //public class ConversionCsvModel
     //{
