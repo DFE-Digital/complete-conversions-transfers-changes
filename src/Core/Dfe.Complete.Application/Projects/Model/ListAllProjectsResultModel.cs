@@ -12,4 +12,4 @@ public record ListAllProjectsResultModel(
     ProjectState State,
     ProjectType? ProjectType,
     bool IsFormAMAT,
-    User? AssignedTo);
+    string? AssignedToFullName);

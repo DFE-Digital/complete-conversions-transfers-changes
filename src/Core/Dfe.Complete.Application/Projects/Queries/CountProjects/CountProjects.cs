@@ -8,12 +8,12 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Dfe.Complete.Application.Projects.Queries.CountProjects
 {
-    public record CountProjectQuery(ProjectState? ProjectStatus, ProjectType? Type, bool? IncludeFormAMat)
+    public record CountProjectQuery(ProjectState? ProjectStatus, ProjectType? Type)
         : IRequest<Result<int>>
     {
         public override string ToString()
         {
-            return $"{ProjectStatus.ToString()}{Type.ToString()}{IncludeFormAMat.ToString()}";
+            return $"{ProjectStatus.ToString()}{Type.ToString()}";
         }
     }
 
@@ -31,7 +31,7 @@ namespace Dfe.Complete.Application.Projects.Queries.CountProjects
                 try
                 {
                     var result = await listAllProjectsQueryService
-                        .ListAllProjects(request.ProjectStatus, request.Type, request.IncludeFormAMat)
+                        .ListAllProjects(request.ProjectStatus, request.Type)
                         .CountAsync(cancellationToken);
                     return Result<int>.Success(result);
                 }

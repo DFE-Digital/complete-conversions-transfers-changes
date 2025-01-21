@@ -17,12 +17,12 @@ namespace Dfe.Complete.Pages.Projects.List.ProjectsInProgress
         public async Task OnGet()
         {
             //TODO: Review pagination logic
-            var listProjectQuery = new ListAllProjectsQuery(ProjectState.Active, ProjectType.Transfer, null, PageNumber-1, PageSize);
+            var listProjectQuery = new ListAllProjectsQuery(ProjectState.Active, ProjectType.Transfer, PageNumber-1, PageSize);
 
             var response = await sender.Send(listProjectQuery);
             Projects = response.Value?.ToList() ?? [];
             
-            var countProjectQuery = new CountProjectQuery(ProjectState.Active, ProjectType.Transfer, null);
+            var countProjectQuery = new CountProjectQuery(ProjectState.Active, ProjectType.Transfer);
             var countResponse = await sender.Send(countProjectQuery);
 
             Pagination = new PaginationModel("/projects/all/in-progress/transfers" ,PageNumber, countResponse.Value, PageSize);

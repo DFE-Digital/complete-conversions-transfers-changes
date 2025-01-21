@@ -46,7 +46,7 @@
                     <td class="govuk-table__cell">@project.Urn.Value</td>
                     <td class="govuk-table__cell">@project.ConversionOrTransferDate.ToDateMonthYearString()</td>
                     <td class="govuk-table__cell">@project.IsFormAMAT.ToYesNoString()</td>
-                    <td class="govuk-table__cell">@project.AssignedTo?.FirstName @project.AssignedTo?.LastName</td>
+                    <td class="govuk-table__cell">@project.AssignedToFullName</td>
                 </tr>
             }
         </tbody>

@@ -12,13 +12,12 @@ namespace Dfe.Complete.Application.Projects.Queries.ListAllProjects
     public record ListAllProjectsQuery(
         ProjectState? ProjectStatus,
         ProjectType? Type,
-        bool? IncludeFormAMat,
-        int Page,
-        int Count) : IRequest<Result<List<ListAllProjectsResultModel>>>
+        int Page = 0,
+        int Count = 20) : IRequest<Result<List<ListAllProjectsResultModel>>>
     {
         public override string ToString()
         {
-            return $"{ProjectStatus.ToString()}{Type.ToString()}{IncludeFormAMat.ToString()}{Page}{Count}";
+            return $"{ProjectStatus.ToString()}{Type.ToString()}{Page}{Count}";
         }
     }
 
@@ -37,7 +36,7 @@ namespace Dfe.Complete.Application.Projects.Queries.ListAllProjects
                 try
                 {
                     var result = await listAllProjectsQueryService
-                        .ListAllProjects(request.ProjectStatus, request.Type, request.IncludeFormAMat)
+                        .ListAllProjects(request.ProjectStatus, request.Type)
                         .Skip(request.Page * request.Count).Take(request.Count)
                         .Select(item => new ListAllProjectsResultModel(
                             item.Establishment.Name,
@@ -47,7 +46,7 @@ namespace Dfe.Complete.Application.Projects.Queries.ListAllProjects
                             item.Project.State,
                             item.Project.Type,
                             item.Project.IncomingTrustUkprn == null,
-                            item.Project.AssignedTo
+                            item.Project.AssignedTo != null ? $"{item.Project.AssignedTo.FirstName} {item.Project.AssignedTo.LastName}" : null
                         ))
                         .ToListAsync(cancellationToken);
                     return Result<List<ListAllProjectsResultModel>>.Success(result);
