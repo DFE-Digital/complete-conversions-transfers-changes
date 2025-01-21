@@ -1,16 +1,17 @@
 using System.ComponentModel.DataAnnotations;
+using Dfe.Complete.Domain.ValueObjects;
+using Dfe.Complete.Services;
 using Dfe.Complete.Validators;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace Dfe.Complete.Pages.Projects.MatConversion;
 
-public class CreateNewProject : PageModel
+public class CreateNewProject(IErrorService errorService) : PageModel
 {
-
     [BindProperty]
-    [Required]
-    // [Urn]
+    [Urn]
+    [Required(ErrorMessage = "Enter a school URN")]
     [Display(Name = "Urn")]
     public string URN { get; set; }
     
@@ -74,4 +75,16 @@ public class CreateNewProject : PageModel
     {
         
     }
+
+    public async Task<IActionResult> OnPost()
+    {
+        if (!ModelState.IsValid)
+        {
+            errorService.AddErrors(ModelState);
+            return Page();
+        }
+        
+        return Page();
+    }
+    
 }

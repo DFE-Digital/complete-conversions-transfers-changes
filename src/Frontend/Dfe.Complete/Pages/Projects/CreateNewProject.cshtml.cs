@@ -7,28 +7,21 @@ namespace Dfe.Complete.Pages.Projects
     public class CreateNewProjectModel : PageModel
     {
         [BindProperty]
-        public string ProjectType { get; set; }
-
-        public CreateNewProjectModel()
+        public string? ProjectType { get; set; }
+        
+        
+        public void  OnGet()
         {
         }
 
-        public async Task OnGet()
+        public IActionResult OnPost()
         {
-        }
-
-        public async Task<IActionResult> OnPost()
-        {
-            var pageToRedirectTo = string.Empty;
-
-            switch (ProjectType)
+            var pageToRedirectTo = ProjectType switch
             {
-                case "conversion":
-                    pageToRedirectTo = "/Projects/Conversion/CreateNewProject";
-                break;
-                default:
-                    break;
-            }
+                "conversion" => "/Projects/Conversion/CreateNewProject",
+                "fam_conversion" => "/Projects/MatConversion/CreateNewProject",
+                _ => string.Empty
+            };
 
             return RedirectToPage(pageToRedirectTo);
         }

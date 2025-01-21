@@ -7,7 +7,7 @@
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
         <form method="post">
-            <govuk-radios name="ProjectType">
+            <govuk-radios name="ProjectType" asp-for="ProjectType">
                 <govuk-radios-fieldset>
                     <govuk-radios-fieldset-legend is-page-heading="true" class="govuk-fieldset__legend--l">
                         Choose project type
@@ -29,7 +29,7 @@
                         </govuk-radios-hint>
                     </govuk-radios-item>
 
-                    <govuk-radios-item value="famconversion">
+                    <govuk-radios-item value="fam_conversion">
                         <b>Form a MAT conversion</b>
                         <br />
                         <govuk-radios-hint>
@@ -37,7 +37,7 @@
                         </govuk-radios-hint>
                     </govuk-radios-item>
 
-                    <govuk-radios-item value="famtransfer">
+                    <govuk-radios-item value="fam_transfer">
                         <b>Form a MAT transfer</b>
                         <br />
                         <govuk-radios-hint>
