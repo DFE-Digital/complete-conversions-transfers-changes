@@ -1,4 +1,4 @@
-using System.Runtime.InteropServices.JavaScript;
+using System.Linq.Expressions;
 using AutoFixture.Xunit2;
 using DfE.CoreLibs.Testing.AutoFixture.Attributes;
 using Dfe.Complete.Domain.Interfaces.Repositories;
@@ -7,7 +7,7 @@ using Dfe.Complete.Application.Projects.Commands.CreateProject;
 using Dfe.Complete.Domain.Entities;
 using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Domain.ValueObjects;
-using Dfe.Complete.Tests.Common;
+using Dfe.Complete.Tests.Common.Customizations.Behaviours;
 using Dfe.Complete.Tests.Common.Customizations.Models;
 using Dfe.Complete.Utils;
 using DfE.CoreLibs.Testing.AutoFixture.Customizations;
@@ -17,56 +17,55 @@ namespace Dfe.Complete.Application.Tests.CommandHandlers.Project;
 public class CreateConversionProjectCommandHandlerTests
 {
     [Theory]
-    [CustomAutoData(typeof(DateOnlyCustomization), typeof(ProjectCustomization))]
+    [CustomAutoData(typeof(DateOnlyCustomization), typeof(ProjectCustomization),
+        typeof(IgnoreVirtualMembersCustomisation))]
     public async Task Handle_ShouldCreateAndReturnProjectId_WhenCommandIsValid(
         [Frozen] ICompleteRepository<Domain.Entities.Project> mockProjectRepository,
         [Frozen] ICompleteRepository<ConversionTasksData> mockConversionTaskRepository,
         [Frozen] ICompleteRepository<ProjectGroup> mockProjectGroupRepository,
         [Frozen] ICompleteRepository<User> mockUserRepository,
         CreateConversionProjectCommandHandler handler,
-        CreateConversionProjectCommand command,
-        Domain.Entities.Project project
+        CreateConversionProjectCommand command
     )
     {
         // Arrange
-        var team = ProjectTeam.WestMidlands;
+        const ProjectTeam team = ProjectTeam.WestMidlands;
         var user = new User
         {
             Id = new UserId(Guid.NewGuid()),
             Team = team.ToDescription()
         };
 
-        mockUserRepository.FindAsync(Arg.Any<string>(), Arg.Any<CancellationToken>()).Returns(Task.FromResult(user));
+        var createdAt = DateTime.UtcNow;
+        var conversionTaskId = Guid.NewGuid();
+        var conversionTask = new ConversionTasksData(new TaskDataId(conversionTaskId), createdAt, createdAt);
+
+        mockUserRepository.FindAsync(Arg.Any<Expression<Func<User, bool>>>()).Returns(Task.FromResult(user));
 
         var groupId = new ProjectGroupId(Guid.NewGuid());
-        mockProjectGroupRepository.FindAsync(Arg.Any<string>(), Arg.Any<CancellationToken>()).Returns(Task.FromResult(new ProjectGroup { Id = groupId }));
-
-        var now = DateTime.UtcNow; 
-        // var project = CreateTestProject(team, now);
-        project.AssignedAt = now;
-        project.Team = team;
-        
+        mockProjectGroupRepository.FindAsync(Arg.Any<Expression<Func<ProjectGroup, bool>>>(), Arg.Any<CancellationToken>())
+            .Returns(Task.FromResult(new ProjectGroup { Id = groupId }));
         
         Domain.Entities.Project capturedProject = null!;
-
+        
         mockProjectRepository.AddAsync(Arg.Do<Domain.Entities.Project>(proj => capturedProject = proj), Arg.Any<CancellationToken>())
-            .Returns(Task.FromResult(project));
+            .Returns(Task.FromResult(capturedProject));
 
+        mockProjectRepository.AddAsync(capturedProject, Arg.Any<CancellationToken>())
+            .Returns(Task.FromResult(capturedProject));
+        
         mockConversionTaskRepository.AddAsync(Arg.Any<ConversionTasksData>(), Arg.Any<CancellationToken>())
-            .Returns(Arg.Any<ConversionTasksData>());
+            .Returns(Task.FromResult(conversionTask));
 
         // Act
         var projectId = await handler.Handle(command, default);
-        
-        // Basic checks
+
         Assert.NotNull(projectId);
         Assert.IsType<ProjectId>(projectId);
 
         await mockProjectRepository.Received(1).AddAsync(capturedProject);
         await mockConversionTaskRepository.Received(1).AddAsync(Arg.Any<ConversionTasksData>());
-        
-        // Now we can break down the property checks on the captured project
-        Assert.NotNull(capturedProject);
+
         Assert.Equal(command.Urn, capturedProject.Urn);
         Assert.Equal(command.SignificantDate, capturedProject.SignificantDate);
         Assert.Equal(command.IsSignificantDateProvisional, capturedProject.SignificantDateProvisional);
@@ -78,7 +77,7 @@ public class CreateConversionProjectCommandHandlerTests
         Assert.Equal(groupId.Value, capturedProject.GroupId);
         Assert.Equal(command.HandoverComments, capturedProject.Notes.FirstOrDefault()?.Body);
     }
-    
+
     //
     // [Theory]
     // [CustomAutoData(typeof(DateOnlyCustomization))]
