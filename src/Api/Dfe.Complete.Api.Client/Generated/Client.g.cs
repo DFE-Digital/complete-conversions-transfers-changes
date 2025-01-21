@@ -542,7 +542,7 @@ namespace Dfe.Complete.Client
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "14.1.0.0 (NJsonSchema v11.0.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    public partial class ListProjectsClient : IListProjectsClient
+    public partial class ListAllProjectsClient : IListAllProjectsClient
     {
         #pragma warning disable 8618
         private string _baseUrl;
@@ -553,7 +553,7 @@ namespace Dfe.Complete.Client
         private Newtonsoft.Json.JsonSerializerSettings _instanceSettings;
 
     #pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
-        public ListProjectsClient(string baseUrl, System.Net.Http.HttpClient httpClient)
+        public ListAllProjectsClient(string baseUrl, System.Net.Http.HttpClient httpClient)
     #pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
         {
             BaseUrl = baseUrl;
@@ -594,9 +594,9 @@ namespace Dfe.Complete.Client
         /// </summary>
         /// <returns>Project</returns>
         /// <exception cref="PersonsApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<ListAllProjectsResultModel>> Projects_ListProjects_Async(ProjectState? projectStatus, ProjectType? type, int? page, int? count)
+        public virtual System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<ListAllProjectsResultModel>> Projects_ListAllProjects_Async(ProjectState? projectStatus, ProjectType? type, int? page, int? count)
         {
-            return Projects_ListProjects_Async(projectStatus, type, page, count, System.Threading.CancellationToken.None);
+            return Projects_ListAllProjects_Async(projectStatus, type, page, count, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -605,7 +605,7 @@ namespace Dfe.Complete.Client
         /// </summary>
         /// <returns>Project</returns>
         /// <exception cref="PersonsApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<ListAllProjectsResultModel>> Projects_ListProjects_Async(ProjectState? projectStatus, ProjectType? type, int? page, int? count, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<ListAllProjectsResultModel>> Projects_ListAllProjects_Async(ProjectState? projectStatus, ProjectType? type, int? page, int? count, System.Threading.CancellationToken cancellationToken)
         {
             var client_ = _httpClient;
             var disposeClient_ = false;
@@ -618,8 +618,8 @@ namespace Dfe.Complete.Client
 
                     var urlBuilder_ = new System.Text.StringBuilder();
                     if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
-                    // Operation Path: "v1/Projects/List"
-                    urlBuilder_.Append("v1/Projects/List");
+                    // Operation Path: "v1/Projects/List/All"
+                    urlBuilder_.Append("v1/Projects/List/All");
                     urlBuilder_.Append('?');
                     if (projectStatus != null)
                     {
@@ -810,7 +810,7 @@ namespace Dfe.Complete.Client
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "14.1.0.0 (NJsonSchema v11.0.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    public partial class CountProjectsClient : ICountProjectsClient
+    public partial class CountAllProjectsClient : ICountAllProjectsClient
     {
         #pragma warning disable 8618
         private string _baseUrl;
@@ -821,7 +821,7 @@ namespace Dfe.Complete.Client
         private Newtonsoft.Json.JsonSerializerSettings _instanceSettings;
 
     #pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
-        public CountProjectsClient(string baseUrl, System.Net.Http.HttpClient httpClient)
+        public CountAllProjectsClient(string baseUrl, System.Net.Http.HttpClient httpClient)
     #pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
         {
             BaseUrl = baseUrl;
@@ -862,9 +862,9 @@ namespace Dfe.Complete.Client
         /// </summary>
         /// <returns>Project</returns>
         /// <exception cref="PersonsApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<int> Projects_CountProjects_Async(ProjectState? projectStatus, ProjectType? type)
+        public virtual System.Threading.Tasks.Task<int> Projects_CountAllProjects_Async(ProjectState? projectStatus, ProjectType? type)
         {
-            return Projects_CountProjects_Async(projectStatus, type, System.Threading.CancellationToken.None);
+            return Projects_CountAllProjects_Async(projectStatus, type, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -873,7 +873,7 @@ namespace Dfe.Complete.Client
         /// </summary>
         /// <returns>Project</returns>
         /// <exception cref="PersonsApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<int> Projects_CountProjects_Async(ProjectState? projectStatus, ProjectType? type, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<int> Projects_CountAllProjects_Async(ProjectState? projectStatus, ProjectType? type, System.Threading.CancellationToken cancellationToken)
         {
             var client_ = _httpClient;
             var disposeClient_ = false;
@@ -886,8 +886,8 @@ namespace Dfe.Complete.Client
 
                     var urlBuilder_ = new System.Text.StringBuilder();
                     if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
-                    // Operation Path: "v1/Projects/Count"
-                    urlBuilder_.Append("v1/Projects/Count");
+                    // Operation Path: "v1/Projects/Count/All"
+                    urlBuilder_.Append("v1/Projects/Count/All");
                     urlBuilder_.Append('?');
                     if (projectStatus != null)
                     {

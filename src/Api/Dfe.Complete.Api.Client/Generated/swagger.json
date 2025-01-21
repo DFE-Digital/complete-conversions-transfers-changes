@@ -76,13 +76,13 @@
         }
       }
     },
-    "/v1/Projects/List": {
+    "/v1/Projects/List/All": {
       "get": {
         "tags": [
           "Projects"
         ],
         "summary": "Returns a list of Projects",
-        "operationId": "Projects_ListProjects_",
+        "operationId": "Projects_ListAllProjects_",
         "parameters": [
           {
             "name": "ProjectStatus",
@@ -149,13 +149,13 @@
         }
       }
     },
-    "/v1/Projects/Count": {
+    "/v1/Projects/Count/All": {
       "get": {
         "tags": [
           "Projects"
         ],
         "summary": "Returns the number of Projects",
-        "operationId": "Projects_CountProjects_",
+        "operationId": "Projects_CountAllProjects_",
         "parameters": [
           {
             "name": "ProjectStatus",

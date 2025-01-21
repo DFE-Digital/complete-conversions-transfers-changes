@@ -1,5 +1,5 @@
 using Dfe.Complete.Application.Projects.Model;
-using Dfe.Complete.Application.Projects.Queries.CountProjects;
+using Dfe.Complete.Application.Projects.Queries.CountAllProjects;
 using Dfe.Complete.Application.Projects.Queries.ListAllProjects;
 using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Pages.Pagination;

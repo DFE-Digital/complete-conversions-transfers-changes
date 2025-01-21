@@ -6,7 +6,7 @@ using DfE.CoreLibs.Caching.Interfaces;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace Dfe.Complete.Application.Projects.Queries.CountProjects
+namespace Dfe.Complete.Application.Projects.Queries.CountAllProjects
 {
     public record CountAllProjectsQuery(ProjectState? ProjectStatus, ProjectType? Type)
         : IRequest<Result<int>>

@@ -67,14 +67,14 @@ namespace Dfe.Complete.Client.Contracts
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "14.1.0.0 (NJsonSchema v11.0.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    public partial interface IListProjectsClient
+    public partial interface IListAllProjectsClient
     {
         /// <summary>
         /// Returns a list of Projects
         /// </summary>
         /// <returns>Project</returns>
         /// <exception cref="PersonsApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<ListAllProjectsResultModel>> Projects_ListProjects_Async(ProjectState? projectStatus, ProjectType? type, int? page, int? count);
+        System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<ListAllProjectsResultModel>> Projects_ListAllProjects_Async(ProjectState? projectStatus, ProjectType? type, int? page, int? count);
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>
@@ -82,19 +82,19 @@ namespace Dfe.Complete.Client.Contracts
         /// </summary>
         /// <returns>Project</returns>
         /// <exception cref="PersonsApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<ListAllProjectsResultModel>> Projects_ListProjects_Async(ProjectState? projectStatus, ProjectType? type, int? page, int? count, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<ListAllProjectsResultModel>> Projects_ListAllProjects_Async(ProjectState? projectStatus, ProjectType? type, int? page, int? count, System.Threading.CancellationToken cancellationToken);
 
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "14.1.0.0 (NJsonSchema v11.0.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    public partial interface ICountProjectsClient
+    public partial interface ICountAllProjectsClient
     {
         /// <summary>
         /// Returns the number of Projects
         /// </summary>
         /// <returns>Project</returns>
         /// <exception cref="PersonsApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<int> Projects_CountProjects_Async(ProjectState? projectStatus, ProjectType? type);
+        System.Threading.Tasks.Task<int> Projects_CountAllProjects_Async(ProjectState? projectStatus, ProjectType? type);
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>
@@ -102,7 +102,7 @@ namespace Dfe.Complete.Client.Contracts
         /// </summary>
         /// <returns>Project</returns>
         /// <exception cref="PersonsApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<int> Projects_CountProjects_Async(ProjectState? projectStatus, ProjectType? type, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<int> Projects_CountAllProjects_Async(ProjectState? projectStatus, ProjectType? type, System.Threading.CancellationToken cancellationToken);
 
     }
 
