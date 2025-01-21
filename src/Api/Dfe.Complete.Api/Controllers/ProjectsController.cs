@@ -45,5 +45,28 @@ namespace Dfe.Complete.Api.Controllers
             return Ok(project);
         }
 
+
+        /// <summary>
+        /// Gets the UKPRN for a group reference number.
+        /// </summary>
+        /// <param name="groupReferenceNumber">The group reference number.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        [HttpGet("{groupReferenceNumber}/ukprn")]
+        [SwaggerResponse(200, "UKPRN returned successfully.", typeof(Ukprn))]
+        [SwaggerResponse(400, "Invalid group reference number.")]
+        [SwaggerResponse(404, "UKPRN not found for the given group reference number.")]
+        public async Task<IActionResult> GetMatchingTrustUkprn_Async(string groupReferenceNumber, CancellationToken cancellationToken)
+        {
+            if (string.IsNullOrWhiteSpace(groupReferenceNumber))
+            {
+                return BadRequest("Group reference number is required.");
+            }
+
+            var request = new GetUkprnByGroupReferenceNumberQuery(groupReferenceNumber);
+            var ukprn = await sender.Send(request, cancellationToken);
+
+            return Ok(ukprn);
+        }
+
     }
 }

@@ -106,13 +106,15 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
         DateOnly significantDate,
         bool isSignificantDateProvisional,
         Ukprn incomingTrustUkprn,
+        Ukprn? outgoingTrustUkprn,
         string? region,
         bool isDueTo2RI,
-        bool hasAcademyOrderBeenIssued,
+        bool? hasAcademyOrderBeenIssued,
         DateOnly advisoryBoardDate,
         string advisoryBoardConditions,
         string establishmentSharepointLink,
         string incomingTrustSharepointLink,
+        string? outgoingTrustSharepointLink,
         Guid? groupId,
         string team,
         UserId? regionalDeliveryOfficerId, 
@@ -129,12 +131,14 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
         SignificantDate = significantDate;
         SignificantDateProvisional = isSignificantDateProvisional;
         IncomingTrustUkprn = incomingTrustUkprn;
+        OutgoingTrustUkprn = outgoingTrustUkprn;
         TwoRequiresImprovement = isDueTo2RI;
         DirectiveAcademyOrder = hasAcademyOrderBeenIssued;
         AdvisoryBoardDate = advisoryBoardDate;
         AdvisoryBoardConditions = advisoryBoardConditions;
         EstablishmentSharepointLink = establishmentSharepointLink;
         IncomingTrustSharepointLink = incomingTrustSharepointLink;
+        OutgoingTrustSharepointLink = outgoingTrustSharepointLink;
         GroupId = groupId;
         Team = team;
         RegionalDeliveryOfficerId = regionalDeliveryOfficerId;
@@ -143,6 +147,7 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
         AssignedAt = assignedAt;
         AssignedToId = assignedTo;
     }
+
 
     public static Project CreateConversionProject(
         ProjectId Id,
@@ -157,7 +162,7 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
         Ukprn incomingTrustUkprn,
         string? region,
         bool isDueTo2RI,
-        bool hasAcademyOrderBeenIssued,
+        bool? hasAcademyOrderBeenIssued,
         DateOnly advisoryBoardDate,
         string advisoryBoardConditions,
         string establishmentSharepointLink,
@@ -179,6 +184,7 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
             significantDate,
             isSignificantDateProvisional,
             incomingTrustUkprn,
+            null,
             region,
             isDueTo2RI,
             hasAcademyOrderBeenIssued,
@@ -186,8 +192,68 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
             advisoryBoardConditions,
             establishmentSharepointLink,
             incomingTrustSharepointLink,
+            null,
             groupId,
             team,
+            regionalDeliveryOfficerId, 
+            assignedToId, 
+            assignedAt);
+
+        project.AddDomainEvent(new ProjectCreatedEvent(project));
+
+        return project;
+    }
+
+
+    public static Project CreateTransferProject
+        (
+            ProjectId Id,
+            Urn urn,
+            DateTime createdAt,
+            DateTime updatedAt,
+            TaskType taskType,
+            ProjectType projectType,
+            Guid tasksDataId,
+            string? region,
+            string team,
+            UserId? regionalDeliveryOfficerId,
+            UserId? assignedToId,
+            DateTime? assignedAt,
+            Ukprn incomingTrustUkprn,
+            Ukprn outgoingTrustUkprn,
+            Guid? groupId,
+            string establishmentSharepointLink,
+            string incomingTrustSharepointLink,
+            string outgoingTrustSharepointLink,
+            DateOnly advisoryBoardDate,
+            string advisoryBoardConditions,
+            DateOnly significantDate,
+            bool isSignificantDateProvisional,
+            bool isDueTo2RI
+        )
+    {
+        var project = new Project(
+            Id,
+            urn, 
+            createdAt, 
+            updatedAt, 
+            taskType, 
+            projectType, 
+            tasksDataId, 
+            significantDate, 
+            isSignificantDateProvisional, 
+            incomingTrustUkprn, 
+            outgoingTrustUkprn,
+            region, 
+            isDueTo2RI, 
+            null, 
+            advisoryBoardDate, 
+            advisoryBoardConditions, 
+            establishmentSharepointLink, 
+            incomingTrustSharepointLink,
+            outgoingTrustSharepointLink, 
+            groupId,
+            team, 
             regionalDeliveryOfficerId, 
             assignedToId, 
             assignedAt);

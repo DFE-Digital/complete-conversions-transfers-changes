@@ -4,8 +4,17 @@ using System.Reflection;
 
 namespace Dfe.Complete.Validators
 {
-    public class UkprnAttribute : ValidationAttribute
+    public class TransferUkprnAttribute : ValidationAttribute
     {
+
+        private readonly string _comparisonProperty;
+
+        public TransferUkprnAttribute(string comparisonProperty)
+        {
+            _comparisonProperty = comparisonProperty;
+        }
+
+
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {
             // Fetch the display name if it is provided
@@ -27,6 +36,22 @@ namespace Dfe.Complete.Validators
                 var errorMessage = $"The {displayName} must be 8 digits long and start with a 1. For example, 12345678.";
 
                 return new ValidationResult(errorMessage);
+            }
+
+            // Get the value of the other property
+            var comparisonProperty = validationContext.ObjectType.GetProperty(_comparisonProperty);
+
+            if (comparisonProperty == null)
+            {
+                return new ValidationResult($"Property '{_comparisonProperty}' not found.");
+            }
+
+            var comparisonPropertyValue = comparisonProperty.GetValue(validationContext.ObjectInstance);
+
+            // Compare the two values
+            if (value != null && value.Equals(comparisonPropertyValue))
+            {
+                return new ValidationResult($"The outgoing and incoming trust cannot be the same");
             }
 
             var trustService = (ITrustService)validationContext.GetService(typeof(ITrustService));
