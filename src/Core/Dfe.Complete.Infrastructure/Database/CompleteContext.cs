@@ -185,7 +185,10 @@ public partial class CompleteContext : DbContext
         projectConfiguration.Property(e => e.PrepareId).HasColumnName("prepare_id");
         projectConfiguration.Property(e => e.Region)
             .HasMaxLength(4000)
-            .HasColumnName("region");
+            .HasColumnName("region")
+            .HasConversion(
+                r => r.GetCharValue(), 
+                regionDbValue => regionDbValue.ToEnumFromChar<Region>());
         projectConfiguration.Property(e => e.RegionalDeliveryOfficerId)
             .HasColumnName("regional_delivery_officer_id")
             .HasConversion(
@@ -205,7 +208,10 @@ public partial class CompleteContext : DbContext
                 tasksTypeDbValue => tasksTypeDbValue.FromDescriptionValue<TaskType>());
         projectConfiguration.Property(e => e.Team)
             .HasMaxLength(4000)
-            .HasColumnName("team");
+            .HasColumnName("team")
+            .HasConversion(
+                team => team.ToDescription(), 
+                teamDbValue => teamDbValue.FromDescriptionValue<ProjectTeam>());
         projectConfiguration.Property(e => e.TwoRequiresImprovement)
             .HasDefaultValue(false)
             .HasColumnName("two_requires_improvement");

@@ -50,14 +50,12 @@ namespace Dfe.Complete.Tests.Common.Customizations
 
                 var services = new ServiceCollection();
                 services.AddSingleton<IConfiguration>(config);
-                services.AddCompleteApiClient<ISchoolsClient, SchoolsClient>(config, client);
 
                 var serviceProvider = services.BuildServiceProvider();
 
                 fixture.Inject(factory);
                 fixture.Inject(serviceProvider);
                 fixture.Inject(client);
-                fixture.Inject(serviceProvider.GetRequiredService<ISchoolsClient>());
                 fixture.Inject(new List<Claim>());
 
                 return factory;

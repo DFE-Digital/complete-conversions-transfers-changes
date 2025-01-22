@@ -8,6 +8,7 @@ using Dfe.Complete.Application.Common.Models;
 using DfE.CoreLibs.Caching.Helpers;
 using Dfe.Complete.Application.Projects.Queries.GetProject;
 using System.Linq.Expressions;
+using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Domain.ValueObjects;
 using Dfe.Complete.Utils;
 
@@ -37,7 +38,7 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
                 DateOnly.MinValue,
                 true,
                 new Domain.ValueObjects.Ukprn(2),
-                "region",
+                Region.London,
                 true,
                 true,
                 DateOnly.MinValue,
@@ -45,7 +46,7 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
                 "",
                 "",
                 null,
-                "",
+                default,
                 null,
                 null, 
                 null);
