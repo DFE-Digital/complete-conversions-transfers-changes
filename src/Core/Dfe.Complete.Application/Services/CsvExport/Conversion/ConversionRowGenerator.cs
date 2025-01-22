@@ -4,30 +4,21 @@ using System.Text;
 
 namespace Dfe.Complete.Application.Services.CsvExport.Conversion
 {
-    public class ConversionRowGenerator : IRowGenerator<ConversionCsvModel>
+    public class ConversionRowGenerator(IRowBuilderFactory<ConversionCsvModel> rowBuilder) : IRowGenerator<ConversionCsvModel>
     {
         private const string Unconfirmed = "unconfirmed";
 
-        private IColumnBuilder<ConversionCsvModel>[] _columnBuilders =
-            [
-                new BlankIfEmpty<ConversionCsvModel>(x => x.CurrentSchool.Name),
-                new BlankIfEmpty<ConversionCsvModel>(x => x.Project.Urn),
-                new ProjectTypeBuilder(),
-                new DefaultIf<ConversionCsvModel>(x => x.Project.AcademyUrn == null, x => x.Academy?.Name, Unconfirmed),
-                new DefaultIf<ConversionCsvModel>(x => x.Project.AcademyUrn == null, x => x.Academy?.Urn, Unconfirmed),
-                new DfeNumberLAESTABBuilder(),
-                new BlankIfEmpty<ConversionCsvModel>(x => "IncomingTrustName"), //Incoming trust name API call
-
-
-            ];
-
-
-
         public string GenerateRow(ConversionCsvModel model)
         {
-            var row = new StringBuilder();
-
-            _columnBuilders.Select(x => x.Build(model)).Aggregate(row, (acc, x) => acc.Append(x).Append(","));
+            return rowBuilder.DefineRow()
+                    .BlankIfEmpty(x => x.CurrentSchool.Name)
+                    .BlankIfEmpty(x => x.Project.Urn)
+                    .Column(new ProjectTypeBuilder())
+                    .DefaultIf(x => x.Project.AcademyUrn == null, x => x.Academy?.Name, Unconfirmed)
+                    .DefaultIf(x => x.Project.AcademyUrn == null, x => x.Academy?.Urn, Unconfirmed)
+                    .Column(new DfeNumberLAESTABBuilder())
+                    .TrustData(x => x.Project.IncomingTrustUkprn, x => x.Name)
+                    .Build(model);
 
             //row.Append(model.SchoolName);
             //row.Append(",");
@@ -165,7 +156,6 @@ namespace Dfe.Complete.Application.Services.CsvExport.Conversion
             //row.Append(",");
             //row.Append(model.DirectorOfChildServicesRole);
 
-            return row.ToString();
         }
 
         private string BlankIfNull(string? value)

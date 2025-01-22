@@ -16,13 +16,9 @@ namespace Dfe.Complete.Infrastructure.QueryServices.CsvExport
               .Join(context.GiasEstablishments, project => project.Urn, establishment => establishment.Urn, 
                 (project, establishment) => new { project, establishment })
               .Join(context.GiasEstablishments, composite => composite.project.AcademyUrn, establishment => establishment.Urn, 
-                (composite, academy) => new ConversionCsvModel( composite.project, composite.establishment, academy))
-
-            ;
+                (composite, academy) => new ConversionCsvModel( composite.project, composite.establishment, academy));
 
             return query;
-
-            throw new NotImplementedException();
         }
     }
 }

@@ -7,6 +7,7 @@ using Dfe.Complete.Application.Projects.Commands.CreateProject;
 using MediatR;
 using Dfe.Complete.Domain.ValueObjects;
 using Microsoft.AspNetCore.Authorization;
+using Dfe.Complete.Application.Services.TrustService;
 
 namespace Dfe.Complete.Pages.Projects.Transfer
 {

@@ -1,10 +1,12 @@
-﻿namespace Dfe.Complete.Domain.Entities
+﻿using Dfe.Complete.Domain.ValueObjects;
+
+namespace Dfe.Complete.Domain.Entities
 {
 	public class TrustDetailsDto
 	{
 		public string Name { get; set; }
 
-		public string Ukprn { get; set; }
+		public Ukprn Ukprn { get; set; }
 
 		public string CompaniesHouseNumber { get; set; }
 

@@ -1,15 +1,12 @@
-﻿using AutoFixture;
-using AutoFixture.Xunit2;
-using Castle.Core.Logging;
-using Dfe.Complete.Application.Common.Models;
+﻿using Dfe.Complete.Application.Common.Models;
+using Dfe.Complete.Application.Services.CsvExport.Builders;
 using Dfe.Complete.Application.Services.CsvExport.Conversion;
+using Dfe.Complete.Application.Services.TrustService;
 using Dfe.Complete.Domain.Entities;
 using Dfe.Complete.Domain.Enums;
-using Dfe.Complete.Domain.ValueObjects;
-using Dfe.Complete.Tests.Common.Customizations.Behaviours;
 using Dfe.Complete.Tests.Common.Customizations.Models;
 using DfE.CoreLibs.Testing.AutoFixture.Attributes;
-using DfE.CoreLibs.Testing.AutoFixture.Customizations;
+using NSubstitute;
 namespace Dfe.Complete.Application.Tests.Services.CsvExport.Conversion
 {
     public class ConversionRowGeneratorTests
@@ -17,15 +14,19 @@ namespace Dfe.Complete.Application.Tests.Services.CsvExport.Conversion
 
 
         [Theory]
-        [CustomAutoData(typeof(ProjectCustomization), typeof(EstablishmentsCustomization))]
-        public void RowGeneratesAccountsForBlankData(Project project, GiasEstablishment currentSchool)
+        [CustomAutoData(typeof(ProjectCustomization), typeof(EstablishmentsCustomization), typeof(TrustDetailsDtoCustomization))]
+        public void RowGeneratesAccountsForBlankData(Project project, GiasEstablishment currentSchool, TrustDetailsDto incomingTrust)
         { 
             project.Type = ProjectType.Conversion;
             project.AcademyUrn = null;
+            project.IncomingTrustUkprn = incomingTrust.Ukprn;
+
+            var TrustCache = Substitute.For<ITrustCache>();
+            TrustCache.GetTrustAsync(incomingTrust.Ukprn).Returns(incomingTrust);
 
             var model = new ConversionCsvModel(project, currentSchool, null);
           
-            var generator = new ConversionRowGenerator();
+            var generator = new ConversionRowGenerator(new RowBuilderFactory<ConversionCsvModel>(TrustCache));
 
             generator.GenerateRow(model);
 
@@ -37,7 +38,7 @@ namespace Dfe.Complete.Application.Tests.Services.CsvExport.Conversion
             Assert.Equal("unconfirmed", result[3]);
             Assert.Equal("unconfirmed", result[4]);
             Assert.Equal("", result[5]);
-            Assert.Equal("IncomingTrustName", result[6]);
+            Assert.Equal(incomingTrust.Name, result[6]);
             //Assert.Equal("LocalAuthority", result[7]);
             //Assert.Equal("Region", result[8]);
             //Assert.Equal("Diocese", result[9]);
@@ -102,13 +103,18 @@ namespace Dfe.Complete.Application.Tests.Services.CsvExport.Conversion
         }
 
         [Theory]
-        [CustomAutoData(typeof(ProjectCustomization), typeof(EstablishmentsCustomization))]
-        public void RowGeneratesBasedOnModel(Project project, GiasEstablishment currentSchool, GiasEstablishment academy)
+        [CustomAutoData(typeof(ProjectCustomization), typeof(EstablishmentsCustomization), typeof(TrustDetailsDtoCustomization))]
+        public void RowGeneratesBasedOnModel(Project project, GiasEstablishment currentSchool, GiasEstablishment academy, TrustDetailsDto incomingTrust)
         {
             project.Type = ProjectType.Transfer;
+            project.IncomingTrustUkprn = incomingTrust.Ukprn;
+
             var model = new ConversionCsvModel(project, currentSchool, academy);
 
-            var generator = new ConversionRowGenerator();
+            var TrustCache = Substitute.For<ITrustCache>();
+            TrustCache.GetTrustAsync(incomingTrust.Ukprn).Returns(incomingTrust);
+
+            var generator = new ConversionRowGenerator(new RowBuilderFactory<ConversionCsvModel>(TrustCache));
 
             generator.GenerateRow(model);
 
@@ -120,7 +126,7 @@ namespace Dfe.Complete.Application.Tests.Services.CsvExport.Conversion
             Assert.Equal(academy.Name, result[3]);
             Assert.Equal(academy.Urn.ToString(), result[4]);
             Assert.Equal(academy.LocalAuthorityCode + "/" + academy.EstablishmentNumber, result[5]);
-            Assert.Equal("IncomingTrustName", result[6]);
+            Assert.Equal(incomingTrust.Name, result[6]);
             //Assert.Equal("LocalAuthority", result[7]);
             //Assert.Equal("Region", result[8]);
             //Assert.Equal("Diocese", result[9]);

@@ -6,18 +6,13 @@ using Dfe.Complete.Tests.Common.Customizations.Behaviours;
 using Dfe.Complete.Tests.Common.Customizations.Models;
 using DfE.CoreLibs.Testing.AutoFixture.Attributes;
 using DfE.CoreLibs.Testing.AutoFixture.Customizations;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Dfe.Complete.Application.Tests.Services.CsvExport.Builders
 {
     public class ProjectTypeTests
     {
         [Theory]
-        [CustomAutoData(typeof(ProjectCustomization), typeof(DateOnlyCustomization), typeof(IgnoreVirtualMembersCustomisation))]
+        [CustomAutoData(typeof(ProjectCustomization))]
         public void Build_When_Conversion(Project project)
         {
             project.Type = ProjectType.Conversion;
@@ -29,7 +24,7 @@ namespace Dfe.Complete.Application.Tests.Services.CsvExport.Builders
         }
 
         [Theory]
-        [CustomAutoData(typeof(ProjectCustomization), typeof(DateOnlyCustomization), typeof(IgnoreVirtualMembersCustomisation))]
+        [CustomAutoData(typeof(ProjectCustomization))]
         public void Build_When_Transfer(Project project)
         {
             project.Type = ProjectType.Transfer;

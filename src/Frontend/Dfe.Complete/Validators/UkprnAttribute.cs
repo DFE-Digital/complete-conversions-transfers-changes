@@ -1,4 +1,4 @@
-﻿using Dfe.Complete.Services;
+﻿using Dfe.Complete.Application.Services.TrustService;
 using System.ComponentModel.DataAnnotations;
 using System.Reflection;
 
