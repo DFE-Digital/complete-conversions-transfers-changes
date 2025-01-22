@@ -1,5 +1,6 @@
 ﻿using AutoFixture;
 using AutoFixture.Xunit2;
+using Castle.Core.Logging;
 using Dfe.Complete.Application.Common.Models;
 using Dfe.Complete.Application.Services.CsvExport.Conversion;
 using Dfe.Complete.Domain.Entities;
@@ -17,12 +18,12 @@ namespace Dfe.Complete.Application.Tests.Services.CsvExport.Conversion
 
         [Theory]
         [CustomAutoData(typeof(ProjectCustomization), typeof(EstablishmentsCustomization))]
-        public void RowGeneratesAccountsForBlankData(Project project, GiasEstablishment currentSchool, GiasEstablishment academy)
+        public void RowGeneratesAccountsForBlankData(Project project, GiasEstablishment currentSchool)
         { 
             project.Type = ProjectType.Conversion;
             project.AcademyUrn = null;
 
-            var model = new ConversionCsvModel(project, currentSchool, academy);
+            var model = new ConversionCsvModel(project, currentSchool, null);
           
             var generator = new ConversionRowGenerator();
 
@@ -35,8 +36,8 @@ namespace Dfe.Complete.Application.Tests.Services.CsvExport.Conversion
             Assert.Equal("Conversion", result[2]);
             Assert.Equal("unconfirmed", result[3]);
             Assert.Equal("unconfirmed", result[4]);
-            //Assert.Equal("AcademyDfENumber", result[5]);
-            //Assert.Equal("IncomingTrustName", result[6]);
+            Assert.Equal("", result[5]);
+            Assert.Equal("IncomingTrustName", result[6]);
             //Assert.Equal("LocalAuthority", result[7]);
             //Assert.Equal("Region", result[8]);
             //Assert.Equal("Diocese", result[9]);
@@ -119,7 +120,7 @@ namespace Dfe.Complete.Application.Tests.Services.CsvExport.Conversion
             Assert.Equal(academy.Name, result[3]);
             Assert.Equal(academy.Urn.ToString(), result[4]);
             Assert.Equal(academy.LocalAuthorityCode + "/" + academy.EstablishmentNumber, result[5]);
-            //Assert.Equal("IncomingTrustName", result[6]);
+            Assert.Equal("IncomingTrustName", result[6]);
             //Assert.Equal("LocalAuthority", result[7]);
             //Assert.Equal("Region", result[8]);
             //Assert.Equal("Diocese", result[9]);

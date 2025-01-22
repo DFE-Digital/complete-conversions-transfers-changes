@@ -4,14 +4,13 @@
     {
         public string Build(T input)
         {
-            object? value = valueFunc(input);
-
             if (condition(input))
             {
                 return defaultValue;
             }
             else
             {
+                object? value = valueFunc(input);
                 return value.ToString();
             }
         }

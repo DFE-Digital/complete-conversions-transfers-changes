@@ -6,6 +6,7 @@ using Dfe.Complete.Tests.Common.Customizations.Commands;
 using DfE.CoreLibs.Testing.AutoFixture.Attributes;
 using DfE.CoreLibs.Testing.Mocks.WebApplicationFactory;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.VisualStudio.TestPlatform.TestHost;
 
 namespace Dfe.Complete.Api.Tests.Integration.Controllers;
 

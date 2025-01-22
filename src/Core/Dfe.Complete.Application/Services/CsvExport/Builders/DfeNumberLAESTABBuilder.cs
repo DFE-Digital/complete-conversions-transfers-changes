@@ -11,6 +11,16 @@ namespace Dfe.Complete.Application.Services.CsvExport.Builders
     {
         public string Build(ConversionCsvModel input)
         {
+            if(input.Project.AcademyUrn == null)
+            {
+                return string.Empty;
+            }
+
+            if (input.Academy == null)
+            {
+                return string.Empty;
+            }
+
             return input.Academy.LocalAuthorityCode + "/" + input.Academy.EstablishmentNumber;
         }
     }

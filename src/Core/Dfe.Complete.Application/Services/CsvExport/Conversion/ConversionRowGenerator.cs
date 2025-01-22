@@ -13,9 +13,12 @@ namespace Dfe.Complete.Application.Services.CsvExport.Conversion
                 new BlankIfEmpty<ConversionCsvModel>(x => x.CurrentSchool.Name),
                 new BlankIfEmpty<ConversionCsvModel>(x => x.Project.Urn),
                 new ProjectTypeBuilder(),
-                new DefaultIf<ConversionCsvModel>(x => x.Project.AcademyUrn == null, x => x.Academy.Name, Unconfirmed),
-                new DefaultIf<ConversionCsvModel>(x => x.Project.AcademyUrn == null, x => x.Academy.Urn, Unconfirmed),
+                new DefaultIf<ConversionCsvModel>(x => x.Project.AcademyUrn == null, x => x.Academy?.Name, Unconfirmed),
+                new DefaultIf<ConversionCsvModel>(x => x.Project.AcademyUrn == null, x => x.Academy?.Urn, Unconfirmed),
                 new DfeNumberLAESTABBuilder(),
+                new BlankIfEmpty<ConversionCsvModel>(x => "IncomingTrustName"), //Incoming trust name API call
+
+
             ];
 
 
