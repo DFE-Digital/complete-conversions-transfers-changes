@@ -15,7 +15,7 @@ namespace Dfe.Complete.Pages.Projects.Conversion
     {
         [BindProperty]
         [Required]
-        // [Urn]
+        [Urn]
         [Display(Name = "Urn")]
         public string URN { get; set; }
 
