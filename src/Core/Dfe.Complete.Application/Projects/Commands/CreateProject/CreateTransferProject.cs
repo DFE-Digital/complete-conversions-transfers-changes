@@ -29,12 +29,14 @@ namespace Dfe.Complete.Application.Projects.Commands.CreateProject
 
     public class CreateTransferProjectCommandHandler(
         ICompleteRepository<Project> projectRepository,
-        ICompleteRepository<TransferTasksData> transferTaskRepository)
+        ICompleteRepository<TransferTasksData> transferTaskRepository,  
+        ICompleteRepository<ProjectGroup> projectGroupRepository,
+        ICompleteRepository<User> userRepository)
         : IRequestHandler<CreateTransferProjectCommand, ProjectId>
     {
         public async Task<ProjectId> Handle(CreateTransferProjectCommand request, CancellationToken cancellationToken)
         {
-            var projectUser = await projectRepository.GetUserByAdId(request.UserAdId, cancellationToken);
+            var projectUser = await GetUserByAdId(request.UserAdId);
             var projectUserTeam = projectUser?.Team;
             var projectUserId = projectUser?.Id; 
 
@@ -47,7 +49,7 @@ namespace Dfe.Complete.Application.Projects.Commands.CreateProject
 
             var transferTask = new TransferTasksData(new TaskDataId(transferTaskId), createdAt, createdAt, request.IsDueToInedaquateOfstedRating, request.IsDueToIssues, request.OutGoingTrustWillClose);
 
-            var groupId = await projectRepository.GetProjectGroupIdByIdentifierAsync(request.GroupReferenceNumber, cancellationToken);
+            var groupId = await GetProjectGroupIdByIdentifierAsync(request.GroupReferenceNumber);
 
             ProjectTeam team = projectTeam;
             DateTime? assignedAt = DateTime.UtcNow;
@@ -76,22 +78,18 @@ namespace Dfe.Complete.Application.Projects.Commands.CreateProject
                     request.AdvisoryBoardConditions,
                     request.SignificantDate,
                     request.IsSignificantDateProvisional,
-                    request.IsDueTo2Ri
+                    request.IsDueTo2Ri, 
+                    request.HandoverComments
                 ); 
-            
-            if (!string.IsNullOrEmpty(request.HandoverComments))
-            {
-                project.Notes.Add(new Note
-                {
-                    Id = new NoteId(Guid.NewGuid()), CreatedAt = createdAt, Body = request.HandoverComments,
-                    ProjectId = projectId, TaskIdentifier = "handover", UserId = projectUser?.Id
-                });
-            }
             
             await transferTaskRepository.AddAsync(transferTask, cancellationToken);
             await projectRepository.AddAsync(project, cancellationToken);
 
             return project.Id;
         }
+        
+        private async Task<User> GetUserByAdId(string? userAdId) => await userRepository.FindAsync(x => x.ActiveDirectoryUserId == userAdId);
+
+        private async Task<ProjectGroupId> GetProjectGroupIdByIdentifierAsync(string groupReferenceNumber) => (await projectGroupRepository.FindAsync(x => x.GroupIdentifier == groupReferenceNumber)).Id;
     }
 }

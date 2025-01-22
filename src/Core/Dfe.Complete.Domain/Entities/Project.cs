@@ -242,7 +242,8 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
         string advisoryBoardConditions,
         DateOnly significantDate,
         bool isSignificantDateProvisional,
-        bool isDueTo2RI
+        bool isDueTo2RI, 
+        string? handoverComments
     )
     {
         var project = new Project(
@@ -271,6 +272,15 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
             assignedToId,
             assignedAt);
 
+        if (!string.IsNullOrEmpty(handoverComments))
+        {
+            project.AddNote(new Note
+            {
+                CreatedAt = project.CreatedAt, ProjectId = project.Id, Body = handoverComments,
+                TaskIdentifier = "handover", UserId = assignedToId
+            });
+        }
+        
         project.AddDomainEvent(new ProjectCreatedEvent(project));
 
         return project;

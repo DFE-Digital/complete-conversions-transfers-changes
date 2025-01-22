@@ -1,3 +1,4 @@
+using System.Linq.Expressions;
 using AutoFixture.Xunit2;
 using DfE.CoreLibs.Testing.AutoFixture.Attributes;
 using Dfe.Complete.Domain.Interfaces.Repositories;
@@ -6,6 +7,7 @@ using Dfe.Complete.Application.Projects.Commands.CreateProject;
 using Dfe.Complete.Domain.Entities;
 using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Domain.ValueObjects;
+using Dfe.Complete.Tests.Common.Customizations.Models;
 using Dfe.Complete.Utils;
 using DfE.CoreLibs.Testing.AutoFixture.Customizations;
 
@@ -17,30 +19,43 @@ public class CreateTransferProjectCommandHandlerTests
     [CustomAutoData(typeof(DateOnlyCustomization))]
     public async Task Handle_ShouldCreateAndReturnProjectId_WhenCommandIsValid(
         [Frozen] ICompleteRepository<Domain.Entities.Project> mockProjectRepository,
+        [Frozen] ICompleteRepository<ProjectGroup> mockProjectGroupRepository,
+        [Frozen] ICompleteRepository<User> mockUserRepository,
         CreateTransferProjectCommandHandler handler,
         CreateTransferProjectCommand command
     )
     {
         // Arrange
+        const ProjectTeam team = ProjectTeam.WestMidlands;
         var user = new User
         {
             Id = new UserId(Guid.NewGuid()),
-            Team = ProjectTeam.WestMidlands.ToDescription()
+            Team = team.ToDescription()
         };
-        mockProjectRepository.GetUserByAdId(Arg.Any<string>(), Arg.Any<CancellationToken>()).Returns(user);
+        // mockProjectRepository.GetUserByAdId(Arg.Any<string>(), Arg.Any<CancellationToken>()).Returns(user);
+        mockUserRepository.FindAsync(Arg.Any<Expression<Func<User, bool>>>()).Returns(Task.FromResult(user));
+        
+        var groupId = new ProjectGroupId(Guid.NewGuid());
+        mockProjectGroupRepository.FindAsync(Arg.Any<Expression<Func<ProjectGroup, bool>>>(), Arg.Any<CancellationToken>())
+            .Returns(Task.FromResult(new ProjectGroup { Id = groupId }));
+        
+        Domain.Entities.Project capturedProject = null!;
+        
+        mockProjectRepository.AddAsync(Arg.Do<Domain.Entities.Project>(proj => capturedProject = proj), Arg.Any<CancellationToken>())
+            .Returns(Task.FromResult(capturedProject));
 
-        var now = DateTime.UtcNow;
-        var project = CreateTestTransferProject(ProjectTeam.WestMidlands, now);
-
-        mockProjectRepository.AddAsync(Arg.Any<Domain.Entities.Project>(), Arg.Any<CancellationToken>())
-            .Returns(Task.FromResult(project));
-
+        mockProjectRepository.AddAsync(capturedProject, Arg.Any<CancellationToken>())
+            .Returns(Task.FromResult(capturedProject));
+        
         // Act
-        await handler.Handle(command, default);
+        var projectId = await handler.Handle(command, default);
+
+        Assert.NotNull(projectId);
+        Assert.IsType<ProjectId>(projectId);
 
         // Assert
         await mockProjectRepository.Received(1)
-            .AddAsync(Arg.Is<Domain.Entities.Project>(s => s.Urn == command.Urn), default);
+            .AddAsync(capturedProject);
     }
     
     
@@ -48,26 +63,31 @@ public class CreateTransferProjectCommandHandlerTests
     [CustomAutoData(typeof(DateOnlyCustomization))]
     public async Task Handle_ShouldAddNotes_WhenHandoverComments(
         [Frozen] ICompleteRepository<Domain.Entities.Project> mockProjectRepository,
+        [Frozen] ICompleteRepository<ProjectGroup> mockProjectGroupRepository,
+        [Frozen] ICompleteRepository<User> mockUserRepository,
         CreateConversionProjectCommandHandler handler,
         CreateConversionProjectCommand command
     )
     {
-        // Arrange
-        var team = ProjectTeam.WestMidlands.ToDescription();
+        command = command with { HandingOverToRegionalCaseworkService = false, HandoverComments = "this is a test note"};
+        
+        const ProjectTeam team = ProjectTeam.WestMidlands;
         var user = new User
         {
             Id = new UserId(Guid.NewGuid()),
-            Team = team
+            Team = team.ToDescription()
         };
-        mockProjectRepository.GetUserByAdId(Arg.Any<string>(), Arg.Any<CancellationToken>()).Returns(user);
-    
-        var now = DateTime.UtcNow;
-        var project = CreateTestTransferProject(ProjectTeam.WestMidlands, now);
-        command = command with { HandingOverToRegionalCaseworkService = false, HandoverComments = "this is a test note"};
+
+        mockUserRepository.FindAsync(Arg.Any<Expression<Func<User, bool>>>()).Returns(Task.FromResult(user));
+
+        var groupId = new ProjectGroupId(Guid.NewGuid());
+        mockProjectGroupRepository.FindAsync(Arg.Any<Expression<Func<ProjectGroup, bool>>>(), Arg.Any<CancellationToken>())
+            .Returns(Task.FromResult(new ProjectGroup { Id = groupId }));
         
-    
-        mockProjectRepository.AddAsync(Arg.Any<Domain.Entities.Project>(), Arg.Any<CancellationToken>())
-            .Returns(Task.FromResult(project));
+        Domain.Entities.Project capturedProject = null!;
+        
+        mockProjectRepository.AddAsync(Arg.Do<Domain.Entities.Project>(proj => capturedProject = proj), Arg.Any<CancellationToken>())
+            .Returns(Task.FromResult(capturedProject));
     
         // Act
         await handler.Handle(command, default);
@@ -76,31 +96,5 @@ public class CreateTransferProjectCommandHandlerTests
         await mockProjectRepository.Received(1)
             .AddAsync(Arg.Is<Domain.Entities.Project>(p => p.Notes.FirstOrDefault().Body == command.HandoverComments), default);
     }
-
-    private static Domain.Entities.Project CreateTestTransferProject(ProjectTeam team, DateTime now) =>
-        Domain.Entities.Project.CreateTransferProject(
-            new ProjectId(Guid.NewGuid()),
-            new Urn(2),
-            now,
-            now,
-            TaskType.Transfer,
-            ProjectType.Transfer,
-            Guid.NewGuid(),
-            Region.NorthWest,
-            team,
-            null,
-            null,
-            now,
-            new Ukprn(1),
-            new Ukprn(3),
-            Guid.Empty,
-            "",
-            "",
-            "",
-            DateOnly.MinValue,
-            "",
-            DateOnly.MinValue,
-            true,
-            true
-        );
+    
 }

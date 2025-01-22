@@ -17,7 +17,7 @@ namespace Dfe.Complete.Application.Tests.CommandHandlers.Project;
 public class CreateConversionProjectCommandHandlerTests
 {
     [Theory]
-    [CustomAutoData(typeof(DateOnlyCustomization), typeof(ProjectCustomization),
+    [CustomAutoData(typeof(DateOnlyCustomization),
         typeof(IgnoreVirtualMembersCustomisation))]
     public async Task Handle_ShouldCreateAndReturnProjectId_WhenCommandIsValid(
         [Frozen] ICompleteRepository<Domain.Entities.Project> mockProjectRepository,
@@ -115,9 +115,6 @@ public class CreateConversionProjectCommandHandlerTests
         Domain.Entities.Project capturedProject = null!;
         
         mockProjectRepository.AddAsync(Arg.Do<Domain.Entities.Project>(proj => capturedProject = proj), Arg.Any<CancellationToken>())
-            .Returns(Task.FromResult(capturedProject));
-
-        mockProjectRepository.AddAsync(capturedProject, Arg.Any<CancellationToken>())
             .Returns(Task.FromResult(capturedProject));
         
         mockConversionTaskRepository.AddAsync(Arg.Any<ConversionTasksData>(), Arg.Any<CancellationToken>())

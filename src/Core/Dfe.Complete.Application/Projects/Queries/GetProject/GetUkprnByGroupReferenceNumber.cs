@@ -4,6 +4,7 @@ using Dfe.Complete.Domain.Interfaces.Repositories;
 using DfE.CoreLibs.Caching.Helpers;
 using DfE.CoreLibs.Caching.Interfaces;
 using Dfe.Complete.Application.Common.Models;
+using Dfe.Complete.Domain.Entities;
 using Dfe.Complete.Infrastructure.Models;
 
 namespace Dfe.Complete.Application.Projects.Queries.GetProject
