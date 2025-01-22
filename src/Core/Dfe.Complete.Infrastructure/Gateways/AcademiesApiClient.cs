@@ -1,18 +1,15 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Logging;
-using Newtonsoft.Json;
-using System.Net.Http;
+﻿using Microsoft.Extensions.Logging;
 
 namespace Dfe.Complete.Infrastructure.Gateways
 {
-    public class TramsApiClient : ApiClient
+    public class AcademiesApiClient : ApiClient
     {
-        private readonly ILogger<TramsApiClient> _logger;
+        private readonly ILogger<AcademiesApiClient> _logger;
 
-        public TramsApiClient(
+        public AcademiesApiClient(
             IHttpClientFactory clientFactory, 
             ILogger<ApiClient> logger,
-            string httpClientName = "TramsApiClient") : base(clientFactory, logger, httpClientName)
+            string httpClientName = "AcademiesApiClient") : base(clientFactory, logger, httpClientName)
         {
             
 

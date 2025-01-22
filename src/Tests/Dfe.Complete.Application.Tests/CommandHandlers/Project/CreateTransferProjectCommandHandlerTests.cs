@@ -30,7 +30,7 @@ public class CreateTransferProjectCommandHandlerTests
         mockProjectRepository.GetUserByAdId(Arg.Any<string>(), Arg.Any<CancellationToken>()).Returns(user);
 
         var now = DateTime.UtcNow;
-        var project = CreateTestTransferProject(user.Team, now);
+        var project = CreateTestTransferProject(ProjectTeam.WestMidlands, now);
 
         mockProjectRepository.AddAsync(Arg.Any<Domain.Entities.Project>(), Arg.Any<CancellationToken>())
             .Returns(Task.FromResult(project));
@@ -62,7 +62,7 @@ public class CreateTransferProjectCommandHandlerTests
         mockProjectRepository.GetUserByAdId(Arg.Any<string>(), Arg.Any<CancellationToken>()).Returns(user);
     
         var now = DateTime.UtcNow;
-        var project = CreateTestTransferProject(team, now);
+        var project = CreateTestTransferProject(ProjectTeam.WestMidlands, now);
         command = command with { HandingOverToRegionalCaseworkService = false, HandoverComments = "this is a test note"};
         
     
@@ -77,7 +77,7 @@ public class CreateTransferProjectCommandHandlerTests
             .AddAsync(Arg.Is<Domain.Entities.Project>(p => p.Notes.FirstOrDefault().Body == command.HandoverComments), default);
     }
 
-    private static Domain.Entities.Project CreateTestTransferProject(string team, DateTime now) =>
+    private static Domain.Entities.Project CreateTestTransferProject(ProjectTeam team, DateTime now) =>
         Domain.Entities.Project.CreateTransferProject(
             new ProjectId(Guid.NewGuid()),
             new Urn(2),
@@ -86,7 +86,7 @@ public class CreateTransferProjectCommandHandlerTests
             TaskType.Transfer,
             ProjectType.Transfer,
             Guid.NewGuid(),
-            "region",
+            Region.NorthWest,
             team,
             null,
             null,

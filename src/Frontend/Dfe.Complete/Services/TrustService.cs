@@ -3,7 +3,7 @@ using Dfe.Complete.Infrastructure.Gateways;
 
 namespace Dfe.Complete.Services
 {
-    public class TrustService : TramsApiClient, ITrustService
+    public class TrustService : AcademiesApiClient, ITrustService
     {
 		private readonly IHttpClientFactory _httpClientFactory;
 		private readonly ILogger<TrustService> _logger;

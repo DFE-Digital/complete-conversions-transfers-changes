@@ -40,8 +40,7 @@ namespace Dfe.Complete.Application.Projects.Commands.CreateProject
 
             var projectTeam = EnumExtensions.FromDescription<ProjectTeam>(projectUserTeam);
             var region = EnumMapper.MapTeamToRegion(projectTeam);
-            var regionCharValue = region.GetCharValue();
-            
+
             var createdAt = DateTime.UtcNow;
             var transferTaskId = Guid.NewGuid();
             var projectId = new ProjectId(Guid.NewGuid());
@@ -50,7 +49,7 @@ namespace Dfe.Complete.Application.Projects.Commands.CreateProject
 
             var groupId = await projectRepository.GetProjectGroupIdByIdentifierAsync(request.GroupReferenceNumber, cancellationToken);
 
-            string team = projectTeam.ToDescription();
+            ProjectTeam team = projectTeam;
             DateTime? assignedAt = DateTime.UtcNow;
             UserId? projectUserAssignedToId = projectUserId;
 
@@ -62,7 +61,7 @@ namespace Dfe.Complete.Application.Projects.Commands.CreateProject
                     TaskType.Transfer,
                     ProjectType.Transfer,
                     transferTaskId,
-                    regionCharValue,
+                    region,
                     team,
                     projectUser?.Id,
                     projectUserAssignedToId,

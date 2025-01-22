@@ -161,7 +161,7 @@ public class Startup
             client.DefaultRequestHeaders.Add("ApiKey", completeOptions.ApiKey);
         });
 
-        services.AddHttpClient("TramsApiClient", (sp, client) =>
+        services.AddHttpClient("AcademiesApiClient", (sp, client) =>
         {
             AcademiesOptions academiesApiOptions = GetTypedConfigurationFor<AcademiesOptions>();
             client.BaseAddress = new Uri(academiesApiOptions.ApiEndpoint);

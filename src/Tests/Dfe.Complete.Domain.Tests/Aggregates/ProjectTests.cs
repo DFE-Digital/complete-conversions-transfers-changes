@@ -12,6 +12,7 @@ using Urn = Dfe.Complete.Domain.ValueObjects.Urn;
 using UserId = Dfe.Complete.Domain.ValueObjects.UserId;
 using System.Text.RegularExpressions;
 using Microsoft.AspNetCore.Http.HttpResults;
+using NSubstitute.ExceptionExtensions;
 
 namespace Dfe.Complete.Domain.Tests.Aggregates
 {
@@ -37,7 +38,7 @@ namespace Dfe.Complete.Domain.Tests.Aggregates
             string establishmentSharepointLink,
             string incomingTrustSharepointLink,
             Guid groupId,
-            string team,
+            ProjectTeam team,
             UserId regionalDeliveryOfficerId,
             UserId assignedToId,
             DateTime? assignedAt
@@ -46,28 +47,30 @@ namespace Dfe.Complete.Domain.Tests.Aggregates
             // Act & Assert
             var exception = Assert.Throws<ArgumentNullException>(() =>
                 new Project(
-                    id,
-                    null,
-                    createdAt,
-                    updatedAt,
-                    taskType,
-                    projectType,
-                    tasksDataId,
-                    significantDate,
-                    isSignificantDateProvisional,
-                    incomingTrustUkprn,
-                    region,
-                    isDueTo2RI,
-                    hasAcademyOrderBeenIssued,
-                    advisoryBoardDate,
-                    advisoryBoardConditions,
-                    establishmentSharepointLink,
-                    incomingTrustSharepointLink,
-                    null,
-                    default,
-                    null,
-                    null,
-                    null));
+                            id,
+                           null,
+                           createdAt,
+                           updatedAt,
+                           taskType,
+                           projectType,
+                           tasksDataId,
+                           significantDate,
+                           isSignificantDateProvisional,
+                           incomingTrustUkprn,
+                           null,
+                           region,
+                           isDueTo2RI,
+                           hasAcademyOrderBeenIssued,
+                           advisoryBoardDate,
+                           advisoryBoardConditions,
+                           establishmentSharepointLink,
+                           incomingTrustSharepointLink,
+                           null,
+                           groupId,
+                           team,
+                           regionalDeliveryOfficerId,
+                           assignedToId,
+                           assignedAt));
 
 
 
@@ -95,7 +98,7 @@ namespace Dfe.Complete.Domain.Tests.Aggregates
             string establishmentSharepointLink,
             string incomingTrustSharepointLink,
             Guid groupId,
-            string team,
+            ProjectTeam team,
             UserId regionalDeliveryOfficerId,
             UserId assignedToId,
             DateTime? assignedAt
@@ -104,28 +107,30 @@ namespace Dfe.Complete.Domain.Tests.Aggregates
             // Act & Assert
             var exception = Assert.Throws<ArgumentNullException>(() =>
                 new Project(
-                    id,
-                    urn,
-                    default,
-                    updatedAt,
-                    taskType,
-                    projectType,
-                    tasksDataId,
-                    significantDate,
-                    isSignificantDateProvisional,
-                    incomingTrustUkprn,
-                    region,
-                    isDueTo2RI,
-                    hasAcademyOrderBeenIssued,
-                    advisoryBoardDate,
-                    advisoryBoardConditions,
-                    establishmentSharepointLink,
-                    incomingTrustSharepointLink,
-                    null,
-                    default,
-                    null,
-                    null,
-                    null));
+                            id,
+                           urn,
+                           default,
+                           updatedAt,
+                           taskType,
+                           projectType,
+                           tasksDataId,
+                           significantDate,
+                           isSignificantDateProvisional,
+                           incomingTrustUkprn,
+                           null,
+                           region,
+                           isDueTo2RI,
+                           hasAcademyOrderBeenIssued,
+                           advisoryBoardDate,
+                           advisoryBoardConditions,
+                           establishmentSharepointLink,
+                           incomingTrustSharepointLink,
+                           null,
+                           groupId,
+                           team,
+                           regionalDeliveryOfficerId,
+                           assignedToId,
+                           assignedAt));
 
             Assert.Equal("createdAt", exception.ParamName);
         }
@@ -150,7 +155,7 @@ namespace Dfe.Complete.Domain.Tests.Aggregates
             string establishmentSharepointLink,
             string incomingTrustSharepointLink,
             Guid groupId,
-            string team,
+            ProjectTeam team,
             UserId regionalDeliveryOfficerId,
             UserId assignedToId,
             DateTime? assignedAt
@@ -159,28 +164,30 @@ namespace Dfe.Complete.Domain.Tests.Aggregates
             // Act & Assert
             var exception = Assert.Throws<ArgumentNullException>(() =>
                 new Project(
-                    id,
-                    urn,
-                    createdAt,
-                    default,
-                    taskType,
-                    projectType,
-                    tasksDataId,
-                    significantDate,
-                    isSignificantDateProvisional,
-                    incomingTrustUkprn,
-                    region,
-                    isDueTo2RI,
-                    hasAcademyOrderBeenIssued,
-                    advisoryBoardDate,
-                    advisoryBoardConditions,
-                    establishmentSharepointLink,
-                    incomingTrustSharepointLink,
-                    null,
-                    default,
-                    null,
-                    null,
-                    null));
+                            id,
+                           urn,
+                           createdAt,
+                           default,
+                           taskType,
+                           projectType,
+                           tasksDataId,
+                           significantDate,
+                           isSignificantDateProvisional,
+                           incomingTrustUkprn,
+                           null,
+                           region,
+                           isDueTo2RI,
+                           hasAcademyOrderBeenIssued,
+                           advisoryBoardDate,
+                           advisoryBoardConditions,
+                           establishmentSharepointLink,
+                           incomingTrustSharepointLink,
+                           null,
+                           groupId,
+                           team,
+                           regionalDeliveryOfficerId,
+                           assignedToId,
+                           assignedAt));
 
             Assert.Equal("updatedAt", exception.ParamName);
         }
