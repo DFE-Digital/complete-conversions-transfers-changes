@@ -82,6 +82,8 @@ namespace Dfe.Complete.Tests.Common.Customizations.Models
 
         public Guid? GroupId { get; set; }
         
+        public string? HandoverComments { get; set; }
+        
         public void Customize(IFixture fixture)
         {
             fixture.Customize<Project>(composer => composer

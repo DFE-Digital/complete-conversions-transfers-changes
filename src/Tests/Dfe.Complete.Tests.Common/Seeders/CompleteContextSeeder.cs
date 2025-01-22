@@ -18,6 +18,14 @@ public static class CompleteContextSeeder
             Team = ProjectTeam.WestMidlands.ToDescription()
         };
 
+        var projectGroup = new ProjectGroup
+        {
+            Id = new ProjectGroupId(Guid.NewGuid()),
+            CreatedAt = DateTime.Now,
+            UpdatedAt = DateTime.Now
+        };
+
+        context.ProjectGroups.Add(projectGroup);
         context.Users.Add(projectUser);
         context.SaveChanges();
     }

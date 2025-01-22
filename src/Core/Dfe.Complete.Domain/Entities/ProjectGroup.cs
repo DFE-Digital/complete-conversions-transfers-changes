@@ -1,7 +1,7 @@
 ﻿using Dfe.Complete.Domain.Common;
 using Dfe.Complete.Domain.ValueObjects;
 
-namespace Dfe.Complete.Infrastructure.Models;
+namespace Dfe.Complete.Domain.Entities;
 
 public class ProjectGroup : BaseAggregateRoot, IEntity<ProjectGroupId>
 {

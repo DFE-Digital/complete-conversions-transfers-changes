@@ -24,7 +24,6 @@ namespace Dfe.Complete.Validators
             if (urn.Length != 6)
             {
                 var errorMessage = $"The {displayName} must be 6 digits long. For example, 123456.";
-
                 return new ValidationResult(errorMessage);
             }
 
