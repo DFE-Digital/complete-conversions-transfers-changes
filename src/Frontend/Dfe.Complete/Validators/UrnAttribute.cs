@@ -18,7 +18,10 @@ namespace Dfe.Complete.Validators
 
             var urn = value as string;
 
-            if (string.IsNullOrEmpty(urn) || urn.Length != 6)
+            if (string.IsNullOrEmpty(urn))
+                return ValidationResult.Success;
+            
+            if (urn.Length != 6)
             {
                 var errorMessage = $"The {displayName} must be 6 digits long. For example, 123456.";
 
