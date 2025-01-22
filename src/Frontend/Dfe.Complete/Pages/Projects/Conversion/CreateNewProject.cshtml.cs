@@ -28,7 +28,7 @@ namespace Dfe.Complete.Pages.Projects.Conversion
         [BindProperty]
         [Display(Name = "Group Reference Number")]
         [GroupReferenceNumber]
-        public string GroupReferenceNumber { get; set; }
+        public string? GroupReferenceNumber { get; set; }
 
         [BindProperty]
         [Required(ErrorMessage = "Enter a date for the Advisory Board Date, like 1 4 2023")]
@@ -80,8 +80,6 @@ namespace Dfe.Complete.Pages.Projects.Conversion
 
         public async Task<IActionResult> OnPost(CancellationToken cancellationToken)
         {
-            ManuallyValidateGroupReferenceNumber();
-
             if (!ModelState.IsValid)
             {
                 errorService.AddErrors(ModelState);
@@ -112,13 +110,6 @@ namespace Dfe.Complete.Pages.Projects.Conversion
             var projectId = createResponse.Value;
 
             return Redirect($"/projects/conversion-projects/{projectId}/created");
-        }
-
-        private void ManuallyValidateGroupReferenceNumber()
-        {
-            //This is a workaround for this field being required by default.
-            ModelState.Remove(nameof(GroupReferenceNumber));
-            new GroupReferenceNumberAttribute().Validate(GroupReferenceNumber, new ValidationContext(this));
         }
     }
 }
