@@ -136,8 +136,8 @@
                             <govuk-radios-error-message>@(ErrorService.GetErrorMessage(handingToRSCField))</govuk-radios-error-message>
                         }
 
-                        <govuk-radios-item value="true">Yes</govuk-radios-item>
-                        <govuk-radios-item value="false">No</govuk-radios-item>
+                        <govuk-radios-item value="true" checked="@Model.IsHandingToRCS">Yes</govuk-radios-item>
+                        <govuk-radios-item value="false" checked="@(!Model.IsHandingToRCS)">No</govuk-radios-item>
 
                     </govuk-radios-fieldset>
                 </govuk-radios>
@@ -175,8 +175,8 @@
                         }
 
                         @* This value should be enums *@
-                        <govuk-radios-item value="true">Directive academy order</govuk-radios-item>
-                        <govuk-radios-item value="false">Academy order</govuk-radios-item>
+                        <govuk-radios-item value="true" checked="@Model.DirectiveAcademyOrder">Directive academy order</govuk-radios-item>
+                        <govuk-radios-item value="false" checked="@(!Model.DirectiveAcademyOrder)">Academy order</govuk-radios-item>
                     </govuk-radios-fieldset>
                 </govuk-radios>
 
@@ -195,8 +195,8 @@
                         <govuk-radios-error-message>@(ErrorService.GetErrorMessage(isDueTo2RIField))</govuk-radios-error-message>
                         }
 
-                        <govuk-radios-item value="true">Yes</govuk-radios-item>
-                        <govuk-radios-item value="false">No</govuk-radios-item>
+                        <govuk-radios-item value="true" checked="@Model.IsDueTo2RI">Yes</govuk-radios-item>
+                        <govuk-radios-item value="false" checked="@(!Model.IsDueTo2RI)">No</govuk-radios-item>
                     </govuk-radios-fieldset>
                 </govuk-radios>
 

@@ -79,7 +79,7 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
 
         [Theory]
         [CustomAutoData(typeof(DateOnlyCustomization))]
-        public async Task ONEONEHandle_ShouldGetAProjectByUrn_WhenCommandIsValid(
+        public async Task Handle_ShouldSucceedAndReturnNullWhenUnfoundProjectByUrn_WhenCommandIsValid(
             [Frozen] ICompleteRepository<Domain.Entities.Project> mockProjectRepository,
             [Frozen] ICacheService<IMemoryCacheType> mockCacheService,
             GetProjectByUrnQueryHandler handler,
