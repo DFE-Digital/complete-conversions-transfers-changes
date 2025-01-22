@@ -16,13 +16,13 @@ public class CreateNewProject(IErrorService errorService) : PageModel
     
     [BindProperty]
     [Ukprn]
-    [Required]
+    [Required(ErrorMessage = "Enter a Trust reference number (TRN)")]
     [Display(Name = "Trust reference number (TRN)")]
     public string TrustReferenceNumber { get; set; }
     
     [BindProperty]
     [Display(Name = "Trust name")]
-    [Required]
+    [Required(ErrorMessage = "Enter a Trust name")]
     public string TrustName { get; set; }
     
     [BindProperty]
@@ -42,13 +42,13 @@ public class CreateNewProject(IErrorService errorService) : PageModel
 
     [BindProperty]
     [SharePointLink]
-    [Required]
+    [Required(ErrorMessage = "Enter a school sharepoint link")]
     [Display(Name = "School or academy SharePoint link")]
     public string SchoolSharePointLink { get; set; }
 
     [BindProperty]
     [SharePointLink]
-    [Required]
+    [Required(ErrorMessage = "Enter an incoming trust Sharepoint link")]
     [Display(Name = "Incoming trust SharePoint link")]
     public string IncomingTrustSharePointLink { get; set; }
     

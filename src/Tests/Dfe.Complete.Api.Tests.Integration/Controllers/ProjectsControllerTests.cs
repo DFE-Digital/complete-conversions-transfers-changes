@@ -1,4 +1,5 @@
 using System.Net;
+using System.Security.Claims;
 using Dfe.Complete.Client.Contracts;
 using Dfe.Complete.Infrastructure.Database;
 using Dfe.Complete.Tests.Common.Customizations;
@@ -19,17 +20,18 @@ public class ProjectsControllerTests
         CreateConversionProjectCommand createConversionProjectCommand,
         ICreateProjectClient createProjectClient)
     {
-        //todo: when auth is done, add this back in
         // factory.TestClaims = [new Claim(ClaimTypes.Role, "API.Write")];
-
-        var testUserAdId = createConversionProjectCommand.UserAdId;
         
         var dbContext = factory.GetDbContext<CompleteContext>();
 
         var testUser = await dbContext.Users.FirstOrDefaultAsync();
-        testUser.ActiveDirectoryUserId = testUserAdId;
+        testUser.ActiveDirectoryUserId = createConversionProjectCommand.UserAdId;
 
+        var group = await dbContext.ProjectGroups.FirstOrDefaultAsync();
+        group.GroupIdentifier = createConversionProjectCommand.GroupReferenceNumber;
+        
         dbContext.Users.Update(testUser);
+        dbContext.ProjectGroups.Update(group);
         await dbContext.SaveChangesAsync();
         
         var result = await createProjectClient.Projects_CreateProject_Async(createConversionProjectCommand);
