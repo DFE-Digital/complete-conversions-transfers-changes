@@ -1,12 +1,9 @@
-﻿using Dfe.Complete.Domain.ValueObjects;
+﻿using Dfe.Complete.Domain.Common;
+using Dfe.Complete.Domain.ValueObjects;
 
-// Please fix the namespace
+namespace Dfe.Complete.Domain.Entities;
 
-namespace Dfe.Complete.Infrastructure.Models;
-
-// Same here missing implementation of IEntity
-
-public class DaoRevocation
+public class DaoRevocation : IEntity<DaoRevocationId>
 {
     public DaoRevocationId Id { get; set; }
 

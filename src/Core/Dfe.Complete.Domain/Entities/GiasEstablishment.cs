@@ -1,9 +1,9 @@
-﻿using Dfe.Complete.Domain.ValueObjects;
+﻿using Dfe.Complete.Domain.Common;
+using Dfe.Complete.Domain.ValueObjects;
 
-namespace Dfe.Complete.Infrastructure.Models;
-// Same here missing implementation of IEntity
+namespace Dfe.Complete.Domain.Entities;
 
-public class GiasEstablishment
+public class GiasEstablishment : IEntity<GiasEstablishmentId>
 {
     public GiasEstablishmentId Id { get; set; }
 

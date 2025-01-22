@@ -19,8 +19,7 @@ namespace Dfe.Complete.Application.Projects.Queries.GetProject
             var cacheKey = $"Project_{CacheKeyHelper.GenerateHashedCacheKey(request.Urn.Value.ToString())}";
 
             var methodName = nameof(GetProjectByUrnQueryHandler);
-
-
+            
             // Please use AutoMapper to make sure return a DTO instead of the actual aggregate/ entity
 
             return await cacheService.GetOrAddAsync(cacheKey, async () =>
