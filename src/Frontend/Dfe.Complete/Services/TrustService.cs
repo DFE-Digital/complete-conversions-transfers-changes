@@ -5,14 +5,10 @@ namespace Dfe.Complete.Services
 {
     public class TrustService : AcademiesApiClient, ITrustService
     {
-		private readonly IHttpClientFactory _httpClientFactory;
-		private readonly ILogger<TrustService> _logger;
-		private const string _url = @"v4/trusts";
+		private const string _url = @"v4/trusts/bulk";
 
 		public TrustService(IHttpClientFactory httpClientFactory, ILogger<TrustService> logger) : base(httpClientFactory, logger)
 		{
-			_httpClientFactory = httpClientFactory;
-			_logger = logger;
 		}
 
 		public async Task<IEnumerable<TrustDetailsDto>> GetTrustByUkprn(string ukprn)
@@ -21,5 +17,13 @@ namespace Dfe.Complete.Services
 
             return result;
 		}
-	}
+
+        public async Task<IEnumerable<TrustDetailsDto>> GetTrustByUkprn(IEnumerable<string> ukprns)
+        {
+            var query = ukprns.Select(ukprn => $"ukprns={ukprn}").Aggregate((acc, next) => acc + "&" + next);
+            var result = await GetEnumerable<TrustDetailsDto>($"{_url}?{query}");
+
+            return result;
+        }
+    }
 }
