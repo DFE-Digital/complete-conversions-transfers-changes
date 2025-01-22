@@ -77,6 +77,45 @@
           }
         }
       }
+    },
+    "/v1/Projects/{groupReferenceNumber}/ukprn": {
+      "get": {
+        "tags": [
+          "Projects"
+        ],
+        "summary": "Gets the UKPRN for a group reference number.",
+        "operationId": "Projects_GetMatchingTrustUkprn_",
+        "parameters": [
+          {
+            "name": "groupReferenceNumber",
+            "in": "path",
+            "required": true,
+            "description": "The group reference number.",
+            "schema": {
+              "type": "string"
+            },
+            "x-position": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "UKPRN returned successfully.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Ukprn"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid group reference number."
+          },
+          "404": {
+            "description": "UKPRN not found for the given group reference number."
+          }
+        }
+      }
     }
   },
   "components": {

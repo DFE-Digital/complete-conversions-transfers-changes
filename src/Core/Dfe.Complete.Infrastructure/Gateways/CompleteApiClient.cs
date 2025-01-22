@@ -2,15 +2,14 @@
 using Microsoft.Extensions.Logging;
 using System.Net.Http;
 
-namespace Dfe.Complete.Services
+namespace Dfe.Complete.Infrastructure.Gateways
 {
     public class CompleteApiClient : ApiClient
     {
         public CompleteApiClient(
             IHttpClientFactory clientFactory, 
             ILogger<ApiClient> logger,
-            IHttpContextAccessor httpContextAccessor,
-            string httpClientName = "CompleteClient") : base(clientFactory, logger, httpContextAccessor, httpClientName)
+            string httpClientName = "CompleteClient") : base(clientFactory, logger, httpClientName)
         {
             
         }

@@ -1,10 +1,11 @@
-﻿using Dfe.Complete.Domain.ValueObjects;
+﻿using Dfe.Complete.Domain.Common;
+using Dfe.Complete.Domain.ValueObjects;
 using System;
 using System.Collections.Generic;
 
 namespace Dfe.Complete.Infrastructure.Models;
 
-public class TransferTasksData
+public class TransferTasksData : BaseAggregateRoot, IEntity<TaskDataId>
 {
     public TaskDataId Id { get; set; }
 
@@ -229,4 +230,23 @@ public class TransferTasksData
     public bool? CommercialTransferAgreementQuestionsReceived { get; set; }
 
     public bool? CommercialTransferAgreementQuestionsChecked { get; set; }
+
+    private TransferTasksData() { }
+
+    public TransferTasksData(
+        TaskDataId id,
+        DateTime createdAt,
+        DateTime updatedAt,
+        bool isDueToInedaquateOfstedRating,
+        bool isDueToIssues,
+        bool outGoingTrustWillClose
+        )
+    {
+        Id = id;
+        CreatedAt = createdAt != default ? createdAt : throw new ArgumentNullException(nameof(createdAt));
+        UpdatedAt = updatedAt != default ? updatedAt : throw new ArgumentNullException(nameof(updatedAt));
+        InadequateOfsted = isDueToInedaquateOfstedRating;
+        FinancialSafeguardingGovernanceIssues = isDueToIssues;
+        OutgoingTrustToClose = outGoingTrustWillClose;
+    }
 }

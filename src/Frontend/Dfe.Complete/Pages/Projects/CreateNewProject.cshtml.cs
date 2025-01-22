@@ -26,6 +26,9 @@ namespace Dfe.Complete.Pages.Projects
                 case "conversion":
                     pageToRedirectTo = "/Projects/Conversion/CreateNewProject";
                 break;
+                case "transfer":
+                    pageToRedirectTo = "/Projects/Transfer/CreateNewProject";
+                    break;
                 default:
                     break;
             }
