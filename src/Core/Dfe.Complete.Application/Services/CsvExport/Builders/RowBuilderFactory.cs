@@ -1,7 +1,7 @@
 ﻿using Dfe.Complete.Application.Services.TrustService;
 using Dfe.Complete.Domain.Entities;
 using Dfe.Complete.Domain.ValueObjects;
-using System.Reflection.Metadata.Ecma335;
+using System.Text;
 
 namespace Dfe.Complete.Application.Services.CsvExport.Builders
 {
@@ -18,20 +18,37 @@ namespace Dfe.Complete.Application.Services.CsvExport.Builders
     public class RowBuilder<T>(ITrustCache trustCache)
     {
         private List<IColumnBuilder<T>> _columnBuilders = new();
+        private StringBuilder _headers = new();
+        private bool _firstHeader = true;
 
+        public RowBuilder<T> Column(string name)
+        {
+            if(!_firstHeader)
+            {
+                _headers.Append(",");
+            }
+            else
+            {
+                _firstHeader = false;
+            }
+
+            _headers.Append(name);
+            return this;
+        }
+       
         public RowBuilder<T> BlankIfEmpty(Func<T, object?> func)
         {
             _columnBuilders.Add(new BlankIfEmpty<T>(func));
             return this;
         }
 
-        public RowBuilder<T> Column(IColumnBuilder<T> columnBuilder)
+        public RowBuilder<T> Builder(IColumnBuilder<T> columnBuilder)
         {       
             _columnBuilders.Add(columnBuilder);
             return this;
         }
 
-        public RowBuilder<T> DefaultIf(Func<T, bool> condition, Func<T, object?> valueFunc, string defaultValue)
+        public RowBuilder<T> DefaultIf(Func<T, bool> condition, Func<T, string?> valueFunc, string defaultValue)
         {
             _columnBuilders.Add(new DefaultIf<T>(condition, valueFunc, defaultValue));
             return this;
@@ -46,6 +63,11 @@ namespace Dfe.Complete.Application.Services.CsvExport.Builders
         public string Build(T model)
         {
             return _columnBuilders.Select(x => x.Build(model)).Aggregate((acc, x) => acc + "," + x);
+        }
+
+        public string BuildHeaders()
+        {
+            return _headers.ToString();
         }
 
     }

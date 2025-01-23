@@ -1,6 +1,5 @@
 ﻿using Dfe.Complete.Application.Common.Models;
 using Dfe.Complete.Application.Services.CsvExport.Builders;
-using System.Text;
 
 namespace Dfe.Complete.Application.Services.CsvExport.Conversion
 {
@@ -11,14 +10,18 @@ namespace Dfe.Complete.Application.Services.CsvExport.Conversion
         public string GenerateRow(ConversionCsvModel model)
         {
             return rowBuilder.DefineRow()
-                    .BlankIfEmpty(x => x.CurrentSchool.Name)
-                    .BlankIfEmpty(x => x.Project.Urn)
-                    .Column(new ProjectTypeBuilder())
-                    .DefaultIf(x => x.Project.AcademyUrn == null, x => x.Academy?.Name, Unconfirmed)
-                    .DefaultIf(x => x.Project.AcademyUrn == null, x => x.Academy?.Urn, Unconfirmed)
-                    .Column(new DfeNumberLAESTABBuilder())
-                    .TrustData(x => x.Project.IncomingTrustUkprn, x => x.Name)
-                    .BlankIfEmpty(x => x.LocalAuthority.Name)
+                    .Column("School name").BlankIfEmpty(x => x.CurrentSchool.Name)
+                    .Column("School URN").BlankIfEmpty(x => x.Project.Urn)
+                    .Column("Project type").Builder(new ProjectTypeBuilder())
+                    .Column("Academy name").DefaultIf(x => x.Project.AcademyUrn == null, x => x.Academy?.Name, Unconfirmed)
+                    .Column("Academy URN").DefaultIf(x => x.Project.AcademyUrn == null, x => x.Academy?.Urn.ToString(), Unconfirmed)
+                    .Column("Academy DfE number/LAESTAB").Builder(new DfeNumberLAESTABBuilder())
+                    .Column("Incoming trust name").TrustData(x => x.Project.IncomingTrustUkprn, x => x.Name)
+                    .Column("Local authority").BlankIfEmpty(x => x.LocalAuthority.Name)
+                    .Column("Region").BlankIfEmpty(x => x.CurrentSchool.RegionName)
+                    .Column("Diocese").BlankIfEmpty(x => x.CurrentSchool.DioceseName)
+                    .Column("Provisional conversion date").Builder(new ProvisionalDateBuilder())
+                    .Column("Confirmed conversion date").DefaultIf(x => x.Project.SignificantDateProvisional == true, x => x.Project.SignificantDate.Value.ToString("dd/MM/yyyy") ?? Unconfirmed , Unconfirmed)
                     .Build(model);
 
             //row.Append(model.SchoolName);
@@ -157,16 +160,6 @@ namespace Dfe.Complete.Application.Services.CsvExport.Conversion
             //row.Append(",");
             //row.Append(model.DirectorOfChildServicesRole);
 
-        }
-
-        private string BlankIfNull(string? value)
-        {
-            return value ?? string.Empty;
-        }
-
-        private string BlankIfNull(int? value)
-        {
-            return value == null ? string.Empty: value.Value.ToString();
         }
     }
 }

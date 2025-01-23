@@ -24,11 +24,12 @@ namespace Dfe.Complete.Application.Tests.Services.CsvExport.Conversion
             project.Type = ProjectType.Conversion;
             project.AcademyUrn = null;
             project.IncomingTrustUkprn = incomingTrust.Ukprn;
+            project.SignificantDateProvisional = true;
 
             var TrustCache = Substitute.For<ITrustCache>();
             TrustCache.GetTrustAsync(incomingTrust.Ukprn).Returns(incomingTrust);
 
-            var model = new ConversionCsvModel(project, currentSchool, null, localAuthority);
+            var model = new ConversionCsvModel(project, currentSchool, null, localAuthority, null);
           
             var generator = new ConversionRowGenerator(new RowBuilderFactory<ConversionCsvModel>(TrustCache));
 
@@ -44,10 +45,10 @@ namespace Dfe.Complete.Application.Tests.Services.CsvExport.Conversion
             Assert.Equal("", result[5]);
             Assert.Equal(incomingTrust.Name, result[6]);
             Assert.Equal(localAuthority.Name, result[7]);
-            //Assert.Equal("Region", result[8]);
-            //Assert.Equal("Diocese", result[9]);
-            //Assert.Equal("06/05/2024", result[10]);
-            //Assert.Equal("03/04/2024", result[11]);
+            Assert.Equal(currentSchool.RegionName, result[8]);
+            Assert.Equal(currentSchool.DioceseName, result[9]);
+            Assert.Equal(project.SignificantDate.Value.ToString("dd/MM/yyyy"), result[10]);
+            Assert.Equal("unconfirmed", result[11]); 
             //Assert.Equal("AcademyOrderType", result[12]);
             //Assert.Equal("True", result[13]);
             //Assert.Equal("02/03/2024", result[14]);
@@ -107,17 +108,19 @@ namespace Dfe.Complete.Application.Tests.Services.CsvExport.Conversion
         }
 
         [Theory]
-        [CustomAutoData(typeof(ProjectCustomization), typeof(EstablishmentsCustomization), typeof(TrustDetailsDtoCustomization), typeof(LocalAuthorityCustomization))]
+        [CustomAutoData(typeof(ProjectCustomization), typeof(EstablishmentsCustomization), typeof(TrustDetailsDtoCustomization), typeof(LocalAuthorityCustomization), typeof(SignificantDateHistoryCustomization))]
         public void RowGeneratesBasedOnModel(Project project,
                                              GiasEstablishment currentSchool,
                                              GiasEstablishment academy,
                                              TrustDetailsDto incomingTrust,
-                                             LocalAuthority localAuthority)
+                                             LocalAuthority localAuthority,
+                                             SignificantDateHistory significantDateHistory)
         {
             project.Type = ProjectType.Transfer;
             project.IncomingTrustUkprn = incomingTrust.Ukprn;
+            project.SignificantDateProvisional = false;
 
-            var model = new ConversionCsvModel(project, currentSchool, academy, localAuthority);
+            var model = new ConversionCsvModel(project, currentSchool, academy, localAuthority, significantDateHistory);
 
             var TrustCache = Substitute.For<ITrustCache>();
             TrustCache.GetTrustAsync(incomingTrust.Ukprn).Returns(incomingTrust);
@@ -136,10 +139,10 @@ namespace Dfe.Complete.Application.Tests.Services.CsvExport.Conversion
             Assert.Equal(academy.LocalAuthorityCode + "/" + academy.EstablishmentNumber, result[5]);
             Assert.Equal(incomingTrust.Name, result[6]);
             Assert.Equal(localAuthority.Name, result[7]);
-            //Assert.Equal("Region", result[8]);
-            //Assert.Equal("Diocese", result[9]);
-            //Assert.Equal("06/05/2024", result[10]);
-            //Assert.Equal("03/04/2024", result[11]);
+            Assert.Equal(currentSchool.RegionName, result[8]);
+            Assert.Equal(currentSchool.DioceseName, result[9]);
+            Assert.Equal(significantDateHistory.PreviousDate.Value.ToString("dd/MM/yyyy"), result[10]);
+            Assert.Equal(project.SignificantDate.Value.ToString("dd/MM/yyyy"), result[11]);
             //Assert.Equal("AcademyOrderType", result[12]);
             //Assert.Equal("True", result[13]);
             //Assert.Equal("02/03/2024", result[14]);
