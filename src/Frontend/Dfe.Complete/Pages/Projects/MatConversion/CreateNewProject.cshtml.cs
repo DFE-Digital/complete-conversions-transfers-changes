@@ -1,12 +1,17 @@
 using System.ComponentModel.DataAnnotations;
+using Dfe.Complete.Application.Projects.Commands.CreateProject;
+using Dfe.Complete.Domain.ValueObjects;
 using Dfe.Complete.Services;
 using Dfe.Complete.Validators;
+using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace Dfe.Complete.Pages.Projects.MatConversion;
 
-public class CreateNewProject(IErrorService errorService) : PageModel
+[Authorize(policy: "CanCreateProjects")]
+public class CreateNewProject(ISender sender, IErrorService errorService) : PageModel
 {
     [BindProperty]
     [Urn]
@@ -15,7 +20,7 @@ public class CreateNewProject(IErrorService errorService) : PageModel
     public string URN { get; set; }
     
     [BindProperty]
-    [Ukprn]
+    // [Ukprn]
     [Required(ErrorMessage = "Enter a Trust reference number (TRN)")]
     [Display(Name = "Trust reference number (TRN)")]
     public string TrustReferenceNumber { get; set; }
@@ -29,7 +34,6 @@ public class CreateNewProject(IErrorService errorService) : PageModel
     [Required(ErrorMessage = "Enter a date for the Advisory Board Date, like 1 4 2023")]
     [Display(Name = "Advisory Board Date")]
     public DateTime? AdvisoryBoardDate { get; set; }
-    
     
     [BindProperty] 
     public string AdvisoryBoardConditions { get; set; }
@@ -75,7 +79,7 @@ public class CreateNewProject(IErrorService errorService) : PageModel
         
     }
 
-    public async Task<IActionResult> OnPost()
+    public async Task<IActionResult> OnPost(CancellationToken cancellationToken)
     {
         if (!ModelState.IsValid)
         {
@@ -83,7 +87,27 @@ public class CreateNewProject(IErrorService errorService) : PageModel
             return Page();
         }
         
-        return Page();
-    }
-    
+        var userAdId = User.Claims.SingleOrDefault(c => c.Type.Contains("objectidentifier"))?.Value;
+        
+        var createProjectCommand = new CreateMatConversionProjectCommand(
+            Urn: new Urn(int.Parse(URN)),
+            TrustName,
+            SignificantDate: ProvisionalConversionDate.HasValue ? DateOnly.FromDateTime(ProvisionalConversionDate.Value) : default,
+            IsSignificantDateProvisional: true, // will be set to false in the stakeholder kick off task 
+            IncomingTrustSharepointLink: IncomingTrustSharePointLink,
+            EstablishmentSharepointLink: SchoolSharePointLink, //todo: is this correct?
+            IsDueTo2Ri: IsDueTo2RI ?? false,
+            AdvisoryBoardDate: AdvisoryBoardDate.HasValue ? DateOnly.FromDateTime(AdvisoryBoardDate.Value) : default,
+            AdvisoryBoardConditions: AdvisoryBoardConditions,
+            HasAcademyOrderBeenIssued: DirectiveAcademyOrder ?? default, 
+            HandingOverToRegionalCaseworkService: IsHandingToRCS ?? default,
+            HandoverComments: HandoverComments, 
+            UserAdId: userAdId
+        );
+        
+        var createResponse = await sender.Send(createProjectCommand, cancellationToken);
+
+        var projectId = createResponse.Value;
+
+        return Redirect($"/projects/conversion-projects/{projectId}/created"); }
 }
