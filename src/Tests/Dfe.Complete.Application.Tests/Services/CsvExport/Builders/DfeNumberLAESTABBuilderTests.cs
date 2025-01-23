@@ -16,7 +16,7 @@ namespace Dfe.Complete.Application.Tests.Services.CsvExport.Builders
         {
             var builder = new DfeNumberLAESTABBuilder();
 
-            var result = builder.Build(new ConversionCsvModel(project, null, academy));
+            var result = builder.Build(new ConversionCsvModel(project, null, academy, null));
 
             Assert.Equal(academy.LocalAuthorityCode + "/" + academy.EstablishmentNumber, result);
         }
@@ -28,7 +28,7 @@ namespace Dfe.Complete.Application.Tests.Services.CsvExport.Builders
             project.AcademyUrn = null;
             var builder = new DfeNumberLAESTABBuilder();
 
-            var result = builder.Build(new ConversionCsvModel(project, null, academy));
+            var result = builder.Build(new ConversionCsvModel(project, null, academy, null));
 
             Assert.Equal(string.Empty, result);
         }
@@ -40,7 +40,7 @@ namespace Dfe.Complete.Application.Tests.Services.CsvExport.Builders
             project.AcademyUrn = null;
             var builder = new DfeNumberLAESTABBuilder();
 
-            var result = builder.Build(new ConversionCsvModel(project, null, null));
+            var result = builder.Build(new ConversionCsvModel(project, null, null, null));
 
             Assert.Equal(string.Empty, result);
         }

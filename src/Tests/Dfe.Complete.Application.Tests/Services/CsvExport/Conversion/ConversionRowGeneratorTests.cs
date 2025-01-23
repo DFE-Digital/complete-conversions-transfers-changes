@@ -4,6 +4,7 @@ using Dfe.Complete.Application.Services.CsvExport.Conversion;
 using Dfe.Complete.Application.Services.TrustService;
 using Dfe.Complete.Domain.Entities;
 using Dfe.Complete.Domain.Enums;
+using Dfe.Complete.Infrastructure.Models;
 using Dfe.Complete.Tests.Common.Customizations.Models;
 using DfE.CoreLibs.Testing.AutoFixture.Attributes;
 using NSubstitute;
@@ -15,7 +16,10 @@ namespace Dfe.Complete.Application.Tests.Services.CsvExport.Conversion
 
         [Theory]
         [CustomAutoData(typeof(ProjectCustomization), typeof(EstablishmentsCustomization), typeof(TrustDetailsDtoCustomization))]
-        public void RowGeneratesAccountsForBlankData(Project project, GiasEstablishment currentSchool, TrustDetailsDto incomingTrust)
+        public void RowGeneratesAccountsForBlankData(Project project,
+                                                     GiasEstablishment currentSchool,
+                                                     TrustDetailsDto incomingTrust,
+                                                     LocalAuthority localAuthority)
         { 
             project.Type = ProjectType.Conversion;
             project.AcademyUrn = null;
@@ -24,7 +28,7 @@ namespace Dfe.Complete.Application.Tests.Services.CsvExport.Conversion
             var TrustCache = Substitute.For<ITrustCache>();
             TrustCache.GetTrustAsync(incomingTrust.Ukprn).Returns(incomingTrust);
 
-            var model = new ConversionCsvModel(project, currentSchool, null);
+            var model = new ConversionCsvModel(project, currentSchool, null, localAuthority);
           
             var generator = new ConversionRowGenerator(new RowBuilderFactory<ConversionCsvModel>(TrustCache));
 
@@ -39,7 +43,7 @@ namespace Dfe.Complete.Application.Tests.Services.CsvExport.Conversion
             Assert.Equal("unconfirmed", result[4]);
             Assert.Equal("", result[5]);
             Assert.Equal(incomingTrust.Name, result[6]);
-            //Assert.Equal("LocalAuthority", result[7]);
+            Assert.Equal(localAuthority.Name, result[7]);
             //Assert.Equal("Region", result[8]);
             //Assert.Equal("Diocese", result[9]);
             //Assert.Equal("06/05/2024", result[10]);
@@ -103,13 +107,17 @@ namespace Dfe.Complete.Application.Tests.Services.CsvExport.Conversion
         }
 
         [Theory]
-        [CustomAutoData(typeof(ProjectCustomization), typeof(EstablishmentsCustomization), typeof(TrustDetailsDtoCustomization))]
-        public void RowGeneratesBasedOnModel(Project project, GiasEstablishment currentSchool, GiasEstablishment academy, TrustDetailsDto incomingTrust)
+        [CustomAutoData(typeof(ProjectCustomization), typeof(EstablishmentsCustomization), typeof(TrustDetailsDtoCustomization), typeof(LocalAuthorityCustomization))]
+        public void RowGeneratesBasedOnModel(Project project,
+                                             GiasEstablishment currentSchool,
+                                             GiasEstablishment academy,
+                                             TrustDetailsDto incomingTrust,
+                                             LocalAuthority localAuthority)
         {
             project.Type = ProjectType.Transfer;
             project.IncomingTrustUkprn = incomingTrust.Ukprn;
 
-            var model = new ConversionCsvModel(project, currentSchool, academy);
+            var model = new ConversionCsvModel(project, currentSchool, academy, localAuthority);
 
             var TrustCache = Substitute.For<ITrustCache>();
             TrustCache.GetTrustAsync(incomingTrust.Ukprn).Returns(incomingTrust);
@@ -127,7 +135,7 @@ namespace Dfe.Complete.Application.Tests.Services.CsvExport.Conversion
             Assert.Equal(academy.Urn.ToString(), result[4]);
             Assert.Equal(academy.LocalAuthorityCode + "/" + academy.EstablishmentNumber, result[5]);
             Assert.Equal(incomingTrust.Name, result[6]);
-            //Assert.Equal("LocalAuthority", result[7]);
+            Assert.Equal(localAuthority.Name, result[7]);
             //Assert.Equal("Region", result[8]);
             //Assert.Equal("Diocese", result[9]);
             //Assert.Equal("06/05/2024", result[10]);

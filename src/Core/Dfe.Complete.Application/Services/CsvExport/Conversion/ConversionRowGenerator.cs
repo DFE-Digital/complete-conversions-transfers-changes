@@ -18,6 +18,7 @@ namespace Dfe.Complete.Application.Services.CsvExport.Conversion
                     .DefaultIf(x => x.Project.AcademyUrn == null, x => x.Academy?.Urn, Unconfirmed)
                     .Column(new DfeNumberLAESTABBuilder())
                     .TrustData(x => x.Project.IncomingTrustUkprn, x => x.Name)
+                    .BlankIfEmpty(x => x.LocalAuthority.Name)
                     .Build(model);
 
             //row.Append(model.SchoolName);

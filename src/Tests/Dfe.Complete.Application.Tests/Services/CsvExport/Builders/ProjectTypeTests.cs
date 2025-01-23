@@ -18,7 +18,7 @@ namespace Dfe.Complete.Application.Tests.Services.CsvExport.Builders
             project.Type = ProjectType.Conversion;
             var builder = new ProjectTypeBuilder();
 
-            var result = builder.Build(new ConversionCsvModel(project, null, null));
+            var result = builder.Build(new ConversionCsvModel(project, null, null, null));
 
             Assert.Equal("Conversion", result);
         }
@@ -30,7 +30,7 @@ namespace Dfe.Complete.Application.Tests.Services.CsvExport.Builders
             project.Type = ProjectType.Transfer;
             var builder = new ProjectTypeBuilder();
 
-            var result = builder.Build(new ConversionCsvModel(project, null, null));
+            var result = builder.Build(new ConversionCsvModel(project, null, null, null));
 
             Assert.Equal("Transfer", result);
         }

@@ -3,6 +3,7 @@ using Dfe.Complete.Application.Projects.Interfaces.CsvExport;
 using Dfe.Complete.Application.Projects.Model;
 using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Infrastructure.Database;
+using Dfe.Complete.Infrastructure.Models;
 
 namespace Dfe.Complete.Infrastructure.QueryServices.CsvExport
 {
@@ -16,7 +17,9 @@ namespace Dfe.Complete.Infrastructure.QueryServices.CsvExport
               .Join(context.GiasEstablishments, project => project.Urn, establishment => establishment.Urn, 
                 (project, establishment) => new { project, establishment })
               .Join(context.GiasEstablishments, composite => composite.project.AcademyUrn, establishment => establishment.Urn, 
-                (composite, academy) => new ConversionCsvModel( composite.project, composite.establishment, academy));
+                (composite, academy) => new { composite.project, composite.establishment, academy })
+              .Join(context.LocalAuthorities, composite => composite.establishment.LocalAuthorityCode, localAuthority => localAuthority.Code,
+                (composite, localAuthority) => new ConversionCsvModel ( composite.project, composite.establishment, composite.academy, localAuthority ));
 
             return query;
         }
