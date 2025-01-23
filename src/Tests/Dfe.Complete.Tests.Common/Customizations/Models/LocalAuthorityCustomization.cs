@@ -1,5 +1,5 @@
 ﻿using AutoFixture;
-using Dfe.Complete.Infrastructure.Models;
+using Dfe.Complete.Domain.Entities;
 
 namespace Dfe.Complete.Tests.Common.Customizations.Models
 {
