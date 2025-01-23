@@ -11,6 +11,7 @@ using System.Linq.Expressions;
 using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Domain.ValueObjects;
 using Dfe.Complete.Utils;
+using Microsoft.IdentityModel.Tokens;
 
 namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
 {
@@ -48,6 +49,7 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
                 null,
                 default,
                 null,
+                null, 
                 null, 
                 null);
 

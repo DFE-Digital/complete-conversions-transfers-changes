@@ -1,10 +1,9 @@
-﻿using Dfe.Complete.Domain.ValueObjects;
-using System;
-using System.Collections.Generic;
+﻿using Dfe.Complete.Domain.Common;
+using Dfe.Complete.Domain.ValueObjects;
 
-namespace Dfe.Complete.Infrastructure.Models;
+namespace Dfe.Complete.Domain.Entities;
 
-public class DaoRevocationReason
+public class DaoRevocationReason : IEntity<DaoRevocationReasonId>
 {
     public DaoRevocationReasonId Id { get; set; }
 

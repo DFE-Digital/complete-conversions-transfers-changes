@@ -27,7 +27,6 @@ namespace Dfe.Complete.Tests.Common.Customizations
                     //TODO: when needed, seed data for CompleteContext
                     SeedData = new Dictionary<Type, Action<DbContext>>
                     {
-                        //TODO: add this but for CompleteContext when needed:
                         { typeof(CompleteContext), context => CompleteContextSeeder.Seed((CompleteContext)context) }
                         // { typeof(CompleteContext), context => {} },
                     },

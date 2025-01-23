@@ -73,7 +73,7 @@ namespace Dfe.Complete.Pages.Projects.Conversion
         [Display(Name = "IsDueTo2RI")]
         public bool? IsDueTo2RI { get; set; }
 
-        public async Task<IActionResult> OnGet()
+        public IActionResult OnGet()
         {
             return Page();
         }
