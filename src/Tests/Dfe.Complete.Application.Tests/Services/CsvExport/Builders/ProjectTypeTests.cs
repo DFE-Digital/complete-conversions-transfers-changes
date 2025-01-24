@@ -15,10 +15,13 @@ namespace Dfe.Complete.Application.Tests.Services.CsvExport.Builders
         [CustomAutoData(typeof(ProjectCustomization))]
         public void Build_When_Conversion(Project project)
         {
-            project.Type = ProjectType.Conversion;
+            
             var builder = new ProjectTypeBuilder();
+            
+            var model = ConversionCsvModelFactory.Make();
+            model.Project.Type = ProjectType.Conversion;
 
-            var result = builder.Build(new ConversionCsvModel(project, null, null, null, null, null));
+            var result = builder.Build(model);
 
             Assert.Equal("Conversion", result);
         }
@@ -26,11 +29,12 @@ namespace Dfe.Complete.Application.Tests.Services.CsvExport.Builders
         [Theory]
         [CustomAutoData(typeof(ProjectCustomization))]
         public void Build_When_Transfer(Project project)
-        {
-            project.Type = ProjectType.Transfer;
+        {   
             var builder = new ProjectTypeBuilder();
+            var model = ConversionCsvModelFactory.Make();
+            model.Project.Type = ProjectType.Transfer;
 
-            var result = builder.Build(new ConversionCsvModel(project, null, null, null, null, null));
+            var result = builder.Build(model);
 
             Assert.Equal("Transfer", result);
         }

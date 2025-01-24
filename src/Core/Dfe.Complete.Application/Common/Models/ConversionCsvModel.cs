@@ -1,5 +1,4 @@
 ﻿using Dfe.Complete.Domain.Entities;
-using Dfe.Complete.Infrastructure.Models;
 
 namespace Dfe.Complete.Application.Common.Models
 {
@@ -8,5 +7,6 @@ namespace Dfe.Complete.Application.Common.Models
                                      GiasEstablishment? Academy,
                                      LocalAuthority LocalAuthority,
                                      SignificantDateHistory? SignificantDateHistory,
-                                     ConversionTasksData ConversionTasks);
+                                     ConversionTasksData ConversionTasks,
+                                     User? CreatedBy);
 }

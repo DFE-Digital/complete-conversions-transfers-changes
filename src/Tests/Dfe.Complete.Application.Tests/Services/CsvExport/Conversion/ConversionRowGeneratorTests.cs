@@ -4,7 +4,6 @@ using Dfe.Complete.Application.Services.CsvExport.Conversion;
 using Dfe.Complete.Application.Services.TrustService;
 using Dfe.Complete.Domain.Entities;
 using Dfe.Complete.Domain.Enums;
-using Dfe.Complete.Infrastructure.Models;
 using Dfe.Complete.Tests.Common.Customizations.Models;
 using DfE.CoreLibs.Testing.AutoFixture.Attributes;
 using NSubstitute;
@@ -15,70 +14,67 @@ namespace Dfe.Complete.Application.Tests.Services.CsvExport.Conversion
 
 
         [Theory]
-        [CustomAutoData(typeof(ProjectCustomization), typeof(EstablishmentsCustomization), typeof(TrustDetailsDtoCustomization))]
-        public void RowGeneratesAccountsForBlankData(Project project,
-                                                     GiasEstablishment currentSchool,
-                                                     TrustDetailsDto incomingTrust,
-                                                     LocalAuthority localAuthority,
-                                                     ConversionTasksData taskData)
-        { 
-            project.Type = ProjectType.Conversion;
-            project.AcademyUrn = null;
-            project.IncomingTrustUkprn = null;
-            project.SignificantDateProvisional = true;
-            project.DirectiveAcademyOrder = true;
-            project.TwoRequiresImprovement = true;
-            project.AdvisoryBoardConditions = null;
-            project.AllConditionsMet = false;
-            project.EstablishmentSharepointLink = null;
+        [CustomAutoData(typeof(TrustDetailsDtoCustomization))]
+        public void RowGeneratesAccountsForBlankData(TrustDetailsDto incomingTrust)
+        {
+            var model = ConversionCsvModelFactory.Make(withAcademy: false, withSignificantDateHistory: false);
 
-            currentSchool.PhaseName = "Not applicable";
-            currentSchool.AddressStreet = null;
-            currentSchool.AddressLocality = null;
-            currentSchool.AddressAdditional = null;
-            currentSchool.AddressTown = null;
-            currentSchool.AddressCounty = null;
-            currentSchool.AddressPostcode = null;
+            model.Project.Type = ProjectType.Conversion;
+            model.Project.AcademyUrn = null;
+            model.Project.IncomingTrustUkprn = null;
+            model.Project.SignificantDateProvisional = true;
+            model.Project.DirectiveAcademyOrder = true;
+            model.Project.TwoRequiresImprovement = true;
+            model.Project.AdvisoryBoardConditions = null;
+            model.Project.AllConditionsMet = false;
+            model.Project.EstablishmentSharepointLink = null;
 
-            taskData.ReceiveGrantPaymentCertificateDateReceived = null;
-            taskData.ProposedCapacityOfTheAcademyReceptionToSixYears = null;
-            taskData.ProposedCapacityOfTheAcademySevenToElevenYears = null;
-            taskData.ProposedCapacityOfTheAcademyTwelveOrAboveYears = null;
+            model.CurrentSchool.PhaseName = "Not applicable";
+            model.CurrentSchool.AddressStreet = null;
+            model.CurrentSchool.AddressLocality = null;
+            model.CurrentSchool.AddressAdditional = null;
+            model.CurrentSchool.AddressTown = null;
+            model.CurrentSchool.AddressCounty = null;
+            model.CurrentSchool.AddressPostcode = null;
+
+            model.ConversionTasks.ReceiveGrantPaymentCertificateDateReceived = null;
+            model.ConversionTasks.ProposedCapacityOfTheAcademyReceptionToSixYears = null;
+            model.ConversionTasks.ProposedCapacityOfTheAcademySevenToElevenYears = null;
+            model.ConversionTasks.ProposedCapacityOfTheAcademyTwelveOrAboveYears = null;
 
             var TrustCache = Substitute.For<ITrustCache>();
-            TrustCache.GetTrustByTrnAsync(project.NewTrustReferenceNumber).Returns(incomingTrust);
+            TrustCache.GetTrustByTrnAsync(model.Project.NewTrustReferenceNumber).Returns(incomingTrust);
 
-            var model = new ConversionCsvModel(project, currentSchool, null, localAuthority, null, taskData);
-          
+
             var generator = new ConversionRowGenerator(new RowBuilderFactory<ConversionCsvModel>(TrustCache));
 
             generator.GenerateRow(model);
 
             var result = generator.GenerateRow(model).Split(",");
 
-            Assert.Equal(currentSchool.Name, result[0]);
-            Assert.Equal(project.Urn.ToString(), result[1]);
+            Assert.Equal(model.CurrentSchool.Name, result[0]);
+            Assert.Equal(model.Project.Urn.ToString(), result[1]);
             Assert.Equal("Conversion", result[2]);
             Assert.Equal("unconfirmed", result[3]);
             Assert.Equal("unconfirmed", result[4]);
             Assert.Equal("", result[5]);
             Assert.Equal(incomingTrust.Name, result[6]);
-            Assert.Equal(localAuthority.Name, result[7]);
-            Assert.Equal(currentSchool.RegionName, result[8]);
-            Assert.Equal(currentSchool.DioceseName, result[9]);
-            Assert.Equal(project.SignificantDate.Value.ToString("dd/MM/yyyy"), result[10]);
+            Assert.Equal(model.LocalAuthority.Name, result[7]);
+            Assert.Equal(model.CurrentSchool.RegionName, result[8]);
+            Assert.Equal(model.CurrentSchool.DioceseName, result[9]);
+            Assert.Equal(model.Project.SignificantDate.Value.ToString("dd/MM/yyyy"), result[10]);
             Assert.Equal("unconfirmed", result[11]); 
             Assert.Equal("directive academy order", result[12]);
             Assert.Equal("yes", result[13]);
-            Assert.Equal(project.AdvisoryBoardDate.Value.ToString("dd/MM/yyyy"), result[14]);
+            Assert.Equal(model.Project.AdvisoryBoardDate.Value.ToString("dd/MM/yyyy"), result[14]);
             Assert.Equal("", result[15]);
             Assert.Equal("standard", result[16]);
             Assert.Equal("not applicable", result[17]);
             Assert.Equal("no", result[18]);
             Assert.Equal("unconfirmed", result[19]);
-            Assert.Equal(currentSchool.TypeName, result[20]);
-            Assert.Equal(currentSchool.AgeRangeLower + "-" + currentSchool.AgeRangeUpper, result[21]);
-            Assert.Equal(currentSchool.TypeName, result[22]);
+            Assert.Equal(model.CurrentSchool.TypeName, result[20]);
+            Assert.Equal(model.CurrentSchool.AgeRangeLower + "-" + model.CurrentSchool.AgeRangeUpper, result[21]);
+            Assert.Equal(model.CurrentSchool.TypeName, result[22]);
             Assert.Equal("not applicable", result[23]);
             Assert.Equal("not applicable", result[24]);
             Assert.Equal("not applicable", result[25]);
@@ -99,7 +95,7 @@ namespace Dfe.Complete.Application.Tests.Services.CsvExport.Conversion
             Assert.Equal(incomingTrust.Address.Town, result[40]);
             Assert.Equal(incomingTrust.Address.County, result[41]);
             Assert.Equal(incomingTrust.Address.Postcode, result[42]);
-            Assert.Equal(project.IncomingTrustSharepointLink, result[43]);
+            Assert.Equal(model.Project.IncomingTrustSharepointLink, result[43]);
             //Assert.Equal("ProjectCreatedBy", result[44]);
             //Assert.Equal("ProjectCreatedByEmailAddress", result[45]);
             //Assert.Equal("AssignedToName", result[46]);
@@ -127,25 +123,19 @@ namespace Dfe.Complete.Application.Tests.Services.CsvExport.Conversion
         }
 
         [Theory]
-        [CustomAutoData(typeof(ProjectCustomization), typeof(EstablishmentsCustomization), typeof(TrustDetailsDtoCustomization), typeof(LocalAuthorityCustomization), typeof(SignificantDateHistoryCustomization))]
-        public void RowGeneratesBasedOnModel(Project project,
-                                             GiasEstablishment currentSchool,
-                                             GiasEstablishment academy,
-                                             TrustDetailsDto incomingTrust,
-                                             LocalAuthority localAuthority,
-                                             SignificantDateHistory significantDateHistory,
-                                             ConversionTasksData taskData)
+        [CustomAutoData(typeof(TrustDetailsDtoCustomization))]
+        public void RowGeneratesBasedOnModel(TrustDetailsDto incomingTrust)
         {
-            project.Type = ProjectType.Conversion;
-            project.IncomingTrustUkprn = incomingTrust.Ukprn;
-            project.SignificantDateProvisional = false;
-            project.TwoRequiresImprovement = false;
-            project.DirectiveAcademyOrder = false;
-            project.AllConditionsMet = true;
+            var model = ConversionCsvModelFactory.Make();
 
-            taskData.RiskProtectionArrangementOption = RiskProtectionArrangementOption.Commercial;
+            model.Project.Type = ProjectType.Conversion;
+            model.Project.IncomingTrustUkprn = incomingTrust.Ukprn;
+            model.Project.SignificantDateProvisional = false;
+            model.Project.TwoRequiresImprovement = false;
+            model.Project.DirectiveAcademyOrder = false;
+            model.Project.AllConditionsMet = true;
 
-            var model = new ConversionCsvModel(project, currentSchool, academy, localAuthority, significantDateHistory, taskData);
+            model.ConversionTasks.RiskProtectionArrangementOption = RiskProtectionArrangementOption.Commercial;
 
             var TrustCache = Substitute.For<ITrustCache>();
             TrustCache.GetTrustAsync(incomingTrust.Ukprn).Returns(incomingTrust);
@@ -156,39 +146,39 @@ namespace Dfe.Complete.Application.Tests.Services.CsvExport.Conversion
 
             var result = generator.GenerateRow(model).Split(",");
 
-            Assert.Equal(currentSchool.Name, result[0]);
-            Assert.Equal(project.Urn.ToString(), result[1]);
+            Assert.Equal(model.CurrentSchool.Name, result[0]);
+            Assert.Equal(model.Project.Urn.ToString(), result[1]);
             Assert.Equal("Conversion", result[2]);
-            Assert.Equal(academy.Name, result[3]);
-            Assert.Equal(academy.Urn.ToString(), result[4]);
-            Assert.Equal(academy.LocalAuthorityCode + "/" + academy.EstablishmentNumber, result[5]);
+            Assert.Equal(model.Academy.Name, result[3]);
+            Assert.Equal(model.Academy.Urn.ToString(), result[4]);
+            Assert.Equal(model.Academy.LocalAuthorityCode + "/" + model.Academy.EstablishmentNumber, result[5]);
             Assert.Equal(incomingTrust.Name, result[6]);
-            Assert.Equal(localAuthority.Name, result[7]);
-            Assert.Equal(currentSchool.RegionName, result[8]);
-            Assert.Equal(currentSchool.DioceseName, result[9]);
-            Assert.Equal(significantDateHistory.PreviousDate.Value.ToString("dd/MM/yyyy"), result[10]);
-            Assert.Equal(project.SignificantDate.Value.ToString("dd/MM/yyyy"), result[11]);
+            Assert.Equal(model.LocalAuthority.Name, result[7]);
+            Assert.Equal(model.CurrentSchool.RegionName, result[8]);
+            Assert.Equal(model.CurrentSchool.DioceseName, result[9]);
+            Assert.Equal(model.SignificantDateHistory.PreviousDate.Value.ToString("dd/MM/yyyy"), result[10]);
+            Assert.Equal(model.Project.SignificantDate.Value.ToString("dd/MM/yyyy"), result[11]);
             Assert.Equal("academy order", result[12]);
             Assert.Equal("no", result[13]);
-            Assert.Equal(project.AdvisoryBoardDate.Value.ToString("dd/MM/yyyy"), result[14]);
-            Assert.Equal(project.AdvisoryBoardConditions, result[15]);
+            Assert.Equal(model.Project.AdvisoryBoardDate.Value.ToString("dd/MM/yyyy"), result[14]);
+            Assert.Equal(model.Project.AdvisoryBoardConditions, result[15]);
             Assert.Equal("commercial", result[16]);
-            Assert.Equal(taskData.RiskProtectionArrangementReason, result[17]);
+            Assert.Equal(model.ConversionTasks.RiskProtectionArrangementReason, result[17]);
             Assert.Equal("yes", result[18]);
-            Assert.Equal(taskData.ReceiveGrantPaymentCertificateDateReceived?.ToString("dd/MM/yyyy"), result[19]);
-            Assert.Equal(currentSchool.TypeName, result[20]);
-            Assert.Equal(currentSchool.AgeRangeLower + "-" + currentSchool.AgeRangeUpper, result[21]);
-            Assert.Equal(currentSchool.PhaseName, result[22]);
-            Assert.Equal(taskData.ProposedCapacityOfTheAcademyReceptionToSixYears, result[23]);
-            Assert.Equal(taskData.ProposedCapacityOfTheAcademySevenToElevenYears, result[24]);
-            Assert.Equal(taskData.ProposedCapacityOfTheAcademyTwelveOrAboveYears, result[25]);
-            Assert.Equal(currentSchool.AddressStreet, result[26]);
-            Assert.Equal(currentSchool.AddressLocality, result[27]);
-            Assert.Equal(currentSchool.AddressAdditional, result[28]);
-            Assert.Equal(currentSchool.AddressTown, result[29]);
-            Assert.Equal(currentSchool.AddressCounty, result[30]);
-            Assert.Equal(currentSchool.AddressPostcode, result[31]);
-            Assert.Equal(project.EstablishmentSharepointLink, result[32]);
+            Assert.Equal(model.ConversionTasks.ReceiveGrantPaymentCertificateDateReceived?.ToString("dd/MM/yyyy"), result[19]);
+            Assert.Equal(model.CurrentSchool.TypeName, result[20]);
+            Assert.Equal(model.CurrentSchool.AgeRangeLower + "-" + model.CurrentSchool.AgeRangeUpper, result[21]);
+            Assert.Equal(model.CurrentSchool.PhaseName, result[22]);
+            Assert.Equal(model.ConversionTasks.ProposedCapacityOfTheAcademyReceptionToSixYears, result[23]);
+            Assert.Equal(model.ConversionTasks.ProposedCapacityOfTheAcademySevenToElevenYears, result[24]);
+            Assert.Equal(model.ConversionTasks.ProposedCapacityOfTheAcademyTwelveOrAboveYears, result[25]);
+            Assert.Equal(model.CurrentSchool.AddressStreet, result[26]);
+            Assert.Equal(model.CurrentSchool.AddressLocality, result[27]);
+            Assert.Equal(model.CurrentSchool.AddressAdditional, result[28]);
+            Assert.Equal(model.CurrentSchool.AddressTown, result[29]);
+            Assert.Equal(model.CurrentSchool.AddressCounty, result[30]);
+            Assert.Equal(model.CurrentSchool.AddressPostcode, result[31]);
+            Assert.Equal(model.Project.EstablishmentSharepointLink, result[32]);
             Assert.Equal("join a MAT", result[33]);
             Assert.Equal(incomingTrust.Ukprn.ToString(), result[34]);
             Assert.Equal(incomingTrust.ReferenceNumber.ToString(), result[35]);
@@ -199,7 +189,7 @@ namespace Dfe.Complete.Application.Tests.Services.CsvExport.Conversion
             Assert.Equal(incomingTrust.Address.Town, result[40]);
             Assert.Equal(incomingTrust.Address.County, result[41]);
             Assert.Equal(incomingTrust.Address.Postcode, result[42]);
-            Assert.Equal(project.IncomingTrustSharepointLink, result[43]);
+            Assert.Equal(model.Project.IncomingTrustSharepointLink, result[43]);
             //Assert.Equal("ProjectCreatedBy", result[44]);
             //Assert.Equal("ProjectCreatedByEmailAddress", result[45]);
             //Assert.Equal("AssignedToName", result[46]);

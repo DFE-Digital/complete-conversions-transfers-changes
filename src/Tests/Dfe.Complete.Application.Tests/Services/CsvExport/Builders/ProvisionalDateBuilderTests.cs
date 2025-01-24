@@ -1,19 +1,13 @@
-﻿using Dfe.Complete.Application.Common.Models;
-using Dfe.Complete.Application.Services.CsvExport.Builders;
-using Dfe.Complete.Domain.Entities;
-using Dfe.Complete.Infrastructure.Models;
-using Dfe.Complete.Tests.Common.Customizations.Models;
-using DfE.CoreLibs.Testing.AutoFixture.Attributes;
+﻿using Dfe.Complete.Application.Services.CsvExport.Builders;
 
 namespace Dfe.Complete.Application.Tests.Services.CsvExport.Builders
 {
     public class ProvisionalDateBuilderTests
     {
-        [Theory]
-        [CustomAutoData(typeof(ProjectCustomization), typeof(SignificantDateHistoryCustomization))]
-        public void IfHistoryDoesNotExistUseDateOnProject(Project project, SignificantDateHistory history)
+        [Fact]
+        public void IfHistoryDoesNotExistUseDateOnProject()
         {
-            var model = new ConversionCsvModel(project, null, null, null, null, null);
+            var model = ConversionCsvModelFactory.Make(withSignificantDateHistory: false);
 
             var builder = new ProvisionalDateBuilder();
 
@@ -22,12 +16,10 @@ namespace Dfe.Complete.Application.Tests.Services.CsvExport.Builders
             Assert.Equal(model.Project.SignificantDate?.ToString("dd/MM/yyyy"), result);
         }
 
-        [Theory]
-        [CustomAutoData(typeof(ProjectCustomization), typeof(SignificantDateHistoryCustomization))]
-
-        public void IfHistoryExistsUseDateOnHistory(Project project, SignificantDateHistory history)
+        [Fact]
+        public void IfHistoryExistsUseDateOnHistory()
         {
-            var model = new ConversionCsvModel(project, null, null, null, history, null);
+            var model = ConversionCsvModelFactory.Make();
 
             var builder = new ProvisionalDateBuilder();
 

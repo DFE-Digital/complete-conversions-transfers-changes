@@ -30,7 +30,7 @@ namespace Dfe.Complete.Infrastructure.QueryServices.CsvExport
               .GroupJoin(context.SignificantDateHistories, composite => composite.project.Id, significantDateHistory => significantDateHistory.ProjectId,
                         (composite, significantDateHistory) => new { composite.project, composite.establishment, composite.academy, composite.localAuthority, composite.taskData, significantDateHistory })
               .SelectMany(x => x.significantDateHistory.OrderByDescending(x => x.UpdatedAt).Take(1),
-                            (x, significantDateHistory) => new ConversionCsvModel(x.project, x.establishment, x.academy, x.localAuthority, significantDateHistory, x.taskData));
+                            (x, significantDateHistory) => new ConversionCsvModel(x.project, x.establishment, x.academy, x.localAuthority, significantDateHistory, x.taskData, x.project.RegionalDeliveryOfficer));
 
 
             return query;

@@ -1,6 +1,6 @@
 ﻿using AutoFixture;
+using Dfe.Complete.Domain.Entities;
 using Dfe.Complete.Domain.ValueObjects;
-using Dfe.Complete.Infrastructure.Models;
 using DfE.CoreLibs.Testing.AutoFixture.Customizations;
 
 namespace Dfe.Complete.Tests.Common.Customizations.Models

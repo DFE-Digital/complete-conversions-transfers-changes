@@ -1,5 +1,4 @@
-﻿using Dfe.Complete.Application.Common.Models;
-using Dfe.Complete.Application.Services.CsvExport.Builders;
+﻿using Dfe.Complete.Application.Services.CsvExport.Builders;
 using Dfe.Complete.Domain.Entities;
 using Dfe.Complete.Tests.Common.Customizations.Models;
 using DfE.CoreLibs.Testing.AutoFixture.Attributes;
@@ -9,38 +8,36 @@ namespace Dfe.Complete.Application.Tests.Services.CsvExport.Builders
 
     public class DfeNumberLAESTABBuilderTests
     {
-        [Theory]
-        [CustomAutoData(typeof(ProjectCustomization), typeof(EstablishmentsCustomization))]
+        [Fact]
 
-        public void BuildsCorrectDfeNumber(Project project, GiasEstablishment academy)
+        public void BuildsCorrectDfeNumber()
         {
             var builder = new DfeNumberLAESTABBuilder();
+            var model = ConversionCsvModelFactory.Make();
 
-            var result = builder.Build(new ConversionCsvModel(project, null, academy, null, null, null));
+            var result = builder.Build(model);
 
-            Assert.Equal(academy.LocalAuthorityCode + "/" + academy.EstablishmentNumber, result);
+            Assert.Equal(model.Academy.LocalAuthorityCode + "/" + model.Academy.EstablishmentNumber, result);
         }
 
-        [Theory]
-        [CustomAutoData(typeof(ProjectCustomization), typeof(EstablishmentsCustomization))]
-        public void BuildBlankIfEmpty(Project project, GiasEstablishment academy)
+        [Fact]
+        public void BuildBlankIfEmpty()
         {
-            project.AcademyUrn = null;
             var builder = new DfeNumberLAESTABBuilder();
+            var model = ConversionCsvModelFactory.Make();
+            model.Project.AcademyUrn = null;
 
-            var result = builder.Build(new ConversionCsvModel(project, null, academy, null, null, null));
+            var result = builder.Build(model);
 
             Assert.Equal(string.Empty, result);
         }
 
-        [Theory]
-        [CustomAutoData(typeof(ProjectCustomization), typeof(EstablishmentsCustomization))]
-        public void BuildBlankIfAcademyNotFound(Project project)
+        [Fact]
+        public void BuildBlankIfAcademyNotFound()
         {
-            project.AcademyUrn = null;
             var builder = new DfeNumberLAESTABBuilder();
 
-            var result = builder.Build(new ConversionCsvModel(project, null, null, null, null, null));
+            var result = builder.Build(ConversionCsvModelFactory.Make(withAcademy: false));
 
             Assert.Equal(string.Empty, result);
         }
