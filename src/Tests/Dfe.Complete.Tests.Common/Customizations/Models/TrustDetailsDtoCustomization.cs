@@ -16,8 +16,18 @@ namespace Dfe.Complete.Tests.Common.Customizations.Models
 
         public void Customize(IFixture fixture)
         {
+            fixture.Customize<GroupContactAddressDto>(composer => composer
+             .With(x => x.Street, fixture.Create<string>())
+             .With(x => x.Locality, fixture.Create<string>())
+             .With(x => x.AdditionalLine, fixture.Create<string>())
+             .With(x => x.Town, fixture.Create<string>())
+             .With(x => x.County, fixture.Create<string>())
+             .With(x => x.Postcode, fixture.Create<string>())
+            );
+
             fixture.Customize<TrustDetailsDto>(composer => composer
              .With(x => x.Ukprn, Ukprn ?? fixture.Create<Ukprn>()));
+
         }
     }
 }

@@ -24,7 +24,9 @@ namespace Dfe.Complete.Application.Services.CsvExport.Builders
             if(trust == null)
                 return string.Empty;
 
-            return TrustSelector(trust);
+            var selection = TrustSelector(trust);
+
+            return selection ?? "";
         }
     }
 }

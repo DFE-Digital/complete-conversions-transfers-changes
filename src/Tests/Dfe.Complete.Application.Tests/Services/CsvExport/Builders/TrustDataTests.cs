@@ -67,5 +67,18 @@ namespace Dfe.Complete.Application.Tests.Services.CsvExport.Builders
 
             Assert.Equal(string.Empty, result);
         }
+
+        [Theory]
+        [CustomAutoData(typeof(TrustDetailsDtoCustomization), typeof(ProjectCustomization))]
+        public void ShouldBeBlankIfSelectedValueIsNull(Project project)
+        {
+            var TrustCache = Substitute.For<ITrustCache>();
+
+            var TrustData = new IncomingTrustDataBuilder<Project>(TrustCache, u => u, t => null);
+
+            var result = TrustData.Build(project);
+
+            Assert.Equal(string.Empty, result);
+        }
     }
 }
