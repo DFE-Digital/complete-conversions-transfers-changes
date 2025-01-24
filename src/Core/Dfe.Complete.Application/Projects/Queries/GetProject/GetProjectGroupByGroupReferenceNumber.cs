@@ -1,20 +1,22 @@
 using MediatR;
-using Dfe.Complete.Domain.ValueObjects;
 using Dfe.Complete.Domain.Interfaces.Repositories;
 using DfE.CoreLibs.Caching.Helpers;
 using DfE.CoreLibs.Caching.Interfaces;
 using Dfe.Complete.Application.Common.Models;
-using Dfe.Complete.Infrastructure.Models;
+using Dfe.Complete.Application.Projects.Models;
+using Dfe.Complete.Domain.Entities;
+using AutoMapper;
 
 namespace Dfe.Complete.Application.Projects.Queries.GetProject
 {
-    public record GetUkprnByGroupReferenceNumberQuery(string GroupReferenceNumber) : IRequest<Result<Ukprn>>;
+    public record GetProjectGroupByGroupReferenceNumberQuery(string GroupReferenceNumber) : IRequest<Result<ProjectGroupDto>>;
 
-    public class GetUkprnByGroupReferenceNumberQueryHandler(ICompleteRepository<ProjectGroup> projectGroupRepository,
+    public class GetProjectGroupByGroupReferenceNumberQueryHandler(ICompleteRepository<ProjectGroup> projectGroupRepository,
+        IMapper mapper,
         ICacheService<IMemoryCacheType> cacheService)
-        : IRequestHandler<GetUkprnByGroupReferenceNumberQuery, Result<Ukprn>>
+        : IRequestHandler<GetProjectGroupByGroupReferenceNumberQuery, Result<ProjectGroupDto>>
     {
-        public async Task<Result<Ukprn>> Handle(GetUkprnByGroupReferenceNumberQuery request, CancellationToken cancellationToken)
+        public async Task<Result<ProjectGroupDto?>> Handle(GetProjectGroupByGroupReferenceNumberQuery request, CancellationToken cancellationToken)
         {
             var cacheKey = $"GroupReferenceNumber_{CacheKeyHelper.GenerateHashedCacheKey(request.GroupReferenceNumber)}";
 
@@ -26,11 +28,13 @@ namespace Dfe.Complete.Application.Projects.Queries.GetProject
                 {
                     var result = await projectGroupRepository.GetAsync(p => p.GroupIdentifier == request.GroupReferenceNumber);
 
-                    return Result<Ukprn>.Success(result?.TrustUkprn);
+                    var projectGroupDto = mapper.Map<ProjectGroupDto?>(result);
+
+                    return Result<ProjectGroupDto?>.Success(projectGroupDto);
                 }
                 catch (Exception ex)
                 {
-                    return Result<Ukprn>.Failure(ex.Message);
+                    return Result<ProjectGroupDto?>.Failure(ex.Message);
                 }
 
             }, methodName);

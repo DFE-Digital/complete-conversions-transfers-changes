@@ -1,4 +1,4 @@
-﻿using Dfe.Complete.Domain.Entities;
+﻿using Dfe.Complete.Application.Common.Models;
 using Dfe.Complete.Infrastructure.Gateways;
 
 namespace Dfe.Complete.Services
@@ -21,5 +21,5 @@ namespace Dfe.Complete.Services
 
             return result;
 		}
-	}
+    }
 }

@@ -1,9 +1,8 @@
-﻿using Dfe.Complete.Domain.Common;
-using Dfe.Complete.Domain.ValueObjects;
+﻿using Dfe.Complete.Domain.ValueObjects;
 
-namespace Dfe.Complete.Domain.Entities;
+namespace Dfe.Complete.Application.Projects.Models;
 
-public class ProjectGroup : BaseAggregateRoot, IEntity<ProjectGroupId>
+public class ProjectGroupDto
 {
     public ProjectGroupId Id { get; set; }
 

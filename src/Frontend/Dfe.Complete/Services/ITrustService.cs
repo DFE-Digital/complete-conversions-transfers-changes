@@ -1,4 +1,4 @@
-﻿using Dfe.Complete.Domain.Entities;
+﻿using Dfe.Complete.Application.Common.Models;
 
 namespace Dfe.Complete.Services
 {

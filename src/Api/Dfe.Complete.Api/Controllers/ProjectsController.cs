@@ -1,12 +1,11 @@
 using Asp.Versioning;
 using Dfe.Complete.Domain.ValueObjects;
 using MediatR;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 using Dfe.Complete.Application.Projects.Commands.CreateProject;
-using Dfe.Complete.Domain.Entities;
 using Dfe.Complete.Application.Projects.Queries.GetProject;
+using Dfe.Complete.Application.Projects.Models;
 
 namespace Dfe.Complete.Api.Controllers
 {
@@ -37,7 +36,7 @@ namespace Dfe.Complete.Api.Controllers
         /// <param name="cancellationToken">The cancellation token.</param>
         //[Authorize(Policy = "API.Read")]
         [HttpGet]
-        [SwaggerResponse(200, "Project", typeof(Project))]
+        [SwaggerResponse(200, "Project", typeof(ProjectDto))]
         [SwaggerResponse(400, "Invalid request data.")]
         public async Task<IActionResult> GetProject_Async([FromBody] GetProjectByUrnQuery request, CancellationToken cancellationToken)
         {
@@ -51,18 +50,18 @@ namespace Dfe.Complete.Api.Controllers
         /// </summary>
         /// <param name="groupReferenceNumber">The group reference number.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
-        [HttpGet("{groupReferenceNumber}/ukprn")]
-        [SwaggerResponse(200, "UKPRN returned successfully.", typeof(Ukprn))]
+        [HttpGet("{groupReferenceNumber}/project_group")]
+        [SwaggerResponse(200, "Project Group returned successfully.", typeof(ProjectGroupDto))]
         [SwaggerResponse(400, "Invalid group reference number.")]
-        [SwaggerResponse(404, "UKPRN not found for the given group reference number.")]
-        public async Task<IActionResult> GetMatchingTrustUkprn_Async(string groupReferenceNumber, CancellationToken cancellationToken)
+        [SwaggerResponse(404, "Project Group not found for the given group reference number.")]
+        public async Task<IActionResult> GetProjectGroupByGroupReferenceNumber_Async(string groupReferenceNumber, CancellationToken cancellationToken)
         {
             if (string.IsNullOrWhiteSpace(groupReferenceNumber))
             {
                 return BadRequest("Group reference number is required.");
             }
 
-            var request = new GetUkprnByGroupReferenceNumberQuery(groupReferenceNumber);
+            var request = new GetProjectGroupByGroupReferenceNumberQuery(groupReferenceNumber);
             var ukprn = await sender.Send(request, cancellationToken);
 
             return Ok(ukprn);
