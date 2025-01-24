@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace Dfe.Complete.Domain.Entities
+namespace Dfe.Complete.Application.Common.Models
 {
 	public class GroupContactAddressDto
 	{

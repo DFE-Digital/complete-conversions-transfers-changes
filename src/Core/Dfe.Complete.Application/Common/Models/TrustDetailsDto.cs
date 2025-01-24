@@ -1,4 +1,4 @@
-﻿namespace Dfe.Complete.Domain.Entities
+﻿namespace Dfe.Complete.Application.Common.Models
 {
 	public class TrustDetailsDto
 	{
