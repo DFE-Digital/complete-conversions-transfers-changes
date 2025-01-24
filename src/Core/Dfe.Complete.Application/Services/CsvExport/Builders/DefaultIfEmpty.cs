@@ -1,16 +1,21 @@
 ﻿namespace Dfe.Complete.Application.Services.CsvExport.Builders
 {
-    public class DefaultIf<T>(Func<T, bool> condition, Func<T, object?> valueFunc, string defaultValue) : IColumnBuilder<T>
+    public class DefaultIfEmpty<T>(Func<T, object?> func, string defaultValue) : IColumnBuilder<T>
     {
         public string Build(T input)
         {
-            if (condition(input))
+            object? value = func(input);
+
+            if (value == null)
+            {
+                return defaultValue;
+            }
+            if (value.ToString() == string.Empty)
             {
                 return defaultValue;
             }
             else
             {
-                object? value = valueFunc(input);
                 return value.ToString();
             }
         }

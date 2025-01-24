@@ -6,6 +6,7 @@ using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Domain.ValueObjects;
 using Dfe.Complete.Infrastructure.Database;
 using Dfe.Complete.Infrastructure.Models;
+using Microsoft.AspNetCore.Components.Rendering;
 
 namespace Dfe.Complete.Infrastructure.QueryServices.CsvExport
 {
@@ -24,10 +25,12 @@ namespace Dfe.Complete.Infrastructure.QueryServices.CsvExport
                 (composite, academy) => new { composite.project, composite.establishment, academy })
               .Join(context.LocalAuthorities, composite => composite.establishment.LocalAuthorityCode, localAuthority => localAuthority.Code,
                 (composite, localAuthority) => new { composite.project, composite.establishment, composite.academy, localAuthority })
+              .Join(context.ConversionTasksData, composite => composite.project.TasksDataId, taskData => taskData.Id.Value,
+                (composite, taskData) => new { composite.project, composite.establishment, composite.academy, composite.localAuthority, taskData })
               .GroupJoin(context.SignificantDateHistories, composite => composite.project.Id, significantDateHistory => significantDateHistory.ProjectId,
-                        (composite, significantDateHistory) => new { composite.project, composite.establishment, composite.academy, composite.localAuthority, significantDateHistory })
+                        (composite, significantDateHistory) => new { composite.project, composite.establishment, composite.academy, composite.localAuthority, composite.taskData, significantDateHistory })
               .SelectMany(x => x.significantDateHistory.OrderByDescending(x => x.UpdatedAt).Take(1),
-                            (x, significantDateHistory) => new ConversionCsvModel(x.project, x.establishment, x.academy, x.localAuthority, significantDateHistory));
+                            (x, significantDateHistory) => new ConversionCsvModel(x.project, x.establishment, x.academy, x.localAuthority, significantDateHistory, x.taskData));
 
 
             return query;

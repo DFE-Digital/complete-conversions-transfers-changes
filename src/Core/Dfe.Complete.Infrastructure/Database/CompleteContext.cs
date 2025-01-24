@@ -552,7 +552,10 @@ public partial class CompleteContext : DbContext
         projectConfiguration.Property(e => e.RedactAndSendSendSolicitors).HasColumnName("redact_and_send_send_solicitors");
         projectConfiguration.Property(e => e.RiskProtectionArrangementOption)
             .HasMaxLength(4000)
-            .HasColumnName("risk_protection_arrangement_option");
+            .HasColumnName("risk_protection_arrangement_option")
+            .HasConversion(
+                rpaOption => rpaOption.ToDescription(),
+                rpaOptionDbValue => rpaOptionDbValue.FromDescriptionValue<RiskProtectionArrangementOption>());
         projectConfiguration.Property(e => e.RiskProtectionArrangementReason)
             .HasMaxLength(4000)
             .HasColumnName("risk_protection_arrangement_reason");

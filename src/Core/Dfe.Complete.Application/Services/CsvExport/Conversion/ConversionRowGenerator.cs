@@ -1,11 +1,16 @@
 ﻿using Dfe.Complete.Application.Common.Models;
 using Dfe.Complete.Application.Services.CsvExport.Builders;
+using Dfe.Complete.Domain.Enums;
 
 namespace Dfe.Complete.Application.Services.CsvExport.Conversion
 {
     public class ConversionRowGenerator(IRowBuilderFactory<ConversionCsvModel> rowBuilder) : IRowGenerator<ConversionCsvModel>
     {
         private const string Unconfirmed = "unconfirmed";
+        private const string NotApplicable = "not applicable";
+        private const string Yes = "yes";
+        private const string No = "no";
+        private const string DateFormat = "dd/MM/yyyy";
 
         public string GenerateRow(ConversionCsvModel model)
         {
@@ -14,14 +19,24 @@ namespace Dfe.Complete.Application.Services.CsvExport.Conversion
                     .Column("School URN").BlankIfEmpty(x => x.Project.Urn)
                     .Column("Project type").Builder(new ProjectTypeBuilder())
                     .Column("Academy name").DefaultIf(x => x.Project.AcademyUrn == null, x => x.Academy?.Name, Unconfirmed)
-                    .Column("Academy URN").DefaultIf(x => x.Project.AcademyUrn == null, x => x.Academy?.Urn.ToString(), Unconfirmed)
+                    .Column("Academy URN").DefaultIf(x => x.Project.AcademyUrn == null, x => x.Academy?.Urn?.ToString(), Unconfirmed)
                     .Column("Academy DfE number/LAESTAB").Builder(new DfeNumberLAESTABBuilder())
-                    .Column("Incoming trust name").TrustData(x => x.Project.IncomingTrustUkprn, x => x.Name)
+                    .Column("Incoming trust name").TrustData(x => x.Project.IncomingTrustUkprn!, x => x.Name)
                     .Column("Local authority").BlankIfEmpty(x => x.LocalAuthority.Name)
                     .Column("Region").BlankIfEmpty(x => x.CurrentSchool.RegionName)
                     .Column("Diocese").BlankIfEmpty(x => x.CurrentSchool.DioceseName)
                     .Column("Provisional conversion date").Builder(new ProvisionalDateBuilder())
-                    .Column("Confirmed conversion date").DefaultIf(x => x.Project.SignificantDateProvisional == true, x => x.Project.SignificantDate.Value.ToString("dd/MM/yyyy") ?? Unconfirmed , Unconfirmed)
+                    .Column("Confirmed conversion date").DefaultIf(x => x.Project.SignificantDateProvisional == true, x => x.Project.SignificantDate?.ToString(DateFormat) ?? Unconfirmed, Unconfirmed)
+                    .Column("Academy order type").Builder(new AcademyOrderTypeBuilder<ConversionCsvModel>(x=> x.Project))
+                    .Column("2RI (Two Requires Improvement)").Bool(x => x.Project.TwoRequiresImprovement, Yes, No)
+                    .Column("Advisory board date").BlankIfEmpty(x => x.Project.AdvisoryBoardDate?.ToString(DateFormat))
+                    .Column("Advisory board conditions").BlankIfEmpty(x => x.Project.AdvisoryBoardConditions)
+                    .Column("Risk protection arrangement").Builder(new RPAOptionBuilder<ConversionCsvModel>(x => x.ConversionTasks.RiskProtectionArrangementOption))
+                    .Column("Reason for commercial insurance").DefaultIf(x => x.ConversionTasks.RiskProtectionArrangementOption != RiskProtectionArrangementOption.Commercial, x => x.ConversionTasks.RiskProtectionArrangementReason, NotApplicable)
+                    .Column("All conditions met").Bool(x => x.Project.AllConditionsMet, Yes, No)
+                    .Column("Completed grant payment certificate received").DefaultIfEmpty(x => x.ConversionTasks.ReceiveGrantPaymentCertificateDateReceived?.ToString(DateFormat), Unconfirmed)
+                    .Column("School type").BlankIfEmpty(x => x.CurrentSchool.TypeName)
+                    .Column("School age range").Builder(new AgeRangeBuilder<ConversionCsvModel>(x => x.CurrentSchool))
                     .Build(model);
 
             //row.Append(model.SchoolName);

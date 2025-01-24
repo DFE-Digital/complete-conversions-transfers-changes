@@ -54,6 +54,18 @@ namespace Dfe.Complete.Application.Services.CsvExport.Builders
             return this;
         }
 
+        public RowBuilder<T> DefaultIfEmpty(Func<T, object?> func, string defaultValue)
+        {
+            _columnBuilders.Add(new DefaultIfEmpty<T>(func, defaultValue));
+            return this;
+        }
+
+        public RowBuilder<T> Bool(Func<T, bool?> condition, string trueValue, string falseValue)
+        {
+            _columnBuilders.Add(new BoolBuilder<T>(condition, trueValue, falseValue));
+            return this;
+        }
+
         public RowBuilder<T> TrustData(Func<T, Ukprn> ukprn, Func<TrustDetailsDto, string> value)
         {
             _columnBuilders.Add(new TrustDataBuilder<T>(trustCache, ukprn, value));

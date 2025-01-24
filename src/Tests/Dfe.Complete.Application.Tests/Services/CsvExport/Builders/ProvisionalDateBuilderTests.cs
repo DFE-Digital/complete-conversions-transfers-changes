@@ -13,7 +13,7 @@ namespace Dfe.Complete.Application.Tests.Services.CsvExport.Builders
         [CustomAutoData(typeof(ProjectCustomization), typeof(SignificantDateHistoryCustomization))]
         public void IfHistoryDoesNotExistUseDateOnProject(Project project, SignificantDateHistory history)
         {
-            var model = new ConversionCsvModel(project, null, null, null, null);
+            var model = new ConversionCsvModel(project, null, null, null, null, null);
 
             var builder = new ProvisionalDateBuilder();
 
@@ -27,7 +27,7 @@ namespace Dfe.Complete.Application.Tests.Services.CsvExport.Builders
 
         public void IfHistoryExistsUseDateOnHistory(Project project, SignificantDateHistory history)
         {
-            var model = new ConversionCsvModel(project, null, null, null, history);
+            var model = new ConversionCsvModel(project, null, null, null, history, null);
 
             var builder = new ProvisionalDateBuilder();
 
