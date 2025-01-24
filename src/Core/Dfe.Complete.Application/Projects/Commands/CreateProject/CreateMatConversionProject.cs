@@ -9,7 +9,8 @@ namespace Dfe.Complete.Application.Projects.Commands.CreateProject;
 
 public record CreateMatConversionProjectCommand(
     Urn Urn,
-    string TrustName,
+    string NewTrustName,
+    string NewTrustReferenceNumber,
     DateOnly SignificantDate,
     bool IsSignificantDateProvisional,
     bool IsDueTo2Ri,
@@ -19,13 +20,12 @@ public record CreateMatConversionProjectCommand(
     string EstablishmentSharepointLink,
     string IncomingTrustSharepointLink,
     bool HandingOverToRegionalCaseworkService,
-    string HandoverComments,
+    string? HandoverComments,
     string? UserAdId) : IRequest<ProjectId>;
 
  public class CreateMatConversionProjectCommandHandler(
         ICompleteRepository<Project> projectRepository,
         ICompleteRepository<ConversionTasksData> conversionTaskRepository,
-        ICompleteRepository<ProjectGroup> projectGroupRepository,
         ICompleteRepository<User> userRepository)
         : IRequestHandler<CreateMatConversionProjectCommand, ProjectId>
     {
@@ -71,18 +71,19 @@ public record CreateMatConversionProjectCommand(
                 conversionTaskId,
                 region,
                 team,
-                projectUser.Id,
-                projectUserAssignedToId,
-                request.IsDueTo2Ri,
-                request.HasAcademyOrderBeenIssued,
-                request.AdvisoryBoardDate,
-                request.AdvisoryBoardConditions,
-                request.EstablishmentSharepointLink,
-                request.IncomingTrustSharepointLink,
                 projectUser?.Id,
                 projectUserAssignedToId,
                 assignedAt,
-                request.IsDueTo2Ri, request);
+                request.EstablishmentSharepointLink,
+                request.IncomingTrustSharepointLink,
+                request.AdvisoryBoardDate,
+                request.AdvisoryBoardConditions,
+                request.SignificantDate,
+                request.IsSignificantDateProvisional,
+                request.IsDueTo2Ri,
+                request.NewTrustName,
+                request.NewTrustReferenceNumber,
+                request.HasAcademyOrderBeenIssued);
 
             await conversionTaskRepository.AddAsync(conversionTask, cancellationToken);
             await projectRepository.AddAsync(project, cancellationToken);

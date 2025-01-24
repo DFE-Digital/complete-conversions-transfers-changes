@@ -313,12 +313,22 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
         bool isDueTo2Ri,
         string newTrustName,
         string newTrustReferenceNumber,
-        bool hasDirectiveAcademyOrderBeenIssue)
+        bool hasDirectiveAcademyOrderBeenIssue,
+        string? handoverComments)
     {
         var project = new Project(Id, urn, createdAt, updatedAt, taskType, projectType, tasksDataId, significantDate,
             isSignificantDateProvisional, null, null, region, isDueTo2Ri, hasDirectiveAcademyOrderBeenIssue,
             advisoryBoardDate, advisoryBoardConditions, establishmentSharepointLink, incomingTrustSharepointLink, null,
             null, team, regionalDeliveryOfficerId, assignedToId, assignedAt, newTrustName, newTrustReferenceNumber);
+        
+        if (!string.IsNullOrEmpty(handoverComments))
+        {
+            project.AddNote(new Note
+            {
+                CreatedAt = project.CreatedAt, ProjectId = project.Id, Body = handoverComments,
+                TaskIdentifier = "handover", UserId = assignedToId
+            });
+        }
         
         project.AddDomainEvent(new ProjectCreatedEvent(project));
 

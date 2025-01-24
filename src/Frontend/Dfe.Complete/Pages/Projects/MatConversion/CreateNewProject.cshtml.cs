@@ -20,7 +20,7 @@ public class CreateNewProject(ISender sender, IErrorService errorService) : Page
     public string URN { get; set; }
     
     [BindProperty]
-    // [Ukprn]
+    [Ukprn]
     [Required(ErrorMessage = "Enter a Trust reference number (TRN)")]
     [Display(Name = "Trust reference number (TRN)")]
     public string TrustReferenceNumber { get; set; }
@@ -92,6 +92,7 @@ public class CreateNewProject(ISender sender, IErrorService errorService) : Page
         var createProjectCommand = new CreateMatConversionProjectCommand(
             Urn: new Urn(int.Parse(URN)),
             TrustName,
+            TrustReferenceNumber,
             SignificantDate: ProvisionalConversionDate.HasValue ? DateOnly.FromDateTime(ProvisionalConversionDate.Value) : default,
             IsSignificantDateProvisional: true, // will be set to false in the stakeholder kick off task 
             IncomingTrustSharepointLink: IncomingTrustSharePointLink,
@@ -101,7 +102,6 @@ public class CreateNewProject(ISender sender, IErrorService errorService) : Page
             AdvisoryBoardConditions: AdvisoryBoardConditions,
             HasAcademyOrderBeenIssued: DirectiveAcademyOrder ?? default, 
             HandingOverToRegionalCaseworkService: IsHandingToRCS ?? default,
-            HandoverComments: HandoverComments, 
             UserAdId: userAdId
         );
         

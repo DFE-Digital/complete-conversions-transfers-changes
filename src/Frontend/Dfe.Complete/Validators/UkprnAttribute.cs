@@ -16,18 +16,12 @@ namespace Dfe.Complete.Validators
             var ukprn = value as string;
 
             if (string.IsNullOrEmpty(ukprn))
-            {
-                var errorMessage = $"Enter a UKPRN";
-
-                return new ValidationResult(errorMessage);
-            }
+                return new ValidationResult("Enter a UKPRN");
 
             if (ukprn.Length != 8)
-            {
-                var errorMessage = $"The {displayName} must be 8 digits long and start with a 1. For example, 12345678.";
+                return new ValidationResult(
+                    $"The {displayName} must be 8 digits long and start with a 1. For example, 12345678.");
 
-                return new ValidationResult(errorMessage);
-            }
 
             var trustService = (ITrustService)validationContext.GetService(typeof(ITrustService));
             var result = trustService.GetTrustByUkprn(ukprn).Result;
