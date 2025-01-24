@@ -12,19 +12,15 @@ namespace Dfe.Complete.Application.Tests.Services.CsvExport
     {
         public static ConversionCsvModel Make(bool withAcademy = true, bool withSignificantDateHistory = true)
         {
-            var fixture = new Fixture();
-
-    
+            var fixture = new Fixture();   
 
             var establishment = fixture.Customize(
                 new EstablishmentsCustomization()
                 ).Create<GiasEstablishment>();
 
-
             var academy = fixture.Customize(
                 new EstablishmentsCustomization()
                 ).Create<GiasEstablishment>();
-
 
             var localAuthority = fixture.Customize(
                 new LocalAuthorityCustomization()

@@ -11,8 +11,6 @@ namespace Dfe.Complete.Application.Tests.Services.CsvExport.Conversion
 {
     public class ConversionRowGeneratorTests
     {
-
-
         [Theory]
         [CustomAutoData(typeof(TrustDetailsDtoCustomization))]
         public void RowGeneratesAccountsForBlankData(TrustDetailsDto incomingTrust)
@@ -44,7 +42,6 @@ namespace Dfe.Complete.Application.Tests.Services.CsvExport.Conversion
 
             var TrustCache = Substitute.For<ITrustCache>();
             TrustCache.GetTrustByTrnAsync(model.Project.NewTrustReferenceNumber).Returns(incomingTrust);
-
 
             var generator = new ConversionRowGenerator(new RowBuilderFactory<ConversionCsvModel>(TrustCache));
 
@@ -96,8 +93,8 @@ namespace Dfe.Complete.Application.Tests.Services.CsvExport.Conversion
             Assert.Equal(incomingTrust.Address.County, result[41]);
             Assert.Equal(incomingTrust.Address.Postcode, result[42]);
             Assert.Equal(model.Project.IncomingTrustSharepointLink, result[43]);
-            //Assert.Equal("ProjectCreatedBy", result[44]);
-            //Assert.Equal("ProjectCreatedByEmailAddress", result[45]);
+            Assert.Equal($"{model.CreatedBy.FirstName} {model.CreatedBy.LastName}", result[44]);
+            Assert.Equal(model.CreatedBy.Email, result[45]);
             //Assert.Equal("AssignedToName", result[46]);
             //Assert.Equal("TeamManagingTheProject", result[47]);
             //Assert.Equal("ProjectMainContactName", result[48]);
@@ -190,8 +187,8 @@ namespace Dfe.Complete.Application.Tests.Services.CsvExport.Conversion
             Assert.Equal(incomingTrust.Address.County, result[41]);
             Assert.Equal(incomingTrust.Address.Postcode, result[42]);
             Assert.Equal(model.Project.IncomingTrustSharepointLink, result[43]);
-            //Assert.Equal("ProjectCreatedBy", result[44]);
-            //Assert.Equal("ProjectCreatedByEmailAddress", result[45]);
+            Assert.Equal($"{model.CreatedBy.FirstName} {model.CreatedBy.LastName}", result[44]);
+            Assert.Equal(model.CreatedBy.Email, result[45]);
             //Assert.Equal("AssignedToName", result[46]);
             //Assert.Equal("TeamManagingTheProject", result[47]);
             //Assert.Equal("ProjectMainContactName", result[48]);

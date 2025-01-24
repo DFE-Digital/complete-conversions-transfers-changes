@@ -60,6 +60,8 @@ namespace Dfe.Complete.Application.Services.CsvExport.Conversion
                     .Column("Incoming trust address county").IncomingTrustData(x => x.Project, t => t.Address.County)
                     .Column("Incoming trust address postcode").IncomingTrustData(x => x.Project, t => t.Address.Postcode)
                     .Column("Incoming trust sharepoint link").BlankIfEmpty(x => x.Project.IncomingTrustSharepointLink)
+                    .Column("Project created by name").BlankIfEmpty(x => $"{x.CreatedBy?.FirstName} {x.CreatedBy?.LastName}")
+                    .Column("Project created by email address").BlankIfEmpty(x => x.CreatedBy?.Email)
                     .Build(model);
         }
     }
