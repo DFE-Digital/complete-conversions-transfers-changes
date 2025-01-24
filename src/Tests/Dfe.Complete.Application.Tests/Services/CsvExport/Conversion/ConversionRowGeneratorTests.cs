@@ -1,12 +1,9 @@
-﻿using AutoFixture;
-using Dfe.Complete.Application.Common.Models;
+﻿using Dfe.Complete.Application.Common.Models;
 using Dfe.Complete.Application.Services.CsvExport.Builders;
 using Dfe.Complete.Application.Services.CsvExport.Conversion;
 using Dfe.Complete.Application.Services.TrustService;
 using Dfe.Complete.Domain.Entities;
 using Dfe.Complete.Domain.Enums;
-using Dfe.Complete.Domain.Events;
-using Dfe.Complete.Domain.ValueObjects;
 using Dfe.Complete.Infrastructure.Models;
 using Dfe.Complete.Tests.Common.Customizations.Models;
 using DfE.CoreLibs.Testing.AutoFixture.Attributes;
@@ -27,18 +24,29 @@ namespace Dfe.Complete.Application.Tests.Services.CsvExport.Conversion
         { 
             project.Type = ProjectType.Conversion;
             project.AcademyUrn = null;
-            project.IncomingTrustUkprn = incomingTrust.Ukprn;
+            project.IncomingTrustUkprn = null;
             project.SignificantDateProvisional = true;
             project.DirectiveAcademyOrder = true;
             project.TwoRequiresImprovement = true;
             project.AdvisoryBoardConditions = null;
             project.AllConditionsMet = false;
+            project.EstablishmentSharepointLink = null;
+
             currentSchool.PhaseName = "Not applicable";
+            currentSchool.AddressStreet = null;
+            currentSchool.AddressLocality = null;
+            currentSchool.AddressAdditional = null;
+            currentSchool.AddressTown = null;
+            currentSchool.AddressCounty = null;
+            currentSchool.AddressPostcode = null;
 
             taskData.ReceiveGrantPaymentCertificateDateReceived = null;
+            taskData.ProposedCapacityOfTheAcademyReceptionToSixYears = null;
+            taskData.ProposedCapacityOfTheAcademySevenToElevenYears = null;
+            taskData.ProposedCapacityOfTheAcademyTwelveOrAboveYears = null;
 
             var TrustCache = Substitute.For<ITrustCache>();
-            TrustCache.GetTrustAsync(incomingTrust.Ukprn).Returns(incomingTrust);
+            TrustCache.GetTrustByTrnAsync(project.NewTrustReferenceNumber).Returns(incomingTrust);
 
             var model = new ConversionCsvModel(project, currentSchool, null, localAuthority, null, taskData);
           
@@ -71,16 +79,16 @@ namespace Dfe.Complete.Application.Tests.Services.CsvExport.Conversion
             Assert.Equal(currentSchool.TypeName, result[20]);
             Assert.Equal(currentSchool.AgeRangeLower + "-" + currentSchool.AgeRangeUpper, result[21]);
             Assert.Equal(currentSchool.TypeName, result[22]);
-            //Assert.Equal("123", result[23]);
-            //Assert.Equal("456", result[24]);
-            //Assert.Equal("789", result[25]);
-            //Assert.Equal("SchoolAddress1", result[26]);
-            //Assert.Equal("SchoolAddress2", result[27]);
-            //Assert.Equal("SchoolAddress3", result[28]);
-            //Assert.Equal("SchoolTown", result[29]);
-            //Assert.Equal("SchoolCounty", result[30]);
-            //Assert.Equal("SchoolPostcode", result[31]);
-            //Assert.Equal("SchoolSharepointFolder", result[32]);
+            Assert.Equal("not applicable", result[23]);
+            Assert.Equal("not applicable", result[24]);
+            Assert.Equal("not applicable", result[25]);
+            Assert.Equal("", result[26]);
+            Assert.Equal("", result[27]);
+            Assert.Equal("", result[28]);
+            Assert.Equal("", result[29]);
+            Assert.Equal("", result[30]);
+            Assert.Equal("", result[31]);
+            Assert.Equal("", result[32]);
             //Assert.Equal("ConversionType", result[33]);
             //Assert.Equal("12345647", result[34]);
             //Assert.Equal("IncomingTrustGroupIdentifier", result[35]);
@@ -171,16 +179,16 @@ namespace Dfe.Complete.Application.Tests.Services.CsvExport.Conversion
             Assert.Equal(currentSchool.TypeName, result[20]);
             Assert.Equal(currentSchool.AgeRangeLower + "-" + currentSchool.AgeRangeUpper, result[21]);
             Assert.Equal(currentSchool.PhaseName, result[22]);
-            //Assert.Equal("123", result[23]);
-            //Assert.Equal("456", result[24]);
-            //Assert.Equal("789", result[25]);
-            //Assert.Equal("SchoolAddress1", result[26]);
-            //Assert.Equal("SchoolAddress2", result[27]);
-            //Assert.Equal("SchoolAddress3", result[28]);
-            //Assert.Equal("SchoolTown", result[29]);
-            //Assert.Equal("SchoolCounty", result[30]);
-            //Assert.Equal("SchoolPostcode", result[31]);
-            //Assert.Equal("SchoolSharepointFolder", result[32]);
+            Assert.Equal(taskData.ProposedCapacityOfTheAcademyReceptionToSixYears, result[23]);
+            Assert.Equal(taskData.ProposedCapacityOfTheAcademySevenToElevenYears, result[24]);
+            Assert.Equal(taskData.ProposedCapacityOfTheAcademyTwelveOrAboveYears, result[25]);
+            Assert.Equal(currentSchool.AddressStreet, result[26]);
+            Assert.Equal(currentSchool.AddressLocality, result[27]);
+            Assert.Equal(currentSchool.AddressAdditional, result[28]);
+            Assert.Equal(currentSchool.AddressTown, result[29]);
+            Assert.Equal(currentSchool.AddressCounty, result[30]);
+            Assert.Equal(currentSchool.AddressPostcode, result[31]);
+            Assert.Equal(project.EstablishmentSharepointLink, result[32]);
             //Assert.Equal("ConversionType", result[33]);
             //Assert.Equal("12345647", result[34]);
             //Assert.Equal("IncomingTrustGroupIdentifier", result[35]);

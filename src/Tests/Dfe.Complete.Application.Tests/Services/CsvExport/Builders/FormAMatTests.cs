@@ -13,17 +13,29 @@ namespace Dfe.Complete.Application.Tests.Services.CsvExport.Builders
     public class FormAMatTests
     {
         [Theory]
-        [CustomAutoData(typeof(ProjectCustomization), typeof(DateOnlyCustomization))]
+        [CustomAutoData(typeof(ProjectCustomization))]
 
-        public void Build_When_Conversion(Project project)
+        public void WhenIncomingUkprnisNullIsFormAMat(Project project)
         {
-            //TODO
-            //project.Type = ProjectType.Conversion;
-            //var builder = new FormAMat();
+            project.IncomingTrustUkprn = null;
+                
+            var builder = new FormAMat<Project>(x => x);
 
-            //var result = builder.Build(new ConversionCsvModel(project, null, null));
+            var result = builder.Build(project);
 
-            //Assert.Equal("", result);
+            Assert.Equal("form a MAT", result);
+        }
+
+        [Theory]
+        [CustomAutoData(typeof(ProjectCustomization))]
+
+        public void WhenIncomingUkprnisNotNullIsJoinAMat(Project project)
+        {
+            var builder = new FormAMat<Project>(x => x);
+
+            var result = builder.Build(project);
+
+            Assert.Equal("join a MAT", result);
         }
     }
 }

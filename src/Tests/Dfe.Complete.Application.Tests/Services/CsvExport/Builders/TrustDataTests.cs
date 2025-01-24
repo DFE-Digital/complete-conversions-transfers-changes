@@ -12,27 +12,58 @@ namespace Dfe.Complete.Application.Tests.Services.CsvExport.Builders
     {
 
         [Theory]
-        [CustomAutoData(typeof(TrustDetailsDtoCustomization))]
-        public void ShouldBeAbleToGetFromTrust(TrustDetailsDto trust)
+        [CustomAutoData(typeof(TrustDetailsDtoCustomization), typeof(ProjectCustomization))]
+        public void ShouldBeAbleToGetFromTrust(TrustDetailsDto trust, Project project)
         {
+            project.IncomingTrustUkprn = trust.Ukprn;
             var TrustCache = Substitute.For<ITrustCache>();
             TrustCache.GetTrustAsync(trust.Ukprn).Returns(trust);
-            var TrustData = new TrustDataBuilder<TrustTestModel>(TrustCache, u => u.id, t => t.CompaniesHouseNumber);
+            var TrustData = new IncomingTrustDataBuilder<Project>(TrustCache, u => u, t => t.CompaniesHouseNumber);
 
-            var result = TrustData.Build(new TrustTestModel(trust.Ukprn));
+            var result = TrustData.Build(project);
 
             Assert.Equal(trust.CompaniesHouseNumber, result);
         }
 
         [Theory]
-        [CustomAutoData(typeof(TrustDetailsDtoCustomization))]
-        public void ShouldBeBlankIfTrustNotFound(TrustDetailsDto trust)
+        [CustomAutoData(typeof(TrustDetailsDtoCustomization), typeof(ProjectCustomization))]
+        public void ShouldBeBlankIfTrustNotFound(Project project)
         {
             var TrustCache = Substitute.For<ITrustCache>();
 
-            var TrustData = new TrustDataBuilder<TrustTestModel>(TrustCache, u => u.id, t => t.CompaniesHouseNumber);
+            var TrustData = new IncomingTrustDataBuilder<Project>(TrustCache, u => u, t => t.CompaniesHouseNumber);
 
-            var result = TrustData.Build(new TrustTestModel(trust.Ukprn));
+            var result = TrustData.Build(project);
+
+            Assert.Equal(string.Empty, result);
+        }
+
+        [Theory]
+        [CustomAutoData(typeof(TrustDetailsDtoCustomization), typeof(ProjectCustomization))]
+        public void ShouldBeAbleToGetFromTRN(TrustDetailsDto trust, Project project)
+        {
+            project.IncomingTrustUkprn = null;
+            project.NewTrustReferenceNumber = trust.ReferenceNumber;
+            var TrustCache = Substitute.For<ITrustCache>();
+            TrustCache.GetTrustByTrnAsync(trust.ReferenceNumber).Returns(trust);
+            var TrustData = new IncomingTrustDataBuilder<Project>(TrustCache, u => u, t => t.CompaniesHouseNumber);
+
+            var result = TrustData.Build(project);
+
+            Assert.Equal(trust.CompaniesHouseNumber, result);
+        }
+
+        [Theory]
+        [CustomAutoData(typeof(TrustDetailsDtoCustomization), typeof(ProjectCustomization))]
+        public void ShouldBeBlankIfTRNNotFound(Project project)
+        {
+            project.IncomingTrustUkprn = null;
+
+            var TrustCache = Substitute.For<ITrustCache>();
+
+            var TrustData = new IncomingTrustDataBuilder<Project>(TrustCache, u => u, t => t.CompaniesHouseNumber);
+
+            var result = TrustData.Build(project);
 
             Assert.Equal(string.Empty, result);
         }

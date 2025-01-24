@@ -1,14 +1,15 @@
 ﻿using Dfe.Complete.Application.Common.Models;
+using Dfe.Complete.Domain.Entities;
 
 namespace Dfe.Complete.Application.Services.CsvExport.Builders
 {
-    public class FormAMat() : IColumnBuilder<ConversionCsvModel>
+    public class FormAMat<T>(Func<T, Project> selector) : IColumnBuilder<T>
     {
-        public string Build(ConversionCsvModel input)
+        public string Build(T input)
         {
-            var projectType = input.Project.Type;
+            var project = selector(input);
 
-            if (projectType == Domain.Enums.ProjectType.Conversion)
+            if (project.IncomingTrustUkprn != null)
             {
                 return "join a MAT";
             }

@@ -66,9 +66,9 @@ namespace Dfe.Complete.Application.Services.CsvExport.Builders
             return this;
         }
 
-        public RowBuilder<T> TrustData(Func<T, Ukprn> ukprn, Func<TrustDetailsDto, string> value)
+        public RowBuilder<T> IncomingTrustDataBuilder(Func<T, Project> project, Func<TrustDetailsDto, string> value)
         {
-            _columnBuilders.Add(new TrustDataBuilder<T>(trustCache, ukprn, value));
+            _columnBuilders.Add(new IncomingTrustDataBuilder<T>(trustCache, project, value));
             return this;
         }
             
