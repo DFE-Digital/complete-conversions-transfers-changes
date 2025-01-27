@@ -2,4 +2,4 @@
 
 namespace Dfe.Complete.Application.Projects.Model;
 
-public record ListAllProjectsQueryModel(Project Project, GiasEstablishment Establishment);
+public record ListAllProjectsQueryModel(Project? Project, GiasEstablishment? Establishment);
