@@ -78,7 +78,7 @@ namespace Dfe.Complete.Application.Projects.Models
 
         public ContactId? LocalAuthorityMainContactId { get; set; }
 
-        public Guid? GroupId { get; set; }
+        public ProjectGroupId? GroupId { get; set; }
 
         public  User? AssignedTo { get; set; }
 

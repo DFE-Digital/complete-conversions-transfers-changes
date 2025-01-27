@@ -955,9 +955,12 @@
                 ]
               },
               "groupId": {
-                "type": "string",
-                "format": "guid",
-                "nullable": true
+                "nullable": true,
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/ProjectGroupId"
+                  }
+                ]
               },
               "assignedTo": {
                 "nullable": true,
@@ -999,14 +1002,13 @@
           }
         ]
       },
-      "IDomainEvent": {
+      "ProjectGroupId": {
         "type": "object",
-        "x-abstract": true,
         "additionalProperties": false,
         "properties": {
-          "occurredOn": {
+          "value": {
             "type": "string",
-            "format": "date-time"
+            "format": "guid"
           }
         }
       },
@@ -1092,6 +1094,30 @@
           }
         }
       },
+      "BaseAggregateRoot": {
+        "type": "object",
+        "x-abstract": true,
+        "additionalProperties": false,
+        "properties": {
+          "domainEvents": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/IDomainEvent"
+            }
+          }
+        }
+      },
+      "IDomainEvent": {
+        "type": "object",
+        "x-abstract": true,
+        "additionalProperties": false,
+        "properties": {
+          "occurredOn": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
       "GetProjectByUrnQuery": {
         "type": "object",
         "additionalProperties": false,
@@ -1127,16 +1153,6 @@
           "updatedAt": {
             "type": "string",
             "format": "date-time"
-          }
-        }
-      },
-      "ProjectGroupId": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-          "value": {
-            "type": "string",
-            "format": "guid"
           }
         }
       }

@@ -74,7 +74,7 @@ public class CreateConversionProjectCommandHandlerTests
         Assert.Equal(command.HasAcademyOrderBeenIssued, capturedProject.DirectiveAcademyOrder);
         Assert.Equal(command.EstablishmentSharepointLink, capturedProject.EstablishmentSharepointLink);
         Assert.Equal(command.IncomingTrustSharepointLink, capturedProject.IncomingTrustSharepointLink);
-        Assert.Equal(groupId.Value, capturedProject.GroupId);
+        Assert.Equal(groupId, capturedProject.GroupId);
 
         var capturedNote = capturedProject.Notes.FirstOrDefault();
         Assert.Equal(command.HandoverComments, capturedNote?.Body);
