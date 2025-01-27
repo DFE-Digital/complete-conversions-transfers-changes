@@ -20,7 +20,7 @@ public class CreateNewProject(ISender sender, IErrorService errorService) : Page
     public string URN { get; set; }
     
     [BindProperty]
-    [Ukprn]
+    [Trn]
     [Required(ErrorMessage = "Enter a Trust reference number (TRN)")]
     [Display(Name = "Trust reference number (TRN)")]
     public string TrustReferenceNumber { get; set; }
