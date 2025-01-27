@@ -125,10 +125,10 @@ public class CreateNewProject(ISender sender, IErrorService errorService) : Page
         var result = await sender.Send(new GetProjectByTrnQuery(TrustReferenceNumber), cancellationToken);
         var existingProject = result.Value;
 
-        if (existingProject != null && !string.IsNullOrEmpty(existingProject.TrustName))
+        if (existingProject != null && !string.IsNullOrEmpty(existingProject.NewTrustName))
         {
             ModelState.AddModelError(nameof(TrustName),
-                $"A trust with this TRN already exists. It is called {existingProject.TrustName}. Check the trust name you have entered for this conversion/transfer");
+                $"A trust with this TRN already exists. It is called {existingProject.NewTrustName}. Check the trust name you have entered for this conversion/transfer");
         }
     }
 }
