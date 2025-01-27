@@ -7,11 +7,12 @@ using Dfe.Complete.Application.Projects.Commands.CreateProject;
 using MediatR;
 using Dfe.Complete.Domain.ValueObjects;
 using Microsoft.AspNetCore.Authorization;
+using Dfe.AcademiesApi.Client.Contracts;
 
 namespace Dfe.Complete.Pages.Projects.Transfer
 {
     [Authorize(policy: "CanCreateProjects")]
-    public class CreateNewProjectModel(ISender sender, IErrorService errorService, ITrustService _trustService) : PageModel
+    public class CreateNewProjectModel(ISender sender, IErrorService errorService, ITrustsClient trustsClient) : PageModel
     {
         [BindProperty]
         [Required]
@@ -20,12 +21,12 @@ namespace Dfe.Complete.Pages.Projects.Transfer
         public string URN { get; set; }
 
         [BindProperty]
-        [TransferUkprn(comparisonProperty: $"{nameof(IncomingUKPRN)}")]
+        [Ukprn(comparisonProperty: $"{nameof(IncomingUKPRN)}")]
         [Display(Name = "OutgoingUKPRN")]
         public string OutgoingUKPRN { get; set; }
 
         [BindProperty]
-        [TransferUkprn(comparisonProperty: $"{nameof(OutgoingUKPRN)}")]
+        [Ukprn(comparisonProperty: $"{nameof(OutgoingUKPRN)}")]
         [Display(Name = "IncomingUKPRN")]
         public string IncomingUKPRN { get; set; }
 

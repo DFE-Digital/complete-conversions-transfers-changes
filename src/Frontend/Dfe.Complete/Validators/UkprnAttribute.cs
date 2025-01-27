@@ -1,4 +1,6 @@
-﻿using Dfe.Complete.Services;
+﻿using Dfe.AcademiesApi.Client.Contracts;
+using Dfe.Complete.Application.Common.Models;
+using Dfe.Complete.Services;
 using System.ComponentModel.DataAnnotations;
 using System.Reflection;
 
@@ -6,6 +8,13 @@ namespace Dfe.Complete.Validators
 {
     public class UkprnAttribute : ValidationAttribute
     {
+
+        private readonly string _comparisonProperty;
+
+        public UkprnAttribute(string comparisonProperty = null)
+        {
+            _comparisonProperty = comparisonProperty;
+        }
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {
             // Fetch the display name if it is provided
@@ -29,14 +38,35 @@ namespace Dfe.Complete.Validators
                 return new ValidationResult(errorMessage);
             }
 
-            var trustService = (ITrustService)validationContext.GetService(typeof(ITrustService));
-            var result = trustService.GetTrustByUkprn(ukprn).Result;
-
-            if (!result.Any())
+            if (!string.IsNullOrEmpty(_comparisonProperty))
             {
-                var errorMessage = $"There's no trust with that UKPRN. Check the number you entered is correct";
+                var comparisonProperty = validationContext.ObjectType.GetProperty(_comparisonProperty);
 
-                return new ValidationResult(errorMessage);
+                if (comparisonProperty == null)
+                {
+                    return new ValidationResult($"Property '{_comparisonProperty}' not found.");
+                }
+
+                var comparisonPropertyValue = comparisonProperty.GetValue(validationContext.ObjectInstance);
+
+                // Compare the two values
+                if (value != null && value.Equals(comparisonPropertyValue))
+                {
+                    return new ValidationResult($"The outgoing and incoming trust cannot be the same");
+                }
+            }
+
+
+            try
+            {
+                var trustClient = (ITrustsClient)validationContext.GetService(typeof(ITrustsClient));
+                var result = trustClient.GetTrustByUkprnAsync(ukprn, "v4").Result;
+            }
+            catch (AggregateException ex)
+            {
+                    var errorMessage = $"There's no trust with that UKPRN. Check the number you entered is correct";
+
+                    return new ValidationResult(errorMessage);
             }
 
             // If valid, return success
