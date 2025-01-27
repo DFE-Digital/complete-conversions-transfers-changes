@@ -414,9 +414,12 @@
             ]
           },
           "groupId": {
-            "type": "string",
-            "format": "guid",
-            "nullable": true
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/ProjectGroupId"
+              }
+            ]
           },
           "assignedTo": {
             "nullable": true,
@@ -547,6 +550,16 @@
         ]
       },
       "ContactId": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "value": {
+            "type": "string",
+            "format": "guid"
+          }
+        }
+      },
+      "ProjectGroupId": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
@@ -1001,16 +1014,6 @@
             }
           }
         ]
-      },
-      "ProjectGroupId": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-          "value": {
-            "type": "string",
-            "format": "guid"
-          }
-        }
       },
       "Contact": {
         "type": "object",

@@ -8,6 +8,8 @@ using Dfe.Complete.Domain.Entities;
 using Dfe.Complete.Application.Common.Models;
 using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Application.Projects.Models;
+using AutoMapper;
+using NSubstitute;
 
 namespace Dfe.Complete.Tests.Validators
 {
@@ -18,15 +20,23 @@ namespace Dfe.Complete.Tests.Validators
         [InlineData("", true)]         // Empty string
         [InlineData("12345", false)]   // Less than 6 digits
         [InlineData("1234567", false)] // More than 6 digits
-        [InlineData("123456", true)]   // Valid URN (not existing)
+        [InlineData("123456", false)]   // Valid URN (not existing)
+        [InlineData("133456", true)]   // Valid URN (not existing)
         public void UrnAttribute_Validation_ReturnsExpectedResult(string urn, bool expectedIsValid)
         {
             // Arrange
             var mockSender = new Mock<ISender>();
+            var mockMapper = new Mock<IMapper>();
+
+            var projectDtoToReturn = urn == "123456" ? new ProjectDto() : null;
 
             mockSender
                 .Setup(sender => sender.Send(It.IsAny<GetProjectByUrnQuery>(), default))
-                .ReturnsAsync((GetProjectByUrnQuery query, CancellationToken token) => null);
+                .ReturnsAsync(Result<ProjectDto>.Success(projectDtoToReturn));
+
+            mockMapper
+                .Setup(m => m.Map<ProjectDto>(It.IsAny<Project>()))
+                .Returns(projectDtoToReturn);
 
             var attribute = new UrnAttribute();
             var validationContext = new ValidationContext(new { }, null, null)
