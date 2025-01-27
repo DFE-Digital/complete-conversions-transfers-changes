@@ -1,4 +1,5 @@
 ﻿using Dfe.Complete.Domain.Common;
+using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Domain.ValueObjects;
 
 namespace Dfe.Complete.Domain.Entities;
@@ -21,7 +22,7 @@ public class Contact : IEntity<ContactId>
 
     public DateTime UpdatedAt { get; set; }
 
-    public int Category { get; set; }
+    public ContactCategory Category { get; set; }
 
     public string? OrganisationName { get; set; }
 

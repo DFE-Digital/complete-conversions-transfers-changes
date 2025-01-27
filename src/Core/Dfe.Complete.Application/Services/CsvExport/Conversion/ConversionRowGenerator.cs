@@ -71,6 +71,20 @@ namespace Dfe.Complete.Application.Services.CsvExport.Conversion
                     .Column("Headteacher email").BlankIfEmpty(x => x.Headteacher?.Email)
                     .Column("Local authority contact name").BlankIfEmpty(x => x.LocalAuthorityContact?.Name)
                     .Column("Local authority contact email").BlankIfEmpty(x => x.LocalAuthorityContact?.Email)
+                    .Column("Primary contact for incoming trust name").BlankIfEmpty(x => x.IncomingContact?.Name)
+                    .Column("Primary contact for incoming trust email").BlankIfEmpty(x => x.IncomingContact?.Email)
+                    .Column("Primary contact for outgoing trust name").BlankIfEmpty(x => x.OutgoingContact?.Name)
+                    .Column("Primary contact for outgoing trust email").BlankIfEmpty(x => x.OutgoingContact?.Email)
+                    .Column("Incoming trust CEO name").BlankIfEmpty(x => x.IncomingCEOContact?.Name)
+                    .Column("Incoming trust CEO role").BlankIfEmpty(x => x.IncomingCEOContact != null ? "CEO" : null)
+                    .Column("Incoming trust CEO email").BlankIfEmpty(x => x.IncomingCEOContact?.Email)
+                    .Column("Solicitor contact name").BlankIfEmpty(x => x.SolicitorContact?.Name)
+                    .Column("Solicitor contact email").BlankIfEmpty(x => x.SolicitorContact?.Email)
+                    .Column("Diocese contact name").BlankIfEmpty(x => x.DioceseContact?.Name)
+                    .Column("Diocese contact email").BlankIfEmpty(x => x.DioceseContact?.Email)
+                    .Column("Director of child services name").BlankIfEmpty(x => x.DirectorOfServicesContact?.Name)
+                    .Column("Director of child services email").BlankIfEmpty(x => x.DirectorOfServicesContact?.Email)
+                    .Column("Director of child services role").BlankIfEmpty(x => x.DirectorOfServicesContact?.Title)
                     .Build(model);
         }
     }

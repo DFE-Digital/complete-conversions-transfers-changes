@@ -43,6 +43,13 @@ namespace Dfe.Complete.Infrastructure.QueryServices.CsvExport
                         join headteacher in context.Contacts on keyContact.HeadteacherId equals headteacher.Id
                         join mainContact in context.Contacts on project.MainContactId equals mainContact.Id
                         join laContact in context.Contacts on localAuthority.Id equals laContact.LocalAuthorityId
+                        join incomingTrustContact in context.Contacts on project.IncomingTrustMainContactId equals incomingTrustContact.Id
+                        join outgoingTrustContact in context.Contacts on project.OutgoingTrustMainContactId equals outgoingTrustContact.Id
+                        join incomingTrustCeo in context.Contacts on keyContact.IncomingTrustCeoId equals incomingTrustCeo.Id
+                        join solicitor in context.Contacts on project.Id equals solicitor.ProjectId where solicitor.Category == ContactCategory.Solicitor
+                        join diocese in context.Contacts on project.Id equals diocese.ProjectId where diocese.Category == ContactCategory.Diocese
+                        join directorOfServices in context.Contacts on project.Id equals directorOfServices.ProjectId where directorOfServices.Category == ContactCategory.LocalAuthority
+                        where diocese.Category == ContactCategory.Diocese
                         join significantDateHistory in context.SignificantDateHistories on project.Id equals significantDateHistory.ProjectId into x
                             from sd in x.OrderByDescending(x => x.UpdatedAt).Take(1).DefaultIfEmpty()
             select new ConversionCsvModel(
@@ -56,7 +63,13 @@ namespace Dfe.Complete.Infrastructure.QueryServices.CsvExport
                 project.AssignedTo,
                 mainContact,
                 headteacher,
-                laContact
+                laContact,
+                incomingTrustContact,
+                outgoingTrustContact,
+                incomingTrustCeo,
+                solicitor,
+                diocese,
+                directorOfServices                
             );
 
 

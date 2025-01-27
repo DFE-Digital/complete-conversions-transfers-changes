@@ -12,9 +12,7 @@ namespace Dfe.Complete.Application.Tests.Services.CsvExport
     {
         public static ConversionCsvModel Make(bool withAcademy = true,
                                               bool withSignificantDateHistory = true,
-                                              bool withMainContact = true,
-                                              bool withHeadteacher = true,
-                                              bool withLAContact = true)
+                                              bool withContacts = true)
         {
             var fixture = new Fixture();   
 
@@ -43,6 +41,12 @@ namespace Dfe.Complete.Application.Tests.Services.CsvExport
 
             var mainContact = fixture.Customize(new OmitCircularReferenceCustomization()).Create<Contact>();
             var headteacher = fixture.Customize(new OmitCircularReferenceCustomization()).Create<Contact>();
+            var incomingContact = fixture.Customize(new OmitCircularReferenceCustomization()).Create<Contact>();
+            var outgoingContact = fixture.Customize(new OmitCircularReferenceCustomization()).Create<Contact>();
+            var incomingCeoContact = fixture.Customize(new OmitCircularReferenceCustomization()).Create<Contact>();
+            var solicitorContact = fixture.Customize(new OmitCircularReferenceCustomization()).Create<Contact>();
+            var dioceseContact = fixture.Customize(new OmitCircularReferenceCustomization()).Create<Contact>();
+            var directorOfServicesContact = fixture.Customize(new OmitCircularReferenceCustomization()).Create<Contact>();
 
             var project = fixture.Customize(
                 new ProjectCustomization()
@@ -51,7 +55,7 @@ namespace Dfe.Complete.Application.Tests.Services.CsvExport
                     AcademyUrn = withAcademy ? academy.Urn : null,
                     RegionalDeliveryOfficerId = createdBy.Id,
                     AssignedToId = assignedTo.Id,
-                    MainContactId = withMainContact ? mainContact.Id : null,
+                    MainContactId = withContacts ? mainContact.Id : null,
                 }
                 ).Create<Project>();
 
@@ -62,7 +66,6 @@ namespace Dfe.Complete.Application.Tests.Services.CsvExport
                 }
                 ).Create<SignificantDateHistory>();
 
-
             return new ConversionCsvModel(project,
                                           establishment,
                                           withAcademy ? academy : null,
@@ -71,9 +74,16 @@ namespace Dfe.Complete.Application.Tests.Services.CsvExport
                                           conversionTasksData,
                                           createdBy,
                                           assignedTo,
-                                          withMainContact ? mainContact : null,
-                                          withHeadteacher ?  headteacher : null,
-                                          withLAContact ? laContact : null);
+                                          withContacts ? mainContact : null,
+                                          withContacts ?  headteacher : null,
+                                          withContacts ? laContact : null,
+                                          withContacts ? incomingContact : null,
+                                          withContacts ? outgoingContact : null,
+                                          withContacts ? incomingCeoContact : null,
+                                          withContacts ? solicitorContact : null,
+                                          withContacts ? dioceseContact : null,
+                                          withContacts ? directorOfServicesContact : null
+                                          );
         }
     }
 }

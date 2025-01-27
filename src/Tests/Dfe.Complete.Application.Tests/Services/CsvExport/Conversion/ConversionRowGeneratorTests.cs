@@ -18,8 +18,7 @@ namespace Dfe.Complete.Application.Tests.Services.CsvExport.Conversion
         {
             var model = ConversionCsvModelFactory.Make(withAcademy: false,
                                                        withSignificantDateHistory: false,
-                                                       withMainContact: false,
-                                                       withHeadteacher: false);
+                                                       withContacts: false);
 
             model.Project.Type = ProjectType.Conversion;
             model.Project.AcademyUrn = null;
@@ -106,22 +105,22 @@ namespace Dfe.Complete.Application.Tests.Services.CsvExport.Conversion
             Assert.Equal("", result[49]);
             Assert.Equal("", result[50]);
             Assert.Equal("", result[51]);
-            Assert.Equal(model.LocalAuthorityContact.Name, result[52]);
-            Assert.Equal(model.LocalAuthorityContact.Email, result[53]);
-            //Assert.Equal("PrimaryContactForIncomingTrustName", result[54]);
-            //Assert.Equal("PrimaryContactForIncomingTrustEmail", result[55]);
-            //Assert.Equal("PrimaryContactForOutgoingTrustName", result[56]);
-            //Assert.Equal("PrimaryContactForOutgoingTrustEmail", result[57]);
-            //Assert.Equal("IncomingTrustCEOName", result[58]);
-            //Assert.Equal("IncomingTrustCEORole", result[59]);
-            //Assert.Equal("IncomingTrustCEOEmail", result[60]);
-            //Assert.Equal("SolicitorContactName", result[61]);
-            //Assert.Equal("SolicitorContactEmail", result[62]);
-            //Assert.Equal("DioceseContactName", result[63]);
-            //Assert.Equal("DioceseContactEmail", result[64]);
-            //Assert.Equal("DirectorOfChildServicesName", result[65]);
-            //Assert.Equal("DirectorOfChildServicesEmail", result[66]);
-            //Assert.Equal("DirectorOfChildServicesRole", result[67]);
+            Assert.Equal("", result[52]);
+            Assert.Equal("", result[53]);
+            Assert.Equal("", result[54]);
+            Assert.Equal("", result[55]);
+            Assert.Equal("", result[56]);
+            Assert.Equal("", result[57]);
+            Assert.Equal("", result[58]);
+            Assert.Equal("", result[59]);
+            Assert.Equal("", result[60]);
+            Assert.Equal("", result[61]);
+            Assert.Equal("", result[62]);
+            Assert.Equal("", result[63]);
+            Assert.Equal("", result[64]);
+            Assert.Equal("", result[65]);
+            Assert.Equal("", result[66]);
+            Assert.Equal("", result[67]);
         }
 
         [Theory]
@@ -203,20 +202,20 @@ namespace Dfe.Complete.Application.Tests.Services.CsvExport.Conversion
             Assert.Equal(model.Headteacher.Email, result[51]);
             Assert.Equal(model.LocalAuthorityContact.Name, result[52]);
             Assert.Equal(model.LocalAuthorityContact.Email, result[53]);
-            //Assert.Equal("PrimaryContactForIncomingTrustName", result[54]);
-            //Assert.Equal("PrimaryContactForIncomingTrustEmail", result[55]);
-            //Assert.Equal("PrimaryContactForOutgoingTrustName", result[56]);
-            //Assert.Equal("PrimaryContactForOutgoingTrustEmail", result[57]);
-            //Assert.Equal("IncomingTrustCEOName", result[58]);
-            //Assert.Equal("IncomingTrustCEORole", result[59]);
-            //Assert.Equal("IncomingTrustCEOEmail", result[60]);
-            //Assert.Equal("SolicitorContactName", result[61]);
-            //Assert.Equal("SolicitorContactEmail", result[62]);
-            //Assert.Equal("DioceseContactName", result[63]);
-            //Assert.Equal("DioceseContactEmail", result[64]);
-            //Assert.Equal("DirectorOfChildServicesName", result[65]);
-            //Assert.Equal("DirectorOfChildServicesEmail", result[66]);
-            //Assert.Equal("DirectorOfChildServicesRole", result[67]);
+            Assert.Equal(model.IncomingContact.Name, result[54]);
+            Assert.Equal(model.IncomingContact.Email, result[55]);
+            Assert.Equal(model.OutgoingContact.Name, result[56]);
+            Assert.Equal(model.OutgoingContact.Email, result[57]);
+            Assert.Equal(model.IncomingCEOContact.Name, result[58]);
+            Assert.Equal("CEO", result[59]);
+            Assert.Equal(model.IncomingCEOContact.Email, result[60]);
+            Assert.Equal(model.SolicitorContact.Name, result[61]);
+            Assert.Equal(model.SolicitorContact.Email, result[62]);
+            Assert.Equal(model.DioceseContact.Name, result[63]);
+            Assert.Equal(model.DioceseContact.Email, result[64]);
+            Assert.Equal(model.DirectorOfServicesContact.Name, result[65]);
+            Assert.Equal(model.DirectorOfServicesContact.Email, result[66]);
+            Assert.Equal(model.DirectorOfServicesContact.Title, result[67]);
         }
     }
 }

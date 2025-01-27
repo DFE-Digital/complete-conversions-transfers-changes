@@ -12,5 +12,11 @@ namespace Dfe.Complete.Application.Common.Models
                                      User? AssignedTo,
                                      Contact? MainContact,
                                      Contact? Headteacher,
-                                     Contact? LocalAuthorityContact);
+                                     Contact? LocalAuthorityContact,
+                                     Contact? IncomingContact,
+                                     Contact? OutgoingContact,
+                                     Contact? IncomingCEOContact,
+                                     Contact? SolicitorContact,
+                                     Contact? DioceseContact,
+                                     Contact? DirectorOfServicesContact);
 }
