@@ -1,8 +1,9 @@
-﻿using Dfe.Complete.Domain.ValueObjects;
+﻿using Dfe.Complete.Domain.Common;
+using Dfe.Complete.Domain.ValueObjects;
 
 namespace Dfe.Complete.Domain.Entities;
 
-public class Note
+public class Note : IEntity<NoteId>
 {
     public NoteId Id { get; set; }
 

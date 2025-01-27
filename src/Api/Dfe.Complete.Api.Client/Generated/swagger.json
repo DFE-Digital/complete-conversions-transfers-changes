@@ -557,102 +557,109 @@
         }
       },
       "User": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-          "id": {
-            "$ref": "#/components/schemas/UserId"
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/BaseAggregateRoot"
           },
-          "email": {
-            "type": "string",
-            "nullable": true
-          },
-          "createdAt": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "updatedAt": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "manageTeam": {
-            "type": "boolean",
-            "nullable": true
-          },
-          "addNewProject": {
-            "type": "boolean"
-          },
-          "firstName": {
-            "type": "string",
-            "nullable": true
-          },
-          "lastName": {
-            "type": "string",
-            "nullable": true
-          },
-          "activeDirectoryUserId": {
-            "type": "string",
-            "nullable": true
-          },
-          "assignToProject": {
-            "type": "boolean",
-            "nullable": true
-          },
-          "manageUserAccounts": {
-            "type": "boolean",
-            "nullable": true
-          },
-          "activeDirectoryUserGroupIds": {
-            "type": "string",
-            "nullable": true
-          },
-          "team": {
-            "type": "string",
-            "nullable": true
-          },
-          "deactivatedAt": {
-            "type": "string",
-            "format": "date-time",
-            "nullable": true
-          },
-          "manageConversionUrns": {
-            "type": "boolean",
-            "nullable": true
-          },
-          "manageLocalAuthorities": {
-            "type": "boolean",
-            "nullable": true
-          },
-          "latestSession": {
-            "type": "string",
-            "format": "date-time",
-            "nullable": true
-          },
-          "notes": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Note"
-            }
-          },
-          "projectAssignedTos": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Project"
-            }
-          },
-          "projectCaseworkers": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Project"
-            }
-          },
-          "projectRegionalDeliveryOfficers": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Project"
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "id": {
+                "$ref": "#/components/schemas/UserId"
+              },
+              "email": {
+                "type": "string",
+                "nullable": true
+              },
+              "createdAt": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "updatedAt": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "manageTeam": {
+                "type": "boolean",
+                "nullable": true
+              },
+              "addNewProject": {
+                "type": "boolean"
+              },
+              "firstName": {
+                "type": "string",
+                "nullable": true
+              },
+              "lastName": {
+                "type": "string",
+                "nullable": true
+              },
+              "activeDirectoryUserId": {
+                "type": "string",
+                "nullable": true
+              },
+              "assignToProject": {
+                "type": "boolean",
+                "nullable": true
+              },
+              "manageUserAccounts": {
+                "type": "boolean",
+                "nullable": true
+              },
+              "activeDirectoryUserGroupIds": {
+                "type": "string",
+                "nullable": true
+              },
+              "team": {
+                "type": "string",
+                "nullable": true
+              },
+              "deactivatedAt": {
+                "type": "string",
+                "format": "date-time",
+                "nullable": true
+              },
+              "manageConversionUrns": {
+                "type": "boolean",
+                "nullable": true
+              },
+              "manageLocalAuthorities": {
+                "type": "boolean",
+                "nullable": true
+              },
+              "latestSession": {
+                "type": "string",
+                "format": "date-time",
+                "nullable": true
+              },
+              "notes": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/Note"
+                }
+              },
+              "projectAssignedTos": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/Project"
+                }
+              },
+              "projectCaseworkers": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/Project"
+                }
+              },
+              "projectRegionalDeliveryOfficers": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/Project"
+                }
+              }
             }
           }
-        }
+        ]
       },
       "Note": {
         "type": "object",
@@ -992,6 +999,17 @@
           }
         ]
       },
+      "IDomainEvent": {
+        "type": "object",
+        "x-abstract": true,
+        "additionalProperties": false,
+        "properties": {
+          "occurredOn": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
       "Contact": {
         "type": "object",
         "additionalProperties": false,
@@ -1071,30 +1089,6 @@
           "value": {
             "type": "string",
             "format": "guid"
-          }
-        }
-      },
-      "BaseAggregateRoot": {
-        "type": "object",
-        "x-abstract": true,
-        "additionalProperties": false,
-        "properties": {
-          "domainEvents": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/IDomainEvent"
-            }
-          }
-        }
-      },
-      "IDomainEvent": {
-        "type": "object",
-        "x-abstract": true,
-        "additionalProperties": false,
-        "properties": {
-          "occurredOn": {
-            "type": "string",
-            "format": "date-time"
           }
         }
       },

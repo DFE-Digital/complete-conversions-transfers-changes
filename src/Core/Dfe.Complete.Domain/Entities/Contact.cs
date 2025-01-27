@@ -1,8 +1,9 @@
-﻿using Dfe.Complete.Domain.ValueObjects;
+﻿using Dfe.Complete.Domain.Common;
+using Dfe.Complete.Domain.ValueObjects;
 
 namespace Dfe.Complete.Domain.Entities;
 
-public class Contact
+public class Contact : IEntity<ContactId>
 {
     public ContactId Id { get; set; }
 
