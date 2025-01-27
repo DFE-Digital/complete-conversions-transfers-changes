@@ -1,40 +1,24 @@
-﻿@using NetEscapades.AspNetCore.SecurityHeaders;
-@model Dfe.Complete.Pages.Pagination.PaginationModel
-@{
-  var prefix = !string.IsNullOrEmpty(Model.ElementIdPrefix) ? Model.ElementIdPrefix : "";
-
-  var nextPageLink = $"{Model.Url}?pageNumber={Model.Next}";
-
-  var previousPageLink = $"{Model.Url}?pageNumber={Model.Previous}";
-
-  var nonce = Context.GetNonce();
-
-  var paginationContainerId = $"{prefix}pagination-container";
-  var nextButtonId = $"{prefix}next-page";
-  var previousButtonId = $"{prefix}previous-page";
-  var pagesToDisplay = new List<int>() { 1, Model.PageNumber, Model.TotalPages };
-  if (Model.Previous.HasValue)
-    pagesToDisplay.Add((int)Model.Previous);
-  if (Model.Next.HasValue)
-    pagesToDisplay.Add((int)Model.Next);
-}
+﻿@model Dfe.Complete.Pages.Pagination.PaginationModel
+@* @{ *@
+   @* var nonce = Context.GetNonce(); *@
+@* } *@
 
 @if (Model.TotalPages > 1)
 {
-  <govuk-pagination id="@paginationContainerId">
+  <govuk-pagination id="@Model.PaginationContainerId">
     @if (Model.HasPrevious)
     {
-      <govuk-pagination-previous href="@previousPageLink" id="@previousButtonId" data-testid="@previousButtonId"/>
+      <govuk-pagination-previous href="@Model.PreviousPageLink" id="@Model.PreviousButtonId" data-testid="@Model.PreviousButtonId"/>
     }
     @for (var pageIdx = 0; pageIdx < Model.TotalPages; pageIdx++)
     {
       var pageNumber = pageIdx + 1;
-      var isCurrentPage = Model.PageNumber == pageNumber;
-      var pageNumberLinkId = $"{prefix}page-{pageNumber}";
+      var isCurrentPage = Model.CurrentPageNumber == pageNumber;
+      var pageNumberLinkId = $"{Model.Prefix}page-{pageNumber}";
       var ariaCurrentPage = isCurrentPage ? "true" : "false";
       var ariaLabel = isCurrentPage ? $"Current page, page {pageNumber}" : $"Go to page {pageNumber}";
 
-      if (!pagesToDisplay.Contains(pageNumber))
+      if (!Model.PagesToDisplay.Contains(pageNumber))
       {
         continue;
       }
@@ -55,7 +39,7 @@
     }
     @if (Model.HasNext)
     {
-      <govuk-pagination-next href="@nextPageLink" id="@nextButtonId" data-testid="@nextButtonId"/>
+      <govuk-pagination-next href="@Model.NextPageLink" id="@Model.NextButtonId" data-testid="@Model.NextButtonId"/>
     }
   </govuk-pagination>
   // When pagination is used on the screen without a full page refresh
