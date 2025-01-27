@@ -11,6 +11,7 @@ using System.Linq.Expressions;
 using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Domain.ValueObjects;
 using Dfe.Complete.Utils;
+using Microsoft.IdentityModel.Tokens;
 
 namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
 {
@@ -49,6 +50,7 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
                 default,
                 null,
                 null, 
+                null, 
                 null);
 
             var cacheKey = $"Project_{CacheKeyHelper.GenerateHashedCacheKey(command.Urn.Value.ToString())}";
@@ -79,7 +81,7 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
 
         [Theory]
         [CustomAutoData(typeof(DateOnlyCustomization))]
-        public async Task ONEONEHandle_ShouldGetAProjectByUrn_WhenCommandIsValid(
+        public async Task Handle_ShouldSucceedAndReturnNullWhenUnfoundProjectByUrn_WhenCommandIsValid(
             [Frozen] ICompleteRepository<Domain.Entities.Project> mockProjectRepository,
             [Frozen] ICacheService<IMemoryCacheType> mockCacheService,
             GetProjectByUrnQueryHandler handler,

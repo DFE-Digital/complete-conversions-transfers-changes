@@ -79,6 +79,8 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
 
     public ContactId? LocalAuthorityMainContactId { get; set; }
 
+    // This should be set to value object as you have already done this in ProjectGroup
+
     public Guid? GroupId { get; set; }
 
     public virtual User? AssignedTo { get; set; }
@@ -90,7 +92,7 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
     public virtual ICollection<Note> Notes { get; set; } = new List<Note>();
 
     public virtual User? RegionalDeliveryOfficer { get; set; }
-    
+
     private Project()
     {
     }
@@ -105,17 +107,19 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
         DateOnly significantDate,
         bool isSignificantDateProvisional,
         Ukprn incomingTrustUkprn,
+        Ukprn outgoingTrustUkprn,
         Region? region,
         bool isDueTo2RI,
-        bool hasAcademyOrderBeenIssued,
+        bool? hasAcademyOrderBeenIssued,
         DateOnly advisoryBoardDate,
         string advisoryBoardConditions,
         string establishmentSharepointLink,
         string incomingTrustSharepointLink,
+        string? outgoingTrustSharepointLink,
         Guid? groupId,
         ProjectTeam? team,
-        UserId? regionalDeliveryOfficerId, 
-        UserId? assignedTo, 
+        UserId? regionalDeliveryOfficerId,
+        UserId? assignedTo,
         DateTime? assignedAt)
     {
         Id = id ?? throw new ArgumentNullException(nameof(id));
@@ -128,12 +132,14 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
         SignificantDate = significantDate;
         SignificantDateProvisional = isSignificantDateProvisional;
         IncomingTrustUkprn = incomingTrustUkprn;
+        OutgoingTrustUkprn = outgoingTrustUkprn;
         TwoRequiresImprovement = isDueTo2RI;
         DirectiveAcademyOrder = hasAcademyOrderBeenIssued;
         AdvisoryBoardDate = advisoryBoardDate;
         AdvisoryBoardConditions = advisoryBoardConditions;
         EstablishmentSharepointLink = establishmentSharepointLink;
         IncomingTrustSharepointLink = incomingTrustSharepointLink;
+        OutgoingTrustSharepointLink = outgoingTrustSharepointLink;
         GroupId = groupId;
         Team = team;
         RegionalDeliveryOfficerId = regionalDeliveryOfficerId;
@@ -142,6 +148,7 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
         AssignedAt = assignedAt;
         AssignedToId = assignedTo;
     }
+
 
     public static Project CreateConversionProject(
         ProjectId Id,
@@ -162,10 +169,11 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
         string establishmentSharepointLink,
         string incomingTrustSharepointLink,
         Guid? groupId,
-        ProjectTeam? team, 
+        ProjectTeam? team,
         UserId? regionalDeliveryOfficerId,
-        UserId? assignedToId, 
-        DateTime? assignedAt)
+        UserId? assignedToId,
+        DateTime? assignedAt,
+        string? handoverComments)
     {
         var project = new Project(
             Id,
@@ -178,6 +186,7 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
             significantDate,
             isSignificantDateProvisional,
             incomingTrustUkprn,
+            null,
             region,
             isDueTo2RI,
             hasAcademyOrderBeenIssued,
@@ -185,14 +194,109 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
             advisoryBoardConditions,
             establishmentSharepointLink,
             incomingTrustSharepointLink,
+            null,
             groupId,
             team,
-            regionalDeliveryOfficerId, 
-            assignedToId, 
+            regionalDeliveryOfficerId,
+            assignedToId,
             assignedAt);
+
+        if (!string.IsNullOrEmpty(handoverComments))
+        {
+            project.AddNote(new Note
+            {
+                CreatedAt = project.CreatedAt, ProjectId = project.Id, Body = handoverComments,
+                TaskIdentifier = "handover", UserId = assignedToId
+            });
+        }
 
         project.AddDomainEvent(new ProjectCreatedEvent(project));
 
         return project;
+    }
+
+
+    public static Project CreateTransferProject
+    (
+        ProjectId Id,
+        Urn urn,
+        DateTime createdAt,
+        DateTime updatedAt,
+        TaskType taskType,
+        ProjectType projectType,
+        Guid tasksDataId,
+        Region? region,
+        ProjectTeam team,
+        UserId? regionalDeliveryOfficerId,
+        UserId? assignedToId,
+        DateTime? assignedAt,
+        Ukprn incomingTrustUkprn,
+        Ukprn outgoingTrustUkprn,
+        Guid? groupId,
+        string establishmentSharepointLink,
+        string incomingTrustSharepointLink,
+        string outgoingTrustSharepointLink,
+        DateOnly advisoryBoardDate,
+        string advisoryBoardConditions,
+        DateOnly significantDate,
+        bool isSignificantDateProvisional,
+        bool isDueTo2RI, 
+        string? handoverComments
+    )
+    {
+        var project = new Project(
+            Id,
+            urn,
+            createdAt,
+            updatedAt,
+            taskType,
+            projectType,
+            tasksDataId,
+            significantDate,
+            isSignificantDateProvisional,
+            incomingTrustUkprn,
+            outgoingTrustUkprn,
+            region,
+            isDueTo2RI,
+            null,
+            advisoryBoardDate,
+            advisoryBoardConditions,
+            establishmentSharepointLink,
+            incomingTrustSharepointLink,
+            outgoingTrustSharepointLink,
+            groupId,
+            team,
+            regionalDeliveryOfficerId,
+            assignedToId,
+            assignedAt);
+
+        if (!string.IsNullOrEmpty(handoverComments))
+        {
+            project.AddNote(new Note
+            {
+                CreatedAt = project.CreatedAt, ProjectId = project.Id, Body = handoverComments,
+                TaskIdentifier = "handover", UserId = assignedToId
+            });
+        }
+        
+        project.AddDomainEvent(new ProjectCreatedEvent(project));
+
+        return project;
+    }
+
+    private void AddNote(Note? note)
+    {
+        if (note != null)
+        {
+            Notes.Add(new Note
+            {
+                Id = new NoteId(Guid.NewGuid()),
+                CreatedAt = note.CreatedAt,
+                Body = note.Body,
+                ProjectId = note.ProjectId,
+                TaskIdentifier = note.TaskIdentifier,
+                UserId = note.User?.Id
+            });
+        }
     }
 }

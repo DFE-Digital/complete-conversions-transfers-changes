@@ -1,4 +1,5 @@
 ﻿using Dfe.Complete.Domain.Interfaces.Repositories;
+using Dfe.Complete.Infrastructure.Gateways;
 using Dfe.Complete.Infrastructure.Repositories;
 using Dfe.Complete.Services;
 
@@ -10,6 +11,9 @@ namespace Dfe.Complete.StartupConfiguration
         {
             services.AddScoped<IErrorService, ErrorService>();
             services.AddScoped<CompleteApiClient, CompleteApiClient>();
+            services.AddScoped<AcademiesApiClient, AcademiesApiClient>();
+            services.AddScoped<ITrustService, TrustService>();
+
             services.AddScoped<IAnalyticsConsentService, AnalyticsConsentService>();
             
             //            services.AddScoped(typeof(ICompleteRepository<>), typeof(CompleteRepository<>));

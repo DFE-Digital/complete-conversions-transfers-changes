@@ -1,31 +1,23 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
-using System;
-using System.IO;
-using System.Net.Http;
 using System.Net.Mime;
 using System.Text;
-using System.Threading.Tasks;
 
-namespace Dfe.Complete.Services
+namespace Dfe.Complete.Infrastructure.Gateways
 {
     public abstract class ApiClient
     {
         private readonly IHttpClientFactory _clientFactory;
         private readonly ILogger<ApiClient> _logger;
         private string _httpClientName;
-        private readonly IHttpContextAccessor _httpContextAccessor;
 
         protected ApiClient(
             IHttpClientFactory clientFactory, 
             ILogger<ApiClient> logger,
-            IHttpContextAccessor httpContextAccessor,
             string httpClientName)
         {
             _clientFactory = clientFactory;
             _logger = logger;
-            _httpContextAccessor = httpContextAccessor;
             _httpClientName = httpClientName;
         }
 
@@ -41,8 +33,10 @@ namespace Dfe.Complete.Services
 
                 response.EnsureSuccessStatusCode();
 
+                // Read response content
                 var content = await response.Content.ReadAsStringAsync();
 
+                // Deserialize content
                 var result = JsonConvert.DeserializeObject<T>(content);
 
                 return result;
@@ -53,6 +47,7 @@ namespace Dfe.Complete.Services
                 throw;
             }
         }
+
 
         public async Task<Stream> GetStream(string endpoint)
         {

@@ -23,18 +23,18 @@ public class ProjectsControllerTests
         CreateConversionProjectCommand createConversionProjectCommand,
         IProjectsClient projectsClient)
     {
-        //todo: when auth is done, add this back in
         // factory.TestClaims = [new Claim(ClaimTypes.Role, "API.Write")];
-
-        var testUserAdId = createConversionProjectCommand.UserAdId;
-
+        
         var dbContext = factory.GetDbContext<CompleteContext>();
 
         var testUser = await dbContext.Users.FirstOrDefaultAsync();
-        Assert.NotNull(testUser);
-        testUser.ActiveDirectoryUserId = testUserAdId;
+        testUser.ActiveDirectoryUserId = createConversionProjectCommand.UserAdId;
 
+        var group = await dbContext.ProjectGroups.FirstOrDefaultAsync();
+        group.GroupIdentifier = createConversionProjectCommand.GroupReferenceNumber;
+        
         dbContext.Users.Update(testUser);
+        dbContext.ProjectGroups.Update(group);
         await dbContext.SaveChangesAsync();
 
         var result = await projectsClient.CreateProjectAsync(createConversionProjectCommand);

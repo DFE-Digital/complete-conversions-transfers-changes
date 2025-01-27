@@ -1,11 +1,9 @@
 ﻿using Dfe.Complete.Domain.Common;
 using Dfe.Complete.Domain.ValueObjects;
-using System;
-using System.Collections.Generic;
 
-namespace Dfe.Complete.Infrastructure.Models;
+namespace Dfe.Complete.Domain.Entities;
 
-public class LocalAuthority: BaseAggregateRoot, IEntity<LocalAuthorityId>
+public class LocalAuthority : IEntity<LocalAuthorityId>
 {
     public LocalAuthorityId Id { get; set; }
 

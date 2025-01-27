@@ -3,6 +3,9 @@ using Dfe.Complete.Domain.ValueObjects;
 
 namespace Dfe.Complete.Domain.Entities;
 
+// This is not an aggregate root, Project is. Tasks are related to projects and never get modified outside context of a project.
+// however for now lets keep it as it is because of the incorrect design in the database we have no proper relationship between different types of Tasks and a project.
+// unfortunately we have to go a little anti-pattern here
 public class ConversionTasksData : BaseAggregateRoot, IEntity<TaskDataId>
 {
     public TaskDataId Id { get; set; }

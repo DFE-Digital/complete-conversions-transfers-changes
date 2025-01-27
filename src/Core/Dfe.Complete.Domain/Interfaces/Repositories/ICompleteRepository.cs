@@ -4,11 +4,9 @@ using Dfe.Complete.Domain.ValueObjects;
 
 namespace Dfe.Complete.Domain.Interfaces.Repositories;
 
-public interface ICompleteRepository<TAggregate> : IRepository<TAggregate>
-    where TAggregate : class, IAggregateRoot
-{
-    Task<ProjectGroupId?> GetProjectGroupIdByIdentifierAsync(string groupIdentifier,
-        CancellationToken cancellationToken);
+// This is interface to the generic repository, it should not contain any methods!
+// Please remove the methods and either use the generic version of them or create them in their own repo
 
-    Task<User?> GetUserByAdId(string? userAdId, CancellationToken cancellationToken);
+public interface ICompleteRepository<TAggregate> : IRepository<TAggregate> where TAggregate : class, IAggregateRoot
+{
 }
