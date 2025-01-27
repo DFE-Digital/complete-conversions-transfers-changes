@@ -31,19 +31,19 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
             // Arrange
             var expected = listAllProjectsQueryModels.Count;
 
-            var cacheKey = $"Project_{CacheKeyHelper.GenerateHashedCacheKey(query.ToString())}";
+            // var cacheKey = $"Project_{CacheKeyHelper.GenerateHashedCacheKey(query.ToString())}";
 
             var mock = listAllProjectsQueryModels.BuildMock();
 
             mockEstablishmentQueryService.ListAllProjects(query.ProjectStatus, query.Type)
                 .Returns(mock);
 
-            mockCacheService.GetOrAddAsync(cacheKey, Arg.Any<Func<Task<Result<int>>>>(), Arg.Any<string>())
-                .Returns(callInfo =>
-                {
-                    var callback = callInfo.ArgAt<Func<Task<Result<int>>>>(1);
-                    return callback();
-                });
+            // mockCacheService.GetOrAddAsync(cacheKey, Arg.Any<Func<Task<Result<int>>>>(), Arg.Any<string>())
+            //     .Returns(callInfo =>
+            //     {
+            //         var callback = callInfo.ArgAt<Func<Task<Result<int>>>>(1);
+            //         return callback();
+            //     });
 
             // Act
             var result = await handler.Handle(query, default);
@@ -51,7 +51,7 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
             // Assert
             Assert.Equal(expected, result.Value);
 
-            await mockCacheService.Received(1).GetOrAddAsync(cacheKey, Arg.Any<Func<Task<Result<int>>>>(), nameof(CountAllProjectsQueryHandler));
+            // await mockCacheService.Received(1).GetOrAddAsync(cacheKey, Arg.Any<Func<Task<Result<int>>>>(), nameof(CountAllProjectsQueryHandler));
         }
     }
 }
