@@ -5,7 +5,7 @@ using Dfe.Complete.Pages.Pagination;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace Dfe.Complete.Pages.Projects.List;
+namespace Dfe.Complete.Pages.Projects.List.ProjectsInProgress;
 
 public class ProjectsInProgressViewModel : PageModel
 {
