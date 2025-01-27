@@ -1,16 +1,13 @@
+using System.Net.Http.Headers;
+using System.Security.Claims;
 using AutoFixture;
 using DfE.CoreLibs.Testing.Mocks.Authentication;
 using DfE.CoreLibs.Testing.Mocks.WebApplicationFactory;
-using Dfe.Complete.Api.Client.Extensions;
-using Dfe.Complete.Client;
-using Dfe.Complete.Client.Contracts;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using System.Net.Http.Headers;
-using System.Security.Claims;
 
-namespace Dfe.Complete.Tests.Common.Customizations
+namespace Dfe.Complete.Api.Tests.Integration.Customizations
 {
     public class CustomWebApplicationFactoryCustomization<TProgram> : ICustomization
         where TProgram : class {

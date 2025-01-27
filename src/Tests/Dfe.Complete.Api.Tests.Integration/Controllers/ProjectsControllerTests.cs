@@ -46,7 +46,7 @@ public class ProjectsControllerTests
     [Theory]
     [CustomAutoData(typeof(CustomWebApplicationDbContextFactoryCustomization))]
     public async Task CreateProject_WithNullRequest_ThrowsException(
-        // CustomWebApplicationDbContextFactory<Program> factory,
+        CustomWebApplicationDbContextFactory<Program> factory,
         CreateConversionProjectCommand createConversionProjectCommand,
         IProjectsClient projectsClient)
     {
@@ -60,6 +60,45 @@ public class ProjectsControllerTests
             await projectsClient.CreateProjectAsync(createConversionProjectCommand));
 
         Assert.Equal(HttpStatusCode.BadRequest, (HttpStatusCode)exception.StatusCode);
+    }
+    
+    [Theory]
+    [CustomAutoData(typeof(CustomWebApplicationDbContextFactoryCustomization), typeof(EstablishmentsCustomization))]
+    public async Task CountAllProjects_Async_ShouldReturnCorrectNumber(
+        CustomWebApplicationDbContextFactory<Program> factory,
+        IProjectsClient projectsClient,
+        IFixture fixture)
+    {
+        //todo: when auth is done, add this back in
+
+        var dbContext = factory.GetDbContext<CompleteContext>();
+
+        var testUser = await dbContext.Users.FirstAsync();
+        var establishments = fixture.CreateMany<GiasEstablishment>(50).ToList();
+        await dbContext.GiasEstablishments.AddRangeAsync(establishments);
+        var projects = establishments.Select(establishment =>
+        {
+            var project = fixture.Customize(new ProjectCustomization
+                {
+                    RegionalDeliveryOfficerId = testUser.Id,
+                    CaseworkerId = testUser.Id,
+                    AssignedToId = testUser.Id
+                })
+                .Create<Project>();
+            project.Urn = establishment.Urn ?? project.Urn;
+            return project;
+        }).ToList();
+        await dbContext.Projects.AddRangeAsync(projects);
+
+        await dbContext.SaveChangesAsync();
+
+        // dbContext.Users.Update(testUser);
+        // await dbContext.SaveChangesAsync();
+
+        var result = await projectsClient.CountAllProjectsAsync(null, null);
+
+        // Assert.NotNull(result);
+        Assert.Equal(50, result);
     }
 
     [Theory]
