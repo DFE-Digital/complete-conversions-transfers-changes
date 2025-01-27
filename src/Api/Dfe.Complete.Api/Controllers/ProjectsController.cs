@@ -27,7 +27,7 @@ namespace Dfe.Complete.Api.Controllers
         [HttpPost]
         [SwaggerResponse(201, "Project created successfully.", typeof(ProjectId))]
         [SwaggerResponse(400, "Invalid request data.")]
-        public async Task<IActionResult> CreateProject_Async([FromBody] CreateConversionProjectCommand request, CancellationToken cancellationToken)
+        public async Task<IActionResult> CreateProjectAsync([FromBody] CreateConversionProjectCommand request, CancellationToken cancellationToken)
         {
             var projectId = await sender.Send(request, cancellationToken);
             return Created("", projectId);
@@ -42,10 +42,10 @@ namespace Dfe.Complete.Api.Controllers
         [HttpGet]
         [SwaggerResponse(200, "Project", typeof(Project))]
         [SwaggerResponse(400, "Invalid request data.")]
-        public async Task<IActionResult> GetProject_Async([FromQuery] GetProjectByUrnQuery request, CancellationToken cancellationToken)
+        public async Task<IActionResult> GetProjectAsync([FromQuery] GetProjectByUrnQuery request, CancellationToken cancellationToken)
         {
             var project = await sender.Send(request, cancellationToken);
-            return Ok(project);
+            return Ok(project.Value);
         }
         
         /// <summary>
@@ -58,10 +58,10 @@ namespace Dfe.Complete.Api.Controllers
         [Route("List/All")]
         [SwaggerResponse(200, "Project", typeof(List<ListAllProjectsResultModel>))]
         [SwaggerResponse(400, "Invalid request data.")]
-        public async Task<IActionResult> ListAllProjects_Async([FromQuery] ListAllProjectsQuery request, CancellationToken cancellationToken)
+        public async Task<IActionResult> ListAllProjectsAsync([FromQuery] ListAllProjectsQuery request, CancellationToken cancellationToken)
         {
             var project = await sender.Send(request, cancellationToken);
-            return Ok(project);
+            return Ok(project.Value);
         }
         
         /// <summary>
@@ -74,10 +74,10 @@ namespace Dfe.Complete.Api.Controllers
         [Route("Count/All")]
         [SwaggerResponse(200, "Project", typeof(int))]
         [SwaggerResponse(400, "Invalid request data.")]
-        public async Task<IActionResult> CountAllProjects_Async([FromQuery] CountAllProjectsQuery request, CancellationToken cancellationToken)
+        public async Task<IActionResult> CountAllProjectsAsync([FromQuery] CountAllProjectsQuery request, CancellationToken cancellationToken)
         {
             var project = await sender.Send(request, cancellationToken);
-            return Ok(project);
+            return Ok(project.Value);
         }
 
     }

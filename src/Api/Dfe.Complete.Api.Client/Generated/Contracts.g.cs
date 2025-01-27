@@ -25,15 +25,15 @@ namespace Dfe.Complete.Client.Contracts
     using System = global::System;
 
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "14.2.0.0 (NJsonSchema v11.1.0.0 (Newtonsoft.Json v13.0.0.0))")]
-    public partial interface ICreateProjectClient
+    public partial interface IProjectsClient
     {
         /// <summary>
         /// Creates a new Project
         /// </summary>
         /// <param name="request">The request.</param>
         /// <returns>Project created successfully.</returns>
-        /// <exception cref="PersonsApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<ProjectId> Projects_CreateProject_Async(CreateConversionProjectCommand request);
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<ProjectId> CreateProjectAsync(CreateConversionProjectCommand request);
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>
@@ -41,68 +41,53 @@ namespace Dfe.Complete.Client.Contracts
         /// </summary>
         /// <param name="request">The request.</param>
         /// <returns>Project created successfully.</returns>
-        /// <exception cref="PersonsApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<ProjectId> Projects_CreateProject_Async(CreateConversionProjectCommand request, System.Threading.CancellationToken cancellationToken);
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<ProjectId> CreateProjectAsync(CreateConversionProjectCommand request, System.Threading.CancellationToken cancellationToken);
 
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NSwag", "14.2.0.0 (NJsonSchema v11.1.0.0 (Newtonsoft.Json v13.0.0.0))")]
-    public partial interface IGetProjectClient
-    {
         /// <summary>
         /// Gets a Project
         /// </summary>
         /// <returns>Project</returns>
-        /// <exception cref="PersonsApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<Project> Projects_GetProject_Async(int? urn_Value);
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<Project> GetProjectAsync(int? urn_Value);
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>
         /// Gets a Project
         /// </summary>
         /// <returns>Project</returns>
-        /// <exception cref="PersonsApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<Project> Projects_GetProject_Async(int? urn_Value, System.Threading.CancellationToken cancellationToken);
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<Project> GetProjectAsync(int? urn_Value, System.Threading.CancellationToken cancellationToken);
 
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NSwag", "14.2.0.0 (NJsonSchema v11.1.0.0 (Newtonsoft.Json v13.0.0.0))")]
-    public partial interface IListAllProjectsClient
-    {
         /// <summary>
         /// Returns a list of Projects
         /// </summary>
         /// <returns>Project</returns>
-        /// <exception cref="PersonsApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<ListAllProjectsResultModel>> Projects_ListAllProjects_Async(ProjectState? projectStatus, ProjectType? type, int? page, int? count);
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<ListAllProjectsResultModel>> ListAllProjectsAsync(ProjectState? projectStatus, ProjectType? type, int? page, int? count);
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>
         /// Returns a list of Projects
         /// </summary>
         /// <returns>Project</returns>
-        /// <exception cref="PersonsApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<ListAllProjectsResultModel>> Projects_ListAllProjects_Async(ProjectState? projectStatus, ProjectType? type, int? page, int? count, System.Threading.CancellationToken cancellationToken);
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<ListAllProjectsResultModel>> ListAllProjectsAsync(ProjectState? projectStatus, ProjectType? type, int? page, int? count, System.Threading.CancellationToken cancellationToken);
 
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NSwag", "14.2.0.0 (NJsonSchema v11.1.0.0 (Newtonsoft.Json v13.0.0.0))")]
-    public partial interface ICountAllProjectsClient
-    {
         /// <summary>
         /// Returns the number of Projects
         /// </summary>
         /// <returns>Project</returns>
-        /// <exception cref="PersonsApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<int> Projects_CountAllProjects_Async(ProjectState? projectStatus, ProjectType? type);
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<int> CountAllProjectsAsync(ProjectState? projectStatus, ProjectType? type);
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>
         /// Returns the number of Projects
         /// </summary>
         /// <returns>Project</returns>
-        /// <exception cref="PersonsApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<int> Projects_CountAllProjects_Async(ProjectState? projectStatus, ProjectType? type, System.Threading.CancellationToken cancellationToken);
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<int> CountAllProjectsAsync(ProjectState? projectStatus, ProjectType? type, System.Threading.CancellationToken cancellationToken);
 
     }
 
@@ -868,7 +853,7 @@ namespace Dfe.Complete.Client.Contracts
 
 
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "14.2.0.0 (NJsonSchema v11.1.0.0 (Newtonsoft.Json v13.0.0.0))")]
-    public partial class PersonsApiException : System.Exception
+    public partial class CompleteApiException : System.Exception
     {
         public int StatusCode { get; private set; }
 
@@ -876,7 +861,7 @@ namespace Dfe.Complete.Client.Contracts
 
         public System.Collections.Generic.IReadOnlyDictionary<string, System.Collections.Generic.IEnumerable<string>> Headers { get; private set; }
 
-        public PersonsApiException(string message, int statusCode, string? response, System.Collections.Generic.IReadOnlyDictionary<string, System.Collections.Generic.IEnumerable<string>> headers, System.Exception? innerException)
+        public CompleteApiException(string message, int statusCode, string? response, System.Collections.Generic.IReadOnlyDictionary<string, System.Collections.Generic.IEnumerable<string>> headers, System.Exception? innerException)
             : base(message + "\n\nStatus: " + statusCode + "\nResponse: \n" + ((response == null) ? "(null)" : response.Substring(0, response.Length >= 512 ? 512 : response.Length)), innerException)
         {
             StatusCode = statusCode;
@@ -891,11 +876,11 @@ namespace Dfe.Complete.Client.Contracts
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "14.2.0.0 (NJsonSchema v11.1.0.0 (Newtonsoft.Json v13.0.0.0))")]
-    public partial class PersonsApiException<TResult> : PersonsApiException
+    public partial class CompleteApiException<TResult> : CompleteApiException
     {
         public TResult Result { get; private set; }
 
-        public PersonsApiException(string message, int statusCode, string? response, System.Collections.Generic.IReadOnlyDictionary<string, System.Collections.Generic.IEnumerable<string>> headers, TResult result, System.Exception? innerException)
+        public CompleteApiException(string message, int statusCode, string? response, System.Collections.Generic.IReadOnlyDictionary<string, System.Collections.Generic.IEnumerable<string>> headers, TResult result, System.Exception? innerException)
             : base(message, statusCode, response, headers, innerException)
         {
             Result = result;

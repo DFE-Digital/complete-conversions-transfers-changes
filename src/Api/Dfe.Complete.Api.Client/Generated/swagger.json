@@ -12,7 +12,7 @@
           "Projects"
         ],
         "summary": "Creates a new Project",
-        "operationId": "Projects_CreateProject_",
+        "operationId": "Projects_CreateProject",
         "requestBody": {
           "x-name": "request",
           "description": "The request.",
@@ -47,7 +47,7 @@
           "Projects"
         ],
         "summary": "Gets a Project",
-        "operationId": "Projects_GetProject_",
+        "operationId": "Projects_GetProject",
         "parameters": [
           {
             "name": "Urn.Value",
@@ -82,7 +82,7 @@
           "Projects"
         ],
         "summary": "Returns a list of Projects",
-        "operationId": "Projects_ListAllProjects_",
+        "operationId": "Projects_ListAllProjects",
         "parameters": [
           {
             "name": "ProjectStatus",
@@ -155,7 +155,7 @@
           "Projects"
         ],
         "summary": "Returns the number of Projects",
-        "operationId": "Projects_CountAllProjects_",
+        "operationId": "Projects_CountAllProjects",
         "parameters": [
           {
             "name": "ProjectStatus",
