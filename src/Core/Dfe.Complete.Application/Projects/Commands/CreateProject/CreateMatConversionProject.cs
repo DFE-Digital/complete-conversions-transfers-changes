@@ -83,7 +83,8 @@ public record CreateMatConversionProjectCommand(
                 request.IsDueTo2Ri,
                 request.NewTrustName,
                 request.NewTrustReferenceNumber,
-                request.HasAcademyOrderBeenIssued);
+                request.HasAcademyOrderBeenIssued, 
+                request.HandoverComments);
 
             await conversionTaskRepository.AddAsync(conversionTask, cancellationToken);
             await projectRepository.AddAsync(project, cancellationToken);

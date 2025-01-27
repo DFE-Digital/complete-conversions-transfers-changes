@@ -102,6 +102,7 @@ public class CreateNewProject(ISender sender, IErrorService errorService) : Page
             AdvisoryBoardConditions: AdvisoryBoardConditions,
             HasAcademyOrderBeenIssued: DirectiveAcademyOrder ?? default, 
             HandingOverToRegionalCaseworkService: IsHandingToRCS ?? default,
+            HandoverComments: HandoverComments,
             UserAdId: userAdId
         );
         
