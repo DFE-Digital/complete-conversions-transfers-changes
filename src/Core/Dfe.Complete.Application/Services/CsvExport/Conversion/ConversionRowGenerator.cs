@@ -1,6 +1,7 @@
 ﻿using Dfe.Complete.Application.Common.Models;
 using Dfe.Complete.Application.Services.CsvExport.Builders;
 using Dfe.Complete.Domain.Enums;
+using Dfe.Complete.Utils;
 using System.Net;
 
 namespace Dfe.Complete.Application.Services.CsvExport.Conversion
@@ -28,7 +29,7 @@ namespace Dfe.Complete.Application.Services.CsvExport.Conversion
                     .Column("Diocese").BlankIfEmpty(x => x.CurrentSchool.DioceseName)
                     .Column("Provisional conversion date").Builder(new ProvisionalDateBuilder())
                     .Column("Confirmed conversion date").DefaultIf(x => x.Project.SignificantDateProvisional == true, x => x.Project.SignificantDate?.ToString(DateFormat) ?? Unconfirmed, Unconfirmed)
-                    .Column("Academy order type").Builder(new AcademyOrderTypeBuilder<ConversionCsvModel>(x=> x.Project))
+                    .Column("Academy order type").Builder(new AcademyOrderTypeBuilder<ConversionCsvModel>(x => x.Project))
                     .Column("2RI (Two Requires Improvement)").Bool(x => x.Project.TwoRequiresImprovement, Yes, No)
                     .Column("Advisory board date").BlankIfEmpty(x => x.Project.AdvisoryBoardDate?.ToString(DateFormat))
                     .Column("Advisory board conditions").BlankIfEmpty(x => x.Project.AdvisoryBoardConditions)
@@ -60,8 +61,16 @@ namespace Dfe.Complete.Application.Services.CsvExport.Conversion
                     .Column("Incoming trust address county").IncomingTrustData(x => x.Project, t => t.Address.County)
                     .Column("Incoming trust address postcode").IncomingTrustData(x => x.Project, t => t.Address.Postcode)
                     .Column("Incoming trust sharepoint link").BlankIfEmpty(x => x.Project.IncomingTrustSharepointLink)
-                    .Column("Project created by name").BlankIfEmpty(x => $"{x.CreatedBy?.FirstName} {x.CreatedBy?.LastName}")
+                    .Column("Project created by name").Builder(new UserNameBuilder<ConversionCsvModel>(x => x.CreatedBy!))
                     .Column("Project created by email address").BlankIfEmpty(x => x.CreatedBy?.Email)
+                    .Column("Assigned to name").Builder(new UserNameBuilder<ConversionCsvModel>(x => x.AssignedTo!))
+                    .Column("Team managing the project").BlankIfEmpty(x => x.Project.Team?.ToDescription())
+                    .Column("Project main contact name").BlankIfEmpty(x => x.MainContact?.Name)
+                    .Column("Headteacher name").BlankIfEmpty(x => x.Headteacher?.Name)
+                    .Column("Headteacher role").BlankIfEmpty(x => x.Headteacher != null ? "Headteacher" : null)
+                    .Column("Headteacher email").BlankIfEmpty(x => x.Headteacher?.Email)
+                    .Column("Local authority contact name").BlankIfEmpty(x => x.LocalAuthorityContact?.Name)
+                    .Column("Local authority contact email").BlankIfEmpty(x => x.LocalAuthorityContact?.Email)
                     .Build(model);
         }
     }

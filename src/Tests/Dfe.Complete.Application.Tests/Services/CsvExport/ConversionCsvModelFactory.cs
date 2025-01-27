@@ -10,7 +10,11 @@ namespace Dfe.Complete.Application.Tests.Services.CsvExport
 {
     public static class ConversionCsvModelFactory
     {
-        public static ConversionCsvModel Make(bool withAcademy = true, bool withSignificantDateHistory = true)
+        public static ConversionCsvModel Make(bool withAcademy = true,
+                                              bool withSignificantDateHistory = true,
+                                              bool withMainContact = true,
+                                              bool withHeadteacher = true,
+                                              bool withLAContact = true)
         {
             var fixture = new Fixture();   
 
@@ -22,6 +26,8 @@ namespace Dfe.Complete.Application.Tests.Services.CsvExport
                 new EstablishmentsCustomization()
                 ).Create<GiasEstablishment>();
 
+            var laContact = fixture.Customize(new OmitCircularReferenceCustomization()).Create<Contact>();
+
             var localAuthority = fixture.Customize(
                 new LocalAuthorityCustomization()
                 {
@@ -32,8 +38,11 @@ namespace Dfe.Complete.Application.Tests.Services.CsvExport
             var conversionTasksData = fixture.Create<ConversionTasksData>();
 
             fixture.Customizations.Add(new IgnoreVirtualMembers());
-            
             var createdBy = fixture.Create<User>();
+            var assignedTo = fixture.Create<User>();
+
+            var mainContact = fixture.Customize(new OmitCircularReferenceCustomization()).Create<Contact>();
+            var headteacher = fixture.Customize(new OmitCircularReferenceCustomization()).Create<Contact>();
 
             var project = fixture.Customize(
                 new ProjectCustomization()
@@ -41,6 +50,8 @@ namespace Dfe.Complete.Application.Tests.Services.CsvExport
                     IncomingTrustUkprn = establishment.Ukprn,
                     AcademyUrn = withAcademy ? academy.Urn : null,
                     RegionalDeliveryOfficerId = createdBy.Id,
+                    AssignedToId = assignedTo.Id,
+                    MainContactId = withMainContact ? mainContact.Id : null,
                 }
                 ).Create<Project>();
 
@@ -58,7 +69,11 @@ namespace Dfe.Complete.Application.Tests.Services.CsvExport
                                           localAuthority,
                                           withSignificantDateHistory ? significantDateHistory : null,
                                           conversionTasksData,
-                                          createdBy);
+                                          createdBy,
+                                          assignedTo,
+                                          withMainContact ? mainContact : null,
+                                          withHeadteacher ?  headteacher : null,
+                                          withLAContact ? laContact : null);
         }
     }
 }

@@ -5,6 +5,7 @@ using Dfe.Complete.Application.Services.TrustService;
 using Dfe.Complete.Domain.Entities;
 using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Tests.Common.Customizations.Models;
+using Dfe.Complete.Utils;
 using DfE.CoreLibs.Testing.AutoFixture.Attributes;
 using NSubstitute;
 namespace Dfe.Complete.Application.Tests.Services.CsvExport.Conversion
@@ -15,7 +16,10 @@ namespace Dfe.Complete.Application.Tests.Services.CsvExport.Conversion
         [CustomAutoData(typeof(TrustDetailsDtoCustomization))]
         public void RowGeneratesAccountsForBlankData(TrustDetailsDto incomingTrust)
         {
-            var model = ConversionCsvModelFactory.Make(withAcademy: false, withSignificantDateHistory: false);
+            var model = ConversionCsvModelFactory.Make(withAcademy: false,
+                                                       withSignificantDateHistory: false,
+                                                       withMainContact: false,
+                                                       withHeadteacher: false);
 
             model.Project.Type = ProjectType.Conversion;
             model.Project.AcademyUrn = null;
@@ -26,6 +30,7 @@ namespace Dfe.Complete.Application.Tests.Services.CsvExport.Conversion
             model.Project.AdvisoryBoardConditions = null;
             model.Project.AllConditionsMet = false;
             model.Project.EstablishmentSharepointLink = null;
+            model.Project.Team = ProjectTeam.SouthWest;
 
             model.CurrentSchool.PhaseName = "Not applicable";
             model.CurrentSchool.AddressStreet = null;
@@ -95,14 +100,14 @@ namespace Dfe.Complete.Application.Tests.Services.CsvExport.Conversion
             Assert.Equal(model.Project.IncomingTrustSharepointLink, result[43]);
             Assert.Equal($"{model.CreatedBy.FirstName} {model.CreatedBy.LastName}", result[44]);
             Assert.Equal(model.CreatedBy.Email, result[45]);
-            //Assert.Equal("AssignedToName", result[46]);
-            //Assert.Equal("TeamManagingTheProject", result[47]);
-            //Assert.Equal("ProjectMainContactName", result[48]);
-            //Assert.Equal("HeadteacherName", result[49]);
-            //Assert.Equal("HeadteacherRole", result[50]);
-            //Assert.Equal("HeadteacherEmail", result[51]);
-            //Assert.Equal("LocalAuthorityContactName", result[52]);
-            //Assert.Equal("LocalAuthorityContactEmail", result[53]);
+            Assert.Equal($"{model.AssignedTo.FirstName} {model.AssignedTo.LastName}", result[46]);
+            Assert.Equal(ProjectTeam.SouthWest.ToDescription(), result[47]);
+            Assert.Equal("", result[48]);
+            Assert.Equal("", result[49]);
+            Assert.Equal("", result[50]);
+            Assert.Equal("", result[51]);
+            Assert.Equal(model.LocalAuthorityContact.Name, result[52]);
+            Assert.Equal(model.LocalAuthorityContact.Email, result[53]);
             //Assert.Equal("PrimaryContactForIncomingTrustName", result[54]);
             //Assert.Equal("PrimaryContactForIncomingTrustEmail", result[55]);
             //Assert.Equal("PrimaryContactForOutgoingTrustName", result[56]);
@@ -131,6 +136,7 @@ namespace Dfe.Complete.Application.Tests.Services.CsvExport.Conversion
             model.Project.TwoRequiresImprovement = false;
             model.Project.DirectiveAcademyOrder = false;
             model.Project.AllConditionsMet = true;
+            model.Project.Team = ProjectTeam.RegionalCaseWorkerServices;
 
             model.ConversionTasks.RiskProtectionArrangementOption = RiskProtectionArrangementOption.Commercial;
 
@@ -189,14 +195,14 @@ namespace Dfe.Complete.Application.Tests.Services.CsvExport.Conversion
             Assert.Equal(model.Project.IncomingTrustSharepointLink, result[43]);
             Assert.Equal($"{model.CreatedBy.FirstName} {model.CreatedBy.LastName}", result[44]);
             Assert.Equal(model.CreatedBy.Email, result[45]);
-            //Assert.Equal("AssignedToName", result[46]);
-            //Assert.Equal("TeamManagingTheProject", result[47]);
-            //Assert.Equal("ProjectMainContactName", result[48]);
-            //Assert.Equal("HeadteacherName", result[49]);
-            //Assert.Equal("HeadteacherRole", result[50]);
-            //Assert.Equal("HeadteacherEmail", result[51]);
-            //Assert.Equal("LocalAuthorityContactName", result[52]);
-            //Assert.Equal("LocalAuthorityContactEmail", result[53]);
+            Assert.Equal($"{model.AssignedTo.FirstName} {model.AssignedTo.LastName}", result[46]);
+            Assert.Equal(ProjectTeam.RegionalCaseWorkerServices.ToDescription(), result[47]);
+            Assert.Equal(model.MainContact.Name, result[48]);
+            Assert.Equal(model.Headteacher.Name, result[49]);
+            Assert.Equal("Headteacher", result[50]);
+            Assert.Equal(model.Headteacher.Email, result[51]);
+            Assert.Equal(model.LocalAuthorityContact.Name, result[52]);
+            Assert.Equal(model.LocalAuthorityContact.Email, result[53]);
             //Assert.Equal("PrimaryContactForIncomingTrustName", result[54]);
             //Assert.Equal("PrimaryContactForIncomingTrustEmail", result[55]);
             //Assert.Equal("PrimaryContactForOutgoingTrustName", result[56]);

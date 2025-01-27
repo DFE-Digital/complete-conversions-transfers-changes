@@ -8,5 +8,9 @@ namespace Dfe.Complete.Application.Common.Models
                                      LocalAuthority LocalAuthority,
                                      SignificantDateHistory? SignificantDateHistory,
                                      ConversionTasksData ConversionTasks,
-                                     User? CreatedBy);
+                                     User? CreatedBy,
+                                     User? AssignedTo,
+                                     Contact? MainContact,
+                                     Contact? Headteacher,
+                                     Contact? LocalAuthorityContact);
 }
