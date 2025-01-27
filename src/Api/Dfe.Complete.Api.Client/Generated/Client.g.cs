@@ -339,7 +339,7 @@ namespace Dfe.Complete.Client
         /// <param name="request">The request.</param>
         /// <returns>Project</returns>
         /// <exception cref="PersonsApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<Project> Projects_GetProject_Async(GetProjectByUrnQuery request)
+        public virtual System.Threading.Tasks.Task<ProjectDto> Projects_GetProject_Async(GetProjectByUrnQuery request)
         {
             return Projects_GetProject_Async(request, System.Threading.CancellationToken.None);
         }
@@ -351,7 +351,7 @@ namespace Dfe.Complete.Client
         /// <param name="request">The request.</param>
         /// <returns>Project</returns>
         /// <exception cref="PersonsApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<Project> Projects_GetProject_Async(GetProjectByUrnQuery request, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<ProjectDto> Projects_GetProject_Async(GetProjectByUrnQuery request, System.Threading.CancellationToken cancellationToken)
         {
             if (request == null)
                 throw new System.ArgumentNullException("request");
@@ -399,7 +399,7 @@ namespace Dfe.Complete.Client
                         var status_ = (int)response_.StatusCode;
                         if (status_ == 200)
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<Project>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            var objectResponse_ = await ReadObjectResponseAsync<ProjectDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
                                 throw new PersonsApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
@@ -545,7 +545,7 @@ namespace Dfe.Complete.Client
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "14.2.0.0 (NJsonSchema v11.1.0.0 (Newtonsoft.Json v13.0.0.0))")]
-    public partial class GetMatchingTrustUkprnClient : IGetMatchingTrustUkprnClient
+    public partial class GetProjectGroupByGroupReferenceNumberClient : IGetProjectGroupByGroupReferenceNumberClient
     {
         #pragma warning disable 8618
         private string _baseUrl;
@@ -556,7 +556,7 @@ namespace Dfe.Complete.Client
         private Newtonsoft.Json.JsonSerializerSettings _instanceSettings;
 
     #pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
-        public GetMatchingTrustUkprnClient(string baseUrl, System.Net.Http.HttpClient httpClient)
+        public GetProjectGroupByGroupReferenceNumberClient(string baseUrl, System.Net.Http.HttpClient httpClient)
     #pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
         {
             BaseUrl = baseUrl;
@@ -596,11 +596,11 @@ namespace Dfe.Complete.Client
         /// Gets the UKPRN for a group reference number.
         /// </summary>
         /// <param name="groupReferenceNumber">The group reference number.</param>
-        /// <returns>UKPRN returned successfully.</returns>
+        /// <returns>Project Group returned successfully.</returns>
         /// <exception cref="PersonsApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<Ukprn> Projects_GetMatchingTrustUkprn_Async(string groupReferenceNumber)
+        public virtual System.Threading.Tasks.Task<ProjectGroupDto> Projects_GetProjectGroupByGroupReferenceNumber_Async(string groupReferenceNumber)
         {
-            return Projects_GetMatchingTrustUkprn_Async(groupReferenceNumber, System.Threading.CancellationToken.None);
+            return Projects_GetProjectGroupByGroupReferenceNumber_Async(groupReferenceNumber, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -608,9 +608,9 @@ namespace Dfe.Complete.Client
         /// Gets the UKPRN for a group reference number.
         /// </summary>
         /// <param name="groupReferenceNumber">The group reference number.</param>
-        /// <returns>UKPRN returned successfully.</returns>
+        /// <returns>Project Group returned successfully.</returns>
         /// <exception cref="PersonsApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<Ukprn> Projects_GetMatchingTrustUkprn_Async(string groupReferenceNumber, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<ProjectGroupDto> Projects_GetProjectGroupByGroupReferenceNumber_Async(string groupReferenceNumber, System.Threading.CancellationToken cancellationToken)
         {
             if (groupReferenceNumber == null)
                 throw new System.ArgumentNullException("groupReferenceNumber");
@@ -626,10 +626,10 @@ namespace Dfe.Complete.Client
 
                     var urlBuilder_ = new System.Text.StringBuilder();
                     if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
-                    // Operation Path: "v1/Projects/{groupReferenceNumber}/ukprn"
+                    // Operation Path: "v1/Projects/{groupReferenceNumber}/project_group"
                     urlBuilder_.Append("v1/Projects/");
                     urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(groupReferenceNumber, System.Globalization.CultureInfo.InvariantCulture)));
-                    urlBuilder_.Append("/ukprn");
+                    urlBuilder_.Append("/project_group");
 
                     PrepareRequest(client_, request_, urlBuilder_);
 
@@ -656,7 +656,7 @@ namespace Dfe.Complete.Client
                         var status_ = (int)response_.StatusCode;
                         if (status_ == 200)
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<Ukprn>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            var objectResponse_ = await ReadObjectResponseAsync<ProjectGroupDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
                                 throw new PersonsApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
@@ -673,7 +673,7 @@ namespace Dfe.Complete.Client
                         if (status_ == 404)
                         {
                             string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new PersonsApiException("UKPRN not found for the given group reference number.", status_, responseText_, headers_, null);
+                            throw new PersonsApiException("Project Group not found for the given group reference number.", status_, responseText_, headers_, null);
                         }
                         else
                         {
