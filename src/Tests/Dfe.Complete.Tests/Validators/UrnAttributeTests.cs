@@ -89,5 +89,40 @@ namespace Dfe.Complete.Tests.Validators
             Assert.IsType<ValidationResult>(result);
             Assert.Equal($"A project with the urn: {urnValue} already exists", result.ErrorMessage);
         }
+
+
+        [Fact]
+        public void UrnAttribute_Validation_Throws_Exception_WhenResultIsFalse()
+        {
+            // Arrange
+            var mockSender = new Mock<ISender>();
+
+            var urnValue = 123456;
+
+            var expectedErrorMessage = "Error Message";
+
+            // Mock the sender to return an existing project for the URN
+            mockSender
+                .Setup(sender => sender.Send(It.IsAny<GetProjectByUrnQuery>(), default))
+                    .ReturnsAsync(Result<ProjectDto?>.Failure(expectedErrorMessage));
+
+
+            var attribute = new UrnAttribute();
+            var validationContext = new ValidationContext(new { }, null, null)
+            {
+                MemberName = "TestUrn"
+            };
+            validationContext.InitializeServiceProvider(type => type == typeof(ISender) ? mockSender.Object : null);
+
+            // Act
+            var exception = Assert.Throws<Exception>(() => attribute.GetValidationResult(urnValue.ToString(), validationContext));
+
+            // Assert
+            //Assert(result);
+            Assert.Equal(expectedErrorMessage, exception.Message);
+        }
+
+
+
     }
 }

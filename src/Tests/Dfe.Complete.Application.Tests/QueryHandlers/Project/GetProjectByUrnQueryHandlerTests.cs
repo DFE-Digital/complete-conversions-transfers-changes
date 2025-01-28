@@ -9,6 +9,8 @@ using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Domain.ValueObjects;
 using AutoMapper;
 using Dfe.Complete.Application.Projects.Models;
+using NSubstitute.ExceptionExtensions;
+using System;
 
 namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
 {
@@ -86,5 +88,28 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
             Assert.True(result.IsSuccess == true);
             Assert.True(result.Value == null);
         }
-    }
+
+        [Theory]
+        [CustomAutoData(typeof(DateOnlyCustomization))]
+        public async Task Handle_ShouldFailAndReturnErrorMessage_WhenExceptionIsThrown(
+        [Frozen] ICompleteRepository<Domain.Entities.Project> mockProjectRepository,
+        GetProjectByUrnQueryHandler handler,
+        GetProjectByUrnQuery command
+        )
+            {
+                // Arrange
+                var expectedErrorMessage = "Expected Error Message";
+
+                mockProjectRepository.GetAsync(Arg.Any<Expression<Func<Domain.Entities.Project?, bool>>>())
+                    .Throws(new Exception(expectedErrorMessage));
+
+                // Act
+                var result = await handler.Handle(command, default);
+
+                // Assert
+                await mockProjectRepository.Received(1).GetAsync(Arg.Any<Expression<Func<Domain.Entities.Project, bool>>>());
+                Assert.True(result.IsSuccess == false);
+                Assert.Equal(result.Error, expectedErrorMessage);
+        }
+        }
 }
