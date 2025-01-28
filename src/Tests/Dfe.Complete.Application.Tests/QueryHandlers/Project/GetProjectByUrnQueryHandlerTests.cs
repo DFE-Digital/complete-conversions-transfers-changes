@@ -9,8 +9,6 @@ using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Domain.ValueObjects;
 using AutoMapper;
 using Dfe.Complete.Application.Projects.Models;
-using Dfe.Complete.Utils;
-using Microsoft.IdentityModel.Tokens;
 
 namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
 {

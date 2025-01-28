@@ -15,7 +15,6 @@ namespace Dfe.Complete.StartupConfiguration
 
             services.AddScoped<IAnalyticsConsentService, AnalyticsConsentService>();
             
-            //            services.AddScoped(typeof(ICompleteRepository<>), typeof(CompleteRepository<>));
             return services;
         }
     }
