@@ -2,7 +2,7 @@
 
 namespace Dfe.Complete.Tests.Extensions;
 
-public class DateOnlyExtensionsTests
+public class DateTimeExtensionsTests
 {
     [Theory]
     [InlineData(1,2,2025, "01/02/2025")]
@@ -11,7 +11,7 @@ public class DateOnlyExtensionsTests
     [InlineData(10,9,1990, "10/09/1990")]
     public void ToUkDateString_ReturnsTheCorrectString(int date, int month, int year, string expected)
     {
-        Assert.Equal(expected, new DateOnly(year, month, date).ToUkDateString());
+        Assert.Equal(expected, new DateTime(year, month, date).ToUkDateString());
     }
     
     [Theory]
@@ -21,7 +21,7 @@ public class DateOnlyExtensionsTests
     [InlineData(10,9,1990, "10 September 1990")]
     public void ToDateString_ReturnsTheCorrectString_WithoutDayOfTheWeek(int date, int month, int year, string expected)
     {
-        Assert.Equal(expected, new DateOnly(year, month, date).ToDateString());
+        Assert.Equal(expected, new DateTime(year, month, date).ToDateString());
     }
     
     [Theory]
@@ -31,16 +31,14 @@ public class DateOnlyExtensionsTests
     [InlineData(10,9,1990, "Monday 10 September 1990")]
     public void ToDateString_ReturnsTheCorrectString_WithDayOfTheWeek(int date, int month, int year, string expected)
     {
-        Assert.Equal(expected, new DateOnly(year, month, date).ToDateString(true));
+        Assert.Equal(expected, new DateTime(year, month, date).ToDateString(true));
     }
-
-    [Theory]
-    [InlineData(true)]
-    [InlineData(false)]
-    public void ToDateString_ReturnsEmptyString_WhenDateOnlyIsNull(bool includeDayOfWeek)
+    
+    [Fact]
+    public void ToDateString_ReturnsEmptyString_WhenDateTimeIsNull()
     {
-        DateOnly? test = null;
-        Assert.Equal(string.Empty, test.ToDateString(includeDayOfWeek));
+        DateTime? test = null;
+        Assert.Equal(string.Empty, test.ToDateString(true));
     }
     
     [Theory]
@@ -49,10 +47,9 @@ public class DateOnlyExtensionsTests
     [InlineData(1,1,1, 10, 11)]
     [InlineData(10,9,1990, 200, 5, 2007)]
     [InlineData(10, 12, 2025, 0, 12)]
-
-    public void FirstOfMonth_ReturnsTheCorrectDateOnly(int testDate, int testMonth, int testYear, int monthsToAdd, int expectedMonth, int? expectedYear = null)
+    public void FirstOfMonth_ReturnsTheCorrectDateTime(int testDate, int testMonth, int testYear, int monthsToAdd, int expectedMonth, int? expectedYear = null)
     {
-        Assert.Equal(new DateOnly(expectedYear ?? testYear, expectedMonth, 1), new DateOnly(testYear, testMonth, testDate).FirstOfMonth(monthsToAdd));
+        Assert.Equal(new DateTime(expectedYear ?? testYear, expectedMonth, 1), new DateTime(testYear, testMonth, testDate).FirstOfMonth(monthsToAdd));
     }
     
     [Theory]
@@ -62,14 +59,14 @@ public class DateOnlyExtensionsTests
     [InlineData(10,9,1990, "Sept 1990")]
     public void ToDateMonthYearString_ReturnsTheCorrectString_WithDayOfTheWeek(int date, int month, int year, string expected)
     {
-        DateOnly? testDate = new DateOnly(year, month, date);
+        DateTime? testDate = new DateTime(year, month, date);
         Assert.Equal(expected, testDate.ToDateMonthYearString());
     }
     
     [Fact]
-    public void ToDateMonthYearString_ReturnsEmptyString_WhenDateOnlyIsNull()
+    public void ToDateMonthYearString_ReturnsEmptyString_WhenDateTimeIsNull()
     {
-        DateOnly? test = null;
+        DateTime? test = null;
         Assert.Equal(string.Empty, test.ToDateMonthYearString());
     }
 }
