@@ -2,21 +2,21 @@
 using Dfe.Complete.Application.Services.CsvExport.Builders;
 using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Utils;
-using System.Net;
 
 namespace Dfe.Complete.Application.Services.CsvExport.Conversion
 {
-    public class ConversionRowGenerator(IRowBuilderFactory<ConversionCsvModel> rowBuilder) : IRowGenerator<ConversionCsvModel>
+    public class ConversionRowGenerator : IRowGenerator<ConversionCsvModel>, IHeaderGenerator<ConversionCsvModel>
     {
         private const string Unconfirmed = "unconfirmed";
         private const string NotApplicable = "not applicable";
         private const string Yes = "yes";
         private const string No = "no";
         private const string DateFormat = "dd/MM/yyyy";
+        private RowBuilder<ConversionCsvModel> _rowBuilder;
 
-        public string GenerateRow(ConversionCsvModel model)
+        public ConversionRowGenerator(IRowBuilderFactory<ConversionCsvModel> rowBuilder)
         {
-            return rowBuilder.DefineRow()
+            _rowBuilder = rowBuilder.DefineRow()
                     .Column("School name").BlankIfEmpty(x => x.CurrentSchool.Name)
                     .Column("School URN").BlankIfEmpty(x => x.Project.Urn)
                     .Column("Project type").Builder(new ProjectTypeBuilder())
@@ -84,8 +84,17 @@ namespace Dfe.Complete.Application.Services.CsvExport.Conversion
                     .Column("Diocese contact email").BlankIfEmpty(x => x.DioceseContact?.Email)
                     .Column("Director of child services name").BlankIfEmpty(x => x.DirectorOfServicesContact?.Name)
                     .Column("Director of child services email").BlankIfEmpty(x => x.DirectorOfServicesContact?.Email)
-                    .Column("Director of child services role").BlankIfEmpty(x => x.DirectorOfServicesContact?.Title)
-                    .Build(model);
+                    .Column("Director of child services role").BlankIfEmpty(x => x.DirectorOfServicesContact?.Title);
+        }
+
+        public string GenerateHeader()
+        {
+            return _rowBuilder.BuildHeaders();
+        }
+
+        public string GenerateRow(ConversionCsvModel model)
+        {
+            return _rowBuilder.Build(model);
         }
     }
 }

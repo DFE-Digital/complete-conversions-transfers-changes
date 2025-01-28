@@ -1,4 +1,7 @@
 using Dfe.Complete.Application.Common.Behaviours;
+using Dfe.Complete.Application.Common.Models;
+using Dfe.Complete.Application.Services.CsvExport;
+using Dfe.Complete.Application.Services.CsvExport.Conversion;
 using FluentValidation;
 using MediatR;
 using Microsoft.Extensions.Configuration;
@@ -26,6 +29,10 @@ namespace Microsoft.Extensions.DependencyInjection
                     cfg.AddBehavior(typeof(IPipelineBehavior<,>), typeof(PerformanceBehaviour<,>));
                 }
             });
+
+            services.AddScoped<ICSVFileContentGenerator<ConversionCsvModel>, CSVFileContentGenerator<ConversionCsvModel>>();
+            services.AddScoped<IRowGenerator<ConversionCsvModel>, ConversionRowGenerator>();
+            services.AddScoped<IHeaderGenerator<ConversionCsvModel>, ConversionRowGenerator>();
 
             services.AddBackgroundService();
 

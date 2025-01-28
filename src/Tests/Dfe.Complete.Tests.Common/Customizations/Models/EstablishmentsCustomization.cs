@@ -11,12 +11,12 @@ namespace Dfe.Complete.Tests.Common.Customizations.Models
 
         public void Customize(IFixture fixture)
         {
+            fixture.Customizations.Add(new UrnSpecimen());
+
             fixture
                 .Customize(new CompositeCustomization(
-                   new UrnCustomization(),
                    new DateOnlyCustomization()))
-                .Customize<GiasEstablishment>(composer => composer
-             .With(x => x.Urn, Urn ?? fixture.Create<Urn>()));
+                .Customize<GiasEstablishment>(composer => composer);
         }
     }
 }
