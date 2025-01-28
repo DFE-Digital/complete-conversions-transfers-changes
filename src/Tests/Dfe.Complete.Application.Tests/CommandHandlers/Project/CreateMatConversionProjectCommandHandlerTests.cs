@@ -75,6 +75,9 @@ namespace Dfe.Complete.Application.Tests.CommandHandlers.Project
             Assert.Equal(command.EstablishmentSharepointLink, capturedProject.EstablishmentSharepointLink);
             Assert.Equal(command.IncomingTrustSharepointLink, capturedProject.IncomingTrustSharepointLink);
             Assert.Equal(command.HandoverComments, capturedProject.Notes.FirstOrDefault()?.Body);
+            
+            Assert.Equal(command.NewTrustName, capturedProject.NewTrustName);
+            Assert.Equal(command.NewTrustReferenceNumber, capturedProject.NewTrustReferenceNumber);
         }
 
         [Theory]
