@@ -1,10 +1,17 @@
 ﻿@page "/projects/all/in-progress/transfers"
 @using Dfe.Complete.Constants;
 @using Dfe.Complete.Domain.Enums
-@model Dfe.Complete.Pages.Projects.List.ProjectsInProgress.TransferProjectsInProgressModel
+@model Dfe.Complete.Pages.Projects.List.ProjectsInProgress.TransferProjectsInProgressInProgressModel
 @{
-    Layout = "List/_AllProjectsLayout";
+    Layout = "List/ProjectsInProgress/_ProjectsInProgressLayout";
     ViewData["Title"] = "All projects in progress";
+}
+
+@section PageHeading
+{
+<h1 class="govuk-heading-xl">
+    Transfer projects in progress
+</h1>
 }
 
 <div class="govuk-grid-column-full">
@@ -13,8 +20,7 @@
             <tr class="govuk-table__row">
                 <th class="govuk-table__header" scope="col">School or academy</th>
                 <th class="govuk-table__header" scope="col">URN</th>
-                <th class="govuk-table__header" scope="col">Conversion or transfer date</th>
-                <th class="govuk-table__header" scope="col">Project type</th>
+                <th class="govuk-table__header" scope="col">Transfer date</th>
                 <th class="govuk-table__header" scope="col">Form a MAT project?</th>
                 <th class="govuk-table__header" scope="col">Assigned to</th>
             </tr>
@@ -40,9 +46,8 @@
                     </td>
                     <td class="govuk-table__cell">@project.Urn.Value</td>
                     <td class="govuk-table__cell">@project.ConversionOrTransferDate.ToDateMonthYearString()</td>
-                    <td class="govuk-table__cell">@project.ProjectType.ToString()</td>
                     <td class="govuk-table__cell">@project.IsFormAMAT.ToYesNoString()</td>
-                    <td class="govuk-table__cell">@project.AssignedTo?.FirstName @project.AssignedTo?.LastName</td>
+                    <td class="govuk-table__cell">@project.AssignedToFullName</td>
                 </tr>
             }
         </tbody>

@@ -1,10 +1,10 @@
-using System;
+using Dfe.Complete.Constants;
 
 namespace Dfe.Complete.Extensions
 {
 	public static class DateOnlyExtensions
 	{
-		public static string ToUkDateString(this DateOnly dateTime) => dateTime.ToString("dd/MM/yyyy");
+		public static string ToUkDateString(this DateOnly dateTime) => dateTime.ToString(DateFormatConstants.DateUkFormat);
 
 		public static string ToDateString(this DateOnly? dateTime, bool includeDayOfWeek = false)
 		{
@@ -19,9 +19,9 @@ namespace Dfe.Complete.Extensions
 		{
 			if (includeDayOfWeek)
 			{
-				return dateTime.ToString("dddd d MMMM yyyy");
+				return dateTime.ToString(DateFormatConstants.DateWithDayOfTheWeek);
 			}
-			return dateTime.ToString("d MMMM yyyy");
+			return dateTime.ToString(DateFormatConstants.DateWithoutDayOfTheWeek);
 		}
 
 		public static DateOnly FirstOfMonth(this DateOnly thisMonth, int monthsToAdd)
@@ -39,7 +39,7 @@ namespace Dfe.Complete.Extensions
 				return string.Empty;
 			}
 
-            return dateTime.Value.ToString("MMM yyyy");
+            return dateTime.Value.ToString(DateFormatConstants.MonthAndYearFormat);
         }
     }
 }

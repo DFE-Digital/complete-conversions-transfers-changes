@@ -5,8 +5,11 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 using Dfe.Complete.Application.Projects.Commands.CreateProject;
+using Dfe.Complete.Application.Projects.Model;
+using Dfe.Complete.Application.Projects.Queries.CountAllProjects;
 using Dfe.Complete.Domain.Entities;
 using Dfe.Complete.Application.Projects.Queries.GetProject;
+using Dfe.Complete.Application.Projects.Queries.ListAllProjects;
 
 namespace Dfe.Complete.Api.Controllers
 {
@@ -24,7 +27,7 @@ namespace Dfe.Complete.Api.Controllers
         [HttpPost]
         [SwaggerResponse(201, "Project created successfully.", typeof(ProjectId))]
         [SwaggerResponse(400, "Invalid request data.")]
-        public async Task<IActionResult> CreateProject_Async([FromBody] CreateConversionProjectCommand request, CancellationToken cancellationToken)
+        public async Task<IActionResult> CreateProjectAsync([FromBody] CreateConversionProjectCommand request, CancellationToken cancellationToken)
         {
             var projectId = await sender.Send(request, cancellationToken);
             return Created("", projectId);
@@ -39,10 +42,42 @@ namespace Dfe.Complete.Api.Controllers
         [HttpGet]
         [SwaggerResponse(200, "Project", typeof(Project))]
         [SwaggerResponse(400, "Invalid request data.")]
-        public async Task<IActionResult> GetProject_Async([FromBody] GetProjectByUrnQuery request, CancellationToken cancellationToken)
+        public async Task<IActionResult> GetProjectAsync([FromQuery] GetProjectByUrnQuery request, CancellationToken cancellationToken)
         {
             var project = await sender.Send(request, cancellationToken);
-            return Ok(project);
+            return Ok(project.Value);
+        }
+        
+        /// <summary>
+        /// Returns a list of Projects
+        /// </summary>
+        /// <param name="request">The request.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        //[Authorize(Policy = "API.Read")]
+        [HttpGet]
+        [Route("List/All")]
+        [SwaggerResponse(200, "Project", typeof(List<ListAllProjectsResultModel>))]
+        [SwaggerResponse(400, "Invalid request data.")]
+        public async Task<IActionResult> ListAllProjectsAsync([FromQuery] ListAllProjectsQuery request, CancellationToken cancellationToken)
+        {
+            var project = await sender.Send(request, cancellationToken);
+            return Ok(project.Value);
+        }
+        
+        /// <summary>
+        /// Returns the number of Projects
+        /// </summary>
+        /// <param name="request">The request.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        //[Authorize(Policy = "API.Read")]
+        [HttpGet]
+        [Route("Count/All")]
+        [SwaggerResponse(200, "Project", typeof(int))]
+        [SwaggerResponse(400, "Invalid request data.")]
+        public async Task<IActionResult> CountAllProjectsAsync([FromQuery] CountAllProjectsQuery request, CancellationToken cancellationToken)
+        {
+            var project = await sender.Send(request, cancellationToken);
+            return Ok(project.Value);
         }
 
 

@@ -1,33 +1,45 @@
-﻿@model Dfe.Complete.Pages.Projects.List.AllProjectsViewModel
-@{
+﻿@{
   Layout = "Shared/_Layout";
 }
 
-<nav class="moj-sub-navigation" aria-label="Project sub-navigation">
-  <ul class="moj-sub-navigation__list">
-
-    <li class="moj-sub-navigation__item">
-      <a class="moj-sub-navigation__link" href="/projects/all/in-progress/all">All projects</a>
-    </li>
-
-    <li class="moj-sub-navigation__item">
-      <a class="moj-sub-navigation__link" href="/projects/all/in-progress/conversions">Conversions</a>
-    </li>
-
-    <li class="moj-sub-navigation__item">
-      <a class="moj-sub-navigation__link" href="/projects/all/in-progress/transfers">Transfers</a>
-    </li>
-
-    <li class="moj-sub-navigation__item">
-      <a class="moj-sub-navigation__link" href="/projects/all/in-progress/form-a-multi-academy-trust">Form a MAT</a>
-    </li>
-
-
-  </ul>
-</nav>
-<div>
-  @RenderBody()
-</div>
-
-@await Html.PartialAsync("/Pages/Pagination/_Pagination.cshtml", model: Model.Pagination)
-@* <partial name="/Pages/Pagination/_Pagination.cshtml" model="Model.Pagination" /> *@
+@section BeforeMainFullWidth
+{
+  <div class="moj-primary-navigation">
+    <div class="moj-primary-navigation__container">
+      <div class="moj-primary-navigation__nav">
+        <nav class="moj-primary-navigation" aria-label="Primary navigation">
+          <ul class="moj-primary-navigation__list">
+            <li class="moj-primary-navigation__item">
+              <a class="moj-primary-navigation__link" href="/projects/all/handover">Handover</a>
+            </li>
+            <li class="moj-primary-navigation__item">
+              <a class="moj-primary-navigation__link" aria-current="page" href="/projects/all/in-progress/all">In progress</a>
+            </li>
+            <li class="moj-primary-navigation__item">
+              <a class="moj-primary-navigation__link" href="/projects/all/by-month/conversions">By month</a>
+            </li>
+            <li class="moj-primary-navigation__item">
+              <a class="moj-primary-navigation__link" href="/projects/all/regions">By region</a>
+            </li>
+            <li class="moj-primary-navigation__item">
+              <a class="moj-primary-navigation__link" href="/projects/all/users">By user</a>
+            </li>
+            <li class="moj-primary-navigation__item">
+              <a class="moj-primary-navigation__link" href="/projects/all/trusts">By trust</a>
+            </li>
+            <li class="moj-primary-navigation__item">
+              <a class="moj-primary-navigation__link" href="/projects/all/local-authorities">By local authority</a>
+            </li>
+            <li class="moj-primary-navigation__item">
+              <a class="moj-primary-navigation__link" href="/projects/all/completed">Completed</a>
+            </li>
+            <li class="moj-primary-navigation__item">
+              <a class="moj-primary-navigation__link" href="/projects/all/statistics">Statistics</a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </div>
+  </div>
+}
+@RenderBody()
