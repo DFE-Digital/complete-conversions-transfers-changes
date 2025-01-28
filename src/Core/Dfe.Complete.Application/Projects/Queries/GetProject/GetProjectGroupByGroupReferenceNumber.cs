@@ -12,32 +12,24 @@ namespace Dfe.Complete.Application.Projects.Queries.GetProject
     public record GetProjectGroupByGroupReferenceNumberQuery(string GroupReferenceNumber) : IRequest<Result<ProjectGroupDto>>;
 
     public class GetProjectGroupByGroupReferenceNumberQueryHandler(ICompleteRepository<ProjectGroup> projectGroupRepository,
-        IMapper mapper,
-        ICacheService<IMemoryCacheType> cacheService)
+        IMapper mapper)
         : IRequestHandler<GetProjectGroupByGroupReferenceNumberQuery, Result<ProjectGroupDto>>
     {
         public async Task<Result<ProjectGroupDto?>> Handle(GetProjectGroupByGroupReferenceNumberQuery request, CancellationToken cancellationToken)
         {
-            var cacheKey = $"GroupReferenceNumber_{CacheKeyHelper.GenerateHashedCacheKey(request.GroupReferenceNumber)}";
-
-            var methodName = nameof(GetProjectByUrnQueryHandler);
-
-            return await cacheService.GetOrAddAsync(cacheKey, async () =>
+            try
             {
-                try
-                {
-                    var result = await projectGroupRepository.GetAsync(p => p.GroupIdentifier == request.GroupReferenceNumber);
+                var result = await projectGroupRepository.GetAsync(p => p.GroupIdentifier == request.GroupReferenceNumber);
 
-                    var projectGroupDto = mapper.Map<ProjectGroupDto?>(result);
+                var projectGroupDto = mapper.Map<ProjectGroupDto?>(result);
 
-                    return Result<ProjectGroupDto?>.Success(projectGroupDto);
-                }
-                catch (Exception ex)
-                {
-                    return Result<ProjectGroupDto?>.Failure(ex.Message);
-                }
+                return Result<ProjectGroupDto?>.Success(projectGroupDto);
+            }
+            catch (Exception ex)
+            {
+                return Result<ProjectGroupDto?>.Failure(ex.Message);
+            }
 
-            }, methodName);
         }
     }
 }
