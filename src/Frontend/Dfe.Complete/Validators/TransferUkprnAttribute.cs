@@ -13,8 +13,7 @@ namespace Dfe.Complete.Validators
         {
             _comparisonProperty = comparisonProperty;
         }
-
-
+        
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {
             // Fetch the display name if it is provided

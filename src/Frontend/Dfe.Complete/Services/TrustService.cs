@@ -3,22 +3,15 @@ using Dfe.Complete.Infrastructure.Gateways;
 
 namespace Dfe.Complete.Services
 {
-    public class TrustService : AcademiesApiClient, ITrustService
+    public class TrustService(IHttpClientFactory httpClientFactory, ILogger<TrustService> logger) : AcademiesApiClient(httpClientFactory, logger), ITrustService
     {
-		private readonly IHttpClientFactory _httpClientFactory;
-		private readonly ILogger<TrustService> _logger;
-		private const string _url = @"v4/trusts";
-
-		public TrustService(IHttpClientFactory httpClientFactory, ILogger<TrustService> logger) : base(httpClientFactory, logger)
-		{
-			_httpClientFactory = httpClientFactory;
-			_logger = logger;
-		}
+		private readonly IHttpClientFactory _httpClientFactory = httpClientFactory;
+		private readonly ILogger<TrustService> _logger = logger;
+		private const string Url = "v4/trusts";
 
 		public async Task<IEnumerable<TrustDetailsDto>> GetTrustByUkprn(string ukprn)
 		{
-			var result = await GetEnumerable<TrustDetailsDto>($"{_url}?ukPrn={ukprn}");
-
+			var result = await GetEnumerable<TrustDetailsDto>($"{Url}?ukPrn={ukprn}");
             return result;
 		}
 	}

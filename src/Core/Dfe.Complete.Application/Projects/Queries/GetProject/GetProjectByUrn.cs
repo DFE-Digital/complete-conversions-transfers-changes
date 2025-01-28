@@ -6,36 +6,35 @@ using DfE.CoreLibs.Caching.Helpers;
 using DfE.CoreLibs.Caching.Interfaces;
 using Dfe.Complete.Application.Common.Models;
 
-namespace Dfe.Complete.Application.Projects.Queries.GetProject
+namespace Dfe.Complete.Application.Projects.Queries.GetProject;
+
+public record GetProjectByUrnQuery(Urn Urn) : IRequest<Result<Project?>>;
+
+public class GetProjectByUrnQueryHandler(ICompleteRepository<Project> projectRepository,
+    ICacheService<IMemoryCacheType> cacheService)
+    : IRequestHandler<GetProjectByUrnQuery, Result<Project?>>
 {
-    public record GetProjectByUrnQuery(Urn Urn) : IRequest<Result<Project?>>;
-
-    public class GetProjectByUrnQueryHandler(ICompleteRepository<Project> projectRepository,
-        ICacheService<IMemoryCacheType> cacheService)
-        : IRequestHandler<GetProjectByUrnQuery, Result<Project?>>
+    public async Task<Result<Project?>> Handle(GetProjectByUrnQuery request, CancellationToken cancellationToken)
     {
-        public async Task<Result<Project?>> Handle(GetProjectByUrnQuery request, CancellationToken cancellationToken)
-        {
-            var cacheKey = $"Project_{CacheKeyHelper.GenerateHashedCacheKey(request.Urn.Value.ToString())}";
+        var cacheKey = $"Project_{CacheKeyHelper.GenerateHashedCacheKey(request.Urn.Value.ToString())}";
 
-            var methodName = nameof(GetProjectByUrnQueryHandler);
+        var methodName = nameof(GetProjectByUrnQueryHandler);
             
-            // Please use AutoMapper to make sure return a DTO instead of the actual aggregate/ entity
+        // Please use AutoMapper to make sure return a DTO instead of the actual aggregate/ entity
 
-            return await cacheService.GetOrAddAsync(cacheKey, async () =>
+        return await cacheService.GetOrAddAsync(cacheKey, async () =>
+        {
+            try
             {
-                try
-                {
-                    var result = await projectRepository.GetAsync(p => p.Urn == request.Urn);
+                var result = await projectRepository.GetAsync(p => p.Urn == request.Urn);
 
-                    return Result<Project?>.Success(result);
-                }
-                catch (Exception ex)
-                {
-                    return Result<Project?>.Failure(ex.Message);
-                }
+                return Result<Project?>.Success(result);
+            }
+            catch (Exception ex)
+            {
+                return Result<Project?>.Failure(ex.Message);
+            }
 
-            }, methodName);
-        }
+        }, methodName);
     }
 }
