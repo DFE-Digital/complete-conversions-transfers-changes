@@ -37,7 +37,7 @@ public class CreateNewProject(ISender sender, IErrorService errorService) : Page
     [Display(Name = "Advisory Board Date")]
     public DateTime? AdvisoryBoardDate { get; set; }
 
-    [BindProperty] public string AdvisoryBoardConditions { get; set; }
+    [BindProperty] public string? AdvisoryBoardConditions { get; set; }
 
     [BindProperty]
     [Required(ErrorMessage = "Enter a date for the Provisional Conversion Date, like 1 4 2023")]
@@ -63,7 +63,7 @@ public class CreateNewProject(ISender sender, IErrorService errorService) : Page
     [Display(Name = "Is Handing To RCS")]
     public bool? IsHandingToRCS { get; set; }
 
-    [BindProperty] public string HandoverComments { get; set; }
+    [BindProperty] public string? HandoverComments { get; set; }
 
     [BindProperty]
     [Required(ErrorMessage =
@@ -83,9 +83,7 @@ public class CreateNewProject(ISender sender, IErrorService errorService) : Page
     public async Task<IActionResult> OnPost(CancellationToken cancellationToken)
     {
         await CheckForExistingProjectWithTrust(cancellationToken);
-
-        ModelState.ClearErrorsForProperties([nameof(AdvisoryBoardConditions), nameof(HandoverComments)]);
-
+        
         if (!ModelState.IsValid)
         {
             errorService.AddErrors(ModelState);
@@ -106,7 +104,7 @@ public class CreateNewProject(ISender sender, IErrorService errorService) : Page
             EstablishmentSharepointLink: SchoolSharePointLink, //todo: is this correct?
             IsDueTo2Ri: IsDueTo2RI ?? false,
             AdvisoryBoardDate: AdvisoryBoardDate.HasValue ? DateOnly.FromDateTime(AdvisoryBoardDate.Value) : default,
-            AdvisoryBoardConditions: AdvisoryBoardConditions,
+            AdvisoryBoardConditions: AdvisoryBoardConditions ?? string.Empty,
             HasAcademyOrderBeenIssued: DirectiveAcademyOrder ?? default,
             HandingOverToRegionalCaseworkService: IsHandingToRCS ?? default,
             HandoverComments: HandoverComments,
