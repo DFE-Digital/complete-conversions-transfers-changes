@@ -521,8 +521,7 @@
             "nullable": true
           },
           "state": {
-            "type": "integer",
-            "format": "int32"
+            "$ref": "#/components/schemas/ProjectState"
           },
           "prepareId": {
             "type": "integer",
@@ -682,6 +681,20 @@
             "format": "guid"
           }
         }
+      },
+      "ProjectState": {
+        "type": "string",
+        "description": "",
+        "x-enumNames": [
+          "Active",
+          "Completed",
+          "Cancelled"
+        ],
+        "enum": [
+          "Active",
+          "Completed",
+          "Cancelled"
+        ]
       },
       "ProjectGroupId": {
         "type": "object",
@@ -1136,20 +1149,6 @@
               }
             }
           }
-        ]
-      },
-      "ProjectState": {
-        "type": "string",
-        "description": "",
-        "x-enumNames": [
-          "Active",
-          "Completed",
-          "Cancelled"
-        ],
-        "enum": [
-          "Active",
-          "Completed",
-          "Cancelled"
         ]
       },
       "Contact": {
