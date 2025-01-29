@@ -1,4 +1,6 @@
 @page "/projects/conversions/new_mat"
+@using Dfe.Complete.Constants
+@using GovUk.Frontend.AspNetCore.TagHelpers
 @model Dfe.Complete.Pages.Projects.MatConversion.CreateNewProject
 @inject Dfe.Complete.Services.IErrorService ErrorService
 @{
@@ -14,8 +16,14 @@
     const string handingToRSCField = nameof(Model.IsHandingToRCS);
     const string directiveAcademyOrderField = nameof(Model.DirectiveAcademyOrder);
     const string isDueTo2RIField = nameof(Model.IsDueTo2RI);
+    
+    const string backLink = RouteConstants.SelectCreateProjectType;
 }
 
+@section BeforeMain
+{
+    <govuk-back-link href="@backLink" xmlns="http://www.w3.org/1999/html"/>
+}
     <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
             @{
