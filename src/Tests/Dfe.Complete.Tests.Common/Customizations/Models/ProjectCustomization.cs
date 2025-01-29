@@ -82,7 +82,7 @@ namespace Dfe.Complete.Tests.Common.Customizations.Models
 
         public ContactId? LocalAuthorityMainContactId { get; set; }
 
-        public Guid? GroupId { get; set; }
+        public ProjectGroupId? GroupId { get; set; }
         
         public string? HandoverComments { get; set; }
         
@@ -118,7 +118,7 @@ namespace Dfe.Complete.Tests.Common.Customizations.Models
                 .With(x => x.OutgoingTrustMainContactId, OutgoingTrustMainContactId ?? fixture.Create<ContactId>())
                 .With(x => x.NewTrustReferenceNumber, NewTrustReferenceNumber ?? fixture.Create<string>())
                 .With(x => x.NewTrustName, NewTrustName ?? fixture.Create<string>())
-                .With(x => x.GroupId, GroupId ?? fixture.Create<Guid?>())
+                .With(x => x.GroupId, GroupId ?? fixture.Create<ProjectGroupId?>())
                 .With(x => x.AssignedAt, AssignedAt ?? fixture.Create<DateTime?>()));
         }
     }

@@ -82,7 +82,7 @@ namespace Dfe.Complete.Application.Projects.Commands.CreateProject
                 request.AdvisoryBoardConditions,
                 request.EstablishmentSharepointLink,
                 request.IncomingTrustSharepointLink,
-                groupId?.Value,
+                groupId,
                 team,
                 projectUser?.Id,
                 projectUserAssignedToId,

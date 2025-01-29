@@ -143,7 +143,11 @@ public partial class CompleteContext : DbContext
                 v => v!.Value,
                 v => new ContactId(v));
         projectConfiguration.Property(e => e.EstablishmentSharepointLink).HasColumnName("establishment_sharepoint_link");
-        projectConfiguration.Property(e => e.GroupId).HasColumnName("group_id");
+        projectConfiguration.Property(e => e.GroupId)
+            .HasColumnName("group_id")
+            .HasConversion(
+                v => v!.Value,
+                v => new ProjectGroupId(v));
         projectConfiguration.Property(e => e.IncomingTrustMainContactId)
             .HasColumnName("incoming_trust_main_contact_id")
             .HasConversion(
