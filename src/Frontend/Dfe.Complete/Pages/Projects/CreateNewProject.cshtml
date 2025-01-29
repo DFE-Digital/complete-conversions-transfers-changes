@@ -1,7 +1,15 @@
 ﻿@page "/projects/new"
+@using Dfe.Complete.Constants
+@using GovUk.Frontend.AspNetCore.TagHelpers
 @model Dfe.Complete.Pages.Projects.CreateNewProjectModel
 @{
     ViewData["Title"] = "Create new project";
+    const string backLink = RouteConstants.YourProjects;
+}
+
+@section BeforeMain
+{
+    <govuk-back-link href="@backLink" xmlns="http://www.w3.org/1999/html"/>
 }
 
 <div class="govuk-grid-row">
