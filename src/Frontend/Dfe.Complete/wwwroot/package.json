@@ -17,10 +17,10 @@
 		"webpack-cli": "^5.0.0"
 	},
 	"dependencies": {
-		"@ministryofjustice/frontend": "^1.0.0",
+		"@ministryofjustice/frontend": "^3.3.1",
 		"accessible-autocomplete": "^2.0.4",
-		"dfe-frontend-alpha": "1.0.1",
-		"govuk-frontend": "^4.4.1",
+		"dfe-frontend": "^2.0.1",
+		"govuk-frontend": "^5.8.0",
 		"jquery": "^3.6.1"
 	}
 }

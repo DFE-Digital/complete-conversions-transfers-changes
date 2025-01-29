@@ -3,7 +3,6 @@ using Dfe.Complete.Application.Common.Mappers;
 using Dfe.Complete.Authorization;
 using Dfe.Complete.Configuration;
 using Dfe.Complete.Security;
-using Dfe.Complete.Services;
 using Dfe.Complete.StartupConfiguration;
 using DfE.CoreLibs.Security.Authorization;
 using GovUk.Frontend.AspNetCore;
@@ -15,6 +14,7 @@ using Microsoft.FeatureManagement;
 using Microsoft.Identity.Web;
 using Microsoft.Identity.Web.UI;
 using System.Security.Claims;
+using Dfe.Complete.Infrastructure;
 
 namespace Dfe.Complete;
 

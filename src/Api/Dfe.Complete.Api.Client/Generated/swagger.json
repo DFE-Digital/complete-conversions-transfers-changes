@@ -12,7 +12,7 @@
           "Projects"
         ],
         "summary": "Creates a new Project",
-        "operationId": "Projects_CreateProject_",
+        "operationId": "Projects_CreateProject",
         "requestBody": {
           "x-name": "request",
           "description": "The request.",
@@ -47,20 +47,18 @@
           "Projects"
         ],
         "summary": "Gets a Project",
-        "operationId": "Projects_GetProject_",
-        "requestBody": {
-          "x-name": "request",
-          "description": "The request.",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/GetProjectByUrnQuery"
-              }
-            }
-          },
-          "required": true,
-          "x-position": 1
-        },
+        "operationId": "Projects_GetProject",
+        "parameters": [
+          {
+            "name": "Urn.Value",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "x-position": 1
+          }
+        ],
         "responses": {
           "200": {
             "description": "Project",
@@ -68,6 +66,132 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ProjectDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request data."
+          }
+        }
+      }
+    },
+    "/v1/Projects/List/All": {
+      "get": {
+        "tags": [
+          "Projects"
+        ],
+        "summary": "Returns a list of Projects",
+        "operationId": "Projects_ListAllProjects",
+        "parameters": [
+          {
+            "name": "ProjectStatus",
+            "in": "query",
+            "schema": {
+              "nullable": true,
+              "oneOf": [
+                {
+                  "$ref": "#/components/schemas/ProjectState"
+                }
+              ]
+            },
+            "x-position": 1
+          },
+          {
+            "name": "Type",
+            "in": "query",
+            "schema": {
+              "nullable": true,
+              "oneOf": [
+                {
+                  "$ref": "#/components/schemas/ProjectType"
+                }
+              ]
+            },
+            "x-position": 2
+          },
+          {
+            "name": "Page",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "x-position": 3
+          },
+          {
+            "name": "Count",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "x-position": 4
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Project",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ListAllProjectsResultModel"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request data."
+          }
+        }
+      }
+    },
+    "/v1/Projects/Count/All": {
+      "get": {
+        "tags": [
+          "Projects"
+        ],
+        "summary": "Returns the number of Projects",
+        "operationId": "Projects_CountAllProjects",
+        "parameters": [
+          {
+            "name": "ProjectStatus",
+            "in": "query",
+            "schema": {
+              "nullable": true,
+              "oneOf": [
+                {
+                  "$ref": "#/components/schemas/ProjectState"
+                }
+              ]
+            },
+            "x-position": 1
+          },
+          {
+            "name": "Type",
+            "in": "query",
+            "schema": {
+              "nullable": true,
+              "oneOf": [
+                {
+                  "$ref": "#/components/schemas/ProjectType"
+                }
+              ]
+            },
+            "x-position": 2
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Project",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "integer",
+                  "format": "int32"
                 }
               }
             }
@@ -397,8 +521,7 @@
             "nullable": true
           },
           "state": {
-            "type": "integer",
-            "format": "int32"
+            "$ref": "#/components/schemas/ProjectState"
           },
           "prepareId": {
             "type": "integer",
@@ -558,6 +681,20 @@
             "format": "guid"
           }
         }
+      },
+      "ProjectState": {
+        "type": "string",
+        "description": "",
+        "x-enumNames": [
+          "Active",
+          "Completed",
+          "Cancelled"
+        ],
+        "enum": [
+          "Active",
+          "Completed",
+          "Cancelled"
+        ]
       },
       "ProjectGroupId": {
         "type": "object",
@@ -951,8 +1088,7 @@
                 "nullable": true
               },
               "state": {
-                "type": "integer",
-                "format": "int32"
+                "$ref": "#/components/schemas/ProjectState"
               },
               "prepareId": {
                 "type": "integer",
@@ -1121,12 +1257,42 @@
           }
         }
       },
-      "GetProjectByUrnQuery": {
+      "ListAllProjectsResultModel": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
+          "establishmentName": {
+            "type": "string",
+            "nullable": true
+          },
+          "projectId": {
+            "$ref": "#/components/schemas/ProjectId"
+          },
           "urn": {
             "$ref": "#/components/schemas/Urn"
+          },
+          "conversionOrTransferDate": {
+            "type": "string",
+            "format": "date",
+            "nullable": true
+          },
+          "state": {
+            "$ref": "#/components/schemas/ProjectState"
+          },
+          "projectType": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/ProjectType"
+              }
+            ]
+          },
+          "isFormAMAT": {
+            "type": "boolean"
+          },
+          "assignedToFullName": {
+            "type": "string",
+            "nullable": true
           }
         }
       },

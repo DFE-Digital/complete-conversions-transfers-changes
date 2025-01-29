@@ -3,6 +3,8 @@ using Dfe.Complete.Domain.Entities;
 using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Domain.ValueObjects;
 using Dfe.Complete.Infrastructure.Models;
+using Dfe.Complete.Tests.Common.Customizations.Behaviours;
+using DfE.CoreLibs.Testing.AutoFixture.Customizations;
 
 namespace Dfe.Complete.Tests.Common.Customizations.Models
 {
@@ -34,7 +36,7 @@ namespace Dfe.Complete.Tests.Common.Customizations.Models
 
         public string? IncomingTrustSharepointLink { get; set; }
 
-        public string? Type { get; set; }
+        public ProjectType? Type { get; set; }
 
         public UserId? AssignedToId { get; set; }
 
@@ -86,14 +88,18 @@ namespace Dfe.Complete.Tests.Common.Customizations.Models
         
         public void Customize(IFixture fixture)
         {
-            fixture.Customize<Project>(composer => composer
+            fixture.Customize(new CompositeCustomization(
+                   new UrnCustomization(),
+                   new DateOnlyCustomization(),
+                   new IgnoreVirtualMembersCustomisation()))
+                .Customize<Project>(composer => composer
                 .With(x => x.IncomingTrustUkprn, IncomingTrustUkprn ?? fixture.Create<Ukprn>())
                 .With(x => x.RegionalDeliveryOfficerId, RegionalDeliveryOfficerId ?? fixture.Create<UserId>())
                 .With(x => x.CaseworkerId, CaseworkerId ?? fixture.Create<UserId>())
                 .With(x => x.AdvisoryBoardConditions, AdvisoryBoardConditions ?? fixture.Create<string>())
                 .With(x => x.EstablishmentSharepointLink, EstablishmentSharepointLink ?? fixture.Create<string>())
                 .With(x => x.IncomingTrustSharepointLink, IncomingTrustSharepointLink ?? fixture.Create<string>())
-                .With(x => x.Type, fixture.Create<ProjectType>())
+                .With(x => x.Type, Type ?? fixture.Create<ProjectType>())
                 .With(x => x.AssignedToId, AssignedToId ?? fixture.Create<UserId>())
                 .With(x => x.SignificantDateProvisional, SignificantDateProvisional ?? fixture.Create<bool>())
                 .With(x => x.DirectiveAcademyOrder, DirectiveAcademyOrder ?? fixture.Create<bool>())

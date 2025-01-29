@@ -2,6 +2,8 @@ using DfE.CoreLibs.Testing.AutoFixture.Attributes;
 using DfE.CoreLibs.Testing.Mocks.WebApplicationFactory;
 using Dfe.Complete.Tests.Common.Customizations;
 using System.Net;
+using Dfe.Complete.Api.Tests.Integration.Customizations;
+using Microsoft.VisualStudio.TestPlatform.TestHost;
 
 namespace Dfe.Complete.Api.Tests.Integration.OpenApiTests;
 
