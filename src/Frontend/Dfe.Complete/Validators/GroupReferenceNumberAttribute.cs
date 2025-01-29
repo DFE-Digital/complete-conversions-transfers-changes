@@ -71,8 +71,8 @@ namespace Dfe.Complete.Validators
         {
             var sender = (ISender)validationContext.GetService(typeof(ISender));
 
-            var result = sender.Send(new GetUkprnByGroupReferenceNumberQuery(groupReferenceNumber)).Result;
-            var ukprn = result.Value?.Value.ToString();
+            var result = sender.Send(new GetProjectGroupByGroupReferenceNumberQuery(groupReferenceNumber)).Result;
+            var ukprn = result.Value?.TrustUkprn.Value.ToString();
 
             if (result != null && incomingUkprn.Equals(ukprn))
             {

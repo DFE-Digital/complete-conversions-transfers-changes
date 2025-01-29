@@ -3,13 +3,14 @@ using DfE.CoreLibs.Testing.AutoFixture.Attributes;
 using Dfe.Complete.Domain.Interfaces.Repositories;
 using NSubstitute;
 using DfE.CoreLibs.Testing.AutoFixture.Customizations;
-using DfE.CoreLibs.Caching.Interfaces;
-using Dfe.Complete.Application.Common.Models;
-using DfE.CoreLibs.Caching.Helpers;
 using Dfe.Complete.Application.Projects.Queries.GetProject;
 using System.Linq.Expressions;
 using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Domain.ValueObjects;
+using AutoMapper;
+using Dfe.Complete.Application.Projects.Models;
+using NSubstitute.ExceptionExtensions;
+using System;
 
 namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
 {
@@ -19,7 +20,7 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
         [CustomAutoData(typeof(DateOnlyCustomization))]
         public async Task Handle_ShouldGetAProjectByUrn_WhenCommandIsValid(
             [Frozen] ICompleteRepository<Domain.Entities.Project> mockProjectRepository,
-            [Frozen] ICacheService<IMemoryCacheType> mockCacheService,
+            [Frozen] IMapper mockMapper,
             GetProjectByUrnQueryHandler handler,
             GetProjectByUrnQuery command
             )
@@ -51,21 +52,11 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
                 null, 
                 null);
 
-            var cacheKey = $"Project_{CacheKeyHelper.GenerateHashedCacheKey(command.Urn.Value.ToString())}";
-
             // Arrange
             mockProjectRepository.GetAsync(Arg.Any<Expression<Func<Domain.Entities.Project, bool>>>())
                 .Returns(project);
 
-            mockCacheService.GetOrAddAsync(
-                cacheKey,
-                Arg.Any<Func<Task<Result<Domain.Entities.Project?>>>>(),
-                Arg.Any<string>())
-            .Returns(callInfo =>
-            {
-                var callback = callInfo.ArgAt<Func<Task<Result<Domain.Entities.Project?>>>>(1);
-                return callback();
-            });
+            mockMapper.Map<ProjectDto>(project).Returns(new ProjectDto() { Urn = command.Urn });
 
             // Act
             var result = await handler.Handle(command, default);
@@ -81,28 +72,13 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
         [CustomAutoData(typeof(DateOnlyCustomization))]
         public async Task Handle_ShouldSucceedAndReturnNullWhenUnfoundProjectByUrn_WhenCommandIsValid(
             [Frozen] ICompleteRepository<Domain.Entities.Project> mockProjectRepository,
-            [Frozen] ICacheService<IMemoryCacheType> mockCacheService,
             GetProjectByUrnQueryHandler handler,
             GetProjectByUrnQuery command
             )
         {
-            var now = DateTime.UtcNow;
-
-            var cacheKey = $"Project_{CacheKeyHelper.GenerateHashedCacheKey(command.Urn.Value.ToString())}";
-
             // Arrange
             mockProjectRepository.GetAsync(Arg.Any<Expression<Func<Domain.Entities.Project?, bool>>>())
                 .Returns((Domain.Entities.Project?)null);
-
-            mockCacheService.GetOrAddAsync(
-                cacheKey,
-                Arg.Any<Func<Task<Result<Domain.Entities.Project?>>>>(),
-                Arg.Any<string>())
-            .Returns(callInfo =>
-            {
-                var callback = callInfo.ArgAt<Func<Task<Result<Domain.Entities.Project?>>>>(1);
-                return callback();
-            });
 
             // Act
             var result = await handler.Handle(command, default);
@@ -112,5 +88,28 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
             Assert.True(result.IsSuccess == true);
             Assert.True(result.Value == null);
         }
-    }
+
+        [Theory]
+        [CustomAutoData(typeof(DateOnlyCustomization))]
+        public async Task Handle_ShouldFailAndReturnErrorMessage_WhenExceptionIsThrown(
+        [Frozen] ICompleteRepository<Domain.Entities.Project> mockProjectRepository,
+        GetProjectByUrnQueryHandler handler,
+        GetProjectByUrnQuery command
+        )
+            {
+                // Arrange
+                var expectedErrorMessage = "Expected Error Message";
+
+                mockProjectRepository.GetAsync(Arg.Any<Expression<Func<Domain.Entities.Project?, bool>>>())
+                    .Throws(new Exception(expectedErrorMessage));
+
+                // Act
+                var result = await handler.Handle(command, default);
+
+                // Assert
+                await mockProjectRepository.Received(1).GetAsync(Arg.Any<Expression<Func<Domain.Entities.Project, bool>>>());
+                Assert.True(result.IsSuccess == false);
+                Assert.Equal(result.Error, expectedErrorMessage);
+        }
+        }
 }

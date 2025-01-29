@@ -63,6 +63,8 @@ namespace Dfe.Complete.Api
             builder.Services.AddApplicationDependencyGroup(builder.Configuration);
             builder.Services.AddInfrastructureDependencyGroup(builder.Configuration);
 
+            builder.Services.AddAutoMapper(typeof(Program));
+
             builder.Services.AddOptions<SwaggerUIOptions>()
                 .Configure<IHttpContextAccessor>((swaggerUiOptions, httpContextAccessor) =>
                 {

@@ -79,9 +79,7 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
 
     public ContactId? LocalAuthorityMainContactId { get; set; }
 
-    // This should be set to value object as you have already done this in ProjectGroup
-
-    public Guid? GroupId { get; set; }
+    public ProjectGroupId? GroupId { get; set; }
 
     public virtual User? AssignedTo { get; set; }
 
@@ -116,7 +114,7 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
         string establishmentSharepointLink,
         string incomingTrustSharepointLink,
         string? outgoingTrustSharepointLink,
-        Guid? groupId,
+        ProjectGroupId? groupId,
         ProjectTeam? team,
         UserId? regionalDeliveryOfficerId,
         UserId? assignedTo,
@@ -172,7 +170,7 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
         string advisoryBoardConditions,
         string establishmentSharepointLink,
         string incomingTrustSharepointLink,
-        Guid? groupId,
+        ProjectGroupId? groupId,
         ProjectTeam? team,
         UserId? regionalDeliveryOfficerId,
         UserId? assignedToId,
@@ -237,7 +235,7 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
         DateTime? assignedAt,
         Ukprn incomingTrustUkprn,
         Ukprn outgoingTrustUkprn,
-        Guid? groupId,
+        ProjectGroupId? groupId,
         string establishmentSharepointLink,
         string incomingTrustSharepointLink,
         string outgoingTrustSharepointLink,

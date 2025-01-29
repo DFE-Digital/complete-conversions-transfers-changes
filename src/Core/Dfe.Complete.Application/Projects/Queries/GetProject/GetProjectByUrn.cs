@@ -5,36 +5,31 @@ using Dfe.Complete.Domain.Entities;
 using DfE.CoreLibs.Caching.Helpers;
 using DfE.CoreLibs.Caching.Interfaces;
 using Dfe.Complete.Application.Common.Models;
+using AutoMapper;
+using Dfe.Complete.Application.Projects.Models;
 
-namespace Dfe.Complete.Application.Projects.Queries.GetProject;
-
-public record GetProjectByUrnQuery(Urn Urn) : IRequest<Result<Project?>>;
-
-public class GetProjectByUrnQueryHandler(ICompleteRepository<Project> projectRepository,
-    ICacheService<IMemoryCacheType> cacheService)
-    : IRequestHandler<GetProjectByUrnQuery, Result<Project?>>
+namespace Dfe.Complete.Application.Projects.Queries.GetProject
 {
-    public async Task<Result<Project?>> Handle(GetProjectByUrnQuery request, CancellationToken cancellationToken)
+    public record GetProjectByUrnQuery(Urn Urn) : IRequest<Result<ProjectDto?>>;
+
+    public class GetProjectByUrnQueryHandler(ICompleteRepository<Project> projectRepository,
+         IMapper mapper)
+        : IRequestHandler<GetProjectByUrnQuery, Result<ProjectDto?>>
     {
-        var cacheKey = $"Project_{CacheKeyHelper.GenerateHashedCacheKey(request.Urn.Value.ToString())}";
-
-        var methodName = nameof(GetProjectByUrnQueryHandler);
-            
-        // Please use AutoMapper to make sure return a DTO instead of the actual aggregate/ entity
-
-        return await cacheService.GetOrAddAsync(cacheKey, async () =>
+        public async Task<Result<ProjectDto?>> Handle(GetProjectByUrnQuery request, CancellationToken cancellationToken)
         {
             try
             {
                 var result = await projectRepository.GetAsync(p => p.Urn == request.Urn);
 
-                return Result<Project?>.Success(result);
+                var projectDto = mapper.Map<ProjectDto?>(result);
+
+                return Result<ProjectDto?>.Success(projectDto);
             }
             catch (Exception ex)
             {
-                return Result<Project?>.Failure(ex.Message);
+                return Result<ProjectDto?>.Failure(ex.Message);
             }
-
-        }, methodName);
+        }
     }
 }
