@@ -1,13 +1,7 @@
-﻿using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 using Dfe.AcademiesApi.Client.Contracts;
-using Dfe.Complete.Domain.Entities;
-using Dfe.Complete.Services;
 using Dfe.Complete.Validators;
 using Moq;
-using Xunit;
 
 namespace Dfe.Complete.Tests.Validators
 {

@@ -21,6 +21,7 @@ namespace Dfe.Complete.Pages.Projects
                 "conversion" => "/Projects/Conversion/CreateNewProject",
                 "fam_conversion" => "/Projects/MatConversion/CreateNewProject",
                 "transfer" => "/Projects/Transfer/CreateNewProject",
+                "fam_transfer" => "/Projects/MatTransfer/CreateNewProject",
                 _ => string.Empty
             };
 
