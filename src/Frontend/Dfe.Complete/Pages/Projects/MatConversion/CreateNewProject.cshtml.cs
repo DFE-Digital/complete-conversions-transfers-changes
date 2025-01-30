@@ -88,7 +88,7 @@ public class CreateNewProject(ISender sender, IErrorService errorService) : Page
             return Page();
         }
 
-        var userAdId = User.Claims.SingleOrDefault(c => c.Type.Contains("objectidentifier"))?.Value;
+        var userAdId = User.GetUserAdId();
 
         var createProjectCommand = new CreateMatConversionProjectCommand(
             Urn: new Urn(int.Parse(URN)),
