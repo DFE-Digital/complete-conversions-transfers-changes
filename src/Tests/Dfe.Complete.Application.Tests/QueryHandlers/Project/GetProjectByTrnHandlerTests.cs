@@ -17,7 +17,7 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
         [CustomAutoData(typeof(DateOnlyCustomization), typeof(ProjectCustomization), typeof(IgnoreVirtualMembersCustomisation))]
         public async Task Handle_ShouldReturnSuccess_WhenProjectIsFound(
             [Frozen] ICompleteRepository<Domain.Entities.Project> mockRepository,
-            GetProjectByTrn handler,                             
+            GetProjectByTrn handler,
             Domain.Entities.Project project)
         {
             // Arrange
@@ -58,26 +58,6 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
             // Assert
             Assert.False(result.IsSuccess);
             Assert.Equal(expectedMessage, result.Error);
-        }
-
-        [Theory]
-        [CustomAutoData(typeof(DateOnlyCustomization), typeof(ProjectCustomization), typeof(IgnoreVirtualMembersCustomisation))]
-        public async Task Handle_ShouldThrowNullReferenceException_WhenProjectIsNotFound(
-            [Frozen] ICompleteRepository<Domain.Entities.Project> mockRepository,
-            GetProjectByTrn handler,
-            Domain.Entities.Project project)
-        {
-            // Arrange
-            mockRepository
-                .FindAsync(Arg.Any<Expression<Func<Domain.Entities.Project, bool>>>(), Arg.Any<CancellationToken>())!
-                .Returns((Domain.Entities.Project?)null);
-
-            var query = new GetProjectByTrnQuery(project.NewTrustReferenceNumber);
-            
-            // Act & Assert
-            var result = await handler.Handle(query, CancellationToken.None);
-            
-            Assert.False(result.IsSuccess);
         }
     }
 }

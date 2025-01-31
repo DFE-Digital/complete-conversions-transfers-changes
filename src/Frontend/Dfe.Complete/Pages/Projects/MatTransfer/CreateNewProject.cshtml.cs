@@ -1,6 +1,5 @@
 using System.ComponentModel.DataAnnotations;
 using Dfe.Complete.Application.Projects.Commands.CreateProject;
-using Dfe.Complete.Application.Projects.Queries.GetProject;
 using Dfe.Complete.Domain.ValueObjects;
 using Dfe.Complete.Extensions;
 using Dfe.Complete.Services;
@@ -10,16 +9,21 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace Dfe.Complete.Pages.Projects.MatConversion;
+namespace Dfe.Complete.Pages.Projects.MatTransfer;
 
 [Authorize(policy: "CanCreateProjects")]
 public class CreateNewProject(ISender sender, IErrorService errorService) : PageModel
 {
     [BindProperty]
     [Urn]
-    [Required(ErrorMessage = "Enter a school URN")]
+    [Required(ErrorMessage = "Enter an academy URN")]
     [Display(Name = "Urn")]
     public string URN { get; set; }
+
+    [BindProperty]
+    [Ukprn]
+    [Display(Name = "OutgoingUKPRN")]
+    public string OutgoingUKPRN { get; set; }
 
     [BindProperty]
     [Trn]
@@ -40,16 +44,15 @@ public class CreateNewProject(ISender sender, IErrorService errorService) : Page
     [BindProperty] public string? AdvisoryBoardConditions { get; set; }
 
     [BindProperty]
-    [Required(ErrorMessage = "Enter a date for the Provisional Conversion Date, like 1 4 2023")]
-    [Display(Name = "Provisional Conversion Date")]
-    public DateTime? ProvisionalConversionDate { get; set; }
-
+    [Required(ErrorMessage = "Enter a date for the Provisional Transfer Date, like 1 4 2023")]
+    [Display(Name = "Provisional Transfer Date")]
+    public DateTime? ProvisionalTransferDate { get; set; }
 
     [BindProperty]
-    [SharePointLink]
+    [SharePointLink]    
     [Required(ErrorMessage = "Enter a school sharepoint link")]
     [Display(Name = "School or academy SharePoint link")]
-    public string SchoolSharePointLink { get; set; }
+    public string AcademySharePointLink { get; set; }
 
     [BindProperty]
     [SharePointLink]
@@ -58,23 +61,38 @@ public class CreateNewProject(ISender sender, IErrorService errorService) : Page
     public string IncomingTrustSharePointLink { get; set; }
 
     [BindProperty]
-    [Required(ErrorMessage =
-        "State if this project will be handed over to the Regional casework services team. Choose yes or no")]
-    [Display(Name = "Is Handing To RCS")]
-    public bool? IsHandingToRCS { get; set; }
-
-    [BindProperty] public string? HandoverComments { get; set; }
-
-    [BindProperty]
-    [Required(ErrorMessage =
-        "Select directive academy order or academy order, whichever has been used for this conversion")]
-    [Display(Name = "Directive Academy Order")]
-    public bool? DirectiveAcademyOrder { get; set; }
+    [SharePointLink]
+    [Required(ErrorMessage = "Enter an outgoing trust Sharepoint link")]
+    [Display(Name = "Outgoing trust SharePoint link")]
+    public string OutgoingTrustSharePointLink { get; set; }
 
     [BindProperty]
     [Required(ErrorMessage = "State if the conversion is due to 2RI. Choose yes or no")]
     [Display(Name = "IsDueTo2RI")]
     public bool? IsDueTo2RI { get; set; }
+
+    [BindProperty]
+    [Required(ErrorMessage = "State if the transfer is due to an inadequate Ofsted rating. Choose yes or no")]
+    [Display(Name = "Inadequate OfstedRating")]
+    public bool? IsDueToInedaquateOfstedRating { get; set; }
+
+    [BindProperty]
+    [Required(ErrorMessage = "State if the transfer is due to financial, safeguarding or governance issues. Choose yes or no")]
+    [Display(Name = "Issues")]
+    public bool? IsDueToIssues { get; set; }
+
+    [BindProperty]
+    [Required(ErrorMessage = "State if the outgoing trust will close once this transfer is completed. Choose yes or no")]
+    [Display(Name = "Will outgoing trust close")]
+    public bool? OutgoingTrustWillClose { get; set; }
+
+    [BindProperty]
+    [Required(ErrorMessage = "State if this project will be handed over to the Regional casework services team. Choose yes or no")]
+    [Display(Name = "Is Handing To RCS")]
+    public bool? IsHandingToRCS { get; set; }
+
+    [BindProperty]
+    public string? HandoverComments { get; set; }
 
     public void OnGet()
     {
@@ -90,29 +108,32 @@ public class CreateNewProject(ISender sender, IErrorService errorService) : Page
 
         var userAdId = User.GetUserAdId();
 
-        var createProjectCommand = new CreateMatConversionProjectCommand(
+        var createProjectCommand = new CreateMatTransferProjectCommand(
             Urn: new Urn(int.Parse(URN)),
             TrustName,
             TrustReferenceNumber,
-            SignificantDate: ProvisionalConversionDate.HasValue
-                ? DateOnly.FromDateTime(ProvisionalConversionDate.Value)
+            OutgoingTrustUkprn: new Ukprn(OutgoingUKPRN.ToInt()),
+            SignificantDate: ProvisionalTransferDate.HasValue
+                ? DateOnly.FromDateTime(ProvisionalTransferDate.Value)
                 : default,
             IsSignificantDateProvisional: true, // will be set to false in the stakeholder kick off task 
-            IncomingTrustSharepointLink: IncomingTrustSharePointLink,
-            EstablishmentSharepointLink: SchoolSharePointLink, //todo: is this correct?
             IsDueTo2Ri: IsDueTo2RI ?? false,
+            IsDueToInedaquateOfstedRating: IsDueToInedaquateOfstedRating ?? false,
+            IsDueToIssues: IsDueToIssues ?? false,
+            HandingOverToRegionalCaseworkService: IsHandingToRCS ?? false,
+            OutGoingTrustWillClose: OutgoingTrustWillClose ?? false,
             AdvisoryBoardDate: AdvisoryBoardDate.HasValue ? DateOnly.FromDateTime(AdvisoryBoardDate.Value) : default,
             AdvisoryBoardConditions: AdvisoryBoardConditions ?? string.Empty,
-            HasAcademyOrderBeenIssued: DirectiveAcademyOrder ?? default,
-            HandingOverToRegionalCaseworkService: IsHandingToRCS ?? default,
-            HandoverComments: HandoverComments,
-            UserAdId: userAdId
-        );
+            EstablishmentSharepointLink: AcademySharePointLink,
+            IncomingTrustSharepointLink: IncomingTrustSharePointLink,
+            OutgoingTrustSharepointLink: OutgoingTrustSharePointLink,
+            HandoverComments: HandoverComments ?? string.Empty,
+            UserAdId: userAdId);
 
         var createResponse = await sender.Send(createProjectCommand, cancellationToken);
 
         var projectId = createResponse.Value;
 
-        return Redirect($"/projects/conversion-projects/{projectId}/created");
+        return Redirect($"/transfer-projects/{projectId}/tasks");
     }
 }
