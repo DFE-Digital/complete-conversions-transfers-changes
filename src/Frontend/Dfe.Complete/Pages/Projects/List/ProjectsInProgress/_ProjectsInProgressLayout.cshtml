@@ -1,0 +1,34 @@
+﻿@model Dfe.Complete.Pages.Projects.List.ProjectsInProgress.ProjectsInProgressViewModel
+@{
+  Layout = "List/_AllProjectsLayout";
+}
+
+@await RenderSectionAsync("PageHeading", true)
+
+<nav class="moj-sub-navigation" aria-label="Project sub-navigation">
+  <ul class="moj-sub-navigation__list">
+
+    <li class="moj-sub-navigation__item">
+      <a class="moj-sub-navigation__link" asp-page="AllProjectsInProgress">All projects</a>
+    </li>
+
+    <li class="moj-sub-navigation__item">
+      <a class="moj-sub-navigation__link" asp-page="ConversionProjectsInProgress">Conversions</a>
+    </li>
+
+    <li class="moj-sub-navigation__item">
+      <a class="moj-sub-navigation__link" asp-page="TransferProjectsInProgress">Transfers</a>
+    </li>
+
+    <li class="moj-sub-navigation__item">
+      <a class="moj-sub-navigation__link" asp-page="FormAMATProjectsInProgress">Form a MAT</a>
+    </li>
+
+
+  </ul>
+</nav>
+<div class="govuk-grid-row">
+  @RenderBody()
+</div>
+
+@await Html.PartialAsync("/Pages/Pagination/_Pagination.cshtml", model: Model.Pagination)

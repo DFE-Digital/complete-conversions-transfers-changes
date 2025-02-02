@@ -1,10 +1,14 @@
-using System;
+using System.Globalization;
+using Dfe.Complete.Constants;
 
 namespace Dfe.Complete.Extensions
 {
 	public static class DateTimeExtensions
 	{
-		public static string ToUkDateString(this DateTime dateTime) => dateTime.ToString("dd/MM/yyyy");
+		// State the explicit culture so that the functions work correctly in all environments
+		// TODO: Fix global culture
+		private static readonly CultureInfo GbCulture = new("en-GB");
+		public static string ToUkDateString(this DateTime dateTime) => dateTime.ToString(DateFormatConstants.DateUkFormat, GbCulture);
 
 		public static string ToDateString(this DateTime? dateTime, bool includeDayOfWeek = false)
 		{
@@ -19,9 +23,9 @@ namespace Dfe.Complete.Extensions
 		{
 			if (includeDayOfWeek)
 			{
-				return dateTime.ToString("dddd d MMMM yyyy");
+				return dateTime.ToString(DateFormatConstants.DateWithDayOfTheWeek, GbCulture);
 			}
-			return dateTime.ToString("d MMMM yyyy");
+			return dateTime.ToString(DateFormatConstants.DateWithoutDayOfTheWeek, GbCulture);
 		}
 
 		public static DateTime FirstOfMonth(this DateTime thisMonth, int monthsToAdd)
@@ -32,14 +36,14 @@ namespace Dfe.Complete.Extensions
 			return new DateTime(thisMonth.Year + yearsToAdd, month, 1);
 		}
 
-        public static string ToDateMonthYearString(this DateTime? dateTime)
-        {
+		public static string ToDateMonthYearString(this DateTime? dateTime)
+		{
 			if (!dateTime.HasValue)
 			{
 				return string.Empty;
 			}
 
-            return dateTime.Value.ToString("MMM yyyy");
-        }
+			return dateTime.Value.ToString(DateFormatConstants.MonthAndYearFormat, GbCulture);
+		}
     }
 }

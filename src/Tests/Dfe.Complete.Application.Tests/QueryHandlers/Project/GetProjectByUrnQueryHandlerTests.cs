@@ -10,7 +10,6 @@ using Dfe.Complete.Domain.ValueObjects;
 using AutoMapper;
 using Dfe.Complete.Application.Projects.Models;
 using NSubstitute.ExceptionExtensions;
-using System;
 
 namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
 {

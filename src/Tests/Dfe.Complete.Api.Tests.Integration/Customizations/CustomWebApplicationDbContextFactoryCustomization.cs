@@ -1,21 +1,20 @@
-using AutoFixture;
-using DfE.CoreLibs.Testing.Mocks.Authentication;
-using DfE.CoreLibs.Testing.Mocks.WebApplicationFactory;
-using Dfe.Complete.Api;
-using Dfe.Complete.Api.Client.Extensions;
-using Dfe.Complete.Client;
-using Dfe.Complete.Client.Contracts;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
 using System.Net.Http.Headers;
 using System.Security.Claims;
+using AutoFixture;
+using Dfe.Complete.Api.Client.Extensions;
+using Dfe.Complete.Application.Common.Mappers;
+using Dfe.Complete.Client;
+using Dfe.Complete.Client.Contracts;
 using Dfe.Complete.Infrastructure.Database;
 using Dfe.Complete.Tests.Common.Seeders;
+using DfE.CoreLibs.Testing.Mocks.Authentication;
+using DfE.CoreLibs.Testing.Mocks.WebApplicationFactory;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.EntityFrameworkCore;
-using Dfe.Complete.Application.Common.Mappers;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 
-namespace Dfe.Complete.Tests.Common.Customizations
+namespace Dfe.Complete.Api.Tests.Integration.Customizations
 {
     public class CustomWebApplicationDbContextFactoryCustomization : ICustomization
     {
@@ -65,15 +64,13 @@ namespace Dfe.Complete.Tests.Common.Customizations
                 var services = new ServiceCollection();
                 services.AddSingleton<IConfiguration>(config);
                 
-                services.AddCompleteApiClient<ICreateProjectClient, CreateProjectClient>(config, client);
-
+                services.AddCompleteApiClient<IProjectsClient, ProjectsClient>(config, client);
                 var serviceProvider = services.BuildServiceProvider();
                 
                 fixture.Inject(factory);
                 fixture.Inject(serviceProvider);
                 fixture.Inject(client);
-                fixture.Inject(serviceProvider.GetRequiredService<ICreateProjectClient>());
-
+                fixture.Inject(serviceProvider.GetRequiredService<IProjectsClient>());
                 fixture.Inject(new List<Claim>());
 
                 return factory;

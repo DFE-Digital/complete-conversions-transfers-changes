@@ -73,7 +73,7 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
 
     public string? NewTrustName { get; set; }
 
-    public int State { get; set; }
+    public ProjectState State { get; set; }
 
     public int? PrepareId { get; set; }
 

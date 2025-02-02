@@ -2,11 +2,15 @@
 {
     public static class RouteConstants
     {
+        public const string YourProjects = "/";
         public const string ProjectsInProgress = "/projects/all/in-progress/all";
 
         // Project
         public const string Project = "/projects/{0}";
         public const string CreateNewProject = "/projects/CreateNewProject";
+
+        public const string SelectCreateProjectType = "/projects/new";
+        
         
         public const string ProjectViewNotes = Project + "/notes";
         public const string ProjectAddNote = ProjectViewNotes + "/edit";
