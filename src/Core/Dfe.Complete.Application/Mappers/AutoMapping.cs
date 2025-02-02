@@ -10,6 +10,7 @@ namespace Dfe.Complete.Application.Common.Mappers
 		{
 			CreateMap<Project, ProjectDto>();
 			CreateMap<ProjectGroup, ProjectGroupDto>();
+			CreateMap<User, UserDto>();
         }
 	}
 }
