@@ -123,6 +123,7 @@ namespace Dfe.Complete.Pages.Projects.Transfer
                 IsDueToInedaquateOfstedRating: IsDueToInedaquateOfstedRating ?? false,
                 IsDueToIssues: IsDueToIssues ?? false,
                 OutGoingTrustWillClose: OutgoingTrustWillClose ?? false,
+                HandingOverToRegionalCaseworkService: IsHandingToRCS ?? false,
                 AdvisoryBoardDate: AdvisoryBoardDate.HasValue ? DateOnly.FromDateTime(AdvisoryBoardDate.Value) : default,
                 AdvisoryBoardConditions: AdvisoryBoardConditions,
                 EstablishmentSharepointLink: AcademySharePointLink,

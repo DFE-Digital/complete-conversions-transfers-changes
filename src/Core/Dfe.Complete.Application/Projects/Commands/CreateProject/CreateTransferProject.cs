@@ -4,7 +4,8 @@ using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Domain.Interfaces.Repositories;
 using Dfe.Complete.Domain.Entities;
 using Dfe.Complete.Utils;
-using Dfe.Complete.Infrastructure.Models;
+using Dfe.Complete.Application.Projects.Queries.GetProject;
+using Dfe.Complete.Application.Projects.Queries.GetUser;
 
 namespace Dfe.Complete.Application.Projects.Commands.CreateProject
 {
@@ -18,6 +19,7 @@ namespace Dfe.Complete.Application.Projects.Commands.CreateProject
         bool IsDueToInedaquateOfstedRating,
         bool IsDueToIssues,
         bool OutGoingTrustWillClose,
+        bool HandingOverToRegionalCaseworkService,
         DateOnly AdvisoryBoardDate,
         string AdvisoryBoardConditions,
         string EstablishmentSharepointLink,
@@ -30,13 +32,20 @@ namespace Dfe.Complete.Application.Projects.Commands.CreateProject
     public class CreateTransferProjectCommandHandler(
         ICompleteRepository<Project> projectRepository,
         ICompleteRepository<TransferTasksData> transferTaskRepository,  
-        ICompleteRepository<ProjectGroup> projectGroupRepository,
-        ICompleteRepository<User> userRepository)
+        ISender sender)
         : IRequestHandler<CreateTransferProjectCommand, ProjectId>
     {
         public async Task<ProjectId> Handle(CreateTransferProjectCommand request, CancellationToken cancellationToken)
         {
-            var projectUser = await GetUserByAdId(request.UserAdId);
+            var userRequest = await sender.Send(new GetUserByAdIdQuery(request.UserAdId));
+
+            if (!userRequest.IsSuccess)
+            {
+                throw new Exception($"User retrieval failed: {userRequest.Error}");
+            }
+
+            var projectUser = userRequest.Value;
+
             var projectUserTeam = projectUser?.Team;
             var projectUserId = projectUser?.Id; 
 
@@ -49,11 +58,29 @@ namespace Dfe.Complete.Application.Projects.Commands.CreateProject
 
             var transferTask = new TransferTasksData(new TaskDataId(transferTaskId), createdAt, createdAt, request.IsDueToInedaquateOfstedRating, request.IsDueToIssues, request.OutGoingTrustWillClose);
 
-            var groupId = await GetProjectGroupIdByIdentifierAsync(request.GroupReferenceNumber);
+            var projectRequest = await sender.Send(new GetProjectGroupByGroupReferenceNumberQuery(request.GroupReferenceNumber));
 
-            ProjectTeam team = projectTeam;
-            DateTime? assignedAt = DateTime.UtcNow;
-            UserId? projectUserAssignedToId = projectUserId;
+            if (!projectRequest.IsSuccess)
+            {
+                throw new Exception($"Project Group retrieval failed: {projectRequest.Error}");
+            }
+
+            var groupId = projectRequest.Value?.Id;
+
+            ProjectTeam team;
+            DateTime? assignedAt = null;
+            UserId? projectUserAssignedToId = null;
+
+            if (request.HandingOverToRegionalCaseworkService)
+            {
+                team = ProjectTeam.RegionalCaseWorkerServices;
+            }
+            else
+            {
+                team = projectTeam;
+                assignedAt = DateTime.UtcNow;
+                projectUserAssignedToId = projectUserId;
+            }
 
             var project = Project.CreateTransferProject
                 (projectId,
@@ -88,8 +115,5 @@ namespace Dfe.Complete.Application.Projects.Commands.CreateProject
             return project.Id;
         }
         
-        private async Task<User> GetUserByAdId(string? userAdId) => await userRepository.FindAsync(x => x.ActiveDirectoryUserId == userAdId);
-
-        private async Task<ProjectGroupId> GetProjectGroupIdByIdentifierAsync(string groupReferenceNumber) => (await projectGroupRepository.FindAsync(x => x.GroupIdentifier == groupReferenceNumber)).Id;
     }
 }

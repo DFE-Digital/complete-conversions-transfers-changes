@@ -1,3 +1,4 @@
+using Dfe.Complete.Application.Projects.Queries.GetUser;
 using Dfe.Complete.Domain.Entities;
 using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Domain.Interfaces.Repositories;
@@ -26,15 +27,21 @@ public record CreateMatConversionProjectCommand(
  public class CreateMatConversionProjectCommandHandler(
         ICompleteRepository<Project> projectRepository,
         ICompleteRepository<ConversionTasksData> conversionTaskRepository,
-        ICompleteRepository<User> userRepository)
+        ISender sender)
         : IRequestHandler<CreateMatConversionProjectCommand, ProjectId>
     {
         public async Task<ProjectId> Handle(CreateMatConversionProjectCommand request, CancellationToken cancellationToken)
         {
             // The user Team should be moved as a Claim or Group to the Entra (MS AD)
-            var projectUser = await GetUserByAdId(request.UserAdId);
+            var userRequest = await sender.Send(new GetUserByAdIdQuery(request.UserAdId));
 
-            var projectUserTeam = projectUser.Team;
+            if (!userRequest.IsSuccess)
+            {
+                throw new Exception($"User retrieval failed: {userRequest.Error}");
+            }
+
+            var projectUser = userRequest.Value;
+            var projectUserTeam = projectUser?.Team;
             var projectUserId = projectUser?.Id;
 
             var projectTeam = EnumExtensions.FromDescription<ProjectTeam>(projectUserTeam);
@@ -91,6 +98,4 @@ public record CreateMatConversionProjectCommand(
 
             return project.Id;
         }
-
-        private async Task<User> GetUserByAdId(string? userAdId) => await userRepository.FindAsync(x => x.ActiveDirectoryUserId == userAdId);
     }
