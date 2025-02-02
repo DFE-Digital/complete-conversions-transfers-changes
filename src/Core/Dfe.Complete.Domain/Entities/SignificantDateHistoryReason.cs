@@ -1,9 +1,9 @@
-﻿using Dfe.Complete.Domain.ValueObjects;
+﻿using Dfe.Complete.Domain.Common;
+using Dfe.Complete.Domain.ValueObjects;
 
-namespace Dfe.Complete.Infrastructure.Models;
-// Same here missing implementation of IEntity
+namespace Dfe.Complete.Domain.Entities;
 
-public class SignificantDateHistoryReason
+public class SignificantDateHistoryReason : IEntity<SignificantDateHistoryReasonId>
 {
     public SignificantDateHistoryReasonId Id { get; set; }
 
