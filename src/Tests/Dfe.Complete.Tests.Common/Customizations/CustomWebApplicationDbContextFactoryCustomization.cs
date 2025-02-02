@@ -13,6 +13,7 @@ using System.Security.Claims;
 using Dfe.Complete.Infrastructure.Database;
 using Dfe.Complete.Tests.Common.Seeders;
 using Microsoft.EntityFrameworkCore;
+using Dfe.Complete.Application.Common.Mappers;
 
 namespace Dfe.Complete.Tests.Common.Customizations
 {
@@ -40,6 +41,11 @@ namespace Dfe.Complete.Tests.Common.Customizations
 
                         services.AddAuthentication("TestScheme")
                             .AddScheme<AuthenticationSchemeOptions, MockJwtBearerHandler>("TestScheme", options => { });
+
+                        services.AddAutoMapper(cfg =>
+                        {
+                            cfg.AddProfile<AutoMapping>();
+                        });
                     },
                     ExternalHttpClientConfiguration = client =>
                     {
@@ -60,7 +66,7 @@ namespace Dfe.Complete.Tests.Common.Customizations
                 services.AddSingleton<IConfiguration>(config);
                 
                 services.AddCompleteApiClient<ICreateProjectClient, CreateProjectClient>(config, client);
-                
+
                 var serviceProvider = services.BuildServiceProvider();
                 
                 fixture.Inject(factory);
