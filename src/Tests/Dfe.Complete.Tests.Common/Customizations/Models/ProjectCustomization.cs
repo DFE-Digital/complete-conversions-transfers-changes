@@ -2,7 +2,6 @@ using AutoFixture;
 using Dfe.Complete.Domain.Entities;
 using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Domain.ValueObjects;
-using Dfe.Complete.Infrastructure.Models;
 
 namespace Dfe.Complete.Tests.Common.Customizations.Models
 {
