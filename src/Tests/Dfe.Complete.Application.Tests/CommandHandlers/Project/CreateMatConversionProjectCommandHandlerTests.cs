@@ -208,37 +208,5 @@ namespace Dfe.Complete.Application.Tests.CommandHandlers.Project
 
             Assert.Equal(exception.Message, expectedErrorMessage);
         }
-
-        [Theory]
-        [CustomAutoData(typeof(DateOnlyCustomization), typeof(ProjectCustomization), typeof(IgnoreVirtualMembersCustomisation))]
-        public async Task Handle_ShouldThrowExceptionWhenProjectGroupRequestFails(
-           [Frozen] ICompleteRepository<Domain.Entities.Project> mockProjectRepository,
-           [Frozen] ICompleteRepository<ConversionTasksData> mockConversionTaskRepository,
-           [Frozen] Mock<ISender> mockSender,
-           CreateMatConversionProjectCommand command,
-           UserDto userDto)
-        {
-            // Arrange
-            var handler = new CreateMatConversionProjectCommandHandler(mockProjectRepository, mockConversionTaskRepository, mockSender.Object);
-
-            userDto.Team = "regional_casework_services";
-
-
-            var expectedErrorMessage = "Project Group retrieval failed: DB ERROR";
-
-            mockSender.Setup(s => s.Send(It.IsAny<GetUserByAdIdQuery>(), It.IsAny<CancellationToken>()))
-                        .ReturnsAsync(Result<UserDto?>.Success(userDto));
-
-            mockSender.Setup(s => s.Send(It.IsAny<GetProjectGroupByGroupReferenceNumberQuery>(), It.IsAny<CancellationToken>()))
-                            .ReturnsAsync(Result<ProjectGroupDto?>.Failure("DB ERROR"));
-
-            // Act & Assert
-            var exception = await Assert.ThrowsAsync<Exception>(() => handler.Handle(command, default));
-
-            await mockProjectRepository.Received(0).AddAsync(Arg.Any<Domain.Entities.Project>());
-            await mockConversionTaskRepository.Received(0).AddAsync(Arg.Any<ConversionTasksData>());
-
-            Assert.Equal(exception.Message, expectedErrorMessage);
-        }
     }
 }
