@@ -1,16 +1,21 @@
-using System.Linq.Expressions;
 using AutoFixture.Xunit2;
 using DfE.CoreLibs.Testing.AutoFixture.Attributes;
-using DfE.CoreLibs.Testing.AutoFixture.Customizations; 
+using DfE.CoreLibs.Testing.AutoFixture.Customizations;
 using Dfe.Complete.Application.Projects.Commands.CreateProject;
-using Dfe.Complete.Domain.Entities;
 using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Domain.Interfaces.Repositories;
 using Dfe.Complete.Domain.ValueObjects;
-using Dfe.Complete.Tests.Common.Customizations.Behaviours; 
+using Dfe.Complete.Tests.Common.Customizations.Behaviours;
 using Dfe.Complete.Utils;
 using NSubstitute;
-using Dfe.Complete.Infrastructure.Models;
+using Moq;
+using MediatR;
+using Dfe.Complete.Application.Projects.Models;
+using Dfe.Complete.Application.Common.Models;
+using Dfe.Complete.Application.Projects.Queries.GetUser;
+using Dfe.Complete.Application.Projects.Queries.GetProject;
+using Dfe.Complete.Tests.Common.Customizations.Models;
+using Dfe.Complete.Domain.Entities;
 
 namespace Dfe.Complete.Application.Tests.CommandHandlers.Project
 {
@@ -21,14 +26,15 @@ namespace Dfe.Complete.Application.Tests.CommandHandlers.Project
         public async Task Handle_ShouldCreateAndReturnProjectId_WhenCommandIsValid(
             [Frozen] ICompleteRepository<Domain.Entities.Project> mockProjectRepository,
             [Frozen] ICompleteRepository<TransferTasksData> mockTransferTaskRepository,
-            [Frozen] ICompleteRepository<User> mockUserRepository,
-            CreateMatTransferProjectCommandHandler handler,
+            [Frozen] Mock<ISender> mockSender,
             CreateMatTransferProjectCommand command
         )
         {
             // Arrange
+            var handler = new CreateMatTransferProjectCommandHandler(mockProjectRepository, mockTransferTaskRepository, mockSender.Object);
+
             const ProjectTeam userTeam = ProjectTeam.WestMidlands;
-            var user = new User
+            var userDto = new UserDto
             {
                 Id = new UserId(Guid.NewGuid()),
                 Team = userTeam.ToDescription()
@@ -38,9 +44,9 @@ namespace Dfe.Complete.Application.Tests.CommandHandlers.Project
             var transferTaskId = Guid.NewGuid();
             var transferTask = new TransferTasksData(new TaskDataId(transferTaskId), createdAt, createdAt, command.IsDueToInedaquateOfstedRating, command.IsDueToIssues, command.OutGoingTrustWillClose);
 
-            mockUserRepository
-                .FindAsync(Arg.Any<Expression<Func<User, bool>>>())
-                .Returns(user);
+            mockSender
+                    .Setup(sender => sender.Send(It.IsAny<GetUserByAdIdQuery>(), default))
+                    .ReturnsAsync(Result<UserDto?>.Success(userDto));
 
             Domain.Entities.Project capturedProject = null!;
             mockProjectRepository
@@ -85,16 +91,17 @@ namespace Dfe.Complete.Application.Tests.CommandHandlers.Project
         public async Task Handle_ShouldSetTeamToRcs_WhenHandoverToRcsTrue(
             [Frozen] ICompleteRepository<Domain.Entities.Project> mockProjectRepository,
             [Frozen] ICompleteRepository<TransferTasksData> mockTransferTaskRepository,
-            [Frozen] ICompleteRepository<User> mockUserRepository,
-            CreateMatTransferProjectCommandHandler handler,
+            [Frozen] Mock<ISender> mockSender,
             CreateMatTransferProjectCommand command
         )
         {
             // Arrange
+            var handler = new CreateMatTransferProjectCommandHandler(mockProjectRepository, mockTransferTaskRepository, mockSender.Object);
+
             command = command with { HandingOverToRegionalCaseworkService = true };
 
             var userTeam = ProjectTeam.WestMidlands;
-            var user = new User
+            var userDto = new UserDto
             {
                 Id = new UserId(Guid.NewGuid()),
                 Team = userTeam.ToDescription()
@@ -103,10 +110,10 @@ namespace Dfe.Complete.Application.Tests.CommandHandlers.Project
             var createdAt = DateTime.UtcNow;
             var transferTaskId = Guid.NewGuid();
             var transferTask = new TransferTasksData(new TaskDataId(transferTaskId), createdAt, createdAt, command.IsDueToInedaquateOfstedRating, command.IsDueToIssues, command.OutGoingTrustWillClose);
-
-            mockUserRepository
-                .FindAsync(Arg.Any<Expression<Func<User, bool>>>())
-                .Returns(user);
+            
+            mockSender
+                    .Setup(sender => sender.Send(It.IsAny<GetUserByAdIdQuery>(), default))
+                    .ReturnsAsync(Result<UserDto?>.Success(userDto));
 
             Domain.Entities.Project capturedProject = null!;
             mockProjectRepository
@@ -132,16 +139,17 @@ namespace Dfe.Complete.Application.Tests.CommandHandlers.Project
         public async Task Handle_ShouldSetTeam_AssignedAt_AssignedTo_WhenNotHandingOverToRcs(
             [Frozen] ICompleteRepository<Domain.Entities.Project> mockProjectRepository,
             [Frozen] ICompleteRepository<TransferTasksData> mockTransferTaskRepository,
-            [Frozen] ICompleteRepository<User> mockUserRepository,
-            CreateMatTransferProjectCommandHandler handler,
+            [Frozen] Mock<ISender> mockSender,
             CreateMatTransferProjectCommand command
         )
         {
             // Arrange
+            var handler = new CreateMatTransferProjectCommandHandler(mockProjectRepository, mockTransferTaskRepository, mockSender.Object);
+
             command = command with { HandingOverToRegionalCaseworkService = false };
 
             const ProjectTeam userTeam = ProjectTeam.WestMidlands;
-            var user = new User
+            var userDto = new UserDto
             {
                 Id = new UserId(Guid.NewGuid()),
                 Team = userTeam.ToDescription()
@@ -151,9 +159,9 @@ namespace Dfe.Complete.Application.Tests.CommandHandlers.Project
             var transferTaskId = Guid.NewGuid();
             var transferTask = new TransferTasksData(new TaskDataId(transferTaskId), createdAt, createdAt, command.IsDueToInedaquateOfstedRating, command.IsDueToIssues, command.OutGoingTrustWillClose);
 
-            mockUserRepository
-                .FindAsync(Arg.Any<Expression<Func<User, bool>>>())
-                .Returns(user);
+            mockSender
+                    .Setup(sender => sender.Send(It.IsAny<GetUserByAdIdQuery>(), default))
+                    .ReturnsAsync(Result<UserDto?>.Success(userDto));
 
             Domain.Entities.Project capturedProject = null!;
             mockProjectRepository
@@ -172,6 +180,34 @@ namespace Dfe.Complete.Application.Tests.CommandHandlers.Project
             Assert.Equal(userTeam, capturedProject.Team);
             Assert.NotNull(capturedProject.AssignedAt);
             Assert.NotNull(capturedProject.AssignedToId);
+        }
+
+
+        [Theory]
+        [CustomAutoData(typeof(DateOnlyCustomization), typeof(ProjectCustomization), typeof(IgnoreVirtualMembersCustomisation))]
+        public async Task Handle_ShouldThrowException_WhenUserRequestFails(
+            [Frozen] ICompleteRepository<Domain.Entities.Project> mockProjectRepository,
+            [Frozen] ICompleteRepository<TransferTasksData> mockTransferTaskRepository,
+            [Frozen] Mock<ISender> mockSender,
+            CreateMatTransferProjectCommand command)
+        {
+            // Arrange
+            var handler = new CreateMatTransferProjectCommandHandler(mockProjectRepository, mockTransferTaskRepository, mockSender.Object);
+            var expectedErrorMessage = "User retrieval failed: DB ERROR";
+
+
+            mockSender.Setup(s => s.Send(It.IsAny<GetUserByAdIdQuery>(), It.IsAny<CancellationToken>()))
+                        .ReturnsAsync(Result<UserDto>.Failure("DB ERROR"));
+
+
+            // Act & Assert
+            var exception = await Assert.ThrowsAsync<Exception>(() => handler.Handle(command, default));
+
+
+            await mockProjectRepository.Received(0).AddAsync(Arg.Any<Domain.Entities.Project>());
+            await mockTransferTaskRepository.Received(0).AddAsync(Arg.Any<TransferTasksData>());
+
+            Assert.Equal(exception.Message, expectedErrorMessage);
         }
     }
 }
