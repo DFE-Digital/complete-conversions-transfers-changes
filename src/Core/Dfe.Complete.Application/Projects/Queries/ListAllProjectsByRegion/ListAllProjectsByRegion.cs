@@ -17,9 +17,15 @@ public class ListAllProjectsByRegionQueryHandler(IListAllProjectsQueryService li
     {
         try
         {
-            var projectsByRegion = await listAllProjectsQueryService
+            var projectsByRegion = listAllProjectsQueryService
                 .ListAllProjects(request.ProjectStatus, request.Type)
-                .GroupBy(p => p.Project.Region).ToListAsync(cancellationToken);
+                .AsEnumerable()
+                .GroupBy(item => item.Project.Region)
+                .Select(group => new
+                {
+                    Region = group.Key,
+                    Items = group.ToList()
+                }).ToList();
             
             return null;
         }
