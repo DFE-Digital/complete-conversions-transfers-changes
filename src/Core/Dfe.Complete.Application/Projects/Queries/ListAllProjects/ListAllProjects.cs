@@ -11,13 +11,13 @@ namespace Dfe.Complete.Application.Projects.Queries.ListAllProjects
         ProjectState? ProjectStatus,
         ProjectType? Type,
         int Page = 0,
-        int Count = 20) : IRequest<Result<List<ListAllProjectsResultModel>>>;
+        int Count = 20) : IRequest<Result<List<Model.ListAllProjectsResultModel>>>;
 
     public class ListAllProjectsQueryHandler(
         IListAllProjectsQueryService listAllProjectsQueryService)
-        : IRequestHandler<ListAllProjectsQuery, Result<List<ListAllProjectsResultModel>>>
+        : IRequestHandler<ListAllProjectsQuery, Result<List<Model.ListAllProjectsResultModel>>>
     {
-        public async Task<Result<List<ListAllProjectsResultModel>>> Handle(ListAllProjectsQuery request,
+        public async Task<Result<List<Model.ListAllProjectsResultModel>>> Handle(ListAllProjectsQuery request,
             CancellationToken cancellationToken)
         {
             try
@@ -25,7 +25,7 @@ namespace Dfe.Complete.Application.Projects.Queries.ListAllProjects
                 var result = await listAllProjectsQueryService
                     .ListAllProjects(request.ProjectStatus, request.Type)
                     .Skip(request.Page * request.Count).Take(request.Count)
-                    .Select(item => new ListAllProjectsResultModel(
+                    .Select(item => new Model.ListAllProjectsResultModel(
                         item.Establishment.Name,
                         item.Project.Id,
                         item.Project.Urn,
@@ -35,14 +35,13 @@ namespace Dfe.Complete.Application.Projects.Queries.ListAllProjects
                         item.Project.IncomingTrustUkprn == null,
                         item.Project.AssignedTo != null
                             ? $"{item.Project.AssignedTo.FirstName} {item.Project.AssignedTo.LastName}"
-                            : null
-                    ))
+                            : null))
                     .ToListAsync(cancellationToken);
-                return Result<List<ListAllProjectsResultModel>>.Success(result);
+                return Result<List<Model.ListAllProjectsResultModel>>.Success(result);
             }
             catch (Exception ex)
             {
-                return Result<List<ListAllProjectsResultModel>>.Failure(ex.Message);
+                return Result<List<Model.ListAllProjectsResultModel>>.Failure(ex.Message);
             }
         }
     }
