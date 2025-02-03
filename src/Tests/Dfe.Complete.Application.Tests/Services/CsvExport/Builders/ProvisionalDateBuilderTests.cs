@@ -13,7 +13,7 @@ namespace Dfe.Complete.Application.Tests.Services.CsvExport.Builders
 
             var result = builder.Build(model);
 
-            Assert.Equal(model.Project.SignificantDate?.ToString("dd/MM/yyyy"), result);
+            Assert.Equal(model.Project.SignificantDate?.ToString("yyyy-MM-dd"), result);
         }
 
         [Fact]
@@ -25,7 +25,7 @@ namespace Dfe.Complete.Application.Tests.Services.CsvExport.Builders
 
             var result = builder.Build(model);
 
-            Assert.Equal(model.SignificantDateHistory?.PreviousDate.Value.ToString("dd/MM/yyyy"), result);
+            Assert.Equal(model.SignificantDateHistory?.PreviousDate.Value.ToString("yyyy-MM-dd"), result);
         }
     }
 }

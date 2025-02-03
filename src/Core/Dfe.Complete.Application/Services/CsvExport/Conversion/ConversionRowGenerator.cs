@@ -1,4 +1,5 @@
 ﻿using Dfe.Complete.Application.Common.Models;
+using Dfe.Complete.Application.Mappers;
 using Dfe.Complete.Application.Services.CsvExport.Builders;
 using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Utils;
@@ -11,17 +12,17 @@ namespace Dfe.Complete.Application.Services.CsvExport.Conversion
         private const string NotApplicable = "not applicable";
         private const string Yes = "yes";
         private const string No = "no";
-        private const string DateFormat = "dd/MM/yyyy";
+        private const string DateFormat = "yyyy-MM-dd";
         private RowBuilder<ConversionCsvModel> _rowBuilder;
 
         public ConversionRowGenerator(IRowBuilderFactory<ConversionCsvModel> rowBuilder)
         {
             _rowBuilder = rowBuilder.DefineRow()
                     .Column("School name").BlankIfEmpty(x => x.CurrentSchool.Name)
-                    .Column("School URN").BlankIfEmpty(x => x.Project.Urn)
+                    .Column("School URN").BlankIfEmpty(x => x.Project.Urn.Value.ToString())
                     .Column("Project type").Builder(new ProjectTypeBuilder())
                     .Column("Academy name").DefaultIf(x => x.Project.AcademyUrn == null, x => x.Academy?.Name, Unconfirmed)
-                    .Column("Academy URN").DefaultIf(x => x.Project.AcademyUrn == null, x => x.Academy?.Urn?.ToString(), Unconfirmed)
+                    .Column("Academy URN").DefaultIf(x => x.Project.AcademyUrn == null, x => x.Academy?.Urn?.Value.ToString(), Unconfirmed)
                     .Column("Academy DfE number/LAESTAB").Builder(new DfeNumberLAESTABBuilder())
                     .Column("Incoming trust name").IncomingTrustData(x => x.Project, x => x.Name)
                     .Column("Local authority").BlankIfEmpty(x => x.LocalAuthority.Name)
@@ -40,9 +41,9 @@ namespace Dfe.Complete.Application.Services.CsvExport.Conversion
                     .Column("School type").BlankIfEmpty(x => x.CurrentSchool.TypeName)
                     .Column("School age range").Builder(new AgeRangeBuilder<ConversionCsvModel>(x => x.CurrentSchool))
                     .Column("School phase").Builder(new SchoolPhaseBuilder<ConversionCsvModel>(x => x.CurrentSchool))
-                    .Column("Proposed capacity for pupils in reception to year 6").DefaultIfEmpty(x => x.ConversionTasks.ProposedCapacityOfTheAcademyReceptionToSixYears, NotApplicable)
-                    .Column("Proposed capacity for pupils in years 7 to 11").DefaultIfEmpty(x => x.ConversionTasks.ProposedCapacityOfTheAcademySevenToElevenYears, NotApplicable)
-                    .Column("Proposed capacity for students in year 12 or above").DefaultIfEmpty(x => x.ConversionTasks.ProposedCapacityOfTheAcademyTwelveOrAboveYears, NotApplicable)
+                    .Column("Proposed capacity for pupils in reception to year 6").BlankIfEmpty(x => x.ConversionTasks.ProposedCapacityOfTheAcademyReceptionToSixYears)
+                    .Column("Proposed capacity for pupils in years 7 to 11").BlankIfEmpty(x => x.ConversionTasks.ProposedCapacityOfTheAcademySevenToElevenYears)
+                    .Column("Proposed capacity for students in year 12 or above").BlankIfEmpty(x => x.ConversionTasks.ProposedCapacityOfTheAcademyTwelveOrAboveYears)
                     .Column("School address 1").BlankIfEmpty(x => x.CurrentSchool.AddressStreet)
                     .Column("School address 2").BlankIfEmpty(x => x.CurrentSchool.AddressLocality)
                     .Column("School address 3").BlankIfEmpty(x => x.CurrentSchool.AddressAdditional)
@@ -56,7 +57,7 @@ namespace Dfe.Complete.Application.Services.CsvExport.Conversion
                     .Column("Incoming trust companies house number").IncomingTrustData(x => x.Project, t => t.CompaniesHouseNumber)
                     .Column("Incoming trust address 1").IncomingTrustData(x => x.Project, t => t.Address.Street)
                     .Column("Incoming trust address 2").IncomingTrustData(x => x.Project, t => t.Address.Locality)
-                    .Column("Incoming trust address 3").IncomingTrustData(x => x.Project, t => t.Address.AdditionalLine)
+                    .Column("Incoming trust address 3").IncomingTrustData(x => x.Project, t => t.Address.Additional)
                     .Column("Incoming trust address town").IncomingTrustData(x => x.Project, t => t.Address.Town)
                     .Column("Incoming trust address county").IncomingTrustData(x => x.Project, t => t.Address.County)
                     .Column("Incoming trust address postcode").IncomingTrustData(x => x.Project, t => t.Address.Postcode)
@@ -64,7 +65,7 @@ namespace Dfe.Complete.Application.Services.CsvExport.Conversion
                     .Column("Project created by name").Builder(new UserNameBuilder<ConversionCsvModel>(x => x.CreatedBy!))
                     .Column("Project created by email address").BlankIfEmpty(x => x.CreatedBy?.Email)
                     .Column("Assigned to name").Builder(new UserNameBuilder<ConversionCsvModel>(x => x.AssignedTo!))
-                    .Column("Team managing the project").BlankIfEmpty(x => x.Project.Team?.ToDescription())
+                    .Column("Team managing the project").BlankIfEmpty(x => ProjectTeamPresentationMapper.Map(x.Project.Team))
                     .Column("Project main contact name").BlankIfEmpty(x => x.MainContact?.Name)
                     .Column("Headteacher name").BlankIfEmpty(x => x.Headteacher?.Name)
                     .Column("Headteacher role").BlankIfEmpty(x => x.Headteacher != null ? "Headteacher" : null)

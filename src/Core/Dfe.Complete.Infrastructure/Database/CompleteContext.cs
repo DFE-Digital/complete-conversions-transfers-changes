@@ -143,7 +143,11 @@ public partial class CompleteContext : DbContext
                 v => v!.Value,
                 v => new ContactId(v));
         projectConfiguration.Property(e => e.EstablishmentSharepointLink).HasColumnName("establishment_sharepoint_link");
-        projectConfiguration.Property(e => e.GroupId).HasColumnName("group_id");
+        projectConfiguration.Property(e => e.GroupId)
+            .HasColumnName("group_id")
+            .HasConversion(
+                v => v!.Value,
+                v => new ProjectGroupId(v));
         projectConfiguration.Property(e => e.IncomingTrustMainContactId)
             .HasColumnName("incoming_trust_main_contact_id")
             .HasConversion(
@@ -199,7 +203,11 @@ public partial class CompleteContext : DbContext
             .HasDefaultValue(true)
             .HasColumnName("significant_date_provisional");
         projectConfiguration.Property(e => e.State).HasColumnName("state");
-        projectConfiguration.Property(e => e.TasksDataId).HasColumnName("tasks_data_id");
+        projectConfiguration.Property(e => e.TasksDataId)
+            .HasColumnName("tasks_data_id")
+            .HasConversion(
+                v => v!.Value,
+                v => new TaskDataId(v)); ;
         projectConfiguration.Property(e => e.TasksDataType)
             .HasMaxLength(4000)
             .HasColumnName("tasks_data_type")

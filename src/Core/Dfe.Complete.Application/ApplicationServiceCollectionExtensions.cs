@@ -1,11 +1,16 @@
+using Dfe.AcademiesApi.Client.Contracts;
+using Dfe.AcademiesApi.Client;
 using Dfe.Complete.Application.Common.Behaviours;
 using Dfe.Complete.Application.Common.Models;
 using Dfe.Complete.Application.Services.CsvExport;
+using Dfe.Complete.Application.Services.CsvExport.Builders;
 using Dfe.Complete.Application.Services.CsvExport.Conversion;
+using Dfe.TramsDataApi.Client.Extensions;
 using FluentValidation;
 using MediatR;
 using Microsoft.Extensions.Configuration;
 using System.Reflection;
+using Dfe.Complete.Application.Services.TrustCache;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
@@ -17,6 +22,8 @@ namespace Microsoft.Extensions.DependencyInjection
             var performanceLoggingEnabled = config.GetValue<bool>("Features:PerformanceLoggingEnabled");
 
             services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
+
+            services.AddAcademiesApiClient<ITrustsV4Client, TrustsV4Client>(config);
 
             services.AddMediatR(cfg =>
             {
@@ -31,6 +38,8 @@ namespace Microsoft.Extensions.DependencyInjection
             });
 
             services.AddScoped<ICSVFileContentGenerator<ConversionCsvModel>, CSVFileContentGenerator<ConversionCsvModel>>();
+            services.AddScoped<ITrustCache, TrustCacheService>();
+            services.AddScoped<IRowBuilderFactory<ConversionCsvModel>, RowBuilderFactory<ConversionCsvModel>>();
             services.AddScoped<IRowGenerator<ConversionCsvModel>, ConversionRowGenerator>();
             services.AddScoped<IHeaderGenerator<ConversionCsvModel>, ConversionRowGenerator>();
 

@@ -70,7 +70,7 @@ namespace Dfe.Complete.Application.Projects.Commands.CreateProject
                     assignedAt,
                     request.IncomingTrustUkprn,
                     request.OutgoingTrustUkprn,
-                    groupId?.Value,
+                    groupId,
                     request.EstablishmentSharepointLink,
                     request.IncomingTrustSharepointLink,
                     request.OutgoingTrustSharepointLink,

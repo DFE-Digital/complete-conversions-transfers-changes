@@ -1,5 +1,6 @@
-﻿using Dfe.Complete.Application.Services.CsvExport.Builders;
-using Dfe.Complete.Application.Services.TrustService;
+﻿using Dfe.AcademiesApi.Client.Contracts;
+using Dfe.Complete.Application.Services.CsvExport.Builders;
+using Dfe.Complete.Application.Services.TrustCache;
 using Dfe.Complete.Domain.Entities;
 using Dfe.Complete.Tests.Common.Customizations.Models;
 using DfE.CoreLibs.Testing.AutoFixture.Attributes;
@@ -12,8 +13,8 @@ namespace Dfe.Complete.Application.Tests.Services.CsvExport.Builders
     {
 
         [Theory]
-        [CustomAutoData(typeof(TrustDetailsDtoCustomization), typeof(ProjectCustomization))]
-        public void ShouldBeAbleToGetFromTrust(TrustDetailsDto trust, Project project)
+        [CustomAutoData(typeof(TrustDtoCustomization), typeof(ProjectCustomization))]
+        public void ShouldBeAbleToGetFromTrust(TrustDto trust, Project project)
         {
             project.IncomingTrustUkprn = trust.Ukprn;
             var TrustCache = Substitute.For<ITrustCache>();
@@ -26,7 +27,7 @@ namespace Dfe.Complete.Application.Tests.Services.CsvExport.Builders
         }
 
         [Theory]
-        [CustomAutoData(typeof(TrustDetailsDtoCustomization), typeof(ProjectCustomization))]
+        [CustomAutoData(typeof(TrustDtoCustomization), typeof(ProjectCustomization))]
         public void ShouldBeBlankIfTrustNotFound(Project project)
         {
             var TrustCache = Substitute.For<ITrustCache>();
@@ -39,8 +40,8 @@ namespace Dfe.Complete.Application.Tests.Services.CsvExport.Builders
         }
 
         [Theory]
-        [CustomAutoData(typeof(TrustDetailsDtoCustomization), typeof(ProjectCustomization))]
-        public void ShouldBeAbleToGetFromTRN(TrustDetailsDto trust, Project project)
+        [CustomAutoData(typeof(TrustDtoCustomization), typeof(ProjectCustomization))]
+        public void ShouldBeAbleToGetFromTRN(TrustDto trust, Project project)
         {
             project.IncomingTrustUkprn = null;
             project.NewTrustReferenceNumber = trust.ReferenceNumber;
@@ -54,7 +55,7 @@ namespace Dfe.Complete.Application.Tests.Services.CsvExport.Builders
         }
 
         [Theory]
-        [CustomAutoData(typeof(TrustDetailsDtoCustomization), typeof(ProjectCustomization))]
+        [CustomAutoData(typeof(TrustDtoCustomization), typeof(ProjectCustomization))]
         public void ShouldBeBlankIfTRNNotFound(Project project)
         {
             project.IncomingTrustUkprn = null;
@@ -69,7 +70,7 @@ namespace Dfe.Complete.Application.Tests.Services.CsvExport.Builders
         }
 
         [Theory]
-        [CustomAutoData(typeof(TrustDetailsDtoCustomization), typeof(ProjectCustomization))]
+        [CustomAutoData(typeof(TrustDtoCustomization), typeof(ProjectCustomization))]
         public void ShouldBeBlankIfSelectedValueIsNull(Project project)
         {
             var TrustCache = Substitute.For<ITrustCache>();

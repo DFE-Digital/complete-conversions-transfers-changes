@@ -1,7 +1,6 @@
 using DfE.CoreLibs.Testing.AutoFixture.Attributes;
 using Dfe.Complete.Tests.Common.Customizations.Models;
 using DfE.CoreLibs.Testing.AutoFixture.Customizations;
-using Note = Dfe.Complete.Domain.Entities.Note;
 using Project = Dfe.Complete.Domain.Entities.Project;
 using ProjectId = Dfe.Complete.Domain.ValueObjects.ProjectId;
 using ProjectTeam = Dfe.Complete.Domain.Enums.ProjectTeam;
@@ -11,9 +10,8 @@ using TaskType = Dfe.Complete.Domain.Enums.TaskType;
 using Ukprn = Dfe.Complete.Domain.ValueObjects.Ukprn;
 using Urn = Dfe.Complete.Domain.ValueObjects.Urn;
 using UserId = Dfe.Complete.Domain.ValueObjects.UserId;
-using System.Text.RegularExpressions;
-using Microsoft.AspNetCore.Http.HttpResults;
-using NSubstitute.ExceptionExtensions;
+using ProjectGroupId = Dfe.Complete.Domain.ValueObjects.ProjectGroupId;
+using Dfe.Complete.Domain.ValueObjects;
 
 namespace Dfe.Complete.Domain.Tests.Aggregates
 {
@@ -38,7 +36,7 @@ namespace Dfe.Complete.Domain.Tests.Aggregates
             string advisoryBoardConditions,
             string establishmentSharepointLink,
             string incomingTrustSharepointLink,
-            Guid groupId,
+            ProjectGroupId groupId,
             ProjectTeam team,
             UserId regionalDeliveryOfficerId,
             UserId assignedToId,
@@ -98,7 +96,7 @@ namespace Dfe.Complete.Domain.Tests.Aggregates
             string advisoryBoardConditions,
             string establishmentSharepointLink,
             string incomingTrustSharepointLink,
-            Guid groupId,
+            ProjectGroupId groupId,
             ProjectTeam team,
             UserId regionalDeliveryOfficerId,
             UserId assignedToId,
@@ -155,7 +153,7 @@ namespace Dfe.Complete.Domain.Tests.Aggregates
             string advisoryBoardConditions,
             string establishmentSharepointLink,
             string incomingTrustSharepointLink,
-            Guid groupId,
+            ProjectGroupId groupId,
             ProjectTeam team,
             UserId regionalDeliveryOfficerId,
             UserId assignedToId,
@@ -214,7 +212,7 @@ namespace Dfe.Complete.Domain.Tests.Aggregates
             string advisoryBoardConditions,
             string establishmentSharepointLink,
             string incomingTrustSharepointLink,
-            Guid? groupId,
+            ProjectGroupId? groupId,
             ProjectTeam team,
             DateTime? assignedAt,
             UserId? assignedToId,
@@ -273,7 +271,7 @@ namespace Dfe.Complete.Domain.Tests.Aggregates
             string incomingTrustSharepointLink,
             DateOnly provisionalConversionDate,
             bool handingOverToRegionalCaseworkService,
-            Guid? groupId,
+            ProjectGroupId? groupId,
             ProjectTeam team,
             DateTime? assignedAt,
             UserId? assignedToId,
@@ -312,7 +310,7 @@ namespace Dfe.Complete.Domain.Tests.Aggregates
             Assert.Equal(updatedAt, project.UpdatedAt);
             Assert.Equal(taskType, project.TasksDataType);
             Assert.Equal(projectType, project.Type);
-            Assert.Equal(tasksDataId, project.TasksDataId);
+            Assert.Equal(new TaskDataId(tasksDataId), project.TasksDataId);
             Assert.Equal(significantDate, project.SignificantDate);
             Assert.Equal(isSignificantDateProvisional, project.SignificantDateProvisional);
             Assert.Equal(incomingTrustUkprn, project.IncomingTrustUkprn);

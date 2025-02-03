@@ -6,6 +6,90 @@
     "version": "1.0.0"
   },
   "paths": {
+    "/v1/CsvExport": {
+      "post": {
+        "tags": [
+          "CsvExport"
+        ],
+        "operationId": "CsvExport_GetConversionCsvByMonth",
+        "parameters": [
+          {
+            "name": "month",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "x-position": 1
+          },
+          {
+            "name": "year",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "x-position": 2
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "File",
+            "content": {
+              "application/octet-stream": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/CsvExport/Contents": {
+      "post": {
+        "tags": [
+          "CsvExport"
+        ],
+        "operationId": "CsvExport_GetConversionCsvByMonthContents",
+        "parameters": [
+          {
+            "name": "month",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "x-position": 1
+          },
+          {
+            "name": "year",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "x-position": 2
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "File contents",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request data."
+          }
+        }
+      }
+    },
     "/v1/Projects": {
       "post": {
         "tags": [
@@ -65,7 +149,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Project"
+                  "$ref": "#/components/schemas/ProjectDto"
                 }
               }
             }
@@ -202,13 +286,13 @@
         }
       }
     },
-    "/v1/Projects/{groupReferenceNumber}/ukprn": {
+    "/v1/Projects/{groupReferenceNumber}/project_group": {
       "get": {
         "tags": [
           "Projects"
         ],
         "summary": "Gets the UKPRN for a group reference number.",
-        "operationId": "Projects_GetMatchingTrustUkprn_",
+        "operationId": "Projects_GetProjectGroupByGroupReferenceNumber_",
         "parameters": [
           {
             "name": "groupReferenceNumber",
@@ -223,11 +307,11 @@
         ],
         "responses": {
           "200": {
-            "description": "UKPRN returned successfully.",
+            "description": "Project Group returned successfully.",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Ukprn"
+                  "$ref": "#/components/schemas/ProjectGroupDto"
                 }
               }
             }
@@ -236,7 +320,7 @@
             "description": "Invalid group reference number."
           },
           "404": {
-            "description": "UKPRN not found for the given group reference number."
+            "description": "Project Group not found for the given group reference number."
           }
         }
       }
@@ -325,266 +409,263 @@
           }
         }
       },
-      "Project": {
-        "allOf": [
-          {
-            "$ref": "#/components/schemas/BaseAggregateRoot"
+      "ProjectDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "$ref": "#/components/schemas/ProjectId"
           },
-          {
-            "type": "object",
-            "additionalProperties": false,
-            "properties": {
-              "id": {
-                "$ref": "#/components/schemas/ProjectId"
-              },
-              "urn": {
-                "$ref": "#/components/schemas/Urn"
-              },
-              "createdAt": {
-                "type": "string",
-                "format": "date-time"
-              },
-              "updatedAt": {
-                "type": "string",
-                "format": "date-time"
-              },
-              "incomingTrustUkprn": {
-                "nullable": true,
-                "oneOf": [
-                  {
-                    "$ref": "#/components/schemas/Ukprn"
-                  }
-                ]
-              },
-              "regionalDeliveryOfficerId": {
-                "nullable": true,
-                "oneOf": [
-                  {
-                    "$ref": "#/components/schemas/UserId"
-                  }
-                ]
-              },
-              "caseworkerId": {
-                "nullable": true,
-                "oneOf": [
-                  {
-                    "$ref": "#/components/schemas/UserId"
-                  }
-                ]
-              },
-              "assignedAt": {
-                "type": "string",
-                "format": "date-time",
-                "nullable": true
-              },
-              "advisoryBoardDate": {
-                "type": "string",
-                "format": "date",
-                "nullable": true
-              },
-              "advisoryBoardConditions": {
-                "type": "string",
-                "nullable": true
-              },
-              "establishmentSharepointLink": {
-                "type": "string",
-                "nullable": true
-              },
-              "completedAt": {
-                "type": "string",
-                "format": "date-time",
-                "nullable": true
-              },
-              "incomingTrustSharepointLink": {
-                "type": "string",
-                "nullable": true
-              },
-              "type": {
-                "nullable": true,
-                "oneOf": [
-                  {
-                    "$ref": "#/components/schemas/ProjectType"
-                  }
-                ]
-              },
-              "assignedToId": {
-                "nullable": true,
-                "oneOf": [
-                  {
-                    "$ref": "#/components/schemas/UserId"
-                  }
-                ]
-              },
-              "significantDate": {
-                "type": "string",
-                "format": "date",
-                "nullable": true
-              },
-              "significantDateProvisional": {
-                "type": "boolean",
-                "nullable": true
-              },
-              "directiveAcademyOrder": {
-                "type": "boolean",
-                "nullable": true
-              },
-              "region": {
-                "nullable": true,
-                "oneOf": [
-                  {
-                    "$ref": "#/components/schemas/Region"
-                  }
-                ]
-              },
-              "academyUrn": {
-                "nullable": true,
-                "oneOf": [
-                  {
-                    "$ref": "#/components/schemas/Urn"
-                  }
-                ]
-              },
-              "tasksDataId": {
-                "type": "string",
-                "format": "guid",
-                "nullable": true
-              },
-              "tasksDataType": {
-                "nullable": true,
-                "oneOf": [
-                  {
-                    "$ref": "#/components/schemas/TaskType"
-                  }
-                ]
-              },
-              "outgoingTrustUkprn": {
-                "nullable": true,
-                "oneOf": [
-                  {
-                    "$ref": "#/components/schemas/Ukprn"
-                  }
-                ]
-              },
-              "team": {
-                "nullable": true,
-                "oneOf": [
-                  {
-                    "$ref": "#/components/schemas/ProjectTeam"
-                  }
-                ]
-              },
-              "twoRequiresImprovement": {
-                "type": "boolean",
-                "nullable": true
-              },
-              "outgoingTrustSharepointLink": {
-                "type": "string",
-                "nullable": true
-              },
-              "allConditionsMet": {
-                "type": "boolean",
-                "nullable": true
-              },
-              "mainContactId": {
-                "nullable": true,
-                "oneOf": [
-                  {
-                    "$ref": "#/components/schemas/ContactId"
-                  }
-                ]
-              },
-              "establishmentMainContactId": {
-                "nullable": true,
-                "oneOf": [
-                  {
-                    "$ref": "#/components/schemas/ContactId"
-                  }
-                ]
-              },
-              "incomingTrustMainContactId": {
-                "nullable": true,
-                "oneOf": [
-                  {
-                    "$ref": "#/components/schemas/ContactId"
-                  }
-                ]
-              },
-              "outgoingTrustMainContactId": {
-                "nullable": true,
-                "oneOf": [
-                  {
-                    "$ref": "#/components/schemas/ContactId"
-                  }
-                ]
-              },
-              "newTrustReferenceNumber": {
-                "type": "string",
-                "nullable": true
-              },
-              "newTrustName": {
-                "type": "string",
-                "nullable": true
-              },
-              "state": {
-                "$ref": "#/components/schemas/ProjectState"
-              },
-              "prepareId": {
-                "type": "integer",
-                "format": "int32",
-                "nullable": true
-              },
-              "localAuthorityMainContactId": {
-                "nullable": true,
-                "oneOf": [
-                  {
-                    "$ref": "#/components/schemas/ContactId"
-                  }
-                ]
-              },
-              "groupId": {
-                "type": "string",
-                "format": "guid",
-                "nullable": true
-              },
-              "assignedTo": {
-                "nullable": true,
-                "oneOf": [
-                  {
-                    "$ref": "#/components/schemas/User"
-                  }
-                ]
-              },
-              "caseworker": {
-                "nullable": true,
-                "oneOf": [
-                  {
-                    "$ref": "#/components/schemas/User"
-                  }
-                ]
-              },
-              "contacts": {
-                "type": "array",
-                "items": {
-                  "$ref": "#/components/schemas/Contact"
-                }
-              },
-              "notes": {
-                "type": "array",
-                "items": {
-                  "$ref": "#/components/schemas/Note"
-                }
-              },
-              "regionalDeliveryOfficer": {
-                "nullable": true,
-                "oneOf": [
-                  {
-                    "$ref": "#/components/schemas/User"
-                  }
-                ]
+          "urn": {
+            "$ref": "#/components/schemas/Urn"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "incomingTrustUkprn": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/Ukprn"
               }
+            ]
+          },
+          "regionalDeliveryOfficerId": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/UserId"
+              }
+            ]
+          },
+          "caseworkerId": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/UserId"
+              }
+            ]
+          },
+          "assignedAt": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "advisoryBoardDate": {
+            "type": "string",
+            "format": "date",
+            "nullable": true
+          },
+          "advisoryBoardConditions": {
+            "type": "string",
+            "nullable": true
+          },
+          "establishmentSharepointLink": {
+            "type": "string",
+            "nullable": true
+          },
+          "completedAt": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "incomingTrustSharepointLink": {
+            "type": "string",
+            "nullable": true
+          },
+          "type": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/ProjectType"
+              }
+            ]
+          },
+          "assignedToId": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/UserId"
+              }
+            ]
+          },
+          "significantDate": {
+            "type": "string",
+            "format": "date",
+            "nullable": true
+          },
+          "significantDateProvisional": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "directiveAcademyOrder": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "region": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/Region"
+              }
+            ]
+          },
+          "academyUrn": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/Urn"
+              }
+            ]
+          },
+          "tasksDataId": {
+            "type": "string",
+            "format": "guid",
+            "nullable": true
+          },
+          "tasksDataType": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/TaskType"
+              }
+            ]
+          },
+          "outgoingTrustUkprn": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/Ukprn"
+              }
+            ]
+          },
+          "team": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/ProjectTeam"
+              }
+            ]
+          },
+          "twoRequiresImprovement": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "outgoingTrustSharepointLink": {
+            "type": "string",
+            "nullable": true
+          },
+          "allConditionsMet": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "mainContactId": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/ContactId"
+              }
+            ]
+          },
+          "establishmentMainContactId": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/ContactId"
+              }
+            ]
+          },
+          "incomingTrustMainContactId": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/ContactId"
+              }
+            ]
+          },
+          "outgoingTrustMainContactId": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/ContactId"
+              }
+            ]
+          },
+          "newTrustReferenceNumber": {
+            "type": "string",
+            "nullable": true
+          },
+          "newTrustName": {
+            "type": "string",
+            "nullable": true
+          },
+          "state": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "prepareId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "localAuthorityMainContactId": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/ContactId"
+              }
+            ]
+          },
+          "groupId": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/ProjectGroupId"
+              }
+            ]
+          },
+          "assignedTo": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/User"
+              }
+            ]
+          },
+          "caseworker": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/User"
+              }
+            ]
+          },
+          "contacts": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Contact"
             }
+          },
+          "notes": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Note"
+            }
+          },
+          "regionalDeliveryOfficer": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/User"
+              }
+            ]
           }
-        ]
+        }
       },
       "UserId": {
         "type": "object",
@@ -660,7 +741,9 @@
           "WestMidlands",
           "NorthEast",
           "SouthWest",
-          "EastMidlands"
+          "EastMidlands",
+          "BusinessSupport",
+          "DataConsumers"
         ],
         "enum": [
           "RegionalCaseWorkerServices",
@@ -673,7 +756,9 @@
           "WestMidlands",
           "NorthEast",
           "SouthWest",
-          "EastMidlands"
+          "EastMidlands",
+          "BusinessSupport",
+          "DataConsumers"
         ]
       },
       "ContactId": {
@@ -686,19 +771,15 @@
           }
         }
       },
-      "ProjectState": {
-        "type": "string",
-        "description": "",
-        "x-enumNames": [
-          "Active",
-          "Completed",
-          "Cancelled"
-        ],
-        "enum": [
-          "Active",
-          "Completed",
-          "Cancelled"
-        ]
+      "ProjectGroupId": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "value": {
+            "type": "string",
+            "format": "guid"
+          }
+        }
       },
       "User": {
         "allOf": [
@@ -881,29 +962,296 @@
           }
         }
       },
-      "BaseAggregateRoot": {
+      "Project": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/BaseAggregateRoot"
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "id": {
+                "$ref": "#/components/schemas/ProjectId"
+              },
+              "urn": {
+                "$ref": "#/components/schemas/Urn"
+              },
+              "createdAt": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "updatedAt": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "incomingTrustUkprn": {
+                "nullable": true,
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/Ukprn"
+                  }
+                ]
+              },
+              "regionalDeliveryOfficerId": {
+                "nullable": true,
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/UserId"
+                  }
+                ]
+              },
+              "caseworkerId": {
+                "nullable": true,
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/UserId"
+                  }
+                ]
+              },
+              "assignedAt": {
+                "type": "string",
+                "format": "date-time",
+                "nullable": true
+              },
+              "advisoryBoardDate": {
+                "type": "string",
+                "format": "date",
+                "nullable": true
+              },
+              "advisoryBoardConditions": {
+                "type": "string",
+                "nullable": true
+              },
+              "establishmentSharepointLink": {
+                "type": "string",
+                "nullable": true
+              },
+              "completedAt": {
+                "type": "string",
+                "format": "date-time",
+                "nullable": true
+              },
+              "incomingTrustSharepointLink": {
+                "type": "string",
+                "nullable": true
+              },
+              "type": {
+                "nullable": true,
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/ProjectType"
+                  }
+                ]
+              },
+              "assignedToId": {
+                "nullable": true,
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/UserId"
+                  }
+                ]
+              },
+              "significantDate": {
+                "type": "string",
+                "format": "date",
+                "nullable": true
+              },
+              "significantDateProvisional": {
+                "type": "boolean",
+                "nullable": true
+              },
+              "directiveAcademyOrder": {
+                "type": "boolean",
+                "nullable": true
+              },
+              "region": {
+                "nullable": true,
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/Region"
+                  }
+                ]
+              },
+              "academyUrn": {
+                "nullable": true,
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/Urn"
+                  }
+                ]
+              },
+              "tasksDataId": {
+                "nullable": true,
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/TaskDataId"
+                  }
+                ]
+              },
+              "tasksDataType": {
+                "nullable": true,
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/TaskType"
+                  }
+                ]
+              },
+              "outgoingTrustUkprn": {
+                "nullable": true,
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/Ukprn"
+                  }
+                ]
+              },
+              "team": {
+                "nullable": true,
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/ProjectTeam"
+                  }
+                ]
+              },
+              "twoRequiresImprovement": {
+                "type": "boolean",
+                "nullable": true
+              },
+              "outgoingTrustSharepointLink": {
+                "type": "string",
+                "nullable": true
+              },
+              "allConditionsMet": {
+                "type": "boolean",
+                "nullable": true
+              },
+              "mainContactId": {
+                "nullable": true,
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/ContactId"
+                  }
+                ]
+              },
+              "establishmentMainContactId": {
+                "nullable": true,
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/ContactId"
+                  }
+                ]
+              },
+              "incomingTrustMainContactId": {
+                "nullable": true,
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/ContactId"
+                  }
+                ]
+              },
+              "outgoingTrustMainContactId": {
+                "nullable": true,
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/ContactId"
+                  }
+                ]
+              },
+              "newTrustReferenceNumber": {
+                "type": "string",
+                "nullable": true
+              },
+              "newTrustName": {
+                "type": "string",
+                "nullable": true
+              },
+              "state": {
+                "$ref": "#/components/schemas/ProjectState"
+              },
+              "prepareId": {
+                "type": "integer",
+                "format": "int32",
+                "nullable": true
+              },
+              "localAuthorityMainContactId": {
+                "nullable": true,
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/ContactId"
+                  }
+                ]
+              },
+              "groupId": {
+                "nullable": true,
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/ProjectGroupId"
+                  }
+                ]
+              },
+              "assignedTo": {
+                "nullable": true,
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/User"
+                  }
+                ]
+              },
+              "caseworker": {
+                "nullable": true,
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/User"
+                  }
+                ]
+              },
+              "contacts": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/Contact"
+                }
+              },
+              "notes": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/Note"
+                }
+              },
+              "regionalDeliveryOfficer": {
+                "nullable": true,
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/User"
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      },
+      "TaskDataId": {
         "type": "object",
-        "x-abstract": true,
         "additionalProperties": false,
         "properties": {
-          "domainEvents": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/IDomainEvent"
-            }
+          "value": {
+            "type": "string",
+            "format": "guid"
           }
         }
       },
-      "IDomainEvent": {
-        "type": "object",
-        "x-abstract": true,
-        "additionalProperties": false,
-        "properties": {
-          "occurredOn": {
-            "type": "string",
-            "format": "date-time"
-          }
-        }
+      "ProjectState": {
+        "type": "string",
+        "description": "",
+        "x-enumNames": [
+          "Active",
+          "Completed",
+          "Cancelled"
+        ],
+        "enum": [
+          "Active",
+          "Completed",
+          "Cancelled"
+        ]
       },
       "Contact": {
         "type": "object",
@@ -1008,6 +1356,30 @@
           }
         }
       },
+      "BaseAggregateRoot": {
+        "type": "object",
+        "x-abstract": true,
+        "additionalProperties": false,
+        "properties": {
+          "domainEvents": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/IDomainEvent"
+            }
+          }
+        }
+      },
+      "IDomainEvent": {
+        "type": "object",
+        "x-abstract": true,
+        "additionalProperties": false,
+        "properties": {
+          "occurredOn": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
       "ListAllProjectsResultModel": {
         "type": "object",
         "additionalProperties": false,
@@ -1044,6 +1416,35 @@
           "assignedToFullName": {
             "type": "string",
             "nullable": true
+          }
+        }
+      },
+      "ProjectGroupDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "$ref": "#/components/schemas/ProjectGroupId"
+          },
+          "groupIdentifier": {
+            "type": "string",
+            "nullable": true
+          },
+          "trustUkprn": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/Ukprn"
+              }
+            ]
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
           }
         }
       }

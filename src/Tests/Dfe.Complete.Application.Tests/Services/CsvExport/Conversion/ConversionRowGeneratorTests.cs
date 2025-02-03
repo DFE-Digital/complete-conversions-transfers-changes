@@ -1,8 +1,9 @@
 ﻿using AutoFixture.Xunit2;
+using Dfe.AcademiesApi.Client.Contracts;
 using Dfe.Complete.Application.Common.Models;
 using Dfe.Complete.Application.Services.CsvExport.Builders;
 using Dfe.Complete.Application.Services.CsvExport.Conversion;
-using Dfe.Complete.Application.Services.TrustService;
+using Dfe.Complete.Application.Services.TrustCache;
 using Dfe.Complete.Domain.Entities;
 using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Tests.Common.Customizations.Models;
@@ -14,8 +15,8 @@ namespace Dfe.Complete.Application.Tests.Services.CsvExport.Conversion
     public class ConversionRowGeneratorTests
     {
         [Theory]
-        [CustomAutoData(typeof(TrustDetailsDtoCustomization))]
-        public void RowGeneratesAccountsForBlankData(TrustDetailsDto incomingTrust)
+        [CustomAutoData(typeof(TrustDtoCustomization))]
+        public void RowGeneratesAccountsForBlankData(TrustDto incomingTrust)
         {
             var model = ConversionCsvModelFactory.Make(withAcademy: false,
                                                        withSignificantDateHistory: false,
@@ -55,7 +56,7 @@ namespace Dfe.Complete.Application.Tests.Services.CsvExport.Conversion
             var result = generator.GenerateRow(model).Split(",");
 
             Assert.Equal(model.CurrentSchool.Name, result[0]);
-            Assert.Equal(model.Project.Urn.ToString(), result[1]);
+            Assert.Equal(model.Project.Urn.Value.ToString(), result[1]);
             Assert.Equal("Conversion", result[2]);
             Assert.Equal("unconfirmed", result[3]);
             Assert.Equal("unconfirmed", result[4]);
@@ -64,11 +65,11 @@ namespace Dfe.Complete.Application.Tests.Services.CsvExport.Conversion
             Assert.Equal(model.LocalAuthority.Name, result[7]);
             Assert.Equal(model.CurrentSchool.RegionName, result[8]);
             Assert.Equal(model.CurrentSchool.DioceseName, result[9]);
-            Assert.Equal(model.Project.SignificantDate.Value.ToString("dd/MM/yyyy"), result[10]);
+            Assert.Equal(model.Project.SignificantDate.Value.ToString("yyyy-MM-dd"), result[10]);
             Assert.Equal("unconfirmed", result[11]); 
             Assert.Equal("directive academy order", result[12]);
             Assert.Equal("yes", result[13]);
-            Assert.Equal(model.Project.AdvisoryBoardDate.Value.ToString("dd/MM/yyyy"), result[14]);
+            Assert.Equal(model.Project.AdvisoryBoardDate.Value.ToString("yyyy-MM-dd"), result[14]);
             Assert.Equal("", result[15]);
             Assert.Equal("standard", result[16]);
             Assert.Equal("not applicable", result[17]);
@@ -77,9 +78,9 @@ namespace Dfe.Complete.Application.Tests.Services.CsvExport.Conversion
             Assert.Equal(model.CurrentSchool.TypeName, result[20]);
             Assert.Equal(model.CurrentSchool.AgeRangeLower + "-" + model.CurrentSchool.AgeRangeUpper, result[21]);
             Assert.Equal(model.CurrentSchool.TypeName, result[22]);
-            Assert.Equal("not applicable", result[23]);
-            Assert.Equal("not applicable", result[24]);
-            Assert.Equal("not applicable", result[25]);
+            Assert.Equal("", result[23]);
+            Assert.Equal("", result[24]);
+            Assert.Equal("", result[25]);
             Assert.Equal("", result[26]);
             Assert.Equal("", result[27]);
             Assert.Equal("", result[28]);
@@ -93,7 +94,7 @@ namespace Dfe.Complete.Application.Tests.Services.CsvExport.Conversion
             Assert.Equal(incomingTrust.CompaniesHouseNumber, result[36]);
             Assert.Equal(incomingTrust.Address.Street, result[37]);
             Assert.Equal(incomingTrust.Address.Locality, result[38]);
-            Assert.Equal(incomingTrust.Address.AdditionalLine, result[39]);
+            Assert.Equal(incomingTrust.Address.Additional, result[39]);
             Assert.Equal(incomingTrust.Address.Town, result[40]);
             Assert.Equal(incomingTrust.Address.County, result[41]);
             Assert.Equal(incomingTrust.Address.Postcode, result[42]);
@@ -101,7 +102,7 @@ namespace Dfe.Complete.Application.Tests.Services.CsvExport.Conversion
             Assert.Equal($"{model.CreatedBy.FirstName} {model.CreatedBy.LastName}", result[44]);
             Assert.Equal(model.CreatedBy.Email, result[45]);
             Assert.Equal($"{model.AssignedTo.FirstName} {model.AssignedTo.LastName}", result[46]);
-            Assert.Equal(ProjectTeam.SouthWest.ToDescription(), result[47]);
+            Assert.Equal("South West", result[47]);
             Assert.Equal("", result[48]);
             Assert.Equal("", result[49]);
             Assert.Equal("", result[50]);
@@ -125,8 +126,8 @@ namespace Dfe.Complete.Application.Tests.Services.CsvExport.Conversion
         }
 
         [Theory]
-        [CustomAutoData(typeof(TrustDetailsDtoCustomization))]
-        public void RowGeneratesBasedOnModel(TrustDetailsDto incomingTrust)
+        [CustomAutoData(typeof(TrustDtoCustomization))]
+        public void RowGeneratesBasedOnModel(TrustDto incomingTrust)
         {
             var model = ConversionCsvModelFactory.Make();
 
@@ -150,25 +151,25 @@ namespace Dfe.Complete.Application.Tests.Services.CsvExport.Conversion
             var result = generator.GenerateRow(model).Split(",");
 
             Assert.Equal(model.CurrentSchool.Name, result[0]);
-            Assert.Equal(model.Project.Urn.ToString(), result[1]);
+            Assert.Equal(model.Project.Urn.Value.ToString(), result[1]);
             Assert.Equal("Conversion", result[2]);
             Assert.Equal(model.Academy.Name, result[3]);
-            Assert.Equal(model.Academy.Urn.ToString(), result[4]);
+            Assert.Equal(model.Academy.Urn.Value.ToString(), result[4]);
             Assert.Equal(model.Academy.LocalAuthorityCode + "/" + model.Academy.EstablishmentNumber, result[5]);
             Assert.Equal(incomingTrust.Name, result[6]);
             Assert.Equal(model.LocalAuthority.Name, result[7]);
             Assert.Equal(model.CurrentSchool.RegionName, result[8]);
             Assert.Equal(model.CurrentSchool.DioceseName, result[9]);
-            Assert.Equal(model.SignificantDateHistory.PreviousDate.Value.ToString("dd/MM/yyyy"), result[10]);
-            Assert.Equal(model.Project.SignificantDate.Value.ToString("dd/MM/yyyy"), result[11]);
+            Assert.Equal(model.SignificantDateHistory.PreviousDate.Value.ToString("yyyy-MM-dd"), result[10]);
+            Assert.Equal(model.Project.SignificantDate.Value.ToString("yyyy-MM-dd"), result[11]);
             Assert.Equal("academy order", result[12]);
             Assert.Equal("no", result[13]);
-            Assert.Equal(model.Project.AdvisoryBoardDate.Value.ToString("dd/MM/yyyy"), result[14]);
+            Assert.Equal(model.Project.AdvisoryBoardDate.Value.ToString("yyyy-MM-dd"), result[14]);
             Assert.Equal(model.Project.AdvisoryBoardConditions, result[15]);
             Assert.Equal("commercial", result[16]);
             Assert.Equal(model.ConversionTasks.RiskProtectionArrangementReason, result[17]);
             Assert.Equal("yes", result[18]);
-            Assert.Equal(model.ConversionTasks.ReceiveGrantPaymentCertificateDateReceived?.ToString("dd/MM/yyyy"), result[19]);
+            Assert.Equal(model.ConversionTasks.ReceiveGrantPaymentCertificateDateReceived?.ToString("yyyy-MM-dd"), result[19]);
             Assert.Equal(model.CurrentSchool.TypeName, result[20]);
             Assert.Equal(model.CurrentSchool.AgeRangeLower + "-" + model.CurrentSchool.AgeRangeUpper, result[21]);
             Assert.Equal(model.CurrentSchool.PhaseName, result[22]);
@@ -188,7 +189,7 @@ namespace Dfe.Complete.Application.Tests.Services.CsvExport.Conversion
             Assert.Equal(incomingTrust.CompaniesHouseNumber, result[36]);
             Assert.Equal(incomingTrust.Address.Street, result[37]);
             Assert.Equal(incomingTrust.Address.Locality, result[38]);
-            Assert.Equal(incomingTrust.Address.AdditionalLine, result[39]);
+            Assert.Equal(incomingTrust.Address.Additional, result[39]);
             Assert.Equal(incomingTrust.Address.Town, result[40]);
             Assert.Equal(incomingTrust.Address.County, result[41]);
             Assert.Equal(incomingTrust.Address.Postcode, result[42]);
@@ -196,7 +197,7 @@ namespace Dfe.Complete.Application.Tests.Services.CsvExport.Conversion
             Assert.Equal($"{model.CreatedBy.FirstName} {model.CreatedBy.LastName}", result[44]);
             Assert.Equal(model.CreatedBy.Email, result[45]);
             Assert.Equal($"{model.AssignedTo.FirstName} {model.AssignedTo.LastName}", result[46]);
-            Assert.Equal(ProjectTeam.RegionalCaseWorkerServices.ToDescription(), result[47]);
+            Assert.Equal("Regional casework services", result[47]);
             Assert.Equal(model.MainContact.Name, result[48]);
             Assert.Equal(model.Headteacher.Name, result[49]);
             Assert.Equal("Headteacher", result[50]);

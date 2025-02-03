@@ -1,4 +1,5 @@
 using Azure.Storage.Blobs;
+using Dfe.Complete.Application.Common.Mappers;
 using Dfe.Complete.Authorization;
 using Dfe.Complete.Configuration;
 using Dfe.Complete.Security;
@@ -92,6 +93,9 @@ public class Startup
 
         services.AddApplicationDependencyGroup(Configuration);
         services.AddInfrastructureDependencyGroup(Configuration);
+
+        // AutoMapper
+        services.AddAutoMapper(typeof(AutoMapping));
     }
 
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

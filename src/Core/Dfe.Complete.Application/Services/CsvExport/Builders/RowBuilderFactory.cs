@@ -1,4 +1,5 @@
-﻿using Dfe.Complete.Application.Services.TrustService;
+﻿using Dfe.AcademiesApi.Client.Contracts;
+using Dfe.Complete.Application.Services.TrustCache;
 using Dfe.Complete.Domain.Entities;
 using Dfe.Complete.Domain.ValueObjects;
 using System.Text;
@@ -66,7 +67,7 @@ namespace Dfe.Complete.Application.Services.CsvExport.Builders
             return this;
         }
 
-        public RowBuilder<T> IncomingTrustData(Func<T, Project> project, Func<TrustDetailsDto, string> value)
+        public RowBuilder<T> IncomingTrustData(Func<T, Project> project, Func<TrustDto, string> value)
         {
             _columnBuilders.Add(new IncomingTrustDataBuilder<T>(trustCache, project, value));
             return this;
