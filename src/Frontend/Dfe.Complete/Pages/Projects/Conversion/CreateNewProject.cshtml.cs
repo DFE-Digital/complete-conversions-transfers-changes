@@ -7,6 +7,7 @@ using Dfe.Complete.Application.Projects.Commands.CreateProject;
 using MediatR;
 using Dfe.Complete.Domain.ValueObjects;
 using Microsoft.AspNetCore.Authorization;
+using Dfe.Complete.Extensions;
 
 namespace Dfe.Complete.Pages.Projects.Conversion
 {
@@ -36,7 +37,7 @@ namespace Dfe.Complete.Pages.Projects.Conversion
         public DateTime? AdvisoryBoardDate { get; set; }
 
         [BindProperty] 
-        public string AdvisoryBoardConditions { get; set; }
+        public string? AdvisoryBoardConditions { get; set; }
 
         [BindProperty]
         [Required(ErrorMessage = "Enter a date for the Provisional Conversion Date, like 1 4 2023")]
@@ -61,7 +62,7 @@ namespace Dfe.Complete.Pages.Projects.Conversion
         public bool? IsHandingToRCS { get; set; }
 
         [BindProperty] 
-        public string HandoverComments { get; set; }
+        public string? HandoverComments { get; set; }
 
         [BindProperty]
         [Required(ErrorMessage = "Select directive academy order or academy order, whichever has been used for this conversion")]
@@ -86,22 +87,22 @@ namespace Dfe.Complete.Pages.Projects.Conversion
                 return Page();
             }
 
-            var userAdId = User.Claims.SingleOrDefault(c => c.Type.Contains("objectidentifier"))?.Value;
-            
+            var userAdId = User.GetUserAdId();
+
             var createProjectCommand = new CreateConversionProjectCommand(
                 Urn: new Urn(int.Parse(URN)),
                 SignificantDate: ProvisionalConversionDate.HasValue ? DateOnly.FromDateTime(ProvisionalConversionDate.Value) : default,
                 IsSignificantDateProvisional: true, // will be set to false in the stakeholder kick off task 
                 IncomingTrustSharepointLink: IncomingTrustSharePointLink,
-                EstablishmentSharepointLink: SchoolSharePointLink, //todo: is this correct?
+                EstablishmentSharepointLink: SchoolSharePointLink, 
                 IsDueTo2Ri: IsDueTo2RI ?? false,
                 AdvisoryBoardDate: AdvisoryBoardDate.HasValue ? DateOnly.FromDateTime(AdvisoryBoardDate.Value) : default,
-                AdvisoryBoardConditions: AdvisoryBoardConditions,
+                AdvisoryBoardConditions: AdvisoryBoardConditions ?? string.Empty,
                 IncomingTrustUkprn: new Ukprn(int.Parse(UKPRN)),
                 HasAcademyOrderBeenIssued: DirectiveAcademyOrder ?? default, 
-                GroupReferenceNumber: GroupReferenceNumber,
+                GroupReferenceNumber: GroupReferenceNumber ?? string.Empty,
                 HandingOverToRegionalCaseworkService: IsHandingToRCS ?? default,
-                HandoverComments: HandoverComments, 
+                HandoverComments: HandoverComments ?? string.Empty, 
                 UserAdId: userAdId
             );
 

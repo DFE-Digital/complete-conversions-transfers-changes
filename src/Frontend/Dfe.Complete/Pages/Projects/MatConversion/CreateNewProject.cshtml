@@ -1,4 +1,6 @@
 @page "/projects/conversions/new_mat"
+@using Dfe.Complete.Constants
+@using GovUk.Frontend.AspNetCore.TagHelpers
 @model Dfe.Complete.Pages.Projects.MatConversion.CreateNewProject
 @inject Dfe.Complete.Services.IErrorService ErrorService
 @{
@@ -14,8 +16,14 @@
     const string handingToRSCField = nameof(Model.IsHandingToRCS);
     const string directiveAcademyOrderField = nameof(Model.DirectiveAcademyOrder);
     const string isDueTo2RIField = nameof(Model.IsDueTo2RI);
+    
+    const string backLink = RouteConstants.SelectCreateProjectType;
 }
 
+@section BeforeMain
+{
+    <govuk-back-link href="@backLink" xmlns="http://www.w3.org/1999/html"/>
+}
     <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
             @{
@@ -52,16 +60,16 @@
                     </govuk-input>
 
 
-                    <govuk-input name="@trustRefNumber" input-class="govuk-input--width-20" asp-for="@Model.TrustReferenceNumber">
+                    <govuk-input name="@trustName" input-class="govuk-input--width-20" asp-for="@Model.TrustName">
                         <govuk-input-label class="govuk-label--m">Trust name</govuk-input-label>
                         <govuk-input-hint>
                             <p>
                                 Enter the proposed name for the new trust. This can be changed later on if necessary.
                             </p>
                         </govuk-input-hint>
-                        @if (ErrorService.HasErrorForKey(trustRefNumber))
+                        @if (ErrorService.HasErrorForKey(trustName))
                         {
-                            <govuk-input-error-message>@(ErrorService.GetErrorMessage(trustRefNumber))</govuk-input-error-message>
+                            <govuk-input-error-message>@(ErrorService.GetErrorMessage(trustName))</govuk-input-error-message>
                         }
                     </govuk-input>
 

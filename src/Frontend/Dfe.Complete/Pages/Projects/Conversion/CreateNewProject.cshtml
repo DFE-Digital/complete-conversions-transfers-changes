@@ -1,4 +1,5 @@
 ﻿@page "/projects/conversions/new"
+@using Dfe.Complete.Constants
 @model Dfe.Complete.Pages.Projects.Conversion.CreateNewProjectModel
 @inject Dfe.Complete.Services.IErrorService ErrorService
 @{
@@ -13,6 +14,13 @@
     const string handingToRSCField = nameof(Model.IsHandingToRCS);
     const string directiveAcademyOrderField = nameof(Model.DirectiveAcademyOrder);
     const string isDueTo2RIField = nameof(Model.IsDueTo2RI);
+    
+    const string backLink = RouteConstants.SelectCreateProjectType;
+}
+
+@section BeforeMain
+{
+<govuk-back-link href="@backLink" xmlns="http://www.w3.org/1999/html"/>
 }
 
 <div class="govuk-grid-row">
@@ -74,7 +82,7 @@
                         </govuk-date-input-hint>
                         @if (ErrorService.HasErrorForKey(@advisoryBoardDateField))
                         {
-                        <govuk-date-input-error-message>@(ErrorService.GetErrorMessage(advisoryBoardDateField))</govuk-date-input-error-message>
+                            <govuk-date-input-error-message>@(ErrorService.GetErrorMessage(advisoryBoardDateField))</govuk-date-input-error-message>
                         }
                     </govuk-date-input-fieldset>
                 </govuk-date-input>
@@ -95,7 +103,7 @@
                         </govuk-date-input-hint>
                         @if (ErrorService.HasErrorForKey(@provisionalConversionDateField))
                         {
-                        <govuk-date-input-error-message>@(ErrorService.GetErrorMessage(provisionalConversionDateField))</govuk-date-input-error-message>
+                            <govuk-date-input-error-message>@(ErrorService.GetErrorMessage(provisionalConversionDateField))</govuk-date-input-error-message>
                         }
                     </govuk-date-input-fieldset>
                 </govuk-date-input >
@@ -130,7 +138,7 @@
                         <govuk-radios-fieldset-legend class="govuk-fieldset__legend--m">
                             Are you handing this project over to RCS (Regional Casework Services)?
                         </govuk-radios-fieldset-legend>
-                        
+
                         @if (ErrorService.HasErrorForKey(handingToRSCField))
                         {
                             <govuk-radios-error-message>@(ErrorService.GetErrorMessage(handingToRSCField))</govuk-radios-error-message>
@@ -171,7 +179,7 @@
 
                         @if (ErrorService.HasErrorForKey(directiveAcademyOrderField))
                         {
-                        <govuk-radios-error-message>@(ErrorService.GetErrorMessage(directiveAcademyOrderField))</govuk-radios-error-message>
+                            <govuk-radios-error-message>@(ErrorService.GetErrorMessage(directiveAcademyOrderField))</govuk-radios-error-message>
                         }
 
                         @* This value should be enums *@
@@ -192,7 +200,7 @@
 
                         @if (ErrorService.HasErrorForKey(isDueTo2RIField))
                         {
-                        <govuk-radios-error-message>@(ErrorService.GetErrorMessage(isDueTo2RIField))</govuk-radios-error-message>
+                            <govuk-radios-error-message>@(ErrorService.GetErrorMessage(isDueTo2RIField))</govuk-radios-error-message>
                         }
 
                         <govuk-radios-item value="true" checked="@Model.IsDueTo2RI">Yes</govuk-radios-item>

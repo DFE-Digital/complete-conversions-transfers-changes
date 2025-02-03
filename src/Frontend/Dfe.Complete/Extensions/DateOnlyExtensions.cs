@@ -1,27 +1,31 @@
+using System.Globalization;
 using Dfe.Complete.Constants;
 
 namespace Dfe.Complete.Extensions
 {
 	public static class DateOnlyExtensions
 	{
-		public static string ToUkDateString(this DateOnly dateTime) => dateTime.ToString(DateFormatConstants.DateUkFormat);
+		// State the explicit culture so that the functions work correctly in all environments
+		// TODO: Fix global culture
+		private static readonly CultureInfo GbCulture = new("en-GB");
+		public static string ToUkDateString(this DateOnly dateOnly) => dateOnly.ToString(DateFormatConstants.DateUkFormat, GbCulture);
 
-		public static string ToDateString(this DateOnly? dateTime, bool includeDayOfWeek = false)
+		public static string ToDateString(this DateOnly? dateOnly, bool includeDayOfWeek = false)
 		{
-			if (!dateTime.HasValue)
+			if (!dateOnly.HasValue)
 			{
 				return string.Empty;
 			}
-			return ToDateString(dateTime.Value, includeDayOfWeek);
+			return ToDateString(dateOnly.Value, includeDayOfWeek);
 		}
 
-		public static string ToDateString(this DateOnly dateTime, bool includeDayOfWeek = false)
+		public static string ToDateString(this DateOnly dateOnly, bool includeDayOfWeek = false)
 		{
 			if (includeDayOfWeek)
 			{
-				return dateTime.ToString(DateFormatConstants.DateWithDayOfTheWeek);
+				return dateOnly.ToString(DateFormatConstants.DateWithDayOfTheWeek, GbCulture);
 			}
-			return dateTime.ToString(DateFormatConstants.DateWithoutDayOfTheWeek);
+			return dateOnly.ToString(DateFormatConstants.DateWithoutDayOfTheWeek, GbCulture);
 		}
 
 		public static DateOnly FirstOfMonth(this DateOnly thisMonth, int monthsToAdd)
@@ -32,14 +36,14 @@ namespace Dfe.Complete.Extensions
 			return new DateOnly(thisMonth.Year + yearsToAdd, month, 1);
 		}
 
-        public static string ToDateMonthYearString(this DateOnly? dateTime)
+        public static string ToDateMonthYearString(this DateOnly? dateOnly)
         {
-			if (!dateTime.HasValue)
+			if (!dateOnly.HasValue)
 			{
 				return string.Empty;
 			}
 
-            return dateTime.Value.ToString(DateFormatConstants.MonthAndYearFormat);
+            return dateOnly.Value.ToString(DateFormatConstants.MonthAndYearFormat, GbCulture);
         }
     }
 }

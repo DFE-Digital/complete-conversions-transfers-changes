@@ -524,9 +524,12 @@
             ]
           },
           "tasksDataId": {
-            "type": "string",
-            "format": "guid",
-            "nullable": true
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/TaskDataId"
+              }
+            ]
           },
           "tasksDataType": {
             "nullable": true,
@@ -605,8 +608,7 @@
             "nullable": true
           },
           "state": {
-            "type": "integer",
-            "format": "int32"
+            "$ref": "#/components/schemas/ProjectState"
           },
           "prepareId": {
             "type": "integer",
@@ -715,6 +717,16 @@
           "SouthWest"
         ]
       },
+      "TaskDataId": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "value": {
+            "type": "string",
+            "format": "guid"
+          }
+        }
+      },
       "TaskType": {
         "type": "string",
         "description": "",
@@ -770,6 +782,20 @@
             "format": "guid"
           }
         }
+      },
+      "ProjectState": {
+        "type": "string",
+        "description": "",
+        "x-enumNames": [
+          "Active",
+          "Completed",
+          "Cancelled"
+        ],
+        "enum": [
+          "Active",
+          "Completed",
+          "Cancelled"
+        ]
       },
       "ProjectGroupId": {
         "type": "object",
@@ -1227,30 +1253,6 @@
               }
             }
           }
-        ]
-      },
-      "TaskDataId": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-          "value": {
-            "type": "string",
-            "format": "guid"
-          }
-        }
-      },
-      "ProjectState": {
-        "type": "string",
-        "description": "",
-        "x-enumNames": [
-          "Active",
-          "Completed",
-          "Cancelled"
-        ],
-        "enum": [
-          "Active",
-          "Completed",
-          "Cancelled"
         ]
       },
       "Contact": {

@@ -46,7 +46,7 @@ namespace Dfe.Complete.Application.Projects.Models
 
         public Urn? AcademyUrn { get; set; }
 
-        public Guid? TasksDataId { get; set; }
+        public TaskDataId? TasksDataId { get; set; }
 
         public TaskType? TasksDataType { get; set; }
 
@@ -72,7 +72,7 @@ namespace Dfe.Complete.Application.Projects.Models
 
         public string? NewTrustName { get; set; }
 
-        public int State { get; set; }
+        public ProjectState State { get; set; }
 
         public int? PrepareId { get; set; }
 

@@ -4,6 +4,8 @@ using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Domain.Interfaces.Repositories;
 using Dfe.Complete.Domain.Entities;
 using Dfe.Complete.Utils;
+using Dfe.Complete.Application.Projects.Queries.GetProject;
+using Dfe.Complete.Application.Projects.Queries.GetUser;
 
 namespace Dfe.Complete.Application.Projects.Commands.CreateProject
 {
@@ -26,16 +28,22 @@ namespace Dfe.Complete.Application.Projects.Commands.CreateProject
     public class CreateConversionProjectCommandHandler(
         ICompleteRepository<Project> projectRepository,
         ICompleteRepository<ConversionTasksData> conversionTaskRepository,
-        ICompleteRepository<ProjectGroup> projectGroupRepository,
-        ICompleteRepository<User> userRepository)
+        ISender sender)
         : IRequestHandler<CreateConversionProjectCommand, ProjectId>
     {
         public async Task<ProjectId> Handle(CreateConversionProjectCommand request, CancellationToken cancellationToken)
         {
             // The user Team should be moved as a Claim or Group to the Entra (MS AD)
-            var projectUser = await GetUserByAdId(request.UserAdId);
+            var userRequest = await sender.Send(new GetUserByAdIdQuery(request.UserAdId), cancellationToken);
 
-            var projectUserTeam = projectUser.Team;
+            if (!userRequest.IsSuccess)
+            {
+                throw new Exception($"User retrieval failed: {userRequest.Error}");
+            }
+
+            var projectUser = userRequest.Value;
+
+            var projectUserTeam = projectUser?.Team;
             var projectUserId = projectUser?.Id;
 
             var projectTeam = EnumExtensions.FromDescription<ProjectTeam>(projectUserTeam);
@@ -47,7 +55,14 @@ namespace Dfe.Complete.Application.Projects.Commands.CreateProject
 
             var conversionTask = new ConversionTasksData(new TaskDataId(conversionTaskId), createdAt, createdAt);
 
-            var groupId = await GetProjectGroupIdByIdentifierAsync(request.GroupReferenceNumber);
+            var projectGroupRequest = await sender.Send(new GetProjectGroupByGroupReferenceNumberQuery(request.GroupReferenceNumber), cancellationToken);
+
+            if (!projectGroupRequest.IsSuccess)
+            {
+                throw new Exception($"Project Group retrieval failed: {projectGroupRequest.Error}");
+            }
+
+            var groupId = projectGroupRequest.Value?.Id;
 
             ProjectTeam team;
             DateTime? assignedAt = null;
@@ -94,9 +109,5 @@ namespace Dfe.Complete.Application.Projects.Commands.CreateProject
 
             return project.Id;
         }
-
-        private async Task<User> GetUserByAdId(string? userAdId) => await userRepository.FindAsync(x => x.ActiveDirectoryUserId == userAdId);
-
-        private async Task<ProjectGroupId> GetProjectGroupIdByIdentifierAsync(string groupReferenceNumber) => (await projectGroupRepository.FindAsync(x => x.GroupIdentifier == groupReferenceNumber)).Id;
     }
 }

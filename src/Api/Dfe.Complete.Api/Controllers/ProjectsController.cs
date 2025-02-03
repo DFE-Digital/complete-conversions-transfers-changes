@@ -6,7 +6,6 @@ using Swashbuckle.AspNetCore.Annotations;
 using Dfe.Complete.Application.Projects.Commands.CreateProject;
 using Dfe.Complete.Application.Projects.Model;
 using Dfe.Complete.Application.Projects.Queries.CountAllProjects;
-using Dfe.Complete.Domain.Entities;
 using Dfe.Complete.Application.Projects.Queries.GetProject;
 using Dfe.Complete.Application.Projects.Queries.ListAllProjects;
 using Dfe.Complete.Application.Projects.Models;

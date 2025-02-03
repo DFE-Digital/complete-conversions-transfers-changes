@@ -3,16 +3,12 @@ using AutoFixture.Xunit2;
 using DfE.CoreLibs.Testing.AutoFixture.Attributes;
 using NSubstitute;
 using DfE.CoreLibs.Testing.AutoFixture.Customizations;
-using DfE.CoreLibs.Caching.Interfaces;
-using Dfe.Complete.Application.Common.Models;
-using DfE.CoreLibs.Caching.Helpers;
 using Dfe.Complete.Application.Projects.Interfaces;
 using Dfe.Complete.Application.Projects.Model;
-using Dfe.Complete.Application.Projects.Queries.CountAllProjects;
 using Dfe.Complete.Application.Projects.Queries.ListAllProjects;
 using Dfe.Complete.Tests.Common.Customizations.Models;
-using Dfe.Complete.Tests.Common.Customizations.Queries;
 using MockQueryable;
+using NSubstitute.ExceptionExtensions;
 
 namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
 {
@@ -134,7 +130,34 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
 
             // Assert
             Assert.NotNull(result);
+            Assert.True(result.IsSuccess);
             Assert.Equal(0, result.Value?.Count);
+        }
+        
+        [Theory]
+        [CustomAutoData(
+            typeof(OmitCircularReferenceCustomization),
+            typeof(ListAllProjectsQueryModelCustomization),
+            typeof(DateOnlyCustomization))]
+        public async Task Handle_ShouldReturnUnsuccessful_WhenAnErrorOccurs(
+            [Frozen] IListAllProjectsQueryService mockEstablishmentQueryService,
+            ListAllProjectsQueryHandler handler)
+        {
+            // Arrange
+            var errorMessage = "This is a test";
+            
+            var query = new ListAllProjectsQuery(null, null);
+
+            mockEstablishmentQueryService.ListAllProjects(query.ProjectStatus, query.Type)
+                .Throws(new Exception(errorMessage));
+
+            // Act
+            var result = await handler.Handle(query, default);
+
+            // Assert
+            Assert.NotNull(result);
+            Assert.False(result.IsSuccess);
+            Assert.Equal(errorMessage, result.Error);
         }
     }
 }

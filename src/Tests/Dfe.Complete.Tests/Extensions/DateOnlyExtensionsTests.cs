@@ -33,12 +33,14 @@ public class DateOnlyExtensionsTests
     {
         Assert.Equal(expected, new DateOnly(year, month, date).ToDateString(true));
     }
-    
-    [Fact]
-    public void ToDateString_ReturnsEmptyString_WhenDateOnlyIsNull()
+
+    [Theory]
+    [InlineData(true)]
+    [InlineData(false)]
+    public void ToDateString_ReturnsEmptyString_WhenDateOnlyIsNull(bool includeDayOfWeek)
     {
         DateOnly? test = null;
-        Assert.Equal(string.Empty, test.ToDateString(true));
+        Assert.Equal(string.Empty, test.ToDateString(includeDayOfWeek));
     }
     
     [Theory]
@@ -46,6 +48,8 @@ public class DateOnlyExtensionsTests
     [InlineData(31,12,9998, 1, 1, 9999)]
     [InlineData(1,1,1, 10, 11)]
     [InlineData(10,9,1990, 200, 5, 2007)]
+    [InlineData(10, 12, 2025, 0, 12)]
+
     public void FirstOfMonth_ReturnsTheCorrectDateOnly(int testDate, int testMonth, int testYear, int monthsToAdd, int expectedMonth, int? expectedYear = null)
     {
         Assert.Equal(new DateOnly(expectedYear ?? testYear, expectedMonth, 1), new DateOnly(testYear, testMonth, testDate).FirstOfMonth(monthsToAdd));

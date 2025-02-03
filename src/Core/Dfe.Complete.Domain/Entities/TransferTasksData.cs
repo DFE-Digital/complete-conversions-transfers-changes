@@ -3,8 +3,7 @@ using Dfe.Complete.Domain.ValueObjects;
 using System;
 using System.Collections.Generic;
 
-namespace Dfe.Complete.Infrastructure.Models;
-// Same here missing implementation of IEntity
+namespace Dfe.Complete.Domain.Entities;
 
 public class TransferTasksData : BaseAggregateRoot, IEntity<TaskDataId>
 {

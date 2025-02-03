@@ -2,7 +2,7 @@ using DfE.CoreLibs.Testing.AutoFixture.Attributes;
 using Dfe.Complete.Domain.ValueObjects;
 using Dfe.Complete.Tests.Common.Customizations.Models;
 using DfE.CoreLibs.Testing.AutoFixture.Customizations;
-using Dfe.Complete.Infrastructure.Models;
+using Dfe.Complete.Domain.Entities;
 
 namespace Dfe.Complete.Domain.Tests.Aggregates
 {
