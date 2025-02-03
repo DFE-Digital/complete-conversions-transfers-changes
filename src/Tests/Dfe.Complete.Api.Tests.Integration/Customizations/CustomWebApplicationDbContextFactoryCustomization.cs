@@ -2,6 +2,7 @@ using System.Net.Http.Headers;
 using System.Security.Claims;
 using AutoFixture;
 using Dfe.Complete.Api.Client.Extensions;
+using Dfe.Complete.Application.Common.Mappers;
 using Dfe.Complete.Client;
 using Dfe.Complete.Client.Contracts;
 using Dfe.Complete.Infrastructure.Database;
@@ -39,6 +40,11 @@ namespace Dfe.Complete.Api.Tests.Integration.Customizations
 
                         services.AddAuthentication("TestScheme")
                             .AddScheme<AuthenticationSchemeOptions, MockJwtBearerHandler>("TestScheme", options => { });
+
+                        services.AddAutoMapper(cfg =>
+                        {
+                            cfg.AddProfile<AutoMapping>();
+                        });
                     },
                     ExternalHttpClientConfiguration = client =>
                     {

@@ -2,7 +2,6 @@
 using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Domain.ValueObjects;
 using Dfe.Complete.Infrastructure.Database.Interceptors;
-using Dfe.Complete.Infrastructure.Models;
 using Dfe.Complete.Utils;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
