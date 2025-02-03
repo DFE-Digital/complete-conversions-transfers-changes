@@ -17,22 +17,35 @@ public class ListAllProjectsByRegionQueryHandler(IListAllProjectsQueryService li
     {
         try
         {
-            var projectsByRegion = listAllProjectsQueryService
+            var projectsList = await listAllProjectsQueryService
                 .ListAllProjects(request.ProjectStatus, request.Type)
-                .AsEnumerable()
-                .GroupBy(item => item.Project.Region)
-                .Select(group => new
-                {
-                    Region = group.Key,
-                    Items = group.ToList()
-                }).ToList();
+                .ToListAsync(cancellationToken);
             
-            return null;
+            var projectsResultModel = projectsList
+                .GroupBy(p => p.Project.Region)
+                .Select(group => new ListAllProjectsByRegionResultModel(
+                Region: (Region)group.Key, 
+                ConversionsCount: group.Count(p => p.Project?.Type == ProjectType.Conversion),
+                TransfersCount: group.Count(p => p.Project?.Type == ProjectType.Transfer),
+                Projects: group.Select(item => new Model.ListAllProjectsResultModel(
+                    item.Establishment.Name,
+                    item.Project.Id,
+                    item.Project.Urn,
+                    item.Project.SignificantDate,
+                    item.Project.State,
+                    item.Project.Type,
+                    item.Project.IncomingTrustUkprn == null,
+                    item.Project.AssignedTo != null
+                        ? $"{item.Project.AssignedTo.FirstName} {item.Project.AssignedTo.LastName}"
+                        : null)).ToList()
+            )).ToList();
+            
+            return Result<List<ListAllProjectsByRegionResultModel>>.Success(projectsResultModel);
         }
         catch (Exception e)
         {
-            Console.WriteLine(e);
-            throw;
+            return Result<List<ListAllProjectsByRegionResultModel>>.Failure(e.Message);
+
         }
     }
 }

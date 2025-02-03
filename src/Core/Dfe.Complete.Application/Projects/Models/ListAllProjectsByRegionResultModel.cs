@@ -3,4 +3,4 @@ using Dfe.Complete.Domain.Enums;
 
 namespace Dfe.Complete.Application.Projects.Models;
 
-public record ListAllProjectsByRegionResultModel(Region Region, int ConversionsCount, int TransfersCount);
+public record ListAllProjectsByRegionResultModel(Region Region, int ConversionsCount, int TransfersCount, List<ListAllProjectsResultModel> Projects);
