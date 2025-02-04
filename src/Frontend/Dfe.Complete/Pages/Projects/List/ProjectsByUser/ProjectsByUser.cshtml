@@ -3,14 +3,15 @@
 @model Dfe.Complete.Pages.Projects.List.ProjectsByUser.ProjectsByUser
 
 @{
-Layout = "List/ProjectsByUser/_ProjectsByUserLayout";
+  Layout = "List/ProjectsByUser/_ProjectsByUserLayout";
+  ViewData["Title"] = $"Projects for {Model.UserResult.FullName}";
 }
 
 @section PageHeading
 {
-<h1 class="govuk-heading-xl">
-  Project for @Model.UserResult.FullName
-</h1>
+  <h1 class="govuk-heading-xl">
+    Projects for @Model.UserResult.FullName
+  </h1>
 }
 
 <div class="govuk-grid-column-full">
@@ -25,16 +26,16 @@ Layout = "List/ProjectsByUser/_ProjectsByUserLayout";
     </thead>
     <tbody class="govuk-table__body">
 
-    @foreach(var project in Model.UserResult.ProjectsAssigned)
+    @foreach (var project in Model.UserResult.ProjectsAssigned)
     {
-    <tr class="govuk-table__row">
-      <td class="govuk-table__header govuk-table__cell">
-        <a class="govuk-link" href="@AllProjectsModel.GetProjectSummaryUrl(project)">@project.EstablishmentName</a>
-      </td>
-      <td class="govuk-table__cell">@project.Urn.Value</td>
-      <td class="govuk-table__cell">@project.ConversionOrTransferDate.ToDateString()</td>
-      <td class="govuk-table__cell">@project.ProjectType.ToString()</td>
-    </tr>
+      <tr class="govuk-table__row">
+        <td class="govuk-table__header govuk-table__cell">
+          <a class="govuk-link" href="@AllProjectsModel.GetProjectSummaryUrl(project)">@project.EstablishmentName</a>
+        </td>
+        <td class="govuk-table__cell">@project.Urn.Value</td>
+        <td class="govuk-table__cell">@project.ConversionOrTransferDate.ToDateString()</td>
+        <td class="govuk-table__cell">@project.ProjectType.ToString()</td>
+      </tr>
     }
     </tbody>
   </table>

@@ -1,17 +1,20 @@
 ﻿using Dfe.Complete.Application.Users.Models;
 using Dfe.Complete.Application.Users.Queries.ListAllUsers;
 using Dfe.Complete.Domain.Enums;
+using Dfe.Complete.Models;
 using Dfe.Complete.Pages.Pagination;
 using MediatR;
 
 namespace Dfe.Complete.Pages.Projects.List.ProjectsByUser;
 
-public class AllProjectsByUser(ISender sender) : AllProjectsModel
+public class AllProjectsByUser(ISender sender) : AllProjectsModel(ByUserNavigation)
 {
     public List<UserWithProjectsResultModel> Users { get; set; } = default!;
 
-    public async Task OnGet()
+    public new async Task OnGet()
     {
+        ViewData[TabNavigationModel.ViewDataKey] = _TabNavigationModel;
+
         var listProjectQuery = new ListAllUsersWithProjectsQuery { Page = PageNumber - 1, Count = PageSize, State = ProjectState.Active};
 
         var listResponse = await sender.Send(listProjectQuery);
