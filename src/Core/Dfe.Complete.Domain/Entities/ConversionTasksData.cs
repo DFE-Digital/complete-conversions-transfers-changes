@@ -1,4 +1,5 @@
 ﻿using Dfe.Complete.Domain.Common;
+using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Domain.ValueObjects;
 
 namespace Dfe.Complete.Domain.Entities;
@@ -204,7 +205,7 @@ public class ConversionTasksData : BaseAggregateRoot, IEntity<TaskDataId>
 
     public string? AcademyDetailsName { get; set; }
 
-    public string? RiskProtectionArrangementOption { get; set; }
+    public RiskProtectionArrangementOption? RiskProtectionArrangementOption { get; set; }
 
     public bool? CheckAccuracyOfHigherNeedsConfirmNumber { get; set; }
 

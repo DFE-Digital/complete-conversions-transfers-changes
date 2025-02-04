@@ -47,7 +47,7 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
 
     public Urn? AcademyUrn { get; set; }
 
-    public Guid? TasksDataId { get; set; }
+    public TaskDataId? TasksDataId { get; set; }
 
     public TaskType? TasksDataType { get; set; }
 
@@ -128,7 +128,7 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
         UpdatedAt = updatedAt != default ? updatedAt : throw new ArgumentNullException(nameof(updatedAt));
         TasksDataType = taskType;
         Type = projectType; //TOD EA: Comeback and validate the rest
-        TasksDataId = tasksDataId;
+        TasksDataId = new TaskDataId(tasksDataId);
         SignificantDate = significantDate;
         SignificantDateProvisional = isSignificantDateProvisional;
         IncomingTrustUkprn = incomingTrustUkprn;

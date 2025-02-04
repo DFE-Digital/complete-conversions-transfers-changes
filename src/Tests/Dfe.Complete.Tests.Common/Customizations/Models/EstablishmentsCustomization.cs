@@ -7,25 +7,16 @@ namespace Dfe.Complete.Tests.Common.Customizations.Models
 {
     public class EstablishmentsCustomization : ICustomization
     {
-        public string? EstablishmentName { get; set; }
+        public Urn? Urn { get; set; }
 
         public void Customize(IFixture fixture)
         {
+            fixture.Customizations.Add(new UrnSpecimen());
+
             fixture
                 .Customize(new CompositeCustomization(
-                   new UrnCustomization(),
                    new DateOnlyCustomization()))
-                .Customize<GiasEstablishment>(composer => composer
-             .With(x => x.Name, EstablishmentName ?? fixture.Create<string>()));
-        }
-    }
-
-    public static class FixtureExtensions
-    {
-        public static Urn CreateUrn(this IFixture fixture)
-        {
-            var urn = new Urn(fixture.Create<int>() % (99999 - 10000 + 1) + 10000);
-            return urn;
+                .Customize<GiasEstablishment>(composer => composer);
         }
     }
 }

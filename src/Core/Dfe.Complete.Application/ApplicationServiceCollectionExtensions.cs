@@ -1,8 +1,16 @@
+using Dfe.AcademiesApi.Client.Contracts;
+using Dfe.AcademiesApi.Client;
 using Dfe.Complete.Application.Common.Behaviours;
+using Dfe.Complete.Application.Common.Models;
+using Dfe.Complete.Application.Services.CsvExport;
+using Dfe.Complete.Application.Services.CsvExport.Builders;
+using Dfe.Complete.Application.Services.CsvExport.Conversion;
+using Dfe.TramsDataApi.Client.Extensions;
 using FluentValidation;
 using MediatR;
 using Microsoft.Extensions.Configuration;
 using System.Reflection;
+using Dfe.Complete.Application.Services.TrustCache;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
@@ -15,6 +23,8 @@ namespace Microsoft.Extensions.DependencyInjection
 
             services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
 
+            services.AddAcademiesApiClient<ITrustsV4Client, TrustsV4Client>(config);
+
             services.AddMediatR(cfg =>
             {
                 cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly());
@@ -26,6 +36,12 @@ namespace Microsoft.Extensions.DependencyInjection
                     cfg.AddBehavior(typeof(IPipelineBehavior<,>), typeof(PerformanceBehaviour<,>));
                 }
             });
+
+            services.AddScoped<ICSVFileContentGenerator<ConversionCsvModel>, CSVFileContentGenerator<ConversionCsvModel>>();
+            services.AddScoped<ITrustCache, TrustCacheService>();
+            services.AddScoped<IRowBuilderFactory<ConversionCsvModel>, RowBuilderFactory<ConversionCsvModel>>();
+            services.AddScoped<IRowGenerator<ConversionCsvModel>, ConversionRowGenerator>();
+            services.AddScoped<IHeaderGenerator<ConversionCsvModel>, ConversionRowGenerator>();
 
             services.AddBackgroundService();
 
