@@ -8,7 +8,7 @@ public record UserWithProjectsResultModel(
     UserId Id,
     string FullName,
     string? Email,
-    string? Team,
+    ProjectTeam? Team,
     List<ListAllProjectsResultModel> ProjectsAssigned,
     int ConversionProjectsAssigned,
     int TransferProjectsAssigned);

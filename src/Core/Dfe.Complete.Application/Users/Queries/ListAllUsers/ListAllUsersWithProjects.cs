@@ -5,6 +5,7 @@ using Dfe.Complete.Application.Users.Models;
 using Dfe.Complete.Domain.Entities;
 using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Domain.Interfaces.Repositories;
+using Dfe.Complete.Utils;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
@@ -36,7 +37,7 @@ public class ListAllUsersWithProjectsHandler(ICompleteRepository<User> users)
                         user.Id,
                         $"{user.FirstName} {user.LastName}",
                         user.Email,
-                        user.Team,
+                        EnumExtensions.FromDescription<ProjectTeam>(user.Team),
                         user.ProjectAssignedTos
                             .Where(project => request.State == null || project.State == request.State).Select(project =>
                                 new ListAllProjectsResultModel(
