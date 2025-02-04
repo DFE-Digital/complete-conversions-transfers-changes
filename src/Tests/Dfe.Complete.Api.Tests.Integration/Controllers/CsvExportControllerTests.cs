@@ -9,6 +9,7 @@ using Dfe.Complete.Tests.Common.Customizations.Models;
 using DfE.CoreLibs.Testing.AutoFixture.Attributes;
 using DfE.CoreLibs.Testing.AutoFixture.Customizations;
 using DfE.CoreLibs.Testing.Mocks.WebApplicationFactory;
+using System.IO;
 
 namespace Dfe.Complete.Api.Tests.Integration.Controllers
 {
@@ -150,8 +151,6 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers
             projectContacts.ForEach(c => c.Id = new ContactId(Guid.NewGuid()));
             projectContacts.ForEach(c => c.ProjectId = project.Id);
 
-            
-            
             dbContext.Contacts.AddRange(projectContacts);
 
             var significantDateHistory = fixture.Customize(
@@ -161,7 +160,6 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers
                 }
                 ).Create<SignificantDateHistory>();
 
-
             dbContext.SignificantDateHistories.Add(significantDateHistory);
 
             await dbContext.SaveChangesAsync();
@@ -169,8 +167,15 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers
             // Act
             var results = await csvExportClient.GetConversionCsvByMonthAsync(1, 2025);
 
+            StreamReader reader = new StreamReader(results.Stream);
+            string fileContents = reader.ReadToEnd();
+
             // Assert
-            Assert.NotNull(results);
+            Assert.NotNull(fileContents);
+
+            var lines = fileContents.Split("\n");
+
+            Assert.Equal(3, lines.Length);
         }
 
         [Theory]
@@ -263,8 +268,17 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers
             // Act
             var results = await csvExportClient.GetConversionCsvByMonthAsync(1, 2025);
 
-            // Assert
             Assert.NotNull(results);
+
+            StreamReader reader = new StreamReader(results.Stream);
+            string fileContents = reader.ReadToEnd();
+
+            // Assert
+            Assert.NotNull(fileContents);
+
+            var lines = fileContents.Split("\n");
+
+            Assert.Equal(3, lines.Length);
         }
     }
 }
