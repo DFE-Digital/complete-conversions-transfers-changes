@@ -1,6 +1,5 @@
 ﻿using Dfe.Complete.Application.Common.Models;
 using Dfe.Complete.Application.Projects.Interfaces.CsvExport;
-using Dfe.Complete.Application.Projects.Model;
 using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Infrastructure.Database;
 
