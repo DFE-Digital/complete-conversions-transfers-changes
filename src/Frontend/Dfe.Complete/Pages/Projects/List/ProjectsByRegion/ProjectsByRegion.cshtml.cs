@@ -1,8 +1,10 @@
 using Dfe.Complete.Application.Projects.Model;
+using Dfe.Complete.Application.Projects.Queries.ListAllProjects;
 using Dfe.Complete.Application.Projects.Queries.ListAllProjectsByRegion;
 using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Pages.Pagination;
 using Dfe.Complete.Utils;
+using DocumentFormat.OpenXml.Wordprocessing;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -19,9 +21,9 @@ public class ProjectsByRegion(ISender sender) : PageModel
     
     public PaginationModel Pagination { get; set; } = default!;
 
-    public const int PageSize = 20;
+    public int PageSize = 20;
 
-    public List<ListAllProjectsResultModel>? ProjectsForRegion { get; set; }
+    public List<ListAllProjectsResultModel>? Projects { get; set; }
     
     public async Task OnGet()
     {
@@ -35,8 +37,10 @@ public class ProjectsByRegion(ISender sender) : PageModel
             .FirstOrDefault(p => p.Region == parsedRegion)
             .Projects
             .ToList();
+
+        var currentPagePos = PageNumber - 1;
         
-        ProjectsForRegion = projectsForRegion.Skip(PageNumber - 1 * PageSize).Take(projectsForRegion.Count).ToList();
+        Projects = projectsForRegion.Skip(currentPagePos * PageSize).Take(PageSize).ToList();
         
         Pagination = new PaginationModel($"/projects/all/regions/{Region}", PageNumber, projectsForRegion.Count, PageSize);
     }
