@@ -1,4 +1,5 @@
-﻿@{
+﻿@model Dfe.Complete.Pages.Projects.List.AllProjectsModel
+@{
   Layout = "Shared/_Layout";
 }
 
@@ -43,3 +44,8 @@
   </div>
 }
 @RenderBody()
+
+@if (Model.Pagination != null)
+{
+  @await Html.PartialAsync("/Pages/Pagination/_Pagination.cshtml", model: Model.Pagination)
+}

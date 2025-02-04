@@ -4,12 +4,10 @@ using Dfe.Complete.Application.Projects.Queries.ListAllProjects;
 using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Pages.Pagination;
 using MediatR;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace Dfe.Complete.Pages.Projects.List.ProjectsInProgress
 {
-    public class TransferProjectsInProgressInProgressModel(ISender sender) : ProjectsInProgressViewModel
+    public class TransferProjectsInProgressInProgressModel(ISender sender) : AllProjectsModel
     {
 
         public List<ListAllProjectsResultModel> Projects { get; set; } = default!;

@@ -1,4 +1,4 @@
-﻿@model Dfe.Complete.Pages.Projects.List.ProjectsInProgress.ProjectsInProgressViewModel
+﻿@model Dfe.Complete.Pages.Projects.List.AllProjectsModel
 @{
   Layout = "List/_AllProjectsLayout";
 }
@@ -30,5 +30,3 @@
 <div class="govuk-grid-row">
   @RenderBody()
 </div>
-
-@await Html.PartialAsync("/Pages/Pagination/_Pagination.cshtml", model: Model.Pagination)
