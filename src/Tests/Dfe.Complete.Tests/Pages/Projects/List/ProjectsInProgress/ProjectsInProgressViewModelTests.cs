@@ -2,6 +2,7 @@
 using Dfe.Complete.Application.Projects.Model;
 using Dfe.Complete.Constants;
 using Dfe.Complete.Domain.Enums;
+using Dfe.Complete.Pages.Projects.List;
 using Dfe.Complete.Pages.Projects.List.ProjectsInProgress;
 using Dfe.Complete.Tests.Common.Customizations.Models;
 
@@ -22,7 +23,7 @@ public class ProjectsInProgressViewModelTests
         string expectedUrl = string.Format(RouteConstants.ConversionProjectTaskList, project.ProjectId);
 
         // Act
-        var result = ProjectsInProgressViewModel.GetProjectSummaryUrl(project);
+        var result = ProjectSummaryUrl.GetUrl(project);
 
         // Assert
         Assert.Equal(expectedUrl, result);
@@ -41,7 +42,7 @@ public class ProjectsInProgressViewModelTests
         string expectedUrl = string.Format(RouteConstants.TransferProjectTaskList, project.ProjectId);
 
         // Act
-        var result = ProjectsInProgressViewModel.GetProjectSummaryUrl(project);
+        var result = ProjectSummaryUrl.GetUrl(project);
 
         // Assert
         Assert.Equal(expectedUrl, result);

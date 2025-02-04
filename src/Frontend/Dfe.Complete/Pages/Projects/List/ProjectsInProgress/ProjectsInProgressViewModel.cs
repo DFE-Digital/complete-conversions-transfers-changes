@@ -14,9 +14,4 @@ public class ProjectsInProgressViewModel : PageModel
     public PaginationModel Pagination { get; set; } = default!;
     
     internal int PageSize = 20;
-
-    public static string GetProjectSummaryUrl(ListAllProjectsResultModel project)
-    {
-        return string.Format(project.ProjectType == ProjectType.Conversion ? RouteConstants.ConversionProjectTaskList : RouteConstants.TransferProjectTaskList, project.ProjectId);
-    }
 }
