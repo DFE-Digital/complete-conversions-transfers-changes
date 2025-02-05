@@ -25,13 +25,6 @@ namespace Dfe.Complete.Application.Projects.Queries.Csv
             await trustCache.HydrateCache(result.Select(x => x.Project.IncomingTrustUkprn));
             var contents = generator.Generate(result);
             return Result<string?>.Success(contents);
-            //return Result<string?>.Success("");
-            //    return Result<Project?>.Success(result);
-            //}
-            //catch (Exception ex)
-            //{
-            //    return Result<Project?>.Failure(ex.Message);
-            //}
         }
     }
 }

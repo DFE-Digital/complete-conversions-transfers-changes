@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Dfe.Complete.Application.Services.CsvExport.Builders
 {
-    public class RPAOptionBuilder<T>(Func<T, RiskProtectionArrangementOption?> selector) : IColumnBuilder<T>
+    public class RPAOptionBuilder<T>(Func<T, RiskProtectionArrangementOption?> selector) : IColumnBuilder<T> where T : class
     {
         public string Build(T value)
         {
