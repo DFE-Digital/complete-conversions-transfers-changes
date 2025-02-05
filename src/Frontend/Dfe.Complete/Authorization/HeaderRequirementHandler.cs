@@ -1,4 +1,6 @@
+using System.Security.Claims;
 using System.Threading.Tasks;
+using Dfe.Complete.UserContext;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authorization.Infrastructure;
 using Microsoft.AspNetCore.Http;
@@ -28,6 +30,21 @@ namespace Dfe.Complete.Authorization
         {
             if (AutomationHandler.ClientSecretHeaderValid(_environment, _httpContextAccessor, _configuration))
             {
+                var simpleHeaders = _httpContextAccessor.HttpContext.Request.Headers
+                    .Select(X => new KeyValuePair<string, string>(X.Key, X.Value.First()))
+                    .ToArray();
+
+                var userInfo = UserInfo.FromHeaders(simpleHeaders);
+
+                var currentUser = context.User.Identities.FirstOrDefault();
+
+                currentUser?.AddClaim(new Claim(ClaimTypes.Name, userInfo.Name));
+
+                foreach (var claim in userInfo.Roles)
+                {
+                    currentUser?.AddClaim(new Claim(ClaimTypes.Role, claim));
+                }
+
                 context.Succeed(requirement);
             }
 

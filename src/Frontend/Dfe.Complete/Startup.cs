@@ -81,7 +81,7 @@ public class Startup
         services.AddApplicationInsightsTelemetry();
 
         services.AddSingleton<IAuthorizationHandler, HeaderRequirementHandler>();
-        services.AddSingleton<IAuthorizationHandler, ClaimsRequirementHandler>();
+       // services.AddSingleton<IAuthorizationHandler, ClaimsRequirementHandler>();
 
         System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
 
