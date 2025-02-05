@@ -19,7 +19,7 @@ namespace Dfe.Complete.Application.Projects.Queries.ProjectsByRegion
                 var result = await listAllProjectsQueryService
                     .ListAllProjects(request.ProjectStatus, request.Type).ToListAsync(cancellationToken: cancellationToken);
 
-                var count = result.Count(p => p.Project.Region == request.Region);
+                var count = result.Count(p => p.Project?.Region == request.Region);
                 
                 return Result<int>.Success(count);
             }
