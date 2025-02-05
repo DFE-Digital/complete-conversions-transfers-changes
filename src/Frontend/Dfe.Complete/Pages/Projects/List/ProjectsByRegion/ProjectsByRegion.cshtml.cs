@@ -11,38 +11,36 @@ namespace Dfe.Complete.Pages.Projects.List.ProjectsByRegion;
 
 public class ProjectsByRegion(ISender sender) : PageModel
 {
-    [BindProperty(SupportsGet = true)]
-    public string? Region { get; set; }
-    
-    [BindProperty(SupportsGet = true)]
-    public int PageNumber { get; set; } = 1;
-    
+    [BindProperty(SupportsGet = true)] public string? Region { get; set; }
+
+    [BindProperty(SupportsGet = true)] public int PageNumber { get; set; } = 1;
+
     public PaginationModel Pagination { get; set; } = default!;
 
     public int PageSize = 20;
 
     public List<ListAllProjectsResultModel>? Projects { get; set; }
-    
+
     public async Task OnGet()
     {
-        var listProjectsByRegionQuery = new ListAllProjectsByRegionQuery(ProjectState.Active, null);
-        
-        var result = await sender.Send(listProjectsByRegionQuery);
-        
         var parsedRegion = Region.FromDescriptionValue<Region>();
-        
-        var projectsForRegion = result.Value
-            .FirstOrDefault(p => p.Region == parsedRegion)
-            .Projects
-            .ToList();
 
-        var currentPagePos = PageNumber - 1;
+        var listProjectsForRegion =
+            new ListAllProjectsForRegionQuery(parsedRegion, ProjectState.Active, null, PageNumber - 1, PageSize);
+        var listProjectsForRegionResult = await sender.Send(listProjectsForRegion);
         
-        Projects = projectsForRegion.Skip(currentPagePos * PageSize).Take(PageSize).ToList();
+        var listProjectsByRegionQuery = new ListAllProjectsByRegionQuery(ProjectState.Active, null);
+        var listProjectsByRegionQueryResult = await sender.Send(listProjectsByRegionQuery);
+        var projectForRegion = listProjectsByRegionQueryResult.Value
+            .SingleOrDefault(x => x.Region == parsedRegion);
+
+        var projectCountForRegion = projectForRegion.ConversionsCount + projectForRegion.TransfersCount; 
         
-        Pagination = new PaginationModel($"/projects/all/regions/{Region}", PageNumber, projectsForRegion.Count, PageSize);
+        Projects = listProjectsForRegionResult.Value;
+        
+        Pagination = new PaginationModel($"/projects/all/regions/{Region}", PageNumber, projectCountForRegion, PageSize);
     }
-    
+
     public async Task OnGetMovePage()
     {
         await OnGet();
