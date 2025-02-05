@@ -11,7 +11,7 @@ namespace Dfe.Complete.Pages.Projects.List;
 
 public abstract class AllProjectsModel(string currentNavigation) : PageModel
 { 
-    protected TabNavigationModel _TabNavigationModel = new(TabNavigationModel.AllProjectsTabName);
+    protected TabNavigationModel AllProjectsTabNavigationModel = new(TabNavigationModel.AllProjectsTabName);
 
     public const string HandoverNavigation = "handover";
     public const string InProgressNavigation= "in-progress";
@@ -23,7 +23,7 @@ public abstract class AllProjectsModel(string currentNavigation) : PageModel
     public const string CompletedNavigation= "Completed";
     public const string StatisticsNavigation= "Statistics";
 
-    public string CurrentNavigationItem = currentNavigation;
+    public string CurrentNavigationItem { get; init; } =  currentNavigation;
     
     [BindProperty(SupportsGet = true)] public int PageNumber { get; set; } = 1;
 

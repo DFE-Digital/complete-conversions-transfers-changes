@@ -14,7 +14,7 @@ namespace Dfe.Complete.Pages.Projects.List.ProjectsInProgress
 
         public async Task OnGet()
         {
-            ViewData[TabNavigationModel.ViewDataKey] = _TabNavigationModel;
+            ViewData[TabNavigationModel.ViewDataKey] = AllProjectsTabNavigationModel;
             
             var listProjectQuery = new ListAllProjectsQuery(ProjectState.Active, null, PageNumber-1, PageSize);
 

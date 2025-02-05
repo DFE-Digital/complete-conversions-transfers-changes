@@ -4,7 +4,7 @@ using Dfe.Complete.Domain.ValueObjects;
 
 namespace Dfe.Complete.Application.Users.Models;
 
-public record UserWithProjectsResultModel(
+public record UserWithProjectsDto(
     UserId Id,
     string FullName,
     string? Email,

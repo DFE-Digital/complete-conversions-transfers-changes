@@ -10,11 +10,11 @@ namespace Dfe.Complete.Pages.Projects.List.ProjectsByUser;
 
 public class ProjectsByUser(ISender sender) : AllProjectsModel(ByUserNavigation)
 {
-    public UserWithProjectsResultModel UserResult { get; set; } = default!;
+    public UserWithProjectsDto UserResult { get; set; } = default!;
 
     public async Task OnGet(string id)
     {
-        ViewData[TabNavigationModel.ViewDataKey] = _TabNavigationModel;
+        ViewData[TabNavigationModel.ViewDataKey] = AllProjectsTabNavigationModel;
 
         var getUserQuery = new GetUserWithProjectsQuery(new UserId(new Guid(id)), ProjectState.Active)
             { Page = PageNumber - 1, Count = PageSize };
