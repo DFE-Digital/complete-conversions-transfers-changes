@@ -1,10 +1,8 @@
 using Dfe.Complete.Application.Projects.Model;
-using Dfe.Complete.Application.Projects.Queries.ListAllProjects;
-using Dfe.Complete.Application.Projects.Queries.ListAllProjectsByRegion;
+using Dfe.Complete.Application.Projects.Queries.ProjectsByRegion;
 using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Pages.Pagination;
 using Dfe.Complete.Utils;
-using DocumentFormat.OpenXml.Wordprocessing;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
