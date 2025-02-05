@@ -34,6 +34,19 @@ jobs:
         key: ${{ runner.os }}-sonar
         restore-keys: ${{ runner.os }}-sonar
 
+    - name: Set Academies API Client credentials
+      working-directory: ./src/Api/Dfe.Complete.Api
+      run: |
+        APP_SETTINGS_FILES=(
+          appsettings.json
+        )
+
+        for app_settings_file in "${APP_SETTINGS_FILES[@]}"
+        do
+          echo "$(cat "$app_settings_file" | jq --arg apikey "${{ secrets.ACADEMIES_API_DEV_KEY }}" '.AcademiesApiClient.ApiKey=$apikey')" > "$app_settings_file"
+          echo "$(cat "$app_settings_file" | jq --arg baseurl "${{ secrets.ACADEMIES_API_DEV_URL }}" '.AcademiesApiClient.BaseUrl=$baseurl')" > "$app_settings_file"
+        done
+
     - name: Install SonarCloud scanners
       run: dotnet tool install --global dotnet-sonarscanner
 
