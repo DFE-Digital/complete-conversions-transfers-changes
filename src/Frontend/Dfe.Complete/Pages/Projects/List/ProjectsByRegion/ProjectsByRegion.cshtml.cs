@@ -25,20 +25,17 @@ public class ProjectsByRegion(ISender sender) : PageModel
     {
         var parsedRegion = Region.FromDescriptionValue<Region>();
 
-        var listProjectsForRegion =
+        var listProjectsForRegionQuery =
             new ListAllProjectsForRegionQuery(parsedRegion, ProjectState.Active, null, PageNumber - 1, PageSize);
-        var listProjectsForRegionResult = await sender.Send(listProjectsForRegion);
-        
-        var listProjectsByRegionQuery = new ListAllProjectsByRegionQuery(ProjectState.Active, null);
-        var listProjectsByRegionQueryResult = await sender.Send(listProjectsByRegionQuery);
-        var projectForRegion = listProjectsByRegionQueryResult.Value
-            .SingleOrDefault(x => x.Region == parsedRegion);
+        var listProjectsForRegionResult = await sender.Send(listProjectsForRegionQuery);
 
-        var projectCountForRegion = projectForRegion.ConversionsCount + projectForRegion.TransfersCount; 
+        var countProjectsForRegionQuery = new CountAllProjectsForRegionQuery(parsedRegion, ProjectState.Active, null);
+
+        var projectCountForRegionResult = await sender.Send(countProjectsForRegionQuery);
         
         Projects = listProjectsForRegionResult.Value;
         
-        Pagination = new PaginationModel($"/projects/all/regions/{Region}", PageNumber, projectCountForRegion, PageSize);
+        Pagination = new PaginationModel($"/projects/all/regions/{Region}", PageNumber, projectCountForRegionResult.Value, PageSize);
     }
 
     public async Task OnGetMovePage()
