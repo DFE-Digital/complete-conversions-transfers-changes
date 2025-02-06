@@ -24,8 +24,8 @@ public class ProjectsByRegion(ISender sender) : AllProjectsModel(ByRegionNavigat
 
     public async Task OnGet()
     {
-        ViewData[TabNavigationModel .ViewDataKey] = AllProjectsTabNavigationModel;
-        
+        ViewData[TabNavigationModel.ViewDataKey] = AllProjectsTabNavigationModel;
+
         var parsedRegion = Region.FromDescriptionValue<Region>();
 
         var listProjectsForRegionQuery =
@@ -34,12 +34,12 @@ public class ProjectsByRegion(ISender sender) : AllProjectsModel(ByRegionNavigat
                 Page = PageNumber - 1,
                 Count = PageSize
             };
-        
+
         var listProjectsForRegionResult = await sender.Send(listProjectsForRegionQuery);
 
         var countProjectsForRegionQuery = new CountAllProjectsForRegionQuery(parsedRegion, ProjectState.Active, null);
 
-        var projectCountForRegionResult = await sender.Send(countProjectsForRegionQuery);
+        await sender.Send(countProjectsForRegionQuery);
 
         Projects = listProjectsForRegionResult.Value;
 
