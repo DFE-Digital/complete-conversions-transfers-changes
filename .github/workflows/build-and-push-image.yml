@@ -64,9 +64,9 @@ jobs:
         ]
         include:
           - image: "web"
-            tag-prefix: ""
+            tag-prefix: "dotnet-"
           - image: "api"
-            tag-prefix: "api-"
+            tag-prefix: "dotnet-api-"
     with:
       environment: ${{ needs.set-env.outputs.environment }}
       docker-image-name: ${{ needs.set-env.outputs.image-name }}
@@ -88,9 +88,9 @@ jobs:
         ]
         include:
           - image: "web"
-            tag-prefix: ""
+            tag-prefix: "dotnet-"
           - image: "api"
-            tag-prefix: "api-"
+            tag-prefix: "dotnet-api-"
     with:
       environment: ${{ needs.set-env.outputs.environment }}
       docker-image-name: ${{ needs.set-env.outputs.image-name }}
@@ -115,10 +115,10 @@ jobs:
         ]
         include:
           - image: "web"
-            tag-prefix: ""
+            tag-prefix: "dotnet-"
             aca_name_secret: "ACA_CONTAINERAPP_NAME"
           - image: "api"
-            tag-prefix: "api-"
+            tag-prefix: "dotnet-api-"
             aca_name_secret: "ACA_CONTAINERAPP_API_NAME"
     with:
       environment: ${{ needs.set-env.outputs.environment }}
