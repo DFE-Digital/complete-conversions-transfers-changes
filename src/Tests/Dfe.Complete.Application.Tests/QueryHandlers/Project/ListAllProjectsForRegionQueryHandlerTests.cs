@@ -78,7 +78,10 @@ public class ListAllProjectsForRegionQueryHandlerTests
             mockListAllProjectsQueryService.ListAllProjects(Arg.Any<ProjectState?>(), Arg.Any<ProjectType?>())
                 .Returns(mock);
             
-            var query = new ListAllProjectsForRegionQuery(Region.London, ProjectState.Active, null, Page: 10);
+            var query = new ListAllProjectsForRegionQuery(Region.London, ProjectState.Active, null)
+            {
+                Page = 10
+            };
             
             var result = await handler.Handle(query, default);
             

@@ -1,6 +1,7 @@
 using Dfe.Complete.Application.Projects.Models;
 using Dfe.Complete.Application.Projects.Queries.ProjectsByRegion;
 using Dfe.Complete.Domain.Enums;
+using Dfe.Complete.Models;
 using Dfe.Complete.Pages.Pagination;
 using Dfe.Complete.Utils;
 using MediatR;
@@ -9,7 +10,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace Dfe.Complete.Pages.Projects.List.ProjectsByRegion;
 
-public class ProjectsByRegion(ISender sender) : PageModel
+public class ProjectsByRegion(ISender sender) : AllProjectsModel(ByRegionNavigation)
 {
     [BindProperty(SupportsGet = true)] public string? Region { get; set; }
 
@@ -23,19 +24,27 @@ public class ProjectsByRegion(ISender sender) : PageModel
 
     public async Task OnGet()
     {
+        ViewData[TabNavigationModel .ViewDataKey] = AllProjectsTabNavigationModel;
+        
         var parsedRegion = Region.FromDescriptionValue<Region>();
 
         var listProjectsForRegionQuery =
-            new ListAllProjectsForRegionQuery(parsedRegion, ProjectState.Active, null, PageNumber - 1, PageSize);
+            new ListAllProjectsForRegionQuery(parsedRegion, ProjectState.Active, null)
+            {
+                Page = PageNumber - 1,
+                Count = PageSize
+            };
+        
         var listProjectsForRegionResult = await sender.Send(listProjectsForRegionQuery);
 
         var countProjectsForRegionQuery = new CountAllProjectsForRegionQuery(parsedRegion, ProjectState.Active, null);
 
         var projectCountForRegionResult = await sender.Send(countProjectsForRegionQuery);
-        
+
         Projects = listProjectsForRegionResult.Value;
-        
-        Pagination = new PaginationModel($"/projects/all/regions/{Region}", PageNumber, projectCountForRegionResult.Value, PageSize);
+
+        Pagination = new PaginationModel($"/projects/all/regions/{Region}", PageNumber,
+            listProjectsForRegionResult.ItemCount, PageSize);
     }
 
     public async Task OnGetMovePage()

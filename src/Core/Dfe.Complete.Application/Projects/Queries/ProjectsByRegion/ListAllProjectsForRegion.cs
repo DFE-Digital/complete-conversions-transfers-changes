@@ -10,16 +10,14 @@ namespace Dfe.Complete.Application.Projects.Queries.ProjectsByRegion;
 public record ListAllProjectsForRegionQuery(
     Region? Region,
     ProjectState? ProjectStatus,
-    ProjectType? Type,
-    int Page = 0,
-    int Count = 20)
-    : IRequest<Result<List<ListAllProjectsResultModel>>>;
+    ProjectType? Type)
+    : PaginatedRequest<PaginatedResult<List<ListAllProjectsResultModel>>>;
 
 public class ListAllProjectsForRegionQueryHandler(IListAllProjectsQueryService listAllProjectsQueryService)
-    : IRequestHandler<ListAllProjectsForRegionQuery, Result<List<ListAllProjectsResultModel>>>
+    : IRequestHandler<ListAllProjectsForRegionQuery, PaginatedResult<List<ListAllProjectsResultModel>>>
 
 {
-    public async Task<Result<List<ListAllProjectsResultModel>>> Handle(ListAllProjectsForRegionQuery request,
+    public async Task<PaginatedResult<List<ListAllProjectsResultModel>>> Handle(ListAllProjectsForRegionQuery request,
         CancellationToken cancellationToken)
     {
         try
@@ -28,11 +26,18 @@ public class ListAllProjectsForRegionQueryHandler(IListAllProjectsQueryService l
                 .ListAllProjects(request.ProjectStatus, request.Type)
                 .ToListAsync(cancellationToken: cancellationToken);
 
-            var projectsGroupedByRegion = projectsList
-                .Where(projectList => projectList.Project.Region == request.Region)
-                .Skip(request.Page * request.Count).Take(request.Count);
+            // Materialise the filtered list to avoid enumerating multiple times.
+            var filteredProjects = projectsList
+                .Where(project => project.Project.Region == request.Region)
+                .ToList();
 
-            var projectsResultModel = projectsGroupedByRegion
+            var totalCount = filteredProjects.Count;
+
+            var paginatedProjects = filteredProjects
+                .Skip(request.Page * request.Count)
+                .Take(request.Count);
+
+            var projectsResultModel = paginatedProjects
                 .Select(item => new ListAllProjectsResultModel(
                     item.Establishment.Name,
                     item.Project.Id,
@@ -46,11 +51,12 @@ public class ListAllProjectsForRegionQueryHandler(IListAllProjectsQueryService l
                         : null))
                 .ToList();
 
-            return Result<List<ListAllProjectsResultModel>>.Success(projectsResultModel);
+            return PaginatedResult<List<ListAllProjectsResultModel>>.Success(projectsResultModel,
+                totalCount);
         }
         catch (Exception e)
         {
-            return Result<List<ListAllProjectsResultModel>>.Failure(e.Message);
+            return PaginatedResult<List<ListAllProjectsResultModel>>.Failure(e.Message);
         }
     }
 }

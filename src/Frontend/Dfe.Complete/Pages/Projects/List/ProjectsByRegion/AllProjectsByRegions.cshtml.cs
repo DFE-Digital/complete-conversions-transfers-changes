@@ -2,11 +2,10 @@ using Dfe.Complete.Application.Projects.Models;
 using Dfe.Complete.Application.Projects.Queries.ProjectsByRegion;
 using Dfe.Complete.Domain.Enums;
 using MediatR;
-using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace Dfe.Complete.Pages.Projects.List.ProjectsByRegion;
 
-public class AllProjectsByRegions(ISender sender) : PageModel
+public class AllProjectsByRegions(ISender sender) : AllProjectsModel(ByRegionNavigation)
 {
     public List<ListAllProjectsByRegionsResultModel>? ListAllProjectsByRegionResultModel { get; set; }
     
