@@ -1,4 +1,5 @@
 using Asp.Versioning.ApiExplorer;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
@@ -44,6 +45,15 @@ namespace Dfe.Complete.Api.Swagger
                 In = ParameterLocation.Header,
                 Type = SecuritySchemeType.Http,
                 Scheme = "Bearer"
+            });
+
+            options.MapType<FileResult>(() =>
+            {
+                return new OpenApiSchema
+                {
+                    Type = "string",
+                    Format = "binary",
+                };
             });
 
             options.OperationFilter<AuthenticationHeaderOperationFilter>();

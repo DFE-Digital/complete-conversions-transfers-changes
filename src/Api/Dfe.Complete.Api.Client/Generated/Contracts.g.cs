@@ -25,6 +25,29 @@ namespace Dfe.Complete.Client.Contracts
     using System = global::System;
 
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "14.2.0.0 (NJsonSchema v11.1.0.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial interface ICsvExportClient
+    {
+        /// <returns>File</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<FileResponse> GetConversionCsvByMonthAsync(int? month, int? year);
+
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <returns>File</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<FileResponse> GetConversionCsvByMonthAsync(int? month, int? year, System.Threading.CancellationToken cancellationToken);
+
+        /// <returns>File contents</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<string> GetConversionCsvByMonthContentsAsync(int? month, int? year);
+
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <returns>File contents</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<string> GetConversionCsvByMonthContentsAsync(int? month, int? year, System.Threading.CancellationToken cancellationToken);
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NSwag", "14.2.0.0 (NJsonSchema v11.1.0.0 (Newtonsoft.Json v13.0.0.0))")]
     public partial interface IProjectsClient
     {
         /// <summary>
@@ -306,7 +329,7 @@ namespace Dfe.Complete.Client.Contracts
         public Urn? AcademyUrn { get; set; } = default!;
 
         [Newtonsoft.Json.JsonProperty("tasksDataId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.Guid? TasksDataId { get; set; } = default!;
+        public TaskDataId? TasksDataId { get; set; } = default!;
 
         [Newtonsoft.Json.JsonProperty("tasksDataType", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
@@ -456,6 +479,27 @@ namespace Dfe.Complete.Client.Contracts
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.2.0.0 (NJsonSchema v11.1.0.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class TaskDataId
+    {
+        [Newtonsoft.Json.JsonProperty("value", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Guid? Value { get; set; } = default!;
+
+        public string ToJson()
+        {
+
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonSerializerSettings());
+
+        }
+        public static TaskDataId FromJson(string data)
+        {
+
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<TaskDataId>(data, new Newtonsoft.Json.JsonSerializerSettings());
+
+        }
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.2.0.0 (NJsonSchema v11.1.0.0 (Newtonsoft.Json v13.0.0.0))")]
     public enum TaskType
     {
 
@@ -503,6 +547,12 @@ namespace Dfe.Complete.Client.Contracts
 
         [System.Runtime.Serialization.EnumMember(Value = @"EastMidlands")]
         EastMidlands = 10,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"BusinessSupport")]
+        BusinessSupport = 11,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"DataConsumers")]
+        DataConsumers = 12,
 
     }
 
@@ -784,7 +834,7 @@ namespace Dfe.Complete.Client.Contracts
         public Urn? AcademyUrn { get; set; } = default!;
 
         [Newtonsoft.Json.JsonProperty("tasksDataId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.Guid? TasksDataId { get; set; } = default!;
+        public TaskDataId? TasksDataId { get; set; } = default!;
 
         [Newtonsoft.Json.JsonProperty("tasksDataType", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
@@ -895,7 +945,8 @@ namespace Dfe.Complete.Client.Contracts
         public System.DateTime? UpdatedAt { get; set; } = default!;
 
         [Newtonsoft.Json.JsonProperty("category", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public int? Category { get; set; } = default!;
+        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
+        public ContactCategory? Category { get; set; } = default!;
 
         [Newtonsoft.Json.JsonProperty("organisationName", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string? OrganisationName { get; set; } = default!;
@@ -924,6 +975,33 @@ namespace Dfe.Complete.Client.Contracts
             return Newtonsoft.Json.JsonConvert.DeserializeObject<Contact>(data, new Newtonsoft.Json.JsonSerializerSettings());
 
         }
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.2.0.0 (NJsonSchema v11.1.0.0 (Newtonsoft.Json v13.0.0.0))")]
+    public enum ContactCategory
+    {
+
+        [System.Runtime.Serialization.EnumMember(Value = @"Other")]
+        Other = 0,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"SchoolOrAcademy")]
+        SchoolOrAcademy = 1,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"IncomingTrust")]
+        IncomingTrust = 2,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"LocalAuthority")]
+        LocalAuthority = 3,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"Diocese")]
+        Diocese = 4,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"Solicitor")]
+        Solicitor = 5,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"OutgoingTrust")]
+        OutgoingTrust = 6,
 
     }
 
@@ -1077,6 +1155,41 @@ namespace Dfe.Complete.Client.Contracts
         }
     }
 
+    [System.CodeDom.Compiler.GeneratedCode("NSwag", "14.2.0.0 (NJsonSchema v11.1.0.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class FileResponse : System.IDisposable
+    {
+        private System.IDisposable? _client;
+        private System.IDisposable? _response;
+
+        public int StatusCode { get; private set; }
+
+        public System.Collections.Generic.IReadOnlyDictionary<string, System.Collections.Generic.IEnumerable<string>> Headers { get; private set; }
+
+        public System.IO.Stream Stream { get; private set; }
+
+        public bool IsPartial
+        {
+            get { return StatusCode == 206; }
+        }
+
+        public FileResponse(int statusCode, System.Collections.Generic.IReadOnlyDictionary<string, System.Collections.Generic.IEnumerable<string>> headers, System.IO.Stream stream, System.IDisposable? client, System.IDisposable? response)
+        {
+            StatusCode = statusCode;
+            Headers = headers;
+            Stream = stream;
+            _client = client;
+            _response = response;
+        }
+
+        public void Dispose()
+        {
+            Stream.Dispose();
+            if (_response != null)
+                _response.Dispose();
+            if (_client != null)
+                _client.Dispose();
+        }
+    }
 
 
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "14.2.0.0 (NJsonSchema v11.1.0.0 (Newtonsoft.Json v13.0.0.0))")]

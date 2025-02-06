@@ -13,7 +13,7 @@ using Dfe.Complete.Extensions;
 namespace Dfe.Complete.Pages.Projects.Transfer
 {
     [Authorize(policy: "CanCreateProjects")]
-    public class CreateNewProjectModel(ISender sender, IErrorService errorService, ITrustsClient trustsClient) : PageModel
+    public class CreateNewProjectModel(ISender sender, IErrorService errorService, ITrustsV4Client trustsClient) : PageModel
     {
         [BindProperty]
         [Required]

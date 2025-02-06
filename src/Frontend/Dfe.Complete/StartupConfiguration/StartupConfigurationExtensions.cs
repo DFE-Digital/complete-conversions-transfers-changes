@@ -11,7 +11,7 @@ namespace Dfe.Complete.StartupConfiguration
         public static IServiceCollection AddCompleteClientProject(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddClientDependencies();
-            services.AddAcademiesApiClient<ITrustsClient, TrustsClient>(configuration);
+            services.AddAcademiesApiClient<ITrustsV4Client, TrustsV4Client>(configuration);
 
             return services;
         }
