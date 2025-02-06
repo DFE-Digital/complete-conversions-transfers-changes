@@ -8,7 +8,7 @@ namespace Dfe.Complete.Application.Projects.Queries.ProjectsByRegion
 {
     public record CountAllProjectsForRegionQuery(Region Region, ProjectState? ProjectStatus, ProjectType? Type) : IRequest<Result<int>>;
 
-    public class CountAllProjectsQueryHandler(
+    public class CountAllProjectsForRegionQueryHandler(
         IListAllProjectsQueryService listAllProjectsQueryService)
         : IRequestHandler<CountAllProjectsForRegionQuery, Result<int>>
     {
