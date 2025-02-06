@@ -21,6 +21,7 @@ RUN ["dotnet", "publish", "--no-build", "-o", "/app"]
 FROM "mcr.microsoft.com/dotnet/aspnet:${DOTNET_VERSION}-azurelinux3.0" AS final
 WORKDIR /app
 LABEL org.opencontainers.image.source="https://github.com/DFE-Digital/complete-api"
+LABEL org.opencontainers.image.description="Complete Conversions Transfers and Changes - API"
 
 COPY --from=build /app /app
 RUN ["chmod", "+x", "./docker-entrypoint.sh"]
