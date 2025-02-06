@@ -82,15 +82,13 @@ public class CreateNewProject(ISender sender, IErrorService errorService) : Page
 
     public async Task<IActionResult> OnPost(CancellationToken cancellationToken)
     {
-        await CheckForExistingProjectWithTrust(cancellationToken);
-        
         if (!ModelState.IsValid)
         {
             errorService.AddErrors(ModelState);
             return Page();
         }
 
-        var userAdId = User.Claims.SingleOrDefault(c => c.Type.Contains("objectidentifier"))?.Value;
+        var userAdId = User.GetUserAdId();
 
         var createProjectCommand = new CreateMatConversionProjectCommand(
             Urn: new Urn(int.Parse(URN)),
@@ -116,17 +114,5 @@ public class CreateNewProject(ISender sender, IErrorService errorService) : Page
         var projectId = createResponse.Value;
 
         return Redirect($"/projects/conversion-projects/{projectId}/created");
-    }
-
-    private async Task CheckForExistingProjectWithTrust(CancellationToken cancellationToken)
-    {
-        var result = await sender.Send(new GetProjectByTrnQuery(TrustReferenceNumber), cancellationToken);
-        var existingProject = result.Value;
-
-        if (existingProject != null && !string.IsNullOrEmpty(existingProject.NewTrustName))
-        {
-            ModelState.AddModelError(nameof(TrustName),
-                $"A trust with this TRN already exists. It is called {existingProject.NewTrustName}. Check the trust name you have entered for this conversion/transfer");
-        }
     }
 }

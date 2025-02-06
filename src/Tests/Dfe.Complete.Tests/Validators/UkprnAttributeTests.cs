@@ -1,13 +1,7 @@
-﻿using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 using Dfe.AcademiesApi.Client.Contracts;
-using Dfe.Complete.Domain.Entities;
-using Dfe.Complete.Services;
 using Dfe.Complete.Validators;
 using Moq;
-using Xunit;
 
 namespace Dfe.Complete.Tests.Validators
 {
@@ -27,18 +21,18 @@ namespace Dfe.Complete.Tests.Validators
             string expectedErrorMessage)
         {
             // Arrange
-            var mockTrustClient = new Mock<ITrustsClient>();
+            var mockTrustClient = new Mock<ITrustsV4Client>();
 
             if (trustExists)
             {
                 mockTrustClient
-                    .Setup(service => service.GetTrustByUkprnAsync(It.IsAny<string>(), It.IsAny<string>()))
-                    .ReturnsAsync(new TrustResponse());
+                    .Setup(service => service.GetTrustByUkprn2Async(It.IsAny<string>()))
+                    .ReturnsAsync(new TrustDto());
             }
             else
             {
                 mockTrustClient
-                    .Setup(service => service.GetTrustByUkprnAsync(It.IsAny<string>(), It.IsAny<string>()))
+                    .Setup(service => service.GetTrustByUkprn2Async(It.IsAny<string>()))
                     .Throws(new AggregateException());
             }
 
@@ -54,7 +48,7 @@ namespace Dfe.Complete.Tests.Validators
                 MemberName = nameof(objectInstance.TestUkprn)
             };
             validationContext.InitializeServiceProvider(type =>
-                type == typeof(ITrustsClient) ? mockTrustClient.Object : null);
+                type == typeof(ITrustsV4Client) ? mockTrustClient.Object : null);
 
             // Act
             var result = attribute.GetValidationResult(ukprn, validationContext);

@@ -7,6 +7,7 @@ using Dfe.Complete.Application.Projects.Commands.CreateProject;
 using MediatR;
 using Dfe.Complete.Domain.ValueObjects;
 using Microsoft.AspNetCore.Authorization;
+using Dfe.Complete.Extensions;
 
 namespace Dfe.Complete.Pages.Projects.Conversion
 {
@@ -86,8 +87,8 @@ namespace Dfe.Complete.Pages.Projects.Conversion
                 return Page();
             }
 
-            var userAdId = User.Claims.SingleOrDefault(c => c.Type.Contains("objectidentifier"))?.Value;
-            
+            var userAdId = User.GetUserAdId();
+
             var createProjectCommand = new CreateConversionProjectCommand(
                 Urn: new Urn(int.Parse(URN)),
                 SignificantDate: ProvisionalConversionDate.HasValue ? DateOnly.FromDateTime(ProvisionalConversionDate.Value) : default,

@@ -8,11 +8,12 @@ using MediatR;
 using Dfe.Complete.Domain.ValueObjects;
 using Microsoft.AspNetCore.Authorization;
 using Dfe.AcademiesApi.Client.Contracts;
+using Dfe.Complete.Extensions;
 
 namespace Dfe.Complete.Pages.Projects.Transfer
 {
     [Authorize(policy: "CanCreateProjects")]
-    public class CreateNewProjectModel(ISender sender, IErrorService errorService, ITrustsClient trustsClient) : PageModel
+    public class CreateNewProjectModel(ISender sender, IErrorService errorService, ITrustsV4Client trustsClient) : PageModel
     {
         [BindProperty]
         [Required]
@@ -110,7 +111,7 @@ namespace Dfe.Complete.Pages.Projects.Transfer
                 return Page();
             }
 
-            var userAdId = User.Claims.SingleOrDefault(c => c.Type.Contains("objectidentifier"))?.Value;
+            var userAdId = User.GetUserAdId();
 
             var createProjectCommand = new CreateTransferProjectCommand(
                 Urn: new Urn(int.Parse(URN)),
@@ -122,6 +123,7 @@ namespace Dfe.Complete.Pages.Projects.Transfer
                 IsDueToInedaquateOfstedRating: IsDueToInedaquateOfstedRating ?? false,
                 IsDueToIssues: IsDueToIssues ?? false,
                 OutGoingTrustWillClose: OutgoingTrustWillClose ?? false,
+                HandingOverToRegionalCaseworkService: IsHandingToRCS ?? false,
                 AdvisoryBoardDate: AdvisoryBoardDate.HasValue ? DateOnly.FromDateTime(AdvisoryBoardDate.Value) : default,
                 AdvisoryBoardConditions: AdvisoryBoardConditions,
                 EstablishmentSharepointLink: AcademySharePointLink,

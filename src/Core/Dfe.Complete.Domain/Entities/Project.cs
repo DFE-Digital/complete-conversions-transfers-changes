@@ -47,7 +47,7 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
 
     public Urn? AcademyUrn { get; set; }
 
-    public Guid? TasksDataId { get; set; }
+    public TaskDataId? TasksDataId { get; set; }
 
     public TaskType? TasksDataType { get; set; }
 
@@ -128,7 +128,7 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
         UpdatedAt = updatedAt != default ? updatedAt : throw new ArgumentNullException(nameof(updatedAt));
         TasksDataType = taskType;
         Type = projectType; //TOD EA: Comeback and validate the rest
-        TasksDataId = tasksDataId;
+        TasksDataId = new TaskDataId(tasksDataId);
         SignificantDate = significantDate;
         SignificantDateProvisional = isSignificantDateProvisional;
         IncomingTrustUkprn = incomingTrustUkprn;
@@ -332,6 +332,54 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
 
         return project;
     }
+
+        public static Project CreateMatTransferProject(
+        ProjectId Id,
+        Urn urn,
+        DateTime createdAt,
+        DateTime updatedAt,
+        Ukprn outgoingTrustUkprn,
+        TaskType taskType,
+        ProjectType projectType,
+        Guid tasksDataId,
+        Region? region,
+        ProjectTeam team,
+        UserId? regionalDeliveryOfficerId,
+        UserId? assignedToId,
+        DateTime? assignedAt,
+        string establishmentSharepointLink,
+        string incomingTrustSharepointLink,
+        string outgoingTrustSharepointLink,
+        DateOnly advisoryBoardDate,
+        string advisoryBoardConditions,
+        DateOnly significantDate,
+        bool isSignificantDateProvisional,
+        bool isDueTo2Ri,
+        string newTrustName,
+        string newTrustReferenceNumber,
+        string? handoverComments)
+        {
+            var project = new Project(Id, urn, createdAt, updatedAt, taskType, projectType, tasksDataId, significantDate,
+                isSignificantDateProvisional, null, outgoingTrustUkprn, region, isDueTo2Ri, null,
+                advisoryBoardDate, advisoryBoardConditions, establishmentSharepointLink, incomingTrustSharepointLink, outgoingTrustSharepointLink,
+                null, team, regionalDeliveryOfficerId, assignedToId, assignedAt, newTrustName, newTrustReferenceNumber);
+
+            if (!string.IsNullOrEmpty(handoverComments))
+            {
+                project.AddNote(new Note
+                {
+                    CreatedAt = project.CreatedAt,
+                    ProjectId = project.Id,
+                    Body = handoverComments,
+                    TaskIdentifier = "handover",
+                    UserId = assignedToId
+                });
+            }
+
+            project.AddDomainEvent(new ProjectCreatedEvent(project));
+
+            return project;
+        }
 
     private void AddNote(Note? note)
     {

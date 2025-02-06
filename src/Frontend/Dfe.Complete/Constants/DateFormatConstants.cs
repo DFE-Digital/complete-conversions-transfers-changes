@@ -6,4 +6,5 @@ public static class DateFormatConstants
     public const string DateWithoutDayOfTheWeek = "d MMMM yyyy";
     public const string MonthAndYearFormat = "MMM yyyy";
     public const string DateUkFormat = "dd/MM/yyyy";
+    public const string YearMonthDayDashed = "yyyy-MM-dd";
 }

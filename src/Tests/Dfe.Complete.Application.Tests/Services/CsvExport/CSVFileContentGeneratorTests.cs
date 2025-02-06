@@ -34,7 +34,7 @@ namespace Dfe.Complete.Application.Tests.Services.CsvExport
 
             var result = generator.Generate(model);
 
-            Assert.Equal("School name,School URN,Project type,Academy name,Academy URN\n\rRound Hill Primary School,122707,Conversion,Round Hill Primary School,150250", result);
+            Assert.Equal("School name,School URN,Project type,Academy name,Academy URN\nRound Hill Primary School,122707,Conversion,Round Hill Primary School,150250\n", result);
         }
 
         [Fact]
@@ -51,9 +51,9 @@ namespace Dfe.Complete.Application.Tests.Services.CsvExport
 
             var result = generator.Generate(models);
 
-            var expected = string.Join("\n\r", models.Select(m => $"{m.SchoolName},{m.SchoolUrn},{m.ProjectType},{m.AcademyName},{m.AcademyUrn}"));
+            var expected = string.Join("\n", models.Select(m => $"{m.SchoolName},{m.SchoolUrn},{m.ProjectType},{m.AcademyName},{m.AcademyUrn}"));
 
-            Assert.Equal($"School name,School URN,Project type,Academy name,Academy URN\n\r{expected}", result);
+            Assert.Equal($"School name,School URN,Project type,Academy name,Academy URN\n{expected}\n", result);
         }
     }
 }

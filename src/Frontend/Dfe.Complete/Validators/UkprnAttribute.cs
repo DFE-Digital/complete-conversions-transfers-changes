@@ -1,6 +1,4 @@
 ﻿using Dfe.AcademiesApi.Client.Contracts;
-using Dfe.Complete.Application.Common.Models;
-using Dfe.Complete.Services;
 using System.ComponentModel.DataAnnotations;
 using System.Reflection;
 
@@ -53,8 +51,8 @@ namespace Dfe.Complete.Validators
 
             try
             {
-                var trustClient = (ITrustsClient)validationContext.GetService(typeof(ITrustsClient));
-                var result = trustClient.GetTrustByUkprnAsync(ukprn, "v4").Result;
+                var trustClient = (ITrustsV4Client)validationContext.GetService(typeof(ITrustsV4Client));
+                var result = trustClient.GetTrustByUkprn2Async(ukprn).Result;
             }
             catch (AggregateException ex)
             {

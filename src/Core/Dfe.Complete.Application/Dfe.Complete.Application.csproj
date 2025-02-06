@@ -6,6 +6,7 @@
 
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="13.0.1" />
+    <PackageReference Include="Dfe.AcademiesApi.Client" Version="1.0.5" />
     <PackageReference Include="DfE.CoreLibs.AsyncProcessing" Version="1.0.5" />
     <PackageReference Include="DfE.CoreLibs.Caching" Version="1.0.7" />
     <PackageReference Include="FluentValidation" Version="11.11.0" />

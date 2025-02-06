@@ -15,8 +15,11 @@ public class GetProjectByTrn(ICompleteRepository<Project> projectRepo) : IReques
     {
         try
         {
-            var result = await projectRepo.FindAsync(x => x.NewTrustReferenceNumber == request.NewTrustReferenceNumber, cancellationToken);
-            return Result<GetProjectByTrnResponseDto?>.Success(new GetProjectByTrnResponseDto(result.Id.Value, result.NewTrustName));
+            var project = await projectRepo.FindAsync(x => x.NewTrustReferenceNumber == request.NewTrustReferenceNumber, cancellationToken);
+
+            var result = project != null ? new GetProjectByTrnResponseDto(project.Id.Value, project.NewTrustName) : null;
+
+            return Result<GetProjectByTrnResponseDto?>.Success(result);
         }
         catch (Exception e)
         {

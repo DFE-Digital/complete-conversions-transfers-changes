@@ -2,7 +2,6 @@
 using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Domain.ValueObjects;
 using Dfe.Complete.Infrastructure.Database.Interceptors;
-using Dfe.Complete.Infrastructure.Models;
 using Dfe.Complete.Utils;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -203,7 +202,11 @@ public partial class CompleteContext : DbContext
             .HasDefaultValue(true)
             .HasColumnName("significant_date_provisional");
         projectConfiguration.Property(e => e.State).HasColumnName("state");
-        projectConfiguration.Property(e => e.TasksDataId).HasColumnName("tasks_data_id");
+        projectConfiguration.Property(e => e.TasksDataId)
+            .HasColumnName("tasks_data_id")
+            .HasConversion(
+                v => v!.Value,
+                v => new TaskDataId(v)); ;
         projectConfiguration.Property(e => e.TasksDataType)
             .HasMaxLength(4000)
             .HasColumnName("tasks_data_type")
@@ -556,7 +559,10 @@ public partial class CompleteContext : DbContext
         projectConfiguration.Property(e => e.RedactAndSendSendSolicitors).HasColumnName("redact_and_send_send_solicitors");
         projectConfiguration.Property(e => e.RiskProtectionArrangementOption)
             .HasMaxLength(4000)
-            .HasColumnName("risk_protection_arrangement_option");
+            .HasColumnName("risk_protection_arrangement_option")
+            .HasConversion(
+                rpaOption => rpaOption.ToDescription(),
+                rpaOptionDbValue => rpaOptionDbValue.FromDescriptionValue<RiskProtectionArrangementOption>());
         projectConfiguration.Property(e => e.RiskProtectionArrangementReason)
             .HasMaxLength(4000)
             .HasColumnName("risk_protection_arrangement_reason");

@@ -26,4 +26,8 @@ public enum ProjectTeam
     SouthWest = 10,
     [Description("east_midlands")]
     EastMidlands = 11,
+    [Description("business_support")]
+    BusinessSupport = 12,
+    [Description("data_consumers")]
+    DataConsumers = 13,
 }

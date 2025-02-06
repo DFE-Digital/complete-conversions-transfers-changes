@@ -3,7 +3,7 @@ using Dfe.Complete.Domain.ValueObjects;
 
 namespace Dfe.Complete.Domain.Entities;
 
-public class LocalAuthority : IEntity<LocalAuthorityId>
+public class LocalAuthority: BaseAggregateRoot, IEntity<LocalAuthorityId>
 {
     public LocalAuthorityId Id { get; set; }
 
