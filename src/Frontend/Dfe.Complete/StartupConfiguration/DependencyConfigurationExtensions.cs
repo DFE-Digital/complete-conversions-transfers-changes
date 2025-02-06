@@ -1,6 +1,4 @@
-﻿using Dfe.Complete.Domain.Interfaces.Repositories;
-using Dfe.Complete.Infrastructure.Gateways;
-using Dfe.Complete.Infrastructure.Repositories;
+﻿using Dfe.Complete.Infrastructure.Gateways;
 using Dfe.Complete.Services;
 
 namespace Dfe.Complete.StartupConfiguration

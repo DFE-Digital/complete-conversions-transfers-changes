@@ -2,6 +2,7 @@ using AutoFixture;
 using Dfe.Complete.Domain.Entities;
 using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Domain.ValueObjects;
+using Dfe.Complete.Tests.Common.Customizations.Behaviours;
 
 namespace Dfe.Complete.Tests.Common.Customizations.Models
 {
@@ -43,7 +44,8 @@ namespace Dfe.Complete.Tests.Common.Customizations.Models
 
         public void Customize(IFixture fixture)
         {
-            fixture.Customize<User>(composer => composer
+            fixture.Customize(new IgnoreVirtualMembersCustomisation())
+                   .Customize<User>(composer => composer
                    .With(x => x.Id, fixture.Create<UserId>())
                    .With(x => x.Email, fixture.Create<string>())
                    .With(x => x.CreatedAt, fixture.Create<DateTime>())
