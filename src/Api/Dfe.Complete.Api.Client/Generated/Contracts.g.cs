@@ -159,7 +159,7 @@ namespace Dfe.Complete.Client.Contracts
         /// </summary>
         /// <returns>Project</returns>
         /// <exception cref="CompleteApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<UserWithProjectsDto>> ListAllProjectsAsync(ProjectState? state, int? page, int? count);
+        System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<UserWithProjectsDto>> ListAllUsersWithProjectsAsync(ProjectState? state, int? page, int? count);
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>
@@ -167,7 +167,7 @@ namespace Dfe.Complete.Client.Contracts
         /// </summary>
         /// <returns>Project</returns>
         /// <exception cref="CompleteApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<UserWithProjectsDto>> ListAllProjectsAsync(ProjectState? state, int? page, int? count, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<UserWithProjectsDto>> ListAllUsersWithProjectsAsync(ProjectState? state, int? page, int? count, System.Threading.CancellationToken cancellationToken);
 
     }
 

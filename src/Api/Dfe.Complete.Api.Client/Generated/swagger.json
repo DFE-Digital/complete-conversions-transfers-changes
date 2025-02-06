@@ -397,7 +397,7 @@
           "Users"
         ],
         "summary": "Returns a list of Users with their assigned projects",
-        "operationId": "Users_ListAllProjects",
+        "operationId": "Users_ListAllUsersWithProjects",
         "parameters": [
           {
             "name": "State",

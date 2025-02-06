@@ -39,7 +39,7 @@ namespace Dfe.Complete.Api.Controllers
         [Route("List/All")]
         [SwaggerResponse(200, "Project", typeof(List<UserWithProjectsDto>))]
         [SwaggerResponse(400, "Invalid request data.")]
-        public async Task<IActionResult> ListAllProjectsAsync([FromQuery] ListAllUsersWithProjectsQuery request, CancellationToken cancellationToken)
+        public async Task<IActionResult> ListAllUsersWithProjectsAsync([FromQuery] ListAllUsersWithProjectsQuery request, CancellationToken cancellationToken)
         {
             var project = await sender.Send(request, cancellationToken);
             return Ok(project.Value);
