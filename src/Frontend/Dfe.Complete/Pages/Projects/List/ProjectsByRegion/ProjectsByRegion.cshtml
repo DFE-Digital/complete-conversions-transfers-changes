@@ -1,5 +1,4 @@
 @page "/projects/all/regions/{region}"
-@using Dfe.Complete.Constants
 @using Dfe.Complete.Pages.Projects.List
 @model Dfe.Complete.Pages.Projects.List.ProjectsByRegion.ProjectsByRegion
 
@@ -23,7 +22,7 @@
             <tbody class="govuk-table__body">
             @foreach (var project in Model.Projects)
             {
-                var projectLink = ProjectSummaryUrl.GetUrl(project);
+                var projectLink = AllProjectsModel.GetProjectSummaryUrl(project);
             
                 <tr class="govuk-table__row">
                     <td class="govuk-table__header govuk-table__cell">

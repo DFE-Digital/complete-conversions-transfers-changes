@@ -1,6 +1,5 @@
 using System.ComponentModel.DataAnnotations;
 using Dfe.Complete.Application.Projects.Commands.CreateProject;
-using Dfe.Complete.Application.Projects.Queries.GetProject;
 using Dfe.Complete.Domain.ValueObjects;
 using Dfe.Complete.Extensions;
 using Dfe.Complete.Services;

@@ -1,4 +1,3 @@
-using System.Linq.Expressions;
 using AutoFixture.Xunit2;
 using DfE.CoreLibs.Testing.AutoFixture.Attributes;
 using DfE.CoreLibs.Testing.AutoFixture.Customizations; 
@@ -15,7 +14,6 @@ using Moq;
 using Dfe.Complete.Application.Common.Models;
 using Dfe.Complete.Application.Projects.Models;
 using Dfe.Complete.Application.Projects.Queries.GetUser;
-using Dfe.Complete.Application.Projects.Queries.GetProject;
 using Dfe.Complete.Tests.Common.Customizations.Models;
 
 namespace Dfe.Complete.Application.Tests.CommandHandlers.Project

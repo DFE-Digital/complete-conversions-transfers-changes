@@ -1,7 +1,7 @@
 using AutoFixture;
 using AutoFixture.Xunit2;
 using Dfe.Complete.Application.Projects.Interfaces;
-using Dfe.Complete.Application.Projects.Model;
+using Dfe.Complete.Application.Projects.Models;
 using Dfe.Complete.Application.Projects.Queries.ProjectsByRegion;
 using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Tests.Common.Customizations.Models;

@@ -1,12 +1,5 @@
 ﻿using Dfe.Complete.UserContext;
 using FluentAssertions;
-using Microsoft.VisualStudio.TestPlatform.ObjectModel.Utilities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Xunit.Sdk;
 
 namespace Dfe.Complete.API.Contracts.Tests.Context
 {

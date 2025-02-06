@@ -1,5 +1,3 @@
-using System;
-
 namespace Dfe.Complete.Services
 {
 	public class DateRangeValidationService

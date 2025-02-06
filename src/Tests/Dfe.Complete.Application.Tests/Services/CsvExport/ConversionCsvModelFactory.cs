@@ -4,7 +4,6 @@ using Dfe.Complete.Domain.Entities;
 using Dfe.Complete.Tests.Common.Customizations.Behaviours;
 using Dfe.Complete.Tests.Common.Customizations.Models;
 using DfE.CoreLibs.Testing.AutoFixture.Customizations;
-using Microsoft.Identity.Client;
 
 namespace Dfe.Complete.Application.Tests.Services.CsvExport
 {

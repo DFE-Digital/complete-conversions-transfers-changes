@@ -1,6 +1,3 @@
-using System.Collections.Generic;
-using System.Linq;
-
 namespace Dfe.Complete.Models.ApplicationForm
 {
 	public abstract class BaseFormSection : FormSubSection

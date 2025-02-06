@@ -1,12 +1,7 @@
-using System.Collections.Generic;
-using System.Linq;
 using System.Security.Claims;
 using Dfe.Complete.UserContext;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authorization.Infrastructure;
-using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Hosting;
 
 namespace Dfe.Complete.Authorization
 {

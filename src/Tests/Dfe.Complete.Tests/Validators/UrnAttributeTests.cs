@@ -6,10 +6,8 @@ using MediatR;
 using Moq;
 using Dfe.Complete.Domain.Entities;
 using Dfe.Complete.Application.Common.Models;
-using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Application.Projects.Models;
 using AutoMapper;
-using NSubstitute;
 
 namespace Dfe.Complete.Tests.Validators
 {

@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-
 namespace Dfe.Complete.Models.ApplicationForm
 {
 	public class FormSubSection

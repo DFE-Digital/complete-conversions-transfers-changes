@@ -1,5 +1,3 @@
-using Microsoft.AspNetCore.Builder;
-
 namespace Dfe.Complete.Security
 {	
 	public static class SecurityHeadersDefinitions
