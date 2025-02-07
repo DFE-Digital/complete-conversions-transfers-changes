@@ -52,7 +52,7 @@ jobs:
       packages: write
     name: Deploy Container
     needs: [ set-env, validate-packages ]
-    uses: DFE-Digital/deploy-azure-container-apps-action/.github/workflows/build-push-deploy.yml@v3.1.0
+    uses: DFE-Digital/deploy-azure-container-apps-action/.github/workflows/build-push-deploy.yml@v4.1.0
     with:
       docker-tag-prefix: dotnet-
       docker-image-name: 'complete-app'
