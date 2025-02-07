@@ -32,7 +32,8 @@ public class ListAllProjectsByRegionQueryHandler(IListAllProjectsQueryService li
                         Region: (Region)group.Key,
                         ConversionsCount: group.Count(item => item.Project?.Type == ProjectType.Conversion),
                         TransfersCount: group.Count(item => item.Project?.Type == ProjectType.Transfer)
-                    )).ToList();
+                    ))
+                .ToList();
 
             return Result<List<ListAllProjectsByRegionsResultModel>>.Success(projectsResultModel);
         }
