@@ -49,7 +49,7 @@ namespace Dfe.Complete.Tests.Common.Customizations.Models
 
         public Urn? AcademyUrn { get; set; }
 
-        public Guid? TasksDataId { get; set; }
+        public TaskDataId? TasksDataId { get; set; }
 
         public TaskType? TasksDataType { get; set; }
 
@@ -87,8 +87,9 @@ namespace Dfe.Complete.Tests.Common.Customizations.Models
         
         public void Customize(IFixture fixture)
         {
+            fixture.Customizations.Add(new UrnSpecimen());
+
             fixture.Customize(new CompositeCustomization(
-                   new UrnCustomization(),
                    new DateOnlyCustomization(),
                    new IgnoreVirtualMembersCustomisation()))
                 .Customize<Project>(composer => composer
@@ -104,7 +105,7 @@ namespace Dfe.Complete.Tests.Common.Customizations.Models
                 .With(x => x.DirectiveAcademyOrder, DirectiveAcademyOrder ?? fixture.Create<bool>())
                 .With(x => x.Region, Region ?? fixture.Create<Region>())
                 .With(x => x.AcademyUrn, AcademyUrn ?? fixture.Create<Urn>())
-                .With(x => x.TasksDataId, TasksDataId ?? fixture.Create<Guid>())
+                .With(x => x.TasksDataId, TasksDataId ?? new TaskDataId(fixture.Create<Guid>()))
                 .With(x => x.TasksDataType, TasksDataType ?? fixture.Create<TaskType>())
                 .With(x => x.OutgoingTrustUkprn, OutgoingTrustUkprn ?? fixture.Create<Ukprn>())
                 .With(x => x.Team, Team ?? fixture.Create<ProjectTeam>())

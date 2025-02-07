@@ -15,7 +15,7 @@ namespace Dfe.Complete.Application.Services.CsvExport
     {
         public string Generate(IEnumerable<TModel> models)
         {
-            return $"{header.GenerateHeader()}\n\r{string.Join("\n\r", models.Select(rowGenerator.GenerateRow))}";
+            return $"{header.GenerateHeader()}\n{string.Join("\n", models.Select(rowGenerator.GenerateRow))}\n";
         }
     }
 }

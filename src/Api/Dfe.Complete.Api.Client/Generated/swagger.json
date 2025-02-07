@@ -6,6 +6,90 @@
     "version": "1.0.0"
   },
   "paths": {
+    "/v1/CsvExport": {
+      "post": {
+        "tags": [
+          "CsvExport"
+        ],
+        "operationId": "CsvExport_GetConversionCsvByMonth",
+        "parameters": [
+          {
+            "name": "month",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "x-position": 1
+          },
+          {
+            "name": "year",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "x-position": 2
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "File",
+            "content": {
+              "application/octet-stream": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/CsvExport/Contents": {
+      "post": {
+        "tags": [
+          "CsvExport"
+        ],
+        "operationId": "CsvExport_GetConversionCsvByMonthContents",
+        "parameters": [
+          {
+            "name": "month",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "x-position": 1
+          },
+          {
+            "name": "year",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "x-position": 2
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "File contents",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request data."
+          }
+        }
+      }
+    },
     "/v1/Projects": {
       "post": {
         "tags": [
@@ -440,9 +524,12 @@
             ]
           },
           "tasksDataId": {
-            "type": "string",
-            "format": "guid",
-            "nullable": true
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/TaskDataId"
+              }
+            ]
           },
           "tasksDataType": {
             "nullable": true,
@@ -630,6 +717,16 @@
           "SouthWest"
         ]
       },
+      "TaskDataId": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "value": {
+            "type": "string",
+            "format": "guid"
+          }
+        }
+      },
       "TaskType": {
         "type": "string",
         "description": "",
@@ -656,7 +753,9 @@
           "WestMidlands",
           "NorthEast",
           "SouthWest",
-          "EastMidlands"
+          "EastMidlands",
+          "BusinessSupport",
+          "DataConsumers"
         ],
         "enum": [
           "RegionalCaseWorkerServices",
@@ -669,7 +768,9 @@
           "WestMidlands",
           "NorthEast",
           "SouthWest",
-          "EastMidlands"
+          "EastMidlands",
+          "BusinessSupport",
+          "DataConsumers"
         ]
       },
       "ContactId": {
@@ -1007,9 +1108,12 @@
                 ]
               },
               "tasksDataId": {
-                "type": "string",
-                "format": "guid",
-                "nullable": true
+                "nullable": true,
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/TaskDataId"
+                  }
+                ]
               },
               "tasksDataType": {
                 "nullable": true,
@@ -1189,8 +1293,7 @@
             "format": "date-time"
           },
           "category": {
-            "type": "integer",
-            "format": "int32"
+            "$ref": "#/components/schemas/ContactCategory"
           },
           "organisationName": {
             "type": "string",
@@ -1222,6 +1325,28 @@
             ]
           }
         }
+      },
+      "ContactCategory": {
+        "type": "string",
+        "description": "",
+        "x-enumNames": [
+          "Other",
+          "SchoolOrAcademy",
+          "IncomingTrust",
+          "LocalAuthority",
+          "Diocese",
+          "Solicitor",
+          "OutgoingTrust"
+        ],
+        "enum": [
+          "Other",
+          "SchoolOrAcademy",
+          "IncomingTrust",
+          "LocalAuthority",
+          "Diocese",
+          "Solicitor",
+          "OutgoingTrust"
+        ]
       },
       "LocalAuthorityId": {
         "type": "object",
