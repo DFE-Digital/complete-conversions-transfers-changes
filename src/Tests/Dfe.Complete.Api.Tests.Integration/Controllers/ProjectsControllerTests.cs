@@ -1,4 +1,5 @@
 using System.Net;
+using System.Security.Claims;
 using AutoFixture;
 using Dfe.Complete.Api.Tests.Integration.Customizations;
 using Dfe.Complete.Client.Contracts;
@@ -22,8 +23,8 @@ public class ProjectsControllerTests
         CustomWebApplicationDbContextFactory<Program> factory,
         CreateConversionProjectCommand createConversionProjectCommand,
         IProjectsClient projectsClient)
-    {
-        // factory.TestClaims = [new Claim(ClaimTypes.Role, "API.Write")];
+    { 
+        factory.TestClaims = [new Claim(ClaimTypes.Role, "API.Write"), new Claim(ClaimTypes.Role, "API.Read")];
         
         var dbContext = factory.GetDbContext<CompleteContext>();
 
@@ -50,8 +51,7 @@ public class ProjectsControllerTests
         CreateConversionProjectCommand createConversionProjectCommand,
         IProjectsClient projectsClient)
     {
-        //todo: when auth is done, add this back in
-        // factory.TestClaims = [new Claim(ClaimTypes.Role, "API.Write")];
+        factory.TestClaims = [new Claim(ClaimTypes.Role, "API.Write"), new Claim(ClaimTypes.Role, "API.Read")];
 
         createConversionProjectCommand.Urn = null;
 
@@ -69,7 +69,7 @@ public class ProjectsControllerTests
         IProjectsClient projectsClient,
         IFixture fixture)
     {
-        //todo: when auth is done, add this back in
+        factory.TestClaims = [new Claim(ClaimTypes.Role, "API.Read")];
 
         var dbContext = factory.GetDbContext<CompleteContext>();
 
@@ -108,7 +108,8 @@ public class ProjectsControllerTests
         IProjectsClient projectsClient,
         IFixture fixture)
     {
-        //todo: when auth is done, add this back in
+        factory.TestClaims = [new Claim(ClaimTypes.Role, "API.Read")];
+
         // Arrange
         var dbContext = factory.GetDbContext<CompleteContext>();
         var testUser = await dbContext.Users.FirstAsync();
