@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Dfe.Complete.Application.Users.Queries.GetUser;
 
-public record GetUserWithProjectsQuery(UserId UserId, ProjectState? State = ProjectState.Active)
+public record GetUserWithProjectsQuery(UserId UserId, ProjectState? State)
     : PaginatedRequest<PaginatedResult<UserWithProjectsDto>>;
 
 public class GetUserWithProjectsHandler(

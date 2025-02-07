@@ -15,7 +15,7 @@ public class AllProjectsByUser(ISender sender) : AllProjectsModel(ByUserNavigati
     {
         ViewData[TabNavigationModel.ViewDataKey] = AllProjectsTabNavigationModel;
 
-        var listProjectQuery = new ListAllUsersWithProjectsQuery { Page = PageNumber - 1, Count = PageSize, State = ProjectState.Active};
+        var listProjectQuery = new ListAllUsersWithProjectsQuery(ProjectState.Active) { Page = PageNumber - 1, Count = PageSize };
 
         var listResponse = await sender.Send(listProjectQuery);
         Users = listResponse.Value ?? [];
