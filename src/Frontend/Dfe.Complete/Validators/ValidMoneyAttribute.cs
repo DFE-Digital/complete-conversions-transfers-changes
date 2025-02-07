@@ -1,5 +1,4 @@
 ﻿using Dfe.Complete.Constants;
-using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace Dfe.Complete.Validators

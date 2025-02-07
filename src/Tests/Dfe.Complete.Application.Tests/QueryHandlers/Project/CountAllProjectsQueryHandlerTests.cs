@@ -3,7 +3,7 @@ using DfE.CoreLibs.Testing.AutoFixture.Attributes;
 using NSubstitute;
 using DfE.CoreLibs.Testing.AutoFixture.Customizations;
 using Dfe.Complete.Application.Projects.Interfaces;
-using Dfe.Complete.Application.Projects.Model;
+using Dfe.Complete.Application.Projects.Models;
 using Dfe.Complete.Application.Projects.Queries.CountAllProjects;
 using Dfe.Complete.Tests.Common.Customizations.Models;
 using MockQueryable;

@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel;
 using System.Reflection;
+using Dfe.Complete.Utils.Attributes;
 
 namespace Dfe.Complete.Utils;
 
@@ -24,8 +25,26 @@ public static class EnumExtensions
 
 		return (attributes.Length > 0 ? attributes[0].Description : source.ToString()) ?? string.Empty;
 	}
+	
+	public static string ToSecondaryDescription<T>(this T source)
+	{
+		if (source == null)
+			return string.Empty;
+
+		var fi = source.GetType().GetField(source.ToString() ?? string.Empty);
+
+		if (fi == null)
+			return string.Empty;
+
+		var attributes = (SecondaryDescriptionAttribute[])fi
+			.GetCustomAttributes(typeof(SecondaryDescriptionAttribute), false);
+
+		return attributes.Length > 0
+			? attributes[0].SecondaryDescription
+			: source.ToString() ?? string.Empty;
+	}
 		
-	public static T? FromDescription<T>(string? description) where T : Enum
+	public static T? FromDescription<T>(this string? description) where T : Enum
 	{
 		if (string.IsNullOrEmpty(description))
 			throw new ArgumentException("Description cannot be null or empty.", nameof(description));
@@ -53,7 +72,6 @@ public static class EnumExtensions
 		if (string.IsNullOrEmpty(description))
 			throw new ArgumentNullException(nameof(description));
 
-		// Look for an enum value whose [Description] matches the input string
 		foreach (var value in Enum.GetValues(typeof(TEnum)))
 		{
 			var enumValue = (TEnum)value;
@@ -66,7 +84,6 @@ public static class EnumExtensions
 				return enumValue;
 		}
 
-		// Fallback: maybe it matches the enum name?
 		if (Enum.TryParse(description, out TEnum parsed))
 			return parsed;
 

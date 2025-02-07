@@ -1,8 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Configuration;
-using System;
-
-namespace Dfe.Complete.Services
+﻿namespace Dfe.Complete.Services
 {
     public interface IAnalyticsConsentService
     {

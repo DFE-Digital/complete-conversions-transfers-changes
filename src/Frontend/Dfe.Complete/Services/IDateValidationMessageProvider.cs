@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-
 namespace Dfe.Complete.Services
 {
 	public interface IDateValidationMessageProvider

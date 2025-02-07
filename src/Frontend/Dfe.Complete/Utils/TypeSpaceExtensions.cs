@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Html;
-using System;
 using System.Text.RegularExpressions;
 
 namespace Dfe.Complete.Utils;

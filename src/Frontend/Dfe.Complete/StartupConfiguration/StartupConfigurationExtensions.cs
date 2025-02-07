@@ -1,8 +1,6 @@
 ﻿using Dfe.AcademiesApi.Client;
 using Dfe.AcademiesApi.Client.Contracts;
 using Dfe.TramsDataApi.Client.Extensions;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace Dfe.Complete.StartupConfiguration
 {
