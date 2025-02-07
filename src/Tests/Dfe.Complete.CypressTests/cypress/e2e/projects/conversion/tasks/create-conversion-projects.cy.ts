@@ -1,33 +1,37 @@
-// import conversionProjectApi from "cypress/api/conversionProjectApi";
-// import { Logger } from "cypress/common/logger";
-// import editHandoverWithDeliveryOfficerPage from "cypress/pages/projects/tasks/editHandoverWithDeliveryOfficerPage";
- import selectProjectType from "cypress/pages/projects/new/selectProjectType";
-// import taskListPage, { ConversionTaskNames } from "cypress/pages/projects/taskListPage";
-// import summaryPage from "cypress/pages/projects/summaryPage";
-// import { ProjectBuilder } from "cypress/api/projectBuilder";
 
+import projectRemover from "cypress/api/projectRemover";
+import newConversionPage from "cypress/pages/projects/new/newConversionPage";
+import selectProjectType from "cypress/pages/projects/new/selectProjectTypePage";
+
+const urn : string = "401450";
 
 describe("Create a new Conversion Project", () => {
 
-    //let projectId: string;
-
     beforeEach(() => {
+        projectRemover.removeProject(urn);
         cy.login({role: "RegionalDeliveryOfficer"});
-
-        // conversionProjectApi
-        //     .createProject(ProjectBuilder.createConversionProjectRequest())
-        //     .then(response => {
-        //         projectId = response.id;
-        //     });
     });
 
     it("Should be able to move around the complete service", () => {
-        cy.visit(`/projects/new`);
+        cy.visit(`/`);
 
+        cy.getByClass("govuk-button").click()
+        
         //cy.executeAccessibilityTests();
-
 
         selectProjectType.selectConversion()
         .continue()
+
+        newConversionPage
+            .WithSchoolURN(urn)
+            .WithIncomingTrustUKPRN("10059853")
+            .withAdvisoryBoardDate("10", "12", "2025")
+            .withProvisionalConversionDate("9", "11", "2026")
+            .WithSchoolSharepointLink("https://educationgovuk-my.sharepoint.com/")
+            .WithIncomingTrustSharePointLink("https://educationgovuk-my.sharepoint.com/")
+            .WithHandingOverToRCS("No")
+            .WithAcademyOrder("Academy order")
+            .With2RI("No")
+            .Continue()
     });
 });

@@ -1,16 +1,10 @@
 using System.Security.Claims;
-using System.Threading.Tasks;
 using Dfe.Complete.UserContext;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Authorization.Infrastructure;
-using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Hosting;
 
 namespace Dfe.Complete.Authorization
 {
-    //Handler is registered from the method RequireAuthenticatedUser()
-    public class HeaderRequirementHandler : AuthorizationHandler<DenyAnonymousAuthorizationRequirement>,
+    public class HeaderRequirementHandler : AuthorizationHandler<IAuthorizationRequirement>,
         IAuthorizationRequirement
     {
         private readonly IHostEnvironment _environment;
@@ -26,7 +20,7 @@ namespace Dfe.Complete.Authorization
         }
 
         protected override Task HandleRequirementAsync(AuthorizationHandlerContext context,
-            DenyAnonymousAuthorizationRequirement requirement)
+            IAuthorizationRequirement requirement)
         {
             if (AutomationHandler.ClientSecretHeaderValid(_environment, _httpContextAccessor, _configuration))
             {
@@ -45,6 +39,13 @@ namespace Dfe.Complete.Authorization
                     currentUser?.AddClaim(new Claim(ClaimTypes.Role, claim));
                 }
 
+                currentUser?.AddClaim(new Claim(ClaimTypes.Authentication, "true"));
+
+                if(currentUser?.Claims.All(c => c.Type != "objectidentifier") ?? true)
+                {
+                    currentUser?.AddClaim(new Claim("objectidentifier", "TEST-AD-ID"));
+                }
+              //
                 context.Succeed(requirement);
             }
 

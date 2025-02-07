@@ -11,6 +11,8 @@ The Cypress tests are designed to run against the front-end of the application. 
     "api": "<enter backend URL>",
     "apiKey": "<enter API key for backend>",
     "authKey": "<enter key set for the CypressTestSecret>"
+    "activeDirectoryId": "<enter active directory id that matches test user in the database>"
+
 }
 ```
 
@@ -27,6 +29,31 @@ beforeEach(() => {
 ```
 
 Intercepts all browser requests and adds a special auth header using the `authKey`. Make sure you set the `CypressTestSecret` in your app, and it matches the `authKey` in the `cypress.env.json` file.
+
+The database will need the user to exist and to match the active directory id defined above. An example script to add the user to the database is below
+
+```sql
+BEGIN TRANSACTION 
+INSERT INTO [complete].[users]
+VALUES (NEWID()
+      ,'test.cypress@education.gov.uk'
+      ,GETDATE()
+      ,GETDATE()
+      ,0
+      ,0
+      ,'cypress'
+      ,'testuser'
+      ,'TEST-AD-ID'
+      ,0
+      ,0
+      ,null
+      ,'london'
+      ,null
+      ,0
+      ,0
+      ,null)
+COMMIT TRANSACTION
+```
 
 ### Test Execution
 
