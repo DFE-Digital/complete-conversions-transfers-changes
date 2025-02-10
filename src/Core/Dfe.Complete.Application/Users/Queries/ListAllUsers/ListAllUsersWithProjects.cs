@@ -51,7 +51,7 @@ public class ListAllUsersWithProjectsHandler(ICompleteRepository<User> users)
                         project.SignificantDate,
                         project.State,
                         project.Type,
-                        project.IncomingTrustUkprn == null,
+                        project.FormAMat,
                         null
                     )).ToList(),
                     u.FilteredProjects.Count(project => project.Type == ProjectType.Conversion),

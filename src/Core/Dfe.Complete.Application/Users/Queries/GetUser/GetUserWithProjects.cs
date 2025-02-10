@@ -26,7 +26,6 @@ public class GetUserWithProjectsHandler(
         {
             //Find the user first
             var foundUser = await users.Query()
-                // .Include(user => user.ProjectAssignedTos)
                 .Where(user => user.Id == request.UserId)
                 .Select(user => new
                 {

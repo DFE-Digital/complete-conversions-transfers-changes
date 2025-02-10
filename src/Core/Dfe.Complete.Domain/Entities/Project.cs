@@ -91,6 +91,9 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
 
     public virtual User? RegionalDeliveryOfficer { get; set; }
 
+    public bool FormAMat =>
+        NewTrustReferenceNumber != null && NewTrustName != null && IncomingTrustUkprn == null;
+
     private Project()
     {
     }

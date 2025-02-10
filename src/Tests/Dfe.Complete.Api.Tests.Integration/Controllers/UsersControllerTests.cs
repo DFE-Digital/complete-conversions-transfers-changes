@@ -87,7 +87,7 @@ public class UsersControllerTests
             Assert.NotNull(assignedProject.ProjectType);
             Assert.Equal(expectedProject?.Type?.ToString(), assignedProject.ProjectType.Value.ToString());
 
-            Assert.Equal(expectedProject?.IncomingTrustUkprn == null, assignedProject.IsFormAMAT);
+            Assert.Equal(expectedProject?.FormAMat, assignedProject.IsFormAMAT);
 
             Assert.Null(assignedProject.AssignedToFullName);
         }
@@ -159,7 +159,7 @@ public class UsersControllerTests
             Assert.NotNull(result.ProjectType);
             Assert.Equal(project?.Type?.ToString(), result.ProjectType.Value.ToString());
 
-            Assert.Equal(project?.IncomingTrustUkprn == null, result.IsFormAMAT);
+            Assert.Equal(project?.FormAMat, result.IsFormAMAT);
 
             Assert.NotNull(result.AssignedToFullName);
             Assert.Equal($"{project?.AssignedTo?.FirstName} {project?.AssignedTo?.LastName}",
