@@ -12,6 +12,7 @@ using System.Text.Json.Serialization;
 using Asp.Versioning;
 using Asp.Versioning.ApiExplorer;
 using Dfe.Complete.Infrastructure;
+using Dfe.Complete.Infrastructure.Security.Authorization;
 using DfE.CoreLibs.Http.Middlewares.CorrelationId;
 using DfE.CoreLibs.Http.Interfaces;
 
@@ -55,6 +56,8 @@ namespace Dfe.Complete.Api
                 if (File.Exists(xmlPath)) c.IncludeXmlComments(xmlPath);
                 c.EnableAnnotations();
             });
+
+            builder.Services.AddCustomAuthorization(builder.Configuration);
 
             builder.Services.ConfigureOptions<SwaggerOptions>();
             builder.Services.AddFeatureManagement();

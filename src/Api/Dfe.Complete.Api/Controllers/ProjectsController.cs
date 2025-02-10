@@ -8,6 +8,7 @@ using Dfe.Complete.Application.Projects.Queries.CountAllProjects;
 using Dfe.Complete.Application.Projects.Queries.GetProject;
 using Dfe.Complete.Application.Projects.Queries.ListAllProjects;
 using Dfe.Complete.Application.Projects.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Dfe.Complete.Api.Controllers
 {
@@ -21,7 +22,7 @@ namespace Dfe.Complete.Api.Controllers
         /// </summary>
         /// <param name="request">The request.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
-        //[Authorize(Policy = "API.Write")]
+        [Authorize(Policy = "CanReadWrite")]
         [HttpPost]
         [SwaggerResponse(201, "Project created successfully.", typeof(ProjectId))]
         [SwaggerResponse(400, "Invalid request data.")]
@@ -36,7 +37,7 @@ namespace Dfe.Complete.Api.Controllers
         /// </summary>
         /// <param name="request">The request.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
-        //[Authorize(Policy = "API.Read")]
+        [Authorize(Policy = "CanRead")]
         [HttpGet]
         [SwaggerResponse(200, "Project", typeof(ProjectDto))]
         [SwaggerResponse(400, "Invalid request data.")]
@@ -51,7 +52,7 @@ namespace Dfe.Complete.Api.Controllers
         /// </summary>
         /// <param name="request">The request.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
-        //[Authorize(Policy = "API.Read")]
+        [Authorize(Policy = "CanRead")]
         [HttpGet]
         [Route("List/All")]
         [SwaggerResponse(200, "Project", typeof(List<ListAllProjectsResultModel>))]
@@ -67,7 +68,7 @@ namespace Dfe.Complete.Api.Controllers
         /// </summary>
         /// <param name="request">The request.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
-        //[Authorize(Policy = "API.Read")]
+        [Authorize(Policy = "CanRead")]
         [HttpGet]
         [Route("Count/All")]
         [SwaggerResponse(200, "Project", typeof(int))]
@@ -78,12 +79,12 @@ namespace Dfe.Complete.Api.Controllers
             return Ok(project.Value);
         }
 
-
         /// <summary>
         /// Gets the UKPRN for a group reference number.
         /// </summary>
         /// <param name="groupReferenceNumber">The group reference number.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
+        [Authorize(Policy = "CanRead")]
         [HttpGet("{groupReferenceNumber}/project_group")]
         [SwaggerResponse(200, "Project Group returned successfully.", typeof(ProjectGroupDto))]
         [SwaggerResponse(400, "Invalid group reference number.")]
