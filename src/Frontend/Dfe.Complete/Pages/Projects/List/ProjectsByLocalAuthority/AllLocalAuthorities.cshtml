@@ -25,18 +25,17 @@ ViewData["Title"] = "All projects by user";
         </thead>
         <tbody class="govuk-table__body">
 
-        @* @foreach(var user in Model.Users) *@
-        @* { *@
-        @* <tr class="govuk-table__row"> *@
-        @*     <td class="govuk-table__header govuk-table__cell"> *@
-        @*         <a class="govuk-link" href="/projects/all/users/@user.Id.Value">@user.FullName</a> *@
-        @*     </td> *@
-        @*     <td class="govuk-table__cell">@user.Email</td> *@
-        @*     <td class="govuk-table__cell">@ProjectTeamPresentationMapper.Map(user.Team)</td> *@
-        @*     <td class="govuk-table__cell">@user.ConversionProjectsAssigned</td> *@
-        @*     <td class="govuk-table__cell">@user.TransferProjectsAssigned</td> *@
-        @* </tr> *@
-        @* } *@
+        @foreach(var localAuthority in Model.LocalAuthorities.OrderBy(la => la.LocalAuthority.Name))
+        {
+        <tr class="govuk-table__row">
+            <td class="govuk-table__header govuk-table__cell">
+                <a class="govuk-link" href="/projects/all/local-authorities/@localAuthority.LocalAuthorityCode">@localAuthority.LocalAuthority.Name</a>
+            </td>
+            <td class="govuk-table__cell">@localAuthority.LocalAuthorityCode</td>
+            <td class="govuk-table__cell">@localAuthority.Conversions</td>
+            <td class="govuk-table__cell">@localAuthority.Transfers</td>
+        </tr>
+        }
         </tbody>
     </table>
 </div>
