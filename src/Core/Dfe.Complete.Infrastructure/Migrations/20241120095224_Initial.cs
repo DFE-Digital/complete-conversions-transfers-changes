@@ -525,7 +525,8 @@ namespace Dfe.Complete.Infrastructure.Migrations
                     state = table.Column<int>(type: "int", nullable: false),
                     prepare_id = table.Column<int>(type: "int", nullable: true),
                     local_authority_main_contact_id = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    group_id = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
+                    group_id = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    local_authority_id = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -647,6 +648,12 @@ namespace Dfe.Complete.Infrastructure.Migrations
                 schema: "complete",
                 table: "projects",
                 column: "regional_delivery_officer_id");
+            
+            migrationBuilder.CreateIndex(
+                name: "IX_projects_local_authority_id",
+                schema: "complete",
+                table: "projects",
+                column: "local_authority_id");
         }
 
         /// <inheritdoc />

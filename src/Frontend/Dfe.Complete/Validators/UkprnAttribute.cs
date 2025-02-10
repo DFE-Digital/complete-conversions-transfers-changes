@@ -51,8 +51,8 @@ namespace Dfe.Complete.Validators
 
             try
             {
-                var trustClient = (ITrustsV4Client)validationContext.GetService(typeof(ITrustsV4Client));
-                var result = trustClient.GetTrustByUkprn2Async(ukprn).Result;
+                // var trustClient = (ITrustsV4Client)validationContext.GetService(typeof(ITrustsV4Client));
+                // var result = trustClient.GetTrustByUkprn2Async(ukprn).Result;
             }
             catch (AggregateException ex)
             {

@@ -302,6 +302,12 @@ public partial class CompleteContext : DbContext
           .HasConversion(
               v => v!.Value,
               v => new ContactId(v));
+        
+        projectConfiguration.Property(e => e.LocalAuthorityId)
+            .HasColumnName("local_authority_id")
+            .HasConversion(
+                v => v!.Value,
+                v => new LocalAuthorityId(v));
 
         //projectConfiguration
         //    .HasOne(c => c.MainContactId)

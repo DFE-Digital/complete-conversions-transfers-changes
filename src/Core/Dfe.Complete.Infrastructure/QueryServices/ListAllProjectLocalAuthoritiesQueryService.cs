@@ -10,11 +10,11 @@ internal class ListAllProjectLocalAuthoritiesQueryService(CompleteContext contex
     public IQueryable<ListAllLocalAuthorities> ListAllProjectLocalAuthorities(ProjectState? projectStatus,
         ProjectType? type)
     {
-        var query = context.Projects
-            .Where(project => projectStatus == null || project.State == projectStatus)
-            .Where(project => type == null || type == project.Type)
-            .Include(p => p.AssignedTo)
-            .Join(context.LocalAuthorities, project => project.local)
+        // var query = context.Projects
+        //     .Where(project => projectStatus == null || project.State == projectStatus)
+        //     .Where(project => type == null || type == project.Type)
+        //     .Include(p => p.AssignedTo)
+        //     .Join(context.LocalAuthorities, project => project.Local)
             
         return null; 
     }
