@@ -10,6 +10,7 @@ using Dfe.Complete.Application.Projects.Queries.GetProject;
 using Dfe.Complete.Application.Projects.Queries.ListAllProjects;
 using Dfe.Complete.Application.Projects.Models;
 using Microsoft.AspNetCore.Authorization;
+using Dfe.Complete.Application.Projects.Commands.RemoveProject;
 
 namespace Dfe.Complete.Api.Controllers
 {
@@ -110,6 +111,7 @@ namespace Dfe.Complete.Api.Controllers
         /// <param name="urn">Urn to remove.</param>
         [HttpDelete]
         [ApiExplorerSettings(IgnoreApi = true)]
+        [Authorize(Policy = "CanReadWrite")]
         public async Task<IActionResult> RemoveProject(Urn urn, CancellationToken cancellationToken)
         {
             if (urn == null)

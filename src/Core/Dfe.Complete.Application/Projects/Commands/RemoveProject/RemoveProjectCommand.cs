@@ -26,6 +26,11 @@ namespace Dfe.Complete.Application.Projects.Commands.RemoveProject
 
             var project = await projectRepository.FindAsync(x => x.Urn == request.Urn);
 
+            if (project == null)
+            {
+                return;
+            }
+
             if(project.TasksDataType == Domain.Enums.TaskType.Conversion)
             {
                 await conversionTaskRepository.RemoveAsync(conversionTaskRepository.Get(new TaskDataId(project.TasksDataId.Value)));
