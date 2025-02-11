@@ -36,11 +36,15 @@ public class GetUserWithProjectsHandler(
                         .Skip(request.Page * request.Count)
                         .Take(request.Count)
                         .ToList(),
-                    ConversionCount = user.ProjectAssignedTos.Count(project => project.Type == ProjectType.Conversion),
-                    TransferCount = user.ProjectAssignedTos.Count(project => project.Type == ProjectType.Transfer)
+                    ConversionCount = user.ProjectAssignedTos
+                        .Where(project => request.State == null || project.State == request.State)
+                        .Count(project => project.Type == ProjectType.Conversion),
+                    TransferCount = user.ProjectAssignedTos
+                        .Where(project => request.State == null || project.State == request.State)
+                        .Count(project => project.Type == ProjectType.Transfer)
                 })
                 .FirstOrDefaultAsync(cancellationToken);
-
+            
             // Exit immediately if there is no user
             if (foundUser is null)
             {
