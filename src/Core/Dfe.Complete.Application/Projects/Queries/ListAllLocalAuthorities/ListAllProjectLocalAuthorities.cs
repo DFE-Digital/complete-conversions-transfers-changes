@@ -10,7 +10,7 @@ namespace Dfe.Complete.Application.Projects.Queries.ProjectsByLocalAuthority;
 public record ListAllProjectLocalAuthoritiesQuery(ProjectState? State = ProjectState.Active, ProjectType? Type = null)
     : PaginatedRequest<PaginatedResult<List<ListAllProjectLocalAuthoritiesResultModel>>>;
 
-public class ListAllProjectLocalAuthorities(IListAllProjectLocalAuthoritiesQueryService queryService)
+public class ListAllProjectLocalAuthorities(IListAllProjectLocalAuthoritiesQueryService queryService) 
     : IRequestHandler<ListAllProjectLocalAuthoritiesQuery, PaginatedResult<List<ListAllProjectLocalAuthoritiesResultModel>>>
 {
     public async Task<PaginatedResult<List<ListAllProjectLocalAuthoritiesResultModel>>> Handle(
