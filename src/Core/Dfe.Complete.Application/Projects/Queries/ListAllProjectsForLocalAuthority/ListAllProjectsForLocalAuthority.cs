@@ -1,7 +1,9 @@
 using Dfe.Complete.Application.Common.Models;
 using Dfe.Complete.Application.Projects.Interfaces;
 using Dfe.Complete.Application.Projects.Models;
+using Dfe.Complete.Domain.Entities;
 using Dfe.Complete.Domain.Enums;
+using Dfe.Complete.Domain.Interfaces.Repositories;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
@@ -14,7 +16,8 @@ public record ListAllProjectsForLocalAuthorityQuery(
     : PaginatedRequest<PaginatedResult<List<ListAllProjectsResultModel>>>;
 
 public class ListAllProjectsForLocalAuthority(
-    IListAllProjectLocalAuthoritiesQueryService listAllProjectLocalAuthoritiesQueryService) :
+    IListAllProjectLocalAuthoritiesQueryService listAllProjectLocalAuthoritiesQueryService,
+    IListAllProjectsQueryService listAllProjectsQueryService) :
     IRequestHandler<ListAllProjectsForLocalAuthorityQuery, PaginatedResult<List<ListAllProjectsResultModel>>>
 {
     public async Task<PaginatedResult<List<ListAllProjectsResultModel>>> Handle(
@@ -24,14 +27,23 @@ public class ListAllProjectsForLocalAuthority(
             .ListAllProjectLocalAuthorities(request.State, null)
             .ToListAsync(cancellationToken);
 
-        var count = allLocalAuthoritiesWithProjects.Count;
-
         var projectsForSpecificLa =
             allLocalAuthoritiesWithProjects
-                .Where(la => la.LocalAuthority.Code == request.LocalAuthorityCode)
-                .Skip(request.Page * request.Count)
-                .Take(request.Count);
+                .Where(la => la.LocalAuthority.Code == request.LocalAuthorityCode);
+
+        var projectsWithEstablishments = await listAllProjectsQueryService.ListAllProjects(request.State, request.Type).ToListAsync(cancellationToken);
+
+        var projectsForLaWithEstablishmentName = projectsForSpecificLa.Select(proj =>
+            ListAllProjectsResultModel.MapProjectAndEstablishmentToListAllProjectResultModel(
+                proj.Project, 
+                projectsWithEstablishments
+                    .First(p => p.Project.Urn == proj.Project.Urn).Establishment))
+            .ToList();
         
-        var result = projectsForSpecificLa.Select(proj => ListAllProjectsResultModel.MapProjectAndEstablishmentToListAllProjectResultModel(proj.Project))
+        var count = projectsForLaWithEstablishmentName.Count;
+
+        var paginatedResult = projectsForLaWithEstablishmentName.Skip(request.Page * request.Count).Take(request.Count).ToList();
+
+        return PaginatedResult<List<ListAllProjectsResultModel>>.Success(paginatedResult, count);
     }
 }
