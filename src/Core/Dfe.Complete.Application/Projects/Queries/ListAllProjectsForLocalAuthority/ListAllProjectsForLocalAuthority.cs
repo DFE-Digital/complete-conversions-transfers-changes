@@ -4,6 +4,7 @@ using Dfe.Complete.Application.Projects.Models;
 using Dfe.Complete.Domain.Entities;
 using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Domain.Interfaces.Repositories;
+using Dfe.Complete.Domain.ValueObjects;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
@@ -17,7 +18,8 @@ public record ListAllProjectsForLocalAuthorityQuery(
 
 public class ListAllProjectsForLocalAuthority(
     IListAllProjectLocalAuthoritiesQueryService listAllProjectLocalAuthoritiesQueryService,
-    IListAllProjectsQueryService listAllProjectsQueryService) :
+    IListAllProjectsQueryService listAllProjectsQueryService, 
+    ICompleteRepository<LocalAuthority> localAuthorityRepo) :
     IRequestHandler<ListAllProjectsForLocalAuthorityQuery, PaginatedResult<List<ListAllProjectsResultModel>>>
 {
     public async Task<PaginatedResult<List<ListAllProjectsResultModel>>> Handle(
@@ -32,7 +34,7 @@ public class ListAllProjectsForLocalAuthority(
                 .Where(la => la.LocalAuthority.Code == request.LocalAuthorityCode);
 
         var projectsWithEstablishments = await listAllProjectsQueryService.ListAllProjects(request.State, request.Type).ToListAsync(cancellationToken);
-
+        
         var projectsForLaWithEstablishmentName = projectsForSpecificLa.Select(proj =>
             ListAllProjectsResultModel.MapProjectAndEstablishmentToListAllProjectResultModel(
                 proj.Project, 

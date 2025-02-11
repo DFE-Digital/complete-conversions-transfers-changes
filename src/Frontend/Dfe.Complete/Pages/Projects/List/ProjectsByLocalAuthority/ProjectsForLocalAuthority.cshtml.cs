@@ -1,3 +1,4 @@
+using Dfe.Complete.Application.Projects.Models;
 using Dfe.Complete.Application.Projects.Queries.ListAllProjectsForLocalAuthority;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -9,6 +10,8 @@ public class ProjectsForLocalAuthority(ISender sender) : AllProjectsModel(ByLoca
     [BindProperty(SupportsGet = true)] public string LocalAuthorityCode { get; set; }
 
     public string LocalAuthorityName { get; set; }
+    
+    public List<ListAllProjectsResultModel> Projects { get; set; } 
 
     public async Task OnGet()
     {
@@ -16,5 +19,7 @@ public class ProjectsForLocalAuthority(ISender sender) : AllProjectsModel(ByLoca
             { Count = PageSize, Page = PageNumber - 1 };
 
         var result = await sender.Send(query);
+
+        Projects = result.Value ?? [];
     }
 }
