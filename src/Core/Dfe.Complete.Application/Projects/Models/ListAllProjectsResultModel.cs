@@ -24,9 +24,7 @@ public record ListAllProjectsResultModel(
             project.State,
             project.Type,
             project.FormAMat,
-            project.AssignedTo != null
-                ? $"{project.AssignedTo.FirstName} {project.AssignedTo.LastName}"
-                : null
+            project.AssignedTo?.FullName
         );
     }
 }
