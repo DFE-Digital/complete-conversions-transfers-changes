@@ -1,7 +1,7 @@
 ﻿@using Dfe.Complete.Constants
 @inject Microsoft.Extensions.Configuration.IConfiguration _configuration
 @inject Dfe.Complete.Services.IAnalyticsConsentService _analytisConsentService
-
+@inject IHostEnvironment _environment;
 @{
   var showAnalytics = _configuration["GoogleAnalytics:Enable"] == "Yes" && _analytisConsentService.HasConsent();
 
@@ -45,7 +45,10 @@
   <link rel="stylesheet" href="~/dist/accessible-autocomplete.min.css" asp-add-nonce/>
 </head>
 <body class="govuk-template__body">
-    <aside id="environment-banner" aria-label="environment banner"><strong class="govuk-tag govuk-tag--turquoise environment-banner">DEVELOPMENT ENVIRONMENT</strong></aside>
+
+
+    <partial name="_EnvironmentHeader" />
+
 @if (showAnalytics)
 {
   <!-- Google Tag Manager (noscript) -->

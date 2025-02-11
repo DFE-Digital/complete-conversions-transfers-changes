@@ -1,0 +1,13 @@
+﻿@inject IHostEnvironment _environment;
+@{
+}
+
+@if (_environment.IsStaging())
+{
+    <aside id="environment-banner" aria-label="environment banner"><strong class="govuk-tag govuk-tag--orange environment-banner">TEST ENVIRONMENT</strong></aside>
+}
+
+@if (_environment.IsDevelopment())
+{
+    <aside id="environment-banner" aria-label="environment banner"><strong class="govuk-tag govuk-tag--turquoise environment-banner">DEVELOPMENT ENVIRONMENT</strong></aside>
+}
