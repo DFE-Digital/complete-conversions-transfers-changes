@@ -1,4 +1,4 @@
-import { EnvClientId, EnvClientSecret, EnvTenantId, EnvUsername } from "cypress/constants/cypressConstants";
+import { CompleteApiClientId, EnvClientId, EnvClientSecret, EnvTenantId, EnvUsername } from "cypress/constants/cypressConstants";
 
 export class ApiBase {
     protected getHeaders(accessToken: string): object {
@@ -15,7 +15,8 @@ export class ApiBase {
         const tenantId = Cypress.env(EnvTenantId);  
         const clientId = Cypress.env(EnvClientId);
         const clientSecret = Cypress.env(EnvClientSecret);
-        const scope = 'https://graph.microsoft.com/.default';  
+        const completeApiClientId = Cypress.env(CompleteApiClientId);
+        const scope = `api://${completeApiClientId}/.default`;  
         
         return cy.request({
             method: 'POST',

@@ -8,3 +8,4 @@ export const EnvClientId = "clientId";
 export const EnvClientSecret = "clientSecret";
 export const TeamLeaderClaim = "teamlead";
 export const ProjectRecordCreator = "projectrecordcreator";
+export const CompleteApiClientId = "completeApiClientId"
