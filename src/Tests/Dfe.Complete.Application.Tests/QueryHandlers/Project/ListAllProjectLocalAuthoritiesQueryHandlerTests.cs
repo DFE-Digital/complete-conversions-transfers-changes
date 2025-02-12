@@ -30,16 +30,15 @@ public class ListAllProjectLocalAuthoritiesQueryHandlerTests
         IFixture fixture)
     {
         var localAuthorities = fixture.CreateMany<LocalAuthority>(20);
-        var localAuthorityCode = localAuthorities.FirstOrDefault().Code;
 
-        var expectedLocalAuthorityCodes = localAuthorities.SelectMany(la => la.Code).Take(10);
+        var expectedLocalAuthorityCodes = localAuthorities.Select(la => la.Code).Take(10).ToList();
 
         localAuthoritiesRepo.FetchAsync(Arg.Any<Expression<Func<LocalAuthority, bool>>>(), default)
             .Returns(localAuthorities.ToList());
 
         var listAllProjectsQueryModels = fixture.CreateMany<ListAllProjectsQueryModel>(50).ToList();
         listAllProjectsQueryModels.Take(30).ToList()
-            .ForEach(p => p.Establishment.LocalAuthorityCode = localAuthorityCode);
+            .ForEach(p => p.Establishment.LocalAuthorityCode = expectedLocalAuthorityCodes.MinBy(_ => Guid.NewGuid()));
 
         var mockListAllProjects = listAllProjectsQueryModels.BuildMock();
 
@@ -47,11 +46,11 @@ public class ListAllProjectLocalAuthoritiesQueryHandlerTests
             .Returns(mockListAllProjects);
 
         var expectedProjects =
-            listAllProjectsQueryModels.Where(p => p.Establishment.LocalAuthorityCode == localAuthorityCode).ToList();
+            listAllProjectsQueryModels.Where(p => expectedLocalAuthorityCodes.Contains(p.Establishment.LocalAuthorityCode)).ToList();
 
         var expected = new List<ListAllProjectLocalAuthoritiesResultModel>();
         expected.AddRange(localAuthorities
-            .Where(la => la.Code == localAuthorityCode)
+            .Where(la => expectedLocalAuthorityCodes.Contains(la.Code))
             .Select(la => new ListAllProjectLocalAuthoritiesResultModel(
                 la,
                 la.Code,
