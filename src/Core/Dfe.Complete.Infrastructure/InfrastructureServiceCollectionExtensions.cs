@@ -27,7 +27,6 @@ namespace Dfe.Complete.Infrastructure
 
             services.AddDbContext<CompleteContext>(options => options.UseSqlServer(connectionString));
             
-            
             //Queries
             services.AddScoped<IListAllProjectsQueryService, ListAllProjectsQueryService>();
             services.AddScoped<IConversionCsvQueryService, ConversionCsvQueryService>();
