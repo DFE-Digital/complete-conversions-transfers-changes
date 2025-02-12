@@ -31,7 +31,7 @@ public class ListAllProjectLocalAuthoritiesQueryHandlerTests
     {
         var localAuthorities = fixture.CreateMany<LocalAuthority>(20);
 
-        var expectedLocalAuthorityCodes = localAuthorities.Select(la => la.Code).Take(10).ToList();
+        var expectedLocalAuthorityCodes = localAuthorities.Select(la => la.Code).Take(20).ToList();
 
         localAuthoritiesRepo.FetchAsync(Arg.Any<Expression<Func<LocalAuthority, bool>>>(), default)
             .Returns(localAuthorities.ToList());
@@ -48,17 +48,25 @@ public class ListAllProjectLocalAuthoritiesQueryHandlerTests
         var expectedProjects =
             listAllProjectsQueryModels.Where(p => expectedLocalAuthorityCodes.Contains(p.Establishment.LocalAuthorityCode)).ToList();
 
-        var expected = new List<ListAllProjectLocalAuthoritiesResultModel>();
-        expected.AddRange(localAuthorities
+        var expectedLocalAuthorities = new List<ListAllProjectLocalAuthoritiesResultModel>();
+        expectedLocalAuthorities.AddRange(localAuthorities
             .Where(la => expectedLocalAuthorityCodes.Contains(la.Code))
             .Select(la => new ListAllProjectLocalAuthoritiesResultModel(
                 la,
                 la.Code,
                 expectedProjects.Count(p => p.Project.Type == ProjectType.Conversion),
                 expectedProjects.Count(p => p.Project.Type == ProjectType.Transfer))));
-
+        
         var query = new ListAllProjectLocalAuthoritiesQuery();
 
         var handlerResult = await handler.Handle(query, default);
+
+        Assert.NotNull(handlerResult);
+        Assert.Equal(expectedLocalAuthorities.Count, handlerResult.ItemCount);
+
+        for (var i = 0; i < handlerResult.ItemCount; i++)
+        {
+            Assert.Equivalent(expectedLocalAuthorities[i], handlerResult.Value![i]);
+        }
     }
 }
