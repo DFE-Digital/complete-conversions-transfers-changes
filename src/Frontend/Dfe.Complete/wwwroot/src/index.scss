@@ -1,5 +1,21 @@
-﻿/* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
-for details on configuring this project to bundle and minify static web assets. */
+﻿@import "./css/inter/inter.css";
+
+$govuk-page-width: 1200px;
+$moj-page-width: $govuk-page-width;
+
+$govuk-font-url-function: "font-url";
+$govuk-image-url-function: "image-url";
+$govuk-global-styles: true;
+
+// override the default page width
+$govuk-page-width: 1200px;
+$moj-page-width: $govuk-page-width;
+
+// Use the DfE font 'Inter', do not user GDS Transport
+$govuk-font-family: "Inter", sans-serif;
+
+$dfe-blue: #003a69;
+
 @import "node_modules/govuk-frontend/govuk/all.scss";
 @import "node_modules/@ministryofjustice/frontend/moj/all.scss";
 @import "./css/attachment.scss";
@@ -13,8 +29,6 @@ for details on configuring this project to bundle and minify static web assets. 
 @import "./css/pupil-numbers.scss";
 @import "./css//pagination.scss";
 
-$govuk-page-width: 1200px;
-$moj-page-width: $govuk-page-width;
 
 .moj-sub-navigation__link {
 	font-weight: bold;
@@ -80,3 +94,82 @@ $moj-page-width: $govuk-page-width;
 .govuk-prototype-kit-common-templates-related-items .govuk-list > li {
     margin-bottom: govuk-spacing(2);
 }
+
+
+.autocomplete__wrapper * {
+	@include govuk-typography-common();
+  }
+  
+  .environment-banner {
+	&.govuk-tag {
+	  display: block;
+	  padding-left: calc((100vw - #{$govuk-page-width}) / 2);
+  
+	  @include govuk-media-query($until: $govuk-page-width + $govuk-gutter * 2) {
+		padding-left: $govuk-gutter;
+	  }
+  
+	  @include govuk-media-query($until: tablet) {
+		padding-left: $govuk-gutter-half;
+	  }
+	}
+  }
+  
+  .list-style-none {
+	list-style: none;
+	padding-left: 0;
+  }
+  
+  .govuk-section-break--s {
+	@include govuk-responsive-margin(2, "top");
+	@include govuk-responsive-margin(2, "bottom");
+  }
+  
+  .projects-list {
+	.project-summary {
+	  p {
+		margin-block-end: 0;
+	  }
+  
+	  @include govuk-media-query($from: desktop) {
+		.row-container {
+		  display: flex;
+		  justify-content: space-between;
+		}
+	  }
+  
+	  @include govuk-media-query($until: desktop) {
+		.govuk-section-break:not(:last-child) {
+		  display: none;
+		}
+	  }
+	}
+  }
+  
+  address.govuk-address {
+	font-style: normal;
+  }
+  
+  .project-information-block {
+	margin-bottom: 50px;
+  }
+  
+  // MOJ header navigtion
+  // We want persitently acitve navigation items
+  .moj-header__navigation-link[aria-current] {
+	color: govuk-colour("blue");
+  }
+  
+  // Undo the changes the the DfE styles do to the MOJ styles
+  .moj-sub-navigation__item {
+	margin-bottom: 0px;
+  }
+  
+  // force skip link to be underline
+  .govuk-skip-link { text-decoration: underline !important; }
+  
+  // force header and DfE navigation links to always be white
+  a.dfe-header__link--service, a.dfe-header__navigation-link {
+	color: #ffffff;
+  }
+  

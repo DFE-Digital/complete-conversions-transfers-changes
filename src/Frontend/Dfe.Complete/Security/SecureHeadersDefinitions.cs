@@ -7,7 +7,9 @@ namespace Dfe.Complete.Security
 		static string GoogleTagManagerUri => "https://www.googletagmanager.com";
 		static string GoogleAnalyticsUri => "https://www.google-analytics.com/";
 
-		public static HeaderPolicyCollection GetHeaderPolicyCollection(bool isDev)
+        static string RsMs => "https://rsms.me/";
+
+        public static HeaderPolicyCollection GetHeaderPolicyCollection(bool isDev)
 		{			
 
 			var policy = new HeaderPolicyCollection()
@@ -36,9 +38,9 @@ namespace Dfe.Complete.Security
 						.From(GoogleTagManagerUri);
 					builder.AddFormAction().Self();
 					builder.AddFormAction().OverHttps();
-					builder.AddFontSrc().Self();
-					builder.AddStyleSrc().Self();
-					builder.AddBaseUri().Self();
+                    builder.AddFontSrc().Self().From(RsMs);
+					builder.AddStyleSrc().Self().From("https://rsms.me/inter/inter.css");
+                    builder.AddBaseUri().Self();
 					builder.AddScriptSrc().From(GoogleTagManagerUri).UnsafeInline().WithNonce();
                builder.AddFrameAncestors().None();
 				})
