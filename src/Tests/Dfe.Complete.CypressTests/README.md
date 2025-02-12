@@ -161,3 +161,11 @@ it("should perform accessibility tests", () => {
 The `executeAccessibilityTests` command under "support/commands.ts"
 
 This will run all accessibility rules provided by the framework
+
+### Troubleshooting Cypress Binary Issues
+
+If you are installing Cypress from behind a proxy you can often hit an issue where the binary is not able to download.Download a version of the cypress binary and in the .npmrc file set the path to it below.
+
+```
+CYPRESS_INSTALL_BINARY=<Path to binary>
+```
