@@ -9,8 +9,7 @@ namespace Dfe.Complete.Pages.Projects.List.ProjectsByLocalAuthority;
 public class AllLocalAuthorities(ISender sender) : AllProjectsModel(ByLocalAuthorityNavigation)
 {
     public List<ListAllProjectLocalAuthoritiesResultModel> LocalAuthorities { get; set; }
-
-
+    
     public async Task OnGet()
     {
         var query = new ListAllProjectLocalAuthoritiesQuery

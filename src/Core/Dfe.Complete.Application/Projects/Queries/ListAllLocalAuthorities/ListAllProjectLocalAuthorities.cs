@@ -20,14 +20,13 @@ public class ListAllProjectLocalAuthorities(IListAllProjectLocalAuthoritiesQuery
         {
             var result = await queryService.ListAllProjectLocalAuthorities(request.State, null)
                 .ToListAsync(cancellationToken);
-
-            var count = result.Count;
-
+            
             var groupedProjectByLa = result.GroupBy(g => g.LocalAuthority)
-                .Skip(request.Page * request.Count)
-                .Take(request.Count);
+                .ToList();
 
-            var resultModel = groupedProjectByLa
+            var paginatedProjectsByLa = groupedProjectByLa.Skip(request.Page * request.Count).Take(request.Count);
+
+            var resultModel = paginatedProjectsByLa
                 .Select(group =>
                     new ListAllProjectLocalAuthoritiesResultModel(
                         group.Key,
@@ -36,7 +35,7 @@ public class ListAllProjectLocalAuthorities(IListAllProjectLocalAuthoritiesQuery
                         Transfers: group.Count(item => item.Project.Type == ProjectType.Transfer)))
                 .ToList();
 
-            return PaginatedResult<List<ListAllProjectLocalAuthoritiesResultModel>>.Success(resultModel, count);
+            return PaginatedResult<List<ListAllProjectLocalAuthoritiesResultModel>>.Success(resultModel, groupedProjectByLa.Count);
         }
         catch (Exception e)
         {
