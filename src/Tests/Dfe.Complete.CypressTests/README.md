@@ -10,7 +10,6 @@ The Cypress tests are designed to run against the front-end of the application. 
     "username": "<enter the user you want to run the tests with>",
     "api": "<enter backend URL>",
     "authKey": "<enter key set for the CypressTestSecret>"
-    "activeDirectoryId": "<enter active directory id that matches test user in the database>"
     "tenantId": "<enter Id from Id Provider for the tenant>",  
     "clientId": "<enter Id from Id Provider for the client used for test app registration>",
     "clientSecret": "<enter a client secret Id Provider for the client used for test app registration>",
