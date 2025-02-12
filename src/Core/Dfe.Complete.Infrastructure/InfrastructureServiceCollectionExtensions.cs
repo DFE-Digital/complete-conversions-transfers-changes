@@ -31,8 +31,6 @@ namespace Dfe.Complete.Infrastructure
             //Queries
             services.AddScoped<IListAllProjectsQueryService, ListAllProjectsQueryService>();
             services.AddScoped<IConversionCsvQueryService, ConversionCsvQueryService>();
-            services.AddScoped<IListAllProjectLocalAuthoritiesQueryService, ListAllProjectLocalAuthoritiesQueryService>();
-
 
             // Authentication
             //services.AddCustomAuthorization(config);
