@@ -20,23 +20,30 @@ public class ListAllProjectsForLocalAuthority(
     public async Task<PaginatedResult<List<ListAllProjectsResultModel>>> Handle(
         ListAllProjectsForLocalAuthorityQuery request, CancellationToken cancellationToken)
     {
-        var projectsWithEstablishments = await listAllProjectsQueryService.ListAllProjects(request.State, request.Type)
-            .ToListAsync(cancellationToken);
+        try
+        {
+            var projectsWithEstablishments = await listAllProjectsQueryService.ListAllProjects(request.State, request.Type)
+                .ToListAsync(cancellationToken);
 
-        var projectsForLa =
-            projectsWithEstablishments.Where(p => p.Establishment.LocalAuthorityCode == request.LocalAuthorityCode);
+            var projectsForLa =
+                projectsWithEstablishments.Where(p => p.Establishment.LocalAuthorityCode == request.LocalAuthorityCode);
 
-        var projectsForLaWithEstablishments = projectsForLa.Select(proj =>
-                ListAllProjectsResultModel.MapProjectAndEstablishmentToListAllProjectResultModel(
-                    proj.Project,
-                    proj.Establishment))
-            .ToList();
+            var projectsForLaWithEstablishments = projectsForLa.Select(proj =>
+                    ListAllProjectsResultModel.MapProjectAndEstablishmentToListAllProjectResultModel(
+                        proj.Project,
+                        proj.Establishment))
+                .ToList();
 
-        var count = projectsForLaWithEstablishments.Count;
+            var count = projectsForLaWithEstablishments.Count;
 
-        var paginatedResult = projectsForLaWithEstablishments.Skip(request.Page * request.Count).Take(request.Count)
-            .ToList();
+            var paginatedResult = projectsForLaWithEstablishments.Skip(request.Page * request.Count).Take(request.Count)
+                .ToList();
 
-        return PaginatedResult<List<ListAllProjectsResultModel>>.Success(paginatedResult, count);
+            return PaginatedResult<List<ListAllProjectsResultModel>>.Success(paginatedResult, count);
+        }
+        catch (Exception e)
+        {
+            return PaginatedResult<List<ListAllProjectsResultModel>>.Failure(e.Message);
+        }
     }
 }
