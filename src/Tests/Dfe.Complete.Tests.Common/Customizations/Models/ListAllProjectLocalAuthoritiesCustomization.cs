@@ -8,7 +8,7 @@ using Dfe.Complete.Domain.Interfaces.Repositories;
 using MockQueryable;
 using NSubstitute;
 
-public class ListAllProjectLocalAuthoritiesArrangementCustomization : ICustomization
+public class ListAllProjectLocalAuthoritiesCustomization : ICustomization
 {
     public void Customize(IFixture fixture)
     {

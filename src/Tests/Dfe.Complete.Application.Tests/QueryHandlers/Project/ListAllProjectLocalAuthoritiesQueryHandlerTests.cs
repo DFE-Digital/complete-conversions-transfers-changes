@@ -1,18 +1,15 @@
 using System.Linq.Expressions;
 using AutoFixture;
 using AutoFixture.Xunit2;
-using Dfe.Complete.Application.Projects.Interfaces;
 using Dfe.Complete.Application.Projects.Models;
 using Dfe.Complete.Application.Projects.Queries.ProjectsByLocalAuthority;
-using Dfe.Complete.Application.Projects.Queries.ProjectsByRegion;
 using Dfe.Complete.Domain.Entities;
-using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Domain.Interfaces.Repositories;
 using Dfe.Complete.Tests.Common.Customizations.Models;
 using DfE.CoreLibs.Testing.AutoFixture.Attributes;
 using DfE.CoreLibs.Testing.AutoFixture.Customizations;
-using MockQueryable;
 using NSubstitute;
+using NSubstitute.ExceptionExtensions;
 
 namespace Dfe.Complete.Application.Tests.QueryHandlers.Project;
 
@@ -23,7 +20,7 @@ public class ListAllProjectLocalAuthoritiesQueryHandlerTests
         typeof(OmitCircularReferenceCustomization),
         typeof(ListAllProjectsQueryModelCustomization),
         typeof(DateOnlyCustomization),
-        typeof(ListAllProjectLocalAuthoritiesArrangementCustomization))]
+        typeof(ListAllProjectLocalAuthoritiesCustomization))]
     public async Task Handle_ShouldReturnListProjectsLocalAuthorities(
         ListAllProjectLocalAuthorities handler,
         IFixture fixture)
@@ -51,12 +48,9 @@ public class ListAllProjectLocalAuthoritiesQueryHandlerTests
         typeof(OmitCircularReferenceCustomization),
         typeof(ListAllProjectsQueryModelCustomization),
         typeof(DateOnlyCustomization),
-        typeof(ListAllProjectLocalAuthoritiesArrangementCustomization))]
+        typeof(ListAllProjectLocalAuthoritiesCustomization))]
     public async Task Handle_ShouldReturnCorrectList_WhenAllPagesAreSkipped(
-        [Frozen] IListAllProjectsQueryService mockListAllProjectsQueryService,
-        [Frozen] ICompleteRepository<LocalAuthority> localAuthoritiesRepo,
-        ListAllProjectLocalAuthorities handler,
-        IFixture fixture)
+        ListAllProjectLocalAuthorities handler)
     {
         //Act
         var query = new ListAllProjectLocalAuthoritiesQuery { Page = 10 };
@@ -69,5 +63,32 @@ public class ListAllProjectLocalAuthoritiesQueryHandlerTests
         Assert.NotNull(handlerResult);
         Assert.True(handlerResult.IsSuccess);
         Assert.Equal(0, handlerResult.Value?.Count);
+    }
+    
+    
+    [Theory]
+    [CustomAutoData(
+        typeof(OmitCircularReferenceCustomization),
+        typeof(ListAllProjectsQueryModelCustomization),
+        typeof(DateOnlyCustomization),
+        typeof(ListAllProjectLocalAuthoritiesCustomization))]
+    public async Task Handle_ShouldReturnUnsuccessful_WhenAnErrorOccurs(
+        [Frozen] ICompleteRepository<LocalAuthority> localAuthoritiesRepo,
+        ListAllProjectLocalAuthorities handler,
+        IFixture fixture)
+    {
+        const string errorMessage = "This is a test error message";
+        
+        var query = new ListAllProjectLocalAuthoritiesQuery { Page = 10 };
+
+        localAuthoritiesRepo.FetchAsync(Arg.Any<Expression<Func<LocalAuthority, bool>>>(), default)
+            .ThrowsAsync(new Exception(errorMessage));
+        
+        var handlerResult = await handler.Handle(query, default);
+       
+        // Assert
+        Assert.NotNull(handlerResult);
+        Assert.False(handlerResult.IsSuccess);
+        Assert.Equal(errorMessage, handlerResult.Error);
     }
 }
