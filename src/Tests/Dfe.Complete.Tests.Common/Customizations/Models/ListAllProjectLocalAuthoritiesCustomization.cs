@@ -8,61 +8,75 @@ using Dfe.Complete.Domain.Interfaces.Repositories;
 using MockQueryable;
 using NSubstitute;
 
-namespace Dfe.Complete.Tests.Common.Customizations.Models
+public class ListAllProjectLocalAuthoritiesArrangementCustomization : ICustomization
 {
-    public class ListAllProjectLocalAuthoritiesArrangementCustomization : ICustomization
+    public void Customize(IFixture fixture)
     {
-        private readonly int projectsToAssignCount;
-        
-        public ListAllProjectLocalAuthoritiesArrangementCustomization(int projectsToAssignCount)
-        {
-            this.projectsToAssignCount = projectsToAssignCount;
-        }
+        var localAuthorities = CreateLocalAuthorities(fixture, count: 20);
+        var expectedLocalAuthorityCodes = localAuthorities.Select(la => la.Code).ToList();
 
-        public void Customize(IFixture fixture)
-        {
-            var localAuthorities = fixture.CreateMany<LocalAuthority>(20).ToList();
-            var expectedLocalAuthorityCodes = localAuthorities.Select(la => la.Code).ToList();
+        SetupLocalAuthoritiesRepository(fixture, localAuthorities);
 
-            var localAuthoritiesRepo = fixture.Freeze<ICompleteRepository<LocalAuthority>>();
-            localAuthoritiesRepo
-                .FetchAsync(Arg.Any<Expression<Func<LocalAuthority, bool>>>(), Arg.Any<CancellationToken>())
-                .Returns(localAuthorities.ToList());
+        var projects = fixture.CreateMany<ListAllProjectsQueryModel>(50).ToList();
+        AssignRandomLocalAuthorityCodes(projects, expectedLocalAuthorityCodes, assignCount: 20);
 
-            var listAllProjectsQueryModels = fixture.CreateMany<ListAllProjectsQueryModel>(50).ToList();
+        SetupProjectsQueryService(fixture, projects);
 
-            listAllProjectsQueryModels
-                .Take(projectsToAssignCount)
-                .ToList()
-                .ForEach(p =>
-                    p.Establishment.LocalAuthorityCode = expectedLocalAuthorityCodes.MinBy(_ => Guid.NewGuid()));
+        var expectedProjects = projects
+            .Where(p => expectedLocalAuthorityCodes.Contains(p.Establishment.LocalAuthorityCode))
+            .ToList();
 
-            var mockListAllProjectsQueryService = fixture.Freeze<IListAllProjectsQueryService>();
-            var mockListAllProjects = listAllProjectsQueryModels.BuildMock();
-            mockListAllProjectsQueryService
-                .ListAllProjects(Arg.Any<ProjectState?>(), Arg.Any<ProjectType?>())
-                .Returns(mockListAllProjects);
+        var expectedLocalAuthorities = localAuthorities
+            .Where(la => expectedLocalAuthorityCodes.Contains(la.Code))
+            .Select(la => new ListAllProjectLocalAuthoritiesResultModel(
+                la,
+                la.Code,
+                expectedProjects.Count(p =>
+                    p.Establishment.LocalAuthorityCode == la.Code &&
+                    p.Project.Type == ProjectType.Conversion),
+                expectedProjects.Count(p =>
+                    p.Establishment.LocalAuthorityCode == la.Code &&
+                    p.Project.Type == ProjectType.Transfer)))
+            .ToList();
 
-            var expectedProjects = listAllProjectsQueryModels
-                .Where(p => expectedLocalAuthorityCodes.Contains(p.Establishment.LocalAuthorityCode))
-                .ToList();
+        fixture.Inject(localAuthorities);
+        fixture.Inject(expectedLocalAuthorityCodes);
+        fixture.Inject(projects);
+        fixture.Inject(expectedProjects);
+        fixture.Inject(expectedLocalAuthorities);
+    }
 
-            var expectedLocalAuthorities = localAuthorities
-                .Where(la => expectedLocalAuthorityCodes.Contains(la.Code))
-                .Select(la => new ListAllProjectLocalAuthoritiesResultModel(
-                    la,
-                    la.Code,
-                    expectedProjects.Count(p => p.Establishment.LocalAuthorityCode == la.Code &&
-                                                p.Project.Type == ProjectType.Conversion),
-                    expectedProjects.Count(p => p.Establishment.LocalAuthorityCode == la.Code &&
-                                                p.Project.Type == ProjectType.Transfer)))
-                .ToList();
+    private static List<LocalAuthority> CreateLocalAuthorities(IFixture fixture, int count)
+    {
+        return fixture.CreateMany<LocalAuthority>(count).ToList();
+    }
 
-            fixture.Inject(localAuthorities);
-            fixture.Inject(expectedLocalAuthorityCodes);
-            fixture.Inject(listAllProjectsQueryModels);
-            fixture.Inject(expectedProjects);
-            fixture.Inject(expectedLocalAuthorities);
-        }
+    private static void SetupLocalAuthoritiesRepository(IFixture fixture, List<LocalAuthority> localAuthorities)
+    {
+        var localAuthoritiesRepo = fixture.Freeze<ICompleteRepository<LocalAuthority>>();
+        localAuthoritiesRepo
+            .FetchAsync(Arg.Any<Expression<Func<LocalAuthority, bool>>>(), Arg.Any<CancellationToken>())
+            .Returns(localAuthorities.ToList());
+    }
+
+    private static void AssignRandomLocalAuthorityCodes(
+        List<ListAllProjectsQueryModel> projects,
+        List<string> expectedLocalAuthorityCodes,
+        int assignCount)
+    {
+        projects
+            .Take(assignCount)
+            .ToList()
+            .ForEach(p =>
+                p.Establishment.LocalAuthorityCode = expectedLocalAuthorityCodes.MinBy(_ => Guid.NewGuid()));
+    }
+
+    private static void SetupProjectsQueryService(IFixture fixture, List<ListAllProjectsQueryModel> projects)
+    {
+        var projectQueryService = fixture.Freeze<IListAllProjectsQueryService>();
+        var mockProjects = projects.BuildMock();
+        projectQueryService
+            .ListAllProjects(Arg.Any<ProjectState?>(), Arg.Any<ProjectType?>())
+            .Returns(mockProjects);
     }
 }

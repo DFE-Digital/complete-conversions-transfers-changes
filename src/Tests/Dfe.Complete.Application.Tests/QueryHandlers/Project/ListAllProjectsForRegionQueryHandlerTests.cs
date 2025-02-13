@@ -65,32 +65,33 @@ public class ListAllProjectsForRegionQueryHandlerTests
 
     [Theory]
     [CustomAutoData(typeof(OmitCircularReferenceCustomization),
-        typeof(ListAllProjectsQueryModelCustomization), typeof(DateOnlyCustomization))]
-        public async Task Handle_ShouldReturnCorrectList_WhenAllPagesAreSkipped(
-            [Frozen] IListAllProjectsQueryService mockListAllProjectsQueryService,
-            ListAllProjectsForRegionQueryHandler handler,
-            IFixture fixture)
-        {
-            var listAllProjectsQueryModels = fixture.CreateMany<ListAllProjectsQueryModel>(50).ToList();
-            
-            var mock = listAllProjectsQueryModels.BuildMock();
+        typeof(ListAllProjectsQueryModelCustomization),
+        typeof(DateOnlyCustomization))]
+    public async Task Handle_ShouldReturnCorrectList_WhenAllPagesAreSkipped(
+        [Frozen] IListAllProjectsQueryService mockListAllProjectsQueryService,
+        ListAllProjectsForRegionQueryHandler handler,
+        IFixture fixture)
+    {
+        var listAllProjectsQueryModels = fixture.CreateMany<ListAllProjectsQueryModel>(50).ToList();
 
-            mockListAllProjectsQueryService.ListAllProjects(Arg.Any<ProjectState?>(), Arg.Any<ProjectType?>())
-                .Returns(mock);
-            
-            var query = new ListAllProjectsForRegionQuery(Region.London, ProjectState.Active, null)
-            {
-                Page = 10
-            };
-            
-            var result = await handler.Handle(query, default);
-            
-            // Assert
-            Assert.NotNull(result);
-            Assert.True(result.IsSuccess);
-            Assert.Equal(0, result.Value?.Count);
-        }
-        
+        var mock = listAllProjectsQueryModels.BuildMock();
+
+        mockListAllProjectsQueryService.ListAllProjects(Arg.Any<ProjectState?>(), Arg.Any<ProjectType?>())
+            .Returns(mock);
+
+        var query = new ListAllProjectsForRegionQuery(Region.London, ProjectState.Active, null)
+        {
+            Page = 10
+        };
+
+        var result = await handler.Handle(query, default);
+
+        // Assert
+        Assert.NotNull(result);
+        Assert.True(result.IsSuccess);
+        Assert.Equal(0, result.Value?.Count);
+    }
+
     [Theory]
     [CustomAutoData(
         typeof(OmitCircularReferenceCustomization),
@@ -102,7 +103,7 @@ public class ListAllProjectsForRegionQueryHandlerTests
     {
         // Arrange
         var errorMessage = "This is a test";
-            
+
         var query = new ListAllProjectsForRegionQuery(null, null, null);
 
         mockEstablishmentQueryService.ListAllProjects(query.ProjectStatus, query.Type)

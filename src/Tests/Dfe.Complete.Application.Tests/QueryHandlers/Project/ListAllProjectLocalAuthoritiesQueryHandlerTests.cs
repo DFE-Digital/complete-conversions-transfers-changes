@@ -21,46 +21,15 @@ public class ListAllProjectLocalAuthoritiesQueryHandlerTests
     [Theory]
     [CustomAutoData(
         typeof(OmitCircularReferenceCustomization),
-        typeof(ListAllProjectLocalAuthoritiesArrangementCustomization),
         typeof(ListAllProjectsQueryModelCustomization),
-        typeof(DateOnlyCustomization))]
+        typeof(DateOnlyCustomization),
+        typeof(ListAllProjectLocalAuthoritiesArrangementCustomization))]
     public async Task Handle_ShouldReturnListProjectsLocalAuthorities(
-        [Frozen] IListAllProjectsQueryService mockListAllProjectsQueryService,
-        [Frozen] ICompleteRepository<LocalAuthority> localAuthoritiesRepo,
         ListAllProjectLocalAuthorities handler,
         IFixture fixture)
     {
         //Arrange
-        var localAuthorities = fixture.CreateMany<LocalAuthority>(20);
-
-        var expectedLocalAuthorityCodes = localAuthorities.Select(la => la.Code).Take(20).ToList();
-
-        localAuthoritiesRepo.FetchAsync(Arg.Any<Expression<Func<LocalAuthority, bool>>>(), default)
-            .Returns(localAuthorities.ToList());
-
-        var listAllProjectsQueryModels = fixture.CreateMany<ListAllProjectsQueryModel>(50).ToList();
-        listAllProjectsQueryModels.Take(20).ToList().ForEach(p =>
-            p.Establishment.LocalAuthorityCode = expectedLocalAuthorityCodes.MinBy(_ => Guid.NewGuid()));
-
-        var mockListAllProjects = listAllProjectsQueryModels.BuildMock();
-
-        mockListAllProjectsQueryService.ListAllProjects(Arg.Any<ProjectState?>(), Arg.Any<ProjectType?>())
-            .Returns(mockListAllProjects);
-
-        var expectedProjects =
-            listAllProjectsQueryModels
-                .Where(p => expectedLocalAuthorityCodes.Contains(p.Establishment.LocalAuthorityCode)).ToList();
-
-        var expectedLocalAuthorities = new List<ListAllProjectLocalAuthoritiesResultModel>();
-        expectedLocalAuthorities.AddRange(localAuthorities
-            .Where(la => expectedLocalAuthorityCodes.Contains(la.Code))
-            .Select(la => new ListAllProjectLocalAuthoritiesResultModel(
-                la,
-                la.Code,
-                expectedProjects.Count(p => p.Establishment.LocalAuthorityCode == la.Code &&
-                                            p.Project.Type == ProjectType.Conversion),
-                expectedProjects.Count(p => p.Establishment.LocalAuthorityCode == la.Code &&
-                                            p.Project.Type == ProjectType.Transfer))));
+        var expectedLocalAuthorities = fixture.Create<List<ListAllProjectLocalAuthoritiesResultModel>>();
         
         //Act
         var query = new ListAllProjectLocalAuthoritiesQuery();
@@ -75,5 +44,30 @@ public class ListAllProjectLocalAuthoritiesQueryHandlerTests
         {
             Assert.Equivalent(expectedLocalAuthorities[i], handlerResult.Value![i]);
         }
+    }
+    
+    [Theory]
+    [CustomAutoData(
+        typeof(OmitCircularReferenceCustomization),
+        typeof(ListAllProjectsQueryModelCustomization),
+        typeof(DateOnlyCustomization),
+        typeof(ListAllProjectLocalAuthoritiesArrangementCustomization))]
+    public async Task Handle_ShouldReturnCorrectList_WhenAllPagesAreSkipped(
+        [Frozen] IListAllProjectsQueryService mockListAllProjectsQueryService,
+        [Frozen] ICompleteRepository<LocalAuthority> localAuthoritiesRepo,
+        ListAllProjectLocalAuthorities handler,
+        IFixture fixture)
+    {
+        //Act
+        var query = new ListAllProjectLocalAuthoritiesQuery { Page = 10 };
+
+        var handlerResult = await handler.Handle(query, default);
+        
+        //Assert 
+       
+        // Assert
+        Assert.NotNull(handlerResult);
+        Assert.True(handlerResult.IsSuccess);
+        Assert.Equal(0, handlerResult.Value?.Count);
     }
 }
