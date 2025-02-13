@@ -18,32 +18,19 @@ public class ListAllProjectLocalAuthoritiesCustomization : ICustomization
         SetupLocalAuthoritiesRepository(fixture, localAuthorities);
 
         var projects = fixture.CreateMany<ListAllProjectsQueryModel>(50).ToList();
-        AssignRandomLocalAuthorityCodes(projects, expectedLocalAuthorityCodes, assignCount: 20);
+        AssignRandomLocalAuthorityCodes(projects, expectedLocalAuthorityCodes, takeCount: 20);
 
         SetupProjectsQueryService(fixture, projects);
 
-        var expectedProjects = projects
-            .Where(p => expectedLocalAuthorityCodes.Contains(p.Establishment.LocalAuthorityCode))
-            .ToList();
-
-        var expectedLocalAuthorities = localAuthorities
-            .Where(la => expectedLocalAuthorityCodes.Contains(la.Code))
-            .Select(la => new ListAllProjectLocalAuthoritiesResultModel(
+        var expectedLocalAuthoritiesResult = 
+            localAuthorities.Select(la => new ListAllProjectLocalAuthoritiesResultModel(
                 la,
                 la.Code,
-                expectedProjects.Count(p =>
-                    p.Establishment.LocalAuthorityCode == la.Code &&
-                    p.Project.Type == ProjectType.Conversion),
-                expectedProjects.Count(p =>
-                    p.Establishment.LocalAuthorityCode == la.Code &&
-                    p.Project.Type == ProjectType.Transfer)))
+                projects.Count(p => p.Establishment.LocalAuthorityCode == la.Code && p.Project.Type == ProjectType.Conversion),
+                projects.Count(p => p.Establishment.LocalAuthorityCode == la.Code && p.Project.Type == ProjectType.Transfer)))
             .ToList();
 
-        fixture.Inject(localAuthorities);
-        fixture.Inject(expectedLocalAuthorityCodes);
-        fixture.Inject(projects);
-        fixture.Inject(expectedProjects);
-        fixture.Inject(expectedLocalAuthorities);
+        fixture.Inject(expectedLocalAuthoritiesResult);
     }
 
     private static List<LocalAuthority> CreateLocalAuthorities(IFixture fixture, int count)
@@ -62,10 +49,10 @@ public class ListAllProjectLocalAuthoritiesCustomization : ICustomization
     private static void AssignRandomLocalAuthorityCodes(
         List<ListAllProjectsQueryModel> projects,
         List<string> expectedLocalAuthorityCodes,
-        int assignCount)
+        int takeCount)
     {
         projects
-            .Take(assignCount)
+            .Take(takeCount)
             .ToList()
             .ForEach(p =>
                 p.Establishment.LocalAuthorityCode = expectedLocalAuthorityCodes.MinBy(_ => Guid.NewGuid()));
