@@ -10,17 +10,17 @@ using NSubstitute;
 
 namespace Dfe.Complete.Tests.Common.Customizations.Models;
 
-public class ListAllProjectLocalAuthoritiesCustomization : ICustomization
+public class ListAllProjectLocalAuthoritiesArrangement : ICustomization
 {
     public void Customize(IFixture fixture)
     {
         var localAuthorities = CreateLocalAuthorities(fixture, count: 20);
-        var expectedLocalAuthorityCodes = localAuthorities.Select(la => la.Code).ToList();
+        var assignedLaCodesToProjects = localAuthorities.Select(la => la.Code).ToList();
 
         SetupLocalAuthoritiesRepository(fixture, localAuthorities);
 
         var projects = fixture.CreateMany<ListAllProjectsQueryModel>(50).ToList();
-        SetupProjectEstablishmentsWithRandomLACode(projects, expectedLocalAuthorityCodes, takeCount: 20);
+        SetupProjectEstablishmentsWithRandomLACode(projects, assignedLaCodesToProjects, takeCount: 20);
 
         SetupProjectsQueryService(fixture, projects);
 
@@ -35,6 +35,7 @@ public class ListAllProjectLocalAuthoritiesCustomization : ICustomization
             .ToList();
 
         fixture.Inject(expectedLocalAuthoritiesResult);
+        fixture.Inject(assignedLaCodesToProjects);
     }
 
     private static List<LocalAuthority> CreateLocalAuthorities(IFixture fixture, int count)

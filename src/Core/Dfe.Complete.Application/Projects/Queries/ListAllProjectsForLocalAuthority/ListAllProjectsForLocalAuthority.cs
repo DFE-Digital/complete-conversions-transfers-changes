@@ -2,7 +2,6 @@ using Dfe.Complete.Application.Common.Models;
 using Dfe.Complete.Application.Projects.Interfaces;
 using Dfe.Complete.Application.Projects.Models;
 using Dfe.Complete.Domain.Enums;
-using Dfe.Complete.Domain.ValueObjects;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
@@ -21,10 +20,12 @@ public class ListAllProjectsForLocalAuthority(
     public async Task<PaginatedResult<List<ListAllProjectsResultModel>>> Handle(
         ListAllProjectsForLocalAuthorityQuery request, CancellationToken cancellationToken)
     {
-        var projectsWithEstablishments = await listAllProjectsQueryService.ListAllProjects(request.State, request.Type).ToListAsync(cancellationToken);
-        
-        var projectsForLa = projectsWithEstablishments.Where(p => p.Establishment.LocalAuthorityCode == request.LocalAuthorityCode);
-        
+        var projectsWithEstablishments = await listAllProjectsQueryService.ListAllProjects(request.State, request.Type)
+            .ToListAsync(cancellationToken);
+
+        var projectsForLa =
+            projectsWithEstablishments.Where(p => p.Establishment.LocalAuthorityCode == request.LocalAuthorityCode);
+
         var projectsForLaWithEstablishments = projectsForLa.Select(proj =>
                 ListAllProjectsResultModel.MapProjectAndEstablishmentToListAllProjectResultModel(
                     proj.Project,

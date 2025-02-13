@@ -20,7 +20,7 @@ public class ListAllProjectLocalAuthoritiesQueryHandlerTests
         typeof(OmitCircularReferenceCustomization),
         typeof(ListAllProjectsQueryModelCustomization),
         typeof(DateOnlyCustomization),
-        typeof(ListAllProjectLocalAuthoritiesCustomization))]
+        typeof(ListAllProjectLocalAuthoritiesArrangement))]
     public async Task Handle_ShouldReturnListProjectsLocalAuthorities(
         ListAllProjectLocalAuthorities handler,
         IFixture fixture)
@@ -48,7 +48,7 @@ public class ListAllProjectLocalAuthoritiesQueryHandlerTests
         typeof(OmitCircularReferenceCustomization),
         typeof(ListAllProjectsQueryModelCustomization),
         typeof(DateOnlyCustomization),
-        typeof(ListAllProjectLocalAuthoritiesCustomization))]
+        typeof(ListAllProjectLocalAuthoritiesArrangement))]
     public async Task Handle_ShouldReturnCorrectList_WhenAllPagesAreSkipped(
         ListAllProjectLocalAuthorities handler)
     {
@@ -71,7 +71,7 @@ public class ListAllProjectLocalAuthoritiesQueryHandlerTests
         typeof(OmitCircularReferenceCustomization),
         typeof(ListAllProjectsQueryModelCustomization),
         typeof(DateOnlyCustomization),
-        typeof(ListAllProjectLocalAuthoritiesCustomization))]
+        typeof(ListAllProjectLocalAuthoritiesArrangement))]
     public async Task Handle_ShouldReturnUnsuccessful_WhenAnErrorOccurs(
         [Frozen] ICompleteRepository<LocalAuthority> localAuthoritiesRepo,
         ListAllProjectLocalAuthorities handler,
