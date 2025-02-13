@@ -22,12 +22,14 @@ public class ListAllProjectLocalAuthoritiesCustomization : ICustomization
 
         SetupProjectsQueryService(fixture, projects);
 
-        var expectedLocalAuthoritiesResult = 
-            localAuthorities.Select(la => new ListAllProjectLocalAuthoritiesResultModel(
-                la,
-                la.Code,
-                projects.Count(p => p.Establishment.LocalAuthorityCode == la.Code && p.Project.Type == ProjectType.Conversion),
-                projects.Count(p => p.Establishment.LocalAuthorityCode == la.Code && p.Project.Type == ProjectType.Transfer)))
+        var expectedLocalAuthoritiesResult = localAuthorities.Select(la =>
+                new ListAllProjectLocalAuthoritiesResultModel(
+                    la,
+                    la.Code,
+                    projects.Count(p =>
+                        p.Establishment.LocalAuthorityCode == la.Code && p.Project.Type == ProjectType.Conversion),
+                    projects.Count(p =>
+                        p.Establishment.LocalAuthorityCode == la.Code && p.Project.Type == ProjectType.Transfer)))
             .ToList();
 
         fixture.Inject(expectedLocalAuthoritiesResult);
@@ -42,7 +44,7 @@ public class ListAllProjectLocalAuthoritiesCustomization : ICustomization
     {
         var localAuthoritiesRepo = fixture.Freeze<ICompleteRepository<LocalAuthority>>();
         localAuthoritiesRepo
-            .FetchAsync(Arg.Any<Expression<Func<LocalAuthority, bool>>>(), Arg.Any<CancellationToken>())
+            .FetchAsync(Arg.Any<Expression<Func<LocalAuthority, bool>>>())
             .Returns(localAuthorities.ToList());
     }
 
@@ -54,8 +56,8 @@ public class ListAllProjectLocalAuthoritiesCustomization : ICustomization
         projects
             .Take(takeCount)
             .ToList()
-            .ForEach(p =>
-                p.Establishment.LocalAuthorityCode = expectedLocalAuthorityCodes.MinBy(_ => Guid.NewGuid()));
+            //Get random authority code and assign to Project Establishment
+            .ForEach(p => p.Establishment.LocalAuthorityCode = expectedLocalAuthorityCodes.MinBy(_ => Guid.NewGuid()));
     }
 
     private static void SetupProjectsQueryService(IFixture fixture, List<ListAllProjectsQueryModel> projects)
