@@ -21,6 +21,7 @@ public class ListAllProjectLocalAuthoritiesQueryHandlerTests
     [Theory]
     [CustomAutoData(
         typeof(OmitCircularReferenceCustomization),
+        typeof(ListAllProjectLocalAuthoritiesArrangementCustomization),
         typeof(ListAllProjectsQueryModelCustomization),
         typeof(DateOnlyCustomization))]
     public async Task Handle_ShouldReturnListProjectsLocalAuthorities(
@@ -29,6 +30,7 @@ public class ListAllProjectLocalAuthoritiesQueryHandlerTests
         ListAllProjectLocalAuthorities handler,
         IFixture fixture)
     {
+        //Arrange
         var localAuthorities = fixture.CreateMany<LocalAuthority>(20);
 
         var expectedLocalAuthorityCodes = localAuthorities.Select(la => la.Code).Take(20).ToList();
@@ -37,8 +39,8 @@ public class ListAllProjectLocalAuthoritiesQueryHandlerTests
             .Returns(localAuthorities.ToList());
 
         var listAllProjectsQueryModels = fixture.CreateMany<ListAllProjectsQueryModel>(50).ToList();
-        listAllProjectsQueryModels.Take(30).ToList()
-            .ForEach(p => p.Establishment.LocalAuthorityCode = expectedLocalAuthorityCodes.MinBy(_ => Guid.NewGuid()));
+        listAllProjectsQueryModels.Take(20).ToList().ForEach(p =>
+            p.Establishment.LocalAuthorityCode = expectedLocalAuthorityCodes.MinBy(_ => Guid.NewGuid()));
 
         var mockListAllProjects = listAllProjectsQueryModels.BuildMock();
 
@@ -46,7 +48,8 @@ public class ListAllProjectLocalAuthoritiesQueryHandlerTests
             .Returns(mockListAllProjects);
 
         var expectedProjects =
-            listAllProjectsQueryModels.Where(p => expectedLocalAuthorityCodes.Contains(p.Establishment.LocalAuthorityCode)).ToList();
+            listAllProjectsQueryModels
+                .Where(p => expectedLocalAuthorityCodes.Contains(p.Establishment.LocalAuthorityCode)).ToList();
 
         var expectedLocalAuthorities = new List<ListAllProjectLocalAuthoritiesResultModel>();
         expectedLocalAuthorities.AddRange(localAuthorities
@@ -54,13 +57,17 @@ public class ListAllProjectLocalAuthoritiesQueryHandlerTests
             .Select(la => new ListAllProjectLocalAuthoritiesResultModel(
                 la,
                 la.Code,
-                expectedProjects.Count(p => p.Project.Type == ProjectType.Conversion),
-                expectedProjects.Count(p => p.Project.Type == ProjectType.Transfer))));
+                expectedProjects.Count(p => p.Establishment.LocalAuthorityCode == la.Code &&
+                                            p.Project.Type == ProjectType.Conversion),
+                expectedProjects.Count(p => p.Establishment.LocalAuthorityCode == la.Code &&
+                                            p.Project.Type == ProjectType.Transfer))));
         
+        //Act
         var query = new ListAllProjectLocalAuthoritiesQuery();
 
         var handlerResult = await handler.Handle(query, default);
-
+        
+        //Assert 
         Assert.NotNull(handlerResult);
         Assert.Equal(expectedLocalAuthorities.Count, handlerResult.ItemCount);
 
