@@ -9,8 +9,11 @@ The Cypress tests are designed to run against the front-end of the application. 
     "url": "<enter frontend URL>",
     "username": "<enter the user you want to run the tests with>",
     "api": "<enter backend URL>",
-    "apiKey": "<enter API key for backend>",
     "authKey": "<enter key set for the CypressTestSecret>"
+    "tenantId": "<enter Id from Id Provider for the tenant>",  
+    "clientId": "<enter Id from Id Provider for the client used for test app registration>",
+    "clientSecret": "<enter a client secret Id Provider for the client used for test app registration>",
+    "completeApiClientId": "<enter Id from Id Provider for the complete api app registration>"
 }
 ```
 
@@ -27,6 +30,31 @@ beforeEach(() => {
 ```
 
 Intercepts all browser requests and adds a special auth header using the `authKey`. Make sure you set the `CypressTestSecret` in your app, and it matches the `authKey` in the `cypress.env.json` file.
+
+The database will need the user to exist and to match the active directory id defined above. An example script to add the user to the database is below
+
+```sql
+BEGIN TRANSACTION 
+INSERT INTO [complete].[users]
+VALUES (NEWID()
+      ,'test.cypress@education.gov.uk'
+      ,GETDATE()
+      ,GETDATE()
+      ,0
+      ,0
+      ,'cypress'
+      ,'testuser'
+      ,'TEST-AD-ID'
+      ,0
+      ,0
+      ,null
+      ,'london'
+      ,null
+      ,0
+      ,0
+      ,null)
+COMMIT TRANSACTION
+```
 
 ### Test Execution
 
@@ -133,3 +161,11 @@ it("should perform accessibility tests", () => {
 The `executeAccessibilityTests` command under "support/commands.ts"
 
 This will run all accessibility rules provided by the framework
+
+### Troubleshooting Cypress Binary Issues
+
+If you are installing Cypress from behind a proxy you can often hit an issue where the binary is not able to download.Download a version of the cypress binary and in the .npmrc file set the path to it below.
+
+```
+CYPRESS_INSTALL_BINARY=<Path to binary>
+```

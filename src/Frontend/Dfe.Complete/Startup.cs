@@ -81,7 +81,6 @@ public class Startup
         services.AddApplicationInsightsTelemetry();
 
         services.AddSingleton<IAuthorizationHandler, HeaderRequirementHandler>();
-        services.AddSingleton<IAuthorizationHandler, ClaimsRequirementHandler>();
 
         System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
 
@@ -189,24 +188,5 @@ public class Startup
         {
             services.AddDataProtection();
         }
-    }
-
-    /// <summary>
-    ///    Builds Authorization policy
-    ///    Ensure authenticated user and restrict roles if they are provided in configuration
-    /// </summary>
-    /// <returns>AuthorizationPolicyBuilder</returns>
-    private AuthorizationPolicyBuilder SetupAuthorizationPolicyBuilder()
-    {
-        AuthorizationPolicyBuilder policyBuilder = new();
-        policyBuilder.RequireAuthenticatedUser();
-
-        string allowedRoles = Configuration.GetSection("AzureAd")["AllowedRoles"];
-        if (string.IsNullOrWhiteSpace(allowedRoles) is false)
-        {
-            policyBuilder.RequireClaim(ClaimTypes.Role, allowedRoles.Split(','));
-        }
-
-        return policyBuilder;
     }
 }
