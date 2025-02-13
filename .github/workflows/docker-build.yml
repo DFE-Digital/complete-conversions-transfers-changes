@@ -13,6 +13,12 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        image: [
+          "web",
+          "api"
+        ]
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -24,7 +30,9 @@ jobs:
         uses: docker/build-push-action@v6
         id: build
         with:
+          file: './Dockerfile.${{ matrix.image }}'
           secrets: github_token=${{ secrets.GITHUB_TOKEN }}
+          build-args: CI=true
           cache-from: type=gha
           cache-to: type=gha
           push: false

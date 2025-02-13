@@ -30,6 +30,7 @@ RUN ["dotnet", "publish", "--no-build", "-o", "/app"]
 FROM "mcr.microsoft.com/dotnet/aspnet:${DOTNET_VERSION}-azurelinux3.0" AS base
 WORKDIR /app
 LABEL org.opencontainers.image.source="https://github.com/DFE-Digital/complete-api"
+LABEL org.opencontainers.image.description="Complete Conversions Transfers and Changes - App"
 
 COPY --from=build /app /app
 COPY --from=assets /app /app/wwwroot
