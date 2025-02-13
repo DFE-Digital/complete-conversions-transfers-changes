@@ -6,13 +6,13 @@ namespace Dfe.Complete.Validators
 {
     public class UkprnAttribute : ValidationAttribute
     {
-
         private readonly string _comparisonProperty;
 
         public UkprnAttribute(string comparisonProperty = null)
         {
             _comparisonProperty = comparisonProperty;
         }
+
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {
             // Fetch the display name if it is provided
@@ -47,12 +47,11 @@ namespace Dfe.Complete.Validators
                     return new ValidationResult($"The outgoing and incoming trust cannot be the same");
                 }
             }
-
-
+            
             try
             {
-                // var trustClient = (ITrustsV4Client)validationContext.GetService(typeof(ITrustsV4Client));
-                // var result = trustClient.GetTrustByUkprn2Async(ukprn).Result;
+                var trustClient = (ITrustsV4Client)validationContext.GetService(typeof(ITrustsV4Client));
+                var result = trustClient.GetTrustByUkprn2Async(ukprn).Result;
             }
             catch (AggregateException ex)
             {
