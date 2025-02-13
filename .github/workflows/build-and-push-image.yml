@@ -105,6 +105,7 @@ jobs:
           azure-acr-name: ${{ secrets.ACR_NAME }}
           annotate-release: ${{ matrix.image == 'web' }}
           image-name: ${{ needs.set-env.outputs.image-name }}
+          tag-prefix: ${{ matrix.tag-prefix }}
         env:
           AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID || '' }}
           AZURE_SUBSCRIPTION: ${{ secrets.AZURE_SUBSCRIPTION_ID || '' }}
