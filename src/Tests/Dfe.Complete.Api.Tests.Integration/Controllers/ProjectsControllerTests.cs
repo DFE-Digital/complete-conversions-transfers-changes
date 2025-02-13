@@ -10,6 +10,7 @@ using Dfe.Complete.Tests.Common.Customizations.Models;
 using DfE.CoreLibs.Testing.AutoFixture.Attributes;
 using DfE.CoreLibs.Testing.Mocks.WebApplicationFactory;
 using Microsoft.EntityFrameworkCore;
+using NSubstitute.Exceptions;
 using Project = Dfe.Complete.Domain.Entities.Project;
 
 namespace Dfe.Complete.Api.Tests.Integration.Controllers;
@@ -169,5 +170,61 @@ public class ProjectsControllerTests
             Assert.Equal($"{project?.AssignedTo?.FirstName} {project?.AssignedTo?.LastName}",
                 result.AssignedToFullName);
         }
+    }
+
+    [Theory]
+    [CustomAutoData(typeof(CustomWebApplicationDbContextFactoryCustomization), typeof(EstablishmentsCustomization))]
+    public async Task RemoveProjectsShouldRemoveConversionProjectAndChildren(
+    CustomWebApplicationDbContextFactory<Program> factory,
+    IProjectsClient projectsClient,
+    IFixture fixture)
+    {
+        factory.TestClaims = new[] { "API.Read", "API.Write", "API.Delete", "API.Update"}.Select(x => new Claim(ClaimTypes.Role, x)).ToList();
+
+        var dbContext = factory.GetDbContext<CompleteContext>();
+
+        var testUser = await dbContext.Users.FirstAsync();
+        var establishment = fixture.Create<GiasEstablishment>();
+
+        var taskData = fixture.Create<Domain.Entities.ConversionTasksData>();
+        dbContext.ConversionTasksData.Add(taskData);
+
+        dbContext.GiasEstablishments.Add(establishment);
+        var project = fixture.Customize(new ProjectCustomization
+        {
+            RegionalDeliveryOfficerId = testUser.Id,
+            CaseworkerId = testUser.Id,
+            AssignedToId = testUser.Id,
+            TasksDataId = taskData.Id,
+            TasksDataType = Domain.Enums.TaskType.Conversion
+        })
+            .Create<Project>();
+        project.Urn = establishment.Urn ?? project.Urn;
+
+        dbContext.ConversionTasksData.Add(taskData);
+
+        //var note = fixture.Create<Domain.Entities.Note>();
+        //note.Id = new Domain.ValueObjects.NoteId(Guid.NewGuid());
+        //project.Notes.Add(note);
+        //note.UserId = testUser.Id;
+
+        dbContext.Projects.Add(project);
+
+        await dbContext.SaveChangesAsync();
+
+        var existingProjectbefore = await dbContext.Projects.SingleAsync(x => x.Urn == project.Urn);
+
+        Assert.NotNull(existingProjectbefore);
+
+
+        //var existingNote = await dbContext.Notes.SingleAsync(x => x.ProjectId == project.Id);
+
+        //Assert.NotNull(existingNote);
+
+        await projectsClient.RemoveProjectAsync(new Urn { Value = project.Urn.Value });
+
+        var existingProject = await dbContext.Projects.SingleOrDefaultAsync(x => x.Urn == project.Urn);
+
+        Assert.Null(existingProject);
     }
 }

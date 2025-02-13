@@ -100,9 +100,9 @@ Cypress.Commands.add('typeFast', { prevSubject: 'element' }, (subject: JQuery<HT
 
 Cypress.Commands.add("enterDate", (idPrefix: string, day: string, month: string, year: string) => {
 
-    cy.getById(`${idPrefix}-day`).typeFast(day);
-    cy.getById(`${idPrefix}-month`).typeFast(month);
-    cy.getById(`${idPrefix}-year`).typeFast(year);
+    cy.getById(`${idPrefix}.Day`).typeFast(day);
+    cy.getById(`${idPrefix}.Month`).typeFast(month);
+    cy.getById(`${idPrefix}.Year`).typeFast(year);
 });
 
 Cypress.Commands.add("hasAddress", (id: string, line1: string, line2: string, line3: string) => {
