@@ -32,7 +32,6 @@ export class ApiBase {
             expect(response.status).to.eq(200);
             const accessToken = response.body.access_token;
 
-            console.log(accessToken);
             return this.getHeaders(accessToken);
         })
     }
