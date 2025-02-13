@@ -8,6 +8,8 @@ using Dfe.Complete.Domain.Interfaces.Repositories;
 using MockQueryable;
 using NSubstitute;
 
+namespace Dfe.Complete.Tests.Common.Customizations.Models;
+
 public class ListAllProjectLocalAuthoritiesCustomization : ICustomization
 {
     public void Customize(IFixture fixture)
@@ -18,7 +20,7 @@ public class ListAllProjectLocalAuthoritiesCustomization : ICustomization
         SetupLocalAuthoritiesRepository(fixture, localAuthorities);
 
         var projects = fixture.CreateMany<ListAllProjectsQueryModel>(50).ToList();
-        AssignRandomLocalAuthorityCodes(projects, expectedLocalAuthorityCodes, takeCount: 20);
+        SetupProjectEstablishmentsWithRandomLACode(projects, expectedLocalAuthorityCodes, takeCount: 20);
 
         SetupProjectsQueryService(fixture, projects);
 
@@ -48,7 +50,7 @@ public class ListAllProjectLocalAuthoritiesCustomization : ICustomization
             .Returns(localAuthorities.ToList());
     }
 
-    private static void AssignRandomLocalAuthorityCodes(
+    private static void SetupProjectEstablishmentsWithRandomLACode(
         List<ListAllProjectsQueryModel> projects,
         List<string> expectedLocalAuthorityCodes,
         int takeCount)
