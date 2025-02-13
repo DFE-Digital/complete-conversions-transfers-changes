@@ -110,8 +110,8 @@ namespace Dfe.Complete.Api.Controllers
         /// </summary>
         /// <param name="urn">Urn to remove.</param>
         [HttpDelete]
-        [ApiExplorerSettings(IgnoreApi = true)]
         [Authorize(Policy = "CanReadWriteUpdateDelete")]
+        [SwaggerResponse(204, "Project Group returned successfully.")]
         public async Task<IActionResult> RemoveProject(Urn urn, CancellationToken cancellationToken)
         {
             if (urn == null)
