@@ -1,3 +1,4 @@
+using Dfe.Complete.Application.Projects.Queries.GetLocalAuthority;
 using MediatR;
 using Dfe.Complete.Domain.ValueObjects;
 using Dfe.Complete.Domain.Enums;
@@ -37,13 +38,17 @@ namespace Dfe.Complete.Application.Projects.Commands.CreateProject
     {
         public async Task<ProjectId> Handle(CreateTransferProjectCommand request, CancellationToken cancellationToken)
         {
-            var userRequest = await sender.Send(new GetUserByAdIdQuery(request.UserAdId));
+            var localAuthorityIdRequest = await sender.Send(new GetLocalAuthorityBySchoolUrnQuery(request.Urn.Value),
+                cancellationToken);
+
+            if (!localAuthorityIdRequest.IsSuccess || localAuthorityIdRequest.Value?.LocalAuthorityId == null)
+                throw new Exception($"Failed to retrieve Local authority for School URN: {request.Urn}");
+            
+            var userRequest = await sender.Send(new GetUserByAdIdQuery(request.UserAdId), cancellationToken);
 
             if (!userRequest.IsSuccess)
-            {
                 throw new Exception($"User retrieval failed: {userRequest.Error}");
-            }
-
+            
             var projectUser = userRequest.Value;
 
             var projectUserTeam = projectUser?.Team;
@@ -58,7 +63,7 @@ namespace Dfe.Complete.Application.Projects.Commands.CreateProject
 
             var transferTask = new TransferTasksData(new TaskDataId(transferTaskId), createdAt, createdAt, request.IsDueToInedaquateOfstedRating, request.IsDueToIssues, request.OutGoingTrustWillClose);
 
-            var projectRequest = await sender.Send(new GetProjectGroupByGroupReferenceNumberQuery(request.GroupReferenceNumber));
+            var projectRequest = await sender.Send(new GetProjectGroupByGroupReferenceNumberQuery(request.GroupReferenceNumber), cancellationToken);
 
             if (!projectRequest.IsSuccess)
             {
@@ -106,7 +111,8 @@ namespace Dfe.Complete.Application.Projects.Commands.CreateProject
                     request.SignificantDate,
                     request.IsSignificantDateProvisional,
                     request.IsDueTo2Ri, 
-                    request.HandoverComments
+                    request.HandoverComments, 
+                    localAuthorityIdRequest.Value.LocalAuthorityId.Value
                 ); 
             
             await transferTaskRepository.AddAsync(transferTask, cancellationToken);

@@ -1,3 +1,4 @@
+using Dfe.Complete.Application.Projects.Queries.GetLocalAuthority;
 using Dfe.Complete.Application.Projects.Queries.GetUser;
 using Dfe.Complete.Domain.Entities;
 using Dfe.Complete.Domain.Enums;
@@ -36,13 +37,17 @@ public class CreateMatTransferProjectCommandHandler(
     {
         public async Task<ProjectId> Handle(CreateMatTransferProjectCommand request, CancellationToken cancellationToken)
         {
+            var localAuthorityIdRequest = await sender.Send(new GetLocalAuthorityBySchoolUrnQuery(request.Urn.Value),
+                cancellationToken);
+
+            if (!localAuthorityIdRequest.IsSuccess || localAuthorityIdRequest.Value?.LocalAuthorityId == null)
+                throw new Exception($"Failed to retrieve Local authority for School URN: {request.Urn}");
+            
             // The user Team should be moved as a Claim or Group to the Entra (MS AD)
             var userRequest = await sender.Send(new GetUserByAdIdQuery(request.UserAdId));
 
             if (!userRequest.IsSuccess)
-            {
                 throw new Exception($"User retrieval failed: {userRequest.Error}");
-            }
 
             var projectUser = userRequest.Value;
 
@@ -97,9 +102,9 @@ public class CreateMatTransferProjectCommandHandler(
                     request.IsDueTo2Ri,
                     request.NewTrustName,
                     request.NewTrustReferenceNumber,
-                    request.HandoverComments);
-
-
+                    request.HandoverComments,
+                    localAuthorityIdRequest.Value.LocalAuthorityId.Value);
+            
         await transferTaskRepository.AddAsync(transferTask, cancellationToken);
         await projectRepository.AddAsync(project, cancellationToken);
 

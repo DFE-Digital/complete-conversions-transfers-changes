@@ -47,8 +47,7 @@ namespace Dfe.Complete.Validators
                     return new ValidationResult($"The outgoing and incoming trust cannot be the same");
                 }
             }
-
-
+            
             try
             {
                 var trustClient = (ITrustsV4Client)validationContext.GetService(typeof(ITrustsV4Client));

@@ -15,7 +15,6 @@ public class GetUserByAdIdQueryHandler(ICompleteRepository<User> userRepository,
     {
         try
         {
-
             var user = await userRepository.FindAsync(u => u.ActiveDirectoryUserId == request.UserAdId, cancellationToken);
 
             var userDto = mapper.Map<UserDto?>(user);

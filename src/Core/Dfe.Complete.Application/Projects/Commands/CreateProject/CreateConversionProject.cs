@@ -1,3 +1,4 @@
+using Dfe.Complete.Application.Projects.Queries.GetLocalAuthority;
 using MediatR;
 using Dfe.Complete.Domain.ValueObjects;
 using Dfe.Complete.Domain.Enums;
@@ -33,6 +34,12 @@ namespace Dfe.Complete.Application.Projects.Commands.CreateProject
     {
         public async Task<ProjectId> Handle(CreateConversionProjectCommand request, CancellationToken cancellationToken)
         {
+            var localAuthorityIdRequest = await sender.Send(new GetLocalAuthorityBySchoolUrnQuery(request.Urn.Value),
+                cancellationToken);
+
+            if (!localAuthorityIdRequest.IsSuccess || localAuthorityIdRequest.Value?.LocalAuthorityId == null)
+                throw new Exception($"Failed to retrieve Local authority for School URN: {request.Urn}");
+            
             // The user Team should be moved as a Claim or Group to the Entra (MS AD)
             var userRequest = await sender.Send(new GetUserByAdIdQuery(request.UserAdId), cancellationToken);
 
@@ -40,7 +47,7 @@ namespace Dfe.Complete.Application.Projects.Commands.CreateProject
             {
                 throw new Exception($"User retrieval failed: {userRequest.Error}");
             }
-
+            
             var projectUser = userRequest.Value;
 
             var projectUserTeam = projectUser?.Team;
@@ -55,7 +62,9 @@ namespace Dfe.Complete.Application.Projects.Commands.CreateProject
 
             var conversionTask = new ConversionTasksData(new TaskDataId(conversionTaskId), createdAt, createdAt);
 
-            var projectGroupRequest = await sender.Send(new GetProjectGroupByGroupReferenceNumberQuery(request.GroupReferenceNumber), cancellationToken);
+            var projectGroupRequest =
+                await sender.Send(new GetProjectGroupByGroupReferenceNumberQuery(request.GroupReferenceNumber),
+                    cancellationToken);
 
             if (!projectGroupRequest.IsSuccess)
             {
@@ -67,7 +76,7 @@ namespace Dfe.Complete.Application.Projects.Commands.CreateProject
             ProjectTeam team;
             DateTime? assignedAt = null;
             UserId? projectUserAssignedToId = null;
-            
+
             if (request.HandingOverToRegionalCaseworkService)
             {
                 team = ProjectTeam.RegionalCaseWorkerServices;
@@ -102,7 +111,8 @@ namespace Dfe.Complete.Application.Projects.Commands.CreateProject
                 projectUser?.Id,
                 projectUserAssignedToId,
                 assignedAt,
-                request.HandoverComments);
+                request.HandoverComments, 
+                localAuthorityIdRequest.Value.LocalAuthorityId.Value);
 
             await conversionTaskRepository.AddAsync(conversionTask, cancellationToken);
             await projectRepository.AddAsync(project, cancellationToken);

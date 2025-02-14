@@ -124,7 +124,8 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
         UserId? assignedTo,
         DateTime? assignedAt,
         string? newTrustName,
-        string? newTrustReferenceNumber)
+        string? newTrustReferenceNumber,
+        Guid localAuthorityId)
     {
         Id = id ?? throw new ArgumentNullException(nameof(id));
         Urn = urn ?? throw new ArgumentNullException(nameof(urn));
@@ -154,6 +155,8 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
 
         NewTrustName = newTrustName;
         NewTrustReferenceNumber = newTrustReferenceNumber;
+
+        LocalAuthorityId = new LocalAuthorityId(localAuthorityId);
     }
 
     public static Project CreateConversionProject(
@@ -179,7 +182,8 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
         UserId? regionalDeliveryOfficerId,
         UserId? assignedToId,
         DateTime? assignedAt,
-        string? handoverComments)
+        string? handoverComments,
+        Guid localAuthorityId)
     {
         var project = new Project(
             Id,
@@ -207,7 +211,8 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
             assignedToId,
             assignedAt,
             null,
-            null);
+            null,
+            localAuthorityId);
 
         if (!string.IsNullOrEmpty(handoverComments))
         {
@@ -248,7 +253,8 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
         DateOnly significantDate,
         bool isSignificantDateProvisional,
         bool isDueTo2RI,
-        string? handoverComments
+        string? handoverComments,
+        Guid localAuthorityId
     )
     {
         var project = new Project(
@@ -277,7 +283,8 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
             assignedToId,
             assignedAt,
             null,
-            null);
+            null, 
+            localAuthorityId);
 
         if (!string.IsNullOrEmpty(handoverComments))
         {
@@ -316,12 +323,13 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
         string newTrustName,
         string newTrustReferenceNumber,
         bool hasDirectiveAcademyOrderBeenIssue,
-        string? handoverComments)
+        string? handoverComments, 
+        Guid localAuthorityId)
     {
         var project = new Project(Id, urn, createdAt, updatedAt, taskType, projectType, tasksDataId, significantDate,
             isSignificantDateProvisional, null, null, region, isDueTo2Ri, hasDirectiveAcademyOrderBeenIssue,
             advisoryBoardDate, advisoryBoardConditions, establishmentSharepointLink, incomingTrustSharepointLink, null,
-            null, team, regionalDeliveryOfficerId, assignedToId, assignedAt, newTrustName, newTrustReferenceNumber);
+            null, team, regionalDeliveryOfficerId, assignedToId, assignedAt, newTrustName, newTrustReferenceNumber, localAuthorityId);
         
         if (!string.IsNullOrEmpty(handoverComments))
         {
@@ -361,12 +369,13 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
         bool isDueTo2Ri,
         string newTrustName,
         string newTrustReferenceNumber,
-        string? handoverComments)
+        string? handoverComments, 
+        Guid localAuthorityId)
         {
             var project = new Project(Id, urn, createdAt, updatedAt, taskType, projectType, tasksDataId, significantDate,
                 isSignificantDateProvisional, null, outgoingTrustUkprn, region, isDueTo2Ri, null,
                 advisoryBoardDate, advisoryBoardConditions, establishmentSharepointLink, incomingTrustSharepointLink, outgoingTrustSharepointLink,
-                null, team, regionalDeliveryOfficerId, assignedToId, assignedAt, newTrustName, newTrustReferenceNumber);
+                null, team, regionalDeliveryOfficerId, assignedToId, assignedAt, newTrustName, newTrustReferenceNumber, localAuthorityId);
 
             if (!string.IsNullOrEmpty(handoverComments))
             {
