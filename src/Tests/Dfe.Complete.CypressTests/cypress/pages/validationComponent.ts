@@ -9,6 +9,10 @@ class ValidationComponent {
             .find("a")
             .invoke('attr', "href")
             .then((href: string | undefined) => {
+                if (href && href.includes(".")) {
+                    // example href="#AdvisoryBoardDate.Day" -> id=AdvisoryBoardDate-error
+                    href = href.split(".")[0];
+                }
                 cy.get(href as string).should('exist');
                 cy.get(href as string + "-error").should("contain.text", message);
             });
