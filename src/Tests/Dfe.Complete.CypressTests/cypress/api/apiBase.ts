@@ -1,16 +1,19 @@
 import { CompleteApiClientId, EnvClientId, EnvClientSecret, EnvTenantId, EnvUsername } from "cypress/constants/cypressConstants";
 
 export class ApiBase {
-    protected getHeaders(accessToken: string): object {
-        const result = {
-            "Authorization": `Bearer ${accessToken}`,
+    protected getHeaders(): object {
+        return {
+            Authorization: `Bearer ${Cypress.env('accessToken')}`,
             "Content-type": "application/json",
-            "x-user-context-name": Cypress.env(EnvUsername)
+            "x-user-context-name": Cypress.env(EnvUsername),
         };
-        return result;
     }
 
     protected authenticatedRequest(): Cypress.Chainable<object> {
+        const accessToken = Cypress.env('accessToken');
+        if (accessToken) {
+            return cy.wrap(this.getHeaders());
+        }
 
         const tenantId = Cypress.env(EnvTenantId);  
         const clientId = Cypress.env(EnvClientId);
@@ -31,8 +34,9 @@ export class ApiBase {
         }).then((response) => {
             expect(response.status).to.eq(200);
             const accessToken = response.body.access_token;
+            Cypress.env('accessToken', accessToken);
 
-            return this.getHeaders(accessToken);
+            return this.getHeaders();
         })
     }
 }
