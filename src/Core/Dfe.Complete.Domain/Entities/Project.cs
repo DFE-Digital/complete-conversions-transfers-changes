@@ -80,7 +80,9 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
     public ContactId? LocalAuthorityMainContactId { get; set; }
 
     public ProjectGroupId? GroupId { get; set; }
-
+    
+    public LocalAuthorityId LocalAuthorityId { get; set; }
+    
     public virtual User? AssignedTo { get; set; }
 
     public virtual User? Caseworker { get; set; }
@@ -90,7 +92,9 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
     public virtual ICollection<Note> Notes { get; set; } = new List<Note>();
 
     public virtual User? RegionalDeliveryOfficer { get; set; }
-
+    
+    public virtual LocalAuthority LocalAuthority { get; set; }
+    
     private Project()
     {
     }
