@@ -17,7 +17,7 @@ public class GetLocalAuthorityBySchoolUrn(ICompleteRepository<LocalAuthority> lo
     {
         try
         {
-            var giasEstablishment = await giasEstablishmentRepo.FindAsync(x => x.Urn == new Urn(request.SchoolUrn), cancellationToken);
+            var giasEstablishment = await giasEstablishmentRepo.GetAsync(x => x.Urn == new Urn(request.SchoolUrn));
             
             var localAuthority = await localAuthorityRepo.GetAsync(x => x.Code == giasEstablishment.LocalAuthorityCode);
             
