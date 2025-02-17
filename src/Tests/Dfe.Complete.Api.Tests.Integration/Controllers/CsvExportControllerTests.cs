@@ -16,7 +16,7 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers
     public class CsvExportControllerTests
     {
         [Theory]
-        [CustomAutoData(typeof(CustomWebApplicationDbContextFactoryCustomization))]
+        [CustomAutoData(typeof(CustomWebApplicationDbContextFactoryCustomization), typeof(DateOnlyCustomization))]
         public async Task GetConversionCsvByMonthQueryHandler(
             CustomWebApplicationDbContextFactory<Program> factory,
             Complete.Client.Contracts.ICsvExportClient csvExportClient,
@@ -179,7 +179,7 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers
         }
 
         [Theory]
-        [CustomAutoData(typeof(CustomWebApplicationDbContextFactoryCustomization))]
+        [CustomAutoData(typeof(CustomWebApplicationDbContextFactoryCustomization), typeof(DateOnlyCustomization))]
         public async Task GetConversionCsvByMonthQueryEmptyData(
            CustomWebApplicationDbContextFactory<Program> factory,
            Complete.Client.Contracts.ICsvExportClient csvExportClient,
