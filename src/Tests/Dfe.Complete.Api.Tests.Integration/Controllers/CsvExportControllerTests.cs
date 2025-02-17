@@ -94,8 +94,7 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers
 
             contacts.ForEach(c => c.Id = new ContactId(Guid.NewGuid()));
             contacts.ForEach(c => c.ProjectId = null);
-
-
+            
             directorOfServicesContact.Category = ContactCategory.LocalAuthority;
             directorOfServicesContact.LocalAuthorityId = localAuthority.Id;
 
@@ -129,6 +128,8 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers
             project.IncomingTrustMainContactId = incomingContact.Id;
             project.OutgoingTrustMainContactId = outgoingContact.Id;
             project.State = ProjectState.Active;
+            project.LocalAuthorityId = localAuthority.Id;
+            
             dbContext.Projects.Add(project);
             await dbContext.SaveChangesAsync();
 
@@ -252,6 +253,7 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers
             project.OutgoingTrustMainContactId = null;
             project.MainContactId = null;
             project.State = ProjectState.Active;
+            project.LocalAuthorityId = localAuthority.Id;
 
             dbContext.Projects.Add(project);
             await dbContext.SaveChangesAsync();
