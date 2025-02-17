@@ -58,7 +58,7 @@ public class ProjectsControllerTests
     }
 
     [Theory]
-    [CustomAutoData(typeof(CustomWebApplicationDbContextFactoryCustomization))]
+    [CustomAutoData(typeof(DateOnlyCustomization), typeof(CustomWebApplicationDbContextFactoryCustomization))]
     public async Task CreateProject_WithNullRequest_ThrowsException(
         CustomWebApplicationDbContextFactory<Program> factory,
         CreateConversionProjectCommand createConversionProjectCommand,
@@ -91,8 +91,7 @@ public class ProjectsControllerTests
 
         var establishments = fixture.CreateMany<GiasEstablishment>(50).ToList();
         await dbContext.GiasEstablishments.AddRangeAsync(establishments);
-
-
+        
         var projects = establishments.Select(establishment =>
         {
             var project = fixture.Customize(new ProjectCustomization

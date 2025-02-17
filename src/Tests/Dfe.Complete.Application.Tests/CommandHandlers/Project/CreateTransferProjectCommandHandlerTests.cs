@@ -13,6 +13,7 @@ using MediatR;
 using Moq;
 using Dfe.Complete.Application.Projects.Models;
 using Dfe.Complete.Application.Common.Models;
+using Dfe.Complete.Application.Projects.Queries.GetLocalAuthority;
 using Dfe.Complete.Application.Projects.Queries.GetUser;
 using Dfe.Complete.Application.Projects.Queries.GetProject;
 using Dfe.Complete.Tests.Common.Customizations.Behaviours;
@@ -41,7 +42,10 @@ public class CreateTransferProjectCommandHandlerTests
         };
 
         var groupId = new ProjectGroupId(Guid.NewGuid());
-
+           
+        mockSender.Setup(s => s.Send(It.IsAny<GetLocalAuthorityBySchoolUrnQuery>(), default))
+            .ReturnsAsync(Result<GetLocalAuthorityBySchoolUrnResponseDto?>.Success(new GetLocalAuthorityBySchoolUrnResponseDto(Guid.NewGuid())));
+        
         mockSender
             .Setup(sender => sender.Send(It.IsAny<GetUserByAdIdQuery>(), default))
             .ReturnsAsync(Result<UserDto?>.Success(userDto));
@@ -110,7 +114,10 @@ public class CreateTransferProjectCommandHandlerTests
         };
 
         var groupId = new ProjectGroupId(Guid.NewGuid());
-
+        
+        mockSender.Setup(s => s.Send(It.IsAny<GetLocalAuthorityBySchoolUrnQuery>(), default))
+            .ReturnsAsync(Result<GetLocalAuthorityBySchoolUrnResponseDto?>.Success(new GetLocalAuthorityBySchoolUrnResponseDto(Guid.NewGuid())));
+        
         mockSender
             .Setup(sender => sender.Send(It.IsAny<GetUserByAdIdQuery>(), default))
             .ReturnsAsync(Result<UserDto?>.Success(userDto));
@@ -160,7 +167,10 @@ public class CreateTransferProjectCommandHandlerTests
         var transferTask = new TransferTasksData(new TaskDataId(transferTaskId), createdAt, createdAt, command.IsDueToInedaquateOfstedRating, command.IsDueToIssues, command.OutGoingTrustWillClose);
         var groupId = new ProjectGroupId(Guid.NewGuid());
 
-
+   
+        mockSender.Setup(s => s.Send(It.IsAny<GetLocalAuthorityBySchoolUrnQuery>(), default))
+            .ReturnsAsync(Result<GetLocalAuthorityBySchoolUrnResponseDto?>.Success(new GetLocalAuthorityBySchoolUrnResponseDto(Guid.NewGuid())));
+        
         mockSender.Setup(s => s.Send(It.IsAny<GetUserByAdIdQuery>(), It.IsAny<CancellationToken>()))
                     .ReturnsAsync(Result<UserDto?>.Success(userDto));
 
@@ -212,6 +222,9 @@ public class CreateTransferProjectCommandHandlerTests
         var transferTask = new TransferTasksData(new TaskDataId(transferTaskId), createdAt, createdAt, command.IsDueToInedaquateOfstedRating, command.IsDueToIssues, command.OutGoingTrustWillClose);
         var groupId = new ProjectGroupId(Guid.NewGuid());
 
+        mockSender.Setup(s => s.Send(It.IsAny<GetLocalAuthorityBySchoolUrnQuery>(), default))
+            .ReturnsAsync(Result<GetLocalAuthorityBySchoolUrnResponseDto?>.Success(new GetLocalAuthorityBySchoolUrnResponseDto(Guid.NewGuid())));
+        
         mockSender.Setup(s => s.Send(It.IsAny<GetUserByAdIdQuery>(), It.IsAny<CancellationToken>()))
                     .ReturnsAsync(Result<UserDto?>.Success(userDto));
 
@@ -251,11 +264,12 @@ public class CreateTransferProjectCommandHandlerTests
         var handler = new CreateTransferProjectCommandHandler(mockProjectRepository, mockTransferTaskRepository, mockSender.Object);
         var expectedErrorMessage = "User retrieval failed: DB ERROR";
 
-
+        mockSender.Setup(s => s.Send(It.IsAny<GetLocalAuthorityBySchoolUrnQuery>(), default))
+            .ReturnsAsync(Result<GetLocalAuthorityBySchoolUrnResponseDto?>.Success(new GetLocalAuthorityBySchoolUrnResponseDto(Guid.NewGuid())));
+        
         mockSender.Setup(s => s.Send(It.IsAny<GetUserByAdIdQuery>(), It.IsAny<CancellationToken>()))
                     .ReturnsAsync(Result<UserDto>.Failure("DB ERROR"));
-
-
+        
         // Act & Assert
         var exception = await Assert.ThrowsAsync<Exception>(() => handler.Handle(command, default));
 
