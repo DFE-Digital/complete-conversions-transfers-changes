@@ -27,7 +27,7 @@ namespace Dfe.Complete.Api.Tests.Integration.Customizations
                     //TODO: when needed, seed data for CompleteContext
                     SeedData = new Dictionary<Type, Action<DbContext>>
                     {
-                        { typeof(CompleteContext), context => CompleteContextSeeder.Seed((CompleteContext)context) }
+                        { typeof(CompleteContext), context => CompleteContextSeeder.Seed((CompleteContext)context, fixture) }
                         // { typeof(CompleteContext), context => {} },
                     },
                     ExternalServicesConfiguration = services =>
