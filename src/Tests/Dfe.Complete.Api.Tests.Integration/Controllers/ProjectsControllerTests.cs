@@ -9,6 +9,7 @@ using Dfe.Complete.Tests.Common.Customizations.Behaviours;
 using Dfe.Complete.Tests.Common.Customizations.Commands;
 using Dfe.Complete.Tests.Common.Customizations.Models;
 using DfE.CoreLibs.Testing.AutoFixture.Attributes;
+using DfE.CoreLibs.Testing.AutoFixture.Customizations;
 using DfE.CoreLibs.Testing.Mocks.WebApplicationFactory;
 using Microsoft.EntityFrameworkCore;
 using NSubstitute.Exceptions;
@@ -22,6 +23,8 @@ public class ProjectsControllerTests
 {
     [Theory]
     [CustomAutoData(typeof(CustomWebApplicationDbContextFactoryCustomization),
+        typeof(DateOnlyCustomization),
+        typeof(LocalAuthorityCustomization),
         typeof(CreateConversionProjectCommandCustomization))]
     public async Task CreateProject_Async_ShouldCreateConversionProject(
         CustomWebApplicationDbContextFactory<Program> factory,
@@ -40,8 +43,14 @@ public class ProjectsControllerTests
 
         dbContext.Users.Update(testUser);
         dbContext.ProjectGroups.Update(group);
-        await dbContext.SaveChangesAsync();
 
+        var localAuthority = dbContext.LocalAuthorities.ToList().FirstOrDefault();
+        var giasEstablishmentUrn = dbContext.GiasEstablishments.FirstOrDefault().Urn;
+
+        createConversionProjectCommand.Urn.Value = giasEstablishmentUrn.Value;
+        
+        await dbContext.SaveChangesAsync();
+        
         var result = await projectsClient.CreateProjectAsync(createConversionProjectCommand);
 
         Assert.NotNull(result);
@@ -79,27 +88,25 @@ public class ProjectsControllerTests
         var dbContext = factory.GetDbContext<CompleteContext>();
 
         var testUser = await dbContext.Users.FirstAsync();
-        
+
         var establishments = fixture.CreateMany<GiasEstablishment>(50).ToList();
         await dbContext.GiasEstablishments.AddRangeAsync(establishments);
-        
-        var localAuthorities = fixture.CreateMany<LocalAuthority>(50);
-        await dbContext.LocalAuthorities.AddRangeAsync(localAuthorities);
-        
+
+
         var projects = establishments.Select(establishment =>
         {
             var project = fixture.Customize(new ProjectCustomization
                 {
                     RegionalDeliveryOfficerId = testUser.Id,
                     CaseworkerId = testUser.Id,
-                    AssignedToId = testUser.Id,
+                    AssignedToId = testUser.Id
                 })
                 .Create<Project>();
             project.Urn = establishment.Urn ?? project.Urn;
             return project;
         }).ToList();
-        
-        projects.ForEach(p => p.LocalAuthorityId = localAuthorities.MinBy(_ => Guid.NewGuid()).Id);
+
+        projects.ForEach(x => x.LocalAuthorityId = dbContext.LocalAuthorities.ToList().MinBy(_ => Guid.NewGuid()).Id);
 
         await dbContext.Projects.AddRangeAsync(projects);
         await dbContext.SaveChangesAsync();
@@ -139,8 +146,10 @@ public class ProjectsControllerTests
             project.Urn = establishment.Urn ?? project.Urn;
             return project;
         }).ToList();
-        await dbContext.Projects.AddRangeAsync(projects);
 
+        projects.ForEach(x => x.LocalAuthorityId = dbContext.LocalAuthorities.ToList().MinBy(_ => Guid.NewGuid()).Id);
+
+        await dbContext.Projects.AddRangeAsync(projects);
         await dbContext.SaveChangesAsync();
 
         // Act
@@ -212,7 +221,8 @@ public class ProjectsControllerTests
             })
             .Create<Project>();
         project.Urn = establishment.Urn ?? project.Urn;
-
+        project.LocalAuthorityId = dbContext.LocalAuthorities.FirstOrDefault().Id;
+        
         dbContext.ConversionTasksData.Add(taskData);
 
         //var note = fixture.Create<Domain.Entities.Note>();
@@ -227,8 +237,7 @@ public class ProjectsControllerTests
         var existingProjectbefore = await dbContext.Projects.SingleAsync(x => x.Urn == project.Urn);
 
         Assert.NotNull(existingProjectbefore);
-
-
+        
         //var existingNote = await dbContext.Notes.SingleAsync(x => x.ProjectId == project.Id);
 
         //Assert.NotNull(existingNote);
