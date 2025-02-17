@@ -279,5 +279,50 @@ public class CreateTransferProjectCommandHandlerTests
 
         Assert.Equal(exception.Message, expectedErrorMessage);
     }
+    
+            [Theory]
+        [CustomAutoData(typeof(DateOnlyCustomization))]
+        public async Task Handle_ShouldThrowException_WhenLocalAuthorityRequestFails(
+            [Frozen] ICompleteRepository<Domain.Entities.Project> mockProjectRepository,
+            [Frozen] ICompleteRepository<TransferTasksData> mockTransferTaskRepository,
+            [Frozen] Mock<ISender> mockSender,
+            CreateTransferProjectCommand command)
+        {
+            mockSender
+                .Setup(s => s.Send(It.IsAny<GetLocalAuthorityBySchoolUrnQuery>(), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(Result<GetLocalAuthorityBySchoolUrnResponseDto?>.Failure("Local authority not found"));
+
+            var handler = new CreateTransferProjectCommandHandler(
+                mockProjectRepository, 
+                mockTransferTaskRepository, 
+                mockSender.Object);
+
+            // Act & Assert
+            var exception = await Assert.ThrowsAsync<Exception>(() => handler.Handle(command, CancellationToken.None));
+            Assert.Equal($"Failed to retrieve Local authority for School URN: {command.Urn}", exception.Message);
+        }
+
+        [Theory]
+        [CustomAutoData(typeof(DateOnlyCustomization))]
+        public async Task Handle_ShouldThrowException_WhenLocalAuthorityIdIsNull(
+            [Frozen] ICompleteRepository<Domain.Entities.Project> mockProjectRepository,
+            [Frozen] ICompleteRepository<TransferTasksData> mockTransferTaskRepository,
+            [Frozen] Mock<ISender> mockSender,
+            CreateTransferProjectCommand command)
+        {
+            var responseDto = new GetLocalAuthorityBySchoolUrnResponseDto(null);
+            mockSender
+                .Setup(s => s.Send(It.IsAny<GetLocalAuthorityBySchoolUrnQuery>(), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(Result<GetLocalAuthorityBySchoolUrnResponseDto?>.Success(responseDto));
+
+            var handler = new CreateTransferProjectCommandHandler(
+                mockProjectRepository, 
+                mockTransferTaskRepository, 
+                mockSender.Object);
+
+            // Act & Assert
+            var exception = await Assert.ThrowsAsync<Exception>(() => handler.Handle(command, CancellationToken.None));
+            Assert.Equal($"Failed to retrieve Local authority for School URN: {command.Urn}", exception.Message);
+        }
 
 }

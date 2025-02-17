@@ -10,7 +10,7 @@ public record GetLocalAuthorityBySchoolUrnQuery(int SchoolUrn) : IRequest<Result
 
 public record GetLocalAuthorityBySchoolUrnResponseDto(Guid? LocalAuthorityId);
 
-public class GetLocalAuthorityBySchoolUrn(ICompleteRepository<LocalAuthority> localAuthorityRepo, ICompleteRepository<GiasEstablishment> giasEstablishmentRepo) 
+public class GetLocalAuthorityBySchoolUrnQueryHandler(ICompleteRepository<LocalAuthority> localAuthorityRepo, ICompleteRepository<GiasEstablishment> giasEstablishmentRepo) 
     : IRequestHandler<GetLocalAuthorityBySchoolUrnQuery, Result<GetLocalAuthorityBySchoolUrnResponseDto?>>
 {
     public async Task<Result<GetLocalAuthorityBySchoolUrnResponseDto?>> Handle(GetLocalAuthorityBySchoolUrnQuery request, CancellationToken cancellationToken)
