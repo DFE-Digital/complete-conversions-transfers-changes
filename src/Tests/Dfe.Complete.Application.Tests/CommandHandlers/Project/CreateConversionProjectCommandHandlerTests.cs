@@ -1,3 +1,4 @@
+using AutoFixture;
 using AutoFixture.Xunit2;
 using DfE.CoreLibs.Testing.AutoFixture.Attributes;
 using Dfe.Complete.Domain.Interfaces.Repositories;
@@ -13,6 +14,7 @@ using DfE.CoreLibs.Testing.AutoFixture.Customizations;
 using Dfe.Complete.Application.Projects.Models;
 using MediatR;
 using Dfe.Complete.Application.Common.Models;
+using Dfe.Complete.Application.Projects.Queries.GetLocalAuthority;
 using Moq;
 using Dfe.Complete.Application.Projects.Queries.GetUser;
 using Dfe.Complete.Application.Projects.Queries.GetProject;
@@ -23,11 +25,13 @@ public class CreateConversionProjectCommandHandlerTests
 {
     [Theory]
     [CustomAutoData(typeof(DateOnlyCustomization),
+        typeof(LocalAuthorityCustomization),
         typeof(IgnoreVirtualMembersCustomisation))]
     public async Task Handle_ShouldCreateAndReturnProjectId_WhenCommandIsValid(
         [Frozen] ICompleteRepository<Domain.Entities.Project> mockProjectRepository,
         [Frozen] ICompleteRepository<ConversionTasksData> mockConversionTaskRepository,
         [Frozen] Mock<ISender> mockSender,
+        LocalAuthority localAuthority,
         CreateConversionProjectCommand command
     )
     {
@@ -53,8 +57,10 @@ public class CreateConversionProjectCommandHandlerTests
 
         mockSender.Setup(s => s.Send(It.IsAny<GetProjectGroupByGroupReferenceNumberQuery>(), It.IsAny<CancellationToken>()))
                     .ReturnsAsync(Result<ProjectGroupDto>.Success(new ProjectGroupDto { Id = groupId }));
-
-
+        
+        mockSender.Setup(s => s.Send(It.IsAny<GetLocalAuthorityBySchoolUrnQuery>(), default))
+            .ReturnsAsync(Result<GetLocalAuthorityBySchoolUrnResponseDto?>.Success(new GetLocalAuthorityBySchoolUrnResponseDto(localAuthority.Id.Value)));
+        
         Domain.Entities.Project capturedProject = null!;
         
         mockProjectRepository.AddAsync(Arg.Do<Domain.Entities.Project>(proj => capturedProject = proj), Arg.Any<CancellationToken>())
@@ -91,11 +97,12 @@ public class CreateConversionProjectCommandHandlerTests
     }
     
     [Theory]
-    [CustomAutoData(typeof(DateOnlyCustomization), typeof(ProjectCustomization), typeof(IgnoreVirtualMembersCustomisation))]
+    [CustomAutoData(typeof(DateOnlyCustomization), typeof(LocalAuthorityCustomization), typeof(IgnoreVirtualMembersCustomisation))]
     public async Task Handle_ShouldSetTeamToRcs_WhenHandoverToRcsTrue(
         [Frozen] ICompleteRepository<Domain.Entities.Project> mockProjectRepository,
         [Frozen] ICompleteRepository<ConversionTasksData> mockConversionTaskRepository,
         [Frozen] Mock<ISender> mockSender,
+        LocalAuthority localAuthority,
         CreateConversionProjectCommand command
     )
     {
@@ -115,8 +122,10 @@ public class CreateConversionProjectCommandHandlerTests
         var conversionTaskId = Guid.NewGuid();
         var conversionTask = new ConversionTasksData(new TaskDataId(conversionTaskId), createdAt, createdAt);
         var groupId = new ProjectGroupId(Guid.NewGuid());
-
-
+           
+        mockSender.Setup(s => s.Send(It.IsAny<GetLocalAuthorityBySchoolUrnQuery>(), default))
+            .ReturnsAsync(Result<GetLocalAuthorityBySchoolUrnResponseDto?>.Success(new GetLocalAuthorityBySchoolUrnResponseDto(localAuthority.Id.Value)));
+        
         mockSender.Setup(s => s.Send(It.IsAny<GetUserByAdIdQuery>(), It.IsAny<CancellationToken>()))
                     .ReturnsAsync(Result<UserDto>.Success(userDto));
 
@@ -143,11 +152,12 @@ public class CreateConversionProjectCommandHandlerTests
     
      
     [Theory]
-    [CustomAutoData(typeof(DateOnlyCustomization), typeof(ProjectCustomization), typeof(IgnoreVirtualMembersCustomisation))]
+    [CustomAutoData(typeof(DateOnlyCustomization), typeof(LocalAuthorityCustomization), typeof(IgnoreVirtualMembersCustomisation))]
     public async Task Handle_ShouldSetTeam_AssignedAt_AssignedTo_WhenNOTHandingOverToRcs(
         [Frozen] ICompleteRepository<Domain.Entities.Project> mockProjectRepository,
         [Frozen] ICompleteRepository<ConversionTasksData> mockConversionTaskRepository,
         [Frozen] Mock<ISender> mockSender,
+        LocalAuthority localAuthority,
         CreateConversionProjectCommand command
     )
     {
@@ -174,6 +184,9 @@ public class CreateConversionProjectCommandHandlerTests
 
         mockSender.Setup(s => s.Send(It.IsAny<GetProjectGroupByGroupReferenceNumberQuery>(), It.IsAny<CancellationToken>()))
                     .ReturnsAsync(Result<ProjectGroupDto>.Success(new ProjectGroupDto { Id = groupId }));
+        
+        mockSender.Setup(s => s.Send(It.IsAny<GetLocalAuthorityBySchoolUrnQuery>(), default))
+            .ReturnsAsync(Result<GetLocalAuthorityBySchoolUrnResponseDto?>.Success(new GetLocalAuthorityBySchoolUrnResponseDto(localAuthority.Id.Value)));
 
         Domain.Entities.Project capturedProject = null!;
         
@@ -197,24 +210,26 @@ public class CreateConversionProjectCommandHandlerTests
     }
 
     [Theory]
-    [CustomAutoData(typeof(DateOnlyCustomization), typeof(ProjectCustomization), typeof(IgnoreVirtualMembersCustomisation))]
+    [CustomAutoData(typeof(DateOnlyCustomization), typeof(LocalAuthorityCustomization), typeof(IgnoreVirtualMembersCustomisation))]
     public async Task Handle_ShouldThrowExceptionWhenUserRequestFails(
     [Frozen] ICompleteRepository<Domain.Entities.Project> mockProjectRepository,
     [Frozen] ICompleteRepository<ConversionTasksData> mockConversionTaskRepository,
     [Frozen] Mock<ISender> mockSender,
+    LocalAuthority localAuthority,
     CreateConversionProjectCommand command)
     {
         // Arrange
         var handler = new CreateConversionProjectCommandHandler(mockProjectRepository, mockConversionTaskRepository, mockSender.Object);
         var expectedErrorMessage = "User retrieval failed: DB ERROR";
-
-
+        
         mockSender.Setup(s => s.Send(It.IsAny<GetUserByAdIdQuery>(), It.IsAny<CancellationToken>()))
                     .ReturnsAsync(Result<UserDto>.Failure("DB ERROR"));
+        
+        mockSender.Setup(s => s.Send(It.IsAny<GetLocalAuthorityBySchoolUrnQuery>(), default))
+            .ReturnsAsync(Result<GetLocalAuthorityBySchoolUrnResponseDto?>.Success(new GetLocalAuthorityBySchoolUrnResponseDto(localAuthority.Id.Value)));
 
         // Act & Assert
         var exception = await Assert.ThrowsAsync<Exception>(() => handler.Handle(command, default));
-
 
         await mockProjectRepository.Received(0).AddAsync(Arg.Any<Domain.Entities.Project>());
         await mockConversionTaskRepository.Received(0).AddAsync(Arg.Any<ConversionTasksData>());
@@ -223,11 +238,12 @@ public class CreateConversionProjectCommandHandlerTests
     }
 
     [Theory]
-    [CustomAutoData(typeof(DateOnlyCustomization), typeof(ProjectCustomization), typeof(IgnoreVirtualMembersCustomisation))]
+    [CustomAutoData(typeof(DateOnlyCustomization), typeof(LocalAuthorityCustomization), typeof(IgnoreVirtualMembersCustomisation))]
     public async Task Handle_ShouldThrowExceptionWhenProjectGroupRequestFails(
        [Frozen] ICompleteRepository<Domain.Entities.Project> mockProjectRepository,
        [Frozen] ICompleteRepository<ConversionTasksData> mockConversionTaskRepository,
        [Frozen] Mock<ISender> mockSender,
+       LocalAuthority localAuthority,
        CreateConversionProjectCommand command,
        UserDto userDto)
         {
@@ -244,6 +260,9 @@ public class CreateConversionProjectCommandHandlerTests
 
             mockSender.Setup(s => s.Send(It.IsAny<GetProjectGroupByGroupReferenceNumberQuery>(), It.IsAny<CancellationToken>()))
                             .ReturnsAsync(Result<ProjectGroupDto?>.Failure("DB ERROR"));
+            
+            mockSender.Setup(s => s.Send(It.IsAny<GetLocalAuthorityBySchoolUrnQuery>(), default))
+                .ReturnsAsync(Result<GetLocalAuthorityBySchoolUrnResponseDto?>.Success(new GetLocalAuthorityBySchoolUrnResponseDto(localAuthority.Id.Value)));
 
             // Act & Assert
             var exception = await Assert.ThrowsAsync<Exception>(() => handler.Handle(command, default));
