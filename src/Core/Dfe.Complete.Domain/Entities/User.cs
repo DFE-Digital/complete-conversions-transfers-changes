@@ -39,6 +39,8 @@ public class User : BaseAggregateRoot, IEntity<UserId>
 
     public DateTime? LatestSession { get; set; }
 
+    public string FullName => $"{FirstName} {LastName}";
+
     public virtual ICollection<Note> Notes { get; set; } = new List<Note>();
 
     public virtual ICollection<Project> ProjectAssignedTos { get; set; } = new List<Project>();

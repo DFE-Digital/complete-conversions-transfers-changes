@@ -41,4 +41,5 @@ locals {
   health_insights_api_ipv4_allow_list      = var.health_insights_api_ipv4_allow_list
   monitor_http_availability_verb           = var.monitor_http_availability_verb
   monitor_http_availability_fqdn           = var.monitor_http_availability_fqdn
+  custom_container_apps                    = var.custom_container_apps
 }

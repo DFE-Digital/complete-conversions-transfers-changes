@@ -1,4 +1,4 @@
-using MediatR;
+﻿using MediatR;
 
 namespace Dfe.Complete.Application.Common.Models;
 

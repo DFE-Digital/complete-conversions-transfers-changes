@@ -1,4 +1,4 @@
-namespace Dfe.Complete.Application.Common.Models;
+﻿namespace Dfe.Complete.Application.Common.Models;
 
 public class PaginatedResult<T>(T value, bool isSuccess, string? error, int? itemCount) : Result<T>(value, isSuccess, error)
 {

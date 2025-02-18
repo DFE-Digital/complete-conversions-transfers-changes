@@ -4,7 +4,7 @@ using DfE.CoreLibs.Testing.AutoFixture.Attributes;
 using NSubstitute;
 using DfE.CoreLibs.Testing.AutoFixture.Customizations;
 using Dfe.Complete.Application.Projects.Interfaces;
-using Dfe.Complete.Application.Projects.Model;
+using Dfe.Complete.Application.Projects.Models;
 using Dfe.Complete.Application.Projects.Queries.ListAllProjects;
 using Dfe.Complete.Tests.Common.Customizations.Models;
 using MockQueryable;
@@ -34,10 +34,8 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
                 item.Project.SignificantDate,
                 item.Project.State,
                 item.Project.Type,
-                item.Project.IncomingTrustUkprn == null,
-                item.Project.AssignedTo != null
-                    ? $"{item.Project.AssignedTo.FirstName} {item.Project.AssignedTo.LastName}"
-                    : null)).Take(20).ToList();
+                item.Project.FormAMat,
+                item.Project.AssignedTo?.FullName)).Take(20).ToList();
 
             var query = new ListAllProjectsQuery(null, null);
 
@@ -79,7 +77,7 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
                 item.Project.SignificantDate,
                 item.Project.State,
                 item.Project.Type,
-                item.Project.IncomingTrustUkprn == null,
+                item.Project.FormAMat,
                 item.Project.AssignedTo != null
                     ? $"{item.Project.AssignedTo.FirstName} {item.Project.AssignedTo.LastName}"
                     : null)).Skip(20).Take(20).ToList();

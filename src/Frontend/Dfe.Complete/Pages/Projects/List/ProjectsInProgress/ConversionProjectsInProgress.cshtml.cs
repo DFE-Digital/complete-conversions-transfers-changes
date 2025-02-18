@@ -1,21 +1,20 @@
-using Dfe.Complete.Application.Projects.Model;
+using Dfe.Complete.Application.Projects.Models;
 using Dfe.Complete.Application.Projects.Queries.CountAllProjects;
 using Dfe.Complete.Application.Projects.Queries.ListAllProjects;
 using Dfe.Complete.Domain.Enums;
+using Dfe.Complete.Models;
 using Dfe.Complete.Pages.Pagination;
 using MediatR;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace Dfe.Complete.Pages.Projects.List.ProjectsInProgress
 {
-    public class ConversionProjectsInProgressInProgressModel(ISender sender) : ProjectsInProgressViewModel
+    public class ConversionProjectsInProgressInProgressModel(ISender sender) : ProjectsInProgressModel(ConversionsSubNavigation)
     {
         public List<ListAllProjectsResultModel> Projects { get; set; } = default!;
 
         public async Task OnGet()
         {
-            //TODO: Review pagination logic
+            ViewData[TabNavigationModel.ViewDataKey] = AllProjectsTabNavigationModel;
             var listProjectQuery = new ListAllProjectsQuery(ProjectState.Active, ProjectType.Conversion, PageNumber-1, PageSize);
 
             var response = await sender.Send(listProjectQuery);

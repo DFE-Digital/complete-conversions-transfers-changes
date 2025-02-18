@@ -350,14 +350,36 @@
         }
       }
     },
-    "/v1/Trust/List/All": {
+    "/v1/Users": {
       "get": {
         "tags": [
-          "Trust"
+          "Users"
         ],
-        "summary": "Returns a list of trusts with projects",
-        "operationId": "Trust_ListAllTrustsWithProjects",
+        "summary": "Gets a User with their assigned projects",
+        "operationId": "Users_GetUserWithProjects",
         "parameters": [
+          {
+            "name": "UserId.Value",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "guid"
+            },
+            "x-position": 1
+          },
+          {
+            "name": "State",
+            "in": "query",
+            "schema": {
+              "nullable": true,
+              "oneOf": [
+                {
+                  "$ref": "#/components/schemas/ProjectState"
+                }
+              ]
+            },
+            "x-position": 2
+          },
           {
             "name": "Page",
             "in": "query",
@@ -365,7 +387,7 @@
               "type": "integer",
               "format": "int32"
             },
-            "x-position": 1
+            "x-position": 3
           },
           {
             "name": "Count",
@@ -374,18 +396,75 @@
               "type": "integer",
               "format": "int32"
             },
-            "x-position": 2
+            "x-position": 4
           }
         ],
         "responses": {
           "200": {
-            "description": "Trusts",
+            "description": "Project",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserWithProjectsDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request data."
+          }
+        }
+      }
+    },
+    "/v1/Users/List/All": {
+      "get": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Returns a list of Users with their assigned projects",
+        "operationId": "Users_ListAllUsersWithProjects",
+        "parameters": [
+          {
+            "name": "State",
+            "in": "query",
+            "schema": {
+              "nullable": true,
+              "oneOf": [
+                {
+                  "$ref": "#/components/schemas/ProjectState"
+                }
+              ]
+            },
+            "x-position": 1
+          },
+          {
+            "name": "Page",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "x-position": 2
+          },
+          {
+            "name": "Count",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "x-position": 3
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Project",
             "content": {
               "application/json": {
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/ListTrustsWithProjectsResultModel"
+                    "$ref": "#/components/schemas/UserWithProjectsDto"
                   }
                 }
               }
@@ -956,6 +1035,9 @@
                 "format": "date-time",
                 "nullable": true
               },
+              "fullName": {
+                "type": "string"
+              },
               "notes": {
                 "type": "array",
                 "items": {
@@ -1322,6 +1404,9 @@
                     "$ref": "#/components/schemas/User"
                   }
                 ]
+              },
+              "formAMat": {
+                "type": "boolean"
               }
             }
           }
@@ -1522,24 +1607,39 @@
           }
         }
       },
-      "ListTrustsWithProjectsResultModel": {
+      "UserWithProjectsDto": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
-          "ukprn": {
+          "id": {
+            "$ref": "#/components/schemas/UserId"
+          },
+          "fullName": {
             "type": "string"
           },
-          "trustName": {
-            "type": "string"
+          "email": {
+            "type": "string",
+            "nullable": true
           },
-          "referenceNumber": {
-            "type": "string"
+          "team": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/ProjectTeam"
+              }
+            ]
           },
-          "conversionCount": {
+          "projectsAssigned": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ListAllProjectsResultModel"
+            }
+          },
+          "conversionProjectsAssigned": {
             "type": "integer",
             "format": "int32"
           },
-          "transfersCount": {
+          "transferProjectsAssigned": {
             "type": "integer",
             "format": "int32"
           }
