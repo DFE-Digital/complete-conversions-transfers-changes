@@ -104,7 +104,6 @@ namespace Dfe.Complete.Pages.Projects.Transfer
 
         public async Task<IActionResult> OnPost()
         {
-
             if (!ModelState.IsValid)
             {
                 errorService.AddErrors(ModelState);

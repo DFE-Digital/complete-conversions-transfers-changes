@@ -7,7 +7,6 @@ using Dfe.Complete.Domain.Entities;
 using Dfe.Complete.Utils;
 using Dfe.Complete.Application.Projects.Queries.GetProject;
 using Dfe.Complete.Application.Projects.Queries.GetUser;
-using Microsoft.Extensions.Logging;
 
 namespace Dfe.Complete.Application.Projects.Commands.CreateProject
 {
@@ -39,17 +38,14 @@ namespace Dfe.Complete.Application.Projects.Commands.CreateProject
                 cancellationToken);
 
             if (!localAuthorityIdRequest.IsSuccess || localAuthorityIdRequest.Value?.LocalAuthorityId == null)
-            {
-                return null;
-            }
+                throw new NotFoundException($"No Local authority could be found via Establishments for School Urn: {request.Urn.Value}.",
+                    innerException: new Exception(localAuthorityIdRequest.Error));
             
             // The user Team should be moved as a Claim or Group to the Entra (MS AD)
             var userRequest = await sender.Send(new GetUserByAdIdQuery(request.UserAdId), cancellationToken);
 
             if (!userRequest.IsSuccess)
-            {
-                throw new Exception($"User retrieval failed: {userRequest.Error}");
-            }
+                throw new NotFoundException("No user found.", innerException: new Exception(userRequest.Error));
             
             var projectUser = userRequest.Value;
 
@@ -69,10 +65,8 @@ namespace Dfe.Complete.Application.Projects.Commands.CreateProject
                 await sender.Send(new GetProjectGroupByGroupReferenceNumberQuery(request.GroupReferenceNumber),
                     cancellationToken);
 
-            if (!projectGroupRequest.IsSuccess)
-            {
-                throw new Exception($"Project Group retrieval failed: {projectGroupRequest.Error}");
-            }
+            if (!projectGroupRequest.IsSuccess || projectGroupRequest.Value == null)
+                throw new NotFoundException($"Project Group retrieval failed: {projectGroupRequest.Error}");
 
             var groupId = projectGroupRequest.Value?.Id;
 
