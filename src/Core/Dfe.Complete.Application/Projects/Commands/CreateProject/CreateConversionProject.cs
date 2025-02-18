@@ -7,6 +7,7 @@ using Dfe.Complete.Domain.Entities;
 using Dfe.Complete.Utils;
 using Dfe.Complete.Application.Projects.Queries.GetProject;
 using Dfe.Complete.Application.Projects.Queries.GetUser;
+using Microsoft.Extensions.Logging;
 
 namespace Dfe.Complete.Application.Projects.Commands.CreateProject
 {
@@ -38,7 +39,9 @@ namespace Dfe.Complete.Application.Projects.Commands.CreateProject
                 cancellationToken);
 
             if (!localAuthorityIdRequest.IsSuccess || localAuthorityIdRequest.Value?.LocalAuthorityId == null)
-                throw new Exception($"Failed to retrieve Local authority for School URN: {request.Urn}");
+            {
+                return null;
+            }
             
             // The user Team should be moved as a Claim or Group to the Entra (MS AD)
             var userRequest = await sender.Send(new GetUserByAdIdQuery(request.UserAdId), cancellationToken);

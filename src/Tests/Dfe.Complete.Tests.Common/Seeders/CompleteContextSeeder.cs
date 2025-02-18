@@ -9,8 +9,6 @@ namespace Dfe.Complete.Tests.Common.Seeders;
 
 public static class CompleteContextSeeder
 {
-    //TODO: implement when needed
-
     public static void Seed(CompleteContext context, IFixture fixture)
     {
         var projectUser = new User
@@ -29,10 +27,11 @@ public static class CompleteContextSeeder
         var giasEstablishment = fixture.Create<GiasEstablishment>();
         
         var localAuthorities = fixture.CreateMany<LocalAuthority>(10);
-        localAuthorities.FirstOrDefault().Code = giasEstablishment.LocalAuthorityCode;
+        var authorities = localAuthorities.ToList();
+        authorities.FirstOrDefault()!.Code = giasEstablishment.LocalAuthorityCode!;
         
         context.GiasEstablishments.Add(giasEstablishment);
-        context.LocalAuthorities.AddRange(localAuthorities);
+        context.LocalAuthorities.AddRange(authorities);
         context.ProjectGroups.Add(projectGroup);
         context.Users.Add(projectUser);
         context.SaveChanges();

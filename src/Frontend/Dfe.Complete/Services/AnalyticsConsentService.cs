@@ -17,15 +17,15 @@ namespace Dfe.Complete.Services
         private readonly IHttpContextAccessor _httpContextAccessor;
         private const string ConsentCookieName = "ACCEPT_OPTIONAL_COOKIES";
         private bool? Consent { get; set; }
-        private string AnalyticsDomain = ".education.gov.uk";
+        private readonly string _analyticsDomain = ".education.gov.uk";
 
-        public AnalyticsConsentService(IHttpContextAccessor httpContextAccessor, IConfiguration _configuration)
+        public AnalyticsConsentService(IHttpContextAccessor httpContextAccessor, IConfiguration configuration)
         {
             _httpContextAccessor = httpContextAccessor;
-            var domain = _configuration["GoogleAnalytics:Domain"];
+            var domain = configuration["GoogleAnalytics:Domain"];
             if (!string.IsNullOrEmpty(domain))
             {
-				AnalyticsDomain = domain;
+				_analyticsDomain = domain;
 			}
 		}
 
@@ -75,7 +75,7 @@ namespace Dfe.Complete.Services
                         //Delete if domain is the same
 						_httpContextAccessor.HttpContext.Response.Cookies.Delete(cookie);
                         //Delete if domain matches - need both as we wont be sent the cookie if the domain doesnt match
-						_httpContextAccessor.HttpContext.Response.Cookies.Delete(cookie, new CookieOptions() { Domain = AnalyticsDomain});
+						_httpContextAccessor.HttpContext.Response.Cookies.Delete(cookie, new CookieOptions() { Domain = _analyticsDomain});
 					}
                 }
             }

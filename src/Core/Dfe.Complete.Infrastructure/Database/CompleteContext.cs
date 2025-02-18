@@ -206,7 +206,7 @@ public partial class CompleteContext : DbContext
             .HasColumnName("tasks_data_id")
             .HasConversion(
                 v => v!.Value,
-                v => new TaskDataId(v)); ;
+                v => new TaskDataId(v));
         projectConfiguration.Property(e => e.TasksDataType)
             .HasMaxLength(4000)
             .HasColumnName("tasks_data_type")
@@ -313,27 +313,6 @@ public partial class CompleteContext : DbContext
           .HasConversion(
               v => v!.Value,
               v => new ContactId(v));
-        
-        //projectConfiguration
-        //    .HasOne(c => c.MainContactId)
-        //    .WithOne()
-        //    .HasForeignKey<Contact>(c => c.Id);
-
-        //projectConfiguration
-        //    .HasOne(c => c.EstablishmentMainContactId)
-        //    .WithOne()
-        //    .HasForeignKey<Contact>(c => c.Id);
-
-        //projectConfiguration
-        //    .HasOne(c => c.IncomingTrustMainContactId)
-        //    .WithOne()
-        //    .HasForeignKey<Contact>(c => c.Id);
-
-        //projectConfiguration
-        //    .HasOne(c => c.OutgoingTrustMainContactId)
-        //    .WithOne()
-        //    .HasForeignKey<Contact>(c => c.Id);
-
     }
 
     private static void ConfigureUser(EntityTypeBuilder<User> projectConfiguration)
@@ -1188,7 +1167,6 @@ public partial class CompleteContext : DbContext
             .HasPrecision(6)
             .HasColumnName("updated_at");
     }
-
-
+    
     partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
 }

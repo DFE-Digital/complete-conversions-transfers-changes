@@ -10,8 +10,9 @@ namespace Dfe.Complete.Pages.Projects.Conversion
         [BindProperty(SupportsGet = true, Name = "projectId")]
         public string ProjectId { get; set; }
         
-        public async Task OnGet()
+        public Task OnGet()
         {
+            return Task.CompletedTask;
         }
     }
 }

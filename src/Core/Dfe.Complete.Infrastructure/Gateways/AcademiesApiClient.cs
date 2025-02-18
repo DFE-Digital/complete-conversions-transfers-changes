@@ -2,19 +2,13 @@
 
 namespace Dfe.Complete.Infrastructure.Gateways
 {
-    public class AcademiesApiClient : ApiClient
+    public class AcademiesApiClient(
+        IHttpClientFactory clientFactory,
+        ILogger<ApiClient> logger,
+        ILogger<AcademiesApiClient> logger1,
+        string httpClientName = "AcademiesApiClient")
+        : ApiClient(clientFactory, logger, httpClientName)
     {
-        private readonly ILogger<AcademiesApiClient> _logger;
-
-        public AcademiesApiClient(
-            IHttpClientFactory clientFactory, 
-            ILogger<ApiClient> logger,
-            string httpClientName = "AcademiesApiClient") : base(clientFactory, logger, httpClientName)
-        {
-            
-
-        }
-
         public async Task<IEnumerable<T>> GetEnumerable<T>(string endpoint) where T : class
         {
             try
@@ -30,7 +24,7 @@ namespace Dfe.Complete.Infrastructure.Gateways
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, ex.Message);
+                logger1.LogError(ex, ex.Message);
                 throw;
             }
         }
