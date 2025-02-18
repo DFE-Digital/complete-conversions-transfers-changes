@@ -1,0 +1,12 @@
+﻿@model Dfe.Complete.Pages.Projects.List.AllProjectsInTrust.AllTrustsWithProjectsPageModel
+@{
+  Layout = "List/_AllProjectsLayout";
+}
+
+@await RenderSectionAsync("PageHeading", true)
+
+<div class="govuk-grid-row">
+  @RenderBody()
+</div>
+
+@await Html.PartialAsync("/Pages/Pagination/_Pagination.cshtml", model: Model.Pagination)

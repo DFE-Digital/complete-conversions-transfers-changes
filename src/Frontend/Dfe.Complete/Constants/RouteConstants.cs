@@ -4,6 +4,8 @@
     {
         public const string YourProjects = "/";
         public const string ProjectsInProgress = "/projects/all/in-progress/all";
+        public const string ProjectsByTrust = "/projects/all/trusts";
+        public const string TrustProjects = "/projects/all/trusts/ukprn/{0}";
 
         // Project
         public const string Project = "/projects/{0}";
