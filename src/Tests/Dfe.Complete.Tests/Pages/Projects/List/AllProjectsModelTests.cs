@@ -1,13 +1,13 @@
-﻿using DfE.CoreLibs.Testing.AutoFixture.Attributes;
-using Dfe.Complete.Application.Projects.Model;
+﻿using Dfe.Complete.Application.Projects.Models;
 using Dfe.Complete.Constants;
 using Dfe.Complete.Domain.Enums;
-using Dfe.Complete.Pages.Projects.List.ProjectsInProgress;
+using Dfe.Complete.Pages.Projects.List;
 using Dfe.Complete.Tests.Common.Customizations.Models;
+using DfE.CoreLibs.Testing.AutoFixture.Attributes;
 
-namespace Dfe.Complete.Tests.Pages.Projects.List.ProjectsInProgress;
+namespace Dfe.Complete.Tests.Pages.Projects.List;
 
-public class ProjectsInProgressViewModelTests
+public class AllProjectsModelTests
 {
     [Theory]
     [CustomAutoData(typeof(ListAllProjectResultModelCustomization))]
@@ -22,7 +22,7 @@ public class ProjectsInProgressViewModelTests
         string expectedUrl = string.Format(RouteConstants.ConversionProjectTaskList, project.ProjectId);
 
         // Act
-        var result = ProjectsInProgressViewModel.GetProjectSummaryUrl(project);
+        var result = AllProjectsModel.GetProjectSummaryUrl(project);
 
         // Assert
         Assert.Equal(expectedUrl, result);
@@ -41,7 +41,7 @@ public class ProjectsInProgressViewModelTests
         string expectedUrl = string.Format(RouteConstants.TransferProjectTaskList, project.ProjectId);
 
         // Act
-        var result = ProjectsInProgressViewModel.GetProjectSummaryUrl(project);
+        var result = AllProjectsModel.GetProjectSummaryUrl(project);
 
         // Assert
         Assert.Equal(expectedUrl, result);

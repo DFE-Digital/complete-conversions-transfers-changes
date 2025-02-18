@@ -1,5 +1,5 @@
 ﻿using AutoFixture;
-using Dfe.Complete.Application.Projects.Model;
+using Dfe.Complete.Application.Projects.Models;
 using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Domain.ValueObjects;
 using DfE.CoreLibs.Testing.AutoFixture.Customizations;

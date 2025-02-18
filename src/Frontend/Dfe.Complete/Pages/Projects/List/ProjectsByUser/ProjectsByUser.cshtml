@@ -1,0 +1,42 @@
+﻿@page "/projects/all/users/{id}"
+@using Dfe.Complete.Pages.Projects.List
+@model Dfe.Complete.Pages.Projects.List.ProjectsByUser.ProjectsByUser
+
+@{
+  Layout = "List/ProjectsByUser/_ProjectsByUserLayout";
+  ViewData["Title"] = $"Projects for {Model.UserResult.FullName}";
+}
+
+@section PageHeading
+{
+  <h1 class="govuk-heading-xl">
+    Projects for @Model.UserResult.FullName
+  </h1>
+}
+
+<div class="govuk-grid-column-full">
+  <table class="govuk-table" name="projects_table" aria-label="Projects table">
+    <thead class="govuk-table__head">
+    <tr class="govuk-table__row">
+      <th class="govuk-table__header" scope="col">School or academy</th>
+      <th class="govuk-table__header" scope="col">URN</th>
+      <th class="govuk-table__header" scope="col">Conversion or transfer date</th>
+      <th class="govuk-table__header" scope="col">Project type</th>
+    </tr>
+    </thead>
+    <tbody class="govuk-table__body">
+
+    @foreach (var project in Model.UserResult.ProjectsAssigned)
+    {
+      <tr class="govuk-table__row">
+        <td class="govuk-table__header govuk-table__cell">
+          <a class="govuk-link" href="@AllProjectsModel.GetProjectSummaryUrl(project)">@project.EstablishmentName</a>
+        </td>
+        <td class="govuk-table__cell">@project.Urn.Value</td>
+        <td class="govuk-table__cell">@project.ConversionOrTransferDate.ToDateString()</td>
+        <td class="govuk-table__cell">@project.ProjectType.ToString()</td>
+      </tr>
+    }
+    </tbody>
+  </table>
+</div>
