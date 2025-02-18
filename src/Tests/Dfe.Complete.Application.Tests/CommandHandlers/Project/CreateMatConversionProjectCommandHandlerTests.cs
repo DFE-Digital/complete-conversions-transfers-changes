@@ -191,74 +191,94 @@ public class CreateMatConversionProjectCommandHandlerTests
         Assert.NotNull(capturedProject.AssignedAt);
         Assert.NotNull(capturedProject.AssignedToId);
     }
-
-
+    
     [Theory]
     [CustomAutoData(typeof(DateOnlyCustomization), typeof(IgnoreVirtualMembersCustomisation))]
-    public async Task Handle_ShouldThrowExceptionWhenUserRequestFails(
+    public async Task Handle_ShouldThrowNotFoundException_WhenUserRequestFails(
         [Frozen] ICompleteRepository<Domain.Entities.Project> mockProjectRepository,
         [Frozen] ICompleteRepository<ConversionTasksData> mockConversionTaskRepository,
         [Frozen] Mock<ISender> mockSender,
         CreateMatConversionProjectCommand command)
     {
-        // Arrange
-        var handler = new CreateMatConversionProjectCommandHandler(mockProjectRepository, mockConversionTaskRepository, mockSender.Object);
-        var expectedErrorMessage = "User retrieval failed: DB ERROR";
-               
-        mockSender.Setup(s => s.Send(It.IsAny<GetLocalAuthorityBySchoolUrnQuery>(), default))
-            .ReturnsAsync(Result<GetLocalAuthorityBySchoolUrnResponseDto?>.Success(new GetLocalAuthorityBySchoolUrnResponseDto(Guid.NewGuid())));
+        mockSender.Setup(s => s.Send(It.IsAny<GetLocalAuthorityBySchoolUrnQuery>(), It.IsAny<CancellationToken>()))
+            .ReturnsAsync(Result<GetLocalAuthorityBySchoolUrnResponseDto?>.Success(
+                new GetLocalAuthorityBySchoolUrnResponseDto(Guid.NewGuid())));
 
         mockSender.Setup(s => s.Send(It.IsAny<GetUserByAdIdQuery>(), It.IsAny<CancellationToken>()))
-            .ReturnsAsync(Result<UserDto>.Failure("DB ERROR"));
+            .ReturnsAsync(Result<UserDto?>.Failure("DB ERROR"));
 
-        // Act & Assert
-        var exception = await Assert.ThrowsAsync<Exception>(() => handler.Handle(command, default));
-            
-        await mockProjectRepository.Received(0).AddAsync(Arg.Any<Domain.Entities.Project>());
-        await mockConversionTaskRepository.Received(0).AddAsync(Arg.Any<ConversionTasksData>());
-
-        Assert.Equal(exception.Message, expectedErrorMessage);
-    }
-        
-    [Theory]
-    [CustomAutoData(typeof(DateOnlyCustomization), typeof(IgnoreVirtualMembersCustomisation))]
-    public async Task Handle_ShouldThrowException_WhenLocalAuthorityIdRequestFails(
-        [Frozen] ICompleteRepository<Domain.Entities.Project> mockProjectRepository,
-        [Frozen] ICompleteRepository<ConversionTasksData> mockConversionTaskRepository,
-        [Frozen] Mock<ISender> mockSender,
-        CreateMatConversionProjectCommand command)
-    {
-        mockSender
-            .Setup(s => s.Send(It.IsAny<GetLocalAuthorityBySchoolUrnQuery>(), It.IsAny<CancellationToken>()))
-            .ReturnsAsync(Result<GetLocalAuthorityBySchoolUrnResponseDto?>.Failure("Local authority not found"));
-            
         var handler = new CreateMatConversionProjectCommandHandler(
-            mockProjectRepository, mockConversionTaskRepository, mockSender.Object);
+            mockProjectRepository,
+            mockConversionTaskRepository,
+            mockSender.Object);
 
         // Act & Assert
-        var exception = await Assert.ThrowsAsync<Exception>(() => handler.Handle(command, CancellationToken.None));
-        Assert.Equal($"Failed to retrieve Local authority for School URN: {command.Urn}", exception.Message);
+        var exception = await Assert.ThrowsAsync<NotFoundException>(() => handler.Handle(command, default));
+        Assert.Equal("No user found.", exception.Message);
+        Assert.NotNull(exception.InnerException);
+        Assert.Equal("DB ERROR", exception.InnerException.Message);
+            
+        await mockProjectRepository.Received(0)
+            .AddAsync(It.IsAny<Domain.Entities.Project>(), It.IsAny<CancellationToken>());
+        await mockConversionTaskRepository.Received(0)
+            .AddAsync(It.IsAny<ConversionTasksData>(), It.IsAny<CancellationToken>());
     }
-
+    
     [Theory]
     [CustomAutoData(typeof(DateOnlyCustomization), typeof(IgnoreVirtualMembersCustomisation))]
-    public async Task Handle_ShouldThrowException_WhenLocalAuthorityIdIsNull(
+    public async Task Handle_ShouldThrowNotFoundException_WhenLocalAuthorityRequestFails(
         [Frozen] ICompleteRepository<Domain.Entities.Project> mockProjectRepository,
         [Frozen] ICompleteRepository<ConversionTasksData> mockConversionTaskRepository,
         [Frozen] Mock<ISender> mockSender,
         CreateMatConversionProjectCommand command)
     {
-        // Arrange
+        var expectedError = "Local authority not found";
+        mockSender.Setup(s => s.Send(It.IsAny<GetLocalAuthorityBySchoolUrnQuery>(), It.IsAny<CancellationToken>()))
+            .ReturnsAsync(Result<GetLocalAuthorityBySchoolUrnResponseDto?>.Failure(expectedError));
+
+        var handler = new CreateMatConversionProjectCommandHandler(
+            mockProjectRepository,
+            mockConversionTaskRepository,
+            mockSender.Object);
+
+        // Act & Assert
+        var exception = await Assert.ThrowsAsync<NotFoundException>(() => handler.Handle(command, default));
+        var expectedMessage = $"No Local authority could be found via Establishments for School Urn: {command.Urn.Value}.";
+        Assert.Equal(expectedMessage, exception.Message);
+        Assert.NotNull(exception.InnerException);
+        Assert.Equal(expectedError, exception.InnerException.Message);
+            
+        await mockProjectRepository.Received(0)
+            .AddAsync(It.IsAny<Domain.Entities.Project>(), It.IsAny<CancellationToken>());
+        await mockConversionTaskRepository.Received(0)
+            .AddAsync(It.IsAny<ConversionTasksData>(), It.IsAny<CancellationToken>());
+    }
+    
+    [Theory]
+    [CustomAutoData(typeof(DateOnlyCustomization), typeof(IgnoreVirtualMembersCustomisation))]
+    public async Task Handle_ShouldThrowNotFoundException_WhenLocalAuthorityIdIsNull(
+        [Frozen] ICompleteRepository<Domain.Entities.Project> mockProjectRepository,
+        [Frozen] ICompleteRepository<ConversionTasksData> mockConversionTaskRepository,
+        [Frozen] Mock<ISender> mockSender,
+        CreateMatConversionProjectCommand command)
+    {
         var responseDto = new GetLocalAuthorityBySchoolUrnResponseDto(null);
-        mockSender
-            .Setup(s => s.Send(It.IsAny<GetLocalAuthorityBySchoolUrnQuery>(), It.IsAny<CancellationToken>()))
+        mockSender.Setup(s => s.Send(It.IsAny<GetLocalAuthorityBySchoolUrnQuery>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(Result<GetLocalAuthorityBySchoolUrnResponseDto?>.Success(responseDto));
 
         var handler = new CreateMatConversionProjectCommandHandler(
-            mockProjectRepository, mockConversionTaskRepository, mockSender.Object);
+            mockProjectRepository,
+            mockConversionTaskRepository,
+            mockSender.Object);
 
         // Act & Assert
-        var exception = await Assert.ThrowsAsync<Exception>(() => handler.Handle(command, CancellationToken.None));
-        Assert.Equal($"Failed to retrieve Local authority for School URN: {command.Urn}", exception.Message);
+        var exception = await Assert.ThrowsAsync<NotFoundException>(() => handler.Handle(command, default));
+        var expectedMessage = $"No Local authority could be found via Establishments for School Urn: {command.Urn.Value}.";
+        Assert.Equal(expectedMessage, exception.Message);
+            
+        await mockProjectRepository.Received(0)
+            .AddAsync(It.IsAny<Domain.Entities.Project>(), It.IsAny<CancellationToken>());
+        await mockConversionTaskRepository.Received(0)
+            .AddAsync(It.IsAny<ConversionTasksData>(), It.IsAny<CancellationToken>());
     }
 }
