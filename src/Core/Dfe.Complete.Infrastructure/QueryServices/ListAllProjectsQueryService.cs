@@ -1,5 +1,5 @@
 ﻿using Dfe.Complete.Application.Projects.Interfaces;
-using Dfe.Complete.Application.Projects.Model;
+using Dfe.Complete.Application.Projects.Models;
 using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Infrastructure.Database;
 using Microsoft.EntityFrameworkCore;

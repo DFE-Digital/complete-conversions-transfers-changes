@@ -1,6 +1,9 @@
-﻿@model Dfe.Complete.Pages.Projects.List.ProjectsInProgress.ProjectsInProgressViewModel
+﻿@using Dfe.Complete.Pages.Projects.List.ProjectsInProgress
+@model Dfe.Complete.Pages.Projects.List.ProjectsInProgress.ProjectsInProgressModel
 @{
   Layout = "List/_AllProjectsLayout";
+  var ariaCurrentValue = "page";
+  string? IsCurrentNav(string tabName) => Model.CurrentSubNavigationItem == tabName ? ariaCurrentValue : null;
 }
 
 @await RenderSectionAsync("PageHeading", true)
@@ -9,19 +12,29 @@
   <ul class="moj-sub-navigation__list">
 
     <li class="moj-sub-navigation__item">
-      <a class="moj-sub-navigation__link" asp-page="AllProjectsInProgress">All projects</a>
+      <a class="moj-sub-navigation__link"
+         aria-current="@IsCurrentNav(ProjectsInProgressModel.AllProjectSubNavigation)"
+         asp-page="AllProjectsInProgress">
+        All projects
+      </a>
     </li>
 
     <li class="moj-sub-navigation__item">
-      <a class="moj-sub-navigation__link" asp-page="ConversionProjectsInProgress">Conversions</a>
+      <a class="moj-sub-navigation__link" 
+         aria-current="@IsCurrentNav(ProjectsInProgressModel.ConversionsSubNavigation)" 
+         asp-page="ConversionProjectsInProgress">Conversions</a>
     </li>
 
     <li class="moj-sub-navigation__item">
-      <a class="moj-sub-navigation__link" asp-page="TransferProjectsInProgress">Transfers</a>
+      <a class="moj-sub-navigation__link" 
+         aria-current="@IsCurrentNav(ProjectsInProgressModel.TransfersSubNavigation)" 
+         asp-page="TransferProjectsInProgress">Transfers</a>
     </li>
 
     <li class="moj-sub-navigation__item">
-      <a class="moj-sub-navigation__link" asp-page="FormAMATProjectsInProgress">Form a MAT</a>
+      <a class="moj-sub-navigation__link" 
+         aria-current="@IsCurrentNav(ProjectsInProgressModel.FormAMatSubNavigation)" 
+         asp-page="FormAMATProjectsInProgress">Form a MAT</a>
     </li>
 
 
@@ -30,5 +43,3 @@
 <div class="govuk-grid-row">
   @RenderBody()
 </div>
-
-@await Html.PartialAsync("/Pages/Pagination/_Pagination.cshtml", model: Model.Pagination)
