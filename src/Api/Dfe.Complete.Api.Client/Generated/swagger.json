@@ -1281,6 +1281,9 @@
               },
               "localAuthority": {
                 "$ref": "#/components/schemas/LocalAuthority"
+              },
+              "formAMat": {
+                "type": "boolean"
               }
             }
           }
