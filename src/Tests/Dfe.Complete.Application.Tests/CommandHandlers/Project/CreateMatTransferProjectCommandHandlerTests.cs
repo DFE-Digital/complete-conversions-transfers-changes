@@ -191,8 +191,39 @@ namespace Dfe.Complete.Application.Tests.CommandHandlers.Project
             Assert.NotNull(capturedProject.AssignedAt);
             Assert.NotNull(capturedProject.AssignedToId);
         }
+        
+        [Theory]
+        [CustomAutoData(typeof(DateOnlyCustomization), typeof(IgnoreVirtualMembersCustomisation))]
+        public async Task Handle_ShouldThrowException_WhenLocalAuthorityRequestFails(
+            [Frozen] ICompleteRepository<Domain.Entities.Project> mockProjectRepository,
+            [Frozen] ICompleteRepository<TransferTasksData> mockTransferTaskRepository,
+            [Frozen] Mock<ISender> mockSender,
+            CreateMatTransferProjectCommand command)
+        {
+            // Arrange
+            var handler = new CreateMatTransferProjectCommandHandler(
+                mockProjectRepository,
+                mockTransferTaskRepository,
+                mockSender.Object);
 
+            var expectedErrorMessage = $"No Local authority could be found via Establishments for School Urn: {command.Urn.Value}.";
 
+            mockSender.Setup(s => s.Send(It.IsAny<GetLocalAuthorityBySchoolUrnQuery>(), default))
+                .ReturnsAsync(Result<GetLocalAuthorityBySchoolUrnResponseDto?>.Failure("Local Authority DB error"));
+
+            // Act & Assert
+            var exception = await Assert.ThrowsAsync<NotFoundException>(() => handler.Handle(command, default));
+
+            await mockProjectRepository.Received(0)
+                .AddAsync(Arg.Any<Domain.Entities.Project>());
+            await mockTransferTaskRepository.Received(0)
+                .AddAsync(Arg.Any<TransferTasksData>());
+
+            Assert.Equal(expectedErrorMessage, exception.Message);
+            Assert.NotNull(exception.InnerException);
+            Assert.Equal("Local Authority DB error", exception.InnerException.Message);
+        }
+        
         [Theory]
         [CustomAutoData(typeof(DateOnlyCustomization), typeof(IgnoreVirtualMembersCustomisation))]
         public async Task Handle_ShouldThrowException_WhenUserRequestFails(
@@ -202,22 +233,32 @@ namespace Dfe.Complete.Application.Tests.CommandHandlers.Project
             CreateMatTransferProjectCommand command)
         {
             // Arrange
-            var handler = new CreateMatTransferProjectCommandHandler(mockProjectRepository, mockTransferTaskRepository, mockSender.Object);
-            var expectedErrorMessage = "User retrieval failed: DB ERROR";
-   
+            var handler = new CreateMatTransferProjectCommandHandler(
+                mockProjectRepository,
+                mockTransferTaskRepository,
+                mockSender.Object);
+
+            var expectedErrorMessage = "No user found.";
+
+            // Setup the local authority lookup to succeed so that we reach the user lookup.
             mockSender.Setup(s => s.Send(It.IsAny<GetLocalAuthorityBySchoolUrnQuery>(), default))
                 .ReturnsAsync(Result<GetLocalAuthorityBySchoolUrnResponseDto?>.Success(new GetLocalAuthorityBySchoolUrnResponseDto(Guid.NewGuid())));
-            
-            mockSender.Setup(s => s.Send(It.IsAny<GetUserByAdIdQuery>(), It.IsAny<CancellationToken>()))
-                        .ReturnsAsync(Result<UserDto>.Failure("DB ERROR"));
-            
-            // Act & Assert
-            var exception = await Assert.ThrowsAsync<Exception>(() => handler.Handle(command, default));
-            
-            await mockProjectRepository.Received(0).AddAsync(Arg.Any<Domain.Entities.Project>());
-            await mockTransferTaskRepository.Received(0).AddAsync(Arg.Any<TransferTasksData>());
 
-            Assert.Equal(exception.Message, expectedErrorMessage);
+            mockSender.Setup(s => s.Send(It.IsAny<GetUserByAdIdQuery>(), default))
+                .ReturnsAsync(Result<UserDto?>.Failure("User DB error"));
+
+            // Act & Assert
+            var exception = await Assert.ThrowsAsync<NotFoundException>(() => handler.Handle(command, default));
+
+            await mockProjectRepository.Received(0)
+                .AddAsync(Arg.Any<Domain.Entities.Project>());
+            await mockTransferTaskRepository.Received(0)
+                .AddAsync(Arg.Any<TransferTasksData>());
+
+            Assert.Equal(expectedErrorMessage, exception.Message);
+            Assert.NotNull(exception.InnerException);
+            Assert.Equal("User DB error", exception.InnerException.Message);
         }
+
     }
 }
