@@ -83,6 +83,8 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
     
     public LocalAuthorityId LocalAuthorityId { get; set; }
     
+    public bool FormAMat => NewTrustReferenceNumber != null && NewTrustName != null && IncomingTrustUkprn == null;
+    
     public virtual User? AssignedTo { get; set; }
 
     public virtual User? Caseworker { get; set; }
@@ -94,6 +96,7 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
     public virtual User? RegionalDeliveryOfficer { get; set; }
     
     public virtual LocalAuthority LocalAuthority { get; set; }
+    
     
     private Project()
     {
