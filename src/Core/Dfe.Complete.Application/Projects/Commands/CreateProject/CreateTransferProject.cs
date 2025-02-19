@@ -42,12 +42,12 @@ namespace Dfe.Complete.Application.Projects.Commands.CreateProject
                 cancellationToken);
 
             if (!localAuthorityIdRequest.IsSuccess || localAuthorityIdRequest.Value?.LocalAuthorityId == null)
-                throw new Exception($"Failed to retrieve Local authority for School URN: {request.Urn}");
+                throw new NotFoundException($"No Local authority could be found via Establishments for School Urn: {request.Urn.Value}.", innerException: new Exception(localAuthorityIdRequest.Error));
             
             var userRequest = await sender.Send(new GetUserByAdIdQuery(request.UserAdId), cancellationToken);
 
             if (!userRequest.IsSuccess)
-                throw new Exception($"User retrieval failed: {userRequest.Error}");
+                throw new NotFoundException("No user found.", innerException: new Exception(userRequest.Error));
             
             var projectUser = userRequest.Value;
 
@@ -66,10 +66,8 @@ namespace Dfe.Complete.Application.Projects.Commands.CreateProject
             var projectRequest = await sender.Send(new GetProjectGroupByGroupReferenceNumberQuery(request.GroupReferenceNumber), cancellationToken);
 
             if (!projectRequest.IsSuccess)
-            {
-                throw new Exception($"Project Group retrieval failed: {projectRequest.Error}");
-            }
-
+                throw new NotFoundException("Project Group retrieval failed", innerException: new Exception(projectRequest.Error));
+            
             var groupId = projectRequest.Value?.Id;
 
             ProjectTeam team;
