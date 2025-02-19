@@ -38,8 +38,7 @@ namespace Dfe.Complete.Application.Projects.Commands.CreateProject
                 cancellationToken);
 
             if (!localAuthorityIdRequest.IsSuccess || localAuthorityIdRequest.Value?.LocalAuthorityId == null)
-                throw new NotFoundException($"No Local authority could be found via Establishments for School Urn: {request.Urn.Value}.",
-                    innerException: new Exception(localAuthorityIdRequest.Error));
+                throw new NotFoundException($"No Local authority could be found via Establishments for School Urn: {request.Urn.Value}.", innerException: new Exception(localAuthorityIdRequest.Error));
             
             // The user Team should be moved as a Claim or Group to the Entra (MS AD)
             var userRequest = await sender.Send(new GetUserByAdIdQuery(request.UserAdId), cancellationToken);
