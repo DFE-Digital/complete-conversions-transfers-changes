@@ -92,7 +92,7 @@ namespace Dfe.Complete.Tests.Validators
 
 
         [Fact]
-        public void UrnAttribute_Validation_Throws_Exception_WhenResultIsFalse()
+        public void UrnAttribute_Validation_Returns_ValidationErrorMessage_WhenQueryNotSuccessful()
         {
             // Arrange
             var mockSender = new Mock<ISender>();
@@ -105,8 +105,7 @@ namespace Dfe.Complete.Tests.Validators
             mockSender
                 .Setup(sender => sender.Send(It.IsAny<GetProjectByUrnQuery>(), default))
                     .ReturnsAsync(Result<ProjectDto?>.Failure(expectedErrorMessage));
-
-
+            
             var attribute = new UrnAttribute();
             var validationContext = new ValidationContext(new { }, null, null)
             {
@@ -115,11 +114,10 @@ namespace Dfe.Complete.Tests.Validators
             validationContext.InitializeServiceProvider(type => type == typeof(ISender) ? mockSender.Object : null);
 
             // Act
-            var exception = Assert.Throws<Exception>(() => attribute.GetValidationResult(urnValue.ToString(), validationContext));
+            var result = attribute.GetValidationResult(urnValue.ToString(), validationContext);
 
             // Assert
-            //Assert(result);
-            Assert.Equal(expectedErrorMessage, exception.Message);
+            Assert.Equal(expectedErrorMessage, result.ErrorMessage);
         }
 
 
