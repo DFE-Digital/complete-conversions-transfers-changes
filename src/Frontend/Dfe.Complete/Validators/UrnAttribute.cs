@@ -4,12 +4,15 @@ using Dfe.Complete.Extensions;
 using MediatR;
 using System.ComponentModel.DataAnnotations;
 using System.Reflection;
+using Dfe.Complete.Utils;
 
-namespace Dfe.Complete.Validators
+namespace Dfe.Complete.Validators;
+
+public class UrnAttribute : ValidationAttribute
 {
-    public class UrnAttribute : ValidationAttribute
+    protected override ValidationResult IsValid(object value, ValidationContext validationContext)
     {
-        protected override ValidationResult IsValid(object value, ValidationContext validationContext)
+        try
         {
             // Fetch the display name if it is provided
             var property = validationContext.ObjectType.GetProperty(validationContext.MemberName);
@@ -22,29 +25,29 @@ namespace Dfe.Complete.Validators
                 return ValidationResult.Success;
             
             if (urn.Length != 6)
-            {
-                var errorMessage = $"The {displayName} must be 6 digits long. For example, 123456.";
-                return new ValidationResult(errorMessage);
-            }
+                return new ValidationResult( $"The {displayName} must be 6 digits long. For example, 123456.");
 
             var sender = (ISender)validationContext.GetService(typeof(ISender));
 
             var result = sender.Send(new GetProjectByUrnQuery(new Urn(urn.ToInt())));
 
             if (!result.Result.IsSuccess)
-            {
-                throw new Exception(result.Result.Error);
-            }
+                throw new NotFoundException(result.Result.Error);
 
             if (result.Result?.Value != null)
-            {
-                var errorMessage = $"A project with the urn: {urn} already exists";
-
-                return new ValidationResult(errorMessage);
-            }
+                return new ValidationResult($"A project with the urn: {urn} already exists");
 
             // If valid, return success
             return ValidationResult.Success;
+        }
+        catch (NotFoundException notFoundException)
+        {
+            return new ValidationResult(notFoundException.Message);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
         }
     }
 }
