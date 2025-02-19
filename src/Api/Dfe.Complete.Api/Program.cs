@@ -11,6 +11,7 @@ using System.Text;
 using System.Text.Json.Serialization;
 using Asp.Versioning;
 using Asp.Versioning.ApiExplorer;
+using Dfe.Complete.Application.Common.Mappers;
 using Dfe.Complete.Infrastructure;
 using Dfe.Complete.Infrastructure.Security.Authorization;
 using DfE.CoreLibs.Http.Middlewares.CorrelationId;
@@ -67,7 +68,7 @@ namespace Dfe.Complete.Api
             builder.Services.AddApplicationDependencyGroup(builder.Configuration);
             builder.Services.AddInfrastructureDependencyGroup(builder.Configuration);
 
-            builder.Services.AddAutoMapper(typeof(Program));
+            builder.Services.AddAutoMapper(typeof(AutoMapping));
 
             builder.Services.AddOptions<SwaggerUIOptions>()
                 .Configure<IHttpContextAccessor>((swaggerUiOptions, httpContextAccessor) =>
@@ -101,7 +102,10 @@ namespace Dfe.Complete.Api
                 options.MaxAge = TimeSpan.FromDays(365);
             });
 
-            builder.Services.AddOpenApiDocument(configure => { configure.Title = "Api"; });
+            builder.Services.AddOpenApiDocument(configure =>
+            {
+                configure.Title = "Api";
+            });
 
             var app = builder.Build();
 
