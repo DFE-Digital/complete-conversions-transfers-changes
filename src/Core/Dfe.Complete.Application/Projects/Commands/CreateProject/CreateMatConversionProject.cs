@@ -33,6 +33,8 @@ public record CreateMatConversionProjectCommand(
     {
         public async Task<ProjectId> Handle(CreateMatConversionProjectCommand request, CancellationToken cancellationToken)
         {
+            throw new NotFoundException("lol");
+            
             var localAuthorityIdRequest = await sender.Send(new GetLocalAuthorityBySchoolUrnQuery(request.Urn.Value),
             cancellationToken);
 

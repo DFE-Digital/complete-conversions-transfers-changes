@@ -14,7 +14,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 namespace Dfe.Complete.Pages.Projects.MatConversion;
 
 [Authorize(policy: "CanCreateProjects")]
-public class CreateNewProject(ISender sender, IErrorService errorService, ILogger<CreateNewProject> logger) : PageModel
+public class CreateNewProject(ISender sender, ErrorService errorService, ILogger<CreateNewProject> logger) : PageModel
 {
     [BindProperty]
     [Urn]
@@ -77,10 +77,6 @@ public class CreateNewProject(ISender sender, IErrorService errorService, ILogge
     [Display(Name = "IsDueTo2RI")]
     public bool? IsDueTo2RI { get; set; }
 
-    public void OnGet()
-    {
-    }
-
     public async Task<IActionResult> OnPost(CancellationToken cancellationToken)
     {
         if (!ModelState.IsValid)
@@ -102,7 +98,7 @@ public class CreateNewProject(ISender sender, IErrorService errorService, ILogge
                     : default,
                 IsSignificantDateProvisional: true, // will be set to false in the stakeholder kick off task 
                 IncomingTrustSharepointLink: IncomingTrustSharePointLink,
-                EstablishmentSharepointLink: SchoolSharePointLink, //todo: is this correct?
+                EstablishmentSharepointLink: SchoolSharePointLink,
                 IsDueTo2Ri: IsDueTo2RI ?? false,
                 AdvisoryBoardDate: AdvisoryBoardDate.HasValue
                     ? DateOnly.FromDateTime(AdvisoryBoardDate.Value)
