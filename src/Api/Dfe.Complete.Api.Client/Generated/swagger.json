@@ -1372,6 +1372,9 @@
               "localAuthorityId": {
                 "$ref": "#/components/schemas/LocalAuthorityId"
               },
+              "formAMat": {
+                "type": "boolean"
+              },
               "assignedTo": {
                 "nullable": true,
                 "oneOf": [
@@ -1410,9 +1413,6 @@
               },
               "localAuthority": {
                 "$ref": "#/components/schemas/LocalAuthority"
-              },
-              "formAMat": {
-                "type": "boolean"
               }
             }
           }
