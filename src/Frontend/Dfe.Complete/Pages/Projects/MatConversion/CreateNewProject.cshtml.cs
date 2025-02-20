@@ -99,7 +99,7 @@ public class CreateNewProject(ISender sender, IErrorService errorService) : Page
                 : default,
             IsSignificantDateProvisional: true, // will be set to false in the stakeholder kick off task 
             IncomingTrustSharepointLink: IncomingTrustSharePointLink,
-            EstablishmentSharepointLink: SchoolSharePointLink, //todo: is this correct?
+            EstablishmentSharepointLink: SchoolSharePointLink,
             IsDueTo2Ri: IsDueTo2RI ?? false,
             AdvisoryBoardDate: AdvisoryBoardDate.HasValue ? DateOnly.FromDateTime(AdvisoryBoardDate.Value) : default,
             AdvisoryBoardConditions: AdvisoryBoardConditions ?? string.Empty,
