@@ -16,6 +16,11 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers;
 
 public class ProjectsControllerTests
 {
+    private const string ReadRole = "API.Read";
+    private const string WriteRole = "API.Write";
+    private const string DeleteRole = "API.Delete";
+    private const string UpdateRole = "API.Update";
+        
     [Theory]
     [CustomAutoData(typeof(CustomWebApplicationDbContextFactoryCustomization),
         typeof(CreateConversionProjectCommandCustomization))]
@@ -24,14 +29,16 @@ public class ProjectsControllerTests
         CreateConversionProjectCommand createConversionProjectCommand,
         IProjectsClient projectsClient)
     {
-        factory.TestClaims = [new Claim(ClaimTypes.Role, "API.Write"), new Claim(ClaimTypes.Role, "API.Read")];
+        factory.TestClaims = [new Claim(ClaimTypes.Role, WriteRole), new Claim(ClaimTypes.Role, ReadRole)];
 
         var dbContext = factory.GetDbContext<CompleteContext>();
 
         var testUser = await dbContext.Users.FirstOrDefaultAsync();
+        Assert.NotNull(testUser);
         testUser.ActiveDirectoryUserId = createConversionProjectCommand.UserAdId;
 
         var group = await dbContext.ProjectGroups.FirstOrDefaultAsync();
+        Assert.NotNull(group);
         group.GroupIdentifier = createConversionProjectCommand.GroupReferenceNumber;
 
         dbContext.Users.Update(testUser);
@@ -51,7 +58,7 @@ public class ProjectsControllerTests
         CreateConversionProjectCommand createConversionProjectCommand,
         IProjectsClient projectsClient)
     {
-        factory.TestClaims = [new Claim(ClaimTypes.Role, "API.Write"), new Claim(ClaimTypes.Role, "API.Read")];
+        factory.TestClaims = [new Claim(ClaimTypes.Role, WriteRole), new Claim(ClaimTypes.Role, ReadRole)];
 
         createConversionProjectCommand.Urn = null;
 
@@ -69,7 +76,7 @@ public class ProjectsControllerTests
         IProjectsClient projectsClient,
         IFixture fixture)
     {
-        factory.TestClaims = [new Claim(ClaimTypes.Role, "API.Read")];
+        factory.TestClaims = [new Claim(ClaimTypes.Role, ReadRole)];
 
         var dbContext = factory.GetDbContext<CompleteContext>();
 
@@ -108,7 +115,7 @@ public class ProjectsControllerTests
         IProjectsClient projectsClient,
         IFixture fixture)
     {
-        factory.TestClaims = [new Claim(ClaimTypes.Role, "API.Read")];
+        factory.TestClaims = [new Claim(ClaimTypes.Role, ReadRole)];
 
         // Arrange
         var dbContext = factory.GetDbContext<CompleteContext>();
@@ -178,7 +185,7 @@ public class ProjectsControllerTests
         IProjectsClient projectsClient,
         IFixture fixture)
     {
-        factory.TestClaims = new[] { "API.Read", "API.Write", "API.Delete", "API.Update" }
+        factory.TestClaims = new[] { ReadRole, WriteRole, DeleteRole, UpdateRole }
             .Select(x => new Claim(ClaimTypes.Role, x)).ToList();
 
         var dbContext = factory.GetDbContext<CompleteContext>();
@@ -235,7 +242,7 @@ public class ProjectsControllerTests
         IProjectsClient projectsClient,
         IFixture fixture)
     {
-        factory.TestClaims = new[] { "API.Read", "API.Write", "API.Delete", "API.Update" }
+        factory.TestClaims = new[] { ReadRole, WriteRole, DeleteRole, UpdateRole }
             .Select(x => new Claim(ClaimTypes.Role, x)).ToList();
 
         var dbContext = factory.GetDbContext<CompleteContext>();
