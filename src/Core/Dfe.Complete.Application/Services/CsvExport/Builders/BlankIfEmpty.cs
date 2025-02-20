@@ -2,17 +2,17 @@
 {
     public class BlankIfEmpty<T>(Func<T, object?> func) : IColumnBuilder<T>
     {
-        public string Build(T input)
+        public string Build(T value)
         {
-            object? value = func(input);
+            object? valueObj = func(value);
 
-            if (value == null)
+            if (valueObj == null)
             {
                 return string.Empty;
             }
             else
             {
-                return value.ToString();
+                return valueObj.ToString();
             }
         }
     }

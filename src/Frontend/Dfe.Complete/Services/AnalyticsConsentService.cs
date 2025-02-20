@@ -36,9 +36,9 @@ namespace Dfe.Complete.Services
                 return Consent;
             }
 
-            if (_httpContextAccessor.HttpContext.Request.Cookies.ContainsKey(ConsentCookieName))
+            if (_httpContextAccessor.HttpContext != null && _httpContextAccessor.HttpContext.Request.Cookies.ContainsKey(ConsentCookieName))
             {
-                return bool.Parse(_httpContextAccessor.HttpContext.Request.Cookies[ConsentCookieName]);
+                return bool.Parse(_httpContextAccessor.HttpContext.Request.Cookies[ConsentCookieName] ?? string.Empty);
             }
 
             return false;
