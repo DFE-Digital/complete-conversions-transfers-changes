@@ -11,6 +11,7 @@ class ConversionProjectApi extends ApiBase {
             body: request
         })
             .then(response => {
+                expect(response.status).to.eq(201);
                 return response.body;
             });
     }

@@ -28,15 +28,20 @@ export type CreateTransferProjectResponse =
     };
 
 export type CreateConversionProjectRequest = {
-    urn: string;
-    date: string;
-    isDateProvisional: boolean;
-    schoolSharePointLink: string;
-    region: Region;
-    isDueTo2RI: boolean;
+    urn: { value: number };
+    significantDate: string;
+    isSignificantDateProvisional: boolean;
+    incomingTrustUkprn: { value: number };
+    isDueTo2Ri: boolean;
     hasAcademyOrderBeenIssued: boolean;
-    advisoryBoardDetails: AdvisoryBoardDetails;
-    incomingTrustDetails: CreateTrustDetails;
+    advisoryBoardDate: string;
+    advisoryBoardConditions: string;
+    establishmentSharepointLink: string;
+    incomingTrustSharepointLink: string;
+    groupReferenceNumber: string;
+    handingOverToRegionalCaseworkService: boolean;
+    handoverComments: string;
+    userAdId?: string;
 };
 
 export type CreateConversionProjectResponse =

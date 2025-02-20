@@ -4,6 +4,11 @@ class ValidationComponent {
         return this;
     }
 
+    public hasNoValidationErrors(): this {
+        cy.get(".govuk-error-summary").should("not.exist");
+        return this
+    }
+
     public hasLinkedValidationError(message: string): this {
         cy.get(".govuk-error-summary").contains(message).parent()
             .find("a")
