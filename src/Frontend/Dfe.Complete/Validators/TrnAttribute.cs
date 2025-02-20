@@ -6,6 +6,7 @@ using Dfe.Complete.Utils;
 
 namespace Dfe.Complete.Validators;
 
+[AttributeUsage(AttributeTargets.Property)]
 public partial class TrnAttribute : ValidationAttribute
 {
     protected override ValidationResult? IsValid(object? value, ValidationContext validationContext)
@@ -46,8 +47,6 @@ public partial class TrnAttribute : ValidationAttribute
             Console.WriteLine(e);
             throw;
         }
-        
-       
     }
 
     [GeneratedRegex("^TR\\d{5}$")]

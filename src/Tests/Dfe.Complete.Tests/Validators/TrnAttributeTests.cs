@@ -89,4 +89,28 @@ public class TrnAttributeTests
         Assert.NotNull(result);
         Assert.Equal(expectedErrorMessage, result.ErrorMessage);
     }
+    
+    [Fact]
+    public void TrnAttribute_Validation_RethrowsUnhandledException()
+    {
+        // Arrange
+        var trn = "TR12345";
+        var mockSender = new Mock<ISender>();
+        var unhandledException = new Exception("Unhandled error");
+
+        mockSender.Setup(s => s.Send(It.IsAny<GetProjectByTrnQuery>(), default))
+            .Throws(unhandledException);
+
+        var objectInstance = new { TestTrn = trn };
+        var attribute = new TrnAttribute();
+        var validationContext = new ValidationContext(objectInstance, null, null)
+        {
+            MemberName = nameof(objectInstance.TestTrn)
+        };
+        validationContext.InitializeServiceProvider(type => type == typeof(ISender) ? mockSender.Object : null);
+
+        // Act & Assert
+        var ex = Assert.Throws<Exception>(() => attribute.GetValidationResult(trn, validationContext));
+        Assert.Equal("Unhandled error", ex.Message);
+    }
 }

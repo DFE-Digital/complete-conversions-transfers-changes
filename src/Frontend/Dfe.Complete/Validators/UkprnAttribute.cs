@@ -4,6 +4,7 @@ using System.Reflection;
 
 namespace Dfe.Complete.Validators
 {
+    [AttributeUsage(AttributeTargets.Property)]
     public class UkprnAttribute : ValidationAttribute
     {
 

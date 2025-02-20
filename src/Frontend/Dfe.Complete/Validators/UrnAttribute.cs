@@ -8,6 +8,7 @@ using Dfe.Complete.Utils;
 
 namespace Dfe.Complete.Validators;
 
+[AttributeUsage(AttributeTargets.Property)]
 public class UrnAttribute : ValidationAttribute
 {
     protected override ValidationResult IsValid(object value, ValidationContext validationContext)
