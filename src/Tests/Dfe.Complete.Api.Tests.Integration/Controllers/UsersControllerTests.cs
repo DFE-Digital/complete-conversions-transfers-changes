@@ -107,6 +107,8 @@ public class UsersControllerTests
         testUser.FirstName = "Nick";
         testUser.LastName = "Warms";
         dbContext.Users.Update(testUser);
+
+        var localAuthorityId = dbContext.LocalAuthorities.FirstOrDefault().Id;
         
         var establishments = fixture.CreateMany<GiasEstablishment>(50).ToList();
         await dbContext.GiasEstablishments.AddRangeAsync(establishments);
@@ -122,6 +124,9 @@ public class UsersControllerTests
             project.Urn = establishment.Urn ?? project.Urn;
             return project;
         }).ToList();
+        
+        projects.ForEach(p => p.LocalAuthorityId = localAuthorityId);
+        
         await dbContext.Projects.AddRangeAsync(projects);
 
         await dbContext.SaveChangesAsync();
