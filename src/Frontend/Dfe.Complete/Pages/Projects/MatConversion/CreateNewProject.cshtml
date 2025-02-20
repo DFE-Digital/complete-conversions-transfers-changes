@@ -10,7 +10,7 @@
     const string trustRefNumber = nameof(Model.TrustReferenceNumber);
     const string trustName = nameof(Model.TrustName);
     const string advisoryBoardDateField = nameof(Model.AdvisoryBoardDate);
-    const string provisionalConversionDateField = nameof(Model.ProvisionalConversionDate);
+    const string provisionalConversionDateField = nameof(Model.SignificantDate);
     const string schoolSharePointLinkField = nameof(Model.SchoolSharePointLink);
     const string incomingTrustSharePointLinkField = nameof(Model.IncomingTrustSharePointLink);   
     const string handingToRSCField = nameof(Model.IsHandingToRCS);
@@ -94,7 +94,7 @@
                         </govuk-textarea-label>
                     </govuk-textarea>
 
-                    <govuk-date-input id="@provisionalConversionDateField" name-prefix="@provisionalConversionDateField" asp-for="@Model.ProvisionalConversionDate">
+                    <govuk-date-input id="@provisionalConversionDateField" name-prefix="@provisionalConversionDateField" asp-for="@Model.SignificantDate">
                         <govuk-date-input-fieldset>
                             <govuk-date-input-fieldset-legend class="govuk-fieldset__legend--m">
                                 Provisional conversion date

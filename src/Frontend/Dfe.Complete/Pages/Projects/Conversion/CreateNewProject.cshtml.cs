@@ -42,7 +42,7 @@ namespace Dfe.Complete.Pages.Projects.Conversion
         [BindProperty]
         [Required(ErrorMessage = "Enter a date for the Provisional Conversion Date, like 1 4 2023")]
         [Display(Name = "Provisional Conversion Date")]
-        public DateTime? ProvisionalConversionDate { get; set; }
+        public DateTime? SignificantDate { get; set; }
 
         [BindProperty]
         [SharePointLink]
@@ -91,7 +91,7 @@ namespace Dfe.Complete.Pages.Projects.Conversion
 
             var createProjectCommand = new CreateConversionProjectCommand(
                 Urn: new Urn(int.Parse(URN)),
-                SignificantDate: ProvisionalConversionDate.HasValue ? DateOnly.FromDateTime(ProvisionalConversionDate.Value) : default,
+                SignificantDate: SignificantDate.HasValue ? DateOnly.FromDateTime(SignificantDate.Value) : default,
                 IsSignificantDateProvisional: true, // will be set to false in the stakeholder kick off task 
                 IncomingTrustSharepointLink: IncomingTrustSharePointLink,
                 EstablishmentSharepointLink: SchoolSharePointLink, 
