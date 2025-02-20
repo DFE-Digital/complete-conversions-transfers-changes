@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using Dfe.Complete.Api.Middleware;
 using Dfe.Complete.Api.Swagger;
 using Microsoft.ApplicationInsights.Extensibility;
@@ -19,6 +20,7 @@ using DfE.CoreLibs.Http.Interfaces;
 
 namespace Dfe.Complete.Api
 {
+    [ExcludeFromCodeCoverage]
     public class Program
     {
         public static async Task Main(string[] args)
