@@ -6,10 +6,9 @@ using MediatR;
 using Moq;
 using Dfe.Complete.Domain.Entities;
 using Dfe.Complete.Application.Common.Models;
-using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Application.Projects.Models;
 using AutoMapper;
-using NSubstitute;
+using Dfe.AcademiesApi.Client.Contracts;
 
 namespace Dfe.Complete.Tests.Validators
 {
@@ -27,6 +26,11 @@ namespace Dfe.Complete.Tests.Validators
             // Arrange
             var mockSender = new Mock<ISender>();
             var mockMapper = new Mock<IMapper>();
+            var mockEstablishmentClient = new Mock<IEstablishmentsV4Client>();
+
+            mockEstablishmentClient
+                .Setup(service => service.GetEstablishmentByUrnAsync(It.IsAny<string>()))
+                .ReturnsAsync(It.IsAny<EstablishmentDto>());
 
             var projectDtoToReturn = urn == "123456" ? new ProjectDto() : null;
 
@@ -43,8 +47,15 @@ namespace Dfe.Complete.Tests.Validators
             {
                 MemberName = "TestUrn"
             };
-            validationContext.InitializeServiceProvider(type => type == typeof(ISender) ? mockSender.Object : null);
-
+            validationContext.InitializeServiceProvider(type =>
+            {
+                if (type == typeof(ISender))
+                    return mockSender.Object;
+                if (type == typeof(IEstablishmentsV4Client))
+                    return mockEstablishmentClient.Object;
+                return null;
+            });
+            
             // Act
             var result = attribute.GetValidationResult(urn, validationContext);
 
@@ -65,22 +76,31 @@ namespace Dfe.Complete.Tests.Validators
         {
             // Arrange
             var mockSender = new Mock<ISender>();
+            var mockEstablishmentClient = new Mock<IEstablishmentsV4Client>();
 
             var urnValue = 123456;
 
-            // Mock the sender to return an existing project for the URN
             mockSender
                 .Setup(sender => sender.Send(It.IsAny<GetProjectByUrnQuery>(), default))
                     .ReturnsAsync(Result<ProjectDto?>.Success(new ProjectDto() { Urn = new Urn(urnValue)}));
 
+            mockEstablishmentClient
+                .Setup(service => service.GetEstablishmentByUrnAsync(It.IsAny<string>()))
+                .ReturnsAsync(It.IsAny<EstablishmentDto>());
 
             var attribute = new UrnAttribute();
             var validationContext = new ValidationContext(new { }, null, null)
             {
                 MemberName = "TestUrn"
             };
-            validationContext.InitializeServiceProvider(type => type == typeof(ISender) ? mockSender.Object : null);
-
+            validationContext.InitializeServiceProvider(type =>
+            {
+                if (type == typeof(ISender))
+                    return mockSender.Object;
+                if (type == typeof(IEstablishmentsV4Client))
+                    return mockEstablishmentClient.Object;
+                return null;
+            });
             // Act
             var result = attribute.GetValidationResult(urnValue.ToString(), validationContext);
 
@@ -89,22 +109,25 @@ namespace Dfe.Complete.Tests.Validators
             Assert.IsType<ValidationResult>(result);
             Assert.Equal($"A project with the urn: {urnValue} already exists", result.ErrorMessage);
         }
-
-
+        
         [Fact]
         public void UrnAttribute_Validation_Throws_Exception_WhenResultIsFalse()
         {
             // Arrange
             var mockSender = new Mock<ISender>();
+            var mockEstablishmentClient = new Mock<IEstablishmentsV4Client>();
 
             var urnValue = 123456;
 
             var expectedErrorMessage = "Error Message";
-
-            // Mock the sender to return an existing project for the URN
+            
             mockSender
                 .Setup(sender => sender.Send(It.IsAny<GetProjectByUrnQuery>(), default))
                     .ReturnsAsync(Result<ProjectDto?>.Failure(expectedErrorMessage));
+            
+            mockEstablishmentClient
+                .Setup(service => service.GetEstablishmentByUrnAsync(It.IsAny<string>()))
+                .ReturnsAsync(It.IsAny<EstablishmentDto>());
 
 
             var attribute = new UrnAttribute();
@@ -112,8 +135,14 @@ namespace Dfe.Complete.Tests.Validators
             {
                 MemberName = "TestUrn"
             };
-            validationContext.InitializeServiceProvider(type => type == typeof(ISender) ? mockSender.Object : null);
-
+            validationContext.InitializeServiceProvider(type =>
+            {
+                if (type == typeof(ISender))
+                    return mockSender.Object;
+                if (type == typeof(IEstablishmentsV4Client))
+                    return mockEstablishmentClient.Object;
+                return null;
+            });
             // Act
             var exception = Assert.Throws<Exception>(() => attribute.GetValidationResult(urnValue.ToString(), validationContext));
 
@@ -122,7 +151,32 @@ namespace Dfe.Complete.Tests.Validators
             Assert.Equal(expectedErrorMessage, exception.Message);
         }
 
+        [Fact]
+        public void UrnAttribute_Validation_Fails_WhenUrnDoesNotExistInAcademies()
+        {
+            // Arrange
+            var mockEstablishmentClient = new Mock<IEstablishmentsV4Client>();
 
+            var urnValue = "123456";
 
+            mockEstablishmentClient
+                .Setup(service => service.GetEstablishmentByUrnAsync(urnValue))
+                .Throws(new AggregateException());
+
+            var attribute = new UrnAttribute();
+            var validationContext = new ValidationContext(new { }, null, null)
+            {
+                MemberName = "TestUrn"
+            };
+            validationContext.InitializeServiceProvider(type => type == typeof(IEstablishmentsV4Client) ? mockEstablishmentClient.Object : null);
+
+            // Act
+            var result = attribute.GetValidationResult(urnValue, validationContext);
+
+            // Assert
+            Assert.NotNull(result);
+            Assert.IsType<ValidationResult>(result);
+            Assert.Equal($"There's no school or academy with that URN. Check the number you entered is correct.", result.ErrorMessage);
+        }
     }
 }

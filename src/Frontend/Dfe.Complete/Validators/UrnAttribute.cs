@@ -4,6 +4,7 @@ using Dfe.Complete.Extensions;
 using MediatR;
 using System.ComponentModel.DataAnnotations;
 using System.Reflection;
+using Dfe.AcademiesApi.Client.Contracts;
 
 namespace Dfe.Complete.Validators
 {
@@ -27,21 +28,36 @@ namespace Dfe.Complete.Validators
                 return new ValidationResult(errorMessage);
             }
 
+            var establishmentsV4Client = (IEstablishmentsV4Client)validationContext.GetService(typeof(IEstablishmentsV4Client));
             var sender = (ISender)validationContext.GetService(typeof(ISender));
 
-            var result = sender.Send(new GetProjectByUrnQuery(new Urn(urn.ToInt())));
-
-            if (!result.Result.IsSuccess)
+            try
             {
-                throw new Exception(result.Result.Error);
+                
+                
+                var getEstablishmentResult = establishmentsV4Client.GetEstablishmentByUrnAsync(urn).Result;
+                var getProjectByUrnQueryResult = sender.Send(new GetProjectByUrnQuery(new Urn(urn.ToInt()))).Result;
+
+                if (!getProjectByUrnQueryResult.IsSuccess)
+                {
+                    throw new Exception(getProjectByUrnQueryResult.Error);
+                }
+
+                if (getProjectByUrnQueryResult?.Value != null)
+                {
+                    var errorMessage = $"A project with the urn: {urn} already exists";
+
+                    return new ValidationResult(errorMessage);
+                }
             }
-
-            if (result.Result?.Value != null)
+            catch (AggregateException ex)
             {
-                var errorMessage = $"A project with the urn: {urn} already exists";
+                var errorMessage = $"There's no school or academy with that URN. Check the number you entered is correct.";
 
                 return new ValidationResult(errorMessage);
             }
+
+
 
             // If valid, return success
             return ValidationResult.Success;
