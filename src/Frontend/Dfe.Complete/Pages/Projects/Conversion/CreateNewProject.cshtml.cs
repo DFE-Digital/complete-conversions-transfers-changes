@@ -33,6 +33,7 @@ namespace Dfe.Complete.Pages.Projects.Conversion
 
         [BindProperty]
         [Required(ErrorMessage = "Enter a date for the Advisory Board Date, like 1 4 2023")]
+        [DateInPast]
         [Display(Name = "Advisory Board Date")]
         public DateTime? AdvisoryBoardDate { get; set; }
 
