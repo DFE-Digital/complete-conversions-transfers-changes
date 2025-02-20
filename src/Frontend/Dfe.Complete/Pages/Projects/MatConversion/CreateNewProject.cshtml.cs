@@ -127,7 +127,7 @@ public class CreateNewProject(ISender sender, ErrorService errorService, ILogger
         catch (Exception ex)
         {
             logger.LogError(ex, "Error occurred while creating a conversion project.");
-            ModelState.AddModelError("", "An unexpected error occurred. Please try again later.");
+            ModelState.AddModelError("UnexpectedError", "An unexpected error occurred. Please try again later.");
             return Page();
         }
     }
