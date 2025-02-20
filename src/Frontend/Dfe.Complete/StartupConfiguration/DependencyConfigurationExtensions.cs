@@ -9,7 +9,6 @@ namespace Dfe.Complete.StartupConfiguration
         {
             services.AddScoped<IErrorService, ErrorService>();
             services.AddScoped<CompleteApiClient, CompleteApiClient>();
-            services.AddScoped<AcademiesApiClient, AcademiesApiClient>();
 
             services.AddScoped<IAnalyticsConsentService, AnalyticsConsentService>();
             
