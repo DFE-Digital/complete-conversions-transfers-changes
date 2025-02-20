@@ -1,10 +1,8 @@
-using System.Net;
 using AutoFixture;
 using Dfe.Complete.Api.Tests.Integration.Customizations;
 using Dfe.Complete.Client.Contracts;
 using Dfe.Complete.Domain.Entities;
 using Dfe.Complete.Infrastructure.Database;
-using Dfe.Complete.Tests.Common.Customizations.Commands;
 using Dfe.Complete.Tests.Common.Customizations.Models;
 using DfE.CoreLibs.Testing.AutoFixture.Attributes;
 using DfE.CoreLibs.Testing.Mocks.WebApplicationFactory;
@@ -38,12 +36,15 @@ public class UsersControllerTests
                 {
                     RegionalDeliveryOfficerId = testUser.Id,
                     CaseworkerId = testUser.Id,
-                    AssignedToId = testUser.Id
+                    AssignedToId = testUser.Id,
                 })
                 .Create<Project>();
             project.Urn = establishment.Urn ?? project.Urn;
             return project;
         }).ToList();
+        
+        projects.ForEach(p => p.LocalAuthorityId = dbContext.LocalAuthorities.FirstOrDefault().Id);
+        
         await dbContext.Projects.AddRangeAsync(projects);
 
         await dbContext.SaveChangesAsync();
