@@ -8,8 +8,6 @@ namespace Dfe.Complete.Pages.Projects.Transfer
 
         [BindProperty(SupportsGet = true, Name = "projectId")]
         public string ProjectId { get; set; }
-
-        // public GetTransferProjectResponse Project { get; set; }
         
     }
 }

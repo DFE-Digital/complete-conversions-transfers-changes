@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using Dfe.Complete.Api.Middleware;
 using Dfe.Complete.Api.Swagger;
 using Microsoft.ApplicationInsights.Extensibility;
@@ -11,6 +12,7 @@ using System.Text;
 using System.Text.Json.Serialization;
 using Asp.Versioning;
 using Asp.Versioning.ApiExplorer;
+using Dfe.Complete.Application.Common.Mappers;
 using Dfe.Complete.Infrastructure;
 using Dfe.Complete.Infrastructure.Security.Authorization;
 using DfE.CoreLibs.Http.Middlewares.CorrelationId;
@@ -18,6 +20,7 @@ using DfE.CoreLibs.Http.Interfaces;
 
 namespace Dfe.Complete.Api
 {
+    [ExcludeFromCodeCoverage]
     public class Program
     {
         public static async Task Main(string[] args)
@@ -67,7 +70,7 @@ namespace Dfe.Complete.Api
             builder.Services.AddApplicationDependencyGroup(builder.Configuration);
             builder.Services.AddInfrastructureDependencyGroup(builder.Configuration);
 
-            builder.Services.AddAutoMapper(typeof(Program));
+            builder.Services.AddAutoMapper(typeof(AutoMapping));
 
             builder.Services.AddOptions<SwaggerUIOptions>()
                 .Configure<IHttpContextAccessor>((swaggerUiOptions, httpContextAccessor) =>
@@ -101,7 +104,10 @@ namespace Dfe.Complete.Api
                 options.MaxAge = TimeSpan.FromDays(365);
             });
 
-            builder.Services.AddOpenApiDocument(configure => { configure.Title = "Api"; });
+            builder.Services.AddOpenApiDocument(configure =>
+            {
+                configure.Title = "Api";
+            });
 
             var app = builder.Build();
 
@@ -173,8 +179,7 @@ namespace Dfe.Complete.Api
 
             app.UseAuthentication();
             app.UseAuthorization();
-
-            app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
+            app.MapControllers();
 
             ILogger<Program> logger = app.Services.GetRequiredService<ILogger<Program>>();
             logger.LogInformation("Logger is working...");

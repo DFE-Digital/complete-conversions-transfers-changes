@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
 namespace Dfe.Complete.Infrastructure.Migrations
 {
+    [ExcludeFromCodeCoverage]
     /// <inheritdoc />
     public partial class Initial : Migration
     {
@@ -548,6 +550,12 @@ namespace Dfe.Complete.Infrastructure.Migrations
                         column: x => x.regional_delivery_officer_id,
                         principalSchema: "complete",
                         principalTable: "users",
+                        principalColumn: "id");
+                    table.ForeignKey(
+                        name: "fk_rails_eddab2651f",
+                        column: x => x.local_authority_id,
+                        principalSchema: "complete",
+                        principalTable: "local_authorities",
                         principalColumn: "id");
                 });
 

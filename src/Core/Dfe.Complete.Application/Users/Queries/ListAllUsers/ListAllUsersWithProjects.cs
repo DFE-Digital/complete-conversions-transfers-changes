@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Dfe.Complete.Application.Users.Queries.ListAllUsers;
 
-public record ListAllUsersWithProjectsQuery(ProjectState? State = ProjectState.Active)
+public record ListAllUsersWithProjectsQuery(ProjectState? State)
     : PaginatedRequest<PaginatedResult<List<UserWithProjectsDto>>>;
 
 public class ListAllUsersWithProjectsHandler(ICompleteRepository<User> users)
@@ -50,7 +50,7 @@ public class ListAllUsersWithProjectsHandler(ICompleteRepository<User> users)
                         project.SignificantDate,
                         project.State,
                         project.Type,
-                        project.IncomingTrustUkprn == null,
+                        project.FormAMat,
                         null
                     )).ToList(),
                     u.FilteredProjects.Count(project => project.Type == ProjectType.Conversion),

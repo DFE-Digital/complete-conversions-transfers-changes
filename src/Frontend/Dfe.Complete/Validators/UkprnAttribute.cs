@@ -4,6 +4,7 @@ using System.Reflection;
 
 namespace Dfe.Complete.Validators
 {
+    [AttributeUsage(AttributeTargets.Property)]
     public class UkprnAttribute : ValidationAttribute
     {
         private readonly string _comparisonProperty;
@@ -28,8 +29,7 @@ namespace Dfe.Complete.Validators
             if (ukprn.Length != 8)
                 return new ValidationResult(
                     $"The {displayName} must be 8 digits long and start with a 1. For example, 12345678.");
-
-
+            
             if (!string.IsNullOrEmpty(_comparisonProperty))
             {
                 var comparisonProperty = validationContext.ObjectType.GetProperty(_comparisonProperty);

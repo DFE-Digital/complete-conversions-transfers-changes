@@ -8,37 +8,51 @@ using Dfe.Complete.Infrastructure.Database;
 using Dfe.Complete.Tests.Common.Customizations.Commands;
 using Dfe.Complete.Tests.Common.Customizations.Models;
 using DfE.CoreLibs.Testing.AutoFixture.Attributes;
+using DfE.CoreLibs.Testing.AutoFixture.Customizations;
 using DfE.CoreLibs.Testing.Mocks.WebApplicationFactory;
 using Microsoft.EntityFrameworkCore;
-using NSubstitute.Exceptions;
 using Project = Dfe.Complete.Domain.Entities.Project;
 
 namespace Dfe.Complete.Api.Tests.Integration.Controllers;
 
 public class ProjectsControllerTests
 {
+    private const string ReadRole = "API.Read";
+    private const string WriteRole = "API.Write";
+    private const string DeleteRole = "API.Delete";
+    private const string UpdateRole = "API.Update";
+        
     [Theory]
     [CustomAutoData(typeof(CustomWebApplicationDbContextFactoryCustomization),
+        typeof(DateOnlyCustomization),
+        typeof(LocalAuthorityCustomization),
         typeof(CreateConversionProjectCommandCustomization))]
     public async Task CreateProject_Async_ShouldCreateConversionProject(
         CustomWebApplicationDbContextFactory<Program> factory,
         CreateConversionProjectCommand createConversionProjectCommand,
         IProjectsClient projectsClient)
-    { 
-        factory.TestClaims = [new Claim(ClaimTypes.Role, "API.Write"), new Claim(ClaimTypes.Role, "API.Read")];
-        
+    {
+        factory.TestClaims = [new Claim(ClaimTypes.Role, WriteRole), new Claim(ClaimTypes.Role, ReadRole)];
+
         var dbContext = factory.GetDbContext<CompleteContext>();
 
         var testUser = await dbContext.Users.FirstOrDefaultAsync();
+        Assert.NotNull(testUser);
         testUser.ActiveDirectoryUserId = createConversionProjectCommand.UserAdId;
 
         var group = await dbContext.ProjectGroups.FirstOrDefaultAsync();
+        Assert.NotNull(group);
         group.GroupIdentifier = createConversionProjectCommand.GroupReferenceNumber;
-        
+
         dbContext.Users.Update(testUser);
         dbContext.ProjectGroups.Update(group);
-        await dbContext.SaveChangesAsync();
 
+        var giasEstablishment = await dbContext.GiasEstablishments.FirstOrDefaultAsync();
+
+        createConversionProjectCommand.Urn.Value = giasEstablishment.Urn.Value;
+        
+        await dbContext.SaveChangesAsync();
+        
         var result = await projectsClient.CreateProjectAsync(createConversionProjectCommand);
 
         Assert.NotNull(result);
@@ -46,37 +60,40 @@ public class ProjectsControllerTests
     }
 
     [Theory]
-    [CustomAutoData(typeof(CustomWebApplicationDbContextFactoryCustomization))]
+    [CustomAutoData(typeof(DateOnlyCustomization), typeof(CustomWebApplicationDbContextFactoryCustomization))]
     public async Task CreateProject_WithNullRequest_ThrowsException(
         CustomWebApplicationDbContextFactory<Program> factory,
         CreateConversionProjectCommand createConversionProjectCommand,
         IProjectsClient projectsClient)
     {
-        factory.TestClaims = [new Claim(ClaimTypes.Role, "API.Write"), new Claim(ClaimTypes.Role, "API.Read")];
+        factory.TestClaims = [new Claim(ClaimTypes.Role, WriteRole), new Claim(ClaimTypes.Role, ReadRole)];
 
         createConversionProjectCommand.Urn = null;
 
-        //todo: change exception type? 
         var exception = await Assert.ThrowsAsync<CompleteApiException>(async () =>
             await projectsClient.CreateProjectAsync(createConversionProjectCommand));
 
         Assert.Equal(HttpStatusCode.BadRequest, (HttpStatusCode)exception.StatusCode);
     }
-    
+
     [Theory]
-    [CustomAutoData(typeof(CustomWebApplicationDbContextFactoryCustomization), typeof(EstablishmentsCustomization))]
+    [CustomAutoData(typeof(CustomWebApplicationDbContextFactoryCustomization),
+        typeof(LocalAuthorityCustomization),
+        typeof(EstablishmentsCustomization))]
     public async Task CountAllProjects_Async_ShouldReturnCorrectNumber(
         CustomWebApplicationDbContextFactory<Program> factory,
         IProjectsClient projectsClient,
         IFixture fixture)
     {
-        factory.TestClaims = [new Claim(ClaimTypes.Role, "API.Read")];
+        factory.TestClaims = [new Claim(ClaimTypes.Role, ReadRole)];
 
         var dbContext = factory.GetDbContext<CompleteContext>();
 
         var testUser = await dbContext.Users.FirstAsync();
+
         var establishments = fixture.CreateMany<GiasEstablishment>(50).ToList();
         await dbContext.GiasEstablishments.AddRangeAsync(establishments);
+        
         var projects = establishments.Select(establishment =>
         {
             var project = fixture.Customize(new ProjectCustomization
@@ -89,8 +106,10 @@ public class ProjectsControllerTests
             project.Urn = establishment.Urn ?? project.Urn;
             return project;
         }).ToList();
-        await dbContext.Projects.AddRangeAsync(projects);
 
+        projects.ForEach(x => x.LocalAuthorityId = dbContext.LocalAuthorities.ToList().MinBy(_ => Guid.NewGuid()).Id);
+
+        await dbContext.Projects.AddRangeAsync(projects);
         await dbContext.SaveChangesAsync();
 
         // dbContext.Users.Update(testUser);
@@ -109,7 +128,7 @@ public class ProjectsControllerTests
         IProjectsClient projectsClient,
         IFixture fixture)
     {
-        factory.TestClaims = [new Claim(ClaimTypes.Role, "API.Read")];
+        factory.TestClaims = [new Claim(ClaimTypes.Role, ReadRole)];
 
         // Arrange
         var dbContext = factory.GetDbContext<CompleteContext>();
@@ -128,8 +147,10 @@ public class ProjectsControllerTests
             project.Urn = establishment.Urn ?? project.Urn;
             return project;
         }).ToList();
-        await dbContext.Projects.AddRangeAsync(projects);
 
+        projects.ForEach(x => x.LocalAuthorityId = dbContext.LocalAuthorities.ToList().MinBy(_ => Guid.NewGuid()).Id);
+
+        await dbContext.Projects.AddRangeAsync(projects);
         await dbContext.SaveChangesAsync();
 
         // Act
@@ -164,7 +185,7 @@ public class ProjectsControllerTests
             Assert.NotNull(result.ProjectType);
             Assert.Equal(project?.Type?.ToString(), result.ProjectType.Value.ToString());
 
-            Assert.Equal(project?.IncomingTrustUkprn == null, result.IsFormAMAT);
+            Assert.Equal(project?.FormAMat, result.IsFormAMAT);
 
             Assert.NotNull(result.AssignedToFullName);
             Assert.Equal($"{project?.AssignedTo?.FirstName} {project?.AssignedTo?.LastName}",
@@ -175,11 +196,12 @@ public class ProjectsControllerTests
     [Theory]
     [CustomAutoData(typeof(CustomWebApplicationDbContextFactoryCustomization), typeof(EstablishmentsCustomization))]
     public async Task RemoveProjectsShouldRemoveConversionProjectAndChildren(
-    CustomWebApplicationDbContextFactory<Program> factory,
-    IProjectsClient projectsClient,
-    IFixture fixture)
+        CustomWebApplicationDbContextFactory<Program> factory,
+        IProjectsClient projectsClient,
+        IFixture fixture)
     {
-        factory.TestClaims = new[] { "API.Read", "API.Write", "API.Delete", "API.Update"}.Select(x => new Claim(ClaimTypes.Role, x)).ToList();
+        factory.TestClaims = new[] { ReadRole, WriteRole, DeleteRole, UpdateRole }
+            .Select(x => new Claim(ClaimTypes.Role, x)).ToList();
 
         var dbContext = factory.GetDbContext<CompleteContext>();
 
@@ -191,16 +213,19 @@ public class ProjectsControllerTests
 
         dbContext.GiasEstablishments.Add(establishment);
         var project = fixture.Customize(new ProjectCustomization
-        {
-            RegionalDeliveryOfficerId = testUser.Id,
-            CaseworkerId = testUser.Id,
-            AssignedToId = testUser.Id,
-            TasksDataId = taskData.Id,
-            TasksDataType = Domain.Enums.TaskType.Conversion
-        })
+            {
+                RegionalDeliveryOfficerId = testUser.Id,
+                CaseworkerId = testUser.Id,
+                AssignedToId = testUser.Id,
+                TasksDataId = taskData.Id,
+                TasksDataType = Domain.Enums.TaskType.Conversion, 
+            })
             .Create<Project>();
         project.Urn = establishment.Urn ?? project.Urn;
 
+        var localAuthority = await dbContext.LocalAuthorities.FirstOrDefaultAsync();
+        project.LocalAuthorityId = localAuthority.Id;
+        
         dbContext.ConversionTasksData.Add(taskData);
 
         //var note = fixture.Create<Domain.Entities.Note>();
@@ -215,8 +240,7 @@ public class ProjectsControllerTests
         var existingProjectbefore = await dbContext.Projects.SingleAsync(x => x.Urn == project.Urn);
 
         Assert.NotNull(existingProjectbefore);
-
-
+        
         //var existingNote = await dbContext.Notes.SingleAsync(x => x.ProjectId == project.Id);
 
         //Assert.NotNull(existingNote);
@@ -226,5 +250,71 @@ public class ProjectsControllerTests
         var existingProject = await dbContext.Projects.SingleOrDefaultAsync(x => x.Urn == project.Urn);
 
         Assert.Null(existingProject);
+    }
+
+    [Theory]
+    [CustomAutoData(typeof(CustomWebApplicationDbContextFactoryCustomization), typeof(EstablishmentsCustomization))]
+    public async Task GetProjectByUrn_should_return_the_correct_project(
+        CustomWebApplicationDbContextFactory<Program> factory,
+        IProjectsClient projectsClient,
+        IFixture fixture)
+    {
+        factory.TestClaims = new[] { ReadRole, WriteRole, DeleteRole, UpdateRole }
+            .Select(x => new Claim(ClaimTypes.Role, x)).ToList();
+
+        var dbContext = factory.GetDbContext<CompleteContext>();
+        var expected = fixture.Customize(new ProjectCustomization())
+            .Create<Project>();
+
+        expected.LocalAuthorityId = dbContext.LocalAuthorities.FirstOrDefault().Id;
+        
+        dbContext.Projects.Add(expected);
+
+        await dbContext.SaveChangesAsync();
+
+        var actual = await projectsClient.GetProjectAsync(expected.Urn.Value);
+
+        Assert.Equivalent(expected.Id, actual.Id);
+        Assert.Equivalent(expected.Urn, actual.Urn);
+        Assert.Equivalent(expected.CreatedAt, actual.CreatedAt);
+        Assert.Equivalent(expected.UpdatedAt, actual.UpdatedAt);
+        Assert.Equivalent(expected.IncomingTrustUkprn, actual.IncomingTrustUkprn);
+        Assert.Equivalent(expected.RegionalDeliveryOfficerId, actual.RegionalDeliveryOfficerId);
+        Assert.Equivalent(expected.CaseworkerId, actual.CaseworkerId);
+        Assert.Equivalent(expected.AssignedAt, actual.AssignedAt);
+        Assert.Equivalent(expected.AdvisoryBoardDate, DateOnly.FromDateTime(actual.AdvisoryBoardDate!.Value));
+        Assert.Equivalent(expected.AdvisoryBoardConditions, actual.AdvisoryBoardConditions);
+        Assert.Equivalent(expected.EstablishmentSharepointLink, actual.EstablishmentSharepointLink);
+        Assert.Equivalent(expected.CompletedAt, actual.CompletedAt);
+        Assert.Equivalent(expected.IncomingTrustSharepointLink, actual.IncomingTrustSharepointLink);
+        Assert.Equivalent(expected.Type.ToString(), actual.Type.ToString());
+        Assert.Equivalent(expected.AssignedToId, actual.AssignedToId);
+        Assert.Equivalent(expected.SignificantDate, DateOnly.FromDateTime(actual.SignificantDate!.Value));
+        Assert.Equivalent(expected.SignificantDateProvisional, actual.SignificantDateProvisional);
+        Assert.Equivalent(expected.DirectiveAcademyOrder, actual.DirectiveAcademyOrder);
+        Assert.Equivalent(expected.Region.ToString(), actual.Region.ToString());
+        Assert.Equivalent(expected.AcademyUrn, actual.AcademyUrn);
+        Assert.Equivalent(expected.TasksDataId, actual.TasksDataId);
+        Assert.Equivalent(expected.TasksDataType.ToString(), actual.TasksDataType.ToString());
+        Assert.Equivalent(expected.OutgoingTrustUkprn, actual.OutgoingTrustUkprn);
+        Assert.Equivalent(expected.Team.ToString(), actual.Team.ToString());
+        Assert.Equivalent(expected.TwoRequiresImprovement, actual.TwoRequiresImprovement);
+        Assert.Equivalent(expected.OutgoingTrustSharepointLink, actual.OutgoingTrustSharepointLink);
+        Assert.Equivalent(expected.AllConditionsMet, actual.AllConditionsMet);
+        Assert.Equivalent(expected.MainContactId, actual.MainContactId);
+        Assert.Equivalent(expected.EstablishmentMainContactId, actual.EstablishmentMainContactId);
+        Assert.Equivalent(expected.IncomingTrustMainContactId, actual.IncomingTrustMainContactId);
+        Assert.Equivalent(expected.OutgoingTrustMainContactId, actual.OutgoingTrustMainContactId);
+        Assert.Equivalent(expected.NewTrustReferenceNumber, actual.NewTrustReferenceNumber);
+        Assert.Equivalent(expected.NewTrustName, actual.NewTrustName);
+        Assert.Equivalent(expected.State.ToString(), actual.State.ToString());
+        Assert.Equivalent(expected.PrepareId, actual.PrepareId);
+        Assert.Equivalent(expected.LocalAuthorityMainContactId, actual.LocalAuthorityMainContactId);
+        Assert.Equivalent(expected.GroupId, actual.GroupId);
+        Assert.Equivalent(expected.AssignedTo, actual.AssignedTo);
+        Assert.Equivalent(expected.Caseworker, actual.Caseworker);
+        Assert.Equivalent(expected.RegionalDeliveryOfficer, actual.RegionalDeliveryOfficer);
+        Assert.Equivalent(expected.Contacts, actual.Contacts);
+        Assert.Equivalent(expected.Notes, actual.Notes);
     }
 }

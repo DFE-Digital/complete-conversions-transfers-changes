@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Dfe.Complete.Application.Users.Queries.GetUser;
 
-public record GetUserWithProjectsQuery(UserId UserId, ProjectState? State = ProjectState.Active)
+public record GetUserWithProjectsQuery(UserId UserId, ProjectState? State)
     : PaginatedRequest<PaginatedResult<UserWithProjectsDto>>;
 
 public class GetUserWithProjectsHandler(
@@ -26,7 +26,6 @@ public class GetUserWithProjectsHandler(
         {
             //Find the user first
             var foundUser = await users.Query()
-                // .Include(user => user.ProjectAssignedTos)
                 .Where(user => user.Id == request.UserId)
                 .Select(user => new
                 {
@@ -37,11 +36,15 @@ public class GetUserWithProjectsHandler(
                         .Skip(request.Page * request.Count)
                         .Take(request.Count)
                         .ToList(),
-                    ConversionCount = user.ProjectAssignedTos.Count(project => project.Type == ProjectType.Conversion),
-                    TransferCount = user.ProjectAssignedTos.Count(project => project.Type == ProjectType.Transfer)
+                    ConversionCount = user.ProjectAssignedTos
+                        .Where(project => request.State == null || project.State == request.State)
+                        .Count(project => project.Type == ProjectType.Conversion),
+                    TransferCount = user.ProjectAssignedTos
+                        .Where(project => request.State == null || project.State == request.State)
+                        .Count(project => project.Type == ProjectType.Transfer)
                 })
                 .FirstOrDefaultAsync(cancellationToken);
-
+            
             // Exit immediately if there is no user
             if (foundUser is null)
             {

@@ -3,6 +3,7 @@ using Dfe.Complete.Application.Projects.Commands.CreateProject;
 using Dfe.Complete.Domain.ValueObjects;
 using Dfe.Complete.Extensions;
 using Dfe.Complete.Services;
+using Dfe.Complete.Utils;
 using Dfe.Complete.Validators;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -12,7 +13,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 namespace Dfe.Complete.Pages.Projects.MatConversion;
 
 [Authorize(policy: "CanCreateProjects")]
-public class CreateNewProject(ISender sender, IErrorService errorService) : PageModel
+public class CreateNewProject(ISender sender, ErrorService errorService, ILogger<CreateNewProject> logger) : PageModel
 {
     [BindProperty]
     [Urn]
@@ -75,10 +76,6 @@ public class CreateNewProject(ISender sender, IErrorService errorService) : Page
     [Display(Name = "IsDueTo2RI")]
     public bool? IsDueTo2RI { get; set; }
 
-    public void OnGet()
-    {
-    }
-
     public async Task<IActionResult> OnPost(CancellationToken cancellationToken)
     {
         if (!ModelState.IsValid)
@@ -87,31 +84,50 @@ public class CreateNewProject(ISender sender, IErrorService errorService) : Page
             return Page();
         }
 
-        var userAdId = User.GetUserAdId();
+        try
+        {
+            var userAdId = User.GetUserAdId();
 
-        var createProjectCommand = new CreateMatConversionProjectCommand(
-            Urn: new Urn(int.Parse(URN)),
-            TrustName,
-            TrustReferenceNumber,
-            SignificantDate: ProvisionalConversionDate.HasValue
-                ? DateOnly.FromDateTime(ProvisionalConversionDate.Value)
-                : default,
-            IsSignificantDateProvisional: true, // will be set to false in the stakeholder kick off task 
-            IncomingTrustSharepointLink: IncomingTrustSharePointLink,
-            EstablishmentSharepointLink: SchoolSharePointLink, //todo: is this correct?
-            IsDueTo2Ri: IsDueTo2RI ?? false,
-            AdvisoryBoardDate: AdvisoryBoardDate.HasValue ? DateOnly.FromDateTime(AdvisoryBoardDate.Value) : default,
-            AdvisoryBoardConditions: AdvisoryBoardConditions ?? string.Empty,
-            HasAcademyOrderBeenIssued: DirectiveAcademyOrder ?? default,
-            HandingOverToRegionalCaseworkService: IsHandingToRCS ?? default,
-            HandoverComments: HandoverComments,
-            UserAdId: userAdId
-        );
+            var createProjectCommand = new CreateMatConversionProjectCommand(
+                Urn: new Urn(int.Parse(URN)),
+                TrustName,
+                TrustReferenceNumber,
+                SignificantDate: ProvisionalConversionDate.HasValue
+                    ? DateOnly.FromDateTime(ProvisionalConversionDate.Value)
+                    : default,
+                IsSignificantDateProvisional: true, // will be set to false in the stakeholder kick off task 
+                IncomingTrustSharepointLink: IncomingTrustSharePointLink,
+                EstablishmentSharepointLink: SchoolSharePointLink,
+                IsDueTo2Ri: IsDueTo2RI ?? false,
+                AdvisoryBoardDate: AdvisoryBoardDate.HasValue
+                    ? DateOnly.FromDateTime(AdvisoryBoardDate.Value)
+                    : default,
+                AdvisoryBoardConditions: AdvisoryBoardConditions ?? string.Empty,
+                HasAcademyOrderBeenIssued: DirectiveAcademyOrder ?? default,
+                HandingOverToRegionalCaseworkService: IsHandingToRCS ?? default,
+                HandoverComments: HandoverComments,
+                UserAdId: userAdId
+            );
 
-        var createResponse = await sender.Send(createProjectCommand, cancellationToken);
+            var createResponse = await sender.Send(createProjectCommand, cancellationToken);
 
-        var projectId = createResponse.Value;
+            var projectId = createResponse.Value;
 
-        return Redirect($"/projects/conversion-projects/{projectId}/created");
+            return Redirect($"/projects/conversion-projects/{projectId}/created");
+        }
+        catch (NotFoundException notFoundException)
+        {
+            logger.LogError(notFoundException, notFoundException.Message, notFoundException.InnerException);
+                
+            ModelState.AddModelError("NotFound", notFoundException.Message);
+            
+            return Page();
+        }
+        catch (Exception ex)
+        {
+            logger.LogError(ex, "Error occurred while creating a conversion project.");
+            ModelState.AddModelError("UnexpectedError", "An unexpected error occurred. Please try again later.");
+            return Page();
+        }
     }
 }
