@@ -18,6 +18,7 @@ using Dfe.Complete.Application.Projects.Queries.GetUser;
 using Dfe.Complete.Application.Projects.Queries.GetProject;
 using Dfe.Complete.Tests.Common.Customizations.Behaviours;
 using Dfe.Complete.Tests.Common.Customizations.Models;
+using Guid = System.Guid;
 
 namespace Dfe.Complete.Application.Tests.CommandHandlers.Project;
 
@@ -438,4 +439,37 @@ public class CreateTransferProjectCommandHandlerTests
             await mockTransferTaskRepository.DidNotReceive()
                 .AddAsync(Arg.Any<TransferTasksData>(), Arg.Any<CancellationToken>());
         }
+        
+        [Theory]
+        [CustomAutoData(typeof(DateOnlyCustomization))]
+        public async Task Handle_ShouldThrowException_WhenLocalAuthorityRequestSuccess_WithNullResponse(
+            [Frozen] ICompleteRepository<Domain.Entities.Project> mockProjectRepository,
+            [Frozen] ICompleteRepository<TransferTasksData> mockTransferTaskRepository,
+            [Frozen] Mock<ISender> mockSender,
+            CreateTransferProjectCommand command)
+        {
+            // Arrange
+            var expectedMessage =
+                $"No Local authority could be found via Establishments for School Urn: {command.Urn.Value}.";
+
+            mockSender
+                .Setup(s => s.Send(It.IsAny<GetLocalAuthorityBySchoolUrnQuery>(), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(Result<GetLocalAuthorityBySchoolUrnResponseDto?>.Success(null));
+            
+            var handler = new CreateTransferProjectCommandHandler(
+                mockProjectRepository,
+                mockTransferTaskRepository,
+                mockSender.Object);
+
+            // Act & Assert
+            var exception = await Assert.ThrowsAsync<NotFoundException>(
+                () => handler.Handle(command, CancellationToken.None));
+            Assert.Equal(expectedMessage, exception.Message);
+
+            await mockProjectRepository.DidNotReceive()
+                .AddAsync(Arg.Any<Domain.Entities.Project>(), Arg.Any<CancellationToken>());
+            await mockTransferTaskRepository.DidNotReceive()
+                .AddAsync(Arg.Any<TransferTasksData>(), Arg.Any<CancellationToken>());
+        }
+   
 }
