@@ -1,8 +1,5 @@
-using System.Runtime.Serialization;
-
 namespace Dfe.Complete.Utils;
 
-[Serializable]
 public class NotFoundException : Exception
 {
     public NotFoundException()
@@ -18,8 +15,4 @@ public class NotFoundException : Exception
         : base(message, innerException)
     {
     }   
-
-    protected NotFoundException(SerializationInfo info, StreamingContext context) : base(info, context)
-    {
-    }
 }
