@@ -23,9 +23,9 @@ public class UrnAttribute : ValidationAttribute
 
             if (string.IsNullOrEmpty(urn))
                 return ValidationResult.Success;
-            
+
             if (urn.Length != 6)
-                return new ValidationResult( $"The {displayName} must be 6 digits long. For example, 123456.");
+                return new ValidationResult($"The {displayName} must be 6 digits long. For example, 123456.");
 
             var sender = (ISender)validationContext.GetService(typeof(ISender));
 
