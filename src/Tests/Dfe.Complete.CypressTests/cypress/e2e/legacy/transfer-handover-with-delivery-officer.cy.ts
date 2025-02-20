@@ -3,7 +3,7 @@ import { Logger } from "cypress/common/logger";
 import editHandoverWithDeliveryOfficerPage from "cypress/pages/projects/tasks/editHandoverWithDeliveryOfficerPage";
 import projectSummarySection from "cypress/pages/projects/projectSummarySection";
 import taskListPage, { TransferTaskNames } from "cypress/pages/projects/taskListPage";
-import summaryPage from "cypress/pages/projects/summaryPage";
+import summaryPage from "cypress/pages/projects/SummaryPage";
 import { ProjectBuilder } from "cypress/api/projectBuilder";
 
 describe("Transfer handover with delivery officer task", () => {
