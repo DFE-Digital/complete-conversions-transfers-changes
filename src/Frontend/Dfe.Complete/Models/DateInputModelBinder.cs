@@ -96,8 +96,7 @@ namespace Dfe.Complete.Models
             if (bindingContext.ModelMetadata is DefaultModelMetadata defaultModelMetadata
                 && defaultModelMetadata.Attributes.Attributes.FirstOrDefault(a => a.GetType() == typeof(DateValidationAttribute)) is DateValidationAttribute dateValidation)
             {
-                var rangeValidator = new DateRangeValidationService();
-                return rangeValidator.Validate(date, dateValidation.DateValidationEnum, displayName);
+                return DateRangeValidationService.Validate(date, dateValidation.DateValidationEnum, displayName);
             }
 
             return (true, string.Empty);

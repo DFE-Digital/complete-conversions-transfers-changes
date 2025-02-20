@@ -169,7 +169,7 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers
             var results = await csvExportClient.GetConversionCsvByMonthAsync(1, 2025);
 
             StreamReader reader = new StreamReader(results.Stream);
-            string fileContents = reader.ReadToEnd();
+            string fileContents = await reader.ReadToEndAsync();
 
             // Assert
             Assert.NotNull(fileContents);
@@ -273,7 +273,7 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers
             Assert.NotNull(results);
 
             StreamReader reader = new StreamReader(results.Stream);
-            string fileContents = reader.ReadToEnd();
+            string fileContents = await reader.ReadToEndAsync();
 
             // Assert
             Assert.NotNull(fileContents);
