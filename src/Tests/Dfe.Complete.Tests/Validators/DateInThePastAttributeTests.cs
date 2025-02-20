@@ -44,5 +44,25 @@ namespace Dfe.Complete.Tests.Validators
             // Assert
             Assert.Null(result);
         }
+        
+        
+        [Fact]
+        public void DateInThePastAttribute_Validation_ReturnsNull_WhenDateNotGiven()
+        {
+            // Arrange
+            var attribute = new DateInPastAttribute();
+            var validationContext = new ValidationContext(new { }, null, null)
+            {
+                MemberName = "TestDateInThePast",
+            };
+
+            // Act
+            var result = attribute.GetValidationResult(string.Empty, validationContext);
+
+            // Assert
+            Assert.Null(result);
+        }
+
+        
     }
 }
