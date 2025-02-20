@@ -283,74 +283,7 @@ public class CreateTransferProjectCommandHandlerTests
         Assert.NotNull(capturedProject.AssignedAt);
         Assert.NotNull(capturedProject.AssignedToId);
     }
-
-    [Theory]
-    [CustomAutoData(typeof(DateOnlyCustomization))]
-    public async Task Handle_ShouldThrowException_WhenLocalAuthorityRequestFails(
-        [Frozen] ICompleteRepository<Domain.Entities.Project> mockProjectRepository,
-        [Frozen] ICompleteRepository<TransferTasksData> mockTransferTaskRepository,
-        [Frozen] Mock<ISender> mockSender,
-        CreateTransferProjectCommand command)
-    {
-        // Arrange
-        var expectedMessage =
-            $"No Local authority could be found via Establishments for School Urn: {command.Urn.Value}.";
-        mockSender
-            .Setup(s => s.Send(It.IsAny<GetLocalAuthorityBySchoolUrnQuery>(), It.IsAny<CancellationToken>()))
-            .ReturnsAsync(Result<GetLocalAuthorityBySchoolUrnResponseDto?>.Failure("Local authority not found"));
-
-        var handler = new CreateTransferProjectCommandHandler(
-            mockProjectRepository,
-            mockTransferTaskRepository,
-            mockSender.Object);
-
-        // Act & Assert
-        var exception =
-            await Assert.ThrowsAsync<NotFoundException>(() => handler.Handle(command, CancellationToken.None));
-        Assert.Equal(expectedMessage, exception.Message);
-        Assert.NotNull(exception.InnerException);
-        Assert.Equal("Local authority not found", exception.InnerException.Message);
-
-        await mockProjectRepository.DidNotReceive()
-            .AddAsync(Arg.Any<Domain.Entities.Project>(), Arg.Any<CancellationToken>());
-        await mockTransferTaskRepository.DidNotReceive()
-            .AddAsync(Arg.Any<TransferTasksData>(), Arg.Any<CancellationToken>());
-    }
-
-    [Theory]
-    [CustomAutoData(typeof(DateOnlyCustomization))]
-    public async Task Handle_ShouldThrowException_WhenLocalAuthorityIdIsNull(
-        [Frozen] ICompleteRepository<Domain.Entities.Project> mockProjectRepository,
-        [Frozen] ICompleteRepository<TransferTasksData> mockTransferTaskRepository,
-        [Frozen] Mock<ISender> mockSender,
-        CreateTransferProjectCommand command)
-    {
-        // Arrange
-        // Return a successful result but with a null LocalAuthorityId.
-        var responseDto = new GetLocalAuthorityBySchoolUrnResponseDto(null);
-        mockSender
-            .Setup(s => s.Send(It.IsAny<GetLocalAuthorityBySchoolUrnQuery>(), It.IsAny<CancellationToken>()))
-            .ReturnsAsync(Result<GetLocalAuthorityBySchoolUrnResponseDto?>.Success(responseDto));
-
-        var handler = new CreateTransferProjectCommandHandler(
-            mockProjectRepository,
-            mockTransferTaskRepository,
-            mockSender.Object);
-
-        var expectedMessage =
-            $"No Local authority could be found via Establishments for School Urn: {command.Urn.Value}.";
-
-        // Act & Assert
-        var exception =
-            await Assert.ThrowsAsync<NotFoundException>(() => handler.Handle(command, CancellationToken.None));
-        Assert.Equal(expectedMessage, exception.Message);
-
-        await mockProjectRepository.DidNotReceive()
-            .AddAsync(Arg.Any<Domain.Entities.Project>(), Arg.Any<CancellationToken>());
-        await mockTransferTaskRepository.DidNotReceive()
-            .AddAsync(Arg.Any<TransferTasksData>(), Arg.Any<CancellationToken>());
-    }
-
+    
     [Theory]
     [CustomAutoData(typeof(DateOnlyCustomization))]
     public async Task Handle_ShouldThrowException_WhenUserRequestFails(
@@ -438,4 +371,71 @@ public class CreateTransferProjectCommandHandlerTests
         await mockTransferTaskRepository.DidNotReceive()
             .AddAsync(Arg.Any<TransferTasksData>(), Arg.Any<CancellationToken>());
     }
+    
+          [Theory]
+        [CustomAutoData(typeof(DateOnlyCustomization))]
+        public async Task Handle_ShouldThrowException_WhenLocalAuthorityRequestFails(
+            [Frozen] ICompleteRepository<Domain.Entities.Project> mockProjectRepository,
+            [Frozen] ICompleteRepository<TransferTasksData> mockTransferTaskRepository,
+            [Frozen] Mock<ISender> mockSender,
+            CreateTransferProjectCommand command)
+        {
+            // Arrange
+            var expectedMessage =
+                $"No Local authority could be found via Establishments for School Urn: {command.Urn.Value}.";
+            
+            mockSender
+                .Setup(s => s.Send(It.IsAny<GetLocalAuthorityBySchoolUrnQuery>(), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(Result<GetLocalAuthorityBySchoolUrnResponseDto?>.Failure("Local authority not found"));
+            
+            var handler = new CreateTransferProjectCommandHandler(
+                mockProjectRepository,
+                mockTransferTaskRepository,
+                mockSender.Object);
+
+            // Act & Assert
+            var exception = await Assert.ThrowsAsync<NotFoundException>(() => handler.Handle(command, CancellationToken.None));
+            
+            Assert.Equal(expectedMessage, exception.Message);
+            Assert.NotNull(exception.InnerException);
+            Assert.Equal("Local authority not found", exception.InnerException.Message);
+
+            await mockProjectRepository.DidNotReceive()
+                .AddAsync(Arg.Any<Domain.Entities.Project>(), Arg.Any<CancellationToken>());
+            await mockTransferTaskRepository.DidNotReceive()
+                .AddAsync(Arg.Any<TransferTasksData>(), Arg.Any<CancellationToken>());
+        }
+
+        [Theory]
+        [CustomAutoData(typeof(DateOnlyCustomization))]
+        public async Task Handle_ShouldThrowException_WhenLocalAuthorityIdIsNull(
+            [Frozen] ICompleteRepository<Domain.Entities.Project> mockProjectRepository,
+            [Frozen] ICompleteRepository<TransferTasksData> mockTransferTaskRepository,
+            [Frozen] Mock<ISender> mockSender,
+            CreateTransferProjectCommand command)
+        {
+            // Arrange
+            var expectedMessage =
+                $"No Local authority could be found via Establishments for School Urn: {command.Urn.Value}.";
+
+            var responseDto = new GetLocalAuthorityBySchoolUrnResponseDto(null);
+            mockSender
+                .Setup(s => s.Send(It.IsAny<GetLocalAuthorityBySchoolUrnQuery>(), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(Result<GetLocalAuthorityBySchoolUrnResponseDto?>.Success(responseDto));
+            
+            var handler = new CreateTransferProjectCommandHandler(
+                mockProjectRepository,
+                mockTransferTaskRepository,
+                mockSender.Object);
+
+            // Act & Assert
+            var exception = await Assert.ThrowsAsync<NotFoundException>(
+                () => handler.Handle(command, CancellationToken.None));
+            Assert.Equal(expectedMessage, exception.Message);
+
+            await mockProjectRepository.DidNotReceive()
+                .AddAsync(Arg.Any<Domain.Entities.Project>(), Arg.Any<CancellationToken>());
+            await mockTransferTaskRepository.DidNotReceive()
+                .AddAsync(Arg.Any<TransferTasksData>(), Arg.Any<CancellationToken>());
+        }
 }
