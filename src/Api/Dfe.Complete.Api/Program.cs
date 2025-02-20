@@ -179,8 +179,7 @@ namespace Dfe.Complete.Api
 
             app.UseAuthentication();
             app.UseAuthorization();
-
-            app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
+            app.MapControllers();
 
             ILogger<Program> logger = app.Services.GetRequiredService<ILogger<Program>>();
             logger.LogInformation("Logger is working...");
