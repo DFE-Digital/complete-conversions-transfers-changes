@@ -349,6 +349,132 @@
           }
         }
       }
+    },
+    "/v1/Users": {
+      "get": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Gets a User with their assigned projects",
+        "operationId": "Users_GetUserWithProjects",
+        "parameters": [
+          {
+            "name": "UserId.Value",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "guid"
+            },
+            "x-position": 1
+          },
+          {
+            "name": "State",
+            "in": "query",
+            "schema": {
+              "nullable": true,
+              "oneOf": [
+                {
+                  "$ref": "#/components/schemas/ProjectState"
+                }
+              ]
+            },
+            "x-position": 2
+          },
+          {
+            "name": "Page",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "x-position": 3
+          },
+          {
+            "name": "Count",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "x-position": 4
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Project",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserWithProjectsDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request data."
+          }
+        }
+      }
+    },
+    "/v1/Users/List/All": {
+      "get": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Returns a list of Users with their assigned projects",
+        "operationId": "Users_ListAllUsersWithProjects",
+        "parameters": [
+          {
+            "name": "State",
+            "in": "query",
+            "schema": {
+              "nullable": true,
+              "oneOf": [
+                {
+                  "$ref": "#/components/schemas/ProjectState"
+                }
+              ]
+            },
+            "x-position": 1
+          },
+          {
+            "name": "Page",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "x-position": 2
+          },
+          {
+            "name": "Count",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "x-position": 3
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Project",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/UserWithProjectsDto"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request data."
+          }
+        }
+      }
     }
   },
   "components": {
@@ -909,6 +1035,9 @@
                 "format": "date-time",
                 "nullable": true
               },
+              "fullName": {
+                "type": "string"
+              },
               "notes": {
                 "type": "array",
                 "items": {
@@ -1275,6 +1404,9 @@
                     "$ref": "#/components/schemas/User"
                   }
                 ]
+              },
+              "formAMat": {
+                "type": "boolean"
               }
             }
           }
@@ -1472,6 +1604,44 @@
           "updatedAt": {
             "type": "string",
             "format": "date-time"
+          }
+        }
+      },
+      "UserWithProjectsDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "$ref": "#/components/schemas/UserId"
+          },
+          "fullName": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string",
+            "nullable": true
+          },
+          "team": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/ProjectTeam"
+              }
+            ]
+          },
+          "projectsAssigned": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ListAllProjectsResultModel"
+            }
+          },
+          "conversionProjectsAssigned": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "transferProjectsAssigned": {
+            "type": "integer",
+            "format": "int32"
           }
         }
       }

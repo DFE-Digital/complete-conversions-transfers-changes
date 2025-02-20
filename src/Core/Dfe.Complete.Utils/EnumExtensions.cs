@@ -25,7 +25,7 @@ public static class EnumExtensions
 		return (attributes.Length > 0 ? attributes[0].Description : source.ToString()) ?? string.Empty;
 	}
 		
-	public static T? FromDescription<T>(string? description) where T : Enum
+	public static T? FromDescription<T>(this string? description) where T : Enum
 	{
 		if (string.IsNullOrEmpty(description))
 			throw new ArgumentException("Description cannot be null or empty.", nameof(description));

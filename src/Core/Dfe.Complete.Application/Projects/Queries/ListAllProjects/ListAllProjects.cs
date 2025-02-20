@@ -1,6 +1,6 @@
 ﻿using Dfe.Complete.Application.Common.Models;
 using Dfe.Complete.Application.Projects.Interfaces;
-using Dfe.Complete.Application.Projects.Model;
+using Dfe.Complete.Application.Projects.Models;
 using Dfe.Complete.Domain.Enums;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -32,7 +32,7 @@ namespace Dfe.Complete.Application.Projects.Queries.ListAllProjects
                         item.Project.SignificantDate,
                         item.Project.State,
                         item.Project.Type,
-                        item.Project.IncomingTrustUkprn == null,
+                        item.Project.FormAMat,
                         item.Project.AssignedTo != null
                             ? $"{item.Project.AssignedTo.FirstName} {item.Project.AssignedTo.LastName}"
                             : null
