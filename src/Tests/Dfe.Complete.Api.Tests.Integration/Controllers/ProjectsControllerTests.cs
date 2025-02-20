@@ -266,6 +266,8 @@ public class ProjectsControllerTests
         var expected = fixture.Customize(new ProjectCustomization())
             .Create<Project>();
 
+        expected.LocalAuthorityId = dbContext.LocalAuthorities.FirstOrDefault().Id;
+        
         dbContext.Projects.Add(expected);
 
         await dbContext.SaveChangesAsync();
