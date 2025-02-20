@@ -122,8 +122,7 @@ namespace Dfe.Complete.Tests.Common.Customizations.Models
                     .With(x => x.NewTrustReferenceNumber, NewTrustReferenceNumber ?? fixture.Create<string>())
                     .With(x => x.NewTrustName, NewTrustName ?? fixture.Create<string>())
                     .With(x => x.GroupId, GroupId ?? fixture.Create<ProjectGroupId?>())
-                    .With(x => x.AssignedAt, AssignedAt ?? fixture.Create<DateTime?>())
-                    .With(x => x.LocalAuthorityId, new LocalAuthorityId(fixture.Create<Guid>())));
+                    .With(x => x.AssignedAt, AssignedAt ?? fixture.Create<DateTime?>()));
         }
     }
 }

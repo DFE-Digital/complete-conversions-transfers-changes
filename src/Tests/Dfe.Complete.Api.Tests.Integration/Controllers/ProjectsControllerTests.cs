@@ -44,10 +44,9 @@ public class ProjectsControllerTests
         dbContext.Users.Update(testUser);
         dbContext.ProjectGroups.Update(group);
 
-        var localAuthority = dbContext.LocalAuthorities.ToList().FirstOrDefault();
-        var giasEstablishmentUrn = dbContext.GiasEstablishments.FirstOrDefault().Urn;
+        var giasEstablishment = await dbContext.GiasEstablishments.FirstOrDefaultAsync();
 
-        createConversionProjectCommand.Urn.Value = giasEstablishmentUrn.Value;
+        createConversionProjectCommand.Urn.Value = giasEstablishment.Urn.Value;
         
         await dbContext.SaveChangesAsync();
         
@@ -216,11 +215,13 @@ public class ProjectsControllerTests
                 CaseworkerId = testUser.Id,
                 AssignedToId = testUser.Id,
                 TasksDataId = taskData.Id,
-                TasksDataType = Domain.Enums.TaskType.Conversion
+                TasksDataType = Domain.Enums.TaskType.Conversion, 
             })
             .Create<Project>();
         project.Urn = establishment.Urn ?? project.Urn;
-        project.LocalAuthorityId = dbContext.LocalAuthorities.FirstOrDefault().Id;
+
+        var localAuthority = await dbContext.LocalAuthorities.FirstOrDefaultAsync();
+        project.LocalAuthorityId = localAuthority.Id;
         
         dbContext.ConversionTasksData.Add(taskData);
 
