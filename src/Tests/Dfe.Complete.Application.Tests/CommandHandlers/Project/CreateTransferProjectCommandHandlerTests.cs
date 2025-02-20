@@ -462,8 +462,7 @@ public class CreateTransferProjectCommandHandlerTests
                 mockSender.Object);
 
             // Act & Assert
-            var exception = await Assert.ThrowsAsync<NotFoundException>(
-                () => handler.Handle(command, CancellationToken.None));
+            var exception = await Assert.ThrowsAsync<NotFoundException>(() => handler.Handle(command, CancellationToken.None));
             Assert.Equal(expectedMessage, exception.Message);
 
             await mockProjectRepository.DidNotReceive()
