@@ -146,8 +146,8 @@
                             <govuk-radios-error-message>@(ErrorService.GetErrorMessage(handingToRSCField))</govuk-radios-error-message>
                             }
 
-                            <govuk-radios-item value="true">Yes</govuk-radios-item>
-                            <govuk-radios-item value="false">No</govuk-radios-item>
+                            <govuk-radios-item checked="@Model.IsHandingToRCS" value="true">Yes</govuk-radios-item>
+                            <govuk-radios-item checked="@(!Model.IsHandingToRCS)" value="false">No</govuk-radios-item>
 
                         </govuk-radios-fieldset>
                     </govuk-radios>
@@ -186,9 +186,8 @@
                             <govuk-radios-error-message>@(ErrorService.GetErrorMessage(directiveAcademyOrderField))</govuk-radios-error-message>
                             }
 
-                            @* This value should be enums *@
-                            <govuk-radios-item value="true">Directive academy order</govuk-radios-item>
-                            <govuk-radios-item value="false">Academy order</govuk-radios-item>
+                            <govuk-radios-item checked="@Model.DirectiveAcademyOrder" value="true">Directive academy order</govuk-radios-item>
+                            <govuk-radios-item checked="@(!Model.DirectiveAcademyOrder)" value="false">Academy order</govuk-radios-item>
                         </govuk-radios-fieldset>
                     </govuk-radios>
 
@@ -207,8 +206,8 @@
                             <govuk-radios-error-message>@(ErrorService.GetErrorMessage(isDueTo2RIField))</govuk-radios-error-message>
                             }
 
-                            <govuk-radios-item value="true">Yes</govuk-radios-item>
-                            <govuk-radios-item value="false">No</govuk-radios-item>
+                            <govuk-radios-item checked="@Model.IsDueTo2RI" value="true">Yes</govuk-radios-item>
+                            <govuk-radios-item checked="@(!Model.IsDueTo2RI)" value="false">No</govuk-radios-item>
                         </govuk-radios-fieldset>
                     </govuk-radios>
                     
