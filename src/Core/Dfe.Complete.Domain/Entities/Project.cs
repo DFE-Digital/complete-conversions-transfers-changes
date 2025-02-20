@@ -2,6 +2,7 @@
 using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Domain.Events;
 using Dfe.Complete.Domain.ValueObjects;
+using Dfe.Complete.Utils;
 
 namespace Dfe.Complete.Domain.Entities;
 
@@ -221,7 +222,7 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
             project.AddNote(new Note
             {
                 CreatedAt = project.CreatedAt, ProjectId = project.Id, Body = handoverComments,
-                TaskIdentifier = "handover", UserId = assignedToId
+                TaskIdentifier = NoteTaskIdentifier.Handover.ToDescription(), UserId = assignedToId
             });
         }
 
@@ -293,7 +294,7 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
             project.AddNote(new Note
             {
                 CreatedAt = project.CreatedAt, ProjectId = project.Id, Body = handoverComments,
-                TaskIdentifier = "handover", UserId = assignedToId
+                TaskIdentifier = NoteTaskIdentifier.Handover.ToDescription(), UserId = assignedToId
             });
         }
 
@@ -338,7 +339,7 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
             project.AddNote(new Note
             {
                 CreatedAt = project.CreatedAt, ProjectId = project.Id, Body = handoverComments,
-                TaskIdentifier = "handover", UserId = assignedToId
+                TaskIdentifier = NoteTaskIdentifier.Handover.ToDescription(), UserId = assignedToId
             });
         }
         
@@ -386,7 +387,7 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
                     CreatedAt = project.CreatedAt,
                     ProjectId = project.Id,
                     Body = handoverComments,
-                    TaskIdentifier = "handover",
+                    TaskIdentifier = NoteTaskIdentifier.Handover.ToDescription(),
                     UserId = assignedToId
                 });
             }
