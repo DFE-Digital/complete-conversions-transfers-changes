@@ -14,7 +14,7 @@ namespace Dfe.Complete.Infrastructure.Database;
 public partial class CompleteContext : DbContext
 {
     private readonly IConfiguration? _configuration;
-    const string DefaultSchema = "complete";
+    private const string DefaultSchema = "complete";
     private readonly IServiceProvider _serviceProvider = null!;
 
     public CompleteContext()

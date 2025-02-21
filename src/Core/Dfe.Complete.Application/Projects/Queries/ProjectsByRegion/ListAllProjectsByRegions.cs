@@ -24,7 +24,7 @@ public class ListAllProjectsByRegionQueryHandler(IListAllProjectsQueryService li
             var projectsList = await listAllProjectsQueryService
                 .ListAllProjects(request.ProjectStatus, request.Type).ToListAsync(cancellationToken: cancellationToken);
 
-            var projectsGroupedByRegion = projectsList.GroupBy(p => p.Project.Region);
+            var projectsGroupedByRegion = projectsList.Where(p => p.Project?.Region != null).GroupBy(p => p.Project?.Region);
 
             var projectsResultModel = projectsGroupedByRegion
                 .Select(group =>
