@@ -1,7 +1,12 @@
 class AllProjects {
 
-    containsAllProjectsInProgressHeader() {
-        cy.get('h1').contains('All projects in progress');
+    containsHeading(heading: string) {
+        cy.get('h1').contains(heading);
+        return this;
+    }
+
+    filterProjects(filter: string) {
+        cy.get('moj-primary-navigation__list').select(filter).click();
         return this;
     }
 

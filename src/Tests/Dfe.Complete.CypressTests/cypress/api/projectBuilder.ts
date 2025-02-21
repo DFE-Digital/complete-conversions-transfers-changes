@@ -43,6 +43,7 @@ export class ProjectBuilder {
             groupReferenceNumber: "GRP_12345670",
             handingOverToRegionalCaseworkService: false,
             handoverComments: "test 2",
+            userAdId: Cypress.env("userAdId"),
         };
     }
 }

@@ -1,4 +1,4 @@
-import conversionProjectApi from "cypress/api/conversionProjectApi";
+import conversionProjectApi from "cypress/api/projectApi";
 import { Logger } from "cypress/common/logger";
 import editHandoverWithDeliveryOfficerPage from "cypress/pages/projects/tasks/editHandoverWithDeliveryOfficerPage";
 import projectSummarySection from "cypress/pages/projects/projectSummarySection";

@@ -4,6 +4,28 @@ class ProjectTable {
         return this;
     }
 
+    containsUser(userName: string) {
+        cy.getById('govuk-table').contains(userName);
+        return this;
+    }
+
+    goToSchoolOrAcademy(schoolName: string) {
+        cy.getByClass('govuk-table').contains(schoolName).click();
+        return this;
+    }
+
+    goToUserProjects(userName: string) {
+        cy.getById('govuk-table').contains(userName).click();
+        return this
+    }
+
+    hasTableHeader(header: string) {
+        cy.getById('govuk-table')
+            .getByClass("govuk-table__head")
+            .contains(header);
+        return this;
+    }
+
     private assertTableCellValue(schoolName: string, tableColumn: number, expectedValue: string) {
         cy.getProjectTableRow(schoolName).then((row) => {
             const actualValue = row.find('td').eq(tableColumn - 1).text();
