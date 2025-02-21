@@ -38,6 +38,7 @@ namespace Dfe.Complete.Pages.Projects.Transfer
 
         [BindProperty]
         [Required(ErrorMessage = "Enter a date for the Advisory Board Date, like 1 4 2023")]
+        [DateInPast]
         [Display(Name = "Advisory Board Date")]
         public DateTime? AdvisoryBoardDate { get; set; }
 
@@ -65,7 +66,7 @@ namespace Dfe.Complete.Pages.Projects.Transfer
         [BindProperty]
         [Required(ErrorMessage = "Enter a date for the Provisional Transfer Date, like 1 4 2023")]
         [Display(Name = "Provisional Transfer Date")]
-        public DateTime? ProvisionalTransferDate { get; set; }
+        public DateTime? SignificantDate { get; set; }
 
         [BindProperty]
         [Required(ErrorMessage = "State if the conversion is due to 2RI. Choose yes or no")]
@@ -117,7 +118,7 @@ namespace Dfe.Complete.Pages.Projects.Transfer
                 Urn: new Urn(int.Parse(URN)),
                 OutgoingTrustUkprn: new Ukprn(int.Parse(OutgoingUKPRN)),
                 IncomingTrustUkprn: new Ukprn(int.Parse(IncomingUKPRN)),
-                SignificantDate: ProvisionalTransferDate.HasValue ? DateOnly.FromDateTime(ProvisionalTransferDate.Value) : default,
+                SignificantDate: SignificantDate.HasValue ? DateOnly.FromDateTime(SignificantDate.Value) : default,
                 IsSignificantDateProvisional: true, // will be set to false in the stakeholder kick off task 
                 IsDueTo2Ri: IsDueTo2RI ?? false,
                 IsDueToInedaquateOfstedRating: IsDueToInedaquateOfstedRating ?? false,
