@@ -12,11 +12,6 @@ namespace Dfe.Complete.Tests.Authorization
 {
     public class AutomationHandlerTests
     {
-        public AutomationHandlerTests()
-        {
-            new Fixture();
-        }
-
         [Theory]
         [MemberData(nameof(GetEnvironmentTestCases))]
         public void ValidateHostEnviroment(string environment, bool expected)
