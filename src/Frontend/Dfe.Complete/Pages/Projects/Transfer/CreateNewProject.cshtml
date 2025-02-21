@@ -1,6 +1,6 @@
 ﻿@page "/projects/transfer-projects/new"
 @model Dfe.Complete.Pages.Projects.Transfer.CreateNewProjectModel
-@inject Dfe.Complete.Services.IErrorService ErrorService
+@inject Dfe.Complete.Services.ErrorService ErrorService
 @{
     ViewData["Title"] = "Add a transfer";
 
@@ -8,7 +8,7 @@
     const string outgoingUkprnField = nameof(Model.OutgoingUKPRN);
     const string incomingUkprnField = nameof(Model.IncomingUKPRN);
     const string advisoryBoardDateField = nameof(Model.AdvisoryBoardDate);
-    const string provisionalTransferDateField = nameof(Model.ProvisionalTransferDate);
+    const string provisionalTransferDateField = nameof(Model.SignificantDate);
     const string academySharePointLinkField = nameof(Model.AcademySharePointLink);
     const string incomingTrustSharePointLinkField = nameof(Model.IncomingTrustSharePointLink);
     const string outgoingTrustSharePointLinkField = nameof(Model.OutgoingTrustSharePointLink);
@@ -18,7 +18,6 @@
     const string isDueTo2RIField = nameof(Model.IsDueTo2RI);
     const string outgoingTrustWillCloseField = nameof(Model.OutgoingTrustWillClose);
 }
-
 
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
@@ -140,7 +139,7 @@
                     </govuk-textarea-label>
                 </govuk-textarea>
 
-                <govuk-date-input id="@provisionalTransferDateField" name-prefix="@provisionalTransferDateField" asp-for="@Model.ProvisionalTransferDate">
+                <govuk-date-input id="@provisionalTransferDateField" name-prefix="@provisionalTransferDateField" asp-for="@Model.SignificantDate">
                     <govuk-date-input-fieldset>
                         <govuk-date-input-fieldset-legend class="govuk-fieldset__legend--m">
                             Provisional transfer date

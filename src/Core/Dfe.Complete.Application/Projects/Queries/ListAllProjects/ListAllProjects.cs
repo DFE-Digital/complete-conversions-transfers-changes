@@ -32,7 +32,7 @@ namespace Dfe.Complete.Application.Projects.Queries.ListAllProjects
                         item.Project.SignificantDate,
                         item.Project.State,
                         item.Project.Type,
-                        item.Project.IncomingTrustUkprn == null,
+                        item.Project.FormAMat,
                         item.Project.AssignedTo != null
                             ? $"{item.Project.AssignedTo.FirstName} {item.Project.AssignedTo.LastName}"
                             : null

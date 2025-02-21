@@ -2,6 +2,7 @@ using AutoFixture;
 using Dfe.Complete.Domain.Entities;
 using Dfe.Complete.Domain.ValueObjects;
 using Dfe.Complete.Tests.Common.Customizations.Behaviours;
+using Dfe.Complete.Utils;
 
 namespace Dfe.Complete.Tests.Common.Customizations.Models
 {
@@ -57,7 +58,7 @@ namespace Dfe.Complete.Tests.Common.Customizations.Models
                    .With(x => x.AssignToProject, fixture.Create<bool?>())
                    .With(x => x.ManageUserAccounts, fixture.Create<bool?>())
                    .With(x => x.ActiveDirectoryUserGroupIds, fixture.Create<string>())
-                   .With(x => x.Team, fixture.Create<string>())
+                   .With(x => x.Team, fixture.Create<ProjectTeam>().ToDescription())
                    .With(x => x.DeactivatedAt, fixture.Create<DateTime?>())
                    .With(x => x.ManageConversionUrns, fixture.Create<bool?>())
                    .With(x => x.ManageLocalAuthorities, fixture.Create<bool?>())

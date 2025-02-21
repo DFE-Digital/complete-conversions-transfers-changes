@@ -44,7 +44,8 @@ namespace Dfe.Complete.Domain.Tests.Aggregates
                     projectCustomisation.AssignedToId,
                     projectCustomisation.AssignedAt,
                     projectCustomisation.NewTrustName,
-                    projectCustomisation.NewTrustReferenceNumber
+                    projectCustomisation.NewTrustReferenceNumber,
+                    projectCustomisation.LocalAuthorityId.Value
                 ));
 
             Assert.Equal("urn", exception.ParamName);
@@ -87,7 +88,8 @@ namespace Dfe.Complete.Domain.Tests.Aggregates
                     projCustomisation.AssignedToId,
                     projCustomisation.AssignedAt,
                     projCustomisation.NewTrustName,
-                    projCustomisation.NewTrustReferenceNumber
+                    projCustomisation.NewTrustReferenceNumber, 
+                    projCustomisation.LocalAuthorityId.Value
                 ));
 
             Assert.Equal("createdAt", exception.ParamName);
@@ -130,7 +132,8 @@ namespace Dfe.Complete.Domain.Tests.Aggregates
                     projCustomisation.AssignedToId,
                     projCustomisation.AssignedAt,
                     projCustomisation.NewTrustName,
-                    projCustomisation.NewTrustReferenceNumber
+                    projCustomisation.NewTrustReferenceNumber,
+                    projCustomisation.LocalAuthorityId.Value
                 ));
 
             Assert.Equal("updatedAt", exception.ParamName);
@@ -168,7 +171,8 @@ namespace Dfe.Complete.Domain.Tests.Aggregates
                 projectCustomisation.AssignedToId,
                 projectCustomisation.AssignedAt,
                 projectCustomisation.NewTrustName,
-                projectCustomisation.NewTrustReferenceNumber
+                projectCustomisation.NewTrustReferenceNumber, 
+                projectCustomisation.LocalAuthorityId.Value
             );
 
             // Assert
@@ -197,6 +201,7 @@ namespace Dfe.Complete.Domain.Tests.Aggregates
             Assert.Equal(projectCustomisation.AssignedAt, project.AssignedAt);
             Assert.Equal(projectCustomisation.NewTrustName, project.NewTrustName);
             Assert.Equal(projectCustomisation.NewTrustReferenceNumber, project.NewTrustReferenceNumber);
+            Assert.Equal(projectCustomisation.LocalAuthorityId, project.LocalAuthorityId);
         }
 
         [Theory]
@@ -231,7 +236,8 @@ namespace Dfe.Complete.Domain.Tests.Aggregates
                 projCustomisation.RegionalDeliveryOfficerId,
                 projCustomisation.AssignedToId,
                 projCustomisation.AssignedAt,
-                handoverComment
+                handoverComment, 
+                projCustomisation.LocalAuthorityId.Value
             );
 
             // Assert
@@ -252,6 +258,8 @@ namespace Dfe.Complete.Domain.Tests.Aggregates
             Assert.Equal(projCustomisation.EstablishmentSharepointLink, project.EstablishmentSharepointLink);
             Assert.Equal(projCustomisation.IncomingTrustSharepointLink, project.IncomingTrustSharepointLink);
             Assert.Equal(handoverComment, project.Notes.FirstOrDefault()?.Body);
+            Assert.Equal(projCustomisation.LocalAuthorityId, project.LocalAuthorityId);
+            
         }
 
         [Theory]
@@ -285,7 +293,7 @@ namespace Dfe.Complete.Domain.Tests.Aggregates
                 projectCustomisation.NewTrustName!,
                 projectCustomisation.NewTrustReferenceNumber!,
                 projectCustomisation.DirectiveAcademyOrder!.Value,
-                handoverComment
+                handoverComment, projectCustomisation.LocalAuthorityId.Value
             );
 
             // Assert
@@ -312,6 +320,8 @@ namespace Dfe.Complete.Domain.Tests.Aggregates
             Assert.Equal(projectCustomisation.DirectiveAcademyOrder, project.DirectiveAcademyOrder);
 
             Assert.Equal(handoverComment, project.Notes.FirstOrDefault()?.Body);
+            Assert.Equal(projectCustomisation.LocalAuthorityId, project.LocalAuthorityId);
+
         }
 
         [Theory]
@@ -347,7 +357,8 @@ namespace Dfe.Complete.Domain.Tests.Aggregates
                 projCustomisation.SignificantDate!.Value,
                 projCustomisation.SignificantDateProvisional!.Value,
                 projCustomisation.TwoRequiresImprovement!.Value,
-                handoverComment
+                handoverComment, 
+                projCustomisation.LocalAuthorityId.Value
                 );
 
             // Assert
@@ -367,6 +378,7 @@ namespace Dfe.Complete.Domain.Tests.Aggregates
             Assert.Equal(projCustomisation.EstablishmentSharepointLink, project.EstablishmentSharepointLink);
             Assert.Equal(projCustomisation.IncomingTrustSharepointLink, project.IncomingTrustSharepointLink);
             Assert.Equal(handoverComment, project.Notes.FirstOrDefault()?.Body);
+            Assert.Equal(projCustomisation.LocalAuthorityId, project.LocalAuthorityId);
         }
 
         [Theory]
@@ -401,7 +413,8 @@ namespace Dfe.Complete.Domain.Tests.Aggregates
                 projectCustomisation.TwoRequiresImprovement!.Value,
                 projectCustomisation.NewTrustName!,
                 projectCustomisation.NewTrustReferenceNumber!,
-                handoverComment
+                handoverComment,
+                projectCustomisation.LocalAuthorityId.Value
             );
 
             // Assert
@@ -427,6 +440,8 @@ namespace Dfe.Complete.Domain.Tests.Aggregates
             Assert.Equal(projectCustomisation.NewTrustReferenceNumber, project.NewTrustReferenceNumber);
 
             Assert.Equal(handoverComment, project.Notes.FirstOrDefault()?.Body);
+            Assert.Equal(projectCustomisation.LocalAuthorityId, project.LocalAuthorityId);
+
         }
 
 

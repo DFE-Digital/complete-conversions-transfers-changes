@@ -24,11 +24,9 @@ namespace Dfe.Complete.Api.Tests.Integration.Customizations
             {
                 var factory = new CustomWebApplicationDbContextFactory<Program>()
                 {
-                    //TODO: when needed, seed data for CompleteContext
                     SeedData = new Dictionary<Type, Action<DbContext>>
                     {
-                        { typeof(CompleteContext), context => CompleteContextSeeder.Seed((CompleteContext)context) }
-                        // { typeof(CompleteContext), context => {} },
+                        { typeof(CompleteContext), context => CompleteContextSeeder.Seed((CompleteContext)context, fixture) } 
                     },
                     ExternalServicesConfiguration = services =>
                     {

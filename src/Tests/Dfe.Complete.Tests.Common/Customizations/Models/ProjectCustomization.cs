@@ -4,6 +4,7 @@ using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Domain.ValueObjects;
 using Dfe.Complete.Tests.Common.Customizations.Behaviours;
 using DfE.CoreLibs.Testing.AutoFixture.Customizations;
+using Guid = System.Guid;
 
 namespace Dfe.Complete.Tests.Common.Customizations.Models
 {
@@ -84,23 +85,25 @@ namespace Dfe.Complete.Tests.Common.Customizations.Models
         public ProjectGroupId? GroupId { get; set; }
         
         public string? HandoverComments { get; set; }
+
+        public LocalAuthorityId LocalAuthorityId { get; set; }
         
         public void Customize(IFixture fixture)
         {
             fixture.Customizations.Add(new UrnSpecimen());
 
             fixture.Customize(new CompositeCustomization(
-                   new DateOnlyCustomization(),
-                   new IgnoreVirtualMembersCustomisation()))
+                    new DateOnlyCustomization(),
+                    new IgnoreVirtualMembersCustomisation()))
                 .Customize<Project>(composer => composer
                 .With(x => x.IncomingTrustUkprn, IncomingTrustUkprn ?? fixture.Create<Ukprn>())
-                .With(x => x.RegionalDeliveryOfficerId, RegionalDeliveryOfficerId ?? fixture.Create<UserId>())
-                .With(x => x.CaseworkerId, CaseworkerId ?? fixture.Create<UserId>())
+                .With(x => x.RegionalDeliveryOfficerId, RegionalDeliveryOfficerId ?? null)
+                .With(x => x.CaseworkerId, CaseworkerId ?? null)
                 .With(x => x.AdvisoryBoardConditions, AdvisoryBoardConditions ?? fixture.Create<string>())
                 .With(x => x.EstablishmentSharepointLink, EstablishmentSharepointLink ?? fixture.Create<string>())
                 .With(x => x.IncomingTrustSharepointLink, IncomingTrustSharepointLink ?? fixture.Create<string>())
                 .With(x => x.Type, Type ?? fixture.Create<ProjectType>())
-                .With(x => x.AssignedToId, AssignedToId ?? fixture.Create<UserId>())
+                .With(x => x.AssignedToId, AssignedToId ?? null)
                 .With(x => x.SignificantDateProvisional, SignificantDateProvisional ?? fixture.Create<bool>())
                 .With(x => x.DirectiveAcademyOrder, DirectiveAcademyOrder ?? fixture.Create<bool>())
                 .With(x => x.Region, Region ?? fixture.Create<Region>())
