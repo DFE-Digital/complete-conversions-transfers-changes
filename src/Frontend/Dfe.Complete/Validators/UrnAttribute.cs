@@ -39,10 +39,10 @@ public class UrnAttribute : ValidationAttribute
 
             var getProjectByUrnQueryResult = sender?.Send(new GetProjectByUrnQuery(new Urn(urn.ToInt()))).Result;
 
-            if (getProjectByUrnQueryResult is { IsSuccess: false })
+            if (getProjectByUrnQueryResult is { IsSuccess: false, Error: not null }) 
                 throw new NotFoundException(getProjectByUrnQueryResult.Error);
 
-            if (getProjectByUrnQueryResult.Value != null)
+            if (getProjectByUrnQueryResult?.Value != null)
                 return new ValidationResult($"A project with the urn: {urn} already exists");
         }
         catch (NotFoundException notFoundException)
