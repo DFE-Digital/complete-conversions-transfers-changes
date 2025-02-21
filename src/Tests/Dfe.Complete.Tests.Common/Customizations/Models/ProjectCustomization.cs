@@ -4,6 +4,7 @@ using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Domain.ValueObjects;
 using Dfe.Complete.Tests.Common.Customizations.Behaviours;
 using DfE.CoreLibs.Testing.AutoFixture.Customizations;
+using Guid = System.Guid;
 
 namespace Dfe.Complete.Tests.Common.Customizations.Models
 {
@@ -84,14 +85,16 @@ namespace Dfe.Complete.Tests.Common.Customizations.Models
         public ProjectGroupId? GroupId { get; set; }
         
         public string? HandoverComments { get; set; }
+
+        public LocalAuthorityId LocalAuthorityId { get; set; }
         
         public void Customize(IFixture fixture)
         {
             fixture.Customizations.Add(new UrnSpecimen());
 
             fixture.Customize(new CompositeCustomization(
-                   new DateOnlyCustomization(),
-                   new IgnoreVirtualMembersCustomisation()))
+                    new DateOnlyCustomization(),
+                    new IgnoreVirtualMembersCustomisation()))
                 .Customize<Project>(composer => composer
                 .With(x => x.IncomingTrustUkprn, IncomingTrustUkprn ?? fixture.Create<Ukprn>())
                 .With(x => x.RegionalDeliveryOfficerId, RegionalDeliveryOfficerId ?? null)

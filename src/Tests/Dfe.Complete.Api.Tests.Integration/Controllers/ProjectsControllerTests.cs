@@ -8,6 +8,7 @@ using Dfe.Complete.Infrastructure.Database;
 using Dfe.Complete.Tests.Common.Customizations.Commands;
 using Dfe.Complete.Tests.Common.Customizations.Models;
 using DfE.CoreLibs.Testing.AutoFixture.Attributes;
+using DfE.CoreLibs.Testing.AutoFixture.Customizations;
 using DfE.CoreLibs.Testing.Mocks.WebApplicationFactory;
 using Microsoft.EntityFrameworkCore;
 using Project = Dfe.Complete.Domain.Entities.Project;
@@ -23,6 +24,8 @@ public class ProjectsControllerTests
         
     [Theory]
     [CustomAutoData(typeof(CustomWebApplicationDbContextFactoryCustomization),
+        typeof(DateOnlyCustomization),
+        typeof(LocalAuthorityCustomization),
         typeof(CreateConversionProjectCommandCustomization))]
     public async Task CreateProject_Async_ShouldCreateConversionProject(
         CustomWebApplicationDbContextFactory<Program> factory,
@@ -43,8 +46,13 @@ public class ProjectsControllerTests
 
         dbContext.Users.Update(testUser);
         dbContext.ProjectGroups.Update(group);
-        await dbContext.SaveChangesAsync();
 
+        var giasEstablishment = await dbContext.GiasEstablishments.FirstOrDefaultAsync();
+
+        createConversionProjectCommand.Urn.Value = giasEstablishment.Urn.Value;
+        
+        await dbContext.SaveChangesAsync();
+        
         var result = await projectsClient.CreateProjectAsync(createConversionProjectCommand);
 
         Assert.NotNull(result);
@@ -52,7 +60,7 @@ public class ProjectsControllerTests
     }
 
     [Theory]
-    [CustomAutoData(typeof(CustomWebApplicationDbContextFactoryCustomization))]
+    [CustomAutoData(typeof(DateOnlyCustomization), typeof(CustomWebApplicationDbContextFactoryCustomization))]
     public async Task CreateProject_WithNullRequest_ThrowsException(
         CustomWebApplicationDbContextFactory<Program> factory,
         CreateConversionProjectCommand createConversionProjectCommand,
@@ -62,7 +70,6 @@ public class ProjectsControllerTests
 
         createConversionProjectCommand.Urn = null;
 
-        //todo: change exception type? 
         var exception = await Assert.ThrowsAsync<CompleteApiException>(async () =>
             await projectsClient.CreateProjectAsync(createConversionProjectCommand));
 
@@ -70,7 +77,9 @@ public class ProjectsControllerTests
     }
 
     [Theory]
-    [CustomAutoData(typeof(CustomWebApplicationDbContextFactoryCustomization), typeof(EstablishmentsCustomization))]
+    [CustomAutoData(typeof(CustomWebApplicationDbContextFactoryCustomization),
+        typeof(LocalAuthorityCustomization),
+        typeof(EstablishmentsCustomization))]
     public async Task CountAllProjects_Async_ShouldReturnCorrectNumber(
         CustomWebApplicationDbContextFactory<Program> factory,
         IProjectsClient projectsClient,
@@ -81,8 +90,10 @@ public class ProjectsControllerTests
         var dbContext = factory.GetDbContext<CompleteContext>();
 
         var testUser = await dbContext.Users.FirstAsync();
+
         var establishments = fixture.CreateMany<GiasEstablishment>(50).ToList();
         await dbContext.GiasEstablishments.AddRangeAsync(establishments);
+        
         var projects = establishments.Select(establishment =>
         {
             var project = fixture.Customize(new ProjectCustomization
@@ -95,8 +106,10 @@ public class ProjectsControllerTests
             project.Urn = establishment.Urn ?? project.Urn;
             return project;
         }).ToList();
-        await dbContext.Projects.AddRangeAsync(projects);
 
+        projects.ForEach(x => x.LocalAuthorityId = dbContext.LocalAuthorities.ToList().MinBy(_ => Guid.NewGuid()).Id);
+
+        await dbContext.Projects.AddRangeAsync(projects);
         await dbContext.SaveChangesAsync();
 
         // dbContext.Users.Update(testUser);
@@ -134,8 +147,10 @@ public class ProjectsControllerTests
             project.Urn = establishment.Urn ?? project.Urn;
             return project;
         }).ToList();
-        await dbContext.Projects.AddRangeAsync(projects);
 
+        projects.ForEach(x => x.LocalAuthorityId = dbContext.LocalAuthorities.ToList().MinBy(_ => Guid.NewGuid()).Id);
+
+        await dbContext.Projects.AddRangeAsync(projects);
         await dbContext.SaveChangesAsync();
 
         // Act
@@ -203,11 +218,14 @@ public class ProjectsControllerTests
                 CaseworkerId = testUser.Id,
                 AssignedToId = testUser.Id,
                 TasksDataId = taskData.Id,
-                TasksDataType = Domain.Enums.TaskType.Conversion
+                TasksDataType = Domain.Enums.TaskType.Conversion, 
             })
             .Create<Project>();
         project.Urn = establishment.Urn ?? project.Urn;
 
+        var localAuthority = await dbContext.LocalAuthorities.FirstOrDefaultAsync();
+        project.LocalAuthorityId = localAuthority.Id;
+        
         dbContext.ConversionTasksData.Add(taskData);
 
         //var note = fixture.Create<Domain.Entities.Note>();
@@ -222,8 +240,7 @@ public class ProjectsControllerTests
         var existingProjectbefore = await dbContext.Projects.SingleAsync(x => x.Urn == project.Urn);
 
         Assert.NotNull(existingProjectbefore);
-
-
+        
         //var existingNote = await dbContext.Notes.SingleAsync(x => x.ProjectId == project.Id);
 
         //Assert.NotNull(existingNote);
@@ -249,6 +266,8 @@ public class ProjectsControllerTests
         var expected = fixture.Customize(new ProjectCustomization())
             .Create<Project>();
 
+        expected.LocalAuthorityId = dbContext.LocalAuthorities.FirstOrDefault().Id;
+        
         dbContext.Projects.Add(expected);
 
         await dbContext.SaveChangesAsync();

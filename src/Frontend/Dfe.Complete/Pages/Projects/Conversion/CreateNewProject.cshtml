@@ -1,7 +1,7 @@
 ﻿@page "/projects/conversions/new"
 @using Dfe.Complete.Constants
 @model Dfe.Complete.Pages.Projects.Conversion.CreateNewProjectModel
-@inject Dfe.Complete.Services.IErrorService ErrorService
+@inject Dfe.Complete.Services.ErrorService ErrorService
 @{
     ViewData["Title"] = "Add a conversion";
 
@@ -22,6 +22,7 @@
 {
 <govuk-back-link href="@backLink" xmlns="http://www.w3.org/1999/html"/>
 }
+
 
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">

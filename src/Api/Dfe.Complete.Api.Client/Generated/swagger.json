@@ -1369,6 +1369,12 @@
                   }
                 ]
               },
+              "localAuthorityId": {
+                "$ref": "#/components/schemas/LocalAuthorityId"
+              },
+              "formAMat": {
+                "type": "boolean"
+              },
               "assignedTo": {
                 "nullable": true,
                 "oneOf": [
@@ -1405,12 +1411,22 @@
                   }
                 ]
               },
-              "formAMat": {
-                "type": "boolean"
+              "localAuthority": {
+                "$ref": "#/components/schemas/LocalAuthority"
               }
             }
           }
         ]
+      },
+      "LocalAuthorityId": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "value": {
+            "type": "string",
+            "format": "guid"
+          }
+        }
       },
       "Contact": {
         "type": "object",
@@ -1505,15 +1521,57 @@
           "OutgoingTrust"
         ]
       },
-      "LocalAuthorityId": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-          "value": {
-            "type": "string",
-            "format": "guid"
+      "LocalAuthority": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/BaseAggregateRoot"
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "id": {
+                "$ref": "#/components/schemas/LocalAuthorityId"
+              },
+              "name": {
+                "type": "string"
+              },
+              "code": {
+                "type": "string"
+              },
+              "address1": {
+                "type": "string"
+              },
+              "address2": {
+                "type": "string",
+                "nullable": true
+              },
+              "address3": {
+                "type": "string",
+                "nullable": true
+              },
+              "addressTown": {
+                "type": "string",
+                "nullable": true
+              },
+              "addressCounty": {
+                "type": "string",
+                "nullable": true
+              },
+              "addressPostcode": {
+                "type": "string"
+              },
+              "createdAt": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "updatedAt": {
+                "type": "string",
+                "format": "date-time"
+              }
+            }
           }
-        }
+        ]
       },
       "BaseAggregateRoot": {
         "type": "object",

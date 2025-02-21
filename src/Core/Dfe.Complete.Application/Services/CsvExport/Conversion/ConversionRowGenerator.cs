@@ -13,7 +13,7 @@ namespace Dfe.Complete.Application.Services.CsvExport.Conversion
         private const string Yes = "yes";
         private const string No = "no";
         private const string DateFormat = "yyyy-MM-dd";
-        private RowBuilder<ConversionCsvModel> _rowBuilder;
+        private readonly RowBuilder<ConversionCsvModel> _rowBuilder;
 
         public ConversionRowGenerator(IRowBuilderFactory<ConversionCsvModel> rowBuilder)
         {

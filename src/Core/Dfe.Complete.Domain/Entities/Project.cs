@@ -2,6 +2,7 @@
 using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Domain.Events;
 using Dfe.Complete.Domain.ValueObjects;
+using Dfe.Complete.Utils;
 
 namespace Dfe.Complete.Domain.Entities;
 
@@ -80,7 +81,11 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
     public ContactId? LocalAuthorityMainContactId { get; set; }
 
     public ProjectGroupId? GroupId { get; set; }
-
+    
+    public LocalAuthorityId LocalAuthorityId { get; set; }
+    
+    public bool FormAMat => NewTrustReferenceNumber != null && NewTrustName != null && IncomingTrustUkprn == null;
+    
     public virtual User? AssignedTo { get; set; }
 
     public virtual User? Caseworker { get; set; }
@@ -90,10 +95,9 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
     public virtual ICollection<Note> Notes { get; set; } = new List<Note>();
 
     public virtual User? RegionalDeliveryOfficer { get; set; }
-
-    public bool FormAMat =>
-        NewTrustReferenceNumber != null && NewTrustName != null && IncomingTrustUkprn == null;
-
+    
+    public virtual LocalAuthority LocalAuthority { get; set; }   
+   
     private Project()
     {
     }
@@ -123,7 +127,8 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
         UserId? assignedTo,
         DateTime? assignedAt,
         string? newTrustName,
-        string? newTrustReferenceNumber)
+        string? newTrustReferenceNumber,
+        Guid localAuthorityId)
     {
         Id = id ?? throw new ArgumentNullException(nameof(id));
         Urn = urn ?? throw new ArgumentNullException(nameof(urn));
@@ -153,6 +158,8 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
 
         NewTrustName = newTrustName;
         NewTrustReferenceNumber = newTrustReferenceNumber;
+
+        LocalAuthorityId = new LocalAuthorityId(localAuthorityId);
     }
 
     public static Project CreateConversionProject(
@@ -178,7 +185,8 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
         UserId? regionalDeliveryOfficerId,
         UserId? assignedToId,
         DateTime? assignedAt,
-        string? handoverComments)
+        string? handoverComments,
+        Guid localAuthorityId)
     {
         var project = new Project(
             Id,
@@ -206,14 +214,15 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
             assignedToId,
             assignedAt,
             null,
-            null);
+            null,
+            localAuthorityId);
 
         if (!string.IsNullOrEmpty(handoverComments))
         {
             project.AddNote(new Note
             {
                 CreatedAt = project.CreatedAt, ProjectId = project.Id, Body = handoverComments,
-                TaskIdentifier = "handover", UserId = assignedToId
+                TaskIdentifier = NoteTaskIdentifier.Handover.ToDescription(), UserId = assignedToId
             });
         }
 
@@ -247,7 +256,8 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
         DateOnly significantDate,
         bool isSignificantDateProvisional,
         bool isDueTo2RI,
-        string? handoverComments
+        string? handoverComments,
+        Guid localAuthorityId
     )
     {
         var project = new Project(
@@ -276,14 +286,15 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
             assignedToId,
             assignedAt,
             null,
-            null);
+            null, 
+            localAuthorityId);
 
         if (!string.IsNullOrEmpty(handoverComments))
         {
             project.AddNote(new Note
             {
                 CreatedAt = project.CreatedAt, ProjectId = project.Id, Body = handoverComments,
-                TaskIdentifier = "handover", UserId = assignedToId
+                TaskIdentifier = NoteTaskIdentifier.Handover.ToDescription(), UserId = assignedToId
             });
         }
 
@@ -315,19 +326,20 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
         string newTrustName,
         string newTrustReferenceNumber,
         bool hasDirectiveAcademyOrderBeenIssue,
-        string? handoverComments)
+        string? handoverComments, 
+        Guid localAuthorityId)
     {
         var project = new Project(Id, urn, createdAt, updatedAt, taskType, projectType, tasksDataId, significantDate,
             isSignificantDateProvisional, null, null, region, isDueTo2Ri, hasDirectiveAcademyOrderBeenIssue,
             advisoryBoardDate, advisoryBoardConditions, establishmentSharepointLink, incomingTrustSharepointLink, null,
-            null, team, regionalDeliveryOfficerId, assignedToId, assignedAt, newTrustName, newTrustReferenceNumber);
+            null, team, regionalDeliveryOfficerId, assignedToId, assignedAt, newTrustName, newTrustReferenceNumber, localAuthorityId);
         
         if (!string.IsNullOrEmpty(handoverComments))
         {
             project.AddNote(new Note
             {
                 CreatedAt = project.CreatedAt, ProjectId = project.Id, Body = handoverComments,
-                TaskIdentifier = "handover", UserId = assignedToId
+                TaskIdentifier = NoteTaskIdentifier.Handover.ToDescription(), UserId = assignedToId
             });
         }
         
@@ -360,12 +372,13 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
         bool isDueTo2Ri,
         string newTrustName,
         string newTrustReferenceNumber,
-        string? handoverComments)
+        string? handoverComments, 
+        Guid localAuthorityId)
         {
             var project = new Project(Id, urn, createdAt, updatedAt, taskType, projectType, tasksDataId, significantDate,
                 isSignificantDateProvisional, null, outgoingTrustUkprn, region, isDueTo2Ri, null,
                 advisoryBoardDate, advisoryBoardConditions, establishmentSharepointLink, incomingTrustSharepointLink, outgoingTrustSharepointLink,
-                null, team, regionalDeliveryOfficerId, assignedToId, assignedAt, newTrustName, newTrustReferenceNumber);
+                null, team, regionalDeliveryOfficerId, assignedToId, assignedAt, newTrustName, newTrustReferenceNumber, localAuthorityId);
 
             if (!string.IsNullOrEmpty(handoverComments))
             {
@@ -374,7 +387,7 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
                     CreatedAt = project.CreatedAt,
                     ProjectId = project.Id,
                     Body = handoverComments,
-                    TaskIdentifier = "handover",
+                    TaskIdentifier = NoteTaskIdentifier.Handover.ToDescription(),
                     UserId = assignedToId
                 });
             }

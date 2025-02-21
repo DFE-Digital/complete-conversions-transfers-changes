@@ -9,11 +9,6 @@ namespace Dfe.Complete.Pages.Projects
         [BindProperty]
         public string? ProjectType { get; set; }
         
-        
-        public void  OnGet()
-        {
-        }
-
         public IActionResult OnPost()
         {
             var pageToRedirectTo = ProjectType switch

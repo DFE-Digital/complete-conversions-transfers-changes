@@ -1,6 +1,6 @@
 @page "/projects/transfer/new_mat"
 @model Dfe.Complete.Pages.Projects.MatTransfer.CreateNewProject
-@inject Dfe.Complete.Services.IErrorService ErrorService
+@inject Dfe.Complete.Services.ErrorService ErrorService
 @{
     ViewData["Title"] = "Add a form a MAT transfer";
 
@@ -20,7 +20,7 @@
     const string outgoingTrustWillCloseField = nameof(Model.OutgoingTrustWillClose);
 }
 
-    <div class="govuk-grid-row">
+<div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
             @{
                 <form method="post">
