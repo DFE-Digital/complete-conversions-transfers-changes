@@ -1,5 +1,6 @@
 using AutoFixture;
 using Dfe.Complete.Domain.Entities;
+using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Domain.ValueObjects;
 using Dfe.Complete.Tests.Common.Customizations.Behaviours;
 using Dfe.Complete.Utils;
