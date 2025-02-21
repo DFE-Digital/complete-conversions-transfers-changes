@@ -1,6 +1,5 @@
 using System.ComponentModel.DataAnnotations;
 using Dfe.Complete.Application.Projects.Commands.CreateProject;
-using Dfe.Complete.Application.Projects.Queries.GetProject;
 using Dfe.Complete.Domain.ValueObjects;
 using Dfe.Complete.Extensions;
 using Dfe.Complete.Services;
@@ -35,6 +34,7 @@ public class CreateNewProject(ISender sender, ErrorService errorService, ILogger
 
     [BindProperty]
     [Required(ErrorMessage = "Enter a date for the Advisory Board Date, like 1 4 2023")]
+    [DateInPast]
     [Display(Name = "Advisory Board Date")]
     public DateTime? AdvisoryBoardDate { get; set; }
 
@@ -43,7 +43,7 @@ public class CreateNewProject(ISender sender, ErrorService errorService, ILogger
     [BindProperty]
     [Required(ErrorMessage = "Enter a date for the Provisional Conversion Date, like 1 4 2023")]
     [Display(Name = "Provisional Conversion Date")]
-    public DateTime? ProvisionalConversionDate { get; set; }
+    public DateTime? SignificantDate { get; set; }
 
 
     [BindProperty]
@@ -93,8 +93,8 @@ public class CreateNewProject(ISender sender, ErrorService errorService, ILogger
                 Urn: new Urn(int.Parse(URN)),
                 TrustName,
                 TrustReferenceNumber,
-                SignificantDate: ProvisionalConversionDate.HasValue
-                    ? DateOnly.FromDateTime(ProvisionalConversionDate.Value)
+                SignificantDate: SignificantDate.HasValue
+                    ? DateOnly.FromDateTime(SignificantDate.Value)
                     : default,
                 IsSignificantDateProvisional: true, // will be set to false in the stakeholder kick off task 
                 IncomingTrustSharepointLink: IncomingTrustSharePointLink,

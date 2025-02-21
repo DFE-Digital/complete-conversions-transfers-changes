@@ -39,6 +39,7 @@ public class CreateNewProject(ISender sender, ErrorService errorService, ILogger
 
     [BindProperty]
     [Required(ErrorMessage = "Enter a date for the Advisory Board Date, like 1 4 2023")]
+    [DateInPast]
     [Display(Name = "Advisory Board Date")]
     public DateTime? AdvisoryBoardDate { get; set; }
 
@@ -47,7 +48,7 @@ public class CreateNewProject(ISender sender, ErrorService errorService, ILogger
     [BindProperty]
     [Required(ErrorMessage = "Enter a date for the Provisional Transfer Date, like 1 4 2023")]
     [Display(Name = "Provisional Transfer Date")]
-    public DateTime? ProvisionalTransferDate { get; set; }
+    public DateTime? SignificantDate { get; set; }
 
     [BindProperty]
     [SharePointLink]
@@ -114,8 +115,8 @@ public class CreateNewProject(ISender sender, ErrorService errorService, ILogger
                 TrustName,
                 TrustReferenceNumber,
                 OutgoingTrustUkprn: new Ukprn(OutgoingUKPRN.ToInt()),
-                SignificantDate: ProvisionalTransferDate.HasValue
-                    ? DateOnly.FromDateTime(ProvisionalTransferDate.Value)
+                SignificantDate: SignificantDate.HasValue
+                    ? DateOnly.FromDateTime(SignificantDate.Value)
                     : default,
                 IsSignificantDateProvisional: true, // will be set to false in the stakeholder kick off task 
                 IsDueTo2Ri: IsDueTo2RI ?? false,

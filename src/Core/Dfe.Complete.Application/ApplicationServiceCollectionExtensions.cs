@@ -24,6 +24,7 @@ namespace Microsoft.Extensions.DependencyInjection
             services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
 
             services.AddAcademiesApiClient<ITrustsV4Client, TrustsV4Client>(config);
+            services.AddAcademiesApiClient<IEstablishmentsV4Client, EstablishmentsV4Client>(config);
 
             services.AddMediatR(cfg =>
             {
