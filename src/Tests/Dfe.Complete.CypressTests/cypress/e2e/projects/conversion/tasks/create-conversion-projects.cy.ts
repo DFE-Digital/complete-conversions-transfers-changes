@@ -5,7 +5,7 @@ import selectProjectType from "cypress/pages/projects/new/selectProjectTypePage"
 import validationComponent from "cypress/pages/validationComponent";
 
 const urn: string = "401450";
-const urnMAT: string = "401451";
+const urnMAT: string = "103846"; //103842
 
 describe("Create a new Conversion Project", () => {
     before(() => {
@@ -21,7 +21,7 @@ describe("Create a new Conversion Project", () => {
     it("Should be able to create a new conversion project", () => {
         homePage.addAProject();
 
-        //cy.executeAccessibilityTests();
+        // cy.executeAccessibilityTests();
 
         selectProjectType.selectConversion().continue();
 
@@ -48,8 +48,8 @@ describe("Create a new Conversion Project", () => {
 
         newConversionPage
             .withSchoolURN(urnMAT)
-            .withTrustReferenceNumber("TR04010")
-            .withTrustName("Willowfield Learning Trust")
+            .withTrustReferenceNumber("TR09999")
+            .withTrustName("Test Trust")
             .withAdvisoryBoardDate("12", "12", "2024")
             .withAdvisoryBoardConditions("Test conditions")
             .withProvisionalConversionDate("25", "11", "2026")

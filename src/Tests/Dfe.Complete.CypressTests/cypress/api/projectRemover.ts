@@ -22,7 +22,8 @@ class ProjectRemover extends ApiBase {
             .then((headers) => {
                 return cy.request<boolean>({
                     method: 'GET',
-                    url: Cypress.env(EnvApi) + "/v1/Projects/" + urn,
+                    url: Cypress.env(EnvApi) + "/v1/Projects",
+                    qs: { "urn.Value" : urn },
                     headers: headers,
                     failOnStatusCode: false
                 })

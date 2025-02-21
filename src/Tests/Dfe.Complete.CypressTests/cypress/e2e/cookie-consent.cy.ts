@@ -41,6 +41,7 @@ describe("Testing cookie preferences", () => {
     });
 
     it.skip("Should be able to view then accept cookies", () => {
+        // bug: 201914
         cookies.viewCookies();
 
         cookiesPage
