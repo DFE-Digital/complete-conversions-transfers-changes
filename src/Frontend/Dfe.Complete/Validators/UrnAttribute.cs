@@ -4,7 +4,7 @@ using Dfe.Complete.Extensions;
 using MediatR;
 using System.ComponentModel.DataAnnotations;
 using System.Reflection;
-using Dfe.AcademiesApi.Client.Contracts;
+using Dfe.Complete.Application.Services.AcademiesApi;
 using Dfe.Complete.Utils;
 
 namespace Dfe.Complete.Validators;
@@ -25,15 +25,16 @@ public class UrnAttribute : ValidationAttribute
 
         if (urn.Length != 6)
             return new ValidationResult($"The {displayName} must be 6 digits long. For example, 123456.");
-
-        var establishmentsV4Client =
-            (IEstablishmentsV4Client)validationContext.GetService(typeof(IEstablishmentsV4Client));
         
         var sender = (ISender)validationContext.GetService(typeof(ISender));
 
         try
         {
-            establishmentsV4Client?.GetEstablishmentByUrnAsync(urn);
+            var getEstablishmentByUrnResult = sender?.Send(new GetEstablishmentByUrnRequest(urn)).Result;
+
+            if (!getEstablishmentByUrnResult.IsSuccess)
+                return new ValidationResult(
+                    "There's no school or academy with that URN. Check the number you entered is correct.");
             
             var getProjectByUrnQueryResult = sender?.Send(new GetProjectByUrnQuery(new Urn(urn.ToInt()))).Result;
 
@@ -42,10 +43,6 @@ public class UrnAttribute : ValidationAttribute
             
             if (getProjectByUrnQueryResult.Value != null)
                 return new ValidationResult($"A project with the urn: {urn} already exists");
-        }
-        catch (AggregateException ex)
-        {
-            return new ValidationResult("There's no school or academy with that URN. Check the number you entered is correct.");
         }
         catch (NotFoundException notFoundException)
         {
