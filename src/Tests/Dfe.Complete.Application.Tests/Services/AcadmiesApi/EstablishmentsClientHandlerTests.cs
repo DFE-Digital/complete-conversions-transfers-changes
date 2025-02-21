@@ -22,10 +22,9 @@ public class EstablishmentsClientHandlerTests
 
         var handler = new EstablishmentsClientHandler(mockClient.Object, mockLogger.Object);
         var request = new GetEstablishmentByUrnRequest(urn);
-        var cancellationToken = CancellationToken.None;
 
         // Act
-        var result = await handler.Handle(request, cancellationToken);
+        var result = await handler.Handle(request, CancellationToken.None);
 
         // Assert
         Assert.True(result.IsSuccess);
@@ -43,10 +42,9 @@ public class EstablishmentsClientHandlerTests
         var mockLogger = new Mock<ILogger<EstablishmentsClientHandler>>();
         var handler = new EstablishmentsClientHandler(mockClient.Object, mockLogger.Object);
         var request = new GetEstablishmentByUrnRequest(urn);
-        var cancellationToken = CancellationToken.None;
 
         // Act & Assert
-        var ex = await Assert.ThrowsAsync<ArgumentException>(() => handler.Handle(request, cancellationToken));
+        var ex = await Assert.ThrowsAsync<ArgumentException>(() => handler.Handle(request, CancellationToken.None));
         Assert.Equal("URN cannot be null or empty.", ex.Message);
     }
 
@@ -68,10 +66,9 @@ public class EstablishmentsClientHandlerTests
 
         var handler = new EstablishmentsClientHandler(mockClient.Object, mockLogger.Object);
         var request = new GetEstablishmentByUrnRequest(urn);
-        var cancellationToken = CancellationToken.None;
 
         // Act
-        var result = await handler.Handle(request, cancellationToken);
+        var result = await handler.Handle(request, CancellationToken.None);
 
         // Assert
         Assert.False(result.IsSuccess);
@@ -94,10 +91,9 @@ public class EstablishmentsClientHandlerTests
 
         var handler = new EstablishmentsClientHandler(mockClient.Object, mockLogger.Object);
         var request = new GetEstablishmentByUrnRequest(urn);
-        var cancellationToken = CancellationToken.None;
 
         // Act
-        var result = await handler.Handle(request, cancellationToken);
+        var result = await handler.Handle(request, CancellationToken.None);
 
         // Assert
         var expectedError = "An error occurred.";
@@ -122,10 +118,9 @@ public class EstablishmentsClientHandlerTests
 
         var handler = new EstablishmentsClientHandler(mockClient.Object, mockLogger.Object);
         var request = new GetEstablishmentByUrnRequest(urn);
-        var cancellationToken = CancellationToken.None;
 
         // Act
-        var result = await handler.Handle(request, cancellationToken);
+        var result = await handler.Handle(request, CancellationToken.None);
 
         // Assert
         Assert.False(result.IsSuccess);
