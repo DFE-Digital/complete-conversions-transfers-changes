@@ -23,10 +23,11 @@ public class ListAllProjectsForLocalAuthority(
         try
         {
             var projects  = await listAllProjectsQueryService.ListAllProjects(request.State, request.Type)
-                .Where(p => p.Establishment.LocalAuthorityCode == request.LocalAuthorityCode)
                 .ToListAsync(cancellationToken);
 
-            var resultModel = projects.Select(proj =>
+            var projectsForLa = projects.Where(p => p.Establishment.LocalAuthorityCode == request.LocalAuthorityCode);
+                
+            var resultModel = projectsForLa.Select(proj =>
                     ListAllProjectsResultModel.MapProjectAndEstablishmentToListAllProjectResultModel(
                         proj.Project,
                         proj.Establishment))
