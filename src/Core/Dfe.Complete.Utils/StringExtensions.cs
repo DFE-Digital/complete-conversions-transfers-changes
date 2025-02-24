@@ -4,8 +4,7 @@ public static class StringExtensions
 {
     public static TEnum? ToEnumFromChar<TEnum>(this string value) where TEnum : struct, Enum
     {
-        try
-        {
+
             if (string.IsNullOrEmpty(value))
                 throw new ArgumentException("Input cannot be null or empty.", nameof(value));
 
@@ -19,10 +18,5 @@ public static class StringExtensions
                 throw new NotFoundException($"{enumName} could not be found.", innerException: new Exception($"'{c}' (ASCII {(int)c}) is not a valid value of the enum {enumName}. {nameof(value)}"));
 
             return enumCandidate;
-        }
-        catch (Exception e)
-        {
-            return null;
-        }
     }
 }
