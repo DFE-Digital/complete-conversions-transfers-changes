@@ -66,35 +66,26 @@ public static class EnumExtensions
 		return default;
 	}
 		
-	public static TEnum? FromDescriptionValue<TEnum>(this string? description)
-		where TEnum : struct, Enum
+	public static TEnum? FromDescriptionValue<TEnum>(this string? description) where TEnum : struct, Enum
 	{
-		try
+		if (string.IsNullOrEmpty(description))
+			throw new ArgumentNullException(nameof(description));
+
+		foreach (var value in Enum.GetValues(typeof(TEnum)))
 		{
-			if (string.IsNullOrEmpty(description))
-				throw new ArgumentNullException(nameof(description));
+			var enumValue = (TEnum)value;
+			var fieldInfo = typeof(TEnum).GetField(enumValue.ToString());
+			var descriptionAttribute = fieldInfo
+				?.GetCustomAttributes(typeof(DescriptionAttribute), false)
+				.FirstOrDefault() as DescriptionAttribute;
 
-			foreach (var value in Enum.GetValues(typeof(TEnum)))
-			{
-				var enumValue = (TEnum)value;
-				var fieldInfo = typeof(TEnum).GetField(enumValue.ToString());
-				var descriptionAttribute = fieldInfo
-					?.GetCustomAttributes(typeof(DescriptionAttribute), false)
-					.FirstOrDefault() as DescriptionAttribute;
-
-				if (descriptionAttribute?.Description == description)
-					return enumValue;
-			}
-
-			if (Enum.TryParse(description, out TEnum parsed))
-				return parsed;
-
-			throw new ArgumentException($"No matching enum value found for '{description}'.");
+			if (descriptionAttribute?.Description == description)
+				return enumValue;
 		}
-		catch (Exception e)
-		{
-			Console.WriteLine(e);
-			return null;
-		}
+
+		if (Enum.TryParse(description, out TEnum parsed))
+			return parsed;
+
+		return null;
 	}
 }

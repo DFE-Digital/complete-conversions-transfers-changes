@@ -36,7 +36,7 @@ public class ProjectsByRegion(ISender sender) : AllProjectsModel(ByRegionNavigat
             };
 
         var listProjectsForRegionResult = await sender.Send(listProjectsForRegionQuery);
-
+        
         Projects = listProjectsForRegionResult.Value;
 
         Pagination = new PaginationModel($"/projects/all/regions/{Region}", PageNumber,

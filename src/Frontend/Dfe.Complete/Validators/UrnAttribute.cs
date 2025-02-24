@@ -4,6 +4,7 @@ using Dfe.Complete.Extensions;
 using MediatR;
 using System.ComponentModel.DataAnnotations;
 using System.Reflection;
+using Dfe.Complete.Application.Services.AcademiesApi;
 using Dfe.Complete.Utils;
 
 namespace Dfe.Complete.Validators;
@@ -13,33 +14,38 @@ public class UrnAttribute : ValidationAttribute
 {
     protected override ValidationResult IsValid(object value, ValidationContext validationContext)
     {
+        // Fetch the display name if it is provided
+        var property = validationContext.ObjectType.GetProperty(validationContext.MemberName);
+        var displayAttribute = property?.GetCustomAttribute<DisplayAttribute>();
+        var displayName = displayAttribute?.GetName() ?? validationContext.DisplayName;
+
+        var urn = value as string;
+
+        if (string.IsNullOrEmpty(urn))
+            return ValidationResult.Success;
+
+        if (urn.Length != 6)
+            return new ValidationResult($"The {displayName} must be 6 digits long. For example, 123456.");
+
+        var sender = (ISender)validationContext.GetService(typeof(ISender));
+
         try
         {
-            // Fetch the display name if it is provided
-            var property = validationContext.ObjectType.GetProperty(validationContext.MemberName);
-            var displayAttribute = property?.GetCustomAttribute<DisplayAttribute>();
-            var displayName = displayAttribute?.GetName() ?? validationContext.DisplayName;
+            var getEstablishmentByUrnResult = sender?.Send(new GetEstablishmentByUrnRequest(urn)).Result;
 
-            var urn = value as string;
+            if (getEstablishmentByUrnResult is { IsSuccess: false })
+                return new ValidationResult(
+                    "There's no school or academy with that URN. Check the number you entered is correct.");
 
-            if (string.IsNullOrEmpty(urn))
-                return ValidationResult.Success;
+            var getProjectByUrnQueryResult = sender?.Send(new GetProjectByUrnQuery(new Urn(urn.ToInt()))).Result;
 
-            if (urn.Length != 6)
-                return new ValidationResult($"The {displayName} must be 6 digits long. For example, 123456.");
-
-            var sender = (ISender)validationContext.GetService(typeof(ISender));
-
-            var result = sender.Send(new GetProjectByUrnQuery(new Urn(urn.ToInt())));
-
-            if (!result.Result.IsSuccess)
-                throw new NotFoundException(result.Result.Error);
-
-            if (result.Result?.Value != null)
-                return new ValidationResult($"A project with the urn: {urn} already exists");
-
-            // If valid, return success
-            return ValidationResult.Success;
+            switch (getProjectByUrnQueryResult)
+            {
+                case { IsSuccess: false, Error: not null }:
+                    throw new NotFoundException(getProjectByUrnQueryResult.Error);
+                case { Value: not null }:
+                    return new ValidationResult($"A project with the urn: {urn} already exists");
+            }
         }
         catch (NotFoundException notFoundException)
         {
@@ -50,5 +56,7 @@ public class UrnAttribute : ValidationAttribute
             Console.WriteLine(e);
             throw;
         }
+
+        return ValidationResult.Success;
     }
 }

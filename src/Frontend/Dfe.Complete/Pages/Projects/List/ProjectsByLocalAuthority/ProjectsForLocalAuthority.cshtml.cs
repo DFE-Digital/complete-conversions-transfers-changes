@@ -16,8 +16,7 @@ public class ProjectsForLocalAuthority(ISender sender) : AllProjectsModel(ByLoca
 
     public async Task OnGet()
     {
-        var query = new ListAllProjectsForLocalAuthorityQuery(LocalAuthorityCode = LocalAuthorityCode)
-            { Count = PageSize, Page = PageNumber - 1 };
+        var query = new ListAllProjectsForLocalAuthorityQuery(LocalAuthorityCode) { Count = PageSize, Page = PageNumber - 1 };
 
         var result = await sender.Send(query);
 
