@@ -5,7 +5,7 @@ using Dfe.Complete.Domain.Enums;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace Dfe.Complete.Application.Projects.Queries.ProjectsByRegion;
+namespace Dfe.Complete.Application.Projects.Queries.ListAllProjects;
 
 public record ListAllProjectsByRegionQuery(
     ProjectState? ProjectStatus,

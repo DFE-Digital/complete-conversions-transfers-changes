@@ -7,16 +7,16 @@ using Dfe.Complete.Domain.Interfaces.Repositories;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace Dfe.Complete.Application.Projects.Queries.ProjectsByLocalAuthority;
+namespace Dfe.Complete.Application.Projects.Queries.ListAllProjects;
 
-public record ListAllProjectLocalAuthoritiesQuery(ProjectState? State = ProjectState.Active, ProjectType? Type = null)
+public record ListAllProjectsByLocalAuthoritiesQuery(ProjectState? State = ProjectState.Active, ProjectType? Type = null)
     : PaginatedRequest<PaginatedResult<List<ListAllProjectLocalAuthoritiesResultModel>>>;
 
-public class ListAllProjectLocalAuthorities(ICompleteRepository<LocalAuthority> localAuthoritiesRepo, IListAllProjectsQueryService listAllProjectsQueryService) 
-    : IRequestHandler<ListAllProjectLocalAuthoritiesQuery, PaginatedResult<List<ListAllProjectLocalAuthoritiesResultModel>>>
+public class ListAllProjectByLocalAuthorities(ICompleteRepository<LocalAuthority> localAuthoritiesRepo, IListAllProjectsQueryService listAllProjectsQueryService) 
+    : IRequestHandler<ListAllProjectsByLocalAuthoritiesQuery, PaginatedResult<List<ListAllProjectLocalAuthoritiesResultModel>>>
 {
     public async Task<PaginatedResult<List<ListAllProjectLocalAuthoritiesResultModel>>> Handle(
-        ListAllProjectLocalAuthoritiesQuery request, CancellationToken cancellationToken)
+        ListAllProjectsByLocalAuthoritiesQuery request, CancellationToken cancellationToken)
     {
         try
         {

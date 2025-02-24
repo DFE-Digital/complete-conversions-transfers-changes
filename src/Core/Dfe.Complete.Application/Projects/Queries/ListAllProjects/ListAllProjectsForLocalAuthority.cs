@@ -5,7 +5,7 @@ using Dfe.Complete.Domain.Enums;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace Dfe.Complete.Application.Projects.Queries.ListAllProjectsForLocalAuthority;
+namespace Dfe.Complete.Application.Projects.Queries.ListAllProjects;
 
 public record ListAllProjectsForLocalAuthorityQuery(
     string LocalAuthorityCode,
@@ -22,21 +22,19 @@ public class ListAllProjectsForLocalAuthority(
     {
         try
         {
-            var projectsWithEstablishments = await listAllProjectsQueryService.ListAllProjects(request.State, request.Type)
+            var projects  = await listAllProjectsQueryService.ListAllProjects(request.State, request.Type)
+                .Where(p => p.Establishment.LocalAuthorityCode == request.LocalAuthorityCode)
                 .ToListAsync(cancellationToken);
 
-            var projectsForLa =
-                projectsWithEstablishments.Where(p => p.Establishment.LocalAuthorityCode == request.LocalAuthorityCode);
-
-            var projectsForLaWithEstablishments = projectsForLa.Select(proj =>
+            var resultModel = projects.Select(proj =>
                     ListAllProjectsResultModel.MapProjectAndEstablishmentToListAllProjectResultModel(
                         proj.Project,
                         proj.Establishment))
                 .ToList();
 
-            var count = projectsForLaWithEstablishments.Count;
+            var count = resultModel.Count;
 
-            var paginatedResult = projectsForLaWithEstablishments.Skip(request.Page * request.Count).Take(request.Count)
+            var paginatedResult = resultModel.Skip(request.Page * request.Count).Take(request.Count)
                 .ToList();
 
             return PaginatedResult<List<ListAllProjectsResultModel>>.Success(paginatedResult, count);

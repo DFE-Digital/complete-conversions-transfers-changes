@@ -36,11 +36,11 @@ public static class EnumExtensions
 		if (fi == null)
 			return string.Empty;
 
-		var attributes = (SecondaryDescriptionAttribute[])fi
-			.GetCustomAttributes(typeof(SecondaryDescriptionAttribute), false);
+		var attributes = (DisplayDescriptionAttribute[])fi
+			.GetCustomAttributes(typeof(DisplayDescriptionAttribute), false);
 
 		return attributes.Length > 0
-			? attributes[0].SecondaryDescription
+			? attributes[0].DisplayDescription
 			: source.ToString() ?? string.Empty;
 	}
 		
