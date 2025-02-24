@@ -28,7 +28,7 @@ public static class EnumExtensions
 	
 	public static string ToSecondaryDescription<T>(this T source)
 	{
-		if (source == null)
+		if (Equals(source, default(T)))
 			return string.Empty;
 
 		var fi = source.GetType().GetField(source.ToString() ?? string.Empty);
