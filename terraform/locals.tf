@@ -42,4 +42,5 @@ locals {
   monitor_http_availability_verb           = var.monitor_http_availability_verb
   monitor_http_availability_fqdn           = var.monitor_http_availability_fqdn
   custom_container_apps                    = var.custom_container_apps
+  enable_monitoring_traces                 = var.enable_monitoring_traces
 }
