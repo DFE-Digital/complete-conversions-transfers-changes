@@ -1,5 +1,5 @@
-using Dfe.Complete.Application.Common.Models;
 using Dfe.Complete.Application.Projects.Models;
+using Dfe.AcademiesApi.Client.Contracts;
 using Dfe.Complete.Application.Projects.Queries.GetLocalAuthority;
 using MediatR;
 using Dfe.Complete.Domain.ValueObjects;
@@ -34,7 +34,8 @@ public record CreateTransferProjectCommand(
 
 public class CreateTransferProjectCommandHandler(
     ICompleteRepository<Project> projectRepository,
-    ICompleteRepository<TransferTasksData> transferTaskRepository,  
+    ICompleteRepository<TransferTasksData> transferTaskRepository,
+    IEstablishmentsV4Client establishmentsClient,
     ISender sender)
     : IRequestHandler<CreateTransferProjectCommand, ProjectId>
 {
@@ -43,30 +44,21 @@ public class CreateTransferProjectCommandHandler(
         var localAuthorityIdRequest = await sender.Send(new GetLocalAuthorityBySchoolUrnQuery(request.Urn.Value),
             cancellationToken);
 
-        if (!localAuthorityIdRequest.IsSuccess || localAuthorityIdRequest.Value?.LocalAuthorityId == null)
-            throw new NotFoundException($"No Local authority could be found via Establishments for School Urn: {request.Urn.Value}.", nameof(request.Urn), innerException: new Exception(localAuthorityIdRequest.Error));
-            
-        Result<UserDto?>? userRequest = null;
-            
-        if (!string.IsNullOrEmpty(request.UserAdId))
-            userRequest = await sender.Send(new GetUserByAdIdQuery(request.UserAdId), cancellationToken);
+            if (!localAuthorityIdRequest.IsSuccess || localAuthorityIdRequest.Value?.LocalAuthorityId == null)
+                throw new NotFoundException(
+                    $"No Local authority could be found via Establishments for School Urn: {request.Urn.Value}.",
+                     nameof(request.Urn),
+                    innerException: new Exception(localAuthorityIdRequest.Error));
 
-        if (userRequest is not { IsSuccess: true })
-            throw new NotFoundException("No user found.", innerException: new Exception(userRequest?.Error));
-        
-        var projectUser = userRequest.Value;
-
-        var projectUserTeam = projectUser?.Team;
-        var projectUserId = projectUser?.Id; 
-
-        var projectTeam = projectUserTeam.FromDescription<ProjectTeam>();
-        var region = EnumMapper.MapTeamToRegion(projectTeam);
+            var region = (await establishmentsClient.GetEstablishmentByUrnAsync(request.Urn.Value.ToString(),
+                cancellationToken)).Gor?.Code?.ToEnumFromChar<Region>();
 
         var createdAt = DateTime.UtcNow;
         var transferTaskId = Guid.NewGuid();
         var projectId = new ProjectId(Guid.NewGuid());
 
-        var transferTask = new TransferTasksData(new TaskDataId(transferTaskId), createdAt, createdAt, request.IsDueToInedaquateOfstedRating, request.IsDueToIssues, request.OutGoingTrustWillClose);
+            var transferTask = new TransferTasksData(new TaskDataId(transferTaskId), createdAt, createdAt,
+                request.IsDueToInedaquateOfstedRating, request.IsDueToIssues, request.OutGoingTrustWillClose);
 
         ProjectGroupDto? projectGroupDto = null;
         if (!string.IsNullOrEmpty(request.GroupReferenceNumber))
@@ -82,17 +74,31 @@ public class CreateTransferProjectCommandHandler(
         ProjectTeam team;
         DateTime? assignedAt = null;
         UserId? projectUserAssignedToId = null;
+        UserDto? projectUser = null;
 
-        if (request.HandingOverToRegionalCaseworkService)
-        {
-            team = ProjectTeam.RegionalCaseWorkerServices;
-        }
-        else
-        {
-            team = projectTeam;
-            assignedAt = DateTime.UtcNow;
-            projectUserAssignedToId = projectUserId;
-        }
+            if (request.HandingOverToRegionalCaseworkService)
+            {
+                team = ProjectTeam.RegionalCaseWorkerServices;
+            }
+            else
+            {
+                if (request.UserAdId is null)
+                    throw new ArgumentException(
+                        "Project cannot be unassigned if it is not being handed over to Regional Case Worker Services");
+                var userRequest = await sender.Send(new GetUserByAdIdQuery(request.UserAdId), cancellationToken);
+
+                if (userRequest is not { IsSuccess: true } || userRequest.Value is null)
+                    throw new NotFoundException("No user found.", innerException: new Exception(userRequest.Error));
+
+                projectUser = userRequest.Value;
+
+                var projectUserTeam = projectUser?.Team;
+                var projectUserId = projectUser?.Id;
+
+                team = projectUserTeam.FromDescription<ProjectTeam>();
+                assignedAt = DateTime.UtcNow;
+                projectUserAssignedToId = projectUserId;
+            }
 
         var project = Project.CreateTransferProject
         (projectId,
