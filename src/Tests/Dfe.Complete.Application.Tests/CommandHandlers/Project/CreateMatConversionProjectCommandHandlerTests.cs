@@ -307,4 +307,62 @@ public class CreateMatConversionProjectCommandHandlerTests
         await mockConversionTaskRepository.Received(0)
             .AddAsync(It.IsAny<ConversionTasksData>(), It.IsAny<CancellationToken>());
     }
+    
+    [Theory]
+        [CustomAutoData(typeof(DateOnlyCustomization), typeof(IgnoreVirtualMembersCustomisation))]
+        public async Task Handle_ShouldThrowNotFoundException_WhenUserIdIsNull(
+            [Frozen] ICompleteRepository<Domain.Entities.Project> mockProjectRepository,
+            [Frozen] ICompleteRepository<ConversionTasksData> mockConversionTaskRepository,
+            [Frozen] Mock<ISender> mockSender,
+            CreateMatConversionProjectCommand command)
+        {
+            // Arrange
+            var handler = new CreateMatConversionProjectCommandHandler(
+                mockProjectRepository,
+                mockConversionTaskRepository,
+                mockSender.Object);
+
+            command = command with { UserAdId = null };
+
+            // Act & Assert
+            var exception = await Assert.ThrowsAsync<ArgumentException>(() => handler.Handle(command, default));
+
+            Assert.Equal("UserAdId should not be null", exception.Message);
+            Assert.Null(exception.InnerException);
+            
+            await mockProjectRepository.Received(0).AddAsync(It.IsAny<Domain.Entities.Project>(), It.IsAny<CancellationToken>());
+            await mockConversionTaskRepository.Received(0).AddAsync(It.IsAny<ConversionTasksData>(), It.IsAny<CancellationToken>());
+        }
+        
+        [Theory]
+        [CustomAutoData(typeof(DateOnlyCustomization), typeof(IgnoreVirtualMembersCustomisation))]
+        public async Task Handle_ShouldThrowNotFoundException_WhenUserRequestSuccess_WithNullResponse(
+            [Frozen] ICompleteRepository<Domain.Entities.Project> mockProjectRepository,
+            [Frozen] ICompleteRepository<ConversionTasksData> mockConversionTaskRepository,
+            [Frozen] Mock<ISender> mockSender,
+            CreateMatConversionProjectCommand command)
+        {
+            // Arrange
+            var handler = new CreateMatConversionProjectCommandHandler(
+                mockProjectRepository,
+                mockConversionTaskRepository,
+                mockSender.Object);
+
+            mockSender.Setup(s => s.Send(It.IsAny<GetUserByAdIdQuery>(), It.IsAny<CancellationToken>()))!
+                .ReturnsAsync(Result<UserDto>.Success(null!));
+
+            mockSender.Setup(s => s.Send(It.IsAny<GetLocalAuthorityBySchoolUrnQuery>(), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(Result<GetLocalAuthorityBySchoolUrnResponseDto?>.Success(
+                    new GetLocalAuthorityBySchoolUrnResponseDto(Guid.NewGuid())));
+
+            // Act & Assert
+            var exception = await Assert.ThrowsAsync<NotFoundException>(() => handler.Handle(command, default));
+
+            Assert.Equal("No user found.", exception.Message);
+            Assert.NotNull(exception.InnerException);
+            Assert.Equal("No user found.", exception.InnerException.Message);
+            
+            await mockProjectRepository.Received(0).AddAsync(It.IsAny<Domain.Entities.Project>(), It.IsAny<CancellationToken>());
+            await mockConversionTaskRepository.Received(0).AddAsync(It.IsAny<ConversionTasksData>(), It.IsAny<CancellationToken>());
+        }
 }
