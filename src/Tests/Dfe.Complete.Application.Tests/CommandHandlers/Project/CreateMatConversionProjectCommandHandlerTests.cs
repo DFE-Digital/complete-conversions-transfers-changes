@@ -1,4 +1,5 @@
 using AutoFixture.Xunit2;
+using Dfe.AcademiesApi.Client.Contracts;
 using DfE.CoreLibs.Testing.AutoFixture.Attributes;
 using DfE.CoreLibs.Testing.AutoFixture.Customizations; 
 using Dfe.Complete.Application.Projects.Commands.CreateProject;
@@ -15,7 +16,6 @@ using Dfe.Complete.Application.Common.Models;
 using Dfe.Complete.Application.Projects.Models;
 using Dfe.Complete.Application.Projects.Queries.GetLocalAuthority;
 using Dfe.Complete.Application.Projects.Queries.GetUser;
-using Dfe.Complete.Tests.Common.Customizations.Models;
 
 namespace Dfe.Complete.Application.Tests.CommandHandlers.Project;
 
@@ -31,7 +31,15 @@ public class CreateMatConversionProjectCommandHandlerTests
     )
     {
         // Arrange
-        var handler = new CreateMatConversionProjectCommandHandler(mockProjectRepository, mockConversionTaskRepository, mockSender.Object);
+        var establishmentDto = new EstablishmentDto { Urn = command.Urn.Value.ToString(), Gor = new NameAndCodeDto{ Code = "H" } };
+        Mock<IEstablishmentsV4Client> mockEstablishmentClient = new Mock<IEstablishmentsV4Client>();
+        mockEstablishmentClient.Setup(mock =>
+            mock.GetEstablishmentByUrnAsync(command.Urn.Value.ToString(), It.IsAny<CancellationToken>())).ReturnsAsync(establishmentDto);
+        
+        var handler = new CreateMatConversionProjectCommandHandler(mockProjectRepository, mockConversionTaskRepository,
+            mockEstablishmentClient.Object,
+            mockSender.Object);
+        
         const ProjectTeam userTeam = ProjectTeam.WestMidlands;
         var userDto = new UserDto
         {
@@ -99,7 +107,14 @@ public class CreateMatConversionProjectCommandHandlerTests
     )
     {
         // Arrange
-        var handler = new CreateMatConversionProjectCommandHandler(mockProjectRepository, mockConversionTaskRepository, mockSender.Object);
+        var establishmentDto = new EstablishmentDto { Urn = command.Urn.Value.ToString(), Gor = new NameAndCodeDto{ Code = "H" } };
+        Mock<IEstablishmentsV4Client> mockEstablishmentClient = new Mock<IEstablishmentsV4Client>();
+        mockEstablishmentClient.Setup(mock =>
+            mock.GetEstablishmentByUrnAsync(command.Urn.Value.ToString(), It.IsAny<CancellationToken>())).ReturnsAsync(establishmentDto);
+        
+        var handler = new CreateMatConversionProjectCommandHandler(mockProjectRepository, mockConversionTaskRepository,
+            mockEstablishmentClient.Object,
+            mockSender.Object);
 
         command = command with { HandingOverToRegionalCaseworkService = true };
 
@@ -150,8 +165,14 @@ public class CreateMatConversionProjectCommandHandlerTests
     )
     {
         // Arrange
-        var handler = new CreateMatConversionProjectCommandHandler(mockProjectRepository, mockConversionTaskRepository, mockSender.Object);
-        command = command with { HandingOverToRegionalCaseworkService = false };
+        var establishmentDto = new EstablishmentDto { Urn = command.Urn.Value.ToString(), Gor = new NameAndCodeDto{ Code = "H" } };
+        Mock<IEstablishmentsV4Client> mockEstablishmentClient = new Mock<IEstablishmentsV4Client>();
+        mockEstablishmentClient.Setup(mock =>
+            mock.GetEstablishmentByUrnAsync(command.Urn.Value.ToString(), It.IsAny<CancellationToken>())).ReturnsAsync(establishmentDto);
+        
+        var handler = new CreateMatConversionProjectCommandHandler(mockProjectRepository, mockConversionTaskRepository,
+            mockEstablishmentClient.Object,
+            mockSender.Object);
 
         const ProjectTeam userTeam = ProjectTeam.WestMidlands;
         var userDto = new UserDto
@@ -205,9 +226,14 @@ public class CreateMatConversionProjectCommandHandlerTests
         mockSender.Setup(s => s.Send(It.IsAny<GetUserByAdIdQuery>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(Result<UserDto?>.Failure("DB ERROR"));
 
-        var handler = new CreateMatConversionProjectCommandHandler(
-            mockProjectRepository,
-            mockConversionTaskRepository,
+        // Arrange
+        var establishmentDto = new EstablishmentDto { Urn = command.Urn.Value.ToString(), Gor = new NameAndCodeDto{ Code = "H" } };
+        Mock<IEstablishmentsV4Client> mockEstablishmentClient = new Mock<IEstablishmentsV4Client>();
+        mockEstablishmentClient.Setup(mock =>
+            mock.GetEstablishmentByUrnAsync(command.Urn.Value.ToString(), It.IsAny<CancellationToken>())).ReturnsAsync(establishmentDto);
+        
+        var handler = new CreateMatConversionProjectCommandHandler(mockProjectRepository, mockConversionTaskRepository,
+            mockEstablishmentClient.Object,
             mockSender.Object);
 
         // Act & Assert
@@ -234,9 +260,14 @@ public class CreateMatConversionProjectCommandHandlerTests
         mockSender.Setup(s => s.Send(It.IsAny<GetLocalAuthorityBySchoolUrnQuery>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(Result<GetLocalAuthorityBySchoolUrnResponseDto?>.Failure(expectedError));
 
-        var handler = new CreateMatConversionProjectCommandHandler(
-            mockProjectRepository,
-            mockConversionTaskRepository,
+        // Arrange
+        var establishmentDto = new EstablishmentDto { Urn = command.Urn.Value.ToString(), Gor = new NameAndCodeDto{ Code = "H" } };
+        Mock<IEstablishmentsV4Client> mockEstablishmentClient = new Mock<IEstablishmentsV4Client>();
+        mockEstablishmentClient.Setup(mock =>
+            mock.GetEstablishmentByUrnAsync(command.Urn.Value.ToString(), It.IsAny<CancellationToken>())).ReturnsAsync(establishmentDto);
+        
+        var handler = new CreateMatConversionProjectCommandHandler(mockProjectRepository, mockConversionTaskRepository,
+            mockEstablishmentClient.Object,
             mockSender.Object);
 
         // Act & Assert
@@ -264,9 +295,14 @@ public class CreateMatConversionProjectCommandHandlerTests
         mockSender.Setup(s => s.Send(It.IsAny<GetLocalAuthorityBySchoolUrnQuery>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(Result<GetLocalAuthorityBySchoolUrnResponseDto?>.Success(responseDto));
 
-        var handler = new CreateMatConversionProjectCommandHandler(
-            mockProjectRepository,
-            mockConversionTaskRepository,
+        // Arrange
+        var establishmentDto = new EstablishmentDto { Urn = command.Urn.Value.ToString(), Gor = new NameAndCodeDto{ Code = "H" } };
+        Mock<IEstablishmentsV4Client> mockEstablishmentClient = new Mock<IEstablishmentsV4Client>();
+        mockEstablishmentClient.Setup(mock =>
+            mock.GetEstablishmentByUrnAsync(command.Urn.Value.ToString(), It.IsAny<CancellationToken>())).ReturnsAsync(establishmentDto);
+        
+        var handler = new CreateMatConversionProjectCommandHandler(mockProjectRepository, mockConversionTaskRepository,
+            mockEstablishmentClient.Object,
             mockSender.Object);
 
         // Act & Assert
@@ -288,13 +324,17 @@ public class CreateMatConversionProjectCommandHandlerTests
         [Frozen] Mock<ISender> mockSender,
         CreateMatConversionProjectCommand command)
     {
-        var responseDto = new GetLocalAuthorityBySchoolUrnResponseDto(null);
         mockSender.Setup(s => s.Send(It.IsAny<GetLocalAuthorityBySchoolUrnQuery>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(Result<GetLocalAuthorityBySchoolUrnResponseDto?>.Success(null));
 
-        var handler = new CreateMatConversionProjectCommandHandler(
-            mockProjectRepository,
-            mockConversionTaskRepository,
+        // Arrange
+        var establishmentDto = new EstablishmentDto { Urn = command.Urn.Value.ToString(), Gor = new NameAndCodeDto{ Code = "H" } };
+        Mock<IEstablishmentsV4Client> mockEstablishmentClient = new Mock<IEstablishmentsV4Client>();
+        mockEstablishmentClient.Setup(mock =>
+            mock.GetEstablishmentByUrnAsync(command.Urn.Value.ToString(), It.IsAny<CancellationToken>())).ReturnsAsync(establishmentDto);
+        
+        var handler = new CreateMatConversionProjectCommandHandler(mockProjectRepository, mockConversionTaskRepository,
+            mockEstablishmentClient.Object,
             mockSender.Object);
 
         // Act & Assert
@@ -317,17 +357,24 @@ public class CreateMatConversionProjectCommandHandlerTests
             CreateMatConversionProjectCommand command)
         {
             // Arrange
-            var handler = new CreateMatConversionProjectCommandHandler(
-                mockProjectRepository,
-                mockConversionTaskRepository,
+            var establishmentDto = new EstablishmentDto { Urn = command.Urn.Value.ToString(), Gor = new NameAndCodeDto{ Code = "H" } };
+            Mock<IEstablishmentsV4Client> mockEstablishmentClient = new Mock<IEstablishmentsV4Client>();
+            mockEstablishmentClient.Setup(mock =>
+                mock.GetEstablishmentByUrnAsync(command.Urn.Value.ToString(), It.IsAny<CancellationToken>())).ReturnsAsync(establishmentDto);
+        
+            var handler = new CreateMatConversionProjectCommandHandler(mockProjectRepository, mockConversionTaskRepository,
+                mockEstablishmentClient.Object,
                 mockSender.Object);
+            
+            mockSender.Setup(s => s.Send(It.IsAny<GetLocalAuthorityBySchoolUrnQuery>(), default))
+                .ReturnsAsync(Result<GetLocalAuthorityBySchoolUrnResponseDto?>.Success(new GetLocalAuthorityBySchoolUrnResponseDto(Guid.NewGuid())));
 
             command = command with { UserAdId = null };
 
             // Act & Assert
             var exception = await Assert.ThrowsAsync<ArgumentException>(() => handler.Handle(command, default));
 
-            Assert.Equal("UserAdId should not be null", exception.Message);
+            Assert.Equal("Project cannot be unassigned if it is not being handed over to Regional Case Worker Services", exception.Message);
             Assert.Null(exception.InnerException);
             
             await mockProjectRepository.Received(0).AddAsync(It.IsAny<Domain.Entities.Project>(), It.IsAny<CancellationToken>());
@@ -343,9 +390,13 @@ public class CreateMatConversionProjectCommandHandlerTests
             CreateMatConversionProjectCommand command)
         {
             // Arrange
-            var handler = new CreateMatConversionProjectCommandHandler(
-                mockProjectRepository,
-                mockConversionTaskRepository,
+            var establishmentDto = new EstablishmentDto { Urn = command.Urn.Value.ToString(), Gor = new NameAndCodeDto{ Code = "H" } };
+            Mock<IEstablishmentsV4Client> mockEstablishmentClient = new Mock<IEstablishmentsV4Client>();
+            mockEstablishmentClient.Setup(mock =>
+                mock.GetEstablishmentByUrnAsync(command.Urn.Value.ToString(), It.IsAny<CancellationToken>())).ReturnsAsync(establishmentDto);
+        
+            var handler = new CreateMatConversionProjectCommandHandler(mockProjectRepository, mockConversionTaskRepository,
+                mockEstablishmentClient.Object,
                 mockSender.Object);
 
             mockSender.Setup(s => s.Send(It.IsAny<GetUserByAdIdQuery>(), It.IsAny<CancellationToken>()))!
@@ -359,8 +410,7 @@ public class CreateMatConversionProjectCommandHandlerTests
             var exception = await Assert.ThrowsAsync<NotFoundException>(() => handler.Handle(command, default));
 
             Assert.Equal("No user found.", exception.Message);
-            Assert.NotNull(exception.InnerException);
-            Assert.Equal("No user found.", exception.InnerException.Message);
+            Assert.Null(exception.InnerException);
             
             await mockProjectRepository.Received(0).AddAsync(It.IsAny<Domain.Entities.Project>(), It.IsAny<CancellationToken>());
             await mockConversionTaskRepository.Received(0).AddAsync(It.IsAny<ConversionTasksData>(), It.IsAny<CancellationToken>());

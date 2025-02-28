@@ -73,10 +73,9 @@ public class CreateMatTransferProjectCommandHandler(
                 // The user Team should be moved as a Claim or Group to the Entra (MS AD)
                 var userRequest = await sender.Send(new GetUserByAdIdQuery(request.UserAdId), cancellationToken);
 
-                if (!userRequest.IsSuccess || userRequest.Value == null)
+                if (!userRequest.IsSuccess)
                     throw new NotFoundException("No user found.", innerException: new Exception(userRequest.Error));
-            
-                projectUser = userRequest.Value;
+                projectUser = userRequest.Value ?? throw new NotFoundException("No user found.");
 
                 var projectUserTeam = projectUser.Team;
                 var projectUserId = projectUser.Id;

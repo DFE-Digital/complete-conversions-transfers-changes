@@ -82,13 +82,12 @@ namespace Dfe.Complete.Application.Projects.Commands.CreateProject
                 // The user Team should be moved as a Claim or Group to the Entra (MS AD)
                 var userRequest = await sender.Send(new GetUserByAdIdQuery(request.UserAdId), cancellationToken);
 
-                if (userRequest is not { IsSuccess: true } || userRequest.Value is null)
-                    throw new NotFoundException("No user found.", innerException: new Exception(userRequest.Error ?? "No user found."));
+                if (!userRequest.IsSuccess)
+                    throw new NotFoundException("No user found.", innerException: new Exception(userRequest.Error));
+                projectUser = userRequest.Value ?? throw new NotFoundException("No user found.");
 
-                projectUser = userRequest.Value;
-
-                var projectUserTeam = projectUser?.Team;
-                var projectUserId = projectUser?.Id;
+                var projectUserTeam = projectUser.Team;
+                var projectUserId = projectUser.Id;
 
                 team = projectUserTeam.FromDescription<ProjectTeam>();
                 assignedAt = DateTime.UtcNow;

@@ -87,13 +87,12 @@ public class CreateTransferProjectCommandHandler(
                         "Project cannot be unassigned if it is not being handed over to Regional Case Worker Services");
                 var userRequest = await sender.Send(new GetUserByAdIdQuery(request.UserAdId), cancellationToken);
 
-                if (userRequest is not { IsSuccess: true } || userRequest.Value is null)
+                if (!userRequest.IsSuccess)
                     throw new NotFoundException("No user found.", innerException: new Exception(userRequest.Error));
+                projectUser = userRequest.Value ?? throw new NotFoundException("No user found.");
 
-                projectUser = userRequest.Value;
-
-                var projectUserTeam = projectUser?.Team;
-                var projectUserId = projectUser?.Id;
+                var projectUserTeam = projectUser.Team;
+                var projectUserId = projectUser.Id;
 
                 team = projectUserTeam.FromDescription<ProjectTeam>();
                 assignedAt = DateTime.UtcNow;
