@@ -42,7 +42,7 @@ namespace Dfe.Complete.Application.Projects.Commands.CreateProject
                 cancellationToken);
 
             if (!localAuthorityIdRequest.IsSuccess || localAuthorityIdRequest.Value?.LocalAuthorityId == null)
-                throw new NotFoundException($"No Local authority could be found via Establishments for School Urn: {request.Urn.Value}.", innerException: new Exception(localAuthorityIdRequest.Error));
+                throw new NotFoundException($"No Local authority could be found via Establishments for School Urn: {request.Urn.Value}.", nameof(request.Urn), innerException: new Exception(localAuthorityIdRequest.Error));
             
             var userRequest = await sender.Send(new GetUserByAdIdQuery(request.UserAdId), cancellationToken);
 
@@ -63,12 +63,17 @@ namespace Dfe.Complete.Application.Projects.Commands.CreateProject
 
             var transferTask = new TransferTasksData(new TaskDataId(transferTaskId), createdAt, createdAt, request.IsDueToInedaquateOfstedRating, request.IsDueToIssues, request.OutGoingTrustWillClose);
 
-            var projectRequest = await sender.Send(new GetProjectGroupByGroupReferenceNumberQuery(request.GroupReferenceNumber), cancellationToken);
+            var projectGroupRequest = await sender.Send(new GetProjectGroupByGroupReferenceNumberQuery(request.GroupReferenceNumber), cancellationToken);
 
-            if (!projectRequest.IsSuccess)
-                throw new NotFoundException("Project Group retrieval failed", innerException: new Exception(projectRequest.Error));
+            if (!projectGroupRequest.IsSuccess)
+                throw new NotFoundException($"Project Group retrieval failed: {projectGroupRequest.Error}", nameof(request.GroupReferenceNumber));
+
+            if (projectGroupRequest.Value == null)
+                throw new NotFoundException(
+                    $"No Project Group found with reference number: {request.GroupReferenceNumber}",
+                    nameof(request.GroupReferenceNumber));
             
-            var groupId = projectRequest.Value?.Id;
+            var groupId = projectGroupRequest.Value?.Id;
 
             ProjectTeam team;
             DateTime? assignedAt = null;
