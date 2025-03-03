@@ -29,7 +29,7 @@ public class ProjectsByRegion(ISender sender) : AllProjectsModel(ByRegionNavigat
         var parsedRegion = Region.FromDescriptionValue<Region>();
 
         var listProjectsForRegionQuery =
-            new ListAllProjectsForRegionQuery(parsedRegion, ProjectState.Active, null)
+            new ListAllProjectsForRegionQuery((Region)parsedRegion, ProjectState.Active, null)
             {
                 Page = PageNumber - 1,
                 Count = PageSize

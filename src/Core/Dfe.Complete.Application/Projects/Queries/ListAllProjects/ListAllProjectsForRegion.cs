@@ -8,12 +8,12 @@ using Microsoft.EntityFrameworkCore;
 namespace Dfe.Complete.Application.Projects.Queries.ListAllProjects;
 
 public record ListAllProjectsForRegionQuery(
-    Region? Region,
+    Region Region,
     ProjectState? ProjectStatus,
     ProjectType? Type)
     : PaginatedRequest<PaginatedResult<List<ListAllProjectsResultModel>>>;
 
-public class ListAllProjectsForRegionQueryHandler(IListAllProjectsQueryService listAllProjectsQueryService)
+public class ListAllProjectsForRegionQueryHandler(IListAllProjectsForRegionQueryService listAllProjectsForRegionQueryServiceQueryService)
     : IRequestHandler<ListAllProjectsForRegionQuery, PaginatedResult<List<ListAllProjectsResultModel>>>
 
 {
@@ -22,36 +22,16 @@ public class ListAllProjectsForRegionQueryHandler(IListAllProjectsQueryService l
     {
         try
         {
-            var projectsList = await listAllProjectsQueryService
-                .ListAllProjects(request.ProjectStatus, request.Type)
-                .ToListAsync(cancellationToken: cancellationToken);
+            var projectsForRegion = await listAllProjectsForRegionQueryServiceQueryService.ListAllProjectsForRegion(request.Region,
+                request.ProjectStatus, request.Type).ToListAsync(cancellationToken);
 
-            var filteredProjects = projectsList
-                .Where(project => project.Project.Region == request.Region)
-                .ToList();
-
-            var totalCount = filteredProjects.Count;
-
-            var paginatedProjects = filteredProjects
+            var paginatedResultModel = projectsForRegion.Select(proj =>
+                    ListAllProjectsResultModel.MapProjectAndEstablishmentToListAllProjectResultModel(proj.Project, proj.Establishment))
                 .Skip(request.Page * request.Count)
-                .Take(request.Count);
-
-            var projectsResultModel = paginatedProjects
-                .Select(item => new ListAllProjectsResultModel(
-                    item.Establishment.Name,
-                    item.Project.Id,
-                    item.Project.Urn,
-                    item.Project.SignificantDate,
-                    item.Project.State,
-                    item.Project.Type,
-                    item.Project.IncomingTrustUkprn == null,
-                    item.Project.AssignedTo != null
-                        ? $"{item.Project.AssignedTo.FirstName} {item.Project.AssignedTo.LastName}"
-                        : null))
+                .Take(request.Count)
                 .ToList();
-
-            return PaginatedResult<List<ListAllProjectsResultModel>>.Success(projectsResultModel,
-                totalCount);
+            
+            return PaginatedResult<List<ListAllProjectsResultModel>>.Success(paginatedResultModel, projectsForRegion.Count);
         }
         catch (Exception e)
         {

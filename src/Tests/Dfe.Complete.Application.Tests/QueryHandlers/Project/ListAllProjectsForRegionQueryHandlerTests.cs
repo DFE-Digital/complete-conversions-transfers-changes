@@ -21,7 +21,7 @@ public class ListAllProjectsForRegionQueryHandlerTests
         typeof(ListAllProjectsQueryModelCustomization),
         typeof(DateOnlyCustomization))]
     public async Task Handle_ShouldReturnCorrectList_WhenPaginationIsCorrect(
-        [Frozen] IListAllProjectsQueryService mockListAllProjectsQueryService,
+        [Frozen] IListAllProjectsForRegionQueryService mockListAllProjectsForRegionQueryService,
         ListAllProjectsForRegionQueryHandler handler,
         IFixture fixture)
     {
@@ -45,7 +45,7 @@ public class ListAllProjectsForRegionQueryHandlerTests
 
         var mock = listAllProjectsQueryModels.BuildMock();
 
-        mockListAllProjectsQueryService.ListAllProjects(Arg.Any<ProjectState?>(), Arg.Any<ProjectType?>())
+        mockListAllProjectsForRegionQueryService.ListAllProjects(Arg.Any<ProjectState?>(), Arg.Any<ProjectType?>())
             .Returns(mock);
 
         var query = new ListAllProjectsForRegionQuery(requestedRegion, ProjectState.Active, null);
