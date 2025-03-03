@@ -1,5 +1,5 @@
 using Dfe.Complete.Application.Projects.Models;
-using Dfe.Complete.Application.Projects.Queries.ListAllProjectsForLocalAuthority;
+using Dfe.Complete.Application.Projects.Queries.ListAllProjects;
 using Dfe.Complete.Pages.Pagination;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;

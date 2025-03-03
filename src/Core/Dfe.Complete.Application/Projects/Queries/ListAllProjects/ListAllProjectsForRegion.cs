@@ -5,7 +5,7 @@ using Dfe.Complete.Domain.Enums;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace Dfe.Complete.Application.Projects.Queries.ProjectsByRegion;
+namespace Dfe.Complete.Application.Projects.Queries.ListAllProjects;
 
 public record ListAllProjectsForRegionQuery(
     Region? Region,
@@ -26,7 +26,6 @@ public class ListAllProjectsForRegionQueryHandler(IListAllProjectsQueryService l
                 .ListAllProjects(request.ProjectStatus, request.Type)
                 .ToListAsync(cancellationToken: cancellationToken);
 
-            // Materialise the filtered list to avoid enumerating multiple times.
             var filteredProjects = projectsList
                 .Where(project => project.Project.Region == request.Region)
                 .ToList();

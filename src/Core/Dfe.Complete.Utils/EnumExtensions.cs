@@ -26,9 +26,9 @@ public static class EnumExtensions
 		return (attributes.Length > 0 ? attributes[0].Description : source.ToString()) ?? string.Empty;
 	}
 	
-	public static string ToSecondaryDescription<T>(this T source)
+	public static string ToDisplayDescription<T>(this T source)
 	{
-		if (Equals(source, default(T)))
+		if (EqualityComparer<T>.Default.Equals(source, default!))
 			return string.Empty;
 
 		var fi = source.GetType().GetField(source.ToString() ?? string.Empty);
@@ -36,11 +36,11 @@ public static class EnumExtensions
 		if (fi == null)
 			return string.Empty;
 
-		var attributes = (SecondaryDescriptionAttribute[])fi
-			.GetCustomAttributes(typeof(SecondaryDescriptionAttribute), false);
+		var attributes = (DisplayDescriptionAttribute[])fi
+			.GetCustomAttributes(typeof(DisplayDescriptionAttribute), false);
 
 		return attributes.Length > 0
-			? attributes[0].SecondaryDescription
+			? attributes[0].DisplayDescription
 			: source.ToString() ?? string.Empty;
 	}
 		

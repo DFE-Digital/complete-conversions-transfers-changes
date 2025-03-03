@@ -2,7 +2,7 @@ using AutoFixture;
 using AutoFixture.Xunit2;
 using Dfe.Complete.Application.Projects.Interfaces;
 using Dfe.Complete.Application.Projects.Models;
-using Dfe.Complete.Application.Projects.Queries.ProjectsByRegion;
+using Dfe.Complete.Application.Projects.Queries.ListAllProjects;
 using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Tests.Common.Customizations.Models;
 using DfE.CoreLibs.Testing.AutoFixture.Attributes;

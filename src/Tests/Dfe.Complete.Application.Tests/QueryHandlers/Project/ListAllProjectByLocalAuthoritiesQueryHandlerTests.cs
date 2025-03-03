@@ -2,7 +2,7 @@ using System.Linq.Expressions;
 using AutoFixture;
 using AutoFixture.Xunit2;
 using Dfe.Complete.Application.Projects.Models;
-using Dfe.Complete.Application.Projects.Queries.ProjectsByLocalAuthority;
+using Dfe.Complete.Application.Projects.Queries.ListAllProjects;
 using Dfe.Complete.Domain.Entities;
 using Dfe.Complete.Domain.Interfaces.Repositories;
 using Dfe.Complete.Tests.Common.Customizations.Models;
@@ -13,7 +13,7 @@ using NSubstitute.ExceptionExtensions;
 
 namespace Dfe.Complete.Application.Tests.QueryHandlers.Project;
 
-public class ListAllProjectLocalAuthoritiesQueryHandlerTests
+public class ListAllProjectByLocalAuthoritiesQueryHandlerTests
 {
     [Theory]
     [CustomAutoData(
@@ -22,14 +22,14 @@ public class ListAllProjectLocalAuthoritiesQueryHandlerTests
         typeof(DateOnlyCustomization),
         typeof(ListAllProjectLocalAuthoritiesArrangement))]
     public async Task Handle_ShouldReturnListProjectsLocalAuthorities(
-        ListAllProjectLocalAuthorities handler,
+        ListAllProjectByLocalAuthorities handler,
         IFixture fixture)
     {
         //Arrange
         var expectedLocalAuthorities = fixture.Create<List<ListAllProjectLocalAuthoritiesResultModel>>();
         
         //Act
-        var query = new ListAllProjectLocalAuthoritiesQuery();
+        var query = new ListAllProjectsByLocalAuthoritiesQuery();
 
         var handlerResult = await handler.Handle(query, default);
         
@@ -50,10 +50,10 @@ public class ListAllProjectLocalAuthoritiesQueryHandlerTests
         typeof(DateOnlyCustomization),
         typeof(ListAllProjectLocalAuthoritiesArrangement))]
     public async Task Handle_ShouldReturnCorrectList_WhenAllPagesAreSkipped(
-        ListAllProjectLocalAuthorities handler)
+        ListAllProjectByLocalAuthorities handler)
     {
         //Act
-        var query = new ListAllProjectLocalAuthoritiesQuery { Page = 10 };
+        var query = new ListAllProjectsByLocalAuthoritiesQuery { Page = 10 };
 
         var handlerResult = await handler.Handle(query, default);
         
@@ -74,12 +74,12 @@ public class ListAllProjectLocalAuthoritiesQueryHandlerTests
         typeof(ListAllProjectLocalAuthoritiesArrangement))]
     public async Task Handle_ShouldReturnUnsuccessful_WhenAnErrorOccurs(
         [Frozen] ICompleteRepository<LocalAuthority> localAuthoritiesRepo,
-        ListAllProjectLocalAuthorities handler,
+        ListAllProjectByLocalAuthorities handler,
         IFixture fixture)
     {
         const string errorMessage = "This is a test error message";
         
-        var query = new ListAllProjectLocalAuthoritiesQuery { Page = 10 };
+        var query = new ListAllProjectsByLocalAuthoritiesQuery { Page = 10 };
 
         localAuthoritiesRepo.FetchAsync(Arg.Any<Expression<Func<LocalAuthority, bool>>>(), default)
             .ThrowsAsync(new Exception(errorMessage));

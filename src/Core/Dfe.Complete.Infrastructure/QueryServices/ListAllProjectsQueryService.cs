@@ -10,8 +10,6 @@ internal class ListAllProjectsQueryService(CompleteContext context) : IListAllPr
 {
     public IQueryable<ListAllProjectsQueryModel> ListAllProjects(ProjectState? projectStatus, ProjectType? type)
     {
-        try
-        {
             var query = context.Projects
                 .Where(project => projectStatus == null || project.State == projectStatus)
                 .Where(project => type == null || type == project.Type)
@@ -20,12 +18,5 @@ internal class ListAllProjectsQueryService(CompleteContext context) : IListAllPr
                     (project, establishment) => new ListAllProjectsQueryModel(project, establishment));
 
             return query;
-        }
-        catch (Exception e)
-        {
-            Console.WriteLine(e);
-            throw;
-        }
-        
     }
 }
