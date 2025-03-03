@@ -66,7 +66,7 @@ namespace Dfe.Complete.Application.Projects.Commands.CreateProject
             var projectGroupRequest = await sender.Send(new GetProjectGroupByGroupReferenceNumberQuery(request.GroupReferenceNumber), cancellationToken);
 
             if (!projectGroupRequest.IsSuccess)
-                throw new NotFoundException($"Project Group retrieval failed: {projectGroupRequest.Error}", nameof(request.GroupReferenceNumber));
+                throw new NotFoundException($"Project Group retrieval failed", nameof(request.GroupReferenceNumber), new Exception(projectGroupRequest.Error));
 
             if (projectGroupRequest.Value == null)
                 throw new NotFoundException(

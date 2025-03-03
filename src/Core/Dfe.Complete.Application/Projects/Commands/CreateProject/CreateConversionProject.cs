@@ -65,7 +65,7 @@ namespace Dfe.Complete.Application.Projects.Commands.CreateProject
                     cancellationToken);
 
             if (!projectGroupRequest.IsSuccess)
-                throw new NotFoundException($"Project Group retrieval failed: {projectGroupRequest.Error}", nameof(request.GroupReferenceNumber));
+                throw new NotFoundException($"Project Group retrieval failed", nameof(request.GroupReferenceNumber), new Exception(projectGroupRequest.Error));
 
             if (projectGroupRequest.Value == null)
                 throw new NotFoundException(
