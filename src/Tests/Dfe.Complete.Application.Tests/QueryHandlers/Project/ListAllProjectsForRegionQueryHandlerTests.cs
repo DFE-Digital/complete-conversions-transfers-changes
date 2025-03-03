@@ -29,26 +29,17 @@ public class ListAllProjectsForRegionQueryHandlerTests
         var requestedRegion = Region.London;
 
         var listAllProjectsQueryModels = fixture.CreateMany<ListAllProjectsQueryModel>(50).ToList();
-        listAllProjectsQueryModels.ForEach(p => p.Project.Region = requestedRegion);
 
-        var expected = listAllProjectsQueryModels.Select(item => new ListAllProjectsResultModel(
-            item.Establishment.Name,
-            item.Project.Id,
-            item.Project.Urn,
-            item.Project.SignificantDate,
-            item.Project.State,
-            item.Project.Type,
-            item.Project.IncomingTrustUkprn == null,
-            item.Project.AssignedTo != null
-                ? $"{item.Project.AssignedTo.FirstName} {item.Project.AssignedTo.LastName}"
-                : null)).Take(20).ToList();
+        var expected = listAllProjectsQueryModels.Select(item =>
+                ListAllProjectsResultModel.MapProjectAndEstablishmentToListAllProjectResultModel(item.Project, item.Establishment))
+            .Skip(20).Take(20).ToList();
 
         var mock = listAllProjectsQueryModels.BuildMock();
 
-        mockListAllProjectsForRegionQueryService.ListAllProjects(Arg.Any<ProjectState?>(), Arg.Any<ProjectType?>())
+        mockListAllProjectsForRegionQueryService.ListAllProjectsForRegion(requestedRegion, Arg.Any<ProjectState?>(), Arg.Any<ProjectType?>())
             .Returns(mock);
 
-        var query = new ListAllProjectsForRegionQuery(requestedRegion, ProjectState.Active, null);
+        var query = new ListAllProjectsForRegionQuery(requestedRegion, ProjectState.Active, null) { Page = 1 };
 
         // Act
         var result = await handler.Handle(query, default);
@@ -68,7 +59,7 @@ public class ListAllProjectsForRegionQueryHandlerTests
         typeof(ListAllProjectsQueryModelCustomization),
         typeof(DateOnlyCustomization))]
     public async Task Handle_ShouldReturnCorrectList_WhenAllPagesAreSkipped(
-        [Frozen] IListAllProjectsQueryService mockListAllProjectsQueryService,
+        [Frozen] IListAllProjectsForRegionQueryService mockListAllProjectsForRegionQueryService,
         ListAllProjectsForRegionQueryHandler handler,
         IFixture fixture)
     {
@@ -76,13 +67,10 @@ public class ListAllProjectsForRegionQueryHandlerTests
 
         var mock = listAllProjectsQueryModels.BuildMock();
 
-        mockListAllProjectsQueryService.ListAllProjects(Arg.Any<ProjectState?>(), Arg.Any<ProjectType?>())
+        mockListAllProjectsForRegionQueryService.ListAllProjectsForRegion(Region.London, Arg.Any<ProjectState?>(), Arg.Any<ProjectType?>())
             .Returns(mock);
-
-        var query = new ListAllProjectsForRegionQuery(Region.London, ProjectState.Active, null)
-        {
-            Page = 10
-        };
+        
+        var query = new ListAllProjectsForRegionQuery(Region.London, ProjectState.Active, null) { Page = 10 };
 
         var result = await handler.Handle(query, default);
 
@@ -98,15 +86,15 @@ public class ListAllProjectsForRegionQueryHandlerTests
         typeof(ListAllProjectsQueryModelCustomization),
         typeof(DateOnlyCustomization))]
     public async Task Handle_ShouldReturnUnsuccessful_WhenAnErrorOccurs(
-        [Frozen] IListAllProjectsQueryService mockEstablishmentQueryService,
+        [Frozen] IListAllProjectsForRegionQueryService mockListAllProjectsForRegionQueryService,
         ListAllProjectsForRegionQueryHandler handler)
     {
         // Arrange
         var errorMessage = "This is a test";
 
-        var query = new ListAllProjectsForRegionQuery(null, null, null);
+        var query = new ListAllProjectsForRegionQuery(Region.London, null, null);
 
-        mockEstablishmentQueryService.ListAllProjects(query.ProjectStatus, query.Type)
+        mockListAllProjectsForRegionQueryService.ListAllProjectsForRegion(Region.London, query.ProjectStatus, query.Type)
             .Throws(new Exception(errorMessage));
 
         // Act
