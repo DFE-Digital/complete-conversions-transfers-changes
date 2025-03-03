@@ -27,26 +27,35 @@ public class ListAllProjectsForLAQueryHandlerTests
     {
         //Arrange create
         var localAuthorityCode = fixture.Create<string>();
-        
+
         var listAllProjectsQueryModels = fixture.CreateMany<ListAllProjectsQueryModel>(50).ToList();
-        
+
+        var expected = listAllProjectsQueryModels.Select(item =>
+                ListAllProjectsResultModel.MapProjectAndEstablishmentToListAllProjectResultModel(item.Project, item.Establishment))
+            .Skip(20).Take(20).ToList();
+
         var listAllProjectsMock = listAllProjectsQueryModels.BuildMock();
-        
-        mockListAllProjectsForLaQueryService.ListAllProjectsForLocalAuthority(localAuthorityCode, Arg.Any<ProjectState?>(), Arg.Any<ProjectType?>())
+        mockListAllProjectsForLaQueryService
+            .ListAllProjectsForLocalAuthority(localAuthorityCode, Arg.Any<ProjectState?>(), Arg.Any<ProjectType?>())
             .Returns(listAllProjectsMock);
 
         //Act
         var handlerResult =
-            await handler.Handle(new ListAllProjectsForLocalAuthorityQuery(localAuthorityCode) { Page = 10 }, default);
+            await handler.Handle(new ListAllProjectsForLocalAuthorityQuery(localAuthorityCode) { Page = 1 }, default);
 
         Assert.NotNull(handlerResult.Value);
         Assert.True(handlerResult.IsSuccess);
-        Assert.Equal(0, handlerResult.Value?.Count);
-        
-        mockListAllProjectsForLaQueryService.Received(1).ListAllProjectsForLocalAuthority(localAuthorityCode, 
+        Assert.Equal(expected.Count, handlerResult.Value?.Count);
+
+        mockListAllProjectsForLaQueryService.Received(1).ListAllProjectsForLocalAuthority(localAuthorityCode,
             Arg.Any<ProjectState?>(), Arg.Any<ProjectType?>());
+        
+        for (int i = 0; i < handlerResult.Value!.Count; i++)
+        {
+            Assert.Equivalent(expected[i], handlerResult.Value![i]);
+        }
     }
-    
+
     [Theory]
     [CustomAutoData(
         typeof(OmitCircularReferenceCustomization),
@@ -59,12 +68,13 @@ public class ListAllProjectsForLAQueryHandlerTests
     {
         //Arrange 
         var localAuthorityCode = fixture.Create<string>();
-        
+
         var listAllProjectsQueryModels = fixture.CreateMany<ListAllProjectsQueryModel>(50).ToList();
-        
+
         var listAllProjectsMock = listAllProjectsQueryModels.BuildMock();
-        
-        mockListAllProjectsForLaQueryService.ListAllProjectsForLocalAuthority(localAuthorityCode, Arg.Any<ProjectState?>(), Arg.Any<ProjectType?>())
+
+        mockListAllProjectsForLaQueryService
+            .ListAllProjectsForLocalAuthority(localAuthorityCode, Arg.Any<ProjectState?>(), Arg.Any<ProjectType?>())
             .Returns(listAllProjectsMock);
 
         //Act
@@ -75,11 +85,11 @@ public class ListAllProjectsForLAQueryHandlerTests
         Assert.NotNull(handlerResult);
         Assert.True(handlerResult.IsSuccess);
         Assert.Equal(0, handlerResult.Value?.Count);
-        
+
         mockListAllProjectsForLaQueryService.Received(1).ListAllProjectsForLocalAuthority(
             localAuthorityCode, Arg.Any<ProjectState?>(), Arg.Any<ProjectType?>());
     }
-    
+
     [Theory]
     [CustomAutoData(
         typeof(OmitCircularReferenceCustomization),
@@ -93,8 +103,9 @@ public class ListAllProjectsForLAQueryHandlerTests
         // Arrange
         var errorMessage = "This is a test";
         var laCode = fixture.Create<string>();
-        
-        mockListAllProjectsForLaQueryService.ListAllProjectsForLocalAuthority(laCode, Arg.Any<ProjectState?>(), Arg.Any<ProjectType?>())
+
+        mockListAllProjectsForLaQueryService
+            .ListAllProjectsForLocalAuthority(laCode, Arg.Any<ProjectState?>(), Arg.Any<ProjectType?>())
             .Throws(new Exception(errorMessage));
 
         // Act
@@ -105,5 +116,4 @@ public class ListAllProjectsForLAQueryHandlerTests
         Assert.False(result.IsSuccess);
         Assert.Equal(errorMessage, result.Error);
     }
-    
 }
