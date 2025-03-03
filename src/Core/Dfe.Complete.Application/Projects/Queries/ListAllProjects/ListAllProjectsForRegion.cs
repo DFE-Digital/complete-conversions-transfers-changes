@@ -26,7 +26,6 @@ public class ListAllProjectsForRegionQueryHandler(IListAllProjectsQueryService l
                 .ListAllProjects(request.ProjectStatus, request.Type)
                 .ToListAsync(cancellationToken: cancellationToken);
 
-            // Materialise the filtered list to avoid enumerating multiple times.
             var filteredProjects = projectsList
                 .Where(project => project.Project.Region == request.Region)
                 .ToList();
