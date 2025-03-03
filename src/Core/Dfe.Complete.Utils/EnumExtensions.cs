@@ -26,9 +26,9 @@ public static class EnumExtensions
 		return (attributes.Length > 0 ? attributes[0].Description : source.ToString()) ?? string.Empty;
 	}
 	
-	public static string ToSecondaryDescription<T>(this T source)
+	public static string ToDisplayDescription<T>(this T source)
 	{
-		if (source == null)
+		if (EqualityComparer<T>.Default.Equals(source, default!))
 			return string.Empty;
 
 		var fi = source.GetType().GetField(source.ToString() ?? string.Empty);
