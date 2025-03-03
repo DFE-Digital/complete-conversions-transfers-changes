@@ -14,7 +14,7 @@ public record ListAllProjectsForLocalAuthorityQuery(
     : PaginatedRequest<PaginatedResult<List<ListAllProjectsResultModel>>>;
 
 public class ListAllProjectsForLocalAuthority(
-    IListAllProjectsForRegionQueryService listAllProjectsForRegionQueryService)
+    IListAllProjectsForLocalAuthorityQueryService listAllProjectsForLocalAuthorityQueryService)
     : IRequestHandler<ListAllProjectsForLocalAuthorityQuery, PaginatedResult<List<ListAllProjectsResultModel>>>
 {
     public async Task<PaginatedResult<List<ListAllProjectsResultModel>>> Handle(
@@ -22,9 +22,9 @@ public class ListAllProjectsForLocalAuthority(
     {
         try
         {
-            var projectsForLa = await listAllProjectsForRegionQueryService.ListAllProjectsForRegion(
-                request.LocalAuthorityCode,
-                request.State, request.Type).ToListAsync(cancellationToken);
+            var projectsForLa = await listAllProjectsForLocalAuthorityQueryService
+                .ListAllProjectsForLocalAuthority(request.LocalAuthorityCode, request.State, request.Type)
+                .ToListAsync(cancellationToken);
 
             var paginatedResultModel = projectsForLa.Select(proj =>
                     ListAllProjectsResultModel.MapProjectAndEstablishmentToListAllProjectResultModel(
@@ -33,7 +33,7 @@ public class ListAllProjectsForLocalAuthority(
                 .Skip(request.Page * request.Count)
                 .Take(request.Count)
                 .ToList();
-            
+
             return PaginatedResult<List<ListAllProjectsResultModel>>.Success(paginatedResultModel, projectsForLa.Count);
         }
         catch (Exception e)
