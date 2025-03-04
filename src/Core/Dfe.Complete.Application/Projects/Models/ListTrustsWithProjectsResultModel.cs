@@ -1,3 +1,3 @@
-﻿namespace Dfe.Complete.Application.Projects.Model;
+﻿namespace Dfe.Complete.Application.Projects.Models;
 
-public record ListTrustsWithProjectsResultModel(string ukprn, string trustName, string referenceNumber, int conversionCount, int transfersCount);
+public record ListTrustsWithProjectsResultModel(string identifier, string trustName, string referenceNumber, int conversionCount, int transfersCount);

@@ -1,13 +1,11 @@
-using Dfe.Complete.Application.Projects.Model;
-using Dfe.Complete.Application.Projects.Queries.CountAllProjects;
+using Dfe.Complete.Application.Projects.Models;
 using Dfe.Complete.Application.Projects.Queries.ListAllProjects;
-using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Pages.Pagination;
 using MediatR;
 
 namespace Dfe.Complete.Pages.Projects.List.AllProjectsInTrust
 {
-    public class AllTrustsWithProjectsViewModel(ISender sender) : AllTrustsWithProjectsPageModel
+    public class AllTrustsWithProjectsViewModel(ISender sender) : AllProjectsModel(ByTrustNavigation)
     {
         public List<ListTrustsWithProjectsResultModel> Trusts { get; set; } = default!;
 
@@ -18,10 +16,7 @@ namespace Dfe.Complete.Pages.Projects.List.AllProjectsInTrust
             var listResponse = await sender.Send(listProjectByTrustQuery);
             Trusts = listResponse.Value ?? [];
             
-            var countProjectQuery = new CountAllProjectsQuery(ProjectState.Active, null);
-            var countResponse = await sender.Send(countProjectQuery);
-
-            Pagination = new PaginationModel("/projects/all/in-progress/all" ,PageNumber, countResponse.Value, PageSize);
+            Pagination = new PaginationModel("/projects/all/trusts" ,PageNumber, listResponse.ItemCount, PageSize);
         }
 
         public async Task OnGetMovePage()

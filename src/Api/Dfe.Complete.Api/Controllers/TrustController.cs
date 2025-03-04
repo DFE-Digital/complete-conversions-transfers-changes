@@ -2,7 +2,7 @@ using Asp.Versioning;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
-using Dfe.Complete.Application.Projects.Model;
+using Dfe.Complete.Application.Projects.Models;
 using Dfe.Complete.Application.Projects.Queries.ListAllProjects;
 
 namespace Dfe.Complete.Api.Controllers

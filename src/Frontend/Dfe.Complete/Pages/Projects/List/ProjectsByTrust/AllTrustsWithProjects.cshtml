@@ -1,6 +1,5 @@
 ﻿@page "/projects/all/trusts"
-@using Dfe.Complete.Constants
-@using Dfe.Complete.Pages.Projects.List.AllProjectsInTrust
+@using Dfe.Complete.Pages.Projects.List
 @model Dfe.Complete.Pages.Projects.List.AllProjectsInTrust.AllTrustsWithProjectsViewModel
 @{
     Layout = "List/ProjectsByTrust/_ProjectsByTrustLayout";
@@ -29,7 +28,7 @@
             {
                     <tr class="govuk-table__row">
                         <td class="govuk-table__header govuk-table__cell">
-                        <a class="govuk-link" href="@string.Format(RouteConstants.TrustProjects, trust.ukprn)">@trust.trustName</a>
+                        <a class="govuk-link" href="@AllProjectsModel.GetTrustProjectsUrl(trust)">@trust.trustName</a>
                     </td>
                     <td class="govuk-table__cell">@trust.referenceNumber</td>
                     <td class="govuk-table__cell">@trust.conversionCount</td>

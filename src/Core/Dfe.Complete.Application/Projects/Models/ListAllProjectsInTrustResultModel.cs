@@ -1,5 +1,4 @@
-﻿using Dfe.Complete.Domain.Enums;
-using Dfe.Complete.Domain.ValueObjects;
+﻿using Dfe.Complete.Application.Projects.Models;
 
 namespace Dfe.Complete.Application.Projects.Model;
 
