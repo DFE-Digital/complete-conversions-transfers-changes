@@ -13,19 +13,13 @@ namespace Dfe.Complete.Pages.Projects.List.ProjectsByRegion;
 public class ProjectsByRegion(ISender sender) : AllProjectsModel(ByRegionNavigation)
 {
     [BindProperty(SupportsGet = true)] public string? Region { get; set; }
-
-    [BindProperty(SupportsGet = true)] public int PageNumber { get; set; } = 1;
-
-    public PaginationModel Pagination { get; set; } = default!;
-
-    public int PageSize = 20;
-
+    
     public List<ListAllProjectsResultModel>? Projects { get; set; }
 
     public async Task OnGet()
     {
         ViewData[TabNavigationModel.ViewDataKey] = AllProjectsTabNavigationModel;
-
+        
         var parsedRegion = Region.FromDescriptionValue<Region>();
 
         var listProjectsForRegionQuery =

@@ -1,5 +1,6 @@
 using Dfe.Complete.Application.Projects.Models;
 using Dfe.Complete.Application.Projects.Queries.ListAllProjects;
+using Dfe.Complete.Models;
 using Dfe.Complete.Pages.Pagination;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -16,13 +17,15 @@ public class ProjectsForLocalAuthority(ISender sender) : AllProjectsModel(ByLoca
 
     public async Task OnGet()
     {
+        ViewData[TabNavigationModel.ViewDataKey] = AllProjectsTabNavigationModel;
+        
         var query = new ListAllProjectsForLocalAuthorityQuery(LocalAuthorityCode) { Count = PageSize, Page = PageNumber - 1 };
 
         var result = await sender.Send(query);
 
         Projects = result.Value ?? [];
         
-        Pagination = new PaginationModel($"/projects/all/regions/{LocalAuthorityCode}", PageNumber,
+        Pagination = new PaginationModel($"/projects/all/local-authorities/{LocalAuthorityCode}", PageNumber,
             result.ItemCount, PageSize);
     }
 }
