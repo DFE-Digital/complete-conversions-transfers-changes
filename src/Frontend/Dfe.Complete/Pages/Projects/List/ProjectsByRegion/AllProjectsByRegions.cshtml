@@ -1,0 +1,39 @@
+@page "/projects/all/regions"
+@using Dfe.Complete.Constants
+@using Dfe.Complete.Utils
+@model Dfe.Complete.Pages.Projects.List.ProjectsByRegion.AllProjectsByRegions
+
+@{
+    Layout = "List/_AllProjectsLayout";
+    ViewData["Title"] = "All projects by region";
+}
+
+<h1 class="govuk-heading-xl">
+    All projects by region
+</h1>
+
+<div class="govuk-grid-column-full">
+    <table class="govuk-table" name="projects_table" aria-label="Projects table">
+        <thead class="govuk-table__head">
+        <tr class="govuk-table__row">
+            <th class="govuk-table__header" scope="col">Region</th>
+            <th class="govuk-table__header" scope="col">Conversions</th>
+            <th class="govuk-table__header" scope="col">Transfers</th>
+        </tr>
+        </thead>
+        <tbody class="govuk-table__body">
+        @foreach (var resultModel in Model.ListAllProjectsByRegionResultModel)
+        {
+            var projectByRegionPageLink = string.Format(RouteConstants.ProjectsByRegion, resultModel.Region.ToDescription());
+            
+            <tr class="govuk-table__row">
+                <td class="govuk-table__cell">
+                    <a class="govuk-link" href="@projectByRegionPageLink">@resultModel.Region.ToDisplayDescription()</a>
+                </td>
+                <td class="govuk-table__cell">@resultModel.ConversionsCount</td>
+                <td class="govuk-table__cell">@resultModel.TransfersCount</td>
+            </tr>
+        }
+        </tbody>
+    </table>
+</div>

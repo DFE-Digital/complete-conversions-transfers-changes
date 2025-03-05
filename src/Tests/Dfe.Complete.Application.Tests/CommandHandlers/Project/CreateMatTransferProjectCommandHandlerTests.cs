@@ -14,7 +14,6 @@ using Dfe.Complete.Application.Projects.Models;
 using Dfe.Complete.Application.Common.Models;
 using Dfe.Complete.Application.Projects.Queries.GetLocalAuthority;
 using Dfe.Complete.Application.Projects.Queries.GetUser;
-using Dfe.Complete.Application.Projects.Queries.GetProject;
 using Dfe.Complete.Tests.Common.Customizations.Models;
 using Dfe.Complete.Domain.Entities;
 

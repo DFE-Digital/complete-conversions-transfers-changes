@@ -236,29 +236,6 @@ public partial class CompleteContext : DbContext
                 v => v!.Value,
                 v => new Urn(v));
         
-        projectConfiguration.HasOne(d => d.AssignedTo).WithMany(p => p.ProjectAssignedTos)
-            .HasForeignKey(d => d.AssignedToId)
-            .HasConstraintName("fk_rails_9cf9d80ba9");
-
-        projectConfiguration.HasOne(d => d.Caseworker).WithMany(p => p.ProjectCaseworkers)
-            .HasForeignKey(d => d.CaseworkerId)
-            .HasConstraintName("fk_rails_246548228c");
-
-        projectConfiguration.HasOne(d => d.RegionalDeliveryOfficer).WithMany(p => p.ProjectRegionalDeliveryOfficers)
-            .HasForeignKey(d => d.RegionalDeliveryOfficerId)
-            .HasConstraintName("fk_rails_bba1c6b145");
-
-        projectConfiguration.HasOne(p => p.LocalAuthority)
-            .WithMany()
-            .HasForeignKey(p => p.LocalAuthorityId)
-            .HasConstraintName("fk_rails_eddab2651f");
-        
-        projectConfiguration.Property(e => e.LocalAuthorityId)
-            .HasColumnName("local_authority_id")
-            .HasConversion(
-                v => v.Value,
-                v => new LocalAuthorityId(v));
-        
         projectConfiguration.Property(e => e.Urn)
            .HasConversion(
                v => v!.Value,
@@ -313,6 +290,29 @@ public partial class CompleteContext : DbContext
           .HasConversion(
               v => v!.Value,
               v => new ContactId(v));
+        
+        projectConfiguration.Property(e => e.LocalAuthorityId)
+            .HasColumnName("local_authority_id")
+            .HasConversion(
+                v => v.Value,
+                v => new LocalAuthorityId(v));
+                
+        projectConfiguration.HasOne(d => d.AssignedTo).WithMany(p => p.ProjectAssignedTos)
+            .HasForeignKey(d => d.AssignedToId)
+            .HasConstraintName("fk_rails_9cf9d80ba9");
+
+        projectConfiguration.HasOne(d => d.Caseworker).WithMany(p => p.ProjectCaseworkers)
+            .HasForeignKey(d => d.CaseworkerId)
+            .HasConstraintName("fk_rails_246548228c");
+
+        projectConfiguration.HasOne(d => d.RegionalDeliveryOfficer).WithMany(p => p.ProjectRegionalDeliveryOfficers)
+            .HasForeignKey(d => d.RegionalDeliveryOfficerId)
+            .HasConstraintName("fk_rails_bba1c6b145");
+
+        projectConfiguration.HasOne(p => p.LocalAuthority)
+            .WithMany()
+            .HasForeignKey(p => p.LocalAuthorityId)
+            .HasConstraintName("fk_rails_eddab2651f");
     }
 
     private static void ConfigureUser(EntityTypeBuilder<User> projectConfiguration)

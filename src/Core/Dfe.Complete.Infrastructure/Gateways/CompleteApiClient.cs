@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Logging;
-using System.Net.Http;
+﻿using Microsoft.Extensions.Logging;
 
 namespace Dfe.Complete.Infrastructure.Gateways
 {
