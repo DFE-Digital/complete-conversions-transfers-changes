@@ -1,7 +1,5 @@
-﻿using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using Dfe.Complete.Models;
-using Xunit;
 
 namespace Dfe.Complete.Tests.Validators
 {

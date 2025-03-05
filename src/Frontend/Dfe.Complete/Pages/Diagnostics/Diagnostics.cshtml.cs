@@ -1,9 +1,5 @@
 using Dfe.Complete.Attributes;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Hosting;
-using System;
 using System.Reflection;
 
 namespace Dfe.Complete.Pages.Diagnostics

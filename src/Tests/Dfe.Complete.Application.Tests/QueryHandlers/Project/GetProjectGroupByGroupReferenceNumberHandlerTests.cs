@@ -30,8 +30,7 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
                 .Returns(projectGroup);
 
             mockMapper.Map<ProjectGroupDto>(projectGroup).Returns(new ProjectGroupDto());
-
-
+            
             // Act
             var result = await handler.Handle(command, default);
 

@@ -24,13 +24,15 @@ namespace Microsoft.Extensions.DependencyInjection
             services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
 
             services.AddAcademiesApiClient<ITrustsV4Client, TrustsV4Client>(config);
+            services.AddAcademiesApiClient<IEstablishmentsV4Client, EstablishmentsV4Client>(config);
 
             services.AddMediatR(cfg =>
             {
                 cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly());
                 cfg.AddBehavior(typeof(IPipelineBehavior<,>), typeof(UnhandledExceptionBehaviour<,>));
                 cfg.AddBehavior(typeof(IPipelineBehavior<,>), typeof(ValidationBehaviour<,>));
-
+                cfg.AddBehavior(typeof(IPipelineBehavior<,>), typeof(ExceptionHandlingBehavior<,>));
+                
                 if (performanceLoggingEnabled)
                 {
                     cfg.AddBehavior(typeof(IPipelineBehavior<,>), typeof(PerformanceBehaviour<,>));

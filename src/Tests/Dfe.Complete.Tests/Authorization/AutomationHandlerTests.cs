@@ -6,19 +6,11 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Hosting.Internal;
 using Microsoft.Net.Http.Headers;
 using NSubstitute;
-using NSubstitute.Core;
 
 namespace Dfe.Complete.Tests.Authorization
 {
     public class AutomationHandlerTests
     {
-        private Fixture _fixture;
-
-        public AutomationHandlerTests()
-        {
-            _fixture = new Fixture();
-        }
-
         [Theory]
         [MemberData(nameof(GetEnvironmentTestCases))]
         public void ValidateHostEnviroment(string environment, bool expected)

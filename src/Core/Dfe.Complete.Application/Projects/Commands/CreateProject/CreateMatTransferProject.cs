@@ -1,3 +1,4 @@
+using Dfe.Complete.Application.Projects.Queries.GetLocalAuthority;
 using Dfe.Complete.Application.Projects.Queries.GetUser;
 using Dfe.Complete.Domain.Entities;
 using Dfe.Complete.Domain.Enums;
@@ -36,20 +37,24 @@ public class CreateMatTransferProjectCommandHandler(
     {
         public async Task<ProjectId> Handle(CreateMatTransferProjectCommand request, CancellationToken cancellationToken)
         {
+            var localAuthorityIdRequest = await sender.Send(new GetLocalAuthorityBySchoolUrnQuery(request.Urn.Value),
+                cancellationToken);
+
+            if (!localAuthorityIdRequest.IsSuccess || localAuthorityIdRequest.Value?.LocalAuthorityId == null)
+                throw new NotFoundException($"No Local authority could be found via Establishments for School Urn: {request.Urn.Value}.", innerException: new Exception(localAuthorityIdRequest.Error));
+            
             // The user Team should be moved as a Claim or Group to the Entra (MS AD)
-            var userRequest = await sender.Send(new GetUserByAdIdQuery(request.UserAdId));
+            var userRequest = await sender.Send(new GetUserByAdIdQuery(request.UserAdId), cancellationToken);
 
-            if (!userRequest.IsSuccess)
-            {
-                throw new Exception($"User retrieval failed: {userRequest.Error}");
-            }
-
+            if (!userRequest.IsSuccess || userRequest.Value == null)
+                throw new NotFoundException("No user found.", innerException: new Exception(userRequest.Error));
+            
             var projectUser = userRequest.Value;
 
             var projectUserTeam = projectUser.Team;
             var projectUserId = projectUser?.Id;
 
-            var projectTeam = EnumExtensions.FromDescription<ProjectTeam>(projectUserTeam);
+            var projectTeam = projectUserTeam.FromDescription<ProjectTeam>();
             var region = EnumMapper.MapTeamToRegion(projectTeam);
 
             var createdAt = DateTime.UtcNow;
@@ -97,9 +102,9 @@ public class CreateMatTransferProjectCommandHandler(
                     request.IsDueTo2Ri,
                     request.NewTrustName,
                     request.NewTrustReferenceNumber,
-                    request.HandoverComments);
-
-
+                    request.HandoverComments,
+                    localAuthorityIdRequest.Value.LocalAuthorityId.Value);
+            
         await transferTaskRepository.AddAsync(transferTask, cancellationToken);
         await projectRepository.AddAsync(project, cancellationToken);
 

@@ -1,7 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Net.Http.Headers;
+﻿using Microsoft.Net.Http.Headers;
 
 namespace Dfe.Complete.Authorization
 {

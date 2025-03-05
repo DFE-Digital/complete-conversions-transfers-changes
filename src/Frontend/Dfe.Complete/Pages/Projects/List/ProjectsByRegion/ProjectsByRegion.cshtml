@@ -1,0 +1,40 @@
+@page "/projects/all/regions/{region}"
+@using Dfe.Complete.Pages.Projects.List
+@model Dfe.Complete.Pages.Projects.List.ProjectsByRegion.ProjectsByRegion
+
+@{
+    Layout = "List/_AllProjectsLayout";
+    ViewData["Title"] = $"Project for {Model.Region} region";
+}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-full">
+        <table class="govuk-table" name="projects_table" aria-label="Projects table">
+            <thead class="govuk-table__head">
+            <tr class="govuk-table__row">
+                <th class="govuk-table__header" scope="col">School or academy</th>
+                <th class="govuk-table__header" scope="col">URN</th>
+                <th class="govuk-table__header" scope="col">Conversion or transfer date</th>
+                <th class="govuk-table__header" scope="col">Project type</th>
+                <th class="govuk-table__header" scope="col">Assigned to</th>
+            </tr>
+            </thead>
+            <tbody class="govuk-table__body">
+            @foreach (var project in Model.Projects)
+            {
+                var projectLink = AllProjectsModel.GetProjectSummaryUrl(project);
+            
+                <tr class="govuk-table__row">
+                    <td class="govuk-table__header govuk-table__cell">
+                        <a class="govuk-link" href="@projectLink">@project.EstablishmentName</a>
+                    </td>
+                    <td class="govuk-table__cell">@project.Urn.Value</td>
+                    <td class="govuk-table__cell">@project.ConversionOrTransferDate.ToDateMonthYearString()</td>
+                    <td class="govuk-table__cell">@project.ProjectType.ToString()</td>
+                    <td class="govuk-table__cell">@project.AssignedToFullName</td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    </div>
+</div>

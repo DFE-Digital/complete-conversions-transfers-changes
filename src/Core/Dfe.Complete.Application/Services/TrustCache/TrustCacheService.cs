@@ -1,5 +1,4 @@
-﻿using Dfe.AcademiesApi.Client;
-using Dfe.AcademiesApi.Client.Contracts;
+﻿using Dfe.AcademiesApi.Client.Contracts;
 using Dfe.Complete.Domain.ValueObjects;
 
 namespace Dfe.Complete.Application.Services.TrustCache

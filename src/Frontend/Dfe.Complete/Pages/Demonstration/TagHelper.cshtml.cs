@@ -3,7 +3,6 @@ using Dfe.Complete.Models;
 using Dfe.Complete.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace Dfe.Complete.Pages.Demonstration

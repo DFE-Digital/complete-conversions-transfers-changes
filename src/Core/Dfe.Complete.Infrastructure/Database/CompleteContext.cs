@@ -206,7 +206,7 @@ public partial class CompleteContext : DbContext
             .HasColumnName("tasks_data_id")
             .HasConversion(
                 v => v!.Value,
-                v => new TaskDataId(v)); ;
+                v => new TaskDataId(v));
         projectConfiguration.Property(e => e.TasksDataType)
             .HasMaxLength(4000)
             .HasColumnName("tasks_data_type")
@@ -235,24 +235,12 @@ public partial class CompleteContext : DbContext
             .HasConversion(
                 v => v!.Value,
                 v => new Urn(v));
-
-        projectConfiguration.HasOne(d => d.AssignedTo).WithMany(p => p.ProjectAssignedTos)
-            .HasForeignKey(d => d.AssignedToId)
-            .HasConstraintName("fk_rails_9cf9d80ba9");
-
-        projectConfiguration.HasOne(d => d.Caseworker).WithMany(p => p.ProjectCaseworkers)
-            .HasForeignKey(d => d.CaseworkerId)
-            .HasConstraintName("fk_rails_246548228c");
-
-        projectConfiguration.HasOne(d => d.RegionalDeliveryOfficer).WithMany(p => p.ProjectRegionalDeliveryOfficers)
-            .HasForeignKey(d => d.RegionalDeliveryOfficerId)
-            .HasConstraintName("fk_rails_bba1c6b145");
-
+        
         projectConfiguration.Property(e => e.Urn)
            .HasConversion(
                v => v!.Value,
                v => new Urn(v));
-
+        
         projectConfiguration.Property(e => e.IncomingTrustUkprn)
           .HasConversion(
               v => v!.Value,
@@ -302,26 +290,29 @@ public partial class CompleteContext : DbContext
           .HasConversion(
               v => v!.Value,
               v => new ContactId(v));
+        
+        projectConfiguration.Property(e => e.LocalAuthorityId)
+            .HasColumnName("local_authority_id")
+            .HasConversion(
+                v => v.Value,
+                v => new LocalAuthorityId(v));
+                
+        projectConfiguration.HasOne(d => d.AssignedTo).WithMany(p => p.ProjectAssignedTos)
+            .HasForeignKey(d => d.AssignedToId)
+            .HasConstraintName("fk_rails_9cf9d80ba9");
 
-        //projectConfiguration
-        //    .HasOne(c => c.MainContactId)
-        //    .WithOne()
-        //    .HasForeignKey<Contact>(c => c.Id);
+        projectConfiguration.HasOne(d => d.Caseworker).WithMany(p => p.ProjectCaseworkers)
+            .HasForeignKey(d => d.CaseworkerId)
+            .HasConstraintName("fk_rails_246548228c");
 
-        //projectConfiguration
-        //    .HasOne(c => c.EstablishmentMainContactId)
-        //    .WithOne()
-        //    .HasForeignKey<Contact>(c => c.Id);
+        projectConfiguration.HasOne(d => d.RegionalDeliveryOfficer).WithMany(p => p.ProjectRegionalDeliveryOfficers)
+            .HasForeignKey(d => d.RegionalDeliveryOfficerId)
+            .HasConstraintName("fk_rails_bba1c6b145");
 
-        //projectConfiguration
-        //    .HasOne(c => c.IncomingTrustMainContactId)
-        //    .WithOne()
-        //    .HasForeignKey<Contact>(c => c.Id);
-
-        //projectConfiguration
-        //    .HasOne(c => c.OutgoingTrustMainContactId)
-        //    .WithOne()
-        //    .HasForeignKey<Contact>(c => c.Id);
+        projectConfiguration.HasOne(p => p.LocalAuthority)
+            .WithMany()
+            .HasForeignKey(p => p.LocalAuthorityId)
+            .HasConstraintName("fk_rails_eddab2651f");
     }
 
     private static void ConfigureUser(EntityTypeBuilder<User> projectConfiguration)
@@ -1176,7 +1167,6 @@ public partial class CompleteContext : DbContext
             .HasPrecision(6)
             .HasColumnName("updated_at");
     }
-
-
+    
     partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
 }

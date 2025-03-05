@@ -49,7 +49,8 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
                 null,
                 null, 
                 null, 
-                null);
+                null, 
+                Guid.NewGuid());
 
             // Arrange
             mockProjectRepository.GetAsync(Arg.Any<Expression<Func<Domain.Entities.Project, bool>>>())

@@ -1,6 +1,6 @@
 @page "/projects/transfer/new_mat"
 @model Dfe.Complete.Pages.Projects.MatTransfer.CreateNewProject
-@inject Dfe.Complete.Services.IErrorService ErrorService
+@inject Dfe.Complete.Services.ErrorService ErrorService
 @{
     ViewData["Title"] = "Add a form a MAT transfer";
 
@@ -9,7 +9,7 @@
     const string trustRefNumber = nameof(Model.TrustReferenceNumber);
     const string trustName = nameof(Model.TrustName);
     const string advisoryBoardDateField = nameof(Model.AdvisoryBoardDate);
-    const string provisionalTransferDateField = nameof(Model.ProvisionalTransferDate);
+    const string provisionalTransferDateField = nameof(Model.SignificantDate);
     const string academySharePointLinkField = nameof(Model.AcademySharePointLink);
     const string incomingTrustSharePointLinkField = nameof(Model.IncomingTrustSharePointLink);
     const string outgoingTrustSharePointLinkField = nameof(Model.OutgoingTrustSharePointLink);
@@ -20,7 +20,7 @@
     const string outgoingTrustWillCloseField = nameof(Model.OutgoingTrustWillClose);
 }
 
-    <div class="govuk-grid-row">
+<div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
             @{
                 <form method="post">
@@ -139,7 +139,7 @@
                         </govuk-textarea-label>
                     </govuk-textarea>
 
-                    <govuk-date-input id="@provisionalTransferDateField" name-prefix="@provisionalTransferDateField" asp-for="@Model.ProvisionalTransferDate">
+                    <govuk-date-input id="@provisionalTransferDateField" name-prefix="@provisionalTransferDateField" asp-for="@Model.SignificantDate">
                         <govuk-date-input-fieldset>
                             <govuk-date-input-fieldset-legend class="govuk-fieldset__legend--m">
                                 Provisional transfer date

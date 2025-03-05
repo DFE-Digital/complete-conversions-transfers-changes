@@ -9,7 +9,7 @@ namespace Dfe.Complete.Infrastructure.Gateways
     {
         private readonly IHttpClientFactory _clientFactory;
         private readonly ILogger<ApiClient> _logger;
-        private string _httpClientName;
+        private readonly string _httpClientName;
 
         protected ApiClient(
             IHttpClientFactory clientFactory, 

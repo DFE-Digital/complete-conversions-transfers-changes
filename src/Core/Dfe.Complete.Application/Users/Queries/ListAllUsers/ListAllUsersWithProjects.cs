@@ -1,5 +1,4 @@
-﻿using Dfe.Complete.Application.Common;
-using Dfe.Complete.Application.Common.Models;
+﻿using Dfe.Complete.Application.Common.Models;
 using Dfe.Complete.Application.Projects.Models;
 using Dfe.Complete.Application.Users.Models;
 using Dfe.Complete.Domain.Entities;
