@@ -130,11 +130,6 @@ $govuk-assets-path: "/node_modules/govuk-frontend/govuk/assets/";
     margin-bottom: govuk-spacing(2);
 }
 
-// Override header link colours to be white
-a.dfe-header__link--service, a.dfe-header__navigation-link {
-	color: #ffffff;
-}
-
 // Override default font from DfE Frontend styles
 html {
 	font-family: "Inter", blinkmacsystemfont, "Segoe UI", roboto, oxygen-sans, ubuntu, cantarell, "Helvetica Neue", sans-serif;
