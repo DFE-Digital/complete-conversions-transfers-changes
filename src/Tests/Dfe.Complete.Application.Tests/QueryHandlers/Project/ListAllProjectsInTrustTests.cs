@@ -30,7 +30,7 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
             IFixture fixture)
         {
             // Arrange
-            var expectedtrusts = 20;
+            var expectedTrusts = 20;
             var expectedProjects = 20;
             var ukprn = 2;
 
@@ -60,7 +60,7 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
                 }
             }
 
-            var query = new ListAllProjectsInTrustQuery("", false) { Count = expectedtrusts };
+            var query = new ListAllProjectsInTrustQuery("", false) { Count = expectedTrusts };
 
             var mockProjects = listAllProjectsQueryModels.BuildMock();
             
