@@ -1,3 +1,4 @@
+using Dfe.Complete.Application.Projects.Models;
 using Dfe.Complete.Application.Projects.Queries.GetLocalAuthority;
 using MediatR;
 using Dfe.Complete.Domain.ValueObjects;
@@ -60,20 +61,24 @@ namespace Dfe.Complete.Application.Projects.Commands.CreateProject
 
             var conversionTask = new ConversionTasksData(new TaskDataId(conversionTaskId), createdAt, createdAt);
 
-            var projectGroupRequest =
-                await sender.Send(new GetProjectGroupByGroupReferenceNumberQuery(request.GroupReferenceNumber),
-                    cancellationToken);
+            ProjectGroupDto? projectGroupDto = null;
+            if (!string.IsNullOrEmpty(request.GroupReferenceNumber))
+            {
+                var projectGroupRequest =
+                    await sender.Send(new GetProjectGroupByGroupReferenceNumberQuery(request.GroupReferenceNumber),
+                        cancellationToken);
 
-            if (!projectGroupRequest.IsSuccess)
-                throw new NotFoundException($"Project Group retrieval failed", nameof(request.GroupReferenceNumber), new Exception(projectGroupRequest.Error));
+                if (!projectGroupRequest.IsSuccess)
+                    throw new NotFoundException($"Project Group retrieval failed", nameof(request.GroupReferenceNumber), new Exception(projectGroupRequest.Error));
 
-            if (projectGroupRequest.Value == null)
-                throw new NotFoundException(
-                    $"No Project Group found with reference number: {request.GroupReferenceNumber}",
-                    nameof(request.GroupReferenceNumber));
+                if (projectGroupRequest.Value == null)
+                    throw new NotFoundException(
+                        $"No Project Group found with reference number: {request.GroupReferenceNumber}",
+                        nameof(request.GroupReferenceNumber));
 
-            var groupId = projectGroupRequest.Value?.Id;
-
+                projectGroupDto = projectGroupRequest.Value;
+            }
+            
             ProjectTeam team;
             DateTime? assignedAt = null;
             UserId? projectUserAssignedToId = null;
@@ -107,7 +112,7 @@ namespace Dfe.Complete.Application.Projects.Commands.CreateProject
                 request.AdvisoryBoardConditions,
                 request.EstablishmentSharepointLink,
                 request.IncomingTrustSharepointLink,
-                groupId,
+                projectGroupDto?.Id,
                 team,
                 projectUser?.Id,
                 projectUserAssignedToId,
