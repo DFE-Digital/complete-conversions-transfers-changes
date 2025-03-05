@@ -152,8 +152,8 @@ namespace Dfe.Complete.Pages.Projects.Transfer
             {
                 logger.LogError(notFoundException, notFoundException.Message, notFoundException.InnerException);
                 
-                ModelState.AddModelError("NotFound", notFoundException.Message);
-                
+                ModelState.AddModelError(notFoundException.Field ?? "NotFound", notFoundException.Message);
+
                 errorService.AddErrors(ModelState);
                 
                 return Page();
