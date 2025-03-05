@@ -36,7 +36,7 @@ public abstract class AllProjectsModel(string currentNavigation) : PageModel
         return string.Format(
             project.ProjectType == ProjectType.Conversion
                 ? RouteConstants.ConversionProjectTaskList
-                : RouteConstants.TransferProjectTaskList, project.ProjectId);
+                : RouteConstants.TransferProjectTaskList, project.ProjectId.Value);
     }
 
     public static string GetProjectSummaryUrl(Project project)
