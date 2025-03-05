@@ -22,7 +22,7 @@ namespace Dfe.Complete.Application.Projects.Commands.CreateProject
         string AdvisoryBoardConditions,
         string EstablishmentSharepointLink,
         string IncomingTrustSharepointLink,
-        string GroupReferenceNumber,
+        string? GroupReferenceNumber,
         bool HandingOverToRegionalCaseworkService,
         string HandoverComments,
         string? UserAdId) : IRequest<ProjectId>;
@@ -52,7 +52,7 @@ namespace Dfe.Complete.Application.Projects.Commands.CreateProject
             var projectUserTeam = projectUser?.Team;
             var projectUserId = projectUser?.Id;
 
-            var projectTeam = EnumExtensions.FromDescription<ProjectTeam>(projectUserTeam);
+            var projectTeam = projectUserTeam.FromDescription<ProjectTeam>();
             var region = EnumMapper.MapTeamToRegion(projectTeam);
 
             var createdAt = DateTime.UtcNow;
@@ -71,12 +71,7 @@ namespace Dfe.Complete.Application.Projects.Commands.CreateProject
                 if (!projectGroupRequest.IsSuccess)
                     throw new NotFoundException($"Project Group retrieval failed", nameof(request.GroupReferenceNumber), new Exception(projectGroupRequest.Error));
 
-                if (projectGroupRequest.Value == null)
-                    throw new NotFoundException(
-                        $"No Project Group found with reference number: {request.GroupReferenceNumber}",
-                        nameof(request.GroupReferenceNumber));
-
-                projectGroupDto = projectGroupRequest.Value;
+                projectGroupDto = projectGroupRequest.Value ?? throw new NotFoundException($"No Project Group found with reference number: {request.GroupReferenceNumber}", nameof(request.GroupReferenceNumber));
             }
             
             ProjectTeam team;

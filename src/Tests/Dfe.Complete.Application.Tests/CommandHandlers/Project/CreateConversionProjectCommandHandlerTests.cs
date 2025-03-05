@@ -372,7 +372,7 @@ public class CreateConversionProjectCommandHandlerTests
         
     [Theory]
     [CustomAutoData(typeof(DateOnlyCustomization), typeof(IgnoreVirtualMembersCustomisation))]
-    public async Task Handle_ShouldNOTSet_GroupReferenceNumber_WhenNullOrEmpty(
+    public async Task Handle_ShouldNOTSet_GroupId_When_GroupReferenceNumber_NullOrEmpty(
         [Frozen] ICompleteRepository<Domain.Entities.Project> mockProjectRepository,
         [Frozen] ICompleteRepository<ConversionTasksData> mockConversionTaskRepository,
         [Frozen] Mock<ISender> mockSender,
@@ -384,7 +384,7 @@ public class CreateConversionProjectCommandHandlerTests
             mockSender.Object);
 
         //
-        command = command with { GroupReferenceNumber = string.Empty };
+        command = command with { GroupReferenceNumber = null };
 
         const ProjectTeam team = ProjectTeam.WestMidlands;
         var userDto = new UserDto
