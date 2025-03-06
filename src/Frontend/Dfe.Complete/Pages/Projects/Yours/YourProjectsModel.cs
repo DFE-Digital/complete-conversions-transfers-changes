@@ -5,9 +5,9 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace Dfe.Complete.Pages.Projects.Yours;
 
-public class YourProjectsModel(string currentNavigation) : PageModel
+public abstract class YourProjectsModel(string currentNavigation) : PageModel
 {
-    protected TabNavigationModel AllProjectsTabNavigationModel = new(TabNavigationModel.AllProjectsTabName);
+    protected TabNavigationModel AllProjectsTabNavigationModel = new(TabNavigationModel.YourProjectsTabName);
     
     public const string InProgressNavigation = "in-progress";
     
@@ -18,6 +18,4 @@ public class YourProjectsModel(string currentNavigation) : PageModel
     public PaginationModel? Pagination { get; set; }
 
     internal int PageSize = 20;
-
-    
 }
