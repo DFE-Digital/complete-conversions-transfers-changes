@@ -195,6 +195,78 @@ public class ProjectsControllerTests
 
     [Theory]
     [CustomAutoData(typeof(CustomWebApplicationDbContextFactoryCustomization), typeof(EstablishmentsCustomization))]
+    public async Task ListAllProjectsCompletedState_Async_ShouldReturnList(
+        CustomWebApplicationDbContextFactory<Program> factory,
+        IProjectsClient projectsClient,
+        IFixture fixture)
+    {
+        factory.TestClaims = [new Claim(ClaimTypes.Role, ReadRole)];
+
+        // Arrange
+        var dbContext = factory.GetDbContext<CompleteContext>();
+        var testUser = await dbContext.Users.FirstAsync();
+        var establishments = fixture.CreateMany<GiasEstablishment>(50).ToList();
+        await dbContext.GiasEstablishments.AddRangeAsync(establishments);
+        var projects = establishments.Select(establishment =>
+        {
+            var project = fixture.Customize(new ProjectCustomization
+                {
+                    RegionalDeliveryOfficerId = testUser.Id,
+                    CaseworkerId = testUser.Id,
+                    AssignedToId = testUser.Id
+                })
+                .Create<Project>();
+            project.Urn = establishment.Urn ?? project.Urn;
+            return project;
+        }).ToList();
+
+        projects.ForEach(x => x.LocalAuthorityId = dbContext.LocalAuthorities.ToList().MinBy(_ => Guid.NewGuid()).Id);
+
+        await dbContext.Projects.AddRangeAsync(projects);
+        await dbContext.SaveChangesAsync();
+
+        // Act
+        var results = await projectsClient.ListAllProjectsAsync(
+            ProjectState.Completed, null, 0, 50);
+
+        // Assert
+        Assert.NotNull(results);
+        Assert.Equal(17, results.Count);
+        foreach (var result in results)
+        {
+            var project = projects.Find(p => p.Id.Value == result.ProjectId?.Value);
+            var establishment = establishments.Find(e => e.Urn?.Value == result.Urn?.Value);
+
+            Assert.NotNull(result.EstablishmentName);
+            Assert.Equal(establishment?.Name, result.EstablishmentName);
+
+            Assert.NotNull(result.ProjectId);
+            Assert.Equal(project?.Id.Value, result.ProjectId.Value);
+
+            Assert.NotNull(result.Urn);
+            Assert.Equal(project?.Urn.Value, result.Urn.Value);
+            Assert.Equal(establishment?.Urn?.Value, result.Urn.Value);
+
+            Assert.NotNull(result.ConversionOrTransferDate);
+            Assert.Equal(project?.SignificantDate, new DateOnly(result.ConversionOrTransferDate.Value.Year,
+                result.ConversionOrTransferDate.Value.Month, result.ConversionOrTransferDate.Value.Day));
+
+            Assert.NotNull(result.State);
+            Assert.Equal(project?.State.ToString(), result.State.ToString());
+
+            Assert.NotNull(result.ProjectType);
+            Assert.Equal(project?.Type?.ToString(), result.ProjectType.Value.ToString());
+
+            Assert.Equal(project?.FormAMat, result.IsFormAMAT);
+
+            Assert.NotNull(result.AssignedToFullName);
+            Assert.Equal($"{project?.AssignedTo?.FirstName} {project?.AssignedTo?.LastName}",
+                result.AssignedToFullName);
+        }
+    }
+
+    [Theory]
+    [CustomAutoData(typeof(CustomWebApplicationDbContextFactoryCustomization), typeof(EstablishmentsCustomization))]
     public async Task RemoveProjectsShouldRemoveConversionProjectAndChildren(
         CustomWebApplicationDbContextFactory<Program> factory,
         IProjectsClient projectsClient,
