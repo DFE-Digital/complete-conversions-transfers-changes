@@ -4,6 +4,8 @@ using Dfe.Complete.Application.Projects.Queries.ListAllProjects;
 using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Models;
 using Dfe.Complete.Pages.Pagination;
+using Dfe.Complete.Constants;
+
 using MediatR;
 
 namespace Dfe.Complete.Pages.Projects.List.CompletedProjects;
@@ -24,6 +26,11 @@ public class AllCompletedProjectsViewModel(ISender sender) : AllProjectsModel(Co
         var countProjectQuery = new CountAllProjectsQuery(ProjectState.Completed, null);
         var countResponse = await sender.Send(countProjectQuery);
 
-        Pagination = new PaginationModel("/projects/all/completed/all", PageNumber, countResponse.Value, PageSize);
+        Pagination = new PaginationModel(RouteConstants.CompletedProjects, PageNumber, countResponse.Value, PageSize);
+    }
+    
+    public async Task OnGetMovePage()
+    {
+        await OnGet();
     }
 }

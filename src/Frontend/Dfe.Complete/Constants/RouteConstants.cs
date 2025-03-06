@@ -11,6 +11,7 @@
 
         public const string SelectCreateProjectType = "/projects/new";
         
+        public const string CompletedProjects = "/projects/all/completed";
         
         public const string ProjectViewNotes = Project + "/notes";
         public const string ProjectAddNote = ProjectViewNotes + "/edit";
