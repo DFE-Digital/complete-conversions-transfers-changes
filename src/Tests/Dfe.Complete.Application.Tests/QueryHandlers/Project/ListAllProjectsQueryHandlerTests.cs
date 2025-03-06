@@ -84,8 +84,10 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
                 item.Project.FormAMat,
                 item.Project.AssignedTo != null
                     ? $"{item.Project.AssignedTo.FirstName} {item.Project.AssignedTo.LastName}"
-                    : null)).Skip(20).Take(20).ToList(),
-                null;
+                    : null,
+                item.Project.LocalAuthority.Name,
+                item.Project.Team,
+                item.Project.CompletedAt)).Skip(20).Take(20).ToList();
 
             var query = new ListAllProjectsQuery(null, null, 1);
 
