@@ -7,7 +7,7 @@ namespace Dfe.Complete.Pages.Projects.Yours;
 
 public abstract class YourProjectsModel(string currentNavigation) : PageModel
 {
-    protected TabNavigationModel AllProjectsTabNavigationModel = new(TabNavigationModel.YourProjectsTabName);
+    protected TabNavigationModel YourProjectsTabNavigationModel = new(TabNavigationModel.YourProjectsTabName);
     
     public const string InProgressNavigation = "in-progress";
     
