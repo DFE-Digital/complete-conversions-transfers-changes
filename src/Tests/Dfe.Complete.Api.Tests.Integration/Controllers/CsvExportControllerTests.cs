@@ -9,7 +9,6 @@ using Dfe.Complete.Tests.Common.Customizations.Models;
 using DfE.CoreLibs.Testing.AutoFixture.Attributes;
 using DfE.CoreLibs.Testing.AutoFixture.Customizations;
 using DfE.CoreLibs.Testing.Mocks.WebApplicationFactory;
-using System.IO;
 
 namespace Dfe.Complete.Api.Tests.Integration.Controllers
 {

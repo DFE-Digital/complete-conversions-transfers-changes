@@ -6,7 +6,6 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Hosting.Internal;
 using Microsoft.Net.Http.Headers;
 using NSubstitute;
-using NSubstitute.Core;
 
 namespace Dfe.Complete.Tests.Authorization
 {

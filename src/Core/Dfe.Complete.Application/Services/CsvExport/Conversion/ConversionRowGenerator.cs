@@ -2,7 +2,6 @@
 using Dfe.Complete.Application.Mappers;
 using Dfe.Complete.Application.Services.CsvExport.Builders;
 using Dfe.Complete.Domain.Enums;
-using Dfe.Complete.Utils;
 
 namespace Dfe.Complete.Application.Services.CsvExport.Conversion
 {

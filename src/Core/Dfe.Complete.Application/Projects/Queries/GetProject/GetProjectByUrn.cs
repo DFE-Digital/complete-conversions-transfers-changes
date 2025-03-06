@@ -2,8 +2,6 @@ using MediatR;
 using Dfe.Complete.Domain.ValueObjects;
 using Dfe.Complete.Domain.Interfaces.Repositories;
 using Dfe.Complete.Domain.Entities;
-using DfE.CoreLibs.Caching.Helpers;
-using DfE.CoreLibs.Caching.Interfaces;
 using Dfe.Complete.Application.Common.Models;
 using AutoMapper;
 using Dfe.Complete.Application.Projects.Models;

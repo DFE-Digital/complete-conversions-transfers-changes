@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Dfe.Complete.Application.Services.CsvExport
+﻿namespace Dfe.Complete.Application.Services.CsvExport
 {
     public interface ICSVFileContentGenerator<TModel>
     {

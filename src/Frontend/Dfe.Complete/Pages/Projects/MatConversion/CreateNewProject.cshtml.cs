@@ -120,7 +120,9 @@ public class CreateNewProject(ISender sender, ErrorService errorService, ILogger
         {
             logger.LogError(notFoundException, notFoundException.Message, notFoundException.InnerException);
                 
-            ModelState.AddModelError("NotFound", notFoundException.Message);
+            ModelState.AddModelError(notFoundException.Field ?? "NotFound", notFoundException.Message);
+
+            errorService.AddErrors(ModelState);
             
             return Page();
         }

@@ -281,7 +281,9 @@ public class CreateConversionProjectCommandHandlerTests
 
             // Act & Assert
             var exception = await Assert.ThrowsAsync<NotFoundException>(() => handler.Handle(command, default));
-            Assert.Equal("Project Group retrieval failed: DB ERROR", exception.Message);
+            Assert.Equal("Project Group retrieval failed", exception.Message);
+            Assert.NotNull(exception.InnerException);
+            Assert.Equal("DB ERROR", exception.InnerException.Message);
             
             await mockProjectRepository.Received(0).AddAsync(It.IsAny<Domain.Entities.Project>(), It.IsAny<CancellationToken>());
             await mockConversionTaskRepository.Received(0).AddAsync(It.IsAny<ConversionTasksData>(), It.IsAny<CancellationToken>());
@@ -351,7 +353,6 @@ public class CreateConversionProjectCommandHandlerTests
             [Frozen] Mock<ISender> mockSender,
             CreateConversionProjectCommand command)
         {
-            var responseDto = new GetLocalAuthorityBySchoolUrnResponseDto(null);
             mockSender.Setup(s => s.Send(It.IsAny<GetLocalAuthorityBySchoolUrnQuery>(), It.IsAny<CancellationToken>()))
                 .ReturnsAsync(Result<GetLocalAuthorityBySchoolUrnResponseDto?>.Success(null));
 

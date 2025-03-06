@@ -11,7 +11,6 @@ namespace Dfe.Complete.Pages.Projects.List;
 
 public abstract class AllProjectsModel(string currentNavigation) : PageModel
 {
-    public record PartialProject(ProjectType ProjectType, string ProjectId);
     protected TabNavigationModel AllProjectsTabNavigationModel = new(TabNavigationModel.AllProjectsTabName);
 
     public const string HandoverNavigation = "handover";
@@ -34,11 +33,17 @@ public abstract class AllProjectsModel(string currentNavigation) : PageModel
 
     public static string GetProjectSummaryUrl(ListAllProjectsResultModel project)
     {
-        return string.Format(project.ProjectType == ProjectType.Conversion ? RouteConstants.ConversionProjectTaskList : RouteConstants.TransferProjectTaskList, project.ProjectId);
+        return string.Format(
+            project.ProjectType == ProjectType.Conversion
+                ? RouteConstants.ConversionProjectTaskList
+                : RouteConstants.TransferProjectTaskList, project.ProjectId);
     }
 
     public static string GetProjectSummaryUrl(Project project)
     {
-        return string.Format(project.Type == ProjectType.Conversion ? RouteConstants.ConversionProjectTaskList : RouteConstants.TransferProjectTaskList, project.Id);
+        return string.Format(
+            project.Type == ProjectType.Conversion
+                ? RouteConstants.ConversionProjectTaskList
+                : RouteConstants.TransferProjectTaskList, project.Id);
     }
 }

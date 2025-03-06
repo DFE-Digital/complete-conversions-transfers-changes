@@ -1,5 +1,4 @@
 using Dfe.Complete.Domain.Common;
-using System;
 
 namespace Dfe.Complete.Domain.ValueObjects
 {

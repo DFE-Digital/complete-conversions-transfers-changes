@@ -1,0 +1,41 @@
+@page "/projects/all/local-authorities"
+@model Dfe.Complete.Pages.Projects.List.ProjectsByLocalAuthority.AllLocalAuthorities
+
+@{
+    Layout = "List/ProjectsByUser/_ProjectsByUserLayout";
+    ViewData["Title"] = "All projects by user";
+}
+
+@section PageHeading
+{
+    <h1 class="govuk-heading-xl">
+        All projects by authority
+    </h1>
+}
+
+<div class="govuk-grid-column-full">
+    <table class="govuk-table" name="la-table" aria-label="All projects by local authority">
+        <thead class="govuk-table__head">
+        <tr class="govuk-table__row">
+            <th class="govuk-table__header" scope="col">Local authority</th>
+            <th class="govuk-table__header" scope="col">Code</th>
+            <th class="govuk-table__header" scope="col">Conversions</th>
+            <th class="govuk-table__header" scope="col">Transfers</th>
+        </tr>
+        </thead>
+        <tbody class="govuk-table__body">
+
+        @foreach (var localAuthority in Model.LocalAuthorities.OrderBy(la => la.LocalAuthority.Name))
+        {
+            <tr class="govuk-table__row">
+                <td class="govuk-table__header govuk-table__cell">
+                    <a class="govuk-link" href="/projects/all/local-authorities/@localAuthority.LocalAuthorityCode">@localAuthority.LocalAuthority.Name</a>
+                </td>
+                <td class="govuk-table__cell">@localAuthority.LocalAuthorityCode</td>
+                <td class="govuk-table__cell">@localAuthority.Conversions</td>
+                <td class="govuk-table__cell">@localAuthority.Transfers</td>
+            </tr>
+        }
+        </tbody>
+    </table>
+</div>

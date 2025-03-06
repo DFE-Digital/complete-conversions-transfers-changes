@@ -1,7 +1,6 @@
 using Dfe.Complete.Constants;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using System.Threading.Tasks;
 
 namespace Dfe.Complete.Pages.Projects.Transfer.Tasks.StakeholderKickoff
 {

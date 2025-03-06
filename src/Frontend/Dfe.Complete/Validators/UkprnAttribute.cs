@@ -7,13 +7,13 @@ namespace Dfe.Complete.Validators
     [AttributeUsage(AttributeTargets.Property)]
     public class UkprnAttribute : ValidationAttribute
     {
-
         private readonly string _comparisonProperty;
 
         public UkprnAttribute(string comparisonProperty = null)
         {
             _comparisonProperty = comparisonProperty;
         }
+
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {
             // Fetch the display name if it is provided

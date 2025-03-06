@@ -1,7 +1,6 @@
 ﻿using Dfe.AcademiesApi.Client.Contracts;
 using Dfe.Complete.Application.Services.TrustCache;
 using Dfe.Complete.Domain.Entities;
-using Dfe.Complete.Domain.ValueObjects;
 using System.Text;
 
 namespace Dfe.Complete.Application.Services.CsvExport.Builders

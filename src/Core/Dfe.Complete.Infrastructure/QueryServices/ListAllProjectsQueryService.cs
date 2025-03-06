@@ -18,6 +18,6 @@ internal class ListAllProjectsQueryService(CompleteContext context) : IListAllPr
             .Join(context.GiasEstablishments, project => project.Urn, establishment => establishment.Urn,
                 (project, establishment) => new ListAllProjectsQueryModel(project, establishment));
 
-        return query;
+            return query;
     }
 }
