@@ -151,6 +151,7 @@ namespace Dfe.Complete.Models
 		{
 			public static readonly LinkItem Accessibility = AddLinkItem(page: "/Public/AccessibilityStatement");
 			public static readonly LinkItem CookiePreferences = AddLinkItem(page: "/Public/Cookies");
+			public static readonly LinkItem Privacy = AddLinkItem(page: "/Public/Privacy");
 		}
 
 		public static class InvoluntaryProject
