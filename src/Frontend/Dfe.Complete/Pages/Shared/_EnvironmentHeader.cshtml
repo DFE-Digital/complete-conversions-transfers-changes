@@ -1,0 +1,12 @@
+﻿@using Microsoft.Extensions.Hosting
+<environment include="@Environments.Staging">
+  <aside id="environment-banner" aria-label="environment banner">
+    <strong class="govuk-tag govuk-tag--orange environment-banner">TEST ENVIRONMENT</strong>
+  </aside>
+</environment>
+
+<environment include="@Environments.Development">
+  <aside id="environment-banner" aria-label="environment banner">
+    <strong class="govuk-tag govuk-tag--turquoise environment-banner">DEVELOPMENT ENVIRONMENT</strong>
+  </aside>
+</environment>

@@ -22,15 +22,8 @@ module.exports = {
 			{ test: /\.css$/, use: ['style-loader', 'css-loader'] },
 			{
 				test: /\.(woff2?)$/i,
-				use: [
-					{
-						loader: 'file-loader',
-						options: {
-							emitFile: false,
-							name: '/dist/assets/fonts/[name].[ext]'
-						}
-					}
-				]
+				type: 'asset/resource',
+				dependency: { not: ['url'] }
 			},
 			{
 				test: /\.(gif|svg)$/i,
