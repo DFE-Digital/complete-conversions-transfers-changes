@@ -1,0 +1,16 @@
+﻿@page "/projects/all/trusts/ukprn/{ukprn}"
+@using Dfe.Complete.Constants
+@using Dfe.Complete.Domain.Enums
+@using Dfe.Complete.Pages.Projects.List
+@model Dfe.Complete.Pages.Projects.List.AllProjectsInTrust.AllProjectsInTrustViewModel
+@{
+    Layout = "List/ProjectsByTrust/_ProjectsByTrustLayout";
+    ViewData["Title"] = "All projects by trust";
+}
+@section PageHeading
+{
+    <h1 class="govuk-heading-xl">
+       Projects for @Model.Trust.trustName
+    </h1>
+}
+<partial name="_ProjectsTable" model=@Model.Trust.projects/>

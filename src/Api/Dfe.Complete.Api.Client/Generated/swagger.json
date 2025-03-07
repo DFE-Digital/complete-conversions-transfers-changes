@@ -350,6 +350,53 @@
         }
       }
     },
+    "/v1/Trust/List/All": {
+      "get": {
+        "tags": [
+          "Trust"
+        ],
+        "summary": "Returns a list of trusts with projects",
+        "operationId": "Trust_ListAllTrustsWithProjects",
+        "parameters": [
+          {
+            "name": "Page",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "x-position": 1
+          },
+          {
+            "name": "Count",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "x-position": 2
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Trusts",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ListTrustsWithProjectsResultModel"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request data."
+          }
+        }
+      }
+    },
     "/v1/Users": {
       "get": {
         "tags": [
@@ -1662,6 +1709,29 @@
           "updatedAt": {
             "type": "string",
             "format": "date-time"
+          }
+        }
+      },
+      "ListTrustsWithProjectsResultModel": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "identifier": {
+            "type": "string"
+          },
+          "trustName": {
+            "type": "string"
+          },
+          "referenceNumber": {
+            "type": "string"
+          },
+          "conversionCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "transfersCount": {
+            "type": "integer",
+            "format": "int32"
           }
         }
       },

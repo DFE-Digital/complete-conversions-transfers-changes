@@ -36,7 +36,7 @@ public abstract class AllProjectsModel(string currentNavigation) : PageModel
         return string.Format(
             project.ProjectType == ProjectType.Conversion
                 ? RouteConstants.ConversionProjectTaskList
-                : RouteConstants.TransferProjectTaskList, project.ProjectId);
+                : RouteConstants.TransferProjectTaskList, project.ProjectId.Value);
     }
 
     public static string GetProjectSummaryUrl(Project project)
@@ -44,6 +44,13 @@ public abstract class AllProjectsModel(string currentNavigation) : PageModel
         return string.Format(
             project.Type == ProjectType.Conversion
                 ? RouteConstants.ConversionProjectTaskList
-                : RouteConstants.TransferProjectTaskList, project.Id);
+                : RouteConstants.TransferProjectTaskList, project.Id.Value);
+    }
+    
+    public static string GetTrustProjectsUrl(ListTrustsWithProjectsResultModel trustModel)
+    {
+        return trustModel.identifier.Contains("TR") ? 
+                                        string.Format(RouteConstants.TrustMATProjects, trustModel.identifier) 
+                                        : string.Format(RouteConstants.TrustProjects, trustModel.identifier);
     }
 }
