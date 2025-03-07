@@ -3,6 +3,8 @@ import "cypress-axe";
 import { AuthenticationInterceptor } from "../auth/authenticationInterceptor";
 import { Logger } from "../common/logger";
 import { RuleObject } from "axe-core";
+import Chainable = Cypress.Chainable;
+import {yesNoOption} from "../constants/stringTestConstants";
 
 Cypress.Commands.add("getByTestId", (id) => {
     cy.get(`[data-testid="${id}"]`);
@@ -34,6 +36,10 @@ Cypress.Commands.add("getByRole", (role) => {
 
 Cypress.Commands.add("getByLabelFor", (labelFor) => {
     cy.get(`[for="${labelFor}"]`);
+})
+
+Cypress.Commands.add("getProjectTableRow", (schoolName: string) : Chainable<JQuery<HTMLTableRowElement>> => {
+    return cy.getByClass('govuk-table').contains(schoolName).closest('tr');
 })
 
 Cypress.Commands.add("getByRadioOption", (radioText: string) => {
@@ -99,10 +105,16 @@ Cypress.Commands.add('typeFast', { prevSubject: 'element' }, (subject: JQuery<HT
 });
 
 Cypress.Commands.add("enterDate", (idPrefix: string, day: string, month: string, year: string) => {
-
     cy.getById(`${idPrefix}.Day`).typeFast(day);
     cy.getById(`${idPrefix}.Month`).typeFast(month);
     cy.getById(`${idPrefix}.Year`).typeFast(year);
+});
+
+Cypress.Commands.add("enterYesNo", (idPrefix: string, option: yesNoOption) => {
+    if (option == "Yes")
+        cy.getById(idPrefix).click();
+    if (option == "No")
+        cy.getById(`${idPrefix}-2`).click();
 });
 
 Cypress.Commands.add("hasAddress", (id: string, line1: string, line2: string, line3: string) => {
