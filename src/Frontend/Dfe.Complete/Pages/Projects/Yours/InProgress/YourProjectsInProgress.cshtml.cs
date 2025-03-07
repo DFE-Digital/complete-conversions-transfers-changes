@@ -1,8 +1,9 @@
 using Dfe.Complete.Models;
+using MediatR;
 
 namespace Dfe.Complete.Pages.Projects.Yours.InProgress;
 
-public class YourProjectsInProgress() : YourProjectsModel(InProgressNavigation)
+public class YourProjectsInProgress(ISender sender) : YourProjectsModel(InProgressNavigation)
 {
     public async Task OnGet()
     {

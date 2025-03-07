@@ -1,15 +1,25 @@
 @page "/projects/yours/in-progress"
+@using Dfe.Complete.Constants
+@using GovUk.Frontend.AspNetCore.TagHelpers
+@using Microsoft.AspNetCore.Authorization
 @model Dfe.Complete.Pages.Projects.Yours.InProgress.YourProjectsInProgress
-
+@inject IAuthorizationService AuthorizationService
 @{
     Layout = "Yours/_YourProjectsLayout";
     ViewData["Title"] = "Your projects in progress";
+    var userCanCreateProjects = await AuthorizationService.AuthorizeAsync(User, "CanCreateProjects");
+}
+
+@if (userCanCreateProjects.Succeeded)
+{
+<form asp-page="@RouteConstants.CreateNewProject" method="get">
+    <govuk-button type="submit">Add a project</govuk-button>
+</form>
 }
 
 <h1 class="govuk-heading-xl">
     Your projects in progress
 </h1>
-
 
 <div class="govuk-grid-column-full">
     <table class="govuk-table" name="la-table" aria-label="All projects by local authority">
