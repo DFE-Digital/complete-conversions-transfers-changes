@@ -1,5 +1,6 @@
 using System.Linq.Expressions;
 using AutoFixture.Xunit2;
+using Dfe.AcademiesApi.Client.Contracts;
 using DfE.CoreLibs.Testing.AutoFixture.Attributes;
 using Dfe.Complete.Domain.Interfaces.Repositories;
 using NSubstitute;
@@ -33,9 +34,14 @@ public class CreateTransferProjectCommandHandlerTests
         CreateTransferProjectCommand command)
     {
         // Arrange
-        var handler =
-            new CreateTransferProjectCommandHandler(mockProjectRepository, mockTransferTaskRepository,
-                mockSender.Object);
+        var establishmentDto = new EstablishmentDto { Urn = command.Urn.Value.ToString(), Gor = new NameAndCodeDto{ Code = "H" } };
+        Mock<IEstablishmentsV4Client> mockEstablishmentClient = new Mock<IEstablishmentsV4Client>();
+        mockEstablishmentClient.Setup(mock =>
+            mock.GetEstablishmentByUrnAsync(command.Urn.Value.ToString(), It.IsAny<CancellationToken>())).ReturnsAsync(establishmentDto);
+        
+        var handler = new CreateTransferProjectCommandHandler(mockProjectRepository, mockTransferTaskRepository,
+            mockEstablishmentClient.Object,
+            mockSender.Object);
 
         const ProjectTeam team = ProjectTeam.WestMidlands;
         var userDto = new UserDto
@@ -108,9 +114,15 @@ public class CreateTransferProjectCommandHandlerTests
         [Frozen] Mock<ISender> mockSender,
         CreateTransferProjectCommand command)
     {
-        var handler =
-            new CreateTransferProjectCommandHandler(mockProjectRepository, mockTransferTaskRepository,
-                mockSender.Object);
+        // Arrange
+        var establishmentDto = new EstablishmentDto { Urn = command.Urn.Value.ToString(), Gor = new NameAndCodeDto{ Code = "H" } };
+        Mock<IEstablishmentsV4Client> mockEstablishmentClient = new Mock<IEstablishmentsV4Client>();
+        mockEstablishmentClient.Setup(mock =>
+            mock.GetEstablishmentByUrnAsync(command.Urn.Value.ToString(), It.IsAny<CancellationToken>())).ReturnsAsync(establishmentDto);
+        
+        var handler = new CreateTransferProjectCommandHandler(mockProjectRepository, mockTransferTaskRepository,
+            mockEstablishmentClient.Object,
+            mockSender.Object);
 
         command = command with
         {
@@ -169,9 +181,14 @@ public class CreateTransferProjectCommandHandlerTests
     )
     {
         // Arrange
-        var handler =
-            new CreateTransferProjectCommandHandler(mockProjectRepository, mockTransferTaskRepository,
-                mockSender.Object);
+        var establishmentDto = new EstablishmentDto { Urn = command.Urn.Value.ToString(), Gor = new NameAndCodeDto{ Code = "H" } };
+        Mock<IEstablishmentsV4Client> mockEstablishmentClient = new Mock<IEstablishmentsV4Client>();
+        mockEstablishmentClient.Setup(mock =>
+            mock.GetEstablishmentByUrnAsync(command.Urn.Value.ToString(), It.IsAny<CancellationToken>())).ReturnsAsync(establishmentDto);
+        
+        var handler = new CreateTransferProjectCommandHandler(mockProjectRepository, mockTransferTaskRepository,
+            mockEstablishmentClient.Object,
+            mockSender.Object);
 
         command = command with { HandingOverToRegionalCaseworkService = true };
 
@@ -232,9 +249,14 @@ public class CreateTransferProjectCommandHandlerTests
     )
     {
         // Arrange
-        var handler =
-            new CreateTransferProjectCommandHandler(mockProjectRepository, mockTransferTaskRepository,
-                mockSender.Object);
+        var establishmentDto = new EstablishmentDto { Urn = command.Urn.Value.ToString(), Gor = new NameAndCodeDto{ Code = "H" } };
+        Mock<IEstablishmentsV4Client> mockEstablishmentClient = new Mock<IEstablishmentsV4Client>();
+        mockEstablishmentClient.Setup(mock =>
+            mock.GetEstablishmentByUrnAsync(command.Urn.Value.ToString(), It.IsAny<CancellationToken>())).ReturnsAsync(establishmentDto);
+        
+        var handler = new CreateTransferProjectCommandHandler(mockProjectRepository, mockTransferTaskRepository,
+            mockEstablishmentClient.Object,
+            mockSender.Object);
 
         command = command with { HandingOverToRegionalCaseworkService = false };
 
@@ -294,6 +316,7 @@ public class CreateTransferProjectCommandHandlerTests
         CreateTransferProjectCommand command)
     {
         // Arrange
+        command = command with { HandingOverToRegionalCaseworkService = false};
         // Local Authority lookup succeeds.
         mockSender
             .Setup(s => s.Send(It.IsAny<GetLocalAuthorityBySchoolUrnQuery>(), It.IsAny<CancellationToken>()))
@@ -305,10 +328,19 @@ public class CreateTransferProjectCommandHandlerTests
         mockSender
             .Setup(s => s.Send(It.IsAny<GetUserByAdIdQuery>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(Result<UserDto?>.Failure("User retrieval error"));
+        
+        var groupId = new ProjectGroupId(Guid.NewGuid());
+        mockSender.Setup(s =>
+                s.Send(It.IsAny<GetProjectGroupByGroupReferenceNumberQuery>(), It.IsAny<CancellationToken>()))
+            .ReturnsAsync(Result<ProjectGroupDto>.Success(new ProjectGroupDto { Id = groupId }));
 
-        var handler = new CreateTransferProjectCommandHandler(
-            mockProjectRepository,
-            mockTransferTaskRepository,
+        var establishmentDto = new EstablishmentDto { Urn = command.Urn.Value.ToString(), Gor = new NameAndCodeDto{ Code = "H" } };
+        Mock<IEstablishmentsV4Client> mockEstablishmentClient = new Mock<IEstablishmentsV4Client>();
+        mockEstablishmentClient.Setup(mock =>
+            mock.GetEstablishmentByUrnAsync(command.Urn.Value.ToString(), It.IsAny<CancellationToken>())).ReturnsAsync(establishmentDto);
+        
+        var handler = new CreateTransferProjectCommandHandler(mockProjectRepository, mockTransferTaskRepository,
+            mockEstablishmentClient.Object,
             mockSender.Object);
 
         // Act & Assert
@@ -355,9 +387,14 @@ public class CreateTransferProjectCommandHandlerTests
             .Setup(s => s.Send(It.IsAny<GetProjectGroupByGroupReferenceNumberQuery>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(Result<ProjectGroupDto?>.Failure("Project group retrieval error"));
 
-        var handler = new CreateTransferProjectCommandHandler(
-            mockProjectRepository,
-            mockTransferTaskRepository,
+        // Arrange
+        var establishmentDto = new EstablishmentDto { Urn = command.Urn.Value.ToString(), Gor = new NameAndCodeDto{ Code = "H" } };
+        Mock<IEstablishmentsV4Client> mockEstablishmentClient = new Mock<IEstablishmentsV4Client>();
+        mockEstablishmentClient.Setup(mock =>
+            mock.GetEstablishmentByUrnAsync(command.Urn.Value.ToString(), It.IsAny<CancellationToken>())).ReturnsAsync(establishmentDto);
+        
+        var handler = new CreateTransferProjectCommandHandler(mockProjectRepository, mockTransferTaskRepository,
+            mockEstablishmentClient.Object,
             mockSender.Object);
 
         // Act & Assert
@@ -389,9 +426,14 @@ public class CreateTransferProjectCommandHandlerTests
                 .Setup(s => s.Send(It.IsAny<GetLocalAuthorityBySchoolUrnQuery>(), It.IsAny<CancellationToken>()))
                 .ReturnsAsync(Result<GetLocalAuthorityBySchoolUrnResponseDto?>.Failure("Local authority not found"));
             
-            var handler = new CreateTransferProjectCommandHandler(
-                mockProjectRepository,
-                mockTransferTaskRepository,
+            // Arrange
+            var establishmentDto = new EstablishmentDto { Urn = command.Urn.Value.ToString(), Gor = new NameAndCodeDto{ Code = "H" } };
+            Mock<IEstablishmentsV4Client> mockEstablishmentClient = new Mock<IEstablishmentsV4Client>();
+            mockEstablishmentClient.Setup(mock =>
+                mock.GetEstablishmentByUrnAsync(command.Urn.Value.ToString(), It.IsAny<CancellationToken>())).ReturnsAsync(establishmentDto);
+        
+            var handler = new CreateTransferProjectCommandHandler(mockProjectRepository, mockTransferTaskRepository,
+                mockEstablishmentClient.Object,
                 mockSender.Object);
 
             // Act & Assert
@@ -424,9 +466,14 @@ public class CreateTransferProjectCommandHandlerTests
                 .Setup(s => s.Send(It.IsAny<GetLocalAuthorityBySchoolUrnQuery>(), It.IsAny<CancellationToken>()))
                 .ReturnsAsync(Result<GetLocalAuthorityBySchoolUrnResponseDto?>.Success(responseDto));
             
-            var handler = new CreateTransferProjectCommandHandler(
-                mockProjectRepository,
-                mockTransferTaskRepository,
+            // Arrange
+            var establishmentDto = new EstablishmentDto { Urn = command.Urn.Value.ToString(), Gor = new NameAndCodeDto{ Code = "H" } };
+            Mock<IEstablishmentsV4Client> mockEstablishmentClient = new Mock<IEstablishmentsV4Client>();
+            mockEstablishmentClient.Setup(mock =>
+                mock.GetEstablishmentByUrnAsync(command.Urn.Value.ToString(), It.IsAny<CancellationToken>())).ReturnsAsync(establishmentDto);
+        
+            var handler = new CreateTransferProjectCommandHandler(mockProjectRepository, mockTransferTaskRepository,
+                mockEstablishmentClient.Object,
                 mockSender.Object);
 
             // Act & Assert
@@ -456,9 +503,14 @@ public class CreateTransferProjectCommandHandlerTests
                 .Setup(s => s.Send(It.IsAny<GetLocalAuthorityBySchoolUrnQuery>(), It.IsAny<CancellationToken>()))
                 .ReturnsAsync(Result<GetLocalAuthorityBySchoolUrnResponseDto?>.Success(null));
             
-            var handler = new CreateTransferProjectCommandHandler(
-                mockProjectRepository,
-                mockTransferTaskRepository,
+            // Arrange
+            var establishmentDto = new EstablishmentDto { Urn = command.Urn.Value.ToString(), Gor = new NameAndCodeDto{ Code = "H" } };
+            Mock<IEstablishmentsV4Client> mockEstablishmentClient = new Mock<IEstablishmentsV4Client>();
+            mockEstablishmentClient.Setup(mock =>
+                mock.GetEstablishmentByUrnAsync(command.Urn.Value.ToString(), It.IsAny<CancellationToken>())).ReturnsAsync(establishmentDto);
+        
+            var handler = new CreateTransferProjectCommandHandler(mockProjectRepository, mockTransferTaskRepository,
+                mockEstablishmentClient.Object,
                 mockSender.Object);
 
             // Act & Assert

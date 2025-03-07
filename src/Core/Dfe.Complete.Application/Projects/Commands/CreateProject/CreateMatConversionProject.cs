@@ -1,3 +1,5 @@
+using Dfe.AcademiesApi.Client.Contracts;
+using Dfe.Complete.Application.Projects.Models;
 using Dfe.Complete.Application.Projects.Queries.GetLocalAuthority;
 using Dfe.Complete.Application.Projects.Queries.GetUser;
 using Dfe.Complete.Domain.Entities;
@@ -28,6 +30,7 @@ public record CreateMatConversionProjectCommand(
  public class CreateMatConversionProjectCommandHandler(
         ICompleteRepository<Project> projectRepository,
         ICompleteRepository<ConversionTasksData> conversionTaskRepository,
+        IEstablishmentsV4Client establishmentsClient,
         ISender sender)
         : IRequestHandler<CreateMatConversionProjectCommand, ProjectId>
     {
@@ -39,18 +42,8 @@ public record CreateMatConversionProjectCommand(
             if (!localAuthorityIdRequest.IsSuccess || localAuthorityIdRequest.Value?.LocalAuthorityId == null)
                 throw new NotFoundException($"No Local authority could be found via Establishments for School Urn: {request.Urn.Value}.", nameof(request.Urn), innerException: new Exception(localAuthorityIdRequest.Error));
             
-            // The user Team should be moved as a Claim or Group to the Entra (MS AD)
-            var userRequest = await sender.Send(new GetUserByAdIdQuery(request.UserAdId), cancellationToken);
-
-            if (!userRequest.IsSuccess || userRequest.Value == null)
-                throw new NotFoundException("No user found.", innerException: new Exception(userRequest.Error));
-            
-            var projectUser = userRequest.Value;
-            var projectUserTeam = projectUser?.Team;
-            var projectUserId = projectUser?.Id;
-
-            var projectTeam = EnumExtensions.FromDescription<ProjectTeam>(projectUserTeam);
-            var region = EnumMapper.MapTeamToRegion(projectTeam);
+            var region = (await establishmentsClient.GetEstablishmentByUrnAsync(request.Urn.Value.ToString(),
+                cancellationToken)).Gor?.Code?.ToEnumFromChar<Region>();
 
             var createdAt = DateTime.UtcNow;
             var conversionTaskId = Guid.NewGuid();
@@ -61,6 +54,7 @@ public record CreateMatConversionProjectCommand(
             ProjectTeam team;
             DateTime? assignedAt = null;
             UserId? projectUserAssignedToId = null;
+            UserDto? projectUser = null;
             
             if (request.HandingOverToRegionalCaseworkService)
             {
@@ -68,6 +62,19 @@ public record CreateMatConversionProjectCommand(
             }
             else
             {
+                if (request.UserAdId is null)
+                    throw new ArgumentException(
+                        "Project cannot be unassigned if it is not being handed over to Regional Case Worker Services");
+                // The user Team should be moved as a Claim or Group to the Entra (MS AD)
+                var userRequest = await sender.Send(new GetUserByAdIdQuery(request.UserAdId), cancellationToken);
+
+                if (!userRequest.IsSuccess)
+                    throw new NotFoundException("No user found.", innerException: new Exception(userRequest.Error));
+                projectUser = userRequest.Value ?? throw new NotFoundException("No user found.");
+                var projectUserTeam = projectUser.Team;
+                var projectUserId = projectUser.Id;
+
+                var projectTeam = projectUserTeam.FromDescription<ProjectTeam>();
                 team = projectTeam;
                 assignedAt = DateTime.UtcNow;
                 projectUserAssignedToId = projectUserId;

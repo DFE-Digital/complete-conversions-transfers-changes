@@ -8,6 +8,7 @@ using DfE.CoreLibs.Testing.AutoFixture.Attributes;
 using DfE.CoreLibs.Testing.Mocks.WebApplicationFactory;
 using Microsoft.EntityFrameworkCore;
 using Project = Dfe.Complete.Domain.Entities.Project;
+using Urn = Dfe.Complete.Domain.ValueObjects.Urn;
 
 namespace Dfe.Complete.Api.Tests.Integration.Controllers;
 
@@ -109,9 +110,16 @@ public class UsersControllerTests
         testUser.LastName = "Warms";
         dbContext.Users.Update(testUser);
 
-        var localAuthorityId = dbContext.LocalAuthorities.FirstOrDefault().Id;
+        var localAuthorityId = (await dbContext.LocalAuthorities.FirstOrDefaultAsync())?.Id!;
+
         
         var establishments = fixture.CreateMany<GiasEstablishment>(50).ToList();
+        int urn = 100000;
+        foreach (var establishment in establishments)
+        {
+            establishment.Urn = new Urn(urn);
+            urn++;
+        }
         await dbContext.GiasEstablishments.AddRangeAsync(establishments);
         var projects = establishments.Select(establishment =>
         {
