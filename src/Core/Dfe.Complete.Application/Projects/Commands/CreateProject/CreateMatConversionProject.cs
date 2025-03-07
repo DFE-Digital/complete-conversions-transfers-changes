@@ -49,7 +49,7 @@ public record CreateMatConversionProjectCommand(
             var projectUserTeam = projectUser?.Team;
             var projectUserId = projectUser?.Id;
 
-            var projectTeam = EnumExtensions.FromDescription<ProjectTeam>(projectUserTeam);
+            var projectTeam = projectUserTeam.FromDescription<ProjectTeam>();
             var region = EnumMapper.MapTeamToRegion(projectTeam);
 
             var createdAt = DateTime.UtcNow;
