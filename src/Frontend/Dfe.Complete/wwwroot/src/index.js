@@ -3,7 +3,7 @@
 
 // Write your JavaScript code.
 
-import { initAll } from "govuk-frontend/dist/govuk/govuk-frontend.min";
+import { initAll } from "govuk-frontend";
 initAll();
 import MOJFrontend from "@ministryofjustice/frontend/moj/all";
 MOJFrontend.initAll();
