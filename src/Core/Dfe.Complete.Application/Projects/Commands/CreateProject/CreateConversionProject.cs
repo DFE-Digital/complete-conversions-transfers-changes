@@ -41,10 +41,20 @@ namespace Dfe.Complete.Application.Projects.Commands.CreateProject
                 cancellationToken);
 
             if (!localAuthorityIdRequest.IsSuccess || localAuthorityIdRequest.Value?.LocalAuthorityId == null)
-                throw new NotFoundException($"No Local authority could be found via Establishments for School Urn: {request.Urn.Value}.", nameof(request.Urn), innerException: new Exception(localAuthorityIdRequest.Error));
+                throw new NotFoundException(
+                    $"No Local authority could be found via Establishments for School Urn: {request.Urn.Value}.",
+                    nameof(request.Urn), innerException: new Exception(localAuthorityIdRequest.Error));
 
-            var region = (await establishmentsClient.GetEstablishmentByUrnAsync(request.Urn.Value.ToString(),
-                cancellationToken)).Gor?.Code?.ToEnumFromChar<Region>();
+            Region? region;
+            try
+            {
+                region = (await establishmentsClient.GetEstablishmentByUrnAsync(request.Urn.Value.ToString(),
+                    cancellationToken)).Gor?.Code?.ToEnumFromChar<Region>();
+            }
+            catch (AcademiesApiException e)
+            {
+                throw new NotFoundException("Problem fetching the establishment", e);
+            }
 
             var createdAt = DateTime.UtcNow;
             var conversionTaskId = Guid.NewGuid();
