@@ -8,6 +8,7 @@ namespace Dfe.Complete.Tests.Common.Customizations.Models
     public class EstablishmentsCustomization : ICustomization
     {
         public Urn? Urn { get; set; }
+        public string? LocalAuthorityCode { get; set; }
 
         public void Customize(IFixture fixture)
         {
@@ -16,7 +17,10 @@ namespace Dfe.Complete.Tests.Common.Customizations.Models
             fixture
                 .Customize(new CompositeCustomization(
                    new DateOnlyCustomization()))
-                .Customize<GiasEstablishment>(composer => composer);
+                .Customize<GiasEstablishment>(composer => composer
+                    .With(x => x.Urn, Urn ?? fixture.Create<Urn>())
+                    .With(x => x.LocalAuthorityCode, LocalAuthorityCode ?? fixture.Create<LocalAuthority>().ToString())
+                );
         }
     }
 }
