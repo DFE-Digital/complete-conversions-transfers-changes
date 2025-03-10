@@ -33,22 +33,22 @@ public class ListAllProjectsForUserTests
     {
         //Arrange 
         var mockTrustsClient = new Mock<ITrustsV4Client>();
-        
+
         var handler = new ListAllProjectsForUserQueryHandler(
             mockListAllProjectsForUserQueryService,
             mockTrustsClient.Object,
             mockSender.Object);
-        
+
         var userDto = fixture.Create<UserDto>();
         mockSender.Setup(sender => sender.Send(It.IsAny<GetUserByAdIdQuery>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(Result<UserDto?>.Success(userDto));
-        
+
         var mockListAllProjectsForUserQueryModels = fixture.CreateMany<ListAllProjectsQueryModel>(50);
 
         var trustDtos = new ObservableCollection<TrustDto>(
             fixture.Build<TrustDto>().With(dto => dto.Ukprn, new Ukprn(new Random().Next()).Value.ToString)
                 .CreateMany(10));
-        
+
         mockTrustsClient.Setup(service => service.GetByUkprnsAllAsync(It.IsAny<IEnumerable<string>>(), default))
             .ReturnsAsync(trustDtos);
 
@@ -59,16 +59,16 @@ public class ListAllProjectsForUserTests
         }
 
         var trustList = trustDtos.ToList();
-        
+
         var expected = mockListAllProjectsForUserQueryModels.Select(item =>
                 ListAllProjectsForUserQueryResultModel
                     .MapProjectAndEstablishmentToListAllProjectsForUserQueryResultModel(
-                        item.Project, 
-                        item.Establishment, 
+                        item.Project,
+                        item.Establishment,
                         trustList.FirstOrDefault(t => t.Ukprn == item.Project.OutgoingTrustUkprn).Name,
                         trustList.FirstOrDefault(t => t.Ukprn == item.Project.IncomingTrustUkprn).Name))
             .Skip(20).Take(20).ToList();
-        
+
         mockListAllProjectsForUserQueryService.ListAllProjectsForUser(userDto.Id, ProjectState.Active)
             .Returns(mockListAllProjectsForUserQueryModels.BuildMock());
 
@@ -79,11 +79,62 @@ public class ListAllProjectsForUserTests
 
         //Assert
         Assert.NotNull(result);
-        
+
         Assert.Equal(expected.Count, result.Value?.Count);
         for (var i = 0; i < result.Value!.Count; i++)
         {
             Assert.Equivalent(expected[i], result.Value![i]);
         }
+    }
+
+    [Theory]
+    [CustomAutoData(
+        typeof(OmitCircularReferenceCustomization),
+        typeof(ListAllProjectsQueryModelCustomization),
+        typeof(DateOnlyCustomization))]
+    public async Task Handle_ShouldReturnCorrectList_WhenAllPagesAreSkipped(
+        [Frozen] IListAllProjectsForUserQueryService mockListAllProjectsForUserQueryService,
+        [Frozen] Mock<ISender> mockSender,
+        IFixture fixture)
+    {
+        //Arrange 
+        var mockTrustsClient = new Mock<ITrustsV4Client>();
+
+        var handler = new ListAllProjectsForUserQueryHandler(
+            mockListAllProjectsForUserQueryService,
+            mockTrustsClient.Object,
+            mockSender.Object);
+
+        var userDto = fixture.Create<UserDto>();
+        mockSender.Setup(sender => sender.Send(It.IsAny<GetUserByAdIdQuery>(), It.IsAny<CancellationToken>()))
+            .ReturnsAsync(Result<UserDto?>.Success(userDto));
+
+        var mockListAllProjectsForUserQueryModels = fixture.CreateMany<ListAllProjectsQueryModel>(50);
+
+        var trustDtos = new ObservableCollection<TrustDto>(
+            fixture.Build<TrustDto>().With(dto => dto.Ukprn, new Ukprn(new Random().Next()).Value.ToString)
+                .CreateMany(10));
+
+        mockTrustsClient.Setup(service => service.GetByUkprnsAllAsync(It.IsAny<IEnumerable<string>>(), default))
+            .ReturnsAsync(trustDtos);
+
+        foreach (var projectsQueryModel in mockListAllProjectsForUserQueryModels.ToList())
+        {
+            projectsQueryModel.Project.IncomingTrustUkprn = trustDtos.OrderBy(_ => new Random().Next()).First().Ukprn;
+            projectsQueryModel.Project.OutgoingTrustUkprn = trustDtos.OrderBy(_ => new Random().Next()).First().Ukprn;
+        }
+        
+        mockListAllProjectsForUserQueryService.ListAllProjectsForUser(userDto.Id, ProjectState.Active)
+            .Returns(mockListAllProjectsForUserQueryModels.BuildMock());
+
+        var query = new ListAllProjectForUserQuery(ProjectState.Active, userDto.ActiveDirectoryUserId) { Page = 50 };
+
+        //Act
+        var result = await handler.Handle(query, default);
+
+        //Assert
+        Assert.NotNull(result);
+        Assert.True(result.IsSuccess);
+        Assert.Equal(0, result.Value?.Count);
     }
 }
