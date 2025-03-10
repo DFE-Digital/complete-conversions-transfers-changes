@@ -25,45 +25,55 @@
 </h1>
 
 <div class="govuk-grid-column-full">
-    <table class="govuk-table" name="la-table" aria-label="All projects by local authority">
-        <thead class="govuk-table__head">
-        <tr class="govuk-table__row">
-            <th class="govuk-table__header" scope="col">School or academy</th>
-            <th class="govuk-table__header" scope="col">URN</th>
-            <th class="govuk-table__header" scope="col">Type of project</th>
-            <th class="govuk-table__header" scope="col">Incoming trust</th>
-            <th class="govuk-table__header" scope="col">Outgoing trust</th>
-            <th class="govuk-table__header" scope="col">Local authority</th>
-            <th class="govuk-table__header" scope="col">Conversion or transfer date</th>
-        </tr>
-        </thead>
-        <tbody class="govuk-table__body">
-
-        @foreach (var project in Model.ProjectsForUser)
-        {
+    @if (Model.ProjectsForUser == null || Model.ProjectsForUser.Count == 0)
+    {
+        <div class="govuk-inset-text">No projects.</div>
+    }
+    else
+    {
+        <table class="govuk-table" name="la-table" aria-label="All projects by local authority">
+            <thead class="govuk-table__head">
             <tr class="govuk-table__row">
-                <td class="govuk-table__header govuk-table__cell">
-                    <a class="govuk-link" href="@AllProjectsModel.GetProjectSummaryUrl(project.ProjectType, project.ProjectId)">@project.SchoolOrAcademyName</a>
-                </td>
-                <td class="govuk-table__cell">@project.Urn.Value</td>
-                <td class="govuk-table__cell">@project.ProjectType</td>
-                <td class="govuk-table__cell">
-                    @DisplayTrustName(project.IncomingTrustName)
-                </td>
-                <td class="govuk-table__cell">
-                    @DisplayTrustName(project.OutgoingTrustName)
-                </td>
-                <td class="govuk-table__cell">@project.LocalAuthority</td>
-                <td class="govuk-table__cell">@project.ConversionOrTransferDate.ToDateMonthYearString()</td>
+                <th class="govuk-table__header" scope="col">School or academy</th>
+                <th class="govuk-table__header" scope="col">URN</th>
+                <th class="govuk-table__header" scope="col">Type of project</th>
+                <th class="govuk-table__header" scope="col">Form a MAT project?</th>
+                <th class="govuk-table__header" scope="col">Incoming trust</th>
+                <th class="govuk-table__header" scope="col">Outgoing trust</th>
+                <th class="govuk-table__header" scope="col">Local authority</th>
+                <th class="govuk-table__header" scope="col">Conversion or transfer date</th>
             </tr>
-        }
-        </tbody>
-    </table>
+            </thead>
+            <tbody class="govuk-table__body">
+            @foreach (var project in Model.ProjectsForUser)
+            {
+                <tr class="govuk-table__row">
+                    <td class="govuk-table__header govuk-table__cell">
+                        <a class="govuk-link" href="@AllProjectsModel.GetProjectSummaryUrl(project.ProjectType, project.ProjectId)">@project.SchoolOrAcademyName</a>
+                    </td>
+                    <td class="govuk-table__cell">@project.Urn.Value</td>
+                    <td class="govuk-table__cell">@project.ProjectType</td>
+                    <td class="govuk-table__cell">@project.IsFormAMat.ToYesNoString()</td>
+                    <td class="govuk-table__cell">
+                        @DisplayTrustName(project.IncomingTrustName)
+                    </td>
+                    <td class="govuk-table__cell">
+                        @DisplayTrustName(project.OutgoingTrustName)
+                    </td>
+                    <td class="govuk-table__cell">@project.LocalAuthority</td>
+                    <td class="govuk-table__cell">@project.ConversionOrTransferDate.ToDateMonthYearString()</td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    }
 </div>
 
 @functions {
+
     private static IHtmlContent DisplayTrustName(string trustName)
     {
         return !string.IsNullOrEmpty(trustName) ? new HtmlString(trustName) : new HtmlString("<strong class=\"govuk-tag govuk-tag--grey\">None</strong>");
     }
+
 }
