@@ -1,3 +1,5 @@
+using Dfe.Complete.Application.Common.Models;
+using Dfe.Complete.Application.Projects.Models;
 using Dfe.Complete.Application.Projects.Queries.GetLocalAuthority;
 using Dfe.Complete.Application.Projects.Queries.GetUser;
 using Dfe.Complete.Domain.Entities;
@@ -40,10 +42,12 @@ public record CreateMatConversionProjectCommand(
                 throw new NotFoundException($"No Local authority could be found via Establishments for School Urn: {request.Urn.Value}.", nameof(request.Urn), innerException: new Exception(localAuthorityIdRequest.Error));
             
             // The user Team should be moved as a Claim or Group to the Entra (MS AD)
-            var userRequest = await sender.Send(new GetUserByAdIdQuery(request.UserAdId), cancellationToken);
+            Result<UserDto?>? userRequest = null;
+            if (!string.IsNullOrEmpty(request.UserAdId))
+                userRequest = await sender.Send(new GetUserByAdIdQuery(request.UserAdId), cancellationToken);
 
-            if (!userRequest.IsSuccess || userRequest.Value == null)
-                throw new NotFoundException("No user found.", innerException: new Exception(userRequest.Error));
+            if (userRequest is not { IsSuccess: true })
+                throw new NotFoundException("No user found.", innerException: new Exception(userRequest?.Error));
             
             var projectUser = userRequest.Value;
             var projectUserTeam = projectUser?.Team;
