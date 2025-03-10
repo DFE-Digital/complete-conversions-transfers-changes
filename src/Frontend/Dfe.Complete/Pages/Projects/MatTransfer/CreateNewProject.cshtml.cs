@@ -3,6 +3,7 @@ using Dfe.Complete.Application.Projects.Commands.CreateProject;
 using Dfe.Complete.Domain.ValueObjects;
 using Dfe.Complete.Extensions;
 using Dfe.Complete.Services;
+using Dfe.Complete.Utils;
 using Dfe.Complete.Validators;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -12,7 +13,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 namespace Dfe.Complete.Pages.Projects.MatTransfer;
 
 [Authorize(policy: "CanCreateProjects")]
-public class CreateNewProject(ISender sender, IErrorService errorService) : PageModel
+public class CreateNewProject(ISender sender, ErrorService errorService, ILogger<CreateNewProject> logger) : PageModel
 {
     [BindProperty]
     [Urn]
@@ -38,6 +39,7 @@ public class CreateNewProject(ISender sender, IErrorService errorService) : Page
 
     [BindProperty]
     [Required(ErrorMessage = "Enter a date for the Advisory Board Date, like 1 4 2023")]
+    [DateInPast]
     [Display(Name = "Advisory Board Date")]
     public DateTime? AdvisoryBoardDate { get; set; }
 
@@ -46,10 +48,10 @@ public class CreateNewProject(ISender sender, IErrorService errorService) : Page
     [BindProperty]
     [Required(ErrorMessage = "Enter a date for the Provisional Transfer Date, like 1 4 2023")]
     [Display(Name = "Provisional Transfer Date")]
-    public DateTime? ProvisionalTransferDate { get; set; }
+    public DateTime? SignificantDate { get; set; }
 
     [BindProperty]
-    [SharePointLink]    
+    [SharePointLink]
     [Required(ErrorMessage = "Enter a school sharepoint link")]
     [Display(Name = "School or academy SharePoint link")]
     public string AcademySharePointLink { get; set; }
@@ -77,27 +79,25 @@ public class CreateNewProject(ISender sender, IErrorService errorService) : Page
     public bool? IsDueToInedaquateOfstedRating { get; set; }
 
     [BindProperty]
-    [Required(ErrorMessage = "State if the transfer is due to financial, safeguarding or governance issues. Choose yes or no")]
+    [Required(ErrorMessage =
+        "State if the transfer is due to financial, safeguarding or governance issues. Choose yes or no")]
     [Display(Name = "Issues")]
     public bool? IsDueToIssues { get; set; }
 
     [BindProperty]
-    [Required(ErrorMessage = "State if the outgoing trust will close once this transfer is completed. Choose yes or no")]
+    [Required(ErrorMessage =
+        "State if the outgoing trust will close once this transfer is completed. Choose yes or no")]
     [Display(Name = "Will outgoing trust close")]
     public bool? OutgoingTrustWillClose { get; set; }
 
     [BindProperty]
-    [Required(ErrorMessage = "State if this project will be handed over to the Regional casework services team. Choose yes or no")]
+    [Required(ErrorMessage =
+        "State if this project will be handed over to the Regional casework services team. Choose yes or no")]
     [Display(Name = "Is Handing To RCS")]
     public bool? IsHandingToRCS { get; set; }
 
-    [BindProperty]
-    public string? HandoverComments { get; set; }
-
-    public void OnGet()
-    {
-    }
-
+    [BindProperty] public string? HandoverComments { get; set; }
+    
     public async Task<IActionResult> OnPost(CancellationToken cancellationToken)
     {
         if (!ModelState.IsValid)
@@ -106,34 +106,55 @@ public class CreateNewProject(ISender sender, IErrorService errorService) : Page
             return Page();
         }
 
-        var userAdId = User.GetUserAdId();
+        try
+        {
+            var userAdId = User.GetUserAdId();
 
-        var createProjectCommand = new CreateMatTransferProjectCommand(
-            Urn: new Urn(int.Parse(URN)),
-            TrustName,
-            TrustReferenceNumber,
-            OutgoingTrustUkprn: new Ukprn(OutgoingUKPRN.ToInt()),
-            SignificantDate: ProvisionalTransferDate.HasValue
-                ? DateOnly.FromDateTime(ProvisionalTransferDate.Value)
-                : default,
-            IsSignificantDateProvisional: true, // will be set to false in the stakeholder kick off task 
-            IsDueTo2Ri: IsDueTo2RI ?? false,
-            IsDueToInedaquateOfstedRating: IsDueToInedaquateOfstedRating ?? false,
-            IsDueToIssues: IsDueToIssues ?? false,
-            HandingOverToRegionalCaseworkService: IsHandingToRCS ?? false,
-            OutGoingTrustWillClose: OutgoingTrustWillClose ?? false,
-            AdvisoryBoardDate: AdvisoryBoardDate.HasValue ? DateOnly.FromDateTime(AdvisoryBoardDate.Value) : default,
-            AdvisoryBoardConditions: AdvisoryBoardConditions ?? string.Empty,
-            EstablishmentSharepointLink: AcademySharePointLink,
-            IncomingTrustSharepointLink: IncomingTrustSharePointLink,
-            OutgoingTrustSharepointLink: OutgoingTrustSharePointLink,
-            HandoverComments: HandoverComments ?? string.Empty,
-            UserAdId: userAdId);
+            var createProjectCommand = new CreateMatTransferProjectCommand(
+                Urn: new Urn(int.Parse(URN)),
+                TrustName,
+                TrustReferenceNumber,
+                OutgoingTrustUkprn: new Ukprn(OutgoingUKPRN.ToInt()),
+                SignificantDate: SignificantDate.HasValue
+                    ? DateOnly.FromDateTime(SignificantDate.Value)
+                    : default,
+                IsSignificantDateProvisional: true, // will be set to false in the stakeholder kick off task 
+                IsDueTo2Ri: IsDueTo2RI ?? false,
+                IsDueToInedaquateOfstedRating: IsDueToInedaquateOfstedRating ?? false,
+                IsDueToIssues: IsDueToIssues ?? false,
+                HandingOverToRegionalCaseworkService: IsHandingToRCS ?? false,
+                OutGoingTrustWillClose: OutgoingTrustWillClose ?? false,
+                AdvisoryBoardDate: AdvisoryBoardDate.HasValue
+                    ? DateOnly.FromDateTime(AdvisoryBoardDate.Value)
+                    : default,
+                AdvisoryBoardConditions: AdvisoryBoardConditions ?? string.Empty,
+                EstablishmentSharepointLink: AcademySharePointLink,
+                IncomingTrustSharepointLink: IncomingTrustSharePointLink,
+                OutgoingTrustSharepointLink: OutgoingTrustSharePointLink,
+                HandoverComments: HandoverComments ?? string.Empty,
+                UserAdId: userAdId);
 
-        var createResponse = await sender.Send(createProjectCommand, cancellationToken);
+            var createResponse = await sender.Send(createProjectCommand, cancellationToken);
 
-        var projectId = createResponse.Value;
+            var projectId = createResponse.Value;
 
-        return Redirect($"/transfer-projects/{projectId}/tasks");
+            return Redirect($"/transfer-projects/{projectId}/tasks");
+        }
+        catch (NotFoundException notFoundException)
+        {
+            logger.LogError(notFoundException, notFoundException.Message, notFoundException.InnerException);
+
+            ModelState.AddModelError(notFoundException.Field ?? "NotFound", notFoundException.Message);
+
+            errorService.AddErrors(ModelState);
+
+            return Page();
+        }
+        catch (Exception ex)
+        {
+            logger.LogError(ex, "Error occurred while creating a conversion project.");
+            ModelState.AddModelError("", "An unexpected error occurred. Please try again later.");
+            return Page();
+        }
     }
 }

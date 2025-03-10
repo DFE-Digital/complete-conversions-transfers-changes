@@ -15,6 +15,7 @@ using Microsoft.Identity.Web;
 using Microsoft.Identity.Web.UI;
 using System.Security.Claims;
 using Dfe.Complete.Infrastructure;
+using Dfe.Complete.Services;
 
 namespace Dfe.Complete;
 
@@ -61,9 +62,11 @@ public class Startup
         services.AddControllersWithViews()
            .AddMicrosoftIdentityUI();
         SetupDataProtection(services);
-
+ 
         services.AddCompleteClientProject(Configuration);
 
+        services.AddScoped<ErrorService>();
+        
         services.AddScoped(sp => sp.GetService<IHttpContextAccessor>()?.HttpContext?.Session);
         services.AddSession(options =>
         {

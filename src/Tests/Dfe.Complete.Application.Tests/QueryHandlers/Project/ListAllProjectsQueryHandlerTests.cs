@@ -83,8 +83,7 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
                     : null)).Skip(20).Take(20).ToList();
 
             var query = new ListAllProjectsQuery(null, null, 1);
-
-
+            
             var mock = listAllProjectsQueryModels.BuildMock();
 
             mockEstablishmentQueryService.ListAllProjects(query.ProjectStatus, query.Type)

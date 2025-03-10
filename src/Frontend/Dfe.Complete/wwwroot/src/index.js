@@ -3,7 +3,19 @@
 
 // Write your JavaScript code.
 
-import { initAll } from "govuk-frontend/dist/govuk/govuk-frontend.min";
+import { initAll } from "govuk-frontend";
 initAll();
 import MOJFrontend from "@ministryofjustice/frontend/moj/all";
 MOJFrontend.initAll();
+
+
+//Temporary solution until the TagHelper Library provides a Date component that only accepts a month and year
+function setAndDisableSignificantDateDayField() {
+    
+    var significantDateProp = $("#SignificantDate\\.Day");
+
+    significantDateProp.val(1);
+    significantDateProp.closest(".govuk-date-input__item").hide();
+}
+
+setAndDisableSignificantDateDayField();

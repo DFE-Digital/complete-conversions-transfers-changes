@@ -1,13 +1,10 @@
-﻿using AutoFixture.Xunit2;
-using Dfe.AcademiesApi.Client.Contracts;
+﻿using Dfe.AcademiesApi.Client.Contracts;
 using Dfe.Complete.Application.Common.Models;
 using Dfe.Complete.Application.Services.CsvExport.Builders;
 using Dfe.Complete.Application.Services.CsvExport.Conversion;
 using Dfe.Complete.Application.Services.TrustCache;
-using Dfe.Complete.Domain.Entities;
 using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Tests.Common.Customizations.Models;
-using Dfe.Complete.Utils;
 using DfE.CoreLibs.Testing.AutoFixture.Attributes;
 using NSubstitute;
 namespace Dfe.Complete.Application.Tests.Services.CsvExport.Conversion

@@ -1,15 +1,7 @@
-﻿using AutoFixture;
-using AutoFixture.Xunit2;
-using Dfe.Complete.Application.Services.CsvExport.Builders;
+﻿using Dfe.Complete.Application.Services.CsvExport.Builders;
 using Dfe.Complete.Domain.Entities;
-using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Tests.Common.Customizations.Models;
 using DfE.CoreLibs.Testing.AutoFixture.Attributes;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Dfe.Complete.Application.Tests.Services.CsvExport.Builders
 {

@@ -1,7 +1,5 @@
 using MediatR;
 using Dfe.Complete.Domain.Interfaces.Repositories;
-using DfE.CoreLibs.Caching.Helpers;
-using DfE.CoreLibs.Caching.Interfaces;
 using Dfe.Complete.Application.Common.Models;
 using Dfe.Complete.Application.Projects.Models;
 using Dfe.Complete.Domain.Entities;

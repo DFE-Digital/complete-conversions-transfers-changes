@@ -1,10 +1,8 @@
-using System;
-
 namespace Dfe.Complete.Services
 {
 	public class DateRangeValidationService
 	{
-		public (bool, string) Validate(DateTime date, DateRange dateRange, string displayName)
+		public static (bool, string) Validate(DateTime date, DateRange dateRange, string displayName)
 		{
 			switch (dateRange)
 			{

@@ -13,8 +13,7 @@ namespace Dfe.Complete.Infrastructure
 {
     public static class InfrastructureServiceCollectionExtensions
     {
-        public static IServiceCollection AddInfrastructureDependencyGroup(
-            this IServiceCollection services, IConfiguration config)
+        public static IServiceCollection AddInfrastructureDependencyGroup(this IServiceCollection services, IConfiguration config)
         {
             //Repos
             services.AddScoped(typeof(ICompleteRepository<>), typeof(CompleteRepository<>));
@@ -27,11 +26,12 @@ namespace Dfe.Complete.Infrastructure
 
             services.AddDbContext<CompleteContext>(options => options.UseSqlServer(connectionString));
             
-            
             //Queries
             services.AddScoped<IListAllProjectsQueryService, ListAllProjectsQueryService>();
             services.AddScoped<IConversionCsvQueryService, ConversionCsvQueryService>();
-
+            services.AddScoped<IListAllProjectsForLocalAuthorityQueryService, ListAllProjectsForLocalAuthorityQueryService>();
+            services.AddScoped<IListAllProjectsForRegionQueryService, ListAllProjectsForRegionQueryService>();
+            
             // Authentication
             //services.AddCustomAuthorization(config);
 

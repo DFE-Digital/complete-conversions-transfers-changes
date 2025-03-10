@@ -1,5 +1,4 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using Dfe.Complete.Constants;
 
 namespace Dfe.Complete.Models;

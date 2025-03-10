@@ -2,7 +2,6 @@
 using Dfe.Complete.Application.Mappers;
 using Dfe.Complete.Application.Services.CsvExport.Builders;
 using Dfe.Complete.Domain.Enums;
-using Dfe.Complete.Utils;
 
 namespace Dfe.Complete.Application.Services.CsvExport.Conversion
 {
@@ -13,7 +12,7 @@ namespace Dfe.Complete.Application.Services.CsvExport.Conversion
         private const string Yes = "yes";
         private const string No = "no";
         private const string DateFormat = "yyyy-MM-dd";
-        private RowBuilder<ConversionCsvModel> _rowBuilder;
+        private readonly RowBuilder<ConversionCsvModel> _rowBuilder;
 
         public ConversionRowGenerator(IRowBuilderFactory<ConversionCsvModel> rowBuilder)
         {

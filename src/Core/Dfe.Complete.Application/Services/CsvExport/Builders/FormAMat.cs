@@ -1,5 +1,4 @@
-﻿using Dfe.Complete.Application.Common.Models;
-using Dfe.Complete.Domain.Entities;
+﻿using Dfe.Complete.Domain.Entities;
 
 namespace Dfe.Complete.Application.Services.CsvExport.Builders
 {

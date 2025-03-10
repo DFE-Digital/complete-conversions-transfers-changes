@@ -1,3 +1,4 @@
+using Dfe.Complete.Application.Projects.Queries.GetLocalAuthority;
 using MediatR;
 using Dfe.Complete.Domain.ValueObjects;
 using Dfe.Complete.Domain.Enums;
@@ -37,19 +38,23 @@ namespace Dfe.Complete.Application.Projects.Commands.CreateProject
     {
         public async Task<ProjectId> Handle(CreateTransferProjectCommand request, CancellationToken cancellationToken)
         {
-            var userRequest = await sender.Send(new GetUserByAdIdQuery(request.UserAdId));
+            var localAuthorityIdRequest = await sender.Send(new GetLocalAuthorityBySchoolUrnQuery(request.Urn.Value),
+                cancellationToken);
+
+            if (!localAuthorityIdRequest.IsSuccess || localAuthorityIdRequest.Value?.LocalAuthorityId == null)
+                throw new NotFoundException($"No Local authority could be found via Establishments for School Urn: {request.Urn.Value}.", nameof(request.Urn), innerException: new Exception(localAuthorityIdRequest.Error));
+            
+            var userRequest = await sender.Send(new GetUserByAdIdQuery(request.UserAdId), cancellationToken);
 
             if (!userRequest.IsSuccess)
-            {
-                throw new Exception($"User retrieval failed: {userRequest.Error}");
-            }
-
+                throw new NotFoundException("No user found.", innerException: new Exception(userRequest.Error));
+            
             var projectUser = userRequest.Value;
 
             var projectUserTeam = projectUser?.Team;
             var projectUserId = projectUser?.Id; 
 
-            var projectTeam = EnumExtensions.FromDescription<ProjectTeam>(projectUserTeam);
+            var projectTeam = projectUserTeam.FromDescription<ProjectTeam>();
             var region = EnumMapper.MapTeamToRegion(projectTeam);
 
             var createdAt = DateTime.UtcNow;
@@ -58,14 +63,17 @@ namespace Dfe.Complete.Application.Projects.Commands.CreateProject
 
             var transferTask = new TransferTasksData(new TaskDataId(transferTaskId), createdAt, createdAt, request.IsDueToInedaquateOfstedRating, request.IsDueToIssues, request.OutGoingTrustWillClose);
 
-            var projectRequest = await sender.Send(new GetProjectGroupByGroupReferenceNumberQuery(request.GroupReferenceNumber));
+            var projectGroupRequest = await sender.Send(new GetProjectGroupByGroupReferenceNumberQuery(request.GroupReferenceNumber), cancellationToken);
 
-            if (!projectRequest.IsSuccess)
-            {
-                throw new Exception($"Project Group retrieval failed: {projectRequest.Error}");
-            }
+            if (!projectGroupRequest.IsSuccess)
+                throw new NotFoundException($"Project Group retrieval failed", nameof(request.GroupReferenceNumber), new Exception(projectGroupRequest.Error));
 
-            var groupId = projectRequest.Value?.Id;
+            if (projectGroupRequest.Value == null)
+                throw new NotFoundException(
+                    $"No Project Group found with reference number: {request.GroupReferenceNumber}",
+                    nameof(request.GroupReferenceNumber));
+            
+            var groupId = projectGroupRequest.Value?.Id;
 
             ProjectTeam team;
             DateTime? assignedAt = null;
@@ -106,7 +114,8 @@ namespace Dfe.Complete.Application.Projects.Commands.CreateProject
                     request.SignificantDate,
                     request.IsSignificantDateProvisional,
                     request.IsDueTo2Ri, 
-                    request.HandoverComments
+                    request.HandoverComments, 
+                    localAuthorityIdRequest.Value.LocalAuthorityId.Value
                 ); 
             
             await transferTaskRepository.AddAsync(transferTask, cancellationToken);

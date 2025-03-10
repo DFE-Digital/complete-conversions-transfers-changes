@@ -1,8 +1,7 @@
 @page "/projects/conversions/new_mat"
 @using Dfe.Complete.Constants
-@using GovUk.Frontend.AspNetCore.TagHelpers
 @model Dfe.Complete.Pages.Projects.MatConversion.CreateNewProject
-@inject Dfe.Complete.Services.IErrorService ErrorService
+@inject Dfe.Complete.Services.ErrorService ErrorService
 @{
     ViewData["Title"] = "Add a form a MAT conversion";
 
@@ -10,7 +9,7 @@
     const string trustRefNumber = nameof(Model.TrustReferenceNumber);
     const string trustName = nameof(Model.TrustName);
     const string advisoryBoardDateField = nameof(Model.AdvisoryBoardDate);
-    const string provisionalConversionDateField = nameof(Model.ProvisionalConversionDate);
+    const string provisionalConversionDateField = nameof(Model.SignificantDate);
     const string schoolSharePointLinkField = nameof(Model.SchoolSharePointLink);
     const string incomingTrustSharePointLinkField = nameof(Model.IncomingTrustSharePointLink);   
     const string handingToRSCField = nameof(Model.IsHandingToRCS);
@@ -24,7 +23,8 @@
 {
     <govuk-back-link href="@backLink" xmlns="http://www.w3.org/1999/html"/>
 }
-    <div class="govuk-grid-row">
+
+<div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
             @{
                 <form method="post">
@@ -94,7 +94,7 @@
                         </govuk-textarea-label>
                     </govuk-textarea>
 
-                    <govuk-date-input id="@provisionalConversionDateField" name-prefix="@provisionalConversionDateField" asp-for="@Model.ProvisionalConversionDate">
+                    <govuk-date-input id="@provisionalConversionDateField" name-prefix="@provisionalConversionDateField" asp-for="@Model.SignificantDate">
                         <govuk-date-input-fieldset>
                             <govuk-date-input-fieldset-legend class="govuk-fieldset__legend--m">
                                 Provisional conversion date
@@ -146,8 +146,8 @@
                             <govuk-radios-error-message>@(ErrorService.GetErrorMessage(handingToRSCField))</govuk-radios-error-message>
                             }
 
-                            <govuk-radios-item value="true">Yes</govuk-radios-item>
-                            <govuk-radios-item value="false">No</govuk-radios-item>
+                            <govuk-radios-item checked="@Model.IsHandingToRCS" value="true">Yes</govuk-radios-item>
+                            <govuk-radios-item checked="@(!Model.IsHandingToRCS)" value="false">No</govuk-radios-item>
 
                         </govuk-radios-fieldset>
                     </govuk-radios>
@@ -186,9 +186,8 @@
                             <govuk-radios-error-message>@(ErrorService.GetErrorMessage(directiveAcademyOrderField))</govuk-radios-error-message>
                             }
 
-                            @* This value should be enums *@
-                            <govuk-radios-item value="true">Directive academy order</govuk-radios-item>
-                            <govuk-radios-item value="false">Academy order</govuk-radios-item>
+                            <govuk-radios-item checked="@Model.DirectiveAcademyOrder" value="true">Directive academy order</govuk-radios-item>
+                            <govuk-radios-item checked="@(!Model.DirectiveAcademyOrder)" value="false">Academy order</govuk-radios-item>
                         </govuk-radios-fieldset>
                     </govuk-radios>
 
@@ -207,8 +206,8 @@
                             <govuk-radios-error-message>@(ErrorService.GetErrorMessage(isDueTo2RIField))</govuk-radios-error-message>
                             }
 
-                            <govuk-radios-item value="true">Yes</govuk-radios-item>
-                            <govuk-radios-item value="false">No</govuk-radios-item>
+                            <govuk-radios-item checked="@Model.IsDueTo2RI" value="true">Yes</govuk-radios-item>
+                            <govuk-radios-item checked="@(!Model.IsDueTo2RI)" value="false">No</govuk-radios-item>
                         </govuk-radios-fieldset>
                     </govuk-radios>
                     

@@ -349,3 +349,9 @@ variable "custom_container_apps" {
   }))
   default = {}
 }
+
+variable "enable_monitoring_traces" {
+  description = "Monitor App Insights traces for error messages"
+  type        = bool
+  default     = true
+}

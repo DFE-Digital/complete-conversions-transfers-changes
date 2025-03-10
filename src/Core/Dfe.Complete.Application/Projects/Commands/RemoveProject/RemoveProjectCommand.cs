@@ -8,12 +8,13 @@ using Microsoft.Extensions.Hosting;
 namespace Dfe.Complete.Application.Projects.Commands.RemoveProject
 {
     public record RemoveProjectCommand(
-       Urn Urn) : IRequest;
+        Urn Urn) : IRequest;
 
-    public class RemoveProjectCommandHandler(IHostEnvironment hostEnvironment,
-                                             ICompleteRepository<Project> projectRepository,
-                                             ICompleteRepository<TransferTasksData> transferTaskRepository,
-                                             ICompleteRepository<ConversionTasksData> conversionTaskRepository)
+    public class RemoveProjectCommandHandler(
+        IHostEnvironment hostEnvironment,
+        ICompleteRepository<Project> projectRepository,
+        ICompleteRepository<TransferTasksData> transferTaskRepository,
+        ICompleteRepository<ConversionTasksData> conversionTaskRepository)
         : IRequestHandler<RemoveProjectCommand>
     {
         public async Task Handle(RemoveProjectCommand request, CancellationToken cancellationToken)
@@ -23,23 +24,25 @@ namespace Dfe.Complete.Application.Projects.Commands.RemoveProject
                 throw new NotDevEnvironmentException();
             }
 
-            var project = await projectRepository.FindAsync(x => x.Urn == request.Urn);
+            var project = await projectRepository.FindAsync(x => x.Urn == request.Urn, cancellationToken);
 
             if (project == null)
             {
                 return;
             }
 
-            if(project.TasksDataType == Domain.Enums.TaskType.Conversion)
+            if (project.TasksDataType == Domain.Enums.TaskType.Conversion)
             {
-                await conversionTaskRepository.RemoveAsync(conversionTaskRepository.Get(new TaskDataId(project.TasksDataId.Value)));
+                await conversionTaskRepository.RemoveAsync(
+                    conversionTaskRepository.Get(new TaskDataId(project.TasksDataId.Value)), cancellationToken);
             }
             else
             {
-                await transferTaskRepository.RemoveAsync(transferTaskRepository.Get(new TaskDataId(project.TasksDataId.Value)));
+                await transferTaskRepository.RemoveAsync(
+                    transferTaskRepository.Get(new TaskDataId(project.TasksDataId.Value)), cancellationToken);
             }
 
-            await projectRepository.RemoveAsync(project);
+            await projectRepository.RemoveAsync(project, cancellationToken);
         }
     }
 }

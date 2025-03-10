@@ -1,14 +1,14 @@
 ﻿@page "/projects/conversions/new"
 @using Dfe.Complete.Constants
 @model Dfe.Complete.Pages.Projects.Conversion.CreateNewProjectModel
-@inject Dfe.Complete.Services.IErrorService ErrorService
+@inject Dfe.Complete.Services.ErrorService ErrorService
 @{
     ViewData["Title"] = "Add a conversion";
-
+    
     const string urnField = nameof(Model.URN);
     const string ukprnField = nameof(Model.UKPRN);
     const string advisoryBoardDateField = nameof(Model.AdvisoryBoardDate);
-    const string provisionalConversionDateField = nameof(Model.ProvisionalConversionDate);
+    const string provisionalConversionDateField = nameof(Model.SignificantDate);
     const string schoolSharePointLinkField = nameof(Model.SchoolSharePointLink);
     const string incomingTrustSharePointLinkField = nameof(Model.IncomingTrustSharePointLink);
     const string handingToRSCField = nameof(Model.IsHandingToRCS);
@@ -22,6 +22,7 @@
 {
 <govuk-back-link href="@backLink" xmlns="http://www.w3.org/1999/html"/>
 }
+
 
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
@@ -49,7 +50,7 @@
                             A UKPRN is an 8-digit number that always starts with a 1.
                         </p>
                         <p>
-                            <a href="https://www.get-information-schools.service.gov.uk/Search?SelectedTab=Groups" target="_blank">
+                            <a class="govuk-link" href="https://www.get-information-schools.service.gov.uk/Search?SelectedTab=Groups" target="_blank">
                                 Search GIAS to find the incoming trust's UKPRN (opens in a new tab).
                             </a>
                         </p>
@@ -93,7 +94,7 @@
                     </govuk-textarea-label>
                 </govuk-textarea>
 
-                <govuk-date-input id="@provisionalConversionDateField" name-prefix="@provisionalConversionDateField" asp-for="@Model.ProvisionalConversionDate">
+                <govuk-date-input id="@provisionalConversionDateField" name-prefix="@provisionalConversionDateField" asp-for="@Model.SignificantDate">
                     <govuk-date-input-fieldset>
                         <govuk-date-input-fieldset-legend class="govuk-fieldset__legend--m">
                             Provisional conversion date

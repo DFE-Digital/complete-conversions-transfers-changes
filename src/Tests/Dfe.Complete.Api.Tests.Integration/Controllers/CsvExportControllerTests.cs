@@ -9,14 +9,13 @@ using Dfe.Complete.Tests.Common.Customizations.Models;
 using DfE.CoreLibs.Testing.AutoFixture.Attributes;
 using DfE.CoreLibs.Testing.AutoFixture.Customizations;
 using DfE.CoreLibs.Testing.Mocks.WebApplicationFactory;
-using System.IO;
 
 namespace Dfe.Complete.Api.Tests.Integration.Controllers
 {
     public class CsvExportControllerTests
     {
         [Theory]
-        [CustomAutoData(typeof(CustomWebApplicationDbContextFactoryCustomization))]
+        [CustomAutoData(typeof(CustomWebApplicationDbContextFactoryCustomization), typeof(DateOnlyCustomization))]
         public async Task GetConversionCsvByMonthQueryHandler(
             CustomWebApplicationDbContextFactory<Program> factory,
             Complete.Client.Contracts.ICsvExportClient csvExportClient,
@@ -94,8 +93,7 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers
 
             contacts.ForEach(c => c.Id = new ContactId(Guid.NewGuid()));
             contacts.ForEach(c => c.ProjectId = null);
-
-
+            
             directorOfServicesContact.Category = ContactCategory.LocalAuthority;
             directorOfServicesContact.LocalAuthorityId = localAuthority.Id;
 
@@ -129,6 +127,8 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers
             project.IncomingTrustMainContactId = incomingContact.Id;
             project.OutgoingTrustMainContactId = outgoingContact.Id;
             project.State = ProjectState.Active;
+            project.LocalAuthorityId = localAuthority.Id;
+            
             dbContext.Projects.Add(project);
             await dbContext.SaveChangesAsync();
 
@@ -168,7 +168,7 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers
             var results = await csvExportClient.GetConversionCsvByMonthAsync(1, 2025);
 
             StreamReader reader = new StreamReader(results.Stream);
-            string fileContents = reader.ReadToEnd();
+            string fileContents = await reader.ReadToEndAsync();
 
             // Assert
             Assert.NotNull(fileContents);
@@ -179,7 +179,7 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers
         }
 
         [Theory]
-        [CustomAutoData(typeof(CustomWebApplicationDbContextFactoryCustomization))]
+        [CustomAutoData(typeof(CustomWebApplicationDbContextFactoryCustomization), typeof(DateOnlyCustomization))]
         public async Task GetConversionCsvByMonthQueryEmptyData(
            CustomWebApplicationDbContextFactory<Program> factory,
            Complete.Client.Contracts.ICsvExportClient csvExportClient,
@@ -252,6 +252,7 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers
             project.OutgoingTrustMainContactId = null;
             project.MainContactId = null;
             project.State = ProjectState.Active;
+            project.LocalAuthorityId = localAuthority.Id;
 
             dbContext.Projects.Add(project);
             await dbContext.SaveChangesAsync();
@@ -271,7 +272,7 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers
             Assert.NotNull(results);
 
             StreamReader reader = new StreamReader(results.Stream);
-            string fileContents = reader.ReadToEnd();
+            string fileContents = await reader.ReadToEndAsync();
 
             // Assert
             Assert.NotNull(fileContents);
