@@ -9,12 +9,12 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Dfe.Complete.Application.Projects.Queries.ListAllProjects;
 
-public record ListAllProjectForUserQuery (ProjectState? State, string UserAdId)
+public record ListAllProjectForUserQuery(ProjectState? State, string UserAdId)
     : PaginatedRequest<PaginatedResult<List<ListAllProjectsForUserQueryResultModel>>>;
 
-public class ListAllProjectsForUser(
+public class ListAllProjectsForUserQueryHandler(
     IListAllProjectsForUserQueryService projectsForUserQueryService,
-    ITrustsV4Client trustsClient, 
+    ITrustsV4Client trustsClient,
     ISender sender)
     : IRequestHandler<ListAllProjectForUserQuery, PaginatedResult<List<ListAllProjectsForUserQueryResultModel>>>
 {
@@ -39,18 +39,14 @@ public class ListAllProjectsForUser(
 
             var allTrusts = await trustsClient.GetByUkprnsAllAsync(allProjectTrustUkPrns, cancellationToken);
 
-            var result = projectsForUser.Select(p => new ListAllProjectsForUserQueryResultModel(
-                    p.Project.Id,
-                    p.Establishment.Urn,
-                    p.Establishment.Name,
-                    p.Project.Type,
-                    p.Project.FormAMat,
-                    IncomingTrustName: allTrusts
-                        .FirstOrDefault(trust => trust.Ukprn == p.Project?.IncomingTrustUkprn?.Value.ToString())?.Name,
-                    OutgoingTrustName: allTrusts
-                        .FirstOrDefault(trust => trust.Ukprn == p.Project?.OutgoingTrustUkprn?.Value.ToString())?.Name,
-                    p.Establishment.LocalAuthorityName,
-                    p.Project.SignificantDate))
+            var result = projectsForUser.Select(p => ListAllProjectsForUserQueryResultModel
+                    .MapProjectAndEstablishmentToListAllProjectsForUserQueryResultModel(
+                        p.Project,
+                        p.Establishment,
+                        outgoingTrustName: allTrusts.FirstOrDefault(trust =>
+                            trust.Ukprn == p.Project?.OutgoingTrustUkprn?.Value.ToString())?.Name,
+                        incomingTrustName: allTrusts.FirstOrDefault(trust =>
+                            trust.Ukprn == p.Project?.IncomingTrustUkprn?.Value.ToString())?.Name))
                 .Skip(request.Page * request.Count)
                 .ToList();
 
