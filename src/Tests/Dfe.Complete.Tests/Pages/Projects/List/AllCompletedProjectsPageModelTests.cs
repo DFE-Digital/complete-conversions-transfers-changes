@@ -10,6 +10,8 @@ using Dfe.Complete.Application.Common.Models;
 using Dfe.Complete.Application.Projects.Queries.ListAllProjects;
 using Dfe.Complete.Application.Projects.Queries.CountAllProjects;
 
+namespace Dfe.Complete.Tests.Pages.Projects.List;
+
 public class AllCompletedProjectsViewModelTests
 {
     [Theory]
