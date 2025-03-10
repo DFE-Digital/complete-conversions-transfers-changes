@@ -137,4 +137,39 @@ public class ListAllProjectsForUserTests
         Assert.True(result.IsSuccess);
         Assert.Equal(0, result.Value?.Count);
     }
+    
+    [Theory]
+    [CustomAutoData(
+        typeof(OmitCircularReferenceCustomization),
+        typeof(ListAllProjectsQueryModelCustomization),
+        typeof(DateOnlyCustomization))]
+    public async Task Handle_ShouldReturnUnsuccessful_WhenAnErrorOccurs(
+        [Frozen] IListAllProjectsForUserQueryService mockListAllProjectsForUserQueryService,
+        [Frozen] Mock<ISender> mockSender,
+        IFixture fixture)
+    {
+        //Arrange 
+        var mockTrustsClient = new Mock<ITrustsV4Client>();
+
+        var handler = new ListAllProjectsForUserQueryHandler(
+            mockListAllProjectsForUserQueryService,
+            mockTrustsClient.Object,
+            mockSender.Object);
+
+        const string errorMessage = "this is a test";
+        
+        var userDto = fixture.Create<UserDto>();
+        mockSender.Setup(sender => sender.Send(It.IsAny<GetUserByAdIdQuery>(), It.IsAny<CancellationToken>()))
+            .ThrowsAsync(new Exception(errorMessage));
+        
+        var query = new ListAllProjectForUserQuery(ProjectState.Active, userDto.ActiveDirectoryUserId) { Page = 50 };
+
+        //Act
+        var result = await handler.Handle(query, default);
+
+        //Assert
+        Assert.NotNull(result);
+        Assert.False(result.IsSuccess);
+        Assert.Equal(errorMessage, result.Error);
+    }
 }
