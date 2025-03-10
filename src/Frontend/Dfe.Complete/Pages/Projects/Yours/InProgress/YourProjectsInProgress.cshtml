@@ -1,7 +1,10 @@
 @page "/projects/yours/in-progress"
+@using Dfe.Complete.Application.Projects.Models
 @using Dfe.Complete.Constants
+@using Dfe.Complete.Pages.Projects.List
 @using GovUk.Frontend.AspNetCore.TagHelpers
 @using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Html
 @model Dfe.Complete.Pages.Projects.Yours.InProgress.YourProjectsInProgress
 @inject IAuthorizationService AuthorizationService
 @{
@@ -12,9 +15,9 @@
 
 @if (userCanCreateProjects.Succeeded)
 {
-<form asp-page="@RouteConstants.CreateNewProject" method="get">
-    <govuk-button type="submit">Add a project</govuk-button>
-</form>
+    <form asp-page="@RouteConstants.CreateNewProject" method="get">
+        <govuk-button type="submit">Add a project</govuk-button>
+    </form>
 }
 
 <h1 class="govuk-heading-xl">
@@ -25,25 +28,42 @@
     <table class="govuk-table" name="la-table" aria-label="All projects by local authority">
         <thead class="govuk-table__head">
         <tr class="govuk-table__row">
+            <th class="govuk-table__header" scope="col">School or academy</th>
+            <th class="govuk-table__header" scope="col">URN</th>
+            <th class="govuk-table__header" scope="col">Type of project</th>
+            <th class="govuk-table__header" scope="col">Incoming trust</th>
+            <th class="govuk-table__header" scope="col">Outgoing trust</th>
             <th class="govuk-table__header" scope="col">Local authority</th>
-            <th class="govuk-table__header" scope="col">Code</th>
-            <th class="govuk-table__header" scope="col">Conversions</th>
-            <th class="govuk-table__header" scope="col">Transfers</th>
+            <th class="govuk-table__header" scope="col">Conversion or transfer date</th>
         </tr>
         </thead>
         <tbody class="govuk-table__body">
 
-        @* @foreach (var localAuthority in Model.LocalAuthorities.OrderBy(la => la.LocalAuthority.Name)) *@
-        @* { *@
-        @*     <tr class="govuk-table__row"> *@
-        @*         <td class="govuk-table__header govuk-table__cell"> *@
-        @*             <a class="govuk-link" href="/projects/all/local-authorities/@localAuthority.LocalAuthorityCode">@localAuthority.LocalAuthority.Name</a> *@
-        @*         </td> *@
-        @*         <td class="govuk-table__cell">@localAuthority.LocalAuthorityCode</td> *@
-        @*         <td class="govuk-table__cell">@localAuthority.Conversions</td> *@
-        @*         <td class="govuk-table__cell">@localAuthority.Transfers</td> *@
-        @*     </tr> *@
-        @* } *@
+        @foreach (var project in Model.ProjectsForUser)
+        {
+            <tr class="govuk-table__row">
+                <td class="govuk-table__header govuk-table__cell">
+                    <a class="govuk-link" href="@AllProjectsModel.GetProjectSummaryUrl(project.ProjectType, project.ProjectId)">@project.SchoolOrAcademyName</a>
+                </td>
+                <td class="govuk-table__cell">@project.Urn.Value</td>
+                <td class="govuk-table__cell">@project.ProjectType</td>
+                <td class="govuk-table__cell">
+                    @DisplayTrustName(project.IncomingTrustName)
+                </td>
+                <td class="govuk-table__cell">
+                    @DisplayTrustName(project.OutgoingTrustName)
+                </td>
+                <td class="govuk-table__cell">@project.LocalAuthority</td>
+                <td class="govuk-table__cell">@project.ConversionOrTransferDate.ToDateMonthYearString()</td>
+            </tr>
+        }
         </tbody>
     </table>
 </div>
+
+@functions {
+    private static IHtmlContent DisplayTrustName(string trustName)
+    {
+        return !string.IsNullOrEmpty(trustName) ? new HtmlString(trustName) : new HtmlString("<strong class=\"govuk-tag govuk-tag--grey\">None</strong>");
+    }
+}

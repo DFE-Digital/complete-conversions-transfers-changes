@@ -4,12 +4,13 @@ using Dfe.Complete.Domain.ValueObjects;
 namespace Dfe.Complete.Application.Projects.Models;
 
 public record ListAllProjectsForUserQueryResultModel(
-    string SchoolOrAcademy,
+    ProjectId ProjectId,
     Urn Urn,
-    ProjectType ProjectType,
+    string SchoolOrAcademyName,
+    ProjectType? ProjectType,
     bool IsFormAMat,
-    string? IncomingTrustUrn,
-    string? OutgoingTrustUrn,
+    string? IncomingTrustName,
+    string? OutgoingTrustName,
     string LocalAuthority,
-    DateOnly ConversionOrTransferDate
+    DateOnly? ConversionOrTransferDate
 );
