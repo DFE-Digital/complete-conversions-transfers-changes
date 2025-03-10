@@ -4,7 +4,7 @@ import homePage from "cypress/pages/homePage";
 import selectProjectType from "cypress/pages/projects/new/selectProjectTypePage";
 import validationComponent from "cypress/pages/validationComponent";
 
-const urn: string = "401450";
+const urn: string = "111394";
 const urnMAT: string = "103846"; //103842
 
 describe("Create a new Conversion Project", () => {
@@ -15,6 +15,7 @@ describe("Create a new Conversion Project", () => {
 
     beforeEach(() => {
         cy.login({ role: "RegionalDeliveryOfficer" });
+        cy.acceptCookies();
         cy.visit("/");
     });
 
@@ -28,7 +29,7 @@ describe("Create a new Conversion Project", () => {
         newConversionPage
             .withSchoolURN(urn)
             .withIncomingTrustUKPRN("10059853")
-            .withAdvisoryBoardDate("10", "12", "2025")
+            .withAdvisoryBoardDate("10", "12", "2024")
             .withProvisionalConversionDate("9", "11", "2026")
             .withSchoolSharepointLink("https://educationgovuk-my.sharepoint.com/")
             .withIncomingTrustSharePointLink("https://educationgovuk-my.sharepoint.com/")

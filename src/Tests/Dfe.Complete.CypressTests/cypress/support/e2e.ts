@@ -35,6 +35,7 @@ declare global {
             login(params?: AuthenticationInterceptorParams): Chainable<Element>;
             loginWithCredentials(): Chainable<Element>;
             loginRuby(): Chainable<Element>;
+            acceptCookies(): Chainable<Element>;
             assertChildList(selector: string, values: string[]): Chainable<Element>;
             executeAccessibilityTests(ruleExclusions?: RuleObject): Chainable<Element>;
             enterDate(idPrefix: string, day: string, month: string, year: string): Chainable<Element>;

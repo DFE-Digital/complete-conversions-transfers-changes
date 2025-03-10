@@ -19,7 +19,7 @@ class NewConversionPage extends NewProjectPage {
     }
 
     public withProvisionalConversionDate(day: string, month: string, year: string): this {
-        cy.enterDate("ProvisionalConversionDate", day, month, year);
+        cy.enterDate("SignificantDate", day, month, year);
 
         return this;
     }

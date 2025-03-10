@@ -78,6 +78,10 @@ Cypress.Commands.add("loginRuby", () => {
     cy.contains('button', 'Sign in with your DfE Microsoft account').click();
 });
 
+Cypress.Commands.add("acceptCookies", () => {
+    cy.setCookie("ACCEPT_OPTIONAL_COOKIES", "True");
+});
+
 Cypress.Commands.add("executeAccessibilityTests", (ruleOverride?: RuleObject) => {
     Logger.log("Executing the command");
     const continueOnFail = false;
