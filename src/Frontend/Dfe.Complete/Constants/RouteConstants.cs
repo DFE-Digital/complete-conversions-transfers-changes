@@ -7,6 +7,8 @@
 
         public const string ProjectsByRegion = "/projects/all/regions/{0}";
 
+        public const string TeamProjectsInProgress = "/projects/team/in-progress";
+
         // Project
         public const string Project = "/projects/{0}";
         public const string CreateNewProject = "/projects/CreateNewProject";
