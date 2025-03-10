@@ -470,5 +470,62 @@ public class CreateTransferProjectCommandHandlerTests
             await mockTransferTaskRepository.DidNotReceive()
                 .AddAsync(Arg.Any<TransferTasksData>(), Arg.Any<CancellationToken>());
         }
+        
+         [Theory]
+    [CustomAutoData(typeof(DateOnlyCustomization), typeof(ProjectCustomization),
+        typeof(IgnoreVirtualMembersCustomisation))]
+    public async Task Handle_ShouldNOTSet_GroupId_When_GroupReferenceNumber_NullOrEmpty(
+        [Frozen] ICompleteRepository<Domain.Entities.Project> mockProjectRepository,
+        [Frozen] ICompleteRepository<TransferTasksData> mockTransferTaskRepository,
+        [Frozen] Mock<ISender> mockSender,
+        CreateTransferProjectCommand command
+    )
+    {
+        // Arrange
+        var handler =
+            new CreateTransferProjectCommandHandler(mockProjectRepository, mockTransferTaskRepository,
+                mockSender.Object);
+
+        command = command with { GroupReferenceNumber = null };
+
+        const ProjectTeam team = ProjectTeam.WestMidlands;
+        var userDto = new UserDto
+        {
+            Id = new UserId(Guid.NewGuid()),
+            Team = team.ToDescription()
+        };
+
+        var createdAt = DateTime.UtcNow;
+        var transferTaskId = Guid.NewGuid();
+        var transferTask = new TransferTasksData(new TaskDataId(transferTaskId), createdAt, createdAt,
+            command.IsDueToInedaquateOfstedRating, command.IsDueToIssues, command.OutGoingTrustWillClose);
+
+        mockSender.Setup(s => s.Send(It.IsAny<GetLocalAuthorityBySchoolUrnQuery>(), default))
+            .ReturnsAsync(
+                Result<GetLocalAuthorityBySchoolUrnResponseDto?>.Success(
+                    new GetLocalAuthorityBySchoolUrnResponseDto(Guid.NewGuid())));
+
+        mockSender.Setup(s => s.Send(It.IsAny<GetUserByAdIdQuery>(), It.IsAny<CancellationToken>()))
+            .ReturnsAsync(Result<UserDto?>.Success(userDto));
+        
+        Domain.Entities.Project capturedProject = null!;
+
+        mockProjectRepository.AddAsync(Arg.Do<Domain.Entities.Project>(proj => capturedProject = proj),
+                Arg.Any<CancellationToken>())
+            .Returns(Task.FromResult(capturedProject));
+
+        mockProjectRepository.AddAsync(capturedProject, Arg.Any<CancellationToken>())
+            .Returns(Task.FromResult(capturedProject));
+
+        mockTransferTaskRepository.AddAsync(Arg.Any<TransferTasksData>(), Arg.Any<CancellationToken>())
+            .Returns(Task.FromResult(transferTask));
+
+        // Act
+        var projectId = await handler.Handle(command, default);
+
+        // Assert
+        Assert.NotNull(projectId);
+        Assert.Null(capturedProject.GroupId);
+    }
    
 }
