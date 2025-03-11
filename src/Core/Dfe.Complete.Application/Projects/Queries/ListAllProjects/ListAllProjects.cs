@@ -36,7 +36,7 @@ namespace Dfe.Complete.Application.Projects.Queries.ListAllProjects
                         item.Project.AssignedTo != null
                             ? $"{item.Project.AssignedTo.FirstName} {item.Project.AssignedTo.LastName}"
                             : null,
-                        item.Project.LocalAuthority.Name,
+                        item.Establishment.LocalAuthorityName,
                         item.Project.Team,
                         item.Project.CompletedAt
                     ))
