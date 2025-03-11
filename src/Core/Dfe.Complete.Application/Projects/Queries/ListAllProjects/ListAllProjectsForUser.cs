@@ -13,7 +13,7 @@ public record ListAllProjectForUserQuery(ProjectState? State, string UserAdId)
     : PaginatedRequest<PaginatedResult<List<ListAllProjectsForUserQueryResultModel>>>;
 
 public class ListAllProjectsForUserQueryHandler(
-    IListAllProjectsForUserQueryService projectsForUserQueryService,
+    IListAllProjectsByFilterQueryService listAllProjectsByFilterQueryService,
     ITrustsV4Client trustsClient,
     ISender sender)
     : IRequestHandler<ListAllProjectForUserQuery, PaginatedResult<List<ListAllProjectsForUserQueryResultModel>>>
@@ -25,9 +25,8 @@ public class ListAllProjectsForUserQueryHandler(
         {
             var user = await sender.Send(new GetUserByAdIdQuery(request.UserAdId), cancellationToken);
 
-            var projectsForUser = await projectsForUserQueryService.ListAllProjectsForUser(user.Value.Id, request.State)
-                .ToListAsync(cancellationToken);
-
+            var projectsForUser = await listAllProjectsByFilterQueryService.ListAllProjectsByFilter(request.State, null, userId: user.Value.Id).ToListAsync(cancellationToken);
+            
             var allProjectTrustUkPrns = projectsForUser
                 .SelectMany(p => new[]
                 {

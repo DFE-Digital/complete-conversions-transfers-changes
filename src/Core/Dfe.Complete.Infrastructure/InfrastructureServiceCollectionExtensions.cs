@@ -32,7 +32,8 @@ namespace Dfe.Complete.Infrastructure
             services.AddScoped<IListAllProjectsForLocalAuthorityQueryService, ListAllProjectsForLocalAuthorityQueryService>();
             services.AddScoped<IListAllProjectsForRegionQueryService, ListAllProjectsForRegionQueryService>();
             services.AddScoped<IListAllProjectsForUserQueryService, ListAllProjectsForUserQueryService>();
-            
+            services.AddScoped<IListAllProjectsByFilterQueryService, ListAllProjectsByFilterQueryService>();
+
             // Authentication
             //services.AddCustomAuthorization(config);
 

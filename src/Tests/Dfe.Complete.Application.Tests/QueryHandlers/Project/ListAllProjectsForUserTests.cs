@@ -34,9 +34,7 @@ public class ListAllProjectsForUserTests
         //Arrange 
         var mockTrustsClient = new Mock<ITrustsV4Client>();
 
-        var handler = new ListAllProjectsForUserQueryHandler(
-            mockListAllProjectsForUserQueryService,
-            mockTrustsClient.Object,
+        var handler = new ListAllProjectsForUserQueryHandler(mockTrustsClient.Object,
             mockSender.Object);
 
         var userDto = fixture.Create<UserDto>();
@@ -100,9 +98,7 @@ public class ListAllProjectsForUserTests
         //Arrange 
         var mockTrustsClient = new Mock<ITrustsV4Client>();
 
-        var handler = new ListAllProjectsForUserQueryHandler(
-            mockListAllProjectsForUserQueryService,
-            mockTrustsClient.Object,
+        var handler = new ListAllProjectsForUserQueryHandler(mockTrustsClient.Object,
             mockSender.Object);
 
         var userDto = fixture.Create<UserDto>();
@@ -144,16 +140,14 @@ public class ListAllProjectsForUserTests
         typeof(ListAllProjectsQueryModelCustomization),
         typeof(DateOnlyCustomization))]
     public async Task Handle_ShouldReturnUnsuccessful_WhenAnErrorOccurs(
-        [Frozen] IListAllProjectsForUserQueryService mockListAllProjectsForUserQueryService,
+        [Frozen] IListAllProjectsByFilterQueryService mockListAllProjectsByFilterQueryService,
         [Frozen] Mock<ISender> mockSender,
         IFixture fixture)
     {
         //Arrange 
         var mockTrustsClient = new Mock<ITrustsV4Client>();
 
-        var handler = new ListAllProjectsForUserQueryHandler(
-            mockListAllProjectsForUserQueryService,
-            mockTrustsClient.Object,
+        var handler = new ListAllProjectsForUserQueryHandler(mockListAllProjectsByFilterQueryService, mockTrustsClient.Object,
             mockSender.Object);
 
         const string errorMessage = "this is a test";
