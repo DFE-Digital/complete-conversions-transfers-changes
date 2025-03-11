@@ -6,7 +6,7 @@ class AllProjects {
     }
 
     filterProjects(filter: string) {
-        cy.get('moj-primary-navigation__list').select(filter).click();
+        cy.getByClass('moj-primary-navigation__list').contains(filter).click();
         return this;
     }
 

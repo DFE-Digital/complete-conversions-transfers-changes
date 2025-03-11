@@ -1,26 +1,24 @@
 import navBar from "../../pages/navBar";
 import allProjects from "../../pages/projects/allProjects";
 import projectTable from "../../pages/projects/projectTable";
-import {after, before} from "mocha";
+import {before, beforeEach} from "mocha";
 import conversionProjectApi from "../../api/projectApi";
 import {ProjectBuilder} from "../../api/projectBuilder";
 import projectRemover from "../../api/projectRemover";
 
 const project = ProjectBuilder.createConversionProjectRequest();
-const schoolName = "Little Ilford School";
-const userName = "Fahad Darwish";
+const schoolName = "St Chad's Catholic Primary School";
+const userName = "Patrick Clark";
 describe("View all projects", () => {
     before(() => {
+        projectRemover.removeProjectIfItExists(`${project.urn.value}`);
         conversionProjectApi.createProject(project);
     });
 
     beforeEach(() => {
         cy.login({ role: "RegionalDeliveryOfficer" });
+        cy.acceptCookies();
         cy.visit(`/projects/all/in-progress/all`);
-    });
-
-    after(() => {
-        projectRemover.removeProjectIfItExists(`${project.urn.value}`);
     });
 
     it("Should be able to view newly created conversion project in All projects and Conversions projects", () => {
@@ -30,7 +28,7 @@ describe("View all projects", () => {
             .goToNextPageUntilProjectIsVisible(schoolName);
         projectTable
             .containsSchoolOrAcademy(schoolName)
-            .schoolHasUrn(schoolName, `${project.urn}`)
+            .schoolHasUrn(schoolName, `${project.urn.value}`)
             .schoolHasConversionOrTransferDate(schoolName, "Feb 2025")
             .schoolHasProjectType(schoolName, "Conversion")
             .schoolHasFormAMatProject(schoolName, "No")

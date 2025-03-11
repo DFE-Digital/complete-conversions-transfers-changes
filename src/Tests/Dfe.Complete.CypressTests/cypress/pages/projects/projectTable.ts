@@ -5,7 +5,7 @@ class ProjectTable {
     }
 
     containsUser(userName: string) {
-        cy.getById('govuk-table').contains(userName);
+        cy.getByClass('govuk-table').contains(userName);
         return this;
     }
 
@@ -15,12 +15,12 @@ class ProjectTable {
     }
 
     goToUserProjects(userName: string) {
-        cy.getById('govuk-table').contains(userName).click();
+        cy.getByClass('govuk-table').contains(userName).click();
         return this
     }
 
     hasTableHeader(header: string) {
-        cy.getById('govuk-table')
+        cy.getByClass('govuk-table')
             .getByClass("govuk-table__head")
             .contains(header);
         return this;

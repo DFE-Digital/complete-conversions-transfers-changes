@@ -28,7 +28,7 @@ class NewTransferPage extends NewProjectPage {
     }
 
     public withProvisionalTransferDate(day: string, month: string, year: string): this {
-        cy.enterDate("ProvisionalTransferDate", day, month, year);
+        cy.enterDate("SignificantDate", day, month, year);
         return this;
     }
 

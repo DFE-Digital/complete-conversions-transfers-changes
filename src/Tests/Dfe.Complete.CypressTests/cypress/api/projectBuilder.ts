@@ -40,7 +40,7 @@ export class ProjectBuilder {
             advisoryBoardConditions: "test",
             establishmentSharepointLink: "https://educationgovuk.sharepoint.com",
             incomingTrustSharepointLink: "https://educationgovuk.sharepoint.com",
-            groupReferenceNumber: "GRP_12345670",
+            groupReferenceNumber: "GRP_00000006",
             handingOverToRegionalCaseworkService: false,
             handoverComments: "test 2",
             userAdId: Cypress.env("userAdId"),

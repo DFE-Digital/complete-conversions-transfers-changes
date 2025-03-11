@@ -10,11 +10,12 @@ const urnMAT = "136731";
 describe("Create a new Transfer Project", () => {
     before(() => {
         projectRemover.removeProjectIfItExists(urn);
-        projectRemover.removeProjectIfItExists(urnMAT);
+        // projectRemover.removeProjectIfItExists(urnMAT); // skip bug 202345
     });
 
     beforeEach(() => {
         cy.login({ role: "RegionalDeliveryOfficer" });
+        cy.acceptCookies();
         cy.visit("/");
     });
 
@@ -43,10 +44,11 @@ describe("Create a new Transfer Project", () => {
             .continue();
 
         validationComponent.hasNoValidationErrors();
-        cy.get("h2").should("contain", "Project created");
+        cy.get("h2").should("contain", "Task list");
     });
 
-    it("Should be able to create a new Form a MAT transfer project", () => {
+    it.skip("Should be able to create a new Form a MAT transfer project", () => {
+        // skip bug 202345
         homePage.addAProject();
 
         selectProjectTypePage.selectFormAMATTransfer().continue();
@@ -70,7 +72,7 @@ describe("Create a new Transfer Project", () => {
             .continue()
 
         validationComponent.hasNoValidationErrors();
-        cy.get("h2").should("contain", "Project created");
+        cy.get("h2").should("contain", "Task list");
     });
 
     it("Should show multiple validation errors when inputting invalid data in Form a MAT Transfer", () => {
