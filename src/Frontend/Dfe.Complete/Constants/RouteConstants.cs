@@ -2,7 +2,7 @@
 {
     public static class RouteConstants
     {
-        public const string YourProjects = "/";
+        public const string YourProjectsInProgress = "/projects/yours/in-progress";
         public const string ProjectsInProgress = "/projects/all/in-progress/all";
 
         public const string ProjectsByRegion = "/projects/all/regions/{0}";
