@@ -29,7 +29,6 @@ describe("Create a new Conversion Project", () => {
         newConversionPage
             .withSchoolURN(urn)
             .withIncomingTrustUKPRN("10059853")
-            .withGroupReferenceNumber("GRP_00000006") //todo remove
             .withAdvisoryBoardDate("10", "12", "2024")
             .withProvisionalConversionDate("9", "11", "2026")
             .withSchoolSharepointLink("https://educationgovuk-my.sharepoint.com/")
