@@ -1,0 +1,61 @@
+@page "/projects/all/by-month/transfers/{month}/{year}" 
+@using Dfe.Complete.Pages.Projects.List
+@model Dfe.Complete.Pages.Projects.List.ProjectsByMonth.TransferProjectsByMonthModel
+@{
+    Layout = "List/ProjectsByMonth/_ProjectsByMonthLayout";
+    ViewData["Title"] = "Academies opening or transferring";
+}
+
+@section PageHeading
+{
+    <span class="govuk-caption-l">Academies opening or transferring</span>
+    <h1 class="govuk-heading-l">
+        @Model.DateString
+    </h1>
+    <p>Schools that will become academies, and academies that will move to a different trust.</p>
+
+    <p>You can also <a href="/projects/all/export/by-significant-date/conversions/all-data/4/2025/csv">download a more detailed version of the data as a CSV file</a>.</p>
+}
+
+<div class="govuk-grid-column-full">
+    @{
+        if (Model.Projects.Any())
+        {
+            <table class="govuk-table" name="projects_table" aria-label="Projects table">
+                <thead class="govuk-table__head">
+                <tr class="govuk-table__row">
+                    <th class="govuk-table__header" scope="col">School and URN</th>
+                    <th class="govuk-table__header" scope="col">Region</th>
+                    <th class="govuk-table__header" scope="col">Outgoing trust</th>
+                    <th class="govuk-table__header" scope="col">Incoming trust</th>
+                    <th class="govuk-table__header" scope="col">Authority to proceed</th>
+                    <th class="govuk-table__header" scope="col">Confirmed date (Original date)</th>
+                </tr>
+                </thead>
+                <tbody class="govuk-table__body">
+                @foreach(var project in Model.Projects)
+                {
+                    <tr class="govuk-table__row">
+                        <td class="govuk-table__header govuk-table__cell">
+                            <a class="govuk-link" href="@AllProjectsModel.GetProjectSummaryUrl(project.ProjectType.Value, project.ProjectId.Value.ToString())">@project.EstablishmentName</a>
+                            @project.Urn.Value
+                        </td>
+                        <td class="govuk-table__cell">@project.Region</td>
+                        <td class="govuk-table__cell">@project.OutgoingTrust</td>
+                        <td class="govuk-table__cell">@project.IncomingTrust</td>
+                        <td class="govuk-table__cell">@project.AllConditionsMet</td>
+                        <td class="govuk-table__cell">@project.ConfirmedAndOriginalDate</td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+        
+        }
+        else
+        {
+            <div class="govuk-inset-text">
+                There are no projects due to convert between @Model.DateString and @Model.DateString
+            </div>
+        }
+    }
+</div>
