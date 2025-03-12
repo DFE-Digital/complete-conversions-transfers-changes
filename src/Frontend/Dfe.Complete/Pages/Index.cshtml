@@ -2,17 +2,9 @@
 @model Dfe.Complete.Pages.IndexModel
 @using Dfe.Complete.Constants
 @using Microsoft.AspNetCore.Authorization
-@inject IAuthorizationService AuthorizationService
 @{
     ViewData["Title"] = "Your projects";
-    var userCanCreateProjects = await AuthorizationService.AuthorizeAsync(User, "CanCreateProjects");
 }
 
-@if (userCanCreateProjects.Succeeded)
-{
-    <form asp-page="@RouteConstants.CreateNewProject" method="get">
-        <govuk-button type="submit">Add a project</govuk-button>
-    </form>
-}
 
 <h1 class="govuk-heading-xl">Your projects in progress</h1>
