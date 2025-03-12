@@ -10,6 +10,7 @@ const project = ProjectBuilder.createConversionProjectRequest();
 const schoolName = "St Chad's Catholic Primary School";
 const userName = "Patrick Clark";
 const region = "London";
+const trust = "5 Dimensions Trust";
 const localAuthority = "Dudley Metropolitan Borough Council";
 describe("View all projects", () => {
     before(() => {
@@ -37,10 +38,35 @@ describe("View all projects", () => {
             .schoolHasAssignedTo(schoolName, "Patrick Clark");
         allProjects
             .viewConversionsProjects()
-            .goToNextPageUntilFieldIsVisible(schoolName);
+            .goToNextPageUntilFieldIsVisible(schoolName)
+        projectTable.goTo(schoolName);
+        // projectDetailsPage.containsHeading(schoolName); // not implemented
     });
 
-    it("Should be able to view all projects by User and all a user's projects", () => {
+    it("Should be able to view all projects by region and all a region's projects", () => {
+        navBar.goToAllProjects();
+        allProjects
+            .filterProjects("By region")
+            .containsHeading("All projects by region")
+        projectTable
+            .hasTableHeader("Region")
+            .hasTableHeader("Conversions")
+            .hasTableHeader("Transfers")
+            .contains(region)
+            .filterBy(region);
+        // allProjects.containsHeading(`Projects for ${region}`); //bug 205144
+        projectTable
+            .hasTableHeader("School or academy")
+            .hasTableHeader("URN")
+            .hasTableHeader("Conversion or transfer date")
+            .hasTableHeader("Project type")
+            .hasTableHeader("Assigned to")
+            .contains(schoolName)
+            .goTo(schoolName);
+        // projectDetailsPage.containsHeading(schoolName); // not implemented
+    });
+
+    it("Should be able to view all projects by user and all a user's projects", () => {
         navBar.goToAllProjects();
         allProjects
             .filterProjects("By user")
@@ -64,18 +90,20 @@ describe("View all projects", () => {
         // projectDetailsPage.containsHeading(schoolName) // not implemented
     })
 
-    it("Should be able to view all projects by region and all a region's projects", () => {
+    it.skip("Should be able to view all projects by trust and all a trust's projects", () => {
+        // not implemented 187140
         navBar.goToAllProjects();
         allProjects
-            .filterProjects("By region")
-            .containsHeading("All projects by region")
+            .filterProjects("By trust")
+            .containsHeading("All projects by trust");
         projectTable
-            .hasTableHeader("Region")
+            .hasTableHeader("Trust")
+            .hasTableHeader("Group identifier")
             .hasTableHeader("Conversions")
             .hasTableHeader("Transfers")
-            .contains(region)
-            .filterBy(region);
-        // allProjects.containsHeading(`Projects for ${region}`); //bug 205144
+            .contains(trust)
+            .filterBy(trust)
+        allProjects.containsHeading(`Projects for ${trust}`);
         projectTable
             .hasTableHeader("School or academy")
             .hasTableHeader("URN")
