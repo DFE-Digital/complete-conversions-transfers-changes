@@ -15,11 +15,11 @@ class AllProjects {
         return this;
     }
 
-    goToNextPageUntilProjectIsVisible(schoolName: string) {
+    goToNextPageUntilFieldIsVisible(field: string) {
         cy.get('body').then($body => {
-            if ($body.find(`.govuk-table:contains(${schoolName})`).length === 0) {
+            if ($body.find(`.govuk-table:contains(${field})`).length === 0) {
                 this.goToNextPage();
-                this.goToNextPageUntilProjectIsVisible(schoolName);
+                this.goToNextPageUntilFieldIsVisible(field);
             }
         });
         return this;

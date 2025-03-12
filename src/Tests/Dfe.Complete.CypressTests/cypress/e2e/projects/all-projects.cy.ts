@@ -9,6 +9,8 @@ import projectRemover from "../../api/projectRemover";
 const project = ProjectBuilder.createConversionProjectRequest();
 const schoolName = "St Chad's Catholic Primary School";
 const userName = "Patrick Clark";
+const region = "London";
+const localAuthority = "Dudley Metropolitan Borough Council";
 describe("View all projects", () => {
     before(() => {
         projectRemover.removeProjectIfItExists(`${project.urn.value}`);
@@ -25,9 +27,9 @@ describe("View all projects", () => {
         navBar.goToAllProjects();
         allProjects
             .containsHeading("All projects in progress")
-            .goToNextPageUntilProjectIsVisible(schoolName);
+            .goToNextPageUntilFieldIsVisible(schoolName);
         projectTable
-            .containsSchoolOrAcademy(schoolName)
+            .contains(schoolName)
             .schoolHasUrn(schoolName, `${project.urn.value}`)
             .schoolHasConversionOrTransferDate(schoolName, "Feb 2025")
             .schoolHasProjectType(schoolName, "Conversion")
@@ -35,7 +37,7 @@ describe("View all projects", () => {
             .schoolHasAssignedTo(schoolName, "Patrick Clark");
         allProjects
             .viewConversionsProjects()
-            .goToNextPageUntilProjectIsVisible(schoolName);
+            .goToNextPageUntilFieldIsVisible(schoolName);
     });
 
     it("Should be able to view all projects by User and all a user's projects", () => {
@@ -49,7 +51,7 @@ describe("View all projects", () => {
             .hasTableHeader("Team")
             .hasTableHeader("Conversions")
             .hasTableHeader("Transfers")
-            .containsUser(userName)
+            .contains(userName)
             .goToUserProjects(userName);
         allProjects.containsHeading(`Projects for ${userName}`);
         projectTable
@@ -57,9 +59,57 @@ describe("View all projects", () => {
             .hasTableHeader("URN")
             .hasTableHeader("Conversion or transfer date")
             .hasTableHeader("Project type")
-            .containsSchoolOrAcademy(schoolName)
-            .goToSchoolOrAcademy(schoolName);
-        //project detail page
+            .contains(schoolName)
+            .goTo(schoolName);
+        // projectDetailsPage.containsHeading(schoolName) // not implemented
     })
+
+    it("Should be able to view all projects by region and all a region's projects", () => {
+        navBar.goToAllProjects();
+        allProjects
+            .filterProjects("By region")
+            .containsHeading("All projects by region")
+        projectTable
+            .hasTableHeader("Region")
+            .hasTableHeader("Conversions")
+            .hasTableHeader("Transfers")
+            .contains(region)
+            .filterBy(region);
+        // allProjects.containsHeading(`Projects for ${region}`); //bug 205144
+        projectTable
+            .hasTableHeader("School or academy")
+            .hasTableHeader("URN")
+            .hasTableHeader("Conversion or transfer date")
+            .hasTableHeader("Project type")
+            .hasTableHeader("Assigned to")
+            .contains(schoolName)
+            .goTo(schoolName);
+        // projectDetailsPage.containsHeading(schoolName); // not implemented
+    });
+
+    it("Should be able to view all projects by local authority and all a local authority's projects", () => {
+        navBar.goToAllProjects();
+        allProjects
+            .filterProjects("By local authority")
+            // .containsHeading("All projects by local authority"); // bug 205240
+            .containsHeading("All projects by authority");
+        projectTable
+            .hasTableHeader("Local authority")
+            .hasTableHeader("Code")
+            .hasTableHeader("Conversions")
+            .hasTableHeader("Transfers");
+        allProjects.goToNextPageUntilFieldIsVisible(localAuthority);
+        projectTable.filterBy(localAuthority);
+        // allProjects.containsHeading(`Projects for ${localAuthority}`); // bug 205240
+        projectTable
+            .hasTableHeader("School or academy")
+            .hasTableHeader("URN")
+            .hasTableHeader("Conversion or transfer date")
+            .hasTableHeader("Project type")
+            .hasTableHeader("Assigned to")
+            .contains(schoolName)
+            .goTo(schoolName);
+        // projectDetailsPage.containsHeading(schoolName); // not implemented
+    });
 
 });

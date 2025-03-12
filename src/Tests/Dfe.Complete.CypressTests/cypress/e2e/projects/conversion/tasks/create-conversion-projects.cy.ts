@@ -19,7 +19,7 @@ describe("Create a new Conversion Project", () => {
         cy.visit("/");
     });
 
-    it.only("Should be able to create a new conversion project", () => {
+    it("Should be able to create a new conversion project", () => {
         homePage.addAProject();
 
         // cy.executeAccessibilityTests();
@@ -81,9 +81,7 @@ describe("Create a new Conversion Project", () => {
             .hasLinkedValidationError("The Urn field is required")
             .hasLinkedValidationError("Enter a UKPRN")
             .hasLinkedValidationError("Enter a date for the Advisory Board Date, like 1 4 2023")
-            .hasLinkedValidationError(
-                "Enter a date for the Provisional Conversion Date, like 1 4 2023",
-            )
+            .hasLinkedValidationError("Provisional Conversion Date must include a month and year")
             .hasLinkedValidationError("The School or academy SharePoint link field is required.")
             .hasLinkedValidationError("The Incoming trust SharePoint link field is required.")
             .hasLinkedValidationError(

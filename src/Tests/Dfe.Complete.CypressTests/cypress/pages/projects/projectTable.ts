@@ -1,16 +1,16 @@
 class ProjectTable {
-    containsSchoolOrAcademy(schoolName: string) {
-        cy.getByClass('govuk-table').contains(schoolName);
+    contains(field: string) {
+        cy.getByClass('govuk-table').contains(field);
         return this;
     }
 
-    containsUser(userName: string) {
-        cy.getByClass('govuk-table').contains(userName);
+    filterBy(filter: string) {
+        cy.getByClass('govuk-table').contains(filter).click();
         return this;
     }
 
-    goToSchoolOrAcademy(schoolName: string) {
-        cy.getByClass('govuk-table').contains(schoolName).click();
+    goTo(link: string) {
+        this.filterBy(link);
         return this;
     }
 
