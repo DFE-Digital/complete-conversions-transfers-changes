@@ -10,13 +10,16 @@ internal class ListAllProjectsQueryService(CompleteContext context) : IListAllPr
 {
     public IQueryable<ListAllProjectsQueryModel> ListAllProjects(ProjectState? projectStatus, ProjectType? type)
     {
-            var query = context.Projects
-                .Where(project => projectStatus == null || project.State == projectStatus)
-                .Where(project => type == null || type == project.Type)
-                .Include(p => p.AssignedTo)
-                .Join(context.GiasEstablishments, project => project.Urn, establishment => establishment.Urn,
-                    (project, establishment) => new ListAllProjectsQueryModel(project, establishment));
-
-            return query;
+        var query = context.Projects
+            .Where(project => projectStatus == null || project.State == projectStatus)
+            .Where(project => type == null || type == project.Type)
+            .Include(p => p.AssignedTo)
+            .Include(p => p.SignificantDateHistories)
+            .Include(p => p.LocalAuthority)
+            .Join(context.GiasEstablishments, 
+                project => project.Urn, 
+                establishment => establishment.Urn,
+                 (project, establishment) => new ListAllProjectsQueryModel(project, establishment));
+        return query;
     }
 }
