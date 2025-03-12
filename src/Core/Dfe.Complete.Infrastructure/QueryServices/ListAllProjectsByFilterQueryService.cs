@@ -20,6 +20,7 @@ internal class ListAllProjectsByFilterQueryService(CompleteContext context) : IL
             .Where(project => projectStatus == null || project.State == projectStatus)
             .Where(project => projectType == null || projectType == project.Type);
         
+        //For now, limiting the service to one filter at a time unless requirement changes
         IQueryable<GiasEstablishment> giasEstablishments = context.GiasEstablishments;
 
         if (userId != null && userId.Value != Guid.Empty)
