@@ -46,4 +46,18 @@ public abstract class AllProjectsModel(string currentNavigation) : PageModel
                 ? RouteConstants.ConversionProjectTaskList
                 : RouteConstants.TransferProjectTaskList, project.Id);
     }
+    
+    public static string GetProjectSummaryUrl(ProjectType projectType, string projectId)
+    {
+        return string.Format(projectType == ProjectType.Conversion ? RouteConstants.ConversionProjectTaskList : RouteConstants.TransferProjectTaskList, projectId);
+    }
+    
+    public static string GetProjectByMonthUrl(ProjectType projectType)
+    {
+        DateTime date = DateTime.Now.AddMonths(1);
+        string month = date.Month.ToString("0");
+        string year = date.Year.ToString("0000");
+
+        return string.Format(projectType == ProjectType.Conversion ? RouteConstants.ConversionProjectsByMonth : RouteConstants.TransfersProjectsByMonth, month, year);
+    }
 }

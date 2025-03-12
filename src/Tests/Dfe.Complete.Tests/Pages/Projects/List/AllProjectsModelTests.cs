@@ -46,4 +46,24 @@ public class AllProjectsModelTests
         // Assert
         Assert.Equal(expectedUrl, result);
     }
+    
+    [Theory]
+    [InlineData(ProjectType.Conversion)]
+    [InlineData(ProjectType.Transfer)]
+
+    public void GetProjectByMonthUrl_ShouldReturnCorrectUrl_DependantOnProjectType(ProjectType projectType)
+    {
+        DateTime date = DateTime.Now.AddMonths(1);
+        string month = date.Month.ToString("0");
+        string year = date.Year.ToString("0000");
+        
+        // Arrange
+        string expectedUrl = string.Format(projectType == ProjectType.Conversion ? RouteConstants.ConversionProjectsByMonth : RouteConstants.TransfersProjectsByMonth, month, year);
+            
+        // Act
+        var result = AllProjectsModel.GetProjectByMonthUrl(projectType);
+        
+        // Assert
+        Assert.Equal(result, expectedUrl);
+    }
 }

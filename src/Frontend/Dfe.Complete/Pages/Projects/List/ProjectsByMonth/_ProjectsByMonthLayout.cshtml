@@ -1,0 +1,31 @@
+@using Dfe.Complete.Domain.Enums
+@using Dfe.Complete.Pages.Projects.List
+@using Dfe.Complete.Pages.Projects.List.ProjectsByMonth
+@model Dfe.Complete.Pages.Projects.List.ProjectsByMonth.ProjectsByMonthModel
+@{
+  Layout = "List/_AllProjectsLayout";
+  var ariaCurrentValue = "page";
+  string? IsCurrentNav(string tabName) => Model.CurrentSubNavigationItem == tabName ? ariaCurrentValue : null;
+}
+
+@await RenderSectionAsync("PageHeading", true)
+
+<nav class="moj-sub-navigation" aria-label="Project sub-navigation">
+  <ul class="moj-sub-navigation__list">
+
+    <li class="moj-sub-navigation__item">
+      <a class="moj-sub-navigation__link"
+         aria-current="@IsCurrentNav(ProjectsByMonthModel.ConversionsSubNavigation)"
+         href="@AllProjectsModel.GetProjectByMonthUrl(ProjectType.Conversion)">Conversions</a>
+    </li>
+
+    <li class="moj-sub-navigation__item">
+      <a class="moj-sub-navigation__link"
+         aria-current="@IsCurrentNav(ProjectsByMonthModel.TransfersSubNavigation)"
+         href="@AllProjectsModel.GetProjectByMonthUrl(ProjectType.Transfer)">Transfers</a>
+    </li>
+  </ul>
+</nav>
+<div class="govuk-grid-row">
+  @RenderBody()
+</div>
