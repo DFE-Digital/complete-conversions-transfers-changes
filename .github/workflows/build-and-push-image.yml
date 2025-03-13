@@ -72,16 +72,15 @@ jobs:
             tag-prefix: "dotnet-api-"
             aca-name-secret: "ACA_CONTAINERAPP_API_NAME"
     steps:
-      - uses: DFE-Digital/deploy-azure-container-apps-action/.github/actions/build@v5.0.0
+      - uses: DFE-Digital/deploy-azure-container-apps-action/.github/actions/build@main
         with:
           build-file-name: ./Dockerfile.${{ matrix.image }}
           build-args: CI=true
-          build-target: ${{ matrix.stage }}
           image-name: ${{ needs.set-env.outputs.image-name }}
           tag-prefix: ${{ matrix.tag-prefix }}
           github-token: ${{ secrets.GITHUB_TOKEN }}
 
-      - uses: DFE-Digital/deploy-azure-container-apps-action/.github/actions/import@v5.0.0
+      - uses: DFE-Digital/deploy-azure-container-apps-action/.github/actions/import@main
         with:
           azure-tenant-id: ${{ secrets.AZURE_TENANT_ID }}
           azure-subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
@@ -95,7 +94,10 @@ jobs:
           AZURE_SUBSCRIPTION: ${{ secrets.AZURE_SUBSCRIPTION_ID || '' }}
           AZURE_ACR_CLIENT_ID: ${{ secrets.ACR_CLIENT_ID || '' }}
 
-      - uses: DFE-Digital/deploy-azure-container-apps-action/.github/actions/deploy@v5.0.0
+      - id: annotate
+        run: echo "ANNOTATE_RELEASE=${{ matrix.image == 'web' && 'yes' || 'no' }}" >> $GITHUB_ENV
+
+      - uses: DFE-Digital/deploy-azure-container-apps-action/.github/actions/deploy@main
         with:
           azure-tenant-id: ${{ secrets.AZURE_TENANT_ID }}
           azure-subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
@@ -103,7 +105,7 @@ jobs:
           azure-aca-name: ${{ secrets[matrix.aca-name-secret] }}
           azure-aca-resource-group: ${{ secrets.ACA_RESOURCE_GROUP }}
           azure-acr-name: ${{ secrets.ACR_NAME }}
-          annotate-release: ${{ matrix.image == 'web' }}
+          annotate-release: ${{ env.ANNOTATE_RELEASE }}
           image-name: ${{ needs.set-env.outputs.image-name }}
           tag-prefix: ${{ matrix.tag-prefix }}
         env:
