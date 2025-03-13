@@ -97,7 +97,7 @@ public class CreateMatTransferProjectCommandHandler(
                     tasksDataId,
                     region,
                     team,
-                    projectUser.Id,
+                    projectUser?.Id,
                     projectUserAssignedToId,
                     assignedAt,
                     request.EstablishmentSharepointLink,

@@ -31,11 +31,13 @@ public class CreateMatTransferProjectCommandHandlerTests
     )
     {
         // Arrange
-        var establishmentDto = new EstablishmentDto { Urn = command.Urn.Value.ToString(), Gor = new NameAndCodeDto{ Code = "H" } };
+        var establishmentDto = new EstablishmentDto
+            { Urn = command.Urn.Value.ToString(), Gor = new NameAndCodeDto { Code = "H" } };
         Mock<IEstablishmentsV4Client> mockEstablishmentClient = new Mock<IEstablishmentsV4Client>();
         mockEstablishmentClient.Setup(mock =>
-            mock.GetEstablishmentByUrnAsync(command.Urn.Value.ToString(), It.IsAny<CancellationToken>())).ReturnsAsync(establishmentDto);
-        
+                mock.GetEstablishmentByUrnAsync(command.Urn.Value.ToString(), It.IsAny<CancellationToken>()))
+            .ReturnsAsync(establishmentDto);
+
         var handler = new CreateMatTransferProjectCommandHandler(mockProjectRepository, mockTransferTaskRepository,
             mockEstablishmentClient.Object,
             mockSender.Object);
@@ -49,11 +51,14 @@ public class CreateMatTransferProjectCommandHandlerTests
 
         var createdAt = DateTime.UtcNow;
         var transferTaskId = Guid.NewGuid();
-        var transferTask = new TransferTasksData(new TaskDataId(transferTaskId), createdAt, createdAt, command.IsDueToInedaquateOfstedRating, command.IsDueToIssues, command.OutGoingTrustWillClose);
-            
+        var transferTask = new TransferTasksData(new TaskDataId(transferTaskId), createdAt, createdAt,
+            command.IsDueToInedaquateOfstedRating, command.IsDueToIssues, command.OutGoingTrustWillClose);
+
         mockSender.Setup(s => s.Send(It.IsAny<GetLocalAuthorityBySchoolUrnQuery>(), default))
-            .ReturnsAsync(Result<GetLocalAuthorityBySchoolUrnResponseDto?>.Success(new GetLocalAuthorityBySchoolUrnResponseDto(Guid.NewGuid())));
-            
+            .ReturnsAsync(
+                Result<GetLocalAuthorityBySchoolUrnResponseDto?>.Success(
+                    new GetLocalAuthorityBySchoolUrnResponseDto(Guid.NewGuid())));
+
         mockSender
             .Setup(sender => sender.Send(It.IsAny<GetUserByAdIdQuery>(), default))
             .ReturnsAsync(Result<UserDto?>.Success(userDto));
@@ -91,7 +96,7 @@ public class CreateMatTransferProjectCommandHandlerTests
         Assert.Equal(command.EstablishmentSharepointLink, capturedProject.EstablishmentSharepointLink);
         Assert.Equal(command.IncomingTrustSharepointLink, capturedProject.IncomingTrustSharepointLink);
         Assert.Equal(command.HandoverComments, capturedProject.Notes.FirstOrDefault()?.Body);
-            
+
         Assert.Equal(command.NewTrustName, capturedProject.NewTrustName);
         Assert.Equal(command.NewTrustReferenceNumber, capturedProject.NewTrustReferenceNumber);
     }
@@ -106,11 +111,13 @@ public class CreateMatTransferProjectCommandHandlerTests
     )
     {
         // Arrange
-        var establishmentDto = new EstablishmentDto { Urn = command.Urn.Value.ToString(), Gor = new NameAndCodeDto{ Code = "H" } };
+        var establishmentDto = new EstablishmentDto
+            { Urn = command.Urn.Value.ToString(), Gor = new NameAndCodeDto { Code = "H" } };
         Mock<IEstablishmentsV4Client> mockEstablishmentClient = new Mock<IEstablishmentsV4Client>();
         mockEstablishmentClient.Setup(mock =>
-            mock.GetEstablishmentByUrnAsync(command.Urn.Value.ToString(), It.IsAny<CancellationToken>())).ReturnsAsync(establishmentDto);
-        
+                mock.GetEstablishmentByUrnAsync(command.Urn.Value.ToString(), It.IsAny<CancellationToken>()))
+            .ReturnsAsync(establishmentDto);
+
         var handler = new CreateMatTransferProjectCommandHandler(mockProjectRepository, mockTransferTaskRepository,
             mockEstablishmentClient.Object,
             mockSender.Object);
@@ -126,11 +133,14 @@ public class CreateMatTransferProjectCommandHandlerTests
 
         var createdAt = DateTime.UtcNow;
         var transferTaskId = Guid.NewGuid();
-        var transferTask = new TransferTasksData(new TaskDataId(transferTaskId), createdAt, createdAt, command.IsDueToInedaquateOfstedRating, command.IsDueToIssues, command.OutGoingTrustWillClose);
-            
+        var transferTask = new TransferTasksData(new TaskDataId(transferTaskId), createdAt, createdAt,
+            command.IsDueToInedaquateOfstedRating, command.IsDueToIssues, command.OutGoingTrustWillClose);
+
         mockSender.Setup(s => s.Send(It.IsAny<GetLocalAuthorityBySchoolUrnQuery>(), default))
-            .ReturnsAsync(Result<GetLocalAuthorityBySchoolUrnResponseDto?>.Success(new GetLocalAuthorityBySchoolUrnResponseDto(Guid.NewGuid())));
-            
+            .ReturnsAsync(
+                Result<GetLocalAuthorityBySchoolUrnResponseDto?>.Success(
+                    new GetLocalAuthorityBySchoolUrnResponseDto(Guid.NewGuid())));
+
         mockSender
             .Setup(sender => sender.Send(It.IsAny<GetUserByAdIdQuery>(), default))
             .ReturnsAsync(Result<UserDto?>.Success(userDto));
@@ -164,11 +174,13 @@ public class CreateMatTransferProjectCommandHandlerTests
     )
     {
         // Arrange
-        var establishmentDto = new EstablishmentDto { Urn = command.Urn.Value.ToString(), Gor = new NameAndCodeDto{ Code = "H" } };
+        var establishmentDto = new EstablishmentDto
+            { Urn = command.Urn.Value.ToString(), Gor = new NameAndCodeDto { Code = "H" } };
         Mock<IEstablishmentsV4Client> mockEstablishmentClient = new Mock<IEstablishmentsV4Client>();
         mockEstablishmentClient.Setup(mock =>
-            mock.GetEstablishmentByUrnAsync(command.Urn.Value.ToString(), It.IsAny<CancellationToken>())).ReturnsAsync(establishmentDto);
-        
+                mock.GetEstablishmentByUrnAsync(command.Urn.Value.ToString(), It.IsAny<CancellationToken>()))
+            .ReturnsAsync(establishmentDto);
+
         var handler = new CreateMatTransferProjectCommandHandler(mockProjectRepository, mockTransferTaskRepository,
             mockEstablishmentClient.Object,
             mockSender.Object);
@@ -184,11 +196,14 @@ public class CreateMatTransferProjectCommandHandlerTests
 
         var createdAt = DateTime.UtcNow;
         var transferTaskId = Guid.NewGuid();
-        var transferTask = new TransferTasksData(new TaskDataId(transferTaskId), createdAt, createdAt, command.IsDueToInedaquateOfstedRating, command.IsDueToIssues, command.OutGoingTrustWillClose);
-            
+        var transferTask = new TransferTasksData(new TaskDataId(transferTaskId), createdAt, createdAt,
+            command.IsDueToInedaquateOfstedRating, command.IsDueToIssues, command.OutGoingTrustWillClose);
+
         mockSender.Setup(s => s.Send(It.IsAny<GetLocalAuthorityBySchoolUrnQuery>(), default))
-            .ReturnsAsync(Result<GetLocalAuthorityBySchoolUrnResponseDto?>.Success(new GetLocalAuthorityBySchoolUrnResponseDto(Guid.NewGuid())));
-            
+            .ReturnsAsync(
+                Result<GetLocalAuthorityBySchoolUrnResponseDto?>.Success(
+                    new GetLocalAuthorityBySchoolUrnResponseDto(Guid.NewGuid())));
+
         mockSender
             .Setup(sender => sender.Send(It.IsAny<GetUserByAdIdQuery>(), default))
             .ReturnsAsync(Result<UserDto?>.Success(userDto));
@@ -211,7 +226,7 @@ public class CreateMatTransferProjectCommandHandlerTests
         Assert.NotNull(capturedProject.AssignedAt);
         Assert.NotNull(capturedProject.AssignedToId);
     }
-        
+
     [Theory]
     [CustomAutoData(typeof(DateOnlyCustomization), typeof(IgnoreVirtualMembersCustomisation))]
     public async Task Handle_ShouldThrowException_WhenLocalAuthorityRequestFails(
@@ -221,16 +236,19 @@ public class CreateMatTransferProjectCommandHandlerTests
         CreateMatTransferProjectCommand command)
     {
         // Arrange
-        var establishmentDto = new EstablishmentDto { Urn = command.Urn.Value.ToString(), Gor = new NameAndCodeDto{ Code = "H" } };
+        var establishmentDto = new EstablishmentDto
+            { Urn = command.Urn.Value.ToString(), Gor = new NameAndCodeDto { Code = "H" } };
         Mock<IEstablishmentsV4Client> mockEstablishmentClient = new Mock<IEstablishmentsV4Client>();
         mockEstablishmentClient.Setup(mock =>
-            mock.GetEstablishmentByUrnAsync(command.Urn.Value.ToString(), It.IsAny<CancellationToken>())).ReturnsAsync(establishmentDto);
-        
+                mock.GetEstablishmentByUrnAsync(command.Urn.Value.ToString(), It.IsAny<CancellationToken>()))
+            .ReturnsAsync(establishmentDto);
+
         var handler = new CreateMatTransferProjectCommandHandler(mockProjectRepository, mockTransferTaskRepository,
             mockEstablishmentClient.Object,
             mockSender.Object);
 
-        var expectedErrorMessage = $"No Local authority could be found via Establishments for School Urn: {command.Urn.Value}.";
+        var expectedErrorMessage =
+            $"No Local authority could be found via Establishments for School Urn: {command.Urn.Value}.";
 
         mockSender.Setup(s => s.Send(It.IsAny<GetLocalAuthorityBySchoolUrnQuery>(), default))
             .ReturnsAsync(Result<GetLocalAuthorityBySchoolUrnResponseDto?>.Failure("Local Authority DB error"));
@@ -247,7 +265,7 @@ public class CreateMatTransferProjectCommandHandlerTests
         Assert.NotNull(exception.InnerException);
         Assert.Equal("Local Authority DB error", exception.InnerException.Message);
     }
-        
+
     [Theory]
     [CustomAutoData(typeof(DateOnlyCustomization), typeof(IgnoreVirtualMembersCustomisation))]
     public async Task Handle_ShouldThrowException_WhenUserRequestFails(
@@ -257,12 +275,14 @@ public class CreateMatTransferProjectCommandHandlerTests
         CreateMatTransferProjectCommand command)
     {
         // Arrange
-        command = command with { HandingOverToRegionalCaseworkService = false};
-        var establishmentDto = new EstablishmentDto { Urn = command.Urn.Value.ToString(), Gor = new NameAndCodeDto{ Code = "H" } };
+        command = command with { HandingOverToRegionalCaseworkService = false };
+        var establishmentDto = new EstablishmentDto
+            { Urn = command.Urn.Value.ToString(), Gor = new NameAndCodeDto { Code = "H" } };
         Mock<IEstablishmentsV4Client> mockEstablishmentClient = new Mock<IEstablishmentsV4Client>();
         mockEstablishmentClient.Setup(mock =>
-            mock.GetEstablishmentByUrnAsync(command.Urn.Value.ToString(), It.IsAny<CancellationToken>())).ReturnsAsync(establishmentDto);
-        
+                mock.GetEstablishmentByUrnAsync(command.Urn.Value.ToString(), It.IsAny<CancellationToken>()))
+            .ReturnsAsync(establishmentDto);
+
         var handler = new CreateMatTransferProjectCommandHandler(mockProjectRepository, mockTransferTaskRepository,
             mockEstablishmentClient.Object,
             mockSender.Object);
@@ -270,7 +290,9 @@ public class CreateMatTransferProjectCommandHandlerTests
         var expectedErrorMessage = "No user found.";
 
         mockSender.Setup(s => s.Send(It.IsAny<GetLocalAuthorityBySchoolUrnQuery>(), default))
-            .ReturnsAsync(Result<GetLocalAuthorityBySchoolUrnResponseDto?>.Success(new GetLocalAuthorityBySchoolUrnResponseDto(Guid.NewGuid())));
+            .ReturnsAsync(
+                Result<GetLocalAuthorityBySchoolUrnResponseDto?>.Success(
+                    new GetLocalAuthorityBySchoolUrnResponseDto(Guid.NewGuid())));
 
         mockSender.Setup(s => s.Send(It.IsAny<GetUserByAdIdQuery>(), default))
             .ReturnsAsync(Result<UserDto?>.Failure("User DB error"));
@@ -287,7 +309,7 @@ public class CreateMatTransferProjectCommandHandlerTests
         Assert.NotNull(exception.InnerException);
         Assert.Equal("User DB error", exception.InnerException.Message);
     }
-        
+
     [Theory]
     [CustomAutoData(typeof(DateOnlyCustomization), typeof(IgnoreVirtualMembersCustomisation))]
     public async Task Handle_ShouldThrowException_WhenLocalAuthorityRequestReturnsSuccess_WithNullResponse(
@@ -297,16 +319,19 @@ public class CreateMatTransferProjectCommandHandlerTests
         CreateMatTransferProjectCommand command)
     {
         // Arrange
-        var establishmentDto = new EstablishmentDto { Urn = command.Urn.Value.ToString(), Gor = new NameAndCodeDto{ Code = "H" } };
+        var establishmentDto = new EstablishmentDto
+            { Urn = command.Urn.Value.ToString(), Gor = new NameAndCodeDto { Code = "H" } };
         Mock<IEstablishmentsV4Client> mockEstablishmentClient = new Mock<IEstablishmentsV4Client>();
         mockEstablishmentClient.Setup(mock =>
-            mock.GetEstablishmentByUrnAsync(command.Urn.Value.ToString(), It.IsAny<CancellationToken>())).ReturnsAsync(establishmentDto);
-        
+                mock.GetEstablishmentByUrnAsync(command.Urn.Value.ToString(), It.IsAny<CancellationToken>()))
+            .ReturnsAsync(establishmentDto);
+
         var handler = new CreateMatTransferProjectCommandHandler(mockProjectRepository, mockTransferTaskRepository,
             mockEstablishmentClient.Object,
             mockSender.Object);
 
-        var expectedErrorMessage = $"No Local authority could be found via Establishments for School Urn: {command.Urn.Value}.";
+        var expectedErrorMessage =
+            $"No Local authority could be found via Establishments for School Urn: {command.Urn.Value}.";
 
         mockSender.Setup(s => s.Send(It.IsAny<GetLocalAuthorityBySchoolUrnQuery>(), default))
             .ReturnsAsync(Result<GetLocalAuthorityBySchoolUrnResponseDto?>.Success(null));
