@@ -24,23 +24,36 @@ namespace Dfe.Complete.Application.Projects.Commands.RemoveProject
                 throw new NotDevEnvironmentException();
             }
 
-            var project = await projectRepository.FindAsync(x => x.Urn == request.Urn, cancellationToken);
+            var project = (Project?) await projectRepository.FindAsync(x => x.Urn == request.Urn, cancellationToken);
 
             if (project == null)
             {
                 return;
             }
 
-            if (project.TasksDataType == Domain.Enums.TaskType.Conversion)
+            
+            if (project is { TasksDataType: Domain.Enums.TaskType.Conversion, TasksDataId: not null })
             {
-                await conversionTaskRepository.RemoveAsync(
-                    conversionTaskRepository.Get(new TaskDataId(project.TasksDataId.Value)), cancellationToken);
+                var conversionTaskList =
+                    (ConversionTasksData?)await conversionTaskRepository.FindAsync(
+                        task => task.Id == new TaskDataId(project.TasksDataId.Value), cancellationToken);
+                if (conversionTaskList is not null)
+                {
+                    await conversionTaskRepository.RemoveAsync(conversionTaskList, cancellationToken);
+                }
             }
-            else
+            else if (project is { TasksDataType: Domain.Enums.TaskType.Transfer, TasksDataId: not null })
             {
-                await transferTaskRepository.RemoveAsync(
-                    transferTaskRepository.Get(new TaskDataId(project.TasksDataId.Value)), cancellationToken);
+                var transferTaskList =
+                    (TransferTasksData?)await transferTaskRepository.GetAsync(new TaskDataId(project.TasksDataId.Value),
+                        cancellationToken);
+                if (transferTaskList is not null)
+                {
+                    await transferTaskRepository.RemoveAsync(transferTaskList, cancellationToken);
+                }
             }
+
+            // var notes = project.Notes;
 
             await projectRepository.RemoveAsync(project, cancellationToken);
         }
