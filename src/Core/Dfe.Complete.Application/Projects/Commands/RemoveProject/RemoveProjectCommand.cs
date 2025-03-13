@@ -1,4 +1,5 @@
 ﻿using Dfe.Complete.Application.Common.Exceptions;
+using Dfe.Complete.Application.Common.Interfaces;
 using Dfe.Complete.Domain.Entities;
 using Dfe.Complete.Domain.Interfaces.Repositories;
 using Dfe.Complete.Domain.ValueObjects;
@@ -14,7 +15,8 @@ namespace Dfe.Complete.Application.Projects.Commands.RemoveProject
         IHostEnvironment hostEnvironment,
         ICompleteRepository<Project> projectRepository,
         ICompleteRepository<TransferTasksData> transferTaskRepository,
-        ICompleteRepository<ConversionTasksData> conversionTaskRepository)
+        ICompleteRepository<ConversionTasksData> conversionTaskRepository,
+        IUnitOfWork unitOfWork)
         : IRequestHandler<RemoveProjectCommand>
     {
         public async Task Handle(RemoveProjectCommand request, CancellationToken cancellationToken)
@@ -24,6 +26,11 @@ namespace Dfe.Complete.Application.Projects.Commands.RemoveProject
                 throw new NotDevEnvironmentException();
             }
 
+            await unitOfWork.BeingTransactionAsync();
+
+            try
+            {
+
             var project = (Project?) await projectRepository.FindAsync(x => x.Urn == request.Urn, cancellationToken);
 
             if (project == null)
@@ -31,7 +38,10 @@ namespace Dfe.Complete.Application.Projects.Commands.RemoveProject
                 return;
             }
 
-            
+
+            project.Notes.Where(x => x.Id == ).RemoveNote();
+
+
             if (project is { TasksDataType: Domain.Enums.TaskType.Conversion, TasksDataId: not null })
             {
                 var conversionTaskList =
@@ -56,6 +66,15 @@ namespace Dfe.Complete.Application.Projects.Commands.RemoveProject
             // var notes = project.Notes;
 
             await projectRepository.RemoveAsync(project, cancellationToken);
+
+            await unitOfWork.CommitAsync();
+
+            }
+            catch (Exception e)
+            {
+                await unitOfWork.RollBackAsync();
+                throw;
+            }
         }
     }
 }

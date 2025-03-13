@@ -401,6 +401,10 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
     {
         if (note != null)
         {
+
+
+
+
             Notes.Add(new Note
             {
                 Id = new NoteId(Guid.NewGuid()),
@@ -412,4 +416,11 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
             });
         }
     }
+
+
+    public void RemoveNote()
+    {
+        this.Notes.Where(x => x.Id == )
+
+        this.Notes.Remove()
 }
