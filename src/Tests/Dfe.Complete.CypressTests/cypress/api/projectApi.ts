@@ -1,14 +1,14 @@
 import { EnvApi } from "cypress/constants/cypressConstants";
 import { ApiBase } from "./apiBase";
-import { CreateConversionProjectRequest, CreateConversionProjectResponse } from "./apiDomain";
+import { CreateProjectRequest, CreateProjectResponse } from "./apiDomain";
 
 class ProjectApi extends ApiBase {
     public createProject(
-        request: CreateConversionProjectRequest,
-    ): Cypress.Chainable<CreateConversionProjectResponse> {
+        request: CreateProjectRequest,
+    ): Cypress.Chainable<CreateProjectResponse> {
         return this.authenticatedRequest().then((headers) => {
             return cy
-                .request<CreateConversionProjectResponse>({
+                .request<CreateProjectResponse>({
                     method: "POST",
                     url: Cypress.env(EnvApi) + "/v1/projects/",
                     headers: headers,
@@ -22,6 +22,6 @@ class ProjectApi extends ApiBase {
     }
 }
 
-const conversionProjectApi = new ProjectApi();
+const projectApi = new ProjectApi();
 
-export default conversionProjectApi;
+export default projectApi;

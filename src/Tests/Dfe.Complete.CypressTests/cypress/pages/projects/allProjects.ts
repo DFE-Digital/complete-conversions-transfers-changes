@@ -15,6 +15,11 @@ class AllProjects {
         return this;
     }
 
+    viewTransfersProjects(){
+        cy.get('nav').contains('Transfers').click();
+        return this;
+    }
+
     goToNextPageUntilFieldIsVisible(field: string) {
         cy.get('body').then($body => {
             if ($body.find(`.govuk-table:contains(${field})`).length === 0) {

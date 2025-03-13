@@ -1,35 +1,30 @@
-import { CreateConversionProjectRequest, CreateTransferProjectRequest, Region } from "./apiDomain";
+import {CreateProjectRequest} from "./apiDomain";
 
 export class ProjectBuilder {
-    public static createTransferProjectRequest(): CreateTransferProjectRequest {
+    public static createTransferProjectRequest(): CreateProjectRequest {
         return {
-            urn: "142277",
-            region: Region.WestMidlands,
-            schoolSharePointLink: "https://educationgovuk.sharepoint.com/school",
-            advisoryBoardDetails: {
-                date: "2022-01-01",
-                conditions: "Conditions",
-            },
-            date: "2026-03-01",
-            isDateProvisional: true,
-            isDueTo2RI: true,
-            isDueToIssues: true,
-            isDueToOfstedRating: true,
-            incomingTrustDetails: {
-                sharepointLink: "https://educationgovuk.sharepoint.com/incoming",
-                ukprn: "10058502",
-            },
-            outgoingTrustDetails: {
-                sharepointLink: "https://educationgovuk.sharepoint.com/outgoing",
-                ukprn: "10061008",
-            },
+            urn: { value: 142277 },
+            significantDate: "2026-03-01",
+            isSignificantDateProvisional: false,
+            incomingTrustUkprn: { value: 10058502 },
+            isDueTo2Ri: false,
+            hasAcademyOrderBeenIssued: false,
+            advisoryBoardDate: "2023-05-01",
+            advisoryBoardConditions: "none.",
+            establishmentSharepointLink: "https://educationgovuk.sharepoint.com/school",
+            incomingTrustSharepointLink: "https://educationgovuk.sharepoint.com/incoming",
+            userAdId: Cypress.env("userAdId"),
         };
     }
 
-    public static createConversionProjectRequest(): CreateConversionProjectRequest {
+    public static createConversionProjectRequest(): CreateProjectRequest {
+        const today = new Date();
+        const nextMonth = new Date(today.setMonth(today.getMonth() + 1));
+        const significantDate = nextMonth.toISOString().split('T')[0];
+
         return {
             urn: { value: 103844 },
-            significantDate: "2025-02-18",
+            significantDate: significantDate,
             isSignificantDateProvisional: true,
             incomingTrustUkprn: {
                 value: 10058682,

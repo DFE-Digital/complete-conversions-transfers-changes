@@ -2,7 +2,7 @@ import navBar from "../../pages/navBar";
 import allProjects from "../../pages/projects/allProjects";
 import projectTable from "../../pages/projects/projectTable";
 import {before, beforeEach} from "mocha";
-import conversionProjectApi from "../../api/projectApi";
+import projectApi from "../../api/projectApi";
 import {ProjectBuilder} from "../../api/projectBuilder";
 import projectRemover from "../../api/projectRemover";
 
@@ -12,10 +12,14 @@ const userName = "Patrick Clark";
 const region = "London";
 const trust = "5 Dimensions Trust";
 const localAuthority = "Dudley Metropolitan Borough Council";
+const transferProject = ProjectBuilder.createTransferProjectRequest();
+const transferSchoolName = "Newcastle Academy";
 describe("View all projects", () => {
     before(() => {
         projectRemover.removeProjectIfItExists(`${project.urn.value}`);
-        conversionProjectApi.createProject(project);
+        projectRemover.removeProjectIfItExists(`${transferProject.urn.value}`);
+        projectApi.createProject(project);
+        projectApi.createProject(transferProject);
     });
 
     beforeEach(() => {
@@ -38,8 +42,45 @@ describe("View all projects", () => {
             .schoolHasAssignedTo(schoolName, "Patrick Clark");
         allProjects
             .viewConversionsProjects()
-            .goToNextPageUntilFieldIsVisible(schoolName)
+            .goToNextPageUntilFieldIsVisible(schoolName);
         projectTable.goTo(schoolName);
+        // projectDetailsPage.containsHeading(schoolName); // not implemented
+    });
+
+    it("Should be able to view newly created transfer project in All projects and Transfers projects", () => {
+        navBar.goToAllProjects();
+        allProjects.goToNextPageUntilFieldIsVisible(transferSchoolName);
+        projectTable
+            .contains(transferSchoolName)
+            .schoolHasUrn(transferSchoolName, `${transferProject.urn.value}`)
+            .schoolHasConversionOrTransferDate(transferSchoolName, "Mar 2026")
+            .schoolHasProjectType(transferSchoolName, "Transfer")
+            .schoolHasFormAMatProject(transferSchoolName, "No")
+            .schoolHasAssignedTo(transferSchoolName, "Patrick Clark");
+        allProjects
+            .viewTransfersProjects()
+            .goToNextPageUntilFieldIsVisible(transferSchoolName);
+        projectTable.goTo(transferSchoolName);
+        // projectDetailsPage.containsHeading(transferSchoolName); // not implemented
+    });
+
+    it("Should be able to view all Conversions projects by month", () => {
+        const today = new Date();
+        const nextMonth = new Date(today.setMonth(today.getMonth() + 1));
+        const nextMonthString = nextMonth.toLocaleString('default', { month: 'long' }) + nextMonth.getFullYear();
+
+        navBar.goToAllProjects();
+        allProjects
+            .filterProjects("By month")
+            .containsHeading(nextMonthString)
+        projectTable
+            .hasTableHeader("School and URN")
+            .hasTableHeader("Region")
+            .hasTableHeader("Incoming trust")
+            .hasTableHeader("All conditions met")
+            .hasTableHeader("Confirmed date (Original date)")
+            .contains(`${schoolName} ${project.urn.value}`)
+            .goTo(`${schoolName} ${project.urn.value}`);
         // projectDetailsPage.containsHeading(schoolName); // not implemented
     });
 
