@@ -8,6 +8,4 @@ public class TabNavigationModel(string currentTab)
     public const string AllProjectsTabName = "all-projects";
 
     public string CurrentTab { get; } = currentTab;
-
-    
 }

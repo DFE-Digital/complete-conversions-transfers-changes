@@ -37,7 +37,8 @@ namespace Dfe.Complete.Application.Projects.Queries.ListAllProjects
                             ? $"{item.Project.AssignedTo.FirstName} {item.Project.AssignedTo.LastName}"
                             : null,
                         item.Establishment.LocalAuthorityName,
-                        item.Project.Team
+                        item.Project.Team,
+                        item.Project.Region
                     ))
                     .ToListAsync(cancellationToken);
                 return Result<List<ListAllProjectsResultModel>>.Success(result);

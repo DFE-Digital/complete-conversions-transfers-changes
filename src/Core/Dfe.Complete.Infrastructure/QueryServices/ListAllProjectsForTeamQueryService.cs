@@ -15,6 +15,7 @@ internal class ListAllProjectsForTeamQueryService(CompleteContext context) : ILi
             .Where(project => type == null || type == project.Type)
             .Where(project => project.Team != null && project.Team == team)
             .Include(p => p.AssignedTo)
+            .Include(p => p.LocalAuthority)
             .Join(context.GiasEstablishments,
                 project => project.Urn, establishment => establishment.Urn,
                 (project, establishment) => new ListAllProjectsQueryModel(project, establishment));

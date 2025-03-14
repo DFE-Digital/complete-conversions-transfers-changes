@@ -1,6 +1,8 @@
 @page "/projects/team/in-progress"
 @using Dfe.Complete.Application.Mappers
 @using Dfe.Complete.Pages.Projects.List
+@using Dfe.Complete.Domain.Enums
+@using Dfe.Complete.Utils
 @model Dfe.Complete.Pages.Projects.List.ProjectsForTeam.AllProjectsInProgressForTeamModel
 @{
     Layout = "List/ProjectsForTeam/_AllProjectsForTeamLayout";
@@ -20,7 +22,14 @@
                 <th class="govuk-table__header" scope="col">School or academy</th>
                 <th class="govuk-table__header" scope="col">URN</th>
                 <th class="govuk-table__header" scope="col">Local authority</th>
-                <th class="govuk-table__header" scope="col">Team</th>
+                @if (EnumHelper.TeamIsGeographic(Model.UserTeam))
+                {
+                    <th class="govuk-table__header" scope="col">Team</th>
+                }
+                else
+                {
+                    <th class="govuk-table__header" scope="col">Region</th>
+                }
                 <th class="govuk-table__header" scope="col">Assigned to</th>
                 <th class="govuk-table__header" scope="col">Project type</th>
                 <th class="govuk-table__header" scope="col">Form a MAT project?</th>
@@ -38,7 +47,14 @@
                     </td>
                     <td class="govuk-table__cell">@project.Urn.Value</td>
                     <td class="govuk-table__cell">@project.LocalAuthorityName</td>
-                    <td class="govuk-table__cell">@ProjectTeamPresentationMapper.Map(@project.Team)</td>
+                    @if (EnumHelper.TeamIsGeographic(Model.UserTeam))
+                    {
+                        <td class="govuk-table__cell">@ProjectTeamPresentationMapper.Map(@project.Team)</td>
+                    }
+                    else
+                    {
+                        <td class="govuk-table__cell">@project.Region.ToDisplayDescription()</td>
+                    }
                     <td class="govuk-table__cell">@project.AssignedToFullName</td>
                     <td class="govuk-table__cell">@project.ProjectType.ToString()</td>
                     <td class="govuk-table__cell">@project.IsFormAMAT.ToYesNoString()</td>

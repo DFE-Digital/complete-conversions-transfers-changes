@@ -1,5 +1,4 @@
 using Dfe.Complete.Application.Projects.Models;
-using Dfe.Complete.Application.Projects.Queries.CountAllProjects;
 using Dfe.Complete.Application.Projects.Queries.GetUser;
 using Dfe.Complete.Application.Projects.Queries.ListAllProjects;
 using Dfe.Complete.Constants;
@@ -15,26 +14,46 @@ namespace Dfe.Complete.Pages.Projects.List.ProjectsForTeam;
 public class AllProjectsInProgressForTeamModel(ISender sender) : YourTeamProjectsModel(InProgressNavigation)
 {
     public List<ListAllProjectsResultModel> Projects { get; set; } = default!;
+    public ProjectTeam UserTeam { get; set; } = default!;
 
     public async Task OnGet()
     {
         ViewData[TabNavigationModel.ViewDataKey] = YourTeamProjectsTabNavigationModel;
 
         var userQuery = new GetUserByAdIdQuery(User.GetUserAdId());
-        var userResponse = await sender.Send(userQuery);
-        var userTeam = EnumExtensions.FromDescription<ProjectTeam>(userResponse?.Value?.Team);
+        var userResponse = (await sender.Send(userQuery))?.Value;
+        var UserTeam = EnumExtensions.FromDescription<ProjectTeam>(userResponse?.Team);
 
-        var listProjectsForTeamQuery =
-            new ListAllProjectsForTeamQuery(userTeam, ProjectState.Active, null)
-            {
-                Page = PageNumber - 1,
-                Count = PageSize
-            };
+        if (EnumHelper.TeamIsGeographic(UserTeam))
+        {
+            var userRegion = EnumMapper.MapTeamToRegion(UserTeam);
 
-        var listResponse = await sender.Send(listProjectsForTeamQuery);
-        Projects = listResponse.Value ?? [];
+            var listProjectsForRegionQuery =
+                new ListAllProjectsForRegionQuery((Region)userRegion, ProjectState.Active, null)
+                {
+                    Page = PageNumber - 1,
+                    Count = PageSize
+                };
 
-        Pagination = new PaginationModel(RouteConstants.TeamProjectsInProgress, PageNumber, listResponse.ItemCount, PageSize);
+            var listProjectsForRegionResult = await sender.Send(listProjectsForRegionQuery);
+            Projects = listProjectsForRegionResult.Value;
+        }
+        else if (UserTeam == ProjectTeam.RegionalCaseWorkerServices)
+        {
+            var listProjectsForTeamQuery =
+                new ListAllProjectsForTeamQuery(UserTeam, ProjectState.Active, null)
+                {
+                    Page = PageNumber - 1,
+                    Count = PageSize
+                };
+
+            var listResponse = await sender.Send(listProjectsForTeamQuery);
+            Projects = listResponse.Value ?? [];
+        }
+
+        Projects = Projects?.Where(proj => !string.IsNullOrEmpty(proj.AssignedToFullName)).OrderBy(project => project.ConversionOrTransferDate).ToList();
+
+        Pagination = new PaginationModel(RouteConstants.TeamProjectsInProgress, PageNumber, Projects.Count, PageSize);
     }
 
     public async Task OnGetMovePage()

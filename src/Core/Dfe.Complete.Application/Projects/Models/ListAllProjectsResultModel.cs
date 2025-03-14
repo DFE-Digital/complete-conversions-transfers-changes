@@ -14,7 +14,8 @@ public record ListAllProjectsResultModel(
     bool IsFormAMAT,
     string? AssignedToFullName,
     string? LocalAuthorityName,
-    ProjectTeam? Team
+    ProjectTeam? Team,
+    Region? Region
 )
 {
     public static ListAllProjectsResultModel MapProjectAndEstablishmentToListAllProjectResultModel(Project project, GiasEstablishment? establishment)
@@ -29,7 +30,8 @@ public record ListAllProjectsResultModel(
             project.FormAMat,
             project.AssignedTo?.FullName,
             project.LocalAuthority?.Name,
-            project.Team
+            project.Team,
+            project.Region
         );
     }
 }

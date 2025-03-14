@@ -15,6 +15,7 @@ internal class ListAllProjectsForRegionQueryService(CompleteContext context) : I
             .Where(project => type == null || type == project.Type)
             .Where(project => project.Region != null && project.Region == region)
             .Include(p => p.AssignedTo)
+            .Include(p => p.LocalAuthority)
             .Join(context.GiasEstablishments,
                 project => project.Urn, establishment => establishment.Urn,
                 (project, establishment) => new ListAllProjectsQueryModel(project, establishment));
