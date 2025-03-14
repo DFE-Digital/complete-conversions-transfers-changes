@@ -15,12 +15,17 @@ const trust = "5 Dimensions Trust";
 const localAuthority = "Dudley Metropolitan Borough Council";
 const transferProject = ProjectBuilder.createTransferProjectRequest();
 const transferSchoolName = "Newcastle Academy";
+const completedProject = ProjectBuilder.createConversionProjectRequest();
+const completedProjectName = "";
+
 describe("View all projects", () => {
     before(() => {
         projectRemover.removeProjectIfItExists(`${project.urn.value}`);
         projectRemover.removeProjectIfItExists(`${transferProject.urn.value}`);
+        projectRemover.removeProjectIfItExists(`${completedProject.urn.value}`);
         projectApi.createProject(project);
         projectApi.createProject(transferProject);
+        projectApi.createProject(completedProject);
     });
 
     beforeEach(() => {
@@ -180,6 +185,24 @@ describe("View all projects", () => {
             .hasTableHeader("Project type")
             .hasTableHeader("Assigned to")
             .contains(schoolName)
+            .goTo(schoolName);
+        // projectDetailsPage.containsHeading(schoolName); // not implemented
+    });
+
+    it("Should be able to view all completed projects", () => {
+        navBar.goToAllProjects();
+        allProjects
+            .filterProjects("Completed")
+            .containsHeading("All completed projects")
+            .goToNextPageUntilFieldIsVisible(completedProjectName);
+        projectTable
+            .hasTableHeader("School or academy")
+            .hasTableHeader("URN")
+            .hasTableHeader("Local authority")
+            .hasTableHeader("Team")
+            .hasTableHeader("Type of project")
+            .hasTableHeader("Conversion or transfer date")
+            .hasTableHeader("Project completion date")
             .goTo(schoolName);
         // projectDetailsPage.containsHeading(schoolName); // not implemented
     });
