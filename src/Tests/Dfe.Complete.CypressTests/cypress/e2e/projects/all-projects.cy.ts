@@ -70,7 +70,7 @@ describe("View all projects", () => {
     it("Should be able to view all Conversions projects by month", () => {
         const today = new Date();
         const nextMonth = new Date(today.setMonth(today.getMonth() + 1));
-        const nextMonthString = nextMonth.toLocaleString('default', { month: 'long' }) + nextMonth.getFullYear();
+        const nextMonthString = `${nextMonth.toLocaleString('default', { month: 'long' })} ${nextMonth.getFullYear()}`;
 
         navBar.goToAllProjects();
         allProjects
