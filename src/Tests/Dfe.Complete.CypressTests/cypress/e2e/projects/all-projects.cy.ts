@@ -1,10 +1,11 @@
 import navBar from "../../pages/navBar";
 import allProjects from "../../pages/projects/allProjects";
-import projectTable from "../../pages/projects/projectTable";
+import { projectTable } from "../../pages/projects/tables/projectTable";
 import {before, beforeEach} from "mocha";
 import projectApi from "../../api/projectApi";
 import {ProjectBuilder} from "../../api/projectBuilder";
 import projectRemover from "../../api/projectRemover";
+import allProjectsInProgressTable from "../../pages/projects/tables/allProjectsInProgressTable";
 
 const project = ProjectBuilder.createConversionProjectRequest();
 const schoolName = "St Chad's Catholic Primary School";
@@ -33,7 +34,7 @@ describe("View all projects", () => {
         allProjects
             .containsHeading("All projects in progress")
             .goToNextPageUntilFieldIsVisible(schoolName);
-        projectTable
+        allProjectsInProgressTable
             .contains(schoolName)
             .schoolHasUrn(schoolName, `${project.urn.value}`)
             .schoolHasConversionOrTransferDate(schoolName, "Feb 2025")
@@ -42,6 +43,7 @@ describe("View all projects", () => {
             .schoolHasAssignedTo(schoolName, "Patrick Clark");
         allProjects
             .viewConversionsProjects()
+            .containsHeading("All conversions in progress")
             .goToNextPageUntilFieldIsVisible(schoolName);
         projectTable.goTo(schoolName);
         // projectDetailsPage.containsHeading(schoolName); // not implemented
@@ -50,7 +52,7 @@ describe("View all projects", () => {
     it("Should be able to view newly created transfer project in All projects and Transfers projects", () => {
         navBar.goToAllProjects();
         allProjects.goToNextPageUntilFieldIsVisible(transferSchoolName);
-        projectTable
+        allProjectsInProgressTable
             .contains(transferSchoolName)
             .schoolHasUrn(transferSchoolName, `${transferProject.urn.value}`)
             .schoolHasConversionOrTransferDate(transferSchoolName, "Mar 2026")
@@ -59,6 +61,7 @@ describe("View all projects", () => {
             .schoolHasAssignedTo(transferSchoolName, "Patrick Clark");
         allProjects
             .viewTransfersProjects()
+            .containsHeading("All transfers in progress")
             .goToNextPageUntilFieldIsVisible(transferSchoolName);
         projectTable.goTo(transferSchoolName);
         // projectDetailsPage.containsHeading(transferSchoolName); // not implemented
