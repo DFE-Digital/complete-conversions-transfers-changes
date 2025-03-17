@@ -4,7 +4,7 @@ ARG DOTNET_VERSION=8.0
 ARG NODEJS_VERSION_MAJOR=22
 
 # Build assets
-FROM "node:${NODEJS_VERSION_MAJOR}-bullseye-slim" AS assets
+FROM node:${NODEJS_VERSION_MAJOR}-bullseye-slim AS assets
 WORKDIR /app
 COPY ./src/Frontend/Dfe.Complete/wwwroot /app
 RUN npm ci --ignore-scripts && npm run build
