@@ -4,10 +4,12 @@ on:
   push:
     branches: main
     paths:
-      - Dockerfile
+      - Dockerfile.web
+      - Dockerfile.api
   pull_request:
     paths:
-      - Dockerfile
+      - Dockerfile.web
+      - Dockerfile.api
     types: [opened, synchronize]
 
 jobs:
