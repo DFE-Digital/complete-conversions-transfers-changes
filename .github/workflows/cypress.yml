@@ -63,9 +63,13 @@ jobs:
         env:
           CYPRESS_url: ${{ secrets.CYPRESS_URL }}
           CYPRESS_api: ${{ secrets.CYPRESS_API }}
-          CYPRESS_apiKey: ${{ secrets.CYPRESS_APIKEY }}
           CYPRESS_username: ${{ secrets.CYPRESS_USERNAME }}
           CYPRESS_authKey: ${{ secrets.CYPRESS_AUTHKEY }}
+          CYPRESS_tenantId: ${{ secrets.TENANTID }}
+          CYPRESS_clientId: ${{ secrets.CLIENTID }}
+          CYPRESS_clientSecret: ${{ secrets.CLIENTSECRET }}
+          CYPRESS_completeApiClientId: ${{ secrets.COMPLETEAPICLIENTID }}
+          CYPRESS_userAdId: ${{ secrets.USERADID }}
         with:
           browser: ${{ matrix.browser }}
           working-directory: ./src/Tests/Dfe.Complete.CypressTests
