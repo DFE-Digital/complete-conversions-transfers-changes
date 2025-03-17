@@ -67,7 +67,7 @@ namespace Dfe.Complete.Application.Projects.Commands.RemoveProject
 
                 await unitOfWork.CommitAsync();
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 await unitOfWork.RollBackAsync();
                 throw;
