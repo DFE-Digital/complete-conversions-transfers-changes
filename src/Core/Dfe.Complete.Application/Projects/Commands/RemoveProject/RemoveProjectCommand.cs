@@ -4,6 +4,7 @@ using Dfe.Complete.Domain.Entities;
 using Dfe.Complete.Domain.Interfaces.Repositories;
 using Dfe.Complete.Domain.ValueObjects;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Hosting;
 
 namespace Dfe.Complete.Application.Projects.Commands.RemoveProject
@@ -30,45 +31,41 @@ namespace Dfe.Complete.Application.Projects.Commands.RemoveProject
 
             try
             {
+                var project = await projectRepository.Query().Include(p => p.Notes).FirstOrDefaultAsync(x => x.Urn == request.Urn, cancellationToken);
 
-            var project = (Project?) await projectRepository.FindAsync(x => x.Urn == request.Urn, cancellationToken);
-
-            if (project == null)
-            {
-                return;
-            }
-
-
-            project.Notes.Where(x => x.Id == ).RemoveNote();
-
-
-            if (project is { TasksDataType: Domain.Enums.TaskType.Conversion, TasksDataId: not null })
-            {
-                var conversionTaskList =
-                    (ConversionTasksData?)await conversionTaskRepository.FindAsync(
-                        task => task.Id == new TaskDataId(project.TasksDataId.Value), cancellationToken);
-                if (conversionTaskList is not null)
+                if (project == null)
                 {
-                    await conversionTaskRepository.RemoveAsync(conversionTaskList, cancellationToken);
+                    return;
                 }
-            }
-            else if (project is { TasksDataType: Domain.Enums.TaskType.Transfer, TasksDataId: not null })
-            {
-                var transferTaskList =
-                    (TransferTasksData?)await transferTaskRepository.GetAsync(new TaskDataId(project.TasksDataId.Value),
-                        cancellationToken);
-                if (transferTaskList is not null)
+                
+                project.RemoveAllNotes();
+                await projectRepository.UpdateAsync(project, cancellationToken);
+
+                if (project is { TasksDataType: Domain.Enums.TaskType.Conversion, TasksDataId: not null })
                 {
-                    await transferTaskRepository.RemoveAsync(transferTaskList, cancellationToken);
+                    var conversionTaskList =
+                        (ConversionTasksData?)await conversionTaskRepository.FindAsync(
+                            task => task.Id == new TaskDataId(project.TasksDataId.Value), cancellationToken);
+                    if (conversionTaskList is not null)
+                    {
+                        await conversionTaskRepository.RemoveAsync(conversionTaskList, cancellationToken);
+                    }
                 }
-            }
+                else if (project is { TasksDataType: Domain.Enums.TaskType.Transfer, TasksDataId: not null })
+                {
+                    var transferTaskList =
+                        (TransferTasksData?)await transferTaskRepository.GetAsync(
+                            new TaskDataId(project.TasksDataId.Value),
+                            cancellationToken);
+                    if (transferTaskList is not null)
+                    {
+                        await transferTaskRepository.RemoveAsync(transferTaskList, cancellationToken);
+                    }
+                }
+                
+                await projectRepository.RemoveAsync(project, cancellationToken);
 
-            // var notes = project.Notes;
-
-            await projectRepository.RemoveAsync(project, cancellationToken);
-
-            await unitOfWork.CommitAsync();
-
+                await unitOfWork.CommitAsync();
             }
             catch (Exception e)
             {

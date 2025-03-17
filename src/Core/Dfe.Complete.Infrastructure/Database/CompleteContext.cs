@@ -1042,6 +1042,10 @@ public partial class CompleteContext : DbContext
     {
         projectConfiguration.HasKey(e => e.Id);
 
+        projectConfiguration.HasOne(e => e.Project)
+            .WithMany(e => e.Notes)
+            .HasForeignKey(e => e.ProjectId);
+
         projectConfiguration.ToTable("notes", "complete");
 
         projectConfiguration.Property(e => e.Id)

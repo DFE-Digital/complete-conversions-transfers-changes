@@ -401,10 +401,6 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
     {
         if (note != null)
         {
-
-
-
-
             Notes.Add(new Note
             {
                 Id = new NoteId(Guid.NewGuid()),
@@ -418,9 +414,22 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
     }
 
 
-    public void RemoveNote()
+    public void RemoveNote(NoteId id)
     {
-        this.Notes.Where(x => x.Id == )
+        var note = Notes.FirstOrDefault(x => x.Id == id);
+        
+        if (note is null) throw new NotFoundException($"No not found with Id {id.Value}");
 
-        this.Notes.Remove()
+        Notes.Remove(note);
+    }
+    
+    public void RemoveAllNotes()
+    {
+        // Create new id so we don't copy by reference as otherwise the list changes as we delete each note
+        var noteIds = Notes.Select(note => note.Id).ToList();
+        foreach (var noteId in noteIds)
+        {
+            RemoveNote(noteId);
+        }
+    }
 }
