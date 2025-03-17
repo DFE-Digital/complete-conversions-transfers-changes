@@ -1,4 +1,5 @@
 import {CreateProjectRequest} from "./apiDomain";
+import {EnvUserAdId} from "../constants/cypressConstants";
 
 export class ProjectBuilder {
 
@@ -24,7 +25,7 @@ export class ProjectBuilder {
             groupReferenceNumber: "GRP_00000006",
             handingOverToRegionalCaseworkService: false,
             handoverComments: "test 2",
-            userAdId: Cypress.env("userAdId"),
+            userAdId: Cypress.env(EnvUserAdId),
         };
     }
 
@@ -40,7 +41,7 @@ export class ProjectBuilder {
             advisoryBoardConditions: "none.",
             establishmentSharepointLink: "https://educationgovuk.sharepoint.com/school",
             incomingTrustSharepointLink: "https://educationgovuk.sharepoint.com/incoming",
-            userAdId: Cypress.env("userAdId"),
+            userAdId: Cypress.env(EnvUserAdId),
         };
     }
 
@@ -59,7 +60,7 @@ export class ProjectBuilder {
             groupReferenceNumber: "GRP_00000006",
             handingOverToRegionalCaseworkService: false,
             handoverComments: "test 2",
-            userAdId: Cypress.env("userAdId"),
+            userAdId: Cypress.env(EnvUserAdId),
         };
     }
 
@@ -75,7 +76,7 @@ export class ProjectBuilder {
             advisoryBoardConditions: "none.",
             establishmentSharepointLink: "https://educationgovuk.sharepoint.com/school",
             incomingTrustSharepointLink: "https://educationgovuk.sharepoint.com/incoming",
-            userAdId: Cypress.env("userAdId"),
+            userAdId: Cypress.env(EnvUserAdId),
         };
     }
 

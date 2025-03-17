@@ -11,11 +11,19 @@ on:
         required: true
       CYPRESS_API:
         required: true
-      CYPRESS_APIKEY:
-        required: true
       CYPRESS_USERNAME:
         required: true
       CYPRESS_AUTHKEY:
+        required: true
+      CYPRESS_TENANTID:
+        required: true
+      CYPRESS_CLIENTID:
+        required: true
+      CYPRESS_CLIENTSECRET:
+        required: true
+      CYPRESS_COMPLETEAPICLIENTID:
+        required: true
+      CYPRESS_USERADID:
         required: true
       SLACK_WEBHOOK_URL:
         required: true
