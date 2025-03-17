@@ -49,7 +49,7 @@ public class ProjectsControllerTests
 
         var giasEstablishment = await dbContext.GiasEstablishments.FirstOrDefaultAsync();
 
-        createConversionProjectCommand.Urn.Value = giasEstablishment.Urn.Value;
+        createConversionProjectCommand.Urn = new Urn{Value = giasEstablishment?.Urn?.Value};
         
         await dbContext.SaveChangesAsync();
         
@@ -107,17 +107,16 @@ public class ProjectsControllerTests
             return project;
         }).ToList();
 
-        projects.ForEach(x => x.LocalAuthorityId = dbContext.LocalAuthorities.ToList().MinBy(_ => Guid.NewGuid()).Id);
+        var localAuthority = dbContext.LocalAuthorities.AsEnumerable().MinBy(_ => Guid.NewGuid());
+        Assert.NotNull(localAuthority);
+        projects.ForEach(x => x.LocalAuthorityId = localAuthority.Id);
 
         await dbContext.Projects.AddRangeAsync(projects);
         await dbContext.SaveChangesAsync();
 
-        // dbContext.Users.Update(testUser);
-        // await dbContext.SaveChangesAsync();
 
         var result = await projectsClient.CountAllProjectsAsync(null, null);
 
-        // Assert.NotNull(result);
         Assert.Equal(50, result);
     }
 
@@ -148,7 +147,9 @@ public class ProjectsControllerTests
             return project;
         }).ToList();
 
-        projects.ForEach(x => x.LocalAuthorityId = dbContext.LocalAuthorities.ToList().MinBy(_ => Guid.NewGuid()).Id);
+        var localAuthority = dbContext.LocalAuthorities.AsEnumerable().MinBy(_ => Guid.NewGuid());
+        Assert.NotNull(localAuthority);
+        projects.ForEach(x => x.LocalAuthorityId = localAuthority.Id);
 
         await dbContext.Projects.AddRangeAsync(projects);
         await dbContext.SaveChangesAsync();
@@ -224,6 +225,7 @@ public class ProjectsControllerTests
         project.Urn = establishment.Urn ?? project.Urn;
 
         var localAuthority = await dbContext.LocalAuthorities.FirstOrDefaultAsync();
+        Assert.NotNull(localAuthority);
         project.LocalAuthorityId = localAuthority.Id;
         
         dbContext.ConversionTasksData.Add(taskData);
@@ -287,6 +289,7 @@ public class ProjectsControllerTests
         project.Urn = establishment.Urn ?? project.Urn;
 
         var localAuthority = await dbContext.LocalAuthorities.FirstOrDefaultAsync();
+        Assert.NotNull(localAuthority);
         project.LocalAuthorityId = localAuthority.Id;
         
         dbContext.TransferTasksData.Add(taskData);
@@ -333,7 +336,8 @@ public class ProjectsControllerTests
         var expected = fixture.Customize(new ProjectCustomization())
             .Create<Project>();
 
-        expected.LocalAuthorityId = dbContext.LocalAuthorities.FirstOrDefault().Id;
+        var localAuthority = await dbContext.LocalAuthorities.FirstAsync();
+        expected.LocalAuthorityId = localAuthority.Id;
         
         dbContext.Projects.Add(expected);
 
