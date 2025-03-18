@@ -13,6 +13,7 @@ internal class ListAllProjectsQueryService(CompleteContext context) : IListAllPr
             var query = context.Projects
                 .Where(project => projectStatus == null || project.State == projectStatus)
                 .Where(project => type == null || type == project.Type)
+                .OrderBy(project => project.SignificantDate)
                 .Include(p => p.AssignedTo)
                 .Include(p => p.LocalAuthority)
                 .Join(context.GiasEstablishments, project => project.Urn, establishment => establishment.Urn,

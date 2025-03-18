@@ -49,7 +49,7 @@ public class ProjectsControllerTests
 
         var giasEstablishment = await dbContext.GiasEstablishments.FirstOrDefaultAsync();
 
-        createConversionProjectCommand.Urn.Value = giasEstablishment.Urn.Value;
+        createConversionProjectCommand.Urn = new Urn{Value = giasEstablishment?.Urn?.Value};
         
         await dbContext.SaveChangesAsync();
         
@@ -107,17 +107,16 @@ public class ProjectsControllerTests
             return project;
         }).ToList();
 
-        projects.ForEach(x => x.LocalAuthorityId = dbContext.LocalAuthorities.ToList().MinBy(_ => Guid.NewGuid()).Id);
+        var localAuthority = dbContext.LocalAuthorities.AsEnumerable().MinBy(_ => Guid.NewGuid());
+        Assert.NotNull(localAuthority);
+        projects.ForEach(x => x.LocalAuthorityId = localAuthority.Id);
 
         await dbContext.Projects.AddRangeAsync(projects);
         await dbContext.SaveChangesAsync();
 
-        // dbContext.Users.Update(testUser);
-        // await dbContext.SaveChangesAsync();
 
         var result = await projectsClient.CountAllProjectsAsync(null, null);
 
-        // Assert.NotNull(result);
         Assert.Equal(50, result);
     }
 
@@ -148,7 +147,9 @@ public class ProjectsControllerTests
             return project;
         }).ToList();
 
-        projects.ForEach(x => x.LocalAuthorityId = dbContext.LocalAuthorities.ToList().MinBy(_ => Guid.NewGuid()).Id);
+        var localAuthority = dbContext.LocalAuthorities.AsEnumerable().MinBy(_ => Guid.NewGuid());
+        Assert.NotNull(localAuthority);
+        projects.ForEach(x => x.LocalAuthorityId = localAuthority.Id);
 
         await dbContext.Projects.AddRangeAsync(projects);
         await dbContext.SaveChangesAsync();
@@ -208,7 +209,7 @@ public class ProjectsControllerTests
         var testUser = await dbContext.Users.FirstAsync();
         var establishment = fixture.Create<GiasEstablishment>();
 
-        var taskData = fixture.Create<Domain.Entities.ConversionTasksData>();
+        var taskData = fixture.Create<ConversionTasksData>();
         dbContext.ConversionTasksData.Add(taskData);
 
         dbContext.GiasEstablishments.Add(establishment);
@@ -224,14 +225,15 @@ public class ProjectsControllerTests
         project.Urn = establishment.Urn ?? project.Urn;
 
         var localAuthority = await dbContext.LocalAuthorities.FirstOrDefaultAsync();
+        Assert.NotNull(localAuthority);
         project.LocalAuthorityId = localAuthority.Id;
         
         dbContext.ConversionTasksData.Add(taskData);
 
-        //var note = fixture.Create<Domain.Entities.Note>();
-        //note.Id = new Domain.ValueObjects.NoteId(Guid.NewGuid());
-        //project.Notes.Add(note);
-        //note.UserId = testUser.Id;
+        var note = fixture.Create<Domain.Entities.Note>();
+        note.Id = new Domain.ValueObjects.NoteId(Guid.NewGuid());
+        project.Notes.Add(note);
+        note.UserId = testUser.Id;
 
         dbContext.Projects.Add(project);
 
@@ -241,15 +243,83 @@ public class ProjectsControllerTests
 
         Assert.NotNull(existingProjectbefore);
         
-        //var existingNote = await dbContext.Notes.SingleAsync(x => x.ProjectId == project.Id);
+        var existingNoteBefore = await dbContext.Notes.SingleAsync(x => x.ProjectId == project.Id);
 
-        //Assert.NotNull(existingNote);
+        Assert.NotNull(existingNoteBefore);
 
         await projectsClient.RemoveProjectAsync(new Urn { Value = project.Urn.Value });
 
         var existingProject = await dbContext.Projects.SingleOrDefaultAsync(x => x.Urn == project.Urn);
 
         Assert.Null(existingProject);
+        
+        var existingNote = await dbContext.Notes.SingleOrDefaultAsync(x => x.ProjectId == project.Id);
+
+        Assert.Null(existingNote);
+    }
+    
+    [Theory]
+    [CustomAutoData(typeof(CustomWebApplicationDbContextFactoryCustomization), typeof(EstablishmentsCustomization))]
+    public async Task RemoveProjectsShouldRemoveTransferProjectAndChildren(
+        CustomWebApplicationDbContextFactory<Program> factory,
+        IProjectsClient projectsClient,
+        IFixture fixture)
+    {
+        factory.TestClaims = new[] { ReadRole, WriteRole, DeleteRole, UpdateRole }
+            .Select(x => new Claim(ClaimTypes.Role, x)).ToList();
+
+        var dbContext = factory.GetDbContext<CompleteContext>();
+
+        var testUser = await dbContext.Users.FirstAsync();
+        var establishment = fixture.Create<GiasEstablishment>();
+
+        var taskData = fixture.Create<TransferTasksData>();
+        dbContext.TransferTasksData.Add(taskData);
+
+        dbContext.GiasEstablishments.Add(establishment);
+        var project = fixture.Customize(new ProjectCustomization
+            {
+                RegionalDeliveryOfficerId = testUser.Id,
+                CaseworkerId = testUser.Id,
+                AssignedToId = testUser.Id,
+                TasksDataId = taskData.Id,
+                TasksDataType = Domain.Enums.TaskType.Transfer, 
+            })
+            .Create<Project>();
+        project.Urn = establishment.Urn ?? project.Urn;
+
+        var localAuthority = await dbContext.LocalAuthorities.FirstOrDefaultAsync();
+        Assert.NotNull(localAuthority);
+        project.LocalAuthorityId = localAuthority.Id;
+        
+        dbContext.TransferTasksData.Add(taskData);
+
+        var note = fixture.Create<Domain.Entities.Note>();
+        note.Id = new Domain.ValueObjects.NoteId(Guid.NewGuid());
+        project.Notes.Add(note);
+        note.UserId = testUser.Id;
+
+        dbContext.Projects.Add(project);
+
+        await dbContext.SaveChangesAsync();
+
+        var existingProjectbefore = await dbContext.Projects.SingleAsync(x => x.Urn == project.Urn);
+
+        Assert.NotNull(existingProjectbefore);
+        
+        var existingNoteBefore = await dbContext.Notes.SingleAsync(x => x.ProjectId == project.Id);
+
+        Assert.NotNull(existingNoteBefore);
+
+        await projectsClient.RemoveProjectAsync(new Urn { Value = project.Urn.Value });
+
+        var existingProject = await dbContext.Projects.SingleOrDefaultAsync(x => x.Urn == project.Urn);
+
+        Assert.Null(existingProject);
+        
+        var existingNote = await dbContext.Notes.SingleOrDefaultAsync(x => x.ProjectId == project.Id);
+
+        Assert.Null(existingNote);
     }
 
     [Theory]
@@ -266,7 +336,8 @@ public class ProjectsControllerTests
         var expected = fixture.Customize(new ProjectCustomization())
             .Create<Project>();
 
-        expected.LocalAuthorityId = dbContext.LocalAuthorities.FirstOrDefault().Id;
+        var localAuthority = await dbContext.LocalAuthorities.FirstAsync();
+        expected.LocalAuthorityId = localAuthority.Id;
         
         dbContext.Projects.Add(expected);
 

@@ -526,7 +526,8 @@
             "type": "string"
           },
           "groupReferenceNumber": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           },
           "handingOverToRegionalCaseworkService": {
             "type": "boolean"
