@@ -7,23 +7,23 @@ on:
         required: true
         type: string
     secrets:
-      CYPRESS_URL:
+      URL_ENDPOINT:
         required: true
-      CYPRESS_API:
+      API_ENDPOINT:
         required: true
-      CYPRESS_USERNAME:
+      USERNAME:
         required: true
-      CYPRESS_AUTHKEY:
+      AUTH_KEY:
         required: true
-      CYPRESS_TENANTID:
+      TENANT_ID:
         required: true
-      CYPRESS_CLIENTID:
+      CLIENT_ID:
         required: true
-      CYPRESS_CLIENTSECRET:
+      CLIENT_SECRET:
         required: true
-      CYPRESS_COMPLETEAPICLIENTID:
+      COMPLETEAPI_CLIENTID:
         required: true
-      CYPRESS_USERADID:
+      USER_AD_ID:
         required: true
       SLACK_WEBHOOK_URL:
         required: true
@@ -61,19 +61,18 @@ jobs:
       - name: Run
         uses: cypress-io/github-action@v6
         env:
-          CYPRESS_url: ${{ secrets.CYPRESS_URL }}
-          CYPRESS_api: ${{ secrets.CYPRESS_API }}
-          CYPRESS_username: ${{ secrets.CYPRESS_USERNAME }}
-          CYPRESS_authKey: ${{ secrets.CYPRESS_AUTHKEY }}
-          CYPRESS_tenantId: ${{ secrets.TENANTID }}
-          CYPRESS_clientId: ${{ secrets.CLIENTID }}
-          CYPRESS_clientSecret: ${{ secrets.CLIENTSECRET }}
-          CYPRESS_completeApiClientId: ${{ secrets.COMPLETEAPICLIENTID }}
-          CYPRESS_userAdId: ${{ secrets.USERADID }}
+          CYPRESS_url: ${{ secrets.URL_ENDPOINT }}
+          CYPRESS_api: ${{ secrets.API_ENDPOINT }}
+          CYPRESS_username: ${{ secrets.USERNAME }}
+          CYPRESS_authKey: ${{ secrets.AUTH_KEY }}
+          CYPRESS_tenantId: ${{ secrets.TENANT_ID }}
+          CYPRESS_clientId: ${{ secrets.CLIENT_ID }}
+          CYPRESS_clientSecret: ${{ secrets.CLIENT_SECRET }}
+          CYPRESS_completeApiClientId: ${{ secrets.COMPLETEAPI_CLIENTID }}
+          CYPRESS_userAdId: ${{ secrets.USER_AD_ID }}
         with:
           browser: ${{ matrix.browser }}
           working-directory: ./src/Tests/Dfe.Complete.CypressTests
-          wait-on: ${{ secrets.URL }}
 
       - name: Upload screenshots
         if: ${{ failure() }}
@@ -97,6 +96,6 @@ jobs:
 
       - name: Report results
         if: always()
-        run: npm run cy:notify -- --custom-text="Environment ${{ inputs.environment }}, See more information https://github.com/DFE-Digital/complete-api/actions/runs/${{github.run_id}}"
+        run: npm run cy:notify -- --custom-text="Environment ${{ inputs.environment }}, See more information https://github.com/DFE-Digital/complete-conversions-transfers-changes/actions/runs/${{github.run_id}}"
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
