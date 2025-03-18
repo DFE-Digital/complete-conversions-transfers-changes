@@ -1,4 +1,4 @@
-name: Cypress
+name: Cypress lint
 
 on:
   pull_request:
