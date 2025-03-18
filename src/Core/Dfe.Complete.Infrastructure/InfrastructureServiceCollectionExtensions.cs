@@ -32,10 +32,6 @@ namespace Dfe.Complete.Infrastructure
             //Queries
             services.AddScoped<IListAllProjectsQueryService, ListAllProjectsQueryService>();
             services.AddScoped<IConversionCsvQueryService, ConversionCsvQueryService>();
-            services.AddScoped<IListAllProjectsForLocalAuthorityQueryService, ListAllProjectsForLocalAuthorityQueryService>();
-            services.AddScoped<IListAllProjectsForRegionQueryService, ListAllProjectsForRegionQueryService>();
-            services.AddScoped<IListAllProjectsForTeamQueryService, ListAllProjectsForTeamQueryService>();
-            // TODO resolve merge conflicts but the two services above need deleting and replacing with the below
             services.AddScoped<IListAllProjectsByFilterQueryService, ListAllProjectsByFilterQueryService>();
 
             // Authentication

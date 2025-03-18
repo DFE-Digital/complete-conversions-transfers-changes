@@ -3,7 +3,7 @@ using Dfe.Complete.Application.Projects.Models;
 using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Infrastructure.Database;
 using Microsoft.EntityFrameworkCore;
-
+// TODO this file was deleted and needs deleting again after replacing with filter query service
 namespace Dfe.Complete.Infrastructure.QueryServices;
 
 internal class ListAllProjectsForRegionQueryService(CompleteContext context) : IListAllProjectsForRegionQueryService
