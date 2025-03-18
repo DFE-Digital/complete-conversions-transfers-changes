@@ -154,13 +154,13 @@ jobs:
     with:
       environment: ${{ needs.set-env.outputs.environment }}
     secrets:
-      URL_ENDPOINT: ${{ secrets.CYPRESS_URL_ENDPOINT }}
-      API_ENDPOINT: ${{ secrets.CYPRESS_API_ENDPOINT }}
-      USERNAME: ${{ secrets.CYPRESS_USERNAME }}
-      AUTH_KEY: ${{ secrets.CYPRESS_AUTH_KEY }}
-      TENANT_ID: ${{ secrets.CYPRESS_TENANT_ID }}
-      CLIENT_ID: ${{ secrets.CYPRESS_CLIENT_ID }}
-      CLIENT_SECRET: ${{ secrets.CYPRESS_CLIENT_SECRET }}
-      COMPLETEAPI_CLIENTID: ${{ secrets.CYPRESS_COMPLETEAPI_CLIENTID }}
-      USER_AD_ID: ${{ secrets.CYPRESS_USER_AD_ID }}
+      CYPRESS_URL_ENDPOINT: ${{ secrets.CYPRESS_URL_ENDPOINT }}
+      CYPRESS_API_ENDPOINT: ${{ secrets.CYPRESS_API_ENDPOINT }}
+      CYPRESS_USERNAME: ${{ secrets.CYPRESS_USERNAME }}
+      CYPRESS_AUTH_KEY: ${{ secrets.CYPRESS_AUTH_KEY }}
+      CYPRESS_TENANT_ID: ${{ secrets.CYPRESS_TENANT_ID }}
+      CYPRESS_CLIENT_ID: ${{ secrets.CYPRESS_CLIENT_ID }}
+      CYPRESS_CLIENT_SECRET: ${{ secrets.CYPRESS_CLIENT_SECRET }}
+      CYPRESS_COMPLETEAPI_CLIENTID: ${{ secrets.CYPRESS_COMPLETEAPI_CLIENTID }}
+      CYPRESS_USER_AD_ID: ${{ secrets.CYPRESS_USER_AD_ID }}
       SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
