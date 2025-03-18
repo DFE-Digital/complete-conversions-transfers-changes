@@ -31,13 +31,14 @@ namespace Dfe.Complete.Application.Projects.Commands.RemoveProject
 
             try
             {
-                var project = await projectRepository.Query().Include(p => p.Notes).FirstOrDefaultAsync(x => x.Urn == request.Urn, cancellationToken);
+                var project = await projectRepository.Query().Include(p => p.Notes)
+                    .FirstOrDefaultAsync(x => x.Urn == request.Urn, cancellationToken);
 
                 if (project == null)
                 {
                     return;
                 }
-                
+
                 project.RemoveAllNotes();
                 await projectRepository.UpdateAsync(project, cancellationToken);
 
@@ -54,15 +55,14 @@ namespace Dfe.Complete.Application.Projects.Commands.RemoveProject
                 else if (project is { TasksDataType: Domain.Enums.TaskType.Transfer, TasksDataId: not null })
                 {
                     var transferTaskList =
-                        (TransferTasksData?)await transferTaskRepository.GetAsync(
-                            new TaskDataId(project.TasksDataId.Value),
-                            cancellationToken);
+                        (TransferTasksData?)await transferTaskRepository.FindAsync(
+                            task => task.Id == new TaskDataId(project.TasksDataId.Value), cancellationToken);
                     if (transferTaskList is not null)
                     {
                         await transferTaskRepository.RemoveAsync(transferTaskList, cancellationToken);
                     }
                 }
-                
+
                 await projectRepository.RemoveAsync(project, cancellationToken);
 
                 await unitOfWork.CommitAsync();
