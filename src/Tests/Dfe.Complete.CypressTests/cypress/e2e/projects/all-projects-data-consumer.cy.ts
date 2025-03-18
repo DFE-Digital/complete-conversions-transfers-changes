@@ -7,7 +7,7 @@ import {ProjectBuilder} from "../../api/projectBuilder";
 import projectRemover from "../../api/projectRemover";
 import dateRangeFilter from "../../pages/projects/dateRangeFilter";
 
-const project = ProjectBuilder.createConversionProjectRequest();
+const project = ProjectBuilder.createConversionProjectRequest(new Date("2026-06-01"));
 const schoolName = "St Chad's Catholic Primary School";
 describe("Data consumer user - view all projects", () => {
     before(() => {
@@ -30,10 +30,10 @@ describe("Data consumer user - view all projects", () => {
             .filterProjects("By month")
             .containsHeading(`${currentMonthString} to ${currentMonthString}`)
         dateRangeFilter
-            .selectDateFrom("May 2025")
-            .selectDateTo("Aug 2025")
+            .selectDateFrom("May 2026")
+            .selectDateTo("Aug 2026")
             .applyDateFilter();
-        allProjects.containsHeading("May 2025 to August 2025");
+        allProjects.containsHeading("May 2026 to August 2026");
         projectTable
             .hasTableHeader("School and URN")
             .hasTableHeader("Region")

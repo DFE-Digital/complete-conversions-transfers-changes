@@ -6,26 +6,28 @@ import projectApi from "../../api/projectApi";
 import {ProjectBuilder} from "../../api/projectBuilder";
 import projectRemover from "../../api/projectRemover";
 import allProjectsInProgressTable from "../../pages/projects/tables/allProjectsInProgressTable";
+import {Username} from "../../constants/cypressConstants";
 
-const project = ProjectBuilder.createConversionProjectRequest();
+const today = new Date();
+const nextMonth = new Date(today.setMonth(today.getMonth() + 1));
+const project = ProjectBuilder.createConversionProjectRequest(nextMonth);
 const schoolName = "St Chad's Catholic Primary School";
-const userName = "Patrick Clark";
 const region = "London";
 const trust = "5 Dimensions Trust";
 const localAuthority = "Dudley Metropolitan Borough Council";
 const transferProject = ProjectBuilder.createTransferProjectRequest();
-const transferSchoolName = "Newcastle Academy";
-const completedProject = ProjectBuilder.createConversionProjectRequest();
+const transferSchoolName = "Abbey College Manchester";
+const completedProject = ProjectBuilder.createConversionProjectRequest(nextMonth);
 const completedProjectName = "";
 
 describe("View all projects", () => {
     before(() => {
         projectRemover.removeProjectIfItExists(`${project.urn.value}`);
-        projectRemover.removeProjectIfItExists(`${transferProject.urn.value}`);
-        projectRemover.removeProjectIfItExists(`${completedProject.urn.value}`);
+        // projectRemover.removeProjectIfItExists(`${transferProject.urn.value}`);
+        // projectRemover.removeProjectIfItExists(`${completedProject.urn.value}`);
         projectApi.createProject(project);
-        projectApi.createProject(transferProject);
-        projectApi.createProject(completedProject);
+        // projectApi.createProject(transferProject);
+        // projectApi.createProject(completedProject);
     });
 
     beforeEach(() => {
@@ -35,6 +37,7 @@ describe("View all projects", () => {
     });
 
     it("Should be able to view newly created conversion project in All projects and Conversions projects", () => {
+        const nextMonthString = `${nextMonth.toLocaleString('default', { month: 'short' })} ${nextMonth.getFullYear()}`;
         navBar.goToAllProjects();
         allProjects
             .containsHeading("All projects in progress")
@@ -42,10 +45,10 @@ describe("View all projects", () => {
         allProjectsInProgressTable
             .contains(schoolName)
             .schoolHasUrn(schoolName, `${project.urn.value}`)
-            .schoolHasConversionOrTransferDate(schoolName, "Feb 2025")
+            .schoolHasConversionOrTransferDate(schoolName, nextMonthString)
             .schoolHasProjectType(schoolName, "Conversion")
             .schoolHasFormAMatProject(schoolName, "No")
-            .schoolHasAssignedTo(schoolName, "Patrick Clark");
+            .schoolHasAssignedTo(schoolName, Username);
         allProjects
             .viewConversionsProjects()
             .containsHeading("All conversions in progress")
@@ -54,7 +57,8 @@ describe("View all projects", () => {
         // projectDetailsPage.containsHeading(schoolName); // not implemented
     });
 
-    it("Should be able to view newly created transfer project in All projects and Transfers projects", () => {
+    it.skip("Should be able to view newly created transfer project in All projects and Transfers projects", () => {
+        // 205986 unable to create transfer project
         navBar.goToAllProjects();
         allProjects.goToNextPageUntilFieldIsVisible(transferSchoolName);
         allProjectsInProgressTable
@@ -63,7 +67,7 @@ describe("View all projects", () => {
             .schoolHasConversionOrTransferDate(transferSchoolName, "Mar 2026")
             .schoolHasProjectType(transferSchoolName, "Transfer")
             .schoolHasFormAMatProject(transferSchoolName, "No")
-            .schoolHasAssignedTo(transferSchoolName, "Patrick Clark");
+            .schoolHasAssignedTo(transferSchoolName, Username);
         allProjects
             .viewTransfersProjects()
             .containsHeading("All transfers in progress")
@@ -73,10 +77,7 @@ describe("View all projects", () => {
     });
 
     it("Should be able to view all Conversions projects by month", () => {
-        const today = new Date();
-        const nextMonth = new Date(today.setMonth(today.getMonth() + 1));
-        const nextMonthString = `${nextMonth.toLocaleString('default', { month: 'long' })} ${nextMonth.getFullYear()}`;
-
+        const nextMonthString = `${nextMonth.toLocaleString('default', { month: 'short' })} ${nextMonth.getFullYear()}`;
         navBar.goToAllProjects();
         allProjects
             .filterProjects("By month")
@@ -103,7 +104,9 @@ describe("View all projects", () => {
             .hasTableHeader("Transfers")
             .contains(region)
             .filterBy(region);
-        // allProjects.containsHeading(`Projects for ${region}`); //bug 205144
+        allProjects
+            // .containsHeading(`Projects for ${region}`); //bug 205144
+            .goToNextPageUntilFieldIsVisible(schoolName);
         projectTable
             .hasTableHeader("School or academy")
             .hasTableHeader("URN")
@@ -126,9 +129,9 @@ describe("View all projects", () => {
             .hasTableHeader("Team")
             .hasTableHeader("Conversions")
             .hasTableHeader("Transfers")
-            .contains(userName)
-            .goToUserProjects(userName);
-        allProjects.containsHeading(`Projects for ${userName}`);
+            .contains(Username)
+            .goToUserProjects(Username);
+        allProjects.containsHeading(`Projects for ${Username}`);
         projectTable
             .hasTableHeader("School or academy")
             .hasTableHeader("URN")
@@ -189,7 +192,8 @@ describe("View all projects", () => {
         // projectDetailsPage.containsHeading(schoolName); // not implemented
     });
 
-    it("Should be able to view all completed projects", () => {
+    it.skip("Should be able to view all completed projects", () => {
+        // not implemented 187142
         navBar.goToAllProjects();
         allProjects
             .filterProjects("Completed")

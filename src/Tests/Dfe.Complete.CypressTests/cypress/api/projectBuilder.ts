@@ -3,15 +3,13 @@ import {EnvUserAdId} from "../constants/cypressConstants";
 
 export class ProjectBuilder {
 
-    public static createConversionProjectRequest(urn? : number): CreateProjectRequest {
-        const today = new Date();
-        const nextMonth = new Date(today.setMonth(today.getMonth() + 1));
-        const significantDate = nextMonth.toISOString().split('T')[0];
+    public static createConversionProjectRequest(significantDate: Date, urn? : number): CreateProjectRequest {
+        const significantDateFormatted = significantDate.toISOString().split('T')[0];
         const urnValue = urn ? urn : 103844;
 
         return {
             urn: { value: urnValue },
-            significantDate: significantDate,
+            significantDate: significantDateFormatted,
             isSignificantDateProvisional: true,
             incomingTrustUkprn: {
                 value: 10058682,
@@ -31,7 +29,7 @@ export class ProjectBuilder {
 
     public static createTransferProjectRequest(): CreateProjectRequest {
         return {
-            urn: { value: 142277 },
+            urn: { value: 105601 },
             significantDate: "2026-03-01",
             isSignificantDateProvisional: false,
             incomingTrustUkprn: { value: 10058502 },

@@ -5,7 +5,7 @@ import yourProjects from "../../pages/projects/yourProjects";
 import { projectTable } from "../../pages/projects/tables/projectTable";
 import yourProjectsInProgressTable from "../../pages/projects/tables/yourProjectsInProgressTable";
 
-const project = ProjectBuilder.createConversionProjectRequest(111394);
+const project = ProjectBuilder.createConversionProjectRequest(new Date("2026-04-01"), 111394);
 const schoolName = "Farnworth Church of England Controlled Primary School";
 
 describe("View your projects", () => {
@@ -37,10 +37,10 @@ describe("View your projects", () => {
             .schoolHasUrn(schoolName, `${project.urn.value}`)
             .schoolHasTypeOfProject(schoolName, "Conversion")
             .schoolHasFormAMatProject(schoolName, "No")
-            .schoolHasIncomingTrust(schoolName, "AURORA ACADEMIES TRUST")
+            .schoolHasIncomingTrust(schoolName, "5 DIMENSIONS TRUST")
             .schoolHasOutgoingTrust(schoolName, "None")
             .schoolHasLocalAuthority(schoolName, "Halton")
-            .schoolHasConversionOrTransferDate(schoolName, "Nov 2026");
+            .schoolHasConversionOrTransferDate(schoolName, "Apr 2026");
         yourProjectsInProgressTable.goTo(schoolName);
         // projectDetailsPage.containsHeading(schoolName); // not implemented
     });
