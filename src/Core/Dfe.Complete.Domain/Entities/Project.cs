@@ -418,7 +418,7 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
     {
         var note = Notes.FirstOrDefault(x => x.Id == id);
         
-        if (note is null) throw new NotFoundException($"No not found with Id {id.Value}");
+        if (note is null) throw new NotFoundException($"No note found with Id {id.Value}");
 
         Notes.Remove(note);
     }
