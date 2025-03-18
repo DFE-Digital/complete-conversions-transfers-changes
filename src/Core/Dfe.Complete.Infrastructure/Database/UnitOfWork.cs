@@ -7,7 +7,7 @@ namespace Dfe.Complete.Infrastructure.Database
     {
         private IDbContextTransaction? _transaction;
 
-        public async Task BeingTransactionAsync()
+        public async Task BeginTransactionAsync()
         {
             _transaction = await context.Database.BeginTransactionAsync();
         }

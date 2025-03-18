@@ -27,7 +27,7 @@ namespace Dfe.Complete.Application.Projects.Commands.RemoveProject
                 throw new NotDevEnvironmentException();
             }
 
-            await unitOfWork.BeingTransactionAsync();
+            await unitOfWork.BeginTransactionAsync();
 
             try
             {
