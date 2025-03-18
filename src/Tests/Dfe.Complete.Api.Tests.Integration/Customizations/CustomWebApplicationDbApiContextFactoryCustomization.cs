@@ -1,6 +1,8 @@
 using System.Net.Http.Headers;
 using System.Security.Claims;
 using AutoFixture;
+using Dfe.AcademiesApi.Client;
+using Dfe.AcademiesApi.Client.Contracts;
 using Dfe.Complete.Api.Client.Extensions;
 using Dfe.Complete.Api.Tests.Integration.Factories;
 using Dfe.Complete.Application.Common.Mappers;
@@ -9,7 +11,7 @@ using Dfe.Complete.Client.Contracts;
 using Dfe.Complete.Infrastructure.Database;
 using Dfe.Complete.Tests.Common.Seeders;
 using DfE.CoreLibs.Testing.Mocks.Authentication;
-using DfE.CoreLibs.Testing.Mocks.WebApplicationFactory;
+using Dfe.TramsDataApi.Client.Extensions;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -70,6 +72,7 @@ namespace Dfe.Complete.Api.Tests.Integration.Customizations
                 services.AddCompleteApiClient<IProjectsClient, ProjectsClient>(config, client);
                 services.AddCompleteApiClient<ICsvExportClient, CsvExportClient>(config, client);
                 services.AddCompleteApiClient<IUsersClient, UsersClient>(config, client);
+                services.AddAcademiesApiClient<IEstablishmentsV4Client, EstablishmentsV4Client>(config, client);
                 var serviceProvider = services.BuildServiceProvider();
                 
                 fixture.Inject(factory);
@@ -78,6 +81,7 @@ namespace Dfe.Complete.Api.Tests.Integration.Customizations
                 fixture.Inject(serviceProvider.GetRequiredService<IProjectsClient>());
                 fixture.Inject(serviceProvider.GetRequiredService<ICsvExportClient>());
                 fixture.Inject(serviceProvider.GetRequiredService<IUsersClient>());
+                fixture.Inject(serviceProvider.GetRequiredService<IEstablishmentsV4Client>());
                 fixture.Inject(new List<Claim>());
 
                 return factory;
