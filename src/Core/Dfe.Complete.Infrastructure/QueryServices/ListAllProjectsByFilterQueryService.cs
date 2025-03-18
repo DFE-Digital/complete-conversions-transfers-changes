@@ -55,6 +55,7 @@ internal class ListAllProjectsByFilterQueryService(CompleteContext context) : IL
     {
         return projects
             .Include(p => p.AssignedTo)
+            .Include(p => p.LocalAuthority)
             .Join(giasEstablishments, project => project.Urn, establishment => establishment.Urn,
                 (project, establishment) => new ListAllProjectsQueryModel(project, establishment));
     }

@@ -14,7 +14,7 @@ namespace Dfe.Complete.Pages.Projects.List.ProjectsForTeam;
 public class AllProjectsInProgressForTeamModel(ISender sender) : YourTeamProjectsModel(InProgressNavigation)
 {
     public List<ListAllProjectsResultModel> Projects { get; set; } = default!;
-    public ProjectTeam UserTeam { get; set; } = default!;
+    public ProjectTeam UserTeam { get; set; } = new();
 
     public async Task OnGet()
     {
