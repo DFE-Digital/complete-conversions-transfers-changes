@@ -48,6 +48,7 @@ namespace Dfe.Complete.Application.Projects.Commands.CreateProject
             if (!string.IsNullOrEmpty(request.UserAdId))
                 userRequest = await sender.Send(new GetUserByAdIdQuery(request.UserAdId), cancellationToken);
 
+            //TODO a userrequest can success but not have a value, passes this check but causing issues later if null
             if (userRequest is not { IsSuccess: true })
                 throw new NotFoundException("No user found.", innerException: new Exception(userRequest?.Error));
             
