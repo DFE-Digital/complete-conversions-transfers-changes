@@ -1,7 +1,7 @@
 using Dfe.Complete.Domain.Entities;
 using Dfe.Complete.Domain.ValueObjects;
 
-namespace Dfe.Complete.Application.Projects.Models;
+namespace Dfe.Complete.Application.LocalAuthorities.Models;
 
 public class LocalAuthorityDto
 {
