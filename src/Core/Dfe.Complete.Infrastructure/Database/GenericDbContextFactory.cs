@@ -19,6 +19,7 @@ namespace Dfe.Complete.Infrastructure.Database
                 .SetBasePath(basePath)
                 .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
                 .AddJsonFile($"appsettings.{environmentName}.json", optional: true, reloadOnChange: true)
+                .AddUserSecrets<GenericDbContextFactory<TContext>>()
                 .AddEnvironmentVariables()
                 .Build();
 
