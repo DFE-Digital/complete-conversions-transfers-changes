@@ -1,4 +1,6 @@
-﻿namespace Dfe.Complete.Models;
+﻿using Dfe.Complete.Domain.Enums;
+
+namespace Dfe.Complete.Models;
 
 public class TabNavigationModel(string currentTab)
 {
@@ -8,4 +10,10 @@ public class TabNavigationModel(string currentTab)
     public const string AllProjectsTabName = "all-projects";
 
     public string CurrentTab { get; } = currentTab;
+
+    public bool UserHasTabAccess(ProjectTeam userTeam, string tabName)
+    {
+        if (tabName == YourTeamProjectsTabName) return EnumHelper.TeamIsGeographic(userTeam) || userTeam == ProjectTeam.RegionalCaseWorkerServices;
+        return true;
+    }
 }
