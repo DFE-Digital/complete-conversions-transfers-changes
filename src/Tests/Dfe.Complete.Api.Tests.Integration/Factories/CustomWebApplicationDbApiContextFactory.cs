@@ -1,4 +1,5 @@
 ﻿using System.Collections.Specialized;
+using System.Net.Http.Headers;
 using DfE.CoreLibs.Testing.Mocks.WebApplicationFactory;
 using Newtonsoft.Json;
 using WireMock.Logging;
@@ -16,18 +17,22 @@ public class CustomWebApplicationDbApiContextFactory<TProgram> : CustomWebApplic
    private static int _currentPort = 5080;
    private static readonly object Sync = new();
 
-   public WireMockServer MockApiServer { get; set; }
-
-   protected override void ConfigureClient(HttpClient client)
-   {
-      int port = AllocateNext();
-      MockApiServer = WireMockServer.Start(port);
-      MockApiServer.LogEntriesChanged += EntriesChanged;
-      base.ConfigureClient(client);
-   }
-
+   public WireMockServer MockApiServer { get; private set; }
+   public HttpClient WireMockHttpClient { get; private set; }
    public ITestOutputHelper DebugOutput { get; set; }
 
+
+   public CustomWebApplicationDbApiContextFactory()
+   {
+       int port = AllocateNext();
+       MockApiServer = WireMockServer.Start(port);
+       MockApiServer.LogEntriesChanged += EntriesChanged;
+
+       Console.WriteLine($"WireMock started at: {MockApiServer.Url}");
+
+       WireMockHttpClient = new HttpClient { BaseAddress = new Uri(MockApiServer.Url) };
+       WireMockHttpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", "wiremock-token");
+   }
 
    public IReadOnlyList<ILogEntry> GetMockServerLogs(string path, HttpMethod verb = null)
    {

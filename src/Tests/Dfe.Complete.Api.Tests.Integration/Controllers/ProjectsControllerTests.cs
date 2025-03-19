@@ -13,6 +13,8 @@ using DfE.CoreLibs.Testing.AutoFixture.Attributes;
 using DfE.CoreLibs.Testing.AutoFixture.Customizations;
 using DfE.CoreLibs.Testing.Mocks.WebApplicationFactory;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Project = Dfe.Complete.Domain.Entities.Project;
 
 namespace Dfe.Complete.Api.Tests.Integration.Controllers;
@@ -35,6 +37,9 @@ public class ProjectsControllerTests
         IProjectsClient projectsClient,
         IFixture fixture)
     {
+
+        var runtimeConfig = factory.Services.GetRequiredService<IConfiguration>();
+
         factory.TestClaims = [new Claim(ClaimTypes.Role, WriteRole), new Claim(ClaimTypes.Role, ReadRole)];
 
         var dbContext = factory.GetDbContext<CompleteContext>();

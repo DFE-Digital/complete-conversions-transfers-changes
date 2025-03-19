@@ -19,12 +19,20 @@ namespace Microsoft.Extensions.DependencyInjection
         public static IServiceCollection AddApplicationDependencyGroup(
             this IServiceCollection services, IConfiguration config)
         {
+            //services.AddSingleton(serviceProvider =>
+            //{
+            //    var runtimeConfig = serviceProvider.GetRequiredService<IConfiguration>();
+            //    return runtimeConfig;
+            //});
+
             var performanceLoggingEnabled = config.GetValue<bool>("Features:PerformanceLoggingEnabled");
 
             services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
 
             services.AddAcademiesApiClient<ITrustsV4Client, TrustsV4Client>(config);
             services.AddAcademiesApiClient<IEstablishmentsV4Client, EstablishmentsV4Client>(config);
+
+            var baseUrl = config.GetValue<string>("AcademiesApiClient:BaseUrl");
 
             services.AddMediatR(cfg =>
             {
