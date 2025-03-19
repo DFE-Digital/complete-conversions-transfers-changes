@@ -11,23 +11,22 @@ import {Username} from "../../constants/cypressConstants";
 const today = new Date();
 const nextMonth = new Date(today.setMonth(today.getMonth() + 1));
 const project = ProjectBuilder.createConversionProjectRequest(nextMonth);
+let projectId: string;
 const schoolName = "St Chad's Catholic Primary School";
 const region = "London";
 const trust = "5 Dimensions Trust";
 const localAuthority = "Dudley Metropolitan Borough Council";
 const transferProject = ProjectBuilder.createTransferProjectRequest();
 const transferSchoolName = "Abbey College Manchester";
-const completedProject = ProjectBuilder.createConversionProjectRequest(nextMonth);
-const completedProjectName = "";
 
 describe("View all projects", () => {
     before(() => {
         projectRemover.removeProjectIfItExists(`${project.urn.value}`);
         // projectRemover.removeProjectIfItExists(`${transferProject.urn.value}`);
-        // projectRemover.removeProjectIfItExists(`${completedProject.urn.value}`);
-        projectApi.createProject(project);
+        projectApi
+            .createProject(project)
+            .then((response) => (projectId = response.id.value));
         // projectApi.createProject(transferProject);
-        // projectApi.createProject(completedProject);
     });
 
     beforeEach(() => {
@@ -193,12 +192,14 @@ describe("View all projects", () => {
     });
 
     it.skip("Should be able to view all completed projects", () => {
-        // not implemented 187142
+        // project completion not implemented
+        cy.visit(`projects/${projectId}/tasks`)
+        // click complete project on tasks page
         navBar.goToAllProjects();
         allProjects
             .filterProjects("Completed")
             .containsHeading("All completed projects")
-            .goToNextPageUntilFieldIsVisible(completedProjectName);
+            .goToNextPageUntilFieldIsVisible(schoolName);
         projectTable
             .hasTableHeader("School or academy")
             .hasTableHeader("URN")
