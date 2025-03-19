@@ -46,7 +46,7 @@
                             href="@AllProjectsModel.GetProjectSummaryUrl(project)">@project.EstablishmentName</a>
                     </td>
                     <td class="govuk-table__cell">@project.Urn.Value</td>
-                    <td class="govuk-table__cell">@project.LocalAuthorityName</td>
+                    <td class="govuk-table__cell">@project.LocalAuthorityNameFormatted</td>
                     @if (EnumHelper.TeamIsGeographic(Model.UserTeam))
                     {
                         <td class="govuk-table__cell">@ProjectTeamPresentationMapper.Map(@project.Team)</td>

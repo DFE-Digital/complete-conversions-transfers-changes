@@ -1646,6 +1646,18 @@
                 "$ref": "#/components/schemas/ProjectTeam"
               }
             ]
+          },
+          "region": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/Region"
+              }
+            ]
+          },
+          "localAuthorityNameFormatted": {
+            "type": "string",
+            "nullable": true
           }
         }
       },

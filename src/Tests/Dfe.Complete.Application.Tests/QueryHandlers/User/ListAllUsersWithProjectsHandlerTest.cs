@@ -53,6 +53,8 @@ public class ListAllUsersWithProjectsHandlerTest
                 project.FormAMat,
                 null,
                 null,
+                null,
+                null,
                 null
             )).ToList(),
             user.ProjectAssignedTos.Count(project => project.Type == ProjectType.Conversion),
@@ -145,6 +147,7 @@ public class ListAllUsersWithProjectsHandlerTest
                 project.FormAMat,
                 null,
                 null,
+                null,
                 null
             )).ToList(),
             user.ProjectAssignedTos.Count(project => project.Type == ProjectType.Conversion),
@@ -203,6 +206,7 @@ public class ListAllUsersWithProjectsHandlerTest
                 project.State,
                 project.Type,
                 project.FormAMat,
+                null,
                 null,
                 null,
                 null

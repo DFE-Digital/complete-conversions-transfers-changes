@@ -22,11 +22,12 @@ public class AllProjectsInProgressForTeamModel(ISender sender) : YourTeamProject
 
         var userQuery = new GetUserByAdIdQuery(User.GetUserAdId());
         var userResponse = (await sender.Send(userQuery))?.Value;
-        var UserTeam = EnumExtensions.FromDescription<ProjectTeam>(userResponse?.Team);
+        var userTeam = EnumExtensions.FromDescription<ProjectTeam>(userResponse?.Team);
+        int recordCount = 0;
 
-        if (EnumHelper.TeamIsGeographic(UserTeam))
+        if (EnumHelper.TeamIsGeographic(userTeam))
         {
-            var userRegion = EnumMapper.MapTeamToRegion(UserTeam);
+            var userRegion = EnumMapper.MapTeamToRegion(userTeam);
 
             var listProjectsForRegionQuery =
                 new ListAllProjectsForRegionQuery((Region)userRegion, ProjectState.Active, null)
@@ -36,24 +37,24 @@ public class AllProjectsInProgressForTeamModel(ISender sender) : YourTeamProject
                 };
 
             var listProjectsForRegionResult = await sender.Send(listProjectsForRegionQuery);
-            Projects = listProjectsForRegionResult.Value;
+            recordCount = listProjectsForRegionResult.ItemCount;
+            Projects = listProjectsForRegionResult.Value ?? [];
         }
-        else if (UserTeam == ProjectTeam.RegionalCaseWorkerServices)
+        else if (userTeam == ProjectTeam.RegionalCaseWorkerServices)
         {
             var listProjectsForTeamQuery =
-                new ListAllProjectsForTeamQuery(UserTeam, ProjectState.Active, null)
+                new ListAllProjectsForTeamQuery(userTeam, ProjectState.Active, null)
                 {
                     Page = PageNumber - 1,
                     Count = PageSize
                 };
 
             var listResponse = await sender.Send(listProjectsForTeamQuery);
+            recordCount = listResponse.ItemCount;
             Projects = listResponse.Value ?? [];
         }
 
-        Projects = Projects?.Where(proj => !string.IsNullOrEmpty(proj.AssignedToFullName)).OrderBy(project => project.ConversionOrTransferDate).ToList();
-
-        Pagination = new PaginationModel(RouteConstants.TeamProjectsInProgress, PageNumber, Projects.Count, PageSize);
+        Pagination = new PaginationModel(RouteConstants.TeamProjectsInProgress, PageNumber, recordCount, PageSize);
     }
 
     public async Task OnGetMovePage()

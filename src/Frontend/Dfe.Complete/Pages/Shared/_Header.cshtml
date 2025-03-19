@@ -13,7 +13,7 @@
   string IsCurrentTab(string tabName) => Model?.CurrentTab == tabName ? currentTabStyling : "";
 
   var userTeam = (await sender.Send(new GetUserByAdIdQuery(User.GetUserAdId())))?.Value?.Team;
-  bool UserHasTabAccess(string tabName) => Model.UserHasTabAccess(EnumExtensions.FromDescription<ProjectTeam>(userTeam), tabName);
+  bool UserHasTabAccess(string tabName) => Model?.UserHasTabAccess(EnumExtensions.FromDescription<ProjectTeam>(userTeam), tabName) ?? true;
 }
 
 <header class="dfe-header" role="banner">

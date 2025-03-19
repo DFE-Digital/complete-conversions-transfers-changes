@@ -1220,6 +1220,13 @@ namespace Dfe.Complete.Client.Contracts
         [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
         public ProjectTeam? Team { get; set; } = default!;
 
+        [Newtonsoft.Json.JsonProperty("region", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
+        public Region? Region { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("localAuthorityNameFormatted", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string? LocalAuthorityNameFormatted { get; set; } = default!;
+
         public string ToJson()
         {
 
