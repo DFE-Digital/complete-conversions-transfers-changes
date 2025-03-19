@@ -50,13 +50,16 @@ public class ProjectsControllerTests
         dbContext.Users.Update(testUser);
         dbContext.ProjectGroups.Update(group);
 
-        var establishmentDto = fixture.Customize(new AcademiesApiEstablishmentDtoCustomisation())
+        var gor = fixture.Customize(new NameAndCodeDtoCustomisation()).Create<NameAndCodeDto>();
+
+        var establishmentDto = fixture.Customize(new AcademiesApiEstablishmentDtoCustomisation(){Gor = gor})
             .Create<EstablishmentDto>();
 
         var localAuthority = await dbContext.LocalAuthorities.FirstOrDefaultAsync();
         var establishment = fixture.Customize(new EstablishmentsCustomization
         {
-            Urn = new Domain.ValueObjects.Urn(int.Parse(establishmentDto.Urn)), LocalAuthorityCode = localAuthority.Code
+            Urn = new Domain.ValueObjects.Urn(int.Parse(establishmentDto.Urn)), 
+            LocalAuthorityCode = localAuthority.Code
         }).Create<GiasEstablishment>();
         await dbContext.GiasEstablishments.AddAsync(establishment);
 

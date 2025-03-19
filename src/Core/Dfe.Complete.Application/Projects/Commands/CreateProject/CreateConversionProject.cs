@@ -48,8 +48,9 @@ namespace Dfe.Complete.Application.Projects.Commands.CreateProject
             Region? region;
             try
             {
-                region = (await establishmentsClient.GetEstablishmentByUrnAsync(request.Urn.Value.ToString(),
-                    cancellationToken)).Gor?.Code?.ToEnumFromChar<Region>();
+                var establishment = await establishmentsClient.GetEstablishmentByUrnAsync(request.Urn.Value.ToString(),
+                    cancellationToken);
+                region = establishment.Gor?.Code?.ToEnumFromChar<Region>();
             }
             catch (AcademiesApiException e)
             {

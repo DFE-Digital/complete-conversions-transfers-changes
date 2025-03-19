@@ -10,6 +10,11 @@ public static class EnumExtensions
 	{
 		return enumValue.HasValue ? ((char)Convert.ToUInt16(enumValue.Value)).ToString() : string.Empty;
 	}
+	
+	public static string GetCharValue<TEnum>(this TEnum enumValue) where TEnum : struct, Enum
+	{
+		return ((char)Convert.ToUInt16(enumValue)).ToString();
+	}
 		
 	public static string ToDescription<T>(this T source)
 	{
