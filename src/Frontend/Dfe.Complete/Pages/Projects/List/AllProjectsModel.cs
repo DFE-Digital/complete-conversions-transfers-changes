@@ -44,7 +44,7 @@ public abstract class AllProjectsModel(string currentNavigation) : PageModel
         return string.Format(
             type == ProjectType.Conversion
                 ? RouteConstants.ConversionProjectTaskList
-                : RouteConstants.TransferProjectTaskList, projectId);
+                : RouteConstants.TransferProjectTaskList, projectId.Value);
     }
     
     public static string GetTrustProjectsUrl(ListTrustsWithProjectsResultModel trustModel)

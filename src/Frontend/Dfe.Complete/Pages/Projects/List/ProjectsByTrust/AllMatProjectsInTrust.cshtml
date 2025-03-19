@@ -6,11 +6,11 @@
 @model Dfe.Complete.Pages.Projects.List.AllProjectsInTrust.AllProjectsInTrustViewModel
 @{
     Layout = "List/ProjectsByTrust/_ProjectsByTrustLayout";
-    ViewData["Title"] = "All projects by trust";
+    ViewData["Title"] = $"Projects for {Model.Trust.trustName}";
 }
 @section PageHeading
 {
-    <h1 class="govuk-heading-xl">
+    <h1 class="govuk-heading-l">
        Projects for @Model.Trust.trustName
     </h1>
 }
