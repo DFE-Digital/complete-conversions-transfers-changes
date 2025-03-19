@@ -13,8 +13,7 @@ public record ListAllProjectsForLocalAuthorityQuery(
     ProjectType? Type = null)
     : PaginatedRequest<PaginatedResult<List<ListAllProjectsResultModel>>>;
 
-public class ListAllProjectsForLocalAuthority(
-    IListAllProjectsForLocalAuthorityQueryService listAllProjectsForLocalAuthorityQueryService)
+public class ListAllProjectsForLocalAuthority(IListAllProjectsByFilterQueryService listAllProjectsByFilterQueryService)
     : IRequestHandler<ListAllProjectsForLocalAuthorityQuery, PaginatedResult<List<ListAllProjectsResultModel>>>
 {
     public async Task<PaginatedResult<List<ListAllProjectsResultModel>>> Handle(
@@ -22,10 +21,8 @@ public class ListAllProjectsForLocalAuthority(
     {
         try
         {
-            var projectsForLa = await listAllProjectsForLocalAuthorityQueryService
-                .ListAllProjectsForLocalAuthority(request.LocalAuthorityCode, request.State, request.Type)
-                .ToListAsync(cancellationToken);
-
+            var projectsForLa = await listAllProjectsByFilterQueryService.ListAllProjectsByFilter(request.State, request.Type, localAuthorityCode: request.LocalAuthorityCode).ToListAsync(cancellationToken);
+            
             var paginatedResultModel = projectsForLa.Select(proj =>
                     ListAllProjectsResultModel.MapProjectAndEstablishmentToListAllProjectResultModel(
                         proj.Project,

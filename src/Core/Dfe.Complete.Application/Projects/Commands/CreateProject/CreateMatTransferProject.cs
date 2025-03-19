@@ -41,7 +41,7 @@ public class CreateMatTransferProjectCommandHandler(
                 cancellationToken);
 
             if (!localAuthorityIdRequest.IsSuccess || localAuthorityIdRequest.Value?.LocalAuthorityId == null)
-                throw new NotFoundException($"No Local authority could be found via Establishments for School Urn: {request.Urn.Value}.", innerException: new Exception(localAuthorityIdRequest.Error));
+                throw new NotFoundException($"No Local authority could be found via Establishments for School Urn: {request.Urn.Value}.", nameof(request.Urn), innerException: new Exception(localAuthorityIdRequest.Error));
             
             // The user Team should be moved as a Claim or Group to the Entra (MS AD)
             var userRequest = await sender.Send(new GetUserByAdIdQuery(request.UserAdId), cancellationToken);
@@ -52,7 +52,7 @@ public class CreateMatTransferProjectCommandHandler(
             var projectUser = userRequest.Value;
 
             var projectUserTeam = projectUser.Team;
-            var projectUserId = projectUser?.Id;
+            var projectUserId = projectUser.Id;
 
             var projectTeam = projectUserTeam.FromDescription<ProjectTeam>();
             var region = EnumMapper.MapTeamToRegion(projectTeam);
@@ -89,7 +89,7 @@ public class CreateMatTransferProjectCommandHandler(
                     tasksDataId,
                     region,
                     team,
-                    projectUser?.Id,
+                    projectUser.Id,
                     projectUserAssignedToId,
                     assignedAt,
                     request.EstablishmentSharepointLink,

@@ -21,7 +21,7 @@ public class ListAllProjectsForLAQueryHandlerTests
         typeof(DateOnlyCustomization),
         typeof(ListAllProjectsQueryModelCustomization))]
     public async Task Handle_ShouldReturnCorrectList_WhenPaginationIsCorrect(
-        [Frozen] IListAllProjectsForLocalAuthorityQueryService mockListAllProjectsForLaQueryService,
+        [Frozen] IListAllProjectsByFilterQueryService mockListAllProjectsByFilterQueryService,
         ListAllProjectsForLocalAuthority handler,
         IFixture fixture)
     {
@@ -31,12 +31,14 @@ public class ListAllProjectsForLAQueryHandlerTests
         var listAllProjectsQueryModels = fixture.CreateMany<ListAllProjectsQueryModel>(50).ToList();
 
         var expected = listAllProjectsQueryModels.Select(item =>
-                ListAllProjectsResultModel.MapProjectAndEstablishmentToListAllProjectResultModel(item.Project, item.Establishment))
+                ListAllProjectsResultModel.MapProjectAndEstablishmentToListAllProjectResultModel(item.Project,
+                    item.Establishment))
             .Skip(20).Take(20).ToList();
 
         var listAllProjectsMock = listAllProjectsQueryModels.BuildMock();
-        mockListAllProjectsForLaQueryService
-            .ListAllProjectsForLocalAuthority(localAuthorityCode, Arg.Any<ProjectState?>(), Arg.Any<ProjectType?>())
+        mockListAllProjectsByFilterQueryService
+            .ListAllProjectsByFilter(Arg.Any<ProjectState?>(), Arg.Any<ProjectType?>(),
+                localAuthorityCode: localAuthorityCode)
             .Returns(listAllProjectsMock);
 
         //Act
@@ -47,9 +49,9 @@ public class ListAllProjectsForLAQueryHandlerTests
         Assert.True(handlerResult.IsSuccess);
         Assert.Equal(expected.Count, handlerResult.Value?.Count);
 
-        mockListAllProjectsForLaQueryService.Received(1).ListAllProjectsForLocalAuthority(localAuthorityCode,
-            Arg.Any<ProjectState?>(), Arg.Any<ProjectType?>());
-        
+        mockListAllProjectsByFilterQueryService.Received(1).ListAllProjectsByFilter(
+            Arg.Any<ProjectState?>(), Arg.Any<ProjectType?>(), localAuthorityCode: localAuthorityCode);
+
         for (int i = 0; i < handlerResult.Value!.Count; i++)
         {
             Assert.Equivalent(expected[i], handlerResult.Value![i]);
@@ -62,7 +64,7 @@ public class ListAllProjectsForLAQueryHandlerTests
         typeof(DateOnlyCustomization),
         typeof(ListAllProjectsQueryModelCustomization))]
     public async Task Handle_ShouldReturnCorrectList_WhenAllPagesAreSkipped(
-        [Frozen] IListAllProjectsForLocalAuthorityQueryService mockListAllProjectsForLaQueryService,
+        [Frozen] IListAllProjectsByFilterQueryService mockListAllProjectsByFilterQueryService,
         ListAllProjectsForLocalAuthority handler,
         IFixture fixture)
     {
@@ -73,8 +75,8 @@ public class ListAllProjectsForLAQueryHandlerTests
 
         var listAllProjectsMock = listAllProjectsQueryModels.BuildMock();
 
-        mockListAllProjectsForLaQueryService
-            .ListAllProjectsForLocalAuthority(localAuthorityCode, Arg.Any<ProjectState?>(), Arg.Any<ProjectType?>())
+        mockListAllProjectsByFilterQueryService.ListAllProjectsByFilter(Arg.Any<ProjectState?>(), Arg.Any<ProjectType?>(),
+                localAuthorityCode: localAuthorityCode)
             .Returns(listAllProjectsMock);
 
         //Act
@@ -86,8 +88,8 @@ public class ListAllProjectsForLAQueryHandlerTests
         Assert.True(handlerResult.IsSuccess);
         Assert.Equal(0, handlerResult.Value?.Count);
 
-        mockListAllProjectsForLaQueryService.Received(1).ListAllProjectsForLocalAuthority(
-            localAuthorityCode, Arg.Any<ProjectState?>(), Arg.Any<ProjectType?>());
+        mockListAllProjectsByFilterQueryService.Received(1).ListAllProjectsByFilter(
+            Arg.Any<ProjectState?>(), Arg.Any<ProjectType?>(), localAuthorityCode: localAuthorityCode);
     }
 
     [Theory]
@@ -96,7 +98,7 @@ public class ListAllProjectsForLAQueryHandlerTests
         typeof(DateOnlyCustomization),
         typeof(ListAllProjectsQueryModelCustomization))]
     public async Task Handle_ShouldReturnUnsuccessful_WhenAnErrorOccurs(
-        [Frozen] IListAllProjectsForLocalAuthorityQueryService mockListAllProjectsForLaQueryService,
+        [Frozen] IListAllProjectsByFilterQueryService mockListAllProjectsByFilterQueryService,
         ListAllProjectsForLocalAuthority handler,
         IFixture fixture)
     {
@@ -104,8 +106,8 @@ public class ListAllProjectsForLAQueryHandlerTests
         var errorMessage = "This is a test";
         var laCode = fixture.Create<string>();
 
-        mockListAllProjectsForLaQueryService
-            .ListAllProjectsForLocalAuthority(laCode, Arg.Any<ProjectState?>(), Arg.Any<ProjectType?>())
+        mockListAllProjectsByFilterQueryService
+            .ListAllProjectsByFilter(Arg.Any<ProjectState?>(), Arg.Any<ProjectType?>(), localAuthorityCode: laCode)
             .Throws(new Exception(errorMessage));
 
         // Act

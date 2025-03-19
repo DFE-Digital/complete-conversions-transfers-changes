@@ -13,7 +13,8 @@ public record ListAllProjectsForRegionQuery(
     ProjectType? Type)
     : PaginatedRequest<PaginatedResult<List<ListAllProjectsResultModel>>>;
 
-public class ListAllProjectsForRegionQueryHandler(IListAllProjectsForRegionQueryService listAllProjectsForRegionQueryServiceQueryService)
+public class ListAllProjectsForRegionQueryHandler(
+    IListAllProjectsByFilterQueryService listAllProjectsByFilterQueryService)
     : IRequestHandler<ListAllProjectsForRegionQuery, PaginatedResult<List<ListAllProjectsResultModel>>>
 
 {
@@ -22,16 +23,19 @@ public class ListAllProjectsForRegionQueryHandler(IListAllProjectsForRegionQuery
     {
         try
         {
-            var projectsForRegion = await listAllProjectsForRegionQueryServiceQueryService.ListAllProjectsForRegion(request.Region,
-                request.ProjectStatus, request.Type).ToListAsync(cancellationToken);
+            var projectsForRegion = await listAllProjectsByFilterQueryService.ListAllProjectsByFilter(
+                request.ProjectStatus, request.Type, region: request.Region)
+                .ToListAsync(cancellationToken);
 
             var paginatedResultModel = projectsForRegion.Select(proj =>
-                    ListAllProjectsResultModel.MapProjectAndEstablishmentToListAllProjectResultModel(proj.Project, proj.Establishment))
+                    ListAllProjectsResultModel.MapProjectAndEstablishmentToListAllProjectResultModel(proj.Project,
+                        proj.Establishment))
                 .Skip(request.Page * request.Count)
                 .Take(request.Count)
                 .ToList();
-            
-            return PaginatedResult<List<ListAllProjectsResultModel>>.Success(paginatedResultModel, projectsForRegion.Count);
+
+            return PaginatedResult<List<ListAllProjectsResultModel>>.Success(paginatedResultModel,
+                projectsForRegion.Count);
         }
         catch (Exception e)
         {

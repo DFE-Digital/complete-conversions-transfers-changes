@@ -1,20 +1,16 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Dfe.Complete.Constants;
+using Dfe.Complete.Models;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace Dfe.BuildFreeSchools.Pages
+namespace Dfe.Complete.Pages
 {
     public class IndexModel : PageModel
     {
-		private readonly ILogger<IndexModel> _logger;
-
-        public IndexModel(ILogger<IndexModel> logger)
-        {
-			_logger = logger;
-        }
-
-		public async Task<IActionResult> OnGetAsync()
+		public Task<IActionResult> OnGetAsync()
 		{
-			return Page();
+			ViewData[TabNavigationModel.ViewDataKey] = new TabNavigationModel(TabNavigationModel.YourProjectsTabName);
+			return Task.FromResult<IActionResult>(Redirect(RouteConstants.YourProjectsInProgress));
 		}
 	}
 }

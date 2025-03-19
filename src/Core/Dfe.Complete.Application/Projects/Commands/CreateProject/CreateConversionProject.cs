@@ -1,3 +1,5 @@
+using Dfe.Complete.Application.Common.Models;
+using Dfe.Complete.Application.Projects.Models;
 using Dfe.Complete.Application.Projects.Queries.GetLocalAuthority;
 using MediatR;
 using Dfe.Complete.Domain.ValueObjects;
@@ -21,7 +23,7 @@ namespace Dfe.Complete.Application.Projects.Commands.CreateProject
         string AdvisoryBoardConditions,
         string EstablishmentSharepointLink,
         string IncomingTrustSharepointLink,
-        string GroupReferenceNumber,
+        string? GroupReferenceNumber,
         bool HandingOverToRegionalCaseworkService,
         string HandoverComments,
         string? UserAdId) : IRequest<ProjectId>;
@@ -38,20 +40,23 @@ namespace Dfe.Complete.Application.Projects.Commands.CreateProject
                 cancellationToken);
 
             if (!localAuthorityIdRequest.IsSuccess || localAuthorityIdRequest.Value?.LocalAuthorityId == null)
-                throw new NotFoundException($"No Local authority could be found via Establishments for School Urn: {request.Urn.Value}.", innerException: new Exception(localAuthorityIdRequest.Error));
+                throw new NotFoundException($"No Local authority could be found via Establishments for School Urn: {request.Urn.Value}.", nameof(request.Urn), innerException: new Exception(localAuthorityIdRequest.Error));
             
             // The user Team should be moved as a Claim or Group to the Entra (MS AD)
-            var userRequest = await sender.Send(new GetUserByAdIdQuery(request.UserAdId), cancellationToken);
+            Result<UserDto?>? userRequest = null;
+            
+            if (!string.IsNullOrEmpty(request.UserAdId))
+                userRequest = await sender.Send(new GetUserByAdIdQuery(request.UserAdId), cancellationToken);
 
-            if (!userRequest.IsSuccess)
-                throw new NotFoundException("No user found.", innerException: new Exception(userRequest.Error));
+            if (userRequest is not { IsSuccess: true })
+                throw new NotFoundException("No user found.", innerException: new Exception(userRequest?.Error));
             
             var projectUser = userRequest.Value;
 
             var projectUserTeam = projectUser?.Team;
             var projectUserId = projectUser?.Id;
 
-            var projectTeam = EnumExtensions.FromDescription<ProjectTeam>(projectUserTeam);
+            var projectTeam = projectUserTeam.FromDescription<ProjectTeam>();
             var region = EnumMapper.MapTeamToRegion(projectTeam);
 
             var createdAt = DateTime.UtcNow;
@@ -60,15 +65,19 @@ namespace Dfe.Complete.Application.Projects.Commands.CreateProject
 
             var conversionTask = new ConversionTasksData(new TaskDataId(conversionTaskId), createdAt, createdAt);
 
-            var projectGroupRequest =
-                await sender.Send(new GetProjectGroupByGroupReferenceNumberQuery(request.GroupReferenceNumber),
-                    cancellationToken);
+            ProjectGroupDto? projectGroupDto = null;
+            if (!string.IsNullOrEmpty(request.GroupReferenceNumber))
+            {
+                var projectGroupRequest =
+                    await sender.Send(new GetProjectGroupByGroupReferenceNumberQuery(request.GroupReferenceNumber),
+                        cancellationToken);
 
-            if (!projectGroupRequest.IsSuccess || projectGroupRequest.Value == null)
-                throw new NotFoundException($"Project Group retrieval failed: {projectGroupRequest.Error}");
+                if (!projectGroupRequest.IsSuccess)
+                    throw new NotFoundException($"Project Group retrieval failed", nameof(request.GroupReferenceNumber), new Exception(projectGroupRequest.Error));
 
-            var groupId = projectGroupRequest.Value?.Id;
-
+                projectGroupDto = projectGroupRequest.Value ?? throw new NotFoundException($"No Project Group found with reference number: {request.GroupReferenceNumber}", nameof(request.GroupReferenceNumber));
+            }
+            
             ProjectTeam team;
             DateTime? assignedAt = null;
             UserId? projectUserAssignedToId = null;
@@ -102,7 +111,7 @@ namespace Dfe.Complete.Application.Projects.Commands.CreateProject
                 request.AdvisoryBoardConditions,
                 request.EstablishmentSharepointLink,
                 request.IncomingTrustSharepointLink,
-                groupId,
+                projectGroupDto?.Id,
                 team,
                 projectUser?.Id,
                 projectUserAssignedToId,
