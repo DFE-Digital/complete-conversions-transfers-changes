@@ -19,7 +19,7 @@ public class AllProjectsModelTests
             ProjectType = ProjectType.Conversion
         }).Create<ListAllProjectsResultModel>();
 
-        string expectedUrl = string.Format(RouteConstants.ConversionProjectTaskList, project.ProjectId);
+        string expectedUrl = string.Format(RouteConstants.ConversionProjectTaskList, project.ProjectId.Value);
 
         // Act
         var result = AllProjectsModel.GetProjectSummaryUrl(project);
@@ -38,10 +38,44 @@ public class AllProjectsModelTests
             ProjectType = ProjectType.Transfer
         }).Create<ListAllProjectsResultModel>();
 
-        string expectedUrl = string.Format(RouteConstants.TransferProjectTaskList, project.ProjectId);
+        string expectedUrl = string.Format(RouteConstants.TransferProjectTaskList, project.ProjectId.Value);
 
         // Act
         var result = AllProjectsModel.GetProjectSummaryUrl(project);
+
+        // Assert
+        Assert.Equal(expectedUrl, result);
+    }
+    
+    [Theory]
+    [CustomAutoData(typeof(ListAllProjectResultModelCustomization))]
+    public void GetTrustProjectsUrl_ShouldReturnCorrectMatUrl_When_IdentifierIsTrustReference(IFixture fixture)
+    {
+        var trust = fixture.Build<ListTrustsWithProjectsResultModel>()
+            .With(x => x.identifier, "TR00001")
+            .Create();
+
+        string expectedUrl = string.Format(RouteConstants.TrustMATProjects, trust.identifier);
+
+        // Act
+        var result = AllProjectsModel.GetTrustProjectsUrl(trust);
+
+        // Assert
+        Assert.Equal(expectedUrl, result);
+    }
+    
+    [Theory]
+    [CustomAutoData(typeof(ListAllProjectResultModelCustomization))]
+    public void GetTrustProjectsUrl_ShouldReturnCorrectUrl_When_IdentifierIsNotTrustReference(IFixture fixture)
+    {
+        var trust = fixture.Build<ListTrustsWithProjectsResultModel>()
+            .With(x => x.identifier, "10035415")
+            .Create();
+
+        string expectedUrl = string.Format(RouteConstants.TrustProjects, trust.identifier);
+
+        // Act
+        var result = AllProjectsModel.GetTrustProjectsUrl(trust);
 
         // Assert
         Assert.Equal(expectedUrl, result);
