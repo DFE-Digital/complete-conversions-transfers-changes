@@ -3,9 +3,10 @@ import {EnvUserAdId} from "../constants/cypressConstants";
 
 export class ProjectBuilder {
 
-    public static createConversionProjectRequest(significantDate: Date, urn? : number): CreateProjectRequest {
+    public static createConversionProjectRequest(significantDate: Date, urn? : number, userAdId?: string): CreateProjectRequest {
         const significantDateFormatted = significantDate.toISOString().split('T')[0];
         const urnValue = urn ? urn : 103844;
+        const userAdIdValue = userAdId ? userAdId : Cypress.env(EnvUserAdId);
 
         return {
             urn: { value: urnValue },
@@ -23,7 +24,7 @@ export class ProjectBuilder {
             groupReferenceNumber: "GRP_00000006",
             handingOverToRegionalCaseworkService: false,
             handoverComments: "test 2",
-            userAdId: Cypress.env(EnvUserAdId),
+            userAdId: userAdIdValue,
         };
     }
 

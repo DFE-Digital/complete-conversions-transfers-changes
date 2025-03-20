@@ -20,6 +20,11 @@ class Projects {
         return this;
     }
 
+    filterProjects(filter: string) {
+        cy.getByClass('moj-primary-navigation__list').contains(filter).click();
+        return this;
+    }
+
 }
 
 export default Projects;

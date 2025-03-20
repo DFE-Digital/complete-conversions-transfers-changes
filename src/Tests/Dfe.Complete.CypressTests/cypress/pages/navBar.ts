@@ -5,6 +5,16 @@ class NavBar {
         return this;
     }
 
+    goToYourProjects(){
+        cy.getById(this.navHeaderId).contains('Your projects').click();
+        return this;
+    }
+
+    goToYourTeamProjects(){
+        cy.getById(this.navHeaderId).contains('Your team projects').click();
+        return this;
+    }
+
 
 }
 
