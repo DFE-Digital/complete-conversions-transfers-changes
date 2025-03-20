@@ -33,7 +33,7 @@ public record ListAllProjectsResultModel(
             project.LocalAuthority?.Name,
             project.Team,
             project.Region,
-            establishment.LocalAuthorityName
+            establishment?.LocalAuthorityName
         );
     }
 }
