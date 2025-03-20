@@ -1,0 +1,40 @@
+﻿@page "/projects/all/trusts"
+@using Dfe.Complete.Pages.Projects.List
+@model Dfe.Complete.Pages.Projects.List.AllProjectsInTrust.AllTrustsWithProjectsViewModel
+@{
+    Layout = "List/ProjectsByTrust/_ProjectsByTrustLayout";
+    ViewData["Title"] = "All projects by trust";
+}
+@section PageHeading
+{
+<h1 class="govuk-heading-xl">
+    All projects by trust
+</h1>
+}
+
+<div class="govuk-grid-column-full">
+    <table class="govuk-table" name="projects_table" aria-label="Projects table">
+        <thead class="govuk-table__head">
+            <tr class="govuk-table__row">
+                <th class="govuk-table__header" scope="col">Trust</th>
+                <th class="govuk-table__header" scope="col">Group identifier</th>
+                <th class="govuk-table__header" scope="col">Conversions</th>
+                <th class="govuk-table__header" scope="col">Transfers</th>
+            </tr>
+        </thead>
+        <tbody class="govuk-table__body">
+
+            @foreach(var trust in Model.Trusts)
+            {
+                    <tr class="govuk-table__row">
+                        <td class="govuk-table__header govuk-table__cell">
+                        <a class="govuk-link" href="@AllProjectsModel.GetTrustProjectsUrl(trust)">@trust.trustName</a>
+                    </td>
+                    <td class="govuk-table__cell">@trust.referenceNumber</td>
+                    <td class="govuk-table__cell">@trust.conversionCount</td>
+                    <td class="govuk-table__cell">@trust.transfersCount</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
