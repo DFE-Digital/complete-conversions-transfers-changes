@@ -55,6 +55,7 @@ namespace Dfe.Complete.Application.Projects.Queries.ListAllProjects
                             : null,
                         item.Project.LocalAuthority?.Name,
                         item.Project.Team,
+                        item.Project.CompletedAt,
                         item.Project.Region,
                         item.Establishment.LocalAuthorityName
                     ));

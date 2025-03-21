@@ -14,6 +14,7 @@ public abstract class YourTeamProjectsModel(string currentNavigation) : PageMode
     protected TabNavigationModel YourTeamProjectsTabNavigationModel = new(TabNavigationModel.YourTeamProjectsTabName);
 
     public const string InProgressNavigation = "in-progress";
+    public const string CompletedNavigation = "completed";
 
     public string CurrentNavigationItem { get; init; } = currentNavigation;
 

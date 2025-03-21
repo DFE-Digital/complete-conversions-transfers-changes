@@ -78,6 +78,7 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
                     : null,
                 item.Project.LocalAuthority.Name,
                 item.Project.Team,
+                item.Project.CompletedAt,
                 item.Project.Region,
                 item.Establishment.LocalAuthorityName
             )).Skip(20).Take(20).ToList();
