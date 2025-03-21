@@ -62,13 +62,13 @@ jobs:
           CLIENT_SECRET: ${{ secrets.CYPRESS_CLIENT_SECRET }}
           COMPLETEAPI_CLIENTID: ${{ secrets.CYPRESS_COMPLETEAPI_CLIENTID }}
         run: |
-          echo "complete api client id: $COMPLETEAPI_CLIENTID"
-          response=$(curl --write-out "HTTPSTATUS:%{http_code}" --silent --location --request POST "https://login.microsoftonline.com/$TENANT_ID/oauth2/v2.0/token" \
-          --header "Content-Type: application/x-www-form-urlencoded" \
-          --data-urlencode "grant_type=client_credentials" \
-          --data-urlencode "client_id=$CLIENT_ID" \
-          --data-urlencode "client_secret=$CLIENT_SECRET" \
-          --data-urlencode "scope=api://$COMPLETEAPI_CLIENTID/.default")
+          response=$(curl --write-out "HTTPSTATUS:%{http_code}" --silent --location \
+            --request POST "https://login.microsoftonline.com/$TENANT_ID/oauth2/v2.0/token" \
+            --header "Content-Type: application/x-www-form-urlencoded" \
+            --data-urlencode "grant_type=client_credentials" \
+            --data-urlencode "client_id=$CLIENT_ID" \
+            --data-urlencode "client_secret=$CLIENT_SECRET" \
+            --data-urlencode "scope=api://$COMPLETEAPI_CLIENTID/.default")
   
           body=$(echo "$response" | sed -e 's/HTTPSTATUS:.*//g')
           status_code=$(echo "$response" | tr -d '\n' | sed -e 's/.*HTTPSTATUS://')
