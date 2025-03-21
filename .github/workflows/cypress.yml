@@ -41,6 +41,7 @@ concurrency:
 jobs:
   generate-token:
     runs-on: ubuntu-latest
+    environment: ${{ inputs.environment }}
     outputs:
       access_token: ${{ steps.get-token.outputs.access_token }}
     permissions:
