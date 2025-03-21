@@ -52,15 +52,13 @@ jobs:
         with:
           node-version: '14'
 
-      - env:
-          TENANT_ID: ${{ secrets.TENANT_ID }}
-        run: |
-          echo tenant id is $TENANT_ID
+      - name: output api
+        run: echo api is ${{ secrets.CYPRESS_API_ENDPOINT }}
 
       - name: Get Access Token
         id: get-token
         run: |
-          response=$(curl --write-out "HTTPSTATUS:%{http_code}" --silent --location --request POST 'https://login.microsoftonline.com/${{ secrets.TENANT_ID }}/oauth2/v2.0/token' \
+          response=$(curl --write-out "HTTPSTATUS:%{http_code}" --silent --location --request POST 'https://login.microsoftonline.com/${{ secrets.CYPRESS_TENANT_ID }}/oauth2/v2.0/token' \
           --header 'Content-Type: application/x-www-form-urlencoded' \
           --data-urlencode 'grant_type=client_credentials' \
           --data-urlencode 'client_id=${{ secrets.CYPRESS_CLIENT_ID }}' \
