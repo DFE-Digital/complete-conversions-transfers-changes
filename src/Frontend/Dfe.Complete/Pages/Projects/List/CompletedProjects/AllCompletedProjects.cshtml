@@ -1,0 +1,49 @@
+﻿@page "/projects/all/completed"
+@using Dfe.Complete.Application.Mappers
+@using Dfe.Complete.Pages.Projects.List
+@model Dfe.Complete.Pages.Projects.List.CompletedProjects.AllCompletedProjectsViewModel
+
+@{
+  Layout = "List/CompletedProjects/_CompletedProjectsLayout";
+  ViewData["Title"] = "All completed projects";
+}
+
+@section PageHeading
+{
+  <h1 class="govuk-heading-l">
+    All completed projects
+  </h1>
+}
+
+<div class="govuk-grid-column-full">
+  <table class="govuk-table" name="projects_table" aria-label="Projects table">
+    <thead class="govuk-table__head">
+      <tr class="govuk-table__row">
+        <th class="govuk-table__header" scope="col">School or academy</th>
+        <th class="govuk-table__header" scope="col">URN</th>
+        <th class="govuk-table__header" scope="col">Local authority</th>
+        <th class="govuk-table__header" scope="col">Team</th>
+        <th class="govuk-table__header" scope="col">Type of project</th>
+        <th class="govuk-table__header" scope="col">Conversion or transfer date</th>
+        <th class="govuk-table__header" scope="col">Project completion date</th>
+      </tr>
+    </thead>
+    <tbody class="govuk-table__body">
+
+      @foreach (var project in Model.Projects)
+      {
+        <tr class="govuk-table__row">
+          <td class="govuk-table__header govuk-table__cell">
+            <a class="govuk-link" href="@AllProjectsModel.GetProjectSummaryUrl(project)">@project.EstablishmentName</a>
+          </td>
+          <td class="govuk-table__cell">@project.Urn.Value</td>
+          <td class="govuk-table__cell">@project.LocalAuthorityName</td>
+          <td class="govuk-table__cell">@ProjectTeamPresentationMapper.Map(@project.Team)</td>
+          <td class="govuk-table__cell">@project.ProjectType.ToString()</td>
+          <td class="govuk-table__cell">@project.ConversionOrTransferDate.ToDateMonthYearString()</td>
+          <td class="govuk-table__cell">@project.ProjectCompletionDate.ToDateString()</td>
+        </tr>
+      }
+    </tbody>
+  </table>
+</div>
