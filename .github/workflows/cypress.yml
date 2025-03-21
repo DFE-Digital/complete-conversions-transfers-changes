@@ -71,6 +71,7 @@ jobs:
           if [ "$status_code" -ne 200 ]; then
             echo "Error: Received status code $status_code"
             echo "Response body: $body"
+            exit 1
           else
             echo "Request successful. Response body: $body"
           fi
