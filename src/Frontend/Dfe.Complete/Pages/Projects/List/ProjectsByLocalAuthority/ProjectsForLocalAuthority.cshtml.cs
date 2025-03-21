@@ -1,4 +1,5 @@
 using Dfe.Complete.Application.Projects.Models;
+using Dfe.Complete.Application.LocalAuthorities.Queries.GetLocalAuthority;
 using Dfe.Complete.Application.Projects.Queries.ListAllProjects;
 using Dfe.Complete.Models;
 using Dfe.Complete.Pages.Pagination;
@@ -12,20 +13,23 @@ public class ProjectsForLocalAuthority(ISender sender) : AllProjectsModel(ByLoca
     [BindProperty(SupportsGet = true)] public string LocalAuthorityCode { get; set; }
 
     public string LocalAuthorityName { get; set; }
-    
-    public List<ListAllProjectsResultModel> Projects { get; set; } 
+
+    public List<ListAllProjectsResultModel> Projects { get; set; }
 
     public async Task OnGet()
     {
         ViewData[TabNavigationModel.ViewDataKey] = AllProjectsTabNavigationModel;
-        
-        var query = new ListAllProjectsForLocalAuthorityQuery(LocalAuthorityCode) { Count = PageSize, Page = PageNumber - 1 };
 
-        var result = await sender.Send(query);
+        var localAuthorityQuery = new GetLocalAuthorityByCodeQuery(LocalAuthorityCode.ToString());
+        var foundLocalAuthority = await sender.Send(localAuthorityQuery);
 
-        Projects = result.Value ?? [];
-        
+        var projectsForLocalAuthorityQuery = new ListAllProjectsForLocalAuthorityQuery(LocalAuthorityCode) { Count = PageSize, Page = PageNumber - 1 };
+        var foundProjectsForLocalAuthority = await sender.Send(projectsForLocalAuthorityQuery);
+
+        LocalAuthorityName = foundLocalAuthority?.Value?.Name ?? "";
+        Projects = foundProjectsForLocalAuthority.Value ?? [];
+
         Pagination = new PaginationModel($"/projects/all/local-authorities/{LocalAuthorityCode}", PageNumber,
-            result.ItemCount, PageSize);
+            foundProjectsForLocalAuthority.ItemCount, PageSize);
     }
 }

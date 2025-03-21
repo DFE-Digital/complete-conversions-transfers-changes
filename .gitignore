@@ -448,10 +448,6 @@ $RECYCLE.BIN/
 *.css
 *.css.map
 
-# govuk frontend stuff
-/ConcernsCaseWork/ConcernsCaseWork/wwwroot/assets
-/ConcernsCaseWork/ConcernsCaseWork/wwwroot/dist
-
 # Local .terraform directories
 **/.terraform/*
 
@@ -488,16 +484,8 @@ override.tf.json
 terraform.rc
 
 # Cypress files
-/ConcernsCaseWork/ConcernsCaseWork.CypressTests/mochareports
-/ConcernsCaseWork/ConcernsCaseWork.CypressTests/cypress/reports
-/ConcernsCaseWork/ConcernsCaseWork.CypressTests/cypress/videos
-/ConcernsCaseWork/ConcernsCaseWork.CypressTests/cypress/videos/casework-regression
 *.png
 *.mp4
-*.mp4
-*.mp4
-*.mp4
-ConcernsCaseWork/ConcernsCaseWork.CypressTests/cypress/videos/casework-regression/create-case-route.js.mp4
 
 # Environment variables
 .env

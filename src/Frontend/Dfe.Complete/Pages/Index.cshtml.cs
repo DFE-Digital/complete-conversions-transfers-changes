@@ -1,4 +1,5 @@
-﻿using Dfe.Complete.Models;
+﻿using Dfe.Complete.Constants;
+using Dfe.Complete.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
@@ -6,10 +7,10 @@ namespace Dfe.Complete.Pages
 {
     public class IndexModel : PageModel
     {
-		public async Task<IActionResult> OnGetAsync()
+		public Task<IActionResult> OnGetAsync()
 		{
 			ViewData[TabNavigationModel.ViewDataKey] = new TabNavigationModel(TabNavigationModel.YourProjectsTabName);
-			return Page();
+			return Task.FromResult<IActionResult>(Redirect(RouteConstants.YourProjectsInProgress));
 		}
 	}
 }

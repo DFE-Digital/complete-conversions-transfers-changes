@@ -1,7 +1,7 @@
 ﻿using Dfe.Complete.Application.Projects.Models;
 using Dfe.Complete.Constants;
-using Dfe.Complete.Domain.Entities;
 using Dfe.Complete.Domain.Enums;
+using Dfe.Complete.Domain.ValueObjects;
 using Dfe.Complete.Models;
 using Dfe.Complete.Pages.Pagination;
 using Microsoft.AspNetCore.Mvc;
@@ -36,15 +36,22 @@ public abstract class AllProjectsModel(string currentNavigation) : PageModel
         return string.Format(
             project.ProjectType == ProjectType.Conversion
                 ? RouteConstants.ConversionProjectTaskList
-                : RouteConstants.TransferProjectTaskList, project.ProjectId);
+                : RouteConstants.TransferProjectTaskList, project.ProjectId.Value);
     }
 
-    public static string GetProjectSummaryUrl(Project project)
+    public static string GetProjectSummaryUrl(ProjectType? type, ProjectId projectId)
     {
         return string.Format(
-            project.Type == ProjectType.Conversion
+            type == ProjectType.Conversion
                 ? RouteConstants.ConversionProjectTaskList
-                : RouteConstants.TransferProjectTaskList, project.Id);
+                : RouteConstants.TransferProjectTaskList, projectId.Value);
+    }
+    
+    public static string GetTrustProjectsUrl(ListTrustsWithProjectsResultModel trustModel)
+    {
+        return trustModel.identifier.Contains("TR") ? 
+                                        string.Format(RouteConstants.TrustMATProjects, trustModel.identifier) 
+                                        : string.Format(RouteConstants.TrustProjects, trustModel.identifier);
     }
     
     public static string GetProjectSummaryUrl(ProjectType projectType, string projectId)

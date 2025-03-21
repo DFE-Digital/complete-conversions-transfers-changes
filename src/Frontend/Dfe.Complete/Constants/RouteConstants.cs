@@ -2,8 +2,11 @@
 {
     public static class RouteConstants
     {
-        public const string YourProjects = "/";
+        public const string YourProjectsInProgress = "/projects/yours/in-progress";
         public const string ProjectsInProgress = "/projects/all/in-progress/all";
+        public const string ProjectsByTrust = "/projects/all/trusts";
+        public const string TrustProjects = "/projects/all/trusts/ukprn/{0}";
+        public const string TrustMATProjects = "/projects/all/trusts/reference/{0}";
         public const string ConversionProjectsByMonth = "/projects/all/by-month/conversions/{0}/{1}";
         public const string TransfersProjectsByMonth = "/projects/all/by-month/transfers/{0}/{1}";
 

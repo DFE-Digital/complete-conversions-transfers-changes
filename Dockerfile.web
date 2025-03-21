@@ -4,36 +4,63 @@ ARG DOTNET_VERSION=8.0
 ARG NODEJS_VERSION_MAJOR=22
 
 # Build assets
-FROM "node:${NODEJS_VERSION_MAJOR}-bullseye-slim" AS assets
+FROM node:${NODEJS_VERSION_MAJOR}-bullseye-slim AS assets
 WORKDIR /app
 COPY ./src/Frontend/Dfe.Complete/wwwroot /app
-RUN npm install
-RUN npm run build
+RUN npm ci --ignore-scripts && npm run build
 
 # Build the app using the dotnet SDK
-FROM "mcr.microsoft.com/dotnet/sdk:${DOTNET_VERSION}-azurelinux3.0" AS build
+FROM mcr.microsoft.com/dotnet/sdk:${DOTNET_VERSION}-azurelinux3.0 AS build
+ARG CI
+ENV CI=${CI}
 WORKDIR /build
-COPY ./Dfe.Complete.sln /build
-COPY ./Directory.Build.props /build
-COPY ./src/ /build/src
+
+# Copy csproj files for restore caching
+ARG PROJECT_NAME="Dfe.Complete"
+COPY src/Api/${PROJECT_NAME}.Api.Client/${PROJECT_NAME}.Api.Client.csproj ./src/Api/${PROJECT_NAME}.Api.Client/
+COPY src/Api/${PROJECT_NAME}.Api/${PROJECT_NAME}.Api.csproj ./src/Api/${PROJECT_NAME}.Api/
+COPY src/Core/${PROJECT_NAME}.Application/${PROJECT_NAME}.Application.csproj ./src/Core/${PROJECT_NAME}.Application/
+COPY src/Core/${PROJECT_NAME}.Domain/${PROJECT_NAME}.Domain.csproj ./src/Core/${PROJECT_NAME}.Domain/
+COPY src/Core/${PROJECT_NAME}.Infrastructure/${PROJECT_NAME}.Infrastructure.csproj ./src/Core/${PROJECT_NAME}.Infrastructure/
+COPY src/Core/${PROJECT_NAME}.Utils/${PROJECT_NAME}.Utils.csproj ./src/Core/${PROJECT_NAME}.Utils/
+COPY src/Frontend/${PROJECT_NAME}.Logging/${PROJECT_NAME}.Logging.csproj ./src/Frontend/${PROJECT_NAME}.Logging/
+COPY src/Frontend/${PROJECT_NAME}.UserContext/${PROJECT_NAME}.UserContext.csproj ./src/Frontend/${PROJECT_NAME}.UserContext/
+COPY src/Frontend/${PROJECT_NAME}/${PROJECT_NAME}.csproj ./src/Frontend/${PROJECT_NAME}/
+COPY src/Tests/${PROJECT_NAME}.Api.Tests.Integration/${PROJECT_NAME}.Api.Tests.Integration.csproj src/Tests/${PROJECT_NAME}.Api.Tests.Integration/
+COPY src/Tests/${PROJECT_NAME}.Application.Tests/${PROJECT_NAME}.Application.Tests.csproj src/Tests/${PROJECT_NAME}.Application.Tests/
+COPY src/Tests/${PROJECT_NAME}.Domain.Tests/${PROJECT_NAME}.Domain.Tests.csproj src/Tests/${PROJECT_NAME}.Domain.Tests/
+COPY src/Tests/${PROJECT_NAME}.Tests.Common/${PROJECT_NAME}.Tests.Common.csproj src/Tests/${PROJECT_NAME}.Tests.Common/
+COPY src/Tests/${PROJECT_NAME}.Tests/${PROJECT_NAME}.Tests.csproj src/Tests/${PROJECT_NAME}.Tests/
+COPY src/Tests/${PROJECT_NAME}.UserContext.Tests/${PROJECT_NAME}.UserContext.Tests.csproj src/Tests/${PROJECT_NAME}.UserContext.Tests/
+
+# Copy solution and props files
+COPY ./${PROJECT_NAME}.sln .
+COPY ./Directory.Build.props .
+
+# Mount GitHub Token and restore
+RUN --mount=type=secret,id=github_token dotnet nuget add source --username USERNAME --password $(cat /run/secrets/github_token) --store-password-in-clear-text --name github "https://nuget.pkg.github.com/DFE-Digital/index.json" && \
+    dotnet restore ${PROJECT_NAME}.sln
+
+# Copy remaining source code
+COPY ./src/ /build/src/
+
+# Build and publish
+WORKDIR /build/src/Frontend/${PROJECT_NAME}
+RUN dotnet build --no-restore -c Release && \
+    dotnet publish --no-build -c Release -o /app
+
+# Copy entrypoint script
 COPY ./script/docker-entrypoint.sh /app/docker-entrypoint.sh
 
-# Mount GitHub Token as a Docker secret so that NuGet Feed can be accessed
-RUN --mount=type=secret,id=github_token dotnet nuget add source --username USERNAME --password $(cat /run/secrets/github_token) --store-password-in-clear-text --name github "https://nuget.pkg.github.com/DFE-Digital/index.json"
-
-RUN ["dotnet", "restore", "Dfe.Complete.sln"]
-WORKDIR /build/src/Frontend/Dfe.Complete/
-RUN ["dotnet", "build", "--no-restore", "-c", "Release"]
-RUN ["dotnet", "publish", "--no-build", "-o", "/app"]
-
 # Build a runtime environment
-FROM "mcr.microsoft.com/dotnet/aspnet:${DOTNET_VERSION}-azurelinux3.0" AS base
+FROM mcr.microsoft.com/dotnet/aspnet:${DOTNET_VERSION}-azurelinux3.0 AS final
 WORKDIR /app
-LABEL org.opencontainers.image.source="https://github.com/DFE-Digital/complete-api"
+LABEL org.opencontainers.image.source="https://github.com/DFE-Digital/complete-conversions-transfers-changes"
 LABEL org.opencontainers.image.description="Complete Conversions Transfers and Changes - App"
 
-COPY --from=build /app /app
-COPY --from=assets /app /app/wwwroot
-RUN ["chmod", "+x", "./docker-entrypoint.sh"]
+COPY --from=build /app .
+COPY --from=assets /app ./wwwroot
 
+# Set permissions and user
+RUN chmod +x ./docker-entrypoint.sh
 USER $APP_UID

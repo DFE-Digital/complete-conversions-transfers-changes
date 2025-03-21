@@ -1,3 +1,4 @@
+using Dfe.Complete.Application.Common.Interfaces;
 using Dfe.Complete.Application.Projects.Interfaces;
 using Dfe.Complete.Application.Projects.Interfaces.CsvExport;
 using Dfe.Complete.Domain.Interfaces.Repositories;
@@ -25,13 +26,14 @@ namespace Dfe.Complete.Infrastructure
             var connectionString = config.GetConnectionString("DefaultConnection");
 
             services.AddDbContext<CompleteContext>(options => options.UseSqlServer(connectionString));
-            
+
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
+
             //Queries
             services.AddScoped<IListAllProjectsQueryService, ListAllProjectsQueryService>();
             services.AddScoped<IConversionCsvQueryService, ConversionCsvQueryService>();
-            services.AddScoped<IListAllProjectsForLocalAuthorityQueryService, ListAllProjectsForLocalAuthorityQueryService>();
-            services.AddScoped<IListAllProjectsForRegionQueryService, ListAllProjectsForRegionQueryService>();
-            
+            services.AddScoped<IListAllProjectsByFilterQueryService, ListAllProjectsByFilterQueryService>();
+
             // Authentication
             //services.AddCustomAuthorization(config);
 
