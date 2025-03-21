@@ -54,6 +54,7 @@ jobs:
           COMPLETEAPI_CLIENTID: ${{ secrets.CYPRESS_COMPLETEAPI_CLIENTID }}
 
         run: |
+          echo "complete api client id: $COMPLETEAPI_CLIENTID"
           response=$(curl --write-out "HTTPSTATUS:%{http_code}" --silent --location --request POST 'https://login.microsoftonline.com/$TENANT_ID/oauth2/v2.0/token' \
           --header 'Content-Type: application/x-www-form-urlencoded' \
           --data-urlencode 'grant_type=client_credentials' \
