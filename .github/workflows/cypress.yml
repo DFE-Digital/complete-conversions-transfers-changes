@@ -53,7 +53,7 @@ jobs:
           node-version: '14'
 
       - name: log tenant id
-        run:  tenant id is ${{ secrets.CYPRESS_TENANT_ID }}
+        run:  echo tenant id is ${{ secrets.CYPRESS_TENANT_ID }}
 
       - name: Get Access Token
         id: get-token
