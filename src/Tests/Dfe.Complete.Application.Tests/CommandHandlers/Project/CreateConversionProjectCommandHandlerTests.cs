@@ -252,6 +252,39 @@ public class CreateConversionProjectCommandHandlerTests
         await mockConversionTaskRepository.Received(0).AddAsync(It.IsAny<ConversionTasksData>(), It.IsAny<CancellationToken>());
     }
     
+    [Theory]
+    [CustomAutoData(typeof(DateOnlyCustomization), typeof(IgnoreVirtualMembersCustomisation))]
+    public async Task Handle_ShouldThrowNotFoundException_WhenUserRequestCantFindMatchingUser(
+        [Frozen] ICompleteRepository<Domain.Entities.Project> mockProjectRepository,
+        [Frozen] ICompleteRepository<ConversionTasksData> mockConversionTaskRepository,
+        [Frozen] Mock<ISender> mockSender,
+        CreateConversionProjectCommand command)
+    {
+        // Arrange
+        var handler = new CreateConversionProjectCommandHandler(
+            mockProjectRepository,
+            mockConversionTaskRepository,
+            mockSender.Object);
+
+        mockSender.Setup(s => s.Send(It.IsAny<GetUserByAdIdQuery>(), It.IsAny<CancellationToken>()))
+            .ReturnsAsync(Result<UserDto>.Success(null));
+
+        mockSender.Setup(s => s.Send(It.IsAny<GetLocalAuthorityBySchoolUrnQuery>(), It.IsAny<CancellationToken>()))
+            .ReturnsAsync(Result<GetLocalAuthorityBySchoolUrnResponseDto?>.Success(
+                new GetLocalAuthorityBySchoolUrnResponseDto(Guid.NewGuid())));
+
+        // Act & Assert
+        var exception = await Assert.ThrowsAsync<NotFoundException>(() => handler.Handle(command, default));
+
+        Assert.Equal("No user found.", exception.Message);
+        Assert.NotNull(exception.InnerException);
+            
+        await mockProjectRepository.Received(0).AddAsync(It.IsAny<Domain.Entities.Project>(), It.IsAny<CancellationToken>());
+        await mockConversionTaskRepository.Received(0).AddAsync(It.IsAny<ConversionTasksData>(), It.IsAny<CancellationToken>());
+    }
+
+
+    
      [Theory]
         [CustomAutoData(typeof(DateOnlyCustomization), typeof(IgnoreVirtualMembersCustomisation))]
         public async Task Handle_ShouldThrowNotFoundException_WhenProjectGroupRequestFails(
@@ -370,55 +403,55 @@ public class CreateConversionProjectCommandHandlerTests
             await mockConversionTaskRepository.Received(0).AddAsync(It.IsAny<ConversionTasksData>(), It.IsAny<CancellationToken>());
         }
         
-    [Theory]
-    [CustomAutoData(typeof(DateOnlyCustomization), typeof(IgnoreVirtualMembersCustomisation))]
-    public async Task Handle_ShouldNOTSet_GroupId_When_GroupReferenceNumber_NullOrEmpty(
-        [Frozen] ICompleteRepository<Domain.Entities.Project> mockProjectRepository,
-        [Frozen] ICompleteRepository<ConversionTasksData> mockConversionTaskRepository,
-        [Frozen] Mock<ISender> mockSender,
-        CreateConversionProjectCommand command
-    )
-    {
-        // Arrange
-        var handler = new CreateConversionProjectCommandHandler(mockProjectRepository, mockConversionTaskRepository,
-            mockSender.Object);
-
-        //
-        command = command with { GroupReferenceNumber = null };
-
-        const ProjectTeam team = ProjectTeam.WestMidlands;
-        var userDto = new UserDto
+        [Theory]
+        [CustomAutoData(typeof(DateOnlyCustomization), typeof(IgnoreVirtualMembersCustomisation))]
+        public async Task Handle_ShouldNOTSet_GroupId_When_GroupReferenceNumber_NullOrEmpty(
+            [Frozen] ICompleteRepository<Domain.Entities.Project> mockProjectRepository,
+            [Frozen] ICompleteRepository<ConversionTasksData> mockConversionTaskRepository,
+            [Frozen] Mock<ISender> mockSender,
+            CreateConversionProjectCommand command
+        )
         {
-            Id = new UserId(Guid.NewGuid()),
-            Team = team.ToDescription()
-        };
+            // Arrange
+            var handler = new CreateConversionProjectCommandHandler(mockProjectRepository, mockConversionTaskRepository,
+                mockSender.Object);
 
-        var createdAt = DateTime.UtcNow;
-        var conversionTaskId = Guid.NewGuid();
-        var conversionTask = new ConversionTasksData(new TaskDataId(conversionTaskId), createdAt, createdAt);
+            //
+            command = command with { GroupReferenceNumber = null };
 
-        mockSender.Setup(s => s.Send(It.IsAny<GetLocalAuthorityBySchoolUrnQuery>(), default))
-            .ReturnsAsync(
-                Result<GetLocalAuthorityBySchoolUrnResponseDto?>.Success(
-                    new GetLocalAuthorityBySchoolUrnResponseDto(Guid.NewGuid())));
+            const ProjectTeam team = ProjectTeam.WestMidlands;
+            var userDto = new UserDto
+            {
+                Id = new UserId(Guid.NewGuid()),
+                Team = team.ToDescription()
+            };
 
-        mockSender.Setup(s => s.Send(It.IsAny<GetUserByAdIdQuery>(), It.IsAny<CancellationToken>()))
-            .ReturnsAsync(Result<UserDto>.Success(userDto));
-        
-        Domain.Entities.Project capturedProject = null!;
+            var createdAt = DateTime.UtcNow;
+            var conversionTaskId = Guid.NewGuid();
+            var conversionTask = new ConversionTasksData(new TaskDataId(conversionTaskId), createdAt, createdAt);
 
-        mockProjectRepository.AddAsync(Arg.Do<Domain.Entities.Project>(proj => capturedProject = proj),
-                Arg.Any<CancellationToken>())
-            .Returns(Task.FromResult(capturedProject));
+            mockSender.Setup(s => s.Send(It.IsAny<GetLocalAuthorityBySchoolUrnQuery>(), default))
+                .ReturnsAsync(
+                    Result<GetLocalAuthorityBySchoolUrnResponseDto?>.Success(
+                        new GetLocalAuthorityBySchoolUrnResponseDto(Guid.NewGuid())));
 
-        mockConversionTaskRepository.AddAsync(Arg.Any<ConversionTasksData>(), Arg.Any<CancellationToken>())
-            .Returns(Task.FromResult(conversionTask));
+            mockSender.Setup(s => s.Send(It.IsAny<GetUserByAdIdQuery>(), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(Result<UserDto>.Success(userDto));
+            
+            Domain.Entities.Project capturedProject = null!;
 
-        // Act
-        var projectId = await handler.Handle(command, default);
+            mockProjectRepository.AddAsync(Arg.Do<Domain.Entities.Project>(proj => capturedProject = proj),
+                    Arg.Any<CancellationToken>())
+                .Returns(Task.FromResult(capturedProject));
 
-        // Assert
-        Assert.NotNull(projectId);
-        Assert.Null(capturedProject.GroupId);
-    }
+            mockConversionTaskRepository.AddAsync(Arg.Any<ConversionTasksData>(), Arg.Any<CancellationToken>())
+                .Returns(Task.FromResult(conversionTask));
+
+            // Act
+            var projectId = await handler.Handle(command, default);
+
+            // Assert
+            Assert.NotNull(projectId);
+            Assert.Null(capturedProject.GroupId);
+        }
 }

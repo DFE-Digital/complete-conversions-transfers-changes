@@ -260,6 +260,41 @@ public class CreateMatTransferProjectCommandHandlerTests
         
     [Theory]
     [CustomAutoData(typeof(DateOnlyCustomization), typeof(IgnoreVirtualMembersCustomisation))]
+    public async Task Handle_ShouldThrowException_WhenUserRequestCantFindMatchingUser(
+        [Frozen] ICompleteRepository<Domain.Entities.Project> mockProjectRepository,
+        [Frozen] ICompleteRepository<TransferTasksData> mockTransferTaskRepository,
+        [Frozen] Mock<ISender> mockSender,
+        CreateMatTransferProjectCommand command)
+    {
+        // Arrange
+        var handler = new CreateMatTransferProjectCommandHandler(
+            mockProjectRepository,
+            mockTransferTaskRepository,
+            mockSender.Object);
+
+        var expectedErrorMessage = "No user found.";
+
+        mockSender.Setup(s => s.Send(It.IsAny<GetLocalAuthorityBySchoolUrnQuery>(), default))
+            .ReturnsAsync(Result<GetLocalAuthorityBySchoolUrnResponseDto?>.Success(new GetLocalAuthorityBySchoolUrnResponseDto(Guid.NewGuid())));
+
+        mockSender.Setup(s => s.Send(It.IsAny<GetUserByAdIdQuery>(), default))
+            .ReturnsAsync(Result<UserDto?>.Success(null));
+
+        // Act & Assert
+        var exception = await Assert.ThrowsAsync<NotFoundException>(() => handler.Handle(command, default));
+
+        await mockProjectRepository.Received(0)
+            .AddAsync(Arg.Any<Domain.Entities.Project>());
+        await mockTransferTaskRepository.Received(0)
+            .AddAsync(Arg.Any<TransferTasksData>());
+
+        Assert.Equal(expectedErrorMessage, exception.Message);
+        Assert.NotNull(exception.InnerException);
+    }
+
+    
+    [Theory]
+    [CustomAutoData(typeof(DateOnlyCustomization), typeof(IgnoreVirtualMembersCustomisation))]
     public async Task Handle_ShouldThrowException_WhenLocalAuthorityRequestReturnsSuccess_WithNullResponse(
         [Frozen] ICompleteRepository<Domain.Entities.Project> mockProjectRepository,
         [Frozen] ICompleteRepository<TransferTasksData> mockTransferTaskRepository,

@@ -23,14 +23,12 @@ public class CreateNewProject(ISender sender, ErrorService errorService, ILogger
 
     [BindProperty]
     [Trn]
-    [Required(ErrorMessage = "Enter a Trust reference number (TRN)")]
     [Display(Name = "Trust reference number (TRN)")]
-    public string TrustReferenceNumber { get; set; }
+    public string? TrustReferenceNumber { get; set; }
 
     [BindProperty]
     [Display(Name = "Trust name")]
-    [Required(ErrorMessage = "Enter a Trust name")]
-    public string TrustName { get; set; }
+    public string? TrustName { get; set; }
 
     [BindProperty]
     [Required(ErrorMessage = "Enter a date for the Advisory Board Date, like 1 4 2023")]
@@ -79,6 +77,9 @@ public class CreateNewProject(ISender sender, ErrorService errorService, ILogger
 
     public async Task<IActionResult> OnPost(CancellationToken cancellationToken)
     {
+        // Manually trigger custom validation to ensure validates even on empty string
+        ManuallyTriggerTrustValidation();
+        
         if (!ModelState.IsValid)
         {
             errorService.AddErrors(ModelState);
@@ -131,6 +132,17 @@ public class CreateNewProject(ISender sender, ErrorService errorService, ILogger
             logger.LogError(ex, "Error occurred while creating a conversion project.");
             ModelState.AddModelError("UnexpectedError", "An unexpected error occurred. Please try again later.");
             return Page();
+        }
+    }
+    
+    private void ManuallyTriggerTrustValidation()
+    {
+        var trustNameValidationAttribute = new TrustNameAttribute(nameof(TrustReferenceNumber), sender);
+        var validationResult = trustNameValidationAttribute.GetValidationResult(TrustName, new ValidationContext(this) { MemberName = nameof(TrustName) });
+
+        if (validationResult != ValidationResult.Success)
+        {
+            ModelState.AddModelError(nameof(TrustName), validationResult.ErrorMessage);
         }
     }
 }

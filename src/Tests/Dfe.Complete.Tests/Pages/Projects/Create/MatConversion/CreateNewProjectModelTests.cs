@@ -1,5 +1,8 @@
 using System.Security.Claims;
+using Dfe.Complete.Application.Common.Models;
 using Dfe.Complete.Application.Projects.Commands.CreateProject;
+using Dfe.Complete.Application.Projects.Models;
+using Dfe.Complete.Application.Projects.Queries.GetProject;
 using Dfe.Complete.Domain.ValueObjects;
 using Dfe.Complete.Pages.Projects.MatConversion;
 using Dfe.Complete.Services;
@@ -27,6 +30,10 @@ public class CreateNewProjectModelTests
         mockSender
             .Setup(s => s.Send(It.IsAny<CreateMatConversionProjectCommand>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(projectId);
+        
+        mockSender
+            .Setup(s => s.Send(It.IsAny<GetProjectByTrnQuery>(), It.IsAny<CancellationToken>()))
+            .ReturnsAsync(Result<GetProjectByTrnResponseDto?>.Success(null));
 
         var pageModel = new CreateNewProject(mockSender.Object, mockErrorService.Object, mockLogger.Object)
         {
@@ -71,6 +78,11 @@ public class CreateNewProjectModelTests
 
         var exceptionMessage = "Test not found exception";
         var notFoundException = new NotFoundException(exceptionMessage);
+        
+        mockSender
+            .Setup(s => s.Send(It.IsAny<GetProjectByTrnQuery>(), It.IsAny<CancellationToken>()))
+            .ReturnsAsync(Result<GetProjectByTrnResponseDto?>.Success(null));
+        
         mockSender
             .Setup(s => s.Send(It.IsAny<CreateMatConversionProjectCommand>(), It.IsAny<CancellationToken>()))
             .ThrowsAsync(notFoundException);
@@ -126,6 +138,10 @@ public class CreateNewProjectModelTests
         mockSender
             .Setup(s => s.Send(It.IsAny<CreateMatConversionProjectCommand>(), It.IsAny<CancellationToken>()))
             .ThrowsAsync(generalException);
+        
+        mockSender
+            .Setup(s => s.Send(It.IsAny<GetProjectByTrnQuery>(), It.IsAny<CancellationToken>()))
+            .ReturnsAsync(Result<GetProjectByTrnResponseDto?>.Success(null));
 
         var pageModel = new CreateNewProject(mockSender.Object, mockErrorService.Object, mockLogger.Object)
         {

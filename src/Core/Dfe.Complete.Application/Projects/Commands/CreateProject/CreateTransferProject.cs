@@ -51,7 +51,7 @@ public class CreateTransferProjectCommandHandler(
         if (!string.IsNullOrEmpty(request.UserAdId))
             userRequest = await sender.Send(new GetUserByAdIdQuery(request.UserAdId), cancellationToken);
 
-        if (userRequest is not { IsSuccess: true })
+        if (userRequest is not { IsSuccess: true } || userRequest.Value is null)
             throw new NotFoundException("No user found.", innerException: new Exception(userRequest?.Error));
         
         var projectUser = userRequest.Value;
