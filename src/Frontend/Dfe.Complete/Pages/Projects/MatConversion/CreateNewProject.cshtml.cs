@@ -78,7 +78,7 @@ public class CreateNewProject(ISender sender, ErrorService errorService, ILogger
     public async Task<IActionResult> OnPost(CancellationToken cancellationToken)
     {
         // Manually trigger custom validation to ensure validates even on empty string
-        MannuallyTriggerTrustValidation();
+        ManuallyTriggerTrustValidation();
         
         if (!ModelState.IsValid)
         {
@@ -135,7 +135,7 @@ public class CreateNewProject(ISender sender, ErrorService errorService, ILogger
         }
     }
     
-    private void MannuallyTriggerTrustValidation()
+    private void ManuallyTriggerTrustValidation()
     {
         var trustNameValidationAttribute = new TrustNameAttribute(nameof(TrustReferenceNumber), sender);
         var validationResult = trustNameValidationAttribute.GetValidationResult(TrustName, new ValidationContext(this) { MemberName = nameof(TrustName) });
