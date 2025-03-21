@@ -55,16 +55,25 @@ jobs:
       - name: Get Access Token
         id: get-token
         run: |
-          response=$(curl -s -o response.json -w "%{http_code}" -X POST -d "grant_type=client_credentials&client_id=${{ secrets.CYPRESS_CLIENT_ID }}&client_secret=${{ secrets.CYPRESS_CLIENT_SECRET }}&scope=api://${{ secrets.CYPRESS_COMPLETEAPI_CLIENTID }}/.default" https://login.microsoftonline.com/${{ secrets.CYPRESS_TENANT_ID }}/oauth2/v2.0/token)
-          http_code=$(tail -n1 response.json)
-          if [ "$http_code" -ne 200 ]; then
-            error_message=$(cat response.json | jq -r .error_description)
-            echo "Failed to get access token. HTTP Status: $http_code, Error: $error_message"
-            exit 1
+          response=$(curl --write-out "HTTPSTATUS:%{http_code}" --silent --location --request POST 'https://login.microsoftonline.com/${{ secrets.CYPRESS_TENANT_ID }}/oauth2/v2.0/token' \
+          --header 'Content-Type: application/x-www-form-urlencoded' \
+          --data-urlencode 'grant_type=client_credentials' \
+          --data-urlencode 'client_id=${{ secrets.CYPRESS_CLIENT_ID }}' \
+          --data-urlencode 'client_secret=${{ secrets.CYPRESS_CLIENT_SECRET }}' \
+          --data-urlencode 'scope=api://${{ secrets.CYPRESS_COMPLETEAPI_CLIENTID }}/.default')
+            
+          body=$(echo "$response" | sed -e 's/HTTPSTATUS:.*//g')
+          status_code=$(echo "$response" | tr -d '\n' | sed -e 's/.*HTTPSTATUS://')
+            
+          if [ "$status_code" -ne 200 ]; then
+            echo "Error: Received status code $status_code"
+            echo "Response body: $body"
+          else
+            echo "Request successful. Response body: $body"
           fi
-          access_token=$(echo $response | jq -r .access_token)
+          access_token=$(echo "$body" | sed -n 's/.*"access_token":"\([^"]*\)".*/\1/p')
           echo "::set-output name=access_token::$access_token"
-          echo $response > access_token.txt
+          echo "$access_token" > access_token.txt
 
       - name: Upload Access Token Artifact
         uses: actions/upload-artifact@v4
