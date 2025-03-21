@@ -39,7 +39,26 @@ concurrency:
   group: ${{ github.workflow }}
 
 jobs:
-  cypress-tests:
+  generate-token:
+    runs-on: ubuntu-latest
+    outputs:
+      access_token: ${{ steps.get-token.outputs.access_token }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+
+      - name: Get Access Token
+        id: get-token
+        run: |
+          response=$(curl -X POST -d "grant_type=client_credentials&client_id=${{ secrets.CYPRESS_CLIENT_ID }}&client_secret=${{ secrets.CYPRESS_CLIENT_SECRET }}&scope=api://${{ secrets.CYPRESS_COMPLETEAPI_CLIENTID }}/.default" https://login.microsoftonline.com/${{ secrets.CYPRESS_TENANT_ID }}/oauth2/v2.0/token)
+          echo "::set-output name=access_token::$(echo $response | jq -r .access_token)"
+
+cypress-tests:
     name: Run Cypress Tests
     runs-on: ubuntu-latest
     environment: ${{ inputs.environment }}
@@ -70,6 +89,7 @@ jobs:
           CYPRESS_clientSecret: ${{ secrets.CYPRESS_CLIENT_SECRET }}
           CYPRESS_completeApiClientId: ${{ secrets.CYPRESS_COMPLETEAPI_CLIENTID }}
           CYPRESS_userAdId: ${{ secrets.CYPRESS_USER_AD_ID }}
+          CYPRESS_accessToken: ${{ needs.generate-token.outputs.access_token }}
         with:
           browser: ${{ matrix.browser }}
           working-directory: ./src/Tests/Dfe.Complete.CypressTests
