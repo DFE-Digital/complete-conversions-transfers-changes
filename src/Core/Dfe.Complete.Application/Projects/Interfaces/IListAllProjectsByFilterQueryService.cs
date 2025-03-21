@@ -10,5 +10,7 @@ public interface IListAllProjectsByFilterQueryService
         ProjectType? projectType,
         UserId? userId = null,
         string? localAuthorityCode = "",
-        Region? region = null);
+        Region? region = null,
+        ProjectTeam? team = null
+        );
 }

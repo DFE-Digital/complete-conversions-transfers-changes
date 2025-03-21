@@ -26,16 +26,11 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
         {
             // Arrange
             var listAllProjectsQueryModels = fixture.CreateMany<ListAllProjectsQueryModel>(50).ToList();
-            
-            var expected = listAllProjectsQueryModels.Select(item => new ListAllProjectsResultModel(
-                item.Establishment.Name,
-                item.Project.Id,
-                item.Project.Urn,
-                item.Project.SignificantDate,
-                item.Project.State,
-                item.Project.Type,
-                item.Project.FormAMat,
-                item.Project.AssignedTo?.FullName)).Take(20).ToList();
+
+            var expected = listAllProjectsQueryModels.Select(item => ListAllProjectsResultModel.MapProjectAndEstablishmentToListAllProjectResultModel(
+                item.Project,
+                item.Establishment
+             )).Take(20).ToList();
 
             var query = new ListAllProjectsQuery(null, null);
 
@@ -56,7 +51,7 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
                 Assert.Equivalent(expected[i], result.Value![i]);
             }
         }
-        
+
         [Theory]
         [CustomAutoData(
             typeof(OmitCircularReferenceCustomization),
@@ -69,7 +64,7 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
         {
             // Arrange
             var listAllProjectsQueryModels = fixture.CreateMany<ListAllProjectsQueryModel>(50).ToList();
-            
+
             var expected = listAllProjectsQueryModels.Select(item => new ListAllProjectsResultModel(
                 item.Establishment.Name,
                 item.Project.Id,
@@ -80,10 +75,16 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
                 item.Project.FormAMat,
                 item.Project.AssignedTo != null
                     ? $"{item.Project.AssignedTo.FirstName} {item.Project.AssignedTo.LastName}"
-                    : null)).Skip(20).Take(20).ToList();
+                    : null,
+                item.Project.LocalAuthority.Name,
+                item.Project.Team,
+                item.Project.CompletedAt,
+                item.Project.Region,
+                item.Establishment.LocalAuthorityName
+            )).Skip(20).Take(20).ToList();
 
             var query = new ListAllProjectsQuery(null, null, 1);
-            
+
             var mock = listAllProjectsQueryModels.BuildMock();
 
             mockEstablishmentQueryService.ListAllProjects(query.ProjectStatus, query.Type)
@@ -101,7 +102,7 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
                 Assert.Equivalent(expected[i], result.Value![i]);
             }
         }
-        
+
         [Theory]
         [CustomAutoData(
             typeof(OmitCircularReferenceCustomization),
@@ -114,7 +115,7 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
         {
             // Arrange
             var listAllProjectsQueryModels = fixture.CreateMany<ListAllProjectsQueryModel>(50).ToList();
-            
+
             var query = new ListAllProjectsQuery(null, null, 10);
 
             var mock = listAllProjectsQueryModels.BuildMock();
@@ -130,7 +131,7 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
             Assert.True(result.IsSuccess);
             Assert.Equal(0, result.Value?.Count);
         }
-        
+
         [Theory]
         [CustomAutoData(
             typeof(OmitCircularReferenceCustomization),
@@ -142,7 +143,7 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
         {
             // Arrange
             var errorMessage = "This is a test";
-            
+
             var query = new ListAllProjectsQuery(null, null);
 
             mockEstablishmentQueryService.ListAllProjects(query.ProjectStatus, query.Type)
