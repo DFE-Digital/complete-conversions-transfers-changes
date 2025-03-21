@@ -1,7 +1,6 @@
 import {
     EnvUrl,
     EnvAuthKey,
-    TeamLeaderClaim,
     ProjectRecordCreator,
     EnvUsername,
 } from "../constants/cypressConstants";

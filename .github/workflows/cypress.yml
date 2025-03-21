@@ -1,4 +1,4 @@
-name: Cypress
+name: Run Cypress tests
 
 on:
   workflow_call:
@@ -7,15 +7,23 @@ on:
         required: true
         type: string
     secrets:
-      CYPRESS_URL:
+      CYPRESS_URL_ENDPOINT:
         required: true
-      CYPRESS_API:
-        required: true
-      CYPRESS_APIKEY:
+      CYPRESS_API_ENDPOINT:
         required: true
       CYPRESS_USERNAME:
         required: true
-      CYPRESS_AUTHKEY:
+      CYPRESS_AUTH_KEY:
+        required: true
+      CYPRESS_TENANT_ID:
+        required: true
+      CYPRESS_CLIENT_ID:
+        required: true
+      CYPRESS_CLIENT_SECRET:
+        required: true
+      CYPRESS_COMPLETEAPI_CLIENTID:
+        required: true
+      CYPRESS_USER_AD_ID:
         required: true
       SLACK_WEBHOOK_URL:
         required: true
@@ -31,8 +39,61 @@ concurrency:
   group: ${{ github.workflow }}
 
 jobs:
+  generate-token:
+    runs-on: ubuntu-latest
+    environment: ${{ inputs.environment }}
+    outputs:
+      access_token: ${{ steps.get-token.outputs.access_token }}
+    permissions:
+      issues: read
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+
+      - name: Get Access Token
+        id: get-token
+        env:
+          TENANT_ID: ${{ secrets.CYPRESS_TENANT_ID }}
+          CLIENT_ID: ${{ secrets.CYPRESS_CLIENT_ID }}
+          CLIENT_SECRET: ${{ secrets.CYPRESS_CLIENT_SECRET }}
+          COMPLETEAPI_CLIENTID: ${{ secrets.CYPRESS_COMPLETEAPI_CLIENTID }}
+        run: |
+          response=$(curl --write-out "HTTPSTATUS:%{http_code}" --silent --location \
+            --request POST "https://login.microsoftonline.com/$TENANT_ID/oauth2/v2.0/token" \
+            --header "Content-Type: application/x-www-form-urlencoded" \
+            --data-urlencode "grant_type=client_credentials" \
+            --data-urlencode "client_id=$CLIENT_ID" \
+            --data-urlencode "client_secret=$CLIENT_SECRET" \
+            --data-urlencode "scope=api://$COMPLETEAPI_CLIENTID/.default")
+  
+          body=$(echo "$response" | sed -e 's/HTTPSTATUS:.*//g')
+          status_code=$(echo "$response" | tr -d '\n' | sed -e 's/.*HTTPSTATUS://')
+  
+          if [ "$status_code" -ne 200 ]; then
+            echo "Error: Received status code $status_code"
+            echo "Response body: $body"
+            exit 1
+          else
+            echo "Request successful. Response body: $body"
+          fi
+          access_token=$(echo "$body" | sed -n 's/.*"access_token":"\([^"]*\)".*/\1/p')
+          echo "::set-output name=access_token::$access_token"
+          echo "$access_token" > access_token.txt
+
+      - name: Upload Access Token Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: access-token
+          path: access_token.txt
+
   cypress-tests:
     name: Run Cypress Tests
+    needs: generate-token
     runs-on: ubuntu-latest
     environment: ${{ inputs.environment }}
     strategy:
@@ -53,15 +114,19 @@ jobs:
       - name: Run
         uses: cypress-io/github-action@v6
         env:
-          CYPRESS_url: ${{ secrets.CYPRESS_URL }}
-          CYPRESS_api: ${{ secrets.CYPRESS_API }}
-          CYPRESS_apiKey: ${{ secrets.CYPRESS_APIKEY }}
+          CYPRESS_url: ${{ secrets.CYPRESS_URL_ENDPOINT }}
+          CYPRESS_api: ${{ secrets.CYPRESS_API_ENDPOINT }}
           CYPRESS_username: ${{ secrets.CYPRESS_USERNAME }}
-          CYPRESS_authKey: ${{ secrets.CYPRESS_AUTHKEY }}
+          CYPRESS_authKey: ${{ secrets.CYPRESS_AUTH_KEY }}
+          CYPRESS_tenantId: ${{ secrets.CYPRESS_TENANT_ID }}
+          CYPRESS_clientId: ${{ secrets.CYPRESS_CLIENT_ID }}
+          CYPRESS_clientSecret: ${{ secrets.CYPRESS_CLIENT_SECRET }}
+          CYPRESS_completeApiClientId: ${{ secrets.CYPRESS_COMPLETEAPI_CLIENTID }}
+          CYPRESS_userAdId: ${{ secrets.CYPRESS_USER_AD_ID }}
+          CYPRESS_accessToken: ${{ needs.generate-token.outputs.access_token }}
         with:
           browser: ${{ matrix.browser }}
           working-directory: ./src/Tests/Dfe.Complete.CypressTests
-          wait-on: ${{ secrets.URL }}
 
       - name: Upload screenshots
         if: ${{ failure() }}
@@ -85,6 +150,6 @@ jobs:
 
       - name: Report results
         if: always()
-        run: npm run cy:notify -- --custom-text="Environment ${{ inputs.environment }}, See more information https://github.com/DFE-Digital/complete-api/actions/runs/${{github.run_id}}"
+        run: npm run cy:notify -- --custom-text="Environment ${{ inputs.environment }}, See more information https://github.com/DFE-Digital/complete-conversions-transfers-changes/actions/runs/${{ github.run_id }}"
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
