@@ -52,10 +52,12 @@ jobs:
         with:
           node-version: '14'
 
-      - env:
-          TENANT_ID: ${{ secrets.TENANT_ID }}
+      - name: Echo tenant ID
+        env:
+          TENANT_ID: ${{ secrets.CYPRESS_TENANT_ID }}
         run: |
-          echo tenant id is $TENANT_ID
+          echo "tenant id secret is ${{ secrets.TENANT_ID }}" \
+          echo "tenant id is $TENANT_ID"
 
       - name: Get Access Token
         id: get-token
