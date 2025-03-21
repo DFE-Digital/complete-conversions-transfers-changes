@@ -163,7 +163,7 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
     }
 
     public static Project CreateConversionProject(
-        ProjectId Id,
+        ProjectId id,
         Urn urn,
         DateTime createdAt,
         DateTime updatedAt,
@@ -189,7 +189,7 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
         Guid localAuthorityId)
     {
         var project = new Project(
-            Id,
+            id,
             urn,
             createdAt,
             updatedAt,
@@ -410,6 +410,26 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
                 TaskIdentifier = note.TaskIdentifier,
                 UserId = note.User?.Id
             });
+        }
+    }
+
+
+    public void RemoveNote(NoteId id)
+    {
+        var note = Notes.FirstOrDefault(x => x.Id == id);
+        
+        if (note is null) throw new NotFoundException($"No note found with Id {id.Value}");
+
+        Notes.Remove(note);
+    }
+    
+    public void RemoveAllNotes()
+    {
+        // Create new id so we don't copy by reference as otherwise the list changes as we delete each note
+        var noteIds = Notes.Select(note => note.Id).ToList();
+        foreach (var noteId in noteIds)
+        {
+            RemoveNote(noteId);
         }
     }
 }

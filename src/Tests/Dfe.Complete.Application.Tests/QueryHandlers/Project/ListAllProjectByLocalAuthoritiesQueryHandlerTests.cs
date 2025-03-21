@@ -26,13 +26,13 @@ public class ListAllProjectByLocalAuthoritiesQueryHandlerTests
         IFixture fixture)
     {
         //Arrange
-        var expectedLocalAuthorities = fixture.Create<List<ListAllProjectLocalAuthoritiesResultModel>>();
-        
+        var expectedLocalAuthorities = fixture.Create<List<ListAllProjectLocalAuthoritiesResultModel>>().OrderBy(la => la.LocalAuthority.Name).ToList();
+
         //Act
         var query = new ListAllProjectsByLocalAuthoritiesQuery();
 
         var handlerResult = await handler.Handle(query, default);
-        
+
         //Assert 
         Assert.NotNull(handlerResult);
         Assert.Equal(expectedLocalAuthorities.Count, handlerResult.ItemCount);
@@ -42,7 +42,7 @@ public class ListAllProjectByLocalAuthoritiesQueryHandlerTests
             Assert.Equivalent(expectedLocalAuthorities[i], handlerResult.Value![i]);
         }
     }
-    
+
     [Theory]
     [CustomAutoData(
         typeof(OmitCircularReferenceCustomization),
@@ -56,16 +56,16 @@ public class ListAllProjectByLocalAuthoritiesQueryHandlerTests
         var query = new ListAllProjectsByLocalAuthoritiesQuery { Page = 10 };
 
         var handlerResult = await handler.Handle(query, default);
-        
+
         //Assert 
-       
+
         // Assert
         Assert.NotNull(handlerResult);
         Assert.True(handlerResult.IsSuccess);
         Assert.Equal(0, handlerResult.Value?.Count);
     }
-    
-    
+
+
     [Theory]
     [CustomAutoData(
         typeof(OmitCircularReferenceCustomization),
@@ -78,14 +78,14 @@ public class ListAllProjectByLocalAuthoritiesQueryHandlerTests
         IFixture fixture)
     {
         const string errorMessage = "This is a test error message";
-        
+
         var query = new ListAllProjectsByLocalAuthoritiesQuery { Page = 10 };
 
         localAuthoritiesRepo.FetchAsync(Arg.Any<Expression<Func<LocalAuthority, bool>>>(), default)
             .ThrowsAsync(new Exception(errorMessage));
-        
+
         var handlerResult = await handler.Handle(query, default);
-       
+
         // Assert
         Assert.NotNull(handlerResult);
         Assert.False(handlerResult.IsSuccess);
