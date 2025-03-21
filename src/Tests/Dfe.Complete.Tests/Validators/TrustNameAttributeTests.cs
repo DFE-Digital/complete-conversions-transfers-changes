@@ -10,48 +10,127 @@ namespace Dfe.Complete.Tests.Validators;
 
 public class TrustNameAttributeTests
 {
-    [Theory]
-    [InlineData("", null, "", false, "Enter a trust name.")] // Invalid if no ref or trust name entered
-    [InlineData("", null, "New trust name", true, null)] // Valid if no trust reference number but trust name
-    [InlineData("TR1234567", null, "", true, null)] // Valid if trust ref exists but trust name is null or empty
-    [InlineData("TR12345", "Big new trust", "Big new trust", true, null)] // Valid if trust is found anf trust name matched
-    [InlineData("TR00000", null, "Big new trust", true, null)] // Valid if trust ref did not exist previously
-    [InlineData("TR12345", "Big new trust", "New trust name", false, "A trust with this TRN already exists. It is called Big new trust. Check the trust name you have entered for this conversion/transfer.")] // Invalid if trust ref exists but name is different
-    public void TrustNameAttribute_Validation_ReturnsExpectedResult(
-        string trn, string existingTrustName, string trustName, bool isValid, string expectedErrorMessage)
+    private static TrustNameAttribute CreateAttribute(Mock<ISender> mockSender)
+    {
+        var objectInstance = new { TrustName = "", TrustReference = "" };
+        return new TrustNameAttribute(nameof(objectInstance.TrustReference), mockSender.Object);
+    }
+
+    [Fact]
+    public void Validation_Fails_When_NoTrustRefAndNoTrustName()
     {
         // Arrange
         var mockSender = new Mock<ISender>();
-        
-        if (!string.IsNullOrEmpty(trn))
+        var attribute = CreateAttribute(mockSender);
+        var validationContext = new ValidationContext(new { TrustName = "", TrustReference = "" })
         {
-            var trnResult = string.IsNullOrEmpty(existingTrustName) 
-                ? Result<GetProjectByTrnResponseDto?>.Success(null)
-                : Result<GetProjectByTrnResponseDto?>.Success(new GetProjectByTrnResponseDto(Guid.NewGuid(), existingTrustName));
-            
-            mockSender.Setup(s => s.Send(It.IsAny<GetProjectByTrnQuery>(), default))
-                .ReturnsAsync(trnResult);
-        }
-        
-        var objectInstance = new { TrustName = trustName, TrustReference = trn };
-        var attribute = new TrustNameAttribute(nameof(objectInstance.TrustReference), mockSender.Object);
-        var validationContext = new ValidationContext(objectInstance, null, null)
-        {
-            MemberName = nameof(objectInstance.TrustName)
+            MemberName = "TrustName"
         };
 
         // Act
-        var result = attribute.GetValidationResult(trustName, validationContext);
+        var result = attribute.GetValidationResult("", validationContext);
 
         // Assert
-        if (isValid)
+        Assert.NotNull(result);
+        Assert.Equal("Enter a trust name.", result.ErrorMessage);
+    }
+
+    [Fact]
+    public void Validation_Passes_When_NoTrustRefButTrustNameExists()
+    {
+        // Arrange
+        var mockSender = new Mock<ISender>();
+        var attribute = CreateAttribute(mockSender);
+        var validationContext = new ValidationContext(new { TrustName = "New trust name", TrustReference = "" })
         {
-            Assert.Null(result);
-        }
-        else
+            MemberName = "TrustName"
+        };
+
+        // Act
+        var result = attribute.GetValidationResult("New trust name", validationContext);
+
+        // Assert
+        Assert.Null(result);
+    }
+
+    [Fact]
+    public void Validation_Passes_When_TrustRefExistsButTrustNameIsEmpty()
+    {
+        // Arrange
+        var mockSender = new Mock<ISender>();
+        var trnResult = Result<GetProjectByTrnResponseDto?>.Success(null);
+        mockSender.Setup(s => s.Send(It.IsAny<GetProjectByTrnQuery>(), default)).ReturnsAsync(trnResult);
+        var attribute = CreateAttribute(mockSender);
+        var validationContext = new ValidationContext(new { TrustName = "", TrustReference = "TR1234567" })
         {
-            Assert.NotNull(result);
-            Assert.Equal(expectedErrorMessage, result.ErrorMessage);
-        }
+            MemberName = "TrustName"
+        };
+
+        // Act
+        var result = attribute.GetValidationResult("", validationContext);
+
+        // Assert
+        Assert.Null(result);
+    }
+
+    [Fact]
+    public void Validation_Passes_When_TrustRefExistsAndTrustNameMatches()
+    {
+        // Arrange
+        var mockSender = new Mock<ISender>();
+        var trnResult = Result<GetProjectByTrnResponseDto?>.Success(new GetProjectByTrnResponseDto(Guid.NewGuid(), "Big new trust"));
+        mockSender.Setup(s => s.Send(It.IsAny<GetProjectByTrnQuery>(), default)).ReturnsAsync(trnResult);
+        var attribute = CreateAttribute(mockSender);
+        var validationContext = new ValidationContext(new { TrustName = "Big new trust", TrustReference = "TR12345" })
+        {
+            MemberName = "TrustName"
+        };
+
+        // Act
+        var result = attribute.GetValidationResult("Big new trust", validationContext);
+
+        // Assert
+        Assert.Null(result);
+    }
+
+    [Fact]
+    public void Validation_Passes_When_TrustRefIsNew()
+    {
+        // Arrange
+        var mockSender = new Mock<ISender>();
+        var trnResult = Result<GetProjectByTrnResponseDto?>.Success(null);
+        mockSender.Setup(s => s.Send(It.IsAny<GetProjectByTrnQuery>(), default)).ReturnsAsync(trnResult);
+        var attribute = CreateAttribute(mockSender);
+        var validationContext = new ValidationContext(new { TrustName = "Big new trust", TrustReference = "TR00000" })
+        {
+            MemberName = "TrustName"
+        };
+
+        // Act
+        var result = attribute.GetValidationResult("Big new trust", validationContext);
+
+        // Assert
+        Assert.Null(result);
+    }
+
+    [Fact]
+    public void Validation_Fails_When_TrustRefExistsButTrustNameDiffers()
+    {
+        // Arrange
+        var mockSender = new Mock<ISender>();
+        var trnResult = Result<GetProjectByTrnResponseDto?>.Success(new GetProjectByTrnResponseDto(Guid.NewGuid(), "Big new trust"));
+        mockSender.Setup(s => s.Send(It.IsAny<GetProjectByTrnQuery>(), default)).ReturnsAsync(trnResult);
+        var attribute = CreateAttribute(mockSender);
+        var validationContext = new ValidationContext(new { TrustName = "New trust name", TrustReference = "TR12345" })
+        {
+            MemberName = "TrustName"
+        };
+
+        // Act
+        var result = attribute.GetValidationResult("New trust name", validationContext);
+
+        // Assert
+        Assert.NotNull(result);
+        Assert.Equal("A trust with this TRN already exists. It is called Big new trust. Check the trust name you have entered for this conversion/transfer.", result.ErrorMessage);
     }
 }
