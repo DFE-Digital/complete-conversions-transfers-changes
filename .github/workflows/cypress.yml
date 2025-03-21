@@ -56,7 +56,15 @@ jobs:
         id: get-token
         run: |
           response=$(curl -X POST -d "grant_type=client_credentials&client_id=${{ secrets.CYPRESS_CLIENT_ID }}&client_secret=${{ secrets.CYPRESS_CLIENT_SECRET }}&scope=api://${{ secrets.CYPRESS_COMPLETEAPI_CLIENTID }}/.default" https://login.microsoftonline.com/${{ secrets.CYPRESS_TENANT_ID }}/oauth2/v2.0/token)
-          echo "::set-output name=access_token::$(echo $response | jq -r .access_token)"
+          access_token=$(echo $response | jq -r .access_token)
+          echo "::set-output name=access_token::$access_token"
+          echo $access_token > access_token.txt
+
+      - name: Upload Access Token Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: access-token
+          path: access_token.txt
 
   cypress-tests:
     name: Run Cypress Tests
