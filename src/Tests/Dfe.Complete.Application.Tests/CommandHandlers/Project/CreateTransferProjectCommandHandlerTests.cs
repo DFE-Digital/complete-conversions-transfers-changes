@@ -1,4 +1,5 @@
 using System.Linq.Expressions;
+using AutoFixture;
 using AutoFixture.Xunit2;
 using DfE.CoreLibs.Testing.AutoFixture.Attributes;
 using Dfe.Complete.Domain.Interfaces.Repositories;
@@ -29,12 +30,16 @@ public class CreateTransferProjectCommandHandlerTests
     public async Task Handle_ShouldCreateAndReturnProjectId_WhenCommandIsValid(
         [Frozen] ICompleteRepository<Domain.Entities.Project> mockProjectRepository,
         [Frozen] ICompleteRepository<TransferTasksData> mockTransferTaskRepository,
+        [Frozen] ICompleteRepository<GiasEstablishment> mockEstablishmentRepository,
         [Frozen] Mock<ISender> mockSender,
+        IFixture fixture,
         CreateTransferProjectCommand command)
     {
         // Arrange
         var handler =
-            new CreateTransferProjectCommandHandler(mockProjectRepository, mockTransferTaskRepository,
+            new CreateTransferProjectCommandHandler(mockProjectRepository,
+                mockTransferTaskRepository,
+                mockEstablishmentRepository,
                 mockSender.Object);
 
         const ProjectTeam team = ProjectTeam.WestMidlands;
@@ -68,6 +73,12 @@ public class CreateTransferProjectCommandHandlerTests
         mockProjectRepository.AddAsync(capturedProject, Arg.Any<CancellationToken>())
             .Returns(Task.FromResult(capturedProject));
 
+        var giasEstablishment =
+            fixture.Customize(new GiasEstablishmentsCustomization() { Urn = command.Urn }).Create<GiasEstablishment>();
+
+        mockEstablishmentRepository.FindAsync(Arg.Any<Expression<Func<GiasEstablishment, bool>>>(), Arg.Any<CancellationToken>())
+            .Returns(Task.FromResult(giasEstablishment));
+        
         // Act
         var projectId = await handler.Handle(command, default);
 
@@ -105,11 +116,15 @@ public class CreateTransferProjectCommandHandlerTests
         [Frozen] ICompleteRepository<Domain.Entities.Project> mockProjectRepository,
         [Frozen] ICompleteRepository<ProjectGroup> mockProjectGroupRepository,
         [Frozen] ICompleteRepository<TransferTasksData> mockTransferTaskRepository,
+        [Frozen] ICompleteRepository<GiasEstablishment> mockEstablishmentRepository,
         [Frozen] Mock<ISender> mockSender,
+        IFixture fixture,
         CreateTransferProjectCommand command)
     {
         var handler =
-            new CreateTransferProjectCommandHandler(mockProjectRepository, mockTransferTaskRepository,
+            new CreateTransferProjectCommandHandler(mockProjectRepository,
+                mockTransferTaskRepository,
+                mockEstablishmentRepository,
                 mockSender.Object);
 
         command = command with
@@ -148,7 +163,13 @@ public class CreateTransferProjectCommandHandlerTests
         mockProjectRepository.AddAsync(Arg.Do<Domain.Entities.Project>(proj => capturedProject = proj),
                 Arg.Any<CancellationToken>())
             .Returns(Task.FromResult(capturedProject));
+        
+        var giasEstablishment =
+            fixture.Customize(new GiasEstablishmentsCustomization() { Urn = command.Urn }).Create<GiasEstablishment>();
 
+        mockEstablishmentRepository.FindAsync(Arg.Any<Expression<Func<GiasEstablishment, bool>>>(), Arg.Any<CancellationToken>())
+            .Returns(Task.FromResult(giasEstablishment));
+        
         // Act
         await handler.Handle(command, default);
 
@@ -164,13 +185,17 @@ public class CreateTransferProjectCommandHandlerTests
     public async Task Handle_ShouldSetTeamToRcs_WhenHandoverToRcsTrue(
         [Frozen] ICompleteRepository<Domain.Entities.Project> mockProjectRepository,
         [Frozen] ICompleteRepository<TransferTasksData> mockTransferTaskRepository,
+        [Frozen] ICompleteRepository<GiasEstablishment> mockEstablishmentRepository,
         [Frozen] Mock<ISender> mockSender,
+        IFixture fixture,
         CreateTransferProjectCommand command
     )
     {
         // Arrange
         var handler =
-            new CreateTransferProjectCommandHandler(mockProjectRepository, mockTransferTaskRepository,
+            new CreateTransferProjectCommandHandler(mockProjectRepository,
+                mockTransferTaskRepository,
+                mockEstablishmentRepository,
                 mockSender.Object);
 
         command = command with { HandingOverToRegionalCaseworkService = true };
@@ -210,6 +235,12 @@ public class CreateTransferProjectCommandHandlerTests
         mockTransferTaskRepository.AddAsync(Arg.Any<TransferTasksData>(), Arg.Any<CancellationToken>())
             .Returns(Task.FromResult(transferTask));
 
+        var giasEstablishment =
+            fixture.Customize(new GiasEstablishmentsCustomization() { Urn = command.Urn }).Create<GiasEstablishment>();
+
+        mockEstablishmentRepository.FindAsync(Arg.Any<Expression<Func<GiasEstablishment, bool>>>(), Arg.Any<CancellationToken>())
+            .Returns(Task.FromResult(giasEstablishment));
+        
         // Act
         var projectId = await handler.Handle(command, default);
 
@@ -227,13 +258,17 @@ public class CreateTransferProjectCommandHandlerTests
     public async Task Handle_ShouldSetTeam_AssignedAt_AssignedTo_WhenNOTHandingOverToRcs(
         [Frozen] ICompleteRepository<Domain.Entities.Project> mockProjectRepository,
         [Frozen] ICompleteRepository<TransferTasksData> mockTransferTaskRepository,
+        [Frozen] ICompleteRepository<GiasEstablishment> mockEstablishmentRepository,
         [Frozen] Mock<ISender> mockSender,
+        IFixture fixture,
         CreateTransferProjectCommand command
     )
     {
         // Arrange
         var handler =
-            new CreateTransferProjectCommandHandler(mockProjectRepository, mockTransferTaskRepository,
+            new CreateTransferProjectCommandHandler(mockProjectRepository,
+                mockTransferTaskRepository,
+                mockEstablishmentRepository,
                 mockSender.Object);
 
         command = command with { HandingOverToRegionalCaseworkService = false };
@@ -275,6 +310,12 @@ public class CreateTransferProjectCommandHandlerTests
         mockTransferTaskRepository.AddAsync(Arg.Any<TransferTasksData>(), Arg.Any<CancellationToken>())
             .Returns(Task.FromResult(transferTask));
 
+        var giasEstablishment =
+            fixture.Customize(new GiasEstablishmentsCustomization() { Urn = command.Urn }).Create<GiasEstablishment>();
+
+        mockEstablishmentRepository.FindAsync(Arg.Any<Expression<Func<GiasEstablishment, bool>>>(), Arg.Any<CancellationToken>())
+            .Returns(Task.FromResult(giasEstablishment));
+        
         // Act
         var projectId = await handler.Handle(command, default);
 
@@ -284,13 +325,15 @@ public class CreateTransferProjectCommandHandlerTests
         Assert.NotNull(capturedProject.AssignedAt);
         Assert.NotNull(capturedProject.AssignedToId);
     }
-    
+
     [Theory]
     [CustomAutoData(typeof(DateOnlyCustomization))]
     public async Task Handle_ShouldThrowException_WhenUserRequestFails(
         [Frozen] ICompleteRepository<Domain.Entities.Project> mockProjectRepository,
         [Frozen] ICompleteRepository<TransferTasksData> mockTransferTaskRepository,
+        [Frozen] ICompleteRepository<GiasEstablishment> mockEstablishmentRepository,
         [Frozen] Mock<ISender> mockSender,
+        IFixture fixture,
         CreateTransferProjectCommand command)
     {
         // Arrange
@@ -306,11 +349,25 @@ public class CreateTransferProjectCommandHandlerTests
             .Setup(s => s.Send(It.IsAny<GetUserByAdIdQuery>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(Result<UserDto?>.Failure("User retrieval error"));
 
-        var handler = new CreateTransferProjectCommandHandler(
-            mockProjectRepository,
-            mockTransferTaskRepository,
-            mockSender.Object);
+        var handler =
+            new CreateTransferProjectCommandHandler(mockProjectRepository,
+                mockTransferTaskRepository,
+                mockEstablishmentRepository,
+                mockSender.Object);
 
+        var giasEstablishment =
+            fixture.Customize(new GiasEstablishmentsCustomization() { Urn = command.Urn }).Create<GiasEstablishment>();
+
+        mockEstablishmentRepository.FindAsync(Arg.Any<Expression<Func<GiasEstablishment, bool>>>(), Arg.Any<CancellationToken>())
+            .Returns(Task.FromResult(giasEstablishment));
+        
+        var groupId = new ProjectGroupId(Guid.NewGuid());
+        mockSender.Setup(s =>
+                s.Send(It.IsAny<GetProjectGroupByGroupReferenceNumberQuery>(), It.IsAny<CancellationToken>()))
+            .ReturnsAsync(Result<ProjectGroupDto>.Success(new ProjectGroupDto { Id = groupId }));
+        
+        command = command with {HandingOverToRegionalCaseworkService = false};
+        
         // Act & Assert
         var exception =
             await Assert.ThrowsAsync<NotFoundException>(() => handler.Handle(command, CancellationToken.None));
@@ -329,8 +386,10 @@ public class CreateTransferProjectCommandHandlerTests
     public async Task Handle_ShouldThrowException_WhenUserRequestCantFindMatchingUser(
         [Frozen] ICompleteRepository<Domain.Entities.Project> mockProjectRepository,
         [Frozen] ICompleteRepository<TransferTasksData> mockTransferTaskRepository,
+        [Frozen] ICompleteRepository<GiasEstablishment> mockEstablishmentRepository,
         [Frozen] Mock<ISender> mockSender,
-        CreateTransferProjectCommand command)
+        CreateTransferProjectCommand command,
+        IFixture fixture)
     {
         // Arrange
         // Local Authority lookup succeeds.
@@ -339,6 +398,12 @@ public class CreateTransferProjectCommandHandlerTests
             .ReturnsAsync(
                 Result<GetLocalAuthorityBySchoolUrnResponseDto?>.Success(
                     new GetLocalAuthorityBySchoolUrnResponseDto(Guid.NewGuid())));
+        
+        GiasEstablishment giasEstablishment =
+            fixture.Customize(new GiasEstablishmentsCustomization() { Urn = command.Urn }).Create<GiasEstablishment>();
+
+        mockEstablishmentRepository.FindAsync(Arg.Any<Expression<Func<GiasEstablishment, bool>>>(), Arg.Any<CancellationToken>())
+            .Returns(Task.FromResult(giasEstablishment));
 
         // Simulate a failed user lookup.
         mockSender
@@ -348,6 +413,7 @@ public class CreateTransferProjectCommandHandlerTests
         var handler = new CreateTransferProjectCommandHandler(
             mockProjectRepository,
             mockTransferTaskRepository,
+            mockEstablishmentRepository,
             mockSender.Object);
 
         // Act & Assert
@@ -368,7 +434,9 @@ public class CreateTransferProjectCommandHandlerTests
     public async Task Handle_ShouldThrowException_WhenProjectGroupRequestFails(
         [Frozen] ICompleteRepository<Domain.Entities.Project> mockProjectRepository,
         [Frozen] ICompleteRepository<TransferTasksData> mockTransferTaskRepository,
+        [Frozen] ICompleteRepository<GiasEstablishment> mockEstablishmentRepository,
         [Frozen] Mock<ISender> mockSender,
+        IFixture fixture,
         CreateTransferProjectCommand command)
     {
         // Arrange
@@ -394,11 +462,18 @@ public class CreateTransferProjectCommandHandlerTests
             .Setup(s => s.Send(It.IsAny<GetProjectGroupByGroupReferenceNumberQuery>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(Result<ProjectGroupDto?>.Failure("Project group retrieval error"));
 
-        var handler = new CreateTransferProjectCommandHandler(
-            mockProjectRepository,
-            mockTransferTaskRepository,
-            mockSender.Object);
+        var handler =
+            new CreateTransferProjectCommandHandler(mockProjectRepository,
+                mockTransferTaskRepository,
+                mockEstablishmentRepository,
+                mockSender.Object);
 
+        var giasEstablishment =
+            fixture.Customize(new GiasEstablishmentsCustomization() { Urn = command.Urn }).Create<GiasEstablishment>();
+
+        mockEstablishmentRepository.FindAsync(Arg.Any<Expression<Func<GiasEstablishment, bool>>>(), Arg.Any<CancellationToken>())
+            .Returns(Task.FromResult(giasEstablishment));
+        
         // Act & Assert
         var exception =
             await Assert.ThrowsAsync<NotFoundException>(() => handler.Handle(command, CancellationToken.None));
@@ -411,118 +486,151 @@ public class CreateTransferProjectCommandHandlerTests
         await mockTransferTaskRepository.DidNotReceive()
             .AddAsync(Arg.Any<TransferTasksData>(), Arg.Any<CancellationToken>());
     }
-    
-          [Theory]
-        [CustomAutoData(typeof(DateOnlyCustomization))]
-        public async Task Handle_ShouldThrowException_WhenLocalAuthorityRequestFails(
-            [Frozen] ICompleteRepository<Domain.Entities.Project> mockProjectRepository,
-            [Frozen] ICompleteRepository<TransferTasksData> mockTransferTaskRepository,
-            [Frozen] Mock<ISender> mockSender,
-            CreateTransferProjectCommand command)
-        {
-            // Arrange
-            var expectedMessage =
-                $"No Local authority could be found via Establishments for School Urn: {command.Urn.Value}.";
-            
-            mockSender
-                .Setup(s => s.Send(It.IsAny<GetLocalAuthorityBySchoolUrnQuery>(), It.IsAny<CancellationToken>()))
-                .ReturnsAsync(Result<GetLocalAuthorityBySchoolUrnResponseDto?>.Failure("Local authority not found"));
-            
-            var handler = new CreateTransferProjectCommandHandler(
-                mockProjectRepository,
+
+    [Theory]
+    [CustomAutoData(typeof(DateOnlyCustomization))]
+    public async Task Handle_ShouldThrowException_WhenLocalAuthorityRequestFails(
+        [Frozen] ICompleteRepository<Domain.Entities.Project> mockProjectRepository,
+        [Frozen] ICompleteRepository<TransferTasksData> mockTransferTaskRepository,
+        [Frozen] ICompleteRepository<GiasEstablishment> mockEstablishmentRepository,
+        [Frozen] Mock<ISender> mockSender,
+        IFixture fixture,
+        CreateTransferProjectCommand command)
+    {
+        // Arrange
+        var expectedMessage =
+            $"No Local authority could be found via Establishments for School Urn: {command.Urn.Value}.";
+
+        mockSender
+            .Setup(s => s.Send(It.IsAny<GetLocalAuthorityBySchoolUrnQuery>(), It.IsAny<CancellationToken>()))
+            .ReturnsAsync(Result<GetLocalAuthorityBySchoolUrnResponseDto?>.Failure("Local authority not found"));
+
+        var handler =
+            new CreateTransferProjectCommandHandler(mockProjectRepository,
                 mockTransferTaskRepository,
+                mockEstablishmentRepository,
                 mockSender.Object);
 
-            // Act & Assert
-            var exception = await Assert.ThrowsAsync<NotFoundException>(() => handler.Handle(command, CancellationToken.None));
-            
-            Assert.Equal(expectedMessage, exception.Message);
-            Assert.NotNull(exception.InnerException);
-            Assert.Equal("Local authority not found", exception.InnerException.Message);
+        var giasEstablishment =
+            fixture.Customize(new GiasEstablishmentsCustomization() { Urn = command.Urn }).Create<GiasEstablishment>();
 
-            await mockProjectRepository.DidNotReceive()
-                .AddAsync(Arg.Any<Domain.Entities.Project>(), Arg.Any<CancellationToken>());
-            await mockTransferTaskRepository.DidNotReceive()
-                .AddAsync(Arg.Any<TransferTasksData>(), Arg.Any<CancellationToken>());
-        }
-
-        [Theory]
-        [CustomAutoData(typeof(DateOnlyCustomization))]
-        public async Task Handle_ShouldThrowException_WhenLocalAuthorityIdIsNull(
-            [Frozen] ICompleteRepository<Domain.Entities.Project> mockProjectRepository,
-            [Frozen] ICompleteRepository<TransferTasksData> mockTransferTaskRepository,
-            [Frozen] Mock<ISender> mockSender,
-            CreateTransferProjectCommand command)
-        {
-            // Arrange
-            var expectedMessage =
-                $"No Local authority could be found via Establishments for School Urn: {command.Urn.Value}.";
-
-            var responseDto = new GetLocalAuthorityBySchoolUrnResponseDto(null);
-            mockSender
-                .Setup(s => s.Send(It.IsAny<GetLocalAuthorityBySchoolUrnQuery>(), It.IsAny<CancellationToken>()))
-                .ReturnsAsync(Result<GetLocalAuthorityBySchoolUrnResponseDto?>.Success(responseDto));
-            
-            var handler = new CreateTransferProjectCommandHandler(
-                mockProjectRepository,
-                mockTransferTaskRepository,
-                mockSender.Object);
-
-            // Act & Assert
-            var exception = await Assert.ThrowsAsync<NotFoundException>(
-                () => handler.Handle(command, CancellationToken.None));
-            Assert.Equal(expectedMessage, exception.Message);
-
-            await mockProjectRepository.DidNotReceive()
-                .AddAsync(Arg.Any<Domain.Entities.Project>(), Arg.Any<CancellationToken>());
-            await mockTransferTaskRepository.DidNotReceive()
-                .AddAsync(Arg.Any<TransferTasksData>(), Arg.Any<CancellationToken>());
-        }
+        mockEstablishmentRepository.FindAsync(Arg.Any<Expression<Func<GiasEstablishment, bool>>>(), Arg.Any<CancellationToken>())
+            .Returns(Task.FromResult(giasEstablishment));
         
-        [Theory]
-        [CustomAutoData(typeof(DateOnlyCustomization))]
-        public async Task Handle_ShouldThrowException_WhenLocalAuthorityRequestSuccess_WithNullResponse(
-            [Frozen] ICompleteRepository<Domain.Entities.Project> mockProjectRepository,
-            [Frozen] ICompleteRepository<TransferTasksData> mockTransferTaskRepository,
-            [Frozen] Mock<ISender> mockSender,
-            CreateTransferProjectCommand command)
-        {
-            // Arrange
-            var expectedMessage =
-                $"No Local authority could be found via Establishments for School Urn: {command.Urn.Value}.";
+        // Act & Assert
+        var exception =
+            await Assert.ThrowsAsync<NotFoundException>(() => handler.Handle(command, CancellationToken.None));
 
-            mockSender
-                .Setup(s => s.Send(It.IsAny<GetLocalAuthorityBySchoolUrnQuery>(), It.IsAny<CancellationToken>()))
-                .ReturnsAsync(Result<GetLocalAuthorityBySchoolUrnResponseDto?>.Success(null));
-            
-            var handler = new CreateTransferProjectCommandHandler(
-                mockProjectRepository,
+        Assert.Equal(expectedMessage, exception.Message);
+        Assert.NotNull(exception.InnerException);
+        Assert.Equal("Local authority not found", exception.InnerException.Message);
+
+        await mockProjectRepository.DidNotReceive()
+            .AddAsync(Arg.Any<Domain.Entities.Project>(), Arg.Any<CancellationToken>());
+        await mockTransferTaskRepository.DidNotReceive()
+            .AddAsync(Arg.Any<TransferTasksData>(), Arg.Any<CancellationToken>());
+    }
+
+    [Theory]
+    [CustomAutoData(typeof(DateOnlyCustomization))]
+    public async Task Handle_ShouldThrowException_WhenLocalAuthorityIdIsNull(
+        [Frozen] ICompleteRepository<Domain.Entities.Project> mockProjectRepository,
+        [Frozen] ICompleteRepository<TransferTasksData> mockTransferTaskRepository,
+        [Frozen] ICompleteRepository<GiasEstablishment> mockEstablishmentRepository,
+        [Frozen] Mock<ISender> mockSender,
+        IFixture fixture,
+        CreateTransferProjectCommand command)
+    {
+        // Arrange
+        var expectedMessage =
+            $"No Local authority could be found via Establishments for School Urn: {command.Urn.Value}.";
+
+        var responseDto = new GetLocalAuthorityBySchoolUrnResponseDto(null);
+        mockSender
+            .Setup(s => s.Send(It.IsAny<GetLocalAuthorityBySchoolUrnQuery>(), It.IsAny<CancellationToken>()))
+            .ReturnsAsync(Result<GetLocalAuthorityBySchoolUrnResponseDto?>.Success(responseDto));
+
+        var handler =
+            new CreateTransferProjectCommandHandler(mockProjectRepository,
                 mockTransferTaskRepository,
+                mockEstablishmentRepository,
                 mockSender.Object);
 
-            // Act & Assert
-            var exception = await Assert.ThrowsAsync<NotFoundException>(() => handler.Handle(command, CancellationToken.None));
-            Assert.Equal(expectedMessage, exception.Message);
+        var giasEstablishment =
+            fixture.Customize(new GiasEstablishmentsCustomization() { Urn = command.Urn }).Create<GiasEstablishment>();
 
-            await mockProjectRepository.DidNotReceive()
-                .AddAsync(Arg.Any<Domain.Entities.Project>(), Arg.Any<CancellationToken>());
-            await mockTransferTaskRepository.DidNotReceive()
-                .AddAsync(Arg.Any<TransferTasksData>(), Arg.Any<CancellationToken>());
-        }
+        mockEstablishmentRepository.FindAsync(Arg.Any<Expression<Func<GiasEstablishment, bool>>>(), Arg.Any<CancellationToken>())
+            .Returns(Task.FromResult(giasEstablishment));
         
-         [Theory]
+        // Act & Assert
+        var exception = await Assert.ThrowsAsync<NotFoundException>(
+            () => handler.Handle(command, CancellationToken.None));
+        Assert.Equal(expectedMessage, exception.Message);
+
+        await mockProjectRepository.DidNotReceive()
+            .AddAsync(Arg.Any<Domain.Entities.Project>(), Arg.Any<CancellationToken>());
+        await mockTransferTaskRepository.DidNotReceive()
+            .AddAsync(Arg.Any<TransferTasksData>(), Arg.Any<CancellationToken>());
+    }
+
+    [Theory]
+    [CustomAutoData(typeof(DateOnlyCustomization))]
+    public async Task Handle_ShouldThrowException_WhenLocalAuthorityRequestSuccess_WithNullResponse(
+        [Frozen] ICompleteRepository<Domain.Entities.Project> mockProjectRepository,
+        [Frozen] ICompleteRepository<TransferTasksData> mockTransferTaskRepository,
+        [Frozen] ICompleteRepository<GiasEstablishment> mockEstablishmentRepository,
+        [Frozen] Mock<ISender> mockSender,
+        IFixture fixture,
+        CreateTransferProjectCommand command)
+    {
+        // Arrange
+        var expectedMessage =
+            $"No Local authority could be found via Establishments for School Urn: {command.Urn.Value}.";
+
+        mockSender
+            .Setup(s => s.Send(It.IsAny<GetLocalAuthorityBySchoolUrnQuery>(), It.IsAny<CancellationToken>()))
+            .ReturnsAsync(Result<GetLocalAuthorityBySchoolUrnResponseDto?>.Success(null));
+
+        var handler =
+            new CreateTransferProjectCommandHandler(mockProjectRepository,
+                mockTransferTaskRepository,
+                mockEstablishmentRepository,
+                mockSender.Object);
+
+        var giasEstablishment =
+            fixture.Customize(new GiasEstablishmentsCustomization() { Urn = command.Urn }).Create<GiasEstablishment>();
+
+        mockEstablishmentRepository.FindAsync(Arg.Any<Expression<Func<GiasEstablishment, bool>>>(), Arg.Any<CancellationToken>())
+            .Returns(Task.FromResult(giasEstablishment));
+        
+        // Act & Assert
+        var exception =
+            await Assert.ThrowsAsync<NotFoundException>(() => handler.Handle(command, CancellationToken.None));
+        Assert.Equal(expectedMessage, exception.Message);
+
+        await mockProjectRepository.DidNotReceive()
+            .AddAsync(Arg.Any<Domain.Entities.Project>(), Arg.Any<CancellationToken>());
+        await mockTransferTaskRepository.DidNotReceive()
+            .AddAsync(Arg.Any<TransferTasksData>(), Arg.Any<CancellationToken>());
+    }
+
+    [Theory]
     [CustomAutoData(typeof(DateOnlyCustomization), typeof(ProjectCustomization),
         typeof(IgnoreVirtualMembersCustomisation))]
     public async Task Handle_ShouldNOTSet_GroupId_When_GroupReferenceNumber_NullOrEmpty(
         [Frozen] ICompleteRepository<Domain.Entities.Project> mockProjectRepository,
         [Frozen] ICompleteRepository<TransferTasksData> mockTransferTaskRepository,
+        [Frozen] ICompleteRepository<GiasEstablishment> mockEstablishmentRepository,
         [Frozen] Mock<ISender> mockSender,
+        IFixture fixture,
         CreateTransferProjectCommand command
     )
     {
         // Arrange
         var handler =
-            new CreateTransferProjectCommandHandler(mockProjectRepository, mockTransferTaskRepository,
+            new CreateTransferProjectCommandHandler(mockProjectRepository,
+                mockTransferTaskRepository,
+                mockEstablishmentRepository,
                 mockSender.Object);
 
         command = command with { GroupReferenceNumber = null };
@@ -546,7 +654,7 @@ public class CreateTransferProjectCommandHandlerTests
 
         mockSender.Setup(s => s.Send(It.IsAny<GetUserByAdIdQuery>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(Result<UserDto?>.Success(userDto));
-        
+
         Domain.Entities.Project capturedProject = null!;
 
         mockProjectRepository.AddAsync(Arg.Do<Domain.Entities.Project>(proj => capturedProject = proj),
@@ -559,6 +667,12 @@ public class CreateTransferProjectCommandHandlerTests
         mockTransferTaskRepository.AddAsync(Arg.Any<TransferTasksData>(), Arg.Any<CancellationToken>())
             .Returns(Task.FromResult(transferTask));
 
+        var giasEstablishment =
+            fixture.Customize(new GiasEstablishmentsCustomization() { Urn = command.Urn }).Create<GiasEstablishment>();
+
+        mockEstablishmentRepository.FindAsync(Arg.Any<Expression<Func<GiasEstablishment, bool>>>(), Arg.Any<CancellationToken>())
+            .Returns(Task.FromResult(giasEstablishment));
+        
         // Act
         var projectId = await handler.Handle(command, default);
 
@@ -566,5 +680,4 @@ public class CreateTransferProjectCommandHandlerTests
         Assert.NotNull(projectId);
         Assert.Null(capturedProject.GroupId);
     }
-   
 }
