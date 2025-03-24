@@ -326,6 +326,45 @@ public class CreateTransferProjectCommandHandlerTests
 
     [Theory]
     [CustomAutoData(typeof(DateOnlyCustomization))]
+    public async Task Handle_ShouldThrowException_WhenUserRequestCantFindMatchingUser(
+        [Frozen] ICompleteRepository<Domain.Entities.Project> mockProjectRepository,
+        [Frozen] ICompleteRepository<TransferTasksData> mockTransferTaskRepository,
+        [Frozen] Mock<ISender> mockSender,
+        CreateTransferProjectCommand command)
+    {
+        // Arrange
+        // Local Authority lookup succeeds.
+        mockSender
+            .Setup(s => s.Send(It.IsAny<GetLocalAuthorityBySchoolUrnQuery>(), It.IsAny<CancellationToken>()))
+            .ReturnsAsync(
+                Result<GetLocalAuthorityBySchoolUrnResponseDto?>.Success(
+                    new GetLocalAuthorityBySchoolUrnResponseDto(Guid.NewGuid())));
+
+        // Simulate a failed user lookup.
+        mockSender
+            .Setup(s => s.Send(It.IsAny<GetUserByAdIdQuery>(), It.IsAny<CancellationToken>()))
+            .ReturnsAsync(Result<UserDto?>.Success(null));
+
+        var handler = new CreateTransferProjectCommandHandler(
+            mockProjectRepository,
+            mockTransferTaskRepository,
+            mockSender.Object);
+
+        // Act & Assert
+        var exception =
+            await Assert.ThrowsAsync<NotFoundException>(() => handler.Handle(command, CancellationToken.None));
+        Assert.Equal("No user found.", exception.Message);
+        Assert.NotNull(exception.InnerException);
+
+        await mockProjectRepository.DidNotReceive()
+            .AddAsync(Arg.Any<Domain.Entities.Project>(), Arg.Any<CancellationToken>());
+        await mockTransferTaskRepository.DidNotReceive()
+            .AddAsync(Arg.Any<TransferTasksData>(), Arg.Any<CancellationToken>());
+    }
+
+    
+    [Theory]
+    [CustomAutoData(typeof(DateOnlyCustomization))]
     public async Task Handle_ShouldThrowException_WhenProjectGroupRequestFails(
         [Frozen] ICompleteRepository<Domain.Entities.Project> mockProjectRepository,
         [Frozen] ICompleteRepository<TransferTasksData> mockTransferTaskRepository,
