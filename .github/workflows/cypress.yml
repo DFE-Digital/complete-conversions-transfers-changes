@@ -57,19 +57,14 @@ jobs:
 
       - name: Get Access Token
         id: get-token
-        env:
-          TENANT_ID: ${{ secrets.CYPRESS_TENANT_ID }}
-          CLIENT_ID: ${{ secrets.CYPRESS_CLIENT_ID }}
-          CLIENT_SECRET: ${{ secrets.CYPRESS_CLIENT_SECRET }}
-          COMPLETEAPI_CLIENTID: ${{ secrets.CYPRESS_COMPLETEAPI_CLIENTID }}
         run: |
           response=$(curl --write-out "HTTPSTATUS:%{http_code}" --silent --location \
-            --request POST "https://login.microsoftonline.com/$TENANT_ID/oauth2/v2.0/token" \
+            --request POST "https://login.microsoftonline.com/${{ secrets.CYPRESS_TENANT_ID }}/oauth2/v2.0/token" \
             --header "Content-Type: application/x-www-form-urlencoded" \
             --data-urlencode "grant_type=client_credentials" \
-            --data-urlencode "client_id=$CLIENT_ID" \
-            --data-urlencode "client_secret=$CLIENT_SECRET" \
-            --data-urlencode "scope=api://$COMPLETEAPI_CLIENTID/.default")
+            --data-urlencode "client_id=${{ secrets.CYPRESS_CLIENT_ID }}" \
+            --data-urlencode "client_secret=${{ secrets.CYPRESS_CLIENT_SECRET }}" \
+            --data-urlencode "scope=api://${{ secrets.CYPRESS_COMPLETEAPI_CLIENTID }}/.default")
   
           body=$(echo "$response" | sed -e 's/HTTPSTATUS:.*//g')
           status_code=$(echo "$response" | tr -d '\n' | sed -e 's/.*HTTPSTATUS://')
@@ -79,7 +74,7 @@ jobs:
             echo "Response body: $body"
             exit 1
           else
-            echo "Request successful. Response body: $body"
+            echo "Request successful"
           fi
           access_token=$(echo "$body" | sed -n 's/.*"access_token":"\([^"]*\)".*/\1/p')
           echo "::set-output name=access_token::$access_token"
