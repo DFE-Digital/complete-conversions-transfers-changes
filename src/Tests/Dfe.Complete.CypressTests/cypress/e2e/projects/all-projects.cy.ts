@@ -166,12 +166,11 @@ describe("View all projects", () => {
         // projectDetailsPage.containsHeading(schoolName); // not implemented
     });
 
-    it("Should be able to view all projects by local authority and all a local authority's projects", () => {
+    it.only("Should be able to view all projects by local authority and all a local authority's projects", () => {
         navBar.goToAllProjects();
         allProjects
             .filterProjects("By local authority")
-            // .containsHeading("All projects by local authority"); // bug 205240
-            .containsHeading("All projects by authority");
+            .containsHeading("All projects by local authority");
         projectTable
             .hasTableHeader("Local authority")
             .hasTableHeader("Code")
@@ -179,7 +178,7 @@ describe("View all projects", () => {
             .hasTableHeader("Transfers");
         allProjects.goToNextPageUntilFieldIsVisible(localAuthority);
         projectTable.filterBy(localAuthority);
-        // allProjects.containsHeading(`Projects for ${localAuthority}`); // bug 205240
+        allProjects.containsHeading(`Projects for ${localAuthority}`);
         projectTable
             .hasTableHeader("School or academy")
             .hasTableHeader("URN")
