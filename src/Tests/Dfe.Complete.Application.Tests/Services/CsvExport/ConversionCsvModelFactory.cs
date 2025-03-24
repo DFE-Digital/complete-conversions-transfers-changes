@@ -16,11 +16,11 @@ namespace Dfe.Complete.Application.Tests.Services.CsvExport
             var fixture = new Fixture();   
 
             var establishment = fixture.Customize(
-                new EstablishmentsCustomization()
+                new GiasEstablishmentsCustomization()
                 ).Create<GiasEstablishment>();
 
             var academy = fixture.Customize(
-                new EstablishmentsCustomization()
+                new GiasEstablishmentsCustomization()
                 ).Create<GiasEstablishment>();
 
             var laContact = fixture.Customize(new OmitCircularReferenceCustomization()).Create<Contact>();

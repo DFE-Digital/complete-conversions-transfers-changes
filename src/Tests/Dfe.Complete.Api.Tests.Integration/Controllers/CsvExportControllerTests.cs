@@ -27,13 +27,13 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers
             //Establishments
 
             var establishment = fixture.Customize(
-                new EstablishmentsCustomization()
+                new GiasEstablishmentsCustomization()
                 ).Create<GiasEstablishment>();
 
             establishment.Ukprn = new Ukprn(10059853);
 
             var academy = fixture.Customize(
-                new EstablishmentsCustomization()
+                new GiasEstablishmentsCustomization()
                 ).Create<GiasEstablishment>();
 
             dbContext.GiasEstablishments.Add(establishment);
@@ -191,7 +191,7 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers
             //Establishments
 
             var establishment = fixture.Customize(
-                new EstablishmentsCustomization()
+                new GiasEstablishmentsCustomization()
                 ).Create<GiasEstablishment>();
 
             establishment.Ukprn = new Ukprn(10059853);
