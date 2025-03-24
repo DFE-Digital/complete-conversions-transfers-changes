@@ -1,3 +1,5 @@
+using Dfe.Complete.Application.Common.Models;
+using Dfe.Complete.Application.Projects.Models;
 using Dfe.Complete.Application.Projects.Queries.GetLocalAuthority;
 using Dfe.Complete.Application.Projects.Queries.GetUser;
 using Dfe.Complete.Domain.Entities;
@@ -32,6 +34,7 @@ public record CreateMatTransferProjectCommand(
 public class CreateMatTransferProjectCommandHandler(
         ICompleteRepository<Project> projectRepository,
         ICompleteRepository<TransferTasksData> transferTaskRepository,
+        ICompleteRepository<GiasEstablishment> establishmentRepository,
         ISender sender)
         : IRequestHandler<CreateMatTransferProjectCommand, ProjectId>
     {
@@ -43,19 +46,14 @@ public class CreateMatTransferProjectCommandHandler(
             if (!localAuthorityIdRequest.IsSuccess || localAuthorityIdRequest.Value?.LocalAuthorityId == null)
                 throw new NotFoundException($"No Local authority could be found via Establishments for School Urn: {request.Urn.Value}.", nameof(request.Urn), innerException: new Exception(localAuthorityIdRequest.Error));
             
-            // The user Team should be moved as a Claim or Group to the Entra (MS AD)
-            var userRequest = await sender.Send(new GetUserByAdIdQuery(request.UserAdId), cancellationToken);
+            var establishment = await establishmentRepository.FindAsync(giasEstablishment => giasEstablishment.Urn == request.Urn, cancellationToken);
 
-            if (userRequest is not { IsSuccess: true } || userRequest.Value is null)
-                throw new NotFoundException("No user found.", innerException: new Exception(userRequest.Error));
+            if (establishment is null)
+            {
+                throw new NotFoundException($"No establishment could be found for Urn: {request.Urn.Value}.", nameof(request.Urn), innerException: new Exception(localAuthorityIdRequest.Error));
+            }
             
-            var projectUser = userRequest.Value;
-
-            var projectUserTeam = projectUser.Team;
-            var projectUserId = projectUser.Id;
-
-            var projectTeam = projectUserTeam.FromDescription<ProjectTeam>();
-            var region = EnumMapper.MapTeamToRegion(projectTeam);
+            var region = establishment.RegionCode?.ToEnumFromChar<Region>();
 
             var createdAt = DateTime.UtcNow;
             var tasksDataId = Guid.NewGuid();
@@ -63,8 +61,10 @@ public class CreateMatTransferProjectCommandHandler(
 
             var transferTask = new TransferTasksData(new TaskDataId(tasksDataId), createdAt, createdAt, request.IsDueToInedaquateOfstedRating, request.IsDueToIssues, request.OutGoingTrustWillClose);
             
+            Result<UserDto?>? userRequest = null;
             ProjectTeam team;
             DateTime? assignedAt = null;
+            UserDto? projectUser = null;
             UserId? projectUserAssignedToId = null;
 
             if (request.HandingOverToRegionalCaseworkService)
@@ -73,9 +73,17 @@ public class CreateMatTransferProjectCommandHandler(
             }
             else
             {
-                team = projectTeam;
+                if (!string.IsNullOrEmpty(request.UserAdId))
+                    userRequest = await sender.Send(new GetUserByAdIdQuery(request.UserAdId), cancellationToken);
+
+                if (userRequest is not { IsSuccess: true } || userRequest.Value is null)
+                    throw new NotFoundException("No user found.", innerException: new Exception(userRequest?.Error));
+            
+                projectUser = userRequest.Value;
+
+                team = (projectUser?.Team).FromDescription<ProjectTeam>();
                 assignedAt = DateTime.UtcNow;
-                projectUserAssignedToId = projectUserId;
+                projectUserAssignedToId = projectUser?.Id;
             }
 
             var project = Project.CreateMatTransferProject(
@@ -89,7 +97,7 @@ public class CreateMatTransferProjectCommandHandler(
                     tasksDataId,
                     region,
                     team,
-                    projectUser.Id,
+                    projectUser?.Id,
                     projectUserAssignedToId,
                     assignedAt,
                     request.EstablishmentSharepointLink,
