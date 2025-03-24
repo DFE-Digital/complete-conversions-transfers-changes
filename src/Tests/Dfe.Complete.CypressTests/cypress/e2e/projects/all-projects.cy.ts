@@ -25,7 +25,7 @@ describe("View all projects", () => {
         // projectRemover.removeProjectIfItExists(`${transferProject.urn.value}`);
         projectApi
             .createProject(project)
-            .then((response) => (projectId = response.id.value));
+            .then((response) => (projectId = response.value));
         // projectApi.createProject(transferProject);
     });
 
@@ -35,7 +35,7 @@ describe("View all projects", () => {
         cy.visit(`/projects/all/in-progress/all`);
     });
 
-    it("Should be able to view newly created conversion project in All projects and Conversions projects", () => {
+    it("Should be able to view newly created conversion project in All projects in progress and Conversions projects", () => {
         const nextMonthString = `${nextMonth.toLocaleString('default', { month: 'short' })} ${nextMonth.getFullYear()}`;
         navBar.goToAllProjects();
         allProjects
@@ -56,7 +56,7 @@ describe("View all projects", () => {
         // projectDetailsPage.containsHeading(schoolName); // not implemented
     });
 
-    it.skip("Should be able to view newly created transfer project in All projects and Transfers projects", () => {
+    it.skip("Should be able to view newly created transfer project in All projects in progress and Transfers projects", () => {
         // 205986 unable to create transfer project
         navBar.goToAllProjects();
         allProjects.goToNextPageUntilFieldIsVisible(transferSchoolName);
@@ -141,27 +141,27 @@ describe("View all projects", () => {
         // projectDetailsPage.containsHeading(schoolName) // not implemented
     })
 
-    it.skip("Should be able to view all projects by trust and all a trust's projects", () => {
-        // not implemented 187140
+    it("Should be able to view all projects by trust and all a trust's projects", () => {
         navBar.goToAllProjects();
         allProjects
             .filterProjects("By trust")
-            .containsHeading("All projects by trust");
+            .containsHeading("All projects by trust")
+            .goToNextPageUntilFieldIsVisible(trust);
         projectTable
             .hasTableHeader("Trust")
             .hasTableHeader("Group identifier")
             .hasTableHeader("Conversions")
             .hasTableHeader("Transfers")
-            .contains(trust)
             .filterBy(trust)
-        allProjects.containsHeading(`Projects for ${trust}`);
+        allProjects
+            .containsHeading(`Projects for ${trust}`)
+            .goToNextPageUntilFieldIsVisible(schoolName);
         projectTable
             .hasTableHeader("School or academy")
             .hasTableHeader("URN")
             .hasTableHeader("Conversion or transfer date")
             .hasTableHeader("Project type")
             .hasTableHeader("Assigned to")
-            .contains(schoolName)
             .goTo(schoolName);
         // projectDetailsPage.containsHeading(schoolName); // not implemented
     });

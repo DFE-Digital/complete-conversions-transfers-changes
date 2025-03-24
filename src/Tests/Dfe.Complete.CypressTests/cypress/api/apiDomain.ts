@@ -45,6 +45,10 @@ export type CreateProjectRequest = {
 };
 
 export type CreateProjectResponse = {
+    value: string;
+}
+
+export type GetProjectResponse = {
     id: { value: string };
     urn: { value: number };
     createdAt: string;
