@@ -4,11 +4,8 @@ import { Logger } from "../common/logger";
 export class ApiBase {
     protected getHeaders(): object {
         const token = Cypress.env(UserAccessToken);
-
-        // Temporarily disable masking for debugging
-        console.log(`::remove-mask::${token}`);
-
-        Logger.log(`Bearer ${token}`);
+        Logger.log(`Token first half: ${token.substring(0, 10)}`);
+        Logger.log(`Token last half: ${token.substring(token.length - 10)}`);
 
         return {
             Authorization: `Bearer ${token}`,
