@@ -325,6 +325,12 @@ public class CreateConversionProjectCommandHandlerTests
             .ReturnsAsync(Result<GetLocalAuthorityBySchoolUrnResponseDto?>.Success(
                 new GetLocalAuthorityBySchoolUrnResponseDto(Guid.NewGuid())));
         
+        var groupId = new ProjectGroupId(Guid.NewGuid());
+        
+        mockSender.Setup(s =>
+                s.Send(It.IsAny<GetProjectGroupByGroupReferenceNumberQuery>(), It.IsAny<CancellationToken>()))
+            .ReturnsAsync(Result<ProjectGroupDto>.Success(new ProjectGroupDto { Id = groupId }));
+        
         GiasEstablishment giasEstablishment =
             fixture.Customize(new GiasEstablishmentsCustomization() { Urn = command.Urn }).Create<GiasEstablishment>();
 

@@ -404,11 +404,19 @@ public class CreateTransferProjectCommandHandlerTests
 
         mockEstablishmentRepository.FindAsync(Arg.Any<Expression<Func<GiasEstablishment, bool>>>(), Arg.Any<CancellationToken>())
             .Returns(Task.FromResult(giasEstablishment));
+        
+        var groupId = new ProjectGroupId(Guid.NewGuid());
+        
+        mockSender.Setup(s =>
+                s.Send(It.IsAny<GetProjectGroupByGroupReferenceNumberQuery>(), It.IsAny<CancellationToken>()))
+            .ReturnsAsync(Result<ProjectGroupDto>.Success(new ProjectGroupDto { Id = groupId }));
 
         // Simulate a failed user lookup.
         mockSender
             .Setup(s => s.Send(It.IsAny<GetUserByAdIdQuery>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(Result<UserDto?>.Success(null));
+        
+        command = command with { HandingOverToRegionalCaseworkService = false };
 
         var handler = new CreateTransferProjectCommandHandler(
             mockProjectRepository,

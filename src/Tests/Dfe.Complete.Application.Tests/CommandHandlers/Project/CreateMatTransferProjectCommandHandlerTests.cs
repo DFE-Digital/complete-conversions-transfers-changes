@@ -15,6 +15,7 @@ using MediatR;
 using Dfe.Complete.Application.Projects.Models;
 using Dfe.Complete.Application.Common.Models;
 using Dfe.Complete.Application.Projects.Queries.GetLocalAuthority;
+using Dfe.Complete.Application.Projects.Queries.GetProject;
 using Dfe.Complete.Application.Projects.Queries.GetUser;
 using Dfe.Complete.Tests.Common.Customizations.Models;
 using Dfe.Complete.Domain.Entities;
@@ -336,11 +337,19 @@ public class CreateMatTransferProjectCommandHandlerTests
         mockSender.Setup(s => s.Send(It.IsAny<GetUserByAdIdQuery>(), default))
             .ReturnsAsync(Result<UserDto?>.Success(null));
         
+        var groupId = new ProjectGroupId(Guid.NewGuid());
+        
+        mockSender.Setup(s =>
+                s.Send(It.IsAny<GetProjectGroupByGroupReferenceNumberQuery>(), It.IsAny<CancellationToken>()))
+            .ReturnsAsync(Result<ProjectGroupDto>.Success(new ProjectGroupDto { Id = groupId }));
+        
         GiasEstablishment giasEstablishment =
             fixture.Customize(new GiasEstablishmentsCustomization() { Urn = command.Urn }).Create<GiasEstablishment>();
 
         mockEstablishmentRepository.FindAsync(Arg.Any<Expression<Func<GiasEstablishment, bool>>>(), Arg.Any<CancellationToken>())
             .Returns(Task.FromResult(giasEstablishment));
+
+        command = command with { HandingOverToRegionalCaseworkService = false };
 
         // Act & Assert
         var exception = await Assert.ThrowsAsync<NotFoundException>(() => handler.Handle(command, default));
