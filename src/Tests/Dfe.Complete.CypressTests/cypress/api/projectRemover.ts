@@ -21,8 +21,7 @@ class ProjectRemover extends ApiBase {
 
     public getProject(urn: string): Cypress.Chainable<Cypress.Response<GetProjectResponse>> {
         return this.authenticatedRequest().then((headers) => {
-            Logger.log(`Getting project with urn: ${urn}`);
-            Logger.log(`with headers: ${JSON.stringify(headers)}`);
+            Logger.log(`token in request = ${headers.toLocaleString().substring(0, 50)}`);
             return cy
                 .request<GetProjectResponse>({
                     method: "GET",
