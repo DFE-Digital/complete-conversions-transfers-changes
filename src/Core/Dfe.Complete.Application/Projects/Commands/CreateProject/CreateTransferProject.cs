@@ -51,7 +51,7 @@ public class CreateTransferProjectCommandHandler(
 
         if (establishment is null)
         {
-            throw new NotFoundException($"No establishment could be found for Urn: {request.Urn.Value}.", nameof(request.Urn), innerException: new Exception(localAuthorityIdRequest.Error));
+            throw new NotFoundException($"No establishment could be found for Urn: {request.Urn.Value}.", nameof(request.Urn));
         }
             
         var region = establishment.RegionCode?.ToEnumFromChar<Region>();
