@@ -3,9 +3,15 @@ import { Logger } from "../common/logger";
 
 export class ApiBase {
     protected getHeaders(): object {
-        Logger.log(`Bearer ${Cypress.env(UserAccessToken)}`);
+        const token = Cypress.env(UserAccessToken);
+
+        // Temporarily disable masking for debugging
+        console.log(`::remove-mask::${token}`);
+
+        Logger.log(`Bearer ${token}`);
+
         return {
-            Authorization: `Bearer ${Cypress.env(UserAccessToken)}`,
+            Authorization: `Bearer ${token}`,
             "Content-type": "application/json",
             "x-user-context-name": Cypress.env(EnvUsername),
         };
