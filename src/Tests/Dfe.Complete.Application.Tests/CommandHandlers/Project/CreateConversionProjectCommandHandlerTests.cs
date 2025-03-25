@@ -83,7 +83,8 @@ public class CreateConversionProjectCommandHandlerTests
         GiasEstablishment giasEstablishment =
             fixture.Customize(new GiasEstablishmentsCustomization() { Urn = command.Urn }).Create<GiasEstablishment>();
 
-        mockEstablishmentRepository.FindAsync(Arg.Any<Expression<Func<GiasEstablishment, bool>>>(), Arg.Any<CancellationToken>())
+        mockEstablishmentRepository.FindAsync(Arg.Any<Expression<Func<GiasEstablishment, bool>>>(),
+                Arg.Any<CancellationToken>())
             .Returns(Task.FromResult(giasEstablishment));
 
         // Act
@@ -161,11 +162,12 @@ public class CreateConversionProjectCommandHandlerTests
 
         mockConversionTaskRepository.AddAsync(Arg.Any<ConversionTasksData>(), Arg.Any<CancellationToken>())
             .Returns(Task.FromResult(conversionTask));
-        
+
         GiasEstablishment giasEstablishment =
             fixture.Customize(new GiasEstablishmentsCustomization() { Urn = command.Urn }).Create<GiasEstablishment>();
 
-        mockEstablishmentRepository.FindAsync(Arg.Any<Expression<Func<GiasEstablishment, bool>>>(), Arg.Any<CancellationToken>())
+        mockEstablishmentRepository.FindAsync(Arg.Any<Expression<Func<GiasEstablishment, bool>>>(),
+                Arg.Any<CancellationToken>())
             .Returns(Task.FromResult(giasEstablishment));
 
         // Act
@@ -234,11 +236,12 @@ public class CreateConversionProjectCommandHandlerTests
 
         mockConversionTaskRepository.AddAsync(Arg.Any<ConversionTasksData>(), Arg.Any<CancellationToken>())
             .Returns(Task.FromResult(conversionTask));
-        
+
         GiasEstablishment giasEstablishment =
             fixture.Customize(new GiasEstablishmentsCustomization() { Urn = command.Urn }).Create<GiasEstablishment>();
 
-        mockEstablishmentRepository.FindAsync(Arg.Any<Expression<Func<GiasEstablishment, bool>>>(), Arg.Any<CancellationToken>())
+        mockEstablishmentRepository.FindAsync(Arg.Any<Expression<Func<GiasEstablishment, bool>>>(),
+                Arg.Any<CancellationToken>())
             .Returns(Task.FromResult(giasEstablishment));
 
         // Act
@@ -277,17 +280,18 @@ public class CreateConversionProjectCommandHandlerTests
         GiasEstablishment giasEstablishment =
             fixture.Customize(new GiasEstablishmentsCustomization() { Urn = command.Urn }).Create<GiasEstablishment>();
 
-        mockEstablishmentRepository.FindAsync(Arg.Any<Expression<Func<GiasEstablishment, bool>>>(), Arg.Any<CancellationToken>())
+        mockEstablishmentRepository.FindAsync(Arg.Any<Expression<Func<GiasEstablishment, bool>>>(),
+                Arg.Any<CancellationToken>())
             .Returns(Task.FromResult(giasEstablishment));
-        
+
         var groupId = new ProjectGroupId(Guid.NewGuid());
-        
+
         mockSender.Setup(s =>
                 s.Send(It.IsAny<GetProjectGroupByGroupReferenceNumberQuery>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(Result<ProjectGroupDto>.Success(new ProjectGroupDto { Id = groupId }));
-        
-        command = command with {HandingOverToRegionalCaseworkService = false};
-        
+
+        command = command with { HandingOverToRegionalCaseworkService = false };
+
         // Act & Assert
         var exception = await Assert.ThrowsAsync<NotFoundException>(() => handler.Handle(command, default));
 
@@ -300,7 +304,7 @@ public class CreateConversionProjectCommandHandlerTests
         await mockConversionTaskRepository.Received(0)
             .AddAsync(It.IsAny<ConversionTasksData>(), It.IsAny<CancellationToken>());
     }
-    
+
     [Theory]
     [CustomAutoData(typeof(DateOnlyCustomization), typeof(IgnoreVirtualMembersCustomisation))]
     public async Task Handle_ShouldThrowNotFoundException_WhenUserRequestCantFindMatchingUser(
@@ -324,17 +328,18 @@ public class CreateConversionProjectCommandHandlerTests
         mockSender.Setup(s => s.Send(It.IsAny<GetLocalAuthorityBySchoolUrnQuery>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(Result<GetLocalAuthorityBySchoolUrnResponseDto?>.Success(
                 new GetLocalAuthorityBySchoolUrnResponseDto(Guid.NewGuid())));
-        
+
         var groupId = new ProjectGroupId(Guid.NewGuid());
-        
+
         mockSender.Setup(s =>
                 s.Send(It.IsAny<GetProjectGroupByGroupReferenceNumberQuery>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(Result<ProjectGroupDto>.Success(new ProjectGroupDto { Id = groupId }));
-        
+
         GiasEstablishment giasEstablishment =
             fixture.Customize(new GiasEstablishmentsCustomization() { Urn = command.Urn }).Create<GiasEstablishment>();
 
-        mockEstablishmentRepository.FindAsync(Arg.Any<Expression<Func<GiasEstablishment, bool>>>(), Arg.Any<CancellationToken>())
+        mockEstablishmentRepository.FindAsync(Arg.Any<Expression<Func<GiasEstablishment, bool>>>(),
+                Arg.Any<CancellationToken>())
             .Returns(Task.FromResult(giasEstablishment));
 
         // Act & Assert
@@ -342,9 +347,11 @@ public class CreateConversionProjectCommandHandlerTests
 
         Assert.Equal("No user found.", exception.Message);
         Assert.NotNull(exception.InnerException);
-            
-        await mockProjectRepository.Received(0).AddAsync(It.IsAny<Domain.Entities.Project>(), It.IsAny<CancellationToken>());
-        await mockConversionTaskRepository.Received(0).AddAsync(It.IsAny<ConversionTasksData>(), It.IsAny<CancellationToken>());
+
+        await mockProjectRepository.Received(0)
+            .AddAsync(It.IsAny<Domain.Entities.Project>(), It.IsAny<CancellationToken>());
+        await mockConversionTaskRepository.Received(0)
+            .AddAsync(It.IsAny<ConversionTasksData>(), It.IsAny<CancellationToken>());
     }
 
 
@@ -377,11 +384,12 @@ public class CreateConversionProjectCommandHandlerTests
         mockSender.Setup(s => s.Send(It.IsAny<GetLocalAuthorityBySchoolUrnQuery>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(Result<GetLocalAuthorityBySchoolUrnResponseDto?>.Success(
                 new GetLocalAuthorityBySchoolUrnResponseDto(Guid.NewGuid())));
-        
+
         GiasEstablishment giasEstablishment =
             fixture.Customize(new GiasEstablishmentsCustomization() { Urn = command.Urn }).Create<GiasEstablishment>();
 
-        mockEstablishmentRepository.FindAsync(Arg.Any<Expression<Func<GiasEstablishment, bool>>>(), Arg.Any<CancellationToken>())
+        mockEstablishmentRepository.FindAsync(Arg.Any<Expression<Func<GiasEstablishment, bool>>>(),
+                Arg.Any<CancellationToken>())
             .Returns(Task.FromResult(giasEstablishment));
 
         // Act & Assert
@@ -516,47 +524,123 @@ public class CreateConversionProjectCommandHandlerTests
         command = command with { GroupReferenceNumber = null };
 
         const ProjectTeam team = ProjectTeam.WestMidlands;
-        var userDto =  new UserDto
+        var userDto = new UserDto
         {
             Id = new UserId(Guid.NewGuid()),
             Team = team.ToDescription()
         };
 
-            var createdAt = DateTime.UtcNow;
-            var conversionTaskId = Guid.NewGuid();
-            var conversionTask = new ConversionTasksData(new TaskDataId(conversionTaskId), createdAt, createdAt);
-            
+        var createdAt = DateTime.UtcNow;
+        var conversionTaskId = Guid.NewGuid();
+        var conversionTask = new ConversionTasksData(new TaskDataId(conversionTaskId), createdAt, createdAt);
+
         mockSender.Setup(s => s.Send(It.IsAny<GetUserByAdIdQuery>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(Result<UserDto>.Success(userDto));
 
         Domain.Entities.Project capturedProject = null!;
 
-            mockSender.Setup(s => s.Send(It.IsAny<GetLocalAuthorityBySchoolUrnQuery>(), default))
-                .ReturnsAsync(
-                    Result<GetLocalAuthorityBySchoolUrnResponseDto?>.Success(
-                        new GetLocalAuthorityBySchoolUrnResponseDto(Guid.NewGuid())));
+        mockSender.Setup(s => s.Send(It.IsAny<GetLocalAuthorityBySchoolUrnQuery>(), default))
+            .ReturnsAsync(
+                Result<GetLocalAuthorityBySchoolUrnResponseDto?>.Success(
+                    new GetLocalAuthorityBySchoolUrnResponseDto(Guid.NewGuid())));
 
         mockConversionTaskRepository.AddAsync(Arg.Any<ConversionTasksData>(), Arg.Any<CancellationToken>())
             .Returns(Task.FromResult(conversionTask));
-        
+
         GiasEstablishment giasEstablishment =
             fixture.Customize(new GiasEstablishmentsCustomization() { Urn = command.Urn }).Create<GiasEstablishment>();
 
-        mockEstablishmentRepository.FindAsync(Arg.Any<Expression<Func<GiasEstablishment, bool>>>(), Arg.Any<CancellationToken>())
+        mockEstablishmentRepository.FindAsync(Arg.Any<Expression<Func<GiasEstablishment, bool>>>(),
+                Arg.Any<CancellationToken>())
             .Returns(Task.FromResult(giasEstablishment));
 
-            mockProjectRepository.AddAsync(Arg.Do<Domain.Entities.Project>(proj => capturedProject = proj),
-                    Arg.Any<CancellationToken>())
-                .Returns(Task.FromResult(capturedProject));
+        mockProjectRepository.AddAsync(Arg.Do<Domain.Entities.Project>(proj => capturedProject = proj),
+                Arg.Any<CancellationToken>())
+            .Returns(Task.FromResult(capturedProject));
 
-            mockConversionTaskRepository.AddAsync(Arg.Any<ConversionTasksData>(), Arg.Any<CancellationToken>())
-                .Returns(Task.FromResult(conversionTask));
+        mockConversionTaskRepository.AddAsync(Arg.Any<ConversionTasksData>(), Arg.Any<CancellationToken>())
+            .Returns(Task.FromResult(conversionTask));
 
-            // Act
-            var projectId = await handler.Handle(command, default);
+        // Act
+        var projectId = await handler.Handle(command, default);
 
-            // Assert
-            Assert.NotNull(projectId);
-            Assert.Null(capturedProject.GroupId);
-        }
+        // Assert
+        Assert.NotNull(projectId);
+        Assert.Null(capturedProject.GroupId);
+    }
+
+    [Theory]
+    [CustomAutoData(typeof(DateOnlyCustomization))]
+    public async Task Handle_ShouldThrowException_WhenEstablishmentIsNotFound(
+        [Frozen] ICompleteRepository<Domain.Entities.Project> mockProjectRepository,
+        [Frozen] ICompleteRepository<ConversionTasksData> mockConversionTaskRepository,
+        [Frozen] ICompleteRepository<GiasEstablishment> mockEstablishmentRepository,
+        [Frozen] Mock<ISender> mockSender,
+        IFixture fixture,
+        CreateConversionProjectCommand command)
+    {
+        // Arrange
+        //Setup the handler
+        var handler =
+            new CreateConversionProjectCommandHandler(mockProjectRepository,
+                mockConversionTaskRepository,
+                mockEstablishmentRepository,
+                mockSender.Object);
+
+        // Setup the user dto
+        const ProjectTeam team = ProjectTeam.WestMidlands;
+        var userDto = new UserDto
+        {
+            Id = new UserId(Guid.NewGuid()),
+            Team = team.ToDescription()
+        };
+
+        // Setup the Project group
+        var groupId = new ProjectGroupId(Guid.NewGuid());
+
+        mockSender.Setup(s =>
+                s.Send(It.IsAny<GetProjectGroupByGroupReferenceNumberQuery>(), It.IsAny<CancellationToken>()))
+            .ReturnsAsync(Result<ProjectGroupDto>.Success(new ProjectGroupDto { Id = groupId }));
+
+        // Setup the Local Authority
+
+        mockSender.Setup(s => s.Send(It.IsAny<GetLocalAuthorityBySchoolUrnQuery>(), default))
+            .ReturnsAsync(
+                Result<GetLocalAuthorityBySchoolUrnResponseDto?>.Success(
+                    new GetLocalAuthorityBySchoolUrnResponseDto(Guid.NewGuid())));
+
+        // Setup the User Ad query
+
+        mockSender
+            .Setup(sender => sender.Send(It.IsAny<GetUserByAdIdQuery>(), default))
+            .ReturnsAsync(Result<UserDto?>.Success(userDto));
+
+
+        // Setup the mock project repository calls 
+        Domain.Entities.Project capturedProject = null!;
+
+        mockProjectRepository.AddAsync(Arg.Do<Domain.Entities.Project>(proj => capturedProject = proj),
+                Arg.Any<CancellationToken>())
+            .Returns(Task.FromResult(capturedProject));
+
+        mockProjectRepository.AddAsync(capturedProject, Arg.Any<CancellationToken>())
+            .Returns(Task.FromResult(capturedProject));
+
+        // Setup the GiasEstablishment and mock call
+
+        mockEstablishmentRepository.FindAsync(Arg.Any<Expression<Func<GiasEstablishment, bool>>>(),
+                Arg.Any<CancellationToken>())
+            .Returns(Task.FromResult((GiasEstablishment)null));
+
+        // Act & Assert
+        var exception =
+            await Assert.ThrowsAsync<NotFoundException>(() => handler.Handle(command, CancellationToken.None));
+        Assert.Equal($"No establishment could be found for Urn: {command.Urn.Value}.", exception.Message);
+        Assert.Null(exception.InnerException);
+
+        await mockProjectRepository.DidNotReceive()
+            .AddAsync(Arg.Any<Domain.Entities.Project>(), Arg.Any<CancellationToken>());
+        await mockConversionTaskRepository.DidNotReceive()
+            .AddAsync(Arg.Any<ConversionTasksData>(), Arg.Any<CancellationToken>());
+    }
 }

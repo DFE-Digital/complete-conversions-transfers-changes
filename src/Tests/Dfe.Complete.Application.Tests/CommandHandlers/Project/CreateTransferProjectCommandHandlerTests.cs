@@ -25,6 +25,7 @@ namespace Dfe.Complete.Application.Tests.CommandHandlers.Project;
 
 public class CreateTransferProjectCommandHandlerTests
 {
+    
     [Theory]
     [CustomAutoData(typeof(DateOnlyCustomization))]
     public async Task Handle_ShouldCreateAndReturnProjectId_WhenCommandIsValid(
@@ -36,12 +37,14 @@ public class CreateTransferProjectCommandHandlerTests
         CreateTransferProjectCommand command)
     {
         // Arrange
+        //Setup the handler
         var handler =
             new CreateTransferProjectCommandHandler(mockProjectRepository,
                 mockTransferTaskRepository,
                 mockEstablishmentRepository,
                 mockSender.Object);
 
+        // Setup the user dto
         const ProjectTeam team = ProjectTeam.WestMidlands;
         var userDto = new UserDto
         {
@@ -49,21 +52,28 @@ public class CreateTransferProjectCommandHandlerTests
             Team = team.ToDescription()
         };
 
+        // Setup the Project group
         var groupId = new ProjectGroupId(Guid.NewGuid());
+        
+        mockSender.Setup(s =>
+                s.Send(It.IsAny<GetProjectGroupByGroupReferenceNumberQuery>(), It.IsAny<CancellationToken>()))
+            .ReturnsAsync(Result<ProjectGroupDto>.Success(new ProjectGroupDto { Id = groupId }));
+        
+        // Setup the Local Authority
 
         mockSender.Setup(s => s.Send(It.IsAny<GetLocalAuthorityBySchoolUrnQuery>(), default))
             .ReturnsAsync(
                 Result<GetLocalAuthorityBySchoolUrnResponseDto?>.Success(
                     new GetLocalAuthorityBySchoolUrnResponseDto(Guid.NewGuid())));
+        
+        // Setup the User Ad query
 
         mockSender
             .Setup(sender => sender.Send(It.IsAny<GetUserByAdIdQuery>(), default))
             .ReturnsAsync(Result<UserDto?>.Success(userDto));
 
-        mockSender.Setup(s =>
-                s.Send(It.IsAny<GetProjectGroupByGroupReferenceNumberQuery>(), It.IsAny<CancellationToken>()))
-            .ReturnsAsync(Result<ProjectGroupDto>.Success(new ProjectGroupDto { Id = groupId }));
-
+        
+        // Setup the mock project repository calls 
         Domain.Entities.Project capturedProject = null!;
 
         mockProjectRepository.AddAsync(Arg.Do<Domain.Entities.Project>(proj => capturedProject = proj),
@@ -72,6 +82,8 @@ public class CreateTransferProjectCommandHandlerTests
 
         mockProjectRepository.AddAsync(capturedProject, Arg.Any<CancellationToken>())
             .Returns(Task.FromResult(capturedProject));
+        
+        // Setup the GiasEstablishment and mock call
 
         var giasEstablishment =
             fixture.Customize(new GiasEstablishmentsCustomization() { Urn = command.Urn }).Create<GiasEstablishment>();
@@ -687,5 +699,79 @@ public class CreateTransferProjectCommandHandlerTests
         // Assert
         Assert.NotNull(projectId);
         Assert.Null(capturedProject.GroupId);
+    }
+    
+    [Theory]
+    [CustomAutoData(typeof(DateOnlyCustomization))]
+    public async Task Handle_ShouldThrowException_WhenEstablishmentIsNotFound(
+        [Frozen] ICompleteRepository<Domain.Entities.Project> mockProjectRepository,
+        [Frozen] ICompleteRepository<TransferTasksData> mockTransferTaskRepository,
+        [Frozen] ICompleteRepository<GiasEstablishment> mockEstablishmentRepository,
+        [Frozen] Mock<ISender> mockSender,
+        IFixture fixture,
+        CreateTransferProjectCommand command)
+    {
+        // Arrange
+       //Setup the handler
+        var handler =
+            new CreateTransferProjectCommandHandler(mockProjectRepository,
+                mockTransferTaskRepository,
+                mockEstablishmentRepository,
+                mockSender.Object);
+
+        // Setup the user dto
+        const ProjectTeam team = ProjectTeam.WestMidlands;
+        var userDto = new UserDto
+        {
+            Id = new UserId(Guid.NewGuid()),
+            Team = team.ToDescription()
+        };
+
+        // Setup the Project group
+        var groupId = new ProjectGroupId(Guid.NewGuid());
+        
+        mockSender.Setup(s =>
+                s.Send(It.IsAny<GetProjectGroupByGroupReferenceNumberQuery>(), It.IsAny<CancellationToken>()))
+            .ReturnsAsync(Result<ProjectGroupDto>.Success(new ProjectGroupDto { Id = groupId }));
+        
+        // Setup the Local Authority
+
+        mockSender.Setup(s => s.Send(It.IsAny<GetLocalAuthorityBySchoolUrnQuery>(), default))
+            .ReturnsAsync(
+                Result<GetLocalAuthorityBySchoolUrnResponseDto?>.Success(
+                    new GetLocalAuthorityBySchoolUrnResponseDto(Guid.NewGuid())));
+        
+        // Setup the User Ad query
+
+        mockSender
+            .Setup(sender => sender.Send(It.IsAny<GetUserByAdIdQuery>(), default))
+            .ReturnsAsync(Result<UserDto?>.Success(userDto));
+
+        
+        // Setup the mock project repository calls 
+        Domain.Entities.Project capturedProject = null!;
+
+        mockProjectRepository.AddAsync(Arg.Do<Domain.Entities.Project>(proj => capturedProject = proj),
+                Arg.Any<CancellationToken>())
+            .Returns(Task.FromResult(capturedProject));
+
+        mockProjectRepository.AddAsync(capturedProject, Arg.Any<CancellationToken>())
+            .Returns(Task.FromResult(capturedProject));
+        
+        // Setup the GiasEstablishment and mock call
+
+        mockEstablishmentRepository.FindAsync(Arg.Any<Expression<Func<GiasEstablishment, bool>>>(), Arg.Any<CancellationToken>())
+            .Returns(Task.FromResult((GiasEstablishment) null));
+        
+        // Act & Assert
+        var exception =
+            await Assert.ThrowsAsync<NotFoundException>(() => handler.Handle(command, CancellationToken.None));
+        Assert.Equal($"No establishment could be found for Urn: {command.Urn.Value}.", exception.Message);
+        Assert.Null(exception.InnerException);
+
+        await mockProjectRepository.DidNotReceive()
+            .AddAsync(Arg.Any<Domain.Entities.Project>(), Arg.Any<CancellationToken>());
+        await mockTransferTaskRepository.DidNotReceive()
+            .AddAsync(Arg.Any<TransferTasksData>(), Arg.Any<CancellationToken>());
     }
 }
