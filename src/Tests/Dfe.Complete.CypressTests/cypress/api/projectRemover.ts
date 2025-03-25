@@ -21,8 +21,8 @@ class ProjectRemover extends ApiBase {
 
     public getProject(urn: string): Cypress.Chainable<Cypress.Response<GetProjectResponse>> {
         return this.authenticatedRequest().then((headers) => {
-            Logger.log(`Header Authorization ${headers["Authorization"].substring(0,25)}`);
-            Logger.log(`Header Authorization ${headers["Authorization"].substring(26,headers["Authorization"].length)}`);
+            Logger.log(`Get Project - Header Authorization part 1 : ${headers["Authorization"].substring(7,25)}`);
+            Logger.log(`Get Project - Header Authorization part 2 : ${headers["Authorization"].substring(26,headers["Authorization"].length)}`);
             return cy
                 .request<GetProjectResponse>({
                     method: "GET",

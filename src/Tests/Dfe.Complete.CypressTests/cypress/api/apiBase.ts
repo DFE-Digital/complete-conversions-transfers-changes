@@ -4,8 +4,8 @@ import { Logger } from "../common/logger";
 export class ApiBase {
     protected getHeaders(): object {
         const token = Cypress.env(UserAccessToken);
-        Logger.log(`Token first half: ${token.substring(0, 10)}`);
-        Logger.log(`Token last half: ${token.substring(11, token.length)}`);
+        Logger.log(`Get headers - Token first half: ${token.substring(0, 10)}`);
+        Logger.log(`Get headers - Token last half: ${token.substring(11, token.length)}`);
 
         return {
             Authorization: `Bearer ${token}`,
