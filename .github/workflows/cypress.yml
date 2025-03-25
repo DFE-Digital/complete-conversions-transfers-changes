@@ -39,56 +39,8 @@ concurrency:
   group: ${{ github.workflow }}
 
 jobs:
-  generate-token:
-    runs-on: ubuntu-latest
-    environment: ${{ inputs.environment }}
-    outputs:
-      access_token: ${{ steps.get-token.outputs.access_token }}
-    permissions:
-      issues: read
-
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v2
-        with:
-          node-version: '14'
-
-      - name: Get Access Token
-        id: get-token
-        run: |
-          response=$(curl --write-out "HTTPSTATUS:%{http_code}" --silent --location \
-            --request POST "https://login.microsoftonline.com/${{ secrets.CYPRESS_TENANT_ID }}/oauth2/v2.0/token" \
-            --header "Content-Type: application/x-www-form-urlencoded" \
-            --data-urlencode "grant_type=client_credentials" \
-            --data-urlencode "client_id=${{ secrets.CYPRESS_CLIENT_ID }}" \
-            --data-urlencode "client_secret=${{ secrets.CYPRESS_CLIENT_SECRET }}" \
-            --data-urlencode "scope=api://${{ secrets.CYPRESS_COMPLETEAPI_CLIENTID }}/.default")
-  
-          body=$(echo "$response" | sed -e 's/HTTPSTATUS:.*//g')
-          status_code=$(echo "$response" | tr -d '\n' | sed -e 's/.*HTTPSTATUS://')
-  
-          if [ "$status_code" -ne 200 ]; then
-            echo "Error: Received status code $status_code"
-            echo "Response body: $body"
-            exit 1
-          else
-            echo "Request successful"
-          fi
-          access_token=$(echo "$body" | sed -n 's/.*"access_token":"\([^"]*\)".*/\1/p')
-          echo "::set-output name=access_token::$access_token"
-          echo "$access_token" > access_token.txt
-
-      - name: Upload Access Token Artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: access-token
-          path: access_token.txt
-
   cypress-tests:
     name: Run Cypress Tests
-    needs: generate-token
     runs-on: ubuntu-latest
     environment: ${{ inputs.environment }}
     strategy:
@@ -118,7 +70,7 @@ jobs:
           CYPRESS_clientSecret: ${{ secrets.CYPRESS_CLIENT_SECRET }}
           CYPRESS_completeApiClientId: ${{ secrets.CYPRESS_COMPLETEAPI_CLIENTID }}
           CYPRESS_userAdId: ${{ secrets.CYPRESS_USER_AD_ID }}
-          CYPRESS_accessToken: ${{ needs.generate-token.outputs.access_token }}
+          CYPRESS_accessToken: ${{ secrets.CYPRESS_USER_ACCESS_TOKEN }}
         with:
           browser: ${{ matrix.browser }}
           working-directory: ./src/Tests/Dfe.Complete.CypressTests
