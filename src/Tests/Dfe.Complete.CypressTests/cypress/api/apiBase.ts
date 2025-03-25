@@ -1,14 +1,9 @@
 import { EnvCompleteApiClientId, EnvClientId, EnvClientSecret, EnvTenantId, EnvUsername, UserAccessToken } from "cypress/constants/cypressConstants";
-import { Logger } from "../common/logger";
 
 export class ApiBase {
     protected getHeaders(): object {
-        const token = Cypress.env(UserAccessToken);
-        Logger.log(`Get headers - Token first half: ${token.substring(0, 10)}`);
-        Logger.log(`Get headers - Token last half: ${token.substring(11, token.length)}`);
-
         return {
-            Authorization: `Bearer ${token}`,
+            Authorization: `Bearer ${Cypress.env(UserAccessToken)}`,
             "Content-type": "application/json",
             "x-user-context-name": Cypress.env(EnvUsername),
         };
