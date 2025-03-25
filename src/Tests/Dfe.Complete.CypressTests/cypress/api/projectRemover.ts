@@ -1,6 +1,7 @@
 import { EnvApi } from "cypress/constants/cypressConstants";
 import { ApiBase } from "./apiBase";
 import {GetProjectResponse} from "./apiDomain";
+import { Logger } from "../common/logger";
 
 class ProjectRemover extends ApiBase {
     public removeProject(urn: string): Cypress.Chainable<boolean> {
@@ -20,6 +21,8 @@ class ProjectRemover extends ApiBase {
 
     public getProject(urn: string): Cypress.Chainable<Cypress.Response<GetProjectResponse>> {
         return this.authenticatedRequest().then((headers) => {
+            Logger.log(`Getting project with urn: ${urn}`);
+            Logger.log(`with headers: ${JSON.stringify(headers)}`);
             return cy
                 .request<GetProjectResponse>({
                     method: "GET",
