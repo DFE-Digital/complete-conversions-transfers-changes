@@ -7,6 +7,5 @@ export const EnvClientId = "clientId";
 export const EnvClientSecret = "clientSecret";
 export const EnvCompleteApiClientId = "completeApiClientId"
 export const EnvUserAdId = "userAdId";
-export const UserAccessToken = "accessToken";
 export const ProjectRecordCreator = "projectrecordcreator";
 export const Username = "cypress testuser"
