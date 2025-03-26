@@ -6,5 +6,5 @@
   <Property Name="sonar.coverageReportPaths">./src/CoverageReport/SonarQube.xml</Property>
 
   <!-- analysis exclusions -->
-  <Property Name="sonar.exclusions">**/Frontend/Dfe.Complete/**/*.cshtml,**/Frontend/Dfe.Complete/**/*.cshtml.cs,src/Tests/Dfe.Complete.CypressTests/</Property>
+  <Property Name="sonar.exclusions">**/Frontend/Dfe.Complete/**/*.cshtml,**/Frontend/Dfe.Complete/**/*.cshtml.cs,**/Tests/Dfe.Complete.CypressTests/</Property>
 </SonarQubeAnalysisProperties>
