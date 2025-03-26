@@ -41,64 +41,70 @@ concurrency:
   group: ${{ github.workflow }}
 
 jobs:
-  cypress-tests:
-    name: Run Cypress Tests
-    runs-on: ubuntu-latest
-    environment: ${{ inputs.environment }}
-    strategy:
-      matrix:
-        browser: [
-          "edge"
-        ]
-    container:
-      image: cypress/browsers:22.12.0
-    defaults:
-      run:
-        working-directory: src/Tests/Dfe.Complete.CypressTests
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          ref: ${{ github.ref }}
-
-      - name: Run
-        uses: cypress-io/github-action@v6
-        env:
-          CYPRESS_url: ${{ secrets.CYPRESS_URL_ENDPOINT }}
-          CYPRESS_api: ${{ secrets.CYPRESS_API_ENDPOINT }}
-          CYPRESS_username: ${{ secrets.CYPRESS_USERNAME }}
-          CYPRESS_authKey: ${{ secrets.CYPRESS_AUTH_KEY }}
-          CYPRESS_tenantId: ${{ secrets.CYPRESS_TENANT_ID }}
-          CYPRESS_clientId: ${{ secrets.CYPRESS_CLIENT_ID }}
-          CYPRESS_clientSecret: ${{ secrets.CYPRESS_CLIENT_SECRET }}
-          CYPRESS_completeApiClientId: ${{ secrets.CYPRESS_COMPLETEAPI_CLIENTID }}
-          CYPRESS_userAdId: ${{ secrets.CYPRESS_USER_AD_ID }}
-          CYPRESS_accessToken: ${{ secrets.CYPRESS_USER_ACCESS_TOKEN }}
-        with:
-          browser: ${{ matrix.browser }}
-          working-directory: ./src/Tests/Dfe.Complete.CypressTests
-
-      - name: Upload screenshots
-        if: ${{ failure() }}
-        uses: actions/upload-artifact@v4
-        with:
-          name: screenshots-${{ inputs.environment }}-${{ matrix.browser }}
-          path: src/Tests/Dfe.Complete.CypressTests/cypress/screenshots
-
-      - name: Generate report
-        if: always()
-        run: |
-          mkdir mochareports
-          npm run generate:html:report
-
-      - name: Upload report
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: reports-${{ inputs.environment }}-${{ matrix.browser }}
-          path: src/Tests/Dfe.Complete.CypressTests/mochareports
-
-      - name: Report results
-        if: always()
-        run: npm run cy:notify -- --custom-text="Environment ${{ inputs.environment }}, See more information https://github.com/DFE-Digital/complete-conversions-transfers-changes/actions/runs/${{ github.run_id }}"
-        env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+  - name:
+    Debug: Call API with curl
+    run: |
+      curl -v -X GET "https://api.dev.complete.education.gov.uk/v1/Projects/List/All" \
+        -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsIng1dCI6IkpETmFfNGk0cjdGZ2lnTDNzSElsSTN4Vi1JVSIsImtpZCI6IkpETmFfNGk0cjdGZ2lnTDNzSElsSTN4Vi1JVSJ9.eyJhdWQiOiJhcGk6Ly8zZDBmOWRjMS1kN2QyLTRjODQtOWQxYy04NzNjNzZmZWZlZmMiLCJpc3MiOiJodHRwczovL3N0cy53aW5kb3dzLm5ldC85YzdkOWRkMy04NDBjLTRiM2YtODE4ZS01NTI4NjUwODJlMTYvIiwiaWF0IjoxNzQyOTg1NzM0LCJuYmYiOjE3NDI5ODU3MzQsImV4cCI6MTc0Mjk4OTYzNCwiYWlvIjoiazJSZ1lERGNVbjNGYzFzZWs1Mkdqa0hWQnowR0FBPT0iLCJhcHBpZCI6ImE2MjQ5MTk4LTJjMGUtNGRjNi05OGFiLWZmYThhYTliODRmMyIsImFwcGlkYWNyIjoiMSIsImlkcCI6Imh0dHBzOi8vc3RzLndpbmRvd3MubmV0LzljN2Q5ZGQzLTg0MGMtNGIzZi04MThlLTU1Mjg2NTA4MmUxNi8iLCJvaWQiOiJlZGQwYzQzNS00ZmM4LTQyNzgtYjYwYi05YmJiMmRlNWU5NmMiLCJyaCI6IjEuQVRBQTA1MTluQXlFUDB1QmpsVW9aUWd1RnNHZER6M1MxNFJNblJ5SFBIYi1fdnhEQVFBd0FBLiIsInJvbGVzIjpbIkFQSS5EZWxldGUiLCJBUEkuUmVhZCIsIkFQSS5Xcml0ZSIsIkFQSS5VcGRhdGUiXSwic3ViIjoiZWRkMGM0MzUtNGZjOC00Mjc4LWI2MGItOWJiYjJkZTVlOTZjIiwidGlkIjoiOWM3ZDlkZDMtODQwYy00YjNmLTgxOGUtNTUyODY1MDgyZTE2IiwidXRpIjoiQWhjRDBFeWZ3MHlrZ1hWYzMwZEFBQSIsInZlciI6IjEuMCJ9.eNymbf3dbkDOdfZxSHPkdzpgled8FWsvYHr3dJ65g4n8T3tMMmP8TkgbjFGeEhUesi8-IzmmTv7Kn-5yhv41Jax6-KveH5dMEZh3Hknim4FmV3Va8LKg5CvwBv4mjgm-HpTrjJpHwMvCE--pESJXEdjXU-sleQH7YC472VF7Xs-Rjdsh4jn3HC7VceRX6hEFInYcngUXq9TzYvnqJD-a65jpzErN9amr3O0z8mcwgp-hXRpl2Zan4qv7L78HOt9BveC4htJ3dT-98RRyoSauaGNdoJi9zpcVKn48Kl9xMYnCxHNpX1QtySQcPRkLXzGNlGnOqCIkVJ677Ifoa96Ovw" \
+        -H "Content-Type: application/json"
+#  cypress-tests:
+#    name: Run Cypress Tests
+#    runs-on: ubuntu-latest
+#    environment: ${{ inputs.environment }}
+#    strategy:
+#      matrix:
+#        browser: [
+#          "edge"
+#        ]
+#    container:
+#      image: cypress/browsers:22.12.0
+#    defaults:
+#      run:
+#        working-directory: src/Tests/Dfe.Complete.CypressTests
+#    steps:
+#      - uses: actions/checkout@v4
+#        with:
+#          ref: ${{ github.ref }}
+#
+#      - name: Run
+#        uses: cypress-io/github-action@v6
+#        env:
+#          CYPRESS_url: ${{ secrets.CYPRESS_URL_ENDPOINT }}
+#          CYPRESS_api: ${{ secrets.CYPRESS_API_ENDPOINT }}
+#          CYPRESS_username: ${{ secrets.CYPRESS_USERNAME }}
+#          CYPRESS_authKey: ${{ secrets.CYPRESS_AUTH_KEY }}
+#          CYPRESS_tenantId: ${{ secrets.CYPRESS_TENANT_ID }}
+#          CYPRESS_clientId: ${{ secrets.CYPRESS_CLIENT_ID }}
+#          CYPRESS_clientSecret: ${{ secrets.CYPRESS_CLIENT_SECRET }}
+#          CYPRESS_completeApiClientId: ${{ secrets.CYPRESS_COMPLETEAPI_CLIENTID }}
+#          CYPRESS_userAdId: ${{ secrets.CYPRESS_USER_AD_ID }}
+#          CYPRESS_accessToken: ${{ secrets.CYPRESS_USER_ACCESS_TOKEN }}
+#        with:
+#          browser: ${{ matrix.browser }}
+#          working-directory: ./src/Tests/Dfe.Complete.CypressTests
+#
+#      - name: Upload screenshots
+#        if: ${{ failure() }}
+#        uses: actions/upload-artifact@v4
+#        with:
+#          name: screenshots-${{ inputs.environment }}-${{ matrix.browser }}
+#          path: src/Tests/Dfe.Complete.CypressTests/cypress/screenshots
+#
+#      - name: Generate report
+#        if: always()
+#        run: |
+#          mkdir mochareports
+#          npm run generate:html:report
+#
+#      - name: Upload report
+#        if: always()
+#        uses: actions/upload-artifact@v4
+#        with:
+#          name: reports-${{ inputs.environment }}-${{ matrix.browser }}
+#          path: src/Tests/Dfe.Complete.CypressTests/mochareports
+#
+#      - name: Report results
+#        if: always()
+#        run: npm run cy:notify -- --custom-text="Environment ${{ inputs.environment }}, See more information https://github.com/DFE-Digital/complete-conversions-transfers-changes/actions/runs/${{ github.run_id }}"
+#        env:
+#          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
