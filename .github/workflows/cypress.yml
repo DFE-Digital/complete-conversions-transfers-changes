@@ -41,12 +41,22 @@ concurrency:
   group: ${{ github.workflow }}
 
 jobs:
-  - name:
-    Debug: Call API with curl
-    run: |
-      curl -v -X GET "https://api.dev.complete.education.gov.uk/v1/Projects/List/All" \
-        -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsIng1dCI6IkpETmFfNGk0cjdGZ2lnTDNzSElsSTN4Vi1JVSIsImtpZCI6IkpETmFfNGk0cjdGZ2lnTDNzSElsSTN4Vi1JVSJ9.eyJhdWQiOiJhcGk6Ly8zZDBmOWRjMS1kN2QyLTRjODQtOWQxYy04NzNjNzZmZWZlZmMiLCJpc3MiOiJodHRwczovL3N0cy53aW5kb3dzLm5ldC85YzdkOWRkMy04NDBjLTRiM2YtODE4ZS01NTI4NjUwODJlMTYvIiwiaWF0IjoxNzQyOTg1NzM0LCJuYmYiOjE3NDI5ODU3MzQsImV4cCI6MTc0Mjk4OTYzNCwiYWlvIjoiazJSZ1lERGNVbjNGYzFzZWs1Mkdqa0hWQnowR0FBPT0iLCJhcHBpZCI6ImE2MjQ5MTk4LTJjMGUtNGRjNi05OGFiLWZmYThhYTliODRmMyIsImFwcGlkYWNyIjoiMSIsImlkcCI6Imh0dHBzOi8vc3RzLndpbmRvd3MubmV0LzljN2Q5ZGQzLTg0MGMtNGIzZi04MThlLTU1Mjg2NTA4MmUxNi8iLCJvaWQiOiJlZGQwYzQzNS00ZmM4LTQyNzgtYjYwYi05YmJiMmRlNWU5NmMiLCJyaCI6IjEuQVRBQTA1MTluQXlFUDB1QmpsVW9aUWd1RnNHZER6M1MxNFJNblJ5SFBIYi1fdnhEQVFBd0FBLiIsInJvbGVzIjpbIkFQSS5EZWxldGUiLCJBUEkuUmVhZCIsIkFQSS5Xcml0ZSIsIkFQSS5VcGRhdGUiXSwic3ViIjoiZWRkMGM0MzUtNGZjOC00Mjc4LWI2MGItOWJiYjJkZTVlOTZjIiwidGlkIjoiOWM3ZDlkZDMtODQwYy00YjNmLTgxOGUtNTUyODY1MDgyZTE2IiwidXRpIjoiQWhjRDBFeWZ3MHlrZ1hWYzMwZEFBQSIsInZlciI6IjEuMCJ9.eNymbf3dbkDOdfZxSHPkdzpgled8FWsvYHr3dJ65g4n8T3tMMmP8TkgbjFGeEhUesi8-IzmmTv7Kn-5yhv41Jax6-KveH5dMEZh3Hknim4FmV3Va8LKg5CvwBv4mjgm-HpTrjJpHwMvCE--pESJXEdjXU-sleQH7YC472VF7Xs-Rjdsh4jn3HC7VceRX6hEFInYcngUXq9TzYvnqJD-a65jpzErN9amr3O0z8mcwgp-hXRpl2Zan4qv7L78HOt9BveC4htJ3dT-98RRyoSauaGNdoJi9zpcVKn48Kl9xMYnCxHNpX1QtySQcPRkLXzGNlGnOqCIkVJ677Ifoa96Ovw" \
-        -H "Content-Type: application/json"
+  debug-api:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+
+      - name: Debug - Call API with curl
+        run: |
+          curl -v -X GET "https://api.dev.complete.education.gov.uk/v1/Projects/List/All" \
+            -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsIng1dCI6IkpETmFfNGk0cjdGZ2lnTDNzSElsSTN4Vi1JVSIsImtpZCI6IkpETmFfNGk0cjdGZ2lnTDNzSElsSTN4Vi1JVSJ9.eyJhdWQiOiJhcGk6Ly8zZDBmOWRjMS1kN2QyLTRjODQtOWQxYy04NzNjNzZmZWZlZmMiLCJpc3MiOiJodHRwczovL3N0cy53aW5kb3dzLm5ldC85YzdkOWRkMy04NDBjLTRiM2YtODE4ZS01NTI4NjUwODJlMTYvIiwiaWF0IjoxNzQyOTg1NzM0LCJuYmYiOjE3NDI5ODU3MzQsImV4cCI6MTc0Mjk4OTYzNCwiYWlvIjoiazJSZ1lERGNVbjNGYzFzZWs1Mkdqa0hWQnowR0FBPT0iLCJhcHBpZCI6ImE2MjQ5MTk4LTJjMGUtNGRjNi05OGFiLWZmYThhYTliODRmMyIsImFwcGlkYWNyIjoiMSIsImlkcCI6Imh0dHBzOi8vc3RzLndpbmRvd3MubmV0LzljN2Q5ZGQzLTg0MGMtNGIzZi04MThlLTU1Mjg2NTA4MmUxNi8iLCJvaWQiOiJlZGQwYzQzNS00ZmM4LTQyNzgtYjYwYi05YmJiMmRlNWU5NmMiLCJyaCI6IjEuQVRBQTA1MTluQXlFUDB1QmpsVW9aUWd1RnNHZER6M1MxNFJNblJ5SFBIYi1fdnhEQVFBd0FBLiIsInJvbGVzIjpbIkFQSS5EZWxldGUiLCJBUEkuUmVhZCIsIkFQSS5Xcml0ZSIsIkFQSS5VcGRhdGUiXSwic3ViIjoiZWRkMGM0MzUtNGZjOC00Mjc4LWI2MGItOWJiYjJkZTVlOTZjIiwidGlkIjoiOWM3ZDlkZDMtODQwYy00YjNmLTgxOGUtNTUyODY1MDgyZTE2IiwidXRpIjoiQWhjRDBFeWZ3MHlrZ1hWYzMwZEFBQSIsInZlciI6IjEuMCJ9.eNymbf3dbkDOdfZxSHPkdzpgled8FWsvYHr3dJ65g4n8T3tMMmP8TkgbjFGeEhUesi8-IzmmTv7Kn-5yhv41Jax6-KveH5dMEZh3Hknim4FmV3Va8LKg5CvwBv4mjgm-HpTrjJpHwMvCE--pESJXEdjXU-sleQH7YC472VF7Xs-Rjdsh4jn3HC7VceRX6hEFInYcngUXq9TzYvnqJD-a65jpzErN9amr3O0z8mcwgp-hXRpl2Zan4qv7L78HOt9BveC4htJ3dT-98RRyoSauaGNdoJi9zpcVKn48Kl9xMYnCxHNpX1QtySQcPRkLXzGNlGnOqCIkVJ677Ifoa96Ovw" \
+            -H "Content-Type: application/json"
 #  cypress-tests:
 #    name: Run Cypress Tests
 #    runs-on: ubuntu-latest
