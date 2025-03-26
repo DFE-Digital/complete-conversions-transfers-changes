@@ -1681,6 +1681,35 @@
           "assignedToFullName": {
             "type": "string",
             "nullable": true
+          },
+          "localAuthorityName": {
+            "type": "string",
+            "nullable": true
+          },
+          "team": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/ProjectTeam"
+              }
+            ]
+          },
+          "projectCompletionDate": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "region": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/Region"
+              }
+            ]
+          },
+          "localAuthorityNameFormatted": {
+            "type": "string",
+            "nullable": true
           }
         }
       },
