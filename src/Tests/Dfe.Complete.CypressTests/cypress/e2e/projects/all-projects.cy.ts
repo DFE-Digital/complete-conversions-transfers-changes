@@ -75,7 +75,8 @@ describe("View all projects", () => {
         // projectDetailsPage.containsHeading(transferSchoolName); // not implemented
     });
 
-    it("Should be able to view all Conversions projects by month", () => {
+    it.skip("Should be able to view all Conversions projects by month", () => {
+        // not implemented 187137
         const nextMonthString = `${nextMonth.toLocaleString('default', { month: 'short' })} ${nextMonth.getFullYear()}`;
         navBar.goToAllProjects();
         allProjects
