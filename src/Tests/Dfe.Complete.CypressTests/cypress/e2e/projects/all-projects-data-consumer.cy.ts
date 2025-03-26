@@ -1,9 +1,9 @@
 import navBar from "../../pages/navBar";
 import allProjects from "../../pages/projects/allProjects";
 import { projectTable } from "../../pages/projects/tables/projectTable";
-import {before, beforeEach} from "mocha";
+import { before, beforeEach } from "mocha";
 import projectApi from "../../api/projectApi";
-import {ProjectBuilder} from "../../api/projectBuilder";
+import { ProjectBuilder } from "../../api/projectBuilder";
 import projectRemover from "../../api/projectRemover";
 import dateRangeFilter from "../../pages/projects/dateRangeFilter";
 
@@ -24,16 +24,11 @@ describe.skip("Data consumer user - view all projects", () => {
 
     it("Should be able to view all Conversions projects by month within a date range", () => {
         const today = new Date();
-        const currentMonthString = `${today.toLocaleString('default', { month: 'long' })} ${today.getFullYear()}`;
+        const currentMonthString = `${today.toLocaleString("default", { month: "long" })} ${today.getFullYear()}`;
 
         navBar.goToAllProjects();
-        allProjects
-            .filterProjects("By month")
-            .containsHeading(`${currentMonthString} to ${currentMonthString}`)
-        dateRangeFilter
-            .selectDateFrom("May 2026")
-            .selectDateTo("Aug 2026")
-            .applyDateFilter();
+        allProjects.filterProjects("By month").containsHeading(`${currentMonthString} to ${currentMonthString}`);
+        dateRangeFilter.selectDateFrom("May 2026").selectDateTo("Aug 2026").applyDateFilter();
         allProjects.containsHeading("May 2026 to August 2026");
         projectTable
             .hasTableHeader("School and URN")
@@ -46,5 +41,4 @@ describe.skip("Data consumer user - view all projects", () => {
             .goTo(`${schoolName} ${project.urn.value}`);
         // projectDetailsPage.containsHeading(schoolName); // not implemented
     });
-
 });

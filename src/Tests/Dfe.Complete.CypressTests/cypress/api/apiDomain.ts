@@ -22,10 +22,9 @@ export type AdvisoryBoardDetails = {
     conditions: string;
 };
 
-export type CreateTransferProjectResponse =
-    {
-        id: string;
-    };
+export type CreateTransferProjectResponse = {
+    id: string;
+};
 
 export type CreateProjectRequest = {
     urn: { value: number };
@@ -46,7 +45,7 @@ export type CreateProjectRequest = {
 
 export type CreateProjectResponse = {
     value: string;
-}
+};
 
 export type GetProjectResponse = {
     id: { value: string };
@@ -102,5 +101,5 @@ export enum Region {
     WestMidlands = 6,
     NorthEast = 7,
     SouthWest = 8,
-    EastMidlands = 9
+    EastMidlands = 9,
 }

@@ -6,10 +6,7 @@ import navBar from "../../pages/navBar";
 import yourTeamProjects from "../../pages/projects/yourTeamProjects";
 import yourTeamProjectsRCSViewTable from "../../pages/projects/tables/yourTeamProjectsRCSViewTable";
 
-const project = ProjectBuilder.createConversionProjectRequest(
-    new Date("2026-04-01"),
-    111396,
-);
+const project = ProjectBuilder.createConversionProjectRequest(new Date("2026-04-01"), 111396);
 const schoolName = "Blacon High School, A Specialist Sports College";
 //todo create regional caseworker service account
 const regionalCaseworkerUserEmail = "todo";
@@ -38,9 +35,7 @@ describe.skip("Regional caseworker services user - View your team projects", () 
 
     it("Should be able to view my project in my team project listings in progress", () => {
         navBar.goToYourTeamProjects();
-        yourTeamProjects
-            .containsHeading("Your team projects in progress")
-            .goToNextPageUntilFieldIsVisible(schoolName);
+        yourTeamProjects.containsHeading("Your team projects in progress").goToNextPageUntilFieldIsVisible(schoolName);
         yourTeamProjectsRCSViewTable
             .hasTableHeader("School or academy")
             .hasTableHeader("URN")
@@ -75,19 +70,14 @@ describe.skip("Regional caseworker services user - View your team projects", () 
             .schoolHasUrn(teammatesSchoolName, `${project.urn.value}`)
             .schoolHasLocalAuthority(teammatesSchoolName, "Halton")
             .schoolHasRegion(teammatesSchoolName, "North West")
-            .schoolHasAssignedTo(
-                teammatesSchoolName,
-                "Regional Delivery Officer",
-            )
+            .schoolHasAssignedTo(teammatesSchoolName, "Regional Delivery Officer")
             .schoolHasProjectType(teammatesSchoolName, "Conversion")
             .goTo(teammatesSchoolName);
         // projectDetailsPage.containsHeading(teammatesSchoolName); // not implemented
     });
 
     it("Should be able to view my team projects that are new", () => {
-        yourTeamProjects
-            .filterProjects("New")
-            .containsHeading("Your team new projects");
+        yourTeamProjects.filterProjects("New").containsHeading("Your team new projects");
         yourTeamProjectsRCSViewTable
             .schoolIsFirstInTable(teammatesSchoolName)
             .hasTableHeader("School or academy")
@@ -112,9 +102,7 @@ describe.skip("Regional caseworker services user - View your team projects", () 
             .hasTableHeader("Conversions")
             .hasTableHeader("Transfers")
             .goTo(regionalCaseWorkerUserName);
-        yourTeamProjects.containsHeading(
-            `Projects assigned to ${regionalCaseWorkerUserName}`,
-        );
+        yourTeamProjects.containsHeading(`Projects assigned to ${regionalCaseWorkerUserName}`);
         yourTeamProjectsRCSViewTable
             .hasTableHeader("School or academy")
             .hasTableHeader("URN")
@@ -127,9 +115,7 @@ describe.skip("Regional caseworker services user - View your team projects", () 
 
     it.skip("Should be able to view my team projects that are completed", () => {
         // not implemented
-        yourTeamProjects
-            .filterProjects("Completed")
-            .containsHeading("Your team completed projects");
+        yourTeamProjects.filterProjects("Completed").containsHeading("Your team completed projects");
         yourTeamProjectsRCSViewTable
             .schoolIsFirstInTable(teammatesSchoolName)
             .hasTableHeader("School or academy")

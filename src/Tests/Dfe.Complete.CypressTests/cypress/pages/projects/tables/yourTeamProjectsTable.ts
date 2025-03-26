@@ -2,9 +2,10 @@ import ProjectTable from "./projectTable";
 
 class YourTeamProjectsTable extends ProjectTable {
     schoolIsFirstInTable(schoolName: string) {
-        cy.getByClass('govuk-table').find('tr').eq(0).should('contain', schoolName)
+        cy.getByClass("govuk-table").find("tr").eq(0).should("contain", schoolName);
         return this;
     }
+
     schoolHasUrn(schoolName: string, expectedUrn: string) {
         this.assertTableCellValue(schoolName, 2, expectedUrn);
         return this;

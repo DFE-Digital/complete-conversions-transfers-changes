@@ -1,5 +1,5 @@
 import NewProjectPage from "./newProjectPage";
-import {yesNoOption} from "../../../constants/stringTestConstants";
+import { yesNoOption } from "../../../constants/stringTestConstants";
 
 class NewTransferPage extends NewProjectPage {
     public withAcademyURN(urn: string): this {
@@ -12,7 +12,7 @@ class NewTransferPage extends NewProjectPage {
         return this;
     }
 
-    public withIncomingTrustUKPRN (ukprn: string): this {
+    public withIncomingTrustUKPRN(ukprn: string): this {
         cy.getById("IncomingUKPRN").typeFast(ukprn);
         return this;
     }

@@ -1,8 +1,6 @@
 import Projects from "./projects";
 
-class YourTeamProjects extends Projects {
-
-}
+class YourTeamProjects extends Projects {}
 
 const yourTeamProjects = new YourTeamProjects();
 

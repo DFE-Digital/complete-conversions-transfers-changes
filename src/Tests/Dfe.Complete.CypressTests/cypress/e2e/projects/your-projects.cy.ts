@@ -1,6 +1,6 @@
 import projectRemover from "../../api/projectRemover";
 import projectApi from "../../api/projectApi";
-import {ProjectBuilder} from "../../api/projectBuilder";
+import { ProjectBuilder } from "../../api/projectBuilder";
 import yourProjects from "../../pages/projects/yourProjects";
 import { projectTable } from "../../pages/projects/tables/projectTable";
 import yourProjectsInProgressTable from "../../pages/projects/tables/yourProjectsInProgressTable";
@@ -21,9 +21,7 @@ describe("View your projects", () => {
     });
 
     it("Should be able to view newly created conversion project in Your projects", () => {
-        yourProjects
-            .containsHeading("Your projects in progress")
-            .goToNextPageUntilFieldIsVisible(schoolName);
+        yourProjects.containsHeading("Your projects in progress").goToNextPageUntilFieldIsVisible(schoolName);
         projectTable
             .hasTableHeader("School or academy")
             .hasTableHeader("URN")

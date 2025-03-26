@@ -6,20 +6,13 @@ import yourTeamProjects from "../../pages/projects/yourTeamProjects";
 import { ProjectBuilder } from "../../api/projectBuilder";
 import yourTeamProjectsRDOViewTable from "../../pages/projects/tables/yourTeamProjectsRCSViewTable";
 
-const project = ProjectBuilder.createConversionProjectRequest(
-    new Date("2026-04-01"),
-    111394,
-);
+const project = ProjectBuilder.createConversionProjectRequest(new Date("2026-04-01"), 111394);
 const schoolName = "Farnworth Church of England Controlled Primary School";
 // todo create regional delivery officer service account in London team
 const londonUserEmail = "todo";
 const londonUserAdId = "todo";
 const londonUserName = "todo";
-const teammatesProject = ProjectBuilder.createConversionProjectRequest(
-    new Date("2026-04-01"),
-    111395,
-    londonUserAdId,
-);
+const teammatesProject = ProjectBuilder.createConversionProjectRequest(new Date("2026-04-01"), 111395, londonUserAdId);
 const teammatesSchoolName = "Kingsway High School";
 describe.skip("Regional delivery officer user - View your team projects", () => {
     before(() => {
@@ -37,9 +30,7 @@ describe.skip("Regional delivery officer user - View your team projects", () => 
 
     it("Should be able to view my project in my team project listings in progress", () => {
         navBar.goToYourTeamProjects();
-        yourTeamProjects
-            .containsHeading("Your team projects in progress")
-            .goToNextPageUntilFieldIsVisible(schoolName);
+        yourTeamProjects.containsHeading("Your team projects in progress").goToNextPageUntilFieldIsVisible(schoolName);
         yourTeamProjectsRDOViewTable
             .hasTableHeader("School or academy")
             .hasTableHeader("URN")
@@ -74,19 +65,14 @@ describe.skip("Regional delivery officer user - View your team projects", () => 
             .schoolHasUrn(teammatesSchoolName, `${project.urn.value}`)
             .schoolHasLocalAuthority(teammatesSchoolName, "Halton")
             .schoolHasRegion(teammatesSchoolName, "North West")
-            .schoolHasAssignedTo(
-                teammatesSchoolName,
-                "Regional Delivery Officer",
-            )
+            .schoolHasAssignedTo(teammatesSchoolName, "Regional Delivery Officer")
             .schoolHasProjectType(teammatesSchoolName, "Conversion")
             .goTo(teammatesSchoolName);
         // projectDetailsPage.containsHeading(teammatesSchoolName); // not implemented
     });
 
     it("Should be able to view my team projects that are new", () => {
-        yourTeamProjects
-            .filterProjects("New")
-            .containsHeading("Your team new projects");
+        yourTeamProjects.filterProjects("New").containsHeading("Your team new projects");
         yourTeamProjectsRDOViewTable
             .schoolIsFirstInTable(teammatesSchoolName)
             .hasTableHeader("School or academy")
@@ -111,9 +97,7 @@ describe.skip("Regional delivery officer user - View your team projects", () => 
             .hasTableHeader("Conversions")
             .hasTableHeader("Transfers")
             .goTo(londonUserName);
-        yourTeamProjects.containsHeading(
-            `Projects assigned to ${londonUserName}`,
-        );
+        yourTeamProjects.containsHeading(`Projects assigned to ${londonUserName}`);
         yourTeamProjectsRDOViewTable
             .hasTableHeader("School or academy")
             .hasTableHeader("URN")
@@ -126,9 +110,7 @@ describe.skip("Regional delivery officer user - View your team projects", () => 
 
     it.skip("Should be able to view my team projects that are handed over", () => {
         // not implemented
-        yourTeamProjects
-            .filterProjects("Handed over")
-            .containsHeading("Handed over");
+        yourTeamProjects.filterProjects("Handed over").containsHeading("Handed over");
         yourTeamProjectsRDOViewTable
             .schoolIsFirstInTable(teammatesSchoolName)
             .hasTableHeader("School or academy")
@@ -138,14 +120,11 @@ describe.skip("Regional delivery officer user - View your team projects", () => 
             .hasTableHeader("Assigned to")
             .goTo(teammatesSchoolName);
         // projectDetailsPage.containsHeading(teammatesSchoolName); // not implemented
-
     });
 
     it("Should be able to view my team projects that are completed", () => {
         // not implemented
-        yourTeamProjects
-            .filterProjects("Completed")
-            .containsHeading("Your team completed projects");
+        yourTeamProjects.filterProjects("Completed").containsHeading("Your team completed projects");
         yourTeamProjectsRDOViewTable
             .schoolIsFirstInTable(teammatesSchoolName)
             .hasTableHeader("School or academy")

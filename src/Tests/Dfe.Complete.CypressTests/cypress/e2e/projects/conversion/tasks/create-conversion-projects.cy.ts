@@ -38,7 +38,7 @@ describe("Create a new Conversion Project", () => {
             .with2RI("No")
             .continue();
 
-        validationComponent.hasNoValidationErrors()
+        validationComponent.hasNoValidationErrors();
         cy.get("h2").should("contain", "Project created");
     });
 

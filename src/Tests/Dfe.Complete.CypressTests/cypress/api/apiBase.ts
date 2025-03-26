@@ -1,4 +1,11 @@
-import { EnvCompleteApiClientId, EnvClientId, EnvClientSecret, EnvTenantId, EnvUsername, UserAccessToken } from "cypress/constants/cypressConstants";
+import {
+    EnvCompleteApiClientId,
+    EnvClientId,
+    EnvClientSecret,
+    EnvTenantId,
+    EnvUsername,
+    UserAccessToken,
+} from "cypress/constants/cypressConstants";
 
 export class ApiBase {
     protected getHeaders(): object {
@@ -15,29 +22,30 @@ export class ApiBase {
             return cy.wrap(this.getHeaders());
         }
 
-        const tenantId = Cypress.env(EnvTenantId);  
+        const tenantId = Cypress.env(EnvTenantId);
         const clientId = Cypress.env(EnvClientId);
         const clientSecret = Cypress.env(EnvClientSecret);
         const completeApiClientId = Cypress.env(EnvCompleteApiClientId);
-        const scope = `api://${completeApiClientId}/.default`;  
-        
-        return cy.request({
-            method: 'POST',
-            url: `https://login.microsoftonline.com/${tenantId}/oauth2/v2.0/token`,
-            form: true,
-            body: {
-                grant_type: 'client_credentials',
-                client_id: clientId,
-                client_secret: clientSecret,
-                scope: scope
-            }
-        }).then((response) => {
-            expect(response.status).to.eq(200);
-            const accessToken = response.body.access_token;
-            Cypress.env(UserAccessToken, accessToken);
+        const scope = `api://${completeApiClientId}/.default`;
 
-            return this.getHeaders();
-        })
+        return cy
+            .request({
+                method: "POST",
+                url: `https://login.microsoftonline.com/${tenantId}/oauth2/v2.0/token`,
+                form: true,
+                body: {
+                    grant_type: "client_credentials",
+                    client_id: clientId,
+                    client_secret: clientSecret,
+                    scope: scope,
+                },
+            })
+            .then((response) => {
+                expect(response.status).to.eq(200);
+                const accessToken = response.body.access_token;
+                Cypress.env(UserAccessToken, accessToken);
+
+                return this.getHeaders();
+            });
     }
 }
-

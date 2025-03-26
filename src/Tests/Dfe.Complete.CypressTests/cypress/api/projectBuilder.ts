@@ -1,10 +1,13 @@
-import {CreateProjectRequest} from "./apiDomain";
-import {EnvUserAdId} from "../constants/cypressConstants";
+import { CreateProjectRequest } from "./apiDomain";
+import { EnvUserAdId } from "../constants/cypressConstants";
 
 export class ProjectBuilder {
-
-    public static createConversionProjectRequest(significantDate: Date, urn? : number, userAdId?: string): CreateProjectRequest {
-        const significantDateFormatted = significantDate.toISOString().split('T')[0];
+    public static createConversionProjectRequest(
+        significantDate: Date,
+        urn?: number,
+        userAdId?: string,
+    ): CreateProjectRequest {
+        const significantDateFormatted = significantDate.toISOString().split("T")[0];
         const urnValue = urn ? urn : 103844;
         const userAdIdValue = userAdId ? userAdId : Cypress.env(EnvUserAdId);
 
@@ -78,5 +81,4 @@ export class ProjectBuilder {
             userAdId: Cypress.env(EnvUserAdId),
         };
     }
-
 }

@@ -26,7 +26,7 @@ describe("Testing cookie preferences", () => {
     });
 
     it("Should be able to view cookies page", () => {
-        cookies.viewCookies()
+        cookies.viewCookies();
 
         cookiesPage.shouldBeOnCookiesPage();
 
@@ -44,22 +44,14 @@ describe("Testing cookie preferences", () => {
         // bug: 201914
         cookies.viewCookies();
 
-        cookiesPage
-            .shouldBeOnCookiesPage()
-            .selectAcceptAnalyticsCookies()
-            .saveChanges();
+        cookiesPage.shouldBeOnCookiesPage().selectAcceptAnalyticsCookies().saveChanges();
 
-        cookies
-            .consentCookieIsSetToTrue()
-            .cookieBannerIsNotVisible(); // This is failing, banner is still visible
+        cookies.consentCookieIsSetToTrue().cookieBannerIsNotVisible(); // This is failing, banner is still visible
 
         cookiesPage.goBackToThePreviousPage();
 
         cy.url().should("not.contain", "/public/cookies");
 
-        cookies
-            .consentCookieIsSetToTrue()
-            .cookieBannerIsNotVisible();
+        cookies.consentCookieIsSetToTrue().cookieBannerIsNotVisible();
     });
-
 });

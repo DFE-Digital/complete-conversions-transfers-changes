@@ -1,4 +1,4 @@
-import {yesNoOption} from "../../../constants/stringTestConstants";
+import { yesNoOption } from "../../../constants/stringTestConstants";
 
 class NewProjectPage {
     public withTrustReferenceNumber(trn: string): this {
@@ -51,7 +51,6 @@ class NewProjectPage {
         cy.getByClass("govuk-button").click();
         return this;
     }
-
 }
 
 export default NewProjectPage;

@@ -1,6 +1,6 @@
 import { EnvApi } from "cypress/constants/cypressConstants";
 import { ApiBase } from "./apiBase";
-import {GetProjectResponse} from "./apiDomain";
+import { GetProjectResponse } from "./apiDomain";
 
 class ProjectRemover extends ApiBase {
     public removeProject(urn: string): Cypress.Chainable<boolean> {

@@ -6,7 +6,7 @@ class SelectProjectTypePage {
 
     public selectTransfer(): this {
         cy.getById("ProjectType-2").click();
-        return this
+        return this;
     }
 
     public selectFormAMATConversion(): this {

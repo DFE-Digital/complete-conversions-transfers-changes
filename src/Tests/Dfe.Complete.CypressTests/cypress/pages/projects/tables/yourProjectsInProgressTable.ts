@@ -1,7 +1,6 @@
 import ProjectTable from "./projectTable";
 
 class YourProjectsInProgressTable extends ProjectTable {
-
     schoolHasUrn(schoolName: string, expectedUrn: string) {
         this.assertTableCellValue(schoolName, 2, expectedUrn);
         return this;

@@ -1,12 +1,12 @@
 import navBar from "../../pages/navBar";
 import allProjects from "../../pages/projects/allProjects";
 import { projectTable } from "../../pages/projects/tables/projectTable";
-import {before, beforeEach} from "mocha";
+import { before, beforeEach } from "mocha";
 import projectApi from "../../api/projectApi";
-import {ProjectBuilder} from "../../api/projectBuilder";
+import { ProjectBuilder } from "../../api/projectBuilder";
 import projectRemover from "../../api/projectRemover";
 import allProjectsInProgressTable from "../../pages/projects/tables/allProjectsInProgressTable";
-import {Username} from "../../constants/cypressConstants";
+import { Username } from "../../constants/cypressConstants";
 
 const today = new Date();
 const nextMonth = new Date(today.setMonth(today.getMonth() + 1));
@@ -23,9 +23,7 @@ describe("View all projects", () => {
     before(() => {
         projectRemover.removeProjectIfItExists(`${project.urn.value}`);
         // projectRemover.removeProjectIfItExists(`${transferProject.urn.value}`);
-        projectApi
-            .createProject(project)
-            .then((response) => (projectId = response.value));
+        projectApi.createProject(project).then((response) => (projectId = response.value));
         // projectApi.createProject(transferProject);
     });
 
@@ -36,11 +34,9 @@ describe("View all projects", () => {
     });
 
     it("Should be able to view newly created conversion project in All projects in progress and Conversions projects", () => {
-        const nextMonthString = `${nextMonth.toLocaleString('default', { month: 'short' })} ${nextMonth.getFullYear()}`;
+        const nextMonthString = `${nextMonth.toLocaleString("default", { month: "short" })} ${nextMonth.getFullYear()}`;
         navBar.goToAllProjects();
-        allProjects
-            .containsHeading("All projects in progress")
-            .goToNextPageUntilFieldIsVisible(schoolName);
+        allProjects.containsHeading("All projects in progress").goToNextPageUntilFieldIsVisible(schoolName);
         allProjectsInProgressTable
             .contains(schoolName)
             .schoolHasUrn(schoolName, `${project.urn.value}`)
@@ -77,11 +73,9 @@ describe("View all projects", () => {
 
     it.skip("Should be able to view all Conversions projects by month", () => {
         // not implemented 187137
-        const nextMonthString = `${nextMonth.toLocaleString('default', { month: 'short' })} ${nextMonth.getFullYear()}`;
+        const nextMonthString = `${nextMonth.toLocaleString("default", { month: "short" })} ${nextMonth.getFullYear()}`;
         navBar.goToAllProjects();
-        allProjects
-            .filterProjects("By month")
-            .containsHeading(nextMonthString)
+        allProjects.filterProjects("By month").containsHeading(nextMonthString);
         projectTable
             .hasTableHeader("School and URN")
             .hasTableHeader("Region")
@@ -95,9 +89,7 @@ describe("View all projects", () => {
 
     it("Should be able to view all projects by region and all a region's projects", () => {
         navBar.goToAllProjects();
-        allProjects
-            .filterProjects("By region")
-            .containsHeading("All projects by region")
+        allProjects.filterProjects("By region").containsHeading("All projects by region");
         projectTable
             .hasTableHeader("Region")
             .hasTableHeader("Conversions")
@@ -120,9 +112,7 @@ describe("View all projects", () => {
 
     it("Should be able to view all projects by user and all a user's projects", () => {
         navBar.goToAllProjects();
-        allProjects
-            .filterProjects("By user")
-            .containsHeading("All projects by user")
+        allProjects.filterProjects("By user").containsHeading("All projects by user");
         projectTable
             .hasTableHeader("User name")
             .hasTableHeader("Email")
@@ -140,7 +130,7 @@ describe("View all projects", () => {
             .contains(schoolName)
             .goTo(schoolName);
         // projectDetailsPage.containsHeading(schoolName) // not implemented
-    })
+    });
 
     it.skip("Should be able to view all projects by trust and all a trust's projects", () => {
         // bug
@@ -154,10 +144,8 @@ describe("View all projects", () => {
             .hasTableHeader("Group identifier")
             .hasTableHeader("Conversions")
             .hasTableHeader("Transfers")
-            .filterBy(trust)
-        allProjects
-            .containsHeading(`Projects for ${trust}`)
-            .goToNextPageUntilFieldIsVisible(schoolName);
+            .filterBy(trust);
+        allProjects.containsHeading(`Projects for ${trust}`).goToNextPageUntilFieldIsVisible(schoolName);
         projectTable
             .hasTableHeader("School or academy")
             .hasTableHeader("URN")
@@ -170,9 +158,7 @@ describe("View all projects", () => {
 
     it("Should be able to view all projects by local authority and all a local authority's projects", () => {
         navBar.goToAllProjects();
-        allProjects
-            .filterProjects("By local authority")
-            .containsHeading("All projects by local authority");
+        allProjects.filterProjects("By local authority").containsHeading("All projects by local authority");
         projectTable
             .hasTableHeader("Local authority")
             .hasTableHeader("Code")
@@ -194,7 +180,7 @@ describe("View all projects", () => {
 
     it.skip("Should be able to view all completed projects", () => {
         // project completion not implemented
-        cy.visit(`projects/${projectId}/tasks`)
+        cy.visit(`projects/${projectId}/tasks`);
         // click complete project on tasks page
         navBar.goToAllProjects();
         allProjects
@@ -212,5 +198,4 @@ describe("View all projects", () => {
             .goTo(schoolName);
         // projectDetailsPage.containsHeading(schoolName); // not implemented
     });
-
 });

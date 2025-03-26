@@ -69,7 +69,7 @@ describe("Create a new Transfer Project", () => {
             .withTransferDueToFinancialSafeguardingGovernanceIssues("Yes")
             .withOutgoingTrustWillCloseAfterTransfer("Yes")
             .withHandingOverToRCS("Yes")
-            .continue()
+            .continue();
 
         validationComponent.hasNoValidationErrors();
         cy.get("h2").should("contain", "Task list");
@@ -94,17 +94,27 @@ describe("Create a new Transfer Project", () => {
 
         validationComponent
             .hasLinkedValidationError("The Urn must be 6 digits long. For example, 123456.")
-            .hasLinkedValidationError("The OutgoingUKPRN must be 8 digits long and start with a 1. For example, 12345678.")
+            .hasLinkedValidationError(
+                "The OutgoingUKPRN must be 8 digits long and start with a 1. For example, 12345678.",
+            )
             .hasLinkedValidationError("The Trust reference number must be 'TR' followed by 5 numbers, e.g. TR01234")
             .hasLinkedValidationError("The School or academy SharePoint link must have the https scheme")
             .hasLinkedValidationError("The Incoming trust SharePoint link must have the https scheme")
-            .hasLinkedValidationError("Enter Outgoing trust SharePoint link in the correct format. SharePoint links start with 'https://educationgovuk.sharepoint.com' or 'https://educationgovuk-my.sharepoint.com/'")
+            .hasLinkedValidationError(
+                "Enter Outgoing trust SharePoint link in the correct format. SharePoint links start with 'https://educationgovuk.sharepoint.com' or 'https://educationgovuk-my.sharepoint.com/'",
+            )
             .hasLinkedValidationError("Advisory Board Date must be a real date")
             .hasLinkedValidationError("Provisional Transfer Date must be a real date")
             .hasLinkedValidationError("State if the conversion is due to 2RI. Choose yes or no")
             .hasLinkedValidationError("State if the transfer is due to an inadequate Ofsted rating. Choose yes or no")
-            .hasLinkedValidationError("State if the transfer is due to financial, safeguarding or governance issues. Choose yes or no")
-            .hasLinkedValidationError("State if the outgoing trust will close once this transfer is completed. Choose yes or no")
-            .hasLinkedValidationError("State if this project will be handed over to the Regional casework services team. Choose yes or no");
+            .hasLinkedValidationError(
+                "State if the transfer is due to financial, safeguarding or governance issues. Choose yes or no",
+            )
+            .hasLinkedValidationError(
+                "State if the outgoing trust will close once this transfer is completed. Choose yes or no",
+            )
+            .hasLinkedValidationError(
+                "State if this project will be handed over to the Regional casework services team. Choose yes or no",
+            );
     });
 });

@@ -3,13 +3,10 @@ import { ApiBase } from "./apiBase";
 import { CreateProjectRequest, CreateProjectResponse } from "./apiDomain";
 
 class ProjectApi extends ApiBase {
-    public createProject(
-        request: CreateProjectRequest,
-        username? : string
-    ): Cypress.Chainable<CreateProjectResponse> {
+    public createProject(request: CreateProjectRequest, username?: string): Cypress.Chainable<CreateProjectResponse> {
         return this.authenticatedRequest().then((headers) => {
             if (username) {
-                headers["x-user-context-name"] = username
+                headers["x-user-context-name"] = username;
             }
             return cy
                 .request<CreateProjectResponse>({
