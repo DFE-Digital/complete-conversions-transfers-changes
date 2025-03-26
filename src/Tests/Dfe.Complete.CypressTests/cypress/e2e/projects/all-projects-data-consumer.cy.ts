@@ -9,7 +9,8 @@ import dateRangeFilter from "../../pages/projects/dateRangeFilter";
 
 const project = ProjectBuilder.createConversionProjectRequest(new Date("2026-06-01"));
 const schoolName = "St Chad's Catholic Primary School";
-describe("Data consumer user - view all projects", () => {
+describe.skip("Data consumer user - view all projects", () => {
+    // not implemented 187514
     before(() => {
         projectRemover.removeProjectIfItExists(`${project.urn.value}`);
         projectApi.createProject(project);

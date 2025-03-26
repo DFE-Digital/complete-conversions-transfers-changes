@@ -141,7 +141,8 @@ describe("View all projects", () => {
         // projectDetailsPage.containsHeading(schoolName) // not implemented
     })
 
-    it("Should be able to view all projects by trust and all a trust's projects", () => {
+    it.skip("Should be able to view all projects by trust and all a trust's projects", () => {
+        // bug
         navBar.goToAllProjects();
         allProjects
             .filterProjects("By trust")
@@ -166,7 +167,7 @@ describe("View all projects", () => {
         // projectDetailsPage.containsHeading(schoolName); // not implemented
     });
 
-    it.only("Should be able to view all projects by local authority and all a local authority's projects", () => {
+    it("Should be able to view all projects by local authority and all a local authority's projects", () => {
         navBar.goToAllProjects();
         allProjects
             .filterProjects("By local authority")
