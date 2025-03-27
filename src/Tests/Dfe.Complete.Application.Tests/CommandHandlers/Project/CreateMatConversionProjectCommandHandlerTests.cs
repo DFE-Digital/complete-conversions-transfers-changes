@@ -36,11 +36,12 @@ public class CreateMatConversionProjectCommandHandlerTests
     )
     {
         // Arrange
-        var handler = new CreateMatConversionProjectCommandHandler(
-            mockProjectRepository, 
-            mockConversionTaskRepository, 
-            mockEstablishmentRepository,
-            mockSender.Object);
+        var commonProject = new CreateProjectCommon(mockEstablishmentRepository, mockSender.Object);
+        var handler =
+            new CreateMatConversionProjectCommandHandler(mockProjectRepository,
+                mockConversionTaskRepository,
+                commonProject);
+        
         const ProjectTeam userTeam = ProjectTeam.WestMidlands;
         var userDto = new UserDto
         {
@@ -116,11 +117,11 @@ public class CreateMatConversionProjectCommandHandlerTests
     )
     {
         // Arrange
-        var handler = new CreateMatConversionProjectCommandHandler(
-            mockProjectRepository, 
-            mockConversionTaskRepository, 
-            mockEstablishmentRepository, 
-            mockSender.Object);
+        var commonProject = new CreateProjectCommon(mockEstablishmentRepository, mockSender.Object);
+        var handler =
+            new CreateMatConversionProjectCommandHandler(mockProjectRepository,
+                mockConversionTaskRepository,
+                commonProject);
         
         command = command with { HandingOverToRegionalCaseworkService = true };
 
@@ -179,11 +180,11 @@ public class CreateMatConversionProjectCommandHandlerTests
     )
     {
         // Arrange
-        var handler = new CreateMatConversionProjectCommandHandler(
-            mockProjectRepository, 
-            mockConversionTaskRepository, 
-            mockEstablishmentRepository, 
-            mockSender.Object);
+        var commonProject = new CreateProjectCommon(mockEstablishmentRepository, mockSender.Object);
+        var handler =
+            new CreateMatConversionProjectCommandHandler(mockProjectRepository,
+                mockConversionTaskRepository,
+                commonProject);
         
         command = command with { HandingOverToRegionalCaseworkService = false };
 
@@ -247,11 +248,11 @@ public class CreateMatConversionProjectCommandHandlerTests
         mockSender.Setup(s => s.Send(It.IsAny<GetUserByAdIdQuery>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(Result<UserDto?>.Failure("DB ERROR"));
 
-        var handler = new CreateMatConversionProjectCommandHandler(
-            mockProjectRepository, 
-            mockConversionTaskRepository, 
-            mockEstablishmentRepository, 
-            mockSender.Object);
+        var commonProject = new CreateProjectCommon(mockEstablishmentRepository, mockSender.Object);
+        var handler =
+            new CreateMatConversionProjectCommandHandler(mockProjectRepository,
+                mockConversionTaskRepository,
+                commonProject);
         
         GiasEstablishment giasEstablishment =
             fixture.Customize(new GiasEstablishmentsCustomization() { Urn = command.Urn }).Create<GiasEstablishment>();
@@ -296,11 +297,11 @@ public class CreateMatConversionProjectCommandHandlerTests
         mockEstablishmentRepository.FindAsync(Arg.Any<Expression<Func<GiasEstablishment, bool>>>(), Arg.Any<CancellationToken>())
             .Returns(Task.FromResult(giasEstablishment));
 
-        var handler = new CreateMatConversionProjectCommandHandler(
-            mockProjectRepository,
-            mockConversionTaskRepository,
-            mockEstablishmentRepository,
-            mockSender.Object);
+        var commonProject = new CreateProjectCommon(mockEstablishmentRepository, mockSender.Object);
+        var handler =
+            new CreateMatConversionProjectCommandHandler(mockProjectRepository,
+                mockConversionTaskRepository,
+                commonProject);
 
         // Act & Assert
         var exception = await Assert.ThrowsAsync<NotFoundException>(() => handler.Handle(command, default));
@@ -328,11 +329,11 @@ public class CreateMatConversionProjectCommandHandlerTests
         mockSender.Setup(s => s.Send(It.IsAny<GetLocalAuthorityBySchoolUrnQuery>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(Result<GetLocalAuthorityBySchoolUrnResponseDto?>.Failure(expectedError));
 
-        var handler = new CreateMatConversionProjectCommandHandler(
-            mockProjectRepository, 
-            mockConversionTaskRepository, 
-            mockEstablishmentRepository, 
-            mockSender.Object);
+        var commonProject = new CreateProjectCommon(mockEstablishmentRepository, mockSender.Object);
+        var handler =
+            new CreateMatConversionProjectCommandHandler(mockProjectRepository,
+                mockConversionTaskRepository,
+                commonProject);
         
         GiasEstablishment giasEstablishment =
             fixture.Customize(new GiasEstablishmentsCustomization() { Urn = command.Urn }).Create<GiasEstablishment>();
@@ -367,11 +368,11 @@ public class CreateMatConversionProjectCommandHandlerTests
         mockSender.Setup(s => s.Send(It.IsAny<GetLocalAuthorityBySchoolUrnQuery>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(Result<GetLocalAuthorityBySchoolUrnResponseDto?>.Success(responseDto));
 
-        var handler = new CreateMatConversionProjectCommandHandler(
-            mockProjectRepository, 
-            mockConversionTaskRepository, 
-            mockEstablishmentRepository, 
-            mockSender.Object);
+        var commonProject = new CreateProjectCommon(mockEstablishmentRepository, mockSender.Object);
+        var handler =
+            new CreateMatConversionProjectCommandHandler(mockProjectRepository,
+                mockConversionTaskRepository,
+                commonProject);
         
         GiasEstablishment giasEstablishment =
             fixture.Customize(new GiasEstablishmentsCustomization() { Urn = command.Urn }).Create<GiasEstablishment>();
@@ -400,15 +401,14 @@ public class CreateMatConversionProjectCommandHandlerTests
         IFixture fixture,
         CreateMatConversionProjectCommand command)
     {
-        var responseDto = new GetLocalAuthorityBySchoolUrnResponseDto(null);
         mockSender.Setup(s => s.Send(It.IsAny<GetLocalAuthorityBySchoolUrnQuery>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(Result<GetLocalAuthorityBySchoolUrnResponseDto?>.Success(null));
 
-        var handler = new CreateMatConversionProjectCommandHandler(
-            mockProjectRepository, 
-            mockConversionTaskRepository, 
-            mockEstablishmentRepository, 
-            mockSender.Object);
+        var commonProject = new CreateProjectCommon(mockEstablishmentRepository, mockSender.Object);
+        var handler =
+            new CreateMatConversionProjectCommandHandler(mockProjectRepository,
+                mockConversionTaskRepository,
+                commonProject);
         
         var giasEstablishment =
             fixture.Customize(new GiasEstablishmentsCustomization() { Urn = command.Urn }).Create<GiasEstablishment>();
@@ -439,11 +439,11 @@ public class CreateMatConversionProjectCommandHandlerTests
     {
         // Arrange
        //Setup the handler
-        var handler =
-            new CreateMatConversionProjectCommandHandler(mockProjectRepository,
-                mockConversionTaskRepository,
-                mockEstablishmentRepository,
-                mockSender.Object);
+       var commonProject = new CreateProjectCommon(mockEstablishmentRepository, mockSender.Object);
+       var handler =
+           new CreateMatConversionProjectCommandHandler(mockProjectRepository,
+               mockConversionTaskRepository,
+               commonProject);
 
         // Setup the user dto
         const ProjectTeam team = ProjectTeam.WestMidlands;

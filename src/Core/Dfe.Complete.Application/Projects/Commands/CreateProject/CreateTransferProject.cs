@@ -1,4 +1,5 @@
 using Dfe.Complete.Application.Common.Models;
+using Dfe.Complete.Application.Projects.Common;
 using Dfe.Complete.Application.Projects.Models;
 using Dfe.Complete.Application.Projects.Queries.GetLocalAuthority;
 using MediatR;
@@ -35,85 +36,37 @@ public record CreateTransferProjectCommand(
 public class CreateTransferProjectCommandHandler(
     ICompleteRepository<Project> projectRepository,
     ICompleteRepository<TransferTasksData> transferTaskRepository,
-    ICompleteRepository<GiasEstablishment> establishmentRepository,
-    ISender sender)
+    ICreateProjectCommon createProjectCommon)
     : IRequestHandler<CreateTransferProjectCommand, ProjectId>
 {
     public async Task<ProjectId> Handle(CreateTransferProjectCommand request, CancellationToken cancellationToken)
     {
-        var localAuthorityIdRequest = await sender.Send(new GetLocalAuthorityBySchoolUrnQuery(request.Urn.Value),
+        var commonProjectCommand = new CreateProjectCommonCommand(request.Urn, request.GroupReferenceNumber,
+            request.HandingOverToRegionalCaseworkService, request.UserAdId);
+        var commonProject = await createProjectCommon.CreateCommonProject(commonProjectCommand,
             cancellationToken);
-
-        if (!localAuthorityIdRequest.IsSuccess || localAuthorityIdRequest.Value?.LocalAuthorityId == null)
-            throw new NotFoundException($"No Local authority could be found via Establishments for School Urn: {request.Urn.Value}.", nameof(request.Urn), innerException: new Exception(localAuthorityIdRequest.Error));
             
-        var establishment = await establishmentRepository.FindAsync(giasEstablishment => giasEstablishment.Urn == request.Urn, cancellationToken);
+        var tasksDataId = Guid.NewGuid();
+        var transferTask = new TransferTasksData(new TaskDataId(tasksDataId), commonProject.CreatedAt, commonProject.CreatedAt, request.IsDueToInedaquateOfstedRating, request.IsDueToIssues, request.OutGoingTrustWillClose);
 
-        if (establishment is null)
-        {
-            throw new NotFoundException($"No establishment could be found for Urn: {request.Urn.Value}.", nameof(request.Urn));
-        }
-            
-        var region = establishment.RegionCode?.ToEnumFromChar<Region>();
-
-        var createdAt = DateTime.UtcNow;
-        var transferTaskId = Guid.NewGuid();
-        var projectId = new ProjectId(Guid.NewGuid());
-
-        var transferTask = new TransferTasksData(new TaskDataId(transferTaskId), createdAt, createdAt, request.IsDueToInedaquateOfstedRating, request.IsDueToIssues, request.OutGoingTrustWillClose);
-
-        ProjectGroupDto? projectGroupDto = null;
-        if (!string.IsNullOrEmpty(request.GroupReferenceNumber))
-        {
-            var projectGroupRequest = await sender.Send(new GetProjectGroupByGroupReferenceNumberQuery(request.GroupReferenceNumber), cancellationToken);
-
-            if (!projectGroupRequest.IsSuccess)
-                throw new NotFoundException("Project Group retrieval failed", nameof(request.GroupReferenceNumber), new Exception(projectGroupRequest.Error));
-
-            projectGroupDto = projectGroupRequest.Value ?? throw new NotFoundException($"No Project Group found with reference number: {request.GroupReferenceNumber}", nameof(request.GroupReferenceNumber));
-        }
-            
-        Result<UserDto?>? userRequest = null;
-        ProjectTeam team;
-        DateTime? assignedAt = null;
-        UserDto? projectUser = null;
-        UserId? projectUserAssignedToId = null;
-
-        if (request.HandingOverToRegionalCaseworkService)
-        {
-            team = ProjectTeam.RegionalCaseWorkerServices;
-        }
-        else
-        {
-            if (!string.IsNullOrEmpty(request.UserAdId))
-                userRequest = await sender.Send(new GetUserByAdIdQuery(request.UserAdId), cancellationToken);
-
-            if (userRequest is not { IsSuccess: true } || userRequest.Value is null)
-                throw new NotFoundException("No user found.", innerException: new Exception(userRequest?.Error));
-            
-            projectUser = userRequest.Value;
-
-            team = (projectUser?.Team).FromDescription<ProjectTeam>();
-            assignedAt = DateTime.UtcNow;
-            projectUserAssignedToId = projectUser?.Id;
-        }
 
         var project = Project.CreateTransferProject
-        (projectId,
+        (
+            commonProject.ProjectId,
             request.Urn,
-            createdAt,
-            createdAt,
+            commonProject.CreatedAt,
+            commonProject.CreatedAt,
             TaskType.Transfer,
             ProjectType.Transfer,
-            transferTaskId,
-            region,
-            team,
-            projectUser?.Id,
-            projectUserAssignedToId,
-            assignedAt,
+            tasksDataId,
+            commonProject.Region,
+            commonProject.ProjectTeam,
+            commonProject.User?.Id,
+            commonProject.User?.Id,
+            commonProject.AssignedAt,
             request.IncomingTrustUkprn,
             request.OutgoingTrustUkprn,
-            projectGroupDto?.Id,
+            commonProject.ProjectGroupDto?.Id,
             request.EstablishmentSharepointLink,
             request.IncomingTrustSharepointLink,
             request.OutgoingTrustSharepointLink,
@@ -123,7 +76,7 @@ public class CreateTransferProjectCommandHandler(
             request.IsSignificantDateProvisional,
             request.IsDueTo2Ri, 
             request.HandoverComments, 
-            localAuthorityIdRequest.Value.LocalAuthorityId.Value
+            commonProject.LocalAuthority.LocalAuthorityId.Value
         ); 
             
         await transferTaskRepository.AddAsync(transferTask, cancellationToken);

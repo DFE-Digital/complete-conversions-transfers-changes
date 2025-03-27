@@ -36,10 +36,11 @@ public class CreateMatTransferProjectCommandHandlerTests
     )
     {
         // Arrange
-        var handler = new CreateMatTransferProjectCommandHandler(mockProjectRepository, 
-            mockTransferTaskRepository, 
-            mockEstablishmentRepository, 
-            mockSender.Object);
+        var commonProject = new CreateProjectCommon(mockEstablishmentRepository, mockSender.Object);
+        var handler =
+            new CreateMatTransferProjectCommandHandler(mockProjectRepository,
+                mockTransferTaskRepository,
+                commonProject);
 
         const ProjectTeam userTeam = ProjectTeam.WestMidlands;
         var userDto = new UserDto
@@ -115,10 +116,11 @@ public class CreateMatTransferProjectCommandHandlerTests
     )
     {
         // Arrange
-        var handler = new CreateMatTransferProjectCommandHandler(mockProjectRepository, 
-            mockTransferTaskRepository, 
-            mockEstablishmentRepository, 
-            mockSender.Object);
+        var commonProject = new CreateProjectCommon(mockEstablishmentRepository, mockSender.Object);
+        var handler =
+            new CreateMatTransferProjectCommandHandler(mockProjectRepository,
+                mockTransferTaskRepository,
+                commonProject);
 
         command = command with { HandingOverToRegionalCaseworkService = true };
 
@@ -177,10 +179,11 @@ public class CreateMatTransferProjectCommandHandlerTests
     )
     {
         // Arrange
-        var handler = new CreateMatTransferProjectCommandHandler(mockProjectRepository, 
-            mockTransferTaskRepository, 
-            mockEstablishmentRepository, 
-            mockSender.Object);
+        var commonProject = new CreateProjectCommon(mockEstablishmentRepository, mockSender.Object);
+        var handler =
+            new CreateMatTransferProjectCommandHandler(mockProjectRepository,
+                mockTransferTaskRepository,
+                commonProject);
 
         command = command with { HandingOverToRegionalCaseworkService = false };
 
@@ -238,10 +241,11 @@ public class CreateMatTransferProjectCommandHandlerTests
         CreateMatTransferProjectCommand command)
     {
         // Arrange
-        var handler = new CreateMatTransferProjectCommandHandler(mockProjectRepository, 
-            mockTransferTaskRepository, 
-            mockEstablishmentRepository, 
-            mockSender.Object);
+        var commonProject = new CreateProjectCommon(mockEstablishmentRepository, mockSender.Object);
+        var handler =
+            new CreateMatTransferProjectCommandHandler(mockProjectRepository,
+                mockTransferTaskRepository,
+                commonProject);
 
         var expectedErrorMessage = $"No Local authority could be found via Establishments for School Urn: {command.Urn.Value}.";
 
@@ -278,10 +282,11 @@ public class CreateMatTransferProjectCommandHandlerTests
         CreateMatTransferProjectCommand command)
     {
         // Arrange
-        var handler = new CreateMatTransferProjectCommandHandler(mockProjectRepository, 
-            mockTransferTaskRepository, 
-            mockEstablishmentRepository, 
-            mockSender.Object);
+        var commonProject = new CreateProjectCommon(mockEstablishmentRepository, mockSender.Object);
+        var handler =
+            new CreateMatTransferProjectCommandHandler(mockProjectRepository,
+                mockTransferTaskRepository,
+                commonProject);
 
         var expectedErrorMessage = "No user found.";
 
@@ -323,11 +328,11 @@ public class CreateMatTransferProjectCommandHandlerTests
         IFixture fixture)
     {
         // Arrange
-        var handler = new CreateMatTransferProjectCommandHandler(
-            mockProjectRepository,
-            mockTransferTaskRepository,
-            mockEstablishmentRepository,
-            mockSender.Object);
+        var commonProject = new CreateProjectCommon(mockEstablishmentRepository, mockSender.Object);
+        var handler =
+            new CreateMatTransferProjectCommandHandler(mockProjectRepository,
+                mockTransferTaskRepository,
+                commonProject);
 
         var expectedErrorMessage = "No user found.";
 
@@ -375,10 +380,11 @@ public class CreateMatTransferProjectCommandHandlerTests
         CreateMatTransferProjectCommand command)
     {
         // Arrange
-        var handler = new CreateMatTransferProjectCommandHandler(mockProjectRepository, 
-            mockTransferTaskRepository, 
-            mockEstablishmentRepository, 
-            mockSender.Object);
+        var commonProject = new CreateProjectCommon(mockEstablishmentRepository, mockSender.Object);
+        var handler =
+            new CreateMatTransferProjectCommandHandler(mockProjectRepository,
+                mockTransferTaskRepository,
+                commonProject);
 
         var expectedErrorMessage = $"No Local authority could be found via Establishments for School Urn: {command.Urn.Value}.";
 
@@ -415,11 +421,11 @@ public class CreateMatTransferProjectCommandHandlerTests
     {
         // Arrange
        //Setup the handler
-        var handler =
-            new CreateMatTransferProjectCommandHandler(mockProjectRepository,
-                mockTransferTaskRepository,
-                mockEstablishmentRepository,
-                mockSender.Object);
+       var commonProject = new CreateProjectCommon(mockEstablishmentRepository, mockSender.Object);
+       var handler =
+           new CreateMatTransferProjectCommandHandler(mockProjectRepository,
+               mockTransferTaskRepository,
+               commonProject);
 
         // Setup the user dto
         const ProjectTeam team = ProjectTeam.WestMidlands;

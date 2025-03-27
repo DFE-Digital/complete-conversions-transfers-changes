@@ -15,6 +15,7 @@ using DfE.CoreLibs.Testing.AutoFixture.Customizations;
 using Dfe.Complete.Application.Projects.Models;
 using MediatR;
 using Dfe.Complete.Application.Common.Models;
+using Dfe.Complete.Application.Projects.Common;
 using Dfe.Complete.Application.Projects.Queries.GetLocalAuthority;
 using Moq;
 using Dfe.Complete.Application.Projects.Queries.GetUser;
@@ -37,10 +38,11 @@ public class CreateConversionProjectCommandHandlerTests
     )
     {
         // Arrange
-        var handler = new CreateConversionProjectCommandHandler(mockProjectRepository,
-            mockConversionTaskRepository,
-            mockEstablishmentRepository,
-            mockSender.Object);
+        var commonProject = new CreateProjectCommon(mockEstablishmentRepository, mockSender.Object);
+        var handler =
+            new CreateConversionProjectCommandHandler(mockProjectRepository,
+                mockConversionTaskRepository,
+                commonProject);
 
         const ProjectTeam team = ProjectTeam.WestMidlands;
         var userDto = new UserDto
@@ -123,10 +125,11 @@ public class CreateConversionProjectCommandHandlerTests
     )
     {
         // Arrange
-        var handler = new CreateConversionProjectCommandHandler(mockProjectRepository,
-            mockConversionTaskRepository,
-            mockEstablishmentRepository,
-            mockSender.Object);
+        var commonProject = new CreateProjectCommon(mockEstablishmentRepository, mockSender.Object);
+        var handler =
+            new CreateConversionProjectCommandHandler(mockProjectRepository,
+                mockConversionTaskRepository,
+                commonProject);
 
         command = command with { HandingOverToRegionalCaseworkService = true };
 
@@ -193,10 +196,11 @@ public class CreateConversionProjectCommandHandlerTests
     )
     {
         // Arrange
-        var handler = new CreateConversionProjectCommandHandler(mockProjectRepository,
-            mockConversionTaskRepository,
-            mockEstablishmentRepository,
-            mockSender.Object);
+        var commonProject = new CreateProjectCommon(mockEstablishmentRepository, mockSender.Object);
+        var handler =
+            new CreateConversionProjectCommandHandler(mockProjectRepository,
+                mockConversionTaskRepository,
+                commonProject);
 
         command = command with { HandingOverToRegionalCaseworkService = false };
 
@@ -265,10 +269,11 @@ public class CreateConversionProjectCommandHandlerTests
         CreateConversionProjectCommand command)
     {
         // Arrange
-        var handler = new CreateConversionProjectCommandHandler(mockProjectRepository,
-            mockConversionTaskRepository,
-            mockEstablishmentRepository,
-            mockSender.Object);
+        var commonProject = new CreateProjectCommon(mockEstablishmentRepository, mockSender.Object);
+        var handler =
+            new CreateConversionProjectCommandHandler(mockProjectRepository,
+                mockConversionTaskRepository,
+                commonProject);
 
         mockSender.Setup(s => s.Send(It.IsAny<GetUserByAdIdQuery>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(Result<UserDto>.Failure("DB ERROR"));
@@ -316,11 +321,11 @@ public class CreateConversionProjectCommandHandlerTests
         IFixture fixture)
     {
         // Arrange
-        var handler = new CreateConversionProjectCommandHandler(
-            mockProjectRepository,
-            mockConversionTaskRepository,
-            mockEstablishmentRepository,
-            mockSender.Object);
+        var commonProject = new CreateProjectCommon(mockEstablishmentRepository, mockSender.Object);
+        var handler =
+            new CreateConversionProjectCommandHandler(mockProjectRepository,
+                mockConversionTaskRepository,
+                commonProject);
 
         mockSender.Setup(s => s.Send(It.IsAny<GetUserByAdIdQuery>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(Result<UserDto>.Success(null));
@@ -367,10 +372,11 @@ public class CreateConversionProjectCommandHandlerTests
         UserDto userDto)
     {
         // Arrange
-        var handler = new CreateConversionProjectCommandHandler(mockProjectRepository,
-            mockConversionTaskRepository,
-            mockEstablishmentRepository,
-            mockSender.Object);
+        var commonProject = new CreateProjectCommon(mockEstablishmentRepository, mockSender.Object);
+        var handler =
+            new CreateConversionProjectCommandHandler(mockProjectRepository,
+                mockConversionTaskRepository,
+                commonProject);
 
         userDto.Team = ProjectTeam.London.ToDescription();
 
@@ -420,10 +426,11 @@ public class CreateConversionProjectCommandHandlerTests
         mockSender.Setup(s => s.Send(It.IsAny<GetLocalAuthorityBySchoolUrnQuery>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(Result<GetLocalAuthorityBySchoolUrnResponseDto?>.Failure(expectedError));
 
-        var handler = new CreateConversionProjectCommandHandler(mockProjectRepository,
-            mockConversionTaskRepository,
-            mockEstablishmentRepository,
-            mockSender.Object);
+        var commonProject = new CreateProjectCommon(mockEstablishmentRepository, mockSender.Object);
+        var handler =
+            new CreateConversionProjectCommandHandler(mockProjectRepository,
+                mockConversionTaskRepository,
+                commonProject);
 
         // Act & Assert
         var exception =
@@ -454,10 +461,11 @@ public class CreateConversionProjectCommandHandlerTests
         mockSender.Setup(s => s.Send(It.IsAny<GetLocalAuthorityBySchoolUrnQuery>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(Result<GetLocalAuthorityBySchoolUrnResponseDto?>.Success(responseDto));
 
-        var handler = new CreateConversionProjectCommandHandler(mockProjectRepository,
-            mockConversionTaskRepository,
-            mockEstablishmentRepository,
-            mockSender.Object);
+        var commonProject = new CreateProjectCommon(mockEstablishmentRepository, mockSender.Object);
+        var handler =
+            new CreateConversionProjectCommandHandler(mockProjectRepository,
+                mockConversionTaskRepository,
+                commonProject);
 
         // Act & Assert
         var exception =
@@ -485,10 +493,11 @@ public class CreateConversionProjectCommandHandlerTests
         mockSender.Setup(s => s.Send(It.IsAny<GetLocalAuthorityBySchoolUrnQuery>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(Result<GetLocalAuthorityBySchoolUrnResponseDto?>.Success(null));
 
-        var handler = new CreateConversionProjectCommandHandler(mockProjectRepository,
-            mockConversionTaskRepository,
-            mockEstablishmentRepository,
-            mockSender.Object);
+        var commonProject = new CreateProjectCommon(mockEstablishmentRepository, mockSender.Object);
+        var handler =
+            new CreateConversionProjectCommandHandler(mockProjectRepository,
+                mockConversionTaskRepository,
+                commonProject);
 
         // Act & Assert
         var exception =
@@ -515,10 +524,11 @@ public class CreateConversionProjectCommandHandlerTests
     )
     {
         // Arrange
-        var handler = new CreateConversionProjectCommandHandler(mockProjectRepository,
-            mockConversionTaskRepository,
-            mockEstablishmentRepository,
-            mockSender.Object);
+        var commonProject = new CreateProjectCommon(mockEstablishmentRepository, mockSender.Object);
+        var handler =
+            new CreateConversionProjectCommandHandler(mockProjectRepository,
+                mockConversionTaskRepository,
+                commonProject);
 
         //
         command = command with { GroupReferenceNumber = null };
@@ -581,11 +591,12 @@ public class CreateConversionProjectCommandHandlerTests
     {
         // Arrange
         //Setup the handler
+
+        var commonProject = new CreateProjectCommon(mockEstablishmentRepository, mockSender.Object);
         var handler =
             new CreateConversionProjectCommandHandler(mockProjectRepository,
                 mockConversionTaskRepository,
-                mockEstablishmentRepository,
-                mockSender.Object);
+                commonProject);
 
         // Setup the user dto
         const ProjectTeam team = ProjectTeam.WestMidlands;

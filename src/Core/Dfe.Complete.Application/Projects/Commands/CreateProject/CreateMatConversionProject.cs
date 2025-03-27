@@ -1,4 +1,5 @@
 using Dfe.Complete.Application.Common.Models;
+using Dfe.Complete.Application.Projects.Common;
 using Dfe.Complete.Application.Projects.Models;
 using Dfe.Complete.Application.Projects.Queries.GetLocalAuthority;
 using Dfe.Complete.Application.Projects.Queries.GetUser;
@@ -30,71 +31,32 @@ public record CreateMatConversionProjectCommand(
  public class CreateMatConversionProjectCommandHandler(
         ICompleteRepository<Project> projectRepository,
         ICompleteRepository<ConversionTasksData> conversionTaskRepository,
-        ICompleteRepository<GiasEstablishment> establishmentRepository,
-        ISender sender)
+        ICreateProjectCommon createProjectCommon)
         : IRequestHandler<CreateMatConversionProjectCommand, ProjectId>
     {
         public async Task<ProjectId> Handle(CreateMatConversionProjectCommand request, CancellationToken cancellationToken)
         {
-            var localAuthorityIdRequest = await sender.Send(new GetLocalAuthorityBySchoolUrnQuery(request.Urn.Value),
-            cancellationToken);
-
-            if (!localAuthorityIdRequest.IsSuccess || localAuthorityIdRequest.Value?.LocalAuthorityId == null)
-                throw new NotFoundException($"No Local authority could be found via Establishments for School Urn: {request.Urn.Value}.", nameof(request.Urn), innerException: new Exception(localAuthorityIdRequest.Error));
+            var commonProjectCommand = new CreateProjectCommonCommand(request.Urn, null,
+                request.HandingOverToRegionalCaseworkService, request.UserAdId);
+            var commonProject = await createProjectCommon.CreateCommonProject(commonProjectCommand,
+                cancellationToken);
             
-            var establishment = await establishmentRepository.FindAsync(giasEstablishment => giasEstablishment.Urn == request.Urn, cancellationToken);
-
-            if (establishment is null)
-            {
-                throw new NotFoundException($"No establishment could be found for Urn: {request.Urn.Value}.", nameof(request.Urn));
-            }
-            
-            var region = establishment.RegionCode?.ToEnumFromChar<Region>();
-
-            var createdAt = DateTime.UtcNow;
             var conversionTaskId = Guid.NewGuid();
-            var projectId = new ProjectId(Guid.NewGuid());
-
-            var conversionTask = new ConversionTasksData(new TaskDataId(conversionTaskId), createdAt, createdAt);
+            var conversionTask = new ConversionTasksData(new TaskDataId(conversionTaskId), commonProject.CreatedAt, commonProject.CreatedAt);
             
-            Result<UserDto?>? userRequest = null;
-            ProjectTeam team;
-            DateTime? assignedAt = null;
-            UserDto? projectUser = null;
-            UserId? projectUserAssignedToId = null;
-
-            if (request.HandingOverToRegionalCaseworkService)
-            {
-                team = ProjectTeam.RegionalCaseWorkerServices;
-            }
-            else
-            {
-                if (!string.IsNullOrEmpty(request.UserAdId))
-                    userRequest = await sender.Send(new GetUserByAdIdQuery(request.UserAdId), cancellationToken);
-
-                if (userRequest is not { IsSuccess: true } || userRequest.Value is null)
-                    throw new NotFoundException("No user found.", innerException: new Exception(userRequest?.Error));
-            
-                projectUser = userRequest.Value;
-
-                team = (projectUser?.Team).FromDescription<ProjectTeam>();
-                assignedAt = DateTime.UtcNow;
-                projectUserAssignedToId = projectUser?.Id;
-            }
-
             var project = Project.CreateMatConversionProject(
-                projectId,
+                commonProject.ProjectId,
                 request.Urn,
-                createdAt,
-                updatedAt: createdAt,
+                commonProject.CreatedAt,
+                updatedAt: commonProject.CreatedAt,
                 TaskType.Conversion,
                 ProjectType.Conversion,
                 conversionTaskId,
-                region,
-                team,
-                projectUser?.Id,
-                projectUserAssignedToId,
-                assignedAt,
+                commonProject.Region,
+                commonProject.ProjectTeam,
+                commonProject.User?.Id,
+                commonProject.User?.Id,
+                commonProject.AssignedAt,
                 request.EstablishmentSharepointLink,
                 request.IncomingTrustSharepointLink,
                 request.AdvisoryBoardDate,
@@ -106,7 +68,7 @@ public record CreateMatConversionProjectCommand(
                 request.NewTrustReferenceNumber,
                 request.HasAcademyOrderBeenIssued, 
                 request.HandoverComments, 
-                localAuthorityIdRequest.Value.LocalAuthorityId.Value);
+                commonProject.LocalAuthority.LocalAuthorityId.Value);
 
             await conversionTaskRepository.AddAsync(conversionTask, cancellationToken);
             await projectRepository.AddAsync(project, cancellationToken);
