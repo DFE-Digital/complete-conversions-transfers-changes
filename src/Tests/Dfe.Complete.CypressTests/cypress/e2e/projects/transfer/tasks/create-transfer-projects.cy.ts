@@ -10,7 +10,7 @@ const urnMAT = "136731";
 describe("Create a new Transfer Project", () => {
     before(() => {
         projectRemover.removeProjectIfItExists(urn);
-        // projectRemover.removeProjectIfItExists(urnMAT); // skip bug 202345
+        projectRemover.removeProjectIfItExists(urnMAT);
     });
 
     beforeEach(() => {
@@ -47,8 +47,7 @@ describe("Create a new Transfer Project", () => {
         cy.get("h2").should("contain", "Task list");
     });
 
-    it.skip("Should be able to create a new Form a MAT transfer project", () => {
-        // skip bug 202345
+    it("Should be able to create a new Form a MAT transfer project", () => {
         homePage.addAProject();
 
         selectProjectTypePage.selectFormAMATTransfer().continue();

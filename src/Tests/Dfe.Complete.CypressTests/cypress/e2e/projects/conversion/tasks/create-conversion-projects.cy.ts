@@ -10,7 +10,7 @@ const urnMAT: string = "103846"; //103842
 describe("Create a new Conversion Project", () => {
     before(() => {
         projectRemover.removeProjectIfItExists(urn);
-        // projectRemover.removeProjectIfItExists(urnMAT); // skip bug 202345
+        projectRemover.removeProjectIfItExists(urnMAT);
     });
 
     beforeEach(() => {
@@ -42,8 +42,7 @@ describe("Create a new Conversion Project", () => {
         cy.get("h2").should("contain", "Project created");
     });
 
-    it.skip("Should be able to create a new Form a MAT conversion project", () => {
-        // skip bug 202345
+    it("Should be able to create a new Form a MAT conversion project", () => {
         homePage.addAProject();
 
         selectProjectType.selectFormAMATConversion().continue();
