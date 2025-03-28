@@ -78,7 +78,7 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
             listAllProjectsQueryService.ListAllProjects(ProjectState.Active, null)
                 .Returns(mockProjects);
 
-            trustsClient.GetByUkprnsAllAsync(Arg.Any<IEnumerable<string>>())
+            trustsClient.GetByUkprnsAllAsync(Arg.Any<IEnumerable<string>>(), Arg.Any<CancellationToken>())
                 .Returns(Task.FromResult(new ObservableCollection<TrustDto>(trustDtos)));
 
             // Act
@@ -117,7 +117,7 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
             listAllProjectsQueryService.ListAllProjects(ProjectState.Active, null)
                 .Returns(mockProjects);
 
-            trustsClient.GetByUkprnsAllAsync(Arg.Any<IEnumerable<string>>())
+            trustsClient.GetByUkprnsAllAsync(Arg.Any<IEnumerable<string>>(), Arg.Any<CancellationToken>())
                 .Throws(new Exception(errorMessage));
 
             // Act
