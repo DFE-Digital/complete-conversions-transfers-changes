@@ -1,12 +1,10 @@
 ﻿using System;
-using System.Diagnostics.CodeAnalysis;
 using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
 namespace Dfe.Complete.Infrastructure.Migrations
 {
-    [ExcludeFromCodeCoverage]
     /// <inheritdoc />
     public partial class Initial : Migration
     {
@@ -527,8 +525,8 @@ namespace Dfe.Complete.Infrastructure.Migrations
                     state = table.Column<int>(type: "int", nullable: false),
                     prepare_id = table.Column<int>(type: "int", nullable: true),
                     local_authority_main_contact_id = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    group_id = table.Column<Guid>(type: "uniqueidentifier", nullable: true), 
-                    local_authority_id = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
+                    group_id = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    local_authority_id = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -556,7 +554,8 @@ namespace Dfe.Complete.Infrastructure.Migrations
                         column: x => x.local_authority_id,
                         principalSchema: "complete",
                         principalTable: "local_authorities",
-                        principalColumn: "id");
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -652,6 +651,12 @@ namespace Dfe.Complete.Infrastructure.Migrations
                 column: "caseworker_id");
 
             migrationBuilder.CreateIndex(
+                name: "IX_projects_local_authority_id",
+                schema: "complete",
+                table: "projects",
+                column: "local_authority_id");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_projects_regional_delivery_officer_id",
                 schema: "complete",
                 table: "projects",
@@ -690,10 +695,6 @@ namespace Dfe.Complete.Infrastructure.Migrations
                 schema: "complete");
 
             migrationBuilder.DropTable(
-                name: "local_authorities",
-                schema: "complete");
-
-            migrationBuilder.DropTable(
                 name: "notes",
                 schema: "complete");
 
@@ -719,6 +720,10 @@ namespace Dfe.Complete.Infrastructure.Migrations
 
             migrationBuilder.DropTable(
                 name: "users",
+                schema: "complete");
+
+            migrationBuilder.DropTable(
+                name: "local_authorities",
                 schema: "complete");
         }
     }
