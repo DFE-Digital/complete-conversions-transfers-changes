@@ -14,7 +14,7 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers;
 public class UsersControllerTests
 {
     [Theory]
-    [CustomAutoData(typeof(CustomWebApplicationDbContextFactoryCustomization), typeof(EstablishmentsCustomization))]
+    [CustomAutoData(typeof(CustomWebApplicationDbContextFactoryCustomization), typeof(GiasEstablishmentsCustomization))]
     public async Task ListUsersWithProjectsAsync_ShouldReturnList(
         CustomWebApplicationDbContextFactory<Program> factory,
         IUsersClient usersClient,
@@ -95,7 +95,7 @@ public class UsersControllerTests
     }
     
     [Theory]
-    [CustomAutoData(typeof(CustomWebApplicationDbContextFactoryCustomization), typeof(EstablishmentsCustomization))]
+    [CustomAutoData(typeof(CustomWebApplicationDbContextFactoryCustomization), typeof(GiasEstablishmentsCustomization))]
     public async Task GetUserWithProjectsAsync_ShouldReturnList(
         CustomWebApplicationDbContextFactory<Program> factory,
         IUsersClient usersClient,

@@ -13,13 +13,11 @@ namespace Dfe.Complete.Tests.Common.Customizations.Models
 
         public void Customize(IFixture fixture)
         {
-            fixture.Customizations.Add(new UrnSpecimen());
-
             fixture.Customize(new CompositeCustomization(
-                   new DateOnlyCustomization()))
+                    new DateOnlyCustomization()))
                 .Customize<SignificantDateHistory>(composer => composer
-             .With(x => x.Id, Id ?? fixture.Create<SignificantDateHistoryId>())
-             .With(x => x.ProjectId, ProjectId ?? fixture.Create<ProjectId>()));
+                    .With(x => x.Id, Id ?? fixture.Create<SignificantDateHistoryId>())
+                    .With(x => x.ProjectId, ProjectId ?? fixture.Create<ProjectId>()));
         }
     }
 }

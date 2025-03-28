@@ -83,46 +83,47 @@ namespace Dfe.Complete.Tests.Common.Customizations.Models
         public ContactId? LocalAuthorityMainContactId { get; set; }
 
         public ProjectGroupId? GroupId { get; set; }
-        
+
         public string? HandoverComments { get; set; }
 
-        public LocalAuthorityId LocalAuthorityId { get; set; }
-        
+        public LocalAuthorityId? LocalAuthorityId { get; set; }
+
         public void Customize(IFixture fixture)
         {
-            fixture.Customizations.Add(new UrnSpecimen());
-
             fixture.Customize(new CompositeCustomization(
                     new DateOnlyCustomization(),
                     new IgnoreVirtualMembersCustomisation()))
                 .Customize<Project>(composer => composer
-                .With(x => x.IncomingTrustUkprn, IncomingTrustUkprn ?? fixture.Create<Ukprn>())
-                .With(x => x.RegionalDeliveryOfficerId, RegionalDeliveryOfficerId ?? null)
-                .With(x => x.CaseworkerId, CaseworkerId ?? null)
-                .With(x => x.AdvisoryBoardConditions, AdvisoryBoardConditions ?? fixture.Create<string>())
-                .With(x => x.EstablishmentSharepointLink, EstablishmentSharepointLink ?? fixture.Create<string>())
-                .With(x => x.IncomingTrustSharepointLink, IncomingTrustSharepointLink ?? fixture.Create<string>())
-                .With(x => x.Type, Type ?? fixture.Create<ProjectType>())
-                .With(x => x.AssignedToId, AssignedToId ?? null)
-                .With(x => x.SignificantDateProvisional, SignificantDateProvisional ?? fixture.Create<bool>())
-                .With(x => x.DirectiveAcademyOrder, DirectiveAcademyOrder ?? fixture.Create<bool>())
-                .With(x => x.Region, Region ?? fixture.Create<Region>())
-                .With(x => x.AcademyUrn, AcademyUrn ?? fixture.Create<Urn>())
-                .With(x => x.TasksDataId, TasksDataId ?? new TaskDataId(fixture.Create<Guid>()))
-                .With(x => x.TasksDataType, TasksDataType ?? fixture.Create<TaskType>())
-                .With(x => x.OutgoingTrustUkprn, OutgoingTrustUkprn ?? fixture.Create<Ukprn>())
-                .With(x => x.Team, Team ?? fixture.Create<ProjectTeam>())
-                .With(x => x.TwoRequiresImprovement, TwoRequiresImprovement ?? fixture.Create<bool>())
-                .With(x => x.OutgoingTrustSharepointLink, OutgoingTrustSharepointLink ?? fixture.Create<string>())
-                .With(x => x.AllConditionsMet, AllConditionsMet ?? fixture.Create<bool>())
-                .With(x => x.MainContactId, MainContactId ?? fixture.Create<ContactId>())
-                .With(x => x.EstablishmentMainContactId, EstablishmentMainContactId ?? fixture.Create<ContactId>())
-                .With(x => x.IncomingTrustMainContactId, IncomingTrustMainContactId ?? fixture.Create<ContactId>())
-                .With(x => x.OutgoingTrustMainContactId, OutgoingTrustMainContactId ?? fixture.Create<ContactId>())
-                .With(x => x.NewTrustReferenceNumber, NewTrustReferenceNumber ?? fixture.Create<string>())
-                .With(x => x.NewTrustName, NewTrustName ?? fixture.Create<string>())
-                .With(x => x.GroupId, GroupId ?? fixture.Create<ProjectGroupId?>())
-                .With(x => x.AssignedAt, AssignedAt ?? fixture.Create<DateTime?>()));
+                    .With(x => x.Urn, () => Urn ?? fixture.Customize(new UrnCustomization()).Create<Urn>())
+                    .With(x => x.IncomingTrustUkprn, IncomingTrustUkprn ?? fixture.Create<Ukprn>())
+                    .With(x => x.RegionalDeliveryOfficerId, RegionalDeliveryOfficerId ?? null)
+                    .With(x => x.CaseworkerId, CaseworkerId ?? null)
+                    .With(x => x.AdvisoryBoardConditions, AdvisoryBoardConditions ?? fixture.Create<string>())
+                    .With(x => x.EstablishmentSharepointLink, EstablishmentSharepointLink ?? fixture.Create<string>())
+                    .With(x => x.IncomingTrustSharepointLink, IncomingTrustSharepointLink ?? fixture.Create<string>())
+                    .With(x => x.Type, Type ?? fixture.Create<ProjectType>())
+                    .With(x => x.AssignedToId, AssignedToId ?? null)
+                    .With(x => x.SignificantDateProvisional, SignificantDateProvisional ?? fixture.Create<bool>())
+                    .With(x => x.DirectiveAcademyOrder, DirectiveAcademyOrder ?? fixture.Create<bool>())
+                    .With(x => x.Region, Region ?? fixture.Create<Region>())
+                    .With(x => x.AcademyUrn, AcademyUrn ?? fixture.Create<Urn>())
+                    .With(x => x.TasksDataId, TasksDataId ?? new TaskDataId(fixture.Create<Guid>()))
+                    .With(x => x.TasksDataType, TasksDataType ?? fixture.Create<TaskType>())
+                    .With(x => x.OutgoingTrustUkprn, OutgoingTrustUkprn ?? fixture.Create<Ukprn>())
+                    .With(x => x.Team, Team ?? fixture.Create<ProjectTeam>())
+                    .With(x => x.TwoRequiresImprovement, TwoRequiresImprovement ?? fixture.Create<bool>())
+                    .With(x => x.OutgoingTrustSharepointLink, OutgoingTrustSharepointLink ?? fixture.Create<string>())
+                    .With(x => x.AllConditionsMet, AllConditionsMet ?? fixture.Create<bool>())
+                    .With(x => x.MainContactId, MainContactId ?? fixture.Create<ContactId>())
+                    .With(x => x.EstablishmentMainContactId, EstablishmentMainContactId ?? fixture.Create<ContactId>())
+                    .With(x => x.IncomingTrustMainContactId, IncomingTrustMainContactId ?? fixture.Create<ContactId>())
+                    .With(x => x.OutgoingTrustMainContactId, OutgoingTrustMainContactId ?? fixture.Create<ContactId>())
+                    .With(x => x.NewTrustReferenceNumber, NewTrustReferenceNumber ?? fixture.Create<string>())
+                    .With(x => x.NewTrustName, NewTrustName ?? fixture.Create<string>())
+                    .With(x => x.GroupId, GroupId ?? fixture.Create<ProjectGroupId?>())
+                    .With(x => x.AssignedAt, AssignedAt ?? fixture.Create<DateTime?>())
+                    .With(x => x.Urn, () => Urn ?? fixture.Customize(new UrnCustomization()).Create<Urn>())
+                    .With(x => x.LocalAuthorityId, LocalAuthorityId ?? fixture.Create<LocalAuthorityId>()));
         }
     }
 }
