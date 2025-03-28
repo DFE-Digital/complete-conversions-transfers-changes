@@ -59,6 +59,18 @@ public abstract class AllProjectsModel(string currentNavigation) : PageModel
         return string.Format(projectType == ProjectType.Conversion ? RouteConstants.ConversionProjectTaskList : RouteConstants.TransferProjectTaskList, projectId);
     }
     
+    public static string GetProjectByMonthsUrl(ProjectType projectType, ProjectTeam userTeam)
+    {
+        DateTime date = DateTime.Now;
+        string month = date.Month.ToString("0");
+        string year = date.Year.ToString("0000");
+        
+        var standardView = string.Format(RouteConstants.ConversionProjectsByMonth, month, year);
+        var dataConsumerUrl = string.Format(RouteConstants.ConversionProjectsByMonths, month, year, month, year);
+
+        return userTeam == ProjectTeam.ServiceSupport ? dataConsumerUrl : standardView;
+    }
+    
     public static string GetProjectByMonthUrl(ProjectType projectType)
     {
         DateTime date = DateTime.Now.AddMonths(1);
