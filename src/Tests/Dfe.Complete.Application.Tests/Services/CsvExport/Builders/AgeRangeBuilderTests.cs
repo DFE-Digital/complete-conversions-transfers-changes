@@ -15,7 +15,7 @@ namespace Dfe.Complete.Application.Tests.Services.CsvExport.Builders
         [InlineData(2, 17, "2-17")]
         public void Build_WhenCalled_ShouldReturnNull(int? ageLower, int? ageUpper, string expected)
         {
-            GiasEstablishment establishment = new Fixture().Customize(new EstablishmentsCustomization()).Create<GiasEstablishment>();
+            GiasEstablishment establishment = new Fixture().Customize(new GiasEstablishmentsCustomization()).Create<GiasEstablishment>();
 
             establishment.AgeRangeLower = ageLower;
             establishment.AgeRangeUpper = ageUpper;
