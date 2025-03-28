@@ -4,36 +4,51 @@ using Dfe.Complete.Application.Projects.Interfaces;
 using Dfe.Complete.Application.Projects.Models;
 using Dfe.Complete.Domain.Enums;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 using Dfe.Complete.Utils;
 
 namespace Dfe.Complete.Application.Projects.Queries.ListProjectsByMonth
 {
-    public record ListProjectsByMonthQuery(
-        int Month,
-        int Year,
+    public record ListProjectsByMonthsQuery(
+        DateOnly FromDate,
+        DateOnly? ToDate,
         ProjectState? ProjectStatus,
         ProjectType? Type,
         int Page = 0,
         int Count = 20) : IRequest<PaginatedResult<List<ListProjectsByMonthResultModel>>>;
 
-    public class ListAllProjectsByMonthQueryHandler(
+    public class ListAllProjectsByMonthsQueryHandler(
         IListAllProjectsQueryService listAllProjectsQueryService,
         ITrustsV4Client trustsClient)
-        : IRequestHandler<ListProjectsByMonthQuery, PaginatedResult<List<ListProjectsByMonthResultModel>>>
+        : IRequestHandler<ListProjectsByMonthsQuery, PaginatedResult<List<ListProjectsByMonthResultModel>>>
     {
-        public async Task<PaginatedResult<List<ListProjectsByMonthResultModel>>> Handle(ListProjectsByMonthQuery request,
+        public async Task<PaginatedResult<List<ListProjectsByMonthResultModel>>> Handle(ListProjectsByMonthsQuery request,
             CancellationToken cancellationToken)
         {
             try
             {
-                var projects =  await listAllProjectsQueryService
+                var projectsQuery = listAllProjectsQueryService
                     .ListAllProjects(request.ProjectStatus, request.Type)
-                    .Where(p => p.Project.SignificantDate.Value.Month == request.Month && p.Project.SignificantDate.Value.Year == request.Year)
-                    .ToListAsync(cancellationToken);
+                    .AsEnumerable();
 
-                var ukprns = projects.Select(p => p.Project.IncomingTrustUkprn.Value.ToString());
-                var outgoingTrustUkprns = projects.Where(p => p.Project.OutgoingTrustUkprn != null).Select(p => p.Project.OutgoingTrustUkprn.Value.ToString());
+                if (request.ToDate.HasValue)
+                {
+                    projectsQuery = projectsQuery.Where(p =>
+                        p.Project.SignificantDate.HasValue &&
+                        p.Project.SignificantDate.Value >= request.FromDate &&
+                        p.Project.SignificantDate.Value <= request.ToDate.Value);
+                }
+                else
+                {
+                    projectsQuery = projectsQuery.Where(p =>
+                        p.Project.SignificantDate.HasValue &&
+                        p.Project.SignificantDate.Value == request.FromDate &&
+                        p.Project.SignificantDate.Value == request.FromDate);
+                }
+
+                var projects = projectsQuery.ToList();
+
+                var ukprns = projects.Select(p => p.Project.IncomingTrustUkprn?.Value.ToString()).ToList();
+                var outgoingTrustUkprns = projects.Where(p => p.Project.OutgoingTrustUkprn != null).Select(p => p.Project.OutgoingTrustUkprn.Value.ToString()).ToList();
                 var allUkprns = ukprns.Concat(outgoingTrustUkprns);
                 
                 var trusts = await trustsClient.GetByUkprnsAllAsync(allUkprns, cancellationToken);

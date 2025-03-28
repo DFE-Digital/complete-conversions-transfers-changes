@@ -29,7 +29,7 @@ namespace Dfe.Complete.Pages.Projects.List.ProjectsByMonth
             
             DateString = datetime.ToDateMonthYearString();
             ViewData[TabNavigationModel.ViewDataKey] = AllProjectsTabNavigationModel;
-            var listProjectQuery = new ListProjectsByMonthQuery(Month, Year, ProjectState.Active, ProjectType.Conversion, PageNumber-1, PageSize);
+            var listProjectQuery = new ListProjectsByMonthsQuery(date, null, ProjectState.Active, ProjectType.Conversion, PageNumber-1, PageSize);
             var response = await sender.Send(listProjectQuery);
             Projects = response.Value?.ToList() ?? [];
 
