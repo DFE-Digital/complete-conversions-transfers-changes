@@ -1,4 +1,4 @@
-name: Cypress
+name: Run Cypress tests
 
 on:
   workflow_call:
@@ -7,15 +7,23 @@ on:
         required: true
         type: string
     secrets:
-      CYPRESS_URL:
+      CYPRESS_URL_ENDPOINT:
         required: true
-      CYPRESS_API:
-        required: true
-      CYPRESS_APIKEY:
+      CYPRESS_API_ENDPOINT:
         required: true
       CYPRESS_USERNAME:
         required: true
-      CYPRESS_AUTHKEY:
+      CYPRESS_AUTH_KEY:
+        required: true
+      CYPRESS_TENANT_ID:
+        required: true
+      CYPRESS_CLIENT_ID:
+        required: true
+      CYPRESS_CLIENT_SECRET:
+        required: true
+      CYPRESS_COMPLETEAPI_CLIENTID:
+        required: true
+      CYPRESS_USER_AD_ID:
         required: true
       SLACK_WEBHOOK_URL:
         required: true
@@ -53,15 +61,18 @@ jobs:
       - name: Run
         uses: cypress-io/github-action@v6
         env:
-          CYPRESS_url: ${{ secrets.CYPRESS_URL }}
-          CYPRESS_api: ${{ secrets.CYPRESS_API }}
-          CYPRESS_apiKey: ${{ secrets.CYPRESS_APIKEY }}
+          CYPRESS_url: ${{ secrets.CYPRESS_URL_ENDPOINT }}
+          CYPRESS_api: ${{ secrets.CYPRESS_API_ENDPOINT }}
           CYPRESS_username: ${{ secrets.CYPRESS_USERNAME }}
-          CYPRESS_authKey: ${{ secrets.CYPRESS_AUTHKEY }}
+          CYPRESS_authKey: ${{ secrets.CYPRESS_AUTH_KEY }}
+          CYPRESS_tenantId: ${{ secrets.CYPRESS_TENANT_ID }}
+          CYPRESS_clientId: ${{ secrets.CYPRESS_CLIENT_ID }}
+          CYPRESS_clientSecret: ${{ secrets.CYPRESS_CLIENT_SECRET }}
+          CYPRESS_completeApiClientId: ${{ secrets.CYPRESS_COMPLETEAPI_CLIENTID }}
+          CYPRESS_userAdId: ${{ secrets.CYPRESS_USER_AD_ID }}
         with:
           browser: ${{ matrix.browser }}
           working-directory: ./src/Tests/Dfe.Complete.CypressTests
-          wait-on: ${{ secrets.URL }}
 
       - name: Upload screenshots
         if: ${{ failure() }}
@@ -85,6 +96,6 @@ jobs:
 
       - name: Report results
         if: always()
-        run: npm run cy:notify -- --custom-text="Environment ${{ inputs.environment }}, See more information https://github.com/DFE-Digital/complete-api/actions/runs/${{github.run_id}}"
+        run: npm run cy:notify -- --custom-text="Environment ${{ inputs.environment }}, See more information https://github.com/DFE-Digital/complete-conversions-transfers-changes/actions/runs/${{ github.run_id }}"
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}

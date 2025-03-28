@@ -1,4 +1,4 @@
-name: Cypress
+name: Cypress lint
 
 on:
   pull_request:
@@ -26,5 +26,5 @@ jobs:
         node-version: ${{ env.NODE_VERSION }}
 
     - run: |
-        npm ci
+        npm ci --ignore-scripts
         npm run format:check
