@@ -1,0 +1,40 @@
+routes:
+  # If creating a PR for a feature that would add a new route to the app, add it here ( dev -> paths )
+  - dev:
+    - paths:
+      - "example route"
+
+      # Ignore these
+      - path: "accessibility-statement"
+        note: "accessibility on ruby"
+      - path: "diagnostics"
+        note: ".NET rewrite only"
+      - path: "public/cookies"
+        note: "cookies on ruby"
+
+  # When promoting a feature to test or prod, if it would make a new route available add it to the relevant section below
+  # On release to test
+  - test:
+    - paths:
+      - "projects/all/trusts"
+      - "projects/all/trusts/ukprn/{ukprn}"
+
+  # On release to prod
+  - prod:
+    - paths:
+      - "access-denied"
+      - "projects/new"
+      - "projects/all/local-authorities"
+      - "projects/all/regions"
+      - "projects/all/users"
+      - "projects/all/in-progress/all"
+      - "projects/all/in-progress/conversions"
+      - "projects/all/in-progress/transfers"
+      - "projects/yours/in-progress"
+      - "projects/all/regions/{region}"
+      - "projects/all/users/{id}"
+      - "projects/all/local-authorities/{localAuthorityCode}"
+      - "projects/conversions/new"
+      - "projects/conversions/new_mat"
+      - "projects/transfers/new_mat"
+      - "projects/transfers/new"
