@@ -13,7 +13,7 @@ const nextMonth = new Date(today.setMonth(today.getMonth() + 1));
 const project = ProjectBuilder.createConversionProjectRequest(nextMonth);
 let projectId: string;
 const schoolName = "St Chad's Catholic Primary School";
-const region = "London";
+const region = "West Midlands";
 const trust = "5 Dimensions Trust";
 const localAuthority = "Dudley Metropolitan Borough Council";
 const transferProject = ProjectBuilder.createTransferProjectRequest();
