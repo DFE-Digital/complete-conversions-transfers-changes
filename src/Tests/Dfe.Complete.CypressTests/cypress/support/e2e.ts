@@ -17,31 +17,53 @@
 import { AuthenticationInterceptorParams } from "cypress/auth/authenticationInterceptor";
 import "./commands";
 import { RuleObject } from "axe-core";
-import {yesNoOption} from "../constants/stringTestConstants";
+import { yesNoOption } from "../constants/stringTestConstants";
 
 declare global {
     namespace Cypress {
         interface Chainable {
             getByTestId(id: string): Chainable<Element>;
+
             containsByTestId(id: string): Chainable<Element>;
+
             getById(id: string): Chainable<Element>;
+
             containsById(id: string): Chainable<Element>;
+
             getByClass(className: string): Chainable<Element>;
+
             getByName(name: string): Chainable<Element>;
+
             getByRole(role: string): Chainable<Element>;
+
             getByLabelFor(labelFor: string): Chainable<Element>;
+
             getByRadioOption(radioText: string): Chainable<Element>;
+
             getProjectTableRow(schoolName: string): Chainable<JQuery<HTMLTableRowElement>>;
+
             login(params?: AuthenticationInterceptorParams): Chainable<Element>;
+
             loginWithCredentials(): Chainable<Element>;
+
             loginRuby(): Chainable<Element>;
+
+            notAuthorisedToPerformAction(): Chainable<Element>;
+
             acceptCookies(): Chainable<Element>;
+
             assertChildList(selector: string, values: string[]): Chainable<Element>;
+
             executeAccessibilityTests(ruleExclusions?: RuleObject): Chainable<Element>;
+
             enterDate(idPrefix: string, day: string, month: string, year: string): Chainable<Element>;
-            enterYesNo(idPrefix: string, option: yesNoOption):Chainable<Element>;
+
+            enterYesNo(idPrefix: string, option: yesNoOption): Chainable<Element>;
+
             hasAddress(id: string, line1: string, line2: string, line3: string): Chainable<Element>;
+
             typeFast(text: string): Chainable<Element>;
+
             typeText(element: Chainable<Element>, text: string): Chainable<Element>;
         }
     }

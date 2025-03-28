@@ -7,9 +7,9 @@ import { ProjectBuilder } from "../../api/projectBuilder";
 import projectRemover from "../../api/projectRemover";
 import allProjectsInProgressTable from "../../pages/projects/tables/allProjectsInProgressTable";
 import { Username } from "../../constants/cypressConstants";
+import { nextMonth } from "../../constants/stringTestConstants";
+import { shouldOnlyBeAbleToViewNextMonthOfProjects } from "../../support/reusableTests";
 
-const today = new Date();
-const nextMonth = new Date(today.setMonth(today.getMonth() + 1));
 const project = ProjectBuilder.createConversionProjectRequest(nextMonth);
 let projectId: string;
 const schoolName = "St Chad's Catholic Primary School";
@@ -71,20 +71,8 @@ describe("View all projects", () => {
         // projectDetailsPage.containsHeading(transferSchoolName); // not implemented
     });
 
-    it.skip("Should be able to view all Conversions projects by month", () => {
-        // not implemented 187137
-        const nextMonthString = `${nextMonth.toLocaleString("default", { month: "short" })} ${nextMonth.getFullYear()}`;
-        navBar.goToAllProjects();
-        allProjects.filterProjects("By month").containsHeading(nextMonthString);
-        projectTable
-            .hasTableHeader("School and URN")
-            .hasTableHeader("Region")
-            .hasTableHeader("Incoming trust")
-            .hasTableHeader("All conditions met")
-            .hasTableHeader("Confirmed date (Original date)")
-            .contains(`${schoolName} ${project.urn.value}`)
-            .goTo(`${schoolName} ${project.urn.value}`);
-        // projectDetailsPage.containsHeading(schoolName); // not implemented
+    it.skip("Should be able to view all Conversions projects by month - next month only", () => {
+        shouldOnlyBeAbleToViewNextMonthOfProjects(schoolName, project);
     });
 
     it("Should be able to view all projects by region and all a region's projects", () => {

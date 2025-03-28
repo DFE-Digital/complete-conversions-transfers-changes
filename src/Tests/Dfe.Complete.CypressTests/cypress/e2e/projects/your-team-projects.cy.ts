@@ -137,4 +137,9 @@ describe.skip("Regional delivery officer user - View your team projects", () => 
             .goTo(teammatesSchoolName);
         // projectDetailsPage.containsHeading(teammatesSchoolName); // not implemented
     });
+
+    it("Should NOT be able to view unassigned projects", () => {
+        yourTeamProjects.doesNotContainFilter("Unassigned");
+        cy.visit("/projects/team/unassigned").notAuthorisedToPerformAction();
+    });
 });
