@@ -1,3 +1,5 @@
+using System.Globalization;
+
 namespace Dfe.Complete.Utils;
 
 public static class StringExtensions
@@ -17,5 +19,12 @@ public static class StringExtensions
                 throw new NotFoundException($"{enumName} could not be found.", innerException: new Exception($"'{c}' (ASCII {(int)c}) is not a valid value of the enum {enumName}. {nameof(value)}"));
 
             return enumCandidate;
+    }
+
+
+    public static string ToTitleCase(this string value)
+    {
+        TextInfo textInfo = CultureInfo.InvariantCulture.TextInfo;
+        return textInfo.ToTitleCase(value.ToLower());
     }
 }

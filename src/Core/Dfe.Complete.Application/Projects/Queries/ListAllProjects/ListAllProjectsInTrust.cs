@@ -18,10 +18,10 @@ namespace Dfe.Complete.Application.Projects.Queries.ListAllProjects
             {
                 var allProjects = listAllProjectsQueryService.ListAllProjects(Domain.Enums.ProjectState.Active, null)
                     .AsEnumerable();
-                    
+
                 var selectedProjects = new List<ListAllProjectsQueryModel>();
                 var trustName = string.Empty;
-                
+
                 if (!request.IsFormAMat)
                 {
                     var trust = await trustsClient.GetTrustByUkprn2Async(request.Identifier);
@@ -55,12 +55,13 @@ namespace Dfe.Complete.Application.Projects.Queries.ListAllProjects
                             : null,
                         item.Project.LocalAuthority?.Name,
                         item.Project.Team,
+                        item.Project.CompletedAt,
                         item.Project.Region,
                         item.Establishment.LocalAuthorityName
                     ));
 
                 var result = new ListAllProjectsInTrustResultModel(trustName, projects);
-                
+
                 return PaginatedResult<ListAllProjectsInTrustResultModel>.Success(result, selectedProjects.Count);
             }
             catch (Exception ex)

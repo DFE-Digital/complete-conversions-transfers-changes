@@ -13,14 +13,14 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
 {
     public class CountAllProjectsQueryHandlerTests
     {
-        
+
         [Theory]
         [CustomAutoData(
             typeof(OmitCircularReferenceCustomization),
             typeof(ListAllProjectsQueryModelCustomization),
             typeof(DateOnlyCustomization))]
         public async Task Handle_ShouldReturnCorrectCount(
-            [Frozen] IListAllProjectsQueryService mockEstablishmentQueryService,
+            [Frozen] IListAllProjectsQueryService mockListAllProjectsQueryService,
             CountAllProjectsQueryHandler handler,
             CountAllProjectsQuery query,
             List<ListAllProjectsQueryModel> listAllProjectsQueryModels)
@@ -30,7 +30,7 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
 
             var mock = listAllProjectsQueryModels.BuildMock();
 
-            mockEstablishmentQueryService.ListAllProjects(query.ProjectStatus, query.Type)
+            mockListAllProjectsQueryService.ListAllProjects(query.ProjectStatus, query.Type)
                 .Returns(mock);
 
             // Act
@@ -39,22 +39,22 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
             // Assert
             Assert.Equal(expected, result.Value);
         }
-        
+
         [Theory]
         [CustomAutoData(
             typeof(OmitCircularReferenceCustomization),
             typeof(ListAllProjectsQueryModelCustomization),
             typeof(DateOnlyCustomization))]
         public async Task Handle_ShouldReturnUnsuccessful_WhenAnErrorOccurs(
-            [Frozen] IListAllProjectsQueryService mockEstablishmentQueryService,
+            [Frozen] IListAllProjectsQueryService mockListAllProjectsQueryService,
             CountAllProjectsQueryHandler handler)
         {
             // Arrange
             var errorMessage = "This is a test";
-            
+
             var query = new CountAllProjectsQuery(null, null);
 
-            mockEstablishmentQueryService.ListAllProjects(query.ProjectStatus, query.Type)
+            mockListAllProjectsQueryService.ListAllProjects(query.ProjectStatus, query.Type)
                 .Throws(new Exception(errorMessage));
 
             // Act
