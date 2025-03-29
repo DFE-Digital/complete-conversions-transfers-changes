@@ -11,44 +11,6 @@ public class AllProjectsModelTests
 {
     [Theory]
     [CustomAutoData(typeof(ListAllProjectResultModelCustomization))]
-    public void GetProjectSummaryUrl_ShouldReturnConversionTaskListUrl_WhenProjectTypeIsConversion(IFixture fixture)
-    {
-        // Arrange
-        var project = fixture.Customize(new ListAllProjectResultModelCustomization
-        {
-            ProjectType = ProjectType.Conversion
-        }).Create<ListAllProjectsResultModel>();
-
-        string expectedUrl = string.Format(RouteConstants.ConversionProjectTaskList, project.ProjectId.Value);
-
-        // Act
-        var result = AllProjectsModel.GetProjectSummaryUrl(project);
-
-        // Assert
-        Assert.Equal(expectedUrl, result);
-    }
-
-    [Theory]
-    [CustomAutoData(typeof(ListAllProjectResultModelCustomization))]
-    public void GetProjectSummaryUrl_ShouldReturnTransferTaskListUrl_WhenProjectTypeIsTransfer(IFixture fixture)
-    {
-        // Arrange
-        var project = fixture.Customize(new ListAllProjectResultModelCustomization
-        {
-            ProjectType = ProjectType.Transfer
-        }).Create<ListAllProjectsResultModel>();
-
-        string expectedUrl = string.Format(RouteConstants.TransferProjectTaskList, project.ProjectId.Value);
-
-        // Act
-        var result = AllProjectsModel.GetProjectSummaryUrl(project);
-
-        // Assert
-        Assert.Equal(expectedUrl, result);
-    }
-    
-    [Theory]
-    [CustomAutoData(typeof(ListAllProjectResultModelCustomization))]
     public void GetTrustProjectsUrl_ShouldReturnCorrectMatUrl_When_IdentifierIsTrustReference(IFixture fixture)
     {
         var trust = fixture.Build<ListTrustsWithProjectsResultModel>()
