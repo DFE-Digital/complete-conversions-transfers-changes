@@ -23,7 +23,8 @@ public abstract class BaseProjectsPageModel(string currentNavigation) : PageMode
         return string.Format(
             project.ProjectType == ProjectType.Conversion
                 ? RouteConstants.ConversionProjectTaskList
-                : RouteConstants.TransferProjectTaskList, project.ProjectId.Value);
+                : RouteConstants.TransferProjectTaskList, 
+            project.ProjectId.Value);
     }
 
     public static string GetProjectSummaryUrl(ProjectType? type, ProjectId projectId)
@@ -31,6 +32,7 @@ public abstract class BaseProjectsPageModel(string currentNavigation) : PageMode
         return string.Format(
             type == ProjectType.Conversion
                 ? RouteConstants.ConversionProjectTaskList
-                : RouteConstants.TransferProjectTaskList, projectId.Value);
+                : RouteConstants.TransferProjectTaskList,
+            projectId.Value);
     }
 }
