@@ -18,14 +18,8 @@ public abstract class BaseProjectsPageModel(string currentNavigation) : PageMode
 
     internal int PageSize = 20;
 
-    public static string GetProjectSummaryUrl(ListAllProjectsResultModel project)
-    {
-        return string.Format(
-            project.ProjectType == ProjectType.Conversion
-                ? RouteConstants.ConversionProjectTaskList
-                : RouteConstants.TransferProjectTaskList, 
-            project.ProjectId.Value);
-    }
+    public static string GetProjectSummaryUrl(ListAllProjectsResultModel project) => 
+        GetProjectSummaryUrl(project.ProjectType, project.ProjectId);
 
     public static string GetProjectSummaryUrl(ProjectType? type, ProjectId projectId)
     {
