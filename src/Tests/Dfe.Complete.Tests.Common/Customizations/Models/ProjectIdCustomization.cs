@@ -1,6 +1,5 @@
 ﻿using AutoFixture;
 using Dfe.Complete.Domain.ValueObjects;
-using Dfe.Complete.Tests.Common.Extensions;
 
 namespace Dfe.Complete.Tests.Common.Customizations.Models
 {
