@@ -31,7 +31,7 @@ public class ListAllProjectsForTeamQueryHandlerTests
         var listAllProjectsQueryModels = fixture.CreateMany<ListAllProjectsQueryModel>(50).ToList();
 
         var expected = listAllProjectsQueryModels.Select(item =>
-                ListAllProjectsResultModel.MapProjectAndEstablishmentToListAllProjectResultModel(item.Project, item.Establishment))
+                ListAllProjectsResultModel.MapProjectAndEstablishmentToListAllProjectResultModel(item.Project!, item.Establishment))
             .Skip(20).Take(20).ToList();
 
         var mock = listAllProjectsQueryModels.BuildMock();

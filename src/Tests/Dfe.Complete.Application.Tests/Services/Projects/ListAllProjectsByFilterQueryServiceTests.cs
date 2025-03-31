@@ -35,7 +35,7 @@ public class ListAllProjectsByFilterQueryServiceTests
     // To show that filtering to Active projects also filters out unassigned projects
     [InlineData(ProjectState.Active, null, null, null, null, null, 5)]
 
-    public async Task Handle_ShouldReturnProjects_WhenFiltered(
+    public void Handle_ShouldReturnProjects_WhenFiltered(
         ProjectState? expectedState,
         ProjectType? expectedType,
         string? expectedUserId,
@@ -66,19 +66,19 @@ public class ListAllProjectsByFilterQueryServiceTests
         foreach (var entry in result)
         {
             if (expectedUserGuid != null)
-                Assert.Equal(expectedUserGuid, entry.Project.AssignedToId);
+                Assert.Equal(expectedUserGuid, entry?.Project?.AssignedToId);
 
             if (expectedType != null)
-                Assert.Equal(expectedType, entry.Project.Type);
+                Assert.Equal(expectedType, entry?.Project?.Type);
 
             if (expectedRegion != null)
-                Assert.Equal(expectedRegion, entry.Project.Region);
+                Assert.Equal(expectedRegion, entry?.Project?.Region);
 
             if (expectedTeam != null)
-                Assert.Equal(expectedTeam, entry.Project.Team);
+                Assert.Equal(expectedTeam, entry?.Project?.Team);
 
             if (expectedLocalAuthority != null)
-                Assert.Equal(expectedLocalAuthority, entry.Establishment.LocalAuthorityCode);
+                Assert.Equal(expectedLocalAuthority, entry?.Establishment?.LocalAuthorityCode);
         }
     }
 
@@ -102,7 +102,7 @@ public class ListAllProjectsByFilterQueryServiceTests
 
         // Assert
         Assert.Equal(10, result.Count);
-        Assert.All(result, r => Assert.Equal(expectedUserId, r.Project.AssignedToId));
+        Assert.All(result, r => Assert.Equal(expectedUserId, r?.Project?.AssignedToId));
     }
 
     public static (List<Project>, List<GiasEstablishment>) CreateTestProjectData(IFixture fixture)
@@ -185,7 +185,7 @@ public class ListAllProjectsByFilterQueryServiceTests
         // 7. In progress with no assignee (filtered out when looking for ACTIVE projects)
         projects.AddRange([.. fixture
            .Build<Project>()
-           .With(p => p.AssignedToId, (UserId)null)
+           .With(p => p.AssignedToId, (UserId?)null)
            .With(p => p.Urn, otherUrn)
            .With(p => p.Type, ProjectType.Conversion)
            .With(p => p.State, ProjectState.Active)
@@ -197,7 +197,7 @@ public class ListAllProjectsByFilterQueryServiceTests
         // 8. Completed with no assignee (NOT filtered out when looking for COMPLETED projects)
         projects.AddRange([.. fixture
            .Build<Project>()
-           .With(p => p.AssignedToId, (UserId)null)
+           .With(p => p.AssignedToId, (UserId?)null)
            .With(p => p.Urn, otherUrn)
            .With(p => p.Type, ProjectType.Conversion)
            .With(p => p.State, ProjectState.Completed)

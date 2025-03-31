@@ -28,7 +28,7 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
             var listAllProjectsQueryModels = fixture.CreateMany<ListAllProjectsQueryModel>(50).ToList();
 
             var expected = listAllProjectsQueryModels.Select(item => ListAllProjectsResultModel.MapProjectAndEstablishmentToListAllProjectResultModel(
-                item.Project,
+                item.Project!,
                 item.Establishment
              )).Take(20).ToList();
 
@@ -66,8 +66,8 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
             var listAllProjectsQueryModels = fixture.CreateMany<ListAllProjectsQueryModel>(50).ToList();
 
             var expected = listAllProjectsQueryModels.Select(item => new ListAllProjectsResultModel(
-                item.Establishment.Name,
-                item.Project.Id,
+                item?.Establishment?.Name,
+                item!.Project!.Id,
                 item.Project.Urn,
                 item.Project.SignificantDate,
                 item.Project.State,
@@ -80,7 +80,7 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
                 item.Project.Team,
                 item.Project.CompletedAt,
                 item.Project.Region,
-                item.Establishment.LocalAuthorityName
+                item?.Establishment?.LocalAuthorityName
             )).Skip(20).Take(20).ToList();
 
             var query = new ListAllProjectsQuery(null, null, 1);
