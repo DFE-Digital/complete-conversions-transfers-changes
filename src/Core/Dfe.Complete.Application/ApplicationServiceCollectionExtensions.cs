@@ -10,6 +10,8 @@ using FluentValidation;
 using MediatR;
 using Microsoft.Extensions.Configuration;
 using System.Reflection;
+using Dfe.Complete.Application.Projects.Commands.CreateProject;
+using Dfe.Complete.Application.Projects.Common;
 using Dfe.Complete.Application.Services.TrustCache;
 
 namespace Microsoft.Extensions.DependencyInjection
@@ -44,6 +46,7 @@ namespace Microsoft.Extensions.DependencyInjection
             services.AddScoped<IRowBuilderFactory<ConversionCsvModel>, RowBuilderFactory<ConversionCsvModel>>();
             services.AddScoped<IRowGenerator<ConversionCsvModel>, ConversionRowGenerator>();
             services.AddScoped<IHeaderGenerator<ConversionCsvModel>, ConversionRowGenerator>();
+            services.AddScoped<ICreateProjectCommon, CreateProjectCommon>();
 
             services.AddBackgroundService();
 
