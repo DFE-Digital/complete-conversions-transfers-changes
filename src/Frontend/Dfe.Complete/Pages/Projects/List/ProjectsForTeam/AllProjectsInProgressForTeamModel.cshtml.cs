@@ -19,7 +19,7 @@ public class AllProjectsInProgressForTeamModel(ISender sender) : YourTeamProject
         ViewData[TabNavigationModel.ViewDataKey] = YourTeamProjectsTabNavigationModel;
 
         var userTeam = await User.GetUserTeam(sender);
-        UserTeamIsRdo = EnumHelper.TeamIsRdo(userTeam);
+        UserTeamIsRdo = userTeam.TeamIsRdo();
 
         int recordCount = 0;
 

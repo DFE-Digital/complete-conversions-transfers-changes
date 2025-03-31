@@ -1,6 +1,8 @@
-namespace Dfe.Complete.Domain.Enums;
+using Dfe.Complete.Domain.Enums;
 
-public static class EnumHelper
+namespace Dfe.Complete.Extensions;
+
+public static class ProjectTeamExtensions
 {
     private static readonly ProjectTeam[] RdoTeams = [
         ProjectTeam.London,
@@ -14,9 +16,5 @@ public static class EnumHelper
         ProjectTeam.EastMidlands
     ];
 
-    public static bool TeamIsRdo(ProjectTeam? projectTeam)
-    {
-        if (projectTeam == null) return false;
-        return RdoTeams.ToList().Contains((ProjectTeam)projectTeam);
-    }
+    public static bool TeamIsRdo(this ProjectTeam team) => RdoTeams.ToList().Contains(team);
 }
