@@ -1,5 +1,11 @@
 ﻿using System.Security.Claims;
+using Dfe.Complete.Application.Common.Models;
+using Dfe.Complete.Application.Projects.Models;
+using Dfe.Complete.Application.Projects.Queries.GetUser;
+using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Extensions;
+using MediatR;
+using Moq;
 
 namespace Dfe.Complete.Tests.Extensions
 {
@@ -11,7 +17,7 @@ namespace Dfe.Complete.Tests.Extensions
             // Arrange
             var claims = new List<Claim>
             {
-                new Claim("objectidentifier", "12345-abcde")
+                new ("objectidentifier", "12345-abcde")
             };
             var principal = new ClaimsPrincipal(new ClaimsIdentity(claims));
 
@@ -28,7 +34,7 @@ namespace Dfe.Complete.Tests.Extensions
             // Arrange
             var claims = new List<Claim>
             {
-                new Claim("someotherclaim", "value")
+                new ("someotherclaim", "value")
             };
             var principal = new ClaimsPrincipal(new ClaimsIdentity(claims));
 
@@ -37,6 +43,30 @@ namespace Dfe.Complete.Tests.Extensions
 
             // Assert
             Assert.Null(result);
+        }
+
+        [Fact]
+        public async Task GetUserTeam_ReturnsUsersProjectTeam_WhenUserHasTeam()
+        {
+            // Arrange
+            var userAdId = "test-ad-id";
+
+            var claims = new[] { new Claim("objectidentifier", userAdId) };
+            var claimsPrincipal = new ClaimsPrincipal(new ClaimsIdentity(claims));
+
+            var mockSender = new Mock<ISender>();
+            UserDto? userDto = new UserDto { Team = "business_support" };
+            var userResult = Result<UserDto?>.Success(userDto);
+
+            mockSender
+                .Setup(s => s.Send(It.Is<GetUserByAdIdQuery>(q => q.UserAdId == userAdId), default))
+                .ReturnsAsync(userResult);
+
+            // Act
+            var actualTeam = await claimsPrincipal.GetUserTeam(mockSender.Object);
+
+            // Assert
+            Assert.Equal(ProjectTeam.BusinessSupport, actualTeam);
         }
     }
 }

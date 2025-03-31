@@ -15,11 +15,11 @@ internal class ListAllProjectsByFilterQueryService(CompleteContext context) : IL
         UserId? userId = null,
         string? localAuthorityCode = "",
         Region? region = null,
-        ProjectTeam? projectTeam = null)
+        ProjectTeam? team = null)
     {
         var projects = context.Projects
             .Where(project => projectStatus == null || project.State == projectStatus)
-            .Where(project => projectStatus == ProjectState.Active ? project.AssignedToId != null : true)
+            .Where(project => projectStatus != ProjectState.Active || project.AssignedToId != null)
             .Where(project => projectType == null || projectType == project.Type);
 
         //For now, limiting the service to one filter at a time unless requirement changes
@@ -43,9 +43,9 @@ internal class ListAllProjectsByFilterQueryService(CompleteContext context) : IL
             return GenerateQuery(projects, giasEstablishments);
         }
 
-        if (projectTeam != null)
+        if (team != null)
         {
-            projects = projects.Where(project => project.Team == projectTeam);
+            projects = projects.Where(project => project.Team == team);
             return GenerateQuery(projects, giasEstablishments);
         }
 

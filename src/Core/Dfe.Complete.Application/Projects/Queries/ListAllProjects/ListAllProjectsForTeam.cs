@@ -26,7 +26,7 @@ public class ListAllProjectsForTeamQueryHandler(IListAllProjectsByFilterQuerySer
                 request.ProjectStatus, request.Type, team: request.Team).ToListAsync(cancellationToken);
 
             var paginatedResultModel = projectsForTeam.Select(proj =>
-                    ListAllProjectsResultModel.MapProjectAndEstablishmentToListAllProjectResultModel(proj.Project, proj.Establishment))
+                    ListAllProjectsResultModel.MapProjectAndEstablishmentToListAllProjectResultModel(proj.Project!, proj.Establishment))
                 .Skip(request.Page * request.Count)
                 .Take(request.Count)
                 .ToList();

@@ -23,4 +23,8 @@
     <ProjectReference Include="..\Dfe.Complete.Domain\Dfe.Complete.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <InternalsVisibleTo Include="Dfe.Complete.Application.Tests" />
+  </ItemGroup>
+
 </Project>

@@ -20,7 +20,7 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
             typeof(ListAllProjectsQueryModelCustomization),
             typeof(DateOnlyCustomization))]
         public async Task Handle_ShouldReturnCorrectList_WhenPaginationIsCorrect(
-            [Frozen] IListAllProjectsQueryService mockEstablishmentQueryService,
+            [Frozen] IListAllProjectsQueryService mockListAllProjectsQueryService,
             ListAllProjectsQueryHandler handler,
             IFixture fixture)
         {
@@ -28,7 +28,7 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
             var listAllProjectsQueryModels = fixture.CreateMany<ListAllProjectsQueryModel>(50).ToList();
 
             var expected = listAllProjectsQueryModels.Select(item => ListAllProjectsResultModel.MapProjectAndEstablishmentToListAllProjectResultModel(
-                item.Project,
+                item.Project!,
                 item.Establishment
              )).Take(20).ToList();
 
@@ -36,7 +36,7 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
 
             var mock = listAllProjectsQueryModels.BuildMock();
 
-            mockEstablishmentQueryService.ListAllProjects(query.ProjectStatus, query.Type)
+            mockListAllProjectsQueryService.ListAllProjects(query.ProjectStatus, query.Type)
                 .Returns(mock);
 
             // Act
@@ -58,7 +58,7 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
             typeof(ListAllProjectsQueryModelCustomization),
             typeof(DateOnlyCustomization))]
         public async Task Handle_ShouldReturnCorrectList_ForOtherPages(
-            [Frozen] IListAllProjectsQueryService mockEstablishmentQueryService,
+            [Frozen] IListAllProjectsQueryService mockListAllProjectsQueryService,
             ListAllProjectsQueryHandler handler,
             IFixture fixture)
         {
@@ -66,8 +66,8 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
             var listAllProjectsQueryModels = fixture.CreateMany<ListAllProjectsQueryModel>(50).ToList();
 
             var expected = listAllProjectsQueryModels.Select(item => new ListAllProjectsResultModel(
-                item.Establishment.Name,
-                item.Project.Id,
+                item?.Establishment?.Name,
+                item!.Project!.Id,
                 item.Project.Urn,
                 item.Project.SignificantDate,
                 item.Project.State,
@@ -80,14 +80,14 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
                 item.Project.Team,
                 item.Project.CompletedAt,
                 item.Project.Region,
-                item.Establishment.LocalAuthorityName
+                item?.Establishment?.LocalAuthorityName
             )).Skip(20).Take(20).ToList();
 
             var query = new ListAllProjectsQuery(null, null, 1);
 
             var mock = listAllProjectsQueryModels.BuildMock();
 
-            mockEstablishmentQueryService.ListAllProjects(query.ProjectStatus, query.Type)
+            mockListAllProjectsQueryService.ListAllProjects(query.ProjectStatus, query.Type)
                 .Returns(mock);
 
             // Act
@@ -109,7 +109,7 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
             typeof(ListAllProjectsQueryModelCustomization),
             typeof(DateOnlyCustomization))]
         public async Task Handle_ShouldReturnCorrectList_WhenAllPagesAreSkipped(
-            [Frozen] IListAllProjectsQueryService mockEstablishmentQueryService,
+            [Frozen] IListAllProjectsQueryService mockListAllProjectsQueryService,
             ListAllProjectsQueryHandler handler,
             IFixture fixture)
         {
@@ -120,7 +120,7 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
 
             var mock = listAllProjectsQueryModels.BuildMock();
 
-            mockEstablishmentQueryService.ListAllProjects(query.ProjectStatus, query.Type)
+            mockListAllProjectsQueryService.ListAllProjects(query.ProjectStatus, query.Type)
                 .Returns(mock);
 
             // Act
@@ -138,7 +138,7 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
             typeof(ListAllProjectsQueryModelCustomization),
             typeof(DateOnlyCustomization))]
         public async Task Handle_ShouldReturnUnsuccessful_WhenAnErrorOccurs(
-            [Frozen] IListAllProjectsQueryService mockEstablishmentQueryService,
+            [Frozen] IListAllProjectsQueryService mockListAllProjectsQueryService,
             ListAllProjectsQueryHandler handler)
         {
             // Arrange
@@ -146,7 +146,7 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
 
             var query = new ListAllProjectsQuery(null, null);
 
-            mockEstablishmentQueryService.ListAllProjects(query.ProjectStatus, query.Type)
+            mockListAllProjectsQueryService.ListAllProjects(query.ProjectStatus, query.Type)
                 .Throws(new Exception(errorMessage));
 
             // Act

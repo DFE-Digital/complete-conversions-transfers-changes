@@ -1,3 +1,6 @@
+using Dfe.Complete.Application.Common.Models;
+using Dfe.Complete.Application.Projects.Common;
+using Dfe.Complete.Application.Projects.Models;
 using Dfe.Complete.Application.Projects.Queries.GetLocalAuthority;
 using Dfe.Complete.Application.Projects.Queries.GetUser;
 using Dfe.Complete.Domain.Entities;
@@ -32,66 +35,33 @@ public record CreateMatTransferProjectCommand(
 public class CreateMatTransferProjectCommandHandler(
         ICompleteRepository<Project> projectRepository,
         ICompleteRepository<TransferTasksData> transferTaskRepository,
-        ISender sender)
+        ICreateProjectCommon createProjectCommon)
         : IRequestHandler<CreateMatTransferProjectCommand, ProjectId>
     {
         public async Task<ProjectId> Handle(CreateMatTransferProjectCommand request, CancellationToken cancellationToken)
         {
-            var localAuthorityIdRequest = await sender.Send(new GetLocalAuthorityBySchoolUrnQuery(request.Urn.Value),
+            var commonProjectCommand = new CreateProjectCommonCommand(request.Urn, null,
+                request.HandingOverToRegionalCaseworkService, request.UserAdId);
+            var commonProject = await createProjectCommon.CreateCommonProject(commonProjectCommand,
                 cancellationToken);
-
-            if (!localAuthorityIdRequest.IsSuccess || localAuthorityIdRequest.Value?.LocalAuthorityId == null)
-                throw new NotFoundException($"No Local authority could be found via Establishments for School Urn: {request.Urn.Value}.", nameof(request.Urn), innerException: new Exception(localAuthorityIdRequest.Error));
             
-            // The user Team should be moved as a Claim or Group to the Entra (MS AD)
-            var userRequest = await sender.Send(new GetUserByAdIdQuery(request.UserAdId), cancellationToken);
-
-            if (!userRequest.IsSuccess || userRequest.Value == null)
-                throw new NotFoundException("No user found.", innerException: new Exception(userRequest.Error));
-            
-            var projectUser = userRequest.Value;
-
-            var projectUserTeam = projectUser.Team;
-            var projectUserId = projectUser.Id;
-
-            var projectTeam = projectUserTeam.FromDescription<ProjectTeam>();
-            var region = EnumMapper.MapTeamToRegion(projectTeam);
-
-            var createdAt = DateTime.UtcNow;
             var tasksDataId = Guid.NewGuid();
-            var projectId = new ProjectId(Guid.NewGuid());
-
-            var transferTask = new TransferTasksData(new TaskDataId(tasksDataId), createdAt, createdAt, request.IsDueToInedaquateOfstedRating, request.IsDueToIssues, request.OutGoingTrustWillClose);
-            
-            ProjectTeam team;
-            DateTime? assignedAt = null;
-            UserId? projectUserAssignedToId = null;
-
-            if (request.HandingOverToRegionalCaseworkService)
-            {
-                team = ProjectTeam.RegionalCaseWorkerServices;
-            }
-            else
-            {
-                team = projectTeam;
-                assignedAt = DateTime.UtcNow;
-                projectUserAssignedToId = projectUserId;
-            }
+            var transferTask = new TransferTasksData(new TaskDataId(tasksDataId), commonProject.CreatedAt, commonProject.CreatedAt, request.IsDueToInedaquateOfstedRating, request.IsDueToIssues, request.OutGoingTrustWillClose);
 
             var project = Project.CreateMatTransferProject(
-                    projectId,
+                    commonProject.ProjectId,
                     request.Urn,
-                    createdAt,
-                    updatedAt: createdAt,
+                    commonProject.CreatedAt,
+                    updatedAt: commonProject.CreatedAt,
                     request.OutgoingTrustUkprn,
                     TaskType.Transfer,
                     ProjectType.Transfer,
                     tasksDataId,
-                    region,
-                    team,
-                    projectUser.Id,
-                    projectUserAssignedToId,
-                    assignedAt,
+                    commonProject.Region,
+                    commonProject.ProjectTeam,
+                    commonProject.User?.Id,
+                    commonProject.User?.Id,
+                    commonProject.AssignedAt,
                     request.EstablishmentSharepointLink,
                     request.IncomingTrustSharepointLink,
                     request.OutgoingTrustSharepointLink,
@@ -103,7 +73,7 @@ public class CreateMatTransferProjectCommandHandler(
                     request.NewTrustName,
                     request.NewTrustReferenceNumber,
                     request.HandoverComments,
-                    localAuthorityIdRequest.Value.LocalAuthorityId.Value);
+                    commonProject.LocalAuthority.LocalAuthorityId.Value);
             
         await transferTaskRepository.AddAsync(transferTask, cancellationToken);
         await projectRepository.AddAsync(project, cancellationToken);
