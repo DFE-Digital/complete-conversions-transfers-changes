@@ -13,7 +13,7 @@ public class TabNavigationModel(string currentTab)
 
     public static bool UserHasTabAccess(ProjectTeam userTeam, string tabName)
     {
-        if (tabName == YourTeamProjectsTabName) return EnumHelper.TeamIsGeographic(userTeam) || userTeam == ProjectTeam.RegionalCaseWorkerServices;
+        if (tabName == YourTeamProjectsTabName) return EnumHelper.TeamIsRdo(userTeam) || userTeam == ProjectTeam.RegionalCaseWorkerServices;
         return true;
     }
 }
