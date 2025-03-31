@@ -1,4 +1,8 @@
-import { shouldBeAbleToAssignUnassignedProjectsToUsers } from "../../support/reusableTests";
+import {
+    shouldBeAbleToAssignUnassignedProjectsToUsers,
+    shouldNotBeAbleToBeAssignedAProject,
+    shouldNotBeAbleToCreateAProject,
+} from "../../support/reusableTests";
 import { before, beforeEach } from "mocha";
 import projectRemover from "../../api/projectRemover";
 import projectApi from "../../api/projectApi";
@@ -19,7 +23,17 @@ describe("Capabilities and permissions of the regional casework services team le
         cy.acceptCookies();
         cy.visit("/");
     });
-    it.only("Should be able to assign unassigned projects to users", () => {
+
+    it("Should NOT be able to create a project", () => {
+        cy.pause();
+        shouldNotBeAbleToCreateAProject();
+    });
+
+    it.skip("Should NOT be able to be assigned a project", () => {
+        shouldNotBeAbleToBeAssignedAProject();
+    });
+
+    it("Should be able to assign unassigned projects to users", () => {
         shouldBeAbleToAssignUnassignedProjectsToUsers(unassignedProjectSchoolName);
     });
 });

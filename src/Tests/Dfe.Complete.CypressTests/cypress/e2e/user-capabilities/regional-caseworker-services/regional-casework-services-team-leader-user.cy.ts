@@ -41,13 +41,7 @@ describe("Capabilities and permissions of the regional casework services team le
         shouldOnlyBeAbleToViewNextMonthOfProjects(schoolName, project);
     });
 
-    it.only("Should be able to assign unassigned projects to users", () => {
-        // same test required also for rdo user
+    it("Should be able to assign unassigned projects to users", () => {
         shouldBeAbleToAssignUnassignedProjectsToUsers(unassignedProjectSchoolName);
-    });
-
-    it.skip("Should be able to view and download csv reports from the export section", () => {
-        // not implemented 187516
-        shouldBeAbleToViewAndDownloadCsvReportsFromTheExportSection();
     });
 });
