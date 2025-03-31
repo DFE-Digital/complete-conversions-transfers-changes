@@ -28,7 +28,7 @@ public class AllProjectsInProgressForTeamModel(ISender sender) : YourTeamProject
             var userRegion = EnumMapper.MapTeamToRegion(userTeam);
 
             var listProjectsForRegionQuery =
-                new ListAllProjectsForRegionQuery((Region)userRegion, ProjectState.Active, null)
+                new ListAllProjectsForRegionQuery((Region)userRegion!, ProjectState.Active, null)
                 {
                     Page = PageNumber - 1,
                     Count = PageSize

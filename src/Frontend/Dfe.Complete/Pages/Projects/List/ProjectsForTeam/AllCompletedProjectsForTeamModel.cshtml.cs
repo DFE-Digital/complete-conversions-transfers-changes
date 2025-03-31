@@ -14,23 +14,23 @@ namespace Dfe.Complete.Pages.Projects.List.ProjectsForTeam;
 public class AllCompletedProjectsForTeamModel(ISender sender) : YourTeamProjectsModel(CompletedNavigation)
 {
     public List<ListAllProjectsResultModel> Projects { get; set; } = default!;
-    public ProjectTeam UserTeam { get; set; } = new();
+    public bool UserTeamIsRdo { get; set; }
 
     public async Task OnGet()
     {
         ViewData[TabNavigationModel.ViewDataKey] = YourTeamProjectsTabNavigationModel;
-        
-        var userQuery = new GetUserByAdIdQuery(User.GetUserAdId());
-        var userResponse = (await sender.Send(userQuery))?.Value;
-        var userTeam = EnumExtensions.FromDescription<ProjectTeam>(userResponse?.Team);
+
+        var userTeam = await User.GetUserTeam(sender);
+        UserTeamIsRdo = userTeam.TeamIsRdo();
+
         int recordCount = 0;
 
-        if (EnumHelper.TeamIsGeographic(userTeam))
+        if (UserTeamIsRdo)
         {
             var userRegion = EnumMapper.MapTeamToRegion(userTeam);
 
             var listProjectsForRegionQuery =
-                new ListAllProjectsForRegionQuery((Region)userRegion, ProjectState.Completed, null)
+                new ListAllProjectsForRegionQuery((Region)userRegion!, ProjectState.Completed, null)
                 {
                     Page = PageNumber - 1,
                     Count = PageSize

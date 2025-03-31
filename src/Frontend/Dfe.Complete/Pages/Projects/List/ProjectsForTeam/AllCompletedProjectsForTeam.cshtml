@@ -22,7 +22,7 @@
                 <th class="govuk-table__header" scope="col">School or academy</th>
                 <th class="govuk-table__header" scope="col">URN</th>
                 <th class="govuk-table__header" scope="col">Local authority</th>
-                @if (EnumHelper.TeamIsGeographic(Model.UserTeam))
+                @if (Model.UserTeamIsRdo)
                 {
                     <th class="govuk-table__header" scope="col">Team</th>
                 }
@@ -46,7 +46,7 @@
                     </td>
                     <td class="govuk-table__cell">@project.Urn.Value</td>
                     <td class="govuk-table__cell">@project.LocalAuthorityNameFormatted</td>
-                    @if (EnumHelper.TeamIsGeographic(Model.UserTeam))
+                    @if (Model.UserTeamIsRdo)
                     {
                         <td class="govuk-table__cell">@ProjectTeamPresentationMapper.Map(@project.Team)</td>
                     }
