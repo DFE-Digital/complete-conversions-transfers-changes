@@ -10,6 +10,11 @@ import assignProject from "../pages/projects/assignProject";
 import { Username } from "../constants/cypressConstants";
 import yourProjects from "../pages/projects/yourProjects";
 
+export function shouldNotBeAbleToViewYourProjects() {
+    navBar.unableToViewYourProjects();
+    cy.visit("/projects/yours/in-progress").notAuthorisedToPerformAction();
+}
+
 export function shouldNotBeAbleToCreateAProject() {
     homePage.unableToAddAProject();
     cy.visit("/projects/new").notAuthorisedToPerformAction();
@@ -17,6 +22,21 @@ export function shouldNotBeAbleToCreateAProject() {
     cy.visit("/projects/transfer-projects/new").notAuthorisedToPerformAction();
     cy.visit("/projects/conversions/new_mat").notAuthorisedToPerformAction();
     cy.visit("/projects/transfer/new_mat").notAuthorisedToPerformAction();
+}
+
+export function shouldNotBeAbleToViewAndEditUsers() {
+    navBar.unableToViewServiceSupport();
+    cy.visit("/service-support/users").notAuthorisedToPerformAction();
+}
+
+export function shouldNotBeAbleToViewAndEditLocalAuthorities() {
+    navBar.unableToViewServiceSupport();
+    cy.visit("/service-support/local-authorities").notAuthorisedToPerformAction();
+}
+
+export function shouldNotBeAbleToViewConversionURNs() {
+    navBar.unableToViewServiceSupport();
+    cy.visit("/projects/service-support/without-academy-urn").notAuthorisedToPerformAction();
 }
 
 export function shouldNotBeAbleToBeAssignedAProject() {

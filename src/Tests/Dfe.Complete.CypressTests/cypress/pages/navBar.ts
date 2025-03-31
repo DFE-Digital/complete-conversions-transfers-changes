@@ -15,6 +15,31 @@ class NavBar {
         cy.getById(this.navHeaderId).contains("Your team projects").click();
         return this;
     }
+
+    goToGroups() {
+        cy.getById(this.navHeaderId).contains("Groups").click();
+        return this;
+    }
+
+    goToServiceSupport() {
+        cy.getById(this.navHeaderId).contains("Service support").click();
+        return this;
+    }
+
+    unableToViewYourProjects() {
+        cy.getById(this.navHeaderId).contains("Your projects").should("not.exist");
+        return this;
+    }
+
+    unableToViewGroups() {
+        cy.getById(this.navHeaderId).contains("Groups").should("not.exist");
+        return this;
+    }
+
+    unableToViewServiceSupport() {
+        cy.getById(this.navHeaderId).contains("Service support").should("not.exist");
+        return this;
+    }
 }
 
 const navBar = new NavBar();
