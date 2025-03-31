@@ -1,6 +1,5 @@
 import {
     shouldBeAbleToAssignUnassignedProjectsToUsers,
-    shouldBeAbleToViewAndDownloadCsvReportsFromTheExportSection,
     shouldNotBeAbleToBeAssignedAProject,
     shouldNotBeAbleToCreateAProject,
     shouldOnlyBeAbleToViewNextMonthOfProjects,
