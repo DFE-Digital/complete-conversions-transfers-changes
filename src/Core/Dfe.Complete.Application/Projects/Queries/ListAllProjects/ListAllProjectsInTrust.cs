@@ -57,7 +57,8 @@ namespace Dfe.Complete.Application.Projects.Queries.ListAllProjects
                         item.Project.Team,
                         item.Project.CompletedAt,
                         item.Project.Region,
-                        item.Establishment.LocalAuthorityName
+                        item.Establishment.LocalAuthorityName,
+                        item.Project.CreatedAt
                     ));
 
                 var result = new ListAllProjectsInTrustResultModel(trustName, projects);

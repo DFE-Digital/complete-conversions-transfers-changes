@@ -40,7 +40,8 @@ namespace Dfe.Complete.Application.Projects.Queries.ListAllProjects
                         item.Project.Team,
                         item.Project.CompletedAt,
                         item.Project.Region,
-                        item.Establishment.LocalAuthorityName
+                        item.Establishment.LocalAuthorityName,
+                        item.Project.CreatedAt
                     ))
                     .ToListAsync(cancellationToken);
                 return Result<List<ListAllProjectsResultModel>>.Success(result);

@@ -8,4 +8,5 @@ public abstract class YourTeamProjectsModel(string currentNavigation) : BaseProj
 
     public const string InProgressNavigation = "in-progress";
     public const string CompletedNavigation = "completed";
+    public const string NewNavigation = "new";
 }

@@ -36,6 +36,9 @@ namespace Dfe.Complete.Extensions
 			return new DateTime(thisMonth.Year + yearsToAdd, month, 1);
 		}
 
+		public static string ToDateMonthYearString(this DateTime date)
+			=> ((DateTime?)date).ToDateMonthYearString();
+
 		public static string ToDateMonthYearString(this DateTime? dateTime)
 		{
 			if (!dateTime.HasValue)
@@ -45,5 +48,5 @@ namespace Dfe.Complete.Extensions
 
 			return dateTime.Value.ToString(DateFormatConstants.MonthAndYearFormat, GbCulture);
 		}
-    }
+	}
 }
