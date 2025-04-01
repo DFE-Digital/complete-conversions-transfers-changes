@@ -1,10 +1,10 @@
 import { before } from "mocha";
-import projectRemover from "../../api/projectRemover";
-import projectApi from "../../api/projectApi";
-import navBar from "../../pages/navBar";
-import yourTeamProjects from "../../pages/projects/yourTeamProjects";
-import { ProjectBuilder } from "../../api/projectBuilder";
-import yourTeamProjectsRDOViewTable from "../../pages/projects/tables/yourTeamProjectsRCSViewTable";
+import projectRemover from "cypress/api/projectRemover";
+import projectApi from "cypress/api/projectApi";
+import navBar from "cypress/pages/navBar";
+import yourTeamProjects from "cypress/pages/projects/yourTeamProjects";
+import { ProjectBuilder } from "cypress/api/projectBuilder";
+import yourTeamProjectsRDOViewTable from "cypress/pages/projects/tables/yourTeamProjectsRCSViewTable";
 
 const project = ProjectBuilder.createConversionProjectRequest(new Date("2026-04-01"), 111394);
 const schoolName = "Farnworth Church of England Controlled Primary School";
