@@ -17,7 +17,7 @@ public class GetLocalAuthorityBySchoolUrnQueryHandlerTests
 {
     [Theory]
     [CustomAutoData(typeof(DateOnlyCustomization), typeof(ProjectCustomization), typeof(LocalAuthorityCustomization),
-        typeof(EstablishmentsCustomization), typeof(IgnoreVirtualMembersCustomisation))]
+        typeof(GiasEstablishmentsCustomization), typeof(IgnoreVirtualMembersCustomisation))]
     public async Task Handle_ShouldGetAProjectByUrn_WhenCommandIsValid(
         [Frozen] ICompleteRepository<GiasEstablishment> mockGiasEstablishmentRepo,
         [Frozen] ICompleteRepository<LocalAuthority> mockLocalAuthorityRepo,
@@ -51,7 +51,7 @@ public class GetLocalAuthorityBySchoolUrnQueryHandlerTests
     
     [Theory]
     [CustomAutoData(typeof(DateOnlyCustomization), typeof(ProjectCustomization), typeof(LocalAuthorityCustomization),
-        typeof(EstablishmentsCustomization), typeof(IgnoreVirtualMembersCustomisation))]
+        typeof(GiasEstablishmentsCustomization), typeof(IgnoreVirtualMembersCustomisation))]
     public async Task Handle_ShouldThrowExceptionAndReturnFailure_WhenCommandInvalid(
         [Frozen] ICompleteRepository<GiasEstablishment> mockGiasEstablishmentRepo,
         GetLocalAuthorityBySchoolUrnQueryHandler handler,

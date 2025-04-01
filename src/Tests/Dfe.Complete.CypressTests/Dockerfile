@@ -1,4 +1,4 @@
-FROM cypress/base:20.9.0
+FROM cypress/base:20.18.0
 
 COPY ./cypress ./cypress
 COPY cypress.config.ts .

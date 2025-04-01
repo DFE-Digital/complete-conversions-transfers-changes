@@ -20,7 +20,7 @@ namespace Dfe.Complete.Application.Common.Behaviours
             {
                 var requestName = typeof(TRequest).Name;
 
-                logger.LogError(ex, "PersonsAPI Request: Unhandled Exception for Request {Name} {@Request}", requestName, request);
+                logger.LogError(ex, "CompleteAPI Request: Unhandled Exception for Request {Name} {@Request}", requestName, request);
 
                 throw;
             }

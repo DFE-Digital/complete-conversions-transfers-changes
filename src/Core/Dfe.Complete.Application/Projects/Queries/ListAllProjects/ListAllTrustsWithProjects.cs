@@ -3,6 +3,7 @@ using Dfe.Complete.Application.Common.Models;
 using Dfe.Complete.Application.Projects.Interfaces;
 using Dfe.Complete.Application.Projects.Models;
 using Dfe.Complete.Domain.Enums;
+using Dfe.Complete.Utils;
 using MediatR;
 
 namespace Dfe.Complete.Application.Projects.Queries.ListAllProjects
@@ -27,19 +28,18 @@ namespace Dfe.Complete.Application.Projects.Queries.ListAllProjects
                 var matProjects = allProjects.Where(p => p.FormAMat);
 
                 // Get trusts related to projects
-                var incomingTrustUkprns = standardProjects.Select(p => p.IncomingTrustUkprn.Value.ToString());
-                var standardProjectsTrust = await trustsClient.GetByUkprnsAllAsync(incomingTrustUkprns);
+                var incomingTrustUkprns = standardProjects.Select(p => p.IncomingTrustUkprn.Value.ToString()).Distinct();
+                var standardProjectsTrust = await trustsClient.GetByUkprnsAllAsync(incomingTrustUkprns, cancellationToken);
 
                 var trusts = standardProjectsTrust
                     .Select(item => new ListTrustsWithProjectsResultModel(
                         item.Ukprn,
-                        item.Name,
+                        item.Name.ToTitleCase(),
                         item.ReferenceNumber,
                         standardProjects.Count(p => p.IncomingTrustUkprn?.ToString() == item.Ukprn && p.Type == ProjectType.Conversion),
                         standardProjects.Count(p => p.IncomingTrustUkprn?.ToString() == item.Ukprn && p.Type == ProjectType.Transfer)
                     ))
                     .ToList();
-                
                 
                 //Group mats by reference and form result model
                 var mats = matProjects

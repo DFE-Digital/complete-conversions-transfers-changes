@@ -1,4 +1,5 @@
 ﻿@using Dfe.Complete.Pages.Projects.List
+@using Dfe.Complete.Constants
 @model Dfe.Complete.Pages.Projects.List.AllProjectsModel
 @{
   Layout = "Shared/_Layout";
@@ -35,7 +36,7 @@
               <a class="moj-primary-navigation__link" aria-current="@IsCurrentNav(AllProjectsModel.ByLocalAuthorityNavigation)" href="/projects/all/local-authorities">By local authority</a>
             </li>
             <li class="moj-primary-navigation__item">
-              <a class="moj-primary-navigation__link" aria-current="@IsCurrentNav(AllProjectsModel.CompletedNavigation)" href="/projects/all/completed">Completed</a>
+              <a class="moj-primary-navigation__link" aria-current="@IsCurrentNav(AllProjectsModel.CompletedNavigation)" href="@RouteConstants.CompletedProjects">Completed</a>
             </li>
             <li class="moj-primary-navigation__item">
               <a class="moj-primary-navigation__link" aria-current="@IsCurrentNav(AllProjectsModel.StatisticsNavigation)" href="/projects/all/statistics">Statistics</a>
