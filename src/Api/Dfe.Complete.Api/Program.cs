@@ -26,7 +26,7 @@ namespace Dfe.Complete.Api
         public static async Task Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
-            
+
             builder.Host.UseSerilog((context, services, loggerConfiguration) =>
             {
                 loggerConfiguration
@@ -45,7 +45,7 @@ namespace Dfe.Complete.Api
                 config.DefaultApiVersion = new ApiVersion(1, 0);
                 config.AssumeDefaultVersionWhenUnspecified = true;
                 config.ReportApiVersions = true;
-                
+
             }).AddApiExplorer(options =>
             {
                 options.GroupNameFormat = "'v'VVV";
@@ -180,6 +180,8 @@ namespace Dfe.Complete.Api
             app.UseAuthentication();
             app.UseAuthorization();
             app.MapControllers();
+
+            app.MapHealthChecks("/health").AllowAnonymous();
 
             ILogger<Program> logger = app.Services.GetRequiredService<ILogger<Program>>();
             logger.LogInformation("Logger is working...");
