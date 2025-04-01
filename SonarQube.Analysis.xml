@@ -7,4 +7,10 @@
 
   <!-- analysis exclusions -->
   <Property Name="sonar.exclusions">**/Frontend/Dfe.Complete/**/*.cshtml,**/Frontend/Dfe.Complete/**/*.cshtml.cs</Property>
+
+  <!-- coverage exclusions -->
+  <Property Name="sonar.coverage.exclusions">**/Tests/Dfe.Complete.CypressTests/**</Property>
+
+  <!-- duplication exclusions -->
+  <Property Name="sonar.cpd.exclusions">**/Tests/Dfe.Complete.CypressTests/cypress/e2e/**</Property>
 </SonarQubeAnalysisProperties>

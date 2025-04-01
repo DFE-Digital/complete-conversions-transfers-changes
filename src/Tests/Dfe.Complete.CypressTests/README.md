@@ -13,7 +13,8 @@ The Cypress tests are designed to run against the front-end of the application. 
     "tenantId": "<enter Id from Id Provider for the tenant>",  
     "clientId": "<enter Id from Id Provider for the client used for test app registration>",
     "clientSecret": "<enter a client secret Id Provider for the client used for test app registration>",
-    "completeApiClientId": "<enter Id from Id Provider for the complete api app registration>"
+    "completeApiClientId": "<enter Id from Id Provider for the complete api app registration>",
+    "userAdId": "<enter the active directory id of the user>"
 }
 ```
 
