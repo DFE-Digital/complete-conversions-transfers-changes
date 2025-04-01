@@ -7,7 +7,7 @@ using Dfe.Complete.Models;
 using Dfe.Complete.Pages.Pagination;
 using MediatR;
 
-namespace Dfe.Complete.Pages.Projects.List.ProjectsForTeam;
+namespace Dfe.Complete.Pages.Projects.Team.InProgress;
 
 public class AllProjectsInProgressForTeamModel(ISender sender) : YourTeamProjectsModel(InProgressNavigation)
 {

@@ -1,6 +1,6 @@
 ﻿using Dfe.Complete.Models;
 
-namespace Dfe.Complete.Pages.Projects.List;
+namespace Dfe.Complete.Pages.Projects.Team;
 
 public abstract class YourTeamProjectsModel(string currentNavigation) : BaseProjectsPageModel(currentNavigation)
 {

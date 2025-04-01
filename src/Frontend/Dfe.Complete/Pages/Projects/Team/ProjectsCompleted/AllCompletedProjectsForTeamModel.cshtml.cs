@@ -1,15 +1,13 @@
 using Dfe.Complete.Application.Projects.Models;
-using Dfe.Complete.Application.Projects.Queries.GetUser;
 using Dfe.Complete.Application.Projects.Queries.ListAllProjects;
 using Dfe.Complete.Constants;
 using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Extensions;
 using Dfe.Complete.Models;
 using Dfe.Complete.Pages.Pagination;
-using Dfe.Complete.Utils;
 using MediatR;
 
-namespace Dfe.Complete.Pages.Projects.List.ProjectsForTeam;
+namespace Dfe.Complete.Pages.Projects.Team.ProjectsCompleted;
 
 public class AllCompletedProjectsForTeamModel(ISender sender) : YourTeamProjectsModel(CompletedNavigation)
 {
