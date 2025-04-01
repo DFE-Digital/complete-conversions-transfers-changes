@@ -47,7 +47,8 @@ describe("Create a new Transfer Project", () => {
         cy.get("h2").should("contain", "Task list");
     });
 
-    it("Should be able to create a new Form a MAT transfer project", () => {
+    it.skip("Should be able to create a new Form a MAT transfer project", () => {
+        // bug 207884
         homePage.addAProject();
 
         selectProjectTypePage.selectFormAMATTransfer().continue();

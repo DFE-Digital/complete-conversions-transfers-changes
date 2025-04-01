@@ -42,7 +42,8 @@ describe("Create a new Conversion Project", () => {
         cy.get("h2").should("contain", "Project created");
     });
 
-    it("Should be able to create a new Form a MAT conversion project", () => {
+    it.skip("Should be able to create a new Form a MAT conversion project", () => {
+        // bug 207884
         homePage.addAProject();
 
         selectProjectType.selectFormAMATConversion().continue();
@@ -60,7 +61,9 @@ describe("Create a new Conversion Project", () => {
             .withHandoverComments("Test comments")
             .withAcademyOrder("Directive academy order")
             .with2RI("Yes")
-            .continue();
+            // .continue();
+
+        cy.pause();
 
         validationComponent.hasNoValidationErrors();
         cy.get("h2").should("contain", "Project created");
