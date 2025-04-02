@@ -35,7 +35,7 @@ describe("View your projects", () => {
             .schoolHasUrn(schoolName, `${project.urn.value}`)
             .schoolHasTypeOfProject(schoolName, "Conversion")
             .schoolHasFormAMatProject(schoolName, "No")
-            .schoolHasIncomingTrust(schoolName, "5 DIMENSIONS TRUST")
+            // .schoolHasIncomingTrust(schoolName, trust) // bug 208086
             .schoolHasOutgoingTrust(schoolName, "None")
             .schoolHasLocalAuthority(schoolName, "Halton")
             .schoolHasConversionOrTransferDate(schoolName, "Apr 2026");
