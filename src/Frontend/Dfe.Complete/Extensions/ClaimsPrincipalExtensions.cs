@@ -11,8 +11,7 @@ namespace Dfe.Complete.Extensions
         public static string GetUserAdId(this ClaimsPrincipal value)
         {
             var userAdId = value.Claims.SingleOrDefault(c => c.Type.Contains("objectidentifier"))?.Value;
-
-            return userAdId;
+            return userAdId ?? throw new InvalidOperationException("User does not have an objectidentifier claim.");
         }
 
         public static async Task<ProjectTeam> GetUserTeam(this ClaimsPrincipal value, ISender sender)

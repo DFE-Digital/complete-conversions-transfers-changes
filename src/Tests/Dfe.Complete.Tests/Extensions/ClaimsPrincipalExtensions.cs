@@ -29,7 +29,7 @@ namespace Dfe.Complete.Tests.Extensions
         }
 
         [Fact]
-        public void GetUserAdId_Returns_Null_When_ObjectIdentifier_Claim_Does_Not_Exist()
+        public void GetUserAdId_Returns_Throws_When_ObjectIdentifier_Claim_Does_Not_Exist()
         {
             // Arrange
             var claims = new List<Claim>
@@ -38,11 +38,11 @@ namespace Dfe.Complete.Tests.Extensions
             };
             var principal = new ClaimsPrincipal(new ClaimsIdentity(claims));
 
-            // Act
-            var result = principal.GetUserAdId();
+            // Act & Assert
+            var exception = Assert.Throws<InvalidOperationException>(() =>
+                principal.GetUserAdId());
 
-            // Assert
-            Assert.Null(result);
+            Assert.Equal("User does not have an objectidentifier claim.", exception.Message);
         }
 
         [Fact]
