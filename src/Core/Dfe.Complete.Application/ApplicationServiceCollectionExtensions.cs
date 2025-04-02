@@ -19,11 +19,6 @@ namespace Microsoft.Extensions.DependencyInjection
         public static IServiceCollection AddApplicationDependencyGroup(
             this IServiceCollection services, IConfiguration config)
         {
-            //services.AddSingleton(serviceProvider =>
-            //{
-            //    var runtimeConfig = serviceProvider.GetRequiredService<IConfiguration>();
-            //    return runtimeConfig;
-            //});
 
             var performanceLoggingEnabled = config.GetValue<bool>("Features:PerformanceLoggingEnabled");
 

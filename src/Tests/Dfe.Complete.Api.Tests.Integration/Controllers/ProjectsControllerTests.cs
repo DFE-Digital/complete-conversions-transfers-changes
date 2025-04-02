@@ -1,20 +1,17 @@
-using System.Net;
-using System.Security.Claims;
 using AutoFixture;
 using Dfe.AcademiesApi.Client.Contracts;
 using Dfe.Complete.Api.Tests.Integration.Customizations;
-using Dfe.Complete.Api.Tests.Integration.Factories;
 using Dfe.Complete.Client.Contracts;
 using Dfe.Complete.Domain.Entities;
 using Dfe.Complete.Infrastructure.Database;
-using Dfe.Complete.Tests.Common.Customizations.Commands;
 using Dfe.Complete.Tests.Common.Customizations.Models;
 using DfE.CoreLibs.Testing.AutoFixture.Attributes;
 using DfE.CoreLibs.Testing.AutoFixture.Customizations;
 using DfE.CoreLibs.Testing.Mocks.WebApplicationFactory;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
+using System.Net;
+using System.Security.Claims;
+using DfE.CoreLibs.Testing.Mocks.WireMock;
 using Project = Dfe.Complete.Domain.Entities.Project;
 
 namespace Dfe.Complete.Api.Tests.Integration.Controllers;
@@ -27,19 +24,15 @@ public class ProjectsControllerTests
     private const string UpdateRole = "API.Update";
 
     [Theory]
-    [CustomAutoData(typeof(CustomWebApplicationDbApiContextFactoryCustomization),
+    [CustomAutoData(typeof(CustomWebApplicationDbContextFactoryCustomization),
         typeof(DateOnlyCustomization),
-        typeof(LocalAuthorityCustomization),
-        typeof(CreateConversionProjectCommandCustomization))]
+        typeof(LocalAuthorityCustomization))]
     public async Task CreateProject_Async_ShouldCreateConversionProject(
-        CustomWebApplicationDbApiContextFactory<Program> factory,
+        CustomWebApplicationDbContextFactory<Program> factory,
         CreateConversionProjectCommand createConversionProjectCommand,
         IProjectsClient projectsClient,
         IFixture fixture)
     {
-
-        var runtimeConfig = factory.Services.GetRequiredService<IConfiguration>();
-
         factory.TestClaims = [new Claim(ClaimTypes.Role, WriteRole), new Claim(ClaimTypes.Role, ReadRole)];
 
         var dbContext = factory.GetDbContext<CompleteContext>();
@@ -68,7 +61,8 @@ public class ProjectsControllerTests
         }).Create<GiasEstablishment>();
         await dbContext.GiasEstablishments.AddAsync(establishment);
 
-        factory.AddGetWithJsonResponse($"/v4/establishment/urn/{establishmentDto.Urn}", establishmentDto);
+        factory.WireMockServer?.AddGetWithJsonResponse($"/v4/establishment/urn/{establishmentDto.Urn}", establishmentDto);
+
         createConversionProjectCommand.Urn = new Urn { Value = int.Parse(establishmentDto.Urn) };
 
         await dbContext.SaveChangesAsync();

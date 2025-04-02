@@ -1,6 +1,8 @@
-using System.Net.Http.Headers;
-using System.Security.Claims;
 using AutoFixture;
+using Dfe.AcademiesApi.Client;
+using Dfe.AcademiesApi.Client.Contracts;
+using Dfe.AcademiesApi.Client.Security;
+using Dfe.AcademiesApi.Client.Settings;
 using Dfe.Complete.Api.Client.Extensions;
 using Dfe.Complete.Application.Common.Mappers;
 using Dfe.Complete.Client;
@@ -13,6 +15,8 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using System.Net.Http.Headers;
+using System.Security.Claims;
 
 namespace Dfe.Complete.Api.Tests.Integration.Customizations
 {
@@ -24,9 +28,12 @@ namespace Dfe.Complete.Api.Tests.Integration.Customizations
             {
                 var factory = new CustomWebApplicationDbContextFactory<Program>()
                 {
+                    UseWireMock = true,
+                    WireMockPort = 0,
+
                     SeedData = new Dictionary<Type, Action<DbContext>>
                     {
-                        { typeof(CompleteContext), context => CompleteContextSeeder.Seed((CompleteContext)context, fixture) } 
+                        { typeof(CompleteContext), context => CompleteContextSeeder.Seed((CompleteContext)context, fixture) }
                     },
                     ExternalServicesConfiguration = services =>
                     {
@@ -47,6 +54,32 @@ namespace Dfe.Complete.Api.Tests.Integration.Customizations
                     ExternalHttpClientConfiguration = client =>
                     {
                         client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", "external-mock-token");
+                    },
+
+                    ExternalWireMockConfigOverride = (cfgBuilder, mockServer) =>
+                    {
+                        cfgBuilder.AddInMemoryCollection(new Dictionary<string, string?>
+                        {
+                            ["AcademiesApiClient:BaseUrl"] = mockServer.Urls[0].TrimEnd('/') + "/",
+                        });
+                    },
+                    ExternalWireMockClientRegistration = (services, config, wireHttp) =>
+                    {
+
+                        services.AddHttpClient<IEstablishmentsV4Client, EstablishmentsV4Client>((httpClient, serviceProvider) =>
+                            {
+                                var wConfig = serviceProvider.GetRequiredService<IConfiguration>();
+
+                                httpClient.BaseAddress = new Uri(wConfig["AcademiesApiClient:BaseUrl"]!);
+
+                                return ActivatorUtilities.CreateInstance<EstablishmentsV4Client>(
+                                    serviceProvider, httpClient, wConfig["AcademiesApiClient:BaseUrl"]!);
+                            })
+                            .AddHttpMessageHandler(serviceProvider =>
+                            {
+                                var apiSettings = serviceProvider.GetRequiredService<AcademiesApiClientSettings>();
+                                return new ApiKeyHandler(apiSettings);
+                            });
                     }
                 };
 
@@ -61,12 +94,12 @@ namespace Dfe.Complete.Api.Tests.Integration.Customizations
 
                 var services = new ServiceCollection();
                 services.AddSingleton<IConfiguration>(config);
-                
+
                 services.AddCompleteApiClient<IProjectsClient, ProjectsClient>(config, client);
                 services.AddCompleteApiClient<ICsvExportClient, CsvExportClient>(config, client);
                 services.AddCompleteApiClient<IUsersClient, UsersClient>(config, client);
                 var serviceProvider = services.BuildServiceProvider();
-                
+
                 fixture.Inject(factory);
                 fixture.Inject(serviceProvider);
                 fixture.Inject(client);
