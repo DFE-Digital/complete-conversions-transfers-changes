@@ -100,4 +100,35 @@ public class AllProjectsModelTests
         // Assert
         Assert.Equal(result, expectedUrl);
     }
+    
+    [Theory]
+    [InlineData(ProjectType.Conversion, ProjectTeam.DataConsumers, false, true)] 
+    [InlineData(ProjectType.Conversion, ProjectTeam.NorthWest, true, true)] 
+    [InlineData(ProjectType.Transfer, ProjectTeam.NorthWest, false, false)]
+    public void GetProjectByMonthsUrl_ShouldReturnCorrectUrl(ProjectType projectType, ProjectTeam team, bool managesTeam, bool expectedToSeeDataConsumerUrl)
+    {
+        // Arrange
+        DateTime date = DateTime.Now;
+        string month = date.Month.ToString("0");
+        string year = date.Year.ToString("0000");
+
+        string expectedUrl = string.Format(
+            expectedToSeeDataConsumerUrl
+                ? (projectType == ProjectType.Conversion ? RouteConstants.ConversionProjectsByMonths : RouteConstants.TransfersProjectsByMonths)
+                : (projectType == ProjectType.Conversion ? RouteConstants.ConversionProjectsByMonth : RouteConstants.TransfersProjectsByMonth),
+            month, year, month, year);
+
+        var user = new UserDto
+        {
+            ManageTeam = managesTeam,
+            Team = team.ToString()
+        };
+
+        // Act
+        var result = AllProjectsModel.GetProjectByMonthsUrl(projectType, user);
+
+        // Assert
+        Assert.Equal(expectedUrl, result);
+    }
+
 }
