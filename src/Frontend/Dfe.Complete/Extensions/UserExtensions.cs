@@ -1,6 +1,8 @@
 ﻿using System.Security.Claims;
+using Dfe.Complete.Application.Projects.Models;
 using Dfe.Complete.Application.Projects.Queries.GetUser;
-using Dfe.Complete.Domain.Enums;
+using Dfe.Complete.Utils;
+using MediatR;
 
 namespace Dfe.Complete.Extensions
 {
@@ -13,23 +15,27 @@ namespace Dfe.Complete.Extensions
             return userAdId;
         }
         
-        public static async Task<ProjectTeam> GetUserTeam(this ClaimsPrincipal value)
+        public static async Task<UserDto> GetUser(this ClaimsPrincipal value, ISender sender)
         {
-            var userAdId = value.GetUserAdId();
+            try
+            {
+                var userAdId = value.GetUserAdId();
 
-            var request = new GetUserByAdIdQuery(userAdId);
-            // var userResult = await sender.Send(request);
-            //
-            // if (userResult is { IsSuccess: false })
-            // {
-            //     throw new NotFoundException(userResult.Error ?? "User not found.");
-            // }
-            //
-            var userTeam = ProjectTeam.ServiceSupport;
+                var request = new GetUserByAdIdQuery(userAdId);
+                var userResult = await sender.Send(request);
 
-            // var userTeam = Enum.Parse<ProjectTeam>(userResult.Value.Team);
+                if (!userResult.IsSuccess || userResult.Value == null)
+                {
+                    throw new NotFoundException(userResult.Error ?? "User not found.");
+                }
                 
-            return userTeam;
+                return userResult.Value;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
         }
     }
 }
