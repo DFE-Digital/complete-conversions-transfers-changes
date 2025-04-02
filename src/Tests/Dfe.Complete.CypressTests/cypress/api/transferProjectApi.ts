@@ -4,13 +4,14 @@ import { CreateTransferProjectRequest, CreateTransferProjectResponse } from "./a
 
 class TransferProjectApi extends ApiBase {
     public createProject(request: CreateTransferProjectRequest): Cypress.Chainable<CreateTransferProjectResponse> {
-        return cy.request<CreateTransferProjectResponse>({
-            method: 'POST',
-            url: Cypress.env(EnvApi) + "/api/v1/transfer-projects/",
-            headers: this.getHeaders(),
-            body: request
-        })
-            .then(response => {
+        return cy
+            .request<CreateTransferProjectResponse>({
+                method: "POST",
+                url: Cypress.env(EnvApi) + "/api/v1/transfer-projects/",
+                headers: this.getHeaders(),
+                body: request,
+            })
+            .then((response) => {
                 return response.body;
             });
     }

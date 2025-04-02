@@ -1,6 +1,6 @@
 using Dfe.Complete.Domain.Enums;
 
-namespace Dfe.Complete.Extensions;
+namespace Dfe.Complete.Domain.Extensions;
 
 public static class ProjectTeamExtensions
 {
