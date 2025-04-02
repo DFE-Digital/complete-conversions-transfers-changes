@@ -1,5 +1,5 @@
 ﻿using Dfe.Complete.Domain.Enums;
-using Dfe.Complete.Extensions;
+using Dfe.Complete.Domain.Extensions;
 
 namespace Dfe.Complete.Models;
 
