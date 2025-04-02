@@ -6,7 +6,7 @@ using MediatR;
 
 namespace Dfe.Complete.Extensions
 {
-    public static class UserExtensions
+    public static class ClaimsPrincipalExtensions
     {
         public static string GetUserAdId(this ClaimsPrincipal value)
         {

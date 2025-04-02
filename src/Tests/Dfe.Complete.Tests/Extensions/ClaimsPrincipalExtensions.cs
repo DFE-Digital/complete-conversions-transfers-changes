@@ -9,7 +9,7 @@ using Moq;
 
 namespace Dfe.Complete.Tests.Extensions
 {
-    public class UserExtensionsTests
+    public class ClaimsPrincipalExtensionsTests
     {
         [Fact]
         public void GetUserAdId_Returns_CorrectValue_When_ObjectIdentifier_Claim_Exists()
