@@ -3,7 +3,7 @@ using Dfe.Complete.Application.Services.AcademiesApi;
 using Microsoft.Extensions.Logging;
 using Moq;
 
-namespace Dfe.Complete.Application.Tests.Services.AcadmiesApi;
+namespace Dfe.Complete.Application.Tests.Services.AcademiesApi;
 
 public class EstablishmentsClientHandlerTests
 {
