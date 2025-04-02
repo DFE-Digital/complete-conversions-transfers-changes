@@ -8,7 +8,7 @@ namespace Dfe.Complete.Application.Tests.Services.CsvExport.Builders
     public class SchoolPhaseBuilderTests
     {
         [Theory]
-        [CustomAutoData(typeof(EstablishmentsCustomization))]
+        [CustomAutoData(typeof(GiasEstablishmentsCustomization))]
         public void WhenNotApplicableShouldReturnSchoolType(GiasEstablishment establishment)
         {
             establishment.PhaseName = "Not applicable";
@@ -21,7 +21,7 @@ namespace Dfe.Complete.Application.Tests.Services.CsvExport.Builders
         }
 
         [Theory]
-        [CustomAutoData(typeof(EstablishmentsCustomization))]
+        [CustomAutoData(typeof(GiasEstablishmentsCustomization))]
         public void WhenCalledShouldReturnSchoolPhase(GiasEstablishment establishment)
         {
             var builder = new SchoolPhaseBuilder<GiasEstablishment>(x => x);

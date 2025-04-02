@@ -2,7 +2,7 @@ import { ProjectBuilder } from "cypress/api/projectBuilder";
 import transferProjectApi from "cypress/api/transferProjectApi";
 import { Logger } from "cypress/common/logger";
 import projectSummarySection from "cypress/pages/projects/projectSummarySection";
-import summaryPage from "cypress/pages/projects/summaryPage";
+import summaryPage from "cypress/pages/projects/SummaryPage";
 import editTransferProject from "cypress/pages/projects/transfer/editTransferProjectPage";
 import { SummaryPageSection } from "cypress/pages/summaryPageSection";
 import validationComponent from "cypress/pages/validationComponent";

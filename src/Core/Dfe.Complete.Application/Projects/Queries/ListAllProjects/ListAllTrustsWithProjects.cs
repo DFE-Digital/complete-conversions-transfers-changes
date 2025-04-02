@@ -28,8 +28,8 @@ namespace Dfe.Complete.Application.Projects.Queries.ListAllProjects
                 var matProjects = allProjects.Where(p => p.FormAMat);
 
                 // Get trusts related to projects
-                var incomingTrustUkprns = standardProjects.Select(p => p.IncomingTrustUkprn.Value.ToString());
-                var standardProjectsTrust = await trustsClient.GetByUkprnsAllAsync(incomingTrustUkprns);
+                var incomingTrustUkprns = standardProjects.Select(p => p.IncomingTrustUkprn.Value.ToString()).Distinct();
+                var standardProjectsTrust = await trustsClient.GetByUkprnsAllAsync(incomingTrustUkprns, cancellationToken);
 
                 var trusts = standardProjectsTrust
                     .Select(item => new ListTrustsWithProjectsResultModel(
