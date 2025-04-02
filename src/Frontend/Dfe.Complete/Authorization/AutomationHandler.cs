@@ -8,7 +8,7 @@ namespace Dfe.Complete.Authorization
             IHttpContextAccessor httpContextAccessor, IConfiguration configuration)
         {
             //Header authorisation not applicable for production
-            if (!hostEnvironment.IsStaging() && !hostEnvironment.IsDevelopment())
+            if (!hostEnvironment.IsEnvironment("Test") && !hostEnvironment.IsDevelopment())
             {
                 return false;
             }
