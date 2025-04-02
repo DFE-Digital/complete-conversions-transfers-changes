@@ -19,7 +19,7 @@ public class AllProjectsModelTests
             ProjectType = ProjectType.Conversion
         }).Create<ListAllProjectsResultModel>();
 
-        string expectedUrl = string.Format(RouteConstants.ConversionProjectTaskList, project.ProjectId);
+        string expectedUrl = string.Format(RouteConstants.ConversionProjectTaskList, project.ProjectId.Value);
 
         // Act
         var result = AllProjectsModel.GetProjectSummaryUrl(project);

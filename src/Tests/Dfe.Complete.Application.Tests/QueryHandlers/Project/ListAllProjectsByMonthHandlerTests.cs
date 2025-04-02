@@ -122,19 +122,28 @@ public class ListAllProjectsByMonthHandlerTests
         typeof(ListAllProjectsQueryModelCustomization))]
     public async Task Handle_ShouldFilterProjectsByDateRange(
         [Frozen] IListAllProjectsQueryService mockListAllProjectsQueryService,
+        [Frozen] ITrustsV4Client mockTrustsClient,
         ListAllProjectsByMonthsQueryHandler handler,
         IFixture fixture)
     {
         // Arrange
+        var ukprn = fixture.Create<int>();
+
         var startDate = new DateOnly(2025, 6, 1);
         var endDate = new DateOnly(2025, 6, 30);
         var inRangeProjects = fixture.Build<ListAllProjectsQueryModel>()
             .CreateMany(6)
             .ToList();
         
+        var trustDtos = fixture
+            .Build<TrustDto>()
+            .With(t => t.Ukprn, ukprn.ToString())
+            .CreateMany(1)
+            .OrderBy(t => t.Name);
 
-        
-        
+        mockTrustsClient.GetByUkprnsAllAsync(Arg.Any<IEnumerable<string>>(), Arg.Any<CancellationToken>())
+            .Returns(Task.FromResult(new ObservableCollection<TrustDto>(trustDtos)));
+
         List<ListAllProjectsQueryModel> projects = new List<ListAllProjectsQueryModel>();
         
         foreach (var project in inRangeProjects)
@@ -144,13 +153,11 @@ public class ListAllProjectsByMonthHandlerTests
             projects.Add(project);
         }
         
-        var lastProject = projects[projects.Count - 1]; // Access the last project
-        lastProject.Project.SignificantDate = new DateOnly(2025, 7, 1); // Change the SignificantDate or other properties
+        var lastProject = projects[projects.Count - 1];
+        lastProject.Project.SignificantDate = new DateOnly(2025, 7, 1);
 
-        
         var final = projects.BuildMock();
 
-        
         mockListAllProjectsQueryService.ListAllProjects(Arg.Any<ProjectState?>(), Arg.Any<ProjectType?>()).Returns(final);
         
         // Act
@@ -160,6 +167,5 @@ public class ListAllProjectsByMonthHandlerTests
         Assert.NotNull(result);
         Assert.True(result.IsSuccess);
         Assert.Equal(5, result.Value?.Count);
-        // Assert.DoesNotContain(outOfRangeProject, result.Value);
     }
 }
