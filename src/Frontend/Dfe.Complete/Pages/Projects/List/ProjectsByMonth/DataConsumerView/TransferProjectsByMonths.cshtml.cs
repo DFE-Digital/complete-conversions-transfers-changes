@@ -10,9 +10,9 @@ using System.Globalization;
 
 namespace Dfe.Complete.Pages.Projects.List.ProjectsByMonth
 {
-    public class ConversionProjectsByMonths(ISender sender) : ProjectsByMonthModel(ConversionsSubNavigation)
+    public class TransferProjectsByMonths(ISender sender) : ProjectsByMonthModel(TransfersSubNavigation)
     {
-        private readonly string _pathToPage = "/projects/all/by-month/conversions/from/{0}/{1}/to/{2}/{3}";
+        private readonly string PathToPage = "/projects/all/by-month/transfers/from/{0}/{1}/to/{2}/{3}";
     
         public List<ListProjectsByMonthResultModel> Projects { get; set; } = [];
         
@@ -51,7 +51,7 @@ namespace Dfe.Complete.Pages.Projects.List.ProjectsByMonth
                 fromDate.Value, 
                 toDate, 
                 ProjectState.Active, 
-                ProjectType.Conversion, 
+                ProjectType.Transfer, 
                 PageNumber - 1, 
                 PageSize);
                 
@@ -59,7 +59,7 @@ namespace Dfe.Complete.Pages.Projects.List.ProjectsByMonth
             Projects = response.Value?.ToList() ?? [];
             
             
-            var url = string.Format(_pathToPage, FromMonth, FromYear, ToMonth, ToYear);
+            var url = string.Format(PathToPage, FromMonth, FromYear, ToMonth, ToYear);
 
             Pagination = new PaginationModel(
                 url, 
@@ -111,14 +111,11 @@ namespace Dfe.Complete.Pages.Projects.List.ProjectsByMonth
             {
                 return date;
             }
-            return DateOnly.FromDateTime(DateTime.Now);
+            return null;
         }
 
         private bool TryParseInputDates(out DateTime fromDate, out DateTime toDate)
         {
-            fromDate = default;
-            toDate = default;
-            
             bool fromSuccess = DateTime.TryParse(FromDate, out fromDate);
             bool toSuccess = DateTime.TryParse(ToDate, out toDate);
             
@@ -150,7 +147,7 @@ namespace Dfe.Complete.Pages.Projects.List.ProjectsByMonth
 
         private IActionResult RedirectToDateRange(DateTime fromDate, DateTime toDate)
         {
-            var url = string.Format(_pathToPage, fromDate.Month, fromDate.Year, toDate.Month, toDate.Year);
+            var url = string.Format(PathToPage, fromDate.Month, fromDate.Year, toDate.Month, toDate.Year);
             return new RedirectResult(url);
         }
     }

@@ -1,12 +1,14 @@
 ﻿@using Dfe.Complete.Domain.Enums
 @using Dfe.Complete.Pages.Projects.List
+@using MediatR
 @model Dfe.Complete.Pages.Projects.List.AllProjectsModel
+@inject ISender Sender
 @{
   Layout = "Shared/_Layout";
   var ariaCurrentValue = "page";
   string? IsCurrentNav(string tabName) => Model.CurrentNavigationItem == tabName ? ariaCurrentValue : null;
   
-  var userTeam = await User.GetUserTeam();
+  var user = await User.GetUser(Sender);
 }
 
 @section BeforeMainFullWidth
@@ -23,7 +25,7 @@
               <a class="moj-primary-navigation__link" aria-current="@IsCurrentNav(AllProjectsModel.InProgressNavigation)" href="/projects/all/in-progress/all">In progress</a>
             </li>
             <li class="moj-primary-navigation__item">
-              <a class="moj-primary-navigation__link" aria-current="@IsCurrentNav(AllProjectsModel.ByMonthNavigation)" href="@AllProjectsModel.GetProjectByMonthsUrl(ProjectType.Conversion, userTeam)">By month</a>
+              <a class="moj-primary-navigation__link" aria-current="@IsCurrentNav(AllProjectsModel.ByMonthNavigation)" href="@AllProjectsModel.GetProjectByMonthsUrl(ProjectType.Conversion, user)">By month</a>
             </li>
             <li class="moj-primary-navigation__item">
               <a class="moj-primary-navigation__link" aria-current="@IsCurrentNav(AllProjectsModel.ByRegionNavigation)" href="/projects/all/regions">By region</a>
