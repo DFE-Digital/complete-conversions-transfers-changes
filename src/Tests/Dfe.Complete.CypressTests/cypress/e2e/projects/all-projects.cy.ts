@@ -2,7 +2,7 @@ import navBar from "cypress/pages/navBar";
 import allProjects from "cypress/pages/projects/allProjects";
 import { projectTable } from "cypress/pages/projects/tables/projectTable";
 import { before, beforeEach } from "mocha";
-import { nextMonth } from "cypress/constants/stringTestConstants";
+import { nextMonth, trust } from "cypress/constants/stringTestConstants";
 import { Username } from "cypress/constants/cypressConstants";
 import { shouldOnlyBeAbleToViewNextMonthOfProjects } from "../../support/reusableTests";
 import projectApi from "cypress/api/projectApi";
@@ -14,7 +14,6 @@ const project = ProjectBuilder.createConversionProjectRequest(nextMonth);
 let projectId: string;
 const schoolName = "St Chad's Catholic Primary School";
 const region = "West Midlands";
-const trust = "5 Dimensions Trust";
 const localAuthority = "Dudley Metropolitan Borough Council";
 const transferProject = ProjectBuilder.createTransferProjectRequest();
 const transferSchoolName = "Abbey College Manchester";
@@ -100,14 +99,16 @@ describe("View all projects", () => {
 
     it("Should be able to view all projects by user and all a user's projects", () => {
         navBar.goToAllProjects();
-        allProjects.filterProjects("By user").containsHeading("All projects by user");
+        allProjects
+            .filterProjects("By user")
+            .containsHeading("All projects by user")
+            .goToNextPageUntilFieldIsVisible(Username);
         projectTable
             .hasTableHeader("User name")
             .hasTableHeader("Email")
             .hasTableHeader("Team")
             .hasTableHeader("Conversions")
             .hasTableHeader("Transfers")
-            .contains(Username)
             .goToUserProjects(Username);
         allProjects.containsHeading(`Projects for ${Username}`);
         projectTable
@@ -120,8 +121,7 @@ describe("View all projects", () => {
         // projectDetailsPage.containsHeading(schoolName) // not implemented
     });
 
-    it.skip("Should be able to view all projects by trust and all a trust's projects", () => {
-        // bug
+    it("Should be able to view all projects by trust and all a trust's projects", () => {
         navBar.goToAllProjects();
         allProjects
             .filterProjects("By trust")
@@ -133,7 +133,9 @@ describe("View all projects", () => {
             .hasTableHeader("Conversions")
             .hasTableHeader("Transfers")
             .filterBy(trust);
-        allProjects.containsHeading(`Projects for ${trust}`).goToNextPageUntilFieldIsVisible(schoolName);
+        allProjects
+            // .containsHeading(`Projects for ${trust}`) // bug 208086
+            .goToNextPageUntilFieldIsVisible(schoolName);
         projectTable
             .hasTableHeader("School or academy")
             .hasTableHeader("URN")

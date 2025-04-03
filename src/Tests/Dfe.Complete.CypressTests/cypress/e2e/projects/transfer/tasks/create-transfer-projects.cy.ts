@@ -3,6 +3,7 @@ import homePage from "cypress/pages/homePage";
 import newTransferPage from "cypress/pages/projects/new/newTransferPage";
 import selectProjectTypePage from "cypress/pages/projects/new/selectProjectTypePage";
 import validationComponent from "cypress/pages/validationComponent";
+import { groupReferenceNumber, ukprn, ukprn2 } from "cypress/constants/stringTestConstants";
 
 const urn = "136730";
 const urnMAT = "136731";
@@ -26,9 +27,9 @@ describe("Create a new Transfer Project", () => {
 
         newTransferPage
             .withAcademyURN(urn)
-            .withOutgoingTrustUKPRN("10058682")
-            .withIncomingTrustUKPRN("10058689")
-            .withGroupReferenceNumber("GRP_00000006")
+            .withOutgoingTrustUKPRN(`${ukprn}`)
+            .withIncomingTrustUKPRN(`${ukprn2}`)
+            .withGroupReferenceNumber(groupReferenceNumber)
             .withAcademySharepointLink("https://educationgovuk.sharepoint.com")
             .withIncomingTrustSharePointLink("https://educationgovuk.sharepoint.com")
             .withOutgoingTrustSharepointLink("https://educationgovuk.sharepoint.com")
@@ -55,7 +56,7 @@ describe("Create a new Transfer Project", () => {
 
         newTransferPage
             .withAcademyURN(urnMAT)
-            .withOutgoingTrustUKPRN("10058682")
+            .withOutgoingTrustUKPRN(`${ukprn}`)
             .withTrustReferenceNumber("TR04024")
             .withTrustName("Helix Academies Trust")
             .withAcademySharepointLink("https://educationgovuk.sharepoint.com")
