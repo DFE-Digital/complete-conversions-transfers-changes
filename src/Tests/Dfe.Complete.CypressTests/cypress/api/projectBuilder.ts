@@ -1,5 +1,6 @@
 import { CreateProjectRequest } from "./apiDomain";
 import { EnvUserAdId } from "../constants/cypressConstants";
+import { groupReferenceNumber, ukprn } from "cypress/constants/stringTestConstants";
 
 export class ProjectBuilder {
     public static createConversionProjectRequest(
@@ -16,7 +17,7 @@ export class ProjectBuilder {
             significantDate: significantDateFormatted,
             isSignificantDateProvisional: true,
             incomingTrustUkprn: {
-                value: 10058682,
+                value: ukprn,
             },
             isDueTo2Ri: false,
             hasAcademyOrderBeenIssued: false,
@@ -24,7 +25,7 @@ export class ProjectBuilder {
             advisoryBoardConditions: "test",
             establishmentSharepointLink: "https://educationgovuk.sharepoint.com",
             incomingTrustSharepointLink: "https://educationgovuk.sharepoint.com",
-            groupReferenceNumber: "GRP_00000006",
+            groupReferenceNumber: groupReferenceNumber,
             handingOverToRegionalCaseworkService: false,
             handoverComments: "test 2",
             userAdId: userAdIdValue,
@@ -52,14 +53,14 @@ export class ProjectBuilder {
             urn: { value: 149149 },
             significantDate: "2025-02-01",
             isSignificantDateProvisional: false,
-            incomingTrustUkprn: { value: 10058682 },
+            incomingTrustUkprn: { value: ukprn },
             isDueTo2Ri: false,
             hasAcademyOrderBeenIssued: false,
             advisoryBoardDate: "2025-02-18",
             advisoryBoardConditions: "test",
             establishmentSharepointLink: "https://educationgovuk.sharepoint.com",
             incomingTrustSharepointLink: "https://educationgovuk.sharepoint.com",
-            groupReferenceNumber: "GRP_00000006",
+            groupReferenceNumber: groupReferenceNumber,
             handingOverToRegionalCaseworkService: false,
             handoverComments: "test 2",
             userAdId: Cypress.env(EnvUserAdId),
