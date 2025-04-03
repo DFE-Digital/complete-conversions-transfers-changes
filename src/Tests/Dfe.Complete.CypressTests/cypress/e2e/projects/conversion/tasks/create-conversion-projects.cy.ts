@@ -5,7 +5,7 @@ import selectProjectType from "cypress/pages/projects/new/selectProjectTypePage"
 import validationComponent from "cypress/pages/validationComponent";
 
 const urn: string = "111394";
-const urnMAT: string = "103846"; //103842
+const urnMAT: string = "103846";
 
 describe("Create a new Conversion Project", () => {
     before(() => {
@@ -19,7 +19,7 @@ describe("Create a new Conversion Project", () => {
         cy.visit("/");
     });
 
-    it("Should be able to create a new conversion project", () => {
+    it.only("Should be able to create a new conversion project", () => {
         homePage.addAProject();
 
         // cy.executeAccessibilityTests();
@@ -30,7 +30,7 @@ describe("Create a new Conversion Project", () => {
             .withSchoolURN(urn)
             .withIncomingTrustUKPRN("10059853")
             .withAdvisoryBoardDate("10", "12", "2024")
-            .withProvisionalConversionDate("9", "11", "2026")
+            .withProvisionalConversionDate("11", "2026")
             .withSchoolSharepointLink("https://educationgovuk-my.sharepoint.com/")
             .withIncomingTrustSharePointLink("https://educationgovuk-my.sharepoint.com/")
             .withHandingOverToRCS("No")
@@ -54,16 +54,14 @@ describe("Create a new Conversion Project", () => {
             .withTrustName("Test Trust")
             .withAdvisoryBoardDate("12", "12", "2024")
             .withAdvisoryBoardConditions("Test conditions")
-            .withProvisionalConversionDate("25", "11", "2026")
+            .withProvisionalConversionDate("11", "2026")
             .withSchoolSharepointLink("https://educationgovuk-my.sharepoint.com/")
             .withIncomingTrustSharePointLink("https://educationgovuk-my.sharepoint.com/")
             .withHandingOverToRCS("Yes")
             .withHandoverComments("Test comments")
             .withAcademyOrder("Directive academy order")
             .with2RI("Yes")
-            // .continue();
-
-        cy.pause();
+            .continue();
 
         validationComponent.hasNoValidationErrors();
         cy.get("h2").should("contain", "Project created");

@@ -1,4 +1,4 @@
-import { yesNoOption } from "../../../constants/stringTestConstants";
+import { yesNoOption } from "cypress/constants/stringTestConstants";
 
 class NewProjectPage {
     public withTrustReferenceNumber(trn: string): this {
