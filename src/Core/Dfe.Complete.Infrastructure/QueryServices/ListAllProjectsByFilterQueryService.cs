@@ -4,38 +4,11 @@ using Dfe.Complete.Domain.Entities;
 using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Domain.ValueObjects;
 using Dfe.Complete.Infrastructure.Database;
+using Dfe.Complete.Infrastructure.Enums;
+using Dfe.Complete.Infrastructure.Extensions;
 using Microsoft.EntityFrameworkCore;
 
 namespace Dfe.Complete.Infrastructure.QueryServices;
-
-public enum FilterField
-{
-    Urn,
-    SignificantDate,
-    CreatedAt
-}
-
-public record OrderByQuery(FilterField Field = FilterField.Urn, bool Ascending = false);
-
-
-public static class ProjectOrderingHelper
-{
-    public static IOrderedQueryable<Project> ApplyOrdering(this IQueryable<Project> query, FilterField field, bool descending = false)
-    {
-        return (field, descending) switch
-        {
-            (FilterField.CreatedAt, false) => query.OrderBy(p => p.CreatedAt),
-            (FilterField.CreatedAt, true) => query.OrderByDescending(p => p.CreatedAt),
-
-            (FilterField.Urn, false) => query.OrderBy(p => p.Urn),
-            (FilterField.Urn, true) => query.OrderByDescending(p => p.Urn),
-
-            (_, false) => query.OrderBy(p => p.SignificantDate),
-            (_, true) => query.OrderByDescending(p => p.SignificantDate),
-        };
-    }
-}
-
 
 internal class ListAllProjectsByFilterQueryService(CompleteContext context) : IListAllProjectsByFilterQueryService
 {
@@ -46,7 +19,7 @@ internal class ListAllProjectsByFilterQueryService(CompleteContext context) : IL
         Region? region = null,
         ProjectTeam? team = null)
     {
-        var orderBy = new OrderByQuery(FilterField.Urn, true);
+        var orderBy = new OrderProjectByQuery(OrderProjectByField.CreatedAt, true);
         var projects = context.Projects
             .Where(project => projectStatus == null || project.State == projectStatus)
             .Where(project => projectStatus != ProjectState.Active || project.AssignedToId != null)
@@ -82,27 +55,13 @@ internal class ListAllProjectsByFilterQueryService(CompleteContext context) : IL
         return GenerateQuery(projects, giasEstablishments);
     }
 
-    private static IQueryable<ListAllProjectsQueryModel> GenerateQuery(IQueryable<Project> projects, IQueryable<GiasEstablishment> giasEstablishments, OrderByQuery? orderBy = default)
+    private static IQueryable<ListAllProjectsQueryModel> GenerateQuery(IQueryable<Project> projects, IQueryable<GiasEstablishment> giasEstablishments, OrderProjectByQuery? orderBy = null)
     {
-        // return projects
-        //     .Include(p => p.AssignedTo)
-        //     .Include(p => p.LocalAuthority)
-        //     // .OrderBy(p => p.SignificantDate)
-        //             .Join(giasEstablishments, project => project.Urn, establishment => establishment.Urn,
-        //         (project, establishment) => new ListAllProjectsQueryModel(project, establishment));
-        var withRelations = projects
+        return projects
             .Include(p => p.AssignedTo)
-            .Include(p => p.LocalAuthority);
-
-        IOrderedQueryable<Project> orderedByA;
-
-        if (orderBy != null)
-        {
-            orderedByA = withRelations.ApplyOrdering(orderBy.Field, orderBy.Ascending);
-        }
-        else orderedByA = withRelations.OrderBy(p => p.SignificantDate);
-
-        return orderedByA
+            .Include(p => p.LocalAuthority)
+                        .OrderBy(p => p.SignificantDate)
+            // .OrderProjectBy(orderBy)
             .Join(giasEstablishments, project => project.Urn, establishment => establishment.Urn,
                 (project, establishment) => new ListAllProjectsQueryModel(project, establishment));
     }
