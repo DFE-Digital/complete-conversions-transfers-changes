@@ -26,11 +26,11 @@ describe.skip("Capabilities and permissions of the business support user", () =>
         shouldBeAbleToViewAndDownloadCsvReportsFromTheExportSection();
     });
 
-    it("Should NOT be able view your projects", () => {
+    it("Should NOT be able to view your projects", () => {
         shouldNotBeAbleToViewYourProjects();
     });
 
-    it("Should NOT be able view your team projects", () => {
+    it("Should NOT be able to view your team projects", () => {
         shouldNotBeAbleToViewYourTeamProjects();
     });
 

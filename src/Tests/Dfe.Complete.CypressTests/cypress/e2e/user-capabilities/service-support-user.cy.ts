@@ -48,11 +48,11 @@ describe.skip("Capabilities and permissions of the service support user", () => 
         // not implemented 187525
     });
 
-    it("Should NOT be able view your projects", () => {
+    it("Should NOT be able to view your projects", () => {
         shouldNotBeAbleToViewYourProjects();
     });
 
-    it("Should NOT be able view your team projects", () => {
+    it("Should NOT be able to view your team projects", () => {
         shouldNotBeAbleToViewYourTeamProjects();
     });
 
