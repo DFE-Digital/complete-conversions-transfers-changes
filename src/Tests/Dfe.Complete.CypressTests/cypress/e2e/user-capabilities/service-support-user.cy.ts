@@ -5,6 +5,7 @@ import {
     shouldNotBeAbleToBeAssignedAProject,
     shouldNotBeAbleToCreateAProject,
     shouldNotBeAbleToViewYourProjects,
+    shouldNotBeAbleToViewYourTeamProjects,
 } from "../../support/reusableTests";
 
 describe.skip("Capabilities and permissions of the service support user", () => {
@@ -49,6 +50,10 @@ describe.skip("Capabilities and permissions of the service support user", () => 
 
     it("Should NOT be able view your projects", () => {
         shouldNotBeAbleToViewYourProjects();
+    });
+
+    it("Should NOT be able view your team projects", () => {
+        shouldNotBeAbleToViewYourTeamProjects();
     });
 
     it("Should NOT be able to create a project", () => {

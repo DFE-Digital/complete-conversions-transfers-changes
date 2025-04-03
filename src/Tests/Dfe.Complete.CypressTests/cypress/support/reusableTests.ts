@@ -15,6 +15,11 @@ export function shouldNotBeAbleToViewYourProjects() {
     cy.visit("/projects/yours/in-progress").notAuthorisedToPerformAction();
 }
 
+export function shouldNotBeAbleToViewYourTeamProjects() {
+    navBar.unableToViewYourTeamProjects();
+    cy.visit("/projects/team/in-progress").notAuthorisedToPerformAction();
+}
+
 export function shouldNotBeAbleToCreateAProject() {
     homePage.unableToAddAProject();
     cy.visit("/projects/new").notAuthorisedToPerformAction();

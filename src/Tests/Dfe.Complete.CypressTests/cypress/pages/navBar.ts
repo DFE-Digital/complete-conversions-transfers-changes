@@ -31,6 +31,11 @@ class NavBar {
         return this;
     }
 
+    unableToViewYourTeamProjects() {
+        cy.getById(this.navHeaderId).contains("Your team projects").should("not.exist");
+        return this;
+    }
+
     unableToViewGroups() {
         cy.getById(this.navHeaderId).contains("Groups").should("not.exist");
         return this;
