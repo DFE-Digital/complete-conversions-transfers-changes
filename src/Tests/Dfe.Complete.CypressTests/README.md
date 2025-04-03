@@ -32,6 +32,8 @@ beforeEach(() => {
 
 Intercepts all browser requests and adds a special auth header using the `authKey`. Make sure you set the `CypressTestSecret` in your app, and it matches the `authKey` in the `cypress.env.json` file.
 
+#### Database
+
 The database will need the user to exist and to match the active directory id defined above. An example script to add the user to the database is below
 
 ```sql
@@ -50,6 +52,54 @@ VALUES (NEWID()
       ,0
       ,null
       ,'london'
+      ,null
+      ,0
+      ,0
+      ,null)
+COMMIT TRANSACTION
+```
+
+The following 2 users will also need to be added for 'your team projects' tests to run correctly.
+
+```sql
+BEGIN TRANSACTION 
+INSERT INTO [complete].[users]
+VALUES (NEWID()
+      ,'test.cypress-london@education.gov.uk'
+      ,GETDATE()
+      ,GETDATE()
+      ,0
+      ,1
+      ,'cypress'
+      ,'test-london'
+      ,'TEST-AD-ID2'
+      ,1
+      ,0
+      ,null
+      ,'london'
+      ,null
+      ,0
+      ,0
+      ,null)
+COMMIT TRANSACTION
+```
+
+```sql
+BEGIN TRANSACTION 
+INSERT INTO [complete].[users]
+VALUES (NEWID()
+      ,'test.cypress-rcs@education.gov.uk'
+      ,GETDATE()
+      ,GETDATE()
+      ,0
+      ,1
+      ,'cypress'
+      ,'test-rcs'
+      ,'TEST-AD-ID-3'
+      ,1
+      ,0
+      ,null
+      ,'regional_casework_services'
       ,null
       ,0
       ,0

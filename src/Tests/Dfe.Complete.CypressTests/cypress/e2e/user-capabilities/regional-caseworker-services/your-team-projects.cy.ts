@@ -5,13 +5,14 @@ import { ProjectBuilder } from "cypress/api/projectBuilder";
 import navBar from "cypress/pages/navBar";
 import yourTeamProjects from "cypress/pages/projects/yourTeamProjects";
 import yourTeamProjectsRCSViewTable from "cypress/pages/projects/tables/yourTeamProjectsRCSViewTable";
+import {
+    regionalCaseworkerUserAdId,
+    regionalCaseworkerUserEmail,
+    regionalCaseWorkerUserName,
+} from "cypress/constants/stringTestConstants";
 
 const project = ProjectBuilder.createConversionProjectRequest(new Date("2026-04-01"), 111396);
 const schoolName = "Blacon High School, A Specialist Sports College";
-//todo create regional caseworker service account
-const regionalCaseworkerUserEmail = "todo";
-const regionalCaseworkerUserAdId = "todo";
-const regionalCaseWorkerUserName = "todo";
 const teammatesProject = ProjectBuilder.createConversionProjectRequest(
     new Date("2026-04-01"),
     111397,
@@ -19,7 +20,7 @@ const teammatesProject = ProjectBuilder.createConversionProjectRequest(
 );
 const teammatesSchoolName = "Queen's Park High School";
 
-describe.skip("Regional caseworker services user - View your team projects", () => {
+describe("Regional caseworker services user - View your team projects", () => {
     before(() => {
         projectRemover.removeProjectIfItExists(`${project.urn.value}`);
         projectRemover.removeProjectIfItExists(`${teammatesProject.urn.value}`);

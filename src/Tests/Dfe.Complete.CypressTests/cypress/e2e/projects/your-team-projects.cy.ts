@@ -5,21 +5,22 @@ import navBar from "cypress/pages/navBar";
 import yourTeamProjects from "cypress/pages/projects/yourTeamProjects";
 import { ProjectBuilder } from "cypress/api/projectBuilder";
 import yourTeamProjectsRDOViewTable from "cypress/pages/projects/tables/yourTeamProjectsRCSViewTable";
+import { rdoLondonUserAdId, rdoLondonUserEmail, rdoLondonUserName } from "cypress/constants/stringTestConstants";
 
 const project = ProjectBuilder.createConversionProjectRequest(new Date("2026-04-01"), 111394);
 const schoolName = "Farnworth Church of England Controlled Primary School";
-// todo create regional delivery officer service account in London team
-const londonUserEmail = "todo";
-const londonUserAdId = "todo";
-const londonUserName = "todo";
-const teammatesProject = ProjectBuilder.createConversionProjectRequest(new Date("2026-04-01"), 111395, londonUserAdId);
+const teammatesProject = ProjectBuilder.createConversionProjectRequest(
+    new Date("2026-04-01"),
+    111395,
+    rdoLondonUserAdId,
+);
 const teammatesSchoolName = "Kingsway High School";
-describe.skip("Regional delivery officer user - View your team projects", () => {
+describe("Regional delivery officer user - View your team projects", () => {
     before(() => {
         projectRemover.removeProjectIfItExists(`${project.urn.value}`);
         projectRemover.removeProjectIfItExists(`${teammatesProject.urn.value}`);
         projectApi.createProject(project);
-        projectApi.createProject(teammatesProject, londonUserEmail);
+        projectApi.createProject(teammatesProject, rdoLondonUserEmail);
     });
 
     beforeEach(() => {
@@ -90,14 +91,14 @@ describe.skip("Regional delivery officer user - View your team projects", () => 
         yourTeamProjects
             .filterProjects("New")
             .containsHeading("Your team projects by user")
-            .goToNextPageUntilFieldIsVisible(londonUserName);
+            .goToNextPageUntilFieldIsVisible(rdoLondonUserName);
         yourTeamProjectsRDOViewTable
             .hasTableHeader("User name")
             .hasTableHeader("Email")
             .hasTableHeader("Conversions")
             .hasTableHeader("Transfers")
-            .goTo(londonUserName);
-        yourTeamProjects.containsHeading(`Projects assigned to ${londonUserName}`);
+            .goTo(rdoLondonUserName);
+        yourTeamProjects.containsHeading(`Projects assigned to ${rdoLondonUserName}`);
         yourTeamProjectsRDOViewTable
             .hasTableHeader("School or academy")
             .hasTableHeader("URN")
@@ -123,7 +124,6 @@ describe.skip("Regional delivery officer user - View your team projects", () => 
     });
 
     it("Should be able to view my team projects that are completed", () => {
-        // not implemented
         yourTeamProjects.filterProjects("Completed").containsHeading("Your team completed projects");
         yourTeamProjectsRDOViewTable
             .schoolIsFirstInTable(teammatesSchoolName)
