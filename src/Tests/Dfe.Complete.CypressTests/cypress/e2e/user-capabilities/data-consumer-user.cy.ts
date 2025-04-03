@@ -5,8 +5,11 @@ import {
     shouldNotBeAbleToBeAssignedAProject,
     shouldNotBeAbleToCreateAProject,
     shouldNotBeAbleToViewAndEditLocalAuthorities,
-    shouldNotBeAbleToViewAndEditUsers, shouldNotBeAbleToViewConversionURNs,
-    shouldNotBeAbleToViewYourProjects, shouldNotBeAbleToViewYourTeamProjects
+    shouldNotBeAbleToViewAndEditUsers,
+    shouldNotBeAbleToViewConversionURNs,
+    shouldNotBeAbleToViewHandedOverProjects,
+    shouldNotBeAbleToViewYourProjects,
+    shouldNotBeAbleToViewYourTeamProjects,
 } from "../../support/reusableTests";
 
 describe.skip("Capabilities and permissions of the data consumer user", () => {
@@ -31,6 +34,10 @@ describe.skip("Capabilities and permissions of the data consumer user", () => {
 
     it("Should NOT be able to view your team projects", () => {
         shouldNotBeAbleToViewYourTeamProjects();
+    });
+
+    it("Should NOT be able to view handed over projects", () => {
+        shouldNotBeAbleToViewHandedOverProjects();
     });
 
     it("Should NOT be able to create a project", () => {

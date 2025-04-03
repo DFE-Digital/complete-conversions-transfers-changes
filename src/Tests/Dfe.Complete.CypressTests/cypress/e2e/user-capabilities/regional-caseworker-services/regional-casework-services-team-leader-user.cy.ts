@@ -5,6 +5,7 @@ import {
     shouldNotBeAbleToViewAndEditLocalAuthorities,
     shouldNotBeAbleToViewAndEditUsers,
     shouldNotBeAbleToViewConversionURNs,
+    shouldNotBeAbleToViewHandedOverProjects,
     shouldNotBeAbleToViewYourProjects,
     shouldOnlyBeAbleToViewNextMonthOfProjects,
 } from "../../../support/reusableTests";
@@ -50,6 +51,10 @@ describe.skip("Capabilities and permissions of the regional casework services te
 
     it("Should NOT be able view your projects", () => {
         shouldNotBeAbleToViewYourProjects();
+    });
+
+    it("Should NOT be able to view handed over projects", () => {
+        shouldNotBeAbleToViewHandedOverProjects();
     });
 
     it.skip("Should NOT be able to soft delete projects", () => {

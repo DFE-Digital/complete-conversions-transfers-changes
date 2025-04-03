@@ -20,6 +20,12 @@ export function shouldNotBeAbleToViewYourTeamProjects() {
     cy.visit("/projects/team/in-progress").notAuthorisedToPerformAction();
 }
 
+export function shouldNotBeAbleToViewHandedOverProjects() {
+    navBar.goToAllProjects();
+    allProjects.doesNotContainFilter("Handover");
+    cy.visit("/projects/all/handover").notAuthorisedToPerformAction();
+}
+
 export function shouldNotBeAbleToCreateAProject() {
     homePage.unableToAddAProject();
     cy.visit("/projects/new").notAuthorisedToPerformAction();

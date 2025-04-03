@@ -7,7 +7,9 @@ import {
     shouldNotBeAbleToViewAndEditLocalAuthorities,
     shouldNotBeAbleToViewAndEditUsers,
     shouldNotBeAbleToViewConversionURNs,
-    shouldNotBeAbleToViewYourProjects, shouldNotBeAbleToViewYourTeamProjects
+    shouldNotBeAbleToViewHandedOverProjects,
+    shouldNotBeAbleToViewYourProjects,
+    shouldNotBeAbleToViewYourTeamProjects,
 } from "../../support/reusableTests";
 
 describe.skip("Capabilities and permissions of the business support user", () => {
@@ -32,6 +34,10 @@ describe.skip("Capabilities and permissions of the business support user", () =>
 
     it("Should NOT be able to view your team projects", () => {
         shouldNotBeAbleToViewYourTeamProjects();
+    });
+
+    it("Should NOT be able to view handed over projects", () => {
+        shouldNotBeAbleToViewHandedOverProjects();
     });
 
     it("Should NOT be able to create a project", () => {

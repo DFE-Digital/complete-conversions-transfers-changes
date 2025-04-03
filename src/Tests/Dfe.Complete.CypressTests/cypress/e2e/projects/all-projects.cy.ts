@@ -32,6 +32,12 @@ describe("View all projects", () => {
         cy.visit(`/projects/all/in-progress/all`);
     });
 
+    it.skip("Should be able to view my team projects that are handed over", () => {
+        // not implemented
+        navBar.goToAllProjects();
+        allProjects.filterProjects("Handover").containsHeading("Projects to handover");
+    });
+
     it("Should be able to view newly created conversion project in All projects in progress and Conversions projects", () => {
         const nextMonthString = `${nextMonth.toLocaleString("default", { month: "short" })} ${nextMonth.getFullYear()}`;
         navBar.goToAllProjects();

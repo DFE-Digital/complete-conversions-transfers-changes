@@ -7,6 +7,8 @@ import {
     shouldNotBeAbleToViewYourProjects,
     shouldNotBeAbleToViewYourTeamProjects,
 } from "../../support/reusableTests";
+import navBar from "cypress/pages/navBar";
+import allProjects from "cypress/pages/projects/allProjects";
 
 describe.skip("Capabilities and permissions of the service support user", () => {
     beforeEach(() => {
@@ -46,6 +48,11 @@ describe.skip("Capabilities and permissions of the service support user", () => 
 
     it.skip("Should be able to edit local authority details", () => {
         // not implemented 187525
+    });
+
+    it("Should be able to view my team projects that are handed over", () => {
+        navBar.goToAllProjects();
+        allProjects.filterProjects("Handover").containsHeading("Projects to handover");
     });
 
     it("Should NOT be able to view your projects", () => {
