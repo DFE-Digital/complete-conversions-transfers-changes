@@ -1,7 +1,7 @@
 import { ProjectBuilder } from "cypress/api/projectBuilder";
 import transferProjectApi from "cypress/api/transferProjectApi";
 import { Logger } from "cypress/common/logger";
-import summaryPage from "cypress/pages/projects/summaryPage";
+import summaryPage from "cypress/pages/projects/SummaryPage";
 import taskListPage, { TransferTaskNames } from "cypress/pages/projects/taskListPage";
 import editExternalStakholderKickoffPage from "cypress/pages/projects/transfer/tasks/editExternalStakholderKickoffPage";
 

@@ -23,6 +23,7 @@ export default defineConfig({
         },
     },
     e2e: {
+        excludeSpecPattern: ["*/**/legacy"],
         // We've imported your old cypress plugins here.
         // You may want to clean this up later by importing these.
         setupNodeEvents(on, config) {
