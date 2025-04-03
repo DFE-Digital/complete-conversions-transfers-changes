@@ -1,10 +1,10 @@
 import { before } from "mocha";
-import projectRemover from "../../../api/projectRemover";
-import projectApi from "../../../api/projectApi";
-import { ProjectBuilder } from "../../../api/projectBuilder";
-import navBar from "../../../pages/navBar";
-import yourTeamProjects from "../../../pages/projects/yourTeamProjects";
-import yourTeamProjectsRCSViewTable from "../../../pages/projects/tables/yourTeamProjectsRCSViewTable";
+import projectRemover from "cypress/api/projectRemover";
+import projectApi from "cypress/api/projectApi";
+import { ProjectBuilder } from "cypress/api/projectBuilder";
+import navBar from "cypress/pages/navBar";
+import yourTeamProjects from "cypress/pages/projects/yourTeamProjects";
+import yourTeamProjectsRCSViewTable from "cypress/pages/projects/tables/yourTeamProjectsRCSViewTable";
 
 const project = ProjectBuilder.createConversionProjectRequest(new Date("2026-04-01"), 111396);
 const schoolName = "Blacon High School, A Specialist Sports College";

@@ -1,5 +1,5 @@
-import cookies from "../pages/cookies";
-import cookiesPage from "../pages/cookiesPage";
+import cookies from "cypress/pages/cookies";
+import cookiesPage from "cypress/pages/cookiesPage";
 
 describe("Testing cookie preferences", () => {
     beforeEach(() => {

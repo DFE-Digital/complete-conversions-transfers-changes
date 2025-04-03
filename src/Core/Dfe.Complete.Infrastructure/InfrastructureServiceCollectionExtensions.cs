@@ -37,7 +37,14 @@ namespace Dfe.Complete.Infrastructure
             // Authentication
             //services.AddCustomAuthorization(config);
 
+            AddInfrastructureHealthChecks(services);
+
             return services;
+        }
+
+        public static void AddInfrastructureHealthChecks(this IServiceCollection services) {
+            services.AddHealthChecks()
+                .AddDbContextCheck<CompleteContext>("Complete Database");
         }
     }
 }

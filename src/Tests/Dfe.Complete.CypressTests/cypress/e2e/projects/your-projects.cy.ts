@@ -1,9 +1,9 @@
-import projectRemover from "../../api/projectRemover";
-import projectApi from "../../api/projectApi";
-import { ProjectBuilder } from "../../api/projectBuilder";
-import yourProjects from "../../pages/projects/yourProjects";
-import { projectTable } from "../../pages/projects/tables/projectTable";
-import yourProjectsInProgressTable from "../../pages/projects/tables/yourProjectsInProgressTable";
+import projectRemover from "cypress/api/projectRemover";
+import projectApi from "cypress/api/projectApi";
+import { ProjectBuilder } from "cypress/api/projectBuilder";
+import yourProjects from "cypress/pages/projects/yourProjects";
+import { projectTable } from "cypress/pages/projects/tables/projectTable";
+import yourProjectsInProgressTable from "cypress/pages/projects/tables/yourProjectsInProgressTable";
 
 const project = ProjectBuilder.createConversionProjectRequest(new Date("2026-04-01"), 111394);
 const schoolName = "Farnworth Church of England Controlled Primary School";

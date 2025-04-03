@@ -1,11 +1,11 @@
-import navBar from "../../pages/navBar";
-import allProjects from "../../pages/projects/allProjects";
-import { projectTable } from "../../pages/projects/tables/projectTable";
+import navBar from "cypress/pages/navBar";
+import allProjects from "cypress/pages/projects/allProjects";
+import { projectTable } from "cypress/pages/projects/tables/projectTable";
 import { before, beforeEach } from "mocha";
-import projectApi from "../../api/projectApi";
-import { ProjectBuilder } from "../../api/projectBuilder";
-import projectRemover from "../../api/projectRemover";
-import dateRangeFilter from "../../pages/projects/dateRangeFilter";
+import projectApi from "cypress/api/projectApi";
+import { ProjectBuilder } from "cypress/api/projectBuilder";
+import projectRemover from "cypress/api/projectRemover";
+import dateRangeFilter from "cypress/pages/projects/dateRangeFilter";
 
 const project = ProjectBuilder.createConversionProjectRequest(new Date("2026-06-01"));
 const schoolName = "St Chad's Catholic Primary School";

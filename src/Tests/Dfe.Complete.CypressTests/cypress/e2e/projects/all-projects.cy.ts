@@ -1,14 +1,14 @@
-import navBar from "../../pages/navBar";
-import allProjects from "../../pages/projects/allProjects";
-import { projectTable } from "../../pages/projects/tables/projectTable";
+import navBar from "cypress/pages/navBar";
+import allProjects from "cypress/pages/projects/allProjects";
+import { projectTable } from "cypress/pages/projects/tables/projectTable";
 import { before, beforeEach } from "mocha";
-import projectApi from "../../api/projectApi";
-import { ProjectBuilder } from "../../api/projectBuilder";
-import projectRemover from "../../api/projectRemover";
-import allProjectsInProgressTable from "../../pages/projects/tables/allProjectsInProgressTable";
-import { Username } from "../../constants/cypressConstants";
-import { nextMonth } from "../../constants/stringTestConstants";
+import { nextMonth } from "cypress/constants/stringTestConstants";
+import { Username } from "cypress/constants/cypressConstants";
 import { shouldOnlyBeAbleToViewNextMonthOfProjects } from "../../support/reusableTests";
+import projectApi from "cypress/api/projectApi";
+import { ProjectBuilder } from "cypress/api/projectBuilder";
+import projectRemover from "cypress/api/projectRemover";
+import allProjectsInProgressTable from "cypress/pages/projects/tables/allProjectsInProgressTable";
 
 const project = ProjectBuilder.createConversionProjectRequest(nextMonth);
 let projectId: string;

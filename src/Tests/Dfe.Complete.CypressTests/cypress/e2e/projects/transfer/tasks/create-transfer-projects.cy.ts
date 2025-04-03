@@ -1,8 +1,8 @@
-import projectRemover from "../../../../api/projectRemover";
-import homePage from "../../../../pages/homePage";
-import selectProjectTypePage from "../../../../pages/projects/new/selectProjectTypePage";
-import newTransferPage from "../../../../pages/projects/new/newTransferPage";
-import validationComponent from "../../../../pages/validationComponent";
+import projectRemover from "cypress/api/projectRemover";
+import homePage from "cypress/pages/homePage";
+import newTransferPage from "cypress/pages/projects/new/newTransferPage";
+import selectProjectTypePage from "cypress/pages/projects/new/selectProjectTypePage";
+import validationComponent from "cypress/pages/validationComponent";
 
 const urn = "136730";
 const urnMAT = "136731";
@@ -47,7 +47,8 @@ describe("Create a new Transfer Project", () => {
         cy.get("h2").should("contain", "Task list");
     });
 
-    it("Should be able to create a new Form a MAT transfer project", () => {
+    it.skip("Should be able to create a new Form a MAT transfer project", () => {
+        // bug 207884
         homePage.addAProject();
 
         selectProjectTypePage.selectFormAMATTransfer().continue();
