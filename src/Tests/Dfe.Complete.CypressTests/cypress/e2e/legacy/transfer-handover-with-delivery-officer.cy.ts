@@ -1,40 +1,38 @@
-import conversionProjectApi from "cypress/api/conversionProjectApi";
+import transferProjectApi from "cypress/api/transferProjectApi";
 import { Logger } from "cypress/common/logger";
 import editHandoverWithDeliveryOfficerPage from "cypress/pages/projects/tasks/editHandoverWithDeliveryOfficerPage";
 import projectSummarySection from "cypress/pages/projects/projectSummarySection";
-import taskListPage, { ConversionTaskNames } from "cypress/pages/projects/taskListPage";
-import summaryPage from "cypress/pages/projects/summaryPage";
+import taskListPage, { TransferTaskNames } from "cypress/pages/projects/taskListPage";
+import summaryPage from "cypress/pages/projects/SummaryPage";
 import { ProjectBuilder } from "cypress/api/projectBuilder";
 
-describe("Conversion handover with delivery officer task", () => {
+describe("Transfer handover with delivery officer task", () => {
 
     let projectId: string;
 
     beforeEach(() => {
         cy.login();
 
-        conversionProjectApi
-            .createProject(ProjectBuilder.createConversionProjectRequest())
+        transferProjectApi
+            .createProject(ProjectBuilder.createTransferProjectRequest())
             .then(response => {
                 projectId = response.id;
+                cy.visit(`/transfer-projects/${projectId}/tasks`);
             });
     });
 
-    it("Should be able to move around the complete service", () => {
-
-        cy.visit(`/conversion-projects/${projectId}/tasks`);
-
+    it("Should be able to configure the handover with delivery officer task", () => {
         cy.executeAccessibilityTests();
 
         projectSummarySection
-            .hasUrn("142277")
-            .hasConversionBadge()
+            .hasUrn("142277 ")
+            .hasTransferBadge()
             .hasSchoolName("Newcastle Academy")
-            .hasConversionDate("1 March 2026");
+            .hasTransferDate("1 March 2026");
 
         Logger.log("Task has status not started");
         taskListPage
-            .withTask(ConversionTaskNames.HandoverWithRegionalDeliveryOfficer)
+            .withTask(TransferTaskNames.HandoverWithRegionalDeliveryOfficer)
             .then(task => {
                 task
                     .hasStatusNotStarted()
@@ -69,7 +67,7 @@ describe("Conversion handover with delivery officer task", () => {
         summaryPage.clickBack();
 
         taskListPage
-            .withTask(ConversionTaskNames.HandoverWithRegionalDeliveryOfficer)
+            .withTask(TransferTaskNames.HandoverWithRegionalDeliveryOfficer)
             .then(task => {
                 task
                     .hasStatusInProgress()
@@ -94,7 +92,7 @@ describe("Conversion handover with delivery officer task", () => {
         summaryPage.clickBack();
 
         taskListPage
-            .withTask(ConversionTaskNames.HandoverWithRegionalDeliveryOfficer)
+            .withTask(TransferTaskNames.HandoverWithRegionalDeliveryOfficer)
             .then(task => {
                 task
                     .hasStatusCompleted()
@@ -119,7 +117,7 @@ describe("Conversion handover with delivery officer task", () => {
         summaryPage.clickBack();
 
         taskListPage
-            .withTask(ConversionTaskNames.HandoverWithRegionalDeliveryOfficer)
+            .withTask(TransferTaskNames.HandoverWithRegionalDeliveryOfficer)
             .then(task => {
                 task
                     .hasStatusNotApplicable();
