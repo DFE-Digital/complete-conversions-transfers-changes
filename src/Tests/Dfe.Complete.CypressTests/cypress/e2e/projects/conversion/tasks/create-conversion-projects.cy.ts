@@ -19,7 +19,7 @@ describe("Create a new Conversion Project", () => {
         cy.visit("/");
     });
 
-    it.only("Should be able to create a new conversion project", () => {
+    it("Should be able to create a new conversion project", () => {
         homePage.addAProject();
 
         // cy.executeAccessibilityTests();
