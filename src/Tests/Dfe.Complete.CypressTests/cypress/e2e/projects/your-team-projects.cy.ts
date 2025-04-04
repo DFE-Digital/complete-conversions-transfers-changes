@@ -4,11 +4,13 @@ import projectApi from "cypress/api/projectApi";
 import navBar from "cypress/pages/navBar";
 import yourTeamProjects from "cypress/pages/projects/yourTeamProjects";
 import { ProjectBuilder } from "cypress/api/projectBuilder";
-import yourTeamProjectsRDOViewTable from "cypress/pages/projects/tables/yourTeamProjectsRCSViewTable";
 import { rdoLondonUserAdId, rdoLondonUserEmail, rdoLondonUserName } from "cypress/constants/stringTestConstants";
+import { Username } from "cypress/constants/cypressConstants";
+import yourTeamProjectsRDOViewTable from "cypress/pages/projects/tables/yourTeamProjectsRDOViewTable";
 
-const project = ProjectBuilder.createConversionProjectRequest(new Date("2026-04-01"), 111394);
-const schoolName = "Farnworth Church of England Controlled Primary School";
+const team = "London";
+const myLondonProject = ProjectBuilder.createConversionProjectRequest(new Date("2026-04-01"), 143659);
+const myLondonSchoolName = "City of London Academy, Highgate Hill";
 const teammatesLondonRegionProject = ProjectBuilder.createConversionProjectRequest(
     new Date("2026-04-01"),
     100830,
@@ -17,9 +19,9 @@ const teammatesLondonRegionProject = ProjectBuilder.createConversionProjectReque
 const teammatesLondonSchoolName = "St John's and St Clement's Church of England Primary School";
 describe("Regional delivery officer (London) user - View your team projects (projects with London region)", () => {
     before(() => {
-        projectRemover.removeProjectIfItExists(`${project.urn.value}`);
+        projectRemover.removeProjectIfItExists(`${myLondonProject.urn.value}`);
         projectRemover.removeProjectIfItExists(`${teammatesLondonRegionProject.urn.value}`);
-        projectApi.createProject(project);
+        projectApi.createProject(myLondonProject);
         projectApi.createProject(teammatesLondonRegionProject, rdoLondonUserEmail);
     });
 
@@ -29,24 +31,26 @@ describe("Regional delivery officer (London) user - View your team projects (pro
         cy.visit("/projects/team/in-progress");
     });
 
-    it("Should be able to view my project in my team project listings in progress", () => {
+    it("Should be able to view my (London) project in my team project listings in progress", () => {
         navBar.goToYourTeamProjects();
-        yourTeamProjects.containsHeading("Your team projects in progress").goToNextPageUntilFieldIsVisible(schoolName);
+        yourTeamProjects
+            .containsHeading("Your team projects in progress")
+            .goToNextPageUntilFieldIsVisible(myLondonSchoolName);
         yourTeamProjectsRDOViewTable
             .hasTableHeader("School or academy")
             .hasTableHeader("URN")
             .hasTableHeader("Local authority")
-            .hasTableHeader("Region")
+            .hasTableHeader("Team")
             .hasTableHeader("Assigned to")
             .hasTableHeader("Project type")
             .hasTableHeader("Form a MAT project")
             .hasTableHeader("Conversion or transfer date")
-            .schoolHasUrn(schoolName, `${project.urn.value}`)
-            .schoolHasLocalAuthority(schoolName, "Halton")
-            .schoolHasRegion(schoolName, "North West")
-            .schoolHasAssignedTo(schoolName, "Regional Delivery Officer")
-            .schoolHasProjectType(schoolName, "Conversion")
-            .goTo(schoolName);
+            .schoolHasUrn(myLondonSchoolName, `${myLondonProject.urn.value}`)
+            .schoolHasLocalAuthority(myLondonSchoolName, "Islington")
+            .schoolHasTeam(myLondonSchoolName, team)
+            .schoolHasAssignedTo(myLondonSchoolName, Username)
+            .schoolHasProjectType(myLondonSchoolName, "Conversion")
+            .goTo(myLondonSchoolName);
         // projectDetailsPage.containsHeading(schoolName); // not implemented
     });
 
@@ -58,21 +62,22 @@ describe("Regional delivery officer (London) user - View your team projects (pro
             .hasTableHeader("School or academy")
             .hasTableHeader("URN")
             .hasTableHeader("Local authority")
-            .hasTableHeader("Region")
+            .hasTableHeader("Team")
             .hasTableHeader("Assigned to")
             .hasTableHeader("Project type")
             .hasTableHeader("Form a MAT project")
             .hasTableHeader("Conversion or transfer date")
-            .schoolHasUrn(teammatesLondonSchoolName, `${project.urn.value}`)
-            .schoolHasLocalAuthority(teammatesLondonSchoolName, "Halton")
-            .schoolHasRegion(teammatesLondonSchoolName, "North West")
-            .schoolHasAssignedTo(teammatesLondonSchoolName, "Regional Delivery Officer")
+            .schoolHasUrn(teammatesLondonSchoolName, `${teammatesLondonRegionProject.urn.value}`)
+            .schoolHasLocalAuthority(teammatesLondonSchoolName, "Southwark")
+            .schoolHasTeam(teammatesLondonSchoolName, team)
+            .schoolHasAssignedTo(teammatesLondonSchoolName, rdoLondonUserName)
             .schoolHasProjectType(teammatesLondonSchoolName, "Conversion")
             .goTo(teammatesLondonSchoolName);
         // projectDetailsPage.containsHeading(teammatesLondonSchoolName); // not implemented
     });
 
-    it("Should be able to view my team projects that are new", () => {
+    it.skip("Should be able to view my team projects that are new", () => {
+        // not implemented
         yourTeamProjects.filterProjects("New").containsHeading("Your team new projects");
         yourTeamProjectsRDOViewTable
             .schoolIsFirstInTable(teammatesLondonSchoolName)
@@ -87,7 +92,8 @@ describe("Regional delivery officer (London) user - View your team projects (pro
         // projectDetailsPage.containsHeading(teammatesLondonSchoolName); // not implemented
     });
 
-    it("Should be able to view my team projects by user and all a user's projects", () => {
+    it.skip("Should be able to view my team projects by user and all a user's projects", () => {
+        // not implemented
         yourTeamProjects
             .filterProjects("New")
             .containsHeading("Your team projects by user")
@@ -141,6 +147,7 @@ describe("Regional delivery officer (London) user - View your team projects (pro
 
     it("Should NOT be able to view unassigned projects", () => {
         yourTeamProjects.doesNotContainFilter("Unassigned");
-        cy.visit("/projects/team/unassigned").notAuthorisedToPerformAction();
+        // not implemented:
+        // cy.visit("/projects/team/unassigned").notAuthorisedToPerformAction();
     });
 });

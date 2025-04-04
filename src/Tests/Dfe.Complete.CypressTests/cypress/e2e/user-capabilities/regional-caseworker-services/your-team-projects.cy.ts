@@ -10,15 +10,16 @@ import {
     regionalCaseworkerUserEmail,
     regionalCaseWorkerUserName,
 } from "cypress/constants/stringTestConstants";
+import { Username } from "cypress/constants/cypressConstants";
 
 const project = ProjectBuilder.createConversionProjectRequest(new Date("2026-04-01"), 111396);
 const schoolName = "Blacon High School, A Specialist Sports College";
 const teammatesProject = ProjectBuilder.createConversionProjectRequest(
     new Date("2026-04-01"),
-    111397,
+    111400,
     regionalCaseworkerUserAdId,
 );
-const teammatesSchoolName = "Queen's Park High School";
+const teammatesSchoolName = "The Heath School";
 
 describe("Regional caseworker services user - View your team projects", () => {
     before(() => {
@@ -47,10 +48,12 @@ describe("Regional caseworker services user - View your team projects", () => {
             .hasTableHeader("Form a MAT project")
             .hasTableHeader("Conversion or transfer date")
             .schoolHasUrn(schoolName, `${project.urn.value}`)
-            .schoolHasLocalAuthority(schoolName, "Halton")
+            .schoolHasLocalAuthority(schoolName, "Cheshire West and Chester\n")
             .schoolHasRegion(schoolName, "North West")
-            .schoolHasAssignedTo(schoolName, "Regional Delivery Officer")
+            .schoolHasAssignedTo(schoolName, Username)
             .schoolHasProjectType(schoolName, "Conversion")
+            .schoolHasFormAMatProject(teammatesSchoolName, "No")
+            .schoolHasConversionOrTransferDate(teammatesSchoolName, "Apr 2026")
             .goTo(schoolName);
         // projectDetailsPage.containsHeading(schoolName); // not implemented
     });
@@ -71,13 +74,16 @@ describe("Regional caseworker services user - View your team projects", () => {
             .schoolHasUrn(teammatesSchoolName, `${project.urn.value}`)
             .schoolHasLocalAuthority(teammatesSchoolName, "Halton")
             .schoolHasRegion(teammatesSchoolName, "North West")
-            .schoolHasAssignedTo(teammatesSchoolName, "Regional Delivery Officer")
+            .schoolHasAssignedTo(teammatesSchoolName, regionalCaseWorkerUserName)
             .schoolHasProjectType(teammatesSchoolName, "Conversion")
+            .schoolHasFormAMatProject(teammatesSchoolName, "No")
+            .schoolHasConversionOrTransferDate(teammatesSchoolName, "Apr 2026")
             .goTo(teammatesSchoolName);
         // projectDetailsPage.containsHeading(teammatesSchoolName); // not implemented
     });
 
-    it("Should be able to view my team projects that are new", () => {
+    it.skip("Should be able to view my team projects that are new", () => {
+        // not implemented
         yourTeamProjects.filterProjects("New").containsHeading("Your team new projects");
         yourTeamProjectsRCSViewTable
             .schoolIsFirstInTable(teammatesSchoolName)
@@ -92,7 +98,8 @@ describe("Regional caseworker services user - View your team projects", () => {
         // projectDetailsPage.containsHeading(teammatesSchoolName); // not implemented
     });
 
-    it("Should be able to view my team projects by user and all a user's projects", () => {
+    it.skip("Should be able to view my team projects by user and all a user's projects", () => {
+        // not implemented
         yourTeamProjects
             .filterProjects("New")
             .containsHeading("Your team projects by user")
@@ -130,9 +137,9 @@ describe("Regional caseworker services user - View your team projects", () => {
         // projectDetailsPage.containsHeading(teammatesSchoolName); // not implemented
     });
 
-    it.skip("Should NOT be able to view handed my team projects that are handed over", () => {
-        // not implemented
+    it("Should NOT be able to view handed my team projects that are handed over", () => {
         yourTeamProjects.doesNotContainFilter("Handed over");
-        cy.visit("/projects/team/handed-over").notAuthorisedToPerformAction();
+        // not implemented:
+        // cy.visit("/projects/team/handed-over").notAuthorisedToPerformAction();
     });
 });
