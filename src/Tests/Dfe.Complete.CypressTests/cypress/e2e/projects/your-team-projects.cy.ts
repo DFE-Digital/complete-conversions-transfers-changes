@@ -15,7 +15,7 @@ const teammatesLondonRegionProject = ProjectBuilder.createConversionProjectReque
     rdoLondonUserAdId,
 );
 const teammatesLondonSchoolName = "St John's and St Clement's Church of England Primary School";
-describe("Regional delivery officer user - View your team projects", () => {
+describe("Regional delivery officer (London) user - View your team projects (projects with London region)", () => {
     before(() => {
         projectRemover.removeProjectIfItExists(`${project.urn.value}`);
         projectRemover.removeProjectIfItExists(`${teammatesLondonRegionProject.urn.value}`);
