@@ -23,9 +23,9 @@ public class ListAllUsersWithProjectsHandler(ICompleteRepository<User> users)
         {
             var filteredUsers = users.Query()
                 .Where(user => user.ProjectAssignedTos.Any(project => request.State == null || project.State == request.State));
-            
+
             var count = await filteredUsers.CountAsync(cancellationToken);
-            
+
             var userProjectData = filteredUsers
                 .Select(user => new
                 {
@@ -33,7 +33,7 @@ public class ListAllUsersWithProjectsHandler(ICompleteRepository<User> users)
                     FilteredProjects = user.ProjectAssignedTos
                         .Where(project => request.State == null || project.State == request.State)
                 });
-            
+
             var result = await userProjectData
                 .OrderBy(u => u.User.FirstName)
                 .ThenBy(u => u.User.LastName)
@@ -54,13 +54,15 @@ public class ListAllUsersWithProjectsHandler(ICompleteRepository<User> users)
                         null,
                         null,
                         null,
+                        null,
+                        null,
                         null
                     )).ToList(),
                     u.FilteredProjects.Count(project => project.Type == ProjectType.Conversion),
                     u.FilteredProjects.Count(project => project.Type == ProjectType.Transfer)
                 ))
                 .ToListAsync(cancellationToken);
-            
+
             return PaginatedResult<List<UserWithProjectsDto>>.Success(result, count);
         }
         catch (Exception ex)
