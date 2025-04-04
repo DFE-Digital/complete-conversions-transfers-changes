@@ -80,4 +80,55 @@ public class AllProjectsModelTests
         // Assert
         Assert.Equal(expectedUrl, result);
     }
+    
+    [Theory]
+    [InlineData(ProjectType.Conversion)]
+    [InlineData(ProjectType.Transfer)]
+
+    public void GetProjectByMonthUrl_ShouldReturnCorrectUrl_DependantOnProjectType(ProjectType projectType)
+    {
+        DateTime date = DateTime.Now.AddMonths(1);
+        string month = date.Month.ToString("0");
+        string year = date.Year.ToString("0000");
+        
+        // Arrange
+        string expectedUrl = string.Format(projectType == ProjectType.Conversion ? RouteConstants.ConversionProjectsByMonth : RouteConstants.TransfersProjectsByMonth, month, year);
+            
+        // Act
+        var result = AllProjectsModel.GetProjectByMonthUrl(projectType);
+        
+        // Assert
+        Assert.Equal(result, expectedUrl);
+    }
+    
+    [Theory]
+    [InlineData(ProjectType.Conversion, ProjectTeam.DataConsumers, false, true)] 
+    [InlineData(ProjectType.Conversion, ProjectTeam.NorthWest, true, true)] 
+    [InlineData(ProjectType.Transfer, ProjectTeam.NorthWest, false, false)]
+    public void GetProjectByMonthsUrl_ShouldReturnCorrectUrl(ProjectType projectType, ProjectTeam team, bool managesTeam, bool expectedToSeeDataConsumerUrl)
+    {
+        // Arrange
+        DateTime date = DateTime.Now;
+        string month = date.Month.ToString("0");
+        string year = date.Year.ToString("0000");
+
+        string expectedUrl = string.Format(
+            expectedToSeeDataConsumerUrl
+                ? (projectType == ProjectType.Conversion ? RouteConstants.ConversionProjectsByMonths : RouteConstants.TransfersProjectsByMonths)
+                : (projectType == ProjectType.Conversion ? RouteConstants.ConversionProjectsByMonth : RouteConstants.TransfersProjectsByMonth),
+            month, year, month, year);
+
+        var user = new UserDto
+        {
+            ManageTeam = managesTeam,
+            Team = team.ToString()
+        };
+
+        // Act
+        var result = AllProjectsModel.GetProjectByMonthsUrl(projectType, user);
+
+        // Assert
+        Assert.Equal(expectedUrl, result);
+    }
+
 }

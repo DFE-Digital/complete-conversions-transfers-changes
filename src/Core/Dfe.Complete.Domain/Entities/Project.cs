@@ -97,6 +97,9 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
     public virtual User? RegionalDeliveryOfficer { get; set; }
     
     public virtual LocalAuthority LocalAuthority { get; set; }   
+    
+    public virtual ICollection<SignificantDateHistory> SignificantDateHistories { get; set; } = new List<SignificantDateHistory>();
+
    
     private Project()
     {
