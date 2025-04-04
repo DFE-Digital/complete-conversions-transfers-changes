@@ -17,7 +17,7 @@ namespace Dfe.Complete.Infrastructure.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.10")
+                .HasAnnotation("ProductVersion", "8.0.14")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -600,282 +600,7 @@ namespace Dfe.Complete.Infrastructure.Migrations
                     b.ToTable("conversion_tasks_data", "complete");
                 });
 
-            modelBuilder.Entity("Dfe.Complete.Domain.Entities.Project", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnName("id");
-
-                    b.Property<int?>("AcademyUrn")
-                        .HasColumnType("int")
-                        .HasColumnName("academy_urn");
-
-                    b.Property<string>("AdvisoryBoardConditions")
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnName("advisory_board_conditions");
-
-                    b.Property<DateOnly?>("AdvisoryBoardDate")
-                        .HasColumnType("date")
-                        .HasColumnName("advisory_board_date");
-
-                    b.Property<bool?>("AllConditionsMet")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValue(false)
-                        .HasColumnName("all_conditions_met");
-
-                    b.Property<DateTime?>("AssignedAt")
-                        .HasPrecision(6)
-                        .HasColumnType("datetime2(6)")
-                        .HasColumnName("assigned_at");
-
-                    b.Property<Guid?>("AssignedToId")
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnName("assigned_to_id");
-
-                    b.Property<Guid?>("CaseworkerId")
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnName("caseworker_id");
-
-                    b.Property<DateTime?>("CompletedAt")
-                        .HasPrecision(6)
-                        .HasColumnType("datetime2(6)")
-                        .HasColumnName("completed_at");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasPrecision(6)
-                        .HasColumnType("datetime2(6)")
-                        .HasColumnName("created_at");
-
-                    b.Property<bool?>("DirectiveAcademyOrder")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValue(false)
-                        .HasColumnName("directive_academy_order");
-
-                    b.Property<Guid?>("EstablishmentMainContactId")
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnName("establishment_main_contact_id");
-
-                    b.Property<string>("EstablishmentSharepointLink")
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnName("establishment_sharepoint_link");
-
-                    b.Property<Guid?>("GroupId")
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnName("group_id");
-
-                    b.Property<Guid?>("IncomingTrustMainContactId")
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnName("incoming_trust_main_contact_id");
-
-                    b.Property<string>("IncomingTrustSharepointLink")
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnName("incoming_trust_sharepoint_link");
-
-                    b.Property<int?>("IncomingTrustUkprn")
-                        .HasColumnType("int")
-                        .HasColumnName("incoming_trust_ukprn");
-
-                    b.Property<Guid?>("LocalAuthorityMainContactId")
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnName("local_authority_main_contact_id");
-
-                    b.Property<Guid?>("MainContactId")
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnName("main_contact_id");
-
-                    b.Property<string>("NewTrustName")
-                        .HasMaxLength(4000)
-                        .HasColumnType("nvarchar(4000)")
-                        .HasColumnName("new_trust_name");
-
-                    b.Property<string>("NewTrustReferenceNumber")
-                        .HasMaxLength(4000)
-                        .HasColumnType("nvarchar(4000)")
-                        .HasColumnName("new_trust_reference_number");
-
-                    b.Property<Guid?>("OutgoingTrustMainContactId")
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnName("outgoing_trust_main_contact_id");
-
-                    b.Property<string>("OutgoingTrustSharepointLink")
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnName("outgoing_trust_sharepoint_link");
-
-                    b.Property<int?>("OutgoingTrustUkprn")
-                        .HasColumnType("int")
-                        .HasColumnName("outgoing_trust_ukprn");
-
-                    b.Property<int?>("PrepareId")
-                        .HasColumnType("int")
-                        .HasColumnName("prepare_id");
-
-                    b.Property<string>("Region")
-                        .HasMaxLength(4000)
-                        .HasColumnType("nvarchar(4000)")
-                        .HasColumnName("region");
-
-                    b.Property<Guid?>("RegionalDeliveryOfficerId")
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnName("regional_delivery_officer_id");
-
-                    b.Property<DateOnly?>("SignificantDate")
-                        .HasColumnType("date")
-                        .HasColumnName("significant_date");
-
-                    b.Property<bool?>("SignificantDateProvisional")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValue(true)
-                        .HasColumnName("significant_date_provisional");
-
-                    b.Property<int>("State")
-                        .HasColumnType("int")
-                        .HasColumnName("state");
-
-                    b.Property<Guid?>("TasksDataId")
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnName("tasks_data_id");
-
-                    b.Property<int?>("TasksDataType")
-                        .HasMaxLength(4000)
-                        .HasColumnType("nvarchar(4000)")
-                        .HasColumnName("tasks_data_type");
-
-                    b.Property<string>("Team")
-                        .HasMaxLength(4000)
-                        .HasColumnType("nvarchar(4000)")
-                        .HasColumnName("team");
-
-                    b.Property<bool?>("TwoRequiresImprovement")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValue(false)
-                        .HasColumnName("two_requires_improvement");
-
-                    b.Property<int?>("Type")
-                        .HasMaxLength(4000)
-                        .HasColumnType("int")
-                        .HasColumnName("type");
-
-                    b.Property<DateTime>("UpdatedAt")
-                        .HasPrecision(6)
-                        .HasColumnType("datetime2(6)")
-                        .HasColumnName("updated_at");
-
-                    b.Property<int>("Urn")
-                        .HasColumnType("int")
-                        .HasColumnName("urn");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("AssignedToId");
-
-                    b.HasIndex("CaseworkerId");
-
-                    b.HasIndex("RegionalDeliveryOfficerId");
-
-                    b.ToTable("projects", "complete");
-                });
-
-            modelBuilder.Entity("Dfe.Complete.Domain.Entities.User", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnName("id");
-
-                    b.Property<string>("ActiveDirectoryUserGroupIds")
-                        .HasMaxLength(4000)
-                        .HasColumnType("nvarchar(4000)")
-                        .HasColumnName("active_directory_user_group_ids");
-
-                    b.Property<string>("ActiveDirectoryUserId")
-                        .HasMaxLength(4000)
-                        .HasColumnType("nvarchar(4000)")
-                        .HasColumnName("active_directory_user_id");
-
-                    b.Property<bool>("AddNewProject")
-                        .HasColumnType("bit")
-                        .HasColumnName("add_new_project");
-
-                    b.Property<bool?>("AssignToProject")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValue(false)
-                        .HasColumnName("assign_to_project");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasPrecision(6)
-                        .HasColumnType("datetime2(6)")
-                        .HasColumnName("created_at");
-
-                    b.Property<DateTime?>("DeactivatedAt")
-                        .HasPrecision(6)
-                        .HasColumnType("datetime2(6)")
-                        .HasColumnName("deactivated_at");
-
-                    b.Property<string>("Email")
-                        .HasMaxLength(4000)
-                        .HasColumnType("nvarchar(4000)")
-                        .HasColumnName("email");
-
-                    b.Property<string>("FirstName")
-                        .HasMaxLength(4000)
-                        .HasColumnType("nvarchar(4000)")
-                        .HasColumnName("first_name");
-
-                    b.Property<string>("LastName")
-                        .HasMaxLength(4000)
-                        .HasColumnType("nvarchar(4000)")
-                        .HasColumnName("last_name");
-
-                    b.Property<DateTime?>("LatestSession")
-                        .HasPrecision(6)
-                        .HasColumnType("datetime2(6)")
-                        .HasColumnName("latest_session");
-
-                    b.Property<bool?>("ManageConversionUrns")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValue(false)
-                        .HasColumnName("manage_conversion_urns");
-
-                    b.Property<bool?>("ManageLocalAuthorities")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValue(false)
-                        .HasColumnName("manage_local_authorities");
-
-                    b.Property<bool?>("ManageTeam")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValue(false)
-                        .HasColumnName("manage_team");
-
-                    b.Property<bool?>("ManageUserAccounts")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValue(false)
-                        .HasColumnName("manage_user_accounts");
-
-                    b.Property<string>("Team")
-                        .HasMaxLength(4000)
-                        .HasColumnType("nvarchar(4000)")
-                        .HasColumnName("team");
-
-                    b.Property<DateTime>("UpdatedAt")
-                        .HasPrecision(6)
-                        .HasColumnType("datetime2(6)")
-                        .HasColumnName("updated_at");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("users", "complete");
-                });
-
-            modelBuilder.Entity("Dfe.Complete.Infrastructure.Models.DaoRevocation", b =>
+            modelBuilder.Entity("Dfe.Complete.Domain.Entities.DaoRevocation", b =>
                 {
                     b.Property<Guid>("Id")
                         .HasColumnType("uniqueidentifier")
@@ -909,7 +634,7 @@ namespace Dfe.Complete.Infrastructure.Migrations
                     b.ToTable("dao_revocations", "complete");
                 });
 
-            modelBuilder.Entity("Dfe.Complete.Infrastructure.Models.DaoRevocationReason", b =>
+            modelBuilder.Entity("Dfe.Complete.Domain.Entities.DaoRevocationReason", b =>
                 {
                     b.Property<Guid>("Id")
                         .HasColumnType("uniqueidentifier")
@@ -929,7 +654,7 @@ namespace Dfe.Complete.Infrastructure.Migrations
                     b.ToTable("dao_revocation_reasons", "complete");
                 });
 
-            modelBuilder.Entity("Dfe.Complete.Infrastructure.Models.GiasEstablishment", b =>
+            modelBuilder.Entity("Dfe.Complete.Domain.Entities.GiasEstablishment", b =>
                 {
                     b.Property<Guid>("Id")
                         .HasColumnType("uniqueidentifier")
@@ -1080,7 +805,7 @@ namespace Dfe.Complete.Infrastructure.Migrations
                     b.ToTable("gias_establishments", "complete");
                 });
 
-            modelBuilder.Entity("Dfe.Complete.Infrastructure.Models.GiasGroup", b =>
+            modelBuilder.Entity("Dfe.Complete.Domain.Entities.GiasGroup", b =>
                 {
                     b.Property<Guid>("Id")
                         .HasColumnType("uniqueidentifier")
@@ -1154,7 +879,7 @@ namespace Dfe.Complete.Infrastructure.Migrations
                     b.ToTable("gias_groups", "complete");
                 });
 
-            modelBuilder.Entity("Dfe.Complete.Infrastructure.Models.KeyContact", b =>
+            modelBuilder.Entity("Dfe.Complete.Domain.Entities.KeyContact", b =>
                 {
                     b.Property<Guid>("Id")
                         .HasColumnType("uniqueidentifier")
@@ -1195,7 +920,7 @@ namespace Dfe.Complete.Infrastructure.Migrations
                     b.ToTable("key_contacts", "complete");
                 });
 
-            modelBuilder.Entity("Dfe.Complete.Infrastructure.Models.LocalAuthority", b =>
+            modelBuilder.Entity("Dfe.Complete.Domain.Entities.LocalAuthority", b =>
                 {
                     b.Property<Guid>("Id")
                         .HasColumnType("uniqueidentifier")
@@ -1260,7 +985,7 @@ namespace Dfe.Complete.Infrastructure.Migrations
                     b.ToTable("local_authorities", "complete");
                 });
 
-            modelBuilder.Entity("Dfe.Complete.Infrastructure.Models.Note", b =>
+            modelBuilder.Entity("Dfe.Complete.Domain.Entities.Note", b =>
                 {
                     b.Property<Guid>("Id")
                         .HasColumnType("uniqueidentifier")
@@ -1311,7 +1036,193 @@ namespace Dfe.Complete.Infrastructure.Migrations
                     b.ToTable("notes", "complete");
                 });
 
-            modelBuilder.Entity("Dfe.Complete.Infrastructure.Models.ProjectGroup", b =>
+            modelBuilder.Entity("Dfe.Complete.Domain.Entities.Project", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("id");
+
+                    b.Property<int?>("AcademyUrn")
+                        .HasColumnType("int")
+                        .HasColumnName("academy_urn");
+
+                    b.Property<string>("AdvisoryBoardConditions")
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("advisory_board_conditions");
+
+                    b.Property<DateOnly?>("AdvisoryBoardDate")
+                        .HasColumnType("date")
+                        .HasColumnName("advisory_board_date");
+
+                    b.Property<bool?>("AllConditionsMet")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false)
+                        .HasColumnName("all_conditions_met");
+
+                    b.Property<DateTime?>("AssignedAt")
+                        .HasPrecision(6)
+                        .HasColumnType("datetime2(6)")
+                        .HasColumnName("assigned_at");
+
+                    b.Property<Guid?>("AssignedToId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("assigned_to_id");
+
+                    b.Property<Guid?>("CaseworkerId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("caseworker_id");
+
+                    b.Property<DateTime?>("CompletedAt")
+                        .HasPrecision(6)
+                        .HasColumnType("datetime2(6)")
+                        .HasColumnName("completed_at");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasPrecision(6)
+                        .HasColumnType("datetime2(6)")
+                        .HasColumnName("created_at");
+
+                    b.Property<bool?>("DirectiveAcademyOrder")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false)
+                        .HasColumnName("directive_academy_order");
+
+                    b.Property<Guid?>("EstablishmentMainContactId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("establishment_main_contact_id");
+
+                    b.Property<string>("EstablishmentSharepointLink")
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("establishment_sharepoint_link");
+
+                    b.Property<Guid?>("GroupId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("group_id");
+
+                    b.Property<Guid?>("IncomingTrustMainContactId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("incoming_trust_main_contact_id");
+
+                    b.Property<string>("IncomingTrustSharepointLink")
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("incoming_trust_sharepoint_link");
+
+                    b.Property<int?>("IncomingTrustUkprn")
+                        .HasColumnType("int")
+                        .HasColumnName("incoming_trust_ukprn");
+
+                    b.Property<Guid>("LocalAuthorityId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("local_authority_id");
+
+                    b.Property<Guid?>("LocalAuthorityMainContactId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("local_authority_main_contact_id");
+
+                    b.Property<Guid?>("MainContactId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("main_contact_id");
+
+                    b.Property<string>("NewTrustName")
+                        .HasMaxLength(4000)
+                        .HasColumnType("nvarchar(4000)")
+                        .HasColumnName("new_trust_name");
+
+                    b.Property<string>("NewTrustReferenceNumber")
+                        .HasMaxLength(4000)
+                        .HasColumnType("nvarchar(4000)")
+                        .HasColumnName("new_trust_reference_number");
+
+                    b.Property<Guid?>("OutgoingTrustMainContactId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("outgoing_trust_main_contact_id");
+
+                    b.Property<string>("OutgoingTrustSharepointLink")
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("outgoing_trust_sharepoint_link");
+
+                    b.Property<int?>("OutgoingTrustUkprn")
+                        .HasColumnType("int")
+                        .HasColumnName("outgoing_trust_ukprn");
+
+                    b.Property<int?>("PrepareId")
+                        .HasColumnType("int")
+                        .HasColumnName("prepare_id");
+
+                    b.Property<string>("Region")
+                        .HasMaxLength(4000)
+                        .HasColumnType("nvarchar(4000)")
+                        .HasColumnName("region");
+
+                    b.Property<Guid?>("RegionalDeliveryOfficerId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("regional_delivery_officer_id");
+
+                    b.Property<DateOnly?>("SignificantDate")
+                        .HasColumnType("date")
+                        .HasColumnName("significant_date");
+
+                    b.Property<bool?>("SignificantDateProvisional")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(true)
+                        .HasColumnName("significant_date_provisional");
+
+                    b.Property<int>("State")
+                        .HasColumnType("int")
+                        .HasColumnName("state");
+
+                    b.Property<Guid?>("TasksDataId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("tasks_data_id");
+
+                    b.Property<string>("TasksDataType")
+                        .HasMaxLength(4000)
+                        .HasColumnType("nvarchar(4000)")
+                        .HasColumnName("tasks_data_type");
+
+                    b.Property<string>("Team")
+                        .HasMaxLength(4000)
+                        .HasColumnType("nvarchar(4000)")
+                        .HasColumnName("team");
+
+                    b.Property<bool?>("TwoRequiresImprovement")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false)
+                        .HasColumnName("two_requires_improvement");
+
+                    b.Property<string>("Type")
+                        .HasMaxLength(4000)
+                        .HasColumnType("nvarchar(4000)")
+                        .HasColumnName("type");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasPrecision(6)
+                        .HasColumnType("datetime2(6)")
+                        .HasColumnName("updated_at");
+
+                    b.Property<int>("Urn")
+                        .HasColumnType("int")
+                        .HasColumnName("urn");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AssignedToId");
+
+                    b.HasIndex("CaseworkerId");
+
+                    b.HasIndex("LocalAuthorityId");
+
+                    b.HasIndex("RegionalDeliveryOfficerId");
+
+                    b.ToTable("projects", "complete");
+                });
+
+            modelBuilder.Entity("Dfe.Complete.Domain.Entities.ProjectGroup", b =>
                 {
                     b.Property<Guid>("Id")
                         .HasColumnType("uniqueidentifier")
@@ -1341,7 +1252,7 @@ namespace Dfe.Complete.Infrastructure.Migrations
                     b.ToTable("project_groups", "complete");
                 });
 
-            modelBuilder.Entity("Dfe.Complete.Infrastructure.Models.SignificantDateHistory", b =>
+            modelBuilder.Entity("Dfe.Complete.Domain.Entities.SignificantDateHistory", b =>
                 {
                     b.Property<Guid>("Id")
                         .HasColumnType("uniqueidentifier")
@@ -1378,7 +1289,7 @@ namespace Dfe.Complete.Infrastructure.Migrations
                     b.ToTable("significant_date_histories", "complete");
                 });
 
-            modelBuilder.Entity("Dfe.Complete.Infrastructure.Models.SignificantDateHistoryReason", b =>
+            modelBuilder.Entity("Dfe.Complete.Domain.Entities.SignificantDateHistoryReason", b =>
                 {
                     b.Property<Guid>("Id")
                         .HasColumnType("uniqueidentifier")
@@ -1408,7 +1319,7 @@ namespace Dfe.Complete.Infrastructure.Migrations
                     b.ToTable("significant_date_history_reasons", "complete");
                 });
 
-            modelBuilder.Entity("Dfe.Complete.Infrastructure.Models.TransferTasksData", b =>
+            modelBuilder.Entity("Dfe.Complete.Domain.Entities.TransferTasksData", b =>
                 {
                     b.Property<Guid>("Id")
                         .HasColumnType("uniqueidentifier")
@@ -1888,6 +1799,101 @@ namespace Dfe.Complete.Infrastructure.Migrations
                     b.ToTable("transfer_tasks_data", "complete");
                 });
 
+            modelBuilder.Entity("Dfe.Complete.Domain.Entities.User", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("id");
+
+                    b.Property<string>("ActiveDirectoryUserGroupIds")
+                        .HasMaxLength(4000)
+                        .HasColumnType("nvarchar(4000)")
+                        .HasColumnName("active_directory_user_group_ids");
+
+                    b.Property<string>("ActiveDirectoryUserId")
+                        .HasMaxLength(4000)
+                        .HasColumnType("nvarchar(4000)")
+                        .HasColumnName("active_directory_user_id");
+
+                    b.Property<bool>("AddNewProject")
+                        .HasColumnType("bit")
+                        .HasColumnName("add_new_project");
+
+                    b.Property<bool?>("AssignToProject")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false)
+                        .HasColumnName("assign_to_project");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasPrecision(6)
+                        .HasColumnType("datetime2(6)")
+                        .HasColumnName("created_at");
+
+                    b.Property<DateTime?>("DeactivatedAt")
+                        .HasPrecision(6)
+                        .HasColumnType("datetime2(6)")
+                        .HasColumnName("deactivated_at");
+
+                    b.Property<string>("Email")
+                        .HasMaxLength(4000)
+                        .HasColumnType("nvarchar(4000)")
+                        .HasColumnName("email");
+
+                    b.Property<string>("FirstName")
+                        .HasMaxLength(4000)
+                        .HasColumnType("nvarchar(4000)")
+                        .HasColumnName("first_name");
+
+                    b.Property<string>("LastName")
+                        .HasMaxLength(4000)
+                        .HasColumnType("nvarchar(4000)")
+                        .HasColumnName("last_name");
+
+                    b.Property<DateTime?>("LatestSession")
+                        .HasPrecision(6)
+                        .HasColumnType("datetime2(6)")
+                        .HasColumnName("latest_session");
+
+                    b.Property<bool?>("ManageConversionUrns")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false)
+                        .HasColumnName("manage_conversion_urns");
+
+                    b.Property<bool?>("ManageLocalAuthorities")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false)
+                        .HasColumnName("manage_local_authorities");
+
+                    b.Property<bool?>("ManageTeam")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false)
+                        .HasColumnName("manage_team");
+
+                    b.Property<bool?>("ManageUserAccounts")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false)
+                        .HasColumnName("manage_user_accounts");
+
+                    b.Property<string>("Team")
+                        .HasMaxLength(4000)
+                        .HasColumnType("nvarchar(4000)")
+                        .HasColumnName("team");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasPrecision(6)
+                        .HasColumnType("datetime2(6)")
+                        .HasColumnName("updated_at");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("users", "complete");
+                });
+
             modelBuilder.Entity("Dfe.Complete.Domain.Entities.Contact", b =>
                 {
                     b.HasOne("Dfe.Complete.Domain.Entities.Project", "Project")
@@ -1898,31 +1904,7 @@ namespace Dfe.Complete.Infrastructure.Migrations
                     b.Navigation("Project");
                 });
 
-            modelBuilder.Entity("Dfe.Complete.Domain.Entities.Project", b =>
-                {
-                    b.HasOne("Dfe.Complete.Domain.Entities.User", "AssignedTo")
-                        .WithMany("ProjectAssignedTos")
-                        .HasForeignKey("AssignedToId")
-                        .HasConstraintName("fk_rails_9cf9d80ba9");
-
-                    b.HasOne("Dfe.Complete.Domain.Entities.User", "Caseworker")
-                        .WithMany("ProjectCaseworkers")
-                        .HasForeignKey("CaseworkerId")
-                        .HasConstraintName("fk_rails_246548228c");
-
-                    b.HasOne("Dfe.Complete.Domain.Entities.User", "RegionalDeliveryOfficer")
-                        .WithMany("ProjectRegionalDeliveryOfficers")
-                        .HasForeignKey("RegionalDeliveryOfficerId")
-                        .HasConstraintName("fk_rails_bba1c6b145");
-
-                    b.Navigation("AssignedTo");
-
-                    b.Navigation("Caseworker");
-
-                    b.Navigation("RegionalDeliveryOfficer");
-                });
-
-            modelBuilder.Entity("Dfe.Complete.Infrastructure.Models.Note", b =>
+            modelBuilder.Entity("Dfe.Complete.Domain.Entities.Note", b =>
                 {
                     b.HasOne("Dfe.Complete.Domain.Entities.Project", "Project")
                         .WithMany("Notes")
@@ -1937,6 +1919,39 @@ namespace Dfe.Complete.Infrastructure.Migrations
                     b.Navigation("Project");
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Dfe.Complete.Domain.Entities.Project", b =>
+                {
+                    b.HasOne("Dfe.Complete.Domain.Entities.User", "AssignedTo")
+                        .WithMany("ProjectAssignedTos")
+                        .HasForeignKey("AssignedToId")
+                        .HasConstraintName("fk_rails_9cf9d80ba9");
+
+                    b.HasOne("Dfe.Complete.Domain.Entities.User", "Caseworker")
+                        .WithMany("ProjectCaseworkers")
+                        .HasForeignKey("CaseworkerId")
+                        .HasConstraintName("fk_rails_246548228c");
+
+                    b.HasOne("Dfe.Complete.Domain.Entities.LocalAuthority", "LocalAuthority")
+                        .WithMany()
+                        .HasForeignKey("LocalAuthorityId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_rails_eddab2651f");
+
+                    b.HasOne("Dfe.Complete.Domain.Entities.User", "RegionalDeliveryOfficer")
+                        .WithMany("ProjectRegionalDeliveryOfficers")
+                        .HasForeignKey("RegionalDeliveryOfficerId")
+                        .HasConstraintName("fk_rails_bba1c6b145");
+
+                    b.Navigation("AssignedTo");
+
+                    b.Navigation("Caseworker");
+
+                    b.Navigation("LocalAuthority");
+
+                    b.Navigation("RegionalDeliveryOfficer");
                 });
 
             modelBuilder.Entity("Dfe.Complete.Domain.Entities.Project", b =>
