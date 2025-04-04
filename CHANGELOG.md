@@ -18,7 +18,7 @@ Security in case of vulnerabilities.
  - New route `/projects/team/in-progress`
  - New route `/projects/team/completed`
  - Your team projects in progress list (`/projects/team/in-progress`)
- - Your team projects completes list (`/projects/team/completed`)
+ - Your team projects completed list (`/projects/team/completed`)
  - Added user (`ClaimsPrincipal`) extension to get users team `GetUserTeam`
 
 ### Changed

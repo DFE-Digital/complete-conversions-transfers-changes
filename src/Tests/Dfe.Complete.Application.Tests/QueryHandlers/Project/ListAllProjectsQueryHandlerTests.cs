@@ -27,19 +27,10 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
             // Arrange
             var listAllProjectsQueryModels = fixture.CreateMany<ListAllProjectsQueryModel>(50).ToList();
 
-            var expected = listAllProjectsQueryModels.Select(item => new ListAllProjectsResultModel(
-                item.Establishment.Name,
-                item.Project.Id,
-                item.Project.Urn,
-                item.Project.SignificantDate,
-                item.Project.State,
-                item.Project.Type,
-                item.Project.FormAMat,
-                item.Project.AssignedTo?.FullName,
-                item.Establishment.LocalAuthorityName,
-                item.Project.Team,
-                item.Project.CompletedAt
-                )).Take(20).ToList();
+            var expected = listAllProjectsQueryModels.Select(item => ListAllProjectsResultModel.MapProjectAndEstablishmentToListAllProjectResultModel(
+                item.Project!,
+                item.Establishment
+             )).Take(20).ToList();
 
             var query = new ListAllProjectsQuery(null, null);
 
@@ -75,8 +66,8 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
             var listAllProjectsQueryModels = fixture.CreateMany<ListAllProjectsQueryModel>(50).ToList();
 
             var expected = listAllProjectsQueryModels.Select(item => new ListAllProjectsResultModel(
-                item.Establishment.Name,
-                item.Project.Id,
+                item?.Establishment?.Name,
+                item!.Project!.Id,
                 item.Project.Urn,
                 item.Project.SignificantDate,
                 item.Project.State,
@@ -85,12 +76,15 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
                 item.Project.AssignedTo != null
                     ? $"{item.Project.AssignedTo.FirstName} {item.Project.AssignedTo.LastName}"
                     : null,
-                item.Establishment.LocalAuthorityName,
+                item.Project.LocalAuthority.Name,
                 item.Project.Team,
-                item.Project.CompletedAt)).Skip(20).Take(20).ToList();
+                item.Project.CompletedAt,
+                item.Project.Region,
+                item?.Establishment?.LocalAuthorityName
+            )).Skip(20).Take(20).ToList();
 
             var query = new ListAllProjectsQuery(null, null, 1);
-            
+
             var mock = listAllProjectsQueryModels.BuildMock();
 
             mockListAllProjectsQueryService.ListAllProjects(query.ProjectStatus, query.Type)
