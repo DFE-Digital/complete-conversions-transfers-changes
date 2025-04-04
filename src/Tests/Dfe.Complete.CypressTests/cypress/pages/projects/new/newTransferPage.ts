@@ -1,5 +1,5 @@
 import NewProjectPage from "./newProjectPage";
-import { yesNoOption } from "../../../constants/stringTestConstants";
+import { yesNoOption } from "cypress/constants/stringTestConstants";
 
 class NewTransferPage extends NewProjectPage {
     public withAcademyURN(urn: string): this {
@@ -27,8 +27,9 @@ class NewTransferPage extends NewProjectPage {
         return this;
     }
 
-    public withProvisionalTransferDate(day: string, month: string, year: string): this {
-        cy.enterDate("SignificantDate", day, month, year);
+    public withProvisionalTransferDate(month: string, year: string): this {
+        cy.getById(`SignificantDate.Month`).typeFast(month);
+        cy.getById(`SignificantDate.Year`).typeFast(year);
         return this;
     }
 
