@@ -35,7 +35,7 @@ describe("Create a new Transfer Project", () => {
             .withOutgoingTrustSharepointLink("https://educationgovuk.sharepoint.com")
             .withAdvisoryBoardDate("12", "09", "2023")
             .withAdvisoryBoardConditions("Test conditions")
-            .withProvisionalTransferDate("13", "09", "2023")
+            .withProvisionalTransferDate("09", "2023")
             .with2RI("No")
             .withTransferDueToInadequateOfstedRating("No")
             .withTransferDueToFinancialSafeguardingGovernanceIssues("No")
@@ -64,7 +64,7 @@ describe("Create a new Transfer Project", () => {
             .withOutgoingTrustSharepointLink("https://educationgovuk.sharepoint.com")
             .withAdvisoryBoardDate("26", "09", "2024")
             .withAdvisoryBoardConditions("Test conditions")
-            .withProvisionalTransferDate("13", "09", "2023")
+            .withProvisionalTransferDate("09", "2023")
             .with2RI("Yes")
             .withTransferDueToInadequateOfstedRating("Yes")
             .withTransferDueToFinancialSafeguardingGovernanceIssues("Yes")
@@ -90,7 +90,7 @@ describe("Create a new Transfer Project", () => {
             .withIncomingTrustSharePointLink("123")
             .withOutgoingTrustSharepointLink("https://example.com")
             .withAdvisoryBoardDate("a", "b", "c")
-            .withProvisionalTransferDate("19", "19", "2025")
+            .withProvisionalTransferDate("19", "2025")
             .continue();
 
         validationComponent

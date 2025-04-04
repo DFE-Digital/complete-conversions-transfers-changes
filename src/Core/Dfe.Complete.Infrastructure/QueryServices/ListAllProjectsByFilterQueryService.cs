@@ -14,12 +14,14 @@ internal class ListAllProjectsByFilterQueryService(CompleteContext context) : IL
         ProjectType? projectType,
         UserId? userId = null,
         string? localAuthorityCode = "",
-        Region? region = null)
+        Region? region = null,
+        ProjectTeam? team = null)
     {
         var projects = context.Projects
             .Where(project => projectStatus == null || project.State == projectStatus)
+            .Where(project => projectStatus != ProjectState.Active || project.AssignedToId != null)
             .Where(project => projectType == null || projectType == project.Type);
-        
+
         //For now, limiting the service to one filter at a time unless requirement changes
         IQueryable<GiasEstablishment> giasEstablishments = context.GiasEstablishments;
 
@@ -40,7 +42,13 @@ internal class ListAllProjectsByFilterQueryService(CompleteContext context) : IL
             projects = projects.Where(project => project.Region == region);
             return GenerateQuery(projects, giasEstablishments);
         }
-        
+
+        if (team != null)
+        {
+            projects = projects.Where(project => project.Team == team);
+            return GenerateQuery(projects, giasEstablishments);
+        }
+
         return GenerateQuery(projects, giasEstablishments);
     }
 
@@ -48,6 +56,8 @@ internal class ListAllProjectsByFilterQueryService(CompleteContext context) : IL
     {
         return projects
             .Include(p => p.AssignedTo)
+            .Include(p => p.LocalAuthority)
+            .OrderBy(p => p.SignificantDate)
             .Join(giasEstablishments, project => project.Urn, establishment => establishment.Urn,
                 (project, establishment) => new ListAllProjectsQueryModel(project, establishment));
     }
