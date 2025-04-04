@@ -1,4 +1,7 @@
-﻿namespace Dfe.Complete.Models;
+﻿using Dfe.Complete.Domain.Enums;
+using Dfe.Complete.Domain.Extensions;
+
+namespace Dfe.Complete.Models;
 
 public class TabNavigationModel(string currentTab)
 {
@@ -9,5 +12,9 @@ public class TabNavigationModel(string currentTab)
 
     public string CurrentTab { get; } = currentTab;
 
-    
+    public static bool UserHasTabAccess(ProjectTeam userTeam, string tabName)
+    {
+        if (tabName == YourTeamProjectsTabName) return userTeam.TeamIsRdo() || userTeam == ProjectTeam.RegionalCaseWorkerServices;
+        return true;
+    }
 }

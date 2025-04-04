@@ -1698,6 +1698,18 @@
             "type": "string",
             "format": "date-time",
             "nullable": true
+          },
+          "region": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/Region"
+              }
+            ]
+          },
+          "localAuthorityNameFormatted": {
+            "type": "string",
+            "nullable": true
           }
         }
       },
