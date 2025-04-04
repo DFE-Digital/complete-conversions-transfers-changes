@@ -19,15 +19,64 @@ namespace Dfe.Complete.Api.Controllers
     public class ProjectsController(ISender sender) : ControllerBase
     {
         /// <summary>
-        /// Creates a new Project
+        /// Creates a new conversion project
         /// </summary>
         /// <param name="request">The request.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
         [Authorize(Policy = "CanReadWrite")]
         [HttpPost]
+        [Route("Create/Conversion")]
         [SwaggerResponse(201, "Project created successfully.", typeof(ProjectId))]
         [SwaggerResponse(400, "Invalid request data.")]
-        public async Task<IActionResult> CreateProjectAsync([FromBody] CreateConversionProjectCommand request, CancellationToken cancellationToken)
+        public async Task<IActionResult> CreateConversionProjectAsync([FromBody] CreateConversionProjectCommand request, CancellationToken cancellationToken)
+        {
+            var projectId = await sender.Send(request, cancellationToken);
+            return Created("", projectId);
+        }
+        
+        /// <summary>
+        /// Creates a new Transfer project
+        /// </summary>
+        /// <param name="request">The request.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        [Authorize(Policy = "CanReadWrite")]
+        [HttpPost]
+        [Route("Create/Transfer")]
+        [SwaggerResponse(201, "Project created successfully.", typeof(ProjectId))]
+        [SwaggerResponse(400, "Invalid request data.")]
+        public async Task<IActionResult> CreateTransferProjectAsync([FromBody] CreateTransferProjectCommand request, CancellationToken cancellationToken)
+        {
+            var projectId = await sender.Send(request, cancellationToken);
+            return Created("", projectId);
+        }
+        
+        /// <summary>
+        /// Creates a new Form a Mat Conversion project
+        /// </summary>
+        /// <param name="request">The request.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        [Authorize(Policy = "CanReadWrite")]
+        [HttpPost]
+        [Route("Create/MatConversion")]
+        [SwaggerResponse(201, "Project created successfully.", typeof(ProjectId))]
+        [SwaggerResponse(400, "Invalid request data.")]
+        public async Task<IActionResult> CreateMatConversionProjectAsync([FromBody] CreateMatConversionProjectCommand request, CancellationToken cancellationToken)
+        {
+            var projectId = await sender.Send(request, cancellationToken);
+            return Created("", projectId);
+        }
+        
+        /// <summary>
+        /// Creates a new Form a Mat Transfer project
+        /// </summary>
+        /// <param name="request">The request.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        [Authorize(Policy = "CanReadWrite")]
+        [HttpPost]
+        [Route("Create/MatTransfer")]
+        [SwaggerResponse(201, "Project created successfully.", typeof(ProjectId))]
+        [SwaggerResponse(400, "Invalid request data.")]
+        public async Task<IActionResult> CreateMatTransferProjectAsync([FromBody] CreateMatTransferProjectCommand request, CancellationToken cancellationToken)
         {
             var projectId = await sender.Send(request, cancellationToken);
             return Created("", projectId);
