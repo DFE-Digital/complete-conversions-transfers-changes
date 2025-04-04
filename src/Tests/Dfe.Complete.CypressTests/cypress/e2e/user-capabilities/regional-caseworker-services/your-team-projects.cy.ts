@@ -122,11 +122,17 @@ describe("Regional caseworker services user - View your team projects", () => {
             .hasTableHeader("School or academy")
             .hasTableHeader("URN")
             .hasTableHeader("Local authority")
-            .hasTableHeader("Team") // check?
+            .hasTableHeader("Region") // this has been changed from Team to Region for .NET
             .hasTableHeader("Type of project")
             .hasTableHeader("Conversion or transfer date")
             .hasTableHeader("Project completion date")
             .goTo(teammatesSchoolName);
         // projectDetailsPage.containsHeading(teammatesSchoolName); // not implemented
+    });
+
+    it.skip("Should NOT be able to view handed my team projects that are handed over", () => {
+        // not implemented
+        yourTeamProjects.doesNotContainFilter("Handed over");
+        cy.visit("/projects/team/handed-over").notAuthorisedToPerformAction();
     });
 });

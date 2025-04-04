@@ -12,5 +12,5 @@ export const rdoLondonUserEmail = "test.cypress-london@education.gov.uk";
 export const rdoLondonUserAdId = "TEST-AD-ID-2";
 export const rdoLondonUserName = "cypress test-london";
 export const regionalCaseworkerUserEmail = "test.cypress-rcs@education.gov.uk";
-export const regionalCaseworkerUserAdId = "TEST-AD-ID-2";
+export const regionalCaseworkerUserAdId = "TEST-AD-ID-3";
 export const regionalCaseWorkerUserName = "cypress test-rcs";
