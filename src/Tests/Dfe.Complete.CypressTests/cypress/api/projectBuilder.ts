@@ -8,6 +8,8 @@ export class ProjectBuilder {
         urn?: number,
         userAdId?: string,
     ): CreateProjectRequest {
+        // force significant date to be first day of the month
+        significantDate.setDate(1);
         const significantDateFormatted = significantDate.toISOString().split("T")[0];
         const urnValue = urn ? urn : 103844;
         const userAdIdValue = userAdId ? userAdId : Cypress.env(EnvUserAdId);
