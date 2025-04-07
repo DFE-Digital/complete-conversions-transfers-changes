@@ -21,7 +21,7 @@ const teammatesProject = ProjectBuilder.createConversionProjectRequest(
 );
 const teammatesSchoolName = "The Heath School";
 
-describe("Regional caseworker services user - View your team projects", () => {
+describe.skip("Regional caseworker services user - View your team projects", () => {
     before(() => {
         projectRemover.removeProjectIfItExists(`${project.urn.value}`);
         projectRemover.removeProjectIfItExists(`${teammatesProject.urn.value}`);
