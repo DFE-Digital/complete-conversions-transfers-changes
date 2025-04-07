@@ -3,6 +3,7 @@ using Dfe.Complete.Domain.Entities;
 using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Domain.ValueObjects;
 using Dfe.Complete.Infrastructure.Database;
+using Dfe.Complete.Tests.Common.Customizations.Models;
 using Dfe.Complete.Utils;
 
 namespace Dfe.Complete.Tests.Common.Seeders;
@@ -24,7 +25,7 @@ public static class CompleteContextSeeder
             UpdatedAt = DateTime.Now
         };
         
-        var giasEstablishment = fixture.Create<GiasEstablishment>();
+        var giasEstablishment = fixture.Customize(new GiasEstablishmentsCustomization()).Create<GiasEstablishment>();
         
         var localAuthorities = fixture.CreateMany<LocalAuthority>(10);
         var authorities = localAuthorities.ToList();
