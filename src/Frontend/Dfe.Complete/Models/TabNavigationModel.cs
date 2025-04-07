@@ -11,10 +11,4 @@ public class TabNavigationModel(string currentTab)
     public const string AllProjectsTabName = "all-projects";
 
     public string CurrentTab { get; } = currentTab;
-
-    public static bool UserHasTabAccess(ProjectTeam userTeam, string tabName)
-    {
-        if (tabName == YourTeamProjectsTabName) return userTeam.TeamIsRdo() || userTeam == ProjectTeam.RegionalCaseWorkerServices;
-        return true;
-    }
 }
