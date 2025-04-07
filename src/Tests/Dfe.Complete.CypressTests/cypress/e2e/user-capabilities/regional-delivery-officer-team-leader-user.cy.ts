@@ -3,12 +3,12 @@ import {
     shouldNotBeAbleToViewAndEditLocalAuthorities,
     shouldNotBeAbleToViewAndEditUsers,
     shouldNotBeAbleToViewConversionURNs,
-} from "../../support/reusableTests";
+} from "cypress/support/reusableTests";
 import { before, beforeEach } from "mocha";
-import projectRemover from "../../api/projectRemover";
-import projectApi from "../../api/projectApi";
-import { ProjectBuilder } from "../../api/projectBuilder";
-import { nextMonth } from "../../constants/stringTestConstants";
+import projectRemover from "cypress/api/projectRemover";
+import projectApi from "cypress/api/projectApi";
+import { ProjectBuilder } from "cypress/api/projectBuilder";
+import { nextMonth } from "cypress/constants/stringTestConstants";
 
 const unassignedProject = ProjectBuilder.createConversionProjectRequest(nextMonth, 103845, "");
 const unassignedProjectSchoolName = "Jesson's CofE Primary School (VA)";

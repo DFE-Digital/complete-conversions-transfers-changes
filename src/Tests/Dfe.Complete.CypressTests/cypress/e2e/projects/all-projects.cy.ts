@@ -4,7 +4,7 @@ import { projectTable } from "cypress/pages/projects/tables/projectTable";
 import { before, beforeEach } from "mocha";
 import { nextMonth, trust } from "cypress/constants/stringTestConstants";
 import { Username } from "cypress/constants/cypressConstants";
-import { shouldOnlyBeAbleToViewNextMonthOfProjects } from "../../support/reusableTests";
+import { shouldOnlyBeAbleToViewNextMonthOfProjects } from "cypress/support/reusableTests";
 import projectApi from "cypress/api/projectApi";
 import { ProjectBuilder } from "cypress/api/projectBuilder";
 import projectRemover from "cypress/api/projectRemover";

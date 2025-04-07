@@ -8,12 +8,12 @@ import {
     shouldNotBeAbleToViewHandedOverProjects,
     shouldNotBeAbleToViewYourProjects,
     shouldOnlyBeAbleToViewNextMonthOfProjects,
-} from "../../../support/reusableTests";
-import { nextMonth } from "../../../constants/stringTestConstants";
-import { ProjectBuilder } from "../../../api/projectBuilder";
+} from "cypress/support/reusableTests";
+import { nextMonth } from "cypress/constants/stringTestConstants";
+import { ProjectBuilder } from "cypress/api/projectBuilder";
 import { before, beforeEach } from "mocha";
-import projectRemover from "../../../api/projectRemover";
-import projectApi from "../../../api/projectApi";
+import projectRemover from "cypress/api/projectRemover";
+import projectApi from "cypress/api/projectApi";
 
 const project = ProjectBuilder.createConversionProjectRequest(nextMonth);
 const schoolName = "St Chad's Catholic Primary School";

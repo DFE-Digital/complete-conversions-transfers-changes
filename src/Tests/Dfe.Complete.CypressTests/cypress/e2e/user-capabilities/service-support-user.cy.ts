@@ -6,7 +6,7 @@ import {
     shouldNotBeAbleToCreateAProject,
     shouldNotBeAbleToViewYourProjects,
     shouldNotBeAbleToViewYourTeamProjects,
-} from "../../support/reusableTests";
+} from "cypress/support/reusableTests";
 import navBar from "cypress/pages/navBar";
 import allProjects from "cypress/pages/projects/allProjects";
 

@@ -10,7 +10,7 @@ import {
     shouldNotBeAbleToViewHandedOverProjects,
     shouldNotBeAbleToViewYourProjects,
     shouldNotBeAbleToViewYourTeamProjects,
-} from "../../support/reusableTests";
+} from "cypress/support/reusableTests";
 
 describe.skip("Capabilities and permissions of the data consumer user", () => {
     beforeEach(() => {
