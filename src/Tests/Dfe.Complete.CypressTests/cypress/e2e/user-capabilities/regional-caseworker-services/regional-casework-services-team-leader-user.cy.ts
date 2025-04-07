@@ -23,8 +23,8 @@ describe.skip("Capabilities and permissions of the regional casework services te
     before(() => {
         projectRemover.removeProjectIfItExists(`${project.urn.value}`);
         projectRemover.removeProjectIfItExists(`${unassignedProject.urn.value}`);
-        projectApi.createProject(project);
-        projectApi.createProject(unassignedProject, "");
+        projectApi.createConversionProject(project);
+        projectApi.createConversionProject(unassignedProject, "");
     });
 
     beforeEach(() => {

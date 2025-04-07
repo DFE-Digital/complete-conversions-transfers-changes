@@ -21,9 +21,9 @@ const transferSchoolName = "Abbey College Manchester";
 describe("View all projects", () => {
     before(() => {
         projectRemover.removeProjectIfItExists(`${project.urn.value}`);
-        // projectRemover.removeProjectIfItExists(`${transferProject.urn.value}`);
-        projectApi.createProject(project).then((response) => (projectId = response.value));
-        // projectApi.createProject(transferProject);
+        projectRemover.removeProjectIfItExists(`${transferProject.urn.value}`);
+        projectApi.createConversionProject(project).then((response) => (projectId = response.value));
+        projectApi.createTransferProject(transferProject);
     });
 
     beforeEach(() => {

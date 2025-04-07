@@ -13,7 +13,7 @@ describe.skip("Data consumer user - view all projects", () => {
     // not implemented 187514
     before(() => {
         projectRemover.removeProjectIfItExists(`${project.urn.value}`);
-        projectApi.createProject(project);
+        projectApi.createConversionProject(project);
     });
 
     beforeEach(() => {

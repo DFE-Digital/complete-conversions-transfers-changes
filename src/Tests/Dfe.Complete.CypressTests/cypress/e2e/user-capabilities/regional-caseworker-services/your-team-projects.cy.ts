@@ -25,8 +25,8 @@ describe.skip("Regional caseworker services user - View your team projects", () 
     before(() => {
         projectRemover.removeProjectIfItExists(`${project.urn.value}`);
         projectRemover.removeProjectIfItExists(`${teammatesProject.urn.value}`);
-        projectApi.createProject(project);
-        projectApi.createProject(teammatesProject, regionalCaseworkerUserEmail);
+        projectApi.createConversionProject(project);
+        projectApi.createConversionProject(teammatesProject, regionalCaseworkerUserEmail);
     });
 
     beforeEach(() => {

@@ -16,7 +16,7 @@ const unassignedProjectSchoolName = "Jesson's CofE Primary School (VA)";
 describe.skip("Capabilities and permissions of the regional casework services team leader user", () => {
     before(() => {
         projectRemover.removeProjectIfItExists(`${unassignedProject.urn.value}`);
-        projectApi.createProject(unassignedProject, "");
+        projectApi.createConversionProject(unassignedProject, "");
     });
 
     beforeEach(() => {

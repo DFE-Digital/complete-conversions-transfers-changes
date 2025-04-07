@@ -11,7 +11,7 @@ const schoolName = "Farnworth Church of England Controlled Primary School";
 describe("View your projects", () => {
     before(() => {
         projectRemover.removeProjectIfItExists(`${project.urn.value}`);
-        projectApi.createProject(project);
+        projectApi.createConversionProject(project);
     });
 
     beforeEach(() => {

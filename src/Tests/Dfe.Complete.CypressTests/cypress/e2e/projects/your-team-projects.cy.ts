@@ -21,8 +21,8 @@ describe("Regional delivery officer (London) user - View your team projects (pro
     before(() => {
         projectRemover.removeProjectIfItExists(`${myLondonProject.urn.value}`);
         projectRemover.removeProjectIfItExists(`${teammatesLondonRegionProject.urn.value}`);
-        projectApi.createProject(myLondonProject);
-        projectApi.createProject(teammatesLondonRegionProject, rdoLondonUserEmail);
+        projectApi.createConversionProject(myLondonProject);
+        projectApi.createConversionProject(teammatesLondonRegionProject, rdoLondonUserEmail);
     });
 
     beforeEach(() => {
