@@ -62,6 +62,13 @@
               <a class="moj-primary-navigation__link" aria-current="@IsCurrentNav(AllProjectsModel.StatisticsNavigation)"
                 href="/projects/all/statistics">Statistics</a>
             </li>
+            @if (UserHasTabAccess(AllProjectsModel.ExportsNavigation))
+            {
+              <li class="moj-primary-navigation__item">
+                <a class="moj-primary-navigation__link" aria-current="@IsCurrentNav(AllProjectsModel.ExportsNavigation)"
+                  href="/projects/all/statistics">Exports</a>
+              </li>
+            }
           </ul>
         </nav>
       </div>
