@@ -18,6 +18,7 @@ namespace Dfe.Complete.Application.Projects.Queries.CountAllProjects
             {
                 var result = await listAllProjectsQueryService
                     .ListAllProjects(request.ProjectStatus, request.Type)
+                    .Where(p => p.Project.AssignedTo != null)
                     .CountAsync(cancellationToken);
                 return Result<int>.Success(result);
             }
