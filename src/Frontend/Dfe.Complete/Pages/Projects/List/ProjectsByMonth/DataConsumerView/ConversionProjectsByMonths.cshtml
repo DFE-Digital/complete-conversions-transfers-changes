@@ -1,10 +1,14 @@
 @page "/projects/all/by-month/conversions/from/{fromMonth}/{fromYear}/to/{toMonth}/{toYear}"
+@using Dfe.Complete.Pages.Projects.List
+@using Dfe.Complete.Pages.Projects.List.ProjectsByMonth
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using Dfe.Complete.Domain.Enums
+@using MediatR
 @model Dfe.Complete.Pages.Projects.List.ProjectsByMonth.ConversionProjectsByMonths
+@inject ISender Sender
 @{
     Layout = "List/ProjectsByMonth/DataConsumerView/_ProjectsByMonthsLayout";
     ViewData["Title"] = "Academies opening or transferring";
-    
-    var months = Model.GetMonths();
 }
 @section PageHeading
 {
@@ -14,45 +18,13 @@
 </h1>
 <p>Schools that will become academies, and academies that will move to a different trust.</p>
 
-<div class="date-range">
-    <form method="post">
-        <fieldset class="govuk-fieldset">
-            <legend class="govuk-fieldset__legend govuk-fieldset__legend--s">Date range</legend>
-
-            <div class="govuk-form-group">
-                <label class="govuk-label" for="fromDate">from</label>
-                <select name="fromDate" id="fromDate" class="govuk-select">
-                    @{
-                        foreach (var month in months)
-                        {
-                            var _month = month.ToDateMonthYearString();
-                            <option selected="@(_month == Model.FromDate)" value="@month.Value">@_month</option>
-                        }
-                    }
-                </select>
-            </div>
-
-            <div class="govuk-form-group">
-                <label class="govuk-label" for="toDate">to</label>
-                <select name="toDate" id="toDate" class="govuk-select">
-                    @{
-                        foreach (var month in months)
-                        {
-                            var _month = month.ToDateMonthYearString();
-                            <option selected="@(_month == Model.ToDate)" value="@month.Value">@_month</option>
-                        }
-                    }
-                </select>
-            </div>
-
-            <div class="govuk-form-group">
-                <button type="submit" class="govuk-button" data-module="govuk-button">Apply</button>
-            </div>
-        </fieldset>
-    </form></div>
+@await Html.PartialAsync("_DateRangeForm", Model)
 }
 
 <div class="govuk-grid-column-full">
+
+    @await Html.PartialAsync("_SubNavigation", Model)
+
     @{
         if (Model.Projects.Any())
         {

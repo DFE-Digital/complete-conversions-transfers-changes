@@ -2,7 +2,9 @@ using Dfe.AcademiesApi.Client.Contracts;
 using Dfe.Complete.Application.Common.Models;
 using Dfe.Complete.Application.Projects.Interfaces;
 using Dfe.Complete.Application.Projects.Models;
+using Dfe.Complete.Domain.Entities;
 using Dfe.Complete.Domain.Enums;
+using Dfe.Complete.Domain.Interfaces.Repositories;
 using MediatR;
 using Dfe.Complete.Utils;
 
@@ -28,6 +30,7 @@ namespace Dfe.Complete.Application.Projects.Queries.ListProjectsByMonth
             {
                 var projectsQuery = listAllProjectsQueryService
                     .ListAllProjects(request.ProjectStatus, request.Type)
+                    .Where(p => p.Project.SignificantDateProvisional == false && p.Project.AssignedTo != null) // Confirmed && in-progress
                     .AsEnumerable();
 
                 if (request.ToDate.HasValue)
@@ -45,7 +48,7 @@ namespace Dfe.Complete.Application.Projects.Queries.ListProjectsByMonth
                         p.Project.SignificantDate.Value == request.FromDate);
                 }
 
-                var projects = projectsQuery.ToList();
+                var projects = projectsQuery.Where(p => p.Project.SignificantDateProvisional == false).ToList();
 
                 var ukprns = projects.Select(p => p.Project.IncomingTrustUkprn?.Value.ToString()).ToList();
                 var outgoingTrustUkprns = projects.Where(p => p.Project.OutgoingTrustUkprn != null).Select(p => p.Project.OutgoingTrustUkprn.Value.ToString()).ToList();

@@ -60,12 +60,8 @@ public abstract class AllProjectsModel(string currentNavigation) : PageModel
         return string.Format(projectType == ProjectType.Conversion ? RouteConstants.ConversionProjectTaskList : RouteConstants.TransferProjectTaskList, projectId);
     }
     
-    public static string GetProjectByMonthsUrl(ProjectType projectType, UserDto user)
+    public static string GetProjectByMonthsUrl(ProjectType projectType, UserDto user, int fromMonth, int fromYear, int? toMonth, int? toYear)
     {
-        DateTime date = DateTime.Now;
-        string month = date.Month.ToString("0");
-        string year = date.Year.ToString("0000");
-        
         bool isConversion = projectType == ProjectType.Conversion;
 
         var singleMonthPath =
@@ -74,8 +70,8 @@ public abstract class AllProjectsModel(string currentNavigation) : PageModel
         var multipleMonthsPath =
             isConversion ? RouteConstants.ConversionProjectsByMonths : RouteConstants.TransfersProjectsByMonths;
         
-        var standardView = string.Format(singleMonthPath, month, year);
-        var dataConsumerUrl = string.Format(multipleMonthsPath, month, year, month, year);
+        var standardView = string.Format(singleMonthPath, fromMonth, fromYear);
+        var dataConsumerUrl = string.Format(multipleMonthsPath, fromMonth, fromYear, toMonth, toYear);
 
         var canViewDataConsumerView = CanViewDataConsumerView(user);
 

@@ -1,4 +1,5 @@
-﻿@using Dfe.Complete.Domain.Enums
+﻿@using Dfe.Complete.Constants
+@using Dfe.Complete.Domain.Enums
 @using Dfe.Complete.Pages.Projects.List
 @using MediatR
 @model Dfe.Complete.Pages.Projects.List.AllProjectsModel
@@ -9,6 +10,10 @@
   string? IsCurrentNav(string tabName) => Model.CurrentNavigationItem == tabName ? ariaCurrentValue : null;
   
   var user = await User.GetUser(Sender);
+
+  var today = DateTime.Now;
+  var month = today.Month;
+  var year = today.Year;
 }
 
 @section BeforeMainFullWidth
@@ -25,7 +30,7 @@
               <a class="moj-primary-navigation__link" aria-current="@IsCurrentNav(AllProjectsModel.InProgressNavigation)" href="/projects/all/in-progress/all">In progress</a>
             </li>
             <li class="moj-primary-navigation__item">
-              <a class="moj-primary-navigation__link" aria-current="@IsCurrentNav(AllProjectsModel.ByMonthNavigation)" href="@AllProjectsModel.GetProjectByMonthsUrl(ProjectType.Conversion, user)">By month</a>
+              <a class="moj-primary-navigation__link" aria-current="@IsCurrentNav(AllProjectsModel.ByMonthNavigation)" href="@AllProjectsModel.GetProjectByMonthsUrl(ProjectType.Conversion, user, month, year, month, year)">By month</a>
             </li>
             <li class="moj-primary-navigation__item">
               <a class="moj-primary-navigation__link" aria-current="@IsCurrentNav(AllProjectsModel.ByRegionNavigation)" href="/projects/all/regions">By region</a>
@@ -40,7 +45,7 @@
               <a class="moj-primary-navigation__link" aria-current="@IsCurrentNav(AllProjectsModel.ByLocalAuthorityNavigation)" href="/projects/all/local-authorities">By local authority</a>
             </li>
             <li class="moj-primary-navigation__item">
-              <a class="moj-primary-navigation__link" aria-current="@IsCurrentNav(AllProjectsModel.CompletedNavigation)" href="/projects/all/completed">Completed</a>
+              <a class="moj-primary-navigation__link" aria-current="@IsCurrentNav(AllProjectsModel.CompletedNavigation)" href="@RouteConstants.CompletedProjects">Completed</a>
             </li>
             <li class="moj-primary-navigation__item">
               <a class="moj-primary-navigation__link" aria-current="@IsCurrentNav(AllProjectsModel.StatisticsNavigation)" href="/projects/all/statistics">Statistics</a>

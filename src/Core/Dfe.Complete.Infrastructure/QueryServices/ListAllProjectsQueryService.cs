@@ -16,6 +16,7 @@ internal class ListAllProjectsQueryService(CompleteContext context) : IListAllPr
             .OrderBy(project => project.SignificantDate)
             .Include(p => p.AssignedTo)
             .Include(p => p.LocalAuthority)
+            //.Include(p => p.SignificantDateHistories)
             .Join(context.GiasEstablishments, project => project.Urn, establishment => establishment.Urn,
                 (project, establishment) => new ListAllProjectsQueryModel(project, establishment));
 
