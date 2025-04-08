@@ -24,6 +24,7 @@ namespace Dfe.Complete.Application.Projects.Queries.ListAllProjects
             {
                 var result = await listAllProjectsQueryService
                     .ListAllProjects(request.ProjectStatus, request.Type)
+                    .Where(p => p.Project.AssignedTo != null)
                     .Skip(request.Page * request.Count).Take(request.Count)
                     .Select(item => new ListAllProjectsResultModel(
                         item.Establishment.Name,
@@ -33,9 +34,7 @@ namespace Dfe.Complete.Application.Projects.Queries.ListAllProjects
                         item.Project.State,
                         item.Project.Type,
                         item.Project.FormAMat,
-                        item.Project.AssignedTo != null
-                            ? $"{item.Project.AssignedTo.FirstName} {item.Project.AssignedTo.LastName}"
-                            : null,
+                        $"{item.Project.AssignedTo.FirstName} {item.Project.AssignedTo.LastName}",
                         item.Project.LocalAuthority.Name,
                         item.Project.Team,
                         item.Project.CompletedAt,
