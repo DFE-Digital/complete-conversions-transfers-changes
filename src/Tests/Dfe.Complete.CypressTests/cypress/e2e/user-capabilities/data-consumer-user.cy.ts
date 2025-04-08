@@ -11,10 +11,11 @@ import {
     shouldNotBeAbleToViewYourProjects,
     shouldNotBeAbleToViewYourTeamProjects,
 } from "cypress/support/reusableTests";
+import { dataConsumerUserAdId } from "cypress/constants/stringTestConstants";
 
 describe.skip("Capabilities and permissions of the data consumer user", () => {
     beforeEach(() => {
-        cy.login({ role: "DataConsumer" });
+        cy.login({ activeDirectoryId: dataConsumerUserAdId });
         cy.acceptCookies();
         cy.visit("/");
     });

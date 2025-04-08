@@ -15,7 +15,7 @@ describe("Create a new Conversion Project", () => {
     });
 
     beforeEach(() => {
-        cy.login({ role: "RegionalDeliveryOfficer" });
+        cy.login();
         cy.acceptCookies();
         cy.visit("/");
     });

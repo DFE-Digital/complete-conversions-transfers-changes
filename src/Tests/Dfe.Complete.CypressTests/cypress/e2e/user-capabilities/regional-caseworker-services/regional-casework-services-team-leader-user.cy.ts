@@ -9,7 +9,7 @@ import {
     shouldNotBeAbleToViewYourProjects,
     shouldOnlyBeAbleToViewNextMonthOfProjects,
 } from "cypress/support/reusableTests";
-import { nextMonth } from "cypress/constants/stringTestConstants";
+import { nextMonth, regionalCaseworkerUserAdId } from "cypress/constants/stringTestConstants";
 import { ProjectBuilder } from "cypress/api/projectBuilder";
 import { before, beforeEach } from "mocha";
 import projectRemover from "cypress/api/projectRemover";
@@ -28,7 +28,7 @@ describe.skip("Capabilities and permissions of the regional casework services te
     });
 
     beforeEach(() => {
-        cy.login({ role: "RegionalCaseworkServicesTeamLeader" });
+        cy.login({ activeDirectoryId: regionalCaseworkerUserAdId });
         cy.acceptCookies();
         cy.visit("/");
     });

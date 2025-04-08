@@ -21,7 +21,7 @@ describe("Create a new Transfer Project", () => {
     });
 
     beforeEach(() => {
-        cy.login({ role: "RegionalDeliveryOfficer" });
+        cy.login();
         cy.acceptCookies();
         cy.visit("/");
     });

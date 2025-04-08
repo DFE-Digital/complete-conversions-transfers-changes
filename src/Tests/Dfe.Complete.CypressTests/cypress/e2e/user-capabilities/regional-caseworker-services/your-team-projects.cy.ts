@@ -21,7 +21,7 @@ const teammatesProject = ProjectBuilder.createConversionProjectRequest(
 );
 const teammatesSchoolName = "The Heath School";
 
-describe.skip("Regional caseworker services user - View your team projects", () => {
+describe("Regional caseworker services user - View your team projects", () => {
     before(() => {
         projectRemover.removeProjectIfItExists(`${project.urn.value}`);
         projectRemover.removeProjectIfItExists(`${teammatesProject.urn.value}`);
@@ -30,7 +30,7 @@ describe.skip("Regional caseworker services user - View your team projects", () 
     });
 
     beforeEach(() => {
-        cy.login({ role: "RegionalCaseworkServices" });
+        cy.login({ activeDirectoryId: regionalCaseworkerUserAdId });
         cy.acceptCookies();
         cy.visit("/projects/team/in-progress");
     });
@@ -58,7 +58,7 @@ describe.skip("Regional caseworker services user - View your team projects", () 
         // projectDetailsPage.containsHeading(schoolName); // not implemented
     });
 
-    it("Should be able to view my teammate's project in my team project listings in progress", () => {
+    it.only("Should be able to view my teammate's project in my team project listings in progress", () => {
         yourTeamProjects
             .containsHeading("Your team projects in progress")
             .goToNextPageUntilFieldIsVisible(teammatesSchoolName);
@@ -71,7 +71,7 @@ describe.skip("Regional caseworker services user - View your team projects", () 
             .hasTableHeader("Project type")
             .hasTableHeader("Form a MAT project")
             .hasTableHeader("Conversion or transfer date")
-            .schoolHasUrn(teammatesSchoolName, `${project.urn.value}`)
+            .schoolHasUrn(teammatesSchoolName, `${teammatesProject.urn.value}`)
             .schoolHasLocalAuthority(teammatesSchoolName, "Halton")
             .schoolHasRegion(teammatesSchoolName, "North West")
             .schoolHasAssignedTo(teammatesSchoolName, regionalCaseWorkerUserName)

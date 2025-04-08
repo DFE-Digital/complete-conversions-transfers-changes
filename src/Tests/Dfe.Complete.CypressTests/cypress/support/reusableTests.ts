@@ -3,7 +3,7 @@ import navBar from "../pages/navBar";
 import allProjects from "../pages/projects/allProjects";
 import { projectTable } from "../pages/projects/tables/projectTable";
 import { nextMonth } from "../constants/stringTestConstants";
-import { CreateProjectRequest } from "../api/apiDomain";
+import { CreateConversionProjectRequest } from "../api/apiDomain";
 import yourTeamProjects from "../pages/projects/yourTeamProjects";
 import yourTeamProjectsRCSViewTable from "../pages/projects/tables/yourTeamProjectsRCSViewTable";
 import assignProject from "../pages/projects/assignProject";
@@ -54,7 +54,7 @@ export function shouldNotBeAbleToBeAssignedAProject() {
     // not implemented
 }
 
-export function shouldOnlyBeAbleToViewNextMonthOfProjects(schoolName: string, project: CreateProjectRequest) {
+export function shouldOnlyBeAbleToViewNextMonthOfProjects(schoolName: string, project: CreateConversionProjectRequest) {
     // not implemented 187137
     const nextMonthString = `${nextMonth.toLocaleString("default", { month: "short" })} ${nextMonth.getFullYear()}`;
     navBar.goToAllProjects();

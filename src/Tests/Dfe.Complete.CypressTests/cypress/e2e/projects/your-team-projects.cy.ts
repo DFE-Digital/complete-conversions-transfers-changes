@@ -26,7 +26,7 @@ describe("Regional delivery officer (London) user - View your team projects (pro
     });
 
     beforeEach(() => {
-        cy.login({ role: "RegionalDeliveryOfficer" });
+        cy.login();
         cy.acceptCookies();
         cy.visit("/projects/team/in-progress");
     });

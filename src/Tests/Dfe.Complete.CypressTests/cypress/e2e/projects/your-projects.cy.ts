@@ -15,7 +15,7 @@ describe("View your projects", () => {
     });
 
     beforeEach(() => {
-        cy.login({ role: "RegionalDeliveryOfficer" });
+        cy.login();
         cy.acceptCookies();
         cy.visit(`/projects/yours/in-progress`);
     });
