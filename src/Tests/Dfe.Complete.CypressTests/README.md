@@ -59,20 +59,26 @@ VALUES (NEWID()
 COMMIT TRANSACTION
 ```
 
-The following 2 users will also need to be added for 'your team projects' tests to run correctly.
+The following users will also need to be added for the user-capabilities tests to run correctly.
+Users to add:
+- Regional delivery officer London
+- Regional Casework Services
+- Business Support
+- Data Consumer
+- Service Support
 
 ```sql
 BEGIN TRANSACTION 
 INSERT INTO [complete].[users]
 VALUES (NEWID()
-      ,'test.cypress-london@education.gov.uk'
+      ,'test.rdo-london@education.gov.uk'
       ,GETDATE()
       ,GETDATE()
       ,0
       ,1
       ,'cypress'
-      ,'test-london'
-      ,'TEST-AD-ID2'
+      ,'rdo-london'
+      ,'TEST-AD-ID-RDO'
       ,1
       ,0
       ,null
@@ -81,25 +87,74 @@ VALUES (NEWID()
       ,0
       ,0
       ,null)
-COMMIT TRANSACTION
-```
-
-```sql
-BEGIN TRANSACTION 
-INSERT INTO [complete].[users]
-VALUES (NEWID()
-      ,'test.cypress-rcs@education.gov.uk'
+      ,
+      (NEWID()
+      ,'test.regional-casework-services@education.gov.uk'
       ,GETDATE()
       ,GETDATE()
       ,0
       ,1
       ,'cypress'
-      ,'test-rcs'
-      ,'TEST-AD-ID-3'
+      ,'regional-casework-services'
+      ,'TEST-AD-ID-RCS'
       ,1
       ,0
       ,null
       ,'regional_casework_services'
+      ,null
+      ,0
+      ,0
+      ,null)
+      ,
+      (NEWID()
+      ,'test.business-support@education.gov.uk'
+      ,GETDATE()
+      ,GETDATE()
+      ,0
+      ,1
+      ,'cypress'
+      ,'business-support'
+      ,'TEST-AD-ID-BS'
+      ,1
+      ,0
+      ,null
+      ,'business_support'
+      ,null
+      ,0
+      ,0
+      ,null)
+      ,
+      (NEWID()
+      ,'test.data-consumer@education.gov.uk'
+      ,GETDATE()
+      ,GETDATE()
+      ,0
+      ,1
+      ,'cypress'
+      ,'data-consumer'
+      ,'TEST-AD-ID-DC'
+      ,1
+      ,0
+      ,null
+      ,'data_consumer'
+      ,null
+      ,0
+      ,0
+      ,null)
+      ,
+      (NEWID()
+      ,'test.service-support@education.gov.uk'
+      ,GETDATE()
+      ,GETDATE()
+      ,0
+      ,1
+      ,'cypress'
+      ,'service-support'
+      ,'TEST-AD-ID-SS'
+      ,1
+      ,0
+      ,null
+      ,'service_support'
       ,null
       ,0
       ,0

@@ -2,7 +2,7 @@ import { defineConfig } from "cypress";
 import { generateZapReport } from "cypress/plugins/generateZapReport";
 
 export default defineConfig({
-    defaultCommandTimeout: 20000,
+    defaultCommandTimeout: 5000,
     pageLoadTimeout: 20000,
     watchForFileChanges: false,
     chromeWebSecurity: false,

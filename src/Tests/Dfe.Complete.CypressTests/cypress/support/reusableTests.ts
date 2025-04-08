@@ -17,7 +17,8 @@ export function shouldNotBeAbleToViewYourProjects() {
 
 export function shouldNotBeAbleToViewYourTeamProjects() {
     navBar.unableToViewYourTeamProjects();
-    cy.visit("/projects/team/in-progress").notAuthorisedToPerformAction();
+    cy.visit("/projects/team/in-progress");
+    yourTeamProjects.noProjectsShown();
 }
 
 export function shouldNotBeAbleToViewHandedOverProjects() {

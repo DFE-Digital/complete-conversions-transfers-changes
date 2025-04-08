@@ -11,14 +11,15 @@ import navBar from "cypress/pages/navBar";
 import allProjects from "cypress/pages/projects/allProjects";
 import { serviceSupportUserAdId } from "cypress/constants/stringTestConstants";
 
-describe.skip("Capabilities and permissions of the service support user", () => {
+describe("Capabilities and permissions of the service support user", () => {
     beforeEach(() => {
         cy.login({ activeDirectoryId: serviceSupportUserAdId });
         cy.acceptCookies();
         cy.visit("/");
     });
 
-    it("Should be able to view multiple months of projects within a specified date range", () => {
+    it.skip("Should be able to view multiple months of projects within a specified date range", () => {
+        // not implemented 187514
         shouldBeAbleToViewMultipleMonthsOfProjects();
     });
 
@@ -51,12 +52,14 @@ describe.skip("Capabilities and permissions of the service support user", () => 
         // not implemented 187525
     });
 
-    it("Should be able to view my team projects that are handed over", () => {
+    it.skip("Should be able to view my team projects that are handed over", () => {
+        // not implemented
         navBar.goToAllProjects();
         allProjects.filterProjects("Handover").containsHeading("Projects to handover");
     });
 
-    it("Should NOT be able to view your projects", () => {
+    it.skip("Should NOT be able to view your projects", () => {
+        // not implemented 208988
         shouldNotBeAbleToViewYourProjects();
     });
 
@@ -64,7 +67,8 @@ describe.skip("Capabilities and permissions of the service support user", () => 
         shouldNotBeAbleToViewYourTeamProjects();
     });
 
-    it("Should NOT be able to create a project", () => {
+    it.skip("Should NOT be able to create a project", () => {
+        // not implemented
         shouldNotBeAbleToCreateAProject();
     });
 

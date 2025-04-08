@@ -13,14 +13,15 @@ import {
 } from "cypress/support/reusableTests";
 import { dataConsumerUserAdId } from "cypress/constants/stringTestConstants";
 
-describe.skip("Capabilities and permissions of the data consumer user", () => {
+describe("Capabilities and permissions of the data consumer user", () => {
     beforeEach(() => {
         cy.login({ activeDirectoryId: dataConsumerUserAdId });
         cy.acceptCookies();
         cy.visit("/");
     });
 
-    it("Should be able to view multiple months of projects within a specified date range", () => {
+    it.skip("Should be able to view multiple months of projects within a specified date range", () => {
+        // not implemented 187514
         shouldBeAbleToViewMultipleMonthsOfProjects();
     });
 
@@ -29,7 +30,8 @@ describe.skip("Capabilities and permissions of the data consumer user", () => {
         shouldBeAbleToViewAndDownloadCsvReportsFromTheExportSection();
     });
 
-    it("Should NOT be able to view your projects", () => {
+    it.skip("Should NOT be able to view your projects", () => {
+        // not implemented 208988
         shouldNotBeAbleToViewYourProjects();
     });
 
@@ -37,11 +39,13 @@ describe.skip("Capabilities and permissions of the data consumer user", () => {
         shouldNotBeAbleToViewYourTeamProjects();
     });
 
-    it("Should NOT be able to view handed over projects", () => {
+    it.skip("Should NOT be able to view handed over projects", () => {
+        // not implemented
         shouldNotBeAbleToViewHandedOverProjects();
     });
 
-    it("Should NOT be able to create a project", () => {
+    it.skip("Should NOT be able to create a project", () => {
+        // not implemented
         shouldNotBeAbleToCreateAProject();
     });
 
