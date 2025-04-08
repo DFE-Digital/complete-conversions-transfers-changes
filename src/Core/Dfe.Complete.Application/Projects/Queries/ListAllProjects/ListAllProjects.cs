@@ -22,8 +22,11 @@ namespace Dfe.Complete.Application.Projects.Queries.ListAllProjects
         {
             try
             {
-                var result = await listAllProjectsQueryService
+                var projectList = await listAllProjectsQueryService
                     .ListAllProjects(request.ProjectStatus, request.Type)
+                    .ToListAsync(cancellationToken);
+                
+                var result = projectList
                     .Where(p => p.Project.AssignedTo != null)
                     .Skip(request.Page * request.Count).Take(request.Count)
                     .Select(item => new ListAllProjectsResultModel(
@@ -41,7 +44,7 @@ namespace Dfe.Complete.Application.Projects.Queries.ListAllProjects
                         item.Project.Region,
                         item.Establishment.LocalAuthorityName
                     ))
-                    .ToListAsync(cancellationToken);
+                    .ToList();
                 return Result<List<ListAllProjectsResultModel>>.Success(result);
             }
             catch (Exception ex)
