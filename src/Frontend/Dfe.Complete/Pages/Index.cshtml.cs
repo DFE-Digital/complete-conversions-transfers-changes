@@ -16,9 +16,11 @@ namespace Dfe.Complete.Pages
 
 			var userTeam = await User.GetUserTeam(sender);
 
-			var route = userTeam is ProjectTeam.BusinessSupport or ProjectTeam.DataConsumers
-				? RouteConstants.ProjectsInProgress
-				: RouteConstants.YourProjectsInProgress;
+			string route;
+
+			if (userTeam is ProjectTeam.BusinessSupport or ProjectTeam.DataConsumers) route = RouteConstants.ProjectsInProgress;
+			else if (userTeam is ProjectTeam.ServiceSupport) route = RouteConstants.ServiceSupportProjects;
+			else route = RouteConstants.YourProjectsInProgress;
 
 			return Redirect(route);
 		}

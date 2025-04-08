@@ -8,7 +8,7 @@ public abstract class AllProjectsModel(string currentNavigation) : BaseProjectsP
 {
     protected TabNavigationModel AllProjectsTabNavigationModel = new(TabNavigationModel.AllProjectsTabName);
 
-    public const string HandoverNavigation = "handover";
+    public const string HandoverNavigation = "all-projects-handover";
     public const string InProgressNavigation = "in-progress";
     public const string ByMonthNavigation = "by-month";
     public const string ByRegionNavigation = "by-region";
@@ -17,7 +17,7 @@ public abstract class AllProjectsModel(string currentNavigation) : BaseProjectsP
     public const string ByLocalAuthorityNavigation = "by-local-authority";
     public const string CompletedNavigation = "completed";
     public const string StatisticsNavigation = "Statistics";
-    public const string ExportsNavigation = "exports";
+    public const string ExportsNavigation = "all-projects-exports";
 
     public static string GetTrustProjectsUrl(ListTrustsWithProjectsResultModel trustModel)
     {
