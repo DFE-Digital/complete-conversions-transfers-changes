@@ -125,7 +125,8 @@ public class AllProjectsModelTests
         };
 
         // Act
-        var result = AllProjectsModel.GetProjectByMonthsUrl(projectType, user);
+        //TODO EA ensusure correct dates
+        var result = AllProjectsModel.GetProjectByMonthsUrl(projectType, user, 3, 2025, 4, 20225);
 
         // Assert
         Assert.Equal(expectedUrl, result);
