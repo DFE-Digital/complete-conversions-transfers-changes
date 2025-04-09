@@ -74,7 +74,7 @@ namespace Dfe.Complete.Tests.Authorization
             return new TheoryData<string, bool>()
             {
                 { Environments.Development, true },
-                { Environments.Staging, true },
+                { "Test", true },
                 { Environments.Production, false }
             }; 
         }
