@@ -30,11 +30,6 @@ public abstract class AllProjectsModel(string currentNavigation) : BaseProjectsP
             : string.Format(RouteConstants.TrustProjects, trustModel.identifier);
     }
     
-    public static string GetProjectSummaryUrl(ProjectType projectType, string projectId)
-    {
-        return string.Format(projectType == ProjectType.Conversion ? RouteConstants.ConversionProjectTaskList : RouteConstants.TransferProjectTaskList, projectId);
-    }
-    
     public static string GetProjectByMonthsUrl(ProjectType projectType, UserDto user, int fromMonth, int fromYear, int? toMonth, int? toYear)
     {
         bool isConversion = projectType == ProjectType.Conversion;
