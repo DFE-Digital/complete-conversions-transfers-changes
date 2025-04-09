@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace Dfe.Complete.Pages.Projects.List;
 
-public abstract class AllProjectsModel(string currentNavigation) : PageModel
+public abstract class AllProjectsModel(string currentNavigation) : BaseProjectsPageModel(currentNavigation)
 {
     protected TabNavigationModel AllProjectsTabNavigationModel = new(TabNavigationModel.AllProjectsTabName);
 

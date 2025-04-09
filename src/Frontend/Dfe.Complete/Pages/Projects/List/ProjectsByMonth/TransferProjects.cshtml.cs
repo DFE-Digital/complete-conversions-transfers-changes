@@ -3,7 +3,6 @@ using Dfe.Complete.Application.Projects.Queries.ListProjectsByMonth;
 using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Models;
 using Dfe.Complete.Pages.Pagination;
-using Dfe.Complete.Utils;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Dfe.Complete.Extensions;
