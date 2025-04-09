@@ -30,6 +30,7 @@ Security in case of vulnerabilities.
  - Updated route `/public/cookies` to `/cookies`
  - Updated route `/projects/transfer/new_mat` to `/projects/transfers/new_mat`
  - Updated route `/projects/transfer-projects/new` to `/projects/transfers/new`
+ - Updated ListAllProjects in-progress and Count all projects in progress to filter out unassigned projects
 
 ### Fixed
  - Correctly identify test env based on environment name being "Test" (previously looking for "Staging")
