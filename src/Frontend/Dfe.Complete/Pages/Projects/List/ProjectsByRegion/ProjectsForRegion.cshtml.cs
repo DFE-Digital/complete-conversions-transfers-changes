@@ -17,11 +17,14 @@ public class ProjectsByRegion(ISender sender) : AllProjectsModel(ByRegionNavigat
     public List<ListAllProjectsResultModel>? Projects { get; set; }
     public Region RegionName { get; set; }
 
-    public async Task OnGet()
+    public async Task<IActionResult> OnGetAsync()
     {
         ViewData[TabNavigationModel.ViewDataKey] = AllProjectsTabNavigationModel;
 
         var parsedRegion = Region.FromDescriptionValue<Region>();
+
+        if (parsedRegion == null) return NotFound();
+        
         RegionName = (Region)parsedRegion!;
 
         var listProjectsForRegionQuery =
@@ -37,10 +40,12 @@ public class ProjectsByRegion(ISender sender) : AllProjectsModel(ByRegionNavigat
 
         Pagination = new PaginationModel($"/projects/all/regions/{Region}", PageNumber,
             listProjectsForRegionResult.ItemCount, PageSize);
+
+        return Page();
     }
 
     public async Task OnGetMovePage()
     {
-        await OnGet();
+        await OnGetAsync();
     }
 }
