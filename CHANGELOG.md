@@ -20,6 +20,10 @@ Security in case of vulnerabilities.
  - Your team projects in progress list (`/projects/team/in-progress`)
  - Your team projects completed list (`/projects/team/completed`)
  - Added user (`ClaimsPrincipal`) extension to get users team `GetUserTeam`
+ - New route `/projects/all/by-month/conversions/{month}/{year}`
+ - New route `/projects/all/by-month/transfers/{month}/{year}`
+ - New route `/projects/all/by-month/conversions/from/{fromMonth}/{fromYear}/to/{toMonth}/{toYear}`
+ - New route `/projects/all/by-month/transfers/from/{fromMonth}/{fromYear}/to/{toMonth}/{toYear}`
 
 ### Changed
  - Updated route `/accessibility-statement` to `/accessibility`
