@@ -84,6 +84,7 @@ public class ListAllProjectsByMonthHandlerTests
         var ukprn = fixture.Create<int>();
         var dateFrom = new DateOnly(2025, 1, 1);
         var dateTo = new DateOnly(2025, 12, 31);
+        var user = fixture.Create<Domain.Entities.User>();
         
         var listAllProjectsQueryModels = fixture.Build<ListAllProjectsQueryModel>()
             .CreateMany(50)
@@ -91,6 +92,8 @@ public class ListAllProjectsByMonthHandlerTests
             {
                 p.Project.IncomingTrustUkprn = new Ukprn(ukprn);
                 p.Project.SignificantDate = dateFrom;
+                p.Project.SignificantDateProvisional = false;
+                p.Project.AssignedTo = user;
                 return p;
             })
             .BuildMock();
@@ -128,6 +131,7 @@ public class ListAllProjectsByMonthHandlerTests
     {
         // Arrange
         var ukprn = fixture.Create<int>();
+        var user = fixture.Create<Domain.Entities.User>();
 
         var startDate = new DateOnly(2025, 6, 1);
         var endDate = new DateOnly(2025, 6, 30);
@@ -149,6 +153,8 @@ public class ListAllProjectsByMonthHandlerTests
         foreach (var project in inRangeProjects)
         {
             project.Project.SignificantDate = startDate;
+            project.Project.SignificantDateProvisional = false;
+            project.Project.AssignedTo = user;
             
             projects.Add(project);
         }

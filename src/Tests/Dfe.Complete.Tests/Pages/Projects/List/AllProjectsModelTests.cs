@@ -71,8 +71,8 @@ public class AllProjectsModelTests
     {
         // Arrange
         DateTime date = DateTime.Now;
-        string month = date.Month.ToString("0");
-        string year = date.Year.ToString("0000");
+        int month = date.Month;
+        int year = date.Year;
 
         string expectedUrl = string.Format(
             expectedToSeeDataConsumerUrl
@@ -87,8 +87,7 @@ public class AllProjectsModelTests
         };
 
         // Act
-        //TODO EA ensusure correct dates
-        var result = AllProjectsModel.GetProjectByMonthsUrl(projectType, user, 3, 2025, 4, 20225);
+        var result = AllProjectsModel.GetProjectByMonthsUrl(projectType, user, month, year, month, year);
 
         // Assert
         Assert.Equal(expectedUrl, result);
