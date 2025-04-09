@@ -26,8 +26,11 @@ namespace Dfe.Complete.Application.Projects.Queries.ListAllProjects
                     .ListAllProjects(request.ProjectStatus, request.Type)
                     .ToListAsync(cancellationToken);
                 
-                var result = projectList
-                    .Where(p => p.Project.AssignedTo != null)
+                var filteredProjectList = request.ProjectStatus == ProjectState.Active
+                    ? projectList.Where(p => p.Project.AssignedTo != null)
+                    : projectList;
+                
+                var result = filteredProjectList
                     .Skip(request.Page * request.Count).Take(request.Count)
                     .Select(item => new ListAllProjectsResultModel(
                         item.Establishment.Name,

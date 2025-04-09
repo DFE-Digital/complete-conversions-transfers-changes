@@ -26,6 +26,7 @@ Security in case of vulnerabilities.
  - Updated route `/public/cookies` to `/cookies`
  - Updated route `/projects/transfer/new_mat` to `/projects/transfers/new_mat`
  - Updated route `/projects/transfer-projects/new` to `/projects/transfers/new`
+ - Updated ListAllProjects in-progress and Count all projects in progress to filter out unassigned projects
 
 See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/main...production-2025-04-01.120-manual) for everything awaiting release
 

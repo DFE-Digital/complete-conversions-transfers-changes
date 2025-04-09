@@ -20,7 +20,11 @@ namespace Dfe.Complete.Application.Projects.Queries.CountAllProjects
                     .ListAllProjects(request.ProjectStatus, request.Type)
                     .ToListAsync(cancellationToken);
                 
-                var result = projectsQuery.Where(p => p.Project.AssignedTo != null).Count();
+                var filteredProjectQuery = request.ProjectStatus == ProjectState.Active
+                    ? projectsQuery.Where(p => p.Project.AssignedTo != null)
+                    : projectsQuery;
+                
+                var result = filteredProjectQuery.Count();
                 
                 return Result<int>.Success(result);
             }
