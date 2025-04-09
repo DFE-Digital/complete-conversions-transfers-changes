@@ -1,6 +1,7 @@
 using System.Net;
 using System.Security.Claims;
 using AutoFixture;
+using Dfe.AcademiesApi.Client.Contracts;
 using Dfe.Complete.Api.Tests.Integration.Customizations;
 using Dfe.Complete.Client.Contracts;
 using Dfe.Complete.Domain.Entities;
@@ -10,8 +11,10 @@ using Dfe.Complete.Tests.Common.Customizations.Models;
 using DfE.CoreLibs.Testing.AutoFixture.Attributes;
 using DfE.CoreLibs.Testing.AutoFixture.Customizations;
 using DfE.CoreLibs.Testing.Mocks.WebApplicationFactory;
+using DfE.CoreLibs.Testing.Mocks.WireMock;
 using Microsoft.EntityFrameworkCore;
 using Project = Dfe.Complete.Domain.Entities.Project;
+using Ukprn = Dfe.Complete.Domain.ValueObjects.Ukprn;
 
 namespace Dfe.Complete.Api.Tests.Integration.Controllers;
 
@@ -296,7 +299,6 @@ public class ProjectsControllerTests
         // Arrange
         var dbContext = factory.GetDbContext<CompleteContext>();
         var testUser = await dbContext.Users.FirstAsync();
-        var urn = 100000;
         
         var establishments = fixture.Customize(new GiasEstablishmentsCustomization()).CreateMany<GiasEstablishment>(50).ToList();
             // .Select(establishment =>
@@ -630,5 +632,177 @@ public class ProjectsControllerTests
         Assert.Equivalent(expected.RegionalDeliveryOfficer, actual.RegionalDeliveryOfficer);
         Assert.Equivalent(expected.Contacts, actual.Contacts);
         Assert.Equivalent(expected.Notes, actual.Notes);
+    }
+    
+    [Theory]
+    [CustomAutoData(typeof(CustomWebApplicationDbContextFactoryCustomization), typeof(GiasEstablishmentsCustomization))]
+    public async Task ListAllProjectsByTrust_Async_ShouldReturnListOfNonFormAMatProjects_WhenTrustExists(
+        CustomWebApplicationDbContextFactory<Program> factory,
+        IProjectsClient projectsClient,
+        IFixture fixture)
+    {
+        factory.TestClaims = [new Claim(ClaimTypes.Role, ReadRole)];
+
+        // Arrange
+        var dbContext = factory.GetDbContext<CompleteContext>();
+        var testUser = await dbContext.Users.FirstAsync();
+        
+        // Add projects for 
+        // Stub TrustV4Client GetTrustByUkprn2Async if not form a mat
+        // Get NewTrustReferenceNumber if form a mat
+        
+        var establishments = fixture.Customize(new GiasEstablishmentsCustomization()).CreateMany<GiasEstablishment>(50).ToList();
+
+        await dbContext.GiasEstablishments.AddRangeAsync(establishments);
+        var projects = establishments.Select(establishment =>
+        {
+            var project = fixture.Customize(new ProjectCustomization
+                {
+                    RegionalDeliveryOfficerId = testUser.Id,
+                    CaseworkerId = testUser.Id,
+                    AssignedToId = testUser.Id
+                })
+                .Create<Project>();
+            project.Urn = establishment.Urn ?? project.Urn;
+            project.IncomingTrustUkprn = new Ukprn(12345678);
+            project.NewTrustReferenceNumber = null;
+            project.NewTrustName = null;
+            project.State = Domain.Enums.ProjectState.Active;
+            return project;
+        }).ToList();
+        
+        var localAuthority = dbContext.LocalAuthorities.AsEnumerable().MinBy(_ => Guid.NewGuid());
+        Assert.NotNull(localAuthority);
+        projects.ForEach(x => x.LocalAuthorityId = localAuthority.Id);
+
+        var trustDto = fixture.Customize(new TrustDtoCustomization(){Ukprn = "12345678"}).Create<TrustDto>();
+        
+        factory.WireMockServer.AddGetWithJsonResponse($"/v4/trust/{trustDto.Ukprn}", trustDto);
+        
+        await dbContext.Projects.AddRangeAsync(projects);
+        await dbContext.SaveChangesAsync();
+
+        // Act
+        var results = await projectsClient.ListAllProjectsInTrustAsync(
+            trustDto.Ukprn, false, 0, 50);
+
+        // Assert
+        Assert.NotNull(results);
+        Assert.Equal(50, results.Count);
+        foreach (var result in results)
+        {
+            var project = projects.Find(p => p.Id.Value == result.ProjectId?.Value);
+            var establishment = establishments.Find(e => e.Urn?.Value == result.Urn?.Value);
+
+            Assert.NotNull(result.Urn);
+            Assert.Equal(project?.Urn.Value, result.Urn.Value);
+            Assert.Equal(establishment?.Urn?.Value, result.Urn.Value);
+
+            Assert.NotNull(result.EstablishmentName);
+            Assert.Equal(establishment?.Name, result.EstablishmentName);
+
+            Assert.NotNull(result.ProjectId);
+            Assert.Equal(project?.Id.Value, result.ProjectId.Value);
+
+            Assert.NotNull(result.ConversionOrTransferDate);
+            Assert.Equal(project?.SignificantDate, new DateOnly(result.ConversionOrTransferDate.Value.Year,
+                result.ConversionOrTransferDate.Value.Month, result.ConversionOrTransferDate.Value.Day));
+
+            Assert.NotNull(result.State);
+            Assert.Equal(project?.State.ToString(), result.State.ToString());
+
+            Assert.NotNull(result.ProjectType);
+            Assert.Equal(project?.Type?.ToString(), result.ProjectType.Value.ToString());
+
+            Assert.Equal(project?.FormAMat, result.IsFormAMAT);
+
+            Assert.NotNull(result.AssignedToFullName);
+            Assert.Equal($"{project?.AssignedTo?.FirstName} {project?.AssignedTo?.LastName}",
+                result.AssignedToFullName);
+        }
+    }
+    
+    [Theory]
+    [CustomAutoData(typeof(CustomWebApplicationDbContextFactoryCustomization), typeof(GiasEstablishmentsCustomization))]
+    public async Task ListAllProjectsByTrust_Async_ShouldReturnListOfFormAMatProjects_WhenTrustExists(
+        CustomWebApplicationDbContextFactory<Program> factory,
+        IProjectsClient projectsClient,
+        IFixture fixture)
+    {
+        factory.TestClaims = [new Claim(ClaimTypes.Role, ReadRole)];
+
+        // Arrange
+        var dbContext = factory.GetDbContext<CompleteContext>();
+        var testUser = await dbContext.Users.FirstAsync();
+        
+        // Add projects for 
+        // Stub TrustV4Client GetTrustByUkprn2Async if not form a mat
+        // Get NewTrustReferenceNumber if form a mat
+        
+        var establishments = fixture.Customize(new GiasEstablishmentsCustomization()).CreateMany<GiasEstablishment>(50).ToList();
+
+        await dbContext.GiasEstablishments.AddRangeAsync(establishments);
+        var projects = establishments.Select(establishment =>
+        {
+            var project = fixture.Customize(new ProjectCustomization
+                {
+                    RegionalDeliveryOfficerId = testUser.Id,
+                    CaseworkerId = testUser.Id,
+                    AssignedToId = testUser.Id
+                })
+                .Create<Project>();
+            project.Urn = establishment.Urn ?? project.Urn;
+            project.IncomingTrustUkprn = null;
+            project.NewTrustReferenceNumber = "TR123456";
+            project.NewTrustName = "New Trust";
+            project.State = Domain.Enums.ProjectState.Active;
+            return project;
+        }).ToList();
+        
+        var localAuthority = dbContext.LocalAuthorities.AsEnumerable().MinBy(_ => Guid.NewGuid());
+        Assert.NotNull(localAuthority);
+        projects.ForEach(x => x.LocalAuthorityId = localAuthority.Id);
+        
+        await dbContext.Projects.AddRangeAsync(projects);
+        await dbContext.SaveChangesAsync();
+
+        // Act
+        var results = await projectsClient.ListAllProjectsInTrustAsync(
+            "TR123456", true, 0, 50);
+
+        // Assert
+        Assert.NotNull(results);
+        Assert.Equal(50, results.Count);
+        foreach (var result in results)
+        {
+            var project = projects.Find(p => p.Id.Value == result.ProjectId?.Value);
+            var establishment = establishments.Find(e => e.Urn?.Value == result.Urn?.Value);
+
+            Assert.NotNull(result.Urn);
+            Assert.Equal(project?.Urn.Value, result.Urn.Value);
+            Assert.Equal(establishment?.Urn?.Value, result.Urn.Value);
+
+            Assert.NotNull(result.EstablishmentName);
+            Assert.Equal(establishment?.Name, result.EstablishmentName);
+
+            Assert.NotNull(result.ProjectId);
+            Assert.Equal(project?.Id.Value, result.ProjectId.Value);
+
+            Assert.NotNull(result.ConversionOrTransferDate);
+            Assert.Equal(project?.SignificantDate, new DateOnly(result.ConversionOrTransferDate.Value.Year,
+                result.ConversionOrTransferDate.Value.Month, result.ConversionOrTransferDate.Value.Day));
+
+            Assert.NotNull(result.State);
+            Assert.Equal(project?.State.ToString(), result.State.ToString());
+
+            Assert.NotNull(result.ProjectType);
+            Assert.Equal(project?.Type?.ToString(), result.ProjectType.Value.ToString());
+
+            Assert.Equal(project?.FormAMat, result.IsFormAMAT);
+
+            Assert.NotNull(result.AssignedToFullName);
+            Assert.Equal($"{project?.AssignedTo?.FirstName} {project?.AssignedTo?.LastName}",
+                result.AssignedToFullName);
+        }
     }
 }
