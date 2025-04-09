@@ -18,6 +18,4 @@ public class SignificantDateHistory: IEntity<SignificantDateHistoryId>
     public DateTime UpdatedAt { get; set; }
 
     public UserId? UserId { get; set; }
-    
-    public virtual Project? Project { get; set; }
 }
