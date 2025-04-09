@@ -1,4 +1,5 @@
 ﻿using AutoFixture;
+using Dfe.AcademiesApi.Client.Contracts;
 using Dfe.Complete.Api.Tests.Integration.Customizations;
 using Dfe.Complete.Domain.Entities;
 using Dfe.Complete.Domain.Enums;
@@ -9,6 +10,7 @@ using Dfe.Complete.Tests.Common.Customizations.Models;
 using DfE.CoreLibs.Testing.AutoFixture.Attributes;
 using DfE.CoreLibs.Testing.AutoFixture.Customizations;
 using DfE.CoreLibs.Testing.Mocks.WebApplicationFactory;
+using DfE.CoreLibs.Testing.Mocks.WireMock;
 
 namespace Dfe.Complete.Api.Tests.Integration.Controllers
 {
@@ -128,6 +130,7 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers
             project.OutgoingTrustMainContactId = outgoingContact.Id;
             project.State = ProjectState.Active;
             project.LocalAuthorityId = localAuthority.Id;
+            project.IncomingTrustUkprn = new Ukprn(12345678);
             
             dbContext.Projects.Add(project);
             await dbContext.SaveChangesAsync();
@@ -163,6 +166,10 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers
             dbContext.SignificantDateHistories.Add(significantDateHistory);
 
             await dbContext.SaveChangesAsync();
+            
+            var trustDto = fixture.Customize(new TrustDtoCustomization {Ukprn = project.IncomingTrustUkprn.Value.ToString()}).Create<TrustDto>();
+        
+            factory.WireMockServer.AddGetWithJsonResponse($"/v4/trusts/bulk", new[]{trustDto}, new List<KeyValuePair<string, string>> {new("ukprns", trustDto.Ukprn!)});
 
             // Act
             var results = await csvExportClient.GetConversionCsvByMonthAsync(1, 2025);
@@ -253,6 +260,7 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers
             project.MainContactId = null;
             project.State = ProjectState.Active;
             project.LocalAuthorityId = localAuthority.Id;
+            project.IncomingTrustUkprn = new Ukprn(12345678);
 
             dbContext.Projects.Add(project);
             await dbContext.SaveChangesAsync();
@@ -265,6 +273,10 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers
             dbContext.KeyContacts.Add(keyContact);
 
             await dbContext.SaveChangesAsync();
+            
+            var trustDto = fixture.Customize(new TrustDtoCustomization(){Ukprn = project.IncomingTrustUkprn.Value.ToString()}).Create<TrustDto>();
+        
+            factory.WireMockServer.AddGetWithJsonResponse($"/v4/trusts/bulk", new[]{trustDto}, new List<KeyValuePair<string, string>> {new("ukprns", trustDto.Ukprn!)});
 
             // Act
             var results = await csvExportClient.GetConversionCsvByMonthAsync(1, 2025);
