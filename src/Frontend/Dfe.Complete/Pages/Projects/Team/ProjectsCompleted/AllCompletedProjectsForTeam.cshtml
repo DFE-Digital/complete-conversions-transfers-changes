@@ -15,50 +15,57 @@
     </h1>
 }
 
-<div class="govuk-grid-column-full">
-    <table class="govuk-table" name="projects_table" aria-label="Projects table">
-        <thead class="govuk-table__head">
-            <tr class="govuk-table__row">
-                <th class="govuk-table__header" scope="col">School or academy</th>
-                <th class="govuk-table__header" scope="col">URN</th>
-                <th class="govuk-table__header" scope="col">Local authority</th>
-                @if (Model.UserTeamIsRdo)
-                {
-                    <th class="govuk-table__header" scope="col">Team</th>
-                }
-                else
-                {
-                    <th class="govuk-table__header" scope="col">Region</th>
-                }
-                <th class="govuk-table__header" scope="col">Type of project</th>
-                <th class="govuk-table__header" scope="col">Conversion or transfer date</th>
-                <th class="govuk-table__header" scope="col">Project completion date</th>
-            </tr>
-        </thead>
-        <tbody class="govuk-table__body">
-
-            @foreach (var project in Model.Projects)
-            {
+@if (Model.Projects == null || Model.Projects.Count == 0)
+{
+    <div class="govuk-inset-text">There are no projects in progress.</div>
+}
+else
+{
+    <div class="govuk-grid-column-full">
+        <table class="govuk-table" name="projects_table" aria-label="Projects table">
+            <thead class="govuk-table__head">
                 <tr class="govuk-table__row">
-                    <td class="govuk-table__header govuk-table__cell">
-                        <a class="govuk-link"
-                            href="@AllProjectsModel.GetProjectSummaryUrl(project)">@project.EstablishmentName</a>
-                    </td>
-                    <td class="govuk-table__cell">@project.Urn.Value</td>
-                    <td class="govuk-table__cell">@project.LocalAuthorityNameFormatted</td>
+                    <th class="govuk-table__header" scope="col">School or academy</th>
+                    <th class="govuk-table__header" scope="col">URN</th>
+                    <th class="govuk-table__header" scope="col">Local authority</th>
                     @if (Model.UserTeamIsRdo)
                     {
-                        <td class="govuk-table__cell">@ProjectTeamPresentationMapper.Map(@project.Team)</td>
+                        <th class="govuk-table__header" scope="col">Team</th>
                     }
                     else
                     {
-                        <td class="govuk-table__cell">@project.Region.ToDisplayDescription()</td>
+                        <th class="govuk-table__header" scope="col">Region</th>
                     }
-                    <td class="govuk-table__cell">@project.ProjectType.ToString()</td>
-                    <td class="govuk-table__cell">@project.ConversionOrTransferDate.ToDateMonthYearString()</td>
-                    <td class="govuk-table__cell">@project.ProjectCompletionDate.ToDateString()</td>
+                    <th class="govuk-table__header" scope="col">Type of project</th>
+                    <th class="govuk-table__header" scope="col">Conversion or transfer date</th>
+                    <th class="govuk-table__header" scope="col">Project completion date</th>
                 </tr>
-            }
-        </tbody>
-    </table>
-</div>
+            </thead>
+            <tbody class="govuk-table__body">
+
+                @foreach (var project in Model.Projects)
+                {
+                    <tr class="govuk-table__row">
+                        <td class="govuk-table__header govuk-table__cell">
+                            <a class="govuk-link"
+                                href="@AllProjectsModel.GetProjectSummaryUrl(project)">@project.EstablishmentName</a>
+                        </td>
+                        <td class="govuk-table__cell">@project.Urn.Value</td>
+                        <td class="govuk-table__cell">@project.LocalAuthorityNameFormatted</td>
+                        @if (Model.UserTeamIsRdo)
+                        {
+                            <td class="govuk-table__cell">@ProjectTeamPresentationMapper.Map(@project.Team)</td>
+                        }
+                        else
+                        {
+                            <td class="govuk-table__cell">@project.Region.ToDisplayDescription()</td>
+                        }
+                        <td class="govuk-table__cell">@project.ProjectType.ToString()</td>
+                        <td class="govuk-table__cell">@project.ConversionOrTransferDate.ToDateMonthYearString()</td>
+                        <td class="govuk-table__cell">@project.ProjectCompletionDate.ToDateString()</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}

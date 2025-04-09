@@ -12,7 +12,7 @@ namespace Dfe.Complete.Pages.Projects.Team.ProjectsCompleted;
 
 public class AllCompletedProjectsForTeamModel(ISender sender) : YourTeamProjectsModel(CompletedNavigation)
 {
-    public List<ListAllProjectsResultModel> Projects { get; set; } = default!;
+    public List<ListAllProjectsResultModel> Projects { get; set; } = [];
     public bool UserTeamIsRdo { get; set; }
 
     public async Task OnGet()
