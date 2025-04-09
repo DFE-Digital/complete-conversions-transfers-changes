@@ -12,6 +12,8 @@ export class AuthenticationInterceptor {
                 req.headers = {
                     ...req.headers,
                     Authorization: `Bearer ${Cypress.env(EnvAuthKey)}`,
+                    "x-user-context-role-0": "not_used", // must be present
+                    "x-user-context-name": "not_used", // must be present
                     "x-user-ad-id": params?.activeDirectoryId ? params.activeDirectoryId : Cypress.env(EnvUserAdId),
                 };
             },
