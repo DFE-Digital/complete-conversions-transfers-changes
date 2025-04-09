@@ -57,8 +57,7 @@ describe("View all projects", () => {
         // projectDetailsPage.containsHeading(schoolName); // not implemented
     });
 
-    it.skip("Should be able to view newly created transfer project in All projects in progress and Transfers projects", () => {
-        // 205986 unable to create transfer project
+    it("Should be able to view newly created transfer project in All projects in progress and Transfers projects", () => {
         navBar.goToAllProjects();
         allProjects.goToNextPageUntilFieldIsVisible(transferSchoolName);
         allProjectsInProgressTable
