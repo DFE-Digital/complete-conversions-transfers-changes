@@ -9,17 +9,17 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Dfe.Complete.Application.Projects.Queries.ListAllProjects;
 
-public record ListAllProjectForUserQuery(ProjectState? State, string UserAdId)
+public record ListAllProjectsForUserQuery(ProjectState? State, string UserAdId)
     : PaginatedRequest<PaginatedResult<List<ListAllProjectsForUserQueryResultModel>>>;
 
 public class ListAllProjectsForUserQueryHandler(
     IListAllProjectsByFilterQueryService listAllProjectsByFilterQueryService,
     ITrustsV4Client trustsClient,
     ISender sender)
-    : IRequestHandler<ListAllProjectForUserQuery, PaginatedResult<List<ListAllProjectsForUserQueryResultModel>>>
+    : IRequestHandler<ListAllProjectsForUserQuery, PaginatedResult<List<ListAllProjectsForUserQueryResultModel>>>
 {
     public async Task<PaginatedResult<List<ListAllProjectsForUserQueryResultModel>>> Handle(
-        ListAllProjectForUserQuery request, CancellationToken cancellationToken)
+        ListAllProjectsForUserQuery request, CancellationToken cancellationToken)
     {
         try
         {
