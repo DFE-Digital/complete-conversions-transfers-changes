@@ -20,6 +20,7 @@ Security in case of vulnerabilities.
  - Your team projects in progress list (`/projects/team/in-progress`)
  - Your team projects completed list (`/projects/team/completed`)
  - Added user (`ClaimsPrincipal`) extension to get users team `GetUserTeam`
+ - Added API endpoint `List/All/LocalAuthority` for fetching projects for local authority
 
 ### Changed
  - Updated route `/accessibility-statement` to `/accessibility`

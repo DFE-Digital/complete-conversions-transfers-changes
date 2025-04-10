@@ -424,6 +424,87 @@
         }
       }
     },
+    "/v1/Projects/List/All/LocalAuthority": {
+      "get": {
+        "tags": [
+          "Projects"
+        ],
+        "summary": "Returns a list of Projects for local authority",
+        "operationId": "Projects_ListAllProjectsForLocalAuthority",
+        "parameters": [
+          {
+            "name": "LocalAuthorityCode",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "x-position": 1
+          },
+          {
+            "name": "State",
+            "in": "query",
+            "schema": {
+              "nullable": true,
+              "oneOf": [
+                {
+                  "$ref": "#/components/schemas/ProjectState"
+                }
+              ]
+            },
+            "x-position": 2
+          },
+          {
+            "name": "Type",
+            "in": "query",
+            "schema": {
+              "nullable": true,
+              "oneOf": [
+                {
+                  "$ref": "#/components/schemas/ProjectType"
+                }
+              ]
+            },
+            "x-position": 3
+          },
+          {
+            "name": "Page",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "x-position": 4
+          },
+          {
+            "name": "Count",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "x-position": 5
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Project",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ListAllProjectsResultModel"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request data."
+          }
+        }
+      }
+    },
     "/v1/Projects/{groupReferenceNumber}/project_group": {
       "get": {
         "tags": [
