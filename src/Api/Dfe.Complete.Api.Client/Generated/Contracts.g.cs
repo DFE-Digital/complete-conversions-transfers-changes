@@ -181,7 +181,7 @@ namespace Dfe.Complete.Client.Contracts
         System.Threading.Tasks.Task<int> CountAllProjectsAsync(ProjectState? projectStatus, ProjectType? type, System.Threading.CancellationToken cancellationToken);
 
         /// <summary>
-        /// Returns a list of Projects for local authority
+        /// Returns a list of Projects for a local authority
         /// </summary>
         /// <returns>Project</returns>
         /// <exception cref="CompleteApiException">A server side error occurred.</exception>
@@ -189,7 +189,7 @@ namespace Dfe.Complete.Client.Contracts
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>
-        /// Returns a list of Projects for local authority
+        /// Returns a list of Projects for a local authority
         /// </summary>
         /// <returns>Project</returns>
         /// <exception cref="CompleteApiException">A server side error occurred.</exception>

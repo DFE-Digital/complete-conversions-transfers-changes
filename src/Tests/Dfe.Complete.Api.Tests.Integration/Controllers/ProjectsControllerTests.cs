@@ -738,7 +738,6 @@ public class ProjectsControllerTests
 
         // Arrange
         var dbContext = factory.GetDbContext<CompleteContext>();
-        var testUser = await dbContext.Users.FirstAsync();
         var expectedRegion = Region.EastMidlands;
 
         var projects = fixture.Customize(new ProjectCustomization()).CreateMany<Project>(50).ToList();
@@ -763,5 +762,19 @@ public class ProjectsControllerTests
         Assert.NotNull(results);
         Assert.Equal(expectedProjects.Count, results.Count);
         Assert.All(results, project => Assert.Equal(project.Region, expectedRegion));
+    }
+
+    [Theory]
+    [CustomAutoData(typeof(CustomWebApplicationDbContextFactoryCustomization), typeof(GiasEstablishmentsCustomization))]
+    public async Task ListAllProjectsForRegionAsync_InvalidRegionSent_ShouldReturnList(
+     CustomWebApplicationDbContextFactory<Program> factory,
+     IProjectsClient projectsClient)
+    {
+        // Arrange
+        factory.TestClaims = [new Claim(ClaimTypes.Role, ReadRole)];
+
+        // Act & Assert
+        await Assert.ThrowsAsync<CompleteApiException>(() =>
+            projectsClient.ListAllProjectsForRegionAsync(null, null, null, 0, 50));
     }
 }

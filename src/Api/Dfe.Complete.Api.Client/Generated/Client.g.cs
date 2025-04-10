@@ -1204,7 +1204,7 @@ namespace Dfe.Complete.Client
         }
 
         /// <summary>
-        /// Returns a list of Projects for local authority
+        /// Returns a list of Projects for a local authority
         /// </summary>
         /// <returns>Project</returns>
         /// <exception cref="CompleteApiException">A server side error occurred.</exception>
@@ -1215,7 +1215,7 @@ namespace Dfe.Complete.Client
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>
-        /// Returns a list of Projects for local authority
+        /// Returns a list of Projects for a local authority
         /// </summary>
         /// <returns>Project</returns>
         /// <exception cref="CompleteApiException">A server side error occurred.</exception>

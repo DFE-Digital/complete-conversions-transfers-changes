@@ -429,7 +429,7 @@
         "tags": [
           "Projects"
         ],
-        "summary": "Returns a list of Projects for local authority",
+        "summary": "Returns a list of Projects for a local authority",
         "operationId": "Projects_ListAllProjectsForLocalAuthority",
         "parameters": [
           {
