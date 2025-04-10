@@ -667,6 +667,77 @@
         }
       }
     },
+    "/v1/Projects/List/All/User": {
+      "get": {
+        "tags": [
+          "Projects"
+        ],
+        "summary": "Returns a list of Projects for a user",
+        "operationId": "Projects_ListAllProjectsForUser",
+        "parameters": [
+          {
+            "name": "State",
+            "in": "query",
+            "schema": {
+              "nullable": true,
+              "oneOf": [
+                {
+                  "$ref": "#/components/schemas/ProjectState"
+                }
+              ]
+            },
+            "x-position": 1
+          },
+          {
+            "name": "UserAdId",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "x-position": 2
+          },
+          {
+            "name": "Page",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "x-position": 3
+          },
+          {
+            "name": "Count",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "x-position": 4
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Project",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ListAllProjectsForUserQueryResultModel"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request data."
+          },
+          "500": {
+            "description": "Internal server error."
+          }
+        }
+      }
+    },
     "/v1/Projects/{groupReferenceNumber}/project_group": {
       "get": {
         "tags": [
@@ -2244,6 +2315,48 @@
           },
           "localAuthorityNameFormatted": {
             "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "ListAllProjectsForUserQueryResultModel": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "projectId": {
+            "$ref": "#/components/schemas/ProjectId"
+          },
+          "urn": {
+            "$ref": "#/components/schemas/Urn"
+          },
+          "schoolOrAcademyName": {
+            "type": "string"
+          },
+          "projectType": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/ProjectType"
+              }
+            ]
+          },
+          "isFormAMat": {
+            "type": "boolean"
+          },
+          "incomingTrustName": {
+            "type": "string",
+            "nullable": true
+          },
+          "outgoingTrustName": {
+            "type": "string",
+            "nullable": true
+          },
+          "localAuthority": {
+            "type": "string"
+          },
+          "conversionOrTransferDate": {
+            "type": "string",
+            "format": "date",
             "nullable": true
           }
         }

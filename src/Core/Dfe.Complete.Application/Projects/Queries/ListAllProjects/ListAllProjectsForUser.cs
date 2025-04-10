@@ -24,9 +24,12 @@ public class ListAllProjectsForUserQueryHandler(
         try
         {
             var user = await sender.Send(new GetUserByAdIdQuery(request.UserAdId), cancellationToken);
+            if (!user.IsSuccess || user.Value == null)
+                throw new Exception("User not found.");
+
 
             var projectsForUser = await listAllProjectsByFilterQueryService.ListAllProjectsByFilter(request.State, null, userId: user.Value.Id).ToListAsync(cancellationToken);
-            
+
             var allProjectTrustUkPrns = projectsForUser
                 .SelectMany(p => new[]
                 {

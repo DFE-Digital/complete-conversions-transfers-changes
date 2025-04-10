@@ -23,6 +23,7 @@ Security in case of vulnerabilities.
  - Added API endpoint `List/All/LocalAuthority` for fetching projects for local authority
  - Added API endpoint `List/All/Region` for fetching projects for region
  - Added API endpoint `List/All/Team` for fetching projects for team
+ - Added API endpoint `List/All/User` for fetching projects for user
 
 ### Changed
  - Updated route `/accessibility-statement` to `/accessibility`

@@ -194,6 +194,31 @@ namespace Dfe.Complete.Api.Controllers
         }
 
         /// <summary>
+        /// Returns a list of Projects for a user
+        /// </summary>
+        /// <param name="request">The request.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        [Authorize(Policy = "CanRead")]
+        [HttpGet]
+        [Route("List/All/User")]
+        [SwaggerResponse(200, "Project", typeof(List<ListAllProjectsForUserQueryResultModel>))]
+        [SwaggerResponse(400, "Invalid request data.")]
+        [SwaggerResponse(500, "Internal server error.")]
+        public async Task<IActionResult> ListAllProjectsForUserAsync(
+            [FromQuery] ListAllProjectsForUserQuery request,
+            CancellationToken cancellationToken)
+        {
+            var project = await sender.Send(request, cancellationToken);
+
+            if (!project.IsSuccess)
+                return project.Error == "User not found."
+                    ? BadRequest($"User does not exist for provided {nameof(request.UserAdId)}")
+                    : StatusCode(500);
+
+            return Ok(project.Value);
+        }
+
+        /// <summary>
         /// Gets the UKPRN for a group reference number.
         /// </summary>
         /// <param name="groupReferenceNumber">The group reference number.</param>
