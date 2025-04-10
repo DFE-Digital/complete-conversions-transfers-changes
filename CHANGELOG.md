@@ -21,6 +21,7 @@ Security in case of vulnerabilities.
  - Your team projects completed list (`/projects/team/completed`)
  - Added user (`ClaimsPrincipal`) extension to get users team `GetUserTeam`
  - Added API endpoint `List/All/LocalAuthority` for fetching projects for local authority
+ - Added API endpoint `List/All/Region` for fetching projects for region
 
 ### Changed
  - Updated route `/accessibility-statement` to `/accessibility`

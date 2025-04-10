@@ -148,6 +148,24 @@ namespace Dfe.Complete.Api.Controllers
         }
 
         /// <summary>
+        /// Returns a list of Projects for a region
+        /// </summary>
+        /// <param name="request">The request.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        [Authorize(Policy = "CanRead")]
+        [HttpGet]
+        [Route("List/All/Region")]
+        [SwaggerResponse(200, "Project", typeof(List<ListAllProjectsResultModel>))]
+        [SwaggerResponse(400, "Invalid request data.")]
+        public async Task<IActionResult> ListAllProjectsForRegionAsync(
+            [FromQuery] ListAllProjectsForRegionQuery request,
+            CancellationToken cancellationToken)
+        {
+            var project = await sender.Send(request, cancellationToken);
+            return Ok(project.Value);
+        }
+
+        /// <summary>
         /// Gets the UKPRN for a group reference number.
         /// </summary>
         /// <param name="groupReferenceNumber">The group reference number.</param>
