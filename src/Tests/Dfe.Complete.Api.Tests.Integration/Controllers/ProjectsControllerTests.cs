@@ -726,4 +726,42 @@ public class ProjectsControllerTests
             Assert.Equal($"{project?.AssignedTo?.FirstName} {project?.AssignedTo?.LastName}", result.AssignedToFullName);
         }
     }
+
+    [Theory]
+    [CustomAutoData(typeof(CustomWebApplicationDbContextFactoryCustomization), typeof(GiasEstablishmentsCustomization))]
+    public async Task ListAllProjectsForRegion_Async_ShouldReturnList(
+     CustomWebApplicationDbContextFactory<Program> factory,
+     IProjectsClient projectsClient,
+     IFixture fixture)
+    {
+        factory.TestClaims = [new Claim(ClaimTypes.Role, ReadRole)];
+
+        // Arrange
+        var dbContext = factory.GetDbContext<CompleteContext>();
+        var testUser = await dbContext.Users.FirstAsync();
+        var expectedRegion = Region.EastMidlands;
+
+        var projects = fixture.Customize(new ProjectCustomization()).CreateMany<Project>(50).ToList();
+
+        var localAuthority = dbContext.LocalAuthorities.AsEnumerable().MinBy(_ => Guid.NewGuid());
+        Assert.NotNull(localAuthority);
+        projects.ForEach(p => p.LocalAuthorityId = localAuthority.Id);
+
+        await dbContext.Projects.AddRangeAsync(projects);
+        await dbContext.SaveChangesAsync();
+
+        // Act
+        var results = await projectsClient.ListAllProjectsForRegionAsync(
+            expectedRegion, null, null, 0, 50);
+
+        var expectedProjects = projects
+            .Where(p => p.State == Domain.Enums.ProjectState.Active)
+            .Where(p => p.Region != null && (Region)p.Region == expectedRegion)
+            .ToList();
+
+        // Assert
+        Assert.NotNull(results);
+        Assert.Equal(expectedProjects.Count, results.Count);
+        Assert.All(results, project => Assert.Equal(project.Region, expectedRegion));
+    }
 }
