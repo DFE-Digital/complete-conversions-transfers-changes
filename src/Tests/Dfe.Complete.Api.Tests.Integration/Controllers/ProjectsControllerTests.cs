@@ -566,6 +566,30 @@ public class ProjectsControllerTests
 
         Assert.Null(existingNote);
     }
+    
+    [Theory]
+    [CustomAutoData(typeof(CustomWebApplicationDbContextFactoryCustomization), typeof(GiasEstablishmentsCustomization))]
+    public async Task RemoveProjectsShouldContinueIfNoProjectIsFound(
+        CustomWebApplicationDbContextFactory<Program> factory,
+        IProjectsClient projectsClient,
+        IFixture fixture)
+    {
+        factory.TestClaims = new[] { ReadRole, WriteRole, DeleteRole, UpdateRole }
+            .Select(x => new Claim(ClaimTypes.Role, x)).ToList();
+
+        var dbContext = factory.GetDbContext<CompleteContext>();
+
+        var existingProjectsBefore = await dbContext.Projects.CountAsync();
+        var existingNotesBefore = await dbContext.Notes.CountAsync();
+
+        await projectsClient.RemoveProjectAsync(new Urn { Value = 98765432 });
+        
+        var existingProjectsAfter = await dbContext.Projects.CountAsync();
+        var existingNotesAfter = await dbContext.Notes.CountAsync();
+        
+        Assert.Equal(existingProjectsBefore, existingProjectsAfter);
+        Assert.Equal(existingNotesBefore, existingNotesAfter);
+    }
 
     [Theory]
     [CustomAutoData(typeof(CustomWebApplicationDbContextFactoryCustomization), typeof(GiasEstablishmentsCustomization))]
