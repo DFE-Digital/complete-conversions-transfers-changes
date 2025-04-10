@@ -130,7 +130,7 @@ namespace Dfe.Complete.Api.Controllers
         }
 
         /// <summary>
-        /// Returns a list of Projects for local authority
+        /// Returns a list of Projects for a local authority
         /// </summary>
         /// <param name="request">The request.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
@@ -161,6 +161,34 @@ namespace Dfe.Complete.Api.Controllers
             [FromQuery] ListAllProjectsForRegionQuery request,
             CancellationToken cancellationToken)
         {
+            if (!Enum.IsDefined<Domain.Enums.Region>(request.Region))
+            {
+                return BadRequest($"Invalid region \"{request.Region}\" specified");
+            }
+
+            var project = await sender.Send(request, cancellationToken);
+            return Ok(project.Value);
+        }
+
+        /// <summary>
+        /// Returns a list of Projects for a team
+        /// </summary>
+        /// <param name="request">The request.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        [Authorize(Policy = "CanRead")]
+        [HttpGet]
+        [Route("List/All/Team")]
+        [SwaggerResponse(200, "Project", typeof(List<ListAllProjectsResultModel>))]
+        [SwaggerResponse(400, "Invalid request data.")]
+        public async Task<IActionResult> ListAllProjectsForTeamAsync(
+            [FromQuery] ListAllProjectsForTeamQuery request,
+            CancellationToken cancellationToken)
+        {
+            if (!Enum.IsDefined<Domain.Enums.ProjectTeam>(request.Team))
+            {
+                return BadRequest($"Invalid team \"{request.Team}\" specified");
+            }
+
             var project = await sender.Send(request, cancellationToken);
             return Ok(project.Value);
         }
