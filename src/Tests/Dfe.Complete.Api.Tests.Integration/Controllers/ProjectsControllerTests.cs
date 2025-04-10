@@ -777,4 +777,55 @@ public class ProjectsControllerTests
         await Assert.ThrowsAsync<CompleteApiException>(() =>
             projectsClient.ListAllProjectsForRegionAsync(null, null, null, 0, 50));
     }
+
+    [Theory]
+    [CustomAutoData(typeof(CustomWebApplicationDbContextFactoryCustomization), typeof(GiasEstablishmentsCustomization))]
+    public async Task ListAllProjectsForTeam_Async_ShouldReturnList(
+     CustomWebApplicationDbContextFactory<Program> factory,
+     IProjectsClient projectsClient,
+     IFixture fixture)
+    {
+        factory.TestClaims = [new Claim(ClaimTypes.Role, ReadRole)];
+
+        // Arrange
+        var dbContext = factory.GetDbContext<CompleteContext>();
+        var expectedTeam = ProjectTeam.BusinessSupport;
+
+        var projects = fixture.Customize(new ProjectCustomization()).CreateMany<Project>(50).ToList();
+
+        var localAuthority = dbContext.LocalAuthorities.AsEnumerable().MinBy(_ => Guid.NewGuid());
+        Assert.NotNull(localAuthority);
+        projects.ForEach(p => p.LocalAuthorityId = localAuthority.Id);
+
+        await dbContext.Projects.AddRangeAsync(projects);
+        await dbContext.SaveChangesAsync();
+
+        // Act
+        var results = await projectsClient.ListAllProjectsForTeamAsync(
+            expectedTeam, null, null, 0, 50);
+
+        var expectedProjects = projects
+            .Where(p => p.State == Domain.Enums.ProjectState.Active)
+            .Where(p => p.Region != null && (ProjectTeam?)p.Team == expectedTeam)
+            .ToList();
+
+        // Assert
+        Assert.NotNull(results);
+        Assert.Equal(expectedProjects.Count, results.Count);
+        Assert.All(results, project => Assert.Equal(project.Team, expectedTeam));
+    }
+
+    [Theory]
+    [CustomAutoData(typeof(CustomWebApplicationDbContextFactoryCustomization), typeof(GiasEstablishmentsCustomization))]
+    public async Task ListAllProjectsForTeamAsync_InvalidRegionSent_ShouldReturnList(
+     CustomWebApplicationDbContextFactory<Program> factory,
+     IProjectsClient projectsClient)
+    {
+        // Arrange
+        factory.TestClaims = [new Claim(ClaimTypes.Role, ReadRole)];
+
+        // Act & Assert
+        await Assert.ThrowsAsync<CompleteApiException>(() =>
+            projectsClient.ListAllProjectsForTeamAsync(null, null, null, 0, 50));
+    }
 }
