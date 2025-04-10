@@ -11,11 +11,11 @@ import {
     shouldNotBeAbleToViewYourProjects,
     shouldNotBeAbleToViewYourTeamProjects,
 } from "cypress/support/reusableTests";
-import { businessSupportUserAdId } from "cypress/constants/stringTestConstants";
+import { businessSupportUser } from "cypress/constants/cypressConstants";
 
 describe("Capabilities and permissions of the business support user", () => {
     beforeEach(() => {
-        cy.login({ activeDirectoryId: businessSupportUserAdId });
+        cy.login({ activeDirectoryId: businessSupportUser.adId });
         cy.acceptCookies();
         cy.visit("/");
     });

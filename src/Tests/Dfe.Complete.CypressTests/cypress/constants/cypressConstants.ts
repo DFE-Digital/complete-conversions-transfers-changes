@@ -10,8 +10,6 @@ export const EnvClientSecret = "clientSecret";
 export const EnvCompleteApiClientId = "completeApiClientId";
 export const EnvUserAdId = "userAdId";
 export const UserAccessToken = "accessToken";
-export const ProjectRecordCreator = "projectrecordcreator";
-export const Username = "cypress testuser";
 
 // test users
 export const cypressUser = new TestUser("cypress testuser", "TEST-AD-ID", "london");

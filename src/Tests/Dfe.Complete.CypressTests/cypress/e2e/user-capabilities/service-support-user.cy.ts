@@ -9,11 +9,11 @@ import {
 } from "cypress/support/reusableTests";
 import navBar from "cypress/pages/navBar";
 import allProjects from "cypress/pages/projects/allProjects";
-import { serviceSupportUserAdId } from "cypress/constants/stringTestConstants";
+import { serviceSupportUser } from "cypress/constants/cypressConstants";
 
 describe("Capabilities and permissions of the service support user", () => {
     beforeEach(() => {
-        cy.login({ activeDirectoryId: serviceSupportUserAdId });
+        cy.login({ activeDirectoryId: serviceSupportUser.adId });
         cy.acceptCookies();
         cy.visit("/");
     });

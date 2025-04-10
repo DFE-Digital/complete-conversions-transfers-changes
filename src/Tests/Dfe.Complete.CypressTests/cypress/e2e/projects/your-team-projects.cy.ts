@@ -4,8 +4,7 @@ import projectApi from "cypress/api/projectApi";
 import navBar from "cypress/pages/navBar";
 import yourTeamProjects from "cypress/pages/projects/yourTeamProjects";
 import { ProjectBuilder } from "cypress/api/projectBuilder";
-import { rdoLondonUserAdId, rdoLondonUserEmail, rdoLondonUserName } from "cypress/constants/stringTestConstants";
-import { Username } from "cypress/constants/cypressConstants";
+import { cypressUser, rdoLondonUser } from "cypress/constants/cypressConstants";
 import yourTeamProjectsRDOViewTable from "cypress/pages/projects/tables/yourTeamProjectsRDOViewTable";
 
 const team = "London";
@@ -14,7 +13,7 @@ const myLondonSchoolName = "City of London Academy, Highgate Hill";
 const teammatesLondonRegionProject = ProjectBuilder.createConversionProjectRequest(
     new Date("2026-04-01"),
     100830,
-    rdoLondonUserAdId,
+    rdoLondonUser.adId,
 );
 const teammatesLondonSchoolName = "St John's and St Clement's Church of England Primary School";
 describe("Regional delivery officer (London) user - View your team projects (projects with London region)", () => {
@@ -22,7 +21,7 @@ describe("Regional delivery officer (London) user - View your team projects (pro
         projectRemover.removeProjectIfItExists(`${myLondonProject.urn.value}`);
         projectRemover.removeProjectIfItExists(`${teammatesLondonRegionProject.urn.value}`);
         projectApi.createConversionProject(myLondonProject);
-        projectApi.createConversionProject(teammatesLondonRegionProject, rdoLondonUserEmail);
+        projectApi.createConversionProject(teammatesLondonRegionProject, rdoLondonUser.email);
     });
 
     beforeEach(() => {
@@ -48,7 +47,7 @@ describe("Regional delivery officer (London) user - View your team projects (pro
             .schoolHasUrn(myLondonSchoolName, `${myLondonProject.urn.value}`)
             .schoolHasLocalAuthority(myLondonSchoolName, "Islington")
             .schoolHasTeam(myLondonSchoolName, team)
-            .schoolHasAssignedTo(myLondonSchoolName, Username)
+            .schoolHasAssignedTo(myLondonSchoolName, cypressUser.username)
             .schoolHasProjectType(myLondonSchoolName, "Conversion")
             .goTo(myLondonSchoolName);
         // projectDetailsPage.containsHeading(schoolName); // not implemented
@@ -70,7 +69,7 @@ describe("Regional delivery officer (London) user - View your team projects (pro
             .schoolHasUrn(teammatesLondonSchoolName, `${teammatesLondonRegionProject.urn.value}`)
             .schoolHasLocalAuthority(teammatesLondonSchoolName, "Southwark")
             .schoolHasTeam(teammatesLondonSchoolName, team)
-            .schoolHasAssignedTo(teammatesLondonSchoolName, rdoLondonUserName)
+            .schoolHasAssignedTo(teammatesLondonSchoolName, rdoLondonUser.username)
             .schoolHasProjectType(teammatesLondonSchoolName, "Conversion")
             .goTo(teammatesLondonSchoolName);
         // projectDetailsPage.containsHeading(teammatesLondonSchoolName); // not implemented
@@ -97,14 +96,14 @@ describe("Regional delivery officer (London) user - View your team projects (pro
         yourTeamProjects
             .filterProjects("New")
             .containsHeading("Your team projects by user")
-            .goToNextPageUntilFieldIsVisible(rdoLondonUserName);
+            .goToNextPageUntilFieldIsVisible(rdoLondonUser.username);
         yourTeamProjectsRDOViewTable
             .hasTableHeader("User name")
             .hasTableHeader("Email")
             .hasTableHeader("Conversions")
             .hasTableHeader("Transfers")
-            .goTo(rdoLondonUserName);
-        yourTeamProjects.containsHeading(`Projects assigned to ${rdoLondonUserName}`);
+            .goTo(rdoLondonUser.username);
+        yourTeamProjects.containsHeading(`Projects assigned to ${rdoLondonUser.username}`);
         yourTeamProjectsRDOViewTable
             .hasTableHeader("School or academy")
             .hasTableHeader("URN")

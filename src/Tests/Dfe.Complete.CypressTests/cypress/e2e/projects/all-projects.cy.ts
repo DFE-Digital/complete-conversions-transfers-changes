@@ -3,12 +3,12 @@ import allProjects from "cypress/pages/projects/allProjects";
 import { projectTable } from "cypress/pages/projects/tables/projectTable";
 import { before, beforeEach } from "mocha";
 import { nextMonth, trust } from "cypress/constants/stringTestConstants";
-import { Username } from "cypress/constants/cypressConstants";
 import { shouldOnlyBeAbleToViewNextMonthOfProjects } from "cypress/support/reusableTests";
 import projectApi from "cypress/api/projectApi";
 import { ProjectBuilder } from "cypress/api/projectBuilder";
 import projectRemover from "cypress/api/projectRemover";
 import allProjectsInProgressTable from "cypress/pages/projects/tables/allProjectsInProgressTable";
+import { cypressUser } from "cypress/constants/cypressConstants";
 
 const project = ProjectBuilder.createConversionProjectRequest(nextMonth);
 let projectId: string;
@@ -48,7 +48,7 @@ describe("View all projects", () => {
             .schoolHasConversionOrTransferDate(schoolName, nextMonthString)
             .schoolHasProjectType(schoolName, "Conversion")
             .schoolHasFormAMatProject(schoolName, "No")
-            .schoolHasAssignedTo(schoolName, Username);
+            .schoolHasAssignedTo(schoolName, cypressUser.username);
         allProjects
             .viewConversionsProjects()
             .containsHeading("All conversions in progress")
@@ -66,7 +66,7 @@ describe("View all projects", () => {
             .schoolHasConversionOrTransferDate(transferSchoolName, "Mar 2026")
             .schoolHasProjectType(transferSchoolName, "Transfer")
             .schoolHasFormAMatProject(transferSchoolName, "No")
-            .schoolHasAssignedTo(transferSchoolName, Username);
+            .schoolHasAssignedTo(transferSchoolName, cypressUser.username);
         allProjects
             .viewTransfersProjects()
             .containsHeading("All transfers in progress")
@@ -107,15 +107,15 @@ describe("View all projects", () => {
         allProjects
             .filterProjects("By user")
             .containsHeading("All projects by user")
-            .goToNextPageUntilFieldIsVisible(Username);
+            .goToNextPageUntilFieldIsVisible(cypressUser.username);
         projectTable
             .hasTableHeader("User name")
             .hasTableHeader("Email")
             .hasTableHeader("Team")
             .hasTableHeader("Conversions")
             .hasTableHeader("Transfers")
-            .goToUserProjects(Username);
-        allProjects.containsHeading(`Projects for ${Username}`);
+            .goToUserProjects(cypressUser.username);
+        allProjects.containsHeading(`Projects for ${cypressUser.username}`);
         projectTable
             .hasTableHeader("School or academy")
             .hasTableHeader("URN")

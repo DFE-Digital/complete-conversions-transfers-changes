@@ -7,7 +7,7 @@ import { CreateConversionProjectRequest } from "../api/apiDomain";
 import yourTeamProjects from "../pages/projects/yourTeamProjects";
 import yourTeamProjectsRCSViewTable from "../pages/projects/tables/yourTeamProjectsRCSViewTable";
 import assignProject from "../pages/projects/assignProject";
-import { Username } from "../constants/cypressConstants";
+import { cypressUser } from "../constants/cypressConstants";
 import yourProjects from "../pages/projects/yourProjects";
 
 export function shouldNotBeAbleToViewYourProjects() {
@@ -92,7 +92,7 @@ export function shouldBeAbleToAssignUnassignedProjectsToUsers(unassignedProjectS
         .hasTableHeader("Region")
         .hasTableHeader("Assigned project")
         .assignProject(unassignedProjectSchoolName);
-    assignProject.assignTo(Username);
+    assignProject.assignTo(cypressUser.username);
     navBar.goToYourProjects();
     yourProjects.goToNextPageUntilFieldIsVisible(unassignedProjectSchoolName);
 }

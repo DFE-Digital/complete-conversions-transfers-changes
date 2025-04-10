@@ -5,19 +5,14 @@ import { ProjectBuilder } from "cypress/api/projectBuilder";
 import navBar from "cypress/pages/navBar";
 import yourTeamProjects from "cypress/pages/projects/yourTeamProjects";
 import yourTeamProjectsRCSViewTable from "cypress/pages/projects/tables/yourTeamProjectsRCSViewTable";
-import {
-    regionalCaseworkerUserAdId,
-    regionalCaseworkerUserEmail,
-    regionalCaseWorkerUserName,
-} from "cypress/constants/stringTestConstants";
-import { Username } from "cypress/constants/cypressConstants";
+import { cypressUser, regionalCaseworkerUser } from "cypress/constants/cypressConstants";
 
 const project = ProjectBuilder.createConversionProjectRequest(new Date("2026-04-01"), 111396);
 const schoolName = "Blacon High School, A Specialist Sports College";
 const teammatesProject = ProjectBuilder.createConversionProjectRequest(
     new Date("2026-04-01"),
     111400,
-    regionalCaseworkerUserAdId,
+    regionalCaseworkerUser.adId,
 );
 const teammatesSchoolName = "The Heath School";
 
@@ -26,11 +21,11 @@ describe("Regional caseworker services user - View your team projects", () => {
         projectRemover.removeProjectIfItExists(`${project.urn.value}`);
         projectRemover.removeProjectIfItExists(`${teammatesProject.urn.value}`);
         projectApi.createConversionProject(project);
-        projectApi.createConversionProject(teammatesProject, regionalCaseworkerUserEmail);
+        projectApi.createConversionProject(teammatesProject, regionalCaseworkerUser.email);
     });
 
     beforeEach(() => {
-        cy.login({ activeDirectoryId: regionalCaseworkerUserAdId });
+        cy.login({ activeDirectoryId: regionalCaseworkerUser.adId });
         cy.acceptCookies();
         cy.visit("/projects/team/in-progress");
     });
@@ -50,7 +45,7 @@ describe("Regional caseworker services user - View your team projects", () => {
             .schoolHasUrn(schoolName, `${project.urn.value}`)
             .schoolHasLocalAuthority(schoolName, "Cheshire West and Chester\n")
             .schoolHasRegion(schoolName, "North West")
-            .schoolHasAssignedTo(schoolName, Username)
+            .schoolHasAssignedTo(schoolName, cypressUser.username)
             .schoolHasProjectType(schoolName, "Conversion")
             .schoolHasFormAMatProject(teammatesSchoolName, "No")
             .schoolHasConversionOrTransferDate(teammatesSchoolName, "Apr 2026")
@@ -74,7 +69,7 @@ describe("Regional caseworker services user - View your team projects", () => {
             .schoolHasUrn(teammatesSchoolName, `${teammatesProject.urn.value}`)
             .schoolHasLocalAuthority(teammatesSchoolName, "Halton")
             .schoolHasRegion(teammatesSchoolName, "North West")
-            .schoolHasAssignedTo(teammatesSchoolName, regionalCaseWorkerUserName)
+            .schoolHasAssignedTo(teammatesSchoolName, regionalCaseworkerUser.username)
             .schoolHasProjectType(teammatesSchoolName, "Conversion")
             .schoolHasFormAMatProject(teammatesSchoolName, "No")
             .schoolHasConversionOrTransferDate(teammatesSchoolName, "Apr 2026")
@@ -103,14 +98,14 @@ describe("Regional caseworker services user - View your team projects", () => {
         yourTeamProjects
             .filterProjects("New")
             .containsHeading("Your team projects by user")
-            .goToNextPageUntilFieldIsVisible(regionalCaseWorkerUserName);
+            .goToNextPageUntilFieldIsVisible(regionalCaseworkerUser.username);
         yourTeamProjectsRCSViewTable
             .hasTableHeader("User name")
             .hasTableHeader("Email")
             .hasTableHeader("Conversions")
             .hasTableHeader("Transfers")
-            .goTo(regionalCaseWorkerUserName);
-        yourTeamProjects.containsHeading(`Projects assigned to ${regionalCaseWorkerUserName}`);
+            .goTo(regionalCaseworkerUser.username);
+        yourTeamProjects.containsHeading(`Projects assigned to ${regionalCaseworkerUser.username}`);
         yourTeamProjectsRCSViewTable
             .hasTableHeader("School or academy")
             .hasTableHeader("URN")

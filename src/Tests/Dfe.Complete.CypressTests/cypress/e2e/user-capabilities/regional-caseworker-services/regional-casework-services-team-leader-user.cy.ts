@@ -9,11 +9,12 @@ import {
     shouldNotBeAbleToViewYourProjects,
     shouldOnlyBeAbleToViewNextMonthOfProjects,
 } from "cypress/support/reusableTests";
-import { nextMonth, regionalCaseworkerUserAdId } from "cypress/constants/stringTestConstants";
+import { nextMonth } from "cypress/constants/stringTestConstants";
 import { ProjectBuilder } from "cypress/api/projectBuilder";
 import { before, beforeEach } from "mocha";
 import projectRemover from "cypress/api/projectRemover";
 import projectApi from "cypress/api/projectApi";
+import { regionalCaseworkerUser } from "cypress/constants/cypressConstants";
 
 const project = ProjectBuilder.createConversionProjectRequest(nextMonth);
 const schoolName = "St Chad's Catholic Primary School";
@@ -28,7 +29,7 @@ describe.skip("Capabilities and permissions of the regional casework services te
     });
 
     beforeEach(() => {
-        cy.login({ activeDirectoryId: regionalCaseworkerUserAdId });
+        cy.login({ activeDirectoryId: regionalCaseworkerUser.adId });
         cy.acceptCookies();
         cy.visit("/");
     });
