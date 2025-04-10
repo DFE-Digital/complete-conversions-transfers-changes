@@ -1,5 +1,6 @@
 import { defineConfig } from "cypress";
 import { generateZapReport } from "cypress/plugins/generateZapReport";
+import { setupDatabase } from "cypress/support/database";
 
 export default defineConfig({
     defaultCommandTimeout: 5000,
@@ -39,6 +40,7 @@ export default defineConfig({
             });
 
             on("task", {
+                setupDatabase: setupDatabase,
                 log(message) {
                     console.log(message);
 
