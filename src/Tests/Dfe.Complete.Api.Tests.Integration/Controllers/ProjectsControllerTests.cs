@@ -58,7 +58,7 @@ public class ProjectsControllerTests
         createConversionProjectCommand.Urn = new Urn { Value = giasEstablishment.Urn?.Value };
 
         await dbContext.SaveChangesAsync();
-        
+
         var result = await projectsClient.CreateConversionProjectAsync(createConversionProjectCommand);
 
         Assert.NotNull(result);
@@ -67,7 +67,7 @@ public class ProjectsControllerTests
 
     [Theory]
     [CustomAutoData(typeof(DateOnlyCustomization), typeof(CustomWebApplicationDbContextFactoryCustomization))]
-    public async Task CreateProject_WithNullRequest_ThrowsException(
+    public async Task CreateConversionProject_WithNullRequest_ThrowsException(
         CustomWebApplicationDbContextFactory<Program> factory,
         CreateConversionProjectCommand createConversionProjectCommand,
         IProjectsClient projectsClient)
@@ -81,7 +81,7 @@ public class ProjectsControllerTests
 
         Assert.Equal(HttpStatusCode.BadRequest, (HttpStatusCode)exception.StatusCode);
     }
-    
+
     [Theory]
     [CustomAutoData(typeof(CustomWebApplicationDbContextFactoryCustomization),
         typeof(DateOnlyCustomization),
@@ -109,10 +109,10 @@ public class ProjectsControllerTests
 
         var giasEstablishment = await dbContext.GiasEstablishments.FirstOrDefaultAsync();
 
-        createTransferProjectCommand.Urn = new Urn{Value = giasEstablishment?.Urn?.Value};
-        
+        createTransferProjectCommand.Urn = new Urn { Value = giasEstablishment?.Urn?.Value };
+
         await dbContext.SaveChangesAsync();
-        
+
         var result = await projectsClient.CreateTransferProjectAsync(createTransferProjectCommand);
 
         Assert.NotNull(result);
@@ -135,7 +135,7 @@ public class ProjectsControllerTests
 
         Assert.Equal(HttpStatusCode.BadRequest, (HttpStatusCode)exception.StatusCode);
     }
-    
+
     [Theory]
     [CustomAutoData(typeof(CustomWebApplicationDbContextFactoryCustomization),
         typeof(DateOnlyCustomization),
@@ -162,10 +162,10 @@ public class ProjectsControllerTests
 
         var giasEstablishment = await dbContext.GiasEstablishments.FirstOrDefaultAsync();
 
-        createMatConversionProjectCommand.Urn = new Urn{Value = giasEstablishment?.Urn?.Value};
-        
+        createMatConversionProjectCommand.Urn = new Urn { Value = giasEstablishment?.Urn?.Value };
+
         await dbContext.SaveChangesAsync();
-        
+
         var result = await projectsClient.CreateMatConversionProjectAsync(createMatConversionProjectCommand);
 
         Assert.NotNull(result);
@@ -188,7 +188,7 @@ public class ProjectsControllerTests
 
         Assert.Equal(HttpStatusCode.BadRequest, (HttpStatusCode)exception.StatusCode);
     }
-    
+
     [Theory]
     [CustomAutoData(typeof(CustomWebApplicationDbContextFactoryCustomization),
         typeof(DateOnlyCustomization),
@@ -215,10 +215,10 @@ public class ProjectsControllerTests
 
         var giasEstablishment = await dbContext.GiasEstablishments.FirstOrDefaultAsync();
 
-        createMatTransferProjectCommand.Urn = new Urn{Value = giasEstablishment?.Urn?.Value};
-        
+        createMatTransferProjectCommand.Urn = new Urn { Value = giasEstablishment?.Urn?.Value };
+
         await dbContext.SaveChangesAsync();
-        
+
         var result = await projectsClient.CreateMatTransferProjectAsync(createMatTransferProjectCommand);
 
         Assert.NotNull(result);
@@ -264,13 +264,13 @@ public class ProjectsControllerTests
         Assert.NotNull(localAuthority);
 
         var projects = fixture.Customize(new ProjectCustomization
-            {
-                RegionalDeliveryOfficerId = testUser.Id,
-                CaseworkerId = testUser.Id,
-                AssignedToId = testUser.Id,
-                LocalAuthorityId = localAuthority.Id,
-                Urn = giasEstablishment.Urn
-            })
+        {
+            RegionalDeliveryOfficerId = testUser.Id,
+            CaseworkerId = testUser.Id,
+            AssignedToId = testUser.Id,
+            LocalAuthorityId = localAuthority.Id,
+            Urn = giasEstablishment.Urn
+        })
             .CreateMany<Project>(50).ToList();
 
 
@@ -297,22 +297,22 @@ public class ProjectsControllerTests
         var dbContext = factory.GetDbContext<CompleteContext>();
         var testUser = await dbContext.Users.FirstAsync();
         var urn = 100000;
-        
+
         var establishments = fixture.Customize(new GiasEstablishmentsCustomization()).CreateMany<GiasEstablishment>(50).ToList();
-            // .Select(establishment =>
-            // {
-            //     establishment.Urn = new Domain.ValueObjects.Urn(urn++);
-            //     return establishment;
-            // })
+        // .Select(establishment =>
+        // {
+        //     establishment.Urn = new Domain.ValueObjects.Urn(urn++);
+        //     return establishment;
+        // })
         await dbContext.GiasEstablishments.AddRangeAsync(establishments);
         var projects = establishments.Select(establishment =>
         {
             var project = fixture.Customize(new ProjectCustomization
-                {
-                    RegionalDeliveryOfficerId = testUser.Id,
-                    CaseworkerId = testUser.Id,
-                    AssignedToId = testUser.Id
-                })
+            {
+                RegionalDeliveryOfficerId = testUser.Id,
+                CaseworkerId = testUser.Id,
+                AssignedToId = testUser.Id
+            })
                 .Create<Project>();
             project.Urn = establishment.Urn ?? project.Urn;
             return project;
@@ -382,11 +382,11 @@ public class ProjectsControllerTests
         var projects = establishments.Select(establishment =>
         {
             var project = fixture.Customize(new ProjectCustomization
-                {
-                    RegionalDeliveryOfficerId = testUser.Id,
-                    CaseworkerId = testUser.Id,
-                    AssignedToId = testUser.Id
-                })
+            {
+                RegionalDeliveryOfficerId = testUser.Id,
+                CaseworkerId = testUser.Id,
+                AssignedToId = testUser.Id
+            })
                 .Create<Project>();
             project.Urn = establishment.Urn ?? project.Urn;
             return project;
@@ -457,13 +457,13 @@ public class ProjectsControllerTests
 
         dbContext.GiasEstablishments.Add(establishment);
         var project = fixture.Customize(new ProjectCustomization
-            {
-                RegionalDeliveryOfficerId = testUser.Id,
-                CaseworkerId = testUser.Id,
-                AssignedToId = testUser.Id,
-                TasksDataId = taskData.Id,
-                TasksDataType = Domain.Enums.TaskType.Conversion,
-            })
+        {
+            RegionalDeliveryOfficerId = testUser.Id,
+            CaseworkerId = testUser.Id,
+            AssignedToId = testUser.Id,
+            TasksDataId = taskData.Id,
+            TasksDataType = Domain.Enums.TaskType.Conversion,
+        })
             .Create<Project>();
         project.Urn = establishment.Urn ?? project.Urn;
 
@@ -521,13 +521,13 @@ public class ProjectsControllerTests
 
         dbContext.GiasEstablishments.Add(establishment);
         var project = fixture.Customize(new ProjectCustomization
-            {
-                RegionalDeliveryOfficerId = testUser.Id,
-                CaseworkerId = testUser.Id,
-                AssignedToId = testUser.Id,
-                TasksDataId = taskData.Id,
-                TasksDataType = Domain.Enums.TaskType.Transfer,
-            })
+        {
+            RegionalDeliveryOfficerId = testUser.Id,
+            CaseworkerId = testUser.Id,
+            AssignedToId = testUser.Id,
+            TasksDataId = taskData.Id,
+            TasksDataType = Domain.Enums.TaskType.Transfer,
+        })
             .Create<Project>();
         project.Urn = establishment.Urn ?? project.Urn;
 
@@ -630,5 +630,100 @@ public class ProjectsControllerTests
         Assert.Equivalent(expected.RegionalDeliveryOfficer, actual.RegionalDeliveryOfficer);
         Assert.Equivalent(expected.Contacts, actual.Contacts);
         Assert.Equivalent(expected.Notes, actual.Notes);
+    }
+
+    [Theory]
+    [CustomAutoData(typeof(CustomWebApplicationDbContextFactoryCustomization), typeof(GiasEstablishmentsCustomization))]
+    public async Task ListAllProjectsForLocalAuthority_Async_ShouldReturnList(
+     CustomWebApplicationDbContextFactory<Program> factory,
+     IProjectsClient projectsClient,
+     IFixture fixture)
+    {
+        factory.TestClaims = [new Claim(ClaimTypes.Role, ReadRole)];
+
+        // Arrange
+        var dbContext = factory.GetDbContext<CompleteContext>();
+        var testUser = await dbContext.Users.FirstAsync();
+        var localAuthorityCode = "123456";
+
+        var allEstablishments = fixture
+            .Customize(new GiasEstablishmentsCustomization())
+            .CreateMany<GiasEstablishment>(50)
+            .ToList();
+
+        var matchingEstablishments = allEstablishments.Take(20).ToList();
+        var otherEstablishments = allEstablishments.Skip(20).ToList();
+
+        foreach (var establishment in matchingEstablishments)
+            establishment.LocalAuthorityCode = localAuthorityCode;
+
+        foreach (var establishment in otherEstablishments)
+            establishment.LocalAuthorityCode = fixture.Create<string>();
+
+        await dbContext.GiasEstablishments.AddRangeAsync(allEstablishments);
+
+        var allProjects = allEstablishments.Select(establishment =>
+        {
+            var project = fixture.Customize(new ProjectCustomization
+            {
+                AssignedToId = testUser.Id
+            }).Create<Project>();
+
+            project.Urn = establishment.Urn ?? project.Urn;
+            return project;
+        }).ToList();
+
+        var localAuthority = dbContext.LocalAuthorities.AsEnumerable().MinBy(_ => Guid.NewGuid());
+        Assert.NotNull(localAuthority);
+        allProjects.ForEach(p => p.LocalAuthorityId = localAuthority.Id);
+
+        await dbContext.Projects.AddRangeAsync(allProjects);
+        await dbContext.SaveChangesAsync();
+
+        // Act
+        var results = await projectsClient.ListAllProjectsForLocalAuthorityAsync(
+            localAuthorityCode, null, null, 0, 50);
+
+        var expectedProjects = allProjects
+            .Where(p => p.State == Domain.Enums.ProjectState.Active)
+            .Where(p => matchingEstablishments.Any(e => e.Urn?.Value == p.Urn.Value))
+            .ToList();
+
+        // Assert
+        Assert.NotNull(results);
+        Assert.Equal(expectedProjects.Count, results.Count);
+
+        foreach (var result in results)
+        {
+            var project = expectedProjects.Find(p => p.Id.Value == result.ProjectId?.Value);
+            var establishment = matchingEstablishments.Find(e => e.Urn?.Value == result.Urn?.Value);
+
+            Assert.NotNull(result.Urn);
+            Assert.Equal(project?.Urn.Value, result.Urn.Value);
+            Assert.Equal(establishment?.Urn?.Value, result.Urn.Value);
+
+            Assert.NotNull(result.EstablishmentName);
+            Assert.Equal(establishment?.Name, result.EstablishmentName);
+
+            Assert.NotNull(result.ProjectId);
+            Assert.Equal(project?.Id.Value, result.ProjectId.Value);
+
+            Assert.NotNull(result.ConversionOrTransferDate);
+            Assert.Equal(project?.SignificantDate, new DateOnly(
+                result.ConversionOrTransferDate.Value.Year,
+                result.ConversionOrTransferDate.Value.Month,
+                result.ConversionOrTransferDate.Value.Day));
+
+            Assert.NotNull(result.State);
+            Assert.Equal(project?.State.ToString(), result.State.ToString());
+
+            Assert.NotNull(result.ProjectType);
+            Assert.Equal(project?.Type?.ToString(), result.ProjectType.Value.ToString());
+
+            Assert.Equal(project?.FormAMat, result.IsFormAMAT);
+
+            Assert.NotNull(result.AssignedToFullName);
+            Assert.Equal($"{project?.AssignedTo?.FirstName} {project?.AssignedTo?.LastName}", result.AssignedToFullName);
+        }
     }
 }
