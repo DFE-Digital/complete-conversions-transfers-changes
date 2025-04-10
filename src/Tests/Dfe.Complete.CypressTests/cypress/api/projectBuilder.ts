@@ -4,7 +4,6 @@ import {
     CreateMatTransferProjectRequest,
     CreateTransferProjectRequest,
 } from "./apiDomain";
-import { EnvUserAdId } from "../constants/cypressConstants";
 import {
     groupReferenceNumber,
     testTrustName,
@@ -12,6 +11,7 @@ import {
     ukprn,
     ukprn2,
 } from "cypress/constants/stringTestConstants";
+import { cypressUser } from "cypress/constants/cypressConstants";
 
 export class ProjectBuilder {
     public static createConversionProjectRequest(
@@ -23,7 +23,7 @@ export class ProjectBuilder {
         significantDate.setDate(1);
         const significantDateFormatted = significantDate.toISOString().split("T")[0];
         const urnValue = urn ? urn : 103844;
-        const userAdIdValue = userAdId ? userAdId : Cypress.env(EnvUserAdId);
+        const userAdIdValue = userAdId ? userAdId : cypressUser.adId;
 
         return {
             urn: { value: urnValue },
@@ -64,7 +64,7 @@ export class ProjectBuilder {
             outgoingTrustSharepointLink: "https://educationgovuk.sharepoint.com",
             groupReferenceNumber: groupReferenceNumber,
             handoverComments: "test 2",
-            userAdId: Cypress.env(EnvUserAdId),
+            userAdId: cypressUser.adId,
         };
     }
 
@@ -83,7 +83,7 @@ export class ProjectBuilder {
             incomingTrustSharepointLink: "https://educationgovuk.sharepoint.com",
             handingOverToRegionalCaseworkService: false,
             handoverComments: "test 2",
-            userAdId: Cypress.env(EnvUserAdId),
+            userAdId: cypressUser.adId,
         };
     }
 
@@ -106,7 +106,7 @@ export class ProjectBuilder {
             incomingTrustSharepointLink: "https://educationgovuk.sharepoint.com",
             outgoingTrustSharepointLink: "https://educationgovuk.sharepoint.com",
             handoverComments: "test 2",
-            userAdId: Cypress.env(EnvUserAdId),
+            userAdId: cypressUser.adId,
         };
     }
 }

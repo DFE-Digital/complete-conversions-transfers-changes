@@ -8,7 +8,6 @@ export const EnvTenantId = "tenantId";
 export const EnvClientId = "clientId";
 export const EnvClientSecret = "clientSecret";
 export const EnvCompleteApiClientId = "completeApiClientId";
-export const EnvUserAdId = "userAdId";
 export const UserAccessToken = "accessToken";
 
 // test users

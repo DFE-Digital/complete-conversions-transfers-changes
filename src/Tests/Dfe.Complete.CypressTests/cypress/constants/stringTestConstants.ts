@@ -10,4 +10,3 @@ export const testTrustName = "Test Trust";
 export const testTrustReferenceNumber = "TR09999";
 export const today = new Date();
 export const nextMonth = new Date(today.setMonth(today.getMonth() + 1));
-export const serviceSupportUserAdId = "TEST-AD-ID-SS";
