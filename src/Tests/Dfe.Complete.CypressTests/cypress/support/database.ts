@@ -40,18 +40,18 @@ function insertUserIfNotExists(user: TestUser): string {
             , '${user.email}'
             , GETDATE()
             , GETDATE()
-            , 0
+            , ${user.manageTeam}
             , 1
             , '${user.firstName}'
             , '${user.lastName}'
             , '${user.adId}'
-            , 1
-            , 0
+            , ${user.assignToProject}
+            , ${user.manageUserAccounts}
             , null
             , '${user.team}'
             , null
-            , 0
-            , 0
+            , ${user.manageConversionURNs}
+            , ${user.manageLocalAuthorities}
             , null)
         END
         `;

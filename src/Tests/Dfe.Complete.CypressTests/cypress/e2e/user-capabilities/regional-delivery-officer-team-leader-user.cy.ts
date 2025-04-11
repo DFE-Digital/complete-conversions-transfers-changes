@@ -9,7 +9,7 @@ import projectRemover from "cypress/api/projectRemover";
 import projectApi from "cypress/api/projectApi";
 import { ProjectBuilder } from "cypress/api/projectBuilder";
 import { nextMonth } from "cypress/constants/stringTestConstants";
-import { rdoLondonUser } from "cypress/constants/cypressConstants";
+import { rdoTeamLeaderUser } from "cypress/constants/cypressConstants";
 
 const unassignedProject = ProjectBuilder.createConversionProjectRequest(nextMonth, 103845, "");
 const unassignedProjectSchoolName = "Jesson's CofE Primary School (VA)";
@@ -21,7 +21,7 @@ describe.skip("Capabilities and permissions of the regional casework services te
     });
 
     beforeEach(() => {
-        cy.login({ activeDirectoryId: rdoLondonUser.adId });
+        cy.login({ activeDirectoryId: rdoTeamLeaderUser.adId });
         cy.acceptCookies();
         cy.visit("/");
     });

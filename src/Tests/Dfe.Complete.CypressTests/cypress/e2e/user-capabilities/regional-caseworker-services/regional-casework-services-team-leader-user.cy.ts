@@ -14,7 +14,7 @@ import { ProjectBuilder } from "cypress/api/projectBuilder";
 import { before, beforeEach } from "mocha";
 import projectRemover from "cypress/api/projectRemover";
 import projectApi from "cypress/api/projectApi";
-import { regionalCaseworkerUser } from "cypress/constants/cypressConstants";
+import { regionalCaseworkerTeamLeaderUser } from "cypress/constants/cypressConstants";
 
 const project = ProjectBuilder.createConversionProjectRequest(nextMonth);
 const schoolName = "St Chad's Catholic Primary School";
@@ -29,7 +29,7 @@ describe.skip("Capabilities and permissions of the regional casework services te
     });
 
     beforeEach(() => {
-        cy.login({ activeDirectoryId: regionalCaseworkerUser.adId });
+        cy.login({ activeDirectoryId: regionalCaseworkerTeamLeaderUser.adId });
         cy.acceptCookies();
         cy.visit("/");
     });

@@ -13,18 +13,45 @@ export const UserAccessToken = "accessToken";
 // test users
 export const cypressUser = new TestUser("cypress testuser", "TEST-AD-ID", "london");
 export const rdoLondonUser = new TestUser("cypress rdo-london", "TEST-AD-ID-RDO", "london");
+export const rdoTeamLeaderUser = new TestUser("cypress rdo-team-leader", "TEST-AD-ID-RDO-TL", "london", 1);
 export const regionalCaseworkerUser = new TestUser(
     "cypress regional-casework-services",
     "TEST-AD-ID-RCS",
     "regional_casework_services",
 );
-export const businessSupportUser = new TestUser("cypress business-support", "TEST-AD-ID-BS", "business_support");
-export const dataConsumerUser = new TestUser("cypress data-consumer", "TEST-AD-ID-DC", "data_consumer");
-export const serviceSupportUser = new TestUser("cypress service-support", "TEST-AD-ID-SS", "service_support");
+export const regionalCaseworkerTeamLeaderUser = new TestUser(
+    "cypress rcs-team-leader",
+    "TEST-AD-ID-RCS-TL",
+    "regional_casework_services",
+    1,
+);
+export const businessSupportUser = new TestUser(
+    "cypress business-support",
+    "TEST-AD-ID-BS",
+    "business_support",
+    0,
+    0,
+    0,
+    0,
+    0,
+);
+export const dataConsumerUser = new TestUser("cypress data-consumer", "TEST-AD-ID-DC", "data_consumer", 0, 0, 0, 0, 0);
+export const serviceSupportUser = new TestUser(
+    "cypress service-support",
+    "TEST-AD-ID-SS",
+    "service_support",
+    0,
+    0,
+    1,
+    1,
+    1,
+);
 export const testUsers: TestUser[] = [
     cypressUser,
     rdoLondonUser,
+    rdoTeamLeaderUser,
     regionalCaseworkerUser,
+    regionalCaseworkerTeamLeaderUser,
     businessSupportUser,
     dataConsumerUser,
     serviceSupportUser,
