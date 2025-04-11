@@ -79,7 +79,8 @@ namespace Dfe.Complete.API.Contracts.Tests.Context
 				new(nameHeader ,"John"),
 				new(roleHeader1, Claims.CaseWorkerRoleClaim),
 				new(roleHeader2, Claims.TeamLeaderRoleClaim),
-				new(roleHeader3, Claims.AdminRoleClaim)
+				new(roleHeader3, Claims.AdminRoleClaim),
+				new("x-user-ad-id", "DEFAULT-AD-ID")
 			};
 
 			var sut = UserInfo.FromHeaders(inputs);
