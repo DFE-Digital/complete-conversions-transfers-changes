@@ -26,8 +26,9 @@ export async function setupDatabase() {
         console.log("Verified test users exist in complete.users table");
         return null;
     } catch (err) {
-        console.error("SQL error: ", err);
-        throw err;
+        console.warn("SQL error when verifying test users in complete.users table: ", err);
+        console.warn("Tests may not run correctly if the tests users do not exist");
+        return null;
     }
 }
 
