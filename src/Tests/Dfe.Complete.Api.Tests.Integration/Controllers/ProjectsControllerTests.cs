@@ -571,8 +571,7 @@ public class ProjectsControllerTests
     [CustomAutoData(typeof(CustomWebApplicationDbContextFactoryCustomization), typeof(GiasEstablishmentsCustomization))]
     public async Task RemoveProjectsShouldContinueIfNoProjectIsFound(
         CustomWebApplicationDbContextFactory<Program> factory,
-        IProjectsClient projectsClient,
-        IFixture fixture)
+        IProjectsClient projectsClient)
     {
         factory.TestClaims = new[] { ReadRole, WriteRole, DeleteRole, UpdateRole }
             .Select(x => new Claim(ClaimTypes.Role, x)).ToList();
@@ -700,6 +699,8 @@ public class ProjectsControllerTests
         projects.ForEach(x => x.LocalAuthorityId = localAuthority.Id);
 
         var trustDto = fixture.Customize(new TrustDtoCustomization(){Ukprn = "12345678"}).Create<TrustDto>();
+        
+        Assert.NotNull(factory.WireMockServer);
         
         factory.WireMockServer.AddGetWithJsonResponse($"/v4/trust/{trustDto.Ukprn}", trustDto);
         
