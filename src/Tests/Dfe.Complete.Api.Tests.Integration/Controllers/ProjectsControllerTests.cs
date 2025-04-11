@@ -1,6 +1,8 @@
 using System.Net;
 using System.Security.Claims;
 using AutoFixture;
+using AutoMapper.Configuration.Annotations;
+using Dfe.AcademiesApi.Client.Contracts;
 using Dfe.Complete.Api.Tests.Integration.Customizations;
 using Dfe.Complete.Client.Contracts;
 using Dfe.Complete.Domain.Entities;
@@ -11,6 +13,7 @@ using DfE.CoreLibs.Testing.AutoFixture.Attributes;
 using DfE.CoreLibs.Testing.AutoFixture.Customizations;
 using DfE.CoreLibs.Testing.Mocks.WebApplicationFactory;
 using Microsoft.EntityFrameworkCore;
+using Moq;
 using Project = Dfe.Complete.Domain.Entities.Project;
 
 namespace Dfe.Complete.Api.Tests.Integration.Controllers;
@@ -635,9 +638,9 @@ public class ProjectsControllerTests
     [Theory]
     [CustomAutoData(typeof(CustomWebApplicationDbContextFactoryCustomization), typeof(GiasEstablishmentsCustomization))]
     public async Task ListAllProjectsForLocalAuthority_Async_ShouldReturnList(
-     CustomWebApplicationDbContextFactory<Program> factory,
-     IProjectsClient projectsClient,
-     IFixture fixture)
+        CustomWebApplicationDbContextFactory<Program> factory,
+        IProjectsClient projectsClient,
+        IFixture fixture)
     {
         factory.TestClaims = [new Claim(ClaimTypes.Role, ReadRole)];
 
@@ -730,9 +733,9 @@ public class ProjectsControllerTests
     [Theory]
     [CustomAutoData(typeof(CustomWebApplicationDbContextFactoryCustomization), typeof(GiasEstablishmentsCustomization))]
     public async Task ListAllProjectsForRegion_Async_ShouldReturnList(
-     CustomWebApplicationDbContextFactory<Program> factory,
-     IProjectsClient projectsClient,
-     IFixture fixture)
+        CustomWebApplicationDbContextFactory<Program> factory,
+        IProjectsClient projectsClient,
+        IFixture fixture)
     {
         factory.TestClaims = [new Claim(ClaimTypes.Role, ReadRole)];
 
@@ -767,8 +770,8 @@ public class ProjectsControllerTests
     [Theory]
     [CustomAutoData(typeof(CustomWebApplicationDbContextFactoryCustomization), typeof(GiasEstablishmentsCustomization))]
     public async Task ListAllProjectsForRegionAsync_InvalidRegionSent_ShouldReturnList(
-     CustomWebApplicationDbContextFactory<Program> factory,
-     IProjectsClient projectsClient)
+        CustomWebApplicationDbContextFactory<Program> factory,
+        IProjectsClient projectsClient)
     {
         // Arrange
         factory.TestClaims = [new Claim(ClaimTypes.Role, ReadRole)];
@@ -781,9 +784,9 @@ public class ProjectsControllerTests
     [Theory]
     [CustomAutoData(typeof(CustomWebApplicationDbContextFactoryCustomization), typeof(GiasEstablishmentsCustomization))]
     public async Task ListAllProjectsForTeam_Async_ShouldReturnList(
-     CustomWebApplicationDbContextFactory<Program> factory,
-     IProjectsClient projectsClient,
-     IFixture fixture)
+        CustomWebApplicationDbContextFactory<Program> factory,
+        IProjectsClient projectsClient,
+        IFixture fixture)
     {
         factory.TestClaims = [new Claim(ClaimTypes.Role, ReadRole)];
 
@@ -818,8 +821,8 @@ public class ProjectsControllerTests
     [Theory]
     [CustomAutoData(typeof(CustomWebApplicationDbContextFactoryCustomization), typeof(GiasEstablishmentsCustomization))]
     public async Task ListAllProjectsForTeamAsync_InvalidRegionSent_ShouldReturnList(
-     CustomWebApplicationDbContextFactory<Program> factory,
-     IProjectsClient projectsClient)
+        CustomWebApplicationDbContextFactory<Program> factory,
+        IProjectsClient projectsClient)
     {
         // Arrange
         factory.TestClaims = [new Claim(ClaimTypes.Role, ReadRole)];
@@ -827,5 +830,82 @@ public class ProjectsControllerTests
         // Act & Assert
         await Assert.ThrowsAsync<CompleteApiException>(() =>
             projectsClient.ListAllProjectsForTeamAsync(null, null, null, 0, 50));
+    }
+
+    [Theory(Skip = "Awaiting wiremock")]
+    [CustomAutoData(typeof(CustomWebApplicationDbContextFactoryCustomization), typeof(GiasEstablishmentsCustomization))]
+    public async Task ListAllProjectsForUserAsync_ShouldReturnProjects(
+        CustomWebApplicationDbContextFactory<Program> factory,
+        IProjectsClient projectsClient,
+        IFixture fixture,
+        Mock<ITrustsV4Client> mockTrustsClient)
+    {
+        factory.TestClaims = [new Claim(ClaimTypes.Role, ReadRole)];
+
+        // // Arrange
+        var dbContext = factory.GetDbContext<CompleteContext>();
+        var testUser = await dbContext.Users.FirstAsync();
+        var userAdId = "test-user-adid";
+        var expectedUserId = testUser.Id;
+
+        testUser.ActiveDirectoryUserId = userAdId;
+
+        mockTrustsClient
+            .Setup(tc => tc.GetByUkprnsAllAsync(It.IsAny<IEnumerable<string>?>(), It.IsAny<CancellationToken>()))
+            .ReturnsAsync([
+                new() { Ukprn = "12345678", Name = "Trust One" },
+                new() { Ukprn = "87654321", Name = "Trust Two" }
+            ]);
+
+        var establishments = fixture.Customize(new GiasEstablishmentsCustomization()).CreateMany<GiasEstablishment>(50).ToList();
+        var localAuthority = dbContext.LocalAuthorities.AsEnumerable().MinBy(_ => Guid.NewGuid());
+        Assert.NotNull(localAuthority);
+
+        await dbContext.GiasEstablishments.AddRangeAsync(establishments);
+
+        var projects = establishments.Select((establishment, i) =>
+        {
+            var project = fixture.Customize(new ProjectCustomization
+            {
+                LocalAuthorityId = localAuthority.Id,
+                IncomingTrustUkprn = "12345678",
+                OutgoingTrustUkprn = "87654321",
+            })
+                .Create<Project>();
+            project.Urn = establishment.Urn ?? project.Urn;
+            if (i < 10) project.AssignedToId = testUser.Id;
+            return project;
+        }).ToList();
+
+        await dbContext.Projects.AddRangeAsync(projects);
+        await dbContext.SaveChangesAsync();
+
+        // // Act
+        var results = await projectsClient.ListAllProjectsForUserAsync(null, userAdId, null, 50);
+
+        // // Assert
+        Assert.NotNull(results);
+        Assert.Equal(10, results.Count);
+        Assert.All(results, project =>
+        {
+            Assert.Equal("Trust One", project.IncomingTrustName);
+            Assert.Equal("Trust Two", project.OutgoingTrustName);
+        });
+    }
+
+    [Theory]
+    [CustomAutoData(typeof(CustomWebApplicationDbContextFactoryCustomization), typeof(GiasEstablishmentsCustomization))]
+    public async Task ListAllProjectsForUserAsync_ShouldReturnBadRequest_IfUserNotFound(
+        CustomWebApplicationDbContextFactory<Program> factory,
+        IFixture fixture,
+        IProjectsClient projectsClient)
+    {
+        factory.TestClaims = [new Claim(ClaimTypes.Role, ReadRole)];
+
+        // Act & Assert
+        var exception = await Assert.ThrowsAsync<CompleteApiException>(() =>
+            projectsClient.ListAllProjectsForUserAsync(null, "123", null, 50));
+
+        Assert.Contains("User does not exist for provided UserAdId", exception.Response);
     }
 }
