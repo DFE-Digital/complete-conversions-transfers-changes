@@ -2,6 +2,8 @@
 
 ### Test Setup
 
+#### Environment variables
+
 The Cypress tests are designed to run against the front-end of the application. To set up the tests, you need to provide a configuration file named `cypress.env.json` with the following information:
 
 ```json
@@ -13,7 +15,10 @@ The Cypress tests are designed to run against the front-end of the application. 
   "tenantId": "<enter Id from Id Provider for the tenant>",
   "clientId": "<enter Id from Id Provider for the client used for test app registration>",
   "clientSecret": "<enter a client secret Id Provider for the client used for test app registration>",
-  "completeApiClientId": "<enter Id from Id Provider for the complete api app registration>"
+  "completeApiClientId": "<enter Id from Id Provider for the complete api app registration>",
+  "dbHost": "<enter the complete database server name for the desired environment>",
+  "dbUser": "enter the complete database user>",
+  "dbPassword": "<enter the complete database password>"
 }
 ```
 
@@ -21,11 +26,13 @@ While it is possible to pass these configurations through commands, it is easier
 
 #### Authentication
 
-The authentication is invoked in every test using the `login` command:
+The authentication is invoked in every test using the `login()` command. This defaults to the cypress test user, but you can override this be passing in the active directory ID. See the available users in the database section.
 
 ```javascript
 beforeEach(() => {
     cy.login();
+    // OR
+    cy.login({ activeDirectoryId: businessSupportUser.adId });
 });
 ```
 
@@ -33,9 +40,10 @@ Intercepts all browser requests and adds a special auth header using the `authKe
 
 #### Database
 
-The following users are added to the database in the before task in `cypress/support/e2e.ts`. These are required for the tests to run successfully. You can add or remove users as needed, but make sure to keep the ones that are necessary for the tests.:
+The following users are required for the tests to run successfully. These are automatically added in the `cypress.config.ts` file `before:run`, which will run before the tests are executed.
+Note: when running `cy:open` this is disabled by default, but can be enabled by setting `cypress.config.ts` `experimentalInteractiveRunEvents: true`
 
-Users to add:
+Users:
 - Cypress default test user (london)
 - Regional delivery officer London
 - Regional Casework Services

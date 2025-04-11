@@ -9,9 +9,9 @@ export default defineConfig({
     chromeWebSecurity: false,
     video: false,
     retries: {
-        runMode: 1
+        runMode: 1,
     },
-    userAgent: 'Complete/1.0 Cypress',
+    userAgent: "Complete/1.0 Cypress",
     reporter: "cypress-multi-reporters",
     reporterOptions: {
         reporterEnabled: "mochawesome",
@@ -24,13 +24,15 @@ export default defineConfig({
         },
     },
     e2e: {
+        experimentalInteractiveRunEvents: false, // turn on to seed db when running cy:open
         excludeSpecPattern: ["*/**/legacy"],
         // We've imported your old cypress plugins here.
         // You may want to clean this up later by importing these.
         setupNodeEvents(on, config) {
-            on("before:run", () => {
+            on("before:run", async () => {
                 // Map cypress env vars to process env vars for usage outside of Cypress run environment
                 process.env = config.env;
+                await setupDatabase();
             });
 
             on("after:run", async () => {
@@ -40,7 +42,6 @@ export default defineConfig({
             });
 
             on("task", {
-                setupDatabase: setupDatabase,
                 log(message) {
                     console.log(message);
 

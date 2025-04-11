@@ -19,10 +19,6 @@ import "./commands";
 import { RuleObject } from "axe-core";
 import { yesNoOption } from "../constants/stringTestConstants";
 
-before(() => {
-    cy.task("setupDatabase")
-})
-
 declare global {
     namespace Cypress {
         interface Chainable {

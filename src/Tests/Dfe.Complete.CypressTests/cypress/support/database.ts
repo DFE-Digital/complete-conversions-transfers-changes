@@ -1,15 +1,12 @@
 import sql from "mssql";
-import dotenv from "dotenv";
 import { testUsers } from "cypress/constants/cypressConstants";
 import { TestUser } from "cypress/constants/TestUser";
 
-dotenv.config();
-
 export async function setupDatabase() {
     const sqlConfig = {
-        server: process.env.DB_HOST!,
-        user: process.env.DB_USER,
-        password: process.env.DB_PASSWORD,
+        server: process.env.dbHost!,
+        user: process.env.dbUser,
+        password: process.env.dbPassword,
         database: "complete",
         options: {
             encrypt: true,
@@ -17,6 +14,7 @@ export async function setupDatabase() {
         },
     };
 
+    console.log("Verifying users in complete.users table...");
     try {
         const pool = await sql.connect(sqlConfig);
 
@@ -25,6 +23,7 @@ export async function setupDatabase() {
         }
 
         await pool.close();
+        console.log("Users verified in complete.users table");
         return null;
     } catch (err) {
         console.error("SQL error: ", err);
