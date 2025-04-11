@@ -20,6 +20,11 @@ Security in case of vulnerabilities.
  - Your team projects in progress list (`/projects/team/in-progress`)
  - Your team projects completed list (`/projects/team/completed`)
  - Added user (`ClaimsPrincipal`) extension to get users team `GetUserTeam`
+ - New route `/projects/all/in-progress/form-a-multi-academy-trust`
+ - New route `/projects/all/in-progress/form-a-multi-academy-trust/{reference}`
+ - Form a MAT with projects in progress list (`/projects/all/in-progress/form-a-multi-academy-trust`)
+ - MAT projects listing related establishments (`/projects/all/in-progress/form-a-multi-academy-trust/{reference}`)
+
 
 ### Changed
  - Updated route `/accessibility-statement` to `/accessibility`
