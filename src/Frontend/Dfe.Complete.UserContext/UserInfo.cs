@@ -4,9 +4,11 @@
 	{
 		public string Name { get; set; }
 		public string[] Roles { get; set; }
+		public string? ActiveDirectoryId { get; private init; }
 
 		private const string NameHeaderKey = "x-user-context-name";
 		private const string RoleHeaderKeyPrefix = "x-user-context-role-";
+		private const string ActiveDirectoryKey = "x-user-ad-id";
 
 		public static string[] ParseRoleClaims(string[] claims)
 		{
@@ -33,14 +35,14 @@
 				.Select(x => x.Value)
 				.ToArray();
 
-			if (string.IsNullOrWhiteSpace(name) || roles.Length == 0)
+			var adId = headers.FirstOrDefault(x => x.Key.Equals(ActiveDirectoryKey, StringComparison.InvariantCultureIgnoreCase)).Value;
+
+			if (string.IsNullOrWhiteSpace(name) || roles.Length == 0 || string.IsNullOrWhiteSpace(adId))
 			{
 				return null;
 			}
-			else
-			{
-				return new UserInfo() { Name = name, Roles = roles };
-			}
+			return new UserInfo() { Name = name, Roles = roles, ActiveDirectoryId = adId };
+			
 		}
 
 
