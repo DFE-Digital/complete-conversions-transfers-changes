@@ -23,7 +23,7 @@ export async function setupDatabase() {
         }
 
         await pool.close();
-        console.log("Users verified in complete.users table");
+        console.log("Verified test users exist in complete.users table");
         return null;
     } catch (err) {
         console.error("SQL error: ", err);

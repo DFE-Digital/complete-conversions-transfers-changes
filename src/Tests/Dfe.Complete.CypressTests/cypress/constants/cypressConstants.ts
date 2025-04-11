@@ -12,7 +12,7 @@ export const UserAccessToken = "accessToken";
 
 // test users
 export const cypressUser = new TestUser("cypress testuser", "TEST-AD-ID", "london");
-export const rdoLondonUser = new TestUser("cypress rdo-London", "TEST-AD-ID-RDO", "london");
+export const rdoLondonUser = new TestUser("cypress rdo-london", "TEST-AD-ID-RDO", "london");
 export const regionalCaseworkerUser = new TestUser(
     "cypress regional-casework-services",
     "TEST-AD-ID-RCS",
