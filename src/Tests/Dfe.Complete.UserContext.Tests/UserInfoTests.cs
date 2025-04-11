@@ -125,5 +125,35 @@ namespace Dfe.Complete.API.Contracts.Tests.Context
 			var sut = UserInfo.FromHeaders(inputs);
 			sut.Should().BeNull();
 		}
+		
+		[Fact]
+		public void FromHeaders_When_ActiveDirectoryKey_Present_Sets_ActiveDirectoryId()
+		{
+			var headers = new KeyValuePair<string, string>[]
+			{
+				new("x-user-context-name", "John"),
+				new("x-user-context-role-0", Claims.CaseWorkerRoleClaim),
+				new("x-user-ad-id", "TEST-AD-ID")
+			};
+
+			var result = UserInfo.FromHeaders(headers);
+
+			result.Should().NotBeNull();
+			result.ActiveDirectoryId.Should().Be("TEST-AD-ID");
+		}
+
+		[Fact]
+		public void FromHeaders_When_ActiveDirectoryKey_Missing_Returns_Null()
+		{
+			var headers = new KeyValuePair<string, string>[]
+			{
+				new("x-user-context-name", "John"),
+				new("x-user-context-role-0", Claims.CaseWorkerRoleClaim)
+			};
+
+			var result = UserInfo.FromHeaders(headers);
+
+			result.Should().BeNull();
+		}
 	}
 }
