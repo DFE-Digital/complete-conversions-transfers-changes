@@ -20,7 +20,7 @@ Security in case of vulnerabilities.
  - Your team projects in progress list (`/projects/team/in-progress`)
  - Your team projects completed list (`/projects/team/completed`)
  - Added user (`ClaimsPrincipal`) extension to get users team `GetUserTeam`
- - Added missing project for region header
+ - Added missing "project for region" header
 
 ### Changed
  - Updated route `/accessibility-statement` to `/accessibility`
