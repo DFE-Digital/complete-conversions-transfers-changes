@@ -40,9 +40,8 @@ namespace Dfe.Complete.Application.Projects.Queries.ListAllProjects
                         item.Project.State,
                         item.Project.Type,
                         item.Project.FormAMat,
-                        item.Project.AssignedTo != null
-                            ? $"{item.Project.AssignedTo.FirstName} {item.Project.AssignedTo.LastName}"
-                            : null, item.Project.LocalAuthority.Name,
+                        item.Project.AssignedTo?.FullName,
+                        item.Project.LocalAuthority.Name,
                         item.Project.Team,
                         item.Project.CompletedAt,
                         item.Project.Region,
