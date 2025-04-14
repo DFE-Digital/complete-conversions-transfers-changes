@@ -29,7 +29,7 @@ namespace Dfe.Complete.Infrastructure.Security.Authorization
 
                 if (!string.IsNullOrEmpty(userRecord.Team))
                 {
-                    additionalClaims.Add(new Claim("team", userRecord.Team));
+                    additionalClaims.Add(new Claim(ClaimTypes.Role, userRecord.Team));
                 }
 
                 if (userRecord.ManageTeam == true)
