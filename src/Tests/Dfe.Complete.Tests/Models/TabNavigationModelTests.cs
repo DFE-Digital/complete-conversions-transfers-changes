@@ -18,7 +18,7 @@ public class TabNavigationModelTests
     [Fact]
     public void UserHasTabAccess_UnprotectedTab_ReturnsTrue()
     {
-        var result = TabNavigationModel.UserHasTabAccess(Arg.Any<ProjectTeam>(), "your-projects");
+        var result = TabNavigationModel.UserHasTabAccess(ProjectTeam.London, "your-projects");
         Assert.True(result);
     }
 
