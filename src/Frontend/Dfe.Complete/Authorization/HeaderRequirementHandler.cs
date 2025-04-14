@@ -32,6 +32,9 @@ namespace Dfe.Complete.Authorization
 
                 var currentUser = context.User.Identities.FirstOrDefault();
 
+                if (userInfo == null)
+                    return Task.CompletedTask;
+                
                 currentUser?.AddClaim(new Claim(ClaimTypes.Name, userInfo.Name));
 
                 foreach (var claim in userInfo.Roles)

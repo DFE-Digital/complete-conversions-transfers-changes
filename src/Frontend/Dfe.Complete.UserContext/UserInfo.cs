@@ -25,7 +25,7 @@
 			}
 		}
 
-		public static UserInfo FromHeaders(KeyValuePair<string,string>[] headers)
+		public static UserInfo? FromHeaders(KeyValuePair<string,string>[] headers)
 		{
 
 			var name = headers.FirstOrDefault(x => x.Key.Equals(NameHeaderKey, StringComparison.InvariantCultureIgnoreCase)).Value;
@@ -37,7 +37,7 @@
 
 			var adId = headers.FirstOrDefault(x => x.Key.Equals(ActiveDirectoryKey, StringComparison.InvariantCultureIgnoreCase)).Value;
 
-			if (string.IsNullOrWhiteSpace(name) || roles.Length == 0 || string.IsNullOrWhiteSpace(adId))
+			if (string.IsNullOrWhiteSpace(name) || roles.Length == 0)
 			{
 				return null;
 			}
