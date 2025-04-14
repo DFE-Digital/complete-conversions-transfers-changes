@@ -9,7 +9,7 @@ public class UserTabAccessHelperTests
     [Fact]
     public void UserHasTabAccess_UnprotectedTab_ReturnsTrue()
     {
-        var result = UserTabAccessHelper.UserHasTabAccess(Arg.Any<ProjectTeam>(), "all-projects");
+        var result = UserTabAccessHelper.UserHasTabAccess(ProjectTeam.London, "all-projects");
         Assert.True(result);
     }
 
