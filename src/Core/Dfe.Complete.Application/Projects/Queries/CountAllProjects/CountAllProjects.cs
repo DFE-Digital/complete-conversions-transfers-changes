@@ -16,9 +16,16 @@ namespace Dfe.Complete.Application.Projects.Queries.CountAllProjects
         {
             try
             {
-                var result = await listAllProjectsQueryService
+                var projectsQuery = await listAllProjectsQueryService
                     .ListAllProjects(request.ProjectStatus, request.Type)
-                    .CountAsync(cancellationToken);
+                    .ToListAsync(cancellationToken);
+                
+                var filteredProjectQuery = request.ProjectStatus == ProjectState.Active
+                    ? projectsQuery.Where(p => p.Project.AssignedTo != null)
+                    : projectsQuery;
+                
+                var result = filteredProjectQuery.Count();
+                
                 return Result<int>.Success(result);
             }
             catch (Exception ex)
