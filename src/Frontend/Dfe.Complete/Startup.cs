@@ -15,6 +15,7 @@ using Microsoft.Identity.Web;
 using Microsoft.Identity.Web.UI;
 using System.Security.Claims;
 using Dfe.Complete.Infrastructure;
+using Dfe.Complete.Infrastructure.Security.Authorization;
 using Dfe.Complete.Services;
 
 namespace Dfe.Complete;
@@ -95,6 +96,8 @@ public class Startup
 
         services.AddApplicationDependencyGroup(Configuration);
         services.AddInfrastructureDependencyGroup(Configuration);
+
+        services.AddCustomClaimProvider<CustomDatabaseClaimsProvider>();
 
         // AutoMapper
         services.AddAutoMapper(typeof(AutoMapping));
