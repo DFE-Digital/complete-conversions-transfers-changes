@@ -1,4 +1,5 @@
 using Dfe.Complete.Attributes;
+using Dfe.Complete.Extensions;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Reflection;
 
@@ -30,9 +31,9 @@ namespace Dfe.Complete.Pages.Diagnostics
         {
             ReleaseTag = _configuration["Dfe.Complete:ReleaseTag"];
 
-            if (_env.IsDevelopment() || _env.IsStaging())
+            if (_env.IsDevelopment() || _env.IsTest())
             {
-                this.Env = _env.IsDevelopment() ? "Development" : "Staging";
+                this.Env = _env.IsDevelopment() ? "Development" : "Test";
             }
 
             var assembly = Assembly.GetEntryAssembly();

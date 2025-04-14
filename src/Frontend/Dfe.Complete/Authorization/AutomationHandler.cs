@@ -1,4 +1,5 @@
-﻿using Microsoft.Net.Http.Headers;
+﻿using Dfe.Complete.Extensions;
+using Microsoft.Net.Http.Headers;
 
 namespace Dfe.Complete.Authorization
 {
@@ -8,7 +9,7 @@ namespace Dfe.Complete.Authorization
             IHttpContextAccessor httpContextAccessor, IConfiguration configuration)
         {
             //Header authorisation not applicable for production
-            if (!hostEnvironment.IsStaging() && !hostEnvironment.IsEnvironment("Test") && !hostEnvironment.IsDevelopment())
+            if (!hostEnvironment.IsTest() && !hostEnvironment.IsDevelopment())
             {
                 return false;
             }

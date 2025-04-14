@@ -12,7 +12,7 @@ namespace Dfe.Complete.Pages.Projects.Team.InProgress;
 
 public class AllProjectsInProgressForTeamModel(ISender sender) : YourTeamProjectsModel(InProgressNavigation)
 {
-    public List<ListAllProjectsResultModel> Projects { get; set; } = default!;
+    public List<ListAllProjectsResultModel> Projects { get; set; } = [];
     public bool UserTeamIsRdo { get; set; }
 
     public async Task OnGet()

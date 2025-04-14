@@ -42,23 +42,9 @@ namespace Dfe.Complete.Application.Projects.Queries.ListAllProjects
                 var projects = selectedProjects
                     .Skip(request.Page * request.Count)
                     .Take(request.Count)
-                    .Select(item => new ListAllProjectsResultModel(
-                        item.Establishment.Name,
-                        item.Project.Id,
-                        item.Project.Urn,
-                        item.Project.SignificantDate,
-                        item.Project.State,
-                        item.Project.Type,
-                        item.Project.FormAMat,
-                        item.Project.AssignedTo != null
-                            ? $"{item.Project.AssignedTo.FirstName} {item.Project.AssignedTo.LastName}"
-                            : null,
-                        item.Project.LocalAuthority?.Name,
-                        item.Project.Team,
-                        item.Project.CompletedAt,
-                        item.Project.Region,
-                        item.Establishment.LocalAuthorityName,
-                        item.Project.CreatedAt
+                    .Select(item =>  ListAllProjectsResultModel.MapProjectAndEstablishmentToListAllProjectResultModel(
+                        item.Project,
+                        item.Establishment
                     ));
 
                 var result = new ListAllProjectsInTrustResultModel(trustName, projects);
