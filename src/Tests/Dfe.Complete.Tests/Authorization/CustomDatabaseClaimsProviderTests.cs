@@ -94,7 +94,7 @@ namespace Dfe.Complete.Tests.Authorization
             var collection = claims as Claim[] ?? claims.ToArray();
 
             Assert.NotEmpty(collection);
-            Assert.Contains(collection, c => c.Type == "team" && c.Value == "TeamA");
+            Assert.Contains(collection, c => c.Type == ClaimTypes.Role && c.Value == "TeamA");
             Assert.Contains(collection, c => c.Type == ClaimTypes.Role && c.Value == "manage_team");
             Assert.Contains(collection, c => c.Type == ClaimTypes.Role && c.Value == "add_new_project");
             Assert.Contains(collection, c => c.Type == ClaimTypes.Role && c.Value == "manage_user_accounts");
