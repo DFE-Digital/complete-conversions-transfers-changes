@@ -89,7 +89,7 @@ describe("View all projects", () => {
             .contains(region)
             .filterBy(region);
         allProjects
-            // .containsHeading(`Projects for ${region}`); //bug 205144
+            .containsHeading(`Projects for ${region}`)
             .goToNextPageUntilFieldIsVisible(schoolName);
         projectTable
             .hasTableHeader("School or academy")
