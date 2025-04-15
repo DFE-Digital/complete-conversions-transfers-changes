@@ -32,6 +32,7 @@ Security in case of vulnerabilities.
 ### Fixed
  - Correctly identify test env based on environment name being "Test" (previously looking for "Staging")
  - Show 404 page when get projects for region `/projects/all/regions/{region}` has a "bad" region in path param
+ - null `AssignedTo` in `ListAllProjects` throws an unexpected error
 
 See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/main...production-2025-04-01.120-manual) for everything awaiting release
 
