@@ -21,6 +21,8 @@ Security in case of vulnerabilities.
  - Your team projects completed list (`/projects/team/completed`)
  - Added user (`ClaimsPrincipal`) extension to get users team `GetUserTeam`
  - Added missing "project for region" header
+ - User redirection on app load based on their permissions
+ - Add navigation items to be more consistent with ruby UI
 
 ### Changed
  - Updated route `/accessibility-statement` to `/accessibility`
@@ -28,6 +30,7 @@ Security in case of vulnerabilities.
  - Updated route `/projects/transfer/new_mat` to `/projects/transfers/new_mat`
  - Updated route `/projects/transfer-projects/new` to `/projects/transfers/new`
  - Updated ListAllProjects in-progress and Count all projects in progress to filter out unassigned projects
+ - Move tab access logic to a helper `UserTabAccessHelper`
 
 ### Fixed
  - Correctly identify test env based on environment name being "Test" (previously looking for "Staging")
