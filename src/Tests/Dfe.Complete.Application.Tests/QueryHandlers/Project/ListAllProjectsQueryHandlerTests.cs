@@ -11,188 +11,223 @@ using Dfe.Complete.Tests.Common.Customizations.Models;
 using MockQueryable;
 using NSubstitute.ExceptionExtensions;
 
-namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
+namespace Dfe.Complete.Application.Tests.QueryHandlers.Project;
+public class ListAllProjectsQueryHandlerTests
 {
-    public class ListAllProjectsQueryHandlerTests
+    [Theory]
+    [CustomAutoData(
+        typeof(OmitCircularReferenceCustomization),
+        typeof(ListAllProjectsQueryModelCustomization),
+        typeof(DateOnlyCustomization))]
+    public async Task Handle_ShouldReturnCorrectList_WhenPaginationIsCorrect(
+        [Frozen] IListAllProjectsQueryService mockListAllProjectsQueryService,
+        ListAllProjectsQueryHandler handler,
+        IFixture fixture)
     {
-        [Theory]
-        [CustomAutoData(
-            typeof(OmitCircularReferenceCustomization),
-            typeof(ListAllProjectsQueryModelCustomization),
-            typeof(DateOnlyCustomization))]
-        public async Task Handle_ShouldReturnCorrectList_WhenPaginationIsCorrect(
-            [Frozen] IListAllProjectsQueryService mockListAllProjectsQueryService,
-            ListAllProjectsQueryHandler handler,
-            IFixture fixture)
+        // Arrange
+        var listAllProjectsQueryModels = fixture.CreateMany<ListAllProjectsQueryModel>(50).ToList();
+
+        var expected = listAllProjectsQueryModels.Select(item => ListAllProjectsResultModel.MapProjectAndEstablishmentToListAllProjectResultModel(
+            item.Project!,
+            item.Establishment
+         )).Take(20).ToList();
+
+        var query = new ListAllProjectsQuery(null, null);
+
+        var mock = listAllProjectsQueryModels.BuildMock();
+
+        mockListAllProjectsQueryService.ListAllProjects(query.ProjectStatus, query.Type)
+            .Returns(mock);
+
+        // Act
+        var result = await handler.Handle(query, default);
+
+        // Assert
+        Assert.NotNull(result);
+        Assert.Equal(expected.Count, result.Value?.Count);
+
+        for (int i = 0; i < result.Value!.Count; i++)
         {
-            // Arrange
-            var listAllProjectsQueryModels = fixture.CreateMany<ListAllProjectsQueryModel>(50).ToList();
-
-            var expected = listAllProjectsQueryModels.Select(item => ListAllProjectsResultModel.MapProjectAndEstablishmentToListAllProjectResultModel(
-                item.Project!,
-                item.Establishment
-             )).Take(20).ToList();
-
-            var query = new ListAllProjectsQuery(null, null);
-
-            var mock = listAllProjectsQueryModels.BuildMock();
-
-            mockListAllProjectsQueryService.ListAllProjects(query.ProjectStatus, query.Type)
-                .Returns(mock);
-
-            // Act
-            var result = await handler.Handle(query, default);
-
-            // Assert
-            Assert.NotNull(result);
-            Assert.Equal(expected.Count, result.Value?.Count);
-
-            for (int i = 0; i < result.Value!.Count; i++)
-            {
-                Assert.Equivalent(expected[i], result.Value![i]);
-            }
+            Assert.Equivalent(expected[i], result.Value![i]);
         }
+    }
 
-        [Theory]
-        [CustomAutoData(
-            typeof(OmitCircularReferenceCustomization),
-            typeof(ListAllProjectsQueryModelCustomization),
-            typeof(DateOnlyCustomization))]
-        public async Task Handle_ShouldReturnCorrectList_ForOtherPages(
-            [Frozen] IListAllProjectsQueryService mockListAllProjectsQueryService,
-            ListAllProjectsQueryHandler handler,
-            IFixture fixture)
-        {
-            // Arrange
-            var listAllProjectsQueryModels = fixture.CreateMany<ListAllProjectsQueryModel>(50).ToList();
+    [Theory]
+    [CustomAutoData(
+        typeof(OmitCircularReferenceCustomization),
+        typeof(ListAllProjectsQueryModelCustomization),
+        typeof(DateOnlyCustomization))]
+    public async Task Handle_ShouldReturnCorrectList_ForOtherPages(
+        [Frozen] IListAllProjectsQueryService mockListAllProjectsQueryService,
+        ListAllProjectsQueryHandler handler,
+        IFixture fixture)
+    {
+        // Arrange
+        var listAllProjectsQueryModels = fixture.CreateMany<ListAllProjectsQueryModel>(50).ToList();
 
-            var expected = listAllProjectsQueryModels.Select(item => ListAllProjectsResultModel.MapProjectAndEstablishmentToListAllProjectResultModel(
+        var expected = listAllProjectsQueryModels.Select(item => ListAllProjectsResultModel.MapProjectAndEstablishmentToListAllProjectResultModel(
                 item.Project,
                 item.Establishment
             )).Skip(20).Take(20).ToList();
 
-            var query = new ListAllProjectsQuery(null, null, 1);
+        var query = new ListAllProjectsQuery(null, null, 1);
 
-            var mock = listAllProjectsQueryModels.BuildMock();
+        var mock = listAllProjectsQueryModels.BuildMock();
 
-            mockListAllProjectsQueryService.ListAllProjects(query.ProjectStatus, query.Type)
-                .Returns(mock);
+        mockListAllProjectsQueryService.ListAllProjects(query.ProjectStatus, query.Type)
+            .Returns(mock);
 
-            // Act
-            var result = await handler.Handle(query, default);
+        // Act
+        var result = await handler.Handle(query, default);
 
-            // Assert
-            Assert.NotNull(result);
-            Assert.Equal(expected.Count, result.Value?.Count);
+        // Assert
+        Assert.NotNull(result);
+        Assert.Equal(expected.Count, result.Value?.Count);
 
-            for (int i = 0; i < result.Value!.Count; i++)
+        for (int i = 0; i < result.Value!.Count; i++)
+        {
+            Assert.Equivalent(expected[i], result.Value![i]);
+        }
+    }
+
+    [Theory]
+    [CustomAutoData(
+        typeof(OmitCircularReferenceCustomization),
+        typeof(ListAllProjectsQueryModelCustomization),
+        typeof(DateOnlyCustomization))]
+    public async Task Handle_ShouldOnlyReturnProjectsThatAreAssigned(
+        [Frozen] IListAllProjectsQueryService mockListAllProjectsQueryService,
+        ListAllProjectsQueryHandler handler,
+        IFixture fixture)
+    {
+        // Arrange
+        var totalProjects = 15;
+        var expectedProjects = 10;
+
+        var combinedProjects = fixture.CreateMany<ListAllProjectsQueryModel>(totalProjects).ToList();
+
+        // Set first 10 as assigned, last 5 as unassigned
+        for (int i = 0; i < combinedProjects.Count; i++)
+        {
+            if (i < 10)
             {
-                Assert.Equivalent(expected[i], result.Value![i]);
+                combinedProjects[i].Project!.AssignedTo = fixture.Create<Domain.Entities.User>();
+            }
+            else
+            {
+                combinedProjects[i].Project!.AssignedTo = null;
             }
         }
 
-        [Theory]
-        [CustomAutoData(
-            typeof(OmitCircularReferenceCustomization),
-            typeof(ListAllProjectsQueryModelCustomization),
-            typeof(DateOnlyCustomization))]
-        public async Task Handle_ShouldOnlyReturnProjectsThatAreAssigned(
-            [Frozen] IListAllProjectsQueryService mockListAllProjectsQueryService,
-            ListAllProjectsQueryHandler handler,
-            IFixture fixture)
-        {
-            // Arrange
-            var totalProjects = 15;
-            var expectedProjects = 10;
 
-            var combinedProjects = fixture.CreateMany<ListAllProjectsQueryModel>(totalProjects).ToList();
+        var mock = combinedProjects.BuildMock();
 
-            // Set first 10 as assigned, last 5 as unassigned
-            for (int i = 0; i < combinedProjects.Count; i++)
-            {
-                if (i < 10)
-                {
-                    combinedProjects[i].Project!.AssignedTo = fixture.Create<Domain.Entities.User>();
-                }
-                else
-                {
-                    combinedProjects[i].Project!.AssignedTo = null;
-                }
-            }
+        var query = new ListAllProjectsQuery(ProjectState.Active, ProjectType.Conversion);
+
+        mockListAllProjectsQueryService.ListAllProjects(query.ProjectStatus, query.Type)
+            .Returns(mock);
+
+        // Act
+        var result = await handler.Handle(query, default);
+
+        // Assert
+        Assert.NotNull(result);
+        Assert.True(result.IsSuccess);
+        Assert.All(result.Value!, project =>
+            Assert.False(string.IsNullOrWhiteSpace(project.AssignedToFullName)));
+        Assert.Equal(expectedProjects, result.Value!.Count);
+    }
 
 
-            var mock = combinedProjects.BuildMock();
+    [Theory]
+    [CustomAutoData(
+        typeof(OmitCircularReferenceCustomization),
+        typeof(ListAllProjectsQueryModelCustomization),
+        typeof(DateOnlyCustomization))]
+    public async Task Handle_ShouldReturnCorrectList_WhenAllPagesAreSkipped(
+        [Frozen] IListAllProjectsQueryService mockListAllProjectsQueryService,
+        ListAllProjectsQueryHandler handler,
+        IFixture fixture)
+    {
+        // Arrange
+        var listAllProjectsQueryModels = fixture.CreateMany<ListAllProjectsQueryModel>(50).ToList();
 
-            var query = new ListAllProjectsQuery(ProjectState.Active, ProjectType.Conversion);
+        var query = new ListAllProjectsQuery(null, null, 10);
 
-            mockListAllProjectsQueryService.ListAllProjects(query.ProjectStatus, query.Type)
-                .Returns(mock);
+        var mock = listAllProjectsQueryModels.BuildMock();
 
-            // Act
-            var result = await handler.Handle(query, default);
+        mockListAllProjectsQueryService.ListAllProjects(query.ProjectStatus, query.Type)
+            .Returns(mock);
 
-            // Assert
-            Assert.NotNull(result);
-            Assert.True(result.IsSuccess);
-            Assert.All(result.Value!, project =>
-                Assert.False(string.IsNullOrWhiteSpace(project.AssignedToFullName)));
-            Assert.Equal(expectedProjects, result.Value!.Count);
-        }
+        // Act
+        var result = await handler.Handle(query, default);
 
+        // Assert
+        Assert.NotNull(result);
+        Assert.True(result.IsSuccess);
+        Assert.Equal(0, result.Value?.Count);
+    }
 
-        [Theory]
-        [CustomAutoData(
-            typeof(OmitCircularReferenceCustomization),
-            typeof(ListAllProjectsQueryModelCustomization),
-            typeof(DateOnlyCustomization))]
-        public async Task Handle_ShouldReturnCorrectList_WhenAllPagesAreSkipped(
-            [Frozen] IListAllProjectsQueryService mockListAllProjectsQueryService,
-            ListAllProjectsQueryHandler handler,
-            IFixture fixture)
-        {
-            // Arrange
-            var listAllProjectsQueryModels = fixture.CreateMany<ListAllProjectsQueryModel>(50).ToList();
+    [Theory]
+    [CustomAutoData(
+        typeof(OmitCircularReferenceCustomization),
+        typeof(ListAllProjectsQueryModelCustomization),
+        typeof(DateOnlyCustomization))]
+    public async Task Handle_ShouldReturnUnsuccessful_WhenAnErrorOccurs(
+        [Frozen] IListAllProjectsQueryService mockListAllProjectsQueryService,
+        ListAllProjectsQueryHandler handler)
+    {
+        // Arrange
+        var errorMessage = "This is a test";
 
-            var query = new ListAllProjectsQuery(null, null, 10);
+        var query = new ListAllProjectsQuery(null, null);
 
-            var mock = listAllProjectsQueryModels.BuildMock();
+        mockListAllProjectsQueryService.ListAllProjects(query.ProjectStatus, query.Type)
+            .Throws(new Exception(errorMessage));
 
-            mockListAllProjectsQueryService.ListAllProjects(query.ProjectStatus, query.Type)
-                .Returns(mock);
+        // Act
+        var result = await handler.Handle(query, default);
 
-            // Act
-            var result = await handler.Handle(query, default);
+        // Assert
+        Assert.NotNull(result);
+        Assert.False(result.IsSuccess);
+        Assert.Equal(errorMessage, result.Error);
+    }
 
-            // Assert
-            Assert.NotNull(result);
-            Assert.True(result.IsSuccess);
-            Assert.Equal(0, result.Value?.Count);
-        }
+    [Theory]
+    [CustomAutoData(
+        typeof(OmitCircularReferenceCustomization),
+        typeof(ListAllProjectsQueryModelCustomization),
+        typeof(DateOnlyCustomization))]
+    public async Task Handle_ShouldNotThrow_WhenOptionalFieldsAreNull(
+        [Frozen] IListAllProjectsQueryService mockListAllProjectsQueryService,
+        ListAllProjectsQueryHandler handler,
+        IFixture fixture)
+    {
+        // Arrange
+        var queryModel = fixture.Create<ListAllProjectsQueryModel>();
 
-        [Theory]
-        [CustomAutoData(
-            typeof(OmitCircularReferenceCustomization),
-            typeof(ListAllProjectsQueryModelCustomization),
-            typeof(DateOnlyCustomization))]
-        public async Task Handle_ShouldReturnUnsuccessful_WhenAnErrorOccurs(
-            [Frozen] IListAllProjectsQueryService mockListAllProjectsQueryService,
-            ListAllProjectsQueryHandler handler)
-        {
-            // Arrange
-            var errorMessage = "This is a test";
+        queryModel.Project!.AssignedTo = null;
+        queryModel.Project.CompletedAt = null;
 
-            var query = new ListAllProjectsQuery(null, null);
+        var queryModels = new List<ListAllProjectsQueryModel> { queryModel };
+        var mock = queryModels.BuildMock();
 
-            mockListAllProjectsQueryService.ListAllProjects(query.ProjectStatus, query.Type)
-                .Throws(new Exception(errorMessage));
+        var query = new ListAllProjectsQuery(null, null);
 
-            // Act
-            var result = await handler.Handle(query, default);
+        mockListAllProjectsQueryService
+            .ListAllProjects(query.ProjectStatus, query.Type)
+            .Returns(mock);
 
-            // Assert
-            Assert.NotNull(result);
-            Assert.False(result.IsSuccess);
-            Assert.Equal(errorMessage, result.Error);
-        }
+        // Act
+        var result = await handler.Handle(query, default);
+
+        // Assert
+        Assert.NotNull(result);
+        Assert.True(result.IsSuccess);
+
+        var projected = result.Value!.First();
+        Assert.Null(projected.AssignedToFullName);
+        Assert.Null(projected.ProjectCompletionDate);
     }
 }
