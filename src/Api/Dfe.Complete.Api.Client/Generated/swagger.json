@@ -1983,14 +1983,6 @@
                 "$ref": "#/components/schemas/UserId"
               }
             ]
-          },
-          "project": {
-            "nullable": true,
-            "oneOf": [
-              {
-                "$ref": "#/components/schemas/Project"
-              }
-            ]
           }
         }
       },
