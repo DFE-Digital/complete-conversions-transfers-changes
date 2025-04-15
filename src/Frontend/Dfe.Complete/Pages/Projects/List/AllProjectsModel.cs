@@ -8,15 +8,16 @@ public abstract class AllProjectsModel(string currentNavigation) : BaseProjectsP
 {
     protected TabNavigationModel AllProjectsTabNavigationModel = new(TabNavigationModel.AllProjectsTabName);
 
-    public const string HandoverNavigation = "handover";
+    public const string HandoverNavigation = "all-projects-handover";
     public const string InProgressNavigation = "in-progress";
     public const string ByMonthNavigation = "by-month";
     public const string ByRegionNavigation = "by-region";
     public const string ByUserNavigation = "by-user";
     public const string ByTrustNavigation = "by-trust";
     public const string ByLocalAuthorityNavigation = "by-local-authority";
-    public const string CompletedNavigation = "Completed";
+    public const string CompletedNavigation = "completed";
     public const string StatisticsNavigation = "Statistics";
+    public const string ExportsNavigation = "all-projects-exports";
 
     public static string GetTrustProjectsUrl(ListTrustsWithProjectsResultModel trustModel)
     {
