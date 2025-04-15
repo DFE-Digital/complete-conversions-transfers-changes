@@ -20,6 +20,7 @@ Security in case of vulnerabilities.
  - Your team projects in progress list (`/projects/team/in-progress`)
  - Your team projects completed list (`/projects/team/completed`)
  - Added user (`ClaimsPrincipal`) extension to get users team `GetUserTeam`
+ - Added endpoint to the projectsController `ListAllProjectsInTrust`-`/v1/Projects/List/Trust`
 
 ### Changed
  - Updated route `/accessibility-statement` to `/accessibility`
@@ -30,6 +31,7 @@ Security in case of vulnerabilities.
 
 ### Fixed
  - Correctly identify test env based on environment name being "Test" (previously looking for "Staging")
+ - Added WireMock support back
 
 See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/main...production-2025-04-01.120-manual) for everything awaiting release
 
