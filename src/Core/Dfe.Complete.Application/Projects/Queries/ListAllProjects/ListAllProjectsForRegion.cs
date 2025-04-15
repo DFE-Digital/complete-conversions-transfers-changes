@@ -11,7 +11,8 @@ public record ListAllProjectsForRegionQuery(
     Region Region,
     ProjectState? ProjectStatus,
     ProjectType? Type,
-    bool ExcludeUnassigned = false)
+    AssignedToState? AssignedToState = null
+    )
     : PaginatedRequest<PaginatedResult<List<ListAllProjectsResultModel>>>;
 
 public class ListAllProjectsForRegionQueryHandler(
@@ -25,7 +26,7 @@ public class ListAllProjectsForRegionQueryHandler(
         try
         {
             var projectsForRegion = await listAllProjectsByFilterQueryService.ListAllProjectsByFilter(
-                request.ProjectStatus, request.Type, request.ExcludeUnassigned, region: request.Region)
+                request.ProjectStatus, request.Type, request.AssignedToState, region: request.Region)
                 .ToListAsync(cancellationToken);
 
             var paginatedResultModel = projectsForRegion.Select(proj =>

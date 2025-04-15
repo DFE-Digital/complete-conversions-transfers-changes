@@ -11,7 +11,7 @@ public record ListAllProjectsForTeamQuery(
     ProjectTeam Team,
     ProjectState? ProjectStatus,
     ProjectType? Type,
-    bool ExcludeUnassigned = false)
+    AssignedToState? AssignedToState = null)
     : PaginatedRequest<PaginatedResult<List<ListAllProjectsResultModel>>>;
 
 public class ListAllProjectsForTeamQueryHandler(IListAllProjectsByFilterQueryService listAllProjectsByFilterQueryService)
@@ -24,14 +24,14 @@ public class ListAllProjectsForTeamQueryHandler(IListAllProjectsByFilterQuerySer
         try
         {
             var projectsForTeam = await listAllProjectsByFilterQueryService.ListAllProjectsByFilter(
-                request.ProjectStatus, request.Type, request.ExcludeUnassigned, team: request.Team).ToListAsync(cancellationToken);
+                request.ProjectStatus, request.Type, request.AssignedToState, team: request.Team).ToListAsync(cancellationToken);
 
             var paginatedResultModel = projectsForTeam.Select(proj =>
                     ListAllProjectsResultModel.MapProjectAndEstablishmentToListAllProjectResultModel(proj.Project!, proj.Establishment))
                 .Skip(request.Page * request.Count)
                 .Take(request.Count)
                 .ToList();
-            
+
             return PaginatedResult<List<ListAllProjectsResultModel>>.Success(paginatedResultModel, projectsForTeam.Count);
         }
         catch (Exception e)
