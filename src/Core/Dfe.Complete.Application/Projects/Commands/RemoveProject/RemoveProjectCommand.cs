@@ -1,5 +1,6 @@
 ﻿using Dfe.Complete.Application.Common.Exceptions;
 using Dfe.Complete.Application.Common.Interfaces;
+using Dfe.Complete.Application.Extensions;
 using Dfe.Complete.Domain.Entities;
 using Dfe.Complete.Domain.Interfaces.Repositories;
 using Dfe.Complete.Domain.ValueObjects;
@@ -28,7 +29,7 @@ namespace Dfe.Complete.Application.Projects.Commands.RemoveProject
             // This is to prevent real projects from currently being deleted
             // This will have to be changed when we implement in app deletes
             // As well as making sure that we differentiate between soft and hard deletes
-            if (!hostEnvironment.IsDevelopment() && !(hostEnvironment.IsEnvironment("Test") && configuration["IntegrationTestOverride"] == "true"))
+            if (!hostEnvironment.IsDevelopment() && !(hostEnvironment.IsTest() && configuration["IntegrationTestOverride"] == "true"))
             {
                 throw new NotDevEnvironmentException();
             }

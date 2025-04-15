@@ -1,8 +1,8 @@
-using Dfe.Complete.Extensions;
+using Dfe.Complete.Application.Extensions;
 using Microsoft.Extensions.Hosting;
 using Moq;
 
-namespace Dfe.Complete.Tests.Extensions;
+namespace Dfe.Complete.Application.Tests.Extensions;
 
 public class IHostEnvironmentExtensionsTests
 {
