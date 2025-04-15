@@ -1,10 +1,12 @@
 ﻿using Dfe.Complete.Application.Common.Exceptions;
 using Dfe.Complete.Application.Common.Interfaces;
+using Dfe.Complete.Application.Extensions;
 using Dfe.Complete.Domain.Entities;
 using Dfe.Complete.Domain.Interfaces.Repositories;
 using Dfe.Complete.Domain.ValueObjects;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 
 namespace Dfe.Complete.Application.Projects.Commands.RemoveProject
@@ -17,12 +19,17 @@ namespace Dfe.Complete.Application.Projects.Commands.RemoveProject
         ICompleteRepository<Project> projectRepository,
         ICompleteRepository<TransferTasksData> transferTaskRepository,
         ICompleteRepository<ConversionTasksData> conversionTaskRepository,
-        IUnitOfWork unitOfWork)
+        IUnitOfWork unitOfWork,
+        IConfiguration configuration)
         : IRequestHandler<RemoveProjectCommand>
     {
         public async Task Handle(RemoveProjectCommand request, CancellationToken cancellationToken)
         {
-            if (!hostEnvironment.IsDevelopment())
+            // TODO: Remove temporary environment limiting
+            // This is to prevent real projects from currently being deleted
+            // This will have to be changed when we implement in app deletes
+            // As well as making sure that we differentiate between soft and hard deletes
+            if (!hostEnvironment.IsDevelopment() && !(hostEnvironment.IsTest() && configuration["IntegrationTestOverride"] == "true"))
             {
                 throw new NotDevEnvironmentException();
             }

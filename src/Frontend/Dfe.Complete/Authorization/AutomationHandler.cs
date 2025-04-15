@@ -1,4 +1,5 @@
-﻿using Dfe.Complete.Extensions;
+﻿using Dfe.Complete.Application.Extensions;
+using Dfe.Complete.Extensions;
 using Microsoft.Net.Http.Headers;
 
 namespace Dfe.Complete.Authorization

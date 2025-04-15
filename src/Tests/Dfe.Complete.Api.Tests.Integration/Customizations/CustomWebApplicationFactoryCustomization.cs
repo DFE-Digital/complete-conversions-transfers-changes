@@ -40,7 +40,8 @@ namespace Dfe.Complete.Api.Tests.Integration.Customizations
                 var config = new ConfigurationBuilder()
                     .AddInMemoryCollection(new Dictionary<string, string?>
                     {
-                        { "ApiClient:BaseUrl", client.BaseAddress!.ToString() }
+                        { "IntegrationTestOverride", "true" },
+                        { "CompleteApiClient:BaseUrl", client.BaseAddress!.ToString() }
                     })
                     .Build();
 

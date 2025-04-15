@@ -2,6 +2,7 @@ using Dfe.Complete.Attributes;
 using Dfe.Complete.Extensions;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Reflection;
+using Dfe.Complete.Application.Extensions;
 
 namespace Dfe.Complete.Pages.Diagnostics
 {
