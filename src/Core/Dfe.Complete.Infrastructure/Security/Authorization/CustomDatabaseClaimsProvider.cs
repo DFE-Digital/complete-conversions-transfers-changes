@@ -35,19 +35,9 @@ namespace Dfe.Complete.Infrastructure.Security.Authorization
                     additionalClaims.Add(new Claim(ClaimTypes.Role, userRecord.Team));
                 }
 
-                ProjectTeam userTeam;
-                try
-                {
-                    userTeam = EnumExtensions.FromDescription<ProjectTeam>(userRecord?.Team);
-
-                    if (userTeam.TeamIsRdo())
-                        additionalClaims.Add(new Claim(ClaimTypes.Role, "regional_delivery_officer"));
-
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine(e);
-                }
+                var userTeam = EnumExtensions.FromDescription<ProjectTeam>(userRecord.Team);
+                if (userTeam.TeamIsRdo())
+                    additionalClaims.Add(new Claim(ClaimTypes.Role, "regional_delivery_officer"));
 
                 if (userRecord.ManageTeam == true)
                     additionalClaims.Add(new Claim(ClaimTypes.Role, "manage_team"));
