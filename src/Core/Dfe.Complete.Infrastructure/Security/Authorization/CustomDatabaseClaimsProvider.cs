@@ -1,5 +1,8 @@
 ﻿using Dfe.Complete.Domain.Entities;
+using Dfe.Complete.Domain.Enums;
+using Dfe.Complete.Domain.Extensions;
 using Dfe.Complete.Domain.Interfaces.Repositories;
+using Dfe.Complete.Utils;
 using DfE.CoreLibs.Security.Interfaces;
 using Microsoft.Extensions.Caching.Memory;
 using System.Security.Claims;
@@ -30,6 +33,20 @@ namespace Dfe.Complete.Infrastructure.Security.Authorization
                 if (!string.IsNullOrEmpty(userRecord.Team))
                 {
                     additionalClaims.Add(new Claim(ClaimTypes.Role, userRecord.Team));
+                }
+
+                ProjectTeam userTeam;
+                try
+                {
+                    userTeam = EnumExtensions.FromDescription<ProjectTeam>(userRecord?.Team);
+
+                    if (userTeam.TeamIsRdo())
+                        additionalClaims.Add(new Claim(ClaimTypes.Role, "regional_delivery_officer"));
+
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e);
                 }
 
                 if (userRecord.ManageTeam == true)
