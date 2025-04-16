@@ -1,6 +1,8 @@
-﻿using Dfe.Complete.Application.Projects.Interfaces;
+using Dfe.Complete.Application.Projects.Interfaces;
 using Dfe.Complete.Application.Projects.Models;
+using Dfe.Complete.Domain.Entities;
 using Dfe.Complete.Domain.Enums;
+using Dfe.Complete.Domain.ValueObjects;
 using Dfe.Complete.Infrastructure.Database;
 using Microsoft.EntityFrameworkCore;
 
@@ -8,17 +10,62 @@ namespace Dfe.Complete.Infrastructure.QueryServices;
 
 internal class ListAllProjectsQueryService(CompleteContext context) : IListAllProjectsQueryService
 {
-    public IQueryable<ListAllProjectsQueryModel> ListAllProjects(ProjectState? projectStatus, ProjectType? type)
+    public IQueryable<ListAllProjectsQueryModel> ListAllProjects(ProjectState? projectStatus,
+        ProjectType? projectType,
+        UserId? assignedToUserId = null,
+        UserId? createdByUserId = null,
+        string? localAuthorityCode = "",
+        Region? region = null,
+        ProjectTeam? team = null)
     {
-        var query = context.Projects
+        var projects = context.Projects
             .Where(project => projectStatus == null || project.State == projectStatus)
-            .Where(project => type == null || type == project.Type)
-            .OrderBy(project => project.SignificantDate)
+            .Where(project => projectStatus != ProjectState.Active || project.AssignedToId != null)
+            .Where(project => projectType == null || projectType == project.Type);
+
+        //For now, limiting the service to one filter at a time unless requirement changes
+        IQueryable<GiasEstablishment> giasEstablishments = context.GiasEstablishments;
+
+        if (assignedToUserId != null && assignedToUserId.Value != Guid.Empty)
+        {
+            projects = projects.Where(project => project.AssignedToId != null && project.AssignedToId == assignedToUserId);
+            return GenerateQuery(projects, giasEstablishments);
+        }
+        
+        if (createdByUserId != null && createdByUserId.Value != Guid.Empty)
+        {
+            projects = projects.Where(project => project.RegionalDeliveryOfficerId != null && project.RegionalDeliveryOfficerId == createdByUserId);
+            return GenerateQuery(projects, giasEstablishments);
+        }
+
+        if (!string.IsNullOrEmpty(localAuthorityCode))
+        {
+            giasEstablishments = giasEstablishments.Where(establishment => establishment.LocalAuthorityCode == localAuthorityCode);
+            return GenerateQuery(projects, giasEstablishments);
+        }
+
+        if (region != null)
+        {
+            projects = projects.Where(project => project.Region == region);
+            return GenerateQuery(projects, giasEstablishments);
+        }
+
+        if (team != null)
+        {
+            projects = projects.Where(project => project.Team == team);
+            return GenerateQuery(projects, giasEstablishments);
+        }
+
+        return GenerateQuery(projects, giasEstablishments);
+    }
+
+    private static IQueryable<ListAllProjectsQueryModel> GenerateQuery(IQueryable<Project> projects, IQueryable<GiasEstablishment> giasEstablishments)
+    {
+        return projects
             .Include(p => p.AssignedTo)
             .Include(p => p.LocalAuthority)
-            .Join(context.GiasEstablishments, project => project.Urn, establishment => establishment.Urn,
+            .OrderBy(p => p.SignificantDate)
+            .Join(giasEstablishments, project => project.Urn, establishment => establishment.Urn,
                 (project, establishment) => new ListAllProjectsQueryModel(project, establishment));
-
-        return query;
     }
 }

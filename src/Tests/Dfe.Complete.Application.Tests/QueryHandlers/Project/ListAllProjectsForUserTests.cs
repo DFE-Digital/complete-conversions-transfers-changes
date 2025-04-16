@@ -27,14 +27,14 @@ public class ListAllProjectsForUserTests
         typeof(ListAllProjectsQueryModelCustomization),
         typeof(DateOnlyCustomization))]
     public async Task Handle_ShouldReturnCorrectList_WhenPaginationIsCorrect(
-        [Frozen] IListAllProjectsByFilterQueryService mockListAllProjectsByFilterQueryService,
+        [Frozen] IListAllProjectsQueryService mockListAllProjectsQueryService,
         [Frozen] Mock<ISender> mockSender,
         IFixture fixture)
     {
         //Arrange 
         var mockTrustsClient = new Mock<ITrustsV4Client>();
 
-        var handler = new ListAllProjectsForUserQueryHandler(mockListAllProjectsByFilterQueryService, 
+        var handler = new ListAllProjectsForUserQueryHandler(mockListAllProjectsQueryService, 
             mockTrustsClient.Object,
             mockSender.Object);
 
@@ -68,7 +68,7 @@ public class ListAllProjectsForUserTests
                         trustList.FirstOrDefault(t => t.Ukprn == item.Project.IncomingTrustUkprn).Name))
             .Skip(20).Take(20).ToList();
 
-        mockListAllProjectsByFilterQueryService.ListAllProjectsByFilter(ProjectState.Active, null, assignedToUserId: userDto.Id)
+        mockListAllProjectsQueryService.ListAllProjects(ProjectState.Active, null, assignedToUserId: userDto.Id)
             .Returns(mockListAllProjectsForUserQueryModels.BuildMock());
 
         var query = new ListAllProjectsForUserQuery(ProjectState.Active, userDto.ActiveDirectoryUserId, ProjectUserFilter.AssignedTo) { Page = 1 };
@@ -92,14 +92,14 @@ public class ListAllProjectsForUserTests
         typeof(ListAllProjectsQueryModelCustomization),
         typeof(DateOnlyCustomization))]
     public async Task Handle_ShouldReturnCorrectList_WhenAllPagesAreSkipped(
-        [Frozen] IListAllProjectsByFilterQueryService mockListAllProjectsByFilterQueryService,
+        [Frozen] IListAllProjectsQueryService mockListAllProjectsQueryService,
         [Frozen] Mock<ISender> mockSender,
         IFixture fixture)
     {
         //Arrange 
         var mockTrustsClient = new Mock<ITrustsV4Client>();
 
-        var handler = new ListAllProjectsForUserQueryHandler(mockListAllProjectsByFilterQueryService, mockTrustsClient.Object,
+        var handler = new ListAllProjectsForUserQueryHandler(mockListAllProjectsQueryService, mockTrustsClient.Object,
             mockSender.Object);
 
         var userDto = fixture.Create<UserDto>();
@@ -121,7 +121,7 @@ public class ListAllProjectsForUserTests
             projectsQueryModel.Project.OutgoingTrustUkprn = trustDtos.OrderBy(_ => new Random().Next()).First().Ukprn;
         }
         
-        mockListAllProjectsByFilterQueryService.ListAllProjectsByFilter(ProjectState.Active, null, assignedToUserId: userDto.Id)
+        mockListAllProjectsQueryService.ListAllProjects(ProjectState.Active, null, assignedToUserId: userDto.Id)
             .Returns(mockListAllProjectsForUserQueryModels.BuildMock());
 
         var query = new ListAllProjectsForUserQuery(ProjectState.Active, userDto.ActiveDirectoryUserId, ProjectUserFilter.AssignedTo) { Page = 50 };
@@ -141,14 +141,14 @@ public class ListAllProjectsForUserTests
         typeof(ListAllProjectsQueryModelCustomization),
         typeof(DateOnlyCustomization))]
     public async Task Handle_ShouldReturnUnsuccessful_WhenAnErrorOccurs(
-        [Frozen] IListAllProjectsByFilterQueryService mockListAllProjectsByFilterQueryService,
+        [Frozen] IListAllProjectsQueryService mockListAllProjectsQueryService,
         [Frozen] Mock<ISender> mockSender,
         IFixture fixture)
     {
         //Arrange 
         var mockTrustsClient = new Mock<ITrustsV4Client>();
 
-        var handler = new ListAllProjectsForUserQueryHandler(mockListAllProjectsByFilterQueryService, mockTrustsClient.Object,
+        var handler = new ListAllProjectsForUserQueryHandler(mockListAllProjectsQueryService, mockTrustsClient.Object,
             mockSender.Object);
 
         const string errorMessage = "this is a test";

@@ -13,7 +13,7 @@ public record ListAllProjectsForUserQuery(ProjectState? State, string UserAdId, 
     : PaginatedRequest<PaginatedResult<List<ListAllProjectsForUserQueryResultModel>>>;
 
 public class ListAllProjectsForUserQueryHandler(
-    IListAllProjectsByFilterQueryService listAllProjectsByFilterQueryService,
+    IListAllProjectsQueryService listAllProjectsQueryService,
     ITrustsV4Client trustsClient,
     ISender sender)
     : IRequestHandler<ListAllProjectsForUserQuery, PaginatedResult<List<ListAllProjectsForUserQueryResultModel>>>
@@ -30,8 +30,8 @@ public class ListAllProjectsForUserQueryHandler(
 
             var assignedTo = request.ProjectUserFilter == ProjectUserFilter.AssignedTo ? user.Value?.Id : null;
             var createdBy = request.ProjectUserFilter == ProjectUserFilter.CreatedBy ? user.Value?.Id : null;
-            var projectsForUser = await listAllProjectsByFilterQueryService
-                .ListAllProjectsByFilter(request.State, null, assignedToUserId: assignedTo, createdByUserId: createdBy)
+            var projectsForUser = await listAllProjectsQueryService
+                .ListAllProjects(request.State, null, assignedToUserId: assignedTo, createdByUserId: createdBy)
                 .ToListAsync(cancellationToken);
 
             var allProjectTrustUkPrns = projectsForUser
