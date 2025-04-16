@@ -15,7 +15,7 @@ public record ListAllProjectsForTeamHandoverQuery(
     : PaginatedRequest<PaginatedResult<List<ListAllProjectsResultModel>>>;
 
 public class ListAllProjectsForTeamHandoverQueryHandler(
-    IListAllProjectsByFilterQueryService listAllProjectsByFilterQueryService)
+    IListAllProjectsQueryService listAllProjectsQueryService)
     : IRequestHandler<ListAllProjectsForTeamHandoverQuery, PaginatedResult<List<ListAllProjectsResultModel>>>
 
 {
@@ -24,7 +24,7 @@ public class ListAllProjectsForTeamHandoverQueryHandler(
     {
         try
         {
-            var projectsHandedOverForTeam = await listAllProjectsByFilterQueryService.ListAllProjectsByFilter(
+            var projectsHandedOverForTeam = await listAllProjectsQueryService.ListAllProjects(
                 request.ProjectStatus, request.Type, region: request.Region, team: ProjectTeam.RegionalCaseWorkerServices)
                 .ToListAsync(cancellationToken);
 

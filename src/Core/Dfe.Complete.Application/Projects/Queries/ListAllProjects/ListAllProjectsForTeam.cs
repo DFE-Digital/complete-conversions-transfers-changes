@@ -15,7 +15,7 @@ public record ListAllProjectsForTeamQuery(
     OrderProjectQueryBy? OrderBy = null)
     : PaginatedRequest<PaginatedResult<List<ListAllProjectsResultModel>>>;
 
-public class ListAllProjectsForTeamQueryHandler(IListAllProjectsByFilterQueryService listAllProjectsByFilterQueryService)
+public class ListAllProjectsForTeamQueryHandler(IListAllProjectsQueryService listAllProjectsQueryService)
     : IRequestHandler<ListAllProjectsForTeamQuery, PaginatedResult<List<ListAllProjectsResultModel>>>
 
 {
@@ -24,7 +24,7 @@ public class ListAllProjectsForTeamQueryHandler(IListAllProjectsByFilterQuerySer
     {
         try
         {
-            var projectsForTeam = await listAllProjectsByFilterQueryService.ListAllProjectsByFilter(
+            var projectsForTeam = await listAllProjectsQueryService.ListAllProjects(
                 request.ProjectStatus, request.Type, request.AssignedToState, team: request.Team, orderBy: request.OrderBy).ToListAsync(cancellationToken);
 
             var paginatedResultModel = projectsForTeam.Select(proj =>
