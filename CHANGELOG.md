@@ -20,6 +20,7 @@ Security in case of vulnerabilities.
  - Your team projects in progress list (`/projects/team/in-progress`)
  - Your team projects completed list (`/projects/team/completed`)
  - Added user (`ClaimsPrincipal`) extension to get users team `GetUserTeam`
+ - Added endpoint to the projectsController `ListAllProjectsInTrust`-`/v1/Projects/List/Trust`
  - Added missing "project for region" header
  - User redirection on app load based on their permissions
  - Add navigation items to be more consistent with ruby UI
@@ -35,6 +36,7 @@ Security in case of vulnerabilities.
 
 ### Fixed
  - Correctly identify test env based on environment name being "Test" (previously looking for "Staging")
+ - Added WireMock support back
  - Show 404 page when get projects for region `/projects/all/regions/{region}` has a "bad" region in path param
  - null `AssignedTo` in `ListAllProjects` throws an unexpected error
 
