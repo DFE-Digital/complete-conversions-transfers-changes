@@ -20,10 +20,9 @@ public static class UserTabAccessHelper
 
     public static bool UserHasTabAccess(ProjectTeam userTeam, string tabName)
     {
-
         if (tabName == YourProjectsTabName) return userTeam.TeamIsRdo() || userTeam == ProjectTeam.RegionalCaseWorkerServices;
         if (tabName == YourTeamProjectsTabName) return userTeam.TeamIsRdo() || userTeam == ProjectTeam.RegionalCaseWorkerServices;
-        if (tabName == AllProjects_HandoverTabName) return userTeam.TeamIsRdo();
+        if (tabName == AllProjects_HandoverTabName) return userTeam.TeamIsRdo() || userTeam == ProjectTeam.ServiceSupport;
         if (tabName == GroupsTabName) return userTeam.TeamIsRdo() || userTeam == ProjectTeam.ServiceSupport || userTeam == ProjectTeam.RegionalCaseWorkerServices;
         if (tabName == ServiceSupportProjectsTabName) return userTeam == ProjectTeam.ServiceSupport;
         if (tabName == AllProjects_ExportsTabName) return userTeam is ProjectTeam.ServiceSupport or ProjectTeam.BusinessSupport or ProjectTeam.DataConsumers;
