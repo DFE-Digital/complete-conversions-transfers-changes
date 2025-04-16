@@ -20,6 +20,10 @@ Security in case of vulnerabilities.
  - Your team projects in progress list (`/projects/team/in-progress`)
  - Your team projects completed list (`/projects/team/completed`)
  - Added user (`ClaimsPrincipal`) extension to get users team `GetUserTeam`
+ - Added endpoint to the projectsController `ListAllProjectsInTrust`-`/v1/Projects/List/Trust`
+ - Added missing "project for region" header
+ - User redirection on app load based on their permissions
+ - Add navigation items to be more consistent with ruby UI
  - New route `/projects/all/by-month/conversions/{month}/{year}`
  - New route `/projects/all/by-month/transfers/{month}/{year}`
  - New route `/projects/all/by-month/conversions/from/{fromMonth}/{fromYear}/to/{toMonth}/{toYear}`
@@ -31,9 +35,12 @@ Security in case of vulnerabilities.
  - Updated route `/projects/transfer/new_mat` to `/projects/transfers/new_mat`
  - Updated route `/projects/transfer-projects/new` to `/projects/transfers/new`
  - Updated ListAllProjects in-progress and Count all projects in progress to filter out unassigned projects
+ - Move tab access logic to a helper `UserTabAccessHelper`
 
 ### Fixed
  - Correctly identify test env based on environment name being "Test" (previously looking for "Staging")
+ - Added WireMock support back
+ - Show 404 page when get projects for region `/projects/all/regions/{region}` has a "bad" region in path param
  - null `AssignedTo` in `ListAllProjects` throws an unexpected error
 
 See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/main...production-2025-04-01.120-manual) for everything awaiting release

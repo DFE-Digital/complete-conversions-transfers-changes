@@ -1,4 +1,6 @@
-namespace Dfe.Complete.Extensions;
+using Microsoft.Extensions.Hosting;
+
+namespace Dfe.Complete.Application.Extensions;
 
 public static class IHostEnvironmentExtensions
 {
