@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Dfe.Complete.Application.Projects.Queries.ListAllProjects;
 
-public record ListAllProjectsForUserQuery(ProjectState? State, string UserAdId)
+public record ListAllProjectsForUserQuery(ProjectState? State, string UserAdId, ProjectUserFilter ProjectUserFilter)
     : PaginatedRequest<PaginatedResult<List<ListAllProjectsForUserQueryResultModel>>>;
 
 public class ListAllProjectsForUserQueryHandler(
@@ -28,7 +28,11 @@ public class ListAllProjectsForUserQueryHandler(
                 throw new Exception("User not found.");
 
 
-            var projectsForUser = await listAllProjectsByFilterQueryService.ListAllProjectsByFilter(request.State, null, userId: user.Value.Id).ToListAsync(cancellationToken);
+            var assignedTo = request.ProjectUserFilter == ProjectUserFilter.AssignedTo ? user.Value?.Id : null;
+            var createdBy = request.ProjectUserFilter == ProjectUserFilter.CreatedBy ? user.Value?.Id : null;
+            var projectsForUser = await listAllProjectsByFilterQueryService
+                .ListAllProjectsByFilter(request.State, null, assignedToUserId: assignedTo, createdByUserId: createdBy)
+                .ToListAsync(cancellationToken);
 
             var allProjectTrustUkPrns = projectsForUser
                 .SelectMany(p => new[]
@@ -41,7 +45,10 @@ public class ListAllProjectsForUserQueryHandler(
 
             var allTrusts = await trustsClient.GetByUkprnsAllAsync(allProjectTrustUkPrns, cancellationToken);
 
-            var result = projectsForUser.Select(p => ListAllProjectsForUserQueryResultModel
+            var result = projectsForUser
+                .Skip(request.Page * request.Count)
+                .Take(request.Count)
+                .Select(p => ListAllProjectsForUserQueryResultModel
                     .MapProjectAndEstablishmentToListAllProjectsForUserQueryResultModel(
                         p.Project,
                         p.Establishment,
@@ -49,8 +56,6 @@ public class ListAllProjectsForUserQueryHandler(
                             trust.Ukprn == p.Project?.OutgoingTrustUkprn?.Value.ToString())?.Name,
                         incomingTrustName: allTrusts.FirstOrDefault(trust =>
                             trust.Ukprn == p.Project?.IncomingTrustUkprn?.Value.ToString())?.Name))
-                .Skip(request.Page * request.Count)
-                .Take(request.Count)
                 .ToList();
 
             return PaginatedResult<List<ListAllProjectsForUserQueryResultModel>>.Success(result, projectsForUser.Count);

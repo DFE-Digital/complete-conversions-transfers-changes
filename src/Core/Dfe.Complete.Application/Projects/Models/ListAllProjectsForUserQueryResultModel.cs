@@ -13,7 +13,8 @@ public record ListAllProjectsForUserQueryResultModel(
     string? IncomingTrustName,
     string? OutgoingTrustName,
     string LocalAuthority,
-    DateOnly? ConversionOrTransferDate
+    DateOnly? ConversionOrTransferDate,
+    User? AssignedTo
 )
 {
     public static ListAllProjectsForUserQueryResultModel MapProjectAndEstablishmentToListAllProjectsForUserQueryResultModel(Project project,
@@ -27,7 +28,8 @@ public record ListAllProjectsForUserQueryResultModel(
             incomingTrustName,
             outgoingTrustName,
             giasEstablishment.LocalAuthorityName,
-            project.SignificantDate
+            project.SignificantDate,
+            project.AssignedTo
         );
     }
 }
