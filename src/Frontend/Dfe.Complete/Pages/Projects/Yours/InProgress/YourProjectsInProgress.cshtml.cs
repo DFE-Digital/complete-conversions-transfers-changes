@@ -19,7 +19,7 @@ public class YourProjectsInProgress(ISender sender) : YourProjectsModel(InProgre
 
         var userAdId = User.GetUserAdId();
 
-        var result = await sender.Send(new ListAllProjectsForUserQuery(ProjectState.Active, userAdId)
+        var result = await sender.Send(new ListAllProjectsForUserQuery(ProjectState.Active, userAdId, ProjectUserFilter.AssignedTo)
             { Count = PageSize, Page = PageNumber - 1 });
 
         ProjectsForUser = result.Value ?? [];

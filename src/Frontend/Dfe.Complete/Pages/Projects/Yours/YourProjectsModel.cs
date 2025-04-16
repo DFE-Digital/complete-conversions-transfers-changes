@@ -10,6 +10,7 @@ public abstract class YourProjectsModel(string currentNavigation) : PageModel
     protected TabNavigationModel YourProjectsTabNavigationModel = new(TabNavigationModel.YourProjectsTabName);
     
     public const string InProgressNavigation = "in-progress";
+    public const string AddedByYouNavigation = "added-by";
     
     public string CurrentNavigationItem { get; init; } = currentNavigation;
 
