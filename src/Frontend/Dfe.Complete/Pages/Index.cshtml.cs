@@ -14,12 +14,11 @@ namespace Dfe.Complete.Pages
 		{
 			ViewData[TabNavigationModel.ViewDataKey] = new TabNavigationModel(TabNavigationModel.YourProjectsTabName);
 
-			var userTeam = await User.GetUserTeam(sender);
-
 			string route;
 
-			if (userTeam is ProjectTeam.BusinessSupport or ProjectTeam.DataConsumers) route = RouteConstants.ProjectsInProgress;
-			else if (userTeam is ProjectTeam.ServiceSupport) route = RouteConstants.ServiceSupportProjects;
+			if (User.HasRole("business_support") || User.HasRole("data_consumers")) route = RouteConstants.ProjectsInProgress;
+			else if (User.HasRole("service_support")) route = RouteConstants.ServiceSupportProjects;
+			else if (User.HasRole("manage_team")) route = RouteConstants.TeamProjectsUnassigned;
 			else route = RouteConstants.YourProjectsInProgress;
 
 			return Redirect(route);
