@@ -20,15 +20,26 @@ public class UserTabAccessHelperTests
     [Theory]
     [InlineData(ProjectTeam.BusinessSupport, "your-team-projects", false)]
     [InlineData(ProjectTeam.RegionalCaseWorkerServices, "your-team-projects", true)]
-    [InlineData(ProjectTeam.London, "your-team-projects", true)]
-    [InlineData(ProjectTeam.London, "your-projects", true)]
-    [InlineData(ProjectTeam.London, "all-projects-handover", true)]
     [InlineData(ProjectTeam.ServiceSupport, "groups", true)]
     [InlineData(ProjectTeam.ServiceSupport, "service-support", true)]
     [InlineData(ProjectTeam.ServiceSupport, "all-projects-exports", true)]
     public void UserHasTabAccess_ProtectedTab_ReturnsCorrectAccessForTeam(ProjectTeam userTeam, string route, bool expectedPermission)
     {
         var claims = new List<Claim> { new(ClaimTypes.Role, userTeam.ToDescription()) };
+        var identity = new ClaimsIdentity(claims, "custom");
+        var principal = new ClaimsPrincipal(identity);
+
+        var result = UserTabAccessHelper.UserHasTabAccess(principal, route);
+        Assert.Equal(expectedPermission, result);
+    }
+
+    [Theory]
+    [InlineData("your-team-projects", true)]
+    [InlineData("your-projects", true)]
+    [InlineData("all-projects-handover", true)]
+    public void UserHasTabAccess_ProtectedTab_ReturnsCorrectAccessForRdo(string route, bool expectedPermission)
+    {
+        var claims = new List<Claim> { new(ClaimTypes.Role, "regional_delivery_officer") };
         var identity = new ClaimsIdentity(claims, "custom");
         var principal = new ClaimsPrincipal(identity);
 
