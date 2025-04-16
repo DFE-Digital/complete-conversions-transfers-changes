@@ -22,6 +22,12 @@ export function shouldNotHaveAccessToViewYourTeamUnassignedProjects() {
     // cy.visit("/projects/team/unassigned").notAuthorisedToPerformAction(); // not implemented auth
 }
 
+export function shouldNotHaveAccessToViewProjectExports() {
+    navBar.goToAllProjects();
+    allProjects.doesNotContainFilter("Exports");
+    // cy.visit("/projects/all/export").notAuthorisedToPerformAction(); // not implemented auth
+}
+
 export function shouldNotBeAbleToCreateAProject() {
     cy.visit("/projects/yours/in-progress");
     homePage.unableToAddAProject();
