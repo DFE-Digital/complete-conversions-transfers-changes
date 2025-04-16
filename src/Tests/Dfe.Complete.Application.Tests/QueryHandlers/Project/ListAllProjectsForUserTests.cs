@@ -68,10 +68,10 @@ public class ListAllProjectsForUserTests
                         trustList.FirstOrDefault(t => t.Ukprn == item.Project.IncomingTrustUkprn).Name))
             .Skip(20).Take(20).ToList();
 
-        mockListAllProjectsByFilterQueryService.ListAllProjectsByFilter(ProjectState.Active, null, userId: userDto.Id)
+        mockListAllProjectsByFilterQueryService.ListAllProjectsByFilter(ProjectState.Active, null, assignedToUserId: userDto.Id)
             .Returns(mockListAllProjectsForUserQueryModels.BuildMock());
 
-        var query = new ListAllProjectsForUserQuery(ProjectState.Active, userDto.ActiveDirectoryUserId) { Page = 1 };
+        var query = new ListAllProjectsForUserQuery(ProjectState.Active, userDto.ActiveDirectoryUserId, ProjectUserFilter.AssignedTo) { Page = 1 };
 
         //Act
         var result = await handler.Handle(query, default);
@@ -121,10 +121,10 @@ public class ListAllProjectsForUserTests
             projectsQueryModel.Project.OutgoingTrustUkprn = trustDtos.OrderBy(_ => new Random().Next()).First().Ukprn;
         }
         
-        mockListAllProjectsByFilterQueryService.ListAllProjectsByFilter(ProjectState.Active, null, userId: userDto.Id)
+        mockListAllProjectsByFilterQueryService.ListAllProjectsByFilter(ProjectState.Active, null, assignedToUserId: userDto.Id)
             .Returns(mockListAllProjectsForUserQueryModels.BuildMock());
 
-        var query = new ListAllProjectsForUserQuery(ProjectState.Active, userDto.ActiveDirectoryUserId) { Page = 50 };
+        var query = new ListAllProjectsForUserQuery(ProjectState.Active, userDto.ActiveDirectoryUserId, ProjectUserFilter.AssignedTo) { Page = 50 };
 
         //Act
         var result = await handler.Handle(query, default);
@@ -157,7 +157,7 @@ public class ListAllProjectsForUserTests
         mockSender.Setup(sender => sender.Send(It.IsAny<GetUserByAdIdQuery>(), It.IsAny<CancellationToken>()))
             .ThrowsAsync(new Exception(errorMessage));
         
-        var query = new ListAllProjectsForUserQuery(ProjectState.Active, userDto.ActiveDirectoryUserId) { Page = 50 };
+        var query = new ListAllProjectsForUserQuery(ProjectState.Active, userDto.ActiveDirectoryUserId, ProjectUserFilter.AssignedTo) { Page = 50 };
 
         //Act
         var result = await handler.Handle(query, default);
