@@ -166,6 +166,21 @@ namespace Dfe.Complete.Client.Contracts
         System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<ListAllProjectsResultModel>> ListAllProjectsAsync(ProjectState? projectStatus, ProjectType? type, int? page, int? count, System.Threading.CancellationToken cancellationToken);
 
         /// <summary>
+        /// Returns a list of Projects related to a specific trust
+        /// </summary>
+        /// <returns>Project</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<ListAllProjectsResultModel>> ListAllProjectsInTrustAsync(string? identifier, bool? isFormAMat, int? page, int? count);
+
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>
+        /// Returns a list of Projects related to a specific trust
+        /// </summary>
+        /// <returns>Project</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<ListAllProjectsResultModel>> ListAllProjectsInTrustAsync(string? identifier, bool? isFormAMat, int? page, int? count, System.Threading.CancellationToken cancellationToken);
+
+        /// <summary>
         /// Returns the number of Projects
         /// </summary>
         /// <returns>Project</returns>

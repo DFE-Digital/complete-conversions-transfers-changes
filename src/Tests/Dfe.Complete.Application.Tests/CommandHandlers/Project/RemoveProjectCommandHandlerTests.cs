@@ -1,0 +1,77 @@
+﻿using AutoFixture.Xunit2;
+using Dfe.Complete.Application.Common.Exceptions;
+using Dfe.Complete.Application.Common.Interfaces;
+using Dfe.Complete.Application.Projects.Commands.RemoveProject;
+using Dfe.Complete.Domain.Entities;
+using Dfe.Complete.Domain.Interfaces.Repositories;
+using Dfe.Complete.Tests.Common.Customizations.Behaviours;
+using DfE.CoreLibs.Testing.AutoFixture.Attributes;
+using DfE.CoreLibs.Testing.AutoFixture.Customizations;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Hosting.Internal;
+using Moq;
+
+namespace Dfe.Complete.Application.Tests.CommandHandlers.Project;
+
+public class RemoveProjectCommandHandlerTests
+{
+    [Theory]
+    [CustomAutoData(typeof(DateOnlyCustomization),
+        typeof(IgnoreVirtualMembersCustomisation))]
+    public async Task Handle_InWrongEnvironment_WillThrowError(
+        [Frozen] ICompleteRepository<Domain.Entities.Project> mockProjectRepository,
+        [Frozen] ICompleteRepository<TransferTasksData> mockTransferTaskRepository,
+        [Frozen] ICompleteRepository<ConversionTasksData> mockConversionTaskRepository,
+        RemoveProjectCommand command
+    )
+    {
+        // Arrange
+        var configMock = new Mock<IConfiguration>();
+        var unitOfWorkMock = new Mock<IUnitOfWork>();
+
+        IHostEnvironment host = new HostingEnvironment();
+        host.EnvironmentName = "UnitTest";
+        configMock.Setup(c => c["IntegrationTestOverride"]).Returns("true");
+
+        var handler = new RemoveProjectCommandHandler(
+            host, 
+            mockProjectRepository, 
+            mockTransferTaskRepository, 
+            mockConversionTaskRepository, 
+            unitOfWorkMock.Object, 
+            configMock.Object);
+
+        // Act & Assert
+        await Assert.ThrowsAsync<NotDevEnvironmentException>(() => handler.Handle(command, CancellationToken.None));
+    }
+    
+    [Theory]
+    [CustomAutoData(typeof(DateOnlyCustomization),
+        typeof(IgnoreVirtualMembersCustomisation))]
+    public async Task Handle_TestEnvironmentWithoutOverrideFlag_WillThrowError(
+        [Frozen] ICompleteRepository<Domain.Entities.Project> mockProjectRepository,
+        [Frozen] ICompleteRepository<TransferTasksData> mockTransferTaskRepository,
+        [Frozen] ICompleteRepository<ConversionTasksData> mockConversionTaskRepository,
+        RemoveProjectCommand command
+    )
+    {
+        // Arrange
+        var configMock = new Mock<IConfiguration>();
+        var unitOfWorkMock = new Mock<IUnitOfWork>();
+        IHostEnvironment host = new HostingEnvironment();
+        host.EnvironmentName = "Test";
+        configMock.Setup(c => c["IntegrationTestOverride"]).Returns("false");
+
+        var handler = new RemoveProjectCommandHandler(
+            host, 
+            mockProjectRepository, 
+            mockTransferTaskRepository, 
+            mockConversionTaskRepository, 
+            unitOfWorkMock.Object, 
+            configMock.Object);
+
+        // Act & Assert
+        await Assert.ThrowsAsync<NotDevEnvironmentException>(() => handler.Handle(command, CancellationToken.None));
+    }
+}

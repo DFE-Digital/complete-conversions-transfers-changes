@@ -114,6 +114,22 @@ namespace Dfe.Complete.Api.Controllers
         }
 
         /// <summary>
+        /// Returns a list of Projects related to a specific trust
+        /// </summary>
+        /// <param name="request">The request.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        [Authorize(Policy = "CanRead")]
+        [HttpGet]
+        [Route("List/Trust")]
+        [SwaggerResponse(200, "Project", typeof(List<ListAllProjectsResultModel>))]
+        [SwaggerResponse(400, "Invalid request data.")]
+        public async Task<IActionResult> ListAllProjectsInTrustAsync([FromQuery] ListAllProjectsInTrustQuery request, CancellationToken cancellationToken)
+        {
+            var project = await sender.Send(request, cancellationToken);
+            return Ok(project.Value?.projects ?? []);
+        }
+        
+        /// <summary>
         /// Returns the number of Projects
         /// </summary>
         /// <param name="request">The request.</param>
