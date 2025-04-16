@@ -1,7 +1,7 @@
-﻿@using Dfe.Complete.Pages.Projects.List
+﻿@using Dfe.Complete.Pages.Projects.Team;
 @using Dfe.Complete.Constants;
 
-@model Dfe.Complete.Pages.Projects.List.YourTeamProjectsModel
+@model Dfe.Complete.Pages.Projects.Team.YourTeamProjectsModel
 @{
   Layout = "Shared/_Layout";
   var ariaCurrentValue = "page";
@@ -19,6 +19,11 @@
               <a class="moj-primary-navigation__link"
                 aria-current="@IsCurrentNav(YourTeamProjectsModel.InProgressNavigation)"
                 href="@RouteConstants.TeamProjectsInProgress">In progress</a>
+            </li>
+            <li class="moj-primary-navigation__item">
+              <a class="moj-primary-navigation__link"
+                aria-current="@IsCurrentNav(YourTeamProjectsModel.CompletedNavigation)"
+                href="@RouteConstants.TeamProjectsCompleted">Completed</a>
             </li>
           </ul>
         </nav>
