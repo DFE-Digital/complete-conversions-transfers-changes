@@ -1,8 +1,6 @@
 import {
     shouldBeAbleToAssignUnassignedProjectsToUsers,
-    shouldNotBeAbleToViewAndEditLocalAuthorities,
-    shouldNotBeAbleToViewAndEditUsers,
-    shouldNotBeAbleToViewConversionURNs,
+    shouldNotHaveAccessToViewAndEditUsers,
 } from "cypress/support/reusableTests";
 import { before, beforeEach } from "mocha";
 import projectRemover from "cypress/api/projectRemover";
@@ -10,11 +8,12 @@ import projectApi from "cypress/api/projectApi";
 import { ProjectBuilder } from "cypress/api/projectBuilder";
 import { nextMonth } from "cypress/constants/stringTestConstants";
 import { rdoTeamLeaderUser } from "cypress/constants/cypressConstants";
+import navBar from "cypress/pages/navBar";
 
 const unassignedProject = ProjectBuilder.createConversionProjectRequest(nextMonth, 103845, "");
 const unassignedProjectSchoolName = "Jesson's CofE Primary School (VA)";
 
-describe.skip("Capabilities and permissions of the regional casework services team leader user", () => {
+describe("Capabilities and permissions of the regional delivery officer team leader user", () => {
     before(() => {
         projectRemover.removeProjectIfItExists(`${unassignedProject.urn.value}`);
         projectApi.createConversionProject(unassignedProject, "");
@@ -26,7 +25,20 @@ describe.skip("Capabilities and permissions of the regional casework services te
         cy.visit("/");
     });
 
-    it("Should be able to assign unassigned projects to users", () => {
+    it("Should direct user to all unassigned team projects after login", () => {
+        cy.url().should("include", "/projects/team/unassigned");
+    });
+
+    it("Should be able to view 'Your projects', 'Your team projects', 'All projects' and 'Groups' sections", () => {
+        navBar.ableToView(["Your projects", "Your team projects", "All projects", "Groups"]);
+    });
+
+    it("Should NOT be able to view 'Service support' section", () => {
+        navBar.unableToView(["Service support"]);
+    });
+
+    it.skip("Should be able to assign unassigned projects to users", () => {
+        // not implemented
         shouldBeAbleToAssignUnassignedProjectsToUsers(unassignedProjectSchoolName);
     });
 
@@ -34,18 +46,16 @@ describe.skip("Capabilities and permissions of the regional casework services te
         // not implemented
     });
 
-    it.skip("Should NOT be able to view and edit users", () => {
+    it.skip("Should NOT have access to view and edit users", () => {
         // not implemented
-        shouldNotBeAbleToViewAndEditUsers();
+        shouldNotHaveAccessToViewAndEditUsers();
     });
 
     it.skip("Should NOT be able to view and edit local authorities", () => {
-        // not implemented
-        shouldNotBeAbleToViewAndEditLocalAuthorities();
+        // this can be viewed in the Ruby app currently?
     });
 
     it.skip("Should NOT be able to view conversion URNs", () => {
-        // not implemented
-        shouldNotBeAbleToViewConversionURNs();
+        // this can be viewed in the Ruby app currently?
     });
 });

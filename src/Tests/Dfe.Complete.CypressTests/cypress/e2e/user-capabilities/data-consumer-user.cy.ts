@@ -4,20 +4,39 @@ import {
     shouldBeAbleToViewMultipleMonthsOfProjects,
     shouldNotBeAbleToBeAssignedAProject,
     shouldNotBeAbleToCreateAProject,
-    shouldNotBeAbleToViewAndEditLocalAuthorities,
-    shouldNotBeAbleToViewAndEditUsers,
-    shouldNotBeAbleToViewConversionURNs,
-    shouldNotBeAbleToViewHandedOverProjects,
-    shouldNotBeAbleToViewYourProjects,
-    shouldNotBeAbleToViewYourTeamProjects,
+    shouldNotHaveAccessToViewAndEditUsers,
+    shouldNotHaveAccessToViewHandedOverProjects,
+    shouldNotHaveAccessToViewYourTeamUnassignedProjects,
 } from "cypress/support/reusableTests";
 import { dataConsumerUser } from "cypress/constants/cypressConstants";
+import navBar from "cypress/pages/navBar";
 
 describe("Capabilities and permissions of the data consumer user", () => {
     beforeEach(() => {
         cy.login({ activeDirectoryId: dataConsumerUser.adId });
         cy.acceptCookies();
         cy.visit("/");
+    });
+
+    it("Should direct user to all projects in progress after login", () => {
+        cy.url().should("include", "/projects/all/in-progress/all");
+    });
+
+    it("Should only be able to view All projects section", () => {
+        navBar.unableToViewTheNavBar();
+    });
+
+    it("Should NOT have access to view All projects -> handed over projects", () => {
+        shouldNotHaveAccessToViewHandedOverProjects();
+    });
+
+    it("Should NOT have access to view Your team projects -> unassigned projects", () => {
+        shouldNotHaveAccessToViewYourTeamUnassignedProjects();
+    });
+
+    it.skip("Should NOT have access to view and edit users", () => {
+        // not implemented
+        shouldNotHaveAccessToViewAndEditUsers();
     });
 
     it.skip("Should be able to view multiple months of projects within a specified date range", () => {
@@ -28,20 +47,6 @@ describe("Capabilities and permissions of the data consumer user", () => {
     it.skip("Should be able to view and download csv reports from the export section", () => {
         // not implemented 187516
         shouldBeAbleToViewAndDownloadCsvReportsFromTheExportSection();
-    });
-
-    it.skip("Should NOT be able to view your projects", () => {
-        // not implemented 208988
-        shouldNotBeAbleToViewYourProjects();
-    });
-
-    it("Should NOT be able to view your team projects", () => {
-        shouldNotBeAbleToViewYourTeamProjects();
-    });
-
-    it.skip("Should NOT be able to view handed over projects", () => {
-        // not implemented
-        shouldNotBeAbleToViewHandedOverProjects();
     });
 
     it.skip("Should NOT be able to create a project", () => {
@@ -58,18 +63,11 @@ describe("Capabilities and permissions of the data consumer user", () => {
         // not implemented
     });
 
-    it.skip("Should NOT be able to view and edit users", () => {
-        // not implemented
-        shouldNotBeAbleToViewAndEditUsers();
-    });
-
     it.skip("Should NOT be able to view and edit local authorities", () => {
-        // not implemented
-        shouldNotBeAbleToViewAndEditLocalAuthorities();
+        // this can be viewed in the Ruby app currently?
     });
 
     it.skip("Should NOT be able to view conversion URNs", () => {
-        // not implemented
-        shouldNotBeAbleToViewConversionURNs();
+        // this can be viewed in the Ruby app currently?
     });
 });

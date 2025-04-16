@@ -26,23 +26,22 @@ class NavBar {
         return this;
     }
 
-    unableToViewYourProjects() {
-        cy.getById(this.navHeaderId).contains("Your projects").should("not.exist");
+    ableToView(sections: string[]) {
+        sections.forEach((section) => {
+            cy.getById(this.navHeaderId).contains(section).should("exist");
+        });
         return this;
     }
 
-    unableToViewYourTeamProjects() {
-        cy.getById(this.navHeaderId).contains("Your team projects").should("not.exist");
+    unableToView(sections: string[]) {
+        sections.forEach((section) => {
+            cy.getById(this.navHeaderId).contains(section).should("not.exist");
+        });
         return this;
     }
 
-    unableToViewGroups() {
-        cy.getById(this.navHeaderId).contains("Groups").should("not.exist");
-        return this;
-    }
-
-    unableToViewServiceSupport() {
-        cy.getById(this.navHeaderId).contains("Service support").should("not.exist");
+    unableToViewTheNavBar() {
+        cy.getById(this.navHeaderId).should("not.exist");
         return this;
     }
 }

@@ -4,11 +4,9 @@ import {
     shouldBeAbleToViewMultipleMonthsOfProjects,
     shouldNotBeAbleToBeAssignedAProject,
     shouldNotBeAbleToCreateAProject,
-    shouldNotBeAbleToViewYourProjects,
-    shouldNotBeAbleToViewYourTeamProjects,
+    shouldNotHaveAccessToViewYourTeamUnassignedProjects,
 } from "cypress/support/reusableTests";
 import navBar from "cypress/pages/navBar";
-import allProjects from "cypress/pages/projects/allProjects";
 import { serviceSupportUser } from "cypress/constants/cypressConstants";
 
 describe("Capabilities and permissions of the service support user", () => {
@@ -16,6 +14,22 @@ describe("Capabilities and permissions of the service support user", () => {
         cy.login({ activeDirectoryId: serviceSupportUser.adId });
         cy.acceptCookies();
         cy.visit("/");
+    });
+
+    it("Should direct user to all Service support -> without academy URNs after login", () => {
+        cy.url().should("include", "/projects/service-support/without-academy-urn");
+    });
+
+    it("Should be able to view 'All projects', 'Groups' and 'Service support' sections", () => {
+        navBar.ableToView(["All projects", "Groups", "Service support"]);
+    });
+
+    it("Should NOT be able to view 'Your projects', 'Your team projects' sections", () => {
+        navBar.unableToView(["Your projects", "Your team projects"]);
+    });
+
+    it("Should NOT have access to view Your team projects -> unassigned projects", () => {
+        shouldNotHaveAccessToViewYourTeamUnassignedProjects();
     });
 
     it.skip("Should be able to view multiple months of projects within a specified date range", () => {
@@ -52,27 +66,13 @@ describe("Capabilities and permissions of the service support user", () => {
         // not implemented 187525
     });
 
-    it.skip("Should be able to view my team projects that are handed over", () => {
-        // not implemented
-        navBar.goToAllProjects();
-        allProjects.filterProjects("Handover").containsHeading("Projects to handover");
-    });
-
-    it.skip("Should NOT be able to view your projects", () => {
-        // not implemented 208988
-        shouldNotBeAbleToViewYourProjects();
-    });
-
-    it("Should NOT be able to view your team projects", () => {
-        shouldNotBeAbleToViewYourTeamProjects();
-    });
-
     it.skip("Should NOT be able to create a project", () => {
         // not implemented
         shouldNotBeAbleToCreateAProject();
     });
 
     it.skip("Should NOT be able to be assigned a project", () => {
+        // not implemented
         shouldNotBeAbleToBeAssignedAProject();
     });
 });

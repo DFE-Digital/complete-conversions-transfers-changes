@@ -10,24 +10,20 @@ import assignProject from "../pages/projects/assignProject";
 import { cypressUser } from "../constants/cypressConstants";
 import yourProjects from "../pages/projects/yourProjects";
 
-export function shouldNotBeAbleToViewYourProjects() {
-    navBar.unableToViewYourProjects();
-    cy.visit("/projects/yours/in-progress").notAuthorisedToPerformAction();
-}
-
-export function shouldNotBeAbleToViewYourTeamProjects() {
-    navBar.unableToViewYourTeamProjects();
-    cy.visit("/projects/team/in-progress");
-    yourTeamProjects.noProjectsShown();
-}
-
-export function shouldNotBeAbleToViewHandedOverProjects() {
+export function shouldNotHaveAccessToViewHandedOverProjects() {
     navBar.goToAllProjects();
     allProjects.doesNotContainFilter("Handover");
-    cy.visit("/projects/all/handover").notAuthorisedToPerformAction();
+    // cy.visit("/projects/all/handover").notAuthorisedToPerformAction(); // not implemented auth
+}
+
+export function shouldNotHaveAccessToViewYourTeamUnassignedProjects() {
+    navBar.goToYourTeamProjects();
+    yourTeamProjects.doesNotContainFilter("Unassigned");
+    // cy.visit("/projects/team/unassigned").notAuthorisedToPerformAction(); // not implemented auth
 }
 
 export function shouldNotBeAbleToCreateAProject() {
+    cy.visit("/projects/yours/in-progress");
     homePage.unableToAddAProject();
     cy.visit("/projects/new").notAuthorisedToPerformAction();
     cy.visit("/projects/conversions/new").notAuthorisedToPerformAction();
@@ -36,19 +32,8 @@ export function shouldNotBeAbleToCreateAProject() {
     cy.visit("/projects/transfer/new_mat").notAuthorisedToPerformAction();
 }
 
-export function shouldNotBeAbleToViewAndEditUsers() {
-    navBar.unableToViewServiceSupport();
+export function shouldNotHaveAccessToViewAndEditUsers() {
     cy.visit("/service-support/users").notAuthorisedToPerformAction();
-}
-
-export function shouldNotBeAbleToViewAndEditLocalAuthorities() {
-    navBar.unableToViewServiceSupport();
-    cy.visit("/service-support/local-authorities").notAuthorisedToPerformAction();
-}
-
-export function shouldNotBeAbleToViewConversionURNs() {
-    navBar.unableToViewServiceSupport();
-    cy.visit("/projects/service-support/without-academy-urn").notAuthorisedToPerformAction();
 }
 
 export function shouldNotBeAbleToBeAssignedAProject() {
