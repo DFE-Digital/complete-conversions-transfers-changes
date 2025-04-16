@@ -20,12 +20,13 @@ public static class UserTabAccessHelper
 
     public static bool UserHasTabAccess(ClaimsPrincipal user, string tabName)
     {
-        if (tabName == YourProjectsTabName) return user.HasRole("regional_delivery_officer") || user.HasRole("regional_casework_services");
+        if (tabName == YourProjectsTabName) return user.HasRole("regional_delivery_officer") || (user.HasRole("regional_casework_services") && !user.HasRole("manage_team"));
         if (tabName == YourTeamProjectsTabName) return user.HasRole("regional_delivery_officer") || user.HasRole("regional_casework_services");
         if (tabName == AllProjects_HandoverTabName) return user.HasRole("regional_delivery_officer") || user.HasRole("service_support");
         if (tabName == GroupsTabName) return user.HasRole("regional_delivery_officer") || user.HasRole("service_support") || user.HasRole("regional_casework_services");
         if (tabName == ServiceSupportProjectsTabName) return user.HasRole("service_support");
-        if (tabName == AllProjects_ExportsTabName) return user.HasRole("service_support") || user.HasRole("business_support") || user.HasRole("data_consumers");
+        if (tabName == AllProjects_ExportsTabName) return user.HasRole("service_support") || user.HasRole("business_support") || user.HasRole("data_consumers")
+            || (user.HasRole("manage_team") && (user.HasRole("regional_delivery_officer") || user.HasRole("regional_casework_services")));
         return true;
     }
 }
