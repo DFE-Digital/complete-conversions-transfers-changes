@@ -58,5 +58,11 @@
 
         public const string TransferViewStakeholderKickoffTask = TransferProjectTaskList + "/stakeholder-kickoff";
         public const string TransferEditStakeholderKickoffTask = TransferViewStakeholderKickoffTask + "/edit";
+
+        // Groups
+        public const string Groups = "/groups";
+
+        // Service support
+        public const string ServiceSupportProjects = "/projects/service-support/without-academy-urn";
     }
 }
