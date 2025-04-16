@@ -35,7 +35,16 @@ export const businessSupportUser = new TestUser(
     0,
     0,
 );
-export const dataConsumerUser = new TestUser("cypress data-consumer", "TEST-AD-ID-DC", "data_consumer", 0, 0, 0, 0, 0);
+export const dataConsumerUser = new TestUser(
+    "cypress data-consumers",
+    "TEST-AD-ID-DC",
+    "data_consumers",
+    0,
+    0,
+    0,
+    0,
+    0,
+);
 export const serviceSupportUser = new TestUser(
     "cypress service-support",
     "TEST-AD-ID-SS",

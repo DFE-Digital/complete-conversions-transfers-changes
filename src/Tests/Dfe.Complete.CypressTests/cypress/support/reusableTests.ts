@@ -11,13 +11,13 @@ import { cypressUser } from "../constants/cypressConstants";
 import yourProjects from "../pages/projects/yourProjects";
 
 export function shouldNotHaveAccessToViewHandedOverProjects() {
-    navBar.goToAllProjects();
+    cy.visit("/projects/all/in-progress/all");
     allProjects.doesNotContainFilter("Handover");
     // cy.visit("/projects/all/handover").notAuthorisedToPerformAction(); // not implemented auth
 }
 
 export function shouldNotHaveAccessToViewYourTeamUnassignedProjects() {
-    navBar.goToYourTeamProjects();
+    cy.visit("/projects/team/in-progress")
     yourTeamProjects.doesNotContainFilter("Unassigned");
     // cy.visit("/projects/team/unassigned").notAuthorisedToPerformAction(); // not implemented auth
 }

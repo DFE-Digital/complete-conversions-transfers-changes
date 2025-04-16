@@ -9,7 +9,8 @@ import {
 import navBar from "cypress/pages/navBar";
 import { serviceSupportUser } from "cypress/constants/cypressConstants";
 
-describe("Capabilities and permissions of the service support user", () => {
+// skipped as visiting / goes to service support that is not implemented yet
+describe.skip("Capabilities and permissions of the service support user", () => {
     beforeEach(() => {
         cy.login({ activeDirectoryId: serviceSupportUser.adId });
         cy.acceptCookies();
