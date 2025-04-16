@@ -612,13 +612,26 @@
             "x-position": 3
           },
           {
+            "name": "AssignedToState",
+            "in": "query",
+            "schema": {
+              "nullable": true,
+              "oneOf": [
+                {
+                  "$ref": "#/components/schemas/AssignedToState"
+                }
+              ]
+            },
+            "x-position": 4
+          },
+          {
             "name": "Page",
             "in": "query",
             "schema": {
               "type": "integer",
               "format": "int32"
             },
-            "x-position": 4
+            "x-position": 5
           },
           {
             "name": "Count",
@@ -627,7 +640,7 @@
               "type": "integer",
               "format": "int32"
             },
-            "x-position": 5
+            "x-position": 6
           }
         ],
         "responses": {
@@ -693,13 +706,26 @@
             "x-position": 3
           },
           {
+            "name": "AssignedToState",
+            "in": "query",
+            "schema": {
+              "nullable": true,
+              "oneOf": [
+                {
+                  "$ref": "#/components/schemas/AssignedToState"
+                }
+              ]
+            },
+            "x-position": 4
+          },
+          {
             "name": "Page",
             "in": "query",
             "schema": {
               "type": "integer",
               "format": "int32"
             },
-            "x-position": 4
+            "x-position": 5
           },
           {
             "name": "Count",
@@ -708,7 +734,7 @@
               "type": "integer",
               "format": "int32"
             },
-            "x-position": 5
+            "x-position": 6
           }
         ],
         "responses": {
@@ -2382,6 +2408,18 @@
             "nullable": true
           }
         }
+      },
+      "AssignedToState": {
+        "type": "string",
+        "description": "",
+        "x-enumNames": [
+          "AssignedOnly",
+          "UnassignedOnly"
+        ],
+        "enum": [
+          "AssignedOnly",
+          "UnassignedOnly"
+        ]
       },
       "ListAllProjectsForUserQueryResultModel": {
         "type": "object",

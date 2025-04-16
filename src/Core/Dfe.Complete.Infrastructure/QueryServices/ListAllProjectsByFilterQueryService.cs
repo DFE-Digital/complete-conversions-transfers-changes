@@ -25,8 +25,6 @@ internal class ListAllProjectsByFilterQueryService(CompleteContext context) : IL
 
         if (assignedToState == AssignedToState.AssignedOnly)
             projects = projects.Where(project => project.AssignedToId != null);
-        else if (assignedToState == AssignedToState.UnassignedOnly)
-            projects = projects.Where(Project => Project.AssignedTo == null);
 
         //For now, limiting the service to one filter at a time unless requirement changes
         IQueryable<GiasEstablishment> giasEstablishments = context.GiasEstablishments;
