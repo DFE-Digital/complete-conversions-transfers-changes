@@ -1,5 +1,5 @@
-using Dfe.Complete.Domain.Enums;
-using Dfe.Complete.Domain.Extensions;
+using System.Security.Claims;
+using Dfe.Complete.Extensions;
 
 namespace Dfe.Complete.Utils;
 
@@ -18,14 +18,14 @@ public static class UserTabAccessHelper
     public const string AllProjects_HandoverTabName = "all-projects-handover";
     public const string AllProjects_ExportsTabName = "all-projects-exports";
 
-    public static bool UserHasTabAccess(ProjectTeam userTeam, string tabName)
+    public static bool UserHasTabAccess(ClaimsPrincipal user, string tabName)
     {
-        if (tabName == YourProjectsTabName) return userTeam.TeamIsRdo() || userTeam == ProjectTeam.RegionalCaseWorkerServices;
-        if (tabName == YourTeamProjectsTabName) return userTeam.TeamIsRdo() || userTeam == ProjectTeam.RegionalCaseWorkerServices;
-        if (tabName == AllProjects_HandoverTabName) return userTeam.TeamIsRdo() || userTeam == ProjectTeam.ServiceSupport;
-        if (tabName == GroupsTabName) return userTeam.TeamIsRdo() || userTeam == ProjectTeam.ServiceSupport || userTeam == ProjectTeam.RegionalCaseWorkerServices;
-        if (tabName == ServiceSupportProjectsTabName) return userTeam == ProjectTeam.ServiceSupport;
-        if (tabName == AllProjects_ExportsTabName) return userTeam is ProjectTeam.ServiceSupport or ProjectTeam.BusinessSupport or ProjectTeam.DataConsumers;
+        if (tabName == YourProjectsTabName) return user.HasRole("regional_delivery_officer") || user.HasRole("regional_casework_services");
+        if (tabName == YourTeamProjectsTabName) return user.HasRole("regional_delivery_officer") || user.HasRole("regional_casework_services");
+        if (tabName == AllProjects_HandoverTabName) return user.HasRole("regional_delivery_officer") || user.HasRole("service_support");
+        if (tabName == GroupsTabName) return user.HasRole("regional_delivery_officer") || user.HasRole("service_support") || user.HasRole("regional_casework_services");
+        if (tabName == ServiceSupportProjectsTabName) return user.HasRole("service_support");
+        if (tabName == AllProjects_ExportsTabName) return user.HasRole("service_support") || user.HasRole("business_support") || user.HasRole("data_consumers");
         return true;
     }
 }
