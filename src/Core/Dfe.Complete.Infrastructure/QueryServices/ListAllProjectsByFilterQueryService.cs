@@ -14,7 +14,8 @@ internal class ListAllProjectsByFilterQueryService(CompleteContext context) : IL
     public IQueryable<ListAllProjectsQueryModel> ListAllProjectsByFilter(ProjectState? projectStatus,
         ProjectType? projectType,
         AssignedToState? assignedToState = null,
-        UserId? userId = null,
+        UserId? assignedToUserId = null,
+        UserId? createdByUserId = null,
         string? localAuthorityCode = "",
         Region? region = null,
         ProjectTeam? team = null,
@@ -29,8 +30,17 @@ internal class ListAllProjectsByFilterQueryService(CompleteContext context) : IL
 
         IQueryable<GiasEstablishment> giasEstablishments = context.GiasEstablishments;
 
-        if (userId != null && userId.Value != Guid.Empty)
-            projects = projects.Where(project => project.AssignedToId != null && project.AssignedToId == userId);
+        if (assignedToUserId != null && assignedToUserId.Value != Guid.Empty)
+        {
+            projects = projects.Where(project => project.AssignedToId != null && project.AssignedToId == assignedToUserId);
+            return GenerateQuery(projects, giasEstablishments);
+        }
+        
+        if (createdByUserId != null && createdByUserId.Value != Guid.Empty)
+        {
+            projects = projects.Where(project => project.RegionalDeliveryOfficerId != null && project.RegionalDeliveryOfficerId == createdByUserId);
+            return GenerateQuery(projects, giasEstablishments);
+        }
 
         if (!string.IsNullOrEmpty(localAuthorityCode))
             giasEstablishments = giasEstablishments.Where(establishment => establishment.LocalAuthorityCode == localAuthorityCode);
