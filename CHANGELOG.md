@@ -20,6 +20,10 @@ Security in case of vulnerabilities.
  - Your team projects in progress list (`/projects/team/in-progress`)
  - Your team projects completed list (`/projects/team/completed`)
  - Added user (`ClaimsPrincipal`) extension to get users team `GetUserTeam`
+ - Added API endpoint `/v1/Projects/List/All/LocalAuthority` for fetching projects for local authority
+ - Added API endpoint `/v1/Projects/List/All/Region` for fetching projects for region
+ - Added API endpoint `/v1/Projects/List/All/Team` for fetching projects for team
+ - Added API endpoint `/v1/Projects/List/All/User` for fetching projects for user
  - Added endpoint to the projectsController `ListAllProjectsInTrust`-`/v1/Projects/List/Trust`
  - Added missing "project for region" header
  - User redirection on app load based on their permissions
