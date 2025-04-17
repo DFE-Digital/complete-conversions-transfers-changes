@@ -68,5 +68,39 @@ namespace Dfe.Complete.Tests.Extensions
             // Assert
             Assert.Equal(ProjectTeam.BusinessSupport, actualTeam);
         }
+
+        [Fact]
+        public void HasRole_ReturnsFalse_WhenNoClaimExists()
+        {
+            // Arrange
+            var claimsPrincipal = new ClaimsPrincipal(new ClaimsIdentity());
+
+            // Act
+            var result = claimsPrincipal.HasRole("my-role");
+
+            // Assert
+            Assert.False(result);
+        }
+
+        [Fact]
+        public void HasRole_ReturnsTrue_WhenClaimExists()
+        {
+            // Arrange
+            var claims = new[] { new Claim(ClaimTypes.Role, "important-role") };
+            var claimsPrincipal = new ClaimsPrincipal(new ClaimsIdentity(claims));
+
+            // Act
+            var result = claimsPrincipal.HasRole("important-role");
+
+            // Assert
+            Assert.True(result);
+        }
+
+        [Fact]
+        public void HasRole_ReturnsFalse_WhenUserIsNull()
+        {
+            ClaimsPrincipal? user = null;
+            Assert.False(user.HasRole("Admin"));
+        }
     }
 }
