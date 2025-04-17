@@ -1,4 +1,5 @@
-﻿using Dfe.Complete.Domain.Entities;
+﻿using Dfe.Complete.Domain.Constants;
+using Dfe.Complete.Domain.Entities;
 using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Domain.Extensions;
 using Dfe.Complete.Domain.Interfaces.Repositories;
@@ -37,25 +38,25 @@ namespace Dfe.Complete.Infrastructure.Security.Authorization
 
                 var userTeam = EnumExtensions.FromDescription<ProjectTeam>(userRecord.Team);
                 if (userTeam.TeamIsRdo())
-                    additionalClaims.Add(new Claim(ClaimTypes.Role, "regional_delivery_officer"));
+                    additionalClaims.Add(new Claim(ClaimTypes.Role, UserRolesConstants.RegionalDeliveryOfficer));
 
                 if (userRecord.ManageTeam == true)
-                    additionalClaims.Add(new Claim(ClaimTypes.Role, "manage_team"));
+                    additionalClaims.Add(new Claim(ClaimTypes.Role, UserRolesConstants.ManageTeam));
 
                 if (userRecord.AddNewProject)
-                    additionalClaims.Add(new Claim(ClaimTypes.Role, "add_new_project"));
+                    additionalClaims.Add(new Claim(ClaimTypes.Role, UserRolesConstants.AddNewProject));
 
                 if (userRecord.AssignToProject == true)
-                    additionalClaims.Add(new Claim(ClaimTypes.Role, "assign_to_project"));
+                    additionalClaims.Add(new Claim(ClaimTypes.Role, UserRolesConstants.AssignToProject));
 
                 if (userRecord.ManageUserAccounts == true)
-                    additionalClaims.Add(new Claim(ClaimTypes.Role, "manage_user_accounts"));
+                    additionalClaims.Add(new Claim(ClaimTypes.Role, UserRolesConstants.ManageUserAccounts));
 
                 if (userRecord.ManageConversionUrns == true)
-                    additionalClaims.Add(new Claim(ClaimTypes.Role, "manage_conversion_urns"));
+                    additionalClaims.Add(new Claim(ClaimTypes.Role, UserRolesConstants.ManageConversionUrns));
 
                 if (userRecord.ManageLocalAuthorities == true)
-                    additionalClaims.Add(new Claim(ClaimTypes.Role, "manage_local_authorities"));
+                    additionalClaims.Add(new Claim(ClaimTypes.Role, UserRolesConstants.ManageLocalAuthorities));
 
                 cache.Set(cacheKey, additionalClaims, _cacheDuration);
             }

@@ -3,6 +3,7 @@
 @using Dfe.Complete.Application.Projects.Queries.GetUser;
 @using Dfe.Complete.Utils;
 @using Dfe.Complete.Domain.Enums;
+@using Dfe.Complete.Domain.Constants;
 
 @inject ISender sender
 
@@ -24,7 +25,7 @@
         <img src="~/dist/assets/dfe-logo-alt.png" class="dfe-logo-hover" alt="Department for Education">
       </a>
     </div>
-    @if (!User.HasRole("data_consumers") && !User.HasRole("business_support"))
+    @if (!User.HasRole(UserRolesConstants.DataConsumers) && !User.HasRole(UserRolesConstants.BusinessSupport))
     {
       <div class="dfe-header__content" id="content-header">
         <div class="dfe-header__menu">
@@ -37,7 +38,7 @@
   <div class="dfe-width-container dfe-header__service-name" href="/">
     <a href="/" class="dfe-header__link--service govuk-link">Complete conversions, transfers and changes</a>
   </div>
-  @if (!User.HasRole("data_consumers") && !User.HasRole("business_support"))
+  @if (!User.HasRole(UserRolesConstants.DataConsumers) && !User.HasRole(UserRolesConstants.BusinessSupport))
   {
     <nav class="dfe-header__navigation" id="header-navigation" role="navigation" aria-label="Primary navigation"
       aria-labelledby="label-navigation">

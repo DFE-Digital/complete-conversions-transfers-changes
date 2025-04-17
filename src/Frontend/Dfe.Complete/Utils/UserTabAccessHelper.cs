@@ -1,4 +1,5 @@
 using System.Security.Claims;
+using Dfe.Complete.Domain.Constants;
 using Dfe.Complete.Extensions;
 
 namespace Dfe.Complete.Utils;
@@ -20,13 +21,13 @@ public static class UserTabAccessHelper
 
     public static bool UserHasTabAccess(ClaimsPrincipal user, string tabName)
     {
-        if (tabName == YourProjectsTabName) return user.HasRole("regional_delivery_officer") || (user.HasRole("regional_casework_services") && !user.HasRole("manage_team"));
-        if (tabName == YourTeamProjectsTabName) return user.HasRole("regional_delivery_officer") || user.HasRole("regional_casework_services");
-        if (tabName == AllProjects_HandoverTabName) return user.HasRole("regional_delivery_officer") || user.HasRole("service_support");
-        if (tabName == GroupsTabName) return user.HasRole("regional_delivery_officer") || user.HasRole("service_support") || user.HasRole("regional_casework_services");
-        if (tabName == ServiceSupportProjectsTabName) return user.HasRole("service_support");
-        if (tabName == AllProjects_ExportsTabName) return user.HasRole("service_support") || user.HasRole("business_support") || user.HasRole("data_consumers")
-            || (user.HasRole("manage_team") && (user.HasRole("regional_delivery_officer") || user.HasRole("regional_casework_services")));
+        if (tabName == YourProjectsTabName) return user.HasRole(UserRolesConstants.RegionalDeliveryOfficer) || (user.HasRole(UserRolesConstants.RegionalCaseworkServices) && !user.HasRole(UserRolesConstants.ManageTeam));
+        if (tabName == YourTeamProjectsTabName) return user.HasRole(UserRolesConstants.RegionalDeliveryOfficer) || user.HasRole(UserRolesConstants.RegionalCaseworkServices);
+        if (tabName == AllProjects_HandoverTabName) return user.HasRole(UserRolesConstants.RegionalDeliveryOfficer) || user.HasRole(UserRolesConstants.ServiceSupport);
+        if (tabName == GroupsTabName) return user.HasRole(UserRolesConstants.RegionalDeliveryOfficer) || user.HasRole(UserRolesConstants.ServiceSupport) || user.HasRole(UserRolesConstants.RegionalCaseworkServices);
+        if (tabName == ServiceSupportProjectsTabName) return user.HasRole(UserRolesConstants.ServiceSupport);
+        if (tabName == AllProjects_ExportsTabName) return user.HasRole(UserRolesConstants.ServiceSupport) || user.HasRole(UserRolesConstants.BusinessSupport) || user.HasRole(UserRolesConstants.DataConsumers)
+            || (user.HasRole(UserRolesConstants.ManageTeam) && (user.HasRole(UserRolesConstants.RegionalDeliveryOfficer) || user.HasRole(UserRolesConstants.RegionalCaseworkServices)));
         return true;
     }
 }
