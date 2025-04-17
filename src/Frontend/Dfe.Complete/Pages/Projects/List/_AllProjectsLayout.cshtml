@@ -1,5 +1,6 @@
 ﻿@using Dfe.Complete.Pages.Projects.List
 @using Dfe.Complete.Constants
+@using Dfe.Complete.Domain.Enums
 @using MediatR
 @using Dfe.Complete.Utils;
 
@@ -11,15 +12,12 @@
     var ariaCurrentValue = "page";
     string? IsCurrentNav(string tabName) => Model.CurrentNavigationItem == tabName ? ariaCurrentValue : null;
 
-  var userTeam = await User.GetUserTeam(sender);
-  bool UserHasTabAccess(string tabName) => UserTabAccessHelper.UserHasTabAccess(userTeam, tabName);
+  bool UserHasTabAccess(string tabName) => UserTabAccessHelper.UserHasTabAccess(User, tabName);
   
-  var user = await User.GetUser(Sender);
-
+  var user = await User.GetUser(sender);
   var today = DateTime.Now;
   var month = today.Month;
   var year = today.Year;
-    bool UserHasTabAccesxs(string tabName) => UserTabAccessHelper.UserHasTabAccess(User, tabName);
 }
 
 @section BeforeMainFullWidth
@@ -42,7 +40,7 @@
                         </li>
                         <li class="moj-primary-navigation__item">
                             <a class="moj-primary-navigation__link" aria-current="@IsCurrentNav(AllProjectsModel.ByMonthNavigation)"
-                               href="/projects/all/by-month/conversions">By month</a>
+                               href="@AllProjectsModel.GetProjectByMonthsUrl(ProjectType.Conversion, user, month, year, month, year)">By month</a>
                         </li>
                         <li class="moj-primary-navigation__item">
                             <a class="moj-primary-navigation__link" aria-current="@IsCurrentNav(AllProjectsModel.ByRegionNavigation)"
