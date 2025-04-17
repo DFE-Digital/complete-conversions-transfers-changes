@@ -128,7 +128,7 @@ namespace Dfe.Complete.Api.Controllers
             var project = await sender.Send(request, cancellationToken);
             return Ok(project.Value?.projects ?? []);
         }
-        
+
         /// <summary>
         /// Returns the number of Projects
         /// </summary>
@@ -177,7 +177,7 @@ namespace Dfe.Complete.Api.Controllers
             [FromQuery] ListAllProjectsForRegionQuery request,
             CancellationToken cancellationToken)
         {
-            if (!Enum.IsDefined<Domain.Enums.Region>(request.Region))
+            if (!Enum.IsDefined(request.Region))
             {
                 return BadRequest($"Invalid region \"{request.Region}\" specified");
             }
@@ -200,7 +200,7 @@ namespace Dfe.Complete.Api.Controllers
             [FromQuery] ListAllProjectsForTeamQuery request,
             CancellationToken cancellationToken)
         {
-            if (!Enum.IsDefined<Domain.Enums.ProjectTeam>(request.Team))
+            if (!Enum.IsDefined(request.Team))
             {
                 return BadRequest($"Invalid team \"{request.Team}\" specified");
             }

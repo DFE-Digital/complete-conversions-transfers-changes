@@ -35,6 +35,7 @@ Security in case of vulnerabilities.
  - Updated route `/projects/transfer/new_mat` to `/projects/transfers/new_mat`
  - Updated route `/projects/transfer-projects/new` to `/projects/transfers/new`
  - Updated ListAllProjects in-progress and Count all projects in progress to filter out unassigned projects
+ - Don't filter unassigned projects for "All projects by region" -> Region
  - Move tab access logic to a helper `UserTabAccessHelper`
 
 ### Fixed

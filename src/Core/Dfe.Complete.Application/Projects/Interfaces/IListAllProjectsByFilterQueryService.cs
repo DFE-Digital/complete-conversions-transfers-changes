@@ -8,6 +8,7 @@ public interface IListAllProjectsByFilterQueryService
 {
     IQueryable<ListAllProjectsQueryModel> ListAllProjectsByFilter(ProjectState? projectStatus,
         ProjectType? projectType,
+        AssignedToState? assignedToState = null,
         UserId? userId = null,
         string? localAuthorityCode = "",
         Region? region = null,
