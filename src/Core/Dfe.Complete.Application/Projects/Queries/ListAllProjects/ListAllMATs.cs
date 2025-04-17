@@ -2,47 +2,64 @@
 using Dfe.Complete.Application.Common.Models;
 using Dfe.Complete.Application.Projects.Interfaces;
 using Dfe.Complete.Application.Projects.Models;
+using Dfe.Complete.Domain.Entities;
 using Dfe.Complete.Domain.Enums;
-using Dfe.Complete.Utils;
+using Dfe.Complete.Domain.ValueObjects;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 namespace Dfe.Complete.Application.Projects.Queries.ListAllProjects
 {
-    public record ListAllMATsQuery() : PaginatedRequest<PaginatedResult<List<ListMatResultModel>>>;
+    public record ListAllMaTsQuery(ProjectState Status) : PaginatedRequest<PaginatedResult<List<ListMatResultModel>>>;
 
-    public class ListAllMATsQueryHandler(
-        IListAllProjectsQueryService listAllProjectsQueryService)
-        : IRequestHandler<ListAllMATsQuery, PaginatedResult<List<ListMatResultModel>>>
+    public class ListAllMaTsQueryHandler(
+        IListAllProjectsByFilterQueryService listAllProjectsByFilterQueryService,
+        IEstablishmentsV4Client establishmentsClient)
+        : IRequestHandler<ListAllMaTsQuery, PaginatedResult<List<ListMatResultModel>>>
     {
-        public async Task<PaginatedResult<List<ListMatResultModel>>> Handle(ListAllMATsQuery request,
+        public async Task<PaginatedResult<List<ListMatResultModel>>> Handle(ListAllMaTsQuery request,
             CancellationToken cancellationToken)
         {
             try
             {
-                var allProjects = listAllProjectsQueryService.ListAllProjects(ProjectState.Active, null)
-                    .AsEnumerable()
-                    .ToList();
-                
-                var matProjects = allProjects.Where(p => p.Project.FormAMat);
+                var matProjects = await listAllProjectsByFilterQueryService
+                    .ListAllProjectsByFilter(request.Status, null, isFormAMat: true)
+                    .ToListAsync(cancellationToken);
+
+                var urns = matProjects.Select(project => project.Project.Urn.Value).Distinct().ToList();
+
+                var academiesEstablishments = await establishmentsClient.GetByUrns2Async(urns, cancellationToken);
+                var establishments = academiesEstablishments
+                    .Select(r => new GiasEstablishment
+                    {
+                        Urn = new Urn(int.Parse(r.Urn)),
+                        Name = r.Name
+                    });
 
                 //Group mats by reference and form result model
-                var mats = matProjects
+                var allMATs = matProjects
                     .GroupBy(p => p.Project.NewTrustReferenceNumber)
-                    .Select(projects => new ListMatResultModel(
-                        projects.Key,
-                        projects.First().Project.NewTrustName, 
-                        projects
-                    ))
+                    .Select(group =>
+                    {
+                        var trustName = group.OrderBy(p => p.Project.CreatedAt).First().Project.NewTrustName;
+
+                        var projectModels = group.Select(p =>
+                        {
+                            var project = p.Project;
+                            var matchingEstablishment = establishments.First(e => e.Urn.Value == project.Urn.Value);
+
+                            return new ListAllProjectsQueryModel(project, matchingEstablishment);
+                        }).OrderByDescending(p => p.Establishment.Name);
+
+                        return new ListMatResultModel(group.Key, trustName, projectModels);
+                    })
+                    .OrderBy(r => r.trustName)
                     .ToList();
-                
-                
-                var allMATs = mats.OrderBy(r => r.trustName)
-                    .ToList();
-                
+
                 var result = allMATs
-                .Skip(request.Page * request.Count)
-                .Take(request.Count)
-                .ToList();
+                    .Skip(request.Page * request.Count)
+                    .Take(request.Count)
+                    .ToList();
 
                 return PaginatedResult<List<ListMatResultModel>>.Success(result, allMATs.Count);
             }

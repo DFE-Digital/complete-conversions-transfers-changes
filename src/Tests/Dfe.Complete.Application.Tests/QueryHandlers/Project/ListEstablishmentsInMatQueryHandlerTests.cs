@@ -6,6 +6,7 @@ using Dfe.Complete.Application.Projects.Models;
 using Dfe.Complete.Application.Projects.Queries.ListAllProjects;
 using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Tests.Common.Customizations.Models;
+using Microsoft.EntityFrameworkCore;
 using MockQueryable;
 using NSubstitute;
 using NSubstitute.ExceptionExtensions;
@@ -13,7 +14,7 @@ using DfE.CoreLibs.Testing.AutoFixture.Customizations;
 
 namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
 {
-    public class ListMatQueryHandlerTests
+    public class ListEstablishmentsInMatQueryHandlerTests
     {
         [Theory]
         [CustomAutoData(
@@ -21,8 +22,8 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
             typeof(ListAllProjectsQueryModelCustomization),
             typeof(DateOnlyCustomization))]
         public async Task Handle_ShouldReturnMatchingProjects_WhenProjectsWithReferenceNumberExist(
-            [Frozen] IListAllProjectsQueryService listAllProjectsQueryService,
-            ListMatQueryHandler handler,
+            [Frozen] IListAllProjectsByFilterQueryService listAllProjectsByFilterQueryService,
+            ListEstablishmentsInMatQueryHandler handler,
             IFixture fixture)
         {
             // Arrange
@@ -39,26 +40,14 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
                     return p;
                 })
                 .ToList();
+            
+            var mockProjects = matchingProjects.BuildMock();
 
-            // Create projects with different reference numbers
-            var otherProjects = fixture
-                .Build<ListAllProjectsQueryModel>()
-                .CreateMany(5)
-                .Select((p, index) => {
-                    p.Project.NewTrustReferenceNumber = $"TR{index + 200}";
-                    p.Project.NewTrustName = $"Other MAT {index}";
-                    p.Project.IncomingTrustUkprn = null;
-                    return p;
-                })
-                .ToList();
-
-            var allProjects = matchingProjects.Concat(otherProjects).ToList();
-            var mockProjects = allProjects.BuildMock();
-
-            listAllProjectsQueryService.ListAllProjects(ProjectState.Active, null)
+            listAllProjectsByFilterQueryService
+                .ListAllProjectsByFilter(ProjectState.Active, null, newTrustReferenceNumber: referenceNumber)
                 .Returns(mockProjects);
 
-            var query = new ListMatQuery(referenceNumber);
+            var query = new ListEstablishmentsInMatQuery(referenceNumber);
 
             // Act
             var result = await handler.Handle(query, CancellationToken.None);
@@ -77,30 +66,18 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
             typeof(ListAllProjectsQueryModelCustomization),
             typeof(DateOnlyCustomization))]
         public async Task Handle_ShouldReturnFailure_WhenNoProjectsWithReferenceNumberExist(
-            [Frozen] IListAllProjectsQueryService listAllProjectsQueryService,
-            ListMatQueryHandler handler,
-            IFixture fixture)
+            [Frozen] IListAllProjectsByFilterQueryService listAllProjectsByFilterQueryService,
+            ListEstablishmentsInMatQueryHandler handler)
         {
             // Arrange
-            var searchReferenceNumber = "TR999";
-            
-            var projects = fixture
-                .Build<ListAllProjectsQueryModel>()
-                .CreateMany(5)
-                .Select((p, index) => {
-                    p.Project.NewTrustReferenceNumber = $"TR{index}";
-                    p.Project.NewTrustName = $"Test MAT {index}";
-                    p.Project.IncomingTrustUkprn = null;
-                    return p;
-                })
-                .ToList();
+            var referenceNumber = "TR999";
+            var emptyList = new List<ListAllProjectsQueryModel>().BuildMock();
 
-            var mockProjects = projects.BuildMock();
+            listAllProjectsByFilterQueryService
+                .ListAllProjectsByFilter(ProjectState.Active, null, newTrustReferenceNumber: referenceNumber)
+                .Returns(emptyList);
 
-            listAllProjectsQueryService.ListAllProjects(ProjectState.Active, null)
-                .Returns(mockProjects);
-
-            var query = new ListMatQuery(searchReferenceNumber);
+            var query = new ListEstablishmentsInMatQuery(referenceNumber);
 
             // Act
             var result = await handler.Handle(query, CancellationToken.None);
@@ -111,19 +88,17 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
         }
 
         [Theory]
-        [CustomAutoData(
-            typeof(OmitCircularReferenceCustomization),
-            typeof(ListAllProjectsQueryModelCustomization),
-            typeof(DateOnlyCustomization))]
+        [CustomAutoData]
         public async Task Handle_ShouldReturnFailure_WhenExceptionIsThrown(
-            [Frozen] IListAllProjectsQueryService listAllProjectsQueryService,
-            ListMatQueryHandler handler)
+            [Frozen] IListAllProjectsByFilterQueryService listAllProjectsByFilterQueryService,
+            ListEstablishmentsInMatQueryHandler handler)
         {
             // Arrange
             var expectedError = "Test failure";
-            var query = new ListMatQuery("TR123");
+            var query = new ListEstablishmentsInMatQuery("TR123");
 
-            listAllProjectsQueryService.ListAllProjects(ProjectState.Active, null)
+            listAllProjectsByFilterQueryService
+                .ListAllProjectsByFilter(ProjectState.Active, null,  newTrustReferenceNumber: "TR123")
                 .Throws(new Exception(expectedError));
 
             // Act

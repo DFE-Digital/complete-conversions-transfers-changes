@@ -5,24 +5,22 @@ using Dfe.Complete.Application.Projects.Models;
 using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Utils;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 namespace Dfe.Complete.Application.Projects.Queries.ListAllProjects
 {
-    public record ListMatQuery(string referenceNumber) : PaginatedRequest<Result<ListMatResultModel>>;
+    public record ListEstablishmentsInMatQuery(string ReferenceNumber) : PaginatedRequest<Result<ListMatResultModel>>;
 
-    public class ListMatQueryHandler(
-        IListAllProjectsQueryService listAllProjectsQueryService)
-        : IRequestHandler<ListMatQuery, Result<ListMatResultModel>>
+    public class ListEstablishmentsInMatQueryHandler(IListAllProjectsByFilterQueryService listAllProjectsByFilterQueryService)
+        : IRequestHandler<ListEstablishmentsInMatQuery, Result<ListMatResultModel>>
     {
-        public async Task<Result<ListMatResultModel>> Handle(ListMatQuery request,
+        public async Task<Result<ListMatResultModel>> Handle(ListEstablishmentsInMatQuery request,
             CancellationToken cancellationToken)
         {
             try
             {
-                var projects = listAllProjectsQueryService.ListAllProjects(ProjectState.Active, null)
-                    .AsEnumerable()
-                    .Where(p => p.Project.NewTrustReferenceNumber == request.referenceNumber)
-                    .ToList();
+                var projects = await listAllProjectsByFilterQueryService.ListAllProjectsByFilter(ProjectState.Active, null, newTrustReferenceNumber: request.ReferenceNumber)
+                    .ToListAsync(cancellationToken);
                 
                 if (!projects.Any())
                 {

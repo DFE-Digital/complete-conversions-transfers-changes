@@ -18,7 +18,7 @@ namespace Dfe.Complete.Pages.Projects.List.ProjectsInProgress
         public async Task OnGet()
         {
             ViewData[TabNavigationModel.ViewDataKey] = AllProjectsTabNavigationModel;
-            var listProjectQuery = new ListMatQuery(Reference);
+            var listProjectQuery = new ListEstablishmentsInMatQuery(Reference);
 
             var response = await sender.Send(listProjectQuery);
             MAT = response.Value;
