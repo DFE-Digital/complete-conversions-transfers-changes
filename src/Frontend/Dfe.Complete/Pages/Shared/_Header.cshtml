@@ -3,6 +3,7 @@
 @using Dfe.Complete.Application.Projects.Queries.GetUser;
 @using Dfe.Complete.Utils;
 @using Dfe.Complete.Domain.Enums;
+@using Dfe.Complete.Domain.Constants;
 
 @inject ISender sender
 
@@ -12,8 +13,7 @@
   const string currentTabStyling = "dfe-header__navigation-item--current";
   string IsCurrentTab(string tabName) => Model?.CurrentTab == tabName ? currentTabStyling : "";
 
-  var userTeam = await User.GetUserTeam(sender);
-  bool UserHasTabAccess(string tabName) => TabNavigationModel.UserHasTabAccess(userTeam, tabName);
+  bool UserHasTabAccess(string tabName) => UserTabAccessHelper.UserHasTabAccess(User, tabName);
 }
 
 <header class="dfe-header" role="banner">
@@ -25,48 +25,68 @@
         <img src="~/dist/assets/dfe-logo-alt.png" class="dfe-logo-hover" alt="Department for Education">
       </a>
     </div>
-    <div class="dfe-header__content" id="content-header">
-      <div class="dfe-header__menu">
-        <button class="dfe-header__menu-toggle" id="toggle-menu" aria-controls="header-navigation"
-          aria-expanded="false">Menu</button>
+    @if (!User.HasRole(UserRolesConstants.DataConsumers) && !User.HasRole(UserRolesConstants.BusinessSupport))
+    {
+      <div class="dfe-header__content" id="content-header">
+        <div class="dfe-header__menu">
+          <button class="dfe-header__menu-toggle" id="toggle-menu" aria-controls="header-navigation"
+            aria-expanded="false">Menu</button>
+        </div>
       </div>
-    </div>
+    }
   </div>
   <div class="dfe-width-container dfe-header__service-name" href="/">
     <a href="/" class="dfe-header__link--service govuk-link">Complete conversions, transfers and changes</a>
   </div>
-  <nav class="dfe-header__navigation" id="header-navigation" role="navigation" aria-label="Primary navigation"
-    aria-labelledby="label-navigation">
-    <div class="dfe-width-container">
-      <p class="dfe-header__navigation-title">
-        <span id="label-navigation">Menu</span>
-        <button class="dfe-header__navigation-close" id="close-menu">
-          <svg class="dfe-icon dfe-icon__close" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
-            aria-hidden="true" focusable="false" width="27" height="27">
-            <path
-              d="M13.41 12l5.3-5.29a1 1 0 1 0-1.42-1.42L12 10.59l-5.29-5.3a1 1 0 0 0-1.42 1.42l5.3 5.29-5.3 5.29a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l5.29-5.3 5.29 5.3a1 1 0 0 0 1.42 0 1 1 0 0 0 0-1.42z">
-            </path>
-          </svg>
-          <span class="govuk-visually-hidden">Close menu</span>
-        </button>
-      </p>
-      <ul class="dfe-header__navigation-list">
-        <li class="dfe-header__navigation-item @IsCurrentTab(TabNavigationModel.YourProjectsTabName)">
-          <a class="dfe-header__navigation-link" href="@RouteConstants.YourProjectsInProgress">
-            Your projects
-            <svg class="dfe-icon dfe-icon__chevron-right" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
-              aria-hidden="true" width="34" height="34">
+  @if (!User.HasRole(UserRolesConstants.DataConsumers) && !User.HasRole(UserRolesConstants.BusinessSupport))
+  {
+    <nav class="dfe-header__navigation" id="header-navigation" role="navigation" aria-label="Primary navigation"
+      aria-labelledby="label-navigation">
+      <div class="dfe-width-container">
+        <p class="dfe-header__navigation-title">
+          <span id="label-navigation">Menu</span>
+          <button class="dfe-header__navigation-close" id="close-menu">
+            <svg class="dfe-icon dfe-icon__close" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+              aria-hidden="true" focusable="false" width="27" height="27">
               <path
-                d="M15.5 12a1 1 0 0 1-.29.71l-5 5a1 1 0 0 1-1.42-1.42l4.3-4.29-4.3-4.29a1 1 0 0 1 1.42-1.42l5 5a1 1 0 0 1 .29.71z">
+                d="M13.41 12l5.3-5.29a1 1 0 1 0-1.42-1.42L12 10.59l-5.29-5.3a1 1 0 0 0-1.42 1.42l5.3 5.29-5.3 5.29a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l5.29-5.3 5.29 5.3a1 1 0 0 0 1.42 0 1 1 0 0 0 0-1.42z">
               </path>
             </svg>
-          </a>
-        </li>
-        @if (UserHasTabAccess(TabNavigationModel.YourTeamProjectsTabName))
-        {
-          <li class="dfe-header__navigation-item @IsCurrentTab(TabNavigationModel.YourTeamProjectsTabName)">
-            <a class="dfe-header__navigation-link" href=@RouteConstants.TeamProjectsInProgress>
-              Your team projects
+            <span class="govuk-visually-hidden">Close menu</span>
+          </button>
+        </p>
+        <ul class="dfe-header__navigation-list">
+          @if (UserHasTabAccess(TabNavigationModel.YourProjectsTabName))
+          {
+            <li class="dfe-header__navigation-item @IsCurrentTab(TabNavigationModel.YourProjectsTabName)">
+              <a class="dfe-header__navigation-link" href="@RouteConstants.YourProjectsInProgress">
+                Your projects
+                <svg class="dfe-icon dfe-icon__chevron-right" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+                  aria-hidden="true" width="34" height="34">
+                  <path
+                    d="M15.5 12a1 1 0 0 1-.29.71l-5 5a1 1 0 0 1-1.42-1.42l4.3-4.29-4.3-4.29a1 1 0 0 1 1.42-1.42l5 5a1 1 0 0 1 .29.71z">
+                  </path>
+                </svg>
+              </a>
+            </li>
+          }
+          @if (UserHasTabAccess(TabNavigationModel.YourTeamProjectsTabName))
+          {
+            <li class="dfe-header__navigation-item @IsCurrentTab(TabNavigationModel.YourTeamProjectsTabName)">
+              <a class="dfe-header__navigation-link" href=@RouteConstants.TeamProjectsInProgress>
+                Your team projects
+                <svg class="dfe-icon dfe-icon__chevron-right" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+                  aria-hidden="true" width="34" height="34">
+                  <path
+                    d="M15.5 12a1 1 0 0 1-.29.71l-5 5a1 1 0 0 1-1.42-1.42l4.3-4.29-4.3-4.29a1 1 0 0 1 1.42-1.42l5 5a1 1 0 0 1 .29.71z">
+                  </path>
+                </svg>
+              </a>
+            </li>
+          }
+          <li class="dfe-header__navigation-item @IsCurrentTab(TabNavigationModel.AllProjectsTabName)">
+            <a class="dfe-header__navigation-link" href="@RouteConstants.ProjectsInProgress">
+              All projects
               <svg class="dfe-icon dfe-icon__chevron-right" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
                 aria-hidden="true" width="34" height="34">
                 <path
@@ -75,19 +95,36 @@
               </svg>
             </a>
           </li>
-        }
-        <li class="dfe-header__navigation-item @IsCurrentTab(TabNavigationModel.AllProjectsTabName)">
-          <a class="dfe-header__navigation-link" href="@RouteConstants.ProjectsInProgress">
-            All projects
-            <svg class="dfe-icon dfe-icon__chevron-right" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
-              aria-hidden="true" width="34" height="34">
-              <path
-                d="M15.5 12a1 1 0 0 1-.29.71l-5 5a1 1 0 0 1-1.42-1.42l4.3-4.29-4.3-4.29a1 1 0 0 1 1.42-1.42l5 5a1 1 0 0 1 .29.71z">
-              </path>
-            </svg>
-          </a>
-        </li>
-      </ul>
-    </div>
-  </nav>
+          @if (UserHasTabAccess(TabNavigationModel.GroupsTabName))
+          {
+            <li class="dfe-header__navigation-item @IsCurrentTab(TabNavigationModel.GroupsTabName)">
+              <a class="dfe-header__navigation-link" href=@RouteConstants.Groups>
+                Groups
+                <svg class="dfe-icon dfe-icon__chevron-right" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+                  aria-hidden="true" width="34" height="34">
+                  <path
+                    d="M15.5 12a1 1 0 0 1-.29.71l-5 5a1 1 0 0 1-1.42-1.42l4.3-4.29-4.3-4.29a1 1 0 0 1 1.42-1.42l5 5a1 1 0 0 1 .29.71z">
+                  </path>
+                </svg>
+              </a>
+            </li>
+          }
+          @if (UserHasTabAccess(TabNavigationModel.ServiceSupportProjectsTabName))
+          {
+            <li class="dfe-header__navigation-item @IsCurrentTab(TabNavigationModel.ServiceSupportProjectsTabName)">
+              <a class="dfe-header__navigation-link" href=@RouteConstants.ServiceSupportProjects>
+                Service support
+                <svg class="dfe-icon dfe-icon__chevron-right" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+                  aria-hidden="true" width="34" height="34">
+                  <path
+                    d="M15.5 12a1 1 0 0 1-.29.71l-5 5a1 1 0 0 1-1.42-1.42l4.3-4.29-4.3-4.29a1 1 0 0 1 1.42-1.42l5 5a1 1 0 0 1 .29.71z">
+                  </path>
+                </svg>
+              </a>
+            </li>
+          }
+        </ul>
+      </div>
+    </nav>
+  }
 </header>

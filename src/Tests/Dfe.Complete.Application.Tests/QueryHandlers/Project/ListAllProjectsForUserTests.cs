@@ -71,7 +71,7 @@ public class ListAllProjectsForUserTests
         mockListAllProjectsByFilterQueryService.ListAllProjectsByFilter(ProjectState.Active, null, userId: userDto.Id)
             .Returns(mockListAllProjectsForUserQueryModels.BuildMock());
 
-        var query = new ListAllProjectForUserQuery(ProjectState.Active, userDto.ActiveDirectoryUserId) { Page = 1 };
+        var query = new ListAllProjectsForUserQuery(ProjectState.Active, userDto.ActiveDirectoryUserId) { Page = 1 };
 
         //Act
         var result = await handler.Handle(query, default);
@@ -124,7 +124,7 @@ public class ListAllProjectsForUserTests
         mockListAllProjectsByFilterQueryService.ListAllProjectsByFilter(ProjectState.Active, null, userId: userDto.Id)
             .Returns(mockListAllProjectsForUserQueryModels.BuildMock());
 
-        var query = new ListAllProjectForUserQuery(ProjectState.Active, userDto.ActiveDirectoryUserId) { Page = 50 };
+        var query = new ListAllProjectsForUserQuery(ProjectState.Active, userDto.ActiveDirectoryUserId) { Page = 50 };
 
         //Act
         var result = await handler.Handle(query, default);
@@ -157,7 +157,7 @@ public class ListAllProjectsForUserTests
         mockSender.Setup(sender => sender.Send(It.IsAny<GetUserByAdIdQuery>(), It.IsAny<CancellationToken>()))
             .ThrowsAsync(new Exception(errorMessage));
         
-        var query = new ListAllProjectForUserQuery(ProjectState.Active, userDto.ActiveDirectoryUserId) { Page = 50 };
+        var query = new ListAllProjectsForUserQuery(ProjectState.Active, userDto.ActiveDirectoryUserId) { Page = 50 };
 
         //Act
         var result = await handler.Handle(query, default);

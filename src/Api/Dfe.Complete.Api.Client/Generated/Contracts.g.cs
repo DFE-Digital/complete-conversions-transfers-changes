@@ -166,6 +166,21 @@ namespace Dfe.Complete.Client.Contracts
         System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<ListAllProjectsResultModel>> ListAllProjectsAsync(ProjectState? projectStatus, ProjectType? type, int? page, int? count, System.Threading.CancellationToken cancellationToken);
 
         /// <summary>
+        /// Returns a list of Projects related to a specific trust
+        /// </summary>
+        /// <returns>Project</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<ListAllProjectsResultModel>> ListAllProjectsInTrustAsync(string? identifier, bool? isFormAMat, int? page, int? count);
+
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>
+        /// Returns a list of Projects related to a specific trust
+        /// </summary>
+        /// <returns>Project</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<ListAllProjectsResultModel>> ListAllProjectsInTrustAsync(string? identifier, bool? isFormAMat, int? page, int? count, System.Threading.CancellationToken cancellationToken);
+
+        /// <summary>
         /// Returns the number of Projects
         /// </summary>
         /// <returns>Project</returns>
@@ -179,6 +194,66 @@ namespace Dfe.Complete.Client.Contracts
         /// <returns>Project</returns>
         /// <exception cref="CompleteApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<int> CountAllProjectsAsync(ProjectState? projectStatus, ProjectType? type, System.Threading.CancellationToken cancellationToken);
+
+        /// <summary>
+        /// Returns a list of Projects for a local authority
+        /// </summary>
+        /// <returns>Project</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<ListAllProjectsResultModel>> ListAllProjectsForLocalAuthorityAsync(string? localAuthorityCode, ProjectState? state, ProjectType? type, int? page, int? count);
+
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>
+        /// Returns a list of Projects for a local authority
+        /// </summary>
+        /// <returns>Project</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<ListAllProjectsResultModel>> ListAllProjectsForLocalAuthorityAsync(string? localAuthorityCode, ProjectState? state, ProjectType? type, int? page, int? count, System.Threading.CancellationToken cancellationToken);
+
+        /// <summary>
+        /// Returns a list of Projects for a region
+        /// </summary>
+        /// <returns>Project</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<ListAllProjectsResultModel>> ListAllProjectsForRegionAsync(Region? region, ProjectState? projectStatus, ProjectType? type, int? page, int? count);
+
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>
+        /// Returns a list of Projects for a region
+        /// </summary>
+        /// <returns>Project</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<ListAllProjectsResultModel>> ListAllProjectsForRegionAsync(Region? region, ProjectState? projectStatus, ProjectType? type, int? page, int? count, System.Threading.CancellationToken cancellationToken);
+
+        /// <summary>
+        /// Returns a list of Projects for a team
+        /// </summary>
+        /// <returns>Project</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<ListAllProjectsResultModel>> ListAllProjectsForTeamAsync(ProjectTeam? team, ProjectState? projectStatus, ProjectType? type, int? page, int? count);
+
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>
+        /// Returns a list of Projects for a team
+        /// </summary>
+        /// <returns>Project</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<ListAllProjectsResultModel>> ListAllProjectsForTeamAsync(ProjectTeam? team, ProjectState? projectStatus, ProjectType? type, int? page, int? count, System.Threading.CancellationToken cancellationToken);
+
+        /// <summary>
+        /// Returns a list of Projects for a user
+        /// </summary>
+        /// <returns>Project</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<ListAllProjectsForUserQueryResultModel>> ListAllProjectsForUserAsync(ProjectState? state, string? userAdId, int? page, int? count);
+
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>
+        /// Returns a list of Projects for a user
+        /// </summary>
+        /// <returns>Project</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<ListAllProjectsForUserQueryResultModel>> ListAllProjectsForUserAsync(ProjectState? state, string? userAdId, int? page, int? count, System.Threading.CancellationToken cancellationToken);
 
     }
 
@@ -1521,6 +1596,53 @@ namespace Dfe.Complete.Client.Contracts
         {
 
             return Newtonsoft.Json.JsonConvert.DeserializeObject<ListAllProjectsResultModel>(data, new Newtonsoft.Json.JsonSerializerSettings());
+
+        }
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.2.0.0 (NJsonSchema v11.1.0.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class ListAllProjectsForUserQueryResultModel
+    {
+        [Newtonsoft.Json.JsonProperty("projectId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public ProjectId? ProjectId { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("urn", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public Urn? Urn { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("schoolOrAcademyName", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string? SchoolOrAcademyName { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("projectType", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
+        public ProjectType? ProjectType { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("isFormAMat", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? IsFormAMat { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("incomingTrustName", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string? IncomingTrustName { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("outgoingTrustName", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string? OutgoingTrustName { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("localAuthority", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string? LocalAuthority { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("conversionOrTransferDate", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonConverter(typeof(DateFormatConverter))]
+        public System.DateTime? ConversionOrTransferDate { get; set; } = default!;
+
+        public string ToJson()
+        {
+
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonSerializerSettings());
+
+        }
+        public static ListAllProjectsForUserQueryResultModel FromJson(string data)
+        {
+
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<ListAllProjectsForUserQueryResultModel>(data, new Newtonsoft.Json.JsonSerializerSettings());
 
         }
 
