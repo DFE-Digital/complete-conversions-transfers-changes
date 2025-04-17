@@ -1,0 +1,10 @@
+@model Dfe.Complete.Pages.Projects.List.ProjectsByMonth.ProjectsByMonthModel
+@{
+  Layout = "List/_AllProjectsLayout";
+}
+
+@await RenderSectionAsync("PageHeading", true)
+
+<div class="govuk-grid-row">
+  @RenderBody()
+</div>

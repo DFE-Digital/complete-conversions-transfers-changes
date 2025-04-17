@@ -7,6 +7,10 @@
         public const string ProjectsByTrust = "/projects/all/trusts";
         public const string TrustProjects = "/projects/all/trusts/ukprn/{0}";
         public const string TrustMATProjects = "/projects/all/trusts/reference/{0}";
+        public const string ConversionProjectsByMonth = "/projects/all/by-month/conversions/{0}/{1}";
+        public const string TransfersProjectsByMonth = "/projects/all/by-month/transfers/{0}/{1}";
+        public const string ConversionProjectsByMonths = "/projects/all/by-month/conversions/from/{0}/{1}/to/{2}/{3}";
+        public const string TransfersProjectsByMonths = "/projects/all/by-month/transfers/from/{0}/{1}/to/{2}/{3}";
 
         public const string ProjectsByRegion = "/projects/all/regions/{0}";
 
