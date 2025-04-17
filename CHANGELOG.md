@@ -27,9 +27,9 @@ Security in case of vulnerabilities.
  - Added endpoint to the projectsController `ListAllProjectsInTrust`-`/v1/Projects/List/Trust`
  - Added missing "project for region" header
  - New route `/projects/all/in-progress/form-a-multi-academy-trust`
- - New route `/projects/all/in-progress/form-a-multi-academy-trust/{reference}`
+ - New route `/form-a-multi-academy-trust/{reference}`
  - Form a MAT with projects in progress list (`/projects/all/in-progress/form-a-multi-academy-trust`)
- - MAT projects listing related establishments (`/projects/all/in-progress/form-a-multi-academy-trust/{reference}`)
+ - MAT projects listing related establishments (`/form-a-multi-academy-trust/{reference}`)
  - Added missing "project for region" header
 
  - User redirection on app load based on their permissions
