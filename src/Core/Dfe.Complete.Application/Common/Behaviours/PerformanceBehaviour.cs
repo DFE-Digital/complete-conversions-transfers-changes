@@ -32,7 +32,7 @@ namespace Dfe.Complete.Application.Common.Behaviours
             var requestName = typeof(TRequest).Name;
             var identityName = user?.Identity?.Name;
 
-            logger.LogWarning("PersonsAPI Long Running Request: {Name} ({ElapsedMilliseconds} milliseconds) {@IdentityName} {@Request}",
+            logger.LogWarning("CompleteAPI Long Running Request: {Name} ({ElapsedMilliseconds} milliseconds) {@IdentityName} {@Request}",
                 requestName, elapsedMilliseconds, identityName, request);
 
             return response;
