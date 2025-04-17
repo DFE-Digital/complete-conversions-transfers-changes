@@ -13,7 +13,7 @@ public record ListAllProjectsForTeamQuery(
     ProjectType? Type)
     : PaginatedRequest<PaginatedResult<List<ListAllProjectsResultModel>>>;
 
-public class ListAllProjectsForTeamQueryHandler(IListAllProjectsByFilterQueryService listAllProjectsByFilterQueryService)
+public class ListAllProjectsForTeamQueryHandler(IListAllProjectsQueryService listAllProjectsQueryService)
     : IRequestHandler<ListAllProjectsForTeamQuery, PaginatedResult<List<ListAllProjectsResultModel>>>
 
 {
@@ -22,7 +22,7 @@ public class ListAllProjectsForTeamQueryHandler(IListAllProjectsByFilterQuerySer
     {
         try
         {
-            var projectsForTeam = await listAllProjectsByFilterQueryService.ListAllProjectsByFilter(
+            var projectsForTeam = await listAllProjectsQueryService.ListAllProjects(
                 request.ProjectStatus, request.Type, team: request.Team).ToListAsync(cancellationToken);
 
             var paginatedResultModel = projectsForTeam.Select(proj =>

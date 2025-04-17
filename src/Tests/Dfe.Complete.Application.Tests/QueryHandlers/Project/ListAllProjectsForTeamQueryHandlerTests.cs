@@ -21,7 +21,7 @@ public class ListAllProjectsForTeamQueryHandlerTests
         typeof(ListAllProjectsQueryModelCustomization),
         typeof(DateOnlyCustomization))]
     public async Task Handle_ShouldReturnCorrectList_WhenPaginationIsCorrect(
-        [Frozen] IListAllProjectsByFilterQueryService mockListAllProjectsForFilterQueryService,
+        [Frozen] IListAllProjectsQueryService mockListAllProjectsForFilterQueryService,
         ListAllProjectsForTeamQueryHandler handler,
         IFixture fixture)
     {
@@ -36,7 +36,7 @@ public class ListAllProjectsForTeamQueryHandlerTests
 
         var mock = listAllProjectsQueryModels.BuildMock();
 
-        mockListAllProjectsForFilterQueryService.ListAllProjectsByFilter(Arg.Any<ProjectState?>(), Arg.Any<ProjectType?>(), team: requestedTeam)
+        mockListAllProjectsForFilterQueryService.ListAllProjects(Arg.Any<ProjectState?>(), Arg.Any<ProjectType?>(), team: requestedTeam)
             .Returns(mock);
 
         var query = new ListAllProjectsForTeamQuery(requestedTeam, ProjectState.Active, null) { Page = 1 };
@@ -59,7 +59,7 @@ public class ListAllProjectsForTeamQueryHandlerTests
         typeof(ListAllProjectsQueryModelCustomization),
         typeof(DateOnlyCustomization))]
     public async Task Handle_ShouldReturnCorrectList_WhenAllPagesAreSkipped(
-        [Frozen] IListAllProjectsByFilterQueryService mockListAllProjectsForFilterQueryService,
+        [Frozen] IListAllProjectsQueryService mockListAllProjectsForFilterQueryService,
         ListAllProjectsForTeamQueryHandler handler,
         IFixture fixture)
     {
@@ -67,7 +67,7 @@ public class ListAllProjectsForTeamQueryHandlerTests
 
         var mock = listAllProjectsQueryModels.BuildMock();
 
-        mockListAllProjectsForFilterQueryService.ListAllProjectsByFilter(Arg.Any<ProjectState?>(), Arg.Any<ProjectType?>(), team: ProjectTeam.London)
+        mockListAllProjectsForFilterQueryService.ListAllProjects(Arg.Any<ProjectState?>(), Arg.Any<ProjectType?>(), team: ProjectTeam.London)
             .Returns(mock);
 
         var query = new ListAllProjectsForTeamQuery(ProjectTeam.London, ProjectState.Active, null) { Page = 10 };
@@ -86,7 +86,7 @@ public class ListAllProjectsForTeamQueryHandlerTests
         typeof(ListAllProjectsQueryModelCustomization),
         typeof(DateOnlyCustomization))]
     public async Task Handle_ShouldReturnUnsuccessful_WhenAnErrorOccurs(
-        [Frozen] IListAllProjectsByFilterQueryService mockListAllProjectsForFilterQueryService,
+        [Frozen] IListAllProjectsQueryService mockListAllProjectsForFilterQueryService,
         ListAllProjectsForTeamQueryHandler handler)
     {
         // Arrange
@@ -94,7 +94,7 @@ public class ListAllProjectsForTeamQueryHandlerTests
 
         var query = new ListAllProjectsForTeamQuery(ProjectTeam.London, null, null);
 
-        mockListAllProjectsForFilterQueryService.ListAllProjectsByFilter(query.ProjectStatus, query.Type, team: ProjectTeam.London)
+        mockListAllProjectsForFilterQueryService.ListAllProjects(query.ProjectStatus, query.Type, team: ProjectTeam.London)
             .Throws(new Exception(errorMessage));
 
         // Act

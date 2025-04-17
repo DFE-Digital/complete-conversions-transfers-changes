@@ -14,7 +14,7 @@ public record ListAllProjectsForRegionQuery(
     : PaginatedRequest<PaginatedResult<List<ListAllProjectsResultModel>>>;
 
 public class ListAllProjectsForRegionQueryHandler(
-    IListAllProjectsByFilterQueryService listAllProjectsByFilterQueryService)
+    IListAllProjectsQueryService listAllProjectsQueryService)
     : IRequestHandler<ListAllProjectsForRegionQuery, PaginatedResult<List<ListAllProjectsResultModel>>>
 
 {
@@ -23,7 +23,7 @@ public class ListAllProjectsForRegionQueryHandler(
     {
         try
         {
-            var projectsForRegion = await listAllProjectsByFilterQueryService.ListAllProjectsByFilter(
+            var projectsForRegion = await listAllProjectsQueryService.ListAllProjects(
                 request.ProjectStatus, request.Type, region: request.Region)
                 .ToListAsync(cancellationToken);
 

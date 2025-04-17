@@ -1,0 +1,68 @@
+@page "/projects/yours/added-by"
+@using Dfe.Complete.Constants
+@using Dfe.Complete.Pages.Projects.List
+@using GovUk.Frontend.AspNetCore.TagHelpers
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Html
+@model Dfe.Complete.Pages.Projects.Yours.AddedByYou.AddedByYou
+@inject IAuthorizationService AuthorizationService
+@{
+    Layout = "Yours/_YourProjectsLayout";
+    ViewData["Title"] = "Added by you";
+    var userCanCreateProjects = await AuthorizationService.AuthorizeAsync(User, "CanCreateProjects");
+}
+
+@if (userCanCreateProjects.Succeeded)
+{
+    <form asp-page="@RouteConstants.CreateNewProject" method="get">
+        <govuk-button type="submit">Add a project</govuk-button>
+    </form>
+}
+
+<h1 class="govuk-heading-xl">
+    Added by you
+</h1>
+
+<div class="govuk-grid-column-full">
+    @if (Model.ProjectsForUser == null || Model.ProjectsForUser.Count == 0)
+    {
+        <div class="govuk-inset-text">There are no projects in progress.</div>
+    }
+    else
+    {
+        <table class="govuk-table" name="la-table" aria-label="All projects by local authority">
+            <thead class="govuk-table__head">
+            <tr class="govuk-table__row">
+                <th class="govuk-table__header" scope="col">School or academy</th>
+                <th class="govuk-table__header" scope="col">URN</th>
+                <th class="govuk-table__header" scope="col">Conversion or transfer date</th>
+                <th class="govuk-table__header" scope="col">Project type</th>
+                <th class="govuk-table__header" scope="col">Form a MAT project?</th>
+                <th class="govuk-table__header" scope="col">Assigned to</th>
+            </tr>
+            </thead>
+            <tbody class="govuk-table__body">
+            @foreach (var project in Model.ProjectsForUser)
+            {
+                <tr class="govuk-table__row">
+                    <td class="govuk-table__header govuk-table__cell">
+                        <a class="govuk-link" href="@BaseProjectsPageModel.GetProjectSummaryUrl(project.ProjectType, project.ProjectId)">@project.SchoolOrAcademyName</a>
+                    </td>
+                    <td class="govuk-table__cell">@project.Urn.Value</td>
+                    <td class="govuk-table__cell">@project.ConversionOrTransferDate.ToDateMonthYearString()</td>
+                    <td class="govuk-table__cell">@project.ProjectType</td>
+                    <td class="govuk-table__cell">@project.IsFormAMat.ToYesNoString()</td>
+                    <td class="govuk-table__cell">@project.AssignedTo?.FullName</td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    }
+</div>
+
+@functions {
+    private static IHtmlContent DisplayTrustName(string trustName)
+    {
+        return !string.IsNullOrEmpty(trustName) ? new HtmlString(trustName) : new HtmlString("<strong class=\"govuk-tag govuk-tag--grey\">None</strong>");
+    }
+}
