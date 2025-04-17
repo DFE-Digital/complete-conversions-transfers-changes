@@ -23,6 +23,7 @@ public class UserTabAccessHelperTests
     [InlineData(ProjectTeam.ServiceSupport, "groups", true)]
     [InlineData(ProjectTeam.ServiceSupport, "service-support", true)]
     [InlineData(ProjectTeam.ServiceSupport, "all-projects-exports", true)]
+    [InlineData(ProjectTeam.ServiceSupport, "all-projects-handover", true)]
     public void UserHasTabAccess_ProtectedTab_ReturnsCorrectAccessForTeam(ProjectTeam userTeam, string route, bool expectedPermission)
     {
         var claims = new List<Claim> { new(ClaimTypes.Role, userTeam.ToDescription()) };
@@ -37,6 +38,7 @@ public class UserTabAccessHelperTests
     [InlineData("your-team-projects", true)]
     [InlineData("your-projects", true)]
     [InlineData("all-projects-handover", true)]
+    [InlineData("groups", true)]
     public void UserHasTabAccess_ProtectedTab_ReturnsCorrectAccessForRdo(string route, bool expectedPermission)
     {
         var claims = new List<Claim> { new(ClaimTypes.Role, "regional_delivery_officer") };

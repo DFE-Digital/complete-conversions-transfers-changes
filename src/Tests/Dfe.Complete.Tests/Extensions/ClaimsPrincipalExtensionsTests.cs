@@ -95,5 +95,12 @@ namespace Dfe.Complete.Tests.Extensions
             // Assert
             Assert.True(result);
         }
+
+        [Fact]
+        public void HasRole_ReturnsFalse_WhenUserIsNull()
+        {
+            ClaimsPrincipal? user = null;
+            Assert.False(user.HasRole("Admin"));
+        }
     }
 }
