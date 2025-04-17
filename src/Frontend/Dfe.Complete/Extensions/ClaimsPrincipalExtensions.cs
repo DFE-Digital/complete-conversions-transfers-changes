@@ -20,5 +20,11 @@ namespace Dfe.Complete.Extensions
             var userResponse = (await sender.Send(userQuery))?.Value;
             return EnumExtensions.FromDescription<ProjectTeam>(userResponse?.Team);
         }
+
+        public static bool HasRole(this ClaimsPrincipal user, string role)
+        {
+            return user?.Claims.Any(c =>
+                c.Type == ClaimTypes.Role && string.Equals(c.Value, role, StringComparison.OrdinalIgnoreCase)) ?? false;
+        }
     }
 }

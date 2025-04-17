@@ -11,6 +11,7 @@
         public const string ProjectsByRegion = "/projects/all/regions/{0}";
 
         public const string TeamProjectsInProgress = "/projects/team/in-progress";
+        public const string TeamProjectsUnassigned = "/projects/team/unassigned";
 
         // Project
         public const string Project = "/projects/{0}";

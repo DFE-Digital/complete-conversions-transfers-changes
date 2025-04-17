@@ -106,6 +106,50 @@ namespace Dfe.Complete.Tests.Authorization
         }
 
         [Fact]
+        public async Task GetClaimsAsync_UserFound_ReturnsAllClaims()
+        {
+            // Arrange
+            var userId = "1234";
+            var identity = new ClaimsIdentity(
+            [
+                new Claim("http://schemas.microsoft.com/identity/claims/objectidentifier", userId)
+            ]);
+            var principal = new ClaimsPrincipal(identity);
+
+            // Create a user record with specific properties.
+            var userRecord = new User
+            {
+                ActiveDirectoryUserId = userId,
+                Team = "london",
+                ManageTeam = true,
+                AddNewProject = true,
+                AssignToProject = true,
+                ManageUserAccounts = true,
+                ManageConversionUrns = true,
+                ManageLocalAuthorities = true
+            };
+
+            _repository.FindAsync(Arg.Any<Expression<Func<User, bool>>>())
+                       .Returns(Task.FromResult(userRecord));
+
+            // Act
+            var claims = await _provider.GetClaimsAsync(principal);
+
+            // Assert: Verify the expected claims are present.
+            var collection = claims as Claim[] ?? claims.ToArray();
+
+            Assert.NotEmpty(collection);
+            Assert.Contains(collection, c => c.Type == ClaimTypes.Role && c.Value == "london");
+            Assert.Contains(collection, c => c.Type == ClaimTypes.Role && c.Value == "manage_team");
+            Assert.Contains(collection, c => c.Type == ClaimTypes.Role && c.Value == "add_new_project");
+            Assert.Contains(collection, c => c.Type == ClaimTypes.Role && c.Value == "manage_user_accounts");
+            Assert.Contains(collection, c => c.Type == ClaimTypes.Role && c.Value == "regional_delivery_officer");
+            Assert.Contains(collection, c => c.Type == ClaimTypes.Role && c.Value == "manage_local_authorities");
+            Assert.Contains(collection, c => c.Type == ClaimTypes.Role && c.Value == "assign_to_project");
+            Assert.Contains(collection, c => c.Type == ClaimTypes.Role && c.Value == "manage_conversion_urns");
+        }
+
+        [Fact]
         public async Task GetClaimsAsync_CachesClaims_RepositoryCalledOnce()
         {
             // Arrange
