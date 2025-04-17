@@ -35,6 +35,11 @@ class YourTeamProjectsTable extends ProjectTable {
         this.assertTableCellValue(schoolName, 8, expectedDate);
         return this;
     }
+
+    assignProject(schoolName: string) {
+        this.clickButtonInRow(schoolName, "Assign project");
+        return this;
+    }
 }
 
 export default YourTeamProjectsTable;

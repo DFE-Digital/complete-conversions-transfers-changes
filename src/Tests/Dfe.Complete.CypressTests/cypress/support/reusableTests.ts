@@ -1,0 +1,93 @@
+import homePage from "../pages/homePage";
+import navBar from "../pages/navBar";
+import allProjects from "../pages/projects/allProjects";
+import { projectTable } from "../pages/projects/tables/projectTable";
+import { nextMonth } from "../constants/stringTestConstants";
+import { CreateConversionProjectRequest } from "../api/apiDomain";
+import yourTeamProjects from "../pages/projects/yourTeamProjects";
+import yourTeamProjectsRCSViewTable from "../pages/projects/tables/yourTeamProjectsRCSViewTable";
+import assignProject from "../pages/projects/assignProject";
+import { cypressUser } from "../constants/cypressConstants";
+import yourProjects from "../pages/projects/yourProjects";
+
+export function shouldNotHaveAccessToViewHandedOverProjects() {
+    cy.visit("/projects/all/in-progress/all");
+    allProjects.doesNotContainFilter("Handover");
+    // cy.visit("/projects/all/handover").notAuthorisedToPerformAction(); // not implemented auth
+}
+
+export function shouldNotHaveAccessToViewYourTeamUnassignedProjects() {
+    cy.visit("/projects/team/in-progress")
+    yourTeamProjects.doesNotContainFilter("Unassigned");
+    // cy.visit("/projects/team/unassigned").notAuthorisedToPerformAction(); // not implemented auth
+}
+
+export function shouldNotHaveAccessToViewProjectExports() {
+    navBar.goToAllProjects();
+    allProjects.doesNotContainFilter("Exports");
+    // cy.visit("/projects/all/export").notAuthorisedToPerformAction(); // not implemented auth
+}
+
+export function shouldNotBeAbleToCreateAProject() {
+    cy.visit("/projects/yours/in-progress");
+    homePage.unableToAddAProject();
+    cy.visit("/projects/new").notAuthorisedToPerformAction();
+    cy.visit("/projects/conversions/new").notAuthorisedToPerformAction();
+    cy.visit("/projects/transfer-projects/new").notAuthorisedToPerformAction();
+    cy.visit("/projects/conversions/new_mat").notAuthorisedToPerformAction();
+    cy.visit("/projects/transfer/new_mat").notAuthorisedToPerformAction();
+}
+
+export function shouldNotHaveAccessToViewAndEditUsers() {
+    cy.visit("/service-support/users").notAuthorisedToPerformAction();
+}
+
+export function shouldNotBeAbleToBeAssignedAProject() {
+    // not implemented
+}
+
+export function shouldOnlyBeAbleToViewNextMonthOfProjects(schoolName: string, project: CreateConversionProjectRequest) {
+    // not implemented 187137
+    const nextMonthString = `${nextMonth.toLocaleString("default", { month: "short" })} ${nextMonth.getFullYear()}`;
+    navBar.goToAllProjects();
+    allProjects.filterProjects("By month").containsHeading(nextMonthString);
+    projectTable
+        .hasTableHeader("School and URN")
+        .hasTableHeader("Region")
+        .hasTableHeader("Incoming trust")
+        .hasTableHeader("All conditions met")
+        .hasTableHeader("Confirmed date (Original date)")
+        .contains(`${schoolName} ${project.urn.value}`)
+        .goTo(`${schoolName} ${project.urn.value}`);
+    // projectDetailsPage.containsHeading(schoolName); // not implemented
+}
+
+export function shouldBeAbleToViewMultipleMonthsOfProjects() {
+    const today = new Date();
+    const currentMonthString = `${today.toLocaleString("default", { month: "long" })} ${today.getFullYear()}`;
+    navBar.goToAllProjects();
+    allProjects.filterProjects("By month").containsHeading(`${currentMonthString} to ${currentMonthString}`);
+}
+
+export function shouldBeAbleToAssignUnassignedProjectsToUsers(unassignedProjectSchoolName: string) {
+    navBar.goToYourTeamProjects();
+    yourTeamProjects
+        .filterProjects("Unassigned")
+        .containsHeading("Your team unassigned projects")
+        .goToNextPageUntilFieldIsVisible(unassignedProjectSchoolName);
+    yourTeamProjectsRCSViewTable
+        .hasTableHeader("School or academy")
+        .hasTableHeader("URN")
+        .hasTableHeader("Conversion or transfer date")
+        .hasTableHeader("Project type")
+        .hasTableHeader("Region")
+        .hasTableHeader("Assigned project")
+        .assignProject(unassignedProjectSchoolName);
+    assignProject.assignTo(cypressUser.username);
+    navBar.goToYourProjects();
+    yourProjects.goToNextPageUntilFieldIsVisible(unassignedProjectSchoolName);
+}
+
+export function shouldBeAbleToViewAndDownloadCsvReportsFromTheExportSection() {
+    // not implemented
+}

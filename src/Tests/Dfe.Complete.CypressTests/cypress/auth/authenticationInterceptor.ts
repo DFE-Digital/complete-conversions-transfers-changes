@@ -1,4 +1,4 @@
-import { EnvUrl, EnvAuthKey, ProjectRecordCreator, EnvUsername } from "../constants/cypressConstants";
+import { cypressUser, EnvAuthKey, EnvUrl } from "../constants/cypressConstants";
 
 export class AuthenticationInterceptor {
     register(params?: AuthenticationInterceptorParams) {
@@ -12,8 +12,9 @@ export class AuthenticationInterceptor {
                 req.headers = {
                     ...req.headers,
                     Authorization: `Bearer ${Cypress.env(EnvAuthKey)}`,
-                    "x-user-context-role-0": params?.role ? params.role : ProjectRecordCreator,
-                    "x-user-context-name": params?.username ? params.username : Cypress.env(EnvUsername),
+                    "x-user-context-role-0": "not_used", // must be present
+                    "x-user-context-name": "not_used", // must be present
+                    "x-user-ad-id": params?.activeDirectoryId ? params.activeDirectoryId : cypressUser.adId,
                 };
             },
         ).as("AuthInterceptor");
@@ -21,6 +22,5 @@ export class AuthenticationInterceptor {
 }
 
 export type AuthenticationInterceptorParams = {
-    role?: string;
-    username?: string;
+    activeDirectoryId?: string;
 };

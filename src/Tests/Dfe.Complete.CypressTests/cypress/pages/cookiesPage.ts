@@ -5,7 +5,7 @@ class CookiesPage {
     private readonly successBannerReturnLink = '[data-test="success-banner-return-link"]';
 
     public shouldBeOnCookiesPage() {
-        cy.url().should("contain", "/public/cookies");
+        cy.url().should("contain", "/cookies");
         return this;
     }
 

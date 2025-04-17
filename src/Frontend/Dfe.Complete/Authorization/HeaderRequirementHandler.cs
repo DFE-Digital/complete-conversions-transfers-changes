@@ -32,6 +32,9 @@ namespace Dfe.Complete.Authorization
 
                 var currentUser = context.User.Identities.FirstOrDefault();
 
+                if (userInfo == null)
+                    return Task.CompletedTask;
+                
                 currentUser?.AddClaim(new Claim(ClaimTypes.Name, userInfo.Name));
 
                 foreach (var claim in userInfo.Roles)
@@ -43,9 +46,16 @@ namespace Dfe.Complete.Authorization
 
                 if(currentUser?.Claims.All(c => c.Type != "objectidentifier") ?? true)
                 {
-                    currentUser?.AddClaim(new Claim("objectidentifier", "TEST-AD-ID"));
+                    if(!string.IsNullOrEmpty(userInfo.ActiveDirectoryId))
+                    {
+                        currentUser?.AddClaim(new Claim("objectidentifier", userInfo.ActiveDirectoryId));
+                    }
+                    else
+                    {
+                        currentUser?.AddClaim(new Claim("objectidentifier", "TEST-AD-ID"));
+                    }
                 }
-              //
+                
                 context.Succeed(requirement);
             }
 

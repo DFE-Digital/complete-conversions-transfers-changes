@@ -2,19 +2,23 @@
 
 ### Test Setup
 
+#### Environment variables
+
 The Cypress tests are designed to run against the front-end of the application. To set up the tests, you need to provide a configuration file named `cypress.env.json` with the following information:
 
-```javascript
+```json
 {
-    "url": "<enter frontend URL>",
-    "username": "<enter the user you want to run the tests with>",
-    "api": "<enter backend URL>",
-    "authKey": "<enter key set for the CypressTestSecret>"
-    "tenantId": "<enter Id from Id Provider for the tenant>",  
-    "clientId": "<enter Id from Id Provider for the client used for test app registration>",
-    "clientSecret": "<enter a client secret Id Provider for the client used for test app registration>",
-    "completeApiClientId": "<enter Id from Id Provider for the complete api app registration>",
-    "userAdId": "<enter the active directory id of the user>"
+  "url": "<enter frontend URL>",
+  "username": "<enter the user you want to run the tests with>",
+  "api": "<enter backend URL>",
+  "authKey": "<enter key set for the CypressTestSecret>",
+  "tenantId": "<enter Id from Id Provider for the tenant>",
+  "clientId": "<enter Id from Id Provider for the client used for test app registration>",
+  "clientSecret": "<enter a client secret Id Provider for the client used for test app registration>",
+  "completeApiClientId": "<enter Id from Id Provider for the complete api app registration>",
+  "dbHost": "<enter the complete database server name for the desired environment>",
+  "dbUser": "enter the complete database user>",
+  "dbPassword": "<enter the complete database password>"
 }
 ```
 
@@ -22,40 +26,31 @@ While it is possible to pass these configurations through commands, it is easier
 
 #### Authentication
 
-The authentication is invoked in every test using the `login` command:
+The authentication is invoked in every test using the `login()` command. This defaults to the cypress test user, but you can override this be passing in the active directory ID. See the available users in the database section.
 
 ```javascript
 beforeEach(() => {
     cy.login();
+    // OR
+    cy.login({ activeDirectoryId: businessSupportUser.adId });
 });
 ```
 
 Intercepts all browser requests and adds a special auth header using the `authKey`. Make sure you set the `CypressTestSecret` in your app, and it matches the `authKey` in the `cypress.env.json` file.
 
-The database will need the user to exist and to match the active directory id defined above. An example script to add the user to the database is below
+#### Database
 
-```sql
-BEGIN TRANSACTION 
-INSERT INTO [complete].[users]
-VALUES (NEWID()
-      ,'test.cypress@education.gov.uk'
-      ,GETDATE()
-      ,GETDATE()
-      ,0
-      ,0
-      ,'cypress'
-      ,'testuser'
-      ,'TEST-AD-ID'
-      ,0
-      ,0
-      ,null
-      ,'london'
-      ,null
-      ,0
-      ,0
-      ,null)
-COMMIT TRANSACTION
-```
+The following users are required for the tests to run successfully. These are automatically added in the `cypress.config.ts` file `before:run`, which will run before the tests are executed.
+Note: when running `cy:open` this is disabled by default, but can be enabled by setting `cypress.config.ts` `experimentalInteractiveRunEvents: true`
+
+Users:
+- Cypress default test user (london)
+- Regional delivery officer London
+- Regional Casework Services
+- Business Support
+- Data Consumer
+- Service Support
+
 
 ### Test Execution
 

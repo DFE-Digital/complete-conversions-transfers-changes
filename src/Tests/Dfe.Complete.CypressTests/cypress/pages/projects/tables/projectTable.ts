@@ -43,6 +43,11 @@ class ProjectTable {
             expect(actualValue).contains(expectedValue);
         });
     }
+
+    protected clickButtonInRow(schoolName: string, buttonName: string) {
+        cy.getProjectTableRow(schoolName).contains(buttonName).click();
+        return this;
+    }
 }
 
 export default ProjectTable;

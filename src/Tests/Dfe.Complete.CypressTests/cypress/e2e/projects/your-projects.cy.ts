@@ -11,11 +11,11 @@ const schoolName = "Farnworth Church of England Controlled Primary School";
 describe("View your projects", () => {
     before(() => {
         projectRemover.removeProjectIfItExists(`${project.urn.value}`);
-        projectApi.createProject(project);
+        projectApi.createConversionProject(project);
     });
 
     beforeEach(() => {
-        cy.login({ role: "RegionalDeliveryOfficer" });
+        cy.login();
         cy.acceptCookies();
         cy.visit(`/projects/yours/in-progress`);
     });

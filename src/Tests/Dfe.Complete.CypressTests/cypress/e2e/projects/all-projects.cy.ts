@@ -2,15 +2,14 @@ import navBar from "cypress/pages/navBar";
 import allProjects from "cypress/pages/projects/allProjects";
 import { projectTable } from "cypress/pages/projects/tables/projectTable";
 import { before, beforeEach } from "mocha";
+import { nextMonth, trust } from "cypress/constants/stringTestConstants";
+import { shouldOnlyBeAbleToViewNextMonthOfProjects } from "cypress/support/reusableTests";
 import projectApi from "cypress/api/projectApi";
 import { ProjectBuilder } from "cypress/api/projectBuilder";
 import projectRemover from "cypress/api/projectRemover";
 import allProjectsInProgressTable from "cypress/pages/projects/tables/allProjectsInProgressTable";
-import { Username } from "cypress/constants/cypressConstants";
-import { trust } from "cypress/constants/stringTestConstants";
+import { cypressUser } from "cypress/constants/cypressConstants";
 
-const today = new Date();
-const nextMonth = new Date(today.setMonth(today.getMonth() + 1));
 const project = ProjectBuilder.createConversionProjectRequest(nextMonth);
 let projectId: string;
 const schoolName = "St Chad's Catholic Primary School";
@@ -22,15 +21,21 @@ const transferSchoolName = "Abbey College Manchester";
 describe("View all projects", () => {
     before(() => {
         projectRemover.removeProjectIfItExists(`${project.urn.value}`);
-        // projectRemover.removeProjectIfItExists(`${transferProject.urn.value}`);
-        projectApi.createProject(project).then((response) => (projectId = response.value));
-        // projectApi.createProject(transferProject);
+        projectRemover.removeProjectIfItExists(`${transferProject.urn.value}`);
+        projectApi.createConversionProject(project).then((response) => (projectId = response.value));
+        projectApi.createTransferProject(transferProject);
     });
 
     beforeEach(() => {
-        cy.login({ role: "RegionalDeliveryOfficer" });
+        cy.login();
         cy.acceptCookies();
         cy.visit(`/projects/all/in-progress/all`);
+    });
+
+    it.skip("Should be able to view my team projects that are handed over", () => {
+        // not implemented
+        navBar.goToAllProjects();
+        allProjects.filterProjects("Handover").containsHeading("Projects to handover");
     });
 
     it("Should be able to view newly created conversion project in All projects in progress and Conversions projects", () => {
@@ -43,7 +48,7 @@ describe("View all projects", () => {
             .schoolHasConversionOrTransferDate(schoolName, nextMonthString)
             .schoolHasProjectType(schoolName, "Conversion")
             .schoolHasFormAMatProject(schoolName, "No")
-            .schoolHasAssignedTo(schoolName, Username);
+            .schoolHasAssignedTo(schoolName, cypressUser.username);
         allProjects
             .viewConversionsProjects()
             .containsHeading("All conversions in progress")
@@ -52,8 +57,7 @@ describe("View all projects", () => {
         // projectDetailsPage.containsHeading(schoolName); // not implemented
     });
 
-    it.skip("Should be able to view newly created transfer project in All projects in progress and Transfers projects", () => {
-        // 205986 unable to create transfer project
+    it("Should be able to view newly created transfer project in All projects in progress and Transfers projects", () => {
         navBar.goToAllProjects();
         allProjects.goToNextPageUntilFieldIsVisible(transferSchoolName);
         allProjectsInProgressTable
@@ -62,7 +66,7 @@ describe("View all projects", () => {
             .schoolHasConversionOrTransferDate(transferSchoolName, "Mar 2026")
             .schoolHasProjectType(transferSchoolName, "Transfer")
             .schoolHasFormAMatProject(transferSchoolName, "No")
-            .schoolHasAssignedTo(transferSchoolName, Username);
+            .schoolHasAssignedTo(transferSchoolName, cypressUser.username);
         allProjects
             .viewTransfersProjects()
             .containsHeading("All transfers in progress")
@@ -71,20 +75,8 @@ describe("View all projects", () => {
         // projectDetailsPage.containsHeading(transferSchoolName); // not implemented
     });
 
-    it.skip("Should be able to view all Conversions projects by month", () => {
-        // not implemented 187137
-        const nextMonthString = `${nextMonth.toLocaleString("default", { month: "short" })} ${nextMonth.getFullYear()}`;
-        navBar.goToAllProjects();
-        allProjects.filterProjects("By month").containsHeading(nextMonthString);
-        projectTable
-            .hasTableHeader("School and URN")
-            .hasTableHeader("Region")
-            .hasTableHeader("Incoming trust")
-            .hasTableHeader("All conditions met")
-            .hasTableHeader("Confirmed date (Original date)")
-            .contains(`${schoolName} ${project.urn.value}`)
-            .goTo(`${schoolName} ${project.urn.value}`);
-        // projectDetailsPage.containsHeading(schoolName); // not implemented
+    it.skip("Should be able to view all Conversions projects by month - next month only", () => {
+        shouldOnlyBeAbleToViewNextMonthOfProjects(schoolName, project);
     });
 
     it("Should be able to view all projects by region and all a region's projects", () => {
@@ -97,7 +89,7 @@ describe("View all projects", () => {
             .contains(region)
             .filterBy(region);
         allProjects
-            // .containsHeading(`Projects for ${region}`); //bug 205144
+            .containsHeading(`Projects for ${region}`)
             .goToNextPageUntilFieldIsVisible(schoolName);
         projectTable
             .hasTableHeader("School or academy")
@@ -115,15 +107,15 @@ describe("View all projects", () => {
         allProjects
             .filterProjects("By user")
             .containsHeading("All projects by user")
-            .goToNextPageUntilFieldIsVisible(Username);
+            .goToNextPageUntilFieldIsVisible(cypressUser.username);
         projectTable
             .hasTableHeader("User name")
             .hasTableHeader("Email")
             .hasTableHeader("Team")
             .hasTableHeader("Conversions")
             .hasTableHeader("Transfers")
-            .goToUserProjects(Username);
-        allProjects.containsHeading(`Projects for ${Username}`);
+            .goToUserProjects(cypressUser.username);
+        allProjects.containsHeading(`Projects for ${cypressUser.username}`);
         projectTable
             .hasTableHeader("School or academy")
             .hasTableHeader("URN")
