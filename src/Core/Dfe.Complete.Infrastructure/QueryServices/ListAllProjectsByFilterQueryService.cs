@@ -15,7 +15,9 @@ internal class ListAllProjectsByFilterQueryService(CompleteContext context) : IL
         UserId? userId = null,
         string? localAuthorityCode = "",
         Region? region = null,
-        ProjectTeam? team = null)
+        ProjectTeam? team = null,
+        bool? isFormAMat  = null,
+        string? newTrustReferenceNumber = "")
     {
         var projects = context.Projects
             .Where(project => projectStatus == null || project.State == projectStatus)
@@ -46,6 +48,26 @@ internal class ListAllProjectsByFilterQueryService(CompleteContext context) : IL
         if (team != null)
         {
             projects = projects.Where(project => project.Team == team);
+            return GenerateQuery(projects, giasEstablishments);
+        }
+        
+        if (isFormAMat != null)
+        {
+            if (isFormAMat == true)
+            {
+                projects = projects.Where(project => project.NewTrustReferenceNumber != null && project.NewTrustName != null && project.IncomingTrustUkprn == null);
+            }
+            else
+            {
+                projects = projects.Where(project => project.NewTrustReferenceNumber == null && project.NewTrustName == null && project.IncomingTrustUkprn != null);
+            }
+            
+            return GenerateQuery(projects, giasEstablishments);
+        }
+        
+        if (!string.IsNullOrEmpty(newTrustReferenceNumber))
+        {
+            projects = projects.Where(project => project.NewTrustReferenceNumber == newTrustReferenceNumber);
             return GenerateQuery(projects, giasEstablishments);
         }
 

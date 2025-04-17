@@ -44,12 +44,12 @@ namespace Dfe.Complete.Application.Projects.Queries.ListAllProjects
                 //Group mats by reference and form result model
                 var mats = matProjects
                     .GroupBy(p => p.NewTrustReferenceNumber)
-                    .Select(trustReference => new ListTrustsWithProjectsResultModel(
-                        trustReference.Key,
-                        trustReference.First().NewTrustName, 
-                        trustReference.Key,
-                        trustReference.Count(p => p.Type == ProjectType.Conversion),
-                        trustReference.Count(p => p.Type == ProjectType.Transfer)
+                    .Select(trust => new ListTrustsWithProjectsResultModel(
+                        trust.Key,
+                        trust.First().NewTrustName, 
+                        trust.Key,
+                        trust.Count(p => p.Type == ProjectType.Conversion),
+                        trust.Count(p => p.Type == ProjectType.Transfer)
                     ))
                     .ToList();
 
