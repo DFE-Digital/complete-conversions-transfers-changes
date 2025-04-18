@@ -13,6 +13,7 @@
         // Your team projects
         public const string TeamProjectsInProgress = "/projects/team/in-progress";
         public const string TeamProjectsCompleted = "/projects/team/completed";
+        public const string TeamProjectsUnassigned = "/projects/team/unassigned";
 
         // Project
         public const string Project = "/projects/{0}";
