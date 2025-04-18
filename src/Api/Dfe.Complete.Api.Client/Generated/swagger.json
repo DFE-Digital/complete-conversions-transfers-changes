@@ -612,13 +612,29 @@
             "x-position": 3
           },
           {
+            "name": "OrderBy.Field",
+            "in": "query",
+            "schema": {
+              "$ref": "#/components/schemas/OrderProjectByField"
+            },
+            "x-position": 4
+          },
+          {
+            "name": "OrderBy.Direction",
+            "in": "query",
+            "schema": {
+              "$ref": "#/components/schemas/OrderByDirection"
+            },
+            "x-position": 5
+          },
+          {
             "name": "Page",
             "in": "query",
             "schema": {
               "type": "integer",
               "format": "int32"
             },
-            "x-position": 4
+            "x-position": 6
           },
           {
             "name": "Count",
@@ -627,7 +643,7 @@
               "type": "integer",
               "format": "int32"
             },
-            "x-position": 5
+            "x-position": 7
           }
         ],
         "responses": {
@@ -693,13 +709,29 @@
             "x-position": 3
           },
           {
+            "name": "OrderBy.Field",
+            "in": "query",
+            "schema": {
+              "$ref": "#/components/schemas/OrderProjectByField"
+            },
+            "x-position": 4
+          },
+          {
+            "name": "OrderBy.Direction",
+            "in": "query",
+            "schema": {
+              "$ref": "#/components/schemas/OrderByDirection"
+            },
+            "x-position": 5
+          },
+          {
             "name": "Page",
             "in": "query",
             "schema": {
               "type": "integer",
               "format": "int32"
             },
-            "x-position": 4
+            "x-position": 6
           },
           {
             "name": "Count",
@@ -708,7 +740,7 @@
               "type": "integer",
               "format": "int32"
             },
-            "x-position": 5
+            "x-position": 7
           }
         ],
         "responses": {
@@ -2386,6 +2418,30 @@
             "format": "date-time"
           }
         }
+      },
+      "OrderProjectByField": {
+        "type": "string",
+        "description": "",
+        "x-enumNames": [
+          "SignificantDate",
+          "CreatedAt"
+        ],
+        "enum": [
+          "SignificantDate",
+          "CreatedAt"
+        ]
+      },
+      "OrderByDirection": {
+        "type": "string",
+        "description": "",
+        "x-enumNames": [
+          "Ascending",
+          "Descending"
+        ],
+        "enum": [
+          "Ascending",
+          "Descending"
+        ]
       },
       "ListAllProjectsForUserQueryResultModel": {
         "type": "object",

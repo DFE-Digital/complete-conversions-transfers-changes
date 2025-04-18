@@ -1,3 +1,4 @@
+using System.Net.NetworkInformation;
 using Dfe.Complete.Application.Common.Models;
 using Dfe.Complete.Application.Projects.Interfaces;
 using Dfe.Complete.Application.Projects.Models;
@@ -10,7 +11,8 @@ namespace Dfe.Complete.Application.Projects.Queries.ListAllProjects;
 public record ListAllProjectsForRegionQuery(
     Region Region,
     ProjectState? ProjectStatus,
-    ProjectType? Type)
+    ProjectType? Type,
+    OrderProjectQueryBy? OrderBy = null)
     : PaginatedRequest<PaginatedResult<List<ListAllProjectsResultModel>>>;
 
 public class ListAllProjectsForRegionQueryHandler(
@@ -24,7 +26,7 @@ public class ListAllProjectsForRegionQueryHandler(
         try
         {
             var projectsForRegion = await listAllProjectsByFilterQueryService.ListAllProjectsByFilter(
-                request.ProjectStatus, request.Type, region: request.Region)
+                request.ProjectStatus, request.Type, region: request.Region, orderBy: request.OrderBy)
                 .ToListAsync(cancellationToken);
 
             var paginatedResultModel = projectsForRegion.Select(proj =>
