@@ -33,7 +33,7 @@ namespace Dfe.Complete.Api.Controllers
             var projectId = await sender.Send(request, cancellationToken);
             return Created("", projectId);
         }
-        
+
         /// <summary>
         /// Creates a new Transfer project
         /// </summary>
@@ -49,7 +49,7 @@ namespace Dfe.Complete.Api.Controllers
             var projectId = await sender.Send(request, cancellationToken);
             return Created("", projectId);
         }
-        
+
         /// <summary>
         /// Creates a new Form a Mat Conversion project
         /// </summary>
@@ -65,7 +65,7 @@ namespace Dfe.Complete.Api.Controllers
             var projectId = await sender.Send(request, cancellationToken);
             return Created("", projectId);
         }
-        
+
         /// <summary>
         /// Creates a new Form a Mat Transfer project
         /// </summary>
@@ -81,7 +81,7 @@ namespace Dfe.Complete.Api.Controllers
             var projectId = await sender.Send(request, cancellationToken);
             return Created("", projectId);
         }
-        
+
         /// <summary>
         /// Gets a Project
         /// </summary>
@@ -96,7 +96,7 @@ namespace Dfe.Complete.Api.Controllers
             var project = await sender.Send(request, cancellationToken);
             return Ok(project.Value);
         }
-        
+
         /// <summary>
         /// Returns a list of Projects
         /// </summary>
@@ -112,6 +112,22 @@ namespace Dfe.Complete.Api.Controllers
             var project = await sender.Send(request, cancellationToken);
             return Ok(project.Value);
         }
+
+        /// <summary>
+        /// Returns a list of Projects related to a specific trust
+        /// </summary>
+        /// <param name="request">The request.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        [Authorize(Policy = "CanRead")]
+        [HttpGet]
+        [Route("List/Trust")]
+        [SwaggerResponse(200, "Project", typeof(List<ListAllProjectsResultModel>))]
+        [SwaggerResponse(400, "Invalid request data.")]
+        public async Task<IActionResult> ListAllProjectsInTrustAsync([FromQuery] ListAllProjectsInTrustQuery request, CancellationToken cancellationToken)
+        {
+            var project = await sender.Send(request, cancellationToken);
+            return Ok(project.Value?.projects ?? []);
+        }
         
         /// <summary>
         /// Returns the number of Projects
@@ -126,6 +142,95 @@ namespace Dfe.Complete.Api.Controllers
         public async Task<IActionResult> CountAllProjectsAsync([FromQuery] CountAllProjectsQuery request, CancellationToken cancellationToken)
         {
             var project = await sender.Send(request, cancellationToken);
+            return Ok(project.Value);
+        }
+
+        /// <summary>
+        /// Returns a list of Projects for a local authority
+        /// </summary>
+        /// <param name="request">The request.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        [Authorize(Policy = "CanRead")]
+        [HttpGet]
+        [Route("List/All/LocalAuthority")]
+        [SwaggerResponse(200, "Project", typeof(List<ListAllProjectsResultModel>))]
+        [SwaggerResponse(400, "Invalid request data.")]
+        public async Task<IActionResult> ListAllProjectsForLocalAuthorityAsync(
+            [FromQuery] ListAllProjectsForLocalAuthorityQuery request,
+            CancellationToken cancellationToken)
+        {
+            var project = await sender.Send(request, cancellationToken);
+            return Ok(project.Value);
+        }
+
+        /// <summary>
+        /// Returns a list of Projects for a region
+        /// </summary>
+        /// <param name="request">The request.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        [Authorize(Policy = "CanRead")]
+        [HttpGet]
+        [Route("List/All/Region")]
+        [SwaggerResponse(200, "Project", typeof(List<ListAllProjectsResultModel>))]
+        [SwaggerResponse(400, "Invalid request data.")]
+        public async Task<IActionResult> ListAllProjectsForRegionAsync(
+            [FromQuery] ListAllProjectsForRegionQuery request,
+            CancellationToken cancellationToken)
+        {
+            if (!Enum.IsDefined<Domain.Enums.Region>(request.Region))
+            {
+                return BadRequest($"Invalid region \"{request.Region}\" specified");
+            }
+
+            var project = await sender.Send(request, cancellationToken);
+            return Ok(project.Value);
+        }
+
+        /// <summary>
+        /// Returns a list of Projects for a team
+        /// </summary>
+        /// <param name="request">The request.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        [Authorize(Policy = "CanRead")]
+        [HttpGet]
+        [Route("List/All/Team")]
+        [SwaggerResponse(200, "Project", typeof(List<ListAllProjectsResultModel>))]
+        [SwaggerResponse(400, "Invalid request data.")]
+        public async Task<IActionResult> ListAllProjectsForTeamAsync(
+            [FromQuery] ListAllProjectsForTeamQuery request,
+            CancellationToken cancellationToken)
+        {
+            if (!Enum.IsDefined<Domain.Enums.ProjectTeam>(request.Team))
+            {
+                return BadRequest($"Invalid team \"{request.Team}\" specified");
+            }
+
+            var project = await sender.Send(request, cancellationToken);
+            return Ok(project.Value);
+        }
+
+        /// <summary>
+        /// Returns a list of Projects for a user
+        /// </summary>
+        /// <param name="request">The request.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        [Authorize(Policy = "CanRead")]
+        [HttpGet]
+        [Route("List/All/User")]
+        [SwaggerResponse(200, "Project", typeof(List<ListAllProjectsForUserQueryResultModel>))]
+        [SwaggerResponse(400, "Invalid request data.")]
+        [SwaggerResponse(500, "Internal server error.")]
+        public async Task<IActionResult> ListAllProjectsForUserAsync(
+            [FromQuery] ListAllProjectsForUserQuery request,
+            CancellationToken cancellationToken)
+        {
+            var project = await sender.Send(request, cancellationToken);
+
+            if (!project.IsSuccess)
+                return project.Error == "User not found."
+                    ? BadRequest($"User does not exist for provided {nameof(request.UserAdId)}")
+                    : StatusCode(500);
+
             return Ok(project.Value);
         }
 

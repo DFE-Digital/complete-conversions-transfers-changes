@@ -14,6 +14,7 @@
         public const string TeamProjectsInProgress = "/projects/team/in-progress";
         public const string TeamProjectsNew = "/projects/team/new";
         public const string TeamProjectsCompleted = "/projects/team/completed";
+        public const string TeamProjectsUnassigned = "/projects/team/unassigned";
 
         // Project
         public const string Project = "/projects/{0}";
@@ -59,5 +60,11 @@
 
         public const string TransferViewStakeholderKickoffTask = TransferProjectTaskList + "/stakeholder-kickoff";
         public const string TransferEditStakeholderKickoffTask = TransferViewStakeholderKickoffTask + "/edit";
+
+        // Groups
+        public const string Groups = "/groups";
+
+        // Service support
+        public const string ServiceSupportProjects = "/projects/service-support/without-academy-urn";
     }
 }
