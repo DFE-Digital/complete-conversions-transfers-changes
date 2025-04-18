@@ -21,7 +21,7 @@ internal class ListAllProjectsByFilterQueryService(CompleteContext context) : IL
     {
         var projects = context.Projects
             .Where(project => projectStatus == null || project.State == projectStatus)
-            .Where(project => projectStatus != ProjectState.Active || project.AssignedToId != null)
+            // .Where(project => projectStatus != ProjectState.Active || project.AssignedToId != null)
             .Where(project => projectType == null || projectType == project.Type);
 
         //For now, limiting the service to one filter at a time unless requirement changes
@@ -30,28 +30,28 @@ internal class ListAllProjectsByFilterQueryService(CompleteContext context) : IL
         if (userId != null && userId.Value != Guid.Empty)
         {
             projects = projects.Where(project => project.AssignedToId != null && project.AssignedToId == userId);
-            return GenerateQuery(projects, giasEstablishments);
+            // return GenerateQuery(projects, giasEstablishments);
         }
 
         if (!string.IsNullOrEmpty(localAuthorityCode))
         {
             giasEstablishments = giasEstablishments.Where(establishment => establishment.LocalAuthorityCode == localAuthorityCode);
-            return GenerateQuery(projects, giasEstablishments);
+            // return GenerateQuery(projects, giasEstablishments);
         }
 
         if (region != null)
         {
             projects = projects.Where(project => project.Region == region);
-            return GenerateQuery(projects, giasEstablishments, orderBy);
+            // return GenerateQuery(projects, giasEstablishments, orderBy);
         }
 
         if (team != null)
         {
             projects = projects.Where(project => project.Team == team);
-            return GenerateQuery(projects, giasEstablishments, orderBy);
+            // return GenerateQuery(projects, giasEstablishments, orderBy);
         }
 
-        return GenerateQuery(projects, giasEstablishments);
+        return GenerateQuery(projects, giasEstablishments, orderBy);
     }
 
     private static IQueryable<ListAllProjectsQueryModel> GenerateQuery(IQueryable<Project> projects, IQueryable<GiasEstablishment> giasEstablishments, OrderProjectQueryBy? orderBy = null)
