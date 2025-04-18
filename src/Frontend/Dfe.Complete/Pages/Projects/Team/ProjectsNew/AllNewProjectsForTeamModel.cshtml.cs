@@ -24,7 +24,8 @@ public class AllNewProjectsForTeamModel(ISender sender) : YourTeamProjectsModel(
 
         int recordCount = 0;
 
-        OrderProjectQueryBy orderBy = new OrderProjectQueryBy(OrderProjectByField.CreatedAt, OrderByDirection.Descending);
+        var orderBy = new OrderProjectQueryBy(OrderProjectByField.CreatedAt, OrderByDirection.Descending);
+
         if (UserTeamIsRdo)
         {
             var userRegion = EnumMapper.MapTeamToRegion(userTeam);

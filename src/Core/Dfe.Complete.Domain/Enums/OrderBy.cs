@@ -7,6 +7,7 @@ public enum OrderByDirection {
 
 public enum OrderProjectByField
 {
-    SignificantDate,
-    CreatedAt
+    CompletedAt,
+    CreatedAt,
+    SignificantDate
 }

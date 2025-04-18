@@ -24,12 +24,14 @@ public class AllCompletedProjectsForTeamModel(ISender sender) : YourTeamProjects
 
         int recordCount = 0;
 
+        var orderBy = new OrderProjectQueryBy(OrderProjectByField.CompletedAt, OrderByDirection.Descending);
+
         if (UserTeamIsRdo)
         {
             var userRegion = EnumMapper.MapTeamToRegion(userTeam);
 
             var listProjectsForRegionQuery =
-                new ListAllProjectsForRegionQuery((Region)userRegion!, ProjectState.Completed, null)
+                new ListAllProjectsForRegionQuery((Region)userRegion!, ProjectState.Completed, null, orderBy)
                 {
                     Page = PageNumber - 1,
                     Count = PageSize
@@ -42,7 +44,7 @@ public class AllCompletedProjectsForTeamModel(ISender sender) : YourTeamProjects
         else if (userTeam == ProjectTeam.RegionalCaseWorkerServices)
         {
             var listProjectsForTeamQuery =
-                new ListAllProjectsForTeamQuery(userTeam, ProjectState.Completed, null)
+                new ListAllProjectsForTeamQuery(userTeam, ProjectState.Completed, null, orderBy)
                 {
                     Page = PageNumber - 1,
                     Count = PageSize

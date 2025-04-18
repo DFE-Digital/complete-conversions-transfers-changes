@@ -2423,12 +2423,14 @@
         "type": "string",
         "description": "",
         "x-enumNames": [
-          "SignificantDate",
-          "CreatedAt"
+          "CompletedAt",
+          "CreatedAt",
+          "SignificantDate"
         ],
         "enum": [
-          "SignificantDate",
-          "CreatedAt"
+          "CompletedAt",
+          "CreatedAt",
+          "SignificantDate"
         ]
       },
       "OrderByDirection": {

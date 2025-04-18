@@ -1608,11 +1608,14 @@ namespace Dfe.Complete.Client.Contracts
     public enum OrderProjectByField
     {
 
-        [System.Runtime.Serialization.EnumMember(Value = @"SignificantDate")]
-        SignificantDate = 0,
+        [System.Runtime.Serialization.EnumMember(Value = @"CompletedAt")]
+        CompletedAt = 0,
 
         [System.Runtime.Serialization.EnumMember(Value = @"CreatedAt")]
         CreatedAt = 1,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"SignificantDate")]
+        SignificantDate = 2,
 
     }
 
