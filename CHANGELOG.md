@@ -28,6 +28,9 @@ Security in case of vulnerabilities.
  - Added missing "project for region" header
  - User redirection on app load based on their permissions
  - Add navigation items to be more consistent with ruby UI
+ - New route `/projects/team/users`
+ - Your team projects by user list (`/projects/team/users`)
+ - Your team projects by user query `ListAllUsersInTeamWithProjectsQuery`
 
 ### Changed
  - Updated route `/accessibility-statement` to `/accessibility`
