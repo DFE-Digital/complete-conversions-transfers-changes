@@ -8,7 +8,7 @@ using Dfe.Complete.Models;
 using Dfe.Complete.Pages.Pagination;
 using MediatR;
 
-namespace Dfe.Complete.Pages.Projects.List.ProjectsForTeam;
+namespace Dfe.Complete.Pages.Projects.Team.InProgress;
 
 public class AllProjectsInProgressForTeamModel(ISender sender) : YourTeamProjectsModel(InProgressNavigation)
 {
@@ -29,7 +29,7 @@ public class AllProjectsInProgressForTeamModel(ISender sender) : YourTeamProject
             var userRegion = EnumMapper.MapTeamToRegion(userTeam);
 
             var listProjectsForRegionQuery =
-                new ListAllProjectsForRegionQuery((Region)userRegion, ProjectState.Active, null, AssignedToState.AssignedOnly)
+                new ListAllProjectsForRegionQuery((Region)userRegion!, ProjectState.Active, null, AssignedToState.AssignedOnly)
                 {
                     Page = PageNumber - 1,
                     Count = PageSize
