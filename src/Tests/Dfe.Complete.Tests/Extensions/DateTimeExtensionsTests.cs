@@ -64,6 +64,13 @@ public class DateTimeExtensionsTests
     }
     
     [Fact]
+    public void ToDateMonthYearString_ReturnsTheCorrectString_ForNonNullableDateConstructor()
+    {
+        DateTime testDate = new DateTime(2023, 2, 12);
+        Assert.Equal("Feb 2023", testDate.ToDateMonthYearString());
+    }
+    
+    [Fact]
     public void ToDateMonthYearString_ReturnsEmptyString_WhenDateTimeIsNull()
     {
         DateTime? test = null;
