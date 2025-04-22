@@ -65,23 +65,10 @@ public class ListAllProjectsQueryHandlerTests
         // Arrange
         var listAllProjectsQueryModels = fixture.CreateMany<ListAllProjectsQueryModel>(50).ToList();
 
-        var expected = listAllProjectsQueryModels.Select(item => new ListAllProjectsResultModel(
-            item?.Establishment?.Name,
-            item!.Project!.Id,
-            item.Project.Urn,
-            item.Project.SignificantDate,
-            item.Project.State,
-            item.Project.Type,
-            item.Project.FormAMat,
-            item.Project.AssignedTo != null
-                ? $"{item.Project.AssignedTo.FirstName} {item.Project.AssignedTo.LastName}"
-                : null,
-            item.Project.LocalAuthority.Name,
-            item.Project.Team,
-            item.Project.CompletedAt,
-            item.Project.Region,
-            item?.Establishment?.LocalAuthorityName
-        )).Skip(20).Take(20).ToList();
+        var expected = listAllProjectsQueryModels.Select(item => ListAllProjectsResultModel.MapProjectAndEstablishmentToListAllProjectResultModel(
+                item.Project,
+                item.Establishment
+            )).Skip(20).Take(20).ToList();
 
         var query = new ListAllProjectsQuery(null, null, 1);
 
