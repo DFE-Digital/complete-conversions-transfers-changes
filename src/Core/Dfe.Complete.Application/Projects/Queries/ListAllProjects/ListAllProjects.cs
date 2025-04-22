@@ -33,7 +33,7 @@ namespace Dfe.Complete.Application.Projects.Queries.ListAllProjects
                 var result = filteredProjectList
                     .Skip(request.Page * request.Count).Take(request.Count)
                     .Select(item => ListAllProjectsResultModel.MapProjectAndEstablishmentToListAllProjectResultModel(
-                        item.Project,
+                        item.Project!,
                         item.Establishment
                     ))
                     .ToList();

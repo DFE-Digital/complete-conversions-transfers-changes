@@ -13,6 +13,7 @@ internal class ListAllProjectsByFilterQueryService(CompleteContext context) : IL
 {
     public IQueryable<ListAllProjectsQueryModel> ListAllProjectsByFilter(ProjectState? projectStatus,
         ProjectType? projectType,
+        AssignedToState? assignedToState = null,
         UserId? userId = null,
         string? localAuthorityCode = "",
         Region? region = null,
@@ -21,8 +22,10 @@ internal class ListAllProjectsByFilterQueryService(CompleteContext context) : IL
     {
         var projects = context.Projects
             .Where(project => projectStatus == null || project.State == projectStatus)
-            .Where(project => projectStatus != ProjectState.Active || project.AssignedToId != null)
             .Where(project => projectType == null || projectType == project.Type);
+
+        if (assignedToState == AssignedToState.AssignedOnly)
+            projects = projects.Where(project => project.AssignedToId != null);
 
         //For now, limiting the service to one filter at a time unless requirement changes
         IQueryable<GiasEstablishment> giasEstablishments = context.GiasEstablishments;
