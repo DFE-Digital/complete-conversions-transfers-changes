@@ -1,3 +1,4 @@
+using System.Collections.ObjectModel;
 using System.Net;
 using System.Security.Claims;
 using AutoFixture;
@@ -15,6 +16,8 @@ using DfE.CoreLibs.Testing.Mocks.WebApplicationFactory;
 using DfE.CoreLibs.Testing.Mocks.WireMock;
 using Microsoft.EntityFrameworkCore;
 using Moq;
+using GiasEstablishment = Dfe.Complete.Domain.Entities.GiasEstablishment;
+using GiasEstablishmentId = Dfe.Complete.Domain.ValueObjects.GiasEstablishmentId;
 using Project = Dfe.Complete.Domain.Entities.Project;
 using Ukprn = Dfe.Complete.Domain.ValueObjects.Ukprn;
 
@@ -1106,4 +1109,90 @@ public class ProjectsControllerTests
 
         Assert.Contains("User does not exist for provided UserAdId", exception.Response);
     }
+    
+    
+    [Theory(Skip = "Awaiting wiremock")]
+    [CustomAutoData(typeof(CustomWebApplicationDbContextFactoryCustomization), typeof(GiasEstablishmentsCustomization))]
+    public async Task ListAllMATS_Async_ShouldReturnListOfFormAMatProjects(
+        CustomWebApplicationDbContextFactory<Program> factory,
+        IProjectsClient projectsClient,
+        IFixture fixture,
+        Mock<IEstablishmentsV4Client> mockEstablishmentsClient)
+    {
+        factory.TestClaims = [new Claim(ClaimTypes.Role, ReadRole)];
+
+        // Arrange
+        var dbContext = factory.GetDbContext<CompleteContext>();
+        var testUser = await dbContext.Users.FirstAsync();
+        var testLocalAuthority = await dbContext.LocalAuthorities.FirstAsync();
+
+        var fakeUrns = new List<int> { 100001, 100002, 100003 };
+        var fakeEstablishments = fakeUrns.Select((urn, index) => new EstablishmentDto()
+        {
+            Urn = urn.ToString(),
+            Name = $"School {index + 1}",
+            Ukprn = $"10000{index + 1}"
+        });
+
+        mockEstablishmentsClient
+            .Setup(e => e.GetByUrns2Async(It.IsAny<IEnumerable<int>>(), It.IsAny<CancellationToken>()))
+            .ReturnsAsync(new ObservableCollection<EstablishmentDto>(fakeEstablishments));
+
+        var establishments = fakeUrns.Select(urn => new GiasEstablishment
+        {
+            Id = new GiasEstablishmentId(Guid.NewGuid()), 
+            Urn = new Dfe.Complete.Domain.ValueObjects.Urn(urn),
+            Name = $"School for {urn}"
+        }).ToList();
+        
+        await dbContext.GiasEstablishments.AddRangeAsync(establishments);
+
+        var projects = establishments.Select(establishment =>
+        {
+            var project = fixture.Customize(new ProjectCustomization
+            {
+                RegionalDeliveryOfficerId = testUser.Id,
+                CaseworkerId = testUser.Id,
+                AssignedToId = testUser.Id,
+                LocalAuthorityId = testLocalAuthority.Id
+            }).Create<Project>();
+
+            project.Urn = establishment.Urn;
+            project.NewTrustReferenceNumber = "TR123456";
+            project.NewTrustName = "New Trust";
+            project.State = Domain.Enums.ProjectState.Active;
+            project.IncomingTrustUkprn = null;
+            return project;
+        }).ToList();
+
+        await dbContext.Projects.AddRangeAsync(projects);
+        await dbContext.SaveChangesAsync();
+
+        // Act
+        var result = await projectsClient.ListAllMaTsAsync(ProjectState.Active, null, null);
+
+        // Assert
+        Assert.NotNull(result);
+        
+        var matGroup = result.First();
+        Assert.Equal("TR123456", matGroup.Identifier);
+        Assert.Equal("New Trust", matGroup.TrustName);
+        Assert.Equal(projects.Count, matGroup.ProjectModels.Count());
+        
+        foreach (var projectResult in matGroup.ProjectModels)
+        {
+            var matchingProject = projects.FirstOrDefault(p => p.Id.Value == projectResult.Project.Id?.Value);
+            var matchingEstablishment = establishments.FirstOrDefault(e => e.Urn?.Value == projectResult.Project.Urn?.Value);
+        
+            Assert.NotNull(matchingProject);
+            Assert.NotNull(matchingEstablishment);
+        
+            Assert.Equal(matchingProject?.Urn.Value, projectResult.Project.Urn.Value);
+            Assert.Equal(matchingEstablishment?.Name, projectResult.Establishment.Name);
+        
+            Assert.Equal(matchingProject?.State.ToString(), projectResult.Project.State.ToString());
+            Assert.Equal(matchingProject?.Type?.ToString(), projectResult.Project.Type?.ToString());
+        }
+    }
+
 }

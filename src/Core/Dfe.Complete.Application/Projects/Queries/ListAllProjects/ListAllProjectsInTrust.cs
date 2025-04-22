@@ -4,6 +4,7 @@ using Dfe.Complete.Application.Projects.Interfaces;
 using Dfe.Complete.Application.Projects.Model;
 using Dfe.Complete.Application.Projects.Models;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 namespace Dfe.Complete.Application.Projects.Queries.ListAllProjects
 {
@@ -16,8 +17,8 @@ namespace Dfe.Complete.Application.Projects.Queries.ListAllProjects
         {
             try
             {
-                var allProjects = listAllProjectsQueryService.ListAllProjects(Domain.Enums.ProjectState.Active, null)
-                    .AsEnumerable();
+                var allProjects = await listAllProjectsQueryService.ListAllProjects(Domain.Enums.ProjectState.Active, null)
+                    .ToListAsync(cancellationToken);
 
                 var selectedProjects = new List<ListAllProjectsQueryModel>();
                 var trustName = string.Empty;

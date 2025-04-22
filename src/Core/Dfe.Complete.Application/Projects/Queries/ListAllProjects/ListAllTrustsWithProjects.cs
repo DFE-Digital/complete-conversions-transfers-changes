@@ -5,6 +5,7 @@ using Dfe.Complete.Application.Projects.Models;
 using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Utils;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 namespace Dfe.Complete.Application.Projects.Queries.ListAllProjects
 {
@@ -19,10 +20,9 @@ namespace Dfe.Complete.Application.Projects.Queries.ListAllProjects
         {
             try
             {
-                var allProjects = listAllProjectsQueryService.ListAllProjects(ProjectState.Active, null)
-                    .AsEnumerable()
+                var allProjects = await listAllProjectsQueryService.ListAllProjects(ProjectState.Active, null)
                     .Select(p => p.Project)
-                    .ToList();
+                    .ToListAsync(cancellationToken);
 
                 var standardProjects = allProjects.Where(p => !p.FormAMat);
                 var matProjects = allProjects.Where(p => p.FormAMat);
