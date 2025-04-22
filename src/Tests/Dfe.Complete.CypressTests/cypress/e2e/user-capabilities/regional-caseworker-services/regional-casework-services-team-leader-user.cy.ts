@@ -19,7 +19,8 @@ const project = ProjectBuilder.createConversionProjectRequest(nextMonth);
 const schoolName = "St Chad's Catholic Primary School";
 const unassignedProject = ProjectBuilder.createConversionProjectRequest(nextMonth, 103845, "");
 const unassignedProjectSchoolName = "Jesson's CofE Primary School (VA)";
-describe("Capabilities and permissions of the regional casework services team leader user", () => {
+// skipped as visiting / goes to unassigned projects that is not implemented yet
+describe.skip("Capabilities and permissions of the regional casework services team leader user", () => {
     before(() => {
         projectRemover.removeProjectIfItExists(`${project.urn.value}`);
         projectRemover.removeProjectIfItExists(`${unassignedProject.urn.value}`);
@@ -28,7 +29,7 @@ describe("Capabilities and permissions of the regional casework services team le
     });
 
     beforeEach(() => {
-        cy.login({ activeDirectoryId: regionalCaseworkerTeamLeaderUser.adId });
+        cy.login(regionalCaseworkerTeamLeaderUser);
         cy.acceptCookies();
         cy.visit("/");
     });

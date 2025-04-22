@@ -13,7 +13,7 @@ import navBar from "cypress/pages/navBar";
 
 describe("Capabilities and permissions of the data consumer user", () => {
     beforeEach(() => {
-        cy.login({ activeDirectoryId: dataConsumerUser.adId });
+        cy.login(dataConsumerUser);
         cy.acceptCookies();
         cy.visit("/");
     });

@@ -14,10 +14,10 @@
 // ***********************************************************
 
 // Import commands.js using ES2015 syntax:
-import { AuthenticationInterceptorParams } from "cypress/auth/authenticationInterceptor";
 import "./commands";
 import { RuleObject } from "axe-core";
 import { yesNoOption } from "../constants/stringTestConstants";
+import { TestUser } from "cypress/constants/TestUser";
 
 declare global {
     namespace Cypress {
@@ -42,7 +42,7 @@ declare global {
 
             getProjectTableRow(schoolName: string): Chainable<JQuery<HTMLTableRowElement>>;
 
-            login(params?: AuthenticationInterceptorParams): Chainable<Element>;
+            login(user?: TestUser): Chainable<Element>;
 
             loginWithCredentials(): Chainable<Element>;
 

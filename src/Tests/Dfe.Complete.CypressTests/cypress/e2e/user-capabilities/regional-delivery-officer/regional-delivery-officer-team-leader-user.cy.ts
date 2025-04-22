@@ -13,14 +13,15 @@ import navBar from "cypress/pages/navBar";
 const unassignedProject = ProjectBuilder.createConversionProjectRequest(nextMonth, 103845, "");
 const unassignedProjectSchoolName = "Jesson's CofE Primary School (VA)";
 
-describe("Capabilities and permissions of the regional delivery officer team leader user", () => {
+// skipped as visiting / goes to unassigned projects that is not implemented yet
+describe.skip("Capabilities and permissions of the regional delivery officer team leader user", () => {
     before(() => {
         projectRemover.removeProjectIfItExists(`${unassignedProject.urn.value}`);
         projectApi.createConversionProject(unassignedProject, "");
     });
 
     beforeEach(() => {
-        cy.login({ activeDirectoryId: rdoTeamLeaderUser.adId });
+        cy.login(rdoTeamLeaderUser);
         cy.acceptCookies();
         cy.visit("/");
     });

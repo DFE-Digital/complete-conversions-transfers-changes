@@ -12,7 +12,7 @@ import { serviceSupportUser } from "cypress/constants/cypressConstants";
 // skipped as visiting / goes to service support that is not implemented yet
 describe.skip("Capabilities and permissions of the service support user", () => {
     beforeEach(() => {
-        cy.login({ activeDirectoryId: serviceSupportUser.adId });
+        cy.login(serviceSupportUser);
         cy.acceptCookies();
         cy.visit("/");
     });

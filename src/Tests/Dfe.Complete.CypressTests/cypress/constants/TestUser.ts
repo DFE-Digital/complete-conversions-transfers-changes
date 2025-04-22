@@ -1,31 +1,14 @@
+import { UserRole } from "cypress/constants/UserRoles";
+
 export class TestUser {
     username: string;
     adId: string;
-    team: string;
-    manageTeam: number;
-    assignToProject: number;
-    manageUserAccounts: number;
-    manageConversionURNs: number;
-    manageLocalAuthorities: number;
+    roles: UserRole[];
 
-    constructor(
-        username: string,
-        adId: string,
-        team: string,
-        manageTeam: number = 0,
-        assignToProject: number = 1,
-        manageUserAccounts: number = 0,
-        manageConversionURNs: number = 0,
-        manageLocalAuthorities: number = 0,
-    ) {
+    constructor(username: string, adId: string, roles: UserRole[]) {
         this.username = username;
         this.adId = adId;
-        this.team = team;
-        this.manageTeam = manageTeam;
-        this.assignToProject = assignToProject;
-        this.manageUserAccounts = manageUserAccounts;
-        this.manageConversionURNs = manageConversionURNs;
-        this.manageLocalAuthorities = manageLocalAuthorities;
+        this.roles = roles;
     }
 
     get email(): string {

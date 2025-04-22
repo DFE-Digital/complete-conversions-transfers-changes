@@ -9,7 +9,7 @@ import navBar from "cypress/pages/navBar";
 
 describe("Capabilities and permissions of the regional delivery officer user", () => {
     beforeEach(() => {
-        cy.login({ activeDirectoryId: cypressUser.adId });
+        cy.login(cypressUser);
         cy.acceptCookies();
         cy.visit("/");
     });

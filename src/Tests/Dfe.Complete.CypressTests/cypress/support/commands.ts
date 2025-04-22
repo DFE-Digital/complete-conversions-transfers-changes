@@ -59,13 +59,13 @@ Cypress.Commands.add("assertChildList", (selector: string, values: string[]) => 
         });
 });
 
-Cypress.Commands.add("login", (params) => {
+Cypress.Commands.add("login", (user) => {
     cy.clearCookies();
     cy.clearLocalStorage();
 
     // // Intercept all browser requests and add our special auth header
     // // Means we don't have to use azure to authenticate
-    new AuthenticationInterceptor().register(params);
+    new AuthenticationInterceptor().register(user);
 
     cy.visit("/");
 });

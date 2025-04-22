@@ -13,7 +13,7 @@ import navBar from "cypress/pages/navBar";
 
 describe("Capabilities and permissions of the business support user", () => {
     beforeEach(() => {
-        cy.login({ activeDirectoryId: businessSupportUser.adId });
+        cy.login(businessSupportUser);
         cy.acceptCookies();
         cy.visit("/");
     });

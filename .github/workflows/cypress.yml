@@ -73,9 +73,6 @@ jobs:
           CYPRESS_clientId: ${{ secrets.CYPRESS_CLIENT_ID }}
           CYPRESS_clientSecret: ${{ secrets.CYPRESS_CLIENT_SECRET }}
           CYPRESS_completeApiClientId: ${{ secrets.CYPRESS_COMPLETEAPI_CLIENTID }}
-          CYPRESS_dbHost: ${{ secrets.CYPRESS_DB_HOST }}
-          CYPRESS_dbUser: ${{ secrets.CYPRESS_DB_USER }}
-          CYPRESS_dbPassword: ${{ secrets.CYPRESS_DB_PASSWORD }}
         with:
           browser: ${{ matrix.browser }}
           working-directory: ./src/Tests/Dfe.Complete.CypressTests

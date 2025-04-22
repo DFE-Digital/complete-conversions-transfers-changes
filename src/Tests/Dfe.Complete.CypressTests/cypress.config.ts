@@ -1,6 +1,5 @@
 import { defineConfig } from "cypress";
 import { generateZapReport } from "cypress/plugins/generateZapReport";
-import { setupDatabase } from "cypress/support/database";
 
 export default defineConfig({
     defaultCommandTimeout: 5000,
@@ -24,15 +23,13 @@ export default defineConfig({
         },
     },
     e2e: {
-        experimentalInteractiveRunEvents: false, // turn on to seed db when running cy:open
         excludeSpecPattern: ["*/**/legacy"],
         // We've imported your old cypress plugins here.
         // You may want to clean this up later by importing these.
         setupNodeEvents(on, config) {
-            on("before:run", async () => {
+            on("before:run", () => {
                 // Map cypress env vars to process env vars for usage outside of Cypress run environment
                 process.env = config.env;
-                await setupDatabase();
             });
 
             on("after:run", async () => {

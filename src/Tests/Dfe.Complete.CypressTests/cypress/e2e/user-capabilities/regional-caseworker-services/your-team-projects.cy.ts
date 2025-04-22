@@ -5,14 +5,18 @@ import { ProjectBuilder } from "cypress/api/projectBuilder";
 import navBar from "cypress/pages/navBar";
 import yourTeamProjects from "cypress/pages/projects/yourTeamProjects";
 import yourTeamProjectsRCSViewTable from "cypress/pages/projects/tables/yourTeamProjectsRCSViewTable";
-import { cypressUser, regionalCaseworkerUser } from "cypress/constants/cypressConstants";
+import { regionalCaseworkerTeamLeaderUser, regionalCaseworkerUser } from "cypress/constants/cypressConstants";
 
-const project = ProjectBuilder.createConversionProjectRequest(new Date("2026-04-01"), 111396);
+const project = ProjectBuilder.createConversionProjectRequest(
+    new Date("2026-04-01"),
+    111396,
+    regionalCaseworkerUser.adId,
+);
 const schoolName = "Blacon High School, A Specialist Sports College";
 const teammatesProject = ProjectBuilder.createConversionProjectRequest(
     new Date("2026-04-01"),
     111400,
-    regionalCaseworkerUser.adId,
+    regionalCaseworkerTeamLeaderUser.adId,
 );
 const teammatesSchoolName = "The Heath School";
 
@@ -20,12 +24,12 @@ describe("Regional caseworker services user - View your team projects", () => {
     before(() => {
         projectRemover.removeProjectIfItExists(`${project.urn.value}`);
         projectRemover.removeProjectIfItExists(`${teammatesProject.urn.value}`);
-        projectApi.createConversionProject(project);
-        projectApi.createConversionProject(teammatesProject, regionalCaseworkerUser.email);
+        projectApi.createConversionProject(project, regionalCaseworkerUser.email);
+        projectApi.createConversionProject(teammatesProject, regionalCaseworkerTeamLeaderUser.email);
     });
 
     beforeEach(() => {
-        cy.login({ activeDirectoryId: regionalCaseworkerUser.adId });
+        cy.login(regionalCaseworkerUser);
         cy.acceptCookies();
         cy.visit("/projects/team/in-progress");
     });
@@ -43,9 +47,9 @@ describe("Regional caseworker services user - View your team projects", () => {
             .hasTableHeader("Form a MAT project")
             .hasTableHeader("Conversion or transfer date")
             .schoolHasUrn(schoolName, `${project.urn.value}`)
-            .schoolHasLocalAuthority(schoolName, "Cheshire West and Chester\n")
+            .schoolHasLocalAuthority(schoolName, "Cheshire West and Chester")
             .schoolHasRegion(schoolName, "North West")
-            .schoolHasAssignedTo(schoolName, cypressUser.username)
+            .schoolHasAssignedTo(schoolName, regionalCaseworkerUser.username)
             .schoolHasProjectType(schoolName, "Conversion")
             .schoolHasFormAMatProject(teammatesSchoolName, "No")
             .schoolHasConversionOrTransferDate(teammatesSchoolName, "Apr 2026")
@@ -53,7 +57,7 @@ describe("Regional caseworker services user - View your team projects", () => {
         // projectDetailsPage.containsHeading(schoolName); // not implemented
     });
 
-    it.only("Should be able to view my teammate's project in my team project listings in progress", () => {
+    it("Should be able to view my teammate's project in my team project listings in progress", () => {
         yourTeamProjects
             .containsHeading("Your team projects in progress")
             .goToNextPageUntilFieldIsVisible(teammatesSchoolName);
@@ -69,7 +73,7 @@ describe("Regional caseworker services user - View your team projects", () => {
             .schoolHasUrn(teammatesSchoolName, `${teammatesProject.urn.value}`)
             .schoolHasLocalAuthority(teammatesSchoolName, "Halton")
             .schoolHasRegion(teammatesSchoolName, "North West")
-            .schoolHasAssignedTo(teammatesSchoolName, regionalCaseworkerUser.username)
+            .schoolHasAssignedTo(teammatesSchoolName, regionalCaseworkerTeamLeaderUser.username)
             .schoolHasProjectType(teammatesSchoolName, "Conversion")
             .schoolHasFormAMatProject(teammatesSchoolName, "No")
             .schoolHasConversionOrTransferDate(teammatesSchoolName, "Apr 2026")

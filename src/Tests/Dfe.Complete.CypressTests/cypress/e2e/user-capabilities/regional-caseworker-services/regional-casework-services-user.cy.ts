@@ -11,7 +11,7 @@ import yourTeamProjects from "cypress/pages/projects/yourTeamProjects";
 
 describe("Capabilities and permissions of the regional casework services user", () => {
     beforeEach(() => {
-        cy.login({ activeDirectoryId: regionalCaseworkerUser.adId });
+        cy.login(regionalCaseworkerUser);
         cy.acceptCookies();
         cy.visit("/");
     });
