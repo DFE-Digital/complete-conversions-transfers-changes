@@ -956,7 +956,7 @@ public class ProjectsControllerTests
 
         // Act
         var results = await projectsClient.ListAllProjectsForRegionAsync(
-            expectedRegion, null, null, 0, 50);
+            expectedRegion, null, null, AssignedToState.AssignedOnly, 0, 50);
 
         var expectedProjects = projects
             .Where(p => p.State == Domain.Enums.ProjectState.Active)
@@ -980,7 +980,7 @@ public class ProjectsControllerTests
 
         // Act & Assert
         await Assert.ThrowsAsync<CompleteApiException>(() =>
-            projectsClient.ListAllProjectsForRegionAsync(null, null, null, 0, 50));
+            projectsClient.ListAllProjectsForRegionAsync(null, null, null, null, 0, 50));
     }
 
     [Theory]
@@ -1007,7 +1007,7 @@ public class ProjectsControllerTests
 
         // Act
         var results = await projectsClient.ListAllProjectsForTeamAsync(
-            expectedTeam, null, null, 0, 50);
+            expectedTeam, null, null,AssignedToState.AssignedOnly, 0, 50);
 
         var expectedProjects = projects
             .Where(p => p.State == Domain.Enums.ProjectState.Active)
@@ -1031,7 +1031,7 @@ public class ProjectsControllerTests
 
         // Act & Assert
         await Assert.ThrowsAsync<CompleteApiException>(() =>
-            projectsClient.ListAllProjectsForTeamAsync(null, null, null, 0, 50));
+            projectsClient.ListAllProjectsForTeamAsync(null, null, null, null, 0, 50));
     }
 
     [Theory(Skip = "Awaiting wiremock")]
