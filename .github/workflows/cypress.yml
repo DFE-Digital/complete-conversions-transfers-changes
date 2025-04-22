@@ -23,12 +23,6 @@ on:
         required: true
       CYPRESS_COMPLETEAPI_CLIENTID:
         required: true
-      CYPRESS_DB_HOST:
-        required: true
-      CYPRESS_DB_USER:
-        required: true
-      CYPRESS_DB_PASSWORD:
-        required: true
       SLACK_WEBHOOK_URL:
         required: true
 
