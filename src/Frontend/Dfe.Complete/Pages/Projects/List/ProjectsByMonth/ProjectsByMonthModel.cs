@@ -36,7 +36,7 @@ public abstract class ProjectsByMonthModel(string currentSubNavigationItem) : Al
     public List<ListProjectsByMonthResultModel> Projects { get; set; } = [];
 
     
-    public List<DateOnly?> GetMonths()
+    public static List<DateOnly?> GetMonths()
     {
         var currentYear = DateTime.Now.Year;
         var months = new List<DateOnly?>();
@@ -69,7 +69,7 @@ public abstract class ProjectsByMonthModel(string currentSubNavigationItem) : Al
         return fromSuccess && toSuccess;
     }
     
-    public DateOnly? ParseDate(int month, int year)
+    public static DateOnly? ParseDate(int month, int year)
     {
         if (DateOnly.TryParse($"{month}/1/{year}", CultureInfo.InvariantCulture, out var date))
         {
@@ -87,7 +87,7 @@ public abstract class ProjectsByMonthModel(string currentSubNavigationItem) : Al
             message);
     }
     
-    public IActionResult RedirectToDateRange(string pathToPage, DateTime fromDate, DateTime toDate)
+    public static IActionResult RedirectToDateRange(string pathToPage, DateTime fromDate, DateTime toDate)
     {
         var url = string.Format(pathToPage, fromDate.Month, fromDate.Year, toDate.Month, toDate.Year);
         return new RedirectResult(url);
