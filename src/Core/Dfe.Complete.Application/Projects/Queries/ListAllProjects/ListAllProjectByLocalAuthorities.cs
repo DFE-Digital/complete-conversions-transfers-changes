@@ -29,7 +29,12 @@ public class ListAllProjectByLocalAuthorities(ICompleteRepository<LocalAuthority
                 localAuthority => projectsWithEstablishments
                     .Where(p => p.Establishment.LocalAuthorityCode == localAuthority.Code).ToList());
 
-            var paginatedLocalAuthoritiesWithProjects = localAuthoritiesWithProjectsDict.Skip(request.Page * request.Count).Take(request.Count);
+            var filteredLocalAuthoritiesWithProjects = localAuthoritiesWithProjectsDict
+                .Where(entry => entry.Value.Count > 0);
+
+            var paginatedLocalAuthoritiesWithProjects = filteredLocalAuthoritiesWithProjects
+                .Skip(request.Page * request.Count)
+                .Take(request.Count);
 
             var resultModel = paginatedLocalAuthoritiesWithProjects.Select(item =>
                 new ListAllProjectLocalAuthoritiesResultModel(
@@ -39,7 +44,7 @@ public class ListAllProjectByLocalAuthorities(ICompleteRepository<LocalAuthority
                     item.Value.Count(p => p.Project.Type == ProjectType.Transfer)))
                 .ToList();
 
-            return PaginatedResult<List<ListAllProjectLocalAuthoritiesResultModel>>.Success(resultModel, localAuthoritiesWithProjectsDict.Count);
+            return PaginatedResult<List<ListAllProjectLocalAuthoritiesResultModel>>.Success(resultModel, filteredLocalAuthoritiesWithProjects.Count());
         }
         catch (Exception e)
         {
