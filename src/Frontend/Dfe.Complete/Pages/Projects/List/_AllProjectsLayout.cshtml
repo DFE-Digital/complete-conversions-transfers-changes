@@ -1,6 +1,7 @@
 ﻿@using Dfe.Complete.Pages.Projects.List
 @using Dfe.Complete.Constants
 @using Dfe.Complete.Domain.Enums
+@using Dfe.Complete.Pages.Projects.List.ProjectsByMonth
 @using MediatR
 @using Dfe.Complete.Utils;
 
@@ -40,7 +41,7 @@
                         </li>
                         <li class="moj-primary-navigation__item">
                             <a class="moj-primary-navigation__link" aria-current="@IsCurrentNav(AllProjectsModel.ByMonthNavigation)"
-                               href="@AllProjectsModel.GetProjectByMonthsUrl(ProjectType.Conversion, user, month, year, month, year)">By month</a>
+                               href="@ProjectsByMonthModel.GetProjectByMonthsUrl(ProjectType.Conversion, user, month, year, month, year)">By month</a>
                         </li>
                         <li class="moj-primary-navigation__item">
                             <a class="moj-primary-navigation__link" aria-current="@IsCurrentNav(AllProjectsModel.ByRegionNavigation)"

@@ -1,7 +1,10 @@
 using System.Globalization;
 using Dfe.Complete.Application.Projects.Models;
+using Dfe.Complete.Constants;
+using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Extensions;
 using Dfe.Complete.Models;
+using Dfe.Complete.Utils;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Dfe.Complete.Pages.Projects.List.ProjectsByMonth;
@@ -92,4 +95,42 @@ public abstract class ProjectsByMonthModel(string currentSubNavigationItem) : Al
         var url = string.Format(pathToPage, fromDate.Month, fromDate.Year, toDate.Month, toDate.Year);
         return new RedirectResult(url);
     }
+    
+    public static string GetProjectByMonthsUrl(ProjectType projectType, UserDto user, int fromMonth, int fromYear, int? toMonth, int? toYear)
+    {
+        bool isConversion = projectType == ProjectType.Conversion;
+        bool canViewDataConsumerView = CanViewDataConsumerView(user);
+
+        string path = canViewDataConsumerView
+            ? (isConversion ? RouteConstants.ConversionProjectsByMonths : RouteConstants.TransfersProjectsByMonths)
+            : (isConversion ? RouteConstants.ConversionProjectsByMonth : RouteConstants.TransfersProjectsByMonth);
+
+        return canViewDataConsumerView
+            ? string.Format(path, fromMonth, fromYear, toMonth, toYear)
+            : string.Format(path, fromMonth + 1, fromYear);
+    }
+    
+    private static bool CanViewDataConsumerView(UserDto user)
+    {
+        var allowedTeams = new List<ProjectTeam>() { ProjectTeam.DataConsumers, ProjectTeam.BusinessSupport, ProjectTeam.ServiceSupport };
+
+        var managesTeam = user.ManageTeam.Value;
+        var projectTeam = user.Team.FromDescriptionValue<ProjectTeam>().Value;
+        
+        var isInTeam = allowedTeams.Contains(projectTeam);
+        
+        var result = isInTeam || managesTeam;
+        
+        return result;
+    }
+    
+    public static string GetProjectByMonthUrl(ProjectType projectType)
+    {
+        DateTime date = DateTime.Now.AddMonths(1);
+        string month = date.Month.ToString("0");
+        string year = date.Year.ToString("0000");
+
+        return string.Format(projectType == ProjectType.Conversion ? RouteConstants.ConversionProjectsByMonth : RouteConstants.TransfersProjectsByMonth, month, year);
+    }
+
 }

@@ -15,14 +15,14 @@
         <li class="moj-sub-navigation__item">
             <a class="moj-sub-navigation__link"
                aria-current="@IsCurrentNav(ProjectsByMonthModel.ConversionsSubNavigation)"
-               href="@AllProjectsModel.GetProjectByMonthsUrl(ProjectType.Conversion, user, Model.FromMonth, Model.FromYear, Model.ToMonth, Model.ToYear)">
+               href="@ProjectsByMonthModel.GetProjectByMonthsUrl(ProjectType.Conversion, user, Model.FromMonth, Model.FromYear, Model.ToMonth, Model.ToYear)">
                 Conversions
             </a>
         </li>
         <li class="moj-sub-navigation__item">
             <a class="moj-sub-navigation__link"
                aria-current="@IsCurrentNav(ProjectsByMonthModel.TransfersSubNavigation)"
-               href="@AllProjectsModel.GetProjectByMonthsUrl(ProjectType.Transfer, user, Model.FromMonth, Model.FromYear, Model.ToMonth, Model.ToYear)">
+               href="@ProjectsByMonthModel.GetProjectByMonthsUrl(ProjectType.Transfer, user, Model.FromMonth, Model.FromYear, Model.ToMonth, Model.ToYear)">
                 Transfers
             </a>
         </li>

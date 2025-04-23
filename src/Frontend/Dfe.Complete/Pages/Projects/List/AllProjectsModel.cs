@@ -31,41 +31,4 @@ public abstract class AllProjectsModel(string currentNavigation) : BaseProjectsP
             : string.Format(RouteConstants.TrustProjects, trustModel.identifier);
     }
     
-    public static string GetProjectByMonthsUrl(ProjectType projectType, UserDto user, int fromMonth, int fromYear, int? toMonth, int? toYear)
-    {
-        bool isConversion = projectType == ProjectType.Conversion;
-        bool canViewDataConsumerView = CanViewDataConsumerView(user);
-
-        string path = canViewDataConsumerView
-            ? (isConversion ? RouteConstants.ConversionProjectsByMonths : RouteConstants.TransfersProjectsByMonths)
-            : (isConversion ? RouteConstants.ConversionProjectsByMonth : RouteConstants.TransfersProjectsByMonth);
-
-        return canViewDataConsumerView
-            ? string.Format(path, fromMonth, fromYear, toMonth, toYear)
-            : string.Format(path, fromMonth + 1, fromYear);
-    }
-
-
-    private static bool CanViewDataConsumerView(UserDto user)
-    {
-        var allowedTeams = new List<ProjectTeam>() { ProjectTeam.DataConsumers, ProjectTeam.BusinessSupport, ProjectTeam.ServiceSupport };
-
-        var managesTeam = user.ManageTeam.Value;
-        var projectTeam = user.Team.FromDescriptionValue<ProjectTeam>().Value;
-        
-        var isInTeam = allowedTeams.Contains(projectTeam);
-        
-        var result = isInTeam || managesTeam;
-        
-        return result;
-    }
-    
-    public static string GetProjectByMonthUrl(ProjectType projectType)
-    {
-        DateTime date = DateTime.Now.AddMonths(1);
-        string month = date.Month.ToString("0");
-        string year = date.Year.ToString("0000");
-
-        return string.Format(projectType == ProjectType.Conversion ? RouteConstants.ConversionProjectsByMonth : RouteConstants.TransfersProjectsByMonth, month, year);
-    }
 }
