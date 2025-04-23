@@ -31,7 +31,7 @@ public class AllCompletedProjectsForTeamModel(ISender sender) : YourTeamProjects
             var userRegion = EnumMapper.MapTeamToRegion(userTeam);
 
             var listProjectsForRegionQuery =
-                new ListAllProjectsForRegionQuery((Region)userRegion!, ProjectState.Completed, null, orderBy)
+                new ListAllProjectsForRegionQuery((Region)userRegion!, ProjectState.Completed, null, null, orderBy)
                 {
                     Page = PageNumber - 1,
                     Count = PageSize
@@ -44,7 +44,7 @@ public class AllCompletedProjectsForTeamModel(ISender sender) : YourTeamProjects
         else if (userTeam == ProjectTeam.RegionalCaseWorkerServices)
         {
             var listProjectsForTeamQuery =
-                new ListAllProjectsForTeamQuery(userTeam, ProjectState.Completed, null, orderBy)
+                new ListAllProjectsForTeamQuery(userTeam, ProjectState.Completed, null, null, orderBy)
                 {
                     Page = PageNumber - 1,
                     Count = PageSize

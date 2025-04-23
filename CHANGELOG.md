@@ -15,10 +15,22 @@ Security in case of vulnerabilities.
 
 ## Unreleased  
 ### Added
- - New route `/projects/team/in-progress`
  - New route `/projects/team/completed`
- - Your team projects in progress list (`/projects/team/in-progress`)
+ - New route `/projects/team/new`
  - Your team projects completed list (`/projects/team/completed`)
+ - Your team projects "new" list (`/projects/team/new`)
+
+### Changes
+- Add an "orderBy" argument to the `ListAllProjectsByFilter` query
+
+See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/main...production-2025-04-17.164) for everything awaiting release
+
+---
+
+## [Release-2](https://github.com/DFE-Digital/complete-conversions-transfers-changes/releases/tag/production-2025-04-17.164) - 2025-04-17
+### Added
+ - New route `/projects/team/in-progress`
+ - Your team projects in progress list (`/projects/team/in-progress`)
  - Added user (`ClaimsPrincipal`) extension to get users team `GetUserTeam`
  - Added API endpoint `/v1/Projects/List/All/LocalAuthority` for fetching projects for local authority
  - Added API endpoint `/v1/Projects/List/All/Region` for fetching projects for region
@@ -38,6 +50,7 @@ Security in case of vulnerabilities.
  - Updated route `/projects/transfer/new_mat` to `/projects/transfers/new_mat`
  - Updated route `/projects/transfer-projects/new` to `/projects/transfers/new`
  - Updated ListAllProjects in-progress and Count all projects in progress to filter out unassigned projects
+ - Don't filter unassigned projects for "All projects by region" -> Region
  - Move tab access logic to a helper `UserTabAccessHelper`
 
 ### Fixed
@@ -46,7 +59,7 @@ Security in case of vulnerabilities.
  - Show 404 page when get projects for region `/projects/all/regions/{region}` has a "bad" region in path param
  - null `AssignedTo` in `ListAllProjects` throws an unexpected error
 
-See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/main...production-2025-04-01.120-manual) for everything awaiting release
+See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-04-01.120-manual...production-2025-04-17.164) for everything in the release
 
 ---
 

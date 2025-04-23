@@ -12,6 +12,7 @@ public record ListAllProjectsForRegionQuery(
     Region Region,
     ProjectState? ProjectStatus,
     ProjectType? Type,
+    AssignedToState? AssignedToState = null,
     OrderProjectQueryBy? OrderBy = null)
     : PaginatedRequest<PaginatedResult<List<ListAllProjectsResultModel>>>;
 
@@ -26,7 +27,7 @@ public class ListAllProjectsForRegionQueryHandler(
         try
         {
             var projectsForRegion = await listAllProjectsByFilterQueryService.ListAllProjectsByFilter(
-                request.ProjectStatus, request.Type, region: request.Region, orderBy: request.OrderBy)
+                request.ProjectStatus, request.Type, request.AssignedToState, region: request.Region, orderBy: request.OrderBy)
                 .ToListAsync(cancellationToken);
 
             var paginatedResultModel = projectsForRegion.Select(proj =>

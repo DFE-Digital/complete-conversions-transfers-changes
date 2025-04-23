@@ -612,12 +612,25 @@
             "x-position": 3
           },
           {
+            "name": "AssignedToState",
+            "in": "query",
+            "schema": {
+              "nullable": true,
+              "oneOf": [
+                {
+                  "$ref": "#/components/schemas/AssignedToState"
+                }
+              ]
+            },
+            "x-position": 4
+          },
+          {
             "name": "OrderBy.Field",
             "in": "query",
             "schema": {
               "$ref": "#/components/schemas/OrderProjectByField"
             },
-            "x-position": 4
+            "x-position": 5
           },
           {
             "name": "OrderBy.Direction",
@@ -625,7 +638,7 @@
             "schema": {
               "$ref": "#/components/schemas/OrderByDirection"
             },
-            "x-position": 5
+            "x-position": 6
           },
           {
             "name": "Page",
@@ -634,7 +647,7 @@
               "type": "integer",
               "format": "int32"
             },
-            "x-position": 6
+            "x-position": 7
           },
           {
             "name": "Count",
@@ -643,7 +656,7 @@
               "type": "integer",
               "format": "int32"
             },
-            "x-position": 7
+            "x-position": 8
           }
         ],
         "responses": {
@@ -709,12 +722,25 @@
             "x-position": 3
           },
           {
+            "name": "AssignedToState",
+            "in": "query",
+            "schema": {
+              "nullable": true,
+              "oneOf": [
+                {
+                  "$ref": "#/components/schemas/AssignedToState"
+                }
+              ]
+            },
+            "x-position": 4
+          },
+          {
             "name": "OrderBy.Field",
             "in": "query",
             "schema": {
               "$ref": "#/components/schemas/OrderProjectByField"
             },
-            "x-position": 4
+            "x-position": 5
           },
           {
             "name": "OrderBy.Direction",
@@ -722,7 +748,7 @@
             "schema": {
               "$ref": "#/components/schemas/OrderByDirection"
             },
-            "x-position": 5
+            "x-position": 6
           },
           {
             "name": "Page",
@@ -731,7 +757,7 @@
               "type": "integer",
               "format": "int32"
             },
-            "x-position": 6
+            "x-position": 7
           },
           {
             "name": "Count",
@@ -740,7 +766,7 @@
               "type": "integer",
               "format": "int32"
             },
-            "x-position": 7
+            "x-position": 8
           }
         ],
         "responses": {
@@ -2418,6 +2444,18 @@
             "format": "date-time"
           }
         }
+      },
+      "AssignedToState": {
+        "type": "string",
+        "description": "",
+        "x-enumNames": [
+          "AssignedOnly",
+          "UnassignedOnly"
+        ],
+        "enum": [
+          "AssignedOnly",
+          "UnassignedOnly"
+        ]
       },
       "OrderProjectByField": {
         "type": "string",
