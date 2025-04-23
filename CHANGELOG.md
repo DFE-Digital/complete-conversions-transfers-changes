@@ -17,11 +17,14 @@ Security in case of vulnerabilities.
 ### Added
  - New route `/projects/team/completed`
  - New route `/projects/team/new`
+ - New route `/projects/team/handed-over`
  - Your team projects completed list (`/projects/team/completed`)
  - Your team projects "new" list (`/projects/team/new`)
+ - Your team projects handed over list (`/projects/team/handed-over`)
 
 ### Changes
 - Add an "orderBy" argument to the `ListAllProjectsByFilter` query
+- Allow `ListAllProjectsByFilter` query to handle multiple filters
 
 See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/main...production-2025-04-17.164) for everything awaiting release
 
