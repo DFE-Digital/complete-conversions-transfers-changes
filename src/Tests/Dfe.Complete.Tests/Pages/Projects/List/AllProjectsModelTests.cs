@@ -71,14 +71,18 @@ public class AllProjectsModelTests
     {
         // Arrange
         DateTime date = DateTime.Now;
-        int month = date.Month;
-        int year = date.Year;
+        int fromMonth = date.Month;
+        int fromYear = date.Year;
+        int? toMonth = fromMonth;
+        int? toYear = fromYear;
 
-        string expectedUrl = string.Format(
-            expectedToSeeDataConsumerUrl
-                ? (projectType == ProjectType.Conversion ? RouteConstants.ConversionProjectsByMonths : RouteConstants.TransfersProjectsByMonths)
-                : (projectType == ProjectType.Conversion ? RouteConstants.ConversionProjectsByMonth : RouteConstants.TransfersProjectsByMonth),
-            month, year, month, year);
+        string routeTemplate = expectedToSeeDataConsumerUrl
+            ? (projectType == ProjectType.Conversion ? RouteConstants.ConversionProjectsByMonths : RouteConstants.TransfersProjectsByMonths)
+            : (projectType == ProjectType.Conversion ? RouteConstants.ConversionProjectsByMonth : RouteConstants.TransfersProjectsByMonth);
+
+        string expectedUrl = expectedToSeeDataConsumerUrl
+            ? string.Format(routeTemplate, fromMonth, fromYear, toMonth, toYear)
+            : string.Format(routeTemplate, fromMonth + 1, fromYear);
 
         var user = new UserDto
         {
@@ -87,7 +91,7 @@ public class AllProjectsModelTests
         };
 
         // Act
-        var result = AllProjectsModel.GetProjectByMonthsUrl(projectType, user, month, year, month, year);
+        var result = AllProjectsModel.GetProjectByMonthsUrl(projectType, user, fromMonth, fromYear, toMonth, toYear);
 
         // Assert
         Assert.Equal(expectedUrl, result);

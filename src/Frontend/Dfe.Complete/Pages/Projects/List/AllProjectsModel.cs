@@ -34,20 +34,17 @@ public abstract class AllProjectsModel(string currentNavigation) : BaseProjectsP
     public static string GetProjectByMonthsUrl(ProjectType projectType, UserDto user, int fromMonth, int fromYear, int? toMonth, int? toYear)
     {
         bool isConversion = projectType == ProjectType.Conversion;
+        bool canViewDataConsumerView = CanViewDataConsumerView(user);
 
-        var singleMonthPath =
-            isConversion ? RouteConstants.ConversionProjectsByMonth : RouteConstants.TransfersProjectsByMonth;
-        
-        var multipleMonthsPath =
-            isConversion ? RouteConstants.ConversionProjectsByMonths : RouteConstants.TransfersProjectsByMonths;
-        
-        var standardView = string.Format(singleMonthPath, fromMonth, fromYear);
-        var dataConsumerUrl = string.Format(multipleMonthsPath, fromMonth, fromYear, toMonth, toYear);
+        string path = canViewDataConsumerView
+            ? (isConversion ? RouteConstants.ConversionProjectsByMonths : RouteConstants.TransfersProjectsByMonths)
+            : (isConversion ? RouteConstants.ConversionProjectsByMonth : RouteConstants.TransfersProjectsByMonth);
 
-        var canViewDataConsumerView = CanViewDataConsumerView(user);
-
-        return canViewDataConsumerView ? dataConsumerUrl : standardView;
+        return canViewDataConsumerView
+            ? string.Format(path, fromMonth, fromYear, toMonth, toYear)
+            : string.Format(path, fromMonth + 1, fromYear);
     }
+
 
     private static bool CanViewDataConsumerView(UserDto user)
     {
