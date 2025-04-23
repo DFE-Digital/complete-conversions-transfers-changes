@@ -10,7 +10,7 @@
     Layout = "List/ProjectsByMonth/DataConsumerView/_ProjectsByMonthsLayout";
     ViewData["Title"] = "Academies opening or transferring";
     
-    var months = Model.GetMonths();
+    var months = ProjectsByMonthModel.GetMonths();
     
     var ariaCurrentValue = "page";
     string? IsCurrentNav(string tabName) => Model.CurrentSubNavigationItem == tabName ? ariaCurrentValue : null;

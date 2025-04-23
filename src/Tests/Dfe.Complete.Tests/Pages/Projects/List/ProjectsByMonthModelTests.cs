@@ -13,8 +13,7 @@ public class ProjectsByMonthModelTests_Additional
     [Fact]
     public void GetMonths_ShouldReturnFiveYearsRangeStartingTwoYearsBack()
     {
-        var model = new TestProjectsByMonthModel();
-        var months = model.GetMonths();
+        var months = ProjectsByMonthModel.GetMonths();
 
         var expectedStart = new DateOnly(DateTime.Now.Year - 2, 1, 1);
         var expectedEnd = new DateOnly(DateTime.Now.Year + 2, 12, 1);
@@ -51,9 +50,7 @@ public class ProjectsByMonthModelTests_Additional
     [InlineData(13, 2025, false)]
     public void ParseDate_ShouldReturnValidDateOnlyOrNull(int month, int year, bool shouldBeValid)
     {
-        var model = new TestProjectsByMonthModel();
-
-        var result = model.ParseDate(month, year);
+        var result = ProjectsByMonthModel.ParseDate(month, year);
 
         if (shouldBeValid)
             Assert.NotNull(result);
@@ -64,12 +61,11 @@ public class ProjectsByMonthModelTests_Additional
     [Fact]
     public void RedirectToDateRange_ShouldReturnCorrectRedirectResult()
     {
-        var model = new TestProjectsByMonthModel();
         var from = new DateTime(2024, 1, 1);
         var to = new DateTime(2024, 12, 1);
         string pathTemplate = "/projects/by-month/{0}/{1}/{2}/{3}";
 
-        var result = model.RedirectToDateRange(pathTemplate, from, to) as RedirectResult;
+        var result = ProjectsByMonthModel.RedirectToDateRange(pathTemplate, from, to) as RedirectResult;
 
         string expectedUrl = string.Format(pathTemplate, from.Month, from.Year, to.Month, to.Year);
 

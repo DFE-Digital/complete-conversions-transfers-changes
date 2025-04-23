@@ -1,7 +1,9 @@
+@using Dfe.Complete.Pages.Projects.List.ProjectsByMonth
+@using Microsoft.AspNetCore.Mvc.TagHelpers
 @model Dfe.Complete.Pages.Projects.List.ProjectsByMonth.ProjectsByMonthModel
 
 @{
-    var months = Model.GetMonths();
+    var months = ProjectsByMonthModel.GetMonths();
 }
 
 <div class="date-range">
