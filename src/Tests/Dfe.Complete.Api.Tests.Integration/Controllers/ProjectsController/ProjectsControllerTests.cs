@@ -1,5 +1,6 @@
 using System.Security.Claims;
 using AutoFixture;
+using AutoFixture.Xunit2;
 using Dfe.AcademiesApi.Client.Contracts;
 using Dfe.Complete.Api.Tests.Integration.Customizations;
 using Dfe.Complete.Client.Contracts;
@@ -10,7 +11,6 @@ using DfE.CoreLibs.Testing.AutoFixture.Attributes;
 using DfE.CoreLibs.Testing.Mocks.WebApplicationFactory;
 using DfE.CoreLibs.Testing.Mocks.WireMock;
 using Microsoft.EntityFrameworkCore;
-using Moq;
 using Project = Dfe.Complete.Domain.Entities.Project;
 using Ukprn = Dfe.Complete.Domain.ValueObjects.Ukprn;
 
@@ -46,13 +46,13 @@ public partial class ProjectsControllerTests
         Assert.NotNull(giasEstablishment.Urn);
 
         var projects = fixture.Customize(new ProjectCustomization
-        {
-            RegionalDeliveryOfficerId = testUser.Id,
-            CaseworkerId = testUser.Id,
-            AssignedToId = testUser.Id,
-            LocalAuthorityId = localAuthority.Id,
-            Urn = giasEstablishment.Urn
-        })
+            {
+                RegionalDeliveryOfficerId = testUser.Id,
+                CaseworkerId = testUser.Id,
+                AssignedToId = testUser.Id,
+                LocalAuthorityId = localAuthority.Id,
+                Urn = giasEstablishment.Urn
+            })
             .CreateMany<Project>(50).ToList();
 
 
@@ -79,17 +79,18 @@ public partial class ProjectsControllerTests
         var dbContext = factory.GetDbContext<CompleteContext>();
         var testUser = await dbContext.Users.FirstAsync();
 
-        var establishments = fixture.Customize(new GiasEstablishmentsCustomization()).CreateMany<GiasEstablishment>(50).ToList();
+        var establishments = fixture.Customize(new GiasEstablishmentsCustomization()).CreateMany<GiasEstablishment>(50)
+            .ToList();
 
         await dbContext.GiasEstablishments.AddRangeAsync(establishments);
         var projects = establishments.Select(establishment =>
         {
             var project = fixture.Customize(new ProjectCustomization
-            {
-                RegionalDeliveryOfficerId = testUser.Id,
-                CaseworkerId = testUser.Id,
-                AssignedToId = testUser.Id
-            })
+                {
+                    RegionalDeliveryOfficerId = testUser.Id,
+                    CaseworkerId = testUser.Id,
+                    AssignedToId = testUser.Id
+                })
                 .Create<Project>();
             project.Urn = establishment.Urn ?? project.Urn;
             return project;
@@ -159,11 +160,11 @@ public partial class ProjectsControllerTests
         var projects = establishments.Select(establishment =>
         {
             var project = fixture.Customize(new ProjectCustomization
-            {
-                RegionalDeliveryOfficerId = testUser.Id,
-                CaseworkerId = testUser.Id,
-                AssignedToId = testUser.Id
-            })
+                {
+                    RegionalDeliveryOfficerId = testUser.Id,
+                    CaseworkerId = testUser.Id,
+                    AssignedToId = testUser.Id
+                })
                 .Create<Project>();
             project.Urn = establishment.Urn ?? project.Urn;
             return project;
@@ -217,7 +218,6 @@ public partial class ProjectsControllerTests
         }
     }
 
-    
 
     [Theory]
     [CustomAutoData(typeof(CustomWebApplicationDbContextFactoryCustomization), typeof(GiasEstablishmentsCustomization))]
@@ -303,17 +303,18 @@ public partial class ProjectsControllerTests
         // Stub TrustV4Client GetTrustByUkprn2Async if not form a mat
         // Get NewTrustReferenceNumber if form a mat
 
-        var establishments = fixture.Customize(new GiasEstablishmentsCustomization()).CreateMany<GiasEstablishment>(50).ToList();
+        var establishments = fixture.Customize(new GiasEstablishmentsCustomization()).CreateMany<GiasEstablishment>(50)
+            .ToList();
 
         await dbContext.GiasEstablishments.AddRangeAsync(establishments);
         var projects = establishments.Select(establishment =>
         {
             var project = fixture.Customize(new ProjectCustomization
-            {
-                RegionalDeliveryOfficerId = testUser.Id,
-                CaseworkerId = testUser.Id,
-                AssignedToId = testUser.Id
-            })
+                {
+                    RegionalDeliveryOfficerId = testUser.Id,
+                    CaseworkerId = testUser.Id,
+                    AssignedToId = testUser.Id
+                })
                 .Create<Project>();
             project.Urn = establishment.Urn ?? project.Urn;
             project.IncomingTrustUkprn = new Ukprn(12345678);
@@ -393,17 +394,18 @@ public partial class ProjectsControllerTests
         // Stub TrustV4Client GetTrustByUkprn2Async if not form a mat
         // Get NewTrustReferenceNumber if form a mat
 
-        var establishments = fixture.Customize(new GiasEstablishmentsCustomization()).CreateMany<GiasEstablishment>(50).ToList();
+        var establishments = fixture.Customize(new GiasEstablishmentsCustomization()).CreateMany<GiasEstablishment>(50)
+            .ToList();
 
         await dbContext.GiasEstablishments.AddRangeAsync(establishments);
         var projects = establishments.Select(establishment =>
         {
             var project = fixture.Customize(new ProjectCustomization
-            {
-                RegionalDeliveryOfficerId = testUser.Id,
-                CaseworkerId = testUser.Id,
-                AssignedToId = testUser.Id
-            })
+                {
+                    RegionalDeliveryOfficerId = testUser.Id,
+                    CaseworkerId = testUser.Id,
+                    AssignedToId = testUser.Id
+                })
                 .Create<Project>();
             project.Urn = establishment.Urn ?? project.Urn;
             project.IncomingTrustUkprn = null;
@@ -551,7 +553,8 @@ public partial class ProjectsControllerTests
             Assert.Equal(project?.FormAMat, result.IsFormAMAT);
 
             Assert.NotNull(result.AssignedToFullName);
-            Assert.Equal($"{project?.AssignedTo?.FirstName} {project?.AssignedTo?.LastName}", result.AssignedToFullName);
+            Assert.Equal($"{project?.AssignedTo?.FirstName} {project?.AssignedTo?.LastName}",
+                result.AssignedToFullName);
         }
     }
 
@@ -656,32 +659,52 @@ public partial class ProjectsControllerTests
         await Assert.ThrowsAsync<CompleteApiException>(() =>
             projectsClient.ListAllProjectsForTeamAsync(null, null, null, null, null, null, 0, 50));
     }
+    
+    [AttributeUsage(AttributeTargets.Method, AllowMultiple = true)]
+    private class ListByUserInlineAutoDataAttribute : CompositeDataAttribute
+    {
+        public ListByUserInlineAutoDataAttribute(ProjectUserFilter filter)
+            : base(
+                new InlineDataAttribute(filter),
+                new CustomAutoDataAttribute(
+                    typeof(CustomWebApplicationDbContextFactoryCustomization),
+                    typeof(GiasEstablishmentsCustomization)))
+        {
+        }
+    }
 
-    [Theory(Skip = "Awaiting wiremock")]
-    [CustomAutoData(typeof(CustomWebApplicationDbContextFactoryCustomization), typeof(GiasEstablishmentsCustomization))]
+    [Theory]
+    [ListByUserInlineAutoData(ProjectUserFilter.AssignedTo)]
+    [ListByUserInlineAutoData(ProjectUserFilter.CreatedBy)]
     public async Task ListAllProjectsForUserAsync_ShouldReturnProjects(
+        ProjectUserFilter filter,
         CustomWebApplicationDbContextFactory<Program> factory,
         IProjectsClient projectsClient,
-        IFixture fixture,
-        Mock<ITrustsV4Client> mockTrustsClient)
+        IFixture fixture)
     {
+        const int numberOfEstablishments = 50;
+        const int numberOfProjectsAssignedToUser = 10;
         factory.TestClaims = [new Claim(ClaimTypes.Role, ReadRole)];
 
         // // Arrange
         var dbContext = factory.GetDbContext<CompleteContext>();
         var testUser = await dbContext.Users.FirstAsync();
-        var userAdId = "test-user-adid";
+        const string userAdId = "test-user-adid";
 
         testUser.ActiveDirectoryUserId = userAdId;
+        var incomingTrust = new TrustDto { Ukprn = "12345678", Name = "Trust One" };
+        var outgoingTrust = new TrustDto { Ukprn = "87654321", Name = "Trust Two" };
+        var trustResults = new List<TrustDto>();
+        for (var i = 0; i < numberOfProjectsAssignedToUser; i++)
+        {
+            trustResults.Add(incomingTrust);
+            trustResults.Add(outgoingTrust);
+        }
+        Assert.NotNull(factory.WireMockServer);
+        factory.WireMockServer.AddGetWithJsonResponse($"/v4/trusts/bulk", trustResults.ToArray());
 
-        mockTrustsClient
-            .Setup(tc => tc.GetByUkprnsAllAsync(It.IsAny<IEnumerable<string>?>(), It.IsAny<CancellationToken>()))
-            .ReturnsAsync([
-                new() { Ukprn = "12345678", Name = "Trust One" },
-                new() { Ukprn = "87654321", Name = "Trust Two" }
-            ]);
-
-        var establishments = fixture.Customize(new GiasEstablishmentsCustomization()).CreateMany<GiasEstablishment>(50).ToList();
+        var establishments = fixture.Customize(new GiasEstablishmentsCustomization()).CreateMany<GiasEstablishment>(numberOfEstablishments)
+            .ToList();
         var localAuthority = dbContext.LocalAuthorities.AsEnumerable().MinBy(_ => Guid.NewGuid());
         Assert.NotNull(localAuthority);
 
@@ -690,14 +713,24 @@ public partial class ProjectsControllerTests
         var projects = establishments.Select((establishment, i) =>
         {
             var project = fixture.Customize(new ProjectCustomization
-            {
-                LocalAuthorityId = localAuthority.Id,
-                IncomingTrustUkprn = "12345678",
-                OutgoingTrustUkprn = "87654321",
-            })
+                {
+                    LocalAuthorityId = localAuthority.Id,
+                    IncomingTrustUkprn = "12345678",
+                    OutgoingTrustUkprn = "87654321",
+                })
                 .Create<Project>();
             project.Urn = establishment.Urn ?? project.Urn;
-            if (i < 10) project.AssignedToId = testUser.Id;
+            switch (filter)
+            {
+                case ProjectUserFilter.AssignedTo:
+                    if (i < numberOfProjectsAssignedToUser) project.AssignedToId = testUser.Id;
+                    break;
+                case ProjectUserFilter.CreatedBy:
+                    if (i < numberOfProjectsAssignedToUser) project.RegionalDeliveryOfficerId = testUser.Id;
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException($"Filter not supported {filter}");
+            }
             return project;
         }).ToList();
 
@@ -705,11 +738,12 @@ public partial class ProjectsControllerTests
         await dbContext.SaveChangesAsync();
 
         // // Act
-        var results = await projectsClient.ListAllProjectsForUserAsync(null, userAdId, ProjectUserFilter.AssignedTo, null, 50);
+        var results =
+            await projectsClient.ListAllProjectsForUserAsync(null, userAdId, filter, null, numberOfEstablishments);
 
         // // Assert
         Assert.NotNull(results);
-        Assert.Equal(10, results.Count);
+        Assert.Equal(numberOfProjectsAssignedToUser, results.Count);
         Assert.All(results, project =>
         {
             Assert.Equal("Trust One", project.IncomingTrustName);
@@ -718,8 +752,10 @@ public partial class ProjectsControllerTests
     }
 
     [Theory]
-    [CustomAutoData(typeof(CustomWebApplicationDbContextFactoryCustomization), typeof(GiasEstablishmentsCustomization))]
+    [ListByUserInlineAutoData(ProjectUserFilter.AssignedTo)]
+    [ListByUserInlineAutoData(ProjectUserFilter.CreatedBy)]
     public async Task ListAllProjectsForUserAsync_ShouldReturnBadRequest_IfUserNotFound(
+        ProjectUserFilter filter,
         CustomWebApplicationDbContextFactory<Program> factory,
         IProjectsClient projectsClient)
     {
@@ -727,7 +763,7 @@ public partial class ProjectsControllerTests
 
         // Act & Assert
         var exception = await Assert.ThrowsAsync<CompleteApiException>(() =>
-            projectsClient.ListAllProjectsForUserAsync(null, "123", ProjectUserFilter.AssignedTo, null, 50));
+            projectsClient.ListAllProjectsForUserAsync(null, "123", filter, null, 50));
 
         Assert.Contains("User does not exist for provided UserAdId", exception.Response);
     }
