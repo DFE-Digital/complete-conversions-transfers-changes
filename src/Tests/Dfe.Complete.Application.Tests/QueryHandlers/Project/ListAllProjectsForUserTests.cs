@@ -22,7 +22,7 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.Project;
 public class ListAllProjectsForUserTests
 {
     [AttributeUsage(AttributeTargets.Method, AllowMultiple = true)]
-    internal class InlineAutoDataAttribute : CompositeDataAttribute
+    private class InlineAutoDataAttribute : CompositeDataAttribute
     {
         public InlineAutoDataAttribute(ProjectUserFilter filter)
             : base(
