@@ -1,3 +1,4 @@
+using AutoMapper;
 using Dfe.Complete.Domain.Entities;
 using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Domain.ValueObjects;
@@ -20,6 +21,14 @@ public record ListAllProjectsForUserQueryResultModel(
     public static ListAllProjectsForUserQueryResultModel MapProjectAndEstablishmentToListAllProjectsForUserQueryResultModel(Project project,
             GiasEstablishment giasEstablishment, string? outgoingTrustName, string? incomingTrustName)
     {
+        if (project.AssignedTo is not null)
+        {
+            project.AssignedTo.Notes = null;
+            project.AssignedTo.ProjectAssignedTos = null;
+            project.AssignedTo.ProjectCaseworkers = null;
+            project.AssignedTo.ProjectRegionalDeliveryOfficers = null;
+        }
+        
         return new ListAllProjectsForUserQueryResultModel(project.Id,
             project.Urn,
             giasEstablishment.Name,
