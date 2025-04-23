@@ -1116,8 +1116,7 @@ public class ProjectsControllerTests
     public async Task ListAllMATS_Async_ShouldReturnListOfFormAMatProjects(
         CustomWebApplicationDbContextFactory<Program> factory,
         IProjectsClient projectsClient,
-        IFixture fixture,
-        Mock<IEstablishmentsV4Client> mockEstablishmentsClient)
+        IFixture fixture)
     {
         factory.TestClaims = [new Claim(ClaimTypes.Role, ReadRole)];
 
@@ -1126,19 +1125,26 @@ public class ProjectsControllerTests
         var testUser = await dbContext.Users.FirstAsync();
         var testLocalAuthority = await dbContext.LocalAuthorities.FirstAsync();
 
-        var fakeUrns = new List<int> { 100001, 100002, 100003 };
-        var fakeEstablishments = fakeUrns.Select((urn, index) => new EstablishmentDto()
+        var urns = new List<int> { 100001, 100002, 100003 };
+        var establishmentDtos = urns.Select((urn, index) => new EstablishmentDto()
         {
             Urn = urn.ToString(),
             Name = $"School {index + 1}",
             Ukprn = $"10000{index + 1}"
-        });
+        }).ToList();
 
-        mockEstablishmentsClient
-            .Setup(e => e.GetByUrns2Async(It.IsAny<IEnumerable<int>>(), It.IsAny<CancellationToken>()))
-            .ReturnsAsync(new ObservableCollection<EstablishmentDto>(fakeEstablishments));
+        Assert.NotNull(factory.WireMockServer);
+        
+        var queryParams = new List<KeyValuePair<string, string>>();
+        foreach (var urn in urns)
+        {
+            queryParams.Add(new KeyValuePair<string, string>("urns", urn.ToString()));
+        }
+        
+        factory.WireMockServer.AddGetWithJsonResponse($"/v4/establishments/bulk", establishmentDtos);
+        
 
-        var establishments = fakeUrns.Select(urn => new GiasEstablishment
+        var establishments = urns.Select(urn => new GiasEstablishment
         {
             Id = new GiasEstablishmentId(Guid.NewGuid()), 
             Urn = new Dfe.Complete.Domain.ValueObjects.Urn(urn),
@@ -1167,7 +1173,7 @@ public class ProjectsControllerTests
 
         await dbContext.Projects.AddRangeAsync(projects);
         await dbContext.SaveChangesAsync();
-
+        
         // Act
         var result = await projectsClient.ListAllMaTsAsync(ProjectState.Active, null, null);
 
