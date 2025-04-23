@@ -2157,6 +2157,12 @@
               },
               "localAuthority": {
                 "$ref": "#/components/schemas/LocalAuthority"
+              },
+              "significantDateHistories": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/SignificantDateHistory"
+                }
               }
             }
           }
@@ -2338,6 +2344,59 @@
           "occurredOn": {
             "type": "string",
             "format": "date-time"
+          }
+        }
+      },
+      "SignificantDateHistory": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "$ref": "#/components/schemas/SignificantDateHistoryId"
+          },
+          "revisedDate": {
+            "type": "string",
+            "format": "date",
+            "nullable": true
+          },
+          "previousDate": {
+            "type": "string",
+            "format": "date",
+            "nullable": true
+          },
+          "projectId": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/ProjectId"
+              }
+            ]
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "userId": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/UserId"
+              }
+            ]
+          }
+        }
+      },
+      "SignificantDateHistoryId": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "value": {
+            "type": "string",
+            "format": "guid"
           }
         }
       },
