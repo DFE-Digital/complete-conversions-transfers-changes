@@ -23,6 +23,10 @@ Security in case of vulnerabilities.
 ### Changes
 - Add an "orderBy" argument to the `ListAllProjectsByFilter` query
 
+### Changed
+ - Filter out any local authorities with no projects in `ListAllProjectByLocalAuthorities`
+
+ 
 See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/main...production-2025-04-17.164) for everything awaiting release
 
 ---
