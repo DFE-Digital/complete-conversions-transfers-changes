@@ -44,6 +44,10 @@ See the [full commit history](https://github.com/DFE-Digital/complete-conversion
  - Added missing "project for region" header
  - User redirection on app load based on their permissions
  - Add navigation items to be more consistent with ruby UI
+ - New route `/projects/all/by-month/conversions/{month}/{year}`
+ - New route `/projects/all/by-month/transfers/{month}/{year}`
+ - New route `/projects/all/by-month/conversions/from/{fromMonth}/{fromYear}/to/{toMonth}/{toYear}`
+ - New route `/projects/all/by-month/transfers/from/{fromMonth}/{fromYear}/to/{toMonth}/{toYear}`
 
 ### Changed
  - Updated route `/accessibility-statement` to `/accessibility`

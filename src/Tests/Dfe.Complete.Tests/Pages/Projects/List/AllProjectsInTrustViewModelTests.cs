@@ -1,13 +1,12 @@
 ﻿using Dfe.Complete.Application.Projects.Models;
 using Dfe.Complete.Constants;
-using Dfe.Complete.Domain.Enums;
-using Dfe.Complete.Pages.Projects.List;
 using Dfe.Complete.Tests.Common.Customizations.Models;
 using DfE.CoreLibs.Testing.AutoFixture.Attributes;
+using AllProjectsInTrustViewModel = Dfe.Complete.Pages.Projects.List.AllProjectsInTrust.AllProjectsInTrustViewModel;
 
 namespace Dfe.Complete.Tests.Pages.Projects.List;
 
-public class AllProjectsModelTests
+public class AllProjectsInTrustViewModelTests
 {
     [Theory]
     [CustomAutoData(typeof(ListAllProjectResultModelCustomization))]
@@ -20,7 +19,7 @@ public class AllProjectsModelTests
         string expectedUrl = string.Format(RouteConstants.TrustMATProjects, trust.identifier);
 
         // Act
-        var result = AllProjectsModel.GetTrustProjectsUrl(trust);
+        var result = AllProjectsInTrustViewModel.GetTrustProjectsUrl(trust);
 
         // Assert
         Assert.Equal(expectedUrl, result);
@@ -37,7 +36,7 @@ public class AllProjectsModelTests
         string expectedUrl = string.Format(RouteConstants.TrustProjects, trust.identifier);
 
         // Act
-        var result = AllProjectsModel.GetTrustProjectsUrl(trust);
+        var result = AllProjectsInTrustViewModel.GetTrustProjectsUrl(trust);
 
         // Assert
         Assert.Equal(expectedUrl, result);
