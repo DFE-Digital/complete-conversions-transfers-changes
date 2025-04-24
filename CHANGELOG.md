@@ -19,26 +19,37 @@ Security in case of vulnerabilities.
  - New route `/projects/all/by-month/transfers/{month}/{year}`
  - New route `/projects/all/by-month/conversions/from/{fromMonth}/{fromYear}/to/{toMonth}/{toYear}`
  - New route `/projects/all/by-month/transfers/from/{fromMonth}/{fromYear}/to/{toMonth}/{toYear}`
- - New route `/projects/team/completed`
  - New route `/projects/team/new`
  - New route `/projects/team/handed-over`
  - New route `/projects/team/users`
  - New route `/projects/team/users/{userId}`
- - Your team projects "Completed" list (`/projects/team/completed`)
  - Your team projects "New" list (`/projects/team/new`)
  - Your team projects "Handed over" list (`/projects/team/handed-over`)
  - Your team projects "By user" list (`/projects/team/users`)
  - Your team projects "By user" > "User" list (`/projects/team/users/{userId}`)
+ - Add new `ProjectTeam` extension method `TeamIsRegionalCaseworkServices`, to identify RCS users 
 
-### Changed
- - Add an "orderBy" argument to the `ListAllProjectsByFilter` query
- - Allow `ListAllProjectsByFilter` query to handle multiple filters
- - Filter out any local authorities with no projects in `ListAllProjectByLocalAuthorities`
+### Changes
+- Add an "orderBy" argument to the `ListAllProjectsByFilter` query
+- Allow `ListAllProjectsByFilter` query to handle multiple filters
 
 ### Fixed
  - Project for user list should show month and year (not day)
 
-See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-04-17.164...main) for everything awaiting release
+See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-04-24.175...main) for everything awaiting release
+
+---
+
+## [Release-3](https://github.com/DFE-Digital/complete-conversions-transfers-changes/releases/tag/production-2025-04-24.175) - 2025-04-25
+### Added
+ - New route `/projects/team/completed`
+ - Your team projects completed list (`/projects/team/completed`)
+
+### Changed
+ - Filter out any local authorities with no projects in `ListAllProjectByLocalAuthorities`
+ - Include unassigned projects in "All projects" > "By region"
+
+See the [full commit history](**Full Changelog**: https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-04-17.164...production-2025-04-24.175) for everything in the release
 
 ---
 
