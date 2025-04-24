@@ -17,12 +17,15 @@ Security in case of vulnerabilities.
 ### Added
  - New route `/projects/team/completed`
  - Your team projects completed list (`/projects/team/completed`)
+ - New route `/projects/all/by-month/conversions/{month}/{year}`
+ - New route `/projects/all/by-month/transfers/{month}/{year}`
+ - New route `/projects/all/by-month/conversions/from/{fromMonth}/{fromYear}/to/{toMonth}/{toYear}`
+ - New route `/projects/all/by-month/transfers/from/{fromMonth}/{fromYear}/to/{toMonth}/{toYear}`
 
 ### Changed
  - Filter out any local authorities with no projects in `ListAllProjectByLocalAuthorities`
-
  
-See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/main...production-2025-04-17.164) for everything awaiting release
+See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-04-17.164...main) for everything awaiting release
 
 ---
 
@@ -39,10 +42,6 @@ See the [full commit history](https://github.com/DFE-Digital/complete-conversion
  - Added missing "project for region" header
  - User redirection on app load based on their permissions
  - Add navigation items to be more consistent with ruby UI
- - New route `/projects/all/by-month/conversions/{month}/{year}`
- - New route `/projects/all/by-month/transfers/{month}/{year}`
- - New route `/projects/all/by-month/conversions/from/{fromMonth}/{fromYear}/to/{toMonth}/{toYear}`
- - New route `/projects/all/by-month/transfers/from/{fromMonth}/{fromYear}/to/{toMonth}/{toYear}`
 
 ### Changed
  - Updated route `/accessibility-statement` to `/accessibility`
