@@ -26,6 +26,7 @@ namespace Dfe.Complete.Application.Projects.Queries.ListAllProjects
                     .ListAllProjectsByFilter(request.Status, null, isFormAMat: true)
                     .ToListAsync(cancellationToken);
 
+                // Assigned to was causing issues in integration tests + it's not needed in this response 
                 matProjects = matProjects.Select(p =>
                 {
                     if (p.Project.AssignedTo != null)
