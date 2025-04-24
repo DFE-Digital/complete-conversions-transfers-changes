@@ -44,22 +44,21 @@ namespace Dfe.Complete.Authorization
 
                 currentUser?.AddClaim(new Claim(ClaimTypes.Authentication, "true"));
 
-                if(currentUser?.Claims.All(c => c.Type != "objectidentifier") ?? true)
+                if (currentUser?.Claims.All(c => c.Type != "objectidentifier") ?? true)
                 {
-                    if(!string.IsNullOrEmpty(userInfo.ActiveDirectoryId))
-                    {
-                        currentUser?.AddClaim(new Claim("objectidentifier", userInfo.ActiveDirectoryId));
-                    }
-                    else
+                    if (string.IsNullOrEmpty(userInfo.ActiveDirectoryId))
                     {
                         currentUser?.AddClaim(new Claim("objectidentifier", "TEST-AD-ID"));
                     }
+                    else
+                    {
+                        currentUser?.AddClaim(new Claim("objectidentifier", userInfo.ActiveDirectoryId));
+                    }
                 }
-                
                 context.Succeed(requirement);
             }
 
             return Task.CompletedTask;
         }
     }
-} 
+}
