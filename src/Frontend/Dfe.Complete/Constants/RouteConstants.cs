@@ -30,6 +30,7 @@
         public const string ProjectViewNotes = Project + "/notes";
         public const string ProjectAddNote = ProjectViewNotes + "/edit";
         public const string ProjectEditNote = ProjectViewNotes + "/{1}/edit";
+        public const string ProjectTaskList = Project + "/tasks";
 
         // Conversion
         public const string ConversionProject = "/conversion-projects/{0}";
