@@ -18,9 +18,13 @@ Security in case of vulnerabilities.
  - New route `/projects/team/completed`
  - New route `/projects/team/new`
  - New route `/projects/team/handed-over`
- - Your team projects completed list (`/projects/team/completed`)
- - Your team projects "new" list (`/projects/team/new`)
- - Your team projects handed over list (`/projects/team/handed-over`)
+ - New route `/projects/team/users`
+ - New route `/projects/team/users/{userId}`
+ - Your team projects "Completed" list (`/projects/team/completed`)
+ - Your team projects "New" list (`/projects/team/new`)
+ - Your team projects "Handed over" list (`/projects/team/handed-over`)
+ - Your team projects "By user" list (`/projects/team/users`)
+ - Your team projects "By user" > "User" list (`/projects/team/users/{userId}`)
 
 ### Changes
 - Add an "orderBy" argument to the `ListAllProjectsByFilter` query
