@@ -15,6 +15,35 @@ class NavBar {
         cy.getById(this.navHeaderId).contains("Your team projects").click();
         return this;
     }
+
+    goToGroups() {
+        cy.getById(this.navHeaderId).contains("Groups").click();
+        return this;
+    }
+
+    goToServiceSupport() {
+        cy.getById(this.navHeaderId).contains("Service support").click();
+        return this;
+    }
+
+    ableToView(sections: string[]) {
+        sections.forEach((section) => {
+            cy.getById(this.navHeaderId).contains(section).should("exist");
+        });
+        return this;
+    }
+
+    unableToView(sections: string[]) {
+        sections.forEach((section) => {
+            cy.getById(this.navHeaderId).contains(section).should("not.exist");
+        });
+        return this;
+    }
+
+    unableToViewTheNavBar() {
+        cy.getById(this.navHeaderId).should("not.exist");
+        return this;
+    }
 }
 
 const navBar = new NavBar();
