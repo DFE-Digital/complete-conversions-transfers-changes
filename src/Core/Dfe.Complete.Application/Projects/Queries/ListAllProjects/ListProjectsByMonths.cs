@@ -80,7 +80,7 @@ namespace Dfe.Complete.Application.Projects.Queries.ListProjectsByMonth
                         return new ListProjectsByMonthResultModel(
                             item.Establishment.Name,
                             project.Region.ToDisplayDescription(),
-                            project.LocalAuthority?.Name,
+                            item.Establishment.LocalAuthorityName,
                             outgoingTrust,
                             project.Id,
                             project.Urn,
