@@ -3,6 +3,7 @@ import newConversionPage from "cypress/pages/projects/new/newConversionPage";
 import homePage from "cypress/pages/homePage";
 import selectProjectType from "cypress/pages/projects/new/selectProjectTypePage";
 import validationComponent from "cypress/pages/validationComponent";
+import { testTrustName, testTrustReferenceNumber } from "cypress/constants/stringTestConstants";
 
 const urn: string = "111394";
 const urnMAT: string = "103846";
@@ -14,7 +15,7 @@ describe("Create a new Conversion Project", () => {
     });
 
     beforeEach(() => {
-        cy.login({ role: "RegionalDeliveryOfficer" });
+        cy.login();
         cy.acceptCookies();
         cy.visit("/");
     });
@@ -50,8 +51,8 @@ describe("Create a new Conversion Project", () => {
 
         newConversionPage
             .withSchoolURN(urnMAT)
-            .withTrustReferenceNumber("TR09999")
-            .withTrustName("Test Trust")
+            .withTrustReferenceNumber(testTrustReferenceNumber)
+            .withTrustName(testTrustName)
             .withAdvisoryBoardDate("12", "12", "2024")
             .withAdvisoryBoardConditions("Test conditions")
             .withProvisionalConversionDate("11", "2026")
