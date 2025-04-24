@@ -21,7 +21,7 @@ public class AllProjectsHandedOverForTeamModel(ISender sender) : YourTeamProject
         var userTeam = await User.GetUserTeam(sender);
         var recordCount = 0;
 
-        if (userTeam.TeamIsRdo())
+        if (userTeam.TeamIsRegionalDeliveryOfficer())
         {
             var userRegion = EnumMapper.MapTeamToRegion(userTeam);
 
