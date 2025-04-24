@@ -19,7 +19,12 @@ Security in case of vulnerabilities.
  - New route `/projects/all/by-month/transfers/{month}/{year}`
  - New route `/projects/all/by-month/conversions/from/{fromMonth}/{fromYear}/to/{toMonth}/{toYear}`
  - New route `/projects/all/by-month/transfers/from/{fromMonth}/{fromYear}/to/{toMonth}/{toYear}`
+ - New route `/projects/{projectId}/tasks`
  
+### Changed
+ - All transfer/conversion projects list use a partial
+ - Projects will route to `/project/{projectId}/tasks` from all projects list
+
 See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-04-24.175...main) for everything awaiting release
 
 ---

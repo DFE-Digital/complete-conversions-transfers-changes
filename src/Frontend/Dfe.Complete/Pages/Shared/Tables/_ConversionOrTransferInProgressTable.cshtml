@@ -1,0 +1,52 @@
+@using Dfe.Complete.Domain.Enums;
+@using Dfe.Complete.Constants;
+@using Dfe.Complete.Application.Projects.Models;
+
+@model List<ListAllProjectsResultModel>
+@{
+    var projectType = ViewData["ProjectType"] as ProjectType?;
+    if (projectType is null)
+        throw new InvalidOperationException("ProjectType is required in ViewData for _ProjectListPartial.");
+}
+
+<div class="govuk-grid-column-full">
+    <table class="govuk-table" name="projects_table" aria-label="Projects table">
+        <thead class="govuk-table__head">
+            <tr class="govuk-table__row">
+                <th class="govuk-table__header" scope="col">School or academy</th>
+                <th class="govuk-table__header" scope="col">URN</th>
+                <th class="govuk-table__header" scope="col">
+                    @(projectType is ProjectType.Conversion ? "Conversion" : "Transfer") date
+                </th>
+                <th class="govuk-table__header" scope="col">Form a MAT project?</th>
+                <th class="govuk-table__header" scope="col">Assigned to</th>
+            </tr>
+        </thead>
+        <tbody class="govuk-table__body">
+
+            @foreach(var project in Model)
+            {
+                string projectSummaryUrl;
+            
+                if (project.ProjectType == ProjectType.Conversion)
+                {
+                    projectSummaryUrl = string.Format(RouteConstants.ConversionProjectTaskList, project.ProjectId);
+                }
+                else
+                {
+                    projectSummaryUrl = string.Format(RouteConstants.TransferProjectTaskList, project.ProjectId);
+                }
+            
+                <tr class="govuk-table__row">
+                    <td class="govuk-table__header govuk-table__cell">
+                        <a class="govuk-link" href="@string.Format(RouteConstants.ProjectTaskList, project.ProjectId)">@project.EstablishmentName</a>
+                    </td>
+                    <td class="govuk-table__cell">@project.Urn.Value</td>
+                    <td class="govuk-table__cell">@project.ConversionOrTransferDate.ToDateMonthYearString()</td>
+                    <td class="govuk-table__cell">@project.IsFormAMAT.ToYesNoString()</td>
+                    <td class="govuk-table__cell">@project.AssignedToFullName</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
