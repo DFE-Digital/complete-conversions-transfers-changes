@@ -1111,7 +1111,7 @@ public class ProjectsControllerTests
     }
     
     
-    [Theory(Skip = "Awaiting wiremock")]
+    [Theory]
     [CustomAutoData(typeof(CustomWebApplicationDbContextFactoryCustomization), typeof(GiasEstablishmentsCustomization))]
     public async Task ListAllMATS_Async_ShouldReturnListOfFormAMatProjects(
         CustomWebApplicationDbContextFactory<Program> factory,
@@ -1126,23 +1126,6 @@ public class ProjectsControllerTests
         var testLocalAuthority = await dbContext.LocalAuthorities.FirstAsync();
 
         var urns = new List<int> { 100001, 100002, 100003 };
-        var establishmentDtos = urns.Select((urn, index) => new EstablishmentDto()
-        {
-            Urn = urn.ToString(),
-            Name = $"School {index + 1}",
-            Ukprn = $"10000{index + 1}"
-        }).ToList();
-
-        Assert.NotNull(factory.WireMockServer);
-        
-        var queryParams = new List<KeyValuePair<string, string>>();
-        foreach (var urn in urns)
-        {
-            queryParams.Add(new KeyValuePair<string, string>("urns", urn.ToString()));
-        }
-        
-        factory.WireMockServer.AddGetWithJsonResponse($"/v4/establishments/bulk", establishmentDtos);
-        
 
         var establishments = urns.Select(urn => new GiasEstablishment
         {
@@ -1150,6 +1133,14 @@ public class ProjectsControllerTests
             Urn = new Dfe.Complete.Domain.ValueObjects.Urn(urn),
             Name = $"School for {urn}"
         }).ToList();
+
+        var establishmentDtos = establishments.Select(e => new EstablishmentDto()
+        {
+            Urn = e.Urn?.Value.ToString(),
+            Name = e.Name,
+            Ukprn = e.Ukprn?.Value.ToString()
+        });
+        
         
         await dbContext.GiasEstablishments.AddRangeAsync(establishments);
 
@@ -1159,7 +1150,6 @@ public class ProjectsControllerTests
             {
                 RegionalDeliveryOfficerId = testUser.Id,
                 CaseworkerId = testUser.Id,
-                AssignedToId = testUser.Id,
                 LocalAuthorityId = testLocalAuthority.Id
             }).Create<Project>();
 
@@ -1174,6 +1164,10 @@ public class ProjectsControllerTests
         await dbContext.Projects.AddRangeAsync(projects);
         await dbContext.SaveChangesAsync();
         
+        Assert.NotNull(factory.WireMockServer);
+        
+        //Seems query params can be optional with wiremock
+        factory.WireMockServer.AddGetWithJsonResponse($"/v4/establishments/bulk", establishmentDtos);
         // Act
         var result = await projectsClient.ListAllMaTsAsync(ProjectState.Active, null, null);
 
@@ -1200,5 +1194,4 @@ public class ProjectsControllerTests
             Assert.Equal(matchingProject?.Type?.ToString(), projectResult.Project.Type?.ToString());
         }
     }
-
 }

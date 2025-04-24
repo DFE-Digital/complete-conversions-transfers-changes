@@ -26,6 +26,18 @@ namespace Dfe.Complete.Application.Projects.Queries.ListAllProjects
                     .ListAllProjectsByFilter(request.Status, null, isFormAMat: true)
                     .ToListAsync(cancellationToken);
 
+                matProjects = matProjects.Select(p =>
+                {
+                    if (p.Project.AssignedTo != null)
+                    {
+                        p.Project.AssignedTo.Notes = null;
+                        p.Project.AssignedTo.ProjectAssignedTos = null;
+                        p.Project.AssignedTo.ProjectCaseworkers = null;
+                        p.Project.AssignedTo.ProjectRegionalDeliveryOfficers = null;
+                    }
+                    return p;
+                }).ToList();
+
                 var urns = matProjects.Select(project => project.Project.Urn.Value).Distinct().ToList();
 
                 var academiesEstablishments = await establishmentsClient.GetByUrns2Async(urns, cancellationToken);
