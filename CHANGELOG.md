@@ -23,6 +23,7 @@ Security in case of vulnerabilities.
  - New route `/projects/team/new`
  - Your team projects completed list (`/projects/team/completed`)
  - Your team projects "new" list (`/projects/team/new`)
+ - Add new `ProjectTeam` extension method `TeamIsRegionalCaseworkServices`, to identify RCS users 
 
 ### Changes
 - Add an "orderBy" argument to the `ListAllProjectsByFilter` query
