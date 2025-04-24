@@ -26,9 +26,12 @@ Security in case of vulnerabilities.
  - Your team projects "By user" list (`/projects/team/users`)
  - Your team projects "By user" > "User" list (`/projects/team/users/{userId}`)
 
-### Changes
+### Changed
 - Add an "orderBy" argument to the `ListAllProjectsByFilter` query
 - Allow `ListAllProjectsByFilter` query to handle multiple filters
+
+### Fixed
+ - Project for user list should show month and year (not day)
 
 See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/main...production-2025-04-17.164) for everything awaiting release
 
