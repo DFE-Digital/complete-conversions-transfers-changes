@@ -25,6 +25,7 @@ Security in case of vulnerabilities.
  - Your team projects completed list (`/projects/team/completed`)
  - Your team projects "new" list (`/projects/team/new`)
  - Your team projects handed over list (`/projects/team/handed-over`)
+ - Add new `ProjectTeam` extension method `TeamIsRegionalCaseworkServices`, to identify RCS users 
 
 ### Changes
 - Add an "orderBy" argument to the `ListAllProjectsByFilter` query
