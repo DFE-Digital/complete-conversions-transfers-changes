@@ -1286,6 +1286,8 @@ namespace Dfe.Complete.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("ProjectId");
+
                     b.ToTable("significant_date_histories", "complete");
                 });
 
@@ -1954,11 +1956,22 @@ namespace Dfe.Complete.Infrastructure.Migrations
                     b.Navigation("RegionalDeliveryOfficer");
                 });
 
+            modelBuilder.Entity("Dfe.Complete.Domain.Entities.SignificantDateHistory", b =>
+                {
+                    b.HasOne("Dfe.Complete.Domain.Entities.Project", "Project")
+                        .WithMany("SignificantDateHistories")
+                        .HasForeignKey("ProjectId");
+
+                    b.Navigation("Project");
+                });
+
             modelBuilder.Entity("Dfe.Complete.Domain.Entities.Project", b =>
                 {
                     b.Navigation("Contacts");
 
                     b.Navigation("Notes");
+
+                    b.Navigation("SignificantDateHistories");
                 });
 
             modelBuilder.Entity("Dfe.Complete.Domain.Entities.User", b =>

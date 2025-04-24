@@ -23,8 +23,6 @@ on:
         required: true
       CYPRESS_COMPLETEAPI_CLIENTID:
         required: true
-      CYPRESS_USER_AD_ID:
-        required: true
       SLACK_WEBHOOK_URL:
         required: true
 
@@ -69,7 +67,6 @@ jobs:
           CYPRESS_clientId: ${{ secrets.CYPRESS_CLIENT_ID }}
           CYPRESS_clientSecret: ${{ secrets.CYPRESS_CLIENT_SECRET }}
           CYPRESS_completeApiClientId: ${{ secrets.CYPRESS_COMPLETEAPI_CLIENTID }}
-          CYPRESS_userAdId: ${{ secrets.CYPRESS_USER_AD_ID }}
         with:
           browser: ${{ matrix.browser }}
           working-directory: ./src/Tests/Dfe.Complete.CypressTests
