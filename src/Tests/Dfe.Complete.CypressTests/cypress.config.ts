@@ -2,15 +2,15 @@ import { defineConfig } from "cypress";
 import { generateZapReport } from "cypress/plugins/generateZapReport";
 
 export default defineConfig({
-    defaultCommandTimeout: 20000,
+    defaultCommandTimeout: 5000,
     pageLoadTimeout: 20000,
     watchForFileChanges: false,
     chromeWebSecurity: false,
     video: false,
     retries: {
-        runMode: 1
+        runMode: 1,
     },
-    userAgent: 'Complete/1.0 Cypress',
+    userAgent: "Complete/1.0 Cypress",
     reporter: "cypress-multi-reporters",
     reporterOptions: {
         reporterEnabled: "mochawesome",
