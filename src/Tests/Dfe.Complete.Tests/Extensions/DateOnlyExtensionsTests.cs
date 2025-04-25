@@ -78,6 +78,13 @@ public class DateOnlyExtensionsTests
     }
     
     [Fact]
+    public void ToFullDateMonthYearString_ReturnsTheEmptyString()
+    {
+        DateOnly? nullDate = null;
+        Assert.Equal(string.Empty, nullDate.ToFullDateMonthYearString());
+    }
+    
+    [Fact]
     public void ToDateMonthYearString_ReturnsEmptyString_WhenDateOnlyIsNull()
     {
         DateOnly? test = null;

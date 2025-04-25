@@ -80,4 +80,11 @@ public class DateTimeExtensionsTests
         DateTime? test = null;
         Assert.Equal(string.Empty, test.ToDateMonthYearString());
     }
+    
+    [Fact]
+    public void ToFullDateMonthYearString_ReturnsTheEmptyString()
+    {
+        DateTime? nullDate = null;
+        Assert.Equal(string.Empty, nullDate.ToFullDateMonthYearString());
+    }
 }
