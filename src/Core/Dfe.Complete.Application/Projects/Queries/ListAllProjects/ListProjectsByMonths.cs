@@ -63,7 +63,7 @@ namespace Dfe.Complete.Application.Projects.Queries.ListProjectsByMonth
                         var project = item.Project;
                         
                         var confirmedDate = project.SignificantDate.Value.ToString("MMM yyyy");
-                        var originalDate = project.SignificantDateHistories.Any() ? item.Project.SignificantDateHistories.FirstOrDefault()?.PreviousDate.Value.ToString("MMM yyyy") : null;
+                        var originalDate = project.SignificantDateHistories.Any() ? GetPreviousDate(project.SignificantDateHistories) : null;
 
                         var isMatProject = project.FormAMat;
 
@@ -97,6 +97,13 @@ namespace Dfe.Complete.Application.Projects.Queries.ListProjectsByMonth
             {
                 return PaginatedResult<List<ListProjectsByMonthResultModel>>.Failure(ex.Message);
             }
+        }
+        
+        
+        
+        private static string GetPreviousDate(ICollection<SignificantDateHistory> significantDateHistories)
+        {
+            return significantDateHistories.OrderBy(s => s.CreatedAt).FirstOrDefault()?.PreviousDate.Value.ToString("MMM yyyy");
         }
     }
 }
