@@ -45,5 +45,15 @@ namespace Dfe.Complete.Extensions
 
 			return dateTime.Value.ToString(DateFormatConstants.MonthAndYearFormat, GbCulture);
 		}
+		
+		public static string ToFullDateMonthYearString(this DateTime? dateTime)
+		{
+			if (!dateTime.HasValue)
+			{
+				return string.Empty;
+			}
+
+			return dateTime.Value.ToString(DateFormatConstants.FullMonthAndYearFormat, GbCulture);
+		}
     }
 }

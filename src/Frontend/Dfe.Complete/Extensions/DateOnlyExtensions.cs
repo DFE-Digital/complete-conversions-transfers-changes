@@ -45,5 +45,15 @@ namespace Dfe.Complete.Extensions
 
             return dateOnly.Value.ToString(DateFormatConstants.MonthAndYearFormat, GbCulture);
         }
+        
+        public static string ToFullDateMonthYearString(this DateOnly? dateOnly)
+        {
+	        if (!dateOnly.HasValue)
+	        {
+		        return string.Empty;
+	        }
+
+	        return dateOnly.Value.ToString(DateFormatConstants.FullMonthAndYearFormat, GbCulture);
+        }
     }
 }
