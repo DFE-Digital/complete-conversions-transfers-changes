@@ -30,7 +30,7 @@
     }
     else
     {
-        <table class="govuk-table" name="la-table" aria-label="All projects by local authority">
+        <table class="govuk-table" name="projects-table" aria-label="Projects table">
             <thead class="govuk-table__head">
             <tr class="govuk-table__row">
                 <th class="govuk-table__header" scope="col">School or academy</th>
@@ -59,10 +59,3 @@
         </table>
     }
 </div>
-
-@functions {
-    private static IHtmlContent DisplayTrustName(string trustName)
-    {
-        return !string.IsNullOrEmpty(trustName) ? new HtmlString(trustName) : new HtmlString("<strong class=\"govuk-tag govuk-tag--grey\">None</strong>");
-    }
-}
