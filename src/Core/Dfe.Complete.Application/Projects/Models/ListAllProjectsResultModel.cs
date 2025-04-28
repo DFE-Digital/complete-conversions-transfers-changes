@@ -17,7 +17,8 @@ public record ListAllProjectsResultModel(
     ProjectTeam? Team,
     DateTime? ProjectCompletionDate,
     Region? Region,
-    string? LocalAuthorityNameFormatted
+    string? LocalAuthorityNameFormatted,
+    DateTime CreatedAt
 )
 {
     public static ListAllProjectsResultModel MapProjectAndEstablishmentToListAllProjectResultModel(Project project, GiasEstablishment? establishment)
@@ -35,7 +36,8 @@ public record ListAllProjectsResultModel(
             project.Team,
             project.CompletedAt,
             project.Region,
-            establishment?.LocalAuthorityName
+            establishment?.LocalAuthorityName,
+            project.CreatedAt
         );
     }
 }

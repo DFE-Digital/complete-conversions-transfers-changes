@@ -8,11 +8,11 @@ using Dfe.Complete.Models;
 using Dfe.Complete.Pages.Pagination;
 using MediatR;
 
-namespace Dfe.Complete.Pages.Projects.Team.ProjectsCompleted;
+namespace Dfe.Complete.Pages.Projects.Team.ProjectsNew;
 
-public class AllCompletedProjectsForTeamModel(ISender sender) : YourTeamProjectsModel(CompletedNavigation)
+public class AllNewProjectsForTeamModel(ISender sender) : YourTeamProjectsModel(NewNavigation)
 {
-    public List<ListAllProjectsResultModel> Projects { get; set; } = [];
+    public List<ListAllProjectsResultModel> Projects { get; set; } = default!;
     public bool UserTeamIsRegionalDeliveryOfficer { get; set; }
 
     public async Task OnGet()
@@ -24,14 +24,14 @@ public class AllCompletedProjectsForTeamModel(ISender sender) : YourTeamProjects
 
         int recordCount = 0;
 
-        var orderBy = new OrderProjectQueryBy(OrderProjectByField.CompletedAt, OrderByDirection.Descending);
+        var orderBy = new OrderProjectQueryBy(OrderProjectByField.CreatedAt, OrderByDirection.Descending);
 
         if (UserTeamIsRegionalDeliveryOfficer)
         {
             var userRegion = EnumMapper.MapTeamToRegion(userTeam);
 
             var listProjectsForRegionQuery =
-                new ListAllProjectsForRegionQuery((Region)userRegion!, ProjectState.Completed, null, null, orderBy)
+                new ListAllProjectsForRegionQuery((Region)userRegion!, ProjectState.Active, null, AssignedToState.AssignedOnly, orderBy)
                 {
                     Page = PageNumber - 1,
                     Count = PageSize
@@ -44,7 +44,7 @@ public class AllCompletedProjectsForTeamModel(ISender sender) : YourTeamProjects
         else if (userTeam.TeamIsRegionalCaseworkServices())
         {
             var listProjectsForTeamQuery =
-                new ListAllProjectsForTeamQuery(userTeam, ProjectState.Completed, null, null, orderBy)
+                new ListAllProjectsForTeamQuery(userTeam, ProjectState.Active, null, AssignedToState.AssignedOnly, orderBy)
                 {
                     Page = PageNumber - 1,
                     Count = PageSize
@@ -55,7 +55,7 @@ public class AllCompletedProjectsForTeamModel(ISender sender) : YourTeamProjects
             Projects = listResponse.Value ?? [];
         }
 
-        Pagination = new PaginationModel(RouteConstants.TeamProjectsCompleted, PageNumber, recordCount, PageSize);
+        Pagination = new PaginationModel(RouteConstants.TeamProjectsNew, PageNumber, recordCount, PageSize);
     }
 
     public async Task OnGetMovePage()

@@ -19,6 +19,12 @@ Security in case of vulnerabilities.
  - New route `/projects/all/by-month/transfers/{month}/{year}`
  - New route `/projects/all/by-month/conversions/from/{fromMonth}/{fromYear}/to/{toMonth}/{toYear}`
  - New route `/projects/all/by-month/transfers/from/{fromMonth}/{fromYear}/to/{toMonth}/{toYear}`
+ - New route `/projects/team/new`
+ - Your team projects "new" list (`/projects/team/new`)
+ - Add new `ProjectTeam` extension method `TeamIsRegionalCaseworkServices`, to identify RCS users 
+
+### Changes
+- Add an "orderBy" argument to the `ListAllProjectsByFilter` query
  
 See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-04-24.175...main) for everything awaiting release
 

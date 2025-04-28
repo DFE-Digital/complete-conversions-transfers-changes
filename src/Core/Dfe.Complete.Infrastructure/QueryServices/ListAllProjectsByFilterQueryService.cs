@@ -4,6 +4,7 @@ using Dfe.Complete.Domain.Entities;
 using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Domain.ValueObjects;
 using Dfe.Complete.Infrastructure.Database;
+using Dfe.Complete.Infrastructure.Extensions;
 using Microsoft.EntityFrameworkCore;
 
 namespace Dfe.Complete.Infrastructure.QueryServices;
@@ -16,8 +17,8 @@ internal class ListAllProjectsByFilterQueryService(CompleteContext context) : IL
         UserId? userId = null,
         string? localAuthorityCode = "",
         Region? region = null,
-        ProjectTeam? team = null
-        )
+        ProjectTeam? team = null,
+        OrderProjectQueryBy? orderBy = null)
     {
         var projects = context.Projects
             .Where(project => projectStatus == null || project.State == projectStatus)
@@ -44,24 +45,24 @@ internal class ListAllProjectsByFilterQueryService(CompleteContext context) : IL
         if (region != null)
         {
             projects = projects.Where(project => project.Region == region);
-            return GenerateQuery(projects, giasEstablishments);
+            return GenerateQuery(projects, giasEstablishments, orderBy);
         }
 
         if (team != null)
         {
             projects = projects.Where(project => project.Team == team);
-            return GenerateQuery(projects, giasEstablishments);
+            return GenerateQuery(projects, giasEstablishments, orderBy);
         }
 
         return GenerateQuery(projects, giasEstablishments);
     }
 
-    private static IQueryable<ListAllProjectsQueryModel> GenerateQuery(IQueryable<Project> projects, IQueryable<GiasEstablishment> giasEstablishments)
+    private static IQueryable<ListAllProjectsQueryModel> GenerateQuery(IQueryable<Project> projects, IQueryable<GiasEstablishment> giasEstablishments, OrderProjectQueryBy? orderBy = null)
     {
         return projects
             .Include(p => p.AssignedTo)
             .Include(p => p.LocalAuthority)
-            .OrderBy(p => p.SignificantDate)
+            .OrderProjectBy(orderBy)
             .Join(giasEstablishments, project => project.Urn, establishment => establishment.Urn,
                 (project, establishment) => new ListAllProjectsQueryModel(project, establishment));
     }
