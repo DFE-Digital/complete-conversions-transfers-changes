@@ -2,20 +2,20 @@ import navBar from "cypress/pages/navBar";
 import allProjects from "cypress/pages/projects/allProjects";
 import { projectTable } from "cypress/pages/projects/tables/projectTable";
 import { before, beforeEach } from "mocha";
-import { nextMonth, trust } from "cypress/constants/stringTestConstants";
-import { shouldOnlyBeAbleToViewNextMonthOfProjects } from "cypress/support/reusableTests";
+import { nextMonth, nextMonthLong, nextMonthShort, trust } from "cypress/constants/stringTestConstants";
 import projectApi from "cypress/api/projectApi";
 import { ProjectBuilder } from "cypress/api/projectBuilder";
 import projectRemover from "cypress/api/projectRemover";
 import allProjectsInProgressTable from "cypress/pages/projects/tables/allProjectsInProgressTable";
 import { cypressUser } from "cypress/constants/cypressConstants";
+import projectsByMonthPage from "cypress/pages/projects/projectsByMonthPage";
 
 const project = ProjectBuilder.createConversionProjectRequest(nextMonth);
 let projectId: string;
 const schoolName = "St Chad's Catholic Primary School";
 const region = "West Midlands";
 const localAuthority = "Dudley Metropolitan Borough Council";
-const transferProject = ProjectBuilder.createTransferProjectRequest();
+const transferProject = ProjectBuilder.createTransferProjectRequest(nextMonth);
 const transferSchoolName = "Abbey College Manchester";
 
 describe("View all projects", () => {
@@ -39,13 +39,12 @@ describe("View all projects", () => {
     });
 
     it("Should be able to view newly created conversion project in All projects in progress and Conversions projects", () => {
-        const nextMonthString = `${nextMonth.toLocaleString("default", { month: "short" })} ${nextMonth.getFullYear()}`;
         navBar.goToAllProjects();
         allProjects.containsHeading("All projects in progress").goToNextPageUntilFieldIsVisible(schoolName);
         allProjectsInProgressTable
             .contains(schoolName)
             .schoolHasUrn(schoolName, `${project.urn.value}`)
-            .schoolHasConversionOrTransferDate(schoolName, nextMonthString)
+            .schoolHasConversionOrTransferDate(schoolName, nextMonthShort)
             .schoolHasProjectType(schoolName, "Conversion")
             .schoolHasFormAMatProject(schoolName, "No")
             .schoolHasAssignedTo(schoolName, cypressUser.username);
@@ -63,7 +62,7 @@ describe("View all projects", () => {
         allProjectsInProgressTable
             .contains(transferSchoolName)
             .schoolHasUrn(transferSchoolName, `${transferProject.urn.value}`)
-            .schoolHasConversionOrTransferDate(transferSchoolName, "Mar 2026")
+            .schoolHasConversionOrTransferDate(transferSchoolName, nextMonthShort)
             .schoolHasProjectType(transferSchoolName, "Transfer")
             .schoolHasFormAMatProject(transferSchoolName, "No")
             .schoolHasAssignedTo(transferSchoolName, cypressUser.username);
@@ -75,8 +74,36 @@ describe("View all projects", () => {
         // projectDetailsPage.containsHeading(transferSchoolName); // not implemented
     });
 
-    it.skip("Should be able to view all Conversions projects by month - next month only", () => {
-        shouldOnlyBeAbleToViewNextMonthOfProjects(schoolName, project);
+    it("Should be able to view all Conversions projects by month - next month only", () => {
+        navBar.goToAllProjects();
+        allProjects.filterProjects("By month").containsHeading(nextMonthLong);
+        projectsByMonthPage.filterDoesNotExist();
+        projectTable
+            .hasTableHeader("School and URN")
+            .hasTableHeader("Region")
+            .hasTableHeader("Local authority")
+            .hasTableHeader("Incoming trust")
+            .hasTableHeader("All conditions met")
+            .hasTableHeader("Confirmed date (Original date)")
+            .contains(`${schoolName} ${project.urn.value}`)
+            .goTo(`${schoolName} ${project.urn.value}`);
+        // projectDetailsPage.containsHeading(schoolName); // not implemented
+    });
+
+    it("Should be able to view all Transfer projects by month - next month only", () => {
+        navBar.goToAllProjects();
+        allProjects.filterProjects("By month").containsHeading(nextMonthLong);
+        projectsByMonthPage.filterDoesNotExist().viewTransferProjects();
+        projectTable
+            .hasTableHeader("School and URN")
+            .hasTableHeader("Region")
+            .hasTableHeader("Outgoing trust")
+            .hasTableHeader("Incoming trust")
+            .hasTableHeader("Authority to proceed")
+            .hasTableHeader("Confirmed date (Original date)")
+            .contains(`${transferSchoolName} ${transferProject.urn.value}`)
+            .goTo(`${transferSchoolName} ${transferProject.urn.value}`); // todo add table assertions
+        // projectDetailsPage.containsHeading(schoolName); // not implemented
     });
 
     it("Should be able to view all projects by region and all a region's projects", () => {
@@ -88,9 +115,7 @@ describe("View all projects", () => {
             .hasTableHeader("Transfers")
             .contains(region)
             .filterBy(region);
-        allProjects
-            .containsHeading(`Projects for ${region}`)
-            .goToNextPageUntilFieldIsVisible(schoolName);
+        allProjects.containsHeading(`Projects for ${region}`).goToNextPageUntilFieldIsVisible(schoolName);
         projectTable
             .hasTableHeader("School or academy")
             .hasTableHeader("URN")

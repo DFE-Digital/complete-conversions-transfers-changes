@@ -22,13 +22,13 @@ export class ProjectBuilder {
         // force significant date to be first day of the month
         significantDate.setDate(1);
         const significantDateFormatted = significantDate.toISOString().split("T")[0];
-        const urnValue = urn ? urn : 103844;
-        const userAdIdValue = userAdId ? userAdId : cypressUser.adId;
+        const urnValue = urn ?? 103844;
+        const userAdIdValue = userAdId ?? cypressUser.adId;
 
         return {
             urn: { value: urnValue },
             significantDate: significantDateFormatted,
-            isSignificantDateProvisional: true,
+            isSignificantDateProvisional: false,
             incomingTrustUkprn: {
                 value: ukprn,
             },
@@ -45,12 +45,13 @@ export class ProjectBuilder {
         };
     }
 
-    public static createTransferProjectRequest(): CreateTransferProjectRequest {
+    public static createTransferProjectRequest(significantDate? :Date): CreateTransferProjectRequest {
+        significantDate?.setDate(1);
         return {
             urn: { value: 105601 },
             outgoingTrustUkprn: { value: ukprn },
             incomingTrustUkprn: { value: ukprn2 },
-            significantDate: "2026-03-01",
+            significantDate: significantDate ? significantDate.toISOString().split("T")[0] : "2026-03-01",
             isSignificantDateProvisional: false,
             isDueTo2Ri: false,
             isDueToInedaquateOfstedRating: false,

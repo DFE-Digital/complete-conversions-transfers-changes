@@ -1,7 +1,6 @@
 import { beforeEach } from "mocha";
 import {
     shouldBeAbleToViewAndDownloadCsvReportsFromTheExportSection,
-    shouldBeAbleToViewMultipleMonthsOfProjects,
     shouldNotBeAbleToBeAssignedAProject,
     shouldNotBeAbleToCreateAProject,
     shouldNotHaveAccessToViewAndEditUsers,
@@ -10,8 +9,22 @@ import {
 } from "cypress/support/reusableTests";
 import { businessSupportUser } from "cypress/constants/cypressConstants";
 import navBar from "cypress/pages/navBar";
+import projectRemover from "cypress/api/projectRemover";
+import { ProjectBuilder } from "cypress/api/projectBuilder";
+import projectApi from "cypress/api/projectApi";
+import allProjects from "cypress/pages/projects/allProjects";
+import projectsByMonthPage from "cypress/pages/projects/projectsByMonthPage";
+import { projectTable } from "cypress/pages/projects/tables/projectTable";
+import { currentMonthLong, currentMonthShort } from "cypress/constants/stringTestConstants";
 
+const date = new Date(2027, 4, 1);
+const project = ProjectBuilder.createConversionProjectRequest(date);
+const schoolName = "St Chad's Catholic Primary School";
 describe("Capabilities and permissions of the business support user", () => {
+    before(() => {
+        projectRemover.removeProjectIfItExists(`${project.urn.value}`);
+        projectApi.createConversionProject(project);
+    });
     beforeEach(() => {
         cy.login(businessSupportUser);
         cy.acceptCookies();
@@ -39,9 +52,22 @@ describe("Capabilities and permissions of the business support user", () => {
         shouldNotHaveAccessToViewAndEditUsers();
     });
 
-    it.skip("Should be able to view multiple months of projects within a specified date range", () => {
-        // not implemented 187514
-        shouldBeAbleToViewMultipleMonthsOfProjects();
+    it.only("Should be able to view multiple months of projects within a specified date range", () => {
+        cy.visit("/projects/all/in-progress/all");
+        allProjects.filterProjects("By month").containsHeading(`${currentMonthLong} to ${currentMonthLong}`);
+        projectsByMonthPage
+            .filterIsFromDateToDate(currentMonthShort, currentMonthShort)
+            .filterDateRange("Apr 2027", "May 2027");
+        projectTable
+            .hasTableHeader("School and URN")
+            .hasTableHeader("Region")
+            .hasTableHeader("Local authority")
+            .hasTableHeader("Incoming trust")
+            .hasTableHeader("All conditions met")
+            .hasTableHeader("Confirmed date (Original date)")
+            .contains(`${schoolName} ${project.urn.value}`)
+            .goTo(`${schoolName} ${project.urn.value}`);
+        // projectDetailsPage.containsHeading(schoolName); // not implemented
     });
 
     it.skip("Should be able to view and download csv reports from the export section", () => {
