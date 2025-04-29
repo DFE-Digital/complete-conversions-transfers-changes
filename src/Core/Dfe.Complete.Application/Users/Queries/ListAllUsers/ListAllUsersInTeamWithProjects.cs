@@ -1,4 +1,5 @@
 ﻿using Dfe.Complete.Application.Common.Models;
+using Dfe.Complete.Application.Projects.Models;
 using Dfe.Complete.Application.Users.Models;
 using Dfe.Complete.Domain.Entities;
 using Dfe.Complete.Domain.Enums;
@@ -12,7 +13,7 @@ namespace Dfe.Complete.Application.Users.Queries.ListAllUsers;
 public record ListAllUsersInTeamWithProjectsQuery(ProjectTeam Team)
     : PaginatedRequest<PaginatedResult<List<UserWithProjectsDto>>>;
 
-public class ListAllUsersInTeamWithProjectsHandler(ICompleteRepository<User> usersRepository, ICompleteRepository<Project> projectsRepository)
+public class ListAllUsersInTeamWithProjectsHandler(ICompleteRepository<User> usersRepository)
     : IRequestHandler<ListAllUsersInTeamWithProjectsQuery, PaginatedResult<List<UserWithProjectsDto>>>
 {
     public async Task<PaginatedResult<List<UserWithProjectsDto>>> Handle(ListAllUsersInTeamWithProjectsQuery request,
@@ -21,26 +22,25 @@ public class ListAllUsersInTeamWithProjectsHandler(ICompleteRepository<User> use
         try
         {
             var usersQuery = usersRepository.Query()
+                .Include(u => u.ProjectAssignedTos)
                 .Where(u => u.Team == request.Team.ToDescription())
                 .OrderBy(u => u.FirstName)
                 .ThenBy(u => u.LastName);
 
             var totalCount = await usersQuery.CountAsync(cancellationToken);
 
-            var users = await usersQuery
+            var usersWithProjects = await usersQuery
                 .Paginate(request.Page, request.Count)
-                .ToListAsync(cancellationToken);
-
-            var usersWithProjects = users
                 .Select(user => new UserWithProjectsDto(
                     user.Id,
                     user.FullName,
                     user.Email,
                     request.Team,
-                    [],
-                    projectsRepository.Query().Count(p => p.AssignedToId == user.Id && p.Type == ProjectType.Conversion),
-                    projectsRepository.Query().Count(p => p.AssignedToId == user.Id && p.Type == ProjectType.Transfer)
-                )).ToList();
+                    new List<ListAllProjectsResultModel>(),
+                    user.ProjectAssignedTos.Count(p => p.Type == ProjectType.Conversion),
+                    user.ProjectAssignedTos.Count(p => p.Type == ProjectType.Transfer)
+                ))
+                .ToListAsync(cancellationToken);
 
             return PaginatedResult<List<UserWithProjectsDto>>.Success(usersWithProjects, totalCount);
         }
