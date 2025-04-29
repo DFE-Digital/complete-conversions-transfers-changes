@@ -13,5 +13,7 @@ public interface IListAllProjectsByFilterQueryService
         string? localAuthorityCode = "",
         Region? region = null,
         ProjectTeam? team = null,
+        bool? isFormAMat  = null,
+        string? newTrustReferenceNumber = "",
         OrderProjectQueryBy? orderBy = null);
 }
