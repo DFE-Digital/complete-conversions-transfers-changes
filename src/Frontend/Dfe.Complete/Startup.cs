@@ -1,7 +1,8 @@
-using Azure.Storage.Blobs;
+using Azure.Identity;
 using Dfe.Complete.Application.Common.Mappers;
 using Dfe.Complete.Authorization;
 using Dfe.Complete.Configuration;
+using DataProtectionOptions = Dfe.Complete.Configuration.DataProtectionOptions;
 using Dfe.Complete.Security;
 using Dfe.Complete.StartupConfiguration;
 using DfE.CoreLibs.Security.Authorization;
@@ -13,7 +14,6 @@ using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.FeatureManagement;
 using Microsoft.Identity.Web;
 using Microsoft.Identity.Web.UI;
-using System.Security.Claims;
 using Dfe.Complete.Infrastructure;
 using Dfe.Complete.Infrastructure.Security.Authorization;
 using Dfe.Complete.Services;
@@ -63,11 +63,11 @@ public class Startup
         services.AddControllersWithViews()
            .AddMicrosoftIdentityUI();
         SetupDataProtection(services);
- 
+
         services.AddCompleteClientProject(Configuration);
 
         services.AddScoped<ErrorService>();
-        
+
         services.AddScoped(sp => sp.GetService<IHttpContextAccessor>()?.HttpContext?.Session);
         services.AddSession(options =>
         {
@@ -78,7 +78,7 @@ public class Startup
         services.AddHttpContextAccessor();
 
         services.AddApplicationAuthorization(Configuration);
-        
+
         services.AddMicrosoftIdentityWebAppAuthentication(Configuration);
         ConfigureCookies(services);
 
@@ -180,19 +180,23 @@ public class Startup
 
     private void SetupDataProtection(IServiceCollection services)
     {
-        if (!string.IsNullOrEmpty(Configuration["ConnectionStrings:BlobStorage"]))
-        {
-            string blobName = "keys.xml";
-            BlobContainerClient container = new BlobContainerClient(new Uri(Configuration["ConnectionStrings:BlobStorage"]));
+        var dp = services.AddDataProtection();
+        var dpTargetPath = @"/srv/app/storage";
+        DataProtectionOptions dpOptions = GetTypedConfigurationFor<DataProtectionOptions>();
 
-            BlobClient blobClient = container.GetBlobClient(blobName);
+        if (Directory.Exists(dpTargetPath)) {
+            dp.PersistKeysToFileSystem(new DirectoryInfo(dpTargetPath));
 
-            services.AddDataProtection()
-                .PersistKeysToAzureBlobStorage(blobClient);
-        }
-        else
-        {
-            services.AddDataProtection();
+            // If a Key Vault Key URI is defined, expect to encrypt the keys.xml
+            string? kvProtectionKeyUri = dpOptions.KeyVaultKey;
+
+            if (!string.IsNullOrWhiteSpace(kvProtectionKeyUri))
+            {
+                dp.ProtectKeysWithAzureKeyVault(
+                    new Uri(kvProtectionKeyUri),
+                    new DefaultAzureCredential()
+                );
+            }
         }
     }
 }
