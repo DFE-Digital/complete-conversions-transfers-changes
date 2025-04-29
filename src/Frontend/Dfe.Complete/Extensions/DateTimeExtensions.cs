@@ -49,7 +49,6 @@ namespace Dfe.Complete.Extensions
 
 			return dateTime.Value.ToDateMonthYearString();
 		}
-	}
 		
 		public static string ToFullDateMonthYearString(this DateTime? dateTime)
 		{
@@ -60,5 +59,6 @@ namespace Dfe.Complete.Extensions
 
 			return dateTime.Value.ToString(DateFormatConstants.FullMonthAndYearFormat, GbCulture);
 		}
-    }
+	}
+	
 }
