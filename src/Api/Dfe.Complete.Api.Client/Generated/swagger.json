@@ -819,13 +819,21 @@
             "x-position": 2
           },
           {
+            "name": "ProjectUserFilter",
+            "in": "query",
+            "schema": {
+              "$ref": "#/components/schemas/ProjectUserFilter"
+            },
+            "x-position": 3
+          },
+          {
             "name": "Page",
             "in": "query",
             "schema": {
               "type": "integer",
               "format": "int32"
             },
-            "x-position": 3
+            "x-position": 4
           },
           {
             "name": "Count",
@@ -834,7 +842,7 @@
               "type": "integer",
               "format": "int32"
             },
-            "x-position": 4
+            "x-position": 5
           }
         ],
         "responses": {
@@ -2581,8 +2589,28 @@
             "type": "string",
             "format": "date",
             "nullable": true
+          },
+          "assignedTo": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/User"
+              }
+            ]
           }
         }
+      },
+      "ProjectUserFilter": {
+        "type": "string",
+        "description": "",
+        "x-enumNames": [
+          "AssignedTo",
+          "CreatedBy"
+        ],
+        "enum": [
+          "AssignedTo",
+          "CreatedBy"
+        ]
       },
       "ProjectGroupDto": {
         "type": "object",

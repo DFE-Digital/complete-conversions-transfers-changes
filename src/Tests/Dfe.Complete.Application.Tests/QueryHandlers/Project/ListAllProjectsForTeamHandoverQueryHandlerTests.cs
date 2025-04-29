@@ -21,7 +21,7 @@ public class ListAllProjectsForTeamHandoverQueryHandlerTests
         typeof(ListAllProjectsQueryModelCustomization),
         typeof(DateOnlyCustomization))]
     public async Task Handle_ShouldReturnCorrectList_WhenPaginationIsCorrect(
-        [Frozen] IListAllProjectsByFilterQueryService mockListAllProjectsForFilterQueryService,
+        [Frozen] IListAllProjectsQueryService mockListAllProjectsQueryService,
         ListAllProjectsForTeamHandoverQueryHandler handler,
         IFixture fixture)
     {
@@ -37,7 +37,7 @@ public class ListAllProjectsForTeamHandoverQueryHandlerTests
 
         var mock = listAllProjectsQueryModels.BuildMock();
 
-        mockListAllProjectsForFilterQueryService.ListAllProjectsByFilter(Arg.Any<ProjectState?>(),
+        mockListAllProjectsQueryService.ListAllProjects(Arg.Any<ProjectState?>(),
                 Arg.Any<ProjectType?>(), region: requestedRegion, team: ProjectTeam.RegionalCaseWorkerServices)
             .Returns(mock);
 
@@ -61,7 +61,7 @@ public class ListAllProjectsForTeamHandoverQueryHandlerTests
         typeof(ListAllProjectsQueryModelCustomization),
         typeof(DateOnlyCustomization))]
     public async Task Handle_ShouldReturnCorrectList_WhenAllPagesAreSkipped(
-        [Frozen] IListAllProjectsByFilterQueryService mockListAllProjectsForFilterQueryService,
+        [Frozen] IListAllProjectsQueryService mockListAllProjectsQueryService,
         ListAllProjectsForTeamHandoverQueryHandler handler,
         IFixture fixture)
     {
@@ -69,7 +69,7 @@ public class ListAllProjectsForTeamHandoverQueryHandlerTests
 
         var mock = listAllProjectsQueryModels.BuildMock();
 
-        mockListAllProjectsForFilterQueryService.ListAllProjectsByFilter(Arg.Any<ProjectState?>(),
+        mockListAllProjectsQueryService.ListAllProjects(Arg.Any<ProjectState?>(),
                 Arg.Any<ProjectType?>(), region: Region.London, team: ProjectTeam.RegionalCaseWorkerServices)
             .Returns(mock);
 
@@ -89,7 +89,7 @@ public class ListAllProjectsForTeamHandoverQueryHandlerTests
         typeof(ListAllProjectsQueryModelCustomization),
         typeof(DateOnlyCustomization))]
     public async Task Handle_ShouldReturnUnsuccessful_WhenAnErrorOccurs(
-        [Frozen] IListAllProjectsByFilterQueryService mockListAllProjectsForFilterQueryService,
+        [Frozen] IListAllProjectsQueryService mockListAllProjectsQueryService,
         ListAllProjectsForTeamHandoverQueryHandler handler)
     {
         // Arrange
@@ -97,8 +97,8 @@ public class ListAllProjectsForTeamHandoverQueryHandlerTests
 
         var query = new ListAllProjectsForTeamHandoverQuery(Region.London, null, null);
 
-        mockListAllProjectsForFilterQueryService
-            .ListAllProjectsByFilter(query.ProjectStatus, query.Type, region: Region.London, team: ProjectTeam.RegionalCaseWorkerServices)
+        mockListAllProjectsQueryService
+            .ListAllProjects(query.ProjectStatus, query.Type, region: Region.London, team: ProjectTeam.RegionalCaseWorkerServices)
             .Throws(new Exception(errorMessage));
 
         // Act

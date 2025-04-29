@@ -21,7 +21,7 @@ public class ListAllProjectsForRegionQueryHandlerTests
         typeof(ListAllProjectsQueryModelCustomization),
         typeof(DateOnlyCustomization))]
     public async Task Handle_ShouldReturnCorrectList_WhenPaginationIsCorrect(
-        [Frozen] IListAllProjectsByFilterQueryService mockListAllProjectsForFilterQueryService,
+        [Frozen] IListAllProjectsQueryService mockListAllProjectsForFilterQueryService,
         ListAllProjectsForRegionQueryHandler handler,
         IFixture fixture)
     {
@@ -37,7 +37,7 @@ public class ListAllProjectsForRegionQueryHandlerTests
 
         var mock = listAllProjectsQueryModels.BuildMock();
 
-        mockListAllProjectsForFilterQueryService.ListAllProjectsByFilter(Arg.Any<ProjectState?>(),
+        mockListAllProjectsForFilterQueryService.ListAllProjects(Arg.Any<ProjectState?>(),
                 Arg.Any<ProjectType?>(), region: requestedRegion)
             .Returns(mock);
 
@@ -61,7 +61,7 @@ public class ListAllProjectsForRegionQueryHandlerTests
         typeof(ListAllProjectsQueryModelCustomization),
         typeof(DateOnlyCustomization))]
     public async Task Handle_ShouldReturnCorrectList_WhenAllPagesAreSkipped(
-        [Frozen] IListAllProjectsByFilterQueryService mockListAllProjectsForFilterQueryService,
+        [Frozen] IListAllProjectsQueryService mockListAllProjectsForFilterQueryService,
         ListAllProjectsForRegionQueryHandler handler,
         IFixture fixture)
     {
@@ -69,7 +69,7 @@ public class ListAllProjectsForRegionQueryHandlerTests
 
         var mock = listAllProjectsQueryModels.BuildMock();
 
-        mockListAllProjectsForFilterQueryService.ListAllProjectsByFilter(Arg.Any<ProjectState?>(),
+        mockListAllProjectsForFilterQueryService.ListAllProjects(Arg.Any<ProjectState?>(),
                 Arg.Any<ProjectType?>(), region: Region.London)
             .Returns(mock);
         
@@ -89,7 +89,7 @@ public class ListAllProjectsForRegionQueryHandlerTests
         typeof(ListAllProjectsQueryModelCustomization),
         typeof(DateOnlyCustomization))]
     public async Task Handle_ShouldReturnUnsuccessful_WhenAnErrorOccurs(
-        [Frozen] IListAllProjectsByFilterQueryService mockListAllProjectsForFilterQueryService,
+        [Frozen] IListAllProjectsQueryService mockListAllProjectsForFilterQueryService,
         ListAllProjectsForRegionQueryHandler handler)
     {
         // Arrange
@@ -98,7 +98,7 @@ public class ListAllProjectsForRegionQueryHandlerTests
         var query = new ListAllProjectsForRegionQuery(Region.London, null, null);
 
         mockListAllProjectsForFilterQueryService
-            .ListAllProjectsByFilter(query.ProjectStatus, query.Type, region: Region.London)
+            .ListAllProjects(query.ProjectStatus, query.Type, region: Region.London)
             .Throws(new Exception(errorMessage));
 
         // Act
