@@ -19,8 +19,8 @@ namespace Dfe.Complete.Pages.Projects.List.ProjectsByMonth
             var fromDate = ParseDate(FromMonth, FromYear);
             var toDate = ParseDate(ToMonth, ToYear);
 
-            FromDate = fromDate.ToDateMonthYearString();
-            ToDate = toDate.ToDateMonthYearString();
+            FromDate = fromDate.ToFullDateMonthYearString();
+            ToDate = toDate.ToFullDateMonthYearString();
             DateRangeDisplay = $"{FromDate} to {ToDate}";
 
             ViewData[TabNavigationModel.ViewDataKey] = AllProjectsTabNavigationModel;

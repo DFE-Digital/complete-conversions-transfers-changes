@@ -16,8 +16,8 @@
                 <select name="fromDate" id="fromDate" class="govuk-select">
                     @foreach (var month in months)
                     {
-                        var _month = month.ToDateMonthYearString();
-                        <option selected="@(_month == Model.FromDate)" value="@month.Value">@_month</option>
+                        var _month = month.ToFullDateMonthYearString();
+                        <option selected="@(_month == Model.FromDate)" value="@month.Value">@month.ToDateMonthYearString()</option>
                     }
                 </select>
             </div>
@@ -27,8 +27,8 @@
                 <select name="toDate" id="toDate" class="govuk-select">
                     @foreach (var month in months)
                     {
-                        var _month = month.ToDateMonthYearString();
-                        <option selected="@(_month == Model.ToDate)" value="@month.Value">@_month</option>
+                        var _month = month.ToFullDateMonthYearString();
+                        <option selected="@(_month == Model.ToDate)" value="@month.Value">@month.ToDateMonthYearString()</option>
                     }
                 </select>
             </div>
