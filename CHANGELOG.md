@@ -28,8 +28,10 @@ Security in case of vulnerabilities.
  - Your team projects "By user" list (`/projects/team/users`)
  - Your team projects "By user" > "User" list (`/projects/team/users/{userId}`)
  - Add new `ProjectTeam` extension method `TeamIsRegionalCaseworkServices`, to identify RCS users 
+  - Projects added by you (`/projects/yours/added-by`)
 
-### Changes
+### Changed
+ - Merged ListAllProjectsByFilter into main ListAllProjects query
 - Add an "orderBy" argument to the `ListAllProjectsByFilter` query
 - Allow `ListAllProjectsByFilter` query to handle multiple filters
 
@@ -44,10 +46,7 @@ See the [full commit history](https://github.com/DFE-Digital/complete-conversion
 ### Added
  - New route `/projects/team/completed`
  - Your team projects completed list (`/projects/team/completed`)
- - Projects added by you (`/projects/yours/added-by`)
 
-### Changed
- - Merged ListAllProjectsByFilter into main ListAllProjects query
 
 ### Changed
  - Filter out any local authorities with no projects in `ListAllProjectByLocalAuthorities`
