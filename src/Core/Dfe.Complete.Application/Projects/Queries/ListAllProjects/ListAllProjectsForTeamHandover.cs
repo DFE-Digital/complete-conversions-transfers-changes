@@ -8,29 +8,27 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Dfe.Complete.Application.Projects.Queries.ListAllProjects;
 
-public record ListAllProjectsForRegionQuery(
+public record ListAllProjectsForTeamHandoverQuery(
     Region Region,
     ProjectState? ProjectStatus,
-    ProjectType? Type,
-    AssignedToState? AssignedToState = null,
-    OrderProjectQueryBy? OrderBy = null)
+    ProjectType? Type)
     : PaginatedRequest<PaginatedResult<List<ListAllProjectsResultModel>>>;
 
-public class ListAllProjectsForRegionQueryHandler(
+public class ListAllProjectsForTeamHandoverQueryHandler(
     IListAllProjectsByFilterQueryService listAllProjectsByFilterQueryService)
-    : IRequestHandler<ListAllProjectsForRegionQuery, PaginatedResult<List<ListAllProjectsResultModel>>>
+    : IRequestHandler<ListAllProjectsForTeamHandoverQuery, PaginatedResult<List<ListAllProjectsResultModel>>>
 
 {
-    public async Task<PaginatedResult<List<ListAllProjectsResultModel>>> Handle(ListAllProjectsForRegionQuery request,
+    public async Task<PaginatedResult<List<ListAllProjectsResultModel>>> Handle(ListAllProjectsForTeamHandoverQuery request,
         CancellationToken cancellationToken)
     {
         try
         {
-            var projectsForRegion = await listAllProjectsByFilterQueryService.ListAllProjectsByFilter(
-                request.ProjectStatus, request.Type, request.AssignedToState, region: request.Region, orderBy: request.OrderBy)
+            var projectsHandedOverForTeam = await listAllProjectsByFilterQueryService.ListAllProjectsByFilter(
+                request.ProjectStatus, request.Type, region: request.Region, team: ProjectTeam.RegionalCaseWorkerServices)
                 .ToListAsync(cancellationToken);
 
-            var paginatedResultModel = projectsForRegion.Select(proj =>
+            var paginatedResultModel = projectsHandedOverForTeam.Select(proj =>
                     ListAllProjectsResultModel.MapProjectAndEstablishmentToListAllProjectResultModel(proj.Project,
                         proj.Establishment))
                 .Skip(request.Page * request.Count)
@@ -38,7 +36,7 @@ public class ListAllProjectsForRegionQueryHandler(
                 .ToList();
 
             return PaginatedResult<List<ListAllProjectsResultModel>>.Success(paginatedResultModel,
-                projectsForRegion.Count);
+                projectsHandedOverForTeam.Count);
         }
         catch (Exception e)
         {

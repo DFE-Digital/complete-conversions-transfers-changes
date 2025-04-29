@@ -56,7 +56,8 @@ public class ListAllUsersWithProjectsHandlerTest
                 null,
                 null,
                 null,
-                null
+                null,
+                project.CreatedAt
             )).ToList(),
             user.ProjectAssignedTos.Count(project => project.Type == ProjectType.Conversion),
             user.ProjectAssignedTos.Count(project => project.Type == ProjectType.Transfer)
@@ -151,7 +152,8 @@ public class ListAllUsersWithProjectsHandlerTest
                 null,
                 null,
                 null,
-                null
+                null,
+                project.CreatedAt
             )).ToList(),
             user.ProjectAssignedTos.Count(project => project.Type == ProjectType.Conversion),
             user.ProjectAssignedTos.Count(project => project.Type == ProjectType.Transfer)
@@ -214,7 +216,8 @@ public class ListAllUsersWithProjectsHandlerTest
                 null,
                 null,
                 null,
-                null
+                null,
+                project.CreatedAt
             )).ToList(),
             user.ProjectAssignedTos.Where(project => project.State == ProjectState.Active).Count(project => project.Type == ProjectType.Conversion),
             user.ProjectAssignedTos.Where(project => project.State == ProjectState.Active).Count(project => project.Type == ProjectType.Transfer)

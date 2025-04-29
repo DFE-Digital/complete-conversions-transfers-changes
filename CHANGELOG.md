@@ -15,14 +15,34 @@ Security in case of vulnerabilities.
 
 ## Unreleased  
 ### Added
+ - New route `/projects/all/by-month/conversions/{month}/{year}`
+ - New route `/projects/all/by-month/transfers/{month}/{year}`
+ - New route `/projects/all/by-month/conversions/from/{fromMonth}/{fromYear}/to/{toMonth}/{toYear}`
+ - New route `/projects/all/by-month/transfers/from/{fromMonth}/{fromYear}/to/{toMonth}/{toYear}`
+ - New route `/projects/team/new`
+ - New route `/projects/team/handed-over`
+ - Your team projects "new" list (`/projects/team/new`)
+ - Your team projects handed over list (`/projects/team/handed-over`)
+ - Add new `ProjectTeam` extension method `TeamIsRegionalCaseworkServices`, to identify RCS users 
+
+### Changes
+- Add an "orderBy" argument to the `ListAllProjectsByFilter` query
+- Allow `ListAllProjectsByFilter` query to handle multiple filters
+ 
+See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-04-24.175...main) for everything awaiting release
+
+---
+
+## [Release-3](https://github.com/DFE-Digital/complete-conversions-transfers-changes/releases/tag/production-2025-04-24.175) - 2025-04-25
+### Added
  - New route `/projects/team/completed`
  - Your team projects completed list (`/projects/team/completed`)
 
 ### Changed
  - Filter out any local authorities with no projects in `ListAllProjectByLocalAuthorities`
-
+ - Include unassigned projects in "All projects" > "By region"
  
-See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/main...production-2025-04-17.164) for everything awaiting release
+See the [full commit history](**Full Changelog**: https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-04-17.164...production-2025-04-24.175) for everything in the release
 
 ---
 
@@ -39,10 +59,6 @@ See the [full commit history](https://github.com/DFE-Digital/complete-conversion
  - Added missing "project for region" header
  - User redirection on app load based on their permissions
  - Add navigation items to be more consistent with ruby UI
- - New route `/projects/all/by-month/conversions/{month}/{year}`
- - New route `/projects/all/by-month/transfers/{month}/{year}`
- - New route `/projects/all/by-month/conversions/from/{fromMonth}/{fromYear}/to/{toMonth}/{toYear}`
- - New route `/projects/all/by-month/transfers/from/{fromMonth}/{fromYear}/to/{toMonth}/{toYear}`
 
 ### Changed
  - Updated route `/accessibility-statement` to `/accessibility`
