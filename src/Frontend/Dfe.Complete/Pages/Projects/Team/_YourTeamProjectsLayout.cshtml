@@ -28,6 +28,13 @@
                 aria-current="@IsCurrentNav(YourTeamProjectsModel.NewNavigation)"
                 href="@RouteConstants.TeamProjectsNew">New</a>
             </li>
+            @if (UserHasTabAccess(YourTeamProjectsModel.HandedOverNavigation)){
+              <li class="moj-primary-navigation__item">
+                <a class="moj-primary-navigation__link"
+                  aria-current="@IsCurrentNav(YourTeamProjectsModel.HandedOverNavigation)"
+                  href="@RouteConstants.TeamProjectsHandedOver">Handed over</a>
+              </li>
+            }
             <li class="moj-primary-navigation__item">
               <a class="moj-primary-navigation__link"
                 aria-current="@IsCurrentNav(YourTeamProjectsModel.ByUserNavigation)"
