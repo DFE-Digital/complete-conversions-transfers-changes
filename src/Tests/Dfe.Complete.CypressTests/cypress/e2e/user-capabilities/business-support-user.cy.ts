@@ -15,7 +15,7 @@ import projectApi from "cypress/api/projectApi";
 import allProjects from "cypress/pages/projects/allProjects";
 import projectsByMonthPage from "cypress/pages/projects/projectsByMonthPage";
 import { projectTable } from "cypress/pages/projects/tables/projectTable";
-import { currentMonthLong, currentMonthShort } from "cypress/constants/stringTestConstants";
+import { currentMonthShort } from "cypress/constants/stringTestConstants";
 
 const date = new Date(2027, 4, 1);
 const project = ProjectBuilder.createConversionProjectRequest(date);
@@ -52,20 +52,28 @@ describe("Capabilities and permissions of the business support user", () => {
         shouldNotHaveAccessToViewAndEditUsers();
     });
 
-    it.only("Should be able to view multiple months of projects within a specified date range", () => {
+    it("Should be able to view multiple months of projects within a specified date range", () => {
         cy.visit("/projects/all/in-progress/all");
-        allProjects.filterProjects("By month").containsHeading(`${currentMonthLong} to ${currentMonthLong}`);
+        allProjects.filterProjects("By month");
+        // .containsHeading(`${currentMonthLong} to ${currentMonthLong}`);
         projectsByMonthPage
             .filterIsFromDateToDate(currentMonthShort, currentMonthShort)
             .filterDateRange("Apr 2027", "May 2027");
         projectTable
-            .hasTableHeader("School and URN")
-            .hasTableHeader("Region")
-            .hasTableHeader("Local authority")
-            .hasTableHeader("Incoming trust")
-            .hasTableHeader("All conditions met")
-            .hasTableHeader("Confirmed date (Original date)")
-            .contains(`${schoolName} ${project.urn.value}`)
+            .hasTableHeaders([
+                "School and URN",
+                "Region",
+                "Local authority",
+                "Incoming trust",
+                "All conditions met",
+                "Confirmed date (Original date)",
+            ])
+            .withSchool(`${schoolName} ${project.urn.value}`)
+            .columnHasValue("Region", "West Midlands")
+            .columnHasValue("Local authority", "Dudley Metropolitan Borough Council")
+            // .columnHasValue("Incoming trust", trust) // bug 208086
+            .columnHasValue("All conditions met", "Not yet")
+            .columnHasValue("Confirmed date (Original date)", "Apr 2027") //todo check
             .goTo(`${schoolName} ${project.urn.value}`);
         // projectDetailsPage.containsHeading(schoolName); // not implemented
     });

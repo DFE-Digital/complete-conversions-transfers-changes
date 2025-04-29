@@ -2,12 +2,13 @@ import homePage from "../pages/homePage";
 import navBar from "../pages/navBar";
 import allProjects from "../pages/projects/allProjects";
 import yourTeamProjects from "../pages/projects/yourTeamProjects";
-import yourTeamProjectsRCSViewTable from "../pages/projects/tables/yourTeamProjectsRCSViewTable";
 import assignProject from "../pages/projects/assignProject";
 import { cypressUser } from "../constants/cypressConstants";
 import yourProjects from "../pages/projects/yourProjects";
 import projectsByMonthPage from "cypress/pages/projects/projectsByMonthPage";
 import { currentMonthLong, currentMonthShort } from "cypress/constants/stringTestConstants";
+import { projectTable } from "cypress/pages/projects/tables/projectTable";
+import yourTeamProjectsTable from "cypress/pages/projects/tables/yourTeamProjectsTable";
 
 export function shouldNotHaveAccessToViewHandedOverProjects() {
     cy.visit("/projects/all/in-progress/all");
@@ -57,14 +58,15 @@ export function shouldBeAbleToAssignUnassignedProjectsToUsers(unassignedProjectS
         .filterProjects("Unassigned")
         .containsHeading("Your team unassigned projects")
         .goToNextPageUntilFieldIsVisible(unassignedProjectSchoolName);
-    yourTeamProjectsRCSViewTable
-        .hasTableHeader("School or academy")
-        .hasTableHeader("URN")
-        .hasTableHeader("Conversion or transfer date")
-        .hasTableHeader("Project type")
-        .hasTableHeader("Region")
-        .hasTableHeader("Assigned project")
-        .assignProject(unassignedProjectSchoolName);
+    projectTable.hasTableHeaders([
+        "School or academy",
+        "URN",
+        "Conversion or transfer date",
+        "Project type",
+        "Region",
+        "Assigned project",
+    ]);
+    yourTeamProjectsTable.assignProject(unassignedProjectSchoolName);
     assignProject.assignTo(cypressUser.username);
     navBar.goToYourProjects();
     yourProjects.goToNextPageUntilFieldIsVisible(unassignedProjectSchoolName);
