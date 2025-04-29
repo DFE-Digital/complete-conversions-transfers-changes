@@ -37,7 +37,7 @@ namespace Dfe.Complete.Infrastructure.Security.Authorization
                 }
 
                 var userTeam = EnumExtensions.FromDescription<ProjectTeam>(userRecord.Team);
-                if (userTeam.TeamIsRdo())
+                if (userTeam.TeamIsRegionalDeliveryOfficer())
                     additionalClaims.Add(new Claim(ClaimTypes.Role, UserRolesConstants.RegionalDeliveryOfficer));
 
                 if (userRecord.ManageTeam == true)

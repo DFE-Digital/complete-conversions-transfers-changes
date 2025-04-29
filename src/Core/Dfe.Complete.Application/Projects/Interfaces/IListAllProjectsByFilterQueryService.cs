@@ -12,6 +12,6 @@ public interface IListAllProjectsByFilterQueryService
         UserId? userId = null,
         string? localAuthorityCode = "",
         Region? region = null,
-        ProjectTeam? team = null
-        );
+        ProjectTeam? team = null,
+        OrderProjectQueryBy? orderBy = null);
 }
