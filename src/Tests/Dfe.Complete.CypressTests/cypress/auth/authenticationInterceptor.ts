@@ -1,4 +1,4 @@
-import { cypressUser, EnvAuthKey, EnvUrl } from "../constants/cypressConstants";
+import { cypressUser, EnvAuthKey, EnvUrl, userType } from "../constants/cypressConstants";
 import { TestUser } from "cypress/constants/TestUser";
 
 export class AuthenticationInterceptor {
@@ -14,7 +14,8 @@ export class AuthenticationInterceptor {
                     ...req.headers,
                     Authorization: `Bearer ${Cypress.env(EnvAuthKey)}`,
                     "x-user-context-name": user.username, // must be present, but not used
-                    "x-user-ad-id": user.adId
+                    "x-user-ad-id": user.adId,
+                    "x-cypress-user": userType
                 };
                 // set roles
                 user?.roles?.forEach((role, index) => {
