@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Dfe.Complete.Application.Users.Queries.ListAllUsers;
 
-public record ListAllUsersInTeamWithProjectsQuery(ProjectTeam? Team)
+public record ListAllUsersInTeamWithProjectsQuery(ProjectTeam Team)
     : PaginatedRequest<PaginatedResult<List<UserWithProjectsDto>>>;
 
 public class ListAllUsersInTeamWithProjectsHandler(ICompleteRepository<User> usersRepository, ICompleteRepository<Project> projectsRepository)
@@ -37,7 +37,7 @@ public class ListAllUsersInTeamWithProjectsHandler(ICompleteRepository<User> use
                     user.FullName,
                     user.Email,
                     request.Team,
-                    null,
+                    [],
                     projectsRepository.Query().Count(p => p.AssignedToId == user.Id && p.Type == ProjectType.Conversion),
                     projectsRepository.Query().Count(p => p.AssignedToId == user.Id && p.Type == ProjectType.Transfer)
                 )).ToList();
