@@ -2,11 +2,10 @@ using Dfe.AcademiesApi.Client.Contracts;
 using Dfe.Complete.Application.Common.Models;
 using Dfe.Complete.Application.Projects.Interfaces;
 using Dfe.Complete.Application.Projects.Models;
-using Dfe.Complete.Domain.Entities;
 using Dfe.Complete.Domain.Enums;
-using Dfe.Complete.Domain.Interfaces.Repositories;
 using MediatR;
 using Dfe.Complete.Utils;
+using DfE.CoreLibs.Utilities.Constants;
 
 namespace Dfe.Complete.Application.Projects.Queries.ListProjectsByMonth
 {
@@ -61,9 +60,9 @@ namespace Dfe.Complete.Application.Projects.Queries.ListProjectsByMonth
                     .Select(item =>
                     {
                         var project = item.Project;
-                        
-                        var confirmedDate = project.SignificantDate.Value.ToString("MMM yyyy");
-                        var originalDate = project.SignificantDateHistories.Any() ? project.SignificantDateHistories.OrderBy(s => s.CreatedAt).FirstOrDefault()?.PreviousDate.Value.ToString("MMM yyyy") : null;
+
+                        var confirmedDate = project.SignificantDate?.ToString(DateFormatConstants.MonthAndYearFormat);
+                        var originalDate = project.SignificantDateHistories.Any() ? project.SignificantDateHistories.OrderBy(s => s.CreatedAt).FirstOrDefault()?.PreviousDate.Value.ToString(DateFormatConstants.MonthAndYearFormat) : null;
 
                         var isMatProject = project.FormAMat;
 

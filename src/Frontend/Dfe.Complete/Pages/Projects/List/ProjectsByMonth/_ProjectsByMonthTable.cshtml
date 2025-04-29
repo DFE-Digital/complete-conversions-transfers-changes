@@ -14,8 +14,7 @@
       {
         <th class="govuk-table__header" scope="col">Outgoing trust</th>
       }
-      
-      if (isConversion)
+      else
       {
         <th class="govuk-table__header" scope="col">Local authority</th>
       }
@@ -38,9 +37,7 @@
         if (!isConversion)
         {
           <td class="govuk-table__cell">@project.OutgoingTrust</td>
-        }
-        
-        if (isConversion)
+        }else
         {
           <td class="govuk-table__cell">@project.LocalAuthority</td>
         }
