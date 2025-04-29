@@ -62,8 +62,11 @@ namespace Dfe.Complete.Application.Projects.Queries.ListProjectsByMonth
                         var project = item.Project;
 
                         var confirmedDate = project.SignificantDate?.ToString(DateFormatConstants.MonthAndYearFormat);
-                        var originalDate = project.SignificantDateHistories.Any() ? project.SignificantDateHistories.OrderBy(s => s.CreatedAt).FirstOrDefault()?.PreviousDate.Value.ToString(DateFormatConstants.MonthAndYearFormat) : null;
-
+                        var originalDate = project.SignificantDateHistories.Any()
+                            ? project.SignificantDateHistories
+                                .OrderBy(s => s.CreatedAt)
+                                .FirstOrDefault()?.PreviousDate?.ToString(DateFormatConstants.MonthAndYearFormat)
+                            : null;
                         var isMatProject = project.FormAMat;
 
                         var incomingTrust = isMatProject
