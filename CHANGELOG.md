@@ -21,7 +21,6 @@ Security in case of vulnerabilities.
  - New route `/projects/all/by-month/transfers/from/{fromMonth}/{fromYear}/to/{toMonth}/{toYear}`
  - New route `/projects/team/new`
  - New route `/projects/team/handed-over`
- - Your team projects completed list (`/projects/team/completed`)
  - Your team projects "new" list (`/projects/team/new`)
  - Your team projects handed over list (`/projects/team/handed-over`)
  - Add new `ProjectTeam` extension method `TeamIsRegionalCaseworkServices`, to identify RCS users 
