@@ -13,18 +13,18 @@ namespace Dfe.Complete.Pages.Projects.Team.InProgress;
 public class AllProjectsInProgressForTeamModel(ISender sender) : YourTeamProjectsModel(InProgressNavigation)
 {
     public List<ListAllProjectsResultModel> Projects { get; set; } = [];
-    public bool UserTeamIsRdo { get; set; }
+    public bool UserTeamIsRegionalDeliveryOfficer { get; set; }
 
     public async Task OnGet()
     {
         ViewData[TabNavigationModel.ViewDataKey] = YourTeamProjectsTabNavigationModel;
 
         var userTeam = await User.GetUserTeam(sender);
-        UserTeamIsRdo = userTeam.TeamIsRdo();
+        UserTeamIsRegionalDeliveryOfficer = userTeam.TeamIsRegionalDeliveryOfficer();
 
         int recordCount = 0;
 
-        if (UserTeamIsRdo)
+        if (UserTeamIsRegionalDeliveryOfficer)
         {
             var userRegion = EnumMapper.MapTeamToRegion(userTeam);
 
@@ -39,7 +39,7 @@ public class AllProjectsInProgressForTeamModel(ISender sender) : YourTeamProject
             recordCount = listProjectsForRegionResult.ItemCount;
             Projects = listProjectsForRegionResult.Value ?? [];
         }
-        else if (userTeam == ProjectTeam.RegionalCaseWorkerServices)
+        else if (userTeam.TeamIsRegionalCaseworkServices())
         {
             var listProjectsForTeamQuery =
                 new ListAllProjectsForTeamQuery(userTeam, ProjectState.Active, null, AssignedToState.AssignedOnly)
@@ -53,7 +53,7 @@ public class AllProjectsInProgressForTeamModel(ISender sender) : YourTeamProject
             Projects = listResponse.Value ?? [];
         }
 
-        Pagination = new PaginationModel(RouteConstants.TeamProjectsInProgress, PageNumber, recordCount, PageSize);
+        Pagination = new PaginationModel(RouteConstants.TeamProjectsHandedOver, PageNumber, recordCount, PageSize);
     }
 
     public async Task OnGetMovePage()

@@ -13,23 +13,25 @@ namespace Dfe.Complete.Pages.Projects.Team.ProjectsCompleted;
 public class AllCompletedProjectsForTeamModel(ISender sender) : YourTeamProjectsModel(CompletedNavigation)
 {
     public List<ListAllProjectsResultModel> Projects { get; set; } = [];
-    public bool UserTeamIsRdo { get; set; }
+    public bool UserTeamIsRegionalDeliveryOfficer { get; set; }
 
     public async Task OnGet()
     {
         ViewData[TabNavigationModel.ViewDataKey] = YourTeamProjectsTabNavigationModel;
 
         var userTeam = await User.GetUserTeam(sender);
-        UserTeamIsRdo = userTeam.TeamIsRdo();
+        UserTeamIsRegionalDeliveryOfficer = userTeam.TeamIsRegionalDeliveryOfficer();
 
         int recordCount = 0;
 
-        if (UserTeamIsRdo)
+        var orderBy = new OrderProjectQueryBy(OrderProjectByField.CompletedAt, OrderByDirection.Descending);
+
+        if (UserTeamIsRegionalDeliveryOfficer)
         {
             var userRegion = EnumMapper.MapTeamToRegion(userTeam);
 
             var listProjectsForRegionQuery =
-                new ListAllProjectsForRegionQuery((Region)userRegion!, ProjectState.Completed, null)
+                new ListAllProjectsForRegionQuery((Region)userRegion!, ProjectState.Completed, null, null, orderBy)
                 {
                     Page = PageNumber - 1,
                     Count = PageSize
@@ -39,10 +41,10 @@ public class AllCompletedProjectsForTeamModel(ISender sender) : YourTeamProjects
             recordCount = listProjectsForRegionResult.ItemCount;
             Projects = listProjectsForRegionResult.Value ?? [];
         }
-        else if (userTeam == ProjectTeam.RegionalCaseWorkerServices)
+        else if (userTeam.TeamIsRegionalCaseworkServices())
         {
             var listProjectsForTeamQuery =
-                new ListAllProjectsForTeamQuery(userTeam, ProjectState.Completed, null)
+                new ListAllProjectsForTeamQuery(userTeam, ProjectState.Completed, null, null, orderBy)
                 {
                     Page = PageNumber - 1,
                     Count = PageSize

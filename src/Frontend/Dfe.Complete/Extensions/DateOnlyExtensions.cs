@@ -1,5 +1,6 @@
 using System.Globalization;
 using Dfe.Complete.Constants;
+using DfE.CoreLibs.Utilities.Constants;
 
 namespace Dfe.Complete.Extensions
 {
@@ -44,6 +45,16 @@ namespace Dfe.Complete.Extensions
 			}
 
             return dateOnly.Value.ToString(DateFormatConstants.MonthAndYearFormat, GbCulture);
+        }
+        
+        public static string ToFullDateMonthYearString(this DateOnly? dateOnly)
+        {
+	        if (!dateOnly.HasValue)
+	        {
+		        return string.Empty;
+	        }
+
+	        return dateOnly.Value.ToString(DateFormatConstants.FullMonthAndYearFormat, GbCulture);
         }
     }
 }
