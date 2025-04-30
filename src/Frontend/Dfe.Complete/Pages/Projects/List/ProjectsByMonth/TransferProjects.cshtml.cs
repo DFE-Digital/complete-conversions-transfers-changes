@@ -26,7 +26,7 @@ namespace Dfe.Complete.Pages.Projects.List.ProjectsByMonth
             
             var datetime = (DateTime?)date.ToDateTime(default);
             
-            DateString = datetime.ToDateMonthYearString();
+            DateString = datetime.ToFullDateMonthYearString();
             
             ViewData[TabNavigationModel.ViewDataKey] = AllProjectsTabNavigationModel;
             var listProjectQuery = new ListProjectsByMonthsQuery(date, null, ProjectState.Active, ProjectType.Transfer, PageNumber-1, PageSize);

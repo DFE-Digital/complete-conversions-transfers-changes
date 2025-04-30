@@ -52,6 +52,7 @@
 	<ItemGroup>
 	  <PackageReference Include="Azure.Extensions.AspNetCore.DataProtection.Blobs" Version="1.5.0" />
 	  <PackageReference Include="Dfe.AcademiesApi.Client" Version="1.0.5" />
+	  <PackageReference Include="DfE.CoreLibs.Utilities" Version="1.0.11" />
 	  <PackageReference Include="DocumentFormat.OpenXml" Version="2.20.0" />
 	  <PackageReference Include="ExcelDataReader" Version="3.6.0" />
 	  <PackageReference Include="ExcelDataReader.DataSet" Version="3.6.0" />
