@@ -59,7 +59,7 @@
         {
             Consent = consent;
             var cookieOptions = new CookieOptions { Expires = DateTime.Today.AddMonths(6), Secure = true, HttpOnly = true };
-            _httpContextAccessor.HttpContext.Response.Cookies.Append(ConsentCookieName, consent.ToString(), cookieOptions);
+            _httpContextAccessor.HttpContext!.Response.Cookies.Append(ConsentCookieName, consent.ToString().ToLower(), cookieOptions);
             var request = _httpContextAccessor.HttpContext.Request;
 
 			if (!consent)
