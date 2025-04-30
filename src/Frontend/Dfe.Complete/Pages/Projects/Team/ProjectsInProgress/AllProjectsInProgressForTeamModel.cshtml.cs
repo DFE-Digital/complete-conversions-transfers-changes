@@ -53,7 +53,7 @@ public class AllProjectsInProgressForTeamModel(ISender sender) : YourTeamProject
             Projects = listResponse.Value ?? [];
         }
 
-        Pagination = new PaginationModel(RouteConstants.TeamProjectsHandedOver, PageNumber, recordCount, PageSize);
+        Pagination = new PaginationModel(RouteConstants.TeamProjectsInProgress, PageNumber, recordCount, PageSize);
     }
 
     public async Task OnGetMovePage()
