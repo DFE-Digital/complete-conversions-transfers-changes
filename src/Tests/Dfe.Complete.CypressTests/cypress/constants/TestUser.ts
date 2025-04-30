@@ -1,14 +1,10 @@
-import { UserRole } from "cypress/constants/UserRoles";
-
 export class TestUser {
     username: string;
     adId: string;
-    roles: UserRole[];
 
-    constructor(username: string, adId: string, roles: UserRole[]) {
+    constructor(username: string, adId: string) {
         this.username = username;
         this.adId = adId;
-        this.roles = roles;
     }
 
     get email(): string {
