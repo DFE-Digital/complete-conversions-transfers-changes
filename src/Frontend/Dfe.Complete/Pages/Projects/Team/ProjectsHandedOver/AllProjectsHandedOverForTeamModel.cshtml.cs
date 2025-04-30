@@ -26,7 +26,7 @@ public class AllProjectsHandedOverForTeamModel(ISender sender) : YourTeamProject
             var userRegion = EnumMapper.MapTeamToRegion(userTeam);
 
             var listProjectsForRegionQuery =
-                new ListAllProjectsForTeamHandoverQuery((Region)userRegion!, ProjectState.Active, null)
+                new ListAllProjectsForTeamHandoverQuery((Region)userRegion!, null, null)
                 {
                     Page = PageNumber - 1,
                     Count = PageSize
