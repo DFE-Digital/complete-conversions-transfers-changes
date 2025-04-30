@@ -21,14 +21,23 @@ Security in case of vulnerabilities.
  - New route `/projects/all/by-month/transfers/from/{fromMonth}/{fromYear}/to/{toMonth}/{toYear}`
  - New route `/projects/team/new`
  - New route `/projects/team/handed-over`
- - Your team projects "new" list (`/projects/team/new`)
- - Your team projects handed over list (`/projects/team/handed-over`)
+ - New route `/projects/team/users`
+ - New route `/projects/team/users/{userId}`
+ - Your team projects "New" list (`/projects/team/new`)
+ - Your team projects "Handed over" list (`/projects/team/handed-over`)
+ - Your team projects "By user" list (`/projects/team/users`)
+ - Your team projects "By user" > "User" list (`/projects/team/users/{userId}`)
  - Add new `ProjectTeam` extension method `TeamIsRegionalCaseworkServices`, to identify RCS users 
+ - Projects added by you (`/projects/yours/added-by`)
 
-### Changes
-- Add an "orderBy" argument to the `ListAllProjectsByFilter` query
-- Allow `ListAllProjectsByFilter` query to handle multiple filters
- 
+### Changed
+ - Merged ListAllProjectsByFilter into main ListAllProjects query
+ - Add an "orderBy" argument to the `ListAllProjectsByFilter` query
+ - Allow `ListAllProjectsByFilter` query to handle multiple filters
+
+### Fixed
+ - Project for user list should show month and year (not day)
+
 See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-04-24.175...main) for everything awaiting release
 
 ---
@@ -38,10 +47,11 @@ See the [full commit history](https://github.com/DFE-Digital/complete-conversion
  - New route `/projects/team/completed`
  - Your team projects completed list (`/projects/team/completed`)
 
+
 ### Changed
  - Filter out any local authorities with no projects in `ListAllProjectByLocalAuthorities`
  - Include unassigned projects in "All projects" > "By region"
- 
+
 See the [full commit history](**Full Changelog**: https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-04-17.164...production-2025-04-24.175) for everything in the release
 
 ---
@@ -57,8 +67,17 @@ See the [full commit history](**Full Changelog**: https://github.com/DFE-Digital
  - Added API endpoint `/v1/Projects/List/All/User` for fetching projects for user
  - Added endpoint to the projectsController `ListAllProjectsInTrust`-`/v1/Projects/List/Trust`
  - Added missing "project for region" header
+ - New route `/projects/all/in-progress/form-a-multi-academy-trust`
+ - New route `/form-a-multi-academy-trust/{reference}`
+ - Form a MAT with projects in progress list (`/projects/all/in-progress/form-a-multi-academy-trust`)
+ - MAT projects listing related establishments (`/form-a-multi-academy-trust/{reference}`)
+ - Added missing "project for region" header
+
  - User redirection on app load based on their permissions
  - Add navigation items to be more consistent with ruby UI
+ - New route `/projects/team/users`
+ - Your team projects by user list (`/projects/team/users`)
+ - Your team projects by user query `ListAllUsersInTeamWithProjectsQuery`
 
 ### Changed
  - Updated route `/accessibility-statement` to `/accessibility`
@@ -72,6 +91,8 @@ See the [full commit history](**Full Changelog**: https://github.com/DFE-Digital
 ### Fixed
  - Correctly identify test env based on environment name being "Test" (previously looking for "Staging")
  - Added WireMock support back
+ - Show 404 page when get projects for region `/projects/all/regions/{region}` has a "bad" region in path param
+ - null `AssignedTo` in `ListAllProjects` throws an unexpected error
  - Show 404 page when get projects for region `/projects/all/regions/{region}` has a "bad" region in path param
  - null `AssignedTo` in `ListAllProjects` throws an unexpected error
 

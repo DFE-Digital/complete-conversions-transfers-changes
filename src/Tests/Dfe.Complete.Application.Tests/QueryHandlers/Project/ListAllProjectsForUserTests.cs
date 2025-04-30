@@ -21,20 +21,33 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.Project;
 
 public class ListAllProjectsForUserTests
 {
+    [AttributeUsage(AttributeTargets.Method, AllowMultiple = true)]
+    private class InlineAutoDataAttribute : CompositeDataAttribute
+    {
+        public InlineAutoDataAttribute(ProjectUserFilter filter)
+            : base(
+                new InlineDataAttribute(filter),
+                new CustomAutoDataAttribute(
+                    typeof(OmitCircularReferenceCustomization),
+                    typeof(ListAllProjectsQueryModelCustomization),
+                    typeof(DateOnlyCustomization)))
+        {
+        }
+    }
+    
     [Theory]
-    [CustomAutoData(
-        typeof(OmitCircularReferenceCustomization),
-        typeof(ListAllProjectsQueryModelCustomization),
-        typeof(DateOnlyCustomization))]
+    [InlineAutoData(ProjectUserFilter.AssignedTo)]
+    [InlineAutoData(ProjectUserFilter.CreatedBy)]
     public async Task Handle_ShouldReturnCorrectList_WhenPaginationIsCorrect(
-        [Frozen] IListAllProjectsByFilterQueryService mockListAllProjectsByFilterQueryService,
+        ProjectUserFilter filter,
+        [Frozen] IListAllProjectsQueryService mockListAllProjectsQueryService,
         [Frozen] Mock<ISender> mockSender,
         IFixture fixture)
     {
         //Arrange 
         var mockTrustsClient = new Mock<ITrustsV4Client>();
 
-        var handler = new ListAllProjectsForUserQueryHandler(mockListAllProjectsByFilterQueryService, 
+        var handler = new ListAllProjectsForUserQueryHandler(mockListAllProjectsQueryService, 
             mockTrustsClient.Object,
             mockSender.Object);
 
@@ -53,25 +66,36 @@ public class ListAllProjectsForUserTests
 
         foreach (var projectsQueryModel in mockListAllProjectsForUserQueryModels.ToList())
         {
-            projectsQueryModel.Project.IncomingTrustUkprn = trustDtos.OrderBy(_ => new Random().Next()).First().Ukprn;
-            projectsQueryModel.Project.OutgoingTrustUkprn = trustDtos.OrderBy(_ => new Random().Next()).First().Ukprn;
+            var incomingTrustUkprn = trustDtos.OrderBy(_ => new Random().Next()).First().Ukprn;
+            var outgoingTrustUkprn = trustDtos.OrderBy(_ => new Random().Next()).First().Ukprn;
+            Assert.NotNull(projectsQueryModel.Project);
+            Assert.NotNull(incomingTrustUkprn);
+            Assert.NotNull(outgoingTrustUkprn);
+            projectsQueryModel.Project.IncomingTrustUkprn = incomingTrustUkprn;
+            projectsQueryModel.Project.OutgoingTrustUkprn = outgoingTrustUkprn;
         }
 
         var trustList = trustDtos.ToList();
 
         var expected = mockListAllProjectsForUserQueryModels.Select(item =>
-                ListAllProjectsForUserQueryResultModel
+            {
+                Assert.NotNull(item.Project);
+                return ListAllProjectsForUserQueryResultModel
                     .MapProjectAndEstablishmentToListAllProjectsForUserQueryResultModel(
                         item.Project,
                         item.Establishment,
                         trustList.FirstOrDefault(t => t.Ukprn == item.Project.OutgoingTrustUkprn).Name,
-                        trustList.FirstOrDefault(t => t.Ukprn == item.Project.IncomingTrustUkprn).Name))
+                        trustList.FirstOrDefault(t => t.Ukprn == item.Project.IncomingTrustUkprn).Name);
+            })
             .Skip(20).Take(20).ToList();
 
-        mockListAllProjectsByFilterQueryService.ListAllProjectsByFilter(ProjectState.Active, null, userId: userDto.Id)
+        mockListAllProjectsQueryService.ListAllProjects(ProjectState.Active, null, assignedToUserId: filter == ProjectUserFilter.AssignedTo ? userDto.Id : null, 
+                createdByUserId: filter == ProjectUserFilter.CreatedBy ? userDto.Id : null)
             .Returns(mockListAllProjectsForUserQueryModels.BuildMock());
+        
+        Assert.NotNull(userDto.ActiveDirectoryUserId);
 
-        var query = new ListAllProjectsForUserQuery(ProjectState.Active, userDto.ActiveDirectoryUserId) { Page = 1 };
+        var query = new ListAllProjectsForUserQuery(ProjectState.Active, userDto.ActiveDirectoryUserId, filter) { Page = 1 };
 
         //Act
         var result = await handler.Handle(query, default);
@@ -87,19 +111,18 @@ public class ListAllProjectsForUserTests
     }
 
     [Theory]
-    [CustomAutoData(
-        typeof(OmitCircularReferenceCustomization),
-        typeof(ListAllProjectsQueryModelCustomization),
-        typeof(DateOnlyCustomization))]
+    [InlineAutoData(ProjectUserFilter.AssignedTo)]
+    [InlineAutoData(ProjectUserFilter.CreatedBy)]
     public async Task Handle_ShouldReturnCorrectList_WhenAllPagesAreSkipped(
-        [Frozen] IListAllProjectsByFilterQueryService mockListAllProjectsByFilterQueryService,
+        ProjectUserFilter filter,
+        [Frozen] IListAllProjectsQueryService mockListAllProjectsQueryService,
         [Frozen] Mock<ISender> mockSender,
         IFixture fixture)
     {
         //Arrange 
         var mockTrustsClient = new Mock<ITrustsV4Client>();
 
-        var handler = new ListAllProjectsForUserQueryHandler(mockListAllProjectsByFilterQueryService, mockTrustsClient.Object,
+        var handler = new ListAllProjectsForUserQueryHandler(mockListAllProjectsQueryService, mockTrustsClient.Object,
             mockSender.Object);
 
         var userDto = fixture.Create<UserDto>();
@@ -117,14 +140,21 @@ public class ListAllProjectsForUserTests
 
         foreach (var projectsQueryModel in mockListAllProjectsForUserQueryModels.ToList())
         {
-            projectsQueryModel.Project.IncomingTrustUkprn = trustDtos.OrderBy(_ => new Random().Next()).First().Ukprn;
-            projectsQueryModel.Project.OutgoingTrustUkprn = trustDtos.OrderBy(_ => new Random().Next()).First().Ukprn;
+            var incomingTrustUkprn = trustDtos.OrderBy(_ => new Random().Next()).First().Ukprn;
+            var outgoingTrustUkprn = trustDtos.OrderBy(_ => new Random().Next()).First().Ukprn;
+            Assert.NotNull(projectsQueryModel.Project);
+            Assert.NotNull(incomingTrustUkprn);
+            Assert.NotNull(outgoingTrustUkprn);
+            projectsQueryModel.Project.IncomingTrustUkprn = incomingTrustUkprn;
+            projectsQueryModel.Project.OutgoingTrustUkprn = outgoingTrustUkprn;
         }
         
-        mockListAllProjectsByFilterQueryService.ListAllProjectsByFilter(ProjectState.Active, null, userId: userDto.Id)
+        mockListAllProjectsQueryService.ListAllProjects(ProjectState.Active, null, assignedToUserId: filter == ProjectUserFilter.AssignedTo ? userDto.Id : null, 
+                createdByUserId: filter == ProjectUserFilter.CreatedBy ? userDto.Id : null)
             .Returns(mockListAllProjectsForUserQueryModels.BuildMock());
 
-        var query = new ListAllProjectsForUserQuery(ProjectState.Active, userDto.ActiveDirectoryUserId) { Page = 50 };
+        Assert.NotNull(userDto.ActiveDirectoryUserId);
+        var query = new ListAllProjectsForUserQuery(ProjectState.Active, userDto.ActiveDirectoryUserId, filter) { Page = 50 };
 
         //Act
         var result = await handler.Handle(query, default);
@@ -136,19 +166,18 @@ public class ListAllProjectsForUserTests
     }
     
     [Theory]
-    [CustomAutoData(
-        typeof(OmitCircularReferenceCustomization),
-        typeof(ListAllProjectsQueryModelCustomization),
-        typeof(DateOnlyCustomization))]
+    [InlineAutoData(ProjectUserFilter.AssignedTo)]
+    [InlineAutoData(ProjectUserFilter.CreatedBy)]
     public async Task Handle_ShouldReturnUnsuccessful_WhenAnErrorOccurs(
-        [Frozen] IListAllProjectsByFilterQueryService mockListAllProjectsByFilterQueryService,
+        ProjectUserFilter filter,
+        [Frozen] IListAllProjectsQueryService mockListAllProjectsQueryService,
         [Frozen] Mock<ISender> mockSender,
         IFixture fixture)
     {
         //Arrange 
         var mockTrustsClient = new Mock<ITrustsV4Client>();
 
-        var handler = new ListAllProjectsForUserQueryHandler(mockListAllProjectsByFilterQueryService, mockTrustsClient.Object,
+        var handler = new ListAllProjectsForUserQueryHandler(mockListAllProjectsQueryService, mockTrustsClient.Object,
             mockSender.Object);
 
         const string errorMessage = "this is a test";
@@ -156,8 +185,9 @@ public class ListAllProjectsForUserTests
         var userDto = fixture.Create<UserDto>();
         mockSender.Setup(sender => sender.Send(It.IsAny<GetUserByAdIdQuery>(), It.IsAny<CancellationToken>()))
             .ThrowsAsync(new Exception(errorMessage));
+        Assert.NotNull(userDto.ActiveDirectoryUserId);
         
-        var query = new ListAllProjectsForUserQuery(ProjectState.Active, userDto.ActiveDirectoryUserId) { Page = 50 };
+        var query = new ListAllProjectsForUserQuery(ProjectState.Active, userDto.ActiveDirectoryUserId, filter) { Page = 50 };
 
         //Act
         var result = await handler.Handle(query, default);
