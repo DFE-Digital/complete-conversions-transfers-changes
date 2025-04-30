@@ -1,8 +1,6 @@
 ﻿using AutoFixture;
 using AutoFixture.Xunit2;
-using Dfe.Complete.Application.Users.Models;
 using Dfe.Complete.Application.Users.Queries.ListAllUsers;
-using Dfe.Complete.Domain.Entities;
 using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Domain.Interfaces.Repositories;
 using Dfe.Complete.Tests.Common.Customizations.Models;
@@ -12,6 +10,7 @@ using MockQueryable;
 using NSubstitute;
 using Dfe.Complete.Utils;
 using DfE.CoreLibs.Testing.AutoFixture.Customizations;
+using NSubstitute.ExceptionExtensions;
 
 namespace Dfe.Complete.Application.Tests.QueryHandlers.User;
 
@@ -92,23 +91,23 @@ public class ListAllUsersInTeamWithProjectsHandlerTests
         Assert.Empty(result.Value);
     }
 
-    // [Theory]
-    // [CustomAutoData(typeof(UserCustomization), typeof(IgnoreVirtualMembersCustomisation))]
-    // public async Task Handle_ShouldReturnFailure_WhenExceptionOccurs(
-    //     [Frozen] ICompleteRepository<User> mockUserRepository,
-    //     ListAllUsersInTeamWithProjectsHandler handler)
-    // {
-    //     // Arrange
-    //     mockUserRepository.Query().Throws(new Exception("Database error"));
+    [Theory]
+    [CustomAutoData(typeof(UserCustomization), typeof(IgnoreVirtualMembersCustomisation))]
+    public async Task Handle_ShouldReturnFailure_WhenExceptionOccurs(
+        [Frozen] ICompleteRepository<Domain.Entities.User> mockUserRepository,
+        ListAllUsersInTeamWithProjectsHandler handler)
+    {
+        // Arrange
+        mockUserRepository.Query().Throws(new Exception("Database error"));
 
-    //     var query = new ListAllUsersInTeamWithProjectsQuery(ProjectTeam.London);
+        var query = new ListAllUsersInTeamWithProjectsQuery(ProjectTeam.London);
 
-    //     // Act
-    //     var result = await handler.Handle(query, CancellationToken.None);
+        // Act
+        var result = await handler.Handle(query, CancellationToken.None);
 
-    //     // Assert
-    //     Assert.False(result.IsSuccess);
-    //     Assert.Null(result.Value);
-    //     Assert.Contains("Database error", result.ErrorMessage);
-    // }
+        // Assert
+        Assert.False(result.IsSuccess);
+        Assert.Null(result.Value);
+        Assert.Contains("Database error", result.Error);
+    }
 }
