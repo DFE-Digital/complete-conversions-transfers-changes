@@ -11,6 +11,7 @@ using DfE.CoreLibs.Testing.AutoFixture.Attributes;
 using DfE.CoreLibs.Testing.Mocks.WebApplicationFactory;
 using DfE.CoreLibs.Testing.Mocks.WireMock;
 using Microsoft.EntityFrameworkCore;
+using GiasEstablishment = Dfe.Complete.Domain.Entities.GiasEstablishment;
 using Project = Dfe.Complete.Domain.Entities.Project;
 using Ukprn = Dfe.Complete.Domain.ValueObjects.Ukprn;
 
