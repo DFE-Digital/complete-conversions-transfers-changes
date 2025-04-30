@@ -29,6 +29,7 @@ Security in case of vulnerabilities.
  - Your team projects "By user" > "User" list (`/projects/team/users/{userId}`)
  - Add new `ProjectTeam` extension method `TeamIsRegionalCaseworkServices`, to identify RCS users 
  - Projects added by you (`/projects/yours/added-by`)
+ - Projects completed by you (`/projects/yours/completed`)
 
 ### Changed
  - Merged ListAllProjectsByFilter into main ListAllProjects query
