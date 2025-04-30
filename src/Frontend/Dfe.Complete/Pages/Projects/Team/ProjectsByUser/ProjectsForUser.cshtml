@@ -1,0 +1,17 @@
+﻿@page "/projects/team/users/{id}"
+@using Dfe.Complete.Pages.Projects.Team
+@model Dfe.Complete.Pages.Projects.Team.ProjectsForUser.ProjectsForUser
+
+@{
+  Layout = "Team/_AllProjectsForTeamLayout";
+  ViewData["Title"] = $"Projects assigned to {Model.UserResult.FullName}";
+}
+
+@section PageHeading
+{
+  <h1 class="govuk-heading-l">
+    Projects assigned to @Model.UserResult.FullName
+  </h1>
+}
+
+@await Html.PartialAsync("_UserProjectsTable", Model.UserResult.ProjectsAssigned)
