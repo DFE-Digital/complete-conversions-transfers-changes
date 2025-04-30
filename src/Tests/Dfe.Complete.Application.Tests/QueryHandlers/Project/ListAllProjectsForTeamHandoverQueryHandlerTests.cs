@@ -13,7 +13,7 @@ using NSubstitute.ExceptionExtensions;
 
 namespace Dfe.Complete.Application.Tests.QueryHandlers.Project;
 
-public class ListAllProjectsForTeamQueryHandlerTests
+public class ListAllProjectsForTeamHandoverQueryHandlerTests
 {
     [Theory]
     [CustomAutoData(
@@ -21,25 +21,27 @@ public class ListAllProjectsForTeamQueryHandlerTests
         typeof(ListAllProjectsQueryModelCustomization),
         typeof(DateOnlyCustomization))]
     public async Task Handle_ShouldReturnCorrectList_WhenPaginationIsCorrect(
-        [Frozen] IListAllProjectsQueryService mockListAllProjectsForFilterQueryService,
-        ListAllProjectsForTeamQueryHandler handler,
+        [Frozen] IListAllProjectsQueryService mockListAllProjectsQueryService,
+        ListAllProjectsForTeamHandoverQueryHandler handler,
         IFixture fixture)
     {
         // Arrange
-        var requestedTeam = ProjectTeam.London;
+        const Region requestedRegion = Region.London;
 
         var listAllProjectsQueryModels = fixture.CreateMany<ListAllProjectsQueryModel>(50).ToList();
 
         var expected = listAllProjectsQueryModels.Select(item =>
-                ListAllProjectsResultModel.MapProjectAndEstablishmentToListAllProjectResultModel(item.Project!, item.Establishment))
+                ListAllProjectsResultModel.MapProjectAndEstablishmentToListAllProjectResultModel(item.Project,
+                    item.Establishment))
             .Skip(20).Take(20).ToList();
 
         var mock = listAllProjectsQueryModels.BuildMock();
 
-        mockListAllProjectsForFilterQueryService.ListAllProjects(Arg.Any<ProjectState?>(), Arg.Any<ProjectType?>(), team: requestedTeam)
+        mockListAllProjectsQueryService.ListAllProjects(Arg.Any<ProjectState?>(),
+                Arg.Any<ProjectType?>(), region: requestedRegion, team: ProjectTeam.RegionalCaseWorkerServices)
             .Returns(mock);
 
-        var query = new ListAllProjectsForTeamQuery(requestedTeam, ProjectState.Active, null) { Page = 1 };
+        var query = new ListAllProjectsForTeamHandoverQuery(requestedRegion, ProjectState.Active, null) { Page = 1 };
 
         // Act
         var result = await handler.Handle(query, default);
@@ -59,18 +61,19 @@ public class ListAllProjectsForTeamQueryHandlerTests
         typeof(ListAllProjectsQueryModelCustomization),
         typeof(DateOnlyCustomization))]
     public async Task Handle_ShouldReturnCorrectList_WhenAllPagesAreSkipped(
-        [Frozen] IListAllProjectsQueryService mockListAllProjectsForFilterQueryService,
-        ListAllProjectsForTeamQueryHandler handler,
+        [Frozen] IListAllProjectsQueryService mockListAllProjectsQueryService,
+        ListAllProjectsForTeamHandoverQueryHandler handler,
         IFixture fixture)
     {
         var listAllProjectsQueryModels = fixture.CreateMany<ListAllProjectsQueryModel>(50).ToList();
 
         var mock = listAllProjectsQueryModels.BuildMock();
 
-        mockListAllProjectsForFilterQueryService.ListAllProjects(Arg.Any<ProjectState?>(), Arg.Any<ProjectType?>(), team: ProjectTeam.London)
+        mockListAllProjectsQueryService.ListAllProjects(Arg.Any<ProjectState?>(),
+                Arg.Any<ProjectType?>(), region: Region.London, team: ProjectTeam.RegionalCaseWorkerServices)
             .Returns(mock);
 
-        var query = new ListAllProjectsForTeamQuery(ProjectTeam.London, ProjectState.Active, null) { Page = 10 };
+        var query = new ListAllProjectsForTeamHandoverQuery(Region.London, ProjectState.Active, null) { Page = 10 };
 
         var result = await handler.Handle(query, default);
 
@@ -86,15 +89,16 @@ public class ListAllProjectsForTeamQueryHandlerTests
         typeof(ListAllProjectsQueryModelCustomization),
         typeof(DateOnlyCustomization))]
     public async Task Handle_ShouldReturnUnsuccessful_WhenAnErrorOccurs(
-        [Frozen] IListAllProjectsQueryService mockListAllProjectsForFilterQueryService,
-        ListAllProjectsForTeamQueryHandler handler)
+        [Frozen] IListAllProjectsQueryService mockListAllProjectsQueryService,
+        ListAllProjectsForTeamHandoverQueryHandler handler)
     {
         // Arrange
         var errorMessage = "This is a test";
 
-        var query = new ListAllProjectsForTeamQuery(ProjectTeam.London, null, null);
+        var query = new ListAllProjectsForTeamHandoverQuery(Region.London, null, null);
 
-        mockListAllProjectsForFilterQueryService.ListAllProjects(query.ProjectStatus, query.Type, team: ProjectTeam.London)
+        mockListAllProjectsQueryService
+            .ListAllProjects(query.ProjectStatus, query.Type, region: Region.London, team: ProjectTeam.RegionalCaseWorkerServices)
             .Throws(new Exception(errorMessage));
 
         // Act

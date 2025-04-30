@@ -18,6 +18,7 @@ public static class UserTabAccessHelper
     // Page navs
     public const string AllProjects_HandoverTabName = "all-projects-handover";
     public const string AllProjects_ExportsTabName = "all-projects-exports";
+    public const string TeamProjects_HandedOver = "team-projects-handed-over";
 
     public static bool UserHasTabAccess(ClaimsPrincipal user, string tabName)
     {
@@ -28,6 +29,7 @@ public static class UserTabAccessHelper
         if (tabName == ServiceSupportProjectsTabName) return user.HasRole(UserRolesConstants.ServiceSupport);
         if (tabName == AllProjects_ExportsTabName) return user.HasRole(UserRolesConstants.ServiceSupport) || user.HasRole(UserRolesConstants.BusinessSupport) || user.HasRole(UserRolesConstants.DataConsumers)
             || (user.HasRole(UserRolesConstants.ManageTeam) && (user.HasRole(UserRolesConstants.RegionalDeliveryOfficer) || user.HasRole(UserRolesConstants.RegionalCaseworkServices)));
+        if (tabName == TeamProjects_HandedOver) return user.HasRole(UserRolesConstants.RegionalDeliveryOfficer);
         return true;
     }
 }

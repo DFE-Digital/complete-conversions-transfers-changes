@@ -2,11 +2,10 @@ using Dfe.AcademiesApi.Client.Contracts;
 using Dfe.Complete.Application.Common.Models;
 using Dfe.Complete.Application.Projects.Interfaces;
 using Dfe.Complete.Application.Projects.Models;
-using Dfe.Complete.Domain.Entities;
 using Dfe.Complete.Domain.Enums;
-using Dfe.Complete.Domain.Interfaces.Repositories;
 using MediatR;
 using Dfe.Complete.Utils;
+using DfE.CoreLibs.Utilities.Constants;
 
 namespace Dfe.Complete.Application.Projects.Queries.ListProjectsByMonth
 {
@@ -51,7 +50,7 @@ namespace Dfe.Complete.Application.Projects.Queries.ListProjectsByMonth
 
                 var ukprns = projects.Select(p => p.Project.IncomingTrustUkprn?.Value.ToString()).ToList();
                 var outgoingTrustUkprns = projects.Where(p => p.Project.OutgoingTrustUkprn != null).Select(p => p.Project.OutgoingTrustUkprn.Value.ToString()).ToList();
-                var allUkprns = ukprns.Concat(outgoingTrustUkprns);
+                var allUkprns = ukprns.Concat(outgoingTrustUkprns).Distinct();
                 
                 var trusts = await trustsClient.GetByUkprnsAllAsync(allUkprns, cancellationToken);
 
@@ -61,10 +60,13 @@ namespace Dfe.Complete.Application.Projects.Queries.ListProjectsByMonth
                     .Select(item =>
                     {
                         var project = item.Project;
-                        
-                        var confirmedDate = project.SignificantDate.Value.ToString("MMM yyyy");
-                        var originalDate = project.SignificantDateHistories.Any() ? item.Project.SignificantDateHistories.FirstOrDefault()?.PreviousDate.Value.ToString("MMM yyyy") : null;
 
+                        var confirmedDate = project.SignificantDate?.ToString(DateFormatConstants.MonthAndYearFormat);
+                        var originalDate = project.SignificantDateHistories.Any()
+                            ? project.SignificantDateHistories
+                                .OrderBy(s => s.CreatedAt)
+                                .FirstOrDefault()?.PreviousDate?.ToString(DateFormatConstants.MonthAndYearFormat)
+                            : null;
                         var isMatProject = project.FormAMat;
 
                         var incomingTrust = isMatProject
@@ -80,7 +82,7 @@ namespace Dfe.Complete.Application.Projects.Queries.ListProjectsByMonth
                         return new ListProjectsByMonthResultModel(
                             item.Establishment.Name,
                             project.Region.ToDisplayDescription(),
-                            project.LocalAuthority?.Name,
+                            item.Establishment.LocalAuthorityName,
                             outgoingTrust,
                             project.Id,
                             project.Urn,
