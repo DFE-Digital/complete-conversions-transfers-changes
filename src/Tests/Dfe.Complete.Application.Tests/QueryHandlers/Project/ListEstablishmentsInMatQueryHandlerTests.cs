@@ -6,7 +6,6 @@ using Dfe.Complete.Application.Projects.Models;
 using Dfe.Complete.Application.Projects.Queries.ListAllProjects;
 using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Tests.Common.Customizations.Models;
-using Microsoft.EntityFrameworkCore;
 using MockQueryable;
 using NSubstitute;
 using NSubstitute.ExceptionExtensions;
@@ -22,7 +21,7 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
             typeof(ListAllProjectsQueryModelCustomization),
             typeof(DateOnlyCustomization))]
         public async Task Handle_ShouldReturnMatchingProjects_WhenProjectsWithReferenceNumberExist(
-            [Frozen] IListAllProjectsByFilterQueryService listAllProjectsByFilterQueryService,
+            [Frozen] IListAllProjectsQueryService listAllProjectsQueryService,
             ListEstablishmentsInMatQueryHandler handler,
             IFixture fixture)
         {
@@ -43,8 +42,8 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
             
             var mockProjects = matchingProjects.BuildMock();
 
-            listAllProjectsByFilterQueryService
-                .ListAllProjectsByFilter(ProjectState.Active, null, newTrustReferenceNumber: referenceNumber)
+            listAllProjectsQueryService
+                .ListAllProjects(ProjectState.Active, null, newTrustReferenceNumber: referenceNumber)
                 .Returns(mockProjects);
 
             var query = new ListEstablishmentsInMatQuery(referenceNumber);
@@ -66,15 +65,15 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
             typeof(ListAllProjectsQueryModelCustomization),
             typeof(DateOnlyCustomization))]
         public async Task Handle_ShouldReturnFailure_WhenNoProjectsWithReferenceNumberExist(
-            [Frozen] IListAllProjectsByFilterQueryService listAllProjectsByFilterQueryService,
+            [Frozen] IListAllProjectsQueryService listAllProjectsQueryService,
             ListEstablishmentsInMatQueryHandler handler)
         {
             // Arrange
             var referenceNumber = "TR999";
             var emptyList = new List<ListAllProjectsQueryModel>().BuildMock();
 
-            listAllProjectsByFilterQueryService
-                .ListAllProjectsByFilter(ProjectState.Active, null, newTrustReferenceNumber: referenceNumber)
+            listAllProjectsQueryService
+                .ListAllProjects(ProjectState.Active, null, newTrustReferenceNumber: referenceNumber)
                 .Returns(emptyList);
 
             var query = new ListEstablishmentsInMatQuery(referenceNumber);
@@ -90,15 +89,15 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
         [Theory]
         [CustomAutoData]
         public async Task Handle_ShouldReturnFailure_WhenExceptionIsThrown(
-            [Frozen] IListAllProjectsByFilterQueryService listAllProjectsByFilterQueryService,
+            [Frozen] IListAllProjectsQueryService listAllProjectsQueryService,
             ListEstablishmentsInMatQueryHandler handler)
         {
             // Arrange
             var expectedError = "Test failure";
             var query = new ListEstablishmentsInMatQuery("TR123");
 
-            listAllProjectsByFilterQueryService
-                .ListAllProjectsByFilter(ProjectState.Active, null,  newTrustReferenceNumber: "TR123")
+            listAllProjectsQueryService
+                .ListAllProjects(ProjectState.Active, null,  newTrustReferenceNumber: "TR123")
                 .Throws(new Exception(expectedError));
 
             // Act

@@ -24,7 +24,7 @@ public class ListAllMATsQueryHandlerTests
         typeof(ListAllProjectsQueryModelCustomization),
         typeof(DateOnlyCustomization))]
     public async Task Handle_ShouldReturnPaginatedMATList_WhenMATProjectsFound(
-        [Frozen] IListAllProjectsByFilterQueryService listAllProjectsByFilterQueryService,
+        [Frozen] IListAllProjectsQueryService listAllProjectsQueryService,
         [Frozen] IEstablishmentsV4Client establishmentsClient,
         ListAllMaTsQueryHandler handler,
         IFixture fixture)
@@ -47,8 +47,8 @@ public class ListAllMATsQueryHandlerTests
 
         var projectsResult = projects.AsQueryable().BuildMock();
 
-        listAllProjectsByFilterQueryService
-            .ListAllProjectsByFilter(ProjectState.Active, null, isFormAMat: true)
+        listAllProjectsQueryService
+            .ListAllProjects(ProjectState.Active, null, isFormAMat: true)
             .Returns(projectsResult);
 
         var urns = projects.Select(p => p.Project.Urn.Value.ToString()).Distinct().ToList();
@@ -81,7 +81,7 @@ public class ListAllMATsQueryHandlerTests
         typeof(ListAllProjectsQueryModelCustomization),
         typeof(DateOnlyCustomization))]
     public async Task Handle_ShouldReturnOnlyFormAMatProjectsGroupedByTrust(
-        [Frozen] IListAllProjectsByFilterQueryService listAllProjectsByFilterQueryService,
+        [Frozen] IListAllProjectsQueryService listAllProjectsQueryService,
         [Frozen] IEstablishmentsV4Client establishmentsClient,
         ListAllMaTsQueryHandler handler,
         IFixture fixture)
@@ -103,8 +103,8 @@ public class ListAllMATsQueryHandlerTests
     
         var dbProjects = matProjects.AsQueryable().BuildMock();
     
-        listAllProjectsByFilterQueryService
-            .ListAllProjectsByFilter(ProjectState.Active, null, isFormAMat: true)
+        listAllProjectsQueryService
+            .ListAllProjects(ProjectState.Active, null, isFormAMat: true)
             .Returns(dbProjects);
 
         var establishments = matProjects.Select(p => new EstablishmentDto
@@ -135,14 +135,14 @@ public class ListAllMATsQueryHandlerTests
     [Theory]
     [CustomAutoData]
     public async Task Handle_ShouldReturnFailure_WhenExceptionIsThrown(
-        [Frozen] IListAllProjectsByFilterQueryService listAllProjectsByFilterQueryService,
+        [Frozen] IListAllProjectsQueryService listAllProjectsQueryService,
         ListAllMaTsQueryHandler handler)
     {
         // Arrange
         var query = new ListAllMaTsQuery(ProjectState.Active) { Count = 10, Page = 0 };
     
-        listAllProjectsByFilterQueryService
-            .ListAllProjectsByFilter(ProjectState.Active, null, isFormAMat: true)
+        listAllProjectsQueryService
+            .ListAllProjects(ProjectState.Active, null, isFormAMat: true)
             .Throws(new Exception("Exception"));
     
         // Act

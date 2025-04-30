@@ -13,7 +13,7 @@ namespace Dfe.Complete.Application.Projects.Queries.ListAllProjects
     public record ListAllMaTsQuery(ProjectState Status) : PaginatedRequest<PaginatedResult<List<ListMatResultModel>>>;
 
     public class ListAllMaTsQueryHandler(
-        IListAllProjectsByFilterQueryService listAllProjectsByFilterQueryService,
+        IListAllProjectsQueryService listAllProjectsQueryService,
         IEstablishmentsV4Client establishmentsClient)
         : IRequestHandler<ListAllMaTsQuery, PaginatedResult<List<ListMatResultModel>>>
     {
@@ -22,8 +22,8 @@ namespace Dfe.Complete.Application.Projects.Queries.ListAllProjects
         {
             try
             {
-                var matProjects = await listAllProjectsByFilterQueryService
-                    .ListAllProjectsByFilter(request.Status, null, isFormAMat: true)
+                var matProjects = await listAllProjectsQueryService
+                    .ListAllProjects(request.Status, null, isFormAMat: true)
                     .ToListAsync(cancellationToken);
 
                 // Assigned to was causing issues in integration tests + it's not needed in this response 

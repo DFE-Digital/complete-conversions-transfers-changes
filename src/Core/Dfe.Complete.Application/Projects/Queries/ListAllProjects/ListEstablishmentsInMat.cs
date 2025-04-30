@@ -11,7 +11,7 @@ namespace Dfe.Complete.Application.Projects.Queries.ListAllProjects
 {
     public record ListEstablishmentsInMatQuery(string ReferenceNumber) : PaginatedRequest<Result<ListMatResultModel>>;
 
-    public class ListEstablishmentsInMatQueryHandler(IListAllProjectsByFilterQueryService listAllProjectsByFilterQueryService)
+    public class ListEstablishmentsInMatQueryHandler(IListAllProjectsQueryService listAllProjectsQueryService)
         : IRequestHandler<ListEstablishmentsInMatQuery, Result<ListMatResultModel>>
     {
         public async Task<Result<ListMatResultModel>> Handle(ListEstablishmentsInMatQuery request,
@@ -19,7 +19,7 @@ namespace Dfe.Complete.Application.Projects.Queries.ListAllProjects
         {
             try
             {
-                var projects = await listAllProjectsByFilterQueryService.ListAllProjectsByFilter(ProjectState.Active, null, newTrustReferenceNumber: request.ReferenceNumber)
+                var projects = await listAllProjectsQueryService.ListAllProjects(ProjectState.Active, null, newTrustReferenceNumber: request.ReferenceNumber)
                     .ToListAsync(cancellationToken);
                 
                 if (!projects.Any())
