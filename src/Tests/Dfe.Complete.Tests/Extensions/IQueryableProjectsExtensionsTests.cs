@@ -15,17 +15,18 @@ public class IQueryableProjectsExtensionTests
     {
         //Arrange
         var projects = fixture.CreateMany<Project>(50);
+        
+        // Shuffle the projects
+        var random = new Random();
+        projects = projects.OrderBy(_ => random.Next()).ToList();
+        
         var expectedOrder = projects.OrderBy(project => project.SignificantDate).ToList();
 
         // Act
         var result = projects.AsQueryable().OrderProjectBy().ToList();
 
         // Assert
-        for (var i = 0; i < projects.Count(); i++)
-        {
-            Assert.Equal(expectedOrder[i].Id, result[i].Id);
-            Assert.Equal(expectedOrder[i].Urn, result[i].Urn);
-        }
+        Assert.Equal(expectedOrder.Select(p => p.Id), result.Select(p => p.Id));
     }
 
     [Theory]
@@ -35,6 +36,11 @@ public class IQueryableProjectsExtensionTests
     {
         //Arrange
         var projects = fixture.CreateMany<Project>(50);
+        
+        // Shuffle the projects
+        var random = new Random();
+        projects = projects.OrderBy(_ => random.Next()).ToList();
+        
         var expectedOrder = projects.OrderByDescending(project => project.SignificantDate).ToList();
 
         // Act
@@ -43,11 +49,7 @@ public class IQueryableProjectsExtensionTests
         ).ToList();
 
         // Assert
-        for (var i = 0; i < projects.Count(); i++)
-        {
-            Assert.Equal(expectedOrder[i].Id, result[i].Id);
-            Assert.Equal(expectedOrder[i].Urn, result[i].Urn);
-        }
+        Assert.Equal(expectedOrder.Select(p => p.Id), result.Select(p => p.Id));
     }
 
     [Theory]
@@ -57,19 +59,20 @@ public class IQueryableProjectsExtensionTests
     {
         //Arrange
         var projects = fixture.CreateMany<Project>(50);
+        
+        // Shuffle the projects
+        var random = new Random();
+        projects = projects.OrderBy(_ => random.Next()).ToList();
+        
         var expectedOrder = projects.OrderByDescending(project => project.CreatedAt).ToList();
-
+        
         // Act
         var result = projects.AsQueryable().OrderProjectBy(
             new(OrderProjectByField.CreatedAt, OrderByDirection.Descending)
         ).ToList();
 
         // Assert
-        for (var i = 0; i < projects.Count(); i++)
-        {
-            Assert.Equal(expectedOrder[i].Id, result[i].Id);
-            Assert.Equal(expectedOrder[i].Urn, result[i].Urn);
-        }
+        Assert.Equal(expectedOrder.Select(p => p.Id), result.Select(p => p.Id));
     }
 
     [Theory]
@@ -79,19 +82,20 @@ public class IQueryableProjectsExtensionTests
     {
         //Arrange
         var projects = fixture.CreateMany<Project>(50);
+        
+        // Shuffle the projects
+        var random = new Random();
+        projects = projects.OrderBy(_ => random.Next()).ToList();
+        
         var expectedOrder = projects.OrderBy(project => project.CreatedAt).ToList();
-
+        
         // Act
         var result = projects.AsQueryable().OrderProjectBy(
             new(OrderProjectByField.CreatedAt, OrderByDirection.Ascending)
         ).ToList();
 
         // Assert
-        for (var i = 0; i < projects.Count(); i++)
-        {
-            Assert.Equal(expectedOrder[i].Id, result[i].Id);
-            Assert.Equal(expectedOrder[i].Urn, result[i].Urn);
-        }
+        Assert.Equal(expectedOrder.Select(p => p.Id), result.Select(p => p.Id));
     }
 
     [Theory]
@@ -101,6 +105,11 @@ public class IQueryableProjectsExtensionTests
     {
         //Arrange
         var projects = fixture.CreateMany<Project>(50);
+        
+        // Shuffle the projects
+        var random = new Random();
+        projects = projects.OrderBy(_ => random.Next()).ToList();
+        
         var expectedOrder = projects.OrderByDescending(project => project.CompletedAt).ToList();
 
         // Act
@@ -109,11 +118,7 @@ public class IQueryableProjectsExtensionTests
         ).ToList();
 
         // Assert
-        for (var i = 0; i < projects.Count(); i++)
-        {
-            Assert.Equal(expectedOrder[i].Id, result[i].Id);
-            Assert.Equal(expectedOrder[i].Urn, result[i].Urn);
-        }
+        Assert.Equal(expectedOrder.Select(p => p.Id), result.Select(p => p.Id));
     }
 
     [Theory]
@@ -123,6 +128,11 @@ public class IQueryableProjectsExtensionTests
     {
         //Arrange
         var projects = fixture.CreateMany<Project>(50);
+        
+        // Shuffle the projects
+        var random = new Random();
+        projects = projects.OrderBy(_ => random.Next()).ToList();
+        
         var expectedOrder = projects.OrderBy(project => project.CompletedAt).ToList();
 
         // Act
@@ -131,10 +141,6 @@ public class IQueryableProjectsExtensionTests
         ).ToList();
 
         // Assert
-        for (var i = 0; i < projects.Count(); i++)
-        {
-            Assert.Equal(expectedOrder[i].Id, result[i].Id);
-            Assert.Equal(expectedOrder[i].Urn, result[i].Urn);
-        }
+        Assert.Equal(expectedOrder.Select(p => p.Id), result.Select(p => p.Id));
     }
 }
