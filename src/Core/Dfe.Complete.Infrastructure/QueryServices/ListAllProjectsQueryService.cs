@@ -56,7 +56,7 @@ internal class ListAllProjectsQueryService(CompleteContext context) : IListAllPr
             projects = projects.Where(project => project.Team == team);
         }
 
-        return GenerateQuery(projects, giasEstablishments);
+        return GenerateQuery(projects, giasEstablishments, orderBy);
     }
 
     private static IQueryable<ListAllProjectsQueryModel> GenerateQuery(IQueryable<Project> projects, IQueryable<GiasEstablishment> giasEstablishments, OrderProjectQueryBy? orderBy = null)
