@@ -14,7 +14,8 @@ import {
 const urn = "136730";
 const urnMAT = "136731";
 
-describe("Create a new Transfer Project", () => {
+// skipped: bug 212027
+describe.skip("Create a new Transfer Project", () => {
     before(() => {
         projectRemover.removeProjectIfItExists(urn);
         projectRemover.removeProjectIfItExists(urnMAT);

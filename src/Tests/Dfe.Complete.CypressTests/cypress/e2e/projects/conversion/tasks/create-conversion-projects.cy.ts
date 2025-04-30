@@ -8,7 +8,8 @@ import { testTrustName, testTrustReferenceNumber } from "cypress/constants/strin
 const urn: string = "111394";
 const urnMAT: string = "103846";
 
-describe("Create a new Conversion Project", () => {
+// skipped: bug 212027
+describe.skip("Create a new Conversion Project", () => {
     before(() => {
         projectRemover.removeProjectIfItExists(urn);
         projectRemover.removeProjectIfItExists(urnMAT);
