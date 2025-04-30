@@ -41,7 +41,7 @@
         {
             <tr class="govuk-table__row">
                 <td class="govuk-table__header govuk-table__cell">
-                    <a class="govuk-link" href="@AllProjectsModel.GetProjectSummaryUrl(project.Project.Type, project.Project.Id)">@project.Establishment.Name</a>
+                    <a class="govuk-link" href="@AllProjectsModel.GetProjectSummaryUrl(project.Project.Id)">@project.Establishment.Name</a>
                 </td>
                 <td class="govuk-table__cell">@project.Establishment.Urn?.Value</td>
                 <td class="govuk-table__cell">@project.Project.SignificantDate.ToDateMonthYearString()</td>

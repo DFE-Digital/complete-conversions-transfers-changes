@@ -25,21 +25,10 @@
         <tbody class="govuk-table__body">
 
             @foreach(var project in Model)
-            {
-                string projectSummaryUrl;
-            
-                if (project.ProjectType == ProjectType.Conversion)
-                {
-                    projectSummaryUrl = string.Format(RouteConstants.ConversionProjectTaskList, project.ProjectId);
-                }
-                else
-                {
-                    projectSummaryUrl = string.Format(RouteConstants.TransferProjectTaskList, project.ProjectId);
-                }
-            
+            {         
                 <tr class="govuk-table__row">
                     <td class="govuk-table__header govuk-table__cell">
-                        <a class="govuk-link" href="@string.Format(RouteConstants.ProjectTaskList, project.ProjectId)">@project.EstablishmentName</a>
+                        <a class="govuk-link" href="@string.Format(RouteConstants.ProjectTaskList, project.ProjectId.Value)">@project.EstablishmentName</a>
                     </td>
                     <td class="govuk-table__cell">@project.Urn.Value</td>
                     <td class="govuk-table__cell">@project.ConversionOrTransferDate.ToDateMonthYearString()</td>

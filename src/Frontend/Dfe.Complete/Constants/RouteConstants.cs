@@ -38,7 +38,7 @@
         // Conversion
         public const string ConversionProject = "/conversion-projects/{0}";
         public const string CreateNewConversionProject = "/projects/conversions/new";
-        public const string ConversionProjectTaskList = ConversionProject + "/tasks";
+        private const string ConversionProjectTaskList = ConversionProject + "/tasks";
         public const string ConversionProjectAbout = ConversionProject + "/information";
 
         public const string ConversionViewHandoverWithDeliveryOfficerTask = ConversionProjectTaskList + "/handover";
@@ -58,7 +58,7 @@
 
         // Transfer
         public const string TransferProject = "/transfer-projects/{0}";
-        public const string TransferProjectTaskList = TransferProject + "/tasks";
+        private const string TransferProjectTaskList = TransferProject + "/tasks";
         public const string TransferProjectAbout = TransferProject + "/information";
         public const string TransferProjectEditAbout = TransferProjectAbout + "/edit";
 

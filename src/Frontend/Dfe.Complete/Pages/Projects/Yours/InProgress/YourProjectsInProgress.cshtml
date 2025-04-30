@@ -49,7 +49,7 @@
             {
                 <tr class="govuk-table__row">
                     <td class="govuk-table__header govuk-table__cell">
-                        <a class="govuk-link" href="@AllProjectsModel.GetProjectSummaryUrl(project.ProjectType, project.ProjectId)">@project.SchoolOrAcademyName</a>
+                        <a class="govuk-link" href="@AllProjectsModel.GetProjectSummaryUrl(project.ProjectId)">@project.SchoolOrAcademyName</a>
                     </td>
                     <td class="govuk-table__cell">@project.Urn.Value</td>
                     <td class="govuk-table__cell">@project.ProjectType</td>
