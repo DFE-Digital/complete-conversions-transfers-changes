@@ -23,7 +23,7 @@ namespace Dfe.Complete.Tests.Authorization
             var inMemConfig = new ConfigurationBuilder()
                 .AddInMemoryCollection(new[]
                 {
-                    new KeyValuePair<string,string>("CypressTestSecret","super‐secret")
+                    new KeyValuePair<string, string>("CypressTestSecret", "super‐secret")
                 }!)
                 .Build();
 
@@ -93,6 +93,37 @@ namespace Dfe.Complete.Tests.Authorization
             // The fallback scheme (Cookies) should still be available
             var cookie = await schemeProvider.GetSchemeAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             Assert.NotNull(cookie);
+        }
+
+        [Fact]
+        public async Task AuthenticationConfiguration_ShouldRegisterSchemes()
+        {
+            // Arrange
+            var services = new ServiceCollection();
+            var configuration = new ConfigurationBuilder().AddInMemoryCollection(new Dictionary<string, string>
+            {
+                { "AzureAd:Instance", "https://login.microsoftonline.com/" },
+                { "AzureAd:Domain", "example.com" },
+                { "AzureAd:TenantId", "tenant-id" },
+                { "AzureAd:ClientId", "client-id" },
+                { "AzureAd:CallbackPath", "/signin-oidc" }
+            }!).Build();
+
+            services.AddSingleton<IConfiguration>(configuration);
+
+            var startup = new Startup(configuration);
+            startup.ConfigureServices(services);
+
+            var serviceProvider = services.BuildServiceProvider();
+
+            // Act
+            var authenticationSchemes = serviceProvider.GetRequiredService<IAuthenticationSchemeProvider>();
+            var multiAuthScheme = await authenticationSchemes.GetSchemeAsync("MultiAuth");
+            var openIdScheme = await authenticationSchemes.GetSchemeAsync(OpenIdConnectDefaults.AuthenticationScheme);
+
+            // Assert
+            Assert.NotNull(multiAuthScheme);
+            Assert.NotNull(openIdScheme);
         }
     }
 
