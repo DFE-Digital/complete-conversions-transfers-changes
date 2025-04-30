@@ -21,7 +21,7 @@ namespace Dfe.Complete.Pages.Projects.List.ProjectsInProgress
             var response = await sender.Send(listProjectQuery);
             MATS = response.Value?.ToList() ?? [];
             
-            Pagination = new PaginationModel("/projects/all/in-progress/form-a-multi-academy-trust" ,PageNumber, MATS.Count, PageSize);
+            Pagination = new PaginationModel("/projects/all/in-progress/form-a-multi-academy-trust", PageNumber, MATS.Count, PageSize);
         }
 
         public async Task OnGetMovePage()

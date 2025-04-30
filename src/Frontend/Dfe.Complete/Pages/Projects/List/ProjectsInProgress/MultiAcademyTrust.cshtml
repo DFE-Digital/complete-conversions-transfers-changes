@@ -46,7 +46,7 @@
                 <td class="govuk-table__cell">@project.Establishment.Urn?.Value</td>
                 <td class="govuk-table__cell">@project.Project.SignificantDate.ToDateMonthYearString()</td>
                 <td class="govuk-table__cell">@project.Project.Type.ToDisplayDescription()</td>
-                <td class="govuk-table__cell">@(project.Project.AssignedTo != null ? $"{project.Project.AssignedTo.FirstName} {project.Project.AssignedTo?.LastName}" : "Not yet assigned")</td>
+                <td class="govuk-table__cell">@(project.Project.AssignedTo != null ? $"{project.Project.AssignedTo.FullName}" : "Not yet assigned")</td>
             </tr>
         }
         </tbody>

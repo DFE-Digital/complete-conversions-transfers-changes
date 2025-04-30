@@ -58,18 +58,19 @@ internal class ListAllProjectsQueryService(CompleteContext context) : IListAllPr
             projects = projects.Where(project => project.Team == team);
         }
         
-        if (isFormAMat != null)
+        if (isFormAMat == true)
         {
-            if (isFormAMat == true)
-            {
-                projects = projects.Where(project => project.NewTrustReferenceNumber != null && project.NewTrustName != null && project.IncomingTrustUkprn == null);
-            }
-            else
-            {
-                projects = projects.Where(project => project.NewTrustReferenceNumber == null && project.NewTrustName == null && project.IncomingTrustUkprn != null);
-            }
-    
-            return GenerateQuery(projects, giasEstablishments);
+            projects = projects.Where(project =>
+                project.NewTrustReferenceNumber != null &&
+                project.NewTrustName != null &&
+                project.IncomingTrustUkprn == null);
+        }
+        else if (isFormAMat == false)
+        {
+            projects = projects.Where(project =>
+                project.NewTrustReferenceNumber == null &&
+                project.NewTrustName == null &&
+                project.IncomingTrustUkprn != null);
         }
 
 
