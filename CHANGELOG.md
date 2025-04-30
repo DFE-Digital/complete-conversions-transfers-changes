@@ -67,6 +67,12 @@ See the [full commit history](**Full Changelog**: https://github.com/DFE-Digital
  - Added API endpoint `/v1/Projects/List/All/User` for fetching projects for user
  - Added endpoint to the projectsController `ListAllProjectsInTrust`-`/v1/Projects/List/Trust`
  - Added missing "project for region" header
+ - New route `/projects/all/in-progress/form-a-multi-academy-trust`
+ - New route `/form-a-multi-academy-trust/{reference}`
+ - Form a MAT with projects in progress list (`/projects/all/in-progress/form-a-multi-academy-trust`)
+ - MAT projects listing related establishments (`/form-a-multi-academy-trust/{reference}`)
+ - Added missing "project for region" header
+
  - User redirection on app load based on their permissions
  - Add navigation items to be more consistent with ruby UI
  - New route `/projects/team/users`
@@ -85,6 +91,8 @@ See the [full commit history](**Full Changelog**: https://github.com/DFE-Digital
 ### Fixed
  - Correctly identify test env based on environment name being "Test" (previously looking for "Staging")
  - Added WireMock support back
+ - Show 404 page when get projects for region `/projects/all/regions/{region}` has a "bad" region in path param
+ - null `AssignedTo` in `ListAllProjects` throws an unexpected error
  - Show 404 page when get projects for region `/projects/all/regions/{region}` has a "bad" region in path param
  - null `AssignedTo` in `ListAllProjects` throws an unexpected error
 

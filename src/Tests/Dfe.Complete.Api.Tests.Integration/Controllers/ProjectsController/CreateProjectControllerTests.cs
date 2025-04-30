@@ -11,6 +11,7 @@ using DfE.CoreLibs.Testing.AutoFixture.Attributes;
 using DfE.CoreLibs.Testing.AutoFixture.Customizations;
 using DfE.CoreLibs.Testing.Mocks.WebApplicationFactory;
 using Microsoft.EntityFrameworkCore;
+using GiasEstablishment = Dfe.Complete.Domain.Entities.GiasEstablishment;
 
 namespace Dfe.Complete.Api.Tests.Integration.Controllers.ProjectsController;
 

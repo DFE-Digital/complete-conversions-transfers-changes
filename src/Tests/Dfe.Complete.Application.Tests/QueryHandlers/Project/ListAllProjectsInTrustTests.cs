@@ -87,14 +87,26 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
             typeof(ListAllProjectsQueryModelCustomization),
             typeof(DateOnlyCustomization))]
         public async Task Handle_ExceptionIsCaught_WhenTrustClientFails(
+            [Frozen] IListAllProjectsQueryService listAllProjectsQueryService,
             [Frozen] ITrustsV4Client trustsClient,
-            ListAllProjectsInTrustQueryHandler handler)
+            ListAllProjectsInTrustQueryHandler handler,
+            IFixture fixture)
         {
             // Arrange
             var expectedtrusts = 20;
             var errorMessage = "This is an error";
             
             var query = new ListAllProjectsInTrustQuery("", false) { Count = expectedtrusts };
+            
+            var listAllProjectsQueryModels = fixture
+                .Build<ListAllProjectsQueryModel>()
+                .CreateMany(3)
+                .ToList();
+            
+            var mockProjects = listAllProjectsQueryModels.BuildMock();
+            
+            listAllProjectsQueryService.ListAllProjects(ProjectState.Active, null)
+                .Returns(mockProjects);
             
             trustsClient.GetTrustByUkprn2Async(Arg.Any<string>())
                 .Throws(new Exception(errorMessage));

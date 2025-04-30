@@ -1,0 +1,40 @@
+﻿@page "/projects/all/in-progress/form-a-multi-academy-trust"
+@model Dfe.Complete.Pages.Projects.List.ProjectsInProgress.MultiAcademyTrustsModel
+@{
+    Layout = "List/ProjectsInProgress/_ProjectsInProgressLayout";
+    ViewData["Title"] = "Form a MAT projects in progress";
+}
+
+@section PageHeading
+{
+<h1 class="govuk-heading-xl">
+    All form a MAT projects in progress
+</h1>
+}
+
+<div class="govuk-grid-column-full">
+    <table class="govuk-table" name="projects_table" aria-label="Projects table">
+        <thead class="govuk-table__head">
+            <tr class="govuk-table__row">
+                <th class="govuk-table__header" scope="col">Trust</th>
+                <th class="govuk-table__header" scope="col">TRN</th>
+                <th class="govuk-table__header" scope="col">Schools Included</th>
+            </tr>
+        </thead>
+        <tbody class="govuk-table__body">
+
+            @foreach(var project in Model.MATS)
+            {
+                string projectSummaryUrl = $"/form-a-multi-academy-trust/{project.identifier}";
+            
+                <tr class="govuk-table__row">
+                    <td class="govuk-table__header govuk-table__cell">
+                        <a class="govuk-link" href="@projectSummaryUrl">@project.trustName</a>
+                    </td>
+                    <td class="govuk-table__cell">@project.identifier</td>
+                    <td class="govuk-table__cell">@(string.Join(";", project.projectModels.Select(e => e.Establishment.Name)))</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
