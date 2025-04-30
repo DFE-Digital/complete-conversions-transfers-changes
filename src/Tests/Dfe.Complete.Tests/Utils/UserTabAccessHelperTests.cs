@@ -39,6 +39,7 @@ public class UserTabAccessHelperTests
     [InlineData("your-projects", true)]
     [InlineData("all-projects-handover", true)]
     [InlineData("groups", true)]
+    [InlineData("team-projects-handed-over", true)]
     public void UserHasTabAccess_ProtectedTab_ReturnsCorrectAccessForRdo(string route, bool expectedPermission)
     {
         var claims = new List<Claim> { new(ClaimTypes.Role, "regional_delivery_officer") };
