@@ -44,7 +44,7 @@
                     <a class="govuk-link" href="@AllProjectsModel.GetProjectSummaryUrl(project.Project.Id)">@project.Establishment.Name</a>
                 </td>
                 <td class="govuk-table__cell">@project.Establishment.Urn?.Value</td>
-                <td class="govuk-table__cell">@project.Project.SignificantDate.ToDateMonthYearString()</td>
+                <td class="govuk-table__cell">@project.Project.SignificantDate.ToMonthYearString()</td>
                 <td class="govuk-table__cell">@project.Project.Type.ToDisplayDescription()</td>
                 <td class="govuk-table__cell">@(project.Project.AssignedTo != null ? $"{project.Project.AssignedTo.FullName}" : "Not yet assigned")</td>
             </tr>

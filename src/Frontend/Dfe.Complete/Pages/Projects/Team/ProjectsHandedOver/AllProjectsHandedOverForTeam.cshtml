@@ -42,7 +42,7 @@ else
                                 href="@AllProjectsModel.GetProjectSummaryUrl(project)">@project.EstablishmentName</a>
                         </td>
                         <td class="govuk-table__cell">@project.Urn.Value</td>
-                        <td class="govuk-table__cell">@project.ConversionOrTransferDate.ToDateMonthYearString()</td>
+                        <td class="govuk-table__cell">@project.ConversionOrTransferDate.ToMonthYearString()</td>
                         <td class="govuk-table__cell">@project.ProjectType.ToString()</td>
                         <td class="govuk-table__cell">
                             @(string.IsNullOrWhiteSpace(project.AssignedToFullName) ? "Not yet assigned" : project.AssignedToFullName)
