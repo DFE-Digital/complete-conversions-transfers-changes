@@ -1,10 +1,11 @@
 using Dfe.Complete.Constants;
+using Dfe.Complete.Models;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace Dfe.Complete.Pages.Projects.Conversion.Tasks.StakeholderKickoff
+namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.StakeholderKickoffTask
 {
-    public class EditStakeholderKickoffTaskModel : PageModel
+    public class StakeholderKickoffTaskModel(ISender sender) : BaseProjectPageModel(sender)
     {
         [BindProperty(SupportsGet = true, Name = "projectId")]
         public Guid ProjectId { get; set; }
@@ -28,10 +29,6 @@ namespace Dfe.Complete.Pages.Projects.Conversion.Tasks.StakeholderKickoff
 
         [BindProperty(Name = "conversion-date")]
         public DateTime? ConversionDate { get; set; }
-        
-        public async Task OnGet()
-        {
-        }
 
         public async Task<IActionResult> OnPost()
         {
