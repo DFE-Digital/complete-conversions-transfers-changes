@@ -58,7 +58,7 @@ public abstract class ProjectsByMonthModel(string currentSubNavigationItem) : Al
     public static string GetDefaultDate()
     {
         var today = (DateOnly?)DateOnly.FromDateTime(DateTime.Now);
-        return today.ToDateMonthYearString();
+        return today.ToMonthYearString();
     }
     
     public bool TryParseInputDates(out DateTime fromDate, out DateTime toDate)
@@ -98,12 +98,20 @@ public abstract class ProjectsByMonthModel(string currentSubNavigationItem) : Al
     
     public static string GetProjectByMonthsUrl(ProjectType projectType, UserDto user, int fromMonth, int fromYear, int? toMonth, int? toYear)
     {
-        bool isConversion = projectType == ProjectType.Conversion;
-        bool canViewDataConsumerView = CanViewDataConsumerView(user);
+        var isConversion = projectType == ProjectType.Conversion;
+        var canViewDataConsumerView = CanViewDataConsumerView(user);
 
-        string path = canViewDataConsumerView
-            ? (isConversion ? RouteConstants.ConversionProjectsByMonths : RouteConstants.TransfersProjectsByMonths)
-            : (isConversion ? RouteConstants.ConversionProjectsByMonth : RouteConstants.TransfersProjectsByMonth);
+        string path;
+        if (canViewDataConsumerView)
+        {
+            path = isConversion
+                ? RouteConstants.ConversionProjectsByMonths
+                : RouteConstants.TransfersProjectsByMonths;
+        }
+        else
+        {
+            path = isConversion ? RouteConstants.ConversionProjectsByMonth : RouteConstants.TransfersProjectsByMonth;
+        }
 
         return canViewDataConsumerView
             ? string.Format(path, fromMonth, fromYear, toMonth, toYear)

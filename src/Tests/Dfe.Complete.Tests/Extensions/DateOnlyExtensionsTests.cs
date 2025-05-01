@@ -63,7 +63,7 @@ public class DateOnlyExtensionsTests
     public void ToDateMonthYearString_ReturnsTheCorrectString_WithDayOfTheWeek(int date, int month, int year, string expected)
     {
         DateOnly? testDate = new DateOnly(year, month, date);
-        Assert.Equal(expected, testDate.ToDateMonthYearString());
+        Assert.Equal(expected, testDate.ToMonthYearString());
     }
     
     [Theory]
@@ -88,6 +88,6 @@ public class DateOnlyExtensionsTests
     public void ToDateMonthYearString_ReturnsEmptyString_WhenDateOnlyIsNull()
     {
         DateOnly? test = null;
-        Assert.Equal(string.Empty, test.ToDateMonthYearString());
+        Assert.Equal(string.Empty, test.ToMonthYearString());
     }
 }
