@@ -13,7 +13,9 @@ public record ListAllProjectsForUserQueryResultModel(
     string? IncomingTrustName,
     string? OutgoingTrustName,
     string LocalAuthority,
+    ProjectTeam? Team,
     DateOnly? ConversionOrTransferDate,
+    DateOnly? CompletionDate,
     User? AssignedTo
 )
 {
@@ -36,7 +38,9 @@ public record ListAllProjectsForUserQueryResultModel(
             incomingTrustName,
             outgoingTrustName,
             giasEstablishment.LocalAuthorityName,
+            project.Team,
             project.SignificantDate,
+            project.CompletedAt.HasValue ? DateOnly.FromDateTime(project.CompletedAt.Value) : null,
             project.AssignedTo
         );
     }
