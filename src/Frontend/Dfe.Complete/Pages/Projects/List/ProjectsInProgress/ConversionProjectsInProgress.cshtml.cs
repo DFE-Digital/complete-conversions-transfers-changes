@@ -7,7 +7,7 @@ using MediatR;
 
 namespace Dfe.Complete.Pages.Projects.List.ProjectsInProgress;
 
-public class ConversionProjectsInProgressInProgressModel(ISender sender) : ConversionOrTransferInProgressModel(ConversionsSubNavigation, ProjectType.Conversion)
+public class ConversionProjectsInProgressModel(ISender sender) : ConversionOrTransferInProgressModel(ConversionsSubNavigation, ProjectType.Conversion)
 {
     public async Task OnGet()
     {
