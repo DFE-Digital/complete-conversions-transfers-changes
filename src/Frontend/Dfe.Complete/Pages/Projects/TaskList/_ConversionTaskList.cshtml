@@ -1,6 +1,7 @@
-﻿@page "/conversion-projects/{projectId}/tasks"
-@using Dfe.Complete.Constants
-@model Dfe.Complete.Pages.Projects.Conversion.Tasks.ConversionTaskListModel
+﻿@using Dfe.Complete.Constants
+@using Dfe.Complete.TagHelpers
+@using Dfe.Complete.TagHelpers
+@model Dfe.Complete.Pages.Projects.TaskList.TaskListModel
 @{
     var handoverWithDeliveryOfficerLink = string.Format(RouteConstants.ConversionViewHandoverWithDeliveryOfficerTask, Model.ProjectId);
     var aboutConversionProject = string.Format(RouteConstants.ConversionProjectAbout, Model.ProjectId);

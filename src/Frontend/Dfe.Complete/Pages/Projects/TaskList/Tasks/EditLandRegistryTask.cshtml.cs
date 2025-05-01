@@ -1,8 +1,7 @@
-
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace Dfe.Complete.Pages.Projects.Conversion.Tasks.LandRegistry
+namespace Dfe.Complete.Pages.Projects.TaskList.Tasks
 {
     public class EditLandRegistryTaskModel : PageModel
     {

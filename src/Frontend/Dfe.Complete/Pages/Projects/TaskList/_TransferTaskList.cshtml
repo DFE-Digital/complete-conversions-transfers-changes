@@ -1,6 +1,6 @@
-﻿@page "/transfer-projects/{projectId}/tasks"
-@using Dfe.Complete.Constants
-@model Dfe.Complete.Pages.Projects.Transfer.Tasks.TransferTaskListModel
+﻿@using Dfe.Complete.Constants
+@using Dfe.Complete.TagHelpers
+@model Dfe.Complete.Pages.Projects.TaskList.TaskListModel
 @{
     var handoverWithDeliveryOfficerLink = string.Format(RouteConstants.TransferViewHandoverWithDeliveryOfficerTask, Model.ProjectId);
     var stakeholderKickoff = string.Format(RouteConstants.TransferViewStakeholderKickoffTask, Model.ProjectId);
