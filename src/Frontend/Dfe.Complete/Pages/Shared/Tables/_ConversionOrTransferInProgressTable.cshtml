@@ -1,13 +1,9 @@
 @using Dfe.Complete.Domain.Enums;
 @using Dfe.Complete.Constants;
 @using Dfe.Complete.Application.Projects.Models;
+@using Dfe.Complete.Pages.Projects.List.ProjectsInProgress;
 
-@model List<ListAllProjectsResultModel>
-@{
-    var projectType = ViewData["ProjectType"] as ProjectType?;
-    if (projectType is null)
-        throw new InvalidOperationException("ProjectType is required in ViewData for _ProjectListPartial.");
-}
+@model ConversionOrTransferInProgressModel
 
 <div class="govuk-grid-column-full">
     <table class="govuk-table" name="projects_table" aria-label="Projects table">
@@ -16,7 +12,7 @@
                 <th class="govuk-table__header" scope="col">School or academy</th>
                 <th class="govuk-table__header" scope="col">URN</th>
                 <th class="govuk-table__header" scope="col">
-                    @(projectType is ProjectType.Conversion ? "Conversion" : "Transfer") date
+                    @(Model.ProjectType is ProjectType.Conversion ? "Conversion" : "Transfer") date
                 </th>
                 <th class="govuk-table__header" scope="col">Form a MAT project?</th>
                 <th class="govuk-table__header" scope="col">Assigned to</th>
@@ -24,7 +20,7 @@
         </thead>
         <tbody class="govuk-table__body">
 
-            @foreach(var project in Model)
+            @foreach(var project in Model.Projects)
             {         
                 <tr class="govuk-table__row">
                     <td class="govuk-table__header govuk-table__cell">

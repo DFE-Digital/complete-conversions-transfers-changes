@@ -14,6 +14,4 @@
 </h1>
 }
 
-@await Html.PartialAsync("Tables/_ConversionOrTransferInProgressTable", Model.Projects, new ViewDataDictionary(ViewData) {
-    { "ProjectType", ProjectType.Transfer }
-})
+@await Html.PartialAsync("Tables/_ConversionOrTransferInProgressTable", Model)
