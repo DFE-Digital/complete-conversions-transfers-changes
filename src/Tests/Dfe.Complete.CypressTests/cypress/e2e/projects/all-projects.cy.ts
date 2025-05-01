@@ -53,7 +53,7 @@ describe("View all projects", () => {
             ])
             .withSchool(schoolName)
             .columnHasValue("URN", `${project.urn.value}`)
-            .columnHasValue("Conversion or transfer date", nextMonthLong)
+            .columnHasValue("Conversion or transfer date", nextMonthShort)
             .columnHasValue("Project type", "Conversion")
             .columnHasValue("Form a MAT project?", "No")
             .columnHasValue("Assigned to", cypressUser.username);
@@ -65,7 +65,7 @@ describe("View all projects", () => {
             .hasTableHeaders(["School or academy", "URN", "Conversion date", "Form a MAT project?", "Assigned to"])
             .withSchool(schoolName)
             .columnHasValue("URN", `${project.urn.value}`)
-            .columnHasValue("Conversion date", nextMonthLong)
+            .columnHasValue("Conversion date", nextMonthShort)
             .columnHasValue("Form a MAT project?", "No")
             .columnHasValue("Assigned to", cypressUser.username)
             .goTo(schoolName);
@@ -78,7 +78,7 @@ describe("View all projects", () => {
         projectTable
             .withSchool(transferSchoolName)
             .columnHasValue("URN", `${transferProject.urn.value}`)
-            .columnHasValue("Conversion or transfer date", nextMonthLong)
+            .columnHasValue("Conversion or transfer date", nextMonthShort)
             .columnHasValue("Project type", "Transfer")
             .columnHasValue("Form a MAT project?", "No")
             .columnHasValue("Assigned to", cypressUser.username);
@@ -90,7 +90,7 @@ describe("View all projects", () => {
             .hasTableHeaders(["School or academy", "URN", "Transfer date", "Form a MAT project?", "Assigned to"])
             .withSchool(transferSchoolName)
             .columnHasValue("URN", `${transferProject.urn.value}`)
-            .columnHasValue("Transfer date", nextMonthLong)
+            .columnHasValue("Transfer date", nextMonthShort)
             .columnHasValue("Form a MAT project?", "No")
             .columnHasValue("Assigned to", cypressUser.username)
             .goTo(transferSchoolName);
@@ -154,7 +154,7 @@ describe("View all projects", () => {
             .hasTableHeaders(["School or academy", "URN", "Conversion or transfer date", "Project type", "Assigned to"])
             .withSchool(schoolName)
             .columnHasValue("URN", `${project.urn.value}`)
-            .columnHasValue("Conversion or transfer date", nextMonthLong)
+            .columnHasValue("Conversion or transfer date", nextMonthShort)
             .columnHasValue("Project type", "Conversion")
             .columnContainsValue("Assigned to", cypressUser.username)
             .goTo(schoolName);
@@ -199,7 +199,7 @@ describe("View all projects", () => {
             .hasTableHeaders(["School or academy", "URN", "Conversion or transfer date", "Project type", "Assigned to"])
             .withSchool(schoolName)
             .columnHasValue("URN", `${project.urn.value}`)
-            .columnHasValue("Conversion or transfer date", nextMonthLong)
+            .columnHasValue("Conversion or transfer date", nextMonthShort)
             .columnHasValue("Project type", "Conversion")
             .columnHasValue("Assigned to", cypressUser.username)
             .goTo(schoolName);
