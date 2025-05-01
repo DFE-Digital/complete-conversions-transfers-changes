@@ -37,7 +37,7 @@ namespace Dfe.Complete.Extensions
 			return new DateOnly(thisMonth.Year + yearsToAdd, month, 1);
 		}
 
-        public static string ToDateMonthYearString(this DateOnly? dateOnly)
+        public static string ToMonthYearString(this DateOnly? dateOnly)
         {
 			if (!dateOnly.HasValue)
 			{
