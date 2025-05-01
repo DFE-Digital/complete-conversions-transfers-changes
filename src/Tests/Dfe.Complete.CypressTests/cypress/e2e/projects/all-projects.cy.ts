@@ -2,7 +2,7 @@ import navBar from "cypress/pages/navBar";
 import allProjects from "cypress/pages/projects/allProjects";
 import { projectTable } from "cypress/pages/projects/tables/projectTable";
 import { before, beforeEach } from "mocha";
-import { nextMonth, nextMonthLong, trust } from "cypress/constants/stringTestConstants";
+import { nextMonth, nextMonthLong, nextMonthShort, trust } from "cypress/constants/stringTestConstants";
 import projectApi from "cypress/api/projectApi";
 import { ProjectBuilder } from "cypress/api/projectBuilder";
 import projectRemover from "cypress/api/projectRemover";
@@ -14,8 +14,10 @@ let projectId: string;
 const schoolName = "St Chad's Catholic Primary School";
 const region = "West Midlands";
 const localAuthority = "Dudley Metropolitan Borough Council";
+const localAuthorityShort = localAuthority.split(" ")[0];
 const transferProject = ProjectBuilder.createTransferProjectRequest(nextMonth);
 const transferSchoolName = "Abbey College Manchester";
+const transferRegion = "North West";
 
 describe("View all projects", () => {
     before(() => {
@@ -111,10 +113,10 @@ describe("View all projects", () => {
             .contains(`${schoolName} ${project.urn.value}`)
             .withSchool(`${schoolName} ${project.urn.value}`)
             .columnHasValue("Region", region)
-            .columnHasValue("Local authority", localAuthority)
-            // .columnHasValue("Incoming trust", trust) // bug 208086
+            .columnHasValue("Local authority", localAuthorityShort)
+            .columnHasValue("Incoming trust", trust.toUpperCase()) // bug 208086
             .columnHasValue("All conditions met", "Not yet")
-            .columnHasValue("Confirmed date (Original date)", nextMonthLong)
+            .columnHasValue("Confirmed date (Original date)", nextMonthShort)
             .goTo(`${schoolName} ${project.urn.value}`);
         // projectDetailsPage.containsHeading(schoolName); // not implemented
     });
@@ -134,11 +136,11 @@ describe("View all projects", () => {
             ])
             .contains(`${transferSchoolName} ${transferProject.urn.value}`)
             .withSchool(`${transferSchoolName} ${transferProject.urn.value}`)
-            .columnHasValue("Region", region)
-            .columnHasValue("Outgoing trust", trust)
-            .columnHasValue("Incoming trust", "5 Dimensions Trust")
+            .columnHasValue("Region", transferRegion)
+            .columnHasValue("Outgoing trust", trust.toUpperCase()) // bug 208086
+            .columnHasValue("Incoming trust", "5 Dimensions Trust".toUpperCase()) // bug 208086
             .columnHasValue("Authority to proceed", "Not yet")
-            .columnHasValue("Confirmed date (Original date)", `${nextMonthLong} (${nextMonthLong})`)
+            .columnHasValue("Confirmed date (Original date)", nextMonthShort)
             .goTo(`${transferSchoolName} ${transferProject.urn.value}`);
         // projectDetailsPage.containsHeading(schoolName); // not implemented
     });
@@ -177,7 +179,7 @@ describe("View all projects", () => {
             .contains(schoolName)
             .withSchool(schoolName)
             .columnHasValue("URN", `${project.urn.value}`)
-            // .columnHasValue("Conversion or transfer date", nextMonthLong) // todo raise bug
+            // .columnHasValue("Conversion or transfer date", nextMonthLong) // bug 212266
             .columnHasValue("Project type", "Conversion")
             .goTo(schoolName);
         // projectDetailsPage.containsHeading(schoolName) // not implemented

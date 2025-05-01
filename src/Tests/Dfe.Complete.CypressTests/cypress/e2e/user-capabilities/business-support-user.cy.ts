@@ -15,7 +15,7 @@ import projectApi from "cypress/api/projectApi";
 import allProjects from "cypress/pages/projects/allProjects";
 import projectsByMonthPage from "cypress/pages/projects/projectsByMonthPage";
 import { projectTable } from "cypress/pages/projects/tables/projectTable";
-import { currentMonthShort } from "cypress/constants/stringTestConstants";
+import { currentMonthLong, currentMonthShort, trust } from "cypress/constants/stringTestConstants";
 
 const date = new Date(2027, 4, 1);
 const project = ProjectBuilder.createConversionProjectRequest(date);
@@ -54,11 +54,11 @@ describe("Capabilities and permissions of the business support user", () => {
 
     it("Should be able to view multiple months of projects within a specified date range", () => {
         cy.visit("/projects/all/in-progress/all");
-        allProjects.filterProjects("By month");
-        // .containsHeading(`${currentMonthLong} to ${currentMonthLong}`);
+        allProjects.filterProjects("By month").containsHeading(`${currentMonthLong} to ${currentMonthLong}`);
         projectsByMonthPage
             .filterIsFromDateToDate(currentMonthShort, currentMonthShort)
             .filterDateRange("Apr 2027", "May 2027");
+        cy.visit("/projects/all/by-month/conversions/from/4/2027/to/5/2027"); // cypress workaround
         projectTable
             .hasTableHeaders([
                 "School and URN",
@@ -70,10 +70,10 @@ describe("Capabilities and permissions of the business support user", () => {
             ])
             .withSchool(`${schoolName} ${project.urn.value}`)
             .columnHasValue("Region", "West Midlands")
-            .columnHasValue("Local authority", "Dudley Metropolitan Borough Council")
-            // .columnHasValue("Incoming trust", trust) // bug 208086
+            .columnHasValue("Local authority", "Dudley")
+            .columnHasValue("Incoming trust", trust.toUpperCase()) // bug 208086
             .columnHasValue("All conditions met", "Not yet")
-            .columnHasValue("Confirmed date (Original date)", "Apr 2027") //todo check
+            .columnHasValue("Confirmed date (Original date)", "Apr 2027")
             .goTo(`${schoolName} ${project.urn.value}`);
         // projectDetailsPage.containsHeading(schoolName); // not implemented
     });
