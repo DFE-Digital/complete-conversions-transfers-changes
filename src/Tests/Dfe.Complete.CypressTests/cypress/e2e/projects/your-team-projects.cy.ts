@@ -151,7 +151,7 @@ describe("Regional delivery officer (London) user - View your team projects (pro
     });
 
     it("Should NOT be able to view unassigned projects", () => {
-        yourTeamProjects.doesNotContainFilter("Unassigned");
+        yourTeamProjects.unableToViewFilter("Unassigned");
         // not implemented:
         // cy.visit("/projects/team/unassigned").notAuthorisedToPerformAction();
     });

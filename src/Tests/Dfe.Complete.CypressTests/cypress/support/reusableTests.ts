@@ -12,19 +12,19 @@ import yourTeamProjectsTable from "cypress/pages/projects/tables/yourTeamProject
 
 export function shouldNotHaveAccessToViewHandedOverProjects() {
     cy.visit("/projects/all/in-progress/all");
-    allProjects.doesNotContainFilter("Handover");
+    allProjects.unableToViewFilter("Handover");
     // cy.visit("/projects/all/handover").notAuthorisedToPerformAction(); // not implemented auth
 }
 
 export function shouldNotHaveAccessToViewYourTeamUnassignedProjects() {
     cy.visit("/projects/team/in-progress");
-    yourTeamProjects.doesNotContainFilter("Unassigned");
+    yourTeamProjects.unableToViewFilter("Unassigned");
     // cy.visit("/projects/team/unassigned").notAuthorisedToPerformAction(); // not implemented auth
 }
 
 export function shouldNotHaveAccessToViewProjectExports() {
     navBar.goToAllProjects();
-    allProjects.doesNotContainFilter("Exports");
+    allProjects.unableToViewFilter("Exports");
     // cy.visit("/projects/all/export").notAuthorisedToPerformAction(); // not implemented auth
 }
 

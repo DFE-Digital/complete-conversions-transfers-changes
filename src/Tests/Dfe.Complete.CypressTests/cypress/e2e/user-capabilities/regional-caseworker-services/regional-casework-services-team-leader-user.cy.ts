@@ -14,18 +14,19 @@ import projectApi from "cypress/api/projectApi";
 import { regionalCaseworkerTeamLeaderUser } from "cypress/constants/cypressConstants";
 import navBar from "cypress/pages/navBar";
 import yourTeamProjects from "cypress/pages/projects/yourTeamProjects";
+import allProjects from "cypress/pages/projects/allProjects";
 
-const project = ProjectBuilder.createConversionProjectRequest(nextMonth);
-const schoolName = "St Chad's Catholic Primary School";
-const unassignedProject = ProjectBuilder.createConversionProjectRequest(nextMonth, 103845, "");
+const unassignedProject = ProjectBuilder.createConversionProjectRequest(
+    nextMonth,
+    103845,
+    regionalCaseworkerTeamLeaderUser.adId,
+);
 const unassignedProjectSchoolName = "Jesson's CofE Primary School (VA)";
 // skipped as visiting / goes to unassigned projects that is not implemented yet
 describe.skip("Capabilities and permissions of the regional casework services team leader user", () => {
     before(() => {
-        projectRemover.removeProjectIfItExists(`${project.urn.value}`);
         projectRemover.removeProjectIfItExists(`${unassignedProject.urn.value}`);
-        projectApi.createConversionProject(project);
-        projectApi.createConversionProject(unassignedProject, "");
+        projectApi.createConversionProject(unassignedProject, regionalCaseworkerTeamLeaderUser.email);
     });
 
     beforeEach(() => {
@@ -38,8 +39,28 @@ describe.skip("Capabilities and permissions of the regional casework services te
         cy.url().should("include", "/projects/team/unassigned");
     });
 
-    it("Should be able to view 'Your team projects', 'All projects' and 'Groups' sections", () => {
+    it("Should be able to view 'Your team projects', 'All projects' and 'Groups' sections and filters", () => {
         navBar.ableToView(["Your team projects", "All projects", "Groups"]);
+        navBar.goToYourTeamProjects();
+        yourTeamProjects.ableToViewFilters([
+            // "Unassigned",
+            "In progress",
+            "New",
+            "By user",
+            "Completed",
+        ]);
+        navBar.goToAllProjects();
+        allProjects.ableToViewFilters([
+            "In progress",
+            "By month",
+            "By region",
+            "By user",
+            "By trust",
+            "By local authority",
+            "Completed",
+            "Statistics",
+            "Exports",
+        ]);
     });
 
     it("Should NOT be able to view 'Your projects' and 'Service support' sections", () => {
@@ -52,7 +73,7 @@ describe.skip("Capabilities and permissions of the regional casework services te
 
     it("Should NOT be able to view Your team projects -> handed over projects", () => {
         navBar.goToYourTeamProjects();
-        yourTeamProjects.doesNotContainFilter("Handed over");
+        yourTeamProjects.unableToViewFilter("Handed over");
     });
 
     it.skip("Should NOT have access to view and edit users", () => {

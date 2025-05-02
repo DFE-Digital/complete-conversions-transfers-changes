@@ -141,7 +141,7 @@ describe("Regional caseworker services user - View your team projects", () => {
     });
 
     it("Should NOT be able to view handed my team projects that are handed over", () => {
-        yourTeamProjects.doesNotContainFilter("Handed over");
+        yourTeamProjects.unableToViewFilter("Handed over");
         // not implemented:
         // cy.visit("/projects/team/handed-over").notAuthorisedToPerformAction();
     });

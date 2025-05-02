@@ -35,8 +35,19 @@ describe("Capabilities and permissions of the business support user", () => {
         cy.url().should("include", "/projects/all/in-progress/all");
     });
 
-    it("Should only be able to view All projects section", () => {
+    it("Should only be able to view All projects section, with all the expected filters", () => {
         navBar.unableToViewTheNavBar();
+        allProjects.ableToViewFilters([
+            "In progress",
+            "By month",
+            "By region",
+            "By user",
+            "By trust",
+            "By local authority",
+            "Completed",
+            "Statistics",
+            "Exports",
+        ]);
     });
 
     it("Should NOT have access to view All projects -> handed over projects", () => {
