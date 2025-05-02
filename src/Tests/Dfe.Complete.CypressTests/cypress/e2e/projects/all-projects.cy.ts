@@ -2,7 +2,7 @@ import navBar from "cypress/pages/navBar";
 import allProjects from "cypress/pages/projects/allProjects";
 import { projectTable } from "cypress/pages/projects/tables/projectTable";
 import { before, beforeEach } from "mocha";
-import { nextMonth, nextMonthLong, nextMonthShort, trust } from "cypress/constants/stringTestConstants";
+import { nextMonth, nextMonthLong, nextMonthShort, trust, trust2 } from "cypress/constants/stringTestConstants";
 import projectApi from "cypress/api/projectApi";
 import { ProjectBuilder } from "cypress/api/projectBuilder";
 import projectRemover from "cypress/api/projectRemover";
@@ -138,7 +138,7 @@ describe("View all projects", () => {
             .withSchool(`${transferSchoolName} ${transferProject.urn.value}`)
             .columnHasValue("Region", transferRegion)
             .columnHasValue("Outgoing trust", trust.toUpperCase()) // bug 208086
-            .columnHasValue("Incoming trust", "5 Dimensions Trust".toUpperCase()) // bug 208086
+            .columnHasValue("Incoming trust", trust2.toUpperCase()) // bug 208086
             .columnHasValue("Authority to proceed", "Not yet")
             .columnHasValue("Confirmed date (Original date)", nextMonthShort)
             .goTo(`${transferSchoolName} ${transferProject.urn.value}`);
