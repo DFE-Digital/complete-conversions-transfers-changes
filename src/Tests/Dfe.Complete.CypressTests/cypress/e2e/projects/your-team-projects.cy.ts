@@ -18,12 +18,20 @@ const teammatesLondonRegionProject = ProjectBuilder.createConversionProjectReque
     rdoLondonUser.adId,
 );
 const teammatesLondonSchoolName = "St John's and St Clement's Church of England Primary School";
+const handedOverProject = ProjectBuilder.createTransferProjectRequest({
+    handingOverToRegionalCaseworkService: true,
+    userAdId: rdoLondonUser.adId,
+});
+const handedOverSchoolName = "Abbey College Manchester";
+
 describe("Regional delivery officer (London) user - View your team projects (projects with London region)", () => {
     before(() => {
         projectRemover.removeProjectIfItExists(`${myLondonProject.urn.value}`);
         projectRemover.removeProjectIfItExists(`${teammatesLondonRegionProject.urn.value}`);
+        projectRemover.removeProjectIfItExists(`${handedOverProject.urn.value}`);
         projectApi.createConversionProject(myLondonProject);
         projectApi.createConversionProject(teammatesLondonRegionProject, rdoLondonUser.email);
+        // projectApi.createTransferProject(handedOverProject, rdoLondonUser.email); // bug
     });
 
     beforeEach(() => {
@@ -130,13 +138,17 @@ describe("Regional delivery officer (London) user - View your team projects (pro
         // projectDetailsPage.containsHeading(teammatesLondonSchoolName); // not implemented
     });
 
+    // todo raise bug that can't create projects with handingOverToRegionalCaseworkService = true
     it.skip("Should be able to view my team projects that are handed over", () => {
-        // not implemented
         yourTeamProjects.filterProjects("Handed over").containsHeading("Handed over");
         yourTeamProjectsTable
-            .schoolIsFirstInTable(teammatesLondonSchoolName)
             .hasTableHeaders(["School or academy", "URN", "Conversion or transfer date", "Project type", "Assigned to"])
-            .goTo(teammatesLondonSchoolName);
+            .withSchool(handedOverSchoolName)
+            .columnHasValue("URN", `${handedOverProject.urn.value}`)
+            .columnHasValue("Conversion or transfer date", "Mar 2026")
+            .columnHasValue("Project type", "Transfer")
+            .columnHasValue("Assigned to", rdoLondonUser.username)
+            .goTo(handedOverSchoolName);
         // projectDetailsPage.containsHeading(teammatesLondonSchoolName); // not implemented
     });
 

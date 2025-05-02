@@ -15,7 +15,9 @@ const schoolName = "St Chad's Catholic Primary School";
 const region = "West Midlands";
 const localAuthority = "Dudley Metropolitan Borough Council";
 const localAuthorityShort = localAuthority.split(" ")[0];
-const transferProject = ProjectBuilder.createTransferProjectRequest(nextMonth);
+const transferProject = ProjectBuilder.createTransferProjectRequest({
+    significantDate: nextMonth.toISOString().split("T")[0],
+});
 const transferSchoolName = "Abbey College Manchester";
 const transferRegion = "North West";
 
