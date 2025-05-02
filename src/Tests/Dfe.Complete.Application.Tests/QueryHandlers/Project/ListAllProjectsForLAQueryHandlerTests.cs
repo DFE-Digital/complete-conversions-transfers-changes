@@ -118,4 +118,39 @@ public class ListAllProjectsForLAQueryHandlerTests
         Assert.False(result.IsSuccess);
         Assert.Equal(errorMessage, result.Error);
     }
+    
+    [Theory]
+    [CustomAutoData(
+        typeof(OmitCircularReferenceCustomization),
+        typeof(DateOnlyCustomization),
+        typeof(ListAllProjectsQueryModelCustomization))]
+    public async Task Handle_ShouldMaintainOrdering_WhenProjectsAreOrderedBySignificantDate(
+        [Frozen] IListAllProjectsQueryService mockListAllProjectsQueryService,
+        ListAllProjectsForLocalAuthority handler,
+        IFixture fixture)
+    {
+        //Arrange 
+        var localAuthorityCode = fixture.Create<string>();
+        var listAllProjectsQueryModels = fixture.CreateMany<ListAllProjectsQueryModel>(50).ToList();
+        
+        var listAllProjectsMock = listAllProjectsQueryModels.BuildMock();
+        mockListAllProjectsQueryService
+            .ListAllProjects(Arg.Any<ProjectState?>(), Arg.Any<ProjectType?>(),
+                localAuthorityCode: localAuthorityCode, orderBy: Arg.Any<OrderProjectQueryBy>())
+            .Returns(listAllProjectsMock);
+        
+        //Act
+        var handlerResult =
+            await handler.Handle(new ListAllProjectsForLocalAuthorityQuery(localAuthorityCode) { Page = 10 }, default);
+        
+        // Assert
+        Assert.NotNull(handlerResult.Value);
+        Assert.True(handlerResult.IsSuccess);
+        
+        var resultDates = handlerResult.Value!.Select(x => x.ConversionOrTransferDate).ToList();
+        
+        var orderedDates = resultDates.OrderBy(d => d).ToList();
+        Assert.True(resultDates.SequenceEqual(orderedDates), 
+            "Dates in the result should be in ascending order");
+    }
 }
