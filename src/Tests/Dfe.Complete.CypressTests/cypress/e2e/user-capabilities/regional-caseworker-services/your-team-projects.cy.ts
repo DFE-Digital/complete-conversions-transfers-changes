@@ -113,19 +113,21 @@ describe("Regional caseworker services user - View your team projects", () => {
         // projectDetailsPage.containsHeading(teammatesSchoolName); // not implemented
     });
 
-    it.skip("Should be able to view my team projects by user and all a user's projects", () => {
-        // not implemented
+    it("Should be able to view my team projects by user and all a user's projects", () => {
         yourTeamProjects
-            .filterProjects("New")
+            .filterProjects("By user")
             .containsHeading("Your team projects by user")
-            .goToNextPageUntilFieldIsVisible(regionalCaseworkerUser.username);
-        projectTable
+            .goToNextPageUntilFieldIsVisible(regionalCaseworkerTeamLeaderUser.username);
+        yourTeamProjectsTable
             .hasTableHeaders(["User name", "Email", "Conversions", "Transfers"])
-            .goTo(regionalCaseworkerUser.username);
-        yourTeamProjects.containsHeading(`Projects assigned to ${regionalCaseworkerUser.username}`);
-        projectTable
+            .goTo(regionalCaseworkerTeamLeaderUser.username);
+        yourTeamProjects.containsHeading(`Projects assigned to ${regionalCaseworkerTeamLeaderUser.username}`);
+        yourTeamProjectsTable
             .hasTableHeaders(["School or academy", "URN", "Conversion or transfer date", "Project type"])
-            .contains(teammatesSchoolName)
+            .withSchool(teammatesSchoolName)
+            .columnHasValue("URN", `${teammatesProject.urn.value}`)
+            .columnHasValue("Conversion or transfer date", "Apr 2026")
+            .columnHasValue("Project type", "Conversion")
             .goTo(teammatesSchoolName);
         // projectDetailsPage.containsHeading(teammatesSchoolName); // not implemented
     });

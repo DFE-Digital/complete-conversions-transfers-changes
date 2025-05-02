@@ -111,10 +111,9 @@ describe("Regional delivery officer (London) user - View your team projects (pro
         // projectDetailsPage.containsHeading(teammatesLondonSchoolName); // not implemented
     });
 
-    it.skip("Should be able to view my team projects by user and all a user's projects", () => {
-        // not implemented
+    it("Should be able to view my team projects by user and all a user's projects", () => {
         yourTeamProjects
-            .filterProjects("New")
+            .filterProjects("By user")
             .containsHeading("Your team projects by user")
             .goToNextPageUntilFieldIsVisible(rdoLondonUser.username);
         yourTeamProjectsTable
@@ -122,8 +121,11 @@ describe("Regional delivery officer (London) user - View your team projects (pro
             .goTo(rdoLondonUser.username);
         yourTeamProjects.containsHeading(`Projects assigned to ${rdoLondonUser.username}`);
         yourTeamProjectsTable
-            .hasTableHeaders(["School or academy", "URN", "Local authority", "Team", "Project type"])
-            .contains(teammatesLondonSchoolName)
+            .hasTableHeaders(["School or academy", "URN", "Conversion or transfer date", "Project type"])
+            .withSchool(teammatesLondonSchoolName)
+            .columnHasValue("URN", `${teammatesLondonRegionProject.urn.value}`)
+            .columnHasValue("Conversion or transfer date", "Apr 2026")
+            .columnHasValue("Project type", "Conversion")
             .goTo(teammatesLondonSchoolName);
         // projectDetailsPage.containsHeading(teammatesLondonSchoolName); // not implemented
     });
