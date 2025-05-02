@@ -7,6 +7,7 @@ import { ProjectBuilder } from "cypress/api/projectBuilder";
 import { cypressUser, rdoLondonUser } from "cypress/constants/cypressConstants";
 import { projectTable } from "cypress/pages/projects/tables/projectTable";
 import yourTeamProjectsTable from "cypress/pages/projects/tables/yourTeamProjectsTable";
+import { currentMonthShort } from "cypress/constants/stringTestConstants";
 
 const team = "London";
 const myLondonProject = ProjectBuilder.createConversionProjectRequest(new Date("2026-04-01"), 143659);
@@ -86,21 +87,26 @@ describe("Regional delivery officer (London) user - View your team projects (pro
         // projectDetailsPage.containsHeading(teammatesLondonSchoolName); // not implemented
     });
 
-    it.skip("Should be able to view my team projects that are new", () => {
-        // not implemented
+    it("Should be able to view my team projects that are new", () => {
         yourTeamProjects.filterProjects("New").containsHeading("Your team new projects");
         yourTeamProjectsTable
             .schoolIsFirstInTable(teammatesLondonSchoolName)
             .hasTableHeaders([
                 "School or academy",
                 "URN",
-                "Local authority",
+                "Created at date",
                 "Team",
                 "Assigned to",
                 "Project type",
-                "Form a MAT project",
                 "Conversion or transfer date",
             ])
+            .withSchool(teammatesLondonSchoolName)
+            .columnHasValue("URN", `${teammatesLondonRegionProject.urn.value}`)
+            .columnHasValue("Created at date", currentMonthShort)
+            .columnHasValue("Team", team)
+            .columnHasValue("Assigned to", rdoLondonUser.username)
+            .columnHasValue("Project type", "Conversion")
+            .columnHasValue("Conversion or transfer date", "Apr 2026")
             .goTo(teammatesLondonSchoolName);
         // projectDetailsPage.containsHeading(teammatesLondonSchoolName); // not implemented
     });

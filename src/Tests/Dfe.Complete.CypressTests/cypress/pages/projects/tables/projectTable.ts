@@ -1,8 +1,9 @@
 class ProjectTable {
     protected readonly tableClass = "govuk-table";
+    protected readonly tableData = "govuk-table__body";
     private readonly tableHeadClass = "govuk-table__head";
     private readonly tableHeadersClass = "govuk-table__header";
-    private schoolName: string = "school-name-not-set";
+    private schoolName = "";
 
     withSchool(schoolName: string) {
         this.schoolName = schoolName;
@@ -60,11 +61,11 @@ class ProjectTable {
             .contains(tableColumn)
             .then((header) => {
                 const tableColumnIndex = Cypress.$(header).index();
+                if (!this.schoolName) {
+                    throw new Error("School name is not set. Call withSchool() before asserting table cell value.");
+                }
                 cy.getProjectTableRow(this.schoolName).then((row) => {
-                    const actualValue = row
-                        .find("td")
-                        .eq(tableColumnIndex)
-                        .text();
+                    const actualValue = row.find("td").eq(tableColumnIndex).text();
                     if (exactMatch) {
                         expect(actualValue).to.equal(expectedValue);
                     } else {
