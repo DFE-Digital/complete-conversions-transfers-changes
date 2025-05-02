@@ -11,6 +11,7 @@ public abstract class YourProjectsModel(string currentNavigation) : PageModel
     
     public const string InProgressNavigation = "in-progress";
     public const string AddedByYouNavigation = "added-by";
+    public const string CompletedNavigation = "completed";
     
     public string CurrentNavigationItem { get; init; } = currentNavigation;
 

@@ -2,9 +2,9 @@
 @using Dfe.Complete.Constants
 @model Dfe.Complete.Pages.Projects.Conversion.Tasks.LandQuestionnaire.ViewLandQuestionnaireTaskModel
 @{
-    var backlink = string.Format(RouteConstants.ConversionProjectTaskList, Model.ProjectId);
+    var backlink = string.Format(RouteConstants.ProjectTaskList, Model.ProjectId);
     var editlink = string.Format(RouteConstants.ConversionEditLandQuestionnaireTask, Model.ProjectId);
-    var taskList = string.Format(RouteConstants.ConversionProjectTaskList, Model.ProjectId);
+    var taskList = string.Format(RouteConstants.ProjectTaskList, Model.ProjectId);
 
     // var landQuestionnaire = Model.Project.LandQuestionnaire;
 }

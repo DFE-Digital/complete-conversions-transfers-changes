@@ -1,16 +1,9 @@
-﻿@page "/projects/all/in-progress/all"
-@using Dfe.Complete.Pages.Projects.List
-@model Dfe.Complete.Pages.Projects.List.ProjectsInProgress.ProjectsInProgressInProgressViewModel
-@{
-    Layout = "List/ProjectsInProgress/_ProjectsInProgressLayout";
-    ViewData["Title"] = "All projects in progress";
-}
-@section PageHeading
-{
-<h1 class="govuk-heading-xl">
-    All projects in progress
-</h1>
-}
+@using Dfe.Complete.Domain.Enums;
+@using Dfe.Complete.Constants;
+@using Dfe.Complete.Application.Projects.Models;
+@using Dfe.Complete.Pages.Projects.List.ProjectsInProgress;
+
+@model ConversionOrTransferInProgressModel
 
 <div class="govuk-grid-column-full">
     <table class="govuk-table" name="projects_table" aria-label="Projects table">
@@ -18,8 +11,9 @@
             <tr class="govuk-table__row">
                 <th class="govuk-table__header" scope="col">School or academy</th>
                 <th class="govuk-table__header" scope="col">URN</th>
-                <th class="govuk-table__header" scope="col">Conversion or transfer date</th>
-                <th class="govuk-table__header" scope="col">Project type</th>
+                <th class="govuk-table__header" scope="col">
+                    @(Model.ProjectType is ProjectType.Conversion ? "Conversion" : "Transfer") date
+                </th>
                 <th class="govuk-table__header" scope="col">Form a MAT project?</th>
                 <th class="govuk-table__header" scope="col">Assigned to</th>
             </tr>
@@ -27,14 +21,13 @@
         <tbody class="govuk-table__body">
 
             @foreach(var project in Model.Projects)
-            {
+            {         
                 <tr class="govuk-table__row">
                     <td class="govuk-table__header govuk-table__cell">
-                        <a class="govuk-link" href="@AllProjectsModel.GetProjectSummaryUrl(project)">@project.EstablishmentName</a>
+                        <a class="govuk-link" href="@string.Format(RouteConstants.ProjectTaskList, project.ProjectId.Value)">@project.EstablishmentName</a>
                     </td>
                     <td class="govuk-table__cell">@project.Urn.Value</td>
                     <td class="govuk-table__cell">@project.ConversionOrTransferDate.ToMonthYearString()</td>
-                    <td class="govuk-table__cell">@project.ProjectType.ToString()</td>
                     <td class="govuk-table__cell">@project.IsFormAMAT.ToYesNoString()</td>
                     <td class="govuk-table__cell">@project.AssignedToFullName</td>
                 </tr>

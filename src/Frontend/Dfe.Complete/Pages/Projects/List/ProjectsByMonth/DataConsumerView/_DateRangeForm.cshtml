@@ -17,7 +17,7 @@
                     @foreach (var month in months)
                     {
                         var _month = month.ToFullDateMonthYearString();
-                        <option selected="@(_month == Model.FromDate)" value="@month.Value">@month.ToDateMonthYearString()</option>
+                        <option selected="@(_month == Model.FromDate)" value="@month.Value">@month.ToMonthYearString()</option>
                     }
                 </select>
             </div>
@@ -28,7 +28,7 @@
                     @foreach (var month in months)
                     {
                         var _month = month.ToFullDateMonthYearString();
-                        <option selected="@(_month == Model.ToDate)" value="@month.Value">@month.ToDateMonthYearString()</option>
+                        <option selected="@(_month == Model.ToDate)" value="@month.Value">@month.ToMonthYearString()</option>
                     }
                 </select>
             </div>
