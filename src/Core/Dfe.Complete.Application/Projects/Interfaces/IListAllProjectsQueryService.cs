@@ -18,4 +18,9 @@ public interface IListAllProjectsQueryService
         string? newTrustReferenceNumber = "",
         OrderProjectQueryBy? orderBy = null
         );
+
+    IQueryable<ListAllProjectsQueryModel> SearchProjects(ProjectState? projectStatus,
+        string searchTerm,
+        int pageCount,
+        OrderProjectQueryBy? orderBy = null);
 }

@@ -10,6 +10,8 @@ using Dfe.Complete.Application.Projects.Queries.ListAllProjects;
 using Dfe.Complete.Application.Projects.Models;
 using Microsoft.AspNetCore.Authorization;
 using Dfe.Complete.Application.Projects.Commands.RemoveProject;
+using Dfe.Complete.Application.Projects.Queries.SearchProjects;
+using Dfe.Complete.Domain.Enums;
 
 namespace Dfe.Complete.Api.Controllers
 {
@@ -272,8 +274,7 @@ namespace Dfe.Complete.Api.Controllers
 
             return Ok(ukprn);
         }
-
-
+        
         /// <summary>
         /// Removes project based on URN for test purposes.
         /// </summary>
@@ -292,6 +293,29 @@ namespace Dfe.Complete.Api.Controllers
             await sender.Send(request, cancellationToken);
 
             return NoContent();
+        }
+
+        /// <summary>
+        /// Search list of project based on search criteria
+        /// </summary>
+        /// <param name="searchProjects">Search active projects</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        [Authorize(Policy = "CanRead")]
+        [HttpGet]
+        [Route("SearchProjects")]
+        [SwaggerResponse(200, "Project", typeof(List<ListAllProjectsResultModel>))]
+        [SwaggerResponse(400, "Invalid request data.")]
+        public async Task<IActionResult> SearchProjectsAsync(
+            [FromQuery] string searchProjects,
+            CancellationToken cancellationToken)
+        {
+            if (string.IsNullOrWhiteSpace(searchProjects))
+            {
+                return BadRequest("searchProjects is required.");
+            }
+            var searchProjectsQuery = new SearchProjectsQuery(ProjectState.Active, searchProjects, 0, 102);
+            var project = await sender.Send(searchProjectsQuery, cancellationToken);
+            return Ok(project.Value);
         }
     }
 }

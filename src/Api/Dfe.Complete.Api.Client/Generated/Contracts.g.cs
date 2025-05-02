@@ -270,6 +270,23 @@ namespace Dfe.Complete.Client.Contracts
         /// <exception cref="CompleteApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<ListAllProjectsForUserQueryResultModel>> ListAllProjectsForUserAsync(ProjectState? state, string? userAdId, ProjectUserFilter? projectUserFilter, int? page, int? count, System.Threading.CancellationToken cancellationToken);
 
+        /// <summary>
+        /// Search list of project based on search criteria
+        /// </summary>
+        /// <param name="searchProjects">Search active projects</param>
+        /// <returns>Project</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<ListAllProjectsResultModel>> SearchProjectsAsync(string? searchProjects);
+
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>
+        /// Search list of project based on search criteria
+        /// </summary>
+        /// <param name="searchProjects">Search active projects</param>
+        /// <returns>Project</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<ListAllProjectsResultModel>> SearchProjectsAsync(string? searchProjects, System.Threading.CancellationToken cancellationToken);
+
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "14.2.0.0 (NJsonSchema v11.1.0.0 (Newtonsoft.Json v13.0.0.0))")]

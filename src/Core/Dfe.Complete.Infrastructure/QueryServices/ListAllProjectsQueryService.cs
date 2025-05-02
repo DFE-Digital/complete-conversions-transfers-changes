@@ -5,7 +5,8 @@ using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Domain.ValueObjects;
 using Dfe.Complete.Infrastructure.Database;
 using Microsoft.EntityFrameworkCore;
-using Dfe.Complete.Infrastructure.Extensions;
+using Dfe.Complete.Infrastructure.Extensions; 
+using System.Text.RegularExpressions;
 
 namespace Dfe.Complete.Infrastructure.QueryServices;
 
@@ -77,14 +78,56 @@ internal class ListAllProjectsQueryService(CompleteContext context) : IListAllPr
         return GenerateQuery(projects, giasEstablishments, orderBy);
     }
 
-    private static IQueryable<ListAllProjectsQueryModel> GenerateQuery(IQueryable<Project> projects, IQueryable<GiasEstablishment> giasEstablishments, OrderProjectQueryBy? orderBy = null)
+    public IQueryable<ListAllProjectsQueryModel> SearchProjects(ProjectState? projectStatus, 
+        string searchTerm,
+        int pageCount,
+        OrderProjectQueryBy? orderBy = null)
     {
-        return projects
+        var projects = context.Projects
+            .Where(project => projectStatus == null || project.State == projectStatus)
+            .Where(project => projectStatus != ProjectState.Active || project.AssignedToId != null);
+         
+        IQueryable<GiasEstablishment> giasEstablishments = context.GiasEstablishments;
+
+        _ = int.TryParse(searchTerm, out int number);
+
+        if (Regex.IsMatch(searchTerm, @"^\d{6}$"))
+        {
+            projects = projects.Where(project => project.Urn == new Urn(number));
+        }
+        else if (Regex.IsMatch(searchTerm, @"^\d{8}$"))
+        {
+            projects = projects.Where(project => project.IncomingTrustUkprn == new Ukprn(number) || project.OutgoingTrustUkprn == new Ukprn(number));
+        }
+        else if (Regex.IsMatch(searchTerm, @"^\d{4}$"))
+        {
+            giasEstablishments = giasEstablishments.Where(establishment => establishment.EstablishmentNumber == searchTerm);
+        }
+        else
+        {
+            searchTerm = searchTerm.ToLower();
+
+            giasEstablishments = giasEstablishments.Where(establishment => establishment.Name != null && EF.Functions.Like(establishment.Name.ToLower(), $"%{searchTerm}%"));
+        }
+
+        return GenerateQuery(projects, giasEstablishments, orderBy, pageCount);
+    }
+
+    private static IQueryable<ListAllProjectsQueryModel> GenerateQuery(IQueryable<Project> projects, IQueryable<GiasEstablishment> giasEstablishments, OrderProjectQueryBy? orderBy = null, int? pageCount = null)
+    {
+        var query = projects
             .Include(p => p.AssignedTo)
             .Include(p => p.LocalAuthority)
             .Include(p => p.SignificantDateHistories)
             .OrderProjectBy(orderBy)
             .Join(giasEstablishments, project => project.Urn, establishment => establishment.Urn,
                 (project, establishment) => new ListAllProjectsQueryModel(project, establishment));
-    }
+
+        
+        if (pageCount.HasValue)
+        {
+            query = query.Take(pageCount.Value);
+        } 
+        return query;
+    } 
 }
