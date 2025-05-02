@@ -9,9 +9,9 @@
 
 @model Dfe.Complete.Pages.Projects.List.AllProjectsModel
 @{
-    Layout = "Shared/_Layout";
-    var ariaCurrentValue = "page";
-    string? IsCurrentNav(string tabName) => Model.CurrentNavigationItem == tabName ? ariaCurrentValue : null;
+  Layout = "Shared/_Layout";
+  var ariaCurrentValue = "page";
+  string? IsCurrentNav(string tabName) => Model.CurrentNavigationItem == tabName ? ariaCurrentValue : null;
 
   bool UserHasTabAccess(string tabName) => UserTabAccessHelper.UserHasTabAccess(User, tabName);
   

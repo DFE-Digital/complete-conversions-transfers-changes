@@ -19,6 +19,7 @@ Security in case of vulnerabilities.
  - New route `/projects/all/by-month/transfers/{month}/{year}`
  - New route `/projects/all/by-month/conversions/from/{fromMonth}/{fromYear}/to/{toMonth}/{toYear}`
  - New route `/projects/all/by-month/transfers/from/{fromMonth}/{fromYear}/to/{toMonth}/{toYear}`
+ - New route `/projects/{projectId}/tasks`
  - New route `/projects/team/new`
  - New route `/projects/team/handed-over`
  - New route `/projects/team/users`
@@ -35,6 +36,8 @@ Security in case of vulnerabilities.
  - Merged ListAllProjectsByFilter into main ListAllProjects query
  - Add an "orderBy" argument to the `ListAllProjectsByFilter` query
  - Allow `ListAllProjectsByFilter` query to handle multiple filters
+ - All transfer/conversion projects list use a partial
+ - Projects will route to `/project/{projectId}/tasks` from all projects list
 
 ### Fixed
  - Project for user list should show month and year (not day)
