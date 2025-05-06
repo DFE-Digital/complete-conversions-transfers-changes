@@ -152,8 +152,7 @@ describe("Regional delivery officer (London) user - View your team projects (pro
         // projectDetailsPage.containsHeading(teammatesLondonSchoolName); // not implemented
     });
 
-    it.skip("Should be able to view my team projects that are completed", () => {
-        // not implemented, unable to move project to completed
+    it("Should be able to view my team projects that are completed", () => {
         yourTeamProjects.filterProjects("Completed").containsHeading("Your team completed projects");
         yourTeamProjectsTable
             .schoolIsFirstInTable(teammatesLondonSchoolName)
@@ -165,8 +164,16 @@ describe("Regional delivery officer (London) user - View your team projects (pro
                 "Type of project",
                 "Conversion or transfer date",
                 "Project completion date",
-            ])
-            .goTo(teammatesLondonSchoolName);
+            ]);
+        // not implemented, unable to move project to completed
+        // .withSchool(teammatesLondonSchoolName)
+        // .columnHasValue("URN", `${teammatesLondonRegionProject.urn.value}`)
+        // .columnHasValue("Local authority", "Southwark")
+        // .columnHasValue("Team", team)
+        // .columnHasValue("Type of project", "Conversion")
+        // .columnHasValue("Conversion or transfer date", "Apr 2026")
+        // .columnHasValue("Project completion date", currentMonthShort)
+        // .goTo(teammatesLondonSchoolName);
         // projectDetailsPage.containsHeading(teammatesLondonSchoolName); // not implemented
     });
 

@@ -145,6 +145,14 @@ describe("Regional caseworker services user - View your team projects", () => {
                 "Conversion or transfer date",
                 "Project completion date",
             ]);
+        // not implemented, unable to move project to completed
+        // .withSchool(teammatesSchoolName)
+        // .columnHasValue("URN", `${teammatesProject.urn.value}`)
+        // .columnHasValue("Local authority", "Halton")
+        // .columnHasValue("Region", "North West")
+        // .columnHasValue("Type of project", "Conversion")
+        // .columnHasValue("Conversion or transfer date", "Apr 2026")
+        // .columnHasValue("Project completion date", currentMonthShort)
         // .goTo(teammatesSchoolName);
         // projectDetailsPage.containsHeading(teammatesSchoolName); // not implemented
     });

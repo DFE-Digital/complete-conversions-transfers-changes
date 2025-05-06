@@ -3,7 +3,7 @@ import projectApi from "cypress/api/projectApi";
 import { ProjectBuilder } from "cypress/api/projectBuilder";
 import yourProjects from "cypress/pages/projects/yourProjects";
 import { projectTable } from "cypress/pages/projects/tables/projectTable";
-import { testTrustName, trust, trust2 } from "cypress/constants/stringTestConstants";
+import { currentMonthShort, testTrustName, trust, trust2 } from "cypress/constants/stringTestConstants";
 import { cypressUser } from "cypress/constants/cypressConstants";
 
 const conversionProject = ProjectBuilder.createConversionProjectRequest(new Date("2026-04-01"), 111394);
@@ -124,6 +124,24 @@ describe("View your projects", () => {
     it.skip("Should be able to view completed transfer project in Your projects -> Completed", () => {
         // project completion not implemented
         yourProjects.filterProjects("Completed").containsHeading("Completed");
-        // projectTable.hasTableHeaders([]).
+        projectTable
+            .hasTableHeaders([
+                "School or academy",
+                "URN",
+                "Local authority",
+                "Team",
+                "Type of project",
+                "Conversion or transfer date",
+                "Project completion date",
+            ])
+            .withSchool(transferSchoolName)
+            .columnHasValue("URN", `${transferProject.urn.value}`)
+            .columnHasValue("Local authority", "Manchester")
+            .columnHasValue("Team", "North West")
+            .columnHasValue("Type of project", "Transfer")
+            .columnHasValue("Conversion or transfer date", "Mar 2026")
+            .columnHasValue("Project completion date", currentMonthShort)
+            .goTo(transferSchoolName);
+        // projectDetailsPage.containsHeading(schoolName); // not implemented
     });
 });
