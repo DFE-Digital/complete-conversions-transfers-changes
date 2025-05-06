@@ -84,22 +84,22 @@ internal class ListAllProjectsQueryService(CompleteContext context) : IListAllPr
         OrderProjectQueryBy? orderBy = null)
     {
         var projects = context.Projects
-            .Where(project => projectStatus == null || project.State == projectStatus)
-            .Where(project => projectStatus != ProjectState.Active || project.AssignedToId != null);
+            .Where(project => projectStatus == null || project.State == projectStatus);
          
         IQueryable<GiasEstablishment> giasEstablishments = context.GiasEstablishments;
 
         _ = int.TryParse(searchTerm, out int number);
+        var timeSpan = TimeSpan.FromMilliseconds(100);
 
-        if (Regex.IsMatch(searchTerm, @"^\d{6}$"))
+        if (Regex.IsMatch(searchTerm, @"^\d{6}$", RegexOptions.None, timeSpan))
         {
             projects = projects.Where(project => project.Urn == new Urn(number));
         }
-        else if (Regex.IsMatch(searchTerm, @"^\d{8}$"))
+        else if (Regex.IsMatch(searchTerm, @"^\d{8}$", RegexOptions.None, timeSpan))
         {
             projects = projects.Where(project => project.IncomingTrustUkprn == new Ukprn(number) || project.OutgoingTrustUkprn == new Ukprn(number));
         }
-        else if (Regex.IsMatch(searchTerm, @"^\d{4}$"))
+        else if (Regex.IsMatch(searchTerm, @"^\d{4}$", RegexOptions.None, timeSpan))
         {
             giasEstablishments = giasEstablishments.Where(establishment => establishment.EstablishmentNumber == searchTerm);
         }
@@ -110,24 +110,25 @@ internal class ListAllProjectsQueryService(CompleteContext context) : IListAllPr
             giasEstablishments = giasEstablishments.Where(establishment => establishment.Name != null && EF.Functions.Like(establishment.Name.ToLower(), $"%{searchTerm}%"));
         }
 
-        return GenerateQuery(projects, giasEstablishments, orderBy, pageCount);
+        return GenerateQuery(projects, giasEstablishments, pageCount, orderBy);
     }
 
-    private static IQueryable<ListAllProjectsQueryModel> GenerateQuery(IQueryable<Project> projects, IQueryable<GiasEstablishment> giasEstablishments, OrderProjectQueryBy? orderBy = null, int? pageCount = null)
+    private static IQueryable<ListAllProjectsQueryModel> GenerateQuery(IQueryable<Project> projects, IQueryable<GiasEstablishment> giasEstablishments, OrderProjectQueryBy? orderBy = null)
     {
-        var query = projects
+        return projects
             .Include(p => p.AssignedTo)
             .Include(p => p.LocalAuthority)
             .Include(p => p.SignificantDateHistories)
             .OrderProjectBy(orderBy)
             .Join(giasEstablishments, project => project.Urn, establishment => establishment.Urn,
                 (project, establishment) => new ListAllProjectsQueryModel(project, establishment));
+    }
 
-        
-        if (pageCount.HasValue)
-        {
-            query = query.Take(pageCount.Value);
-        } 
-        return query;
-    } 
+    private static IQueryable<ListAllProjectsQueryModel> GenerateQuery(IQueryable<Project> projects, IQueryable<GiasEstablishment> giasEstablishments, int pageCount, OrderProjectQueryBy? orderBy = null )
+    {
+        return projects 
+            .OrderProjectBy(orderBy)
+            .Join(giasEstablishments, project => project.Urn, establishment => establishment.Urn,
+                (project, establishment) => new ListAllProjectsQueryModel(project, establishment)).Take(pageCount); 
+    }
 }

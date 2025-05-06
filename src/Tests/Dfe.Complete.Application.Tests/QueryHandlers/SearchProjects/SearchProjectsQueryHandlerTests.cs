@@ -161,5 +161,34 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.SearchProjects
             Assert.True(result.IsSuccess);
             Assert.Equal(listAllProjectsQueryModels.Count, result.Value?.Count);
         }
+
+        [Theory]
+        [CustomAutoData(
+        typeof(OmitCircularReferenceCustomization),
+        typeof(ListAllProjectsQueryModelCustomization),
+        typeof(DateOnlyCustomization))]
+        public async Task Handle_ShouldReturnException_WhenExceptionOccurs(
+            SearchProjectsQueryHandler handler,
+            IFixture fixture, int pageCount = 100)
+        {
+            // Arrange 
+            var listAllProjectsQueryModels = fixture.CreateMany<ListAllProjectsQueryModel>(1).ToList();
+            var searchTerm = listAllProjectsQueryModels.First().Establishment!.Name;
+
+            var expected = listAllProjectsQueryModels.Select(item => ListAllProjectsResultModel.MapProjectAndEstablishmentToListAllProjectResultModel(
+                    item.Project!,
+                    item.Establishment
+                )).ToList();
+              
+            var query = new SearchProjectsQuery(ProjectState.Active, searchTerm!, 0, pageCount);
+
+            // Act
+            var result = await handler.Handle(query, default);
+
+            // Assert
+            Assert.NotNull(result);
+            Assert.False(result.IsSuccess);
+            Assert.Null(result.Value?.Count);
+        }
     }
 }

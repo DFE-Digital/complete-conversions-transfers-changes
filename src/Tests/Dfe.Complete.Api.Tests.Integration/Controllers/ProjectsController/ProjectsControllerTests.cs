@@ -1,12 +1,13 @@
+using System;
 using System.Security.Claims;
 using AutoFixture;
 using AutoFixture.Xunit2;
 using Dfe.AcademiesApi.Client.Contracts;
 using Dfe.Complete.Api.Tests.Integration.Customizations;
 using Dfe.Complete.Client.Contracts;
-using Dfe.Complete.Domain.Entities;
 using Dfe.Complete.Infrastructure.Database;
 using Dfe.Complete.Tests.Common.Customizations.Models;
+using Dfe.Complete.Tests.Common.Extensions;
 using DfE.CoreLibs.Testing.AutoFixture.Attributes;
 using DfE.CoreLibs.Testing.Mocks.WebApplicationFactory;
 using DfE.CoreLibs.Testing.Mocks.WireMock;
@@ -767,5 +768,159 @@ public partial class ProjectsControllerTests
             projectsClient.ListAllProjectsForUserAsync(null, "123", filter, null, 50));
 
         Assert.Contains("User does not exist for provided UserAdId", exception.Response);
+    }
+
+    [Theory]
+    [CustomAutoData(typeof(CustomWebApplicationDbContextFactoryCustomization), typeof(GiasEstablishmentsCustomization))]
+    public async Task SearchProjectsWithEstablishmentName_Async_ShouldReturnList(
+       CustomWebApplicationDbContextFactory<Program> factory,
+       IProjectsClient projectsClient,
+       IFixture fixture)
+    {
+        factory.TestClaims = [new Claim(ClaimTypes.Role, ReadRole)];
+
+        // Arrange
+        var dbContext = factory.GetDbContext<CompleteContext>(); 
+        var establishments = fixture.Customize(new GiasEstablishmentsCustomization()).CreateMany<GiasEstablishment>(10)
+            .ToList();
+        var localAuthority = dbContext.LocalAuthorities.AsEnumerable().MinBy(_ => Guid.NewGuid());
+        Assert.NotNull(localAuthority);
+
+        await dbContext.GiasEstablishments.AddRangeAsync(establishments);
+
+        var projects = establishments.Select((establishment, i) =>
+        {
+            var project = fixture.Customize(new ProjectCustomization
+            {
+                LocalAuthorityId = localAuthority.Id,
+                IncomingTrustUkprn = "12345678",
+                OutgoingTrustUkprn = "87654321",
+            })
+                .Create<Project>();
+            project.Urn = establishment.Urn ?? project.Urn; 
+            return project;
+        }).ToList();
+
+        await dbContext.Projects.AddRangeAsync(projects);
+        await dbContext.SaveChangesAsync();
+        var establishment = establishments.First();
+        var searchTerm = establishment.Name; 
+
+        // Act
+        var results = await projectsClient.SearchProjectsAsync(searchTerm, CancellationToken.None);
+
+        var expectedProjects = projects
+            .Where(p => p.Urn == establishment.Urn)
+            .ToList();
+
+        // Assert
+        Assert.NotNull(results);
+        Assert.Equal(expectedProjects.Count, results.Count);
+    }
+    [Theory]
+    [CustomAutoData(typeof(CustomWebApplicationDbContextFactoryCustomization), typeof(GiasEstablishmentsCustomization))]
+    public async Task SearchProjectsWithUKPRN_Async_ShouldReturnList(
+       CustomWebApplicationDbContextFactory<Program> factory,
+       IProjectsClient projectsClient,
+       IFixture fixture)
+    {
+        factory.TestClaims = [new Claim(ClaimTypes.Role, ReadRole)];
+
+        // Arrange
+        var dbContext = factory.GetDbContext<CompleteContext>();
+        var establishments = fixture.Customize(new GiasEstablishmentsCustomization()).CreateMany<GiasEstablishment>(10)
+            .ToList();
+        var localAuthority = dbContext.LocalAuthorities.AsEnumerable().MinBy(_ => Guid.NewGuid());
+        Assert.NotNull(localAuthority);
+
+        await dbContext.GiasEstablishments.AddRangeAsync(establishments);
+
+        var projects = establishments.Select((establishment, i) =>
+        {
+            var project = fixture.Customize(new ProjectCustomization
+            {
+                LocalAuthorityId = localAuthority.Id,
+                IncomingTrustUkprn = "12345678",
+                OutgoingTrustUkprn = "87654321",
+            })
+                .Create<Project>();
+            project.Urn = establishment.Urn ?? project.Urn;
+            return project;
+        }).ToList();
+
+        await dbContext.Projects.AddRangeAsync(projects);
+        await dbContext.SaveChangesAsync();
+        var ukprn = projects.First().IncomingTrustUkprn; 
+
+        // Act
+        var results = await projectsClient.SearchProjectsAsync(ukprn!.ToString(), CancellationToken.None);
+
+        var expectedProjects = projects
+            .Where(p => p.IncomingTrustUkprn == ukprn && p.State == Domain.Enums.ProjectState.Active)
+            .ToList();
+
+        // Assert
+        Assert.NotNull(results);
+        Assert.Equal(expectedProjects.Count, results.Count);
+    }
+    [Theory]
+    [CustomAutoData(typeof(CustomWebApplicationDbContextFactoryCustomization), typeof(GiasEstablishmentsCustomization))]
+    public async Task SearchProjectsWithUrn_Async_ShouldReturnList(
+       CustomWebApplicationDbContextFactory<Program> factory,
+       IProjectsClient projectsClient,
+       IFixture fixture)
+    {
+        factory.TestClaims = [new Claim(ClaimTypes.Role, ReadRole)];
+
+        // Arrange
+        var dbContext = factory.GetDbContext<CompleteContext>();
+        var random = new Random();
+        var usedUrns = new HashSet<int>();
+
+        var establishments = Enumerable.Range(0, 10)
+            .Select(_ =>
+            {
+                int urn;
+                do
+                {
+                    urn = random.Next(100000, 1000000);
+                } while (!usedUrns.Add(urn));
+
+                return fixture.Customize(new GiasEstablishmentsCustomization
+                {
+                    Urn = new Domain.ValueObjects.Urn(urn)
+                }).Create<GiasEstablishment>();
+            })
+            .ToList();
+        var localAuthority = dbContext.LocalAuthorities.AsEnumerable().MinBy(_ => Guid.NewGuid());
+        Assert.NotNull(localAuthority);
+
+        await dbContext.GiasEstablishments.AddRangeAsync(establishments);
+        var projects = establishments.Select((establishment, i) =>
+        { 
+            var project = fixture.Customize(new ProjectCustomization
+            {
+                LocalAuthorityId = localAuthority.Id,
+                IncomingTrustUkprn = "12345678",
+                OutgoingTrustUkprn = "87654321"
+            }).Create<Project>();
+            project.Urn = establishment.Urn ?? project.Urn;
+            return project;
+        }).ToList();
+
+        await dbContext.Projects.AddRangeAsync(projects);
+        await dbContext.SaveChangesAsync();
+        var urn = projects.First(p => p.State == Domain.Enums.ProjectState.Active).Urn;
+
+        // Act
+        var results = await projectsClient.SearchProjectsAsync(urn!.Value.ToString(), CancellationToken.None);
+
+        var expectedProjects = projects
+            .Where(p => p.Urn == urn)
+            .ToList();
+
+        // Assert
+        Assert.NotNull(results);
+        Assert.Equal(expectedProjects.Count, results.Count);
     }
 }

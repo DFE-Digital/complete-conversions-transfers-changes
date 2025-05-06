@@ -24,20 +24,13 @@ namespace Dfe.Complete.Application.Projects.Queries.SearchProjects
             {
                 var projectList = await listAllProjectsQueryService
                     .SearchProjects(request.ProjectStatus, request.SearhchTerm, request.Count)
-                    .ToListAsync(cancellationToken);
-
-                var filteredProjectList = request.ProjectStatus == ProjectState.Active
-                    ? projectList.Where(p => p.Project?.AssignedTo != null)
-                    : projectList;
-
-                var result = filteredProjectList
-                    .Skip(request.Page * request.Count).Take(request.Count)
                     .Select(item => ListAllProjectsResultModel.MapProjectAndEstablishmentToListAllProjectResultModel(
                         item.Project!,
                         item.Establishment
                     ))
-                    .ToList();
-                return Result<List<ListAllProjectsResultModel>>.Success(result);
+                    .ToListAsync(cancellationToken); 
+
+                return Result<List<ListAllProjectsResultModel>>.Success(projectList);
             }
             catch (Exception ex)
             {
