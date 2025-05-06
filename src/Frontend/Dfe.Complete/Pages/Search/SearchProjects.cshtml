@@ -1,5 +1,6 @@
 ﻿@page "/search"
 @using Dfe.Complete.Pages.Projects.List
+@using Dfe.Complete.Utils
 @model Dfe.Complete.Pages.Search.SearchProjectsModel
 @{
     ViewData["Title"] = "Search Results";
@@ -70,7 +71,7 @@ else
                     </td>
                     <td class="govuk-table__cell">@project.Urn.Value</td>
                     <td class="govuk-table__cell">@project.ProjectType.ToString()</td>
-                    <td class="govuk-table__cell">@project.ConversionOrTransferDate.ToDateMonthYearString()</td> 
+                    <td class="govuk-table__cell">@project.ConversionOrTransferDate.ToMonthYearString()</td>
                     <td class="govuk-table__cell">@project.AssignedToFullName</td>
                 </tr>
             }

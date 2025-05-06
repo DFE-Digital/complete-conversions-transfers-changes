@@ -6,9 +6,9 @@ using Dfe.Complete.Application.Projects.Queries.SearchProjects;
 using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Tests.Common.Customizations.Models;
 using DfE.CoreLibs.Testing.AutoFixture.Attributes;
-using DfE.CoreLibs.Testing.AutoFixture.Customizations;
-using MockQueryable;
-using NSubstitute; 
+using DfE.CoreLibs.Testing.AutoFixture.Customizations; 
+using MockQueryable; 
+using NSubstitute;
 
 namespace Dfe.Complete.Application.Tests.QueryHandlers.SearchProjects
 {
@@ -19,28 +19,28 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.SearchProjects
         typeof(OmitCircularReferenceCustomization),
         typeof(ListAllProjectsQueryModelCustomization),
         typeof(DateOnlyCustomization))]
-        public async Task Handle_ShouldReturnFilteredList_WhenSearchTermURN(
-            [Frozen] IListAllProjectsQueryService mockListAllProjectsQueryService,
-            SearchProjectsQueryHandler handler,
-            IFixture fixture)
+            public async Task Handle_ShouldReturnFilteredList_WhenSearchTermURNs(
+        [Frozen] IListAllProjectsQueryService mockListAllProjectsQueryService,
+        SearchProjectsQueryHandler handler,
+        IFixture fixture,
+        int pageCount = 100)
         {
-            // Arrange 
-            var pageCount = 100;
-            var listAllProjectsQueryModels = fixture.CreateMany<ListAllProjectsQueryModel>(1).ToList();
+            // Arrange  
+            var listAllProjectsQueryModels = fixture.CreateMany<ListAllProjectsQueryModel>(2).ToList();
             var searchTerm = listAllProjectsQueryModels.First().Project!.Urn.Value.ToString()[..Math.Min(6, listAllProjectsQueryModels.First().Project!.Urn.Value.ToString().Length)];
 
             var expected = listAllProjectsQueryModels.Select(item => ListAllProjectsResultModel.MapProjectAndEstablishmentToListAllProjectResultModel(
                     item.Project!,
                     item.Establishment
                 )).ToList();
-
+             
             var mock = listAllProjectsQueryModels.BuildMock();
 
             mockListAllProjectsQueryService
                 .SearchProjects(ProjectState.Active, searchTerm, pageCount)
                 .Returns(mock);
 
-            var query = new SearchProjectsQuery(ProjectState.Active, searchTerm, 0, 10);
+            var query = new SearchProjectsQuery(ProjectState.Active, searchTerm, 0, pageCount);
 
             // Act
             var result = await handler.Handle(query, default);
@@ -48,7 +48,8 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.SearchProjects
             // Assert
             Assert.NotNull(result);
             Assert.True(result.IsSuccess);
-            Assert.Equal(listAllProjectsQueryModels.Count, result.Value?.Count);
+            Assert.Equal(expected.Count, result.Value?.Count);
+            Assert.Equal(expected, result.Value);
         }
 
         [Theory]
@@ -59,7 +60,8 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.SearchProjects
         public async Task Handle_ShouldReturnFilteredList_WhenSearchTermIsUKPRN(
             [Frozen] IListAllProjectsQueryService mockListAllProjectsQueryService,
             SearchProjectsQueryHandler handler,
-            IFixture fixture)
+            IFixture fixture,
+            int pageCount = 100)
         {
             // Arrange 
             var listAllProjectsQueryModels = fixture.CreateMany<ListAllProjectsQueryModel>(1).ToList();
@@ -73,10 +75,10 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.SearchProjects
             var mock = listAllProjectsQueryModels.BuildMock();
 
             mockListAllProjectsQueryService
-                .SearchProjects(ProjectState.Active, searchTerm, 100)
+                .SearchProjects(ProjectState.Active, searchTerm, pageCount)
                 .Returns(mock);
 
-            var query = new SearchProjectsQuery(ProjectState.Active, searchTerm, 0, 10);
+            var query = new SearchProjectsQuery(ProjectState.Active, searchTerm, 0, pageCount);
 
             // Act
             var result = await handler.Handle(query, default);
@@ -95,7 +97,8 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.SearchProjects
         public async Task Handle_ShouldReturnFilteredList_WhenSearchTermIsEstablishmentNumber(
             [Frozen] IListAllProjectsQueryService mockListAllProjectsQueryService,
             SearchProjectsQueryHandler handler,
-            IFixture fixture)
+            IFixture fixture,
+            int pageCount = 100)
         {
             // Arrange 
             var listAllProjectsQueryModels = fixture.CreateMany<ListAllProjectsQueryModel>(1).ToList();
@@ -131,7 +134,7 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.SearchProjects
         public async Task Handle_ShouldReturnFilteredList_WhenSearchTermIsString(
             [Frozen] IListAllProjectsQueryService mockListAllProjectsQueryService,
             SearchProjectsQueryHandler handler,
-            IFixture fixture)
+            IFixture fixture, int pageCount = 100)
         {
             // Arrange 
             var listAllProjectsQueryModels = fixture.CreateMany<ListAllProjectsQueryModel>(1).ToList();
@@ -145,10 +148,10 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.SearchProjects
             var mock = listAllProjectsQueryModels.BuildMock();
 
             mockListAllProjectsQueryService
-                .SearchProjects(ProjectState.Active, searchTerm!, 100)
+                .SearchProjects(ProjectState.Active, searchTerm!, pageCount)
                 .Returns(mock);
 
-            var query = new SearchProjectsQuery(ProjectState.Active, searchTerm!, 0, 10);
+            var query = new SearchProjectsQuery(ProjectState.Active, searchTerm!, 0, pageCount);
 
             // Act
             var result = await handler.Handle(query, default);
