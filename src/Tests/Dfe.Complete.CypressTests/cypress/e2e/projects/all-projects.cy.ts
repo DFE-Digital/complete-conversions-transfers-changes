@@ -2,7 +2,14 @@ import navBar from "cypress/pages/navBar";
 import allProjects from "cypress/pages/projects/allProjects";
 import { projectTable } from "cypress/pages/projects/tables/projectTable";
 import { before, beforeEach } from "mocha";
-import { nextMonth, nextMonthLong, nextMonthShort, trust, trust2 } from "cypress/constants/stringTestConstants";
+import {
+    nextMonth,
+    nextMonthLong,
+    nextMonthShort,
+    testTrustName,
+    trust,
+    trust2,
+} from "cypress/constants/stringTestConstants";
 import projectApi from "cypress/api/projectApi";
 import { ProjectBuilder } from "cypress/api/projectBuilder";
 import projectRemover from "cypress/api/projectRemover";
@@ -20,13 +27,17 @@ const transferProject = ProjectBuilder.createTransferProjectRequest({
 });
 const transferSchoolName = "Abbey College Manchester";
 const transferRegion = "North West";
+const transferFormAMatProject = ProjectBuilder.createTransferFormAMatProjectRequest();
+const transferFormAMatSchoolName = "Priory Rise School";
 
 describe("View all projects", () => {
     before(() => {
         projectRemover.removeProjectIfItExists(`${project.urn.value}`);
         projectRemover.removeProjectIfItExists(`${transferProject.urn.value}`);
+        projectRemover.removeProjectIfItExists(`${transferFormAMatProject.urn.value}`);
         projectApi.createConversionProject(project).then((response) => (projectId = response.value));
         projectApi.createTransferProject(transferProject);
+        projectApi.createMatTransferProject(transferFormAMatProject);
     });
 
     beforeEach(() => {
@@ -96,6 +107,44 @@ describe("View all projects", () => {
             .columnHasValue("Form a MAT project?", "No")
             .columnHasValue("Assigned to", cypressUser.username)
             .goTo(transferSchoolName);
+        // projectDetailsPage.containsHeading(transferSchoolName); // not implemented
+    });
+
+    // not implemented
+    it.skip("Should be able to view a form a MAT transfer project in All projects in progress, Transfers projects and Form a MAT projects (by Trust) ", () => {
+        navBar.goToAllProjects();
+        allProjects.containsHeading("All projects in progress").goToNextPageUntilFieldIsVisible(transferSchoolName);
+        projectTable
+            .withSchool(transferFormAMatSchoolName)
+            .columnHasValue("URN", `${transferFormAMatProject.urn.value}`)
+            .columnHasValue("Conversion or transfer date", "Mar 2026")
+            .columnHasValue("Project type", "Transfer")
+            .columnHasValue("Form a MAT project?", "Yes")
+            .columnHasValue("Assigned to", cypressUser.username);
+        allProjects
+            .viewTransfersProjects()
+            .containsHeading("All transfers in progress")
+            .goToNextPageUntilFieldIsVisible(transferFormAMatSchoolName);
+        projectTable
+            .hasTableHeaders(["School or academy", "URN", "Transfer date", "Form a MAT project?", "Assigned to"])
+            .withSchool(transferFormAMatSchoolName)
+            .columnHasValue("URN", `${transferFormAMatProject.urn.value}`)
+            .columnHasValue("Transfer date", "Mar 2026")
+            .columnHasValue("Form a MAT project?", "Yes")
+            .columnHasValue("Assigned to", cypressUser.username);
+        allProjects
+            .viewFormAMatProjects()
+            .containsHeading("All form a MAT projects in progress")
+            .goToNextPageUntilFieldIsVisible(transferFormAMatSchoolName);
+        projectTable.hasTableHeaders(["Trust", "TRN", "Schools Included"]).goTo(testTrustName);
+        allProjects.containsHeading(testTrustName);
+        projectTable
+            .hasTableHeaders(["School or academy", "URN", "Conversion or transfer date", "Project type", "Assigned to"])
+            .withSchool(transferFormAMatSchoolName)
+            .columnHasValue("URN", `${transferFormAMatProject.urn.value}`)
+            .columnHasValue("Conversion or transfer date", "Mar 2026")
+            .columnHasValue("Project type", "Transfer")
+            .columnHasValue("Assigned to", cypressUser.username);
         // projectDetailsPage.containsHeading(transferSchoolName); // not implemented
     });
 
