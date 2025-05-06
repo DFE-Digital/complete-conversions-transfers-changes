@@ -126,7 +126,8 @@ internal class ListAllProjectsQueryService(CompleteContext context) : IListAllPr
 
     private static IQueryable<ListAllProjectsQueryModel> GenerateQuery(IQueryable<Project> projects, IQueryable<GiasEstablishment> giasEstablishments, int pageCount, OrderProjectQueryBy? orderBy = null )
     {
-        return projects 
+        return projects
+            .Include(p => p.AssignedTo)
             .OrderProjectBy(orderBy)
             .Join(giasEstablishments, project => project.Urn, establishment => establishment.Urn,
                 (project, establishment) => new ListAllProjectsQueryModel(project, establishment)).Take(pageCount); 
