@@ -2,9 +2,9 @@
 @using Dfe.Complete.TagHelpers
 @model Dfe.Complete.Pages.Projects.TaskList.TaskListModel
 @{
-    var handoverWithDeliveryOfficerLink = string.Format(RouteConstants.TransferViewHandoverWithDeliveryOfficerTask, Model.ProjectId);
-    var stakeholderKickoff = string.Format(RouteConstants.TransferViewStakeholderKickoffTask, Model.ProjectId);
-    var aboutTransferProject = string.Format(RouteConstants.TransferProjectAbout, Model.ProjectId);
+    var handoverWithDeliveryOfficerLink = string.Format(RouteConstants.ProjectHandoverWithDeliveryOfficerTask, Model.ProjectId);
+    var stakeholderKickoff = string.Format(RouteConstants.ProjectStakeholderKickoffTask, Model.ProjectId);
+    var aboutTransferProject = string.Format(RouteConstants.ProjectAbout, Model.ProjectId);
 }
 
 @* <partial name="_ProjectSummary" model=@Model.Tasks.ProjectDetails /> *@

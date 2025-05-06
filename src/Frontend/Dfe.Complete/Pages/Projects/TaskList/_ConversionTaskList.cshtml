@@ -3,13 +3,13 @@
 @using Dfe.Complete.TagHelpers
 @model Dfe.Complete.Pages.Projects.TaskList.TaskListModel
 @{
-    var handoverWithDeliveryOfficerLink = string.Format(RouteConstants.ConversionViewHandoverWithDeliveryOfficerTask, Model.ProjectId);
-    var aboutConversionProject = string.Format(RouteConstants.ConversionProjectAbout, Model.ProjectId);
+    var handoverWithDeliveryOfficerLink = string.Format(RouteConstants.ProjectHandoverWithDeliveryOfficerTask, Model.ProjectId);
+    var aboutConversionProject = string.Format(RouteConstants.ProjectAbout, Model.ProjectId);
 
-    var stakeHolderKickOffLink = string.Format(RouteConstants.ConversionStakeholderKickoffTask, Model.ProjectId);
-    var landQuestionnaireLink = string.Format(RouteConstants.ConversionLandQuestionnaireTask, Model.ProjectId);
-    var landRegistryLink = string.Format(RouteConstants.ConversionLandRegistryTask, Model.ProjectId);
-    var supplementalFundingAgreementLink = string.Format(RouteConstants.ConversionSupplementalFundingAgreementTask, Model.ProjectId);
+    var stakeHolderKickOffLink = string.Format(RouteConstants.ProjectStakeholderKickoffTask, Model.ProjectId);
+    var landQuestionnaireLink = string.Format(RouteConstants.ProjectLandQuestionnaireTask, Model.ProjectId);
+    var landRegistryLink = string.Format(RouteConstants.ProjectLandRegistryTask, Model.ProjectId);
+    var supplementalFundingAgreementLink = string.Format(RouteConstants.ProjectSupplementalFundingAgreementTask, Model.ProjectId);
 }
 
 @* <partial name="_ProjectSummary" model=@Model.Tasks.ProjectDetails /> *@

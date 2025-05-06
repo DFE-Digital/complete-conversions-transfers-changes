@@ -3,7 +3,7 @@ using Dfe.Complete.Models;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.StakeholderKickoffTask
+namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.La.StakeholderKickoffTask
 {
     public class StakeholderKickoffTaskModel(ISender sender) : BaseProjectPageModel(sender)
     {
@@ -32,7 +32,7 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.StakeholderKickoffTask
 
         public async Task<IActionResult> OnPost()
         {
-            return Redirect(string.Format(RouteConstants.ConversionStakeholderKickoffTask, ProjectId));
+            return Redirect(string.Format(RouteConstants.ProjectStakeholderKickoffTask, ProjectId));
         }
     }
 }

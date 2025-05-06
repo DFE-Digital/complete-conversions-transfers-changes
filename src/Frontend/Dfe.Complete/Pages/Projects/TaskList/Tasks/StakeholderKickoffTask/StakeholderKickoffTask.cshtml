@@ -1,9 +1,9 @@
-﻿@page "/projects/{projectId}/tasks/stakeholder-kickoff/edit"
+﻿@page "/projects/{projectId}/tasks/stakeholder-kickoff"
 @using Dfe.Complete.Constants
 @using Dfe.Complete.Domain.Enums
-@model Dfe.Complete.Pages.Projects.TaskList.Tasks.StakeholderKickoffTask.StakeholderKickoffTaskModel
+@model Dfe.Complete.Pages.Projects.TaskList.Tasks.La.StakeholderKickoffTask.StakeholderKickoffTaskModel
 @{
-  var backlink = string.Format(RouteConstants.ConversionEditStakeholderKickoffTask, Model.ProjectId);
+  var backlink = string.Format(RouteConstants.ProjectStakeholderKickoffTask, Model.ProjectId);
 }
 
 @section BeforeMain {
