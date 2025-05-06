@@ -60,7 +60,10 @@ namespace Dfe.Complete.Pages.Projects.List.ProjectsByMonth
             {
                 SetErrorNotification("The 'from' date cannot be after the 'to' date");
                 ResetDates();
-                return Page();
+                                
+                var today = DateTime.Today;
+                fromDate = today;
+                toDate = today;
             }
             
             return RedirectToDateRange(PathToPage, fromDate, toDate);
