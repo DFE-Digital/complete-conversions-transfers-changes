@@ -9,11 +9,11 @@ namespace Dfe.Complete.Application.Services.AcademiesApi
 
     public class TrustUkprnClientHandler(
         ITrustsV4Client trustsV4Client,
-        ILogger<GetTrustByUkprnRequest> logger)
+        ILogger<TrustUkprnClientHandler> logger)
         : IRequestHandler<GetTrustByUkprnRequest, Result<TrustDto>>
     {
         private readonly ITrustsV4Client _trustsV4Client = trustsV4Client ?? throw new ArgumentNullException(nameof(trustsV4Client));
-        private readonly ILogger<GetTrustByUkprnRequest> _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+        private readonly ILogger<TrustUkprnClientHandler> _logger = logger ?? throw new ArgumentNullException(nameof(logger));
 
         public async Task<Result<TrustDto>> Handle(GetTrustByUkprnRequest request, CancellationToken cancellationToken)
         {
