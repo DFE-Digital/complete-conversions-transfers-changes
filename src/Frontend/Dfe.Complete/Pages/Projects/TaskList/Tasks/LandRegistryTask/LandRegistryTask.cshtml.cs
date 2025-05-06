@@ -1,15 +1,12 @@
+using Dfe.Complete.Models;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.La.LandRegistryTask
+namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.LandRegistryTask
 {
-    public class LandRegistryTaskModel : PageModel
+    public class LandRegistryTaskModel(ISender sender) : BaseProjectPageModel(sender)
     {
-        [BindProperty(SupportsGet = true, Name = "projectId")]
-        public Guid ProjectId { get; set; }
-
-        public string SchoolName { get; set; }
-
         [BindProperty(Name = "cleared")]
         public bool? Cleared { get; set; }
 

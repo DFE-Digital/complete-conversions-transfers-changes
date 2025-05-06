@@ -2,7 +2,7 @@
 @using Dfe.Complete.Constants
 @model Dfe.Complete.Pages.Projects.TaskList.Tasks.SupplementalFundingAgreementTask.SupplementalFundingAgreementTaskModel
 @{
-  var backlink = string.Format(RouteConstants.ProjectLandRegistryTask, Model.ProjectId);
+  var backlink = string.Format(RouteConstants.ProjectTaskList, Model.ProjectId);
 }
 
 @section BeforeMain {
@@ -14,7 +14,7 @@
 
     <h1 class="govuk-heading-xl" data-testid="title">
       <span class="govuk-caption-l" data-testid="school-name">
-        @Model.SchoolName
+        @Model.Establishment.Name
       </span>
       Supplemental funding agreement
       <span class="govuk-caption-m">

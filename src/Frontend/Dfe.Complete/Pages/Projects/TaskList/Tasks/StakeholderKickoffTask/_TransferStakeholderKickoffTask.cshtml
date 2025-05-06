@@ -1,14 +1,14 @@
 ﻿@using Dfe.Complete.Constants
-@model Dfe.Complete.Pages.Projects.TaskList.Tasks.La.StakeholderKickoffTask.StakeholderKickoffTaskModel
+@model Dfe.Complete.Pages.Projects.TaskList.Tasks.StakeholderKickoffTask.StakeholderKickoffTaskModel
 @{
-    var backlink = string.Format(RouteConstants.ProjectStakeholderKickoffTask, Model.ProjectId);
+    var backlink = string.Format(RouteConstants.ProjectTaskList, Model.ProjectId);
 }
 @section BeforeMain {
     <a href=@backlink class="govuk-back-link">Back</a>
 }
 
 <h1 class="govuk-heading-xl" data-testid="title">
-    <span class="govuk-caption-l" data-testid="school-name">@Model.SchoolName</span>
+    <span class="govuk-caption-l" data-testid="school-name">@Model.Establishment.Name</span>
     External stakeholder kick-off
 </h1>
 
