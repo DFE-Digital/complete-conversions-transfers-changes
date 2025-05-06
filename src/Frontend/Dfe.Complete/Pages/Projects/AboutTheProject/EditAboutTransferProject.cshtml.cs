@@ -77,7 +77,7 @@ namespace Dfe.Complete.Pages.Projects.Transfer
                 return Page();
             }
             
-            return Redirect(string.Format(RouteConstants.TransferProjectAbout, ProjectId));
+            return Redirect(string.Format(RouteConstants.ProjectAbout, ProjectId));
         }
     }
 }

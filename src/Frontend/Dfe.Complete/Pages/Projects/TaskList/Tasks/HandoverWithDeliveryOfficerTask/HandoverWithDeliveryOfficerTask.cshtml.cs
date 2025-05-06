@@ -4,7 +4,7 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.HandoverWithDeliveryOfficerTask
+namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.La.HandoverWithDeliveryOfficerTask
 {
     public class HandoverWithDeliveryOfficerTaskModel(ISender sender) : BaseProjectPageModel(sender)
     {
@@ -33,7 +33,7 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.HandoverWithDeliveryOfficer
 
         public async Task<IActionResult> OnPost()
         {
-            return Redirect(string.Format(RouteConstants.ConversionViewHandoverWithDeliveryOfficerTask, ProjectId));
+            return Redirect(string.Format(RouteConstants.ProjectHandoverWithDeliveryOfficerTask, ProjectId));
         }
     }
 }
