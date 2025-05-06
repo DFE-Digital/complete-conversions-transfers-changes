@@ -2,7 +2,8 @@
 @using Dfe.Complete.Constants
 @model Dfe.Complete.Pages.Projects.TaskList.Tasks.LandQuestionnaireTask.LandQuestionnaireTaskModel
 @{
-  var backlink = string.Format(RouteConstants.ProjectLandQuestionnaireTask, Model.ProjectId);
+  ViewData["Title"] = "Land questionnaire";
+  var backlink = string.Format(RouteConstants.ProjectTaskList, Model.ProjectId);
 }
 
 @section BeforeMain {

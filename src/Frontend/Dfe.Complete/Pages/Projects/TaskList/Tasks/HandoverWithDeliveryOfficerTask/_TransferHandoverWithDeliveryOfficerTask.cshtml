@@ -1,7 +1,7 @@
 ﻿@using Dfe.Complete.Constants
-@model Dfe.Complete.Pages.Projects.TaskList.Tasks.La.HandoverWithDeliveryOfficerTask.HandoverWithDeliveryOfficerTaskModel
+@model Dfe.Complete.Pages.Projects.TaskList.Tasks.HandoverWithDeliveryOfficerTask.HandoverWithDeliveryOfficerTaskModel
 @{
-    var backlink = string.Format(RouteConstants.ProjectHandoverWithDeliveryOfficerTask, Model.ProjectId);
+    var backlink = string.Format(RouteConstants.ProjectTaskList, Model.ProjectId);
 
     var reviewProjectInformationHint = @"
         <details data-module=""govuk-details"" class=""govuk-details"">
@@ -35,7 +35,7 @@
 }
 
 <h1 class="govuk-heading-xl" data-testid="title">
-    <span class="govuk-caption-l" data-testid="school-name">@Model.SchoolName</span>
+    <span class="govuk-caption-l" data-testid="school-name">@Model.Establishment.Name</span>
     Handover with regional delivery officer
 </h1>
 

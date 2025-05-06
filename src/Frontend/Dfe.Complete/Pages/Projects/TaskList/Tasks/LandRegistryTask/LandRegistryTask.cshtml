@@ -1,8 +1,9 @@
 ﻿@page "/projects/{projectId}/tasks/land-registry"
 @using Dfe.Complete.Constants
-@model Dfe.Complete.Pages.Projects.TaskList.Tasks.La.LandRegistryTask.LandRegistryTaskModel
+@model Dfe.Complete.Pages.Projects.TaskList.Tasks.LandRegistryTask.LandRegistryTaskModel
 @{
-  var backlink = string.Format(RouteConstants.ProjectLandRegistryTask, Model.ProjectId);
+  ViewData["Title"] = "Land registry";
+  var backlink = string.Format(RouteConstants.ProjectTaskList, Model.Project.Id.Value.ToString());
 }
 
 @section BeforeMain {

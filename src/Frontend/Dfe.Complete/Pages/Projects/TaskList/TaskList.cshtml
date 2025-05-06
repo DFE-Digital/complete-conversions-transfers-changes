@@ -91,7 +91,7 @@ else if (User.GetUserAdId() != Model.Project.AssignedToId?.Value.ToString() && M
         <dt class="govuk-summary-list__key">LA and region</dt><dd class="govuk-summary-list__value">@Model.Establishment.LocalAuthorityName?.ToTitleCase(), @Model.Establishment.Gor?.Name?.ToTitleCase()</dd>
       </div>
       <div class="govuk-summary-list__row">
-        <dt class="govuk-summary-list__key">SharePoint link</dt>
+        <dt class="govuk-summary-list__key">SharePoint link@(Model.Project.Type == ProjectType.Conversion ? "s" : "")</dt>
         @if (Model.Project.Type == ProjectType.Transfer)
         {
           <dd class="govuk-summary-list__value">

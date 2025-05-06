@@ -3,15 +3,10 @@ using Dfe.Complete.Models;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.La.StakeholderKickoffTask
+namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.StakeholderKickoffTask
 {
     public class StakeholderKickoffTaskModel(ISender sender) : BaseProjectPageModel(sender)
     {
-        [BindProperty(SupportsGet = true, Name = "projectId")]
-        public Guid ProjectId { get; set; }
-
-        public string SchoolName { get; set; }
-
         [BindProperty(Name = "send-intro-emails")]
         public bool? SendIntroEmails { get; set; }
 
