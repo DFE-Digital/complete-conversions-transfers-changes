@@ -112,10 +112,10 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.SearchProjects
             var mock = listAllProjectsQueryModels.BuildMock();
 
             mockListAllProjectsQueryService
-                .SearchProjects(ProjectState.Active, searchTerm, 100)
+                .SearchProjects(ProjectState.Active, searchTerm, pageCount)
                 .Returns(mock);
 
-            var query = new SearchProjectsQuery(ProjectState.Active, searchTerm, 0, 10);
+            var query = new SearchProjectsQuery(ProjectState.Active, searchTerm, 0, pageCount);
 
             // Act
             var result = await handler.Handle(query, default);
