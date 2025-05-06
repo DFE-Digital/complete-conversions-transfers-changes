@@ -1040,13 +1040,26 @@
             "x-position": 2
           },
           {
+            "name": "OrderProjectsBy",
+            "in": "query",
+            "schema": {
+              "nullable": true,
+              "oneOf": [
+                {
+                  "$ref": "#/components/schemas/OrderProjectByField"
+                }
+              ]
+            },
+            "x-position": 3
+          },
+          {
             "name": "Page",
             "in": "query",
             "schema": {
               "type": "integer",
               "format": "int32"
             },
-            "x-position": 3
+            "x-position": 4
           },
           {
             "name": "Count",
@@ -1055,7 +1068,7 @@
               "type": "integer",
               "format": "int32"
             },
-            "x-position": 4
+            "x-position": 5
           }
         ],
         "responses": {
@@ -1097,13 +1110,35 @@
             "x-position": 1
           },
           {
+            "name": "Team",
+            "in": "query",
+            "schema": {
+              "nullable": true,
+              "oneOf": [
+                {
+                  "$ref": "#/components/schemas/ProjectTeam"
+                }
+              ]
+            },
+            "x-position": 2
+          },
+          {
+            "name": "UserHasProjects",
+            "in": "query",
+            "schema": {
+              "type": "boolean",
+              "nullable": true
+            },
+            "x-position": 3
+          },
+          {
             "name": "Page",
             "in": "query",
             "schema": {
               "type": "integer",
               "format": "int32"
             },
-            "x-position": 2
+            "x-position": 4
           },
           {
             "name": "Count",
@@ -1112,7 +1147,7 @@
               "type": "integer",
               "format": "int32"
             },
-            "x-position": 3
+            "x-position": 5
           }
         ],
         "responses": {
@@ -1123,7 +1158,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/UserWithProjectsDto"
+                    "$ref": "#/components/schemas/ListAllUsersWithProjectsResultModel"
                   }
                 }
               }
@@ -2778,12 +2813,14 @@
         "x-enumNames": [
           "CompletedAt",
           "CreatedAt",
-          "SignificantDate"
+          "SignificantDate",
+          "Id"
         ],
         "enum": [
           "CompletedAt",
           "CreatedAt",
-          "SignificantDate"
+          "SignificantDate",
+          "Id"
         ]
       },
       "OrderByDirection": {
@@ -2952,6 +2989,38 @@
             "items": {
               "$ref": "#/components/schemas/ListAllProjectsResultModel"
             }
+          },
+          "conversionProjectsAssigned": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "transferProjectsAssigned": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "ListAllUsersWithProjectsResultModel": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "$ref": "#/components/schemas/UserId"
+          },
+          "fullName": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string",
+            "nullable": true
+          },
+          "team": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/ProjectTeam"
+              }
+            ]
           },
           "conversionProjectsAssigned": {
             "type": "integer",

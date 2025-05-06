@@ -14,6 +14,8 @@ public static class IQueryableProjectExtensions
             if (orderBy.Field == OrderProjectByField.CreatedAt) return query.OrderByDescending(p => p.CreatedAt);
             if (orderBy.Field == OrderProjectByField.CompletedAt && orderBy.Direction == OrderByDirection.Ascending) return query.OrderBy(p => p.CompletedAt);
             if (orderBy.Field == OrderProjectByField.CompletedAt) return query.OrderByDescending(p => p.CompletedAt);
+            if (orderBy.Field == OrderProjectByField.Id && orderBy.Direction == OrderByDirection.Ascending) return query.OrderBy(p => p.Id);
+            if (orderBy.Field == OrderProjectByField.Id) return query.OrderByDescending(p => p.Id);
             if (orderBy.Field == OrderProjectByField.SignificantDate && orderBy.Direction == OrderByDirection.Descending) return query.OrderByDescending(p => p.SignificantDate);
         }
 
