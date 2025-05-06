@@ -2,9 +2,9 @@ using Dfe.Complete.Constants;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace Dfe.Complete.Pages.Projects.TaskList.Tasks
+namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.SupplementalFundingAgreementTask
 {
-    public class EditLandQuestionnaireTaskModel : PageModel
+    public class SupplementalFundingAgreementTaskModel : PageModel
     {
         [BindProperty(SupportsGet = true, Name = "projectId")]
         public Guid ProjectId { get; set; }
@@ -17,15 +17,22 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks
         [BindProperty(Name = "received")]
         public bool? Received { get; set; }
 
+        [BindProperty(Name = "saved")]
+        public bool? Saved { get; set; }
+
         [BindProperty(Name = "signed")]
         public bool? Signed { get; set; }
 
-        [BindProperty(Name = "saved")]
-        public bool? Saved { get; set; }
+        [BindProperty(Name = "sent")]
+        public bool? Sent { get; set; }
+
+        [BindProperty(Name = "signed-secretary-state")]
+        public bool? SignedSecretaryState { get; set; }
+
         
         public async Task<IActionResult> OnPost()
         {
-            return Redirect(string.Format(RouteConstants.ConversionLandQuestionnaireTask, ProjectId));
+            return Redirect(string.Format(RouteConstants.ProjectSupplementalFundingAgreementTask, ProjectId));
         }
     }
 }
