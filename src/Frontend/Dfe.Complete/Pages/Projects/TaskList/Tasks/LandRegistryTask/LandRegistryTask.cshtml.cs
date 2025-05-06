@@ -1,9 +1,9 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace Dfe.Complete.Pages.Projects.TaskList.Tasks
+namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.La.LandRegistryTask
 {
-    public class EditLandRegistryTaskModel : PageModel
+    public class LandRegistryTaskModel : PageModel
     {
         [BindProperty(SupportsGet = true, Name = "projectId")]
         public Guid ProjectId { get; set; }
