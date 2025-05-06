@@ -1,5 +1,6 @@
 using Dfe.Complete.Application.Projects.Models;
 using Dfe.Complete.Application.Projects.Queries.ListAllProjects;
+using Dfe.Complete.Constants;
 using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Extensions;
 using Dfe.Complete.Models;
@@ -18,12 +19,12 @@ public class CompletedByYou(ISender sender) : YourProjectsModel(CompletedNavigat
 
         var userAdId = User.GetUserAdId();
 
-        var result = await sender.Send(new ListAllProjectsForUserQuery(ProjectState.Completed, userAdId, ProjectUserFilter.CreatedBy)
+        var result = await sender.Send(new ListAllProjectsForUserQuery(ProjectState.Completed, userAdId, ProjectUserFilter.AssignedTo)
             { Count = PageSize, Page = PageNumber - 1 });
 
         ProjectsForUser = result.Value ?? [];
 
-        Pagination = new PaginationModel("/projects/yours/completed", PageNumber, result.ItemCount, PageSize);
+        Pagination = new PaginationModel(RouteConstants.YourProjectsCompleted, PageNumber, result.ItemCount, PageSize);
     }
 
     public async Task OnGetMovePage()
