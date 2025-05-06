@@ -2,17 +2,24 @@
 {
     public static class RouteConstants
     {
-        public const string YourProjectsInProgress = "/projects/yours/in-progress";
-        public const string ProjectsInProgress = "/projects/all/in-progress/all";
-        public const string ProjectsByTrust = "/projects/all/trusts";
-        public const string TrustProjects = "/projects/all/trusts/ukprn/{0}";
-        public const string TrustMATProjects = "/projects/all/trusts/reference/{0}";
-        public const string ConversionProjectsByMonth = "/projects/all/by-month/conversions/{0}/{1}";
-        public const string TransfersProjectsByMonth = "/projects/all/by-month/transfers/{0}/{1}";
-        public const string ConversionProjectsByMonths = "/projects/all/by-month/conversions/from/{0}/{1}/to/{2}/{3}";
-        public const string TransfersProjectsByMonths = "/projects/all/by-month/transfers/from/{0}/{1}/to/{2}/{3}";
+        // All projects
 
-        public const string ProjectsByRegion = "/projects/all/regions/{0}";
+        private const string AllProjectsPrefix = "/projects/all";
+        public const string ProjectsInProgress = AllProjectsPrefix + "/in-progress/all";
+        public const string ProjectsByTrust = AllProjectsPrefix + "/trusts";
+        public const string TrustProjects = AllProjectsPrefix + "/trusts/ukprn/{0}";
+        public const string TrustMATProjects = AllProjectsPrefix + "/trusts/reference/{0}";
+        public const string ConversionProjectsByMonth = AllProjectsPrefix + "/by-month/conversions/{0}/{1}";
+        public const string TransfersProjectsByMonth = AllProjectsPrefix + "/by-month/transfers/{0}/{1}";
+        public const string ConversionProjectsByMonths = AllProjectsPrefix + "/by-month/conversions/from/{0}/{1}/to/{2}/{3}";
+        public const string TransfersProjectsByMonths = AllProjectsPrefix + "/by-month/transfers/from/{0}/{1}/to/{2}/{3}";
+        public const string ProjectsByRegion = AllProjectsPrefix + "/regions/{0}";
+        public const string CompletedProjects = AllProjectsPrefix + "/completed";
+        
+        // Your projects
+        private const string YourProjectsPrefix = "/projects/yours";
+        public const string YourProjectsInProgress = YourProjectsPrefix + "/in-progress";
+        public const string YourProjectsCompleted = YourProjectsPrefix + "/completed";
 
         // Your team projects
         public const string TeamProjectsInProgress = "/projects/team/in-progress";
@@ -28,7 +35,7 @@
 
         public const string SelectCreateProjectType = "/projects/new";
         
-        public const string CompletedProjects = "/projects/all/completed";
+        
         
         public const string ProjectViewNotes = Project + "/notes";
         public const string ProjectAddNote = ProjectViewNotes + "/edit";
