@@ -807,7 +807,7 @@ public partial class ProjectsControllerTests
         var searchTerm = establishment.Name; 
 
         // Act
-        var results = await projectsClient.SearchProjectsAsync(searchTerm, CancellationToken.None);
+        var results = await projectsClient.SearchProjectsAsync(null, searchTerm, 1, 50, CancellationToken.None);
 
         var expectedProjects = projects
             .Where(p => p.Urn == establishment.Urn)
@@ -853,7 +853,7 @@ public partial class ProjectsControllerTests
         var ukprn = projects.First().IncomingTrustUkprn; 
 
         // Act
-        var results = await projectsClient.SearchProjectsAsync(ukprn!.ToString(), CancellationToken.None);
+        var results = await projectsClient.SearchProjectsAsync(null, ukprn!.ToString(), 1, 50, CancellationToken.None);
 
         var expectedProjects = projects
             .Where(p => p.IncomingTrustUkprn == ukprn && p.State == Domain.Enums.ProjectState.Active)
@@ -913,7 +913,7 @@ public partial class ProjectsControllerTests
         var urn = projects.First(p => p.State == Domain.Enums.ProjectState.Active).Urn;
 
         // Act
-        var results = await projectsClient.SearchProjectsAsync(urn!.Value.ToString(), CancellationToken.None);
+        var results = await projectsClient.SearchProjectsAsync(null, urn!.Value.ToString(), 1, 50, CancellationToken.None);
 
         var expectedProjects = projects
             .Where(p => p.Urn == urn)

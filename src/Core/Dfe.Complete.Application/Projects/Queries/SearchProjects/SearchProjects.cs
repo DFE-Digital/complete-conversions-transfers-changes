@@ -9,7 +9,7 @@ namespace Dfe.Complete.Application.Projects.Queries.SearchProjects
 { 
     public record SearchProjectsQuery(
        ProjectState? ProjectStatus, 
-       string SearhchTerm,
+       string SearchTerm,
        int Page = 0,
        int Count = 20) : IRequest<Result<List<ListAllProjectsResultModel>>>;
 
@@ -23,7 +23,7 @@ namespace Dfe.Complete.Application.Projects.Queries.SearchProjects
             try
             {
                 var projectList = await listAllProjectsQueryService
-                    .SearchProjects(request.ProjectStatus, request.SearhchTerm, request.Count)
+                    .SearchProjects(request.ProjectStatus, request.SearchTerm, request.Count)
                     .Select(item => ListAllProjectsResultModel.MapProjectAndEstablishmentToListAllProjectResultModel(
                         item.Project!,
                         item.Establishment

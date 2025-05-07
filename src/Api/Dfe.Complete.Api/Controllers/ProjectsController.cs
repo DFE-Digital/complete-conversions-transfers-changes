@@ -298,7 +298,7 @@ namespace Dfe.Complete.Api.Controllers
         /// <summary>
         /// Search list of project based on search criteria
         /// </summary>
-        /// <param name="searchProjects">Search active projects</param>
+        /// <param name="request">The request</param>
         /// <param name="cancellationToken">The cancellation token.</param>
         [Authorize(Policy = "CanRead")]
         [HttpGet]
@@ -306,14 +306,14 @@ namespace Dfe.Complete.Api.Controllers
         [SwaggerResponse(200, "Project", typeof(List<ListAllProjectsResultModel>))]
         [SwaggerResponse(400, "Invalid request data.")]
         public async Task<IActionResult> SearchProjectsAsync(
-            [FromQuery] string searchProjects,
+            [FromQuery] SearchProjectsQuery request,
             CancellationToken cancellationToken)
         {
-            if (string.IsNullOrWhiteSpace(searchProjects))
+            if (string.IsNullOrWhiteSpace(request.SearchTerm))
             {
                 return BadRequest("searchProjects is required.");
             }
-            var searchProjectsQuery = new SearchProjectsQuery(ProjectState.Active, searchProjects, 0, 102);
+            var searchProjectsQuery = new SearchProjectsQuery(ProjectState.Active, request.SearchTerm, 0, 102);
             var project = await sender.Send(searchProjectsQuery, cancellationToken);
             return Ok(project.Value);
         }

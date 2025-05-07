@@ -1896,22 +1896,20 @@ namespace Dfe.Complete.Client
         /// <summary>
         /// Search list of project based on search criteria
         /// </summary>
-        /// <param name="searchProjects">Search active projects</param>
         /// <returns>Project</returns>
         /// <exception cref="CompleteApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<ListAllProjectsResultModel>> SearchProjectsAsync(string? searchProjects)
+        public virtual System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<ListAllProjectsResultModel>> SearchProjectsAsync(ProjectState? projectStatus, string? searchTerm, int? page, int? count)
         {
-            return SearchProjectsAsync(searchProjects, System.Threading.CancellationToken.None);
+            return SearchProjectsAsync(projectStatus, searchTerm, page, count, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>
         /// Search list of project based on search criteria
         /// </summary>
-        /// <param name="searchProjects">Search active projects</param>
         /// <returns>Project</returns>
         /// <exception cref="CompleteApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<ListAllProjectsResultModel>> SearchProjectsAsync(string? searchProjects, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<ListAllProjectsResultModel>> SearchProjectsAsync(ProjectState? projectStatus, string? searchTerm, int? page, int? count, System.Threading.CancellationToken cancellationToken)
         {
             var client_ = _httpClient;
             var disposeClient_ = false;
@@ -1927,9 +1925,21 @@ namespace Dfe.Complete.Client
                     // Operation Path: "v1/Projects/SearchProjects"
                     urlBuilder_.Append("v1/Projects/SearchProjects");
                     urlBuilder_.Append('?');
-                    if (searchProjects != null)
+                    if (projectStatus != null)
                     {
-                        urlBuilder_.Append(System.Uri.EscapeDataString("searchProjects")).Append('=').Append(System.Uri.EscapeDataString(ConvertToString(searchProjects, System.Globalization.CultureInfo.InvariantCulture))).Append('&');
+                        urlBuilder_.Append(System.Uri.EscapeDataString("ProjectStatus")).Append('=').Append(System.Uri.EscapeDataString(ConvertToString(projectStatus, System.Globalization.CultureInfo.InvariantCulture))).Append('&');
+                    }
+                    if (searchTerm != null)
+                    {
+                        urlBuilder_.Append(System.Uri.EscapeDataString("SearchTerm")).Append('=').Append(System.Uri.EscapeDataString(ConvertToString(searchTerm, System.Globalization.CultureInfo.InvariantCulture))).Append('&');
+                    }
+                    if (page != null)
+                    {
+                        urlBuilder_.Append(System.Uri.EscapeDataString("Page")).Append('=').Append(System.Uri.EscapeDataString(ConvertToString(page, System.Globalization.CultureInfo.InvariantCulture))).Append('&');
+                    }
+                    if (count != null)
+                    {
+                        urlBuilder_.Append(System.Uri.EscapeDataString("Count")).Append('=').Append(System.Uri.EscapeDataString(ConvertToString(count, System.Globalization.CultureInfo.InvariantCulture))).Append('&');
                     }
                     urlBuilder_.Length--;
 

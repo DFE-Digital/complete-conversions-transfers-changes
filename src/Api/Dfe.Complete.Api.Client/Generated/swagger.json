@@ -971,13 +971,43 @@
         "operationId": "Projects_SearchProjects",
         "parameters": [
           {
-            "name": "searchProjects",
+            "name": "ProjectStatus",
             "in": "query",
-            "description": "Search active projects",
+            "schema": {
+              "nullable": true,
+              "oneOf": [
+                {
+                  "$ref": "#/components/schemas/ProjectState"
+                }
+              ]
+            },
+            "x-position": 1
+          },
+          {
+            "name": "SearchTerm",
+            "in": "query",
             "schema": {
               "type": "string"
             },
-            "x-position": 1
+            "x-position": 2
+          },
+          {
+            "name": "Page",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "x-position": 3
+          },
+          {
+            "name": "Count",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "x-position": 4
           }
         ],
         "responses": {

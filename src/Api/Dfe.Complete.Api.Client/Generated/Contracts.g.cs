@@ -273,19 +273,17 @@ namespace Dfe.Complete.Client.Contracts
         /// <summary>
         /// Search list of project based on search criteria
         /// </summary>
-        /// <param name="searchProjects">Search active projects</param>
         /// <returns>Project</returns>
         /// <exception cref="CompleteApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<ListAllProjectsResultModel>> SearchProjectsAsync(string? searchProjects);
+        System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<ListAllProjectsResultModel>> SearchProjectsAsync(ProjectState? projectStatus, string? searchTerm, int? page, int? count);
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>
         /// Search list of project based on search criteria
         /// </summary>
-        /// <param name="searchProjects">Search active projects</param>
         /// <returns>Project</returns>
         /// <exception cref="CompleteApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<ListAllProjectsResultModel>> SearchProjectsAsync(string? searchProjects, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<ListAllProjectsResultModel>> SearchProjectsAsync(ProjectState? projectStatus, string? searchTerm, int? page, int? count, System.Threading.CancellationToken cancellationToken);
 
     }
 
