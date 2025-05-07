@@ -9,5 +9,6 @@ public enum OrderProjectByField
 {
     CompletedAt,
     CreatedAt,
-    SignificantDate
+    SignificantDate,
+    Id
 }
