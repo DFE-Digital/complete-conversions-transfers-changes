@@ -322,7 +322,7 @@ namespace Dfe.Complete.Client.Contracts
         /// </summary>
         /// <returns>Project</returns>
         /// <exception cref="CompleteApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<UserWithProjectsDto> GetUserWithProjectsAsync(System.Guid? userId_Value, ProjectState? state, int? page, int? count);
+        System.Threading.Tasks.Task<UserWithProjectsDto> GetUserWithProjectsAsync(System.Guid? userId_Value, ProjectState? state, OrderProjectByField? orderProjectsBy, int? page, int? count);
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>
@@ -330,14 +330,14 @@ namespace Dfe.Complete.Client.Contracts
         /// </summary>
         /// <returns>Project</returns>
         /// <exception cref="CompleteApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<UserWithProjectsDto> GetUserWithProjectsAsync(System.Guid? userId_Value, ProjectState? state, int? page, int? count, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<UserWithProjectsDto> GetUserWithProjectsAsync(System.Guid? userId_Value, ProjectState? state, OrderProjectByField? orderProjectsBy, int? page, int? count, System.Threading.CancellationToken cancellationToken);
 
         /// <summary>
         /// Returns a list of Users with their assigned projects
         /// </summary>
         /// <returns>Project</returns>
         /// <exception cref="CompleteApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<UserWithProjectsDto>> ListAllUsersWithProjectsAsync(ProjectState? state, int? page, int? count);
+        System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<ListAllUsersWithProjectsResultModel>> ListAllUsersWithProjectsAsync(ProjectState? state, ProjectTeam? team, bool? requireUserHasProjects, int? page, int? count);
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>
@@ -345,7 +345,7 @@ namespace Dfe.Complete.Client.Contracts
         /// </summary>
         /// <returns>Project</returns>
         /// <exception cref="CompleteApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<UserWithProjectsDto>> ListAllUsersWithProjectsAsync(ProjectState? state, int? page, int? count, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<ListAllUsersWithProjectsResultModel>> ListAllUsersWithProjectsAsync(ProjectState? state, ProjectTeam? team, bool? requireUserHasProjects, int? page, int? count, System.Threading.CancellationToken cancellationToken);
 
     }
 
@@ -1890,6 +1890,9 @@ namespace Dfe.Complete.Client.Contracts
         [System.Runtime.Serialization.EnumMember(Value = @"SignificantDate")]
         SignificantDate = 2,
 
+        [System.Runtime.Serialization.EnumMember(Value = @"Id")]
+        Id = 3,
+
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.2.0.0 (NJsonSchema v11.1.0.0 (Newtonsoft.Json v13.0.0.0))")]
@@ -2075,6 +2078,43 @@ namespace Dfe.Complete.Client.Contracts
         {
 
             return Newtonsoft.Json.JsonConvert.DeserializeObject<UserWithProjectsDto>(data, new Newtonsoft.Json.JsonSerializerSettings());
+
+        }
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.2.0.0 (NJsonSchema v11.1.0.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class ListAllUsersWithProjectsResultModel
+    {
+        [Newtonsoft.Json.JsonProperty("id", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public UserId? Id { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("fullName", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string? FullName { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("email", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string? Email { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("team", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
+        public ProjectTeam? Team { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("conversionProjectsAssigned", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? ConversionProjectsAssigned { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("transferProjectsAssigned", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? TransferProjectsAssigned { get; set; } = default!;
+
+        public string ToJson()
+        {
+
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonSerializerSettings());
+
+        }
+        public static ListAllUsersWithProjectsResultModel FromJson(string data)
+        {
+
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<ListAllUsersWithProjectsResultModel>(data, new Newtonsoft.Json.JsonSerializerSettings());
 
         }
 
