@@ -31,6 +31,7 @@ Security in case of vulnerabilities.
  - Add new `ProjectTeam` extension method `TeamIsRegionalCaseworkServices`, to identify RCS users 
  - Projects added by you (`/projects/yours/added-by`)
  - Projects completed by you (`/projects/yours/completed`)
+ - Added "order by field" argument to `GetUserWithProjectsQuery`
 
 ### Changed
  - Merged ListAllProjectsByFilter into main ListAllProjects query
@@ -38,6 +39,8 @@ Security in case of vulnerabilities.
  - Allow `ListAllProjectsByFilter` query to handle multiple filters
  - All transfer/conversion projects list use a partial
  - Projects will route to `/project/{projectId}/tasks` from all projects list
+ - Merged `ListAllUsersInTeamWithProjectsQuery` into `ListAllUsersWithProjectsQuery` with filter
+ - Deploy workflow will run on PR creation/syncing
 
 ### Fixed
  - Project for user list should show month and year (not day)
