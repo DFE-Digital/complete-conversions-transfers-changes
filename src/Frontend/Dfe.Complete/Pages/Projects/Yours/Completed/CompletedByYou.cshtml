@@ -1,5 +1,5 @@
 @page "/projects/yours/completed"
-@using Dfe.Complete.Utils
+@using Dfe.Complete.Application.Mappers
 @model Dfe.Complete.Pages.Projects.Yours.Completed.CompletedByYou
 @{
   Layout = "Yours/_YourProjectsLayout";
@@ -37,7 +37,7 @@ else
         </td>
         <td class="govuk-table__cell">@project.Urn.Value</td>
         <td class="govuk-table__cell">@project.LocalAuthority</td>
-        <td class="govuk-table__cell">@project.Team.ToDisplayDescription()</td>
+        <td class="govuk-table__cell">@ProjectTeamPresentationMapper.Map(project.Team)</td>
         <td class="govuk-table__cell">@project.ProjectType</td>
         <td class="govuk-table__cell">@project.ConversionOrTransferDate.ToMonthYearString()</td>
         <td class="govuk-table__cell">@project.CompletionDate.ToDateString()</td>
