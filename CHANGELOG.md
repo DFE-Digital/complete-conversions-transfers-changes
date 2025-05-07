@@ -40,7 +40,6 @@ Security in case of vulnerabilities.
  - All transfer/conversion projects list use a partial
  - Projects will route to `/project/{projectId}/tasks` from all projects list
  - Merged `ListAllUsersInTeamWithProjectsQuery` into `ListAllUsersWithProjectsQuery` with filter
- - Deploy workflow will run on PR creation/syncing
 
 ### Fixed
  - Project for user list should show month and year (not day)
