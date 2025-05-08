@@ -2833,7 +2833,20 @@
           "localAuthority": {
             "type": "string"
           },
+          "team": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/ProjectTeam"
+              }
+            ]
+          },
           "conversionOrTransferDate": {
+            "type": "string",
+            "format": "date",
+            "nullable": true
+          },
+          "completionDate": {
             "type": "string",
             "format": "date",
             "nullable": true

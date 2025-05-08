@@ -57,6 +57,12 @@ internal class ListAllProjectsQueryService(CompleteContext context) : IListAllPr
         {
             projects = projects.Where(project => project.Team == team);
         }
+
+        if (!string.IsNullOrWhiteSpace(newTrustReferenceNumber))
+        {
+            projects = projects.Where(project =>
+                project.NewTrustReferenceNumber != null && project.NewTrustReferenceNumber == newTrustReferenceNumber);
+        }
         
         if (isFormAMat == true)
         {
