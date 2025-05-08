@@ -6,7 +6,7 @@ import { projectTable } from "cypress/pages/projects/tables/projectTable";
 import { currentMonthShort, trust, trust2 } from "cypress/constants/stringTestConstants";
 import { cypressUser } from "cypress/constants/cypressConstants";
 
-const conversionProject = ProjectBuilder.createConversionProjectRequest(new Date("2026-04-01"), 143659);
+const conversionProject = ProjectBuilder.createConversionProjectRequest(new Date("2026-04-01"), 111394);
 const conversionSchoolName = "Farnworth Church of England Controlled Primary School";
 const transferProject = ProjectBuilder.createTransferProjectRequest();
 const transferSchoolName = "Abbey College Manchester";
