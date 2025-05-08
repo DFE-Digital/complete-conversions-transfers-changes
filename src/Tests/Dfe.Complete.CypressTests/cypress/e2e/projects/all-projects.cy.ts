@@ -169,9 +169,6 @@ describe("View all projects", () => {
             .goToNextPageUntilFieldIsVisible(cypressUser.username);
         projectTable
             .hasTableHeaders(["User name", "Email", "Team", "Conversions", "Transfers"])
-            // .withUser(cypressUser.username)
-            // .columnHasValue("Email", cypressUser.email)
-            // .columnHasValue("Team", "London")
             .goToUserProjects(cypressUser.username);
         allProjects.containsHeading(`Projects for ${cypressUser.username}`);
         projectTable
