@@ -3,10 +3,10 @@ import projectApi from "cypress/api/projectApi";
 import { ProjectBuilder } from "cypress/api/projectBuilder";
 import yourProjects from "cypress/pages/projects/yourProjects";
 import { projectTable } from "cypress/pages/projects/tables/projectTable";
-import { currentMonthShort, testTrustName, trust, trust2 } from "cypress/constants/stringTestConstants";
+import { currentMonthShort, trust, trust2 } from "cypress/constants/stringTestConstants";
 import { cypressUser } from "cypress/constants/cypressConstants";
 
-const conversionProject = ProjectBuilder.createConversionProjectRequest(new Date("2026-04-01"), 111394);
+const conversionProject = ProjectBuilder.createConversionProjectRequest(new Date("2026-04-01"), 143659);
 const conversionSchoolName = "Farnworth Church of England Controlled Primary School";
 const transferProject = ProjectBuilder.createTransferProjectRequest();
 const transferSchoolName = "Abbey College Manchester";
@@ -19,12 +19,12 @@ describe("View your projects", () => {
     before(() => {
         projectRemover.removeProjectIfItExists(`${conversionProject.urn.value}`);
         projectRemover.removeProjectIfItExists(`${transferProject.urn.value}`);
-        // projectRemover.removeProjectIfItExists(`${conversionFormAMatProject.urn.value}`);
-        // projectRemover.removeProjectIfItExists(`${transferFormAMatProject.urn.value}`);
+        projectRemover.removeProjectIfItExists(`${conversionFormAMatProject.urn.value}`);
+        projectRemover.removeProjectIfItExists(`${transferFormAMatProject.urn.value}`);
         projectApi.createConversionProject(conversionProject);
         projectApi.createTransferProject(transferProject);
-        // projectApi.createMatConversionProject(conversionFormAMatProject);
-        // projectApi.createMatTransferProject(transferFormAMatProject);
+        projectApi.createMatConversionProject(conversionFormAMatProject);
+        projectApi.createMatTransferProject(transferFormAMatProject);
     });
 
     beforeEach(() => {
@@ -72,14 +72,13 @@ describe("View your projects", () => {
         // projectDetailsPage.containsHeading(schoolName); // not implemented
     });
 
-    // bug 212413
-    it.skip("Should be able to view newly created conversion form a MAT project in Your projects -> in progress", () => {
+    it("Should be able to view newly created conversion form a MAT project in Your projects -> in progress", () => {
         projectTable
             .withSchool(conversionFormAMatSchoolName)
             .columnHasValue("URN", `${conversionFormAMatProject.urn.value}`)
             .columnHasValue("Type of project", "Conversion")
             .columnHasValue("Form a MAT project", "Yes")
-            .columnContainsValue("Incoming trust", testTrustName)
+            // .columnContainsValue("Incoming trust", testTrustName) // bug 212413
             .columnContainsValue("Outgoing trust", "None")
             .columnHasValue("Local authority", "Bath and North East Somerset")
             .columnHasValue("Conversion or transfer date", "Mar 2026")
@@ -87,14 +86,13 @@ describe("View your projects", () => {
         // projectDetailsPage.containsHeading(schoolName); // not implemented
     });
 
-    // bug 212413
-    it.skip("Should be able to view newly created transfer form a MAT project in Your projects -> in progress", () => {
+    it("Should be able to view newly created transfer form a MAT project in Your projects -> in progress", () => {
         projectTable
             .withSchool(transferFormAMatSchoolName)
             .columnHasValue("URN", `${transferFormAMatProject.urn.value}`)
             .columnHasValue("Type of project", "Transfer")
             .columnHasValue("Form a MAT project", "Yes")
-            .columnContainsValue("Incoming trust", testTrustName)
+            // .columnContainsValue("Incoming trust", testTrustName)  // bug 212413
             .columnContainsValue("Outgoing trust", trust.toUpperCase()) // bug 208086
             .columnHasValue("Local authority", "Milton Keynes")
             .columnHasValue("Conversion or transfer date", "Mar 2026")

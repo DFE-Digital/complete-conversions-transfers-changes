@@ -19,10 +19,11 @@ const teammatesLondonRegionProject = ProjectBuilder.createConversionProjectReque
 );
 const teammatesLondonSchoolName = "St John's and St Clement's Church of England Primary School";
 const handedOverProject = ProjectBuilder.createTransferProjectRequest({
+    urn: { value: 135587  },
     handingOverToRegionalCaseworkService: true,
     userAdId: rdoLondonUser.adId,
 });
-const handedOverSchoolName = "Abbey College Manchester";
+const handedOverSchoolName = "City of London Academy Islington";
 
 describe("Regional delivery officer (London) user - View your team projects (projects with London region)", () => {
     before(() => {
@@ -31,7 +32,7 @@ describe("Regional delivery officer (London) user - View your team projects (pro
         projectRemover.removeProjectIfItExists(`${handedOverProject.urn.value}`);
         projectApi.createConversionProject(myLondonProject);
         projectApi.createConversionProject(teammatesLondonRegionProject, rdoLondonUser.email);
-        // projectApi.createTransferProject(handedOverProject, rdoLondonUser.email); // bug
+        projectApi.createTransferProject(handedOverProject, rdoLondonUser.email); // bug
     });
 
     beforeEach(() => {
@@ -138,8 +139,7 @@ describe("Regional delivery officer (London) user - View your team projects (pro
         // projectDetailsPage.containsHeading(teammatesLondonSchoolName); // not implemented
     });
 
-    // todo raise bug that can't create projects with handingOverToRegionalCaseworkService = true
-    it.skip("Should be able to view my team projects that are handed over", () => {
+    it("Should be able to view my team projects that are handed over", () => {
         yourTeamProjects.filterProjects("Handed over").containsHeading("Handed over");
         yourTeamProjectsTable
             .hasTableHeaders(["School or academy", "URN", "Conversion or transfer date", "Project type", "Assigned to"])
