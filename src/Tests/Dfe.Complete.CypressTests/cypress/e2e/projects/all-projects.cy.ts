@@ -110,10 +110,9 @@ describe("View all projects", () => {
         // projectDetailsPage.containsHeading(transferSchoolName); // not implemented
     });
 
-    // not implemented
-    it.skip("Should be able to view a form a MAT transfer project in All projects in progress, Transfers projects and Form a MAT projects (by Trust) ", () => {
+    it("Should be able to view a form a MAT transfer project in All projects in progress, Transfers projects and Form a MAT projects (by Trust) ", () => {
         navBar.goToAllProjects();
-        allProjects.containsHeading("All projects in progress").goToNextPageUntilFieldIsVisible(transferSchoolName);
+        allProjects.containsHeading("All projects in progress").goToNextPageUntilFieldIsVisible(transferFormAMatSchoolName);
         projectTable
             .withSchool(transferFormAMatSchoolName)
             .columnHasValue("URN", `${transferFormAMatProject.urn.value}`)
