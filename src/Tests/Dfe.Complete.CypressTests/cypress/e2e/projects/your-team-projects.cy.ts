@@ -5,7 +5,8 @@ import navBar from "cypress/pages/navBar";
 import yourTeamProjects from "cypress/pages/projects/yourTeamProjects";
 import { ProjectBuilder } from "cypress/api/projectBuilder";
 import { cypressUser, rdoLondonUser } from "cypress/constants/cypressConstants";
-import yourTeamProjectsRDOViewTable from "cypress/pages/projects/tables/yourTeamProjectsRDOViewTable";
+import { projectTable } from "cypress/pages/projects/tables/projectTable";
+import yourTeamProjectsTable from "cypress/pages/projects/tables/yourTeamProjectsTable";
 
 const team = "London";
 const myLondonProject = ProjectBuilder.createConversionProjectRequest(new Date("2026-04-01"), 143659);
@@ -35,20 +36,25 @@ describe("Regional delivery officer (London) user - View your team projects (pro
         yourTeamProjects
             .containsHeading("Your team projects in progress")
             .goToNextPageUntilFieldIsVisible(myLondonSchoolName);
-        yourTeamProjectsRDOViewTable
-            .hasTableHeader("School or academy")
-            .hasTableHeader("URN")
-            .hasTableHeader("Local authority")
-            .hasTableHeader("Team")
-            .hasTableHeader("Assigned to")
-            .hasTableHeader("Project type")
-            .hasTableHeader("Form a MAT project")
-            .hasTableHeader("Conversion or transfer date")
-            .schoolHasUrn(myLondonSchoolName, `${myLondonProject.urn.value}`)
-            .schoolHasLocalAuthority(myLondonSchoolName, "Islington")
-            .schoolHasTeam(myLondonSchoolName, team)
-            .schoolHasAssignedTo(myLondonSchoolName, cypressUser.username)
-            .schoolHasProjectType(myLondonSchoolName, "Conversion")
+        projectTable
+            .hasTableHeaders([
+                "School or academy",
+                "URN",
+                "Local authority",
+                "Team",
+                "Assigned to",
+                "Project type",
+                "Form a MAT project",
+                "Conversion or transfer date",
+            ])
+            .withSchool(myLondonSchoolName)
+            .columnHasValue("URN", `${myLondonProject.urn.value}`)
+            .columnHasValue("Local authority", "Islington")
+            .columnHasValue("Team", team)
+            .columnHasValue("Assigned to", cypressUser.username)
+            .columnHasValue("Project type", "Conversion")
+            .columnHasValue("Form a MAT project", "No")
+            .columnHasValue("Conversion or transfer date", "Apr 2026")
             .goTo(myLondonSchoolName);
         // projectDetailsPage.containsHeading(schoolName); // not implemented
     });
@@ -57,20 +63,25 @@ describe("Regional delivery officer (London) user - View your team projects (pro
         yourTeamProjects
             .containsHeading("Your team projects in progress")
             .goToNextPageUntilFieldIsVisible(teammatesLondonSchoolName);
-        yourTeamProjectsRDOViewTable
-            .hasTableHeader("School or academy")
-            .hasTableHeader("URN")
-            .hasTableHeader("Local authority")
-            .hasTableHeader("Team")
-            .hasTableHeader("Assigned to")
-            .hasTableHeader("Project type")
-            .hasTableHeader("Form a MAT project")
-            .hasTableHeader("Conversion or transfer date")
-            .schoolHasUrn(teammatesLondonSchoolName, `${teammatesLondonRegionProject.urn.value}`)
-            .schoolHasLocalAuthority(teammatesLondonSchoolName, "Southwark")
-            .schoolHasTeam(teammatesLondonSchoolName, team)
-            .schoolHasAssignedTo(teammatesLondonSchoolName, rdoLondonUser.username)
-            .schoolHasProjectType(teammatesLondonSchoolName, "Conversion")
+        projectTable
+            .hasTableHeaders([
+                "School or academy",
+                "URN",
+                "Local authority",
+                "Team",
+                "Assigned to",
+                "Project type",
+                "Form a MAT project",
+                "Conversion or transfer date",
+            ])
+            .withSchool(teammatesLondonSchoolName)
+            .columnHasValue("URN", `${teammatesLondonRegionProject.urn.value}`)
+            .columnHasValue("Local authority", "Southwark")
+            .columnHasValue("Team", team)
+            .columnHasValue("Assigned to", rdoLondonUser.username)
+            .columnHasValue("Project type", "Conversion")
+            .columnHasValue("Form a MAT project", "No")
+            .columnHasValue("Conversion or transfer date", "Apr 2026")
             .goTo(teammatesLondonSchoolName);
         // projectDetailsPage.containsHeading(teammatesLondonSchoolName); // not implemented
     });
@@ -78,15 +89,18 @@ describe("Regional delivery officer (London) user - View your team projects (pro
     it.skip("Should be able to view my team projects that are new", () => {
         // not implemented
         yourTeamProjects.filterProjects("New").containsHeading("Your team new projects");
-        yourTeamProjectsRDOViewTable
+        yourTeamProjectsTable
             .schoolIsFirstInTable(teammatesLondonSchoolName)
-            .hasTableHeader("School or academy")
-            .hasTableHeader("URN")
-            .hasTableHeader("Created at date")
-            .hasTableHeader("Team")
-            .hasTableHeader("Assigned to")
-            .hasTableHeader("Project type")
-            .hasTableHeader("Conversion or transfer date")
+            .hasTableHeaders([
+                "School or academy",
+                "URN",
+                "Local authority",
+                "Team",
+                "Assigned to",
+                "Project type",
+                "Form a MAT project",
+                "Conversion or transfer date",
+            ])
             .goTo(teammatesLondonSchoolName);
         // projectDetailsPage.containsHeading(teammatesLondonSchoolName); // not implemented
     });
@@ -97,18 +111,12 @@ describe("Regional delivery officer (London) user - View your team projects (pro
             .filterProjects("New")
             .containsHeading("Your team projects by user")
             .goToNextPageUntilFieldIsVisible(rdoLondonUser.username);
-        yourTeamProjectsRDOViewTable
-            .hasTableHeader("User name")
-            .hasTableHeader("Email")
-            .hasTableHeader("Conversions")
-            .hasTableHeader("Transfers")
+        yourTeamProjectsTable
+            .hasTableHeaders(["User name", "Email", "Conversions", "Transfers"])
             .goTo(rdoLondonUser.username);
         yourTeamProjects.containsHeading(`Projects assigned to ${rdoLondonUser.username}`);
-        yourTeamProjectsRDOViewTable
-            .hasTableHeader("School or academy")
-            .hasTableHeader("URN")
-            .hasTableHeader("Conversion or transfer date")
-            .hasTableHeader("Project type")
+        yourTeamProjectsTable
+            .hasTableHeaders(["School or academy", "URN", "Local authority", "Team", "Project type"])
             .contains(teammatesLondonSchoolName)
             .goTo(teammatesLondonSchoolName);
         // projectDetailsPage.containsHeading(teammatesLondonSchoolName); // not implemented
@@ -117,13 +125,9 @@ describe("Regional delivery officer (London) user - View your team projects (pro
     it.skip("Should be able to view my team projects that are handed over", () => {
         // not implemented
         yourTeamProjects.filterProjects("Handed over").containsHeading("Handed over");
-        yourTeamProjectsRDOViewTable
+        yourTeamProjectsTable
             .schoolIsFirstInTable(teammatesLondonSchoolName)
-            .hasTableHeader("School or academy")
-            .hasTableHeader("URN")
-            .hasTableHeader("Conversion or transfer date")
-            .hasTableHeader("Project type")
-            .hasTableHeader("Assigned to")
+            .hasTableHeaders(["School or academy", "URN", "Conversion or transfer date", "Project type", "Assigned to"])
             .goTo(teammatesLondonSchoolName);
         // projectDetailsPage.containsHeading(teammatesLondonSchoolName); // not implemented
     });
@@ -131,15 +135,17 @@ describe("Regional delivery officer (London) user - View your team projects (pro
     it.skip("Should be able to view my team projects that are completed", () => {
         // not implemented, unable to move project to completed
         yourTeamProjects.filterProjects("Completed").containsHeading("Your team completed projects");
-        yourTeamProjectsRDOViewTable
+        yourTeamProjectsTable
             .schoolIsFirstInTable(teammatesLondonSchoolName)
-            .hasTableHeader("School or academy")
-            .hasTableHeader("URN")
-            .hasTableHeader("Local authority")
-            .hasTableHeader("Team")
-            .hasTableHeader("Type of project")
-            .hasTableHeader("Conversion or transfer date")
-            .hasTableHeader("Project completion date")
+            .hasTableHeaders([
+                "School or academy",
+                "URN",
+                "Local authority",
+                "Team",
+                "Type of project",
+                "Conversion or transfer date",
+                "Project completion date",
+            ])
             .goTo(teammatesLondonSchoolName);
         // projectDetailsPage.containsHeading(teammatesLondonSchoolName); // not implemented
     });

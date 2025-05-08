@@ -8,6 +8,9 @@ import { beforeEach } from "mocha";
 import { regionalCaseworkerUser } from "cypress/constants/cypressConstants";
 import navBar from "cypress/pages/navBar";
 import yourTeamProjects from "cypress/pages/projects/yourTeamProjects";
+import allProjects from "cypress/pages/projects/allProjects";
+import projectsByMonthPage from "cypress/pages/projects/projectsByMonthPage";
+import { nextMonthLong } from "cypress/constants/stringTestConstants";
 
 describe("Capabilities and permissions of the regional casework services user", () => {
     beforeEach(() => {
@@ -26,6 +29,12 @@ describe("Capabilities and permissions of the regional casework services user", 
 
     it("Should NOT be able to view 'Service support' section", () => {
         navBar.unableToView(["Service support"]);
+    });
+
+    it("Should be able to view all projects by month - next month only", () => {
+        navBar.goToAllProjects();
+        allProjects.filterProjects("By month").containsHeading(nextMonthLong);
+        projectsByMonthPage.filterDoesNotExist();
     });
 
     it("Should NOT have access to view Your team projects -> unassigned projects", () => {

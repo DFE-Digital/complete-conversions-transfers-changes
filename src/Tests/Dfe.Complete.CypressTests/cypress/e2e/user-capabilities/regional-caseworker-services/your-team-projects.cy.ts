@@ -4,8 +4,9 @@ import projectApi from "cypress/api/projectApi";
 import { ProjectBuilder } from "cypress/api/projectBuilder";
 import navBar from "cypress/pages/navBar";
 import yourTeamProjects from "cypress/pages/projects/yourTeamProjects";
-import yourTeamProjectsRCSViewTable from "cypress/pages/projects/tables/yourTeamProjectsRCSViewTable";
 import { regionalCaseworkerTeamLeaderUser, regionalCaseworkerUser } from "cypress/constants/cypressConstants";
+import { projectTable } from "cypress/pages/projects/tables/projectTable";
+import yourTeamProjectsTable from "cypress/pages/projects/tables/yourTeamProjectsTable";
 
 const project = ProjectBuilder.createConversionProjectRequest(
     new Date("2026-04-01"),
@@ -37,22 +38,25 @@ describe("Regional caseworker services user - View your team projects", () => {
     it("Should be able to view my project in my team project listings in progress", () => {
         navBar.goToYourTeamProjects();
         yourTeamProjects.containsHeading("Your team projects in progress").goToNextPageUntilFieldIsVisible(schoolName);
-        yourTeamProjectsRCSViewTable
-            .hasTableHeader("School or academy")
-            .hasTableHeader("URN")
-            .hasTableHeader("Local authority")
-            .hasTableHeader("Region")
-            .hasTableHeader("Assigned to")
-            .hasTableHeader("Project type")
-            .hasTableHeader("Form a MAT project")
-            .hasTableHeader("Conversion or transfer date")
-            .schoolHasUrn(schoolName, `${project.urn.value}`)
-            .schoolHasLocalAuthority(schoolName, "Cheshire West and Chester")
-            .schoolHasRegion(schoolName, "North West")
-            .schoolHasAssignedTo(schoolName, regionalCaseworkerUser.username)
-            .schoolHasProjectType(schoolName, "Conversion")
-            .schoolHasFormAMatProject(teammatesSchoolName, "No")
-            .schoolHasConversionOrTransferDate(teammatesSchoolName, "Apr 2026")
+        projectTable
+            .hasTableHeaders([
+                "School or academy",
+                "URN",
+                "Local authority",
+                "Region",
+                "Assigned to",
+                "Project type",
+                "Form a MAT project",
+                "Conversion or transfer date",
+            ])
+            .withSchool(schoolName)
+            .columnHasValue("URN", `${project.urn.value}`)
+            .columnHasValue("Local authority", "Cheshire West and Chester")
+            .columnHasValue("Region", "North West")
+            .columnHasValue("Assigned to", regionalCaseworkerUser.username)
+            .columnHasValue("Project type", "Conversion")
+            .columnHasValue("Form a MAT project", "No")
+            .columnHasValue("Conversion or transfer date", "Apr 2026")
             .goTo(schoolName);
         // projectDetailsPage.containsHeading(schoolName); // not implemented
     });
@@ -61,22 +65,25 @@ describe("Regional caseworker services user - View your team projects", () => {
         yourTeamProjects
             .containsHeading("Your team projects in progress")
             .goToNextPageUntilFieldIsVisible(teammatesSchoolName);
-        yourTeamProjectsRCSViewTable
-            .hasTableHeader("School or academy")
-            .hasTableHeader("URN")
-            .hasTableHeader("Local authority")
-            .hasTableHeader("Region")
-            .hasTableHeader("Assigned to")
-            .hasTableHeader("Project type")
-            .hasTableHeader("Form a MAT project")
-            .hasTableHeader("Conversion or transfer date")
-            .schoolHasUrn(teammatesSchoolName, `${teammatesProject.urn.value}`)
-            .schoolHasLocalAuthority(teammatesSchoolName, "Halton")
-            .schoolHasRegion(teammatesSchoolName, "North West")
-            .schoolHasAssignedTo(teammatesSchoolName, regionalCaseworkerTeamLeaderUser.username)
-            .schoolHasProjectType(teammatesSchoolName, "Conversion")
-            .schoolHasFormAMatProject(teammatesSchoolName, "No")
-            .schoolHasConversionOrTransferDate(teammatesSchoolName, "Apr 2026")
+        projectTable
+            .hasTableHeaders([
+                "School or academy",
+                "URN",
+                "Local authority",
+                "Region",
+                "Assigned to",
+                "Project type",
+                "Form a MAT project",
+                "Conversion or transfer date",
+            ])
+            .withSchool(teammatesSchoolName)
+            .columnHasValue("URN", `${teammatesProject.urn.value}`)
+            .columnHasValue("Local authority", "Halton")
+            .columnHasValue("Region", "North West")
+            .columnHasValue("Assigned to", regionalCaseworkerTeamLeaderUser.username)
+            .columnHasValue("Project type", "Conversion")
+            .columnHasValue("Form a MAT project", "No")
+            .columnHasValue("Conversion or transfer date", "Apr 2026")
             .goTo(teammatesSchoolName);
         // projectDetailsPage.containsHeading(teammatesSchoolName); // not implemented
     });
@@ -84,15 +91,17 @@ describe("Regional caseworker services user - View your team projects", () => {
     it.skip("Should be able to view my team projects that are new", () => {
         // not implemented
         yourTeamProjects.filterProjects("New").containsHeading("Your team new projects");
-        yourTeamProjectsRCSViewTable
+        yourTeamProjectsTable
             .schoolIsFirstInTable(teammatesSchoolName)
-            .hasTableHeader("School or academy")
-            .hasTableHeader("URN")
-            .hasTableHeader("Created at date")
-            .hasTableHeader("Region")
-            .hasTableHeader("Assigned to")
-            .hasTableHeader("Project type")
-            .hasTableHeader("Conversion or transfer date")
+            .hasTableHeaders([
+                "School or academy",
+                "URN",
+                "Created at date",
+                "Region",
+                "Assigned to",
+                "Project type",
+                "Conversion or transfer date",
+            ])
             .goTo(teammatesSchoolName);
         // projectDetailsPage.containsHeading(teammatesSchoolName); // not implemented
     });
@@ -103,36 +112,31 @@ describe("Regional caseworker services user - View your team projects", () => {
             .filterProjects("New")
             .containsHeading("Your team projects by user")
             .goToNextPageUntilFieldIsVisible(regionalCaseworkerUser.username);
-        yourTeamProjectsRCSViewTable
-            .hasTableHeader("User name")
-            .hasTableHeader("Email")
-            .hasTableHeader("Conversions")
-            .hasTableHeader("Transfers")
+        projectTable
+            .hasTableHeaders(["User name", "Email", "Conversions", "Transfers"])
             .goTo(regionalCaseworkerUser.username);
         yourTeamProjects.containsHeading(`Projects assigned to ${regionalCaseworkerUser.username}`);
-        yourTeamProjectsRCSViewTable
-            .hasTableHeader("School or academy")
-            .hasTableHeader("URN")
-            .hasTableHeader("Conversion or transfer date")
-            .hasTableHeader("Project type")
+        projectTable
+            .hasTableHeaders(["School or academy", "URN", "Conversion or transfer date", "Project type"])
             .contains(teammatesSchoolName)
             .goTo(teammatesSchoolName);
         // projectDetailsPage.containsHeading(teammatesSchoolName); // not implemented
     });
 
-    it.skip("Should be able to view my team projects that are completed", () => {
-        // not implemented
+    it("Should be able to view my team projects that are completed", () => {
         yourTeamProjects.filterProjects("Completed").containsHeading("Your team completed projects");
-        yourTeamProjectsRCSViewTable
-            .schoolIsFirstInTable(teammatesSchoolName)
-            .hasTableHeader("School or academy")
-            .hasTableHeader("URN")
-            .hasTableHeader("Local authority")
-            .hasTableHeader("Region") // this has been changed from Team to Region for .NET
-            .hasTableHeader("Type of project")
-            .hasTableHeader("Conversion or transfer date")
-            .hasTableHeader("Project completion date")
-            .goTo(teammatesSchoolName);
+        projectTable
+            // .schoolIsFirstInTable(teammatesSchoolName) // project completion not implemented
+            .hasTableHeaders([
+                "School or academy",
+                "URN",
+                "Local authority",
+                "Region",
+                "Type of project",
+                "Conversion or transfer date",
+                "Project completion date",
+            ]);
+        // .goTo(teammatesSchoolName);
         // projectDetailsPage.containsHeading(teammatesSchoolName); // not implemented
     });
 

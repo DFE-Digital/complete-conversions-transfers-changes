@@ -27,15 +27,20 @@ class NavBar {
     }
 
     ableToView(sections: string[]) {
-        sections.forEach((section) => {
-            cy.getById(this.navHeaderId).contains(section).should("exist");
-        });
+        this.expectToView(sections, true);
         return this;
     }
 
     unableToView(sections: string[]) {
+        this.expectToView(sections, false);
+        return this;
+    }
+
+    expectToView(sections: string[], visible: boolean) {
         sections.forEach((section) => {
-            cy.getById(this.navHeaderId).contains(section).should("not.exist");
+            cy.getById(this.navHeaderId)
+                .contains(section)
+                .should(visible ? "exist" : "not.exist");
         });
         return this;
     }

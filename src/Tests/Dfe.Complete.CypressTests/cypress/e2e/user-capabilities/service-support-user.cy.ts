@@ -33,8 +33,7 @@ describe.skip("Capabilities and permissions of the service support user", () => 
         shouldNotHaveAccessToViewYourTeamUnassignedProjects();
     });
 
-    it.skip("Should be able to view multiple months of projects within a specified date range", () => {
-        // not implemented 187514
+    it("Should be able to view multiple months of projects within a specified date range", () => {
         shouldBeAbleToViewMultipleMonthsOfProjects();
     });
 
