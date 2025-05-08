@@ -38,6 +38,7 @@ Security in case of vulnerabilities.
  - Allow `ListAllProjectsByFilter` query to handle multiple filters
  - All transfer/conversion projects list use a partial
  - Projects will route to `/project/{projectId}/tasks` from all projects list
+ - Deploy workflow modified to run on PR too
 
 ### Fixed
  - Project for user list should show month and year (not day)
