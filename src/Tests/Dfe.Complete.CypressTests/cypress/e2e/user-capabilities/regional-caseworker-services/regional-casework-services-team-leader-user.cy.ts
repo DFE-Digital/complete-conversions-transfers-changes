@@ -1,10 +1,10 @@
 import {
     shouldBeAbleToAssignUnassignedProjectsToUsers,
+    shouldBeAbleToViewMultipleMonthsOfProjects,
     shouldNotBeAbleToBeAssignedAProject,
     shouldNotBeAbleToCreateAProject,
     shouldNotHaveAccessToViewAndEditUsers,
     shouldNotHaveAccessToViewHandedOverProjects,
-    shouldOnlyBeAbleToViewNextMonthOfProjects,
 } from "cypress/support/reusableTests";
 import { nextMonth } from "cypress/constants/stringTestConstants";
 import { ProjectBuilder } from "cypress/api/projectBuilder";
@@ -60,8 +60,8 @@ describe.skip("Capabilities and permissions of the regional casework services te
         shouldNotHaveAccessToViewAndEditUsers();
     });
 
-    it.skip("Should be able to view all Conversions projects by month - next month only", () => {
-        shouldOnlyBeAbleToViewNextMonthOfProjects(schoolName, project);
+    it("Should be able to view multiple months of projects within a specified date range", () => {
+        shouldBeAbleToViewMultipleMonthsOfProjects();
     });
 
     it.skip("Should be able to assign unassigned projects to users", () => {
