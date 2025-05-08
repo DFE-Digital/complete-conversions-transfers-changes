@@ -6,13 +6,14 @@
     ViewData["Title"] = "Form a MAT projects in progress";
 }
 
-<div class="govuk-grid-column-full">
+<div class="govuk-grid-column-two-thirds">
 
     <h1 class="govuk-heading-xl">
         <span class="govuk-caption-l">TRN: @Model.MAT.identifier</span>
         @Model.MAT.trustName
     </h1>
-
+</div>
+<div class="govuk-grid-column-full">
     <nav class="moj-sub-navigation" aria-label="Project sub-navigation">
         <ul class="moj-sub-navigation__list">
 
@@ -24,7 +25,7 @@
             </li>
         </ul>
     </nav>
-    
+
     <table class="govuk-table" name="projects_table" aria-label="Projects table">
         <thead class="govuk-table__head">
         <tr class="govuk-table__row">
