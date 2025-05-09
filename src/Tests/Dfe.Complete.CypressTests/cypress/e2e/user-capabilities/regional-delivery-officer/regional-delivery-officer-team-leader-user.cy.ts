@@ -1,6 +1,6 @@
 import {
-    shouldBeAbleToAssignUnassignedProjectsToUsers,
-    shouldNotHaveAccessToViewAndEditUsers,
+    shouldBeAbleToAssignUnassignedProjectsToUsers, shouldBeAbleToViewMultipleMonthsOfProjects,
+    shouldNotHaveAccessToViewAndEditUsers
 } from "cypress/support/reusableTests";
 import { before, beforeEach } from "mocha";
 import projectRemover from "cypress/api/projectRemover";
@@ -36,6 +36,10 @@ describe.skip("Capabilities and permissions of the regional delivery officer tea
 
     it("Should NOT be able to view 'Service support' section", () => {
         navBar.unableToView(["Service support"]);
+    });
+
+    it("Should be able to view multiple months of projects within a specified date range", () => {
+        shouldBeAbleToViewMultipleMonthsOfProjects();
     });
 
     it.skip("Should be able to assign unassigned projects to users", () => {
