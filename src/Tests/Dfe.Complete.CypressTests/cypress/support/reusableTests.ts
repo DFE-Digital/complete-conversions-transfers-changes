@@ -1,14 +1,14 @@
 import homePage from "../pages/homePage";
 import navBar from "../pages/navBar";
 import allProjects from "../pages/projects/allProjects";
-import { projectTable } from "../pages/projects/tables/projectTable";
-import { nextMonth } from "../constants/stringTestConstants";
-import { CreateConversionProjectRequest } from "../api/apiDomain";
 import yourTeamProjects from "../pages/projects/yourTeamProjects";
-import yourTeamProjectsRCSViewTable from "../pages/projects/tables/yourTeamProjectsRCSViewTable";
 import assignProject from "../pages/projects/assignProject";
 import { cypressUser } from "../constants/cypressConstants";
 import yourProjects from "../pages/projects/yourProjects";
+import projectsByMonthPage from "cypress/pages/projects/projectsByMonthPage";
+import { currentMonthLong, currentMonthShort } from "cypress/constants/stringTestConstants";
+import { projectTable } from "cypress/pages/projects/tables/projectTable";
+import yourTeamProjectsTable from "cypress/pages/projects/tables/yourTeamProjectsTable";
 
 export function shouldNotHaveAccessToViewHandedOverProjects() {
     cy.visit("/projects/all/in-progress/all");
@@ -17,7 +17,7 @@ export function shouldNotHaveAccessToViewHandedOverProjects() {
 }
 
 export function shouldNotHaveAccessToViewYourTeamUnassignedProjects() {
-    cy.visit("/projects/team/in-progress")
+    cy.visit("/projects/team/in-progress");
     yourTeamProjects.doesNotContainFilter("Unassigned");
     // cy.visit("/projects/team/unassigned").notAuthorisedToPerformAction(); // not implemented auth
 }
@@ -46,27 +46,10 @@ export function shouldNotBeAbleToBeAssignedAProject() {
     // not implemented
 }
 
-export function shouldOnlyBeAbleToViewNextMonthOfProjects(schoolName: string, project: CreateConversionProjectRequest) {
-    // not implemented 187137
-    const nextMonthString = `${nextMonth.toLocaleString("default", { month: "short" })} ${nextMonth.getFullYear()}`;
-    navBar.goToAllProjects();
-    allProjects.filterProjects("By month").containsHeading(nextMonthString);
-    projectTable
-        .hasTableHeader("School and URN")
-        .hasTableHeader("Region")
-        .hasTableHeader("Incoming trust")
-        .hasTableHeader("All conditions met")
-        .hasTableHeader("Confirmed date (Original date)")
-        .contains(`${schoolName} ${project.urn.value}`)
-        .goTo(`${schoolName} ${project.urn.value}`);
-    // projectDetailsPage.containsHeading(schoolName); // not implemented
-}
-
 export function shouldBeAbleToViewMultipleMonthsOfProjects() {
-    const today = new Date();
-    const currentMonthString = `${today.toLocaleString("default", { month: "long" })} ${today.getFullYear()}`;
-    navBar.goToAllProjects();
-    allProjects.filterProjects("By month").containsHeading(`${currentMonthString} to ${currentMonthString}`);
+    cy.visit("/projects/all/in-progress/all");
+    allProjects.filterProjects("By month").containsHeading(`${currentMonthLong} to ${currentMonthLong}`);
+    projectsByMonthPage.filterIsFromDateToDate(currentMonthShort, currentMonthShort);
 }
 
 export function shouldBeAbleToAssignUnassignedProjectsToUsers(unassignedProjectSchoolName: string) {
@@ -75,14 +58,15 @@ export function shouldBeAbleToAssignUnassignedProjectsToUsers(unassignedProjectS
         .filterProjects("Unassigned")
         .containsHeading("Your team unassigned projects")
         .goToNextPageUntilFieldIsVisible(unassignedProjectSchoolName);
-    yourTeamProjectsRCSViewTable
-        .hasTableHeader("School or academy")
-        .hasTableHeader("URN")
-        .hasTableHeader("Conversion or transfer date")
-        .hasTableHeader("Project type")
-        .hasTableHeader("Region")
-        .hasTableHeader("Assigned project")
-        .assignProject(unassignedProjectSchoolName);
+    projectTable.hasTableHeaders([
+        "School or academy",
+        "URN",
+        "Conversion or transfer date",
+        "Project type",
+        "Region",
+        "Assigned project",
+    ]);
+    yourTeamProjectsTable.assignProject(unassignedProjectSchoolName);
     assignProject.assignTo(cypressUser.username);
     navBar.goToYourProjects();
     yourProjects.goToNextPageUntilFieldIsVisible(unassignedProjectSchoolName);

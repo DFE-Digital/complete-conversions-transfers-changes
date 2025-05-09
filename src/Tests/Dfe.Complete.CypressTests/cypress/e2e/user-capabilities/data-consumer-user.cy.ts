@@ -39,8 +39,7 @@ describe("Capabilities and permissions of the data consumer user", () => {
         shouldNotHaveAccessToViewAndEditUsers();
     });
 
-    it.skip("Should be able to view multiple months of projects within a specified date range", () => {
-        // not implemented 187514
+    it("Should be able to view multiple months of projects within a specified date range", () => {
         shouldBeAbleToViewMultipleMonthsOfProjects();
     });
 
