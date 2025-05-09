@@ -6,6 +6,7 @@ class ProjectTable {
 
     withSchool(schoolName: string) {
         this.schoolName = schoolName;
+        cy.contains(schoolName).scrollIntoView();
         return this;
     }
 
@@ -61,10 +62,7 @@ class ProjectTable {
             .then((header) => {
                 const tableColumnIndex = Cypress.$(header).index();
                 cy.getProjectTableRow(this.schoolName).then((row) => {
-                    const actualValue = row
-                        .find("td")
-                        .eq(tableColumnIndex)
-                        .text();
+                    const actualValue = row.find("td").eq(tableColumnIndex).text();
                     if (exactMatch) {
                         expect(actualValue).to.equal(expectedValue);
                     } else {
