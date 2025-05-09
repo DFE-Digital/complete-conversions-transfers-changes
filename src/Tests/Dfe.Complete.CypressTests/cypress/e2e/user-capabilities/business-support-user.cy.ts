@@ -17,7 +17,7 @@ import projectsByMonthPage from "cypress/pages/projects/projectsByMonthPage";
 import { projectTable } from "cypress/pages/projects/tables/projectTable";
 import { currentMonthLong, currentMonthShort, trust } from "cypress/constants/stringTestConstants";
 
-const date = new Date(2027, 4, 1);
+const date = new Date("2027-04-01");
 const project = ProjectBuilder.createConversionProjectRequest(date, 103847);
 const schoolName = "Halesowen CofE Primary School";
 describe("Capabilities and permissions of the business support user", () => {
