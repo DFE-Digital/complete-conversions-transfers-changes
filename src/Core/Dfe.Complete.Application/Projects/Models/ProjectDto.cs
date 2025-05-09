@@ -89,6 +89,8 @@ namespace Dfe.Complete.Application.Projects.Models
         public  ICollection<Note> Notes { get; set; } = new List<Note>();
 
         public  User? RegionalDeliveryOfficer { get; set; }
+        
+        public bool FormAMat => NewTrustReferenceNumber != null && NewTrustName != null && IncomingTrustUkprn == null;
 
     }
 }

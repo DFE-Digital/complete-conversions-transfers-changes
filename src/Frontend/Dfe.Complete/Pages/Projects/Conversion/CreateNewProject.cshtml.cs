@@ -121,7 +121,7 @@ namespace Dfe.Complete.Pages.Projects.Conversion
 
                 var projectId = createResponse.Value;
 
-                return Redirect($"/projects/conversion-projects/{projectId}/created");
+                return Redirect($"/projects/{projectId}/created");
             }
             catch (NotFoundException notFoundException)
             {

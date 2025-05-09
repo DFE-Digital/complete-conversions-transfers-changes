@@ -1,0 +1,22 @@
+﻿@page "/projects/{projectId}/tasks/stakeholder-kickoff"
+@using Dfe.Complete.Constants
+@using Dfe.Complete.Domain.Enums
+@model Dfe.Complete.Pages.Projects.TaskList.Tasks.StakeholderKickoffTask.StakeholderKickoffTaskModel
+@{
+  ViewData["Title"] = "External stakeholder kick-off";
+  var backlink = string.Format(RouteConstants.ProjectStakeholderKickoffTask, Model.ProjectId);
+}
+
+@section BeforeMain {
+  <a href=@backlink class="govuk-back-link">Back</a>
+}
+
+@if (Model.Project.Type == ProjectType.Conversion)
+{
+  @await Html.PartialAsync("_ConversionStakeholderKickoffTask", Model)
+}
+
+@if (Model.Project.Type == ProjectType.Transfer)
+{
+  @await Html.PartialAsync("_TransferStakeholderKickoffTask", Model)
+}
