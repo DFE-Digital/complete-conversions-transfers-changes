@@ -13,7 +13,7 @@ namespace Dfe.Complete.Api.Controllers
     [Route("v{version:apiVersion}/[controller]")]
     public class UsersController(ISender sender) : ControllerBase
     {
-        
+
         /// <summary>
         /// Gets a User with their assigned projects
         /// </summary>
@@ -28,7 +28,7 @@ namespace Dfe.Complete.Api.Controllers
             var project = await sender.Send(request, cancellationToken);
             return Ok(project.Value);
         }
-        
+
         /// <summary>
         /// Returns a list of Users with their assigned projects
         /// </summary>
@@ -37,7 +37,7 @@ namespace Dfe.Complete.Api.Controllers
         //[Authorize(Policy = "API.Read")]
         [HttpGet]
         [Route("List/All")]
-        [SwaggerResponse(200, "Project", typeof(List<UserWithProjectsDto>))]
+        [SwaggerResponse(200, "Project", typeof(List<ListAllUsersWithProjectsResultModel>))]
         [SwaggerResponse(400, "Invalid request data.")]
         public async Task<IActionResult> ListAllUsersWithProjectsAsync([FromQuery] ListAllUsersWithProjectsQuery request, CancellationToken cancellationToken)
         {

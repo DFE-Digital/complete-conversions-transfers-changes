@@ -9,7 +9,7 @@ namespace Dfe.Complete.Pages.Projects.List.ProjectsByUser;
 
 public class AllProjectsByUser(ISender sender) : AllProjectsModel(ByUserNavigation)
 {
-    public List<UserWithProjectsDto> Users { get; set; } = default!;
+    public List<ListAllUsersWithProjectsResultModel> Users { get; set; } = default!;
 
     public new async Task OnGet()
     {

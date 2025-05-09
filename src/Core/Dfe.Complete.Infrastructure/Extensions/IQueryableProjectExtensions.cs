@@ -6,17 +6,26 @@ namespace Dfe.Complete.Infrastructure.Extensions;
 
 public static class IQueryableProjectExtensions
 {
-    public static IOrderedQueryable<Project> OrderProjectBy(this IQueryable<Project> query, OrderProjectQueryBy? orderBy = null)
+    public static IOrderedQueryable<Project> OrderProjectBy(
+        this IQueryable<Project> src,
+        OrderProjectQueryBy? order = null)
     {
-        if (orderBy != null)
-        {
-            if (orderBy.Field == OrderProjectByField.CreatedAt && orderBy.Direction == OrderByDirection.Ascending) return query.OrderBy(p => p.CreatedAt);
-            if (orderBy.Field == OrderProjectByField.CreatedAt) return query.OrderByDescending(p => p.CreatedAt);
-            if (orderBy.Field == OrderProjectByField.CompletedAt && orderBy.Direction == OrderByDirection.Ascending) return query.OrderBy(p => p.CompletedAt);
-            if (orderBy.Field == OrderProjectByField.CompletedAt) return query.OrderByDescending(p => p.CompletedAt);
-            if (orderBy.Field == OrderProjectByField.SignificantDate && orderBy.Direction == OrderByDirection.Descending) return query.OrderByDescending(p => p.SignificantDate);
-        }
+        order ??= new(OrderProjectByField.SignificantDate, OrderByDirection.Ascending);
 
-        return query.OrderBy(p => p.SignificantDate);
+        return (order.Field, order.Direction) switch
+        {
+            (OrderProjectByField.CreatedAt, OrderByDirection.Ascending) => src.OrderBy(p => p.CreatedAt),
+            (OrderProjectByField.CreatedAt, _) => src.OrderByDescending(p => p.CreatedAt),
+
+            (OrderProjectByField.CompletedAt, OrderByDirection.Ascending) => src.OrderBy(p => p.CompletedAt),
+            (OrderProjectByField.CompletedAt, _) => src.OrderByDescending(p => p.CompletedAt),
+
+            (OrderProjectByField.Id, OrderByDirection.Ascending) => src.OrderBy(p => p.Id),
+            (OrderProjectByField.Id, _) => src.OrderByDescending(p => p.Id),
+
+            (OrderProjectByField.SignificantDate, OrderByDirection.Descending) => src.OrderByDescending(p => p.SignificantDate),
+
+            _ => src.OrderBy(p => p.SignificantDate)
+        };
     }
 }

@@ -5,12 +5,13 @@ using Dfe.Complete.Pages.Pagination;
 using MediatR;
 using Dfe.Complete.Application.Users.Queries.ListAllUsers;
 using Dfe.Complete.Application.Users.Models;
+using Dfe.Complete.Domain.Enums;
 
 namespace Dfe.Complete.Pages.Projects.Team.ProjectsByUser;
 
 public class AllProjectsByUser(ISender sender) : YourTeamProjectsModel(ByUserNavigation)
 {
-    public List<UserWithProjectsDto> Users { get; set; } = [];
+    public List<ListAllUsersWithProjectsResultModel> Users { get; set; } = [];
 
     public async Task OnGet()
     {
@@ -18,7 +19,7 @@ public class AllProjectsByUser(ISender sender) : YourTeamProjectsModel(ByUserNav
 
         var userTeam = await User.GetUserTeam(sender);
 
-        var usersQuery = new ListAllUsersInTeamWithProjectsQuery(userTeam)
+        var usersQuery = new ListAllUsersWithProjectsQuery(ProjectState.Active, userTeam, false)
         {
             Page = PageNumber - 1,
             Count = PageSize
