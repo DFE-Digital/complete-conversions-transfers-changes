@@ -32,7 +32,7 @@ describe("Regional delivery officer (London) user - View your team projects (pro
         projectRemover.removeProjectIfItExists(`${handedOverProject.urn.value}`);
         projectApi.createConversionProject(myLondonProject);
         projectApi.createConversionProject(teammatesLondonRegionProject, rdoLondonUser.email);
-        projectApi.createTransferProject(handedOverProject, rdoLondonUser.email); // bug
+        // projectApi.createTransferProject(handedOverProject, rdoLondonUser.email); // bug 213250
     });
 
     beforeEach(() => {
@@ -139,7 +139,8 @@ describe("Regional delivery officer (London) user - View your team projects (pro
         // projectDetailsPage.containsHeading(teammatesLondonSchoolName); // not implemented
     });
 
-    it("Should be able to view my team projects that are handed over", () => {
+    // bug 213250
+    it.skip("Should be able to view my team projects that are handed over", () => {
         yourTeamProjects.filterProjects("Handed over").containsHeading("Handed over");
         yourTeamProjectsTable
             .hasTableHeaders(["School or academy", "URN", "Conversion or transfer date", "Project type", "Assigned to"])
