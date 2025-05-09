@@ -18,8 +18,8 @@ import { projectTable } from "cypress/pages/projects/tables/projectTable";
 import { currentMonthLong, currentMonthShort, trust } from "cypress/constants/stringTestConstants";
 
 const date = new Date(2027, 4, 1);
-const project = ProjectBuilder.createConversionProjectRequest(date);
-const schoolName = "St Chad's Catholic Primary School";
+const project = ProjectBuilder.createConversionProjectRequest(date, 103847);
+const schoolName = "Halesowen CofE Primary School";
 describe("Capabilities and permissions of the business support user", () => {
     before(() => {
         projectRemover.removeProjectIfItExists(`${project.urn.value}`);
