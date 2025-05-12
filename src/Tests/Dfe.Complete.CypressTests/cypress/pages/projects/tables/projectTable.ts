@@ -42,12 +42,12 @@ class ProjectTable {
     }
 
     columnHasValue(tableColumn: string, expectedValue: string) {
-        this.assertTableCellValue(tableColumn, expectedValue);
+        this.assertTableCellValue(this.schoolName, tableColumn, expectedValue);
         return this;
     }
 
     columnContainsValue(tableColumn: string, expectedValue: string) {
-        this.assertTableCellValue(tableColumn, expectedValue, false);
+        this.assertTableCellValue(this.schoolName, tableColumn, expectedValue, false);
         return this;
     }
 
@@ -56,15 +56,15 @@ class ProjectTable {
         return this;
     }
 
-    private assertTableCellValue(tableColumn: string, expectedValue: string, exactMatch = true) {
+    protected assertTableCellValue(tableRowKey: string, tableColumn: string, expectedValue: string, exactMatch = true) {
         cy.getByClass(this.tableHeadersClass)
             .contains(tableColumn)
             .then((header) => {
                 const tableColumnIndex = Cypress.$(header).index();
-                if (!this.schoolName) {
+                if (!tableRowKey) {
                     throw new Error("School name is not set. Call withSchool() before asserting table cell value.");
                 }
-                cy.getProjectTableRow(this.schoolName).then((row) => {
+                cy.getProjectTableRow(tableRowKey).then((row) => {
                     const actualValue = row.find("td").eq(tableColumnIndex).text();
                     if (exactMatch) {
                         expect(actualValue).to.equal(expectedValue);

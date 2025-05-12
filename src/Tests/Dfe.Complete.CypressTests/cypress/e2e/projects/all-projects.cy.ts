@@ -16,6 +16,7 @@ import projectRemover from "cypress/api/projectRemover";
 import { cypressUser } from "cypress/constants/cypressConstants";
 import projectsByMonthPage from "cypress/pages/projects/projectsByMonthPage";
 import projectDetailsPage from "cypress/pages/projects/projectDetailsPage";
+import userProjectTable from "cypress/pages/projects/tables/userProjectTable";
 
 const project = ProjectBuilder.createConversionProjectRequest(nextMonth);
 let projectId: string;
@@ -231,11 +232,11 @@ describe("View all projects", () => {
             .filterProjects("By user")
             .containsHeading("All projects by user")
             .goToNextPageUntilFieldIsVisible(cypressUser.username);
-        projectTable
+        userProjectTable
             .hasTableHeaders(["User name", "Email", "Team", "Conversions", "Transfers"])
-            // .withUser(cypressUser.username)
-            // .columnHasValue("Email", cypressUser.email)
-            // .columnHasValue("Team", "London")
+            .withUser(cypressUser.username)
+            .columnHasValue("Email", cypressUser.email)
+            .columnHasValue("Team", "London")
             .goToUserProjects(cypressUser.username);
         allProjects.containsHeading(`Projects for ${cypressUser.username}`);
         projectTable
@@ -257,7 +258,7 @@ describe("View all projects", () => {
             .goToNextPageUntilFieldIsVisible(trust);
         projectTable.hasTableHeaders(["Trust", "Group identifier", "Conversions", "Transfers"]).filterBy(trust);
         allProjects
-            // .containsHeading(`Projects for ${trust}`) // bug 208086
+            .containsHeading(`Projects for ${trust.toUpperCase()}`)
             .goToNextPageUntilFieldIsVisible(schoolName);
         projectTable
             .hasTableHeaders(["School or academy", "URN", "Conversion or transfer date", "Project type", "Assigned to"])
