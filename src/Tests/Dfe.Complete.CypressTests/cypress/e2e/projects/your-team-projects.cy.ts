@@ -8,6 +8,7 @@ import { cypressUser, rdoLondonUser } from "cypress/constants/cypressConstants";
 import { projectTable } from "cypress/pages/projects/tables/projectTable";
 import yourTeamProjectsTable from "cypress/pages/projects/tables/yourTeamProjectsTable";
 import { currentMonthShort } from "cypress/constants/stringTestConstants";
+import projectDetailsPage from "cypress/pages/projects/projectDetailsPage";
 
 const team = "London";
 const myLondonProject = ProjectBuilder.createConversionProjectRequest(new Date("2026-04-01"), 143659);
@@ -66,7 +67,7 @@ describe("Regional delivery officer (London) user - View your team projects (pro
             .columnHasValue("Form a MAT project", "No")
             .columnHasValue("Conversion or transfer date", "Apr 2026")
             .goTo(myLondonSchoolName);
-        // projectDetailsPage.containsHeading(schoolName); // not implemented
+        projectDetailsPage.containsHeading(myLondonSchoolName);
     });
 
     it("Should be able to view my teammate's project (who is in the same region) in my team project listings in progress", () => {
@@ -93,7 +94,7 @@ describe("Regional delivery officer (London) user - View your team projects (pro
             .columnHasValue("Form a MAT project", "No")
             .columnHasValue("Conversion or transfer date", "Apr 2026")
             .goTo(teammatesLondonSchoolName);
-        // projectDetailsPage.containsHeading(teammatesLondonSchoolName); // not implemented
+        projectDetailsPage.containsHeading(teammatesLondonSchoolName);
     });
 
     it("Should be able to view my team projects that are new", () => {
@@ -117,7 +118,7 @@ describe("Regional delivery officer (London) user - View your team projects (pro
             .columnHasValue("Project type", "Conversion")
             .columnHasValue("Conversion or transfer date", "Apr 2026")
             .goTo(teammatesLondonSchoolName);
-        // projectDetailsPage.containsHeading(teammatesLondonSchoolName); // not implemented
+        projectDetailsPage.containsHeading(teammatesLondonSchoolName);
     });
 
     it("Should be able to view my team projects by user and all a user's projects", () => {
@@ -136,7 +137,7 @@ describe("Regional delivery officer (London) user - View your team projects (pro
             .columnHasValue("Conversion or transfer date", "Apr 2026")
             .columnHasValue("Project type", "Conversion")
             .goTo(teammatesLondonSchoolName);
-        // projectDetailsPage.containsHeading(teammatesLondonSchoolName); // not implemented
+        projectDetailsPage.containsHeading(teammatesLondonSchoolName);
     });
 
     // bug 213250
@@ -150,7 +151,7 @@ describe("Regional delivery officer (London) user - View your team projects (pro
             .columnHasValue("Project type", "Transfer")
             .columnHasValue("Assigned to", rdoLondonUser.username)
             .goTo(handedOverSchoolName);
-        // projectDetailsPage.containsHeading(teammatesLondonSchoolName); // not implemented
+        projectDetailsPage.containsHeading(handedOverSchoolName);
     });
 
     it("Should be able to view my team projects that are completed", () => {
@@ -175,7 +176,7 @@ describe("Regional delivery officer (London) user - View your team projects (pro
         // .columnHasValue("Conversion or transfer date", "Apr 2026")
         // .columnHasValue("Project completion date", currentMonthShort)
         // .goTo(teammatesLondonSchoolName);
-        // projectDetailsPage.containsHeading(teammatesLondonSchoolName); // not implemented
+        // projectDetailsPage.containsHeading(teammatesLondonSchoolName);
     });
 
     it("Should NOT be able to view unassigned projects", () => {

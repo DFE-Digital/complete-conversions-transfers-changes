@@ -15,6 +15,7 @@ import { ProjectBuilder } from "cypress/api/projectBuilder";
 import projectRemover from "cypress/api/projectRemover";
 import { cypressUser } from "cypress/constants/cypressConstants";
 import projectsByMonthPage from "cypress/pages/projects/projectsByMonthPage";
+import projectDetailsPage from "cypress/pages/projects/projectDetailsPage";
 
 const project = ProjectBuilder.createConversionProjectRequest(nextMonth);
 let projectId: string;
@@ -86,7 +87,7 @@ describe("View all projects", () => {
             .columnHasValue("Form a MAT project?", "No")
             .columnHasValue("Assigned to", cypressUser.username)
             .goTo(schoolName);
-        // projectDetailsPage.containsHeading(schoolName); // not implemented
+        projectDetailsPage.containsHeading(schoolName);
     });
 
     it("Should be able to view newly created transfer project in All projects in progress and Transfers projects", () => {
@@ -115,7 +116,7 @@ describe("View all projects", () => {
             .columnHasValue("Form a MAT project?", "No")
             .columnHasValue("Assigned to", cypressUser.username)
             .goTo(transferSchoolName);
-        // projectDetailsPage.containsHeading(transferSchoolName); // not implemented
+        projectDetailsPage.containsHeading(transferSchoolName);
     });
 
     it("Should be able to view a form a MAT transfer project in All projects in progress, Transfers projects and Form a MAT projects (by Trust) ", () => {
@@ -155,8 +156,9 @@ describe("View all projects", () => {
             .columnHasValue("URN", `${transferFormAMatProject.urn.value}`)
             .columnHasValue("Conversion or transfer date", "Mar 2026")
             .columnHasValue("Project type", "Transfer")
-            .columnHasValue("Assigned to", cypressUser.username);
-        // projectDetailsPage.containsHeading(transferSchoolName); // not implemented
+            .columnHasValue("Assigned to", cypressUser.username)
+            .goTo(transferFormAMatSchoolName);
+        projectDetailsPage.containsHeading(transferFormAMatSchoolName);
     });
 
     it("Should be able to view all Conversions projects by month - next month only", () => {
@@ -180,7 +182,7 @@ describe("View all projects", () => {
             .columnHasValue("All conditions met", "Not yet")
             .columnHasValue("Confirmed date (Original date)", nextMonthShort)
             .goTo(`${schoolName} ${project.urn.value}`);
-        // projectDetailsPage.containsHeading(schoolName); // not implemented
+        projectDetailsPage.containsHeading(schoolName);
     });
 
     it("Should be able to view all Transfer projects by month - next month only", () => {
@@ -204,7 +206,7 @@ describe("View all projects", () => {
             .columnHasValue("Authority to proceed", "Not yet")
             .columnHasValue("Confirmed date (Original date)", nextMonthShort)
             .goTo(`${transferSchoolName} ${transferProject.urn.value}`);
-        // projectDetailsPage.containsHeading(schoolName); // not implemented
+        projectDetailsPage.containsHeading(transferSchoolName);
     });
 
     it("Should be able to view all projects by region and all a region's projects", () => {
@@ -220,7 +222,7 @@ describe("View all projects", () => {
             .columnHasValue("Project type", "Conversion")
             .columnContainsValue("Assigned to", cypressUser.username)
             .goTo(schoolName);
-        // projectDetailsPage.containsHeading(schoolName); // not implemented
+        projectDetailsPage.containsHeading(schoolName);
     });
 
     it("Should be able to view all projects by user and all a user's projects", () => {
@@ -244,7 +246,7 @@ describe("View all projects", () => {
             // .columnHasValue("Conversion or transfer date", nextMonthLong) // bug 212266
             .columnHasValue("Project type", "Conversion")
             .goTo(schoolName);
-        // projectDetailsPage.containsHeading(schoolName) // not implemented
+        projectDetailsPage.containsHeading(schoolName);
     });
 
     it("Should be able to view all projects by trust and all a trust's projects", () => {
@@ -265,7 +267,7 @@ describe("View all projects", () => {
             .columnHasValue("Project type", "Conversion")
             .columnHasValue("Assigned to", cypressUser.username)
             .goTo(schoolName);
-        // projectDetailsPage.containsHeading(schoolName); // not implemented
+        projectDetailsPage.containsHeading(schoolName);
     });
 
     it("Should be able to view all projects by local authority and all a local authority's projects", () => {
@@ -284,7 +286,7 @@ describe("View all projects", () => {
             .columnHasValue("Project type", "Conversion")
             .columnHasValue("Assigned to", cypressUser.username)
             .goTo(schoolName);
-        // projectDetailsPage.containsHeading(schoolName); // not implemented
+        projectDetailsPage.containsHeading(schoolName);
     });
 
     it.skip("Should be able to view all completed projects", () => {
@@ -307,6 +309,6 @@ describe("View all projects", () => {
                 "Project completion date",
             ])
             .goTo(schoolName);
-        // projectDetailsPage.containsHeading(schoolName); // not implemented
+        projectDetailsPage.containsHeading(schoolName);
     });
 });

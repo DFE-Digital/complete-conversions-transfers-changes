@@ -154,7 +154,7 @@ describe("Regional caseworker services user - View your team projects", () => {
         // .columnHasValue("Conversion or transfer date", "Apr 2026")
         // .columnHasValue("Project completion date", currentMonthShort)
         // .goTo(teammatesSchoolName);
-        // projectDetailsPage.containsHeading(teammatesSchoolName); // not implemented
+        // projectDetailsPage.containsHeading(teammatesSchoolName);
     });
 
     it("Should NOT be able to view handed my team projects that are handed over", () => {

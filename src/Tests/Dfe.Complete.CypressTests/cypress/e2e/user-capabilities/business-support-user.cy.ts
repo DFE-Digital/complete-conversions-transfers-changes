@@ -16,6 +16,7 @@ import allProjects from "cypress/pages/projects/allProjects";
 import projectsByMonthPage from "cypress/pages/projects/projectsByMonthPage";
 import { projectTable } from "cypress/pages/projects/tables/projectTable";
 import { currentMonthLong, currentMonthShort, trust } from "cypress/constants/stringTestConstants";
+import projectDetailsPage from "cypress/pages/projects/projectDetailsPage";
 
 const date = new Date("2027-04-01");
 const project = ProjectBuilder.createConversionProjectRequest(date);
@@ -86,7 +87,7 @@ describe("Capabilities and permissions of the business support user", () => {
             .columnHasValue("All conditions met", "Not yet")
             .columnHasValue("Confirmed date (Original date)", "Apr 2027")
             .goTo(`${schoolName} ${project.urn.value}`);
-        // projectDetailsPage.containsHeading(schoolName); // not implemented
+        projectDetailsPage.containsHeading(schoolName);
     });
 
     it.skip("Should be able to view and download csv reports from the export section", () => {

@@ -5,6 +5,7 @@ import yourProjects from "cypress/pages/projects/yourProjects";
 import { projectTable } from "cypress/pages/projects/tables/projectTable";
 import { currentMonthShort, trust, trust2 } from "cypress/constants/stringTestConstants";
 import { cypressUser } from "cypress/constants/cypressConstants";
+import projectDetailsPage from "cypress/pages/projects/projectDetailsPage";
 
 const conversionProject = ProjectBuilder.createConversionProjectRequest(new Date("2026-04-01"), 111394);
 const conversionSchoolName = "Farnworth Church of England Controlled Primary School";
@@ -55,7 +56,7 @@ describe("View your projects", () => {
             .columnHasValue("Local authority", "Halton")
             .columnHasValue("Conversion or transfer date", "Apr 2026")
             .goTo(conversionSchoolName);
-        // projectDetailsPage.containsHeading(schoolName); // not implemented
+        projectDetailsPage.containsHeading(conversionSchoolName);
     });
 
     it("Should be able to view newly created transfer project in Your projects -> in progress", () => {
@@ -69,7 +70,7 @@ describe("View your projects", () => {
             .columnHasValue("Local authority", "Manchester")
             .columnHasValue("Conversion or transfer date", "Mar 2026")
             .goTo(transferSchoolName);
-        // projectDetailsPage.containsHeading(schoolName); // not implemented
+        projectDetailsPage.containsHeading(transferSchoolName);
     });
 
     it("Should be able to view newly created conversion form a MAT project in Your projects -> in progress", () => {
@@ -83,7 +84,7 @@ describe("View your projects", () => {
             .columnHasValue("Local authority", "Bath and North East Somerset")
             .columnHasValue("Conversion or transfer date", "Mar 2026")
             .goTo(conversionFormAMatSchoolName);
-        // projectDetailsPage.containsHeading(schoolName); // not implemented
+        projectDetailsPage.containsHeading(conversionFormAMatSchoolName);
     });
 
     it("Should be able to view newly created transfer form a MAT project in Your projects -> in progress", () => {
@@ -97,7 +98,7 @@ describe("View your projects", () => {
             .columnHasValue("Local authority", "Milton Keynes")
             .columnHasValue("Conversion or transfer date", "Mar 2026")
             .goTo(transferFormAMatSchoolName);
-        // projectDetailsPage.containsHeading(schoolName); // not implemented
+        projectDetailsPage.containsHeading(transferFormAMatSchoolName);
     });
 
     it("Should be able to view newly created conversion project in Your projects -> added by you", () => {
@@ -116,7 +117,9 @@ describe("View your projects", () => {
             .columnHasValue("Conversion or transfer date", "Apr 2026")
             .columnHasValue("Project type", "Conversion")
             .columnHasValue("Form a MAT project", "No")
-            .columnHasValue("Assigned to", cypressUser.username);
+            .columnHasValue("Assigned to", cypressUser.username)
+            .goTo(conversionSchoolName);
+        projectDetailsPage.containsHeading(conversionSchoolName);
     });
 
     it.skip("Should be able to view completed transfer project in Your projects -> Completed", () => {
@@ -140,6 +143,6 @@ describe("View your projects", () => {
             .columnHasValue("Conversion or transfer date", "Mar 2026")
             .columnHasValue("Project completion date", currentMonthShort)
             .goTo(transferSchoolName);
-        // projectDetailsPage.containsHeading(schoolName); // not implemented
+        projectDetailsPage.containsHeading(transferSchoolName);
     });
 });
