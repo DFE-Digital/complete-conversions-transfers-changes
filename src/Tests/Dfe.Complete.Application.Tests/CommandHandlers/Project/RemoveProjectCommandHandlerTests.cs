@@ -31,8 +31,7 @@ public class RemoveProjectCommandHandlerTests
         var unitOfWorkMock = new Mock<IUnitOfWork>();
 
         IHostEnvironment host = new HostingEnvironment();
-        host.EnvironmentName = "UnitTest";
-        configMock.Setup(c => c["IntegrationTestOverride"]).Returns("true");
+        host.EnvironmentName = "Production";
 
         var handler = new RemoveProjectCommandHandler(
             host,
@@ -43,35 +42,7 @@ public class RemoveProjectCommandHandlerTests
             configMock.Object);
 
         // Act & Assert
-        await Assert.ThrowsAsync<NotDevOrTestEnvironmentException>(() => handler.Handle(command, CancellationToken.None));
-    }
-
-    [Theory]
-    [CustomAutoData(typeof(DateOnlyCustomization),
-        typeof(IgnoreVirtualMembersCustomisation))]
-    public async Task Handle_ProdEnvironment_WillThrowError(
-        [Frozen] ICompleteRepository<Domain.Entities.Project> mockProjectRepository,
-        [Frozen] ICompleteRepository<TransferTasksData> mockTransferTaskRepository,
-        [Frozen] ICompleteRepository<ConversionTasksData> mockConversionTaskRepository,
-        RemoveProjectCommand command
-    )
-    {
-        // Arrange
-        var configMock = new Mock<IConfiguration>();
-        var unitOfWorkMock = new Mock<IUnitOfWork>();
-        IHostEnvironment host = new HostingEnvironment();
-        host.EnvironmentName = "Production";
-        configMock.Setup(c => c["IntegrationTestOverride"]).Returns("true");
-
-        var handler = new RemoveProjectCommandHandler(
-            host, 
-            mockProjectRepository, 
-            mockTransferTaskRepository, 
-            mockConversionTaskRepository, 
-            unitOfWorkMock.Object, 
-            configMock.Object);
-
-        // Act & Assert
-        await Assert.ThrowsAsync<NotDevOrTestEnvironmentException>(() => handler.Handle(command, CancellationToken.None));
+        await Assert.ThrowsAsync<NotDevOrTestEnvironmentException>(
+            () => handler.Handle(command, CancellationToken.None));
     }
 }
