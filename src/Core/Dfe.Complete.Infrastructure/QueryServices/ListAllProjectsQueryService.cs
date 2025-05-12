@@ -75,8 +75,7 @@ internal class ListAllProjectsQueryService(CompleteContext context) : IListAllPr
                 project.NewTrustReferenceNumber == null &&
                 project.NewTrustName == null);
         }
-
-        var test = GenerateQuery(projects, giasEstablishments, orderBy).ToQueryString();
+         
         return GenerateQuery(projects, giasEstablishments, orderBy);
     }
 
