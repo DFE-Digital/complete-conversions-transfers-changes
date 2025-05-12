@@ -1,3 +1,4 @@
+using System;
 using System.Security.Claims;
 using AutoFixture;
 using AutoFixture.Xunit2;
@@ -854,6 +855,60 @@ public partial class ProjectsControllerTests
 
         var expectedProjects = projects
             .Where(p => p.IncomingTrustUkprn == ukprn && p.State == Domain.Enums.ProjectState.Active)
+            .ToList();
+
+        // Assert
+        Assert.NotNull(results);
+        Assert.Equal(expectedProjects.Count, results.Count);
+    }
+    [Theory]
+    [CustomAutoData(typeof(CustomWebApplicationDbContextFactoryCustomization), typeof(GiasEstablishmentsCustomization))]
+    public async Task SearchProjectsWithEstablishmentNumber_Async_ShouldReturnList(
+      CustomWebApplicationDbContextFactory<Program> factory,
+      IProjectsClient projectsClient,
+      IFixture fixture)
+    {
+        // Arrange
+        factory.TestClaims = [new Claim(ClaimTypes.Role, ReadRole)];
+        var dbContext = factory.GetDbContext<CompleteContext>();
+        int i = 0;
+        var establishments = Enumerable.Range(0, 10)
+           .Select(_ =>
+           {  
+               i++;
+
+               return fixture.Customize(new GiasEstablishmentsCustomization
+               {
+                   EstablishmentNumber = i.ToString("D4")
+               }).Create<GiasEstablishment>();
+           })
+           .ToList();
+        var localAuthority = dbContext.LocalAuthorities.AsEnumerable().MinBy(_ => Guid.NewGuid());
+        Assert.NotNull(localAuthority);
+
+        await dbContext.GiasEstablishments.AddRangeAsync(establishments);
+
+        var projects = establishments.Select((establishment, i) =>
+        {
+            var project = fixture.Customize(new ProjectCustomization
+            {
+                LocalAuthorityId = localAuthority.Id,
+                IncomingTrustUkprn = "12345678",
+                OutgoingTrustUkprn = "87654321",
+            }).Create<Project>();
+            project.Urn = establishment.Urn ?? project.Urn;
+            return project;
+        }).ToList();
+
+        await dbContext.Projects.AddRangeAsync(projects);
+        await dbContext.SaveChangesAsync();
+        var establishment = establishments.First(); 
+
+        // Act
+        var results = await projectsClient.SearchProjectsAsync(ProjectState.Active, establishment.EstablishmentNumber!.ToString(), 0, 20, CancellationToken.None);
+
+        var expectedProjects = projects
+            .Where(p => p.Urn == establishment.Urn && p.State == Domain.Enums.ProjectState.Active)
             .ToList();
 
         // Assert
