@@ -32,6 +32,7 @@ Security in case of vulnerabilities.
 ### Fixed  
  - Routing for projects merged (`/conversion-project` and `/transfer-project` become `/project`)
  - "Team projects" > "Handed over" now shows unassigned projects again
+ - Authorization fixed on all API endpoints
 
 See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-05-08.217...main) for everything awaiting release
 
