@@ -1,7 +1,8 @@
 ﻿@page "/projects/all/in-progress/transfers"
 @using Dfe.Complete.Constants;
 @using Dfe.Complete.Domain.Enums
-@model Dfe.Complete.Pages.Projects.List.ProjectsInProgress.TransferProjectsInProgressInProgressModel
+@using Dfe.Complete.Pages.Projects.List
+@model Dfe.Complete.Pages.Projects.List.ProjectsInProgress.TransferProjectsInProgressModel
 @{
     Layout = "List/ProjectsInProgress/_ProjectsInProgressLayout";
     ViewData["Title"] = "Transfer projects in progress";
@@ -14,42 +15,4 @@
 </h1>
 }
 
-<div class="govuk-grid-column-full">
-    <table class="govuk-table" name="projects_table" aria-label="Projects table">
-        <thead class="govuk-table__head">
-            <tr class="govuk-table__row">
-                <th class="govuk-table__header" scope="col">School or academy</th>
-                <th class="govuk-table__header" scope="col">URN</th>
-                <th class="govuk-table__header" scope="col">Transfer date</th>
-                <th class="govuk-table__header" scope="col">Form a MAT project?</th>
-                <th class="govuk-table__header" scope="col">Assigned to</th>
-            </tr>
-        </thead>
-        <tbody class="govuk-table__body">
-
-            @foreach(var project in Model.Projects)
-            {
-                string projectSummaryUrl;
-            
-                if (project.ProjectType == ProjectType.Conversion)
-                {
-                    projectSummaryUrl = string.Format(RouteConstants.ConversionProjectTaskList, project.ProjectId);
-                }
-                else
-                {
-                    projectSummaryUrl = string.Format(RouteConstants.TransferProjectTaskList, project.ProjectId);
-                }
-            
-                <tr class="govuk-table__row">
-                    <td class="govuk-table__header govuk-table__cell">
-                        <a class="govuk-link" href="@projectSummaryUrl">@project.EstablishmentName</a>
-                    </td>
-                    <td class="govuk-table__cell">@project.Urn.Value</td>
-                    <td class="govuk-table__cell">@project.ConversionOrTransferDate.ToMonthYearString()</td>
-                    <td class="govuk-table__cell">@project.IsFormAMAT.ToYesNoString()</td>
-                    <td class="govuk-table__cell">@project.AssignedToFullName</td>
-                </tr>
-            }
-        </tbody>
-    </table>
-</div>
+@await Html.PartialAsync("Tables/_ConversionOrTransferInProgressTable", Model)
