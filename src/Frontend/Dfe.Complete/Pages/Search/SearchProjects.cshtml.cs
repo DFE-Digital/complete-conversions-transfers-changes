@@ -1,21 +1,25 @@
 using Dfe.Complete.Application.Projects.Models;
-using Dfe.Complete.Application.Projects.Queries.ListAllProjects;
+using Dfe.Complete.Application.Projects.Queries.CountAllProjects;
 using Dfe.Complete.Application.Projects.Queries.SearchProjects;
 using Dfe.Complete.Domain.Enums;
-using Dfe.Complete.Pages.Projects.List; 
+using Dfe.Complete.Pages.Pagination;
+using Dfe.Complete.Pages.Projects.List;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Dfe.Complete.Pages.Search
 {
-    public class SearchProjectsModel(ISender sender) : AllProjectsModel(ByUserNavigation)
+    public class SearchProjectsModel(ISender sender) : AllProjectsModel("")
     {
-
-        [BindProperty(SupportsGet = true)]
+        [BindProperty(SupportsGet = true, Name = "query")]
         public string Query { get; set; } = string.Empty;
 
         public List<ListAllProjectsResultModel> Projects { get; set; } = default!;
+         
         public string ErrorMessage { get; set; } = string.Empty;
+
+        public int TotalResults { get; set; } = 0;
+
         public async Task OnGetAsync()
         {
             if (string.IsNullOrWhiteSpace(Query))
@@ -32,14 +36,19 @@ namespace Dfe.Complete.Pages.Search
             }
             else
             {
-                var searchProjectsQuery = new SearchProjectsQuery(ProjectState.Active, Query, PageNumber - 1, 102);
+                var countProjectQuery = new CountAllProjectsQuery(ProjectState.Active, null, Query);
+                var countResponse = await sender.Send(countProjectQuery);
 
-                var searchProjectsResponse = await sender.Send(searchProjectsQuery);
-                if(searchProjectsResponse.Value?.Count > 100 )
+                var searchProjectsQuery = new SearchProjectsQuery(ProjectState.Active, Query)
                 {
-                    ErrorMessage = "Too many results";
-                }
-                Projects = searchProjectsResponse.Value ?? []; 
+                    Page = PageNumber - 1,
+                    Count = PageSize
+                };
+                var searchProjectsResponse = await sender.Send(searchProjectsQuery);
+                Projects = searchProjectsResponse.Value ?? [];
+                TotalResults = countResponse.Value;
+
+                Pagination = new PaginationModel($"/search?query={Query}", PageNumber, TotalResults, PageSize);
             }
         }
         public static bool IsMixedString(string input)
@@ -47,6 +56,11 @@ namespace Dfe.Complete.Pages.Search
             bool hasLetter = input.Any(char.IsLetter);
             bool hasDigit = input.Any(char.IsDigit);
             return hasLetter && hasDigit;
+        }
+
+        public async Task OnGetMovePage()
+        {
+            await OnGetAsync();
         }
     }
 }

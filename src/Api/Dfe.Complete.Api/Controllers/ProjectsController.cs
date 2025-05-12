@@ -313,8 +313,7 @@ namespace Dfe.Complete.Api.Controllers
             {
                 return BadRequest("searchProjects is required.");
             }
-            var searchProjectsQuery = new SearchProjectsQuery(ProjectState.Active, request.SearchTerm, 0, 102);
-            var project = await sender.Send(searchProjectsQuery, cancellationToken);
+            var project = await sender.Send(request, cancellationToken);
             return Ok(project.Value);
         }
     }

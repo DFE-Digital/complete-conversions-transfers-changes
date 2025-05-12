@@ -22,8 +22,7 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.SearchProjects
             public async Task Handle_ShouldReturnFilteredList_WhenSearchTermURNs(
         [Frozen] IListAllProjectsQueryService mockListAllProjectsQueryService,
         SearchProjectsQueryHandler handler,
-        IFixture fixture,
-        int pageCount = 100)
+        IFixture fixture)
         {
             // Arrange  
             var listAllProjectsQueryModels = fixture.CreateMany<ListAllProjectsQueryModel>(2).ToList();
@@ -36,11 +35,14 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.SearchProjects
              
             var mock = listAllProjectsQueryModels.BuildMock();
 
+            var query = new SearchProjectsQuery(ProjectState.Active, searchTerm)
+            {
+                Page = 0,
+                Count = 20
+            };
             mockListAllProjectsQueryService
-                .SearchProjects(ProjectState.Active, searchTerm, pageCount)
+                .ListAllProjects(ProjectState.Active, null, search: searchTerm)
                 .Returns(mock);
-
-            var query = new SearchProjectsQuery(ProjectState.Active, searchTerm, 0, pageCount);
 
             // Act
             var result = await handler.Handle(query, default);
@@ -60,8 +62,7 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.SearchProjects
         public async Task Handle_ShouldReturnFilteredList_WhenSearchTermIsUKPRN(
             [Frozen] IListAllProjectsQueryService mockListAllProjectsQueryService,
             SearchProjectsQueryHandler handler,
-            IFixture fixture,
-            int pageCount = 100)
+            IFixture fixture)
         {
             // Arrange 
             var listAllProjectsQueryModels = fixture.CreateMany<ListAllProjectsQueryModel>(1).ToList();
@@ -73,12 +74,14 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.SearchProjects
                 )).ToList();
 
             var mock = listAllProjectsQueryModels.BuildMock();
-
+            var query = new SearchProjectsQuery(ProjectState.Active, searchTerm)
+            {
+                Page = 0,
+                Count = 20
+            };
             mockListAllProjectsQueryService
-                .SearchProjects(ProjectState.Active, searchTerm, pageCount)
-                .Returns(mock);
-
-            var query = new SearchProjectsQuery(ProjectState.Active, searchTerm, 0, pageCount);
+                .ListAllProjects(ProjectState.Active, null, search: searchTerm)
+                .Returns(mock); 
 
             // Act
             var result = await handler.Handle(query, default);
@@ -97,8 +100,7 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.SearchProjects
         public async Task Handle_ShouldReturnFilteredList_WhenSearchTermIsEstablishmentNumber(
             [Frozen] IListAllProjectsQueryService mockListAllProjectsQueryService,
             SearchProjectsQueryHandler handler,
-            IFixture fixture,
-            int pageCount = 100)
+            IFixture fixture)
         {
             // Arrange 
             var listAllProjectsQueryModels = fixture.CreateMany<ListAllProjectsQueryModel>(1).ToList();
@@ -111,11 +113,15 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.SearchProjects
 
             var mock = listAllProjectsQueryModels.BuildMock();
 
-            mockListAllProjectsQueryService
-                .SearchProjects(ProjectState.Active, searchTerm, pageCount)
-                .Returns(mock);
+            var query = new SearchProjectsQuery(ProjectState.Active, searchTerm)
+            {
+                Page = 0,
+                Count = 20
+            };
 
-            var query = new SearchProjectsQuery(ProjectState.Active, searchTerm, 0, pageCount);
+            mockListAllProjectsQueryService
+                .ListAllProjects(ProjectState.Active, null, search: searchTerm)
+                .Returns(mock);
 
             // Act
             var result = await handler.Handle(query, default);
@@ -134,7 +140,7 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.SearchProjects
         public async Task Handle_ShouldReturnFilteredList_WhenSearchTermIsString(
             [Frozen] IListAllProjectsQueryService mockListAllProjectsQueryService,
             SearchProjectsQueryHandler handler,
-            IFixture fixture, int pageCount = 100)
+            IFixture fixture)
         {
             // Arrange 
             var listAllProjectsQueryModels = fixture.CreateMany<ListAllProjectsQueryModel>(1).ToList();
@@ -146,13 +152,16 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.SearchProjects
                 )).ToList();
 
             var mock = listAllProjectsQueryModels.BuildMock();
+            var query = new SearchProjectsQuery(ProjectState.Active, searchTerm!)
+            {
+                Page = 0,
+                Count = 20
+            };
 
             mockListAllProjectsQueryService
-                .SearchProjects(ProjectState.Active, searchTerm!, pageCount)
+                .ListAllProjects(ProjectState.Active, null, search: searchTerm)
                 .Returns(mock);
-
-            var query = new SearchProjectsQuery(ProjectState.Active, searchTerm!, 0, pageCount);
-
+             
             // Act
             var result = await handler.Handle(query, default);
 
@@ -169,7 +178,7 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.SearchProjects
         typeof(DateOnlyCustomization))]
         public async Task Handle_ShouldReturnException_WhenExceptionOccurs(
             SearchProjectsQueryHandler handler,
-            IFixture fixture, int pageCount = 100)
+            IFixture fixture)
         {
             // Arrange 
             var listAllProjectsQueryModels = fixture.CreateMany<ListAllProjectsQueryModel>(1).ToList();
@@ -180,7 +189,11 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.SearchProjects
                     item.Establishment
                 )).ToList();
               
-            var query = new SearchProjectsQuery(ProjectState.Active, searchTerm!, 0, pageCount);
+            var query = new SearchProjectsQuery(ProjectState.Active, searchTerm!)
+            {
+                Page = 1,
+                Count = 20
+            };
 
             // Act
             var result = await handler.Handle(query, default);

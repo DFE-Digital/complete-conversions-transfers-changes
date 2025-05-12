@@ -74,9 +74,10 @@ public class PaginationModel
     public string? ElementIdPrefix { get; init; }
         
     public string Prefix => !string.IsNullOrEmpty(ElementIdPrefix) ? ElementIdPrefix : "";
-    public string? NextPageLink => Next.HasValue ? $"{Url}?pageNumber={Next}" : null;
-    public string? PreviousPageLink => Previous.HasValue ? $"{Url}?pageNumber={Previous}" : null;
+    public string? NextPageLink => Next.HasValue ? SetUrl(Url, Next.Value) : null;
+    public string? PreviousPageLink => Previous.HasValue ? SetUrl(Url, Previous.Value) : null;
     public string PaginationContainerId => $"{Prefix}pagination-container";
     public string NextButtonId => $"{Prefix}next-page";
     public string PreviousButtonId => $"{Prefix}previous-page";
+    public string SetUrl(string url, int pageNumber) => $"{url}{(url.Contains('?') ? "&" : "?")}pageNumber={pageNumber}";
 }

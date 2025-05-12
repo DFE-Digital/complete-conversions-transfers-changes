@@ -61,7 +61,7 @@ public partial class ProjectsControllerTests
         await dbContext.Projects.AddRangeAsync(projects);
         await dbContext.SaveChangesAsync();
 
-        var result = await projectsClient.CountAllProjectsAsync(null, null);
+        var result = await projectsClient.CountAllProjectsAsync(null, null, null);
 
         Assert.Equal(50, result);
     }
@@ -792,7 +792,7 @@ public partial class ProjectsControllerTests
             {
                 LocalAuthorityId = localAuthority.Id,
                 IncomingTrustUkprn = "12345678",
-                OutgoingTrustUkprn = "87654321",
+                OutgoingTrustUkprn = "87654321"
             })
                 .Create<Project>();
             project.Urn = establishment.Urn ?? project.Urn; 
@@ -805,7 +805,7 @@ public partial class ProjectsControllerTests
         var searchTerm = establishment.Name; 
 
         // Act
-        var results = await projectsClient.SearchProjectsAsync(ProjectState.Active, searchTerm, 1, 50, CancellationToken.None);
+        var results = await projectsClient.SearchProjectsAsync(ProjectState.Active, searchTerm, 0, 20, CancellationToken.None);
 
         var expectedProjects = projects
             .Where(p => p.Urn == establishment.Urn)
@@ -831,7 +831,7 @@ public partial class ProjectsControllerTests
         var localAuthority = dbContext.LocalAuthorities.AsEnumerable().MinBy(_ => Guid.NewGuid());
         Assert.NotNull(localAuthority);
 
-        await dbContext.GiasEstablishments.AddRangeAsync(establishments);
+        await dbContext.GiasEstablishments.AddRangeAsync(establishments); 
 
         var projects = establishments.Select((establishment, i) =>
         {
@@ -839,19 +839,18 @@ public partial class ProjectsControllerTests
             {
                 LocalAuthorityId = localAuthority.Id,
                 IncomingTrustUkprn = "12345678",
-                OutgoingTrustUkprn = "87654321",
-            })
-                .Create<Project>();
+                OutgoingTrustUkprn = "87654321", 
+            }).Create<Project>();
             project.Urn = establishment.Urn ?? project.Urn;
             return project;
         }).ToList();
 
         await dbContext.Projects.AddRangeAsync(projects);
         await dbContext.SaveChangesAsync();
-        var ukprn = projects.First().IncomingTrustUkprn; 
+        var ukprn = projects.First().IncomingTrustUkprn;  
 
         // Act
-        var results = await projectsClient.SearchProjectsAsync(ProjectState.Active, ukprn!.ToString(), 1, 50, CancellationToken.None);
+        var results = await projectsClient.SearchProjectsAsync(ProjectState.Active, ukprn!.ToString(), 0, 20, CancellationToken.None);
 
         var expectedProjects = projects
             .Where(p => p.IncomingTrustUkprn == ukprn && p.State == Domain.Enums.ProjectState.Active)
@@ -900,7 +899,8 @@ public partial class ProjectsControllerTests
             {
                 LocalAuthorityId = localAuthority.Id,
                 IncomingTrustUkprn = "12345678",
-                OutgoingTrustUkprn = "87654321"
+                OutgoingTrustUkprn = "87654321",
+                State = Domain.Enums.ProjectState.Active.GetHashCode()
             }).Create<Project>();
             project.Urn = establishment.Urn ?? project.Urn;
             return project;
@@ -911,7 +911,7 @@ public partial class ProjectsControllerTests
         var urn = projects.First(p => p.State == Domain.Enums.ProjectState.Active).Urn;
 
         // Act
-        var results = await projectsClient.SearchProjectsAsync(ProjectState.Active, urn!.Value.ToString(), 1, 50, CancellationToken.None);
+        var results = await projectsClient.SearchProjectsAsync(ProjectState.Active, urn!.Value.ToString(), 0, 20, CancellationToken.None);
 
         var expectedProjects = projects
             .Where(p => p.Urn == urn)

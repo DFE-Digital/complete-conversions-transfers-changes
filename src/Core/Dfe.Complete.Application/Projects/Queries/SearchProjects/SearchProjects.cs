@@ -1,6 +1,6 @@
 ﻿using Dfe.Complete.Application.Common.Models;
 using Dfe.Complete.Application.Projects.Interfaces;
-using Dfe.Complete.Application.Projects.Models; 
+using Dfe.Complete.Application.Projects.Models;
 using Dfe.Complete.Domain.Enums;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -9,32 +9,30 @@ namespace Dfe.Complete.Application.Projects.Queries.SearchProjects
 { 
     public record SearchProjectsQuery(
        ProjectState? ProjectStatus, 
-       string SearchTerm,
-       int Page = 0,
-       int Count = 20) : IRequest<Result<List<ListAllProjectsResultModel>>>;
+       string SearchTerm) : PaginatedRequest<PaginatedResult<List<ListAllProjectsResultModel>>>;
 
     public class SearchProjectsQueryHandler(
         IListAllProjectsQueryService listAllProjectsQueryService)
-        : IRequestHandler<SearchProjectsQuery, Result<List<ListAllProjectsResultModel>>>
+        : IRequestHandler<SearchProjectsQuery, PaginatedResult<List<ListAllProjectsResultModel>>>
     {
-        public async Task<Result<List<ListAllProjectsResultModel>>> Handle(SearchProjectsQuery request,
+        public async Task<PaginatedResult<List<ListAllProjectsResultModel>>> Handle(SearchProjectsQuery request,
             CancellationToken cancellationToken)
         {
             try
             {
                 var projectList = await listAllProjectsQueryService
-                    .SearchProjects(request.ProjectStatus, request.SearchTerm, request.Count)
+                    .ListAllProjects(request.ProjectStatus, null, search: request.SearchTerm)
+                    .Skip(request.Page * request.Count).Take(request.Count)
                     .Select(item => ListAllProjectsResultModel.MapProjectAndEstablishmentToListAllProjectResultModel(
-                        item.Project!,
-                        item.Establishment
-                    ))
-                    .ToListAsync(cancellationToken); 
+                       item.Project!,
+                       item.Establishment
+                   )).ToListAsync(cancellationToken); 
 
-                return Result<List<ListAllProjectsResultModel>>.Success(projectList);
+                return PaginatedResult<List<ListAllProjectsResultModel>>.Success(projectList, projectList.Count);
             }
             catch (Exception ex)
             {
-                return Result<List<ListAllProjectsResultModel>>.Failure(ex.Message);
+                return PaginatedResult<List<ListAllProjectsResultModel>>.Failure(ex.Message);
             }
         }
     }

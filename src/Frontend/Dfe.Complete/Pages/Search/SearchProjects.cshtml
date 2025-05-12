@@ -3,6 +3,7 @@
 @using Dfe.Complete.Utils
 @model Dfe.Complete.Pages.Search.SearchProjectsModel
 @{
+    Layout = "Search/_SearchProjectsLayout";
     ViewData["Title"] = "Search Results";
 }
 
@@ -31,7 +32,7 @@ else if(!string.IsNullOrEmpty(Model.ErrorMessage))
     </div> 
 }
 else if (Model.Projects.Count == 0)
-{ 
+{
     <h1 class="govuk-heading-l">
         Search results for "@Model.Query"
     </h1>
@@ -50,7 +51,7 @@ else
         Search results for "@Model.Query"
     </h1>
 
-    <p class="govuk-body">@Model.Projects.Count results found</p>
+    <p class="govuk-body">@Model.TotalResults results found</p>
     <table class="govuk-table" name="projects_table" aria-label="Projects table">
         <thead class="govuk-table__head">
             <tr class="govuk-table__row">
