@@ -835,6 +835,9 @@ namespace Dfe.Complete.Client.Contracts
         [Newtonsoft.Json.JsonProperty("regionalDeliveryOfficer", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public User? RegionalDeliveryOfficer { get; set; } = default!;
 
+        [Newtonsoft.Json.JsonProperty("formAMat", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? FormAMat { get; set; } = default!;
+
         public string ToJson()
         {
 

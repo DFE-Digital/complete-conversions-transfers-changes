@@ -1733,6 +1733,9 @@
                 "$ref": "#/components/schemas/User"
               }
             ]
+          },
+          "formAMat": {
+            "type": "boolean"
           }
         }
       },
