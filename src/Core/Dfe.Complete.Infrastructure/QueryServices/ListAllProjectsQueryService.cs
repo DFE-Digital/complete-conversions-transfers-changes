@@ -25,7 +25,6 @@ internal class ListAllProjectsQueryService(CompleteContext context) : IListAllPr
     {
         var projects = context.Projects
             .Where(project => projectStatus == null || project.State == projectStatus)
-            .Where(project => projectStatus != ProjectState.Active || project.AssignedToId != null)
             .Where(project => projectType == null || projectType == project.Type);
 
         IQueryable<GiasEstablishment> giasEstablishments = context.GiasEstablishments;
@@ -68,18 +67,16 @@ internal class ListAllProjectsQueryService(CompleteContext context) : IListAllPr
         {
             projects = projects.Where(project =>
                 project.NewTrustReferenceNumber != null &&
-                project.NewTrustName != null &&
-                project.IncomingTrustUkprn == null);
+                project.NewTrustName != null);
         }
         else if (isFormAMat == false)
         {
             projects = projects.Where(project =>
                 project.NewTrustReferenceNumber == null &&
-                project.NewTrustName == null &&
-                project.IncomingTrustUkprn != null);
+                project.NewTrustName == null);
         }
 
-
+        var test = GenerateQuery(projects, giasEstablishments, orderBy).ToQueryString();
         return GenerateQuery(projects, giasEstablishments, orderBy);
     }
 
