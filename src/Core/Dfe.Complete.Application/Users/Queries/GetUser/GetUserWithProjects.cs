@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Dfe.Complete.Application.Users.Queries.GetUser;
 
-public record GetUserWithProjectsQuery(UserId UserId, ProjectState? State, OrderProjectByField? OrderProjectsBy = OrderProjectByField.Id)
+public record GetUserWithProjectsQuery(UserId UserId, ProjectState? State, OrderUserProjectsByField? OrderUserProjectsBy = OrderUserProjectsByField.Id)
     : PaginatedRequest<PaginatedResult<UserWithProjectsDto>>;
 
 public class GetUserWithProjectsHandler(
@@ -19,65 +19,54 @@ public class GetUserWithProjectsHandler(
     ICompleteRepository<GiasEstablishment> establishments)
     : IRequestHandler<GetUserWithProjectsQuery, PaginatedResult<UserWithProjectsDto>>
 {
-    public async Task<PaginatedResult<UserWithProjectsDto>> Handle(GetUserWithProjectsQuery request,
+    public async Task<PaginatedResult<UserWithProjectsDto>> Handle(
+        GetUserWithProjectsQuery request,
         CancellationToken cancellationToken)
     {
         try
         {
             //Find the user first
             var foundUser = await users.Query()
-                .Where(user => user.Id == request.UserId)
-                .Select(user => new
-                {
-                    User = user,
-                    FilteredProjects = (
-                        request.OrderProjectsBy == OrderProjectByField.SignificantDate
-                        ? user.ProjectAssignedTos
-                            .Where(project => request.State == null || project.State == request.State)
-                            .OrderBy(p => p.SignificantDate)
-                        : user.ProjectAssignedTos
-                            .Where(project => request.State == null || project.State == request.State)
-                            .OrderBy(p => p.Id)
-                        )
-                        .Skip(request.Page * request.Count)
-                        .Take(request.Count)
-                        .ToList(),
-                    ConversionCount = user.ProjectAssignedTos
-                        .Where(project => request.State == null || project.State == request.State)
-                        .Count(project => project.Type == ProjectType.Conversion),
-                    TransferCount = user.ProjectAssignedTos
-                        .Where(project => request.State == null || project.State == request.State)
-                        .Count(project => project.Type == ProjectType.Transfer)
-                })
-                .FirstOrDefaultAsync(cancellationToken);
+                .Include(user => user.ProjectAssignedTos)
+                .SingleOrDefaultAsync(user => user.Id == request.UserId, cancellationToken);
 
             // Exit immediately if there is no user
             if (foundUser is null)
-            {
                 return PaginatedResult<UserWithProjectsDto>.Failure("User is not found");
-            }
+
+            var projects = foundUser.ProjectAssignedTos.Where(project => request.State == null || project.State == request.State);
+
+            if (request.OrderUserProjectsBy == OrderUserProjectsByField.SignificantDate)
+                projects = projects.OrderBy(project => project.SignificantDate);
+            else if (request.OrderUserProjectsBy == OrderUserProjectsByField.Id)
+                projects = projects.OrderBy(project => project.Id);
+
+            var projectsList = projects.Skip(request.Page * request.Count).Take(request.Count).ToList();
+
+            var conversionCount = projectsList.Count(projects => projects.Type == ProjectType.Conversion);
+            var transferCount = projectsList.Count(projects => projects.Type == ProjectType.Transfer);
 
             // Find all matching establishments for projects found
-            var establishmentUrns = foundUser.FilteredProjects.Select(p => p.Urn).Distinct();
+            var establishmentUrns = projectsList.Select(p => p.Urn).Distinct();
             var establishmentsDict = await establishments.Query()
                 .Where(e => establishmentUrns.Contains(e.Urn)).ToDictionaryAsync(e => e.Urn!, cancellationToken);
 
             // Format results into expected model
             var result = new UserWithProjectsDto(
-                foundUser.User.Id,
-                $"{foundUser.User.FirstName} {foundUser.User.LastName}",
-                foundUser.User.Email,
-                foundUser.User.Team.FromDescriptionValue<ProjectTeam>(),
-                foundUser.FilteredProjects.Select(project =>
+                foundUser.Id,
+                foundUser.FullName,
+                foundUser.Email,
+                foundUser.Team.FromDescriptionValue<ProjectTeam>(),
+                projectsList.Select(project =>
                 {
                     establishmentsDict.TryGetValue(project.Urn, out var establishment);
                     return ListAllProjectsResultModel.MapProjectAndEstablishmentToListAllProjectResultModel(project,
                         establishment);
                 }).ToList(),
-                foundUser.ConversionCount,
-                foundUser.TransferCount
+                conversionCount,
+                transferCount
             );
-            return PaginatedResult<UserWithProjectsDto>.Success(result, foundUser.ConversionCount + foundUser.TransferCount);
+            return PaginatedResult<UserWithProjectsDto>.Success(result, conversionCount + transferCount);
         }
         catch (Exception ex)
         {

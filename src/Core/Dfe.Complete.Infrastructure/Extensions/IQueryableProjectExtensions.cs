@@ -20,9 +20,6 @@ public static class IQueryableProjectExtensions
             (OrderProjectByField.CompletedAt, OrderByDirection.Ascending) => src.OrderBy(p => p.CompletedAt),
             (OrderProjectByField.CompletedAt, _) => src.OrderByDescending(p => p.CompletedAt),
 
-            (OrderProjectByField.Id, OrderByDirection.Ascending) => src.OrderBy(p => p.Id),
-            (OrderProjectByField.Id, _) => src.OrderByDescending(p => p.Id),
-
             (OrderProjectByField.SignificantDate, OrderByDirection.Descending) => src.OrderByDescending(p => p.SignificantDate),
 
             _ => src.OrderBy(p => p.SignificantDate)

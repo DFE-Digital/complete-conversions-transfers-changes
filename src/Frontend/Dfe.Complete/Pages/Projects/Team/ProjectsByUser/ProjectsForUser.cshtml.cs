@@ -1,5 +1,4 @@
-﻿using Dfe.Complete.Application.Projects.Models;
-using Dfe.Complete.Application.Users.Models;
+﻿using Dfe.Complete.Application.Users.Models;
 using Dfe.Complete.Application.Users.Queries.GetUser;
 using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Domain.ValueObjects;
@@ -17,7 +16,7 @@ public class ProjectsForUser(ISender sender) : YourTeamProjectsModel(ByUserNavig
     {
         ViewData[TabNavigationModel.ViewDataKey] = YourTeamProjectsTabNavigationModel;
 
-        var getUserQuery = new GetUserWithProjectsQuery(new UserId(new Guid(id)), ProjectState.Active, OrderProjectByField.SignificantDate)
+        var getUserQuery = new GetUserWithProjectsQuery(new UserId(new Guid(id)), ProjectState.Active, OrderUserProjectsByField.SignificantDate)
             { Page = PageNumber - 1, Count = PageSize };
 
         var response = await sender.Send(getUserQuery);

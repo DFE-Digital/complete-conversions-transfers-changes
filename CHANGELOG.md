@@ -26,6 +26,8 @@ Security in case of vulnerabilities.
 
 ### Changed  
  - Merged `ListAllUsersInTeamWithProjectsQuery` into `ListAllUsersWithProjectsQuery` with filter
+ - Order "Team projects" > "By User" by significant date
+ - Filter "Team projects" > "Handed over" to active projects only
 
 ### Fixed  
  - Routing for projects merged (`/conversion-project` and `/transfer-project` become `/project`)
