@@ -1,0 +1,13 @@
+﻿@page "/projects/{projectId}/information"
+@using Dfe.Complete.Domain.Enums
+@model Dfe.Complete.Pages.Projects.AboutTheProject.AboutTheProjectModel
+
+@if (Model.Project.Type == ProjectType.Conversion)
+{
+  @await Html.PartialAsync("_AboutConversionProject", Model)
+}
+
+@if (Model.Project.Type == ProjectType.Transfer)
+{
+  @await Html.PartialAsync("_AboutTransferProject", Model)
+}
