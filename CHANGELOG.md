@@ -22,6 +22,7 @@ Security in case of vulnerabilities.
 
 ## Unreleased  
 ### Added  
+- Added search bar to search projects with active status.
 ### Changed  
 ### Fixed  
  - Routing for projects merged (`/conversion-project` and `/transfer-project` become `/project`)
