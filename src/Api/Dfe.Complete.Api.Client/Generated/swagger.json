@@ -2567,6 +2567,14 @@
           "createdAt": {
             "type": "string",
             "format": "date-time"
+          },
+          "regionalDeliveryOfficer": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/User"
+              }
+            ]
           }
         }
       },
@@ -2593,12 +2601,7 @@
         "additionalProperties": false,
         "properties": {
           "project": {
-            "nullable": true,
-            "oneOf": [
-              {
-                "$ref": "#/components/schemas/Project"
-              }
-            ]
+            "$ref": "#/components/schemas/Project"
           },
           "establishment": {
             "nullable": true,

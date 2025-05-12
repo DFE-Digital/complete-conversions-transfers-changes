@@ -7,35 +7,49 @@ using Dfe.Complete.Domain.Extensions;
 using Dfe.Complete.Models;
 using Dfe.Complete.Pages.Pagination;
 using MediatR;
-using Dfe.Complete.Domain.Constants;
 
-namespace Dfe.Complete.Pages.Projects.Team.HandedOver;
+namespace Dfe.Complete.Pages.Projects.Team.Unassigned;
 
 public class AllProjectsUnassignedForTeamModel(ISender sender) : YourTeamProjectsModel(UnassignedNavigation)
 {
     public List<ListAllProjectsResultModel> Projects { get; set; } = [];
+    public bool UserTeamIsRegionalDeliveryOfficer { get; set; }
 
     public async Task OnGet()
     {
         ViewData[TabNavigationModel.ViewDataKey] = YourTeamProjectsTabNavigationModel;
 
         var userTeam = await User.GetUserTeam(sender);
+        UserTeamIsRegionalDeliveryOfficer = userTeam.TeamIsRegionalDeliveryOfficer();
         var recordCount = 0;
 
-        if (User.HasRole(UserRolesConstants.ManageTeam))
+        if (UserTeamIsRegionalDeliveryOfficer)
         {
-            // var userRegion = EnumMapper.MapTeamToRegion(userTeam);
+            var userRegion = EnumMapper.MapTeamToRegion(userTeam);
 
-            // var listProjectsForRegionQuery =
-            //     new ListAllProjectsForTeamHandoverQuery((Region)userRegion!, null, null)
-            //     {
-            //         Page = PageNumber - 1,
-            //         Count = PageSize
-            //     };
+            var listProjectsForRegionQuery =
+                new ListAllProjectsForRegionQuery((Region)userRegion!, ProjectState.Active, null, AssignedToState.UnassignedOnly, null)
+                {
+                    Page = PageNumber - 1,
+                    Count = PageSize
+                };
 
-            // var listProjectsForRegionResult = await sender.Send(listProjectsForRegionQuery);
-            // recordCount = listProjectsForRegionResult.ItemCount;
-            // Projects = listProjectsForRegionResult.Value ?? [];
+            var listProjectsForRegionResult = await sender.Send(listProjectsForRegionQuery);
+            recordCount = listProjectsForRegionResult.ItemCount;
+            Projects = listProjectsForRegionResult.Value ?? [];
+        }
+        else if (userTeam.TeamIsRegionalCaseworkServices())
+        {
+            var listProjectsForTeamQuery =
+                new ListAllProjectsForTeamQuery(userTeam, ProjectState.Active, null, AssignedToState.UnassignedOnly, null)
+                {
+                    Page = PageNumber - 1,
+                    Count = PageSize
+                };
+
+            var listResponse = await sender.Send(listProjectsForTeamQuery);
+            recordCount = listResponse.ItemCount;
+            Projects = listResponse.Value ?? [];
         }
 
         Pagination = new PaginationModel(RouteConstants.TeamProjectsUnassigned, PageNumber, recordCount, PageSize);

@@ -24,6 +24,7 @@ internal class ListAllProjectsQueryService(CompleteContext context) : IListAllPr
         OrderProjectQueryBy? orderBy = null)
     {
         var projects = context.Projects
+            .Include(project => project.RegionalDeliveryOfficer)
             .Where(project => projectStatus == null || project.State == projectStatus)
             .Where(project => projectType == null || projectType == project.Type);
 

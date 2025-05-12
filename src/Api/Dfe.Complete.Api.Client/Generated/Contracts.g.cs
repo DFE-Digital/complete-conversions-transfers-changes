@@ -1672,6 +1672,9 @@ namespace Dfe.Complete.Client.Contracts
         [Newtonsoft.Json.JsonProperty("createdAt", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public System.DateTime? CreatedAt { get; set; } = default!;
 
+        [Newtonsoft.Json.JsonProperty("regionalDeliveryOfficer", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public User? RegionalDeliveryOfficer { get; set; } = default!;
+
         public string ToJson()
         {
 
