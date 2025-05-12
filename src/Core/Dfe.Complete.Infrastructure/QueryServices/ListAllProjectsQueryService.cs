@@ -25,13 +25,15 @@ internal class ListAllProjectsQueryService(CompleteContext context) : IListAllPr
     {
         var projects = context.Projects
             .Where(project => projectStatus == null || project.State == projectStatus)
-            .Where(project => projectStatus != ProjectState.Active || project.AssignedToId != null)
             .Where(project => projectType == null || projectType == project.Type);
 
         IQueryable<GiasEstablishment> giasEstablishments = context.GiasEstablishments;
 
         if (assignedToState == AssignedToState.AssignedOnly)
             projects = projects.Where(project => project.AssignedToId != null);
+
+        if (assignedToState == AssignedToState.UnassignedOnly)
+            projects = projects.Where(project => project.AssignedToId == null);
 
         if (assignedToUserId != null && assignedToUserId.Value != Guid.Empty)
         {
