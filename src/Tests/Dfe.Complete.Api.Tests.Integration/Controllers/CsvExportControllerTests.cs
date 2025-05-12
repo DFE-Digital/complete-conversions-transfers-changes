@@ -1,10 +1,12 @@
-﻿using AutoFixture;
+﻿using System.Security.Claims;
+using AutoFixture;
 using Dfe.AcademiesApi.Client.Contracts;
 using Dfe.Complete.Api.Tests.Integration.Customizations;
 using Dfe.Complete.Domain.Entities;
 using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Domain.ValueObjects;
 using Dfe.Complete.Infrastructure.Database;
+using Dfe.Complete.Tests.Common.Constants;
 using Dfe.Complete.Tests.Common.Customizations.Behaviours;
 using Dfe.Complete.Tests.Common.Customizations.Models;
 using DfE.CoreLibs.Testing.AutoFixture.Attributes;
@@ -24,6 +26,7 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers
             IFixture fixture)
         {
             // Arrange
+            factory.TestClaims = [new Claim(ClaimTypes.Role, ApiRoles.ReadRole)];
             var dbContext = factory.GetDbContext<CompleteContext>();
 
             //Establishments
@@ -195,6 +198,7 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers
            IFixture fixture)
         {
             // Arrange
+            factory.TestClaims = [new Claim(ClaimTypes.Role, ApiRoles.ReadRole)];
             var dbContext = factory.GetDbContext<CompleteContext>();
 
             //Establishments
