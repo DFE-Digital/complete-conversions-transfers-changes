@@ -30,7 +30,7 @@
     "@types/node": "20.17.32",
     "@types/uuid": "9.0.8",
     "@typescript-eslint/eslint-plugin": "6.8.0",
-    "axe-core": "4.7.2",
+    "axe-core": "4.10.3",
     "csv-stringify": "6.4.6",
     "cypress": "13.17.0",
     "cypress-axe": "1.5.0",
