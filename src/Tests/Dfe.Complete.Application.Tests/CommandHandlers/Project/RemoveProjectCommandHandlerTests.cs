@@ -35,21 +35,21 @@ public class RemoveProjectCommandHandlerTests
         configMock.Setup(c => c["IntegrationTestOverride"]).Returns("true");
 
         var handler = new RemoveProjectCommandHandler(
-            host, 
-            mockProjectRepository, 
-            mockTransferTaskRepository, 
-            mockConversionTaskRepository, 
-            unitOfWorkMock.Object, 
+            host,
+            mockProjectRepository,
+            mockTransferTaskRepository,
+            mockConversionTaskRepository,
+            unitOfWorkMock.Object,
             configMock.Object);
 
         // Act & Assert
-        await Assert.ThrowsAsync<NotDevEnvironmentException>(() => handler.Handle(command, CancellationToken.None));
+        await Assert.ThrowsAsync<NotDevOrTestEnvironmentException>(() => handler.Handle(command, CancellationToken.None));
     }
-    
+
     [Theory]
     [CustomAutoData(typeof(DateOnlyCustomization),
         typeof(IgnoreVirtualMembersCustomisation))]
-    public async Task Handle_TestEnvironmentWithoutOverrideFlag_WillThrowError(
+    public async Task Handle_ProdEnvironment_WillThrowError(
         [Frozen] ICompleteRepository<Domain.Entities.Project> mockProjectRepository,
         [Frozen] ICompleteRepository<TransferTasksData> mockTransferTaskRepository,
         [Frozen] ICompleteRepository<ConversionTasksData> mockConversionTaskRepository,
@@ -60,8 +60,8 @@ public class RemoveProjectCommandHandlerTests
         var configMock = new Mock<IConfiguration>();
         var unitOfWorkMock = new Mock<IUnitOfWork>();
         IHostEnvironment host = new HostingEnvironment();
-        host.EnvironmentName = "Test";
-        configMock.Setup(c => c["IntegrationTestOverride"]).Returns("false");
+        host.EnvironmentName = "Production";
+        configMock.Setup(c => c["IntegrationTestOverride"]).Returns("true");
 
         var handler = new RemoveProjectCommandHandler(
             host, 
@@ -72,6 +72,6 @@ public class RemoveProjectCommandHandlerTests
             configMock.Object);
 
         // Act & Assert
-        await Assert.ThrowsAsync<NotDevEnvironmentException>(() => handler.Handle(command, CancellationToken.None));
+        await Assert.ThrowsAsync<NotDevOrTestEnvironmentException>(() => handler.Handle(command, CancellationToken.None));
     }
 }

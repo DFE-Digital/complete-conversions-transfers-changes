@@ -31,7 +31,7 @@ namespace Dfe.Complete.Application.Projects.Commands.RemoveProject
             // As well as making sure that we differentiate between soft and hard deletes
             if (!hostEnvironment.IsDevelopment() && !hostEnvironment.IsTest())
             {
-                throw new NotDevEnvironmentException();
+                throw new NotDevOrTestEnvironmentException();
             }
 
             await unitOfWork.BeginTransactionAsync();
