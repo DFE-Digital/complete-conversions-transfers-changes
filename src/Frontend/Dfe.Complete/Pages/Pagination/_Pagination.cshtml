@@ -1,4 +1,5 @@
 ﻿@model Dfe.Complete.Pages.Pagination.PaginationModel
+@using Dfe.Complete.Pages.Pagination
 @* @{ *@
    @* var nonce = Context.GetNonce(); *@
 @* } *@
@@ -27,7 +28,7 @@
       {
         <govuk-pagination-ellipsis/>
       }
-      <govuk-pagination-item id="@pageNumberLinkId" href="@Html.Raw(Model.SetUrl(Model.Url,pageNumber))" is-current="@isCurrentPage" aria-current="@ariaCurrentPage" aria-label="@ariaLabel">
+      <govuk-pagination-item id="@pageNumberLinkId" href="@Html.Raw(PaginationModel.SetUrl(Model.Url, pageNumber))" is-current="@isCurrentPage" aria-current="@ariaCurrentPage" aria-label="@ariaLabel">
         @pageNumber
       </govuk-pagination-item>
 
