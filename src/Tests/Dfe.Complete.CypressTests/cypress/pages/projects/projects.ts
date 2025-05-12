@@ -16,8 +16,28 @@ class Projects {
         return this;
     }
 
+    goToPreviousPageUntilFieldIsVisible(field: string) {
+        cy.get("body").then(($body) => {
+            if ($body.find(`.govuk-table:contains(${field})`).length === 0) {
+                this.goToPreviousPage();
+                this.goToPreviousPageUntilFieldIsVisible(field);
+            }
+        });
+        return this;
+    }
+
     goToNextPage() {
         cy.getById("next-page").click();
+        return this;
+    }
+
+    goToPreviousPage() {
+        cy.getById("previous-page").click();
+        return this;
+    }
+
+    goToLastPage() {
+        cy.getByClass("govuk-pagination__list").find("li").last().click();
         return this;
     }
 

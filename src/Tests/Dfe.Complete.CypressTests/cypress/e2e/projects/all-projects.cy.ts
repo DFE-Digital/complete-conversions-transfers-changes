@@ -1,7 +1,7 @@
 import navBar from "cypress/pages/navBar";
 import allProjects from "cypress/pages/projects/allProjects";
 import { projectTable } from "cypress/pages/projects/tables/projectTable";
-import { before, beforeEach } from "mocha";
+import { beforeEach } from "mocha";
 import {
     nextMonth,
     nextMonthLong,
@@ -54,7 +54,10 @@ describe("View all projects", () => {
 
     it("Should be able to view newly created conversion project in All projects in progress and Conversions projects", () => {
         navBar.goToAllProjects();
-        allProjects.containsHeading("All projects in progress").goToNextPageUntilFieldIsVisible(schoolName);
+        allProjects
+            .containsHeading("All projects in progress")
+            .goToLastPage()
+            .goToPreviousPageUntilFieldIsVisible(schoolName);
         projectTable
             .hasTableHeaders([
                 "School or academy",
@@ -73,7 +76,8 @@ describe("View all projects", () => {
         allProjects
             .viewConversionsProjects()
             .containsHeading("All conversions in progress")
-            .goToNextPageUntilFieldIsVisible(schoolName);
+            .goToLastPage()
+            .goToPreviousPageUntilFieldIsVisible(schoolName);
         projectTable
             .hasTableHeaders(["School or academy", "URN", "Conversion date", "Form a MAT project?", "Assigned to"])
             .withSchool(schoolName)
@@ -87,7 +91,10 @@ describe("View all projects", () => {
 
     it("Should be able to view newly created transfer project in All projects in progress and Transfers projects", () => {
         navBar.goToAllProjects();
-        allProjects.containsHeading("All projects in progress").goToNextPageUntilFieldIsVisible(transferSchoolName);
+        allProjects
+            .containsHeading("All projects in progress")
+            .goToLastPage()
+            .goToPreviousPageUntilFieldIsVisible(transferSchoolName);
         projectTable
             .withSchool(transferSchoolName)
             .columnHasValue("URN", `${transferProject.urn.value}`)
@@ -98,6 +105,7 @@ describe("View all projects", () => {
         allProjects
             .viewTransfersProjects()
             .containsHeading("All transfers in progress")
+            .goToLastPage()
             .goToNextPageUntilFieldIsVisible(transferSchoolName);
         projectTable
             .hasTableHeaders(["School or academy", "URN", "Transfer date", "Form a MAT project?", "Assigned to"])
@@ -112,7 +120,10 @@ describe("View all projects", () => {
 
     it("Should be able to view a form a MAT transfer project in All projects in progress, Transfers projects and Form a MAT projects (by Trust) ", () => {
         navBar.goToAllProjects();
-        allProjects.containsHeading("All projects in progress").goToNextPageUntilFieldIsVisible(transferFormAMatSchoolName);
+        allProjects
+            .containsHeading("All projects in progress")
+            .goToLastPage()
+            .goToPreviousPageUntilFieldIsVisible(transferFormAMatSchoolName);
         projectTable
             .withSchool(transferFormAMatSchoolName)
             .columnHasValue("URN", `${transferFormAMatProject.urn.value}`)
@@ -123,7 +134,8 @@ describe("View all projects", () => {
         allProjects
             .viewTransfersProjects()
             .containsHeading("All transfers in progress")
-            .goToNextPageUntilFieldIsVisible(transferFormAMatSchoolName);
+            .goToLastPage()
+            .goToPreviousPageUntilFieldIsVisible(transferFormAMatSchoolName);
         projectTable
             .hasTableHeaders(["School or academy", "URN", "Transfer date", "Form a MAT project?", "Assigned to"])
             .withSchool(transferFormAMatSchoolName)
