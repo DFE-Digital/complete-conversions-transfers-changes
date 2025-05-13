@@ -116,22 +116,6 @@ namespace Dfe.Complete.Api.Controllers
         }
 
         /// <summary>
-        /// Returns a list of Projects by trust reference number
-        /// </summary>
-        /// <param name="request">The request.</param>
-        /// <param name="cancellationToken">The cancellation token.</param>
-        [Authorize(Policy = "CanRead")]
-        [HttpGet]
-        [Route("List/All/TrustRef")]
-        [SwaggerResponse(200, "Project", typeof(List<ListAllProjectsQueryModel>))]
-        [SwaggerResponse(400, "Invalid request data.")]
-        public async Task<IActionResult> ListAllProjectsByTrustRefAsync([FromQuery] ListEstablishmentsInMatQuery request, CancellationToken cancellationToken)
-        {
-            var project = await sender.Send(request, cancellationToken);
-            return Ok(project.Value?.projectModels ?? []);
-        }
-
-        /// <summary>
         /// Returns a list of Projects related to a specific trust
         /// </summary>
         /// <param name="request">The request.</param>
@@ -144,7 +128,7 @@ namespace Dfe.Complete.Api.Controllers
         public async Task<IActionResult> ListAllProjectsInTrustAsync([FromQuery] ListAllProjectsInTrustQuery request, CancellationToken cancellationToken)
         {
             var project = await sender.Send(request, cancellationToken);
-            return Ok(project.Value?.projects.ToList() ?? []);
+            return Ok(project.Value?.projects ?? []);
         }
 
         /// <summary>
