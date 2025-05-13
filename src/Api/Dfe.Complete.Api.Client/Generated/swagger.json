@@ -1040,13 +1040,13 @@
             "x-position": 2
           },
           {
-            "name": "OrderProjectsBy",
+            "name": "OrderUserProjectsBy",
             "in": "query",
             "schema": {
               "nullable": true,
               "oneOf": [
                 {
-                  "$ref": "#/components/schemas/OrderProjectByField"
+                  "$ref": "#/components/schemas/OrderUserProjectsByField"
                 }
               ]
             },
@@ -2816,14 +2816,12 @@
         "x-enumNames": [
           "CompletedAt",
           "CreatedAt",
-          "SignificantDate",
-          "Id"
+          "SignificantDate"
         ],
         "enum": [
           "CompletedAt",
           "CreatedAt",
-          "SignificantDate",
-          "Id"
+          "SignificantDate"
         ]
       },
       "OrderByDirection": {
@@ -3002,6 +3000,18 @@
             "format": "int32"
           }
         }
+      },
+      "OrderUserProjectsByField": {
+        "type": "string",
+        "description": "",
+        "x-enumNames": [
+          "Id",
+          "SignificantDate"
+        ],
+        "enum": [
+          "Id",
+          "SignificantDate"
+        ]
       },
       "ListAllUsersWithProjectsResultModel": {
         "type": "object",
