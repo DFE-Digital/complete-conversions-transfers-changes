@@ -26,13 +26,8 @@ internal class ListAllProjectsQueryService(CompleteContext context) : IListAllPr
         OrderProjectQueryBy? orderBy = null)
     {
         var projects = context.Projects
-            .Where(project => projectStatus == null || project.State == projectStatus);
-        if (string.IsNullOrWhiteSpace(search))
-        {
-            projects = projects
-                .Where(project => projectStatus != ProjectState.Active || project.AssignedToId != null)
-                .Where(project => projectType == null || projectType == project.Type);
-        }
+            .Where(project => projectStatus == null || project.State == projectStatus)
+            .Where(project => projectType == null || projectType == project.Type);
 
         IQueryable<GiasEstablishment> giasEstablishments = context.GiasEstablishments;
 
