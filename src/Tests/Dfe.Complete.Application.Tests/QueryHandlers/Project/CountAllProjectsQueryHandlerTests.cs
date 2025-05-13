@@ -30,7 +30,7 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
 
             var mock = listAllProjectsQueryModels.BuildMock();
 
-            mockListAllProjectsQueryService.ListAllProjects(query.ProjectStatus, query.Type)
+            mockListAllProjectsQueryService.ListAllProjects(query.ProjectStatus, query.Type, search: query.Search)
                 .Returns(mock);
 
             // Act
