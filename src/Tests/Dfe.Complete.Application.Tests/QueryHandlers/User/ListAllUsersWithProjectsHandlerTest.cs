@@ -2,9 +2,7 @@
 using AutoFixture.Xunit2;
 using Dfe.Complete.Application.Projects.Models;
 using Dfe.Complete.Application.Users.Models;
-using Dfe.Complete.Application.Users.Queries.GetUser;
 using Dfe.Complete.Application.Users.Queries.ListAllUsers;
-using Dfe.Complete.Domain.Entities;
 using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Domain.Interfaces.Repositories;
 using Dfe.Complete.Tests.Common.Customizations.Behaviours;
@@ -57,7 +55,8 @@ public class ListAllUsersWithProjectsHandlerTest
                 null,
                 null,
                 null,
-                project.CreatedAt
+                project.CreatedAt,
+                null
             )).ToList(),
             user.ProjectAssignedTos.Count(project => project.Type == ProjectType.Conversion),
             user.ProjectAssignedTos.Count(project => project.Type == ProjectType.Transfer)
@@ -153,7 +152,8 @@ public class ListAllUsersWithProjectsHandlerTest
                 null,
                 null,
                 null,
-                project.CreatedAt
+                project.CreatedAt,
+                null
             )).ToList(),
             user.ProjectAssignedTos.Count(project => project.Type == ProjectType.Conversion),
             user.ProjectAssignedTos.Count(project => project.Type == ProjectType.Transfer)
@@ -217,7 +217,8 @@ public class ListAllUsersWithProjectsHandlerTest
                 null,
                 null,
                 null,
-                project.CreatedAt
+                project.CreatedAt,
+                null
             )).ToList(),
             user.ProjectAssignedTos.Where(project => project.State == ProjectState.Active).Count(project => project.Type == ProjectType.Conversion),
             user.ProjectAssignedTos.Where(project => project.State == ProjectState.Active).Count(project => project.Type == ProjectType.Transfer)

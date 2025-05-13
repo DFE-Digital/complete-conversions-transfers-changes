@@ -19,7 +19,7 @@ public record ListAllProjectsResultModel(
     Region? Region,
     string? LocalAuthorityNameFormatted,
     DateTime CreatedAt,
-    User? RegionalDeliveryOfficer
+    string? RegionalDeliveryOfficerFullName
 )
 {
     public static ListAllProjectsResultModel MapProjectAndEstablishmentToListAllProjectResultModel(Project project, GiasEstablishment? establishment)
@@ -39,7 +39,7 @@ public record ListAllProjectsResultModel(
             project.Region,
             establishment?.LocalAuthorityName,
             project.CreatedAt,
-            project.RegionalDeliveryOfficer
+            project.RegionalDeliveryOfficer?.FullName
         );
     }
 }

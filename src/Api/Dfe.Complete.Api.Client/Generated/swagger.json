@@ -2568,13 +2568,9 @@
             "type": "string",
             "format": "date-time"
           },
-          "regionalDeliveryOfficer": {
-            "nullable": true,
-            "oneOf": [
-              {
-                "$ref": "#/components/schemas/User"
-              }
-            ]
+          "regionalDeliveryOfficerFullName": {
+            "type": "string",
+            "nullable": true
           }
         }
       },
