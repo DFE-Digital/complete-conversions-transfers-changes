@@ -67,7 +67,7 @@ Cypress.Commands.add("login", (user) => {
     // // Means we don't have to use azure to authenticate
     new AuthenticationInterceptor().register(user);
 
-    cy.visit("/");
+    // cy.visit("/");
 });
 
 Cypress.Commands.add("loginRuby", () => {
@@ -79,7 +79,7 @@ Cypress.Commands.add("loginRuby", () => {
 });
 
 Cypress.Commands.add("notAuthorisedToPerformAction", () => {
-    cy.get("h3").contains("You are not authorised to perform this action");
+    cy.get("h1").contains("You do not have access to this service");
 });
 
 Cypress.Commands.add("acceptCookies", () => {

@@ -95,8 +95,7 @@ describe("Capabilities and permissions of the business support user", () => {
         shouldBeAbleToViewAndDownloadCsvReportsFromTheExportSection();
     });
 
-    it.skip("Should NOT be able to create a project", () => {
-        // not implemented
+    it("Should NOT be able to create a project", () => {
         shouldNotBeAbleToCreateAProject();
     });
 

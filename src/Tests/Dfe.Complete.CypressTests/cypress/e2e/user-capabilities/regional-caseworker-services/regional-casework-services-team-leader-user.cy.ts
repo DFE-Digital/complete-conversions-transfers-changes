@@ -18,12 +18,11 @@ import allProjects from "cypress/pages/projects/allProjects";
 
 const unassignedProject = ProjectBuilder.createConversionProjectRequest(
     nextMonth,
-    103845,
+    103846,
     regionalCaseworkerTeamLeaderUser.adId,
 );
-const unassignedProjectSchoolName = "Jesson's CofE Primary School (VA)";
-// skipped as visiting / goes to unassigned projects that is not implemented yet
-describe.skip("Capabilities and permissions of the regional casework services team leader user", () => {
+const unassignedProjectSchoolName = "Cradley CofE Primary School";
+describe("Capabilities and permissions of the regional casework services team leader user", () => {
     before(() => {
         projectRemover.removeProjectIfItExists(`${unassignedProject.urn.value}`);
         projectApi.createConversionProject(unassignedProject, regionalCaseworkerTeamLeaderUser.email);
@@ -32,10 +31,11 @@ describe.skip("Capabilities and permissions of the regional casework services te
     beforeEach(() => {
         cy.login(regionalCaseworkerTeamLeaderUser);
         cy.acceptCookies();
-        cy.visit("/");
+        cy.visit("/projects/team/in-progress"); // visit '/' goes to unassigned projects that is not implemented yet
     });
 
-    it("Should direct user to all unassigned team projects after login", () => {
+    // not implemented 188857
+    it.skip("Should direct user to all unassigned team projects after login", () => {
         cy.url().should("include", "/projects/team/unassigned");
     });
 
@@ -89,8 +89,7 @@ describe.skip("Capabilities and permissions of the regional casework services te
         shouldBeAbleToAssignUnassignedProjectsToUsers(unassignedProjectSchoolName);
     });
 
-    it.skip("Should NOT be able to create a project", () => {
-        // not implemented
+    it("Should NOT be able to create a project", () => {
         shouldNotBeAbleToCreateAProject();
     });
 

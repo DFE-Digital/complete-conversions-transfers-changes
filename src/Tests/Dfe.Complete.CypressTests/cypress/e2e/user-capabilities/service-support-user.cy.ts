@@ -10,15 +10,15 @@ import navBar from "cypress/pages/navBar";
 import { serviceSupportUser } from "cypress/constants/cypressConstants";
 import allProjects from "cypress/pages/projects/allProjects";
 
-// skipped as visiting / goes to service support that is not implemented yet
-describe.skip("Capabilities and permissions of the service support user", () => {
+describe("Capabilities and permissions of the service support user", () => {
     beforeEach(() => {
         cy.login(serviceSupportUser);
         cy.acceptCookies();
-        cy.visit("/");
+        cy.visit("/projects/all/in-progress/all"); // visit '/' goes to service support that is not implemented yet
     });
 
-    it("Should direct user to all Service support -> without academy URNs after login", () => {
+    // not implemented 187518
+    it.skip("Should direct user to all Service support -> without academy URNs after login", () => {
         cy.url().should("include", "/projects/service-support/without-academy-urn");
     });
 
@@ -80,8 +80,7 @@ describe.skip("Capabilities and permissions of the service support user", () => 
         // not implemented 187525
     });
 
-    it.skip("Should NOT be able to create a project", () => {
-        // not implemented
+    it("Should NOT be able to create a project", () => {
         shouldNotBeAbleToCreateAProject();
     });
 

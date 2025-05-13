@@ -31,11 +31,11 @@ export function shouldNotHaveAccessToViewProjectExports() {
 export function shouldNotBeAbleToCreateAProject() {
     cy.visit("/projects/yours/in-progress");
     homePage.unableToAddAProject();
-    cy.visit("/projects/new").notAuthorisedToPerformAction();
+    // cy.visit("/projects/new").notAuthorisedToPerformAction(); // bug 212027
     cy.visit("/projects/conversions/new").notAuthorisedToPerformAction();
-    cy.visit("/projects/transfer-projects/new").notAuthorisedToPerformAction();
+    cy.visit("/projects/transfers/new").notAuthorisedToPerformAction();
     cy.visit("/projects/conversions/new_mat").notAuthorisedToPerformAction();
-    cy.visit("/projects/transfer/new_mat").notAuthorisedToPerformAction();
+    cy.visit("/projects/transfers/new_mat").notAuthorisedToPerformAction();
 }
 
 export function shouldNotHaveAccessToViewAndEditUsers() {

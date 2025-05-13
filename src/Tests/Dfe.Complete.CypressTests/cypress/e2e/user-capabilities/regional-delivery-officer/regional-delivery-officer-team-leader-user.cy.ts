@@ -14,11 +14,10 @@ import yourProjects from "cypress/pages/projects/yourProjects";
 import yourTeamProjects from "cypress/pages/projects/yourTeamProjects";
 import allProjects from "cypress/pages/projects/allProjects";
 
-const unassignedProject = ProjectBuilder.createConversionProjectRequest(nextMonth, 103845, rdoTeamLeaderUser.adId);
-const unassignedProjectSchoolName = "Jesson's CofE Primary School (VA)";
+const unassignedProject = ProjectBuilder.createConversionProjectRequest(nextMonth, 103846, rdoTeamLeaderUser.adId);
+const unassignedProjectSchoolName = "Cradley CofE Primary School";
 
-// skipped as visiting / goes to unassigned projects that is not implemented yet
-describe.skip("Capabilities and permissions of the regional delivery officer team leader user", () => {
+describe("Capabilities and permissions of the regional delivery officer team leader user", () => {
     before(() => {
         projectRemover.removeProjectIfItExists(`${unassignedProject.urn.value}`);
         projectApi.createConversionProject(unassignedProject, rdoTeamLeaderUser.email);
@@ -27,10 +26,11 @@ describe.skip("Capabilities and permissions of the regional delivery officer tea
     beforeEach(() => {
         cy.login(rdoTeamLeaderUser);
         cy.acceptCookies();
-        cy.visit("/");
+        cy.visit("/projects/team/in-progress"); // visit '/' goes to unassigned projects that is not implemented yet
     });
 
-    it("Should direct user to all unassigned team projects after login", () => {
+    // not implemented 188857
+    it.skip("Should direct user to all unassigned team projects after login", () => {
         cy.url().should("include", "/projects/team/unassigned");
     });
 
@@ -57,7 +57,7 @@ describe.skip("Capabilities and permissions of the regional delivery officer tea
             "By local authority",
             "Completed",
             "Statistics",
-            "Exports"
+            "Exports",
         ]);
     });
 
