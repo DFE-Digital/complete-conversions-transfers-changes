@@ -2693,9 +2693,9 @@ namespace Dfe.Complete.Client
         /// </summary>
         /// <returns>Project</returns>
         /// <exception cref="CompleteApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<UserWithProjectsDto> GetUserWithProjectsAsync(System.Guid? userId_Value, ProjectState? state, int? page, int? count)
+        public virtual System.Threading.Tasks.Task<UserWithProjectsDto> GetUserWithProjectsAsync(System.Guid? userId_Value, ProjectState? state, OrderProjectByField? orderProjectsBy, int? page, int? count)
         {
-            return GetUserWithProjectsAsync(userId_Value, state, page, count, System.Threading.CancellationToken.None);
+            return GetUserWithProjectsAsync(userId_Value, state, orderProjectsBy, page, count, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -2704,7 +2704,7 @@ namespace Dfe.Complete.Client
         /// </summary>
         /// <returns>Project</returns>
         /// <exception cref="CompleteApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<UserWithProjectsDto> GetUserWithProjectsAsync(System.Guid? userId_Value, ProjectState? state, int? page, int? count, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<UserWithProjectsDto> GetUserWithProjectsAsync(System.Guid? userId_Value, ProjectState? state, OrderProjectByField? orderProjectsBy, int? page, int? count, System.Threading.CancellationToken cancellationToken)
         {
             var client_ = _httpClient;
             var disposeClient_ = false;
@@ -2727,6 +2727,10 @@ namespace Dfe.Complete.Client
                     if (state != null)
                     {
                         urlBuilder_.Append(System.Uri.EscapeDataString("State")).Append('=').Append(System.Uri.EscapeDataString(ConvertToString(state, System.Globalization.CultureInfo.InvariantCulture))).Append('&');
+                    }
+                    if (orderProjectsBy != null)
+                    {
+                        urlBuilder_.Append(System.Uri.EscapeDataString("OrderProjectsBy")).Append('=').Append(System.Uri.EscapeDataString(ConvertToString(orderProjectsBy, System.Globalization.CultureInfo.InvariantCulture))).Append('&');
                     }
                     if (page != null)
                     {
@@ -2801,9 +2805,9 @@ namespace Dfe.Complete.Client
         /// </summary>
         /// <returns>Project</returns>
         /// <exception cref="CompleteApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<UserWithProjectsDto>> ListAllUsersWithProjectsAsync(ProjectState? state, int? page, int? count)
+        public virtual System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<ListAllUsersWithProjectsResultModel>> ListAllUsersWithProjectsAsync(ProjectState? state, ProjectTeam? team, bool? requireUserHasProjects, int? page, int? count)
         {
-            return ListAllUsersWithProjectsAsync(state, page, count, System.Threading.CancellationToken.None);
+            return ListAllUsersWithProjectsAsync(state, team, requireUserHasProjects, page, count, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -2812,7 +2816,7 @@ namespace Dfe.Complete.Client
         /// </summary>
         /// <returns>Project</returns>
         /// <exception cref="CompleteApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<UserWithProjectsDto>> ListAllUsersWithProjectsAsync(ProjectState? state, int? page, int? count, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<ListAllUsersWithProjectsResultModel>> ListAllUsersWithProjectsAsync(ProjectState? state, ProjectTeam? team, bool? requireUserHasProjects, int? page, int? count, System.Threading.CancellationToken cancellationToken)
         {
             var client_ = _httpClient;
             var disposeClient_ = false;
@@ -2831,6 +2835,14 @@ namespace Dfe.Complete.Client
                     if (state != null)
                     {
                         urlBuilder_.Append(System.Uri.EscapeDataString("State")).Append('=').Append(System.Uri.EscapeDataString(ConvertToString(state, System.Globalization.CultureInfo.InvariantCulture))).Append('&');
+                    }
+                    if (team != null)
+                    {
+                        urlBuilder_.Append(System.Uri.EscapeDataString("Team")).Append('=').Append(System.Uri.EscapeDataString(ConvertToString(team, System.Globalization.CultureInfo.InvariantCulture))).Append('&');
+                    }
+                    if (requireUserHasProjects != null)
+                    {
+                        urlBuilder_.Append(System.Uri.EscapeDataString("RequireUserHasProjects")).Append('=').Append(System.Uri.EscapeDataString(ConvertToString(requireUserHasProjects, System.Globalization.CultureInfo.InvariantCulture))).Append('&');
                     }
                     if (page != null)
                     {
@@ -2867,7 +2879,7 @@ namespace Dfe.Complete.Client
                         var status_ = (int)response_.StatusCode;
                         if (status_ == 200)
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<System.Collections.ObjectModel.ObservableCollection<UserWithProjectsDto>>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            var objectResponse_ = await ReadObjectResponseAsync<System.Collections.ObjectModel.ObservableCollection<ListAllUsersWithProjectsResultModel>>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
                                 throw new CompleteApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);

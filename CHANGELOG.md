@@ -22,10 +22,16 @@ Security in case of vulnerabilities.
 
 ## Unreleased  
 ### Added  
-- Added search bar to search projects with active status.
+ - Added "order by field" argument to `GetUserWithProjectsQuery`
+ - Added search bar to search projects with active status.
 ### Changed  
+ - Merged `ListAllUsersInTeamWithProjectsQuery` into `ListAllUsersWithProjectsQuery` with filter
+ - Order "Team projects" > "By User" by significant date
+ - Filter "Team projects" > "Handed over" to active projects only
+
 ### Fixed  
  - Routing for projects merged (`/conversion-project` and `/transfer-project` become `/project`)
+ - "Team projects" > "Handed over" now shows unassigned projects again
 
 See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-05-08.217...main) for everything awaiting release
 
