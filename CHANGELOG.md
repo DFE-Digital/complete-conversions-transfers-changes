@@ -23,7 +23,7 @@ Security in case of vulnerabilities.
 ## Unreleased  
 ### Added  
  - Added "order by field" argument to `GetUserWithProjectsQuery`
-
+ - Added search bar to search projects with active status.
 ### Changed  
  - Merged `ListAllUsersInTeamWithProjectsQuery` into `ListAllUsersWithProjectsQuery` with filter
  - Order "Team projects" > "By User" by significant date
