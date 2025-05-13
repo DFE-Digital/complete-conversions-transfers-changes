@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Dfe.Complete.Application.Projects.Queries.CountAllProjects
 {
-    public record CountAllProjectsQuery(ProjectState? ProjectStatus, ProjectType? Type) : IRequest<Result<int>>;
+    public record CountAllProjectsQuery(ProjectState? ProjectStatus, ProjectType? Type, string? Search = "") : IRequest<Result<int>>;
 
     public class CountAllProjectsQueryHandler(
         IListAllProjectsQueryService listAllProjectsQueryService)
@@ -17,11 +17,11 @@ namespace Dfe.Complete.Application.Projects.Queries.CountAllProjects
             try
             {
                 var projectsQuery = await listAllProjectsQueryService
-                    .ListAllProjects(request.ProjectStatus, request.Type)
+                    .ListAllProjects(request.ProjectStatus, request.Type, search: request.Search)
                     .ToListAsync(cancellationToken);
                 
                 var filteredProjectQuery = request.ProjectStatus == ProjectState.Active
-                    ? projectsQuery.Where(p => p.Project.AssignedTo != null)
+                    ? projectsQuery.Where(p => p.Project?.AssignedTo != null)
                     : projectsQuery;
                 
                 var result = filteredProjectQuery.Count();
