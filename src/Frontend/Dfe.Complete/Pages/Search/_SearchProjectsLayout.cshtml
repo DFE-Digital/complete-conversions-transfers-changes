@@ -1,0 +1,11 @@
+﻿@model Dfe.Complete.Pages.Search.SearchProjectsModel
+@{
+   Layout = "Shared/_Layout";
+}
+
+@RenderBody()
+
+@if (Model.Pagination != null)
+{
+    @await Html.PartialAsync("/Pages/Pagination/_Pagination.cshtml", model: Model.Pagination)
+}

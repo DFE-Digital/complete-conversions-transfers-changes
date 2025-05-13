@@ -1,4 +1,5 @@
 ﻿@model Dfe.Complete.Pages.Pagination.PaginationModel
+@using Dfe.Complete.Pages.Pagination
 @* @{ *@
    @* var nonce = Context.GetNonce(); *@
 @* } *@
@@ -8,7 +9,7 @@
   <govuk-pagination id="@Model.PaginationContainerId">
     @if (Model.HasPrevious)
     {
-      <govuk-pagination-previous href="@Model.PreviousPageLink" id="@Model.PreviousButtonId" data-testid="@Model.PreviousButtonId"/>
+      <govuk-pagination-previous href="@Html.Raw(Model.PreviousPageLink)" id="@Model.PreviousButtonId" data-testid="@Model.PreviousButtonId"/>
     }
     @for (var pageIdx = 0; pageIdx < Model.TotalPages; pageIdx++)
     {
@@ -27,8 +28,7 @@
       {
         <govuk-pagination-ellipsis/>
       }
-
-      <govuk-pagination-item id="@pageNumberLinkId" href="@Model.Url?pageNumber=@pageNumber" is-current="@isCurrentPage" aria-current="@ariaCurrentPage" aria-label="@ariaLabel">
+      <govuk-pagination-item id="@pageNumberLinkId" href="@Html.Raw(PaginationModel.SetUrl(Model.Url, pageNumber))" is-current="@isCurrentPage" aria-current="@ariaCurrentPage" aria-label="@ariaLabel">
         @pageNumber
       </govuk-pagination-item>
 
@@ -39,7 +39,7 @@
     }
     @if (Model.HasNext)
     {
-      <govuk-pagination-next href="@Model.NextPageLink" id="@Model.NextButtonId" data-testid="@Model.NextButtonId"/>
+      <govuk-pagination-next href="@Html.Raw(Model.NextPageLink)" id="@Model.NextButtonId" data-testid="@Model.NextButtonId"/>
     }
   </govuk-pagination>
   // When pagination is used on the screen without a full page refresh
