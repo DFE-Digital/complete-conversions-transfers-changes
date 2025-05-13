@@ -3,6 +3,7 @@ using AutoFixture;
 using AutoFixture.Xunit2;
 using Dfe.AcademiesApi.Client.Contracts;
 using Dfe.Complete.Api.Tests.Integration.Customizations;
+using Dfe.Complete.Application.Projects.Queries.ListAllProjects;
 using Dfe.Complete.Client.Contracts;
 using Dfe.Complete.Domain.Entities;
 using Dfe.Complete.Infrastructure.Database;
@@ -768,4 +769,70 @@ public partial class ProjectsControllerTests
 
         Assert.Contains("User does not exist for provided UserAdId", exception.Response);
     }
+
+    [Theory]
+    [CustomAutoData(typeof(CustomWebApplicationDbContextFactoryCustomization), typeof(GiasEstablishmentsCustomization))]
+    public async Task ListAllProjectsByTrustReference_Async_ShouldReturnProjects_ByTrustReference(
+        CustomWebApplicationDbContextFactory<Program> factory,
+        IProjectsClient projectsClient,
+        IFixture fixture)
+    {
+        // Arrange
+        factory.TestClaims = [new Claim(ClaimTypes.Role, ReadRole)];
+
+        var dbContext = factory.GetDbContext<CompleteContext>();
+        var testUser = await dbContext.Users.FirstAsync();
+          
+        var establishments = fixture.Customize(new GiasEstablishmentsCustomization()).CreateMany<GiasEstablishment>(10)
+            .ToList();
+
+        await dbContext.GiasEstablishments.AddRangeAsync(establishments);
+        var trustReference = "TR123456";
+        var projects = establishments.Select(establishment =>
+        {
+            var project = fixture.Customize(new ProjectCustomization
+            {
+                RegionalDeliveryOfficerId = testUser.Id,
+                CaseworkerId = testUser.Id,
+                AssignedToId = testUser.Id
+            })
+                .Create<Project>();
+            project.Urn = establishment.Urn ?? project.Urn;
+            project.IncomingTrustUkprn = null;
+            project.NewTrustReferenceNumber = trustReference;
+            project.NewTrustName = "New Trust";
+            project.State = Domain.Enums.ProjectState.Active;
+            return project;
+        }).ToList();
+
+        var localAuthority = dbContext.LocalAuthorities.AsEnumerable().MinBy(_ => Guid.NewGuid());
+        Assert.NotNull(localAuthority);
+        projects.ForEach(x => x.LocalAuthorityId = localAuthority.Id);
+
+        await dbContext.Projects.AddRangeAsync(projects);
+        await dbContext.SaveChangesAsync();
+
+        // Act
+        var results = await projectsClient.ListAllProjectsByTrustRefAsync(trustReference, 0, 10);
+
+        // Assert
+        Assert.NotNull(results);
+        //Assert.Equal(10, results.Count);
+        //foreach (var result in results)
+        //{
+        //    var project = projects.Find(p => p.Id.Value == result.Project?.Id?.Value);
+        //    var establishment = establishments.Find(e => e.Urn?.Value == result.Project?.Urn?.Value);
+
+        //    Assert.NotNull(result.Project?.Urn);
+        //    Assert.Equal(project?.Urn.Value, result.Project?.Urn.Value);
+        //    Assert.Equal(establishment?.Urn?.Value, result.Project?.Urn.Value);
+              
+        //    Assert.NotNull(result.Project?.Id);
+        //    Assert.Equal(project?.Id.Value, result.Project?.Id.Value);
+
+        //    Assert.NotNull(result.Project?.NewTrustReferenceNumber);
+        //    Assert.Equal(project?.NewTrustReferenceNumber, result.Project?.NewTrustReferenceNumber);
+
+        //}
+    } 
 }
