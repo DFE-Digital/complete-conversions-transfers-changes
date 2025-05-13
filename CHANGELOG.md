@@ -23,6 +23,8 @@ Security in case of vulnerabilities.
 ## Unreleased  
 ### Added  
  - Added "order by field" argument to `GetUserWithProjectsQuery`
+ - New route `/projects/team/unassigned`
+ - Your team projects "Unassigned" list (`/projects/team/unassigned`)
 
 ### Changed  
  - Merged `ListAllUsersInTeamWithProjectsQuery` into `ListAllUsersWithProjectsQuery` with filter
