@@ -22,6 +22,8 @@ Security in case of vulnerabilities.
 
 ## Unreleased  
 ### Added  
+ - New route `/projects/team/unassigned`
+ - Your team projects "Unassigned" list (`/projects/team/unassigned`)
 
 ### Changed  
 
@@ -50,8 +52,6 @@ See the [full commit history](https://github.com/DFE-Digital/complete-conversion
 ## [1.5.0](https://github.com/DFE-Digital/complete-conversions-transfers-changes/releases/tag/production-2025-05-13.244) - 2025-05-13
 ### Added  
  - Added "order by field" argument to `GetUserWithProjectsQuery`
- - New route `/projects/team/unassigned`
- - Your team projects "Unassigned" list (`/projects/team/unassigned`)
  - Added search bar to search projects with active status
 
 ### Changed  
