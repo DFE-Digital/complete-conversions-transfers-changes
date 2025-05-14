@@ -44,6 +44,7 @@ See the [full commit history](https://github.com/DFE-Digital/complete-conversion
 ### Fixed  
  - Routing for projects merged (`/conversion-project` and `/transfer-project` become `/project`)
  - "Team projects" > "Handed over" now shows unassigned projects again
+ - Authorization fixed on all API endpoints
  - Fixed identifying "Form A MAT" projects logic
  - Removed unnecessary `Assign To` filter while pulling projects from database.
 
