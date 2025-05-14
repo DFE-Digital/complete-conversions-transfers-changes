@@ -124,7 +124,7 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers
                 new ProjectCustomization()
                 {
                     Id = new ProjectId(Guid.NewGuid()),
-                    Urn = establishment.Urn,
+                    Urn = establishment.Urn!,
                     IncomingTrustUkprn = establishment.Ukprn,
                     AcademyUrn = academy.Urn,
                     RegionalDeliveryOfficerId = createdBy.Id,
@@ -135,7 +135,7 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers
                 }
                 ).Create<Project>();
 
-            project.Urn = establishment.Urn;
+            project.Urn = establishment.Urn!;
             project.RegionalDeliveryOfficer = createdBy;
             project.AssignedTo = assignedTo;
             project.Caseworker = null;
