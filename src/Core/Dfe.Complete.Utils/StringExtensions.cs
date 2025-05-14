@@ -24,7 +24,7 @@ public static class StringExtensions
 
     public static string ToTitleCase(this string value)
     {
-        TextInfo textInfo = CultureInfo.InvariantCulture.TextInfo;
+        var textInfo = CultureInfo.InvariantCulture.TextInfo;
         return textInfo.ToTitleCase(value.ToLower());
     }
 }

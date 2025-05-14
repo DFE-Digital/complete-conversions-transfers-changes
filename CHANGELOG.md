@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/). To see an example from a mature product in the program [see the Complete products changelog that follows the same methodology](https://github.com/DFE-Digital/dfe-complete-conversions-transfers-and-changes/blob/main/CHANGELOG.md).
 
+
+## Notes
+### Releases
+ - Unreleased: Developed and tested, has not yet deployed to prod
+ - [TEST]/[PROD]: Feature/fix is considered ready for dual running in this environment
+
+### Statuses
 Added for new features.  
 Changed for changes in existing functionality.  
 Fixed for any bug fixes.  
@@ -14,6 +21,35 @@ Security in case of vulnerabilities.
 ---
 
 ## Unreleased  
+### Added  
+
+### Changed  
+
+### Fixed  
+
+See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-05-13.244...main) for everything awaiting release
+
+---
+
+## [1.5.0](https://github.com/DFE-Digital/complete-conversions-transfers-changes/releases/tag/production-2025-05-13.244) - 2025-05-13
+### Added  
+ - Added "order by field" argument to `GetUserWithProjectsQuery`
+ - Added search bar to search projects with active status
+
+### Changed  
+ - Merged `ListAllUsersInTeamWithProjectsQuery` into `ListAllUsersWithProjectsQuery` with filter
+ - Order "Team projects" > "By User" by significant date
+ - Filter "Team projects" > "Handed over" to active projects only
+
+### Fixed  
+ - Routing for projects merged (`/conversion-project` and `/transfer-project` become `/project`)
+ - "Team projects" > "Handed over" now shows unassigned projects again
+ - Authorization fixed on all API endpoints
+
+See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-05-08.217...production-2025-05-13.244) for everything in the release
+---
+
+## [1.4.0](https://github.com/DFE-Digital/complete-conversions-transfers-changes/releases/tag/production-2025-05-08.217) - 2025-05-08
 ### Added
  - New route `/projects/all/by-month/conversions/{month}/{year}`
  - New route `/projects/all/by-month/transfers/{month}/{year}`
@@ -42,11 +78,11 @@ Security in case of vulnerabilities.
 ### Fixed
  - Project for user list should show month and year (not day)
 
-See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-04-24.175...main) for everything awaiting release
+See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-04-24.175...production-2025-05-08.217) for everything in the release
 
 ---
 
-## [Release-3](https://github.com/DFE-Digital/complete-conversions-transfers-changes/releases/tag/production-2025-04-24.175) - 2025-04-25
+## [1.3.0](https://github.com/DFE-Digital/complete-conversions-transfers-changes/releases/tag/production-2025-04-24.175) - 2025-04-25
 ### Added
  - New route `/projects/team/completed`
  - Your team projects completed list (`/projects/team/completed`)
@@ -56,11 +92,11 @@ See the [full commit history](https://github.com/DFE-Digital/complete-conversion
  - Filter out any local authorities with no projects in `ListAllProjectByLocalAuthorities`
  - Include unassigned projects in "All projects" > "By region"
 
-See the [full commit history](**Full Changelog**: https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-04-17.164...production-2025-04-24.175) for everything in the release
+See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-04-17.164...production-2025-04-24.175) for everything in the release
 
 ---
 
-## [Release-2](https://github.com/DFE-Digital/complete-conversions-transfers-changes/releases/tag/production-2025-04-17.164) - 2025-04-17
+## [1.2.0](https://github.com/DFE-Digital/complete-conversions-transfers-changes/releases/tag/production-2025-04-17.164) - 2025-04-17
 ### Added
  - New route `/projects/team/in-progress`
  - Your team projects in progress list (`/projects/team/in-progress`)
@@ -104,7 +140,7 @@ See the [full commit history](https://github.com/DFE-Digital/complete-conversion
 
 ---
 
-## [Release-1](https://github.com/DFE-Digital/complete-conversions-transfers-changes/releases/tag/production-2025-04-01.120-manual) - 2025-04-01
+## [1.1.0](https://github.com/DFE-Digital/complete-conversions-transfers-changes/releases/tag/production-2025-04-01.120-manual) - 2025-04-01
 ### Added
  - Another 'sync' release to bring the changelog up to date
 
@@ -112,7 +148,7 @@ See the [full commit history](https://github.com/DFE-Digital/complete-conversion
 
 ---
 
-## [Release-0](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/082ba69cfa1b5b098d5dd5e2c804e8f5c58c2a00...development-2025-03-05.78) - 2025-03-28
+## [1.0.0](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/082ba69cfa1b5b098d5dd5e2c804e8f5c58c2a00...development-2025-03-05.78) - 2025-03-28
 
 ### Added
  - Initial changelog setup to match the current production state.
