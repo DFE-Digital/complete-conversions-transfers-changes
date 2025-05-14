@@ -22,9 +22,21 @@ Security in case of vulnerabilities.
 
 ## Unreleased  
 ### Added  
+
+### Changed  
+
+### Fixed  
+
+See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-05-13.244...main) for everything awaiting release
+
+---
+
+## [1.5.0](https://github.com/DFE-Digital/complete-conversions-transfers-changes/releases/tag/production-2025-05-13.244) - 2025-05-13
+### Added  
  - Added "order by field" argument to `GetUserWithProjectsQuery`
  - New route `/projects/team/unassigned`
  - Your team projects "Unassigned" list (`/projects/team/unassigned`)
+ - Added search bar to search projects with active status
 
 ### Changed  
  - Merged `ListAllUsersInTeamWithProjectsQuery` into `ListAllUsersWithProjectsQuery` with filter
@@ -34,9 +46,9 @@ Security in case of vulnerabilities.
 ### Fixed  
  - Routing for projects merged (`/conversion-project` and `/transfer-project` become `/project`)
  - "Team projects" > "Handed over" now shows unassigned projects again
+ - Authorization fixed on all API endpoints
 
-See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-05-08.217...main) for everything awaiting release
-
+See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-05-08.217...production-2025-05-13.244) for everything in the release
 ---
 
 ## [1.4.0](https://github.com/DFE-Digital/complete-conversions-transfers-changes/releases/tag/production-2025-05-08.217) - 2025-05-08
@@ -69,6 +81,7 @@ See the [full commit history](https://github.com/DFE-Digital/complete-conversion
  - Project for user list should show month and year (not day)
 
 See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-04-24.175...production-2025-05-08.217) for everything in the release
+
 ---
 
 ## [1.3.0](https://github.com/DFE-Digital/complete-conversions-transfers-changes/releases/tag/production-2025-04-24.175) - 2025-04-25
