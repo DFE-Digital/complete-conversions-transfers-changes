@@ -271,7 +271,7 @@ describe("View all projects", () => {
         projectDetailsPage.containsHeading(schoolName);
     });
 
-    it.only("Should be able to view all projects by local authority and all a local authority's projects", () => {
+    it("Should be able to view all projects by local authority and all a local authority's projects", () => {
         navBar.goToAllProjects();
         allProjects
             .filterProjects("By local authority")
