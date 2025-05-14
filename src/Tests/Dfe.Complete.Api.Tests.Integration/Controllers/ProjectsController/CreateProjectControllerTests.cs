@@ -3,8 +3,8 @@ using System.Security.Claims;
 using AutoFixture;
 using Dfe.Complete.Api.Tests.Integration.Customizations;
 using Dfe.Complete.Client.Contracts;
-using Dfe.Complete.Domain.Entities;
 using Dfe.Complete.Infrastructure.Database;
+using Dfe.Complete.Tests.Common.Constants;
 using Dfe.Complete.Tests.Common.Customizations.Commands;
 using Dfe.Complete.Tests.Common.Customizations.Models;
 using DfE.CoreLibs.Testing.AutoFixture.Attributes;
@@ -28,7 +28,7 @@ public partial class ProjectsControllerTests
         IProjectsClient projectsClient,
         IFixture fixture)
     {
-        factory.TestClaims = [new Claim(ClaimTypes.Role, WriteRole), new Claim(ClaimTypes.Role, ReadRole)];
+        factory.TestClaims = [new Claim(ClaimTypes.Role, ApiRoles.WriteRole), new Claim(ClaimTypes.Role, ApiRoles.ReadRole)];
 
         var dbContext = factory.GetDbContext<CompleteContext>();
 
@@ -67,7 +67,7 @@ public partial class ProjectsControllerTests
         CreateConversionProjectCommand createConversionProjectCommand,
         IProjectsClient projectsClient)
     {
-        factory.TestClaims = [new Claim(ClaimTypes.Role, WriteRole), new Claim(ClaimTypes.Role, ReadRole)];
+        factory.TestClaims = [new Claim(ClaimTypes.Role, ApiRoles.WriteRole), new Claim(ClaimTypes.Role, ApiRoles.ReadRole)];
 
         createConversionProjectCommand.Urn = null;
 
@@ -87,7 +87,7 @@ public partial class ProjectsControllerTests
         CreateTransferProjectCommand createTransferProjectCommand,
         IProjectsClient projectsClient)
     {
-        factory.TestClaims = [new Claim(ClaimTypes.Role, WriteRole), new Claim(ClaimTypes.Role, ReadRole)];
+        factory.TestClaims = [new Claim(ClaimTypes.Role, ApiRoles.WriteRole), new Claim(ClaimTypes.Role, ApiRoles.ReadRole)];
 
         var dbContext = factory.GetDbContext<CompleteContext>();
 
@@ -121,7 +121,7 @@ public partial class ProjectsControllerTests
         CreateTransferProjectCommand createTransferProjectCommand,
         IProjectsClient projectsClient)
     {
-        factory.TestClaims = [new Claim(ClaimTypes.Role, WriteRole), new Claim(ClaimTypes.Role, ReadRole)];
+        factory.TestClaims = [new Claim(ClaimTypes.Role, ApiRoles.WriteRole), new Claim(ClaimTypes.Role, ApiRoles.ReadRole)];
 
         createTransferProjectCommand.Urn = null;
 
@@ -141,7 +141,7 @@ public partial class ProjectsControllerTests
         CreateMatConversionProjectCommand createMatConversionProjectCommand,
         IProjectsClient projectsClient)
     {
-        factory.TestClaims = [new Claim(ClaimTypes.Role, WriteRole), new Claim(ClaimTypes.Role, ReadRole)];
+        factory.TestClaims = [new Claim(ClaimTypes.Role, ApiRoles.WriteRole), new Claim(ClaimTypes.Role, ApiRoles.ReadRole)];
 
         var dbContext = factory.GetDbContext<CompleteContext>();
 
@@ -174,7 +174,7 @@ public partial class ProjectsControllerTests
         CreateMatConversionProjectCommand createMatConversionProjectCommand,
         IProjectsClient projectsClient)
     {
-        factory.TestClaims = [new Claim(ClaimTypes.Role, WriteRole), new Claim(ClaimTypes.Role, ReadRole)];
+        factory.TestClaims = [new Claim(ClaimTypes.Role, ApiRoles.WriteRole), new Claim(ClaimTypes.Role, ApiRoles.ReadRole)];
 
         createMatConversionProjectCommand.Urn = null;
 
@@ -194,7 +194,7 @@ public partial class ProjectsControllerTests
         CreateMatTransferProjectCommand createMatTransferProjectCommand,
         IProjectsClient projectsClient)
     {
-        factory.TestClaims = [new Claim(ClaimTypes.Role, WriteRole), new Claim(ClaimTypes.Role, ReadRole)];
+        factory.TestClaims = [new Claim(ClaimTypes.Role, ApiRoles.WriteRole), new Claim(ClaimTypes.Role, ApiRoles.ReadRole)];
 
         var dbContext = factory.GetDbContext<CompleteContext>();
 
@@ -227,7 +227,7 @@ public partial class ProjectsControllerTests
         CreateMatTransferProjectCommand createMatTransferProjectCommand,
         IProjectsClient projectsClient)
     {
-        factory.TestClaims = [new Claim(ClaimTypes.Role, WriteRole), new Claim(ClaimTypes.Role, ReadRole)];
+        factory.TestClaims = [new Claim(ClaimTypes.Role, ApiRoles.WriteRole), new Claim(ClaimTypes.Role, ApiRoles.ReadRole)];
 
         createMatTransferProjectCommand.Urn = null;
 
