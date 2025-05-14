@@ -35,6 +35,7 @@ public class GetUserWithProjectsHandler(
                 return PaginatedResult<UserWithProjectsDto>.Failure("User is not found");
 
             var projects = foundUser.ProjectAssignedTos.Where(project => request.State == null || project.State == request.State);
+            var projectCount = projects.Count();
 
             if (request.OrderUserProjectsBy == OrderUserProjectsByField.SignificantDate)
                 projects = projects.OrderBy(project => project.SignificantDate);
@@ -66,7 +67,7 @@ public class GetUserWithProjectsHandler(
                 conversionCount,
                 transferCount
             );
-            return PaginatedResult<UserWithProjectsDto>.Success(result, conversionCount + transferCount);
+            return PaginatedResult<UserWithProjectsDto>.Success(result, projectCount);
         }
         catch (Exception ex)
         {
