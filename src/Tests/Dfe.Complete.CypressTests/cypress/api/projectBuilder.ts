@@ -45,13 +45,14 @@ export class ProjectBuilder {
         };
     }
 
-    public static createTransferProjectRequest(significantDate? :Date): CreateTransferProjectRequest {
-        significantDate?.setDate(1);
+    public static createTransferProjectRequest(
+        options: Partial<CreateTransferProjectRequest> = {},
+    ): CreateTransferProjectRequest {
         return {
             urn: { value: 105601 },
             outgoingTrustUkprn: { value: ukprn },
             incomingTrustUkprn: { value: ukprn2 },
-            significantDate: significantDate ? significantDate.toISOString().split("T")[0] : "2026-03-01",
+            significantDate: "2026-03-01",
             isSignificantDateProvisional: false,
             isDueTo2Ri: false,
             isDueToInedaquateOfstedRating: false,
@@ -66,12 +67,15 @@ export class ProjectBuilder {
             groupReferenceNumber: groupReferenceNumber,
             handoverComments: "test 2",
             userAdId: cypressUser.adId,
+            ...options,
         };
     }
 
-    public static createConversionFormAMatProjectRequest(): CreateMatConversionProjectRequest {
+    public static createConversionFormAMatProjectRequest(
+        options: Partial<CreateMatConversionProjectRequest> = {},
+    ): CreateMatConversionProjectRequest {
         return {
-            urn: { value: 149149 },
+            urn: { value: 147800 },
             newTrustName: testTrustName,
             newTrustReferenceNumber: testTrustReferenceNumber,
             significantDate: "2026-03-01",
@@ -85,12 +89,15 @@ export class ProjectBuilder {
             handingOverToRegionalCaseworkService: false,
             handoverComments: "test 2",
             userAdId: cypressUser.adId,
+            ...options,
         };
     }
 
-    public static createTransferFormAMatProjectRequest(): CreateMatTransferProjectRequest {
+    public static createTransferFormAMatProjectRequest(
+        options: Partial<CreateMatTransferProjectRequest> = {},
+    ): CreateMatTransferProjectRequest {
         return {
-            urn: { value: 136732 },
+            urn: { value: 149460 },
             newTrustName: testTrustName,
             newTrustReferenceNumber: testTrustReferenceNumber,
             outgoingTrustUkprn: { value: ukprn },
@@ -108,6 +115,7 @@ export class ProjectBuilder {
             outgoingTrustSharepointLink: "https://educationgovuk.sharepoint.com",
             handoverComments: "test 2",
             userAdId: cypressUser.adId,
+            ...options,
         };
     }
 }

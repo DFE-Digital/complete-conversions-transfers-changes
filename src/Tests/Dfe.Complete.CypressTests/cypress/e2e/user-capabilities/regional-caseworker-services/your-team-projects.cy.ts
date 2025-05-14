@@ -7,6 +7,7 @@ import yourTeamProjects from "cypress/pages/projects/yourTeamProjects";
 import { regionalCaseworkerTeamLeaderUser, regionalCaseworkerUser } from "cypress/constants/cypressConstants";
 import { projectTable } from "cypress/pages/projects/tables/projectTable";
 import yourTeamProjectsTable from "cypress/pages/projects/tables/yourTeamProjectsTable";
+import { currentMonthShort } from "cypress/constants/stringTestConstants";
 
 const project = ProjectBuilder.createConversionProjectRequest(
     new Date("2026-04-01"),
@@ -88,8 +89,7 @@ describe("Regional caseworker services user - View your team projects", () => {
         // projectDetailsPage.containsHeading(teammatesSchoolName); // not implemented
     });
 
-    it.skip("Should be able to view my team projects that are new", () => {
-        // not implemented
+    it("Should be able to view my team projects that are new", () => {
         yourTeamProjects.filterProjects("New").containsHeading("Your team new projects");
         yourTeamProjectsTable
             .schoolIsFirstInTable(teammatesSchoolName)
@@ -102,23 +102,32 @@ describe("Regional caseworker services user - View your team projects", () => {
                 "Project type",
                 "Conversion or transfer date",
             ])
+            .withSchool(teammatesSchoolName)
+            .columnHasValue("URN", `${teammatesProject.urn.value}`)
+            .columnHasValue("Created at date", currentMonthShort)
+            .columnHasValue("Region", "North West")
+            .columnHasValue("Assigned to", regionalCaseworkerTeamLeaderUser.username)
+            .columnHasValue("Project type", "Conversion")
+            .columnHasValue("Conversion or transfer date", "Apr 2026")
             .goTo(teammatesSchoolName);
         // projectDetailsPage.containsHeading(teammatesSchoolName); // not implemented
     });
 
-    it.skip("Should be able to view my team projects by user and all a user's projects", () => {
-        // not implemented
+    it("Should be able to view my team projects by user and all a user's projects", () => {
         yourTeamProjects
-            .filterProjects("New")
+            .filterProjects("By user")
             .containsHeading("Your team projects by user")
-            .goToNextPageUntilFieldIsVisible(regionalCaseworkerUser.username);
-        projectTable
+            .goToNextPageUntilFieldIsVisible(regionalCaseworkerTeamLeaderUser.username);
+        yourTeamProjectsTable
             .hasTableHeaders(["User name", "Email", "Conversions", "Transfers"])
-            .goTo(regionalCaseworkerUser.username);
-        yourTeamProjects.containsHeading(`Projects assigned to ${regionalCaseworkerUser.username}`);
-        projectTable
+            .goTo(regionalCaseworkerTeamLeaderUser.username);
+        yourTeamProjects.containsHeading(`Projects assigned to ${regionalCaseworkerTeamLeaderUser.username}`);
+        yourTeamProjectsTable
             .hasTableHeaders(["School or academy", "URN", "Conversion or transfer date", "Project type"])
-            .contains(teammatesSchoolName)
+            .withSchool(teammatesSchoolName)
+            .columnHasValue("URN", `${teammatesProject.urn.value}`)
+            .columnHasValue("Conversion or transfer date", "Apr 2026")
+            .columnHasValue("Project type", "Conversion")
             .goTo(teammatesSchoolName);
         // projectDetailsPage.containsHeading(teammatesSchoolName); // not implemented
     });
@@ -136,12 +145,20 @@ describe("Regional caseworker services user - View your team projects", () => {
                 "Conversion or transfer date",
                 "Project completion date",
             ]);
+        // not implemented, unable to move project to completed
+        // .withSchool(teammatesSchoolName)
+        // .columnHasValue("URN", `${teammatesProject.urn.value}`)
+        // .columnHasValue("Local authority", "Halton")
+        // .columnHasValue("Region", "North West")
+        // .columnHasValue("Type of project", "Conversion")
+        // .columnHasValue("Conversion or transfer date", "Apr 2026")
+        // .columnHasValue("Project completion date", currentMonthShort)
         // .goTo(teammatesSchoolName);
-        // projectDetailsPage.containsHeading(teammatesSchoolName); // not implemented
+        // projectDetailsPage.containsHeading(teammatesSchoolName);
     });
 
     it("Should NOT be able to view handed my team projects that are handed over", () => {
-        yourTeamProjects.doesNotContainFilter("Handed over");
+        yourTeamProjects.unableToViewFilter("Handed over");
         // not implemented:
         // cy.visit("/projects/team/handed-over").notAuthorisedToPerformAction();
     });
