@@ -66,8 +66,6 @@ Cypress.Commands.add("login", (user) => {
     // // Intercept all browser requests and add our special auth header
     // // Means we don't have to use azure to authenticate
     new AuthenticationInterceptor().register(user);
-
-    // cy.visit("/");
 });
 
 Cypress.Commands.add("loginRuby", () => {

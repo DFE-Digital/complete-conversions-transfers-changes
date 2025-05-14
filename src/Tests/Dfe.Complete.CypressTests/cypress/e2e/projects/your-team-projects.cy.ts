@@ -33,7 +33,7 @@ describe("Regional delivery officer (London) user - View your team projects (pro
         projectRemover.removeProjectIfItExists(`${handedOverProject.urn.value}`);
         projectApi.createConversionProject(myLondonProject);
         projectApi.createConversionProject(teammatesLondonRegionProject, rdoLondonUser.email);
-        // projectApi.createTransferProject(handedOverProject, rdoLondonUser.email); // bug 213250
+        // bug 213250 - projectApi.createTransferProject(handedOverProject, rdoLondonUser.email);
     });
 
     beforeEach(() => {
