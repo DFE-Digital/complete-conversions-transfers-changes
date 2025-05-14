@@ -70,7 +70,7 @@ public class ListAllProjectsQueryHandlerTests
                 item.Establishment
             )).Skip(20).Take(20).ToList();
 
-        var query = new ListAllProjectsQuery(null, null, 1);
+        var query = new ListAllProjectsQuery(null, null, null, 1);
 
         var mock = listAllProjectsQueryModels.BuildMock();
 
@@ -122,7 +122,7 @@ public class ListAllProjectsQueryHandlerTests
 
         var mock = combinedProjects.BuildMock();
 
-        var query = new ListAllProjectsQuery(ProjectState.Active, ProjectType.Conversion);
+        var query = new ListAllProjectsQuery(ProjectState.Active, ProjectType.Conversion, AssignedToState.AssignedOnly);
 
         mockListAllProjectsQueryService.ListAllProjects(query.ProjectStatus, query.Type)
             .Returns(mock);
@@ -152,7 +152,7 @@ public class ListAllProjectsQueryHandlerTests
         // Arrange
         var listAllProjectsQueryModels = fixture.CreateMany<ListAllProjectsQueryModel>(50).ToList();
 
-        var query = new ListAllProjectsQuery(null, null, 10);
+        var query = new ListAllProjectsQuery(null, null, null, 10);
 
         var mock = listAllProjectsQueryModels.BuildMock();
 

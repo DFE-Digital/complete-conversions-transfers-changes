@@ -15,12 +15,12 @@ namespace Dfe.Complete.Pages.Projects.List.ProjectsInProgress
         public async Task OnGet()
         {
             ViewData[TabNavigationModel.ViewDataKey] = AllProjectsTabNavigationModel;
-            
-            var listProjectQuery = new ListAllProjectsQuery(ProjectState.Active, null, PageNumber-1, PageSize);
+
+            var listProjectQuery = new ListAllProjectsQuery(ProjectState.Active, null, AssignedToState.AssignedOnly, PageNumber - 1, PageSize);
 
             var listResponse = await sender.Send(listProjectQuery);
             Projects = listResponse.Value ?? [];
-            
+
             var countProjectQuery = new CountAllProjectsQuery(ProjectState.Active, null);
             var countResponse = await sender.Send(countProjectQuery);
 
