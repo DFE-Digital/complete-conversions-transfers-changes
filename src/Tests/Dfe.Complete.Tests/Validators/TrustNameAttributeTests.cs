@@ -1,19 +1,21 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using Dfe.Complete.Application.Common.Models;
+using Dfe.Complete.Application.Projects.Commands.CreateProject;
 using Dfe.Complete.Application.Projects.Models;
 using Dfe.Complete.Application.Projects.Queries.GetProject;
 using Dfe.Complete.Validators;
 using MediatR;
+using Microsoft.Extensions.Logging;
 using Moq;
 
 namespace Dfe.Complete.Tests.Validators;
 
 public class TrustNameAttributeTests
 {
-    private static TrustNameAttribute CreateAttribute(Mock<ISender> mockSender)
+    private static TrustNameAttribute<T> CreateAttribute<T>(Mock<ISender> mockSender, Mock<ILogger<T>> mockLogger)
     {
         var objectInstance = new { TrustName = "", TrustReference = "" };
-        return new TrustNameAttribute(nameof(objectInstance.TrustReference), mockSender.Object);
+        return new TrustNameAttribute<T>(nameof(objectInstance.TrustReference), mockSender.Object, mockLogger.Object);
     }
 
     [Fact]
@@ -21,7 +23,7 @@ public class TrustNameAttributeTests
     {
         // Arrange
         var mockSender = new Mock<ISender>();
-        var attribute = CreateAttribute(mockSender);
+        var attribute = CreateAttribute(mockSender, new Mock<ILogger<CreateProjectCommon>>());
         var validationContext = new ValidationContext(new { TrustName = "", TrustReference = "" })
         {
             MemberName = "TrustName"
@@ -40,7 +42,7 @@ public class TrustNameAttributeTests
     {
         // Arrange
         var mockSender = new Mock<ISender>();
-        var attribute = CreateAttribute(mockSender);
+        var attribute = CreateAttribute(mockSender, new Mock<ILogger<CreateProjectCommon>>());
         var validationContext = new ValidationContext(new { TrustName = "New trust name", TrustReference = "" })
         {
             MemberName = "TrustName"
@@ -60,7 +62,7 @@ public class TrustNameAttributeTests
         var mockSender = new Mock<ISender>();
         var trnResult = Result<GetProjectByTrnResponseDto?>.Success(null);
         mockSender.Setup(s => s.Send(It.IsAny<GetProjectByTrnQuery>(), default)).ReturnsAsync(trnResult);
-        var attribute = CreateAttribute(mockSender);
+        var attribute = CreateAttribute(mockSender, new Mock<ILogger<CreateProjectCommon>>());
         var validationContext = new ValidationContext(new { TrustName = "", TrustReference = "TR1234567" })
         {
             MemberName = "TrustName"
@@ -80,7 +82,7 @@ public class TrustNameAttributeTests
         var mockSender = new Mock<ISender>();
         var trnResult = Result<GetProjectByTrnResponseDto?>.Success(new GetProjectByTrnResponseDto(Guid.NewGuid(), "Big new trust"));
         mockSender.Setup(s => s.Send(It.IsAny<GetProjectByTrnQuery>(), default)).ReturnsAsync(trnResult);
-        var attribute = CreateAttribute(mockSender);
+        var attribute = CreateAttribute(mockSender, new Mock<ILogger<CreateProjectCommon>>());
         var validationContext = new ValidationContext(new { TrustName = "Big new trust", TrustReference = "TR12345" })
         {
             MemberName = "TrustName"
@@ -100,7 +102,7 @@ public class TrustNameAttributeTests
         var mockSender = new Mock<ISender>();
         var trnResult = Result<GetProjectByTrnResponseDto?>.Success(null);
         mockSender.Setup(s => s.Send(It.IsAny<GetProjectByTrnQuery>(), default)).ReturnsAsync(trnResult);
-        var attribute = CreateAttribute(mockSender);
+        var attribute = CreateAttribute(mockSender, new Mock<ILogger<CreateProjectCommon>>());
         var validationContext = new ValidationContext(new { TrustName = "Big new trust", TrustReference = "TR00000" })
         {
             MemberName = "TrustName"
@@ -120,7 +122,7 @@ public class TrustNameAttributeTests
         var mockSender = new Mock<ISender>();
         var trnResult = Result<GetProjectByTrnResponseDto?>.Success(new GetProjectByTrnResponseDto(Guid.NewGuid(), "Big new trust"));
         mockSender.Setup(s => s.Send(It.IsAny<GetProjectByTrnQuery>(), default)).ReturnsAsync(trnResult);
-        var attribute = CreateAttribute(mockSender);
+        var attribute = CreateAttribute(mockSender, new Mock<ILogger<CreateProjectCommon>>());
         var validationContext = new ValidationContext(new { TrustName = "New trust name", TrustReference = "TR12345" })
         {
             MemberName = "TrustName"

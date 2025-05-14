@@ -8,6 +8,7 @@ using Dfe.Complete.Domain.ValueObjects;
 using Dfe.Complete.Utils;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace Dfe.Complete.Application.Users.Queries.GetUser;
 
@@ -16,7 +17,8 @@ public record GetUserWithProjectsQuery(UserId UserId, ProjectState? State)
 
 public class GetUserWithProjectsHandler(
     ICompleteRepository<User> users,
-    ICompleteRepository<GiasEstablishment> establishments)
+    ICompleteRepository<GiasEstablishment> establishments,
+    ILogger<GetUserWithProjectsHandler> logger)
     : IRequestHandler<GetUserWithProjectsQuery, PaginatedResult<UserWithProjectsDto>>
 {
     public async Task<PaginatedResult<UserWithProjectsDto>> Handle(GetUserWithProjectsQuery request,
@@ -75,6 +77,7 @@ public class GetUserWithProjectsHandler(
         }
         catch (Exception ex)
         {
+            logger.LogError(ex, "Exception for {Name} Request - {@Request}", nameof(GetUserWithProjectsHandler), request);
             return PaginatedResult<UserWithProjectsDto>.Failure(ex.Message);
         }
     }

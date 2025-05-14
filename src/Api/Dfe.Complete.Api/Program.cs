@@ -33,8 +33,7 @@ namespace Dfe.Complete.Api
                     .ReadFrom.Configuration(context.Configuration)
                     .WriteTo.ApplicationInsights(services.GetRequiredService<TelemetryConfiguration>(),
                         TelemetryConverter.Traces)
-                    .Enrich.FromLogContext()
-                    .WriteTo.Console();
+                    .Enrich.FromLogContext();
             });
 
             builder.Services.AddControllers()

@@ -10,6 +10,7 @@ using DfE.CoreLibs.Testing.AutoFixture.Customizations;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Hosting.Internal;
+using Microsoft.Extensions.Logging;
 using Moq;
 
 namespace Dfe.Complete.Application.Tests.CommandHandlers.Project;
@@ -23,7 +24,8 @@ public class RemoveProjectCommandHandlerTests
         [Frozen] ICompleteRepository<Domain.Entities.Project> mockProjectRepository,
         [Frozen] ICompleteRepository<TransferTasksData> mockTransferTaskRepository,
         [Frozen] ICompleteRepository<ConversionTasksData> mockConversionTaskRepository,
-        RemoveProjectCommand command
+        RemoveProjectCommand command,
+        Mock<ILogger<RemoveProjectCommandHandler>> _mockLogger
     )
     {
         // Arrange
@@ -40,7 +42,8 @@ public class RemoveProjectCommandHandlerTests
             mockTransferTaskRepository, 
             mockConversionTaskRepository, 
             unitOfWorkMock.Object, 
-            configMock.Object);
+            configMock.Object,
+            _mockLogger.Object);
 
         // Act & Assert
         await Assert.ThrowsAsync<NotDevEnvironmentException>(() => handler.Handle(command, CancellationToken.None));
@@ -53,7 +56,8 @@ public class RemoveProjectCommandHandlerTests
         [Frozen] ICompleteRepository<Domain.Entities.Project> mockProjectRepository,
         [Frozen] ICompleteRepository<TransferTasksData> mockTransferTaskRepository,
         [Frozen] ICompleteRepository<ConversionTasksData> mockConversionTaskRepository,
-        RemoveProjectCommand command
+        RemoveProjectCommand command,
+        Mock<ILogger<RemoveProjectCommandHandler>> _mockLogger
     )
     {
         // Arrange
@@ -69,7 +73,8 @@ public class RemoveProjectCommandHandlerTests
             mockTransferTaskRepository, 
             mockConversionTaskRepository, 
             unitOfWorkMock.Object, 
-            configMock.Object);
+            configMock.Object,
+            _mockLogger.Object);
 
         // Act & Assert
         await Assert.ThrowsAsync<NotDevEnvironmentException>(() => handler.Handle(command, CancellationToken.None));

@@ -4,6 +4,7 @@ using Dfe.Complete.Application.Projects.Models;
 using Dfe.Complete.Domain.Enums;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace Dfe.Complete.Application.Projects.Queries.ListAllProjects
 {
@@ -14,7 +15,8 @@ namespace Dfe.Complete.Application.Projects.Queries.ListAllProjects
         int Count = 20) : IRequest<Result<List<ListAllProjectsResultModel>>>;
 
     public class ListAllProjectsQueryHandler(
-        IListAllProjectsQueryService listAllProjectsQueryService)
+        IListAllProjectsQueryService listAllProjectsQueryService,
+        ILogger<ListAllProjectsQueryHandler> logger)
         : IRequestHandler<ListAllProjectsQuery, Result<List<ListAllProjectsResultModel>>>
     {
         public async Task<Result<List<ListAllProjectsResultModel>>> Handle(ListAllProjectsQuery request,
@@ -41,6 +43,7 @@ namespace Dfe.Complete.Application.Projects.Queries.ListAllProjects
             }
             catch (Exception ex)
             {
+                logger.LogError(ex, "Exception for {Name} Request - {@Request}", nameof(ListAllProjectsQueryHandler), request);
                 return Result<List<ListAllProjectsResultModel>>.Failure(ex.Message);
             }
         }

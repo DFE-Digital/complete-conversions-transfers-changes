@@ -7,13 +7,14 @@ using Dfe.Complete.Domain.Interfaces.Repositories;
 using Dfe.Complete.Utils;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace Dfe.Complete.Application.Users.Queries.ListAllUsers;
 
 public record ListAllUsersInTeamWithProjectsQuery(ProjectTeam Team)
     : PaginatedRequest<PaginatedResult<List<UserWithProjectsDto>>>;
 
-public class ListAllUsersInTeamWithProjectsHandler(ICompleteRepository<User> usersRepository)
+public class ListAllUsersInTeamWithProjectsHandler(ICompleteRepository<User> usersRepository, ILogger<ListAllUsersInTeamWithProjectsHandler> logger)
     : IRequestHandler<ListAllUsersInTeamWithProjectsQuery, PaginatedResult<List<UserWithProjectsDto>>>
 {
     public async Task<PaginatedResult<List<UserWithProjectsDto>>> Handle(ListAllUsersInTeamWithProjectsQuery request,
@@ -46,6 +47,7 @@ public class ListAllUsersInTeamWithProjectsHandler(ICompleteRepository<User> use
         }
         catch (Exception ex)
         {
+            logger.LogError(ex, "Exception for {Name} Request - {@Request}", nameof(ListAllUsersInTeamWithProjectsHandler), request);
             return PaginatedResult<List<UserWithProjectsDto>>.Failure(ex.Message);
         }
     }
