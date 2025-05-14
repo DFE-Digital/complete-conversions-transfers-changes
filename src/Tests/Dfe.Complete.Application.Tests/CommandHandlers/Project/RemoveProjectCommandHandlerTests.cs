@@ -24,8 +24,7 @@ public class RemoveProjectCommandHandlerTests
         [Frozen] ICompleteRepository<Domain.Entities.Project> mockProjectRepository,
         [Frozen] ICompleteRepository<TransferTasksData> mockTransferTaskRepository,
         [Frozen] ICompleteRepository<ConversionTasksData> mockConversionTaskRepository,
-        RemoveProjectCommand command,
-        Mock<ILogger<RemoveProjectCommandHandler>> _mockLogger
+        RemoveProjectCommand command
     )
     {
         // Arrange
@@ -40,9 +39,7 @@ public class RemoveProjectCommandHandlerTests
             mockProjectRepository, 
             mockTransferTaskRepository, 
             mockConversionTaskRepository, 
-            unitOfWorkMock.Object, 
-            configMock.Object,
-            _mockLogger.Object);
+            unitOfWorkMock.Object);
 
         // Act & Assert
         await Assert.ThrowsAsync<NotDevOrTestEnvironmentException>(

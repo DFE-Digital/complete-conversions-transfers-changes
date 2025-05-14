@@ -20,9 +20,7 @@ namespace Dfe.Complete.Application.Projects.Commands.RemoveProject
         ICompleteRepository<Project> projectRepository,
         ICompleteRepository<TransferTasksData> transferTaskRepository,
         ICompleteRepository<ConversionTasksData> conversionTaskRepository,
-        IUnitOfWork unitOfWork,
-        IConfiguration configuration,
-        ILogger<RemoveProjectCommandHandler> logger)
+        IUnitOfWork unitOfWork)
         : IRequestHandler<RemoveProjectCommand>
     {
         public async Task Handle(RemoveProjectCommand request, CancellationToken cancellationToken)
@@ -78,7 +76,6 @@ namespace Dfe.Complete.Application.Projects.Commands.RemoveProject
             }
             catch (Exception ex)
             {
-                logger.LogError(ex, "Exception for {Name} Request - {@Request}", nameof(RemoveProjectCommand), request);
                 await unitOfWork.RollBackAsync();
                 throw;
             }

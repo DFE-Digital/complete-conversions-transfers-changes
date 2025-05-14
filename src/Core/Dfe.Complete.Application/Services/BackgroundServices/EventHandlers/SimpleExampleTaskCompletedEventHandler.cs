@@ -8,7 +8,7 @@ namespace Dfe.Complete.Application.Services.BackgroundServices.EventHandlers
     {
         public Task Handle(CreateReportExampleTaskCompletedEvent notification, CancellationToken cancellationToken)
         {
-            logger.LogInformation($"Event received for Task: {notification.TaskName}, Message: {notification.Message}");
+            logger.LogInformation("Event received for Task: {TaskName}, Message: {Message}", notification.TaskName, notification.Message);
             return Task.CompletedTask;
         }
     }

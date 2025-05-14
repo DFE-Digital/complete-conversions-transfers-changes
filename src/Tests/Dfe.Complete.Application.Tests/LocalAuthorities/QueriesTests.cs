@@ -10,7 +10,7 @@ namespace Dfe.Complete.Application.Tests.LocalAuthorities.QueriesTests;
 
 public class LocalAuthoritiesQueriesTests
 {
-    private readonly Mock<ICompleteRepository<LocalAuthority?>> _repositoryMock;
+    private readonly Mock<ICompleteRepository<LocalAuthority>> _repositoryMock;
     private readonly GetLocalAuthorityByCodeQueryHandler _handler;
     private readonly Mock<ILogger<GetLocalAuthorityByCodeQueryHandler>> _mockLogger;
 
