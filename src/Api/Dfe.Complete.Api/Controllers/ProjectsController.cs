@@ -311,7 +311,7 @@ namespace Dfe.Complete.Api.Controllers
         {
             if (string.IsNullOrWhiteSpace(request.SearchTerm))
             {
-                return BadRequest("searchProjects is required.");
+                return BadRequest("The SearchTerm field is required.");
             }
             var project = await sender.Send(request, cancellationToken);
             return Ok(project.Value);

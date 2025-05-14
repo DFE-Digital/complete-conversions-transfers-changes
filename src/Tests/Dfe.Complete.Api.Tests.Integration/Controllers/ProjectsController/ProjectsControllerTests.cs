@@ -769,6 +769,21 @@ public partial class ProjectsControllerTests
 
     [Theory]
     [CustomAutoData(typeof(CustomWebApplicationDbContextFactoryCustomization), typeof(GiasEstablishmentsCustomization))]
+    public async Task SearchProjectsWithEstablishmentName_ShouldReturnBadRequest_IfSearchEmpty( 
+       CustomWebApplicationDbContextFactory<Program> factory,
+       IProjectsClient projectsClient)
+    {
+        factory.TestClaims = [new Claim(ClaimTypes.Role, ApiRoles.ReadRole)];
+
+        // Act & Assert
+        var exception = await Assert.ThrowsAsync<CompleteApiException>(() =>
+            projectsClient.SearchProjectsAsync(ProjectState.Active, "  ", 0, 50));
+
+        Assert.Contains("The SearchTerm field is required.", exception.Response);
+    }
+
+    [Theory]
+    [CustomAutoData(typeof(CustomWebApplicationDbContextFactoryCustomization), typeof(GiasEstablishmentsCustomization))]
     public async Task SearchProjectsWithEstablishmentName_Async_ShouldReturnList(
        CustomWebApplicationDbContextFactory<Program> factory,
        IProjectsClient projectsClient,
@@ -974,6 +989,7 @@ public partial class ProjectsControllerTests
         Assert.NotNull(results);
         Assert.Equal(expectedProjects.Count, results.Count);
     }
+
     [Theory]
     [CustomAutoData(typeof(CustomWebApplicationDbContextFactoryCustomization), typeof(GiasEstablishmentsCustomization))]
     public async Task ListAllProjectsByTrustRef_Async_ShouldReturnList(
@@ -1020,5 +1036,50 @@ public partial class ProjectsControllerTests
         // Assert
         Assert.NotNull(results);
         Assert.Equal(expectedProjects.Count, results.Count);
+    }
+
+
+    [Theory]
+    [CustomAutoData(typeof(CustomWebApplicationDbContextFactoryCustomization), typeof(GiasEstablishmentsCustomization))]
+    public async Task ListAllProjectsByTrustRef_Async_ShouldReturnNoList_OnNoRefMatched(
+       CustomWebApplicationDbContextFactory<Program> factory,
+       IProjectsClient projectsClient,
+       IFixture fixture)
+    {
+        factory.TestClaims = [new Claim(ClaimTypes.Role, ApiRoles.ReadRole)];
+
+        // Arrange
+        var dbContext = factory.GetDbContext<CompleteContext>();
+        var establishments = fixture.Customize(new GiasEstablishmentsCustomization()).CreateMany<GiasEstablishment>(1)
+            .ToList();
+        var localAuthority = dbContext.LocalAuthorities.AsEnumerable().MinBy(_ => Guid.NewGuid());
+        Assert.NotNull(localAuthority);
+
+        await dbContext.GiasEstablishments.AddRangeAsync(establishments);
+        var trustPref = "TR12345";
+        var trustReference = string.Concat(trustPref, 0);
+        var projects = establishments.Select((establishment, i) =>
+        {
+            var project = fixture.Customize(new ProjectCustomization
+            {
+                LocalAuthorityId = localAuthority.Id,
+                IncomingTrustUkprn = "12345678",
+                OutgoingTrustUkprn = "87654321",
+                NewTrustReferenceNumber = string.Concat(trustPref, i),
+            }).Create<Project>();
+            project.Urn = establishment.Urn ?? project.Urn;
+            return project;
+        }).ToList();
+
+        await dbContext.Projects.AddRangeAsync(projects);
+        await dbContext.SaveChangesAsync();
+        var ukprn = projects.First().IncomingTrustUkprn;
+
+        // Act
+        var results = await projectsClient.ListAllProjectsByTrustRefAsync("TR12345", 0, 20, CancellationToken.None);
+
+        // Assert
+        Assert.NotNull(results);
+        Assert.Empty(results);
     }
 }
