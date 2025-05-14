@@ -271,7 +271,7 @@ describe("View all projects", () => {
         projectDetailsPage.containsHeading(schoolName);
     });
 
-    it("Should be able to view all projects by local authority and all a local authority's projects", () => {
+    it.only("Should be able to view all projects by local authority and all a local authority's projects", () => {
         navBar.goToAllProjects();
         allProjects
             .filterProjects("By local authority")
@@ -283,7 +283,7 @@ describe("View all projects", () => {
             .hasTableHeaders(["School or academy", "URN", "Conversion or transfer date", "Project type", "Assigned to"])
             .withSchool(schoolName)
             .columnHasValue("URN", `${project.urn.value}`)
-            // .columnHasValue("Conversion or transfer date", nextMonthLong) // bug 207849
+            .columnHasValue("Conversion or transfer date", nextMonthShort)
             .columnHasValue("Project type", "Conversion")
             .columnHasValue("Assigned to", cypressUser.username)
             .goTo(schoolName);
