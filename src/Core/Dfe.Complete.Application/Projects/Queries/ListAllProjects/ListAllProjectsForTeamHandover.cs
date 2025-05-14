@@ -24,19 +24,19 @@ public class ListAllProjectsForTeamHandoverQueryHandler(
     {
         try
         {
-            var projectsHandedOverForTeam = await listAllProjectsQueryService.ListAllProjects(
-                request.ProjectStatus, request.Type, region: request.Region, team: ProjectTeam.RegionalCaseWorkerServices)
-                .ToListAsync(cancellationToken);
+            var projectsHandedOverForTeamQuery = listAllProjectsQueryService.ListAllProjects(
+                request.ProjectStatus, request.Type, region: request.Region, team: ProjectTeam.RegionalCaseWorkerServices);
 
-            var paginatedResultModel = projectsHandedOverForTeam.Select(proj =>
+            var count = await projectsHandedOverForTeamQuery.CountAsync(cancellationToken);
+
+            var paginatedResultModel = await projectsHandedOverForTeamQuery.Select(proj =>
                     ListAllProjectsResultModel.MapProjectAndEstablishmentToListAllProjectResultModel(proj.Project,
                         proj.Establishment))
                 .Skip(request.Page * request.Count)
                 .Take(request.Count)
-                .ToList();
+                .ToListAsync(cancellationToken);
 
-            return PaginatedResult<List<ListAllProjectsResultModel>>.Success(paginatedResultModel,
-                projectsHandedOverForTeam.Count);
+            return PaginatedResult<List<ListAllProjectsResultModel>>.Success(paginatedResultModel, count);
         }
         catch (Exception e)
         {

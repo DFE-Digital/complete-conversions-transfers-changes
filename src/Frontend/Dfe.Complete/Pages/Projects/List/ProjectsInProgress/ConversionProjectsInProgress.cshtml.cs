@@ -17,7 +17,7 @@ public class ConversionProjectsInProgressModel(ISender sender) : ConversionOrTra
         var response = await sender.Send(listProjectQuery);
         Projects = response.Value?.ToList() ?? [];
 
-        var countProjectQuery = new CountAllProjectsQuery(ProjectState.Active, ProjectType.Conversion);
+        var countProjectQuery = new CountAllProjectsQuery(ProjectState.Active, ProjectType.Conversion, AssignedToState.AssignedOnly);
         var countResponse = await sender.Send(countProjectQuery);
 
         Pagination = new PaginationModel("/projects/all/in-progress/conversions", PageNumber, countResponse.Value, PageSize);

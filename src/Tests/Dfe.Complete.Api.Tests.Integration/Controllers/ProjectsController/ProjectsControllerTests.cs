@@ -59,7 +59,7 @@ public partial class ProjectsControllerTests
         await dbContext.Projects.AddRangeAsync(projects);
         await dbContext.SaveChangesAsync();
 
-        var result = await projectsClient.CountAllProjectsAsync(null, null, null);
+        var result = await projectsClient.CountAllProjectsAsync(null, null, null, null);
 
         Assert.Equal(50, result);
     }
@@ -103,7 +103,7 @@ public partial class ProjectsControllerTests
 
         // Act
         var results = await projectsClient.ListAllProjectsAsync(
-            null, null, 0, 50);
+            null, null, null, 0, 50);
 
         // Assert
         Assert.NotNull(results);
@@ -178,7 +178,7 @@ public partial class ProjectsControllerTests
 
         // Act
         var results = await projectsClient.ListAllProjectsAsync(
-            ProjectState.Completed, null, 0, 50);
+            ProjectState.Completed, null, null, 0, 50);
 
         // Assert
         Assert.NotNull(results);

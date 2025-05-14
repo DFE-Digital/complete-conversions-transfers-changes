@@ -17,7 +17,7 @@ public class TransferProjectsInProgressModel(ISender sender) : ConversionOrTrans
         var response = await sender.Send(listProjectQuery);
         Projects = response.Value?.ToList() ?? [];
 
-        var countProjectQuery = new CountAllProjectsQuery(ProjectState.Active, ProjectType.Transfer);
+        var countProjectQuery = new CountAllProjectsQuery(ProjectState.Active, ProjectType.Transfer, AssignedToState.AssignedOnly);
         var countResponse = await sender.Send(countProjectQuery);
 
         Pagination = new PaginationModel("/projects/all/in-progress/transfers", PageNumber, countResponse.Value, PageSize);

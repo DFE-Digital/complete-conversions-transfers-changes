@@ -538,13 +538,26 @@
             "x-position": 2
           },
           {
+            "name": "AssignedToState",
+            "in": "query",
+            "schema": {
+              "nullable": true,
+              "oneOf": [
+                {
+                  "$ref": "#/components/schemas/AssignedToState"
+                }
+              ]
+            },
+            "x-position": 3
+          },
+          {
             "name": "Search",
             "in": "query",
             "schema": {
               "type": "string",
               "nullable": true
             },
-            "x-position": 3
+            "x-position": 4
           }
         ],
         "responses": {
@@ -2730,12 +2743,7 @@
         "additionalProperties": false,
         "properties": {
           "project": {
-            "nullable": true,
-            "oneOf": [
-              {
-                "$ref": "#/components/schemas/Project"
-              }
-            ]
+            "$ref": "#/components/schemas/Project"
           },
           "establishment": {
             "nullable": true,

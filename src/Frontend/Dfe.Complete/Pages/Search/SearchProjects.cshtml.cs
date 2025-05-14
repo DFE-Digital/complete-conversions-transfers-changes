@@ -15,7 +15,7 @@ namespace Dfe.Complete.Pages.Search
         public string Query { get; set; } = string.Empty;
 
         public List<ListAllProjectsResultModel> Projects { get; set; } = default!;
-         
+
         public string ErrorMessage { get; set; } = string.Empty;
 
         public int TotalResults { get; set; } = 0;
@@ -26,17 +26,17 @@ namespace Dfe.Complete.Pages.Search
             {
                 ErrorMessage = "Please enter a search term";
             }
-            else if(Query.Length < 4 )
+            else if (Query.Length < 4)
             {
                 ErrorMessage = "Search term too short";
             }
-            else if(IsMixedString(Query))
+            else if (IsMixedString(Query))
             {
                 Projects = [];
             }
             else
             {
-                var countProjectQuery = new CountAllProjectsQuery(ProjectState.Active, null, Query);
+                var countProjectQuery = new CountAllProjectsQuery(ProjectState.Active, null, AssignedToState.AssignedOnly, Query);
                 var countResponse = await sender.Send(countProjectQuery);
 
                 var searchProjectsQuery = new SearchProjectsQuery(ProjectState.Active, Query)
