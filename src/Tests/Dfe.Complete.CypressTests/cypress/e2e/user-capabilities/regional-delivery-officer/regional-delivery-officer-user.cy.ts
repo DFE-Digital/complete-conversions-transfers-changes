@@ -6,6 +6,9 @@ import {
 import { beforeEach } from "mocha";
 import { cypressUser } from "cypress/constants/cypressConstants";
 import navBar from "cypress/pages/navBar";
+import yourProjects from "cypress/pages/projects/yourProjects";
+import yourTeamProjects from "cypress/pages/projects/yourTeamProjects";
+import allProjects from "cypress/pages/projects/allProjects";
 
 describe("Capabilities and permissions of the regional delivery officer user", () => {
     beforeEach(() => {
@@ -18,8 +21,24 @@ describe("Capabilities and permissions of the regional delivery officer user", (
         cy.url().should("include", "/projects/yours/in-progress");
     });
 
-    it("Should be able to view 'Your projects', 'Your team projects', 'All projects' and 'Groups' sections", () => {
+    it("Should be able to view 'Your projects', 'Your team projects', 'All projects' and 'Groups' sections and filters", () => {
         navBar.ableToView(["Your projects", "Your team projects", "All projects", "Groups"]);
+        navBar.goToYourProjects();
+        yourProjects.ableToViewFilters(["In progress", "Added by you", "Completed"]);
+        navBar.goToYourTeamProjects();
+        yourTeamProjects.ableToViewFilters(["In progress", "New", "By user", "Handed over", "Completed"]);
+        navBar.goToAllProjects();
+        allProjects.ableToViewFilters([
+            "Handover",
+            "In progress",
+            "By month",
+            "By region",
+            "By user",
+            "By trust",
+            "By local authority",
+            "Completed",
+            "Statistics",
+        ]);
     });
 
     it("Should NOT be able to view 'Service support' section", () => {
