@@ -27,6 +27,8 @@ Security in case of vulnerabilities.
  - Optimise several project listing queries by implementing pagination before retrieving records
 
 ### Fixed  
+- Fixed identifying "Form A MAT" projects logic
+- Removed unnecessary `Assign To` filter while pulling projects from database.
 
 See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-05-14.254...main) for everything awaiting release
 
@@ -61,6 +63,7 @@ See the [full commit history](https://github.com/DFE-Digital/complete-conversion
 ### Fixed  
  - Routing for projects merged (`/conversion-project` and `/transfer-project` become `/project`)
  - "Team projects" > "Handed over" now shows unassigned projects again
+
 
 See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-05-08.217...production-2025-05-13.244) for everything in the release
 
