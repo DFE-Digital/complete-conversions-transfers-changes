@@ -4,6 +4,7 @@ using Dfe.Complete.Api.Tests.Integration.Customizations;
 using Dfe.Complete.Client.Contracts;
 using Dfe.Complete.Domain.Entities;
 using Dfe.Complete.Infrastructure.Database;
+using Dfe.Complete.Tests.Common.Constants;
 using Dfe.Complete.Tests.Common.Customizations.Models;
 using DfE.CoreLibs.Testing.AutoFixture.Attributes;
 using DfE.CoreLibs.Testing.Mocks.WebApplicationFactory;
@@ -22,7 +23,7 @@ public partial class ProjectsControllerTests
         IProjectsClient projectsClient,
         IFixture fixture)
     {
-        factory.TestClaims = new[] { ReadRole, WriteRole, DeleteRole, UpdateRole }
+        factory.TestClaims = new[] { ApiRoles.ReadRole, ApiRoles.WriteRole, ApiRoles.DeleteRole, ApiRoles.UpdateRole }
             .Select(x => new Claim(ClaimTypes.Role, x)).ToList();
 
         var dbContext = factory.GetDbContext<CompleteContext>();
@@ -86,7 +87,7 @@ public partial class ProjectsControllerTests
         IProjectsClient projectsClient,
         IFixture fixture)
     {
-        factory.TestClaims = new[] { ReadRole, WriteRole, DeleteRole, UpdateRole }
+        factory.TestClaims = new[] { ApiRoles.ReadRole, ApiRoles.WriteRole, ApiRoles.DeleteRole, ApiRoles.UpdateRole }
             .Select(x => new Claim(ClaimTypes.Role, x)).ToList();
 
         var dbContext = factory.GetDbContext<CompleteContext>();
@@ -149,7 +150,7 @@ public partial class ProjectsControllerTests
         CustomWebApplicationDbContextFactory<Program> factory,
         IProjectsClient projectsClient)
     {
-        factory.TestClaims = new[] { ReadRole, WriteRole, DeleteRole, UpdateRole }
+        factory.TestClaims = new[] { ApiRoles.ReadRole, ApiRoles.WriteRole, ApiRoles.DeleteRole, ApiRoles.UpdateRole }
             .Select(x => new Claim(ClaimTypes.Role, x)).ToList();
 
         var dbContext = factory.GetDbContext<CompleteContext>();

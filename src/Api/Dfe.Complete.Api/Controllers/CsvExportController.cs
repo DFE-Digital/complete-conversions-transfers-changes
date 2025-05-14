@@ -4,11 +4,13 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 using System.Text;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Dfe.Complete.Api.Controllers
 {
     [ApiController]
     [ApiVersion("1.0")]
+    [Authorize(Policy = "CanRead")]
     [Route("v{version:apiVersion}/[controller]")]
     public class CsvExportController(ISender sender) : ControllerBase
     {
@@ -18,7 +20,7 @@ namespace Dfe.Complete.Api.Controllers
         public async Task<IActionResult> GetConversionCsvByMonthAsync([FromQuery] GetConversionCsvByMonthQuery request, CancellationToken cancellationToken)
         {
             var fileContents = await sender.Send(request, cancellationToken);
-            if (fileContents.IsSuccess == false)
+            if (!fileContents.IsSuccess)
             {
                 return BadRequest(fileContents.Error);
             }
@@ -38,7 +40,7 @@ namespace Dfe.Complete.Api.Controllers
         public async Task<IActionResult> GetConversionCsvByMonthContentsAsync([FromQuery] GetConversionCsvByMonthQuery request, CancellationToken cancellationToken)
         {
             var fileContents = await sender.Send(request, cancellationToken);
-            if (fileContents.IsSuccess == false)
+            if (!fileContents.IsSuccess)
             {
                 return BadRequest(fileContents.Error);
             }
