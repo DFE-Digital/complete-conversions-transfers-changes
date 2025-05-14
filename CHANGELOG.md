@@ -27,7 +27,23 @@ Security in case of vulnerabilities.
 
 ### Fixed  
 
-See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-05-13.244...main) for everything awaiting release
+See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-05-14.254...main) for everything awaiting release
+
+---
+
+## [1.5.1](https://github.com/DFE-Digital/complete-conversions-transfers-changes/releases/tag/production-2025-05-14.254) - 2025-05-14
+
+### Changed
+ - Change date format to "Month Year" string on local authority projects list
+ - Change projects to sort by significant date on local authority projects list
+
+### Fixed  
+ - Resolve project pagination issue on "Team projects" > "By User" > User page
+
+### Security
+ - Authorization fixed on all API endpoints
+
+See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-05-13.244...production-2025-05-14.254) for everything in the release
 
 ---
 
@@ -46,9 +62,9 @@ See the [full commit history](https://github.com/DFE-Digital/complete-conversion
 ### Fixed  
  - Routing for projects merged (`/conversion-project` and `/transfer-project` become `/project`)
  - "Team projects" > "Handed over" now shows unassigned projects again
- - Authorization fixed on all API endpoints
 
 See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-05-08.217...production-2025-05-13.244) for everything in the release
+
 ---
 
 ## [1.4.0](https://github.com/DFE-Digital/complete-conversions-transfers-changes/releases/tag/production-2025-05-08.217) - 2025-05-08
