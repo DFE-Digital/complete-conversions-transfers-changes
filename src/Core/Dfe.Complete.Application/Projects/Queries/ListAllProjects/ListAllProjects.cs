@@ -25,16 +25,13 @@ namespace Dfe.Complete.Application.Projects.Queries.ListAllProjects
             {
                 var projectList = await listAllProjectsQueryService
                     .ListAllProjects(request.ProjectStatus, request.Type, assignedToState: request.AssignedToState)
-                    .ToListAsync(cancellationToken);
-
-                var result = projectList
                     .Skip(request.Page * request.Count).Take(request.Count)
                     .Select(item => ListAllProjectsResultModel.MapProjectAndEstablishmentToListAllProjectResultModel(
                         item.Project!,
                         item.Establishment
                     ))
-                    .ToList();
-                return Result<List<ListAllProjectsResultModel>>.Success(result);
+                    .ToListAsync(cancellationToken);
+                return Result<List<ListAllProjectsResultModel>>.Success(projectList);
             }
             catch (Exception ex)
             {
