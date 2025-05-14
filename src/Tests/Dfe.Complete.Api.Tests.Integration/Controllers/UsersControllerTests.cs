@@ -1,7 +1,9 @@
+using System.Security.Claims;
 using AutoFixture;
 using Dfe.Complete.Api.Tests.Integration.Customizations;
 using Dfe.Complete.Client.Contracts;
 using Dfe.Complete.Infrastructure.Database;
+using Dfe.Complete.Tests.Common.Constants;
 using Dfe.Complete.Tests.Common.Customizations.Models;
 using DfE.CoreLibs.Testing.AutoFixture.Attributes;
 using DfE.CoreLibs.Testing.Mocks.WebApplicationFactory;
@@ -20,9 +22,9 @@ public class UsersControllerTests
         IUsersClient usersClient,
         IFixture fixture)
     {
-        //todo: when auth is done, add this back in
         // Arrange
         var dbContext = factory.GetDbContext<CompleteContext>();
+        factory.TestClaims = [new Claim(ClaimTypes.Role, ApiRoles.ReadRole)];
         var testUser = await dbContext.Users.FirstAsync();
         testUser.FirstName = "Nick";
         testUser.LastName = "Warms";
@@ -69,8 +71,8 @@ public class UsersControllerTests
         IUsersClient usersClient,
         IFixture fixture)
     {
-        //todo: when auth is done, add this back in
         // Arrange
+        factory.TestClaims = [new Claim(ClaimTypes.Role, ApiRoles.ReadRole)];
         var dbContext = factory.GetDbContext<CompleteContext>();
         var testUser = await dbContext.Users.FirstAsync();
         testUser.FirstName = "Nick";
