@@ -9,16 +9,16 @@
 
 @model Dfe.Complete.Pages.Projects.List.AllProjectsModel
 @{
-  Layout = "Shared/_Layout";
-  var ariaCurrentValue = "page";
-  string? IsCurrentNav(string tabName) => Model.CurrentNavigationItem == tabName ? ariaCurrentValue : null;
+    Layout = "Shared/_Layout";
+    var ariaCurrentValue = "page";
+    string? IsCurrentNav(string tabName) => Model.CurrentNavigationItem == tabName ? ariaCurrentValue : null;
 
-  bool UserHasTabAccess(string tabName) => UserTabAccessHelper.UserHasTabAccess(User, tabName);
-  
-  var user = await User.GetUser(sender);
-  var today = DateTime.Now;
-  var month = today.Month;
-  var year = today.Year;
+    bool UserHasTabAccess(string tabName) => UserTabAccessHelper.UserHasTabAccess(User, tabName);
+
+    var user = await User.GetUser(sender);
+    var today = DateTime.Now;
+    var month = today.Month;
+    var year = today.Year;
 }
 
 @section BeforeMainFullWidth
@@ -28,51 +28,58 @@
             <div class="moj-primary-navigation__nav">
                 <nav class="moj-primary-navigation" aria-label="Primary navigation">
                     <ul class="moj-primary-navigation__list">
-                        @if (UserHasTabAccess(AllProjectsModel.HandoverNavigation))
-                        {
-                            <li class="moj-primary-navigation__item">
-                                <a class="moj-primary-navigation__link" aria-current="@IsCurrentNav(AllProjectsModel.HandoverNavigation)"
-                                   href="/projects/all/handover">Handover</a>
-                            </li>
-                        }
-                        <li class="moj-primary-navigation__item">
-                            <a class="moj-primary-navigation__link" aria-current="@IsCurrentNav(AllProjectsModel.InProgressNavigation)"
-                               href="/projects/all/in-progress/all">In progress</a>
-                        </li>
-                        <li class="moj-primary-navigation__item">
-                            <a class="moj-primary-navigation__link" aria-current="@IsCurrentNav(AllProjectsModel.ByMonthNavigation)"
-                               href="@ProjectsByMonthModel.GetProjectByMonthsUrl(ProjectType.Conversion, user, month, year, month, year)">By month</a>
-                        </li>
-                        <li class="moj-primary-navigation__item">
-                            <a class="moj-primary-navigation__link" aria-current="@IsCurrentNav(AllProjectsModel.ByRegionNavigation)"
-                               href="/projects/all/regions">By region</a>
-                        </li>
-                        <li class="moj-primary-navigation__item">
-                            <a class="moj-primary-navigation__link" aria-current="@IsCurrentNav(AllProjectsModel.ByUserNavigation)"
-                               href="/projects/all/users">By user</a>
-                        </li>
-                        <li class="moj-primary-navigation__item">
-                            <a class="moj-primary-navigation__link" aria-current="@IsCurrentNav(AllProjectsModel.ByTrustNavigation)"
-                               href="/projects/all/trusts">By trust</a>
+                        <li class="moj-primary-navigation__item" asp-policy="@UserPolicies.CanViewAllProjectsHandover">
+                            <a class="moj-primary-navigation__link"
+                                aria-current="@IsCurrentNav(AllProjectsModel.HandoverNavigation)"
+                                href="/projects/all/handover">Handover</a>
                         </li>
                         <li class="moj-primary-navigation__item">
                             <a class="moj-primary-navigation__link"
-                               aria-current="@IsCurrentNav(AllProjectsModel.ByLocalAuthorityNavigation)"
-                               href="/projects/all/local-authorities">By local authority</a>
+                                aria-current="@IsCurrentNav(AllProjectsModel.InProgressNavigation)"
+                                href="/projects/all/in-progress/all">In progress</a>
                         </li>
                         <li class="moj-primary-navigation__item">
-                            <a class="moj-primary-navigation__link" aria-current="@IsCurrentNav(AllProjectsModel.CompletedNavigation)"
-                               href="@RouteConstants.CompletedProjects">Completed</a>
+                            <a class="moj-primary-navigation__link"
+                                aria-current="@IsCurrentNav(AllProjectsModel.ByMonthNavigation)"
+                                href="@ProjectsByMonthModel.GetProjectByMonthsUrl(ProjectType.Conversion, user, month, year, month, year)">By
+                                month</a>
                         </li>
                         <li class="moj-primary-navigation__item">
-                            <a class="moj-primary-navigation__link" aria-current="@IsCurrentNav(AllProjectsModel.StatisticsNavigation)"
-                               href="/projects/all/statistics">Statistics</a>
+                            <a class="moj-primary-navigation__link"
+                                aria-current="@IsCurrentNav(AllProjectsModel.ByRegionNavigation)"
+                                href="/projects/all/regions">By region</a>
+                        </li>
+                        <li class="moj-primary-navigation__item">
+                            <a class="moj-primary-navigation__link"
+                                aria-current="@IsCurrentNav(AllProjectsModel.ByUserNavigation)"
+                                href="/projects/all/users">By user</a>
+                        </li>
+                        <li class="moj-primary-navigation__item">
+                            <a class="moj-primary-navigation__link"
+                                aria-current="@IsCurrentNav(AllProjectsModel.ByTrustNavigation)"
+                                href="/projects/all/trusts">By trust</a>
+                        </li>
+                        <li class="moj-primary-navigation__item">
+                            <a class="moj-primary-navigation__link"
+                                aria-current="@IsCurrentNav(AllProjectsModel.ByLocalAuthorityNavigation)"
+                                href="/projects/all/local-authorities">By local authority</a>
+                        </li>
+                        <li class="moj-primary-navigation__item">
+                            <a class="moj-primary-navigation__link"
+                                aria-current="@IsCurrentNav(AllProjectsModel.CompletedNavigation)"
+                                href="@RouteConstants.CompletedProjects">Completed</a>
+                        </li>
+                        <li class="moj-primary-navigation__item">
+                            <a class="moj-primary-navigation__link"
+                                aria-current="@IsCurrentNav(AllProjectsModel.StatisticsNavigation)"
+                                href="/projects/all/statistics">Statistics</a>
                         </li>
                         @if (UserHasTabAccess(AllProjectsModel.ExportsNavigation))
                         {
                             <li class="moj-primary-navigation__item">
-                                <a class="moj-primary-navigation__link" aria-current="@IsCurrentNav(AllProjectsModel.ExportsNavigation)"
-                                   href="/projects/all/statistics">Exports</a>
+                                <a class="moj-primary-navigation__link"
+                                    aria-current="@IsCurrentNav(AllProjectsModel.ExportsNavigation)"
+                                    href="/projects/all/statistics">Exports</a>
                             </li>
                         }
                     </ul>
