@@ -31,9 +31,9 @@ namespace Dfe.Complete.Application.Projects.Commands.RemoveProject
             // This is to prevent real projects from currently being deleted
             // This will have to be changed when we implement in app deletes
             // As well as making sure that we differentiate between soft and hard deletes
-            if (!hostEnvironment.IsDevelopment() && !(hostEnvironment.IsTest() && configuration["IntegrationTestOverride"] == "true"))
+            if (!hostEnvironment.IsDevelopment() && !hostEnvironment.IsTest())
             {
-                throw new NotDevEnvironmentException();
+                throw new NotDevOrTestEnvironmentException();
             }
 
             await unitOfWork.BeginTransactionAsync();

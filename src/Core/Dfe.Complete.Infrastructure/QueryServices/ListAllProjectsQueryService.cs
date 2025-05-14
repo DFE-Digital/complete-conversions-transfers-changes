@@ -5,7 +5,8 @@ using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Domain.ValueObjects;
 using Dfe.Complete.Infrastructure.Database;
 using Microsoft.EntityFrameworkCore;
-using Dfe.Complete.Infrastructure.Extensions;
+using Dfe.Complete.Infrastructure.Extensions; 
+using System.Text.RegularExpressions;
 
 namespace Dfe.Complete.Infrastructure.QueryServices;
 
@@ -19,13 +20,13 @@ internal class ListAllProjectsQueryService(CompleteContext context) : IListAllPr
         string? localAuthorityCode = "",
         Region? region = null,
         ProjectTeam? team = null,
-        bool? isFormAMat  = null,
+        bool? isFormAMat = null,
         string? newTrustReferenceNumber = "",
+        string? search = "",
         OrderProjectQueryBy? orderBy = null)
     {
         var projects = context.Projects
             .Where(project => projectStatus == null || project.State == projectStatus)
-            .Where(project => projectStatus != ProjectState.Active || project.AssignedToId != null)
             .Where(project => projectType == null || projectType == project.Type);
 
         IQueryable<GiasEstablishment> giasEstablishments = context.GiasEstablishments;
@@ -68,21 +69,50 @@ internal class ListAllProjectsQueryService(CompleteContext context) : IListAllPr
         {
             projects = projects.Where(project =>
                 project.NewTrustReferenceNumber != null &&
-                project.NewTrustName != null &&
-                project.IncomingTrustUkprn == null);
+                project.NewTrustName != null);
         }
         else if (isFormAMat == false)
         {
             projects = projects.Where(project =>
                 project.NewTrustReferenceNumber == null &&
-                project.NewTrustName == null &&
-                project.IncomingTrustUkprn != null);
+                project.NewTrustName == null);
         }
 
+        if (!string.IsNullOrWhiteSpace(search))
+        {
+            (projects, giasEstablishments) = SearchProjects(projects, giasEstablishments, search);
+        }
 
         return GenerateQuery(projects, giasEstablishments, orderBy);
     }
 
+    public static (IQueryable<Project>, IQueryable<GiasEstablishment> giasEstablishments) SearchProjects(IQueryable<Project> projects, IQueryable<GiasEstablishment> giasEstablishments, string searchTerm)
+    {  
+        _ = int.TryParse(searchTerm, out int number);
+        var timeSpan = TimeSpan.FromMilliseconds(100);
+
+        if (Regex.IsMatch(searchTerm, @"^\d{6}$", RegexOptions.None, timeSpan))
+        {
+            projects = projects.Where(project => project.Urn == new Urn(number));
+        }
+        else if (Regex.IsMatch(searchTerm, @"^\d{8}$", RegexOptions.None, timeSpan))
+        {
+            projects = projects.Where(project => project.IncomingTrustUkprn == new Ukprn(number) || project.OutgoingTrustUkprn == new Ukprn(number));
+        }
+        else if (Regex.IsMatch(searchTerm, @"^\d{4}$", RegexOptions.None, timeSpan))
+        {
+            giasEstablishments = giasEstablishments.Where(establishment => establishment.EstablishmentNumber == searchTerm);
+        }
+        else
+        {
+            searchTerm = searchTerm.ToLower();
+
+            giasEstablishments = giasEstablishments.Where(establishment => establishment.Name != null && EF.Functions.Like(establishment.Name.ToLower(), $"%{searchTerm}%"));
+        }
+
+        return (projects, giasEstablishments);
+    }
+     
     private static IQueryable<ListAllProjectsQueryModel> GenerateQuery(IQueryable<Project> projects, IQueryable<GiasEstablishment> giasEstablishments, OrderProjectQueryBy? orderBy = null)
     {
         return projects

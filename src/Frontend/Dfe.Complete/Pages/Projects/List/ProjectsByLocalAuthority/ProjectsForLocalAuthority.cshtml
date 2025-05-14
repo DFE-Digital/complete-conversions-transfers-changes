@@ -27,7 +27,7 @@
         </thead>
         <tbody class="govuk-table__body">
 
-        @foreach (var project in Model.Projects.OrderBy(p => p.EstablishmentName))
+        @foreach (var project in Model.Projects)
         {
             var projectLink = AllProjectsModel.GetProjectSummaryUrl(project);
             
@@ -36,7 +36,7 @@
                 <a class="govuk-link" href="@projectLink">@project.EstablishmentName</a>
             </td>
             <td class="govuk-table__cell">@project.Urn.Value</td>
-            <td class="govuk-table__cell">@project.ConversionOrTransferDate</td>
+            <td class="govuk-table__cell">@project.ConversionOrTransferDate.ToMonthYearString()</td>
             <td class="govuk-table__cell">@project.ProjectType</td>
             <td class="govuk-table__cell">@project.AssignedToFullName</td>
         </tr>

@@ -10,6 +10,7 @@ import {
 } from "cypress/support/reusableTests";
 import { dataConsumerUser } from "cypress/constants/cypressConstants";
 import navBar from "cypress/pages/navBar";
+import allProjects from "cypress/pages/projects/allProjects";
 
 describe("Capabilities and permissions of the data consumer user", () => {
     beforeEach(() => {
@@ -22,8 +23,19 @@ describe("Capabilities and permissions of the data consumer user", () => {
         cy.url().should("include", "/projects/all/in-progress/all");
     });
 
-    it("Should only be able to view All projects section", () => {
+    it("Should only be able to view All projects section, with all the expected filters", () => {
         navBar.unableToViewTheNavBar();
+        allProjects.ableToViewFilters([
+            "In progress",
+            "By month",
+            "By region",
+            "By user",
+            "By trust",
+            "By local authority",
+            "Completed",
+            "Statistics",
+            "Exports",
+        ]);
     });
 
     it("Should NOT have access to view All projects -> handed over projects", () => {
@@ -39,8 +51,7 @@ describe("Capabilities and permissions of the data consumer user", () => {
         shouldNotHaveAccessToViewAndEditUsers();
     });
 
-    it.skip("Should be able to view multiple months of projects within a specified date range", () => {
-        // not implemented 187514
+    it("Should be able to view multiple months of projects within a specified date range", () => {
         shouldBeAbleToViewMultipleMonthsOfProjects();
     });
 
@@ -49,8 +60,7 @@ describe("Capabilities and permissions of the data consumer user", () => {
         shouldBeAbleToViewAndDownloadCsvReportsFromTheExportSection();
     });
 
-    it.skip("Should NOT be able to create a project", () => {
-        // not implemented
+    it("Should NOT be able to create a project", () => {
         shouldNotBeAbleToCreateAProject();
     });
 

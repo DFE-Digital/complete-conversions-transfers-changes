@@ -1,5 +1,4 @@
 ﻿using Dfe.Complete.Application.Common.Models;
-using Dfe.Complete.Application.Projects.Models;
 using Dfe.Complete.Application.Users.Models;
 using Dfe.Complete.Domain.Entities;
 using Dfe.Complete.Domain.Enums;
@@ -11,66 +10,57 @@ using Microsoft.Extensions.Logging;
 
 namespace Dfe.Complete.Application.Users.Queries.ListAllUsers;
 
-public record ListAllUsersWithProjectsQuery(ProjectState? State)
-    : PaginatedRequest<PaginatedResult<List<UserWithProjectsDto>>>;
+public record ListAllUsersWithProjectsQuery(
+    ProjectState? State,
+    ProjectTeam? Team = null,
+    bool? RequireUserHasProjects = true
+)
+    : PaginatedRequest<PaginatedResult<List<ListAllUsersWithProjectsResultModel>>>;
 
 public class ListAllUsersWithProjectsHandler(ICompleteRepository<User> users, ILogger<ListAllUsersWithProjectsHandler> logger)
-    : IRequestHandler<ListAllUsersWithProjectsQuery, PaginatedResult<List<UserWithProjectsDto>>>
+    : IRequestHandler<ListAllUsersWithProjectsQuery, PaginatedResult<List<ListAllUsersWithProjectsResultModel>>>
 {
-    public async Task<PaginatedResult<List<UserWithProjectsDto>>> Handle(ListAllUsersWithProjectsQuery request,
+    public async Task<PaginatedResult<List<ListAllUsersWithProjectsResultModel>>> Handle(ListAllUsersWithProjectsQuery request,
         CancellationToken cancellationToken)
     {
         try
         {
-            var filteredUsers = users.Query()
-                .Where(user => user.ProjectAssignedTos.Any(project => request.State == null || project.State == request.State));
+            var filteredUsers = users.Query();
+
+            if (request.Team is not null)
+                filteredUsers = filteredUsers.Where(u => u.Team == request.Team.ToDescription());
+
+            if (request.RequireUserHasProjects == true)
+                filteredUsers = filteredUsers.Where(u =>
+                    u.ProjectAssignedTos.Any(pa =>
+                        request.State == null || pa.State == request.State));
 
             var count = await filteredUsers.CountAsync(cancellationToken);
 
-            var userProjectData = filteredUsers
-                .Select(user => new
-                {
-                    User = user,
-                    FilteredProjects = user.ProjectAssignedTos
-                        .Where(project => request.State == null || project.State == request.State)
-                });
-
-            var result = await userProjectData
-                .OrderBy(u => u.User.FirstName)
-                .ThenBy(u => u.User.LastName)
+            var result = await filteredUsers
+                .OrderBy(user => user.FirstName)
+                .ThenBy(user => user.LastName)
                 .Paginate(request.Page, request.Count)
-                .Select(u => new UserWithProjectsDto(
-                    u.User.Id,
-                    $"{u.User.FirstName} {u.User.LastName}",
-                    u.User.Email,
-                    u.User.Team.FromDescriptionValue<ProjectTeam>(),
-                    u.FilteredProjects.Select(project => new ListAllProjectsResultModel(
-                        null,
-                        project.Id,
-                        project.Urn,
-                        project.SignificantDate,
-                        project.State,
-                        project.Type,
-                        project.FormAMat,
-                        null,
-                        null,
-                        null,
-                        null,
-                        null,
-                        null,
-                        project.CreatedAt
-                    )).ToList(),
-                    u.FilteredProjects.Count(project => project.Type == ProjectType.Conversion),
-                    u.FilteredProjects.Count(project => project.Type == ProjectType.Transfer)
+                .Select(user => new ListAllUsersWithProjectsResultModel(
+                    user.Id,
+                    user.FullName,
+                    user.Email,
+                    user.Team.FromDescriptionValue<ProjectTeam>(),
+                    user.ProjectAssignedTos
+                        .Where(project => request.State == null || project.State == request.State)
+                        .Count(project => project.Type == ProjectType.Conversion),
+                    user.ProjectAssignedTos
+                        .Where(project => request.State == null || project.State == request.State)
+                        .Count(project => project.Type == ProjectType.Transfer)
                 ))
                 .ToListAsync(cancellationToken);
 
-            return PaginatedResult<List<UserWithProjectsDto>>.Success(result, count);
+            return PaginatedResult<List<ListAllUsersWithProjectsResultModel>>.Success(result, count);
         }
         catch (Exception ex)
         {
             logger.LogError(ex, "Exception for {Name} Request - {@Request}", nameof(ListAllUsersWithProjectsHandler), request);
-            return PaginatedResult<List<UserWithProjectsDto>>.Failure(ex.Message);
+            return PaginatedResult<List<ListAllUsersWithProjectsResultModel>>.Failure(ex.Message);
         }
     }
 }

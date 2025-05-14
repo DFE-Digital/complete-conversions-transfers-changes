@@ -22,8 +22,9 @@ public class ListAllProjectsForLocalAuthority(IListAllProjectsQueryService listA
     {
         try
         {
-            var projectsForLa = await listAllProjectsQueryService.ListAllProjects(request.State, request.Type, localAuthorityCode: request.LocalAuthorityCode).ToListAsync(cancellationToken);
-            
+            var orderBy = new OrderProjectQueryBy();
+            var projectsForLa = await listAllProjectsQueryService.ListAllProjects(request.State, request.Type, localAuthorityCode: request.LocalAuthorityCode, orderBy: orderBy).ToListAsync(cancellationToken);
+
             var paginatedResultModel = projectsForLa.Select(proj =>
                     ListAllProjectsResultModel.MapProjectAndEstablishmentToListAllProjectResultModel(
                         proj.Project,

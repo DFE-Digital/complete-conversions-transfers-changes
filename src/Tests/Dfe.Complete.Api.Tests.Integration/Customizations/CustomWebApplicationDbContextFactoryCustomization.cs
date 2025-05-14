@@ -59,7 +59,6 @@ namespace Dfe.Complete.Api.Tests.Integration.Customizations
                     {
                         cfgBuilder.AddInMemoryCollection(new Dictionary<string, string?>
                         {
-                            ["IntegrationTestOverride"] = "true",
                             ["AcademiesApiClient:BaseUrl"] = mockServer.Urls[0].TrimEnd('/') + "/",
                         });
                     },
@@ -104,7 +103,6 @@ namespace Dfe.Complete.Api.Tests.Integration.Customizations
                 var config = new ConfigurationBuilder()
                     .AddInMemoryCollection(new Dictionary<string, string?>
                     {
-                        { "IntegrationTestOverride", "true" },
                         { "CompleteApiClient:BaseUrl", client.BaseAddress!.ToString() }
                     })
                     .Build();
