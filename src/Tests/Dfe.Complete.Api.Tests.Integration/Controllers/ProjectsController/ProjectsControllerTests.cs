@@ -773,7 +773,7 @@ public partial class ProjectsControllerTests
        IProjectsClient projectsClient,
        IFixture fixture)
     {
-        factory.TestClaims = [new Claim(ClaimTypes.Role, ReadRole)];
+        factory.TestClaims = [new Claim(ClaimTypes.Role, ApiRoles.ReadRole)];
 
         // Arrange
         var dbContext = factory.GetDbContext<CompleteContext>(); 
@@ -820,7 +820,7 @@ public partial class ProjectsControllerTests
        IProjectsClient projectsClient,
        IFixture fixture)
     {
-        factory.TestClaims = [new Claim(ClaimTypes.Role, ReadRole)];
+        factory.TestClaims = [new Claim(ClaimTypes.Role, ApiRoles.ReadRole)];
 
         // Arrange
         var dbContext = factory.GetDbContext<CompleteContext>();
@@ -866,7 +866,7 @@ public partial class ProjectsControllerTests
       IFixture fixture)
     {
         // Arrange
-        factory.TestClaims = [new Claim(ClaimTypes.Role, ReadRole)];
+        factory.TestClaims = [new Claim(ClaimTypes.Role, ApiRoles.ReadRole)];
         var dbContext = factory.GetDbContext<CompleteContext>();
         int i = 0;
         var establishments = Enumerable.Range(0, 10)
@@ -919,7 +919,7 @@ public partial class ProjectsControllerTests
        IProjectsClient projectsClient,
        IFixture fixture)
     {
-        factory.TestClaims = [new Claim(ClaimTypes.Role, ReadRole)];
+        factory.TestClaims = [new Claim(ClaimTypes.Role, ApiRoles.ReadRole)];
 
         // Arrange
         var dbContext = factory.GetDbContext<CompleteContext>();
