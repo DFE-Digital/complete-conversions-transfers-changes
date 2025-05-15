@@ -45,7 +45,7 @@ public class LocalAuthoritiesQueriesTests
         var query = new GetLocalAuthorityByCodeQuery("999");
         _repositoryMock
             .Setup(repo => repo.GetAsync(x => x.Code == query.Code))
-            .ReturnsAsync((LocalAuthority?)null);
+            .ReturnsAsync((LocalAuthority)null!);
 
         var result = await _handler.Handle(query, CancellationToken.None);
 
@@ -59,7 +59,7 @@ public class LocalAuthoritiesQueriesTests
     {
         var query = new GetLocalAuthorityByCodeQuery("123");
         _repositoryMock
-            .Setup(repo => repo.GetAsync(It.IsAny<Expression<Func<LocalAuthority?, bool>>>()))
+            .Setup(repo => repo.GetAsync(It.IsAny<Expression<Func<LocalAuthority, bool>>>()))
             .ThrowsAsync(new Exception("Database error"));
 
         var result = await _handler.Handle(query, CancellationToken.None);

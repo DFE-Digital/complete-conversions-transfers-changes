@@ -44,7 +44,7 @@ namespace Dfe.Complete.Extensions
 
                 return userResult.Value;
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 throw;
             }

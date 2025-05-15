@@ -18,6 +18,7 @@ using DfE.CoreLibs.Security.Cypress;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using DfE.CoreLibs.Http.Middlewares.CorrelationId;
 using DfE.CoreLibs.Http.Interfaces;
+using Dfe.Complete.Middleware;
 namespace Dfe.Complete;
 
 public class Startup
@@ -124,6 +125,7 @@ public class Startup
         }
         
         app.UseMiddleware<CorrelationIdMiddleware>();
+        app.UseMiddleware<ExceptionHandlerMiddleware>();
 
         app.UseSecurityHeaders(
            SecurityHeadersDefinitions.GetHeaderPolicyCollection(env.IsDevelopment())
