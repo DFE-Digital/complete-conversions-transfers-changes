@@ -91,8 +91,8 @@ public class Startup
         authenticationBuilder.AddMicrosoftIdentityWebApp(Configuration);
 
         ConfigureCookies(services);
-
-        services.AddApplicationInsightsTelemetry();
+        var appInsightsCnnStr = Configuration.GetSection("ApplicationInsights")?["ConnectionString"]; 
+        services.AddApplicationInsightsTelemetry(options => options.ConnectionString = appInsightsCnnStr);
 
         System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
 
