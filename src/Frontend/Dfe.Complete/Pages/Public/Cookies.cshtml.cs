@@ -10,7 +10,7 @@ namespace Dfe.Complete.Pages.Public
 		public bool? Consent { get; set; }
 		public bool PreferencesSet { get; set; } = false;
 		public string returnPath { get; set; }
-		
+
 		private readonly IAnalyticsConsentService _analyticsConsentService;
 
 		public Cookies(ILogger<Cookies> logger, IAnalyticsConsentService analyticsConsentService)
@@ -19,51 +19,47 @@ namespace Dfe.Complete.Pages.Public
 		}
 
 		public string TransfersCookiesUrl { get; set; }
-
-		public ActionResult OnGet(bool? consent, string returnUrl)
+		private ActionResult ProcessConsent(bool? consent, string returnUrl, bool noRedirect = false)
 		{
 			returnPath = returnUrl;
-
 			Consent = _analyticsConsentService.ConsentValue();
 
-            if (consent.HasValue)
+			if (consent.HasValue)
 			{
 				PreferencesSet = true;
+				TempData["PreferencesSet"] = true;
 
-				ApplyCookieConsent(consent.Value);
+				var valueToApply = consent ?? Consent ?? false;
+				ApplyCookieConsent(valueToApply);
 
-				if (!string.IsNullOrEmpty(returnUrl))
+				if (!string.IsNullOrEmpty(returnUrl) && noRedirect)
 				{
 					return Redirect(returnUrl);
 				}
-
 				return RedirectToPage(Links.Public.CookiePreferences);
 			}
-
 			return Page();
 		}
 
-		public IActionResult OnPost(bool? consent, string returnUrl)
+		public ActionResult OnGet(bool? consent, string returnUrl)
+		{
+			if (TempData["PreferencesSet"] is bool prefsSet && prefsSet)
+			{
+				PreferencesSet = true;
+			}
+			return ProcessConsent(consent, returnUrl);
+		}
+
+		public ActionResult OnPost(bool? consent, string returnUrl, bool noRedirect = false)
 		{
 			returnPath = returnUrl;
-
-            Consent = _analyticsConsentService.ConsentValue();
-
-            if (consent.HasValue)
-			{
-				Consent = consent;
-				PreferencesSet = true;
-
-				ApplyCookieConsent(consent.Value);
-				return Page();
-			}
-
-			return Page();
+			return ProcessConsent(consent, returnUrl, noRedirect);
 		}
 
 		private void ApplyCookieConsent(bool consent)
 		{
-			if (consent) { 
+			if (consent)
+			{
 				_analyticsConsentService.AllowConsent();
 			}
 			else

@@ -4,7 +4,8 @@
 
 @if (showBanner)
 {
-  <div class="govuk-cookie-banner" data-nosnippet role="region" id="appCookieBanner" aria-label="cookie banner" role="complementary">
+  <div class="govuk-cookie-banner" data-nosnippet role="region" id="appCookieBanner" aria-label="cookie banner"
+    role="complementary">
     <div class="govuk-cookie-banner__message govuk-width-container">
       <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
@@ -13,23 +14,28 @@
           </h2>
           <div class="govuk-cookie-banner__content">
             <p class="govuk-body">We use some essential cookies to make this service work.</p>
-            <p class="govuk-body">We’d like to set additional cookies so we can understand how people use the service and make improvements.</p>
+            <p class="govuk-body">We’d like to set additional cookies so we can understand how people use the service and
+              make improvements.</p>
           </div>
         </div>
       </div>
-      <div class="govuk-button-group">
-        <a role="button" draggable="false" data-testid="cookie-banner-accept"
-           class="govuk-button" asp-page="@Links.Public.CookiePreferences.Page"
-           asp-route-consent="true" asp-route-returnUrl="@Context.Request.Path">
-          Accept optional cookies
-        </a>
-        <a role="button" draggable="false" data-testid="cookie-banner-reject"
-           class="govuk-button" asp-page="@Links.Public.CookiePreferences.Page"
-           asp-route-consent="false" asp-route-returnUrl="@Context.Request.Path">
-          Reject optional cookies
-        </a>
-        <a class="govuk-link" data-testid="cookie-banner-link-2"
-           asp-page="@Links.Public.CookiePreferences.Page" asp-route-returnUrl="@Context.Request.Path">
+      <div class="govuk-button-group govuk-button-group--cookie-banner">
+        <form method="post" asp-page="/Public/Cookies" asp-route-returnUrl="@Context.Request.Path"
+          asp-route-noRedirect="true" class="govuk-button--cookie-banner">
+          <input type="hidden" name="consent" value="true" />
+          <button type="submit" data-testid="cookie-banner-accept" class="govuk-button">
+            Accept optional cookies
+          </button>
+        </form>
+        <form method="post" asp-page="/Public/Cookies" asp-route-returnUrl="@Context.Request.Path"
+          asp-route-noRedirect="true" class="govuk-button--cookie-banner">
+          <input type="hidden" name="consent" value="false" />
+          <button type="submit" data-testid="cookie-banner-reject" class="govuk-button">
+            Reject optional cookies
+          </button>
+        </form>
+        <a class="govuk-link" data-testid="cookie-banner-link-2" asp-page="@Links.Public.CookiePreferences.Page"
+          asp-route-returnUrl="@Context.Request.Path">
           View cookies
         </a>
       </div>

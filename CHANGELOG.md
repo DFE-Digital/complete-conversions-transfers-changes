@@ -24,6 +24,7 @@ Security in case of vulnerabilities.
 ### Added  
 
 ### Changed  
+- Accept/reject cookies from banner now uses a POST for consistency with ruby
 
 ### Fixed  
 - Fixed identifying "Form A MAT" projects logic

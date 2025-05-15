@@ -179,3 +179,15 @@ p.govuk-phase-banner__content {
 a.dfe-header__link--service, a.dfe-header__navigation-link {
 	color: #ffffff;
 }
+
+// accept/reject buttons in cookie banner need to be form elements to use POST
+.govuk-button-group--cookie-banner {
+    align-items: center;
+}
+
+.govuk-button--cookie-banner {
+	width: 100%;
+	@include govuk-media-query($from: tablet) {
+		width: auto;
+	}
+}
