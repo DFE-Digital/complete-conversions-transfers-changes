@@ -6,7 +6,7 @@ using Dfe.Complete.Utils;
 namespace Dfe.Complete.Validators;
 
 [AttributeUsage(AttributeTargets.Property)]
-public partial class TrustNameAttribute(string trustReference, ISender sender) : ValidationAttribute
+public partial class TrustNameAttribute<T>(string trustReference, ISender sender, ILogger<T> logger) : ValidationAttribute
 {
     protected override ValidationResult? IsValid(object? value, ValidationContext validationContext)
     {
@@ -55,8 +55,9 @@ public partial class TrustNameAttribute(string trustReference, ISender sender) :
         {
             return new ValidationResult(notFoundException.Message);
         }
-        catch (Exception)
+        catch (Exception ex)
         {
+            logger.LogError(ex, "Exception while validating TRN: {TRN}, TrustName: {TrustName}", trn, trustName);
             throw;
         }
     }

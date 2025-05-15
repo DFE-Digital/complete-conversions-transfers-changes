@@ -1,6 +1,6 @@
-﻿using System.Text.Json;
+﻿using System.Text.Json; 
 
-namespace Dfe.Complete.Application.RespoonseModels
+namespace Dfe.Complete.Logging.Models
 {
     public class ErrorResponse
     {

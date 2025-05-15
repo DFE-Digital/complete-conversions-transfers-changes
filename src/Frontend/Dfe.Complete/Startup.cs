@@ -18,7 +18,7 @@ using DfE.CoreLibs.Security.Cypress;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using DfE.CoreLibs.Http.Middlewares.CorrelationId;
 using DfE.CoreLibs.Http.Interfaces;
-using Dfe.Complete.Middleware;
+using Dfe.Complete.Logging.Middleware;
 namespace Dfe.Complete;
 
 public class Startup

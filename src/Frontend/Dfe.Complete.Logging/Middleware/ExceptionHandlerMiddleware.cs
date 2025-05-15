@@ -1,10 +1,12 @@
 ﻿using Dfe.Complete.Application.Common.Exceptions;
-using Dfe.Complete.Application.RespoonseModels;
+using Dfe.Complete.Logging.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using System.Net;
 using System.Text.Json;
 
-namespace Dfe.Complete.Middleware
+namespace Dfe.Complete.Logging.Middleware
 {
     public class ExceptionHandlerMiddleware(RequestDelegate next, ILogger<ExceptionHandlerMiddleware> logger)
     {
@@ -87,8 +89,7 @@ namespace Dfe.Complete.Middleware
                 Message = "Internal Server Error: " + exception.Message
             };
 
-            logger.LogError("Unhandled Exception: {Message}", exception.Message);
-            logger.LogError("Stack Trace: {StackTrace}", exception.StackTrace);
+            logger.LogError(exception, "Unhandled Exception: {Message}", exception.Message);
 
             await context.Response.WriteAsync(JsonSerializer.Serialize(errorResponse));
         }

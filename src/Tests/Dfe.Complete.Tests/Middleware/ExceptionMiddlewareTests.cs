@@ -1,4 +1,5 @@
 ﻿using Dfe.Complete.Application.Common.Exceptions;
+using Dfe.Complete.Logging.Middleware;
 using Dfe.Complete.Middleware;
 using FluentValidation.Results;
 using Microsoft.AspNetCore.Http;

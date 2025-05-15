@@ -9,6 +9,12 @@ namespace Dfe.Complete.Extensions
 {
     public static class ClaimsPrincipalExtensions
     {
+        private static ILogger? _logger;
+
+        public static void ConfigureLogger(ILogger logger)
+        {
+            _logger = logger;
+        }
         public static string GetUserAdId(this ClaimsPrincipal value)
         {
             var userAdId = value.Claims.SingleOrDefault(c => c.Type.Contains("objectidentifier"))?.Value;
@@ -44,8 +50,9 @@ namespace Dfe.Complete.Extensions
 
                 return userResult.Value;
             }
-            catch (Exception)
+            catch (Exception e)
             {
+                _logger?.LogError(e, "Error occurred while getting user.");
                 throw;
             }
         }

@@ -161,12 +161,12 @@ public class CreateNewProject(ISender sender, ErrorService errorService, ILogger
 
     private void ManuallyTriggerTrustValidation()
     {
-        var trustNameValidationAttribute = new TrustNameAttribute(nameof(TrustReferenceNumber), sender);
+        var trustNameValidationAttribute = new TrustNameAttribute<CreateNewProject>(nameof(TrustReferenceNumber), sender, logger);
         var validationResult = trustNameValidationAttribute.GetValidationResult(TrustName, new ValidationContext(this) { MemberName = nameof(TrustName) });
 
         if (validationResult != ValidationResult.Success)
         {
-            ModelState.AddModelError(nameof(TrustName), validationResult.ErrorMessage);
+            ModelState.AddModelError(nameof(TrustName), validationResult?.ErrorMessage!);
         }
     }
 }

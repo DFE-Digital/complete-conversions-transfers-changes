@@ -2,18 +2,20 @@
 using Dfe.Complete.Application.Common.Models;
 using Dfe.Complete.Application.Projects.Models;
 using Dfe.Complete.Application.Projects.Queries.GetProject;
+using Dfe.Complete.Pages.Projects.MatConversion;
 using Dfe.Complete.Validators;
 using MediatR;
+using Microsoft.Extensions.Logging;
 using Moq;
 
 namespace Dfe.Complete.Tests.Validators;
 
 public class TrustNameAttributeTests
 {
-    private static TrustNameAttribute CreateAttribute(Mock<ISender> mockSender)
+    private static TrustNameAttribute<CreateNewProject> CreateAttribute(Mock<ISender> mockSender)
     {
         var objectInstance = new { TrustName = "", TrustReference = "" };
-        return new TrustNameAttribute(nameof(objectInstance.TrustReference), mockSender.Object);
+        return new TrustNameAttribute<CreateNewProject>(nameof(objectInstance.TrustReference), mockSender.Object, new Mock<ILogger<CreateNewProject>>().Object);
     }
 
     [Fact]

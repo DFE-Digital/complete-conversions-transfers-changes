@@ -17,6 +17,7 @@ using Dfe.Complete.Infrastructure;
 using Dfe.Complete.Infrastructure.Security.Authorization;
 using DfE.CoreLibs.Http.Middlewares.CorrelationId;
 using DfE.CoreLibs.Http.Interfaces;
+using Dfe.Complete.Logging.Middleware;
 
 namespace Dfe.Complete.Api
 {
