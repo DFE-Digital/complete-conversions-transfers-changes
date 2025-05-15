@@ -7,6 +7,7 @@ import {
     nextMonthLong,
     nextMonthShort,
     testTrustName,
+    testTrustReferenceNumber,
     trust,
     trust2,
 } from "cypress/constants/stringTestConstants";
@@ -17,6 +18,7 @@ import { cypressUser } from "cypress/constants/cypressConstants";
 import projectsByMonthPage from "cypress/pages/projects/projectsByMonthPage";
 import projectDetailsPage from "cypress/pages/projects/projectDetailsPage";
 import userProjectTable from "cypress/pages/projects/tables/userProjectTable";
+import formAMATProjectTable from "cypress/pages/projects/tables/formAMATProjectTable";
 
 const project = ProjectBuilder.createConversionProjectRequest(nextMonth);
 let projectId: string;
@@ -149,7 +151,12 @@ describe("View all projects", () => {
             .viewFormAMatProjects()
             .containsHeading("All form a MAT projects in progress")
             .goToNextPageUntilFieldIsVisible(transferFormAMatSchoolName);
-        projectTable.hasTableHeaders(["Trust", "TRN", "Schools Included"]).goTo(testTrustName);
+        formAMATProjectTable
+            .hasTableHeaders(["Trust", "TRN", "Schools Included"])
+            .withTrust(testTrustName)
+            .columnHasValue("TRN", testTrustReferenceNumber)
+            .columnContainsValue("Schools Included", transferFormAMatSchoolName)
+            .goTo(testTrustName);
         allProjects.containsHeading(testTrustName);
         projectTable
             .hasTableHeaders(["School or academy", "URN", "Conversion or transfer date", "Project type", "Assigned to"])
