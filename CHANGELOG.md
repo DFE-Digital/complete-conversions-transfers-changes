@@ -22,6 +22,7 @@ Security in case of vulnerabilities.
 
 ## Unreleased  
 ### Added  
+ - Enabled error tracking via Application Insights.
 
 ### Changed  
 
