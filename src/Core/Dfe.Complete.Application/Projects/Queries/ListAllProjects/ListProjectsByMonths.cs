@@ -28,7 +28,7 @@ namespace Dfe.Complete.Application.Projects.Queries.ListProjectsByMonth
             try
             {
                 var projectsQuery = listAllProjectsQueryService
-                    .ListAllProjects(request.ProjectStatus, request.Type)
+                    .ListAllProjects(request.ProjectStatus, request.Type, assignedToState: AssignedToState.AssignedOnly)
                     .AsEnumerable();
 
                 if (request.ToDate.HasValue)
@@ -46,7 +46,7 @@ namespace Dfe.Complete.Application.Projects.Queries.ListProjectsByMonth
                         p.Project.SignificantDate.Value == request.FromDate);
                 }
 
-                var projects = projectsQuery.Where(p => p.Project.SignificantDateProvisional == false && p.Project.AssignedTo != null).ToList(); // Confirmed && Inprogress
+                var projects = projectsQuery.Where(p => p.Project.SignificantDateProvisional == false).ToList(); // Confirmed && Inprogress
 
                 var ukprns = projects.Select(p => p.Project.IncomingTrustUkprn?.Value.ToString()).ToList();
                 var outgoingTrustUkprns = projects.Where(p => p.Project.OutgoingTrustUkprn != null).Select(p => p.Project.OutgoingTrustUkprn.Value.ToString()).ToList();

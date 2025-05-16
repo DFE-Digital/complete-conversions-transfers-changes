@@ -24,6 +24,7 @@ Security in case of vulnerabilities.
 ### Added  
 
 ### Changed  
+ - Optimise several project listing queries by implementing pagination before retrieving records
 
 ### Fixed  
 - Fixed identifying "Form A MAT" projects logic
