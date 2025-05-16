@@ -6,13 +6,14 @@ using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Domain.Interfaces.Repositories;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace Dfe.Complete.Application.Projects.Queries.ListAllProjects;
 
 public record ListAllProjectsByLocalAuthoritiesQuery(ProjectState? State = ProjectState.Active, ProjectType? Type = null)
     : PaginatedRequest<PaginatedResult<List<ListAllProjectLocalAuthoritiesResultModel>>>;
 
-public class ListAllProjectByLocalAuthorities(ICompleteRepository<LocalAuthority> localAuthoritiesRepo, IListAllProjectsQueryService listAllProjectsQueryService)
+public class ListAllProjectByLocalAuthorities(ICompleteRepository<LocalAuthority> localAuthoritiesRepo, IListAllProjectsQueryService listAllProjectsQueryService, ILogger<ListAllProjectByLocalAuthorities> logger)
     : IRequestHandler<ListAllProjectsByLocalAuthoritiesQuery, PaginatedResult<List<ListAllProjectLocalAuthoritiesResultModel>>>
 {
     public async Task<PaginatedResult<List<ListAllProjectLocalAuthoritiesResultModel>>> Handle(
@@ -48,6 +49,7 @@ public class ListAllProjectByLocalAuthorities(ICompleteRepository<LocalAuthority
         }
         catch (Exception e)
         {
+            logger.LogError(e, "Exception for {Name} Request - {@Request}", nameof(ListAllProjectByLocalAuthorities), request);
             return PaginatedResult<List<ListAllProjectLocalAuthoritiesResultModel>>.Failure(e.Message);
         }
     }

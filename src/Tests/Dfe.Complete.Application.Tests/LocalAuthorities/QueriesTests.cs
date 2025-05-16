@@ -4,18 +4,21 @@ using Dfe.Complete.Domain.Interfaces.Repositories;
 using Moq;
 using FluentAssertions;
 using System.Linq.Expressions;
+using Microsoft.Extensions.Logging;
 
 namespace Dfe.Complete.Application.Tests.LocalAuthorities.QueriesTests;
 
 public class LocalAuthoritiesQueriesTests
 {
-    private readonly Mock<ICompleteRepository<LocalAuthority?>> _repositoryMock;
+    private readonly Mock<ICompleteRepository<LocalAuthority>> _repositoryMock;
     private readonly GetLocalAuthorityByCodeQueryHandler _handler;
+    private readonly Mock<ILogger<GetLocalAuthorityByCodeQueryHandler>> _mockLogger;
 
     public LocalAuthoritiesQueriesTests()
     {
         _repositoryMock = new Mock<ICompleteRepository<LocalAuthority>>();
-        _handler = new GetLocalAuthorityByCodeQueryHandler(_repositoryMock.Object);
+        _mockLogger = new Mock<ILogger<GetLocalAuthorityByCodeQueryHandler>>();
+        _handler = new GetLocalAuthorityByCodeQueryHandler(_repositoryMock.Object, _mockLogger.Object);
     }
 
     [Fact]
@@ -42,7 +45,7 @@ public class LocalAuthoritiesQueriesTests
         var query = new GetLocalAuthorityByCodeQuery("999");
         _repositoryMock
             .Setup(repo => repo.GetAsync(x => x.Code == query.Code))
-            .ReturnsAsync((LocalAuthority?)null);
+            .ReturnsAsync((LocalAuthority)null!);
 
         var result = await _handler.Handle(query, CancellationToken.None);
 
@@ -56,7 +59,7 @@ public class LocalAuthoritiesQueriesTests
     {
         var query = new GetLocalAuthorityByCodeQuery("123");
         _repositoryMock
-            .Setup(repo => repo.GetAsync(It.IsAny<Expression<Func<LocalAuthority?, bool>>>()))
+            .Setup(repo => repo.GetAsync(It.IsAny<Expression<Func<LocalAuthority, bool>>>()))
             .ThrowsAsync(new Exception("Database error"));
 
         var result = await _handler.Handle(query, CancellationToken.None);

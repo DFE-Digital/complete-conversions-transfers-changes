@@ -1,13 +1,14 @@
 ﻿using DfE.CoreLibs.AsyncProcessing.Interfaces;
 using Dfe.Complete.Application.Services.BackgroundServices.Events;
+using Microsoft.Extensions.Logging;
 
 namespace Dfe.Complete.Application.Services.BackgroundServices.EventHandlers
 {
-    public class SimpleTaskCompletedEventHandler : IBackgroundServiceEventHandler<CreateReportExampleTaskCompletedEvent>
+    public class SimpleTaskCompletedEventHandler(ILogger<SimpleTaskCompletedEventHandler> logger) : IBackgroundServiceEventHandler<CreateReportExampleTaskCompletedEvent>
     {
         public Task Handle(CreateReportExampleTaskCompletedEvent notification, CancellationToken cancellationToken)
         {
-            Console.WriteLine($"Event received for Task: {notification.TaskName}, Message: {notification.Message}");
+            logger.LogInformation("Event received for Task: {TaskName}, Message: {Message}", notification.TaskName, notification.Message);
             return Task.CompletedTask;
         }
     }

@@ -166,7 +166,7 @@ public class CreateNewProject(ISender sender, ErrorService errorService, ILogger
 
         if (validationResult != ValidationResult.Success)
         {
-            ModelState.AddModelError(nameof(TrustName), validationResult.ErrorMessage);
+            ModelState.AddModelError(nameof(TrustName), validationResult?.ErrorMessage!);
         }
     }
 }

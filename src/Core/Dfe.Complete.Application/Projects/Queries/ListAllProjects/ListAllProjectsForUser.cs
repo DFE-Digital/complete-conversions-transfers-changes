@@ -6,6 +6,7 @@ using Dfe.Complete.Application.Projects.Queries.GetUser;
 using Dfe.Complete.Domain.Enums;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace Dfe.Complete.Application.Projects.Queries.ListAllProjects;
 
@@ -15,7 +16,8 @@ public record ListAllProjectsForUserQuery(ProjectState? State, string UserAdId, 
 public class ListAllProjectsForUserQueryHandler(
     IListAllProjectsQueryService listAllProjectsQueryService,
     ITrustsV4Client trustsClient,
-    ISender sender)
+    ISender sender,
+    ILogger<ListAllProjectsForUserQueryHandler> logger)
     : IRequestHandler<ListAllProjectsForUserQuery, PaginatedResult<List<ListAllProjectsForUserQueryResultModel>>>
 {
     public async Task<PaginatedResult<List<ListAllProjectsForUserQueryResultModel>>> Handle(
@@ -62,6 +64,7 @@ public class ListAllProjectsForUserQueryHandler(
         }
         catch (Exception e)
         {
+            logger.LogError(e, "Exception for {Name} Request - {@Request}", nameof(ListAllProjectsForUserQueryHandler), request);
             return PaginatedResult<List<ListAllProjectsForUserQueryResultModel>>.Failure(e.Message);
         }
     }

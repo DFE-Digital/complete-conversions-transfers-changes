@@ -3,6 +3,7 @@ using Dfe.Complete.Application.Projects.Interfaces;
 using Dfe.Complete.Domain.Enums;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace Dfe.Complete.Application.Projects.Queries.CountAllProjects
 {
@@ -13,7 +14,8 @@ namespace Dfe.Complete.Application.Projects.Queries.CountAllProjects
         string? Search = "") : IRequest<Result<int>>;
 
     public class CountAllProjectsQueryHandler(
-        IListAllProjectsQueryService listAllProjectsQueryService)
+        IListAllProjectsQueryService listAllProjectsQueryService,
+        ILogger<CountAllProjectsQueryHandler> logger)
         : IRequestHandler<CountAllProjectsQuery, Result<int>>
     {
         public async Task<Result<int>> Handle(CountAllProjectsQuery request, CancellationToken cancellationToken)
@@ -28,6 +30,7 @@ namespace Dfe.Complete.Application.Projects.Queries.CountAllProjects
             }
             catch (Exception ex)
             {
+                logger.LogError(ex, "Exception for {Name} Request - {@Request}", nameof(CountAllProjectsQueryHandler), request);
                 return Result<int>.Failure(ex.Message);
             }
         }

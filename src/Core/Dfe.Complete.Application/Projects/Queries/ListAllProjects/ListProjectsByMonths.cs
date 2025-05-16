@@ -6,6 +6,7 @@ using Dfe.Complete.Domain.Enums;
 using MediatR;
 using Dfe.Complete.Utils;
 using DfE.CoreLibs.Utilities.Constants;
+using Microsoft.Extensions.Logging;
 
 namespace Dfe.Complete.Application.Projects.Queries.ListProjectsByMonth
 {
@@ -19,7 +20,8 @@ namespace Dfe.Complete.Application.Projects.Queries.ListProjectsByMonth
 
     public class ListAllProjectsByMonthsQueryHandler(
         IListAllProjectsQueryService listAllProjectsQueryService,
-        ITrustsV4Client trustsClient)
+        ITrustsV4Client trustsClient,
+        ILogger<ListAllProjectsByMonthsQueryHandler> logger)
         : IRequestHandler<ListProjectsByMonthsQuery, PaginatedResult<List<ListProjectsByMonthResultModel>>>
     {
         public async Task<PaginatedResult<List<ListProjectsByMonthResultModel>>> Handle(ListProjectsByMonthsQuery request,
@@ -97,6 +99,7 @@ namespace Dfe.Complete.Application.Projects.Queries.ListProjectsByMonth
             }
             catch (Exception ex)
             {
+                logger.LogError(ex, "Exception for {Name} Request - {@Request}", nameof(ListAllProjectsByMonthsQueryHandler), request);
                 return PaginatedResult<List<ListProjectsByMonthResultModel>>.Failure(ex.Message);
             }
         }

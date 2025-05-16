@@ -17,6 +17,7 @@ using Dfe.Complete.Infrastructure;
 using Dfe.Complete.Infrastructure.Security.Authorization;
 using DfE.CoreLibs.Http.Middlewares.CorrelationId;
 using DfE.CoreLibs.Http.Interfaces;
+using Dfe.Complete.Logging.Middleware;
 
 namespace Dfe.Complete.Api
 {
@@ -33,8 +34,7 @@ namespace Dfe.Complete.Api
                     .ReadFrom.Configuration(context.Configuration)
                     .WriteTo.ApplicationInsights(services.GetRequiredService<TelemetryConfiguration>(),
                         TelemetryConverter.Traces)
-                    .Enrich.FromLogContext()
-                    .WriteTo.Console();
+                    .Enrich.FromLogContext();
             });
 
             builder.Services.AddControllers()

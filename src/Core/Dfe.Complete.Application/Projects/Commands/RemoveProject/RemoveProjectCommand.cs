@@ -8,6 +8,7 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 
 namespace Dfe.Complete.Application.Projects.Commands.RemoveProject
 {
@@ -19,8 +20,7 @@ namespace Dfe.Complete.Application.Projects.Commands.RemoveProject
         ICompleteRepository<Project> projectRepository,
         ICompleteRepository<TransferTasksData> transferTaskRepository,
         ICompleteRepository<ConversionTasksData> conversionTaskRepository,
-        IUnitOfWork unitOfWork,
-        IConfiguration configuration)
+        IUnitOfWork unitOfWork)
         : IRequestHandler<RemoveProjectCommand>
     {
         public async Task Handle(RemoveProjectCommand request, CancellationToken cancellationToken)

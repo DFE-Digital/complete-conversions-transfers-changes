@@ -13,16 +13,15 @@ namespace Dfe.Complete.Application.Common.EventHandlers
         {
             try
             {
-                logger.LogInformation($"Handling event: {typeof(TEvent).Name}");
-
+                logger.LogInformation("Handling event: {EventName}", typeof(TEvent).Name);
 
                 await HandleEvent(notification, cancellationToken);
 
-                logger.LogInformation($"Event handled successfully: {typeof(TEvent).Name}");
+                logger.LogInformation("Event handled successfully: {EventName}", typeof(TEvent).Name);
             }
             catch (Exception ex)
             {
-                logger.LogError(ex, $"Error handling event: {typeof(TEvent).Name}");
+                logger.LogError(ex, "Error handling event: {EventName}", typeof(TEvent).Name);
                 throw;
             }
         }

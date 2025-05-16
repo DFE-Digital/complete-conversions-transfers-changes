@@ -4,12 +4,13 @@ using Dfe.Complete.Application.Projects.Models;
 using Dfe.Complete.Domain.Entities;
 using Dfe.Complete.Domain.Interfaces.Repositories;
 using MediatR;
+using Microsoft.Extensions.Logging;
 
 namespace Dfe.Complete.Application.Projects.Queries.GetUser;
 
 public record GetUserByAdIdQuery(string UserAdId) : IRequest<Result<UserDto?>>;
 
-public class GetUserByAdIdQueryHandler(ICompleteRepository<User> userRepository, IMapper mapper) : IRequestHandler<GetUserByAdIdQuery, Result<UserDto?>>
+public class GetUserByAdIdQueryHandler(ICompleteRepository<User> userRepository, IMapper mapper, ILogger<GetUserByAdIdQueryHandler> logger) : IRequestHandler<GetUserByAdIdQuery, Result<UserDto?>>
 {
     public async Task<Result<UserDto?>> Handle(GetUserByAdIdQuery request, CancellationToken cancellationToken)
     {
@@ -23,6 +24,7 @@ public class GetUserByAdIdQueryHandler(ICompleteRepository<User> userRepository,
         }
         catch (Exception e)
         {
+            logger.LogError(e, "Exception for {Name} Request - {@Request}", nameof(GetUserByAdIdQueryHandler), request);
             return Result<UserDto?>.Failure(e.Message);
         }
     }

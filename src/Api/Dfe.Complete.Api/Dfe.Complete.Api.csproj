@@ -39,6 +39,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Dfe.Complete.Application\Dfe.Complete.Application.csproj" />
     <ProjectReference Include="..\..\Core\Dfe.Complete.Infrastructure\Dfe.Complete.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\Frontend\Dfe.Complete.Logging\Dfe.Complete.Logging.csproj" />
   </ItemGroup>
 
   <ItemGroup>
