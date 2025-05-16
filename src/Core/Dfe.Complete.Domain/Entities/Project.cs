@@ -417,16 +417,6 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
         }
     }
 
-
-    public void RemoveNote(NoteId id)
-    {
-        var note = Notes.FirstOrDefault(x => x.Id == id);
-        
-        if (note is null) throw new NotFoundException($"No note found with Id {id.Value}");
-
-        Notes.Remove(note);
-    }
-
     public async Task RemoveAllNotes(ICompleteRepository<Note> noteRepository, CancellationToken cancellationToken)
     {
         // Create new id so we don't copy by reference as otherwise the list changes as we delete each note
