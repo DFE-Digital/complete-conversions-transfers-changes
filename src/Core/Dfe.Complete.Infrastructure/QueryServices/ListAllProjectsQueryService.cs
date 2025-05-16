@@ -73,15 +73,13 @@ internal class ListAllProjectsQueryService(CompleteContext context) : IListAllPr
         {
             projects = projects.Where(project =>
                 project.NewTrustReferenceNumber != null &&
-                project.NewTrustName != null &&
-                project.IncomingTrustUkprn == null);
+                project.NewTrustName != null);
         }
         else if (isFormAMat == false)
         {
             projects = projects.Where(project =>
                 project.NewTrustReferenceNumber == null &&
-                project.NewTrustName == null &&
-                project.IncomingTrustUkprn != null);
+                project.NewTrustName == null);
         }
 
         if (!string.IsNullOrWhiteSpace(search))

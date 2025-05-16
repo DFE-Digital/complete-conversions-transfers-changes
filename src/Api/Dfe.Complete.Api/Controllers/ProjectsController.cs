@@ -311,10 +311,26 @@ namespace Dfe.Complete.Api.Controllers
         {
             if (string.IsNullOrWhiteSpace(request.SearchTerm))
             {
-                return BadRequest("searchProjects is required.");
+                return BadRequest("The SearchTerm field is required.");
             }
             var project = await sender.Send(request, cancellationToken);
             return Ok(project.Value);
+        }
+
+        /// <summary>
+        /// Returns a list of Projects by trust reference number
+        /// </summary>
+        /// <param name="request">The request.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        [Authorize(Policy = "CanRead")]
+        [HttpGet]
+        [Route("List/All/TrustRef")]
+        [SwaggerResponse(200, "Project", typeof(List<ListAllProjectsQueryModel>))]
+        [SwaggerResponse(400, "Invalid request data.")]
+        public async Task<IActionResult> ListAllProjectsByTrustRefAsync([FromQuery] ListEstablishmentsInMatQuery request, CancellationToken cancellationToken)
+        {
+            var project = await sender.Send(request, cancellationToken);
+            return Ok(project.Value?.projectModels ?? []);
         }
     }
 }

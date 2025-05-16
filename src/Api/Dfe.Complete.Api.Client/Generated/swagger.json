@@ -333,13 +333,26 @@
             "x-position": 2
           },
           {
+            "name": "AssignedToState",
+            "in": "query",
+            "schema": {
+              "nullable": true,
+              "oneOf": [
+                {
+                  "$ref": "#/components/schemas/AssignedToState"
+                }
+              ]
+            },
+            "x-position": 3
+          },
+          {
             "name": "Page",
             "in": "query",
             "schema": {
               "type": "integer",
               "format": "int32"
             },
-            "x-position": 3
+            "x-position": 4
           },
           {
             "name": "Count",
@@ -348,7 +361,7 @@
               "type": "integer",
               "format": "int32"
             },
-            "x-position": 4
+            "x-position": 5
           }
         ],
         "responses": {
@@ -525,13 +538,26 @@
             "x-position": 2
           },
           {
+            "name": "AssignedToState",
+            "in": "query",
+            "schema": {
+              "nullable": true,
+              "oneOf": [
+                {
+                  "$ref": "#/components/schemas/AssignedToState"
+                }
+              ]
+            },
+            "x-position": 3
+          },
+          {
             "name": "Search",
             "in": "query",
             "schema": {
               "type": "string",
               "nullable": true
             },
-            "x-position": 3
+            "x-position": 4
           }
         ],
         "responses": {
@@ -1028,6 +1054,61 @@
                   "type": "array",
                   "items": {
                     "$ref": "#/components/schemas/ListAllProjectsResultModel"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request data."
+          }
+        }
+      }
+    },
+    "/v1/Projects/List/All/TrustRef": {
+      "get": {
+        "tags": [
+          "Projects"
+        ],
+        "summary": "Returns a list of Projects by trust reference number",
+        "operationId": "Projects_ListAllProjectsByTrustRef",
+        "parameters": [
+          {
+            "name": "ReferenceNumber",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "x-position": 1
+          },
+          {
+            "name": "Page",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "x-position": 2
+          },
+          {
+            "name": "Count",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "x-position": 3
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Project",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ListAllProjectsQueryModel"
                   }
                 }
               }
@@ -2686,6 +2767,18 @@
           }
         }
       },
+      "AssignedToState": {
+        "type": "string",
+        "description": "",
+        "x-enumNames": [
+          "AssignedOnly",
+          "UnassignedOnly"
+        ],
+        "enum": [
+          "AssignedOnly",
+          "UnassignedOnly"
+        ]
+      },
       "ListMatResultModel": {
         "type": "object",
         "additionalProperties": false,
@@ -2873,18 +2966,6 @@
             "format": "guid"
           }
         }
-      },
-      "AssignedToState": {
-        "type": "string",
-        "description": "",
-        "x-enumNames": [
-          "AssignedOnly",
-          "UnassignedOnly"
-        ],
-        "enum": [
-          "AssignedOnly",
-          "UnassignedOnly"
-        ]
       },
       "OrderProjectByField": {
         "type": "string",
