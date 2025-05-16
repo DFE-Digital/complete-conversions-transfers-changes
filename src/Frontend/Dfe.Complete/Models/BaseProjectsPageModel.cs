@@ -1,6 +1,5 @@
 using Dfe.Complete.Application.Projects.Models;
 using Dfe.Complete.Constants;
-using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Domain.ValueObjects;
 using Dfe.Complete.Pages.Pagination;
 using Microsoft.AspNetCore.Mvc;
