@@ -1902,9 +1902,9 @@ namespace Dfe.Complete.Client
         /// </summary>
         /// <returns>Project</returns>
         /// <exception cref="CompleteApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<ListAllProjectsResultModel>> SearchProjectsAsync(ProjectState? projectStatus, string? searchTerm, int? page, int? count)
+        public virtual System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<ListAllProjectsResultModel>> SearchProjectsAsync(string? searchTerm, int? page, int? count)
         {
-            return SearchProjectsAsync(projectStatus, searchTerm, page, count, System.Threading.CancellationToken.None);
+            return SearchProjectsAsync(searchTerm, page, count, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -1913,7 +1913,7 @@ namespace Dfe.Complete.Client
         /// </summary>
         /// <returns>Project</returns>
         /// <exception cref="CompleteApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<ListAllProjectsResultModel>> SearchProjectsAsync(ProjectState? projectStatus, string? searchTerm, int? page, int? count, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<ListAllProjectsResultModel>> SearchProjectsAsync(string? searchTerm, int? page, int? count, System.Threading.CancellationToken cancellationToken)
         {
             var client_ = _httpClient;
             var disposeClient_ = false;
@@ -1929,10 +1929,6 @@ namespace Dfe.Complete.Client
                     // Operation Path: "v1/Projects/SearchProjects"
                     urlBuilder_.Append("v1/Projects/SearchProjects");
                     urlBuilder_.Append('?');
-                    if (projectStatus != null)
-                    {
-                        urlBuilder_.Append(System.Uri.EscapeDataString("ProjectStatus")).Append('=').Append(System.Uri.EscapeDataString(ConvertToString(projectStatus, System.Globalization.CultureInfo.InvariantCulture))).Append('&');
-                    }
                     if (searchTerm != null)
                     {
                         urlBuilder_.Append(System.Uri.EscapeDataString("SearchTerm")).Append('=').Append(System.Uri.EscapeDataString(ConvertToString(searchTerm, System.Globalization.CultureInfo.InvariantCulture))).Append('&');
