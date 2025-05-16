@@ -23,6 +23,7 @@ public class RemoveProjectCommandHandlerTests
         [Frozen] ICompleteRepository<Domain.Entities.Project> mockProjectRepository,
         [Frozen] ICompleteRepository<TransferTasksData> mockTransferTaskRepository,
         [Frozen] ICompleteRepository<ConversionTasksData> mockConversionTaskRepository,
+        [Frozen] ICompleteRepository<Note> mockNoteRepository,
         RemoveProjectCommand command
     )
     {
@@ -38,6 +39,7 @@ public class RemoveProjectCommandHandlerTests
             mockProjectRepository,
             mockTransferTaskRepository,
             mockConversionTaskRepository,
+            mockNoteRepository,
             unitOfWorkMock.Object,
             configMock.Object);
 
