@@ -18,7 +18,10 @@ public class AddedByYou(ISender sender) : YourProjectsModel(AddedByYouNavigation
 
         var userAdId = User.GetUserAdId();
 
-        var result = await sender.Send(new ListAllProjectsForUserQuery(ProjectState.Active, userAdId, ProjectUserFilter.CreatedBy)
+        var result = await sender.Send(new ListAllProjectsForUserQuery(ProjectState.Active, userAdId,
+                ProjectUserFilter.CreatedBy,
+                new OrderProjectQueryBy
+                    { Field = OrderProjectByField.SignificantDate, Direction = OrderByDirection.Ascending })
             { Count = PageSize, Page = PageNumber - 1 });
 
         ProjectsForUser = result.Value ?? [];
