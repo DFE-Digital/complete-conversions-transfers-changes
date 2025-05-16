@@ -28,7 +28,7 @@ public class ListAllProjectsByMonthHandlerTests
         var errorMessage = "This is a test";
 
         mockListAllProjectsQueryService
-            .ListAllProjects(Arg.Any<ProjectState?>(), Arg.Any<ProjectType?>())
+            .ListAllProjects(Arg.Any<ProjectState?>(), Arg.Any<ProjectType?>(), assignedToState: Arg.Any<AssignedToState>())
             .Throws(new Exception(errorMessage));
 
         var date = DateOnly.FromDateTime(DateTime.Today);
@@ -98,7 +98,7 @@ public class ListAllProjectsByMonthHandlerTests
             })
             .BuildMock();
         
-        mockListAllProjectsQueryService.ListAllProjects(Arg.Any<ProjectState?>(), Arg.Any<ProjectType?>()).Returns(listAllProjectsQueryModels);
+        mockListAllProjectsQueryService.ListAllProjects(Arg.Any<ProjectState?>(), Arg.Any<ProjectType?>(), assignedToState: Arg.Any<AssignedToState>()).Returns(listAllProjectsQueryModels);
         
         var trustDtos = fixture
             .Build<TrustDto>()
@@ -164,7 +164,7 @@ public class ListAllProjectsByMonthHandlerTests
 
         var final = projects.BuildMock();
 
-        mockListAllProjectsQueryService.ListAllProjects(Arg.Any<ProjectState?>(), Arg.Any<ProjectType?>()).Returns(final);
+        mockListAllProjectsQueryService.ListAllProjects(Arg.Any<ProjectState?>(), Arg.Any<ProjectType?>(), assignedToState: Arg.Any<AssignedToState>()).Returns(final);
         
         // Act
         var result = await handler.Handle(new ListProjectsByMonthsQuery(startDate, endDate, ProjectState.Active, ProjectType.Conversion), default);
