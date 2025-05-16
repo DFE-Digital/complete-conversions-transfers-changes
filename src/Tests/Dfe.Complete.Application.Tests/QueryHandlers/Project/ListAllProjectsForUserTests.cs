@@ -25,9 +25,10 @@ public class ListAllProjectsForUserTests
     [AttributeUsage(AttributeTargets.Method, AllowMultiple = true)]
     private class InlineAutoDataAttribute : CompositeDataAttribute
     {
-        public InlineAutoDataAttribute(ProjectUserFilter filter)
+        public InlineAutoDataAttribute(ProjectUserFilter filter, OrderProjectByField sortingField, OrderByDirection sortingDirection)
             : base(
                 new InlineDataAttribute(filter),
+                new InlineDataAttribute(new OrderProjectQueryBy(sortingField, sortingDirection)),
                 new CustomAutoDataAttribute(
                     typeof(OmitCircularReferenceCustomization),
                     typeof(ListAllProjectsQueryModelCustomization),
@@ -37,10 +38,15 @@ public class ListAllProjectsForUserTests
     }
     
     [Theory]
-    [InlineAutoData(ProjectUserFilter.AssignedTo)]
-    [InlineAutoData(ProjectUserFilter.CreatedBy)]
+    [InlineAutoData(ProjectUserFilter.AssignedTo,  OrderProjectByField.SignificantDate, OrderByDirection.Ascending)]
+    [InlineAutoData(ProjectUserFilter.CreatedBy, OrderProjectByField.SignificantDate, OrderByDirection.Descending)]
+    [InlineAutoData(ProjectUserFilter.AssignedTo, OrderProjectByField.CreatedAt, OrderByDirection.Ascending)]
+    [InlineAutoData(ProjectUserFilter.CreatedBy, OrderProjectByField.CreatedAt, OrderByDirection.Descending)]
+    [InlineAutoData(ProjectUserFilter.AssignedTo, OrderProjectByField.CompletedAt, OrderByDirection.Ascending)]
+    [InlineAutoData(ProjectUserFilter.CreatedBy, OrderProjectByField.CompletedAt, OrderByDirection.Descending)]
     public async Task Handle_ShouldReturnCorrectList_WhenPaginationIsCorrect(
         ProjectUserFilter filter,
+        OrderProjectQueryBy ordering,
         [Frozen] IListAllProjectsQueryService mockListAllProjectsQueryService,
         [Frozen] Mock<ISender> mockSender,
         IFixture fixture,
@@ -80,16 +86,35 @@ public class ListAllProjectsForUserTests
 
         var trustList = trustDtos.ToList();
 
-        var expected = mockListAllProjectsForUserQueryModels.Select(item =>
-            {
-                Assert.NotNull(item.Project);
-                return ListAllProjectsForUserQueryResultModel
-                    .MapProjectAndEstablishmentToListAllProjectsForUserQueryResultModel(
-                        item.Project,
-                        item.Establishment,
-                        trustList.FirstOrDefault(t => t.Ukprn == item.Project.OutgoingTrustUkprn).Name,
-                        trustList.FirstOrDefault(t => t.Ukprn == item.Project.IncomingTrustUkprn).Name);
-            })
+        var expectedQuery = mockListAllProjectsForUserQueryModels.Select(item =>
+        {
+            Assert.NotNull(item.Project);
+            return ListAllProjectsForUserQueryResultModel
+                .MapProjectAndEstablishmentToListAllProjectsForUserQueryResultModel(
+                    item.Project,
+                    item.Establishment,
+                    trustList.FirstOrDefault(t => t.Ukprn == item.Project.OutgoingTrustUkprn).Name,
+                    trustList.FirstOrDefault(t => t.Ukprn == item.Project.IncomingTrustUkprn).Name);
+        });
+
+        var sortedExpectedQuery = ordering switch
+        {
+            { Field: OrderProjectByField.CompletedAt, Direction: OrderByDirection.Ascending } => expectedQuery.OrderBy(
+                project => project.CompletionDate),
+            { Field: OrderProjectByField.CompletedAt, Direction: OrderByDirection.Descending } => expectedQuery
+                .OrderByDescending(project => project.CompletionDate),
+            { Field: OrderProjectByField.CreatedAt, Direction: OrderByDirection.Ascending } => expectedQuery.OrderBy(
+                project => project.CreatedDate),
+            { Field: OrderProjectByField.CreatedAt, Direction: OrderByDirection.Descending } => expectedQuery
+                .OrderByDescending(project => project.CreatedDate),
+            { Field: OrderProjectByField.SignificantDate, Direction: OrderByDirection.Ascending } =>
+                expectedQuery.OrderBy(project => project.ConversionOrTransferDate),
+            { Field: OrderProjectByField.SignificantDate, Direction: OrderByDirection.Descending } =>
+                expectedQuery.OrderByDescending(project => project.ConversionOrTransferDate),
+            _ => throw new ArgumentException($"Ordering not recognised: {ordering}", nameof(ordering))
+        };
+
+        var expected = sortedExpectedQuery.ThenBy(project => project.Urn.Value)
             .Skip(20).Take(20).ToList();
 
         mockListAllProjectsQueryService.ListAllProjects(ProjectState.Active, null, assignedToUserId: filter == ProjectUserFilter.AssignedTo ? userDto.Id : null, 
@@ -98,7 +123,7 @@ public class ListAllProjectsForUserTests
         
         Assert.NotNull(userDto.ActiveDirectoryUserId);
 
-        var query = new ListAllProjectsForUserQuery(ProjectState.Active, userDto.ActiveDirectoryUserId, filter) { Page = 1 };
+        var query = new ListAllProjectsForUserQuery(ProjectState.Active, userDto.ActiveDirectoryUserId, filter, ordering) { Page = 1 };
 
         //Act
         var result = await handler.Handle(query, default);
@@ -114,10 +139,11 @@ public class ListAllProjectsForUserTests
     }
 
     [Theory]
-    [InlineAutoData(ProjectUserFilter.AssignedTo)]
-    [InlineAutoData(ProjectUserFilter.CreatedBy)]
+    [InlineAutoData(ProjectUserFilter.AssignedTo,  OrderProjectByField.SignificantDate, OrderByDirection.Ascending)]
+    [InlineAutoData(ProjectUserFilter.CreatedBy, OrderProjectByField.SignificantDate, OrderByDirection.Descending)]
     public async Task Handle_ShouldReturnCorrectList_WhenAllPagesAreSkipped(
         ProjectUserFilter filter,
+        OrderProjectQueryBy ordering,
         [Frozen] IListAllProjectsQueryService mockListAllProjectsQueryService,
         [Frozen] Mock<ISender> mockSender,
         IFixture fixture,
@@ -158,7 +184,7 @@ public class ListAllProjectsForUserTests
             .Returns(mockListAllProjectsForUserQueryModels.BuildMock());
 
         Assert.NotNull(userDto.ActiveDirectoryUserId);
-        var query = new ListAllProjectsForUserQuery(ProjectState.Active, userDto.ActiveDirectoryUserId, filter) { Page = 50 };
+        var query = new ListAllProjectsForUserQuery(ProjectState.Active, userDto.ActiveDirectoryUserId, filter, ordering) { Page = 50 };
 
         //Act
         var result = await handler.Handle(query, default);
@@ -170,10 +196,15 @@ public class ListAllProjectsForUserTests
     }
     
     [Theory]
-    [InlineAutoData(ProjectUserFilter.AssignedTo)]
-    [InlineAutoData(ProjectUserFilter.CreatedBy)]
+    [InlineAutoData(ProjectUserFilter.AssignedTo,  OrderProjectByField.SignificantDate, OrderByDirection.Ascending)]
+    [InlineAutoData(ProjectUserFilter.CreatedBy, OrderProjectByField.SignificantDate, OrderByDirection.Descending)]
+    [InlineAutoData(ProjectUserFilter.AssignedTo, OrderProjectByField.CreatedAt, OrderByDirection.Ascending)]
+    [InlineAutoData(ProjectUserFilter.CreatedBy, OrderProjectByField.CreatedAt, OrderByDirection.Descending)]
+    [InlineAutoData(ProjectUserFilter.AssignedTo, OrderProjectByField.CompletedAt, OrderByDirection.Ascending)]
+    [InlineAutoData(ProjectUserFilter.CreatedBy, OrderProjectByField.CompletedAt, OrderByDirection.Descending)]
     public async Task Handle_ShouldReturnUnsuccessful_WhenAnErrorOccurs(
         ProjectUserFilter filter,
+        OrderProjectQueryBy ordering,
         [Frozen] IListAllProjectsQueryService mockListAllProjectsQueryService,
         [Frozen] Mock<ISender> mockSender,
         IFixture fixture,
@@ -192,7 +223,7 @@ public class ListAllProjectsForUserTests
             .ThrowsAsync(new Exception(errorMessage));
         Assert.NotNull(userDto.ActiveDirectoryUserId);
         
-        var query = new ListAllProjectsForUserQuery(ProjectState.Active, userDto.ActiveDirectoryUserId, filter) { Page = 50 };
+        var query = new ListAllProjectsForUserQuery(ProjectState.Active, userDto.ActiveDirectoryUserId, filter, ordering) { Page = 50 };
 
         //Act
         var result = await handler.Handle(query, default);
