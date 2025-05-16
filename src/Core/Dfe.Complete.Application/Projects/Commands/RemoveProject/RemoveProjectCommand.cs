@@ -19,6 +19,7 @@ namespace Dfe.Complete.Application.Projects.Commands.RemoveProject
         ICompleteRepository<Project> projectRepository,
         ICompleteRepository<TransferTasksData> transferTaskRepository,
         ICompleteRepository<ConversionTasksData> conversionTaskRepository,
+        ICompleteRepository<Note> noteRepository,
         IUnitOfWork unitOfWork,
         IConfiguration configuration)
         : IRequestHandler<RemoveProjectCommand>
@@ -45,8 +46,8 @@ namespace Dfe.Complete.Application.Projects.Commands.RemoveProject
                 {
                     return;
                 }
-
-                project.RemoveAllNotes();
+                
+                await project.RemoveAllNotes(noteRepository, cancellationToken);
                 await projectRepository.UpdateAsync(project, cancellationToken);
 
                 if (project is { TasksDataType: Domain.Enums.TaskType.Conversion, TasksDataId: not null })

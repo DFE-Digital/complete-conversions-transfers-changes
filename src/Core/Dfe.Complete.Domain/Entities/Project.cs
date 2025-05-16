@@ -1,6 +1,7 @@
 ﻿using Dfe.Complete.Domain.Common;
 using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Domain.Events;
+using Dfe.Complete.Domain.Interfaces.Repositories;
 using Dfe.Complete.Domain.ValueObjects;
 using Dfe.Complete.Utils;
 
@@ -411,7 +412,7 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
                 Body = note.Body,
                 ProjectId = note.ProjectId,
                 TaskIdentifier = note.TaskIdentifier,
-                UserId = note.User?.Id
+                UserId = note.UserId
             });
         }
     }
@@ -425,14 +426,12 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
 
         Notes.Remove(note);
     }
-    
-    public void RemoveAllNotes()
+
+    public async Task RemoveAllNotes(ICompleteRepository<Note> noteRepository, CancellationToken cancellationToken)
     {
         // Create new id so we don't copy by reference as otherwise the list changes as we delete each note
-        var noteIds = Notes.Select(note => note.Id).ToList();
-        foreach (var noteId in noteIds)
-        {
-            RemoveNote(noteId);
-        }
+        var notesToRemove = Notes.ToList();
+        foreach (var note in notesToRemove) await noteRepository.RemoveAsync(note, cancellationToken);
+        Notes.Clear();
     }
 }
