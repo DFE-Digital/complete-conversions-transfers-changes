@@ -882,13 +882,29 @@
             "x-position": 3
           },
           {
+            "name": "OrderProjectQueryBy.Field",
+            "in": "query",
+            "schema": {
+              "$ref": "#/components/schemas/OrderProjectByField"
+            },
+            "x-position": 4
+          },
+          {
+            "name": "OrderProjectQueryBy.Direction",
+            "in": "query",
+            "schema": {
+              "$ref": "#/components/schemas/OrderByDirection"
+            },
+            "x-position": 5
+          },
+          {
             "name": "Page",
             "in": "query",
             "schema": {
               "type": "integer",
               "format": "int32"
             },
-            "x-position": 4
+            "x-position": 6
           },
           {
             "name": "Count",
@@ -897,7 +913,7 @@
               "type": "integer",
               "format": "int32"
             },
-            "x-position": 5
+            "x-position": 7
           }
         ],
         "responses": {
@@ -1040,13 +1056,13 @@
             "x-position": 2
           },
           {
-            "name": "OrderProjectsBy",
+            "name": "OrderUserProjectsBy",
             "in": "query",
             "schema": {
               "nullable": true,
               "oneOf": [
                 {
-                  "$ref": "#/components/schemas/OrderProjectByField"
+                  "$ref": "#/components/schemas/OrderUserProjectsByField"
                 }
               ]
             },
@@ -2816,14 +2832,12 @@
         "x-enumNames": [
           "CompletedAt",
           "CreatedAt",
-          "SignificantDate",
-          "Id"
+          "SignificantDate"
         ],
         "enum": [
           "CompletedAt",
           "CreatedAt",
-          "SignificantDate",
-          "Id"
+          "SignificantDate"
         ]
       },
       "OrderByDirection": {
@@ -2898,6 +2912,11 @@
                 "$ref": "#/components/schemas/User"
               }
             ]
+          },
+          "createdDate": {
+            "type": "string",
+            "format": "date",
+            "nullable": true
           }
         }
       },
@@ -3002,6 +3021,18 @@
             "format": "int32"
           }
         }
+      },
+      "OrderUserProjectsByField": {
+        "type": "string",
+        "description": "",
+        "x-enumNames": [
+          "Id",
+          "SignificantDate"
+        ],
+        "enum": [
+          "Id",
+          "SignificantDate"
+        ]
       },
       "ListAllUsersWithProjectsResultModel": {
         "type": "object",
