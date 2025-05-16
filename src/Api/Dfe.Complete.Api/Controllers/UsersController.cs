@@ -5,11 +5,13 @@ using Swashbuckle.AspNetCore.Annotations;
 using Dfe.Complete.Application.Users.Models;
 using Dfe.Complete.Application.Users.Queries.GetUser;
 using Dfe.Complete.Application.Users.Queries.ListAllUsers;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Dfe.Complete.Api.Controllers
 {
     [ApiController]
     [ApiVersion("1.0")]
+    [Authorize(Policy = "CanRead")]
     [Route("v{version:apiVersion}/[controller]")]
     public class UsersController(ISender sender) : ControllerBase
     {

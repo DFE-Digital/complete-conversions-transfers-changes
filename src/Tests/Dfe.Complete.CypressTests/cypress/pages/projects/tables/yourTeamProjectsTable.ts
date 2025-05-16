@@ -2,7 +2,7 @@ import ProjectTable from "./projectTable";
 
 class YourTeamProjectsTable extends ProjectTable {
     schoolIsFirstInTable(schoolName: string) {
-        cy.getByClass(super.tableClass).find("tr").eq(0).should("contain", schoolName);
+        cy.getByClass(this.tableClass).getByClass(this.tableData).find("tr").eq(0).should("contain", schoolName);
         return this;
     }
 

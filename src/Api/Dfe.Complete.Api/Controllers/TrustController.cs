@@ -4,11 +4,13 @@ using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 using Dfe.Complete.Application.Projects.Models;
 using Dfe.Complete.Application.Projects.Queries.ListAllProjects;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Dfe.Complete.Api.Controllers
 {
     [ApiController]
     [ApiVersion("1.0")]
+    [Authorize(Policy = "CanRead")]
     [Route("v{version:apiVersion}/[controller]")]
     public class TrustController(ISender sender) : ControllerBase
     {

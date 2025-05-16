@@ -27,7 +27,37 @@ Security in case of vulnerabilities.
 
 ### Fixed  
 
-See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-05-13.244...main) for everything awaiting release
+See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-05-16.272...main) for everything awaiting release
+
+---
+
+## [1.5.2](https://github.com/DFE-Digital/complete-conversions-transfers-changes/releases/tag/production-2025-05-16.272) - 2025-05-16
+
+### Changed
+- Optimise several project listing queries by implementing pagination before retrieving records
+
+### Fixed  
+- Fixed identifying "Form A MAT" projects logic
+- Removed unnecessary `Assign To` filter while pulling projects from database.
+- Resolve accessibility issue causing app header to appear blue instead of white
+
+See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-05-14.254...production-2025-05-16.272) for everything in the release
+
+---
+
+## [1.5.1](https://github.com/DFE-Digital/complete-conversions-transfers-changes/releases/tag/production-2025-05-14.254) - 2025-05-14
+
+### Changed
+ - Change date format to "Month Year" string on local authority projects list
+ - Change projects to sort by significant date on local authority projects list
+
+### Fixed  
+ - Resolve project pagination issue on "Team projects" > "By User" > User page
+
+### Security
+ - Authorization fixed on all API endpoints
+
+See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-05-13.244...production-2025-05-14.254) for everything in the release
 
 ---
 
@@ -45,7 +75,9 @@ See the [full commit history](https://github.com/DFE-Digital/complete-conversion
  - Routing for projects merged (`/conversion-project` and `/transfer-project` become `/project`)
  - "Team projects" > "Handed over" now shows unassigned projects again
 
+
 See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-05-08.217...production-2025-05-13.244) for everything in the release
+
 ---
 
 ## [1.4.0](https://github.com/DFE-Digital/complete-conversions-transfers-changes/releases/tag/production-2025-05-08.217) - 2025-05-08

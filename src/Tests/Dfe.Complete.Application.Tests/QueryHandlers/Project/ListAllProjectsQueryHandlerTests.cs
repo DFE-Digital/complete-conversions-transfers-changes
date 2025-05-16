@@ -70,7 +70,7 @@ public class ListAllProjectsQueryHandlerTests
                 item.Establishment
             )).Skip(20).Take(20).ToList();
 
-        var query = new ListAllProjectsQuery(null, null, 1);
+        var query = new ListAllProjectsQuery(null, null, null, 1);
 
         var mock = listAllProjectsQueryModels.BuildMock();
 
@@ -95,55 +95,6 @@ public class ListAllProjectsQueryHandlerTests
         typeof(OmitCircularReferenceCustomization),
         typeof(ListAllProjectsQueryModelCustomization),
         typeof(DateOnlyCustomization))]
-    public async Task Handle_ShouldOnlyReturnProjectsThatAreAssigned(
-        [Frozen] IListAllProjectsQueryService mockListAllProjectsQueryService,
-        ListAllProjectsQueryHandler handler,
-        IFixture fixture)
-    {
-        // Arrange
-        var totalProjects = 15;
-        var expectedProjects = 10;
-
-        var combinedProjects = fixture.CreateMany<ListAllProjectsQueryModel>(totalProjects).ToList();
-
-        // Set first 10 as assigned, last 5 as unassigned
-        for (int i = 0; i < combinedProjects.Count; i++)
-        {
-            if (i < 10)
-            {
-                combinedProjects[i].Project!.AssignedTo = fixture.Create<Domain.Entities.User>();
-            }
-            else
-            {
-                combinedProjects[i].Project!.AssignedTo = null;
-            }
-        }
-
-
-        var mock = combinedProjects.BuildMock();
-
-        var query = new ListAllProjectsQuery(ProjectState.Active, ProjectType.Conversion);
-
-        mockListAllProjectsQueryService.ListAllProjects(query.ProjectStatus, query.Type)
-            .Returns(mock);
-
-        // Act
-        var result = await handler.Handle(query, default);
-
-        // Assert
-        Assert.NotNull(result);
-        Assert.True(result.IsSuccess);
-        Assert.All(result.Value!, project =>
-            Assert.False(string.IsNullOrWhiteSpace(project.AssignedToFullName)));
-        Assert.Equal(expectedProjects, result.Value!.Count);
-    }
-
-
-    [Theory]
-    [CustomAutoData(
-        typeof(OmitCircularReferenceCustomization),
-        typeof(ListAllProjectsQueryModelCustomization),
-        typeof(DateOnlyCustomization))]
     public async Task Handle_ShouldReturnCorrectList_WhenAllPagesAreSkipped(
         [Frozen] IListAllProjectsQueryService mockListAllProjectsQueryService,
         ListAllProjectsQueryHandler handler,
@@ -152,7 +103,7 @@ public class ListAllProjectsQueryHandlerTests
         // Arrange
         var listAllProjectsQueryModels = fixture.CreateMany<ListAllProjectsQueryModel>(50).ToList();
 
-        var query = new ListAllProjectsQuery(null, null, 10);
+        var query = new ListAllProjectsQuery(null, null, null, 10);
 
         var mock = listAllProjectsQueryModels.BuildMock();
 
