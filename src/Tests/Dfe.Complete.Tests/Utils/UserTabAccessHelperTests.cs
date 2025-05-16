@@ -49,4 +49,21 @@ public class UserTabAccessHelperTests
         var result = UserTabAccessHelper.UserHasTabAccess(principal, route);
         Assert.Equal(expectedPermission, result);
     }
+
+    [Theory]
+    [InlineData(new [] {"service_support"}, false)]
+    [InlineData(new [] {"service_support", "manage_team"}, false)]
+    [InlineData(new [] {"regional_casework_services"}, false)]
+    [InlineData(new [] {"regional_casework_services", "manage_team"}, true)]
+    [InlineData(new [] {"regional_delivery_officer"}, false)]
+    [InlineData(new [] {"regional_delivery_officer", "manage_team"}, true)]
+    public void UserHasTabAccess_ProtectedTab_ReturnsCorrectAccessForTeamLead(string[] userClaims, bool expectedPermission)
+    {
+        var claims = userClaims.ToList().Select(role => new Claim(ClaimTypes.Role, role)).ToList();
+        var identity = new ClaimsIdentity(claims, "custom");
+        var principal = new ClaimsPrincipal(identity);
+
+        var result = UserTabAccessHelper.UserHasTabAccess(principal, "team-projects-unassigned");
+        Assert.Equal(expectedPermission, result);
+    }
 }
