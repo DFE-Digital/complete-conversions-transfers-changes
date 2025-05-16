@@ -35,7 +35,7 @@ public class ListAllProjectsForUserTests
         {
         }
     }
-    
+
     [Theory]
     [InlineAutoData(ProjectUserFilter.AssignedTo,  OrderProjectByField.SignificantDate, OrderByDirection.Ascending)]
     [InlineAutoData(ProjectUserFilter.CreatedBy, OrderProjectByField.SignificantDate, OrderByDirection.Descending)]
@@ -53,7 +53,7 @@ public class ListAllProjectsForUserTests
         //Arrange 
         var mockTrustsClient = new Mock<ITrustsV4Client>();
 
-        var handler = new ListAllProjectsForUserQueryHandler(mockListAllProjectsQueryService, 
+        var handler = new ListAllProjectsForUserQueryHandler(mockListAllProjectsQueryService,
             mockTrustsClient.Object,
             mockSender.Object);
 
@@ -83,7 +83,24 @@ public class ListAllProjectsForUserTests
 
         var trustList = trustDtos.ToList();
 
-        var expectedQuery = mockListAllProjectsForUserQueryModels.Select(item =>
+        var sortedQuery = ordering switch
+        {
+            { Field: OrderProjectByField.CompletedAt, Direction: OrderByDirection.Ascending } => mockListAllProjectsForUserQueryModels.OrderBy(
+                project => project.Project.CompletedAt),
+            { Field: OrderProjectByField.CompletedAt, Direction: OrderByDirection.Descending } => mockListAllProjectsForUserQueryModels
+                .OrderByDescending(project => project.Project.CompletedAt),
+            { Field: OrderProjectByField.CreatedAt, Direction: OrderByDirection.Ascending } => mockListAllProjectsForUserQueryModels.OrderBy(
+                project => project.Project.CreatedAt),
+            { Field: OrderProjectByField.CreatedAt, Direction: OrderByDirection.Descending } => mockListAllProjectsForUserQueryModels
+                .OrderByDescending(project => project.Project.CreatedAt),
+            { Field: OrderProjectByField.SignificantDate, Direction: OrderByDirection.Ascending } =>
+                mockListAllProjectsForUserQueryModels.OrderBy(project => project.Project.SignificantDate),
+            { Field: OrderProjectByField.SignificantDate, Direction: OrderByDirection.Descending } =>
+                mockListAllProjectsForUserQueryModels.OrderByDescending(project => project.Project.SignificantDate),
+            _ => throw new ArgumentException($"Ordering not recognised: {ordering}", nameof(ordering))
+        };
+
+        var expectedQuery = sortedQuery.ThenBy(project => project.Project.Urn.Value).Select(item =>
         {
             Assert.NotNull(item.Project);
             return ListAllProjectsForUserQueryResultModel
@@ -94,30 +111,13 @@ public class ListAllProjectsForUserTests
                     trustList.FirstOrDefault(t => t.Ukprn == item.Project.IncomingTrustUkprn).Name);
         });
 
-        var sortedExpectedQuery = ordering switch
-        {
-            { Field: OrderProjectByField.CompletedAt, Direction: OrderByDirection.Ascending } => expectedQuery.OrderBy(
-                project => project.CompletionDate),
-            { Field: OrderProjectByField.CompletedAt, Direction: OrderByDirection.Descending } => expectedQuery
-                .OrderByDescending(project => project.CompletionDate),
-            { Field: OrderProjectByField.CreatedAt, Direction: OrderByDirection.Ascending } => expectedQuery.OrderBy(
-                project => project.CreatedDate),
-            { Field: OrderProjectByField.CreatedAt, Direction: OrderByDirection.Descending } => expectedQuery
-                .OrderByDescending(project => project.CreatedDate),
-            { Field: OrderProjectByField.SignificantDate, Direction: OrderByDirection.Ascending } =>
-                expectedQuery.OrderBy(project => project.ConversionOrTransferDate),
-            { Field: OrderProjectByField.SignificantDate, Direction: OrderByDirection.Descending } =>
-                expectedQuery.OrderByDescending(project => project.ConversionOrTransferDate),
-            _ => throw new ArgumentException($"Ordering not recognised: {ordering}", nameof(ordering))
-        };
-
-        var expected = sortedExpectedQuery.ThenBy(project => project.Urn.Value)
+        var expected = expectedQuery
             .Skip(20).Take(20).ToList();
 
-        mockListAllProjectsQueryService.ListAllProjects(ProjectState.Active, null, assignedToUserId: filter == ProjectUserFilter.AssignedTo ? userDto.Id : null, 
+        mockListAllProjectsQueryService.ListAllProjects(ProjectState.Active, null, assignedToUserId: filter == ProjectUserFilter.AssignedTo ? userDto.Id : null,
                 createdByUserId: filter == ProjectUserFilter.CreatedBy ? userDto.Id : null)
             .Returns(mockListAllProjectsForUserQueryModels.BuildMock());
-        
+
         Assert.NotNull(userDto.ActiveDirectoryUserId);
 
         var query = new ListAllProjectsForUserQuery(ProjectState.Active, userDto.ActiveDirectoryUserId, filter, ordering) { Page = 1 };
@@ -136,7 +136,7 @@ public class ListAllProjectsForUserTests
     }
 
     [Theory]
-    [InlineAutoData(ProjectUserFilter.AssignedTo,  OrderProjectByField.SignificantDate, OrderByDirection.Ascending)]
+    [InlineAutoData(ProjectUserFilter.AssignedTo, OrderProjectByField.SignificantDate, OrderByDirection.Ascending)]
     [InlineAutoData(ProjectUserFilter.CreatedBy, OrderProjectByField.SignificantDate, OrderByDirection.Descending)]
     public async Task Handle_ShouldReturnCorrectList_WhenAllPagesAreSkipped(
         ProjectUserFilter filter,
@@ -174,8 +174,8 @@ public class ListAllProjectsForUserTests
             projectsQueryModel.Project.IncomingTrustUkprn = incomingTrustUkprn;
             projectsQueryModel.Project.OutgoingTrustUkprn = outgoingTrustUkprn;
         }
-        
-        mockListAllProjectsQueryService.ListAllProjects(ProjectState.Active, null, assignedToUserId: filter == ProjectUserFilter.AssignedTo ? userDto.Id : null, 
+
+        mockListAllProjectsQueryService.ListAllProjects(ProjectState.Active, null, assignedToUserId: filter == ProjectUserFilter.AssignedTo ? userDto.Id : null,
                 createdByUserId: filter == ProjectUserFilter.CreatedBy ? userDto.Id : null)
             .Returns(mockListAllProjectsForUserQueryModels.BuildMock());
 
@@ -190,9 +190,9 @@ public class ListAllProjectsForUserTests
         Assert.True(result.IsSuccess);
         Assert.Equal(0, result.Value?.Count);
     }
-    
+
     [Theory]
-    [InlineAutoData(ProjectUserFilter.AssignedTo,  OrderProjectByField.SignificantDate, OrderByDirection.Ascending)]
+    [InlineAutoData(ProjectUserFilter.AssignedTo, OrderProjectByField.SignificantDate, OrderByDirection.Ascending)]
     [InlineAutoData(ProjectUserFilter.CreatedBy, OrderProjectByField.SignificantDate, OrderByDirection.Descending)]
     [InlineAutoData(ProjectUserFilter.AssignedTo, OrderProjectByField.CreatedAt, OrderByDirection.Ascending)]
     [InlineAutoData(ProjectUserFilter.CreatedBy, OrderProjectByField.CreatedAt, OrderByDirection.Descending)]
@@ -212,12 +212,12 @@ public class ListAllProjectsForUserTests
             mockSender.Object);
 
         const string errorMessage = "this is a test";
-        
+
         var userDto = fixture.Create<UserDto>();
         mockSender.Setup(sender => sender.Send(It.IsAny<GetUserByAdIdQuery>(), It.IsAny<CancellationToken>()))
             .ThrowsAsync(new Exception(errorMessage));
         Assert.NotNull(userDto.ActiveDirectoryUserId);
-        
+
         var query = new ListAllProjectsForUserQuery(ProjectState.Active, userDto.ActiveDirectoryUserId, filter, ordering) { Page = 50 };
 
         //Act
