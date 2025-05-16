@@ -29,6 +29,7 @@ Security in case of vulnerabilities.
 ### Fixed  
 - Fixed identifying "Form A MAT" projects logic
 - Removed unnecessary `Assign To` filter while pulling projects from database.
+- Resolve accessibility issue causing app header to appear blue instead of white
 
 See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-05-14.254...main) for everything awaiting release
 
