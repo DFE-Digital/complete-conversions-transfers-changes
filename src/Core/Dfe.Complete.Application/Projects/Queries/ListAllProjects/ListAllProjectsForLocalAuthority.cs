@@ -22,17 +22,19 @@ public class ListAllProjectsForLocalAuthority(IListAllProjectsQueryService listA
         try
         {
             var orderBy = new OrderProjectQueryBy();
-            var projectsForLa = await listAllProjectsQueryService.ListAllProjects(request.State, request.Type, localAuthorityCode: request.LocalAuthorityCode, orderBy: orderBy).ToListAsync(cancellationToken);
+            var projectsForLaQuery = listAllProjectsQueryService.ListAllProjects(request.State, request.Type, localAuthorityCode: request.LocalAuthorityCode, orderBy: orderBy);
 
-            var paginatedResultModel = projectsForLa.Select(proj =>
+            var count = await projectsForLaQuery.CountAsync(cancellationToken);
+
+            var paginatedResultModel = await projectsForLaQuery.Select(proj =>
                     ListAllProjectsResultModel.MapProjectAndEstablishmentToListAllProjectResultModel(
                         proj.Project,
                         proj.Establishment))
                 .Skip(request.Page * request.Count)
                 .Take(request.Count)
-                .ToList();
+                .ToListAsync(cancellationToken);
 
-            return PaginatedResult<List<ListAllProjectsResultModel>>.Success(paginatedResultModel, projectsForLa.Count);
+            return PaginatedResult<List<ListAllProjectsResultModel>>.Success(paginatedResultModel, count);
         }
         catch (Exception e)
         {

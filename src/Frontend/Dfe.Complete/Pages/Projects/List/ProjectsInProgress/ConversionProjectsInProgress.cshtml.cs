@@ -12,12 +12,12 @@ public class ConversionProjectsInProgressModel(ISender sender) : ConversionOrTra
     public async Task OnGet()
     {
         ViewData[TabNavigationModel.ViewDataKey] = AllProjectsTabNavigationModel;
-        var listProjectQuery = new ListAllProjectsQuery(ProjectState.Active, ProjectType.Conversion, PageNumber - 1, PageSize);
+        var listProjectQuery = new ListAllProjectsQuery(ProjectState.Active, ProjectType.Conversion, AssignedToState.AssignedOnly, PageNumber - 1, PageSize);
 
         var response = await sender.Send(listProjectQuery);
         Projects = response.Value?.ToList() ?? [];
 
-        var countProjectQuery = new CountAllProjectsQuery(ProjectState.Active, ProjectType.Conversion);
+        var countProjectQuery = new CountAllProjectsQuery(ProjectState.Active, ProjectType.Conversion, AssignedToState.AssignedOnly);
         var countResponse = await sender.Send(countProjectQuery);
 
         Pagination = new PaginationModel("/projects/all/in-progress/conversions", PageNumber, countResponse.Value, PageSize);

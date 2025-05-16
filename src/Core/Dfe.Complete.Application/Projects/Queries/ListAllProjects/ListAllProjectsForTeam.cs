@@ -24,16 +24,18 @@ public class ListAllProjectsForTeamQueryHandler(IListAllProjectsQueryService lis
     {
         try
         {
-            var projectsForTeam = await listAllProjectsQueryService.ListAllProjects(
-                request.ProjectStatus, request.Type, request.AssignedToState, team: request.Team, orderBy: request.OrderBy).ToListAsync(cancellationToken);
+            var projectsForTeamQuery = listAllProjectsQueryService.ListAllProjects(
+                request.ProjectStatus, request.Type, request.AssignedToState, team: request.Team, orderBy: request.OrderBy);
 
-            var paginatedResultModel = projectsForTeam.Select(proj =>
-                    ListAllProjectsResultModel.MapProjectAndEstablishmentToListAllProjectResultModel(proj.Project!, proj.Establishment))
+            var count = await projectsForTeamQuery.CountAsync(cancellationToken);
+
+            var paginatedResultModel = await projectsForTeamQuery.Select(proj =>
+                    ListAllProjectsResultModel.MapProjectAndEstablishmentToListAllProjectResultModel(proj.Project, proj.Establishment))
                 .Skip(request.Page * request.Count)
                 .Take(request.Count)
-                .ToList();
+                .ToListAsync(cancellationToken);
 
-            return PaginatedResult<List<ListAllProjectsResultModel>>.Success(paginatedResultModel, projectsForTeam.Count);
+            return PaginatedResult<List<ListAllProjectsResultModel>>.Success(paginatedResultModel, count);
         }
         catch (Exception e)
         {

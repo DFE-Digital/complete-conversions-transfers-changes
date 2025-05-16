@@ -333,13 +333,26 @@
             "x-position": 2
           },
           {
+            "name": "AssignedToState",
+            "in": "query",
+            "schema": {
+              "nullable": true,
+              "oneOf": [
+                {
+                  "$ref": "#/components/schemas/AssignedToState"
+                }
+              ]
+            },
+            "x-position": 3
+          },
+          {
             "name": "Page",
             "in": "query",
             "schema": {
               "type": "integer",
               "format": "int32"
             },
-            "x-position": 3
+            "x-position": 4
           },
           {
             "name": "Count",
@@ -348,7 +361,7 @@
               "type": "integer",
               "format": "int32"
             },
-            "x-position": 4
+            "x-position": 5
           }
         ],
         "responses": {
@@ -525,13 +538,26 @@
             "x-position": 2
           },
           {
+            "name": "AssignedToState",
+            "in": "query",
+            "schema": {
+              "nullable": true,
+              "oneOf": [
+                {
+                  "$ref": "#/components/schemas/AssignedToState"
+                }
+              ]
+            },
+            "x-position": 3
+          },
+          {
             "name": "Search",
             "in": "query",
             "schema": {
               "type": "string",
               "nullable": true
             },
-            "x-position": 3
+            "x-position": 4
           }
         ],
         "responses": {
@@ -2737,6 +2763,18 @@
           }
         }
       },
+      "AssignedToState": {
+        "type": "string",
+        "description": "",
+        "x-enumNames": [
+          "AssignedOnly",
+          "UnassignedOnly"
+        ],
+        "enum": [
+          "AssignedOnly",
+          "UnassignedOnly"
+        ]
+      },
       "ListMatResultModel": {
         "type": "object",
         "additionalProperties": false,
@@ -2760,12 +2798,7 @@
         "additionalProperties": false,
         "properties": {
           "project": {
-            "nullable": true,
-            "oneOf": [
-              {
-                "$ref": "#/components/schemas/Project"
-              }
-            ]
+            "$ref": "#/components/schemas/Project"
           },
           "establishment": {
             "nullable": true,
@@ -2929,18 +2962,6 @@
             "format": "guid"
           }
         }
-      },
-      "AssignedToState": {
-        "type": "string",
-        "description": "",
-        "x-enumNames": [
-          "AssignedOnly",
-          "UnassignedOnly"
-        ],
-        "enum": [
-          "AssignedOnly",
-          "UnassignedOnly"
-        ]
       },
       "OrderProjectByField": {
         "type": "string",
