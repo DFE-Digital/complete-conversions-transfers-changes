@@ -4,52 +4,52 @@
 
 @model Dfe.Complete.Pages.Projects.Team.YourTeamProjectsModel
 @{
-  Layout = "Shared/_Layout";
-  var ariaCurrentValue = "page";
-  string? IsCurrentNav(string tabName) => Model.CurrentNavigationItem == tabName ? ariaCurrentValue : null;
+    Layout = "Shared/_Layout";
+    var ariaCurrentValue = "page";
+    string? IsCurrentNav(string tabName) => Model.CurrentNavigationItem == tabName ? ariaCurrentValue : null;
 }
 
 @section BeforeMainFullWidth
 {
-  <div class="moj-primary-navigation">
-    <div class="moj-primary-navigation__container">
-      <div class="moj-primary-navigation__nav">
-        <nav class="moj-primary-navigation" aria-label="Primary navigation">
-          <ul class="moj-primary-navigation__list">
-            <li class="moj-primary-navigation__item">
-              <a class="moj-primary-navigation__link"
-                aria-current="@IsCurrentNav(YourTeamProjectsModel.InProgressNavigation)"
-                href="@RouteConstants.TeamProjectsInProgress">In progress</a>
-            </li>
-            <li class="moj-primary-navigation__item">
-              <a class="moj-primary-navigation__link"
-                aria-current="@IsCurrentNav(YourTeamProjectsModel.NewNavigation)"
-                href="@RouteConstants.TeamProjectsNew">New</a>
-            </li>
-            <li class="moj-primary-navigation__item">
-              <a class="moj-primary-navigation__link"
-                aria-current="@IsCurrentNav(YourTeamProjectsModel.ByUserNavigation)"
-                href="@RouteConstants.TeamProjectsUsers">By user</a>
-            </li>
-            <li class="moj-primary-navigation__item" asp-policy="@UserPolicies.CanViewTeamProjectsHandedOver">
-              <a class="moj-primary-navigation__link"
-                aria-current="@IsCurrentNav(YourTeamProjectsModel.HandedOverNavigation)"
-                href="@RouteConstants.TeamProjectsHandedOver">Handed over</a>
-            </li>
-            <li class="moj-primary-navigation__item">
-              <a class="moj-primary-navigation__link"
-                aria-current="@IsCurrentNav(YourTeamProjectsModel.CompletedNavigation)"
-                href="@RouteConstants.TeamProjectsCompleted">Completed</a>
-            </li>
-          </ul>
-        </nav>
-      </div>
+    <div class="moj-primary-navigation">
+        <div class="moj-primary-navigation__container">
+            <div class="moj-primary-navigation__nav">
+                <nav class="moj-primary-navigation" aria-label="Primary navigation">
+                    <ul class="moj-primary-navigation__list">
+                        <li class="moj-primary-navigation__item">
+                            <a class="moj-primary-navigation__link"
+                               aria-current="@IsCurrentNav(YourTeamProjectsModel.InProgressNavigation)"
+                               href="@RouteConstants.TeamProjectsInProgress">In progress</a>
+                        </li>
+                        <li class="moj-primary-navigation__item">
+                            <a class="moj-primary-navigation__link"
+                               aria-current="@IsCurrentNav(YourTeamProjectsModel.NewNavigation)"
+                               href="@RouteConstants.TeamProjectsNew">New</a>
+                        </li>
+                        <li class="moj-primary-navigation__item">
+                            <a class="moj-primary-navigation__link"
+                               aria-current="@IsCurrentNav(YourTeamProjectsModel.ByUserNavigation)"
+                               href="@RouteConstants.TeamProjectsUsers">By user</a>
+                        </li>
+                        <li class="moj-primary-navigation__item" asp-policy="@UserPolicies.CanViewTeamProjectsHandedOver">
+                            <a class="moj-primary-navigation__link"
+                               aria-current="@IsCurrentNav(YourTeamProjectsModel.HandedOverNavigation)"
+                               href="@RouteConstants.TeamProjectsHandedOver">Handed over</a>
+                        </li>
+                        <li class="moj-primary-navigation__item">
+                            <a class="moj-primary-navigation__link"
+                               aria-current="@IsCurrentNav(YourTeamProjectsModel.CompletedNavigation)"
+                               href="@RouteConstants.TeamProjectsCompleted">Completed</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
     </div>
-  </div>
 }
 @RenderBody()
 
 @if (Model.Pagination != null)
 {
-  @await Html.PartialAsync("/Pages/Pagination/_Pagination.cshtml", model: Model.Pagination)
+    @await Html.PartialAsync("/Pages/Pagination/_Pagination.cshtml", model: Model.Pagination)
 }
