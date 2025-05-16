@@ -22,10 +22,18 @@ Security in case of vulnerabilities.
 
 ## Unreleased  
 ### Added  
+- `PolicyCheckTagHelper` added to conditionally hide elements based on policy
 
 ### Changed  
+- Navigation items previously hidden with `UserTabAccessHelper` now hide on policy
 
 ### Fixed  
+
+### Removed
+- `UserTabAccessHelper` class is no longer required. Use policies instead
+
+### Security
+- Only correct user groups can now create projects
 
 See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-05-16.272...main) for everything awaiting release
 

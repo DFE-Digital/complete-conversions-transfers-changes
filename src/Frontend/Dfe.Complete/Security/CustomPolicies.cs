@@ -18,16 +18,6 @@ public static class CustomPolicies
                     user.IsInRole(UserRolesConstants.RegionalDeliveryOfficer) ||
                     (user.IsInRole(UserRolesConstants.RegionalCaseworkServices) && !user.IsInRole(UserRolesConstants.ManageTeam));
             });
-        },
-        // ["CanViewNavigation"] = builder =>
-        // {
-        //     builder.RequireAuthenticatedUser();
-        //     builder.RequireAssertion(context =>
-        //     {
-        //         var user = context.User;
-        //         // NOT data AND NOT support: user must not be in either group.
-        //         return !user.IsInRole("data") && !user.IsInRole("support");
-        //     });
-        // }
+        }
     };
 }

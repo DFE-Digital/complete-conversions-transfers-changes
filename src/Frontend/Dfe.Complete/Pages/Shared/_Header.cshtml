@@ -1,7 +1,6 @@
 ﻿@using Dfe.Complete.Constants
 @using MediatR
 @using Dfe.Complete.Application.Projects.Queries.GetUser;
-@using Dfe.Complete.Utils;
 @using Dfe.Complete.Domain.Enums;
 @using Dfe.Complete.Domain.Constants;
 
@@ -12,8 +11,6 @@
 @{
   const string currentTabStyling = "dfe-header__navigation-item--current";
   string IsCurrentTab(string tabName) => Model?.CurrentTab == tabName ? currentTabStyling : "";
-
-  bool UserHasTabAccess(string tabName) => UserTabAccessHelper.UserHasTabAccess(User, tabName);
 }
 
 @functions {

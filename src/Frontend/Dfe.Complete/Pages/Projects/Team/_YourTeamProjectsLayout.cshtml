@@ -1,14 +1,12 @@
 ﻿@using Dfe.Complete.Pages.Projects.Team;
 @using Dfe.Complete.Constants;
-@using Dfe.Complete.Utils;
+@using Dfe.Complete.Domain.Enums
 
 @model Dfe.Complete.Pages.Projects.Team.YourTeamProjectsModel
 @{
   Layout = "Shared/_Layout";
   var ariaCurrentValue = "page";
   string? IsCurrentNav(string tabName) => Model.CurrentNavigationItem == tabName ? ariaCurrentValue : null;
-  
-  bool UserHasTabAccess(string tabName) => UserTabAccessHelper.UserHasTabAccess(User, tabName);
 }
 
 @section BeforeMainFullWidth
@@ -33,13 +31,11 @@
                 aria-current="@IsCurrentNav(YourTeamProjectsModel.ByUserNavigation)"
                 href="@RouteConstants.TeamProjectsUsers">By user</a>
             </li>
-            @if (UserHasTabAccess(YourTeamProjectsModel.HandedOverNavigation)){
-              <li class="moj-primary-navigation__item">
-                <a class="moj-primary-navigation__link"
-                  aria-current="@IsCurrentNav(YourTeamProjectsModel.HandedOverNavigation)"
-                  href="@RouteConstants.TeamProjectsHandedOver">Handed over</a>
-              </li>
-            }
+            <li class="moj-primary-navigation__item" asp-policy="@UserPolicies.CanViewTeamProjectsHandedOver">
+              <a class="moj-primary-navigation__link"
+                aria-current="@IsCurrentNav(YourTeamProjectsModel.HandedOverNavigation)"
+                href="@RouteConstants.TeamProjectsHandedOver">Handed over</a>
+            </li>
             <li class="moj-primary-navigation__item">
               <a class="moj-primary-navigation__link"
                 aria-current="@IsCurrentNav(YourTeamProjectsModel.CompletedNavigation)"

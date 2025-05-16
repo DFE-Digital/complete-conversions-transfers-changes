@@ -142,10 +142,30 @@ public class Startup
         app.UseSession();
         app.UseAuthentication();
         app.UseAuthorization();
-        app.UseEndpoints(endpoints =>
+        // app.UseEndpoints(endpoints =>
+        // {
+        //     endpoints.MapRazorPages();
+        // });
+            app.UseEndpoints(endpoints =>
+    {
+        // Add a new endpoint for the sitemap
+        endpoints.MapGet("/sitemap.json", async context =>
         {
-            endpoints.MapRazorPages();
+            // Grab the list of endpoints from the endpoint data source
+            var endpointDataSource = context.RequestServices.GetRequiredService<EndpointDataSource>();
+            var routeEndpoints = endpointDataSource.Endpoints.OfType<RouteEndpoint>()
+                .Select(e => new
+                {
+                    Route = e.RoutePattern.RawText,
+                    HttpMethods = e.Metadata.OfType<HttpMethodMetadata>().FirstOrDefault()?.HttpMethods
+                });
+            context.Response.ContentType = "application/json";
+            var json = System.Text.Json.JsonSerializer.Serialize(routeEndpoints, new System.Text.Json.JsonSerializerOptions { WriteIndented = true });
+            await context.Response.WriteAsync(json);
         });
+
+        endpoints.MapRazorPages();
+    });
     }
 
     private void ConfigureCookies(IServiceCollection services)
