@@ -2076,70 +2076,77 @@
         ]
       },
       "Note": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-          "id": {
-            "$ref": "#/components/schemas/NoteId"
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/BaseAggregateRoot"
           },
-          "body": {
-            "type": "string",
-            "nullable": true
-          },
-          "projectId": {
-            "nullable": true,
-            "oneOf": [
-              {
-                "$ref": "#/components/schemas/ProjectId"
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "id": {
+                "$ref": "#/components/schemas/NoteId"
+              },
+              "body": {
+                "type": "string",
+                "nullable": true
+              },
+              "projectId": {
+                "nullable": true,
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/ProjectId"
+                  }
+                ]
+              },
+              "userId": {
+                "nullable": true,
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/UserId"
+                  }
+                ]
+              },
+              "createdAt": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "updatedAt": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "taskIdentifier": {
+                "type": "string",
+                "nullable": true
+              },
+              "notableId": {
+                "type": "string",
+                "format": "guid",
+                "nullable": true
+              },
+              "notableType": {
+                "type": "string",
+                "nullable": true
+              },
+              "project": {
+                "nullable": true,
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/Project"
+                  }
+                ]
+              },
+              "user": {
+                "nullable": true,
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/User"
+                  }
+                ]
               }
-            ]
-          },
-          "userId": {
-            "nullable": true,
-            "oneOf": [
-              {
-                "$ref": "#/components/schemas/UserId"
-              }
-            ]
-          },
-          "createdAt": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "updatedAt": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "taskIdentifier": {
-            "type": "string",
-            "nullable": true
-          },
-          "notableId": {
-            "type": "string",
-            "format": "guid",
-            "nullable": true
-          },
-          "notableType": {
-            "type": "string",
-            "nullable": true
-          },
-          "project": {
-            "nullable": true,
-            "oneOf": [
-              {
-                "$ref": "#/components/schemas/Project"
-              }
-            ]
-          },
-          "user": {
-            "nullable": true,
-            "oneOf": [
-              {
-                "$ref": "#/components/schemas/User"
-              }
-            ]
+            }
           }
-        }
+        ]
       },
       "NoteId": {
         "type": "object",
