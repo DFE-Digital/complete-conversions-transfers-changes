@@ -1,14 +1,12 @@
 ﻿using Dfe.Complete.Application.Common.Models;
 using Dfe.Complete.Application.Projects.Interfaces;
 using Dfe.Complete.Application.Projects.Models;
-using Dfe.Complete.Domain.Enums;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
 namespace Dfe.Complete.Application.Projects.Queries.SearchProjects
 { 
     public record SearchProjectsQuery(
-       ProjectState? ProjectStatus, 
        string SearchTerm) : PaginatedRequest<PaginatedResult<List<ListAllProjectsResultModel>>>;
 
     public class SearchProjectsQueryHandler(
@@ -20,15 +18,20 @@ namespace Dfe.Complete.Application.Projects.Queries.SearchProjects
         {
             try
             {
-                var projectList = await listAllProjectsQueryService
-                    .ListAllProjects(request.ProjectStatus, null, search: request.SearchTerm)
+                var searchQuery = listAllProjectsQueryService
+                    .ListAllProjects(null, null, search: request.SearchTerm).AsQueryable();
+
+                var itemCount = await searchQuery
+                    .CountAsync(cancellationToken);
+
+                var projectList = await searchQuery
                     .Skip(request.Page * request.Count).Take(request.Count)
                     .Select(item => ListAllProjectsResultModel.MapProjectAndEstablishmentToListAllProjectResultModel(
                        item.Project!,
                        item.Establishment
                    )).ToListAsync(cancellationToken); 
 
-                return PaginatedResult<List<ListAllProjectsResultModel>>.Success(projectList, projectList.Count);
+                return PaginatedResult<List<ListAllProjectsResultModel>>.Success(projectList, itemCount);
             }
             catch (Exception ex)
             {

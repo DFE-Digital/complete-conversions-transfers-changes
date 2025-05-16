@@ -980,25 +980,12 @@
         "operationId": "Projects_SearchProjects",
         "parameters": [
           {
-            "name": "ProjectStatus",
-            "in": "query",
-            "schema": {
-              "nullable": true,
-              "oneOf": [
-                {
-                  "$ref": "#/components/schemas/ProjectState"
-                }
-              ]
-            },
-            "x-position": 1
-          },
-          {
             "name": "SearchTerm",
             "in": "query",
             "schema": {
               "type": "string"
             },
-            "x-position": 2
+            "x-position": 1
           },
           {
             "name": "Page",
@@ -1007,7 +994,7 @@
               "type": "integer",
               "format": "int32"
             },
-            "x-position": 3
+            "x-position": 2
           },
           {
             "name": "Count",
@@ -1016,7 +1003,7 @@
               "type": "integer",
               "format": "int32"
             },
-            "x-position": 4
+            "x-position": 3
           }
         ],
         "responses": {
