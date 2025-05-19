@@ -23,16 +23,24 @@ public static class UserTabAccessHelper
 
     public static bool UserHasTabAccess(ClaimsPrincipal user, string tabName)
     {
-        if (tabName == YourProjectsTabName) return user.HasRole(UserRolesConstants.RegionalDeliveryOfficer) || (user.HasRole(UserRolesConstants.RegionalCaseworkServices) && !user.HasRole(UserRolesConstants.ManageTeam));
-        if (tabName == YourTeamProjectsTabName) return user.HasRole(UserRolesConstants.RegionalDeliveryOfficer) || user.HasRole(UserRolesConstants.RegionalCaseworkServices);
-        if (tabName == AllProjects_HandoverTabName) return user.HasRole(UserRolesConstants.RegionalDeliveryOfficer) || user.HasRole(UserRolesConstants.ServiceSupport);
-        if (tabName == GroupsTabName) return user.HasRole(UserRolesConstants.RegionalDeliveryOfficer) || user.HasRole(UserRolesConstants.ServiceSupport) || user.HasRole(UserRolesConstants.RegionalCaseworkServices);
-        if (tabName == ServiceSupportProjectsTabName) return user.HasRole(UserRolesConstants.ServiceSupport);
-        if (tabName == AllProjects_ExportsTabName) return user.HasRole(UserRolesConstants.ServiceSupport) || user.HasRole(UserRolesConstants.BusinessSupport) || user.HasRole(UserRolesConstants.DataConsumers)
-            || (user.HasRole(UserRolesConstants.ManageTeam) && (user.HasRole(UserRolesConstants.RegionalDeliveryOfficer) || user.HasRole(UserRolesConstants.RegionalCaseworkServices)));
-        if (tabName == TeamProjects_HandedOver) return user.HasRole(UserRolesConstants.RegionalDeliveryOfficer);
-        if (tabName == TeamProjects_Unassigned) return user.HasRole(UserRolesConstants.ManageTeam) && 
-            (user.HasRole(UserRolesConstants.RegionalDeliveryOfficer) || user.HasRole(UserRolesConstants.RegionalCaseworkServices));
-        return true;
+        var isRdo = user.HasRole(UserRolesConstants.RegionalDeliveryOfficer);
+        var isCase = user.HasRole(UserRolesConstants.RegionalCaseworkServices);
+        var isService = user.HasRole(UserRolesConstants.ServiceSupport);
+        var isBusiness = user.HasRole(UserRolesConstants.BusinessSupport);
+        var isData = user.HasRole(UserRolesConstants.DataConsumers);
+        var isManageTeam = user.HasRole(UserRolesConstants.ManageTeam);
+
+        return tabName switch
+        {
+            YourProjectsTabName => isRdo || (isCase && !isManageTeam),
+            YourTeamProjectsTabName => isRdo || isCase,
+            AllProjects_HandoverTabName => isRdo || isService,
+            GroupsTabName => isRdo || isService || isCase,
+            ServiceSupportProjectsTabName => isService,
+            AllProjects_ExportsTabName => isService || isBusiness || isData || (isManageTeam && (isRdo || isCase)),
+            TeamProjects_HandedOver => isRdo,
+            TeamProjects_Unassigned => isManageTeam && (isRdo || isCase),
+            _ => true
+        };
     }
 }
