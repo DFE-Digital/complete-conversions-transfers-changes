@@ -4,9 +4,9 @@
 
 @model Dfe.Complete.Pages.Projects.Team.YourTeamProjectsModel
 @{
-    Layout = "Shared/_Layout";
-    var ariaCurrentValue = "page";
-    string? IsCurrentNav(string tabName) => Model.CurrentNavigationItem == tabName ? ariaCurrentValue : null;
+  Layout = "Shared/_Layout";
+  var ariaCurrentValue = "page";
+  string? IsCurrentNav(string tabName) => Model.CurrentNavigationItem == tabName ? ariaCurrentValue : null;
 }
 
 @section BeforeMainFullWidth
@@ -16,6 +16,11 @@
             <div class="moj-primary-navigation__nav">
                 <nav class="moj-primary-navigation" aria-label="Primary navigation">
                     <ul class="moj-primary-navigation__list">
+                        <li class="moj-primary-navigation__item">
+                          <a class="moj-primary-navigation__link"
+                            aria-current="@IsCurrentNav(YourTeamProjectsModel.UnassignedNavigation)"
+                            href="@RouteConstants.TeamProjectsUnassigned">Unassigned</a>
+                        </li>
                         <li class="moj-primary-navigation__item">
                             <a class="moj-primary-navigation__link"
                                aria-current="@IsCurrentNav(YourTeamProjectsModel.InProgressNavigation)"
@@ -33,8 +38,8 @@
                         </li>
                         <li class="moj-primary-navigation__item" asp-policy="@UserPolicies.CanViewTeamProjectsHandedOver">
                             <a class="moj-primary-navigation__link"
-                               aria-current="@IsCurrentNav(YourTeamProjectsModel.HandedOverNavigation)"
-                               href="@RouteConstants.TeamProjectsHandedOver">Handed over</a>
+                              aria-current="@IsCurrentNav(YourTeamProjectsModel.HandedOverNavigation)"
+                              href="@RouteConstants.TeamProjectsHandedOver">Handed over</a>
                         </li>
                         <li class="moj-primary-navigation__item">
                             <a class="moj-primary-navigation__link"

@@ -23,6 +23,8 @@ Security in case of vulnerabilities.
 ## Unreleased  
 ### Added  
 - `PolicyCheckTagHelper` added to conditionally hide elements based on policy
+ - New route `/projects/team/unassigned`
+ - Your team projects "Unassigned" list (`/projects/team/unassigned`)
 
 ### Changed  
 - Navigation items previously hidden with `UserTabAccessHelper` now hide on policy
