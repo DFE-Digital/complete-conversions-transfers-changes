@@ -28,7 +28,7 @@ namespace Dfe.Complete.TagHelpers.Tests
             // Arrange
             var authorizationService = Substitute.For<IAuthorizationService>();
             var httpContextAccessor = Substitute.For<IHttpContextAccessor>();
-            httpContextAccessor.HttpContext.Returns((HttpContext)null);
+            httpContextAccessor.HttpContext.Returns((HttpContext)null!);
 
             var tagHelper = new PolicyCheckTagHelper(authorizationService, httpContextAccessor)
             {
