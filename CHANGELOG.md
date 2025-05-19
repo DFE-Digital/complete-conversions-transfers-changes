@@ -26,6 +26,7 @@ Security in case of vulnerabilities.
  - Your team projects "Unassigned" list (`/projects/team/unassigned`)
 
 ### Changed  
+- Sort all projects by region list alphabetically
 
 ### Fixed  
 
