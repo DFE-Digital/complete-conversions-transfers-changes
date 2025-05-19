@@ -7,9 +7,11 @@ using Dfe.Complete.Domain.Extensions;
 using Dfe.Complete.Models;
 using Dfe.Complete.Pages.Pagination;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 
-namespace Dfe.Complete.Pages.Projects.Team.Unassigned;
+namespace Dfe.Complete.Pages.Projects.Team.ProjectsUnassigned;
 
+[Authorize(Policy = "CanViewTeamProjectsUnassigned")]
 public class AllProjectsUnassignedForTeamModel(ISender sender) : YourTeamProjectsModel(UnassignedNavigation)
 {
     public List<ListAllProjectsResultModel> Projects { get; set; } = [];

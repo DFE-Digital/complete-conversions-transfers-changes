@@ -142,15 +142,17 @@ namespace Dfe.Complete.Tests.Security
 
         private static DefaultHttpContext CreateHttpContext(ClaimsPrincipal user)
         {
-            var context = new DefaultHttpContext();
-            context.User = user;
+            var context = new DefaultHttpContext
+            {
+                User = user
+            };
             var ticket = new AuthenticationTicket(user, "TestScheme");
             var authResult = AuthenticateResult.Success(ticket);
             context.Features.Set<IAuthenticateResultFeature>(new FakeAuthenticateResultFeature { AuthenticateResult = authResult });
             return context;
         }
 
-        private DefaultAuthorizationPolicyProvider CreatePolicyProvider()
+        private static DefaultAuthorizationPolicyProvider CreatePolicyProvider()
         {
             var options = Options.Create(BuildAuthorizationOptions());
             return new DefaultAuthorizationPolicyProvider(options);
