@@ -1,4 +1,3 @@
-using System.Net.NetworkInformation;
 using Dfe.Complete.Application.Common.Models;
 using Dfe.Complete.Application.Projects.Interfaces;
 using Dfe.Complete.Application.Projects.Models;
@@ -12,7 +11,8 @@ namespace Dfe.Complete.Application.Projects.Queries.ListAllProjects;
 public record ListAllProjectsForTeamHandoverQuery(
     Region Region,
     ProjectState? ProjectStatus,
-    ProjectType? Type)
+    ProjectType? Type,
+    AssignedToState? ProjectAssignedToState = null)
     : PaginatedRequest<PaginatedResult<List<ListAllProjectsResultModel>>>;
 
 public class ListAllProjectsForTeamHandoverQueryHandler(

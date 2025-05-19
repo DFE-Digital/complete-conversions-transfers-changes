@@ -23,6 +23,8 @@ Security in case of vulnerabilities.
 ## Unreleased  
 ### Added  
  - Enabled error tracking via Application Insights.
+ - New route `/projects/team/unassigned`
+ - Your team projects "Unassigned" list (`/projects/team/unassigned`)
 
 ### Changed  
 - Sort all projects by region list alphabetically
