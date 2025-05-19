@@ -9,9 +9,9 @@ public class Note : IEntity<NoteId>
 
     public string? Body { get; set; }
 
-    public ProjectId? ProjectId { get; set; }
+    public ProjectId ProjectId { get; set; }
 
-    public UserId? UserId { get; set; }
+    public UserId UserId { get; set; }
 
     public DateTime CreatedAt { get; set; }
 
@@ -23,7 +23,7 @@ public class Note : IEntity<NoteId>
 
     public string? NotableType { get; set; }
 
-    public virtual Project? Project { get; set; }
+    public virtual Project Project { get; set; }
 
-    public virtual User? User { get; set; }
+    public virtual User User { get; set; }
 }
