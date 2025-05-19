@@ -50,16 +50,21 @@ public class UserTabAccessHelperTests
         Assert.Equal(expectedPermission, result);
     }
 
+    public static readonly object[][] TeamLeadTabAccessTestData = new object[][]
+    {
+        [new[] { "service_support" }, false],
+        [new[] { "service_support", "manage_team" }, false],
+        [new[] { "regional_casework_services" }, false],
+        [new[] { "regional_casework_services", "manage_team" }, true],
+        [new[] { "regional_delivery_officer" }, false],
+        [new[] { "regional_delivery_officer", "manage_team" }, true],
+    };
+
     [Theory]
-    [InlineData(new [] {"service_support"}, false)]
-    [InlineData(new [] {"service_support", "manage_team"}, false)]
-    [InlineData(new [] {"regional_casework_services"}, false)]
-    [InlineData(new [] {"regional_casework_services", "manage_team"}, true)]
-    [InlineData(new [] {"regional_delivery_officer"}, false)]
-    [InlineData(new [] {"regional_delivery_officer", "manage_team"}, true)]
+    [MemberData(nameof(TeamLeadTabAccessTestData))]
     public void UserHasTabAccess_ProtectedTab_ReturnsCorrectAccessForTeamLead(string[] userClaims, bool expectedPermission)
     {
-        var claims = userClaims.ToList().Select(role => new Claim(ClaimTypes.Role, role)).ToList();
+        var claims = userClaims.Select(role => new Claim(ClaimTypes.Role, role)).ToList();
         var identity = new ClaimsIdentity(claims, "custom");
         var principal = new ClaimsPrincipal(identity);
 
