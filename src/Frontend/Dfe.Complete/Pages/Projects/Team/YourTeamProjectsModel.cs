@@ -8,6 +8,7 @@ public abstract class YourTeamProjectsModel(string currentNavigation) : BaseProj
 {
     protected TabNavigationModel YourTeamProjectsTabNavigationModel = new(TabNavigationModel.YourTeamProjectsTabName);
 
+    public const string UnassignedNavigation = "team-projects-unassigned";
     public const string InProgressNavigation = "in-progress";
     public const string CompletedNavigation = "completed";
     public const string NewNavigation = "new";
