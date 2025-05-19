@@ -404,6 +404,7 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
     {
         if (note != null)
         {
+            //Generate new note to ensure new Id
             Notes.Add(new Note
             {
                 Id = new NoteId(Guid.NewGuid()),
@@ -411,7 +412,9 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
                 Body = note.Body,
                 ProjectId = note.ProjectId,
                 TaskIdentifier = note.TaskIdentifier,
-                UserId = note.User?.Id
+                UserId = note.UserId,
+                NotableId = note.NotableId,
+                NotableType = note.NotableType
             });
         }
     }
