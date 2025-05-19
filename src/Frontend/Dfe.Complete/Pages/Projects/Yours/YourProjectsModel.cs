@@ -1,10 +1,12 @@
 using Dfe.Complete.Models;
 using Dfe.Complete.Pages.Pagination;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace Dfe.Complete.Pages.Projects.Yours;
 
+[Authorize(Policy = "CanViewYourProjects")]
 public abstract class YourProjectsModel(string currentNavigation) : PageModel
 {
     protected TabNavigationModel YourProjectsTabNavigationModel = new(TabNavigationModel.YourProjectsTabName);

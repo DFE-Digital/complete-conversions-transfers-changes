@@ -113,7 +113,6 @@ using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Security;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Authorization.Policy;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
@@ -121,34 +120,30 @@ using Xunit;
 
 namespace Dfe.Complete.Tests.Security
 {
-    // A fake feature so that the evaluator sees a successful authentication.
     public class FakeAuthenticateResultFeature : IAuthenticateResultFeature
     {
-        public AuthenticateResult AuthenticateResult { get; set; } = AuthenticateResult.NoResult();
+        public AuthenticateResult? AuthenticateResult { get; set; } = AuthenticateResult.NoResult();
     }
 
     public class CustomPoliciesIntegrationTests
     {
-        private AuthorizationOptions BuildAuthorizationOptions()
+        private static AuthorizationOptions BuildAuthorizationOptions()
         {
             var options = new AuthorizationOptions();
             foreach (var policyCustomization in CustomPolicies.PolicyCustomizations)
             {
                 options.AddPolicy(policyCustomization.Key, builder =>
                 {
-                    // Call the customization to build the policy.
                     policyCustomization.Value(builder);
                 });
             }
             return options;
         }
 
-        // Creates an HttpContext with a fake successful authentication.
-        private DefaultHttpContext CreateHttpContext(ClaimsPrincipal user)
+        private static DefaultHttpContext CreateHttpContext(ClaimsPrincipal user)
         {
             var context = new DefaultHttpContext();
             context.User = user;
-            // Create a fake authentication ticket so that the evaluator finds the user authenticated.
             var ticket = new AuthenticationTicket(user, "TestScheme");
             var authResult = AuthenticateResult.Success(ticket);
             context.Features.Set<IAuthenticateResultFeature>(new FakeAuthenticateResultFeature { AuthenticateResult = authResult });
@@ -161,20 +156,24 @@ namespace Dfe.Complete.Tests.Security
             return new DefaultAuthorizationPolicyProvider(options);
         }
 
+        public static readonly object[][] HasPolicyTestData = {
+            ["CanViewTeamProjectsUnassigned", new string[] { "service_support" }, false],
+            ["CanViewTeamProjectsUnassigned", new string[] { "service_support", "manage_team" }, false],
+            ["CanViewTeamProjectsUnassigned", new string[] { "regional_casework_services" }, false],
+            ["CanViewTeamProjectsUnassigned", new string[] { "regional_casework_services", "manage_team" }, true],
+            ["CanViewTeamProjectsUnassigned", new string[] { "regional_delivery_officer" }, false],
+            ["CanViewTeamProjectsUnassigned", new string[] { "regional_delivery_officer", "manage_team" }, true],
+            ["CanViewYourProjects", new string[] { "service_support" }, false],
+            ["CanViewYourProjects", new string[] { "service_support", "manage_team" }, false],
+            ["CanViewYourProjects", new string[] { "regional_casework_services" }, true],
+            ["CanViewYourProjects", new string[] { "regional_casework_services", "manage_team" }, false],
+            ["CanViewYourProjects", new string[] { "regional_delivery_officer" }, true],
+            ["CanViewYourProjects", new string[] { "regional_delivery_officer", "manage_team" }, true]
+        };
+
         [Theory]
-        [InlineData("CanViewTeamProjectsUnassigned", new string[] { "service_support" }, false)]
-        [InlineData("CanViewTeamProjectsUnassigned", new string[] { "service_support", "manage_team" }, false)]
-        [InlineData("CanViewTeamProjectsUnassigned", new string[] { "regional_casework_services" }, false)]
-        [InlineData("CanViewTeamProjectsUnassigned", new string[] { "regional_casework_services", "manage_team" }, true)]
-        [InlineData("CanViewTeamProjectsUnassigned", new string[] { "regional_delivery_officer" }, false)]
-        [InlineData("CanViewTeamProjectsUnassigned", new string[] { "regional_delivery_officer", "manage_team" }, true)]
-        [InlineData("CanViewYourProjects", new string[] { "service_support" }, false)]
-        [InlineData("CanViewYourProjects", new string[] { "service_support", "manage_team" }, false)]
-        [InlineData("CanViewYourProjects", new string[] { "regional_casework_services" }, true)]
-        [InlineData("CanViewYourProjects", new string[] { "regional_casework_services", "manage_team" }, false)]
-        [InlineData("CanViewYourProjects", new string[] { "regional_delivery_officer" }, true)]
-        [InlineData("CanViewYourProjects", new string[] { "regional_delivery_officer", "manage_team" }, true)]
-        public async Task CanViewTeamProjectsUnassignedPolicy_EvaluatesCorrectly(string policyName, string[] roles, bool expectedOutcome)
+        [MemberData(nameof(HasPolicyTestData))]
+        public async Task HasPolicy_EvaluatesCorrectly(string policyName, string[] roles, bool expectedOutcome)
         {
             // Arrange
             var policyProvider = CreatePolicyProvider();
