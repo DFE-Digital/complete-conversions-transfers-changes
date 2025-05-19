@@ -10,6 +10,7 @@ namespace Dfe.Complete.Application.Projects.Queries.ListAllProjects
     public record ListAllProjectsQuery(
         ProjectState? ProjectStatus,
         ProjectType? Type,
+        AssignedToState? AssignedToState = null,
         int Page = 0,
         int Count = 20) : IRequest<Result<List<ListAllProjectsResultModel>>>;
 
@@ -23,21 +24,14 @@ namespace Dfe.Complete.Application.Projects.Queries.ListAllProjects
             try
             {
                 var projectList = await listAllProjectsQueryService
-                    .ListAllProjects(request.ProjectStatus, request.Type)
-                    .ToListAsync(cancellationToken);
-
-                var filteredProjectList = request.ProjectStatus == ProjectState.Active
-                    ? projectList.Where(p => p.Project?.AssignedTo != null)
-                    : projectList;
-
-                var result = filteredProjectList
+                    .ListAllProjects(request.ProjectStatus, request.Type, assignedToState: request.AssignedToState)
                     .Skip(request.Page * request.Count).Take(request.Count)
                     .Select(item => ListAllProjectsResultModel.MapProjectAndEstablishmentToListAllProjectResultModel(
                         item.Project!,
                         item.Establishment
                     ))
-                    .ToList();
-                return Result<List<ListAllProjectsResultModel>>.Success(result);
+                    .ToListAsync(cancellationToken);
+                return Result<List<ListAllProjectsResultModel>>.Success(projectList);
             }
             catch (Exception ex)
             {

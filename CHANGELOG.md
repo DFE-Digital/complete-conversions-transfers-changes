@@ -24,6 +24,18 @@ Security in case of vulnerabilities.
 ### Added  
 
 ### Changed  
+- Sort all projects by region list alphabetically
+
+### Fixed  
+
+See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-05-16.272...main) for everything awaiting release
+
+---
+
+## [1.5.2](https://github.com/DFE-Digital/complete-conversions-transfers-changes/releases/tag/production-2025-05-16.272) - 2025-05-16
+
+### Changed
+- Optimise several project listing queries by implementing pagination before retrieving records
 
 ### Fixed  
 - Fixed identifying "Form A MAT" projects logic
@@ -31,7 +43,7 @@ Security in case of vulnerabilities.
 - Resolve accessibility issue causing app header to appear blue instead of white
 - Removed `Project Status` filter while pullling search results.  
 
-See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-05-14.254...main) for everything awaiting release
+See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-05-14.254...production-2025-05-16.272) for everything in the release
 
 ---
 
