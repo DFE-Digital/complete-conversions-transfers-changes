@@ -2100,20 +2100,10 @@
             "nullable": true
           },
           "projectId": {
-            "nullable": true,
-            "oneOf": [
-              {
-                "$ref": "#/components/schemas/ProjectId"
-              }
-            ]
+            "$ref": "#/components/schemas/ProjectId"
           },
           "userId": {
-            "nullable": true,
-            "oneOf": [
-              {
-                "$ref": "#/components/schemas/UserId"
-              }
-            ]
+            "$ref": "#/components/schemas/UserId"
           },
           "createdAt": {
             "type": "string",
@@ -2137,20 +2127,10 @@
             "nullable": true
           },
           "project": {
-            "nullable": true,
-            "oneOf": [
-              {
-                "$ref": "#/components/schemas/Project"
-              }
-            ]
+            "$ref": "#/components/schemas/Project"
           },
           "user": {
-            "nullable": true,
-            "oneOf": [
-              {
-                "$ref": "#/components/schemas/User"
-              }
-            ]
+            "$ref": "#/components/schemas/User"
           }
         }
       },
