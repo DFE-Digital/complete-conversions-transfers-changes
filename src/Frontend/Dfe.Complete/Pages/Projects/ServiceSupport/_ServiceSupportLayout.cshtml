@@ -8,11 +8,6 @@
     Layout = "Shared/_Layout";
     var ariaCurrentValue = "page";
     string? IsCurrentNav(string tabName) => Model.CurrentNavigationItem == tabName ? ariaCurrentValue : null;
-
-    var user = await User.GetUser(sender);
-    var today = DateTime.Now;
-    var month = today.Month;
-    var year = today.Year;
 }
 
 @section BeforeMainFullWidth
