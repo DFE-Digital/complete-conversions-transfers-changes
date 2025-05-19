@@ -25,6 +25,7 @@ Security in case of vulnerabilities.
  - Enabled error tracking via Application Insights.
 
 ### Changed  
+- Sort all projects by region list alphabetically
 
 ### Fixed  
 
