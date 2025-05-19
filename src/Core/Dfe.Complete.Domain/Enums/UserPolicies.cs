@@ -6,6 +6,7 @@ public enum UserPolicies
     CanViewYourProjects,
     CanViewTeamProjects,
     CanViewTeamProjectsHandedOver,
+    CanViewTeamProjectsUnassigned,
     CanViewGroups,
     CanViewServiceSupport,
     CanViewAllProjectsHandover,
