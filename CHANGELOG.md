@@ -26,6 +26,7 @@ Security in case of vulnerabilities.
 
 ### Changed  
 - Navigation items previously hidden with `UserTabAccessHelper` now hide on policy
+- Sort all projects by region list alphabetically
 
 ### Fixed  
 
