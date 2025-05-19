@@ -24,6 +24,7 @@ Security in case of vulnerabilities.
 ### Added  
 
 ### Changed  
+- Sort all projects by region list alphabetically
 
 ### Fixed  
 
