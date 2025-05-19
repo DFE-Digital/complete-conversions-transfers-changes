@@ -16,7 +16,7 @@ namespace Dfe.Complete.Pages.Projects.List.ProjectsInProgress
         {
             ViewData[TabNavigationModel.ViewDataKey] = AllProjectsTabNavigationModel;
 
-            var listProjectQuery = new ListAllProjectsQuery(ProjectState.Active, null, AssignedToState.AssignedOnly, PageNumber - 1, PageSize);
+            var listProjectQuery = new ListAllProjectsQuery(ProjectState.Active, null, AssignedToState.AssignedOnly, null, PageNumber - 1, PageSize);
 
             var listResponse = await sender.Send(listProjectQuery);
             Projects = listResponse.Value ?? [];

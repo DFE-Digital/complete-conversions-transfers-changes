@@ -6,7 +6,6 @@ using DfE.CoreLibs.Testing.AutoFixture.Customizations;
 using Dfe.Complete.Application.Projects.Interfaces;
 using Dfe.Complete.Application.Projects.Models;
 using Dfe.Complete.Application.Projects.Queries.ListAllProjects;
-using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Tests.Common.Customizations.Models;
 using MockQueryable;
 using NSubstitute.ExceptionExtensions;
@@ -70,7 +69,7 @@ public class ListAllProjectsQueryHandlerTests
                 item.Establishment
             )).Skip(20).Take(20).ToList();
 
-        var query = new ListAllProjectsQuery(null, null, null, 1);
+        var query = new ListAllProjectsQuery(null, null, null, null, 1);
 
         var mock = listAllProjectsQueryModels.BuildMock();
 
@@ -103,7 +102,7 @@ public class ListAllProjectsQueryHandlerTests
         // Arrange
         var listAllProjectsQueryModels = fixture.CreateMany<ListAllProjectsQueryModel>(50).ToList();
 
-        var query = new ListAllProjectsQuery(null, null, null, 10);
+        var query = new ListAllProjectsQuery(null, null, null, null, 10);
 
         var mock = listAllProjectsQueryModels.BuildMock();
 

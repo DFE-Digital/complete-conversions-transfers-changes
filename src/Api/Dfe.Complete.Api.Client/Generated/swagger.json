@@ -346,13 +346,29 @@
             "x-position": 3
           },
           {
+            "name": "OrderBy.Field",
+            "in": "query",
+            "schema": {
+              "$ref": "#/components/schemas/OrderProjectByField"
+            },
+            "x-position": 4
+          },
+          {
+            "name": "OrderBy.Direction",
+            "in": "query",
+            "schema": {
+              "$ref": "#/components/schemas/OrderByDirection"
+            },
+            "x-position": 5
+          },
+          {
             "name": "Page",
             "in": "query",
             "schema": {
               "type": "integer",
               "format": "int32"
             },
-            "x-position": 4
+            "x-position": 6
           },
           {
             "name": "Count",
@@ -361,7 +377,7 @@
               "type": "integer",
               "format": "int32"
             },
-            "x-position": 5
+            "x-position": 7
           }
         ],
         "responses": {
@@ -2779,6 +2795,32 @@
           "UnassignedOnly"
         ]
       },
+      "OrderProjectByField": {
+        "type": "string",
+        "description": "",
+        "x-enumNames": [
+          "CompletedAt",
+          "CreatedAt",
+          "SignificantDate"
+        ],
+        "enum": [
+          "CompletedAt",
+          "CreatedAt",
+          "SignificantDate"
+        ]
+      },
+      "OrderByDirection": {
+        "type": "string",
+        "description": "",
+        "x-enumNames": [
+          "Ascending",
+          "Descending"
+        ],
+        "enum": [
+          "Ascending",
+          "Descending"
+        ]
+      },
       "ListMatResultModel": {
         "type": "object",
         "additionalProperties": false,
@@ -2966,32 +3008,6 @@
             "format": "guid"
           }
         }
-      },
-      "OrderProjectByField": {
-        "type": "string",
-        "description": "",
-        "x-enumNames": [
-          "CompletedAt",
-          "CreatedAt",
-          "SignificantDate"
-        ],
-        "enum": [
-          "CompletedAt",
-          "CreatedAt",
-          "SignificantDate"
-        ]
-      },
-      "OrderByDirection": {
-        "type": "string",
-        "description": "",
-        "x-enumNames": [
-          "Ascending",
-          "Descending"
-        ],
-        "enum": [
-          "Ascending",
-          "Descending"
-        ]
       },
       "ListAllProjectsForUserQueryResultModel": {
         "type": "object",
