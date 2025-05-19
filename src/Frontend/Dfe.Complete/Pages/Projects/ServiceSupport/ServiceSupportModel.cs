@@ -9,7 +9,7 @@ namespace Dfe.Complete.Pages.Projects.ServiceSupport
 
         public const string ConversionURNsNavigation = "conversion-urns";
         public const string LocalAuthoriesNavigation = "local-authorites";
-
+        public const string UsersNavigation = "users";
         public string CurrentSubNavigationItem { get; set; } = currentSubNavigationItem;
     }
 }
