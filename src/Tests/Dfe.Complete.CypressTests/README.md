@@ -161,11 +161,11 @@ IF NOT EXISTS (SELECT *
                , GETDATE()
                , GETDATE()
                , 1
-               , 1
+               , 0
                , 'cypress'
                , 'rcs-team-leader'
                , 'TEST-AD-ID-RCS-TL'
-               , 1
+               , 0
                , 0
                , null
                , 'regional_casework_services'
@@ -185,7 +185,7 @@ IF NOT EXISTS (SELECT *
                , GETDATE()
                , GETDATE()
                , 0
-               , 1
+               , 0
                , 'cypress'
                , 'business-support'
                , 'TEST-AD-ID-BS'
@@ -209,7 +209,7 @@ IF NOT EXISTS (SELECT *
                , GETDATE()
                , GETDATE()
                , 0
-               , 1
+               , 0
                , 'cypress'
                , 'data-consumers'
                , 'TEST-AD-ID-DC'
@@ -233,7 +233,7 @@ IF NOT EXISTS (SELECT *
                , GETDATE()
                , GETDATE()
                , 0
-               , 1
+               , 0
                , 'cypress'
                , 'service-support'
                , 'TEST-AD-ID-SS'
