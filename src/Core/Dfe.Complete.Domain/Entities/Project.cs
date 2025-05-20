@@ -18,7 +18,7 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
 
     public Ukprn? IncomingTrustUkprn { get; set; }
 
-    public UserId? RegionalDeliveryOfficerId { get; set; }
+    public UserId RegionalDeliveryOfficerId { get; set; }
 
     public UserId? CaseworkerId { get; set; }
 
@@ -126,7 +126,7 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
         string? outgoingTrustSharepointLink,
         ProjectGroupId? groupId,
         ProjectTeam? team,
-        UserId? regionalDeliveryOfficerId,
+        UserId regionalDeliveryOfficerId,
         UserId? assignedTo,
         DateTime? assignedAt,
         string? newTrustName,
@@ -185,7 +185,7 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
         string incomingTrustSharepointLink,
         ProjectGroupId? groupId,
         ProjectTeam? team,
-        UserId? regionalDeliveryOfficerId,
+        UserId regionalDeliveryOfficerId,
         UserId? assignedToId,
         DateTime? assignedAt,
         string? handoverComments,
@@ -225,7 +225,7 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
             project.AddNote(new Note
             {
                 CreatedAt = project.CreatedAt, ProjectId = project.Id, Body = handoverComments,
-                TaskIdentifier = NoteTaskIdentifier.Handover.ToDescription(), UserId = assignedToId
+                TaskIdentifier = NoteTaskIdentifier.Handover.ToDescription(), UserId = regionalDeliveryOfficerId
             });
         }
 
@@ -236,7 +236,7 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
 
     public static Project CreateTransferProject
     (
-        ProjectId Id,
+        ProjectId id,
         Urn urn,
         DateTime createdAt,
         DateTime updatedAt,
@@ -245,7 +245,7 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
         Guid tasksDataId,
         Region? region,
         ProjectTeam team,
-        UserId? regionalDeliveryOfficerId,
+        UserId regionalDeliveryOfficerId,
         UserId? assignedToId,
         DateTime? assignedAt,
         Ukprn incomingTrustUkprn,
@@ -264,7 +264,7 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
     )
     {
         var project = new Project(
-            Id,
+            id,
             urn,
             createdAt,
             updatedAt,
@@ -297,7 +297,7 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
             project.AddNote(new Note
             {
                 CreatedAt = project.CreatedAt, ProjectId = project.Id, Body = handoverComments,
-                TaskIdentifier = NoteTaskIdentifier.Handover.ToDescription(), UserId = assignedToId
+                TaskIdentifier = NoteTaskIdentifier.Handover.ToDescription(), UserId = regionalDeliveryOfficerId
             });
         }
 
@@ -307,7 +307,7 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
     }
 
     public static Project CreateMatConversionProject(
-        ProjectId Id,
+        ProjectId id,
         Urn urn,
         DateTime createdAt,
         DateTime updatedAt,
@@ -316,7 +316,7 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
         Guid tasksDataId,
         Region? region,
         ProjectTeam team,
-        UserId? regionalDeliveryOfficerId,
+        UserId regionalDeliveryOfficerId,
         UserId? assignedToId,
         DateTime? assignedAt,
         string establishmentSharepointLink,
@@ -332,7 +332,7 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
         string? handoverComments, 
         Guid localAuthorityId)
     {
-        var project = new Project(Id, urn, createdAt, updatedAt, taskType, projectType, tasksDataId, significantDate,
+        var project = new Project(id, urn, createdAt, updatedAt, taskType, projectType, tasksDataId, significantDate,
             isSignificantDateProvisional, null, null, region, isDueTo2Ri, hasDirectiveAcademyOrderBeenIssue,
             advisoryBoardDate, advisoryBoardConditions, establishmentSharepointLink, incomingTrustSharepointLink, null,
             null, team, regionalDeliveryOfficerId, assignedToId, assignedAt, newTrustName, newTrustReferenceNumber, localAuthorityId);
@@ -342,7 +342,7 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
             project.AddNote(new Note
             {
                 CreatedAt = project.CreatedAt, ProjectId = project.Id, Body = handoverComments,
-                TaskIdentifier = NoteTaskIdentifier.Handover.ToDescription(), UserId = assignedToId
+                TaskIdentifier = NoteTaskIdentifier.Handover.ToDescription(), UserId = regionalDeliveryOfficerId
             });
         }
         
@@ -362,7 +362,7 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
         Guid tasksDataId,
         Region? region,
         ProjectTeam team,
-        UserId? regionalDeliveryOfficerId,
+        UserId regionalDeliveryOfficerId,
         UserId? assignedToId,
         DateTime? assignedAt,
         string establishmentSharepointLink,
@@ -391,7 +391,7 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
                     ProjectId = project.Id,
                     Body = handoverComments,
                     TaskIdentifier = NoteTaskIdentifier.Handover.ToDescription(),
-                    UserId = assignedToId
+                    UserId = regionalDeliveryOfficerId
                 });
             }
 
