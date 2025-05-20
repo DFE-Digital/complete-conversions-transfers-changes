@@ -7,7 +7,7 @@ public class Note : IEntity<NoteId>
 {
     public NoteId Id { get; set; }
 
-    public string? Body { get; set; }
+    public string Body { get; set; }
 
     public ProjectId ProjectId { get; set; }
 
