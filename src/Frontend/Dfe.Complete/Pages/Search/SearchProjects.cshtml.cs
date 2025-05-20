@@ -36,17 +36,14 @@ namespace Dfe.Complete.Pages.Search
             }
             else
             {
-                var countProjectQuery = new CountAllProjectsQuery(ProjectState.Active, null, AssignedToState.AssignedOnly, Query);
-                var countResponse = await sender.Send(countProjectQuery);
-
-                var searchProjectsQuery = new SearchProjectsQuery(ProjectState.Active, Query)
+                var searchProjectsQuery = new SearchProjectsQuery(Query)
                 {
                     Page = PageNumber - 1,
                     Count = PageSize
                 };
                 var searchProjectsResponse = await sender.Send(searchProjectsQuery);
                 Projects = searchProjectsResponse.Value ?? [];
-                TotalResults = countResponse.Value;
+                TotalResults = searchProjectsResponse.ItemCount;
 
                 Pagination = new PaginationModel($"/search?query={Query}", PageNumber, TotalResults, PageSize);
             }
