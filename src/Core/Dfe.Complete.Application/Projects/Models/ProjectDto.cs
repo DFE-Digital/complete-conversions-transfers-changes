@@ -4,11 +4,11 @@ using Dfe.Complete.Domain.ValueObjects;
 
 namespace Dfe.Complete.Application.Projects.Models
 {
-    public class ProjectDto
+    public record ProjectDto
     {
-        public ProjectId Id { get; set; }
+        public ProjectId Id { get; set; } = default!;
 
-        public Urn Urn { get; set; }
+        public Urn Urn { get; set; } = default!;
 
         public DateTime CreatedAt { get; set; }
 
@@ -16,7 +16,7 @@ namespace Dfe.Complete.Application.Projects.Models
 
         public Ukprn? IncomingTrustUkprn { get; set; }
 
-        public UserId RegionalDeliveryOfficerId { get; set; }
+        public UserId RegionalDeliveryOfficerId { get; set; } = default!;
 
         public UserId? CaseworkerId { get; set; }
 
@@ -88,7 +88,7 @@ namespace Dfe.Complete.Application.Projects.Models
 
         public  ICollection<Note> Notes { get; set; } = new List<Note>();
 
-        public  User RegionalDeliveryOfficer { get; set; }
+        public User RegionalDeliveryOfficer { get; set; } = default!;
         
         public bool FormAMat => NewTrustReferenceNumber != null && NewTrustName != null && IncomingTrustUkprn == null;
 

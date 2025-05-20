@@ -10,9 +10,9 @@ namespace Dfe.Complete.Tests.Common.Customizations.Models
 {
     public class ProjectCustomization : ICustomization
     {
-        public ProjectId Id { get; set; }
+        public ProjectId Id { get; set; } = default!;
 
-        public Urn Urn { get; set; }
+        public Urn Urn { get; set; } = default!; 
 
         public DateTime CreatedAt { get; set; }
 
@@ -20,7 +20,7 @@ namespace Dfe.Complete.Tests.Common.Customizations.Models
 
         public Ukprn? IncomingTrustUkprn { get; set; }
 
-        public UserId RegionalDeliveryOfficerId { get; set; }
+        public UserId RegionalDeliveryOfficerId { get; set; } = default!;
 
         public UserId? CaseworkerId { get; set; }
 
