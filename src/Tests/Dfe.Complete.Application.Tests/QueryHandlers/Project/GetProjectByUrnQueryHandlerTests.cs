@@ -46,7 +46,7 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
                 "",
                 null,
                 default,
-                null,
+                new UserId(Guid.NewGuid()),
                 null,
                 null,
                 null,
