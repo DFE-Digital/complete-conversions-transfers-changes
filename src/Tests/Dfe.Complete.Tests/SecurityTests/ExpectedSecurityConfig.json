@@ -1,0 +1,88 @@
+{
+    "Endpoints": [
+        {
+            "Route": "/Projects/Team/ProjectsByUser/ProjectsForUser",
+            "ExpectedSecurity": "Authorize: Policy=CanViewTeamProjects"
+        },
+        {
+            "Route": "/Projects/Team/ProjectsCompleted/AllCompletedProjectsForTeam",
+            "ExpectedSecurity": "Authorize: Policy=CanViewTeamProjects"
+        },
+        {
+            "Route": "/Projects/Team/ProjectsInProgress/AllProjectsInProgressForTeam",
+            "ExpectedSecurity": "Authorize: Policy=CanViewTeamProjects"
+        },
+        {
+            "Route": "/Projects/Team/ProjectsNew/AllNewProjectsForTeam",
+            "ExpectedSecurity": "Authorize: Policy=CanViewTeamProjects"
+        },
+        {
+            "Route": "/Projects/Team/ProjectsUnassigned/AllProjectsUnassignedForTeam",
+            "ExpectedSecurity": "Authorize: Policy=CanViewTeamProjectsUnassigned"
+        },
+        {
+            "Route": "/Projects/Team/ProjectsHandedOver/AllProjectsHandedOverForTeam",
+            "ExpectedSecurity": "Authorize: Policy=CanViewTeamProjectsHandedOver"
+        },
+        {
+            "Route": "/Projects/Team/ProjectsByUser/AllProjectsByUser",
+            "ExpectedSecurity": "Authorize: Policy=CanViewTeamProjects"
+        },
+        {
+            "Route": "/Projects/CreateNewProject",
+            "ExpectedSecurity": "Authorize: Policy=CanCreateProjects"
+        },
+        {
+            "Route": "/Projects/Conversion/CreateNewProject",
+            "ExpectedSecurity": "Authorize: Policy=CanCreateProjects"
+        },
+        {
+            "Route": "/Projects/MatConversion/CreateNewProject",
+            "ExpectedSecurity": "Authorize: Policy=CanCreateProjects"
+        },
+        {
+            "Route": "/Projects/Transfer/CreateNewProject",
+            "ExpectedSecurity": "Authorize: Policy=CanCreateProjects"
+        },
+        {
+            "Route": "/Projects/MatTransfer/CreateNewProject",
+            "ExpectedSecurity": "Authorize: Policy=CanCreateProjects"
+        },
+        {
+            "Route": "/Demonstration/TagHelper",
+            "ExpectedSecurity": "Authorize"
+        },
+        {
+            "Route": "/Diagnostics/Diagnostics",
+            "ExpectedSecurity": "Authorize"
+        },
+        {
+            "Route": "/Projects/EditProjectNote",
+            "ExpectedSecurity": "Authorize"
+        },
+        {
+            "Route": "/Projects/ViewProjectNotes",
+            "ExpectedSecurity": "Authorize"
+        },
+        {
+            "Route": "/Projects/Yours/InProgress",
+            "ExpectedSecurity": "Authorize: Policy=CanViewYourProjects"
+        },
+        {
+            "Route": "/Projects/Yours/Completed",
+            "ExpectedSecurity": "Authorize: Policy=CanViewYourProjects"
+        },
+        {
+            "Route": "/Projects/Yours/AddedByYou",
+            "ExpectedSecurity": "Authorize: Policy=CanViewYourProjects"
+        },
+        {
+            "Route": "/Cookies",
+            "ExpectedSecurity": "AllowAnonymous"
+        },
+        {
+            "Route": "/Search",
+            "ExpectedSecurity": "Authorize"
+        }
+    ]
+}
