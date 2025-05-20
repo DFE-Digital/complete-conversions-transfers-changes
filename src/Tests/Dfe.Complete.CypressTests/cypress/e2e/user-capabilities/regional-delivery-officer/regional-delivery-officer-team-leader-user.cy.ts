@@ -26,11 +26,10 @@ describe("Capabilities and permissions of the regional delivery officer team lea
     beforeEach(() => {
         cy.login(rdoTeamLeaderUser);
         cy.acceptCookies();
-        cy.visit("/projects/team/in-progress"); // visit '/' goes to unassigned projects that is not implemented yet
+        cy.visit("/");
     });
 
-    // not implemented 188857
-    it.skip("Should direct user to all unassigned team projects after login", () => {
+    it("Should direct user to all unassigned team projects after login", () => {
         cy.url().should("include", "/projects/team/unassigned");
     });
 
@@ -39,14 +38,7 @@ describe("Capabilities and permissions of the regional delivery officer team lea
         navBar.goToYourProjects();
         yourProjects.ableToViewFilters(["In progress", "Completed"]);
         navBar.goToYourTeamProjects();
-        yourTeamProjects.ableToViewFilters([
-            // "Unassigned",
-            "In progress",
-            "New",
-            "By user",
-            "Handed over",
-            "Completed",
-        ]);
+        yourTeamProjects.ableToViewFilters(["Unassigned", "In progress", "New", "By user", "Handed over", "Completed"]);
         navBar.goToAllProjects();
         allProjects.ableToViewFilters([
             "In progress",

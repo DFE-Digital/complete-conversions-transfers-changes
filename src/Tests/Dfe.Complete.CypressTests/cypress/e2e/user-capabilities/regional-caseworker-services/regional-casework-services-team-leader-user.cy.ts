@@ -31,11 +31,10 @@ describe("Capabilities and permissions of the regional casework services team le
     beforeEach(() => {
         cy.login(regionalCaseworkerTeamLeaderUser);
         cy.acceptCookies();
-        cy.visit("/projects/team/in-progress"); // visit '/' goes to unassigned projects that is not implemented yet
+        cy.visit("/");
     });
 
-    // not implemented 188857
-    it.skip("Should direct user to all unassigned team projects after login", () => {
+    it("Should direct user to all unassigned team projects after login", () => {
         cy.url().should("include", "/projects/team/unassigned");
     });
 
@@ -43,7 +42,7 @@ describe("Capabilities and permissions of the regional casework services team le
         navBar.ableToView(["Your team projects", "All projects", "Groups"]);
         navBar.goToYourTeamProjects();
         yourTeamProjects.ableToViewFilters([
-            // "Unassigned",
+            "Unassigned",
             "In progress",
             "New",
             "By user",

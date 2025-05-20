@@ -5,8 +5,8 @@ import {
     shouldNotBeAbleToBeAssignedAProject,
     shouldNotBeAbleToCreateAProject,
     shouldNotHaveAccessToViewAndEditUsers,
-    shouldNotHaveAccessToViewHandedOverProjects,
-    shouldNotHaveAccessToViewYourTeamUnassignedProjects,
+    shouldNotHaveAccessToViewHandedOverProjects, shouldNotHaveAccessToViewYourProjectsSections,
+    shouldNotHaveAccessToViewYourTeamProjectsSections
 } from "cypress/support/reusableTests";
 import { dataConsumerUser } from "cypress/constants/cypressConstants";
 import navBar from "cypress/pages/navBar";
@@ -42,8 +42,12 @@ describe("Capabilities and permissions of the data consumer user", () => {
         shouldNotHaveAccessToViewHandedOverProjects();
     });
 
-    it("Should NOT have access to view Your team projects -> unassigned projects", () => {
-        shouldNotHaveAccessToViewYourTeamUnassignedProjects();
+    it("Should NOT have access to view Your projects sections", () => {
+        shouldNotHaveAccessToViewYourProjectsSections();
+    });
+
+    it("Should NOT have access to view Your team projects sections", () => {
+        shouldNotHaveAccessToViewYourTeamProjectsSections();
     });
 
     it.skip("Should NOT have access to view and edit users", () => {
