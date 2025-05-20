@@ -16,7 +16,7 @@ namespace Dfe.Complete.Application.Projects.Models
 
         public Ukprn? IncomingTrustUkprn { get; set; }
 
-        public UserId? RegionalDeliveryOfficerId { get; set; }
+        public UserId RegionalDeliveryOfficerId { get; set; }
 
         public UserId? CaseworkerId { get; set; }
 
@@ -88,7 +88,7 @@ namespace Dfe.Complete.Application.Projects.Models
 
         public  ICollection<Note> Notes { get; set; } = new List<Note>();
 
-        public  User? RegionalDeliveryOfficer { get; set; }
+        public  User RegionalDeliveryOfficer { get; set; }
         
         public bool FormAMat => NewTrustReferenceNumber != null && NewTrustName != null && IncomingTrustUkprn == null;
 

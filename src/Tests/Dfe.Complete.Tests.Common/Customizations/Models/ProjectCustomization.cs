@@ -20,7 +20,7 @@ namespace Dfe.Complete.Tests.Common.Customizations.Models
 
         public Ukprn? IncomingTrustUkprn { get; set; }
 
-        public UserId? RegionalDeliveryOfficerId { get; set; }
+        public UserId RegionalDeliveryOfficerId { get; set; }
 
         public UserId? CaseworkerId { get; set; }
 
@@ -96,7 +96,7 @@ namespace Dfe.Complete.Tests.Common.Customizations.Models
                 .Customize<Project>(composer => composer
                     .With(x => x.Urn, () => Urn ?? fixture.Customize(new UrnCustomization()).Create<Urn>())
                     .With(x => x.IncomingTrustUkprn, IncomingTrustUkprn ?? fixture.Create<Ukprn>())
-                    .With(x => x.RegionalDeliveryOfficerId, RegionalDeliveryOfficerId ?? null)
+                    .With(x => x.RegionalDeliveryOfficerId, RegionalDeliveryOfficerId ?? fixture.Create<UserId>())
                     .With(x => x.CaseworkerId, CaseworkerId ?? null)
                     .With(x => x.AdvisoryBoardConditions, AdvisoryBoardConditions ?? fixture.Create<string>())
                     .With(x => x.EstablishmentSharepointLink, EstablishmentSharepointLink ?? fixture.Create<string>())
