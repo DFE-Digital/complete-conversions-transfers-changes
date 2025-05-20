@@ -25,14 +25,14 @@
 
             @foreach(var project in Model.MATS)
             {
-                string projectSummaryUrl = $"/form-a-multi-academy-trust/{project.identifier}";
+                string projectSummaryUrl = $"/form-a-multi-academy-trust/{project.Identifier}";
             
                 <tr class="govuk-table__row">
                     <td class="govuk-table__header govuk-table__cell">
-                        <a class="govuk-link" href="@projectSummaryUrl">@project.trustName</a>
+                        <a class="govuk-link" href="@projectSummaryUrl">@project.TrustName</a>
                     </td>
-                    <td class="govuk-table__cell">@project.identifier</td>
-                    <td class="govuk-table__cell">@(string.Join("; ", project.projectModels.Select(e => e.EstablishmentName)))</td>
+                    <td class="govuk-table__cell">@project.Identifier</td>
+                    <td class="govuk-table__cell">@(string.Join("; ", project.ProjectModels.Select(e => e.EstablishmentName)))</td>
                 </tr>
             }
         </tbody>

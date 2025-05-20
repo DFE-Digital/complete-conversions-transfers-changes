@@ -9,8 +9,8 @@
 <div class="govuk-grid-column-two-thirds">
 
     <h1 class="govuk-heading-xl">
-        <span class="govuk-caption-l">TRN: @Model.MAT.identifier</span>
-        @Model.MAT.trustName
+        <span class="govuk-caption-l">TRN: @Model.MAT.Identifier</span>
+        @Model.MAT.TrustName
     </h1>
 </div>
 <div class="govuk-grid-column-full">
@@ -38,7 +38,7 @@
         </thead>
         <tbody class="govuk-table__body">
 
-        @foreach (var project in Model.MAT.projectModels)
+        @foreach (var project in Model.MAT.ProjectModels)
         {
             <tr class="govuk-table__row">
                 <td class="govuk-table__header govuk-table__cell">
