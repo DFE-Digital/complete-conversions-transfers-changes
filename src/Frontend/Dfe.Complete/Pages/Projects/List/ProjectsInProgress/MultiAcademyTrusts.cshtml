@@ -32,7 +32,7 @@
                         <a class="govuk-link" href="@projectSummaryUrl">@project.trustName</a>
                     </td>
                     <td class="govuk-table__cell">@project.identifier</td>
-                    <td class="govuk-table__cell">@(string.Join("; ", project.projectModels.Select(e => e.Establishment.Name)))</td>
+                    <td class="govuk-table__cell">@(string.Join("; ", project.projectModels.Select(e => e.EstablishmentName)))</td>
                 </tr>
             }
         </tbody>

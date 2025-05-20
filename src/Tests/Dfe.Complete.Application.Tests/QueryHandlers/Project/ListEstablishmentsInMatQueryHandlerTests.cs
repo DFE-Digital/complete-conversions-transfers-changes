@@ -56,7 +56,7 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
             Assert.Equal(referenceNumber, result.Value.identifier);
             Assert.Equal(trustName, result.Value.trustName);
             Assert.Equal(matchingProjects.Count, result.Value.projectModels.Count());
-            Assert.All(result.Value.projectModels, p => Assert.Equal(referenceNumber, p.Project.NewTrustReferenceNumber));
+            Assert.All(result.Value.projectModels, p => Assert.Equal(referenceNumber, p.NewTrustReferenceNumber));
         }
 
         [Theory]
