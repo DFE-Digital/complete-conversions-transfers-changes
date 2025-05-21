@@ -5,6 +5,7 @@ using Dfe.Complete.Extensions;
 using Dfe.Complete.Models;
 using Dfe.Complete.Pages.Pagination;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Dfe.Complete.Pages.Projects.Yours.AddedByYou;
 
@@ -19,7 +20,7 @@ public class AddedByYou(ISender sender) : YourProjectsModel(AddedByYouNavigation
         var userAdId = User.GetUserAdId();
 
         var result = await sender.Send(new ListAllProjectsForUserQuery(ProjectState.Active, userAdId, ProjectUserFilter.CreatedBy)
-            { Count = PageSize, Page = PageNumber - 1 });
+        { Count = PageSize, Page = PageNumber - 1 });
 
         ProjectsForUser = result.Value ?? [];
 
