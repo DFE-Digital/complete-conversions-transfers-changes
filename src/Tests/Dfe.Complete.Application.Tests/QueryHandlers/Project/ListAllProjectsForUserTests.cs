@@ -25,7 +25,8 @@ public class ListAllProjectsForUserTests
     [AttributeUsage(AttributeTargets.Method, AllowMultiple = true)]
     private class InlineAutoDataAttribute : CompositeDataAttribute
     {
-        public InlineAutoDataAttribute(ProjectUserFilter filter, OrderProjectByField sortingField, OrderByDirection sortingDirection)
+        public InlineAutoDataAttribute(ProjectUserFilter filter, OrderProjectByField sortingField,
+            OrderByDirection sortingDirection)
             : base(
                 new InlineDataAttribute(filter),
                 new InlineDataAttribute(new OrderProjectQueryBy(sortingField, sortingDirection)),
@@ -61,6 +62,7 @@ public class ListAllProjectsForUserTests
             _mockLogger.Object);
 
         var userDto = fixture.Create<UserDto>();
+        
         mockSender.Setup(sender => sender.Send(It.IsAny<GetUserByAdIdQuery>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(Result<UserDto?>.Success(userDto));
 
@@ -86,24 +88,7 @@ public class ListAllProjectsForUserTests
 
         var trustList = trustDtos.ToList();
 
-        var sortedExpectedQuery = ordering switch
-        {
-            { Field: OrderProjectByField.CompletedAt, Direction: OrderByDirection.Ascending } => mockListAllProjectsForUserQueryModels.OrderBy(
-                project => project.Project.CompletedAt),
-            { Field: OrderProjectByField.CompletedAt, Direction: OrderByDirection.Descending } => mockListAllProjectsForUserQueryModels
-                .OrderByDescending(project => project.Project.CompletedAt),
-            { Field: OrderProjectByField.CreatedAt, Direction: OrderByDirection.Ascending } => mockListAllProjectsForUserQueryModels.OrderBy(
-                project => project.Project.CreatedAt),
-            { Field: OrderProjectByField.CreatedAt, Direction: OrderByDirection.Descending } => mockListAllProjectsForUserQueryModels
-                .OrderByDescending(project => project.Project.CreatedAt),
-            { Field: OrderProjectByField.SignificantDate, Direction: OrderByDirection.Ascending } =>
-                mockListAllProjectsForUserQueryModels.OrderBy(project => project.Project.SignificantDate),
-            { Field: OrderProjectByField.SignificantDate, Direction: OrderByDirection.Descending } =>
-                mockListAllProjectsForUserQueryModels.OrderByDescending(project => project.Project.SignificantDate),
-            _ => throw new ArgumentException($"Ordering not recognised: {ordering}", nameof(ordering))
-        };
-
-        var expectedQuery = sortedExpectedQuery.ThenBy(project => project.Project.Urn.Value).Select(item =>
+        var expectedQuery = mockListAllProjectsForUserQueryModels.Select(item =>
         {
             Assert.NotNull(item.Project);
             return ListAllProjectsForUserQueryResultModel
@@ -117,13 +102,16 @@ public class ListAllProjectsForUserTests
         var expected = expectedQuery
             .Skip(20).Take(20).ToList();
 
-        mockListAllProjectsQueryService.ListAllProjects(ProjectState.Active, null, assignedToUserId: filter == ProjectUserFilter.AssignedTo ? userDto.Id : null,
-                createdByUserId: filter == ProjectUserFilter.CreatedBy ? userDto.Id : null)
+        mockListAllProjectsQueryService.ListAllProjects(ProjectState.Active, null,
+                assignedToUserId: filter == ProjectUserFilter.AssignedTo ? userDto.Id : null,
+                createdByUserId: filter == ProjectUserFilter.CreatedBy ? userDto.Id : null,
+                orderBy: Arg.Any<OrderProjectQueryBy>())
             .Returns(mockListAllProjectsForUserQueryModels.BuildMock());
 
         Assert.NotNull(userDto.ActiveDirectoryUserId);
 
-        var query = new ListAllProjectsForUserQuery(ProjectState.Active, userDto.ActiveDirectoryUserId, filter, ordering) { Page = 1 };
+        var query = new ListAllProjectsForUserQuery(ProjectState.Active, userDto.ActiveDirectoryUserId, filter,
+            ordering) { Page = 1 };
 
         //Act
         var result = await handler.Handle(query, default);
@@ -180,12 +168,15 @@ public class ListAllProjectsForUserTests
             projectsQueryModel.Project.OutgoingTrustUkprn = outgoingTrustUkprn;
         }
 
-        mockListAllProjectsQueryService.ListAllProjects(ProjectState.Active, null, assignedToUserId: filter == ProjectUserFilter.AssignedTo ? userDto.Id : null,
-                createdByUserId: filter == ProjectUserFilter.CreatedBy ? userDto.Id : null)
+        mockListAllProjectsQueryService.ListAllProjects(ProjectState.Active, null,
+                assignedToUserId: filter == ProjectUserFilter.AssignedTo ? userDto.Id : null,
+                createdByUserId: filter == ProjectUserFilter.CreatedBy ? userDto.Id : null,
+                orderBy: Arg.Any<OrderProjectQueryBy>())
             .Returns(mockListAllProjectsForUserQueryModels.BuildMock());
 
         Assert.NotNull(userDto.ActiveDirectoryUserId);
-        var query = new ListAllProjectsForUserQuery(ProjectState.Active, userDto.ActiveDirectoryUserId, filter, ordering) { Page = 50 };
+        var query = new ListAllProjectsForUserQuery(ProjectState.Active, userDto.ActiveDirectoryUserId, filter,
+            ordering) { Page = 50 };
 
         //Act
         var result = await handler.Handle(query, default);
@@ -224,7 +215,8 @@ public class ListAllProjectsForUserTests
             .ThrowsAsync(new Exception(errorMessage));
         Assert.NotNull(userDto.ActiveDirectoryUserId);
 
-        var query = new ListAllProjectsForUserQuery(ProjectState.Active, userDto.ActiveDirectoryUserId, filter, ordering) { Page = 50 };
+        var query = new ListAllProjectsForUserQuery(ProjectState.Active, userDto.ActiveDirectoryUserId, filter,
+            ordering) { Page = 50 };
 
         //Act
         var result = await handler.Handle(query, default);

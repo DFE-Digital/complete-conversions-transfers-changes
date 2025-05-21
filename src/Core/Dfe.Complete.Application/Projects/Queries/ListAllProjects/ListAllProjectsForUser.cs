@@ -33,13 +33,13 @@ public class ListAllProjectsForUserQueryHandler(
             var user = await sender.Send(new GetUserByAdIdQuery(request.UserAdId), cancellationToken);
             if (!user.IsSuccess || user.Value == null)
                 throw new NotFoundException("User not found.");
-            
+
             var assignedTo = request.ProjectUserFilter == ProjectUserFilter.AssignedTo ? user.Value?.Id : null;
             var createdBy = request.ProjectUserFilter == ProjectUserFilter.CreatedBy ? user.Value?.Id : null;
-            var notAllprojectsForUser = listAllProjectsQueryService
+            var projectsForUser = await listAllProjectsQueryService
                 .ListAllProjects(request.State, null, assignedToUserId: assignedTo, createdByUserId: createdBy,
-                    orderBy: request.OrderProjectQueryBy);
-            var projectsForUser = await notAllprojectsForUser.ToListAsync(cancellationToken);
+                    orderBy: request.OrderProjectQueryBy)
+                .ToListAsync(cancellationToken);
 
             var allProjectTrustUkPrns = projectsForUser
                 .SelectMany(p => new[]
@@ -68,7 +68,8 @@ public class ListAllProjectsForUserQueryHandler(
         }
         catch (Exception e)
         {
-            logger.LogError(e, "Exception for {Name} Request - {@Request}", nameof(ListAllProjectsForUserQueryHandler), request);
+            logger.LogError(e, "Exception for {Name} Request - {@Request}", nameof(ListAllProjectsForUserQueryHandler),
+                request);
             return PaginatedResult<List<ListAllProjectsForUserQueryResultModel>>.Failure(e.Message);
         }
     }
