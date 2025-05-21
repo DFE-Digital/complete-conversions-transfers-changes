@@ -22,6 +22,7 @@ Security in case of vulnerabilities.
 
 ## Unreleased  
 ### Added  
+ - Enabled error tracking via Application Insights.
  - New route `/projects/team/unassigned`
  - Your team projects "Unassigned" list (`/projects/team/unassigned`)
 
@@ -43,6 +44,7 @@ See the [full commit history](https://github.com/DFE-Digital/complete-conversion
 - Fixed identifying "Form A MAT" projects logic
 - Removed unnecessary `Assign To` filter while pulling projects from database.
 - Resolve accessibility issue causing app header to appear blue instead of white
+- Removed `Project Status` filter while pullling search results.  
 
 See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-05-14.254...production-2025-05-16.272) for everything in the release
 
