@@ -3,5 +3,5 @@ using MediatR;
 
 namespace Dfe.Complete.Pages.Projects
 {
-    public class ViewProjectNotesModel(ISender sender) : ProjectViewLayoutModel(sender);
+    public class ViewProjectNotesModel(ISender sender) : ProjectViewLayoutModel(sender, NotesNavigation);
 }

@@ -12,9 +12,12 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace Dfe.Complete.Models;
 
-public abstract class BaseProjectPageModel(ISender sender) : PageModel
+public abstract class BaseProjectPageModel(ISender sender, string currentNavigation) : PageModel
 {
     [BindProperty(SupportsGet = true, Name = "projectId")]
+
+    public string CurrentNavigationItem { get; init; } = currentNavigation;
+
     public string ProjectId { get; set; }
 
     public ProjectDto Project { get; set; }

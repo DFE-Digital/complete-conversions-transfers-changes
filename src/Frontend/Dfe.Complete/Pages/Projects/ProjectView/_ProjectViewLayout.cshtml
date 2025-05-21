@@ -8,6 +8,9 @@
 @model Dfe.Complete.Pages.Projects.ProjectView.ProjectViewLayoutModel
 @{
   Layout = "Shared/_Layout";
+
+  string? IsCurrentNav(string tabName) => Model.CurrentNavigationItem == tabName ? "page" : null;
+
 }
 
 <div class="govuk-grid-row">
