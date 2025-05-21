@@ -4,6 +4,7 @@
 @using Dfe.Complete.Domain.Enums
 @using Dfe.Complete.Domain.Extensions
 @using GovUk.Frontend.AspNetCore.TagHelpers
+@using Dfe.Complete.Pages.Projects.ProjectView
 
 @model Dfe.Complete.Pages.Projects.ProjectView.ProjectViewLayoutModel
 @{
@@ -130,22 +131,29 @@ Model.CurrentUserTeam.TeamIsServiceSupport())
       <ul class="moj-sub-navigation__list">
 
         <li class="moj-sub-navigation__item">
-          <a class="moj-sub-navigation__link" aria-current="page" href="#">Task list</a>
+          <a class="moj-sub-navigation__link" href="@String.Format(RouteConstants.ProjectTaskList, Model.Project.Id.Value)"
+            aria-current="@IsCurrentNav(ProjectViewLayoutModel.TaskListNavigation)">Task list</a>
         </li>
         <li class="moj-sub-navigation__item">
-          <a class="moj-sub-navigation__link" href="#">About the project</a>
+          <a class="moj-sub-navigation__link" href="@String.Format(RouteConstants.ProjectAbout, Model.Project.Id.Value)"
+            aria-current="@IsCurrentNav(ProjectViewLayoutModel.AboutTheProjectNavigation)">About the project</a>
         </li>
         <li class="moj-sub-navigation__item">
-          <a class="moj-sub-navigation__link" href="#">Notes</a>
+          <a class="moj-sub-navigation__link" href="@String.Format(RouteConstants.ProjectViewNotes, Model.Project.Id.Value)"
+            aria-current="@IsCurrentNav(ProjectViewLayoutModel.NotesNavigation)">Notes</a>
         </li>
         <li class="moj-sub-navigation__item">
-          <a class="moj-sub-navigation__link" href="#">External contacts</a>
+          <a class="moj-sub-navigation__link" href="#"
+            aria-current="@IsCurrentNav(ProjectViewLayoutModel.ExternalContactsNavigation)">External contacts</a>
         </li>
         <li class="moj-sub-navigation__item">
-          <a class="moj-sub-navigation__link" href="#">Internal contacts</a>
+          <a class="moj-sub-navigation__link" href="#"
+            aria-current="@IsCurrentNav(ProjectViewLayoutModel.InternalContactsNavigation)">Internal contacts</a>
         </li>
         <li class="moj-sub-navigation__item">
-          <a class="moj-sub-navigation__link" href="#">@Model.Project.Type.ToDisplayDescription() date history</a>
+          <a class="moj-sub-navigation__link" href="#"
+            aria-current="@IsCurrentNav(ProjectViewLayoutModel.ConversionDateHistoryNavigation)">@Model.Project.Type.ToDisplayDescription()
+            date history</a>
         </li>
       </ul>
     </nav>
