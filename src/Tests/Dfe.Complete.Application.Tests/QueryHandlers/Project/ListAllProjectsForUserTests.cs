@@ -64,7 +64,7 @@ public class ListAllProjectsForUserTests
         mockSender.Setup(sender => sender.Send(It.IsAny<GetUserByAdIdQuery>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(Result<UserDto?>.Success(userDto));
 
-        var mockListAllProjectsForUserQueryModels = fixture.CreateMany<ListAllProjectsQueryModel>(50);
+        var mockListAllProjectsForUserQueryModels = fixture.CreateMany<ListAllProjectsQueryModel>(50).ToList();
 
         var trustDtos = new ObservableCollection<TrustDto>(
             fixture.Build<TrustDto>().With(dto => dto.Ukprn, new Ukprn(new Random().Next()).Value.ToString)
@@ -73,7 +73,7 @@ public class ListAllProjectsForUserTests
         mockTrustsClient.Setup(service => service.GetByUkprnsAllAsync(It.IsAny<IEnumerable<string>>(), default))
             .ReturnsAsync(trustDtos);
 
-        foreach (var projectsQueryModel in mockListAllProjectsForUserQueryModels.ToList())
+        foreach (var projectsQueryModel in mockListAllProjectsForUserQueryModels)
         {
             var incomingTrustUkprn = trustDtos.OrderBy(_ => new Random().Next()).First().Ukprn;
             var outgoingTrustUkprn = trustDtos.OrderBy(_ => new Random().Next()).First().Ukprn;
@@ -130,6 +130,7 @@ public class ListAllProjectsForUserTests
 
         //Assert
         Assert.NotNull(result);
+        Assert.True(result.IsSuccess);
 
         Assert.Equal(expected.Count, result.Value?.Count);
         for (var i = 0; i < result.Value!.Count; i++)

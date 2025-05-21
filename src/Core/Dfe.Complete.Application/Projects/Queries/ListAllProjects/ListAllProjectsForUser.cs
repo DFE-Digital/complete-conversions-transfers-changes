@@ -33,13 +33,13 @@ public class ListAllProjectsForUserQueryHandler(
             var user = await sender.Send(new GetUserByAdIdQuery(request.UserAdId), cancellationToken);
             if (!user.IsSuccess || user.Value == null)
                 throw new NotFoundException("User not found.");
-
-
+            
             var assignedTo = request.ProjectUserFilter == ProjectUserFilter.AssignedTo ? user.Value?.Id : null;
             var createdBy = request.ProjectUserFilter == ProjectUserFilter.CreatedBy ? user.Value?.Id : null;
-            var projectsForUser = await listAllProjectsQueryService
-                .ListAllProjects(request.State, null, assignedToUserId: assignedTo, createdByUserId: createdBy)
-                .ToListAsync(cancellationToken);
+            var notAllprojectsForUser = listAllProjectsQueryService
+                .ListAllProjects(request.State, null, assignedToUserId: assignedTo, createdByUserId: createdBy,
+                    orderBy: request.OrderProjectQueryBy);
+            var projectsForUser = await notAllprojectsForUser.ToListAsync(cancellationToken);
 
             var allProjectTrustUkPrns = projectsForUser
                 .SelectMany(p => new[]
@@ -51,41 +51,6 @@ public class ListAllProjectsForUserQueryHandler(
                 .ToList();
 
             var allTrusts = await trustsClient.GetByUkprnsAllAsync(allProjectTrustUkPrns, cancellationToken);
-            if (request.OrderProjectQueryBy is not null)
-            {
-                var orderedQuery = request.OrderProjectQueryBy switch
-                {
-                    { Field: OrderProjectByField.CompletedAt, Direction: OrderByDirection.Ascending } => projectsForUser
-                        .OrderBy(project => project.Project?.CompletedAt).ThenBy(project => project.Project?.Urn.Value),
-                    { Field: OrderProjectByField.CompletedAt, Direction: OrderByDirection.Descending } =>
-                        projectsForUser.OrderByDescending(project => project.Project?.CompletedAt).ThenBy(project => project.Project?.Urn.Value),
-                    { Field: OrderProjectByField.CreatedAt, Direction: OrderByDirection.Ascending } => projectsForUser
-                        .OrderBy(project => project.Project?.CreatedAt).ThenBy(project => project.Project?.Urn.Value),
-                    { Field: OrderProjectByField.CreatedAt, Direction: OrderByDirection.Descending } => projectsForUser
-                        .OrderByDescending(project => project.Project?.CreatedAt).ThenBy(project => project.Project?.Urn.Value),
-                    { Field: OrderProjectByField.SignificantDate, Direction: OrderByDirection.Ascending } =>
-                        projectsForUser.OrderBy(project => project.Project?.SignificantDate).ThenBy(project => project.Project?.Urn.Value),
-                    { Field: OrderProjectByField.SignificantDate, Direction: OrderByDirection.Descending } =>
-                        projectsForUser.OrderByDescending(project => project.Project?.SignificantDate).ThenBy(project => project.Project?.Urn.Value),
-                    _ => throw new ArgumentException($"Ordering not recognised: {request.OrderProjectQueryBy}",
-                        nameof(request))
-                };
-                
-                var orderedResult = orderedQuery
-                    .Skip(request.Page * request.Count)
-                    .Take(request.Count)
-                    .Select(p => ListAllProjectsForUserQueryResultModel
-                        .MapProjectAndEstablishmentToListAllProjectsForUserQueryResultModel(
-                            p.Project,
-                            p.Establishment,
-                            outgoingTrustName: allTrusts.FirstOrDefault(trust =>
-                                trust.Ukprn == p.Project?.OutgoingTrustUkprn?.Value.ToString())?.Name,
-                            incomingTrustName: allTrusts.FirstOrDefault(trust =>
-                                trust.Ukprn == p.Project?.IncomingTrustUkprn?.Value.ToString())?.Name))
-                    .ToList();
-
-                return PaginatedResult<List<ListAllProjectsForUserQueryResultModel>>.Success(orderedResult, projectsForUser.Count);
-            }
             var result = projectsForUser
                 .Skip(request.Page * request.Count)
                 .Take(request.Count)
