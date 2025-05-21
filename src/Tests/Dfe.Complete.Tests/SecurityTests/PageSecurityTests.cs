@@ -42,10 +42,6 @@ namespace Dfe.Complete.Frontend.Tests.Pages
                .OfType<RouteEndpoint>()
                 .Where(x => x.DisplayName!.Contains("/"));
 
-            foreach (var endline in endpoints)
-            {
-                Console.WriteLine(endline.DisplayName);
-            }
             return endpoints;
         }
     }

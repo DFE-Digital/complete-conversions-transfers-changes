@@ -4,20 +4,17 @@
 @using GovUk.Frontend.AspNetCore.TagHelpers
 @using Microsoft.AspNetCore.Authorization
 @using Microsoft.AspNetCore.Html
+@using Dfe.Complete.Domain.Enums
+
 @model Dfe.Complete.Pages.Projects.Yours.AddedByYou.AddedByYou
-@inject IAuthorizationService AuthorizationService
 @{
     Layout = "Yours/_YourProjectsLayout";
     ViewData["Title"] = "Added by you";
-    var userCanCreateProjects = await AuthorizationService.AuthorizeAsync(User, "CanCreateProjects");
 }
 
-@if (userCanCreateProjects.Succeeded)
-{
-    <form asp-page="@RouteConstants.CreateNewProject" method="get">
-        <govuk-button type="submit">Add a project</govuk-button>
-    </form>
-}
+<form asp-page="@RouteConstants.CreateNewProject" method="get" asp-policy="@UserPolicies.CanCreateProjects">
+    <govuk-button type="submit">Add a project</govuk-button>
+</form>
 
 <h1 class="govuk-heading-xl">
     Added by you
