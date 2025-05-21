@@ -1,16 +1,7 @@
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
+using Dfe.Complete.Pages.Projects.ProjectView;
+using MediatR;
 
 namespace Dfe.Complete.Pages.Projects
 {
-    public class ViewProjectNotesModel : PageModel
-    {
-        [BindProperty(SupportsGet = true, Name = "projectId")]
-        public string ProjectId { get; set; }
-        
-        public async Task OnGet()
-        {
-            
-        }
-    }
+    public class ViewProjectNotesModel(ISender sender) : ProjectViewLayoutModel(sender);
 }
