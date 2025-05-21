@@ -58,7 +58,13 @@ public class CustomPoliciesIntegrationTests
         ["CanViewYourProjects", new string[] { "regional_casework_services" }, true],
         ["CanViewYourProjects", new string[] { "regional_casework_services", "manage_team" }, false],
         ["CanViewYourProjects", new string[] { "regional_delivery_officer" }, true],
-        ["CanViewYourProjects", new string[] { "regional_delivery_officer", "manage_team" }, true]
+        ["CanViewYourProjects", new string[] { "regional_delivery_officer", "manage_team" }, true],
+        ["CanCreateProjects", new string[] { "service_support" }, false],
+        ["CanCreateProjects", new string[] { "service_support", "manage_team" }, false],
+        ["CanCreateProjects", new string[] { "regional_casework_services" }, true],
+        ["CanCreateProjects", new string[] { "regional_casework_services", "manage_team" }, false],
+        ["CanCreateProjects", new string[] { "regional_delivery_officer" }, true],
+        ["CanCreateProjects", new string[] { "regional_delivery_officer", "manage_team" }, true]
     };
 
     [Theory]

@@ -18,7 +18,7 @@ namespace Dfe.Complete.Extensions
         public static async Task<ProjectTeam> GetUserTeam(this ClaimsPrincipal value, ISender sender)
         {
             var user = await value.GetUser(sender);
-            return EnumExtensions.FromDescription<ProjectTeam>(user?.Team);
+            return EnumExtensions.FromDescription<ProjectTeam>(user.Team);
         }
 
         public static async Task<UserDto> GetUser(this ClaimsPrincipal value, ISender sender)

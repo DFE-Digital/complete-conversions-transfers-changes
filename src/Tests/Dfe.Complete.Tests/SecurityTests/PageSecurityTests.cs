@@ -40,7 +40,7 @@ namespace Dfe.Complete.Frontend.Tests.Pages
 
             var endpoints = endpointDataSource.Endpoints
                .OfType<RouteEndpoint>()
-                .Where(x => x.DisplayName!.Contains("/"));
+                .Where(x => x.DisplayName!.Contains('/'));
 
             return endpoints;
         }
