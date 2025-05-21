@@ -65,24 +65,36 @@
             "ExpectedSecurity": "Authorize"
         },
         {
-            "Route": "/Projects/Yours/InProgress",
+            "Route": "/Projects/Yours/InProgress/YourProjectsInProgress",
             "ExpectedSecurity": "Authorize: Policy=CanViewYourProjects"
         },
         {
-            "Route": "/Projects/Yours/Completed",
+            "Route": "/Projects/Yours/Completed/CompletedByYou",
             "ExpectedSecurity": "Authorize: Policy=CanViewYourProjects"
         },
         {
-            "Route": "/Projects/Yours/AddedByYou",
+            "Route": "/Projects/Yours/AddedByYou/AddedByYou",
             "ExpectedSecurity": "Authorize: Policy=CanViewYourProjects"
         },
         {
-            "Route": "/Cookies",
+            "Route": "Public/Cookies",
             "ExpectedSecurity": "AllowAnonymous"
         },
         {
-            "Route": "/Search",
+            "Route": "/Search/SearchProjects",
             "ExpectedSecurity": "Authorize"
+        },
+        {
+            "Route": "/Account/AccessDenied",
+            "ExpectedSecurity": "AllowAnonymous"
+        },
+        {
+            "Route": "/Account/SignedOut",
+            "ExpectedSecurity": "AllowAnonymous"
+        },
+        {
+            "Route": "/Account/Error",
+            "ExpectedSecurity": "AllowAnonymous"
         }
     ]
 }
