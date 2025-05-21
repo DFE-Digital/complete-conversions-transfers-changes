@@ -16,8 +16,9 @@ using Microsoft.Identity.Web;
 using Microsoft.Identity.Web.UI;
 using DfE.CoreLibs.Security.Cypress;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
-using System.Configuration;
-
+using DfE.CoreLibs.Http.Middlewares.CorrelationId;
+using DfE.CoreLibs.Http.Interfaces;
+using Dfe.Complete.Logging.Middleware;
 namespace Dfe.Complete;
 
 public class Startup
@@ -67,7 +68,9 @@ public class Startup
         services.AddCompleteClientProject(Configuration);
 
         services.AddScoped<ErrorService>();
-        
+
+        services.AddScoped<ICorrelationContext, CorrelationContext>();
+
         services.AddScoped(sp => sp.GetService<IHttpContextAccessor>()?.HttpContext?.Session);
         services.AddSession(options =>
         {
@@ -88,8 +91,8 @@ public class Startup
         authenticationBuilder.AddMicrosoftIdentityWebApp(Configuration);
 
         ConfigureCookies(services);
-
-        services.AddApplicationInsightsTelemetry();
+        var appInsightsCnnStr = Configuration.GetSection("ApplicationInsights")?["ConnectionString"]; 
+        services.AddApplicationInsightsTelemetry(options => options.ConnectionString = appInsightsCnnStr);
 
         System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
 
@@ -120,6 +123,9 @@ public class Startup
             // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
             app.UseHsts();
         }
+        
+        app.UseMiddleware<CorrelationIdMiddleware>();
+        app.UseMiddleware<ExceptionHandlerMiddleware>();
 
         app.UseSecurityHeaders(
            SecurityHeadersDefinitions.GetHeaderPolicyCollection(env.IsDevelopment())
@@ -188,7 +194,7 @@ public class Startup
         if (!string.IsNullOrEmpty(Configuration["ConnectionStrings:BlobStorage"]))
         {
             string blobName = "keys.xml";
-            BlobContainerClient container = new BlobContainerClient(new Uri(Configuration["ConnectionStrings:BlobStorage"]));
+            BlobContainerClient container = new(new Uri(Configuration["ConnectionStrings:BlobStorage"]!));
 
             BlobClient blobClient = container.GetBlobClient(blobName);
 
