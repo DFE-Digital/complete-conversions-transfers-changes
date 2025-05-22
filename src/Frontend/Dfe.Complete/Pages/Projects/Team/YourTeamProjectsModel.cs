@@ -1,11 +1,12 @@
 ﻿using System.Diagnostics.CodeAnalysis;
+using Dfe.Complete.Domain.Constants;
 using Dfe.Complete.Models;
 using Microsoft.AspNetCore.Authorization;
 
 namespace Dfe.Complete.Pages.Projects.Team;
 
 [ExcludeFromCodeCoverage]
-[Authorize(Policy = "CanViewTeamProjects")]
+[Authorize(policy: UserPolicyConstants.CanViewTeamProjects)]
 public abstract class YourTeamProjectsModel(string currentNavigation) : BaseProjectsPageModel(currentNavigation)
 {
     protected TabNavigationModel YourTeamProjectsTabNavigationModel = new(TabNavigationModel.YourTeamProjectsTabName);
