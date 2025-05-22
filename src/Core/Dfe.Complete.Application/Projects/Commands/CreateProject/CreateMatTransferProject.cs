@@ -1,13 +1,8 @@
-using Dfe.Complete.Application.Common.Models;
 using Dfe.Complete.Application.Projects.Common;
-using Dfe.Complete.Application.Projects.Models;
-using Dfe.Complete.Application.Projects.Queries.GetLocalAuthority;
-using Dfe.Complete.Application.Projects.Queries.GetUser;
 using Dfe.Complete.Domain.Entities;
 using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Domain.Interfaces.Repositories;
 using Dfe.Complete.Domain.ValueObjects;
-using Dfe.Complete.Utils;
 using MediatR;
 
 namespace Dfe.Complete.Application.Projects.Commands.CreateProject;

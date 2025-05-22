@@ -10,7 +10,6 @@ using DfE.CoreLibs.Testing.AutoFixture.Customizations;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Hosting.Internal;
-using Microsoft.Extensions.Logging;
 using Moq;
 
 namespace Dfe.Complete.Application.Tests.CommandHandlers.Project;

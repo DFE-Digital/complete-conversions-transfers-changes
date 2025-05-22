@@ -1,4 +1,3 @@
-using System.Xml.XPath;
 using AutoFixture;
 using AutoFixture.Xunit2;
 using Dfe.Complete.Application.Projects.Interfaces;

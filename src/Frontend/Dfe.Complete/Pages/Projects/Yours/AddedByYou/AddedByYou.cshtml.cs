@@ -5,7 +5,6 @@ using Dfe.Complete.Extensions;
 using Dfe.Complete.Models;
 using Dfe.Complete.Pages.Pagination;
 using MediatR;
-using Microsoft.AspNetCore.Authorization;
 
 namespace Dfe.Complete.Pages.Projects.Yours.AddedByYou;
 
