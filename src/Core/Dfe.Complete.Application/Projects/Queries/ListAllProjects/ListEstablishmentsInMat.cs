@@ -18,9 +18,10 @@ namespace Dfe.Complete.Application.Projects.Queries.ListAllProjects
         {
             try
             {
-                var projects = await listAllProjectsQueryService.ListAllProjects(ProjectState.Active, null, newTrustReferenceNumber: request.ReferenceNumber)
+                var projects = await listAllProjectsQueryService.ListAllProjects(ProjectState.Active, null,
+                        newTrustReferenceNumber: request.ReferenceNumber)
                     .ToListAsync(cancellationToken);
-                
+
                 if (!projects.Any())
                 {
                     return Result<ListMatResultModel>.Failure("No projects found");
@@ -31,11 +32,12 @@ namespace Dfe.Complete.Application.Projects.Queries.ListAllProjects
                 var result = new ListMatResultModel(
                     firstProject.Project.NewTrustReferenceNumber,
                     firstProject.Project.NewTrustName,
-                    projects
+                    projects.Select(model =>
+                        ListAllProjectsResultModel.MapProjectAndEstablishmentToListAllProjectResultModel(model.Project,
+                            model.Establishment))
                 );
 
                 return Result<ListMatResultModel>.Success(result);
-
             }
             catch (Exception ex)
             {
