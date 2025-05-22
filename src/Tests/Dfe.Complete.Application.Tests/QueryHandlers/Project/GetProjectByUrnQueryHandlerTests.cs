@@ -22,7 +22,7 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
             [Frozen] IMapper mockMapper,
             GetProjectByUrnQueryHandler handler,
             GetProjectByUrnQuery command
-            )
+        )
         {
             var now = DateTime.UtcNow;
 
@@ -46,24 +46,29 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
                 "",
                 null,
                 default,
+                new UserId(Guid.NewGuid()),
                 null,
-                null, 
-                null, 
-                null, 
+                null,
+                null,
                 Guid.NewGuid());
 
             // Arrange
             mockProjectRepository.GetAsync(Arg.Any<Expression<Func<Domain.Entities.Project, bool>>>())
                 .Returns(project);
 
-            mockMapper.Map<ProjectDto>(project).Returns(new ProjectDto() { Urn = command.Urn });
+            mockMapper.Map<ProjectDto>(project).Returns(new ProjectDto()
+            {
+                Urn = command.Urn, Id = project.Id, RegionalDeliveryOfficer = project.RegionalDeliveryOfficer,
+                RegionalDeliveryOfficerId = project.RegionalDeliveryOfficerId
+            });
 
             // Act
             var result = await handler.Handle(command, default);
 
             // Assert
-            await mockProjectRepository.Received(1).GetAsync(Arg.Any<Expression<Func<Domain.Entities.Project, bool>>>());
-            Assert.True(result.IsSuccess == true);
+            await mockProjectRepository.Received(1)
+                .GetAsync(Arg.Any<Expression<Func<Domain.Entities.Project, bool>>>());
+            Assert.True(result.IsSuccess);
             Assert.True(result.Value?.Urn == command.Urn);
         }
 
@@ -74,7 +79,7 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
             [Frozen] ICompleteRepository<Domain.Entities.Project> mockProjectRepository,
             GetProjectByUrnQueryHandler handler,
             GetProjectByUrnQuery command
-            )
+        )
         {
             // Arrange
             mockProjectRepository.GetAsync(Arg.Any<Expression<Func<Domain.Entities.Project?, bool>>>())
@@ -84,32 +89,34 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
             var result = await handler.Handle(command, default);
 
             // Assert
-            await mockProjectRepository.Received(1).GetAsync(Arg.Any<Expression<Func<Domain.Entities.Project, bool>>>());
-            Assert.True(result.IsSuccess == true);
+            await mockProjectRepository.Received(1)
+                .GetAsync(Arg.Any<Expression<Func<Domain.Entities.Project, bool>>>());
+            Assert.True(result.IsSuccess);
             Assert.True(result.Value == null);
         }
 
         [Theory]
         [CustomAutoData(typeof(DateOnlyCustomization))]
         public async Task Handle_ShouldFailAndReturnErrorMessage_WhenExceptionIsThrown(
-        [Frozen] ICompleteRepository<Domain.Entities.Project> mockProjectRepository,
-        GetProjectByUrnQueryHandler handler,
-        GetProjectByUrnQuery command
+            [Frozen] ICompleteRepository<Domain.Entities.Project> mockProjectRepository,
+            GetProjectByUrnQueryHandler handler,
+            GetProjectByUrnQuery command
         )
-            {
-                // Arrange
-                var expectedErrorMessage = "Expected Error Message";
+        {
+            // Arrange
+            var expectedErrorMessage = "Expected Error Message";
 
-                mockProjectRepository.GetAsync(Arg.Any<Expression<Func<Domain.Entities.Project?, bool>>>())
-                    .Throws(new Exception(expectedErrorMessage));
+            mockProjectRepository.GetAsync(Arg.Any<Expression<Func<Domain.Entities.Project?, bool>>>())
+                .Throws(new Exception(expectedErrorMessage));
 
-                // Act
-                var result = await handler.Handle(command, default);
+            // Act
+            var result = await handler.Handle(command, default);
 
-                // Assert
-                await mockProjectRepository.Received(1).GetAsync(Arg.Any<Expression<Func<Domain.Entities.Project, bool>>>());
-                Assert.True(result.IsSuccess == false);
-                Assert.Equal(result.Error, expectedErrorMessage);
+            // Assert
+            await mockProjectRepository.Received(1)
+                .GetAsync(Arg.Any<Expression<Func<Domain.Entities.Project, bool>>>());
+            Assert.False(result.IsSuccess);
+            Assert.Equal(result.Error, expectedErrorMessage);
         }
-        }
+    }
 }

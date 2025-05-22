@@ -66,9 +66,11 @@ namespace Dfe.Complete.Application.Projects.Queries.ListAllProjects
                             return new ListAllProjectsQueryModel(project, matchingEstablishment);
                         }).OrderByDescending(p => p.Establishment.Name);
 
-                        return new ListMatResultModel(group.Key, trustName, projectModels);
+                        return new ListMatResultModel(group.Key!, trustName!, projectModels.Select(model =>
+                            ListAllProjectsResultModel.MapProjectAndEstablishmentToListAllProjectResultModel(model.Project,
+                                model.Establishment)));
                     })
-                    .OrderBy(r => r.trustName)
+                    .OrderBy(r => r.TrustName)
                     .ToList();
 
                 var result = allMATs
