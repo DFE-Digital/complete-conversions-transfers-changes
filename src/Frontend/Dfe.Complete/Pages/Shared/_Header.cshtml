@@ -31,7 +31,7 @@
             </a>
         </div>
         <div class="dfe-header__content" id="content-header">
-            <div class="dfe-header__menu" asp-policy="@UserPolicies.HasGlobalNavigation">
+            <div class="dfe-header__menu" asp-policy="@UserPolicyConstants.HasGlobalNavigation">
                 <button class="dfe-header__menu-toggle" id="toggle-menu" aria-controls="header-navigation"
                         aria-expanded="false">
                     Menu
@@ -77,7 +77,7 @@
         <a href="/" class="dfe-header__link--service">Complete conversions, transfers and changes</a>
     </div>
     <nav class="dfe-header__navigation" id="header-navigation" role="navigation" aria-label="Primary navigation"
-         aria-labelledby="label-navigation" asp-policy="@UserPolicies.HasGlobalNavigation">
+         aria-labelledby="label-navigation" asp-policy="@UserPolicyConstants.HasGlobalNavigation">
         <div class="dfe-width-container">
             <p class="dfe-header__navigation-title">
                 <span id="label-navigation">Menu</span>
@@ -91,7 +91,7 @@
                 </button>
             </p>
             <ul class="dfe-header__navigation-list">
-                <li class="dfe-header__navigation-item @IsCurrentTab(TabNavigationModel.YourProjectsTabName)" asp-policy="@UserPolicies.CanViewYourProjects">
+                <li class="dfe-header__navigation-item @IsCurrentTab(TabNavigationModel.YourProjectsTabName)" asp-policy="@UserPolicyConstants.CanViewYourProjects">
                     <a class="dfe-header__navigation-link" href="@RouteConstants.YourProjectsInProgress">
                         Your projects
                         <svg class="dfe-icon dfe-icon__chevron-right" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
@@ -101,7 +101,7 @@
                         </svg>
                     </a>
                 </li>
-                <li class="dfe-header__navigation-item @IsCurrentTab(TabNavigationModel.YourTeamProjectsTabName)" asp-policy="@UserPolicies.CanViewTeamProjects">
+                <li class="dfe-header__navigation-item @IsCurrentTab(TabNavigationModel.YourTeamProjectsTabName)" asp-policy="@UserPolicyConstants.CanViewTeamProjects">
                     <a class="dfe-header__navigation-link" href=@RouteConstants.TeamProjectsInProgress>
                         Your team projects
                         <svg class="dfe-icon dfe-icon__chevron-right" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
@@ -121,7 +121,7 @@
                         </svg>
                     </a>
                 </li>
-                <li class="dfe-header__navigation-item @IsCurrentTab(TabNavigationModel.GroupsTabName)" asp-policy="@UserPolicies.CanViewGroups">
+                <li class="dfe-header__navigation-item @IsCurrentTab(TabNavigationModel.GroupsTabName)" asp-policy="@UserPolicyConstants.CanViewGroups">
                     <a class="dfe-header__navigation-link" href=@RouteConstants.Groups>
                         Groups
                         <svg class="dfe-icon dfe-icon__chevron-right" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
@@ -131,7 +131,7 @@
                         </svg>
                     </a>
                 </li>
-                <li class="dfe-header__navigation-item @IsCurrentTab(TabNavigationModel.ServiceSupportProjectsTabName)" asp-policy="@UserPolicies.CanViewServiceSupport">
+                <li class="dfe-header__navigation-item @IsCurrentTab(TabNavigationModel.ServiceSupportProjectsTabName)" asp-policy="@UserPolicyConstants.CanViewServiceSupport">
                     <a class="dfe-header__navigation-link" href=@RouteConstants.ServiceSupportProjects>
                         Service support
                         <svg class="dfe-icon dfe-icon__chevron-right" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"

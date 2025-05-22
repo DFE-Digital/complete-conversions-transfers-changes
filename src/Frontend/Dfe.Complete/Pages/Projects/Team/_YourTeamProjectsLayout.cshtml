@@ -1,5 +1,6 @@
 ﻿@using Dfe.Complete.Pages.Projects.Team;
 @using Dfe.Complete.Constants;
+@using Dfe.Complete.Domain.Constants;
 @using Dfe.Complete.Domain.Enums
 
 @model Dfe.Complete.Pages.Projects.Team.YourTeamProjectsModel
@@ -16,7 +17,7 @@
             <div class="moj-primary-navigation__nav">
                 <nav class="moj-primary-navigation" aria-label="Primary navigation">
                     <ul class="moj-primary-navigation__list">
-                        <li class="moj-primary-navigation__item" asp-policy="@UserPolicies.CanViewTeamProjectsUnassigned">
+                        <li class="moj-primary-navigation__item" asp-policy="@UserPolicyConstants.CanViewTeamProjectsUnassigned">
                           <a class="moj-primary-navigation__link"
                             aria-current="@IsCurrentNav(YourTeamProjectsModel.UnassignedNavigation)"
                             href="@RouteConstants.TeamProjectsUnassigned">Unassigned</a>
@@ -36,7 +37,7 @@
                                aria-current="@IsCurrentNav(YourTeamProjectsModel.ByUserNavigation)"
                                href="@RouteConstants.TeamProjectsUsers">By user</a>
                         </li>
-                        <li class="moj-primary-navigation__item" asp-policy="@UserPolicies.CanViewTeamProjectsHandedOver">
+                        <li class="moj-primary-navigation__item" asp-policy="@UserPolicyConstants.CanViewTeamProjectsHandedOver">
                             <a class="moj-primary-navigation__link"
                               aria-current="@IsCurrentNav(YourTeamProjectsModel.HandedOverNavigation)"
                               href="@RouteConstants.TeamProjectsHandedOver">Handed over</a>

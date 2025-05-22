@@ -1,5 +1,6 @@
 @page "/projects/yours/added-by"
 @using Dfe.Complete.Constants
+@using Dfe.Complete.Domain.Constants
 @using Dfe.Complete.Pages.Projects.List
 @using GovUk.Frontend.AspNetCore.TagHelpers
 @using Microsoft.AspNetCore.Authorization
@@ -12,7 +13,7 @@
     ViewData["Title"] = "Added by you";
 }
 
-<form asp-page="@RouteConstants.CreateNewProject" method="get" asp-policy="@UserPolicies.CanCreateProjects">
+<form asp-page="@RouteConstants.CreateNewProject" method="get" asp-policy="@UserPolicyConstants.CanCreateProjects">
     <govuk-button type="submit">Add a project</govuk-button>
 </form>
 

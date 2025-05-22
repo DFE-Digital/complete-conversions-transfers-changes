@@ -6,6 +6,7 @@
 @using Microsoft.AspNetCore.Authorization
 @using Microsoft.AspNetCore.Html
 @using Dfe.Complete.Domain.Enums
+@using Dfe.Complete.Domain.Constants
 
 @model Dfe.Complete.Pages.Projects.Yours.InProgress.YourProjectsInProgress
 @{
@@ -13,7 +14,7 @@
     ViewData["Title"] = "Your projects in progress";
 }
 
-<form asp-page="@RouteConstants.CreateNewProject" method="get" asp-policy="@UserPolicies.CanCreateProjects">
+<form asp-page="@RouteConstants.CreateNewProject" method="get" asp-policy="@UserPolicyConstants.CanCreateProjects">
     <govuk-button type="submit">Add a project</govuk-button>
 </form>
 

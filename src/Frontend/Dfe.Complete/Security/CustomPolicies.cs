@@ -1,14 +1,13 @@
 using Dfe.Complete.Domain.Constants;
-using Dfe.Complete.Domain.Enums;
 using Microsoft.AspNetCore.Authorization;
 
 namespace Dfe.Complete.Security;
 
 public static class CustomPolicies
 {
-    public static Dictionary<string, Action<AuthorizationPolicyBuilder>> PolicyCustomizations => new Dictionary<string, Action<AuthorizationPolicyBuilder>>
+    public static Dictionary<string, Action<AuthorizationPolicyBuilder>> PolicyCustomizations => new()
     {
-        [UserPolicies.CanCreateProjects.ToString()] = builder =>
+        [UserPolicyConstants.CanCreateProjects] = builder =>
         {
             builder.RequireAuthenticatedUser();
             builder.RequireAssertion(context =>
@@ -19,7 +18,7 @@ public static class CustomPolicies
                     (user.IsInRole(UserRolesConstants.RegionalCaseworkServices) && !user.IsInRole(UserRolesConstants.ManageTeam));
             });
         },
-        [UserPolicies.CanViewYourProjects.ToString()] = builder =>
+        [UserPolicyConstants.CanViewYourProjects] = builder =>
         {
             builder.RequireAuthenticatedUser();
             builder.RequireAssertion(context =>
@@ -30,7 +29,7 @@ public static class CustomPolicies
                     (user.IsInRole(UserRolesConstants.RegionalCaseworkServices) && !user.IsInRole(UserRolesConstants.ManageTeam));
             });
         },
-        [UserPolicies.CanViewTeamProjectsUnassigned.ToString()] = builder =>
+        [UserPolicyConstants.CanViewTeamProjectsUnassigned] = builder =>
         {
             builder.RequireAuthenticatedUser();
             builder.RequireAssertion(context =>
