@@ -140,7 +140,7 @@ describe("Regional delivery officer (London) user - View your team projects (pro
         projectDetailsPage.containsHeading(teammatesLondonSchoolName);
     });
 
-    it.only("Should be able to view my team projects that are handed over", () => {
+    it("Should be able to view my team projects that are handed over", () => {
         yourTeamProjects
             .filterProjects("Handed over")
             .containsHeading("Handed over")
