@@ -17,6 +17,12 @@ public static class CompleteContextSeeder
             Id = new UserId(Guid.NewGuid()),
             Team = ProjectTeam.WestMidlands.ToDescription()
         };
+        
+        var secondProjectUser = new User
+        {
+            Id = new UserId(Guid.NewGuid()),
+            Team = ProjectTeam.SouthWest.ToDescription()
+        };
 
         var projectGroup = new ProjectGroup
         {
@@ -35,6 +41,7 @@ public static class CompleteContextSeeder
         context.LocalAuthorities.AddRange(authorities);
         context.ProjectGroups.Add(projectGroup);
         context.Users.Add(projectUser);
+        context.Users.Add(secondProjectUser);
         context.SaveChanges();
     }
 }

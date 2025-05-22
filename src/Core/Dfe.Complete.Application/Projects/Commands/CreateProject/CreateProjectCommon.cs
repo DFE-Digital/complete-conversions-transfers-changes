@@ -17,7 +17,8 @@ public record CreateProjectCommonResult(
     GetLocalAuthorityBySchoolUrnResponseDto LocalAuthority,
     Region Region,
     ProjectGroupDto? ProjectGroupDto,
-    UserDto? User,
+    UserDto CreatedByUser,
+    UserDto? AssignedUser,
     ProjectTeam ProjectTeam,
     DateTime CreatedAt,
     DateTime? AssignedAt,
@@ -83,9 +84,18 @@ public class CreateProjectCommon(
         }
 
         Result<UserDto?>? userRequest = null;
-        ProjectTeam team;
-        UserDto? projectUser = null;
+        
+        if (!string.IsNullOrEmpty(request.UserAdId))
+            userRequest = await sender.Send(new GetUserByAdIdQuery(request.UserAdId), cancellationToken);
+
+        if (userRequest is not { IsSuccess: true } || userRequest.Value is null)
+            throw new NotFoundException("No user found.", innerException: new Exception(userRequest?.Error));
+
+        var createdByUser = userRequest.Value;
+        
+        UserDto? assignedUser = null;
         DateTime? assignedAt = null;
+        ProjectTeam team;
 
         if (request.HandingOverToRegionalCaseworkService)
         {
@@ -93,18 +103,12 @@ public class CreateProjectCommon(
         }
         else
         {
-            if (!string.IsNullOrEmpty(request.UserAdId))
-                userRequest = await sender.Send(new GetUserByAdIdQuery(request.UserAdId), cancellationToken);
-
-            if (userRequest is not { IsSuccess: true } || userRequest.Value is null)
-                throw new NotFoundException("No user found.", innerException: new Exception(userRequest?.Error));
-
-            projectUser = userRequest.Value;
+            assignedUser = userRequest.Value;
             assignedAt = createdAt;
-            team = (projectUser?.Team).FromDescription<ProjectTeam>();
+            team = (assignedUser?.Team).FromDescription<ProjectTeam>();
         }
 
         return new CreateProjectCommonResult(localAuthorityIdRequest.Value, region.Value,
-            projectGroupDto, projectUser, team, createdAt, assignedAt, projectId);
+            projectGroupDto, createdByUser, assignedUser, team, createdAt, assignedAt, projectId);
     }
 }

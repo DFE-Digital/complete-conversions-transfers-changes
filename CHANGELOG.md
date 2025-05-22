@@ -30,6 +30,8 @@ Security in case of vulnerabilities.
 - Sort all projects by region list alphabetically
 
 ### Fixed  
+- Note FK Ids are now required
+- Separated created and assigned users in project creation
 
 See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-05-16.272...main) for everything awaiting release
 
