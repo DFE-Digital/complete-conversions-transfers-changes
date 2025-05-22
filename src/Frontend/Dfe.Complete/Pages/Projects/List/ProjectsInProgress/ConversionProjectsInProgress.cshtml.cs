@@ -12,7 +12,7 @@ public class ConversionProjectsInProgressModel(ISender sender) : ConversionOrTra
     public async Task OnGet()
     {
         ViewData[TabNavigationModel.ViewDataKey] = AllProjectsTabNavigationModel;
-        var listProjectQuery = new ListAllProjectsQuery(ProjectState.Active, ProjectType.Conversion, AssignedToState.AssignedOnly, null, PageNumber - 1, PageSize);
+        var listProjectQuery = new ListAllProjectsQuery(ProjectState.Active, ProjectType.Conversion, AssignedToState.AssignedOnly, Page: PageNumber - 1, Count: PageSize);
 
         var response = await sender.Send(listProjectQuery);
         Projects = response.Value?.ToList() ?? [];

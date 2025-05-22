@@ -20,7 +20,7 @@ public class AllCompletedProjectsViewModel(ISender sender) : AllProjectsModel(Co
         ViewData[TabNavigationModel.ViewDataKey] = AllProjectsTabNavigationModel;
 
         var orderByClause = new OrderProjectQueryBy(OrderProjectByField.CompletedAt, OrderByDirection.Descending);
-        var listProjectQuery = new ListAllProjectsQuery(ProjectState.Completed, null, null, orderByClause, PageNumber - 1, PageSize);
+        var listProjectQuery = new ListAllProjectsQuery(ProjectState.Completed, null, OrderBy: orderByClause, Page: PageNumber - 1, Count: PageSize);
 
         var listResponse = await sender.Send(listProjectQuery);
         Projects = (listResponse.Value ?? [])

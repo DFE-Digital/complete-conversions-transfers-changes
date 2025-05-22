@@ -742,12 +742,12 @@ public partial class ProjectsControllerTests
         var projects = establishments.Select((establishment, i) =>
         {
             var project = fixture.Customize(new ProjectCustomization
-                {
-                    LocalAuthorityId = localAuthority.Id,
-                    IncomingTrustUkprn = "12345678",
-                    OutgoingTrustUkprn = "87654321",
-                    RegionalDeliveryOfficerId = otherUser.Id
-                })
+            {
+                LocalAuthorityId = localAuthority.Id,
+                IncomingTrustUkprn = "12345678",
+                OutgoingTrustUkprn = "87654321",
+                RegionalDeliveryOfficerId = otherUser.Id
+            })
                 .Create<Project>();
             project.Urn = establishment.Urn ?? project.Urn;
             switch (filter)
@@ -838,12 +838,12 @@ public partial class ProjectsControllerTests
         var projects = establishments.Select((establishment, i) =>
         {
             var project = fixture.Customize(new ProjectCustomization
-                {
-                    LocalAuthorityId = localAuthority.Id,
-                    IncomingTrustUkprn = "12345678",
-                    OutgoingTrustUkprn = "87654321",
-                    RegionalDeliveryOfficerId = testUser.Id
-                })
+            {
+                LocalAuthorityId = localAuthority.Id,
+                IncomingTrustUkprn = "12345678",
+                OutgoingTrustUkprn = "87654321",
+                RegionalDeliveryOfficerId = testUser.Id
+            })
                 .Create<Project>();
             project.Urn = establishment.Urn ?? project.Urn;
             return project;
@@ -893,7 +893,7 @@ public partial class ProjectsControllerTests
             {
                 LocalAuthorityId = localAuthority.Id,
                 IncomingTrustUkprn = "12345678",
-                OutgoingTrustUkprn = "87654321", 
+                OutgoingTrustUkprn = "87654321",
                 RegionalDeliveryOfficerId = testUser.Id
             }).Create<Project>();
             project.Urn = establishment.Urn ?? project.Urn;
