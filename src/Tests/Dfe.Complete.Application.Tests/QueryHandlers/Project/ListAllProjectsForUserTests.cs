@@ -13,6 +13,7 @@ using Dfe.Complete.Tests.Common.Customizations.Models;
 using DfE.CoreLibs.Testing.AutoFixture.Attributes;
 using DfE.CoreLibs.Testing.AutoFixture.Customizations;
 using MediatR;
+using Microsoft.Extensions.Logging;
 using MockQueryable;
 using Moq;
 using NSubstitute;
@@ -42,14 +43,16 @@ public class ListAllProjectsForUserTests
         ProjectUserFilter filter,
         [Frozen] IListAllProjectsQueryService mockListAllProjectsQueryService,
         [Frozen] Mock<ISender> mockSender,
-        IFixture fixture)
+        IFixture fixture,
+        Mock<ILogger<ListAllProjectsForUserQueryHandler>> _mockLogger)
     {
         //Arrange 
         var mockTrustsClient = new Mock<ITrustsV4Client>();
 
         var handler = new ListAllProjectsForUserQueryHandler(mockListAllProjectsQueryService, 
             mockTrustsClient.Object,
-            mockSender.Object);
+            mockSender.Object,
+            _mockLogger.Object);
 
         var userDto = fixture.Create<UserDto>();
         mockSender.Setup(sender => sender.Send(It.IsAny<GetUserByAdIdQuery>(), It.IsAny<CancellationToken>()))
@@ -117,13 +120,14 @@ public class ListAllProjectsForUserTests
         ProjectUserFilter filter,
         [Frozen] IListAllProjectsQueryService mockListAllProjectsQueryService,
         [Frozen] Mock<ISender> mockSender,
-        IFixture fixture)
+        IFixture fixture,
+        Mock<ILogger<ListAllProjectsForUserQueryHandler>> _mockLogger)
     {
         //Arrange 
         var mockTrustsClient = new Mock<ITrustsV4Client>();
 
         var handler = new ListAllProjectsForUserQueryHandler(mockListAllProjectsQueryService, mockTrustsClient.Object,
-            mockSender.Object);
+            mockSender.Object, _mockLogger.Object);
 
         var userDto = fixture.Create<UserDto>();
         mockSender.Setup(sender => sender.Send(It.IsAny<GetUserByAdIdQuery>(), It.IsAny<CancellationToken>()))
@@ -172,13 +176,14 @@ public class ListAllProjectsForUserTests
         ProjectUserFilter filter,
         [Frozen] IListAllProjectsQueryService mockListAllProjectsQueryService,
         [Frozen] Mock<ISender> mockSender,
-        IFixture fixture)
+        IFixture fixture,
+        Mock<ILogger<ListAllProjectsForUserQueryHandler>> _mockLogger)
     {
         //Arrange 
         var mockTrustsClient = new Mock<ITrustsV4Client>();
 
         var handler = new ListAllProjectsForUserQueryHandler(mockListAllProjectsQueryService, mockTrustsClient.Object,
-            mockSender.Object);
+            mockSender.Object, _mockLogger.Object);
 
         const string errorMessage = "this is a test";
         

@@ -10,6 +10,7 @@ using Dfe.Complete.Infrastructure.Database;
 using Dfe.Complete.Tests.Common.Constants;
 using Dfe.Complete.Tests.Common.Customizations.Models;
 using DfE.CoreLibs.Testing.AutoFixture.Attributes;
+using DfE.CoreLibs.Testing.AutoFixture.Customizations;
 using DfE.CoreLibs.Testing.Mocks.WebApplicationFactory;
 using DfE.CoreLibs.Testing.Mocks.WireMock;
 using Microsoft.EntityFrameworkCore;
@@ -21,7 +22,6 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers.ProjectsController;
 
 public partial class ProjectsControllerTests
 {
-
     [Theory]
     [CustomAutoData(typeof(CustomWebApplicationDbContextFactoryCustomization),
         typeof(LocalAuthorityCustomization),
@@ -228,9 +228,17 @@ public partial class ProjectsControllerTests
         factory.TestClaims = new[] { ApiRoles.ReadRole, ApiRoles.WriteRole, ApiRoles.DeleteRole, ApiRoles.UpdateRole }
             .Select(x => new Claim(ClaimTypes.Role, x)).ToList();
 
+
         var dbContext = factory.GetDbContext<CompleteContext>();
-        var expected = fixture.Customize(new ProjectCustomization())
+
+        var testUser = await dbContext.Users.FirstAsync();
+        const string userAdId = "test-user-adid";
+        testUser.ActiveDirectoryUserId = userAdId;
+
+        var expected = fixture.Customize(new ProjectCustomization { RegionalDeliveryOfficerId = testUser.Id })
             .Create<Project>();
+
+        expected.RegionalDeliveryOfficer = testUser;
 
         var localAuthority = await dbContext.LocalAuthorities.FirstAsync();
         expected.LocalAuthorityId = localAuthority.Id;
@@ -280,7 +288,6 @@ public partial class ProjectsControllerTests
         Assert.Equivalent(expected.GroupId, actual.GroupId);
         Assert.Equivalent(expected.AssignedTo, actual.AssignedTo);
         Assert.Equivalent(expected.Caseworker, actual.Caseworker);
-        Assert.Equivalent(expected.RegionalDeliveryOfficer, actual.RegionalDeliveryOfficer);
         Assert.Equivalent(expected.Contacts, actual.Contacts);
         Assert.Equivalent(expected.Notes, actual.Notes);
     }
@@ -473,6 +480,8 @@ public partial class ProjectsControllerTests
         // Arrange
         var dbContext = factory.GetDbContext<CompleteContext>();
         var testUser = await dbContext.Users.FirstAsync();
+        const string userAdId = "test-user-adid";
+        testUser.ActiveDirectoryUserId = userAdId;
         var localAuthorityCode = "123456";
 
         var allEstablishments = fixture
@@ -495,7 +504,8 @@ public partial class ProjectsControllerTests
         {
             var project = fixture.Customize(new ProjectCustomization
             {
-                AssignedToId = testUser.Id
+                AssignedToId = testUser.Id,
+                RegionalDeliveryOfficerId = testUser.Id
             }).Create<Project>();
 
             project.Urn = establishment.Urn ?? project.Urn;
@@ -568,9 +578,15 @@ public partial class ProjectsControllerTests
 
         // Arrange
         var dbContext = factory.GetDbContext<CompleteContext>();
+
+        var testUser = await dbContext.Users.FirstAsync();
+        const string userAdId = "test-user-adid";
+        testUser.ActiveDirectoryUserId = userAdId;
+
         var expectedRegion = Region.EastMidlands;
 
-        var projects = fixture.Customize(new ProjectCustomization()).CreateMany<Project>(50).ToList();
+        var projects = fixture.Customize(new ProjectCustomization { RegionalDeliveryOfficerId = testUser.Id })
+            .CreateMany<Project>(50).ToList();
 
         var localAuthority = dbContext.LocalAuthorities.AsEnumerable().MinBy(_ => Guid.NewGuid());
         Assert.NotNull(localAuthority);
@@ -619,9 +635,15 @@ public partial class ProjectsControllerTests
 
         // Arrange
         var dbContext = factory.GetDbContext<CompleteContext>();
+
+        var testUser = await dbContext.Users.FirstAsync();
+        const string userAdId = "test-user-adid";
+        testUser.ActiveDirectoryUserId = userAdId;
+
         var expectedTeam = ProjectTeam.BusinessSupport;
 
-        var projects = fixture.Customize(new ProjectCustomization()).CreateMany<Project>(50).ToList();
+        var projects = fixture.Customize(new ProjectCustomization { RegionalDeliveryOfficerId = testUser.Id })
+            .CreateMany<Project>(50).ToList();
 
         var localAuthority = dbContext.LocalAuthorities.AsEnumerable().MinBy(_ => Guid.NewGuid());
         Assert.NotNull(localAuthority);
@@ -658,7 +680,7 @@ public partial class ProjectsControllerTests
         await Assert.ThrowsAsync<CompleteApiException>(() =>
             projectsClient.ListAllProjectsForTeamAsync(null, null, null, null, null, null, 0, 50));
     }
-    
+
     [AttributeUsage(AttributeTargets.Method, AllowMultiple = true)]
     private class ListByUserInlineAutoDataAttribute : CompositeDataAttribute
     {
@@ -688,6 +710,7 @@ public partial class ProjectsControllerTests
         // // Arrange
         var dbContext = factory.GetDbContext<CompleteContext>();
         var testUser = await dbContext.Users.FirstAsync();
+        var otherUser = await dbContext.Users.FirstAsync(user => user.Id != testUser.Id);
         const string userAdId = "test-user-adid";
 
         testUser.ActiveDirectoryUserId = userAdId;
@@ -699,10 +722,12 @@ public partial class ProjectsControllerTests
             trustResults.Add(incomingTrust);
             trustResults.Add(outgoingTrust);
         }
+
         Assert.NotNull(factory.WireMockServer);
         factory.WireMockServer.AddGetWithJsonResponse($"/v4/trusts/bulk", trustResults.ToArray());
 
-        var establishments = fixture.Customize(new GiasEstablishmentsCustomization()).CreateMany<GiasEstablishment>(numberOfEstablishments)
+        var establishments = fixture.Customize(new GiasEstablishmentsCustomization())
+            .CreateMany<GiasEstablishment>(numberOfEstablishments)
             .ToList();
         var localAuthority = dbContext.LocalAuthorities.AsEnumerable().MinBy(_ => Guid.NewGuid());
         Assert.NotNull(localAuthority);
@@ -716,6 +741,7 @@ public partial class ProjectsControllerTests
                     LocalAuthorityId = localAuthority.Id,
                     IncomingTrustUkprn = "12345678",
                     OutgoingTrustUkprn = "87654321",
+                    RegionalDeliveryOfficerId = otherUser.Id
                 })
                 .Create<Project>();
             project.Urn = establishment.Urn ?? project.Urn;
@@ -730,6 +756,7 @@ public partial class ProjectsControllerTests
                 default:
                     throw new ArgumentOutOfRangeException($"Filter not supported {filter}");
             }
+
             return project;
         }).ToList();
 
@@ -769,15 +796,15 @@ public partial class ProjectsControllerTests
 
     [Theory]
     [CustomAutoData(typeof(CustomWebApplicationDbContextFactoryCustomization), typeof(GiasEstablishmentsCustomization))]
-    public async Task SearchProjectsWithEstablishmentName_ShouldReturnBadRequest_IfSearchEmpty( 
-       CustomWebApplicationDbContextFactory<Program> factory,
-       IProjectsClient projectsClient)
+    public async Task SearchProjectsWithEstablishmentName_ShouldReturnBadRequest_IfSearchEmpty(
+        CustomWebApplicationDbContextFactory<Program> factory,
+        IProjectsClient projectsClient)
     {
         factory.TestClaims = [new Claim(ClaimTypes.Role, ApiRoles.ReadRole)];
 
         // Act & Assert
         var exception = await Assert.ThrowsAsync<CompleteApiException>(() =>
-            projectsClient.SearchProjectsAsync(ProjectState.Active, "  ", 0, 50));
+            projectsClient.SearchProjectsAsync("  ", 0, 50));
 
         Assert.Contains("The SearchTerm field is required.", exception.Response);
     }
@@ -785,14 +812,17 @@ public partial class ProjectsControllerTests
     [Theory]
     [CustomAutoData(typeof(CustomWebApplicationDbContextFactoryCustomization), typeof(GiasEstablishmentsCustomization))]
     public async Task SearchProjectsWithEstablishmentName_Async_ShouldReturnList(
-       CustomWebApplicationDbContextFactory<Program> factory,
-       IProjectsClient projectsClient,
-       IFixture fixture)
+        CustomWebApplicationDbContextFactory<Program> factory,
+        IProjectsClient projectsClient,
+        IFixture fixture)
     {
         factory.TestClaims = [new Claim(ClaimTypes.Role, ApiRoles.ReadRole)];
 
         // Arrange
-        var dbContext = factory.GetDbContext<CompleteContext>(); 
+        var dbContext = factory.GetDbContext<CompleteContext>();
+        var testUser = await dbContext.Users.FirstAsync();
+        const string userAdId = "test-user-adid";
+        testUser.ActiveDirectoryUserId = userAdId;
         var establishments = fixture.Customize(new GiasEstablishmentsCustomization()).CreateMany<GiasEstablishment>(10)
             .ToList();
         var localAuthority = dbContext.LocalAuthorities.AsEnumerable().MinBy(_ => Guid.NewGuid());
@@ -803,23 +833,24 @@ public partial class ProjectsControllerTests
         var projects = establishments.Select((establishment, i) =>
         {
             var project = fixture.Customize(new ProjectCustomization
-            {
-                LocalAuthorityId = localAuthority.Id,
-                IncomingTrustUkprn = "12345678",
-                OutgoingTrustUkprn = "87654321"
-            })
+                {
+                    LocalAuthorityId = localAuthority.Id,
+                    IncomingTrustUkprn = "12345678",
+                    OutgoingTrustUkprn = "87654321",
+                    RegionalDeliveryOfficerId = testUser.Id
+                })
                 .Create<Project>();
-            project.Urn = establishment.Urn ?? project.Urn; 
+            project.Urn = establishment.Urn ?? project.Urn;
             return project;
         }).ToList();
 
         await dbContext.Projects.AddRangeAsync(projects);
         await dbContext.SaveChangesAsync();
         var establishment = establishments.First();
-        var searchTerm = establishment.Name; 
+        var searchTerm = establishment.Name;
 
         // Act
-        var results = await projectsClient.SearchProjectsAsync(ProjectState.Active, searchTerm, 0, 20, CancellationToken.None);
+        var results = await projectsClient.SearchProjectsAsync(searchTerm, 0, 20, CancellationToken.None);
 
         var expectedProjects = projects
             .Where(p => p.Urn == establishment.Urn)
@@ -829,17 +860,21 @@ public partial class ProjectsControllerTests
         Assert.NotNull(results);
         Assert.Equal(expectedProjects.Count, results.Count);
     }
+
     [Theory]
     [CustomAutoData(typeof(CustomWebApplicationDbContextFactoryCustomization), typeof(GiasEstablishmentsCustomization))]
     public async Task SearchProjectsWithUKPRN_Async_ShouldReturnList(
-       CustomWebApplicationDbContextFactory<Program> factory,
-       IProjectsClient projectsClient,
-       IFixture fixture)
+        CustomWebApplicationDbContextFactory<Program> factory,
+        IProjectsClient projectsClient,
+        IFixture fixture)
     {
         factory.TestClaims = [new Claim(ClaimTypes.Role, ApiRoles.ReadRole)];
 
         // Arrange
         var dbContext = factory.GetDbContext<CompleteContext>();
+        var testUser = await dbContext.Users.FirstAsync();
+        const string userAdId = "test-user-adid";
+        testUser.ActiveDirectoryUserId = userAdId;
         var establishments = fixture.Customize(new GiasEstablishmentsCustomization()).CreateMany<GiasEstablishment>(10)
             .ToList();
         var localAuthority = dbContext.LocalAuthorities.AsEnumerable().MinBy(_ => Guid.NewGuid());
@@ -854,6 +889,7 @@ public partial class ProjectsControllerTests
                 LocalAuthorityId = localAuthority.Id,
                 IncomingTrustUkprn = "12345678",
                 OutgoingTrustUkprn = "87654321", 
+                RegionalDeliveryOfficerId = testUser.Id
             }).Create<Project>();
             project.Urn = establishment.Urn ?? project.Urn;
             return project;
@@ -864,38 +900,43 @@ public partial class ProjectsControllerTests
         var ukprn = projects.First().IncomingTrustUkprn;  
 
         // Act
-        var results = await projectsClient.SearchProjectsAsync(ProjectState.Active, ukprn!.ToString(), 0, 20, CancellationToken.None);
+        var results = await projectsClient.SearchProjectsAsync(ukprn!.ToString(), 0, 20, CancellationToken.None);
 
         var expectedProjects = projects
-            .Where(p => p.IncomingTrustUkprn == ukprn && p.State == Domain.Enums.ProjectState.Active)
+            .Where(p => p.IncomingTrustUkprn == ukprn)
             .ToList();
 
         // Assert
         Assert.NotNull(results);
         Assert.Equal(expectedProjects.Count, results.Count);
     }
+
     [Theory]
     [CustomAutoData(typeof(CustomWebApplicationDbContextFactoryCustomization), typeof(GiasEstablishmentsCustomization))]
     public async Task SearchProjectsWithEstablishmentNumber_Async_ShouldReturnList(
-      CustomWebApplicationDbContextFactory<Program> factory,
-      IProjectsClient projectsClient,
-      IFixture fixture)
+        CustomWebApplicationDbContextFactory<Program> factory,
+        IProjectsClient projectsClient,
+        IFixture fixture)
     {
         // Arrange
         factory.TestClaims = [new Claim(ClaimTypes.Role, ApiRoles.ReadRole)];
         var dbContext = factory.GetDbContext<CompleteContext>();
+
+        var testUser = await dbContext.Users.FirstAsync();
+        const string userAdId = "test-user-adid";
+        testUser.ActiveDirectoryUserId = userAdId;
         int i = 0;
         var establishments = Enumerable.Range(0, 10)
-           .Select(_ =>
-           {  
-               i++;
+            .Select(_ =>
+            {
+                i++;
 
-               return fixture.Customize(new GiasEstablishmentsCustomization
-               {
-                   EstablishmentNumber = i.ToString("D4")
-               }).Create<GiasEstablishment>();
-           })
-           .ToList();
+                return fixture.Customize(new GiasEstablishmentsCustomization
+                {
+                    EstablishmentNumber = i.ToString("D4")
+                }).Create<GiasEstablishment>();
+            })
+            .ToList();
         var localAuthority = dbContext.LocalAuthorities.AsEnumerable().MinBy(_ => Guid.NewGuid());
         Assert.NotNull(localAuthority);
 
@@ -908,6 +949,7 @@ public partial class ProjectsControllerTests
                 LocalAuthorityId = localAuthority.Id,
                 IncomingTrustUkprn = "12345678",
                 OutgoingTrustUkprn = "87654321",
+                RegionalDeliveryOfficerId = testUser.Id
             }).Create<Project>();
             project.Urn = establishment.Urn ?? project.Urn;
             return project;
@@ -915,10 +957,10 @@ public partial class ProjectsControllerTests
 
         await dbContext.Projects.AddRangeAsync(projects);
         await dbContext.SaveChangesAsync();
-        var establishment = establishments.First(); 
+        var establishment = establishments.First();
 
         // Act
-        var results = await projectsClient.SearchProjectsAsync(ProjectState.Active, establishment.EstablishmentNumber!.ToString(), 0, 20, CancellationToken.None);
+        var results = await projectsClient.SearchProjectsAsync(establishment.EstablishmentNumber!, 0, 20, CancellationToken.None);
 
         var expectedProjects = projects
             .Where(p => p.Urn == establishment.Urn && p.State == Domain.Enums.ProjectState.Active)
@@ -928,17 +970,22 @@ public partial class ProjectsControllerTests
         Assert.NotNull(results);
         Assert.Equal(expectedProjects.Count, results.Count);
     }
+
     [Theory]
     [CustomAutoData(typeof(CustomWebApplicationDbContextFactoryCustomization), typeof(GiasEstablishmentsCustomization))]
     public async Task SearchProjectsWithUrn_Async_ShouldReturnList(
-       CustomWebApplicationDbContextFactory<Program> factory,
-       IProjectsClient projectsClient,
-       IFixture fixture)
+        CustomWebApplicationDbContextFactory<Program> factory,
+        IProjectsClient projectsClient,
+        IFixture fixture)
     {
         factory.TestClaims = [new Claim(ClaimTypes.Role, ApiRoles.ReadRole)];
 
         // Arrange
         var dbContext = factory.GetDbContext<CompleteContext>();
+
+        var testUser = await dbContext.Users.FirstAsync();
+        const string userAdId = "test-user-adid";
+        testUser.ActiveDirectoryUserId = userAdId;
         var random = new Random();
         var usedUrns = new HashSet<int>();
 
@@ -962,13 +1009,14 @@ public partial class ProjectsControllerTests
 
         await dbContext.GiasEstablishments.AddRangeAsync(establishments);
         var projects = establishments.Select((establishment, i) =>
-        { 
+        {
             var project = fixture.Customize(new ProjectCustomization
             {
                 LocalAuthorityId = localAuthority.Id,
                 IncomingTrustUkprn = "12345678",
                 OutgoingTrustUkprn = "87654321",
-                State = Domain.Enums.ProjectState.Active.GetHashCode()
+                State = Domain.Enums.ProjectState.Active.GetHashCode(),
+                RegionalDeliveryOfficerId = testUser.Id
             }).Create<Project>();
             project.Urn = establishment.Urn ?? project.Urn;
             return project;
@@ -979,7 +1027,7 @@ public partial class ProjectsControllerTests
         var urn = projects.First(p => p.State == Domain.Enums.ProjectState.Active).Urn;
 
         // Act
-        var results = await projectsClient.SearchProjectsAsync(ProjectState.Active, urn!.Value.ToString(), 0, 20, CancellationToken.None);
+        var results = await projectsClient.SearchProjectsAsync(urn!.Value.ToString(), 0, 20, CancellationToken.None);
 
         var expectedProjects = projects
             .Where(p => p.Urn == urn)
@@ -991,16 +1039,22 @@ public partial class ProjectsControllerTests
     }
 
     [Theory]
-    [CustomAutoData(typeof(CustomWebApplicationDbContextFactoryCustomization), typeof(GiasEstablishmentsCustomization))]
+    [CustomAutoData(typeof(CustomWebApplicationDbContextFactoryCustomization), typeof(GiasEstablishmentsCustomization),
+        typeof(OmitCircularReferenceCustomization))]
     public async Task ListAllProjectsByTrustRef_Async_ShouldReturnList(
-       CustomWebApplicationDbContextFactory<Program> factory,
-       IProjectsClient projectsClient,
-       IFixture fixture)
+        CustomWebApplicationDbContextFactory<Program> factory,
+        IProjectsClient projectsClient,
+        IFixture fixture)
     {
         factory.TestClaims = [new Claim(ClaimTypes.Role, ApiRoles.ReadRole)];
 
         // Arrange
         var dbContext = factory.GetDbContext<CompleteContext>();
+
+        var testUser = await dbContext.Users.FirstAsync();
+        const string userAdId = "test-user-adid";
+        testUser.ActiveDirectoryUserId = userAdId;
+
         var establishments = fixture.Customize(new GiasEstablishmentsCustomization()).CreateMany<GiasEstablishment>(10)
             .ToList();
         var localAuthority = dbContext.LocalAuthorities.AsEnumerable().MinBy(_ => Guid.NewGuid());
@@ -1017,6 +1071,7 @@ public partial class ProjectsControllerTests
                 IncomingTrustUkprn = "12345678",
                 OutgoingTrustUkprn = "87654321",
                 NewTrustReferenceNumber = string.Concat(trustPref, i),
+                RegionalDeliveryOfficerId = testUser.Id
             }).Create<Project>();
             project.Urn = establishment.Urn ?? project.Urn;
             return project;
@@ -1026,12 +1081,13 @@ public partial class ProjectsControllerTests
         await dbContext.SaveChangesAsync();
         var ukprn = projects.First().IncomingTrustUkprn;
 
-        // Act
-        var results = await projectsClient.ListAllProjectsByTrustRefAsync(trustReference, 0, 20, CancellationToken.None);
-
         var expectedProjects = projects
             .Where(p => p.NewTrustReferenceNumber == trustReference && p.State == Domain.Enums.ProjectState.Active)
             .ToList();
+
+        // Act
+        var results =
+            await projectsClient.ListAllProjectsByTrustRefAsync(trustReference, 0, 20, CancellationToken.None);
 
         // Assert
         Assert.NotNull(results);
@@ -1042,14 +1098,19 @@ public partial class ProjectsControllerTests
     [Theory]
     [CustomAutoData(typeof(CustomWebApplicationDbContextFactoryCustomization), typeof(GiasEstablishmentsCustomization))]
     public async Task ListAllProjectsByTrustRef_Async_ShouldReturnNoList_OnNoRefMatched(
-       CustomWebApplicationDbContextFactory<Program> factory,
-       IProjectsClient projectsClient,
-       IFixture fixture)
+        CustomWebApplicationDbContextFactory<Program> factory,
+        IProjectsClient projectsClient,
+        IFixture fixture)
     {
         factory.TestClaims = [new Claim(ClaimTypes.Role, ApiRoles.ReadRole)];
 
         // Arrange
         var dbContext = factory.GetDbContext<CompleteContext>();
+
+        var testUser = await dbContext.Users.FirstAsync();
+        const string userAdId = "test-user-adid";
+        testUser.ActiveDirectoryUserId = userAdId;
+
         var establishments = fixture.Customize(new GiasEstablishmentsCustomization()).CreateMany<GiasEstablishment>(1)
             .ToList();
         var localAuthority = dbContext.LocalAuthorities.AsEnumerable().MinBy(_ => Guid.NewGuid());
@@ -1066,6 +1127,7 @@ public partial class ProjectsControllerTests
                 IncomingTrustUkprn = "12345678",
                 OutgoingTrustUkprn = "87654321",
                 NewTrustReferenceNumber = string.Concat(trustPref, i),
+                RegionalDeliveryOfficerId = testUser.Id
             }).Create<Project>();
             project.Urn = establishment.Urn ?? project.Urn;
             return project;

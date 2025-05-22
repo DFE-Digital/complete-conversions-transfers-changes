@@ -1,30 +1,21 @@
 using Dfe.Complete.Application.Projects.Queries.GetProject;
 using MediatR;
 using System.ComponentModel.DataAnnotations;
-using Dfe.Complete.Utils;
+using Dfe.Complete.Utils; 
 
 namespace Dfe.Complete.Validators;
 
 [AttributeUsage(AttributeTargets.Property)]
-public partial class TrustNameAttribute : ValidationAttribute
+public partial class TrustNameAttribute(string trustReference, ISender sender) : ValidationAttribute
 {
-    private readonly string _trustReference;
-    private readonly ISender _sender;
-
-    public TrustNameAttribute(string trustReference, ISender sender)
-    {
-        _trustReference = trustReference;
-        _sender = sender;
-    }
-    
     protected override ValidationResult? IsValid(object? value, ValidationContext validationContext)
     {
         var trustName = value as string ?? string.Empty;
-        var trnProperty = validationContext.ObjectType.GetProperty(_trustReference);
+        var trnProperty = validationContext.ObjectType.GetProperty(trustReference);
 
         if (trnProperty == null)
         {
-            return new ValidationResult($"Property '{_trustReference}' not found.");
+            return new ValidationResult($"Property '{trustReference}' not found.");
         }
 
         var trn = trnProperty.GetValue(validationContext.ObjectInstance)?.ToString();
@@ -39,7 +30,7 @@ public partial class TrustNameAttribute : ValidationAttribute
             return ValidationResult.Success;
         }
 
-        return ValidateTrustNameAsync(trn, trustName, _sender).GetAwaiter().GetResult();
+        return ValidateTrustNameAsync(trn, trustName, sender).GetAwaiter().GetResult();
     }
     
     private async Task<ValidationResult?> ValidateTrustNameAsync(string? trn, string trustName, ISender sender)
@@ -63,11 +54,6 @@ public partial class TrustNameAttribute : ValidationAttribute
         catch (NotFoundException notFoundException)
         {
             return new ValidationResult(notFoundException.Message);
-        }
-        catch (Exception e)
-        {
-            Console.WriteLine(e);
-            throw;
         }
     }
 }

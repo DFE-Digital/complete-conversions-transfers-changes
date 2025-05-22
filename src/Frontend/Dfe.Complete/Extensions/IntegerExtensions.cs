@@ -1,4 +1,6 @@
-﻿namespace Dfe.Complete.Extensions
+﻿using Dfe.Complete.Application.Common.Models;
+
+namespace Dfe.Complete.Extensions
 {
 	public static class IntegerExtensions
 	{
@@ -19,5 +21,10 @@
 			}
 			return null;
 		}
-	}
+
+		public static string ToResultsCountMessage(this int value)
+        {
+            return $"{value} result{(value == 1 ? "" : "s")} found";
+        }
+    }
 }

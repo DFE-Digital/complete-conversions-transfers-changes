@@ -6,13 +6,14 @@ using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Utils;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace Dfe.Complete.Application.Projects.Queries.ListAllProjects
 {
     public record ListAllTrustsWithProjectsQuery() : PaginatedRequest<PaginatedResult<List<ListTrustsWithProjectsResultModel>>>;
 
     public class ListAllTrustsWithProjectsQueryHandler(
-        IListAllProjectsQueryService listAllProjectsQueryService, ITrustsV4Client trustsClient)
+        IListAllProjectsQueryService listAllProjectsQueryService, ITrustsV4Client trustsClient, ILogger<ListAllTrustsWithProjectsQueryHandler> logger)
         : IRequestHandler<ListAllTrustsWithProjectsQuery, PaginatedResult<List<ListTrustsWithProjectsResultModel>>>
     {
         public async Task<PaginatedResult<List<ListTrustsWithProjectsResultModel>>> Handle(ListAllTrustsWithProjectsQuery request,
@@ -66,6 +67,7 @@ namespace Dfe.Complete.Application.Projects.Queries.ListAllProjects
             }
             catch (Exception ex)
             {
+                logger.LogError(ex, "Exception for {Name} Request - {@Request}", nameof(ListAllTrustsWithProjectsQueryHandler), request);
                 return PaginatedResult<List<ListTrustsWithProjectsResultModel>>.Failure(ex.Message);
             }
         }

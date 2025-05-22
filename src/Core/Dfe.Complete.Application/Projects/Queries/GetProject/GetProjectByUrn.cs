@@ -5,13 +5,15 @@ using Dfe.Complete.Domain.Entities;
 using Dfe.Complete.Application.Common.Models;
 using AutoMapper;
 using Dfe.Complete.Application.Projects.Models;
+using Microsoft.Extensions.Logging;
 
 namespace Dfe.Complete.Application.Projects.Queries.GetProject
 {
     public record GetProjectByUrnQuery(Urn Urn) : IRequest<Result<ProjectDto?>>;
 
     public class GetProjectByUrnQueryHandler(ICompleteRepository<Project> projectRepository,
-         IMapper mapper)
+         IMapper mapper,
+         ILogger<GetProjectByUrnQueryHandler> logger)
         : IRequestHandler<GetProjectByUrnQuery, Result<ProjectDto?>>
     {
         public async Task<Result<ProjectDto?>> Handle(GetProjectByUrnQuery request, CancellationToken cancellationToken)
@@ -26,6 +28,7 @@ namespace Dfe.Complete.Application.Projects.Queries.GetProject
             }
             catch (Exception ex)
             {
+                logger.LogError(ex, "Exception for {Name} Request - {@Request}", nameof(GetProjectByUrnQueryHandler), request);
                 return Result<ProjectDto?>.Failure(ex.Message);
             }
         }

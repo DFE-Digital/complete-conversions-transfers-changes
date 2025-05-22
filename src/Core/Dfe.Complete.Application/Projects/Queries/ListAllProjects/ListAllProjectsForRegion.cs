@@ -5,6 +5,7 @@ using Dfe.Complete.Application.Projects.Models;
 using Dfe.Complete.Domain.Enums;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace Dfe.Complete.Application.Projects.Queries.ListAllProjects;
 
@@ -17,7 +18,8 @@ public record ListAllProjectsForRegionQuery(
     : PaginatedRequest<PaginatedResult<List<ListAllProjectsResultModel>>>;
 
 public class ListAllProjectsForRegionQueryHandler(
-    IListAllProjectsQueryService listAllProjectsQueryService)
+    IListAllProjectsQueryService listAllProjectsQueryService,
+    ILogger<ListAllProjectsForRegionQueryHandler> logger)
     : IRequestHandler<ListAllProjectsForRegionQuery, PaginatedResult<List<ListAllProjectsResultModel>>>
 
 {
@@ -42,6 +44,7 @@ public class ListAllProjectsForRegionQueryHandler(
         }
         catch (Exception e)
         {
+            logger.LogError(e, "Exception for {Name} Request - {@Request}", nameof(ListAllProjectsForRegionQueryHandler), request);
             return PaginatedResult<List<ListAllProjectsResultModel>>.Failure(e.Message);
         }
     }
