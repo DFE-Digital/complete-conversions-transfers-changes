@@ -32,6 +32,8 @@ Security in case of vulnerabilities.
 - Sort all projects by region list alphabetically
 
 ### Fixed  
+- Note FK Ids are now required
+- Separated created and assigned users in project creation
 
 ### Removed
 - `UserTabAccessHelper` class is no longer required. Use policies instead

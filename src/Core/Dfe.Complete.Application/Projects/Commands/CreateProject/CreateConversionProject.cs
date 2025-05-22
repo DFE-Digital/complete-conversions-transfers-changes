@@ -59,8 +59,8 @@ namespace Dfe.Complete.Application.Projects.Commands.CreateProject
                 request.IncomingTrustSharepointLink,
                 commonProject.ProjectGroupDto?.Id,
                 commonProject.ProjectTeam,
-                commonProject.User?.Id,
-                commonProject.User?.Id,
+                commonProject.CreatedByUser.Id,
+                commonProject.AssignedUser?.Id,
                 commonProject.AssignedAt,
                 request.HandoverComments,
                 commonProject.LocalAuthority.LocalAuthorityId.Value);

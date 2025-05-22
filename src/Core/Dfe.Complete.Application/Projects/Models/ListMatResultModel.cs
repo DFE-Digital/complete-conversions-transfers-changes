@@ -1,3 +1,3 @@
 ﻿namespace Dfe.Complete.Application.Projects.Models;
 
-public record ListMatResultModel(string identifier, string trustName, IEnumerable<ListAllProjectsQueryModel> projectModels);
+public record ListMatResultModel(string Identifier, string TrustName, IEnumerable<ListAllProjectsResultModel> ProjectModels);

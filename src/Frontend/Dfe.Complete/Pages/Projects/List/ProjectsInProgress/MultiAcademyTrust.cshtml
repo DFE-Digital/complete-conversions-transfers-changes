@@ -9,8 +9,8 @@
 <div class="govuk-grid-column-two-thirds">
 
     <h1 class="govuk-heading-xl">
-        <span class="govuk-caption-l">TRN: @Model.MAT.identifier</span>
-        @Model.MAT.trustName
+        <span class="govuk-caption-l">TRN: @Model.MAT.Identifier</span>
+        @Model.MAT.TrustName
     </h1>
 </div>
 <div class="govuk-grid-column-full">
@@ -38,16 +38,16 @@
         </thead>
         <tbody class="govuk-table__body">
 
-        @foreach (var project in Model.MAT.projectModels)
+        @foreach (var project in Model.MAT.ProjectModels)
         {
             <tr class="govuk-table__row">
                 <td class="govuk-table__header govuk-table__cell">
-                    <a class="govuk-link" href="@AllProjectsModel.GetProjectSummaryUrl(project.Project.Id)">@project.Establishment.Name</a>
+                    <a class="govuk-link" href="@AllProjectsModel.GetProjectSummaryUrl(project.ProjectId)">@project.EstablishmentName</a>
                 </td>
-                <td class="govuk-table__cell">@project.Establishment.Urn?.Value</td>
-                <td class="govuk-table__cell">@project.Project.SignificantDate.ToMonthYearString()</td>
-                <td class="govuk-table__cell">@project.Project.Type.ToDisplayDescription()</td>
-                <td class="govuk-table__cell">@(project.Project.AssignedTo != null ? $"{project.Project.AssignedTo.FullName}" : "Not yet assigned")</td>
+                <td class="govuk-table__cell">@project.Urn.Value</td>
+                <td class="govuk-table__cell">@project.ConversionOrTransferDate.ToMonthYearString()</td>
+                <td class="govuk-table__cell">@project.ProjectType.ToDisplayDescription()</td>
+                <td class="govuk-table__cell">@(project.AssignedToFullName != null ? $"{project.AssignedToFullName}" : "Not yet assigned")</td>
             </tr>
         }
         </tbody>
