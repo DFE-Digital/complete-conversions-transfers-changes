@@ -36,10 +36,8 @@ namespace Dfe.Complete.Application.Projects.Queries.ListAllProjects
                 if (request.IsFormAMat && allProjects.Any())
                     trustName = allProjects.First().Project.NewTrustName;
 
-                allProjects = allProjects
-                    .Paginate(request.Page, request.Count);
-
                 var projectsQuery = allProjects
+                    .Paginate(request.Page, request.Count)
                     .Select(item => ListAllProjectsResultModel.MapProjectAndEstablishmentToListAllProjectResultModel(
                         item.Project,
                         item.Establishment
