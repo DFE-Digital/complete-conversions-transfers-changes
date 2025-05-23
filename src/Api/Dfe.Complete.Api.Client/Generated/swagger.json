@@ -917,13 +917,29 @@
             "x-position": 3
           },
           {
+            "name": "OrderProjectQueryBy.Field",
+            "in": "query",
+            "schema": {
+              "$ref": "#/components/schemas/OrderProjectByField"
+            },
+            "x-position": 4
+          },
+          {
+            "name": "OrderProjectQueryBy.Direction",
+            "in": "query",
+            "schema": {
+              "$ref": "#/components/schemas/OrderByDirection"
+            },
+            "x-position": 5
+          },
+          {
             "name": "Page",
             "in": "query",
             "schema": {
               "type": "integer",
               "format": "int32"
             },
-            "x-position": 4
+            "x-position": 6
           },
           {
             "name": "Count",
@@ -932,7 +948,7 @@
               "type": "integer",
               "format": "int32"
             },
-            "x-position": 5
+            "x-position": 7
           }
         ],
         "responses": {
@@ -2837,6 +2853,11 @@
                 "$ref": "#/components/schemas/User"
               }
             ]
+          },
+          "createdDate": {
+            "type": "string",
+            "format": "date",
+            "nullable": true
           }
         }
       },
