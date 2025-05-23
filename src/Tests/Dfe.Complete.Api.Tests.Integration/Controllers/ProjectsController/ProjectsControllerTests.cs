@@ -43,13 +43,13 @@ public partial class ProjectsControllerTests
         Assert.NotNull(giasEstablishment.Urn);
 
         var projects = fixture.Customize(new ProjectCustomization
-            {
-                RegionalDeliveryOfficerId = testUser.Id,
-                CaseworkerId = testUser.Id,
-                AssignedToId = testUser.Id,
-                LocalAuthorityId = localAuthority.Id,
-                Urn = giasEstablishment.Urn
-            })
+        {
+            RegionalDeliveryOfficerId = testUser.Id,
+            CaseworkerId = testUser.Id,
+            AssignedToId = testUser.Id,
+            LocalAuthorityId = localAuthority.Id,
+            Urn = giasEstablishment.Urn
+        })
             .CreateMany<Project>(50).ToList();
 
 
@@ -83,11 +83,11 @@ public partial class ProjectsControllerTests
         var projects = establishments.Select(establishment =>
         {
             var project = fixture.Customize(new ProjectCustomization
-                {
-                    RegionalDeliveryOfficerId = testUser.Id,
-                    CaseworkerId = testUser.Id,
-                    AssignedToId = testUser.Id
-                })
+            {
+                RegionalDeliveryOfficerId = testUser.Id,
+                CaseworkerId = testUser.Id,
+                AssignedToId = testUser.Id
+            })
                 .Create<Project>();
             project.Urn = establishment.Urn ?? project.Urn;
             return project;
@@ -102,7 +102,7 @@ public partial class ProjectsControllerTests
 
         // Act
         var results = await projectsClient.ListAllProjectsAsync(
-            null, null, null, 0, 50);
+            null, null, null, null, null, 0, 50);
 
         // Assert
         Assert.NotNull(results);
@@ -157,11 +157,11 @@ public partial class ProjectsControllerTests
         var projects = establishments.Select(establishment =>
         {
             var project = fixture.Customize(new ProjectCustomization
-                {
-                    RegionalDeliveryOfficerId = testUser.Id,
-                    CaseworkerId = testUser.Id,
-                    AssignedToId = testUser.Id
-                })
+            {
+                RegionalDeliveryOfficerId = testUser.Id,
+                CaseworkerId = testUser.Id,
+                AssignedToId = testUser.Id
+            })
                 .Create<Project>();
             project.Urn = establishment.Urn ?? project.Urn;
             return project;
@@ -177,14 +177,19 @@ public partial class ProjectsControllerTests
 
         // Act
         var results = await projectsClient.ListAllProjectsAsync(
-            ProjectState.Completed, null, null, 0, 50);
+            ProjectState.Completed, null, null, OrderProjectByField.CompletedAt, OrderByDirection.Descending, 0, 50);
+
+        projects = projects
+            .Where(project => project.State == Domain.Enums.ProjectState.Completed)
+            .OrderByDescending(project => project.CompletedAt).ToList();
 
         // Assert
         Assert.NotNull(results);
         Assert.Equal(17, results.Count);
-        foreach (var result in results)
+        for (var i = 0; i < results.Count; i++)
         {
-            var project = projects.Find(p => p.Id.Value == result.ProjectId?.Value);
+            var result = results[i];
+            var project = projects[i];
             var establishment = establishments.Find(e => e.Urn?.Value == result.Urn?.Value);
 
             Assert.NotNull(result.EstablishmentName);
@@ -314,11 +319,11 @@ public partial class ProjectsControllerTests
         var projects = establishments.Select(establishment =>
         {
             var project = fixture.Customize(new ProjectCustomization
-                {
-                    RegionalDeliveryOfficerId = testUser.Id,
-                    CaseworkerId = testUser.Id,
-                    AssignedToId = testUser.Id
-                })
+            {
+                RegionalDeliveryOfficerId = testUser.Id,
+                CaseworkerId = testUser.Id,
+                AssignedToId = testUser.Id
+            })
                 .Create<Project>();
             project.Urn = establishment.Urn ?? project.Urn;
             project.IncomingTrustUkprn = new Ukprn(12345678);
@@ -405,11 +410,11 @@ public partial class ProjectsControllerTests
         var projects = establishments.Select(establishment =>
         {
             var project = fixture.Customize(new ProjectCustomization
-                {
-                    RegionalDeliveryOfficerId = testUser.Id,
-                    CaseworkerId = testUser.Id,
-                    AssignedToId = testUser.Id
-                })
+            {
+                RegionalDeliveryOfficerId = testUser.Id,
+                CaseworkerId = testUser.Id,
+                AssignedToId = testUser.Id
+            })
                 .Create<Project>();
             project.Urn = establishment.Urn ?? project.Urn;
             project.IncomingTrustUkprn = null;
@@ -735,12 +740,12 @@ public partial class ProjectsControllerTests
         var projects = establishments.Select((establishment, i) =>
         {
             var project = fixture.Customize(new ProjectCustomization
-                {
-                    LocalAuthorityId = localAuthority.Id,
-                    IncomingTrustUkprn = "12345678",
-                    OutgoingTrustUkprn = "87654321",
-                    RegionalDeliveryOfficerId = otherUser.Id
-                })
+            {
+                LocalAuthorityId = localAuthority.Id,
+                IncomingTrustUkprn = "12345678",
+                OutgoingTrustUkprn = "87654321",
+                RegionalDeliveryOfficerId = otherUser.Id
+            })
                 .Create<Project>();
             project.Urn = establishment.Urn ?? project.Urn;
             switch (filter)
@@ -831,12 +836,12 @@ public partial class ProjectsControllerTests
         var projects = establishments.Select((establishment, i) =>
         {
             var project = fixture.Customize(new ProjectCustomization
-                {
-                    LocalAuthorityId = localAuthority.Id,
-                    IncomingTrustUkprn = "12345678",
-                    OutgoingTrustUkprn = "87654321",
-                    RegionalDeliveryOfficerId = testUser.Id
-                })
+            {
+                LocalAuthorityId = localAuthority.Id,
+                IncomingTrustUkprn = "12345678",
+                OutgoingTrustUkprn = "87654321",
+                RegionalDeliveryOfficerId = testUser.Id
+            })
                 .Create<Project>();
             project.Urn = establishment.Urn ?? project.Urn;
             return project;
@@ -878,7 +883,7 @@ public partial class ProjectsControllerTests
         var localAuthority = dbContext.LocalAuthorities.AsEnumerable().MinBy(_ => Guid.NewGuid());
         Assert.NotNull(localAuthority);
 
-        await dbContext.GiasEstablishments.AddRangeAsync(establishments); 
+        await dbContext.GiasEstablishments.AddRangeAsync(establishments);
 
         var projects = establishments.Select((establishment, i) =>
         {
@@ -886,7 +891,7 @@ public partial class ProjectsControllerTests
             {
                 LocalAuthorityId = localAuthority.Id,
                 IncomingTrustUkprn = "12345678",
-                OutgoingTrustUkprn = "87654321", 
+                OutgoingTrustUkprn = "87654321",
                 RegionalDeliveryOfficerId = testUser.Id
             }).Create<Project>();
             project.Urn = establishment.Urn ?? project.Urn;
@@ -895,7 +900,7 @@ public partial class ProjectsControllerTests
 
         await dbContext.Projects.AddRangeAsync(projects);
         await dbContext.SaveChangesAsync();
-        var ukprn = projects.First().IncomingTrustUkprn;  
+        var ukprn = projects.First().IncomingTrustUkprn;
 
         // Act
         var results = await projectsClient.SearchProjectsAsync(ukprn!.ToString(), 0, 20, CancellationToken.None);
