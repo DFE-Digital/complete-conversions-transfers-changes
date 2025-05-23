@@ -1,6 +1,5 @@
 ﻿@using Dfe.Complete.Constants
 @using Dfe.Complete.TagHelpers
-@using Dfe.Complete.TagHelpers
 @model Dfe.Complete.Pages.Projects.TaskList.TaskListModel
 @{
     var handoverWithDeliveryOfficerLink = string.Format(RouteConstants.ProjectHandoverWithDeliveryOfficerTask, Model.ProjectId);
@@ -11,10 +10,6 @@
     var landRegistryLink = string.Format(RouteConstants.ProjectLandRegistryTask, Model.ProjectId);
     var supplementalFundingAgreementLink = string.Format(RouteConstants.ProjectSupplementalFundingAgreementTask, Model.ProjectId);
 }
-
-@* <partial name="_ProjectSummary" model=@Model.Tasks.ProjectDetails /> *@
-
-<govuk-project-tabs project-id="@Model.ProjectId" project-type="" />
 
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-full-width">
