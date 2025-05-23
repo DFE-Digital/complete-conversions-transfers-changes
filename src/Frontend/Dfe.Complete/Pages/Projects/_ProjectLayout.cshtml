@@ -45,7 +45,7 @@
           Important
         </govuk-notification-banner-title>
         <h3>Project completed</h3>
-        <p>This project was completed on %{date}.</p>
+        <p>This project was completed on @Model.Project.CompletedAt.ToDateMonthYearString().</p>
         <p>Only Service Support team members can make changes to this project.</p>
       </govuk-notification-banner>
     </div>
