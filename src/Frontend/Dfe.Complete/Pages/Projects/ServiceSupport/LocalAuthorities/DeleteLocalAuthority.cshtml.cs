@@ -14,14 +14,19 @@ namespace Dfe.Complete.Pages.Projects.ServiceSupport.LocalAuthorities
         [BindProperty(SupportsGet = true, Name = "id")]
         public required Guid Id { get; set; }
 
+        [BindProperty(Name = nameof(ContactId))]
+        public Guid? ContactId { get; set; }
+
         public void OnGet()
         {
             Name = TempData["LA_Name"] as string ?? string.Empty;
+            ContactId = TempData["LA_ContatId"] as Guid? ?? null;
         }
 
         public async Task<IActionResult> OnPostAsync()
         {
-            var response = await sender.Send(new DeleteLocalAuthorityCommand(new LocalAuthorityId(Id)));
+            var contactId = ContactId.HasValue ? new ContactId(ContactId.Value) : null;
+            var response = await sender.Send(new DeleteLocalAuthorityCommand(new LocalAuthorityId(Id), contactId));
             if (response.IsSuccess)
             {
                 TempData["HasDeletedLa"] = true;
@@ -29,5 +34,8 @@ namespace Dfe.Complete.Pages.Projects.ServiceSupport.LocalAuthorities
             }
             return Page(); 
         }
+
+        public string EditLocalAuthorityUrl(string id)
+           => string.Format(RouteConstants.EditLocalAuthorityDetails, id);
     }
 }

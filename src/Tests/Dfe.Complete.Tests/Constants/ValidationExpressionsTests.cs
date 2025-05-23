@@ -3,8 +3,15 @@ using System.Text.RegularExpressions;
 
 namespace Dfe.Complete.Tests.Constants
 {
-    public class ValidationExpressionsTests
+    public partial class ValidationExpressionsTests
     {
+        [GeneratedRegex(ValidationExpressions.UKPhone)]
+        private static partial Regex UKPhoneRegex();
+        [GeneratedRegex(ValidationExpressions.UKPostCode, RegexOptions.IgnoreCase, "en-GB")]
+        private static partial Regex UKPostCodeRegex();
+        [GeneratedRegex(ValidationExpressions.Email)]
+        private static partial Regex EmailRegex();
+
         [Theory]
         [InlineData("SW1A 1AA", true)]
         [InlineData("M1 1AE", true)]
@@ -15,7 +22,7 @@ namespace Dfe.Complete.Tests.Constants
         [InlineData("12345", false)]
         public void UKPostCode_Validation(string input, bool expectedIsValid)
         {
-            var isValid = Regex.IsMatch(input, ValidationExpressions.UKPostCode, RegexOptions.IgnoreCase);
+            var isValid = UKPostCodeRegex().IsMatch(input);
             Assert.Equal(expectedIsValid, isValid);
         }
 
@@ -33,7 +40,7 @@ namespace Dfe.Complete.Tests.Constants
         [InlineData("020 8327 3737", true)]
         public void UKPhone_Validation(string input, bool expectedIsValid)
         {
-            var isValid = Regex.IsMatch(input, ValidationExpressions.UKPhone);
+            var isValid = UKPhoneRegex().IsMatch(input);
             Assert.Equal(expectedIsValid, isValid);
         }
          
@@ -50,7 +57,7 @@ namespace Dfe.Complete.Tests.Constants
         [InlineData("user@c", false)]
         public void Email_Validation(string input, bool expectedIsValid)
         {
-            var isValid = Regex.IsMatch(input, ValidationExpressions.Email);
+            var isValid = EmailRegex().IsMatch(input);
             Assert.Equal(expectedIsValid, isValid);
         } 
     }

@@ -1,10 +1,8 @@
 ﻿using Dfe.Complete.Application.Common.Interfaces;
 using Dfe.Complete.Application.Common.Models;
 using Dfe.Complete.Domain.Entities;
-using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Domain.Interfaces.Repositories;
 using Dfe.Complete.Domain.ValueObjects;
-using Dfe.Complete.Utils;
 using MediatR;
 using Microsoft.Extensions.Logging;
 
@@ -36,7 +34,7 @@ namespace Dfe.Complete.Application.LocalAuthorities.Commands
             try
             {
                 await unitOfWork.BeginTransactionAsync();
-                var localAuthority = await localAuthorityRepository.FindAsync(x => x.Name == request.Name && x.Code == x.Code, cancellationToken);
+                var localAuthority = await localAuthorityRepository.FindAsync(x => x.Name == request.Name && x.Code == request.Code, cancellationToken);
                 if (localAuthority != null)
                 {
                     logger.LogWarning("Cannot create Local authority as it is already existed. Request: {Request}", request);
@@ -49,8 +47,7 @@ namespace Dfe.Complete.Application.LocalAuthorities.Commands
                 await localAuthorityRepository.AddAsync(localAuthority, cancellationToken);
                 if (!string.IsNullOrWhiteSpace(request.Title) && !string.IsNullOrWhiteSpace(request.ContactName))
                 {
-                    var contact = Contact.CreateContact(request.ContactId, request.Title, request.Name, request.Email, request.Phone, localAuthority.Id,
-                        ContactCategory.LocalAuthority, ContactType.DirectorOfChildServices.ToDescription(), DateTime.Now);
+                    var contact = Contact.CreateLocalAuthorityContact(request.ContactId, request.Title, request.Name, request.Email, request.Phone, localAuthority.Id, DateTime.Now);
                     await contactRepository.AddAsync(contact, cancellationToken);
                 }
                 await unitOfWork.CommitAsync();

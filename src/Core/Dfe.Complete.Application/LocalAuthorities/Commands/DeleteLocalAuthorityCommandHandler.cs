@@ -9,7 +9,7 @@ using Microsoft.Extensions.Logging;
 
 namespace Dfe.Complete.Application.LocalAuthorities.Commands
 {
-    public record DeleteLocalAuthorityCommand(LocalAuthorityId Id) : IRequest<Result<bool>>;
+    public record DeleteLocalAuthorityCommand(LocalAuthorityId Id, ContactId? ContactId) : IRequest<Result<bool>>;
 
     public class DeleteLocalAuthorityCommandHandler(
         IUnitOfWork unitOfWork,
@@ -29,17 +29,16 @@ namespace Dfe.Complete.Application.LocalAuthorities.Commands
                     throw new Exception("Cannot delete Local authority as it is linked to a project.");
                 }
 
-                var localAuthority = await localAuthorityRepository.FindAsync(request.Id, cancellationToken) ?? throw new NotFoundException($"Local authority with Id {request.Id} not found.");
-                if (localAuthority == null)
-                {
-                    throw new NotFoundException($"Local authority with Id {request.Id} not found.");
-                }
+                var localAuthority = await localAuthorityRepository.FindAsync(request.Id, cancellationToken) ?? throw new NotFoundException($"Local authority with Id {request.Id} not found."); 
                 await localAuthorityRepository.RemoveAsync(localAuthority, cancellationToken);
 
-                var contact = await contactRepository.FindAsync(x => x.LocalAuthorityId == request.Id, cancellationToken);
-                if(contact != null)
+                if (request.ContactId != null)
                 {
-                    await contactRepository.RemoveAsync(contact, cancellationToken);
+                    var contact = await contactRepository.FindAsync(x => x.Id == request.ContactId && x.LocalAuthorityId == request.Id, cancellationToken);
+                    if (contact != null)
+                    {
+                        await contactRepository.RemoveAsync(contact, cancellationToken);
+                    }
                 }
 
                 await unitOfWork.CommitAsync();

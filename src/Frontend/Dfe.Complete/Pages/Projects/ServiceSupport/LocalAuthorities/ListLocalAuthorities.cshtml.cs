@@ -15,6 +15,9 @@ namespace Dfe.Complete.Pages.Projects.ServiceSupport.LocalAuthorities
             LocalAuthorities = localAuthoriesResponse.Value ?? []; 
 
             Pagination = new PaginationModel(RouteConstants.ListLocalAuthorities, PageNumber, localAuthoriesResponse.ItemCount, PageSize); 
-        } 
+        }
+
+        public string GetLocalAuthorityDetailsUrl(string id)
+            => string.Format(RouteConstants.LocalAuthorityDetails, id);
     }
 }

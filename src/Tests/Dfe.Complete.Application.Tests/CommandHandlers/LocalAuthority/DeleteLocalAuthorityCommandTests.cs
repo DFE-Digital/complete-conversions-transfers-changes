@@ -37,14 +37,13 @@ namespace Dfe.Complete.Application.Tests.CommandHandlers.LocalAuthority
         [Fact]
         public async Task Handle_ShouldDeleteLocalAuthorityAndContactSuccessfully()
         {
-            var command = new DeleteLocalAuthorityCommand(new LocalAuthorityId(Guid.NewGuid())); 
+            var command = new DeleteLocalAuthorityCommand(new LocalAuthorityId(Guid.NewGuid()), new ContactId(Guid.NewGuid())); 
 
             var localAuthority = Domain.Entities.LocalAuthority.CreateLocalAuthority(
                 command.Id, "Name", "Code", "Address1", "Address2", "Address3",
                 "AddressTown", "AddressCounty", "AddressPostcode", DateTime.UtcNow);
-            var contact = Domain.Entities.Contact.CreateContact(
-                new ContactId(Guid.NewGuid()),"Title", "Name", "Email", "Phone",
-                command.Id, ContactCategory.LocalAuthority, ContactType.DirectorOfChildServices.ToDescription(), DateTime.UtcNow);
+            var contact = Domain.Entities.Contact.CreateLocalAuthorityContact(
+                command.ContactId!, "Title", "Name", "Email", "Phone", command.Id,  DateTime.UtcNow);
 
             _mockLocalAuthorityRepository.Setup(repo => repo.FindAsync(command.Id, It.IsAny<CancellationToken>()))
                 .ReturnsAsync(localAuthority);
@@ -70,10 +69,18 @@ namespace Dfe.Complete.Application.Tests.CommandHandlers.LocalAuthority
             _mockContactRepository.Verify(repo => repo.RemoveAsync(It.IsAny<Domain.Entities.Contact>(), It.IsAny<CancellationToken>()), Times.Once);
             _mockUnitOfWork.Verify(uow => uow.RollBackAsync(), Times.Never);
         }
-        [Fact]
-        public async Task Handle_ShouldDeleteLocalAuthorityWithoutContactSuccessfully()
+        public static IEnumerable<object[]> ContactIdTestCases()
         {
-            var command = new DeleteLocalAuthorityCommand(new LocalAuthorityId(Guid.NewGuid()));
+            yield return new object[] { null! };
+            yield return new object[] { new ContactId(Guid.NewGuid()) };
+        }
+
+        // Use MemberData to inject the data into the test
+        [Theory]
+        [MemberData(nameof(ContactIdTestCases))]
+        public async Task Handle_ShouldDeleteLocalAuthorityWithoutContactSuccessfully(ContactId? contactId)
+        {
+            var command = new DeleteLocalAuthorityCommand(new LocalAuthorityId(Guid.NewGuid()), contactId);
 
             var localAuthority = Domain.Entities.LocalAuthority.CreateLocalAuthority(
                 command.Id, "Name", "Code", "Address1", "Address2", "Address3",
@@ -100,7 +107,7 @@ namespace Dfe.Complete.Application.Tests.CommandHandlers.LocalAuthority
         [Fact]
         public async Task Handle_ShouldReturnFailure_WhenLocalAuthorityLinkedToProject()
         {
-            var command = new DeleteLocalAuthorityCommand(new LocalAuthorityId(Guid.NewGuid()));
+            var command = new DeleteLocalAuthorityCommand(new LocalAuthorityId(Guid.NewGuid()), new ContactId(Guid.NewGuid()));
             var linkedProject = new Domain.Entities.Project(new ProjectId(Guid.NewGuid()), new Urn(1), DateTime.Now, DateTime.Now, TaskType.Transfer, ProjectType.Transfer, Guid.NewGuid(),
                 DateOnly.MaxValue, false, null, null, null, false, null, DateOnly.MinValue, string.Empty, string.Empty, string.Empty, null, null, null, null, null, null, null, null, command.Id.Value);
 
@@ -119,7 +126,7 @@ namespace Dfe.Complete.Application.Tests.CommandHandlers.LocalAuthority
         [Fact]
         public async Task Handle_ShouldReturnFailure_WhenLocalAuthorityNotFound()
         {
-            var command = new DeleteLocalAuthorityCommand(new LocalAuthorityId(Guid.NewGuid()));
+            var command = new DeleteLocalAuthorityCommand(new LocalAuthorityId(Guid.NewGuid()), new ContactId(Guid.NewGuid()));
 
             var result = await _handler.Handle(command, CancellationToken.None);
 

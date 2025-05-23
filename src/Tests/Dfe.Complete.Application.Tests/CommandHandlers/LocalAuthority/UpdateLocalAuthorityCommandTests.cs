@@ -72,9 +72,8 @@ namespace Dfe.Complete.Application.Tests.CommandHandlers.LocalAuthority
             var localAuthority = Domain.Entities.LocalAuthority.CreateLocalAuthority(
                 command.Id, "Name", "Code", "Address1", "Address2", "Address3",
                 "AddressTown", "AddressCounty", "AddressPostcode", DateTime.UtcNow);
-            var contact = Domain.Entities.Contact.CreateContact(
-                command.ContactId!, command.Title!, command.ContactName!, command.Email, command.Phone,
-                localAuthority.Id, ContactCategory.LocalAuthority, ContactType.DirectorOfChildServices.ToDescription(), DateTime.UtcNow);
+            var contact = Domain.Entities.Contact.CreateLocalAuthorityContact(
+                command.ContactId!, command.Title!, command.ContactName!, command.Email, command.Phone, command.Id, DateTime.UtcNow);
 
             _mockLocalAuthorityRepository.Setup(repo => repo.FindAsync(It.IsAny<Expression<Func<Domain.Entities.LocalAuthority, bool>>>(), It.IsAny<CancellationToken>()))
                 .ReturnsAsync(localAuthority);
@@ -111,9 +110,8 @@ namespace Dfe.Complete.Application.Tests.CommandHandlers.LocalAuthority
             var localAuthority = Domain.Entities.LocalAuthority.CreateLocalAuthority(
                 command.Id, "Name", "Code", "Address1", "Address2", "Address3",
                 "AddressTown", "AddressCounty", "AddressPostcode", DateTime.UtcNow);
-            var contact = Domain.Entities.Contact.CreateContact(
-                command.ContactId!, command.Title!, command.ContactName!, command.Email, command.Phone,
-                localAuthority.Id, ContactCategory.LocalAuthority, ContactType.DirectorOfChildServices.ToDescription(), DateTime.UtcNow);
+            var contact = Domain.Entities.Contact.CreateLocalAuthorityContact(
+                command.ContactId!, command.Title!, command.ContactName!, command.Email, command.Phone, localAuthority.Id,  DateTime.UtcNow);
 
             _mockLocalAuthorityRepository.Setup(repo => repo.FindAsync(It.IsAny<Expression<Func<Domain.Entities.LocalAuthority, bool>>>(), It.IsAny<CancellationToken>()))
                 .ReturnsAsync(localAuthority);

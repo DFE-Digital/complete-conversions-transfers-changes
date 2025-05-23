@@ -1,7 +1,6 @@
 ﻿using Dfe.Complete.Application.Common.Interfaces;
 using Dfe.Complete.Application.Common.Models;
 using Dfe.Complete.Domain.Entities;
-using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Domain.Interfaces.Repositories;
 using Dfe.Complete.Domain.ValueObjects;
 using Dfe.Complete.Utils;
@@ -47,8 +46,7 @@ namespace Dfe.Complete.Application.LocalAuthorities.Commands
                     var contact = await contactRepository.FindAsync(x => x.Id == request.ContactId && x.LocalAuthorityId == request.Id, cancellationToken);
                     if (contact == null)
                     {
-                        contact = Contact.CreateContact(request.ContactId!, request.Title, request.ContactName!, request.Email, request.Phone, localAuthority.Id,
-                        ContactCategory.LocalAuthority, ContactType.DirectorOfChildServices.ToDescription(), DateTime.Now);
+                        contact = Contact.CreateLocalAuthorityContact(request.ContactId!, request.Title, request.ContactName!, request.Email, request.Phone, localAuthority.Id, DateTime.Now);
                         await contactRepository.AddAsync(contact, cancellationToken);
                     }
                     else

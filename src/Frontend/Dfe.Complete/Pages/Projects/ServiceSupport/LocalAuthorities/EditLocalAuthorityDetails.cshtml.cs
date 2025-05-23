@@ -75,6 +75,7 @@ namespace Dfe.Complete.Pages.Projects.ServiceSupport.LocalAuthorities
             } 
             else { ContactId = Guid.NewGuid(); }
         }
+
         public async Task<IActionResult> OnPostAsync()
         {
             if (!ModelState.IsValid)
@@ -93,5 +94,7 @@ namespace Dfe.Complete.Pages.Projects.ServiceSupport.LocalAuthorities
             }
             return Page();
         }
+        public string GetLocalAuthorityDetailsUrl(string id)
+            => string.Format(RouteConstants.LocalAuthorityDetails, id);
     }
 }
