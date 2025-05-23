@@ -19,7 +19,7 @@ public class CompletedByYou(ISender sender) : YourProjectsModel(CompletedNavigat
 
         var userAdId = User.GetUserAdId();
 
-        var result = await sender.Send(new ListAllProjectsForUserQuery(ProjectState.Completed, userAdId, ProjectUserFilter.AssignedTo)
+        var result = await sender.Send(new ListAllProjectsForUserQuery(ProjectState.Completed, userAdId, ProjectUserFilter.AssignedTo, new OrderProjectQueryBy(OrderProjectByField.CompletedAt, OrderByDirection.Descending))
             { Count = PageSize, Page = PageNumber - 1 });
 
         ProjectsForUser = result.Value ?? [];
