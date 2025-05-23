@@ -23,17 +23,11 @@ Security in case of vulnerabilities.
 ## Unreleased  
 ### Added  
 - `PolicyCheckTagHelper` added to conditionally hide elements based on policy
- - Enabled error tracking via Application Insights.
- - New route `/projects/team/unassigned`
- - Your team projects "Unassigned" list (`/projects/team/unassigned`)
 
 ### Changed  
 - Navigation items previously hidden with `UserTabAccessHelper` now hide on policy
-- Sort all projects by region list alphabetically
 
 ### Fixed  
-- Note FK Ids are now required
-- Separated created and assigned users in project creation
 
 ### Removed
 - `UserTabAccessHelper` class is no longer required. Use policies instead
@@ -41,7 +35,24 @@ Security in case of vulnerabilities.
 ### Security
 - Only correct user groups can now create projects
 
-See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-05-16.272...main) for everything awaiting release
+See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-05-22.290...main) for everything awaiting release
+
+---
+
+## [1.5.3](https://github.com/DFE-Digital/complete-conversions-transfers-changes/releases/tag/production-2025-05-22.290) - 2025-05-22
+### Added  
+ - Enabled error tracking via Application Insights.
+ - New route `/projects/team/unassigned`
+ - Your team projects "Unassigned" list (`/projects/team/unassigned`)
+
+### Changed  
+- Sort all projects by region list alphabetically
+
+### Fixed  
+- Note FK Ids are now required
+- Separated created and assigned users in project creation
+
+See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-05-16.272...production-2025-05-22.290) for everything in the release
 
 ---
 
