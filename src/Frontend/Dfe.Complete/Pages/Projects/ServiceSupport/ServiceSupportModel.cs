@@ -1,10 +1,10 @@
-﻿using Dfe.Complete.Models;
+﻿using Dfe.Complete.Constants;
+using Dfe.Complete.Models;
 
 namespace Dfe.Complete.Pages.Projects.ServiceSupport
 {
     public class ServiceSupportModel(string currentSubNavigationItem) : BaseProjectsPageModel(currentSubNavigationItem)
     {
-
         protected TabNavigationModel AllProjectsTabNavigationModel = new(TabNavigationModel.AllProjectsTabName);
 
         public const string ConversionURNsNavigation = "conversion-urns";

@@ -3,7 +3,7 @@ using Dfe.Complete.Domain.ValueObjects;
 
 namespace Dfe.Complete.Domain.Entities;
 
-public class LocalAuthority: BaseAggregateRoot, IEntity<LocalAuthorityId>
+public class LocalAuthority : BaseAggregateRoot, IEntity<LocalAuthorityId>
 {
     public LocalAuthorityId Id { get; set; }
 
@@ -26,4 +26,50 @@ public class LocalAuthority: BaseAggregateRoot, IEntity<LocalAuthorityId>
     public DateTime CreatedAt { get; set; }
 
     public DateTime UpdatedAt { get; set; }
+
+    public static LocalAuthority CreateLocalAuthority(
+        LocalAuthorityId id,
+        string name,
+        string code,
+        string address1,
+        string? address2,
+        string? address3,
+        string? addressTown,
+        string? addressCounty,
+        string addressPostcode,
+        DateTime createdAt)
+    {
+        return new LocalAuthority
+        {
+            Id = id,
+            Name = name,
+            Code = code,
+            Address1 = address1,
+            Address2 = address2,
+            Address3 = address3,
+            AddressTown = addressTown,
+            AddressCounty = addressCounty,
+            AddressPostcode = addressPostcode,
+            CreatedAt = createdAt
+        };
+    }
+    public void UpdateLocalAuthority( 
+       string code,
+       string address1,
+       string? address2,
+       string? address3,
+       string? addressTown,
+       string? addressCounty,
+       string addressPostcode,
+       DateTime updatedAt)
+    { 
+        Code = code;
+        Address1 = address1;
+        Address2 = address2;
+        Address3 = address3;
+        AddressTown = addressTown;
+        AddressCounty = addressCounty;
+        AddressPostcode = addressPostcode;
+        UpdatedAt = updatedAt;
+    }
 }

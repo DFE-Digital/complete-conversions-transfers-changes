@@ -22,6 +22,7 @@ Security in case of vulnerabilities.
 
 ## Unreleased  
 ### Added  
+- Manage local authorities under service support section.
 
 ### Changed  
 

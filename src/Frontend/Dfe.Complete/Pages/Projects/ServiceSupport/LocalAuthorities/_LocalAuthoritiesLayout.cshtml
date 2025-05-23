@@ -1,0 +1,13 @@
+﻿@model Dfe.Complete.Pages.Projects.ServiceSupport.LocalAuthorities.ListLocalAuthoritiesModel
+@{
+    Layout = "ServiceSupport/_ServiceSupportLayout";
+}
+
+<div class="govuk-grid-row">
+    @RenderBody()
+</div>
+
+@if (Model.Pagination != null)
+{
+    @await Html.PartialAsync("/Pages/Pagination/_Pagination.cshtml", model: Model.Pagination)
+}
