@@ -159,6 +159,12 @@ namespace Dfe.Complete.Models
 			public static readonly LinkItem SearchSchool = AddLinkItem(page: "/InvoluntaryProject/SearchSchool");
 			public static readonly LinkItem SchoolResults = AddLinkItem(page: "/InvoluntaryProject/SchoolResults");
 		}
+
+		public static class LocalAuthorities
+		{
+            public static readonly LinkItem ListLocalAuthorities = AddLinkItem("/Projects/ServiceSupport/LocalAuthorities/ListLocalAuthorities");
+            public static readonly LinkItem ViewLocalAuthorityDetails = AddLinkItem("/Projects/ServiceSupport/LocalAuthorities/ViewLocalAuthorityDetails");
+		}
 	}
 
 	public class LinkItem

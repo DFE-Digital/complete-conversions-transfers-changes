@@ -2470,75 +2470,82 @@
         }
       },
       "Contact": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-          "id": {
-            "$ref": "#/components/schemas/ContactId"
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/BaseAggregateRoot"
           },
-          "projectId": {
-            "nullable": true,
-            "oneOf": [
-              {
-                "$ref": "#/components/schemas/ProjectId"
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "id": {
+                "$ref": "#/components/schemas/ContactId"
+              },
+              "projectId": {
+                "nullable": true,
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/ProjectId"
+                  }
+                ]
+              },
+              "name": {
+                "type": "string"
+              },
+              "title": {
+                "type": "string"
+              },
+              "email": {
+                "type": "string",
+                "nullable": true
+              },
+              "phone": {
+                "type": "string",
+                "nullable": true
+              },
+              "createdAt": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "updatedAt": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "category": {
+                "$ref": "#/components/schemas/ContactCategory"
+              },
+              "organisationName": {
+                "type": "string",
+                "nullable": true
+              },
+              "type": {
+                "type": "string",
+                "nullable": true
+              },
+              "localAuthorityId": {
+                "nullable": true,
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/LocalAuthorityId"
+                  }
+                ]
+              },
+              "establishmentUrn": {
+                "type": "integer",
+                "format": "int32",
+                "nullable": true
+              },
+              "project": {
+                "nullable": true,
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/Project"
+                  }
+                ]
               }
-            ]
-          },
-          "name": {
-            "type": "string"
-          },
-          "title": {
-            "type": "string"
-          },
-          "email": {
-            "type": "string",
-            "nullable": true
-          },
-          "phone": {
-            "type": "string",
-            "nullable": true
-          },
-          "createdAt": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "updatedAt": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "category": {
-            "$ref": "#/components/schemas/ContactCategory"
-          },
-          "organisationName": {
-            "type": "string",
-            "nullable": true
-          },
-          "type": {
-            "type": "string",
-            "nullable": true
-          },
-          "localAuthorityId": {
-            "nullable": true,
-            "oneOf": [
-              {
-                "$ref": "#/components/schemas/LocalAuthorityId"
-              }
-            ]
-          },
-          "establishmentUrn": {
-            "type": "integer",
-            "format": "int32",
-            "nullable": true
-          },
-          "project": {
-            "nullable": true,
-            "oneOf": [
-              {
-                "$ref": "#/components/schemas/Project"
-              }
-            ]
+            }
           }
-        }
+        ]
       },
       "ContactCategory": {
         "type": "string",
@@ -2561,6 +2568,30 @@
           "Solicitor",
           "OutgoingTrust"
         ]
+      },
+      "BaseAggregateRoot": {
+        "type": "object",
+        "x-abstract": true,
+        "additionalProperties": false,
+        "properties": {
+          "domainEvents": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/IDomainEvent"
+            }
+          }
+        }
+      },
+      "IDomainEvent": {
+        "type": "object",
+        "x-abstract": true,
+        "additionalProperties": false,
+        "properties": {
+          "occurredOn": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
       },
       "LocalAuthority": {
         "allOf": [
@@ -2613,30 +2644,6 @@
             }
           }
         ]
-      },
-      "BaseAggregateRoot": {
-        "type": "object",
-        "x-abstract": true,
-        "additionalProperties": false,
-        "properties": {
-          "domainEvents": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/IDomainEvent"
-            }
-          }
-        }
-      },
-      "IDomainEvent": {
-        "type": "object",
-        "x-abstract": true,
-        "additionalProperties": false,
-        "properties": {
-          "occurredOn": {
-            "type": "string",
-            "format": "date-time"
-          }
-        }
       },
       "SignificantDateHistory": {
         "type": "object",

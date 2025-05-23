@@ -1,4 +1,5 @@
-﻿using Dfe.Complete.Models;
+﻿using Dfe.Complete.Constants;
+using Dfe.Complete.Models;
 
 namespace Dfe.Complete.Pages.Projects.ServiceSupport
 {
@@ -11,5 +12,10 @@ namespace Dfe.Complete.Pages.Projects.ServiceSupport
         public const string LocalAuthoriesNavigation = "local-authorites";
         public const string UsersNavigation = "users";
         public string CurrentSubNavigationItem { get; set; } = currentSubNavigationItem;
+
+        public string EditLocalAuthorityUrl(string id) 
+            => string.Format(RouteConstants.EditLocalAuthorityDetails, id);
+        public string GetLocalAuthorityDetailsUrl(string id)
+            => string.Format(RouteConstants.LocalAuthorityDetails, id);
     }
 }
