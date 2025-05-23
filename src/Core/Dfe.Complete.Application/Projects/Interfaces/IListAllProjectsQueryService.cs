@@ -17,6 +17,7 @@ public interface IListAllProjectsQueryService
         bool? isFormAMat = null,
         string? newTrustReferenceNumber = "",
         string? search = "",
+        string? incomingTrustUkprn = null,
         OrderProjectQueryBy? orderBy = null
         );
 }

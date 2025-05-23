@@ -75,12 +75,9 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
 
             // Assert
             Assert.NotNull(result);
-            Assert.Equal(result.Value.trustName, trustDto.Name);
+            Assert.Equal(result.Value.TrustName, trustDto.Name);
         }
-        
-        
-
-        
+         
         [Theory]
         [CustomAutoData(
             typeof(OmitCircularReferenceCustomization),

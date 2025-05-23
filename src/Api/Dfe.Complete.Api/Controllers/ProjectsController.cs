@@ -128,7 +128,7 @@ namespace Dfe.Complete.Api.Controllers
         public async Task<IActionResult> ListAllProjectsInTrustAsync([FromQuery] ListAllProjectsInTrustQuery request, CancellationToken cancellationToken)
         {
             var project = await sender.Send(request, cancellationToken);
-            return Ok(project.Value?.projects ?? []);
+            return Ok(project.Value?.Projects ?? []);
         }
 
         /// <summary>
