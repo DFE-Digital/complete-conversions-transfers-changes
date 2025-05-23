@@ -15,7 +15,6 @@ using DfE.CoreLibs.Testing.AutoFixture.Customizations;
 using Dfe.Complete.Application.Projects.Models;
 using MediatR;
 using Dfe.Complete.Application.Common.Models;
-using Dfe.Complete.Application.Projects.Common;
 using Dfe.Complete.Application.Projects.Queries.GetLocalAuthority;
 using Moq;
 using Dfe.Complete.Application.Projects.Queries.GetUser;

@@ -1,14 +1,14 @@
 using Dfe.Complete.Application.Projects.Models;
-using Dfe.Complete.Application.Projects.Queries.CountAllProjects;
 using Dfe.Complete.Application.Projects.Queries.SearchProjects;
-using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Pages.Pagination;
 using Dfe.Complete.Pages.Projects.List;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Dfe.Complete.Pages.Search
 {
+    [Authorize]
     public class SearchProjectsModel(ISender sender) : AllProjectsModel("")
     {
         [BindProperty(SupportsGet = true, Name = "query")]

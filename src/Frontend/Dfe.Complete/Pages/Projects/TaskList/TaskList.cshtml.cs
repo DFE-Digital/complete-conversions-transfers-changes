@@ -1,4 +1,3 @@
-using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Models;
 using MediatR;
 

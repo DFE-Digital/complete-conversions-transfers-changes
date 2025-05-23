@@ -80,7 +80,7 @@ public class Startup
         });
         services.AddHttpContextAccessor();
 
-        services.AddApplicationAuthorization(Configuration);
+        services.AddApplicationAuthorization(Configuration, CustomPolicies.PolicyCustomizations);
 
         var authenticationBuilder = services.AddAuthentication(options =>
         {

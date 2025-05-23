@@ -1,5 +1,4 @@
-﻿using System.Collections.ObjectModel;
-using AutoFixture;
+﻿using AutoFixture;
 using AutoFixture.Xunit2;
 using Dfe.Complete.Application.Users.Queries.GetUser;
 using Dfe.Complete.Domain.Entities;
