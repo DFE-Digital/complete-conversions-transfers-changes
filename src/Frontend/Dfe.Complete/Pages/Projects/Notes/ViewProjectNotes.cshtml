@@ -2,7 +2,7 @@
 @using Dfe.Complete.Constants
 @model Dfe.Complete.Pages.Projects.ViewProjectNotesModel
 @{
-    Layout = "ProjectView/_ProjectViewLayout";
+    Layout = "_ProjectLayout";
     ViewData["Title"] = "Project notes";
 
     var addNoteLink = string.Format(RouteConstants.ProjectAddNote, Model.ProjectId);

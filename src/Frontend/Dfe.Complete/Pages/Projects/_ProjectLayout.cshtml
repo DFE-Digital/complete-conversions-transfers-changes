@@ -6,12 +6,11 @@
 @using GovUk.Frontend.AspNetCore.TagHelpers
 @using Dfe.Complete.Pages.Projects.ProjectView
 
-@model Dfe.Complete.Pages.Projects.ProjectView.ProjectViewLayoutModel
+@model Dfe.Complete.Pages.Projects.ProjectView.ProjectLayoutModel
 @{
   Layout = "Shared/_Layout";
 
   string? IsCurrentNav(string tabName) => Model.CurrentNavigationItem == tabName ? "page" : null;
-
 }
 
 <div class="govuk-grid-row">
@@ -132,27 +131,27 @@ Model.CurrentUserTeam.TeamIsServiceSupport())
 
         <li class="moj-sub-navigation__item">
           <a class="moj-sub-navigation__link" href="@String.Format(RouteConstants.ProjectTaskList, Model.Project.Id.Value)"
-            aria-current="@IsCurrentNav(ProjectViewLayoutModel.TaskListNavigation)">Task list</a>
+            aria-current="@IsCurrentNav(ProjectLayoutModel.TaskListNavigation)">Task list</a>
         </li>
         <li class="moj-sub-navigation__item">
           <a class="moj-sub-navigation__link" href="@String.Format(RouteConstants.ProjectAbout, Model.Project.Id.Value)"
-            aria-current="@IsCurrentNav(ProjectViewLayoutModel.AboutTheProjectNavigation)">About the project</a>
+            aria-current="@IsCurrentNav(ProjectLayoutModel.AboutTheProjectNavigation)">About the project</a>
         </li>
         <li class="moj-sub-navigation__item">
           <a class="moj-sub-navigation__link" href="@String.Format(RouteConstants.ProjectViewNotes, Model.Project.Id.Value)"
-            aria-current="@IsCurrentNav(ProjectViewLayoutModel.NotesNavigation)">Notes</a>
+            aria-current="@IsCurrentNav(ProjectLayoutModel.NotesNavigation)">Notes</a>
         </li>
         <li class="moj-sub-navigation__item">
           <a class="moj-sub-navigation__link" href="#"
-            aria-current="@IsCurrentNav(ProjectViewLayoutModel.ExternalContactsNavigation)">External contacts</a>
+            aria-current="@IsCurrentNav(ProjectLayoutModel.ExternalContactsNavigation)">External contacts</a>
         </li>
         <li class="moj-sub-navigation__item">
           <a class="moj-sub-navigation__link" href="#"
-            aria-current="@IsCurrentNav(ProjectViewLayoutModel.InternalContactsNavigation)">Internal contacts</a>
+            aria-current="@IsCurrentNav(ProjectLayoutModel.InternalContactsNavigation)">Internal contacts</a>
         </li>
         <li class="moj-sub-navigation__item">
           <a class="moj-sub-navigation__link" href="#"
-            aria-current="@IsCurrentNav(ProjectViewLayoutModel.ConversionDateHistoryNavigation)">@Model.Project.Type.ToDisplayDescription()
+            aria-current="@IsCurrentNav(ProjectLayoutModel.ConversionDateHistoryNavigation)">@Model.Project.Type.ToDisplayDescription()
             date history</a>
         </li>
       </ul>
