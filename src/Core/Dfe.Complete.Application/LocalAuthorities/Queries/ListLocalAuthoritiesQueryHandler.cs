@@ -7,12 +7,12 @@ using Microsoft.Extensions.Logging;
 
 namespace Dfe.Complete.Application.LocalAuthorities.Queries
 {
-    public record GetLocalAuthoritiesQuery(int PageNumber, int PageCount) : PaginatedRequest<PaginatedResult<List<LocalAuthorityQueryModel>>>;
+    public record ListLocalAuthoritiesQuery(int PageNumber, int PageCount) : PaginatedRequest<PaginatedResult<List<LocalAuthorityQueryModel>>>;
 
     public class ListLocalAuthoritiesQueryHandler(ILocalAuthoritiesQueryService localAuthoritiesQueryService, ILogger<ListLocalAuthoritiesQueryHandler> logger)
-        : IRequestHandler<GetLocalAuthoritiesQuery, PaginatedResult<List<LocalAuthorityQueryModel>>>
+        : IRequestHandler<ListLocalAuthoritiesQuery, PaginatedResult<List<LocalAuthorityQueryModel>>>
     {
-        public async Task<PaginatedResult<List<LocalAuthorityQueryModel>>> Handle(GetLocalAuthoritiesQuery request, CancellationToken cancellationToken)
+        public async Task<PaginatedResult<List<LocalAuthorityQueryModel>>> Handle(ListLocalAuthoritiesQuery request, CancellationToken cancellationToken)
         {
             try
             {

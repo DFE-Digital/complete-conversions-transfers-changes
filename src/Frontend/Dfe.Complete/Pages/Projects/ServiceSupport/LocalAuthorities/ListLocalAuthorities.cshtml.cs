@@ -11,7 +11,7 @@ namespace Dfe.Complete.Pages.Projects.ServiceSupport.LocalAuthorities
         public List<LocalAuthorityQueryModel> LocalAuthorities { get; set; } = default!;
         public async Task OnGetAsync()
         {
-            var localAuthoriesResponse = await sender.Send(new GetLocalAuthoritiesQuery(PageNumber - 1, PageSize));
+            var localAuthoriesResponse = await sender.Send(new ListLocalAuthoritiesQuery(PageNumber - 1, PageSize));
             LocalAuthorities = localAuthoriesResponse.Value ?? []; 
 
             Pagination = new PaginationModel(RouteConstants.ListLocalAuthorities, PageNumber, localAuthoriesResponse.ItemCount, PageSize); 

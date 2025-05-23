@@ -274,11 +274,12 @@ namespace Dfe.Complete.Api.Controllers
 
             return Ok(ukprn);
         }
-        
+
         /// <summary>
         /// Removes project based on URN for test purposes.
         /// </summary>
         /// <param name="urn">Urn to remove.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
         [HttpDelete]
         [Authorize(Policy = "CanReadWriteUpdateDelete")]
         [SwaggerResponse(204, "Project Group returned successfully.")]
