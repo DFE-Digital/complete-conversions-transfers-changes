@@ -10,6 +10,7 @@ using DfE.CoreLibs.Testing.AutoFixture.Customizations;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Hosting.Internal;
+using Microsoft.Extensions.Logging;
 using Moq;
 
 namespace Dfe.Complete.Application.Tests.CommandHandlers.Project;
@@ -34,12 +35,11 @@ public class RemoveProjectCommandHandlerTests
         host.EnvironmentName = "Production";
 
         var handler = new RemoveProjectCommandHandler(
-            host,
-            mockProjectRepository,
-            mockTransferTaskRepository,
-            mockConversionTaskRepository,
-            unitOfWorkMock.Object,
-            configMock.Object);
+            host, 
+            mockProjectRepository, 
+            mockTransferTaskRepository, 
+            mockConversionTaskRepository, 
+            unitOfWorkMock.Object);
 
         // Act & Assert
         await Assert.ThrowsAsync<NotDevOrTestEnvironmentException>(
