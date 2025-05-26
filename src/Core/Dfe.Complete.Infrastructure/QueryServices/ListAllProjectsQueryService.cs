@@ -19,60 +19,12 @@ internal class ListAllProjectsQueryService(CompleteContext context) : IListAllPr
     {
         var projects = context.Projects
             .Include(project => project.RegionalDeliveryOfficer)
-            .Where(project => filters.ProjectStatus == null || project.State == filters.ProjectStatus)
-            .Where(project => filters.ProjectType == null || filters.ProjectType == project.Type);
+            .AsQueryable();
 
         IQueryable<GiasEstablishment> giasEstablishments = context.GiasEstablishments;
 
-        if (filters.AssignedToState == AssignedToState.AssignedOnly)
-            projects = projects.Where(project => project.AssignedToId != null);
-
-        if (filters.AssignedToState == AssignedToState.UnassignedOnly)
-            projects = projects.Where(project => project.AssignedToId == null);
-
-        if (filters.AssignedToUserId != null && filters.AssignedToUserId.Value != Guid.Empty)
-        {
-            projects = projects.Where(project => project.AssignedToId != null && project.AssignedToId == filters.AssignedToUserId);
-        }
-        
-        if (filters.CreatedByUserId != null && filters.CreatedByUserId.Value != Guid.Empty)
-        {
-            projects = projects.Where(project => project.RegionalDeliveryOfficerId != null && project.RegionalDeliveryOfficerId == filters.CreatedByUserId);
-        }
-
-        if (!string.IsNullOrEmpty(filters.LocalAuthorityCode))
-        {
-            giasEstablishments = giasEstablishments.Where(establishment => establishment.LocalAuthorityCode == filters.LocalAuthorityCode);
-        }
-
-        if (filters.Region != null)
-        {
-            projects = projects.Where(project => project.Region == filters.Region);
-        }
-
-        if (filters.Team != null)
-        {
-            projects = projects.Where(project => project.Team == filters.Team);
-        }
-
-        if (!string.IsNullOrWhiteSpace(filters.NewTrustReferenceNumber))
-        {
-            projects = projects.Where(project =>
-                project.NewTrustReferenceNumber != null && project.NewTrustReferenceNumber == filters.NewTrustReferenceNumber);
-        }
-        
-        if (filters.IsFormAMat == true)
-        {
-            projects = projects.Where(project =>
-                project.NewTrustReferenceNumber != null &&
-                project.NewTrustName != null);
-        }
-        else if (filters.IsFormAMat == false)
-        {
-            projects = projects.Where(project =>
-                project.NewTrustReferenceNumber == null &&
-                project.NewTrustName == null);
-        }
+        projects = ApplyProjectFilters(projects, filters);
+        giasEstablishments = ApplyGiasEstablishmentFilters(giasEstablishments, filters);
 
         if (!string.IsNullOrWhiteSpace(search))
         {
@@ -118,5 +70,110 @@ internal class ListAllProjectsQueryService(CompleteContext context) : IListAllPr
             .OrderProjectBy(orderBy)
             .Join(giasEstablishments, project => project.Urn, establishment => establishment.Urn,
                 (project, establishment) => new ListAllProjectsQueryModel(project, establishment));
+    }
+
+    private static IQueryable<Project> ApplyProjectFilters(IQueryable<Project> projects, ProjectFilters filters)
+    {
+        projects = FilterByProjectStatus(projects, filters.ProjectStatus);
+        projects = FilterByProjectType(projects, filters.ProjectType);
+        projects = FilterByAssignedToState(projects, filters.AssignedToState);
+        projects = FilterByAssignedToUserId(projects, filters.AssignedToUserId);
+        projects = FilterByCreatedByUserId(projects, filters.CreatedByUserId);
+        projects = FilterByRegion(projects, filters.Region);
+        projects = FilterByTeam(projects, filters.Team);
+        projects = FilterByNewTrustReferenceNumber(projects, filters.NewTrustReferenceNumber);
+        projects = FilterByIsFormAMat(projects, filters.IsFormAMat);
+        return projects;
+    }
+
+    private static IQueryable<GiasEstablishment> ApplyGiasEstablishmentFilters(IQueryable<GiasEstablishment> giasEstablishments, ProjectFilters filters)
+    {
+        if (!string.IsNullOrEmpty(filters.LocalAuthorityCode))
+        {
+            giasEstablishments = giasEstablishments.Where(establishment => establishment.LocalAuthorityCode == filters.LocalAuthorityCode);
+        }
+        return giasEstablishments;
+    }
+
+    private static IQueryable<Project> FilterByProjectStatus(IQueryable<Project> projects, ProjectState? status)
+    {
+        if (status != null)
+            projects = projects.Where(project => project.State == status);
+        return projects;
+    }
+
+    private static IQueryable<Project> FilterByProjectType(IQueryable<Project> projects, ProjectType? type)
+    {
+        if (type != null)
+            projects = projects.Where(project => project.Type == type);
+        return projects;
+    }
+
+    private static IQueryable<Project> FilterByAssignedToState(IQueryable<Project> projects, AssignedToState? assignedToState)
+    {
+        if (assignedToState == AssignedToState.AssignedOnly)
+            projects = projects.Where(project => project.AssignedToId != null);
+        else if (assignedToState == AssignedToState.UnassignedOnly)
+            projects = projects.Where(project => project.AssignedToId == null);
+        return projects;
+    }
+
+    private static IQueryable<Project> FilterByAssignedToUserId(IQueryable<Project> projects, UserId? assignedToUserId)
+    {
+        if (assignedToUserId != null && assignedToUserId.Value != Guid.Empty)
+        {
+            projects = projects.Where(project => project.AssignedToId != null && project.AssignedToId == assignedToUserId);
+        }
+        return projects;
+    }
+
+    private static IQueryable<Project> FilterByCreatedByUserId(IQueryable<Project> projects, UserId? createdByUserId)
+    {
+        if (createdByUserId != null && createdByUserId.Value != Guid.Empty)
+        {
+            projects = projects.Where(project => project.RegionalDeliveryOfficerId != null && project.RegionalDeliveryOfficerId == createdByUserId);
+        }
+        return projects;
+    }
+
+    private static IQueryable<Project> FilterByRegion(IQueryable<Project> projects, Region? region)
+    {
+        if (region != null)
+            projects = projects.Where(project => project.Region == region);
+        return projects;
+    }
+
+    private static IQueryable<Project> FilterByTeam(IQueryable<Project> projects, ProjectTeam? team)
+    {
+        if (team != null)
+            projects = projects.Where(project => project.Team == team);
+        return projects;
+    }
+
+    private static IQueryable<Project> FilterByNewTrustReferenceNumber(IQueryable<Project> projects, string? newTrustReferenceNumber)
+    {
+        if (!string.IsNullOrWhiteSpace(newTrustReferenceNumber))
+        {
+            projects = projects.Where(project =>
+                project.NewTrustReferenceNumber != null && project.NewTrustReferenceNumber == newTrustReferenceNumber);
+        }
+        return projects;
+    }
+
+    private static IQueryable<Project> FilterByIsFormAMat(IQueryable<Project> projects, bool? isFormAMat)
+    {
+        if (isFormAMat == true)
+        {
+            projects = projects.Where(project =>
+                project.NewTrustReferenceNumber != null &&
+                project.NewTrustName != null);
+        }
+        else if (isFormAMat == false)
+        {
+            projects = projects.Where(project =>
+                project.NewTrustReferenceNumber == null &&
+                project.NewTrustName == null);
+        }
+        return projects;
     }
 }
