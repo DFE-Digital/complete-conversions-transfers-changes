@@ -30,7 +30,7 @@ namespace Dfe.Complete.Application.Projects.Queries.ListProjectsByMonth
             try
             {
                 var projectsQuery = listAllProjectsQueryService
-                    .ListAllProjects(request.ProjectStatus, request.Type, assignedToState: AssignedToState.AssignedOnly)
+                    .ListAllProjects(new ProjectFilters(request.ProjectStatus, request.Type, AssignedToState: AssignedToState.AssignedOnly))
                     .AsEnumerable();
 
                 if (request.ToDate.HasValue)

@@ -27,7 +27,7 @@ public class ListAllProjectsForTeamHandoverQueryHandler(
         try
         {
             var projectsHandedOverForTeamQuery = listAllProjectsQueryService.ListAllProjects(
-                request.ProjectStatus, request.Type, region: request.Region, team: ProjectTeam.RegionalCaseWorkerServices);
+                new ProjectFilters(request.ProjectStatus, request.Type, Region: request.Region, Team: ProjectTeam.RegionalCaseWorkerServices));
 
             var count = await projectsHandedOverForTeamQuery.CountAsync(cancellationToken);
 

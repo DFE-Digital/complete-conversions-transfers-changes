@@ -12,70 +12,62 @@ namespace Dfe.Complete.Infrastructure.QueryServices;
 
 internal class ListAllProjectsQueryService(CompleteContext context) : IListAllProjectsQueryService
 {
-    public IQueryable<ListAllProjectsQueryModel> ListAllProjects(ProjectState? projectStatus,
-        ProjectType? projectType,
-        AssignedToState? assignedToState = null,
-        UserId? assignedToUserId = null,
-        UserId? createdByUserId = null,
-        string? localAuthorityCode = "",
-        Region? region = null,
-        ProjectTeam? team = null,
-        bool? isFormAMat = null,
-        string? newTrustReferenceNumber = "",
+    public IQueryable<ListAllProjectsQueryModel> ListAllProjects(
+        ProjectFilters filters,
         string? search = "",
         OrderProjectQueryBy? orderBy = null)
     {
         var projects = context.Projects
             .Include(project => project.RegionalDeliveryOfficer)
-            .Where(project => projectStatus == null || project.State == projectStatus)
-            .Where(project => projectType == null || projectType == project.Type);
+            .Where(project => filters.ProjectStatus == null || project.State == filters.ProjectStatus)
+            .Where(project => filters.ProjectType == null || filters.ProjectType == project.Type);
 
         IQueryable<GiasEstablishment> giasEstablishments = context.GiasEstablishments;
 
-        if (assignedToState == AssignedToState.AssignedOnly)
+        if (filters.AssignedToState == AssignedToState.AssignedOnly)
             projects = projects.Where(project => project.AssignedToId != null);
 
-        if (assignedToState == AssignedToState.UnassignedOnly)
+        if (filters.AssignedToState == AssignedToState.UnassignedOnly)
             projects = projects.Where(project => project.AssignedToId == null);
 
-        if (assignedToUserId != null && assignedToUserId.Value != Guid.Empty)
+        if (filters.AssignedToUserId != null && filters.AssignedToUserId.Value != Guid.Empty)
         {
-            projects = projects.Where(project => project.AssignedToId != null && project.AssignedToId == assignedToUserId);
+            projects = projects.Where(project => project.AssignedToId != null && project.AssignedToId == filters.AssignedToUserId);
         }
         
-        if (createdByUserId != null && createdByUserId.Value != Guid.Empty)
+        if (filters.CreatedByUserId != null && filters.CreatedByUserId.Value != Guid.Empty)
         {
-            projects = projects.Where(project => project.RegionalDeliveryOfficerId != null && project.RegionalDeliveryOfficerId == createdByUserId);
+            projects = projects.Where(project => project.RegionalDeliveryOfficerId != null && project.RegionalDeliveryOfficerId == filters.CreatedByUserId);
         }
 
-        if (!string.IsNullOrEmpty(localAuthorityCode))
+        if (!string.IsNullOrEmpty(filters.LocalAuthorityCode))
         {
-            giasEstablishments = giasEstablishments.Where(establishment => establishment.LocalAuthorityCode == localAuthorityCode);
+            giasEstablishments = giasEstablishments.Where(establishment => establishment.LocalAuthorityCode == filters.LocalAuthorityCode);
         }
 
-        if (region != null)
+        if (filters.Region != null)
         {
-            projects = projects.Where(project => project.Region == region);
+            projects = projects.Where(project => project.Region == filters.Region);
         }
 
-        if (team != null)
+        if (filters.Team != null)
         {
-            projects = projects.Where(project => project.Team == team);
+            projects = projects.Where(project => project.Team == filters.Team);
         }
 
-        if (!string.IsNullOrWhiteSpace(newTrustReferenceNumber))
+        if (!string.IsNullOrWhiteSpace(filters.NewTrustReferenceNumber))
         {
             projects = projects.Where(project =>
-                project.NewTrustReferenceNumber != null && project.NewTrustReferenceNumber == newTrustReferenceNumber);
+                project.NewTrustReferenceNumber != null && project.NewTrustReferenceNumber == filters.NewTrustReferenceNumber);
         }
         
-        if (isFormAMat == true)
+        if (filters.IsFormAMat == true)
         {
             projects = projects.Where(project =>
                 project.NewTrustReferenceNumber != null &&
                 project.NewTrustName != null);
         }
-        else if (isFormAMat == false)
+        else if (filters.IsFormAMat == false)
         {
             projects = projects.Where(project =>
                 project.NewTrustReferenceNumber == null &&

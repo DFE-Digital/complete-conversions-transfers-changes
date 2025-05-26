@@ -63,7 +63,7 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
 
             var mockProjects = listAllProjectsQueryModels.BuildMock();
             
-            listAllProjectsQueryService.ListAllProjects(ProjectState.Active, null)
+            listAllProjectsQueryService.ListAllProjects(new ProjectFilters(ProjectState.Active, null))
                 .Returns(mockProjects);
 
             trustsClient.GetTrustByUkprn2Async(Arg.Any<string>())
@@ -104,7 +104,7 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
             
             var mockProjects = listAllProjectsQueryModels.BuildMock();
             
-            listAllProjectsQueryService.ListAllProjects(ProjectState.Active, null)
+            listAllProjectsQueryService.ListAllProjects(new ProjectFilters(ProjectState.Active, null))
                 .Returns(mockProjects);
             
             trustsClient.GetTrustByUkprn2Async(Arg.Any<string>())
