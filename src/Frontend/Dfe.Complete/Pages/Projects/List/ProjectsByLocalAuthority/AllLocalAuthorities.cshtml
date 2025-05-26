@@ -25,11 +25,11 @@
         </thead>
         <tbody class="govuk-table__body">
 
-        @foreach (var localAuthority in Model.LocalAuthorities.OrderBy(la => la.LocalAuthority.Name))
+        @foreach (var localAuthority in Model.LocalAuthorities)
         {
             <tr class="govuk-table__row">
                 <td class="govuk-table__header govuk-table__cell">
-                    <a class="govuk-link" href="/projects/all/local-authorities/@localAuthority.LocalAuthorityCode">@localAuthority.LocalAuthority.Name</a>
+                    <a class="govuk-link" href="/projects/all/local-authorities/@localAuthority.LocalAuthorityCode">@localAuthority.LocalAuthorityName</a>
                 </td>
                 <td class="govuk-table__cell">@localAuthority.LocalAuthorityCode</td>
                 <td class="govuk-table__cell">@localAuthority.Conversions</td>
