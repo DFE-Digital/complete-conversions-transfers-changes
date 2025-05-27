@@ -2,7 +2,7 @@ using Dfe.Complete.Constants;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace Dfe.Complete.Pages.Projects
+namespace Dfe.Complete.Pages.Projects.Notes
 {
     public class EditProjectNoteModel : PageModel
     {
