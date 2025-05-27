@@ -10,7 +10,7 @@ using Microsoft.Extensions.Logging;
 
 namespace Dfe.Complete.Application.Projects.Queries.ListAllProjects
 {
-    public record ListAllProjectsInTrustQuery(string? Identifier, bool IsFormAMat) : PaginatedRequest<PaginatedResult<ListAllProjectsInTrustResultModel>>;
+    public record ListAllProjectsInTrustQuery(string Identifier, bool IsFormAMat) : PaginatedRequest<PaginatedResult<ListAllProjectsInTrustResultModel>>;
 
     public class ListAllProjectsInTrustQueryHandler(IListAllProjectsQueryService listAllProjectsQueryService, ITrustsV4Client trustsClient, ILogger<ListAllProjectsInTrustQueryHandler> logger)
         : IRequestHandler<ListAllProjectsInTrustQuery, PaginatedResult<ListAllProjectsInTrustResultModel>>
@@ -33,8 +33,8 @@ namespace Dfe.Complete.Application.Projects.Queries.ListAllProjects
                 var allProjects = listAllProjectsQueryService.ListAllProjects(Domain.Enums.ProjectState.Active, null,
                     newTrustReferenceNumber: newTrustReferenceNumberFilterValue, incomingTrustUkprn: incomingTrustUkprnFilterValue);
 
-                if (request.IsFormAMat && allProjects.Any())
-                    trustName = allProjects.First().Project.NewTrustName;
+                if (request.IsFormAMat && await allProjects.AnyAsync())
+                    trustName = (await allProjects.FirstAsync()).Project.NewTrustName;
 
                 var projectsQuery = allProjects
                     .Paginate(request.Page, request.Count)
