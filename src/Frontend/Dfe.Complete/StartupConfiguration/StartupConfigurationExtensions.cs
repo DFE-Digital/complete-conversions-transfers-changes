@@ -1,8 +1,4 @@
-﻿using Dfe.AcademiesApi.Client;
-using Dfe.AcademiesApi.Client.Contracts;
-using Dfe.TramsDataApi.Client.Extensions;
-
-namespace Dfe.Complete.StartupConfiguration
+﻿namespace Dfe.Complete.StartupConfiguration
 {
     public static class StartupConfigurationExtensions
     {

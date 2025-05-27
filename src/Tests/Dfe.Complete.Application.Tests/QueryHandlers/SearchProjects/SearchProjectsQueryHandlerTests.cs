@@ -3,14 +3,11 @@ using AutoFixture.Xunit2;
 using Dfe.Complete.Application.Projects.Interfaces;
 using Dfe.Complete.Application.Projects.Models; 
 using Dfe.Complete.Application.Projects.Queries.SearchProjects;
-using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Tests.Common.Customizations.Models;
 using DfE.CoreLibs.Testing.AutoFixture.Attributes;
 using DfE.CoreLibs.Testing.AutoFixture.Customizations;
-using Microsoft.EntityFrameworkCore;
 using MockQueryable; 
 using NSubstitute;
-using System.Linq;
 
 namespace Dfe.Complete.Application.Tests.QueryHandlers.SearchProjects
 {

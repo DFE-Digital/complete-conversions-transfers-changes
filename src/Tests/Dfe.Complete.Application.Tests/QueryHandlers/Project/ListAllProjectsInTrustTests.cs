@@ -1,4 +1,3 @@
-using System.Collections.ObjectModel;
 using AutoFixture;
 using AutoFixture.Xunit2;
 using Dfe.AcademiesApi.Client.Contracts;
