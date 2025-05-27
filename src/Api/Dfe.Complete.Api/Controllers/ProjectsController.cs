@@ -11,7 +11,6 @@ using Dfe.Complete.Application.Projects.Models;
 using Microsoft.AspNetCore.Authorization;
 using Dfe.Complete.Application.Projects.Commands.RemoveProject;
 using Dfe.Complete.Application.Projects.Queries.SearchProjects;
-using Dfe.Complete.Domain.Enums;
 
 namespace Dfe.Complete.Api.Controllers
 {

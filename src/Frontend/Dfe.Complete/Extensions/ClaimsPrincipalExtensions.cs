@@ -17,15 +17,8 @@ namespace Dfe.Complete.Extensions
 
         public static async Task<ProjectTeam> GetUserTeam(this ClaimsPrincipal value, ISender sender)
         {
-            var userQuery = new GetUserByAdIdQuery(value.GetUserAdId());
-            var userResponse = (await sender.Send(userQuery))?.Value;
-            return EnumExtensions.FromDescription<ProjectTeam>(userResponse?.Team);
-        }
-
-        public static bool HasRole(this ClaimsPrincipal user, string role)
-        {
-            return user?.Claims.Any(c =>
-                c.Type == ClaimTypes.Role && string.Equals(c.Value, role, StringComparison.OrdinalIgnoreCase)) ?? false;
+            var user = await value.GetUser(sender);
+            return EnumExtensions.FromDescription<ProjectTeam>(user.Team);
         }
 
         public static async Task<UserDto> GetUser(this ClaimsPrincipal value, ISender sender)

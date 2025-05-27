@@ -1,8 +1,11 @@
+using Dfe.Complete.Domain.Constants;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace Dfe.Complete.Pages.Projects
 {
+    [Authorize(policy: UserPolicyConstants.CanCreateProjects)]
     public class CreateNewProjectModel : PageModel
     {
         [BindProperty]

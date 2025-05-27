@@ -1,6 +1,4 @@
-﻿using Dfe.Complete.Application.Common.Models;
-
-namespace Dfe.Complete.Extensions
+﻿namespace Dfe.Complete.Extensions
 {
 	public static class IntegerExtensions
 	{

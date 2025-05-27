@@ -1,4 +1,3 @@
-
 namespace Dfe.Complete.Domain.Constants;
 
 public static class UserRolesConstants
