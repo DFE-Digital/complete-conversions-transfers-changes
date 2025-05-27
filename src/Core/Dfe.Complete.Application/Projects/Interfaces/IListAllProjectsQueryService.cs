@@ -1,4 +1,5 @@
 using Dfe.Complete.Application.Projects.Models;
+using Dfe.Complete.Domain.Entities;
 using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Domain.ValueObjects;
 
@@ -20,4 +21,8 @@ public interface IListAllProjectsQueryService
         string? incomingTrustUkprn = null,
         OrderProjectQueryBy? orderBy = null
         );
+
+    IQueryable<Project> ListAllProjectsWithRegion(
+        ProjectState? projectStatus,
+        ProjectType? projectType);
 }
