@@ -6,7 +6,7 @@ namespace Dfe.Complete.Tests.Common.Customizations.Models;
 
 public class ListAllProjectsByLAQueryModelCustomization : ICustomization
 {
-    public Project Project { get; set; }
+    public required Project Project { get; set; }
     
     public void Customize(IFixture fixture)
     {

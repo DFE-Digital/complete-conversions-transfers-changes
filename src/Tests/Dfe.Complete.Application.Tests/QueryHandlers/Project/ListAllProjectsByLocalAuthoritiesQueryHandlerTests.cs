@@ -45,9 +45,18 @@ public class ListAllProjectByLocalAuthoritiesQueryHandlerTests
 
         var mockLocalAuthorities = new List<LocalAuthority>
         {
-            fixture.Build<LocalAuthority>().With(la => la.Code, "LA001").Create(),
-            fixture.Build<LocalAuthority>().With(la => la.Code, "LA002").Create(),
-            fixture.Build<LocalAuthority>().With(la => la.Code, "LA003").Create()
+            fixture.Build<LocalAuthority>()
+               .With(la => la.Code, "LA001")
+               .With(la => la.Name, "LA001")
+               .Create(),
+            fixture.Build<LocalAuthority>()
+               .With(la => la.Code, "LA002")
+               .With(la => la.Name, "LA002")
+               .Create(),
+            fixture.Build<LocalAuthority>()
+               .With(la => la.Code, "LA003")
+               .With(la => la.Name, "LA003")
+               .Create()
         };
 
 
@@ -72,8 +81,20 @@ public class ListAllProjectByLocalAuthoritiesQueryHandlerTests
 
         // Assert
         Assert.NotNull(handlerResult);
-// TODO add equivalence
         Assert.Equal(3, handlerResult.ItemCount);
+
+        Assert.Equal("LA001", handlerResult.Value?[0].LocalAuthorityCode);
+        Assert.Equal(3, handlerResult.Value?[0].Transfers);
+        Assert.Equal(0, handlerResult.Value?[0].Conversions);
+
+        Assert.Equal("LA002", handlerResult.Value?[1].LocalAuthorityCode);
+        Assert.Equal(0, handlerResult.Value?[1].Transfers);
+        Assert.Equal(3, handlerResult.Value?[1].Conversions);
+
+        Assert.Equal("LA003", handlerResult.Value?[2].LocalAuthorityCode);
+        Assert.Equal(3, handlerResult.Value?[2].Transfers);
+        Assert.Equal(1, handlerResult.Value?[2].Conversions);
+        // (string LocalAuthorityName, string LocalAuthorityCode, int Conversions, int Transfers);
     }
 
     [Theory]
@@ -88,8 +109,6 @@ public class ListAllProjectByLocalAuthoritiesQueryHandlerTests
         var query = new ListAllProjectsByLocalAuthoritiesQuery { Page = 10 };
 
         var handlerResult = await handler.Handle(query, default);
-
-        //Assert 
 
         // Assert
         Assert.NotNull(handlerResult);

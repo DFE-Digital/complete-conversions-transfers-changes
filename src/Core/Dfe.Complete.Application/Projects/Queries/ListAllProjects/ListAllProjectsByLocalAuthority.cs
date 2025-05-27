@@ -1,9 +1,7 @@
 using Dfe.Complete.Application.Common.Models;
 using Dfe.Complete.Application.Projects.Interfaces;
 using Dfe.Complete.Application.Projects.Models;
-using Dfe.Complete.Domain.Entities;
 using Dfe.Complete.Domain.Enums;
-using Dfe.Complete.Domain.Interfaces.Repositories;
 using Dfe.Complete.Utils;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -14,7 +12,7 @@ namespace Dfe.Complete.Application.Projects.Queries.ListAllProjects;
 public record ListAllProjectsByLocalAuthoritiesQuery(ProjectState? State = ProjectState.Active, ProjectType? Type = null)
     : PaginatedRequest<PaginatedResult<List<ListAllProjectLocalAuthoritiesResultModel>>>;
 
-public class ListAllProjectByLocalAuthorities(ICompleteRepository<LocalAuthority> localAuthoritiesRepo, IListAllProjectsWithLAsQueryService ListAllProjectsWithLAsQueryService, ILogger<ListAllProjectByLocalAuthorities> logger)
+public class ListAllProjectByLocalAuthorities(IListAllProjectsWithLAsQueryService ListAllProjectsWithLAsQueryService, ILogger<ListAllProjectByLocalAuthorities> logger)
     : IRequestHandler<ListAllProjectsByLocalAuthoritiesQuery, PaginatedResult<List<ListAllProjectLocalAuthoritiesResultModel>>>
 {
     public async Task<PaginatedResult<List<ListAllProjectLocalAuthoritiesResultModel>>> Handle(
