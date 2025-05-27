@@ -1,10 +1,12 @@
 using Dfe.Complete.Models;
 using Dfe.Complete.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace Dfe.Complete.Pages.Public
 {
+	[AllowAnonymous]
 	public class Cookies : PageModel
 	{
 		public bool? Consent { get; set; }
