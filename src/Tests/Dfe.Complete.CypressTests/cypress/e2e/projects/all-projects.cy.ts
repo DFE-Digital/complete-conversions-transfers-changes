@@ -110,7 +110,7 @@ describe("View all projects", () => {
             .viewTransfersProjects()
             .containsHeading("All transfers in progress")
             .goToLastPage()
-            .goToNextPageUntilFieldIsVisible(transferSchoolName);
+            .goToPreviousPageUntilFieldIsVisible(transferSchoolName);
         projectTable
             .hasTableHeaders(["School or academy", "URN", "Transfer date", "Form a MAT project?", "Assigned to"])
             .withSchool(transferSchoolName)
