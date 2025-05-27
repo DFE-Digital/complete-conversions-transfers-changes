@@ -16,5 +16,6 @@ public record ProjectFilters(
     Region? Region = null,
     ProjectTeam? Team = null,
     bool? IsFormAMat = null,
-    string? NewTrustReferenceNumber = ""
+    string? NewTrustReferenceNumber = "",
+    DateRangeFilter? SignificantDateRange = null
 );

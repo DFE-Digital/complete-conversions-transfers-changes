@@ -30,23 +30,9 @@ namespace Dfe.Complete.Application.Projects.Queries.ListProjectsByMonth
             try
             {
                 var projectsQuery = listAllProjectsQueryService
-                    .ListAllProjects(new ProjectFilters(request.ProjectStatus, request.Type, AssignedToState: AssignedToState.AssignedOnly))
+                    .ListAllProjects(new ProjectFilters(request.ProjectStatus, request.Type, AssignedToState: AssignedToState.AssignedOnly, 
+                    SignificantDateRange: new DateRangeFilter(request.FromDate, request.ToDate)))
                     .AsEnumerable();
-
-                if (request.ToDate.HasValue)
-                {
-                    projectsQuery = projectsQuery.Where(p =>
-                        p.Project.SignificantDate.HasValue &&
-                        p.Project.SignificantDate.Value >= request.FromDate &&
-                        p.Project.SignificantDate.Value <= request.ToDate.Value);
-                }
-                else
-                {
-                    projectsQuery = projectsQuery.Where(p =>
-                        p.Project.SignificantDate.HasValue &&
-                        p.Project.SignificantDate.Value == request.FromDate &&
-                        p.Project.SignificantDate.Value == request.FromDate);
-                }
 
                 var projects = projectsQuery.Where(p => p.Project.SignificantDateProvisional == false).ToList(); // Confirmed && Inprogress
 

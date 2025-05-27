@@ -83,15 +83,15 @@ internal class ListAllProjectsQueryService(CompleteContext context) : IListAllPr
         projects = FilterByTeam(projects, filters.Team);
         projects = FilterByNewTrustReferenceNumber(projects, filters.NewTrustReferenceNumber);
         projects = FilterByIsFormAMat(projects, filters.IsFormAMat);
+        projects = FilterBySignificantDateRange(projects, filters.SignificantDateRange);
         return projects;
     }
 
     private static IQueryable<GiasEstablishment> ApplyGiasEstablishmentFilters(IQueryable<GiasEstablishment> giasEstablishments, ProjectFilters filters)
     {
         if (!string.IsNullOrEmpty(filters.LocalAuthorityCode))
-        {
             giasEstablishments = giasEstablishments.Where(establishment => establishment.LocalAuthorityCode == filters.LocalAuthorityCode);
-        }
+
         return giasEstablishments;
     }
 
@@ -121,18 +121,16 @@ internal class ListAllProjectsQueryService(CompleteContext context) : IListAllPr
     private static IQueryable<Project> FilterByAssignedToUserId(IQueryable<Project> projects, UserId? assignedToUserId)
     {
         if (assignedToUserId != null && assignedToUserId.Value != Guid.Empty)
-        {
             projects = projects.Where(project => project.AssignedToId != null && project.AssignedToId == assignedToUserId);
-        }
+
         return projects;
     }
 
     private static IQueryable<Project> FilterByCreatedByUserId(IQueryable<Project> projects, UserId? createdByUserId)
     {
         if (createdByUserId != null && createdByUserId.Value != Guid.Empty)
-        {
             projects = projects.Where(project => project.RegionalDeliveryOfficerId != null && project.RegionalDeliveryOfficerId == createdByUserId);
-        }
+
         return projects;
     }
 
@@ -153,27 +151,39 @@ internal class ListAllProjectsQueryService(CompleteContext context) : IListAllPr
     private static IQueryable<Project> FilterByNewTrustReferenceNumber(IQueryable<Project> projects, string? newTrustReferenceNumber)
     {
         if (!string.IsNullOrWhiteSpace(newTrustReferenceNumber))
-        {
             projects = projects.Where(project =>
                 project.NewTrustReferenceNumber != null && project.NewTrustReferenceNumber == newTrustReferenceNumber);
-        }
+
         return projects;
     }
 
     private static IQueryable<Project> FilterByIsFormAMat(IQueryable<Project> projects, bool? isFormAMat)
     {
         if (isFormAMat == true)
-        {
             projects = projects.Where(project =>
                 project.NewTrustReferenceNumber != null &&
                 project.NewTrustName != null);
-        }
         else if (isFormAMat == false)
-        {
             projects = projects.Where(project =>
                 project.NewTrustReferenceNumber == null &&
                 project.NewTrustName == null);
+
+        return projects;
+    }
+
+    private static IQueryable<Project> FilterBySignificantDateRange(IQueryable<Project> projects, DateRangeFilter? significantDateRange)
+    {
+        if (significantDateRange != null)
+        {
+            var fromDate = significantDateRange.From;
+            var toDate = significantDateRange.To ?? fromDate;
+
+            projects = projects.Where(project =>
+                project.SignificantDate.HasValue &&
+                project.SignificantDate.Value >= fromDate &&
+                project.SignificantDate.Value <= toDate);
         }
+
         return projects;
     }
 }
