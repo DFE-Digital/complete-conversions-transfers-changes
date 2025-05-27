@@ -57,11 +57,11 @@
             "ExpectedSecurity": "Authorize"
         },
         {
-            "Route": "/Projects/EditProjectNote",
+            "Route": "/Projects/Notes/EditProjectNote",
             "ExpectedSecurity": "Authorize"
         },
         {
-            "Route": "/Projects/ViewProjectNotes",
+            "Route": "/Projects/Notes/ViewProjectNotes",
             "ExpectedSecurity": "Authorize"
         },
         {
