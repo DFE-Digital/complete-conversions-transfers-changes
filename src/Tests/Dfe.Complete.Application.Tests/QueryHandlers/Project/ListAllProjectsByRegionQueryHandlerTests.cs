@@ -1,7 +1,6 @@
 using AutoFixture;
 using AutoFixture.Xunit2;
 using Dfe.Complete.Application.Projects.Interfaces;
-using Dfe.Complete.Application.Projects.Models;
 using Dfe.Complete.Application.Projects.Queries.ListAllProjects;
 using Dfe.Complete.Tests.Common.Customizations.Models;
 using DfE.CoreLibs.Testing.AutoFixture.Attributes;
@@ -25,13 +24,13 @@ public class ListAllProjectsByRegionQueryHandlerTests
         IFixture fixture)
     {
         // Arrange
-        var listAllProjectsQueryModels = fixture.CreateMany<ListAllProjectsQueryModel>(50).ToList();
+        var listAllProjectsQueryModels = fixture.CreateMany<Domain.Entities.Project>(50).ToList();
 
         var query = new ListAllProjectsQuery(null, null);
 
         var mock = listAllProjectsQueryModels.BuildMock();
 
-        mockListAllProjectsQueryService.ListAllProjects(query.ProjectStatus, query.Type)
+        mockListAllProjectsQueryService.ListAllProjectsWithRegion(query.ProjectStatus, query.Type)
             .Returns(mock);
 
         var listAllProjectsByRegionQuery = new ListAllProjectsByRegionQuery(null, null);
@@ -58,7 +57,7 @@ public class ListAllProjectsByRegionQueryHandlerTests
 
         var query = new ListAllProjectsQuery(null, null);
 
-        mockListAllProjectsQueryService.ListAllProjects(query.ProjectStatus, query.Type)
+        mockListAllProjectsQueryService.ListAllProjectsWithRegion(query.ProjectStatus, query.Type)
             .Throws(new Exception(errorMessage));
 
         var listAllProjectsByRegionQuery = new ListAllProjectsByRegionQuery(null, null);

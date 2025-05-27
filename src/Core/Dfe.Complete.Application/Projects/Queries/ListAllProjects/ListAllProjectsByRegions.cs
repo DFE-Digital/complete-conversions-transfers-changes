@@ -23,21 +23,19 @@ public class ListAllProjectsByRegionQueryHandler(IListAllProjectsQueryService li
         try
         {
             var projectsList = await listAllProjectsQueryService
-                .ListAllProjects(request.ProjectStatus, request.Type).ToListAsync(cancellationToken: cancellationToken);
-
-            var projectsGroupedByRegion = projectsList.Where(p => p.Project?.Region != null).GroupBy(p => p.Project?.Region);
-
-            var projectsResultModel = projectsGroupedByRegion
+                .ListAllProjectsWithRegion(request.ProjectStatus, request.Type)
+                .GroupBy(p => p.Region)
                 .Select(group =>
                     new ListAllProjectsByRegionsResultModel(
-                        Region: (Region)group.Key,
-                        ConversionsCount: group.Count(item => item.Project?.Type == ProjectType.Conversion),
-                        TransfersCount: group.Count(item => item.Project?.Type == ProjectType.Transfer)
+                        group.Key.GetValueOrDefault(),
+                        group.Count(item => item != null && item.Type == ProjectType.Conversion),
+                        group.Count(item => item != null && item.Type == ProjectType.Transfer)
                     ))
-                .OrderBy(item => item.Region.ToString())
-                .ToList();
+                .ToListAsync(cancellationToken);
 
-            return Result<List<ListAllProjectsByRegionsResultModel>>.Success(projectsResultModel);
+            var orderedRegions = projectsList.OrderBy(region => region.Region.ToString()).ToList();
+
+            return Result<List<ListAllProjectsByRegionsResultModel>>.Success(orderedRegions);
         }
         catch (Exception e)
         {
