@@ -8,7 +8,7 @@ public interface IProjectsQueryBuilder
 {
     IProjectsQueryBuilder ApplyProjectFilters(ProjectFilters filters);
     IProjectsQueryBuilder ApplyGiasEstablishmentFilters(ProjectFilters filters);
-    IProjectsQueryBuilder Search(string searchTerm);
+    IProjectsQueryBuilder Search(string? searchTerm);
     IProjectsQueryBuilder Where(Expression<Func<Project, bool>> predicate);
     IQueryable<Project> GetProjects();
     IQueryable<ListAllProjectsQueryModel> GenerateQuery(OrderProjectQueryBy? orderBy = null);

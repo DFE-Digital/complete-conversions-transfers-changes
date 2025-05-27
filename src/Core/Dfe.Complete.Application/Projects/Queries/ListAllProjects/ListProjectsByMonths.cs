@@ -48,8 +48,6 @@ namespace Dfe.Complete.Application.Projects.Queries.ListProjectsByMonth
                 var trusts = await trustsClient.GetByUkprnsAllAsync(allUkprns, cancellationToken);
 
                 var result = projects
-                    .Skip(request.Page * request.Count)
-                    .Take(request.Count)
                     .Select(item =>
                     {
                         var project = item.Project;
