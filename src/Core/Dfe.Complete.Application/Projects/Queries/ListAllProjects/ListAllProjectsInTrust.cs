@@ -33,8 +33,8 @@ namespace Dfe.Complete.Application.Projects.Queries.ListAllProjects
                 var allProjects = listAllProjectsQueryService.ListAllProjects(Domain.Enums.ProjectState.Active, null,
                     newTrustReferenceNumber: newTrustReferenceNumberFilterValue, incomingTrustUkprn: incomingTrustUkprnFilterValue);
 
-                if (request.IsFormAMat && await allProjects.AnyAsync())
-                    trustName = (await allProjects.FirstAsync()).Project.NewTrustName;
+                if (request.IsFormAMat && await allProjects.AnyAsync(cancellationToken))
+                    trustName = (await allProjects.FirstAsync(cancellationToken)).Project.NewTrustName;
 
                 var projectsQuery = allProjects
                     .Paginate(request.Page, request.Count)
