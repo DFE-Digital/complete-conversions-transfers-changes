@@ -40,8 +40,8 @@ namespace Dfe.Complete.Application.Tests.CommandHandlers.LocalAuthority
             var command = new DeleteLocalAuthorityCommand(new LocalAuthorityId(Guid.NewGuid()), new ContactId(Guid.NewGuid())); 
 
             var localAuthority = Domain.Entities.LocalAuthority.CreateLocalAuthority(
-                command.Id, "Name", "Code", "Address1", "Address2", "Address3",
-                "AddressTown", "AddressCounty", "AddressPostcode", DateTime.UtcNow);
+                command.Id, "Name", "Code", new AddressDetails("Address1", "Address2", "Address3",
+                "AddressTown", "AddressCounty", "AddressPostcode"), DateTime.UtcNow);
             var contact = Domain.Entities.Contact.CreateLocalAuthorityContact(
                 command.ContactId!, "Title", "Name", "Email", "Phone", command.Id,  DateTime.UtcNow);
 
@@ -83,8 +83,8 @@ namespace Dfe.Complete.Application.Tests.CommandHandlers.LocalAuthority
             var command = new DeleteLocalAuthorityCommand(new LocalAuthorityId(Guid.NewGuid()), contactId);
 
             var localAuthority = Domain.Entities.LocalAuthority.CreateLocalAuthority(
-                command.Id, "Name", "Code", "Address1", "Address2", "Address3",
-                "AddressTown", "AddressCounty", "AddressPostcode", DateTime.UtcNow); 
+                command.Id, "Name", "Code", new AddressDetails("Address1", "Address2", "Address3",
+                "AddressTown", "AddressCounty", "AddressPostcode"), DateTime.UtcNow); 
 
             _mockLocalAuthorityRepository.Setup(repo => repo.FindAsync(command.Id, It.IsAny<CancellationToken>()))
                 .ReturnsAsync(localAuthority);

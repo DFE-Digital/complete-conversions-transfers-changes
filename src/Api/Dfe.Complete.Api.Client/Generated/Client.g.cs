@@ -2644,9 +2644,9 @@ namespace Dfe.Complete.Client
         /// </summary>
         /// <returns>List of local authorities.</returns>
         /// <exception cref="CompleteApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<LocalAuthorityQueryModel>> ListAllLocalAuthoritiesAsync(int? pageNumber, int? pageCount, int? page, int? count)
+        public virtual System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<LocalAuthorityQueryModel>> ListAllLocalAuthoritiesAsync(int? page, int? count)
         {
-            return ListAllLocalAuthoritiesAsync(pageNumber, pageCount, page, count, System.Threading.CancellationToken.None);
+            return ListAllLocalAuthoritiesAsync(page, count, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -2655,7 +2655,7 @@ namespace Dfe.Complete.Client
         /// </summary>
         /// <returns>List of local authorities.</returns>
         /// <exception cref="CompleteApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<LocalAuthorityQueryModel>> ListAllLocalAuthoritiesAsync(int? pageNumber, int? pageCount, int? page, int? count, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<LocalAuthorityQueryModel>> ListAllLocalAuthoritiesAsync(int? page, int? count, System.Threading.CancellationToken cancellationToken)
         {
             var client_ = _httpClient;
             var disposeClient_ = false;
@@ -2671,14 +2671,6 @@ namespace Dfe.Complete.Client
                     // Operation Path: "v1/ServiceSupport/LocalAuthority/List/All"
                     urlBuilder_.Append("v1/ServiceSupport/LocalAuthority/List/All");
                     urlBuilder_.Append('?');
-                    if (pageNumber != null)
-                    {
-                        urlBuilder_.Append(System.Uri.EscapeDataString("PageNumber")).Append('=').Append(System.Uri.EscapeDataString(ConvertToString(pageNumber, System.Globalization.CultureInfo.InvariantCulture))).Append('&');
-                    }
-                    if (pageCount != null)
-                    {
-                        urlBuilder_.Append(System.Uri.EscapeDataString("PageCount")).Append('=').Append(System.Uri.EscapeDataString(ConvertToString(pageCount, System.Globalization.CultureInfo.InvariantCulture))).Append('&');
-                    }
                     if (page != null)
                     {
                         urlBuilder_.Append(System.Uri.EscapeDataString("Page")).Append('=').Append(System.Uri.EscapeDataString(ConvertToString(page, System.Globalization.CultureInfo.InvariantCulture))).Append('&');
@@ -2776,8 +2768,8 @@ namespace Dfe.Complete.Client
 
                     var urlBuilder_ = new System.Text.StringBuilder();
                     if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
-                    // Operation Path: "v1/ServiceSupport/LocalAuthority/Update"
-                    urlBuilder_.Append("v1/ServiceSupport/LocalAuthority/Update");
+                    // Operation Path: "v1/ServiceSupport/LocalAuthority/details"
+                    urlBuilder_.Append("v1/ServiceSupport/LocalAuthority/details");
                     urlBuilder_.Append('?');
                     if (localAuthorityId_Value != null)
                     {
@@ -2846,88 +2838,42 @@ namespace Dfe.Complete.Client
         /// <summary>
         /// Update the local authority details.
         /// </summary>
+        /// <param name="request">The request.</param>
         /// <returns>local authoirty details updated successfully.</returns>
         /// <exception cref="CompleteApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task UpdateLocalAuthorityDetailsAsync(System.Guid? id_Value, string? code, string? address1, string? address2, string? address3, string? addressTown, string? addressCounty, string? addressPostcode, System.Guid? contactId_Value, string? title, string? contactName, string? email, string? phone)
+        public virtual System.Threading.Tasks.Task UpdateLocalAuthorityDetailsAsync(UpdateLocalAuthorityCommand request)
         {
-            return UpdateLocalAuthorityDetailsAsync(id_Value, code, address1, address2, address3, addressTown, addressCounty, addressPostcode, contactId_Value, title, contactName, email, phone, System.Threading.CancellationToken.None);
+            return UpdateLocalAuthorityDetailsAsync(request, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>
         /// Update the local authority details.
         /// </summary>
+        /// <param name="request">The request.</param>
         /// <returns>local authoirty details updated successfully.</returns>
         /// <exception cref="CompleteApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task UpdateLocalAuthorityDetailsAsync(System.Guid? id_Value, string? code, string? address1, string? address2, string? address3, string? addressTown, string? addressCounty, string? addressPostcode, System.Guid? contactId_Value, string? title, string? contactName, string? email, string? phone, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task UpdateLocalAuthorityDetailsAsync(UpdateLocalAuthorityCommand request, System.Threading.CancellationToken cancellationToken)
         {
+            if (request == null)
+                throw new System.ArgumentNullException("request");
+
             var client_ = _httpClient;
             var disposeClient_ = false;
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
-                    request_.Content = new System.Net.Http.StringContent(string.Empty, System.Text.Encoding.UTF8, "application/json");
+                    var json_ = Newtonsoft.Json.JsonConvert.SerializeObject(request, JsonSerializerSettings);
+                    var content_ = new System.Net.Http.StringContent(json_);
+                    content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
+                    request_.Content = content_;
                     request_.Method = new System.Net.Http.HttpMethod("PATCH");
 
                     var urlBuilder_ = new System.Text.StringBuilder();
                     if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
                     // Operation Path: "v1/ServiceSupport/LocalAuthority/Delete"
                     urlBuilder_.Append("v1/ServiceSupport/LocalAuthority/Delete");
-                    urlBuilder_.Append('?');
-                    if (id_Value != null)
-                    {
-                        urlBuilder_.Append(System.Uri.EscapeDataString("Id.Value")).Append('=').Append(System.Uri.EscapeDataString(ConvertToString(id_Value, System.Globalization.CultureInfo.InvariantCulture))).Append('&');
-                    }
-                    if (code != null)
-                    {
-                        urlBuilder_.Append(System.Uri.EscapeDataString("Code")).Append('=').Append(System.Uri.EscapeDataString(ConvertToString(code, System.Globalization.CultureInfo.InvariantCulture))).Append('&');
-                    }
-                    if (address1 != null)
-                    {
-                        urlBuilder_.Append(System.Uri.EscapeDataString("Address1")).Append('=').Append(System.Uri.EscapeDataString(ConvertToString(address1, System.Globalization.CultureInfo.InvariantCulture))).Append('&');
-                    }
-                    if (address2 != null)
-                    {
-                        urlBuilder_.Append(System.Uri.EscapeDataString("Address2")).Append('=').Append(System.Uri.EscapeDataString(ConvertToString(address2, System.Globalization.CultureInfo.InvariantCulture))).Append('&');
-                    }
-                    if (address3 != null)
-                    {
-                        urlBuilder_.Append(System.Uri.EscapeDataString("Address3")).Append('=').Append(System.Uri.EscapeDataString(ConvertToString(address3, System.Globalization.CultureInfo.InvariantCulture))).Append('&');
-                    }
-                    if (addressTown != null)
-                    {
-                        urlBuilder_.Append(System.Uri.EscapeDataString("AddressTown")).Append('=').Append(System.Uri.EscapeDataString(ConvertToString(addressTown, System.Globalization.CultureInfo.InvariantCulture))).Append('&');
-                    }
-                    if (addressCounty != null)
-                    {
-                        urlBuilder_.Append(System.Uri.EscapeDataString("AddressCounty")).Append('=').Append(System.Uri.EscapeDataString(ConvertToString(addressCounty, System.Globalization.CultureInfo.InvariantCulture))).Append('&');
-                    }
-                    if (addressPostcode != null)
-                    {
-                        urlBuilder_.Append(System.Uri.EscapeDataString("AddressPostcode")).Append('=').Append(System.Uri.EscapeDataString(ConvertToString(addressPostcode, System.Globalization.CultureInfo.InvariantCulture))).Append('&');
-                    }
-                    if (contactId_Value != null)
-                    {
-                        urlBuilder_.Append(System.Uri.EscapeDataString("ContactId.Value")).Append('=').Append(System.Uri.EscapeDataString(ConvertToString(contactId_Value, System.Globalization.CultureInfo.InvariantCulture))).Append('&');
-                    }
-                    if (title != null)
-                    {
-                        urlBuilder_.Append(System.Uri.EscapeDataString("Title")).Append('=').Append(System.Uri.EscapeDataString(ConvertToString(title, System.Globalization.CultureInfo.InvariantCulture))).Append('&');
-                    }
-                    if (contactName != null)
-                    {
-                        urlBuilder_.Append(System.Uri.EscapeDataString("ContactName")).Append('=').Append(System.Uri.EscapeDataString(ConvertToString(contactName, System.Globalization.CultureInfo.InvariantCulture))).Append('&');
-                    }
-                    if (email != null)
-                    {
-                        urlBuilder_.Append(System.Uri.EscapeDataString("Email")).Append('=').Append(System.Uri.EscapeDataString(ConvertToString(email, System.Globalization.CultureInfo.InvariantCulture))).Append('&');
-                    }
-                    if (phone != null)
-                    {
-                        urlBuilder_.Append(System.Uri.EscapeDataString("Phone")).Append('=').Append(System.Uri.EscapeDataString(ConvertToString(phone, System.Globalization.CultureInfo.InvariantCulture))).Append('&');
-                    }
-                    urlBuilder_.Length--;
 
                     PrepareRequest(client_, request_, urlBuilder_);
 

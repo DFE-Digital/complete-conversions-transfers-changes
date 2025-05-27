@@ -31,12 +31,7 @@ public class LocalAuthority : BaseAggregateRoot, IEntity<LocalAuthorityId>
         LocalAuthorityId id,
         string name,
         string code,
-        string address1,
-        string? address2,
-        string? address3,
-        string? addressTown,
-        string? addressCounty,
-        string addressPostcode,
+        AddressDetails addressDetails,
         DateTime createdAt)
     {
         return new LocalAuthority
@@ -44,32 +39,27 @@ public class LocalAuthority : BaseAggregateRoot, IEntity<LocalAuthorityId>
             Id = id,
             Name = name,
             Code = code,
-            Address1 = address1,
-            Address2 = address2,
-            Address3 = address3,
-            AddressTown = addressTown,
-            AddressCounty = addressCounty,
-            AddressPostcode = addressPostcode,
+            Address1 = addressDetails.Address1,
+            Address2 = addressDetails.Address2,
+            Address3 = addressDetails.Address3,
+            AddressTown = addressDetails.AddressTown,
+            AddressCounty = addressDetails.AddressCounty,
+            AddressPostcode = addressDetails.AddressPostcode,
             CreatedAt = createdAt
         };
     }
     public void UpdateLocalAuthority( 
        string code,
-       string address1,
-       string? address2,
-       string? address3,
-       string? addressTown,
-       string? addressCounty,
-       string addressPostcode,
+       AddressDetails addressDetails,
        DateTime updatedAt)
     { 
         Code = code;
-        Address1 = address1;
-        Address2 = address2;
-        Address3 = address3;
-        AddressTown = addressTown;
-        AddressCounty = addressCounty;
-        AddressPostcode = addressPostcode;
+        Address1 = addressDetails.Address1;
+        Address2 = addressDetails.Address2;
+        Address3 = addressDetails.Address3;
+        AddressTown = addressDetails.AddressTown;
+        AddressCounty = addressDetails.AddressCounty;
+        AddressPostcode = addressDetails.AddressPostcode;
         UpdatedAt = updatedAt;
     }
 }

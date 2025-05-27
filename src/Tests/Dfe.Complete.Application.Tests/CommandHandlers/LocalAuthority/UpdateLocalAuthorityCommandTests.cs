@@ -39,8 +39,8 @@ namespace Dfe.Complete.Application.Tests.CommandHandlers.LocalAuthority
                 "AddressTown", "AddressCounty", "AddressPostcode");
 
             var localAuthority = Domain.Entities.LocalAuthority.CreateLocalAuthority(
-                command.Id, "Name", "Code", "Address1", "Address2", "Address3",
-                "AddressTown", "AddressCounty", "AddressPostcode", DateTime.UtcNow); 
+                command.Id, "Name", "Code", new AddressDetails("Address1", "Address2", "Address3",
+                "AddressTown", "AddressCounty", "AddressPostcode"), DateTime.UtcNow); 
 
             _mockLocalAuthorityRepository.Setup(repo => repo.FindAsync(It.IsAny<Expression<Func<Domain.Entities.LocalAuthority, bool>>>(), It.IsAny<CancellationToken>()))
                 .ReturnsAsync(localAuthority);
@@ -70,8 +70,8 @@ namespace Dfe.Complete.Application.Tests.CommandHandlers.LocalAuthority
                 "Title", "ContactName", "Email", "Phone");
 
             var localAuthority = Domain.Entities.LocalAuthority.CreateLocalAuthority(
-                command.Id, "Name", "Code", "Address1", "Address2", "Address3",
-                "AddressTown", "AddressCounty", "AddressPostcode", DateTime.UtcNow);
+                command.Id, "Name", "Code", new AddressDetails("Address1", "Address2", "Address3",
+                "AddressTown", "AddressCounty", "AddressPostcode"), DateTime.UtcNow);
             var contact = Domain.Entities.Contact.CreateLocalAuthorityContact(
                 command.ContactId!, command.Title!, command.ContactName!, command.Email, command.Phone, command.Id, DateTime.UtcNow);
 
@@ -108,8 +108,8 @@ namespace Dfe.Complete.Application.Tests.CommandHandlers.LocalAuthority
                 "Title", "ContactName", "Email", "Phone");
 
             var localAuthority = Domain.Entities.LocalAuthority.CreateLocalAuthority(
-                command.Id, "Name", "Code", "Address1", "Address2", "Address3",
-                "AddressTown", "AddressCounty", "AddressPostcode", DateTime.UtcNow);
+                command.Id, "Name", "Code", new AddressDetails("Address1", "Address2", "Address3",
+                "AddressTown", "AddressCounty", "AddressPostcode"), DateTime.UtcNow);
             var contact = Domain.Entities.Contact.CreateLocalAuthorityContact(
                 command.ContactId!, command.Title!, command.ContactName!, command.Email, command.Phone, localAuthority.Id,  DateTime.UtcNow);
 

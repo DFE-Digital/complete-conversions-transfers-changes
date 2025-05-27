@@ -36,9 +36,9 @@ namespace Dfe.Complete.Application.LocalAuthorities.Commands
                 await unitOfWork.BeginTransactionAsync();
                 var localAuthority = await localAuthorityRepository.FindAsync(x=> x.Id == request.Id, cancellationToken) ?? throw new NotFoundException("Cannot update Local authority as it is not existed.");
 
-                localAuthority.UpdateLocalAuthority(request.Code, request.Address1,
+                localAuthority.UpdateLocalAuthority(request.Code, new AddressDetails(request.Address1,
                     request.Address2, request.Address3, request.AddressTown, request.AddressCounty,
-                    request.AddressPostcode, DateTime.UtcNow);  
+                    request.AddressPostcode), DateTime.UtcNow);  
                 await localAuthorityRepository.UpdateAsync(localAuthority, cancellationToken);
 
                 if (!string.IsNullOrWhiteSpace(request.Title) && !string.IsNullOrWhiteSpace(request.ContactName)) 

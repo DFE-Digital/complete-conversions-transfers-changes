@@ -2,7 +2,6 @@
 using Dfe.Complete.Application.LocalAuthorities.Commands;
 using Dfe.Complete.Application.LocalAuthorities.Models;
 using Dfe.Complete.Application.LocalAuthorities.Queries;
-using Dfe.Complete.Domain.ValueObjects;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -54,7 +53,7 @@ namespace Dfe.Complete.Api.Controllers
         /// <param name="cancellationToken">The cancellation token.</param>
         [Authorize(Policy = "CanRead")]
         [HttpGet]
-        [Route("LocalAuthority/Update")]
+        [Route("LocalAuthority/details")]
         [SwaggerResponse(200, "Local authority details.", typeof(LocalAuthorityDetailsModel))]
         [SwaggerResponse(400, "Invalid request data.")]
         public async Task<IActionResult> GetLocalAuthorityDetailsAsync([FromQuery] GetLocalAuthorityDetailsQuery request, CancellationToken cancellationToken)
@@ -73,7 +72,7 @@ namespace Dfe.Complete.Api.Controllers
         [Route("LocalAuthority/Delete")]
         [SwaggerResponse(204, "local authoirty details updated successfully.")]
         [SwaggerResponse(400, "Invalid request data.")]
-        public async Task<IActionResult> UpdateLocalAuthorityDetailsAsync([FromQuery] UpdateLocalAuthorityCommand request, CancellationToken cancellationToken)
+        public async Task<IActionResult> UpdateLocalAuthorityDetailsAsync([FromBody] UpdateLocalAuthorityCommand request, CancellationToken cancellationToken)
         {
             await sender.Send(request, cancellationToken);
             return NoContent();

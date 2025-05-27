@@ -27,20 +27,17 @@ namespace Dfe.Complete.Infrastructure.QueryServices
 
         public async Task<LocalAuthorityDetailsModel?> GetLocalAuthorityDetailsAsync(LocalAuthorityId? Id = null, CancellationToken cancellationToken = default)
         {
-            return await context.LocalAuthorities
-                .Where(la => la.Id == Id)
-                .GroupJoin(
-                    context.Contacts,
-                    la => la.Id,
-                    c => c.LocalAuthorityId,
-                    (localAuthority, contacts) => new { LocalAuthority = localAuthority, Contact = contacts.FirstOrDefault() }
-                )
-                .Select(result => new LocalAuthorityDetailsModel
+            return await (
+                from la in context.LocalAuthorities
+                where la.Id == Id
+                join c in context.Contacts on la.Id equals c.LocalAuthorityId into contacts
+                from contact in contacts.DefaultIfEmpty()
+                select new LocalAuthorityDetailsModel
                 {
-                    LocalAuthority = LocalAuthorityDto.MapLAEntityToDto(result.LocalAuthority),
-                    Contact = result.Contact != null ? ContactDetailsModel.MapContactEntityToModel(result.Contact) : null
-                })
-                .FirstOrDefaultAsync(cancellationToken);
+                    LocalAuthority = LocalAuthorityDto.MapLAEntityToDto(la),
+                    Contact = contact != null ? ContactDetailsModel.MapContactEntityToModel(contact) : null
+                }
+            ).FirstOrDefaultAsync(cancellationToken);
         }
     }
 }

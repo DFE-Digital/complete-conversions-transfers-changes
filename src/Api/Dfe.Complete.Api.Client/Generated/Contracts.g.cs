@@ -349,7 +349,7 @@ namespace Dfe.Complete.Client.Contracts
         /// </summary>
         /// <returns>List of local authorities.</returns>
         /// <exception cref="CompleteApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<LocalAuthorityQueryModel>> ListAllLocalAuthoritiesAsync(int? pageNumber, int? pageCount, int? page, int? count);
+        System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<LocalAuthorityQueryModel>> ListAllLocalAuthoritiesAsync(int? page, int? count);
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>
@@ -357,7 +357,7 @@ namespace Dfe.Complete.Client.Contracts
         /// </summary>
         /// <returns>List of local authorities.</returns>
         /// <exception cref="CompleteApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<LocalAuthorityQueryModel>> ListAllLocalAuthoritiesAsync(int? pageNumber, int? pageCount, int? page, int? count, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<LocalAuthorityQueryModel>> ListAllLocalAuthoritiesAsync(int? page, int? count, System.Threading.CancellationToken cancellationToken);
 
         /// <summary>
         /// Get the local authority details
@@ -377,17 +377,19 @@ namespace Dfe.Complete.Client.Contracts
         /// <summary>
         /// Update the local authority details.
         /// </summary>
+        /// <param name="request">The request.</param>
         /// <returns>local authoirty details updated successfully.</returns>
         /// <exception cref="CompleteApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task UpdateLocalAuthorityDetailsAsync(System.Guid? id_Value, string? code, string? address1, string? address2, string? address3, string? addressTown, string? addressCounty, string? addressPostcode, System.Guid? contactId_Value, string? title, string? contactName, string? email, string? phone);
+        System.Threading.Tasks.Task UpdateLocalAuthorityDetailsAsync(UpdateLocalAuthorityCommand request);
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>
         /// Update the local authority details.
         /// </summary>
+        /// <param name="request">The request.</param>
         /// <returns>local authoirty details updated successfully.</returns>
         /// <exception cref="CompleteApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task UpdateLocalAuthorityDetailsAsync(System.Guid? id_Value, string? code, string? address1, string? address2, string? address3, string? addressTown, string? addressCounty, string? addressPostcode, System.Guid? contactId_Value, string? title, string? contactName, string? email, string? phone, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task UpdateLocalAuthorityDetailsAsync(UpdateLocalAuthorityCommand request, System.Threading.CancellationToken cancellationToken);
 
         /// <summary>
         /// Removes the local authority.
@@ -2311,6 +2313,63 @@ namespace Dfe.Complete.Client.Contracts
         {
 
             return Newtonsoft.Json.JsonConvert.DeserializeObject<ContactDetailsModel>(data, new Newtonsoft.Json.JsonSerializerSettings());
+
+        }
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.2.0.0 (NJsonSchema v11.1.0.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class UpdateLocalAuthorityCommand
+    {
+        [Newtonsoft.Json.JsonProperty("id", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public LocalAuthorityId? Id { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("code", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string? Code { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("address1", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string? Address1 { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("address2", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string? Address2 { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("address3", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string? Address3 { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("addressTown", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string? AddressTown { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("addressCounty", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string? AddressCounty { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("addressPostcode", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string? AddressPostcode { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("contactId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public ContactId? ContactId { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("title", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string? Title { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("contactName", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string? ContactName { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("email", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string? Email { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("phone", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string? Phone { get; set; } = default!;
+
+        public string ToJson()
+        {
+
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonSerializerSettings());
+
+        }
+        public static UpdateLocalAuthorityCommand FromJson(string data)
+        {
+
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<UpdateLocalAuthorityCommand>(data, new Newtonsoft.Json.JsonSerializerSettings());
 
         }
 

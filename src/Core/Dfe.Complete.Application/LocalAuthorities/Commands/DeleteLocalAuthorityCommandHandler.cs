@@ -26,7 +26,7 @@ namespace Dfe.Complete.Application.LocalAuthorities.Commands
                 var project = await projectRepository.FindAsync(x => x.LocalAuthorityId == request.Id, cancellationToken);
                 if (project != null)
                 { 
-                    throw new Exception("Cannot delete Local authority as it is linked to a project.");
+                    throw new DependencyException("Cannot delete Local authority as it is linked to a project.");
                 }
 
                 var localAuthority = await localAuthorityRepository.FindAsync(request.Id, cancellationToken) ?? throw new NotFoundException($"Local authority with Id {request.Id} not found."); 

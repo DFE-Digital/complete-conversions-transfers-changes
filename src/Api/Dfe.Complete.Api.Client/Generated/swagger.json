@@ -1167,7 +1167,7 @@
         "operationId": "ServiceSupport_ListAllLocalAuthorities",
         "parameters": [
           {
-            "name": "PageNumber",
+            "name": "Page",
             "in": "query",
             "schema": {
               "type": "integer",
@@ -1176,31 +1176,13 @@
             "x-position": 1
           },
           {
-            "name": "PageCount",
-            "in": "query",
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            },
-            "x-position": 2
-          },
-          {
-            "name": "Page",
-            "in": "query",
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            },
-            "x-position": 3
-          },
-          {
             "name": "Count",
             "in": "query",
             "schema": {
               "type": "integer",
               "format": "int32"
             },
-            "x-position": 4
+            "x-position": 2
           }
         ],
         "responses": {
@@ -1223,7 +1205,7 @@
         }
       }
     },
-    "/v1/ServiceSupport/LocalAuthority/Update": {
+    "/v1/ServiceSupport/LocalAuthority/details": {
       "get": {
         "tags": [
           "ServiceSupport"
@@ -1265,122 +1247,19 @@
         ],
         "summary": "Update the local authority details.",
         "operationId": "ServiceSupport_UpdateLocalAuthorityDetails",
-        "parameters": [
-          {
-            "name": "Id.Value",
-            "in": "query",
-            "schema": {
-              "type": "string",
-              "format": "guid"
-            },
-            "x-position": 1
+        "requestBody": {
+          "x-name": "request",
+          "description": "The request.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateLocalAuthorityCommand"
+              }
+            }
           },
-          {
-            "name": "Code",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            },
-            "x-position": 2
-          },
-          {
-            "name": "Address1",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            },
-            "x-position": 3
-          },
-          {
-            "name": "Address2",
-            "in": "query",
-            "schema": {
-              "type": "string",
-              "nullable": true
-            },
-            "x-position": 4
-          },
-          {
-            "name": "Address3",
-            "in": "query",
-            "schema": {
-              "type": "string",
-              "nullable": true
-            },
-            "x-position": 5
-          },
-          {
-            "name": "AddressTown",
-            "in": "query",
-            "schema": {
-              "type": "string",
-              "nullable": true
-            },
-            "x-position": 6
-          },
-          {
-            "name": "AddressCounty",
-            "in": "query",
-            "schema": {
-              "type": "string",
-              "nullable": true
-            },
-            "x-position": 7
-          },
-          {
-            "name": "AddressPostcode",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            },
-            "x-position": 8
-          },
-          {
-            "name": "ContactId.Value",
-            "in": "query",
-            "schema": {
-              "type": "string",
-              "format": "guid"
-            },
-            "x-position": 9
-          },
-          {
-            "name": "Title",
-            "in": "query",
-            "schema": {
-              "type": "string",
-              "nullable": true
-            },
-            "x-position": 10
-          },
-          {
-            "name": "ContactName",
-            "in": "query",
-            "schema": {
-              "type": "string",
-              "nullable": true
-            },
-            "x-position": 11
-          },
-          {
-            "name": "Email",
-            "in": "query",
-            "schema": {
-              "type": "string",
-              "nullable": true
-            },
-            "x-position": 12
-          },
-          {
-            "name": "Phone",
-            "in": "query",
-            "schema": {
-              "type": "string",
-              "nullable": true
-            },
-            "x-position": 13
-          }
-        ],
+          "required": true,
+          "x-position": 1
+        },
         "responses": {
           "204": {
             "description": "local authoirty details updated successfully."
@@ -3437,13 +3316,20 @@
             "type": "string"
           },
           "contactId": {
-            "$ref": "#/components/schemas/ContactId"
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/ContactId"
+              }
+            ]
           },
           "title": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           },
           "contactName": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           },
           "email": {
             "type": "string",
@@ -3541,6 +3427,64 @@
           },
           "name": {
             "type": "string"
+          },
+          "email": {
+            "type": "string",
+            "nullable": true
+          },
+          "phone": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "UpdateLocalAuthorityCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "$ref": "#/components/schemas/LocalAuthorityId"
+          },
+          "code": {
+            "type": "string"
+          },
+          "address1": {
+            "type": "string"
+          },
+          "address2": {
+            "type": "string",
+            "nullable": true
+          },
+          "address3": {
+            "type": "string",
+            "nullable": true
+          },
+          "addressTown": {
+            "type": "string",
+            "nullable": true
+          },
+          "addressCounty": {
+            "type": "string",
+            "nullable": true
+          },
+          "addressPostcode": {
+            "type": "string"
+          },
+          "contactId": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/ContactId"
+              }
+            ]
+          },
+          "title": {
+            "type": "string",
+            "nullable": true
+          },
+          "contactName": {
+            "type": "string",
+            "nullable": true
           },
           "email": {
             "type": "string",

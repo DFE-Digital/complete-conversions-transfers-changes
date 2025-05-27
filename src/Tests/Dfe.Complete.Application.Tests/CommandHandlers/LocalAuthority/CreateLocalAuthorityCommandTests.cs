@@ -64,8 +64,8 @@ namespace Dfe.Complete.Application.Tests.CommandHandlers.LocalAuthority
                 "Title", "ContactName", "Email", "Phone");
 
             var existingLocalAuthority = Domain.Entities.LocalAuthority.CreateLocalAuthority(
-                command.Id, command.Name, command.Code, command.Address1, command.Address2, command.Address3,
-                command.AddressTown, command.AddressCounty, command.AddressPostcode, DateTime.UtcNow);
+                command.Id, command.Name, command.Code, new AddressDetails(command.Address1, command.Address2, command.Address3,
+                command.AddressTown, command.AddressCounty, command.AddressPostcode), DateTime.UtcNow);
 
             _mockLocalAuthorityRepository.Setup(repo => repo.FindAsync(It.IsAny<Expression<Func<Domain.Entities.LocalAuthority, bool>>>(), _cancellationToken))
                 .ReturnsAsync(existingLocalAuthority);

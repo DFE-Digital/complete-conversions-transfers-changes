@@ -27,7 +27,7 @@ namespace Dfe.Complete.Application.Tests.LocalAuthorities
         [Fact]
         public async Task Handle_ShouldReturnPaginatedResultSuccessfully()
         {
-            var query = new ListLocalAuthoritiesQuery(0, 10);
+            var query = new ListLocalAuthoritiesQuery { Page = 0, Count = 10 };
             var localAuthorities = new List<LocalAuthorityQueryModel>
         {
             new() { Id = new LocalAuthorityId(Guid.NewGuid()), Name = "Authority1" },
@@ -50,7 +50,7 @@ namespace Dfe.Complete.Application.Tests.LocalAuthorities
         [Fact]
         public async Task Handle_ShouldReturnFailure_WhenExceptionOccurs()
         {
-            var query = new ListLocalAuthoritiesQuery(1, 10);
+            var query = new ListLocalAuthoritiesQuery{ Page = 1, Count = 10 };
 
             _mockLocalAuthoritiesQueryService
                 .Setup(service => service.ListAllLocalAuthorities(null))

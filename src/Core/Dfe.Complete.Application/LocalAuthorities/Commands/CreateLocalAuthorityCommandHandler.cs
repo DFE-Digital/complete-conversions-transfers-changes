@@ -3,6 +3,7 @@ using Dfe.Complete.Application.Common.Models;
 using Dfe.Complete.Domain.Entities;
 using Dfe.Complete.Domain.Interfaces.Repositories;
 using Dfe.Complete.Domain.ValueObjects;
+using Dfe.Complete.Utils;
 using MediatR;
 using Microsoft.Extensions.Logging;
 
@@ -17,9 +18,9 @@ namespace Dfe.Complete.Application.LocalAuthorities.Commands
        string? AddressTown,
        string? AddressCounty,
        string AddressPostcode,
-       ContactId ContactId,
-       string Title,
-       string ContactName,
+       ContactId? ContactId,
+       string? Title,
+       string? ContactName,
        string? Email,
        string? Phone) : IRequest<Result<LocalAuthorityId?>>;
 
@@ -36,18 +37,17 @@ namespace Dfe.Complete.Application.LocalAuthorities.Commands
                 await unitOfWork.BeginTransactionAsync();
                 var localAuthority = await localAuthorityRepository.FindAsync(x => x.Name == request.Name && x.Code == request.Code, cancellationToken);
                 if (localAuthority != null)
-                {
-                    logger.LogWarning("Cannot create Local authority as it is already existed. Request: {Request}", request);
-                    throw new Exception($"Cannot create Local authority with code {request.Code} as it is already existed.");
+                { 
+                    throw new AlreadyExistedException($"Cannot create Local authority with code {request.Code} as it is already existed.");
                 } 
-                localAuthority = LocalAuthority.CreateLocalAuthority(request.Id, request.Name, request.Code, request.Address1,
+                localAuthority = LocalAuthority.CreateLocalAuthority(request.Id, request.Name, request.Code, new AddressDetails(request.Address1,
                     request.Address2, request.Address3, request.AddressTown, request.AddressCounty,
-                    request.AddressPostcode, DateTime.UtcNow);
+                    request.AddressPostcode), DateTime.UtcNow);
 
                 await localAuthorityRepository.AddAsync(localAuthority, cancellationToken);
                 if (!string.IsNullOrWhiteSpace(request.Title) && !string.IsNullOrWhiteSpace(request.ContactName))
                 {
-                    var contact = Contact.CreateLocalAuthorityContact(request.ContactId, request.Title, request.Name, request.Email, request.Phone, localAuthority.Id, DateTime.Now);
+                    var contact = Contact.CreateLocalAuthorityContact(request.ContactId!, request.Title, request.Name, request.Email, request.Phone, localAuthority.Id, DateTime.Now);
                     await contactRepository.AddAsync(contact, cancellationToken);
                 }
                 await unitOfWork.CommitAsync();
