@@ -7,6 +7,7 @@ using MediatR;
 using Dfe.Complete.Utils;
 using DfE.CoreLibs.Utilities.Constants;
 using Microsoft.Extensions.Logging;
+using Microsoft.EntityFrameworkCore;
 
 namespace Dfe.Complete.Application.Projects.Queries.ListProjectsByMonth
 {
@@ -19,7 +20,7 @@ namespace Dfe.Complete.Application.Projects.Queries.ListProjectsByMonth
         int Count = 20) : IRequest<PaginatedResult<List<ListProjectsByMonthResultModel>>>;
 
     public class ListAllProjectsByMonthsQueryHandler(
-        IListAllProjectsQueryService listAllProjectsQueryService,
+        IProjectsQueryBuilder listAllProjectsQueryBuilder,
         ITrustsV4Client trustsClient,
         ILogger<ListAllProjectsByMonthsQueryHandler> logger)
         : IRequestHandler<ListProjectsByMonthsQuery, PaginatedResult<List<ListProjectsByMonthResultModel>>>
@@ -29,17 +30,21 @@ namespace Dfe.Complete.Application.Projects.Queries.ListProjectsByMonth
         {
             try
             {
-                var projectsQuery = listAllProjectsQueryService
-                    .ListAllProjects(new ProjectFilters(request.ProjectStatus, request.Type, AssignedToState: AssignedToState.AssignedOnly, 
-                    SignificantDateRange: new DateRangeFilter(request.FromDate, request.ToDate)))
-                    .AsEnumerable();
+                var filters = new ProjectFilters(request.ProjectStatus, request.Type, AssignedToState: AssignedToState.AssignedOnly,
+                    SignificantDateRange: new DateRangeFilter(request.FromDate, request.ToDate));
 
-                var projects = projectsQuery.Where(p => p.Project.SignificantDateProvisional == false).ToList(); // Confirmed && Inprogress
+                var projectsQuery = listAllProjectsQueryBuilder
+                    .ApplyProjectFilters(filters)
+                    .Where(p => p.SignificantDateProvisional == false)
+                    .GenerateQuery();
+
+                var count = await projectsQuery.CountAsync(cancellationToken);
+                var projects = await projectsQuery.Paginate(request.Page, request.Count).ToListAsync(cancellationToken);
 
                 var ukprns = projects.Select(p => p.Project.IncomingTrustUkprn?.Value.ToString()).ToList();
                 var outgoingTrustUkprns = projects.Where(p => p.Project.OutgoingTrustUkprn != null).Select(p => p.Project.OutgoingTrustUkprn.Value.ToString()).ToList();
                 var allUkprns = ukprns.Concat(outgoingTrustUkprns).Distinct();
-                
+
                 var trusts = await trustsClient.GetByUkprnsAllAsync(allUkprns, cancellationToken);
 
                 var result = projects
@@ -60,13 +65,13 @@ namespace Dfe.Complete.Application.Projects.Queries.ListProjectsByMonth
                         var incomingTrust = isMatProject
                             ? project.NewTrustName
                             : trusts.FirstOrDefault(t => t.Ukprn == project.IncomingTrustUkprn)?.Name;
-                        
+
                         var outgoingTrust = trusts.FirstOrDefault(t => t.Ukprn == project.OutgoingTrustUkprn)?.Name;
-                        
+
                         var allConditions = project.AllConditionsMet.Value ? "Yes" : "Not yet";
 
                         var confirmedAndOriginalDate = string.IsNullOrEmpty(originalDate) ? confirmedDate : $"{confirmedDate} ({originalDate})";
-                        
+
                         return new ListProjectsByMonthResultModel(
                             item.Establishment.Name,
                             project.Region.ToDisplayDescription(),
@@ -80,8 +85,8 @@ namespace Dfe.Complete.Application.Projects.Queries.ListProjectsByMonth
                             project.Type);
                     })
                     .ToList();
-                
-                return PaginatedResult<List<ListProjectsByMonthResultModel>>.Success(result, projects.Count);
+
+                return PaginatedResult<List<ListProjectsByMonthResultModel>>.Success(result, count);
             }
             catch (Exception ex)
             {

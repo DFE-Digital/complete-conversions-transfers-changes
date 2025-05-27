@@ -161,7 +161,7 @@ public class ListAllProjectsByMonthHandlerTests
         
         foreach (var project in inRangeProjects)
         {
-            project.Project.SignificantDate = startDate;
+            project.Project.SignificantDate = startDate
             project.Project.SignificantDateProvisional = false;
             project.Project.AssignedTo = user;
             
