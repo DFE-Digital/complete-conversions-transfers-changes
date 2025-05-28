@@ -26,9 +26,15 @@ internal class ListAllProjectsQueryService(CompleteContext context) : IListAllPr
        OrderProjectQueryBy? orderBy = null)
     {
         var projects = context.Projects
-           .Where(project => projectStatuses == null || projectStatuses.Contains(project.State));
+            .Include(project => project.RegionalDeliveryOfficer)
+            .Where(project => projectStatuses == null || projectStatuses.Contains(project.State))
+            .Where(project => projectType == null || projectType == project.Type);
 
-        return SetListAllProjects(projects, projectType, assignedToState, assignedToUserId, createdByUserId, localAuthorityCode, region, team, isFormAMat, newTrustReferenceNumber, search, orderBy);
+        projects = SetAssignStateAndUserAssignmentQueryParameters(projects, assignedToState, assignedToUserId, createdByUserId);
+        projects = SetRegionAndTeamQueryParameters(projects, region, team);
+        projects = SetFormAMatQueryParameters(projects, isFormAMat);
+
+        return SetListAllProjects(projects, localAuthorityCode, newTrustReferenceNumber, search, orderBy);
     }
      
     public IQueryable<ListAllProjectsQueryModel> ListAllProjects(ProjectState? projectStatus,
@@ -44,30 +50,19 @@ internal class ListAllProjectsQueryService(CompleteContext context) : IListAllPr
         OrderProjectQueryBy? orderBy = null)
     {
         var projects = context.Projects
-            .Where(project => projectStatus == null || project.State == projectStatus);
-
-       return SetListAllProjects(projects, projectType, assignedToState, assignedToUserId, createdByUserId, localAuthorityCode, region, team, isFormAMat, newTrustReferenceNumber, null, orderBy);
-    }
-
-    private IQueryable<ListAllProjectsQueryModel> SetListAllProjects(IQueryable<Project> projects,
-        ProjectType? projectType,
-        AssignedToState? assignedToState = null,
-        UserId? assignedToUserId = null,
-        UserId? createdByUserId = null,
-        string? localAuthorityCode = "",
-        Region? region = null,
-        ProjectTeam? team = null,
-        bool? isFormAMat = null,
-        string? newTrustReferenceNumber = "",
-        string? search = "",
-        OrderProjectQueryBy? orderBy = null)
-    {
-        projects = projects
             .Include(project => project.RegionalDeliveryOfficer)
+            .Where(project => projectStatus == null || project.State == projectStatus)
             .Where(project => projectType == null || projectType == project.Type);
 
-        IQueryable<GiasEstablishment> giasEstablishments = context.GiasEstablishments;
+        projects = SetAssignStateAndUserAssignmentQueryParameters(projects, assignedToState, assignedToUserId, createdByUserId); 
+        projects = SetRegionAndTeamQueryParameters(projects, region, team);
+        projects = SetFormAMatQueryParameters(projects, isFormAMat);
 
+        return SetListAllProjects(projects, localAuthorityCode, newTrustReferenceNumber, null, orderBy);
+    }
+
+    private static IQueryable<Project> SetAssignStateAndUserAssignmentQueryParameters(IQueryable<Project> projects, AssignedToState? assignedToState = null, UserId? assignedToUserId = null, UserId? createdByUserId = null)
+    {
         if (assignedToState == AssignedToState.AssignedOnly)
             projects = projects.Where(project => project.AssignedToId != null);
 
@@ -83,12 +78,11 @@ internal class ListAllProjectsQueryService(CompleteContext context) : IListAllPr
         {
             projects = projects.Where(project => project.RegionalDeliveryOfficerId != null && project.RegionalDeliveryOfficerId == createdByUserId);
         }
+        return projects;
+    }
 
-        if (!string.IsNullOrEmpty(localAuthorityCode))
-        {
-            giasEstablishments = giasEstablishments.Where(establishment => establishment.LocalAuthorityCode == localAuthorityCode);
-        }
-
+    private static IQueryable<Project> SetRegionAndTeamQueryParameters(IQueryable<Project> projects, Region? region = null, ProjectTeam? team = null)
+    {
         if (region != null)
         {
             projects = projects.Where(project => project.Region == region);
@@ -98,13 +92,10 @@ internal class ListAllProjectsQueryService(CompleteContext context) : IListAllPr
         {
             projects = projects.Where(project => project.Team == team);
         }
-
-        if (!string.IsNullOrWhiteSpace(newTrustReferenceNumber))
-        {
-            projects = projects.Where(project =>
-                project.NewTrustReferenceNumber != null && project.NewTrustReferenceNumber == newTrustReferenceNumber);
-        }
-
+        return projects;
+    }
+    private static IQueryable<Project> SetFormAMatQueryParameters(IQueryable<Project> projects, bool? isFormAMat = null)
+    {
         if (isFormAMat == true)
         {
             projects = projects.Where(project =>
@@ -117,6 +108,30 @@ internal class ListAllProjectsQueryService(CompleteContext context) : IListAllPr
                 project.NewTrustReferenceNumber == null &&
                 project.NewTrustName == null);
         }
+        return projects;
+    }
+
+    private IQueryable<ListAllProjectsQueryModel> SetListAllProjects(IQueryable<Project> projects,
+        string? localAuthorityCode = "", 
+        string? newTrustReferenceNumber = "",
+        string? search = "",
+        OrderProjectQueryBy? orderBy = null)
+    {
+        IQueryable<GiasEstablishment> giasEstablishments = context.GiasEstablishments;
+         
+        if (!string.IsNullOrEmpty(localAuthorityCode))
+        {
+            giasEstablishments = giasEstablishments.Where(establishment => establishment.LocalAuthorityCode == localAuthorityCode);
+        }
+         
+
+        if (!string.IsNullOrWhiteSpace(newTrustReferenceNumber))
+        {
+            projects = projects.Where(project =>
+                project.NewTrustReferenceNumber != null && project.NewTrustReferenceNumber == newTrustReferenceNumber);
+        }
+
+       
 
         if (!string.IsNullOrWhiteSpace(search))
         {
