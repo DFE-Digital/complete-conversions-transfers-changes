@@ -109,7 +109,7 @@ public class PaginationModelTests
         var model = new PaginationModel(url, pageNumber, recordCount, pageSize);
 
         // Assert
-        Assert.Equal("https://example.com?pageNumber=3", model.NextPageLink);
+        Assert.Equal("https://example.com?page=3", model.NextPageLink);
     }
 
     [Fact]
@@ -125,7 +125,7 @@ public class PaginationModelTests
         var model = new PaginationModel(url, pageNumber, recordCount, pageSize);
 
         // Assert
-        Assert.Equal("https://example.com?pageNumber=1", model.PreviousPageLink);
+        Assert.Equal("https://example.com?page=1", model.PreviousPageLink);
     }
 
     [Fact]
