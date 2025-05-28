@@ -1,21 +1,14 @@
 ﻿@page "/projects/{projectId}/notes"
 @using Dfe.Complete.Constants
-@model Dfe.Complete.Pages.Projects.ViewProjectNotesModel
+@model Dfe.Complete.Pages.Projects.Notes.ViewProjectNotesModel
 @{
+    Layout = "_ProjectLayout";
     ViewData["Title"] = "Project notes";
-
-    // var projectDetails = Model.Project.ProjectDetails;
-    // var notesList = Model.Project.Notes;
-
-    // var projectType = (ProjectType)projectDetails.ProjectType;
 
     var addNoteLink = string.Format(RouteConstants.ProjectAddNote, Model.ProjectId);
 }
 
-@*TODO: add below back with model*@
-@* <partial name="_ProjectSummary" model="" /> *@
-
-<govuk-project-tabs project-id="@Model.ProjectId" project-type="" />
+<govuk-project-tabs project-id="@Model.Project.Id" project-type="" />
 
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
