@@ -109,7 +109,7 @@ namespace Dfe.Complete.Application.Tests.CommandHandlers.LocalAuthority
         {
             var command = new DeleteLocalAuthorityCommand(new LocalAuthorityId(Guid.NewGuid()), new ContactId(Guid.NewGuid()));
             var linkedProject = new Domain.Entities.Project(new ProjectId(Guid.NewGuid()), new Urn(1), DateTime.Now, DateTime.Now, TaskType.Transfer, ProjectType.Transfer, Guid.NewGuid(),
-                DateOnly.MaxValue, false, null, null, null, false, null, DateOnly.MinValue, string.Empty, string.Empty, string.Empty, null, null, null, null, null, null, null, null, command.Id.Value);
+                DateOnly.MaxValue, false, null, null, null, false, null, DateOnly.MinValue, string.Empty, string.Empty, string.Empty, null, null, null, null!, null, null, null, null, command.Id.Value);
 
             _mockProjectRepository.Setup(repo => repo.FindAsync(It.IsAny<Expression<Func<Domain.Entities.Project, bool>>>(), It.IsAny<CancellationToken>()))
                 .ReturnsAsync(linkedProject);
