@@ -162,7 +162,7 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.SearchProjects
             };
 
             mockListAllProjectsQueryService
-                .ListSearchProjects(Arg.Any<List<ProjectState>>(), searchTerm)
+                .ListSearchProjects(Arg.Any<List<ProjectState>>(), searchTerm!)
                 .Returns(mock);
              
             // Act
