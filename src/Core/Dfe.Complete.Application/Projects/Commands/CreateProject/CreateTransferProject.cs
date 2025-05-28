@@ -1,15 +1,9 @@
-using Dfe.Complete.Application.Common.Models;
 using Dfe.Complete.Application.Projects.Common;
-using Dfe.Complete.Application.Projects.Models;
-using Dfe.Complete.Application.Projects.Queries.GetLocalAuthority;
 using MediatR;
 using Dfe.Complete.Domain.ValueObjects;
 using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Domain.Interfaces.Repositories;
 using Dfe.Complete.Domain.Entities;
-using Dfe.Complete.Utils;
-using Dfe.Complete.Application.Projects.Queries.GetProject;
-using Dfe.Complete.Application.Projects.Queries.GetUser;
 
 namespace Dfe.Complete.Application.Projects.Commands.CreateProject;
 
@@ -61,8 +55,8 @@ public class CreateTransferProjectCommandHandler(
             tasksDataId,
             commonProject.Region,
             commonProject.ProjectTeam,
-            commonProject.User?.Id,
-            commonProject.User?.Id,
+            commonProject.CreatedByUser.Id,
+            commonProject.AssignedUser?.Id,
             commonProject.AssignedAt,
             request.IncomingTrustUkprn,
             request.OutgoingTrustUkprn,

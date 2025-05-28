@@ -3,10 +3,9 @@ using AutoFixture.Xunit2;
 using Dfe.Complete.Application.Projects.Interfaces;
 using Dfe.Complete.Application.Projects.Models; 
 using Dfe.Complete.Application.Projects.Queries.SearchProjects;
-using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Tests.Common.Customizations.Models;
 using DfE.CoreLibs.Testing.AutoFixture.Attributes;
-using DfE.CoreLibs.Testing.AutoFixture.Customizations; 
+using DfE.CoreLibs.Testing.AutoFixture.Customizations;
 using MockQueryable; 
 using NSubstitute;
 
@@ -35,13 +34,13 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.SearchProjects
              
             var mock = listAllProjectsQueryModels.BuildMock();
 
-            var query = new SearchProjectsQuery(ProjectState.Active, searchTerm)
+            var query = new SearchProjectsQuery(searchTerm)
             {
                 Page = 0,
                 Count = 20
             };
             mockListAllProjectsQueryService
-                .ListAllProjects(ProjectState.Active, null, search: searchTerm)
+                .ListAllProjects(null, null, search: searchTerm)
                 .Returns(mock);
 
             // Act
@@ -74,13 +73,13 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.SearchProjects
                 )).ToList();
 
             var mock = listAllProjectsQueryModels.BuildMock();
-            var query = new SearchProjectsQuery(ProjectState.Active, searchTerm)
+            var query = new SearchProjectsQuery(searchTerm)
             {
                 Page = 0,
                 Count = 20
             };
             mockListAllProjectsQueryService
-                .ListAllProjects(ProjectState.Active, null, search: searchTerm)
+                .ListAllProjects(null, null, search: searchTerm)
                 .Returns(mock); 
 
             // Act
@@ -111,16 +110,16 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.SearchProjects
                     item.Establishment
                 )).ToList();
 
-            var mock = listAllProjectsQueryModels.BuildMock();
-
-            var query = new SearchProjectsQuery(ProjectState.Active, searchTerm)
+            var query = new SearchProjectsQuery(searchTerm)
             {
                 Page = 0,
                 Count = 20
             };
 
+            var mock = listAllProjectsQueryModels.BuildMock();
+
             mockListAllProjectsQueryService
-                .ListAllProjects(ProjectState.Active, null, search: searchTerm)
+                .ListAllProjects(null,null, search: searchTerm)
                 .Returns(mock);
 
             // Act
@@ -152,14 +151,14 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.SearchProjects
                 )).ToList();
 
             var mock = listAllProjectsQueryModels.BuildMock();
-            var query = new SearchProjectsQuery(ProjectState.Active, searchTerm!)
+            var query = new SearchProjectsQuery(searchTerm!)
             {
                 Page = 0,
                 Count = 20
             };
 
             mockListAllProjectsQueryService
-                .ListAllProjects(ProjectState.Active, null, search: searchTerm)
+                .ListAllProjects(null, null, search: searchTerm)
                 .Returns(mock);
              
             // Act
@@ -189,7 +188,7 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.SearchProjects
                     item.Establishment
                 )).ToList();
               
-            var query = new SearchProjectsQuery(ProjectState.Active, searchTerm!)
+            var query = new SearchProjectsQuery(searchTerm!)
             {
                 Page = 1,
                 Count = 20
