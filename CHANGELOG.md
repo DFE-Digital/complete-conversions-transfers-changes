@@ -28,6 +28,7 @@ Security in case of vulnerabilities.
 - Navigation items previously hidden with `UserTabAccessHelper` now hide on policy
 
 ### Fixed  
+- Fixed the search functionality to return only projects with status values of 0, 1, or 3.
 
 ### Removed
 - `UserTabAccessHelper` class is no longer required. Use policies instead
