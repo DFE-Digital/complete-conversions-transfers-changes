@@ -1,6 +1,7 @@
 ﻿using Dfe.Complete.Application.Common.Models;
 using Dfe.Complete.Application.Projects.Interfaces;
 using Dfe.Complete.Application.Projects.Models;
+using Dfe.Complete.Domain.Enums;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
@@ -19,7 +20,7 @@ namespace Dfe.Complete.Application.Projects.Queries.SearchProjects
             try
             {
                 var searchQuery = listAllProjectsQueryService
-                    .ListAllProjects(null, null, search: request.SearchTerm).AsQueryable();
+                    .ListAllProjects([ProjectState.Active, ProjectState.DaoRevoked, ProjectState.Completed], null, search: request.SearchTerm).AsQueryable();
 
                 var itemCount = await searchQuery
                     .CountAsync(cancellationToken);

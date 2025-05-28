@@ -10,8 +10,7 @@ namespace Dfe.Complete.Application.Projects.Queries.CountAllProjects
     public record CountAllProjectsQuery(
         ProjectState? ProjectStatus,
         ProjectType? Type,
-        AssignedToState? AssignedToState = null,
-        string? Search = "") : IRequest<Result<int>>;
+        AssignedToState? AssignedToState = null) : IRequest<Result<int>>;
 
     public class CountAllProjectsQueryHandler(
         IListAllProjectsQueryService listAllProjectsQueryService,
@@ -23,7 +22,7 @@ namespace Dfe.Complete.Application.Projects.Queries.CountAllProjects
             try
             {
                 var result = await listAllProjectsQueryService
-                    .ListAllProjects(request.ProjectStatus, request.Type, search: request.Search, assignedToState: request.AssignedToState)
+                    .ListAllProjects(request.ProjectStatus, request.Type, assignedToState: request.AssignedToState)
                     .CountAsync(cancellationToken);
 
                 return Result<int>.Success(result);

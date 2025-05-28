@@ -3,11 +3,13 @@ using AutoFixture.Xunit2;
 using Dfe.Complete.Application.Projects.Interfaces;
 using Dfe.Complete.Application.Projects.Models; 
 using Dfe.Complete.Application.Projects.Queries.SearchProjects;
+using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Tests.Common.Customizations.Models;
 using DfE.CoreLibs.Testing.AutoFixture.Attributes;
 using DfE.CoreLibs.Testing.AutoFixture.Customizations;
 using MockQueryable; 
 using NSubstitute;
+using Wmhelp.XPath2;
 
 namespace Dfe.Complete.Application.Tests.QueryHandlers.SearchProjects
 {
@@ -40,7 +42,7 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.SearchProjects
                 Count = 20
             };
             mockListAllProjectsQueryService
-                .ListAllProjects(null, null, search: searchTerm)
+                .ListAllProjects(Arg.Any<List<ProjectState>>(), null, search: searchTerm)
                 .Returns(mock);
 
             // Act
@@ -79,7 +81,7 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.SearchProjects
                 Count = 20
             };
             mockListAllProjectsQueryService
-                .ListAllProjects(null, null, search: searchTerm)
+                .ListAllProjects(Arg.Any<List<ProjectState>>(), null, search: searchTerm)
                 .Returns(mock); 
 
             // Act
@@ -102,7 +104,9 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.SearchProjects
             IFixture fixture)
         {
             // Arrange 
-            var listAllProjectsQueryModels = fixture.CreateMany<ListAllProjectsQueryModel>(1).ToList();
+            var listAllProjectsQueryModels = fixture.Build<ListAllProjectsQueryModel>()
+               .CreateMany(1)
+               .ToList();
             var searchTerm = listAllProjectsQueryModels.First().Establishment!.EstablishmentNumber![..4];
 
             var expected = listAllProjectsQueryModels.Select(item => ListAllProjectsResultModel.MapProjectAndEstablishmentToListAllProjectResultModel(
@@ -119,7 +123,7 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.SearchProjects
             var mock = listAllProjectsQueryModels.BuildMock();
 
             mockListAllProjectsQueryService
-                .ListAllProjects(null,null, search: searchTerm)
+                .ListAllProjects(Arg.Any<List<ProjectState>>(),null, search: searchTerm)
                 .Returns(mock);
 
             // Act
@@ -158,7 +162,7 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.SearchProjects
             };
 
             mockListAllProjectsQueryService
-                .ListAllProjects(null, null, search: searchTerm)
+                .ListAllProjects(Arg.Any<List<ProjectState>>(), null, search: searchTerm)
                 .Returns(mock);
              
             // Act
