@@ -5,7 +5,7 @@ using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Domain.ValueObjects;
 using Dfe.Complete.Infrastructure.Database;
 using Microsoft.EntityFrameworkCore;
-using Dfe.Complete.Infrastructure.Extensions; 
+using Dfe.Complete.Infrastructure.Extensions;
 using System.Text.RegularExpressions;
 
 namespace Dfe.Complete.Infrastructure.QueryServices;
@@ -20,7 +20,7 @@ internal class ListAllProjectsQueryService(CompleteContext context) : IListAllPr
             .Include(project => project.RegionalDeliveryOfficer)
             .Where(project => projectStatuses == null || projectStatuses.Contains(project.State));
 
-        return SetListAllProjects(projects, null, null, search, orderBy);
+        return SetListAllProjects(projects, search: search, orderBy: orderBy);
     }
      
     public IQueryable<ListAllProjectsQueryModel> ListAllProjects(ProjectState? projectStatus,
@@ -33,6 +33,7 @@ internal class ListAllProjectsQueryService(CompleteContext context) : IListAllPr
         ProjectTeam? team = null,
         bool? isFormAMat = null,
         string? newTrustReferenceNumber = "",
+        string? incomingTrustUkprn = null,
         OrderProjectQueryBy? orderBy = null)
     {
         var projects = context.Projects
@@ -44,7 +45,7 @@ internal class ListAllProjectsQueryService(CompleteContext context) : IListAllPr
         projects = SetRegionAndTeamQueryParameters(projects, region, team);
         projects = SetFormAMatQueryParameters(projects, isFormAMat);
 
-        return SetListAllProjects(projects, localAuthorityCode, newTrustReferenceNumber, null, orderBy);
+        return SetListAllProjects(projects, localAuthorityCode, newTrustReferenceNumber, incomingTrustUkprn, orderBy: orderBy);
     }
 
     private static IQueryable<Project> SetAssignStateAndUserAssignmentQueryParameters(IQueryable<Project> projects, AssignedToState? assignedToState = null, UserId? assignedToUserId = null, UserId? createdByUserId = null)
@@ -99,7 +100,8 @@ internal class ListAllProjectsQueryService(CompleteContext context) : IListAllPr
 
     private IQueryable<ListAllProjectsQueryModel> SetListAllProjects(IQueryable<Project> projects,
         string? localAuthorityCode = "", 
-        string? newTrustReferenceNumber = "",
+        string? newTrustReferenceNumber = "", 
+        string? incomingTrustUkprn = null,
         string? search = "",
         OrderProjectQueryBy? orderBy = null)
     {
@@ -117,7 +119,11 @@ internal class ListAllProjectsQueryService(CompleteContext context) : IListAllPr
                 project.NewTrustReferenceNumber != null && project.NewTrustReferenceNumber == newTrustReferenceNumber);
         }
 
-       
+        if (!string.IsNullOrWhiteSpace(incomingTrustUkprn))
+        {
+            projects = projects.Where(project =>
+                project.IncomingTrustUkprn != null && project.IncomingTrustUkprn == incomingTrustUkprn);
+        }
 
         if (!string.IsNullOrWhiteSpace(search))
         {
@@ -128,7 +134,7 @@ internal class ListAllProjectsQueryService(CompleteContext context) : IListAllPr
     }
 
     public static (IQueryable<Project>, IQueryable<GiasEstablishment> giasEstablishments) SearchProjects(IQueryable<Project> projects, IQueryable<GiasEstablishment> giasEstablishments, string searchTerm)
-    {  
+    {
         _ = int.TryParse(searchTerm, out int number);
         var timeSpan = TimeSpan.FromMilliseconds(100);
 
@@ -153,7 +159,7 @@ internal class ListAllProjectsQueryService(CompleteContext context) : IListAllPr
 
         return (projects, giasEstablishments);
     }
-     
+
     private static IQueryable<ListAllProjectsQueryModel> GenerateQuery(IQueryable<Project> projects, IQueryable<GiasEstablishment> giasEstablishments, OrderProjectQueryBy? orderBy = null)
     {
         return projects

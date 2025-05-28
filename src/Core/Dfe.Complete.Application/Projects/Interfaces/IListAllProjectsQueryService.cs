@@ -20,6 +20,7 @@ public interface IListAllProjectsQueryService
         ProjectTeam? team = null,
         bool? isFormAMat = null,
         string? newTrustReferenceNumber = "",
+        string? incomingTrustUkprn = null,
         OrderProjectQueryBy? orderBy = null
         );
 }

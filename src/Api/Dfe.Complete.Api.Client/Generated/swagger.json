@@ -396,8 +396,7 @@
             "name": "Identifier",
             "in": "query",
             "schema": {
-              "type": "string",
-              "nullable": true
+              "type": "string"
             },
             "x-position": 1
           },
