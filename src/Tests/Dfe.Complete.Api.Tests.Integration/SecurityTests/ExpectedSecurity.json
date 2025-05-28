@@ -1,0 +1,114 @@
+{
+  "Endpoints": [
+    {
+      "Controller": "ProjectsController",
+      "Action": "CreateConversionProjectAsync",
+      "ExpectedSecurity": "Authorize: Policy=CanReadWrite"
+    },
+    {
+      "Controller": "ProjectsController",
+      "Action": "CreateTransferProjectAsync",
+      "ExpectedSecurity": "Authorize: Policy=CanReadWrite"
+    },
+    {
+      "Controller": "ProjectsController",
+      "Action": "CreateMatConversionProjectAsync",
+      "ExpectedSecurity": "Authorize: Policy=CanReadWrite"
+    },
+    {
+      "Controller": "ProjectsController",
+      "Action": "CreateMatTransferProjectAsync",
+      "ExpectedSecurity": "Authorize: Policy=CanReadWrite"
+    },
+    {
+      "Controller": "ProjectsController",
+      "Action": "GetProjectAsync",
+      "ExpectedSecurity": "Authorize: Policy=CanRead"
+    },
+    {
+      "Controller": "ProjectsController",
+      "Action": "ListAllProjectsAsync",
+      "ExpectedSecurity": "Authorize: Policy=CanRead"
+    },
+    {
+      "Controller": "ProjectsController",
+      "Action": "ListAllProjectsInTrustAsync",
+      "ExpectedSecurity": "Authorize: Policy=CanRead"
+    },
+    {
+      "Controller": "ProjectsController",
+      "Action": "ListAllMaTsAsync",
+      "ExpectedSecurity": "Authorize: Policy=CanRead"
+    },
+    {
+      "Controller": "ProjectsController",
+      "Action": "CountAllProjectsAsync",
+      "ExpectedSecurity": "Authorize: Policy=CanRead"
+    },
+    {
+      "Controller": "ProjectsController",
+      "Action": "ListAllProjectsForLocalAuthorityAsync",
+      "ExpectedSecurity": "Authorize: Policy=CanRead"
+    },
+    {
+      "Controller": "ProjectsController",
+      "Action": "ListAllProjectsForRegionAsync",
+      "ExpectedSecurity": "Authorize: Policy=CanRead"
+    },
+    {
+      "Controller": "ProjectsController",
+      "Action": "ListAllProjectsForTeamAsync",
+      "ExpectedSecurity": "Authorize: Policy=CanRead"
+    },
+    {
+      "Controller": "ProjectsController",
+      "Action": "ListAllProjectsForUserAsync",
+      "ExpectedSecurity": "Authorize: Policy=CanRead"
+    },
+    {
+      "Controller": "ProjectsController",
+      "Action": "GetProjectGroupByGroupReferenceNumber_Async",
+      "ExpectedSecurity": "Authorize: Policy=CanRead"
+    },
+    {
+      "Controller": "ProjectsController",
+      "Action": "RemoveProject",
+      "ExpectedSecurity": "Authorize: Policy=CanReadWriteUpdateDelete"
+    },
+    {
+      "Controller": "ProjectsController",
+      "Action": "SearchProjectsAsync",
+      "ExpectedSecurity": "Authorize: Policy=CanRead"
+    },
+    {
+      "Controller": "ProjectsController",
+      "Action": "ListAllProjectsByTrustRefAsync",
+      "ExpectedSecurity": "Authorize: Policy=CanRead"
+    },
+    {
+      "Controller": "CsvExportController",
+      "Action": "GetConversionCsvByMonthAsync",
+      "ExpectedSecurity": "Authorize: Policy=CanRead"
+    },
+    {
+      "Controller": "CsvExportController",
+      "Action": "GetConversionCsvByMonthContentsAsync",
+      "ExpectedSecurity": "Authorize: Policy=CanRead"
+    },
+    {
+      "Controller": "UsersController",
+      "Action": "GetUserWithProjectsAsync",
+      "ExpectedSecurity": "Authorize: Policy=CanRead"
+    },
+    {
+      "Controller": "UsersController",
+      "Action": "ListAllUsersWithProjectsAsync",
+      "ExpectedSecurity": "Authorize: Policy=CanRead"
+    },
+    {
+      "Controller": "TrustController",
+      "Action": "ListAllTrustsWithProjectsAsync",
+      "ExpectedSecurity": "Authorize: Policy=CanRead"
+    }
+  ]
+}

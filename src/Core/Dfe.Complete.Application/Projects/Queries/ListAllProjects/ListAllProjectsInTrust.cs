@@ -5,12 +5,13 @@ using Dfe.Complete.Application.Projects.Model;
 using Dfe.Complete.Application.Projects.Models;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace Dfe.Complete.Application.Projects.Queries.ListAllProjects
 {
     public record ListAllProjectsInTrustQuery(string? Identifier, bool IsFormAMat) : PaginatedRequest<PaginatedResult<ListAllProjectsInTrustResultModel>>;
 
-    public class ListAllProjectsInTrustQueryHandler(IListAllProjectsQueryService listAllProjectsQueryService, ITrustsV4Client trustsClient)
+    public class ListAllProjectsInTrustQueryHandler(IListAllProjectsQueryService listAllProjectsQueryService, ITrustsV4Client trustsClient, ILogger<ListAllProjectsInTrustQueryHandler> logger)
         : IRequestHandler<ListAllProjectsInTrustQuery, PaginatedResult<ListAllProjectsInTrustResultModel>>
     {
         public async Task<PaginatedResult<ListAllProjectsInTrustResultModel>> Handle(ListAllProjectsInTrustQuery request, CancellationToken cancellationToken)
@@ -54,6 +55,7 @@ namespace Dfe.Complete.Application.Projects.Queries.ListAllProjects
             }
             catch (Exception ex)
             {
+                logger.LogError(ex, "Exception for {Name} Request - {@Request}", nameof(ListAllProjectsForUserQueryHandler), request);
                 return PaginatedResult<ListAllProjectsInTrustResultModel>.Failure(ex.Message);
             }
         }

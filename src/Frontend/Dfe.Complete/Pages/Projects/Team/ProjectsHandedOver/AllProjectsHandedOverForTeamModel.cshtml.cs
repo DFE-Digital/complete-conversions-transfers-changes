@@ -7,9 +7,12 @@ using Dfe.Complete.Domain.Extensions;
 using Dfe.Complete.Models;
 using Dfe.Complete.Pages.Pagination;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
+using Dfe.Complete.Domain.Constants;
 
-namespace Dfe.Complete.Pages.Projects.Team.HandedOver;
+namespace Dfe.Complete.Pages.Projects.Team.ProjectsHandedOver;
 
+[Authorize(policy: UserPolicyConstants.CanViewTeamProjectsHandedOver)]
 public class AllProjectsHandedOverForTeamModel(ISender sender) : YourTeamProjectsModel(HandedOverNavigation)
 {
     public List<ListAllProjectsResultModel> Projects { get; set; } = [];

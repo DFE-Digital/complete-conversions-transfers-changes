@@ -34,12 +34,11 @@ public class RemoveProjectCommandHandlerTests
         host.EnvironmentName = "Production";
 
         var handler = new RemoveProjectCommandHandler(
-            host,
-            mockProjectRepository,
-            mockTransferTaskRepository,
-            mockConversionTaskRepository,
-            unitOfWorkMock.Object,
-            configMock.Object);
+            host, 
+            mockProjectRepository, 
+            mockTransferTaskRepository, 
+            mockConversionTaskRepository, 
+            unitOfWorkMock.Object);
 
         // Act & Assert
         await Assert.ThrowsAsync<NotDevOrTestEnvironmentException>(

@@ -6,7 +6,6 @@ using Dfe.Complete.Pages.Pagination;
 using Dfe.Complete.Utils;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace Dfe.Complete.Pages.Projects.List.ProjectsByRegion;
 

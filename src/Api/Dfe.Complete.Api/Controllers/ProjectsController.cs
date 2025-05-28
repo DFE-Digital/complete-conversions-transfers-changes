@@ -11,7 +11,6 @@ using Dfe.Complete.Application.Projects.Models;
 using Microsoft.AspNetCore.Authorization;
 using Dfe.Complete.Application.Projects.Commands.RemoveProject;
 using Dfe.Complete.Application.Projects.Queries.SearchProjects;
-using Dfe.Complete.Domain.Enums;
 
 namespace Dfe.Complete.Api.Controllers
 {
@@ -330,7 +329,7 @@ namespace Dfe.Complete.Api.Controllers
         public async Task<IActionResult> ListAllProjectsByTrustRefAsync([FromQuery] ListEstablishmentsInMatQuery request, CancellationToken cancellationToken)
         {
             var project = await sender.Send(request, cancellationToken);
-            return Ok(project.Value?.projectModels ?? []);
+            return Ok(project.Value?.ProjectModels ?? []);
         }
     }
 }

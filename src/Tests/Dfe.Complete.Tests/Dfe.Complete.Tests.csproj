@@ -42,4 +42,10 @@
     <Folder Include="Pages\Projects\Create\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Include="SecurityTests\ExpectedSecurityConfig.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>
