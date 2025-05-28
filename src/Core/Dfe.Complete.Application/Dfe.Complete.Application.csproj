@@ -1,7 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
-  <PropertyGroup>
-    <UserSecretsId>6d00b5e1-27de-4da6-915c-7e99bdfcd0e1</UserSecretsId>
-  </PropertyGroup>
+﻿<Project Sdk="Microsoft.NET.Sdk"> 
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="14.0.0" />
     <PackageReference Include="Dfe.AcademiesApi.Client" Version="1.0.5" />
