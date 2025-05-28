@@ -12,29 +12,15 @@ namespace Dfe.Complete.Infrastructure.QueryServices;
 
 internal class ListAllProjectsQueryService(CompleteContext context) : IListAllProjectsQueryService
 {
-    public IQueryable<ListAllProjectsQueryModel> ListAllProjects(List<ProjectState>? projectStatuses,
-       ProjectType? projectType,
-       AssignedToState? assignedToState = null,
-       UserId? assignedToUserId = null,
-       UserId? createdByUserId = null,
-       string? localAuthorityCode = "",
-       Region? region = null,
-       ProjectTeam? team = null,
-       bool? isFormAMat = null,
-       string? newTrustReferenceNumber = "",
-       string? search = "",
+    public IQueryable<ListAllProjectsQueryModel> ListSearchProjects(List<ProjectState>? projectStatuses,
+       string search,
        OrderProjectQueryBy? orderBy = null)
     {
         var projects = context.Projects
             .Include(project => project.RegionalDeliveryOfficer)
-            .Where(project => projectStatuses == null || projectStatuses.Contains(project.State))
-            .Where(project => projectType == null || projectType == project.Type);
+            .Where(project => projectStatuses == null || projectStatuses.Contains(project.State));
 
-        projects = SetAssignStateAndUserAssignmentQueryParameters(projects, assignedToState, assignedToUserId, createdByUserId);
-        projects = SetRegionAndTeamQueryParameters(projects, region, team);
-        projects = SetFormAMatQueryParameters(projects, isFormAMat);
-
-        return SetListAllProjects(projects, localAuthorityCode, newTrustReferenceNumber, search, orderBy);
+        return SetListAllProjects(projects, null, null, search, orderBy);
     }
      
     public IQueryable<ListAllProjectsQueryModel> ListAllProjects(ProjectState? projectStatus,

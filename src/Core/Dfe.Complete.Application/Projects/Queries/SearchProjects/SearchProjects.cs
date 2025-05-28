@@ -20,7 +20,7 @@ namespace Dfe.Complete.Application.Projects.Queries.SearchProjects
             try
             {
                 var searchQuery = listAllProjectsQueryService
-                    .ListAllProjects([ProjectState.Active, ProjectState.DaoRevoked, ProjectState.Completed], null, search: request.SearchTerm).AsQueryable();
+                    .ListSearchProjects([ProjectState.Active, ProjectState.DaoRevoked, ProjectState.Completed], request.SearchTerm).AsQueryable();
 
                 var itemCount = await searchQuery
                     .CountAsync(cancellationToken);

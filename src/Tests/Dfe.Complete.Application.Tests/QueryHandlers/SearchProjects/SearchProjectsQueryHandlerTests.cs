@@ -42,7 +42,7 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.SearchProjects
                 Count = 20
             };
             mockListAllProjectsQueryService
-                .ListAllProjects(Arg.Any<List<ProjectState>>(), null, search: searchTerm)
+                .ListSearchProjects(Arg.Any<List<ProjectState>>(), searchTerm)
                 .Returns(mock);
 
             // Act
@@ -81,7 +81,7 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.SearchProjects
                 Count = 20
             };
             mockListAllProjectsQueryService
-                .ListAllProjects(Arg.Any<List<ProjectState>>(), null, search: searchTerm)
+                .ListSearchProjects(Arg.Any<List<ProjectState>>(), searchTerm)
                 .Returns(mock); 
 
             // Act
@@ -123,7 +123,7 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.SearchProjects
             var mock = listAllProjectsQueryModels.BuildMock();
 
             mockListAllProjectsQueryService
-                .ListAllProjects(Arg.Any<List<ProjectState>>(),null, search: searchTerm)
+                .ListSearchProjects(Arg.Any<List<ProjectState>>(), searchTerm)
                 .Returns(mock);
 
             // Act
@@ -162,7 +162,7 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.SearchProjects
             };
 
             mockListAllProjectsQueryService
-                .ListAllProjects(Arg.Any<List<ProjectState>>(), null, search: searchTerm)
+                .ListSearchProjects(Arg.Any<List<ProjectState>>(), searchTerm)
                 .Returns(mock);
              
             // Act
