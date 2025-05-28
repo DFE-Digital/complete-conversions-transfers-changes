@@ -3,4 +3,4 @@
 namespace Dfe.Complete.Application.Projects.Model;
 
 public record ListAllProjectsInTrustResultModel(
-    string trustName, IEnumerable<ListAllProjectsResultModel> projects);
+    string TrustName, IEnumerable<ListAllProjectsResultModel> Projects);
