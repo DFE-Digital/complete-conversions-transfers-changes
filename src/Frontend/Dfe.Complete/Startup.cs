@@ -19,6 +19,8 @@ using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using DfE.CoreLibs.Http.Middlewares.CorrelationId;
 using DfE.CoreLibs.Http.Interfaces;
 using Dfe.Complete.Logging.Middleware;
+using Microsoft.AspNetCore.Mvc;
+
 namespace Dfe.Complete;
 
 public class Startup
@@ -47,19 +49,22 @@ public class Startup
 
     public void ConfigureServices(IServiceCollection services)
     {
+        ConfigureCypressAntiforgery(services);
         services.AddHttpClient();
         services.AddFeatureManagement();
         services.AddHealthChecks();
         services
-           .AddRazorPages(options =>
-           {
-               options.Conventions.AuthorizeFolder("/");
-               options.Conventions.AddPageRoute("/Projects/EditProjectNote", "projects/{projectId}/notes/edit");
-           })
-           .AddViewOptions(options =>
-           {
-               options.HtmlHelperOptions.ClientValidationEnabled = false;
-           });
+            .AddRazorPages(options =>
+            {
+                options.Conventions.ConfigureFilter(new IgnoreAntiforgeryTokenAttribute());
+
+                options.Conventions.AuthorizeFolder("/");
+                options.Conventions.AddPageRoute("/Projects/EditProjectNote", "projects/{projectId}/notes/edit");
+            })
+            .AddViewOptions(options =>
+            {
+                options.HtmlHelperOptions.ClientValidationEnabled = false;
+            }).AddCypressAntiForgeryHandling();
 
         services.AddControllersWithViews()
            .AddMicrosoftIdentityUI();
@@ -170,6 +175,19 @@ public class Startup
                    options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
                }
            });
+    }
+
+    private static void ConfigureCypressAntiforgery(IServiceCollection services)
+    {
+        services.Configure<CypressAwareAntiForgeryOptions>(opts =>
+        {
+            opts.ShouldSkipAntiforgery = httpContext =>
+            {
+                var path = httpContext.Request.Path;
+                return path.StartsWithSegments("/v1") ||
+                       path.StartsWithSegments("/Errors");
+            };
+        });
     }
 
     private void RegisterClients(IServiceCollection services)
