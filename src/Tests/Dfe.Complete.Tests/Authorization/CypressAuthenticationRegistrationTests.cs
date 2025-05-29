@@ -3,9 +3,9 @@ using DfE.CoreLibs.Security.Interfaces;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 
@@ -111,7 +111,8 @@ namespace Dfe.Complete.Tests.Authorization
 
             services.AddSingleton<IConfiguration>(configuration);
 
-            var startup = new Startup(configuration);
+            var env = new HostingEnvironment { EnvironmentName = "Development" };
+            var startup = new Startup(configuration, env);
             startup.ConfigureServices(services);
 
             var serviceProvider = services.BuildServiceProvider();
@@ -127,11 +128,13 @@ namespace Dfe.Complete.Tests.Authorization
         }
     }
 
-    internal class HostingEnvironment : IHostEnvironment
+    internal class HostingEnvironment : IWebHostEnvironment
     {
         public string EnvironmentName { get; set; }
         public string ApplicationName { get; set; }
         public string ContentRootPath { get; set; }
-        public IFileProvider ContentRootFileProvider { get; set; }
+        public Microsoft.Extensions.FileProviders.IFileProvider ContentRootFileProvider { get; set; }
+        public string WebRootPath { get; set; }
+        public Microsoft.Extensions.FileProviders.IFileProvider WebRootFileProvider { get; set; }
     }
 }
