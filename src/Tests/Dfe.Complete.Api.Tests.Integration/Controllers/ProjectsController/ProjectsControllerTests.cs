@@ -1,10 +1,8 @@
-using System;
 using System.Security.Claims;
 using AutoFixture;
 using AutoFixture.Xunit2;
 using Dfe.AcademiesApi.Client.Contracts;
 using Dfe.Complete.Api.Tests.Integration.Customizations;
-using Dfe.Complete.Application.Projects.Queries.ListAllProjects;
 using Dfe.Complete.Client.Contracts;
 using Dfe.Complete.Infrastructure.Database;
 using Dfe.Complete.Tests.Common.Constants;
@@ -765,7 +763,7 @@ public partial class ProjectsControllerTests
 
         // // Act
         var results =
-            await projectsClient.ListAllProjectsForUserAsync(null, userAdId, filter, null, numberOfEstablishments);
+            await projectsClient.ListAllProjectsForUserAsync(null, userAdId, filter, null, null, null, numberOfEstablishments);
 
         // // Assert
         Assert.NotNull(results);
@@ -789,7 +787,7 @@ public partial class ProjectsControllerTests
 
         // Act & Assert
         var exception = await Assert.ThrowsAsync<CompleteApiException>(() =>
-            projectsClient.ListAllProjectsForUserAsync(null, "123", filter, null, 50));
+            projectsClient.ListAllProjectsForUserAsync(null, "123", filter, null, null, null, 50));
 
         Assert.Contains("User does not exist for provided UserAdId", exception.Response);
     }

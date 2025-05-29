@@ -1,4 +1,3 @@
-using Dfe.Complete.Application.Projects.Models;
 using Dfe.Complete.Application.Projects.Queries.ListProjectsByMonth;
 using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Models;
@@ -6,7 +5,6 @@ using Dfe.Complete.Pages.Pagination;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Dfe.Complete.Extensions;
-using System.Globalization;
 
 namespace Dfe.Complete.Pages.Projects.List.ProjectsByMonth
 {
