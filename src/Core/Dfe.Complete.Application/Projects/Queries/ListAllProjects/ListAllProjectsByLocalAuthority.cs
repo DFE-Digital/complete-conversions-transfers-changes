@@ -20,8 +20,7 @@ public class ListAllProjectByLocalAuthorities(IListAllProjectsWithLAsQueryServic
     {
         try
         {
-            // TODO instead of having a new service, consider using ListAllProjectsQueryService.ApplyProjectFilters when those changes merge instead
-            var grouped = ListAllProjectsWithLAsQueryService.ListAllProjects(request.State, request.Type)
+           var grouped = ListAllProjectsWithLAsQueryService.ListAllProjects(request.State, request.Type)
                 .GroupBy(p => p.LocalAuthority.Code)
                 .Select(g => new
                 {
