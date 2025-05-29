@@ -27,6 +27,7 @@ public class ProjectsQueryBuilder(CompleteContext context) : IProjectsQueryBuild
         _projects = FilterByTeam(_projects, filters.Team);
         _projects = FilterByNewTrustReferenceNumber(_projects, filters.NewTrustReferenceNumber);
         _projects = FilterByIsFormAMat(_projects, filters.IsFormAMat);
+        _projects = FilterByIncomingTrustUkprn(_projects, filters.IncomingTrustUkprn);
         _projects = FilterBySignificantDateRange(_projects, filters.SignificantDateRange);
         return this;
     }
@@ -158,6 +159,14 @@ public class ProjectsQueryBuilder(CompleteContext context) : IProjectsQueryBuild
             projects = projects.Where(project => project.NewTrustReferenceNumber != null && project.NewTrustName != null);
         else if (isFormAMat == false)
             projects = projects.Where(project => project.NewTrustReferenceNumber == null && project.NewTrustName == null);
+        return projects;
+    }
+
+    private static IQueryable<Project> FilterByIncomingTrustUkprn(IQueryable<Project> projects, string? incomingTrustUkprn)
+    {
+        if (!string.IsNullOrWhiteSpace(incomingTrustUkprn))
+            projects = projects.Where(project =>
+                project.IncomingTrustUkprn != null && project.IncomingTrustUkprn == incomingTrustUkprn);
         return projects;
     }
 
