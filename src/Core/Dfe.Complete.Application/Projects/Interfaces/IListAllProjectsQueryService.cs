@@ -7,6 +7,7 @@ public interface IListAllProjectsQueryService
     IQueryable<ListAllProjectsQueryModel> ListAllProjects(
         ProjectFilters filters,
         string? search = "",
+        string? incomingTrustUkprn = null,
         OrderProjectQueryBy? orderBy = null
         );
 }
