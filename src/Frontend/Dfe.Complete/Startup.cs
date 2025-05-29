@@ -19,6 +19,7 @@ using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using DfE.CoreLibs.Http.Middlewares.CorrelationId;
 using DfE.CoreLibs.Http.Interfaces;
 using Dfe.Complete.Logging.Middleware;
+using DfE.CoreLibs.Security.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Dfe.Complete;
@@ -26,11 +27,12 @@ namespace Dfe.Complete;
 public class Startup
 {
     private readonly TimeSpan _authenticationExpiration;
+    private readonly IWebHostEnvironment _env;
 
-    public Startup(IConfiguration configuration)
+    public Startup(IConfiguration configuration, IWebHostEnvironment env)
     {
         Configuration = configuration;
-
+        _env = env;
         _authenticationExpiration = TimeSpan.FromMinutes(int.Parse(Configuration["AuthenticationExpirationInMinutes"] ?? "60"));
     }
 
@@ -49,14 +51,17 @@ public class Startup
 
     public void ConfigureServices(IServiceCollection services)
     {
-        ConfigureCypressAntiforgery(services);
+        ConfigureCypressAntiforgeryEndpoints(services);
         services.AddHttpClient();
         services.AddFeatureManagement();
         services.AddHealthChecks();
         services
             .AddRazorPages(options =>
             {
-                options.Conventions.ConfigureFilter(new IgnoreAntiforgeryTokenAttribute());
+                if (!_env.IsProduction())
+                {
+                    options.Conventions.ConfigureFilter(new IgnoreAntiforgeryTokenAttribute());
+                }
 
                 options.Conventions.AuthorizeFolder("/");
                 options.Conventions.AddPageRoute("/Projects/EditProjectNote", "projects/{projectId}/notes/edit");
@@ -64,7 +69,9 @@ public class Startup
             .AddViewOptions(options =>
             {
                 options.HtmlHelperOptions.ClientValidationEnabled = false;
-            }).AddCypressAntiForgeryHandling();
+            });
+        
+        ConfigureCypressAntiforgery(services);
 
         services.AddControllersWithViews()
            .AddMicrosoftIdentityUI();
@@ -177,17 +184,35 @@ public class Startup
            });
     }
 
-    private static void ConfigureCypressAntiforgery(IServiceCollection services)
+    private void ConfigureCypressAntiforgeryEndpoints(IServiceCollection services)
     {
-        services.Configure<CypressAwareAntiForgeryOptions>(opts =>
+        if (!_env.IsProduction())
         {
-            opts.ShouldSkipAntiforgery = httpContext =>
+            services.Configure<CypressAwareAntiForgeryOptions>(opts =>
             {
-                var path = httpContext.Request.Path;
-                return path.StartsWithSegments("/v1") ||
-                       path.StartsWithSegments("/Errors");
-            };
-        });
+                opts.ShouldSkipAntiforgery = httpContext =>
+                {
+                    var path = httpContext.Request.Path;
+                    return path.StartsWithSegments("/v1") ||
+                           path.StartsWithSegments("/Errors");
+                };
+            });
+        }
+    }
+
+    private void ConfigureCypressAntiforgery(IServiceCollection services)
+    {
+        if (!_env.IsProduction())
+        {
+            services.AddScoped<ICypressRequestChecker, CypressRequestChecker>();
+
+            services.AddScoped<CypressAwareAntiForgeryFilter>();
+
+            services.PostConfigure<MvcOptions>(options =>
+            {
+                options.Filters.AddService<CypressAwareAntiForgeryFilter>();
+            });
+        }
     }
 
     private void RegisterClients(IServiceCollection services)
