@@ -133,8 +133,8 @@ namespace Dfe.Complete.Tests.Authorization
         public string EnvironmentName { get; set; }
         public string ApplicationName { get; set; }
         public string ContentRootPath { get; set; }
-        public Microsoft.Extensions.FileProviders.IFileProvider ContentRootFileProvider { get; set; }
-        public string WebRootPath { get; set; }
-        public Microsoft.Extensions.FileProviders.IFileProvider WebRootFileProvider { get; set; }
+        public Microsoft.Extensions.FileProviders.IFileProvider? ContentRootFileProvider { get; set; }
+        public string? WebRootPath { get; set; }
+        public Microsoft.Extensions.FileProviders.IFileProvider? WebRootFileProvider { get; set; }
     }
 }
