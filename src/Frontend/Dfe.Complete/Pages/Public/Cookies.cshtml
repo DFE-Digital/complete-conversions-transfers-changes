@@ -7,7 +7,7 @@
 }
 
 @section BeforeMain {
-    <a href="@Model.returnPath" class="govuk-back-link">Back</a>
+    <a href="@Model.ReturnPath" class="govuk-back-link">Back</a>
 }
 
 @if (Model.PreferencesSet)
@@ -22,7 +22,7 @@
         <div class="govuk-notification-banner__content">
             <p class="govuk-notification-banner__heading">
                 You’ve set your cookie preferences. <a class="govuk-notification-banner__link"
-                                                       data-test="success-banner-return-link" href="@Model.returnPath">
+                                                       data-test="success-banner-return-link" href="@Model.ReturnPath">
                     Go back to the page you were looking
                     at
                 </a>.

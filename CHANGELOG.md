@@ -28,6 +28,7 @@ Security in case of vulnerabilities.
 - Navigation items previously hidden with `UserTabAccessHelper` now hide on policy
 
 ### Fixed  
+- Unassigned projects should show "Not yet assigned" under "Assigned To" column for projects on the local authority/trust pages
 - Fixed the search functionality to return only projects with status values of 0, 1, or 3.
 
 ### Removed
