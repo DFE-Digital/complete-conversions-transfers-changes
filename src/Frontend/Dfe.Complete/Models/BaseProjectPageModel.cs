@@ -28,7 +28,7 @@ public abstract class BaseProjectPageModel(ISender sender) : PageModel
     public TransferTaskDataDto? TransferTaskData { get; set; }
     public ProjectTeam CurrentUserTeam { get; set; }
 
-    public async Task<IActionResult> OnGet()
+    private async Task SetProject()
     {
         var success = Guid.TryParse(ProjectId, out var guid);
 
@@ -45,7 +45,10 @@ public abstract class BaseProjectPageModel(ISender sender) : PageModel
         }
 
         Project = result.Value;
+    }
 
+    private async Task SetEstablishment()
+    {
         var establishmentQuery = new GetEstablishmentByUrnRequest(Project.Urn.Value.ToString());
         var establishmentResult = await sender.Send(establishmentQuery);
 
@@ -55,7 +58,10 @@ public abstract class BaseProjectPageModel(ISender sender) : PageModel
         }
 
         Establishment = establishmentResult.Value;
+    }
 
+    private async Task SetAcademy()
+    {
         if (Project.AcademyUrn != null)
         {
             var academyQuery = new GetEstablishmentByUrnRequest(Project.AcademyUrn.Value.ToString());
@@ -68,7 +74,10 @@ public abstract class BaseProjectPageModel(ISender sender) : PageModel
 
             Academy = academyResult.Value;
         }
-        
+    }
+
+    private async Task SetIncomingTrust()
+    {
         if (!Project.FormAMat)
         {
             var incomingTrustQuery = new GetTrustByUkprnRequest(Project.IncomingTrustUkprn.Value.ToString());
@@ -81,7 +90,10 @@ public abstract class BaseProjectPageModel(ISender sender) : PageModel
 
             IncomingTrust = incomingTrustResult.Value;
         }
+    }
 
+    private async Task SetOutgoingTrust()
+    {
         if (Project.Type == ProjectType.Transfer)
         {
             var outgoingtrustQuery = new GetTrustByUkprnRequest(Project.OutgoingTrustUkprn.Value.ToString());
@@ -94,7 +106,10 @@ public abstract class BaseProjectPageModel(ISender sender) : PageModel
 
             OutgoingTrust = outgoingTrustResult.Value;
         }
+    }
 
+    private async Task SetProjectGroup()
+    {
         if (Project.GroupId != null)
         {
             var projectGroupQuery = new GetProjectGroupByIdQuery(Project.GroupId);
@@ -104,7 +119,10 @@ public abstract class BaseProjectPageModel(ISender sender) : PageModel
                 ProjectGroup = projectGroup.Value;
             }
         }
+    }
 
+    private async Task SetTransferTaskData()
+    {
         if (Project.TasksDataId != null)
         {
             var transferTasksDataQuery = new GetTransferTasksDataByIdQuery(Project.TasksDataId);
@@ -114,6 +132,23 @@ public abstract class BaseProjectPageModel(ISender sender) : PageModel
                 TransferTaskData = transferTasksData.Value;
             }
         }
+    }
+
+    public async Task<IActionResult> OnGet()
+    {
+        await SetProject();
+
+        await SetEstablishment();
+
+        await SetAcademy();
+
+        await SetIncomingTrust();
+
+        await SetOutgoingTrust();
+
+        await SetProjectGroup();
+
+        await SetTransferTaskData();
 
         CurrentUserTeam = await User.GetUserTeam(sender);
 

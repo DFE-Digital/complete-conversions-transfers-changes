@@ -330,6 +330,7 @@ public class BaseProjectsPageModelTests
             MasterFundingAgreementCleared = false,
             MasterFundingAgreementSigned = false,
             MasterFundingAgreementSaved = false,
+            MasterFundingAgreementSignedSecretaryState = false,
             MasterFundingAgreementNotApplicable = false,
             DeedOfNovationAndVariationReceived = false,
             DeedOfNovationAndVariationCleared = false,
