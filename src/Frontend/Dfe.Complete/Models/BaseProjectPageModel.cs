@@ -69,7 +69,6 @@ public abstract class BaseProjectPageModel(ISender sender) : PageModel
             Academy = academyResult.Value;
         }
         
-
         if (!Project.FormAMat)
         {
             var incomingTrustQuery = new GetTrustByUkprnRequest(Project.IncomingTrustUkprn.Value.ToString());
@@ -90,7 +89,7 @@ public abstract class BaseProjectPageModel(ISender sender) : PageModel
 
             if (!outgoingTrustResult.IsSuccess || outgoingTrustResult.Value == null)
             {
-                throw new NotFoundException($"Trust {Project.IncomingTrustUkprn.Value} does not exist.");
+                throw new NotFoundException($"Trust {Project.OutgoingTrustUkprn.Value} does not exist.");
             }
 
             OutgoingTrust = outgoingTrustResult.Value;
