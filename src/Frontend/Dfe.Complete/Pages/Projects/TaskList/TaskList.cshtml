@@ -7,145 +7,15 @@
 @model Dfe.Complete.Pages.Projects.TaskList.TaskListModel
 
 @{
-  ViewData["Title"] = Model.Establishment.Name;
+    Layout = "Projects/_ProjectDetailsLayout";
 }
-
-<div class="govuk-grid-row">
-  <div class="govuk-grid-column-two-thirds">
-    <span class="govuk-caption-l">
-      @(Model.Project.Type == ProjectType.Transfer ? "Academy" : "School") URN @Model.Project.Urn.Value
-      <govuk-tag class="govuk-tag--purple">@Model.Project.Type.ToDisplayDescription()</govuk-tag>
-
-      @if (Model.Project.FormAMat)
-      {
-        <govuk-tag class="govuk-tag--pink">Form a MAT</govuk-tag>
-      }
-      
-      @* TODO: Add DAO Revoked *@
-      
-      @if (Model.Project.GroupId is not null)
-      {
-        <govuk-tag class="govuk-tag--turquoise">In a group</govuk-tag>
-      }
-
-    </span>
-    <h1 class="govuk-heading-xl">@Model.Establishment.Name</h1>
-  </div>
-</div>
-
-@if (Model.Project.CompletedAt is not null)
-{
-  <div class="govuk-grid-row">
-    <div class="govuk-grid-column-two-thirds">
-      <govuk-notification-banner>
-        <govuk-notification-banner-title>
-          Important
-        </govuk-notification-banner-title>
-        <h3>Project completed</h3>
-        <p>This project was completed on %{date}.</p>
-        <p>Only Service Support team members can make changes to this project.</p>
-      </govuk-notification-banner>
-    </div>
-  </div>
-}
-else if (User.GetUserAdId() != Model.Project.AssignedToId?.Value.ToString() && Model.CurrentUserTeam.TeamIsServiceSupport())
-{
-  <div class="govuk-grid-row">
-    <div class="govuk-grid-column-two-thirds">
-      <govuk-notification-banner>
-        <govuk-notification-banner-title>
-          Important
-        </govuk-notification-banner-title>
-        <h3>Not assigned to project</h3>
-        <p>This project is not assigned to you and cannot be changed, you can add notes or contacts if required.</p>
-      </govuk-notification-banner>
-    </div>
-  </div>
-}
-
-@* TODO Add DAO Revoked message *@
-
-<div class="govuk-grid-row">
-  <div class="govuk-grid-column-three-quarters">
-    <dl class="govuk-summary-list dfe-summary-list--project-summary" id="project-summary">
-      <div class="govuk-summary-list__row">
-        <dt class="govuk-summary-list__key">@Model.Project.Type.ToDisplayDescription() date</dt>
-        <dd class="govuk-summary-list__value">
-          @Model.Project.SignificantDate
-          @if (Model.Project.SignificantDateProvisional is true)
-          {
-            <strong class="govuk-tag govuk-tag--grey">provisional</strong>
-          }
-        </dd >
-      </div>
-      @if (Model.Project.Type == ProjectType.Transfer)
-      {
-        <div class="govuk-summary-list__row">
-          <dt class="govuk-summary-list__key">Outgoing trust</dt><dd class="govuk-summary-list__value">@Model.OutgoingTrust?.Name?.ToTitleCase()</dd>
-        </div>
-      }
-      <div class="govuk-summary-list__row">
-        <dt class="govuk-summary-list__key">Incoming trust</dt><dd class="govuk-summary-list__value">@(Model.IncomingTrust?.Name?.ToTitleCase() ?? Model.Project.NewTrustName?.ToTitleCase())</dd>
-      </div>
-      <div class="govuk-summary-list__row">
-        <dt class="govuk-summary-list__key">LA and region</dt><dd class="govuk-summary-list__value">@Model.Establishment.LocalAuthorityName?.ToTitleCase(), @Model.Establishment.Gor?.Name?.ToTitleCase()</dd>
-      </div>
-      <div class="govuk-summary-list__row">
-        <dt class="govuk-summary-list__key">SharePoint link@(Model.Project.Type == ProjectType.Conversion ? "s" : "")</dt>
-        @if (Model.Project.Type == ProjectType.Transfer)
-        {
-          <dd class="govuk-summary-list__value">
-            <a target="_blank" class="govuk-link" href="@Model.Project.EstablishmentSharepointLink">Academy folder (opens in new tab)</a>
-          </dd>
-        }
-        @if (Model.Project.Type == ProjectType.Conversion)
-        {
-          <dd class="govuk-summary-list__value">
-            <a target="_blank" class="govuk-link" href="@Model.Project.EstablishmentSharepointLink">School folder (opens in new tab)</a> &nbsp;|&nbsp;
-            <a target="_blank" class="govuk-link" href="@Model.Project.IncomingTrustSharepointLink">Trust folder (opens in new tab)</a>
-          </dd>
-        }
-      </div>
-    </dl>
-
-  </div>
-</div>
-
-<div class="govuk-grid-row">
-  <div class="govuk-grid-column-full">
-    <nav class="moj-sub-navigation" aria-label="Project sub-navigation">
-      <ul class="moj-sub-navigation__list">
-
-        <li class="moj-sub-navigation__item">
-          <a class="moj-sub-navigation__link" aria-current="page" href="#">Task list</a>
-        </li>
-        <li class="moj-sub-navigation__item">
-          <a class="moj-sub-navigation__link" href="#">About the project</a>
-        </li>
-        <li class="moj-sub-navigation__item">
-          <a class="moj-sub-navigation__link" href="#">Notes</a>
-        </li>
-        <li class="moj-sub-navigation__item">
-          <a class="moj-sub-navigation__link" href="#">External contacts</a>
-        </li>
-        <li class="moj-sub-navigation__item">
-          <a class="moj-sub-navigation__link" href="#">Internal contacts</a>
-        </li>
-        <li class="moj-sub-navigation__item">
-          <a class="moj-sub-navigation__link" href="#">@Model.Project.Type.ToDisplayDescription() date history</a>
-        </li>
-      </ul>
-    </nav>
-  </div>
-</div>
-
 
 @if (Model.Project.Type == ProjectType.Conversion)
 {
-  @await Html.PartialAsync("_ConversionTaskList", Model)
+    @await Html.PartialAsync("_ConversionTaskList", Model)
 }
 
 @if (Model.Project.Type == ProjectType.Transfer)
 {
-  @await Html.PartialAsync("_TransferTaskList", Model)
+    @await Html.PartialAsync("_TransferTaskList", Model)
 }

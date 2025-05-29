@@ -1,28 +1,7 @@
 ﻿@using Dfe.Complete.TagHelpers
+@using Dfe.Complete.Utils
 @model Dfe.Complete.Pages.Projects.AboutTheProject.AboutTheProjectModel
-@{
-    // var projectDetails = Model.Project.ProjectDetails;
-    // var reasonForConversion = Model.Project.ReasonForTheConversion;
-    // var advisoryBoardDetails = Model.Project.AdvisoryBoardDetails;
-    // var schoolDetails = Model.Project.SchoolDetails;
-    // var incomingTrustDetails = Model.Project.IncomingTrustDetails;
-    //
-    // var schoolGiasLink = new LinkSummaryItem()
-    //         {
-    //             Label = schoolDetails.Name,
-    //             Link = string.Format(ExternalSiteConstants.GiasEstablishment, schoolDetails.Urn),
-    //             LinkText = "View the school's information in GIAS"
-    //         };
-    //
-    // var schoolSharePointLink = new LinkSummaryItem()
-    //         {
-    //             Link = schoolDetails.SharePointLink,
-    //             LinkText = "View the academy SharePoint folder"
-    //         };
-}
-
-@*TODO: add below back with model*@
-@* <partial name="_ProjectSummary" model="" /> *@
+@* var editLink = string.Format(RouteConstants.ProjectEditAbout, Model.ProjectId); *@
 
 <govuk-project-tabs project-id="@Model.ProjectId" project-type="" />
 
@@ -36,7 +15,19 @@
                 </li>
 
                 <li>
+                    <a class="govuk-link govuk-link--no-visited-state" href="#projectAssignment">Project assignment</a>
+                </li>
+
+                <li>
+                    <a class="govuk-link govuk-link--no-visited-state" href="#reasonsForConversion">Reasons for the conversion</a>
+                </li>
+
+                <li>
                     <a class="govuk-link govuk-link--no-visited-state" href="#advisoryBoardDetails">Advisory board details</a>
+                </li>
+
+                <li>
+                    <a class="govuk-link govuk-link--no-visited-state" href="#schoolDetails">School details</a>
                 </li>
 
                 <li>
@@ -46,11 +37,6 @@
                 <li>
                     <a class="govuk-link govuk-link--no-visited-state" href="#incomingTrustDetails">Incoming trust details</a>
                 </li>
-
-                <li>
-                    <a class="govuk-link govuk-link--no-visited-state" href="#outgoingTrustDetails">Outgoing trust details</a>
-                </li>
-
             </ul>
         </nav>
 
@@ -59,165 +45,182 @@
     <div class="govuk-grid-column-three-quarters" id="projectInformationList">
         <h2 class="govuk-heading-l">About the project</h2>
 
-        <div id="projectDetails" class="project-information-block">
-            <h3 class="govuk-heading-m">Project details</h3>
-            <govuk-summary-list>
-                <govuk-summary-list-row>
-                    <govuk-summary-list-row-key>
-                        Type
-                    </govuk-summary-list-row-key>
-                    <govuk-summary-list-row-value>
-                        @* @projectDetails.ProjectType *@
-                    </govuk-summary-list-row-value>
-                </govuk-summary-list-row>
-                <govuk-summary-list-row>
-                    <govuk-summary-list-row-key>
-                        Conversion date
-                    </govuk-summary-list-row-key>
-                    <govuk-summary-list-row-value>
-                        @* @projectDetails.Date.ToDateString() *@
-                        @* @if (projectDetails.IsDateProvisional == true) *@
-                        @* { *@
-                        @*     <strong class="govuk-tag govuk-tag--grey">provisional</strong> *@
-                        @* } *@
-                    </govuk-summary-list-row-value>
-                </govuk-summary-list-row>
-                <govuk-summary-list-row>
-                    <govuk-summary-list-row-key>
-                        Local authority
-                    </govuk-summary-list-row-key>
-                    <govuk-summary-list-row-value>
-                        @* @projectDetails.LocalAuthority *@
-                    </govuk-summary-list-row-value>
-                </govuk-summary-list-row>
-                <govuk-summary-list-row>
-                    <govuk-summary-list-row-key>
-                        Diocese
-                    </govuk-summary-list-row-key>
-                    <govuk-summary-list-row-value>
-                        @* @schoolDetails.Diocese *@
-                    </govuk-summary-list-row-value>
-                </govuk-summary-list-row>
-                <govuk-summary-list-row>
-                    <govuk-summary-list-row-key>
-                        Region
-                    </govuk-summary-list-row-key>
-                    <govuk-summary-list-row-value>
-                        @* @projectDetails.Region *@
-                    </govuk-summary-list-row-value>
-                </govuk-summary-list-row>
-            </govuk-summary-list>
-        </div>
+        @await Html.PartialAsync("Common/_ProjectDetails", Model)
 
-        <div id="reasonsFor" class="project-information-block">
-            <h3 class="govuk-heading-m">Reasons for the conversion</h3>
-            <govuk-summary-list>
-                <govuk-summary-list-row>
-                    <govuk-summary-list-row-key>
-                        Has a directive academy order been issued?
-                    </govuk-summary-list-row-key>
-                    <govuk-summary-list-row-value>
-                        @* @reasonForConversion.HasAcademyOrderBeenIssued *@
-                    </govuk-summary-list-row-value>
-                </govuk-summary-list-row>
-                <govuk-summary-list-row>
-                    <govuk-summary-list-row-key>
-                        Is this transfer due to 2RI?
-                    </govuk-summary-list-row-key>
-                    <govuk-summary-list-row-value>
-                        @* @reasonForConversion.IsDueTo2RI *@
-                    </govuk-summary-list-row-value>
-                </govuk-summary-list-row>
-            </govuk-summary-list>
-        </div>
+        @await Html.PartialAsync("Common/_ProjectAssignment", Model)
 
+        <section id="reasonsForConversion" class="app-summary-card govuk-!-margin-bottom-6">
+            <header class="app-summary-card__header">
+                <h2 class="app-summary-card__title">
+                    Reasons for the conversion
+                </h2>
+            </header>
+            <div class="app-summary-card__body">
+                <govuk-summary-list>
+                    <govuk-summary-list-row>
+                        <govuk-summary-list-row-key>Has a directive academy order been issued?</govuk-summary-list-row-key>
+                        <govuk-summary-list-row-value>
+                            @(Model.Project.DirectiveAcademyOrder != null && Model.Project.DirectiveAcademyOrder.Value ? "Yes" : "No")
+                        </govuk-summary-list-row-value>
+                        <govuk-summary-list-row-actions>
+                            <govuk-summary-list-row-action href="#" visually-hidden-text="Has a directive academy order been issued?">Change</govuk-summary-list-row-action>
+                        </govuk-summary-list-row-actions>
+                    </govuk-summary-list-row>
+                    <govuk-summary-list-row>
+                        <govuk-summary-list-row-key>Is this conversion due to intervention following 2RI?</govuk-summary-list-row-key>
+                        <govuk-summary-list-row-value>
+                            @(Model.Project.TwoRequiresImprovement != null && Model.Project.TwoRequiresImprovement.Value ? "Yes" : "No")
+                        </govuk-summary-list-row-value>
+                        <govuk-summary-list-row-actions>
+                            <govuk-summary-list-row-action href="#" visually-hidden-text="Is this conversion due to intervention following 2RI?">Change</govuk-summary-list-row-action>
+                        </govuk-summary-list-row-actions>
+                    </govuk-summary-list-row>
+                </govuk-summary-list>
+            </div>
+        </section>
 
-        <div id="advisoryBoardDetails" class="project-information-block">
-            <h3 class="govuk-heading-m">Advisory board details</h3>
-            <govuk-summary-list>
-                <govuk-summary-list-row>
-                    <govuk-summary-list-row-key>
-                        Date of advisory board
-                    </govuk-summary-list-row-key>
-                    <govuk-summary-list-row-value>
-                        @* @advisoryBoardDetails.Date *@
-                    </govuk-summary-list-row-value>
-                </govuk-summary-list-row>
-                <govuk-summary-list-row>
-                    <govuk-summary-list-row-key>
-                        Conditions from advisory board
-                    </govuk-summary-list-row-key>
-                    <govuk-summary-list-row-value>
-                        @* @advisoryBoardDetails.Conditions *@
-                    </govuk-summary-list-row-value>
-                </govuk-summary-list-row>
-            </govuk-summary-list>
-        </div>
+        @await Html.PartialAsync("Common/_AdvisoryBoardDetails", Model)
 
+        <section id="schoolDetails" class="app-summary-card govuk-!-margin-bottom-6">
+            <header class="app-summary-card__header">
+                <h2 class="app-summary-card__title">
+                    School details
+                </h2>
+            </header>
+            <div class="app-summary-card__body">
+                <govuk-summary-list>
+                    <govuk-summary-list-row>
+                        <govuk-summary-list-row-key>Name</govuk-summary-list-row-key>
+                        <govuk-summary-list-row-value>
+                            @Model.Establishment.Name<br />
+                            <a class="govuk-link" href="https://get-information-schools.service.gov.uk/Establishments/Establishment/Details/@Model.Establishment.Urn" target="_blank">View the school's information in GIAS (opens in new tab)</a>
+                        </govuk-summary-list-row-value>
+                    </govuk-summary-list-row>
+                    <govuk-summary-list-row>
+                        <govuk-summary-list-row-key>URN (unique reference number)</govuk-summary-list-row-key>
+                        <govuk-summary-list-row-value>
+                            @Model.Establishment.Urn
+                        </govuk-summary-list-row-value>
+                    </govuk-summary-list-row>
+                    <govuk-summary-list-row>
+                        <govuk-summary-list-row-key>Type</govuk-summary-list-row-key>
+                        <govuk-summary-list-row-value>
+                            @Model.Establishment.EstablishmentType?.Name
+                        </govuk-summary-list-row-value>
+                    </govuk-summary-list-row>
+                    <govuk-summary-list-row>
+                        <govuk-summary-list-row-key>Range</govuk-summary-list-row-key>
+                        <govuk-summary-list-row-value>
+                            @Model.Establishment.StatutoryLowAge to @Model.Establishment.StatutoryHighAge
+                        </govuk-summary-list-row-value>
+                    </govuk-summary-list-row>
+                    <govuk-summary-list-row>
+                        <govuk-summary-list-row-key>Phase</govuk-summary-list-row-key>
+                        <govuk-summary-list-row-value>
+                            @(Model.Establishment?.PhaseOfEducation?.Name ?? "Not applicable")
+                        </govuk-summary-list-row-value>
+                    </govuk-summary-list-row>
+                    <govuk-summary-list-row>
+                        <govuk-summary-list-row-key>Address</govuk-summary-list-row-key>
+                        <govuk-summary-list-row-value>
+                            @if (!string.IsNullOrWhiteSpace(@Model.Establishment?.Address?.Street))
+                            {
+                                @Model.Establishment?.Address?.Street <br />
+                            }
+                            @if (!string.IsNullOrWhiteSpace(@Model.Establishment?.Address?.Town))
+                            {
+                                @Model.Establishment?.Address?.Town <br />
+                            }
+                            @if (!string.IsNullOrWhiteSpace(@Model.Establishment?.Address?.County))
+                            {
+                                @Model.Establishment?.Address?.County <br />
+                            }
+                            @if (!string.IsNullOrWhiteSpace(@Model.Establishment?.Address?.Postcode))
+                            {
+                                @Model.Establishment?.Address?.Postcode
+                            }
+                        </govuk-summary-list-row-value>
+                    </govuk-summary-list-row>
+                    <govuk-summary-list-row>
+                        <govuk-summary-list-row-key>SharePoint folder</govuk-summary-list-row-key>
+                        <govuk-summary-list-row-value>
+                            <a class="govuk-link" href="@Model.Project.EstablishmentSharepointLink" target="_blank">View the school SharePoint folder (opens in new tab)</a>
+                        </govuk-summary-list-row-value>
+                        <govuk-summary-list-row-actions>
+                            <govuk-summary-list-row-action href="#" visually-hidden-text="School sharePoint folder">Change</govuk-summary-list-row-action>
+                        </govuk-summary-list-row-actions>
+                    </govuk-summary-list-row>
+                </govuk-summary-list>
+            </div>
+        </section>
 
-        <div id="academyDetails" class="project-information-block">
-            <h3 class="govuk-heading-m">School details</h3>
-            <govuk-summary-list>
-                <govuk-summary-list-row>
-                    <govuk-summary-list-row-key>
-                        Name
-                    </govuk-summary-list-row-key>
-                    <govuk-summary-list-row-value>
-                        @* @schoolGiasLink *@
-                    </govuk-summary-list-row-value>
-                </govuk-summary-list-row>
-                <govuk-summary-list-row>
-                    <govuk-summary-list-row-key>
-                        Academy URN (unique reference number)
-                    </govuk-summary-list-row-key>
-                    <govuk-summary-list-row-value>
-                        @* @schoolDetails.Urn *@
-                    </govuk-summary-list-row-value>
-                </govuk-summary-list-row>
-                <govuk-summary-list-row>
-                    <govuk-summary-list-row-key>
-                        Type
-                    </govuk-summary-list-row-key>
-                    <govuk-summary-list-row-value>
-                        @* @schoolDetails.Type *@
-                    </govuk-summary-list-row-value>
-                </govuk-summary-list-row>
-                <govuk-summary-list-row>
-                    <govuk-summary-list-row-key>
-                        Age range
-                    </govuk-summary-list-row-key>
-                    <govuk-summary-list-row-value>
-                        @* @schoolDetails.AgeRange *@
-                    </govuk-summary-list-row-value>
-                </govuk-summary-list-row>
-                <govuk-summary-list-row>
-                    <govuk-summary-list-row-key>
-                        Phase
-                    </govuk-summary-list-row-key>
-                    <govuk-summary-list-row-value>
-                        @* @schoolDetails.Phase *@
-                    </govuk-summary-list-row-value>
-                </govuk-summary-list-row>
-                <govuk-summary-list-row>
-                    <govuk-summary-list-row-key>
-                        Address
-                    </govuk-summary-list-row-key>
-                    <govuk-summary-list-row-value>
-                        @* @schoolDetails.Address *@
-                    </govuk-summary-list-row-value>
-                </govuk-summary-list-row>
-                <govuk-summary-list-row>
-                    <govuk-summary-list-row-key>
-                        SharePoint folder
-                    </govuk-summary-list-row-key>
-                    <govuk-summary-list-row-value>
-                        @* @schoolSharePointLink *@
-                    </govuk-summary-list-row-value>
-                </govuk-summary-list-row>
-            </govuk-summary-list>
-        </div>
+        @await Html.PartialAsync("Common/_AcademyDetails", Model)
 
-        @* <govuk-trust-details asp-for="@Model.Project.IncomingTrustDetails" id="incomingTrustDetails" label="Incoming trust details" /> *@
-
+        <section id="incomingTrustDetails" class="app-summary-card govuk-!-margin-bottom-6">
+            <header class="app-summary-card__header">
+                <h2 class="app-summary-card__title">
+                    Incoming trust details
+                </h2>
+            </header>
+            <div class="app-summary-card__body">
+                <govuk-summary-list>
+                    <govuk-summary-list-row>
+                        <govuk-summary-list-row-key>Name</govuk-summary-list-row-key>
+                        <govuk-summary-list-row-value>
+                            @Model.IncomingTrust?.Name<br />
+                            <a class="govuk-link" href="https://get-information-schools.service.gov.uk/Groups/Search?GroupSearchModel.Text=@Model.Project.IncomingTrustUkprn" target="_blank">View the trust information in GIAS (opens in new tab)</a>
+                        </govuk-summary-list-row-value>
+                    </govuk-summary-list-row>
+                    <govuk-summary-list-row>
+                        <govuk-summary-list-row-key>UKPRN (UK provider reference number)</govuk-summary-list-row-key>
+                        <govuk-summary-list-row-value>@Model.Project.IncomingTrustUkprn</govuk-summary-list-row-value>
+                        <govuk-summary-list-row-actions>
+                            <govuk-summary-list-row-action href="#" visually-hidden-text="UK provider reference number">Change</govuk-summary-list-row-action>
+                        </govuk-summary-list-row-actions>
+                    </govuk-summary-list-row>
+                    <govuk-summary-list-row>
+                        <govuk-summary-list-row-key>Group ID (identifier)</govuk-summary-list-row-key>
+                        <govuk-summary-list-row-value>@Model.IncomingTrust?.ReferenceNumber</govuk-summary-list-row-value>
+                    </govuk-summary-list-row>
+                    <govuk-summary-list-row>
+                        <govuk-summary-list-row-key>Companies House number</govuk-summary-list-row-key>
+                        <govuk-summary-list-row-value>
+                            @Model.IncomingTrust?.CompaniesHouseNumber<br />
+                            <a class="govuk-link" href="https://find-and-update.company-information.service.gov.uk/company/@Model.IncomingTrust?.CompaniesHouseNumber" target="_blank">View the companiesHouse information (opens in new tab)</a>
+                        </govuk-summary-list-row-value>
+                    </govuk-summary-list-row>
+                    <govuk-summary-list-row>
+                        <govuk-summary-list-row-key>Address</govuk-summary-list-row-key>
+                        <govuk-summary-list-row-value>
+                            @if (!string.IsNullOrWhiteSpace(@Model.IncomingTrust?.Address?.Street))
+                            {
+                                @Model.IncomingTrust?.Address?.Street <br />
+                            }
+                            @if (!string.IsNullOrWhiteSpace(@Model.IncomingTrust?.Address?.Town))
+                            {
+                                @Model.IncomingTrust?.Address?.Town <br />
+                            }
+                            @if (!string.IsNullOrWhiteSpace(@Model.IncomingTrust?.Address?.County))
+                            {
+                                @Model.IncomingTrust?.Address?.County <br />
+                            }
+                            @if (!string.IsNullOrWhiteSpace(@Model.IncomingTrust?.Address?.Postcode))
+                            {
+                                @Model.IncomingTrust?.Address?.Postcode
+                            }
+                        </govuk-summary-list-row-value>
+                    </govuk-summary-list-row>
+                    <govuk-summary-list-row>
+                        <govuk-summary-list-row-key>SharePoint folder</govuk-summary-list-row-key>
+                        <govuk-summary-list-row-value>
+                            <a class="govuk-link" href="@Model.Project.IncomingTrustSharepointLink" target="_blank">View the trust SharePoint folder (opens in new tab)</a>
+                        </govuk-summary-list-row-value>
+                        <govuk-summary-list-row-actions>
+                            <govuk-summary-list-row-action href="#" visually-hidden-text="Trust sharePoint folder">Change</govuk-summary-list-row-action>
+                        </govuk-summary-list-row-actions>
+                    </govuk-summary-list-row>
+                </govuk-summary-list>
+            </div>
+        </section>
     </div>
 </div>

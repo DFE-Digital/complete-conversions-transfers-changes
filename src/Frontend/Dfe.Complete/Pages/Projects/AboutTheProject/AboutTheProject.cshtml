@@ -2,6 +2,10 @@
 @using Dfe.Complete.Domain.Enums
 @model Dfe.Complete.Pages.Projects.AboutTheProject.AboutTheProjectModel
 
+@{
+    Layout = "Projects/_ProjectDetailsLayout";
+}
+
 @if (Model.Project.Type == ProjectType.Conversion)
 {
   @await Html.PartialAsync("_AboutConversionProject", Model)
