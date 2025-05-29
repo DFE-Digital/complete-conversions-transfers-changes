@@ -8,7 +8,6 @@ internal class ListAllProjectsQueryService(CompleteContext context) : IListAllPr
     public IQueryable<ListAllProjectsQueryModel> ListAllProjects(
         ProjectFilters filters,
         string? search = "",
-        string? incomingTrustUkprn = null,
         OrderProjectQueryBy? orderBy = null)
     {
         var query = new ProjectsQueryBuilder(context)
