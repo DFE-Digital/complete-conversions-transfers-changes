@@ -4,6 +4,8 @@
     {
         Active = 0,
         Completed = 1,
-        Cancelled = 2
+        Deleted = 2,
+        DaoRevoked = 3,
+        InActive = 4
     }
 }

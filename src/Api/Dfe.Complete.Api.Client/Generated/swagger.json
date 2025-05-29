@@ -548,15 +548,6 @@
               ]
             },
             "x-position": 3
-          },
-          {
-            "name": "Search",
-            "in": "query",
-            "schema": {
-              "type": "string",
-              "nullable": true
-            },
-            "x-position": 4
           }
         ],
         "responses": {
@@ -1967,12 +1958,16 @@
         "x-enumNames": [
           "Active",
           "Completed",
-          "Cancelled"
+          "Deleted",
+          "DaoRevoked",
+          "InActive"
         ],
         "enum": [
           "Active",
           "Completed",
-          "Cancelled"
+          "Deleted",
+          "DaoRevoked",
+          "InActive"
         ]
       },
       "ProjectGroupId": {

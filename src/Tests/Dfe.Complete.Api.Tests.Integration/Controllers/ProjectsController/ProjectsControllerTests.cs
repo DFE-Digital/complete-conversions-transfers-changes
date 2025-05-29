@@ -58,7 +58,7 @@ public partial class ProjectsControllerTests
         await dbContext.Projects.AddRangeAsync(projects);
         await dbContext.SaveChangesAsync();
 
-        var result = await projectsClient.CountAllProjectsAsync(null, null, null, null);
+        var result = await projectsClient.CountAllProjectsAsync(null, null, null);
 
         Assert.Equal(50, result);
     }
@@ -178,10 +178,10 @@ public partial class ProjectsControllerTests
         // Act
         var results = await projectsClient.ListAllProjectsAsync(
             ProjectState.Completed, null, null, 0, 50);
-
+        var count = projects.Count(p => p.State == Domain.Enums.ProjectState.Completed);
         // Assert
         Assert.NotNull(results);
-        Assert.Equal(17, results.Count);
+        Assert.Equal(count, results.Count);
         foreach (var result in results)
         {
             var project = projects.Find(p => p.Id.Value == result.ProjectId?.Value);
@@ -680,18 +680,14 @@ public partial class ProjectsControllerTests
     }
 
     [AttributeUsage(AttributeTargets.Method, AllowMultiple = true)]
-    private class ListByUserInlineAutoDataAttribute : CompositeDataAttribute
-    {
-        public ListByUserInlineAutoDataAttribute(ProjectUserFilter filter)
-            : base(
-                new InlineDataAttribute(filter),
-                new CustomAutoDataAttribute(
+    private class ListByUserInlineAutoDataAttribute(ProjectUserFilter filter) : CompositeDataAttribute(
+            new InlineDataAttribute(filter),
+            new CustomAutoDataAttribute(
                     typeof(CustomWebApplicationDbContextFactoryCustomization),
                     typeof(GiasEstablishmentsCustomization)))
-        {
-        }
+    {
     }
-
+    
     [Theory]
     [ListByUserInlineAutoData(ProjectUserFilter.AssignedTo)]
     [ListByUserInlineAutoData(ProjectUserFilter.CreatedBy)]
@@ -887,7 +883,8 @@ public partial class ProjectsControllerTests
                 LocalAuthorityId = localAuthority.Id,
                 IncomingTrustUkprn = "12345678",
                 OutgoingTrustUkprn = "87654321", 
-                RegionalDeliveryOfficerId = testUser.Id
+                RegionalDeliveryOfficerId = testUser.Id,
+                State = ProjectState.Active.GetHashCode()
             }).Create<Project>();
             project.Urn = establishment.Urn ?? project.Urn;
             return project;
@@ -895,14 +892,15 @@ public partial class ProjectsControllerTests
 
         await dbContext.Projects.AddRangeAsync(projects);
         await dbContext.SaveChangesAsync();
-        var ukprn = projects.First().IncomingTrustUkprn;  
+        var ukprn = projects.First().IncomingTrustUkprn;
+        var projectStatuses = new List<Domain.Enums.ProjectState> { Domain.Enums.ProjectState.Active, Domain.Enums.ProjectState.DaoRevoked, Domain.Enums.ProjectState.Completed };
 
         // Act
         var results = await projectsClient.SearchProjectsAsync(ukprn!.ToString(), 0, 20, CancellationToken.None);
 
         var expectedProjects = projects
-            .Where(p => p.IncomingTrustUkprn == ukprn)
-            .ToList();
+           .Where(p => p.IncomingTrustUkprn == ukprn && projectStatuses.Contains(p.State))
+           .ToList();
 
         // Assert
         Assert.NotNull(results);

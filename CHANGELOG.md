@@ -29,6 +29,7 @@ Security in case of vulnerabilities.
 
 ### Fixed  
 - Unassigned projects should show "Not yet assigned" under "Assigned To" column for projects on the local authority/trust pages
+- Fixed the search functionality to return only projects with status values of 0, 1, or 3.
 
 ### Removed
 - `UserTabAccessHelper` class is no longer required. Use policies instead

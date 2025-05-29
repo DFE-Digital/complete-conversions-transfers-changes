@@ -200,7 +200,7 @@ namespace Dfe.Complete.Client.Contracts
         /// </summary>
         /// <returns>Project</returns>
         /// <exception cref="CompleteApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<int> CountAllProjectsAsync(ProjectState? projectStatus, ProjectType? type, AssignedToState? assignedToState, string? search);
+        System.Threading.Tasks.Task<int> CountAllProjectsAsync(ProjectState? projectStatus, ProjectType? type, AssignedToState? assignedToState);
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>
@@ -208,7 +208,7 @@ namespace Dfe.Complete.Client.Contracts
         /// </summary>
         /// <returns>Project</returns>
         /// <exception cref="CompleteApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<int> CountAllProjectsAsync(ProjectState? projectStatus, ProjectType? type, AssignedToState? assignedToState, string? search, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<int> CountAllProjectsAsync(ProjectState? projectStatus, ProjectType? type, AssignedToState? assignedToState, System.Threading.CancellationToken cancellationToken);
 
         /// <summary>
         /// Returns a list of Projects for a local authority
@@ -1043,8 +1043,14 @@ namespace Dfe.Complete.Client.Contracts
         [System.Runtime.Serialization.EnumMember(Value = @"Completed")]
         Completed = 1,
 
-        [System.Runtime.Serialization.EnumMember(Value = @"Cancelled")]
-        Cancelled = 2,
+        [System.Runtime.Serialization.EnumMember(Value = @"Deleted")]
+        Deleted = 2,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"DaoRevoked")]
+        DaoRevoked = 3,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"InActive")]
+        InActive = 4,
 
     }
 
