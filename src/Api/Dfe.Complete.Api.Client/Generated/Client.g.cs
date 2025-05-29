@@ -1000,9 +1000,9 @@ namespace Dfe.Complete.Client
         /// </summary>
         /// <returns>Project</returns>
         /// <exception cref="CompleteApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<ListAllProjectsResultModel>> ListAllProjectsAsync(ProjectState? projectStatus, ProjectType? type, int? page, int? count)
+        public virtual System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<ListAllProjectsResultModel>> ListAllProjectsAsync(ProjectState? projectStatus, ProjectType? type, AssignedToState? assignedToState, int? page, int? count)
         {
-            return ListAllProjectsAsync(projectStatus, type, page, count, System.Threading.CancellationToken.None);
+            return ListAllProjectsAsync(projectStatus, type, assignedToState, page, count, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -1011,7 +1011,7 @@ namespace Dfe.Complete.Client
         /// </summary>
         /// <returns>Project</returns>
         /// <exception cref="CompleteApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<ListAllProjectsResultModel>> ListAllProjectsAsync(ProjectState? projectStatus, ProjectType? type, int? page, int? count, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<ListAllProjectsResultModel>> ListAllProjectsAsync(ProjectState? projectStatus, ProjectType? type, AssignedToState? assignedToState, int? page, int? count, System.Threading.CancellationToken cancellationToken)
         {
             var client_ = _httpClient;
             var disposeClient_ = false;
@@ -1034,6 +1034,10 @@ namespace Dfe.Complete.Client
                     if (type != null)
                     {
                         urlBuilder_.Append(System.Uri.EscapeDataString("Type")).Append('=').Append(System.Uri.EscapeDataString(ConvertToString(type, System.Globalization.CultureInfo.InvariantCulture))).Append('&');
+                    }
+                    if (assignedToState != null)
+                    {
+                        urlBuilder_.Append(System.Uri.EscapeDataString("AssignedToState")).Append('=').Append(System.Uri.EscapeDataString(ConvertToString(assignedToState, System.Globalization.CultureInfo.InvariantCulture))).Append('&');
                     }
                     if (page != null)
                     {
@@ -1320,9 +1324,9 @@ namespace Dfe.Complete.Client
         /// </summary>
         /// <returns>Project</returns>
         /// <exception cref="CompleteApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<int> CountAllProjectsAsync(ProjectState? projectStatus, ProjectType? type, string? search)
+        public virtual System.Threading.Tasks.Task<int> CountAllProjectsAsync(ProjectState? projectStatus, ProjectType? type, AssignedToState? assignedToState, string? search)
         {
-            return CountAllProjectsAsync(projectStatus, type, search, System.Threading.CancellationToken.None);
+            return CountAllProjectsAsync(projectStatus, type, assignedToState, search, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -1331,7 +1335,7 @@ namespace Dfe.Complete.Client
         /// </summary>
         /// <returns>Project</returns>
         /// <exception cref="CompleteApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<int> CountAllProjectsAsync(ProjectState? projectStatus, ProjectType? type, string? search, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<int> CountAllProjectsAsync(ProjectState? projectStatus, ProjectType? type, AssignedToState? assignedToState, string? search, System.Threading.CancellationToken cancellationToken)
         {
             var client_ = _httpClient;
             var disposeClient_ = false;
@@ -1354,6 +1358,10 @@ namespace Dfe.Complete.Client
                     if (type != null)
                     {
                         urlBuilder_.Append(System.Uri.EscapeDataString("Type")).Append('=').Append(System.Uri.EscapeDataString(ConvertToString(type, System.Globalization.CultureInfo.InvariantCulture))).Append('&');
+                    }
+                    if (assignedToState != null)
+                    {
+                        urlBuilder_.Append(System.Uri.EscapeDataString("AssignedToState")).Append('=').Append(System.Uri.EscapeDataString(ConvertToString(assignedToState, System.Globalization.CultureInfo.InvariantCulture))).Append('&');
                     }
                     if (search != null)
                     {
@@ -1784,9 +1792,9 @@ namespace Dfe.Complete.Client
         /// </summary>
         /// <returns>Project</returns>
         /// <exception cref="CompleteApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<ListAllProjectsForUserQueryResultModel>> ListAllProjectsForUserAsync(ProjectState? state, string? userAdId, ProjectUserFilter? projectUserFilter, int? page, int? count)
+        public virtual System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<ListAllProjectsForUserQueryResultModel>> ListAllProjectsForUserAsync(ProjectState? state, string? userAdId, ProjectUserFilter? projectUserFilter, OrderProjectByField? orderProjectQueryBy_Field, OrderByDirection? orderProjectQueryBy_Direction, int? page, int? count)
         {
-            return ListAllProjectsForUserAsync(state, userAdId, projectUserFilter, page, count, System.Threading.CancellationToken.None);
+            return ListAllProjectsForUserAsync(state, userAdId, projectUserFilter, orderProjectQueryBy_Field, orderProjectQueryBy_Direction, page, count, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -1795,7 +1803,7 @@ namespace Dfe.Complete.Client
         /// </summary>
         /// <returns>Project</returns>
         /// <exception cref="CompleteApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<ListAllProjectsForUserQueryResultModel>> ListAllProjectsForUserAsync(ProjectState? state, string? userAdId, ProjectUserFilter? projectUserFilter, int? page, int? count, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<ListAllProjectsForUserQueryResultModel>> ListAllProjectsForUserAsync(ProjectState? state, string? userAdId, ProjectUserFilter? projectUserFilter, OrderProjectByField? orderProjectQueryBy_Field, OrderByDirection? orderProjectQueryBy_Direction, int? page, int? count, System.Threading.CancellationToken cancellationToken)
         {
             var client_ = _httpClient;
             var disposeClient_ = false;
@@ -1822,6 +1830,14 @@ namespace Dfe.Complete.Client
                     if (projectUserFilter != null)
                     {
                         urlBuilder_.Append(System.Uri.EscapeDataString("ProjectUserFilter")).Append('=').Append(System.Uri.EscapeDataString(ConvertToString(projectUserFilter, System.Globalization.CultureInfo.InvariantCulture))).Append('&');
+                    }
+                    if (orderProjectQueryBy_Field != null)
+                    {
+                        urlBuilder_.Append(System.Uri.EscapeDataString("OrderProjectQueryBy.Field")).Append('=').Append(System.Uri.EscapeDataString(ConvertToString(orderProjectQueryBy_Field, System.Globalization.CultureInfo.InvariantCulture))).Append('&');
+                    }
+                    if (orderProjectQueryBy_Direction != null)
+                    {
+                        urlBuilder_.Append(System.Uri.EscapeDataString("OrderProjectQueryBy.Direction")).Append('=').Append(System.Uri.EscapeDataString(ConvertToString(orderProjectQueryBy_Direction, System.Globalization.CultureInfo.InvariantCulture))).Append('&');
                     }
                     if (page != null)
                     {
@@ -1902,9 +1918,9 @@ namespace Dfe.Complete.Client
         /// </summary>
         /// <returns>Project</returns>
         /// <exception cref="CompleteApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<ListAllProjectsResultModel>> SearchProjectsAsync(ProjectState? projectStatus, string? searchTerm, int? page, int? count)
+        public virtual System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<ListAllProjectsResultModel>> SearchProjectsAsync(string? searchTerm, int? page, int? count)
         {
-            return SearchProjectsAsync(projectStatus, searchTerm, page, count, System.Threading.CancellationToken.None);
+            return SearchProjectsAsync(searchTerm, page, count, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -1913,7 +1929,7 @@ namespace Dfe.Complete.Client
         /// </summary>
         /// <returns>Project</returns>
         /// <exception cref="CompleteApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<ListAllProjectsResultModel>> SearchProjectsAsync(ProjectState? projectStatus, string? searchTerm, int? page, int? count, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<ListAllProjectsResultModel>> SearchProjectsAsync(string? searchTerm, int? page, int? count, System.Threading.CancellationToken cancellationToken)
         {
             var client_ = _httpClient;
             var disposeClient_ = false;
@@ -1929,10 +1945,6 @@ namespace Dfe.Complete.Client
                     // Operation Path: "v1/Projects/SearchProjects"
                     urlBuilder_.Append("v1/Projects/SearchProjects");
                     urlBuilder_.Append('?');
-                    if (projectStatus != null)
-                    {
-                        urlBuilder_.Append(System.Uri.EscapeDataString("ProjectStatus")).Append('=').Append(System.Uri.EscapeDataString(ConvertToString(projectStatus, System.Globalization.CultureInfo.InvariantCulture))).Append('&');
-                    }
                     if (searchTerm != null)
                     {
                         urlBuilder_.Append(System.Uri.EscapeDataString("SearchTerm")).Append('=').Append(System.Uri.EscapeDataString(ConvertToString(searchTerm, System.Globalization.CultureInfo.InvariantCulture))).Append('&');

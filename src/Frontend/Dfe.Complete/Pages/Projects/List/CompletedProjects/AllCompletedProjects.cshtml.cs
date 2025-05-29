@@ -19,7 +19,7 @@ public class AllCompletedProjectsViewModel(ISender sender) : AllProjectsModel(Co
     {
         ViewData[TabNavigationModel.ViewDataKey] = AllProjectsTabNavigationModel;
 
-        var listProjectQuery = new ListAllProjectsQuery(ProjectState.Completed, null, PageNumber - 1, PageSize);
+        var listProjectQuery = new ListAllProjectsQuery(ProjectState.Completed, null, null, PageNumber - 1, PageSize);
 
         var listResponse = await sender.Send(listProjectQuery);
         Projects = (listResponse.Value ?? [])

@@ -1,6 +1,5 @@
 using AutoFixture;
 using Dfe.Complete.Application.Projects.Commands.CreateProject;
-using Ukprn = Dfe.Complete.Domain.ValueObjects.Ukprn;
 using Urn = Dfe.Complete.Domain.ValueObjects.Urn;
 
 namespace Dfe.Complete.Tests.Common.Customizations.Commands

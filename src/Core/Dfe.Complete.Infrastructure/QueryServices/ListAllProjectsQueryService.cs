@@ -5,7 +5,7 @@ using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Domain.ValueObjects;
 using Dfe.Complete.Infrastructure.Database;
 using Microsoft.EntityFrameworkCore;
-using Dfe.Complete.Infrastructure.Extensions; 
+using Dfe.Complete.Infrastructure.Extensions;
 using System.Text.RegularExpressions;
 
 namespace Dfe.Complete.Infrastructure.QueryServices;
@@ -23,9 +23,11 @@ internal class ListAllProjectsQueryService(CompleteContext context) : IListAllPr
         bool? isFormAMat = null,
         string? newTrustReferenceNumber = "",
         string? search = "",
+        string? incomingTrustUkprn = null,
         OrderProjectQueryBy? orderBy = null)
     {
         var projects = context.Projects
+            .Include(project => project.RegionalDeliveryOfficer)
             .Where(project => projectStatus == null || project.State == projectStatus)
             .Where(project => projectType == null || projectType == project.Type);
 
@@ -34,11 +36,14 @@ internal class ListAllProjectsQueryService(CompleteContext context) : IListAllPr
         if (assignedToState == AssignedToState.AssignedOnly)
             projects = projects.Where(project => project.AssignedToId != null);
 
+        if (assignedToState == AssignedToState.UnassignedOnly)
+            projects = projects.Where(project => project.AssignedToId == null);
+
         if (assignedToUserId != null && assignedToUserId.Value != Guid.Empty)
         {
             projects = projects.Where(project => project.AssignedToId != null && project.AssignedToId == assignedToUserId);
         }
-        
+
         if (createdByUserId != null && createdByUserId.Value != Guid.Empty)
         {
             projects = projects.Where(project => project.RegionalDeliveryOfficerId != null && project.RegionalDeliveryOfficerId == createdByUserId);
@@ -64,7 +69,13 @@ internal class ListAllProjectsQueryService(CompleteContext context) : IListAllPr
             projects = projects.Where(project =>
                 project.NewTrustReferenceNumber != null && project.NewTrustReferenceNumber == newTrustReferenceNumber);
         }
-        
+
+        if (!string.IsNullOrWhiteSpace(incomingTrustUkprn))
+        {
+            projects = projects.Where(project =>
+                project.IncomingTrustUkprn != null && project.IncomingTrustUkprn == incomingTrustUkprn);
+        }
+
         if (isFormAMat == true)
         {
             projects = projects.Where(project =>
@@ -87,7 +98,7 @@ internal class ListAllProjectsQueryService(CompleteContext context) : IListAllPr
     }
 
     public static (IQueryable<Project>, IQueryable<GiasEstablishment> giasEstablishments) SearchProjects(IQueryable<Project> projects, IQueryable<GiasEstablishment> giasEstablishments, string searchTerm)
-    {  
+    {
         _ = int.TryParse(searchTerm, out int number);
         var timeSpan = TimeSpan.FromMilliseconds(100);
 
@@ -112,7 +123,7 @@ internal class ListAllProjectsQueryService(CompleteContext context) : IListAllPr
 
         return (projects, giasEstablishments);
     }
-     
+
     private static IQueryable<ListAllProjectsQueryModel> GenerateQuery(IQueryable<Project> projects, IQueryable<GiasEstablishment> giasEstablishments, OrderProjectQueryBy? orderBy = null)
     {
         return projects

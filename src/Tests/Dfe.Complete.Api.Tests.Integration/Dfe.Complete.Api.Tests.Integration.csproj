@@ -28,6 +28,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="SecurityTests\ExpectedSecurity.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
     <Using Include="Xunit" />
   </ItemGroup>
 

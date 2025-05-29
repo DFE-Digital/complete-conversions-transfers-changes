@@ -1,4 +1,3 @@
-using Dfe.Complete.Application.Common.Models;
 using Dfe.Complete.Application.Projects.Models;
 using Dfe.Complete.Application.Projects.Queries.ListAllProjects;
 using Dfe.Complete.Domain.Enums;
@@ -19,7 +18,10 @@ public class YourProjectsInProgress(ISender sender) : YourProjectsModel(InProgre
 
         var userAdId = User.GetUserAdId();
 
-        var result = await sender.Send(new ListAllProjectsForUserQuery(ProjectState.Active, userAdId, ProjectUserFilter.AssignedTo)
+        var result = await sender.Send(new ListAllProjectsForUserQuery(ProjectState.Active, userAdId,
+                ProjectUserFilter.AssignedTo,
+                new OrderProjectQueryBy
+                    { Field = OrderProjectByField.SignificantDate, Direction = OrderByDirection.Descending })
             { Count = PageSize, Page = PageNumber - 1 });
 
         ProjectsForUser = result.Value ?? [];

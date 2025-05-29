@@ -1,21 +1,21 @@
 using Dfe.Complete.Application.Projects.Models;
-using Dfe.Complete.Application.Projects.Queries.CountAllProjects;
 using Dfe.Complete.Application.Projects.Queries.SearchProjects;
-using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Pages.Pagination;
 using Dfe.Complete.Pages.Projects.List;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Dfe.Complete.Pages.Search
 {
+    [Authorize]
     public class SearchProjectsModel(ISender sender) : AllProjectsModel("")
     {
         [BindProperty(SupportsGet = true, Name = "query")]
         public string Query { get; set; } = string.Empty;
 
         public List<ListAllProjectsResultModel> Projects { get; set; } = default!;
-         
+
         public string ErrorMessage { get; set; } = string.Empty;
 
         public int TotalResults { get; set; } = 0;
@@ -26,27 +26,24 @@ namespace Dfe.Complete.Pages.Search
             {
                 ErrorMessage = "Please enter a search term";
             }
-            else if(Query.Length < 4 )
+            else if (Query.Length < 4)
             {
                 ErrorMessage = "Search term too short";
             }
-            else if(IsMixedString(Query))
+            else if (IsMixedString(Query))
             {
                 Projects = [];
             }
             else
             {
-                var countProjectQuery = new CountAllProjectsQuery(ProjectState.Active, null, Query);
-                var countResponse = await sender.Send(countProjectQuery);
-
-                var searchProjectsQuery = new SearchProjectsQuery(ProjectState.Active, Query)
+                var searchProjectsQuery = new SearchProjectsQuery(Query)
                 {
                     Page = PageNumber - 1,
                     Count = PageSize
                 };
                 var searchProjectsResponse = await sender.Send(searchProjectsQuery);
                 Projects = searchProjectsResponse.Value ?? [];
-                TotalResults = countResponse.Value;
+                TotalResults = searchProjectsResponse.ItemCount;
 
                 Pagination = new PaginationModel($"/search?query={Query}", PageNumber, TotalResults, PageSize);
             }

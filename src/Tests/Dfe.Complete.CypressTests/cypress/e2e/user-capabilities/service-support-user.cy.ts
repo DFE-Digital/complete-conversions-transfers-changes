@@ -3,8 +3,8 @@ import {
     shouldBeAbleToViewAndDownloadCsvReportsFromTheExportSection,
     shouldBeAbleToViewMultipleMonthsOfProjects,
     shouldNotBeAbleToBeAssignedAProject,
-    shouldNotBeAbleToCreateAProject,
-    shouldNotHaveAccessToViewYourTeamUnassignedProjects,
+    shouldNotBeAbleToCreateAProject, shouldNotHaveAccessToViewYourProjectsSections,
+    shouldNotHaveAccessToViewYourTeamProjectsSections
 } from "cypress/support/reusableTests";
 import navBar from "cypress/pages/navBar";
 import { serviceSupportUser } from "cypress/constants/cypressConstants";
@@ -43,8 +43,12 @@ describe("Capabilities and permissions of the service support user", () => {
         navBar.unableToView(["Your projects", "Your team projects"]);
     });
 
-    it("Should NOT have access to view Your team projects -> unassigned projects", () => {
-        shouldNotHaveAccessToViewYourTeamUnassignedProjects();
+    it("Should NOT have access to view Your projects sections", () => {
+        shouldNotHaveAccessToViewYourProjectsSections();
+    });
+
+    it("Should NOT have access to view Your team projects sections", () => {
+        shouldNotHaveAccessToViewYourTeamProjectsSections();
     });
 
     it("Should be able to view multiple months of projects within a specified date range", () => {

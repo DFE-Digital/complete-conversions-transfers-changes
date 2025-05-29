@@ -6,6 +6,7 @@ using Dfe.Complete.Domain.Enums;
 using MediatR;
 using Dfe.Complete.Utils;
 using DfE.CoreLibs.Utilities.Constants;
+using Microsoft.Extensions.Logging;
 
 namespace Dfe.Complete.Application.Projects.Queries.ListProjectsByMonth
 {
@@ -19,7 +20,8 @@ namespace Dfe.Complete.Application.Projects.Queries.ListProjectsByMonth
 
     public class ListAllProjectsByMonthsQueryHandler(
         IListAllProjectsQueryService listAllProjectsQueryService,
-        ITrustsV4Client trustsClient)
+        ITrustsV4Client trustsClient,
+        ILogger<ListAllProjectsByMonthsQueryHandler> logger)
         : IRequestHandler<ListProjectsByMonthsQuery, PaginatedResult<List<ListProjectsByMonthResultModel>>>
     {
         public async Task<PaginatedResult<List<ListProjectsByMonthResultModel>>> Handle(ListProjectsByMonthsQuery request,
@@ -28,7 +30,7 @@ namespace Dfe.Complete.Application.Projects.Queries.ListProjectsByMonth
             try
             {
                 var projectsQuery = listAllProjectsQueryService
-                    .ListAllProjects(request.ProjectStatus, request.Type)
+                    .ListAllProjects(request.ProjectStatus, request.Type, assignedToState: AssignedToState.AssignedOnly)
                     .AsEnumerable();
 
                 if (request.ToDate.HasValue)
@@ -46,7 +48,7 @@ namespace Dfe.Complete.Application.Projects.Queries.ListProjectsByMonth
                         p.Project.SignificantDate.Value == request.FromDate);
                 }
 
-                var projects = projectsQuery.Where(p => p.Project.SignificantDateProvisional == false && p.Project.AssignedTo != null).ToList(); // Confirmed && Inprogress
+                var projects = projectsQuery.Where(p => p.Project.SignificantDateProvisional == false).ToList(); // Confirmed && Inprogress
 
                 var ukprns = projects.Select(p => p.Project.IncomingTrustUkprn?.Value.ToString()).ToList();
                 var outgoingTrustUkprns = projects.Where(p => p.Project.OutgoingTrustUkprn != null).Select(p => p.Project.OutgoingTrustUkprn.Value.ToString()).ToList();
@@ -97,6 +99,7 @@ namespace Dfe.Complete.Application.Projects.Queries.ListProjectsByMonth
             }
             catch (Exception ex)
             {
+                logger.LogError(ex, "Exception for {Name} Request - {@Request}", nameof(ListAllProjectsByMonthsQueryHandler), request);
                 return PaginatedResult<List<ListProjectsByMonthResultModel>>.Failure(ex.Message);
             }
         }

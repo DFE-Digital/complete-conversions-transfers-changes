@@ -127,9 +127,9 @@ public class ListAllMATsQueryHandlerTests
         // Assert
         Assert.True(result.IsSuccess);
         Assert.Single(result.Value);
-        Assert.Equal(trustKey, expectedModel.identifier);
-        Assert.Equal(trustName, expectedModel.trustName);
-        Assert.Equal(5, expectedModel.projectModels.Count());
+        Assert.Equal(trustKey, expectedModel.Identifier);
+        Assert.Equal(trustName, expectedModel.TrustName);
+        Assert.Equal(5, expectedModel.ProjectModels.Count());
     }
     
     [Theory]

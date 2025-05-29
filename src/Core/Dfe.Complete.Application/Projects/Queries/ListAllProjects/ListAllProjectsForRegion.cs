@@ -1,10 +1,10 @@
-using System.Net.NetworkInformation;
 using Dfe.Complete.Application.Common.Models;
 using Dfe.Complete.Application.Projects.Interfaces;
 using Dfe.Complete.Application.Projects.Models;
 using Dfe.Complete.Domain.Enums;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace Dfe.Complete.Application.Projects.Queries.ListAllProjects;
 
@@ -17,7 +17,8 @@ public record ListAllProjectsForRegionQuery(
     : PaginatedRequest<PaginatedResult<List<ListAllProjectsResultModel>>>;
 
 public class ListAllProjectsForRegionQueryHandler(
-    IListAllProjectsQueryService listAllProjectsQueryService)
+    IListAllProjectsQueryService listAllProjectsQueryService,
+    ILogger<ListAllProjectsForRegionQueryHandler> logger)
     : IRequestHandler<ListAllProjectsForRegionQuery, PaginatedResult<List<ListAllProjectsResultModel>>>
 
 {
@@ -26,22 +27,23 @@ public class ListAllProjectsForRegionQueryHandler(
     {
         try
         {
-            var projectsForRegion = await listAllProjectsQueryService.ListAllProjects(
-                request.ProjectStatus, request.Type, request.AssignedToState, region: request.Region, orderBy: request.OrderBy)
-                .ToListAsync(cancellationToken);
+            var projectsForRegionQuery = listAllProjectsQueryService.ListAllProjects(
+                request.ProjectStatus, request.Type, request.AssignedToState, region: request.Region, orderBy: request.OrderBy);
 
-            var paginatedResultModel = projectsForRegion.Select(proj =>
+            var count = await projectsForRegionQuery.CountAsync(cancellationToken);
+
+            var paginatedResultModel = await projectsForRegionQuery.Select(proj =>
                     ListAllProjectsResultModel.MapProjectAndEstablishmentToListAllProjectResultModel(proj.Project,
                         proj.Establishment))
                 .Skip(request.Page * request.Count)
                 .Take(request.Count)
-                .ToList();
+                .ToListAsync(cancellationToken);
 
-            return PaginatedResult<List<ListAllProjectsResultModel>>.Success(paginatedResultModel,
-                projectsForRegion.Count);
+            return PaginatedResult<List<ListAllProjectsResultModel>>.Success(paginatedResultModel, count);
         }
         catch (Exception e)
         {
+            logger.LogError(e, "Exception for {Name} Request - {@Request}", nameof(ListAllProjectsForRegionQueryHandler), request);
             return PaginatedResult<List<ListAllProjectsResultModel>>.Failure(e.Message);
         }
     }
