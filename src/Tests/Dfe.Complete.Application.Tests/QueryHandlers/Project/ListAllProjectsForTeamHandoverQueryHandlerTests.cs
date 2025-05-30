@@ -37,8 +37,10 @@ public class ListAllProjectsForTeamHandoverQueryHandlerTests
 
         var mock = listAllProjectsQueryModels.BuildMock();
 
-        mockListAllProjectsQueryService.ListAllProjects(Arg.Any<ProjectState?>(),
-                Arg.Any<ProjectType?>(), region: requestedRegion, team: ProjectTeam.RegionalCaseWorkerServices)
+        mockListAllProjectsQueryService.ListAllProjects(
+            Arg.Is<ProjectFilters>(f =>
+                f.Region == requestedRegion &&
+                f.Team == ProjectTeam.RegionalCaseWorkerServices))
             .Returns(mock);
 
         var query = new ListAllProjectsForTeamHandoverQuery(requestedRegion, ProjectState.Active, null) { Page = 1 };
@@ -69,8 +71,15 @@ public class ListAllProjectsForTeamHandoverQueryHandlerTests
 
         var mock = listAllProjectsQueryModels.BuildMock();
 
-        mockListAllProjectsQueryService.ListAllProjects(Arg.Any<ProjectState?>(),
-                Arg.Any<ProjectType?>(), region: Region.London, team: ProjectTeam.RegionalCaseWorkerServices)
+        mockListAllProjectsQueryService
+            .ListAllProjects(
+                Arg.Is<ProjectFilters>(f =>
+                    f.Region == Region.London &&
+                    f.Team == ProjectTeam.RegionalCaseWorkerServices
+                ),
+                Arg.Any<string?>(),
+                Arg.Any<OrderProjectQueryBy?>()
+            )
             .Returns(mock);
 
         var query = new ListAllProjectsForTeamHandoverQuery(Region.London, ProjectState.Active, null) { Page = 10 };
@@ -98,7 +107,7 @@ public class ListAllProjectsForTeamHandoverQueryHandlerTests
         var query = new ListAllProjectsForTeamHandoverQuery(Region.London, null, null);
 
         mockListAllProjectsQueryService
-            .ListAllProjects(query.ProjectStatus, query.Type, region: Region.London, team: ProjectTeam.RegionalCaseWorkerServices)
+            .ListAllProjects(new ProjectFilters(query.ProjectStatus, query.Type, Region: Region.London, Team: ProjectTeam.RegionalCaseWorkerServices))
             .Throws(new Exception(errorMessage));
 
         // Act

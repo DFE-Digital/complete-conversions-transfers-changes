@@ -26,7 +26,7 @@ public class ListAllProjectsForTeamQueryHandler(IListAllProjectsQueryService lis
         try
         {
             var projectsForTeamQuery = listAllProjectsQueryService.ListAllProjects(
-                request.ProjectStatus, request.Type, request.AssignedToState, team: request.Team, orderBy: request.OrderBy);
+                new ProjectFilters(request.ProjectStatus, request.Type, request.AssignedToState, Team: request.Team), orderBy: request.OrderBy);
 
             var count = await projectsForTeamQuery.CountAsync(cancellationToken);
 

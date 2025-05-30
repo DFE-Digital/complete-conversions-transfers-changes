@@ -1,5 +1,6 @@
 ﻿using Dfe.Complete.Application.Common.Models;
 using Dfe.Complete.Application.Projects.Interfaces;
+using Dfe.Complete.Application.Projects.Models;
 using Dfe.Complete.Domain.Enums;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -23,7 +24,10 @@ namespace Dfe.Complete.Application.Projects.Queries.CountAllProjects
             try
             {
                 var result = await listAllProjectsQueryService
-                    .ListAllProjects(request.ProjectStatus, request.Type, search: request.Search, assignedToState: request.AssignedToState)
+                    .ListAllProjects(
+                        new ProjectFilters(request.ProjectStatus, request.Type, AssignedToState: request.AssignedToState),
+                            search: request.Search
+                        )
                     .CountAsync(cancellationToken);
 
                 return Result<int>.Success(result);

@@ -102,9 +102,9 @@ public class ListAllProjectsForUserTests
         var expected = expectedQuery
             .Skip(20).Take(20).ToList();
 
-        mockListAllProjectsQueryService.ListAllProjects(ProjectState.Active, null,
-                assignedToUserId: filter == ProjectUserFilter.AssignedTo ? userDto.Id : null,
-                createdByUserId: filter == ProjectUserFilter.CreatedBy ? userDto.Id : null,
+        mockListAllProjectsQueryService.ListAllProjects(new ProjectFilters(ProjectState.Active, null,
+                AssignedToUserId: filter == ProjectUserFilter.AssignedTo ? userDto.Id : null,
+                CreatedByUserId: filter == ProjectUserFilter.CreatedBy ? userDto.Id : null),
                 orderBy: Arg.Any<OrderProjectQueryBy>())
             .Returns(mockListAllProjectsForUserQueryModels.BuildMock());
 
@@ -168,9 +168,9 @@ public class ListAllProjectsForUserTests
             projectsQueryModel.Project.OutgoingTrustUkprn = outgoingTrustUkprn;
         }
 
-        mockListAllProjectsQueryService.ListAllProjects(ProjectState.Active, null,
-                assignedToUserId: filter == ProjectUserFilter.AssignedTo ? userDto.Id : null,
-                createdByUserId: filter == ProjectUserFilter.CreatedBy ? userDto.Id : null,
+        mockListAllProjectsQueryService.ListAllProjects(new ProjectFilters(ProjectState.Active, null,
+                AssignedToUserId: filter == ProjectUserFilter.AssignedTo ? userDto.Id : null,
+                CreatedByUserId: filter == ProjectUserFilter.CreatedBy ? userDto.Id : null),
                 orderBy: Arg.Any<OrderProjectQueryBy>())
             .Returns(mockListAllProjectsForUserQueryModels.BuildMock());
 

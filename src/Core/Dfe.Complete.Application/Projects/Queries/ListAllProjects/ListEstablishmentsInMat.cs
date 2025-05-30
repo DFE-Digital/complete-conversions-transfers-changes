@@ -18,8 +18,9 @@ namespace Dfe.Complete.Application.Projects.Queries.ListAllProjects
         {
             try
             {
-                var projects = await listAllProjectsQueryService.ListAllProjects(ProjectState.Active, null,
-                        newTrustReferenceNumber: request.ReferenceNumber)
+                var projects = await listAllProjectsQueryService.ListAllProjects(
+                    new ProjectFilters(ProjectState.Active, null, NewTrustReferenceNumber: request.ReferenceNumber)
+                    )
                     .ToListAsync(cancellationToken);
 
                 if (!projects.Any())

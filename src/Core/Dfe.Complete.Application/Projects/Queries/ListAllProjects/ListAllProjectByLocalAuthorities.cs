@@ -23,7 +23,7 @@ public class ListAllProjectByLocalAuthorities(ICompleteRepository<LocalAuthority
         {
             var localAuthorities = await localAuthoritiesRepo.FetchAsync(la => !string.IsNullOrEmpty(la.Code), cancellationToken);
 
-            var projectsWithEstablishments = await listAllProjectsQueryService.ListAllProjects(request.State, request.Type).ToListAsync(cancellationToken);
+            var projectsWithEstablishments = await listAllProjectsQueryService.ListAllProjects(new ProjectFilters(request.State, request.Type)).ToListAsync(cancellationToken);
 
             var localAuthoritiesWithProjectsDict = localAuthorities.OrderBy(la => la.Name).ToDictionary(
                 localAuthority => localAuthority,
