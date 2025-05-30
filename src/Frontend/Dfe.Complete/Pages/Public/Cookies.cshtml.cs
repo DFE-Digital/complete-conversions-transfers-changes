@@ -7,26 +7,19 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 namespace Dfe.Complete.Pages.Public
 {
 	[AllowAnonymous]
-	public class Cookies : PageModel
+	public class Cookies(ILogger<Cookies> logger, IAnalyticsConsentService analyticsConsentService) : PageModel
 	{
 		public bool? Consent { get; set; }
 		public bool PreferencesSet { get; set; } = false;
-		public string returnPath { get; set; }
-		
-		private readonly IAnalyticsConsentService _analyticsConsentService;
+		public string ReturnPath { get; set; } = string.Empty;
 
-		public Cookies(ILogger<Cookies> logger, IAnalyticsConsentService analyticsConsentService)
+        public string TransfersCookiesUrl { get; set; } = string.Empty;
+
+        public ActionResult OnGet(bool? consent, string returnUrl)
 		{
-			_analyticsConsentService = analyticsConsentService;
-		}
+            ReturnPath = returnUrl;
 
-		public string TransfersCookiesUrl { get; set; }
-
-		public ActionResult OnGet(bool? consent, string returnUrl)
-		{
-			returnPath = returnUrl;
-
-			Consent = _analyticsConsentService.ConsentValue();
+			Consent = analyticsConsentService.ConsentValue();
 
             if (consent.HasValue)
 			{
@@ -45,11 +38,34 @@ namespace Dfe.Complete.Pages.Public
 			return Page();
 		}
 
-		public IActionResult OnPost(bool? consent, string returnUrl)
-		{
-			returnPath = returnUrl;
+        public IActionResult OnPost([FromBody] Dictionary<string, string> formData, string? returnUrl)
+        {
+            if (formData.TryGetValue("cookies_form[accept_optional_cookies]", out var acceptOptionalCookiesValue))
+            {
+                bool? acceptOptionalCookies = bool.TryParse(acceptOptionalCookiesValue, out var parsedValue) ? parsedValue : (bool?)null;
 
-            Consent = _analyticsConsentService.ConsentValue();
+				logger.LogInformation("Testing returnUrl - {returnUrl} cookies_form[accept_optional_cookies] - {@AcceptOptionalCookies}", returnUrl, acceptOptionalCookies);
+                ReturnPath = formData.TryGetValue("returnUrl", out string? value) ? value : string.Empty;
+
+                Consent = analyticsConsentService.ConsentValue();
+
+                if (acceptOptionalCookies.HasValue)
+                {
+                    Consent = acceptOptionalCookies;
+                    PreferencesSet = true;
+
+                    ApplyCookieConsent(acceptOptionalCookies.Value);
+                    return Page();
+                }
+            }
+
+            return Page();
+        }
+        public IActionResult OnPost(bool? consent, string returnUrl)
+		{
+            ReturnPath = returnUrl;
+
+            Consent = analyticsConsentService.ConsentValue();
 
             if (consent.HasValue)
 			{
@@ -66,11 +82,11 @@ namespace Dfe.Complete.Pages.Public
 		private void ApplyCookieConsent(bool consent)
 		{
 			if (consent) { 
-				_analyticsConsentService.AllowConsent();
+				analyticsConsentService.AllowConsent();
 			}
 			else
 			{
-				_analyticsConsentService.DenyConsent();
+				analyticsConsentService.DenyConsent();
 			}
 		}
 	}
