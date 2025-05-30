@@ -62,7 +62,7 @@ public class Startup
                 {
                     options.Conventions.ConfigureFilter(new IgnoreAntiforgeryTokenAttribute());
                 }
-                options.Conventions.ConfigureFilter(new IgnoreAntiforgeryTokenAttribute());
+                options.Conventions.AddPageApplicationModelConvention("/Public/Cookies", model => model.Filters.Add(new IgnoreAntiforgeryTokenAttribute()));
                 options.Conventions.AuthorizeFolder("/");
                 options.Conventions.AddPageRoute("/Projects/EditProjectNote", "projects/{projectId}/notes/edit");
             })
