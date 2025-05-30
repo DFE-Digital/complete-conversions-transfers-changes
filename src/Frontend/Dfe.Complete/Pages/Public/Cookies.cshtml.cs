@@ -6,9 +6,8 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace Dfe.Complete.Pages.Public
 {
-	[AllowAnonymous]
-    [IgnoreAntiforgeryToken]
-    public class Cookies(ILogger<Cookies> logger, IAnalyticsConsentService analyticsConsentService) : PageModel
+	[AllowAnonymous] 
+    public class Cookies(IAnalyticsConsentService analyticsConsentService) : PageModel
 	{
 		public bool? Consent { get; set; }
 		public bool PreferencesSet { get; set; } = false;
@@ -37,41 +36,22 @@ namespace Dfe.Complete.Pages.Public
 			}
 
 			return Page();
-		}
-
-        public IActionResult OnPost([FromBody] Dictionary<string, string> formData, [FromQuery] string? returnUrl)
-        {
-            if (formData.TryGetValue("cookies_form[accept_optional_cookies]", out var acceptOptionalCookiesValue))
-            {
-                bool? acceptOptionalCookies = bool.TryParse(acceptOptionalCookiesValue, out var parsedValue) ? parsedValue : (bool?)null;
-
-				logger.LogInformation("Testing returnUrl - {returnUrl} cookies_form[accept_optional_cookies] - {@AcceptOptionalCookies}", returnUrl, acceptOptionalCookies);
-				ReturnPath = formData.TryGetValue("returnUrl", out string? value) ? value : Links.Public.CookiePreferences.Page; 
-
-                Consent = analyticsConsentService.ConsentValue();
-
-                if (acceptOptionalCookies.HasValue)
-                {
-                    Consent = acceptOptionalCookies;
-                    PreferencesSet = true;
-
-                    ApplyCookieConsent(acceptOptionalCookies.Value);
-                    return Page();
-                }
-            }
-
-            return Page();
-        }
-		public IActionResult OnPost(bool? consent, string returnUrl)
+		} 
+		public IActionResult OnPost(bool? consent, string returnUrl, [FromForm(Name ="cookies_form[accept_optional_cookies]")] bool? cookiesConsent)
 		{
-			if (returnUrl == null)
+			if (string.IsNullOrWhiteSpace(returnUrl))
 			{
 				returnUrl = Links.Public.CookiePreferences.Page;
 
 			}
 			ReturnPath = returnUrl;
 
-			Consent = analyticsConsentService.ConsentValue();
+            if (!consent.HasValue)
+            {
+				consent = cookiesConsent;
+            }
+
+            Consent = analyticsConsentService.ConsentValue();
 
 			if (consent.HasValue)
 			{
