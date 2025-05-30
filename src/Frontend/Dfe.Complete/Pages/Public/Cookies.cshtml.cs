@@ -6,27 +6,20 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace Dfe.Complete.Pages.Public
 {
-	[AllowAnonymous]
-	public class Cookies : PageModel
+	[AllowAnonymous] 
+    public class Cookies(IAnalyticsConsentService analyticsConsentService) : PageModel
 	{
 		public bool? Consent { get; set; }
 		public bool PreferencesSet { get; set; } = false;
-		public string returnPath { get; set; }
-		
-		private readonly IAnalyticsConsentService _analyticsConsentService;
+		public string ReturnPath { get; set; } = string.Empty;
 
-		public Cookies(ILogger<Cookies> logger, IAnalyticsConsentService analyticsConsentService)
+        public string TransfersCookiesUrl { get; set; } = string.Empty;
+
+        public ActionResult OnGet(bool? consent, string returnUrl)
 		{
-			_analyticsConsentService = analyticsConsentService;
-		}
+            ReturnPath = returnUrl;
 
-		public string TransfersCookiesUrl { get; set; }
-
-		public ActionResult OnGet(bool? consent, string returnUrl)
-		{
-			returnPath = returnUrl;
-
-			Consent = _analyticsConsentService.ConsentValue();
+			Consent = analyticsConsentService.ConsentValue();
 
             if (consent.HasValue)
 			{
@@ -43,15 +36,24 @@ namespace Dfe.Complete.Pages.Public
 			}
 
 			return Page();
-		}
-
-		public IActionResult OnPost(bool? consent, string returnUrl)
+		} 
+        public IActionResult OnPost(bool? consent, string returnUrl, [FromForm(Name ="cookies_form[accept_optional_cookies]")] bool? cookiesConsent)
 		{
-			returnPath = returnUrl;
+			if (string.IsNullOrWhiteSpace(returnUrl))
+			{
+				returnUrl = Links.Public.CookiePreferences.Page;
 
-            Consent = _analyticsConsentService.ConsentValue();
+			}
+			ReturnPath = returnUrl;
 
-            if (consent.HasValue)
+            if (!consent.HasValue)
+            {
+				consent = cookiesConsent;
+            }
+
+            Consent = analyticsConsentService.ConsentValue();
+
+			if (consent.HasValue)
 			{
 				Consent = consent;
 				PreferencesSet = true;
@@ -66,11 +68,11 @@ namespace Dfe.Complete.Pages.Public
 		private void ApplyCookieConsent(bool consent)
 		{
 			if (consent) { 
-				_analyticsConsentService.AllowConsent();
+				analyticsConsentService.AllowConsent();
 			}
 			else
 			{
-				_analyticsConsentService.DenyConsent();
+				analyticsConsentService.DenyConsent();
 			}
 		}
 	}

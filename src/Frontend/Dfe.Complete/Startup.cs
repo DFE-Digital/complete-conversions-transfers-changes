@@ -51,7 +51,7 @@ public class Startup
 
     public void ConfigureServices(IServiceCollection services)
     {
-        ConfigureCypressAntiforgeryEndpoints(services);
+        //ConfigureCypressAntiforgeryEndpoints(services);
         services.AddHttpClient();
         services.AddFeatureManagement();
         services.AddHealthChecks();
@@ -70,8 +70,8 @@ public class Startup
             {
                 options.HtmlHelperOptions.ClientValidationEnabled = false;
             });
-        
-        ConfigureCypressAntiforgery(services);
+
+        //ConfigureCypressAntiforgery(services);
 
         services.AddControllersWithViews()
            .AddMicrosoftIdentityUI();
