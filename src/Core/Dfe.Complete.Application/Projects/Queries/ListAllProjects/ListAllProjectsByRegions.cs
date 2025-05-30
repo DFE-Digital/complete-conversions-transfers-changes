@@ -13,7 +13,7 @@ public record ListAllProjectsByRegionQuery(
     ProjectType? Type)
     : IRequest<Result<List<ListAllProjectsByRegionsResultModel>>>;
 
-public class ListAllProjectsByRegionQueryHandler(IListAllProjectsQueryService listAllProjectsQueryService, ILogger<ListAllProjectsByRegionQueryHandler> logger)
+public class ListAllProjectsByRegionQueryHandler(IProjectsQueryBuilder projectsQueryBuilder, ILogger<ListAllProjectsByRegionQueryHandler> logger)
     : IRequestHandler<ListAllProjectsByRegionQuery, Result<List<ListAllProjectsByRegionsResultModel>>>
 
 {
@@ -22,8 +22,14 @@ public class ListAllProjectsByRegionQueryHandler(IListAllProjectsQueryService li
     {
         try
         {
-            var projectsList = await listAllProjectsQueryService
-                .ListAllProjectsWithRegion(request.ProjectStatus, request.Type)
+            var filters = new ProjectFilters(request.ProjectStatus, request.Type);
+
+            var projectsQuery = projectsQueryBuilder
+                .ApplyProjectFilters(filters)
+                .Where(p => p.Region != null)
+                .GetProjects();
+
+            var projectsList = await projectsQuery
                 .GroupBy(p => p.Region)
                 .Select(group =>
                     new ListAllProjectsByRegionsResultModel(

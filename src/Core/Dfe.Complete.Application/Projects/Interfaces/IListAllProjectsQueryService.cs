@@ -11,8 +11,4 @@ public interface IListAllProjectsQueryService
         string? search = "",
         OrderProjectQueryBy? orderBy = null
         );
-
-    IQueryable<Project> ListAllProjectsWithRegion(
-        ProjectState? projectStatus,
-        ProjectType? projectType);
 }

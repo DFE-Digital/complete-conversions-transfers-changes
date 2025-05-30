@@ -1,6 +1,8 @@
+using System.Linq.Expressions;
 using AutoFixture;
 using AutoFixture.Xunit2;
 using Dfe.Complete.Application.Projects.Interfaces;
+using Dfe.Complete.Application.Projects.Models;
 using Dfe.Complete.Application.Projects.Queries.ListAllProjects;
 using Dfe.Complete.Tests.Common.Customizations.Models;
 using DfE.CoreLibs.Testing.AutoFixture.Attributes;
@@ -17,9 +19,10 @@ public class ListAllProjectsByRegionQueryHandlerTests
     [CustomAutoData(
         typeof(OmitCircularReferenceCustomization),
         typeof(ListAllProjectsQueryModelCustomization),
+        typeof(ProjectsQueryBuilderCustomization),
         typeof(DateOnlyCustomization))]
     public async Task Handle_ShouldReturnProjectsByRegion(
-        [Frozen] IListAllProjectsQueryService mockListAllProjectsQueryService,
+        [Frozen] IProjectsQueryBuilder mockProjectsQueryBuilder,
         ListAllProjectsByRegionQueryHandler handler,
         IFixture fixture)
     {
@@ -30,7 +33,11 @@ public class ListAllProjectsByRegionQueryHandlerTests
 
         var mock = listAllProjectsQueryModels.BuildMock();
 
-        mockListAllProjectsQueryService.ListAllProjectsWithRegion(query.ProjectStatus, query.Type)
+
+        mockProjectsQueryBuilder
+            .ApplyProjectFilters(Arg.Any<ProjectFilters>())
+            .Where(Arg.Any<Expression<Func<Domain.Entities.Project, bool>>>())
+            .GetProjects()
             .Returns(mock);
 
         var listAllProjectsByRegionQuery = new ListAllProjectsByRegionQuery(null, null);
@@ -46,18 +53,21 @@ public class ListAllProjectsByRegionQueryHandlerTests
     [CustomAutoData(
         typeof(OmitCircularReferenceCustomization),
         typeof(ListAllProjectsQueryModelCustomization),
+        typeof(ProjectsQueryBuilderCustomization),
         typeof(DateOnlyCustomization))]
     public async Task Handle_ThrowsException_Returns_FailureResult(
-        [Frozen] IListAllProjectsQueryService mockListAllProjectsQueryService,
-        ListAllProjectsByRegionQueryHandler handler,
-        IFixture fixture)
+        [Frozen] IProjectsQueryBuilder mockProjectsQueryBuilder,
+        ListAllProjectsByRegionQueryHandler handler)
     {
         // Arrange
         const string errorMessage = "test error message";
 
         var query = new ListAllProjectsQuery(null, null);
 
-        mockListAllProjectsQueryService.ListAllProjectsWithRegion(query.ProjectStatus, query.Type)
+        mockProjectsQueryBuilder
+            .ApplyProjectFilters(Arg.Any<ProjectFilters>())
+            .Where(Arg.Any<Expression<Func<Domain.Entities.Project, bool>>>())
+            .GetProjects()
             .Throws(new Exception(errorMessage));
 
         var listAllProjectsByRegionQuery = new ListAllProjectsByRegionQuery(null, null);

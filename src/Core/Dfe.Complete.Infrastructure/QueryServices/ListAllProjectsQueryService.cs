@@ -20,16 +20,4 @@ internal class ListAllProjectsQueryService(CompleteContext context) : IListAllPr
 
         return query;
     }
-
-    public IQueryable<Project> ListAllProjectsWithRegion(ProjectState? projectStatus,
-        ProjectType? projectType)
-    {
-        var projects = context.Projects
-            .Where(project => projectStatus == null || project.State == projectStatus)
-            .Where(project => projectType == null || projectType == project.Type)
-            .Where(project => project.Region != null);
-
-        return projects;
-    }
-
 }
