@@ -1,6 +1,7 @@
-using Azure.Storage.Blobs;
+using Azure.Identity;
 using Dfe.Complete.Application.Common.Mappers;
 using Dfe.Complete.Configuration;
+using DataProtectionOptions = Dfe.Complete.Configuration.DataProtectionOptions;
 using Dfe.Complete.Infrastructure;
 using Dfe.Complete.Infrastructure.Security.Authorization;
 using Dfe.Complete.Security;
@@ -14,6 +15,9 @@ using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.FeatureManagement;
 using Microsoft.Identity.Web;
 using Microsoft.Identity.Web.UI;
+using Dfe.Complete.Infrastructure;
+using Dfe.Complete.Infrastructure.Security.Authorization;
+using Dfe.Complete.Services;
 using DfE.CoreLibs.Security.Cypress;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using DfE.CoreLibs.Http.Middlewares.CorrelationId;
@@ -76,7 +80,7 @@ public class Startup
         services.AddControllersWithViews()
            .AddMicrosoftIdentityUI();
         SetupDataProtection(services);
- 
+
         services.AddCompleteClientProject(Configuration);
 
         services.AddScoped<ErrorService>();
@@ -234,19 +238,23 @@ public class Startup
 
     private void SetupDataProtection(IServiceCollection services)
     {
-        if (!string.IsNullOrEmpty(Configuration["ConnectionStrings:BlobStorage"]))
-        {
-            string blobName = "keys.xml";
-            BlobContainerClient container = new(new Uri(Configuration["ConnectionStrings:BlobStorage"]!));
+        var dp = services.AddDataProtection();
+        var dpTargetPath = @"/srv/app/storage";
+        DataProtectionOptions dpOptions = GetTypedConfigurationFor<DataProtectionOptions>();
 
-            BlobClient blobClient = container.GetBlobClient(blobName);
+        if (Directory.Exists(dpTargetPath)) {
+            dp.PersistKeysToFileSystem(new DirectoryInfo(dpTargetPath));
 
-            services.AddDataProtection()
-                .PersistKeysToAzureBlobStorage(blobClient);
-        }
-        else
-        {
-            services.AddDataProtection();
+            // If a Key Vault Key URI is defined, expect to encrypt the keys.xml
+            string? kvProtectionKeyUri = dpOptions.KeyVaultKey;
+
+            if (!string.IsNullOrWhiteSpace(kvProtectionKeyUri))
+            {
+                dp.ProtectKeysWithAzureKeyVault(
+                    new Uri(kvProtectionKeyUri),
+                    new DefaultAzureCredential()
+                );
+            }
         }
     }
 }
