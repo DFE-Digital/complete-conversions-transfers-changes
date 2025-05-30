@@ -658,6 +658,61 @@
         }
       }
     },
+    "/v1/Projects/List/All/Regions": {
+      "get": {
+        "tags": [
+          "Projects"
+        ],
+        "summary": "Returns a list of Regions with project counts",
+        "operationId": "Projects_ListAllProjectsByRegion",
+        "parameters": [
+          {
+            "name": "ProjectStatus",
+            "in": "query",
+            "schema": {
+              "nullable": true,
+              "oneOf": [
+                {
+                  "$ref": "#/components/schemas/ProjectState"
+                }
+              ]
+            },
+            "x-position": 1
+          },
+          {
+            "name": "Type",
+            "in": "query",
+            "schema": {
+              "nullable": true,
+              "oneOf": [
+                {
+                  "$ref": "#/components/schemas/ProjectType"
+                }
+              ]
+            },
+            "x-position": 2
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Project",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ListAllProjectsByRegionsResultModel"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request data."
+          }
+        }
+      }
+    },
     "/v1/Projects/List/All/Region": {
       "get": {
         "tags": [
@@ -2763,6 +2818,23 @@
             "items": {
               "$ref": "#/components/schemas/ListAllProjectsResultModel"
             }
+          }
+        }
+      },
+      "ListAllProjectsByRegionsResultModel": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "region": {
+            "$ref": "#/components/schemas/Region"
+          },
+          "conversionsCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "transfersCount": {
+            "type": "integer",
+            "format": "int32"
           }
         }
       },

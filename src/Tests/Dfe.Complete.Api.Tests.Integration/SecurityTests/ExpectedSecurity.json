@@ -52,6 +52,11 @@
     },
     {
       "Controller": "ProjectsController",
+      "Action": "ListAllProjectsByRegionAsync",
+      "ExpectedSecurity": "Authorize: Policy=CanRead"
+    },
+    {
+      "Controller": "ProjectsController",
       "Action": "ListAllProjectsForRegionAsync",
       "ExpectedSecurity": "Authorize: Policy=CanRead"
     },
