@@ -11,7 +11,7 @@ public abstract class BaseProjectsPageModel(string currentNavigation) : PageMode
 {
     public string CurrentNavigationItem { get; init; } = currentNavigation;
 
-    [BindProperty(SupportsGet = true)] public int PageNumber { get; set; } = 1;
+    [FromQuery(Name = "page")] public int PageNumber { get; set; } = 1;
 
     public PaginationModel? Pagination { get; set; }
 

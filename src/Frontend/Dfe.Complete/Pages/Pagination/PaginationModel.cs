@@ -79,5 +79,5 @@ public class PaginationModel
     public string PaginationContainerId => $"{Prefix}pagination-container";
     public string NextButtonId => $"{Prefix}next-page";
     public string PreviousButtonId => $"{Prefix}previous-page";
-    public static string SetUrl(string url, int pageNumber) => $"{url}{(url.Contains('?') ? "&" : "?")}pageNumber={pageNumber}";
+    public static string SetUrl(string url, int pageNumber) => $"{url}{(url.Contains('?') ? "&" : "?")}page={pageNumber}";
 }
