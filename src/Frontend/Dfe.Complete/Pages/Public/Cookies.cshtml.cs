@@ -7,7 +7,8 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 namespace Dfe.Complete.Pages.Public
 {
 	[AllowAnonymous]
-	public class Cookies(ILogger<Cookies> logger, IAnalyticsConsentService analyticsConsentService) : PageModel
+    [ValidateAntiForgeryToken]
+    public class Cookies(ILogger<Cookies> logger, IAnalyticsConsentService analyticsConsentService) : PageModel
 	{
 		public bool? Consent { get; set; }
 		public bool PreferencesSet { get; set; } = false;
@@ -61,13 +62,18 @@ namespace Dfe.Complete.Pages.Public
 
             return Page();
         }
-        public IActionResult OnPost(bool? consent, string returnUrl)
+		public IActionResult OnPost(bool? consent, string returnUrl)
 		{
-            ReturnPath = returnUrl;
+			if (returnUrl == null)
+			{
+				returnUrl = Links.Public.CookiePreferences.Page;
 
-            Consent = analyticsConsentService.ConsentValue();
+			}
+			ReturnPath = returnUrl;
 
-            if (consent.HasValue)
+			Consent = analyticsConsentService.ConsentValue();
+
+			if (consent.HasValue)
 			{
 				Consent = consent;
 				PreferencesSet = true;
