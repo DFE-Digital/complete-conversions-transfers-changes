@@ -70,10 +70,13 @@ public class Startup
             {
                 options.HtmlHelperOptions.ClientValidationEnabled = false;
             });
-        
+
         ConfigureCypressAntiforgery(services);
 
-        services.AddControllersWithViews()
+        services.AddControllersWithViews(options =>
+        {
+            options.Filters.Add(new IgnoreAntiforgeryTokenAttribute());
+        })
            .AddMicrosoftIdentityUI();
         SetupDataProtection(services);
  
