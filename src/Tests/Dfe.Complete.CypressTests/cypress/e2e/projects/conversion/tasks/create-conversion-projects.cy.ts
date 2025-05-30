@@ -3,14 +3,13 @@ import newConversionPage from "cypress/pages/projects/new/newConversionPage";
 import homePage from "cypress/pages/homePage";
 import selectProjectType from "cypress/pages/projects/new/selectProjectTypePage";
 import validationComponent from "cypress/pages/validationComponent";
-import { testTrustName, testTrustReferenceNumber } from "cypress/constants/stringTestConstants";
+import { testTrustName, testTrustReferenceNumber, ukprn } from "cypress/constants/stringTestConstants";
 import { checkAccessibilityAcrossPages } from "cypress/support/reusableTests";
 
 const urn: string = "111394";
 const urnMAT: string = "103846";
 
-// skipped: bug 212027
-describe.skip("Create a new Conversion Project", () => {
+describe("Create a new Conversion Project", () => {
     before(() => {
         projectRemover.removeProjectIfItExists(urn);
         projectRemover.removeProjectIfItExists(urnMAT);
@@ -25,13 +24,11 @@ describe.skip("Create a new Conversion Project", () => {
     it("Should be able to create a new conversion project", () => {
         homePage.addAProject();
 
-        // cy.executeAccessibilityTests();
-
         selectProjectType.selectConversion().continue();
 
         newConversionPage
             .withSchoolURN(urn)
-            .withIncomingTrustUKPRN("10059853")
+            .withIncomingTrustUKPRN(`${ukprn}`)
             .withAdvisoryBoardDate("10", "12", "2024")
             .withProvisionalConversionDate("11", "2026")
             .withSchoolSharepointLink("https://educationgovuk-my.sharepoint.com/")
@@ -42,11 +39,12 @@ describe.skip("Create a new Conversion Project", () => {
             .continue();
 
         validationComponent.hasNoValidationErrors();
+
         cy.get("h2").should("contain", "Project created");
     });
 
+    // bug 216887
     it.skip("Should be able to create a new Form a MAT conversion project", () => {
-        // bug 207884
         homePage.addAProject();
 
         selectProjectType.selectFormAMATConversion().continue();
@@ -72,8 +70,6 @@ describe.skip("Create a new Conversion Project", () => {
 
     it("Should show multiple validation errors when continuing with no input", () => {
         homePage.addAProject();
-
-        //cy.executeAccessibilityTests();
 
         selectProjectType.selectConversion().continue();
 
