@@ -8,12 +8,13 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
+using Moq;
 
 namespace Dfe.Complete.Tests.Authorization
 {
     public class CypressAuthenticationRegistrationTests
     {
-        private ServiceProvider BuildServices(Action<IServiceCollection> configure)
+        private static ServiceProvider BuildServices(Action<IServiceCollection> configure)
         {
             var services = new ServiceCollection();
 
@@ -30,7 +31,9 @@ namespace Dfe.Complete.Tests.Authorization
             services.AddSingleton<IConfiguration>(inMemConfig);
 
             // Fake environment as Development
-            services.AddSingleton<IHostEnvironment>(new HostingEnvironment { EnvironmentName = "Development" });
+            var mockEnv = new Mock<IWebHostEnvironment>();
+            mockEnv.Setup(env => env.EnvironmentName).Returns("Development");
+            services.AddSingleton<IHostEnvironment>(mockEnv.Object);
 
             configure(services);
             return services.BuildServiceProvider();
@@ -111,8 +114,9 @@ namespace Dfe.Complete.Tests.Authorization
 
             services.AddSingleton<IConfiguration>(configuration);
 
-            var env = new HostingEnvironment { EnvironmentName = "Development" };
-            var startup = new Startup(configuration, env);
+            var mockEnv = new Mock<IWebHostEnvironment>();
+            mockEnv.Setup(env => env.EnvironmentName).Returns("Development");
+            var startup = new Startup(configuration, mockEnv.Object);
             startup.ConfigureServices(services);
 
             var serviceProvider = services.BuildServiceProvider();
@@ -126,15 +130,5 @@ namespace Dfe.Complete.Tests.Authorization
             Assert.NotNull(multiAuthScheme);
             Assert.NotNull(openIdScheme);
         }
-    }
-
-    internal class HostingEnvironment : IWebHostEnvironment
-    {
-        public string EnvironmentName { get; set; }
-        public string ApplicationName { get; set; }
-        public string ContentRootPath { get; set; }
-        public Microsoft.Extensions.FileProviders.IFileProvider? ContentRootFileProvider { get; set; }
-        public string? WebRootPath { get; set; }
-        public Microsoft.Extensions.FileProviders.IFileProvider? WebRootFileProvider { get; set; }
     }
 }
