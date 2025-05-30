@@ -14,8 +14,7 @@ import {
 const urn = "136730";
 const urnMAT = "136731";
 
-// skipped: bug 212027
-describe.skip("Create a new Transfer Project", () => {
+describe("Create a new Transfer Project", () => {
     before(() => {
         projectRemover.removeProjectIfItExists(urn);
         projectRemover.removeProjectIfItExists(urnMAT);
@@ -27,7 +26,8 @@ describe.skip("Create a new Transfer Project", () => {
         cy.visit("/");
     });
 
-    it("Should be able to create a new Transfer Project", () => {
+    // bug 216887
+    it.skip("Should be able to create a new Transfer Project", () => {
         homePage.addAProject();
 
         selectProjectTypePage.selectTransfer().continue();
@@ -55,8 +55,8 @@ describe.skip("Create a new Transfer Project", () => {
         cy.get("h2").should("contain", "Task list");
     });
 
+    // bug 216887
     it.skip("Should be able to create a new Form a MAT transfer project", () => {
-        // bug 207884
         homePage.addAProject();
 
         selectProjectTypePage.selectFormAMATTransfer().continue();
