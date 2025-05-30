@@ -7,6 +7,7 @@ import { projectTable } from "cypress/pages/projects/tables/projectTable";
 import { cypressUser } from "cypress/constants/cypressConstants";
 import projectRemover from "cypress/api/projectRemover";
 import projectApi from "cypress/api/projectApi";
+import { checkAccessibilityAcrossPages } from "cypress/support/reusableTests";
 
 const project = ProjectBuilder.createConversionProjectRequest(nextMonth);
 const schoolName = "St Chad's Catholic Primary School";
@@ -65,5 +66,9 @@ describe("Search bar tests", () => {
                 .columnHasValue("Assigned to", cypressUser.username)
                 .goTo(schoolName);
         });
+    });
+
+    it("Check accessibility across pages", () => {
+        checkAccessibilityAcrossPages();
     });
 });
