@@ -23,7 +23,8 @@ public class ListAllProjectsForLocalAuthority(IListAllProjectsQueryService listA
         try
         {
             var orderBy = new OrderProjectQueryBy();
-            var projectsForLaQuery = listAllProjectsQueryService.ListAllProjects(request.State, request.Type, localAuthorityCode: request.LocalAuthorityCode, orderBy: orderBy);
+            var projectsForLaQuery = listAllProjectsQueryService.ListAllProjects(
+                new ProjectFilters(request.State, request.Type, LocalAuthorityCode: request.LocalAuthorityCode), orderBy: orderBy);
 
             var count = await projectsForLaQuery.CountAsync(cancellationToken);
 

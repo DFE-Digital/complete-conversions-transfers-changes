@@ -30,8 +30,10 @@ namespace Dfe.Complete.Application.Projects.Queries.ListAllProjects
                     incomingTrustUkprnFilterValue = trust.Ukprn;
                 }
 
-                var allProjects = listAllProjectsQueryService.ListAllProjects(Domain.Enums.ProjectState.Active, null,
-                    newTrustReferenceNumber: newTrustReferenceNumberFilterValue, incomingTrustUkprn: incomingTrustUkprnFilterValue);
+                var filters = new ProjectFilters(Domain.Enums.ProjectState.Active, null, NewTrustReferenceNumber: newTrustReferenceNumberFilterValue,
+                    IncomingTrustUkprn: incomingTrustUkprnFilterValue);
+
+                var allProjects = listAllProjectsQueryService.ListAllProjects(filters);
 
                 if (request.IsFormAMat && await allProjects.AnyAsync(cancellationToken))
                     trustName = (await allProjects.FirstAsync(cancellationToken)).Project.NewTrustName;
