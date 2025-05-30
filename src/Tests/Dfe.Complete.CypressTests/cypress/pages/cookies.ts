@@ -6,12 +6,12 @@ class Cookies {
     private readonly cookieBannerId = "appCookieBanner";
 
     public consentCookieIsSetToTrue() {
-        cy.getCookie(this.consentCookie).should("exist").should("have.property", "value", "True");
+        cy.getCookie(this.consentCookie).should("exist").should("have.property", "value", "true");
         return this;
     }
 
     public consentCookieIsSetToFalse() {
-        cy.getCookie(this.consentCookie).should("exist").should("have.property", "value", "False");
+        cy.getCookie(this.consentCookie).should("exist").should("have.property", "value", "false");
         return this;
     }
 

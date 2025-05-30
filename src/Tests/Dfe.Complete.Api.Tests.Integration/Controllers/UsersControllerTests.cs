@@ -1,12 +1,14 @@
+using System.Security.Claims;
 using AutoFixture;
 using Dfe.Complete.Api.Tests.Integration.Customizations;
 using Dfe.Complete.Client.Contracts;
-using Dfe.Complete.Domain.Entities;
 using Dfe.Complete.Infrastructure.Database;
+using Dfe.Complete.Tests.Common.Constants;
 using Dfe.Complete.Tests.Common.Customizations.Models;
 using DfE.CoreLibs.Testing.AutoFixture.Attributes;
 using DfE.CoreLibs.Testing.Mocks.WebApplicationFactory;
 using Microsoft.EntityFrameworkCore;
+using GiasEstablishment = Dfe.Complete.Domain.Entities.GiasEstablishment;
 using Project = Dfe.Complete.Domain.Entities.Project;
 
 namespace Dfe.Complete.Api.Tests.Integration.Controllers;
@@ -20,9 +22,9 @@ public class UsersControllerTests
         IUsersClient usersClient,
         IFixture fixture)
     {
-        //todo: when auth is done, add this back in
         // Arrange
         var dbContext = factory.GetDbContext<CompleteContext>();
+        factory.TestClaims = [new Claim(ClaimTypes.Role, ApiRoles.ReadRole)];
         var testUser = await dbContext.Users.FirstAsync();
         testUser.FirstName = "Nick";
         testUser.LastName = "Warms";
@@ -51,7 +53,7 @@ public class UsersControllerTests
 
         // Act
         var results = await usersClient.ListAllUsersWithProjectsAsync(
-            null, 0, 1000);
+            null, null, null, 0, 1000);
 
         // Assert
         Assert.NotNull(results);
@@ -60,38 +62,6 @@ public class UsersControllerTests
         Assert.Equal(testUser.Email, result.Email);
         Assert.Equal(testUser.Id.Value, result.Id.Value);
         Assert.Equal($"{testUser.FirstName} {testUser.LastName}", result.FullName);
-        
-        Assert.NotNull(result.ProjectsAssigned);
-        Assert.Equal(50, result.ProjectsAssigned!.Count);
-        foreach (var assignedProject in result.ProjectsAssigned!)
-        {
-            var expectedProject = projects.Find(p => p.Id.Value == assignedProject.ProjectId?.Value);
-            var expectedEstablishment = establishments.Find(e => e.Urn?.Value == assignedProject.Urn?.Value);
-
-            Assert.Null(assignedProject.EstablishmentName);
-            // Assert.Equal(establishment?.Name, result.EstablishmentName);
-
-            Assert.NotNull(assignedProject.ProjectId);
-            Assert.Equal(expectedProject?.Id.Value, assignedProject.ProjectId.Value);
-
-            Assert.NotNull(assignedProject.Urn);
-            Assert.Equal(expectedProject?.Urn.Value, assignedProject.Urn.Value);
-            Assert.Equal(expectedEstablishment?.Urn?.Value, assignedProject.Urn.Value);
-
-            Assert.NotNull(assignedProject.ConversionOrTransferDate);
-            Assert.Equal(expectedProject?.SignificantDate, new DateOnly(assignedProject.ConversionOrTransferDate.Value.Year,
-                assignedProject.ConversionOrTransferDate.Value.Month, assignedProject.ConversionOrTransferDate.Value.Day));
-
-            Assert.NotNull(assignedProject.State);
-            Assert.Equal(expectedProject?.State.ToString(), assignedProject.State.ToString());
-
-            Assert.NotNull(assignedProject.ProjectType);
-            Assert.Equal(expectedProject?.Type?.ToString(), assignedProject.ProjectType.Value.ToString());
-
-            Assert.Equal(expectedProject?.FormAMat, assignedProject.IsFormAMAT);
-
-            Assert.Null(assignedProject.AssignedToFullName);
-        }
     }
     
     [Theory]
@@ -101,8 +71,8 @@ public class UsersControllerTests
         IUsersClient usersClient,
         IFixture fixture)
     {
-        //todo: when auth is done, add this back in
         // Arrange
+        factory.TestClaims = [new Claim(ClaimTypes.Role, ApiRoles.ReadRole)];
         var dbContext = factory.GetDbContext<CompleteContext>();
         var testUser = await dbContext.Users.FirstAsync();
         testUser.FirstName = "Nick";
@@ -134,7 +104,7 @@ public class UsersControllerTests
 
         // Act
         var results = await usersClient.GetUserWithProjectsAsync( testUser.Id.Value,
-            null, 0, 1000);
+            null, null, 0, 1000);
 
         // Assert
         Assert.NotNull(results);

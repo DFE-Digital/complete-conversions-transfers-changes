@@ -1,0 +1,72 @@
+@page "/projects/team/unassigned"
+@using Dfe.Complete.Application.Mappers
+@using Dfe.Complete.Pages.Projects.List
+@using Dfe.Complete.Utils
+@model Dfe.Complete.Pages.Projects.Team.ProjectsUnassigned.AllProjectsUnassignedForTeamModel
+@{
+    Layout = "Team/_AllProjectsForTeamLayout";
+    ViewData["Title"] = "Your team unassigned projects";
+}
+@section PageHeading
+{
+    <h1 class="govuk-heading-1">
+        Your team unassigned projects
+    </h1>
+}
+
+@if (Model.Projects == null || Model.Projects.Count == 0)
+{
+    <div class="govuk-inset-text">There are no projects in progress.</div>
+}
+else
+{
+    <div class="govuk-grid-column-full">
+        <table class="govuk-table" name="projects_table" aria-label="Projects table">
+            <thead class="govuk-table__head">
+                <tr class="govuk-table__row">
+                    <th class="govuk-table__header" scope="col">School or academy</th>
+                    <th class="govuk-table__header" scope="col">URN</th>
+                    <th class="govuk-table__header" scope="col">Added by</th>
+                    <th class="govuk-table__header" scope="col">Conversion or transfer date</th>
+                    <th class="govuk-table__header" scope="col">Project type</th>
+                    @if (Model.UserTeamIsRegionalDeliveryOfficer)
+                    {
+                        <th class="govuk-table__header" scope="col">Team</th>
+                    }
+                    else
+                    {
+                        <th class="govuk-table__header" scope="col">Region</th>
+                    }
+                    <th class="govuk-table__header" scope="col">Assign project</th>
+                </tr>
+            </thead>
+            <tbody class="govuk-table__body">
+
+                @foreach (var project in Model.Projects)
+                {
+                    <tr class="govuk-table__row">
+                        <td class="govuk-table__header govuk-table__cell">
+                            <a class="govuk-link"
+                                href="@AllProjectsModel.GetProjectSummaryUrl(project)">@project.EstablishmentName</a>
+                        </td>
+                        <td class="govuk-table__cell">@project.Urn.Value</td>
+                        <td class="govuk-table__cell">@project.RegionalDeliveryOfficerFullName</td>
+                        <td class="govuk-table__cell">@project.ConversionOrTransferDate.ToMonthYearString()</td>
+                        <td class="govuk-table__cell">@project.ProjectType.ToString()</td>
+                        @if (Model.UserTeamIsRegionalDeliveryOfficer)
+                        {
+                            <td class="govuk-table__cell">@ProjectTeamPresentationMapper.Map(@project.Team)</td>
+                        }
+                        else
+                        {
+                            <td class="govuk-table__cell">@project.Region.ToDisplayDescription()</td>
+                        }
+                        <td class="govuk-table__cell">
+                            <a class="govuk-link" href="/projects/@project.ProjectId.Value/internal-contacts/assigned-user/edit">Assign Project</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}

@@ -101,7 +101,7 @@
       "wrapResponses": false,
       "wrapResponseMethods": [],
       "generateResponseClasses": true,
-      "responseClass": "PersonsApiResponse",
+      "responseClass": "CompleteApiResponse",
       "namespace": "Dfe.Complete.Client",
       "requiredPropertiesMustBeDefined": false,
       "dateType": "System.DateTime",

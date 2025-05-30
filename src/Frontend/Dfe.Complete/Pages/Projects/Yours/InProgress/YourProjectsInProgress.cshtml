@@ -1,24 +1,19 @@
 @page "/projects/yours/in-progress"
-@using Dfe.Complete.Application.Projects.Models
 @using Dfe.Complete.Constants
 @using Dfe.Complete.Pages.Projects.List
 @using GovUk.Frontend.AspNetCore.TagHelpers
-@using Microsoft.AspNetCore.Authorization
 @using Microsoft.AspNetCore.Html
+@using Dfe.Complete.Domain.Constants
+
 @model Dfe.Complete.Pages.Projects.Yours.InProgress.YourProjectsInProgress
-@inject IAuthorizationService AuthorizationService
 @{
     Layout = "Yours/_YourProjectsLayout";
     ViewData["Title"] = "Your projects in progress";
-    var userCanCreateProjects = await AuthorizationService.AuthorizeAsync(User, "CanCreateProjects");
 }
 
-@if (userCanCreateProjects.Succeeded)
-{
-    <form asp-page="@RouteConstants.CreateNewProject" method="get">
-        <govuk-button type="submit">Add a project</govuk-button>
-    </form>
-}
+<form asp-page="@RouteConstants.CreateNewProject" method="get" asp-policy="@UserPolicyConstants.CanCreateProjects">
+    <govuk-button type="submit">Add a project</govuk-button>
+</form>
 
 <h1 class="govuk-heading-xl">
     Your projects in progress
@@ -49,7 +44,7 @@
             {
                 <tr class="govuk-table__row">
                     <td class="govuk-table__header govuk-table__cell">
-                        <a class="govuk-link" href="@AllProjectsModel.GetProjectSummaryUrl(project.ProjectType, project.ProjectId)">@project.SchoolOrAcademyName</a>
+                        <a class="govuk-link" href="@AllProjectsModel.GetProjectSummaryUrl(project.ProjectId)">@project.SchoolOrAcademyName</a>
                     </td>
                     <td class="govuk-table__cell">@project.Urn.Value</td>
                     <td class="govuk-table__cell">@project.ProjectType</td>
@@ -61,7 +56,7 @@
                         @DisplayTrustName(project.OutgoingTrustName)
                     </td>
                     <td class="govuk-table__cell">@project.LocalAuthority</td>
-                    <td class="govuk-table__cell">@project.ConversionOrTransferDate.ToDateMonthYearString()</td>
+                    <td class="govuk-table__cell">@project.ConversionOrTransferDate.ToMonthYearString()</td>
                 </tr>
             }
             </tbody>

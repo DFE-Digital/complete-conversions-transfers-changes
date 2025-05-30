@@ -1,0 +1,37 @@
+@page "/projects/all/by-month/conversions/from/{fromMonth}/{fromYear}/to/{toMonth}/{toYear}"
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using MediatR
+@model Dfe.Complete.Pages.Projects.List.ProjectsByMonth.ConversionProjectsByMonths
+@inject ISender Sender
+@{
+    Layout = "List/ProjectsByMonth/DataConsumerView/_ProjectsByMonthsLayout";
+    ViewData["Title"] = "Academies opening or transferring";
+}
+@section PageHeading
+{
+<span class="govuk-caption-l">Academies opening or transferring</span>
+<h1 class="govuk-heading-l">
+    @Model.DateRangeDisplay
+</h1>
+<p>Schools that will become academies, and academies that will move to a different trust.</p>
+
+@await Html.PartialAsync("_DateRangeForm", Model)
+}
+
+<div class="govuk-grid-column-full">
+
+    @await Html.PartialAsync("_SubNavigation", Model)
+
+    @{
+        if (Model.Projects.Any())
+        {
+            <partial name="Projects/List/ProjectsByMonth/_ProjectsByMonthTable" model="@Model.Projects" />
+        }
+        else
+        {
+            <div class="govuk-inset-text">
+                There are no projects due to convert between @Model.FromDate and @Model.ToDate
+            </div>
+        }
+    }
+</div>

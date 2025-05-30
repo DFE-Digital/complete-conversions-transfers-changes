@@ -13,7 +13,6 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
 {
     public class CountAllProjectsQueryHandlerTests
     {
-
         [Theory]
         [CustomAutoData(
             typeof(OmitCircularReferenceCustomization),
@@ -28,10 +27,11 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
             // Arrange
             var expected = listAllProjectsQueryModels.Count;
 
-            var mock = listAllProjectsQueryModels.BuildMock();
+            var mockQueryable = listAllProjectsQueryModels.AsQueryable().BuildMock();
 
-            mockListAllProjectsQueryService.ListAllProjects(query.ProjectStatus, query.Type)
-                .Returns(mock);
+            mockListAllProjectsQueryService
+                .ListAllProjects(new ProjectFilters(query.ProjectStatus, query.Type, AssignedToState: query.AssignedToState), search: query.Search)
+                .Returns(mockQueryable);
 
             // Act
             var result = await handler.Handle(query, default);
@@ -39,7 +39,6 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
             // Assert
             Assert.Equal(expected, result.Value);
         }
-
         [Theory]
         [CustomAutoData(
             typeof(OmitCircularReferenceCustomization),
@@ -54,7 +53,7 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
 
             var query = new CountAllProjectsQuery(null, null);
 
-            mockListAllProjectsQueryService.ListAllProjects(query.ProjectStatus, query.Type)
+            mockListAllProjectsQueryService.ListAllProjects(new ProjectFilters(query.ProjectStatus, query.Type))
                 .Throws(new Exception(errorMessage));
 
             // Act

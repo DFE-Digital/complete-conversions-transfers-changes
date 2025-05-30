@@ -1,0 +1,29 @@
+@using Dfe.Complete.Domain.Enums
+@using Dfe.Complete.Pages.Projects.List.ProjectsByMonth
+@using MediatR
+@model Dfe.Complete.Pages.Projects.List.ProjectsByMonth.ProjectsByMonthModel
+@inject ISender Sender
+
+@{
+    var user = await User.GetUser(Sender);
+    string? IsCurrentNav(string tabName) => Model.CurrentSubNavigationItem == tabName ? "page" : null;
+}
+
+<nav class="moj-sub-navigation" aria-label="Project sub-navigation">
+    <ul class="moj-sub-navigation__list">
+        <li class="moj-sub-navigation__item">
+            <a class="moj-sub-navigation__link"
+               aria-current="@IsCurrentNav(ProjectsByMonthModel.ConversionsSubNavigation)"
+               href="@ProjectsByMonthModel.GetProjectByMonthsUrl(ProjectType.Conversion, user, Model.FromMonth, Model.FromYear, Model.ToMonth, Model.ToYear)">
+                Conversions
+            </a>
+        </li>
+        <li class="moj-sub-navigation__item">
+            <a class="moj-sub-navigation__link"
+               aria-current="@IsCurrentNav(ProjectsByMonthModel.TransfersSubNavigation)"
+               href="@ProjectsByMonthModel.GetProjectByMonthsUrl(ProjectType.Transfer, user, Model.FromMonth, Model.FromYear, Model.ToMonth, Model.ToYear)">
+                Transfers
+            </a>
+        </li>
+    </ul>
+</nav>

@@ -15,9 +15,12 @@
         private bool? Consent { get; set; }
         private readonly string _analyticsDomain = ".education.gov.uk";
 
-        public AnalyticsConsentService(IHttpContextAccessor httpContextAccessor, IConfiguration configuration)
+        private readonly ILogger<AnalyticsConsentService> _logger;
+
+        public AnalyticsConsentService(IHttpContextAccessor httpContextAccessor, IConfiguration configuration, ILogger<AnalyticsConsentService> logger)
         {
             _httpContextAccessor = httpContextAccessor;
+            _logger = logger;
             var domain = configuration["GoogleAnalytics:Domain"];
             if (!string.IsNullOrEmpty(domain))
             {
@@ -59,7 +62,7 @@
         {
             Consent = consent;
             var cookieOptions = new CookieOptions { Expires = DateTime.Today.AddMonths(6), Secure = true, HttpOnly = true };
-            _httpContextAccessor.HttpContext.Response.Cookies.Append(ConsentCookieName, consent.ToString(), cookieOptions);
+            _httpContextAccessor.HttpContext!.Response.Cookies.Append(ConsentCookieName, consent.ToString().ToLower(), cookieOptions);
             var request = _httpContextAccessor.HttpContext.Request;
 
 			if (!consent)
@@ -68,8 +71,9 @@
                 {
                     if (cookie.StartsWith("_ga") || cookie.Equals("_gid"))
                     {
+                        _logger.LogInformation("Expiring Google analytics cookie: {cookie}", cookie);
                         //Delete if domain is the same
-						_httpContextAccessor.HttpContext.Response.Cookies.Delete(cookie);
+                        _httpContextAccessor.HttpContext.Response.Cookies.Delete(cookie);
                         //Delete if domain matches - need both as we wont be sent the cookie if the domain doesnt match
 						_httpContextAccessor.HttpContext.Response.Cookies.Delete(cookie, new CookieOptions() { Domain = _analyticsDomain});
 					}

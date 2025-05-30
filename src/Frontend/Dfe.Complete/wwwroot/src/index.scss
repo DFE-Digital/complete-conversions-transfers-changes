@@ -21,6 +21,7 @@ $govuk-assets-path: "/node_modules/govuk-frontend/govuk/assets/";
 @import "./css/summary-card.scss";
 @import "./css/task-list.scss";
 @import "./css/cookie-banner.scss";
+@import "./css/date-range.scss";
 @import "./css/risk.scss";
 @import "./css/project-overview.scss";
 @import "./css/pupil-numbers.scss";
@@ -153,4 +154,28 @@ html {
 // Stop the service banner from wrapping
 p.govuk-phase-banner__content {
 	max-width: 100%;
+}
+
+.list-style-none {
+	list-style: none;
+	padding-left: 0;
+}
+
+// MOJ header navigtion
+// We want persitently acitve navigation items
+.moj-header__navigation-link[aria-current] {
+	color: govuk-colour("blue");
+}
+
+// Undo the changes the the DfE styles do to the MOJ styles
+.moj-sub-navigation__item {
+	margin-bottom: 0px;
+}
+
+// force skip link to be underline
+.govuk-skip-link { text-decoration: underline !important; }
+
+// force header and DfE navigation links to always be white
+a.dfe-header__link--service, a.dfe-header__navigation-link {
+	color: #ffffff;
 }
