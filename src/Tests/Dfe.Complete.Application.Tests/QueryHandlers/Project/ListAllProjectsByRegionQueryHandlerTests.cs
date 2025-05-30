@@ -41,7 +41,7 @@ public class ListAllProjectsByRegionQueryHandlerTests
         Assert.Distinct(result.Value.Select(x => x.Region));
         Assert.Contains(result.Value, x => x.TransfersCount > 1 || x.ConversionsCount > 1);
     }
-    
+
     [Theory]
     [CustomAutoData(
         typeof(OmitCircularReferenceCustomization),

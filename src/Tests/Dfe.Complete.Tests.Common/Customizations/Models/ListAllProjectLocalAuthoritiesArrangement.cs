@@ -68,7 +68,7 @@ public class ListAllProjectLocalAuthoritiesArrangement : ICustomization
         var projectQueryService = fixture.Freeze<IListAllProjectsQueryService>();
         var mockProjects = projects.BuildMock();
         projectQueryService
-            .ListAllProjects(Arg.Any<ProjectState?>(), Arg.Any<ProjectType?>())
+            .ListAllProjects(Arg.Any<ProjectFilters>())
             .Returns(mockProjects);
     }
 }

@@ -66,7 +66,7 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
 
             var mockProjects = listAllProjectsQueryModels.BuildMock();
 
-            listAllProjectsQueryService.ListAllProjects(ProjectState.Active, null, newTrustReferenceNumber: null, incomingTrustUkprn: ukprn.ToString())
+            listAllProjectsQueryService.ListAllProjects(new ProjectFilters(ProjectState.Active, null, NewTrustReferenceNumber: null, IncomingTrustUkprn: ukprn.ToString()))
                 .Returns(mockProjects);
 
             // Act

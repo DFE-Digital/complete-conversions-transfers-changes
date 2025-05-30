@@ -6,9 +6,9 @@ namespace Dfe.Complete.Tests.Common.Customizations.Models;
 
 public class ListAllProjectsQueryModelCustomization : ICustomization
 {
-    public Project Project { get; set; }
-    public GiasEstablishment Establishment{ get; set; }
-    
+    public required Project Project { get; set; }
+    public required GiasEstablishment Establishment { get; set; }
+
     public void Customize(IFixture fixture)
     {
         fixture.Customize<ListAllProjectsQueryModel>(composer => composer
