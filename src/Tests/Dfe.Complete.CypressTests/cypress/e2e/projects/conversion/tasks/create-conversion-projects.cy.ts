@@ -4,6 +4,7 @@ import homePage from "cypress/pages/homePage";
 import selectProjectType from "cypress/pages/projects/new/selectProjectTypePage";
 import validationComponent from "cypress/pages/validationComponent";
 import { testTrustName, testTrustReferenceNumber, ukprn } from "cypress/constants/stringTestConstants";
+import { checkAccessibilityAcrossPages } from "cypress/support/reusableTests";
 
 const urn: string = "111394";
 const urnMAT: string = "103846";
@@ -88,5 +89,9 @@ describe("Create a new Conversion Project", () => {
                 "Select directive academy order or academy order, whichever has been used for this conversion",
             )
             .hasLinkedValidationError("State if the conversion is due to 2RI. Choose yes or no");
+    });
+
+    it("Check accessibility across pages", () => {
+        checkAccessibilityAcrossPages();
     });
 });
