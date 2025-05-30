@@ -12,7 +12,7 @@ namespace Dfe.Complete.Application.Projects.Queries.ListAllProjects;
 public record ListAllProjectsByLocalAuthoritiesQuery(ProjectState? State = ProjectState.Active, ProjectType? Type = null)
     : PaginatedRequest<PaginatedResult<List<ListAllProjectLocalAuthoritiesResultModel>>>;
 
-public class ListAllProjectByLocalAuthorities(IListAllProjectsWithLAsQueryService ListAllProjectsWithLAsQueryService, ILogger<ListAllProjectByLocalAuthorities> logger)
+public class ListAllProjectByLocalAuthorities(IProjectsQueryBuilder projectsQueryBuilder, ILogger<ListAllProjectByLocalAuthorities> logger)
     : IRequestHandler<ListAllProjectsByLocalAuthoritiesQuery, PaginatedResult<List<ListAllProjectLocalAuthoritiesResultModel>>>
 {
     public async Task<PaginatedResult<List<ListAllProjectLocalAuthoritiesResultModel>>> Handle(
@@ -20,7 +20,12 @@ public class ListAllProjectByLocalAuthorities(IListAllProjectsWithLAsQueryServic
     {
         try
         {
-           var grouped = ListAllProjectsWithLAsQueryService.ListAllProjects(request.State, request.Type)
+            var filters = new ProjectFilters(request.State, request.Type);
+            var projectsQuery = projectsQueryBuilder
+                .ApplyProjectFilters(filters)
+                .GetProjects();
+
+            var grouped = projectsQuery
                 .GroupBy(p => p.LocalAuthority.Code)
                 .Select(g => new
                 {

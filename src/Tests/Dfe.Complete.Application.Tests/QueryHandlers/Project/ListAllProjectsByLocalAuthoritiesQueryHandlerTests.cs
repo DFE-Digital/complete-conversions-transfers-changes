@@ -1,4 +1,3 @@
-using System.Linq.Expressions;
 using AutoFixture;
 using AutoFixture.Xunit2;
 using Dfe.Complete.Application.Projects.Interfaces;
@@ -6,13 +5,11 @@ using Dfe.Complete.Application.Projects.Models;
 using Dfe.Complete.Application.Projects.Queries.ListAllProjects;
 using Dfe.Complete.Domain.Entities;
 using Dfe.Complete.Domain.Enums;
-using Dfe.Complete.Domain.Interfaces.Repositories;
 using Dfe.Complete.Tests.Common.Customizations.Models;
 using DfE.CoreLibs.Testing.AutoFixture.Attributes;
 using DfE.CoreLibs.Testing.AutoFixture.Customizations;
 using MockQueryable;
 using NSubstitute;
-using NSubstitute.ExceptionExtensions;
 
 namespace Dfe.Complete.Application.Tests.QueryHandlers.Project;
 
@@ -22,9 +19,10 @@ public class ListAllProjectByLocalAuthoritiesQueryHandlerTests
     [CustomAutoData(
     typeof(OmitCircularReferenceCustomization),
     typeof(DateOnlyCustomization),
+    typeof(ProjectsQueryBuilderCustomization),
     typeof(ProjectCustomization))]
     public async Task Handle_ShouldReturnListProjectsLocalAuthorities(
-    [Frozen] IListAllProjectsWithLAsQueryService mockListAllProjectsWithLAsQueryService,
+    [Frozen] IProjectsQueryBuilder mockProjectsQueryBuilder,
     ListAllProjectByLocalAuthorities handler,
     IFixture fixture)
     {
@@ -71,9 +69,10 @@ public class ListAllProjectByLocalAuthoritiesQueryHandlerTests
             mockProjects.Add(proj);
         }
 
-        mockListAllProjectsWithLAsQueryService
-             .ListAllProjects(Arg.Any<ProjectState?>(), Arg.Any<ProjectType?>())
-             .Returns(mockProjects.BuildMock());
+        mockProjectsQueryBuilder
+            .ApplyProjectFilters(Arg.Any<ProjectFilters>())
+            .GetProjects()
+            .Returns(mockProjects.BuildMock());
 
         // Act
         var query = new ListAllProjectsByLocalAuthoritiesQuery();
@@ -94,17 +93,35 @@ public class ListAllProjectByLocalAuthoritiesQueryHandlerTests
         Assert.Equal("LA003", handlerResult.Value?[2].LocalAuthorityCode);
         Assert.Equal(3, handlerResult.Value?[2].Transfers);
         Assert.Equal(1, handlerResult.Value?[2].Conversions);
-        // (string LocalAuthorityName, string LocalAuthorityCode, int Conversions, int Transfers);
     }
 
     [Theory]
     [CustomAutoData(
         typeof(OmitCircularReferenceCustomization),
-        typeof(DateOnlyCustomization),
-        typeof(ListAllProjectLocalAuthoritiesArrangement))]
+        typeof(ProjectsQueryBuilderCustomization),
+        typeof(DateOnlyCustomization))]
     public async Task Handle_ShouldReturnCorrectList_WhenAllPagesAreSkipped(
-        ListAllProjectByLocalAuthorities handler)
+        [Frozen] IProjectsQueryBuilder mockProjectsQueryBuilder,
+        ListAllProjectByLocalAuthorities handler,
+        IFixture fixture)
+
     {
+        // Arrange
+        var mockProjects = new List<Domain.Entities.Project>();
+        var mockLocalAuthoritY = fixture.Build<LocalAuthority>().Create();
+
+        for (int i = 0; i < 10; i++)
+        {
+            var proj = fixture.Create<Domain.Entities.Project>();
+            proj.LocalAuthority = mockLocalAuthoritY;
+            mockProjects.Add(proj);
+        }
+
+        mockProjectsQueryBuilder
+            .ApplyProjectFilters(Arg.Any<ProjectFilters>())
+            .GetProjects()
+            .Returns(mockProjects.BuildMock());
+
         //Act
         var query = new ListAllProjectsByLocalAuthoritiesQuery { Page = 10 };
 
