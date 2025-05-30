@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 namespace Dfe.Complete.Pages.Public
 {
 	[AllowAnonymous] 
+	[IgnoreAntiforgeryToken(Order = 0)]
     public class Cookies(IAnalyticsConsentService analyticsConsentService) : PageModel
 	{
 		public bool? Consent { get; set; }
@@ -37,7 +38,7 @@ namespace Dfe.Complete.Pages.Public
 
 			return Page();
 		} 
-		public IActionResult OnPost(bool? consent, string returnUrl, [FromForm(Name ="cookies_form[accept_optional_cookies]")] bool? cookiesConsent)
+        public IActionResult OnPost(bool? consent, string returnUrl, [FromForm(Name ="cookies_form[accept_optional_cookies]")] bool? cookiesConsent)
 		{
 			if (string.IsNullOrWhiteSpace(returnUrl))
 			{
