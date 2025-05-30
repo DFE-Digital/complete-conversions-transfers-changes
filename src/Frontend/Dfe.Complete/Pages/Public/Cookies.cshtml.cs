@@ -38,14 +38,14 @@ namespace Dfe.Complete.Pages.Public
 			return Page();
 		}
 
-        public IActionResult OnPost([FromBody] Dictionary<string, string> formData, string? returnUrl)
+        public IActionResult OnPost([FromBody] Dictionary<string, string> formData, [FromQuery] string? returnUrl)
         {
             if (formData.TryGetValue("cookies_form[accept_optional_cookies]", out var acceptOptionalCookiesValue))
             {
                 bool? acceptOptionalCookies = bool.TryParse(acceptOptionalCookiesValue, out var parsedValue) ? parsedValue : (bool?)null;
 
 				logger.LogInformation("Testing returnUrl - {returnUrl} cookies_form[accept_optional_cookies] - {@AcceptOptionalCookies}", returnUrl, acceptOptionalCookies);
-                ReturnPath = formData.TryGetValue("returnUrl", out string? value) ? value : string.Empty;
+				ReturnPath = formData.TryGetValue("returnUrl", out string? value) ? value : Links.Public.CookiePreferences.Page; 
 
                 Consent = analyticsConsentService.ConsentValue();
 
