@@ -19,9 +19,9 @@ using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using DfE.CoreLibs.Http.Middlewares.CorrelationId;
 using DfE.CoreLibs.Http.Interfaces;
 using Dfe.Complete.Logging.Middleware;
-using DfE.CoreLibs.Security.Interfaces;
 using Microsoft.AspNetCore.Mvc;
-
+using DfE.CoreLibs.Security.Interfaces;
+using Microsoft.Extensions.DependencyInjection;
 namespace Dfe.Complete;
 
 public class Startup
@@ -51,7 +51,19 @@ public class Startup
 
     public void ConfigureServices(IServiceCollection services)
     {
-        ConfigureCypressAntiforgeryEndpoints(services);
+        if (!_env.IsProduction())
+        {
+            services.Configure<CypressAwareAntiForgeryOptions>(opts =>
+            {
+                opts.ShouldSkipAntiforgery = httpContext =>
+                {
+                    var path = httpContext.Request.Path;
+                    return path.StartsWithSegments("/v1") ||
+                           path.StartsWithSegments("/Errors");
+                };
+            });
+        }
+
         services.AddHttpClient();
         services.AddFeatureManagement();
         services.AddHealthChecks();
@@ -60,7 +72,9 @@ public class Startup
             {
                 if (!_env.IsProduction())
                 {
-                    options.Conventions.ConfigureFilter(new IgnoreAntiforgeryTokenAttribute());
+                    options.Conventions.ConfigureFilter(
+                        new IgnoreAntiforgeryTokenAttribute()
+                    );
                 }
 
                 options.Conventions.AuthorizeFolder("/");
@@ -70,8 +84,18 @@ public class Startup
             {
                 options.HtmlHelperOptions.ClientValidationEnabled = false;
             });
-        
-        ConfigureCypressAntiforgery(services);
+
+        if (!_env.IsProduction())
+        {
+            services.AddScoped<ICypressRequestChecker, CypressRequestChecker>();
+
+            services.AddScoped<CypressAwareAntiForgeryFilter>();
+
+            services.PostConfigure<MvcOptions>(options =>
+            {
+                options.Filters.AddService<CypressAwareAntiForgeryFilter>();
+            });
+        }
 
         services.AddControllersWithViews()
            .AddMicrosoftIdentityUI();

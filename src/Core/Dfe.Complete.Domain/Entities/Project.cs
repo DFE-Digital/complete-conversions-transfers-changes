@@ -3,7 +3,9 @@ using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Domain.Events;
 using Dfe.Complete.Domain.ValueObjects;
 using Dfe.Complete.Utils;
+using System.Runtime.CompilerServices;
 
+[assembly: InternalsVisibleTo("Dfe.Complete.Application.Tests")]
 namespace Dfe.Complete.Domain.Entities;
 
 public class Project : BaseAggregateRoot, IEntity<ProjectId>
@@ -85,7 +87,9 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
     public LocalAuthorityId LocalAuthorityId { get; set; }
     
     public bool FormAMat => NewTrustReferenceNumber != null && NewTrustName != null;
-    
+
+    public GiasEstablishment? GiasEstablishment { get; internal set; }
+
     public virtual User? AssignedTo { get; set; }
 
     public virtual User? Caseworker { get; set; }
@@ -100,8 +104,8 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
     
     public virtual ICollection<SignificantDateHistory> SignificantDateHistories { get; set; } = new List<SignificantDateHistory>();
 
-   
-    private Project()
+
+    internal Project()
     {
     }
 
