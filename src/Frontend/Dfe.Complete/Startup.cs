@@ -51,7 +51,7 @@ public class Startup
 
     public void ConfigureServices(IServiceCollection services)
     {
-        ConfigureCypressAntiforgeryEndpoints(services);
+        //ConfigureCypressAntiforgeryEndpoints(services);
         services.AddHttpClient();
         services.AddFeatureManagement();
         services.AddHealthChecks();
@@ -62,7 +62,7 @@ public class Startup
                 {
                     options.Conventions.ConfigureFilter(new IgnoreAntiforgeryTokenAttribute());
                 }
-                options.Conventions.AddPageApplicationModelConvention("/Public/Cookies", model => model.Filters.Add(new IgnoreAntiforgeryTokenAttribute()));
+
                 options.Conventions.AuthorizeFolder("/");
                 options.Conventions.AddPageRoute("/Projects/EditProjectNote", "projects/{projectId}/notes/edit");
             })
@@ -71,12 +71,9 @@ public class Startup
                 options.HtmlHelperOptions.ClientValidationEnabled = false;
             });
 
-        ConfigureCypressAntiforgery(services);
+        //ConfigureCypressAntiforgery(services);
 
-        services.AddControllersWithViews(options =>
-        {
-            options.Filters.Add(new IgnoreAntiforgeryTokenAttribute());
-        })
+        services.AddControllersWithViews()
            .AddMicrosoftIdentityUI();
         SetupDataProtection(services);
  
