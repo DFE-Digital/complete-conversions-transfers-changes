@@ -3,8 +3,7 @@
 @model Dfe.Complete.Pages.Projects.AboutTheProject.AboutTheProjectModel
 
 @{
-  Layout = "_ProjectLayout";
-  ViewData["Title"] = Model.Establishment.Name;
+    Layout = "Projects/_ProjectDetailsLayout";
 }
 
 @if (Model.Project.Type == ProjectType.Conversion)

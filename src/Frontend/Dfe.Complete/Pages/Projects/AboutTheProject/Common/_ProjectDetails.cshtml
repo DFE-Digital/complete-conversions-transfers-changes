@@ -1,0 +1,47 @@
+﻿@using Dfe.Complete.Utils
+@model Dfe.Complete.Pages.Projects.AboutTheProject.AboutTheProjectModel
+
+<section id="projectDetails" class="app-summary-card govuk-!-margin-bottom-6">
+    <header class="app-summary-card__header">
+        <h2 class="app-summary-card__title">
+            Project details
+        </h2>
+    </header>
+    <div class="app-summary-card__body">
+        <govuk-summary-list>
+            <govuk-summary-list-row>
+                <govuk-summary-list-row-key>Type</govuk-summary-list-row-key>
+                <govuk-summary-list-row-value>@Model.Project.Type</govuk-summary-list-row-value>
+            </govuk-summary-list-row>
+            <govuk-summary-list-row>
+                <govuk-summary-list-row-key>Conversion date</govuk-summary-list-row-key>
+                <govuk-summary-list-row-value>
+                    @Model.Project.SignificantDate.ToDateString()
+                    @if (Model.Project.SignificantDateProvisional == true)
+                    {
+                        <strong class="govuk-tag govuk-tag--grey">provisional</strong>
+                    }
+                </govuk-summary-list-row-value>
+            </govuk-summary-list-row>
+            <govuk-summary-list-row>
+                <govuk-summary-list-row-key>Local authority</govuk-summary-list-row-key>
+                <govuk-summary-list-row-value>@Model.Establishment.LocalAuthorityName</govuk-summary-list-row-value>
+            </govuk-summary-list-row>
+            <govuk-summary-list-row>
+                <govuk-summary-list-row-key>Diocese</govuk-summary-list-row-key>
+                <govuk-summary-list-row-value>@Model.Establishment.Diocese?.Name</govuk-summary-list-row-value>
+            </govuk-summary-list-row>
+            <govuk-summary-list-row>
+                <govuk-summary-list-row-key>Region</govuk-summary-list-row-key>
+                <govuk-summary-list-row-value>@Model.Project.Region.ToDisplayDescription()</govuk-summary-list-row-value>
+            </govuk-summary-list-row>
+            <govuk-summary-list-row>
+                <govuk-summary-list-row-key>Group reference number</govuk-summary-list-row-key>
+                <govuk-summary-list-row-value>@(Model.ProjectGroup != null ? @Model.ProjectGroup.GroupIdentifier : "Not grouped")</govuk-summary-list-row-value>
+                <govuk-summary-list-row-actions>
+                    <govuk-summary-list-row-action href="#" visually-hidden-text="Change project group">Change</govuk-summary-list-row-action>
+                </govuk-summary-list-row-actions>
+            </govuk-summary-list-row>
+        </govuk-summary-list>
+    </div>
+</section>

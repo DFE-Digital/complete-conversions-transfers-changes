@@ -1,7 +1,6 @@
-using Dfe.Complete.Pages.Projects.ProjectView;
 using MediatR;
 
 namespace Dfe.Complete.Pages.Projects.TaskList
 {
-    public class TaskListModel(ISender sender) : ProjectLayoutModel(sender, TaskListNavigation);
+    public class TaskListModel(ISender sender) : Models.BaseProjectTabPageModel(sender, TaskList);
 }
