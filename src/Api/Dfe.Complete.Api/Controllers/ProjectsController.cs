@@ -10,6 +10,7 @@ using Dfe.Complete.Application.Projects.Queries.ListAllProjects;
 using Dfe.Complete.Application.Projects.Models;
 using Microsoft.AspNetCore.Authorization;
 using Dfe.Complete.Application.Projects.Commands.RemoveProject;
+using Dfe.Complete.Application.Projects.Queries.SearchProjects;
 
 namespace Dfe.Complete.Api.Controllers
 {
@@ -33,7 +34,7 @@ namespace Dfe.Complete.Api.Controllers
             var projectId = await sender.Send(request, cancellationToken);
             return Created("", projectId);
         }
-        
+
         /// <summary>
         /// Creates a new Transfer project
         /// </summary>
@@ -49,7 +50,7 @@ namespace Dfe.Complete.Api.Controllers
             var projectId = await sender.Send(request, cancellationToken);
             return Created("", projectId);
         }
-        
+
         /// <summary>
         /// Creates a new Form a Mat Conversion project
         /// </summary>
@@ -65,7 +66,7 @@ namespace Dfe.Complete.Api.Controllers
             var projectId = await sender.Send(request, cancellationToken);
             return Created("", projectId);
         }
-        
+
         /// <summary>
         /// Creates a new Form a Mat Transfer project
         /// </summary>
@@ -81,7 +82,7 @@ namespace Dfe.Complete.Api.Controllers
             var projectId = await sender.Send(request, cancellationToken);
             return Created("", projectId);
         }
-        
+
         /// <summary>
         /// Gets a Project
         /// </summary>
@@ -96,7 +97,7 @@ namespace Dfe.Complete.Api.Controllers
             var project = await sender.Send(request, cancellationToken);
             return Ok(project.Value);
         }
-        
+
         /// <summary>
         /// Returns a list of Projects
         /// </summary>
@@ -112,7 +113,7 @@ namespace Dfe.Complete.Api.Controllers
             var project = await sender.Send(request, cancellationToken);
             return Ok(project.Value);
         }
-        
+
         /// <summary>
         /// Returns a list of Projects related to a specific trust
         /// </summary>
@@ -126,7 +127,23 @@ namespace Dfe.Complete.Api.Controllers
         public async Task<IActionResult> ListAllProjectsInTrustAsync([FromQuery] ListAllProjectsInTrustQuery request, CancellationToken cancellationToken)
         {
             var project = await sender.Send(request, cancellationToken);
-            return Ok(project.Value?.projects ?? []);
+            return Ok(project.Value?.Projects ?? []);
+        }
+
+        /// <summary>
+        /// Returns a list of all MATs
+        /// </summary>
+        /// <param name="request">The request.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        [Authorize(Policy = "CanRead")]
+        [HttpGet]
+        [Route("List/Mat")]
+        [SwaggerResponse(200, "List of all MATs", typeof(List<ListMatResultModel>))]
+        [SwaggerResponse(400, "Invalid request data.")]
+        public async Task<IActionResult> ListAllMaTsAsync([FromQuery] ListAllMaTsQuery request, CancellationToken cancellationToken)
+        {
+            var project = await sender.Send(request, cancellationToken);
+            return Ok(project.Value ?? []);
         }
         
         /// <summary>
@@ -142,6 +159,95 @@ namespace Dfe.Complete.Api.Controllers
         public async Task<IActionResult> CountAllProjectsAsync([FromQuery] CountAllProjectsQuery request, CancellationToken cancellationToken)
         {
             var project = await sender.Send(request, cancellationToken);
+            return Ok(project.Value);
+        }
+
+        /// <summary>
+        /// Returns a list of Projects for a local authority
+        /// </summary>
+        /// <param name="request">The request.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        [Authorize(Policy = "CanRead")]
+        [HttpGet]
+        [Route("List/All/LocalAuthority")]
+        [SwaggerResponse(200, "Project", typeof(List<ListAllProjectsResultModel>))]
+        [SwaggerResponse(400, "Invalid request data.")]
+        public async Task<IActionResult> ListAllProjectsForLocalAuthorityAsync(
+            [FromQuery] ListAllProjectsForLocalAuthorityQuery request,
+            CancellationToken cancellationToken)
+        {
+            var project = await sender.Send(request, cancellationToken);
+            return Ok(project.Value);
+        }
+
+        /// <summary>
+        /// Returns a list of Projects for a region
+        /// </summary>
+        /// <param name="request">The request.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        [Authorize(Policy = "CanRead")]
+        [HttpGet]
+        [Route("List/All/Region")]
+        [SwaggerResponse(200, "Project", typeof(List<ListAllProjectsResultModel>))]
+        [SwaggerResponse(400, "Invalid request data.")]
+        public async Task<IActionResult> ListAllProjectsForRegionAsync(
+            [FromQuery] ListAllProjectsForRegionQuery request,
+            CancellationToken cancellationToken)
+        {
+            if (!Enum.IsDefined(request.Region))
+            {
+                return BadRequest($"Invalid region \"{request.Region}\" specified");
+            }
+
+            var project = await sender.Send(request, cancellationToken);
+            return Ok(project.Value);
+        }
+
+        /// <summary>
+        /// Returns a list of Projects for a team
+        /// </summary>
+        /// <param name="request">The request.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        [Authorize(Policy = "CanRead")]
+        [HttpGet]
+        [Route("List/All/Team")]
+        [SwaggerResponse(200, "Project", typeof(List<ListAllProjectsResultModel>))]
+        [SwaggerResponse(400, "Invalid request data.")]
+        public async Task<IActionResult> ListAllProjectsForTeamAsync(
+            [FromQuery] ListAllProjectsForTeamQuery request,
+            CancellationToken cancellationToken)
+        {
+            if (!Enum.IsDefined(request.Team))
+            {
+                return BadRequest($"Invalid team \"{request.Team}\" specified");
+            }
+
+            var project = await sender.Send(request, cancellationToken);
+            return Ok(project.Value);
+        }
+
+        /// <summary>
+        /// Returns a list of Projects for a user
+        /// </summary>
+        /// <param name="request">The request.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        [Authorize(Policy = "CanRead")]
+        [HttpGet]
+        [Route("List/All/User")]
+        [SwaggerResponse(200, "Project", typeof(List<ListAllProjectsForUserQueryResultModel>))]
+        [SwaggerResponse(400, "Invalid request data.")]
+        [SwaggerResponse(500, "Internal server error.")]
+        public async Task<IActionResult> ListAllProjectsForUserAsync(
+            [FromQuery] ListAllProjectsForUserQuery request,
+            CancellationToken cancellationToken)
+        {
+            var project = await sender.Send(request, cancellationToken);
+
+            if (!project.IsSuccess)
+                return project.Error == "User not found."
+                    ? BadRequest($"User does not exist for provided {nameof(request.UserAdId)}")
+                    : StatusCode(500);
+
             return Ok(project.Value);
         }
 
@@ -167,8 +273,7 @@ namespace Dfe.Complete.Api.Controllers
 
             return Ok(ukprn);
         }
-
-
+        
         /// <summary>
         /// Removes project based on URN for test purposes.
         /// </summary>
@@ -187,6 +292,44 @@ namespace Dfe.Complete.Api.Controllers
             await sender.Send(request, cancellationToken);
 
             return NoContent();
+        }
+
+        /// <summary>
+        /// Search list of project based on search criteria
+        /// </summary>
+        /// <param name="request">The request</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        [Authorize(Policy = "CanRead")]
+        [HttpGet]
+        [Route("SearchProjects")]
+        [SwaggerResponse(200, "Project", typeof(List<ListAllProjectsResultModel>))]
+        [SwaggerResponse(400, "Invalid request data.")]
+        public async Task<IActionResult> SearchProjectsAsync(
+            [FromQuery] SearchProjectsQuery request,
+            CancellationToken cancellationToken)
+        {
+            if (string.IsNullOrWhiteSpace(request.SearchTerm))
+            {
+                return BadRequest("The SearchTerm field is required.");
+            }
+            var project = await sender.Send(request, cancellationToken);
+            return Ok(project.Value);
+        }
+
+        /// <summary>
+        /// Returns a list of Projects by trust reference number
+        /// </summary>
+        /// <param name="request">The request.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        [Authorize(Policy = "CanRead")]
+        [HttpGet]
+        [Route("List/All/TrustRef")]
+        [SwaggerResponse(200, "Project", typeof(List<ListAllProjectsQueryModel>))]
+        [SwaggerResponse(400, "Invalid request data.")]
+        public async Task<IActionResult> ListAllProjectsByTrustRefAsync([FromQuery] ListEstablishmentsInMatQuery request, CancellationToken cancellationToken)
+        {
+            var project = await sender.Send(request, cancellationToken);
+            return Ok(project.Value?.ProjectModels ?? []);
         }
     }
 }

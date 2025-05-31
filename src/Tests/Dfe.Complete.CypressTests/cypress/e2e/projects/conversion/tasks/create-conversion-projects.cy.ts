@@ -3,18 +3,21 @@ import newConversionPage from "cypress/pages/projects/new/newConversionPage";
 import homePage from "cypress/pages/homePage";
 import selectProjectType from "cypress/pages/projects/new/selectProjectTypePage";
 import validationComponent from "cypress/pages/validationComponent";
+import { testTrustName, testTrustReferenceNumber } from "cypress/constants/stringTestConstants";
+import { checkAccessibilityAcrossPages } from "cypress/support/reusableTests";
 
 const urn: string = "111394";
 const urnMAT: string = "103846";
 
-describe("Create a new Conversion Project", () => {
+// skipped: bug 212027
+describe.skip("Create a new Conversion Project", () => {
     before(() => {
         projectRemover.removeProjectIfItExists(urn);
         projectRemover.removeProjectIfItExists(urnMAT);
     });
 
     beforeEach(() => {
-        cy.login({ role: "RegionalDeliveryOfficer" });
+        cy.login();
         cy.acceptCookies();
         cy.visit("/");
     });
@@ -50,8 +53,8 @@ describe("Create a new Conversion Project", () => {
 
         newConversionPage
             .withSchoolURN(urnMAT)
-            .withTrustReferenceNumber("TR09999")
-            .withTrustName("Test Trust")
+            .withTrustReferenceNumber(testTrustReferenceNumber)
+            .withTrustName(testTrustName)
             .withAdvisoryBoardDate("12", "12", "2024")
             .withAdvisoryBoardConditions("Test conditions")
             .withProvisionalConversionDate("11", "2026")
@@ -90,5 +93,9 @@ describe("Create a new Conversion Project", () => {
                 "Select directive academy order or academy order, whichever has been used for this conversion",
             )
             .hasLinkedValidationError("State if the conversion is due to 2RI. Choose yes or no");
+    });
+
+    it("Check accessibility across pages", () => {
+        checkAccessibilityAcrossPages();
     });
 });

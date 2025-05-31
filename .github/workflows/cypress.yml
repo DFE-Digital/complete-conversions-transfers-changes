@@ -23,8 +23,6 @@ on:
         required: true
       CYPRESS_COMPLETEAPI_CLIENTID:
         required: true
-      CYPRESS_USER_AD_ID:
-        required: true
       SLACK_WEBHOOK_URL:
         required: true
 
@@ -49,12 +47,12 @@ jobs:
           "edge"
         ]
     container:
-      image: cypress/browsers:22.14.0
+      image: cypress/browsers:22.15.0@sha256:c0096906570b453b74aaa0803f7c6d6d3e2a13e1af226081730e45d1dc0bfeeb
     defaults:
       run:
         working-directory: src/Tests/Dfe.Complete.CypressTests
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
         with:
           ref: ${{ github.ref }}
 
@@ -69,14 +67,13 @@ jobs:
           CYPRESS_clientId: ${{ secrets.CYPRESS_CLIENT_ID }}
           CYPRESS_clientSecret: ${{ secrets.CYPRESS_CLIENT_SECRET }}
           CYPRESS_completeApiClientId: ${{ secrets.CYPRESS_COMPLETEAPI_CLIENTID }}
-          CYPRESS_userAdId: ${{ secrets.CYPRESS_USER_AD_ID }}
         with:
           browser: ${{ matrix.browser }}
           working-directory: ./src/Tests/Dfe.Complete.CypressTests
 
       - name: Upload screenshots
         if: ${{ failure() }}
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
           name: screenshots-${{ inputs.environment }}-${{ matrix.browser }}
           path: src/Tests/Dfe.Complete.CypressTests/cypress/screenshots
@@ -89,7 +86,7 @@ jobs:
 
       - name: Upload report
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
           name: reports-${{ inputs.environment }}-${{ matrix.browser }}
           path: src/Tests/Dfe.Complete.CypressTests/mochareports

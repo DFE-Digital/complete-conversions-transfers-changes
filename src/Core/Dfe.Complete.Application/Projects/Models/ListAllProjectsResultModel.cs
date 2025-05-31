@@ -17,7 +17,11 @@ public record ListAllProjectsResultModel(
     ProjectTeam? Team,
     DateTime? ProjectCompletionDate,
     Region? Region,
-    string? LocalAuthorityNameFormatted
+    string? LocalAuthorityNameFormatted,
+    DateTime CreatedAt,
+    string? RegionalDeliveryOfficerFullName,
+    string? NewTrustName,
+    string? NewTrustReferenceNumber
 )
 {
     public static ListAllProjectsResultModel MapProjectAndEstablishmentToListAllProjectResultModel(Project project, GiasEstablishment? establishment)
@@ -35,7 +39,11 @@ public record ListAllProjectsResultModel(
             project.Team,
             project.CompletedAt,
             project.Region,
-            establishment?.LocalAuthorityName
+            establishment?.LocalAuthorityName,
+            project.CreatedAt,
+            project.RegionalDeliveryOfficer?.FullName,
+            project.NewTrustName,
+            project.NewTrustReferenceNumber
         );
     }
 }

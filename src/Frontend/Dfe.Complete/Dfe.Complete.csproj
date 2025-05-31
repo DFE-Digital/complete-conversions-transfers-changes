@@ -18,6 +18,7 @@
 	  <Content Remove="ViewComponents\**" />
 	  <EmbeddedResource Remove="ViewComponents\**" />
 	  <None Remove="ViewComponents\**" />
+	  <Compile Remove="Pages\Projects\List\AllProjectsInTrustViewModel.cs" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -51,21 +52,24 @@
 	<ItemGroup>
 	  <PackageReference Include="Azure.Extensions.AspNetCore.DataProtection.Blobs" Version="1.5.0" />
 	  <PackageReference Include="Dfe.AcademiesApi.Client" Version="1.0.5" />
+	  <PackageReference Include="DfE.CoreLibs.Http" Version="1.0.8" />
+	  <PackageReference Include="DfE.CoreLibs.Utilities" Version="1.0.11" />
 	  <PackageReference Include="DocumentFormat.OpenXml" Version="2.20.0" />
 	  <PackageReference Include="ExcelDataReader" Version="3.6.0" />
 	  <PackageReference Include="ExcelDataReader.DataSet" Version="3.6.0" />
 	  <PackageReference Include="FluentValidation" Version="11.11.0" />
 	  <PackageReference Include="GovUk.Frontend.AspNetCore" Version="2.2.0" />
 	  <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.22.0" />
-	  <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="8.0.14" />
+	  <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="8.0.15" />
 	  <PackageReference Include="Microsoft.FeatureManagement.AspNetCore" Version="2.6.1" />
-	  <PackageReference Include="Microsoft.Identity.Web" Version="3.8.3" />
-	  <PackageReference Include="Microsoft.Identity.Web.UI" Version="3.8.3" />
+	  <PackageReference Include="Microsoft.Identity.Web" Version="3.8.4" />
+	  <PackageReference Include="Microsoft.Identity.Web.UI" Version="3.8.4" />
 	  <PackageReference Include="NetEscapades.AspNetCore.SecurityHeaders" Version="0.21.0" />
 	  <PackageReference Include="NetEscapades.AspNetCore.SecurityHeaders.TagHelpers" Version="0.20.0" />
 	  <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
 	  <PackageReference Include="Scrutor" Version="4.2.2" />
 	  <PackageReference Include="Serilog.AspNetCore" Version="7.0.0" />
+	  <PackageReference Include="Serilog.Sinks.ApplicationInsights" Version="4.0.0" />
 	  <PackageReference Include="System.Net.Http.Json" Version="7.0.1" />
 	  <PackageReference Include="Azure.Core" Version="1.45.0" />
 	  <PackageReference Include="Azure.Identity" Version="1.13.2" />

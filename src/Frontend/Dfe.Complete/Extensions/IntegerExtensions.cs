@@ -19,5 +19,10 @@
 			}
 			return null;
 		}
-	}
+
+		public static string ToResultsCountMessage(this int value)
+        {
+            return $"{value} result{(value == 1 ? "" : "s")} found";
+        }
+    }
 }

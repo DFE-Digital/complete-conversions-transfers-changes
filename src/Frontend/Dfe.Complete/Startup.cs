@@ -1,33 +1,38 @@
 using Azure.Storage.Blobs;
 using Dfe.Complete.Application.Common.Mappers;
-using Dfe.Complete.Authorization;
 using Dfe.Complete.Configuration;
+using Dfe.Complete.Infrastructure;
+using Dfe.Complete.Infrastructure.Security.Authorization;
 using Dfe.Complete.Security;
+using Dfe.Complete.Services;
 using Dfe.Complete.StartupConfiguration;
 using DfE.CoreLibs.Security.Authorization;
 using GovUk.Frontend.AspNetCore;
 using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.FeatureManagement;
 using Microsoft.Identity.Web;
 using Microsoft.Identity.Web.UI;
-using System.Security.Claims;
-using Dfe.Complete.Infrastructure;
-using Dfe.Complete.Infrastructure.Security.Authorization;
-using Dfe.Complete.Services;
+using DfE.CoreLibs.Security.Cypress;
+using Microsoft.AspNetCore.Authentication.OpenIdConnect;
+using DfE.CoreLibs.Http.Middlewares.CorrelationId;
+using DfE.CoreLibs.Http.Interfaces;
+using Dfe.Complete.Logging.Middleware;
+using DfE.CoreLibs.Security.Interfaces;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Dfe.Complete;
 
 public class Startup
 {
     private readonly TimeSpan _authenticationExpiration;
+    private readonly IWebHostEnvironment _env;
 
-    public Startup(IConfiguration configuration)
+    public Startup(IConfiguration configuration, IWebHostEnvironment env)
     {
         Configuration = configuration;
-
+        _env = env;
         _authenticationExpiration = TimeSpan.FromMinutes(int.Parse(Configuration["AuthenticationExpirationInMinutes"] ?? "60"));
     }
 
@@ -46,19 +51,27 @@ public class Startup
 
     public void ConfigureServices(IServiceCollection services)
     {
+        ConfigureCypressAntiforgeryEndpoints(services);
         services.AddHttpClient();
         services.AddFeatureManagement();
         services.AddHealthChecks();
         services
-           .AddRazorPages(options =>
-           {
-               options.Conventions.AuthorizeFolder("/");
-               options.Conventions.AddPageRoute("/Projects/EditProjectNote", "projects/{projectId}/notes/edit");
-           })
-           .AddViewOptions(options =>
-           {
-               options.HtmlHelperOptions.ClientValidationEnabled = false;
-           });
+            .AddRazorPages(options =>
+            {
+                if (!_env.IsProduction())
+                {
+                    options.Conventions.ConfigureFilter(new IgnoreAntiforgeryTokenAttribute());
+                }
+
+                options.Conventions.AuthorizeFolder("/");
+                options.Conventions.AddPageRoute("/Projects/EditProjectNote", "projects/{projectId}/notes/edit");
+            })
+            .AddViewOptions(options =>
+            {
+                options.HtmlHelperOptions.ClientValidationEnabled = false;
+            });
+        
+        ConfigureCypressAntiforgery(services);
 
         services.AddControllersWithViews()
            .AddMicrosoftIdentityUI();
@@ -67,7 +80,9 @@ public class Startup
         services.AddCompleteClientProject(Configuration);
 
         services.AddScoped<ErrorService>();
-        
+
+        services.AddScoped<ICorrelationContext, CorrelationContext>();
+
         services.AddScoped(sp => sp.GetService<IHttpContextAccessor>()?.HttpContext?.Session);
         services.AddSession(options =>
         {
@@ -77,14 +92,19 @@ public class Startup
         });
         services.AddHttpContextAccessor();
 
-        services.AddApplicationAuthorization(Configuration);
-        
-        services.AddMicrosoftIdentityWebAppAuthentication(Configuration);
+        services.AddApplicationAuthorization(Configuration, CustomPolicies.PolicyCustomizations);
+
+        var authenticationBuilder = services.AddAuthentication(options =>
+        {
+            options.DefaultScheme = "MultiAuth";
+            options.DefaultChallengeScheme = OpenIdConnectDefaults.AuthenticationScheme;
+        }).AddCypressMultiAuthentication();
+
+        authenticationBuilder.AddMicrosoftIdentityWebApp(Configuration);
+
         ConfigureCookies(services);
-
-        services.AddApplicationInsightsTelemetry();
-
-        services.AddSingleton<IAuthorizationHandler, HeaderRequirementHandler>();
+        var appInsightsCnnStr = Configuration.GetSection("ApplicationInsights")?["ConnectionString"]; 
+        services.AddApplicationInsightsTelemetry(options => options.ConnectionString = appInsightsCnnStr);
 
         System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
 
@@ -115,6 +135,9 @@ public class Startup
             // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
             app.UseHsts();
         }
+        
+        app.UseMiddleware<CorrelationIdMiddleware>();
+        app.UseMiddleware<ExceptionHandlerMiddleware>();
 
         app.UseSecurityHeaders(
            SecurityHeadersDefinitions.GetHeaderPolicyCollection(env.IsDevelopment())
@@ -161,6 +184,37 @@ public class Startup
            });
     }
 
+    private void ConfigureCypressAntiforgeryEndpoints(IServiceCollection services)
+    {
+        if (!_env.IsProduction())
+        {
+            services.Configure<CypressAwareAntiForgeryOptions>(opts =>
+            {
+                opts.ShouldSkipAntiforgery = httpContext =>
+                {
+                    var path = httpContext.Request.Path;
+                    return path.StartsWithSegments("/v1") ||
+                           path.StartsWithSegments("/Errors");
+                };
+            });
+        }
+    }
+
+    private void ConfigureCypressAntiforgery(IServiceCollection services)
+    {
+        if (!_env.IsProduction())
+        {
+            services.AddScoped<ICypressRequestChecker, CypressRequestChecker>();
+
+            services.AddScoped<CypressAwareAntiForgeryFilter>();
+
+            services.PostConfigure<MvcOptions>(options =>
+            {
+                options.Filters.AddService<CypressAwareAntiForgeryFilter>();
+            });
+        }
+    }
+
     private void RegisterClients(IServiceCollection services)
     {
         services.AddHttpClient("CompleteClient", (_, client) =>
@@ -183,7 +237,7 @@ public class Startup
         if (!string.IsNullOrEmpty(Configuration["ConnectionStrings:BlobStorage"]))
         {
             string blobName = "keys.xml";
-            BlobContainerClient container = new BlobContainerClient(new Uri(Configuration["ConnectionStrings:BlobStorage"]));
+            BlobContainerClient container = new(new Uri(Configuration["ConnectionStrings:BlobStorage"]!));
 
             BlobClient blobClient = container.GetBlobClient(blobName);
 

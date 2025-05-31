@@ -40,7 +40,7 @@
           <td class="govuk-table__cell">@project.LocalAuthorityName</td>
           <td class="govuk-table__cell">@ProjectTeamPresentationMapper.Map(@project.Team)</td>
           <td class="govuk-table__cell">@project.ProjectType.ToString()</td>
-          <td class="govuk-table__cell">@project.ConversionOrTransferDate.ToDateMonthYearString()</td>
+          <td class="govuk-table__cell">@project.ConversionOrTransferDate.ToMonthYearString()</td>
           <td class="govuk-table__cell">@project.ProjectCompletionDate.ToDateString()</td>
         </tr>
       }

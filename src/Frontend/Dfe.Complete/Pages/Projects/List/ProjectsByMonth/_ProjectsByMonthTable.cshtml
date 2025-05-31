@@ -1,0 +1,51 @@
+@using Dfe.Complete.Domain.Enums
+@using Dfe.Complete.Pages.Projects.List
+@model List<Dfe.Complete.Application.Projects.Models.ListProjectsByMonthResultModel>
+@{
+  var isConversion = Model.First().ProjectType == ProjectType.Conversion;
+}
+<table class="govuk-table" name="projects_table" aria-label="Projects table">
+  <thead class="govuk-table__head">
+  <tr class="govuk-table__row">
+    <th class="govuk-table__header" scope="col">School and URN</th>
+    <th class="govuk-table__header" scope="col">Region</th>
+    @{
+      if (!isConversion)
+      {
+        <th class="govuk-table__header" scope="col">Outgoing trust</th>
+      }
+      else
+      {
+        <th class="govuk-table__header" scope="col">Local authority</th>
+      }
+    }
+    <th class="govuk-table__header" scope="col">Incoming trust</th>
+    <th class="govuk-table__header" scope="col">@(isConversion ? "All conditions met" : "Authority to proceed")</th>
+    <th class="govuk-table__header" scope="col">Confirmed date (Original date)</th>
+  </tr>
+  </thead>
+  <tbody class="govuk-table__body">
+  @foreach(var project in Model)
+  {
+    <tr class="govuk-table__row">
+      <td class="govuk-table__header govuk-table__cell">
+        <a class="govuk-link" href="@AllProjectsModel.GetProjectSummaryUrl(project.ProjectId)">@project.EstablishmentName</a>
+        @project.Urn.Value
+      </td>
+      <td class="govuk-table__cell">@project.Region</td>
+      @{
+        if (!isConversion)
+        {
+          <td class="govuk-table__cell">@project.OutgoingTrust</td>
+        }else
+        {
+          <td class="govuk-table__cell">@project.LocalAuthority</td>
+        }
+      }
+      <td class="govuk-table__cell">@project.IncomingTrust</td>
+      <td class="govuk-table__cell">@project.AllConditionsMet</td>
+      <td class="govuk-table__cell">@project.ConfirmedAndOriginalDate</td>
+    </tr>
+  }
+  </tbody>
+</table>

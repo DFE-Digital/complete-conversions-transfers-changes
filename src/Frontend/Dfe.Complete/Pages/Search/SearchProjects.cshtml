@@ -1,0 +1,81 @@
+﻿@page "/search"
+@using Dfe.Complete.Pages.Projects.List
+@model Dfe.Complete.Pages.Search.SearchProjectsModel
+@{
+    Layout = "Search/_SearchProjectsLayout";
+    ViewData["Title"] = "Search Results";
+}
+
+@if(string.IsNullOrWhiteSpace(Model.Query)){
+    <p class="govuk-body">
+        @Model.ErrorMessage
+    </p>
+}
+else if(!string.IsNullOrEmpty(Model.ErrorMessage))
+{  
+    @if(Model.Query.Length >4)
+    {
+        Model.Query = string.Empty;
+    }
+    <div class="govuk-grid-column-two-thirds">
+        <h1 class="govuk-heading-l">Sorry, there is a problem with your search</h1>
+        <p class="govuk-body">
+            The search failed with the error:
+        </p>
+        <p class="govuk-body govuk-!-font-weight-bold">
+            @Model.ErrorMessage
+        </p>
+        <p class="govuk-body">
+            Email the support team at <a class="govuk-link" href="mailto:regionalservices.rg@education.gov.uk?subject=Complete%20conversions%2C%20transfers%20and%20changes%3A%20support%20query">regionalservices.rg@education.gov.uk</a> if you are unable to find the transfer or conversion you need.
+        </p>
+    </div> 
+}
+else if (Model.Projects.Count == 0)
+{
+    <h1 class="govuk-heading-l">
+        Search results for "@Model.Query"
+    </h1>
+
+    <p>Your search - @Model.Query - had no matching results.</p>
+    <p>Improve your search results by:</p> 
+    <ul> 
+        <li>double-checking your spelling</li> 
+        <li>using fewer keywords</li> 
+        <li>searching for something less specific</li> 
+    </ul>  
+}
+else
+{
+    <h1 class="govuk-heading-l">
+        Search results for "@Model.Query"
+    </h1>
+
+    <p class="govuk-body">@Model.TotalResults.ToResultsCountMessage()</p>
+    <table class="govuk-table" name="projects_table" aria-label="Projects table">
+        <thead class="govuk-table__head">
+            <tr class="govuk-table__row">
+                <th class="govuk-table__header" scope="col">School or academy</th>
+                <th class="govuk-table__header" scope="col">URN</th>
+                <th class="govuk-table__header" scope="col">Project type</th>
+                <th class="govuk-table__header" scope="col">Conversion or transfer date</th> 
+                <th class="govuk-table__header" scope="col">Assigned to</th>
+            </tr>
+        </thead>
+        <tbody class="govuk-table__body">
+
+            @foreach (var project in Model.Projects)
+            {
+                <tr class="govuk-table__row">
+                    <td class="govuk-table__header govuk-table__cell">
+                        <a class="govuk-link" href="@AllProjectsModel.GetProjectSummaryUrl(project)">@project.EstablishmentName</a>
+                    </td>
+                    <td class="govuk-table__cell">@project.Urn.Value</td>
+                    <td class="govuk-table__cell">@project.ProjectType.ToString()</td>
+                    <td class="govuk-table__cell">@project.ConversionOrTransferDate.ToMonthYearString()</td>
+                    <td class="govuk-table__cell">@(project.AssignedToFullName ?? "Not yet assigned")</td>
+                </tr>
+            }
+        </tbody>
+    </table> 
+
+}

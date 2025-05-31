@@ -1,4 +1,3 @@
-using System.Collections.ObjectModel;
 using AutoFixture;
 using AutoFixture.Xunit2;
 using Dfe.AcademiesApi.Client.Contracts;
@@ -37,22 +36,25 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
             var trustDto = fixture
                 .Build<TrustDto>().With(t => t.Ukprn, ukprn.ToString())
                 .Create();
-            
+
+            trustsClient.GetTrustByUkprn2Async(Arg.Any<string>(), Arg.Any<CancellationToken>())
+                .Returns(Task.FromResult(trustDto));
+
             var listAllProjectsQueryModels = fixture
                 .Build<ListAllProjectsQueryModel>()
                 .CreateMany(expectedProjects)
                 .ToList();
-            
+
             var random = new Random();
-            
+
             foreach (var model in listAllProjectsQueryModels)
             {
                 var project = model.Project;
                 bool isMatProject = random.NextDouble() < 0.5; // 50% chance
-            
-                project.IncomingTrustUkprn = isMatProject ? null : new Ukprn(ukprn);
+
+                project.IncomingTrustUkprn = new Ukprn(ukprn);
                 project.Type = isMatProject ? ProjectType.Conversion : ProjectType.Transfer;
-            
+
                 if (isMatProject)
                 {
                     project.NewTrustReferenceNumber = "TR0001";
@@ -63,40 +65,33 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
             var query = new ListAllProjectsInTrustQuery("", false) { Count = expectedTrusts };
 
             var mockProjects = listAllProjectsQueryModels.BuildMock();
-            
-            listAllProjectsQueryService.ListAllProjects(ProjectState.Active, null)
-                .Returns(mockProjects);
 
-            trustsClient.GetTrustByUkprn2Async(Arg.Any<string>())
-                .Returns(Task.FromResult(trustDto));
+            listAllProjectsQueryService.ListAllProjects(new ProjectFilters(ProjectState.Active, null, NewTrustReferenceNumber: null, IncomingTrustUkprn: ukprn.ToString()))
+                .Returns(mockProjects);
 
             // Act
             var result = await handler.Handle(query, default);
 
             // Assert
             Assert.NotNull(result);
-            Assert.Equal(result.Value.trustName, trustDto.Name);
+            Assert.Equal(result.Value.TrustName, trustDto.Name);
+            Assert.Equal(20, result.Value.Projects.Count());
         }
-        
-        
 
-        
         [Theory]
         [CustomAutoData(
             typeof(OmitCircularReferenceCustomization),
-            typeof(ListAllProjectsQueryModelCustomization),
             typeof(DateOnlyCustomization))]
         public async Task Handle_ExceptionIsCaught_WhenTrustClientFails(
             [Frozen] ITrustsV4Client trustsClient,
             ListAllProjectsInTrustQueryHandler handler)
         {
             // Arrange
-            var expectedtrusts = 20;
             var errorMessage = "This is an error";
-            
-            var query = new ListAllProjectsInTrustQuery("", false) { Count = expectedtrusts };
-            
-            trustsClient.GetTrustByUkprn2Async(Arg.Any<string>())
+
+            var query = new ListAllProjectsInTrustQuery("", false) { Count = 20 };
+
+            trustsClient.GetTrustByUkprn2Async(Arg.Any<string>(), Arg.Any<CancellationToken>())
                 .Throws(new Exception(errorMessage));
 
             // Act
@@ -106,6 +101,29 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
             Assert.NotNull(result);
             Assert.False(result.IsSuccess);
             Assert.Equal(errorMessage, result.Error);
+        }
+
+        [Theory]
+        [CustomAutoData(
+            typeof(OmitCircularReferenceCustomization),
+            typeof(DateOnlyCustomization))]
+        public async Task Handle_ExceptionIsCaught_WhenTrustNotFound(
+            [Frozen] ITrustsV4Client trustsClient,
+            ListAllProjectsInTrustQueryHandler handler)
+        {
+            // Arrange
+            var query = new ListAllProjectsInTrustQuery("1212123", false) { Count = 20 };
+
+            trustsClient.GetTrustByUkprn2Async(Arg.Any<string>(), Arg.Any<CancellationToken>())
+                .Returns(Task.FromResult<TrustDto>(null!));
+
+            // Act
+            var result = await handler.Handle(query, default);
+
+            // Assert
+            Assert.NotNull(result);
+            Assert.False(result.IsSuccess);
+            Assert.Equal("Trust with UKPRN 1212123 not found.", result.Error);
         }
     }
 }

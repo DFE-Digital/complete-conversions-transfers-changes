@@ -3,69 +3,58 @@ using Dfe.Complete.Application.Common.Models;
 using Dfe.Complete.Application.Projects.Interfaces;
 using Dfe.Complete.Application.Projects.Model;
 using Dfe.Complete.Application.Projects.Models;
+using Dfe.Complete.Utils;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace Dfe.Complete.Application.Projects.Queries.ListAllProjects
 {
-    public record ListAllProjectsInTrustQuery(string? Identifier, bool IsFormAMat) : PaginatedRequest<PaginatedResult<ListAllProjectsInTrustResultModel>>;
+    public record ListAllProjectsInTrustQuery(string Identifier, bool IsFormAMat) : PaginatedRequest<PaginatedResult<ListAllProjectsInTrustResultModel>>;
 
-    public class ListAllProjectsInTrustQueryHandler(IListAllProjectsQueryService listAllProjectsQueryService, ITrustsV4Client trustsClient)
+    public class ListAllProjectsInTrustQueryHandler(IListAllProjectsQueryService listAllProjectsQueryService, ITrustsV4Client trustsClient, ILogger<ListAllProjectsInTrustQueryHandler> logger)
         : IRequestHandler<ListAllProjectsInTrustQuery, PaginatedResult<ListAllProjectsInTrustResultModel>>
     {
         public async Task<PaginatedResult<ListAllProjectsInTrustResultModel>> Handle(ListAllProjectsInTrustQuery request, CancellationToken cancellationToken)
         {
             try
             {
-                var allProjects = listAllProjectsQueryService.ListAllProjects(Domain.Enums.ProjectState.Active, null)
-                    .AsEnumerable();
-
-                var selectedProjects = new List<ListAllProjectsQueryModel>();
-                var trustName = string.Empty;
+                string? incomingTrustUkprnFilterValue = null;
+                string? newTrustReferenceNumberFilterValue = request.IsFormAMat ? request.Identifier : null;
+                string? trustName = string.Empty;
 
                 if (!request.IsFormAMat)
                 {
-                    var trust = await trustsClient.GetTrustByUkprn2Async(request.Identifier);
-                    selectedProjects = allProjects.Where(p => p.Project.IncomingTrustUkprn == trust.Ukprn).ToList();
+                    var trust = await trustsClient.GetTrustByUkprn2Async(request.Identifier, cancellationToken) ?? throw new NotFoundException($"Trust with UKPRN {request.Identifier} not found.");
                     trustName = trust.Name;
-                }
-                else
-                {
-                    selectedProjects = allProjects.Where(p => p.Project.NewTrustReferenceNumber == request.Identifier).ToList();
-                    trustName = selectedProjects.Any() ? selectedProjects.First().Project.NewTrustName : string.Empty;
+                    incomingTrustUkprnFilterValue = trust.Ukprn;
                 }
 
-                selectedProjects = selectedProjects
-                    .OrderBy(p => p.Project.SignificantDate)
-                        .ThenBy(p => p.Establishment.Name)
-                    .ToList();
+                var filters = new ProjectFilters(Domain.Enums.ProjectState.Active, null, NewTrustReferenceNumber: newTrustReferenceNumberFilterValue,
+                    IncomingTrustUkprn: incomingTrustUkprnFilterValue);
 
-                var projects = selectedProjects
-                    .Skip(request.Page * request.Count)
-                    .Take(request.Count)
-                    .Select(item => new ListAllProjectsResultModel(
-                        item.Establishment.Name,
-                        item.Project.Id,
-                        item.Project.Urn,
-                        item.Project.SignificantDate,
-                        item.Project.State,
-                        item.Project.Type,
-                        item.Project.FormAMat,
-                        item.Project.AssignedTo != null
-                            ? $"{item.Project.AssignedTo.FirstName} {item.Project.AssignedTo.LastName}"
-                            : null,
-                        item.Project.LocalAuthority?.Name,
-                        item.Project.Team,
-                        item.Project.CompletedAt,
-                        item.Project.Region,
-                        item.Establishment.LocalAuthorityName
+                var allProjects = listAllProjectsQueryService.ListAllProjects(filters);
+
+                if (request.IsFormAMat && await allProjects.AnyAsync(cancellationToken))
+                    trustName = (await allProjects.FirstAsync(cancellationToken)).Project.NewTrustName;
+
+                var projectsQuery = allProjects
+                    .Paginate(request.Page, request.Count)
+                    .Select(item => ListAllProjectsResultModel.MapProjectAndEstablishmentToListAllProjectResultModel(
+                        item.Project,
+                        item.Establishment
                     ));
 
-                var result = new ListAllProjectsInTrustResultModel(trustName, projects);
+                var projects = await projectsQuery.ToListAsync(cancellationToken);
+                var count = await allProjects.CountAsync(cancellationToken);
 
-                return PaginatedResult<ListAllProjectsInTrustResultModel>.Success(result, selectedProjects.Count);
+                var result = new ListAllProjectsInTrustResultModel(trustName ?? string.Empty, projects);
+
+                return PaginatedResult<ListAllProjectsInTrustResultModel>.Success(result, count);
             }
             catch (Exception ex)
             {
+                logger.LogError(ex, "Exception for {Name} Request - {@Request}", nameof(ListAllProjectsForUserQueryHandler), request);
                 return PaginatedResult<ListAllProjectsInTrustResultModel>.Failure(ex.Message);
             }
         }

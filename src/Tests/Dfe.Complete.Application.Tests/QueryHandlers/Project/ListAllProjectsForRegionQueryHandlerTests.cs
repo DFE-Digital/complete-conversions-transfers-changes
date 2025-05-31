@@ -21,7 +21,7 @@ public class ListAllProjectsForRegionQueryHandlerTests
         typeof(ListAllProjectsQueryModelCustomization),
         typeof(DateOnlyCustomization))]
     public async Task Handle_ShouldReturnCorrectList_WhenPaginationIsCorrect(
-        [Frozen] IListAllProjectsByFilterQueryService mockListAllProjectsForFilterQueryService,
+        [Frozen] IListAllProjectsQueryService mockListAllProjectsForFilterQueryService,
         ListAllProjectsForRegionQueryHandler handler,
         IFixture fixture)
     {
@@ -37,8 +37,10 @@ public class ListAllProjectsForRegionQueryHandlerTests
 
         var mock = listAllProjectsQueryModels.BuildMock();
 
-        mockListAllProjectsForFilterQueryService.ListAllProjectsByFilter(Arg.Any<ProjectState?>(),
-                Arg.Any<ProjectType?>(), region: requestedRegion)
+        mockListAllProjectsForFilterQueryService.ListAllProjects(
+            Arg.Is<ProjectFilters>(f =>
+                f.Region == requestedRegion
+            ))
             .Returns(mock);
 
         var query = new ListAllProjectsForRegionQuery(requestedRegion, ProjectState.Active, null) { Page = 1 };
@@ -61,7 +63,7 @@ public class ListAllProjectsForRegionQueryHandlerTests
         typeof(ListAllProjectsQueryModelCustomization),
         typeof(DateOnlyCustomization))]
     public async Task Handle_ShouldReturnCorrectList_WhenAllPagesAreSkipped(
-        [Frozen] IListAllProjectsByFilterQueryService mockListAllProjectsForFilterQueryService,
+        [Frozen] IListAllProjectsQueryService mockListAllProjectsForFilterQueryService,
         ListAllProjectsForRegionQueryHandler handler,
         IFixture fixture)
     {
@@ -69,8 +71,10 @@ public class ListAllProjectsForRegionQueryHandlerTests
 
         var mock = listAllProjectsQueryModels.BuildMock();
 
-        mockListAllProjectsForFilterQueryService.ListAllProjectsByFilter(Arg.Any<ProjectState?>(),
-                Arg.Any<ProjectType?>(), region: Region.London)
+        mockListAllProjectsForFilterQueryService.ListAllProjects(
+            Arg.Is<ProjectFilters>(f =>
+                f.Region ==Region.London
+            ))
             .Returns(mock);
         
         var query = new ListAllProjectsForRegionQuery(Region.London, ProjectState.Active, null) { Page = 10 };
@@ -89,7 +93,7 @@ public class ListAllProjectsForRegionQueryHandlerTests
         typeof(ListAllProjectsQueryModelCustomization),
         typeof(DateOnlyCustomization))]
     public async Task Handle_ShouldReturnUnsuccessful_WhenAnErrorOccurs(
-        [Frozen] IListAllProjectsByFilterQueryService mockListAllProjectsForFilterQueryService,
+        [Frozen] IListAllProjectsQueryService mockListAllProjectsForFilterQueryService,
         ListAllProjectsForRegionQueryHandler handler)
     {
         // Arrange
@@ -98,7 +102,7 @@ public class ListAllProjectsForRegionQueryHandlerTests
         var query = new ListAllProjectsForRegionQuery(Region.London, null, null);
 
         mockListAllProjectsForFilterQueryService
-            .ListAllProjectsByFilter(query.ProjectStatus, query.Type, region: Region.London)
+            .ListAllProjects(new ProjectFilters(query.ProjectStatus, query.Type, Region: Region.London))
             .Throws(new Exception(errorMessage));
 
         // Act

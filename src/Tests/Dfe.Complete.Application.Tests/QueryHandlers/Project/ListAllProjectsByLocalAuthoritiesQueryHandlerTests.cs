@@ -26,8 +26,9 @@ public class ListAllProjectByLocalAuthoritiesQueryHandlerTests
         IFixture fixture)
     {
         //Arrange
-        var expectedLocalAuthorities = fixture.Create<List<ListAllProjectLocalAuthoritiesResultModel>>().OrderBy(la => la.LocalAuthority.Name).ToList();
+        var localAuthorities = fixture.Create<List<ListAllProjectLocalAuthoritiesResultModel>>().OrderBy(la => la.LocalAuthority.Name).ToList();
 
+        var expectedLocalAuthorities = localAuthorities.Where(la => la.Transfers + la.Conversions > 0).ToList();
         //Act
         var query = new ListAllProjectsByLocalAuthoritiesQuery();
 

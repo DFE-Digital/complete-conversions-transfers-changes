@@ -1,6 +1,5 @@
 using Dfe.Complete.Application.Projects.Models;
 using Dfe.Complete.Constants;
-using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Domain.ValueObjects;
 using Dfe.Complete.Pages.Pagination;
 using Microsoft.AspNetCore.Mvc;
@@ -18,15 +17,9 @@ public abstract class BaseProjectsPageModel(string currentNavigation) : PageMode
 
     internal int PageSize = 20;
 
-    public static string GetProjectSummaryUrl(ListAllProjectsResultModel project) => 
-        GetProjectSummaryUrl(project.ProjectType, project.ProjectId);
+    public static string GetProjectSummaryUrl(ListAllProjectsResultModel project) =>
+        GetProjectSummaryUrl(project.ProjectId);
 
-    public static string GetProjectSummaryUrl(ProjectType? type, ProjectId projectId)
-    {
-        return string.Format(
-            type == ProjectType.Conversion
-                ? RouteConstants.ConversionProjectTaskList
-                : RouteConstants.TransferProjectTaskList,
-            projectId.Value);
-    }
+    public static string GetProjectSummaryUrl(ProjectId projectId) =>
+        string.Format(RouteConstants.ProjectTaskList, projectId.Value);
 }

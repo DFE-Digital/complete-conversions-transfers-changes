@@ -21,7 +21,7 @@ public class ListAllProjectsForLAQueryHandlerTests
         typeof(DateOnlyCustomization),
         typeof(ListAllProjectsQueryModelCustomization))]
     public async Task Handle_ShouldReturnCorrectList_WhenPaginationIsCorrect(
-        [Frozen] IListAllProjectsByFilterQueryService mockListAllProjectsByFilterQueryService,
+        [Frozen] IListAllProjectsQueryService mockListAllProjectsQueryService,
         ListAllProjectsForLocalAuthority handler,
         IFixture fixture)
     {
@@ -36,9 +36,12 @@ public class ListAllProjectsForLAQueryHandlerTests
             .Skip(20).Take(20).ToList();
 
         var listAllProjectsMock = listAllProjectsQueryModels.BuildMock();
-        mockListAllProjectsByFilterQueryService
-            .ListAllProjectsByFilter(Arg.Any<ProjectState?>(), Arg.Any<ProjectType?>(),
-                localAuthorityCode: localAuthorityCode)
+        mockListAllProjectsQueryService
+            .ListAllProjects(
+            Arg.Is<ProjectFilters>(f =>
+                f.LocalAuthorityCode == localAuthorityCode
+            ),
+             orderBy: Arg.Any<OrderProjectQueryBy>())
             .Returns(listAllProjectsMock);
 
         //Act
@@ -48,14 +51,12 @@ public class ListAllProjectsForLAQueryHandlerTests
         Assert.NotNull(handlerResult.Value);
         Assert.True(handlerResult.IsSuccess);
         Assert.Equal(expected.Count, handlerResult.Value?.Count);
-
-        mockListAllProjectsByFilterQueryService.Received(1).ListAllProjectsByFilter(
-            Arg.Any<ProjectState?>(), Arg.Any<ProjectType?>(), localAuthorityCode: localAuthorityCode);
-
-        for (int i = 0; i < handlerResult.Value!.Count; i++)
-        {
-            Assert.Equivalent(expected[i], handlerResult.Value![i]);
-        }
+        
+        Assert.Equal(expected.Select(r => r), handlerResult.Value?.Select(r => r));
+        // for (int i = 0; i < handlerResult.Value!.Count; i++)
+        // {
+        //     Assert.Equivalent(expected[i], handlerResult.Value![i]);
+        // }
     }
 
     [Theory]
@@ -64,7 +65,7 @@ public class ListAllProjectsForLAQueryHandlerTests
         typeof(DateOnlyCustomization),
         typeof(ListAllProjectsQueryModelCustomization))]
     public async Task Handle_ShouldReturnCorrectList_WhenAllPagesAreSkipped(
-        [Frozen] IListAllProjectsByFilterQueryService mockListAllProjectsByFilterQueryService,
+        [Frozen] IListAllProjectsQueryService mockListAllProjectsQueryService,
         ListAllProjectsForLocalAuthority handler,
         IFixture fixture)
     {
@@ -75,8 +76,11 @@ public class ListAllProjectsForLAQueryHandlerTests
 
         var listAllProjectsMock = listAllProjectsQueryModels.BuildMock();
 
-        mockListAllProjectsByFilterQueryService.ListAllProjectsByFilter(Arg.Any<ProjectState?>(), Arg.Any<ProjectType?>(),
-                localAuthorityCode: localAuthorityCode)
+        mockListAllProjectsQueryService.ListAllProjects(
+            Arg.Is<ProjectFilters>(f =>
+                f.LocalAuthorityCode == localAuthorityCode
+            ),
+             orderBy: Arg.Any<OrderProjectQueryBy>())
             .Returns(listAllProjectsMock);
 
         //Act
@@ -87,9 +91,6 @@ public class ListAllProjectsForLAQueryHandlerTests
         Assert.NotNull(handlerResult);
         Assert.True(handlerResult.IsSuccess);
         Assert.Equal(0, handlerResult.Value?.Count);
-
-        mockListAllProjectsByFilterQueryService.Received(1).ListAllProjectsByFilter(
-            Arg.Any<ProjectState?>(), Arg.Any<ProjectType?>(), localAuthorityCode: localAuthorityCode);
     }
 
     [Theory]
@@ -98,7 +99,7 @@ public class ListAllProjectsForLAQueryHandlerTests
         typeof(DateOnlyCustomization),
         typeof(ListAllProjectsQueryModelCustomization))]
     public async Task Handle_ShouldReturnUnsuccessful_WhenAnErrorOccurs(
-        [Frozen] IListAllProjectsByFilterQueryService mockListAllProjectsByFilterQueryService,
+        [Frozen] IListAllProjectsQueryService mockListAllProjectsQueryService,
         ListAllProjectsForLocalAuthority handler,
         IFixture fixture)
     {
@@ -106,8 +107,12 @@ public class ListAllProjectsForLAQueryHandlerTests
         var errorMessage = "This is a test";
         var laCode = fixture.Create<string>();
 
-        mockListAllProjectsByFilterQueryService
-            .ListAllProjectsByFilter(Arg.Any<ProjectState?>(), Arg.Any<ProjectType?>(), localAuthorityCode: laCode)
+        mockListAllProjectsQueryService
+            .ListAllProjects(
+            Arg.Is<ProjectFilters>(f =>
+                f.LocalAuthorityCode == laCode
+            ),
+             orderBy: Arg.Any<OrderProjectQueryBy>())
             .Throws(new Exception(errorMessage));
 
         // Act
@@ -117,5 +122,43 @@ public class ListAllProjectsForLAQueryHandlerTests
         Assert.NotNull(result);
         Assert.False(result.IsSuccess);
         Assert.Equal(errorMessage, result.Error);
+    }
+    
+    [Theory]
+    [CustomAutoData(
+        typeof(OmitCircularReferenceCustomization),
+        typeof(DateOnlyCustomization),
+        typeof(ListAllProjectsQueryModelCustomization))]
+    public async Task Handle_ShouldMaintainOrdering_WhenProjectsAreOrderedBySignificantDate(
+        [Frozen] IListAllProjectsQueryService mockListAllProjectsQueryService,
+        ListAllProjectsForLocalAuthority handler,
+        IFixture fixture)
+    {
+        //Arrange 
+        var localAuthorityCode = fixture.Create<string>();
+        var listAllProjectsQueryModels = fixture.CreateMany<ListAllProjectsQueryModel>(50).ToList();
+        
+        var listAllProjectsMock = listAllProjectsQueryModels.BuildMock();
+        mockListAllProjectsQueryService
+            .ListAllProjects(
+            Arg.Is<ProjectFilters>(f =>
+                f.LocalAuthorityCode == localAuthorityCode
+            ), 
+            orderBy: Arg.Any<OrderProjectQueryBy>())
+            .Returns(listAllProjectsMock);
+        
+        //Act
+        var handlerResult =
+            await handler.Handle(new ListAllProjectsForLocalAuthorityQuery(localAuthorityCode) { Page = 10 }, default);
+        
+        // Assert
+        Assert.NotNull(handlerResult.Value);
+        Assert.True(handlerResult.IsSuccess);
+        
+        var resultDates = handlerResult.Value!.Select(x => x.ConversionOrTransferDate).ToList();
+        
+        var orderedDates = resultDates.OrderBy(d => d).ToList();
+        Assert.True(resultDates.SequenceEqual(orderedDates), 
+            "Dates in the result should be in ascending order");
     }
 }

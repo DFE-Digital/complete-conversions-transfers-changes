@@ -1,0 +1,22 @@
+﻿@page "/projects/{projectId}/tasks"
+
+@using Dfe.Complete.Domain.Enums
+@using Dfe.Complete.Domain.Extensions
+@using Dfe.Complete.Utils
+@using GovUk.Frontend.AspNetCore.TagHelpers
+@model Dfe.Complete.Pages.Projects.TaskList.TaskListModel
+
+@{
+  Layout = "_ProjectLayout";
+  ViewData["Title"] = Model.Establishment.Name;
+}
+
+@if (Model.Project.Type == ProjectType.Conversion)
+{
+  @await Html.PartialAsync("_ConversionTaskList", Model)
+}
+
+@if (Model.Project.Type == ProjectType.Transfer)
+{
+  @await Html.PartialAsync("_TransferTaskList", Model)
+}

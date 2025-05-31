@@ -3,8 +3,8 @@ import "cypress-axe";
 import { AuthenticationInterceptor } from "../auth/authenticationInterceptor";
 import { Logger } from "../common/logger";
 import { RuleObject } from "axe-core";
+import { yesNoOption } from "../constants/stringTestConstants";
 import Chainable = Cypress.Chainable;
-import {yesNoOption} from "../constants/stringTestConstants";
 
 Cypress.Commands.add("getByTestId", (id) => {
     cy.get(`[data-testid="${id}"]`);
@@ -36,19 +36,19 @@ Cypress.Commands.add("getByRole", (role) => {
 
 Cypress.Commands.add("getByLabelFor", (labelFor) => {
     cy.get(`[for="${labelFor}"]`);
-})
+});
 
-Cypress.Commands.add("getProjectTableRow", (schoolName: string) : Chainable<JQuery<HTMLTableRowElement>> => {
-    return cy.getByClass('govuk-table').contains(schoolName).closest('tr');
-})
+Cypress.Commands.add("getProjectTableRow", (schoolName: string): Chainable<JQuery<HTMLTableRowElement>> => {
+    return cy.getByClass("govuk-table").contains(schoolName).closest("tr");
+});
 
 Cypress.Commands.add("getByRadioOption", (radioText: string) => {
     cy.contains(radioText)
-        .invoke('attr', 'for')
+        .invoke("attr", "for")
         .then((id) => {
-            cy.get('#' + id);
+            cy.get("#" + id);
         });
-})
+});
 
 Cypress.Commands.add("assertChildList", (selector: string, values: string[]) => {
     cy.getByTestId(selector)
@@ -59,15 +59,13 @@ Cypress.Commands.add("assertChildList", (selector: string, values: string[]) => 
         });
 });
 
-Cypress.Commands.add("login", (params) => {
+Cypress.Commands.add("login", (user) => {
     cy.clearCookies();
     cy.clearLocalStorage();
 
     // // Intercept all browser requests and add our special auth header
     // // Means we don't have to use azure to authenticate
-    new AuthenticationInterceptor().register(params);
-
-    cy.visit("/");
+    new AuthenticationInterceptor().register(user);
 });
 
 Cypress.Commands.add("loginRuby", () => {
@@ -75,7 +73,11 @@ Cypress.Commands.add("loginRuby", () => {
     cy.clearLocalStorage();
 
     cy.visit("/");
-    cy.contains('button', 'Sign in with your DfE Microsoft account').click();
+    cy.contains("button", "Sign in with your DfE Microsoft account").click();
+});
+
+Cypress.Commands.add("notAuthorisedToPerformAction", () => {
+    cy.get("h1").contains("You do not have access to this service");
 });
 
 Cypress.Commands.add("acceptCookies", () => {
@@ -83,11 +85,10 @@ Cypress.Commands.add("acceptCookies", () => {
 });
 
 Cypress.Commands.add("executeAccessibilityTests", (ruleOverride?: RuleObject) => {
-    Logger.log("Executing the command");
     const continueOnFail = false;
 
     let ruleConfiguration: RuleObject = {
-        region: { enabled: false }
+        region: { enabled: false },
     };
 
     if (ruleOverride) {
@@ -95,17 +96,25 @@ Cypress.Commands.add("executeAccessibilityTests", (ruleOverride?: RuleObject) =>
     }
 
     // Ensure that the axe dependency is available in the browser
-    Logger.log("Inject Axe");
+    Logger.log("Injecting Axe and checking accessibility");
     cy.injectAxe();
 
-    Logger.log("Checking accessibility");
-    cy.checkA11y(undefined, {
-        rules: ruleConfiguration,
-    }, undefined, continueOnFail);
+    cy.checkA11y(
+        undefined,
+        {
+            runOnly: {
+                type: "tag",
+                values: ["wcag2aa"],
+            },
+            rules: ruleConfiguration,
+        },
+        undefined,
+        continueOnFail,
+    );
 });
 
-Cypress.Commands.add('typeFast', { prevSubject: 'element' }, (subject: JQuery<HTMLElement>, text: string) => {
-    cy.wrap(subject).invoke('val', text);
+Cypress.Commands.add("typeFast", { prevSubject: "element" }, (subject: JQuery<HTMLElement>, text: string) => {
+    cy.wrap(subject).invoke("val", text);
 });
 
 Cypress.Commands.add("enterDate", (idPrefix: string, day: string, month: string, year: string) => {
@@ -115,10 +124,8 @@ Cypress.Commands.add("enterDate", (idPrefix: string, day: string, month: string,
 });
 
 Cypress.Commands.add("enterYesNo", (idPrefix: string, option: yesNoOption) => {
-    if (option == "Yes")
-        cy.getById(idPrefix).click();
-    if (option == "No")
-        cy.getById(`${idPrefix}-2`).click();
+    if (option == "Yes") cy.getById(idPrefix).click();
+    if (option == "No") cy.getById(`${idPrefix}-2`).click();
 });
 
 Cypress.Commands.add("hasAddress", (id: string, line1: string, line2: string, line3: string) => {

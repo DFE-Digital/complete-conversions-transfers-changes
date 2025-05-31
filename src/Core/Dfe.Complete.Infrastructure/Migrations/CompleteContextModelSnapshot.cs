@@ -17,7 +17,7 @@ namespace Dfe.Complete.Infrastructure.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.14")
+                .HasAnnotation("ProductVersion", "8.0.15")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -992,6 +992,7 @@ namespace Dfe.Complete.Infrastructure.Migrations
                         .HasColumnName("id");
 
                     b.Property<string>("Body")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)")
                         .HasColumnName("body");
 
@@ -1009,7 +1010,7 @@ namespace Dfe.Complete.Infrastructure.Migrations
                         .HasColumnType("nvarchar(4000)")
                         .HasColumnName("notable_type");
 
-                    b.Property<Guid?>("ProjectId")
+                    b.Property<Guid>("ProjectId")
                         .HasColumnType("uniqueidentifier")
                         .HasColumnName("project_id");
 
@@ -1023,7 +1024,7 @@ namespace Dfe.Complete.Infrastructure.Migrations
                         .HasColumnType("datetime2(6)")
                         .HasColumnName("updated_at");
 
-                    b.Property<Guid?>("UserId")
+                    b.Property<Guid>("UserId")
                         .HasColumnType("uniqueidentifier")
                         .HasColumnName("user_id");
 
@@ -1157,7 +1158,7 @@ namespace Dfe.Complete.Infrastructure.Migrations
                         .HasColumnType("nvarchar(4000)")
                         .HasColumnName("region");
 
-                    b.Property<Guid?>("RegionalDeliveryOfficerId")
+                    b.Property<Guid>("RegionalDeliveryOfficerId")
                         .HasColumnType("uniqueidentifier")
                         .HasColumnName("regional_delivery_officer_id");
 
@@ -1285,6 +1286,8 @@ namespace Dfe.Complete.Infrastructure.Migrations
                         .HasColumnName("user_id");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ProjectId");
 
                     b.ToTable("significant_date_histories", "complete");
                 });
@@ -1909,11 +1912,15 @@ namespace Dfe.Complete.Infrastructure.Migrations
                     b.HasOne("Dfe.Complete.Domain.Entities.Project", "Project")
                         .WithMany("Notes")
                         .HasForeignKey("ProjectId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
                         .HasConstraintName("fk_rails_99e097b079");
 
                     b.HasOne("Dfe.Complete.Domain.Entities.User", "User")
                         .WithMany("Notes")
                         .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
                         .HasConstraintName("fk_rails_7f2323ad43");
 
                     b.Navigation("Project");
@@ -1943,6 +1950,8 @@ namespace Dfe.Complete.Infrastructure.Migrations
                     b.HasOne("Dfe.Complete.Domain.Entities.User", "RegionalDeliveryOfficer")
                         .WithMany("ProjectRegionalDeliveryOfficers")
                         .HasForeignKey("RegionalDeliveryOfficerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
                         .HasConstraintName("fk_rails_bba1c6b145");
 
                     b.Navigation("AssignedTo");
@@ -1954,11 +1963,20 @@ namespace Dfe.Complete.Infrastructure.Migrations
                     b.Navigation("RegionalDeliveryOfficer");
                 });
 
+            modelBuilder.Entity("Dfe.Complete.Domain.Entities.SignificantDateHistory", b =>
+                {
+                    b.HasOne("Dfe.Complete.Domain.Entities.Project", null)
+                        .WithMany("SignificantDateHistories")
+                        .HasForeignKey("ProjectId");
+                });
+
             modelBuilder.Entity("Dfe.Complete.Domain.Entities.Project", b =>
                 {
                     b.Navigation("Contacts");
 
                     b.Navigation("Notes");
+
+                    b.Navigation("SignificantDateHistories");
                 });
 
             modelBuilder.Entity("Dfe.Complete.Domain.Entities.User", b =>

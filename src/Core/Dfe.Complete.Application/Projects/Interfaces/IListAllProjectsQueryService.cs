@@ -1,9 +1,12 @@
-﻿using Dfe.Complete.Application.Projects.Models;
-using Dfe.Complete.Domain.Enums;
+using Dfe.Complete.Application.Projects.Models;
 
 namespace Dfe.Complete.Application.Projects.Interfaces;
 
 public interface IListAllProjectsQueryService
 {
-    IQueryable<ListAllProjectsQueryModel> ListAllProjects(ProjectState? projectStatus, ProjectType? type);
+    IQueryable<ListAllProjectsQueryModel> ListAllProjects(
+        ProjectFilters filters,
+        string? search = "",
+        OrderProjectQueryBy? orderBy = null
+    );
 }

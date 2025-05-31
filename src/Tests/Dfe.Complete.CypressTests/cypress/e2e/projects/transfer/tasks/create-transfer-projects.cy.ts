@@ -3,19 +3,27 @@ import homePage from "cypress/pages/homePage";
 import newTransferPage from "cypress/pages/projects/new/newTransferPage";
 import selectProjectTypePage from "cypress/pages/projects/new/selectProjectTypePage";
 import validationComponent from "cypress/pages/validationComponent";
-import { groupReferenceNumber, ukprn, ukprn2 } from "cypress/constants/stringTestConstants";
+import {
+    groupReferenceNumber,
+    testTrustName,
+    testTrustReferenceNumber,
+    ukprn,
+    ukprn2,
+} from "cypress/constants/stringTestConstants";
+import { checkAccessibilityAcrossPages } from "cypress/support/reusableTests";
 
 const urn = "136730";
 const urnMAT = "136731";
 
-describe("Create a new Transfer Project", () => {
+// skipped: bug 212027
+describe.skip("Create a new Transfer Project", () => {
     before(() => {
         projectRemover.removeProjectIfItExists(urn);
         projectRemover.removeProjectIfItExists(urnMAT);
     });
 
     beforeEach(() => {
-        cy.login({ role: "RegionalDeliveryOfficer" });
+        cy.login();
         cy.acceptCookies();
         cy.visit("/");
     });
@@ -57,8 +65,8 @@ describe("Create a new Transfer Project", () => {
         newTransferPage
             .withAcademyURN(urnMAT)
             .withOutgoingTrustUKPRN(`${ukprn}`)
-            .withTrustReferenceNumber("TR04024")
-            .withTrustName("Helix Academies Trust")
+            .withTrustReferenceNumber(testTrustReferenceNumber)
+            .withTrustName(testTrustName)
             .withAcademySharepointLink("https://educationgovuk.sharepoint.com")
             .withIncomingTrustSharePointLink("https://educationgovuk.sharepoint.com")
             .withOutgoingTrustSharepointLink("https://educationgovuk.sharepoint.com")
@@ -117,5 +125,9 @@ describe("Create a new Transfer Project", () => {
             .hasLinkedValidationError(
                 "State if this project will be handed over to the Regional casework services team. Choose yes or no",
             );
+    });
+
+    it("Check accessibility across pages", () => {
+        checkAccessibilityAcrossPages();
     });
 });

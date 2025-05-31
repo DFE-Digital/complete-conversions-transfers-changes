@@ -1,0 +1,29 @@
+@page "/projects/all/by-month/conversions/{month}/{year}" 
+@model Dfe.Complete.Pages.Projects.List.ProjectsByMonth.ConversionProjectsByMonthModel
+@{
+    Layout = "List/ProjectsByMonth/_ProjectsByMonthLayout";
+    ViewData["Title"] = "Academies opening or transferring";
+}
+@section PageHeading
+{
+<span class="govuk-caption-l">Academies opening or transferring</span>
+<h1 class="govuk-heading-l">
+    @Model.DateString
+</h1>
+<p>Schools that will become academies, and academies that will move to a different trust.</p>
+}
+
+<div class="govuk-grid-column-full">
+    @{
+        if (Model.Projects.Any())
+        {
+            <partial name="Projects/List/ProjectsByMonth/_ProjectsByMonthTable" model="@Model.Projects" />
+        }
+        else
+        {
+            <div class="govuk-inset-text">
+                There are no projects due to convert between @Model.DateString and @Model.DateString
+            </div>
+        }
+    }
+</div>

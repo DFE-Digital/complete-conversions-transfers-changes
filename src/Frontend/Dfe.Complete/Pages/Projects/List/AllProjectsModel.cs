@@ -25,4 +25,5 @@ public abstract class AllProjectsModel(string currentNavigation) : BaseProjectsP
             ? string.Format(RouteConstants.TrustMATProjects, trustModel.identifier)
             : string.Format(RouteConstants.TrustProjects, trustModel.identifier);
     }
+    
 }

@@ -5,13 +5,15 @@ using Dfe.Complete.Application.Projects.Models;
 using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Utils;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace Dfe.Complete.Application.Projects.Queries.ListAllProjects
 {
     public record ListAllTrustsWithProjectsQuery() : PaginatedRequest<PaginatedResult<List<ListTrustsWithProjectsResultModel>>>;
 
     public class ListAllTrustsWithProjectsQueryHandler(
-        IListAllProjectsQueryService listAllProjectsQueryService, ITrustsV4Client trustsClient)
+        IListAllProjectsQueryService listAllProjectsQueryService, ITrustsV4Client trustsClient, ILogger<ListAllTrustsWithProjectsQueryHandler> logger)
         : IRequestHandler<ListAllTrustsWithProjectsQuery, PaginatedResult<List<ListTrustsWithProjectsResultModel>>>
     {
         public async Task<PaginatedResult<List<ListTrustsWithProjectsResultModel>>> Handle(ListAllTrustsWithProjectsQuery request,
@@ -19,10 +21,9 @@ namespace Dfe.Complete.Application.Projects.Queries.ListAllProjects
         {
             try
             {
-                var allProjects = listAllProjectsQueryService.ListAllProjects(ProjectState.Active, null)
-                    .AsEnumerable()
+                var allProjects = await listAllProjectsQueryService.ListAllProjects(new ProjectFilters(ProjectState.Active, null))
                     .Select(p => p.Project)
-                    .ToList();
+                    .ToListAsync(cancellationToken);
 
                 var standardProjects = allProjects.Where(p => !p.FormAMat);
                 var matProjects = allProjects.Where(p => p.FormAMat);
@@ -44,12 +45,12 @@ namespace Dfe.Complete.Application.Projects.Queries.ListAllProjects
                 //Group mats by reference and form result model
                 var mats = matProjects
                     .GroupBy(p => p.NewTrustReferenceNumber)
-                    .Select(trustReference => new ListTrustsWithProjectsResultModel(
-                        trustReference.Key,
-                        trustReference.First().NewTrustName, 
-                        trustReference.Key,
-                        trustReference.Count(p => p.Type == ProjectType.Conversion),
-                        trustReference.Count(p => p.Type == ProjectType.Transfer)
+                    .Select(trust => new ListTrustsWithProjectsResultModel(
+                        trust.Key,
+                        trust.First().NewTrustName, 
+                        trust.Key,
+                        trust.Count(p => p.Type == ProjectType.Conversion),
+                        trust.Count(p => p.Type == ProjectType.Transfer)
                     ))
                     .ToList();
 
@@ -66,6 +67,7 @@ namespace Dfe.Complete.Application.Projects.Queries.ListAllProjects
             }
             catch (Exception ex)
             {
+                logger.LogError(ex, "Exception for {Name} Request - {@Request}", nameof(ListAllTrustsWithProjectsQueryHandler), request);
                 return PaginatedResult<List<ListTrustsWithProjectsResultModel>>.Failure(ex.Message);
             }
         }

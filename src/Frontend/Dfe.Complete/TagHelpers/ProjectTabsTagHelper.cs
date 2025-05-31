@@ -22,25 +22,11 @@ namespace Dfe.Complete.TagHelpers
         {
             output.TagName = "div";
             output.Attributes.SetAttribute("class", "govuk-grid-row");
-             
-            string aboutProjectLink;
-            string taskListLink;
+            
             string notesLink = string.Format(Constants.RouteConstants.ProjectViewNotes, ProjectId);
 
-            if (ProjectType == ProjectType.Conversion)
-            {
-                aboutProjectLink = string.Format(Constants.RouteConstants.ConversionProjectAbout, ProjectId);
-                taskListLink = string.Format(Constants.RouteConstants.ConversionProjectTaskList, ProjectId);
-            }
-            else if (ProjectType == ProjectType.Transfer)
-            {
-                aboutProjectLink = string.Format(Constants.RouteConstants.TransferProjectAbout, ProjectId);
-                taskListLink = string.Format(Constants.RouteConstants.TransferProjectTaskList, ProjectId);
-            }
-            else
-            {
-                throw new Exception($"Unknown project type {ProjectType}");
-            }
+            var aboutProjectLink = string.Format(Constants.RouteConstants.ProjectAbout, ProjectId);
+            var taskListLink = string.Format(Constants.RouteConstants.ProjectTaskList, ProjectId);
 
             var currentPageAttribute = @"aria-current=""page""";
             var currentUrl = ViewContext.HttpContext.Request.GetDisplayUrl();

@@ -1,13 +1,8 @@
-using Dfe.Complete.Application.Common.Models;
 using Dfe.Complete.Application.Projects.Common;
-using Dfe.Complete.Application.Projects.Models;
-using Dfe.Complete.Application.Projects.Queries.GetLocalAuthority;
-using Dfe.Complete.Application.Projects.Queries.GetUser;
 using Dfe.Complete.Domain.Entities;
 using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Domain.Interfaces.Repositories;
 using Dfe.Complete.Domain.ValueObjects;
-using Dfe.Complete.Utils;
 using MediatR;
 
 namespace Dfe.Complete.Application.Projects.Commands.CreateProject;
@@ -59,8 +54,8 @@ public class CreateMatTransferProjectCommandHandler(
                     tasksDataId,
                     commonProject.Region,
                     commonProject.ProjectTeam,
-                    commonProject.User?.Id,
-                    commonProject.User?.Id,
+                    commonProject.CreatedByUser.Id,
+                    commonProject.AssignedUser?.Id,
                     commonProject.AssignedAt,
                     request.EstablishmentSharepointLink,
                     request.IncomingTrustSharepointLink,
