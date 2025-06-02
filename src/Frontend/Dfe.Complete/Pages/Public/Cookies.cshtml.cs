@@ -43,7 +43,7 @@ namespace Dfe.Complete.Pages.Public
 		{
 			if (string.IsNullOrWhiteSpace(returnUrl))
 			{ 
-                returnUrl = $"/cookies?consent={cookiesConsent}";
+                returnUrl = "/cookies";
             }
 			ReturnPath = returnUrl;
 
