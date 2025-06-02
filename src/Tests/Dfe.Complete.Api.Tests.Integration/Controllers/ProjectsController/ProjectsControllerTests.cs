@@ -13,6 +13,9 @@ using DfE.CoreLibs.Testing.Mocks.WebApplicationFactory;
 using DfE.CoreLibs.Testing.Mocks.WireMock;
 using Microsoft.EntityFrameworkCore;
 using GiasEstablishment = Dfe.Complete.Domain.Entities.GiasEstablishment;
+using Region = Dfe.Complete.Domain.Enums.Region;
+using ProjectType = Dfe.Complete.Domain.Enums.ProjectType;
+using ProjectState = Dfe.Complete.Domain.Enums.ProjectState;
 using Project = Dfe.Complete.Domain.Entities.Project;
 using Ukprn = Dfe.Complete.Domain.ValueObjects.Ukprn;
 
@@ -177,7 +180,7 @@ public partial class ProjectsControllerTests
 
         // Act
         var results = await projectsClient.ListAllProjectsAsync(
-            ProjectState.Completed, null, null, OrderProjectByField.CompletedAt, OrderByDirection.Descending, 0, 50);
+            Complete.Client.Contracts.ProjectState.Completed, null, null, OrderProjectByField.CompletedAt, OrderByDirection.Descending, 0, 50);
 
         projects = projects
             .Where(project => project.State == Domain.Enums.ProjectState.Completed)
@@ -220,6 +223,126 @@ public partial class ProjectsControllerTests
         }
     }
 
+    [Theory]
+    [CustomAutoData(
+        typeof(CustomWebApplicationDbContextFactoryCustomization),
+        typeof(GiasEstablishmentsCustomization))]
+    public async Task ListAllProjectsByRegion_Async_ShouldReturnList(
+        CustomWebApplicationDbContextFactory<Program> factory,
+        IProjectsClient projectsClient,
+        IFixture fixture)
+    {
+        // Arrange
+        factory.TestClaims = new[] { ApiRoles.ReadRole, ApiRoles.WriteRole, ApiRoles.DeleteRole, ApiRoles.UpdateRole }
+            .Select(x => new Claim(ClaimTypes.Role, x)).ToList();
+
+        var dbContext = factory.GetDbContext<CompleteContext>();
+
+        var testUser = await dbContext.Users.FirstAsync();
+        const string userAdId = "test-user-adid";
+        testUser.ActiveDirectoryUserId = userAdId;
+
+        var projects = new List<Project>();
+
+        projects.AddRange(Enumerable.Range(0, 10).Select(i => fixture.Customize(new ProjectCustomization
+        {
+            Region = Region.NorthEast,
+            Type = i < 4 ? ProjectType.Conversion : ProjectType.Transfer,
+        }).Create<Project>()));
+
+        projects.AddRange(Enumerable.Range(0, 15).Select(i => fixture.Customize(new ProjectCustomization
+        {
+            Region = Region.SouthEast,
+            Type = i < 10 ? ProjectType.Conversion : ProjectType.Transfer,
+        }).Create<Project>()));
+
+        var localAuthority = await dbContext.LocalAuthorities.FirstAsync();
+        projects.ForEach(project =>
+        {
+            project.RegionalDeliveryOfficerId = testUser.Id;
+            project.LocalAuthorityId = localAuthority.Id;
+        });
+
+        dbContext.Projects.AddRange(projects);
+        await dbContext.SaveChangesAsync();
+
+        // Act
+        var results = await projectsClient.ListAllProjectsByRegionAsync(null, null);
+
+        // Assert
+        Assert.NotNull(results);
+        Assert.Equal(2, results.Count);
+        Assert.Equal(Complete.Client.Contracts.Region.NorthEast, results[0].Region);
+        Assert.Equal(4, results[0].ConversionsCount);
+        Assert.Equal(6, results[0].TransfersCount);
+        Assert.Equal(Complete.Client.Contracts.Region.SouthEast, results[1].Region);
+        Assert.Equal(10, results[1].ConversionsCount);
+        Assert.Equal(5, results[1].TransfersCount);
+    }
+
+
+    [Theory]
+    [CustomAutoData(
+        typeof(CustomWebApplicationDbContextFactoryCustomization),
+        typeof(GiasEstablishmentsCustomization))]
+    public async Task ListAllProjectsByRegionCompletedProjects_Async_ShouldReturnList(
+        CustomWebApplicationDbContextFactory<Program> factory,
+        IProjectsClient projectsClient,
+        IFixture fixture)
+    {
+        // Arrange
+        factory.TestClaims = new[] { ApiRoles.ReadRole, ApiRoles.WriteRole, ApiRoles.DeleteRole, ApiRoles.UpdateRole }
+            .Select(x => new Claim(ClaimTypes.Role, x)).ToList();
+
+        var dbContext = factory.GetDbContext<CompleteContext>();
+
+        var testUser = await dbContext.Users.FirstAsync();
+        const string userAdId = "test-user-adid";
+        testUser.ActiveDirectoryUserId = userAdId;
+
+        var projects = new List<Project>();
+
+        projects.AddRange(Enumerable.Range(0, 10).Select(i => fixture.Customize(new ProjectCustomization
+        {
+            Region = Region.NorthEast,
+            Type = i < 4 ? ProjectType.Conversion : ProjectType.Transfer,
+            State = i < 6 ? (int)ProjectState.Active : (int)ProjectState.Completed
+        }).Create<Project>()));
+
+        projects.AddRange(Enumerable.Range(0, 15).Select(i => fixture.Customize(new ProjectCustomization
+        {
+            Region = Region.SouthEast,
+            Type = i < 10 ? ProjectType.Conversion : ProjectType.Transfer,
+            State = i < 8 ? (int)ProjectState.Active : (int)ProjectState.Completed
+        }).Create<Project>()));
+
+        var localAuthority = await dbContext.LocalAuthorities.FirstAsync();
+        projects.ForEach(project =>
+        {
+            project.RegionalDeliveryOfficerId = testUser.Id;
+            project.LocalAuthorityId = localAuthority.Id;
+        });
+
+        dbContext.Projects.AddRange(projects);
+        await dbContext.SaveChangesAsync();
+
+        // Act
+        var results = await projectsClient.ListAllProjectsByRegionAsync(
+            Dfe.Complete.Client.Contracts.ProjectState.Completed, null);
+
+        // Assert
+        Assert.NotNull(results);
+        Assert.Equal(2, results.Count);
+
+        Assert.NotNull(results);
+        Assert.Equal(2, results.Count);
+        Assert.Equal(Complete.Client.Contracts.Region.NorthEast, results[0].Region);
+        Assert.Equal(1, results[0].ConversionsCount);
+        Assert.Equal(2, results[0].TransfersCount);
+        Assert.Equal(Complete.Client.Contracts.Region.SouthEast, results[1].Region);
+        Assert.Equal(4, results[1].ConversionsCount);
+        Assert.Equal(1, results[1].TransfersCount);
+    }
 
     [Theory]
     [CustomAutoData(typeof(CustomWebApplicationDbContextFactoryCustomization), typeof(GiasEstablishmentsCustomization))]
@@ -230,7 +353,6 @@ public partial class ProjectsControllerTests
     {
         factory.TestClaims = new[] { ApiRoles.ReadRole, ApiRoles.WriteRole, ApiRoles.DeleteRole, ApiRoles.UpdateRole }
             .Select(x => new Claim(ClaimTypes.Role, x)).ToList();
-
 
         var dbContext = factory.GetDbContext<CompleteContext>();
 
@@ -527,7 +649,7 @@ public partial class ProjectsControllerTests
             localAuthorityCode, null, null, 0, 50);
 
         var expectedProjects = allProjects
-            .Where(p => p.State == Domain.Enums.ProjectState.Active)
+            .Where(p => p.State == ProjectState.Active)
             .Where(p => matchingEstablishments.Any(e => e.Urn?.Value == p.Urn.Value))
             .ToList();
 
@@ -586,7 +708,7 @@ public partial class ProjectsControllerTests
         const string userAdId = "test-user-adid";
         testUser.ActiveDirectoryUserId = userAdId;
 
-        var expectedRegion = Region.EastMidlands;
+        var expectedRegion = Complete.Client.Contracts.Region.EastMidlands;
 
         var projects = fixture.Customize(new ProjectCustomization { RegionalDeliveryOfficerId = testUser.Id })
             .CreateMany<Project>(50).ToList();
@@ -603,8 +725,8 @@ public partial class ProjectsControllerTests
             expectedRegion, null, null, AssignedToState.AssignedOnly, null, null, 0, 50);
 
         var expectedProjects = projects
-            .Where(p => p.State == Domain.Enums.ProjectState.Active)
-            .Where(p => p.Region != null && (Region)p.Region == expectedRegion)
+            .Where(p => p.State == ProjectState.Active)
+            .Where(p => p.Region != null && (Dfe.Complete.Client.Contracts.Region)p.Region == expectedRegion)
             .ToList();
 
         // Assert
