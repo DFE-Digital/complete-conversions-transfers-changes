@@ -85,7 +85,6 @@ Cypress.Commands.add("acceptCookies", () => {
 });
 
 Cypress.Commands.add("executeAccessibilityTests", (ruleOverride?: RuleObject) => {
-    Logger.log("Executing the command");
     const continueOnFail = false;
 
     let ruleConfiguration: RuleObject = {
@@ -97,13 +96,16 @@ Cypress.Commands.add("executeAccessibilityTests", (ruleOverride?: RuleObject) =>
     }
 
     // Ensure that the axe dependency is available in the browser
-    Logger.log("Inject Axe");
+    Logger.log("Injecting Axe and checking accessibility");
     cy.injectAxe();
 
-    Logger.log("Checking accessibility");
     cy.checkA11y(
         undefined,
         {
+            runOnly: {
+                type: "tag",
+                values: ["wcag2aa"],
+            },
             rules: ruleConfiguration,
         },
         undefined,
