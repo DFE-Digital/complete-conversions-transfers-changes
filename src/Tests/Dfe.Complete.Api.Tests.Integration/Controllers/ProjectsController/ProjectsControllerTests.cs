@@ -18,7 +18,6 @@ using ProjectType = Dfe.Complete.Domain.Enums.ProjectType;
 using ProjectState = Dfe.Complete.Domain.Enums.ProjectState;
 using Project = Dfe.Complete.Domain.Entities.Project;
 using Ukprn = Dfe.Complete.Domain.ValueObjects.Ukprn;
-using LocalAuthority = Dfe.Complete.Domain.Entities.LocalAuthority;
 
 namespace Dfe.Complete.Api.Tests.Integration.Controllers.ProjectsController;
 
@@ -106,7 +105,7 @@ public partial class ProjectsControllerTests
 
         // Act
         var results = await projectsClient.ListAllProjectsAsync(
-            null, null, null, 0, 50);
+            null, null, null, null, null, 0, 50);
 
         // Assert
         Assert.NotNull(results);
@@ -181,14 +180,19 @@ public partial class ProjectsControllerTests
 
         // Act
         var results = await projectsClient.ListAllProjectsAsync(
-            Dfe.Complete.Client.Contracts.ProjectState.Completed, null, null, 0, 50);
+            Complete.Client.Contracts.ProjectState.Completed, null, null, OrderProjectByField.CompletedAt, OrderByDirection.Descending, 0, 50);
+
+        projects = projects
+            .Where(project => project.State == Domain.Enums.ProjectState.Completed)
+            .OrderByDescending(project => project.CompletedAt).ToList();
 
         // Assert
         Assert.NotNull(results);
         Assert.Equal(17, results.Count);
-        foreach (var result in results)
+        for (var i = 0; i < results.Count; i++)
         {
-            var project = projects.Find(p => p.Id.Value == result.ProjectId?.Value);
+            var result = results[i];
+            var project = projects[i];
             var establishment = establishments.Find(e => e.Urn?.Value == result.Urn?.Value);
 
             Assert.NotNull(result.EstablishmentName);
