@@ -71,7 +71,7 @@ public class Startup
             {
                 options.HtmlHelperOptions.ClientValidationEnabled = false;
             });
-        
+
         ConfigureCypressAntiforgery(services);
 
         services.AddControllersWithViews()
@@ -104,7 +104,7 @@ public class Startup
         authenticationBuilder.AddMicrosoftIdentityWebApp(Configuration);
 
         ConfigureCookies(services);
-        var appInsightsCnnStr = Configuration.GetSection("ApplicationInsights")?["ConnectionString"]; 
+        var appInsightsCnnStr = Configuration.GetSection("ApplicationInsights")?["ConnectionString"];
         services.AddApplicationInsightsTelemetry(options => options.ConnectionString = appInsightsCnnStr);
 
         System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
@@ -136,7 +136,7 @@ public class Startup
             // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
             app.UseHsts();
         }
-        
+
         app.UseMiddleware<CorrelationIdMiddleware>();
         app.UseMiddleware<ExceptionHandlerMiddleware>();
 
@@ -236,14 +236,16 @@ public class Startup
     private void SetupDataProtection(IServiceCollection services)
     {
         var dp = services.AddDataProtection();
-        var dpTargetPath = @"/srv/app/storage";
-        DataProtectionOptions dpOptions = GetTypedConfigurationFor<DataProtectionOptions>();
+        DataProtectionOptions options = GetTypedConfigurationFor<DataProtectionOptions>();
 
-        if (Directory.Exists(dpTargetPath)) {
+        var dpTargetPath = options?.DpTargetPath ?? @"/srv/app/storage";
+
+        if (Directory.Exists(dpTargetPath))
+        {
             dp.PersistKeysToFileSystem(new DirectoryInfo(dpTargetPath));
 
             // If a Key Vault Key URI is defined, expect to encrypt the keys.xml
-            string? kvProtectionKeyUri = dpOptions.KeyVaultKey;
+            string? kvProtectionKeyUri = options?.KeyVaultKey;
 
             if (!string.IsNullOrWhiteSpace(kvProtectionKeyUri))
             {
