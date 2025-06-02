@@ -20,6 +20,7 @@ namespace Dfe.Complete.Pages.Public
             ReturnPath = returnUrl;
 
 			Consent = analyticsConsentService.ConsentValue(); 
+			PreferencesSet = TempData["PreferencesSet"] as bool? ?? false;
 
             if (consent.HasValue)
 			{
@@ -57,8 +58,8 @@ namespace Dfe.Complete.Pages.Public
 			if (consent.HasValue)
 			{
 				Consent = consent;
-				PreferencesSet = true; 
-
+				PreferencesSet = true;
+				TempData["PreferencesSet"] = true;
                 ApplyCookieConsent(consent.Value);
 				return Page();
 			}

@@ -211,7 +211,7 @@ public class Startup
         });
     }
 
-    private void ConfigureCypressAntiforgeryEndpoints(IServiceCollection services)
+    /*private void ConfigureCypressAntiforgeryEndpoints(IServiceCollection services)
     {
         if (!_env.IsProduction())
         {
@@ -240,7 +240,7 @@ public class Startup
                 options.Filters.AddService<CypressAwareAntiForgeryFilter>();
             });
         }
-    }
+    }*/
 
     private void RegisterClients(IServiceCollection services)
     {
