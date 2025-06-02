@@ -20,7 +20,7 @@ namespace Dfe.Complete.Pages.Public
             ReturnPath = returnUrl;
 
 			Consent = analyticsConsentService.ConsentValue(); 
-			PreferencesSet = TempData["PreferencesSet"] as bool? ?? false;
+			
 
             if (consent.HasValue)
 			{
@@ -42,10 +42,9 @@ namespace Dfe.Complete.Pages.Public
         public IActionResult OnPost(bool? consent, string returnUrl, [FromForm(Name ="cookies_form[accept_optional_cookies]")] bool? cookiesConsent)
 		{
 			if (string.IsNullOrWhiteSpace(returnUrl))
-			{
-				returnUrl = Links.Public.CookiePreferences.Page;
-
-			}
+			{ 
+                returnUrl = $"/cookies?consent={cookiesConsent}";
+            }
 			ReturnPath = returnUrl;
 
             if (!consent.HasValue)
@@ -59,7 +58,7 @@ namespace Dfe.Complete.Pages.Public
 			{
 				Consent = consent;
 				PreferencesSet = true;
-				TempData["PreferencesSet"] = true;
+
                 ApplyCookieConsent(consent.Value);
 				return Page();
 			}
