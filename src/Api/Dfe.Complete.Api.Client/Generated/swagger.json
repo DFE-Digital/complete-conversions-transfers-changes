@@ -346,13 +346,29 @@
             "x-position": 3
           },
           {
+            "name": "OrderBy.Field",
+            "in": "query",
+            "schema": {
+              "$ref": "#/components/schemas/OrderProjectByField"
+            },
+            "x-position": 4
+          },
+          {
+            "name": "OrderBy.Direction",
+            "in": "query",
+            "schema": {
+              "$ref": "#/components/schemas/OrderByDirection"
+            },
+            "x-position": 5
+          },
+          {
             "name": "Page",
             "in": "query",
             "schema": {
               "type": "integer",
               "format": "int32"
             },
-            "x-position": 4
+            "x-position": 6
           },
           {
             "name": "Count",
@@ -361,7 +377,7 @@
               "type": "integer",
               "format": "int32"
             },
-            "x-position": 5
+            "x-position": 7
           }
         ],
         "responses": {
@@ -2748,24 +2764,6 @@
           "UnassignedOnly"
         ]
       },
-      "ListMatResultModel": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-          "identifier": {
-            "type": "string"
-          },
-          "trustName": {
-            "type": "string"
-          },
-          "projectModels": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/ListAllProjectsResultModel"
-            }
-          }
-        }
-      },
       "OrderProjectByField": {
         "type": "string",
         "description": "",
@@ -2791,6 +2789,24 @@
           "Ascending",
           "Descending"
         ]
+      },
+      "ListMatResultModel": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "identifier": {
+            "type": "string"
+          },
+          "trustName": {
+            "type": "string"
+          },
+          "projectModels": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ListAllProjectsResultModel"
+            }
+          }
+        }
       },
       "ListAllProjectsForUserQueryResultModel": {
         "type": "object",
