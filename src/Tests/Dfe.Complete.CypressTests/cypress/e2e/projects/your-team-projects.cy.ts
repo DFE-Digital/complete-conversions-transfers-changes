@@ -9,6 +9,7 @@ import { projectTable } from "cypress/pages/projects/tables/projectTable";
 import yourTeamProjectsTable from "cypress/pages/projects/tables/yourTeamProjectsTable";
 import { currentMonthShort } from "cypress/constants/stringTestConstants";
 import projectDetailsPage from "cypress/pages/projects/projectDetailsPage";
+import { checkAccessibilityAcrossPages } from "cypress/support/reusableTests";
 
 const team = "London";
 const myLondonProject = ProjectBuilder.createConversionProjectRequest(new Date("2026-04-01"), 143659);
@@ -185,5 +186,9 @@ describe("Regional delivery officer (London) user - View your team projects (pro
         yourTeamProjects.unableToViewFilter("Unassigned");
         // not implemented:
         // cy.visit("/projects/team/unassigned").notAuthorisedToPerformAction();
+    });
+
+    it("Check accessibility across pages", () => {
+        checkAccessibilityAcrossPages();
     });
 });

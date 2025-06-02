@@ -8,6 +8,7 @@ import projectsByMonthPage from "cypress/pages/projects/projectsByMonthPage";
 import { currentMonthLong, currentMonthShort } from "cypress/constants/stringTestConstants";
 import { projectTable } from "cypress/pages/projects/tables/projectTable";
 import yourTeamProjectsTable from "cypress/pages/projects/tables/yourTeamProjectsTable";
+import { Logger } from "cypress/common/logger";
 
 export function shouldNotHaveAccessToViewHandedOverProjects() {
     cy.visit("/projects/all/in-progress/all");
@@ -88,4 +89,13 @@ export function shouldBeAbleToAssignUnassignedProjectsToUsers(unassignedProjectS
 
 export function shouldBeAbleToViewAndDownloadCsvReportsFromTheExportSection() {
     // not implemented
+}
+
+export function checkAccessibilityAcrossPages() {
+    const visitedUrls = Cypress.env("visitedUrls");
+    visitedUrls.forEach((url: string) => {
+        cy.visit(url);
+        Logger.log("Executing accessibility check for URL: " + url);
+        cy.executeAccessibilityTests();
+    });
 }

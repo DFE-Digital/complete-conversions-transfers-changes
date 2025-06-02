@@ -1,5 +1,6 @@
 import cookies from "cypress/pages/cookies";
 import cookiesPage from "cypress/pages/cookiesPage";
+import { checkAccessibilityAcrossPages } from "cypress/support/reusableTests";
 
 describe("Testing cookie preferences", () => {
     beforeEach(() => {
@@ -53,5 +54,9 @@ describe("Testing cookie preferences", () => {
         cy.url().should("not.contain", "/public/cookies");
 
         cookies.consentCookieIsSetToTrue().cookieBannerIsNotVisible();
+    });
+
+    it("Check accessibility across pages", () => {
+        checkAccessibilityAcrossPages();
     });
 });
