@@ -1,8 +1,12 @@
 ﻿using Dfe.AcademiesApi.Client.Contracts;
 using Dfe.Complete.Application.Common.Models;
+using Dfe.Complete.Application.Common.Queries;
 using Dfe.Complete.Application.Projects.Interfaces;
 using Dfe.Complete.Application.Projects.Models;
+using Dfe.Complete.Application.Projects.Queries.QueryFilters;
+using Dfe.Complete.Domain.Entities;
 using Dfe.Complete.Domain.Enums;
+using Dfe.Complete.Domain.ValueObjects;
 using Dfe.Complete.Utils;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -13,7 +17,7 @@ namespace Dfe.Complete.Application.Projects.Queries.ListAllProjects
     public record ListAllTrustsWithProjectsQuery() : PaginatedRequest<PaginatedResult<List<ListTrustsWithProjectsResultModel>>>;
 
     public class ListAllTrustsWithProjectsQueryHandler(
-        IListAllProjectsQueryService listAllProjectsQueryService, ITrustsV4Client trustsClient, ILogger<ListAllTrustsWithProjectsQueryHandler> logger)
+        IProjectReadRepository repo, ITrustsV4Client trustsClient, ILogger<ListAllTrustsWithProjectsQueryHandler> logger)
         : IRequestHandler<ListAllTrustsWithProjectsQuery, PaginatedResult<List<ListTrustsWithProjectsResultModel>>>
     {
         public async Task<PaginatedResult<List<ListTrustsWithProjectsResultModel>>> Handle(ListAllTrustsWithProjectsQuery request,
@@ -21,53 +25,87 @@ namespace Dfe.Complete.Application.Projects.Queries.ListAllProjects
         {
             try
             {
-                var allProjects = await listAllProjectsQueryService.ListAllProjects(new ProjectFilters(ProjectState.Active, null))
-                    .Select(p => p.Project)
+                var baseQ = new StateQuery(ProjectState.Active)
+                    .Apply(repo.Projects.AsNoTracking());
+
+                var nonMatGroups = await new FormAMatQuery(false)
+                    .Apply(baseQ)
+                    .GroupBy(p => p.IncomingTrustUkprn)
+                    .Select(g => new
+                    {
+                        UkprnInt = g.Key,
+                        Conversions = g.Count(p => p.Type == ProjectType.Conversion),
+                        Transfers = g.Count(p => p.Type == ProjectType.Transfer)
+                    })
                     .ToListAsync(cancellationToken);
 
-                var standardProjects = allProjects.Where(p => !p.FormAMat);
-                var matProjects = allProjects.Where(p => p.FormAMat);
+                var matGroups = await new FormAMatQuery(true)
+                    .Apply(baseQ)
+                    .GroupBy(p => new { NewTrustReferenceNumber = p.NewTrustReferenceNumber!, NewTrustName = p.NewTrustName! })
+                    .Select(g => new
+                    {
+                        Key = g.Key.NewTrustReferenceNumber,
+                        Name = g.Key.NewTrustName,
+                        Conversions = g.Count(p => p.Type == ProjectType.Conversion),
+                        Transfers = g.Count(p => p.Type == ProjectType.Transfer)
+                    })
+                    .ToListAsync(cancellationToken);
 
-                // Get trusts related to projects
-                var incomingTrustUkprns = standardProjects.Select(p => p.IncomingTrustUkprn.Value.ToString()).Distinct();
-                var standardProjectsTrust = await trustsClient.GetByUkprnsAllAsync(incomingTrustUkprns, cancellationToken);
-
-                var trusts = standardProjectsTrust
-                    .Select(item => new ListTrustsWithProjectsResultModel(
-                        item.Ukprn,
-                        item.Name.ToTitleCase(),
-                        item.ReferenceNumber,
-                        standardProjects.Count(p => p.IncomingTrustUkprn?.ToString() == item.Ukprn && p.Type == ProjectType.Conversion),
-                        standardProjects.Count(p => p.IncomingTrustUkprn?.ToString() == item.Ukprn && p.Type == ProjectType.Transfer)
-                    ))
-                    .ToList();
-                
-                //Group mats by reference and form result model
-                var mats = matProjects
-                    .GroupBy(p => p.NewTrustReferenceNumber)
-                    .Select(trust => new ListTrustsWithProjectsResultModel(
-                        trust.Key,
-                        trust.First().NewTrustName, 
-                        trust.Key,
-                        trust.Count(p => p.Type == ProjectType.Conversion),
-                        trust.Count(p => p.Type == ProjectType.Transfer)
-                    ))
+                var ukprnStrings = nonMatGroups
+                    .Select(x => x.UkprnInt.Value.ToString())
+                    .Distinct()
                     .ToList();
 
-                var allTrusts = trusts.Concat(mats)
+                var apiDtos = await trustsClient
+                    .GetByUkprnsAllAsync(ukprnStrings, cancellationToken);
+
+                var nonMatResults = nonMatGroups
+                    .Select(g => {
+                        var uk = g.UkprnInt.ToString();
+                        var dto = apiDtos.First(d => d.Ukprn == uk);
+                        return new ListTrustsWithProjectsResultModel(
+                            identifier: uk,
+                            trustName: dto.Name.ToTitleCase(),
+                            referenceNumber: uk,
+                            conversionCount: g.Conversions,
+                            transfersCount: g.Transfers
+                        );
+                    });
+
+                var matResults = matGroups
+                    .Select(g => new ListTrustsWithProjectsResultModel(
+                        identifier: g.Key,
+                        trustName: g.Name,
+                        referenceNumber: g.Key,
+                        conversionCount: g.Conversions,
+                        transfersCount: g.Transfers
+                    ));
+
+
+                var all = nonMatResults
+                    .Concat(matResults)
                     .OrderBy(r => r.trustName)
                     .ToList();
 
-                var result = allTrusts
-                .Skip(request.Page * request.Count)
-                .Take(request.Count)
-                .ToList();
+                var page = all
+                    .Skip(request.Page * request.Count)
+                    .Take(request.Count)
+                    .ToList();
 
-                return PaginatedResult<List<ListTrustsWithProjectsResultModel>>.Success(result, allTrusts.Count);
+                var total = all.Count;
+
+                return PaginatedResult<List<ListTrustsWithProjectsResultModel>>
+                    .Success(page, total);
+
+
             }
             catch (Exception ex)
             {
-                logger.LogError(ex, "Exception for {Name} Request - {@Request}", nameof(ListAllTrustsWithProjectsQueryHandler), request);
+                logger.LogError(ex,
+                    "Exception in {Handler} for {@Request}",
+                    nameof(ListAllTrustsWithProjectsQueryHandler),
+                    request);
+
                 return PaginatedResult<List<ListTrustsWithProjectsResultModel>>.Failure(ex.Message);
             }
         }
