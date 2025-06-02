@@ -27,6 +27,7 @@ Security in case of vulnerabilities.
 ### Changed  
 
 ### Fixed  
+
 - Optimised queries behind the "By local authority" page
 
 See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-05-30.320...main) for everything awaiting release
@@ -43,7 +44,7 @@ See the [full commit history](https://github.com/DFE-Digital/complete-conversion
 
 ### Fixed  
 - Unassigned projects should show "Not yet assigned" under "Assigned To" column for projects on the local authority/trust pages
-- Optimised queries behind the "By region" and "For trust" listing pages
+- Optimised queries behind the "By month" and "For trust" listing pages
 
 ### Removed
 - `UserTabAccessHelper` class is no longer required. Use policies instead
