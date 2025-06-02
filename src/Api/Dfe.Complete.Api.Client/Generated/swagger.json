@@ -346,13 +346,29 @@
             "x-position": 3
           },
           {
+            "name": "OrderBy.Field",
+            "in": "query",
+            "schema": {
+              "$ref": "#/components/schemas/OrderProjectByField"
+            },
+            "x-position": 4
+          },
+          {
+            "name": "OrderBy.Direction",
+            "in": "query",
+            "schema": {
+              "$ref": "#/components/schemas/OrderByDirection"
+            },
+            "x-position": 5
+          },
+          {
             "name": "Page",
             "in": "query",
             "schema": {
               "type": "integer",
               "format": "int32"
             },
-            "x-position": 4
+            "x-position": 6
           },
           {
             "name": "Count",
@@ -361,7 +377,7 @@
               "type": "integer",
               "format": "int32"
             },
-            "x-position": 5
+            "x-position": 7
           }
         ],
         "responses": {
@@ -647,6 +663,61 @@
                   "type": "array",
                   "items": {
                     "$ref": "#/components/schemas/ListAllProjectsResultModel"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request data."
+          }
+        }
+      }
+    },
+    "/v1/Projects/List/All/Regions": {
+      "get": {
+        "tags": [
+          "Projects"
+        ],
+        "summary": "Returns a list of Regions with project counts",
+        "operationId": "Projects_ListAllProjectsByRegion",
+        "parameters": [
+          {
+            "name": "ProjectStatus",
+            "in": "query",
+            "schema": {
+              "nullable": true,
+              "oneOf": [
+                {
+                  "$ref": "#/components/schemas/ProjectState"
+                }
+              ]
+            },
+            "x-position": 1
+          },
+          {
+            "name": "Type",
+            "in": "query",
+            "schema": {
+              "nullable": true,
+              "oneOf": [
+                {
+                  "$ref": "#/components/schemas/ProjectType"
+                }
+              ]
+            },
+            "x-position": 2
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Project",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ListAllProjectsByRegionsResultModel"
                   }
                 }
               }
@@ -2748,24 +2819,6 @@
           "UnassignedOnly"
         ]
       },
-      "ListMatResultModel": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-          "identifier": {
-            "type": "string"
-          },
-          "trustName": {
-            "type": "string"
-          },
-          "projectModels": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/ListAllProjectsResultModel"
-            }
-          }
-        }
-      },
       "OrderProjectByField": {
         "type": "string",
         "description": "",
@@ -2791,6 +2844,41 @@
           "Ascending",
           "Descending"
         ]
+      },
+      "ListMatResultModel": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "identifier": {
+            "type": "string"
+          },
+          "trustName": {
+            "type": "string"
+          },
+          "projectModels": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ListAllProjectsResultModel"
+            }
+          }
+        }
+      },
+      "ListAllProjectsByRegionsResultModel": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "region": {
+            "$ref": "#/components/schemas/Region"
+          },
+          "conversionsCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "transfersCount": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
       },
       "ListAllProjectsForUserQueryResultModel": {
         "type": "object",
