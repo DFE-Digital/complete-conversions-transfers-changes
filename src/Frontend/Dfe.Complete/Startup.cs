@@ -13,7 +13,7 @@ using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.FeatureManagement;
 using Microsoft.Identity.Web;
-using Microsoft.Identity.Web.UI;
+using Microsoft.Identity.Web.UI; 
 using DfE.CoreLibs.Security.Cypress;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using DfE.CoreLibs.Http.Middlewares.CorrelationId;
@@ -21,6 +21,7 @@ using DfE.CoreLibs.Http.Interfaces;
 using Dfe.Complete.Logging.Middleware;
 using DfE.CoreLibs.Security.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using DfE.CoreLibs.Security.Antiforgery;
 
 namespace Dfe.Complete;
 
@@ -51,6 +52,7 @@ public class Startup
 
     public void ConfigureServices(IServiceCollection services)
     {
+        ConfigureCustomAntiforgeryEndpoints(services);
         //ConfigureCypressAntiforgeryEndpoints(services);
         services.AddHttpClient();
         services.AddFeatureManagement();
@@ -70,7 +72,7 @@ public class Startup
             {
                 options.HtmlHelperOptions.ClientValidationEnabled = false;
             });
-
+        ConfigureCustomAntiforgery(services);
         //ConfigureCypressAntiforgery(services);
 
         services.AddControllersWithViews()
@@ -182,6 +184,31 @@ public class Startup
                    options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
                }
            });
+    }
+    private static void ConfigureCustomAntiforgeryEndpoints(IServiceCollection services)
+    {
+        services.Configure<CustomAwareAntiForgeryOptions>(opts =>
+        { 
+            opts.ShouldSkipAntiforgery = httpContext =>
+            {
+                var path = httpContext.Request.Path;
+                return path.StartsWithSegments("/v1") ||
+                       path.StartsWithSegments("/Errors") ||
+                       path.StartsWithSegments("/Cookies");
+            };
+            opts.RequestHeaderKey = "x-request-origin";
+        });
+    }
+    private static void ConfigureCustomAntiforgery(IServiceCollection services)
+    {
+        services.AddScoped<ICustomRequestChecker, CustomRequestChecker>();
+
+        services.AddScoped<CustomAwareAntiForgeryFilter>();
+
+        services.PostConfigure<MvcOptions>(options =>
+        {
+            options.Filters.AddService<CustomAwareAntiForgeryFilter>();
+        });
     }
 
     private void ConfigureCypressAntiforgeryEndpoints(IServiceCollection services)
