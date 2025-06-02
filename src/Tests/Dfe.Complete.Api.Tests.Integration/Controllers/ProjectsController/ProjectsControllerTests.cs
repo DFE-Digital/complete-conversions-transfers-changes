@@ -798,7 +798,7 @@ public partial class ProjectsControllerTests
 
         // Act & Assert
         var exception = await Assert.ThrowsAsync<CompleteApiException>(() =>
-            projectsClient.SearchProjectsAsync("  ", 0, 50));
+            projectsClient.SearchProjectsAsync("  ", [ProjectState.Active, ProjectState.Completed, ProjectState.DaoRevoked], 0, 50));
 
         Assert.Contains("The SearchTerm field is required.", exception.Response);
     }
@@ -844,7 +844,7 @@ public partial class ProjectsControllerTests
         var searchTerm = establishment.Name;
 
         // Act
-        var results = await projectsClient.SearchProjectsAsync(searchTerm, 0, 20, CancellationToken.None);
+        var results = await projectsClient.SearchProjectsAsync(searchTerm, [ProjectState.Active, ProjectState.Completed, ProjectState.DaoRevoked], 0, 20, CancellationToken.None);
 
         var expectedProjects = projects
             .Where(p => p.Urn == establishment.Urn)
@@ -896,7 +896,7 @@ public partial class ProjectsControllerTests
         var projectStatuses = new List<Domain.Enums.ProjectState> { Domain.Enums.ProjectState.Active, Domain.Enums.ProjectState.DaoRevoked, Domain.Enums.ProjectState.Completed };
 
         // Act
-        var results = await projectsClient.SearchProjectsAsync(ukprn!.ToString(), 0, 20, CancellationToken.None);
+        var results = await projectsClient.SearchProjectsAsync(ukprn!.ToString(), [ProjectState.Active, ProjectState.Completed, ProjectState.DaoRevoked], 0, 20, CancellationToken.None);
 
         var expectedProjects = projects
            .Where(p => p.IncomingTrustUkprn == ukprn && projectStatuses.Contains(p.State))
@@ -956,7 +956,7 @@ public partial class ProjectsControllerTests
         var establishment = establishments.First();
 
         // Act
-        var results = await projectsClient.SearchProjectsAsync(establishment.EstablishmentNumber!, 0, 20, CancellationToken.None);
+        var results = await projectsClient.SearchProjectsAsync(establishment.EstablishmentNumber!, [ProjectState.Active, ProjectState.Completed, ProjectState.DaoRevoked], 0, 20, CancellationToken.None);
 
         var expectedProjects = projects
             .Where(p => p.Urn == establishment.Urn && p.State == Domain.Enums.ProjectState.Active)
@@ -1023,7 +1023,7 @@ public partial class ProjectsControllerTests
         var urn = projects.First(p => p.State == Domain.Enums.ProjectState.Active).Urn;
 
         // Act
-        var results = await projectsClient.SearchProjectsAsync(urn!.Value.ToString(), 0, 20, CancellationToken.None);
+        var results = await projectsClient.SearchProjectsAsync(urn!.Value.ToString(), [ProjectState.Active, ProjectState.Completed, ProjectState.DaoRevoked], 0, 20, CancellationToken.None);
 
         var expectedProjects = projects
             .Where(p => p.Urn == urn)

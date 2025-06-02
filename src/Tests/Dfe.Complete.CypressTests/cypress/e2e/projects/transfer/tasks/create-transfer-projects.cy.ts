@@ -10,6 +10,7 @@ import {
     ukprn,
     ukprn2,
 } from "cypress/constants/stringTestConstants";
+import { checkAccessibilityAcrossPages } from "cypress/support/reusableTests";
 
 const urn = "136730";
 const urnMAT = "136731";
@@ -124,5 +125,9 @@ describe.skip("Create a new Transfer Project", () => {
             .hasLinkedValidationError(
                 "State if this project will be handed over to the Regional casework services team. Choose yes or no",
             );
+    });
+
+    it("Check accessibility across pages", () => {
+        checkAccessibilityAcrossPages();
     });
 });

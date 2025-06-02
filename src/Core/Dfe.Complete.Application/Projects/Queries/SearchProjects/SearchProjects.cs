@@ -8,7 +8,8 @@ using Microsoft.EntityFrameworkCore;
 namespace Dfe.Complete.Application.Projects.Queries.SearchProjects
 { 
     public record SearchProjectsQuery(
-       string SearchTerm) : PaginatedRequest<PaginatedResult<List<ListAllProjectsResultModel>>>;
+        string SearchTerm,
+        List<ProjectState> ProjectStates) : PaginatedRequest<PaginatedResult<List<ListAllProjectsResultModel>>>;
 
     public class SearchProjectsQueryHandler(
         IListAllProjectsQueryService listAllProjectsQueryService)
@@ -20,7 +21,7 @@ namespace Dfe.Complete.Application.Projects.Queries.SearchProjects
             try
             {
                 var searchQuery = listAllProjectsQueryService
-                    .ListSearchProjects([ProjectState.Active, ProjectState.DaoRevoked, ProjectState.Completed], request.SearchTerm).AsQueryable();
+                    .ListAllProjects(new ProjectFilters(null, null,ProjectStatuses: request.ProjectStates), search: request.SearchTerm).AsQueryable();
 
                 var itemCount = await searchQuery
                     .CountAsync(cancellationToken);

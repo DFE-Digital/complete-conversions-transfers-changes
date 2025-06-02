@@ -36,7 +36,9 @@ public class ListAllProjectsForTeamQueryHandlerTests
 
         var mock = listAllProjectsQueryModels.BuildMock();
 
-        mockListAllProjectsForFilterQueryService.ListAllProjects(Arg.Any<ProjectState?>(), Arg.Any<ProjectType?>(), team: requestedTeam)
+        mockListAllProjectsForFilterQueryService.ListAllProjects(
+            Arg.Is<ProjectFilters>(f =>
+                f.Team == requestedTeam))
             .Returns(mock);
 
         var query = new ListAllProjectsForTeamQuery(requestedTeam, ProjectState.Active, null) { Page = 1 };
@@ -67,7 +69,9 @@ public class ListAllProjectsForTeamQueryHandlerTests
 
         var mock = listAllProjectsQueryModels.BuildMock();
 
-        mockListAllProjectsForFilterQueryService.ListAllProjects(Arg.Any<ProjectState?>(), Arg.Any<ProjectType?>(), team: ProjectTeam.London)
+        mockListAllProjectsForFilterQueryService.ListAllProjects(
+            Arg.Is<ProjectFilters>(f =>
+                f.Team == ProjectTeam.London))
             .Returns(mock);
 
         var query = new ListAllProjectsForTeamQuery(ProjectTeam.London, ProjectState.Active, null) { Page = 10 };
@@ -94,7 +98,7 @@ public class ListAllProjectsForTeamQueryHandlerTests
 
         var query = new ListAllProjectsForTeamQuery(ProjectTeam.London, null, null);
 
-        mockListAllProjectsForFilterQueryService.ListAllProjects(query.ProjectStatus, query.Type, team: ProjectTeam.London)
+        mockListAllProjectsForFilterQueryService.ListAllProjects(new ProjectFilters(query.ProjectStatus, query.Type, Team: ProjectTeam.London))
             .Throws(new Exception(errorMessage));
 
         // Act

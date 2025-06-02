@@ -43,7 +43,7 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
             var mockProjects = matchingProjects.BuildMock();
 
             listAllProjectsQueryService
-                .ListAllProjects(ProjectState.Active, null, newTrustReferenceNumber: referenceNumber)
+                .ListAllProjects(new ProjectFilters(ProjectState.Active, null, NewTrustReferenceNumber: referenceNumber))
                 .Returns(mockProjects);
 
             var query = new ListEstablishmentsInMatQuery(referenceNumber);
@@ -52,7 +52,8 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
             var result = await handler.Handle(query, CancellationToken.None);
 
             // Assert
-            Assert.True(result.IsSuccess);
+            Assert.True(result.IsSuccess); 
+            Assert.NotNull(result.Value);
             Assert.Equal(referenceNumber, result.Value.Identifier);
             Assert.Equal(trustName, result.Value.TrustName);
             Assert.Equal(matchingProjects.Count, result.Value.ProjectModels.Count());
@@ -73,7 +74,7 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
             var emptyList = new List<ListAllProjectsQueryModel>().BuildMock();
 
             listAllProjectsQueryService
-                .ListAllProjects(ProjectState.Active, null, newTrustReferenceNumber: referenceNumber)
+                .ListAllProjects(new ProjectFilters(ProjectState.Active, null, NewTrustReferenceNumber: referenceNumber))
                 .Returns(emptyList);
 
             var query = new ListEstablishmentsInMatQuery(referenceNumber);
@@ -97,7 +98,7 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
             var query = new ListEstablishmentsInMatQuery("TR123");
 
             listAllProjectsQueryService
-                .ListAllProjects(ProjectState.Active, null,  newTrustReferenceNumber: "TR123")
+                .ListAllProjects(new ProjectFilters(ProjectState.Active, null,  NewTrustReferenceNumber: "TR123"))
                 .Throws(new Exception(expectedError));
 
             // Act

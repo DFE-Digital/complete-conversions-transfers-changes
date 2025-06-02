@@ -66,14 +66,15 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
 
             var mockProjects = listAllProjectsQueryModels.BuildMock();
 
-            listAllProjectsQueryService.ListAllProjects(ProjectState.Active, null, newTrustReferenceNumber: null, incomingTrustUkprn: ukprn.ToString())
+            listAllProjectsQueryService.ListAllProjects(new ProjectFilters(ProjectState.Active, null, NewTrustReferenceNumber: null, IncomingTrustUkprn: ukprn.ToString()))
                 .Returns(mockProjects);
 
             // Act
             var result = await handler.Handle(query, default);
 
             // Assert
-            Assert.NotNull(result);
+            Assert.NotNull(result); 
+            Assert.NotNull(result.Value);
             Assert.Equal(result.Value.TrustName, trustDto.Name);
             Assert.Equal(20, result.Value.Projects.Count());
         }

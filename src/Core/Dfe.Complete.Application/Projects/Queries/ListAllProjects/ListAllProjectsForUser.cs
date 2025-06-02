@@ -37,16 +37,16 @@ public class ListAllProjectsForUserQueryHandler(
             var assignedTo = request.ProjectUserFilter == ProjectUserFilter.AssignedTo ? user.Value?.Id : null;
             var createdBy = request.ProjectUserFilter == ProjectUserFilter.CreatedBy ? user.Value?.Id : null;
             var projectsForUser = await listAllProjectsQueryService
-                .ListAllProjects(request.State, null, assignedToUserId: assignedTo, createdByUserId: createdBy,
+                .ListAllProjects(new ProjectFilters(request.State, null, AssignedToUserId: assignedTo, CreatedByUserId: createdBy),
                     orderBy: request.OrderProjectQueryBy)
                 .ToListAsync(cancellationToken);
 
             var allProjectTrustUkPrns = projectsForUser
-                .SelectMany(p => new[]
-                {
+                .SelectMany<ListAllProjectsQueryModel, string>(p =>
+                [
                     p.Project?.IncomingTrustUkprn?.Value.ToString() ?? string.Empty,
                     p.Project?.OutgoingTrustUkprn?.Value.ToString() ?? string.Empty
-                })
+                ])
                 .Where(ukPrn => !string.IsNullOrEmpty(ukPrn))
                 .ToList();
 
@@ -57,7 +57,7 @@ public class ListAllProjectsForUserQueryHandler(
                 .Select(p => ListAllProjectsForUserQueryResultModel
                     .MapProjectAndEstablishmentToListAllProjectsForUserQueryResultModel(
                         p.Project,
-                        p.Establishment,
+                        p.Establishment!,
                         outgoingTrustName: allTrusts.FirstOrDefault(trust =>
                             trust.Ukprn == p.Project?.OutgoingTrustUkprn?.Value.ToString())?.Name,
                         incomingTrustName: allTrusts.FirstOrDefault(trust =>

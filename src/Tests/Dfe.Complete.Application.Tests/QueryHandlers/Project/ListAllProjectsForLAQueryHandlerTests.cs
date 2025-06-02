@@ -37,8 +37,11 @@ public class ListAllProjectsForLAQueryHandlerTests
 
         var listAllProjectsMock = listAllProjectsQueryModels.BuildMock();
         mockListAllProjectsQueryService
-            .ListAllProjects(Arg.Any<ProjectState?>(), Arg.Any<ProjectType?>(),
-                localAuthorityCode: localAuthorityCode, orderBy: Arg.Any<OrderProjectQueryBy>())
+            .ListAllProjects(
+            Arg.Is<ProjectFilters>(f =>
+                f.LocalAuthorityCode == localAuthorityCode
+            ),
+             orderBy: Arg.Any<OrderProjectQueryBy>())
             .Returns(listAllProjectsMock);
 
         //Act
@@ -48,10 +51,6 @@ public class ListAllProjectsForLAQueryHandlerTests
         Assert.NotNull(handlerResult.Value);
         Assert.True(handlerResult.IsSuccess);
         Assert.Equal(expected.Count, handlerResult.Value?.Count);
-
-        mockListAllProjectsQueryService.Received(1).ListAllProjects(
-            Arg.Any<ProjectState?>(), Arg.Any<ProjectType?>(), localAuthorityCode: localAuthorityCode, orderBy: Arg.Any<OrderProjectQueryBy>());
-
         
         Assert.Equal(expected.Select(r => r), handlerResult.Value?.Select(r => r));
         // for (int i = 0; i < handlerResult.Value!.Count; i++)
@@ -77,8 +76,11 @@ public class ListAllProjectsForLAQueryHandlerTests
 
         var listAllProjectsMock = listAllProjectsQueryModels.BuildMock();
 
-        mockListAllProjectsQueryService.ListAllProjects(Arg.Any<ProjectState?>(), Arg.Any<ProjectType?>(),
-                localAuthorityCode: localAuthorityCode, orderBy: Arg.Any<OrderProjectQueryBy>())
+        mockListAllProjectsQueryService.ListAllProjects(
+            Arg.Is<ProjectFilters>(f =>
+                f.LocalAuthorityCode == localAuthorityCode
+            ),
+             orderBy: Arg.Any<OrderProjectQueryBy>())
             .Returns(listAllProjectsMock);
 
         //Act
@@ -89,9 +91,6 @@ public class ListAllProjectsForLAQueryHandlerTests
         Assert.NotNull(handlerResult);
         Assert.True(handlerResult.IsSuccess);
         Assert.Equal(0, handlerResult.Value?.Count);
-
-        mockListAllProjectsQueryService.Received(1).ListAllProjects(
-            Arg.Any<ProjectState?>(), Arg.Any<ProjectType?>(), localAuthorityCode: localAuthorityCode, orderBy: Arg.Any<OrderProjectQueryBy>());
     }
 
     [Theory]
@@ -109,7 +108,11 @@ public class ListAllProjectsForLAQueryHandlerTests
         var laCode = fixture.Create<string>();
 
         mockListAllProjectsQueryService
-            .ListAllProjects(Arg.Any<ProjectState?>(), Arg.Any<ProjectType?>(), localAuthorityCode: laCode, orderBy: Arg.Any<OrderProjectQueryBy>())
+            .ListAllProjects(
+            Arg.Is<ProjectFilters>(f =>
+                f.LocalAuthorityCode == laCode
+            ),
+             orderBy: Arg.Any<OrderProjectQueryBy>())
             .Throws(new Exception(errorMessage));
 
         // Act
@@ -137,8 +140,11 @@ public class ListAllProjectsForLAQueryHandlerTests
         
         var listAllProjectsMock = listAllProjectsQueryModels.BuildMock();
         mockListAllProjectsQueryService
-            .ListAllProjects(Arg.Any<ProjectState?>(), Arg.Any<ProjectType?>(),
-                localAuthorityCode: localAuthorityCode, orderBy: Arg.Any<OrderProjectQueryBy>())
+            .ListAllProjects(
+            Arg.Is<ProjectFilters>(f =>
+                f.LocalAuthorityCode == localAuthorityCode
+            ), 
+            orderBy: Arg.Any<OrderProjectQueryBy>())
             .Returns(listAllProjectsMock);
         
         //Act

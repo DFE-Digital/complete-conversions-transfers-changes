@@ -21,7 +21,7 @@ namespace Dfe.Complete.Application.Projects.Queries.ListAllProjects
         {
             try
             {
-                var allProjects = await listAllProjectsQueryService.ListAllProjects(ProjectState.Active, null)
+                var allProjects = await listAllProjectsQueryService.ListAllProjects(new ProjectFilters(ProjectState.Active, null))
                     .Select(p => p.Project)
                     .ToListAsync(cancellationToken);
 
@@ -29,14 +29,14 @@ namespace Dfe.Complete.Application.Projects.Queries.ListAllProjects
                 var matProjects = allProjects.Where(p => p.FormAMat);
 
                 // Get trusts related to projects
-                var incomingTrustUkprns = standardProjects.Select(p => p.IncomingTrustUkprn.Value.ToString()).Distinct();
+                var incomingTrustUkprns = standardProjects.Select(p => p.IncomingTrustUkprn!.Value.ToString()).Distinct();
                 var standardProjectsTrust = await trustsClient.GetByUkprnsAllAsync(incomingTrustUkprns, cancellationToken);
 
                 var trusts = standardProjectsTrust
                     .Select(item => new ListTrustsWithProjectsResultModel(
-                        item.Ukprn,
-                        item.Name.ToTitleCase(),
-                        item.ReferenceNumber,
+                        item.Ukprn!,
+                        item.Name!.ToTitleCase(),
+                        item.ReferenceNumber!,
                         standardProjects.Count(p => p.IncomingTrustUkprn?.ToString() == item.Ukprn && p.Type == ProjectType.Conversion),
                         standardProjects.Count(p => p.IncomingTrustUkprn?.ToString() == item.Ukprn && p.Type == ProjectType.Transfer)
                     ))

@@ -36,13 +36,13 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.SearchProjects
              
             var mock = listAllProjectsQueryModels.BuildMock();
 
-            var query = new SearchProjectsQuery(searchTerm)
+            var query = new SearchProjectsQuery(searchTerm, [ProjectState.Active, ProjectState.Completed, ProjectState.DaoRevoked])
             {
                 Page = 0,
                 Count = 20
             };
             mockListAllProjectsQueryService
-                .ListSearchProjects(Arg.Any<List<ProjectState>>(), searchTerm)
+                .ListAllProjects(new ProjectFilters(null, null, ProjectStatuses: query.ProjectStates), searchTerm)
                 .Returns(mock);
 
             // Act
@@ -75,13 +75,13 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.SearchProjects
                 )).ToList();
 
             var mock = listAllProjectsQueryModels.BuildMock();
-            var query = new SearchProjectsQuery(searchTerm)
+            var query = new SearchProjectsQuery(searchTerm, [ProjectState.Active, ProjectState.Completed, ProjectState.DaoRevoked])
             {
                 Page = 0,
                 Count = 20
             };
             mockListAllProjectsQueryService
-                .ListSearchProjects(Arg.Any<List<ProjectState>>(), searchTerm)
+                .ListAllProjects(new ProjectFilters(null, null, ProjectStatuses: query.ProjectStates), searchTerm)
                 .Returns(mock); 
 
             // Act
@@ -114,7 +114,7 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.SearchProjects
                     item.Establishment
                 )).ToList();
 
-            var query = new SearchProjectsQuery(searchTerm)
+            var query = new SearchProjectsQuery(searchTerm, [ProjectState.Active, ProjectState.Completed, ProjectState.DaoRevoked])
             {
                 Page = 0,
                 Count = 20
@@ -123,7 +123,7 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.SearchProjects
             var mock = listAllProjectsQueryModels.BuildMock();
 
             mockListAllProjectsQueryService
-                .ListSearchProjects(Arg.Any<List<ProjectState>>(), searchTerm)
+                .ListAllProjects(new ProjectFilters(null,null, ProjectStatuses: query.ProjectStates), searchTerm)
                 .Returns(mock);
 
             // Act
@@ -155,14 +155,14 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.SearchProjects
                 )).ToList();
 
             var mock = listAllProjectsQueryModels.BuildMock();
-            var query = new SearchProjectsQuery(searchTerm!)
+            var query = new SearchProjectsQuery(searchTerm!, [ProjectState.Active, ProjectState.Completed, ProjectState.DaoRevoked])
             {
                 Page = 0,
                 Count = 20
             };
 
             mockListAllProjectsQueryService
-                .ListSearchProjects(Arg.Any<List<ProjectState>>(), searchTerm!)
+                .ListAllProjects(new ProjectFilters(null, null, ProjectStatuses: query.ProjectStates), searchTerm)
                 .Returns(mock);
              
             // Act
@@ -192,7 +192,7 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.SearchProjects
                     item.Establishment
                 )).ToList();
               
-            var query = new SearchProjectsQuery(searchTerm!)
+            var query = new SearchProjectsQuery(searchTerm!, [ProjectState.Active, ProjectState.Completed, ProjectState.DaoRevoked])
             {
                 Page = 1,
                 Count = 20

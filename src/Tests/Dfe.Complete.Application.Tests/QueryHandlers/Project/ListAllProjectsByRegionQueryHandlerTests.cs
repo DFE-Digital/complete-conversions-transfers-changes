@@ -31,7 +31,7 @@ public class ListAllProjectsByRegionQueryHandlerTests
 
         var mock = listAllProjectsQueryModels.BuildMock();
 
-        mockListAllProjectsQueryService.ListAllProjects(query.ProjectStatus, query.Type)
+        mockListAllProjectsQueryService.ListAllProjects(new ProjectFilters(query.ProjectStatus, query.Type))
             .Returns(mock);
 
         var listAllProjectsByRegionQuery = new ListAllProjectsByRegionQuery(null, null);
@@ -39,6 +39,7 @@ public class ListAllProjectsByRegionQueryHandlerTests
         var result = await handler.Handle(listAllProjectsByRegionQuery, CancellationToken.None);
 
         Assert.NotNull(result);
+        Assert.NotNull(result.Value);
         Assert.Distinct(result.Value.Select(x => x.Region));
         Assert.Contains(result.Value, x => x.TransfersCount > 1 || x.ConversionsCount > 1);
     }
@@ -50,15 +51,14 @@ public class ListAllProjectsByRegionQueryHandlerTests
         typeof(DateOnlyCustomization))]
     public async Task Handle_ThrowsException_Returns_FailureResult(
         [Frozen] IListAllProjectsQueryService mockListAllProjectsQueryService,
-        ListAllProjectsByRegionQueryHandler handler,
-        IFixture fixture)
+        ListAllProjectsByRegionQueryHandler handler)
     {
         // Arrange
         const string errorMessage = "test error message";
 
         var query = new ListAllProjectsQuery(null, null);
 
-        mockListAllProjectsQueryService.ListAllProjects(query.ProjectStatus, query.Type)
+        mockListAllProjectsQueryService.ListAllProjects(new ProjectFilters(query.ProjectStatus, query.Type))
             .Throws(new Exception(errorMessage));
 
         var listAllProjectsByRegionQuery = new ListAllProjectsByRegionQuery(null, null);
