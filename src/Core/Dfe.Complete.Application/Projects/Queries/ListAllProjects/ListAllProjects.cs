@@ -27,7 +27,9 @@ namespace Dfe.Complete.Application.Projects.Queries.ListAllProjects
             try
             {
                 var projectList = await listAllProjectsQueryService
-                    .ListAllProjects(request.ProjectStatus, request.Type, assignedToState: request.AssignedToState, orderBy: request.OrderBy)
+                    .ListAllProjects(
+                        new ProjectFilters(request.ProjectStatus, request.Type, AssignedToState: request.AssignedToState),
+                        orderBy: request.OrderBy)
                     .Skip(request.Page * request.Count).Take(request.Count)
                     .Select(item => ListAllProjectsResultModel.MapProjectAndEstablishmentToListAllProjectResultModel(
                         item.Project!,

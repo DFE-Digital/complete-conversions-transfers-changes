@@ -31,7 +31,7 @@ public class ListAllProjectsByRegionQueryHandlerTests
 
         var mock = listAllProjectsQueryModels.BuildMock();
 
-        mockListAllProjectsQueryService.ListAllProjects(query.ProjectStatus, query.Type)
+        mockListAllProjectsQueryService.ListAllProjects(new ProjectFilters(query.ProjectStatus, query.Type))
             .Returns(mock);
 
         var listAllProjectsByRegionQuery = new ListAllProjectsByRegionQuery(null, null);
@@ -58,7 +58,7 @@ public class ListAllProjectsByRegionQueryHandlerTests
 
         var query = new ListAllProjectsQuery(null, null);
 
-        mockListAllProjectsQueryService.ListAllProjects(query.ProjectStatus, query.Type)
+        mockListAllProjectsQueryService.ListAllProjects(new ProjectFilters(query.ProjectStatus, query.Type))
             .Throws(new Exception(errorMessage));
 
         var listAllProjectsByRegionQuery = new ListAllProjectsByRegionQuery(null, null);

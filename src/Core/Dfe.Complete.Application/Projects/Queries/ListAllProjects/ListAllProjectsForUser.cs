@@ -37,7 +37,7 @@ public class ListAllProjectsForUserQueryHandler(
             var assignedTo = request.ProjectUserFilter == ProjectUserFilter.AssignedTo ? user.Value?.Id : null;
             var createdBy = request.ProjectUserFilter == ProjectUserFilter.CreatedBy ? user.Value?.Id : null;
             var projectsForUser = await listAllProjectsQueryService
-                .ListAllProjects(request.State, null, assignedToUserId: assignedTo, createdByUserId: createdBy,
+                .ListAllProjects(new ProjectFilters(request.State, null, AssignedToUserId: assignedTo, CreatedByUserId: createdBy),
                     orderBy: request.OrderProjectQueryBy)
                 .ToListAsync(cancellationToken);
 

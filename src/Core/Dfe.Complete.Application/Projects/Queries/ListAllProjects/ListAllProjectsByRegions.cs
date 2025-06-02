@@ -23,7 +23,7 @@ public class ListAllProjectsByRegionQueryHandler(IListAllProjectsQueryService li
         try
         {
             var projectsList = await listAllProjectsQueryService
-                .ListAllProjects(request.ProjectStatus, request.Type).ToListAsync(cancellationToken: cancellationToken);
+                .ListAllProjects(new ProjectFilters(request.ProjectStatus, request.Type)).ToListAsync(cancellationToken: cancellationToken);
 
             var projectsGroupedByRegion = projectsList.Where(p => p.Project?.Region != null).GroupBy(p => p.Project?.Region);
 

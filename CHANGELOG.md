@@ -21,13 +21,28 @@ Security in case of vulnerabilities.
 ---
 
 ## Unreleased  
+
+### Added  
+
+### Changed  
+
+### Fixed  
+
+See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-05-30.320...main) for everything awaiting release
+
+---
+
+## [1.5.4](https://github.com/DFE-Digital/complete-conversions-transfers-changes/releases/tag/production-2025-05-30.320) - 2025-05-30
 ### Added  
 - `PolicyCheckTagHelper` added to conditionally hide elements based on policy
+- Query builder in the infrastructure layer to help support custom queries
 
 ### Changed  
 - Navigation items previously hidden with `UserTabAccessHelper` now hide on policy
 
 ### Fixed  
+- Unassigned projects should show "Not yet assigned" under "Assigned To" column for projects on the local authority/trust pages
+- Optimised queries behind the "By region" and "For trust" listing pages
 
 ### Removed
 - `UserTabAccessHelper` class is no longer required. Use policies instead
@@ -35,7 +50,7 @@ Security in case of vulnerabilities.
 ### Security
 - Only correct user groups can now create projects
 
-See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-05-22.290...main) for everything awaiting release
+See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-05-22.290...production-2025-05-30.320) for everything in the release
 
 ---
 

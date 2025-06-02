@@ -35,7 +35,7 @@ public class ListAllProjectsQueryHandlerTests
 
         var mock = listAllProjectsQueryModels.BuildMock();
 
-        mockListAllProjectsQueryService.ListAllProjects(query.ProjectStatus, query.Type)
+        mockListAllProjectsQueryService.ListAllProjects(new ProjectFilters(query.ProjectStatus, query.Type))
             .Returns(mock);
 
         // Act
@@ -73,7 +73,7 @@ public class ListAllProjectsQueryHandlerTests
 
         var mock = listAllProjectsQueryModels.BuildMock();
 
-        mockListAllProjectsQueryService.ListAllProjects(query.ProjectStatus, query.Type)
+        mockListAllProjectsQueryService.ListAllProjects(new ProjectFilters(query.ProjectStatus, query.Type))
             .Returns(mock);
 
         // Act
@@ -106,7 +106,7 @@ public class ListAllProjectsQueryHandlerTests
 
         var mock = listAllProjectsQueryModels.BuildMock();
 
-        mockListAllProjectsQueryService.ListAllProjects(query.ProjectStatus, query.Type)
+        mockListAllProjectsQueryService.ListAllProjects(new ProjectFilters(query.ProjectStatus, query.Type))
             .Returns(mock);
 
         // Act
@@ -132,7 +132,7 @@ public class ListAllProjectsQueryHandlerTests
 
         var query = new ListAllProjectsQuery(null, null);
 
-        mockListAllProjectsQueryService.ListAllProjects(query.ProjectStatus, query.Type)
+        mockListAllProjectsQueryService.ListAllProjects(new ProjectFilters(query.ProjectStatus, query.Type))
             .Throws(new Exception(errorMessage));
 
         // Act
@@ -166,7 +166,7 @@ public class ListAllProjectsQueryHandlerTests
         var query = new ListAllProjectsQuery(null, null);
 
         mockListAllProjectsQueryService
-            .ListAllProjects(query.ProjectStatus, query.Type)
+            .ListAllProjects(new ProjectFilters(query.ProjectStatus, query.Type))
             .Returns(mock);
 
         // Act

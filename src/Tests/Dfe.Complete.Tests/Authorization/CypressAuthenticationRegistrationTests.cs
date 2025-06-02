@@ -3,17 +3,18 @@ using DfE.CoreLibs.Security.Interfaces;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
+using Moq;
 
 namespace Dfe.Complete.Tests.Authorization
 {
     public class CypressAuthenticationRegistrationTests
     {
-        private ServiceProvider BuildServices(Action<IServiceCollection> configure)
+        private static ServiceProvider BuildServices(Action<IServiceCollection> configure)
         {
             var services = new ServiceCollection();
 
@@ -30,7 +31,9 @@ namespace Dfe.Complete.Tests.Authorization
             services.AddSingleton<IConfiguration>(inMemConfig);
 
             // Fake environment as Development
-            services.AddSingleton<IHostEnvironment>(new HostingEnvironment { EnvironmentName = "Development" });
+            var mockEnv = new Mock<IWebHostEnvironment>();
+            mockEnv.Setup(env => env.EnvironmentName).Returns("Development");
+            services.AddSingleton<IHostEnvironment>(mockEnv.Object);
 
             configure(services);
             return services.BuildServiceProvider();
@@ -111,7 +114,9 @@ namespace Dfe.Complete.Tests.Authorization
 
             services.AddSingleton<IConfiguration>(configuration);
 
-            var startup = new Startup(configuration);
+            var mockEnv = new Mock<IWebHostEnvironment>();
+            mockEnv.Setup(env => env.EnvironmentName).Returns("Development");
+            var startup = new Startup(configuration, mockEnv.Object);
             startup.ConfigureServices(services);
 
             var serviceProvider = services.BuildServiceProvider();
@@ -125,13 +130,5 @@ namespace Dfe.Complete.Tests.Authorization
             Assert.NotNull(multiAuthScheme);
             Assert.NotNull(openIdScheme);
         }
-    }
-
-    internal class HostingEnvironment : IHostEnvironment
-    {
-        public string EnvironmentName { get; set; }
-        public string ApplicationName { get; set; }
-        public string ContentRootPath { get; set; }
-        public IFileProvider ContentRootFileProvider { get; set; }
     }
 }
