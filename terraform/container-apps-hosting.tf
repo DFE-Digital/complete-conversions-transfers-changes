@@ -37,6 +37,7 @@ module "azure_container_apps_hosting" {
   existing_resource_group            = local.existing_resource_group
   launch_in_vnet                     = false
   container_app_name_override        = "complete-dotnet-app"
+  enable_container_app_file_share    = local.enable_container_app_file_share
 
   enable_monitoring              = local.enable_monitoring
   monitor_email_receivers        = local.monitor_email_receivers
