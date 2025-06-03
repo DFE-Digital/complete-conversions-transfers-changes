@@ -58,8 +58,7 @@ namespace Dfe.Complete.Pages.Public
 
                 if (cookiesConsent.HasValue && string.IsNullOrWhiteSpace(returnUrl))
                 {
-                    returnUrl = Request.Headers.Referer.ToString().Replace("https://", string.Empty).Replace(HttpContext.Request.Host.Value, string.Empty);
-					return Redirect($"/cookies?consent={cookiesConsent}&returnUrl={returnUrl}");
+					return Redirect($"/cookies?consent={cookiesConsent}&returnUrl={GetReturnUrl()}");
                 }
 
                 return Page();
@@ -68,7 +67,10 @@ namespace Dfe.Complete.Pages.Public
 			return Page();
 		}
 
-		private void ApplyCookieConsent(bool consent)
+        private string GetReturnUrl()
+			=> Request.Headers.Referer.ToString().Replace("https://", string.Empty).Replace(HttpContext.Request.Host.Value, string.Empty);
+
+        private void ApplyCookieConsent(bool consent)
 		{
 			if (consent) { 
 				analyticsConsentService.AllowConsent();

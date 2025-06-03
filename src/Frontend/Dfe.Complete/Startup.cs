@@ -45,15 +45,17 @@ public class Startup
         return Configuration.GetRequiredSection(sectionName);
     }
 
-    private T GetTypedConfigurationFor<T>()
+    private T GetTypedConfigurationFor<T>() where T : class, new()
     {
-        return GetConfigurationSectionFor<T>().Get<T>();
+        var section = GetConfigurationSectionFor<T>();
+        return section == null
+            ? throw new InvalidOperationException($"Configuration section for {typeof(T).Name} not found.")
+            : section.Get<T>() ?? new T();
     }
 
     public void ConfigureServices(IServiceCollection services)
     {
         ConfigureCustomAntiforgeryEndpoints(services);
-        //ConfigureCypressAntiforgeryEndpoints(services);
         services.AddHttpClient();
         services.AddFeatureManagement();
         services.AddHealthChecks();
@@ -74,7 +76,6 @@ public class Startup
             });
          
         ConfigureCustomAntiforgery(services);
-        //ConfigureCypressAntiforgery(services);
 
         services.AddControllersWithViews()
            .AddMicrosoftIdentityUI();
@@ -210,38 +211,7 @@ public class Startup
         {
             options.Filters.AddService<CustomAwareAntiForgeryFilter>();
         });
-    }
-
-    /*private void ConfigureCypressAntiforgeryEndpoints(IServiceCollection services)
-    {
-        if (!_env.IsProduction())
-        {
-            services.Configure<CypressAwareAntiForgeryOptions>(opts =>
-            {
-                opts.ShouldSkipAntiforgery = httpContext =>
-                {
-                    var path = httpContext.Request.Path;
-                    return path.StartsWithSegments("/v1") ||
-                           path.StartsWithSegments("/Errors");
-                };
-            });
-        }
-    }
-
-    private void ConfigureCypressAntiforgery(IServiceCollection services)
-    {
-        if (!_env.IsProduction())
-        {
-            services.AddScoped<ICypressRequestChecker, CypressRequestChecker>();
-
-            services.AddScoped<CypressAwareAntiForgeryFilter>();
-
-            services.PostConfigure<MvcOptions>(options =>
-            {
-                options.Filters.AddService<CypressAwareAntiForgeryFilter>();
-            });
-        }
-    }*/
+    } 
 
     private void RegisterClients(IServiceCollection services)
     {
