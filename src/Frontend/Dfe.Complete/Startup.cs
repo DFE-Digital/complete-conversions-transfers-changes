@@ -72,6 +72,7 @@ public class Startup
             {
                 options.HtmlHelperOptions.ClientValidationEnabled = false;
             });
+         
         ConfigureCustomAntiforgery(services);
         //ConfigureCypressAntiforgery(services);
 
@@ -185,25 +186,25 @@ public class Startup
                }
            });
     }
-    private static void ConfigureCustomAntiforgeryEndpoints(IServiceCollection services)
+    private void ConfigureCustomAntiforgeryEndpoints(IServiceCollection services)
     {
         services.Configure<CustomAwareAntiForgeryOptions>(opts =>
-        { 
+        {
             opts.ShouldSkipAntiforgery = httpContext =>
             {
                 var path = httpContext.Request.Path;
-                return path.StartsWithSegments("/v1") ||
-                       path.StartsWithSegments("/Errors") ||
-                       path.StartsWithSegments("/Cookies");
+                return path.StartsWithSegments("/Cookies") ||
+                          (!_env.IsProduction() && (path.StartsWithSegments("/v1") || path.StartsWithSegments("/Errors") || path.StartsWithSegments("/Cookies")));
             };
-            opts.RequestHeaderKey = "x-request-origin";
+            opts.RequestHeaderKey = Configuration["RequestHeaderKey"];
+
         });
     }
     private static void ConfigureCustomAntiforgery(IServiceCollection services)
     {
         services.AddScoped<ICustomRequestChecker, CustomRequestChecker>();
-
         services.AddScoped<CustomAwareAntiForgeryFilter>();
+        services.AddScoped<ICypressRequestChecker, CypressRequestChecker>();
 
         services.PostConfigure<MvcOptions>(options =>
         {
