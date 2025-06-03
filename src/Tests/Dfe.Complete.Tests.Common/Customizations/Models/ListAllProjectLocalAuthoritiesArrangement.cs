@@ -26,7 +26,7 @@ public class ListAllProjectLocalAuthoritiesArrangement : ICustomization
 
         var expectedLocalAuthoritiesResult = localAuthorities.Select(la =>
                 new ListAllProjectLocalAuthoritiesResultModel(
-                    la,
+                    la.Name,
                     la.Code,
                     projects.Count(p =>
                         p.Establishment.LocalAuthorityCode == la.Code && p.Project.Type == ProjectType.Conversion),
