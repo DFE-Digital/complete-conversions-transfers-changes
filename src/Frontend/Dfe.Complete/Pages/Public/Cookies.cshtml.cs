@@ -19,8 +19,7 @@ namespace Dfe.Complete.Pages.Public
 		{
             ReturnPath = returnUrl;
 
-			Consent = analyticsConsentService.ConsentValue(); 
-			
+			Consent = analyticsConsentService.ConsentValue();
 
             if (consent.HasValue)
 			{
@@ -42,6 +41,7 @@ namespace Dfe.Complete.Pages.Public
         public IActionResult OnPost(bool? consent, string returnUrl, [FromForm(Name ="cookies_form[accept_optional_cookies]")] bool? cookiesConsent)
 		{
 			ReturnPath = returnUrl;
+			 
 
             if (!consent.HasValue)
             {
@@ -59,7 +59,9 @@ namespace Dfe.Complete.Pages.Public
 
                 if (cookiesConsent.HasValue)
                 {
-					return RedirectToPage(Links.Public.CookiePreferences);
+					var returnURl = Request.Headers["Referer"].ToString().Replace("https://", string.Empty).Replace(HttpContext.Request.Host.Value, string.Empty);
+
+                    return RedirectToPage(returnURl);
                 }
                 return Page();
 			}
