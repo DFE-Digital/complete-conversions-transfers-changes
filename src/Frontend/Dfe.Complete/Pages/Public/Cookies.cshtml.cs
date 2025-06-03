@@ -59,9 +59,9 @@ namespace Dfe.Complete.Pages.Public
 
                 if (cookiesConsent.HasValue)
                 {
-					var returnURl = Request.Headers["Referer"].ToString().Replace("https://", string.Empty).Replace(HttpContext.Request.Host.Value, string.Empty);
+					//var returnURl = Request.Headers["Referer"].ToString().Replace("https://", string.Empty).Replace(HttpContext.Request.Host.Value, string.Empty);
 
-                    return RedirectToPage(returnURl);
+                    return RedirectToPage(Request.Headers["Referer"].ToString());
                 }
                 return Page();
 			}
