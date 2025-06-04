@@ -81,6 +81,48 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers
 
             Assert.Null(newContact);
         }
+        [Theory]
+        [CustomAutoData(typeof(CustomWebApplicationDbContextFactoryCustomization))]
+        public async Task CreateLocalAuthorityAsyncShouldNotCreateLocalAuthorityWithExistingLocalAuthorityCode(
+        CustomWebApplicationDbContextFactory<Program> factory,
+        IServiceSupportClient serviceSupportClient,
+        IFixture fixture)
+        {
+            factory.TestClaims = new[] { ApiRoles.ReadRole, ApiRoles.WriteRole, ApiRoles.UpdateRole }
+                 .Select(x => new Claim(ClaimTypes.Role, x)).ToList();
+
+            var dbContext = factory.GetDbContext<CompleteContext>();
+
+            var localAuthority = fixture.Customize(new LocalAuthorityCustomization
+            {
+                LocalAuthorityCode = fixture.Create<int>().ToString(),
+                LocalAuthorityName = fixture.Create<string>()
+
+            }).Create<Domain.Entities.LocalAuthority>();
+            await dbContext.LocalAuthorities.AddAsync(localAuthority);
+            await dbContext.SaveChangesAsync();
+            var command = new CreateLocalAuthorityCommand()
+            {
+                Id = new LocalAuthorityId() { Value = Guid.NewGuid() },
+                Code = localAuthority.Code,
+                Name = fixture.Create<string>(),
+                Address1 = fixture.Create<string>(),
+                Address2 = fixture.Create<string>(),
+                AddressTown = fixture.Create<string>(),
+                AddressCounty = fixture.Create<string>(),
+                AddressPostcode = fixture.Create<string>()
+            };
+             
+            await Assert.ThrowsAsync<CompleteApiException>(() => serviceSupportClient.CreateLocalAuthorityAsync(command, CancellationToken.None));
+
+            var newLocalAuthority = await dbContext.LocalAuthorities.SingleOrDefaultAsync(x => x.Id == new Domain.ValueObjects.LocalAuthorityId(command.Id.Value.Value));
+
+            Assert.Null(newLocalAuthority);
+
+            var newContact = await dbContext.Contacts.SingleOrDefaultAsync();
+
+            Assert.Null(newContact);
+        }
 
         [Theory]
         [CustomAutoData(typeof(CustomWebApplicationDbContextFactoryCustomization))]
@@ -249,6 +291,61 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers
             var localAuthority = await dbContext.LocalAuthorities.SingleOrDefaultAsync(x => x.Id == new Domain.ValueObjects.LocalAuthorityId(command.Id.Value!.Value));
 
             Assert.Null(localAuthority);
+        }
+
+        [Theory]
+        [CustomAutoData(typeof(CustomWebApplicationDbContextFactoryCustomization))]
+        public async Task UpdateLocalAuthorityDetailsAsyncShouldThrowExceptionOnCodeMatchesWithAnotherLocalAuthorityCode(
+          CustomWebApplicationDbContextFactory<Program> factory,
+          IServiceSupportClient serviceSupportClient,
+          IFixture fixture)
+        {
+            factory.TestClaims = new[] { ApiRoles.ReadRole, ApiRoles.WriteRole, ApiRoles.UpdateRole }
+                .Select(x => new Claim(ClaimTypes.Role, x)).ToList();
+
+            var dbContext = factory.GetDbContext<CompleteContext>();
+            dbContext.LocalAuthorities.RemoveRange(dbContext.LocalAuthorities);
+            int i = 0;
+            var localAuthorities = Enumerable.Range(0, 2)
+               .Select(_ =>
+               {
+                   i++;
+                   return fixture.Customize(new LocalAuthorityCustomization
+                   {
+                       LocalAuthorityCode = i.ToString("D4"),
+                       LocalAuthorityName = fixture.Create<string>()
+                   }).Create<Domain.Entities.LocalAuthority>();
+               })
+               .ToList();
+            await dbContext.LocalAuthorities.AddRangeAsync(localAuthorities);
+
+            await dbContext.SaveChangesAsync();
+            var localAuthority = localAuthorities.First();
+            var anotherLocalAuthority = localAuthorities.Skip(1).First();
+
+            var command = new UpdateLocalAuthorityCommand()
+            {
+                Id = new LocalAuthorityId { Value = localAuthority.Id.Value },
+                Code = anotherLocalAuthority.Code,
+                Address1 = fixture.Create<string>(),
+                Address2 = fixture.Create<string>(),
+                Address3 = fixture.Create<string>(),
+                AddressTown = fixture.Create<string>(),
+                AddressCounty = fixture.Create<string>(),
+                AddressPostcode = fixture.Create<string>(),
+                ContactName = fixture.Create<string>(),
+                Title = fixture.Create<string>(),
+                ContactId = new ContactId { Value = Guid.NewGuid() },
+                Email = fixture.Create<string>(),
+                Phone = fixture.Create<string>()
+            };
+
+            await serviceSupportClient.UpdateLocalAuthorityDetailsAsync(command, CancellationToken.None);
+
+            var existinglocalAuthority = await dbContext.LocalAuthorities.SingleOrDefaultAsync(x => x.Id == new Domain.ValueObjects.LocalAuthorityId(command.Id.Value!.Value));
+
+            Assert.NotNull(existinglocalAuthority); 
+            Assert.NotEqual(existinglocalAuthority.Code, anotherLocalAuthority.Code);
         }
 
         [Theory]

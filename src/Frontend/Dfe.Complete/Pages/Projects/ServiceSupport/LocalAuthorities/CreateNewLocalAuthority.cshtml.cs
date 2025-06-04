@@ -64,6 +64,11 @@ namespace Dfe.Complete.Pages.Projects.ServiceSupport.LocalAuthorities
                 TempData["HasCreatedLaDetails"] = true;
                 return RedirectToPage(Links.LocalAuthorities.ViewLocalAuthorityDetails.Page, new { Id = localAuthorityId.Value });
             }
+            else if(response.Error == $"Already existed local authority with code {Code}")
+            { 
+                errorService.AddError(nameof(Code), ValidationConstants.AlreadyBeenTaken);
+                ModelState.AddModelError(nameof(Code), ValidationConstants.AlreadyBeenTaken);
+            }
             return Page();
         }
     }

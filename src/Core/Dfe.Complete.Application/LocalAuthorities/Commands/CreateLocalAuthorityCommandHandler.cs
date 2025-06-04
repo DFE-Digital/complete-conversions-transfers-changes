@@ -35,19 +35,19 @@ namespace Dfe.Complete.Application.LocalAuthorities.Commands
             try
             {
                 await unitOfWork.BeginTransactionAsync();
-                var localAuthority = await localAuthorityRepository.FindAsync(x => x.Name == request.Name && x.Code == request.Code, cancellationToken);
-                if (localAuthority != null)
+                var hasLocalAuthority = await localAuthorityRepository.ExistsAsync(x => x.Code == request.Code, cancellationToken);
+                if (hasLocalAuthority)
                 { 
-                    throw new AlreadyExistedException($"Cannot create Local authority with code {request.Code} as it is already existed.");
+                    throw new AlreadyExistedException($"Already existed local authority with code {request.Code}");
                 } 
-                localAuthority = LocalAuthority.CreateLocalAuthority(request.Id, request.Name, request.Code, new AddressDetails(request.Address1,
+                var localAuthority = LocalAuthority.CreateLocalAuthority(request.Id, request.Name, request.Code, new AddressDetails(request.Address1,
                     request.Address2, request.Address3, request.AddressTown, request.AddressCounty,
                     request.AddressPostcode), DateTime.UtcNow);
 
                 await localAuthorityRepository.AddAsync(localAuthority, cancellationToken);
                 if (!string.IsNullOrWhiteSpace(request.Title) && !string.IsNullOrWhiteSpace(request.ContactName))
                 {
-                    var contact = Contact.CreateLocalAuthorityContact(request.ContactId!, request.Title, request.Name, request.Email, request.Phone, localAuthority.Id, DateTime.Now);
+                    var contact = Contact.CreateLocalAuthorityContact(request.ContactId!, request.Title, request.ContactName, request.Email, request.Phone, localAuthority.Id, DateTime.Now);
                     await contactRepository.AddAsync(contact, cancellationToken);
                 }
                 await unitOfWork.CommitAsync();

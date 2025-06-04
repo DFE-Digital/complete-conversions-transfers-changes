@@ -10,5 +10,6 @@
         public const string NotRecognisedUKPostcode = "not recognised as a UK postcode";
         public const string NotRecognisedUKPhone = "not recognised as a UK phone number";
         public const string InvalidEmailFormat = "Email address must be in correct format";
+        public const string AlreadyBeenTaken = "has already been taken";
     }
 }

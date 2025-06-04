@@ -1,9 +1,7 @@
 ﻿using Dfe.Complete.Application.Common.Interfaces;
 using Dfe.Complete.Application.LocalAuthorities.Commands;
-using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Domain.Interfaces.Repositories;
 using Dfe.Complete.Domain.ValueObjects;
-using Dfe.Complete.Utils;
 using Microsoft.Extensions.Logging;
 using Moq;
 using System.Linq.Expressions;
@@ -147,6 +145,35 @@ namespace Dfe.Complete.Application.Tests.CommandHandlers.LocalAuthority
 
             Assert.False(result.IsSuccess);
             Assert.Equal("Cannot update Local authority as it is not existed.", result.Error);
+            _mockUnitOfWork.Verify(uow => uow.BeginTransactionAsync(), Times.Once);
+            _mockUnitOfWork.Verify(uow => uow.RollBackAsync(), Times.Once);
+            _mockUnitOfWork.Verify(uow => uow.CommitAsync(), Times.Never);
+        }
+
+
+        [Fact]
+        public async Task Handle_ShouldReturnFailure_WhenAnotherLocalAuthorityAlreadyExistWithSameCode()
+        {
+            var command = new UpdateLocalAuthorityCommand(
+                 new LocalAuthorityId(Guid.NewGuid()), "Code", "Address1", "Address2", "Address3",
+                 "AddressTown", "AddressCounty", "AddressPostcode");
+
+            var localAuthority = Domain.Entities.LocalAuthority.CreateLocalAuthority(
+                command.Id, "Name", "Code1", new AddressDetails("Address1", "Address2", "Address3",
+                "AddressTown", "AddressCounty", "AddressPostcode"), DateTime.UtcNow);
+
+            _mockLocalAuthorityRepository.Setup(repo => repo.FindAsync(It.IsAny<Expression<Func<Domain.Entities.LocalAuthority, bool>>>(), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(localAuthority);
+
+            _mockLocalAuthorityRepository.Setup(repo => repo.ExistsAsync(It.IsAny<Expression<Func<Domain.Entities.LocalAuthority, bool>>>(), It.IsAny<CancellationToken>()))
+               .ReturnsAsync(true); 
+
+            _mockUnitOfWork.Setup(uow => uow.CommitAsync()).Returns(Task.CompletedTask);
+
+            var result = await _handler.Handle(command, CancellationToken.None);
+
+            Assert.False(result.IsSuccess);
+            Assert.Equal($"Already existed local authority with code {command.Code}", result.Error);
             _mockUnitOfWork.Verify(uow => uow.BeginTransactionAsync(), Times.Once);
             _mockUnitOfWork.Verify(uow => uow.RollBackAsync(), Times.Once);
             _mockUnitOfWork.Verify(uow => uow.CommitAsync(), Times.Never);

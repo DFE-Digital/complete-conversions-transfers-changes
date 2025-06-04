@@ -67,16 +67,17 @@ namespace Dfe.Complete.Application.Tests.CommandHandlers.LocalAuthority
                 command.Id, command.Name, command.Code, new AddressDetails(command.Address1, command.Address2, command.Address3,
                 command.AddressTown, command.AddressCounty, command.AddressPostcode), DateTime.UtcNow);
 
-            _mockLocalAuthorityRepository.Setup(repo => repo.FindAsync(It.IsAny<Expression<Func<Domain.Entities.LocalAuthority, bool>>>(), _cancellationToken))
-                .ReturnsAsync(existingLocalAuthority);
+            _mockLocalAuthorityRepository.Setup(repo => repo.ExistsAsync(It.IsAny<Expression<Func<Domain.Entities.LocalAuthority, bool>>>(), _cancellationToken))
+              .ReturnsAsync(true); 
 
             var result = await _handler.Handle(command, _cancellationToken);
 
             Assert.False(result.IsSuccess);
-            Assert.Equal($"Cannot create Local authority with code {command.Code} as it is already existed.", result.Error);
+            Assert.Equal($"Already existed local authority with code {command.Code}", result.Error);
 
             _mockUnitOfWork.Verify(uow => uow.BeginTransactionAsync(), Times.Once);
             _mockUnitOfWork.Verify(uow => uow.RollBackAsync(), Times.Once);
+            _mockLocalAuthorityRepository.Verify(repo => repo.FindAsync(It.IsAny<Expression<Func<Domain.Entities.LocalAuthority, bool>>>(), _cancellationToken), Times.Never());
         }
 
         [Fact]
@@ -87,7 +88,7 @@ namespace Dfe.Complete.Application.Tests.CommandHandlers.LocalAuthority
                 "AddressTown", "AddressCounty", "AddressPostcode", new ContactId(Guid.NewGuid()),
                 "Title", "ContactName", "Email", "Phone");
 
-            _mockLocalAuthorityRepository.Setup(repo => repo.FindAsync(It.IsAny<Expression<Func<Domain.Entities.LocalAuthority, bool>>>(), _cancellationToken))
+            _mockLocalAuthorityRepository.Setup(repo => repo.ExistsAsync(It.IsAny<Expression<Func<Domain.Entities.LocalAuthority, bool>>>(), _cancellationToken))
                 .ThrowsAsync(new Exception("Database error"));
 
             var result = await _handler.Handle(command, _cancellationToken);
