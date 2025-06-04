@@ -1,6 +1,7 @@
-using Azure.Storage.Blobs;
+using Azure.Identity;
 using Dfe.Complete.Application.Common.Mappers;
 using Dfe.Complete.Configuration;
+using DataProtectionOptions = Dfe.Complete.Configuration.DataProtectionOptions;
 using Dfe.Complete.Infrastructure;
 using Dfe.Complete.Infrastructure.Security.Authorization;
 using Dfe.Complete.Security;
@@ -19,16 +20,20 @@ using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using DfE.CoreLibs.Http.Middlewares.CorrelationId;
 using DfE.CoreLibs.Http.Interfaces;
 using Dfe.Complete.Logging.Middleware;
+using DfE.CoreLibs.Security.Interfaces;
+using Microsoft.AspNetCore.Mvc;
+
 namespace Dfe.Complete;
 
 public class Startup
 {
     private readonly TimeSpan _authenticationExpiration;
+    private readonly IWebHostEnvironment _env;
 
-    public Startup(IConfiguration configuration)
+    public Startup(IConfiguration configuration, IWebHostEnvironment env)
     {
         Configuration = configuration;
-
+        _env = env;
         _authenticationExpiration = TimeSpan.FromMinutes(int.Parse(Configuration["AuthenticationExpirationInMinutes"] ?? "60"));
     }
 
@@ -47,24 +52,32 @@ public class Startup
 
     public void ConfigureServices(IServiceCollection services)
     {
+        ConfigureCypressAntiforgeryEndpoints(services);
         services.AddHttpClient();
         services.AddFeatureManagement();
         services.AddHealthChecks();
         services
-           .AddRazorPages(options =>
-           {
-               options.Conventions.AuthorizeFolder("/");
-               options.Conventions.AddPageRoute("/Projects/EditProjectNote", "projects/{projectId}/notes/edit");
-           })
-           .AddViewOptions(options =>
-           {
-               options.HtmlHelperOptions.ClientValidationEnabled = false;
-           });
+            .AddRazorPages(options =>
+            {
+                if (!_env.IsProduction())
+                {
+                    options.Conventions.ConfigureFilter(new IgnoreAntiforgeryTokenAttribute());
+                }
+
+                options.Conventions.AuthorizeFolder("/");
+                options.Conventions.AddPageRoute("/Projects/EditProjectNote", "projects/{projectId}/notes/edit");
+            })
+            .AddViewOptions(options =>
+            {
+                options.HtmlHelperOptions.ClientValidationEnabled = false;
+            });
+
+        ConfigureCypressAntiforgery(services);
 
         services.AddControllersWithViews()
            .AddMicrosoftIdentityUI();
         SetupDataProtection(services);
- 
+
         services.AddCompleteClientProject(Configuration);
 
         services.AddScoped<ErrorService>();
@@ -91,7 +104,7 @@ public class Startup
         authenticationBuilder.AddMicrosoftIdentityWebApp(Configuration);
 
         ConfigureCookies(services);
-        var appInsightsCnnStr = Configuration.GetSection("ApplicationInsights")?["ConnectionString"]; 
+        var appInsightsCnnStr = Configuration.GetSection("ApplicationInsights")?["ConnectionString"];
         services.AddApplicationInsightsTelemetry(options => options.ConnectionString = appInsightsCnnStr);
 
         System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
@@ -123,7 +136,7 @@ public class Startup
             // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
             app.UseHsts();
         }
-        
+
         app.UseMiddleware<CorrelationIdMiddleware>();
         app.UseMiddleware<ExceptionHandlerMiddleware>();
 
@@ -172,6 +185,37 @@ public class Startup
            });
     }
 
+    private void ConfigureCypressAntiforgeryEndpoints(IServiceCollection services)
+    {
+        if (!_env.IsProduction())
+        {
+            services.Configure<CypressAwareAntiForgeryOptions>(opts =>
+            {
+                opts.ShouldSkipAntiforgery = httpContext =>
+                {
+                    var path = httpContext.Request.Path;
+                    return path.StartsWithSegments("/v1") ||
+                           path.StartsWithSegments("/Errors");
+                };
+            });
+        }
+    }
+
+    private void ConfigureCypressAntiforgery(IServiceCollection services)
+    {
+        if (!_env.IsProduction())
+        {
+            services.AddScoped<ICypressRequestChecker, CypressRequestChecker>();
+
+            services.AddScoped<CypressAwareAntiForgeryFilter>();
+
+            services.PostConfigure<MvcOptions>(options =>
+            {
+                options.Filters.AddService<CypressAwareAntiForgeryFilter>();
+            });
+        }
+    }
+
     private void RegisterClients(IServiceCollection services)
     {
         services.AddHttpClient("CompleteClient", (_, client) =>
@@ -191,19 +235,25 @@ public class Startup
 
     private void SetupDataProtection(IServiceCollection services)
     {
-        if (!string.IsNullOrEmpty(Configuration["ConnectionStrings:BlobStorage"]))
-        {
-            string blobName = "keys.xml";
-            BlobContainerClient container = new(new Uri(Configuration["ConnectionStrings:BlobStorage"]!));
+        var dp = services.AddDataProtection();
+        DataProtectionOptions options = GetTypedConfigurationFor<DataProtectionOptions>();
 
-            BlobClient blobClient = container.GetBlobClient(blobName);
+        var dpTargetPath = options?.DpTargetPath ?? @"/srv/app/storage";
 
-            services.AddDataProtection()
-                .PersistKeysToAzureBlobStorage(blobClient);
-        }
-        else
+        if (Directory.Exists(dpTargetPath))
         {
-            services.AddDataProtection();
+            dp.PersistKeysToFileSystem(new DirectoryInfo(dpTargetPath));
+
+            // If a Key Vault Key URI is defined, expect to encrypt the keys.xml
+            string? kvProtectionKeyUri = options?.KeyVaultKey;
+
+            if (!string.IsNullOrWhiteSpace(kvProtectionKeyUri))
+            {
+                dp.ProtectKeysWithAzureKeyVault(
+                    new Uri(kvProtectionKeyUri),
+                    new DefaultAzureCredential()
+                );
+            }
         }
     }
 }

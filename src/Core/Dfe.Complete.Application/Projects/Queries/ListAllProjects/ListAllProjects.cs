@@ -12,6 +12,7 @@ namespace Dfe.Complete.Application.Projects.Queries.ListAllProjects
         ProjectState? ProjectStatus,
         ProjectType? Type,
         AssignedToState? AssignedToState = null,
+        OrderProjectQueryBy? OrderBy = null,
         int Page = 0,
         int Count = 20) : IRequest<Result<List<ListAllProjectsResultModel>>>;
 
@@ -26,7 +27,9 @@ namespace Dfe.Complete.Application.Projects.Queries.ListAllProjects
             try
             {
                 var projectList = await listAllProjectsQueryService
-                    .ListAllProjects(request.ProjectStatus, request.Type, assignedToState: request.AssignedToState)
+                    .ListAllProjects(
+                        new ProjectFilters(request.ProjectStatus, request.Type, AssignedToState: request.AssignedToState),
+                        orderBy: request.OrderBy)
                     .Skip(request.Page * request.Count).Take(request.Count)
                     .Select(item => ListAllProjectsResultModel.MapProjectAndEstablishmentToListAllProjectResultModel(
                         item.Project!,

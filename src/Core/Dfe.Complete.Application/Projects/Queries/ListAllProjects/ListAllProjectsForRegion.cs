@@ -28,7 +28,7 @@ public class ListAllProjectsForRegionQueryHandler(
         try
         {
             var projectsForRegionQuery = listAllProjectsQueryService.ListAllProjects(
-                request.ProjectStatus, request.Type, request.AssignedToState, region: request.Region, orderBy: request.OrderBy);
+                new ProjectFilters(request.ProjectStatus, request.Type, request.AssignedToState, Region: request.Region), orderBy: request.OrderBy);
 
             var count = await projectsForRegionQuery.CountAsync(cancellationToken);
 
