@@ -24,9 +24,9 @@ namespace Dfe.Complete.Application.Projects.Queries.GetTransferTasksData
             {
                 var result = await transferTaskDataRepository.GetAsync(p => p.Id == request.Id);
 
-                var projectGroupDto = mapper.Map<TransferTaskDataDto>(result);
+                var transferTaskData = mapper.Map<TransferTaskDataDto>(result);
 
-                return Result<TransferTaskDataDto>.Success(projectGroupDto);
+                return Result<TransferTaskDataDto>.Success(transferTaskData);
             }
             catch (Exception ex)
             {

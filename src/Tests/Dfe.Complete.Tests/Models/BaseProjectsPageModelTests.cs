@@ -4,7 +4,6 @@ using Dfe.Complete.Application.Common.Models;
 using Dfe.Complete.Application.Projects.Models;
 using Dfe.Complete.Application.Projects.Queries.GetProject;
 using Dfe.Complete.Application.Projects.Queries.GetTransferTasksData;
-using Dfe.Complete.Application.Projects.Queries.GetUser;
 using Dfe.Complete.Application.Services.AcademiesApi;
 using Dfe.Complete.Constants;
 using Dfe.Complete.Domain.Enums;
