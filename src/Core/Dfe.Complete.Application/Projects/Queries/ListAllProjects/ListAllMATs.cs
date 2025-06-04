@@ -25,7 +25,7 @@ namespace Dfe.Complete.Application.Projects.Queries.ListAllProjects
             try
             {
                 var matProjects = await listAllProjectsQueryService
-                    .ListAllProjects(request.Status, null, isFormAMat: true)
+                    .ListAllProjects(new ProjectFilters(request.Status, null, IsFormAMat: true))
                     .ToListAsync(cancellationToken);
 
                 // Assigned to was causing issues in integration tests + it's not needed in this response 

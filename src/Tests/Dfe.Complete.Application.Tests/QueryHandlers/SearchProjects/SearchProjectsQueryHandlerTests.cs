@@ -40,7 +40,7 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.SearchProjects
                 Count = 20
             };
             mockListAllProjectsQueryService
-                .ListAllProjects(null, null, search: searchTerm)
+                .ListAllProjects(new ProjectFilters(null, null), searchTerm)
                 .Returns(mock);
 
             // Act
@@ -79,7 +79,7 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.SearchProjects
                 Count = 20
             };
             mockListAllProjectsQueryService
-                .ListAllProjects(null, null, search: searchTerm)
+                .ListAllProjects(new ProjectFilters(null, null), searchTerm)
                 .Returns(mock); 
 
             // Act
@@ -119,7 +119,7 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.SearchProjects
             var mock = listAllProjectsQueryModels.BuildMock();
 
             mockListAllProjectsQueryService
-                .ListAllProjects(null,null, search: searchTerm)
+                .ListAllProjects(new ProjectFilters(null,null), searchTerm)
                 .Returns(mock);
 
             // Act
@@ -158,7 +158,7 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.SearchProjects
             };
 
             mockListAllProjectsQueryService
-                .ListAllProjects(null, null, search: searchTerm)
+                .ListAllProjects(new ProjectFilters(null, null), searchTerm)
                 .Returns(mock);
              
             // Act

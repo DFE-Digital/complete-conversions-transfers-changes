@@ -127,7 +127,7 @@ namespace Dfe.Complete.Api.Controllers
         public async Task<IActionResult> ListAllProjectsInTrustAsync([FromQuery] ListAllProjectsInTrustQuery request, CancellationToken cancellationToken)
         {
             var project = await sender.Send(request, cancellationToken);
-            return Ok(project.Value?.projects ?? []);
+            return Ok(project.Value?.Projects ?? []);
         }
 
         /// <summary>
@@ -175,6 +175,22 @@ namespace Dfe.Complete.Api.Controllers
         public async Task<IActionResult> ListAllProjectsForLocalAuthorityAsync(
             [FromQuery] ListAllProjectsForLocalAuthorityQuery request,
             CancellationToken cancellationToken)
+        {
+            var project = await sender.Send(request, cancellationToken);
+            return Ok(project.Value);
+        }
+
+        /// <summary>
+        /// Returns a list of Regions with project counts
+        /// </summary>
+        /// <param name="request">The request.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        [Authorize(Policy = "CanRead")]
+        [HttpGet]
+        [Route("List/All/Regions")]
+        [SwaggerResponse(200, "Project", typeof(List<ListAllProjectsByRegionsResultModel>))]
+        [SwaggerResponse(400, "Invalid request data.")]
+        public async Task<IActionResult> ListAllProjectsByRegionAsync([FromQuery] ListAllProjectsByRegionQuery request, CancellationToken cancellationToken)
         {
             var project = await sender.Send(request, cancellationToken);
             return Ok(project.Value);

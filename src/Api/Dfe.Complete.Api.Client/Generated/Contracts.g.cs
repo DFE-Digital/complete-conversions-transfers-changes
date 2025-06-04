@@ -155,7 +155,7 @@ namespace Dfe.Complete.Client.Contracts
         /// </summary>
         /// <returns>Project</returns>
         /// <exception cref="CompleteApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<ListAllProjectsResultModel>> ListAllProjectsAsync(ProjectState? projectStatus, ProjectType? type, AssignedToState? assignedToState, int? page, int? count);
+        System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<ListAllProjectsResultModel>> ListAllProjectsAsync(ProjectState? projectStatus, ProjectType? type, AssignedToState? assignedToState, OrderProjectByField? orderBy_Field, OrderByDirection? orderBy_Direction, int? page, int? count);
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>
@@ -163,7 +163,7 @@ namespace Dfe.Complete.Client.Contracts
         /// </summary>
         /// <returns>Project</returns>
         /// <exception cref="CompleteApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<ListAllProjectsResultModel>> ListAllProjectsAsync(ProjectState? projectStatus, ProjectType? type, AssignedToState? assignedToState, int? page, int? count, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<ListAllProjectsResultModel>> ListAllProjectsAsync(ProjectState? projectStatus, ProjectType? type, AssignedToState? assignedToState, OrderProjectByField? orderBy_Field, OrderByDirection? orderBy_Direction, int? page, int? count, System.Threading.CancellationToken cancellationToken);
 
         /// <summary>
         /// Returns a list of Projects related to a specific trust
@@ -224,6 +224,21 @@ namespace Dfe.Complete.Client.Contracts
         /// <returns>Project</returns>
         /// <exception cref="CompleteApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<ListAllProjectsResultModel>> ListAllProjectsForLocalAuthorityAsync(string? localAuthorityCode, ProjectState? state, ProjectType? type, int? page, int? count, System.Threading.CancellationToken cancellationToken);
+
+        /// <summary>
+        /// Returns a list of Regions with project counts
+        /// </summary>
+        /// <returns>Project</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<ListAllProjectsByRegionsResultModel>> ListAllProjectsByRegionAsync(ProjectState? projectStatus, ProjectType? type);
+
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>
+        /// Returns a list of Regions with project counts
+        /// </summary>
+        /// <returns>Project</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<ListAllProjectsByRegionsResultModel>> ListAllProjectsByRegionAsync(ProjectState? projectStatus, ProjectType? type, System.Threading.CancellationToken cancellationToken);
 
         /// <summary>
         /// Returns a list of Projects for a region
@@ -1825,6 +1840,33 @@ namespace Dfe.Complete.Client.Contracts
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.2.0.0 (NJsonSchema v11.1.0.0 (Newtonsoft.Json v13.0.0.0))")]
+    public enum OrderProjectByField
+    {
+
+        [System.Runtime.Serialization.EnumMember(Value = @"CompletedAt")]
+        CompletedAt = 0,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"CreatedAt")]
+        CreatedAt = 1,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"SignificantDate")]
+        SignificantDate = 2,
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.2.0.0 (NJsonSchema v11.1.0.0 (Newtonsoft.Json v13.0.0.0))")]
+    public enum OrderByDirection
+    {
+
+        [System.Runtime.Serialization.EnumMember(Value = @"Ascending")]
+        Ascending = 0,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"Descending")]
+        Descending = 1,
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.2.0.0 (NJsonSchema v11.1.0.0 (Newtonsoft.Json v13.0.0.0))")]
     public partial class ListMatResultModel
     {
         [Newtonsoft.Json.JsonProperty("identifier", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
@@ -1852,29 +1894,30 @@ namespace Dfe.Complete.Client.Contracts
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.2.0.0 (NJsonSchema v11.1.0.0 (Newtonsoft.Json v13.0.0.0))")]
-    public enum OrderProjectByField
+    public partial class ListAllProjectsByRegionsResultModel
     {
+        [Newtonsoft.Json.JsonProperty("region", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
+        public Region? Region { get; set; } = default!;
 
-        [System.Runtime.Serialization.EnumMember(Value = @"CompletedAt")]
-        CompletedAt = 0,
+        [Newtonsoft.Json.JsonProperty("conversionsCount", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? ConversionsCount { get; set; } = default!;
 
-        [System.Runtime.Serialization.EnumMember(Value = @"CreatedAt")]
-        CreatedAt = 1,
+        [Newtonsoft.Json.JsonProperty("transfersCount", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? TransfersCount { get; set; } = default!;
 
-        [System.Runtime.Serialization.EnumMember(Value = @"SignificantDate")]
-        SignificantDate = 2,
+        public string ToJson()
+        {
 
-    }
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonSerializerSettings());
 
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.2.0.0 (NJsonSchema v11.1.0.0 (Newtonsoft.Json v13.0.0.0))")]
-    public enum OrderByDirection
-    {
+        }
+        public static ListAllProjectsByRegionsResultModel FromJson(string data)
+        {
 
-        [System.Runtime.Serialization.EnumMember(Value = @"Ascending")]
-        Ascending = 0,
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<ListAllProjectsByRegionsResultModel>(data, new Newtonsoft.Json.JsonSerializerSettings());
 
-        [System.Runtime.Serialization.EnumMember(Value = @"Descending")]
-        Descending = 1,
+        }
 
     }
 

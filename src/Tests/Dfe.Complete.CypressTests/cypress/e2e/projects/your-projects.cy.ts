@@ -6,6 +6,7 @@ import { projectTable } from "cypress/pages/projects/tables/projectTable";
 import { currentMonthShort, trust, trust2 } from "cypress/constants/stringTestConstants";
 import { cypressUser } from "cypress/constants/cypressConstants";
 import projectDetailsPage from "cypress/pages/projects/projectDetailsPage";
+import { checkAccessibilityAcrossPages } from "cypress/support/reusableTests";
 
 const conversionProject = ProjectBuilder.createConversionProjectRequest(new Date("2026-04-01"), 111394);
 const conversionSchoolName = "Farnworth Church of England Controlled Primary School";
@@ -144,5 +145,9 @@ describe("View your projects", () => {
             .columnHasValue("Project completion date", currentMonthShort)
             .goTo(transferSchoolName);
         projectDetailsPage.containsHeading(transferSchoolName);
+    });
+
+    it("Check accessibility across pages", () => {
+        checkAccessibilityAcrossPages();
     });
 });

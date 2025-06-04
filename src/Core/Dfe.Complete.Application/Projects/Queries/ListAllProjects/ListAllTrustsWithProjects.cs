@@ -21,7 +21,7 @@ namespace Dfe.Complete.Application.Projects.Queries.ListAllProjects
         {
             try
             {
-                var allProjects = await listAllProjectsQueryService.ListAllProjects(ProjectState.Active, null)
+                var allProjects = await listAllProjectsQueryService.ListAllProjects(new ProjectFilters(ProjectState.Active, null))
                     .Select(p => p.Project)
                     .ToListAsync(cancellationToken);
 

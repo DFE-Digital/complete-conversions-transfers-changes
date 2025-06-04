@@ -35,7 +35,7 @@ public class ListAllProjectsQueryHandlerTests
 
         var mock = listAllProjectsQueryModels.BuildMock();
 
-        mockListAllProjectsQueryService.ListAllProjects(query.ProjectStatus, query.Type)
+        mockListAllProjectsQueryService.ListAllProjects(new ProjectFilters(query.ProjectStatus, query.Type))
             .Returns(mock);
 
         // Act
@@ -69,11 +69,11 @@ public class ListAllProjectsQueryHandlerTests
                 item.Establishment
             )).Skip(20).Take(20).ToList();
 
-        var query = new ListAllProjectsQuery(null, null, null, 1);
+        var query = new ListAllProjectsQuery(null, null, null, null, 1);
 
         var mock = listAllProjectsQueryModels.BuildMock();
 
-        mockListAllProjectsQueryService.ListAllProjects(query.ProjectStatus, query.Type)
+        mockListAllProjectsQueryService.ListAllProjects(new ProjectFilters(query.ProjectStatus, query.Type))
             .Returns(mock);
 
         // Act
@@ -102,11 +102,11 @@ public class ListAllProjectsQueryHandlerTests
         // Arrange
         var listAllProjectsQueryModels = fixture.CreateMany<ListAllProjectsQueryModel>(50).ToList();
 
-        var query = new ListAllProjectsQuery(null, null, null, 10);
+        var query = new ListAllProjectsQuery(null, null, null, null, 10);
 
         var mock = listAllProjectsQueryModels.BuildMock();
 
-        mockListAllProjectsQueryService.ListAllProjects(query.ProjectStatus, query.Type)
+        mockListAllProjectsQueryService.ListAllProjects(new ProjectFilters(query.ProjectStatus, query.Type))
             .Returns(mock);
 
         // Act
@@ -132,7 +132,7 @@ public class ListAllProjectsQueryHandlerTests
 
         var query = new ListAllProjectsQuery(null, null);
 
-        mockListAllProjectsQueryService.ListAllProjects(query.ProjectStatus, query.Type)
+        mockListAllProjectsQueryService.ListAllProjects(new ProjectFilters(query.ProjectStatus, query.Type))
             .Throws(new Exception(errorMessage));
 
         // Act
@@ -166,7 +166,7 @@ public class ListAllProjectsQueryHandlerTests
         var query = new ListAllProjectsQuery(null, null);
 
         mockListAllProjectsQueryService
-            .ListAllProjects(query.ProjectStatus, query.Type)
+            .ListAllProjects(new ProjectFilters(query.ProjectStatus, query.Type))
             .Returns(mock);
 
         // Act

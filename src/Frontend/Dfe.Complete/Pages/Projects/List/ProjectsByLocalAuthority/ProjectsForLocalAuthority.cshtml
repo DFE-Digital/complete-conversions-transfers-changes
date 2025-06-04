@@ -38,7 +38,7 @@
             <td class="govuk-table__cell">@project.Urn.Value</td>
             <td class="govuk-table__cell">@project.ConversionOrTransferDate.ToMonthYearString()</td>
             <td class="govuk-table__cell">@project.ProjectType</td>
-            <td class="govuk-table__cell">@project.AssignedToFullName</td>
+            <td class="govuk-table__cell">@(project.AssignedToFullName ?? "Not yet assigned")</td>
         </tr>
         }
         </tbody>
