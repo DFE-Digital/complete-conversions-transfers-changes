@@ -1,12 +1,9 @@
 ﻿using Dfe.AcademiesApi.Client.Contracts;
 using Dfe.Complete.Application.Common.Models;
-using Dfe.Complete.Application.Common.Queries;
 using Dfe.Complete.Application.Projects.Interfaces;
 using Dfe.Complete.Application.Projects.Models;
 using Dfe.Complete.Application.Projects.Queries.QueryFilters;
-using Dfe.Complete.Domain.Entities;
 using Dfe.Complete.Domain.Enums;
-using Dfe.Complete.Domain.ValueObjects;
 using Dfe.Complete.Utils;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -60,17 +57,25 @@ namespace Dfe.Complete.Application.Projects.Queries.ListAllProjects
                     .GetByUkprnsAllAsync(ukprnStrings, cancellationToken);
 
                 var nonMatResults = nonMatGroups
-                    .Select(g => {
-                        var uk = g.UkprnInt.ToString();
-                        var dto = apiDtos.First(d => d.Ukprn == uk);
+                    .Select(g =>
+                    {
+                        var uk = g.UkprnInt.Value.ToString();
+                        var dto = apiDtos.FirstOrDefault(d => d.Ukprn == uk);
+
+                        if (dto is null)
+                            return null;
+
                         return new ListTrustsWithProjectsResultModel(
-                            identifier: uk,
-                            trustName: dto.Name.ToTitleCase(),
-                            referenceNumber: uk,
+                            identifier: dto.ReferenceNumber!,
+                            trustName: dto.Name!.ToTitleCase(),
+                            referenceNumber: dto.ReferenceNumber!,
                             conversionCount: g.Conversions,
                             transfersCount: g.Transfers
                         );
-                    });
+                    })
+                    .Where(r => r != null)
+                    .Cast<ListTrustsWithProjectsResultModel>()
+                    .ToList();
 
                 var matResults = matGroups
                     .Select(g => new ListTrustsWithProjectsResultModel(
@@ -80,7 +85,6 @@ namespace Dfe.Complete.Application.Projects.Queries.ListAllProjects
                         conversionCount: g.Conversions,
                         transfersCount: g.Transfers
                     ));
-
 
                 var all = nonMatResults
                     .Concat(matResults)
@@ -96,7 +100,6 @@ namespace Dfe.Complete.Application.Projects.Queries.ListAllProjects
 
                 return PaginatedResult<List<ListTrustsWithProjectsResultModel>>
                     .Success(page, total);
-
 
             }
             catch (Exception ex)
