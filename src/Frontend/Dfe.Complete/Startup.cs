@@ -1,6 +1,7 @@
-using Azure.Storage.Blobs;
+using Azure.Identity;
 using Dfe.Complete.Application.Common.Mappers;
 using Dfe.Complete.Configuration;
+using DataProtectionOptions = Dfe.Complete.Configuration.DataProtectionOptions;
 using Dfe.Complete.Infrastructure;
 using Dfe.Complete.Infrastructure.Security.Authorization;
 using Dfe.Complete.Security;
@@ -70,13 +71,13 @@ public class Startup
             {
                 options.HtmlHelperOptions.ClientValidationEnabled = false;
             });
-        
+
         ConfigureCypressAntiforgery(services);
 
         services.AddControllersWithViews()
            .AddMicrosoftIdentityUI();
         SetupDataProtection(services);
- 
+
         services.AddCompleteClientProject(Configuration);
 
         services.AddScoped<ErrorService>();
@@ -103,7 +104,7 @@ public class Startup
         authenticationBuilder.AddMicrosoftIdentityWebApp(Configuration);
 
         ConfigureCookies(services);
-        var appInsightsCnnStr = Configuration.GetSection("ApplicationInsights")?["ConnectionString"]; 
+        var appInsightsCnnStr = Configuration.GetSection("ApplicationInsights")?["ConnectionString"];
         services.AddApplicationInsightsTelemetry(options => options.ConnectionString = appInsightsCnnStr);
 
         System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
@@ -135,7 +136,7 @@ public class Startup
             // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
             app.UseHsts();
         }
-        
+
         app.UseMiddleware<CorrelationIdMiddleware>();
         app.UseMiddleware<ExceptionHandlerMiddleware>();
 
@@ -234,19 +235,25 @@ public class Startup
 
     private void SetupDataProtection(IServiceCollection services)
     {
-        if (!string.IsNullOrEmpty(Configuration["ConnectionStrings:BlobStorage"]))
-        {
-            string blobName = "keys.xml";
-            BlobContainerClient container = new(new Uri(Configuration["ConnectionStrings:BlobStorage"]!));
+        var dp = services.AddDataProtection();
+        DataProtectionOptions options = GetTypedConfigurationFor<DataProtectionOptions>();
 
-            BlobClient blobClient = container.GetBlobClient(blobName);
+        var dpTargetPath = options?.DpTargetPath ?? @"/srv/app/storage";
 
-            services.AddDataProtection()
-                .PersistKeysToAzureBlobStorage(blobClient);
-        }
-        else
+        if (Directory.Exists(dpTargetPath))
         {
-            services.AddDataProtection();
+            dp.PersistKeysToFileSystem(new DirectoryInfo(dpTargetPath));
+
+            // If a Key Vault Key URI is defined, expect to encrypt the keys.xml
+            string? kvProtectionKeyUri = options?.KeyVaultKey;
+
+            if (!string.IsNullOrWhiteSpace(kvProtectionKeyUri))
+            {
+                dp.ProtectKeysWithAzureKeyVault(
+                    new Uri(kvProtectionKeyUri),
+                    new DefaultAzureCredential()
+                );
+            }
         }
     }
 }
