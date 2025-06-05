@@ -9,6 +9,7 @@ using Dfe.Complete.Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using StackExchange.Redis;
 
 namespace Dfe.Complete.Infrastructure
 {
@@ -38,6 +39,39 @@ namespace Dfe.Complete.Infrastructure
             //services.AddCustomAuthorization(config);
 
             AddInfrastructureHealthChecks(services);
+
+            var redisAppSettings = config.GetSection("Redis");
+            if (redisAppSettings.GetValue<bool>("Enable"))
+            {
+                // Configure Redis Based Distributed Session
+                var redisConfigurationOptions = new ConfigurationOptions
+                {
+                    AbortOnConnectFail = false,
+                    ResolveDns = true,
+                    Ssl = true,
+                    EndPoints =
+                    {
+                        { redisAppSettings.GetValue<string>("Host")!, redisAppSettings.GetValue<int>("Port") }
+                    },
+                    Password = redisAppSettings.GetValue<string>("Password"),
+                    ClientName = "Dfe.Complete",
+                    DefaultVersion = new Version(6, 0),
+                    AsyncTimeout = 15000,
+                    SyncTimeout = 15000,
+                };
+
+                // https://stackexchange.github.io/StackExchange.Redis/ThreadTheft.html
+                ConnectionMultiplexer.SetFeatureFlag("preventthreadtheft", true);
+
+                IConnectionMultiplexer redisConnectionMultiplexer = ConnectionMultiplexer.Connect(redisConfigurationOptions);
+
+                services.AddStackExchangeRedisCache(redisCacheConfig =>
+                {
+                    redisCacheConfig.ConfigurationOptions = redisConfigurationOptions;
+                    redisCacheConfig.ConnectionMultiplexerFactory = () => Task.FromResult(redisConnectionMultiplexer);
+                    redisCacheConfig.InstanceName = "redis-master";
+                });
+            }
 
             return services;
         }
