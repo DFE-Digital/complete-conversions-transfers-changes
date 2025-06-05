@@ -27,7 +27,7 @@ Security in case of vulnerabilities.
 ### Changed  
 
 ### Fixed  
-
+- Updated pagination query parameter from `pageNumber` to `page` to match Ruby app
 - Optimised queries behind the "By local authority" page
 - Fixed unable to set cookies issue if request is coming from ruby app
 
