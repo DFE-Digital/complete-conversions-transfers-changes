@@ -2,6 +2,7 @@ using Dfe.Complete.Application.Projects.Models;
 using Dfe.Complete.Application.Projects.Queries.ListAllProjects;
 using Dfe.Complete.Pages.Pagination;
 using MediatR;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Dfe.Complete.Pages.Projects.List.AllProjectsInTrust
 {
@@ -9,7 +10,7 @@ namespace Dfe.Complete.Pages.Projects.List.AllProjectsInTrust
     {
         public List<ListTrustsWithProjectsResultModel> Trusts { get; set; } = default!;
 
-        public async Task OnGet()
+        public async Task<IActionResult> OnGet()
         {
             var listProjectByTrustQuery = new ListAllTrustsWithProjectsQuery() { Page = PageNumber - 1, Count = PageSize };
 
@@ -17,11 +18,14 @@ namespace Dfe.Complete.Pages.Projects.List.AllProjectsInTrust
             Trusts = listResponse.Value ?? [];
             
             Pagination = new PaginationModel("/projects/all/trusts" ,PageNumber, listResponse.ItemCount, PageSize);
+
+            var hasPageFound = HasPageFound(Pagination.IsOutOfRangePage);
+            return hasPageFound ?? Page();
         }
 
-        public async Task OnGetMovePage()
+        public async Task<IActionResult> OnGetMovePage()
         {
-            await OnGet();
+            return await OnGet();
         }
     }
 }

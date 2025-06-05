@@ -8,6 +8,7 @@ public class PaginationModel
         CurrentPageNumber = currentPageNumber;
         RecordCount = recordCount;
         TotalPages = (int)Math.Ceiling((double)recordCount / pageSize);
+        IsOutOfRangePage = currentPageNumber > TotalPages || currentPageNumber < 1;
         if (currentPageNumber > 1)
         {
             HasPrevious = true;
@@ -80,4 +81,6 @@ public class PaginationModel
     public string NextButtonId => $"{Prefix}next-page";
     public string PreviousButtonId => $"{Prefix}previous-page";
     public static string SetUrl(string url, int pageNumber) => $"{url}{(url.Contains('?') ? "&" : "?")}page={pageNumber}";
+
+    public bool IsOutOfRangePage{ get; set; }
 }
