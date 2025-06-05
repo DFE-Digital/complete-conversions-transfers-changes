@@ -14,25 +14,6 @@ namespace Dfe.Complete.Api.Controllers
     [Route("v{version:apiVersion}/[controller]")]
     public class ProjectGroupController(ISender sender) : ControllerBase
     {
-        ///// <summary>
-        ///// Gets the Project group by Id.
-        ///// </summary>
-        ///// <param name="id">The group Id.</param>
-        ///// <param name="cancellationToken">The cancellation token.</param>
-        //[Authorize(Policy = "CanRead")]
-        //[HttpGet("/{id:guid}")]
-        //[SwaggerResponse(200, "Project Group returned successfully.", typeof(ProjectGroupDto))]
-        //[SwaggerResponse(404, "Project Group not found for the given Id.")]
-        //public async Task<IActionResult> GetProjectGroupByIdAsync(Guid id, CancellationToken cancellationToken)
-        //{
-        //    var groupId = new ProjectGroupId(id);
-
-        //    var request = new GetProjectGroupByIdQuery(groupId);
-        //    var projectGroup = await sender.Send(request, cancellationToken);
-
-        //    return Ok(projectGroup);
-        //}
-
         /// <summary>
         /// Gets the Project group by Id.
         /// </summary>
