@@ -27,7 +27,7 @@ namespace Dfe.Complete.Api.Controllers
         {
             var transferTasksData = await sender.Send(request, cancellationToken);
 
-            return Ok(transferTasksData);
+            return Ok(transferTasksData.Value);
         }
     }
 }

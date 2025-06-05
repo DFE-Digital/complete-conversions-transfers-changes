@@ -27,7 +27,7 @@ namespace Dfe.Complete.Api.Controllers
         {
             var projectGroup = await sender.Send(request, cancellationToken);
 
-            return Ok(projectGroup);
+            return Ok(projectGroup.Value);
         }
     }
 }
