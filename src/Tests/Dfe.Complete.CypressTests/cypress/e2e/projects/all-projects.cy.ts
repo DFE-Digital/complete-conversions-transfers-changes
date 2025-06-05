@@ -19,6 +19,7 @@ import projectsByMonthPage from "cypress/pages/projects/projectsByMonthPage";
 import projectDetailsPage from "cypress/pages/projects/projectDetailsPage";
 import userProjectTable from "cypress/pages/projects/tables/userProjectTable";
 import formAMATProjectTable from "cypress/pages/projects/tables/formAMATProjectTable";
+import { checkAccessibilityAcrossPages } from "cypress/support/reusableTests";
 
 const project = ProjectBuilder.createConversionProjectRequest(nextMonth);
 let projectId: string;
@@ -318,5 +319,9 @@ describe("View all projects", () => {
             ])
             .goTo(schoolName);
         projectDetailsPage.containsHeading(schoolName);
+    });
+
+    it("Check accessibility across pages", () => {
+        checkAccessibilityAcrossPages();
     });
 });
