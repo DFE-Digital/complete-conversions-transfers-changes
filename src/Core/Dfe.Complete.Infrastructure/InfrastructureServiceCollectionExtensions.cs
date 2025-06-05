@@ -51,7 +51,7 @@ namespace Dfe.Complete.Infrastructure
                     Ssl = true,
                     EndPoints =
                     {
-                        { redisAppSettings.GetValue<string>("Host"), redisAppSettings.GetValue<int>("Port") }
+                        { redisAppSettings.GetValue<string>("Host")!, redisAppSettings.GetValue<int>("Port") }
                     },
                     Password = redisAppSettings.GetValue<string>("Password"),
                     ClientName = "Dfe.Complete",
