@@ -1,122 +1,102 @@
-// ------------------------------------------------------------
-//  InfrastructureRedisTests.cs
-//  Unit‑tests that exercise the Redis branch inside
-//  Dfe.Complete.Infrastructure.InfrastructureServiceCollectionExtensions
-// ------------------------------------------------------------
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using Dfe.Complete.Infrastructure;
-using Microsoft.Extensions.Caching.Distributed;
-using Microsoft.Extensions.Caching.StackExchangeRedis;
+using System.Reflection;
+using Microsoft.AspNetCore.DataProtection;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using StackExchange.Redis;
-using Xunit;
+using Microsoft.Extensions.FileProviders;
 
 namespace Dfe.Complete.Tests;
 
-/// <summary>
-///   Focused tests around the "Redis" section inside
-///   <see cref="InfrastructureServiceCollectionExtensions.AddInfrastructureDependencyGroup"/>.
-///   We verify both the disabled and enabled paths without touching a real Redis
-///   instance.  The enabled‑path uses <c>port = 1</c> so the TCP connect fails
-///   immediately (connection‑refused) and StackExchange.Redis returns almost
-///   instantaneously thanks to <c>AbortOnConnectFail = false</c> in production
-///   code.  This keeps the test runtime &lt; 1 second on typical CI agents.
-/// </summary>
-public sealed class InfrastructureRedisTests
+public sealed class StartupDataProtectionTests : IDisposable
 {
-    /* --------------------------------------------------------------------
-     *  🧪  Tests
-     * ------------------------------------------------------------------*/
+    private readonly string _tempDpTargetPath;
+
+    public StartupDataProtectionTests()
+    {
+        _tempDpTargetPath = Path.Combine(Path.GetTempPath(), "dp-" + Guid.NewGuid());
+        Directory.CreateDirectory(_tempDpTargetPath);
+    }
 
     [Fact]
-    public void AddInfrastructureDependencyGroup_RedisDisabled_DoesNotRegisterRedisCache()
+    public void SetupDataProtection_PersistsKeys_ToConfiguredFolder()
     {
         // Arrange
-        IConfiguration cfg = BuildConfiguration(enable: false);
+        IConfiguration cfg = BuildConfiguration(_tempDpTargetPath, keyVaultKey: string.Empty);
+        var env = BuildEnvironment();
+        var startup = new Startup(cfg, env);
         var services = new ServiceCollection();
 
         // Act
-        services.AddInfrastructureDependencyGroup(cfg);
+        InvokeSetupDataProtection(startup, services);
+        var sp = services.BuildServiceProvider();
 
-        // Assert – no Redis‑backed IDistributedCache was added.
-        Assert.DoesNotContain(
-            services,
-            d => d.ServiceType == typeof(IDistributedCache) &&
-                 d.ImplementationFactory is not null);
+        // Assert
+        Assert.NotNull(sp.GetService<IDataProtectionProvider>());
+        Assert.True(Directory.Exists(_tempDpTargetPath));
+
     }
 
     [Fact]
-    public void AddInfrastructureDependencyGroup_RedisEnabled_RegistersRedisCache_WithExpectedOptions()
+    public void SetupDataProtection_UsesKeyVault_WhenKeyConfigured()
     {
-        // Arrange – port 1 gives an immediate connection‑refused (fast!).
-        IConfiguration cfg = BuildConfiguration(enable: true, host: "localhost", port: 1, password: string.Empty);
+        // Arrange
+        var fakeKeyVaultUri = "https://contoso.vault.azure.net/keys/dp-unit-test/0000000000000000";
+        IConfiguration cfg = BuildConfiguration(_tempDpTargetPath, fakeKeyVaultUri);
+        var env = BuildEnvironment();
+        var startup = new Startup(cfg, env);
         var services = new ServiceCollection();
 
         // Act
-        services.AddInfrastructureDependencyGroup(cfg);
+        InvokeSetupDataProtection(startup, services);
 
-        // Assert – exactly one IDistributedCache registered via an ImplementationFactory.
-        var redisDescriptor = Assert.Single(
-            services.Where(d => d.ServiceType == typeof(IDistributedCache)));
-        Assert.NotNull(redisDescriptor.ImplementationFactory);
-
-        // Retrieve the ConfigurationOptions captured in the closure so we can
-        // assert against the values set inside AddInfrastructureDependencyGroup
-        var opts = ExtractConfigurationOptions(redisDescriptor);
-        Assert.NotNull(opts);
-
-        Assert.True(opts!.Ssl);
-        Assert.Equal("Dfe.Complete", opts.ClientName);
-        Assert.Equal("localhost:1", opts.EndPoints.Single().ToString(), ignoreCase: true);
-        Assert.Equal(6, opts.DefaultVersion.Major);
-        Assert.Equal(0, opts.DefaultVersion.Minor);
+        // Assert
+        var provider = services.BuildServiceProvider().GetService<IDataProtectionProvider>();
+        Assert.NotNull(provider);
     }
 
-    /* --------------------------------------------------------------------
-     *  🛠️  Helpers
-     * ------------------------------------------------------------------*/
-
-    private static IConfiguration BuildConfiguration(
-        bool   enable,
-        string host     = "localhost",
-        int    port     = 1,
-        string password = "")
+    private static IConfiguration BuildConfiguration(string dpTargetPath, string? keyVaultKey)
     {
         var dict = new Dictionary<string, string?>
         {
-            ["Redis:Enable"]   = enable.ToString(),
-            ["Redis:Host"]     = host,
-            ["Redis:Port"]     = port.ToString(),
-            ["Redis:Password"] = password,
-            // Minimum viable connection‑string so AddDbContext doesn’t complain.
-            ["ConnectionStrings:DefaultConnection"] = "Server=(local);Database=UnitTest;Trusted_Connection=True;"
+            ["DataProtection:DpTargetPath"] = dpTargetPath,
+            ["DataProtection:KeyVaultKey"] = keyVaultKey
         };
-
-        return new ConfigurationBuilder()
-            .AddInMemoryCollection(dict)
-            .Build();
+        return new ConfigurationBuilder().AddInMemoryCollection(dict).Build();
     }
 
-    /// <summary>
-    ///   Peeks inside the closure that AddStackExchangeRedisCache generated so
-    ///   we can grab the <see cref="ConfigurationOptions"/> instance built in
-    ///   production code without triggering any network activity.
-    /// </summary>
-    private static ConfigurationOptions? ExtractConfigurationOptions(ServiceDescriptor desc)
+    private static FakeWebHostEnvironment BuildEnvironment() =>
+        new FakeWebHostEnvironment
+        {
+            EnvironmentName = "Test",
+            ApplicationName = "UnitTestApp",
+            ContentRootPath = Directory.GetCurrentDirectory(),
+            WebRootPath = Directory.GetCurrentDirectory(),
+            ContentRootFileProvider = new NullFileProvider(),
+            WebRootFileProvider = new NullFileProvider()
+        };
+
+    private static void InvokeSetupDataProtection(Startup startup, IServiceCollection services)
     {
-        if (desc.ImplementationFactory is null)
-            return null;
+        MethodInfo? mi = typeof(Startup).GetMethod(
+                            "SetupDataProtection",
+                            BindingFlags.Instance | BindingFlags.NonPublic);
+        Assert.NotNull(mi);
+        mi.Invoke(startup, new object?[] { services });
+    }
 
-        var closure = desc.ImplementationFactory.Target;
-        if (closure is null)
-            return null;
+    private sealed class FakeWebHostEnvironment : IWebHostEnvironment
+    {
+        public required string EnvironmentName { get; set; }
+        public required string ApplicationName { get; set; }
+        public required string WebRootPath { get; set; }
+        public required IFileProvider WebRootFileProvider { get; set; }
+        public required string ContentRootPath { get; set; }
+        public required IFileProvider ContentRootFileProvider { get; set; }
+    }
 
-        return closure.GetType()
-                       .GetFields(System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic)
-                       .FirstOrDefault(f => f.FieldType == typeof(ConfigurationOptions))?
-                       .GetValue(closure) as ConfigurationOptions;
+    public void Dispose()
+    {
+        try { Directory.Delete(_tempDpTargetPath, recursive: true); }
+        catch { }
     }
 }
