@@ -34,8 +34,7 @@ const localAuthorityEdited = {
 };
 const preExistingCode = "301";
 
-// local authorities not implemented
-describe.skip("Service support user - Local authorities: ", () => {
+describe("Service support user - Local authorities: ", () => {
     beforeEach(() => {
         cy.login(serviceSupportUser);
         cy.acceptCookies();
