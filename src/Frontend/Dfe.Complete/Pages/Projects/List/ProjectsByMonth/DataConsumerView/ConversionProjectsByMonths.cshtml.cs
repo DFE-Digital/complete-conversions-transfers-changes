@@ -12,7 +12,7 @@ namespace Dfe.Complete.Pages.Projects.List.ProjectsByMonth
     {
         private readonly string PathToPage = "/projects/all/by-month/conversions/from/{0}/{1}/to/{2}/{3}";
     
-        public async Task OnGet()
+        public async Task<IActionResult> OnGet()
         {
             var fromDate = ParseDate(FromMonth, FromYear);
             var toDate = ParseDate(ToMonth, ToYear);
@@ -41,9 +41,12 @@ namespace Dfe.Complete.Pages.Projects.List.ProjectsByMonth
                 PageNumber, 
                 response.ItemCount, 
                 PageSize);
+
+            var hasPageFound = HasPageFound(Pagination.IsOutOfRangePage);
+            return hasPageFound ?? Page();
         }
 
-        public async Task OnGetMovePage() => await OnGet();
+        public async Task<IActionResult> OnGetMovePage() => await OnGet();
         
         public async Task<IActionResult> OnPost(CancellationToken cancellationToken)
         {

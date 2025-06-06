@@ -40,11 +40,12 @@ public class ProjectsByRegion(ISender sender) : AllProjectsModel(ByRegionNavigat
         Pagination = new PaginationModel($"/projects/all/regions/{Region}", PageNumber,
             listProjectsForRegionResult.ItemCount, PageSize);
 
-        return Page();
+        var hasPageFound = HasPageFound(Pagination.IsOutOfRangePage);
+        return hasPageFound ?? Page();
     }
 
-    public async Task OnGetMovePage()
+    public async Task<IActionResult> OnGetMovePage()
     {
-        await OnGetAsync();
+        return await OnGetAsync();
     }
 }
