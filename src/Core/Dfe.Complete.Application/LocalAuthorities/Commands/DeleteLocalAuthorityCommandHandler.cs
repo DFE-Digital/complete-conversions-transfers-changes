@@ -1,5 +1,6 @@
 ﻿using Dfe.Complete.Application.Common.Interfaces;
 using Dfe.Complete.Application.Common.Models;
+using Dfe.Complete.Domain.Constants;
 using Dfe.Complete.Domain.Entities;
 using Dfe.Complete.Domain.Interfaces.Repositories;
 using Dfe.Complete.Domain.ValueObjects;
@@ -26,10 +27,10 @@ namespace Dfe.Complete.Application.LocalAuthorities.Commands
                 var project = await projectRepository.FindAsync(x => x.LocalAuthorityId == request.Id, cancellationToken);
                 if (project != null)
                 { 
-                    throw new DependencyException("Cannot delete Local authority as it is linked to a project.");
+                    throw new DependencyException(ErrorMessagesConstants.CannotDeleteLocalAuthorityAsLinkedToProject);
                 }
 
-                var localAuthority = await localAuthorityRepository.FindAsync(request.Id, cancellationToken) ?? throw new NotFoundException($"Local authority with Id {request.Id} not found."); 
+                var localAuthority = await localAuthorityRepository.FindAsync(request.Id, cancellationToken) ?? throw new NotFoundException(string.Format(ErrorMessagesConstants.NotFoundLocalAuthority, request.Id)); 
                 await localAuthorityRepository.RemoveAsync(localAuthority, cancellationToken);
 
                 if (request.ContactId != null)
@@ -47,7 +48,7 @@ namespace Dfe.Complete.Application.LocalAuthorities.Commands
             catch (Exception ex)
             {
                 await unitOfWork.RollBackAsync();
-                logger.LogError(ex, "Error occurred while deleting local authority with ID {Id}.", request.Id);
+                logger.LogError(ex, ErrorMessagesConstants.ExceptionWhileDeletingLocalAuthority, request.Id);
                 return Result<bool>.Failure(ex.Message);
             }
         }

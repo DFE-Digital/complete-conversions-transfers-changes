@@ -1,5 +1,6 @@
 ﻿using Dfe.Complete.Application.Common.Interfaces;
 using Dfe.Complete.Application.Common.Models;
+using Dfe.Complete.Domain.Constants;
 using Dfe.Complete.Domain.Entities;
 using Dfe.Complete.Domain.Interfaces.Repositories;
 using Dfe.Complete.Domain.ValueObjects;
@@ -34,13 +35,13 @@ namespace Dfe.Complete.Application.LocalAuthorities.Commands
             try
             {
                 await unitOfWork.BeginTransactionAsync();
-                var localAuthority = await localAuthorityRepository.FindAsync(x=> x.Id == request.Id, cancellationToken) ?? throw new NotFoundException("Cannot update Local authority as it is not existed.");
+                var localAuthority = await localAuthorityRepository.FindAsync(x=> x.Id == request.Id, cancellationToken) ?? throw new NotFoundException(ErrorMessagesConstants.CannotUpdateLocalAuthorityAsNotExisted);
                 if(localAuthority.Code != request.Code)
                 {
                     var hasLocalAuthorityWithSameCode = await localAuthorityRepository.ExistsAsync(x => x.Code == request.Code, cancellationToken);
                     if (hasLocalAuthorityWithSameCode)
                     {
-                        throw new AlreadyExistsException($"Already existed local authority with code {request.Code}");
+                        throw new AlreadyExistsException(string.Format(ErrorMessagesConstants.AlreadyExistedLocalAuthorityWithCode, request.Code));
                     }
                 } 
                 localAuthority.Update(request.Code, new AddressDetails(request.Address1,
@@ -68,7 +69,8 @@ namespace Dfe.Complete.Application.LocalAuthorities.Commands
             catch (Exception ex)
             {
                 await unitOfWork.RollBackAsync();
-                logger.LogError(ex, "Error occurred while updating local authority with ID {Id}.", request.Id);
+                logger.LogError(ex, message: ErrorMessagesConstants.ExceptionWhileUpdatingLocalAuthority, request.Id);
+
                 return Result<bool>.Failure(ex.Message);
             }
         }

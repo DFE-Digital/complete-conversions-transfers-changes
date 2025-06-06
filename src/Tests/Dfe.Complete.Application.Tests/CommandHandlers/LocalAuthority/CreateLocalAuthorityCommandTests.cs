@@ -1,9 +1,11 @@
 ﻿using Dfe.Complete.Application.Common.Interfaces;
 using Dfe.Complete.Application.LocalAuthorities.Commands;
+using Dfe.Complete.Domain.Constants;
 using Dfe.Complete.Domain.Interfaces.Repositories;
 using Dfe.Complete.Domain.ValueObjects;
 using Microsoft.Extensions.Logging;
 using Moq;
+using System.Globalization;
 using System.Linq.Expressions;
 
 namespace Dfe.Complete.Application.Tests.CommandHandlers.LocalAuthority
@@ -73,7 +75,7 @@ namespace Dfe.Complete.Application.Tests.CommandHandlers.LocalAuthority
             var result = await _handler.Handle(command, _cancellationToken);
 
             Assert.False(result.IsSuccess);
-            Assert.Equal($"Already existed local authority with code {command.Code}", result.Error);
+            Assert.Equal(string.Format(ErrorMessagesConstants.AlreadyExistedLocalAuthorityWithCode, command.Code), result.Error);
 
             _mockUnitOfWork.Verify(uow => uow.BeginTransactionAsync(), Times.Once);
             _mockUnitOfWork.Verify(uow => uow.RollBackAsync(), Times.Once);

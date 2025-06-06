@@ -1,3 +1,4 @@
+using Azure.Core;
 using Dfe.Complete.Application.LocalAuthorities.Commands;
 using Dfe.Complete.Application.LocalAuthorities.Models;
 using Dfe.Complete.Application.LocalAuthorities.Queries;
@@ -94,7 +95,7 @@ namespace Dfe.Complete.Pages.Projects.ServiceSupport.LocalAuthorities
                 TempData["HasUpdatedLaDetails"] = true;
                 return RedirectToPage(Links.LocalAuthorities.ViewLocalAuthorityDetails.Page, new { Id });
             }
-            else if (response.Error == $"Already existed local authority with code {Code}")
+            else if (response.Error == string.Format(ErrorMessagesConstants.AlreadyExistedLocalAuthorityWithCode, Code))
             {
                 errorService.AddError(nameof(Code), ValidationConstants.AlreadyBeenTaken);
                 ModelState.AddModelError(nameof(Code), ValidationConstants.AlreadyBeenTaken);

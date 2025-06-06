@@ -1,5 +1,6 @@
 ﻿using Dfe.Complete.Application.Common.Interfaces;
 using Dfe.Complete.Application.LocalAuthorities.Commands;
+using Dfe.Complete.Domain.Constants;
 using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Domain.Interfaces.Repositories;
 using Dfe.Complete.Domain.ValueObjects;
@@ -117,7 +118,7 @@ namespace Dfe.Complete.Application.Tests.CommandHandlers.LocalAuthority
             var result = await _handler.Handle(command, CancellationToken.None);
 
             Assert.False(result.IsSuccess);
-            Assert.Equal("Cannot delete Local authority as it is linked to a project.", result.Error);
+            Assert.Equal(ErrorMessagesConstants.CannotDeleteLocalAuthorityAsLinkedToProject, result.Error);
             _mockUnitOfWork.Verify(uow => uow.BeginTransactionAsync(), Times.Once);
             _mockUnitOfWork.Verify(uow => uow.RollBackAsync(), Times.Once);
             _mockUnitOfWork.Verify(uow => uow.CommitAsync(), Times.Never);
@@ -131,7 +132,7 @@ namespace Dfe.Complete.Application.Tests.CommandHandlers.LocalAuthority
             var result = await _handler.Handle(command, CancellationToken.None);
 
             Assert.False(result.IsSuccess);
-            Assert.Equal($"Local authority with Id {command.Id} not found.", result.Error);
+            Assert.Equal(string.Format(ErrorMessagesConstants.NotFoundLocalAuthority, command.Id), result.Error);
             _mockUnitOfWork.Verify(uow => uow.BeginTransactionAsync(), Times.Once);
             _mockUnitOfWork.Verify(uow => uow.RollBackAsync(), Times.Once);
             _mockUnitOfWork.Verify(uow => uow.CommitAsync(), Times.Never);

@@ -1,5 +1,6 @@
 ﻿using Dfe.Complete.Application.Common.Interfaces;
 using Dfe.Complete.Application.Common.Models;
+using Dfe.Complete.Domain.Constants;
 using Dfe.Complete.Domain.Entities;
 using Dfe.Complete.Domain.Interfaces.Repositories;
 using Dfe.Complete.Domain.ValueObjects;
@@ -37,8 +38,8 @@ namespace Dfe.Complete.Application.LocalAuthorities.Commands
                 await unitOfWork.BeginTransactionAsync();
                 var hasLocalAuthority = await localAuthorityRepository.ExistsAsync(x => x.Code == request.Code, cancellationToken);
                 if (hasLocalAuthority)
-                { 
-                    throw new AlreadyExistsException($"Already existed local authority with code {request.Code}");
+                {
+                    throw new AlreadyExistsException(string.Format(ErrorMessagesConstants.AlreadyExistedLocalAuthorityWithCode, request.Code));
                 } 
                 var localAuthority = LocalAuthority.Create(request.Id, request.Name, request.Code, new AddressDetails(request.Address1,
                     request.Address2, request.Address3, request.AddressTown, request.AddressCounty,
@@ -57,7 +58,7 @@ namespace Dfe.Complete.Application.LocalAuthorities.Commands
             catch (Exception ex)
             {
                 await unitOfWork.RollBackAsync();
-                logger.LogError(ex, "Error occurred while creating LocalAuthority with code {Code}.", request.Code);
+                logger.LogError(ex, ErrorMessagesConstants.ExceptionWhileCreatingLocalAuthority, request.Code);
 
                 return Result<LocalAuthorityId?>.Failure(ex.Message);
             }
