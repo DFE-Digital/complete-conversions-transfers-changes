@@ -12,4 +12,5 @@ public static class UserPolicyConstants
     public const string CanViewAllProjectsHandover = "CanViewAllProjectsHandover";
     public const string CanViewAllProjectsExports = "CanViewAllProjectsExports";
     public const string HasGlobalNavigation = "HasGlobalNavigation";
+    public const string ManagerLocalAuthorities = "ManagerLocalAuthorities"; 
 }
