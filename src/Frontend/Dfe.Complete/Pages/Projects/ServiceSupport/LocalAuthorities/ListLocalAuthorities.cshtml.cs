@@ -5,6 +5,7 @@ using Dfe.Complete.Domain.Constants;
 using Dfe.Complete.Pages.Pagination;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Dfe.Complete.Pages.Projects.ServiceSupport.LocalAuthorities
 {
@@ -12,12 +13,14 @@ namespace Dfe.Complete.Pages.Projects.ServiceSupport.LocalAuthorities
     public class ListLocalAuthoritiesModel(ISender sender) : ServiceSupportModel(LocalAuthoriesNavigation)
     { 
         public List<LocalAuthorityQueryModel> LocalAuthorities { get; set; } = default!;
-        public async Task OnGetAsync()
+        public async Task<IActionResult> OnGetAsync()
         {
             var localAuthoriesResponse = await sender.Send(new ListLocalAuthoritiesQuery() {  Page = PageNumber - 1, Count = PageSize });
             LocalAuthorities = localAuthoriesResponse.Value ?? []; 
 
-            Pagination = new PaginationModel(RouteConstants.ListLocalAuthorities, PageNumber, localAuthoriesResponse.ItemCount, PageSize); 
+            Pagination = new PaginationModel(RouteConstants.ListLocalAuthorities, PageNumber, localAuthoriesResponse.ItemCount, PageSize);
+            var hasPageFound = HasPageFound(Pagination.IsOutOfRangePage);
+            return hasPageFound ?? Page();
         }
 
         public string GetLocalAuthorityDetailsUrl(string id)
