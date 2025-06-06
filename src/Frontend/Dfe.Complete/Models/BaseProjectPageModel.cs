@@ -1,7 +1,6 @@
 using Dfe.AcademiesApi.Client.Contracts;
 using Dfe.Complete.Application.Projects.Models;
 using Dfe.Complete.Application.Projects.Queries.GetProject;
-using Dfe.Complete.Application.Projects.Queries.GetTransferTasksData;
 using Dfe.Complete.Application.Services.AcademiesApi;
 using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Domain.ValueObjects;
@@ -20,15 +19,16 @@ public abstract class BaseProjectPageModel(ISender sender) : PageModel
     public string ProjectId { get; set; }
 
     public ProjectDto Project { get; set; }
+
     public EstablishmentDto Establishment { get; set; }
-    public EstablishmentDto? Academy { get; set; }
+
     public TrustDto? IncomingTrust { get; set; }
+
     public TrustDto? OutgoingTrust { get; set; }
-    public ProjectGroupDto? ProjectGroup { get; set; }
-    public TransferTaskDataDto? TransferTaskData { get; set; }
+
     public ProjectTeam CurrentUserTeam { get; set; }
 
-    private async Task SetProject()
+    protected async Task SetProjectAsync()
     {
         var success = Guid.TryParse(ProjectId, out var guid);
 
@@ -47,7 +47,7 @@ public abstract class BaseProjectPageModel(ISender sender) : PageModel
         Project = result.Value;
     }
 
-    private async Task SetEstablishment()
+    protected async Task SetEstablishmentAsync()
     {
         var establishmentQuery = new GetEstablishmentByUrnRequest(Project.Urn.Value.ToString());
         var establishmentResult = await sender.Send(establishmentQuery);
@@ -60,25 +60,9 @@ public abstract class BaseProjectPageModel(ISender sender) : PageModel
         Establishment = establishmentResult.Value;
     }
 
-    private async Task SetAcademy()
+    protected async Task SetIncomingTrustAsync()
     {
-        if (Project.AcademyUrn != null)
-        {
-            var academyQuery = new GetEstablishmentByUrnRequest(Project.AcademyUrn.Value.ToString());
-            var academyResult = await sender.Send(academyQuery);
-
-            if (!academyResult.IsSuccess || academyResult.Value == null)
-            {
-                throw new NotFoundException($"Academy {Project.AcademyUrn.Value} does not exist.");
-            }
-
-            Academy = academyResult.Value;
-        }
-    }
-
-    private async Task SetIncomingTrust()
-    {
-        if (!Project.FormAMat)
+        if (!Project.FormAMat && Project.IncomingTrustUkprn != null)
         {
             var incomingTrustQuery = new GetTrustByUkprnRequest(Project.IncomingTrustUkprn.Value.ToString());
             var incomingTrustResult = await sender.Send(incomingTrustQuery);
@@ -92,7 +76,7 @@ public abstract class BaseProjectPageModel(ISender sender) : PageModel
         }
     }
 
-    private async Task SetOutgoingTrust()
+    protected async Task SetOutgoingTrustAsync()
     {
         if (Project.Type == ProjectType.Transfer)
         {
@@ -108,49 +92,22 @@ public abstract class BaseProjectPageModel(ISender sender) : PageModel
         }
     }
 
-    private async Task SetProjectGroup()
+    protected async Task SetCurrentUserTeamAsync()
     {
-        if (Project.GroupId != null)
-        {
-            var projectGroupQuery = new GetProjectGroupByIdQuery(Project.GroupId);
-            var projectGroup = await sender.Send(projectGroupQuery);
-            if (projectGroup.IsSuccess || projectGroup.Value != null)
-            {
-                ProjectGroup = projectGroup.Value;
-            }
-        }
-    }
-
-    private async Task SetTransferTaskData()
-    {
-        if (Project.TasksDataId != null)
-        {
-            var transferTasksDataQuery = new GetTransferTasksDataByIdQuery(Project.TasksDataId);
-            var transferTasksData = await sender.Send(transferTasksDataQuery);
-            if (transferTasksData.IsSuccess || transferTasksData.Value != null)
-            {
-                TransferTaskData = transferTasksData.Value;
-            }
-        }
-    }
-
-    public async Task<IActionResult> OnGet()
-    {
-        await SetProject();
-
-        await SetEstablishment();
-
-        await SetAcademy();
-
-        await SetIncomingTrust();
-
-        await SetOutgoingTrust();
-
-        await SetProjectGroup();
-
-        await SetTransferTaskData();
-
         CurrentUserTeam = await User.GetUserTeam(sender);
+    }
+
+    public virtual async Task<IActionResult> OnGet()
+    {
+        await SetProjectAsync();
+
+        await SetEstablishmentAsync();
+
+        await SetIncomingTrustAsync();
+
+        await SetOutgoingTrustAsync();
+
+        await SetCurrentUserTeamAsync();
 
         return Page();
     }
