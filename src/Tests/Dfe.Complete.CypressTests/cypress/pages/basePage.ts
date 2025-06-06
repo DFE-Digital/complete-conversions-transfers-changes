@@ -4,6 +4,15 @@ class BasePage {
         return this;
     }
 
+    clickButton(buttonText?: string) {
+        if (buttonText) {
+            cy.getByClass("govuk-button").contains(buttonText).click();
+        } else {
+            cy.getByClass("govuk-button").click();
+        }
+        return this;
+    }
+
     verifyFieldDoesntExistOnAnyPage(field: string) {
         cy.get("body").then(($body) => {
             if ($body.find(`.govuk-table:contains(${field})`).length > 0) {

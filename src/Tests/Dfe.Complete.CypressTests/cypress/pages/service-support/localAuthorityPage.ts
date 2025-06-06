@@ -41,7 +41,7 @@ class LocalAuthorityPage extends BasePage {
     }
 
     edit() {
-        cy.getByClass("govuk-button").contains("Edit").click();
+        this.clickButton("Edit");
         return this;
     }
 

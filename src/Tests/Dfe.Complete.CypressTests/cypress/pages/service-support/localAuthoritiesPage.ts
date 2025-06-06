@@ -2,7 +2,7 @@ import BasePage from "cypress/pages/basePage";
 
 class LocalAuthoritiesPage extends BasePage {
     newLocalAuthority() {
-        cy.getByClass("govuk-button").contains("New local authority").click();
+        this.clickButton("New local authority");
         return this;
     }
 

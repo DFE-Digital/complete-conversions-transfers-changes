@@ -16,7 +16,7 @@ class LocalAuthority extends BasePage {
     protected readonly dcsPhoneId = "Phone";
 
     saveAndReturn() {
-        cy.getByClass("govuk-button").contains("Save and return").click();
+        this.clickButton("Save and return");
         return this;
     }
 }
