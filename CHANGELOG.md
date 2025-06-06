@@ -23,6 +23,7 @@ Security in case of vulnerabilities.
 ## Unreleased  
 
 ### Added  
+- Internal contacts page and edit pages `/projects/{projectId}/internal-contacts`
 
 ### Changed  
 
