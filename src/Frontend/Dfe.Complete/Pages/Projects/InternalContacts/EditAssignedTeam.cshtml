@@ -1,0 +1,41 @@
+﻿@page "/projects/{projectId}/internal-contacts/team/edit"
+@using Dfe.Complete.Constants
+@using Dfe.Complete.Domain.Enums
+@using GovUk.Frontend.AspNetCore.TagHelpers
+@model Dfe.Complete.Pages.Projects.InternalContacts.EditAssignedTeam
+
+@{
+  Layout = "Shared/_Layout";
+}
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-two-thirds">
+    <span class="govuk-caption-l">
+      URN @Model.Project.Urn.Value
+    </span>
+    <form method="post" novalidate>
+      <govuk-radios name="team" asp-for="Team">
+        <govuk-radios-fieldset>
+          <govuk-radios-fieldset-legend is-page-heading="true" class="govuk-fieldset__legend--xl">
+            Change assigned team for @Model.Establishment.Name
+          </govuk-radios-fieldset-legend>
+          <govuk-radios-item value="@ProjectTeam.London">London</govuk-radios-item>
+          <govuk-radios-item value="@ProjectTeam.SouthEast">South East</govuk-radios-item>
+          <govuk-radios-item value="@ProjectTeam.YorkshireAndTheHumber">Yorkshire and the Humber</govuk-radios-item>
+          <govuk-radios-item value="@ProjectTeam.NorthWest">North West</govuk-radios-item>
+          <govuk-radios-item value="@ProjectTeam.EastOfEngland">East of England</govuk-radios-item>
+          <govuk-radios-item value="@ProjectTeam.WestMidlands">West Midlands</govuk-radios-item>
+          <govuk-radios-item value="@ProjectTeam.NorthEast">North East</govuk-radios-item>
+          <govuk-radios-item value="@ProjectTeam.SouthWest">South West</govuk-radios-item>
+          <govuk-radios-item value="@ProjectTeam.EastMidlands">East Midlands</govuk-radios-item>
+          <govuk-radios-item value="@ProjectTeam.RegionalCaseWorkerServices">Regional casework services</govuk-radios-item>
+        </govuk-radios-fieldset>
+      </govuk-radios>
+      <div class="govuk-button-group">
+        <button data-prevent-double-click="true" class="govuk-button" data-module="govuk-button" role="button" id="save">
+          Continue
+        </button>
+        <a id="cancel-link-event" class="govuk-link" href="@(string.Format(RouteConstants.ProjectInternalContacts, Model.ProjectId))">Cancel</a>
+      </div>
+    </form>
+  </div>
+</div>
