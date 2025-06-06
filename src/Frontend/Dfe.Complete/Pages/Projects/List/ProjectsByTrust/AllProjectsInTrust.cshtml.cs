@@ -16,7 +16,7 @@ namespace Dfe.Complete.Pages.Projects.List.AllProjectsInTrust
 
         public ListAllProjectsInTrustResultModel? Trust { get; set; } = default!;
 
-        public async Task OnGet()
+        public async Task<IActionResult> OnGet()
         {
             bool isFormAMat = !string.IsNullOrEmpty(Reference);
             string identifier = isFormAMat ? Reference : Ukprn;
@@ -30,11 +30,14 @@ namespace Dfe.Complete.Pages.Projects.List.AllProjectsInTrust
             var path = isFormAMat ? "reference" : "ukprn";
 
             Pagination = new PaginationModel($"/projects/all/trusts/{path}/{identifier}", PageNumber, trustResponse.ItemCount, PageSize);
+
+            var hasPageFound = HasPageFound(Pagination.IsOutOfRangePage);
+            return hasPageFound ?? Page();
         }
 
-        public async Task OnGetMovePage()
+        public async Task<IActionResult> OnGetMovePage()
         {
-            await OnGet();
+            return await OnGet();
         }
     }
 }

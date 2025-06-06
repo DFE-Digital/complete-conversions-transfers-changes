@@ -5,6 +5,7 @@ using Dfe.Complete.Extensions;
 using Dfe.Complete.Models;
 using Dfe.Complete.Pages.Pagination;
 using MediatR;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Dfe.Complete.Pages.Projects.Yours.AddedByYou;
 
@@ -12,7 +13,7 @@ public class AddedByYou(ISender sender) : YourProjectsModel(AddedByYouNavigation
 {
     public List<ListAllProjectsForUserQueryResultModel>? ProjectsForUser { get; set; }
 
-    public async Task OnGet()
+    public async Task<IActionResult> OnGet()
     {
         ViewData[TabNavigationModel.ViewDataKey] = YourProjectsTabNavigationModel;
 
@@ -21,12 +22,15 @@ public class AddedByYou(ISender sender) : YourProjectsModel(AddedByYouNavigation
         var result = await sender.Send(new ListAllProjectsForUserQuery(ProjectState.Active, userAdId,
                 ProjectUserFilter.CreatedBy,
                 new OrderProjectQueryBy
-                    { Field = OrderProjectByField.SignificantDate, Direction = OrderByDirection.Ascending })
-            { Count = PageSize, Page = PageNumber - 1 });
+                { Field = OrderProjectByField.SignificantDate, Direction = OrderByDirection.Ascending })
+        { Count = PageSize, Page = PageNumber - 1 });
 
         ProjectsForUser = result.Value ?? [];
 
         Pagination = new PaginationModel("/projects/yours/added-by", PageNumber, result.ItemCount, PageSize);
+
+        var hasPageFound = HasPageFound(Pagination.IsOutOfRangePage);
+        return hasPageFound ?? Page();
     }
 
     public async Task OnGetMovePage()
