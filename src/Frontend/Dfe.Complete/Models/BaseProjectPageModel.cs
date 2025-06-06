@@ -24,7 +24,7 @@ public abstract class BaseProjectPageModel(ISender sender) : PageModel
     public TrustDto? OutgoingTrust { get; set; }
     public ProjectTeam CurrentUserTeam { get; set; }
 
-    public async Task<IActionResult> OnGet()
+    public virtual async Task<IActionResult> OnGet()
     {
         var success = Guid.TryParse(ProjectId, out var guid);
 
@@ -82,4 +82,6 @@ public abstract class BaseProjectPageModel(ISender sender) : PageModel
 
         return Page();
     }
+
+    public string FormatRouteWithProjectId(string route) => string.Format(route, ProjectId);
 }
