@@ -1,4 +1,6 @@
-class SelectProjectTypePage {
+import BasePage from "cypress/pages/basePage";
+
+class SelectProjectTypePage extends BasePage {
     public selectConversion(): this {
         cy.getById("ProjectType").click();
         return this;
@@ -20,7 +22,7 @@ class SelectProjectTypePage {
     }
 
     public continue(): this {
-        cy.getByClass("govuk-button").click();
+        this.clickButton("Continue");
         return this;
     }
 }
