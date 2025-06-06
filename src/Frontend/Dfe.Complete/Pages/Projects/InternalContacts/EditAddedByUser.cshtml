@@ -1,0 +1,33 @@
+﻿@page "/projects/{projectId}/internal-contacts/added-by-user/edit"
+@using Dfe.Complete.Constants
+@model Dfe.Complete.Pages.Projects.InternalContacts.EditAddedByUser
+
+@{
+  Layout = "Shared/_Layout";
+}
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-two-thirds">
+    <span class="govuk-caption-l">
+      URN @Model.Project.Urn.Value
+    </span>
+    <h1 class="govuk-heading-xl"> Change assigned person for @Model.Establishment.Name</h1>
+
+    <form method="post" novalidate>
+
+      <govuk-input asp-for="@Model.Email"
+                   id="assigned-user"
+                   name="email"
+                   class="govuk-!-width-three-quarters"
+                   value="@Model.Email">
+        <govuk-input-label class="govuk-label--m">Assign to</govuk-input-label>
+      </govuk-input>
+
+      <div class="govuk-button-group">
+        <button data-prevent-double-click="true" class="govuk-button" data-module="govuk-button" role="button" id="save">
+          Continue
+        </button>
+        <a id="cancel-link-event" class="govuk-link" href="@(string.Format(RouteConstants.ProjectInternalContacts, Model.ProjectId))">Cancel</a>
+      </div>
+    </form>
+  </div>
+</div>
