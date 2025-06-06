@@ -29,6 +29,7 @@ public class ProjectsQueryBuilder(CompleteContext context) : IProjectsQueryBuild
         _projects = FilterByIsFormAMat(_projects, filters.IsFormAMat);
         _projects = FilterByIncomingTrustUkprn(_projects, filters.IncomingTrustUkprn);
         _projects = FilterBySignificantDateRange(_projects, filters.SignificantDateRange);
+        _projects = FilterByProjectStatuses(_projects, filters.ProjectStatuses);
         return this;
     }
 
@@ -181,6 +182,12 @@ public class ProjectsQueryBuilder(CompleteContext context) : IProjectsQueryBuild
                 project.SignificantDate.Value >= fromDate &&
                 project.SignificantDate.Value <= toDate);
         }
+        return projects;
+    }
+    private static IQueryable<Project> FilterByProjectStatuses(IQueryable<Project> projects, List<ProjectState>? statuses)
+    {
+        if (statuses != null)
+            projects = projects.Where(project => statuses.Contains(project.State));
         return projects;
     }
 }

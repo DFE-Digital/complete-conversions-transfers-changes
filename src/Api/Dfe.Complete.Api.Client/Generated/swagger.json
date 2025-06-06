@@ -1100,13 +1100,26 @@
             "x-position": 1
           },
           {
+            "name": "ProjectStates",
+            "in": "query",
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/ProjectState"
+              }
+            },
+            "x-position": 2
+          },
+          {
             "name": "Page",
             "in": "query",
             "schema": {
               "type": "integer",
               "format": "int32"
             },
-            "x-position": 2
+            "x-position": 3
           },
           {
             "name": "Count",
@@ -1115,7 +1128,7 @@
               "type": "integer",
               "format": "int32"
             },
-            "x-position": 3
+            "x-position": 4
           }
         ],
         "responses": {
@@ -2038,12 +2051,16 @@
         "x-enumNames": [
           "Active",
           "Completed",
-          "Cancelled"
+          "Deleted",
+          "DaoRevoked",
+          "Inactive"
         ],
         "enum": [
           "Active",
           "Completed",
-          "Cancelled"
+          "Deleted",
+          "DaoRevoked",
+          "Inactive"
         ]
       },
       "ProjectGroupId": {

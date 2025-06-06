@@ -18,5 +18,6 @@ public record ProjectFilters(
     bool? IsFormAMat = null,
     string? NewTrustReferenceNumber = "",
     string? IncomingTrustUkprn = null,
-    DateRangeFilter? SignificantDateRange = null
+    DateRangeFilter? SignificantDateRange = null,
+    List<ProjectState>? ProjectStatuses = null
 );
