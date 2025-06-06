@@ -19,12 +19,16 @@ public abstract class BaseProjectPageModel(ISender sender) : PageModel
     public string ProjectId { get; set; }
 
     public ProjectDto Project { get; set; }
+
     public EstablishmentDto Establishment { get; set; }
+
     public TrustDto? IncomingTrust { get; set; }
+
     public TrustDto? OutgoingTrust { get; set; }
+
     public ProjectTeam CurrentUserTeam { get; set; }
 
-    public async Task<IActionResult> OnGet()
+    protected async Task SetProjectAsync()
     {
         var success = Guid.TryParse(ProjectId, out var guid);
 
@@ -41,7 +45,10 @@ public abstract class BaseProjectPageModel(ISender sender) : PageModel
         }
 
         Project = result.Value;
+    }
 
+    protected async Task SetEstablishmentAsync()
+    {
         var establishmentQuery = new GetEstablishmentByUrnRequest(Project.Urn.Value.ToString());
         var establishmentResult = await sender.Send(establishmentQuery);
 
@@ -51,8 +58,11 @@ public abstract class BaseProjectPageModel(ISender sender) : PageModel
         }
 
         Establishment = establishmentResult.Value;
+    }
 
-        if (!Project.FormAMat)
+    protected async Task SetIncomingTrustAsync()
+    {
+        if (!Project.FormAMat && Project.IncomingTrustUkprn != null)
         {
             var incomingTrustQuery = new GetTrustByUkprnRequest(Project.IncomingTrustUkprn.Value.ToString());
             var incomingTrustResult = await sender.Send(incomingTrustQuery);
@@ -64,7 +74,10 @@ public abstract class BaseProjectPageModel(ISender sender) : PageModel
 
             IncomingTrust = incomingTrustResult.Value;
         }
+    }
 
+    protected async Task SetOutgoingTrustAsync()
+    {
         if (Project.Type == ProjectType.Transfer)
         {
             var outgoingtrustQuery = new GetTrustByUkprnRequest(Project.OutgoingTrustUkprn.Value.ToString());
@@ -72,13 +85,29 @@ public abstract class BaseProjectPageModel(ISender sender) : PageModel
 
             if (!outgoingTrustResult.IsSuccess || outgoingTrustResult.Value == null)
             {
-                throw new NotFoundException($"Trust {Project.IncomingTrustUkprn.Value} does not exist.");
+                throw new NotFoundException($"Trust {Project.OutgoingTrustUkprn.Value} does not exist.");
             }
 
             OutgoingTrust = outgoingTrustResult.Value;
         }
+    }
 
+    protected async Task SetCurrentUserTeamAsync()
+    {
         CurrentUserTeam = await User.GetUserTeam(sender);
+    }
+
+    public virtual async Task<IActionResult> OnGet()
+    {
+        await SetProjectAsync();
+
+        await SetEstablishmentAsync();
+
+        await SetIncomingTrustAsync();
+
+        await SetOutgoingTrustAsync();
+
+        await SetCurrentUserTeamAsync();
 
         return Page();
     }

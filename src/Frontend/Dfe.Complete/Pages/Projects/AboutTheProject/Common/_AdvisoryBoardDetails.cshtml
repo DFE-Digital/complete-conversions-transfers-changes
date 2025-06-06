@@ -1,0 +1,38 @@
+﻿@using Dfe.Complete.Utils
+@model Dfe.Complete.Pages.Projects.AboutTheProject.AboutTheProjectModel
+
+<section id="advisoryBoardDetails" class="app-summary-card govuk-!-margin-bottom-6">
+    <header class="app-summary-card__header">
+        <h2 class="app-summary-card__title">
+            Advisory board details
+        </h2>
+    </header>
+    <div class="app-summary-card__body">
+        <govuk-summary-list>
+            <govuk-summary-list-row>
+                <govuk-summary-list-row-key>Date of advisory board</govuk-summary-list-row-key>
+                <govuk-summary-list-row-value>
+                    @Model.Project.AdvisoryBoardDate?.ToDateString()
+                </govuk-summary-list-row-value>
+                <govuk-summary-list-row-actions>
+                    <govuk-summary-list-row-action href="#" visually-hidden-text="Date of advisory board">Change</govuk-summary-list-row-action>
+                </govuk-summary-list-row-actions>
+            </govuk-summary-list-row>
+            <govuk-summary-list-row>
+                <govuk-summary-list-row-key>Conditions from advisory board</govuk-summary-list-row-key>
+                <govuk-summary-list-row-value>
+                    @if (!string.IsNullOrWhiteSpace(Model.Project.AdvisoryBoardConditions))
+                    {
+                        foreach (string condition in Model.Project.AdvisoryBoardConditions.Split("\r\n").Where(x => !string.IsNullOrWhiteSpace(x)))
+                        {
+                            <div>@condition</div>
+                        }
+                    }
+                </govuk-summary-list-row-value>
+                <govuk-summary-list-row-actions>
+                    <govuk-summary-list-row-action href="#" visually-hidden-text="Conditions from advisory board">Change</govuk-summary-list-row-action>
+                </govuk-summary-list-row-actions>
+            </govuk-summary-list-row>
+        </govuk-summary-list>
+    </div>
+</section>

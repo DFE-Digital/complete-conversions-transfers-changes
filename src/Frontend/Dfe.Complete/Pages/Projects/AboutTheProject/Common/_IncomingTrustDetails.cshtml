@@ -1,0 +1,69 @@
+﻿@using Dfe.Complete.Utils
+@model Dfe.Complete.Pages.Projects.AboutTheProject.AboutTheProjectModel
+
+<section id="incomingTrustDetails" class="app-summary-card govuk-!-margin-bottom-6">
+    <header class="app-summary-card__header">
+        <h2 class="app-summary-card__title">
+            Incoming trust details
+        </h2>
+    </header>
+    <div class="app-summary-card__body">
+        <govuk-summary-list>
+            <govuk-summary-list-row>
+                <govuk-summary-list-row-key>Name</govuk-summary-list-row-key>
+                <govuk-summary-list-row-value>
+                    @Model.IncomingTrust?.Name<br />
+                    <a class="govuk-link" href="https://get-information-schools.service.gov.uk/Groups/Search?GroupSearchModel.Text=@Model.Project.IncomingTrustUkprn" target="_blank">View the trust information in GIAS (opens in new tab)</a>
+                </govuk-summary-list-row-value>
+            </govuk-summary-list-row>
+            <govuk-summary-list-row>
+                <govuk-summary-list-row-key>UKPRN (UK provider reference number)</govuk-summary-list-row-key>
+                <govuk-summary-list-row-value>@Model.Project.IncomingTrustUkprn</govuk-summary-list-row-value>
+                <govuk-summary-list-row-actions>
+                    <govuk-summary-list-row-action href="#" visually-hidden-text="UK provider reference number">Change</govuk-summary-list-row-action>
+                </govuk-summary-list-row-actions>
+            </govuk-summary-list-row>
+            <govuk-summary-list-row>
+                <govuk-summary-list-row-key>Group ID (identifier)</govuk-summary-list-row-key>
+                <govuk-summary-list-row-value>@Model.IncomingTrust?.ReferenceNumber</govuk-summary-list-row-value>
+            </govuk-summary-list-row>
+            <govuk-summary-list-row>
+                <govuk-summary-list-row-key>Companies House number</govuk-summary-list-row-key>
+                <govuk-summary-list-row-value>
+                    @Model.IncomingTrust?.CompaniesHouseNumber<br />
+                    <a class="govuk-link" href="https://find-and-update.company-information.service.gov.uk/company/@Model.IncomingTrust?.CompaniesHouseNumber" target="_blank">View the companiesHouse information (opens in new tab)</a>
+                </govuk-summary-list-row-value>
+            </govuk-summary-list-row>
+            <govuk-summary-list-row>
+                <govuk-summary-list-row-key>Address</govuk-summary-list-row-key>
+                <govuk-summary-list-row-value>
+                    @if (!string.IsNullOrWhiteSpace(@Model.IncomingTrust?.Address?.Street))
+                    {
+                        @Model.IncomingTrust?.Address?.Street <br />
+                    }
+                    @if (!string.IsNullOrWhiteSpace(@Model.IncomingTrust?.Address?.Town))
+                    {
+                        @Model.IncomingTrust?.Address?.Town <br />
+                    }
+                    @if (!string.IsNullOrWhiteSpace(@Model.IncomingTrust?.Address?.County))
+                    {
+                        @Model.IncomingTrust?.Address?.County <br />
+                    }
+                    @if (!string.IsNullOrWhiteSpace(@Model.IncomingTrust?.Address?.Postcode))
+                    {
+                        @Model.IncomingTrust?.Address?.Postcode
+                    }
+                </govuk-summary-list-row-value>
+            </govuk-summary-list-row>
+            <govuk-summary-list-row>
+                <govuk-summary-list-row-key>SharePoint folder</govuk-summary-list-row-key>
+                <govuk-summary-list-row-value>
+                    <a class="govuk-link" href="@Model.Project.IncomingTrustSharepointLink" target="_blank">View the trust SharePoint folder (opens in new tab)</a>
+                </govuk-summary-list-row-value>
+                <govuk-summary-list-row-actions>
+                    <govuk-summary-list-row-action href="#" visually-hidden-text="Trust sharePoint folder">Change</govuk-summary-list-row-action>
+                </govuk-summary-list-row-actions>
+            </govuk-summary-list-row>
+        </govuk-summary-list>
+    </div>
+</section>
