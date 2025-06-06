@@ -6,8 +6,8 @@ using DfE.CoreLibs.Testing.AutoFixture.Customizations;
 using System.Linq.Expressions;
 using AutoMapper;
 using Dfe.Complete.Application.Projects.Models;
+using Dfe.Complete.Application.Users.Queries.GetUser;
 using NSubstitute.ExceptionExtensions;
-using Dfe.Complete.Application.Projects.Queries.GetUser;
 using Dfe.Complete.Tests.Common.Customizations.Behaviours;
 using Dfe.Complete.Tests.Common.Customizations.Models;
 

@@ -2,7 +2,7 @@ using Dfe.AcademiesApi.Client.Contracts;
 using Dfe.Complete.Application.Common.Models;
 using Dfe.Complete.Application.Projects.Interfaces;
 using Dfe.Complete.Application.Projects.Models;
-using Dfe.Complete.Application.Projects.Queries.GetUser;
+using Dfe.Complete.Application.Users.Queries.GetUser;
 using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Utils;
 using MediatR;
