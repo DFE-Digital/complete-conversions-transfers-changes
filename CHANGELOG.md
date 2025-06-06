@@ -29,7 +29,7 @@ Security in case of vulnerabilities.
 ### Fixed  
 - Updated pagination query parameter from `pageNumber` to `page` to match Ruby app
 - Optimised queries behind the "By local authority" page
-- Fixed the search functionality to return only projects with status values of 0, 1, or 3.
+- Fixed the search functionality to return only projects with status values of 0, 1, or 3 (Active, Completed or DAO revoked)
 
 See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-05-30.320...main) for everything awaiting release
 
