@@ -14,7 +14,7 @@ using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.FeatureManagement;
 using Microsoft.Identity.Web;
-using Microsoft.Identity.Web.UI;
+using Microsoft.Identity.Web.UI; 
 using DfE.CoreLibs.Security.Cypress;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using DfE.CoreLibs.Http.Middlewares.CorrelationId;
@@ -22,6 +22,7 @@ using DfE.CoreLibs.Http.Interfaces;
 using Dfe.Complete.Logging.Middleware;
 using DfE.CoreLibs.Security.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using DfE.CoreLibs.Security.Antiforgery;
 
 namespace Dfe.Complete;
 
@@ -45,14 +46,17 @@ public class Startup
         return Configuration.GetRequiredSection(sectionName);
     }
 
-    private T GetTypedConfigurationFor<T>()
+    private T GetTypedConfigurationFor<T>() where T : class, new()
     {
-        return GetConfigurationSectionFor<T>().Get<T>();
+        var section = GetConfigurationSectionFor<T>();
+        return section == null
+            ? throw new InvalidOperationException($"Configuration section for {typeof(T).Name} not found.")
+            : section.Get<T>() ?? new T();
     }
 
     public void ConfigureServices(IServiceCollection services)
     {
-        ConfigureCypressAntiforgeryEndpoints(services);
+        ConfigureCustomAntiforgeryEndpoints(services);
         services.AddHttpClient();
         services.AddFeatureManagement();
         services.AddHealthChecks();
@@ -71,8 +75,8 @@ public class Startup
             {
                 options.HtmlHelperOptions.ClientValidationEnabled = false;
             });
-
-        ConfigureCypressAntiforgery(services);
+         
+        ConfigureCustomAntiforgery(services);
 
         services.AddControllersWithViews()
            .AddMicrosoftIdentityUI();
@@ -184,37 +188,31 @@ public class Startup
                }
            });
     }
-
-    private void ConfigureCypressAntiforgeryEndpoints(IServiceCollection services)
+    private void ConfigureCustomAntiforgeryEndpoints(IServiceCollection services)
     {
-        if (!_env.IsProduction())
+        services.Configure<CustomAwareAntiForgeryOptions>(opts =>
         {
-            services.Configure<CypressAwareAntiForgeryOptions>(opts =>
+            opts.ShouldSkipAntiforgery = httpContext =>
             {
-                opts.ShouldSkipAntiforgery = httpContext =>
-                {
-                    var path = httpContext.Request.Path;
-                    return path.StartsWithSegments("/v1") ||
-                           path.StartsWithSegments("/Errors");
-                };
-            });
-        }
-    }
+                var path = httpContext.Request.Path;
+                return path.StartsWithSegments("/Cookies") ||
+                          (!_env.IsProduction() && (path.StartsWithSegments("/v1") || path.StartsWithSegments("/Errors") || path.StartsWithSegments("/Cookies")));
+            };
+            opts.RequestHeaderKey = Configuration["RequestHeaderKey"];
 
-    private void ConfigureCypressAntiforgery(IServiceCollection services)
+        });
+    }
+    private static void ConfigureCustomAntiforgery(IServiceCollection services)
     {
-        if (!_env.IsProduction())
+        services.AddScoped<ICustomRequestChecker, CustomRequestChecker>();
+        services.AddScoped<CustomAwareAntiForgeryFilter>();
+        services.AddScoped<ICypressRequestChecker, CypressRequestChecker>();
+
+        services.PostConfigure<MvcOptions>(options =>
         {
-            services.AddScoped<ICypressRequestChecker, CypressRequestChecker>();
-
-            services.AddScoped<CypressAwareAntiForgeryFilter>();
-
-            services.PostConfigure<MvcOptions>(options =>
-            {
-                options.Filters.AddService<CypressAwareAntiForgeryFilter>();
-            });
-        }
-    }
+            options.Filters.AddService<CustomAwareAntiForgeryFilter>();
+        });
+    } 
 
     private void RegisterClients(IServiceCollection services)
     {
