@@ -1,6 +1,7 @@
 ﻿using Dfe.Complete.Application.Common.Models;
 using Dfe.Complete.Application.LocalAuthorities.Models;
 using Dfe.Complete.Application.Projects.Interfaces;
+using Dfe.Complete.Utils;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -21,8 +22,7 @@ namespace Dfe.Complete.Application.LocalAuthorities.Queries
                 var localAuthoritiesCount = await localAuthoritiesQuery.CountAsync(cancellationToken);
 
                 var localAuthorities = await localAuthoritiesQuery
-                    .Skip(request.Page * request.Count)
-                    .Take(request.Count)
+                    .Paginate(request.Page, request.Count) 
                     .ToListAsync(cancellationToken);
 
                 return PaginatedResult<List<LocalAuthorityQueryModel>>.Success(localAuthorities, localAuthoritiesCount);

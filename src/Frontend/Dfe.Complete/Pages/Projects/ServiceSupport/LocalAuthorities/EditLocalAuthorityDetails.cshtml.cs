@@ -1,18 +1,20 @@
-using Azure.Core;
 using Dfe.Complete.Application.LocalAuthorities.Commands;
 using Dfe.Complete.Application.LocalAuthorities.Models;
 using Dfe.Complete.Application.LocalAuthorities.Queries;
 using Dfe.Complete.Constants;
+using Dfe.Complete.Domain.Constants;
 using Dfe.Complete.Domain.ValueObjects;
 using Dfe.Complete.Models;
 using Dfe.Complete.Services;
 using Dfe.Complete.Validators;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
 
 namespace Dfe.Complete.Pages.Projects.ServiceSupport.LocalAuthorities
 {
+    [Authorize(policy: UserPolicyConstants.ManagerLocalAuthorities)]
     public class EditLocalAuthorityDetailsModel(ISender sender, IErrorService errorService) : ServiceSupportModel(LocalAuthoriesNavigation)
     {
         [BindProperty(SupportsGet = true, Name = nameof(Id))]
@@ -73,8 +75,7 @@ namespace Dfe.Complete.Pages.Projects.ServiceSupport.LocalAuthorities
                 Email = model.Contact.Email;
                 Phone = model.Contact.Phone;
                 ContactId = model.Contact.Id.Value;
-            } 
-            else { ContactId = Guid.NewGuid(); }
+            }
         }
 
         public async Task<IActionResult> OnPostAsync()
@@ -85,7 +86,7 @@ namespace Dfe.Complete.Pages.Projects.ServiceSupport.LocalAuthorities
                 return Page();
             }
             //get contact id. 
-            var contactId = ContactId.HasValue ? new ContactId(ContactId.Value) : null;
+            var contactId = ContactId.HasValue ? new ContactId(ContactId.Value) : new ContactId(Guid.NewGuid());
             var response = await sender.Send(new UpdateLocalAuthorityCommand(new LocalAuthorityId(new Guid(Id)), Code, Address1,
                 Address2, Address3, AddressTown, AddressCounty, AddressPostcode, contactId, Title, ContactName, Email, Phone));
             if (response.IsSuccess)

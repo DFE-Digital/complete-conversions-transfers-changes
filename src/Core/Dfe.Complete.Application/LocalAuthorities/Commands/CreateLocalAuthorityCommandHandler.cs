@@ -38,16 +38,16 @@ namespace Dfe.Complete.Application.LocalAuthorities.Commands
                 var hasLocalAuthority = await localAuthorityRepository.ExistsAsync(x => x.Code == request.Code, cancellationToken);
                 if (hasLocalAuthority)
                 { 
-                    throw new AlreadyExistedException($"Already existed local authority with code {request.Code}");
+                    throw new AlreadyExistsException($"Already existed local authority with code {request.Code}");
                 } 
-                var localAuthority = LocalAuthority.CreateLocalAuthority(request.Id, request.Name, request.Code, new AddressDetails(request.Address1,
+                var localAuthority = LocalAuthority.Create(request.Id, request.Name, request.Code, new AddressDetails(request.Address1,
                     request.Address2, request.Address3, request.AddressTown, request.AddressCounty,
                     request.AddressPostcode), DateTime.UtcNow);
 
                 await localAuthorityRepository.AddAsync(localAuthority, cancellationToken);
                 if (!string.IsNullOrWhiteSpace(request.Title) && !string.IsNullOrWhiteSpace(request.ContactName))
                 {
-                    var contact = Contact.CreateLocalAuthorityContact(request.ContactId!, request.Title, request.ContactName, request.Email, request.Phone, localAuthority.Id, DateTime.Now);
+                    var contact = Contact.Create(request.ContactId!, request.Title, request.ContactName, request.Email, request.Phone, localAuthority.Id, DateTime.Now);
                     await contactRepository.AddAsync(contact, cancellationToken);
                 }
                 await unitOfWork.CommitAsync();

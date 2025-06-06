@@ -63,7 +63,7 @@ namespace Dfe.Complete.Application.Tests.CommandHandlers.LocalAuthority
                 "AddressTown", "AddressCounty", "AddressPostcode", new ContactId(Guid.NewGuid()),
                 "Title", "ContactName", "Email", "Phone");
 
-            var existingLocalAuthority = Domain.Entities.LocalAuthority.CreateLocalAuthority(
+            var existingLocalAuthority = Domain.Entities.LocalAuthority.Create(
                 command.Id, command.Name, command.Code, new AddressDetails(command.Address1, command.Address2, command.Address3,
                 command.AddressTown, command.AddressCounty, command.AddressPostcode), DateTime.UtcNow);
 

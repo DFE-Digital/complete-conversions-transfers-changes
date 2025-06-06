@@ -43,19 +43,19 @@ namespace Dfe.Complete.Tests.Constants
         [Fact]
         public void CannotBeBlank_ShouldReturnExpectedMessage()
         {
-            Assert.Equal("can't be blank", ValidationConstants.CannotBeBlank);
+            Assert.Equal("Can't be blank", ValidationConstants.CannotBeBlank);
         }
 
         [Fact]
         public void NotRecognisedUKPostcode_ShouldReturnExpectedMessage()
         {
-            Assert.Equal("not recognised as a UK postcode", ValidationConstants.NotRecognisedUKPostcode);
+            Assert.Equal("Not recognised as a UK postcode", ValidationConstants.NotRecognisedUKPostcode);
         }
 
         [Fact]
         public void NotRecognisedUKPhone_ShouldReturnExpectedMessage()
         {
-            Assert.Equal("not recognised as a UK phone number", ValidationConstants.NotRecognisedUKPhone);
+            Assert.Equal("Not recognised as a UK phone number", ValidationConstants.NotRecognisedUKPhone);
         }
 
         [Fact]

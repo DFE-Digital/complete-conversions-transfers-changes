@@ -7,19 +7,15 @@
     var HasDeletedLa = (bool)(TempData["HasDeletedLa"] ?? false);
 }
 @if (HasDeletedLa)
-{ 
-    <div class="govuk-notification-banner govuk-notification-banner--success" role="alert" aria-labelledby="govuk-notification-banner-title" data-module="govuk-notification-banner">
-        <div class="govuk-notification-banner__header">
-            <h2 class="govuk-notification-banner__title" id="govuk-notification-banner-title">
-                Success
-            </h2>
-        </div>
-        <div class="govuk-notification-banner__content">
-            <h3 class="govuk-notification-banner__heading" id="project-note-added">
-                Local authority deleted successfully
-            </h3>
-        </div>
-    </div>
+{
+    <govuk-notification-banner class="govuk-notification-banner--success">
+        <govuk-notification-banner-title>
+            Success
+        </govuk-notification-banner-title>
+        <h3 class="govuk-notification-banner__heading" id="la-deleted">
+            Local authority deleted successfully
+        </h3>
+    </govuk-notification-banner> 
 }
 <div class="govuk-grid-column-full">
     <h1 class="govuk-heading-xl">

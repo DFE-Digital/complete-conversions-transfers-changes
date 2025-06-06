@@ -1,12 +1,15 @@
 using Dfe.Complete.Application.LocalAuthorities.Models;
 using Dfe.Complete.Application.LocalAuthorities.Queries;
 using Dfe.Complete.Constants;
+using Dfe.Complete.Domain.Constants;
 using Dfe.Complete.Domain.ValueObjects;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc; 
 
 namespace Dfe.Complete.Pages.Projects.ServiceSupport.LocalAuthorities
 {
+    [Authorize(policy: UserPolicyConstants.ManagerLocalAuthorities)]
     public class ViewLocalAuthorityDetailsModel(ISender sender) : ServiceSupportModel(LocalAuthoriesNavigation)
     {
         [BindProperty(SupportsGet = true, Name = "id")]
@@ -19,7 +22,7 @@ namespace Dfe.Complete.Pages.Projects.ServiceSupport.LocalAuthorities
             var localAuthorityResponse = await sender.Send(new GetLocalAuthorityDetailsQuery(new LocalAuthorityId(new Guid(Id))));
             Details = localAuthorityResponse?.Value!;
             TempData["LA_Name"] = Details.LocalAuthority.Name;
-            TempData["LA_ContatId"] = Details.Contact?.Id.Value;
+            TempData["LA_ContactId"] = Details.Contact?.Id.Value;
         }
 
         public string DeleteLocalAuthorityUrl() => string.Format(RouteConstants.DeleteLocalAuthorityDetails, Id);

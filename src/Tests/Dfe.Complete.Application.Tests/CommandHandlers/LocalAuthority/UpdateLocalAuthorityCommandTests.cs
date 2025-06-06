@@ -36,7 +36,7 @@ namespace Dfe.Complete.Application.Tests.CommandHandlers.LocalAuthority
                 new LocalAuthorityId(Guid.NewGuid()), "Code", "Address1", "Address2", "Address3",
                 "AddressTown", "AddressCounty", "AddressPostcode");
 
-            var localAuthority = Domain.Entities.LocalAuthority.CreateLocalAuthority(
+            var localAuthority = Domain.Entities.LocalAuthority.Create(
                 command.Id, "Name", "Code", new AddressDetails("Address1", "Address2", "Address3",
                 "AddressTown", "AddressCounty", "AddressPostcode"), DateTime.UtcNow); 
 
@@ -67,10 +67,10 @@ namespace Dfe.Complete.Application.Tests.CommandHandlers.LocalAuthority
                 "AddressTown", "AddressCounty", "AddressPostcode", new ContactId(Guid.NewGuid()),
                 "Title", "ContactName", "Email", "Phone");
 
-            var localAuthority = Domain.Entities.LocalAuthority.CreateLocalAuthority(
+            var localAuthority = Domain.Entities.LocalAuthority.Create(
                 command.Id, "Name", "Code", new AddressDetails("Address1", "Address2", "Address3",
                 "AddressTown", "AddressCounty", "AddressPostcode"), DateTime.UtcNow);
-            var contact = Domain.Entities.Contact.CreateLocalAuthorityContact(
+            var contact = Domain.Entities.Contact.Create(
                 command.ContactId!, command.Title!, command.ContactName!, command.Email, command.Phone, command.Id, DateTime.UtcNow);
 
             _mockLocalAuthorityRepository.Setup(repo => repo.FindAsync(It.IsAny<Expression<Func<Domain.Entities.LocalAuthority, bool>>>(), It.IsAny<CancellationToken>()))
@@ -105,10 +105,10 @@ namespace Dfe.Complete.Application.Tests.CommandHandlers.LocalAuthority
                 "AddressTown", "AddressCounty", "AddressPostcode", new ContactId(Guid.NewGuid()),
                 "Title", "ContactName", "Email", "Phone");
 
-            var localAuthority = Domain.Entities.LocalAuthority.CreateLocalAuthority(
+            var localAuthority = Domain.Entities.LocalAuthority.Create(
                 command.Id, "Name", "Code", new AddressDetails("Address1", "Address2", "Address3",
                 "AddressTown", "AddressCounty", "AddressPostcode"), DateTime.UtcNow);
-            var contact = Domain.Entities.Contact.CreateLocalAuthorityContact(
+            var contact = Domain.Entities.Contact.Create(
                 command.ContactId!, command.Title!, command.ContactName!, command.Email, command.Phone, localAuthority.Id,  DateTime.UtcNow);
 
             _mockLocalAuthorityRepository.Setup(repo => repo.FindAsync(It.IsAny<Expression<Func<Domain.Entities.LocalAuthority, bool>>>(), It.IsAny<CancellationToken>()))
@@ -158,7 +158,7 @@ namespace Dfe.Complete.Application.Tests.CommandHandlers.LocalAuthority
                  new LocalAuthorityId(Guid.NewGuid()), "Code", "Address1", "Address2", "Address3",
                  "AddressTown", "AddressCounty", "AddressPostcode");
 
-            var localAuthority = Domain.Entities.LocalAuthority.CreateLocalAuthority(
+            var localAuthority = Domain.Entities.LocalAuthority.Create(
                 command.Id, "Name", "Code1", new AddressDetails("Address1", "Address2", "Address3",
                 "AddressTown", "AddressCounty", "AddressPostcode"), DateTime.UtcNow);
 

@@ -27,7 +27,7 @@ public class LocalAuthority : BaseAggregateRoot, IEntity<LocalAuthorityId>
 
     public DateTime UpdatedAt { get; set; }
 
-    public static LocalAuthority CreateLocalAuthority(
+    public static LocalAuthority Create(
         LocalAuthorityId id,
         string name,
         string code,
@@ -48,7 +48,7 @@ public class LocalAuthority : BaseAggregateRoot, IEntity<LocalAuthorityId>
             CreatedAt = createdAt
         };
     }
-    public void UpdateLocalAuthority( 
+    public void Update( 
        string code,
        AddressDetails addressDetails,
        DateTime updatedAt)

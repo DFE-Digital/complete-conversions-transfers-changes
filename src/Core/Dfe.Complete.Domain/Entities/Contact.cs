@@ -35,7 +35,7 @@ public class Contact : BaseAggregateRoot, IEntity<ContactId>
 
     public virtual Project? Project { get; set; }
 
-    public static Contact CreateLocalAuthorityContact(ContactId id,
+    public static Contact Create(ContactId id,
         string title,
         string name,
         string? email,
@@ -58,7 +58,7 @@ public class Contact : BaseAggregateRoot, IEntity<ContactId>
         };
     }
     
-    public void UpdateContact(
+    public void Update(
         string title,
         string name,
         string? email,

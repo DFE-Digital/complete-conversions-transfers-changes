@@ -40,10 +40,10 @@ namespace Dfe.Complete.Application.LocalAuthorities.Commands
                     var hasLocalAuthorityWithSameCode = await localAuthorityRepository.ExistsAsync(x => x.Code == request.Code, cancellationToken);
                     if (hasLocalAuthorityWithSameCode)
                     {
-                        throw new AlreadyExistedException($"Already existed local authority with code {request.Code}");
+                        throw new AlreadyExistsException($"Already existed local authority with code {request.Code}");
                     }
                 } 
-                localAuthority.UpdateLocalAuthority(request.Code, new AddressDetails(request.Address1,
+                localAuthority.Update(request.Code, new AddressDetails(request.Address1,
                     request.Address2, request.Address3, request.AddressTown, request.AddressCounty,
                     request.AddressPostcode), DateTime.UtcNow);  
                 await localAuthorityRepository.UpdateAsync(localAuthority, cancellationToken);
@@ -53,12 +53,12 @@ namespace Dfe.Complete.Application.LocalAuthorities.Commands
                     var contact = await contactRepository.FindAsync(x => x.Id == request.ContactId && x.LocalAuthorityId == request.Id, cancellationToken);
                     if (contact == null)
                     {
-                        contact = Contact.CreateLocalAuthorityContact(request.ContactId!, request.Title, request.ContactName!, request.Email, request.Phone, localAuthority.Id, DateTime.Now);
+                        contact = Contact.Create(request.ContactId!, request.Title, request.ContactName!, request.Email, request.Phone, localAuthority.Id, DateTime.Now);
                         await contactRepository.AddAsync(contact, cancellationToken);
                     }
                     else
                     {
-                        contact.UpdateContact(request.Title!, request.ContactName!, request.Email, request.Phone, DateTime.Now);
+                        contact.Update(request.Title!, request.ContactName!, request.Email, request.Phone, DateTime.Now);
                         await contactRepository.UpdateAsync(contact, cancellationToken);
                     }
                 }

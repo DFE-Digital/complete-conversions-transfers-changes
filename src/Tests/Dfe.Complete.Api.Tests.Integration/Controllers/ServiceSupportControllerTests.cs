@@ -180,7 +180,7 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers
             }).Create<Domain.Entities.LocalAuthority>();
             await dbContext.LocalAuthorities.AddAsync(localAuthority);
 
-            var contact = Domain.Entities.Contact.CreateLocalAuthorityContact(new Domain.ValueObjects.ContactId(Guid.NewGuid()),
+            var contact = Domain.Entities.Contact.Create(new Domain.ValueObjects.ContactId(Guid.NewGuid()),
                 "title", "name", null, null, localAuthority.Id, DateTime.Now);
             await dbContext.Contacts.AddAsync(contact);
 
@@ -367,7 +367,7 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers
             }).Create<Domain.Entities.LocalAuthority>();
             await dbContext.LocalAuthorities.AddAsync(localAuthority);
 
-            var contact = Domain.Entities.Contact.CreateLocalAuthorityContact(new Domain.ValueObjects.ContactId(Guid.NewGuid()),
+            var contact = Domain.Entities.Contact.Create(new Domain.ValueObjects.ContactId(Guid.NewGuid()),
                 "title", "name", null, null, localAuthority.Id, DateTime.Now); 
             await dbContext.Contacts.AddAsync(contact);
 
@@ -480,7 +480,7 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers
             }).Create<Domain.Entities.LocalAuthority>();
             await dbContext.LocalAuthorities.AddAsync(localAuthority);
            
-            var contact = Domain.Entities.Contact.CreateLocalAuthorityContact(new Domain.ValueObjects.ContactId(Guid.NewGuid()),
+            var contact = Domain.Entities.Contact.Create(new Domain.ValueObjects.ContactId(Guid.NewGuid()),
                 fixture.Create<string>(), fixture.Create<string>(), null, null, localAuthority.Id, DateTime.Now);
             await dbContext.Contacts.AddAsync(contact);
             
