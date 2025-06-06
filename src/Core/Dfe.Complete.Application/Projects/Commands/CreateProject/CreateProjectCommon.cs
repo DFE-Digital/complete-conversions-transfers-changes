@@ -3,7 +3,7 @@ using Dfe.Complete.Application.Projects.Common;
 using Dfe.Complete.Application.Projects.Models;
 using Dfe.Complete.Application.Projects.Queries.GetLocalAuthority;
 using Dfe.Complete.Application.Projects.Queries.GetProject;
-using Dfe.Complete.Application.Projects.Queries.GetUser;
+using Dfe.Complete.Application.Users.Queries.GetUser;
 using Dfe.Complete.Domain.Entities;
 using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Domain.Interfaces.Repositories;
