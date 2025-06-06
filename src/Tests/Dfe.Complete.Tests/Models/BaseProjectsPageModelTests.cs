@@ -17,6 +17,7 @@ using DfE.CoreLibs.Testing.AutoFixture.Attributes;
 using DfE.CoreLibs.Testing.AutoFixture.Customizations;
 using MediatR;
 using Moq;
+using Microsoft.AspNetCore.Mvc;
 using System.Reflection;
 
 namespace Dfe.Complete.Tests.Models;
@@ -456,11 +457,43 @@ Assert.NotNull(pageSizeField);
 
 var value = (int)pageSizeField!.GetValue(model)!;
 
-Assert.Equal(pagination, model.Pagination);
-Assert.Equal("my-navigation-page", model.CurrentNavigationItem);
-Assert.Equal(1, model.PageNumber);
-Assert.Equal(20, value);
-}
+        Assert.Equal(pagination, model.Pagination);
+        Assert.Equal("my-navigation-page", model.CurrentNavigationItem);
+        Assert.Equal(1, model.PageNumber);
+        Assert.Equal(20, value);
+    }
+
+    [Fact]
+    public void HasPageFound_Returns404_WhenConditionIsTrue()
+    {
+        // Arrange + Act
+        var model = new TestBaseProjectsPageModel("my-navigation-page");
+        var pagination = new PaginationModel("route", 100, 100, 20);
+        model.Pagination = pagination;
+
+        var result = model.TestHasPageFound(pagination.IsOutOfRangePage);
+
+        // Assert
+        var statusCodeResult = Assert.IsType<StatusCodeResult>(result);
+        Assert.Equal(404, statusCodeResult.StatusCode);
+    }
+
+    [Fact]
+    public void HasPageFound_ReturnsNull_WhenConditionIsFalse()
+    {
+        // Arrange + Act
+        var model = new TestBaseProjectsPageModel("my-navigation-page");
+        var pagination = new PaginationModel("route", 1, 100, 20);
+        model.Pagination = pagination;
+
+        var result = model.TestHasPageFound(pagination.IsOutOfRangePage);
+
+        // Assert
+        Assert.Null(result);
+    }
 }
 
-public class TestBaseProjectsPageModel(string currentNav) : BaseProjectsPageModel(currentNav) {}
+public class TestBaseProjectsPageModel(string currentNav) : BaseProjectsPageModel(currentNav) {
+    public IActionResult TestHasPageFound(bool condition) =>
+       HasPageFound(condition);
+}
