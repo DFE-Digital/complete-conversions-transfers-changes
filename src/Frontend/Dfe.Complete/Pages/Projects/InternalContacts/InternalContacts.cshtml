@@ -1,0 +1,60 @@
+﻿@page "/projects/{projectId}/internal-contacts"
+@using Dfe.Complete.Application.Mappers
+@using Dfe.Complete.Constants
+@model Dfe.Complete.Pages.Projects.InternalContacts.InternalContacts
+
+@{
+  Layout = "_ProjectLayout";
+  ViewData["Title"] = Model.Establishment.Name;
+}
+
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-three-quarters" id="projectInternalContacts">
+    <h2 class="govuk-heading-l">Internal Contacts</h2>
+    <govuk-summary-list>
+      <govuk-summary-list-row>
+        <govuk-summary-list-row-key>
+          Assigned to user
+        </govuk-summary-list-row-key>
+        <govuk-summary-list-row-value>
+          @(Model.UserAssignedTo?.FullName ?? "Not yet assigned")
+        </govuk-summary-list-row-value>
+        <govuk-summary-list-row-actions>
+          @if (Model.UserAssignedTo is not null)
+          {
+            <govuk-summary-list-row-action href="mailto:@Model.UserAssignedTo.Email" visually-hidden-text="Assigned to user">Email</govuk-summary-list-row-action>
+          }
+          <govuk-summary-list-row-action href="@Model.FormatRouteWithProjectId(RouteConstants.ProjectInternalContactsEditAssignedUser)" visually-hidden-text="Assigned to user">Change</govuk-summary-list-row-action>
+        </govuk-summary-list-row-actions>
+      </govuk-summary-list-row>
+
+      <govuk-summary-list-row>
+        <govuk-summary-list-row-key>
+          Assigned to team
+        </govuk-summary-list-row-key>
+        <govuk-summary-list-row-value>
+          @(ProjectTeamPresentationMapper.Map(Model.TeamAssignedTo) ?? "Not yet assigned")
+        </govuk-summary-list-row-value>
+        <govuk-summary-list-row-actions>
+          <govuk-summary-list-row-action href="@Model.FormatRouteWithProjectId(RouteConstants.ProjectInternalContactsEditAssignedTeam)" visually-hidden-text="Assigned to team">Change</govuk-summary-list-row-action>
+        </govuk-summary-list-row-actions>
+      </govuk-summary-list-row>
+
+      <govuk-summary-list-row>
+        <govuk-summary-list-row-key>
+          Added by
+        </govuk-summary-list-row-key>
+        <govuk-summary-list-row-value>
+          @(Model.UserAddedBy?.FullName ?? "Not yet assigned")
+        </govuk-summary-list-row-value>
+        <govuk-summary-list-row-actions>
+          @if (Model.UserAddedBy is not null)
+          {
+            <govuk-summary-list-row-action href="mailto:@Model.UserAddedBy.Email" visually-hidden-text="Assigned to team">Email</govuk-summary-list-row-action>
+          }
+          <govuk-summary-list-row-action href="@Model.FormatRouteWithProjectId(RouteConstants.ProjectInternalContactsEditAddedByUser)" visually-hidden-text="Assigned to team">Change</govuk-summary-list-row-action>
+        </govuk-summary-list-row-actions>
+      </govuk-summary-list-row>
+    </govuk-summary-list>
+  </div>
+</div>
