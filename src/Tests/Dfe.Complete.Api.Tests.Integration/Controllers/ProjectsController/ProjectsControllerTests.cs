@@ -182,13 +182,34 @@ public partial class ProjectsControllerTests
         var results = await projectsClient.ListAllProjectsAsync(
             Complete.Client.Contracts.ProjectState.Completed, null, null, OrderProjectByField.CompletedAt, OrderByDirection.Descending, 0, 50);
 
+        var activeProjects = projects
+            .Where(project => project.State == ProjectState.Active)
+            .OrderByDescending(project => project.CompletedAt).ToList();
+
+        var daoRevokedProjects = projects
+           .Where(project => project.State == ProjectState.DaoRevoked)
+           .OrderByDescending(project => project.CompletedAt).ToList();
+
+        var inActiveProjects = projects
+            .Where(project => project.State == ProjectState.Inactive)
+            .OrderByDescending(project => project.CompletedAt).ToList();
+
+        var deletedProjects = projects
+            .Where(project => project.State == ProjectState.Deleted)
+            .OrderByDescending(project => project.CompletedAt).ToList();
+
         projects = projects
-            .Where(project => project.State == Domain.Enums.ProjectState.Completed)
+            .Where(project => project.State == ProjectState.Completed)
             .OrderByDescending(project => project.CompletedAt).ToList();
 
         // Assert
         Assert.NotNull(results);
-        Assert.Equal(projects.Count, results.Count);
+        Assert.Equal(10, results.Count);
+        Assert.Equal(10, projects.Count);
+        Assert.Equal(10, activeProjects.Count);
+        Assert.Equal(10, daoRevokedProjects.Count);
+        Assert.Equal(10, inActiveProjects.Count);
+        Assert.Equal(10, deletedProjects.Count);
         for (var i = 0; i < results.Count; i++)
         {
             var result = results[i];
