@@ -1,6 +1,7 @@
 import { yesNoOption } from "cypress/constants/stringTestConstants";
+import BasePage from "cypress/pages/basePage";
 
-class NewProjectPage {
+class NewProjectPage extends BasePage {
     public withTrustReferenceNumber(trn: string): this {
         cy.getById("TrustReferenceNumber").typeFast(trn);
         return this;
@@ -48,7 +49,7 @@ class NewProjectPage {
     }
 
     public continue(): this {
-        cy.getByClass("govuk-button").click();
+        this.clickButton("Continue");
         return this;
     }
 }
