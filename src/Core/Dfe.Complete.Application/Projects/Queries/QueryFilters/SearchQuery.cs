@@ -12,18 +12,19 @@ public class SearchQuery(string? t) : IQueryObject<Project>
 
     public IQueryable<Project> Apply(IQueryable<Project> q)
     {
+        var timeSpan = TimeSpan.FromMilliseconds(100);
         if (string.IsNullOrEmpty(_term)) return q;
 
-        if (Regex.IsMatch(_term, @"^\d{6}$"))     // URN
+        if (Regex.IsMatch(_term, @"^\d{6}$", RegexOptions.None, timeSpan))     // URN
             return q.Where(p => p.Urn == new Urn(int.Parse(_term)));
 
-        if (Regex.IsMatch(_term, @"^\d{8}$"))     // UKPRN
+        if (Regex.IsMatch(_term, @"^\d{8}$", RegexOptions.None, timeSpan))     // UKPRN
         {
             var vo = new Ukprn(int.Parse(_term));
             return q.Where(p => p.IncomingTrustUkprn == vo || p.OutgoingTrustUkprn == vo);
         }
 
-        if (Regex.IsMatch(_term, @"^\d{4}$"))     // Establishment Number
+        if (Regex.IsMatch(_term, @"^\d{4}$", RegexOptions.None, timeSpan))     // Establishment Number
             return q.Where(p => p.GiasEstablishment.EstablishmentNumber == _term);
 
         return q.Where(p =>

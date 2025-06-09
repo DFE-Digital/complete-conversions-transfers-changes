@@ -52,18 +52,7 @@ public class Startup
 
     public void ConfigureServices(IServiceCollection services)
     {
-        if (!_env.IsProduction())
-        {
-            services.Configure<CypressAwareAntiForgeryOptions>(opts =>
-            {
-                opts.ShouldSkipAntiforgery = httpContext =>
-                {
-                    var path = httpContext.Request.Path;
-                    return path.StartsWithSegments("/v1") ||
-                           path.StartsWithSegments("/Errors");
-                };
-            });
-        }
+        ConfigureCypressAntiforgeryEndpoints(services);
 
         services.AddHttpClient();
         services.AddFeatureManagement();
