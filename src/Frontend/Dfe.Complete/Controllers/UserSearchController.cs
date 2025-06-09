@@ -10,9 +10,9 @@ public class UserSearchController(ISender sender) : Controller
 {
     // GET
     [Route("Search/User")]
-    public async Task<IActionResult> Index(string query)
+    public async Task<IActionResult> Index(string query, string? type)
     {
-        var userQuery = new SearchUsersQuery(query);
+        var userQuery = new SearchUsersQuery(query, type?.ToLowerInvariant() == "assignable");
         var users = await sender.Send(userQuery);
         if (users.Value is null)
         {
