@@ -4,6 +4,7 @@ using Dfe.Complete.Application.Projects.Models;
 using Dfe.Complete.Application.Users.Queries.GetUser;
 using Dfe.Complete.Application.Users.Queries.SearchUsers;
 using Dfe.Complete.Constants;
+using Dfe.Complete.Extensions;
 using Dfe.Complete.Models;
 using Dfe.Complete.Services;
 using MediatR;
@@ -55,6 +56,7 @@ public class EditAddedByUser(ISender sender, ErrorService errorService, ILogger<
         {
             var updateRequest = new UpdateRegionalDeliveryOfficerCommand(Project.Urn, addedBySearchResult.Value[0].Id);
             await sender.Send(updateRequest);
+            TempData.SetNotification(NotificationType.Success, "Success", "Project has been assigned successfully");
             return Redirect(FormatRouteWithProjectId(RouteConstants.ProjectInternalContacts));
         }
 
