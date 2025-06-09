@@ -2,11 +2,13 @@
 using Dfe.Complete.Domain.Entities;
 using Dfe.Complete.Domain.Interfaces.Repositories;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 namespace Dfe.Complete.Application.Users.Queries.SearchUsers
-{ 
+{
     public record SearchUsersQuery(
-       string Email) : PaginatedRequest<PaginatedResult<List<User>>>;
+        string Query,
+        bool FilterToAssignableUsers = false) : PaginatedRequest<PaginatedResult<List<User>>>;
 
     public class SearchUsersQueryHandler(
         ICompleteRepository<User> users)
@@ -17,12 +19,20 @@ namespace Dfe.Complete.Application.Users.Queries.SearchUsers
         {
             try
             {
-                var searchQuery = await users.FetchAsync(user => user.Email != null && user.Email.Contains(request.Email), cancellationToken);
+                var searchQuery = await users.FetchAsync(
+                    user =>
+                        ((user.FirstName != null &&
+                          EF.Functions.Like(user.FirstName.ToLower(), $"%{request.Query.ToLower()}%")) ||
+                         (user.LastName != null &&
+                          EF.Functions.Like(user.LastName.ToLower(), $"%{request.Query.ToLower()}%")) ||
+                         (user.Email != null &&
+                          EF.Functions.Like(user.Email.ToLower(), $"%{request.Query.ToLower()}%")))
+                        && (!request.FilterToAssignableUsers || user.AssignToProject == true), cancellationToken);
 
                 var itemCount = searchQuery.Count;
 
                 var userList = searchQuery
-                    .Skip(request.Page * request.Count).Take(request.Count).ToList(); 
+                    .Skip(request.Page * request.Count).Take(request.Count).ToList();
 
                 return PaginatedResult<List<User>>.Success(userList, itemCount);
             }
