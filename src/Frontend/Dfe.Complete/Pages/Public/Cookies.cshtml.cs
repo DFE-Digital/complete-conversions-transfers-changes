@@ -17,15 +17,15 @@ namespace Dfe.Complete.Pages.Public
 
         public ActionResult OnGet(bool? consent, string returnUrl)
 		{
-            ReturnPath = returnUrl;
+			ReturnPath = string.IsNullOrWhiteSpace(returnUrl) ? GetReturnUrl() : returnUrl;
 
-			Consent = analyticsConsentService.ConsentValue();
+            Consent = analyticsConsentService.ConsentValue();
 
             if (consent.HasValue)
 			{
 				PreferencesSet = true;
-
-				ApplyCookieConsent(consent.Value);
+				TempData["PreferencesSet"] = true;
+                ApplyCookieConsent(consent.Value);
 
 				if (!string.IsNullOrEmpty(returnUrl))
 				{
@@ -40,7 +40,7 @@ namespace Dfe.Complete.Pages.Public
 
         public IActionResult OnPost(bool? consent, string returnUrl, [FromForm(Name ="cookies_form[accept_optional_cookies]")] bool? cookiesConsent)
 		{
-			ReturnPath = returnUrl; 
+			ReturnPath = returnUrl;
 
             if (!consent.HasValue)
             {
@@ -56,13 +56,13 @@ namespace Dfe.Complete.Pages.Public
 
                 ApplyCookieConsent(consent.Value);
 
-                if (cookiesConsent.HasValue && string.IsNullOrWhiteSpace(returnUrl))
-                {
-					return Redirect($"/cookies?consent={cookiesConsent}&returnUrl={GetReturnUrl()}");
-                }
+				if (string.IsNullOrWhiteSpace(returnUrl))
+				{
+					return Redirect($"/cookies?consent={cookiesConsent}&returnUrl={ReturnPath}");
+				}
 
                 return Page();
-			}
+            }
 
 			return Page();
 		}

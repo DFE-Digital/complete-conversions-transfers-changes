@@ -12,23 +12,18 @@
 
 @if (Model.PreferencesSet)
 {
-    <div class="govuk-notification-banner govuk-notification-banner--success" role="alert"
-         aria-labelledby="govuk-notification-banner-title" data-module="govuk-notification-banner">
-        <div class="govuk-notification-banner__header">
-            <h2 class="govuk-notification-banner__title" id="govuk-notification-banner-title">
-                Success
-            </h2>
-        </div>
-        <div class="govuk-notification-banner__content">
-            <p class="govuk-notification-banner__heading">
-                You’ve set your cookie preferences. <a class="govuk-notification-banner__link"
-                                                       data-test="success-banner-return-link" href="@Model.ReturnPath">
-                    Go back to the page you were looking
-                    at
-                </a>.
-            </p>
-        </div>
-    </div>
+    <govuk-notification-banner class="govuk-notification-banner--success">
+        <govuk-notification-banner-title>
+            Success
+        </govuk-notification-banner-title> 
+        <h3>
+            You’ve set your cookie preferences. <a class="govuk-notification-banner__link"
+                                                   data-test="success-banner-return-link" href="@Model.ReturnPath">
+                Go back to the page you were looking
+                at
+            </a>.
+        </h3>
+    </govuk-notification-banner>
 }
 
 <h1 class="govuk-heading-xl">Cookie preferences</h1>

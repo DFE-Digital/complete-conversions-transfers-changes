@@ -1,0 +1,23 @@
+﻿@{
+    var hasCookiesSet = TempData["PreferencesSet"];
+    var isCookiesPage =!Context.Request.Host.Value.Contains("/cookies");
+}
+
+@if (hasCookiesSet != null)
+{
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+            <govuk-notification-banner class="govuk-notification-banner--success">
+                <govuk-notification-banner-title>
+                    Success
+                </govuk-notification-banner-title>
+                <h3>
+                    You've @(Context.Request.Cookies["ACCEPT_OPTIONAL_COOKIES"] == "true" ? "accepted" : "rejected") optional cookies.You can <a class="govuk-link" data-testid="cookie-banner-link-2"
+                                                                                                                                                 asp-page="@Links.Public.CookiePreferences.Page">
+                        change your cookie settings
+                    </a> at any time.
+                </h3>
+            </govuk-notification-banner>
+        </div>
+    </div>
+}

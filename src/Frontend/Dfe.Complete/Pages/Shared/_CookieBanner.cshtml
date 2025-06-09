@@ -1,5 +1,7 @@
 @{
-  var showBanner = !Context.Request.Cookies.ContainsKey("ACCEPT_OPTIONAL_COOKIES");
+    var isCookiesPage = Context.Request.Path.Value?.Contains("/cookies") ?? false;
+    var isPost = string.Equals(Context.Request.Method, "POST", StringComparison.OrdinalIgnoreCase);
+    var showBanner = !(isCookiesPage && isPost) && !Context.Request.Cookies.ContainsKey("ACCEPT_OPTIONAL_COOKIES");
 }
 
 @if (showBanner)
