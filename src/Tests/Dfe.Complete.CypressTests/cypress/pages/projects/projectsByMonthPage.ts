@@ -1,4 +1,6 @@
-class ProjectsByMonthPage {
+import BasePage from "cypress/pages/basePage";
+
+class ProjectsByMonthPage extends BasePage {
     private readonly fromDateId = "fromDate";
     private readonly toDateId = "toDate";
 
@@ -11,7 +13,7 @@ class ProjectsByMonthPage {
     filterDateRange(fromDate: string, toDate: string) {
         cy.getById(this.fromDateId).select(fromDate);
         cy.getById(this.toDateId).select(toDate);
-        cy.getByClass("govuk-button").contains("Apply").click();
+        this.clickButton("Apply");
         return this;
     }
 
