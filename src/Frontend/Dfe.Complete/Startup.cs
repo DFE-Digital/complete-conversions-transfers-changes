@@ -123,6 +123,8 @@ public class Startup
 
         // AutoMapper
         services.AddAutoMapper(typeof(AutoMapping));
+
+        services.Configure<ExternalLinksOptions>(Configuration.GetSection(ExternalLinksOptions.Section));
     }
 
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -164,13 +166,13 @@ public class Startup
         app.UseAuthorization();
         app.UseEndpoints(endpoints =>
         {
-            endpoints.MapGet("/projects/all/exports", async context =>
+            endpoints.MapGet("/projects/all/exports", ctx =>
             {
                 ctx.Response.Redirect("/projects/all/reports", permanent: false);
                 return Task.CompletedTask;
             })
             .RequireAuthorization(UserPolicyConstants.CanViewAllProjectsExports);
-            
+
             endpoints.MapRazorPages();
         });
     }
