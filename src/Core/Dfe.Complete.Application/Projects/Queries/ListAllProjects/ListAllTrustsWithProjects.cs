@@ -30,6 +30,7 @@ namespace Dfe.Complete.Application.Projects.Queries.ListAllProjects
                 var nonMatGroups = await new FormAMatQuery(false)
                     .Apply(baseQ)
                     .GroupBy(p => p.IncomingTrustUkprn)
+                    .Where(p => p.Key != null)
                     .Select(g => new
                     {
                         UkprnInt = g.Key,
@@ -40,18 +41,21 @@ namespace Dfe.Complete.Application.Projects.Queries.ListAllProjects
 
                 var matGroups = await new FormAMatQuery(true)
                     .Apply(baseQ)
-                    .GroupBy(p => new { NewTrustReferenceNumber = p.NewTrustReferenceNumber!, NewTrustName = p.NewTrustName! })
+                    .GroupBy(p => new { NewTrustReferenceNumber = p.NewTrustReferenceNumber!, NewTrustName = p.NewTrustName!, UkprnInt = p.IncomingTrustUkprn! })
+                    .Where(p => p.Key.UkprnInt != null)
                     .Select(g => new
                     {
                         Key = g.Key.NewTrustReferenceNumber,
                         Name = g.Key.NewTrustName,
+                        Ukprn = g.Key.UkprnInt.ToString(),
                         Conversions = g.Count(p => p.Type == ProjectType.Conversion),
                         Transfers = g.Count(p => p.Type == ProjectType.Transfer)
-                    })
+                    }
+                    )
                     .ToListAsync(cancellationToken);
 
                 var ukprnStrings = nonMatGroups
-                    .Select(x => x.UkprnInt.Value.ToString())
+                    .Select(x => x.UkprnInt!.Value.ToString())
                     .Distinct()
                     .ToList();
 
@@ -70,7 +74,7 @@ namespace Dfe.Complete.Application.Projects.Queries.ListAllProjects
                         return new ListTrustsWithProjectsResultModel(
                             identifier: dto.ReferenceNumber!,
                             trustName: dto.Name!.ToTitleCase(),
-                            referenceNumber: dto.ReferenceNumber!,
+                            ukprn: dto.Ukprn!,
                             conversionCount: g.Conversions,
                             transfersCount: g.Transfers
                         );
@@ -83,7 +87,7 @@ namespace Dfe.Complete.Application.Projects.Queries.ListAllProjects
                     .Select(g => new ListTrustsWithProjectsResultModel(
                         identifier: g.Key,
                         trustName: g.Name,
-                        referenceNumber: g.Key,
+                        ukprn: g.Ukprn,
                         conversionCount: g.Conversions,
                         transfersCount: g.Transfers
                     ));
