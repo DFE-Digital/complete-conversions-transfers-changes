@@ -5,6 +5,7 @@ using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Models;
 using Dfe.Complete.Pages.Pagination;
 using MediatR;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Dfe.Complete.Pages.Projects.List.ProjectsInProgress
 {
@@ -12,7 +13,7 @@ namespace Dfe.Complete.Pages.Projects.List.ProjectsInProgress
     {
         public List<ListAllProjectsResultModel> Projects { get; set; } = default!;
 
-        public async Task OnGet()
+        public async Task<IActionResult> OnGet()
         {
             ViewData[TabNavigationModel.ViewDataKey] = AllProjectsTabNavigationModel;
 
@@ -25,11 +26,14 @@ namespace Dfe.Complete.Pages.Projects.List.ProjectsInProgress
             var countResponse = await sender.Send(countProjectQuery);
 
             Pagination = new PaginationModel("/projects/all/in-progress/all", PageNumber, countResponse.Value, PageSize);
+
+            var hasPageFound = HasPageFound(Pagination.IsOutOfRangePage);
+            return hasPageFound ?? Page();
         }
 
-        public async Task OnGetMovePage()
+        public async Task<IActionResult> OnGetMovePage()
         {
-            await OnGet();
+            return await OnGet();
         }
     }
 }

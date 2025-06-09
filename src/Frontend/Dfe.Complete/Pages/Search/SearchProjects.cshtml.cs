@@ -5,6 +5,7 @@ using Dfe.Complete.Pages.Projects.List;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Net;
 
 namespace Dfe.Complete.Pages.Search
 {
@@ -20,7 +21,7 @@ namespace Dfe.Complete.Pages.Search
 
         public int TotalResults { get; set; } = 0;
 
-        public async Task OnGetAsync()
+        public async Task<IActionResult> OnGetAsync()
         {
             if (string.IsNullOrWhiteSpace(Query))
             {
@@ -43,10 +44,14 @@ namespace Dfe.Complete.Pages.Search
                 };
                 var searchProjectsResponse = await sender.Send(searchProjectsQuery);
                 Projects = searchProjectsResponse.Value ?? [];
-                TotalResults = searchProjectsResponse.ItemCount;
+                TotalResults = searchProjectsResponse.ItemCount; 
 
                 Pagination = new PaginationModel($"/search?query={Query}", PageNumber, TotalResults, PageSize);
+
+                var hasPageFound = HasPageFound(Pagination.IsOutOfRangePage);
+                return hasPageFound ?? Page();
             }
+            return Page();
         }
         public static bool IsMixedString(string input)
         {
