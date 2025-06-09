@@ -43,4 +43,6 @@ locals {
   monitor_http_availability_fqdn           = var.monitor_http_availability_fqdn
   custom_container_apps                    = var.custom_container_apps
   enable_monitoring_traces                 = var.enable_monitoring_traces
+  enable_container_app_file_share          = var.enable_container_app_file_share
+  data_protection_subnet_prefix            = var.data_protection_subnet_prefix
 }

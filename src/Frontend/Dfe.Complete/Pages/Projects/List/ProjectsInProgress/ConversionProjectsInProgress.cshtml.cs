@@ -4,15 +4,16 @@ using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Models;
 using Dfe.Complete.Pages.Pagination;
 using MediatR;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Dfe.Complete.Pages.Projects.List.ProjectsInProgress;
 
 public class ConversionProjectsInProgressModel(ISender sender) : ConversionOrTransferInProgressModel(ConversionsSubNavigation, ProjectType.Conversion)
 {
-    public async Task OnGet()
+    public async Task<IActionResult> OnGet()
     {
         ViewData[TabNavigationModel.ViewDataKey] = AllProjectsTabNavigationModel;
-        var listProjectQuery = new ListAllProjectsQuery(ProjectState.Active, ProjectType.Conversion, AssignedToState.AssignedOnly, PageNumber - 1, PageSize);
+        var listProjectQuery = new ListAllProjectsQuery(ProjectState.Active, ProjectType.Conversion, AssignedToState.AssignedOnly, Page: PageNumber - 1, Count: PageSize);
 
         var response = await sender.Send(listProjectQuery);
         Projects = response.Value?.ToList() ?? [];
@@ -21,10 +22,13 @@ public class ConversionProjectsInProgressModel(ISender sender) : ConversionOrTra
         var countResponse = await sender.Send(countProjectQuery);
 
         Pagination = new PaginationModel("/projects/all/in-progress/conversions", PageNumber, countResponse.Value, PageSize);
+
+        var hasPageFound = HasPageFound(Pagination.IsOutOfRangePage);
+        return hasPageFound ?? Page();
     }
 
-    public async Task OnGetMovePage()
+    public async Task<IActionResult> OnGetMovePage()
     {
-        await OnGet();
+        return await OnGet();
     }
 }

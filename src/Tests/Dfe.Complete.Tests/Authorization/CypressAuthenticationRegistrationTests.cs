@@ -109,7 +109,8 @@ namespace Dfe.Complete.Tests.Authorization
                 { "AzureAd:Domain", "example.com" },
                 { "AzureAd:TenantId", "tenant-id" },
                 { "AzureAd:ClientId", "client-id" },
-                { "AzureAd:CallbackPath", "/signin-oidc" }
+                { "AzureAd:CallbackPath", "/signin-oidc" },
+                { "DataProtection:__dummy", string.Empty }
             }!).Build();
 
             services.AddSingleton<IConfiguration>(configuration);

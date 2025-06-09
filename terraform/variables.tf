@@ -355,3 +355,15 @@ variable "enable_monitoring_traces" {
   type        = bool
   default     = true
 }
+
+variable "enable_container_app_file_share" {
+  description = "Create an Azure Storage Account and File Share to be mounted to the Container Apps"
+  type        = bool
+  default     = true
+}
+
+variable "data_protection_subnet_prefix" {
+  description = "Subnet prefix to use for the Data Protection Key Vault Private Endpoint"
+  type        = string
+  default     = "10.0.110.0/23"
+}

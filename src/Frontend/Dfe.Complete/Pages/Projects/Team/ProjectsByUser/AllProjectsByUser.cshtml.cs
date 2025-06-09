@@ -6,6 +6,7 @@ using MediatR;
 using Dfe.Complete.Application.Users.Queries.ListAllUsers;
 using Dfe.Complete.Application.Users.Models;
 using Dfe.Complete.Domain.Enums;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Dfe.Complete.Pages.Projects.Team.ProjectsByUser;
 
@@ -13,7 +14,7 @@ public class AllProjectsByUser(ISender sender) : YourTeamProjectsModel(ByUserNav
 {
     public List<ListAllUsersWithProjectsResultModel> Users { get; set; } = [];
 
-    public async Task OnGet()
+    public async Task<IActionResult> OnGet()
     {
         ViewData[TabNavigationModel.ViewDataKey] = YourTeamProjectsTabNavigationModel;
 
@@ -30,10 +31,13 @@ public class AllProjectsByUser(ISender sender) : YourTeamProjectsModel(ByUserNav
         Users = result.Value ?? [];
 
         Pagination = new PaginationModel(RouteConstants.TeamProjectsUsers, PageNumber, recordCount, PageSize);
+
+        var hasPageFound = HasPageFound(Pagination.IsOutOfRangePage);
+        return hasPageFound ?? Page();
     }
 
-    public async Task OnGetMovePage()
+    public async Task<IActionResult> OnGetMovePage()
     {
-        await OnGet();
+        return await OnGet();
     }
 }
