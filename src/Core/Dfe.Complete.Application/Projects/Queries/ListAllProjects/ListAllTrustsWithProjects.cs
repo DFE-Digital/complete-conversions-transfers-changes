@@ -72,11 +72,11 @@ namespace Dfe.Complete.Application.Projects.Queries.ListAllProjects
                             return null;
 
                         return new ListTrustsWithProjectsResultModel(
-                            identifier: dto.ReferenceNumber!,
-                            trustName: dto.Name!.ToTitleCase(),
-                            ukprn: dto.Ukprn!,
-                            conversionCount: g.Conversions,
-                            transfersCount: g.Transfers
+                            Identifier: dto.ReferenceNumber!,
+                            TrustName: dto.Name!.ToTitleCase(),
+                            Ukprn: dto.Ukprn!,
+                            ConversionCount: g.Conversions,
+                            TransfersCount: g.Transfers
                         );
                     })
                     .Where(r => r != null)
@@ -85,16 +85,16 @@ namespace Dfe.Complete.Application.Projects.Queries.ListAllProjects
 
                 var matResults = matGroups
                     .Select(g => new ListTrustsWithProjectsResultModel(
-                        identifier: g.Key,
-                        trustName: g.Name,
-                        ukprn: g.Ukprn,
-                        conversionCount: g.Conversions,
-                        transfersCount: g.Transfers
+                        Identifier: g.Key,
+                        TrustName: g.Name,
+                        Ukprn: g.Ukprn,
+                        ConversionCount: g.Conversions,
+                        TransfersCount: g.Transfers
                     ));
 
                 var all = nonMatResults
                     .Concat(matResults)
-                    .OrderBy(r => r.trustName)
+                    .OrderBy(r => r.TrustName)
                     .ToList();
 
                 var page = all

@@ -59,20 +59,20 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
             Assert.Equal(3, list!.Count);
 
             // Verify counts and names
-            var first = list.Single(r => r.identifier == "100");
-            Assert.Equal("Alpha Trust", first.trustName);
-            Assert.Equal(1, first.conversionCount);
-            Assert.Equal(1, first.transfersCount);
+            var first = list.Single(r => r.Identifier == "100");
+            Assert.Equal("Alpha Trust", first.TrustName);
+            Assert.Equal(1, first.ConversionCount);
+            Assert.Equal(1, first.TransfersCount);
 
-            var second = list.Single(r => r.identifier == "200");
-            Assert.Equal("Beta Trust", second.trustName);
-            Assert.Equal(1, second.conversionCount);
-            Assert.Equal(0, second.transfersCount);
+            var second = list.Single(r => r.Identifier == "200");
+            Assert.Equal("Beta Trust", second.TrustName);
+            Assert.Equal(1, second.ConversionCount);
+            Assert.Equal(0, second.TransfersCount);
 
-            var third = list.Single(r => r.identifier == "T1");
-            Assert.Equal("Trust One", third.trustName);
-            Assert.Equal(0, third.conversionCount);
-            Assert.Equal(1, third.transfersCount);
+            var third = list.Single(r => r.Identifier == "T1");
+            Assert.Equal("Trust One", third.TrustName);
+            Assert.Equal(0, third.ConversionCount);
+            Assert.Equal(1, third.TransfersCount);
         }
 
         [Theory]
@@ -158,7 +158,7 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
             // Assert: only one trust returned, filtering out inactive
             Assert.True(result.IsSuccess);
             Assert.Single(result.Value!);
-            Assert.Equal("Gamma Trust", result.Value!.First().trustName);
+            Assert.Equal("Gamma Trust", result.Value!.First().TrustName);
         }
 
         [Theory]
@@ -189,8 +189,8 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
             Assert.True(result.IsSuccess);
             var list = result.Value;
             Assert.Equal(2, list!.Count);
-            Assert.Contains(list, r => r is { identifier: "M1", trustName: "Mat One" });
-            Assert.Contains(list, r => r is { identifier: "M2", trustName: "Mat Two" });
+            Assert.Contains(list, r => r is { Identifier: "M1", TrustName: "Mat One" });
+            Assert.Contains(list, r => r is { Identifier: "M2", TrustName: "Mat Two" });
         }
     }
 }

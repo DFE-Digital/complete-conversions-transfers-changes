@@ -13,7 +13,7 @@ public class AllProjectsInTrustViewModelTests
     public void GetTrustProjectsUrl_ShouldReturnCorrectUrl_When_IdentifierIsNotTrustReference(IFixture fixture)
     {
         var trust = fixture.Build<ListTrustsWithProjectsResultModel>()
-            .With(x => x.ukprn, "10035415")
+            .With(x => x.Ukprn, "10035415")
             .Create();
 
         string expectedUrl = "/projects/all/trusts/ukprn/10035415";

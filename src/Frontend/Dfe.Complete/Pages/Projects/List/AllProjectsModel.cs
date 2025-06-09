@@ -21,7 +21,7 @@ public abstract class AllProjectsModel(string currentNavigation) : BaseProjectsP
 
     public static string GetTrustProjectsUrl(ListTrustsWithProjectsResultModel trustModel)
     {
-        return string.Format(RouteConstants.TrustProjects, trustModel.ukprn);
+        return string.Format(RouteConstants.TrustProjects, trustModel.Ukprn);
     }
 
 }

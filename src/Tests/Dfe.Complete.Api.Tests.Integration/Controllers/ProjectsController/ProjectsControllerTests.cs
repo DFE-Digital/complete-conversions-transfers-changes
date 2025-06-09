@@ -242,6 +242,7 @@ public partial class ProjectsControllerTests
         const string userAdId = "test-user-adid";
         testUser.ActiveDirectoryUserId = userAdId;
 
+        var giasEstablishment = fixture.Create<GiasEstablishment>();
         var projects = new List<Project>();
 
         projects.AddRange(Enumerable.Range(0, 10).Select(i => fixture.Customize(new ProjectCustomization
@@ -261,8 +262,10 @@ public partial class ProjectsControllerTests
         {
             project.RegionalDeliveryOfficerId = testUser.Id;
             project.LocalAuthorityId = localAuthority.Id;
+            project.Urn = giasEstablishment.Urn!;
         });
 
+        dbContext.GiasEstablishments.Add(giasEstablishment);
         dbContext.Projects.AddRange(projects);
         await dbContext.SaveChangesAsync();
 
@@ -300,6 +303,7 @@ public partial class ProjectsControllerTests
         const string userAdId = "test-user-adid";
         testUser.ActiveDirectoryUserId = userAdId;
 
+        var giasEstablishment = fixture.Create<GiasEstablishment>();
         var projects = new List<Project>();
 
         projects.AddRange(Enumerable.Range(0, 10).Select(i => fixture.Customize(new ProjectCustomization
@@ -321,8 +325,10 @@ public partial class ProjectsControllerTests
         {
             project.RegionalDeliveryOfficerId = testUser.Id;
             project.LocalAuthorityId = localAuthority.Id;
+            project.Urn = giasEstablishment.Urn!;
         });
 
+        dbContext.GiasEstablishments.Add(giasEstablishment);
         dbContext.Projects.AddRange(projects);
         await dbContext.SaveChangesAsync();
 
