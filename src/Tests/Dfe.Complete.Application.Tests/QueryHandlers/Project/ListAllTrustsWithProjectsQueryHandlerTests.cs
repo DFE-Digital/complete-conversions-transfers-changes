@@ -17,22 +17,23 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
 {
     public class ListAllTrustsWithProjectsQueryHandlerTests
     {
+        private static readonly string[] secondArray = ["100", "200"];
+
         [Theory]
         [CustomAutoData(typeof(OmitCircularReferenceCustomization))]
         public async Task Handle_ShouldReturnPagedTrusts_WhenProjectsExist(
             [Frozen] IProjectReadRepository repo,
             [Frozen] ITrustsV4Client trustsClient,
-            [Frozen] ILogger<ListAllTrustsWithProjectsQueryHandler> logger,
-            IFixture fixture)
+            [Frozen] ILogger<ListAllTrustsWithProjectsQueryHandler> logger)
         {
             // Arrange
             // Create projects: two non-MAT under UKPRN 100, one under 200; one MAT under T1
             var projects = new List<ProjectEntity>
             {
-                new ProjectEntity { IncomingTrustUkprn = new Ukprn(100), Type = ProjectType.Conversion },
-                new ProjectEntity { IncomingTrustUkprn = new Ukprn(100), Type = ProjectType.Transfer },
-                new ProjectEntity { IncomingTrustUkprn = new Ukprn(200), Type = ProjectType.Conversion },
-                new ProjectEntity { IncomingTrustUkprn = new Ukprn(200), NewTrustReferenceNumber = "T1", NewTrustName = "Trust One", Type = ProjectType.Transfer }
+                new() { IncomingTrustUkprn = new Ukprn(100), Type = ProjectType.Conversion },
+                new() { IncomingTrustUkprn = new Ukprn(100), Type = ProjectType.Transfer },
+                new() { IncomingTrustUkprn = new Ukprn(200), Type = ProjectType.Conversion },
+                new() { IncomingTrustUkprn = new Ukprn(200), NewTrustReferenceNumber = "T1", NewTrustName = "Trust One", Type = ProjectType.Transfer }
             }.AsQueryable().BuildMock();
 
             repo.Projects.Returns(projects);
@@ -40,10 +41,10 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
             // Mock API return for non-MAT UKPRNs
             var dtos = new System.Collections.ObjectModel.ObservableCollection<TrustDto>
             {
-                new TrustDto { Ukprn = "100", Name = "Alpha Trust", ReferenceNumber = "100" },
-                new TrustDto { Ukprn = "200", Name = "Beta Trust", ReferenceNumber = "200" }
+                new() { Ukprn = "100", Name = "Alpha Trust", ReferenceNumber = "100" },
+                new() { Ukprn = "200", Name = "Beta Trust", ReferenceNumber = "200" }
             };
-            trustsClient.GetByUkprnsAllAsync(Arg.Is<IEnumerable<string>>(u => u.SequenceEqual(new[] { "100", "200" })), Arg.Any<CancellationToken>())
+            trustsClient.GetByUkprnsAllAsync(Arg.Is<IEnumerable<string>>(u => u.SequenceEqual(secondArray)), Arg.Any<CancellationToken>())
                 .Returns(dtos);
 
             var handler = new ListAllTrustsWithProjectsQueryHandler(repo, trustsClient, logger);
@@ -108,7 +109,7 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
             // Arrange
             var projects = new List<ProjectEntity>
             {
-                new ProjectEntity { IncomingTrustUkprn = new Ukprn(111), Type = ProjectType.Conversion }
+                new() { IncomingTrustUkprn = new Ukprn(111), Type = ProjectType.Conversion }
             }.AsQueryable().BuildMock();
             repo.Projects.Returns(projects);
 
@@ -136,15 +137,15 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
             // Arrange: one active and one inactive project
             var projects = new List<ProjectEntity>
             {
-                new ProjectEntity { State = ProjectState.Active, IncomingTrustUkprn = new Ukprn(300), Type = ProjectType.Conversion },
-                new ProjectEntity { State = ProjectState.Completed, IncomingTrustUkprn = new Ukprn(300), Type = ProjectType.Transfer }
+                new() { State = ProjectState.Active, IncomingTrustUkprn = new Ukprn(300), Type = ProjectType.Conversion },
+                new() { State = ProjectState.Completed, IncomingTrustUkprn = new Ukprn(300), Type = ProjectType.Transfer }
             }.AsQueryable().BuildMock();
             repo.Projects.Returns(projects);
 
             // API should only be called for active project
             var dtos = new System.Collections.ObjectModel.ObservableCollection<TrustDto>
             {
-                new TrustDto { Ukprn = "300", Name = "Gamma Trust", ReferenceNumber = "300" }
+                new() { Ukprn = "300", Name = "Gamma Trust", ReferenceNumber = "300" }
             };
             trustsClient.GetByUkprnsAllAsync(Arg.Any<IEnumerable<string>>(), Arg.Any<CancellationToken>())
                 .Returns(Task.FromResult(dtos));
@@ -171,8 +172,8 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
             // Arrange: two MAT projects
             var projects = new List<ProjectEntity>
             {
-                new ProjectEntity { State = ProjectState.Active, NewTrustReferenceNumber = "M1", IncomingTrustUkprn = "121", NewTrustName = "Mat One", Type = ProjectType.Conversion },
-                new ProjectEntity { State = ProjectState.Active, NewTrustReferenceNumber = "M2", IncomingTrustUkprn = "121", NewTrustName = "Mat Two", Type = ProjectType.Transfer }
+                new() { State = ProjectState.Active, NewTrustReferenceNumber = "M1", IncomingTrustUkprn = "121", NewTrustName = "Mat One", Type = ProjectType.Conversion },
+                new() { State = ProjectState.Active, NewTrustReferenceNumber = "M2", IncomingTrustUkprn = "121", NewTrustName = "Mat Two", Type = ProjectType.Transfer }
             }.AsQueryable().BuildMock();
             repo.Projects.Returns(projects);
 

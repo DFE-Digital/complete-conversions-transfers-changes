@@ -25,9 +25,9 @@ public class SearchQuery(string? t) : IQueryObject<Project>
         }
 
         if (Regex.IsMatch(_term, @"^\d{4}$", RegexOptions.None, timeSpan))     // Establishment Number
-            return q.Where(p => p.GiasEstablishment.EstablishmentNumber == _term);
+            return q.Where(p => p.GiasEstablishment != null && p.GiasEstablishment.EstablishmentNumber == _term);
 
-        return q.Where(p =>
+        return q.Where(p => p.GiasEstablishment != null &&
             EF.Functions.Like(p.GiasEstablishment.Name, $"%{_term}%"));
     }
 }

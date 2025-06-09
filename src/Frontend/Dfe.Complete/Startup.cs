@@ -62,9 +62,7 @@ public class Startup
             {
                 if (!_env.IsProduction())
                 {
-                    options.Conventions.ConfigureFilter(
-                        new IgnoreAntiforgeryTokenAttribute()
-                    );
+                    options.Conventions.ConfigureFilter(new IgnoreAntiforgeryTokenAttribute());
                 }
 
                 options.Conventions.AuthorizeFolder("/");

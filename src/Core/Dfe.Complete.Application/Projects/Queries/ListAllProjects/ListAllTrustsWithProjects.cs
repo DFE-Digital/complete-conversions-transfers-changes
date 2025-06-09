@@ -1,11 +1,9 @@
 ﻿using Dfe.AcademiesApi.Client.Contracts;
 using Dfe.Complete.Application.Common.Models;
-using Dfe.Complete.Application.Common.Queries;
 using Dfe.Complete.Application.Projects.Interfaces;
 using Dfe.Complete.Application.Projects.Models;
 using Dfe.Complete.Application.Projects.Queries.QueryFilters;
 using Dfe.Complete.Domain.Enums;
-using Dfe.Complete.Domain.ValueObjects;
 using Dfe.Complete.Utils;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -65,7 +63,7 @@ namespace Dfe.Complete.Application.Projects.Queries.ListAllProjects
                 var nonMatResults = nonMatGroups
                     .Select(g =>
                     {
-                        var uk = g.UkprnInt.Value.ToString();
+                        var uk = g.UkprnInt!.Value.ToString();
                         var dto = apiDtos.FirstOrDefault(d => d.Ukprn == uk);
 
                         if (dto is null)

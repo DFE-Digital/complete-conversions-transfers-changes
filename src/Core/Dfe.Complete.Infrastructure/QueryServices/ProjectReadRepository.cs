@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Dfe.Complete.Application.Projects.Interfaces;
+﻿using Dfe.Complete.Application.Projects.Interfaces;
 using Dfe.Complete.Domain.Entities;
 using Dfe.Complete.Infrastructure.Database;
 using Microsoft.EntityFrameworkCore;

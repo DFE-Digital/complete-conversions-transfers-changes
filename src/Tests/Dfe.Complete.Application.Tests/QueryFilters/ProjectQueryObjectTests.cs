@@ -15,7 +15,7 @@ namespace Dfe.Complete.Application.Tests.QueryFilters
 {
     public class ProjectQueryObjectTests
     {
-        private IQueryable<Project> SampleProjects() => new[]
+        private static IQueryable<Project> SampleProjects() => new[]
         {
             new Project { AssignedToId = new UserId(Guid.NewGuid()), RegionalDeliveryOfficerId = new UserId(Guid.NewGuid()),
                           IncomingTrustUkprn = new Ukprn(12345678), OutgoingTrustUkprn = new Ukprn(87654321),
@@ -147,7 +147,7 @@ namespace Dfe.Complete.Application.Tests.QueryFilters
             }.AsQueryable();
             var param = new OrderProjectQueryBy(OrderProjectByField.CreatedAt, OrderByDirection.Descending);
             var q = new OrderProjectsQuery(param).Apply(list).ToList();
-            Assert.Equal(new[] { "2021-02-01", "2021-01-01" },
+            Assert.Equal(["2021-02-01", "2021-01-01"],
                 q.Select(p => p.CreatedAt.ToString("yyyy-MM-dd")).ToArray());
         }
 
