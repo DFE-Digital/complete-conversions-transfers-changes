@@ -22,6 +22,7 @@ using DfE.CoreLibs.Http.Interfaces;
 using Dfe.Complete.Logging.Middleware;
 using DfE.CoreLibs.Security.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using Dfe.Complete.Domain.Constants;
 
 namespace Dfe.Complete;
 
@@ -163,6 +164,13 @@ public class Startup
         app.UseAuthorization();
         app.UseEndpoints(endpoints =>
         {
+            endpoints.MapGet("/projects/all/exports", async context =>
+            {
+                ctx.Response.Redirect("/projects/all/reports", permanent: false);
+                return Task.CompletedTask;
+            })
+            .RequireAuthorization(UserPolicyConstants.CanViewAllProjectsExports);
+            
             endpoints.MapRazorPages();
         });
     }

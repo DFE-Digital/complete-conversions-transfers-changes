@@ -20,7 +20,8 @@
         public const string TransfersProjectsByMonths = AllProjectsPrefix + "/by-month/transfers/from/{0}/{1}/to/{2}/{3}";
         public const string CompletedProjects = AllProjectsPrefix + "/completed";
         public const string Statistics = AllProjectsPrefix + "/statistics";
-        public const string Reports = AllProjectsPrefix + "/reports";
+        // Let redirect handle this until we drop ruby. Front door will not work otherwise. Alternatively map it in FD
+        public const string Reports = AllProjectsPrefix + "/exports";
 
         // Your projects
         private const string YourProjectsPrefix = "/projects/yours";
