@@ -1,6 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using Dfe.Complete.Application.Projects.Commands.UpdateProject;
 using Dfe.Complete.Application.Projects.Models;
 using Dfe.Complete.Application.Users.Queries.GetUser;
+using Dfe.Complete.Application.Users.Queries.SearchUsers;
 using Dfe.Complete.Constants;
 using Dfe.Complete.Models;
 using Dfe.Complete.Services;
@@ -31,18 +33,32 @@ public class EditAddedByUser(ISender sender, ErrorService errorService, ILogger<
         }
         else
         {
-            logger.LogError("Added by user id exists but user was not found by query - {id}", addedByUserQuery.UserId.Value.ToString());
+            logger.LogError("Added by user id exists but user was not found by query - {UserId}", addedByUserQuery.UserId.Value.ToString());
         }
         return Page();
     }
 
     public async Task<IActionResult> OnPost()
     {
+        await UpdateCurrentProject();
+        
         if (!ModelState.IsValid)
         {
             errorService.AddErrors(ModelState);
             return await OnGet();
         }
-        return Redirect(FormatRouteWithProjectId(RouteConstants.ProjectInternalContacts));
+        
+        var addedByUserQuery = new SearchUsersQuery(Email);
+        var addedBySearchResult = await _sender.Send(addedByUserQuery);
+        
+        if (addedBySearchResult is { IsSuccess: true, Value.Count: 1 })
+        {
+            var updateRequest = new UpdateRegionalDeliveryOfficerCommand(Project.Urn, addedBySearchResult.Value[0].Id);
+            await sender.Send(updateRequest);
+            return Redirect(FormatRouteWithProjectId(RouteConstants.ProjectInternalContacts));
+        }
+
+        logger.LogError("Email not found or too many results found - {Email}", addedByUserQuery.Query);
+        return await OnGet();
     }
 }

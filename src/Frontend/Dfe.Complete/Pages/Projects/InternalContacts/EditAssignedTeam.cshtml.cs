@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using Dfe.Complete.Application.Projects.Commands.UpdateProject;
 using Dfe.Complete.Constants;
 using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Models;
@@ -10,8 +11,6 @@ namespace Dfe.Complete.Pages.Projects.InternalContacts;
 
 public class EditAssignedTeam(ISender sender, ErrorService errorService, ILogger<InternalContacts> logger) : BaseProjectPageModel(sender)
 {
-    private readonly ISender _sender = sender;
-
     [BindProperty]
     [Required]
     public ProjectTeam? Team { get; set; } = default!;
@@ -25,11 +24,16 @@ public class EditAssignedTeam(ISender sender, ErrorService errorService, ILogger
 
     public async Task<IActionResult> OnPost()
     {
+        await UpdateCurrentProject();
+        
         if (!ModelState.IsValid)
         {
             errorService.AddErrors(ModelState);
             return await OnGet();
         }
+        var updateRequest = new UpdateAssignedTeamCommand(Project.Urn, Team);
+        await sender.Send(updateRequest);
         return Redirect(FormatRouteWithProjectId(RouteConstants.ProjectInternalContacts));
+
     }
 }
