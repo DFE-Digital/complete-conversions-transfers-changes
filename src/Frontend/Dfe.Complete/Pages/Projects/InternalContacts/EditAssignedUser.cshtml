@@ -13,17 +13,18 @@
     <h1 class="govuk-heading-xl"> Change assigned person for @Model.Establishment.Name</h1>
 
     <form method="post" novalidate>
-
-      <govuk-input asp-for="@Model.Email"
-                   id="assigned-user"
-                   name="email"
-                   class="govuk-!-width-three-quarters"
-                   value="@Model.Email">
-        <govuk-input-label class="govuk-label--m">Assign to</govuk-input-label>
-      </govuk-input>
+      <div id="assignment-form-group">
+        <govuk-input asp-for="@Model.Email"
+                     id="assigned-user"
+                     name="email"
+                     class="govuk-!-width-three-quarters"
+                     value="@Model.Email">
+          <govuk-input-label class="govuk-label--m">Email of person</govuk-input-label>
+        </govuk-input>
+      </div>
 
       <div class="govuk-button-group">
-        <button data-prevent-double-click="true" class="govuk-button" data-module="govuk-button" role="button" id="save">
+        <button data-prevent-double-click="true" class="govuk-button" data-module="govuk-button" id="save">
           Continue
         </button>
         <a id="cancel-link-event" class="govuk-link" href="@(string.Format(RouteConstants.ProjectInternalContacts, Model.ProjectId))">Cancel</a>
