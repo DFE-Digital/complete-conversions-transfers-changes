@@ -361,3 +361,9 @@ variable "enable_container_app_file_share" {
   type        = bool
   default     = true
 }
+
+variable "data_protection_subnet_prefix" {
+  description = "Subnet prefix to use for the Data Protection Key Vault Private Endpoint"
+  type        = string
+  default     = "10.0.110.0/23"
+}
