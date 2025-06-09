@@ -1,0 +1,39 @@
+@page "/projects/all/reports"
+@model Dfe.Complete.Pages.Projects.List.Reports.ReportsViewModel
+@{
+    Layout = "List/_AllProjectsLayout";
+    ViewData["Title"] = "Reports";
+}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-full">
+        <h1 class="govuk-heading-l">Reports</h1>
+
+        <p class="govuk-body">
+            You can now view and download reports on academy conversions and
+            transfers in Power BI.
+        </p>
+
+        <h2 class="govuk-heading-m govuk-!-margin-top-2">Conversions</h2>
+        <ul class="govuk-list govuk-list--bullet">
+            <li>funding agreement letter contacts</li>
+            <li>RPA and start-up grants</li>
+        </ul>
+
+        <h2 class="govuk-heading-m govuk-!-margin-top-2">Transfers</h2>
+        <ul class="govuk-list govuk-list--bullet">
+            <li>academies due to transfer in a date range</li>
+            <li>pre-transfer grants for academies joining a different trust</li>
+        </ul>
+
+        <p class="govuk-body">
+            The reports open in a new tab and include guidance to help you find the data you need.
+        </p>
+
+        <a data-module="govuk-button" draggable="false" role="button" class="govuk-button govuk-button--success"
+            target="_blank" rel="noopener noreferrer"
+            href="https://app.powerbi.com/groups/e159c176-e8f1-4839-a005-3b30064047ad/reports/3fcfae66-c913-4007-94e7-bee7433d7ff9/7edc36ec9281c86d9b87?experience=power-bi">
+            View reports in Power BI
+        </a>
+    </div>
+</div>
