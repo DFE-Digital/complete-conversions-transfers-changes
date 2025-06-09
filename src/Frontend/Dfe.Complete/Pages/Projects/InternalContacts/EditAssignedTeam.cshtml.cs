@@ -2,6 +2,7 @@
 using Dfe.Complete.Application.Projects.Commands.UpdateProject;
 using Dfe.Complete.Constants;
 using Dfe.Complete.Domain.Enums;
+using Dfe.Complete.Extensions;
 using Dfe.Complete.Models;
 using Dfe.Complete.Services;
 using MediatR;
@@ -33,6 +34,7 @@ public class EditAssignedTeam(ISender sender, ErrorService errorService, ILogger
         }
         var updateRequest = new UpdateAssignedTeamCommand(Project.Urn, Team);
         await sender.Send(updateRequest);
+        TempData.SetNotification(NotificationType.Success, "Success", "Project has been assigned to team successfully");
         return Redirect(FormatRouteWithProjectId(RouteConstants.ProjectInternalContacts));
 
     }

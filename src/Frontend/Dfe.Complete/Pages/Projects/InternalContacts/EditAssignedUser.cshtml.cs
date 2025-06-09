@@ -3,6 +3,7 @@ using Dfe.Complete.Application.Projects.Commands.UpdateProject;
 using Dfe.Complete.Application.Projects.Models;
 using Dfe.Complete.Application.Users.Queries.GetUser;
 using Dfe.Complete.Constants;
+using Dfe.Complete.Extensions;
 using Dfe.Complete.Models;
 using Dfe.Complete.Services;
 using MediatR;
@@ -56,6 +57,7 @@ public class EditAssignedUser(ISender sender, ErrorService errorService, ILogger
         {
             var updateRequest = new UpdateAssignedUserCommand(Project.Urn, assignedResult.Value.Id);
             await sender.Send(updateRequest);
+            TempData.SetNotification(NotificationType.Success, "Success", "Project has been updated successfully");
             return Redirect(FormatRouteWithProjectId(RouteConstants.ProjectInternalContacts));
         }
 
