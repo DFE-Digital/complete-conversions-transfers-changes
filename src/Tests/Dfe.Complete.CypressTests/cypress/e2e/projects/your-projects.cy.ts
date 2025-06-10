@@ -5,7 +5,7 @@ import yourProjects from "cypress/pages/projects/yourProjects";
 import { projectTable } from "cypress/pages/projects/tables/projectTable";
 import { currentMonthShort, trust, trust2 } from "cypress/constants/stringTestConstants";
 import { cypressUser } from "cypress/constants/cypressConstants";
-import projectDetailsPage from "cypress/pages/projects/projectDetailsPage";
+import projectDetailsPage from "cypress/pages/projects/projectDetails/projectDetailsPage";
 import { checkAccessibilityAcrossPages } from "cypress/support/reusableTests";
 
 const conversionProject = ProjectBuilder.createConversionProjectRequest(new Date("2026-04-01"), 111394);

@@ -4,6 +4,11 @@ class BasePage {
         return this;
     }
 
+    containsSubHeading(subHeading: string) {
+        cy.get("h2").contains(subHeading);
+        return this;
+    }
+
     clickButton(buttonText?: string) {
         if (buttonText) {
             cy.getByClass("govuk-button").contains(buttonText).click();
