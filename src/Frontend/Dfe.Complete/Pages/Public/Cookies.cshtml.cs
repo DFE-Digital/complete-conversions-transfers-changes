@@ -28,12 +28,17 @@ namespace Dfe.Complete.Pages.Public
                 {
                     TempData["PreferencesSet"] = true;
                 }
+                else
+                {
+                   Response.Headers.Append("x-preferences-set", "true");
+                }
                 ApplyCookieConsent(consent.Value);
 
 				if (!string.IsNullOrEmpty(returnUrl))
 				{
 					return Redirect(returnUrl);
 				}
+
 
 				return RedirectToPage(Links.Public.CookiePreferences);
 			}
