@@ -1,5 +1,4 @@
-﻿using Dfe.Complete.Application.Projects.Common;
-using Dfe.Complete.Domain.Entities;
+﻿using Dfe.Complete.Domain.Entities;
 using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Domain.Interfaces.Repositories;
 using Dfe.Complete.Domain.ValueObjects;
@@ -13,8 +12,7 @@ public record UpdateAssignedTeamCommand(
     ) : IRequest;
 
 public class UpdateAssignedTeam(
-    ICompleteRepository<Project> projectRepository,
-    ICreateProjectCommon createProjectCommon)
+    ICompleteRepository<Project> projectRepository)
     : IRequestHandler<UpdateAssignedTeamCommand>
 {
     public async Task Handle(UpdateAssignedTeamCommand request, CancellationToken cancellationToken)
