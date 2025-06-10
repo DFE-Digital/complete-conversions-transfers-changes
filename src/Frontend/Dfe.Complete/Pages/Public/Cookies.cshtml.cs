@@ -24,9 +24,13 @@ namespace Dfe.Complete.Pages.Public
             if (consent.HasValue)
 			{
 				PreferencesSet = true;
-				if(TempData["IsRequirePreferencesSet"] == null)
+				if(TempData["IsRubyRequest"] == null)
                 {
                     TempData["PreferencesSet"] = true;
+                }
+                else
+                {
+					Response.Headers.Append("x-preference-set", ".net");
                 }
 
                 ApplyCookieConsent(consent.Value);
@@ -35,7 +39,6 @@ namespace Dfe.Complete.Pages.Public
 				{
 					return Redirect(returnUrl);
 				}
-
 
 				return RedirectToPage(Links.Public.CookiePreferences);
 			}
@@ -63,7 +66,7 @@ namespace Dfe.Complete.Pages.Public
 
 				if (cookiesConsent != null)
 				{
-                    TempData["IsRequirePreferencesSet"] = false;
+                    TempData["IsRubyRequest"] = false;
                     return Redirect($"/cookies?consent={cookiesConsent}&returnUrl={GetReturnUrl()}");
 				}
 
