@@ -1,5 +1,4 @@
-﻿using Dfe.Complete.Application.Projects.Common;
-using Dfe.Complete.Domain.Entities;
+﻿using Dfe.Complete.Domain.Entities;
 using Dfe.Complete.Domain.Interfaces.Repositories;
 using Dfe.Complete.Domain.ValueObjects;
 using MediatR;
@@ -12,8 +11,7 @@ public record UpdateRegionalDeliveryOfficerCommand(
     ) : IRequest;
 
 public class UpdateRegionalDeliveryOfficer(
-    ICompleteRepository<Project> projectRepository,
-    ICreateProjectCommon createProjectCommon)
+    ICompleteRepository<Project> projectRepository)
     : IRequestHandler<UpdateRegionalDeliveryOfficerCommand>
 {
     public async Task Handle(UpdateRegionalDeliveryOfficerCommand request, CancellationToken cancellationToken)
