@@ -40,7 +40,7 @@ namespace Dfe.Complete.Pages.Public
 
         public IActionResult OnPost(bool? consent, string returnUrl, [FromForm(Name ="cookies_form[accept_optional_cookies]")] bool? cookiesConsent)
 		{
-			ReturnPath = returnUrl;
+			ReturnPath = string.IsNullOrWhiteSpace(returnUrl) ? GetReturnUrl() : returnUrl;
 
             if (!consent.HasValue)
             {
@@ -56,9 +56,9 @@ namespace Dfe.Complete.Pages.Public
 
                 ApplyCookieConsent(consent.Value);
 
-				if (string.IsNullOrWhiteSpace(returnUrl))
+				if (cookiesConsent != null)
 				{
-					return Redirect($"/cookies?consent={cookiesConsent}&returnUrl={ReturnPath}");
+					return Redirect($"/cookies?consent={cookiesConsent}&returnUrl={GetReturnUrl()}");
 				}
 
                 return Page();
