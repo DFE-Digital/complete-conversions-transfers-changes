@@ -12,7 +12,7 @@ namespace Dfe.Complete.Pages.Public
 		public bool? Consent { get; set; }
 		public bool PreferencesSet { get; set; } = false;
 		public string returnPath { get; set; }
-		
+
 		private readonly IAnalyticsConsentService _analyticsConsentService;
 
 		public Cookies(ILogger<Cookies> logger, IAnalyticsConsentService analyticsConsentService)
@@ -28,7 +28,7 @@ namespace Dfe.Complete.Pages.Public
 
 			Consent = _analyticsConsentService.ConsentValue();
 
-            if (consent.HasValue)
+			if (consent.HasValue)
 			{
 				PreferencesSet = true;
 
@@ -49,9 +49,9 @@ namespace Dfe.Complete.Pages.Public
 		{
 			returnPath = returnUrl;
 
-            Consent = _analyticsConsentService.ConsentValue();
+			Consent = _analyticsConsentService.ConsentValue();
 
-            if (consent.HasValue)
+			if (consent.HasValue)
 			{
 				Consent = consent;
 				PreferencesSet = true;
@@ -60,12 +60,15 @@ namespace Dfe.Complete.Pages.Public
 				return Page();
 			}
 
+			Response.Headers.Append("x-hello", "world");
+
 			return Page();
 		}
 
 		private void ApplyCookieConsent(bool consent)
 		{
-			if (consent) { 
+			if (consent)
+			{
 				_analyticsConsentService.AllowConsent();
 			}
 			else
