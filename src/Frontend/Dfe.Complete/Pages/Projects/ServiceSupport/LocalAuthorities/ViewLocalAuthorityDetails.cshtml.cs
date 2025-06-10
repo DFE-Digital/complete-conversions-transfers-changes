@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Dfe.Complete.Pages.Projects.ServiceSupport.LocalAuthorities
 {
-    [Authorize(policy: UserPolicyConstants.ManagerLocalAuthorities)]
+    [Authorize(policy: UserPolicyConstants.ManageLocalAuthorities)]
     public class ViewLocalAuthorityDetailsModel(ISender sender) : ServiceSupportModel(LocalAuthoriesNavigation)
     {
         [BindProperty(SupportsGet = true, Name = "id")]

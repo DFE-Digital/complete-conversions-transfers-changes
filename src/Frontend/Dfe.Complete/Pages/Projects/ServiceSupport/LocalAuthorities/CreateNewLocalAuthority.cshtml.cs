@@ -13,7 +13,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Dfe.Complete.Pages.Projects.ServiceSupport.LocalAuthorities
 {
-    [Authorize(policy: UserPolicyConstants.ManagerLocalAuthorities)]
+    [Authorize(policy: UserPolicyConstants.ManageLocalAuthorities)]
     public class CreateNewLocalAuthorityModel(ISender sender, IErrorService errorService) : ServiceSupportModel(LocalAuthoriesNavigation)
     {
         [BindProperty(Name = nameof(Name))]
