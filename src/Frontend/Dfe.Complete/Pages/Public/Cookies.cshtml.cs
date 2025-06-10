@@ -24,7 +24,10 @@ namespace Dfe.Complete.Pages.Public
             if (consent.HasValue)
 			{
 				PreferencesSet = true;
-				TempData["PreferencesSet"] = true;
+				if(TempData["IsRequirePreferencesSet"] == null)
+                {
+                    TempData["PreferencesSet"] = true;
+                }
                 ApplyCookieConsent(consent.Value);
 
 				if (!string.IsNullOrEmpty(returnUrl))
@@ -52,13 +55,14 @@ namespace Dfe.Complete.Pages.Public
 			if (consent.HasValue)
 			{
 				Consent = consent;
-				PreferencesSet = true;
+				PreferencesSet = true; 
 
                 ApplyCookieConsent(consent.Value);
 
 				if (cookiesConsent != null)
 				{
-					return Redirect($"/cookies?consent={cookiesConsent}&returnUrl={GetReturnUrl()}");
+                    TempData["IsRequirePreferencesSet"] = false;
+                    return Redirect($"/cookies?consent={cookiesConsent}&returnUrl={GetReturnUrl()}");
 				}
 
                 return Page();
