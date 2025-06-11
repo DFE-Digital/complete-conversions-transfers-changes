@@ -30,7 +30,7 @@ namespace Dfe.Complete.Pages.Public
                 }
                 else
                 {
-					Response.Headers.Append("x-preference-set", ".net");
+					Response.Headers.Append("x-preference-set", "dotnet");
                 }
 
                 ApplyCookieConsent(consent.Value);
