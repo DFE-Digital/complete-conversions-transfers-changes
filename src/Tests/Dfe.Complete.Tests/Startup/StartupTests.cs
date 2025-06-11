@@ -1,17 +1,19 @@
 using System.Reflection;
+using Dfe.Complete.Configuration;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
+using Microsoft.Extensions.Options;
 
-namespace Dfe.Complete.Tests;
+namespace Dfe.Complete.Tests.StartupTests;
 
-public sealed class StartupDataProtectionTests : IDisposable
+public class StartupTests : IDisposable
 {
     private readonly string _tempDpTargetPath;
 
-    public StartupDataProtectionTests()
+    public StartupTests()
     {
         _tempDpTargetPath = Path.Combine(Path.GetTempPath(), "dp-" + Guid.NewGuid());
         Directory.CreateDirectory(_tempDpTargetPath);
@@ -21,9 +23,7 @@ public sealed class StartupDataProtectionTests : IDisposable
     public void SetupDataProtection_PersistsKeys_ToConfiguredFolder()
     {
         // Arrange
-        IConfiguration cfg = BuildConfiguration(_tempDpTargetPath, keyVaultKey: string.Empty);
-        var env = BuildEnvironment();
-        var startup = new Startup(cfg, env);
+        var startup = BuildStartup();
         var services = new ServiceCollection();
 
         // Act
@@ -42,8 +42,7 @@ public sealed class StartupDataProtectionTests : IDisposable
         // Arrange
         var fakeKeyVaultUri = "https://contoso.vault.azure.net/keys/dp-unit-test/0000000000000000";
         IConfiguration cfg = BuildConfiguration(_tempDpTargetPath, fakeKeyVaultUri);
-        var env = BuildEnvironment();
-        var startup = new Startup(cfg, env);
+        var startup = BuildStartup(cfg);
         var services = new ServiceCollection();
 
         // Act
@@ -52,6 +51,35 @@ public sealed class StartupDataProtectionTests : IDisposable
         // Assert
         var provider = services.BuildServiceProvider().GetService<IDataProtectionProvider>();
         Assert.NotNull(provider);
+    }
+
+    [Fact]
+    public void ConfigureServices_Binds_ExternalLinksOptions_From_Config()
+    {
+        // Arrange
+        const string expectedUrl = "https://powerbi.contoso/awesome-report";
+        var dict = new Dictionary<string, string?>
+        {
+            ["ExternalLinks:PowerBiReports"] = expectedUrl,
+            ["DataProtection:DpTargetPath"] = Path.GetTempPath(),
+            ["DataProtection:KeyVaultKey"] = string.Empty
+        };
+
+        IConfiguration cfg = new ConfigurationBuilder()
+            .AddInMemoryCollection(dict)
+            .Build();
+
+        var startup = BuildStartup(cfg);
+        var services = new ServiceCollection();
+
+        startup.ConfigureServices(services);
+
+        // Act
+        var provider = services.BuildServiceProvider();
+        var options = provider.GetRequiredService<IOptions<ExternalLinksOptions>>().Value;
+
+        // Assert
+        Assert.Equal(expectedUrl, options.PowerBiReports);
     }
 
     private static IConfiguration BuildConfiguration(string dpTargetPath, string? keyVaultKey)
@@ -75,6 +103,11 @@ public sealed class StartupDataProtectionTests : IDisposable
             WebRootFileProvider = new NullFileProvider()
         };
 
+    private Startup BuildStartup(IConfiguration? cfg = null, IWebHostEnvironment? env = null)
+    {
+        IConfiguration defaultCfg = BuildConfiguration(_tempDpTargetPath, keyVaultKey: string.Empty);
+        return new Startup(cfg ?? defaultCfg, env ?? BuildEnvironment());
+    }
     private static void InvokeSetupDataProtection(Startup startup, IServiceCollection services)
     {
         MethodInfo? mi = typeof(Startup).GetMethod(
