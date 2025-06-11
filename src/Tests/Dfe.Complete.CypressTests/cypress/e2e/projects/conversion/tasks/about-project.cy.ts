@@ -5,16 +5,26 @@ import { macclesfieldTrust } from "cypress/constants/stringTestConstants";
 import projectApi from "cypress/api/projectApi";
 import projectRemover from "cypress/api/projectRemover";
 import aboutTheProjectPageConversion from "cypress/pages/projects/projectDetails/aboutTheProjectPageConversion";
+import { rdoLondonUser } from "cypress/constants/cypressConstants";
 
 const project = ProjectBuilder.createConversionFormAMatProjectRequest();
 let projectId: string;
 const schoolName = "Whitchurch Primary School";
 const localAuthority = "Bath and North East Somerset";
 const region = "South West";
+const teammatesProject = ProjectBuilder.createConversionFormAMatProjectRequest({
+    urn: { value: 147801 },
+    userAdId: rdoLondonUser.adId,
+});
+let teammatesProjectId: string;
 describe("About a project - conversion project", () => {
     before(() => {
-        projectRemover.removeProjectIfItExists(`${project.urn.value}`);
-        projectApi.createMatConversionProject(project).then((response) => (projectId = response.value));
+        // projectRemover.removeProjectIfItExists(`${project.urn.value}`);
+        projectRemover.removeProjectIfItExists(`${teammatesProject.urn.value}`);
+        // projectApi.createMatConversionProject(project).then((response) => (projectId = response.value));
+        projectApi
+            .createMatConversionProject(teammatesProject, rdoLondonUser.email)
+            .then((response) => (teammatesProjectId = response.value));
     });
     beforeEach(() => {
         cy.login();
@@ -62,5 +72,20 @@ describe("About a project - conversion project", () => {
                 macclesfieldTrust.address,
                 project.incomingTrustSharepointLink,
             );
+    });
+
+    // not implemented
+    it.skip("Should display 'Not assigned to project' banner when viewing a project that is not assigned to the user", () => {
+        Logger.log("Go to unassigned project");
+        cy.visit(`projects/${teammatesProjectId}/tasks`);
+
+        Logger.log("Go to the about project section");
+        projectDetailsPage.navigateTo("About the project").containsSubHeading("About the project");
+
+        Logger.log("Check that the 'Not assigned to project' banner is displayed");
+        cy.contains("Not assigned to project");
+        cy.contains(
+            "This project is not assigned to you and cannot be changed, you can add notes or contacts if required.",
+        );
     });
 });
