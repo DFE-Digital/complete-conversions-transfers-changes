@@ -6,6 +6,7 @@ import {
 } from "./apiDomain";
 import {
     groupReferenceNumber,
+    macclesfieldTrust,
     testTrustName,
     testTrustReferenceNumber,
     ukprn,
@@ -76,16 +77,16 @@ export class ProjectBuilder {
     ): CreateMatConversionProjectRequest {
         return {
             urn: { value: 147800 },
-            newTrustName: testTrustName,
-            newTrustReferenceNumber: testTrustReferenceNumber,
+            newTrustName: macclesfieldTrust.name,
+            newTrustReferenceNumber: macclesfieldTrust.referenceNumber,
             significantDate: "2026-03-01",
             isSignificantDateProvisional: false,
             isDueTo2Ri: false,
             hasAcademyOrderBeenIssued: false,
             advisoryBoardDate: "2023-05-01",
             advisoryBoardConditions: "none.",
-            establishmentSharepointLink: "https://educationgovuk.sharepoint.com",
-            incomingTrustSharepointLink: "https://educationgovuk.sharepoint.com",
+            establishmentSharepointLink: "https://educationgovuk.sharepoint.com/1",
+            incomingTrustSharepointLink: "https://educationgovuk.sharepoint.com/2",
             handingOverToRegionalCaseworkService: false,
             handoverComments: "test 2",
             userAdId: cypressUser.adId,

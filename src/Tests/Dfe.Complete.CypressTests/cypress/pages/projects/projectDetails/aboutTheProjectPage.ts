@@ -1,8 +1,8 @@
 import { ProjectDetailsPage } from "cypress/pages/projects/projectDetails/projectDetailsPage";
 import { significateDateToDisplayDate } from "cypress/support/formatDate";
 
-class AboutTheProjectPage extends ProjectDetailsPage {
-    private readonly giasUrl = "https://get-information-schools.service.gov.uk";
+export class AboutTheProjectPage extends ProjectDetailsPage {
+    protected readonly giasUrl = "https://get-information-schools.service.gov.uk";
 
     hasProjectDetails(
         type: string,
@@ -13,7 +13,7 @@ class AboutTheProjectPage extends ProjectDetailsPage {
         groupRef: string,
     ) {
         cy.getById("projectDetails")
-            .eq(1) // 2 projectDetails Ids issue
+            .eq(-1) // 2 projectDetails Ids issue
             .within(() => {
                 this.containsSubHeading("Project details");
                 this.keyHasValue("Type", type);
@@ -26,7 +26,11 @@ class AboutTheProjectPage extends ProjectDetailsPage {
                 this.keyHasValue("Diocese", diocese);
                 this.keyHasValue("Region", region);
                 this.keyHasValue("Group reference number", groupRef);
-                this.keyHasValueWithLink("Group reference number", groupRef, `/groups/`);
+                if (groupRef === "Not grouped") {
+                    this.keyHasValue("Group reference number", "Not grouped");
+                } else {
+                    this.keyHasValueWithLink("Group reference number", groupRef, `/groups/`);
+                }
             });
         return this;
     }
@@ -86,7 +90,18 @@ class AboutTheProjectPage extends ProjectDetailsPage {
             this.keyHasValue("Type", type);
             this.keyHasValue("Age range", ageRange);
             this.keyHasValue("Phase", phase);
-            this.keyHasValueWithLink("SharePoint folder", sharePointFolder, sharePointFolder);
+            this.keyHasValueWithLink(
+                "SharePoint folder",
+                "View the academy SharePoint folder (opens in new tab)",
+                sharePointFolder,
+            );
+        });
+        return this;
+    }
+
+    hasNoAcademyDetailsAsURNNotProvided() {
+        cy.getById("academyDetails").within(() => {
+            cy.contains("Academy URN has not been provided");
         });
         return this;
     }

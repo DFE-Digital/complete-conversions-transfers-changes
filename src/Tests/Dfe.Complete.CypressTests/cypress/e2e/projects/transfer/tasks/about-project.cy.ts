@@ -2,7 +2,7 @@ import { Logger } from "cypress/common/logger";
 import { ProjectBuilder } from "cypress/api/projectBuilder";
 import projectDetailsPage from "cypress/pages/projects/projectDetails/projectDetailsPage";
 import aboutTheProjectPage from "cypress/pages/projects/projectDetails/aboutTheProjectPage";
-import { trust, trust2 } from "cypress/constants/stringTestConstants";
+import { dimensionsTrust, macclesfieldTrust } from "cypress/constants/stringTestConstants";
 import projectApi from "cypress/api/projectApi";
 import projectRemover from "cypress/api/projectRemover";
 
@@ -11,10 +11,8 @@ let projectId: string;
 const schoolName = "Abbey College Manchester";
 const localAuthority = "Manchester";
 const region = "North West";
-const incomingTrust = trust2;
-const outgoingTrust = trust;
-const incomingTrustGroupId = "TR01904";
-const outgoingTrustGroupId = "TR01369";
+const incomingTrust = dimensionsTrust;
+const outgoingTrust = macclesfieldTrust;
 
 describe("About a transfer project", () => {
     before(() => {
@@ -39,8 +37,8 @@ describe("About a transfer project", () => {
             .hasTransferTag()
             .hasInAGroupTag()
             .hasTransferDate(project.significantDate)
-            .hasOutgoingTrust(outgoingTrust)
-            .hasIncomingTrust(incomingTrust)
+            .hasOutgoingTrust(outgoingTrust.name)
+            .hasIncomingTrust(incomingTrust.name)
             .hasLAAndRegion(localAuthority, region)
             .hasSharePointLink(project.establishmentSharepointLink);
 
@@ -71,19 +69,19 @@ describe("About a transfer project", () => {
                 project.establishmentSharepointLink,
             )
             .hasIncomingTrustDetails(
-                incomingTrust.toUpperCase(), // bug 208086,
+                incomingTrust.name.toUpperCase(), // bug 208086,
                 project.incomingTrustUkprn.value,
-                incomingTrustGroupId,
-                "07595434",
-                "Milton Keynes",
+                incomingTrust.referenceNumber,
+                incomingTrust.number,
+                incomingTrust.address,
                 project.incomingTrustSharepointLink,
             )
             .hasOutgoingTrustDetails(
-                outgoingTrust.toUpperCase(), // bug 208086,
+                outgoingTrust.name.toUpperCase(), // bug 208086,
                 project.outgoingTrustUkprn.value,
-                outgoingTrustGroupId,
-                "07597883",
-                "Macclesfield",
+                outgoingTrust.referenceNumber,
+                outgoingTrust.number,
+                outgoingTrust.address,
                 project.outgoingTrustSharepointLink,
                 project.outGoingTrustWillClose,
             );

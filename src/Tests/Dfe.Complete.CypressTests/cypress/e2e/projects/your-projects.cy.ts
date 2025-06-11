@@ -94,7 +94,7 @@ describe("View your projects", () => {
             .columnHasValue("URN", `${transferFormAMatProject.urn.value}`)
             .columnHasValue("Type of project", "Transfer")
             .columnHasValue("Form a MAT project", "Yes")
-            // .columnContainsValue("Incoming trust", testTrustName)  // bug 212413
+            // .columnContainsValue("Incoming trust", macclesfieldTrust.name)  // bug 212413
             .columnContainsValue("Outgoing trust", trust.toUpperCase()) // bug 208086
             .columnHasValue("Local authority", "Milton Keynes")
             .columnHasValue("Conversion or transfer date", "Mar 2026")

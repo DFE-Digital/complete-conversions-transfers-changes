@@ -16,7 +16,16 @@ export class ProjectDetailsPage extends BasePage {
         return this;
     }
 
+    hasSchoolURNHeading(urn: string) {
+        cy.getByClass(this.captionClass).contains(`School URN ${urn}`);
+        return this;
+    }
+
     // tags
+    hasConversionTag() {
+        return this.hasTag("Conversion");
+    }
+
     hasTransferTag() {
         return this.hasTag("Transfer");
     }
@@ -30,6 +39,10 @@ export class ProjectDetailsPage extends BasePage {
     }
 
     // data
+
+    hasConversionDate(significantDate: string) {
+        return this.keyHasValue("Conversion date", significateDateToDisplayDate(significantDate));
+    }
 
     hasTransferDate(significantDate: string) {
         return this.keyHasValue("Transfer date", significateDateToDisplayDate(significantDate));
@@ -50,6 +63,23 @@ export class ProjectDetailsPage extends BasePage {
 
     hasSharePointLink(link: string) {
         return this.keyHasValueWithLink("SharePoint link", "Academy folder (opens in new tab)", link);
+    }
+
+    hasSharePointLinks(schoolLink: string, trustLink: string) {
+        cy.contains("dt", "SharePoint links")
+            .next("dd")
+            .within(() => {
+                cy.get("a").should("have.length", 2);
+                cy.get("a")
+                    .eq(0)
+                    .should("have.text", "School folder (opens in new tab)")
+                    .should("have.attr", "href", schoolLink);
+                cy.get("a")
+                    .eq(1)
+                    .should("have.text", "Trust folder (opens in new tab)")
+                    .should("have.attr", "href", trustLink);
+            });
+        return this;
     }
 
     protected keyHasValue(key: string, value: string | number) {
