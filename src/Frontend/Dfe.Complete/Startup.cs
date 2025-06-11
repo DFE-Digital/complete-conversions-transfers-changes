@@ -23,6 +23,8 @@ using Dfe.Complete.Logging.Middleware;
 using DfE.CoreLibs.Security.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using DfE.CoreLibs.Security.Antiforgery;
+using Dfe.Complete.Validators;
+using Microsoft.Extensions.Options;
 
 namespace Dfe.Complete;
 
@@ -88,7 +90,7 @@ public class Startup
 
         services.AddScoped<ICorrelationContext, CorrelationContext>();
 
-        services.AddScoped(sp => sp.GetService<IHttpContextAccessor>()?.HttpContext?.Session);
+        services.AddScoped(sp => sp.GetRequiredService<IHttpContextAccessor>()?.HttpContext?.Session ?? throw new InvalidOperationException("Session is not available."));
         services.AddSession(options =>
         {
             options.IdleTimeout = _authenticationExpiration;
@@ -204,9 +206,18 @@ public class Startup
     }
     private static void ConfigureCustomAntiforgery(IServiceCollection services)
     {
-        services.AddScoped<ICustomRequestChecker, CustomRequestChecker>();
-        services.AddScoped<CustomAwareAntiForgeryFilter>();
+        services.AddScoped<ICustomRequestChecker, HasHeaderKeyExistsInRequestValidator>();
         services.AddScoped<ICypressRequestChecker, CypressRequestChecker>();
+        var serviceProvider = services.BuildServiceProvider();
+        var customChecker = serviceProvider.GetRequiredService<ICustomRequestChecker>();
+        var cypressChecker = serviceProvider.GetRequiredService<ICypressRequestChecker>();
+        var options = serviceProvider.GetRequiredService<IOptions<CustomAwareAntiForgeryOptions>>().Value; 
+        services.AddSingleton(new List<Func<HttpContext, bool>>
+        {
+            ctx => customChecker.IsValidRequest(ctx, options.RequestHeaderKey),
+            cypressChecker.IsCypressRequest
+        });
+        services.AddScoped<CustomAwareAntiForgeryFilter>();
 
         services.PostConfigure<MvcOptions>(options =>
         {
