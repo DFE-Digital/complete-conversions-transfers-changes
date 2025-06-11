@@ -1,0 +1,8 @@
+@page "/projects/all/exports"
+@using Dfe.Complete.Domain.Constants;
+@using Microsoft.AspNetCore.Authorization;
+@attribute [Authorize(Policy = UserPolicyConstants.CanViewAllProjectsExports)]
+@functions {
+    public IActionResult OnGet() =>
+    Redirect("/projects/all/reports");
+}

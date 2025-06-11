@@ -166,13 +166,6 @@ public class Startup
         app.UseAuthorization();
         app.UseEndpoints(endpoints =>
         {
-            endpoints.MapGet("/projects/all/exports", ctx =>
-            {
-                ctx.Response.Redirect("/projects/all/reports", permanent: false);
-                return Task.CompletedTask;
-            })
-            .RequireAuthorization(UserPolicyConstants.CanViewAllProjectsExports);
-
             endpoints.MapRazorPages();
         });
     }
