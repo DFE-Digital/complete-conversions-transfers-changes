@@ -19,9 +19,9 @@ const teammatesProject = ProjectBuilder.createConversionFormAMatProjectRequest({
 let teammatesProjectId: string;
 describe("About a project - conversion project", () => {
     before(() => {
-        // projectRemover.removeProjectIfItExists(`${project.urn.value}`);
+        projectRemover.removeProjectIfItExists(`${project.urn.value}`);
         projectRemover.removeProjectIfItExists(`${teammatesProject.urn.value}`);
-        // projectApi.createMatConversionProject(project).then((response) => (projectId = response.value));
+        projectApi.createMatConversionProject(project).then((response) => (projectId = response.value));
         projectApi
             .createMatConversionProject(teammatesProject, rdoLondonUser.email)
             .then((response) => (teammatesProjectId = response.value));
