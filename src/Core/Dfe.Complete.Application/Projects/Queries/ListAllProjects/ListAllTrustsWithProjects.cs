@@ -39,17 +39,15 @@ namespace Dfe.Complete.Application.Projects.Queries.ListAllProjects
 
                 var matGroups = await new FormAMatQuery(true)
                     .Apply(baseQ)
-                    .GroupBy(p => new { NewTrustReferenceNumber = p.NewTrustReferenceNumber!, NewTrustName = p.NewTrustName!, UkprnInt = p.IncomingTrustUkprn! })
-                    .Where(p => p.Key.UkprnInt != null)
+                    .GroupBy(p => new { NewTrustReferenceNumber = p.NewTrustReferenceNumber!, NewTrustName = p.NewTrustName! })
                     .Select(g => new
                     {
                         Key = g.Key.NewTrustReferenceNumber,
                         Name = g.Key.NewTrustName,
-                        Ukprn = g.Key.UkprnInt.ToString(),
+                        GroupIdentifier = g.Key.NewTrustReferenceNumber,
                         Conversions = g.Count(p => p.Type == ProjectType.Conversion),
                         Transfers = g.Count(p => p.Type == ProjectType.Transfer)
-                    }
-                    )
+                    })
                     .ToListAsync(cancellationToken);
 
                 var ukprnStrings = nonMatGroups
@@ -60,22 +58,25 @@ namespace Dfe.Complete.Application.Projects.Queries.ListAllProjects
                 var apiDtos = await trustsClient
                     .GetByUkprnsAllAsync(ukprnStrings, cancellationToken);
 
+                var apiDtoDictionary = apiDtos == null
+                    ? new Dictionary<string, TrustDto>()
+                    : apiDtos.ToDictionary(dto => dto.Ukprn!, dto => dto);
+
                 var nonMatResults = nonMatGroups
                     .Select(g =>
                     {
                         var uk = g.UkprnInt!.Value.ToString();
-                        var dto = apiDtos.FirstOrDefault(d => d.Ukprn == uk);
+                        var dto = apiDtoDictionary.GetValueOrDefault(uk);
 
                         if (dto is null)
                             return null;
 
                         return new ListTrustsWithProjectsResultModel(
-                            Identifier: dto.ReferenceNumber!,
+                            Identifier: dto.Ukprn!,
                             TrustName: dto.Name!.ToTitleCase(),
-                            Ukprn: dto.Ukprn!,
+                            GroupIdentifier: dto.ReferenceNumber!,
                             ConversionCount: g.Conversions,
-                            TransfersCount: g.Transfers
-                        );
+                            TransfersCount: g.Transfers);
                     })
                     .Where(r => r != null)
                     .Cast<ListTrustsWithProjectsResultModel>()
@@ -85,13 +86,23 @@ namespace Dfe.Complete.Application.Projects.Queries.ListAllProjects
                     .Select(g => new ListTrustsWithProjectsResultModel(
                         Identifier: g.Key,
                         TrustName: g.Name,
-                        Ukprn: g.Ukprn,
+                        GroupIdentifier: g.Key,
                         ConversionCount: g.Conversions,
-                        TransfersCount: g.Transfers
-                    ));
+                        TransfersCount: g.Transfers));
 
                 var all = nonMatResults
                     .Concat(matResults)
+                    .GroupBy(r => r.GroupIdentifier)
+                    .Select(g =>
+                    {
+                        var first = g.First();
+                        return new ListTrustsWithProjectsResultModel(
+                            Identifier: first.Identifier,
+                            TrustName: first.TrustName,
+                            GroupIdentifier: first.GroupIdentifier,
+                            ConversionCount: g.Sum(x => x.ConversionCount),
+                            TransfersCount: g.Sum(x => x.TransfersCount));
+                    })
                     .OrderBy(r => r.TrustName)
                     .ToList();
 

@@ -7,13 +7,30 @@ using AllProjectsInTrustViewModel = Dfe.Complete.Pages.Projects.List.AllProjects
 namespace Dfe.Complete.Tests.Pages.Projects.List;
 
 public class AllProjectsInTrustViewModelTests
-{   
+{
+    [Theory]
+    [CustomAutoData(typeof(ListAllProjectResultModelCustomization))]
+    public void GetTrustProjectsUrl_ShouldReturnCorrectMatUrl_When_IdentifierIsTrustReference(IFixture fixture)
+    {
+        var trust = fixture.Build<ListTrustsWithProjectsResultModel>()
+            .With(x => x.Identifier, "TR00001")
+            .Create();
+
+        string expectedUrl = "/projects/all/trusts/reference/TR00001";
+
+        // Act
+        var result = AllProjectsInTrustViewModel.GetTrustProjectsUrl(trust);
+
+        // Assert
+        Assert.Equal(expectedUrl, result);
+    }
+
     [Theory]
     [CustomAutoData(typeof(ListAllProjectResultModelCustomization))]
     public void GetTrustProjectsUrl_ShouldReturnCorrectUrl_When_IdentifierIsNotTrustReference(IFixture fixture)
     {
         var trust = fixture.Build<ListTrustsWithProjectsResultModel>()
-            .With(x => x.Ukprn, "10035415")
+            .With(x => x.Identifier, "10035415")
             .Create();
 
         string expectedUrl = "/projects/all/trusts/ukprn/10035415";

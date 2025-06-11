@@ -2484,10 +2484,20 @@
                 }
               },
               "regionalDeliveryOfficer": {
-                "$ref": "#/components/schemas/User"
+                "nullable": true,
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/User"
+                  }
+                ]
               },
               "localAuthority": {
-                "$ref": "#/components/schemas/LocalAuthority"
+                "nullable": true,
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/LocalAuthority"
+                  }
+                ]
               },
               "significantDateHistories": {
                 "type": "array",
@@ -3177,7 +3187,7 @@
           "trustName": {
             "type": "string"
           },
-          "ukprn": {
+          "groupIdentifier": {
             "type": "string"
           },
           "conversionCount": {
