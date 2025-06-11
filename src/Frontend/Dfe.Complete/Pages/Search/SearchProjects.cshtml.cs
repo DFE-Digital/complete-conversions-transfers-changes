@@ -49,7 +49,7 @@ namespace Dfe.Complete.Pages.Search
 
                 Pagination = new PaginationModel($"/search?query={Query}", PageNumber, TotalResults, PageSize);
 
-                var hasPageFound = HasPageFound(Pagination.IsOutOfRangePage);
+                var hasPageFound = HasPageFound(Pagination.IsOutOfRangePage, Pagination.TotalPages);
                 return hasPageFound ?? Page();
             }
             return Page();

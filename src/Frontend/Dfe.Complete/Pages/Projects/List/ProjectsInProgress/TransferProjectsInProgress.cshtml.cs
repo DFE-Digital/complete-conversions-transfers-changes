@@ -23,7 +23,7 @@ public class TransferProjectsInProgressModel(ISender sender) : ConversionOrTrans
 
         Pagination = new PaginationModel("/projects/all/in-progress/transfers", PageNumber, countResponse.Value, PageSize);
 
-        var hasPageFound = HasPageFound(Pagination.IsOutOfRangePage);
+        var hasPageFound = HasPageFound(Pagination.IsOutOfRangePage, Pagination.TotalPages);
         return hasPageFound ?? Page();
     }
 

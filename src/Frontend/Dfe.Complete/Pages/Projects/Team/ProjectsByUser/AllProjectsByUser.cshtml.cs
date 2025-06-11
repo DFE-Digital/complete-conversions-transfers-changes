@@ -32,7 +32,7 @@ public class AllProjectsByUser(ISender sender) : YourTeamProjectsModel(ByUserNav
 
         Pagination = new PaginationModel(RouteConstants.TeamProjectsUsers, PageNumber, recordCount, PageSize);
 
-        var hasPageFound = HasPageFound(Pagination.IsOutOfRangePage);
+        var hasPageFound = HasPageFound(Pagination.IsOutOfRangePage, Pagination.TotalPages);
         return hasPageFound ?? Page();
     }
 
