@@ -92,17 +92,6 @@ namespace Dfe.Complete.Application.Projects.Queries.ListAllProjects
 
                 var all = nonMatResults
                     .Concat(matResults)
-                    .GroupBy(r => r.Identifier)
-                    .Select(g =>
-                    {
-                        var first = g.First();
-                        return new ListTrustsWithProjectsResultModel(
-                            Identifier: first.Identifier,
-                            TrustName: first.TrustName,
-                            GroupIdentifier: first.GroupIdentifier,
-                            ConversionCount: g.Sum(x => x.ConversionCount),
-                            TransfersCount: g.Sum(x => x.TransfersCount));
-                    })
                     .OrderBy(r => r.TrustName)
                     .ToList();
 
