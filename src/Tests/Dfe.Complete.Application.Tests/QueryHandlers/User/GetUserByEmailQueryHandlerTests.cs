@@ -7,6 +7,7 @@ using Dfe.Complete.Application.Users.Queries.GetUser;
 using Dfe.Complete.Domain.Entities;
 using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Domain.Interfaces.Repositories;
+using Dfe.Complete.Domain.ValueObjects;
 using Dfe.Complete.Tests.Common.Customizations.Behaviours;
 using Dfe.Complete.Tests.Common.Customizations.Models;
 using DfE.CoreLibs.Testing.AutoFixture.Attributes;
@@ -28,6 +29,7 @@ public class GetUserByEmailQueryHandlerTests
         GiasEstablishment establishment,
         IFixture fixture)
     {
+        establishment.Urn ??= new Urn(123456);
         // Arrange
         var conversionProject = fixture.Customize(new ProjectCustomization
         {
