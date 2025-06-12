@@ -51,7 +51,7 @@ namespace Dfe.Complete.Tests.Authorization
             });
 
             // ICypressRequestChecker should be resolvable
-            var checker = sp.GetService<ICypressRequestChecker>();
+            var checker = sp.GetService<ICustomRequestChecker>();
             Assert.NotNull(checker);
             Assert.IsType<CypressRequestChecker>(checker);
         }

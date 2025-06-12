@@ -25,6 +25,7 @@ using Microsoft.AspNetCore.Mvc;
 using DfE.CoreLibs.Security.Antiforgery;
 using Dfe.Complete.Validators;
 using Microsoft.Extensions.Options;
+using Microsoft.AspNetCore.Antiforgery;
 
 namespace Dfe.Complete;
 
@@ -192,38 +193,32 @@ public class Startup
     }
     private void ConfigureCustomAntiforgeryEndpoints(IServiceCollection services)
     {
-        services.Configure<CustomAwareAntiForgeryOptions>(opts =>
-        {
-            opts.ShouldSkipAntiforgery = httpContext =>
-            {
-                var path = httpContext.Request.Path;
-                return path.StartsWithSegments("/Cookies") ||
-                          (!_env.IsProduction() && (path.StartsWithSegments("/v1") || path.StartsWithSegments("/Errors") || path.StartsWithSegments("/Cookies")));
-            };
-            opts.RequestHeaderKey = Configuration["RequestHeaderKey"];
-            opts.RequestHeaderValue = Configuration["RequestHeaderValue"];
-        });
+        //services.Configure<CustomAwareAntiForgeryOptions>(opts =>
+        //{
+        //    opts.ShouldSkipAntiforgery = httpContext =>
+        //    {
+        //        var path = httpContext.Request.Path;
+        //        return path.StartsWithSegments("/Cookies") ||
+        //                  (!_env.IsProduction() && (path.StartsWithSegments("/v1") || path.StartsWithSegments("/Errors") || path.StartsWithSegments("/Cookies")));
+        //    };
+        //    opts.RequestHeaderKey = Configuration["RequestHeaderKey"];
+        //    opts.RequestHeaderValue = Configuration["RequestHeaderValue"];
+        //});
     }
     private static void ConfigureCustomAntiforgery(IServiceCollection services)
     {
-        services.AddScoped<ICustomRequestChecker, HasHeaderKeyExistsInRequestValidator>();
-        services.AddScoped<ICypressRequestChecker, CypressRequestChecker>();
-        var serviceProvider = services.BuildServiceProvider();
-        var customChecker = serviceProvider.GetRequiredService<ICustomRequestChecker>();
-        var cypressChecker = serviceProvider.GetRequiredService<ICypressRequestChecker>();
-        var options = serviceProvider.GetRequiredService<IOptions<CustomAwareAntiForgeryOptions>>().Value; 
-        services.AddSingleton(new List<Func<HttpContext, bool>>
-        {
-            ctx => customChecker.IsValidRequest(ctx, options.RequestHeaderKey, options.RequestHeaderValue),
-            cypressChecker.IsCypressRequest
-        });
+        services.AddCustomRequestCheckerProvider<HasHeaderKeyExistsInRequestValidator>();
+        services.AddCustomRequestCheckerProvider<CypressRequestChecker>();
+
+        services.AddScoped(provider => provider.GetServices<ICustomRequestChecker>().ToList());
+
         services.AddScoped<CustomAwareAntiForgeryFilter>();
 
         services.PostConfigure<MvcOptions>(options =>
         {
             options.Filters.AddService<CustomAwareAntiForgeryFilter>();
         });
-    } 
+    }
 
     private void RegisterClients(IServiceCollection services)
     {

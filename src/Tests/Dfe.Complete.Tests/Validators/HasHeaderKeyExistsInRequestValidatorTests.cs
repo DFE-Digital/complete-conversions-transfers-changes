@@ -1,5 +1,6 @@
 ﻿using Dfe.Complete.Validators;
-using Microsoft.AspNetCore.Http; 
+using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Configuration;
 
 namespace Dfe.Complete.Tests.Validators
 {
@@ -14,61 +15,75 @@ namespace Dfe.Complete.Tests.Validators
             return httpContext;
         }
 
+        private static IConfigurationRoot GetConfiguration(string headerKey, string headerVaule)
+        {
+            var configuration = new ConfigurationBuilder()
+                .AddInMemoryCollection(new[]
+                {
+                    new KeyValuePair<string, string>("RequestHeaderKey", headerKey),
+                    new KeyValuePair<string, string>("RequestHeaderValue", headerVaule)
+                }!)
+                .Build();
+            return configuration;
+        }
+
         [Fact]
         public void IsCustomRequest_ReturnsFalse_WhenNoHeaderKey()
         {
-            // Arrange 
-
+            // Arrange   
             var httpContext = CreateHttpContext("ruby");
-            var checker = new HasHeaderKeyExistsInRequestValidator();
+            var configuration = new ConfigurationBuilder().AddInMemoryCollection().Build();
+            var checker = new HasHeaderKeyExistsInRequestValidator(configuration);
 
-            // Act
-            var result = checker.IsValidRequest(httpContext, null, null);
+            // Act  
+            var result = checker.IsValidRequest(httpContext);
 
-            // Assert
+            // Assert  
             Assert.False(result);
         }
+
         [Fact]
         public void IsCustomRequest_ReturnsFalse_WhenHeaderKeyDoesNotMatched()
         {
-            // Arrange 
-
+            // Arrange  
             var httpContext = CreateHttpContext("ruby");
-            var checker = new HasHeaderKeyExistsInRequestValidator();
+            var configuration = GetConfiguration("x-header-key", "dotnet");
+            var checker = new HasHeaderKeyExistsInRequestValidator(configuration);
 
-            // Act
-            var result = checker.IsValidRequest(httpContext, "x-header-key", "dotnet");
+            // Act  
+            var result = checker.IsValidRequest(httpContext);
 
-            // Assert
+            // Assert  
             Assert.False(result);
         }
 
         [Fact]
         public void IsCustomRequest_ReturnsTrue_WhenHeaderKeyMatchesButNotValue()
         {
-            // Arrange 
-
+            // Arrange  
             var httpContext = CreateHttpContext("ruby");
-            var checker = new HasHeaderKeyExistsInRequestValidator();
+            var configuration = GetConfiguration(HeaderKey, "dotnet");
+            var checker = new HasHeaderKeyExistsInRequestValidator(configuration);
 
-            // Act
-            var result = checker.IsValidRequest(httpContext, HeaderKey, "dotnet");
+            // Act  
+            var result = checker.IsValidRequest(httpContext);
 
-            // Assert
+            // Assert  
             Assert.False(result);
         }
+
         [Fact]
         public void IsCustomRequest_ReturnsTrue_WhenBothHeaderKeyAndValueMatches()
         {
-            // Arrange 
-
+            // Arrange  
             var httpContext = CreateHttpContext("ruby");
-            var checker = new HasHeaderKeyExistsInRequestValidator();
+            var configuration = GetConfiguration(HeaderKey, "ruby");
+            var checker = new HasHeaderKeyExistsInRequestValidator(configuration);
 
-            // Act
-            var result = checker.IsValidRequest(httpContext, HeaderKey, "ruby");
+            // Act  
+            var result = checker.IsValidRequest(httpContext);
 
-            // Assert
+            // Assert  
             Assert.True(result);
         }
     }
