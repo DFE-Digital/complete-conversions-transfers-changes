@@ -5,6 +5,7 @@ using Dfe.Complete.Application.Users.Queries.SearchUsers;
 using Dfe.Complete.Domain.Entities;
 using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Domain.Interfaces.Repositories;
+using Dfe.Complete.Domain.ValueObjects;
 using Dfe.Complete.Tests.Common.Customizations.Behaviours;
 using Dfe.Complete.Tests.Common.Customizations.Models;
 using DfE.CoreLibs.Testing.AutoFixture.Attributes;
@@ -25,6 +26,8 @@ public class SearchUsersQueryHandlerTests
         IFixture fixture)
     {
         // Arrange
+        establishment.Urn ??= new Urn(123456);
+
         var conversionProject = fixture.Customize(new ProjectCustomization
         {
             Urn = establishment.Urn,

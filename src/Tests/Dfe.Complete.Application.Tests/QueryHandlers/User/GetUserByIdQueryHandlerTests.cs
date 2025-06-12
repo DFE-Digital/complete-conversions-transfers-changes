@@ -29,6 +29,8 @@ public class GetUserByIdQueryHandlerTests
         IFixture fixture)
     {
         // Arrange
+        establishment.Urn ??= new Urn(123456);
+
         var conversionProject = fixture.Customize(new ProjectCustomization
         {
             Urn = establishment.Urn,
