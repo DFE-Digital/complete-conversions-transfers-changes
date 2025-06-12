@@ -17,11 +17,7 @@ export class AboutTheProjectPage extends ProjectDetailsPage {
             .within(() => {
                 this.containsSubHeading("Project details");
                 this.keyHasValue("Type", type);
-                if (type === "Transfer") {
-                    this.keyHasValue("Transfer date", significateDateToDisplayDate(significantDate));
-                } else {
-                    this.keyHasValue("Conversion date", significateDateToDisplayDate(significantDate));
-                }
+                this.keyHasValue(`${type} date`, significateDateToDisplayDate(significantDate));
                 this.keyHasValue("Local authority", localAuthority);
                 this.keyHasValue("Diocese", diocese);
                 this.keyHasValue("Region", region);
@@ -46,55 +42,11 @@ export class AboutTheProjectPage extends ProjectDetailsPage {
         return this;
     }
 
-    hasReasonsForTheTransfer(isDueTo2Ri: boolean, isDueToInadequateOfstedRating: boolean, isDueToIssues: boolean) {
-        cy.getById("reasonsForTransfer").within(() => {
-            this.containsSubHeading("Reasons for the transfer");
-            this.keyHasValue("Is this transfer due to 2RI?", isDueTo2Ri ? "Yes" : "No");
-            this.keyHasValue(
-                "Is this transfer due to an inadequate Ofsted rating?",
-                isDueToInadequateOfstedRating ? "Yes" : "No",
-            );
-            this.keyHasValue(
-                "Is this transfer due to financial, safeguarding or governance issues?",
-                isDueToIssues ? "Yes" : "No",
-            );
-        });
-        return this;
-    }
-
     hasAdvisoryBoardDetails(advisoryBoardDate: string, advisoryBoardConditions: string) {
         cy.getById("advisoryBoardDetails").within(() => {
             this.containsSubHeading("Advisory board details");
             this.keyHasValue("Date of advisory board", significateDateToDisplayDate(advisoryBoardDate));
             this.keyHasValue("Conditions from advisory board", advisoryBoardConditions);
-        });
-        return this;
-    }
-
-    hasAcademyDetails(
-        name: string,
-        urn: number,
-        type: string,
-        ageRange: string,
-        phase: string,
-        sharePointFolder: string,
-    ) {
-        cy.getById("academyDetails").within(() => {
-            this.containsSubHeading("Academy details");
-            this.keyHasValueWithLink(
-                "Name",
-                `${name} View the school's information in GIAS (opens in new tab)`,
-                `${this.giasUrl}/Establishments/Establishment/Details/${urn}`,
-            );
-            this.keyHasValue("Academy URN (unique reference number)", urn);
-            this.keyHasValue("Type", type);
-            this.keyHasValue("Age range", ageRange);
-            this.keyHasValue("Phase", phase);
-            this.keyHasValueWithLink(
-                "SharePoint folder",
-                "View the academy SharePoint folder (opens in new tab)",
-                sharePointFolder,
-            );
         });
         return this;
     }
@@ -164,6 +116,29 @@ export class AboutTheProjectPage extends ProjectDetailsPage {
                 outGoingTrustWillClose ? "Yes" : "No",
             );
         });
+        return this;
+    }
+
+    jumpToSection(section: string) {
+        cy.contains("Jump to section")
+            .parents("nav")
+            .within(() => {
+                cy.contains(section).click();
+            });
+        return this;
+    }
+
+    pageHasMovedToSection(section: string) {
+        cy.url().should(
+            "include",
+            `#${section
+                .split(" ")
+                .map((word, index) =>
+                    index === 0 ? word.toLowerCase() : word.charAt(0).toUpperCase() + word.slice(1).toLowerCase(),
+                )
+                .join("")}`,
+        );
+        cy.contains("h2", section).isInViewport();
         return this;
     }
 }

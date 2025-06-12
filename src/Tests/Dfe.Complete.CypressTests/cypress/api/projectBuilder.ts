@@ -5,10 +5,9 @@ import {
     CreateTransferProjectRequest,
 } from "./apiDomain";
 import {
+    dimensionsTrust,
     groupReferenceNumber,
     macclesfieldTrust,
-    testTrustName,
-    testTrustReferenceNumber,
     ukprn,
     ukprn2,
 } from "cypress/constants/stringTestConstants";
@@ -99,9 +98,9 @@ export class ProjectBuilder {
     ): CreateMatTransferProjectRequest {
         return {
             urn: { value: 149460 },
-            newTrustName: testTrustName,
-            newTrustReferenceNumber: testTrustReferenceNumber,
-            outgoingTrustUkprn: { value: ukprn },
+            newTrustName: dimensionsTrust.name,
+            newTrustReferenceNumber: dimensionsTrust.referenceNumber,
+            outgoingTrustUkprn: { value: macclesfieldTrust.ukprn },
             significantDate: "2026-03-01",
             isSignificantDateProvisional: false,
             isDueTo2Ri: false,
@@ -111,9 +110,9 @@ export class ProjectBuilder {
             outGoingTrustWillClose: false,
             advisoryBoardDate: "2023-05-01",
             advisoryBoardConditions: "none.",
-            establishmentSharepointLink: "https://educationgovuk.sharepoint.com",
-            incomingTrustSharepointLink: "https://educationgovuk.sharepoint.com",
-            outgoingTrustSharepointLink: "https://educationgovuk.sharepoint.com",
+            establishmentSharepointLink: "https://educationgovuk.sharepoint.com/1",
+            incomingTrustSharepointLink: "https://educationgovuk.sharepoint.com/2",
+            outgoingTrustSharepointLink: "https://educationgovuk.sharepoint.com/3",
             handoverComments: "test 2",
             userAdId: cypressUser.adId,
             ...options,

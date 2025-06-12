@@ -6,6 +6,7 @@ import projectApi from "cypress/api/projectApi";
 import projectRemover from "cypress/api/projectRemover";
 import aboutTheProjectPageConversion from "cypress/pages/projects/projectDetails/aboutTheProjectPageConversion";
 import { rdoLondonUser } from "cypress/constants/cypressConstants";
+import aboutTheProjectPage from "cypress/pages/projects/projectDetails/aboutTheProjectPage";
 
 const project = ProjectBuilder.createConversionFormAMatProjectRequest();
 let projectId: string;
@@ -42,16 +43,16 @@ describe("About a project - conversion project", () => {
             .hasSchoolURNHeading(`${project.urn.value}`)
             .hasFormAMATTag()
             .hasConversionTag()
-            // .hasConversionDate(project.significantDate) // incorrect date format
-            .hasIncomingTrust(macclesfieldTrust.name);
-        // .hasLAAndRegion(localAuthority, region); case-sensitive issue with LA
-        // .hasSharePointLinks(project.establishmentSharepointLink, project.incomingTrustSharepointLink); // has a /n in middle of text
+            .hasConversionDate(project.significantDate)
+            .hasIncomingTrust(macclesfieldTrust.name)
+            .hasLAAndRegion(localAuthority, region)
+            .hasSharePointLinks(project.establishmentSharepointLink, project.incomingTrustSharepointLink);
 
         Logger.log("Project details sections are displayed as expected");
 
         aboutTheProjectPageConversion
             .hasProjectDetails(project.significantDate, localAuthority, "Not applicable", region, "Not grouped")
-            // .hasProjectAssignment(project.handingOverToRegionalCaseworkService) // "handling" over is misspelled
+            .hasProjectAssignment(project.handingOverToRegionalCaseworkService)
             .hasReasonsForTheConversion(project.hasAcademyOrderBeenIssued, project.isDueTo2Ri)
             .hasAdvisoryBoardDetails(project.advisoryBoardDate, project.advisoryBoardConditions)
             .hasSchoolDetails(
@@ -68,14 +69,35 @@ describe("About a project - conversion project", () => {
                 macclesfieldTrust.name,
                 macclesfieldTrust.ukprn,
                 macclesfieldTrust.referenceNumber,
-                macclesfieldTrust.number,
+                macclesfieldTrust.companiesHouseNumber,
                 macclesfieldTrust.address,
                 project.incomingTrustSharepointLink,
             );
     });
 
-    // not implemented
-    it.skip("Should display 'Not assigned to project' banner when viewing a project that is not assigned to the user", () => {
+    it("Should display page links that navigate to different sections of the about project page", () => {
+        Logger.log("Go to the about project section");
+        cy.visit(`projects/${projectId}/information`);
+
+        Logger.log("Check that the page links correctly navigate to the different sections");
+        aboutTheProjectPage
+            .jumpToSection("Project details")
+            .pageHasMovedToSection("Project details")
+            .jumpToSection("Project assignment")
+            .pageHasMovedToSection("Project assignment")
+            .jumpToSection("Reasons for transfer")
+            .pageHasMovedToSection("Reasons for transfer")
+            .jumpToSection("Advisory board details")
+            .pageHasMovedToSection("Advisory board details")
+            .jumpToSection("Academy details")
+            .pageHasMovedToSection("Academy details")
+            .jumpToSection("Incoming trust details")
+            .pageHasMovedToSection("Incoming trust details")
+            .jumpToSection("Outgoing trust details")
+            .pageHasMovedToSection("Outgoing trust details");
+    });
+
+    it("Should display 'Not assigned to project' banner when viewing a project that is not assigned to the user", () => {
         Logger.log("Go to unassigned project");
         cy.visit(`projects/${teammatesProjectId}/tasks`);
 

@@ -7,14 +7,14 @@ export const macclesfieldTrust = {
     name: "The Macclesfield Academy",
     referenceNumber: "TR01369",
     ukprn: 10058689,
-    number: "07597883",
+    companiesHouseNumber: "07597883",
     address: "Macclesfield",
 };
 export const dimensionsTrust = {
     name: "5 Dimensions Trust",
     referenceNumber: "TR01904",
     ukprn: 10058682,
-    number: "07595434",
+    companiesHouseNumber: "07595434",
     address: "Milton Keynes",
 };
 export const trust = "The Macclesfield Academy";
