@@ -5,11 +5,11 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Dfe.Complete.Controllers;
 
+[Route("Search/User")]
 [Authorize]
 public class UserSearchController(ISender sender) : Controller
 {
     // GET
-    [Route("Search/User")]
     public async Task<IActionResult> Index(string query, string? type)
     {
         var userQuery = new SearchUsersQuery(query, type?.ToLowerInvariant() == "assignable");
