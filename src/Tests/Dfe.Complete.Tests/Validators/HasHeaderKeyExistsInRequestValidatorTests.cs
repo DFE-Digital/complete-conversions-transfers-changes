@@ -23,7 +23,7 @@ namespace Dfe.Complete.Tests.Validators
             var checker = new HasHeaderKeyExistsInRequestValidator();
 
             // Act
-            var result = checker.IsValidRequest(httpContext, null);
+            var result = checker.IsValidRequest(httpContext, null, null);
 
             // Assert
             Assert.False(result);
@@ -37,14 +37,14 @@ namespace Dfe.Complete.Tests.Validators
             var checker = new HasHeaderKeyExistsInRequestValidator();
 
             // Act
-            var result = checker.IsValidRequest(httpContext, "x-header-key");
+            var result = checker.IsValidRequest(httpContext, "x-header-key", "dotnet");
 
             // Assert
             Assert.False(result);
         }
 
         [Fact]
-        public void IsCustomRequest_ReturnsTrue_WhenHeaderKeyMatches()
+        public void IsCustomRequest_ReturnsTrue_WhenHeaderKeyMatchesButNotValue()
         {
             // Arrange 
 
@@ -52,7 +52,21 @@ namespace Dfe.Complete.Tests.Validators
             var checker = new HasHeaderKeyExistsInRequestValidator();
 
             // Act
-            var result = checker.IsValidRequest(httpContext, HeaderKey);
+            var result = checker.IsValidRequest(httpContext, HeaderKey, "dotnet");
+
+            // Assert
+            Assert.False(result);
+        }
+        [Fact]
+        public void IsCustomRequest_ReturnsTrue_WhenBothHeaderKeyAndValueMatches()
+        {
+            // Arrange 
+
+            var httpContext = CreateHttpContext("ruby");
+            var checker = new HasHeaderKeyExistsInRequestValidator();
+
+            // Act
+            var result = checker.IsValidRequest(httpContext, HeaderKey, "ruby");
 
             // Assert
             Assert.True(result);

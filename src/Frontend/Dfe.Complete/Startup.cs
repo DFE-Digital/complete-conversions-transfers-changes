@@ -201,7 +201,7 @@ public class Startup
                           (!_env.IsProduction() && (path.StartsWithSegments("/v1") || path.StartsWithSegments("/Errors") || path.StartsWithSegments("/Cookies")));
             };
             opts.RequestHeaderKey = Configuration["RequestHeaderKey"];
-
+            opts.RequestHeaderValue = Configuration["RequestHeaderValue"];
         });
     }
     private static void ConfigureCustomAntiforgery(IServiceCollection services)
@@ -214,7 +214,7 @@ public class Startup
         var options = serviceProvider.GetRequiredService<IOptions<CustomAwareAntiForgeryOptions>>().Value; 
         services.AddSingleton(new List<Func<HttpContext, bool>>
         {
-            ctx => customChecker.IsValidRequest(ctx, options.RequestHeaderKey),
+            ctx => customChecker.IsValidRequest(ctx, options.RequestHeaderKey, options.RequestHeaderValue),
             cypressChecker.IsCypressRequest
         });
         services.AddScoped<CustomAwareAntiForgeryFilter>();
