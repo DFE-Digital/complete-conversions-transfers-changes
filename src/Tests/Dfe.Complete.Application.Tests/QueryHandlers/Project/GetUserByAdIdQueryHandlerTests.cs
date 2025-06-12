@@ -38,7 +38,7 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
 
             // Assert
             await mockUserRepository.Received(1).FindAsync(Arg.Any<Expression<Func<Domain.Entities.User, bool>>>(), Arg.Any<CancellationToken>());
-            Assert.True(result.IsSuccess == true);
+            Assert.True(result.IsSuccess);
 
             var returnedDto = result.Value;
 
@@ -64,7 +64,7 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
 
             // Assert
             await mockUserRepository.Received(1).FindAsync(Arg.Any<Expression<Func<Domain.Entities.User, bool>>>(), Arg.Any<CancellationToken>());
-            Assert.True(result.IsSuccess == true);
+            Assert.True(result.IsSuccess);
             Assert.True(result.Value == null);
         }
 
@@ -85,7 +85,7 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
 
             // Assert
             await mockUserRepository.Received(1).FindAsync(Arg.Any<Expression<Func<Domain.Entities.User, bool>>>(), Arg.Any<CancellationToken>());
-            Assert.True(result.IsSuccess == false);
+            Assert.True(!result.IsSuccess);
         }
     }
 }
