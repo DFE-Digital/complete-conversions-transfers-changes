@@ -92,7 +92,7 @@ namespace Dfe.Complete.Application.Projects.Queries.ListAllProjects
 
                 var all = nonMatResults
                     .Concat(matResults)
-                    .GroupBy(r => r.GroupIdentifier)
+                    .GroupBy(r => r.Identifier)
                     .Select(g =>
                     {
                         var first = g.First();
