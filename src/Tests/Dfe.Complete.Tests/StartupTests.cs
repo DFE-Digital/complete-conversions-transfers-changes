@@ -81,16 +81,17 @@ public sealed class StartupDataProtectionTests : IDisposable
         services.AddScoped(sp => sp.GetRequiredService<IHttpContextAccessor>()?.HttpContext?.Session ?? throw new InvalidOperationException("Session is not available."));
 
         // Register the antiforgery options with the expected CheckerGroups
-        services.Configure<CustomAwareAntiForgeryOptions>(opts =>
+        services.AddControllersWithViews().AddCustomAntiForgeryHandling(opts =>
         {
-            opts.CheckerGroups = [
+            opts.CheckerGroups =
+            [
                 new()
-                {
-                    TypeNames = [nameof(HasHeaderKeyExistsInRequestValidator), nameof(CypressRequestChecker)],
-                    CheckerOperator = CheckerOperator.Or
-                }
+            {
+                TypeNames = [nameof(HasHeaderKeyExistsInRequestValidator), nameof(CypressRequestChecker)],
+                CheckerOperator = CheckerOperator.Or
+            }
             ];
-        });
+        }); 
 
         // Act
         InvokeSetupDataProtection(startup, services);
