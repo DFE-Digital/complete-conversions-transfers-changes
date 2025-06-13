@@ -1,5 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-using Dfe.Complete.Application.Projects.Commands.UpdateProject;
+﻿using Dfe.Complete.Application.Projects.Commands.UpdateProject;
 using Dfe.Complete.Application.Projects.Models;
 using Dfe.Complete.Application.Users.Queries.GetUser;
 using Dfe.Complete.Application.Users.Queries.SearchUsers;
@@ -7,6 +6,7 @@ using Dfe.Complete.Constants;
 using Dfe.Complete.Extensions;
 using Dfe.Complete.Models;
 using Dfe.Complete.Services;
+using Dfe.Complete.Validators;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -17,7 +17,7 @@ public class EditAddedByUser(ISender sender, ErrorService errorService, ILogger<
     private readonly ISender _sender = sender;
 
     [BindProperty]
-    [EmailAddress]
+    [InternalEmail]
     public string Email { get; set; } = default!;
 
     public UserDto AddedByUser { get; set; } = default!;
@@ -55,7 +55,7 @@ public class EditAddedByUser(ISender sender, ErrorService errorService, ILogger<
         if (addedBySearchResult is { IsSuccess: true, Value.Count: 1 })
         {
             var updateRequest = new UpdateRegionalDeliveryOfficerCommand(Project.Urn, addedBySearchResult.Value[0].Id);
-            await sender.Send(updateRequest);
+            await _sender.Send(updateRequest);
             TempData.SetNotification(NotificationType.Success, "Success", "Project has been assigned successfully");
             return Redirect(FormatRouteWithProjectId(RouteConstants.ProjectInternalContacts));
         }
