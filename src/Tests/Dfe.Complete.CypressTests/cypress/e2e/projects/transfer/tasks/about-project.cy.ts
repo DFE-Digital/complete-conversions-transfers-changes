@@ -64,11 +64,7 @@ describe.skip("About the project page - transfer projects: ", () => {
                 project.groupReferenceNumber!,
             )
             .hasProjectAssignment(project.handingOverToRegionalCaseworkService!)
-            .hasReasonsForTheTransfer(
-                project.isDueTo2Ri!,
-                project.isDueToInedaquateOfstedRating!,
-                project.isDueToIssues!,
-            )
+            .hasReasonsForTheTransfer(project.isDueTo2Ri, project.isDueToInedaquateOfstedRating, project.isDueToIssues)
             .hasAdvisoryBoardDetails(project.advisoryBoardDate, project.advisoryBoardConditions)
             .hasAcademyDetails(
                 schoolName,
@@ -122,11 +118,11 @@ describe.skip("About the project page - transfer projects: ", () => {
                 formAMATRegion,
                 "Not grouped",
             )
-            .hasProjectAssignment(projectFormAMat.handingOverToRegionalCaseworkService!)
+            .hasProjectAssignment(projectFormAMat.handingOverToRegionalCaseworkService)
             .hasReasonsForTheTransfer(
-                projectFormAMat.isDueTo2Ri!,
-                projectFormAMat.isDueToInedaquateOfstedRating!,
-                projectFormAMat.isDueToIssues!,
+                projectFormAMat.isDueTo2Ri,
+                projectFormAMat.isDueToInedaquateOfstedRating,
+                projectFormAMat.isDueToIssues,
             )
             .hasAdvisoryBoardDetails(projectFormAMat.advisoryBoardDate, projectFormAMat.advisoryBoardConditions)
             .hasAcademyDetails(
