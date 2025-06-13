@@ -35,7 +35,7 @@ namespace Dfe.Complete.Pages.Projects.List.ProjectsByMonth
 
             Pagination = new PaginationModel($"/projects/all/by-month/conversions/{Month}/{Year}", PageNumber, response.ItemCount, PageSize);
 
-            var hasPageFound = HasPageFound(Pagination.IsOutOfRangePage);
+            var hasPageFound = HasPageFound(Pagination.IsOutOfRangePage, Pagination.TotalPages);
             return hasPageFound ?? Page();
         }
 

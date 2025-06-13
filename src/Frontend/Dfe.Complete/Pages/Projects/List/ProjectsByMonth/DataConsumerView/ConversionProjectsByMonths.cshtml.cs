@@ -42,7 +42,7 @@ namespace Dfe.Complete.Pages.Projects.List.ProjectsByMonth
                 response.ItemCount, 
                 PageSize);
 
-            var hasPageFound = HasPageFound(Pagination.IsOutOfRangePage);
+            var hasPageFound = HasPageFound(Pagination.IsOutOfRangePage, Pagination.TotalPages);
             return hasPageFound ?? Page();
         }
 

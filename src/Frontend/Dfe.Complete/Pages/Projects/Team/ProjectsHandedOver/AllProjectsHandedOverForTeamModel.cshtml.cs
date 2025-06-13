@@ -43,7 +43,7 @@ public class AllProjectsHandedOverForTeamModel(ISender sender) : YourTeamProject
 
         Pagination = new PaginationModel(RouteConstants.TeamProjectsHandedOver, PageNumber, recordCount, PageSize);
 
-        var hasPageFound = HasPageFound(Pagination.IsOutOfRangePage);
+        var hasPageFound = HasPageFound(Pagination.IsOutOfRangePage, Pagination.TotalPages);
         return hasPageFound ?? Page();
     }
 

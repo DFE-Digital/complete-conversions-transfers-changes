@@ -23,7 +23,7 @@ public class AllLocalAuthorities(ISender sender) : AllProjectsModel(ByLocalAutho
         Pagination = new PaginationModel("/projects/all/local-authorities", PageNumber, listResponse.ItemCount,
             PageSize);
 
-        var hasPageFound = HasPageFound(Pagination.IsOutOfRangePage);
+        var hasPageFound = HasPageFound(Pagination.IsOutOfRangePage, Pagination.TotalPages);
         return hasPageFound ?? Page();
     }
 }

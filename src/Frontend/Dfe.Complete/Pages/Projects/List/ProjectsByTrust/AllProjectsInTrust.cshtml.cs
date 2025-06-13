@@ -31,7 +31,7 @@ namespace Dfe.Complete.Pages.Projects.List.AllProjectsInTrust
 
             Pagination = new PaginationModel($"/projects/all/trusts/{path}/{identifier}", PageNumber, trustResponse.ItemCount, PageSize);
 
-            var hasPageFound = HasPageFound(Pagination.IsOutOfRangePage);
+            var hasPageFound = HasPageFound(Pagination.IsOutOfRangePage, Pagination.TotalPages);
             return hasPageFound ?? Page();
         }
 
