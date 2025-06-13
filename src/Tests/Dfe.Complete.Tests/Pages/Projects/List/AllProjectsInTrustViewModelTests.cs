@@ -13,10 +13,10 @@ public class AllProjectsInTrustViewModelTests
     public void GetTrustProjectsUrl_ShouldReturnCorrectMatUrl_When_IdentifierIsTrustReference(IFixture fixture)
     {
         var trust = fixture.Build<ListTrustsWithProjectsResultModel>()
-            .With(x => x.identifier, "TR00001")
+            .With(x => x.Identifier, "TR00001")
             .Create();
 
-        string expectedUrl = string.Format(RouteConstants.TrustMATProjects, trust.identifier);
+        string expectedUrl = "/projects/all/trusts/reference/TR00001";
 
         // Act
         var result = AllProjectsInTrustViewModel.GetTrustProjectsUrl(trust);
@@ -24,16 +24,16 @@ public class AllProjectsInTrustViewModelTests
         // Assert
         Assert.Equal(expectedUrl, result);
     }
-    
+
     [Theory]
     [CustomAutoData(typeof(ListAllProjectResultModelCustomization))]
     public void GetTrustProjectsUrl_ShouldReturnCorrectUrl_When_IdentifierIsNotTrustReference(IFixture fixture)
     {
         var trust = fixture.Build<ListTrustsWithProjectsResultModel>()
-            .With(x => x.identifier, "10035415")
+            .With(x => x.Identifier, "10035415")
             .Create();
 
-        string expectedUrl = string.Format(RouteConstants.TrustProjects, trust.identifier);
+        string expectedUrl = "/projects/all/trusts/ukprn/10035415";
 
         // Act
         var result = AllProjectsInTrustViewModel.GetTrustProjectsUrl(trust);

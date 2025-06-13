@@ -3,7 +3,9 @@ using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Domain.Events;
 using Dfe.Complete.Domain.ValueObjects;
 using Dfe.Complete.Utils;
+using System.Runtime.CompilerServices;
 
+[assembly: InternalsVisibleTo("Dfe.Complete.Application.Tests")]
 namespace Dfe.Complete.Domain.Entities;
 
 public class Project : BaseAggregateRoot, IEntity<ProjectId>
@@ -81,11 +83,13 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
     public ContactId? LocalAuthorityMainContactId { get; set; }
 
     public ProjectGroupId? GroupId { get; set; }
-    
+
     public LocalAuthorityId LocalAuthorityId { get; set; }
-    
+
     public bool FormAMat => NewTrustReferenceNumber != null && NewTrustName != null;
-    
+
+    public GiasEstablishment? GiasEstablishment { get; internal set; }
+
     public virtual User? AssignedTo { get; set; }
 
     public virtual User? Caseworker { get; set; }
@@ -94,15 +98,21 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
 
     public virtual ICollection<Note> Notes { get; set; } = new List<Note>();
 
-    public virtual User RegionalDeliveryOfficer { get; set; }
-    
-    public virtual LocalAuthority LocalAuthority { get; set; }   
-    
+    public virtual User? RegionalDeliveryOfficer { get; set; }
+
+    public virtual LocalAuthority? LocalAuthority { get; set; }
+
     public virtual ICollection<SignificantDateHistory> SignificantDateHistories { get; set; } = new List<SignificantDateHistory>();
 
-   
-    private Project()
+
+    internal Project()
     {
+        Id = default!;
+        Urn = default!;
+        RegionalDeliveryOfficerId = default!;
+        RegionalDeliveryOfficer = default!;
+        LocalAuthorityId = default!;
+        LocalAuthority = default!;
     }
 
     public Project(ProjectId id,
@@ -224,8 +234,11 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
         {
             project.AddNote(new Note
             {
-                CreatedAt = project.CreatedAt, ProjectId = project.Id, Body = handoverComments,
-                TaskIdentifier = NoteTaskIdentifier.Handover.ToDescription(), UserId = regionalDeliveryOfficerId
+                CreatedAt = project.CreatedAt,
+                ProjectId = project.Id,
+                Body = handoverComments,
+                TaskIdentifier = NoteTaskIdentifier.Handover.ToDescription(),
+                UserId = regionalDeliveryOfficerId
             });
         }
 
@@ -289,15 +302,18 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
             assignedToId,
             assignedAt,
             null,
-            null, 
+            null,
             localAuthorityId);
 
         if (!string.IsNullOrEmpty(handoverComments))
         {
             project.AddNote(new Note
             {
-                CreatedAt = project.CreatedAt, ProjectId = project.Id, Body = handoverComments,
-                TaskIdentifier = NoteTaskIdentifier.Handover.ToDescription(), UserId = regionalDeliveryOfficerId
+                CreatedAt = project.CreatedAt,
+                ProjectId = project.Id,
+                Body = handoverComments,
+                TaskIdentifier = NoteTaskIdentifier.Handover.ToDescription(),
+                UserId = regionalDeliveryOfficerId
             });
         }
 
@@ -329,76 +345,79 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
         string newTrustName,
         string newTrustReferenceNumber,
         bool hasDirectiveAcademyOrderBeenIssue,
-        string? handoverComments, 
+        string? handoverComments,
         Guid localAuthorityId)
     {
         var project = new Project(id, urn, createdAt, updatedAt, taskType, projectType, tasksDataId, significantDate,
             isSignificantDateProvisional, null, null, region, isDueTo2Ri, hasDirectiveAcademyOrderBeenIssue,
             advisoryBoardDate, advisoryBoardConditions, establishmentSharepointLink, incomingTrustSharepointLink, null,
             null, team, regionalDeliveryOfficerId, assignedToId, assignedAt, newTrustName, newTrustReferenceNumber, localAuthorityId);
-        
+
         if (!string.IsNullOrEmpty(handoverComments))
         {
             project.AddNote(new Note
             {
-                CreatedAt = project.CreatedAt, ProjectId = project.Id, Body = handoverComments,
-                TaskIdentifier = NoteTaskIdentifier.Handover.ToDescription(), UserId = regionalDeliveryOfficerId
+                CreatedAt = project.CreatedAt,
+                ProjectId = project.Id,
+                Body = handoverComments,
+                TaskIdentifier = NoteTaskIdentifier.Handover.ToDescription(),
+                UserId = regionalDeliveryOfficerId
             });
         }
-        
+
         project.AddDomainEvent(new ProjectCreatedEvent(project));
 
         return project;
     }
 
-        public static Project CreateMatTransferProject(
-        ProjectId Id,
-        Urn urn,
-        DateTime createdAt,
-        DateTime updatedAt,
-        Ukprn outgoingTrustUkprn,
-        TaskType taskType,
-        ProjectType projectType,
-        Guid tasksDataId,
-        Region? region,
-        ProjectTeam team,
-        UserId regionalDeliveryOfficerId,
-        UserId? assignedToId,
-        DateTime? assignedAt,
-        string establishmentSharepointLink,
-        string incomingTrustSharepointLink,
-        string outgoingTrustSharepointLink,
-        DateOnly advisoryBoardDate,
-        string advisoryBoardConditions,
-        DateOnly significantDate,
-        bool isSignificantDateProvisional,
-        bool isDueTo2Ri,
-        string newTrustName,
-        string newTrustReferenceNumber,
-        string? handoverComments, 
-        Guid localAuthorityId)
+    public static Project CreateMatTransferProject(
+    ProjectId Id,
+    Urn urn,
+    DateTime createdAt,
+    DateTime updatedAt,
+    Ukprn outgoingTrustUkprn,
+    TaskType taskType,
+    ProjectType projectType,
+    Guid tasksDataId,
+    Region? region,
+    ProjectTeam team,
+    UserId regionalDeliveryOfficerId,
+    UserId? assignedToId,
+    DateTime? assignedAt,
+    string establishmentSharepointLink,
+    string incomingTrustSharepointLink,
+    string outgoingTrustSharepointLink,
+    DateOnly advisoryBoardDate,
+    string advisoryBoardConditions,
+    DateOnly significantDate,
+    bool isSignificantDateProvisional,
+    bool isDueTo2Ri,
+    string newTrustName,
+    string newTrustReferenceNumber,
+    string? handoverComments,
+    Guid localAuthorityId)
+    {
+        var project = new Project(Id, urn, createdAt, updatedAt, taskType, projectType, tasksDataId, significantDate,
+            isSignificantDateProvisional, null, outgoingTrustUkprn, region, isDueTo2Ri, null,
+            advisoryBoardDate, advisoryBoardConditions, establishmentSharepointLink, incomingTrustSharepointLink, outgoingTrustSharepointLink,
+            null, team, regionalDeliveryOfficerId, assignedToId, assignedAt, newTrustName, newTrustReferenceNumber, localAuthorityId);
+
+        if (!string.IsNullOrEmpty(handoverComments))
         {
-            var project = new Project(Id, urn, createdAt, updatedAt, taskType, projectType, tasksDataId, significantDate,
-                isSignificantDateProvisional, null, outgoingTrustUkprn, region, isDueTo2Ri, null,
-                advisoryBoardDate, advisoryBoardConditions, establishmentSharepointLink, incomingTrustSharepointLink, outgoingTrustSharepointLink,
-                null, team, regionalDeliveryOfficerId, assignedToId, assignedAt, newTrustName, newTrustReferenceNumber, localAuthorityId);
-
-            if (!string.IsNullOrEmpty(handoverComments))
+            project.AddNote(new Note
             {
-                project.AddNote(new Note
-                {
-                    CreatedAt = project.CreatedAt,
-                    ProjectId = project.Id,
-                    Body = handoverComments,
-                    TaskIdentifier = NoteTaskIdentifier.Handover.ToDescription(),
-                    UserId = regionalDeliveryOfficerId
-                });
-            }
-
-            project.AddDomainEvent(new ProjectCreatedEvent(project));
-
-            return project;
+                CreatedAt = project.CreatedAt,
+                ProjectId = project.Id,
+                Body = handoverComments,
+                TaskIdentifier = NoteTaskIdentifier.Handover.ToDescription(),
+                UserId = regionalDeliveryOfficerId
+            });
         }
+
+        project.AddDomainEvent(new ProjectCreatedEvent(project));
+
+        return project;
+    }
 
     private void AddNote(Note? note)
     {
@@ -423,12 +442,12 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
     public void RemoveNote(NoteId id)
     {
         var note = Notes.FirstOrDefault(x => x.Id == id);
-        
+
         if (note is null) throw new NotFoundException($"No note found with Id {id.Value}");
 
         Notes.Remove(note);
     }
-    
+
     public void RemoveAllNotes()
     {
         // Create new id so we don't copy by reference as otherwise the list changes as we delete each note

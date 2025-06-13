@@ -7,9 +7,9 @@
 }
 @section PageHeading
 {
-<h1 class="govuk-heading-xl">
-    All projects by trust
-</h1>
+    <h1 class="govuk-heading-xl">
+        All projects by trust
+    </h1>
 }
 
 <div class="govuk-grid-column-full">
@@ -24,15 +24,15 @@
         </thead>
         <tbody class="govuk-table__body">
 
-            @foreach(var trust in Model.Trusts)
+            @foreach (var trust in Model.Trusts)
             {
-                    <tr class="govuk-table__row">
-                        <td class="govuk-table__header govuk-table__cell">
-                        <a class="govuk-link" href="@AllProjectsModel.GetTrustProjectsUrl(trust)">@trust.trustName</a>
+                <tr class="govuk-table__row">
+                    <td class="govuk-table__header govuk-table__cell">
+                        <a class="govuk-link" href="@AllProjectsModel.GetTrustProjectsUrl(trust)">@trust.TrustName</a>
                     </td>
-                    <td class="govuk-table__cell">@trust.referenceNumber</td>
-                    <td class="govuk-table__cell">@trust.conversionCount</td>
-                    <td class="govuk-table__cell">@trust.transfersCount</td>
+                    <td class="govuk-table__cell">@trust.GroupIdentifier</td>
+                    <td class="govuk-table__cell">@trust.ConversionCount</td>
+                    <td class="govuk-table__cell">@trust.TransfersCount</td>
                 </tr>
             }
         </tbody>
