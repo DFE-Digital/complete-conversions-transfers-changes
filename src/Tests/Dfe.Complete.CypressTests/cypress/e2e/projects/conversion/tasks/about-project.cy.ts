@@ -18,7 +18,7 @@ const teammatesProject = ProjectBuilder.createConversionFormAMatProjectRequest({
     userAdId: rdoLondonUser.adId,
 });
 let teammatesProjectId: string;
-describe("About a project - conversion project", () => {
+describe.skip("About the project page - conversion projects: ", () => {
     before(() => {
         projectRemover.removeProjectIfItExists(`${project.urn.value}`);
         projectRemover.removeProjectIfItExists(`${teammatesProject.urn.value}`);

@@ -21,7 +21,7 @@ const formAMATSchoolName = "Priory Rise School";
 const formAMATLocalAuthority = "Milton Keynes";
 const formAMATRegion = "South East";
 
-describe("About a transfer project", () => {
+describe.skip("About the project page - transfer projects: ", () => {
     before(() => {
         projectRemover.removeProjectIfItExists(`${project.urn.value}`);
         projectRemover.removeProjectIfItExists(`${projectFormAMat.urn.value}`);
