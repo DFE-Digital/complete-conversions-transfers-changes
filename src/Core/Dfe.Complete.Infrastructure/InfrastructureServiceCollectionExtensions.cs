@@ -1,4 +1,5 @@
 using Dfe.Complete.Application.Common.Interfaces;
+using Dfe.Complete.Application.Notes.Interfaces;
 using Dfe.Complete.Application.Projects.Interfaces;
 using Dfe.Complete.Application.Projects.Interfaces.CsvExport;
 using Dfe.Complete.Domain.Interfaces.Repositories;
@@ -35,6 +36,7 @@ namespace Dfe.Complete.Infrastructure
             services.AddScoped<IProjectsQueryBuilder, ProjectsQueryBuilder>();
             services.AddScoped<IConversionCsvQueryService, ConversionCsvQueryService>();
             services.AddScoped<IProjectReadRepository, ProjectReadRepository>();
+            services.AddScoped<INoteReadRepository, NoteReadRepository>();
 
             // Authentication
             //services.AddCustomAuthorization(config);
@@ -77,7 +79,8 @@ namespace Dfe.Complete.Infrastructure
             return services;
         }
 
-        public static void AddInfrastructureHealthChecks(this IServiceCollection services) {
+        public static void AddInfrastructureHealthChecks(this IServiceCollection services)
+        {
             services.AddHealthChecks()
                 .AddDbContextCheck<CompleteContext>("Complete Database");
         }

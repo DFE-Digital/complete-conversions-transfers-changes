@@ -86,7 +86,7 @@ namespace Dfe.Complete.Application.Projects.Models
 
         public  ICollection<Contact> Contacts { get; set; } = new List<Contact>();
 
-        public  ICollection<Note> Notes { get; set; } = new List<Note>();
+        public  ICollection<Note> Notes { get; set; } = [];
 
         public User RegionalDeliveryOfficer { get; set; } = default!;
         

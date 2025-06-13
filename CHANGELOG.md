@@ -24,6 +24,9 @@ Security in case of vulnerabilities.
 
 ### Added  
 - Internal contacts page and edit pages `/projects/{projectId}/internal-contacts`
+- Add notes repository
+- Add `GetNotesByProjectId` query and handler
+- Add project notes page (`/projects/{projectId}/notes`)
 
 ### Changed  
 

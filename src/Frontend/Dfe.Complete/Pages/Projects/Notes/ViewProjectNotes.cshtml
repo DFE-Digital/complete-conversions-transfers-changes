@@ -8,35 +8,37 @@
     var addNoteLink = string.Format(RouteConstants.ProjectAddNote, Model.ProjectId);
 }
 
-<govuk-project-tabs project-id="@Model.Project.Id" project-type="" />
+<govuk-project-tabs project-id="@Model.ProjectId" project-type="" />
 
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
         <h2 class="govuk-heading-l">Notes</h2>
 
         <div class="govuk-!-margin-bottom-5">
-            <a data-module="govuk-button" draggable="false" role="button" class="govuk-button" href="@addNoteLink">Add note</a>
+            <a data-module="govuk-button" draggable="false" role="button" class="govuk-button" href="@addNoteLink">
+                Add note
+            </a>
         </div>
-        @* *@
-        @* @if (notesList.Count == 0) *@
-        @* { *@
-        @*     <div class="govuk-inset-text">There are not any notes for this project yet.</div> *@
-        @* } *@
-        @* *@
-        @* @foreach (var note in notesList) *@
-        @* { *@
-        @*     var editNoteLink = string.Format(RouteConstants.ProjectEditNote, Model.ProjectId, note.Id); *@
-        @* *@
-        @*     <div id="note-entry-@note.Id"> *@
-        @*         <span class="govuk-caption-m">@note.DateCreated.ToDateString()</span> *@
-        @*         <h3 class="govuk-heading-m">@note.CreatedBy</h3> *@
-        @*         <p class="govuk-body-m">@note.Text</p> *@
-        @*         <p class="govuk-body govuk-!-font-size-16"> *@
-        @*             <a class="govuk-link" href="@editNoteLink">Edit</a> *@
-        @*         </p> *@
-        @*         <hr class="govuk-section-break govuk-section-break--xl govuk-section-break--visible"> *@
-        @*     </div> *@
-        @* } *@
+
+        @if (Model.Notes.Count == 0)
+        {
+            <div class="govuk-inset-text">There are not any notes for this project yet.</div>
+        }
+
+        @foreach (var note in Model.Notes)
+        {
+            var editNoteLink = string.Format(RouteConstants.ProjectEditNote, Model.ProjectId, note.Id);
+
+            <div id="note-entry-@note.Id">
+                <span class="govuk-caption-m">@note.CreatedAt.ToDateString()</span>
+                <h3 class="govuk-heading-m">@note.UserFullName</h3>
+                <p class="govuk-body-m">@note.Body</p>
+                <p class="govuk-body govuk-!-font-size-16">
+                    <a class="govuk-link" href="@editNoteLink">Edit</a>
+                </p>
+                <hr class="govuk-section-break govuk-section-break--xl govuk-section-break--visible">
+            </div>
+        }
 
     </div>
 </div>

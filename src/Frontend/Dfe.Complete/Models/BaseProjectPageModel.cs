@@ -16,7 +16,7 @@ public abstract class BaseProjectPageModel(ISender sender) : PageModel
 {
     [BindProperty(SupportsGet = true, Name = "projectId")]
 
-    public string ProjectId { get; set; }
+    public string ProjectId { get; set; } = default!;
 
     public ProjectDto Project { get; set; }
     public EstablishmentDto Establishment { get; set; }
@@ -24,7 +24,7 @@ public abstract class BaseProjectPageModel(ISender sender) : PageModel
     public TrustDto? OutgoingTrust { get; set; }
     public ProjectTeam CurrentUserTeam { get; set; }
 
-    public virtual async Task<IActionResult> OnGet()
+    public virtual async Task<IActionResult> OnGetAsync()
     {
         await UpdateCurrentProject();
 
