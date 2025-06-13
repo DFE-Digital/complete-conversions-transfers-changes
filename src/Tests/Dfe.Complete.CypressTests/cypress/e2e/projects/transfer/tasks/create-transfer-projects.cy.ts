@@ -4,11 +4,10 @@ import newTransferPage from "cypress/pages/projects/new/newTransferPage";
 import selectProjectTypePage from "cypress/pages/projects/new/selectProjectTypePage";
 import validationComponent from "cypress/pages/validationComponent";
 import {
+    dimensionsTrust,
     groupReferenceNumber,
-    testTrustName,
-    testTrustReferenceNumber,
-    ukprn,
-    ukprn2,
+    macclesfieldTrust,
+    testTrust,
 } from "cypress/constants/stringTestConstants";
 import { checkAccessibilityAcrossPages } from "cypress/support/reusableTests";
 
@@ -35,8 +34,8 @@ describe("Create a new Transfer Project", () => {
 
         newTransferPage
             .withAcademyURN(urn)
-            .withOutgoingTrustUKPRN(`${ukprn}`)
-            .withIncomingTrustUKPRN(`${ukprn2}`)
+            .withOutgoingTrustUKPRN(`${macclesfieldTrust.ukprn}`)
+            .withIncomingTrustUKPRN(`${dimensionsTrust.ukprn}`)
             .withGroupReferenceNumber(groupReferenceNumber)
             .withAcademySharepointLink("https://educationgovuk.sharepoint.com")
             .withIncomingTrustSharePointLink("https://educationgovuk.sharepoint.com")
@@ -64,9 +63,9 @@ describe("Create a new Transfer Project", () => {
 
         newTransferPage
             .withAcademyURN(urnMAT)
-            .withOutgoingTrustUKPRN(`${ukprn}`)
-            .withTrustReferenceNumber(testTrustReferenceNumber)
-            .withTrustName(testTrustName)
+            .withOutgoingTrustUKPRN(`${macclesfieldTrust.ukprn}`)
+            .withTrustReferenceNumber(testTrust.referenceNumber)
+            .withTrustName(testTrust.name)
             .withAcademySharepointLink("https://educationgovuk.sharepoint.com")
             .withIncomingTrustSharePointLink("https://educationgovuk.sharepoint.com")
             .withOutgoingTrustSharepointLink("https://educationgovuk.sharepoint.com")

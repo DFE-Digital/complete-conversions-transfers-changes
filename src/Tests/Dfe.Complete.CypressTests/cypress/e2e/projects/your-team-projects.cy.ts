@@ -8,7 +8,7 @@ import { cypressUser, rdoLondonUser } from "cypress/constants/cypressConstants";
 import { projectTable } from "cypress/pages/projects/tables/projectTable";
 import yourTeamProjectsTable from "cypress/pages/projects/tables/yourTeamProjectsTable";
 import { currentMonthShort } from "cypress/constants/stringTestConstants";
-import projectDetailsPage from "cypress/pages/projects/projectDetailsPage";
+import projectDetailsPage from "cypress/pages/projects/projectDetails/projectDetailsPage";
 import { checkAccessibilityAcrossPages } from "cypress/support/reusableTests";
 
 const team = "London";
