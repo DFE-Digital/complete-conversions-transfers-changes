@@ -34,7 +34,7 @@ describe.skip("About the project page - transfer projects: ", () => {
         cy.acceptCookies();
     });
 
-    it.only("Should display the project details on the about project section for a transfer project", () => {
+    it("Should display the project details on the about project section for a transfer project", () => {
         Logger.log("Go to project");
         cy.visit(`projects/${projectId}/tasks`);
 
