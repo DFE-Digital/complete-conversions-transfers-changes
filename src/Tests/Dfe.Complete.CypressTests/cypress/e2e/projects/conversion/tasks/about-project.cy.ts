@@ -92,9 +92,7 @@ describe("About a project - conversion project", () => {
             .jumpToSection("Academy details")
             .pageHasMovedToSection("Academy details")
             .jumpToSection("Incoming trust details")
-            .pageHasMovedToSection("Incoming trust details")
-            .jumpToSection("Outgoing trust details")
-            .pageHasMovedToSection("Outgoing trust details");
+            .pageHasMovedToSection("Incoming trust details");
     });
 
     it("Should display 'Not assigned to project' banner when viewing a project that is not assigned to the user", () => {

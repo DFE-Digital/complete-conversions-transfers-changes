@@ -5,6 +5,7 @@ import { dimensionsTrust, macclesfieldTrust } from "cypress/constants/stringTest
 import aboutTheProjectPageTransfer from "cypress/pages/projects/projectDetails/aboutTheProjectPageTransfer";
 import projectRemover from "cypress/api/projectRemover";
 import projectApi from "cypress/api/projectApi";
+import aboutTheProjectPage from "cypress/pages/projects/projectDetails/aboutTheProjectPage";
 
 const project = ProjectBuilder.createTransferProjectRequest();
 let projectId: string;
@@ -153,5 +154,27 @@ describe("About a transfer project", () => {
                 projectFormAMat.outgoingTrustSharepointLink,
                 projectFormAMat.outGoingTrustWillClose,
             );
+    });
+
+    it("Should display page links that navigate to different sections of the about project page", () => {
+        Logger.log("Go to the about project section");
+        cy.visit(`projects/${projectId}/information`);
+
+        Logger.log("Check that the page links correctly navigate to the different sections");
+        aboutTheProjectPage
+            .jumpToSection("Project details")
+            .pageHasMovedToSection("Project details")
+            .jumpToSection("Project assignment")
+            .pageHasMovedToSection("Project assignment")
+            .jumpToSection("Reasons for transfer")
+            .pageHasMovedToSection("Reasons for transfer")
+            .jumpToSection("Advisory board details")
+            .pageHasMovedToSection("Advisory board details")
+            .jumpToSection("Academy details")
+            .pageHasMovedToSection("Academy details")
+            .jumpToSection("Incoming trust details")
+            .pageHasMovedToSection("Incoming trust details")
+            .jumpToSection("Outgoing trust details")
+            .pageHasMovedToSection("Outgoing trust details");
     });
 });
