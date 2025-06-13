@@ -24,8 +24,6 @@ using DfE.CoreLibs.Security.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using DfE.CoreLibs.Security.Antiforgery;
 using Dfe.Complete.Validators;
-using Microsoft.Extensions.Options;
-using Microsoft.AspNetCore.Antiforgery;
 
 namespace Dfe.Complete;
 
@@ -193,7 +191,7 @@ public class Startup
     }
     private void ConfigureCustomAntiforgeryEndpoints(IServiceCollection services)
     {
-        //services.Configure<CustomAwareAntiForgeryOptions>(opts =>
+        //services.Configure<CustomAntiForgeryOptions>(opts =>
         //{
         //    opts.ShouldSkipAntiforgery = httpContext =>
         //    {
@@ -201,14 +199,12 @@ public class Startup
         //        return path.StartsWithSegments("/Cookies") ||
         //                  (!_env.IsProduction() && (path.StartsWithSegments("/v1") || path.StartsWithSegments("/Errors") || path.StartsWithSegments("/Cookies")));
         //    };
-        //    opts.RequestHeaderKey = Configuration["RequestHeaderKey"];
-        //    opts.RequestHeaderValue = Configuration["RequestHeaderValue"];
         //});
     }
     private static void ConfigureCustomAntiforgery(IServiceCollection services)
     {
         services.AddCustomRequestCheckerProvider<HasHeaderKeyExistsInRequestValidator>();
-        services.AddCustomRequestCheckerProvider<CypressRequestChecker>();
+
 
         services.AddScoped(provider => provider.GetServices<ICustomRequestChecker>().ToList());
 
