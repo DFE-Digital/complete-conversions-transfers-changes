@@ -1,5 +1,4 @@
 ﻿using Dfe.Complete.Validators;
-using DfE.CoreLibs.Security.Enums;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 
@@ -40,7 +39,6 @@ namespace Dfe.Complete.Tests.Validators
             var result = checker.IsValidRequest(httpContext);
 
             // Assert  
-            Assert.Equal(OperatorType.And, checker.Operator);
             Assert.False(result);
         }
 
@@ -56,7 +54,6 @@ namespace Dfe.Complete.Tests.Validators
             var result = checker.IsValidRequest(httpContext);
 
             // Assert  
-            Assert.Equal(OperatorType.And, checker.Operator);
             Assert.False(result);
         }
 
@@ -71,8 +68,7 @@ namespace Dfe.Complete.Tests.Validators
             // Act  
             var result = checker.IsValidRequest(httpContext);
 
-            // Assert  
-            Assert.Equal(OperatorType.And, checker.Operator);
+            // Assert
             Assert.False(result);
         }
 
@@ -87,8 +83,7 @@ namespace Dfe.Complete.Tests.Validators
             // Act  
             var result = checker.IsValidRequest(httpContext);
 
-            // Assert  
-            Assert.Equal(OperatorType.And, checker.Operator);
+            // Assert
             Assert.True(result);
         }
     }

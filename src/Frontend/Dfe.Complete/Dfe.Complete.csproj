@@ -53,7 +53,7 @@
 	  <PackageReference Include="Azure.Extensions.AspNetCore.DataProtection.Keys" Version="1.4.0" />
 	  <PackageReference Include="Dfe.AcademiesApi.Client" Version="1.0.5" />
 	  <PackageReference Include="DfE.CoreLibs.Http" Version="1.0.8" />
-	  <PackageReference Include="DfE.CoreLibs.Security" Version="1.1.9-prerelease-25" />
+	  <PackageReference Include="DfE.CoreLibs.Security" Version="1.1.9-prerelease-30" />
 	  <PackageReference Include="DfE.CoreLibs.Utilities" Version="1.0.11" />
 	  <PackageReference Include="DocumentFormat.OpenXml" Version="2.20.0" />
 	  <PackageReference Include="ExcelDataReader" Version="3.6.0" />

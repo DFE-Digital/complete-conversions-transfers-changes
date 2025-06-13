@@ -20,10 +20,10 @@ using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using DfE.CoreLibs.Http.Middlewares.CorrelationId;
 using DfE.CoreLibs.Http.Interfaces;
 using Dfe.Complete.Logging.Middleware;
-using DfE.CoreLibs.Security.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using DfE.CoreLibs.Security.Antiforgery;
 using Dfe.Complete.Validators;
+using DfE.CoreLibs.Security.Enums;
 
 namespace Dfe.Complete;
 
@@ -57,7 +57,6 @@ public class Startup
 
     public void ConfigureServices(IServiceCollection services)
     {
-        ConfigureCustomAntiforgeryEndpoints(services);
         services.AddHttpClient();
         services.AddFeatureManagement();
         services.AddHealthChecks();
@@ -80,7 +79,17 @@ public class Startup
         ConfigureCustomAntiforgery(services);
 
         services.AddControllersWithViews()
-           .AddMicrosoftIdentityUI();
+           .AddMicrosoftIdentityUI()
+           .AddCustomAntiForgeryHandling(opts =>
+           {
+               opts.CheckerGroups =
+               [
+                   new() {
+                       TypeNames   = [nameof(HasHeaderKeyExistsInRequestValidator), nameof(CypressRequestChecker)],
+                       CheckerOperator = CheckerOperator.Or
+                   }
+               ];
+           });
         SetupDataProtection(services);
 
         services.AddCompleteClientProject(Configuration);
@@ -188,32 +197,11 @@ public class Startup
                    options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
                }
            });
-    }
-    private void ConfigureCustomAntiforgeryEndpoints(IServiceCollection services)
-    {
-        //services.Configure<CustomAntiForgeryOptions>(opts =>
-        //{
-        //    opts.ShouldSkipAntiforgery = httpContext =>
-        //    {
-        //        var path = httpContext.Request.Path;
-        //        return path.StartsWithSegments("/Cookies") ||
-        //                  (!_env.IsProduction() && (path.StartsWithSegments("/v1") || path.StartsWithSegments("/Errors") || path.StartsWithSegments("/Cookies")));
-        //    };
-        //});
-    }
+    } 
+
     private static void ConfigureCustomAntiforgery(IServiceCollection services)
     {
-        services.AddCustomRequestCheckerProvider<HasHeaderKeyExistsInRequestValidator>();
-
-
-        services.AddScoped(provider => provider.GetServices<ICustomRequestChecker>().ToList());
-
-        services.AddScoped<CustomAwareAntiForgeryFilter>();
-
-        services.PostConfigure<MvcOptions>(options =>
-        {
-            options.Filters.AddService<CustomAwareAntiForgeryFilter>();
-        });
+        services.AddCustomRequestCheckerProvider<HasHeaderKeyExistsInRequestValidator>(); 
     }
 
     private void RegisterClients(IServiceCollection services)
