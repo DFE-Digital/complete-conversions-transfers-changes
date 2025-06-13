@@ -29,7 +29,7 @@ public class YourProjectsInProgress(ISender sender) : YourProjectsModel(InProgre
 
         Pagination = new PaginationModel("/projects/yours/in-progress", PageNumber, result.ItemCount, PageSize);
 
-        var hasPageFound = HasPageFound(Pagination.IsOutOfRangePage);
+        var hasPageFound = HasPageFound(Pagination.IsOutOfRangePage, Pagination.TotalPages);
         return hasPageFound ?? Page();
     }
 

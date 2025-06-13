@@ -58,7 +58,7 @@ public class AllCompletedProjectsForTeamModel(ISender sender) : YourTeamProjects
 
         Pagination = new PaginationModel(RouteConstants.TeamProjectsCompleted, PageNumber, recordCount, PageSize);
 
-        var hasPageFound = HasPageFound(Pagination.IsOutOfRangePage);
+        var hasPageFound = HasPageFound(Pagination.IsOutOfRangePage, Pagination.TotalPages);
         return hasPageFound ?? Page();
     }
 

@@ -182,13 +182,34 @@ public partial class ProjectsControllerTests
         var results = await projectsClient.ListAllProjectsAsync(
             Complete.Client.Contracts.ProjectState.Completed, null, null, OrderProjectByField.CompletedAt, OrderByDirection.Descending, 0, 50);
 
+        var activeProjects = projects
+            .Where(project => project.State == ProjectState.Active)
+            .OrderByDescending(project => project.CompletedAt).ToList();
+
+        var daoRevokedProjects = projects
+           .Where(project => project.State == ProjectState.DaoRevoked)
+           .OrderByDescending(project => project.CompletedAt).ToList();
+
+        var inActiveProjects = projects
+            .Where(project => project.State == ProjectState.Inactive)
+            .OrderByDescending(project => project.CompletedAt).ToList();
+
+        var deletedProjects = projects
+            .Where(project => project.State == ProjectState.Deleted)
+            .OrderByDescending(project => project.CompletedAt).ToList();
+
         projects = projects
-            .Where(project => project.State == Domain.Enums.ProjectState.Completed)
+            .Where(project => project.State == ProjectState.Completed)
             .OrderByDescending(project => project.CompletedAt).ToList();
 
         // Assert
         Assert.NotNull(results);
-        Assert.Equal(17, results.Count);
+        Assert.Equal(10, results.Count);
+        Assert.Equal(10, projects.Count);
+        Assert.Equal(10, activeProjects.Count);
+        Assert.Equal(10, daoRevokedProjects.Count);
+        Assert.Equal(10, inActiveProjects.Count);
+        Assert.Equal(10, deletedProjects.Count);
         for (var i = 0; i < results.Count; i++)
         {
             var result = results[i];
@@ -334,7 +355,7 @@ public partial class ProjectsControllerTests
 
         // Act
         var results = await projectsClient.ListAllProjectsByRegionAsync(
-            Dfe.Complete.Client.Contracts.ProjectState.Completed, null);
+            Complete.Client.Contracts.ProjectState.Completed, null);
 
         // Assert
         Assert.NotNull(results);
@@ -344,9 +365,9 @@ public partial class ProjectsControllerTests
         Assert.Equal(2, results.Count);
         Assert.Equal(Complete.Client.Contracts.Region.NorthEast, results[0].Region);
         Assert.Equal(1, results[0].ConversionsCount);
-        Assert.Equal(2, results[0].TransfersCount);
+        Assert.Equal(1, results[0].TransfersCount);
         Assert.Equal(Complete.Client.Contracts.Region.SouthEast, results[1].Region);
-        Assert.Equal(4, results[1].ConversionsCount);
+        Assert.Equal(2, results[1].ConversionsCount);
         Assert.Equal(1, results[1].TransfersCount);
     }
 
@@ -819,16 +840,12 @@ public partial class ProjectsControllerTests
     }
 
     [AttributeUsage(AttributeTargets.Method, AllowMultiple = true)]
-    private class ListByUserInlineAutoDataAttribute : CompositeDataAttribute
-    {
-        public ListByUserInlineAutoDataAttribute(ProjectUserFilter filter)
-            : base(
-                new InlineDataAttribute(filter),
-                new CustomAutoDataAttribute(
+    private class ListByUserInlineAutoDataAttribute(ProjectUserFilter filter) : CompositeDataAttribute(
+            new InlineDataAttribute(filter),
+            new CustomAutoDataAttribute(
                     typeof(CustomWebApplicationDbContextFactoryCustomization),
                     typeof(GiasEstablishmentsCustomization)))
-        {
-        }
+    {
     }
 
     [Theory]
@@ -941,7 +958,7 @@ public partial class ProjectsControllerTests
 
         // Act & Assert
         var exception = await Assert.ThrowsAsync<CompleteApiException>(() =>
-            projectsClient.SearchProjectsAsync("  ", 0, 50));
+            projectsClient.SearchProjectsAsync("  ", [Complete.Client.Contracts.ProjectState.Active, Complete.Client.Contracts.ProjectState.Completed, Complete.Client.Contracts.ProjectState.DaoRevoked],0, 50));
 
         Assert.Contains("The SearchTerm field is required.", exception.Response);
     }
@@ -987,7 +1004,7 @@ public partial class ProjectsControllerTests
         var searchTerm = establishment.Name;
 
         // Act
-        var results = await projectsClient.SearchProjectsAsync(searchTerm, 0, 20, CancellationToken.None);
+        var results = await projectsClient.SearchProjectsAsync(searchTerm, [Complete.Client.Contracts.ProjectState.Active, Complete.Client.Contracts.ProjectState.Completed, Complete.Client.Contracts.ProjectState.DaoRevoked], 0, 20, CancellationToken.None);
 
         var expectedProjects = projects
             .Where(p => p.Urn == establishment.Urn)
@@ -1035,12 +1052,13 @@ public partial class ProjectsControllerTests
         await dbContext.Projects.AddRangeAsync(projects);
         await dbContext.SaveChangesAsync();
         var ukprn = projects.First().IncomingTrustUkprn;
+        var projectStatuses = new List<ProjectState> { ProjectState.Active, ProjectState.DaoRevoked, ProjectState.Completed };
 
         // Act
-        var results = await projectsClient.SearchProjectsAsync(ukprn!.ToString(), 0, 20, CancellationToken.None);
+        var results = await projectsClient.SearchProjectsAsync(ukprn!.ToString(), [Complete.Client.Contracts.ProjectState.Active, Complete.Client.Contracts.ProjectState.Completed, Complete.Client.Contracts.ProjectState.DaoRevoked], 0, 20, CancellationToken.None);
 
         var expectedProjects = projects
-            .Where(p => p.IncomingTrustUkprn == ukprn)
+            .Where(p => p.IncomingTrustUkprn == ukprn && projectStatuses.Contains(p.State))
             .ToList();
 
         // Assert
@@ -1097,7 +1115,7 @@ public partial class ProjectsControllerTests
         var establishment = establishments.First();
 
         // Act
-        var results = await projectsClient.SearchProjectsAsync(establishment.EstablishmentNumber!, 0, 20, CancellationToken.None);
+        var results = await projectsClient.SearchProjectsAsync(establishment.EstablishmentNumber!, [Complete.Client.Contracts.ProjectState.Active, Complete.Client.Contracts.ProjectState.Completed, Complete.Client.Contracts.ProjectState.DaoRevoked], 0, 20, CancellationToken.None);
 
         var expectedProjects = projects
             .Where(p => p.Urn == establishment.Urn && p.State == Domain.Enums.ProjectState.Active)
@@ -1164,7 +1182,7 @@ public partial class ProjectsControllerTests
         var urn = projects.First(p => p.State == Domain.Enums.ProjectState.Active).Urn;
 
         // Act
-        var results = await projectsClient.SearchProjectsAsync(urn!.Value.ToString(), 0, 20, CancellationToken.None);
+        var results = await projectsClient.SearchProjectsAsync(urn!.Value.ToString(), [Complete.Client.Contracts.ProjectState.Active, Complete.Client.Contracts.ProjectState.Completed, Complete.Client.Contracts.ProjectState.DaoRevoked], 0, 20, CancellationToken.None);
 
         var expectedProjects = projects
             .Where(p => p.Urn == urn)

@@ -31,7 +31,7 @@ public class AllCompletedProjectsViewModel(ISender sender) : AllProjectsModel(Co
 
         Pagination = new PaginationModel(RouteConstants.CompletedProjects, PageNumber, countResponse.Value, PageSize);
 
-        var hasPageFound = HasPageFound(Pagination.IsOutOfRangePage);
+        var hasPageFound = HasPageFound(Pagination.IsOutOfRangePage, Pagination.TotalPages);
         return hasPageFound ?? Page();
     }
 

@@ -23,6 +23,6 @@ public abstract class BaseProjectsPageModel(string currentNavigation) : PageMode
     public static string GetProjectSummaryUrl(ProjectId projectId) =>
         string.Format(RouteConstants.ProjectTaskList, projectId.Value);
 
-    protected IActionResult HasPageFound(bool condition) =>
-        condition ? StatusCode(404) : null!;
+    protected IActionResult HasPageFound(bool condition, int totalPages) =>
+        condition && totalPages > 0 ? StatusCode(404) : null!;
 }
