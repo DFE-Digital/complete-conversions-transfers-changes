@@ -26,7 +26,7 @@ namespace Dfe.Complete.Pages.Projects.List.ProjectsInProgress
             
             Pagination = new PaginationModel("/projects/all/in-progress/form-a-multi-academy-trust", PageNumber, response.ItemCount, PageSize);
 
-            var hasPageFound = HasPageFound(Pagination.IsOutOfRangePage);
+            var hasPageFound = HasPageFound(Pagination.IsOutOfRangePage, Pagination.TotalPages);
             return hasPageFound ?? Page();
         }
 
