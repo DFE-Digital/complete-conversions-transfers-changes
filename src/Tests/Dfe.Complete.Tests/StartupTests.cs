@@ -1,9 +1,18 @@
+using System;
 using System.Reflection;
+using Dfe.Complete.Validators;
+using DfE.CoreLibs.Security.Antiforgery;
+using DfE.CoreLibs.Security.Cypress;
+using DfE.CoreLibs.Security.Enums;
+using DfE.CoreLibs.Security.Interfaces;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
+using Microsoft.Extensions.Options;
+using Moq;
 
 namespace Dfe.Complete.Tests;
 
@@ -54,6 +63,53 @@ public sealed class StartupDataProtectionTests : IDisposable
         Assert.NotNull(provider);
     }
 
+    [Fact]
+    public void SetupDataProtection_ValidateConfigureCustomAntiforgery()
+    {
+        // Arrange
+        IConfiguration cfg = BuildConfiguration(_tempDpTargetPath, keyVaultKey: string.Empty);
+        var env = BuildEnvironment();
+        var startup = new Startup(cfg, env);
+        var services = new ServiceCollection();
+        // Register the checkers
+        services.AddCustomRequestCheckerProvider<CypressRequestChecker>();
+        services.AddCustomRequestCheckerProvider<HasHeaderKeyExistsInRequestValidator>(); 
+        var httpContextAccessor = new Mock<IHttpContextAccessor>();
+        httpContextAccessor.Setup(x => x.HttpContext).Returns((HttpContext?)null);
+
+        services.AddSingleton(httpContextAccessor.Object);
+        services.AddScoped(sp => sp.GetRequiredService<IHttpContextAccessor>()?.HttpContext?.Session ?? throw new InvalidOperationException("Session is not available."));
+
+        // Register the antiforgery options with the expected CheckerGroups
+        services.Configure<CustomAwareAntiForgeryOptions>(opts =>
+        {
+            opts.CheckerGroups = [
+                new()
+                {
+                    TypeNames = [nameof(HasHeaderKeyExistsInRequestValidator), nameof(CypressRequestChecker)],
+                    CheckerOperator = CheckerOperator.Or
+                }
+            ];
+        });
+
+        // Act
+        InvokeSetupDataProtection(startup, services);
+        var sp = services.BuildServiceProvider();
+
+        // Assert 
+        var configuredOptions = sp.GetRequiredService<IOptions<CustomAwareAntiForgeryOptions>>().Value;
+        Assert.NotNull(configuredOptions.CheckerGroups);
+
+        Assert.Contains(services, d => d.ServiceType == typeof(ICustomRequestChecker) && d.ImplementationType == typeof(CypressRequestChecker));
+        Assert.Contains(services, d => d.ServiceType == typeof(ICustomRequestChecker) && d.ImplementationType == typeof(HasHeaderKeyExistsInRequestValidator));
+
+        Assert.Single(configuredOptions.CheckerGroups);
+        Assert.Equal(2, configuredOptions.CheckerGroups.First().TypeNames.Length);
+        Assert.Equal(nameof(HasHeaderKeyExistsInRequestValidator), configuredOptions.CheckerGroups[0].TypeNames[0]);
+        Assert.Equal(nameof(CypressRequestChecker), configuredOptions.CheckerGroups[0].TypeNames[1]);
+        Assert.Equal(CheckerOperator.Or, configuredOptions.CheckerGroups[0].CheckerOperator);
+    }
+
     private static IConfiguration BuildConfiguration(string dpTargetPath, string? keyVaultKey)
     {
         var dict = new Dictionary<string, string?>
@@ -65,7 +121,7 @@ public sealed class StartupDataProtectionTests : IDisposable
     }
 
     private static FakeWebHostEnvironment BuildEnvironment() =>
-        new FakeWebHostEnvironment
+        new()
         {
             EnvironmentName = "Test",
             ApplicationName = "UnitTestApp",
@@ -81,7 +137,7 @@ public sealed class StartupDataProtectionTests : IDisposable
                             "SetupDataProtection",
                             BindingFlags.Instance | BindingFlags.NonPublic);
         Assert.NotNull(mi);
-        mi.Invoke(startup, new object?[] { services });
+        mi.Invoke(startup, [services]);
     }
 
     private sealed class FakeWebHostEnvironment : IWebHostEnvironment
