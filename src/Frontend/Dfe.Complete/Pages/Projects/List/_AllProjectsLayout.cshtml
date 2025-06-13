@@ -26,57 +26,61 @@
             <div class="moj-primary-navigation__nav">
                 <nav class="moj-primary-navigation" aria-label="Primary navigation">
                     <ul class="moj-primary-navigation__list">
-                        <li class="moj-primary-navigation__item" asp-policy="@UserPolicyConstants.CanViewAllProjectsHandover">
+                        <li class="moj-primary-navigation__item"
+                            asp-policy="@UserPolicyConstants.CanViewAllProjectsHandover">
                             <a class="moj-primary-navigation__link"
-                               aria-current="@IsCurrentNav(AllProjectsModel.HandoverNavigation)"
-                               href="/projects/all/handover">Handover</a>
+                                aria-current="@IsCurrentNav(AllProjectsModel.HandoverNavigation)"
+                                href="@RouteConstants.ProjectsHandover">Handover</a>
                         </li>
                         <li class="moj-primary-navigation__item">
                             <a class="moj-primary-navigation__link"
-                               aria-current="@IsCurrentNav(AllProjectsModel.InProgressNavigation)"
-                               href="/projects/all/in-progress/all">In progress</a>
+                                aria-current="@IsCurrentNav(AllProjectsModel.InProgressNavigation)"
+                                href="@RouteConstants.ProjectsInProgress">In progress</a>
                         </li>
                         <li class="moj-primary-navigation__item">
                             <a class="moj-primary-navigation__link"
-                               aria-current="@IsCurrentNav(AllProjectsModel.ByMonthNavigation)"
-                               href="@ProjectsByMonthModel.GetProjectByMonthsUrl(ProjectType.Conversion, user, month, year, month, year)">
+                                aria-current="@IsCurrentNav(AllProjectsModel.ByMonthNavigation)"
+                                href="@ProjectsByMonthModel.GetProjectByMonthsUrl(ProjectType.Conversion, user, month, year, month, year)">
                                 By month
                             </a>
                         </li>
                         <li class="moj-primary-navigation__item">
                             <a class="moj-primary-navigation__link"
-                               aria-current="@IsCurrentNav(AllProjectsModel.ByRegionNavigation)"
-                               href="/projects/all/regions">By region</a>
+                                aria-current="@IsCurrentNav(AllProjectsModel.ByRegionNavigation)"
+                                href="@RouteConstants.ProjectsByRegion">By region</a>
                         </li>
                         <li class="moj-primary-navigation__item">
                             <a class="moj-primary-navigation__link"
-                               aria-current="@IsCurrentNav(AllProjectsModel.ByUserNavigation)"
-                               href="/projects/all/users">By user</a>
+                                aria-current="@IsCurrentNav(AllProjectsModel.ByUserNavigation)"
+                                href="@RouteConstants.ProjectsByUser">By user</a>
                         </li>
                         <li class="moj-primary-navigation__item">
                             <a class="moj-primary-navigation__link"
-                               aria-current="@IsCurrentNav(AllProjectsModel.ByTrustNavigation)"
-                               href="/projects/all/trusts">By trust</a>
+                                aria-current="@IsCurrentNav(AllProjectsModel.ByTrustNavigation)"
+                                href="@RouteConstants.ProjectsByTrust">By trust</a>
                         </li>
                         <li class="moj-primary-navigation__item">
                             <a class="moj-primary-navigation__link"
-                               aria-current="@IsCurrentNav(AllProjectsModel.ByLocalAuthorityNavigation)"
-                               href="/projects/all/local-authorities">By local authority</a>
+                                aria-current="@IsCurrentNav(AllProjectsModel.ByLocalAuthorityNavigation)"
+                                href="@RouteConstants.ProjectsByLocalAuthority">By local authority</a>
                         </li>
                         <li class="moj-primary-navigation__item">
                             <a class="moj-primary-navigation__link"
-                               aria-current="@IsCurrentNav(AllProjectsModel.CompletedNavigation)"
-                               href="@RouteConstants.CompletedProjects">Completed</a>
+                                aria-current="@IsCurrentNav(AllProjectsModel.CompletedNavigation)"
+                                href="@RouteConstants.CompletedProjects">Completed</a>
                         </li>
                         <li class="moj-primary-navigation__item">
                             <a class="moj-primary-navigation__link"
-                               aria-current="@IsCurrentNav(AllProjectsModel.StatisticsNavigation)"
-                               href="/projects/all/statistics">Statistics</a>
+                                aria-current="@IsCurrentNav(AllProjectsModel.StatisticsNavigation)"
+                                href="@RouteConstants.Statistics">Statistics</a>
                         </li>
-                        <li class="moj-primary-navigation__item" asp-policy="@UserPolicyConstants.CanViewAllProjectsExports">
+                        <li class="moj-primary-navigation__item"
+                            asp-policy="@UserPolicyConstants.CanViewAllProjectsExports">
                             <a class="moj-primary-navigation__link"
-                               aria-current="@IsCurrentNav(AllProjectsModel.ExportsNavigation)"
-                               href="/projects/all/statistics">Exports</a>
+                                aria-current="@IsCurrentNav(AllProjectsModel.ReportsNavigation)"
+                                @* This tab needs to say "Exports" until we are redirecting users to the reports tab *@
+                                @* At that point, ruby should update to say "Reports" instead - but I think we just have "Exports" until ruby is dropped *@
+                                href="@RouteConstants.Reports">Exports</a>
                         </li>
                     </ul>
                 </nav>

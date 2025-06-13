@@ -22,6 +22,7 @@ using DfE.CoreLibs.Http.Interfaces;
 using Dfe.Complete.Logging.Middleware;
 using DfE.CoreLibs.Security.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using Dfe.Complete.Domain.Constants;
 
 namespace Dfe.Complete;
 
@@ -122,6 +123,8 @@ public class Startup
 
         // AutoMapper
         services.AddAutoMapper(typeof(AutoMapping));
+
+        services.Configure<ExternalLinksOptions>(Configuration.GetSection(ExternalLinksOptions.Section));
     }
 
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

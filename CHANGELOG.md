@@ -23,6 +23,8 @@ Security in case of vulnerabilities.
 ## Unreleased  
 
 ### Added  
+ - New route `/projects/all/reports`
+ - Add reports landing page under All projects > Reports (`/projects/all/reports`)
 
 ### Changed  
 
