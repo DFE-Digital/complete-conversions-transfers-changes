@@ -71,27 +71,6 @@ public sealed class StartupDataProtectionTests : IDisposable
         var env = BuildEnvironment();
         var startup = new Startup(cfg, env);
         var services = new ServiceCollection();
-        // Register the checkers
-        //services.AddCustomRequestCheckerProvider<CypressRequestChecker>();
-        //services.AddCustomRequestCheckerProvider<HasHeaderKeyExistsInRequestValidator>(); 
-        //var httpContextAccessor = new Mock<IHttpContextAccessor>();
-        //httpContextAccessor.Setup(x => x.HttpContext).Returns((HttpContext?)null);
-
-        //services.AddSingleton(httpContextAccessor.Object);
-        //services.AddScoped(sp => sp.GetRequiredService<IHttpContextAccessor>()?.HttpContext?.Session ?? throw new InvalidOperationException("Session is not available."));
-
-        //// Register the antiforgery options with the expected CheckerGroups
-        //services.AddControllersWithViews().AddCustomAntiForgeryHandling(opts =>
-        //{
-        //    opts.CheckerGroups =
-        //    [
-        //        new()
-        //    {
-        //        TypeNames = [nameof(HasHeaderKeyExistsInRequestValidator), nameof(CypressRequestChecker)],
-        //        CheckerOperator = CheckerOperator.Or
-        //    }
-        //    ];
-        //}); 
 
         // Act
         InvokeSetupDataProtection(startup, services);
