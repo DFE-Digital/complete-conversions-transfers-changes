@@ -3,7 +3,7 @@ import newConversionPage from "cypress/pages/projects/new/newConversionPage";
 import homePage from "cypress/pages/homePage";
 import selectProjectType from "cypress/pages/projects/new/selectProjectTypePage";
 import validationComponent from "cypress/pages/validationComponent";
-import { testTrustName, testTrustReferenceNumber, ukprn } from "cypress/constants/stringTestConstants";
+import { macclesfieldTrust, testTrust } from "cypress/constants/stringTestConstants";
 import { checkAccessibilityAcrossPages } from "cypress/support/reusableTests";
 
 const urn: string = "111394";
@@ -28,7 +28,7 @@ describe("Create a new Conversion Project", () => {
 
         newConversionPage
             .withSchoolURN(urn)
-            .withIncomingTrustUKPRN(`${ukprn}`)
+            .withIncomingTrustUKPRN(`${macclesfieldTrust.ukprn}`)
             .withAdvisoryBoardDate("10", "12", "2024")
             .withProvisionalConversionDate("11", "2026")
             .withSchoolSharepointLink("https://educationgovuk-my.sharepoint.com/")
@@ -51,8 +51,8 @@ describe("Create a new Conversion Project", () => {
 
         newConversionPage
             .withSchoolURN(urnMAT)
-            .withTrustReferenceNumber(testTrustReferenceNumber)
-            .withTrustName(testTrustName)
+            .withTrustReferenceNumber(testTrust.referenceNumber)
+            .withTrustName(testTrust.name)
             .withAdvisoryBoardDate("12", "12", "2024")
             .withAdvisoryBoardConditions("Test conditions")
             .withProvisionalConversionDate("11", "2026")

@@ -4,8 +4,9 @@ import {
     shouldNotBeAbleToBeAssignedAProject,
     shouldNotBeAbleToCreateAProject,
     shouldNotHaveAccessToViewAndEditUsers,
-    shouldNotHaveAccessToViewHandedOverProjects, shouldNotHaveAccessToViewYourProjectsSections,
-    shouldNotHaveAccessToViewYourTeamProjectsSections
+    shouldNotHaveAccessToViewHandedOverProjects,
+    shouldNotHaveAccessToViewYourProjectsSections,
+    shouldNotHaveAccessToViewYourTeamProjectsSections,
 } from "cypress/support/reusableTests";
 import { businessSupportUser } from "cypress/constants/cypressConstants";
 import navBar from "cypress/pages/navBar";
@@ -15,7 +16,7 @@ import projectApi from "cypress/api/projectApi";
 import allProjects from "cypress/pages/projects/allProjects";
 import projectsByMonthPage from "cypress/pages/projects/projectsByMonthPage";
 import { projectTable } from "cypress/pages/projects/tables/projectTable";
-import { currentMonthLong, currentMonthShort, trust } from "cypress/constants/stringTestConstants";
+import { currentMonthLong, currentMonthShort, macclesfieldTrust } from "cypress/constants/stringTestConstants";
 import projectDetailsPage from "cypress/pages/projects/projectDetails/projectDetailsPage";
 
 const date = new Date("2027-04-01");
@@ -87,7 +88,7 @@ describe("Capabilities and permissions of the business support user", () => {
             .withSchool(`${schoolName} ${project.urn.value}`)
             .columnHasValue("Region", "West Midlands")
             .columnHasValue("Local authority", "Dudley")
-            .columnHasValue("Incoming trust", trust.toUpperCase()) // bug 208086
+            .columnHasValue("Incoming trust", macclesfieldTrust.name.toUpperCase()) // bug 208086
             .columnHasValue("All conditions met", "Not yet")
             .columnHasValue("Confirmed date (Original date)", "Apr 2027")
             .goTo(`${schoolName} ${project.urn.value}`);

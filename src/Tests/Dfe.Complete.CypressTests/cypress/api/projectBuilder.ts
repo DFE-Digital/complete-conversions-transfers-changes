@@ -4,13 +4,7 @@ import {
     CreateMatTransferProjectRequest,
     CreateTransferProjectRequest,
 } from "./apiDomain";
-import {
-    dimensionsTrust,
-    groupReferenceNumber,
-    macclesfieldTrust,
-    ukprn,
-    ukprn2,
-} from "cypress/constants/stringTestConstants";
+import { dimensionsTrust, groupReferenceNumber, macclesfieldTrust } from "cypress/constants/stringTestConstants";
 import { cypressUser } from "cypress/constants/cypressConstants";
 
 export class ProjectBuilder {
@@ -30,7 +24,7 @@ export class ProjectBuilder {
             significantDate: significantDateFormatted,
             isSignificantDateProvisional: false,
             incomingTrustUkprn: {
-                value: ukprn,
+                value: macclesfieldTrust.ukprn,
             },
             isDueTo2Ri: false,
             hasAcademyOrderBeenIssued: false,
@@ -50,8 +44,8 @@ export class ProjectBuilder {
     ): CreateTransferProjectRequest {
         return {
             urn: { value: 105601 },
-            outgoingTrustUkprn: { value: ukprn },
-            incomingTrustUkprn: { value: ukprn2 },
+            outgoingTrustUkprn: { value: macclesfieldTrust.ukprn },
+            incomingTrustUkprn: { value: dimensionsTrust.ukprn },
             significantDate: "2026-03-01",
             isSignificantDateProvisional: false,
             isDueTo2Ri: false,
