@@ -229,5 +229,20 @@ namespace Dfe.Complete.Domain.Interfaces.Repositories
         /// <param name="entity">The entity to update.</param>
         /// <param name="cancellationToken"></param>
         Task<TAggregate> UpdateAsync(TAggregate entity, CancellationToken cancellationToken = default(CancellationToken));
+
+        /// <summary>
+        /// Checks if an entity exists in the database based on a given predicate.
+        /// </summary>
+        /// <param name="predicate">A function to test an entity for a condition.</param>
+        /// <returns>True if the entity exists, otherwise false.</returns>
+        bool Exists(Expression<Func<TAggregate, bool>> predicate);
+
+        /// <summary>
+        /// Asynchronously checks if an entity exists in the database based on a given predicate.
+        /// </summary>
+        /// <param name="predicate">A function to test an entity for a condition.</param>
+        /// <param name="cancellationToken">A cancellation token.</param>
+        /// <returns>True if the entity exists, otherwise false.</returns>
+        Task<bool> ExistsAsync(Expression<Func<TAggregate, bool>> predicate, CancellationToken cancellationToken = default);
     }
 }
