@@ -1,11 +1,11 @@
-﻿using System.ComponentModel.DataAnnotations;
-using Dfe.Complete.Application.Projects.Commands.UpdateProject;
+﻿using Dfe.Complete.Application.Projects.Commands.UpdateProject;
 using Dfe.Complete.Application.Projects.Models;
 using Dfe.Complete.Application.Users.Queries.GetUser;
 using Dfe.Complete.Constants;
 using Dfe.Complete.Extensions;
 using Dfe.Complete.Models;
 using Dfe.Complete.Services;
+using Dfe.Complete.Validators;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -16,7 +16,7 @@ public class EditAssignedUser(ISender sender, ErrorService errorService, ILogger
     private readonly ISender _sender = sender;
 
     [BindProperty]
-    [EmailAddress]
+    [InternalEmail]
     public string Email { get; set; } = default!;
 
     public UserDto AssignedUser { get; set; } = default!;
@@ -56,7 +56,7 @@ public class EditAssignedUser(ISender sender, ErrorService errorService, ILogger
         if (assignedResult is { IsSuccess: true, Value: not null  })
         {
             var updateRequest = new UpdateAssignedUserCommand(Project.Urn, assignedResult.Value.Id);
-            await sender.Send(updateRequest);
+            await _sender.Send(updateRequest);
             TempData.SetNotification(NotificationType.Success, "Success", "Project has been updated successfully");
             return Redirect(FormatRouteWithProjectId(RouteConstants.ProjectInternalContacts));
         }
