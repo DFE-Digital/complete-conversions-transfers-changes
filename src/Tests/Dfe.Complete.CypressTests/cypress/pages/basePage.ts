@@ -1,4 +1,6 @@
 class BasePage {
+    private readonly bannerClass = "govuk-notification-banner";
+
     containsHeading(heading: string) {
         cy.get("h1").contains(heading);
         return this;
@@ -7,6 +9,10 @@ class BasePage {
     containsSubHeading(subHeading: string) {
         cy.get("h2").contains(subHeading);
         return this;
+    }
+
+    containsImportantBannerWithMessage(title: string, message: string) {
+        return this.containsBannerWithMessage("Important", title, message);
     }
 
     clickButton(buttonText?: string) {
@@ -63,6 +69,15 @@ class BasePage {
 
     goToLastPage() {
         cy.getByClass("govuk-pagination__list").find("li").last().click();
+        return this;
+    }
+
+    private containsBannerWithMessage(bannerType: string, title: string, message: string) {
+        cy.getByClass(this.bannerClass).within(() => {
+            cy.get("h2").should("have.text", bannerType);
+            cy.get("h3").should("have.text", title);
+            cy.get("p").should("have.text", message);
+        });
         return this;
     }
 }

@@ -103,8 +103,8 @@ describe.skip("About the project page - conversion projects: ", () => {
         projectDetailsPage.navigateTo("About the project").containsSubHeading("About the project");
 
         Logger.log("Check that the 'Not assigned to project' banner is displayed");
-        cy.contains("Not assigned to project");
-        cy.contains(
+        projectDetailsPage.containsImportantBannerWithMessage(
+            "Not assigned to project",
             "This project is not assigned to you and cannot be changed, you can add notes or contacts if required.",
         );
     });
