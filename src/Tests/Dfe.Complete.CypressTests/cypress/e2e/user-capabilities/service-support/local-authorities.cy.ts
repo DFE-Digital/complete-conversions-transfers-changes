@@ -158,8 +158,8 @@ describe("Service support user - Local authorities: ", () => {
 
         Logger.log("Verify validation errors are displayed");
         validationComponent
-            .hasLinkedValidationErrorForField("Address1", "can't be blank")
-            .hasLinkedValidationErrorForField("AddressPostcode", "not recognised as a UK postcode")
+            .hasLinkedValidationErrorForField("Address1", "Can't be blank")
+            .hasLinkedValidationErrorForField("AddressPostcode", "Not recognised as a UK postcode")
             .hasLinkedValidationErrorForField("Email", "Email address must be in correct format");
 
         Logger.log("Revisit current URL to clear validation errors");
@@ -169,7 +169,7 @@ describe("Service support user - Local authorities: ", () => {
         editLocalAuthorityPage.editCode(preExistingCode).saveAndReturn();
 
         Logger.log("Verify validation error for duplicate code");
-        validationComponent.hasLinkedValidationErrorForField("Code", "has already been taken");
+        validationComponent.hasLinkedValidationErrorForField("Code", "Has already been taken");
     });
 
     it("Should be able to delete an existing local authority", () => {
@@ -200,10 +200,10 @@ describe("Service support user - Local authorities: ", () => {
 
         Logger.log("Verify validation errors are displayed");
         validationComponent
-            .hasLinkedValidationErrorForField("Name", "can't be blank")
-            .hasLinkedValidationErrorForField("Code", "can't be blank")
-            .hasLinkedValidationErrorForField("Address1", "can't be blank")
-            .hasLinkedValidationErrorForField("AddressPostcode", "can't be blank");
+            .hasLinkedValidationErrorForField("Name", "Can't be blank")
+            .hasLinkedValidationErrorForField("Code", "Can't be blank")
+            .hasLinkedValidationErrorForField("Address1", "Can't be blank")
+            .hasLinkedValidationErrorForField("AddressPostcode", "Can't be blank");
     });
 
     it("Should show 'code has already been taken' error when trying to add a new local authority with a duplicate local authority code", () => {
@@ -219,6 +219,6 @@ describe("Service support user - Local authorities: ", () => {
             .saveAndReturn();
 
         Logger.log("Verify validation error for duplicate code");
-        validationComponent.hasLinkedValidationErrorForField("Code", "has already been taken");
+        validationComponent.hasLinkedValidationErrorForField("Code", "Has already been taken");
     });
 });
