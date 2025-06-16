@@ -19,7 +19,7 @@ namespace Dfe.Complete.Pages.Projects.ServiceSupport.LocalAuthorities
             LocalAuthorities = localAuthoriesResponse.Value ?? []; 
 
             Pagination = new PaginationModel(RouteConstants.ListLocalAuthorities, PageNumber, localAuthoriesResponse.ItemCount, PageSize);
-            var hasPageFound = HasPageFound(Pagination.IsOutOfRangePage);
+            var hasPageFound = HasPageFound(Pagination.IsOutOfRangePage, Pagination.TotalPages);
             return hasPageFound ?? Page();
         }
 

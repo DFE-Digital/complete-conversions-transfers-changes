@@ -38,6 +38,8 @@ namespace Dfe.Complete.Tests.Validators
         [InlineData("user@domain..com")]
         [InlineData("user@@domain.com")]
         [InlineData("user domain.com")]
+        [InlineData("user,user@domain.com")]
+        [InlineData("user@domain,com")]
         public void InvalidEmails_ShouldFailValidation(string email)
         {
             var model = new ValidateEmailTestModel { Email = email };

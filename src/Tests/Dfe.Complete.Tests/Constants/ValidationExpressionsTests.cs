@@ -55,6 +55,8 @@ namespace Dfe.Complete.Tests.Constants
         [InlineData("user domain.com", false)]
         [InlineData("user@domain.c", false)]
         [InlineData("user@c", false)]
+        [InlineData("user,user@domain.c", false)]
+        [InlineData("user@domain,c", false)]
         public void Email_Validation(string input, bool expectedIsValid)
         {
             var isValid = EmailRegex().IsMatch(input);
