@@ -1,11 +1,13 @@
 ﻿@page "/projects/{projectId}/notes"
 @using Dfe.Complete.Constants
+@using Dfe.Complete.Extensions;
 @model Dfe.Complete.Pages.Projects.Notes.ViewProjectNotesModel
 @{
     Layout = "_ProjectLayout";
     ViewData["Title"] = "Project notes";
 
     var addNoteLink = string.Format(RouteConstants.ProjectAddNote, Model.ProjectId);
+    var userId = User.GetUserId();
 }
 
 <govuk-project-tabs project-id="@Model.ProjectId" project-type="" />
@@ -33,9 +35,12 @@
                 <span class="govuk-caption-m">@note.CreatedAt.ToDateString()</span>
                 <h3 class="govuk-heading-m">@note.UserFullName</h3>
                 <p class="govuk-body-m">@note.Body</p>
-                <p class="govuk-body govuk-!-font-size-16">
-                    <a class="govuk-link" href="@editNoteLink">Edit</a>
-                </p>
+                @if (userId == note.UserId)
+                {
+                    <p class="govuk-body govuk-!-font-size-16">
+                        <a class="govuk-link" href="@editNoteLink">Edit</a>
+                    </p>
+                }
                 <hr class="govuk-section-break govuk-section-break--xl govuk-section-break--visible">
             </div>
         }

@@ -16,7 +16,7 @@ public abstract class BaseProjectPageModel(ISender sender) : PageModel
 {
     [BindProperty(SupportsGet = true, Name = "projectId")]
 
-    public string ProjectId { get; set; } = default!;
+    public string ProjectId { get; set; }
 
     public ProjectDto Project { get; set; }
     public EstablishmentDto Establishment { get; set; }
