@@ -29,7 +29,11 @@ namespace Dfe.Complete.Infrastructure.Security.Authorization
                 if (userRecord == null!)
                     return [];
 
-                additionalClaims = new List<Claim>();
+                additionalClaims =
+                [
+                    new (CustomClaimTypeConstants.UserId, userRecord.Id.Value.ToString())
+                ];
+
 
                 if (!string.IsNullOrEmpty(userRecord.Team))
                 {
