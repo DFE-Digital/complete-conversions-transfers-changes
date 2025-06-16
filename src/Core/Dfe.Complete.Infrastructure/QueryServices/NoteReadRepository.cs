@@ -13,6 +13,7 @@ internal class NoteReadRepository(CompleteContext context, IMapper mapper) : INo
     public IQueryable<NoteDto> GetNotesForProject(ProjectId projectId) => context.Notes
         .AsNoTracking()
         .Include(n => n.User)
-        .Where(n => n.ProjectId == projectId)
+        .Where(n => n.ProjectId == projectId
+            && n.NotableId == null && n.NotableType == null && n.TaskIdentifier == null)
         .ProjectTo<NoteDto>(mapper.ConfigurationProvider);
 }
