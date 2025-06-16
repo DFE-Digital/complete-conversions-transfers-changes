@@ -290,7 +290,7 @@ namespace Dfe.Complete.Client.Contracts
         /// </summary>
         /// <returns>Project</returns>
         /// <exception cref="CompleteApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<ListAllProjectsResultModel>> SearchProjectsAsync(string? searchTerm, int? page, int? count);
+        System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<ListAllProjectsResultModel>> SearchProjectsAsync(string? searchTerm, System.Collections.Generic.IEnumerable<ProjectState>? projectStates, int? page, int? count);
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>
@@ -298,7 +298,7 @@ namespace Dfe.Complete.Client.Contracts
         /// </summary>
         /// <returns>Project</returns>
         /// <exception cref="CompleteApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<ListAllProjectsResultModel>> SearchProjectsAsync(string? searchTerm, int? page, int? count, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<ListAllProjectsResultModel>> SearchProjectsAsync(string? searchTerm, System.Collections.Generic.IEnumerable<ProjectState>? projectStates, int? page, int? count, System.Threading.CancellationToken cancellationToken);
 
         /// <summary>
         /// Returns a list of Projects by trust reference number
@@ -1144,8 +1144,14 @@ namespace Dfe.Complete.Client.Contracts
         [System.Runtime.Serialization.EnumMember(Value = @"Completed")]
         Completed = 1,
 
-        [System.Runtime.Serialization.EnumMember(Value = @"Cancelled")]
-        Cancelled = 2,
+        [System.Runtime.Serialization.EnumMember(Value = @"Deleted")]
+        Deleted = 2,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"DaoRevoked")]
+        DaoRevoked = 3,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"Inactive")]
+        Inactive = 4,
 
     }
 

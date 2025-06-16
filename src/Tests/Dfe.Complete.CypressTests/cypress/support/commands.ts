@@ -23,7 +23,7 @@ Cypress.Commands.add("containsById", (id) => {
 });
 
 Cypress.Commands.add("getByClass", (className) => {
-    cy.get(`[class="${className}"]`);
+    cy.get(`[class~="${className}"]`);
 });
 
 Cypress.Commands.add("getByName", (name) => {
@@ -138,4 +138,10 @@ Cypress.Commands.add("hasAddress", (id: string, line1: string, line2: string, li
     cy.getByTestId(id).find("[data-testid='address-line1']").should("contain.text", line1);
     cy.getByTestId(id).find("[data-testid='address-line2']").should("contain.text", line2);
     cy.getByTestId(id).find("[data-testid='address-line3']").should("contain.text", line3);
+});
+
+Cypress.Commands.add("revisitCurrentUrl", () => {
+    cy.url().then((url: string) => {
+        cy.visit(url);
+    });
 });

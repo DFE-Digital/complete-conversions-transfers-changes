@@ -25,7 +25,7 @@ public class ProjectsByUser(ISender sender) : AllProjectsModel(ByUserNavigation)
         
         Pagination = new PaginationModel($"/projects/all/users/{id}", PageNumber, response.ItemCount, PageSize);
 
-        var hasPageFound = HasPageFound(Pagination.IsOutOfRangePage);
+        var hasPageFound = HasPageFound(Pagination.IsOutOfRangePage, Pagination.TotalPages);
         return hasPageFound ?? Page();
     }
 }
