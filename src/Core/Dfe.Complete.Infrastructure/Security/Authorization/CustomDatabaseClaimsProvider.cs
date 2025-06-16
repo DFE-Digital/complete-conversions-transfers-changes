@@ -23,7 +23,7 @@ namespace Dfe.Complete.Infrastructure.Security.Authorization
 
             string cacheKey = $"UserClaims_{userId}";
 
-            if (!cache.TryGetValue(cacheKey, out List<Claim>? additionalClaims))
+            if (true || !cache.TryGetValue(cacheKey, out List<Claim>? additionalClaims))
             {
                 var userRecord = await userRepository.FindAsync(u => u.ActiveDirectoryUserId == userId);
                 if (userRecord == null!)

@@ -2,7 +2,9 @@
 @using Dfe.Complete.Constants
 @using Dfe.Complete.Extensions;
 @using Dfe.Complete.Domain.Enums;
-
+@using Microsoft.AspNetCore.Authorization
+@using Dfe.Complete.Domain.Constants;
+@inject IAuthorizationService _authorizationService
 @model Dfe.Complete.Pages.Projects.Notes.ViewProjectNotesModel
 @{
     Layout = "_ProjectLayout";
@@ -11,7 +13,11 @@
     var addNoteLink = string.Format(RouteConstants.ProjectAddNote, Model.ProjectId);
     var userId = User.GetUserId();
 
-    var canAddNotes = Model.Project.State == ProjectState.Active;
+    var canAddNotes = Model.Project.State != ProjectState.Deleted &&
+    Model.Project.State != ProjectState.Completed &&
+    Model.Project.State != ProjectState.DaoRevoked &&
+    (await _authorizationService.AuthorizeAsync(User, UserPolicyConstants.CanAddNotes)).Succeeded;
+
     var projectEditable = Model.Project.State != ProjectState.Completed;
 }
 
@@ -20,14 +26,14 @@
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
         <h2 class="govuk-heading-l">Notes</h2>
-        @if (canAddNotes)
-        {
-            <div class="govuk-!-margin-bottom-5">
-                <a data-module="govuk-button" draggable="false" role="button" class="govuk-button" href="@addNoteLink">
+
+        <div class="govuk-!-margin-bottom-5">
+            <form method="post" asp-page-handler="AddNote">
+                <button data-module="govuk-button" class="govuk-button" type="submit">
                     Add note
-                </a>
-            </div>
-        }
+                </button>
+            </form>
+        </div>
 
         @if (Model.Notes.Count == 0)
         {
@@ -42,13 +48,12 @@
                 <span class="govuk-caption-m">@note.CreatedAt.ToDateString()</span>
                 <h3 class="govuk-heading-m">@note.UserFullName</h3>
                 <p class="govuk-body-m">@note.Body</p>
-                @if (userId == note.UserId && !projectCompleted)
+                @if (projectEditable && userId == note.UserId)
                 {
                     <p class="govuk-body govuk-!-font-size-16">
                         <a class="govuk-link" href="@editNoteLink">Edit</a>
                     </p>
                 }
-                <hr class="govuk-section-break govuk-section-break--xl govuk-section-break--visible">
             </div>
         }
 
