@@ -14,14 +14,16 @@ using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.FeatureManagement;
 using Microsoft.Identity.Web;
-using Microsoft.Identity.Web.UI;
+using Microsoft.Identity.Web.UI; 
 using DfE.CoreLibs.Security.Cypress;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using DfE.CoreLibs.Http.Middlewares.CorrelationId;
 using DfE.CoreLibs.Http.Interfaces;
 using Dfe.Complete.Logging.Middleware;
 using Microsoft.AspNetCore.Mvc;
-using DfE.CoreLibs.Security.Interfaces;
+using DfE.CoreLibs.Security.Antiforgery;
+using Dfe.Complete.Validators;
+using DfE.CoreLibs.Security.Enums;
 
 namespace Dfe.Complete;
 
@@ -45,15 +47,16 @@ public class Startup
         return Configuration.GetRequiredSection(sectionName);
     }
 
-    private T GetTypedConfigurationFor<T>()
+    private T GetTypedConfigurationFor<T>() where T : class, new()
     {
-        return GetConfigurationSectionFor<T>().Get<T>();
+        var section = GetConfigurationSectionFor<T>();
+        return section == null
+            ? throw new InvalidOperationException($"Configuration section for {typeof(T).Name} not found.")
+            : section.Get<T>() ?? new T();
     }
 
     public void ConfigureServices(IServiceCollection services)
     {
-        ConfigureCypressAntiforgeryEndpoints(services);
-
         services.AddHttpClient();
         services.AddFeatureManagement();
         services.AddHealthChecks();
@@ -72,11 +75,21 @@ public class Startup
             {
                 options.HtmlHelperOptions.ClientValidationEnabled = false;
             });
-
-        ConfigureCypressAntiforgery(services);
+         
+        ConfigureCustomAntiforgery(services);
 
         services.AddControllersWithViews()
-           .AddMicrosoftIdentityUI();
+           .AddMicrosoftIdentityUI()
+           .AddCustomAntiForgeryHandling(opts =>
+           {
+               opts.CheckerGroups =
+               [
+                   new() {
+                       TypeNames   = [nameof(HasHeaderKeyExistsInRequestValidator), nameof(CypressRequestChecker)],
+                       CheckerOperator = CheckerOperator.Or
+                   }
+               ];
+           });
         SetupDataProtection(services);
 
         services.AddCompleteClientProject(Configuration);
@@ -85,7 +98,7 @@ public class Startup
 
         services.AddScoped<ICorrelationContext, CorrelationContext>();
 
-        services.AddScoped(sp => sp.GetService<IHttpContextAccessor>()?.HttpContext?.Session);
+        services.AddScoped(sp => sp.GetRequiredService<IHttpContextAccessor>()?.HttpContext?.Session ?? throw new InvalidOperationException("Session is not available."));
         services.AddSession(options =>
         {
             options.IdleTimeout = _authenticationExpiration;
@@ -184,37 +197,11 @@ public class Startup
                    options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
                }
            });
-    }
+    } 
 
-    private void ConfigureCypressAntiforgeryEndpoints(IServiceCollection services)
+    private static void ConfigureCustomAntiforgery(IServiceCollection services)
     {
-        if (!_env.IsProduction())
-        {
-            services.Configure<CypressAwareAntiForgeryOptions>(opts =>
-            {
-                opts.ShouldSkipAntiforgery = httpContext =>
-                {
-                    var path = httpContext.Request.Path;
-                    return path.StartsWithSegments("/v1") ||
-                           path.StartsWithSegments("/Errors");
-                };
-            });
-        }
-    }
-
-    private void ConfigureCypressAntiforgery(IServiceCollection services)
-    {
-        if (!_env.IsProduction())
-        {
-            services.AddScoped<ICypressRequestChecker, CypressRequestChecker>();
-
-            services.AddScoped<CypressAwareAntiForgeryFilter>();
-
-            services.PostConfigure<MvcOptions>(options =>
-            {
-                options.Filters.AddService<CypressAwareAntiForgeryFilter>();
-            });
-        }
+        services.AddCustomRequestCheckerProvider<HasHeaderKeyExistsInRequestValidator>(); 
     }
 
     private void RegisterClients(IServiceCollection services)
