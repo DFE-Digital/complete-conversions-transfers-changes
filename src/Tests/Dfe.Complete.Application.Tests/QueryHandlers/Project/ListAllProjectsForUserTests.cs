@@ -10,6 +10,7 @@ using Dfe.Complete.Application.Projects.Queries.ListAllProjects;
 using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Domain.ValueObjects;
 using Dfe.Complete.Tests.Common.Customizations.Models;
+using Dfe.Complete.Utils;
 using DfE.CoreLibs.Testing.AutoFixture.Attributes;
 using DfE.CoreLibs.Testing.AutoFixture.Customizations;
 using MediatR;
@@ -36,6 +37,43 @@ public class ListAllProjectsForUserTests
                     typeof(DateOnlyCustomization)))
         {
         }
+    }
+
+    [Theory]
+    [InlineAutoData(ProjectUserFilter.AssignedTo, OrderProjectByField.SignificantDate, OrderByDirection.Ascending)]
+    public async Task Handle_ShouldThrowNotFoundException_WhenUserValueIsNull(
+    ProjectUserFilter filter,
+    OrderProjectQueryBy ordering,
+    [Frozen] IListAllProjectsQueryService mockListAllProjectsQueryService,
+    [Frozen] Mock<ISender> mockSender,
+    Mock<ILogger<ListAllProjectsForUserQueryHandler>> _mockLogger)
+    {
+        // Arrange
+        var mockTrustsClient = new Mock<ITrustsV4Client>();
+        var handler = new ListAllProjectsForUserQueryHandler(
+            mockListAllProjectsQueryService,
+            mockTrustsClient.Object,
+            mockSender.Object,
+            _mockLogger.Object);
+
+        // Simulate user lookup returns null value
+        mockSender.Setup(sender => sender.Send(It.IsAny<GetUserByAdIdQuery>(), It.IsAny<CancellationToken>()))
+            .ReturnsAsync(Result<UserDto?>.Success(null));
+
+        var query = new ListAllProjectsForUserQuery(
+            ProjectState.Active,
+            "missing-ad-id",
+            filter,
+            ordering)
+        { Page = 1 };
+
+        // Act
+        var result = await handler.Handle(query, default);
+
+        //Assert
+        Assert.NotNull(result);
+        Assert.False(result.IsSuccess);
+        Assert.Contains("User not found.", result.Error);
     }
 
     [Theory]
