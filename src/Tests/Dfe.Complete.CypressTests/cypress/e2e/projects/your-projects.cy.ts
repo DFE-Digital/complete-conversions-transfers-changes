@@ -3,9 +3,9 @@ import projectApi from "cypress/api/projectApi";
 import { ProjectBuilder } from "cypress/api/projectBuilder";
 import yourProjects from "cypress/pages/projects/yourProjects";
 import { projectTable } from "cypress/pages/projects/tables/projectTable";
-import { currentMonthShort, trust, trust2 } from "cypress/constants/stringTestConstants";
+import { currentMonthShort, dimensionsTrust, macclesfieldTrust } from "cypress/constants/stringTestConstants";
 import { cypressUser } from "cypress/constants/cypressConstants";
-import projectDetailsPage from "cypress/pages/projects/projectDetailsPage";
+import projectDetailsPage from "cypress/pages/projects/projectDetails/projectDetailsPage";
 import { checkAccessibilityAcrossPages } from "cypress/support/reusableTests";
 
 const conversionProject = ProjectBuilder.createConversionProjectRequest(new Date("2026-04-01"), 111394);
@@ -66,8 +66,8 @@ describe("View your projects", () => {
             .columnHasValue("URN", `${transferProject.urn.value}`)
             .columnHasValue("Type of project", "Transfer")
             .columnHasValue("Form a MAT project", "No")
-            .columnContainsValue("Incoming trust", trust2.toUpperCase()) // bug 208086
-            .columnContainsValue("Outgoing trust", trust.toUpperCase()) // bug 208086
+            .columnContainsValue("Incoming trust", dimensionsTrust.name.toUpperCase()) // bug 208086
+            .columnContainsValue("Outgoing trust", macclesfieldTrust.name.toUpperCase()) // bug 208086
             .columnHasValue("Local authority", "Manchester")
             .columnHasValue("Conversion or transfer date", "Mar 2026")
             .goTo(transferSchoolName);
@@ -94,8 +94,8 @@ describe("View your projects", () => {
             .columnHasValue("URN", `${transferFormAMatProject.urn.value}`)
             .columnHasValue("Type of project", "Transfer")
             .columnHasValue("Form a MAT project", "Yes")
-            // .columnContainsValue("Incoming trust", testTrustName)  // bug 212413
-            .columnContainsValue("Outgoing trust", trust.toUpperCase()) // bug 208086
+            // .columnContainsValue("Incoming trust", dimensionsTrust.name)  // bug 212413
+            .columnContainsValue("Outgoing trust", macclesfieldTrust.name.toUpperCase()) // bug 208086
             .columnHasValue("Local authority", "Milton Keynes")
             .columnHasValue("Conversion or transfer date", "Mar 2026")
             .goTo(transferFormAMatSchoolName);
