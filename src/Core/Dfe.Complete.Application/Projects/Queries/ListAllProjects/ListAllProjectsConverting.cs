@@ -37,8 +37,8 @@ namespace Dfe.Complete.Application.Projects.Queries.ListAllProjects
                     .Select(item =>
                         {
                             return new ListAllProjectsConvertingQueryResultModel(item.Project.Id,
-                                item.Establishment.Name, 
-                                item.Establishment.Urn.Value, 
+                                item.Establishment?.Name, 
+                                item.Establishment?.Urn?.Value, 
                                 item.Project.SignificantDate,
                                 giasEstablishments.FirstOrDefault(e => e.Urn == item.Project.AcademyUrn)?.Name,
                                 item.Project.AcademyUrn?.Value);
