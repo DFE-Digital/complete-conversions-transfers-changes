@@ -346,13 +346,29 @@
             "x-position": 3
           },
           {
+            "name": "OrderBy.Field",
+            "in": "query",
+            "schema": {
+              "$ref": "#/components/schemas/OrderProjectByField"
+            },
+            "x-position": 4
+          },
+          {
+            "name": "OrderBy.Direction",
+            "in": "query",
+            "schema": {
+              "$ref": "#/components/schemas/OrderByDirection"
+            },
+            "x-position": 5
+          },
+          {
             "name": "Page",
             "in": "query",
             "schema": {
               "type": "integer",
               "format": "int32"
             },
-            "x-position": 4
+            "x-position": 6
           },
           {
             "name": "Count",
@@ -361,7 +377,7 @@
               "type": "integer",
               "format": "int32"
             },
-            "x-position": 5
+            "x-position": 7
           }
         ],
         "responses": {
@@ -396,8 +412,7 @@
             "name": "Identifier",
             "in": "query",
             "schema": {
-              "type": "string",
-              "nullable": true
+              "type": "string"
             },
             "x-position": 1
           },
@@ -648,6 +663,61 @@
                   "type": "array",
                   "items": {
                     "$ref": "#/components/schemas/ListAllProjectsResultModel"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request data."
+          }
+        }
+      }
+    },
+    "/v1/Projects/List/All/Regions": {
+      "get": {
+        "tags": [
+          "Projects"
+        ],
+        "summary": "Returns a list of Regions with project counts",
+        "operationId": "Projects_ListAllProjectsByRegion",
+        "parameters": [
+          {
+            "name": "ProjectStatus",
+            "in": "query",
+            "schema": {
+              "nullable": true,
+              "oneOf": [
+                {
+                  "$ref": "#/components/schemas/ProjectState"
+                }
+              ]
+            },
+            "x-position": 1
+          },
+          {
+            "name": "Type",
+            "in": "query",
+            "schema": {
+              "nullable": true,
+              "oneOf": [
+                {
+                  "$ref": "#/components/schemas/ProjectType"
+                }
+              ]
+            },
+            "x-position": 2
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Project",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ListAllProjectsByRegionsResultModel"
                   }
                 }
               }
@@ -917,13 +987,29 @@
             "x-position": 3
           },
           {
+            "name": "OrderProjectQueryBy.Field",
+            "in": "query",
+            "schema": {
+              "$ref": "#/components/schemas/OrderProjectByField"
+            },
+            "x-position": 4
+          },
+          {
+            "name": "OrderProjectQueryBy.Direction",
+            "in": "query",
+            "schema": {
+              "$ref": "#/components/schemas/OrderByDirection"
+            },
+            "x-position": 5
+          },
+          {
             "name": "Page",
             "in": "query",
             "schema": {
               "type": "integer",
               "format": "int32"
             },
-            "x-position": 4
+            "x-position": 6
           },
           {
             "name": "Count",
@@ -932,7 +1018,7 @@
               "type": "integer",
               "format": "int32"
             },
-            "x-position": 5
+            "x-position": 7
           }
         ],
         "responses": {
@@ -1006,23 +1092,23 @@
         "operationId": "Projects_SearchProjects",
         "parameters": [
           {
-            "name": "ProjectStatus",
-            "in": "query",
-            "schema": {
-              "nullable": true,
-              "oneOf": [
-                {
-                  "$ref": "#/components/schemas/ProjectState"
-                }
-              ]
-            },
-            "x-position": 1
-          },
-          {
             "name": "SearchTerm",
             "in": "query",
             "schema": {
               "type": "string"
+            },
+            "x-position": 1
+          },
+          {
+            "name": "ProjectStates",
+            "in": "query",
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/ProjectState"
+              }
             },
             "x-position": 2
           },
@@ -1116,94 +1202,6 @@
           },
           "400": {
             "description": "Invalid request data."
-          }
-        }
-      }
-    },
-    "/v1/Projects/List/All/Converting": {
-      "get": {
-        "tags": [
-          "Projects"
-        ],
-        "summary": "Returns a list of Projects converting to an academy",
-        "operationId": "Projects_ListAllProjectsConverting",
-        "parameters": [
-          {
-            "name": "WithAcademyUrn",
-            "in": "query",
-            "schema": {
-              "type": "boolean"
-            },
-            "x-position": 1
-          },
-          {
-            "name": "Page",
-            "in": "query",
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            },
-            "x-position": 2
-          },
-          {
-            "name": "Count",
-            "in": "query",
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            },
-            "x-position": 3
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Project",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/ListAllProjectsConvertingQueryResultModel"
-                  }
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid request data."
-          }
-        }
-      }
-    },
-    "/v1/Projects/project/academy-urn": {
-      "patch": {
-        "tags": [
-          "Projects"
-        ],
-        "summary": "Updates the Academy URN for a specific project.",
-        "operationId": "Projects_UpdateAcademyUrn",
-        "requestBody": {
-          "x-name": "request",
-          "description": "The update command.",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/UpdateAcademyUrnCommand"
-              }
-            }
-          },
-          "required": true,
-          "x-position": 1
-        },
-        "responses": {
-          "204": {
-            "description": "Academy URN updated successfully."
-          },
-          "400": {
-            "description": "Invalid request data."
-          },
-          "404": {
-            "description": "Project not found."
           }
         }
       }
@@ -1707,12 +1705,7 @@
             ]
           },
           "regionalDeliveryOfficerId": {
-            "nullable": true,
-            "oneOf": [
-              {
-                "$ref": "#/components/schemas/UserId"
-              }
-            ]
+            "$ref": "#/components/schemas/UserId"
           },
           "caseworkerId": {
             "nullable": true,
@@ -1931,12 +1924,7 @@
             }
           },
           "regionalDeliveryOfficer": {
-            "nullable": true,
-            "oneOf": [
-              {
-                "$ref": "#/components/schemas/User"
-              }
-            ]
+            "$ref": "#/components/schemas/User"
           },
           "formAMat": {
             "type": "boolean"
@@ -2063,12 +2051,16 @@
         "x-enumNames": [
           "Active",
           "Completed",
-          "Cancelled"
+          "Deleted",
+          "DaoRevoked",
+          "Inactive"
         ],
         "enum": [
           "Active",
           "Completed",
-          "Cancelled"
+          "Deleted",
+          "DaoRevoked",
+          "Inactive"
         ]
       },
       "ProjectGroupId": {
@@ -2197,24 +2189,13 @@
             "$ref": "#/components/schemas/NoteId"
           },
           "body": {
-            "type": "string",
-            "nullable": true
+            "type": "string"
           },
           "projectId": {
-            "nullable": true,
-            "oneOf": [
-              {
-                "$ref": "#/components/schemas/ProjectId"
-              }
-            ]
+            "$ref": "#/components/schemas/ProjectId"
           },
           "userId": {
-            "nullable": true,
-            "oneOf": [
-              {
-                "$ref": "#/components/schemas/UserId"
-              }
-            ]
+            "$ref": "#/components/schemas/UserId"
           },
           "createdAt": {
             "type": "string",
@@ -2238,20 +2219,10 @@
             "nullable": true
           },
           "project": {
-            "nullable": true,
-            "oneOf": [
-              {
-                "$ref": "#/components/schemas/Project"
-              }
-            ]
+            "$ref": "#/components/schemas/Project"
           },
           "user": {
-            "nullable": true,
-            "oneOf": [
-              {
-                "$ref": "#/components/schemas/User"
-              }
-            ]
+            "$ref": "#/components/schemas/User"
           }
         }
       },
@@ -2297,12 +2268,7 @@
                 ]
               },
               "regionalDeliveryOfficerId": {
-                "nullable": true,
-                "oneOf": [
-                  {
-                    "$ref": "#/components/schemas/UserId"
-                  }
-                ]
+                "$ref": "#/components/schemas/UserId"
               },
               "caseworkerId": {
                 "nullable": true,
@@ -2527,12 +2493,7 @@
                 }
               },
               "regionalDeliveryOfficer": {
-                "nullable": true,
-                "oneOf": [
-                  {
-                    "$ref": "#/components/schemas/User"
-                  }
-                ]
+                "$ref": "#/components/schemas/User"
               },
               "localAuthority": {
                 "$ref": "#/components/schemas/LocalAuthority"
@@ -2848,6 +2809,18 @@
           "createdAt": {
             "type": "string",
             "format": "date-time"
+          },
+          "regionalDeliveryOfficerFullName": {
+            "type": "string",
+            "nullable": true
+          },
+          "newTrustName": {
+            "type": "string",
+            "nullable": true
+          },
+          "newTrustReferenceNumber": {
+            "type": "string",
+            "nullable": true
           }
         }
       },
@@ -2863,6 +2836,32 @@
           "UnassignedOnly"
         ]
       },
+      "OrderProjectByField": {
+        "type": "string",
+        "description": "",
+        "x-enumNames": [
+          "CompletedAt",
+          "CreatedAt",
+          "SignificantDate"
+        ],
+        "enum": [
+          "CompletedAt",
+          "CreatedAt",
+          "SignificantDate"
+        ]
+      },
+      "OrderByDirection": {
+        "type": "string",
+        "description": "",
+        "x-enumNames": [
+          "Ascending",
+          "Descending"
+        ],
+        "enum": [
+          "Ascending",
+          "Descending"
+        ]
+      },
       "ListMatResultModel": {
         "type": "object",
         "additionalProperties": false,
@@ -2876,8 +2875,134 @@
           "projectModels": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/ListAllProjectsQueryModel"
+              "$ref": "#/components/schemas/ListAllProjectsResultModel"
             }
+          }
+        }
+      },
+      "ListAllProjectsByRegionsResultModel": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "region": {
+            "$ref": "#/components/schemas/Region"
+          },
+          "conversionsCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "transfersCount": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "ListAllProjectsForUserQueryResultModel": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "projectId": {
+            "$ref": "#/components/schemas/ProjectId"
+          },
+          "urn": {
+            "$ref": "#/components/schemas/Urn"
+          },
+          "schoolOrAcademyName": {
+            "type": "string"
+          },
+          "projectType": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/ProjectType"
+              }
+            ]
+          },
+          "isFormAMat": {
+            "type": "boolean"
+          },
+          "incomingTrustName": {
+            "type": "string",
+            "nullable": true
+          },
+          "outgoingTrustName": {
+            "type": "string",
+            "nullable": true
+          },
+          "localAuthority": {
+            "type": "string"
+          },
+          "team": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/ProjectTeam"
+              }
+            ]
+          },
+          "conversionOrTransferDate": {
+            "type": "string",
+            "format": "date",
+            "nullable": true
+          },
+          "completionDate": {
+            "type": "string",
+            "format": "date",
+            "nullable": true
+          },
+          "assignedTo": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/User"
+              }
+            ]
+          },
+          "createdDate": {
+            "type": "string",
+            "format": "date",
+            "nullable": true
+          }
+        }
+      },
+      "ProjectUserFilter": {
+        "type": "string",
+        "description": "",
+        "x-enumNames": [
+          "AssignedTo",
+          "CreatedBy"
+        ],
+        "enum": [
+          "AssignedTo",
+          "CreatedBy"
+        ]
+      },
+      "ProjectGroupDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "$ref": "#/components/schemas/ProjectGroupId"
+          },
+          "groupIdentifier": {
+            "type": "string",
+            "nullable": true
+          },
+          "trustUkprn": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/Ukprn"
+              }
+            ]
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
           }
         }
       },
@@ -3048,178 +3173,6 @@
           "value": {
             "type": "string",
             "format": "guid"
-          }
-        }
-      },
-      "OrderProjectByField": {
-        "type": "string",
-        "description": "",
-        "x-enumNames": [
-          "CompletedAt",
-          "CreatedAt",
-          "SignificantDate"
-        ],
-        "enum": [
-          "CompletedAt",
-          "CreatedAt",
-          "SignificantDate"
-        ]
-      },
-      "OrderByDirection": {
-        "type": "string",
-        "description": "",
-        "x-enumNames": [
-          "Ascending",
-          "Descending"
-        ],
-        "enum": [
-          "Ascending",
-          "Descending"
-        ]
-      },
-      "ListAllProjectsForUserQueryResultModel": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-          "projectId": {
-            "$ref": "#/components/schemas/ProjectId"
-          },
-          "urn": {
-            "$ref": "#/components/schemas/Urn"
-          },
-          "schoolOrAcademyName": {
-            "type": "string"
-          },
-          "projectType": {
-            "nullable": true,
-            "oneOf": [
-              {
-                "$ref": "#/components/schemas/ProjectType"
-              }
-            ]
-          },
-          "isFormAMat": {
-            "type": "boolean"
-          },
-          "incomingTrustName": {
-            "type": "string",
-            "nullable": true
-          },
-          "outgoingTrustName": {
-            "type": "string",
-            "nullable": true
-          },
-          "localAuthority": {
-            "type": "string"
-          },
-          "team": {
-            "nullable": true,
-            "oneOf": [
-              {
-                "$ref": "#/components/schemas/ProjectTeam"
-              }
-            ]
-          },
-          "conversionOrTransferDate": {
-            "type": "string",
-            "format": "date",
-            "nullable": true
-          },
-          "completionDate": {
-            "type": "string",
-            "format": "date",
-            "nullable": true
-          },
-          "assignedTo": {
-            "nullable": true,
-            "oneOf": [
-              {
-                "$ref": "#/components/schemas/User"
-              }
-            ]
-          }
-        }
-      },
-      "ProjectUserFilter": {
-        "type": "string",
-        "description": "",
-        "x-enumNames": [
-          "AssignedTo",
-          "CreatedBy"
-        ],
-        "enum": [
-          "AssignedTo",
-          "CreatedBy"
-        ]
-      },
-      "ProjectGroupDto": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-          "id": {
-            "$ref": "#/components/schemas/ProjectGroupId"
-          },
-          "groupIdentifier": {
-            "type": "string",
-            "nullable": true
-          },
-          "trustUkprn": {
-            "nullable": true,
-            "oneOf": [
-              {
-                "$ref": "#/components/schemas/Ukprn"
-              }
-            ]
-          },
-          "createdAt": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "updatedAt": {
-            "type": "string",
-            "format": "date-time"
-          }
-        }
-      },
-      "ListAllProjectsConvertingQueryResultModel": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-          "projectId": {
-            "$ref": "#/components/schemas/ProjectId"
-          },
-          "establishmentName": {
-            "type": "string"
-          },
-          "urn": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "conversionDate": {
-            "type": "string",
-            "format": "date",
-            "nullable": true
-          },
-          "academyName": {
-            "type": "string",
-            "nullable": true
-          },
-          "academyUrn": {
-            "type": "integer",
-            "format": "int32",
-            "nullable": true
-          }
-        }
-      },
-      "UpdateAcademyUrnCommand": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-          "projectId": {
-            "$ref": "#/components/schemas/ProjectId"
-          },
-          "urn": {
-            "$ref": "#/components/schemas/Urn"
           }
         }
       },

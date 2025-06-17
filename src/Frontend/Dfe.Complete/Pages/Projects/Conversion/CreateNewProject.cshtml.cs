@@ -9,10 +9,11 @@ using Dfe.Complete.Domain.ValueObjects;
 using Microsoft.AspNetCore.Authorization;
 using Dfe.Complete.Extensions;
 using Dfe.Complete.Utils;
+using Dfe.Complete.Domain.Constants;
 
 namespace Dfe.Complete.Pages.Projects.Conversion
 {
-    [Authorize(policy: "CanCreateProjects")]
+    [Authorize(policy: UserPolicyConstants.CanCreateProjects)]
     public class CreateNewProjectModel(
         ISender sender,
         ErrorService errorService,

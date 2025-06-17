@@ -5,6 +5,7 @@ using Dfe.Complete.Domain.ValueObjects;
 using Dfe.Complete.Models;
 using Dfe.Complete.Pages.Pagination;
 using MediatR;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Dfe.Complete.Pages.Projects.Team.ProjectsForUser;
 
@@ -12,7 +13,7 @@ public class ProjectsForUser(ISender sender) : YourTeamProjectsModel(ByUserNavig
 {
     public UserWithProjectsDto UserResult { get; set; } = default!;
 
-    public async Task OnGet(string id)
+    public async Task<IActionResult> OnGet(string id)
     {
         ViewData[TabNavigationModel.ViewDataKey] = YourTeamProjectsTabNavigationModel;
 
@@ -24,5 +25,7 @@ public class ProjectsForUser(ISender sender) : YourTeamProjectsModel(ByUserNavig
         
         Pagination = new PaginationModel($"/projects/team/users/{id}", PageNumber, response.ItemCount, PageSize);
 
+        var hasPageFound = HasPageFound(Pagination.IsOutOfRangePage, Pagination.TotalPages);
+        return hasPageFound ?? Page();
     }
 }

@@ -313,6 +313,8 @@ public partial class CompleteContext : DbContext
             .WithMany()
             .HasForeignKey(p => p.LocalAuthorityId)
             .HasConstraintName("fk_rails_eddab2651f");
+
+        projectConfiguration.HasMany(d => d.Notes).WithOne(p => p.Project).HasForeignKey(p => p.ProjectId);
     }
 
     private static void ConfigureUser(EntityTypeBuilder<User> projectConfiguration)
@@ -1050,7 +1052,7 @@ public partial class CompleteContext : DbContext
 
         projectConfiguration.Property(e => e.Id)
             .HasConversion(
-                v => v!.Value,
+                v => v.Value,
                 v => new NoteId(v))
             .HasColumnName("id");
         projectConfiguration.Property(e => e.Body).HasColumnName("body");
@@ -1064,7 +1066,7 @@ public partial class CompleteContext : DbContext
         projectConfiguration.Property(e => e.ProjectId)
             .HasColumnName("project_id")
             .HasConversion(
-                v => v!.Value,
+                v => v.Value,
                 v => new ProjectId(v));
         projectConfiguration.Property(e => e.TaskIdentifier)
             .HasMaxLength(4000)
@@ -1075,7 +1077,7 @@ public partial class CompleteContext : DbContext
         projectConfiguration.Property(e => e.UserId)
             .HasColumnName("user_id")
             .HasConversion(
-                v => v!.Value,
+                v => v.Value,
                 v => new UserId(v));
 
         projectConfiguration.HasOne(d => d.Project).WithMany(p => p.Notes)

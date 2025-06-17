@@ -1000,9 +1000,9 @@ namespace Dfe.Complete.Client
         /// </summary>
         /// <returns>Project</returns>
         /// <exception cref="CompleteApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<ListAllProjectsResultModel>> ListAllProjectsAsync(ProjectState? projectStatus, ProjectType? type, AssignedToState? assignedToState, int? page, int? count)
+        public virtual System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<ListAllProjectsResultModel>> ListAllProjectsAsync(ProjectState? projectStatus, ProjectType? type, AssignedToState? assignedToState, OrderProjectByField? orderBy_Field, OrderByDirection? orderBy_Direction, int? page, int? count)
         {
-            return ListAllProjectsAsync(projectStatus, type, assignedToState, page, count, System.Threading.CancellationToken.None);
+            return ListAllProjectsAsync(projectStatus, type, assignedToState, orderBy_Field, orderBy_Direction, page, count, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -1011,7 +1011,7 @@ namespace Dfe.Complete.Client
         /// </summary>
         /// <returns>Project</returns>
         /// <exception cref="CompleteApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<ListAllProjectsResultModel>> ListAllProjectsAsync(ProjectState? projectStatus, ProjectType? type, AssignedToState? assignedToState, int? page, int? count, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<ListAllProjectsResultModel>> ListAllProjectsAsync(ProjectState? projectStatus, ProjectType? type, AssignedToState? assignedToState, OrderProjectByField? orderBy_Field, OrderByDirection? orderBy_Direction, int? page, int? count, System.Threading.CancellationToken cancellationToken)
         {
             var client_ = _httpClient;
             var disposeClient_ = false;
@@ -1038,6 +1038,14 @@ namespace Dfe.Complete.Client
                     if (assignedToState != null)
                     {
                         urlBuilder_.Append(System.Uri.EscapeDataString("AssignedToState")).Append('=').Append(System.Uri.EscapeDataString(ConvertToString(assignedToState, System.Globalization.CultureInfo.InvariantCulture))).Append('&');
+                    }
+                    if (orderBy_Field != null)
+                    {
+                        urlBuilder_.Append(System.Uri.EscapeDataString("OrderBy.Field")).Append('=').Append(System.Uri.EscapeDataString(ConvertToString(orderBy_Field, System.Globalization.CultureInfo.InvariantCulture))).Append('&');
+                    }
+                    if (orderBy_Direction != null)
+                    {
+                        urlBuilder_.Append(System.Uri.EscapeDataString("OrderBy.Direction")).Append('=').Append(System.Uri.EscapeDataString(ConvertToString(orderBy_Direction, System.Globalization.CultureInfo.InvariantCulture))).Append('&');
                     }
                     if (page != null)
                     {
@@ -1540,6 +1548,106 @@ namespace Dfe.Complete.Client
         }
 
         /// <summary>
+        /// Returns a list of Regions with project counts
+        /// </summary>
+        /// <returns>Project</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        public virtual System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<ListAllProjectsByRegionsResultModel>> ListAllProjectsByRegionAsync(ProjectState? projectStatus, ProjectType? type)
+        {
+            return ListAllProjectsByRegionAsync(projectStatus, type, System.Threading.CancellationToken.None);
+        }
+
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>
+        /// Returns a list of Regions with project counts
+        /// </summary>
+        /// <returns>Project</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        public virtual async System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<ListAllProjectsByRegionsResultModel>> ListAllProjectsByRegionAsync(ProjectState? projectStatus, ProjectType? type, System.Threading.CancellationToken cancellationToken)
+        {
+            var client_ = _httpClient;
+            var disposeClient_ = false;
+            try
+            {
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                {
+                    request_.Method = new System.Net.Http.HttpMethod("GET");
+                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
+
+                    var urlBuilder_ = new System.Text.StringBuilder();
+                    if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
+                    // Operation Path: "v1/Projects/List/All/Regions"
+                    urlBuilder_.Append("v1/Projects/List/All/Regions");
+                    urlBuilder_.Append('?');
+                    if (projectStatus != null)
+                    {
+                        urlBuilder_.Append(System.Uri.EscapeDataString("ProjectStatus")).Append('=').Append(System.Uri.EscapeDataString(ConvertToString(projectStatus, System.Globalization.CultureInfo.InvariantCulture))).Append('&');
+                    }
+                    if (type != null)
+                    {
+                        urlBuilder_.Append(System.Uri.EscapeDataString("Type")).Append('=').Append(System.Uri.EscapeDataString(ConvertToString(type, System.Globalization.CultureInfo.InvariantCulture))).Append('&');
+                    }
+                    urlBuilder_.Length--;
+
+                    PrepareRequest(client_, request_, urlBuilder_);
+
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+
+                    PrepareRequest(client_, request_, url_);
+
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    var disposeResponse_ = true;
+                    try
+                    {
+                        var headers_ = new System.Collections.Generic.Dictionary<string, System.Collections.Generic.IEnumerable<string>>();
+                        foreach (var item_ in response_.Headers)
+                            headers_[item_.Key] = item_.Value;
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+
+                        ProcessResponse(client_, response_);
+
+                        var status_ = (int)response_.StatusCode;
+                        if (status_ == 200)
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<System.Collections.ObjectModel.ObservableCollection<ListAllProjectsByRegionsResultModel>>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            if (objectResponse_.Object == null)
+                            {
+                                throw new CompleteApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                            }
+                            return objectResponse_.Object;
+                        }
+                        else
+                        if (status_ == 400)
+                        {
+                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new CompleteApiException("Invalid request data.", status_, responseText_, headers_, null);
+                        }
+                        else
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new CompleteApiException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                        }
+                    }
+                    finally
+                    {
+                        if (disposeResponse_)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+                if (disposeClient_)
+                    client_.Dispose();
+            }
+        }
+
+        /// <summary>
         /// Returns a list of Projects for a region
         /// </summary>
         /// <returns>Project</returns>
@@ -1792,9 +1900,9 @@ namespace Dfe.Complete.Client
         /// </summary>
         /// <returns>Project</returns>
         /// <exception cref="CompleteApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<ListAllProjectsForUserQueryResultModel>> ListAllProjectsForUserAsync(ProjectState? state, string? userAdId, ProjectUserFilter? projectUserFilter, int? page, int? count)
+        public virtual System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<ListAllProjectsForUserQueryResultModel>> ListAllProjectsForUserAsync(ProjectState? state, string? userAdId, ProjectUserFilter? projectUserFilter, OrderProjectByField? orderProjectQueryBy_Field, OrderByDirection? orderProjectQueryBy_Direction, int? page, int? count)
         {
-            return ListAllProjectsForUserAsync(state, userAdId, projectUserFilter, page, count, System.Threading.CancellationToken.None);
+            return ListAllProjectsForUserAsync(state, userAdId, projectUserFilter, orderProjectQueryBy_Field, orderProjectQueryBy_Direction, page, count, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -1803,7 +1911,7 @@ namespace Dfe.Complete.Client
         /// </summary>
         /// <returns>Project</returns>
         /// <exception cref="CompleteApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<ListAllProjectsForUserQueryResultModel>> ListAllProjectsForUserAsync(ProjectState? state, string? userAdId, ProjectUserFilter? projectUserFilter, int? page, int? count, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<ListAllProjectsForUserQueryResultModel>> ListAllProjectsForUserAsync(ProjectState? state, string? userAdId, ProjectUserFilter? projectUserFilter, OrderProjectByField? orderProjectQueryBy_Field, OrderByDirection? orderProjectQueryBy_Direction, int? page, int? count, System.Threading.CancellationToken cancellationToken)
         {
             var client_ = _httpClient;
             var disposeClient_ = false;
@@ -1830,6 +1938,14 @@ namespace Dfe.Complete.Client
                     if (projectUserFilter != null)
                     {
                         urlBuilder_.Append(System.Uri.EscapeDataString("ProjectUserFilter")).Append('=').Append(System.Uri.EscapeDataString(ConvertToString(projectUserFilter, System.Globalization.CultureInfo.InvariantCulture))).Append('&');
+                    }
+                    if (orderProjectQueryBy_Field != null)
+                    {
+                        urlBuilder_.Append(System.Uri.EscapeDataString("OrderProjectQueryBy.Field")).Append('=').Append(System.Uri.EscapeDataString(ConvertToString(orderProjectQueryBy_Field, System.Globalization.CultureInfo.InvariantCulture))).Append('&');
+                    }
+                    if (orderProjectQueryBy_Direction != null)
+                    {
+                        urlBuilder_.Append(System.Uri.EscapeDataString("OrderProjectQueryBy.Direction")).Append('=').Append(System.Uri.EscapeDataString(ConvertToString(orderProjectQueryBy_Direction, System.Globalization.CultureInfo.InvariantCulture))).Append('&');
                     }
                     if (page != null)
                     {
@@ -1910,9 +2026,9 @@ namespace Dfe.Complete.Client
         /// </summary>
         /// <returns>Project</returns>
         /// <exception cref="CompleteApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<ListAllProjectsResultModel>> SearchProjectsAsync(ProjectState? projectStatus, string? searchTerm, int? page, int? count)
+        public virtual System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<ListAllProjectsResultModel>> SearchProjectsAsync(string? searchTerm, System.Collections.Generic.IEnumerable<ProjectState>? projectStates, int? page, int? count)
         {
-            return SearchProjectsAsync(projectStatus, searchTerm, page, count, System.Threading.CancellationToken.None);
+            return SearchProjectsAsync(searchTerm, projectStates, page, count, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -1921,7 +2037,7 @@ namespace Dfe.Complete.Client
         /// </summary>
         /// <returns>Project</returns>
         /// <exception cref="CompleteApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<ListAllProjectsResultModel>> SearchProjectsAsync(ProjectState? projectStatus, string? searchTerm, int? page, int? count, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<ListAllProjectsResultModel>> SearchProjectsAsync(string? searchTerm, System.Collections.Generic.IEnumerable<ProjectState>? projectStates, int? page, int? count, System.Threading.CancellationToken cancellationToken)
         {
             var client_ = _httpClient;
             var disposeClient_ = false;
@@ -1937,13 +2053,13 @@ namespace Dfe.Complete.Client
                     // Operation Path: "v1/Projects/SearchProjects"
                     urlBuilder_.Append("v1/Projects/SearchProjects");
                     urlBuilder_.Append('?');
-                    if (projectStatus != null)
-                    {
-                        urlBuilder_.Append(System.Uri.EscapeDataString("ProjectStatus")).Append('=').Append(System.Uri.EscapeDataString(ConvertToString(projectStatus, System.Globalization.CultureInfo.InvariantCulture))).Append('&');
-                    }
                     if (searchTerm != null)
                     {
                         urlBuilder_.Append(System.Uri.EscapeDataString("SearchTerm")).Append('=').Append(System.Uri.EscapeDataString(ConvertToString(searchTerm, System.Globalization.CultureInfo.InvariantCulture))).Append('&');
+                    }
+                    if (projectStates != null)
+                    {
+                        foreach (var item_ in projectStates) { urlBuilder_.Append(System.Uri.EscapeDataString("ProjectStates")).Append('=').Append(System.Uri.EscapeDataString(ConvertToString(item_, System.Globalization.CultureInfo.InvariantCulture))).Append('&'); }
                     }
                     if (page != null)
                     {

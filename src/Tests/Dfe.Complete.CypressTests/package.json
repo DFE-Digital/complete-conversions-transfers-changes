@@ -32,8 +32,8 @@
     "@typescript-eslint/eslint-plugin": "6.8.0",
     "axe-core": "4.10.3",
     "csv-stringify": "6.4.6",
-    "cypress": "13.17.0",
-    "cypress-axe": "1.5.0",
+    "cypress": "14.4.1",
+    "cypress-axe": "1.6.0",
     "cypress-localstorage-commands": "2.2.7",
     "cypress-multi-reporters": "1.6.4",
     "cypress-slack-reporter": "1.5.4",
@@ -45,8 +45,6 @@
     "mochawesome-report-generator": "6.2.0",
     "prettier": "3.0.3",
     "typescript": "5.2.2",
-    "uuid": "9.0.1",
-    "xlsx": "0.18.5",
     "zaproxy": "2.0.0-rc.6"
   }
 }

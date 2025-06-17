@@ -4,6 +4,7 @@ using Dfe.Complete.Application.Projects.Models;
 using Dfe.Complete.Domain.Enums;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace Dfe.Complete.Application.Projects.Queries.ListAllProjects;
 
@@ -12,7 +13,7 @@ public record ListAllProjectsByRegionQuery(
     ProjectType? Type)
     : IRequest<Result<List<ListAllProjectsByRegionsResultModel>>>;
 
-public class ListAllProjectsByRegionQueryHandler(IListAllProjectsQueryService listAllProjectsQueryService)
+public class ListAllProjectsByRegionQueryHandler(IProjectsQueryBuilder projectsQueryBuilder, ILogger<ListAllProjectsByRegionQueryHandler> logger)
     : IRequestHandler<ListAllProjectsByRegionQuery, Result<List<ListAllProjectsByRegionsResultModel>>>
 
 {
@@ -21,24 +22,30 @@ public class ListAllProjectsByRegionQueryHandler(IListAllProjectsQueryService li
     {
         try
         {
-            var projectsList = await listAllProjectsQueryService
-                .ListAllProjects(request.ProjectStatus, request.Type).ToListAsync(cancellationToken: cancellationToken);
+            var filters = new ProjectFilters(request.ProjectStatus, request.Type);
 
-            var projectsGroupedByRegion = projectsList.Where(p => p.Project?.Region != null).GroupBy(p => p.Project?.Region);
+            var projectsQuery = projectsQueryBuilder
+                .ApplyProjectFilters(filters)
+                .Where(p => p.Region != null)
+                .GetProjects();
 
-            var projectsResultModel = projectsGroupedByRegion
+            var projectsList = await projectsQuery
+                .GroupBy(p => p.Region)
                 .Select(group =>
                     new ListAllProjectsByRegionsResultModel(
-                        Region: (Region)group.Key,
-                        ConversionsCount: group.Count(item => item.Project?.Type == ProjectType.Conversion),
-                        TransfersCount: group.Count(item => item.Project?.Type == ProjectType.Transfer)
+                        group.Key.GetValueOrDefault(),
+                        group.Count(item => item != null && item.Type == ProjectType.Conversion),
+                        group.Count(item => item != null && item.Type == ProjectType.Transfer)
                     ))
-                .ToList();
+                .ToListAsync(cancellationToken);
 
-            return Result<List<ListAllProjectsByRegionsResultModel>>.Success(projectsResultModel);
+            var orderedRegions = projectsList.OrderBy(region => region.Region.ToString()).ToList();
+
+            return Result<List<ListAllProjectsByRegionsResultModel>>.Success(orderedRegions);
         }
         catch (Exception e)
         {
+            logger.LogError(e, "Exception for {Name} Request - {@Request}", nameof(ListAllProjectsByRegionQueryHandler), request);
             return Result<List<ListAllProjectsByRegionsResultModel>>.Failure(e.Message);
         }
     }

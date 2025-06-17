@@ -21,6 +21,7 @@ Security in case of vulnerabilities.
 ---
 
 ## Unreleased  
+
 ### Added  
 - New route /projects/service-support/without-academy-urn
 - Service support Conversion URNs (/projects/service-support/without-academy-urn)
@@ -30,8 +31,51 @@ Security in case of vulnerabilities.
 ### Changed  
 
 ### Fixed  
+- Updated pagination query parameter from `pageNumber` to `page` to match Ruby app
+- Optimised queries behind the "By local authority" page
+- Show a `Page Not Found` error if the requested page number exceeds the total number of available pages.
+- Fixed the search functionality to return only projects with status values of 0, 1, or 3 (Active, Completed or DAO revoked)
 
-See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-05-16.272...main) for everything awaiting release
+See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-05-30.320...main) for everything awaiting release
+
+---
+
+## [1.5.4](https://github.com/DFE-Digital/complete-conversions-transfers-changes/releases/tag/production-2025-05-30.320) - 2025-05-30
+### Added  
+- `PolicyCheckTagHelper` added to conditionally hide elements based on policy
+- Query builder in the infrastructure layer to help support custom queries
+
+### Changed  
+- Navigation items previously hidden with `UserTabAccessHelper` now hide on policy
+
+### Fixed  
+- Unassigned projects should show "Not yet assigned" under "Assigned To" column for projects on the local authority/trust pages
+- Optimised queries behind the "By month" and "For trust" listing pages
+
+### Removed
+- `UserTabAccessHelper` class is no longer required. Use policies instead
+
+### Security
+- Only correct user groups can now create projects
+
+See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-05-22.290...production-2025-05-30.320) for everything in the release
+
+---
+
+## [1.5.3](https://github.com/DFE-Digital/complete-conversions-transfers-changes/releases/tag/production-2025-05-22.290) - 2025-05-22
+### Added  
+ - Enabled error tracking via Application Insights.
+ - New route `/projects/team/unassigned`
+ - Your team projects "Unassigned" list (`/projects/team/unassigned`)
+
+### Changed  
+- Sort all projects by region list alphabetically
+
+### Fixed  
+- Note FK Ids are now required
+- Separated created and assigned users in project creation
+
+See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-05-16.272...production-2025-05-22.290) for everything in the release
 
 ---
 
@@ -44,6 +88,7 @@ See the [full commit history](https://github.com/DFE-Digital/complete-conversion
 - Fixed identifying "Form A MAT" projects logic
 - Removed unnecessary `Assign To` filter while pulling projects from database.
 - Resolve accessibility issue causing app header to appear blue instead of white
+- Removed `Project Status` filter while pullling search results.  
 
 See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-05-14.254...production-2025-05-16.272) for everything in the release
 

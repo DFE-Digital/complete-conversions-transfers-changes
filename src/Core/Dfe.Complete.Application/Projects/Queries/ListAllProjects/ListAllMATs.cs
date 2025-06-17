@@ -7,6 +7,7 @@ using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Domain.ValueObjects;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace Dfe.Complete.Application.Projects.Queries.ListAllProjects
 {
@@ -14,7 +15,8 @@ namespace Dfe.Complete.Application.Projects.Queries.ListAllProjects
 
     public class ListAllMaTsQueryHandler(
         IListAllProjectsQueryService listAllProjectsQueryService,
-        IEstablishmentsV4Client establishmentsClient)
+        IEstablishmentsV4Client establishmentsClient,
+        ILogger<ListAllMaTsQueryHandler> logger)
         : IRequestHandler<ListAllMaTsQuery, PaginatedResult<List<ListMatResultModel>>>
     {
         public async Task<PaginatedResult<List<ListMatResultModel>>> Handle(ListAllMaTsQuery request,
@@ -23,7 +25,7 @@ namespace Dfe.Complete.Application.Projects.Queries.ListAllProjects
             try
             {
                 var matProjects = await listAllProjectsQueryService
-                    .ListAllProjects(request.Status, null, isFormAMat: true)
+                    .ListAllProjects(new ProjectFilters(request.Status, null, IsFormAMat: true))
                     .ToListAsync(cancellationToken);
 
                 // Assigned to was causing issues in integration tests + it's not needed in this response 
@@ -31,10 +33,10 @@ namespace Dfe.Complete.Application.Projects.Queries.ListAllProjects
                 {
                     if (p.Project.AssignedTo != null)
                     {
-                        p.Project.AssignedTo.Notes = null;
-                        p.Project.AssignedTo.ProjectAssignedTos = null;
-                        p.Project.AssignedTo.ProjectCaseworkers = null;
-                        p.Project.AssignedTo.ProjectRegionalDeliveryOfficers = null;
+                        p.Project.AssignedTo.Notes = null!;
+                        p.Project.AssignedTo.ProjectAssignedTos = null!;
+                        p.Project.AssignedTo.ProjectCaseworkers = null!;
+                        p.Project.AssignedTo.ProjectRegionalDeliveryOfficers = null!;
                     }
                     return p;
                 }).ToList();
@@ -64,9 +66,11 @@ namespace Dfe.Complete.Application.Projects.Queries.ListAllProjects
                             return new ListAllProjectsQueryModel(project, matchingEstablishment);
                         }).OrderByDescending(p => p.Establishment.Name);
 
-                        return new ListMatResultModel(group.Key, trustName, projectModels);
+                        return new ListMatResultModel(group.Key!, trustName!, projectModels.Select(model =>
+                            ListAllProjectsResultModel.MapProjectAndEstablishmentToListAllProjectResultModel(model.Project,
+                                model.Establishment)));
                     })
-                    .OrderBy(r => r.trustName)
+                    .OrderBy(r => r.TrustName)
                     .ToList();
 
                 var result = allMATs
@@ -78,6 +82,7 @@ namespace Dfe.Complete.Application.Projects.Queries.ListAllProjects
             }
             catch (Exception ex)
             {
+                logger.LogError(ex, "Exception for {Name} Request - {@Request}", nameof(ListAllMaTsQueryHandler), request);
                 return PaginatedResult<List<ListMatResultModel>>.Failure(ex.Message);
             }
         }

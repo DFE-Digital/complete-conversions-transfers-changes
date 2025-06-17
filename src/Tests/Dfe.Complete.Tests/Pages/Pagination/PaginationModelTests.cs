@@ -109,7 +109,7 @@ public class PaginationModelTests
         var model = new PaginationModel(url, pageNumber, recordCount, pageSize);
 
         // Assert
-        Assert.Equal("https://example.com?pageNumber=3", model.NextPageLink);
+        Assert.Equal("https://example.com?page=3", model.NextPageLink);
     }
 
     [Fact]
@@ -125,7 +125,7 @@ public class PaginationModelTests
         var model = new PaginationModel(url, pageNumber, recordCount, pageSize);
 
         // Assert
-        Assert.Equal("https://example.com?pageNumber=1", model.PreviousPageLink);
+        Assert.Equal("https://example.com?page=1", model.PreviousPageLink);
     }
 
     [Fact]
@@ -177,5 +177,39 @@ public class PaginationModelTests
 
         // Assert
         Assert.Equal("custom-previous-page", model.PreviousButtonId);
+    }
+
+    [Theory]
+    [InlineData(1, false)]
+    [InlineData(200, true)]
+    public void IsOutOfRangePage_ShouldReturnCorrectResult(int pageNumber, bool result)
+    {
+        // Arrange
+        var url = "https://example.com"; 
+        var recordCount = 10;
+        var pageSize = 5;
+        var elementIdPrefix = "custom-";
+
+        // Act
+        var model = new PaginationModel(url, pageNumber, recordCount, pageSize, elementIdPrefix);
+
+        // Assert
+        Assert.Equal(result, model.IsOutOfRangePage);
+    }
+
+    [Theory]
+    [InlineData("https://example.com")]
+    [InlineData("https://example.com?q=test")]
+    public void SetUrl_FormatesCorrectURL(string url)
+    {
+        // Arrange
+        var pageNumber = 1;
+        var expectedUrl = $"{url}{(url.Contains('?') ? "&" : "?")}page={pageNumber}";
+
+        // Act 
+        var result = PaginationModel.SetUrl(url, pageNumber);
+
+        // Assert
+        Assert.Equal(expectedUrl, result);
     }
 }

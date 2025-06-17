@@ -9,6 +9,7 @@ import { projectTable } from "cypress/pages/projects/tables/projectTable";
 import yourTeamProjectsTable from "cypress/pages/projects/tables/yourTeamProjectsTable";
 import { currentMonthShort } from "cypress/constants/stringTestConstants";
 import projectDetailsPage from "cypress/pages/projects/projectDetailsPage";
+import { checkAccessibilityAcrossPages } from "cypress/support/reusableTests";
 
 const team = "London";
 const myLondonProject = ProjectBuilder.createConversionProjectRequest(new Date("2026-04-01"), 143659);
@@ -33,7 +34,7 @@ describe("Regional delivery officer (London) user - View your team projects (pro
         projectRemover.removeProjectIfItExists(`${handedOverProject.urn.value}`);
         projectApi.createConversionProject(myLondonProject);
         projectApi.createConversionProject(teammatesLondonRegionProject, rdoLondonUser.email);
-        // bug 213250 - projectApi.createTransferProject(handedOverProject, rdoLondonUser.email);
+        projectApi.createTransferProject(handedOverProject, rdoLondonUser.email);
     });
 
     beforeEach(() => {
@@ -140,16 +141,18 @@ describe("Regional delivery officer (London) user - View your team projects (pro
         projectDetailsPage.containsHeading(teammatesLondonSchoolName);
     });
 
-    // bug 213250
-    it.skip("Should be able to view my team projects that are handed over", () => {
-        yourTeamProjects.filterProjects("Handed over").containsHeading("Handed over");
+    it("Should be able to view my team projects that are handed over", () => {
+        yourTeamProjects
+            .filterProjects("Handed over")
+            .containsHeading("Handed over")
+            .goToNextPageUntilFieldIsVisible(handedOverSchoolName);
         yourTeamProjectsTable
             .hasTableHeaders(["School or academy", "URN", "Conversion or transfer date", "Project type", "Assigned to"])
             .withSchool(handedOverSchoolName)
             .columnHasValue("URN", `${handedOverProject.urn.value}`)
             .columnHasValue("Conversion or transfer date", "Mar 2026")
             .columnHasValue("Project type", "Transfer")
-            .columnHasValue("Assigned to", rdoLondonUser.username)
+            .columnContainsValue("Assigned to", "Not yet assigned")
             .goTo(handedOverSchoolName);
         projectDetailsPage.containsHeading(handedOverSchoolName);
     });
@@ -183,5 +186,9 @@ describe("Regional delivery officer (London) user - View your team projects (pro
         yourTeamProjects.unableToViewFilter("Unassigned");
         // not implemented:
         // cy.visit("/projects/team/unassigned").notAuthorisedToPerformAction();
+    });
+
+    it("Check accessibility across pages", () => {
+        checkAccessibilityAcrossPages();
     });
 });

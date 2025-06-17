@@ -43,7 +43,7 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
             var mockProjects = matchingProjects.BuildMock();
 
             listAllProjectsQueryService
-                .ListAllProjects(ProjectState.Active, null, newTrustReferenceNumber: referenceNumber)
+                .ListAllProjects(new ProjectFilters(ProjectState.Active, null, NewTrustReferenceNumber: referenceNumber))
                 .Returns(mockProjects);
 
             var query = new ListEstablishmentsInMatQuery(referenceNumber);
@@ -53,10 +53,10 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
 
             // Assert
             Assert.True(result.IsSuccess);
-            Assert.Equal(referenceNumber, result.Value.identifier);
-            Assert.Equal(trustName, result.Value.trustName);
-            Assert.Equal(matchingProjects.Count, result.Value.projectModels.Count());
-            Assert.All(result.Value.projectModels, p => Assert.Equal(referenceNumber, p.Project.NewTrustReferenceNumber));
+            Assert.Equal(referenceNumber, result.Value.Identifier);
+            Assert.Equal(trustName, result.Value.TrustName);
+            Assert.Equal(matchingProjects.Count, result.Value.ProjectModels.Count());
+            Assert.All(result.Value.ProjectModels, p => Assert.Equal(referenceNumber, p.NewTrustReferenceNumber));
         }
 
         [Theory]
@@ -73,7 +73,7 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
             var emptyList = new List<ListAllProjectsQueryModel>().BuildMock();
 
             listAllProjectsQueryService
-                .ListAllProjects(ProjectState.Active, null, newTrustReferenceNumber: referenceNumber)
+                .ListAllProjects(new ProjectFilters(ProjectState.Active, null, NewTrustReferenceNumber: referenceNumber))
                 .Returns(emptyList);
 
             var query = new ListEstablishmentsInMatQuery(referenceNumber);
@@ -97,7 +97,7 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
             var query = new ListEstablishmentsInMatQuery("TR123");
 
             listAllProjectsQueryService
-                .ListAllProjects(ProjectState.Active, null,  newTrustReferenceNumber: "TR123")
+                .ListAllProjects(new ProjectFilters(ProjectState.Active, null,  NewTrustReferenceNumber: "TR123"))
                 .Throws(new Exception(expectedError));
 
             // Act

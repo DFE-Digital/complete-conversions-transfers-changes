@@ -1,6 +1,5 @@
 ﻿@page "/search"
 @using Dfe.Complete.Pages.Projects.List
-@using Dfe.Complete.Utils
 @model Dfe.Complete.Pages.Search.SearchProjectsModel
 @{
     Layout = "Search/_SearchProjectsLayout";
@@ -51,7 +50,7 @@ else
         Search results for "@Model.Query"
     </h1>
 
-    <p class="govuk-body">@Model.TotalResults results found</p>
+    <p class="govuk-body">@Model.TotalResults.ToResultsCountMessage()</p>
     <table class="govuk-table" name="projects_table" aria-label="Projects table">
         <thead class="govuk-table__head">
             <tr class="govuk-table__row">
@@ -73,7 +72,7 @@ else
                     <td class="govuk-table__cell">@project.Urn.Value</td>
                     <td class="govuk-table__cell">@project.ProjectType.ToString()</td>
                     <td class="govuk-table__cell">@project.ConversionOrTransferDate.ToMonthYearString()</td>
-                    <td class="govuk-table__cell">@project.AssignedToFullName</td>
+                    <td class="govuk-table__cell">@(project.AssignedToFullName ?? "Not yet assigned")</td>
                 </tr>
             }
         </tbody>

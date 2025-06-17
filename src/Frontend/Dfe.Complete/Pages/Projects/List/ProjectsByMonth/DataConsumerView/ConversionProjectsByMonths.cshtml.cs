@@ -1,4 +1,3 @@
-using Dfe.Complete.Application.Projects.Models;
 using Dfe.Complete.Application.Projects.Queries.ListProjectsByMonth;
 using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Models;
@@ -6,7 +5,6 @@ using Dfe.Complete.Pages.Pagination;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Dfe.Complete.Extensions;
-using System.Globalization;
 
 namespace Dfe.Complete.Pages.Projects.List.ProjectsByMonth
 {
@@ -14,7 +12,7 @@ namespace Dfe.Complete.Pages.Projects.List.ProjectsByMonth
     {
         private readonly string PathToPage = "/projects/all/by-month/conversions/from/{0}/{1}/to/{2}/{3}";
     
-        public async Task OnGet()
+        public async Task<IActionResult> OnGet()
         {
             var fromDate = ParseDate(FromMonth, FromYear);
             var toDate = ParseDate(ToMonth, ToYear);
@@ -43,9 +41,12 @@ namespace Dfe.Complete.Pages.Projects.List.ProjectsByMonth
                 PageNumber, 
                 response.ItemCount, 
                 PageSize);
+
+            var hasPageFound = HasPageFound(Pagination.IsOutOfRangePage, Pagination.TotalPages);
+            return hasPageFound ?? Page();
         }
 
-        public async Task OnGetMovePage() => await OnGet();
+        public async Task<IActionResult> OnGetMovePage() => await OnGet();
         
         public async Task<IActionResult> OnPost(CancellationToken cancellationToken)
         {

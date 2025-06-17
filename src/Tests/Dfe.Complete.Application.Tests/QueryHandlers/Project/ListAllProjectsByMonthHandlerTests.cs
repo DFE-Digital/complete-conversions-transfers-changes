@@ -1,4 +1,5 @@
 using System.Collections.ObjectModel;
+using System.Linq.Expressions;
 using AutoFixture;
 using AutoFixture.Xunit2;
 using Dfe.AcademiesApi.Client.Contracts;
@@ -21,14 +22,16 @@ public class ListAllProjectsByMonthHandlerTests
     [Theory]
     [CustomAutoData]
     public async Task Handle_ShouldReturnUnsuccessful_WhenAnErrorOccurs(
-        [Frozen] IListAllProjectsQueryService mockListAllProjectsQueryService,
+        [Frozen] IProjectsQueryBuilder mockProjectsQueryBuilder,
         ListAllProjectsByMonthsQueryHandler handler)
     {
         // Arrange
         var errorMessage = "This is a test";
 
-        mockListAllProjectsQueryService
-            .ListAllProjects(Arg.Any<ProjectState?>(), Arg.Any<ProjectType?>(), assignedToState: Arg.Any<AssignedToState>())
+        mockProjectsQueryBuilder
+            .ApplyProjectFilters(Arg.Any<ProjectFilters>())
+            .Where(Arg.Any<Expression<Func<Domain.Entities.Project, bool>>>())
+            .GenerateQuery()
             .Throws(new Exception(errorMessage));
 
         var date = DateOnly.FromDateTime(DateTime.Today);
@@ -47,7 +50,7 @@ public class ListAllProjectsByMonthHandlerTests
         typeof(OmitCircularReferenceCustomization),
         typeof(DateOnlyCustomization))]
     public async Task Handle_ShouldReturnUnsuccessful_WhenTrustLookupFails(
-        [Frozen] IListAllProjectsQueryService mockListAllProjectsQueryService,
+        [Frozen] IProjectsQueryBuilder mockProjectsQueryBuilder,
         [Frozen] ITrustsV4Client mockTrustsClient,
         ListAllProjectsByMonthsQueryHandler handler,
         IFixture fixture)
@@ -55,28 +58,34 @@ public class ListAllProjectsByMonthHandlerTests
         // Arrange
         var expectedError = "Trust lookup error";
         var mockProjects = fixture.CreateMany<ListAllProjectsQueryModel>(3).BuildMock();
-        mockListAllProjectsQueryService.ListAllProjects(Arg.Any<ProjectState?>(), Arg.Any<ProjectType?>()).Returns(mockProjects);
+
+        mockProjectsQueryBuilder
+            .ApplyProjectFilters(Arg.Any<ProjectFilters>())
+            .Where(Arg.Any<Expression<Func<Domain.Entities.Project, bool>>>())
+            .GenerateQuery()
+            .Returns(mockProjects);
+
         mockTrustsClient.GetByUkprnsAllAsync(Arg.Any<IEnumerable<string>>(), Arg.Any<CancellationToken>()).Throws(new Exception(expectedError));
-        
+
         var date = DateOnly.FromDateTime(DateTime.Today);
 
         // Act
         var result = await handler.Handle(new ListProjectsByMonthsQuery(date, null, ProjectState.Active, ProjectType.Conversion), default);
-        
+
         // Assert
         Assert.NotNull(result);
         Assert.False(result.IsSuccess);
         Assert.Contains(expectedError, result.Error);
     }
-    
+
     [Theory]
     [CustomAutoData(
         typeof(OmitCircularReferenceCustomization),
         typeof(DateOnlyCustomization),
-        typeof(ListAllProjectsQueryModelCustomization))]
+        typeof(ProjectsQueryBuilderCustomization))]
     public async Task Handle_ShouldCorrectlyPaginateResults(
-        [Frozen] IListAllProjectsQueryService mockListAllProjectsQueryService,
         [Frozen] ITrustsV4Client mockTrustsClient,
+        [Frozen] IProjectsQueryBuilder mockProjectsQueryBuilder,
         ListAllProjectsByMonthsQueryHandler handler,
         IFixture fixture)
     {
@@ -85,7 +94,7 @@ public class ListAllProjectsByMonthHandlerTests
         var dateFrom = new DateOnly(2025, 1, 1);
         var dateTo = new DateOnly(2025, 12, 31);
         var user = fixture.Create<Domain.Entities.User>();
-        
+
         var listAllProjectsQueryModels = fixture.Build<ListAllProjectsQueryModel>()
             .CreateMany(50)
             .Select(p =>
@@ -97,9 +106,13 @@ public class ListAllProjectsByMonthHandlerTests
                 return p;
             })
             .BuildMock();
-        
-        mockListAllProjectsQueryService.ListAllProjects(Arg.Any<ProjectState?>(), Arg.Any<ProjectType?>(), assignedToState: Arg.Any<AssignedToState>()).Returns(listAllProjectsQueryModels);
-        
+
+        mockProjectsQueryBuilder
+            .ApplyProjectFilters(Arg.Any<ProjectFilters>())
+            .Where(Arg.Any<Expression<Func<Domain.Entities.Project, bool>>>())
+            .GenerateQuery()
+            .Returns(listAllProjectsQueryModels);
+
         var trustDtos = fixture
             .Build<TrustDto>()
             .With(t => t.Ukprn, ukprn.ToString())
@@ -108,10 +121,10 @@ public class ListAllProjectsByMonthHandlerTests
 
         mockTrustsClient.GetByUkprnsAllAsync(Arg.Any<IEnumerable<string>>(), Arg.Any<CancellationToken>())
             .Returns(Task.FromResult(new ObservableCollection<TrustDto>(trustDtos)));
-        
+
         // Act
         var result = await handler.Handle(new ListProjectsByMonthsQuery(dateFrom, dateTo, ProjectState.Active, ProjectType.Conversion, Page: 2, Count: 10), default);
-        
+
         // Assert
         Assert.NotNull(result);
         Assert.True(result.IsSuccess);
@@ -122,10 +135,10 @@ public class ListAllProjectsByMonthHandlerTests
     [CustomAutoData(
         typeof(OmitCircularReferenceCustomization),
         typeof(DateOnlyCustomization),
-        typeof(ListAllProjectsQueryModelCustomization))]
+        typeof(ProjectsQueryBuilderCustomization))]
     public async Task Handle_ShouldFilterProjectsByDateRange(
-        [Frozen] IListAllProjectsQueryService mockListAllProjectsQueryService,
         [Frozen] ITrustsV4Client mockTrustsClient,
+        [Frozen] IProjectsQueryBuilder mockProjectsQueryBuilder,
         ListAllProjectsByMonthsQueryHandler handler,
         IFixture fixture)
     {
@@ -135,10 +148,10 @@ public class ListAllProjectsByMonthHandlerTests
 
         var startDate = new DateOnly(2025, 6, 1);
         var endDate = new DateOnly(2025, 6, 30);
-        var inRangeProjects = fixture.Build<ListAllProjectsQueryModel>()
+        var allProjects = fixture.Build<ListAllProjectsQueryModel>()
             .CreateMany(6)
             .ToList();
-        
+
         var trustDtos = fixture
             .Build<TrustDto>()
             .With(t => t.Ukprn, ukprn.ToString())
@@ -149,26 +162,33 @@ public class ListAllProjectsByMonthHandlerTests
             .Returns(Task.FromResult(new ObservableCollection<TrustDto>(trustDtos)));
 
         List<ListAllProjectsQueryModel> projects = new List<ListAllProjectsQueryModel>();
-        
-        foreach (var project in inRangeProjects)
+
+        foreach (var project in allProjects)
         {
             project.Project.SignificantDate = startDate;
             project.Project.SignificantDateProvisional = false;
             project.Project.AssignedTo = user;
-            
+
             projects.Add(project);
         }
-        
+
         var lastProject = projects[projects.Count - 1];
         lastProject.Project.SignificantDate = new DateOnly(2025, 7, 1);
 
-        var final = projects.BuildMock();
+        var inRangeProjects = projects
+            .Where(p => p.Project.SignificantDate >= startDate && p.Project.SignificantDate <= endDate)
+            .ToList()
+            .BuildMock();
 
-        mockListAllProjectsQueryService.ListAllProjects(Arg.Any<ProjectState?>(), Arg.Any<ProjectType?>(), assignedToState: Arg.Any<AssignedToState>()).Returns(final);
-        
+        mockProjectsQueryBuilder
+            .ApplyProjectFilters(Arg.Any<ProjectFilters>())
+            .Where(Arg.Any<Expression<Func<Domain.Entities.Project, bool>>>())
+            .GenerateQuery()
+            .Returns(inRangeProjects);
+
         // Act
         var result = await handler.Handle(new ListProjectsByMonthsQuery(startDate, endDate, ProjectState.Active, ProjectType.Conversion), default);
-        
+
         // Assert
         Assert.NotNull(result);
         Assert.True(result.IsSuccess);

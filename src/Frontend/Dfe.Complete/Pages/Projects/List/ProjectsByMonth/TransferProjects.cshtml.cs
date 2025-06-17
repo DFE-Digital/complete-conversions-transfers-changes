@@ -20,7 +20,7 @@ namespace Dfe.Complete.Pages.Projects.List.ProjectsByMonth
         public int Year { get; set; }
         
         public string DateString { get; set; }
-        public async Task OnGet()
+        public async Task<IActionResult> OnGet()
         {
             DateOnly.TryParse(string.Format("{0}/{1}", Month, Year), out DateOnly date);
             
@@ -34,11 +34,14 @@ namespace Dfe.Complete.Pages.Projects.List.ProjectsByMonth
             Projects = response.Value?.ToList() ?? [];
 
             Pagination = new PaginationModel($"/projects/all/by-month/transfers/{Month}/{Year}", PageNumber, response.ItemCount, PageSize);
+
+            var hasPageFound = HasPageFound(Pagination.IsOutOfRangePage, Pagination.TotalPages);
+            return hasPageFound ?? Page();
         }
 
-        public async Task OnGetMovePage()
+        public async Task<IActionResult> OnGetMovePage()
         {
-            await OnGet();
+            return await OnGet();
         }
     }
 }

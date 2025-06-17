@@ -11,7 +11,7 @@ public abstract class BaseProjectsPageModel(string currentNavigation) : PageMode
 {
     public string CurrentNavigationItem { get; init; } = currentNavigation;
 
-    [BindProperty(SupportsGet = true)] public int PageNumber { get; set; } = 1;
+    [FromQuery(Name = "page")] public int PageNumber { get; set; } = 1;
 
     public PaginationModel? Pagination { get; set; }
 
@@ -22,4 +22,7 @@ public abstract class BaseProjectsPageModel(string currentNavigation) : PageMode
 
     public static string GetProjectSummaryUrl(ProjectId projectId) =>
         string.Format(RouteConstants.ProjectTaskList, projectId.Value);
+
+    protected IActionResult HasPageFound(bool condition, int totalPages) =>
+        condition && totalPages > 0 ? StatusCode(404) : null!;
 }

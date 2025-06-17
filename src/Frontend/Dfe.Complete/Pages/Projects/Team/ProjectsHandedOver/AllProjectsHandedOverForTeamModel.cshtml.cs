@@ -7,14 +7,18 @@ using Dfe.Complete.Domain.Extensions;
 using Dfe.Complete.Models;
 using Dfe.Complete.Pages.Pagination;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
+using Dfe.Complete.Domain.Constants;
+using Microsoft.AspNetCore.Mvc;
 
-namespace Dfe.Complete.Pages.Projects.Team.HandedOver;
+namespace Dfe.Complete.Pages.Projects.Team.ProjectsHandedOver;
 
+[Authorize(policy: UserPolicyConstants.CanViewTeamProjectsHandedOver)]
 public class AllProjectsHandedOverForTeamModel(ISender sender) : YourTeamProjectsModel(HandedOverNavigation)
 {
     public List<ListAllProjectsResultModel> Projects { get; set; } = [];
 
-    public async Task OnGet()
+    public async Task<IActionResult> OnGet()
     {
         ViewData[TabNavigationModel.ViewDataKey] = YourTeamProjectsTabNavigationModel;
 
@@ -38,6 +42,9 @@ public class AllProjectsHandedOverForTeamModel(ISender sender) : YourTeamProject
         }
 
         Pagination = new PaginationModel(RouteConstants.TeamProjectsHandedOver, PageNumber, recordCount, PageSize);
+
+        var hasPageFound = HasPageFound(Pagination.IsOutOfRangePage, Pagination.TotalPages);
+        return hasPageFound ?? Page();
     }
 
     public async Task OnGetMovePage()

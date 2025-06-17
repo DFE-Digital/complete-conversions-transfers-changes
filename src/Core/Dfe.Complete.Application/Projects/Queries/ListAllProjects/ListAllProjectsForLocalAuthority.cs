@@ -4,6 +4,7 @@ using Dfe.Complete.Application.Projects.Models;
 using Dfe.Complete.Domain.Enums;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace Dfe.Complete.Application.Projects.Queries.ListAllProjects;
 
@@ -13,7 +14,7 @@ public record ListAllProjectsForLocalAuthorityQuery(
     ProjectType? Type = null)
     : PaginatedRequest<PaginatedResult<List<ListAllProjectsResultModel>>>;
 
-public class ListAllProjectsForLocalAuthority(IListAllProjectsQueryService listAllProjectsQueryService)
+public class ListAllProjectsForLocalAuthority(IListAllProjectsQueryService listAllProjectsQueryService, ILogger<ListAllProjectsByRegionQueryHandler> logger)
     : IRequestHandler<ListAllProjectsForLocalAuthorityQuery, PaginatedResult<List<ListAllProjectsResultModel>>>
 {
     public async Task<PaginatedResult<List<ListAllProjectsResultModel>>> Handle(
@@ -22,7 +23,8 @@ public class ListAllProjectsForLocalAuthority(IListAllProjectsQueryService listA
         try
         {
             var orderBy = new OrderProjectQueryBy();
-            var projectsForLaQuery = listAllProjectsQueryService.ListAllProjects(request.State, request.Type, localAuthorityCode: request.LocalAuthorityCode, orderBy: orderBy);
+            var projectsForLaQuery = listAllProjectsQueryService.ListAllProjects(
+                new ProjectFilters(request.State, request.Type, LocalAuthorityCode: request.LocalAuthorityCode), orderBy: orderBy);
 
             var count = await projectsForLaQuery.CountAsync(cancellationToken);
 
@@ -38,6 +40,7 @@ public class ListAllProjectsForLocalAuthority(IListAllProjectsQueryService listA
         }
         catch (Exception e)
         {
+            logger.LogError(e, "Exception for {Name} Request - {@Request}", nameof(ListAllProjectsForLocalAuthority), request);
             return PaginatedResult<List<ListAllProjectsResultModel>>.Failure(e.Message);
         }
     }

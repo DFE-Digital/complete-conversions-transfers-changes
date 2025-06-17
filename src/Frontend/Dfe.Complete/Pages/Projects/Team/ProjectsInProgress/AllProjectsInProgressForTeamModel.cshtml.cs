@@ -7,6 +7,7 @@ using Dfe.Complete.Domain.Extensions;
 using Dfe.Complete.Models;
 using Dfe.Complete.Pages.Pagination;
 using MediatR;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Dfe.Complete.Pages.Projects.Team.InProgress;
 
@@ -15,7 +16,7 @@ public class AllProjectsInProgressForTeamModel(ISender sender) : YourTeamProject
     public List<ListAllProjectsResultModel> Projects { get; set; } = [];
     public bool UserTeamIsRegionalDeliveryOfficer { get; set; }
 
-    public async Task OnGet()
+    public async Task<IActionResult> OnGet()
     {
         ViewData[TabNavigationModel.ViewDataKey] = YourTeamProjectsTabNavigationModel;
 
@@ -54,6 +55,9 @@ public class AllProjectsInProgressForTeamModel(ISender sender) : YourTeamProject
         }
 
         Pagination = new PaginationModel(RouteConstants.TeamProjectsInProgress, PageNumber, recordCount, PageSize);
+
+        var hasPageFound = HasPageFound(Pagination.IsOutOfRangePage, Pagination.TotalPages);
+        return hasPageFound ?? Page();
     }
 
     public async Task OnGetMovePage()

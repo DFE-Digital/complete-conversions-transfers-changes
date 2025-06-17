@@ -19,6 +19,14 @@ import { RuleObject } from "axe-core";
 import { yesNoOption } from "../constants/stringTestConstants";
 import { TestUser } from "cypress/constants/TestUser";
 
+Cypress.on("url:changed", (url) => {
+    url = url.replace(`${Cypress.config("baseUrl")}`, "");
+    if (!Cypress.env("visitedUrls")) {
+        Cypress.env("visitedUrls", new Set());
+    }
+    Cypress.env("visitedUrls").add(url);
+});
+
 declare global {
     namespace Cypress {
         interface Chainable {
@@ -65,6 +73,8 @@ declare global {
             typeFast(text: string): Chainable<Element>;
 
             typeText(element: Chainable<Element>, text: string): Chainable<Element>;
+
+            revisitCurrentUrl(): Chainable<Element>;
         }
     }
 }

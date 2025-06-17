@@ -4,6 +4,7 @@ using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Models;
 using Dfe.Complete.Pages.Pagination;
 using MediatR;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Dfe.Complete.Pages.Projects.List.ProjectsByUser;
 
@@ -11,7 +12,7 @@ public class AllProjectsByUser(ISender sender) : AllProjectsModel(ByUserNavigati
 {
     public List<ListAllUsersWithProjectsResultModel> Users { get; set; } = default!;
 
-    public new async Task OnGet()
+    public new async Task<IActionResult> OnGet()
     {
         ViewData[TabNavigationModel.ViewDataKey] = AllProjectsTabNavigationModel;
 
@@ -21,5 +22,8 @@ public class AllProjectsByUser(ISender sender) : AllProjectsModel(ByUserNavigati
         Users = listResponse.Value ?? [];
 
         Pagination = new PaginationModel("/projects/all/users", PageNumber, listResponse.ItemCount, PageSize);
+
+        var hasPageFound = HasPageFound(Pagination.IsOutOfRangePage, Pagination.TotalPages);
+        return hasPageFound ?? Page();
     }
 }

@@ -16,7 +16,7 @@ public class ProjectsForLocalAuthority(ISender sender) : AllProjectsModel(ByLoca
 
     public List<ListAllProjectsResultModel> Projects { get; set; }
 
-    public async Task OnGet()
+    public async Task<IActionResult> OnGet()
     {
         ViewData[TabNavigationModel.ViewDataKey] = AllProjectsTabNavigationModel;
 
@@ -31,5 +31,8 @@ public class ProjectsForLocalAuthority(ISender sender) : AllProjectsModel(ByLoca
 
         Pagination = new PaginationModel($"/projects/all/local-authorities/{LocalAuthorityCode}", PageNumber,
             foundProjectsForLocalAuthority.ItemCount, PageSize);
+
+        var hasPageFound = HasPageFound(Pagination.IsOutOfRangePage, Pagination.TotalPages);
+        return hasPageFound ?? Page();
     }
 }

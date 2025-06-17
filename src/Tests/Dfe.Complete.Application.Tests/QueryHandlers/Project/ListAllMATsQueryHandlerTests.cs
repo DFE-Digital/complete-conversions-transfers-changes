@@ -48,7 +48,7 @@ public class ListAllMATsQueryHandlerTests
         var projectsResult = projects.AsQueryable().BuildMock();
 
         listAllProjectsQueryService
-            .ListAllProjects(ProjectState.Active, null, isFormAMat: true)
+            .ListAllProjects(new ProjectFilters(ProjectState.Active, null, IsFormAMat: true))
             .Returns(projectsResult);
 
         var urns = projects.Select(p => p.Project.Urn.Value.ToString()).Distinct().ToList();
@@ -104,7 +104,7 @@ public class ListAllMATsQueryHandlerTests
         var dbProjects = matProjects.AsQueryable().BuildMock();
     
         listAllProjectsQueryService
-            .ListAllProjects(ProjectState.Active, null, isFormAMat: true)
+            .ListAllProjects(new ProjectFilters(ProjectState.Active, null, IsFormAMat: true))
             .Returns(dbProjects);
 
         var establishments = matProjects.Select(p => new EstablishmentDto
@@ -127,9 +127,9 @@ public class ListAllMATsQueryHandlerTests
         // Assert
         Assert.True(result.IsSuccess);
         Assert.Single(result.Value);
-        Assert.Equal(trustKey, expectedModel.identifier);
-        Assert.Equal(trustName, expectedModel.trustName);
-        Assert.Equal(5, expectedModel.projectModels.Count());
+        Assert.Equal(trustKey, expectedModel.Identifier);
+        Assert.Equal(trustName, expectedModel.TrustName);
+        Assert.Equal(5, expectedModel.ProjectModels.Count());
     }
     
     [Theory]
@@ -142,7 +142,7 @@ public class ListAllMATsQueryHandlerTests
         var query = new ListAllMaTsQuery(ProjectState.Active) { Count = 10, Page = 0 };
     
         listAllProjectsQueryService
-            .ListAllProjects(ProjectState.Active, null, isFormAMat: true)
+            .ListAllProjects(new ProjectFilters(ProjectState.Active, null, IsFormAMat: true))
             .Throws(new Exception("Exception"));
     
         // Act
