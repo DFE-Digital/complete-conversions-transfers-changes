@@ -20,6 +20,11 @@ namespace Dfe.Complete.Pages.Public
 		{
 			ReturnPath = string.IsNullOrWhiteSpace(returnUrl) ? GetReturnUrl() : returnUrl;
 
+			if (ReturnPath == "/cookies")
+			{
+				returnUrl = Uri.UnescapeDataString(GetReturnUrl().Replace("/cookies?returnUrl=", ""));
+
+			}
             Consent = analyticsConsentService.ConsentValue();
 
             if (consent.HasValue)
