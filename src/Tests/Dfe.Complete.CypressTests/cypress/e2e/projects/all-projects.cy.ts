@@ -8,7 +8,6 @@ import {
     nextMonth,
     nextMonthLong,
     nextMonthShort,
-    testTrust,
 } from "cypress/constants/stringTestConstants";
 import projectApi from "cypress/api/projectApi";
 import { ProjectBuilder } from "cypress/api/projectBuilder";
@@ -153,11 +152,11 @@ describe("View all projects", () => {
             .goToNextPageUntilFieldIsVisible(transferFormAMatSchoolName);
         formAMATProjectTable
             .hasTableHeaders(["Trust", "TRN", "Schools Included"])
-            .withTrust(testTrust.name)
-            .columnHasValue("TRN", testTrust.referenceNumber)
+            .withTrust(dimensionsTrust.name)
+            .columnHasValue("TRN", dimensionsTrust.referenceNumber)
             .columnContainsValue("Schools Included", transferFormAMatSchoolName)
-            .goTo(testTrust.name);
-        allProjects.containsHeading(testTrust.name);
+            .goTo(dimensionsTrust.name);
+        allProjects.containsHeading(dimensionsTrust.name);
         projectTable
             .hasTableHeaders(["School or academy", "URN", "Conversion or transfer date", "Project type", "Assigned to"])
             .withSchool(transferFormAMatSchoolName)
