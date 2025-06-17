@@ -2,9 +2,7 @@
 @using Dfe.Complete.Constants
 @using Dfe.Complete.Extensions;
 @using Dfe.Complete.Domain.Enums;
-@using Microsoft.AspNetCore.Authorization
 @using Dfe.Complete.Domain.Constants;
-@inject IAuthorizationService _authorizationService
 @model Dfe.Complete.Pages.Projects.Notes.ViewProjectNotesModel
 @{
     Layout = "_ProjectLayout";
@@ -12,11 +10,6 @@
 
     var addNoteLink = string.Format(RouteConstants.ProjectAddNote, Model.ProjectId);
     var userId = User.GetUserId();
-
-    var canAddNotes = Model.Project.State != ProjectState.Deleted &&
-    Model.Project.State != ProjectState.Completed &&
-    Model.Project.State != ProjectState.DaoRevoked &&
-    (await _authorizationService.AuthorizeAsync(User, UserPolicyConstants.CanAddNotes)).Succeeded;
 
     var projectEditable = Model.Project.State != ProjectState.Completed;
 }

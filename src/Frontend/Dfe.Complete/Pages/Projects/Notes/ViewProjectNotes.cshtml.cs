@@ -13,26 +13,34 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace Dfe.Complete.Pages.Projects.Notes;
 
-public class ViewProjectNotesModel(ISender sender) : ProjectLayoutModel(sender, NotesNavigation)
+public class ViewProjectNotesModel(ISender sender, IAuthorizationService _authorizationService) : ProjectLayoutModel(sender, NotesNavigation)
 {
     public IReadOnlyList<NoteDto> Notes { get; private set; } = [];
 
-    public async Task<IActionResult> OnPostAddNoteAsync(IAuthorizationService _authorizationService)
+    public async Task<IActionResult> OnPostAddNoteAsync()
     {
+        var baseResult = await base.OnGetAsync();
+        if (baseResult is not PageResult) return baseResult;
         var canAddNotes = Project.State != ProjectState.Deleted &&
             Project.State != ProjectState.Completed &&
-            Project.State != ProjectState.DaoRevoked &&
-            (await _authorizationService.AuthorizeAsync(User, UserPolicyConstants.CanAddNotes)).Succeeded;
+            Project.State != ProjectState.DaoRevoked;
+
+        string? errorMessage = null;
 
         if (!canAddNotes)
-        {
-            TempDataExtensions.SetNotification(
-                TempData,
-                NotificationType.Error,
-                "Access denied",
-                "You cannot add notes to this project.");
+            errorMessage = "The project is not active and no further notes can be added.";
+        else if (!(await _authorizationService.AuthorizeAsync(User, UserPolicyConstants.CanAddNotes)).Succeeded)
+            errorMessage = "You are not authorised to perform this action.";
 
-            return Page();
+        if (errorMessage != null)
+        {
+            TempData.SetNotification(
+                NotificationType.Error,
+                "Important",
+                errorMessage
+            );
+
+            return RedirectToPage(new { projectId = ProjectId });
         }
 
         return RedirectToPage("/Projects/Notes/Add");
