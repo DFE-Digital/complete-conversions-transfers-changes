@@ -1082,4 +1082,50 @@ public partial class ProjectsControllerTests
         Assert.NotNull(results);
         Assert.Empty(results);
     }
+    
+    [Theory]
+    [CustomAutoData(typeof(CustomWebApplicationDbContextFactoryCustomization), typeof(GiasEstablishmentsCustomization))]
+    public async Task ListAllConvertingProjects_Async_ShouldReturnList(
+       CustomWebApplicationDbContextFactory<Program> factory,
+       IProjectsClient projectsClient,
+       IFixture fixture)
+    {
+        factory.TestClaims = [new Claim(ClaimTypes.Role, ApiRoles.ReadRole)];
+
+        // Arrange
+        var dbContext = factory.GetDbContext<CompleteContext>();
+        var establishments = fixture.Customize(new GiasEstablishmentsCustomization()).CreateMany<GiasEstablishment>(10)
+            .ToList();
+        var localAuthority = dbContext.LocalAuthorities.AsEnumerable().MinBy(_ => Guid.NewGuid());
+        Assert.NotNull(localAuthority);
+
+        await dbContext.GiasEstablishments.AddRangeAsync(establishments);
+        
+        var projects = establishments.Select((establishment, i) =>
+        {
+            var project = fixture.Customize(new ProjectCustomization
+            {
+                LocalAuthorityId = localAuthority.Id,
+                AssignedAt = null,
+                CompletedAt = null,
+                SignificantDate = DateOnly.FromDateTime(DateTime.Today),
+            }).Create<Project>();
+            project.Urn = establishment.Urn ?? project.Urn;
+            return project;
+        }).ToList();
+
+        await dbContext.Projects.AddRangeAsync(projects);
+        await dbContext.SaveChangesAsync();
+
+        // Act
+        var results = await projectsClient.ListAllProjectsConvertingAsync(true, 0, 20, CancellationToken.None);
+        
+        var expectedProjects = projects
+            .Where(p => p.AssignedAt == null && p.CompletedAt == null && p.State == Domain.Enums.ProjectState.Active)
+            .ToList();
+        
+        // Assert
+        Assert.NotNull(results);
+        Assert.Equal(expectedProjects.Count, results.Count);
+    }
 }
