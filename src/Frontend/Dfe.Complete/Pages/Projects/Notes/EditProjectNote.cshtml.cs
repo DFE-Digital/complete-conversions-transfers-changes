@@ -7,14 +7,14 @@ namespace Dfe.Complete.Pages.Projects.Notes
     public class EditProjectNoteModel : PageModel
     {
         [BindProperty(SupportsGet = true, Name = "projectId")]
-        public string ProjectId { get; set; }
+        public required string ProjectId { get; set; }
 
         [BindProperty(SupportsGet = true, Name = "noteId")]
-        public string NoteId { get; set; }
+        public required string NoteId { get; set; }
 
         [BindProperty(Name = "note-text")]
         public string NoteText { get; set; }
-        
+
 
         public async Task OnGet()
         {
