@@ -57,7 +57,28 @@ namespace Dfe.Complete.Application.Common.Mappers
 					Town = src.AddressTown,
 					County = src.AddressCounty,
 					Postcode = src.AddressPostcode
-				}));
+				}))
+				.ForMember(dest => dest.OfstedRating, opt => opt.Ignore())
+				.ForMember(dest => dest.OfstedLastInspection, opt => opt.Ignore())
+				.ForMember(dest => dest.SchoolCapacity, opt => opt.Ignore())
+				.ForMember(dest => dest.Pfi, opt => opt.Ignore())
+				.ForMember(dest => dest.Pan, opt => opt.Ignore())
+				.ForMember(dest => dest.Deficit, opt => opt.Ignore())
+				.ForMember(dest => dest.ViabilityIssue, opt => opt.Ignore())
+				.ForMember(dest => dest.GiasLastChangedDate, opt => opt.Ignore())
+				.ForMember(dest => dest.NoOfBoys, opt => opt.Ignore())
+				.ForMember(dest => dest.NoOfGirls, opt => opt.Ignore())
+				.ForMember(dest => dest.SenUnitCapacity, opt => opt.Ignore())
+				.ForMember(dest => dest.SenUnitOnRoll, opt => opt.Ignore())
+				.ForMember(dest => dest.ReligousEthos, opt => opt.Ignore())
+				.ForMember(dest => dest.HeadteacherTitle, opt => opt.Ignore())
+				.ForMember(dest => dest.HeadteacherFirstName, opt => opt.Ignore())
+				.ForMember(dest => dest.HeadteacherLastName, opt => opt.Ignore())
+				.ForMember(dest => dest.HeadteacherPreferredJobTitle, opt => opt.Ignore())
+				.ForMember(dest => dest.ReligiousCharacter, opt => opt.Ignore())
+				.ForMember(dest => dest.Census, opt => opt.Ignore())
+				.ForMember(dest => dest.MisEstablishment, opt => opt.Ignore());
+
 		}
 	}
 }
