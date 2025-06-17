@@ -24,19 +24,15 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.Project;
 public class ListAllProjectsForUserTests
 {
     [AttributeUsage(AttributeTargets.Method, AllowMultiple = true)]
-    private class InlineAutoDataAttribute : CompositeDataAttribute
-    {
-        public InlineAutoDataAttribute(ProjectUserFilter filter, OrderProjectByField sortingField,
-            OrderByDirection sortingDirection)
-            : base(
-                new InlineDataAttribute(filter),
-                new InlineDataAttribute(new OrderProjectQueryBy(sortingField, sortingDirection)),
-                new CustomAutoDataAttribute(
+    private class InlineAutoDataAttribute(ProjectUserFilter filter, OrderProjectByField sortingField,
+        OrderByDirection sortingDirection) : CompositeDataAttribute(
+            new InlineDataAttribute(filter),
+            new InlineDataAttribute(new OrderProjectQueryBy(sortingField, sortingDirection)),
+            new CustomAutoDataAttribute(
                     typeof(OmitCircularReferenceCustomization),
                     typeof(ListAllProjectsQueryModelCustomization),
                     typeof(DateOnlyCustomization)))
-        {
-        }
+    {
     }
 
     [Theory]
@@ -75,6 +71,7 @@ public class ListAllProjectsForUserTests
         Assert.False(result.IsSuccess);
         Assert.Contains("User not found.", result.Error);
     }
+      
 
     [Theory]
     [InlineAutoData(ProjectUserFilter.AssignedTo, OrderProjectByField.SignificantDate, OrderByDirection.Ascending)]
@@ -268,4 +265,61 @@ public class ListAllProjectsForUserTests
         Assert.False(result.IsSuccess);
         Assert.Equal(errorMessage, result.Error);
     }
+
+    [Theory]
+    [InlineAutoData(ProjectUserFilter.AssignedTo, OrderProjectByField.SignificantDate, OrderByDirection.Ascending)]
+    [InlineAutoData(ProjectUserFilter.CreatedBy, OrderProjectByField.SignificantDate, OrderByDirection.Descending)]
+    public async Task Handle_ShouldSetAssignedToOrCreatedByCorrectly(
+     ProjectUserFilter filter,
+     OrderProjectQueryBy ordering,
+     [Frozen] Mock<IListAllProjectsQueryService> mockListAllProjectsQueryService,
+     [Frozen] Mock<ISender> mockSender,
+     IFixture fixture)
+    {
+        // Arrange
+        var mockLogger = new Mock<ILogger<ListAllProjectsForUserQueryHandler>>();
+        var mockTrustsClient = new Mock<ITrustsV4Client>();
+        var handler = new ListAllProjectsForUserQueryHandler(
+            mockListAllProjectsQueryService.Object,
+            mockTrustsClient.Object,
+            mockSender.Object,
+            mockLogger.Object);
+
+        var userDto = fixture.Create<UserDto>();
+        mockSender.Setup(sender => sender.Send(It.IsAny<GetUserByAdIdQuery>(), It.IsAny<CancellationToken>()))
+            .ReturnsAsync(Result<UserDto?>.Success(userDto));
+
+        var dummyProjects = fixture.CreateMany<ListAllProjectsQueryModel>(3).ToList();
+        ProjectFilters? capturedFilters = null;
+
+        mockListAllProjectsQueryService
+            .Setup(s => s.ListAllProjects(It.IsAny<ProjectFilters>(), It.IsAny<string>(), It.IsAny<OrderProjectQueryBy>()))
+            .Callback<ProjectFilters, string, OrderProjectQueryBy?>((filters, _, __) => capturedFilters = filters)
+            .Returns(dummyProjects.BuildMock());
+
+        mockTrustsClient.Setup(service => service.GetByUkprnsAllAsync(It.IsAny<IEnumerable<string>>(), default))
+            .ReturnsAsync([]);
+
+        var query = new ListAllProjectsForUserQuery(ProjectState.Active, userDto.ActiveDirectoryUserId!, filter, ordering) { Page = 0 };
+
+        // Act
+        var result = await handler.Handle(query, default);
+
+        // Assert
+        Assert.NotNull(result);
+        Assert.True(result.IsSuccess);
+        Assert.NotNull(capturedFilters);
+
+        if (filter == ProjectUserFilter.AssignedTo)
+        {
+            Assert.Equal(userDto.Id, capturedFilters.AssignedToUserId);
+            Assert.Null(capturedFilters.CreatedByUserId);
+        }
+        else if (filter == ProjectUserFilter.CreatedBy)
+        {
+            Assert.Equal(userDto.Id, capturedFilters.CreatedByUserId);
+            Assert.Null(capturedFilters.AssignedToUserId);
+        }
+    }
+
 }
