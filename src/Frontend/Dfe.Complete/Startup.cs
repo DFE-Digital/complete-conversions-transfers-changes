@@ -20,8 +20,8 @@ using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using DfE.CoreLibs.Http.Middlewares.CorrelationId;
 using DfE.CoreLibs.Http.Interfaces;
 using Dfe.Complete.Logging.Middleware;
-using DfE.CoreLibs.Security.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using DfE.CoreLibs.Security.Interfaces;
 
 namespace Dfe.Complete;
 
@@ -53,6 +53,7 @@ public class Startup
     public void ConfigureServices(IServiceCollection services)
     {
         ConfigureCypressAntiforgeryEndpoints(services);
+
         services.AddHttpClient();
         services.AddFeatureManagement();
         services.AddHealthChecks();
