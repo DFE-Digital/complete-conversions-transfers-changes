@@ -11,7 +11,8 @@ namespace Dfe.Complete.Pages.Public
 	{
 		public bool? Consent { get; set; }
 		public bool PreferencesSet { get; set; } = false;
-		public string ReturnPath { get; set; } = string.Empty;
+
+        public string ReturnPath { get; set; } = string.Empty;
 
         public string TransfersCookiesUrl { get; set; } = string.Empty;
 
