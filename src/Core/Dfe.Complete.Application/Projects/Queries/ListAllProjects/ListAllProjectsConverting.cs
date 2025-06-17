@@ -1,5 +1,4 @@
-﻿using Dfe.AcademiesApi.Client.Contracts;
-using Dfe.Complete.Application.Common.Models;
+﻿using Dfe.Complete.Application.Common.Models;
 using Dfe.Complete.Application.Projects.Interfaces;
 using Dfe.Complete.Application.Projects.Models;
 using Dfe.Complete.Domain.Entities;
@@ -18,14 +17,10 @@ namespace Dfe.Complete.Application.Projects.Queries.ListAllProjects
         {
             try
             {
-                var allProjects = await listAllProjectsQueryService.ListAllProjects(new ProjectFilters(Domain.Enums.ProjectState.Active, Domain.Enums.ProjectType.Conversion))
+                var allProjects = await listAllProjectsQueryService.ListAllProjects(new ProjectFilters(Domain.Enums.ProjectState.Active, Domain.Enums.ProjectType.Conversion, WithAcademyUrn: request.WithAcademyUrn))
                     .ToListAsync(cancellationToken);
 
-               var convertingProjects = request.WithAcademyUrn
-                   ? allProjects.Where(p => p.Project.AcademyUrn != null && p.Project.CompletedAt == null)
-                   : allProjects.Where(p => p.Project.AcademyUrn == null && p.Project.CompletedAt == null);
-
-               convertingProjects = convertingProjects.OrderBy(p => p.Project.SignificantDate);
+               var convertingProjects = allProjects.OrderBy(p => p.Project.SignificantDate);
                
                List<GiasEstablishment> giasEstablishments = new List<GiasEstablishment>();
                
