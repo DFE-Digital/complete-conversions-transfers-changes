@@ -1,7 +1,6 @@
 ﻿using Dfe.Complete.Application.Projects.Commands.UpdateProject;
 using Dfe.Complete.Application.Projects.Models;
 using Dfe.Complete.Application.Users.Queries.GetUser;
-using Dfe.Complete.Application.Users.Queries.SearchUsers;
 using Dfe.Complete.Constants;
 using Dfe.Complete.Extensions;
 using Dfe.Complete.Models;
@@ -49,18 +48,19 @@ public class EditAddedByUser(ISender sender, ErrorService errorService, ILogger<
             return await OnGet();
         }
         
-        var addedByUserQuery = new SearchUsersQuery(Email);
+        var addedByUserQuery = new GetUserByEmailQuery(Email);
         var addedBySearchResult = await _sender.Send(addedByUserQuery);
         
-        if (addedBySearchResult is { IsSuccess: true, Value.Count: 1 })
+        if (addedBySearchResult is { IsSuccess: true, Value.AssignToProject: true })
         {
-            var updateRequest = new UpdateRegionalDeliveryOfficerCommand(Project.Urn, addedBySearchResult.Value[0].Id);
+            var updateRequest = new UpdateRegionalDeliveryOfficerCommand(Project.Urn, addedBySearchResult.Value.Id);
             await _sender.Send(updateRequest);
-            TempData.SetNotification(NotificationType.Success, "Success", "Project has been assigned successfully");
+            TempData.SetNotification(NotificationType.Success, "Success", "Project has been updated successfully");
             return Redirect(FormatRouteWithProjectId(RouteConstants.ProjectInternalContacts));
         }
 
-        logger.LogError("Email not found or too many results found - {Email}", addedByUserQuery.Query);
+        logger.LogError("Email not found or not assignable - {Email}", addedByUserQuery.Email);
+        ModelState.AddModelError("Email", "Email is not assignable");
         return await OnGet();
     }
 }
