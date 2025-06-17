@@ -1,0 +1,41 @@
+﻿@page "/projects/{projectId}/academy-urn"
+@model Dfe.Complete.Pages.Projects.ServiceSupport.ConversionURNs.CreateAcademyUrnModel
+@inject Dfe.Complete.Services.ErrorService ErrorService
+@{
+    var establishmentName = Model.Establishment.Name;
+    var selectedAcademy = Model.SelectedAcademy;
+    var selectedUrn = Model.URN;
+
+    ViewData["Title"] = selectedAcademy == null ? $"Create academy URN for {establishmentName} conversion" : "Are these details correct?";
+        
+    const string urnField = nameof(Model.URN);
+    
+    var showUrnNotFound = !string.IsNullOrEmpty(selectedUrn)
+                          && selectedAcademy == null
+                          && !ErrorService.HasErrorForKey(urnField);
+
+    var showConfirmAcademy = selectedAcademy != null;
+    var showEnterUrnForm = !showUrnNotFound && !showConfirmAcademy;
+}
+
+<div class="govuk-grid-column-two-thirds">
+
+    @{
+        @if (showUrnNotFound)
+        {
+            <partial name="_UrnNotFound" />
+        }
+        else if (showConfirmAcademy)
+        {
+            <partial name="_ConfirmAcademyDetails" />
+        }
+        else if (showEnterUrnForm)
+        {
+            <partial name="_EnterUrnForm" />
+        }
+    }
+</div>
+
+
+
+

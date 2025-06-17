@@ -435,4 +435,9 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
             RemoveNote(noteId);
         }
     }
+
+    public void AddAcademyUrn(Urn urn)
+    {
+        AcademyUrn = urn;
+    }
 }

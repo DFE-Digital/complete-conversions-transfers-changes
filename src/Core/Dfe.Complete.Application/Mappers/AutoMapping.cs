@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Dfe.AcademiesApi.Client.Contracts;
 using Dfe.Complete.Application.Projects.Models;
 using Dfe.Complete.Domain.Entities;
 
@@ -11,6 +12,52 @@ namespace Dfe.Complete.Application.Common.Mappers
 			CreateMap<Project, ProjectDto>();
 			CreateMap<ProjectGroup, ProjectGroupDto>();
 			CreateMap<User, UserDto>();
-        }
+			CreateMap<GiasEstablishment, EstablishmentDto>()
+				.ForMember(dest => dest.Ukprn,
+					opt => opt.MapFrom(src => src.Ukprn != null ? src.Ukprn.ToString() : null))
+				.ForMember(dest => dest.Urn, opt => opt.MapFrom(src => src.Urn != null ? src.Urn.ToString() : null))
+				.ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Name))
+				.ForMember(dest => dest.LocalAuthorityCode, opt => opt.MapFrom(src => src.LocalAuthorityCode))
+				.ForMember(dest => dest.LocalAuthorityName, opt => opt.MapFrom(src => src.LocalAuthorityName))
+				.ForMember(dest => dest.EstablishmentNumber, opt => opt.MapFrom(src => src.EstablishmentNumber))
+				.ForMember(dest => dest.StatutoryLowAge,
+					opt => opt.MapFrom(src => src.AgeRangeLower.HasValue ? src.AgeRangeLower.Value.ToString() : null))
+				.ForMember(dest => dest.StatutoryHighAge,
+					opt => opt.MapFrom(src => src.AgeRangeUpper.HasValue ? src.AgeRangeUpper.Value.ToString() : null))
+				.ForMember(dest => dest.Diocese, opt => opt.MapFrom(src => new NameAndCodeDto
+				{
+					Name = src.DioceseName,
+					Code = src.DioceseCode
+				}))
+				.ForMember(dest => dest.EstablishmentType, opt => opt.MapFrom(src => new NameAndCodeDto
+				{
+					Name = src.TypeName,
+					Code = src.TypeCode
+				}))
+				.ForMember(dest => dest.Gor, opt => opt.MapFrom(src => new NameAndCodeDto
+				{
+					Name = src.RegionName,
+					Code = src.RegionCode
+				}))
+				.ForMember(dest => dest.PhaseOfEducation, opt => opt.MapFrom(src => new NameAndCodeDto
+				{
+					Name = src.PhaseName,
+					Code = src.PhaseCode
+				}))
+				.ForMember(dest => dest.ParliamentaryConstituency, opt => opt.MapFrom(src => new NameAndCodeDto
+				{
+					Name = src.ParliamentaryConstituencyName,
+					Code = src.ParliamentaryConstituencyCode
+				}))
+				.ForMember(dest => dest.Address, opt => opt.MapFrom(src => new AddressDto
+				{
+					Street = src.AddressStreet,
+					Additional = src.AddressAdditional,
+					Locality = src.AddressLocality,
+					Town = src.AddressTown,
+					County = src.AddressCounty,
+					Postcode = src.AddressPostcode
+				}));
+		}
 	}
 }
