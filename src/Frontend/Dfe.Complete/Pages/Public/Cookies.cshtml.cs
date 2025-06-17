@@ -66,11 +66,13 @@ namespace Dfe.Complete.Pages.Public
 
 				if (cookiesConsent != null)
 				{
-                    TempData["IsRubyRequest"] = false;
-                    return Redirect($"/cookies?consent={cookiesConsent}&returnUrl={GetReturnUrl()}");
+					TempData["IsRubyRequest"] = false;
+					return Redirect($"/cookies?consent={cookiesConsent}&returnUrl={GetReturnUrl()}");
 				}
-
-                return Page();
+				else
+				{
+					TempData.Clear();
+				}
             }
 
 			return Page();
