@@ -38,12 +38,12 @@ namespace Dfe.Complete.Application.Tests.Mappers
             Assert.Equal(giasEstablishment.LocalAuthorityName, dto.LocalAuthorityName);
             Assert.Equal(giasEstablishment.AgeRangeLower?.ToString(), dto.StatutoryLowAge);
             Assert.Equal(giasEstablishment.AgeRangeUpper?.ToString(), dto.StatutoryHighAge);
-            Assert.Equal(giasEstablishment.AddressPostcode, dto.Address.Postcode);
-            Assert.Equal(giasEstablishment.DioceseName, dto.Diocese.Name);
-            Assert.Equal(giasEstablishment.TypeName, dto.EstablishmentType.Name);
-            Assert.Equal(giasEstablishment.PhaseName, dto.PhaseOfEducation.Name);
-            Assert.Equal(giasEstablishment.RegionName, dto.Gor.Name);
-            Assert.Equal(giasEstablishment.ParliamentaryConstituencyName, dto.ParliamentaryConstituency.Name);
+            Assert.Equal(giasEstablishment.AddressPostcode, dto.Address?.Postcode);
+            Assert.Equal(giasEstablishment.DioceseName, dto.Diocese?.Name);
+            Assert.Equal(giasEstablishment.TypeName, dto.EstablishmentType?.Name);
+            Assert.Equal(giasEstablishment.PhaseName, dto.PhaseOfEducation?.Name);
+            Assert.Equal(giasEstablishment.RegionName, dto.Gor?.Name);
+            Assert.Equal(giasEstablishment.ParliamentaryConstituencyName, dto.ParliamentaryConstituency?.Name);
         }
     }
 }

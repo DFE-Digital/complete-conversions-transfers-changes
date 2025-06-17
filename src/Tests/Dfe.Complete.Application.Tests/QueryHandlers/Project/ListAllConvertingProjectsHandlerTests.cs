@@ -66,7 +66,7 @@ public class ListAllProjectsConvertingQueryHandlerTests
         // Assert
         Assert.NotNull(result);
         Assert.True(result.IsSuccess);
-        Assert.Equal(5, result.Value.Count());
+        Assert.Equal(5, result.Value?.Count());
         Assert.Equal(projects.Count, result.ItemCount);
     }
 }

@@ -40,8 +40,7 @@ public class UpdateAcademyUrnCommandHandlerTests
     [Theory]
     [CustomAutoData(typeof(IgnoreVirtualMembersCustomisation))]
     public async Task Handle_ShouldNotThrowOrUpdate_WhenProjectNotFound(
-        [Frozen] ICompleteRepository<Domain.Entities.Project> mockProjectRepository,
-        IFixture fixture)
+        [Frozen] ICompleteRepository<Domain.Entities.Project> mockProjectRepository)
     {
         // Arrange
         var nonExistentProjectId = new ProjectId(Guid.NewGuid());
