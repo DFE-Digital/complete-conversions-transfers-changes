@@ -25,7 +25,7 @@ public class ListAllProjectsConvertingQueryHandlerTests
         // Arrange
         var errorMessage = "This is an error";
         mockListAllProjectsQueryService
-            .ListAllProjects(ProjectState.Active, ProjectType.Conversion)
+            .ListAllProjects(new ProjectFilters(ProjectState.Active, ProjectType.Conversion))
             .Throws(new Exception(errorMessage));
 
         // Act
@@ -55,7 +55,7 @@ public class ListAllProjectsConvertingQueryHandlerTests
 
         var mockQueryable = projects.BuildMock();
         mockListAllProjectsQueryService
-            .ListAllProjects(ProjectState.Active, ProjectType.Conversion)
+            .ListAllProjects(new ProjectFilters(ProjectState.Active, ProjectType.Conversion))
             .Returns(mockQueryable);
 
         var request = new ListAllProjectsConvertingQuery(WithAcademyUrn: false) { Page = 1, Count = 5 };

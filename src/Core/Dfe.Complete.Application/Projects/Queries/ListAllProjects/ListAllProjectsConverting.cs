@@ -18,7 +18,7 @@ namespace Dfe.Complete.Application.Projects.Queries.ListAllProjects
         {
             try
             {
-                var allProjects = await listAllProjectsQueryService.ListAllProjects(Domain.Enums.ProjectState.Active, Domain.Enums.ProjectType.Conversion)
+                var allProjects = await listAllProjectsQueryService.ListAllProjects(new ProjectFilters(Domain.Enums.ProjectState.Active, Domain.Enums.ProjectType.Conversion))
                     .ToListAsync(cancellationToken);
 
                var convertingProjects = request.WithAcademyUrn
