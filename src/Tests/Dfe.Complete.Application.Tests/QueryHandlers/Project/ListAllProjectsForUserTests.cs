@@ -91,12 +91,16 @@ public class ListAllProjectsForUserTests
         var expectedQuery = mockListAllProjectsForUserQueryModels.Select(item =>
         {
             Assert.NotNull(item.Project);
+            var incomingTrustName = item.Project.FormAMat
+                ? item.Project.NewTrustName
+                : trustList.FirstOrDefault(t => t.Ukprn! == item.Project.IncomingTrustUkprn)?.Name;
+            var outgoingTrustName = trustList.FirstOrDefault(t => t.Ukprn! == item.Project.OutgoingTrustUkprn)?.Name;
             return ListAllProjectsForUserQueryResultModel
                 .MapProjectAndEstablishmentToListAllProjectsForUserQueryResultModel(
                     item.Project,
-                    item.Establishment,
-                    trustList.FirstOrDefault(t => t.Ukprn == item.Project.OutgoingTrustUkprn).Name,
-                    trustList.FirstOrDefault(t => t.Ukprn == item.Project.IncomingTrustUkprn).Name);
+                    item.Establishment!,
+                    outgoingTrustName,
+                    incomingTrustName);
         });
 
         var expected = expectedQuery
