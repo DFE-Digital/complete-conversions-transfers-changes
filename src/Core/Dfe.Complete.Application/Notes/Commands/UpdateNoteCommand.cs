@@ -2,22 +2,33 @@ using Dfe.Complete.Application.Notes.Interfaces;
 using Dfe.Complete.Domain.ValueObjects;
 using Dfe.Complete.Utils;
 using MediatR;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 
-public record UpdateNoteCommand(int NoteId, string Body, int CurrentUserId) : IRequest<NoteId>;
+namespace Dfe.Complete.Application.Notes.Commands;
+
+public record UpdateNoteCommand(NoteId NoteId, string Body) : IRequest<NoteId>;
 
 public class UpdateNoteCommandHandler(
     INoteWriteRepository _repo,
-    ILogger<UpdateNoteCommand> logger
+    IHttpContextAccessor _httpContextAccessor,
+    ILogger<UpdateNoteCommandHandler> logger
 ) : IRequestHandler<UpdateNoteCommand, NoteId>
 {
     public async Task<NoteId> Handle(UpdateNoteCommand request, CancellationToken cancellationToken)
     {
         try
         {
-            var note = await _repo.GetNoteByIdAsync(request.NoteId, cancellationToken) ?? throw new NotFoundException($"Note with ID {request.NoteId} not found");
+            var note = await _repo.GetNoteByIdAsync(request.NoteId, cancellationToken) ?? throw new NotFoundException($"Note with ID {request.NoteId.Value} not found");
 
-            // if (note.UserId != request.CurrentUserId) throw new UnauthorizedAccessException();
+            var userIdClaim = _httpContextAccessor.HttpContext?.User?.FindFirst("sub")?.Value
+                     ?? _httpContextAccessor.HttpContext?.User?.FindFirst("uid")?.Value;
+
+            if (!Guid.TryParse(userIdClaim, out var parsedUserId))
+                throw new UnauthorizedAccessException();
+
+            if (note.UserId != new UserId(parsedUserId))
+                throw new UnauthorizedAccessException("The current user is not assigned to the note and cannot change it");
 
             note.Body = request.Body;
             await _repo.UpdateNoteAsync(note, cancellationToken);
@@ -26,7 +37,7 @@ public class UpdateNoteCommandHandler(
         }
         catch (Exception ex)
         {
-            logger.LogError(ex, "Exception for {Name} Request - {@Request}", nameof(UpdateNoteCommand), request);
+            logger.LogError(ex, "Exception for {Name} Request - {@Request}", nameof(UpdateNoteCommandHandler), request);
             throw new Exception(ex.Message);
         }
     }

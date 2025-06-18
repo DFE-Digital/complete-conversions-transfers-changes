@@ -26,7 +26,11 @@ Security in case of vulnerabilities.
 - Internal contacts page and edit pages `/projects/{projectId}/internal-contacts`
 - Add notes repository
 - Add `GetNotesByProjectId` query and handler
+- Add `GetNoteById` query and handler
+- Add `UpdateNote` command and handler
 - Add project notes page (`/projects/{projectId}/notes`)
+- Add project notes editing page (`/projects/{projectId}/notes/{noteId}/edit`)
+- Attach user ID from DB as custom claim
 
 ### Changed  
 
