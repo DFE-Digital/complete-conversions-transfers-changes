@@ -196,7 +196,7 @@ public class ProjectsQueryBuilder(CompleteContext context) : IProjectsQueryBuild
     private static IQueryable<Project> FilterByHasAcademyUrn(IQueryable<Project> projects, bool? withAcademyUrn)
     {
         if (withAcademyUrn != null)
-            projects = withAcademyUrn.Value ? projects.Where(project => project.AcademyUrn != null && project.CompletedAt == null) : projects.Where(project => project.AcademyUrn == null && project.CompletedAt == null);
+            projects = withAcademyUrn.Value ? projects.Where(project => project.AcademyUrn != null) : projects.Where(project => project.AcademyUrn == null);
         return projects;
     }
 }
