@@ -4,6 +4,7 @@ using Dfe.Complete.Application.Projects.Interfaces;
 using Dfe.Complete.Application.Projects.Interfaces.CsvExport;
 using Dfe.Complete.Domain.Interfaces.Repositories;
 using Dfe.Complete.Infrastructure.Database;
+using Dfe.Complete.Infrastructure.CommandServices;
 using Dfe.Complete.Infrastructure.QueryServices;
 using Dfe.Complete.Infrastructure.QueryServices.CsvExport;
 using Dfe.Complete.Infrastructure.Repositories;

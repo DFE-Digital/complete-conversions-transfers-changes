@@ -35,7 +35,7 @@
 
         @foreach (var note in Model.Notes)
         {
-            var editNoteLink = string.Format(RouteConstants.ProjectEditNote, Model.ProjectId, note.Id);
+            var editNoteLink = string.Format(RouteConstants.ProjectEditNote, Model.ProjectId, note.Id.Value);
 
             <div id="note-entry-@note.Id">
                 <span class="govuk-caption-m">@note.CreatedAt.ToDateString()</span>

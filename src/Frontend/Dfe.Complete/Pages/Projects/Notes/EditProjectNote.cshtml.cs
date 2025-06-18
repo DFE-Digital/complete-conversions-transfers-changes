@@ -1,43 +1,30 @@
 using Dfe.Complete.Constants;
+using Dfe.Complete.Domain.ValueObjects;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace Dfe.Complete.Pages.Projects.Notes
+namespace Dfe.Complete.Pages.Projects.Notes;
+
+public class EditProjectNoteModel(ISender sender) : PageModel
 {
-    public class EditProjectNoteModel : PageModel
+    [BindProperty(SupportsGet = true, Name = "projectId")]
+    public required string ProjectId { get; set; }
+
+    [BindProperty(SupportsGet = true, Name = "noteId")]
+    public required Guid NoteId { get; set; }
+
+    [BindProperty(Name = "note-text")]
+    public string NoteText { get; set; }
+
+    public async Task OnGet()
     {
-        [BindProperty(SupportsGet = true, Name = "projectId")]
-        public required string ProjectId { get; set; }
+    }
 
-        [BindProperty(SupportsGet = true, Name = "noteId")]
-        public required string NoteId { get; set; }
-
-        [BindProperty(Name = "note-text")]
-        public string NoteText { get; set; }
-
-
-        public async Task OnGet()
-        {
-            if (NoteExists())
-            {
-            }
-        }
-
-        public async Task<IActionResult> OnPostAsync()
-        {
-            if (NoteExists())
-            {
-            }
-            else
-            {
-            }
-
-            return Redirect(string.Format(RouteConstants.ProjectViewNotes, ProjectId));
-        }
-
-        private bool NoteExists()
-        {
-            return !string.IsNullOrEmpty(NoteId);
-        }
+    public async Task<IActionResult> OnPostAsync()
+    {
+        await sender.Send(new UpdateNoteCommand(new NoteId(NoteId), NoteText));
+        return Redirect(string.Format(RouteConstants.ProjectViewNotes, ProjectId));
     }
 }
+
