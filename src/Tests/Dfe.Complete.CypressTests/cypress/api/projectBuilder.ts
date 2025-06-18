@@ -4,13 +4,7 @@ import {
     CreateMatTransferProjectRequest,
     CreateTransferProjectRequest,
 } from "./apiDomain";
-import {
-    groupReferenceNumber,
-    testTrustName,
-    testTrustReferenceNumber,
-    ukprn,
-    ukprn2,
-} from "cypress/constants/stringTestConstants";
+import { dimensionsTrust, groupReferenceNumber, macclesfieldTrust } from "cypress/constants/stringTestConstants";
 import { cypressUser } from "cypress/constants/cypressConstants";
 
 export class ProjectBuilder {
@@ -30,7 +24,7 @@ export class ProjectBuilder {
             significantDate: significantDateFormatted,
             isSignificantDateProvisional: false,
             incomingTrustUkprn: {
-                value: ukprn,
+                value: macclesfieldTrust.ukprn,
             },
             isDueTo2Ri: false,
             hasAcademyOrderBeenIssued: false,
@@ -50,8 +44,8 @@ export class ProjectBuilder {
     ): CreateTransferProjectRequest {
         return {
             urn: { value: 105601 },
-            outgoingTrustUkprn: { value: ukprn },
-            incomingTrustUkprn: { value: ukprn2 },
+            outgoingTrustUkprn: { value: macclesfieldTrust.ukprn },
+            incomingTrustUkprn: { value: dimensionsTrust.ukprn },
             significantDate: "2026-03-01",
             isSignificantDateProvisional: false,
             isDueTo2Ri: false,
@@ -61,9 +55,9 @@ export class ProjectBuilder {
             handingOverToRegionalCaseworkService: false,
             advisoryBoardDate: "2023-05-01",
             advisoryBoardConditions: "test",
-            establishmentSharepointLink: "https://educationgovuk.sharepoint.com",
-            incomingTrustSharepointLink: "https://educationgovuk.sharepoint.com",
-            outgoingTrustSharepointLink: "https://educationgovuk.sharepoint.com",
+            establishmentSharepointLink: "https://educationgovuk.sharepoint.com/1",
+            incomingTrustSharepointLink: "https://educationgovuk.sharepoint.com/2",
+            outgoingTrustSharepointLink: "https://educationgovuk.sharepoint.com/3",
             groupReferenceNumber: groupReferenceNumber,
             handoverComments: "test 2",
             userAdId: cypressUser.adId,
@@ -76,16 +70,16 @@ export class ProjectBuilder {
     ): CreateMatConversionProjectRequest {
         return {
             urn: { value: 147800 },
-            newTrustName: testTrustName,
-            newTrustReferenceNumber: testTrustReferenceNumber,
+            newTrustName: macclesfieldTrust.name,
+            newTrustReferenceNumber: macclesfieldTrust.referenceNumber,
             significantDate: "2026-03-01",
             isSignificantDateProvisional: false,
             isDueTo2Ri: false,
             hasAcademyOrderBeenIssued: false,
             advisoryBoardDate: "2023-05-01",
             advisoryBoardConditions: "none.",
-            establishmentSharepointLink: "https://educationgovuk.sharepoint.com",
-            incomingTrustSharepointLink: "https://educationgovuk.sharepoint.com",
+            establishmentSharepointLink: "https://educationgovuk.sharepoint.com/1",
+            incomingTrustSharepointLink: "https://educationgovuk.sharepoint.com/2",
             handingOverToRegionalCaseworkService: false,
             handoverComments: "test 2",
             userAdId: cypressUser.adId,
@@ -98,9 +92,9 @@ export class ProjectBuilder {
     ): CreateMatTransferProjectRequest {
         return {
             urn: { value: 149460 },
-            newTrustName: testTrustName,
-            newTrustReferenceNumber: testTrustReferenceNumber,
-            outgoingTrustUkprn: { value: ukprn },
+            newTrustName: dimensionsTrust.name,
+            newTrustReferenceNumber: dimensionsTrust.referenceNumber,
+            outgoingTrustUkprn: { value: macclesfieldTrust.ukprn },
             significantDate: "2026-03-01",
             isSignificantDateProvisional: false,
             isDueTo2Ri: false,
@@ -110,9 +104,9 @@ export class ProjectBuilder {
             outGoingTrustWillClose: false,
             advisoryBoardDate: "2023-05-01",
             advisoryBoardConditions: "none.",
-            establishmentSharepointLink: "https://educationgovuk.sharepoint.com",
-            incomingTrustSharepointLink: "https://educationgovuk.sharepoint.com",
-            outgoingTrustSharepointLink: "https://educationgovuk.sharepoint.com",
+            establishmentSharepointLink: "https://educationgovuk.sharepoint.com/1",
+            incomingTrustSharepointLink: "https://educationgovuk.sharepoint.com/2",
+            outgoingTrustSharepointLink: "https://educationgovuk.sharepoint.com/3",
             handoverComments: "test 2",
             userAdId: cypressUser.adId,
             ...options,

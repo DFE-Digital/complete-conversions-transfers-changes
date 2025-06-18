@@ -3,20 +3,18 @@ import allProjects from "cypress/pages/projects/allProjects";
 import { projectTable } from "cypress/pages/projects/tables/projectTable";
 import { beforeEach } from "mocha";
 import {
+    dimensionsTrust,
+    macclesfieldTrust,
     nextMonth,
     nextMonthLong,
     nextMonthShort,
-    testTrustName,
-    testTrustReferenceNumber,
-    trust,
-    trust2,
 } from "cypress/constants/stringTestConstants";
 import projectApi from "cypress/api/projectApi";
 import { ProjectBuilder } from "cypress/api/projectBuilder";
 import projectRemover from "cypress/api/projectRemover";
 import { cypressUser } from "cypress/constants/cypressConstants";
 import projectsByMonthPage from "cypress/pages/projects/projectsByMonthPage";
-import projectDetailsPage from "cypress/pages/projects/projectDetailsPage";
+import projectDetailsPage from "cypress/pages/projects/projectDetails/projectDetailsPage";
 import userProjectTable from "cypress/pages/projects/tables/userProjectTable";
 import formAMATProjectTable from "cypress/pages/projects/tables/formAMATProjectTable";
 import { checkAccessibilityAcrossPages } from "cypress/support/reusableTests";
@@ -154,11 +152,11 @@ describe("View all projects", () => {
             .goToNextPageUntilFieldIsVisible(transferFormAMatSchoolName);
         formAMATProjectTable
             .hasTableHeaders(["Trust", "TRN", "Schools Included"])
-            .withTrust(testTrustName)
-            .columnHasValue("TRN", testTrustReferenceNumber)
+            .withTrust(dimensionsTrust.name)
+            .columnHasValue("TRN", dimensionsTrust.referenceNumber)
             .columnContainsValue("Schools Included", transferFormAMatSchoolName)
-            .goTo(testTrustName);
-        allProjects.containsHeading(testTrustName);
+            .goTo(dimensionsTrust.name);
+        allProjects.containsHeading(dimensionsTrust.name);
         projectTable
             .hasTableHeaders(["School or academy", "URN", "Conversion or transfer date", "Project type", "Assigned to"])
             .withSchool(transferFormAMatSchoolName)
@@ -187,7 +185,7 @@ describe("View all projects", () => {
             .withSchool(`${schoolName} ${project.urn.value}`)
             .columnHasValue("Region", region)
             .columnHasValue("Local authority", localAuthorityShort)
-            .columnHasValue("Incoming trust", trust.toUpperCase()) // bug 208086
+            .columnHasValue("Incoming trust", macclesfieldTrust.name.toUpperCase()) // bug 208086
             .columnHasValue("All conditions met", "Not yet")
             .columnHasValue("Confirmed date (Original date)", nextMonthShort)
             .goTo(`${schoolName} ${project.urn.value}`);
@@ -210,8 +208,8 @@ describe("View all projects", () => {
             .contains(`${transferSchoolName} ${transferProject.urn.value}`)
             .withSchool(`${transferSchoolName} ${transferProject.urn.value}`)
             .columnHasValue("Region", transferRegion)
-            .columnHasValue("Outgoing trust", trust.toUpperCase()) // bug 208086
-            .columnHasValue("Incoming trust", trust2.toUpperCase()) // bug 208086
+            .columnHasValue("Outgoing trust", macclesfieldTrust.name.toUpperCase()) // bug 208086
+            .columnHasValue("Incoming trust", dimensionsTrust.name.toUpperCase()) // bug 208086
             .columnHasValue("Authority to proceed", "Not yet")
             .columnHasValue("Confirmed date (Original date)", nextMonthShort)
             .goTo(`${transferSchoolName} ${transferProject.urn.value}`);
@@ -263,10 +261,12 @@ describe("View all projects", () => {
         allProjects
             .filterProjects("By trust")
             .containsHeading("All projects by trust")
-            .goToNextPageUntilFieldIsVisible(trust);
-        projectTable.hasTableHeaders(["Trust", "Group identifier", "Conversions", "Transfers"]).filterBy(trust);
+            .goToNextPageUntilFieldIsVisible(macclesfieldTrust.name);
+        projectTable
+            .hasTableHeaders(["Trust", "Group identifier", "Conversions", "Transfers"])
+            .filterBy(macclesfieldTrust.name);
         allProjects
-            .containsHeading(`Projects for ${trust.toUpperCase()}`)
+            .containsHeading(`Projects for ${macclesfieldTrust.name.toUpperCase()}`)
             .goToNextPageUntilFieldIsVisible(schoolName);
         projectTable
             .hasTableHeaders(["School or academy", "URN", "Conversion or transfer date", "Project type", "Assigned to"])
