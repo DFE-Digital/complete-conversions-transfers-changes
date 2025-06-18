@@ -796,11 +796,18 @@ namespace Dfe.Complete.Infrastructure.Migrations
                         .HasColumnType("nvarchar(4000)")
                         .HasColumnName("url");
 
-                    b.Property<int?>("Urn")
+                    b.Property<int>("Urn")
                         .HasColumnType("int")
                         .HasColumnName("urn");
 
                     b.HasKey("Id");
+
+                    b.HasAlternateKey("Urn")
+                        .HasName("AK_GiasEstablishments_Urn");
+
+                    b.HasIndex("Urn")
+                        .IsUnique()
+                        .HasDatabaseName("IX_GiasEstablishments_Urn");
 
                     b.ToTable("gias_establishments", "complete");
                 });
@@ -1219,6 +1226,8 @@ namespace Dfe.Complete.Infrastructure.Migrations
                     b.HasIndex("LocalAuthorityId");
 
                     b.HasIndex("RegionalDeliveryOfficerId");
+
+                    b.HasIndex("Urn");
 
                     b.ToTable("projects", "complete");
                 });
@@ -1954,9 +1963,18 @@ namespace Dfe.Complete.Infrastructure.Migrations
                         .IsRequired()
                         .HasConstraintName("fk_rails_bba1c6b145");
 
+                    b.HasOne("Dfe.Complete.Domain.Entities.GiasEstablishment", "GiasEstablishment")
+                        .WithMany()
+                        .HasForeignKey("Urn")
+                        .HasPrincipalKey("Urn")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("AssignedTo");
 
                     b.Navigation("Caseworker");
+
+                    b.Navigation("GiasEstablishment");
 
                     b.Navigation("LocalAuthority");
 
