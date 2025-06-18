@@ -1206,94 +1206,6 @@
         }
       }
     },
-    "/v1/Projects/List/All/Converting": {
-      "get": {
-        "tags": [
-          "Projects"
-        ],
-        "summary": "Returns a list of Projects converting to an academy",
-        "operationId": "Projects_ListAllProjectsConverting",
-        "parameters": [
-          {
-            "name": "WithAcademyUrn",
-            "in": "query",
-            "schema": {
-              "type": "boolean"
-            },
-            "x-position": 1
-          },
-          {
-            "name": "Page",
-            "in": "query",
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            },
-            "x-position": 2
-          },
-          {
-            "name": "Count",
-            "in": "query",
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            },
-            "x-position": 3
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Project",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/ListAllProjectsConvertingQueryResultModel"
-                  }
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid request data."
-          }
-        }
-      }
-    },
-    "/v1/Projects/project/academy-urn": {
-      "patch": {
-        "tags": [
-          "Projects"
-        ],
-        "summary": "Updates the Academy URN for a specific project.",
-        "operationId": "Projects_UpdateAcademyUrn",
-        "requestBody": {
-          "x-name": "request",
-          "description": "The update command.",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/UpdateAcademyUrnCommand"
-              }
-            }
-          },
-          "required": true,
-          "x-position": 1
-        },
-        "responses": {
-          "204": {
-            "description": "Academy URN updated successfully."
-          },
-          "400": {
-            "description": "Invalid request data."
-          },
-          "404": {
-            "description": "Project not found."
-          }
-        }
-      }
-    },
     "/v1/Trust/List/All": {
       "get": {
         "tags": [
@@ -2552,6 +2464,14 @@
               "formAMat": {
                 "type": "boolean"
               },
+              "giasEstablishment": {
+                "nullable": true,
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/GiasEstablishment"
+                  }
+                ]
+              },
               "assignedTo": {
                 "nullable": true,
                 "oneOf": [
@@ -2581,10 +2501,20 @@
                 }
               },
               "regionalDeliveryOfficer": {
-                "$ref": "#/components/schemas/User"
+                "nullable": true,
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/User"
+                  }
+                ]
               },
               "localAuthority": {
-                "$ref": "#/components/schemas/LocalAuthority"
+                "nullable": true,
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/LocalAuthority"
+                  }
+                ]
               },
               "significantDateHistories": {
                 "type": "array",
@@ -2603,6 +2533,183 @@
           "value": {
             "type": "string",
             "format": "guid"
+          }
+        }
+      },
+      "GiasEstablishment": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/BaseAggregateRoot"
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "id": {
+                "$ref": "#/components/schemas/GiasEstablishmentId"
+              },
+              "urn": {
+                "nullable": true,
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/Urn"
+                  }
+                ]
+              },
+              "ukprn": {
+                "nullable": true,
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/Ukprn"
+                  }
+                ]
+              },
+              "name": {
+                "type": "string",
+                "nullable": true
+              },
+              "establishmentNumber": {
+                "type": "string",
+                "nullable": true
+              },
+              "localAuthorityName": {
+                "type": "string",
+                "nullable": true
+              },
+              "localAuthorityCode": {
+                "type": "string",
+                "nullable": true
+              },
+              "regionName": {
+                "type": "string",
+                "nullable": true
+              },
+              "regionCode": {
+                "type": "string",
+                "nullable": true
+              },
+              "typeName": {
+                "type": "string",
+                "nullable": true
+              },
+              "typeCode": {
+                "type": "string",
+                "nullable": true
+              },
+              "ageRangeLower": {
+                "type": "integer",
+                "format": "int32",
+                "nullable": true
+              },
+              "ageRangeUpper": {
+                "type": "integer",
+                "format": "int32",
+                "nullable": true
+              },
+              "phaseName": {
+                "type": "string",
+                "nullable": true
+              },
+              "phaseCode": {
+                "type": "string",
+                "nullable": true
+              },
+              "dioceseName": {
+                "type": "string",
+                "nullable": true
+              },
+              "dioceseCode": {
+                "type": "string",
+                "nullable": true
+              },
+              "parliamentaryConstituencyName": {
+                "type": "string",
+                "nullable": true
+              },
+              "parliamentaryConstituencyCode": {
+                "type": "string",
+                "nullable": true
+              },
+              "addressStreet": {
+                "type": "string",
+                "nullable": true
+              },
+              "addressLocality": {
+                "type": "string",
+                "nullable": true
+              },
+              "addressAdditional": {
+                "type": "string",
+                "nullable": true
+              },
+              "addressTown": {
+                "type": "string",
+                "nullable": true
+              },
+              "addressCounty": {
+                "type": "string",
+                "nullable": true
+              },
+              "addressPostcode": {
+                "type": "string",
+                "nullable": true
+              },
+              "url": {
+                "type": "string",
+                "nullable": true
+              },
+              "createdAt": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "updatedAt": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "openDate": {
+                "type": "string",
+                "format": "date",
+                "nullable": true
+              },
+              "statusName": {
+                "type": "string",
+                "nullable": true
+              }
+            }
+          }
+        ]
+      },
+      "GiasEstablishmentId": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "value": {
+            "type": "string",
+            "format": "guid"
+          }
+        }
+      },
+      "BaseAggregateRoot": {
+        "type": "object",
+        "x-abstract": true,
+        "additionalProperties": false,
+        "properties": {
+          "domainEvents": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/IDomainEvent"
+            }
+          }
+        }
+      },
+      "IDomainEvent": {
+        "type": "object",
+        "x-abstract": true,
+        "additionalProperties": false,
+        "properties": {
+          "occurredOn": {
+            "type": "string",
+            "format": "date-time"
           }
         }
       },
@@ -2750,30 +2857,6 @@
             }
           }
         ]
-      },
-      "BaseAggregateRoot": {
-        "type": "object",
-        "x-abstract": true,
-        "additionalProperties": false,
-        "properties": {
-          "domainEvents": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/IDomainEvent"
-            }
-          }
-        }
-      },
-      "IDomainEvent": {
-        "type": "object",
-        "x-abstract": true,
-        "additionalProperties": false,
-        "properties": {
-          "occurredOn": {
-            "type": "string",
-            "format": "date-time"
-          }
-        }
       },
       "SignificantDateHistory": {
         "type": "object",
@@ -3111,201 +3194,6 @@
           }
         }
       },
-      "GiasEstablishment": {
-        "allOf": [
-          {
-            "$ref": "#/components/schemas/BaseAggregateRoot"
-          },
-          {
-            "type": "object",
-            "additionalProperties": false,
-            "properties": {
-              "id": {
-                "$ref": "#/components/schemas/GiasEstablishmentId"
-              },
-              "urn": {
-                "nullable": true,
-                "oneOf": [
-                  {
-                    "$ref": "#/components/schemas/Urn"
-                  }
-                ]
-              },
-              "ukprn": {
-                "nullable": true,
-                "oneOf": [
-                  {
-                    "$ref": "#/components/schemas/Ukprn"
-                  }
-                ]
-              },
-              "name": {
-                "type": "string",
-                "nullable": true
-              },
-              "establishmentNumber": {
-                "type": "string",
-                "nullable": true
-              },
-              "localAuthorityName": {
-                "type": "string",
-                "nullable": true
-              },
-              "localAuthorityCode": {
-                "type": "string",
-                "nullable": true
-              },
-              "regionName": {
-                "type": "string",
-                "nullable": true
-              },
-              "regionCode": {
-                "type": "string",
-                "nullable": true
-              },
-              "typeName": {
-                "type": "string",
-                "nullable": true
-              },
-              "typeCode": {
-                "type": "string",
-                "nullable": true
-              },
-              "ageRangeLower": {
-                "type": "integer",
-                "format": "int32",
-                "nullable": true
-              },
-              "ageRangeUpper": {
-                "type": "integer",
-                "format": "int32",
-                "nullable": true
-              },
-              "phaseName": {
-                "type": "string",
-                "nullable": true
-              },
-              "phaseCode": {
-                "type": "string",
-                "nullable": true
-              },
-              "dioceseName": {
-                "type": "string",
-                "nullable": true
-              },
-              "dioceseCode": {
-                "type": "string",
-                "nullable": true
-              },
-              "parliamentaryConstituencyName": {
-                "type": "string",
-                "nullable": true
-              },
-              "parliamentaryConstituencyCode": {
-                "type": "string",
-                "nullable": true
-              },
-              "addressStreet": {
-                "type": "string",
-                "nullable": true
-              },
-              "addressLocality": {
-                "type": "string",
-                "nullable": true
-              },
-              "addressAdditional": {
-                "type": "string",
-                "nullable": true
-              },
-              "addressTown": {
-                "type": "string",
-                "nullable": true
-              },
-              "addressCounty": {
-                "type": "string",
-                "nullable": true
-              },
-              "addressPostcode": {
-                "type": "string",
-                "nullable": true
-              },
-              "url": {
-                "type": "string",
-                "nullable": true
-              },
-              "createdAt": {
-                "type": "string",
-                "format": "date-time"
-              },
-              "updatedAt": {
-                "type": "string",
-                "format": "date-time"
-              },
-              "openDate": {
-                "type": "string",
-                "format": "date",
-                "nullable": true
-              },
-              "statusName": {
-                "type": "string",
-                "nullable": true
-              }
-            }
-          }
-        ]
-      },
-      "GiasEstablishmentId": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-          "value": {
-            "type": "string",
-            "format": "guid"
-          }
-        }
-      },
-      "ListAllProjectsConvertingQueryResultModel": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-          "projectId": {
-            "$ref": "#/components/schemas/ProjectId"
-          },
-          "establishmentName": {
-            "type": "string"
-          },
-          "urn": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "conversionDate": {
-            "type": "string",
-            "format": "date",
-            "nullable": true
-          },
-          "academyName": {
-            "type": "string",
-            "nullable": true
-          },
-          "academyUrn": {
-            "type": "integer",
-            "format": "int32",
-            "nullable": true
-          }
-        }
-      },
-      "UpdateAcademyUrnCommand": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-          "projectId": {
-            "$ref": "#/components/schemas/ProjectId"
-          },
-          "urn": {
-            "$ref": "#/components/schemas/Urn"
-          }
-        }
-      },
       "ListTrustsWithProjectsResultModel": {
         "type": "object",
         "additionalProperties": false,
@@ -3316,7 +3204,7 @@
           "trustName": {
             "type": "string"
           },
-          "referenceNumber": {
+          "groupIdentifier": {
             "type": "string"
           },
           "conversionCount": {

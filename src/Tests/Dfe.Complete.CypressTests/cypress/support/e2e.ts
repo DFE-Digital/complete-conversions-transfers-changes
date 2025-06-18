@@ -74,7 +74,7 @@ declare global {
 
             typeText(element: Chainable<Element>, text: string): Chainable<Element>;
 
-            revisitCurrentUrl(): Chainable<Element>;
+            isInViewport(): Chainable<Element>;
         }
     }
 }

@@ -264,6 +264,7 @@ public partial class ProjectsControllerTests
         const string userAdId = "test-user-adid";
         testUser.ActiveDirectoryUserId = userAdId;
 
+        var giasEstablishment = fixture.Create<GiasEstablishment>();
         var projects = new List<Project>();
 
         projects.AddRange(Enumerable.Range(0, 10).Select(i => fixture.Customize(new ProjectCustomization
@@ -283,8 +284,10 @@ public partial class ProjectsControllerTests
         {
             project.RegionalDeliveryOfficerId = testUser.Id;
             project.LocalAuthorityId = localAuthority.Id;
+            project.Urn = giasEstablishment.Urn!;
         });
 
+        dbContext.GiasEstablishments.Add(giasEstablishment);
         dbContext.Projects.AddRange(projects);
         await dbContext.SaveChangesAsync();
 
@@ -322,6 +325,7 @@ public partial class ProjectsControllerTests
         const string userAdId = "test-user-adid";
         testUser.ActiveDirectoryUserId = userAdId;
 
+        var giasEstablishment = fixture.Create<GiasEstablishment>();
         var projects = new List<Project>();
 
         projects.AddRange(Enumerable.Range(0, 10).Select(i => fixture.Customize(new ProjectCustomization
@@ -343,8 +347,10 @@ public partial class ProjectsControllerTests
         {
             project.RegionalDeliveryOfficerId = testUser.Id;
             project.LocalAuthorityId = localAuthority.Id;
+            project.Urn = giasEstablishment.Urn!;
         });
 
+        dbContext.GiasEstablishments.Add(giasEstablishment);
         dbContext.Projects.AddRange(projects);
         await dbContext.SaveChangesAsync();
 
@@ -382,7 +388,8 @@ public partial class ProjectsControllerTests
         const string userAdId = "test-user-adid";
         testUser.ActiveDirectoryUserId = userAdId;
 
-        var expected = fixture.Customize(new ProjectCustomization { RegionalDeliveryOfficerId = testUser.Id })
+        var giasEstablishment = fixture.Create<GiasEstablishment>();
+        var expected = fixture.Customize(new ProjectCustomization { RegionalDeliveryOfficerId = testUser.Id, Urn = giasEstablishment.Urn! })
             .Create<Project>();
 
         expected.RegionalDeliveryOfficer = testUser;
@@ -390,6 +397,7 @@ public partial class ProjectsControllerTests
         var localAuthority = await dbContext.LocalAuthorities.FirstAsync();
         expected.LocalAuthorityId = localAuthority.Id;
 
+        dbContext.GiasEstablishments.Add(giasEstablishment);
         dbContext.Projects.Add(expected);
 
         await dbContext.SaveChangesAsync();
@@ -732,13 +740,15 @@ public partial class ProjectsControllerTests
 
         var expectedRegion = Complete.Client.Contracts.Region.EastMidlands;
 
-        var projects = fixture.Customize(new ProjectCustomization { RegionalDeliveryOfficerId = testUser.Id })
+        var giasEstablishment = fixture.Create<GiasEstablishment>();
+        var projects = fixture.Customize(new ProjectCustomization { RegionalDeliveryOfficerId = testUser.Id, Urn = giasEstablishment.Urn! })
             .CreateMany<Project>(50).ToList();
 
         var localAuthority = dbContext.LocalAuthorities.AsEnumerable().MinBy(_ => Guid.NewGuid());
         Assert.NotNull(localAuthority);
         projects.ForEach(p => p.LocalAuthorityId = localAuthority.Id);
 
+        await dbContext.GiasEstablishments.AddAsync(giasEstablishment);
         await dbContext.Projects.AddRangeAsync(projects);
         await dbContext.SaveChangesAsync();
 
@@ -789,13 +799,15 @@ public partial class ProjectsControllerTests
 
         var expectedTeam = ProjectTeam.BusinessSupport;
 
-        var projects = fixture.Customize(new ProjectCustomization { RegionalDeliveryOfficerId = testUser.Id })
+        var giasEstablishment = fixture.Create<GiasEstablishment>();
+        var projects = fixture.Customize(new ProjectCustomization { RegionalDeliveryOfficerId = testUser.Id, Urn = giasEstablishment.Urn! })
             .CreateMany<Project>(50).ToList();
 
         var localAuthority = dbContext.LocalAuthorities.AsEnumerable().MinBy(_ => Guid.NewGuid());
         Assert.NotNull(localAuthority);
         projects.ForEach(p => p.LocalAuthorityId = localAuthority.Id);
 
+        await dbContext.GiasEstablishments.AddAsync(giasEstablishment);
         await dbContext.Projects.AddRangeAsync(projects);
         await dbContext.SaveChangesAsync();
 

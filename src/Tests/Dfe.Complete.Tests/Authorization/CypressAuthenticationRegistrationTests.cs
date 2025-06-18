@@ -51,7 +51,7 @@ namespace Dfe.Complete.Tests.Authorization
             });
 
             // ICypressRequestChecker should be resolvable
-            var checker = sp.GetService<ICypressRequestChecker>();
+            var checker = sp.GetService<ICustomRequestChecker>();
             Assert.NotNull(checker);
             Assert.IsType<CypressRequestChecker>(checker);
         }
@@ -117,6 +117,7 @@ namespace Dfe.Complete.Tests.Authorization
 
             var mockEnv = new Mock<IWebHostEnvironment>();
             mockEnv.Setup(env => env.EnvironmentName).Returns("Development");
+            services.AddSingleton<IHostEnvironment>(mockEnv.Object);
             var startup = new Startup(configuration, mockEnv.Object);
             startup.ConfigureServices(services);
 
