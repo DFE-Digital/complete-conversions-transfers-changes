@@ -37,3 +37,7 @@
 }
 @RenderBody()
 
+@if (Model.Pagination != null)
+{
+    @await Html.PartialAsync("/Pages/Pagination/_Pagination.cshtml", model: Model.Pagination)
+}

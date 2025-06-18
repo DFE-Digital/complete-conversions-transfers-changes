@@ -56,6 +56,8 @@
         public const string Groups = "/groups";
 
         // Service support
-        public const string ServiceSupportProjects = "/projects/service-support/without-academy-urn";
+        public const string ServiceSupportProjectsWithoutAcademyUrn = "/projects/service-support/without-academy-urn";
+        public const string ServiceSupportProjectsWithAcademyUrn = "/projects/service-support/with-academy-urn";
+        public const string ServiceSupportAssignAcademyUrn = "/projects/{0}/academy-urn";
     }
 }
