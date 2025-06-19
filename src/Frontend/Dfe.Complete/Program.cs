@@ -17,10 +17,13 @@ public static class Program
            .UseSerilog((context, services, loggerConfiguration) =>
            {
                loggerConfiguration
-                   .ReadFrom.Configuration(context.Configuration)
-                   .WriteTo.ApplicationInsights(services.GetRequiredService<TelemetryConfiguration>(),
-                       TelemetryConverter.Traces)
-                   .Enrich.FromLogContext();
+                .MinimumLevel.Information()
+                .ReadFrom.Configuration(context.Configuration)
+                .WriteTo.ApplicationInsights(
+                    services.GetRequiredService<TelemetryConfiguration>(),
+                    TelemetryConverter.Traces,
+                    restrictedToMinimumLevel: Serilog.Events.LogEventLevel.Information) // <-- Add this line
+                .Enrich.FromLogContext();
            })
            .ConfigureAppConfiguration((_, configuration) => configuration.AddEnvironmentVariables())
            .ConfigureWebHostDefaults(webBuilder =>

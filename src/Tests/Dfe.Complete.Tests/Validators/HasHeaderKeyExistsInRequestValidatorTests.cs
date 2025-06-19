@@ -1,6 +1,8 @@
 ﻿using Dfe.Complete.Validators;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
+using Moq;
 
 namespace Dfe.Complete.Tests.Validators
 {
@@ -33,7 +35,7 @@ namespace Dfe.Complete.Tests.Validators
             // Arrange   
             var httpContext = CreateHttpContext("ruby");
             var configuration = new ConfigurationBuilder().AddInMemoryCollection().Build();
-            var checker = new HasHeaderKeyExistsInRequestValidator(configuration);
+            var checker = new HasHeaderKeyExistsInRequestValidator(configuration, CreateLoggerMock().Object);
 
             // Act  
             var result = checker.IsValidRequest(httpContext);
@@ -48,7 +50,7 @@ namespace Dfe.Complete.Tests.Validators
             // Arrange  
             var httpContext = CreateHttpContext("ruby");
             var configuration = GetConfiguration("x-header-key", "dotnet");
-            var checker = new HasHeaderKeyExistsInRequestValidator(configuration);
+            var checker = new HasHeaderKeyExistsInRequestValidator(configuration, CreateLoggerMock().Object);
 
             // Act  
             var result = checker.IsValidRequest(httpContext);
@@ -63,7 +65,7 @@ namespace Dfe.Complete.Tests.Validators
             // Arrange  
             var httpContext = CreateHttpContext("ruby");
             var configuration = GetConfiguration(HeaderKey, "dotnet");
-            var checker = new HasHeaderKeyExistsInRequestValidator(configuration);
+            var checker = new HasHeaderKeyExistsInRequestValidator(configuration, CreateLoggerMock().Object);
 
             // Act  
             var result = checker.IsValidRequest(httpContext);
@@ -78,13 +80,18 @@ namespace Dfe.Complete.Tests.Validators
             // Arrange  
             var httpContext = CreateHttpContext("ruby");
             var configuration = GetConfiguration(HeaderKey, "ruby");
-            var checker = new HasHeaderKeyExistsInRequestValidator(configuration);
+            var checker = new HasHeaderKeyExistsInRequestValidator(configuration, CreateLoggerMock().Object);
 
             // Act  
             var result = checker.IsValidRequest(httpContext);
 
             // Assert
             Assert.True(result);
+        }
+
+        private static Mock<ILogger<HasHeaderKeyExistsInRequestValidator>> CreateLoggerMock()
+        {
+            return new Mock<ILogger<HasHeaderKeyExistsInRequestValidator>>();
         }
     }
 }
