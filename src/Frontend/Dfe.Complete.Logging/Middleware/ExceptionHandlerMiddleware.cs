@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System.Net;
+using System.Net.Http;
 using System.Text.Json;
 
 namespace Dfe.Complete.Logging.Middleware
@@ -41,15 +42,22 @@ namespace Dfe.Complete.Logging.Middleware
         // Handle validation exceptions
         private static async Task HandleValidationException(HttpContext httpContext, Exception ex)
         {
-            var exception = (ValidationException)ex;
-
-            httpContext.Response.StatusCode = StatusCodes.Status400BadRequest;
-
-            await httpContext.Response.WriteAsJsonAsync(new ValidationProblemDetails(exception.Errors)
+            if (IsApiRequest(httpContext))
             {
-                Status = StatusCodes.Status400BadRequest,
-                Type = "https://tools.ietf.org/html/rfc7231#section-6.5.1"
-            });
+                var exception = (ValidationException)ex;
+
+                httpContext.Response.StatusCode = StatusCodes.Status400BadRequest;
+
+                await httpContext.Response.WriteAsJsonAsync(new ValidationProblemDetails(exception.Errors)
+                {
+                    Status = StatusCodes.Status400BadRequest,
+                    Type = "https://tools.ietf.org/html/rfc7231#section-6.5.1"
+                });
+            }
+            else
+            {
+                throw ex;
+            }
         }
 
         // Handle 401 Unauthorized
@@ -81,17 +89,30 @@ namespace Dfe.Complete.Logging.Middleware
         // Handle general exceptions (500 Internal Server Error)
         private async Task HandleExceptionAsync(HttpContext context, Exception exception)
         {
-            context.Response.ContentType = "application/json";
-            context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
-            var errorResponse = new ErrorResponse
-            {
-                StatusCode = context.Response.StatusCode,
-                Message = "Internal Server Error: " + exception.Message
-            };
-
             logger.LogError(exception, "Unhandled Exception: {Message}", exception.Message);
+            if (IsApiRequest(context))
+            {
+                context.Response.ContentType = "application/json";
+                context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+                var errorResponse = new ErrorResponse
+                {
+                    StatusCode = context.Response.StatusCode,
+                    Message = "Internal Server Error: " + exception.Message
+                };
 
-            await context.Response.WriteAsync(JsonSerializer.Serialize(errorResponse));
+                await context.Response.WriteAsync(JsonSerializer.Serialize(errorResponse));
+            }
+            else
+            {
+                throw exception;
+            }
+        }
+
+        private static bool IsApiRequest(HttpContext context)
+        {
+            // Adjust this logic to match your API route conventions
+            return context.Request.Path.StartsWithSegments("/api") ||
+                context.Request.Headers.Accept.Any(h => h!.Contains("application/json"));
         }
     }
 }
