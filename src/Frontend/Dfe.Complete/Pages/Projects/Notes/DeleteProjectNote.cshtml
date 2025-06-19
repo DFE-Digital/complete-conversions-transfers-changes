@@ -1,0 +1,26 @@
+@page "/projects/{projectId}/notes/{noteId?}/delete"
+@using Dfe.Complete.Constants;
+@model Dfe.Complete.Pages.Projects.Notes.DeleteProjectNoteModel
+@{
+    Layout = "ServiceSupport/_ServiceSupportLayout";
+    ViewData["Title"] = "Delete local authority";
+}
+
+<div class="govuk-grid-column-two-thirds">
+    <form class="delete_project_note" id="delete_project_note_@Model.Id" method="post">
+        <h1 class="govuk-heading-l">Are you sure you want to delete this note?</h1>
+        <p>This will remove the note from the project. If this note contains outdated information, it may be better to
+            leave a new note with an update instead.</p>
+        <div class="govuk-button-group">
+            <button type="submit" formnovalidate="formnovalidate" class="govuk-button govuk-button--warning"
+                data-module="govuk-button" data-prevent-double-click="true">Delete</button>
+            <a class="govuk-link"
+                href="@string.Format(RouteConstants.ProjectEditNote, Model.ProjectId, Model.NoteId))">Cancel</a>
+        </div>
+    </form>
+</div>
+@* TODO tests *@
+@* TODO controller with test *@
+@* TODO check permissions, particularly delete *@
+@* TODO check whether note gets deleted or detached. Wording on the delete confirm message is weird. *@
+@* TODO changelog *@

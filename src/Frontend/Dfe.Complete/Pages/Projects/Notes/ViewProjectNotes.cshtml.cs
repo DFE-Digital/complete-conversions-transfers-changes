@@ -26,7 +26,7 @@ public class ViewProjectNotesModel(ISender sender, IAuthorizationService _author
             Project.State != ProjectState.DaoRevoked;
 
         string? errorMessage = null;
-
+        // TODO add this logic to the addnotepage too
         if (!canAddNotes)
             errorMessage = "The project is not active and no further notes can be added.";
         else if (!(await _authorizationService.AuthorizeAsync(User, UserPolicyConstants.CanAddNotes)).Succeeded)

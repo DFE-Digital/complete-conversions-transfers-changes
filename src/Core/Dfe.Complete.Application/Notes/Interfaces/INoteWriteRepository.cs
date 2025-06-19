@@ -7,4 +7,5 @@ public interface INoteWriteRepository
 {
     Task<Note?> GetNoteByIdAsync(NoteId noteId, CancellationToken cancellationToken);
     Task UpdateNoteAsync(Note note, CancellationToken cancellationToken);
+    Task RemoveNoteAsync(Note note, CancellationToken cancellationToken);
 }

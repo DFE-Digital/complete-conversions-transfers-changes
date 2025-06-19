@@ -19,4 +19,10 @@ internal class NoteWriteRepository(CompleteContext context) : INoteWriteReposito
         _context.Notes.Update(note);
         await _context.SaveChangesAsync(cancellationToken);
     }
+
+    public async Task RemoveNoteAsync(Note note, CancellationToken cancellationToken)
+    {
+        _context.Notes.Remove(note);
+        await _context.SaveChangesAsync(cancellationToken);
+    }
 }
