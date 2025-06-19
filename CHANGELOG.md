@@ -27,6 +27,7 @@ Security in case of vulnerabilities.
 ### Changed  
 
 ### Fixed  
+- Fixed incoming trust displaying as `None`
 - update exports tab to point at correct page
 - Fixed project creation path.
 
