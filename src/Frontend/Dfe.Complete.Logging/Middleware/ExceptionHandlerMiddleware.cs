@@ -10,6 +10,7 @@ namespace Dfe.Complete.Logging.Middleware
 {
     public class ExceptionHandlerMiddleware(RequestDelegate next, ILogger<ExceptionHandlerMiddleware> logger)
     {
+        private static string ContentTypeJson = "application/json";
         public async Task InvokeAsync(HttpContext context)
         {
             try
@@ -63,7 +64,7 @@ namespace Dfe.Complete.Logging.Middleware
         private async Task HandleUnauthorizedResponseAsync(HttpContext context)
         {
             logger.LogWarning("Unauthorized access attempt detected.");
-            context.Response.ContentType = "application/json";
+            context.Response.ContentType = ContentTypeJson;
             var errorResponse = new ErrorResponse
             {
                 StatusCode = context.Response.StatusCode,
@@ -76,7 +77,7 @@ namespace Dfe.Complete.Logging.Middleware
         private async Task HandleForbiddenResponseAsync(HttpContext context)
         {
             logger.LogWarning("Forbidden access attempt detected.");
-            context.Response.ContentType = "application/json";
+            context.Response.ContentType = ContentTypeJson;
             var errorResponse = new ErrorResponse
             {
                 StatusCode = context.Response.StatusCode,
@@ -91,7 +92,7 @@ namespace Dfe.Complete.Logging.Middleware
             logger.LogError(exception, "Unhandled Exception: {Message}", exception.Message);
             if (IsApiRequest(context))
             {
-                context.Response.ContentType = "application/json";
+                context.Response.ContentType = ContentTypeJson;
                 context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
                 var errorResponse = new ErrorResponse
                 {
@@ -111,7 +112,7 @@ namespace Dfe.Complete.Logging.Middleware
         {
             // Adjust this logic to match your API route conventions
             return context.Request.Path.StartsWithSegments("/api") ||
-                context.Request.Headers.Accept.Any(h => h!.Contains("application/json"));
+                context.Request.Headers.Accept.Any(h => h!.Contains(ContentTypeJson));
         }
     }
 }
