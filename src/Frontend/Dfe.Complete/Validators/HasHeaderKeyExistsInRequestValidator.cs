@@ -15,7 +15,7 @@ namespace Dfe.Complete.Validators
                         httpContext.Request.Headers.Select(h =>
                             $"{h.Key}: {string.Join(",", h.Value!)}"));
 
-                                logger.LogInformation("All request headers: {Headers}", allHeaders);
+                                logger.LogInformation("Getting Anti forgery header: {Headers}", !httpContext.Request.Headers.TryGetValue(headerKey, out var requestHeaderK));
                 return false;
             }
             logger.LogInformation("Getting Anti forgery Result: {HeaderKey}", string.Equals(requestHeader, headerValue, StringComparison.Ordinal));
