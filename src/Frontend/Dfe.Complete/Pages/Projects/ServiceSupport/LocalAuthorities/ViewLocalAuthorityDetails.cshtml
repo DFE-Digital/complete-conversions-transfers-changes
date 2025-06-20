@@ -1,0 +1,89 @@
+﻿@page "/service-support/local-authorities/{id:guid}"
+@using Dfe.Complete.Constants
+@model Dfe.Complete.Pages.Projects.ServiceSupport.LocalAuthorities.ViewLocalAuthorityDetailsModel
+
+@{
+    Layout = "ServiceSupport/_ServiceSupportLayout";
+    ViewData["Title"] = "Local authority details";
+  
+    var hasCreatedLaDetails = (bool)(TempData["HasCreatedLaDetails"] ?? false);
+    var hasUpdatedLaDetails = (bool)(TempData["HasUpdatedLaDetails"] ?? false);
+}
+@if (hasUpdatedLaDetails || hasCreatedLaDetails)
+{
+    <div class="govuk-grid-column-two-thirds">
+        <govuk-notification-banner class="govuk-notification-banner--success">
+            <govuk-notification-banner-title>
+                Success
+            </govuk-notification-banner-title>
+            @if (hasCreatedLaDetails)
+            {
+                <h3 class="govuk-notification-banner__heading" id="la-created">
+                    Local authority successfully created
+                </h3>
+            }
+            else
+            {
+                <h3 class="govuk-notification-banner__heading" id="la-updated">
+                    Local authority details updated
+                </h3>
+            }
+        </govuk-notification-banner>
+    </div>
+}
+
+<div class="govuk-grid-column-full">
+    <h1 class="govuk-heading-l">
+        @Model.Details.LocalAuthority.Name
+    </h1>
+
+    <dl class="govuk-summary-list">
+        <div class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__key">Code</dt>
+            <dd class="govuk-summary-list__value">@Model.Details.LocalAuthority.Code</dd>
+        </div>
+        <div class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__key">Address</dt>
+            <dd class="govuk-summary-list__value">
+                <address class="govuk-address">@Model.Details.LocalAuthority.Address1<br>
+                    @Model.Details.LocalAuthority.Address2<br>
+                    @if (!string.IsNullOrWhiteSpace(Model.Details.LocalAuthority.Address3))
+                    {
+                        @Model.Details.LocalAuthority.Address3<br>
+                    }
+                    @Model.Details.LocalAuthority.AddressTown<br>
+                    @Model.Details.LocalAuthority.AddressCounty<br>
+                    @Model.Details.LocalAuthority.AddressPostcode
+                </address>
+            </dd>
+        </div>
+    </dl>
+    @if (@Model.Details.Contact !=null)
+    {
+        <h2 class="govuk-heading-l">Director of child services</h2>
+        <dl class="govuk-summary-list">
+            <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">DCS Position</dt>
+                <dd class="govuk-summary-list__value">@Model.Details.Contact.Title</dd>
+            </div>
+            <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">Name</dt>
+                <dd class="govuk-summary-list__value">@Model.Details.Contact.Name</dd>
+            </div>
+            <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">Email</dt>
+                <dd class="govuk-summary-list__value">@Model.Details.Contact.Email</dd>
+            </div>
+            <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">Phone</dt>
+                <dd class="govuk-summary-list__value">@Model.Details.Contact.Phone</dd>
+            </div>
+        </dl>
+    } 
+    <div class="govuk-button-group">
+        <a data-module="govuk-button" draggable="false" role="button" class="govuk-button" href="@Model.EditLocalAuthorityUrl(Model.Id)">Edit</a>
+        <a data-module="govuk-button" draggable="false" role="button" class="govuk-button govuk-button--warning" href="@Model.DeleteLocalAuthorityUrl()">Delete</a>
+        <a class="govuk-link" href="@RouteConstants.ListLocalAuthorities">Return to list</a>
+    </div>
+
+</div>
