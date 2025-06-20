@@ -68,7 +68,7 @@
 
 @functions {
 
-  private static IHtmlContent DisplayTrustName(string trustName)
+  private static IHtmlContent DisplayTrustName(string? trustName)
   {
     return !string.IsNullOrEmpty(trustName) ? new HtmlString(trustName) : new HtmlString("<strong class=\"govuk-tag govuk-tag--grey\">None</strong>");
   }

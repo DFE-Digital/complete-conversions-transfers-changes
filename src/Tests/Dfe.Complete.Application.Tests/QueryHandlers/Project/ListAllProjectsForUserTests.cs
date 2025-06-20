@@ -10,6 +10,7 @@ using Dfe.Complete.Application.Projects.Queries.ListAllProjects;
 using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Domain.ValueObjects;
 using Dfe.Complete.Tests.Common.Customizations.Models;
+using Dfe.Complete.Utils;
 using DfE.CoreLibs.Testing.AutoFixture.Attributes;
 using DfE.CoreLibs.Testing.AutoFixture.Customizations;
 using MediatR;
@@ -23,20 +24,54 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.Project;
 public class ListAllProjectsForUserTests
 {
     [AttributeUsage(AttributeTargets.Method, AllowMultiple = true)]
-    private class InlineAutoDataAttribute : CompositeDataAttribute
-    {
-        public InlineAutoDataAttribute(ProjectUserFilter filter, OrderProjectByField sortingField,
-            OrderByDirection sortingDirection)
-            : base(
-                new InlineDataAttribute(filter),
-                new InlineDataAttribute(new OrderProjectQueryBy(sortingField, sortingDirection)),
-                new CustomAutoDataAttribute(
+    private class InlineAutoDataAttribute(ProjectUserFilter filter, OrderProjectByField sortingField,
+        OrderByDirection sortingDirection) : CompositeDataAttribute(
+            new InlineDataAttribute(filter),
+            new InlineDataAttribute(new OrderProjectQueryBy(sortingField, sortingDirection)),
+            new CustomAutoDataAttribute(
                     typeof(OmitCircularReferenceCustomization),
                     typeof(ListAllProjectsQueryModelCustomization),
                     typeof(DateOnlyCustomization)))
-        {
-        }
+    {
     }
+
+    [Theory]
+    [InlineAutoData(ProjectUserFilter.AssignedTo, OrderProjectByField.SignificantDate, OrderByDirection.Ascending)]
+    public async Task Handle_ShouldThrowNotFoundException_WhenUserValueIsNull(
+    ProjectUserFilter filter,
+    OrderProjectQueryBy ordering,
+    [Frozen] IListAllProjectsQueryService mockListAllProjectsQueryService,
+    [Frozen] Mock<ISender> mockSender,
+    Mock<ILogger<ListAllProjectsForUserQueryHandler>> _mockLogger)
+    {
+        // Arrange
+        var mockTrustsClient = new Mock<ITrustsV4Client>();
+        var handler = new ListAllProjectsForUserQueryHandler(
+            mockListAllProjectsQueryService,
+            mockTrustsClient.Object,
+            mockSender.Object,
+            _mockLogger.Object);
+
+        // Simulate user lookup returns null value
+        mockSender.Setup(sender => sender.Send(It.IsAny<GetUserByAdIdQuery>(), It.IsAny<CancellationToken>()))
+            .ReturnsAsync(Result<UserDto?>.Success(null));
+
+        var query = new ListAllProjectsForUserQuery(
+            ProjectState.Active,
+            "missing-ad-id",
+            filter,
+            ordering)
+        { Page = 1 };
+
+        // Act
+        var result = await handler.Handle(query, default);
+
+        //Assert
+        Assert.NotNull(result);
+        Assert.False(result.IsSuccess);
+        Assert.Contains("User not found.", result.Error);
+    }
+      
 
     [Theory]
     [InlineAutoData(ProjectUserFilter.AssignedTo, OrderProjectByField.SignificantDate, OrderByDirection.Ascending)]
@@ -91,12 +126,16 @@ public class ListAllProjectsForUserTests
         var expectedQuery = mockListAllProjectsForUserQueryModels.Select(item =>
         {
             Assert.NotNull(item.Project);
+            var incomingTrustName = item.Project.FormAMat
+                ? item.Project.NewTrustName
+                : trustList.FirstOrDefault(t => t.Ukprn! == item.Project.IncomingTrustUkprn)?.Name;
+            var outgoingTrustName = trustList.FirstOrDefault(t => t.Ukprn! == item.Project.OutgoingTrustUkprn)?.Name;
             return ListAllProjectsForUserQueryResultModel
                 .MapProjectAndEstablishmentToListAllProjectsForUserQueryResultModel(
                     item.Project,
-                    item.Establishment,
-                    trustList.FirstOrDefault(t => t.Ukprn == item.Project.OutgoingTrustUkprn).Name,
-                    trustList.FirstOrDefault(t => t.Ukprn == item.Project.IncomingTrustUkprn).Name);
+                    item.Establishment!,
+                    outgoingTrustName,
+                    incomingTrustName);
         });
 
         var expected = expectedQuery
@@ -226,4 +265,61 @@ public class ListAllProjectsForUserTests
         Assert.False(result.IsSuccess);
         Assert.Equal(errorMessage, result.Error);
     }
+
+    [Theory]
+    [InlineAutoData(ProjectUserFilter.AssignedTo, OrderProjectByField.SignificantDate, OrderByDirection.Ascending)]
+    [InlineAutoData(ProjectUserFilter.CreatedBy, OrderProjectByField.SignificantDate, OrderByDirection.Descending)]
+    public async Task Handle_ShouldSetAssignedToOrCreatedByCorrectly(
+     ProjectUserFilter filter,
+     OrderProjectQueryBy ordering,
+     [Frozen] Mock<IListAllProjectsQueryService> mockListAllProjectsQueryService,
+     [Frozen] Mock<ISender> mockSender,
+     IFixture fixture)
+    {
+        // Arrange
+        var mockLogger = new Mock<ILogger<ListAllProjectsForUserQueryHandler>>();
+        var mockTrustsClient = new Mock<ITrustsV4Client>();
+        var handler = new ListAllProjectsForUserQueryHandler(
+            mockListAllProjectsQueryService.Object,
+            mockTrustsClient.Object,
+            mockSender.Object,
+            mockLogger.Object);
+
+        var userDto = fixture.Create<UserDto>();
+        mockSender.Setup(sender => sender.Send(It.IsAny<GetUserByAdIdQuery>(), It.IsAny<CancellationToken>()))
+            .ReturnsAsync(Result<UserDto?>.Success(userDto));
+
+        var dummyProjects = fixture.CreateMany<ListAllProjectsQueryModel>(3).ToList();
+        ProjectFilters? capturedFilters = null;
+
+        mockListAllProjectsQueryService
+            .Setup(s => s.ListAllProjects(It.IsAny<ProjectFilters>(), It.IsAny<string>(), It.IsAny<OrderProjectQueryBy>()))
+            .Callback<ProjectFilters, string, OrderProjectQueryBy?>((filters, _, __) => capturedFilters = filters)
+            .Returns(dummyProjects.BuildMock());
+
+        mockTrustsClient.Setup(service => service.GetByUkprnsAllAsync(It.IsAny<IEnumerable<string>>(), default))
+            .ReturnsAsync([]);
+
+        var query = new ListAllProjectsForUserQuery(ProjectState.Active, userDto.ActiveDirectoryUserId!, filter, ordering) { Page = 0 };
+
+        // Act
+        var result = await handler.Handle(query, default);
+
+        // Assert
+        Assert.NotNull(result);
+        Assert.True(result.IsSuccess);
+        Assert.NotNull(capturedFilters);
+
+        if (filter == ProjectUserFilter.AssignedTo)
+        {
+            Assert.Equal(userDto.Id, capturedFilters.AssignedToUserId);
+            Assert.Null(capturedFilters.CreatedByUserId);
+        }
+        else if (filter == ProjectUserFilter.CreatedBy)
+        {
+            Assert.Equal(userDto.Id, capturedFilters.CreatedByUserId);
+            Assert.Null(capturedFilters.AssignedToUserId);
+        }
+    }
+
 }
