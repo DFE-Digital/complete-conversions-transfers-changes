@@ -1,0 +1,36 @@
+﻿@page "/projects/{projectId}/notes/new"
+@using Dfe.Complete.Constants
+@model Dfe.Complete.Pages.Projects.Notes.AddProjectNoteModel
+@{
+    ViewData["Title"] = "Complete conversions, tranfers and changes";
+    var backLink = string.Format(RouteConstants.ProjectViewNotes, Model.ProjectId);
+}
+
+@section BeforeMain
+{
+    <govuk-back-link href="@backLink" xmlns="http://www.w3.org/1999/html" />
+}
+
+<div class="govuk-grid-row govuk-body">
+    <div class="govuk-grid-column-two-thirds">
+        <form method="post">
+            <govuk-textarea name="note-text" asp-for="@Model.NoteText">
+                <govuk-textarea-label class="govuk-label--l">
+                    Enter note
+                </govuk-textarea-label>
+
+                <govuk-textarea-hint>
+                    <p>
+                        Do not include personal or financial information.
+                    </p>
+                </govuk-textarea-hint>
+            </govuk-textarea>
+
+            <div class="govuk-button-group">
+                <button type="submit" formnovalidate="formnovalidate" class="govuk-button" data-module="govuk-button"
+                    data-prevent-double-click="true">Add note</button>
+                <a class="govuk-link" href="@backLink">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>

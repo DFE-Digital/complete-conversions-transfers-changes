@@ -36,7 +36,7 @@
         public const string SelectCreateProjectType = "/projects/new";
         
         public const string ProjectViewNotes = Project + "/notes";
-        public const string ProjectAddNote = ProjectViewNotes + "/edit";
+        public const string ProjectAddNote = ProjectViewNotes + "/new";
         public const string ProjectEditNote = ProjectViewNotes + "/{1}/edit";
 
         public const string ProjectInternalContacts = Project + "/internal-contacts";

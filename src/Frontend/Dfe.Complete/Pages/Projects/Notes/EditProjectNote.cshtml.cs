@@ -39,7 +39,11 @@ public class EditProjectNoteModel(ISender sender) : PageModel
 
     public async Task<IActionResult> OnPostAsync()
     {
-        await sender.Send(new UpdateNoteCommand(new NoteId(NoteId), NoteText));
+        var response = await sender.Send(new UpdateNoteCommand(new NoteId(NoteId), NoteText));
+
+        if (!response.IsSuccess)
+            throw new ApplicationException($"An error occurred when updating note {NoteId} for project {ProjectId}");
+
         return Redirect(string.Format(RouteConstants.ProjectViewNotes, ProjectId));
     }
 }

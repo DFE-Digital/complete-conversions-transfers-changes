@@ -15,17 +15,15 @@ public class DeleteProjectNoteModel(ISender sender) : PageModel
     [BindProperty(SupportsGet = true, Name = "noteId")]
     public required Guid NoteId { get; set; }
 
-    public void OnGet()
-    {
-
-    }
-
     public async Task<IActionResult> OnPostAsync()
     {
-        await sender.Send(new RemoveNoteCommand(new NoteId(NoteId)));
-        // TODO need to return note id again and check success
-        return RedirectToPage(string.Format(RouteConstants.ProjectEditNote, ProjectId, NoteId));
+        var response = await sender.Send(new RemoveNoteCommand(new NoteId(NoteId)));
 
+        if (!(response.IsSuccess || response.Value == true))
+            throw new ApplicationException($"An error occurred when deleting note {NoteId} for project {ProjectId}");
 
+        return Redirect(string.Format(RouteConstants.ProjectViewNotes, ProjectId));
+        // TODO add deleted notification
+        // TempData.SetNotification(
     }
 }

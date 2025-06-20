@@ -1,7 +1,7 @@
 using Dfe.Complete.Application.Notes.Queries;
 using Dfe.Complete.Application.Projects.Models;
+using Dfe.Complete.Constants;
 using Dfe.Complete.Domain.Constants;
-using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Domain.ValueObjects;
 using Dfe.Complete.Extensions;
 using Dfe.Complete.Models;
@@ -21,13 +21,9 @@ public class ViewProjectNotesModel(ISender sender, IAuthorizationService _author
     {
         var baseResult = await base.OnGetAsync();
         if (baseResult is not PageResult) return baseResult;
-        var canAddNotes = Project.State != ProjectState.Deleted &&
-            Project.State != ProjectState.Completed &&
-            Project.State != ProjectState.DaoRevoked;
 
         string? errorMessage = null;
-        // TODO add this logic to the addnotepage too
-        if (!canAddNotes)
+        if (!Project.CanAddNotes)
             errorMessage = "The project is not active and no further notes can be added.";
         else if (!(await _authorizationService.AuthorizeAsync(User, UserPolicyConstants.CanAddNotes)).Succeeded)
             errorMessage = "You are not authorised to perform this action.";
@@ -40,10 +36,10 @@ public class ViewProjectNotesModel(ISender sender, IAuthorizationService _author
                 errorMessage
             );
 
-            return RedirectToPage(new { projectId = ProjectId });
+            return Page();
         }
 
-        return RedirectToPage("/Projects/Notes/Add");
+        return Redirect(string.Format(RouteConstants.ProjectAddNote, ProjectId));
     }
 
     public override async Task<IActionResult> OnGetAsync()

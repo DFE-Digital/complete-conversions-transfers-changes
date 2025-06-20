@@ -33,10 +33,15 @@
             <div class="govuk-inset-text">There are not any notes for this project yet.</div>
         }
 
-        @foreach (var note in Model.Notes)
+        @for (var iNote = 0; iNote < Model.Notes.Count; iNote++)
         {
+            var note = Model.Notes[iNote];
             var editNoteLink = string.Format(RouteConstants.ProjectEditNote, Model.ProjectId, note.Id.Value);
 
+            @if (iNote > 0)
+            {
+                <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible" />
+            }
             <div id="note-entry-@note.Id">
                 <span class="govuk-caption-m">@note.CreatedAt.ToDateString()</span>
                 <h3 class="govuk-heading-m">@note.UserFullName</h3>

@@ -14,15 +14,21 @@ internal class NoteWriteRepository(CompleteContext context) : INoteWriteReposito
         return await _context.Notes.FindAsync([noteId], cancellationToken);
     }
 
-    public async Task UpdateNoteAsync(Note note, CancellationToken cancellationToken)
+    public async Task CreateNoteAsync(Note note, CancellationToken cancellationToken)
     {
-        _context.Notes.Update(note);
+        await _context.Notes.AddAsync(note, cancellationToken);
         await _context.SaveChangesAsync(cancellationToken);
     }
 
     public async Task RemoveNoteAsync(Note note, CancellationToken cancellationToken)
     {
         _context.Notes.Remove(note);
+        await _context.SaveChangesAsync(cancellationToken);
+    }
+
+    public async Task UpdateNoteAsync(Note note, CancellationToken cancellationToken)
+    {
+        _context.Notes.Update(note);
         await _context.SaveChangesAsync(cancellationToken);
     }
 }

@@ -1,3 +1,4 @@
+using Dfe.Complete.Application.Common.Models;
 using Dfe.Complete.Application.Notes.Interfaces;
 using Dfe.Complete.Domain.ValueObjects;
 using Dfe.Complete.Utils;
@@ -7,15 +8,15 @@ using Microsoft.Extensions.Logging;
 
 namespace Dfe.Complete.Application.Notes.Commands;
 
-public record RemoveNoteCommand(NoteId NoteId) : IRequest;
+public record RemoveNoteCommand(NoteId NoteId) : IRequest<Result<bool>>;
 
 public class RemoveNoteCommandHandler(
     INoteWriteRepository _repo,
     IHttpContextAccessor _httpContextAccessor,
     ILogger<RemoveNoteCommandHandler> logger
-) : IRequestHandler<RemoveNoteCommand>
+) : IRequestHandler<RemoveNoteCommand, Result<bool>>
 {
-    public async Task Handle(RemoveNoteCommand request, CancellationToken cancellationToken)
+    public async Task<Result<bool>> Handle(RemoveNoteCommand request, CancellationToken cancellationToken)
     {
         try
         {
@@ -31,11 +32,13 @@ public class RemoveNoteCommandHandler(
                 throw new UnauthorizedAccessException("The current user is not assigned to the note and cannot delete it");
 
             await _repo.RemoveNoteAsync(note, cancellationToken);
+
+            return Result<bool>.Success(true);
         }
         catch (Exception ex)
         {
             logger.LogError(ex, "Exception for {Name} Request - {@Request}", nameof(RemoveNoteCommandHandler), request);
-            throw new Exception(ex.Message);
+            return Result<bool>.Failure($"Could not remove note {request.NoteId.Value}: {ex.Message}");
         }
     }
 }

@@ -28,8 +28,11 @@ Security in case of vulnerabilities.
 - Add `GetNotesByProjectId` query and handler
 - Add `GetNoteById` query and handler
 - Add `UpdateNote` command and handler
+- Add `CreateNote` command and handler
 - Add project notes page (`/projects/{projectId}/notes`)
 - Add project notes editing page (`/projects/{projectId}/notes/{noteId}/edit`)
+- Add project notes creation page (`/projects/{projectId}/notes/new`)
+- Add ability to delete note (`/projects/{projectId}/notes/{noteId}/delete`)
 - Attach user ID from DB as custom claim
 
 ### Changed  

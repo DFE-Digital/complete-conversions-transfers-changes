@@ -1,3 +1,4 @@
+using Dfe.Complete.Application.Common.Models;
 using Dfe.Complete.Application.Notes.Interfaces;
 using Dfe.Complete.Domain.ValueObjects;
 using Dfe.Complete.Utils;
@@ -7,15 +8,15 @@ using Microsoft.Extensions.Logging;
 
 namespace Dfe.Complete.Application.Notes.Commands;
 
-public record UpdateNoteCommand(NoteId NoteId, string Body) : IRequest<NoteId>;
+public record UpdateNoteCommand(NoteId NoteId, string Body) : IRequest<Result<NoteId>>;
 
 public class UpdateNoteCommandHandler(
     INoteWriteRepository _repo,
     IHttpContextAccessor _httpContextAccessor,
     ILogger<UpdateNoteCommandHandler> logger
-) : IRequestHandler<UpdateNoteCommand, NoteId>
+) : IRequestHandler<UpdateNoteCommand, Result<NoteId>>
 {
-    public async Task<NoteId> Handle(UpdateNoteCommand request, CancellationToken cancellationToken)
+    public async Task<Result<NoteId>> Handle(UpdateNoteCommand request, CancellationToken cancellationToken)
     {
         try
         {
@@ -33,12 +34,12 @@ public class UpdateNoteCommandHandler(
             note.Body = request.Body;
             await _repo.UpdateNoteAsync(note, cancellationToken);
 
-            return note.Id;
+            return Result<NoteId>.Success(note.Id);
         }
         catch (Exception ex)
         {
             logger.LogError(ex, "Exception for {Name} Request - {@Request}", nameof(UpdateNoteCommandHandler), request);
-            throw new Exception(ex.Message);
+            return Result<NoteId>.Failure($"Could not update note {request.NoteId.Value}: {ex.Message}");
         }
     }
 }

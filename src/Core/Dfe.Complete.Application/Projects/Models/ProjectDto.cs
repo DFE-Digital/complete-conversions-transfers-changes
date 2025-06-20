@@ -80,17 +80,20 @@ namespace Dfe.Complete.Application.Projects.Models
 
         public ProjectGroupId? GroupId { get; set; }
 
-        public  User? AssignedTo { get; set; }
+        public User? AssignedTo { get; set; }
 
-        public  User? Caseworker { get; set; }
+        public User? Caseworker { get; set; }
 
-        public  ICollection<Contact> Contacts { get; set; } = new List<Contact>();
+        public ICollection<Contact> Contacts { get; set; } = new List<Contact>();
 
-        public  ICollection<Note> Notes { get; set; } = [];
+        public ICollection<Note> Notes { get; set; } = [];
 
         public User RegionalDeliveryOfficer { get; set; } = default!;
-        
+
         public bool FormAMat => NewTrustReferenceNumber != null && NewTrustName != null && IncomingTrustUkprn == null;
+
+        // TODO this is probably too specific to be here, I'd like to see this in the project notes page model
+        public bool CanAddNotes => State != ProjectState.Deleted && State != ProjectState.Completed && State != ProjectState.DaoRevoked;
 
     }
 }
