@@ -8,7 +8,6 @@ using System.Net;
 
 namespace Dfe.Complete.Tests.Middleware
 {
-
     public class ExceptionHandlerMiddlewareTests
     {
         private readonly Mock<ILogger<ExceptionHandlerMiddleware>> _loggerMock;
@@ -69,10 +68,11 @@ namespace Dfe.Complete.Tests.Middleware
 
             Assert.Contains("You do not have permission", responseBody);
         }
-
         [Fact]
-        public async Task InvokeAsync_Should_Handle_ValidationException()
+        public async Task InvokeAsync_Should_Handle_ValidationException_ForApiRequest()
         {
+            // Simulate API request
+            _httpContext.Request.Path = "/api/test";
             var middleware = new ExceptionHandlerMiddleware(context =>
             {
                 throw new ValidationException(
@@ -93,8 +93,28 @@ namespace Dfe.Complete.Tests.Middleware
         }
 
         [Fact]
-        public async Task InvokeAsync_Should_Handle_General_Exception()
+        public async Task InvokeAsync_Should_Handle_ValidationException_ForWebRequest()
         {
+            var middleware = new ExceptionHandlerMiddleware(context =>
+            {
+                throw new ValidationException(
+                 [
+                    new ValidationFailure("Field", "Error message")
+                 ]);
+            }, _loggerMock.Object);
+
+            var responseStream = new MemoryStream();
+            _httpContext.Response.Body = responseStream;
+
+            // Should throw for non-API (web) requests
+            await Assert.ThrowsAsync<ValidationException>(() => middleware.InvokeAsync(_httpContext));
+        }
+
+        [Fact]
+        public async Task InvokeAsync_Should_Handle_General_Exception_ForApiRequest()
+        {
+            // Simulate API request
+            _httpContext.Request.Path = "/api/test";
             var middleware = new ExceptionHandlerMiddleware(context =>
             {
                 throw new Exception("Something went wrong");
@@ -110,5 +130,54 @@ namespace Dfe.Complete.Tests.Middleware
             var responseBody = await new StreamReader(responseStream).ReadToEndAsync();
             Assert.Contains("Internal Server Error", responseBody);
         }
+
+        [Fact]
+        public async Task InvokeAsync_Should_Handle_General_Exception_ForWebRequest()
+        {
+            var middleware = new ExceptionHandlerMiddleware(context =>
+            {
+                throw new Exception("Something went wrong");
+            }, _loggerMock.Object);
+
+            var responseStream = new MemoryStream();
+            _httpContext.Response.Body = responseStream;
+
+            // Should throw for non-API (web) requests
+            await Assert.ThrowsAsync<Exception>(() => middleware.InvokeAsync(_httpContext));
+        }
+
+        [Fact]
+        public async Task InvokeAsync_Should_Propagate_ValidationException_ForNonApiRequest()
+        {
+            var middleware = new ExceptionHandlerMiddleware(context =>
+            {
+                throw new ValidationException(
+                 [
+                    new ValidationFailure("Field", "Error message")
+                 ]);
+            }, _loggerMock.Object);
+
+            var responseStream = new MemoryStream();
+            _httpContext.Response.Body = responseStream;
+
+            // Should throw for non-API requests
+            await Assert.ThrowsAsync<ValidationException>(() => middleware.InvokeAsync(_httpContext));
+        }
+
+        [Fact]
+        public async Task InvokeAsync_Should_Propagate_General_Exception_ForNonApiRequest()
+        {
+            var middleware = new ExceptionHandlerMiddleware(context =>
+            {
+                throw new Exception("Something went wrong");
+            }, _loggerMock.Object);
+
+            var responseStream = new MemoryStream();
+            _httpContext.Response.Body = responseStream;
+
+            // Should throw for non-API requests
+            await Assert.ThrowsAsync<Exception>(() => middleware.InvokeAsync(_httpContext));
+        }
     }
+
 }
