@@ -6,7 +6,7 @@ export class ProjectDetailsPage extends BasePage {
     private readonly captionClass = "govuk-caption-l";
     private readonly navBarClass = "moj-sub-navigation";
 
-    constructor(sectionId: string = "") {
+    constructor(sectionId: string = "main-content") {
         super();
         this.sectionId = sectionId;
     }
