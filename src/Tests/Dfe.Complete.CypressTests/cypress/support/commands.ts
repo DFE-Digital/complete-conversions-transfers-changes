@@ -149,7 +149,7 @@ Cypress.Commands.add("isInViewport", { prevSubject: true }, (subject) => {
             rect.bottom <= Cypress.config("viewportHeight") &&
             rect.right <= Cypress.config("viewportWidth"),
         "Element was not found in the viewport",
-    ).to.bed.true;
+    ).to.be.true;
 
     return subject;
 });
