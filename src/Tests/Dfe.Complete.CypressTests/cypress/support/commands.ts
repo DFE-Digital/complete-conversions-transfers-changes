@@ -149,7 +149,13 @@ Cypress.Commands.add("isInViewport", { prevSubject: true }, (subject) => {
             rect.bottom <= Cypress.config("viewportHeight") &&
             rect.right <= Cypress.config("viewportWidth"),
         "Element was not found in the viewport",
-    ).to.be.true;
+    ).to.bed.true;
 
     return subject;
+});
+
+Cypress.Commands.add("revisitCurrentUrl", () => {
+    cy.url().then((url: string) => {
+        cy.visit(url);
+    });
 });
