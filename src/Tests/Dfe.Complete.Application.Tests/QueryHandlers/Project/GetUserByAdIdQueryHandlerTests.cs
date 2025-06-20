@@ -6,8 +6,8 @@ using DfE.CoreLibs.Testing.AutoFixture.Customizations;
 using System.Linq.Expressions;
 using AutoMapper;
 using Dfe.Complete.Application.Projects.Models;
+using Dfe.Complete.Application.Users.Queries.GetUser;
 using NSubstitute.ExceptionExtensions;
-using Dfe.Complete.Application.Projects.Queries.GetUser;
 using Dfe.Complete.Tests.Common.Customizations.Behaviours;
 using Dfe.Complete.Tests.Common.Customizations.Models;
 
@@ -38,7 +38,7 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
 
             // Assert
             await mockUserRepository.Received(1).FindAsync(Arg.Any<Expression<Func<Domain.Entities.User, bool>>>(), Arg.Any<CancellationToken>());
-            Assert.True(result.IsSuccess == true);
+            Assert.True(result.IsSuccess);
 
             var returnedDto = result.Value;
 
@@ -64,7 +64,7 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
 
             // Assert
             await mockUserRepository.Received(1).FindAsync(Arg.Any<Expression<Func<Domain.Entities.User, bool>>>(), Arg.Any<CancellationToken>());
-            Assert.True(result.IsSuccess == true);
+            Assert.True(result.IsSuccess);
             Assert.True(result.Value == null);
         }
 
@@ -85,7 +85,7 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
 
             // Assert
             await mockUserRepository.Received(1).FindAsync(Arg.Any<Expression<Func<Domain.Entities.User, bool>>>(), Arg.Any<CancellationToken>());
-            Assert.True(result.IsSuccess == false);
+            Assert.True(!result.IsSuccess);
         }
     }
 }

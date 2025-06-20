@@ -83,9 +83,7 @@ public abstract class ProjectsByMonthModel(string currentSubNavigationItem) : Al
     
     public void SetErrorNotification(string message)
     {
-        TempDataExtensions.SetNotification(
-            TempData, 
-            NotificationType.Error, 
+        TempData.SetNotification(NotificationType.Error, 
             "Important", 
             message);
     }

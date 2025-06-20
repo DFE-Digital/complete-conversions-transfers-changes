@@ -90,6 +90,7 @@ public class Startup
                    }
                ];
            });
+        services.AddControllers().AddMicrosoftIdentityUI();
         SetupDataProtection(services);
 
         services.AddCompleteClientProject(Configuration);
@@ -178,6 +179,7 @@ public class Startup
         app.UseEndpoints(endpoints =>
         {
             endpoints.MapRazorPages();
+            endpoints.MapControllers();
         });
     }
 
