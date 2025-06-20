@@ -115,8 +115,7 @@ public class CreateNewProject(ISender sender, ErrorService errorService, ILogger
             var createResponse = await sender.Send(createProjectCommand, cancellationToken);
 
             var projectId = createResponse.Value;
-
-            return Redirect($"/projects/conversion-projects/{projectId}/created");
+            return Redirect($"/projects/{projectId}/created");
         }
         catch (NotFoundException notFoundException)
         {
