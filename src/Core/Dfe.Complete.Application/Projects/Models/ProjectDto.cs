@@ -92,8 +92,5 @@ namespace Dfe.Complete.Application.Projects.Models
 
         public bool FormAMat => NewTrustReferenceNumber != null && NewTrustName != null && IncomingTrustUkprn == null;
 
-        // TODO this is probably too specific to be here, I'd like to see this in the project notes page model
-        public bool CanAddNotes => State != ProjectState.Deleted && State != ProjectState.Completed && State != ProjectState.DaoRevoked;
-
     }
 }

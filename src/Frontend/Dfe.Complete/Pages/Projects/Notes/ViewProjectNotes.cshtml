@@ -10,8 +10,6 @@
 
     var addNoteLink = string.Format(RouteConstants.ProjectAddNote, Model.ProjectId);
     var userId = User.GetUserId();
-
-    var projectEditable = Model.Project.State != ProjectState.Completed;
 }
 
 <govuk-project-tabs project-id="@Model.ProjectId" project-type="" />
@@ -46,7 +44,7 @@
                 <span class="govuk-caption-m">@note.CreatedAt.ToDateString()</span>
                 <h3 class="govuk-heading-m">@note.UserFullName</h3>
                 <p class="govuk-body-m">@note.Body</p>
-                @if (projectEditable && userId == note.UserId)
+                @if (Model.CanEditNote(note.UserId))
                 {
                     <p class="govuk-body govuk-!-font-size-16">
                         <a class="govuk-link" href="@editNoteLink">Edit</a>

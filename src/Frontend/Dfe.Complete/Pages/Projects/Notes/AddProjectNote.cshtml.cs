@@ -1,5 +1,4 @@
 using Dfe.Complete.Application.Notes.Commands;
-using Dfe.Complete.Application.Projects.Queries.GetProject;
 using Dfe.Complete.Constants;
 using Dfe.Complete.Domain.Constants;
 using Dfe.Complete.Domain.ValueObjects;
@@ -13,24 +12,17 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 namespace Dfe.Complete.Pages.Projects.Notes;
 
 [Authorize(policy: UserPolicyConstants.CanAddNotes)]
-public class AddProjectNoteModel(ISender sender) : PageModel
+public class AddProjectNoteModel(ISender sender) : ProjectNotesBaseModel(sender, NotesNavigation)
 {
-    [BindProperty(SupportsGet = true, Name = "projectId")]
-    public required string ProjectId { get; set; }
-
     [BindProperty(Name = "note-text")]
     public required string NoteText { get; set; }
 
-    public async Task<IActionResult> OnGetAsync()
+    public override async Task<IActionResult> OnGetAsync()
     {
-        var query = new GetProjectByIdQuery(new ProjectId(Guid.Parse(ProjectId)));
-        var project = await sender.Send(query);
-        if (!project.IsSuccess || project.Value == null)
-        {
-            return NotFound($"Project {ProjectId} does not exist.");
-        }
+        var baseResult = await base.OnGetAsync();
+        if (baseResult is not PageResult) return baseResult;
 
-        if (!project.Value.CanAddNotes)
+        if (!CanAddNotes)
         {
             TempData.SetNotification(
                 NotificationType.Error,
@@ -47,7 +39,7 @@ public class AddProjectNoteModel(ISender sender) : PageModel
     public async Task<IActionResult> OnPostAsync()
     {
         var newNote = new CreateNoteCommand(new ProjectId(Guid.Parse(ProjectId)), User.GetUserId(), NoteText);
-        var response = await sender.Send(newNote);
+        var response = await Sender.Send(newNote);
 
         if (!response.IsSuccess)
             throw new ApplicationException($"An error occurred when creating a new note for project {ProjectId}");
@@ -55,11 +47,3 @@ public class AddProjectNoteModel(ISender sender) : PageModel
         return Redirect(string.Format(RouteConstants.ProjectViewNotes, ProjectId));
     }
 }
-
-/* TODO 
-
-Refactor this to have a common base class for the project notes pages.
-In it we want a notification handler, particularly unauthorised...
-It'll probably extend the project navigation model, so we can have the project details
-
-*/
