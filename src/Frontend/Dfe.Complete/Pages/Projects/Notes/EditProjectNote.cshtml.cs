@@ -47,6 +47,12 @@ public class EditProjectNoteModel(ISender sender) : ProjectNotesBaseModel(sender
         if (!response.IsSuccess)
             throw new ApplicationException($"An error occurred when updating note {NoteId} for project {ProjectId}");
 
+        TempData.SetNotification(
+            NotificationType.Success,
+            "Success",
+            "Your note has been edited"
+        );
+
         return Redirect(string.Format(RouteConstants.ProjectViewNotes, ProjectId));
     }
 }

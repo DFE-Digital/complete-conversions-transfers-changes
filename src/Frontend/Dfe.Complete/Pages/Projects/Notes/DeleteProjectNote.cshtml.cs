@@ -42,8 +42,15 @@ public class DeleteProjectNoteModel(ISender sender) : ProjectNotesBaseModel(send
         if (!(response.IsSuccess || response.Value == true))
             throw new ApplicationException($"An error occurred when deleting note {NoteId} for project {ProjectId}");
 
+        TempData.SetNotification(
+            NotificationType.Success,
+            "Success",
+            "Your note has been deleted"
+        );
+
         return Redirect(string.Format(RouteConstants.ProjectViewNotes, ProjectId));
-        // TODO add deleted notification
-        // TempData.SetNotification(
+
+        // TODO check if all on gets are now the same and move to base class
+        // TODO controller checks
     }
 }

@@ -38,11 +38,17 @@ public class AddProjectNoteModel(ISender sender) : ProjectNotesBaseModel(sender,
 
     public async Task<IActionResult> OnPostAsync()
     {
-        var newNote = new CreateNoteCommand(new ProjectId(Guid.Parse(ProjectId)), User.GetUserId(), NoteText);
-        var response = await Sender.Send(newNote);
+        var newNoteQuery = new CreateNoteCommand(new ProjectId(Guid.Parse(ProjectId)), User.GetUserId(), NoteText);
+        var response = await Sender.Send(newNoteQuery);
 
         if (!response.IsSuccess)
             throw new ApplicationException($"An error occurred when creating a new note for project {ProjectId}");
+
+        TempData.SetNotification(
+            NotificationType.Success,
+            "Success",
+            "Your note has been added"
+        );
 
         return Redirect(string.Format(RouteConstants.ProjectViewNotes, ProjectId));
     }
