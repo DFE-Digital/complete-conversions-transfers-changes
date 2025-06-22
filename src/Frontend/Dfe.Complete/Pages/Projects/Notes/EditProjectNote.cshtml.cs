@@ -22,7 +22,7 @@ public class EditProjectNoteModel(ISender sender) : ProjectNotesBaseModel(sender
         var baseResult = await base.OnGetAsync();
         if (baseResult is not PageResult) return baseResult;
 
-        var note = GetNoteById(NoteId);
+        var note = await GetNoteById(NoteId);
         if (note == null)
             return NotFound();
 

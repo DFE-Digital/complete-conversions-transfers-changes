@@ -19,7 +19,7 @@ public class DeleteProjectNoteModel(ISender sender) : ProjectNotesBaseModel(send
         var baseResult = await base.OnGetAsync();
         if (baseResult is not PageResult) return baseResult;
 
-        var note = GetNoteById(NoteId);
+        var note = await GetNoteById(NoteId);
         if (note == null)
             return NotFound();
 
@@ -50,7 +50,6 @@ public class DeleteProjectNoteModel(ISender sender) : ProjectNotesBaseModel(send
 
         return Redirect(string.Format(RouteConstants.ProjectViewNotes, ProjectId));
 
-        // TODO check if all on gets are now the same and move to base class
         // TODO controller checks
     }
 }

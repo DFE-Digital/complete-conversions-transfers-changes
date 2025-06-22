@@ -10,12 +10,12 @@ namespace Dfe.Complete.Pages.Projects.Notes;
 
 public class ProjectNotesBaseModel(ISender sender, string notesNavigation) : ProjectLayoutModel(sender, notesNavigation)
 {
-    public NoteDto? GetNoteById(Guid noteId)
+    public async Task<NoteDto?> GetNoteById(Guid noteId)
     {
         if (noteId == Guid.Empty)
             return null;
 
-        var noteResult = sender.Send(new GetNoteByIdQuery(new NoteId(noteId))).GetAwaiter().GetResult();
+        var noteResult = await Sender.Send(new GetNoteByIdQuery(new NoteId(noteId)));
         if (!noteResult.IsSuccess || noteResult.Value == null)
             return null;
 
@@ -28,5 +28,4 @@ public class ProjectNotesBaseModel(ISender sender, string notesNavigation) : Pro
             return false;
         return true;
     }
-
 }
