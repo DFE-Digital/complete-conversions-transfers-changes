@@ -4,7 +4,7 @@ using Dfe.Complete.Domain.ValueObjects;
 
 namespace Dfe.Complete.Domain.Entities;
 
-public class Contact : IEntity<ContactId>
+public class Contact : BaseAggregateRoot, IEntity<ContactId>
 {
     public ContactId Id { get; set; }
 
