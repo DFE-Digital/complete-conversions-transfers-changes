@@ -14,6 +14,10 @@ public class GetContactsForProject(IRepository<Contact> contactsRepository) : IR
 
     public async Task<Result<List<Contact>>> Handle(GetContactsForProjectQuery request, CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        var contactsCollection =
+            await contactsRepository.FetchAsync(contact => contact.ProjectId != null && contact.ProjectId.Value == request.ProjectId.Value,
+                cancellationToken);
+        var contactsList = contactsCollection.ToList();
+        return Result<List<Contact>>.Success(contactsList);
     }
 }
