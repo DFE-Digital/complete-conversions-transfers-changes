@@ -11,6 +11,8 @@ using Dfe.Complete.Application.Projects.Models;
 using Microsoft.AspNetCore.Authorization;
 using Dfe.Complete.Application.Projects.Commands.RemoveProject;
 using Dfe.Complete.Application.Projects.Queries.SearchProjects;
+using Dfe.Complete.Application.Notes.Queries;
+using Dfe.Complete.Application.Notes.Commands;
 
 namespace Dfe.Complete.Api.Controllers
 {
@@ -145,7 +147,7 @@ namespace Dfe.Complete.Api.Controllers
             var project = await sender.Send(request, cancellationToken);
             return Ok(project.Value ?? []);
         }
-        
+
         /// <summary>
         /// Returns the number of Projects
         /// </summary>
@@ -289,7 +291,7 @@ namespace Dfe.Complete.Api.Controllers
 
             return Ok(ukprn);
         }
-        
+
         /// <summary>
         /// Removes project based on URN for test purposes.
         /// </summary>
@@ -346,6 +348,89 @@ namespace Dfe.Complete.Api.Controllers
         {
             var project = await sender.Send(request, cancellationToken);
             return Ok(project.Value?.ProjectModels ?? []);
+        }
+
+        /// <summary>
+        /// Returns a list of Notes for a Project
+        /// </summary>
+        /// <param name="request"></param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        [Authorize(Policy = "CanRead")]
+        [HttpGet]
+        [Route("Notes")]
+        [SwaggerResponse(200, "Notes for project", typeof(List<NoteDto>))]
+        [SwaggerResponse(404, "Project not found")]
+        public async Task<IActionResult> GetNotesByProjectIdAsync([FromQuery] GetNotesByProjectIdQuery request, CancellationToken cancellationToken)
+        {
+            var result = await sender.Send(request, cancellationToken);
+
+            if (!result.IsSuccess || result.Value is null)
+                return NotFound();
+
+            return Ok(result.Value);
+        }
+
+        /// <summary>
+        /// Create a new Note for a Project
+        /// </summary>
+        /// <param name="request"></param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        [Authorize(Policy = "CanReadWrite")]
+        [HttpPost]
+        [Route("Notes")]
+        [SwaggerResponse(200, "Note ID", typeof(NoteId))]
+        [SwaggerResponse(404, "Project not found")]
+        [SwaggerResponse(404, "Note not found")]
+        public async Task<IActionResult> CreateProjectNoteAsync([FromQuery] CreateNoteCommand request, CancellationToken cancellationToken)
+        {
+            var result = await sender.Send(request, cancellationToken);
+
+            if (!result.IsSuccess || result.Value is null)
+                return StatusCode(500, result.Error);
+
+            return Created();
+        }
+
+        /// <summary>
+        /// Update a Note for a Project
+        /// </summary>
+        /// <param name="request"></param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        [Authorize(Policy = "CanReadWriteUpdate")]
+        [HttpPut]
+        [Route("Notes")]
+        [SwaggerResponse(200, "Note ID", typeof(NoteId))]
+        [SwaggerResponse(404, "Project not found")]
+        [SwaggerResponse(404, "Note not found")]
+        public async Task<IActionResult> UpdateProjectNoteAsync([FromQuery] UpdateNoteCommand request, CancellationToken cancellationToken)
+        {
+            var result = await sender.Send(request, cancellationToken);
+
+            if (!result.IsSuccess || result.Value is null)
+                return StatusCode(500, result.Error);
+
+            return Ok(result.Value);
+        }
+
+        /// <summary>
+        /// Delete a Note for a Project
+        /// </summary>
+        /// <param name="request"></param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        [Authorize(Policy = "CanReadWriteUpdateDelete")]
+        [HttpDelete]
+        [Route("Notes")]
+        [SwaggerResponse(200, "Success", typeof(bool))]
+        [SwaggerResponse(404, "Project not found")]
+        [SwaggerResponse(404, "Note not found")]
+        public async Task<IActionResult> DeleteProjectNoteAsync([FromQuery] RemoveNoteCommand request, CancellationToken cancellationToken)
+        {
+            var result = await sender.Send(request, cancellationToken);
+
+            if (!result.IsSuccess)
+                return StatusCode(500, result.Error);
+
+            return Ok(result.Value);
         }
     }
 }

@@ -91,6 +91,26 @@
       "ExpectedSecurity": "Authorize: Policy=CanRead"
     },
     {
+      "Controller": "ProjectsController",
+      "Action": "GetNotesByProjectIdAsync",
+      "ExpectedSecurity": "Authorize: Policy=CanRead"
+    },
+    {
+      "Controller": "ProjectsController",
+      "Action": "CreateProjectNoteAsync",
+      "ExpectedSecurity": "Authorize: Policy=CanReadWrite"
+    },
+    {
+      "Controller": "ProjectsController",
+      "Action": "UpdateProjectNoteAsync",
+      "ExpectedSecurity": "Authorize: Policy=CanReadWriteUpdate"
+    },
+    {
+      "Controller": "ProjectsController",
+      "Action": "DeleteProjectNoteAsync",
+      "ExpectedSecurity": "Authorize: Policy=CanReadWriteUpdateDelete"
+    },
+    {
       "Controller": "CsvExportController",
       "Action": "GetConversionCsvByMonthAsync",
       "ExpectedSecurity": "Authorize: Policy=CanRead"

@@ -5,7 +5,6 @@ using Dfe.Complete.Domain.Constants;
 using Dfe.Complete.Domain.ValueObjects;
 using Dfe.Complete.Extensions;
 using Dfe.Complete.Models;
-using Dfe.Complete.Pages.Projects.ProjectView;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -29,6 +28,7 @@ public class ViewProjectNotesModel(ISender sender, IAuthorizationService _author
         Notes = notesResult.Value ?? [];
         return Page();
     }
+
     public async Task<IActionResult> OnPostAddNoteAsync()
     {
         var baseResult = await base.OnGetAsync();

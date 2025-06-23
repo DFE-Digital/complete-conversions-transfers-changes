@@ -21,7 +21,9 @@ public class ProjectNotesBaseModel(ISender sender, string notesNavigation) : Pro
 
         return noteResult.Value;
     }
+
     public bool CanAddNotes => Project.State != ProjectState.Deleted && Project.State != ProjectState.Completed && Project.State != ProjectState.DaoRevoked;
+
     public bool CanEditNote(UserId noteUserId)
     {
         if (Project.State == ProjectState.Completed || noteUserId != User.GetUserId())
