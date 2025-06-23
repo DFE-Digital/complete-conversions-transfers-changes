@@ -40,7 +40,7 @@ public class ProjectsByRegion(ISender sender) : AllProjectsModel(ByRegionNavigat
         Pagination = new PaginationModel($"/projects/all/regions/{Region}", PageNumber,
             listProjectsForRegionResult.ItemCount, PageSize);
 
-        var hasPageFound = HasPageFound(Pagination.IsOutOfRangePage);
+        var hasPageFound = HasPageFound(Pagination.IsOutOfRangePage, Pagination.TotalPages);
         return hasPageFound ?? Page();
     }
 

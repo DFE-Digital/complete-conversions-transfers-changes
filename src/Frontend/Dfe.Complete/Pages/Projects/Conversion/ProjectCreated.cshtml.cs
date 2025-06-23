@@ -8,8 +8,8 @@ namespace Dfe.Complete.Pages.Projects.Conversion
 
         [BindProperty(SupportsGet = true, Name = "projectId")]
         public Guid ProjectId { get; set; }
-        
-        public async Task<IActionResult> OnPost()
+
+        public IActionResult OnPost()
         {
             return Redirect($"/projects/{ProjectId}/tasks");
         }

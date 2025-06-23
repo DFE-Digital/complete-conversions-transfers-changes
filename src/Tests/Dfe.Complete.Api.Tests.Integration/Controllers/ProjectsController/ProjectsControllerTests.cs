@@ -182,13 +182,34 @@ public partial class ProjectsControllerTests
         var results = await projectsClient.ListAllProjectsAsync(
             Complete.Client.Contracts.ProjectState.Completed, null, null, OrderProjectByField.CompletedAt, OrderByDirection.Descending, 0, 50);
 
+        var activeProjects = projects
+            .Where(project => project.State == ProjectState.Active)
+            .OrderByDescending(project => project.CompletedAt).ToList();
+
+        var daoRevokedProjects = projects
+           .Where(project => project.State == ProjectState.DaoRevoked)
+           .OrderByDescending(project => project.CompletedAt).ToList();
+
+        var inActiveProjects = projects
+            .Where(project => project.State == ProjectState.Inactive)
+            .OrderByDescending(project => project.CompletedAt).ToList();
+
+        var deletedProjects = projects
+            .Where(project => project.State == ProjectState.Deleted)
+            .OrderByDescending(project => project.CompletedAt).ToList();
+
         projects = projects
-            .Where(project => project.State == Domain.Enums.ProjectState.Completed)
+            .Where(project => project.State == ProjectState.Completed)
             .OrderByDescending(project => project.CompletedAt).ToList();
 
         // Assert
         Assert.NotNull(results);
-        Assert.Equal(17, results.Count);
+        Assert.Equal(10, results.Count);
+        Assert.Equal(10, projects.Count);
+        Assert.Equal(10, activeProjects.Count);
+        Assert.Equal(10, daoRevokedProjects.Count);
+        Assert.Equal(10, inActiveProjects.Count);
+        Assert.Equal(10, deletedProjects.Count);
         for (var i = 0; i < results.Count; i++)
         {
             var result = results[i];
@@ -242,6 +263,7 @@ public partial class ProjectsControllerTests
         const string userAdId = "test-user-adid";
         testUser.ActiveDirectoryUserId = userAdId;
 
+        var giasEstablishment = fixture.Create<GiasEstablishment>();
         var projects = new List<Project>();
 
         projects.AddRange(Enumerable.Range(0, 10).Select(i => fixture.Customize(new ProjectCustomization
@@ -261,8 +283,10 @@ public partial class ProjectsControllerTests
         {
             project.RegionalDeliveryOfficerId = testUser.Id;
             project.LocalAuthorityId = localAuthority.Id;
+            project.Urn = giasEstablishment.Urn!;
         });
 
+        dbContext.GiasEstablishments.Add(giasEstablishment);
         dbContext.Projects.AddRange(projects);
         await dbContext.SaveChangesAsync();
 
@@ -300,6 +324,7 @@ public partial class ProjectsControllerTests
         const string userAdId = "test-user-adid";
         testUser.ActiveDirectoryUserId = userAdId;
 
+        var giasEstablishment = fixture.Create<GiasEstablishment>();
         var projects = new List<Project>();
 
         projects.AddRange(Enumerable.Range(0, 10).Select(i => fixture.Customize(new ProjectCustomization
@@ -321,14 +346,16 @@ public partial class ProjectsControllerTests
         {
             project.RegionalDeliveryOfficerId = testUser.Id;
             project.LocalAuthorityId = localAuthority.Id;
+            project.Urn = giasEstablishment.Urn!;
         });
 
+        dbContext.GiasEstablishments.Add(giasEstablishment);
         dbContext.Projects.AddRange(projects);
         await dbContext.SaveChangesAsync();
 
         // Act
         var results = await projectsClient.ListAllProjectsByRegionAsync(
-            Dfe.Complete.Client.Contracts.ProjectState.Completed, null);
+            Complete.Client.Contracts.ProjectState.Completed, null);
 
         // Assert
         Assert.NotNull(results);
@@ -338,9 +365,9 @@ public partial class ProjectsControllerTests
         Assert.Equal(2, results.Count);
         Assert.Equal(Complete.Client.Contracts.Region.NorthEast, results[0].Region);
         Assert.Equal(1, results[0].ConversionsCount);
-        Assert.Equal(2, results[0].TransfersCount);
+        Assert.Equal(1, results[0].TransfersCount);
         Assert.Equal(Complete.Client.Contracts.Region.SouthEast, results[1].Region);
-        Assert.Equal(4, results[1].ConversionsCount);
+        Assert.Equal(2, results[1].ConversionsCount);
         Assert.Equal(1, results[1].TransfersCount);
     }
 
@@ -360,7 +387,8 @@ public partial class ProjectsControllerTests
         const string userAdId = "test-user-adid";
         testUser.ActiveDirectoryUserId = userAdId;
 
-        var expected = fixture.Customize(new ProjectCustomization { RegionalDeliveryOfficerId = testUser.Id })
+        var giasEstablishment = fixture.Create<GiasEstablishment>();
+        var expected = fixture.Customize(new ProjectCustomization { RegionalDeliveryOfficerId = testUser.Id, Urn = giasEstablishment.Urn! })
             .Create<Project>();
 
         expected.RegionalDeliveryOfficer = testUser;
@@ -368,6 +396,7 @@ public partial class ProjectsControllerTests
         var localAuthority = await dbContext.LocalAuthorities.FirstAsync();
         expected.LocalAuthorityId = localAuthority.Id;
 
+        dbContext.GiasEstablishments.Add(giasEstablishment);
         dbContext.Projects.Add(expected);
 
         await dbContext.SaveChangesAsync();
@@ -710,13 +739,15 @@ public partial class ProjectsControllerTests
 
         var expectedRegion = Complete.Client.Contracts.Region.EastMidlands;
 
-        var projects = fixture.Customize(new ProjectCustomization { RegionalDeliveryOfficerId = testUser.Id })
+        var giasEstablishment = fixture.Create<GiasEstablishment>();
+        var projects = fixture.Customize(new ProjectCustomization { RegionalDeliveryOfficerId = testUser.Id, Urn = giasEstablishment.Urn! })
             .CreateMany<Project>(50).ToList();
 
         var localAuthority = dbContext.LocalAuthorities.AsEnumerable().MinBy(_ => Guid.NewGuid());
         Assert.NotNull(localAuthority);
         projects.ForEach(p => p.LocalAuthorityId = localAuthority.Id);
 
+        await dbContext.GiasEstablishments.AddAsync(giasEstablishment);
         await dbContext.Projects.AddRangeAsync(projects);
         await dbContext.SaveChangesAsync();
 
@@ -767,13 +798,15 @@ public partial class ProjectsControllerTests
 
         var expectedTeam = ProjectTeam.BusinessSupport;
 
-        var projects = fixture.Customize(new ProjectCustomization { RegionalDeliveryOfficerId = testUser.Id })
+        var giasEstablishment = fixture.Create<GiasEstablishment>();
+        var projects = fixture.Customize(new ProjectCustomization { RegionalDeliveryOfficerId = testUser.Id, Urn = giasEstablishment.Urn! })
             .CreateMany<Project>(50).ToList();
 
         var localAuthority = dbContext.LocalAuthorities.AsEnumerable().MinBy(_ => Guid.NewGuid());
         Assert.NotNull(localAuthority);
         projects.ForEach(p => p.LocalAuthorityId = localAuthority.Id);
 
+        await dbContext.GiasEstablishments.AddAsync(giasEstablishment);
         await dbContext.Projects.AddRangeAsync(projects);
         await dbContext.SaveChangesAsync();
 
@@ -807,32 +840,28 @@ public partial class ProjectsControllerTests
     }
 
     [AttributeUsage(AttributeTargets.Method, AllowMultiple = true)]
-    private class ListByUserInlineAutoDataAttribute : CompositeDataAttribute
-    {
-        public ListByUserInlineAutoDataAttribute(ProjectUserFilter filter)
-            : base(
-                new InlineDataAttribute(filter),
-                new CustomAutoDataAttribute(
+    private class ListByUserInlineAutoDataAttribute(ProjectUserFilter filter) : CompositeDataAttribute(
+            new InlineDataAttribute(filter),
+            new CustomAutoDataAttribute(
                     typeof(CustomWebApplicationDbContextFactoryCustomization),
                     typeof(GiasEstablishmentsCustomization)))
-        {
-        }
+    {
     }
 
     [Theory]
     [ListByUserInlineAutoData(ProjectUserFilter.AssignedTo)]
     [ListByUserInlineAutoData(ProjectUserFilter.CreatedBy)]
     public async Task ListAllProjectsForUserAsync_ShouldReturnProjects(
-        ProjectUserFilter filter,
-        CustomWebApplicationDbContextFactory<Program> factory,
-        IProjectsClient projectsClient,
-        IFixture fixture)
+    ProjectUserFilter filter,
+    CustomWebApplicationDbContextFactory<Program> factory,
+    IProjectsClient projectsClient,
+    IFixture fixture)
     {
         const int numberOfEstablishments = 50;
         const int numberOfProjectsAssignedToUser = 10;
         factory.TestClaims = [new Claim(ClaimTypes.Role, ApiRoles.ReadRole)];
 
-        // // Arrange
+        // Arrange
         var dbContext = factory.GetDbContext<CompleteContext>();
         var testUser = await dbContext.Users.FirstAsync();
         var otherUser = await dbContext.Users.FirstAsync(user => user.Id != testUser.Id);
@@ -888,19 +917,21 @@ public partial class ProjectsControllerTests
         await dbContext.Projects.AddRangeAsync(projects);
         await dbContext.SaveChangesAsync();
 
-        // // Act
+        // Act
         var results =
             await projectsClient.ListAllProjectsForUserAsync(null, userAdId, filter, null, null, null, numberOfEstablishments);
 
-        // // Assert
+        // Assert
         Assert.NotNull(results);
         Assert.Equal(numberOfProjectsAssignedToUser, results.Count);
         Assert.All(results, project =>
         {
-            Assert.Equal("Trust One", project.IncomingTrustName);
+            var result = results.First(p => p.ProjectId?.Value == project.ProjectId?.Value);
+            Assert.Equal(result.IncomingTrustName, project.IncomingTrustName);
             Assert.Equal("Trust Two", project.OutgoingTrustName);
         });
     }
+
 
     [Theory]
     [ListByUserInlineAutoData(ProjectUserFilter.AssignedTo)]
@@ -929,7 +960,7 @@ public partial class ProjectsControllerTests
 
         // Act & Assert
         var exception = await Assert.ThrowsAsync<CompleteApiException>(() =>
-            projectsClient.SearchProjectsAsync("  ", 0, 50));
+            projectsClient.SearchProjectsAsync("  ", [Complete.Client.Contracts.ProjectState.Active, Complete.Client.Contracts.ProjectState.Completed, Complete.Client.Contracts.ProjectState.DaoRevoked],0, 50));
 
         Assert.Contains("The SearchTerm field is required.", exception.Response);
     }
@@ -975,7 +1006,7 @@ public partial class ProjectsControllerTests
         var searchTerm = establishment.Name;
 
         // Act
-        var results = await projectsClient.SearchProjectsAsync(searchTerm, 0, 20, CancellationToken.None);
+        var results = await projectsClient.SearchProjectsAsync(searchTerm, [Complete.Client.Contracts.ProjectState.Active, Complete.Client.Contracts.ProjectState.Completed, Complete.Client.Contracts.ProjectState.DaoRevoked], 0, 20, CancellationToken.None);
 
         var expectedProjects = projects
             .Where(p => p.Urn == establishment.Urn)
@@ -1023,12 +1054,13 @@ public partial class ProjectsControllerTests
         await dbContext.Projects.AddRangeAsync(projects);
         await dbContext.SaveChangesAsync();
         var ukprn = projects.First().IncomingTrustUkprn;
+        var projectStatuses = new List<ProjectState> { ProjectState.Active, ProjectState.DaoRevoked, ProjectState.Completed };
 
         // Act
-        var results = await projectsClient.SearchProjectsAsync(ukprn!.ToString(), 0, 20, CancellationToken.None);
+        var results = await projectsClient.SearchProjectsAsync(ukprn!.ToString(), [Complete.Client.Contracts.ProjectState.Active, Complete.Client.Contracts.ProjectState.Completed, Complete.Client.Contracts.ProjectState.DaoRevoked], 0, 20, CancellationToken.None);
 
         var expectedProjects = projects
-            .Where(p => p.IncomingTrustUkprn == ukprn)
+            .Where(p => p.IncomingTrustUkprn == ukprn && projectStatuses.Contains(p.State))
             .ToList();
 
         // Assert
@@ -1085,7 +1117,7 @@ public partial class ProjectsControllerTests
         var establishment = establishments.First();
 
         // Act
-        var results = await projectsClient.SearchProjectsAsync(establishment.EstablishmentNumber!, 0, 20, CancellationToken.None);
+        var results = await projectsClient.SearchProjectsAsync(establishment.EstablishmentNumber!, [Complete.Client.Contracts.ProjectState.Active, Complete.Client.Contracts.ProjectState.Completed, Complete.Client.Contracts.ProjectState.DaoRevoked], 0, 20, CancellationToken.None);
 
         var expectedProjects = projects
             .Where(p => p.Urn == establishment.Urn && p.State == Domain.Enums.ProjectState.Active)
@@ -1152,7 +1184,7 @@ public partial class ProjectsControllerTests
         var urn = projects.First(p => p.State == Domain.Enums.ProjectState.Active).Urn;
 
         // Act
-        var results = await projectsClient.SearchProjectsAsync(urn!.Value.ToString(), 0, 20, CancellationToken.None);
+        var results = await projectsClient.SearchProjectsAsync(urn!.Value.ToString(), [Complete.Client.Contracts.ProjectState.Active, Complete.Client.Contracts.ProjectState.Completed, Complete.Client.Contracts.ProjectState.DaoRevoked], 0, 20, CancellationToken.None);
 
         var expectedProjects = projects
             .Where(p => p.Urn == urn)

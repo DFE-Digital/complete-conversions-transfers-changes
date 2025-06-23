@@ -29,7 +29,7 @@ public class AddedByYou(ISender sender) : YourProjectsModel(AddedByYouNavigation
 
         Pagination = new PaginationModel("/projects/yours/added-by", PageNumber, result.ItemCount, PageSize);
 
-        var hasPageFound = HasPageFound(Pagination.IsOutOfRangePage);
+        var hasPageFound = HasPageFound(Pagination.IsOutOfRangePage, Pagination.TotalPages);
         return hasPageFound ?? Page();
     }
 
