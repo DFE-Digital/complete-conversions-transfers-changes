@@ -16,7 +16,7 @@ class BasePage {
         return this;
     }
 
-    containsImportantBannerWithMessage(title: string, message: string) {
+    containsImportantBannerWithMessage(title: string, message?: string) {
         return this.containsBannerWithMessage("Important", title, message);
     }
 

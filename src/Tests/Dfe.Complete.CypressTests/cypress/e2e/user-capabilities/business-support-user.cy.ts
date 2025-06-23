@@ -75,7 +75,6 @@ describe("Capabilities and permissions of the business support user", () => {
         projectsByMonthPage
             .filterIsFromDateToDate(currentMonthShort, currentMonthShort)
             .filterDateRange("Apr 2027", "May 2027");
-        cy.visit("/projects/all/by-month/conversions/from/4/2027/to/5/2027"); // cypress workaround
         projectTable
             .hasTableHeaders([
                 "School and URN",
@@ -93,6 +92,16 @@ describe("Capabilities and permissions of the business support user", () => {
             .columnHasValue("Confirmed date (Original date)", "Apr 2027")
             .goTo(`${schoolName} ${project.urn.value}`);
         projectDetailsPage.containsHeading(schoolName);
+    });
+
+    it("Should show message when 'from' date is after 'to' date and default to current month when viewing projects by month", () => {
+        cy.visit("/projects/all/in-progress/all");
+        allProjects.filterProjects("By month");
+
+        projectsByMonthPage
+            .filterDateRange("May 2025", "Apr 2025")
+            .containsImportantBannerWithMessage("The 'from' date cannot be after the 'to' date")
+            .filterIsFromDateToDate(currentMonthShort, currentMonthShort);
     });
 
     it.skip("Should be able to view and download csv reports from the export section", () => {
