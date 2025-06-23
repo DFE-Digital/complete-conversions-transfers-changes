@@ -65,7 +65,7 @@ public class CreateNewProjectModelTests
 
         // Assert
         var redirectResult = Assert.IsType<RedirectResult>(result);
-        Assert.Contains($"/projects/conversion-projects/{projectId.Value}/created", redirectResult.Url);
+        Assert.Contains($"/projects/{projectId.Value}/created", redirectResult.Url);
     }
 
     [Fact]
