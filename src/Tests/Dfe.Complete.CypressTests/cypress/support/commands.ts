@@ -23,7 +23,7 @@ Cypress.Commands.add("containsById", (id) => {
 });
 
 Cypress.Commands.add("getByClass", (className) => {
-    cy.get(`[class="${className}"]`);
+    cy.get(`[class~="${className}"]`);
 });
 
 Cypress.Commands.add("getByName", (name) => {
@@ -152,4 +152,10 @@ Cypress.Commands.add("isInViewport", { prevSubject: true }, (subject) => {
     ).to.be.true;
 
     return subject;
+});
+
+Cypress.Commands.add("revisitCurrentUrl", () => {
+    cy.url().then((url: string) => {
+        cy.visit(url);
+    });
 });
