@@ -54,14 +54,17 @@ public class ListAllProjectsForUserQueryHandler(
             var result = projectsForUser
                 .Skip(request.Page * request.Count)
                 .Take(request.Count)
-                .Select(p => ListAllProjectsForUserQueryResultModel
-                    .MapProjectAndEstablishmentToListAllProjectsForUserQueryResultModel(
-                        p.Project,
-                        p.Establishment,
-                        outgoingTrustName: allTrusts.FirstOrDefault(trust =>
-                            trust.Ukprn == p.Project?.OutgoingTrustUkprn?.Value.ToString())?.Name,
-                        incomingTrustName: allTrusts.FirstOrDefault(trust =>
-                            trust.Ukprn == p.Project?.IncomingTrustUkprn?.Value.ToString())?.Name))
+                .Select(p =>
+                {
+                    var incomingTrustName = p.Project.FormAMat ? p.Project.NewTrustName : allTrusts.FirstOrDefault(trust => trust.Ukprn == p.Project?.IncomingTrustUkprn?.Value.ToString())?.Name;
+                    return ListAllProjectsForUserQueryResultModel
+                        .MapProjectAndEstablishmentToListAllProjectsForUserQueryResultModel(
+                            p.Project,
+                            p.Establishment!,
+                            outgoingTrustName: allTrusts.FirstOrDefault(trust =>
+                                trust.Ukprn == p.Project?.OutgoingTrustUkprn?.Value.ToString())?.Name,
+                            incomingTrustName: incomingTrustName);
+                })
                 .ToList();
 
             return PaginatedResult<List<ListAllProjectsForUserQueryResultModel>>.Success(result, projectsForUser.Count);
