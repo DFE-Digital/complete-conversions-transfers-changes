@@ -153,3 +153,9 @@ Cypress.Commands.add("isInViewport", { prevSubject: true }, (subject) => {
 
     return subject;
 });
+
+Cypress.Commands.add("revisitCurrentUrl", () => {
+    cy.url().then((url: string) => {
+        cy.visit(url);
+    });
+});

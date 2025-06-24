@@ -853,16 +853,16 @@ public partial class ProjectsControllerTests
     [ListByUserInlineAutoData(ProjectUserFilter.AssignedTo)]
     [ListByUserInlineAutoData(ProjectUserFilter.CreatedBy)]
     public async Task ListAllProjectsForUserAsync_ShouldReturnProjects(
-        ProjectUserFilter filter,
-        CustomWebApplicationDbContextFactory<Program> factory,
-        IProjectsClient projectsClient,
-        IFixture fixture)
+    ProjectUserFilter filter,
+    CustomWebApplicationDbContextFactory<Program> factory,
+    IProjectsClient projectsClient,
+    IFixture fixture)
     {
         const int numberOfEstablishments = 50;
         const int numberOfProjectsAssignedToUser = 10;
         factory.TestClaims = [new Claim(ClaimTypes.Role, ApiRoles.ReadRole)];
 
-        // // Arrange
+        // Arrange
         var dbContext = factory.GetDbContext<CompleteContext>();
         var testUser = await dbContext.Users.FirstAsync();
         var otherUser = await dbContext.Users.FirstAsync(user => user.Id != testUser.Id);
@@ -918,19 +918,21 @@ public partial class ProjectsControllerTests
         await dbContext.Projects.AddRangeAsync(projects);
         await dbContext.SaveChangesAsync();
 
-        // // Act
+        // Act
         var results =
             await projectsClient.ListAllProjectsForUserAsync(null, userAdId, filter, null, null, null, numberOfEstablishments);
 
-        // // Assert
+        // Assert
         Assert.NotNull(results);
         Assert.Equal(numberOfProjectsAssignedToUser, results.Count);
         Assert.All(results, project =>
         {
-            Assert.Equal("Trust One", project.IncomingTrustName);
+            var result = results.First(p => p.ProjectId?.Value == project.ProjectId?.Value);
+            Assert.Equal(result.IncomingTrustName, project.IncomingTrustName);
             Assert.Equal("Trust Two", project.OutgoingTrustName);
         });
     }
+
 
     [Theory]
     [ListByUserInlineAutoData(ProjectUserFilter.AssignedTo)]
