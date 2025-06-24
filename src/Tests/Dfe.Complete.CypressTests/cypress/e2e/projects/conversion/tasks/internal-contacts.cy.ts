@@ -5,6 +5,7 @@ import { cypressUser, rdoLondonUser, rdoTeamLeaderUser } from "cypress/constants
 import internalContactsPage from "cypress/pages/projects/projectDetails/internalContactsPage";
 import projectRemover from "cypress/api/projectRemover";
 import projectApi from "cypress/api/projectApi";
+import { checkAccessibilityAcrossPages } from "cypress/support/reusableTests";
 
 const project = ProjectBuilder.createConversionFormAMatProjectRequest();
 let projectId: string;
@@ -130,5 +131,9 @@ describe.skip("Internal contacts page: ", () => {
             .summaryShows("Added by")
             .hasValue(rdoTeamLeaderUser.username)
             .hasEmailLink(rdoTeamLeaderUser.email);
+    });
+
+    it("Check accessibility across pages", () => {
+        checkAccessibilityAcrossPages();
     });
 });
