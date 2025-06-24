@@ -9,13 +9,13 @@ namespace Dfe.Complete.Application.Contacts.Queries;
 public record GetContactsForProjectQuery(ProjectId ProjectId) : IRequest<Result<List<Contact>>>;
 
 
-public class GetContactsForProject(IRepository<Contact> contactsRepository) : IRequestHandler<GetContactsForProjectQuery, Result<List<Contact>>>
+public class GetContactsForProject(ICompleteRepository<Contact> contactsRepository) : IRequestHandler<GetContactsForProjectQuery, Result<List<Contact>>>
 {
 
     public async Task<Result<List<Contact>>> Handle(GetContactsForProjectQuery request, CancellationToken cancellationToken)
     {
         var contactsCollection =
-            await contactsRepository.FetchAsync(contact => contact.ProjectId != null && contact.ProjectId.Value == request.ProjectId.Value,
+            await contactsRepository.FetchAsync(contact => contact.ProjectId != null && contact.ProjectId == request.ProjectId,
                 cancellationToken);
         var contactsList = contactsCollection.ToList();
         return Result<List<Contact>>.Success(contactsList);
