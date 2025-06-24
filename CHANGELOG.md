@@ -27,12 +27,20 @@ Security in case of vulnerabilities.
 ### Changed  
 
 ### Fixed  
-- Fixed incoming trust displaying as `None`
-- update exports tab to point at correct page
 - Notification banner was not showing as cookie banner was clearing TempData
 
-See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-06-17.413...main) for everything awaiting release
+See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-06-23.444...main) for everything awaiting release
 
+---
+
+## [1.6.1](https://github.com/DFE-Digital/complete-conversions-transfers-changes/releases/tag/production-2025-06-23.444) - 2025-06-23
+
+### Fixed  
+- Fixed incoming trust displaying as `None`
+- update exports tab to point at correct page
+- Fixed project creation path.
+
+See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-06-17.413...production-2025-06-23.444) for everything in the release
 ---
 
 ## [1.6.0](https://github.com/DFE-Digital/complete-conversions-transfers-changes/releases/tag/production-2025-06-17.413) - 2025-05-30
