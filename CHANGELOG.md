@@ -26,11 +26,18 @@ Security in case of vulnerabilities.
 
 ### Changed  
 
-### Fixed  
+### Fixed
+
+See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-06-24.451...main) for everything awaiting release
+
+---
+
+## [1.6.2](https://github.com/DFE-Digital/complete-conversions-transfers-changes/releases/tag/production-2025-06-24.451) - 2025-06-24
+
+### Fixed
 - Notification banner was not showing as cookie banner was clearing TempData
 
-See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-06-23.444...main) for everything awaiting release
-
+See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-06-23.444...production-2025-06-24.451) for everything in the release
 ---
 
 ## [1.6.1](https://github.com/DFE-Digital/complete-conversions-transfers-changes/releases/tag/production-2025-06-23.444) - 2025-06-23
