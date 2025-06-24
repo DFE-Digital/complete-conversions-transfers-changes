@@ -8,14 +8,16 @@ namespace Dfe.Complete.Application.Contacts.Queries;
 
 public record GetContactsForLocalAuthorityQuery(LocalAuthorityId LocalAuthority) : IRequest<Result<List<Contact>>>;
 
-
-public class GetContactsForLocalAuthority(IRepository<Contact> contactsRepository) : IRequestHandler<GetContactsForLocalAuthorityQuery, Result<List<Contact>>>
+public class GetContactsForLocalAuthority(ICompleteRepository<Contact> contactsRepository)
+    : IRequestHandler<GetContactsForLocalAuthorityQuery, Result<List<Contact>>>
 {
-
-    public async Task<Result<List<Contact>>> Handle(GetContactsForLocalAuthorityQuery request, CancellationToken cancellationToken)
+    public async Task<Result<List<Contact>>> Handle(GetContactsForLocalAuthorityQuery request,
+        CancellationToken cancellationToken)
     {
         var contactsCollection =
-            await contactsRepository.FetchAsync(contact => contact.LocalAuthorityId != null && contact.LocalAuthorityId.Value == request.LocalAuthority.Value,
+            await contactsRepository.FetchAsync(
+                contact => contact.LocalAuthorityId != null &&
+                           contact.LocalAuthorityId == request.LocalAuthority,
                 cancellationToken);
         var contactsList = contactsCollection.ToList();
         return Result<List<Contact>>.Success(contactsList);
