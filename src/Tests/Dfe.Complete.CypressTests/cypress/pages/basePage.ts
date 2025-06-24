@@ -88,10 +88,10 @@ class BasePage {
 
     private containsBannerWithMessage(bannerType: string, title: string, message?: string) {
         cy.getByClass(this.bannerClass).within(() => {
-            cy.get("h2").should("have.text", bannerType);
-            cy.get("h3").should("have.text", title);
+            cy.get("h2").shouldHaveText(bannerType);
+            cy.get("h3").shouldHaveText(title);
             if (message) {
-                cy.get("p").should("have.text", message);
+                cy.get("p").shouldHaveText(message);
             }
         });
         return this;

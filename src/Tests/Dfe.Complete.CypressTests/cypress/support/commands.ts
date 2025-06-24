@@ -23,7 +23,7 @@ Cypress.Commands.add("containsById", (id) => {
 });
 
 Cypress.Commands.add("getByClass", (className) => {
-    cy.get(`[class="${className}"]`);
+    cy.get(`[class~="${className}"]`);
 });
 
 Cypress.Commands.add("getByName", (name) => {
@@ -152,4 +152,14 @@ Cypress.Commands.add("isInViewport", { prevSubject: true }, (subject) => {
     ).to.be.true;
 
     return subject;
+});
+
+Cypress.Commands.add("shouldHaveText", { prevSubject: true }, (subject, expectedText) => {
+    return cy
+        .wrap(subject)
+        .invoke("text")
+        .then((text) => {
+            expect(text.trim()).to.equal(expectedText);
+            return subject;
+        });
 });
