@@ -7,6 +7,7 @@ import projectRemover from "cypress/api/projectRemover";
 import aboutTheProjectPageConversion from "cypress/pages/projects/projectDetails/aboutTheProjectPageConversion";
 import { rdoLondonUser } from "cypress/constants/cypressConstants";
 import aboutTheProjectPage from "cypress/pages/projects/projectDetails/aboutTheProjectPage";
+import { checkAccessibilityAcrossPages } from "cypress/support/reusableTests";
 
 const project = ProjectBuilder.createConversionFormAMatProjectRequest();
 let projectId: string;
@@ -107,5 +108,9 @@ describe.skip("About the project page - conversion projects: ", () => {
             "Not assigned to project",
             "This project is not assigned to you and cannot be changed, you can add notes or contacts if required.",
         );
+    });
+
+    it("Check accessibility across pages", () => {
+        checkAccessibilityAcrossPages();
     });
 });
