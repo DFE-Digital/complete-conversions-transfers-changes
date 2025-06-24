@@ -1,12 +1,13 @@
 import { beforeEach } from "mocha";
 import {
+    checkAccessibilityAcrossPages,
     shouldBeAbleToViewAndDownloadCsvReportsFromTheExportSection,
     shouldNotBeAbleToBeAssignedAProject,
     shouldNotBeAbleToCreateAProject,
     shouldNotHaveAccessToViewAndEditUsers,
     shouldNotHaveAccessToViewHandedOverProjects,
     shouldNotHaveAccessToViewYourProjectsSections,
-    shouldNotHaveAccessToViewYourTeamProjectsSections,
+    shouldNotHaveAccessToViewYourTeamProjectsSections
 } from "cypress/support/reusableTests";
 import { businessSupportUser } from "cypress/constants/cypressConstants";
 import navBar from "cypress/pages/navBar";
@@ -128,5 +129,9 @@ describe("Capabilities and permissions of the business support user", () => {
 
     it.skip("Should NOT be able to view conversion URNs", () => {
         // this can be viewed in the Ruby app currently?
+    });
+
+    it("Check accessibility across pages", () => {
+        checkAccessibilityAcrossPages();
     });
 });
