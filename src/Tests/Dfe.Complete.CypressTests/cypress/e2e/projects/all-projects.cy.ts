@@ -250,7 +250,7 @@ describe("View all projects", () => {
             .contains(schoolName)
             .withSchool(schoolName)
             .columnHasValue("URN", `${project.urn.value}`)
-            // .columnHasValue("Conversion or transfer date", nextMonthLong) // bug 212266
+            .columnHasValue("Conversion or transfer date", nextMonthShort)
             .columnHasValue("Project type", "Conversion")
             .goTo(schoolName);
         projectDetailsPage.containsHeading(schoolName);
