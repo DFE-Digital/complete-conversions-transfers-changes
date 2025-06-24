@@ -91,6 +91,16 @@
       "ExpectedSecurity": "Authorize: Policy=CanRead"
     },
     {
+      "Controller": "ProjectsController",
+      "Action": "ListAllProjectsConvertingAsync",
+      "ExpectedSecurity": "Authorize: Policy=CanRead"
+    },
+    {
+      "Controller": "ProjectsController",
+      "Action": "UpdateAcademyUrnAsync",
+      "ExpectedSecurity": "Authorize: Policy=CanReadWrite"
+    },
+    {
       "Controller": "CsvExportController",
       "Action": "GetConversionCsvByMonthAsync",
       "ExpectedSecurity": "Authorize: Policy=CanRead"

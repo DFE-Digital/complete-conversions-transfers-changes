@@ -1,0 +1,37 @@
+﻿@page "/projects/service-support/without-academy-urn"
+@model Dfe.Complete.Pages.Projects.ServiceSupport.ConversionURNs.WithoutAcademyUrnModel
+@{
+    Layout = "ServiceSupport/_ServiceSupportLayout";
+    ViewData["Title"] = "Conversion URNs";
+   
+   var success = (bool?)TempData["Success"];
+   var updatedMessage = (string?)TempData["SuccessMessage"];
+}
+
+@{
+    if (success == true)
+    {
+        <div class="govuk-grid-row">
+            <div class="govuk-grid-column-two-thirds">
+                <div class="govuk-notification-banner govuk-notification-banner--success" role="alert" aria-labelledby="govuk-notification-banner-title" data-module="govuk-notification-banner">
+                    <div class="govuk-notification-banner__header">
+                        <h2 class="govuk-notification-banner__title" id="govuk-notification-banner-title">
+                            Success
+                        </h2>
+                    </div>
+                    <div class="govuk-notification-banner__content flash">
+                        <h3 class="govuk-notification-banner__heading">@updatedMessage</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+}
+
+<partial name="_ConversionURNs"/>
+
+<h2 class="govuk-heading-m">
+    URNs to create
+</h2>
+
+<partial name="_ConversionUrnsTable" model="@Model.Projects"/>

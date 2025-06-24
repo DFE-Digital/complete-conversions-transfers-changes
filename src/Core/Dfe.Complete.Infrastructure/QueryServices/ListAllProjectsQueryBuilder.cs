@@ -30,6 +30,8 @@ public class ProjectsQueryBuilder(CompleteContext context) : IProjectsQueryBuild
         _projects = FilterByIncomingTrustUkprn(_projects, filters.IncomingTrustUkprn);
         _projects = FilterBySignificantDateRange(_projects, filters.SignificantDateRange);
         _projects = FilterByProjectStatuses(_projects, filters.ProjectStatuses);
+        _projects = FilterByHasAcademyUrn(_projects, filters.WithAcademyUrn);
+        
         return this;
     }
 
@@ -188,6 +190,13 @@ public class ProjectsQueryBuilder(CompleteContext context) : IProjectsQueryBuild
     {
         if (statuses != null)
             projects = projects.Where(project => statuses.Contains(project.State));
+        return projects;
+    }
+    
+    private static IQueryable<Project> FilterByHasAcademyUrn(IQueryable<Project> projects, bool? withAcademyUrn)
+    {
+        if (withAcademyUrn != null)
+            projects = withAcademyUrn.Value ? projects.Where(project => project.AcademyUrn != null) : projects.Where(project => project.AcademyUrn == null);
         return projects;
     }
 }

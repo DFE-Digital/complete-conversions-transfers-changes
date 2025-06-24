@@ -1,0 +1,15 @@
+﻿@using Dfe.Complete.Constants
+@model Dfe.Complete.Pages.Projects.ServiceSupport.ConversionURNs.CreateAcademyUrnModel
+
+<h1 class="govuk-heading-l">
+    No information found for URN @Model.URN
+</h1>
+
+<p>GIAS (Get Information about Schools) may not be up-to-date. It can take up to 24 hours for changes to appear in GIAS.</p>
+<p>Try again in 24 hours if the URN you entered is correct.</p>
+<p>Check the URN you entered is correct. Enter it again if it was incorrect.</p>
+
+<div class="govuk-button-group">
+    <a class="govuk-button" href="@string.Format(RouteConstants.ServiceSupportAssignAcademyUrn, Model.ProjectId)">Enter URN again</a>
+    <a class="govuk-link" href="@RouteConstants.ServiceSupportProjectsWithoutAcademyUrn">Cancel</a>
+</div>
