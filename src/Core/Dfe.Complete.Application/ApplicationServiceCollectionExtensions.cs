@@ -13,6 +13,9 @@ using System.Reflection;
 using Dfe.Complete.Application.Projects.Commands.CreateProject;
 using Dfe.Complete.Application.Projects.Common;
 using Dfe.Complete.Application.Services.TrustCache;
+using Dfe.PersonsApi.Client;
+using Dfe.PersonsApi.Client.Contracts;
+using Dfe.PersonsApi.Client.Extensions;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
@@ -27,6 +30,7 @@ namespace Microsoft.Extensions.DependencyInjection
 
             services.AddAcademiesApiClient<ITrustsV4Client, TrustsV4Client>(config);
             services.AddAcademiesApiClient<IEstablishmentsV4Client, EstablishmentsV4Client>(config);
+            services.AddPersonsApiClient<IConstituenciesClient, ConstituenciesClient>(config);
 
             services.AddMediatR(cfg =>
             {

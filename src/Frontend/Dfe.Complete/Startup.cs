@@ -221,6 +221,13 @@ public class Startup
             client.BaseAddress = new Uri(academiesApiOptions.ApiEndpoint);
             client.DefaultRequestHeaders.Add("ApiKey", academiesApiOptions.ApiKey);
         });
+        
+        // services.AddHttpClient("PersonsApiClient", (sp, client) =>
+        // {
+        //     PersonsOptions academiesApiOptions = GetTypedConfigurationFor<PersonsOptions>();
+        //     client.BaseAddress = new Uri(academiesApiOptions.ApiEndpoint);
+        //     client.DefaultRequestHeaders.Add("ApiKey", academiesApiOptions.ApiKey);
+        // });
     }
 
     private void SetupDataProtection(IServiceCollection services)
