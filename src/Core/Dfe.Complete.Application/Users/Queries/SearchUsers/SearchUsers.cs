@@ -21,13 +21,11 @@ namespace Dfe.Complete.Application.Users.Queries.SearchUsers
             {
                 var searchQuery = await users.FetchAsync(
                     user =>
-                        ((user.FirstName != null &&
-                          EF.Functions.Like(user.FirstName.ToLower(), $"%{request.Query.ToLower()}%")) ||
-                         (user.LastName != null &&
-                          EF.Functions.Like(user.LastName.ToLower(), $"%{request.Query.ToLower()}%")) ||
-                         (user.Email != null &&
-                          EF.Functions.Like(user.Email.ToLower(), $"%{request.Query.ToLower()}%")))
-                        && (!request.FilterToAssignableUsers || user.AssignToProject == true), cancellationToken);
+                        (!request.FilterToAssignableUsers || user.AssignToProject == true) &&
+                        EF.Functions.Like(
+                            (user.FirstName ?? "") + " " + (user.LastName ?? "") + " " + (user.Email ?? ""),
+                            "%" + request.Query + "%"
+                        ), cancellationToken);
 
                 var itemCount = searchQuery.Count;
 
