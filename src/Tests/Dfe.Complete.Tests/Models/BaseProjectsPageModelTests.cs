@@ -471,7 +471,7 @@ var value = (int)pageSizeField!.GetValue(model)!;
         var pagination = new PaginationModel("route", 100, 100, 20);
         model.Pagination = pagination;
 
-        var result = model.TestHasPageFound(pagination.IsOutOfRangePage);
+        var result = model.TestHasPageFound(pagination.IsOutOfRangePage, pagination.TotalPages);
 
         // Assert
         var statusCodeResult = Assert.IsType<StatusCodeResult>(result);
@@ -486,7 +486,7 @@ var value = (int)pageSizeField!.GetValue(model)!;
         var pagination = new PaginationModel("route", 1, 100, 20);
         model.Pagination = pagination;
 
-        var result = model.TestHasPageFound(pagination.IsOutOfRangePage);
+        var result = model.TestHasPageFound(pagination.IsOutOfRangePage, pagination.TotalPages);
 
         // Assert
         Assert.Null(result);
@@ -494,6 +494,6 @@ var value = (int)pageSizeField!.GetValue(model)!;
 }
 
 public class TestBaseProjectsPageModel(string currentNav) : BaseProjectsPageModel(currentNav) {
-    public IActionResult TestHasPageFound(bool condition) =>
-       HasPageFound(condition);
+    public IActionResult TestHasPageFound(bool condition, int totalPages) =>
+       HasPageFound(condition, totalPages);
 }

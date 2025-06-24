@@ -27,7 +27,7 @@ public class CompletedByYou(ISender sender) : YourProjectsModel(CompletedNavigat
 
         Pagination = new PaginationModel(RouteConstants.YourProjectsCompleted, PageNumber, result.ItemCount, PageSize);
 
-        var hasPageFound = HasPageFound(Pagination.IsOutOfRangePage);
+        var hasPageFound = HasPageFound(Pagination.IsOutOfRangePage, Pagination.TotalPages);
         return hasPageFound ?? Page();
     }
 

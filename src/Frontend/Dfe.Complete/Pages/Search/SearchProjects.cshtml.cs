@@ -1,5 +1,6 @@
 using Dfe.Complete.Application.Projects.Models;
 using Dfe.Complete.Application.Projects.Queries.SearchProjects;
+using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Pages.Pagination;
 using Dfe.Complete.Pages.Projects.List;
 using MediatR;
@@ -37,7 +38,7 @@ namespace Dfe.Complete.Pages.Search
             }
             else
             {
-                var searchProjectsQuery = new SearchProjectsQuery(Query)
+                var searchProjectsQuery = new SearchProjectsQuery(Query, [ProjectState.Active, ProjectState.Completed, ProjectState.DaoRevoked])
                 {
                     Page = PageNumber - 1,
                     Count = PageSize
@@ -48,7 +49,7 @@ namespace Dfe.Complete.Pages.Search
 
                 Pagination = new PaginationModel($"/search?query={Query}", PageNumber, TotalResults, PageSize);
 
-                var hasPageFound = HasPageFound(Pagination.IsOutOfRangePage);
+                var hasPageFound = HasPageFound(Pagination.IsOutOfRangePage, Pagination.TotalPages);
                 return hasPageFound ?? Page();
             }
             return Page();

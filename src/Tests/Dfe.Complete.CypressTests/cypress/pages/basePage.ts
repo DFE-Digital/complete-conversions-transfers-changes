@@ -1,7 +1,27 @@
 class BasePage {
+    private readonly bannerClass = "govuk-notification-banner";
+
     containsHeading(heading: string) {
         cy.get("h1").contains(heading);
         return this;
+    }
+
+    containsSubHeading(subHeading: string) {
+        cy.get("h2").contains(subHeading);
+        return this;
+    }
+
+    contains(text: string) {
+        cy.contains(text);
+        return this;
+    }
+
+    containsImportantBannerWithMessage(title: string, message: string) {
+        return this.containsBannerWithMessage("Important", title, message);
+    }
+
+    containsSuccessBannerWithMessage(title: string, message?: string) {
+        return this.containsBannerWithMessage("Success", title, message);
     }
 
     clickButton(buttonText?: string) {
@@ -10,6 +30,11 @@ class BasePage {
         } else {
             cy.getByClass("govuk-button").click();
         }
+        return this;
+    }
+
+    clickLink(linkText: string) {
+        cy.getByClass("govuk-link").contains(linkText).click();
         return this;
     }
 
@@ -58,6 +83,17 @@ class BasePage {
 
     goToLastPage() {
         cy.getByClass("govuk-pagination__list").find("li").last().click();
+        return this;
+    }
+
+    private containsBannerWithMessage(bannerType: string, title: string, message?: string) {
+        cy.getByClass(this.bannerClass).within(() => {
+            cy.get("h2").should("have.text", bannerType);
+            cy.get("h3").should("have.text", title);
+            if (message) {
+                cy.get("p").should("have.text", message);
+            }
+        });
         return this;
     }
 }

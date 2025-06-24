@@ -315,6 +315,11 @@ public partial class CompleteContext : DbContext
             .HasConstraintName("fk_rails_eddab2651f");
 
         projectConfiguration.HasMany(d => d.Notes).WithOne(p => p.Project).HasForeignKey(p => p.ProjectId);
+
+        projectConfiguration.HasOne(p => p.GiasEstablishment)
+            .WithMany()
+            .HasForeignKey(p => p.Urn)
+            .HasPrincipalKey(g => g.Urn);
     }
 
     private static void ConfigureUser(EntityTypeBuilder<User> projectConfiguration)
@@ -811,6 +816,9 @@ public partial class CompleteContext : DbContext
     {
         projectConfiguration.HasKey(e => e.Id);
 
+        projectConfiguration.HasAlternateKey(e => e.Urn)
+            .HasName("AK_GiasEstablishments_Urn");
+
         projectConfiguration.ToTable("gias_establishments", DefaultSchema);
 
         projectConfiguration.Property(e => e.Id)
@@ -903,6 +911,10 @@ public partial class CompleteContext : DbContext
             .HasConversion(
                 v => v!.Value,
                 v => new Urn(v));
+
+        projectConfiguration.HasIndex(e => e.Urn)
+            .IsUnique()
+            .HasDatabaseName("IX_GiasEstablishments_Urn");
     }
 
     private static void ConfigureGiasGroup(EntityTypeBuilder<GiasGroup> projectConfiguration)
