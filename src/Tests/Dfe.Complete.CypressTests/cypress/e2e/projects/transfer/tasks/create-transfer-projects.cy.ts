@@ -3,13 +3,9 @@ import homePage from "cypress/pages/homePage";
 import newTransferPage from "cypress/pages/projects/new/newTransferPage";
 import selectProjectTypePage from "cypress/pages/projects/new/selectProjectTypePage";
 import validationComponent from "cypress/pages/validationComponent";
-import {
-    dimensionsTrust,
-    groupReferenceNumber,
-    macclesfieldTrust,
-    testTrust,
-} from "cypress/constants/stringTestConstants";
+import { dimensionsTrust, macclesfieldTrust, testTrust } from "cypress/constants/stringTestConstants";
 import { checkAccessibilityAcrossPages } from "cypress/support/reusableTests";
+import projectDetailsPage from "cypress/pages/projects/projectDetails/projectDetailsPage";
 
 const urn = "136730";
 const urnMAT = "136731";
@@ -26,8 +22,7 @@ describe("Create a new Transfer Project", () => {
         cy.visit("/");
     });
 
-    // bug 216887
-    it.skip("Should be able to create a new Transfer Project", () => {
+    it("Should be able to create a new Transfer Project", () => {
         homePage.addAProject();
 
         selectProjectTypePage.selectTransfer().continue();
@@ -36,7 +31,7 @@ describe("Create a new Transfer Project", () => {
             .withAcademyURN(urn)
             .withOutgoingTrustUKPRN(`${macclesfieldTrust.ukprn}`)
             .withIncomingTrustUKPRN(`${dimensionsTrust.ukprn}`)
-            .withGroupReferenceNumber(groupReferenceNumber)
+            .withGroupReferenceNumber(dimensionsTrust.groupReferenceNumber)
             .withAcademySharepointLink("https://educationgovuk.sharepoint.com")
             .withIncomingTrustSharePointLink("https://educationgovuk.sharepoint.com")
             .withOutgoingTrustSharepointLink("https://educationgovuk.sharepoint.com")
@@ -52,11 +47,13 @@ describe("Create a new Transfer Project", () => {
             .continue();
 
         validationComponent.hasNoValidationErrors();
-        cy.get("h2").should("contain", "Task list");
+        projectDetailsPage
+            .containsSubHeading("Project created")
+            .containsSubHeading("Add contact details")
+            .containsSubHeading("What happens next");
     });
 
-    // bug 216887
-    it.skip("Should be able to create a new Form a MAT transfer project", () => {
+    it("Should be able to create a new Form a MAT transfer project", () => {
         homePage.addAProject();
 
         selectProjectTypePage.selectFormAMATTransfer().continue();
@@ -80,7 +77,10 @@ describe("Create a new Transfer Project", () => {
             .continue();
 
         validationComponent.hasNoValidationErrors();
-        cy.get("h2").should("contain", "Task list");
+        projectDetailsPage
+            .containsSubHeading("Project created")
+            .containsSubHeading("Add contact details")
+            .containsSubHeading("What happens next");
     });
 
     it("Should show multiple validation errors when inputting invalid data in Form a MAT Transfer", () => {

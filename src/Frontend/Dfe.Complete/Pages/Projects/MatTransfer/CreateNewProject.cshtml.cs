@@ -114,8 +114,8 @@ public class CreateNewProject(ISender sender, ErrorService errorService, ILogger
 
             var createProjectCommand = new CreateMatTransferProjectCommand(
                 Urn: new Urn(int.Parse(URN)),
-                TrustName,
-                TrustReferenceNumber,
+                TrustName!,
+                TrustReferenceNumber!,
                 OutgoingTrustUkprn: new Ukprn(OutgoingUKPRN.ToInt()),
                 SignificantDate: SignificantDate.HasValue
                     ? DateOnly.FromDateTime(SignificantDate.Value)
@@ -140,7 +140,7 @@ public class CreateNewProject(ISender sender, ErrorService errorService, ILogger
 
             var projectId = createResponse.Value;
 
-            return Redirect($"/transfer-projects/{projectId}/tasks");
+            return Redirect($"/projects/{projectId}/created");
         }
         catch (NotFoundException notFoundException)
         {
