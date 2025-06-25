@@ -16,9 +16,9 @@ public class EditAssignedTeam(ISender sender, ErrorService errorService, ILogger
     [Required]
     public ProjectTeam? Team { get; set; } = default!;
     
-    public override async Task<IActionResult> OnGet()
+    public override async Task<IActionResult> OnGetAsync()
     {
-        await base.OnGet();
+        await base.OnGetAsync();
         Team = Project.Team;
         return Page();
     }
@@ -30,7 +30,7 @@ public class EditAssignedTeam(ISender sender, ErrorService errorService, ILogger
         if (!ModelState.IsValid)
         {
             errorService.AddErrors(ModelState);
-            return await OnGet();
+            return await OnGetAsync();
         }
         var updateRequest = new UpdateAssignedTeamCommand(Project.Urn, Team);
         await sender.Send(updateRequest);
