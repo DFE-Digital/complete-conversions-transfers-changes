@@ -49,7 +49,5 @@ public class DeleteProjectNoteModel(ISender sender) : ProjectNotesBaseModel(send
         );
 
         return Redirect(string.Format(RouteConstants.ProjectViewNotes, ProjectId));
-
-        // TODO controller checks
     }
 }

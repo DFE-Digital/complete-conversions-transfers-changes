@@ -13,6 +13,7 @@ using Dfe.Complete.Application.Projects.Commands.RemoveProject;
 using Dfe.Complete.Application.Projects.Queries.SearchProjects;
 using Dfe.Complete.Application.Notes.Queries;
 using Dfe.Complete.Application.Notes.Commands;
+using Dfe.Complete.Application.Common.Models;
 
 namespace Dfe.Complete.Api.Controllers
 {
@@ -378,17 +379,16 @@ namespace Dfe.Complete.Api.Controllers
         [Authorize(Policy = "CanReadWrite")]
         [HttpPost]
         [Route("Notes")]
-        [SwaggerResponse(200, "Note ID", typeof(NoteId))]
-        [SwaggerResponse(404, "Project not found")]
+        [SwaggerResponse(201, "Note ID", typeof(NoteId))]
         [SwaggerResponse(404, "Note not found")]
-        public async Task<IActionResult> CreateProjectNoteAsync([FromQuery] CreateNoteCommand request, CancellationToken cancellationToken)
+        public async Task<IActionResult> CreateProjectNoteAsync([FromBody] CreateNoteCommand request, CancellationToken cancellationToken)
         {
             var result = await sender.Send(request, cancellationToken);
 
             if (!result.IsSuccess || result.Value is null)
                 return StatusCode(500, result.Error);
 
-            return Created();
+            return Created("", new NoteId(result.Value.Value));
         }
 
         /// <summary>
@@ -400,16 +400,20 @@ namespace Dfe.Complete.Api.Controllers
         [HttpPut]
         [Route("Notes")]
         [SwaggerResponse(200, "Note ID", typeof(NoteId))]
-        [SwaggerResponse(404, "Project not found")]
+        [SwaggerResponse(401, "Unauthorized access")]
         [SwaggerResponse(404, "Note not found")]
-        public async Task<IActionResult> UpdateProjectNoteAsync([FromQuery] UpdateNoteCommand request, CancellationToken cancellationToken)
+        public async Task<IActionResult> UpdateProjectNoteAsync([FromBody] UpdateNoteCommand request, CancellationToken cancellationToken)
         {
             var result = await sender.Send(request, cancellationToken);
 
             if (!result.IsSuccess || result.Value is null)
+            {
+                if (result.ErrorType == ErrorType.Unauthorized)
+                    return Unauthorized(result.Error);
                 return StatusCode(500, result.Error);
+            }
 
-            return Ok(result.Value);
+            return Ok(new NoteId(result.Value.Value));
         }
 
         /// <summary>
@@ -423,12 +427,16 @@ namespace Dfe.Complete.Api.Controllers
         [SwaggerResponse(200, "Success", typeof(bool))]
         [SwaggerResponse(404, "Project not found")]
         [SwaggerResponse(404, "Note not found")]
-        public async Task<IActionResult> DeleteProjectNoteAsync([FromQuery] RemoveNoteCommand request, CancellationToken cancellationToken)
+        public async Task<IActionResult> DeleteProjectNoteAsync([FromBody] RemoveNoteCommand request, CancellationToken cancellationToken)
         {
             var result = await sender.Send(request, cancellationToken);
 
             if (!result.IsSuccess)
+            {
+                if (result.ErrorType == ErrorType.Unauthorized)
+                    return Unauthorized(result.Error);
                 return StatusCode(500, result.Error);
+            }
 
             return Ok(result.Value);
         }

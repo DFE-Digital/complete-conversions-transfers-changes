@@ -335,7 +335,7 @@ namespace Dfe.Complete.Client.Contracts
         /// </summary>
         /// <returns>Note ID</returns>
         /// <exception cref="CompleteApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<NoteId> CreateProjectNoteAsync(System.Guid? projectId_Value, System.Guid? userId_Value, string? body);
+        System.Threading.Tasks.Task<NoteId> CreateProjectNoteAsync(CreateNoteCommand request);
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>
@@ -343,14 +343,14 @@ namespace Dfe.Complete.Client.Contracts
         /// </summary>
         /// <returns>Note ID</returns>
         /// <exception cref="CompleteApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<NoteId> CreateProjectNoteAsync(System.Guid? projectId_Value, System.Guid? userId_Value, string? body, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<NoteId> CreateProjectNoteAsync(CreateNoteCommand request, System.Threading.CancellationToken cancellationToken);
 
         /// <summary>
         /// Update a Note for a Project
         /// </summary>
         /// <returns>Note ID</returns>
         /// <exception cref="CompleteApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<NoteId> UpdateProjectNoteAsync(System.Guid? noteId_Value, string? body);
+        System.Threading.Tasks.Task<NoteId> UpdateProjectNoteAsync(UpdateNoteCommand request);
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>
@@ -358,14 +358,14 @@ namespace Dfe.Complete.Client.Contracts
         /// </summary>
         /// <returns>Note ID</returns>
         /// <exception cref="CompleteApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<NoteId> UpdateProjectNoteAsync(System.Guid? noteId_Value, string? body, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<NoteId> UpdateProjectNoteAsync(UpdateNoteCommand request, System.Threading.CancellationToken cancellationToken);
 
         /// <summary>
         /// Delete a Note for a Project
         /// </summary>
         /// <returns>Success</returns>
         /// <exception cref="CompleteApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<bool> DeleteProjectNoteAsync(System.Guid? noteId_Value);
+        System.Threading.Tasks.Task<bool> DeleteProjectNoteAsync(RemoveNoteCommand request);
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>
@@ -373,7 +373,7 @@ namespace Dfe.Complete.Client.Contracts
         /// </summary>
         /// <returns>Success</returns>
         /// <exception cref="CompleteApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<bool> DeleteProjectNoteAsync(System.Guid? noteId_Value, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<bool> DeleteProjectNoteAsync(RemoveNoteCommand request, System.Threading.CancellationToken cancellationToken);
 
     }
 
@@ -2196,6 +2196,78 @@ namespace Dfe.Complete.Client.Contracts
         {
 
             return Newtonsoft.Json.JsonConvert.DeserializeObject<NoteDto>(data, new Newtonsoft.Json.JsonSerializerSettings());
+
+        }
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.2.0.0 (NJsonSchema v11.1.0.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class CreateNoteCommand
+    {
+        [Newtonsoft.Json.JsonProperty("projectId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public ProjectId? ProjectId { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("userId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public UserId? UserId { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("body", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string? Body { get; set; } = default!;
+
+        public string ToJson()
+        {
+
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonSerializerSettings());
+
+        }
+        public static CreateNoteCommand FromJson(string data)
+        {
+
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<CreateNoteCommand>(data, new Newtonsoft.Json.JsonSerializerSettings());
+
+        }
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.2.0.0 (NJsonSchema v11.1.0.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class UpdateNoteCommand
+    {
+        [Newtonsoft.Json.JsonProperty("noteId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public NoteId? NoteId { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("body", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string? Body { get; set; } = default!;
+
+        public string ToJson()
+        {
+
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonSerializerSettings());
+
+        }
+        public static UpdateNoteCommand FromJson(string data)
+        {
+
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<UpdateNoteCommand>(data, new Newtonsoft.Json.JsonSerializerSettings());
+
+        }
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.2.0.0 (NJsonSchema v11.1.0.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class RemoveNoteCommand
+    {
+        [Newtonsoft.Json.JsonProperty("noteId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public NoteId? NoteId { get; set; } = default!;
+
+        public string ToJson()
+        {
+
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonSerializerSettings());
+
+        }
+        public static RemoveNoteCommand FromJson(string data)
+        {
+
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<RemoveNoteCommand>(data, new Newtonsoft.Json.JsonSerializerSettings());
 
         }
 

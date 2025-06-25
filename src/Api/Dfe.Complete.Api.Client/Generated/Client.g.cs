@@ -2334,9 +2334,9 @@ namespace Dfe.Complete.Client
         /// </summary>
         /// <returns>Note ID</returns>
         /// <exception cref="CompleteApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<NoteId> CreateProjectNoteAsync(System.Guid? projectId_Value, System.Guid? userId_Value, string? body)
+        public virtual System.Threading.Tasks.Task<NoteId> CreateProjectNoteAsync(CreateNoteCommand request)
         {
-            return CreateProjectNoteAsync(projectId_Value, userId_Value, body, System.Threading.CancellationToken.None);
+            return CreateProjectNoteAsync(request, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -2345,15 +2345,21 @@ namespace Dfe.Complete.Client
         /// </summary>
         /// <returns>Note ID</returns>
         /// <exception cref="CompleteApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<NoteId> CreateProjectNoteAsync(System.Guid? projectId_Value, System.Guid? userId_Value, string? body, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<NoteId> CreateProjectNoteAsync(CreateNoteCommand request, System.Threading.CancellationToken cancellationToken)
         {
+            if (request == null)
+                throw new System.ArgumentNullException("request");
+
             var client_ = _httpClient;
             var disposeClient_ = false;
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
-                    request_.Content = new System.Net.Http.StringContent(string.Empty, System.Text.Encoding.UTF8, "application/json");
+                    var json_ = Newtonsoft.Json.JsonConvert.SerializeObject(request, JsonSerializerSettings);
+                    var content_ = new System.Net.Http.StringContent(json_);
+                    content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
+                    request_.Content = content_;
                     request_.Method = new System.Net.Http.HttpMethod("POST");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
 
@@ -2361,20 +2367,6 @@ namespace Dfe.Complete.Client
                     if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
                     // Operation Path: "v1/Projects/Notes"
                     urlBuilder_.Append("v1/Projects/Notes");
-                    urlBuilder_.Append('?');
-                    if (projectId_Value != null)
-                    {
-                        urlBuilder_.Append(System.Uri.EscapeDataString("ProjectId.Value")).Append('=').Append(System.Uri.EscapeDataString(ConvertToString(projectId_Value, System.Globalization.CultureInfo.InvariantCulture))).Append('&');
-                    }
-                    if (userId_Value != null)
-                    {
-                        urlBuilder_.Append(System.Uri.EscapeDataString("UserId.Value")).Append('=').Append(System.Uri.EscapeDataString(ConvertToString(userId_Value, System.Globalization.CultureInfo.InvariantCulture))).Append('&');
-                    }
-                    if (body != null)
-                    {
-                        urlBuilder_.Append(System.Uri.EscapeDataString("Body")).Append('=').Append(System.Uri.EscapeDataString(ConvertToString(body, System.Globalization.CultureInfo.InvariantCulture))).Append('&');
-                    }
-                    urlBuilder_.Length--;
 
                     PrepareRequest(client_, request_, urlBuilder_);
 
@@ -2399,7 +2391,7 @@ namespace Dfe.Complete.Client
                         ProcessResponse(client_, response_);
 
                         var status_ = (int)response_.StatusCode;
-                        if (status_ == 200)
+                        if (status_ == 201)
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<NoteId>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
@@ -2412,7 +2404,7 @@ namespace Dfe.Complete.Client
                         if (status_ == 404)
                         {
                             string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new CompleteApiException("Project not found\nor\nNote not found", status_, responseText_, headers_, null);
+                            throw new CompleteApiException("Note not found", status_, responseText_, headers_, null);
                         }
                         else
                         {
@@ -2439,9 +2431,9 @@ namespace Dfe.Complete.Client
         /// </summary>
         /// <returns>Note ID</returns>
         /// <exception cref="CompleteApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<NoteId> UpdateProjectNoteAsync(System.Guid? noteId_Value, string? body)
+        public virtual System.Threading.Tasks.Task<NoteId> UpdateProjectNoteAsync(UpdateNoteCommand request)
         {
-            return UpdateProjectNoteAsync(noteId_Value, body, System.Threading.CancellationToken.None);
+            return UpdateProjectNoteAsync(request, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -2450,15 +2442,21 @@ namespace Dfe.Complete.Client
         /// </summary>
         /// <returns>Note ID</returns>
         /// <exception cref="CompleteApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<NoteId> UpdateProjectNoteAsync(System.Guid? noteId_Value, string? body, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<NoteId> UpdateProjectNoteAsync(UpdateNoteCommand request, System.Threading.CancellationToken cancellationToken)
         {
+            if (request == null)
+                throw new System.ArgumentNullException("request");
+
             var client_ = _httpClient;
             var disposeClient_ = false;
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
-                    request_.Content = new System.Net.Http.StringContent(string.Empty, System.Text.Encoding.UTF8, "application/json");
+                    var json_ = Newtonsoft.Json.JsonConvert.SerializeObject(request, JsonSerializerSettings);
+                    var content_ = new System.Net.Http.StringContent(json_);
+                    content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
+                    request_.Content = content_;
                     request_.Method = new System.Net.Http.HttpMethod("PUT");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
 
@@ -2466,16 +2464,6 @@ namespace Dfe.Complete.Client
                     if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
                     // Operation Path: "v1/Projects/Notes"
                     urlBuilder_.Append("v1/Projects/Notes");
-                    urlBuilder_.Append('?');
-                    if (noteId_Value != null)
-                    {
-                        urlBuilder_.Append(System.Uri.EscapeDataString("NoteId.Value")).Append('=').Append(System.Uri.EscapeDataString(ConvertToString(noteId_Value, System.Globalization.CultureInfo.InvariantCulture))).Append('&');
-                    }
-                    if (body != null)
-                    {
-                        urlBuilder_.Append(System.Uri.EscapeDataString("Body")).Append('=').Append(System.Uri.EscapeDataString(ConvertToString(body, System.Globalization.CultureInfo.InvariantCulture))).Append('&');
-                    }
-                    urlBuilder_.Length--;
 
                     PrepareRequest(client_, request_, urlBuilder_);
 
@@ -2510,10 +2498,16 @@ namespace Dfe.Complete.Client
                             return objectResponse_.Object;
                         }
                         else
+                        if (status_ == 401)
+                        {
+                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new CompleteApiException("Unauthorized access", status_, responseText_, headers_, null);
+                        }
+                        else
                         if (status_ == 404)
                         {
                             string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new CompleteApiException("Project not found\nor\nNote not found", status_, responseText_, headers_, null);
+                            throw new CompleteApiException("Note not found", status_, responseText_, headers_, null);
                         }
                         else
                         {
@@ -2540,9 +2534,9 @@ namespace Dfe.Complete.Client
         /// </summary>
         /// <returns>Success</returns>
         /// <exception cref="CompleteApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<bool> DeleteProjectNoteAsync(System.Guid? noteId_Value)
+        public virtual System.Threading.Tasks.Task<bool> DeleteProjectNoteAsync(RemoveNoteCommand request)
         {
-            return DeleteProjectNoteAsync(noteId_Value, System.Threading.CancellationToken.None);
+            return DeleteProjectNoteAsync(request, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -2551,14 +2545,21 @@ namespace Dfe.Complete.Client
         /// </summary>
         /// <returns>Success</returns>
         /// <exception cref="CompleteApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<bool> DeleteProjectNoteAsync(System.Guid? noteId_Value, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<bool> DeleteProjectNoteAsync(RemoveNoteCommand request, System.Threading.CancellationToken cancellationToken)
         {
+            if (request == null)
+                throw new System.ArgumentNullException("request");
+
             var client_ = _httpClient;
             var disposeClient_ = false;
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
+                    var json_ = Newtonsoft.Json.JsonConvert.SerializeObject(request, JsonSerializerSettings);
+                    var content_ = new System.Net.Http.StringContent(json_);
+                    content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
+                    request_.Content = content_;
                     request_.Method = new System.Net.Http.HttpMethod("DELETE");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
 
@@ -2566,12 +2567,6 @@ namespace Dfe.Complete.Client
                     if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
                     // Operation Path: "v1/Projects/Notes"
                     urlBuilder_.Append("v1/Projects/Notes");
-                    urlBuilder_.Append('?');
-                    if (noteId_Value != null)
-                    {
-                        urlBuilder_.Append(System.Uri.EscapeDataString("NoteId.Value")).Append('=').Append(System.Uri.EscapeDataString(ConvertToString(noteId_Value, System.Globalization.CultureInfo.InvariantCulture))).Append('&');
-                    }
-                    urlBuilder_.Length--;
 
                     PrepareRequest(client_, request_, urlBuilder_);
 

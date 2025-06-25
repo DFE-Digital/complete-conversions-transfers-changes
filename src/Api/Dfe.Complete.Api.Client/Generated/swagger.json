@@ -1249,36 +1249,20 @@
         ],
         "summary": "Create a new Note for a Project",
         "operationId": "Projects_CreateProjectNote",
-        "parameters": [
-          {
-            "name": "ProjectId.Value",
-            "in": "query",
-            "schema": {
-              "type": "string",
-              "format": "guid"
-            },
-            "x-position": 1
+        "requestBody": {
+          "x-name": "request",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateNoteCommand"
+              }
+            }
           },
-          {
-            "name": "UserId.Value",
-            "in": "query",
-            "schema": {
-              "type": "string",
-              "format": "guid"
-            },
-            "x-position": 2
-          },
-          {
-            "name": "Body",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            },
-            "x-position": 3
-          }
-        ],
+          "required": true,
+          "x-position": 1
+        },
         "responses": {
-          "200": {
+          "201": {
             "description": "Note ID",
             "content": {
               "application/json": {
@@ -1289,7 +1273,7 @@
             }
           },
           "404": {
-            "description": "Project not found\nor\nNote not found"
+            "description": "Note not found"
           }
         }
       },
@@ -1299,25 +1283,18 @@
         ],
         "summary": "Update a Note for a Project",
         "operationId": "Projects_UpdateProjectNote",
-        "parameters": [
-          {
-            "name": "NoteId.Value",
-            "in": "query",
-            "schema": {
-              "type": "string",
-              "format": "guid"
-            },
-            "x-position": 1
+        "requestBody": {
+          "x-name": "request",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateNoteCommand"
+              }
+            }
           },
-          {
-            "name": "Body",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            },
-            "x-position": 2
-          }
-        ],
+          "required": true,
+          "x-position": 1
+        },
         "responses": {
           "200": {
             "description": "Note ID",
@@ -1329,8 +1306,11 @@
               }
             }
           },
+          "401": {
+            "description": "Unauthorized access"
+          },
           "404": {
-            "description": "Project not found\nor\nNote not found"
+            "description": "Note not found"
           }
         }
       },
@@ -1340,17 +1320,18 @@
         ],
         "summary": "Delete a Note for a Project",
         "operationId": "Projects_DeleteProjectNote",
-        "parameters": [
-          {
-            "name": "NoteId.Value",
-            "in": "query",
-            "schema": {
-              "type": "string",
-              "format": "guid"
-            },
-            "x-position": 1
-          }
-        ],
+        "requestBody": {
+          "x-name": "request",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RemoveNoteCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
         "responses": {
           "200": {
             "description": "Success",
@@ -3378,6 +3359,42 @@
           "createdAt": {
             "type": "string",
             "format": "date-time"
+          }
+        }
+      },
+      "CreateNoteCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "projectId": {
+            "$ref": "#/components/schemas/ProjectId"
+          },
+          "userId": {
+            "$ref": "#/components/schemas/UserId"
+          },
+          "body": {
+            "type": "string"
+          }
+        }
+      },
+      "UpdateNoteCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "noteId": {
+            "$ref": "#/components/schemas/NoteId"
+          },
+          "body": {
+            "type": "string"
+          }
+        }
+      },
+      "RemoveNoteCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "noteId": {
+            "$ref": "#/components/schemas/NoteId"
           }
         }
       },

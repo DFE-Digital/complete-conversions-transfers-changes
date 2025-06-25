@@ -20,16 +20,16 @@ public class UpdateNoteCommandHandler(
     {
         try
         {
-            var note = await _repo.GetNoteByIdAsync(request.NoteId, cancellationToken) ?? throw new NotFoundException($"Note with ID {request.NoteId.Value} not found");
-
             var userIdClaim = _httpContextAccessor.HttpContext?.User?.FindFirst("sub")?.Value
-                     ?? _httpContextAccessor.HttpContext?.User?.FindFirst("uid")?.Value;
+                ?? _httpContextAccessor.HttpContext?.User?.FindFirst("uid")?.Value;
 
             if (!Guid.TryParse(userIdClaim, out var parsedUserId))
-                throw new UnauthorizedAccessException();
+                return Result<NoteId>.Failure($"Could not update note {request.NoteId.Value}", ErrorType.Unauthorized);
+
+            var note = await _repo.GetNoteByIdAsync(request.NoteId, cancellationToken) ?? throw new NotFoundException($"Note with ID {request.NoteId.Value} not found");
 
             if (note.UserId != new UserId(parsedUserId))
-                throw new UnauthorizedAccessException("The current user is not assigned to the note and cannot change it");
+                return Result<NoteId>.Failure($"Could not update note {request.NoteId.Value}", ErrorType.Unauthorized);
 
             note.Body = request.Body;
             await _repo.UpdateNoteAsync(note, cancellationToken);
