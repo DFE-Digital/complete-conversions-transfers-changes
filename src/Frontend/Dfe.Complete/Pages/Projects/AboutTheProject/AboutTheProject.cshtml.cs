@@ -60,7 +60,7 @@ namespace Dfe.Complete.Pages.Projects.AboutTheProject
 
         public override async Task<IActionResult> OnGet()
         {
-            await SetProjectAsync();
+            await UpdateCurrentProject();
 
             await SetEstablishmentAsync();
 

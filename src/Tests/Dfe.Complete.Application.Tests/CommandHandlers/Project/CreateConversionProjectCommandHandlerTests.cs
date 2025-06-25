@@ -17,8 +17,8 @@ using MediatR;
 using Dfe.Complete.Application.Common.Models;
 using Dfe.Complete.Application.Projects.Queries.GetLocalAuthority;
 using Moq;
-using Dfe.Complete.Application.Projects.Queries.GetUser;
 using Dfe.Complete.Application.Projects.Queries.GetProject;
+using Dfe.Complete.Application.Users.Queries.GetUser;
 
 namespace Dfe.Complete.Application.Tests.CommandHandlers.Project;
 

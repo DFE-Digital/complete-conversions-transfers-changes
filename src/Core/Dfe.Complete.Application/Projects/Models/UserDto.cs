@@ -21,6 +21,8 @@ namespace Dfe.Complete.Application.Projects.Models
 
         public string? LastName { get; set; }
 
+        public string FullName => $"{FirstName} {LastName}";
+
         public string? ActiveDirectoryUserId { get; set; }
 
         public bool? AssignToProject { get; set; }

@@ -28,7 +28,7 @@ public abstract class BaseProjectPageModel(ISender sender) : PageModel
 
     public ProjectTeam CurrentUserTeam { get; set; }
 
-    protected async Task SetProjectAsync()
+    public async Task UpdateCurrentProject()
     {
         var success = Guid.TryParse(ProjectId, out var guid);
 
@@ -99,7 +99,7 @@ public abstract class BaseProjectPageModel(ISender sender) : PageModel
 
     public virtual async Task<IActionResult> OnGet()
     {
-        await SetProjectAsync();
+        await UpdateCurrentProject();
 
         await SetEstablishmentAsync();
 
@@ -111,4 +111,8 @@ public abstract class BaseProjectPageModel(ISender sender) : PageModel
 
         return Page();
     }
+
+    
+
+    public string FormatRouteWithProjectId(string route) => string.Format(route, ProjectId);
 }
