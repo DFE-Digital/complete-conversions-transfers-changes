@@ -1,13 +1,8 @@
 import navBar from "../pages/navBar";
 import allProjects from "../pages/projects/allProjects";
 import yourTeamProjects from "../pages/projects/yourTeamProjects";
-import assignProject from "../pages/projects/assignProject";
-import { cypressUser } from "../constants/cypressConstants";
-import yourProjects from "../pages/projects/yourProjects";
 import projectsByMonthPage from "cypress/pages/projects/projectsByMonthPage";
 import { currentMonthLong, currentMonthShort } from "cypress/constants/stringTestConstants";
-import { projectTable } from "cypress/pages/projects/tables/projectTable";
-import yourTeamProjectsTable from "cypress/pages/projects/tables/yourTeamProjectsTable";
 import { Logger } from "cypress/common/logger";
 
 export function shouldNotHaveAccessToViewHandedOverProjects() {
@@ -65,26 +60,6 @@ export function shouldBeAbleToViewMultipleMonthsOfProjects() {
     cy.visit("/projects/all/in-progress/all");
     allProjects.filterProjects("By month").containsHeading(`${currentMonthLong} to ${currentMonthLong}`);
     projectsByMonthPage.filterIsFromDateToDate(currentMonthShort, currentMonthShort);
-}
-
-export function shouldBeAbleToAssignUnassignedProjectsToUsers(unassignedProjectSchoolName: string) {
-    navBar.goToYourTeamProjects();
-    yourTeamProjects
-        .filterProjects("Unassigned")
-        .containsHeading("Your team unassigned projects")
-        .goToNextPageUntilFieldIsVisible(unassignedProjectSchoolName);
-    projectTable.hasTableHeaders([
-        "School or academy",
-        "URN",
-        "Conversion or transfer date",
-        "Project type",
-        "Region",
-        "Assigned project",
-    ]);
-    yourTeamProjectsTable.assignProject(unassignedProjectSchoolName);
-    assignProject.assignTo(cypressUser.username);
-    navBar.goToYourProjects();
-    yourProjects.goToNextPageUntilFieldIsVisible(unassignedProjectSchoolName);
 }
 
 export function shouldBeAbleToViewAndDownloadCsvReportsFromTheExportSection() {
