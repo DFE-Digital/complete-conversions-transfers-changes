@@ -1,5 +1,7 @@
 ﻿@page "/projects/{projectId}/notes/{noteId?}/edit"
 @using Dfe.Complete.Constants
+
+@inject Dfe.Complete.Services.ErrorService ErrorService
 @model Dfe.Complete.Pages.Projects.Notes.EditProjectNoteModel
 @{
     ViewData["Title"] = "Complete conversions, tranfers and changes";
@@ -24,6 +26,12 @@
                         Do not include personal or financial information.
                     </p>
                 </govuk-textarea-hint>
+                @if (ErrorService.HasErrorForKey("note-text"))
+                {
+                    <govuk-textarea-error-message>
+                        @(ErrorService.GetErrorMessage("note-text"))
+                    </govuk-textarea-error-message>
+                }
             </govuk-textarea>
 
             <div class="govuk-button-group">

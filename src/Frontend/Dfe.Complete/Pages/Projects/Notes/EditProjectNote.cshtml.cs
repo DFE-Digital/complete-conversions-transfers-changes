@@ -1,20 +1,25 @@
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using Dfe.Complete.Application.Notes.Commands;
 using Dfe.Complete.Constants;
 using Dfe.Complete.Domain.ValueObjects;
 using Dfe.Complete.Extensions;
 using Dfe.Complete.Models;
+using Dfe.Complete.Services;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace Dfe.Complete.Pages.Projects.Notes;
 
-public class EditProjectNoteModel(ISender sender) : ProjectNotesBaseModel(sender, NotesNavigation)
+public class EditProjectNoteModel(ISender sender, ErrorService errorService) : ProjectNotesBaseModel(sender, NotesNavigation)
 {
     [BindProperty(SupportsGet = true, Name = "noteId")]
     public required Guid NoteId { get; set; }
 
     [BindProperty(Name = "note-text")]
+    [Required]
+    [DisplayName("note")]
     public required string NoteText { get; set; }
 
     public async override Task<IActionResult> OnGetAsync()
@@ -42,6 +47,12 @@ public class EditProjectNoteModel(ISender sender) : ProjectNotesBaseModel(sender
 
     public async Task<IActionResult> OnPostAsync()
     {
+        if (!ModelState.IsValid)
+        {
+            errorService.AddErrors(ModelState);
+            return Page();
+        }
+
         var response = await Sender.Send(new UpdateNoteCommand(new NoteId(NoteId), NoteText));
 
         if (!response.IsSuccess)
