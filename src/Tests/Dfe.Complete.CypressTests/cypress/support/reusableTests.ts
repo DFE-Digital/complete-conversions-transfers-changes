@@ -4,6 +4,8 @@ import yourTeamProjects from "../pages/projects/yourTeamProjects";
 import projectsByMonthPage from "cypress/pages/projects/projectsByMonthPage";
 import { currentMonthLong, currentMonthShort } from "cypress/constants/stringTestConstants";
 import { Logger } from "cypress/common/logger";
+import internalContactsPage from "cypress/pages/projects/projectDetails/internalContactsPage";
+import { TestUser } from "cypress/constants/TestUser";
 
 export function shouldNotHaveAccessToViewHandedOverProjects() {
     cy.visit("/projects/all/in-progress/all");
@@ -73,4 +75,33 @@ export function checkAccessibilityAcrossPages() {
         Logger.log("Executing accessibility check for URL: " + url);
         cy.executeAccessibilityTests();
     });
+}
+
+export function shouldBeAbleToChangeTheAddedByUserOfAProject(
+    projectUrn: number,
+    projectId: string,
+    currentAssignee: TestUser,
+    newAssignee: TestUser,
+) {
+    Logger.log("Go to project internal contacts page");
+    cy.visit(`projects/${projectId}/internal-contacts`);
+
+    Logger.log("Check the added by user is displayed and click change");
+    internalContactsPage.row(3).summaryShows("Added by").hasValue(currentAssignee.username).change("Added by");
+
+    Logger.log("Change the added by user");
+    internalContactsPage
+        .containsHeading(`Who added this project?`)
+        .contains(`URN ${projectUrn}`)
+        .hasLabel("Added by")
+        .assignTo(newAssignee.username)
+        .clickButton("Continue");
+
+    Logger.log("Check the added by user is updated");
+    internalContactsPage
+        .containsSuccessBannerWithMessage("Project has been updated successfully")
+        .row(3)
+        .summaryShows("Added by")
+        .hasValue(newAssignee.username)
+        .hasEmailLink(newAssignee.email);
 }

@@ -14,6 +14,12 @@ export class EditUserPage extends ProjectDetailsPage {
         cy.getById(this.firstOptionId).click();
         return this;
     }
+
+    assignToInvalidUser(user: string) {
+        cy.getById(this.userInputId).clear().type(user);
+        cy.getById(this.firstOptionId).should("not.exist");
+        return this;
+    }
 }
 
 const editUserPage = new EditUserPage();

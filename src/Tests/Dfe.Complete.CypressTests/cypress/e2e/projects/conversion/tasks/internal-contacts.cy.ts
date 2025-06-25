@@ -1,7 +1,7 @@
 import { ProjectBuilder } from "cypress/api/projectBuilder";
 import { Logger } from "cypress/common/logger";
 import projectDetailsPage from "cypress/pages/projects/projectDetails/projectDetailsPage";
-import { cypressUser, rdoLondonUser } from "cypress/constants/cypressConstants";
+import { cypressUser, rdoLondonUser, regionalCaseworkerTeamLeaderUser } from "cypress/constants/cypressConstants";
 import internalContactsPage from "cypress/pages/projects/projectDetails/internalContactsPage";
 import projectRemover from "cypress/api/projectRemover";
 import projectApi from "cypress/api/projectApi";
@@ -37,8 +37,7 @@ describe("Internal contacts page: ", () => {
             .hasValue("London")
             .summaryShows("Added by")
             .hasValue(cypressUser.username)
-            .hasEmailLink(cypressUser.email)
-            .hasChangeLink(`/projects/${projectId}/internal-contacts/added-by-user/edit`);
+            .hasEmailLink(cypressUser.email);
     });
 
     it("Should cancel the assigned user change", () => {
@@ -110,27 +109,27 @@ describe("Internal contacts page: ", () => {
             .hasValue("North East");
     });
 
-    it("Should change the added by user of the project", () => {
+    it("Should NOT be able to change the added by user of the project", () => {
         cy.visit(`projects/${projectId}/internal-contacts`);
 
         Logger.log("Check the added by user is displayed and click change");
-        internalContactsPage.row(3).summaryShows("Added by").hasValue(cypressUser.username).change("Added by");
+        internalContactsPage.row(3).summaryShows("Added by").hasValue(cypressUser.username).hasNoChangeLink("Added by");
 
-        Logger.log("Change the added by user");
+        cy.visit(`/projects/${projectId}/internal-contacts/added-by-user/edit`).notAuthorisedToPerformAction();
+    });
+
+    it("Should not be able to assign project to a user that cannot create/assign projects", () => {
+        Logger.log("Go to project internal contacts page and change assigned user");
+        cy.visit(`projects/${projectId}/internal-contacts`);
+        internalContactsPage.change("Assigned to user");
+
+        Logger.log("Change the assigned user to a user that cannot create/assign projects");
         internalContactsPage
-            .containsHeading(`Who added this project?`)
+            .containsHeading(`Change assigned person for ${schoolName}`)
             .contains(`URN ${project.urn.value}`)
-            .hasLabel("Added by")
-            .assignTo(rdoLondonUser.username)
-            .clickButton("Continue");
-
-        Logger.log("Check the added by user is updated");
-        internalContactsPage
-            .containsSuccessBannerWithMessage("Project has been updated successfully")
-            .row(3)
-            .summaryShows("Added by")
-            .hasValue(rdoLondonUser.username)
-            .hasEmailLink(rdoLondonUser.email);
+            .hasLabel("Assign to")
+            .assignToInvalidUser(regionalCaseworkerTeamLeaderUser.username)
+            .contains("No results found");
     });
 
     it("Check accessibility across pages", () => {

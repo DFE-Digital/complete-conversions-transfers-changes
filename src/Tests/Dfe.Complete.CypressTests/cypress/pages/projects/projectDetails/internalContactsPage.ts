@@ -18,6 +18,11 @@ class InternalContactsPage extends EditUserPage {
         return this;
     }
 
+    hasNoChangeLink(key: string) {
+        cy.contains("dt", key).next("dd").next("dd").should("not.contain.text", "Change");
+        return this;
+    }
+
     selectTeam(team: string) {
         cy.contains(team).click();
         return this;

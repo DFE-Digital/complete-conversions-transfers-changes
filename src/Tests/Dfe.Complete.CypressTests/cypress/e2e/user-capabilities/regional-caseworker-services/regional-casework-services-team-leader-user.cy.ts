@@ -1,4 +1,5 @@
 import {
+    shouldBeAbleToChangeTheAddedByUserOfAProject,
     shouldBeAbleToViewMultipleMonthsOfProjects,
     shouldNotBeAbleToBeAssignedAProject,
     shouldNotBeAbleToCreateAProject,
@@ -9,7 +10,11 @@ import { ProjectBuilder } from "cypress/api/projectBuilder";
 import { before, beforeEach } from "mocha";
 import projectRemover from "cypress/api/projectRemover";
 import projectApi from "cypress/api/projectApi";
-import { regionalCaseworkerTeamLeaderUser, regionalCaseworkerUser } from "cypress/constants/cypressConstants";
+import {
+    cypressUser,
+    regionalCaseworkerTeamLeaderUser,
+    regionalCaseworkerUser,
+} from "cypress/constants/cypressConstants";
 import navBar from "cypress/pages/navBar";
 import yourTeamProjects from "cypress/pages/projects/yourTeamProjects";
 import allProjects from "cypress/pages/projects/allProjects";
@@ -20,13 +25,16 @@ import editUserPage from "cypress/pages/projects/editUserPage";
 const unassignedProject = ProjectBuilder.createTransferProjectRequest({
     urn: { value: 103846 },
     handingOverToRegionalCaseworkService: true,
-    userAdId: regionalCaseworkerTeamLeaderUser.adId,
 });
 const unassignedProjectSchoolName = "Cradley CofE Primary School";
+const project = ProjectBuilder.createConversionFormAMatProjectRequest();
+let projectId: string;
 describe("Capabilities and permissions of the regional casework services team leader user", () => {
     before(() => {
         projectRemover.removeProjectIfItExists(`${unassignedProject.urn.value}`);
-        projectApi.createTransferProject(unassignedProject, regionalCaseworkerTeamLeaderUser.email);
+        projectRemover.removeProjectIfItExists(`${project.urn.value}`);
+        projectApi.createTransferProject(unassignedProject);
+        projectApi.createMatConversionProject(project).then((response) => (projectId = response.value));
     });
 
     beforeEach(() => {
@@ -79,7 +87,7 @@ describe("Capabilities and permissions of the regional casework services team le
         shouldBeAbleToViewMultipleMonthsOfProjects();
     });
 
-    it.only("Should be able to assign unassigned projects to users", () => {
+    it("Should be able to assign unassigned projects to users", () => {
         navBar.goToYourTeamProjects();
         yourTeamProjects
             .filterProjects("Unassigned")
@@ -105,6 +113,10 @@ describe("Capabilities and permissions of the regional casework services team le
         yourTeamProjectsTable
             .withSchool(unassignedProjectSchoolName)
             .columnHasValue("Assigned to", regionalCaseworkerUser.username);
+    });
+
+    it("Should be able to change the added by user of the project in internal projects", () => {
+        shouldBeAbleToChangeTheAddedByUserOfAProject(project.urn.value, projectId, cypressUser, regionalCaseworkerUser);
     });
 
     it("Should NOT be able to create a project", () => {
