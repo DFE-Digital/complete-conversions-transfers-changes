@@ -24,17 +24,22 @@ public class UpdateNoteCommandHandler(
                 ?? _httpContextAccessor.HttpContext?.User?.FindFirst("uid")?.Value;
 
             if (!Guid.TryParse(userIdClaim, out var parsedUserId))
-                return Result<NoteId>.Failure($"Could not update note {request.NoteId.Value}", ErrorType.Unauthorized);
+                throw new UnauthorizedAccessException($"Could not update note {request.NoteId.Value}");
 
             var note = await _repo.GetNoteByIdAsync(request.NoteId, cancellationToken) ?? throw new NotFoundException($"Note with ID {request.NoteId.Value} not found");
 
             if (note.UserId != new UserId(parsedUserId))
-                return Result<NoteId>.Failure($"Could not update note {request.NoteId.Value}", ErrorType.Unauthorized);
+                throw new UnauthorizedAccessException($"Could not update note {request.NoteId.Value}");
 
             note.Body = request.Body;
             await _repo.UpdateNoteAsync(note, cancellationToken);
 
             return Result<NoteId>.Success(note.Id);
+        }
+        catch (UnauthorizedAccessException ex)
+        {
+            logger.LogWarning(ex, "Exception for {Name} Request - {@Request}", nameof(RemoveNoteCommandHandler), request);
+            return Result<NoteId>.Failure(ex.Message, ErrorType.Unauthorized);
         }
         catch (Exception ex)
         {
