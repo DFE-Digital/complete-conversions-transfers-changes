@@ -157,7 +157,74 @@
             </div>
         </section>
 
-        @await Html.PartialAsync("Common/_AcademyDetails", Model)
+        <section id="academyDetails" class="app-summary-card govuk-!-margin-bottom-6">
+            <header class="app-summary-card__header">
+                <h2 class="app-summary-card__title">
+                    Academy details
+                </h2>
+            </header>
+            @if (Model.Academy != null)
+            {
+                <div class="app-summary-card__body">
+                    <govuk-summary-list>
+                        <govuk-summary-list-row>
+                            <govuk-summary-list-row-key>Name</govuk-summary-list-row-key>
+                            <govuk-summary-list-row-value>
+                                @Model.Academy.Name<br />
+                                <a class="govuk-link" href="https://get-information-schools.service.gov.uk/Establishments/Establishment/Details/@Model.Academy.Urn" target="_blank">View the school's information in GIAS (opens in new tab)</a>
+                            </govuk-summary-list-row-value>
+                        </govuk-summary-list-row>
+                        <govuk-summary-list-row>
+                            <govuk-summary-list-row-key>Academy URN (unique reference number)</govuk-summary-list-row-key>
+                            <govuk-summary-list-row-value>
+                                @Model.Academy.Urn?.ToString()
+                            </govuk-summary-list-row-value>
+                        </govuk-summary-list-row>
+                        <govuk-summary-list-row>
+                            <govuk-summary-list-row-key>LAESTAB (DfE number)</govuk-summary-list-row-key>
+                            <govuk-summary-list-row-value>
+                                @Model.Academy.LocalAuthorityCode/@Model.Academy.EstablishmentNumber
+                            </govuk-summary-list-row-value>
+                        </govuk-summary-list-row>
+                        <govuk-summary-list-row>
+                            <govuk-summary-list-row-key>Type</govuk-summary-list-row-key>
+                            <govuk-summary-list-row-value>
+                                @Model.Academy.EstablishmentType?.Name
+                            </govuk-summary-list-row-value>
+                        </govuk-summary-list-row>
+                        <govuk-summary-list-row>
+                            <govuk-summary-list-row-key>Age range</govuk-summary-list-row-key>
+                            <govuk-summary-list-row-value>
+                                @Model.Academy.StatutoryLowAge to @Model.Academy.StatutoryHighAge
+                            </govuk-summary-list-row-value>
+                        </govuk-summary-list-row>
+                        <govuk-summary-list-row>
+                            <govuk-summary-list-row-key>Phase</govuk-summary-list-row-key>
+                            <govuk-summary-list-row-value>
+                                @(Model.Academy?.PhaseOfEducation?.Name ?? "Not applicable")
+                            </govuk-summary-list-row-value>
+                        </govuk-summary-list-row>
+                        <govuk-summary-list-row>
+                            <govuk-summary-list-row-key>SharePoint folder</govuk-summary-list-row-key>
+                            <govuk-summary-list-row-value>
+                                <a class="govuk-link" href="@Model.Project.EstablishmentSharepointLink" target="_blank">View the academy SharePoint folder (opens in new tab)</a>
+                            </govuk-summary-list-row-value>
+                            <govuk-summary-list-row-actions>
+                                <govuk-summary-list-row-action href="#" visually-hidden-text="Academy sharePoint folder">Change</govuk-summary-list-row-action>
+                            </govuk-summary-list-row-actions>
+                        </govuk-summary-list-row>
+                    </govuk-summary-list>
+                </div>
+            }
+            else
+            {
+                <div class="app-summary-card__body" style="border-left: 4px solid #b1b4b6;">
+                    <govuk-inset-text>
+                        @(Model.Project.AcademyUrn?.Value.ToString() ?? "Academy URN has not been provided")
+                    </govuk-inset-text>
+                </div>
+            }
+        </section>
 
         @await Html.PartialAsync("Common/_IncomingTrustDetails", Model)
     </div>

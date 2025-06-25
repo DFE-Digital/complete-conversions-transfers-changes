@@ -8,6 +8,7 @@
 
 @{
     Layout = "Projects/_ProjectLayout";
+    ViewData["Title"] = Model.Establishment.Name;
 }
 
 @if (Model.Project.Type == ProjectType.Conversion)

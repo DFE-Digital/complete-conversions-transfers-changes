@@ -28,6 +28,14 @@
                 <li>
                     <a class="govuk-link govuk-link--no-visited-state" href="#academyDetails">Academy details</a>
                 </li>
+
+                <li>
+                    <a class="govuk-link govuk-link--no-visited-state" href="#incomingTrustDetails">Incoming trust details</a>
+                </li>
+
+                <li>
+                    <a class="govuk-link govuk-link--no-visited-state" href="#outgoingTrustDetails">Outgoing trust details</a>
+                </li>
             </ul>
         </nav>
 
@@ -84,9 +92,137 @@
 
             @await Html.PartialAsync("Common/_AdvisoryBoardDetails", Model)
 
-            @await Html.PartialAsync("Common/_AcademyDetails", Model)
+            <section id="academyDetails" class="app-summary-card govuk-!-margin-bottom-6">
+                <header class="app-summary-card__header">
+                    <h2 class="app-summary-card__title">
+                        Academy details
+                    </h2>
+                </header>
+                @if (Model.Establishment != null)
+                {
+                    <div class="app-summary-card__body">
+                        <govuk-summary-list>
+                            <govuk-summary-list-row>
+                                <govuk-summary-list-row-key>Name</govuk-summary-list-row-key>
+                                <govuk-summary-list-row-value>
+                                    @Model.Establishment.Name<br />
+                                    <a class="govuk-link" href="https://get-information-schools.service.gov.uk/Establishments/Establishment/Details/@Model.Establishment.Urn" target="_blank">View the school's information in GIAS (opens in new tab)</a>
+                                </govuk-summary-list-row-value>
+                            </govuk-summary-list-row>
+                            <govuk-summary-list-row>
+                                <govuk-summary-list-row-key>Academy URN (unique reference number)</govuk-summary-list-row-key>
+                                <govuk-summary-list-row-value>
+                                    @Model.Establishment.Urn?.ToString()
+                                </govuk-summary-list-row-value>
+                            </govuk-summary-list-row>
+                            <govuk-summary-list-row>
+                                <govuk-summary-list-row-key>Type</govuk-summary-list-row-key>
+                                <govuk-summary-list-row-value>
+                                    @Model.Establishment.EstablishmentType?.Name
+                                </govuk-summary-list-row-value>
+                            </govuk-summary-list-row>
+                            <govuk-summary-list-row>
+                                <govuk-summary-list-row-key>Age range</govuk-summary-list-row-key>
+                                <govuk-summary-list-row-value>
+                                    @Model.Establishment.StatutoryLowAge to @Model.Establishment.StatutoryHighAge
+                                </govuk-summary-list-row-value>
+                            </govuk-summary-list-row>
+                            <govuk-summary-list-row>
+                                <govuk-summary-list-row-key>Phase</govuk-summary-list-row-key>
+                                <govuk-summary-list-row-value>
+                                    @(Model.Establishment?.PhaseOfEducation?.Name ?? "Not applicable")
+                                </govuk-summary-list-row-value>
+                            </govuk-summary-list-row>
+                            <govuk-summary-list-row>
+                                <govuk-summary-list-row-key>SharePoint folder</govuk-summary-list-row-key>
+                                <govuk-summary-list-row-value>
+                                    <a class="govuk-link" href="@Model.Project.EstablishmentSharepointLink" target="_blank">View the academy SharePoint folder (opens in new tab)</a>
+                                </govuk-summary-list-row-value>
+                                <govuk-summary-list-row-actions>
+                                    <govuk-summary-list-row-action href="#" visually-hidden-text="Academy sharePoint folder">Change</govuk-summary-list-row-action>
+                                </govuk-summary-list-row-actions>
+                            </govuk-summary-list-row>
+                        </govuk-summary-list>
+                    </div>
+                }
+                else
+                {
+                    <div class="app-summary-card__body" style="border-left: 4px solid #b1b4b6;">
+                        <govuk-inset-text>
+                            @(Model.Project.AcademyUrn?.Value.ToString() ?? "Academy URN has not been provided")
+                        </govuk-inset-text>
+                    </div>
+                }
+            </section>
 
             @await Html.PartialAsync("Common/_IncomingTrustDetails", Model)
+
+            <section id="outgoingTrustDetails" class="app-summary-card govuk-!-margin-bottom-6">
+                <header class="app-summary-card__header">
+                    <h2 class="app-summary-card__title">
+                        Outgoing trust details
+                    </h2>
+                </header>
+                <div class="app-summary-card__body">
+                    <govuk-summary-list>
+                        <govuk-summary-list-row>
+                            <govuk-summary-list-row-key>Name</govuk-summary-list-row-key>
+                            <govuk-summary-list-row-value>
+                                @Model.OutgoingTrust?.Name<br />
+                                <a class="govuk-link" href="https://get-information-schools.service.gov.uk/Groups/Search?GroupSearchModel.Text=@Model.Project.OutgoingTrustUkprn" target="_blank">View the trust information in GIAS (opens in new tab)</a>
+                            </govuk-summary-list-row-value>
+                        </govuk-summary-list-row>
+                        <govuk-summary-list-row>
+                            <govuk-summary-list-row-key>UKPRN (UK provider reference number)</govuk-summary-list-row-key>
+                            <govuk-summary-list-row-value>@Model.Project.OutgoingTrustUkprn</govuk-summary-list-row-value>
+                            <govuk-summary-list-row-actions>
+                                <govuk-summary-list-row-action href="#" visually-hidden-text="UK provider reference number">Change</govuk-summary-list-row-action>
+                            </govuk-summary-list-row-actions>
+                        </govuk-summary-list-row>
+                        <govuk-summary-list-row>
+                            <govuk-summary-list-row-key>Group ID (identifier)</govuk-summary-list-row-key>
+                            <govuk-summary-list-row-value>@Model.OutgoingTrust?.ReferenceNumber</govuk-summary-list-row-value>
+                        </govuk-summary-list-row>
+                        <govuk-summary-list-row>
+                            <govuk-summary-list-row-key>Companies House number</govuk-summary-list-row-key>
+                            <govuk-summary-list-row-value>
+                                @Model.OutgoingTrust?.CompaniesHouseNumber<br />
+                                <a class="govuk-link" href="https://find-and-update.company-information.service.gov.uk/company/@Model.OutgoingTrust?.CompaniesHouseNumber" target="_blank">View the companiesHouse information (opens in new tab)</a>
+                            </govuk-summary-list-row-value>
+                        </govuk-summary-list-row>
+                        <govuk-summary-list-row>
+                            <govuk-summary-list-row-key>Address</govuk-summary-list-row-key>
+                            <govuk-summary-list-row-value>
+                                @if (!string.IsNullOrWhiteSpace(@Model.OutgoingTrust?.Address?.Street))
+                                {
+                                    @Model.OutgoingTrust?.Address?.Street <br />
+                                }
+                                @if (!string.IsNullOrWhiteSpace(@Model.OutgoingTrust?.Address?.Town))
+                                {
+                                    @Model.OutgoingTrust?.Address?.Town <br />
+                                }
+                                @if (!string.IsNullOrWhiteSpace(@Model.OutgoingTrust?.Address?.County))
+                                {
+                                    @Model.OutgoingTrust?.Address?.County <br />
+                                }
+                                @if (!string.IsNullOrWhiteSpace(@Model.OutgoingTrust?.Address?.Postcode))
+                                {
+                                    @Model.OutgoingTrust?.Address?.Postcode
+                                }
+                            </govuk-summary-list-row-value>
+                        </govuk-summary-list-row>
+                        <govuk-summary-list-row>
+                            <govuk-summary-list-row-key>SharePoint folder</govuk-summary-list-row-key>
+                            <govuk-summary-list-row-value>
+                                <a class="govuk-link" href="@Model.Project.OutgoingTrustSharepointLink" target="_blank">View the trust SharePoint folder (opens in new tab)</a>
+                            </govuk-summary-list-row-value>
+                            <govuk-summary-list-row-actions>
+                                <govuk-summary-list-row-action href="#" visually-hidden-text="Trust sharePoint folder">Change</govuk-summary-list-row-action>
+                            </govuk-summary-list-row-actions>
+                        </govuk-summary-list-row>
+                    </govuk-summary-list>
+                </div>
+            </section>
         </div>
     </div>
 </div>

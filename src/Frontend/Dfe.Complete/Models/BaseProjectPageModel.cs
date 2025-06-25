@@ -78,7 +78,7 @@ public abstract class BaseProjectPageModel(ISender sender) : PageModel
 
     protected async Task SetOutgoingTrustAsync()
     {
-        if (Project.Type == ProjectType.Transfer)
+        if (Project.Type == ProjectType.Transfer && Project.OutgoingTrustUkprn != null)
         {
             var outgoingtrustQuery = new GetTrustByUkprnRequest(Project.OutgoingTrustUkprn.Value.ToString());
             var outgoingTrustResult = await sender.Send(outgoingtrustQuery);
