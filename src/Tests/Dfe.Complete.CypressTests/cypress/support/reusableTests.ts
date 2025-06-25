@@ -54,10 +54,6 @@ export function shouldNotHaveAccessToViewAndEditUsers() {
     cy.visit("/service-support/users").notAuthorisedToPerformAction();
 }
 
-export function shouldNotBeAbleToBeAssignedAProject() {
-    // not implemented 187369
-}
-
 export function shouldBeAbleToViewMultipleMonthsOfProjects() {
     cy.visit("/projects/all/in-progress/all");
     allProjects.filterProjects("By month").containsHeading(`${currentMonthLong} to ${currentMonthLong}`);

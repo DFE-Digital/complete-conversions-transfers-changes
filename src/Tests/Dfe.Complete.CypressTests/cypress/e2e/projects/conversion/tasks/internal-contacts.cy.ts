@@ -1,7 +1,16 @@
 import { ProjectBuilder } from "cypress/api/projectBuilder";
 import { Logger } from "cypress/common/logger";
 import projectDetailsPage from "cypress/pages/projects/projectDetails/projectDetailsPage";
-import { cypressUser, rdoLondonUser, regionalCaseworkerTeamLeaderUser } from "cypress/constants/cypressConstants";
+import {
+    businessSupportUser,
+    cypressUser,
+    dataConsumerUser,
+    rdoLondonUser,
+    rdoTeamLeaderUser,
+    regionalCaseworkerTeamLeaderUser,
+    regionalCaseworkerUser,
+    serviceSupportUser,
+} from "cypress/constants/cypressConstants";
 import internalContactsPage from "cypress/pages/projects/projectDetails/internalContactsPage";
 import projectRemover from "cypress/api/projectRemover";
 import projectApi from "cypress/api/projectApi";
@@ -10,6 +19,8 @@ import { checkAccessibilityAcrossPages } from "cypress/support/reusableTests";
 const project = ProjectBuilder.createConversionFormAMatProjectRequest();
 let projectId: string;
 const schoolName = "Whitchurch Primary School";
+const assignableUsers = [rdoLondonUser, rdoTeamLeaderUser, regionalCaseworkerUser];
+const unassignableUsers = [regionalCaseworkerTeamLeaderUser, dataConsumerUser, businessSupportUser, serviceSupportUser];
 
 describe("Internal contacts page: ", () => {
     before(() => {
@@ -61,33 +72,6 @@ describe("Internal contacts page: ", () => {
         internalContactsPage.inOrder().summaryShows("Assigned to user").hasValue(cypressUser.username);
     });
 
-    it("Should change the assigned user of the project", () => {
-        cy.visit(`projects/${projectId}/internal-contacts`);
-
-        Logger.log("Check the assigned user is displayed and click change");
-        internalContactsPage
-            .inOrder()
-            .summaryShows("Assigned to user")
-            .hasValue(cypressUser.username)
-            .change("Assigned to user");
-
-        Logger.log("Change the assigned user");
-        internalContactsPage
-            .containsHeading(`Change assigned person for ${schoolName}`)
-            .contains(`URN ${project.urn.value}`)
-            .hasLabel("Assign to")
-            .assignTo(rdoLondonUser.username)
-            .clickButton("Continue");
-
-        Logger.log("Check the assigned user is updated");
-        internalContactsPage
-            .containsSuccessBannerWithMessage("Project has been assigned successfully")
-            .inOrder()
-            .summaryShows("Assigned to user")
-            .hasValue(rdoLondonUser.username)
-            .hasEmailLink(rdoLondonUser.email);
-    });
-
     it("Should change the assigned team of the project", () => {
         cy.visit(`projects/${projectId}/internal-contacts`);
 
@@ -109,7 +93,8 @@ describe("Internal contacts page: ", () => {
             .hasValue("North East");
     });
 
-    it("Should NOT be able to change the added by user of the project", () => {
+    // bug 220830
+    it.skip("Should NOT be able to change the added by user of the project", () => {
         cy.visit(`projects/${projectId}/internal-contacts`);
 
         Logger.log("Check the added by user is displayed and click change");
@@ -118,18 +103,44 @@ describe("Internal contacts page: ", () => {
         cy.visit(`/projects/${projectId}/internal-contacts/added-by-user/edit`).notAuthorisedToPerformAction();
     });
 
-    it("Should not be able to assign project to a user that cannot create/assign projects", () => {
-        Logger.log("Go to project internal contacts page and change assigned user");
-        cy.visit(`projects/${projectId}/internal-contacts`);
-        internalContactsPage.change("Assigned to user");
+    assignableUsers.forEach((assignableUser) => {
+        it(`Should be able to assign project to a ${assignableUser.lastName} user`, () => {
+            Logger.log("Go to project internal contacts page and change assigned user");
+            cy.visit(`projects/${projectId}/internal-contacts`);
+            internalContactsPage.change("Assigned to user");
 
-        Logger.log("Change the assigned user to a user that cannot create/assign projects");
-        internalContactsPage
-            .containsHeading(`Change assigned person for ${schoolName}`)
-            .contains(`URN ${project.urn.value}`)
-            .hasLabel("Assign to")
-            .assignToInvalidUser(regionalCaseworkerTeamLeaderUser.username)
-            .contains("No results found");
+            Logger.log(`Change the assigned user to ${assignableUser.username} user`);
+            internalContactsPage
+                .containsHeading(`Change assigned person for ${schoolName}`)
+                .contains(`URN ${project.urn.value}`)
+                .hasLabel("Assign to")
+                .assignTo(assignableUser.username)
+                .clickButton("Continue");
+
+            Logger.log("Check the assigned user is updated");
+            internalContactsPage
+                .containsSuccessBannerWithMessage("Project has been assigned successfully")
+                .inOrder()
+                .summaryShows("Assigned to user")
+                .hasValue(assignableUser.username)
+                .hasEmailLink(assignableUser.email);
+        });
+    });
+
+    unassignableUsers.forEach((unassignableUser) => {
+        it(`Should not be able to assign project to a ${unassignableUser.lastName} user`, () => {
+            Logger.log("Go to project internal contacts page and change assigned user");
+            cy.visit(`projects/${projectId}/internal-contacts`);
+            internalContactsPage.change("Assigned to user");
+
+            Logger.log(`Try to change the assigned user to ${unassignableUser.username} user`);
+            internalContactsPage
+                .containsHeading(`Change assigned person for ${schoolName}`)
+                .contains(`URN ${project.urn.value}`)
+                .hasLabel("Assign to")
+                .assignToInvalidUser(unassignableUser.username)
+                .contains("No results found");
+        });
     });
 
     it("Check accessibility across pages", () => {

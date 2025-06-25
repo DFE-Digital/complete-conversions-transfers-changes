@@ -1,7 +1,6 @@
 import {
     shouldBeAbleToChangeTheAddedByUserOfAProject,
     shouldBeAbleToViewMultipleMonthsOfProjects,
-    shouldNotBeAbleToBeAssignedAProject,
     shouldNotBeAbleToCreateAProject,
     shouldNotHaveAccessToViewAndEditUsers,
     shouldNotHaveAccessToViewHandedOverProjects,
@@ -121,11 +120,6 @@ describe("Capabilities and permissions of the regional casework services team le
 
     it("Should NOT be able to create a project", () => {
         shouldNotBeAbleToCreateAProject();
-    });
-
-    it.skip("Should NOT be able to be assigned a project", () => {
-        // not implemented
-        shouldNotBeAbleToBeAssignedAProject();
     });
 
     it.skip("Should NOT be able to soft delete projects", () => {
