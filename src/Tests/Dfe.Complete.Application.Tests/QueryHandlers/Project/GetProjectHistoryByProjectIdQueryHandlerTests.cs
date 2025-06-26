@@ -55,7 +55,6 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
         [CustomAutoData(typeof(DateOnlyCustomization), typeof(OmitCircularReferenceCustomization))]
         public async Task Handle_ShouldReturnFailure_WhenExceptionThrown(
             [Frozen] ICompleteRepository<Domain.Entities.Project> mockProjectRepository,
-            [Frozen] ILogger<GetProjectHistoryByProjectIdHandler> logger,
             GetProjectHistoryByProjectIdHandler handler
         )
         {
