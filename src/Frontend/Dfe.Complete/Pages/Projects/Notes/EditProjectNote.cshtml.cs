@@ -2,10 +2,12 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using Dfe.Complete.Application.Notes.Commands;
 using Dfe.Complete.Constants;
+using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Domain.ValueObjects;
 using Dfe.Complete.Extensions;
 using Dfe.Complete.Models;
 using Dfe.Complete.Services;
+using Dfe.Complete.Utils;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -22,8 +24,18 @@ public class EditProjectNoteModel(ISender sender, ErrorService errorService) : P
     [DisplayName("note")]
     public required string NoteText { get; set; }
 
+    [BindProperty(SupportsGet = true, Name = "task_identifier")]
+    public string? TaskIdentifier { get; set; }
+
     public async override Task<IActionResult> OnGetAsync()
     {
+        if (TaskIdentifier != null)
+        {
+            var validTaskIdentifier = EnumExtensions.FromDescriptionValue<NoteTaskIdentifier>(TaskIdentifier);
+            if (validTaskIdentifier == null)
+                return NotFound();
+        }
+
         var baseResult = await base.OnGetAsync();
         if (baseResult is not PageResult) return baseResult;
 
@@ -64,6 +76,10 @@ public class EditProjectNoteModel(ISender sender, ErrorService errorService) : P
             "Your note has been edited"
         );
 
+        NoteTaskIdentifier? noteTaskIdentifier = EnumExtensions.FromDescriptionValue<NoteTaskIdentifier>(TaskIdentifier);
+
+        if (noteTaskIdentifier != null)
+            return Redirect(string.Format(RouteConstants.ProjectTaskListDynamic, ProjectId, TaskIdentifier));
         return Redirect(string.Format(RouteConstants.ProjectViewNotes, ProjectId));
     }
 }
