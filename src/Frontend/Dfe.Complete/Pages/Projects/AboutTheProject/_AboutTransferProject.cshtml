@@ -221,8 +221,15 @@
                             </govuk-summary-list-row-actions>
                         </govuk-summary-list-row>
                         <govuk-summary-list-row>
+                            @{
+                                var toClose = "";
+                                if (Model.TransferTaskData?.OutgoingTrustToClose != null)
+                                {
+                                    toClose = Model.TransferTaskData.OutgoingTrustToClose == true ? "Yes" : "No";
+                                }
+                            }
                             <govuk-summary-list-row-key>Will the outgoing trust close once this transfer is completed?</govuk-summary-list-row-key>
-                            <govuk-summary-list-row-value>????</govuk-summary-list-row-value>
+                            <govuk-summary-list-row-value>@toClose</govuk-summary-list-row-value>
                             <govuk-summary-list-row-actions>
                                 <govuk-summary-list-row-action href="#" visually-hidden-text="Will the outgoing trust close once this transfer is completed">Change</govuk-summary-list-row-action>
                             </govuk-summary-list-row-actions>
