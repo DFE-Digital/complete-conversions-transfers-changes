@@ -3,10 +3,12 @@ using System.ComponentModel.DataAnnotations;
 using Dfe.Complete.Application.Notes.Commands;
 using Dfe.Complete.Constants;
 using Dfe.Complete.Domain.Constants;
+using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Domain.ValueObjects;
 using Dfe.Complete.Extensions;
 using Dfe.Complete.Models;
 using Dfe.Complete.Services;
+using Dfe.Complete.Utils;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -22,8 +24,18 @@ public class AddProjectNoteModel(ISender sender, ErrorService errorService) : Pr
     [DisplayName("note")]
     public required string NoteText { get; set; }
 
+    [BindProperty(SupportsGet = true, Name = "task_identifier")]
+    public string? TaskIdentifier { get; set; }
+
     public override async Task<IActionResult> OnGetAsync()
     {
+        if (TaskIdentifier != null)
+        {
+            var validTaskIdentifier = EnumExtensions.FromDescriptionValue<NoteTaskIdentifier>(TaskIdentifier);
+            if (validTaskIdentifier == null)
+                return NotFound();
+        }
+
         var baseResult = await base.OnGetAsync();
         if (baseResult is not PageResult) return baseResult;
 
@@ -49,7 +61,14 @@ public class AddProjectNoteModel(ISender sender, ErrorService errorService) : Pr
             return Page();
         }
 
-        var newNoteQuery = new CreateNoteCommand(new ProjectId(Guid.Parse(ProjectId)), User.GetUserId(), NoteText);
+        NoteTaskIdentifier? noteTaskIdentifier = EnumExtensions.FromDescriptionValue<NoteTaskIdentifier>(TaskIdentifier);
+        var newNoteQuery = new CreateNoteCommand(
+            new ProjectId(Guid.Parse(ProjectId)),
+            User.GetUserId(),
+            NoteText,
+            noteTaskIdentifier
+        );
+
         var response = await Sender.Send(newNoteQuery);
 
         if (!response.IsSuccess)
@@ -61,6 +80,8 @@ public class AddProjectNoteModel(ISender sender, ErrorService errorService) : Pr
             "Your note has been added"
         );
 
+        if (noteTaskIdentifier != null)
+            return Redirect(string.Format(RouteConstants.ProjectTaskListDynamic, ProjectId, TaskIdentifier));
         return Redirect(string.Format(RouteConstants.ProjectViewNotes, ProjectId));
     }
 }

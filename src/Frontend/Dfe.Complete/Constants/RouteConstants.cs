@@ -15,7 +15,7 @@
         public const string TransfersProjectsByMonths = AllProjectsPrefix + "/by-month/transfers/from/{0}/{1}/to/{2}/{3}";
         public const string ProjectsByRegion = AllProjectsPrefix + "/regions/{0}";
         public const string CompletedProjects = AllProjectsPrefix + "/completed";
-        
+
         // Your projects
         private const string YourProjectsPrefix = "/projects/yours";
         public const string YourProjectsInProgress = YourProjectsPrefix + "/in-progress";
@@ -34,7 +34,7 @@
         public const string CreateNewProject = "/projects/CreateNewProject";
 
         public const string SelectCreateProjectType = "/projects/new";
-        
+
         public const string ProjectViewNotes = Project + "/notes";
         public const string ProjectAddNote = ProjectViewNotes + "/new";
         public const string ProjectEditNote = ProjectViewNotes + "/{1}/edit";
@@ -44,17 +44,18 @@
         public const string ProjectInternalContactsEditAddedByUser = ProjectInternalContacts + "/added-by-user/edit";
         public const string ProjectInternalContactsEditAssignedTeam = ProjectInternalContacts + "/team/edit";
         public const string ProjectDeleteNote = ProjectViewNotes + "/{1}/delete";
-        
+
         public const string ProjectTaskList = Project + "/tasks";
-        
+
         public const string ProjectAbout = Project + "/information";
         public const string ProjectEditAbout = ProjectAbout + "/edit";
-        
+
+        public const string ProjectTaskListDynamic = ProjectTaskList + "/{1}";
         public const string ProjectHandoverWithDeliveryOfficerTask = ProjectTaskList + "/handover";
-        public const string ProjectStakeholderKickoffTask = ProjectTaskList + "/stakeholder-kickoff";
-        public const string ProjectLandQuestionnaireTask = ProjectTaskList + "/land-questionnaire";
-        public const string ProjectLandRegistryTask = ProjectTaskList + "/land-registry";
-        public const string ProjectSupplementalFundingAgreementTask = ProjectTaskList + "/supplemental-funding-agreement";
+        public const string ProjectStakeholderKickoffTask = ProjectTaskList + "/stakeholder_kickoff";
+        public const string ProjectLandQuestionnaireTask = ProjectTaskList + "/land_questionnaire";
+        public const string ProjectLandRegistryTask = ProjectTaskList + "/land_registry";
+        public const string ProjectSupplementalFundingAgreementTask = ProjectTaskList + "/supplemental_funding_agreement";
 
         // Groups
         public const string Groups = "/groups";
