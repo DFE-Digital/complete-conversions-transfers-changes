@@ -354,7 +354,7 @@ namespace Dfe.Complete.Api.Controllers
         /// <summary>
         /// Returns a list of Notes for a Project
         /// </summary>
-        /// <param name="request"></param>
+        /// <param name="request">The request.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
         [Authorize(Policy = "CanRead")]
         [HttpGet]
