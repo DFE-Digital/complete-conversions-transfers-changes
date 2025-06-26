@@ -31,9 +31,9 @@ namespace Dfe.Complete.Application.Projects.Queries.GetProject
                         .ThenInclude(ph => ph.User)
                     .Include(p => p.SignificantDateHistories)
                         .ThenInclude(ph => ph.Reason)
-                    .FirstOrDefaultAsync();
+                    .FirstOrDefaultAsync(cancellationToken);
 
-                result.Notes = result.Notes.Where(n => n.NotableType == "SignificantDateHistoryReason").ToList();
+                result!.Notes = result.Notes.Where(n => n.NotableType == "SignificantDateHistoryReason").ToList();
 
                 var projectDto = mapper.Map<ProjectDto>(result);
 
