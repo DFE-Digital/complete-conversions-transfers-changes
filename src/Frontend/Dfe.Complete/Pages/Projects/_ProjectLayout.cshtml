@@ -1,4 +1,3 @@
-@using Dfe.Complete.Pages.Projects.Team;
 @using Dfe.Complete.Constants;
 @using Dfe.Complete.Utils;
 @using Dfe.Complete.Domain.Enums
@@ -142,7 +141,7 @@ Model.CurrentUserTeam.TeamIsServiceSupport())
             aria-current="@IsCurrentNav(ProjectLayoutModel.NotesNavigation)">Notes</a>
         </li>
         <li class="moj-sub-navigation__item">
-          <a class="moj-sub-navigation__link" href="#"
+          <a class="moj-sub-navigation__link" href="@String.Format(RouteConstants.ProjectExternalContacts, Model.Project.Id.Value)"
             aria-current="@IsCurrentNav(ProjectLayoutModel.ExternalContactsNavigation)">External contacts</a>
         </li>
         <li class="moj-sub-navigation__item">
