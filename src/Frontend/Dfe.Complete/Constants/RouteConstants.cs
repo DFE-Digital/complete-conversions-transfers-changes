@@ -44,6 +44,8 @@
         public const string ProjectInternalContactsEditAddedByUser = ProjectInternalContacts + "/added-by-user/edit";
         public const string ProjectInternalContactsEditAssignedTeam = ProjectInternalContacts + "/team/edit";
         
+        public const string ProjectExternalContacts = Project + "/external-contacts";
+        
         public const string ProjectTaskList = Project + "/tasks";
         
         public const string ProjectAbout = Project + "/information";
