@@ -11,6 +11,9 @@ namespace Dfe.Complete.Application.Common.Mappers
 			CreateMap<Project, ProjectDto>();
 			CreateMap<ProjectGroup, ProjectGroupDto>();
 			CreateMap<User, UserDto>();
+			CreateMap<SignificantDateHistory, SignificantDateHistoryDto>();
+			CreateMap<SignificantDateHistoryReason, SignificantDateHistoryReasonDto>();
+			CreateMap<Note, NoteDto>();
         }
 	}
 }

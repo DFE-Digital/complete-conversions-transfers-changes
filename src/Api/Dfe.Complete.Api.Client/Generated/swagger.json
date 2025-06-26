@@ -1920,7 +1920,13 @@
           "notes": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/Note"
+              "$ref": "#/components/schemas/NoteDto"
+            }
+          },
+          "significantDateHistories": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SignificantDateHistoryDto"
             }
           },
           "regionalDeliveryOfficer": {
@@ -2898,6 +2904,12 @@
                 "$ref": "#/components/schemas/UserId"
               }
             ]
+          },
+          "reason": {
+            "$ref": "#/components/schemas/SignificantDateHistoryReason"
+          },
+          "user": {
+            "$ref": "#/components/schemas/User"
           }
         }
       },
@@ -2908,6 +2920,168 @@
           "value": {
             "type": "string",
             "format": "guid"
+          }
+        }
+      },
+      "SignificantDateHistoryReason": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "$ref": "#/components/schemas/SignificantDateHistoryReasonId"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "reasonType": {
+            "type": "string",
+            "nullable": true
+          },
+          "significantDateHistoryId": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/SignificantDateHistoryId"
+              }
+            ]
+          }
+        }
+      },
+      "SignificantDateHistoryReasonId": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "value": {
+            "type": "string",
+            "format": "guid"
+          }
+        }
+      },
+      "NoteDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "$ref": "#/components/schemas/NoteId"
+          },
+          "body": {
+            "type": "string"
+          },
+          "projectId": {
+            "$ref": "#/components/schemas/ProjectId"
+          },
+          "userId": {
+            "$ref": "#/components/schemas/UserId"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "taskIdentifier": {
+            "type": "string",
+            "nullable": true
+          },
+          "notableId": {
+            "type": "string",
+            "format": "guid",
+            "nullable": true
+          },
+          "notableType": {
+            "type": "string",
+            "nullable": true
+          },
+          "project": {
+            "$ref": "#/components/schemas/Project"
+          },
+          "user": {
+            "$ref": "#/components/schemas/User"
+          }
+        }
+      },
+      "SignificantDateHistoryDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "$ref": "#/components/schemas/SignificantDateHistoryId"
+          },
+          "revisedDate": {
+            "type": "string",
+            "format": "date",
+            "nullable": true
+          },
+          "previousDate": {
+            "type": "string",
+            "format": "date",
+            "nullable": true
+          },
+          "projectId": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/ProjectId"
+              }
+            ]
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "userId": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/UserId"
+              }
+            ]
+          },
+          "reason": {
+            "$ref": "#/components/schemas/SignificantDateHistoryReasonDto"
+          },
+          "user": {
+            "$ref": "#/components/schemas/User"
+          }
+        }
+      },
+      "SignificantDateHistoryReasonDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "$ref": "#/components/schemas/SignificantDateHistoryReasonId"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "reasonType": {
+            "type": "string",
+            "nullable": true
+          },
+          "significantDateHistoryId": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/SignificantDateHistoryId"
+              }
+            ]
           }
         }
       },
