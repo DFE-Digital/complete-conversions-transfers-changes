@@ -4,7 +4,7 @@ namespace Dfe.Complete.Application.Projects.Models;
 
 public class SignificantDateHistoryReasonDto
 {
-    public SignificantDateHistoryReasonId Id { get; set; }
+    public SignificantDateHistoryReasonId? Id { get; set; }
 
     public DateTime CreatedAt { get; set; }
 

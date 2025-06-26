@@ -5,7 +5,7 @@ namespace Dfe.Complete.Application.Projects.Models;
 
 public class SignificantDateHistoryDto
 {
-    public SignificantDateHistoryId Id { get; set; }
+    public SignificantDateHistoryId? Id { get; set; }
 
     public DateOnly? RevisedDate { get; set; }
 
