@@ -1920,7 +1920,7 @@
           "notes": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/NoteDto"
+              "$ref": "#/components/schemas/Note"
             }
           },
           "significantDateHistories": {
@@ -2906,10 +2906,20 @@
             ]
           },
           "reason": {
-            "$ref": "#/components/schemas/SignificantDateHistoryReason"
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/SignificantDateHistoryReason"
+              }
+            ]
           },
           "user": {
-            "$ref": "#/components/schemas/User"
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/User"
+              }
+            ]
           }
         }
       },
@@ -2962,57 +2972,17 @@
           }
         }
       },
-      "NoteDto": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-          "id": {
-            "$ref": "#/components/schemas/NoteId"
-          },
-          "body": {
-            "type": "string"
-          },
-          "projectId": {
-            "$ref": "#/components/schemas/ProjectId"
-          },
-          "userId": {
-            "$ref": "#/components/schemas/UserId"
-          },
-          "createdAt": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "updatedAt": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "taskIdentifier": {
-            "type": "string",
-            "nullable": true
-          },
-          "notableId": {
-            "type": "string",
-            "format": "guid",
-            "nullable": true
-          },
-          "notableType": {
-            "type": "string",
-            "nullable": true
-          },
-          "project": {
-            "$ref": "#/components/schemas/Project"
-          },
-          "user": {
-            "$ref": "#/components/schemas/User"
-          }
-        }
-      },
       "SignificantDateHistoryDto": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
           "id": {
-            "$ref": "#/components/schemas/SignificantDateHistoryId"
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/SignificantDateHistoryId"
+              }
+            ]
           },
           "revisedDate": {
             "type": "string",
@@ -3049,10 +3019,20 @@
             ]
           },
           "reason": {
-            "$ref": "#/components/schemas/SignificantDateHistoryReasonDto"
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/SignificantDateHistoryReasonDto"
+              }
+            ]
           },
           "user": {
-            "$ref": "#/components/schemas/User"
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/User"
+              }
+            ]
           }
         }
       },
@@ -3061,7 +3041,12 @@
         "additionalProperties": false,
         "properties": {
           "id": {
-            "$ref": "#/components/schemas/SignificantDateHistoryReasonId"
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/SignificantDateHistoryReasonId"
+              }
+            ]
           },
           "createdAt": {
             "type": "string",

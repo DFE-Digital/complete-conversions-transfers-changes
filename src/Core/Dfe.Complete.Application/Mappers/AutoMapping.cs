@@ -13,7 +13,6 @@ namespace Dfe.Complete.Application.Common.Mappers
 			CreateMap<User, UserDto>();
 			CreateMap<SignificantDateHistory, SignificantDateHistoryDto>();
 			CreateMap<SignificantDateHistoryReason, SignificantDateHistoryReasonDto>();
-			CreateMap<Note, NoteDto>();
         }
 	}
 }
