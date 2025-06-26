@@ -1,7 +1,7 @@
 import { ProjectBuilder } from "cypress/api/projectBuilder";
 import { Logger } from "cypress/common/logger";
 import projectDetailsPage from "cypress/pages/projects/projectDetails/projectDetailsPage";
-import { cypressUser, rdoLondonUser, rdoTeamLeaderUser } from "cypress/constants/cypressConstants";
+import { cypressUser, rdoLondonUser } from "cypress/constants/cypressConstants";
 import internalContactsPage from "cypress/pages/projects/projectDetails/internalContactsPage";
 import projectRemover from "cypress/api/projectRemover";
 import projectApi from "cypress/api/projectApi";
@@ -11,7 +11,7 @@ const project = ProjectBuilder.createConversionFormAMatProjectRequest();
 let projectId: string;
 const schoolName = "Whitchurch Primary School";
 
-describe.skip("Internal contacts page: ", () => {
+describe("Internal contacts page: ", () => {
     before(() => {
         projectRemover.removeProjectIfItExists(`${project.urn.value}`);
         projectApi.createMatConversionProject(project).then((response) => (projectId = response.value));
@@ -129,8 +129,8 @@ describe.skip("Internal contacts page: ", () => {
             .containsSuccessBannerWithMessage("Project has been updated successfully")
             .row(3)
             .summaryShows("Added by")
-            .hasValue(rdoTeamLeaderUser.username)
-            .hasEmailLink(rdoTeamLeaderUser.email);
+            .hasValue(rdoLondonUser.username)
+            .hasEmailLink(rdoLondonUser.email);
     });
 
     it("Check accessibility across pages", () => {
