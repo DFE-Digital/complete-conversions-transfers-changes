@@ -374,7 +374,7 @@ namespace Dfe.Complete.Api.Controllers
         /// <summary>
         /// Create a new Note for a Project
         /// </summary>
-        /// <param name="request"></param>
+        /// <param name="request">The request.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
         [Authorize(Policy = "CanReadWrite")]
         [HttpPost]
