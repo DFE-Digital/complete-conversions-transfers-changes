@@ -1,0 +1,15 @@
+﻿@page "/projects/{projectId}/external-contacts"
+@model Dfe.Complete.Pages.Projects.ExternalContacts.ExternalContacts
+
+@{
+  Layout = "_ProjectLayout";
+  ViewData["Title"] = Model.Establishment.Name;
+}
+
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-three-quarters" id="projectInternalContacts">
+    <h2 class="govuk-heading-l">External Contacts</h2>
+    <govuk-button-link href="#">Add contact</govuk-button-link>
+    
+  </div>
+</div>
