@@ -394,7 +394,7 @@ namespace Dfe.Complete.Api.Controllers
         /// <summary>
         /// Update a Note for a Project
         /// </summary>
-        /// <param name="request"></param>
+        /// <param name="request">The request.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
         [Authorize(Policy = "CanReadWriteUpdate")]
         [HttpPut]
