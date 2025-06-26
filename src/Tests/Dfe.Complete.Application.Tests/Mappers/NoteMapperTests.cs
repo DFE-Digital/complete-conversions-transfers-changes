@@ -23,7 +23,7 @@ namespace Dfe.Complete.Application.Tests.Mappers
 
         [Theory]
         [CustomAutoData(typeof(DateOnlyCustomization), typeof(IgnoreVirtualMembersCustomisation))]
-        public async Task Map_NoteToNoteDto_ShouldMapAllPropertiesCorrectly(Domain.Entities.Note note)
+        public void Map_NoteToNoteDto_ShouldMapAllPropertiesCorrectly(Domain.Entities.Note note)
         {
             // Act
             var noteDto = _mapper.Map<NoteDto>(note);

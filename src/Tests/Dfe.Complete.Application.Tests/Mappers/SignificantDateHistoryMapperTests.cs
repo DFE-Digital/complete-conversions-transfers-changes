@@ -23,7 +23,7 @@ namespace Dfe.Complete.Application.Tests.Mappers
 
         [Theory]
         [CustomAutoData(typeof(DateOnlyCustomization), typeof(IgnoreVirtualMembersCustomisation))]
-        public async Task Map_SignificantDateHistoryToSignificantDateHistoryDto_ShouldMapAllPropertiesCorrectly(Domain.Entities.SignificantDateHistory significantDateHistory)
+        public void Map_SignificantDateHistoryToSignificantDateHistoryDto_ShouldMapAllPropertiesCorrectly(Domain.Entities.SignificantDateHistory significantDateHistory)
         {
             // Act
             var significantDateHistoryDto = _mapper.Map<SignificantDateHistoryDto>(significantDateHistory);
