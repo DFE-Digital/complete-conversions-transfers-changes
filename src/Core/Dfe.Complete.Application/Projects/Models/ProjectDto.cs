@@ -85,7 +85,8 @@ namespace Dfe.Complete.Application.Projects.Models
         public User? Caseworker { get; set; }
 
         public ICollection<Contact> Contacts { get; set; } = new List<Contact>();
-
+        
+        public  ICollection<SignificantDateHistoryDto> SignificantDateHistories { get; set; } = new List<SignificantDateHistoryDto>();
         public ICollection<Note> Notes { get; set; } = [];
 
         public User RegionalDeliveryOfficer { get; set; } = default!;

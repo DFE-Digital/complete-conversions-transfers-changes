@@ -23,6 +23,7 @@ Security in case of vulnerabilities.
 ## Unreleased  
 
 ### Added
+- New route `/projects/{projectId}/date-history`
 
 ### Changed  
 
