@@ -6,6 +6,7 @@ export const macclesfieldTrust = {
     ukprn: 10058689,
     companiesHouseNumber: "07597883",
     address: "Macclesfield",
+    groupReferenceNumber: "GRP_07597883",
 };
 export const dimensionsTrust = {
     name: "5 Dimensions Trust",
@@ -13,6 +14,7 @@ export const dimensionsTrust = {
     ukprn: 10058682,
     companiesHouseNumber: "07595434",
     address: "Milton Keynes",
+    groupReferenceNumber: "GRP_12345670",
 };
 export const testTrust = {
     name: "Test Trust",

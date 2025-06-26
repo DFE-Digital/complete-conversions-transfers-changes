@@ -101,7 +101,7 @@ namespace Dfe.Complete.Pages.Projects.Transfer
         [BindProperty] public string? HandoverComments { get; set; }
 
 
-        public async Task<IActionResult> OnGet()
+        public IActionResult OnGet()
         {
             return Page();
         }
@@ -146,8 +146,8 @@ namespace Dfe.Complete.Pages.Projects.Transfer
                 var createResponse = await sender.Send(createProjectCommand);
 
                 var projectId = createResponse.Value;
-
-                return Redirect($"/transfer-projects/{projectId}/tasks");
+                
+                return Redirect($"/projects/{projectId}/created");
             }
             catch (NotFoundException notFoundException)
             {
