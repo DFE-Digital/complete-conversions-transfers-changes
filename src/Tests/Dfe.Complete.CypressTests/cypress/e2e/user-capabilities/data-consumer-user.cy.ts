@@ -2,11 +2,11 @@ import { beforeEach } from "mocha";
 import {
     shouldBeAbleToViewAndDownloadCsvReportsFromTheExportSection,
     shouldBeAbleToViewMultipleMonthsOfProjects,
-    shouldNotBeAbleToBeAssignedAProject,
     shouldNotBeAbleToCreateAProject,
     shouldNotHaveAccessToViewAndEditUsers,
-    shouldNotHaveAccessToViewHandedOverProjects, shouldNotHaveAccessToViewYourProjectsSections,
-    shouldNotHaveAccessToViewYourTeamProjectsSections
+    shouldNotHaveAccessToViewHandedOverProjects,
+    shouldNotHaveAccessToViewYourProjectsSections,
+    shouldNotHaveAccessToViewYourTeamProjectsSections,
 } from "cypress/support/reusableTests";
 import { dataConsumerUser } from "cypress/constants/cypressConstants";
 import navBar from "cypress/pages/navBar";
@@ -66,11 +66,6 @@ describe("Capabilities and permissions of the data consumer user", () => {
 
     it("Should NOT be able to create a project", () => {
         shouldNotBeAbleToCreateAProject();
-    });
-
-    it.skip("Should NOT be able to be assigned a project", () => {
-        // not implemented
-        shouldNotBeAbleToBeAssignedAProject();
     });
 
     it.skip("Should NOT be able to soft delete projects", () => {

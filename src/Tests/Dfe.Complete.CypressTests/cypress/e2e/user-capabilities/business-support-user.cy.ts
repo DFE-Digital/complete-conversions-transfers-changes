@@ -2,12 +2,11 @@ import { beforeEach } from "mocha";
 import {
     checkAccessibilityAcrossPages,
     shouldBeAbleToViewAndDownloadCsvReportsFromTheExportSection,
-    shouldNotBeAbleToBeAssignedAProject,
     shouldNotBeAbleToCreateAProject,
     shouldNotHaveAccessToViewAndEditUsers,
     shouldNotHaveAccessToViewHandedOverProjects,
     shouldNotHaveAccessToViewYourProjectsSections,
-    shouldNotHaveAccessToViewYourTeamProjectsSections
+    shouldNotHaveAccessToViewYourTeamProjectsSections,
 } from "cypress/support/reusableTests";
 import { businessSupportUser } from "cypress/constants/cypressConstants";
 import navBar from "cypress/pages/navBar";
@@ -112,11 +111,6 @@ describe("Capabilities and permissions of the business support user", () => {
 
     it("Should NOT be able to create a project", () => {
         shouldNotBeAbleToCreateAProject();
-    });
-
-    it.skip("Should NOT be able to be assigned a project", () => {
-        // not implemented
-        shouldNotBeAbleToBeAssignedAProject();
     });
 
     it.skip("Should NOT be able to soft delete projects", () => {

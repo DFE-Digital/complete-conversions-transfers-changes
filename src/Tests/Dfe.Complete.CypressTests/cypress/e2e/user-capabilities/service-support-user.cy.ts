@@ -2,9 +2,9 @@ import { beforeEach } from "mocha";
 import {
     shouldBeAbleToViewAndDownloadCsvReportsFromTheExportSection,
     shouldBeAbleToViewMultipleMonthsOfProjects,
-    shouldNotBeAbleToBeAssignedAProject,
-    shouldNotBeAbleToCreateAProject, shouldNotHaveAccessToViewYourProjectsSections,
-    shouldNotHaveAccessToViewYourTeamProjectsSections
+    shouldNotBeAbleToCreateAProject,
+    shouldNotHaveAccessToViewYourProjectsSections,
+    shouldNotHaveAccessToViewYourTeamProjectsSections,
 } from "cypress/support/reusableTests";
 import navBar from "cypress/pages/navBar";
 import { serviceSupportUser } from "cypress/constants/cypressConstants";
@@ -86,10 +86,5 @@ describe("Capabilities and permissions of the service support user", () => {
 
     it("Should NOT be able to create a project", () => {
         shouldNotBeAbleToCreateAProject();
-    });
-
-    it.skip("Should NOT be able to be assigned a project", () => {
-        // not implemented
-        shouldNotBeAbleToBeAssignedAProject();
     });
 });

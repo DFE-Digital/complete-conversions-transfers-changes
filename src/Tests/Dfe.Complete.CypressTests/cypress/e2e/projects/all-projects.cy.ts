@@ -50,7 +50,7 @@ describe("View all projects", () => {
     });
 
     it.skip("Should be able to view my team projects that are handed over", () => {
-        // not implemented
+        // not implemented 211995
         navBar.goToAllProjects();
         allProjects.filterProjects("Handover").containsHeading("Projects to handover");
     });
