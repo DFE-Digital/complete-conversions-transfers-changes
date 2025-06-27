@@ -28,8 +28,8 @@ public class UpdateRegionalDeliveryOfficerCommandHandlerTests
         var now = DateTime.UtcNow;
 
         var sourceProject = Domain.Entities.Project.CreateConversionProject(
-            new ProjectId(Guid.NewGuid()),
-            command.ProjectUrn,
+            command.ProjectId,
+            new Urn(123456),
             now,
             now,
             Domain.Enums.TaskType.Conversion,
@@ -84,8 +84,8 @@ public class UpdateRegionalDeliveryOfficerCommandHandlerTests
         var now = DateTime.UtcNow;
 
         var sourceProject = Domain.Entities.Project.CreateConversionProject(
-            new ProjectId(Guid.NewGuid()),
-            command.ProjectUrn,
+            command.ProjectId,
+            new Urn(123456),
             now,
             now,
             Domain.Enums.TaskType.Conversion,

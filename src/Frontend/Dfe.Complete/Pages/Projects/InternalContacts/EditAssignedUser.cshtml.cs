@@ -59,7 +59,7 @@ public class EditAssignedUser(ISender sender, ErrorService errorService, ILogger
         {
             try
             {
-                var updateRequest = new UpdateAssignedUserCommand(Project.Urn, assignedResult.Value.Id);
+                var updateRequest = new UpdateAssignedUserCommand(Project.Id, assignedResult.Value.Id);
                 await _sender.Send(updateRequest);
                 TempData.SetNotification(NotificationType.Success, "Success", "Project has been assigned successfully");
                 return Redirect(FormatRouteWithProjectId(RouteConstants.ProjectInternalContacts));

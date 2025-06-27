@@ -7,7 +7,7 @@ using MediatR;
 namespace Dfe.Complete.Application.Projects.Commands.UpdateProject;
 
 public record UpdateAssignedUserCommand(
-    Urn ProjectUrn,
+    ProjectId ProjectId,
     UserId AssignedUser
     ) : IRequest;
 
@@ -18,7 +18,7 @@ public class UpdateAssignedUser(
 {
     public async Task Handle(UpdateAssignedUserCommand request, CancellationToken cancellationToken)
     {
-        var project = await projectRepository.FindAsync(p => p.Urn == request.ProjectUrn, cancellationToken);
+        var project = await projectRepository.FindAsync(p => p.Id == request.ProjectId, cancellationToken);
         var user = await userRepository.GetAsync(request.AssignedUser, cancellationToken);
         if (user is null || user.AssignToProject is false)
         {
