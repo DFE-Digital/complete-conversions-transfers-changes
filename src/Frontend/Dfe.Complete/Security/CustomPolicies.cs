@@ -40,5 +40,15 @@ public static class CustomPolicies
                     (user.IsInRole(UserRolesConstants.RegionalCaseworkServices) || user.IsInRole(UserRolesConstants.RegionalDeliveryOfficer));
             });
         },
+        [UserPolicyConstants.CanEditAddedByUser] = builder =>
+        {
+            builder.RequireAuthenticatedUser();
+            builder.RequireAssertion(context =>
+            {
+                var user = context.User;
+                return
+                    user.IsInRole(UserRolesConstants.ManageTeam) || user.IsInRole(UserRolesConstants.ServiceSupport);
+            });
+        },
     };
 }

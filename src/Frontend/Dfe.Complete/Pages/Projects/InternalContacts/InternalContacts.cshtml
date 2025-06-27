@@ -1,11 +1,16 @@
 ﻿@page "/projects/{projectId}/internal-contacts"
 @using Dfe.Complete.Application.Mappers
 @using Dfe.Complete.Constants
+@using Dfe.Complete.Domain.Constants
+@using GovUk.Frontend.AspNetCore.TagHelpers
+@using Microsoft.AspNetCore.Authorization
 @model Dfe.Complete.Pages.Projects.InternalContacts.InternalContacts
+@inject IAuthorizationService Authorization
 
 @{
   Layout = "_ProjectLayout";
   ViewData["Title"] = Model.Establishment.Name;
+  var canEditAddedByUser = await Authorization.AuthorizeAsync(User, policyName: UserPolicyConstants.CanEditAddedByUser);
 }
 
 <div class="govuk-grid-row">
@@ -52,7 +57,10 @@
           {
             <govuk-summary-list-row-action href="mailto:@Model.UserAddedBy.Email" visually-hidden-text="Assigned to team">Email</govuk-summary-list-row-action>
           }
-          <govuk-summary-list-row-action href="@Model.FormatRouteWithProjectId(RouteConstants.ProjectInternalContactsEditAddedByUser)" visually-hidden-text="Assigned to team">Change</govuk-summary-list-row-action>
+          @if (canEditAddedByUser.Succeeded)
+          {
+            <govuk-summary-list-row-action asp-policy="@UserPolicyConstants.CanEditAddedByUser" href="@Model.FormatRouteWithProjectId(RouteConstants.ProjectInternalContactsEditAddedByUser)" visually-hidden-text="Assigned to team">Change</govuk-summary-list-row-action>
+          }
         </govuk-summary-list-row-actions>
       </govuk-summary-list-row>
     </govuk-summary-list>
