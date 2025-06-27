@@ -35,11 +35,14 @@
 
         public const string SelectCreateProjectType = "/projects/new";
         
-        
-        
         public const string ProjectViewNotes = Project + "/notes";
         public const string ProjectAddNote = ProjectViewNotes + "/edit";
         public const string ProjectEditNote = ProjectViewNotes + "/{1}/edit";
+
+        public const string ProjectInternalContacts = Project + "/internal-contacts";
+        public const string ProjectInternalContactsEditAssignedUser = ProjectInternalContacts + "/assigned-user/edit";
+        public const string ProjectInternalContactsEditAddedByUser = ProjectInternalContacts + "/added-by-user/edit";
+        public const string ProjectInternalContactsEditAssignedTeam = ProjectInternalContacts + "/team/edit";
         
         public const string ProjectTaskList = Project + "/tasks";
         

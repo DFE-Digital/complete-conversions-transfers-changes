@@ -41,13 +41,12 @@ describe("Testing cookie preferences", () => {
             .saveChangesIsClickable();
     });
 
-    it.skip("Should be able to view then accept cookies", () => {
-        // bug: 201914
+    it("Should be able to view then accept cookies", () => {
         cookies.viewCookies();
 
         cookiesPage.shouldBeOnCookiesPage().selectAcceptAnalyticsCookies().saveChanges();
 
-        cookies.consentCookieIsSetToTrue().cookieBannerIsNotVisible(); // This is failing, banner is still visible
+        cookies.consentCookieIsSetToTrue().cookieBannerIsNotVisible();
 
         cookiesPage.goBackToThePreviousPage();
 
