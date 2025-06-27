@@ -53,7 +53,7 @@ public class EditAddedByUser(ISender sender, ErrorService errorService, ILogger<
         
         if (addedBySearchResult is { IsSuccess: true, Value.AssignToProject: true })
         {
-            var updateRequest = new UpdateRegionalDeliveryOfficerCommand(Project.Urn, addedBySearchResult.Value.Id);
+            var updateRequest = new UpdateRegionalDeliveryOfficerCommand(Project.Id, addedBySearchResult.Value.Id);
             await _sender.Send(updateRequest);
             TempData.SetNotification(NotificationType.Success, "Success", "Project has been updated successfully");
             return Redirect(FormatRouteWithProjectId(RouteConstants.ProjectInternalContacts));
