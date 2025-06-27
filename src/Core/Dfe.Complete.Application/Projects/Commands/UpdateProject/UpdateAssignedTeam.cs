@@ -7,9 +7,9 @@ using MediatR;
 namespace Dfe.Complete.Application.Projects.Commands.UpdateProject;
 
 public record UpdateAssignedTeamCommand(
-    Urn ProjectUrn,
+    ProjectId ProjectId,
     ProjectTeam? AssignedTeam
-    ) : IRequest;
+) : IRequest;
 
 public class UpdateAssignedTeam(
     ICompleteRepository<Project> projectRepository)
@@ -17,7 +17,7 @@ public class UpdateAssignedTeam(
 {
     public async Task Handle(UpdateAssignedTeamCommand request, CancellationToken cancellationToken)
     {
-        var project = await projectRepository.FindAsync(p => p.Urn == request.ProjectUrn, cancellationToken);
+        var project = await projectRepository.FindAsync(p => p.Id == request.ProjectId, cancellationToken);
         project.Team = request.AssignedTeam;
         await projectRepository.UpdateAsync(project, cancellationToken);
     }
