@@ -9,10 +9,10 @@ namespace Dfe.Complete.Application.Projects.Commands.UpdateProject;
 public record UpdateAssignedUserCommand(
     ProjectId ProjectId,
     UserId AssignedUser
-    ) : IRequest;
+) : IRequest;
 
 public class UpdateAssignedUser(
-    ICompleteRepository<Project> projectRepository, 
+    ICompleteRepository<Project> projectRepository,
     ICompleteRepository<User> userRepository)
     : IRequestHandler<UpdateAssignedUserCommand>
 {
@@ -24,6 +24,7 @@ public class UpdateAssignedUser(
         {
             throw new NotFoundException("Email is not assignable", "email");
         }
+
         project.AssignedAt = DateTime.UtcNow;
         project.AssignedToId = request.AssignedUser;
         await projectRepository.UpdateAsync(project, cancellationToken);

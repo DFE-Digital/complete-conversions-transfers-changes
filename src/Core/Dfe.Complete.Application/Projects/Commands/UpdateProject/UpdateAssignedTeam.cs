@@ -9,7 +9,7 @@ namespace Dfe.Complete.Application.Projects.Commands.UpdateProject;
 public record UpdateAssignedTeamCommand(
     ProjectId ProjectId,
     ProjectTeam? AssignedTeam
-    ) : IRequest;
+) : IRequest;
 
 public class UpdateAssignedTeam(
     ICompleteRepository<Project> projectRepository)
