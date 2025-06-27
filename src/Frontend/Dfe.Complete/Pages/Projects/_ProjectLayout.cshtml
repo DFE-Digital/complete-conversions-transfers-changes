@@ -75,7 +75,7 @@ Model.CurrentUserTeam.TeamIsServiceSupport())
       <div class="govuk-summary-list__row">
         <dt class="govuk-summary-list__key">@Model.Project.Type.ToDisplayDescription() date</dt>
         <dd class="govuk-summary-list__value">
-          @Model.Project.SignificantDate
+          @Model.Project.SignificantDate.ToDateString()
           @if (Model.Project.SignificantDateProvisional is true)
           {
             <strong class="govuk-tag govuk-tag--grey">provisional</strong>
