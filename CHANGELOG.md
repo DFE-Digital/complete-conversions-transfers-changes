@@ -24,10 +24,12 @@ Security in case of vulnerabilities.
 
 ### Added  
 - Internal contacts page and edit pages `/projects/{projectId}/internal-contacts`
+- app settings for test environment 
 
 ### Changed  
 
 ### Fixed
+- footer links for production
 
 See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-06-24.451...main) for everything awaiting release
 
