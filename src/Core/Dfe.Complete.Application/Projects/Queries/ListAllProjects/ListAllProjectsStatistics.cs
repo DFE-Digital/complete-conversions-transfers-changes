@@ -57,10 +57,6 @@ namespace Dfe.Complete.Application.Projects.Queries.ListAllProjects
                 return Result<ListAllProjectsStatisticsModel>.Failure(e.Message);
             }
         }
-        private static List<ProjectTeam> GetRegionalTeams(List<ProjectTeam> usersTeams) => Enum.GetValues(typeof(ProjectTeam))
-                .Cast<ProjectTeam>()
-                .Where(t => !usersTeams.Contains(t))
-                .ToList();
 
         private static ProjectDetailsModel GetProjectsStats(List<Project> projects, bool includeDaoRevokedCount = true) => new(
                 projects.Count(IsInProgress),
@@ -107,8 +103,8 @@ namespace Dfe.Complete.Application.Projects.Queries.ListAllProjects
 
         private static NewProjectsInThisMonth GetNewProjectsThisMonth(List<Project> conversions, List<Project> transfers)
         {
-            var now = DateTime.UtcNow;
-            var monthStart = new DateTime(now.Year, now.Month, 1);
+            var now = DateTime.UtcNow; 
+            var monthStart = new DateTime(now.Year, now.Month, 1, 0, 0, 0, DateTimeKind.Utc); 
             var monthEnd = monthStart.AddMonths(1).AddDays(-1);
             var monthYear = $"{now:MMMM} {now.Year}";
 
