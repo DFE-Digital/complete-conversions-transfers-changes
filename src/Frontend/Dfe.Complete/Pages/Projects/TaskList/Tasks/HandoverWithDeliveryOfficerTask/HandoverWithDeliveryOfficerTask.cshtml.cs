@@ -1,11 +1,9 @@
-using Dfe.Complete.Constants;
-using Dfe.Complete.Models;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.HandoverWithDeliveryOfficerTask
 {
-    public class HandoverWithDeliveryOfficerTaskModel(ISender sender) : BaseProjectPageModel(sender)
+    public class HandoverWithDeliveryOfficerTaskModel(ISender sender) : ProjectTaskBaseModel(sender)
     {
         [BindProperty(Name = "not-applicable")]
         public bool? NotApplicable { get; set; }
@@ -18,10 +16,5 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.HandoverWithDeliveryOfficer
 
         [BindProperty(Name = "attend-handover-meeting")]
         public bool? AttendHandoverMeeting { get; set; }
-
-        public async Task<IActionResult> OnPost()
-        {
-            return Redirect(string.Format(RouteConstants.ProjectHandoverWithDeliveryOfficerTask, ProjectId));
-        }
     }
 }

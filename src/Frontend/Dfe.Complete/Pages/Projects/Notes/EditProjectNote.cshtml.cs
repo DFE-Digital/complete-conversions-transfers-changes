@@ -24,17 +24,8 @@ public class EditProjectNoteModel(ISender sender, ErrorService errorService) : P
     [DisplayName("note")]
     public required string NoteText { get; set; }
 
-    [BindProperty(SupportsGet = true, Name = "task_identifier")]
-    public string? TaskIdentifier { get; set; }
-
     public async override Task<IActionResult> OnGetAsync()
     {
-        if (TaskIdentifier != null)
-        {
-            var validTaskIdentifier = EnumExtensions.FromDescriptionValue<NoteTaskIdentifier>(TaskIdentifier);
-            if (validTaskIdentifier == null)
-                return NotFound();
-        }
 
         var baseResult = await base.OnGetAsync();
         if (baseResult is not PageResult) return baseResult;
@@ -67,7 +58,7 @@ public class EditProjectNoteModel(ISender sender, ErrorService errorService) : P
 
         var response = await Sender.Send(new UpdateNoteCommand(new NoteId(NoteId), NoteText));
 
-        if (!response.IsSuccess)
+        if (!response.IsSuccess || response.Value == null)
             throw new ApplicationException($"An error occurred when updating note {NoteId} for project {ProjectId}");
 
         TempData.SetNotification(
@@ -76,11 +67,7 @@ public class EditProjectNoteModel(ISender sender, ErrorService errorService) : P
             "Your note has been edited"
         );
 
-        NoteTaskIdentifier? noteTaskIdentifier = EnumExtensions.FromDescriptionValue<NoteTaskIdentifier>(TaskIdentifier);
-
-        if (noteTaskIdentifier != null)
-            return Redirect(string.Format(RouteConstants.ProjectTaskListDynamic, ProjectId, TaskIdentifier));
-        return Redirect(string.Format(RouteConstants.ProjectViewNotes, ProjectId));
+        return Redirect(GetReturnUrl(response.Value.TaskIdentifier));
     }
 }
 

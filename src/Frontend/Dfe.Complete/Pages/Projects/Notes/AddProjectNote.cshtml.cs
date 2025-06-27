@@ -80,8 +80,6 @@ public class AddProjectNoteModel(ISender sender, ErrorService errorService) : Pr
             "Your note has been added"
         );
 
-        if (noteTaskIdentifier != null)
-            return Redirect(string.Format(RouteConstants.ProjectTaskListDynamic, ProjectId, TaskIdentifier));
-        return Redirect(string.Format(RouteConstants.ProjectViewNotes, ProjectId));
+        return Redirect(GetReturnUrl(TaskIdentifier));
     }
 }
