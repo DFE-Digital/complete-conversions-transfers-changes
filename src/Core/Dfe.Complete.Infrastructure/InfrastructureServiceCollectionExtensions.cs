@@ -1,6 +1,7 @@
 using Dfe.Complete.Application.Common.Interfaces;
 using Dfe.Complete.Application.Projects.Interfaces;
 using Dfe.Complete.Application.Projects.Interfaces.CsvExport;
+using Dfe.Complete.Application.Users.Interfaces;
 using Dfe.Complete.Domain.Interfaces.Repositories;
 using Dfe.Complete.Infrastructure.Database;
 using Dfe.Complete.Infrastructure.QueryServices;
@@ -33,6 +34,7 @@ namespace Dfe.Complete.Infrastructure
             //Queries
             services.AddScoped<IListAllProjectsQueryService, ListAllProjectsQueryService>();
             services.AddScoped<IProjectsQueryBuilder, ProjectsQueryBuilder>();
+            services.AddScoped<IUsersQueryBuilder, UsersQueryBuilder>();
             services.AddScoped<IConversionCsvQueryService, ConversionCsvQueryService>();
             services.AddScoped<IProjectReadRepository, ProjectReadRepository>();
 
