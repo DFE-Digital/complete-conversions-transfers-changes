@@ -7,7 +7,7 @@ using MediatR;
 namespace Dfe.Complete.Application.Projects.Commands.UpdateProject;
 
 public record UpdateRegionalDeliveryOfficerCommand(
-    Urn ProjectUrn,
+    ProjectId ProjectId,
     UserId RegionalDeliveryOfficer
     ) : IRequest;
 
@@ -18,7 +18,7 @@ public class UpdateRegionalDeliveryOfficer(
 {
     public async Task Handle(UpdateRegionalDeliveryOfficerCommand request, CancellationToken cancellationToken)
     {
-        var project = await projectRepository.FindAsync(p => p.Urn == request.ProjectUrn, cancellationToken);
+        var project = await projectRepository.FindAsync(p => p.Id == request.ProjectId, cancellationToken);
         var user = await userRepository.GetAsync(request.RegionalDeliveryOfficer, cancellationToken);
         if (user is null || user.AssignToProject is false)
         {
