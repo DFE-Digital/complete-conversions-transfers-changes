@@ -11,3 +11,9 @@ public enum OrderProjectByField
     CreatedAt,
     SignificantDate
 }
+
+public enum OrderUserByField
+{
+    CreatedAt,
+    Team
+}

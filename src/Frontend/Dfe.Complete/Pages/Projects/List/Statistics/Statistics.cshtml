@@ -3,6 +3,10 @@
 @{
     Layout = "List/Statistics/_StatisticsLayout";
     ViewData["Title"] = "Statistics";
+
+    @functions {
+        string DisplayValue(int? value) => value.HasValue && value.Value != 0 ? value.ToStringOrDefault() : "NA";
+    }
 }
 @section PageHeading
 {
@@ -62,31 +66,31 @@
                             <th class="govuk-table__header govuk-table__header--numeric" scope="col">Transfers</th>
                         </tr>
                     </thead>
-                    <tbody class="govuk-table__body">
+                    <tbody class="govuk-table__body"> 
                         <tr class="govuk-table__row" id="in_progress">
                             <th scope="row" class="govuk-table__cell">In progress projects</th>
-                            <td class="govuk-table__cell govuk-table__cell--numeric">102</td>
-                            <td class="govuk-table__cell govuk-table__cell--numeric">27</td>
+                            <td class="govuk-table__cell govuk-table__cell--numeric">@DisplayValue(Model.Statistics.OveraAllProjects.Conversions.InProgressProjects)</td>
+                            <td class="govuk-table__cell govuk-table__cell--numeric">@DisplayValue(Model.Statistics.OveraAllProjects.Transfers.InProgressProjects)</td>
                         </tr>
                         <tr class="govuk-table__row" id="completed">
                             <th scope="row" class="govuk-table__cell">Completed projects</th>
-                            <td class="govuk-table__cell govuk-table__cell--numeric">22</td>
-                            <td class="govuk-table__cell govuk-table__cell--numeric">4</td>
+                            <td class="govuk-table__cell govuk-table__cell--numeric">@DisplayValue(Model.Statistics.OveraAllProjects.Conversions.CompletedProjects)</td>
+                            <td class="govuk-table__cell govuk-table__cell--numeric">@DisplayValue(Model.Statistics.OveraAllProjects.Transfers.CompletedProjects)</td>
                         </tr>
                         <tr class="govuk-table__row" id="unassigned">
                             <th scope="row" class="govuk-table__cell">Unassigned projects</th>
-                            <td class="govuk-table__cell govuk-table__cell--numeric">39</td>
-                            <td class="govuk-table__cell govuk-table__cell--numeric">8</td>
+                            <td class="govuk-table__cell govuk-table__cell--numeric">@DisplayValue(Model.Statistics.OveraAllProjects.Conversions.UnassignedProjects)</td>
+                            <td class="govuk-table__cell govuk-table__cell--numeric">@DisplayValue(Model.Statistics.OveraAllProjects.Transfers.UnassignedProjects)</td>
                         </tr>
                         <tr class="govuk-table__row" id="dao_revoked">
                             <th scope="row" class="govuk-table__cell">DAO revoked projects</th>
-                            <td class="govuk-table__cell govuk-table__cell--numeric">13</td>
-                            <td class="govuk-table__cell govuk-table__cell--numeric">NA</td>
+                            <td class="govuk-table__cell govuk-table__cell--numeric">@DisplayValue(Model.Statistics.OveraAllProjects.Conversions.DaoRevokedProjects)</td>
+                            <td class="govuk-table__cell govuk-table__cell--numeric">@DisplayValue(Model.Statistics.OveraAllProjects.Transfers.DaoRevokedProjects)</td>
                         </tr>
                         <tr class="govuk-table__row" id="all_projects">
                             <th scope="row" class="govuk-table__cell">All projects</th>
-                            <td class="govuk-table__cell govuk-table__cell--numeric">175</td>
-                            <td class="govuk-table__cell govuk-table__cell--numeric">39</td>
+                            <td class="govuk-table__cell govuk-table__cell--numeric">@DisplayValue(Model.Statistics.OveraAllProjects.Conversions.TotalProjects)</td>
+                            <td class="govuk-table__cell govuk-table__cell--numeric">@DisplayValue(Model.Statistics.OveraAllProjects.Transfers.TotalProjects)</td>
                         </tr>
                     </tbody>
                 </table>
@@ -107,23 +111,23 @@
                     <tbody class="govuk-table__body" id="conversion_projects">
                         <tr class="govuk-table__row" id="in_progress">
                             <th scope="row" class="govuk-table__cell">In progress projects</th>
-                            <td class="govuk-table__cell govuk-table__cell--numeric">17</td>
-                            <td class="govuk-table__cell govuk-table__cell--numeric">12</td>
+                            <td class="govuk-table__cell govuk-table__cell--numeric">@DisplayValue(Model.Statistics.RegionalCaseworkServicesProjects.Conversions.InProgressProjects)</td>
+                            <td class="govuk-table__cell govuk-table__cell--numeric">@DisplayValue(Model.Statistics.RegionalCaseworkServicesProjects.Transfers.InProgressProjects)</td>
                         </tr>
                         <tr class="govuk-table__row" id="completed">
                             <th scope="row" class="govuk-table__cell">Completed projects</th>
-                            <td class="govuk-table__cell govuk-table__cell--numeric">9</td>
-                            <td class="govuk-table__cell govuk-table__cell--numeric">2</td>
+                            <td class="govuk-table__cell govuk-table__cell--numeric">@DisplayValue(Model.Statistics.RegionalCaseworkServicesProjects.Conversions.CompletedProjects)</td>
+                            <td class="govuk-table__cell govuk-table__cell--numeric">@DisplayValue(Model.Statistics.RegionalCaseworkServicesProjects.Transfers.CompletedProjects)</td>
                         </tr>
                         <tr class="govuk-table__row" id="unassigned">
                             <th scope="row" class="govuk-table__cell">Unassigned projects</th>
-                            <td class="govuk-table__cell govuk-table__cell--numeric">30</td>
-                            <td class="govuk-table__cell govuk-table__cell--numeric">6</td>
+                            <td class="govuk-table__cell govuk-table__cell--numeric">@DisplayValue(Model.Statistics.RegionalCaseworkServicesProjects.Conversions.UnassignedProjects)</td>
+                            <td class="govuk-table__cell govuk-table__cell--numeric">@DisplayValue(Model.Statistics.RegionalCaseworkServicesProjects.Transfers.UnassignedProjects)</td>
                         </tr>
                         <tr class="govuk-table__row" id="all_projects">
                             <th scope="row" class="govuk-table__cell">All projects with Regional casework services</th>
-                            <td class="govuk-table__cell govuk-table__cell--numeric">56</td>
-                            <td class="govuk-table__cell govuk-table__cell--numeric">20</td>
+                            <td class="govuk-table__cell govuk-table__cell--numeric">@DisplayValue(Model.Statistics.RegionalCaseworkServicesProjects.Conversions.TotalProjects)</td>
+                            <td class="govuk-table__cell govuk-table__cell--numeric">@DisplayValue(Model.Statistics.RegionalCaseworkServicesProjects.Transfers.TotalProjects)</td>
                         </tr>
                     </tbody>
                 </table>
@@ -144,24 +148,24 @@
                     <tbody>
                         <tr class="govuk-table__row" id="in_progress">
                             <th scope="row" class="govuk-table__cell">In progress projects</th>
-                            <td class="govuk-table__cell govuk-table__cell--numeric">85</td>
-                            <td class="govuk-table__cell govuk-table__cell--numeric">15</td>
+                            <td class="govuk-table__cell govuk-table__cell--numeric">@Model.Statistics.NotRegionalCaseworkServicesProjects.Conversions.InProgressProjects</td>
+                            <td class="govuk-table__cell govuk-table__cell--numeric">@Model.Statistics.NotRegionalCaseworkServicesProjects.Transfers.InProgressProjects</td>
                         </tr>
                         <tr class="govuk-table__row" id="completed">
                             <th scope="row" class="govuk-table__cell">Completed projects</th>
-                            <td class="govuk-table__cell govuk-table__cell--numeric">13</td>
-                            <td class="govuk-table__cell govuk-table__cell--numeric">2</td>
+                            <td class="govuk-table__cell govuk-table__cell--numeric">@Model.Statistics.NotRegionalCaseworkServicesProjects.Conversions.CompletedProjects</td>
+                            <td class="govuk-table__cell govuk-table__cell--numeric">@Model.Statistics.NotRegionalCaseworkServicesProjects.Transfers.CompletedProjects</td>
                         </tr>
                         <tr class="govuk-table__row" id="unassigned">
                             <th scope="row" class="govuk-table__cell">Unassigned projects</th>
-                            <td class="govuk-table__cell govuk-table__cell--numeric">2</td>
-                            <td class="govuk-table__cell govuk-table__cell--numeric">0</td>
+                            <td class="govuk-table__cell govuk-table__cell--numeric">@Model.Statistics.NotRegionalCaseworkServicesProjects.Conversions.UnassignedProjects</td>
+                            <td class="govuk-table__cell govuk-table__cell--numeric">@Model.Statistics.NotRegionalCaseworkServicesProjects.Transfers.UnassignedProjects</td>
                         </tr>
                         <tr class="govuk-table__row" id="all_projects">
                             <th scope="row" class="govuk-table__cell">All projects not with Regional casework services</th>
-                            <td class="govuk-table__cell govuk-table__cell--numeric">112</td>
-                            <td class="govuk-table__cell govuk-table__cell--numeric">17</td>
-                        </tr>
+                            <td class="govuk-table__cell govuk-table__cell--numeric">@Model.Statistics.NotRegionalCaseworkServicesProjects.Conversions.TotalProjects</td>
+                            <td class="govuk-table__cell govuk-table__cell--numeric">@Model.Statistics.NotRegionalCaseworkServicesProjects.Transfers.TotalProjects</td>
+                        </tr> 
                     </tbody>
                 </table>
             </div>
@@ -181,69 +185,16 @@
                         </tr>
                     </thead>
                     <tbody class="govuk-table__body">
-                        <tr class="govuk-table__row" id="london">
-                            <th scope="row" class="govuk-table__cell">London</th>
-                            <td class="govuk-table__cell govuk-table__cell--numeric">17</td>
-                            <td class="govuk-table__cell govuk-table__cell--numeric">4</td>
-                            <td class="govuk-table__cell govuk-table__cell--numeric">7</td>
-                            <td class="govuk-table__cell govuk-table__cell--numeric">30</td>
-                        </tr>
-                        <tr class="govuk-table__row" id="south-east">
-                            <th scope="row" class="govuk-table__cell">South East</th>
-                            <td class="govuk-table__cell govuk-table__cell--numeric">6</td>
-                            <td class="govuk-table__cell govuk-table__cell--numeric">2</td>
-                            <td class="govuk-table__cell govuk-table__cell--numeric">2</td>
-                            <td class="govuk-table__cell govuk-table__cell--numeric">11</td>
-                        </tr>
-                        <tr class="govuk-table__row" id="yorkshire-and-the-humber">
-                            <th scope="row" class="govuk-table__cell">Yorkshire and the Humber</th>
-                            <td class="govuk-table__cell govuk-table__cell--numeric">8</td>
-                            <td class="govuk-table__cell govuk-table__cell--numeric">1</td>
-                            <td class="govuk-table__cell govuk-table__cell--numeric">6</td>
-                            <td class="govuk-table__cell govuk-table__cell--numeric">17</td>
-                        </tr>
-                        <tr class="govuk-table__row" id="north-west">
-                            <th scope="row" class="govuk-table__cell">North West</th>
-                            <td class="govuk-table__cell govuk-table__cell--numeric">12</td>
-                            <td class="govuk-table__cell govuk-table__cell--numeric">4</td>
-                            <td class="govuk-table__cell govuk-table__cell--numeric">4</td>
-                            <td class="govuk-table__cell govuk-table__cell--numeric">21</td>
-                        </tr>
-                        <tr class="govuk-table__row" id="east-of-england">
-                            <th scope="row" class="govuk-table__cell">East of England</th>
-                            <td class="govuk-table__cell govuk-table__cell--numeric">3</td>
-                            <td class="govuk-table__cell govuk-table__cell--numeric">3</td>
-                            <td class="govuk-table__cell govuk-table__cell--numeric">2</td>
-                            <td class="govuk-table__cell govuk-table__cell--numeric">9</td>
-                        </tr>
-                        <tr class="govuk-table__row" id="west-midlands">
-                            <th scope="row" class="govuk-table__cell">West Midlands</th>
-                            <td class="govuk-table__cell govuk-table__cell--numeric">34</td>
-                            <td class="govuk-table__cell govuk-table__cell--numeric">3</td>
-                            <td class="govuk-table__cell govuk-table__cell--numeric">14</td>
-                            <td class="govuk-table__cell govuk-table__cell--numeric">51</td>
-                        </tr>
-                        <tr class="govuk-table__row" id="north-east">
-                            <th scope="row" class="govuk-table__cell">North East</th>
-                            <td class="govuk-table__cell govuk-table__cell--numeric">1</td>
-                            <td class="govuk-table__cell govuk-table__cell--numeric">0</td>
-                            <td class="govuk-table__cell govuk-table__cell--numeric">2</td>
-                            <td class="govuk-table__cell govuk-table__cell--numeric">5</td>
-                        </tr>
-                        <tr class="govuk-table__row" id="south-west">
-                            <th scope="row" class="govuk-table__cell">South West</th>
-                            <td class="govuk-table__cell govuk-table__cell--numeric">20</td>
-                            <td class="govuk-table__cell govuk-table__cell--numeric">3</td>
-                            <td class="govuk-table__cell govuk-table__cell--numeric">0</td>
-                            <td class="govuk-table__cell govuk-table__cell--numeric">25</td>
-                        </tr>
-                        <tr class="govuk-table__row" id="east-midlands">
-                            <th scope="row" class="govuk-table__cell">East Midlands</th>
-                            <td class="govuk-table__cell govuk-table__cell--numeric">1</td>
-                            <td class="govuk-table__cell govuk-table__cell--numeric">2</td>
-                            <td class="govuk-table__cell govuk-table__cell--numeric">2</td>
-                            <td class="govuk-table__cell govuk-table__cell--numeric">6</td>
-                        </tr>
+                        @foreach (var region in Model.Statistics.ConversionsPerRegion)
+                        {
+                            <tr class="govuk-table__row" id="@region.RegionName.ToLower().Replace(" ", "-")">
+                                <th scope="row" class="govuk-table__cell">@region.RegionName</th>
+                                <td class="govuk-table__cell govuk-table__cell--numeric">@region.Details.InProgressProjects</td>
+                                <td class="govuk-table__cell govuk-table__cell--numeric">@region.Details.CompletedProjects</td>
+                                <td class="govuk-table__cell govuk-table__cell--numeric">@region.Details.UnassignedProjects</td>
+                                <td class="govuk-table__cell govuk-table__cell--numeric">@region.Details.TotalProjects</td>
+                            </tr>
+                        }
                     </tbody>
                 </table>
             </div>
@@ -263,69 +214,16 @@
                         </tr>
                     </thead>
                     <tbody class="govuk-table__body">
-                        <tr class="govuk-table__row" id="london">
-                            <th scope="row" class="govuk-table__cell">London</th>
-                            <td class="govuk-table__cell govuk-table__cell--numeric">2</td>
-                            <td class="govuk-table__cell govuk-table__cell--numeric">0</td>
-                            <td class="govuk-table__cell govuk-table__cell--numeric">3</td>
-                            <td class="govuk-table__cell govuk-table__cell--numeric">5</td>
-                        </tr>
-                        <tr class="govuk-table__row" id="south-east">
-                            <th scope="row" class="govuk-table__cell">South East</th>
-                            <td class="govuk-table__cell govuk-table__cell--numeric">3</td>
-                            <td class="govuk-table__cell govuk-table__cell--numeric">0</td>
-                            <td class="govuk-table__cell govuk-table__cell--numeric">0</td>
-                            <td class="govuk-table__cell govuk-table__cell--numeric">3</td>
-                        </tr>
-                        <tr class="govuk-table__row" id="yorkshire-and-the-humber">
-                            <th scope="row" class="govuk-table__cell">Yorkshire and the Humber</th>
-                            <td class="govuk-table__cell govuk-table__cell--numeric">3</td>
-                            <td class="govuk-table__cell govuk-table__cell--numeric">0</td>
-                            <td class="govuk-table__cell govuk-table__cell--numeric">2</td>
-                            <td class="govuk-table__cell govuk-table__cell--numeric">5</td>
-                        </tr>
-                        <tr class="govuk-table__row" id="north-west">
-                            <th scope="row" class="govuk-table__cell">North West</th>
-                            <td class="govuk-table__cell govuk-table__cell--numeric">6</td>
-                            <td class="govuk-table__cell govuk-table__cell--numeric">1</td>
-                            <td class="govuk-table__cell govuk-table__cell--numeric">0</td>
-                            <td class="govuk-table__cell govuk-table__cell--numeric">7</td>
-                        </tr>
-                        <tr class="govuk-table__row" id="east-of-england">
-                            <th scope="row" class="govuk-table__cell">East of England</th>
-                            <td class="govuk-table__cell govuk-table__cell--numeric">1</td>
-                            <td class="govuk-table__cell govuk-table__cell--numeric">1</td>
-                            <td class="govuk-table__cell govuk-table__cell--numeric">1</td>
-                            <td class="govuk-table__cell govuk-table__cell--numeric">3</td>
-                        </tr>
-                        <tr class="govuk-table__row" id="west-midlands">
-                            <th scope="row" class="govuk-table__cell">West Midlands</th>
-                            <td class="govuk-table__cell govuk-table__cell--numeric">7</td>
-                            <td class="govuk-table__cell govuk-table__cell--numeric">1</td>
-                            <td class="govuk-table__cell govuk-table__cell--numeric">1</td>
-                            <td class="govuk-table__cell govuk-table__cell--numeric">9</td>
-                        </tr>
-                        <tr class="govuk-table__row" id="north-east">
-                            <th scope="row" class="govuk-table__cell">North East</th>
-                            <td class="govuk-table__cell govuk-table__cell--numeric">2</td>
-                            <td class="govuk-table__cell govuk-table__cell--numeric">1</td>
-                            <td class="govuk-table__cell govuk-table__cell--numeric">0</td>
-                            <td class="govuk-table__cell govuk-table__cell--numeric">3</td>
-                        </tr>
-                        <tr class="govuk-table__row" id="south-west">
-                            <th scope="row" class="govuk-table__cell">South West</th>
-                            <td class="govuk-table__cell govuk-table__cell--numeric">2</td>
-                            <td class="govuk-table__cell govuk-table__cell--numeric">0</td>
-                            <td class="govuk-table__cell govuk-table__cell--numeric">1</td>
-                            <td class="govuk-table__cell govuk-table__cell--numeric">3</td>
-                        </tr>
-                        <tr class="govuk-table__row" id="east-midlands">
-                            <th scope="row" class="govuk-table__cell">East Midlands</th>
-                            <td class="govuk-table__cell govuk-table__cell--numeric">1</td>
-                            <td class="govuk-table__cell govuk-table__cell--numeric">0</td>
-                            <td class="govuk-table__cell govuk-table__cell--numeric">0</td>
-                            <td class="govuk-table__cell govuk-table__cell--numeric">1</td>
-                        </tr>
+                        @foreach (var region in Model.Statistics.TransfersPerRegion)
+                        {
+                            <tr class="govuk-table__row" id="@region.RegionName.ToLower().Replace(" ", "-")">
+                                <th scope="row" class="govuk-table__cell">@region.RegionName</th>
+                                <td class="govuk-table__cell govuk-table__cell--numeric">@region.Details.InProgressProjects</td>
+                                <td class="govuk-table__cell govuk-table__cell--numeric">@region.Details.CompletedProjects</td>
+                                <td class="govuk-table__cell govuk-table__cell--numeric">@region.Details.UnassignedProjects</td>
+                                <td class="govuk-table__cell govuk-table__cell--numeric">@region.Details.TotalProjects</td>
+                            </tr>
+                        }
                     </tbody>
                 </table>
             </div>
@@ -343,36 +241,14 @@
                         </tr>
                     </thead>
                     <tbody class="govuk-table__body">
-                        <tr class="govuk-table__row">
-                            <th scope="row" class="govuk-table__cell">July 2025</th>
-                            <td class="govuk-table__cell govuk-table__cell--numeric">0</td>
-                            <td class="govuk-table__cell govuk-table__cell--numeric">0</td>
-                        </tr>
-                        <tr class="govuk-table__row">
-                            <th scope="row" class="govuk-table__cell">August 2025</th>
-                            <td class="govuk-table__cell govuk-table__cell--numeric">1</td>
-                            <td class="govuk-table__cell govuk-table__cell--numeric">0</td>
-                        </tr>
-                        <tr class="govuk-table__row">
-                            <th scope="row" class="govuk-table__cell">September 2025</th>
-                            <td class="govuk-table__cell govuk-table__cell--numeric">0</td>
-                            <td class="govuk-table__cell govuk-table__cell--numeric">0</td>
-                        </tr>
-                        <tr class="govuk-table__row">
-                            <th scope="row" class="govuk-table__cell">October 2025</th>
-                            <td class="govuk-table__cell govuk-table__cell--numeric">1</td>
-                            <td class="govuk-table__cell govuk-table__cell--numeric">0</td>
-                        </tr>
-                        <tr class="govuk-table__row">
-                            <th scope="row" class="govuk-table__cell">November 2025</th>
-                            <td class="govuk-table__cell govuk-table__cell--numeric">0</td>
-                            <td class="govuk-table__cell govuk-table__cell--numeric">0</td>
-                        </tr>
-                        <tr class="govuk-table__row">
-                            <th scope="row" class="govuk-table__cell">December 2025</th>
-                            <td class="govuk-table__cell govuk-table__cell--numeric">0</td>
-                            <td class="govuk-table__cell govuk-table__cell--numeric">0</td>
-                        </tr>
+                        @foreach (var project in Model.Statistics.SixMonthViewOfAllProjectOpeners)
+                        {
+                            <tr class="govuk-table__row">
+                                <th scope="row" class="govuk-table__cell">@project.Date</th>
+                                <td class="govuk-table__cell govuk-table__cell--numeric">@project.Conversions</td>
+                                <td class="govuk-table__cell govuk-table__cell--numeric">@project.Tranfers</td>
+                            </tr>
+                        }
                     </tbody>
                 </table>
             </div>
@@ -380,26 +256,26 @@
 
         <div class="govuk-grid-row">
             <div class="govuk-grid-column-three-quarters">
-                <h2 class="govuk-heading-l" id="newProjects">New projects this month (June 2025)</h2>
+                <h2 class="govuk-heading-l" id="newProjects">New projects this month (@Model.Statistics.NewProjects.Date)</h2>
                 <table class="govuk-table" name="statistics_table" aria-label="Project statistics">
                     <tbody class="govuk-table__body">
                         <tr>
                             <th scope="row" class="govuk-table__cell">
                                 Total
                             </th>
-                            <td class="govuk-table__cell govuk-table__cell--numeric">17</td>
+                            <td class="govuk-table__cell govuk-table__cell--numeric">@Model.Statistics.NewProjects.TotalProjects</td>
                         </tr>
                         <tr>
                             <th scope="row" class="govuk-table__cell">
                                 Conversions
                             </th>
-                            <td class="govuk-table__cell govuk-table__cell--numeric">14</td>
+                            <td class="govuk-table__cell govuk-table__cell--numeric">@Model.Statistics.NewProjects.TotalConversions</td>
                         </tr>
                         <tr>
                             <th scope="row" class="govuk-table__cell">
                                 Transfers
                             </th>
-                            <td class="govuk-table__cell govuk-table__cell--numeric">3</td>
+                            <td class="govuk-table__cell govuk-table__cell--numeric">@Model.Statistics.NewProjects.TotalTransfers</td>
                         </tr>
                     </tbody>
                 </table>
@@ -417,58 +293,13 @@
                         </tr>
                     </thead>
                     <tbody class="govuk-table__body">
-                        <tr class="govuk-table__row" id="users_london">
-                            <th scope="row" class="govuk-table__cell">London</th>
-                            <td class="govuk-table__cell govuk-table__cell--numeric">23</td>
-                        </tr>
-                        <tr class="govuk-table__row" id="users_south_east">
-                            <th scope="row" class="govuk-table__cell">South East</th>
-                            <td class="govuk-table__cell govuk-table__cell--numeric">0</td>
-                        </tr>
-                        <tr class="govuk-table__row" id="users_yorkshire_and_the_humber">
-                            <th scope="row" class="govuk-table__cell">Yorkshire and the Humber</th>
-                            <td class="govuk-table__cell govuk-table__cell--numeric">2</td>
-                        </tr>
-                        <tr class="govuk-table__row" id="users_north_west">
-                            <th scope="row" class="govuk-table__cell">North West</th>
-                            <td class="govuk-table__cell govuk-table__cell--numeric">6</td>
-                        </tr>
-                        <tr class="govuk-table__row" id="users_east_of_england">
-                            <th scope="row" class="govuk-table__cell">East of England</th>
-                            <td class="govuk-table__cell govuk-table__cell--numeric">0</td>
-                        </tr>
-                        <tr class="govuk-table__row" id="users_west_midlands">
-                            <th scope="row" class="govuk-table__cell">West Midlands</th>
-                            <td class="govuk-table__cell govuk-table__cell--numeric">1</td>
-                        </tr>
-                        <tr class="govuk-table__row" id="users_north_east">
-                            <th scope="row" class="govuk-table__cell">North East</th>
-                            <td class="govuk-table__cell govuk-table__cell--numeric">1</td>
-                        </tr>
-                        <tr class="govuk-table__row" id="users_south_west">
-                            <th scope="row" class="govuk-table__cell">South West</th>
-                            <td class="govuk-table__cell govuk-table__cell--numeric">1</td>
-                        </tr>
-                        <tr class="govuk-table__row" id="users_east_midlands">
-                            <th scope="row" class="govuk-table__cell">East Midlands</th>
-                            <td class="govuk-table__cell govuk-table__cell--numeric">2</td>
-                        </tr>
-                        <tr class="govuk-table__row" id="users_regional_casework_services">
-                            <th scope="row" class="govuk-table__cell">Regional casework services</th>
-                            <td class="govuk-table__cell govuk-table__cell--numeric">30</td>
-                        </tr>
-                        <tr class="govuk-table__row" id="users_service_support">
-                            <th scope="row" class="govuk-table__cell">Service support</th>
-                            <td class="govuk-table__cell govuk-table__cell--numeric">12</td>
-                        </tr>
-                        <tr class="govuk-table__row" id="users_business_support">
-                            <th scope="row" class="govuk-table__cell">Business support</th>
-                            <td class="govuk-table__cell govuk-table__cell--numeric">4</td>
-                        </tr>
-                        <tr class="govuk-table__row" id="users_data_consumers">
-                            <th scope="row" class="govuk-table__cell">Data consumers</th>
-                            <td class="govuk-table__cell govuk-table__cell--numeric">2</td>
-                        </tr>
+                        @foreach (var usersPerTeam in Model.Statistics.UsersPerTeam)
+                        {
+                            <tr class="govuk-table__row" id="users_@usersPerTeam.Key.ToLower().Replace(" ", "-")">
+                                <th scope="row" class="govuk-table__cell">@usersPerTeam.Key</th>
+                                <td class="govuk-table__cell govuk-table__cell--numeric">@usersPerTeam.Value</td>
+                            </tr>
+                        } 
                     </tbody>
                 </table>
             </div>
