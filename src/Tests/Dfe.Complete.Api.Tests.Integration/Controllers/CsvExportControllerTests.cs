@@ -23,6 +23,7 @@ using ProjectId = Dfe.Complete.Domain.ValueObjects.ProjectId;
 using ProjectState = Dfe.Complete.Domain.Enums.ProjectState;
 using ProjectType = Dfe.Complete.Domain.Enums.ProjectType;
 using SignificantDateHistory = Dfe.Complete.Domain.Entities.SignificantDateHistory;
+using SignificantDateHistoryReason = Dfe.Complete.Domain.Entities.SignificantDateHistoryReason;
 using TaskType = Dfe.Complete.Domain.Enums.TaskType;
 using Ukprn = Dfe.Complete.Domain.ValueObjects.Ukprn;
 using User = Dfe.Complete.Domain.Entities.User;
@@ -176,9 +177,19 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers
             var significantDateHistory = fixture.Customize(
                 new SignificantDateHistoryCustomization()
                 {
-                    ProjectId = project.Id
+                    ProjectId = project.Id,
+                    User = createdBy,
                 }
                 ).Create<SignificantDateHistory>();
+            
+            var significantDateHistoryReason = fixture.Customize(
+                new SignificantDateHistoryReasonCustomization()
+                {
+                    SignificantDateHistoryId = significantDateHistory.Id
+                }
+            ).Create<SignificantDateHistoryReason>();
+            
+            significantDateHistory.Reason = significantDateHistoryReason;
 
             dbContext.SignificantDateHistories.Add(significantDateHistory);
 
@@ -348,9 +359,19 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers
             var significantDateHistory = fixture.Customize(
                 new SignificantDateHistoryCustomization()
                 {
-                    ProjectId = project.Id
+                    ProjectId = project.Id,
+                    User = createdBy,
                 }
                 ).Create<SignificantDateHistory>();
+            
+            var significantDateHistoryReason = fixture.Customize(
+                new SignificantDateHistoryReasonCustomization()
+                {
+                    SignificantDateHistoryId = significantDateHistory.Id
+                }
+            ).Create<SignificantDateHistoryReason>();
+            
+            significantDateHistory.Reason = significantDateHistoryReason;
 
             dbContext.SignificantDateHistories.Add(significantDateHistory);
 

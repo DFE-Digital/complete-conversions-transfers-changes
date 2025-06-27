@@ -24,6 +24,7 @@ Security in case of vulnerabilities.
 
 ### Added  
 - Internal contacts page and edit pages `/projects/{projectId}/internal-contacts`
+- Project Significant History Dates `/projects/{projectId}/date-history`
 
 ### Changed  
 

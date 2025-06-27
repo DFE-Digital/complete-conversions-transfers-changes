@@ -4,7 +4,7 @@
     <PackageReference Include="Dfe.AcademiesApi.Client" Version="1.0.5" />
     <PackageReference Include="DfE.CoreLibs.AsyncProcessing" Version="1.0.5" />
     <PackageReference Include="DfE.CoreLibs.Caching" Version="1.0.7" />
-    <PackageReference Include="DfE.CoreLibs.Utilities" Version="1.0.11" />
+    <PackageReference Include="DfE.CoreLibs.Utilities" Version="1.0.12-prerelease-68" />
     <PackageReference Include="FluentValidation" Version="11.11.0" />
     <PackageReference Include="FluentValidation.AspNetCore" Version="11.3.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.15" />
