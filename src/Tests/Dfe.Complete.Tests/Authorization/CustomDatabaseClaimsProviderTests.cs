@@ -1,7 +1,9 @@
 ﻿using System.Linq.Expressions;
 using System.Security.Claims;
+using Dfe.Complete.Domain.Constants;
 using Dfe.Complete.Domain.Entities;
 using Dfe.Complete.Domain.Interfaces.Repositories;
+using Dfe.Complete.Domain.ValueObjects;
 using Dfe.Complete.Infrastructure.Security.Authorization;
 using DfE.CoreLibs.Security.Interfaces;
 using Microsoft.Extensions.Caching.Memory;
@@ -64,7 +66,7 @@ namespace Dfe.Complete.Tests.Authorization
         public async Task GetClaimsAsync_UserFound_ReturnsExpectedClaims()
         {
             // Arrange
-            var userId = "123";
+            var userId = "00000000-0000-0000-0000-000000000123";
             var identity = new ClaimsIdentity(new[]
             {
                 new Claim("http://schemas.microsoft.com/identity/claims/objectidentifier", userId)
@@ -74,6 +76,7 @@ namespace Dfe.Complete.Tests.Authorization
             // Create a user record with specific properties.
             var userRecord = new User
             {
+                Id = new UserId(new Guid(userId)),
                 ActiveDirectoryUserId = userId,
                 Team = "TeamA",
                 ManageTeam = true,
@@ -109,7 +112,7 @@ namespace Dfe.Complete.Tests.Authorization
         public async Task GetClaimsAsync_UserFound_ReturnsAllClaims()
         {
             // Arrange
-            var userId = "1234";
+            var userId = "00000000-0000-0000-0000-000000001234";
             var identity = new ClaimsIdentity(
             [
                 new Claim("http://schemas.microsoft.com/identity/claims/objectidentifier", userId)
@@ -119,6 +122,7 @@ namespace Dfe.Complete.Tests.Authorization
             // Create a user record with specific properties.
             var userRecord = new User
             {
+                Id = new UserId(new Guid(userId)),
                 ActiveDirectoryUserId = userId,
                 Team = "london",
                 ManageTeam = true,
@@ -139,6 +143,7 @@ namespace Dfe.Complete.Tests.Authorization
             var collection = claims as Claim[] ?? claims.ToArray();
 
             Assert.NotEmpty(collection);
+            Assert.Contains(collection, c => c.Type == CustomClaimTypeConstants.UserId && c.Value == "00000000-0000-0000-0000-000000001234");
             Assert.Contains(collection, c => c.Type == ClaimTypes.Role && c.Value == "london");
             Assert.Contains(collection, c => c.Type == ClaimTypes.Role && c.Value == "manage_team");
             Assert.Contains(collection, c => c.Type == ClaimTypes.Role && c.Value == "add_new_project");
@@ -153,7 +158,7 @@ namespace Dfe.Complete.Tests.Authorization
         public async Task GetClaimsAsync_CachesClaims_RepositoryCalledOnce()
         {
             // Arrange
-            var userId = "123";
+            var userId = "00000000-0000-0000-0000-000000000123";
             var identity = new ClaimsIdentity(new[]
             {
                 new Claim("http://schemas.microsoft.com/identity/claims/objectidentifier", userId)
@@ -162,6 +167,7 @@ namespace Dfe.Complete.Tests.Authorization
 
             var userRecord = new User
             {
+                Id = new UserId(new Guid(userId)),
                 ActiveDirectoryUserId = userId,
                 Team = "TeamA",
                 ManageTeam = true,

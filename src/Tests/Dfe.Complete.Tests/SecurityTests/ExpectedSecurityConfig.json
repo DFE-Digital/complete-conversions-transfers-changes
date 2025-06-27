@@ -57,6 +57,14 @@
             "ExpectedSecurity": "Authorize"
         },
         {
+            "Route": "/Projects/Notes/AddProjectNote",
+            "ExpectedSecurity": "Authorize: Policy=CanAddNotes"
+        },
+        {
+            "Route": "/Projects/Notes/DeleteProjectNote",
+            "ExpectedSecurity": "Authorize"
+        },
+        {
             "Route": "/Projects/Notes/EditProjectNote",
             "ExpectedSecurity": "Authorize"
         },

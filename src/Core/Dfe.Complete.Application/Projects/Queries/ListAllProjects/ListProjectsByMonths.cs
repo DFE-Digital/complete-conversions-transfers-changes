@@ -9,7 +9,7 @@ using DfE.CoreLibs.Utilities.Constants;
 using Microsoft.Extensions.Logging;
 using Microsoft.EntityFrameworkCore;
 
-namespace Dfe.Complete.Application.Projects.Queries.ListProjectsByMonth
+namespace Dfe.Complete.Application.Projects.Queries.ListAllProjects
 {
     public record ListProjectsByMonthsQuery(
         DateOnly FromDate,

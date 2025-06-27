@@ -24,7 +24,7 @@ public abstract class BaseProjectPageModel(ISender sender) : PageModel
     public TrustDto? OutgoingTrust { get; set; }
     public ProjectTeam CurrentUserTeam { get; set; }
 
-    public virtual async Task<IActionResult> OnGet()
+    public virtual async Task<IActionResult> OnGetAsync()
     {
         await UpdateCurrentProject();
 
