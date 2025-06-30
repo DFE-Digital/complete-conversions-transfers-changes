@@ -435,10 +435,7 @@ public partial class CompleteContext : DbContext
             .HasColumnName("title");
         projectConfiguration.Property(e => e.Type)
             .HasMaxLength(4000)
-            .HasColumnName("type")
-            .HasConversion(
-                v => v.ToString(),
-                v => (ContactCategory)Enum.Parse(typeof(ContactCategory), v));
+            .HasColumnName("type");
         projectConfiguration.Property(e => e.UpdatedAt)
             .HasPrecision(6)
             .HasColumnName("updated_at");
