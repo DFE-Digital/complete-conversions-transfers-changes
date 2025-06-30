@@ -56,10 +56,12 @@ namespace Dfe.Complete.Pages.Projects.ServiceSupport.ConversionURNs
             var updateAcademyUrnCommand = new UpdateAcademyUrnCommand(projectId, urn);
             await sender.Send(updateAcademyUrnCommand, cancellationToken);
             
-            var successMessage = string.Format("Academy URN {0} added to {1}, {2}", URN, Establishment?.Name, Establishment.Urn);
+            var successMessage = string.Format("Academy URN {0} added to {1}, {2}", URN, Establishment?.Name, Establishment?.Urn);
 
-            TempData["Success"] = true;
-            TempData["SuccessMessage"] = successMessage;
+            TempData.SetNotification(
+                NotificationType.Success,
+                "Success",
+                successMessage);
 
             return Redirect(RouteConstants.ServiceSupportProjectsWithoutAcademyUrn);
         }

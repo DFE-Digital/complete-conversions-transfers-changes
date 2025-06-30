@@ -2,6 +2,7 @@
 using Dfe.Complete.Application.Projects.Interfaces;
 using Dfe.Complete.Application.Projects.Models;
 using Dfe.Complete.Domain.Entities;
+using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Domain.Interfaces.Repositories;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -17,10 +18,15 @@ namespace Dfe.Complete.Application.Projects.Queries.ListAllProjects
         {
             try
             {
-                var allProjects = await listAllProjectsQueryService.ListAllProjects(new ProjectFilters(Domain.Enums.ProjectState.Active, Domain.Enums.ProjectType.Conversion, WithAcademyUrn: request.WithAcademyUrn))
+                var orderBy = new OrderProjectQueryBy() { Field = OrderProjectByField.SignificantDate, Direction = OrderByDirection.Ascending };
+                
+                var projectsQuery = listAllProjectsQueryService.ListAllProjects(new ProjectFilters(Domain.Enums.ProjectState.Active, Domain.Enums.ProjectType.Conversion, WithAcademyUrn: request.WithAcademyUrn), null, orderBy);
+                var totalProjectCount = await projectsQuery.CountAsync(cancellationToken);
+                
+                var convertingProjects = await projectsQuery
+                    .Skip(request.Page * request.Count)
+                    .Take(request.Count)
                     .ToListAsync(cancellationToken);
-
-               var convertingProjects = allProjects.OrderBy(p => p.Project.SignificantDate);
                
                List<GiasEstablishment> giasEstablishments = new List<GiasEstablishment>();
                
@@ -32,8 +38,6 @@ namespace Dfe.Complete.Application.Projects.Queries.ListAllProjects
                }
      
                 var projects = convertingProjects
-                    .Skip(request.Page * request.Count)
-                    .Take(request.Count)
                     .Select(item =>
                         {
                             return new ListAllProjectsConvertingQueryResultModel(item.Project.Id,
@@ -45,7 +49,7 @@ namespace Dfe.Complete.Application.Projects.Queries.ListAllProjects
                         }
                     );
 
-                return PaginatedResult<IEnumerable<ListAllProjectsConvertingQueryResultModel>>.Success(projects, convertingProjects.Count());
+                return PaginatedResult<IEnumerable<ListAllProjectsConvertingQueryResultModel>>.Success(projects, totalProjectCount);
             }
             catch (Exception ex)
             {
