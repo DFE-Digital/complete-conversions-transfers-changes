@@ -1,5 +1,5 @@
 import {
-    shouldBeAbleToAssignUnassignedProjectsToUsers,
+    shouldBeAbleToChangeTheAddedByUserOfAProject,
     shouldBeAbleToViewMultipleMonthsOfProjects,
     shouldNotHaveAccessToViewAndEditUsers,
 } from "cypress/support/reusableTests";
@@ -7,20 +7,30 @@ import { before, beforeEach } from "mocha";
 import projectRemover from "cypress/api/projectRemover";
 import projectApi from "cypress/api/projectApi";
 import { ProjectBuilder } from "cypress/api/projectBuilder";
-import { nextMonth } from "cypress/constants/stringTestConstants";
-import { rdoTeamLeaderUser } from "cypress/constants/cypressConstants";
+import { cypressUser, rdoTeamLeaderUser, regionalCaseworkerUser } from "cypress/constants/cypressConstants";
 import navBar from "cypress/pages/navBar";
 import yourProjects from "cypress/pages/projects/yourProjects";
 import yourTeamProjects from "cypress/pages/projects/yourTeamProjects";
 import allProjects from "cypress/pages/projects/allProjects";
+import { projectTable } from "cypress/pages/projects/tables/projectTable";
+import yourTeamProjectsTable from "cypress/pages/projects/tables/yourTeamProjectsTable";
+import editUserPage from "cypress/pages/projects/editUserPage";
 
-const unassignedProject = ProjectBuilder.createConversionProjectRequest(nextMonth, 103846, rdoTeamLeaderUser.adId);
-const unassignedProjectSchoolName = "Cradley CofE Primary School";
+const unassignedProject = ProjectBuilder.createTransferProjectRequest({
+    urn: { value: 143659 },
+    handingOverToRegionalCaseworkService: true,
+    userAdId: rdoTeamLeaderUser.adId,
+});
+const unassignedProjectSchoolName = "City of London Academy, Highgate Hill";
+const project = ProjectBuilder.createConversionFormAMatProjectRequest();
+let projectId: string;
 
 describe("Capabilities and permissions of the regional delivery officer team leader user", () => {
     before(() => {
         projectRemover.removeProjectIfItExists(`${unassignedProject.urn.value}`);
-        projectApi.createConversionProject(unassignedProject, rdoTeamLeaderUser.email);
+        projectRemover.removeProjectIfItExists(`${project.urn.value}`);
+        projectApi.createTransferProject(unassignedProject, rdoTeamLeaderUser.email);
+        projectApi.createMatConversionProject(project).then((response) => (projectId = response.value));
     });
 
     beforeEach(() => {
@@ -61,9 +71,34 @@ describe("Capabilities and permissions of the regional delivery officer team lea
         shouldBeAbleToViewMultipleMonthsOfProjects();
     });
 
-    it.skip("Should be able to assign unassigned projects to users", () => {
-        // not implemented
-        shouldBeAbleToAssignUnassignedProjectsToUsers(unassignedProjectSchoolName);
+    it("Should be able to assign unassigned projects to users", () => {
+        cy.pause();
+        navBar.goToYourTeamProjects();
+        yourTeamProjects
+            .filterProjects("Unassigned")
+            .containsHeading("Your team unassigned projects")
+            .goToNextPageUntilFieldIsVisible(unassignedProjectSchoolName);
+        projectTable.hasTableHeaders([
+            "School or academy",
+            "URN",
+            "Added by",
+            "Conversion or transfer date",
+            "Project type",
+            "Team",
+            "Assign project",
+        ]);
+        yourTeamProjectsTable.assignProject(unassignedProjectSchoolName);
+        editUserPage
+            .hasLabel("Assign to")
+            .assignTo(rdoTeamLeaderUser.username)
+            .clickButton("Continue")
+            .containsSuccessBannerWithMessage("Project has been assigned successfully");
+        navBar.goToYourProjects();
+        yourProjects.goToNextPageUntilFieldIsVisible(unassignedProjectSchoolName);
+    });
+
+    it("Should be able to change the added by user of the project in internal projects", () => {
+        shouldBeAbleToChangeTheAddedByUserOfAProject(project.urn.value, projectId, cypressUser, regionalCaseworkerUser);
     });
 
     it.skip("Should NOT be able to soft delete projects", () => {
