@@ -359,7 +359,7 @@ namespace Dfe.Complete.Api.Controllers
         public async Task<IActionResult> ListAllProjectsStatisticsAsync(CancellationToken cancellationToken)
         {
             var statistics = await sender.Send(new ListAllProjectsStatisticsQuery(), cancellationToken);
-            return Ok(statistics);
+            return Ok(statistics.Value);
         } 
     }
 }
