@@ -59,7 +59,7 @@
           }
           @if (canEditAddedByUser.Succeeded)
           {
-            <govuk-summary-list-row-action asp-policy="@UserPolicyConstants.CanEditAddedByUser" href="@Model.FormatRouteWithProjectId(RouteConstants.ProjectInternalContactsEditAddedByUser)" visually-hidden-text="Assigned to team">Change</govuk-summary-list-row-action>
+            <govuk-summary-list-row-action href="@Model.FormatRouteWithProjectId(RouteConstants.ProjectInternalContactsEditAddedByUser)" visually-hidden-text="Assigned to team">Change</govuk-summary-list-row-action>
           }
         </govuk-summary-list-row-actions>
       </govuk-summary-list-row>
