@@ -97,11 +97,11 @@ export class ProjectDetailsPage extends BasePage {
                 cy.get("a").should("have.length", 2);
                 cy.get("a")
                     .eq(0)
-                    .should("have.text", "School folder (opens in new tab)")
+                    .shouldHaveText("School folder (opens in new tab)")
                     .should("have.attr", "href", schoolLink);
                 cy.get("a")
                     .eq(1)
-                    .should("have.text", "Trust folder (opens in new tab)")
+                    .shouldHaveText("Trust folder (opens in new tab)")
                     .should("have.attr", "href", trustLink);
             });
         return this;

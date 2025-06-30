@@ -1,14 +1,11 @@
 import navBar from "../pages/navBar";
 import allProjects from "../pages/projects/allProjects";
 import yourTeamProjects from "../pages/projects/yourTeamProjects";
-import assignProject from "../pages/projects/assignProject";
-import { cypressUser } from "../constants/cypressConstants";
-import yourProjects from "../pages/projects/yourProjects";
 import projectsByMonthPage from "cypress/pages/projects/projectsByMonthPage";
 import { currentMonthLong, currentMonthShort } from "cypress/constants/stringTestConstants";
-import { projectTable } from "cypress/pages/projects/tables/projectTable";
-import yourTeamProjectsTable from "cypress/pages/projects/tables/yourTeamProjectsTable";
 import { Logger } from "cypress/common/logger";
+import internalContactsPage from "cypress/pages/projects/projectDetails/internalContactsPage";
+import { TestUser } from "cypress/constants/TestUser";
 
 export function shouldNotHaveAccessToViewHandedOverProjects() {
     cy.visit("/projects/all/in-progress/all");
@@ -57,34 +54,10 @@ export function shouldNotHaveAccessToViewAndEditUsers() {
     cy.visit("/service-support/users").notAuthorisedToPerformAction();
 }
 
-export function shouldNotBeAbleToBeAssignedAProject() {
-    // not implemented 187369
-}
-
 export function shouldBeAbleToViewMultipleMonthsOfProjects() {
     cy.visit("/projects/all/in-progress/all");
     allProjects.filterProjects("By month").containsHeading(`${currentMonthLong} to ${currentMonthLong}`);
     projectsByMonthPage.filterIsFromDateToDate(currentMonthShort, currentMonthShort);
-}
-
-export function shouldBeAbleToAssignUnassignedProjectsToUsers(unassignedProjectSchoolName: string) {
-    navBar.goToYourTeamProjects();
-    yourTeamProjects
-        .filterProjects("Unassigned")
-        .containsHeading("Your team unassigned projects")
-        .goToNextPageUntilFieldIsVisible(unassignedProjectSchoolName);
-    projectTable.hasTableHeaders([
-        "School or academy",
-        "URN",
-        "Conversion or transfer date",
-        "Project type",
-        "Region",
-        "Assigned project",
-    ]);
-    yourTeamProjectsTable.assignProject(unassignedProjectSchoolName);
-    assignProject.assignTo(cypressUser.username);
-    navBar.goToYourProjects();
-    yourProjects.goToNextPageUntilFieldIsVisible(unassignedProjectSchoolName);
 }
 
 export function shouldBeAbleToViewAndDownloadCsvReportsFromTheExportSection() {
@@ -98,4 +71,33 @@ export function checkAccessibilityAcrossPages() {
         Logger.log("Executing accessibility check for URL: " + url);
         cy.executeAccessibilityTests();
     });
+}
+
+export function shouldBeAbleToChangeTheAddedByUserOfAProject(
+    projectUrn: number,
+    projectId: string,
+    currentAssignee: TestUser,
+    newAssignee: TestUser,
+) {
+    Logger.log("Go to project internal contacts page");
+    cy.visit(`projects/${projectId}/internal-contacts`);
+
+    Logger.log("Check the added by user is displayed and click change");
+    internalContactsPage.row(3).summaryShows("Added by").hasValue(currentAssignee.username).change("Added by");
+
+    Logger.log("Change the added by user");
+    internalContactsPage
+        .containsHeading(`Who added this project?`)
+        .contains(`URN ${projectUrn}`)
+        .hasLabel("Added by")
+        .assignTo(newAssignee.username)
+        .clickButton("Continue");
+
+    Logger.log("Check the added by user is updated");
+    internalContactsPage
+        .containsSuccessBannerWithMessage("Project has been updated successfully")
+        .row(3)
+        .summaryShows("Added by")
+        .hasValue(newAssignee.username)
+        .hasEmailLink(newAssignee.email);
 }
