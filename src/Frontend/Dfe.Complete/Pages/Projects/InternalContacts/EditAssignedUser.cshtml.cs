@@ -35,7 +35,7 @@ public class EditAssignedUser(ISender sender, ErrorService errorService, ILogger
         }
         else
         {
-            logger.LogError("Assigned to user id exists but user was not found by query - {Id}",
+            logger.LogInformation("Assigned to user id exists but user was not found by query - {Id}",
                 assignedToUserQuery.UserId.Value.ToString());
         }
 
@@ -66,7 +66,7 @@ public class EditAssignedUser(ISender sender, ErrorService errorService, ILogger
             }
             catch (NotFoundException notFoundException)
             {
-                logger.LogError(notFoundException, notFoundException.Message, notFoundException.InnerException);
+                logger.LogInformation(notFoundException, notFoundException.Message, notFoundException.InnerException);
 
                 ModelState.AddModelError(notFoundException.Field ?? "NotFound", notFoundException.Message);
 
@@ -76,7 +76,7 @@ public class EditAssignedUser(ISender sender, ErrorService errorService, ILogger
             }
             catch (Exception ex)
             {
-                logger.LogError(ex, "Error occurred while updating the assigned user.");
+                logger.LogInformation(ex, "Error occurred while updating the assigned user.");
                 ModelState.AddModelError("", "An unexpected error occurred. Please try again later.");
                 return await OnGet();
             }
