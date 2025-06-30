@@ -52,7 +52,8 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
         public async Task Handle_ShouldReturns_CorrectStatistics()
         {
             // Arrange
-            var projects = SetUpProjects(); 
+            var dateTime = new DateTime(2025, 06, 30);
+            var projects = SetUpProjects(dateTime); 
             var regions = GetRegions(projects);
             var teams = projects.DistinctBy(x => x.Team)
                 .Select(p => p.Team.ToDescription()).ToList();
@@ -101,9 +102,9 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
             AssertProjectsPerRegion(regions, result.Value.ConversionsPerRegion, ProjectType.Conversion); 
             AssertProjectsPerRegion(regions, result.Value.TransfersPerRegion, ProjectType.Transfer);
 
-            AssertSixMonthViewOfAllProjectOpeners(result.Value.SixMonthViewOfAllProjectOpeners);
+            AssertSixMonthViewOfAllProjectOpeners(dateTime, result.Value.SixMonthViewOfAllProjectOpeners);
 
-            AssertNewProjectsInAMonth(result.Value.NewProjects);
+            AssertNewProjectsInAMonth(dateTime, result.Value.NewProjects);
 
             AssertUsersPerTeam(result.Value.UsersPerTeam, teams.Select(FormatDescription).ToList()); 
         }
@@ -131,21 +132,20 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
             }
         }
 
-        private static void AssertNewProjectsInAMonth(NewProjectsInThisMonth newProjects)
-        {
-            var now = DateTime.UtcNow; 
-            var monthYear = $"{now:MMMM} {now.Year}";
+        private static void AssertNewProjectsInAMonth(DateTime dateTime, NewProjectsInThisMonth newProjects)
+        { 
+            var monthYear = $"{dateTime:MMMM} {dateTime.Year}";
             Assert.Equal(monthYear, newProjects.Date);
             Assert.Equal(17, newProjects.TotalProjects);
             Assert.Equal(9, newProjects.TotalConversions);
             Assert.Equal(8, newProjects.TotalTransfers);
         }
 
-        private static void AssertSixMonthViewOfAllProjectOpeners(List<AllOpenersProjectsModel> projects)
+        private static void AssertSixMonthViewOfAllProjectOpeners(DateTime dateTime, List<AllOpenersProjectsModel> projects)
         {
             for (int i = 1; i <= projects.Count; i++)
             {
-                var targetMonth = DateTime.Now.AddMonths(i);
+                var targetMonth = dateTime.AddMonths(i);
                 var monthYear = $"{targetMonth:MMMM} {targetMonth.Year}";
                 var project = projects[i - 1];
                 Assert.Equal(monthYear, project.Date);
@@ -182,29 +182,29 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
         private record AssignmentCounts(int AssignedCount, int UnassignedCount);
         private record RegionStateTypeKey(string Region, ProjectState State, ProjectType? Type);
 
-        private static List<Domain.Entities.Project> SetUpProjects()
+        private static List<Domain.Entities.Project> SetUpProjects(DateTime dateTime)
             =>
             [
-                new() { Type = ProjectType.Conversion, State = ProjectState.Active, AssignedToId = new UserId(Guid.NewGuid()), Region = Region.London, Team = ProjectTeam.London, CreatedAt = DateTime.UtcNow },
-                new() { Type = ProjectType.Conversion, State = ProjectState.Completed, AssignedToId = new UserId(Guid.NewGuid()), Region = Region.SouthEast, Team = ProjectTeam.SouthEast, CreatedAt = DateTime.UtcNow },
-                new() { Type = ProjectType.Conversion, State = ProjectState.DaoRevoked, AssignedToId = new UserId(Guid.NewGuid()), Region = Region.EastOfEngland, Team = ProjectTeam.EastOfEngland, CreatedAt = DateTime.UtcNow },
-                new() { Type = ProjectType.Conversion, State = ProjectState.DaoRevoked, AssignedToId = new UserId(Guid.NewGuid()), Region = Region.YorkshireAndTheHumber, Team = ProjectTeam.YorkshireAndTheHumber, CreatedAt = DateTime.UtcNow },
-                new() { Type = ProjectType.Conversion, State = ProjectState.Active, Region = Region.London, Team = ProjectTeam.London, CreatedAt = DateTime.UtcNow },
+                new() { Type = ProjectType.Conversion, State = ProjectState.Active, AssignedToId = new UserId(Guid.NewGuid()), Region = Region.London, Team = ProjectTeam.London, CreatedAt = dateTime },
+                new() { Type = ProjectType.Conversion, State = ProjectState.Completed, AssignedToId = new UserId(Guid.NewGuid()), Region = Region.SouthEast, Team = ProjectTeam.SouthEast, CreatedAt = dateTime },
+                new() { Type = ProjectType.Conversion, State = ProjectState.DaoRevoked, AssignedToId = new UserId(Guid.NewGuid()), Region = Region.EastOfEngland, Team = ProjectTeam.EastOfEngland, CreatedAt = dateTime },
+                new() { Type = ProjectType.Conversion, State = ProjectState.DaoRevoked, AssignedToId = new UserId(Guid.NewGuid()), Region = Region.YorkshireAndTheHumber, Team = ProjectTeam.YorkshireAndTheHumber, CreatedAt = dateTime },
+                new() { Type = ProjectType.Conversion, State = ProjectState.Active, Region = Region.London, Team = ProjectTeam.London, CreatedAt = dateTime },
 
-                new() { Type = ProjectType.Conversion, State = ProjectState.Active, AssignedToId = new UserId(Guid.NewGuid()), Region = Region.London, Team = ProjectTeam.RegionalCaseWorkerServices, CreatedAt = DateTime.UtcNow },
-                new() { Type = ProjectType.Conversion, State = ProjectState.Completed, AssignedToId = new UserId(Guid.NewGuid()), Region = Region.SouthEast, Team = ProjectTeam.RegionalCaseWorkerServices, CreatedAt = DateTime.UtcNow },
-                new() { Type = ProjectType.Conversion, State = ProjectState.DaoRevoked, AssignedToId = new UserId(Guid.NewGuid()), Region = Region.EastOfEngland, Team = ProjectTeam.RegionalCaseWorkerServices, CreatedAt = DateTime.UtcNow },
-                new() { Type = ProjectType.Conversion, State = ProjectState.DaoRevoked, AssignedToId = new UserId(Guid.NewGuid()), Region = Region.YorkshireAndTheHumber, Team = ProjectTeam.RegionalCaseWorkerServices, CreatedAt = DateTime.UtcNow },
+                new() { Type = ProjectType.Conversion, State = ProjectState.Active, AssignedToId = new UserId(Guid.NewGuid()), Region = Region.London, Team = ProjectTeam.RegionalCaseWorkerServices, CreatedAt = dateTime },
+                new() { Type = ProjectType.Conversion, State = ProjectState.Completed, AssignedToId = new UserId(Guid.NewGuid()), Region = Region.SouthEast, Team = ProjectTeam.RegionalCaseWorkerServices, CreatedAt = dateTime },
+                new() { Type = ProjectType.Conversion, State = ProjectState.DaoRevoked, AssignedToId = new UserId(Guid.NewGuid()), Region = Region.EastOfEngland, Team = ProjectTeam.RegionalCaseWorkerServices, CreatedAt = dateTime },
+                new() { Type = ProjectType.Conversion, State = ProjectState.DaoRevoked, AssignedToId = new UserId(Guid.NewGuid()), Region = Region.YorkshireAndTheHumber, Team = ProjectTeam.RegionalCaseWorkerServices, CreatedAt = dateTime },
 
-                new() { Type = ProjectType.Transfer, State = ProjectState.Active, AssignedToId = new UserId(Guid.NewGuid()), Region = Region.London, Team = ProjectTeam.London, CreatedAt = DateTime.UtcNow },
-                new() { Type = ProjectType.Transfer, State = ProjectState.Completed, AssignedToId = new UserId(Guid.NewGuid()), Region = Region.SouthEast, Team = ProjectTeam.SouthEast, CreatedAt = DateTime.UtcNow },
-                new() { Type = ProjectType.Transfer, State = ProjectState.DaoRevoked, AssignedToId = new UserId(Guid.NewGuid()), Region = Region.EastOfEngland, Team = ProjectTeam.EastOfEngland, CreatedAt = DateTime.UtcNow },
-                new() { Type = ProjectType.Transfer, State = ProjectState.DaoRevoked, AssignedToId = new UserId(Guid.NewGuid()), Region = Region.YorkshireAndTheHumber, Team = ProjectTeam.YorkshireAndTheHumber, CreatedAt = DateTime.UtcNow },
-                new() { Type = ProjectType.Transfer, State = ProjectState.Active, Region = Region.London, Team = ProjectTeam.London, CreatedAt = DateTime.UtcNow },
+                new() { Type = ProjectType.Transfer, State = ProjectState.Active, AssignedToId = new UserId(Guid.NewGuid()), Region = Region.London, Team = ProjectTeam.London, CreatedAt = dateTime },
+                new() { Type = ProjectType.Transfer, State = ProjectState.Completed, AssignedToId = new UserId(Guid.NewGuid()), Region = Region.SouthEast, Team = ProjectTeam.SouthEast, CreatedAt = dateTime },
+                new() { Type = ProjectType.Transfer, State = ProjectState.DaoRevoked, AssignedToId = new UserId(Guid.NewGuid()), Region = Region.EastOfEngland, Team = ProjectTeam.EastOfEngland, CreatedAt = dateTime },
+                new() { Type = ProjectType.Transfer, State = ProjectState.DaoRevoked, AssignedToId = new UserId(Guid.NewGuid()), Region = Region.YorkshireAndTheHumber, Team = ProjectTeam.YorkshireAndTheHumber, CreatedAt = dateTime },
+                new() { Type = ProjectType.Transfer, State = ProjectState.Active, Region = Region.London, Team = ProjectTeam.London, CreatedAt = dateTime },
 
-                new() { Type = ProjectType.Transfer, State = ProjectState.Active, AssignedToId = new UserId(Guid.NewGuid()), Region = Region.London, Team = ProjectTeam.RegionalCaseWorkerServices, CreatedAt = DateTime.UtcNow },
-                new() { Type = ProjectType.Transfer, State = ProjectState.Completed, AssignedToId = new UserId(Guid.NewGuid()), Region = Region.SouthEast, Team = ProjectTeam.RegionalCaseWorkerServices, CreatedAt = DateTime.UtcNow },
-                new() { Type = ProjectType.Transfer, State = ProjectState.DaoRevoked, AssignedToId = new UserId(Guid.NewGuid()), Region = Region.EastOfEngland, Team = ProjectTeam.RegionalCaseWorkerServices, CreatedAt = DateTime.UtcNow },
+                new() { Type = ProjectType.Transfer, State = ProjectState.Active, AssignedToId = new UserId(Guid.NewGuid()), Region = Region.London, Team = ProjectTeam.RegionalCaseWorkerServices, CreatedAt = dateTime },
+                new() { Type = ProjectType.Transfer, State = ProjectState.Completed, AssignedToId = new UserId(Guid.NewGuid()), Region = Region.SouthEast, Team = ProjectTeam.RegionalCaseWorkerServices, CreatedAt = dateTime },
+                new() { Type = ProjectType.Transfer, State = ProjectState.DaoRevoked, AssignedToId = new UserId(Guid.NewGuid()), Region = Region.EastOfEngland, Team = ProjectTeam.RegionalCaseWorkerServices, CreatedAt = dateTime },
             ];
 
         private static Dictionary<string, Dictionary<ProjectType, ProjectDetailsModel>> GetRegions(List<Domain.Entities.Project> projects) =>
