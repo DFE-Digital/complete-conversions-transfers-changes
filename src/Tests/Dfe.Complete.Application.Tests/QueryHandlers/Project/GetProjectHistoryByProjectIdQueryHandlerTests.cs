@@ -5,7 +5,6 @@ using Dfe.Complete.Application.Projects.Queries.GetProject;
 using Dfe.Complete.Domain.Entities;
 using Dfe.Complete.Domain.Interfaces.Repositories;
 using Dfe.Complete.Domain.ValueObjects;
-using Microsoft.Extensions.Logging;
 using NSubstitute;
 using AutoMapper;
 using DfE.CoreLibs.Testing.AutoFixture.Customizations;
@@ -68,6 +67,45 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
             // Assert
             Assert.False(result.IsSuccess);
             Assert.Contains("DB Error", result.Error);
+        }
+        
+        
+        [Theory]
+        [CustomAutoData(typeof(DateOnlyCustomization), typeof(OmitCircularReferenceCustomization))]
+        public async Task Handle_ShouldReturnFailure_WhenSignificantDateHasNoUser(
+            [Frozen] ICompleteRepository<Domain.Entities.Project> mockProjectRepository,
+            GetProjectHistoryByProjectIdHandler handler,
+            Domain.Entities.Project project
+        )
+        {
+            // Arrange
+            var validGuid = Guid.NewGuid();
+            var query = new GetProjectHistoryByProjectIdQuery(validGuid.ToString());
+
+            project.Id = new ProjectId(validGuid);
+            project.Notes = new List<Note>
+            {
+                new Note { NotableType = "SignificantDateHistoryReason" }
+            };
+
+            project.SignificantDateHistories = new List<SignificantDateHistory>
+            {
+                new SignificantDateHistory
+                {
+                    User = null,
+                    Reason = new SignificantDateHistoryReason()
+                }
+            };
+
+            var mockDbSet = new List<Domain.Entities.Project> { project }.AsQueryable().BuildMockDbSet();
+            mockProjectRepository.Query().Returns(mockDbSet);
+
+            // Act
+            var result = await handler.Handle(query, default);
+
+            // Assert
+            Assert.False(result.IsSuccess);
+            Assert.Contains("One or more significant dates do not have an associated user", result.Error);
         }
     }
 }
