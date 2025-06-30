@@ -1,5 +1,4 @@
-﻿using Dfe.Complete.Application.Common.Models;
-using Dfe.Complete.Application.Projects.Interfaces;
+﻿using Dfe.Complete.Application.Projects.Interfaces;
 using Dfe.Complete.Application.Projects.Models;
 using Dfe.Complete.Application.Projects.Queries.ListAllProjects;
 using Dfe.Complete.Application.Users.Interfaces;
@@ -174,7 +173,7 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
                 .Select(word => char.ToUpper(word[0]) + word[1..].ToLower()));
 
         private record AssignmentCounts(int AssignedCount, int UnassignedCount);
-        private record RegionStateTypeKey(string Region, ProjectState State, ProjectType? Type);
+        private record RegionStateTypeKey(string Region, ProjectState State, ProjectType? Type);                          
 
         private static List<Domain.Entities.Project> SetUpProjects(DateTime dateTime)
             =>
