@@ -137,15 +137,10 @@ namespace Dfe.Complete.Application.Projects.Queries.ListAllProjects
             ]).ToDictionary(FormatDescription, team => usersGroupedByTeam.TryGetValue(team, out var count) ? count : 0);
         }
 
-        private static string FormatDescription(string description)
-        {
-            if (string.IsNullOrWhiteSpace(description))
-                return string.Empty;
-
-            return string.Join(" ", description.Replace("_", " ")
+        private static string FormatDescription(string description) => string.Join(" ", description.Replace("_", " ")
                 .Split(' ', StringSplitOptions.RemoveEmptyEntries)
                 .Select(word => char.ToUpper(word[0]) + word[1..].ToLower()));
-        }
+
         private static bool IsInProgress(Project p) => p.State == ProjectState.Active && p.AssignedToId != null;
         private static bool IsCompleted(Project p) => p.State == ProjectState.Completed;
         private static bool IsDaoRevoked(Project p) => p.State == ProjectState.DaoRevoked;

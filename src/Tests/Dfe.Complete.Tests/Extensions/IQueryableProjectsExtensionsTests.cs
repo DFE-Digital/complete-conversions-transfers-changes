@@ -1,3 +1,5 @@
+using AutoFixture;
+using Dfe.Complete.Application.Users.Models;
 using Dfe.Complete.Domain.Entities;
 using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Infrastructure.Extensions;
@@ -142,5 +144,62 @@ public class IQueryableProjectsExtensionTests
 
         // Assert
         Assert.Equal(expectedOrder.Select(p => p.Id), result.Select(p => p.Id));
+    } 
+
+    [Theory]
+    [CustomAutoData(
+        typeof(UserCustomization))]
+    public void OrderUserBy_CreatedAt_Ascending(IFixture fixture)
+    {
+        var users = fixture.CreateMany<User>(10).AsQueryable();
+
+        var result = users.OrderUserBy(new OrderUserQueryBy(OrderUserByField.CreatedAt, OrderByDirection.Ascending)).ToList();
+
+        Assert.Equal("Alice", result[0].FullName);
+        Assert.Equal("Charlie", result[1].FullName);
+        Assert.Equal("Bob", result[2].FullName);
+    }
+
+    [Theory]
+    [CustomAutoData(
+       typeof(UserCustomization))]
+    public void OrderUserBy_CreatedAt_Descending(IFixture fixture)
+    {
+        var users = fixture.CreateMany<User>(10).AsQueryable();
+
+        var result = users.OrderUserBy(new OrderUserQueryBy(OrderUserByField.CreatedAt, OrderByDirection.Descending)).ToList();
+
+        Assert.Equal("Bob", result[0].FullName);
+        Assert.Equal("Charlie", result[1].FullName);
+        Assert.Equal("Alice", result[2].FullName);
+    }
+
+    [Theory]
+    [CustomAutoData(
+       typeof(UserCustomization))]
+    public void OrderUserBy_Default_FullName(IFixture fixture)
+    {
+        var users = fixture.CreateMany<User>(10).AsQueryable();
+
+        // Use a field not handled by the switch to trigger the default (FullName)
+        var result = users.OrderUserBy(new OrderUserQueryBy((OrderUserByField)999, OrderByDirection.Ascending)).ToList();
+
+        Assert.Equal("Alice", result[0].FullName);
+        Assert.Equal("Bob", result[1].FullName);
+        Assert.Equal("Charlie", result[2].FullName);
+    }
+
+    [Theory]
+    [CustomAutoData(
+       typeof(UserCustomization))]
+    public void OrderUserBy_NullOrder_UsesDefault(IFixture fixture)
+    {
+        var users = fixture.CreateMany<User>(10).AsQueryable();
+
+        var result = users.OrderUserBy(null).ToList();
+
+        Assert.Equal("Alice", result[0].FullName);
+        Assert.Equal("Charlie", result[1].FullName);
+        Assert.Equal("Bob", result[2].FullName);
     }
 }

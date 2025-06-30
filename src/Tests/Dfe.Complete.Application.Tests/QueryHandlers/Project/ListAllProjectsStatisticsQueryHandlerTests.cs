@@ -168,16 +168,10 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
                 Assert.Null(project.Details.DaoRevokedProjects);
             }
         }
-         
-        private static string FormatDescription(string description)
-        {
-            if (string.IsNullOrWhiteSpace(description))
-                return string.Empty;
 
-            return string.Join(" ", description.Replace("_", " ")
+        private static string FormatDescription(string description) => string.Join(" ", description.Replace("_", " ")
                 .Split(' ', StringSplitOptions.RemoveEmptyEntries)
                 .Select(word => char.ToUpper(word[0]) + word[1..].ToLower()));
-        }
 
         private record AssignmentCounts(int AssignedCount, int UnassignedCount);
         private record RegionStateTypeKey(string Region, ProjectState State, ProjectType? Type);

@@ -15,5 +15,6 @@ public enum OrderProjectByField
 public enum OrderUserByField
 {
     CreatedAt,
-    Team
+    Team,
+    Email
 }
