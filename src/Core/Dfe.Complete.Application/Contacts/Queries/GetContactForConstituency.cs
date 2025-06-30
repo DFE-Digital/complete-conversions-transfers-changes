@@ -15,15 +15,23 @@ public class GetContactForConstituency(IConstituenciesClient client)
     public async Task<Result<Contact>> Handle(GetContactForConstituencyQuery request,
         CancellationToken cancellationToken)
     {
-        var result = await client.GetMemberOfParliamentByConstituencyAsync(request.Constituency, cancellationToken);
-        if (result is null) throw new NotFoundException($"No MP found for constituency {request.Constituency}");
-        var contact = new Contact()
+        try
         {
-            Name = result.DisplayName,
-            Category = ContactCategory.Other,
-            Email = result.Email,
-            Phone = result.Phone
-        };
-        return Result<Contact>.Success(contact);
+            var result = await client.GetMemberOfParliamentByConstituencyAsync(request.Constituency, cancellationToken);
+            if (result is null) throw new NotFoundException($"No MP found for constituency {request.Constituency}");
+            var contact = new Contact()
+            {
+                Name = result.DisplayName,
+                Category = ContactCategory.Other,
+                Email = result.Email,
+                Phone = result.Phone
+            };
+            return Result<Contact>.Success(contact);
+        }
+        catch (Exception e)
+        {
+            return Result<Contact>.Failure(e.Message);
+        }
+        
     }
 }
