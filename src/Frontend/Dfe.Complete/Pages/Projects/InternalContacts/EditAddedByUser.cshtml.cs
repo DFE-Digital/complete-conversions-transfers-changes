@@ -35,7 +35,7 @@ public class EditAddedByUser(ISender sender, ErrorService errorService, ILogger<
         }
         else
         {
-            logger.LogError("Added by user id exists but user was not found by query - {UserId}",
+            logger.LogInformation("Added by user id exists but user was not found by query - {UserId}",
                 addedByUserQuery.UserId.Value.ToString());
         }
 
@@ -64,12 +64,12 @@ public class EditAddedByUser(ISender sender, ErrorService errorService, ILogger<
                 TempData.SetNotification(NotificationType.Success, "Success", "Project has been updated successfully");
                 return Redirect(FormatRouteWithProjectId(RouteConstants.ProjectInternalContacts));
             }
-            logger.LogError("An error occured when trying up update the assigned user.");
+            logger.LogInformation("An error occured when trying up update the assigned user.");
             ModelState.AddModelError("Misc", "An error occured when trying up update.");
             return await OnGet();
         }
 
-        logger.LogError("Email not found or not assignable - {Email}", addedByUserQuery.Email);
+        logger.LogInformation("Email not found or not assignable - {Email}", addedByUserQuery.Email);
         ModelState.AddModelError("Email", "Email is not assignable");
         return await OnGet();
     }
