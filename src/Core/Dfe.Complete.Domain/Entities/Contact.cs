@@ -26,7 +26,7 @@ public class Contact : BaseAggregateRoot, IEntity<ContactId>
 
     public string? OrganisationName { get; set; }
 
-    public ContactCategory? Type { get; set; }
+    public string? Type { get; set; }
 
     public LocalAuthorityId? LocalAuthorityId { get; set; }
 
