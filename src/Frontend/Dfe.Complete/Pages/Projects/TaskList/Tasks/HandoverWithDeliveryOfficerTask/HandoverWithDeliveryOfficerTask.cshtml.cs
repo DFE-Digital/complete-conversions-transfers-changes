@@ -1,9 +1,10 @@
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.HandoverWithDeliveryOfficerTask
 {
-    public class HandoverWithDeliveryOfficerTaskModel(ISender sender) : ProjectTaskBaseModel(sender)
+    public class HandoverWithDeliveryOfficerTaskModel(ISender sender, IAuthorizationService authorizationService) : ProjectTaskBaseModel(sender, authorizationService)
     {
         [BindProperty(Name = "not-applicable")]
         public bool? NotApplicable { get; set; }

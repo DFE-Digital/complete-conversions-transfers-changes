@@ -1,0 +1,25 @@
+@page "/projects/{projectId}/tasks/{task_identifier}"
+@using Dfe.Complete.Constants
+@model Dfe.Complete.Pages.Projects.TaskList.Tasks.ProjectTaskBaseModel
+@{
+    Layout = "Shared/_Layout";
+    var backlink = string.Format(RouteConstants.ProjectTaskList, Model.ProjectId);
+}
+
+@section BeforeMain {
+    <a href="@backlink" class="govuk-back-link">Back</a>
+}
+
+<div class="govuk-grid-row govuk-!-margin-bottom-9">
+    <div class="govuk-grid-column-two-thirds">
+        @RenderSection("TaskHeaderSection", required: true)
+    </div>
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+            @RenderSection("TaskSection", required: true)
+        </div>
+        <div class="govuk-grid-column-one-third">
+            @await Html.PartialAsync("_ProjectTaskNotes", Model)
+        </div>
+    </div>
+</main>

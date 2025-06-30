@@ -1,17 +1,26 @@
 ﻿@page "/projects/{projectId}/tasks/handover"
 @using Dfe.Complete.Domain.Enums
 @model Dfe.Complete.Pages.Projects.TaskList.Tasks.HandoverWithDeliveryOfficerTask.HandoverWithDeliveryOfficerTaskModel
-
 @{
+  Layout = "_ProjectTaskLayout";
   ViewData["Title"] = "Handover with regional delivery officer";
 }
 
-@if (Model.Project.Type == ProjectType.Conversion)
-{
-  @await Html.PartialAsync("_ConversionHandoverWithDeliveryOfficerTask", Model)
+@section TaskHeaderSection {
+  <h1 class="govuk-heading-xl" data-testid="title">
+    <span class="govuk-caption-l" data-testid="school-name">@Model.Establishment.Name</span>
+    Handover with regional delivery officer
+  </h1>
 }
 
-@if (Model.Project.Type == ProjectType.Transfer)
-{
-  @await Html.PartialAsync("_TransferHandoverWithDeliveryOfficerTask", Model)
+@section TaskSection {
+  @if (Model.Project.Type == ProjectType.Conversion)
+  {
+    @await Html.PartialAsync("_ConversionHandoverWithDeliveryOfficerTask", Model)
+  }
+
+  @if (Model.Project.Type == ProjectType.Transfer)
+  {
+    @await Html.PartialAsync("_TransferHandoverWithDeliveryOfficerTask", Model)
+  }
 }

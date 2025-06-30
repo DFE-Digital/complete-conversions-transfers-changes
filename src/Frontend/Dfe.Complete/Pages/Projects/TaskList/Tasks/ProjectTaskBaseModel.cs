@@ -1,32 +1,62 @@
+using System.ComponentModel.DataAnnotations;
+using Dfe.Complete.Constants;
+using Dfe.Complete.Domain.Enums;
+using Dfe.Complete.Models;
+using Dfe.Complete.Utils;
+using MediatR;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 using Dfe.Complete.Application.Notes.Queries;
 using Dfe.Complete.Application.Projects.Models;
-using Dfe.Complete.Constants;
 using Dfe.Complete.Domain.Constants;
 using Dfe.Complete.Domain.ValueObjects;
 using Dfe.Complete.Extensions;
-using Dfe.Complete.Models;
-using MediatR;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
+namespace Dfe.Complete.Pages.Projects.TaskList.Tasks;
 
-namespace Dfe.Complete.Pages.Projects.Notes;
-
-public class ViewProjectNotesModel(ISender sender, IAuthorizationService _authorizationService) : ProjectNotesBaseModel(sender, NotesNavigation)
+public class ProjectTaskBaseModel(ISender sender, IAuthorizationService _authorizationService) : BaseProjectPageModel(sender)
 {
+    [BindProperty(SupportsGet = true, Name = "task_identifier")]
+    [Required]
+    public required string TaskIdentifier { get; set; }
+
+    protected ISender Sender { get; } = sender;
     public IReadOnlyList<NoteDto> Notes { get; private set; } = [];
+
+    public bool CanAddNotes => Project.State != ProjectState.Deleted && Project.State != ProjectState.Completed && Project.State != ProjectState.DaoRevoked;
+
+    public bool CanEditNote(UserId noteUserId)
+    {
+        if (Project.State == ProjectState.Completed || noteUserId != User.GetUserId())
+            return false;
+        return true;
+    }
 
     public override async Task<IActionResult> OnGetAsync()
     {
+        NoteTaskIdentifier? validTaskIdentifier = null;
+        if (TaskIdentifier != null)
+        {
+            validTaskIdentifier = EnumExtensions.FromDescriptionValue<NoteTaskIdentifier>(TaskIdentifier);
+            if (validTaskIdentifier == null)
+                return NotFound();
+        }
+
         var baseResult = await base.OnGetAsync();
         if (baseResult is not PageResult) return baseResult;
 
-        var notesResult = await Sender.Send(new GetNotesByProjectIdQuery(new ProjectId(Guid.Parse(ProjectId))));
+        var notesResult = await Sender.Send(new GetTaskNotesByProjectIdQuery(new ProjectId(Guid.Parse(ProjectId)), (NoteTaskIdentifier)validTaskIdentifier!));
         if (!notesResult.IsSuccess)
             throw new ApplicationException($"Could not load notes for project {ProjectId}");
 
         Notes = notesResult.Value ?? [];
+
         return Page();
+    }
+
+    public virtual IActionResult OnPost()
+    {
+        return Redirect(string.Format(RouteConstants.ProjectTask, ProjectId, TaskIdentifier));
     }
 
     public async Task<IActionResult> OnPostAddNoteAsync()
