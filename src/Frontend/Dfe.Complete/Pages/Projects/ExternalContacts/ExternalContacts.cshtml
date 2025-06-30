@@ -1,5 +1,6 @@
 ﻿@page "/projects/{projectId}/external-contacts"
 @using Dfe.Complete.Pages.Projects.ExternalContacts
+@using DfE.CoreLibs.Utilities.Extensions
 @model Dfe.Complete.Pages.Projects.ExternalContacts.ExternalContacts
 
 @{
@@ -32,19 +33,19 @@
     {
       <partial
         name="_ExternalContactsSection"
-        model="@(new ExternalContactsSectionModel(Model.IncomingTrustContacts, Model.IncomingTrust?.Name))"/>
+        model="@(new ExternalContactsSectionModel(Model.IncomingTrustContacts, Model.IncomingTrust?.Name?.ToTitleCase()))"/>
     }
     @if (Model.OutgoingTrustContacts.Any())
     {
       <partial
         name="_ExternalContactsSection"
-        model="@(new ExternalContactsSectionModel(Model.OutgoingTrustContacts, Model.OutgoingTrust?.Name))"/>
+        model="@(new ExternalContactsSectionModel(Model.OutgoingTrustContacts, Model.OutgoingTrust?.Name?.ToTitleCase()))"/>
     }
     @if (Model.LocalAuthorityContacts.Any())
     {
       <partial
         name="_ExternalContactsSection"
-        model="@(new ExternalContactsSectionModel(Model.LocalAuthorityContacts, Model.Establishment.LocalAuthorityName))"/>
+        model="@(new ExternalContactsSectionModel(Model.LocalAuthorityContacts, Model.LocalAuthorityName))"/>
     }
     @if (Model.SolicitorContacts.Any())
     {

@@ -39,7 +39,7 @@
         </govuk-summary-list-row-value>
       </govuk-summary-list-row>
     }
-    @if (Model.Contact.Phone is not null)
+    @if (Model.Contact.Phone is not null && !string.IsNullOrEmpty(Model.Contact.Phone))
     {
     <govuk-summary-list-row>
       <govuk-summary-list-row-key>

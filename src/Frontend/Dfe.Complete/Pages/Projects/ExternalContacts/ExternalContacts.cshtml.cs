@@ -23,6 +23,7 @@ public class ExternalContacts(ISender sender, ILogger<ExternalContacts> logger)
     public List<ExternalContactModel> DioceseContacts = [];
     public List<ExternalContactModel> OtherContacts = [];
     public List<ExternalContactModel> ParliamentaryContacts = [];
+    public string LocalAuthorityName = "";
     public bool ProjectContactsExist;
 
     public override async Task<IActionResult> OnGet()
@@ -37,14 +38,14 @@ public class ExternalContacts(ISender sender, ILogger<ExternalContacts> logger)
         {
             ProjectContactsExist = projectContacts.Value.Count > 0;
             EstablishmentContacts.AddRange(projectContacts.Value
-                .FindAll(contact => contact.Type == ContactCategory.SchoolOrAcademy).Select(contact =>
+                .FindAll(contact => contact.Category == ContactCategory.SchoolOrAcademy).Select(contact =>
                     new ExternalContactModel(contact,
                         true,
                         contact.Id == Project.MainContactId,
                         contact.Id == Project.EstablishmentMainContactId
                     )));
             IncomingTrustContacts.AddRange(
-                projectContacts.Value.FindAll(contact => contact.Type == ContactCategory.IncomingTrust).Select(
+                projectContacts.Value.FindAll(contact => contact.Category == ContactCategory.IncomingTrust).Select(
                     contact =>
                         new ExternalContactModel(contact,
                             true,
@@ -52,7 +53,7 @@ public class ExternalContacts(ISender sender, ILogger<ExternalContacts> logger)
                             contact.Id == Project.IncomingTrustMainContactId
                         )));
             OutgoingTrustContacts.AddRange(
-                projectContacts.Value.FindAll(contact => contact.Type == ContactCategory.OutgoingTrust).Select(
+                projectContacts.Value.FindAll(contact => contact.Category == ContactCategory.OutgoingTrust).Select(
                     contact =>
                         new ExternalContactModel(contact,
                             true,
@@ -60,12 +61,12 @@ public class ExternalContacts(ISender sender, ILogger<ExternalContacts> logger)
                             contact.Id == Project.OutgoingTrustMainContactId
                         )));
             SolicitorContacts.AddRange(
-                projectContacts.Value.FindAll(contact => contact.Type == ContactCategory.Solicitor).Select(contact =>
+                projectContacts.Value.FindAll(contact => contact.Category == ContactCategory.Solicitor).Select(contact =>
                     new ExternalContactModel(contact, true)));
-            DioceseContacts.AddRange(projectContacts.Value.FindAll(contact => contact.Type == ContactCategory.Diocese)
+            DioceseContacts.AddRange(projectContacts.Value.FindAll(contact => contact.Category == ContactCategory.Diocese)
                 .Select(contact =>
                     new ExternalContactModel(contact, true)));
-            OtherContacts.AddRange(projectContacts.Value.FindAll(contact => contact.Type == ContactCategory.Other)
+            OtherContacts.AddRange(projectContacts.Value.FindAll(contact => contact.Category == ContactCategory.Other)
                 .Select(contact =>
                     new ExternalContactModel(contact, true)));
         }
@@ -77,6 +78,8 @@ public class ExternalContacts(ISender sender, ILogger<ExternalContacts> logger)
 
         if (la is not { IsSuccess: true, Value: not null }) return Page();
 
+        LocalAuthorityName = la.Value.Name;
+
         var laContactQuery = new GetContactsForLocalAuthorityQuery(la.Value.Id);
 
         var laContacts = await _sender.Send(laContactQuery);
@@ -87,18 +90,17 @@ public class ExternalContacts(ISender sender, ILogger<ExternalContacts> logger)
                 new ExternalContactModel(contact, false)));
         }
 
-        // if (Establishment.ParliamentaryConstituency?.Code is null) return Page();
-        //
-        // var mpContactQuery = new GetContactForConstituencyQuery(Establishment.ParliamentaryConstituency.Code);
-        //
-        // var mpContact = await _sender.Send(mpContactQuery);
-        //
-        // if (mpContact is { IsSuccess: true, Value: not null })
-        // {
-        //     var mp = new ExternalContactModel(mpContact.Value, false);
-        //     ParliamentaryContacts.Add(mp);
-        // }
-
+        if (Establishment.ParliamentaryConstituency?.Code is null) return Page();
+        
+        var mpContactQuery = new GetContactForConstituencyQuery(Establishment.ParliamentaryConstituency.Code);
+        
+        var mpContact = await _sender.Send(mpContactQuery);
+        
+        if (mpContact is { IsSuccess: true, Value: not null })
+        {
+            var mp = new ExternalContactModel(mpContact.Value, false);
+            ParliamentaryContacts.Add(mp);
+        }
 
         return Page();
     }
