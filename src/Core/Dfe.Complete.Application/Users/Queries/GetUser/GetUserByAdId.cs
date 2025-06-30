@@ -6,7 +6,7 @@ using Dfe.Complete.Domain.Interfaces.Repositories;
 using MediatR;
 using Microsoft.Extensions.Logging;
 
-namespace Dfe.Complete.Application.Projects.Queries.GetUser;
+namespace Dfe.Complete.Application.Users.Queries.GetUser;
 
 public record GetUserByAdIdQuery(string UserAdId) : IRequest<Result<UserDto?>>;
 

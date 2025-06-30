@@ -27,6 +27,7 @@ namespace Dfe.Complete.TagHelpers
 
             var aboutProjectLink = string.Format(Constants.RouteConstants.ProjectAbout, ProjectId);
             var taskListLink = string.Format(Constants.RouteConstants.ProjectTaskList, ProjectId);
+            var internalContactsLink = string.Format(Constants.RouteConstants.ProjectInternalContacts, ProjectId);
 
             var currentPageAttribute = @"aria-current=""page""";
             var currentUrl = ViewContext.HttpContext.Request.GetDisplayUrl();
@@ -34,6 +35,7 @@ namespace Dfe.Complete.TagHelpers
             var aboutPageCurrentStyle = currentUrl.Contains(aboutProjectLink) ? currentPageAttribute : "";
             var taskListCurrentPageStyle = currentUrl.Contains(taskListLink) ? currentPageAttribute : "";
             var notesCurrentPageStyle = currentUrl.Contains(notesLink) ? currentPageAttribute : "";
+            var internalContactsCurrentPageStyle = currentUrl.Contains(internalContactsLink) ? currentPageAttribute : "";
 
             output.Content.SetHtmlContent(
                 $@"<div class=""govuk-grid-column-full"">
@@ -61,7 +63,7 @@ namespace Dfe.Complete.TagHelpers
 
 
                             <li class=""moj-sub-navigation__item"">
-                                <a class=""moj-sub-navigation__link"" href=""/projects/51FA403B-B3F3-4580-919B-207B842B9BE3/internal-contacts"">Internal contacts</a>
+                                <a class=""moj-sub-navigation__link"" {internalContactsCurrentPageStyle} href=""{internalContactsLink}"">Internal contacts</a>
                             </li>
 
 

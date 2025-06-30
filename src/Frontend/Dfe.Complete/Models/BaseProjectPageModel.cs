@@ -24,23 +24,9 @@ public abstract class BaseProjectPageModel(ISender sender) : PageModel
     public TrustDto? OutgoingTrust { get; set; }
     public ProjectTeam CurrentUserTeam { get; set; }
 
-    public async Task<IActionResult> OnGet()
+    public virtual async Task<IActionResult> OnGet()
     {
-        var success = Guid.TryParse(ProjectId, out var guid);
-
-        if (!success)
-        {
-            throw new InvalidDataException($"{ProjectId} is not a valid Guid.");
-        }
-
-        var query = new GetProjectByIdQuery(new ProjectId(guid));
-        var result = await sender.Send(query);
-        if (!result.IsSuccess || result.Value == null)
-        {
-            throw new NotFoundException($"Project {ProjectId} does not exist.");
-        }
-
-        Project = result.Value;
+        await UpdateCurrentProject();
 
         var establishmentQuery = new GetEstablishmentByUrnRequest(Project.Urn.Value.ToString());
         var establishmentResult = await sender.Send(establishmentQuery);
@@ -82,4 +68,25 @@ public abstract class BaseProjectPageModel(ISender sender) : PageModel
 
         return Page();
     }
+
+    public async Task UpdateCurrentProject()
+    {
+        var success = Guid.TryParse(ProjectId, out var guid);
+
+        if (!success)
+        {
+            throw new InvalidDataException($"{ProjectId} is not a valid Guid.");
+        }
+
+        var query = new GetProjectByIdQuery(new ProjectId(guid));
+        var result = await sender.Send(query);
+        if (!result.IsSuccess || result.Value == null)
+        {
+            throw new NotFoundException($"Project {ProjectId} does not exist.");
+        }
+
+        Project = result.Value;
+    }
+
+    public string FormatRouteWithProjectId(string route) => string.Format(route, ProjectId);
 }

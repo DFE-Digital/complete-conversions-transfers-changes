@@ -153,3 +153,13 @@ Cypress.Commands.add("isInViewport", { prevSubject: true }, (subject) => {
 
     return subject;
 });
+
+Cypress.Commands.add("shouldHaveText", { prevSubject: true }, (subject, expectedText) => {
+    return cy
+        .wrap(subject)
+        .invoke("text")
+        .then((text) => {
+            expect(text.trim()).to.equal(expectedText);
+            return subject;
+        });
+});
