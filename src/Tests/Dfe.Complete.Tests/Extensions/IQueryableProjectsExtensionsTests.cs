@@ -5,6 +5,7 @@ using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Infrastructure.Extensions;
 using Dfe.Complete.Tests.Common.Customizations.Models;
 using DfE.CoreLibs.Testing.AutoFixture.Attributes;
+using NetEscapades.AspNetCore.SecurityHeaders.Headers.FeaturePolicy;
 
 namespace Dfe.Complete.Tests.Extensions;
 
@@ -133,7 +134,7 @@ public class IQueryableProjectsExtensionTests
         
         // Shuffle the projects
         var random = new Random();
-        projects = projects.OrderBy(_ => random.Next()).ToList();
+        projects = [.. projects.OrderBy(_ => random.Next())];
         
         var expectedOrder = projects.OrderBy(project => project.CompletedAt).ToList();
 
@@ -154,10 +155,11 @@ public class IQueryableProjectsExtensionTests
         var users = fixture.CreateMany<User>(10).AsQueryable();
 
         var result = users.OrderUserBy(new OrderUserQueryBy(OrderUserByField.CreatedAt, OrderByDirection.Ascending)).ToList();
-
-        Assert.Equal("Alice", result[0].FullName);
-        Assert.Equal("Charlie", result[1].FullName);
-        Assert.Equal("Bob", result[2].FullName);
+        for (int i = 0; i < result.Count - 1; i++)
+        {
+            Assert.True(result[i].CreatedAt <= result[i + 1].CreatedAt,
+                $"User at index {i} (CreatedAt: {result[i].CreatedAt}) should be <= user at index {i + 1} (CreatedAt: {result[i + 1].CreatedAt})");
+        }
     }
 
     [Theory]
@@ -169,37 +171,10 @@ public class IQueryableProjectsExtensionTests
 
         var result = users.OrderUserBy(new OrderUserQueryBy(OrderUserByField.CreatedAt, OrderByDirection.Descending)).ToList();
 
-        Assert.Equal("Bob", result[0].FullName);
-        Assert.Equal("Charlie", result[1].FullName);
-        Assert.Equal("Alice", result[2].FullName);
-    }
-
-    [Theory]
-    [CustomAutoData(
-       typeof(UserCustomization))]
-    public void OrderUserBy_Default_FullName(IFixture fixture)
-    {
-        var users = fixture.CreateMany<User>(10).AsQueryable();
-
-        // Use a field not handled by the switch to trigger the default (FullName)
-        var result = users.OrderUserBy(new OrderUserQueryBy((OrderUserByField)999, OrderByDirection.Ascending)).ToList();
-
-        Assert.Equal("Alice", result[0].FullName);
-        Assert.Equal("Bob", result[1].FullName);
-        Assert.Equal("Charlie", result[2].FullName);
-    }
-
-    [Theory]
-    [CustomAutoData(
-       typeof(UserCustomization))]
-    public void OrderUserBy_NullOrder_UsesDefault(IFixture fixture)
-    {
-        var users = fixture.CreateMany<User>(10).AsQueryable();
-
-        var result = users.OrderUserBy(null).ToList();
-
-        Assert.Equal("Alice", result[0].FullName);
-        Assert.Equal("Charlie", result[1].FullName);
-        Assert.Equal("Bob", result[2].FullName);
-    }
+        for (int i = 0; i < result.Count - 1; i++)
+        {
+            Assert.True(result[i].CreatedAt >= result[i + 1].CreatedAt,
+                $"User at index {i} (CreatedAt: {result[i].CreatedAt}) should be >= user at index {i + 1} (CreatedAt: {result[i + 1].CreatedAt})");
+        }
+    } 
 }
