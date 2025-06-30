@@ -33,6 +33,11 @@ namespace Dfe.Complete.Application.Projects.Queries.GetProject
                         .ThenInclude(ph => ph.Reason)
                     .FirstOrDefaultAsync(cancellationToken);
 
+                if (result.SignificantDateHistories.Any(p => p.User == null))
+                {
+                    throw new InvalidOperationException("One or more significant dates do not have an associated user.");
+                }
+                
                 result!.Notes = result.Notes.Where(n => n.NotableType == "SignificantDateHistoryReason").ToList();
 
                 var projectDto = mapper.Map<ProjectDto>(result);
