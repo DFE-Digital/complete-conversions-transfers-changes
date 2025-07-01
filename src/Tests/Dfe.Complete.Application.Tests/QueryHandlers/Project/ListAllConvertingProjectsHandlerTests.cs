@@ -24,8 +24,10 @@ public class ListAllProjectsConvertingQueryHandlerTests
     {
         // Arrange
         var errorMessage = "This is an error";
+        var orderBy = new OrderProjectQueryBy() { Field = OrderProjectByField.SignificantDate, Direction = OrderByDirection.Ascending };
+
         mockListAllProjectsQueryService
-            .ListAllProjects(new ProjectFilters(ProjectState.Active, ProjectType.Conversion, WithAcademyUrn: true))
+            .ListAllProjects(new ProjectFilters(ProjectState.Active, ProjectType.Conversion, WithAcademyUrn: true), null, orderBy)
             .Throws(new Exception(errorMessage));
 
         // Act
@@ -54,8 +56,11 @@ public class ListAllProjectsConvertingQueryHandlerTests
         }        
 
         var mockQueryable = projects.BuildMock();
+        
+        var orderBy = new OrderProjectQueryBy() { Field = OrderProjectByField.SignificantDate, Direction = OrderByDirection.Ascending };
+
         mockListAllProjectsQueryService
-            .ListAllProjects(new ProjectFilters(ProjectState.Active, ProjectType.Conversion, WithAcademyUrn: false))
+            .ListAllProjects(new ProjectFilters(ProjectState.Active, ProjectType.Conversion, WithAcademyUrn: false), null, orderBy)
             .Returns(mockQueryable);
 
         var request = new ListAllProjectsConvertingQuery(WithAcademyUrn: false) { Page = 1, Count = 5 };
