@@ -12,22 +12,24 @@ export class AboutTheProjectPage extends ProjectDetailsPage {
         "Incoming trust details": "incomingTrustDetails",
         "Outgoing trust details": "outgoingTrustDetails",
     };
-    protected readonly giasUrl = "https://get-information-schools.service.gov.uk";
+    private readonly sectionId = "projectInformationList";
 
-    constructor() {
-        super("projectInformationList");
+    inOrder() {
+        cy.wrap(this.sectionId).as("sectionId");
+        cy.wrap(-1).as("summaryCounter");
+        return this;
     }
 
     subSection(subSectionId: string) {
         cy.wrap(-1).as("summaryCounter");
-        cy.wrap(this.sections[subSectionId]).as("subSectionId");
+        cy.wrap(this.sections[subSectionId]).as("sectionId");
         return this;
     }
 
     hasSubHeading(subHeading: string) {
         cy.get("@summaryCounter").then((counter) => {
-            cy.get("@subSectionId").then((subSectionId) => {
-                cy.getById(subSectionId.toString()).find("h2").eq(Number(counter)).shouldHaveText(subHeading);
+            cy.get("@sectionId").then((id) => {
+                cy.getById(id.toString()).find("h2").eq(Number(counter)).shouldHaveText(subHeading);
             });
         });
         return this;

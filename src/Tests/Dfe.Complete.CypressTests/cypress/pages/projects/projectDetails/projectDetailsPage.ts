@@ -2,22 +2,11 @@ import BasePage from "cypress/pages/basePage";
 import { significateDateToDisplayDate } from "cypress/support/formatDate";
 
 export class ProjectDetailsPage extends BasePage {
-    protected readonly sectionId: string;
     private readonly captionClass = "govuk-caption-l";
     private readonly navBarClass = "moj-sub-navigation";
 
-    constructor(sectionId: string = "") {
-        super();
-        this.sectionId = sectionId;
-    }
-
     inOrder() {
         cy.wrap(-1).as("summaryCounter");
-        return this;
-    }
-
-    row(row: number) {
-        cy.wrap(row - 2).as("summaryCounter");
         return this;
     }
 
@@ -111,9 +100,8 @@ export class ProjectDetailsPage extends BasePage {
         cy.get("@summaryCounter").then((counter) => {
             const nextIndex = Number(counter) + 1;
             cy.wrap(nextIndex).as("summaryCounter");
-            cy.get("@subSectionId").then((subSectionId) => {
-                const id = subSectionId ? subSectionId.toString() : this.sectionId;
-                cy.getById(id).find(".govuk-summary-list__key").eq(nextIndex).shouldHaveText(key);
+            cy.get("@sectionId").then((id) => {
+                cy.getById(id.toString()).find(".govuk-summary-list__key").eq(nextIndex).shouldHaveText(key);
             });
         });
         return this;
@@ -126,9 +114,8 @@ export class ProjectDetailsPage extends BasePage {
 
     hasValueWithLink(value: string | number, link?: string): this {
         cy.get("@summaryCounter").then((counter) => {
-            cy.get("@subSectionId").then((subSectionId) => {
-                const id = subSectionId ? subSectionId.toString() : this.sectionId;
-                cy.getById(id)
+            cy.get("@sectionId").then((id) => {
+                cy.getById(id.toString())
                     .find(".govuk-summary-list__value")
                     .eq(Number(counter))
                     .shouldHaveText(value)
@@ -144,9 +131,8 @@ export class ProjectDetailsPage extends BasePage {
 
     hasTextWithLink(text: string, link: string, position: number = -1): this {
         cy.get("@summaryCounter").then((counter) => {
-            cy.get("@subSectionId").then((subSectionId) => {
-                const id = subSectionId ? subSectionId.toString() : this.sectionId;
-                cy.getById(id)
+            cy.get("@sectionId").then((id) => {
+                cy.getById(id.toString())
                     .find(".govuk-summary-list__value")
                     .eq(Number(counter))
                     .next("dd")
