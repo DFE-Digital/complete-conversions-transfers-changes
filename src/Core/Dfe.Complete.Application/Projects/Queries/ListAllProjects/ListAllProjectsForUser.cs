@@ -50,18 +50,18 @@ public class ListAllProjectsForUserQueryHandler(
                 .Where(ukPrn => !string.IsNullOrEmpty(ukPrn))
                 .ToList();
 
-            var allTrusts = await trustsClient.GetByUkprnsAllAsync(allProjectTrustUkPrns, cancellationToken);
+            var allTrusts = allProjectTrustUkPrns?.Count > 0 ? await trustsClient.GetByUkprnsAllAsync(allProjectTrustUkPrns, cancellationToken) : null;
             var result = projectsForUser
                 .Skip(request.Page * request.Count)
                 .Take(request.Count)
                 .Select(p =>
                 {
-                    var incomingTrustName = p.Project.FormAMat ? p.Project.NewTrustName : allTrusts.FirstOrDefault(trust => trust.Ukprn == p.Project?.IncomingTrustUkprn?.Value.ToString())?.Name;
+                    var incomingTrustName = p.Project.FormAMat ? p.Project.NewTrustName : allTrusts?.FirstOrDefault(trust => trust.Ukprn == p.Project?.IncomingTrustUkprn?.Value.ToString())?.Name;
                     return ListAllProjectsForUserQueryResultModel
                         .MapProjectAndEstablishmentToListAllProjectsForUserQueryResultModel(
                             p.Project,
                             p.Establishment!,
-                            outgoingTrustName: allTrusts.FirstOrDefault(trust =>
+                            outgoingTrustName: allTrusts?.FirstOrDefault(trust =>
                                 trust.Ukprn == p.Project?.OutgoingTrustUkprn?.Value.ToString())?.Name,
                             incomingTrustName: incomingTrustName);
                 })
