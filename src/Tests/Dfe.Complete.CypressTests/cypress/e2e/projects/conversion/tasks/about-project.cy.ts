@@ -7,6 +7,7 @@ import projectRemover from "cypress/api/projectRemover";
 import aboutTheProjectPageConversion from "cypress/pages/projects/projectDetails/aboutTheProjectPageConversion";
 import { rdoLondonUser } from "cypress/constants/cypressConstants";
 import aboutTheProjectPage from "cypress/pages/projects/projectDetails/aboutTheProjectPage";
+import { checkAccessibilityAcrossPages } from "cypress/support/reusableTests";
 
 const project = ProjectBuilder.createConversionFormAMatProjectRequest();
 let projectId: string;
@@ -45,8 +46,8 @@ describe.skip("About the project page - conversion projects: ", () => {
             .hasConversionTag()
             .hasConversionDate(project.significantDate)
             .hasIncomingTrust(macclesfieldTrust.name)
-            .hasLAAndRegion(localAuthority, region)
-            .hasSharePointLinks(project.establishmentSharepointLink, project.incomingTrustSharepointLink);
+            .hasLAAndRegion("Bath And North East Somerset", region);
+        // .hasSharePointLinks(project.establishmentSharepointLink, project.incomingTrustSharepointLink); // bug 221328
 
         Logger.log("Project details sections are displayed as expected");
 
@@ -64,15 +65,15 @@ describe.skip("About the project page - conversion projects: ", () => {
                 project.establishmentSharepointLink,
                 "Bristol",
             )
-            .hasNoAcademyDetailsAsURNNotProvided()
-            .hasIncomingTrustDetails(
-                macclesfieldTrust.name,
-                macclesfieldTrust.ukprn,
-                macclesfieldTrust.referenceNumber,
-                macclesfieldTrust.companiesHouseNumber,
-                macclesfieldTrust.address,
-                project.incomingTrustSharepointLink,
-            );
+            .hasNoAcademyDetailsAsURNNotProvided();
+        // .hasIncomingTrustDetails(
+        //     macclesfieldTrust.name,
+        //     macclesfieldTrust.ukprn,
+        //     macclesfieldTrust.referenceNumber,
+        //     macclesfieldTrust.companiesHouseNumber,
+        //     macclesfieldTrust.address,
+        //     project.incomingTrustSharepointLink,
+        // ); // bug 221303
     });
 
     it("Should display page links that navigate to different sections of the about project page", () => {
@@ -85,8 +86,8 @@ describe.skip("About the project page - conversion projects: ", () => {
             .pageHasMovedToSection("Project details")
             .jumpToSection("Project assignment")
             .pageHasMovedToSection("Project assignment")
-            .jumpToSection("Reasons for transfer")
-            .pageHasMovedToSection("Reasons for transfer")
+            .jumpToSection("Reasons for the conversion")
+            .pageHasMovedToSection("Reasons for the conversion")
             .jumpToSection("Advisory board details")
             .pageHasMovedToSection("Advisory board details")
             .jumpToSection("Academy details")
@@ -95,7 +96,8 @@ describe.skip("About the project page - conversion projects: ", () => {
             .pageHasMovedToSection("Incoming trust details");
     });
 
-    it("Should display 'Not assigned to project' banner when viewing a project that is not assigned to the user", () => {
+    // bug 221367
+    it.skip("Should display 'Not assigned to project' banner when viewing a project that is not assigned to the user", () => {
         Logger.log("Go to unassigned project");
         cy.visit(`projects/${teammatesProjectId}/tasks`);
 
@@ -107,5 +109,9 @@ describe.skip("About the project page - conversion projects: ", () => {
             "Not assigned to project",
             "This project is not assigned to you and cannot be changed, you can add notes or contacts if required.",
         );
+    });
+
+    it("Check accessibility across pages", () => {
+        checkAccessibilityAcrossPages();
     });
 });

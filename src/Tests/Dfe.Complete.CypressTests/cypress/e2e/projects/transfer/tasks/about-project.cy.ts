@@ -6,6 +6,7 @@ import aboutTheProjectPageTransfer from "cypress/pages/projects/projectDetails/a
 import projectRemover from "cypress/api/projectRemover";
 import projectApi from "cypress/api/projectApi";
 import aboutTheProjectPage from "cypress/pages/projects/projectDetails/aboutTheProjectPage";
+import { checkAccessibilityAcrossPages } from "cypress/support/reusableTests";
 
 const project = ProjectBuilder.createTransferProjectRequest();
 let projectId: string;
@@ -172,5 +173,9 @@ describe.skip("About the project page - transfer projects: ", () => {
             .pageHasMovedToSection("Incoming trust details")
             .jumpToSection("Outgoing trust details")
             .pageHasMovedToSection("Outgoing trust details");
+    });
+
+    it("Check accessibility across pages", () => {
+        checkAccessibilityAcrossPages();
     });
 });

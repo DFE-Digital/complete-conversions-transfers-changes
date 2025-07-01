@@ -1,10 +1,13 @@
-﻿@inject Microsoft.Extensions.Configuration.IConfiguration Configuration
+﻿@using DfE.CoreLibs.Utilities.Extensions
+@inject Microsoft.Extensions.Configuration.IConfiguration Configuration
 @inject Dfe.Complete.Services.IAnalyticsConsentService AnalytisConsentService
 
 @{
   var showAnalytics = Configuration["GoogleAnalytics:Enable"] == "Yes" && AnalytisConsentService.HasConsent();
 
-  var titleDescription = " - Complete conversions, transfers and changes";
+  const string titleDescription = "Complete conversions, transfers and changes";
+  var inputTitle = ViewData["Title"];
+  var title = inputTitle?.ToString() != null && !inputTitle.ToString()!.IsEmpty() ? $"{inputTitle} - {titleDescription}" : titleDescription;
   var currentTab = (TabNavigationModel?) ViewData[TabNavigationModel.ViewDataKey];
 }
 
@@ -40,7 +43,7 @@
   <link rel="apple-touch-icon" sizes="152x152" href="/dist/assets/images/govuk-apple-touch-icon-152x152.png">
   <link rel="apple-touch-icon" href="/dist/assets/images/govuk-apple-touch-icon.png">
 
-  <title>@ViewData["Title"] @titleDescription</title>
+  <title>@title</title>
   <link rel="stylesheet" href="~/dist/site.css"/>
   <link rel="stylesheet" href="~/dist/accessible-autocomplete.min.css" asp-add-nonce/>
 </head>
@@ -80,10 +83,10 @@
 
 <div class="govuk-main-wrapper">
   <main id="main-content" role="main" class="dfe-width-container">
-    <partial name="_SetCookiesPreferenceBanner" />
     <div class="govuk-grid-row">
       <div class="govuk-grid-column-full"> 
         <partial name="_NotificationSummary"/>
+        <partial name="_SetCookiesPreferenceBanner" />
         @RenderBody()
       </div>
     </div>

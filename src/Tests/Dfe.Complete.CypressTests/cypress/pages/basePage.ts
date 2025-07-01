@@ -16,7 +16,7 @@ class BasePage {
         return this;
     }
 
-    containsImportantBannerWithMessage(title: string, message: string) {
+    containsImportantBannerWithMessage(title: string, message?: string) {
         return this.containsBannerWithMessage("Important", title, message);
     }
 
@@ -91,7 +91,7 @@ class BasePage {
             cy.get("h2").should("contain.text", bannerType);
             cy.get("h3").should("have.text", title);
             if (message) {
-                cy.get("p").should("have.text", message);
+                cy.get("p").shouldHaveText(message);
             }
         });
         return this;

@@ -50,7 +50,7 @@ describe("Search bar tests", () => {
     searchCases.forEach(({ description, searchTerm }) => {
         it(description, () => {
             search.searchFor(searchTerm);
-            searchResultsPage.hasSearchResultsTitle(searchTerm);
+            searchResultsPage.hasSearchResultsTitle(searchTerm).goToNextPageUntilFieldIsVisible(schoolName);
             projectTable
                 .hasTableHeaders([
                     "School or academy",
