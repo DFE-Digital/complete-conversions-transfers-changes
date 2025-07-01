@@ -26,20 +26,4 @@ public static class IQueryableProjectExtensions
             _ => src.OrderBy(p => p.SignificantDate)
         };
     }
-
-    public static IOrderedQueryable<User> OrderUserBy(
-        this IQueryable<User> src,
-        OrderUserQueryBy? order = null)
-    {
-        order ??= new(OrderUserByField.CreatedAt, OrderByDirection.Ascending);
-
-        return (order.Field, order.Direction) switch
-        {
-            (OrderUserByField.CreatedAt, OrderByDirection.Ascending) => src.OrderBy(p => p.CreatedAt),
-            (OrderUserByField.CreatedAt, _) => src.OrderByDescending(p => p.CreatedAt),
-
-
-            _ => src.OrderBy(p => p.FullName)
-        };
-    }
 }

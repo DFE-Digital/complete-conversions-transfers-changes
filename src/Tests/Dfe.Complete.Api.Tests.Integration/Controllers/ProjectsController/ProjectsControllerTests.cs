@@ -1338,11 +1338,11 @@ public partial class ProjectsControllerTests
 
         // Assert
         Assert.NotNull(results);
-        Assert.NotNull(results.OveraAllProjects);
-        Assert.NotNull(results.OveraAllProjects.Conversions);
-        Assert.NotNull(results.OveraAllProjects.Transfers);
-        Assert.Equal(expectedConversionProjects.Count(), results.OveraAllProjects.Conversions.TotalProjects);
-        Assert.Equal(expectedTransfersProjects.Count(), results.OveraAllProjects.Transfers.TotalProjects);
+        Assert.NotNull(results.OverAllProjects);
+        Assert.NotNull(results.OverAllProjects.Conversions);
+        Assert.NotNull(results.OverAllProjects.Transfers);
+        Assert.Equal(expectedConversionProjects.Count(), results.OverAllProjects.Conversions.TotalProjects);
+        Assert.Equal(expectedTransfersProjects.Count(), results.OverAllProjects.Transfers.TotalProjects);
         Assert.NotNull(results.ConversionsPerRegion);
         Assert.NotNull(results.TransfersPerRegion);
         Assert.NotNull(results.NewProjects);

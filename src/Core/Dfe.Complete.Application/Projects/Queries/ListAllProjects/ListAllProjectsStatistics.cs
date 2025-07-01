@@ -1,8 +1,6 @@
 ﻿using Dfe.Complete.Application.Common.Models;
 using Dfe.Complete.Application.Projects.Interfaces;
 using Dfe.Complete.Application.Projects.Models;
-using Dfe.Complete.Application.Users.Interfaces;
-using Dfe.Complete.Application.Users.Models;
 using Dfe.Complete.Domain.Entities;
 using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Utils;
@@ -12,10 +10,9 @@ using Microsoft.Extensions.Logging;
 
 namespace Dfe.Complete.Application.Projects.Queries.ListAllProjects
 {
-    public record ListAllProjectsStatisticsQuery() : IRequest<Result<ListAllProjectsStatisticsModel>>
-    {
-    }
-    public class ListAllProjectsStatisticsQueryHandler(IProjectsQueryBuilder projectsQueryBuilder, IUsersQueryBuilder usersQueryBuilder,  ILogger<ListAllProjectsStatisticsQueryHandler> logger) : IRequestHandler<ListAllProjectsStatisticsQuery, Result<ListAllProjectsStatisticsModel>>
+    public record ListAllProjectsStatisticsQuery() : IRequest<Result<ListAllProjectsStatisticsModel>>;
+
+    public class ListAllProjectsStatisticsQueryHandler(IProjectsQueryBuilder projectsQueryBuilder, IReadUserRepository readUserRepository,  ILogger<ListAllProjectsStatisticsQueryHandler> logger) : IRequestHandler<ListAllProjectsStatisticsQuery, Result<ListAllProjectsStatisticsModel>>
     { 
         public async Task<Result<ListAllProjectsStatisticsModel>> Handle(ListAllProjectsStatisticsQuery request, CancellationToken cancellationToken)
         {
@@ -39,14 +36,14 @@ namespace Dfe.Complete.Application.Projects.Queries.ListAllProjects
 
                 var result = new ListAllProjectsStatisticsModel
                 {
-                    OveraAllProjects = new ProjectsModel(GetProjectsStats(conversions), GetProjectsStats(transfers)),
-                    RegionalCaseworkServicesProjects = new ProjectsModel(GetProjectsStats(conversionsWithRegionalCasework, false), GetProjectsStats(transfersWithRegionalCasework, false)),
-                    NotRegionalCaseworkServicesProjects = new ProjectsModel(GetProjectsStats(conversionsNotWithRegionalCasework, false), GetProjectsStats(transfersNotWithRegionalCasework, false)),
+                    OverAllProjects = new ProjectStatisticsModel(GetProjectsStats(conversions), GetProjectsStats(transfers)),
+                    RegionalCaseworkServicesProjects = new ProjectStatisticsModel(GetProjectsStats(conversionsWithRegionalCasework, false), GetProjectsStats(transfersWithRegionalCasework, false)),
+                    NotRegionalCaseworkServicesProjects = new ProjectStatisticsModel(GetProjectsStats(conversionsNotWithRegionalCasework, false), GetProjectsStats(transfersNotWithRegionalCasework, false)),
                     ConversionsPerRegion = ProjectsPerRegion(regionalTeams, conversions),
                     TransfersPerRegion = ProjectsPerRegion(regionalTeams, transfers),
                     SixMonthViewOfAllProjectOpeners = GetSixMonthViewOfAllProjectOpeners(conversions, transfers),
                     NewProjects = GetNewProjectsThisMonth(conversions, transfers),
-                    UsersPerTeam = await GetUsersPerTeamAsync(regionalTeams, usersQueryBuilder, cancellationToken)
+                    UsersPerTeam = await GetUsersPerTeamAsync(regionalTeams, readUserRepository, cancellationToken)
                 };
 
                 return Result<ListAllProjectsStatisticsModel>.Success(result);
@@ -58,29 +55,29 @@ namespace Dfe.Complete.Application.Projects.Queries.ListAllProjects
             }
         }
 
-        private static ProjectDetailsModel GetProjectsStats(List<Project> projects, bool includeDaoRevokedCount = true) => new(
+        private static ProjectDetailsStatisticsModel GetProjectsStats(List<Project> projects, bool includeDaoRevokedCount = true) => new(
                 projects.Count(IsInProgress),
                 projects.Count(IsCompleted),
                 projects.Count(IsUnassigned),
                 projects.Count,
                 includeDaoRevokedCount ? projects.Count(IsDaoRevoked) : null);
 
-        private static List<RegionProjectDetailsModel> ProjectsPerRegion(List<Region> regions, List<Project> projects)
+        private static List<RegionalProjectsStatisticsModel> ProjectsPerRegion(List<Region> regions, List<Project> projects)
             => regions.Select(region =>
             {
                 var regionProjects = projects.Where(p => p.Region == region).ToList();
-                var projectDetails = new ProjectDetailsModel(
+                var projectDetails = new ProjectDetailsStatisticsModel(
                     InProgressProjects: regionProjects.Count(IsInProgress),
                     CompletedProjects: regionProjects.Count(IsCompleted),
                     UnassignedProjects: regionProjects.Count(IsUnassigned),
                     TotalProjects: regionProjects.Count
                 );
-                return new RegionProjectDetailsModel(FormatDescription(region.ToDescription()), projectDetails);
+                return new RegionalProjectsStatisticsModel(FormatDescription(region.ToDescription()), projectDetails);
             }).ToList();
 
-        private static List<AllOpenersProjectsModel> GetSixMonthViewOfAllProjectOpeners(List<Project> conversions, List<Project> transfers) 
+        private static List<AllOpenersProjectsStatisticsModel> GetSixMonthViewOfAllProjectOpeners(List<Project> conversions, List<Project> transfers) 
         {
-            var openersPerMonth = new List<AllOpenersProjectsModel>();
+            var openersPerMonth = new List<AllOpenersProjectsStatisticsModel>();
 
             for (int i = 1; i <= 6; i++)
             {
@@ -92,7 +89,7 @@ namespace Dfe.Complete.Application.Projects.Queries.ListAllProjects
                     p.SignificantDate.Value.Year == targetMonth.Year &&
                     p.SignificantDate.Value.Month == targetMonth.Month);
 
-                openersPerMonth.Add(new AllOpenersProjectsModel(
+                openersPerMonth.Add(new AllOpenersProjectsStatisticsModel(
                     $"{targetMonth:MMMM} {targetMonth.Year}",
                     OpenerProjectCount(conversions),
                     OpenerProjectCount(transfers)
@@ -101,7 +98,7 @@ namespace Dfe.Complete.Application.Projects.Queries.ListAllProjects
             return openersPerMonth;
         }
 
-        private static NewProjectsInThisMonth GetNewProjectsThisMonth(List<Project> conversions, List<Project> transfers)
+        private static ThisMonthNewProjectsStatisticsModel GetNewProjectsThisMonth(List<Project> conversions, List<Project> transfers)
         {
             var now = DateTime.UtcNow; 
             var monthStart = new DateTime(now.Year, now.Month, 1, 0, 0, 0, DateTimeKind.Utc); 
@@ -113,15 +110,14 @@ namespace Dfe.Complete.Application.Projects.Queries.ListAllProjects
             var newConversionsThisMonth = CountNewProjects(conversions);
             var newTransfersThisMonth = CountNewProjects(transfers);
 
-            return new NewProjectsInThisMonth(monthYear, newConversionsThisMonth + newTransfersThisMonth, newConversionsThisMonth, newTransfersThisMonth);
+            return new ThisMonthNewProjectsStatisticsModel(monthYear, newConversionsThisMonth + newTransfersThisMonth, newConversionsThisMonth, newTransfersThisMonth);
         }
 
-        public static async Task<Dictionary<string, int>> GetUsersPerTeamAsync(List<Region> regions, IUsersQueryBuilder usersQueryBuilder, CancellationToken cancellationToken)
+        public static async Task<Dictionary<string, int>> GetUsersPerTeamAsync(List<Region> regions, IReadUserRepository readUserRepository, CancellationToken cancellationToken)
         {
-            var usersGroupedByTeam = await usersQueryBuilder
-                .ApplyUsersFilters(new UsersFilters())
+            var usersGroupedByTeam = await readUserRepository  
+                .Users
                 .Where(x => !string.IsNullOrWhiteSpace(x.Team))
-                .GetUsers()
                 .GroupBy(u => u.Team ?? string.Empty)
                 .ToDictionaryAsync(
                     group => group.Key,

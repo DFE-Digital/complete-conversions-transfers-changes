@@ -3222,35 +3222,35 @@
         "type": "object",
         "additionalProperties": false,
         "properties": {
-          "overaAllProjects": {
-            "$ref": "#/components/schemas/ProjectsModel"
+          "overAllProjects": {
+            "$ref": "#/components/schemas/ProjectStatisticsModel"
           },
           "regionalCaseworkServicesProjects": {
-            "$ref": "#/components/schemas/ProjectsModel"
+            "$ref": "#/components/schemas/ProjectStatisticsModel"
           },
           "notRegionalCaseworkServicesProjects": {
-            "$ref": "#/components/schemas/ProjectsModel"
+            "$ref": "#/components/schemas/ProjectStatisticsModel"
           },
           "conversionsPerRegion": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/RegionProjectDetailsModel"
+              "$ref": "#/components/schemas/RegionalProjectsStatisticsModel"
             }
           },
           "transfersPerRegion": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/RegionProjectDetailsModel"
+              "$ref": "#/components/schemas/RegionalProjectsStatisticsModel"
             }
           },
           "sixMonthViewOfAllProjectOpeners": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/AllOpenersProjectsModel"
+              "$ref": "#/components/schemas/AllOpenersProjectsStatisticsModel"
             }
           },
           "newProjects": {
-            "$ref": "#/components/schemas/NewProjectsInThisMonth"
+            "$ref": "#/components/schemas/ThisMonthNewProjectsStatisticsModel"
           },
           "usersPerTeam": {
             "type": "object",
@@ -3261,19 +3261,19 @@
           }
         }
       },
-      "ProjectsModel": {
+      "ProjectStatisticsModel": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
           "conversions": {
-            "$ref": "#/components/schemas/ProjectDetailsModel"
+            "$ref": "#/components/schemas/ProjectDetailsStatisticsModel"
           },
           "transfers": {
-            "$ref": "#/components/schemas/ProjectDetailsModel"
+            "$ref": "#/components/schemas/ProjectDetailsStatisticsModel"
           }
         }
       },
-      "ProjectDetailsModel": {
+      "ProjectDetailsStatisticsModel": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
@@ -3300,7 +3300,7 @@
           }
         }
       },
-      "RegionProjectDetailsModel": {
+      "RegionalProjectsStatisticsModel": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
@@ -3308,11 +3308,11 @@
             "type": "string"
           },
           "details": {
-            "$ref": "#/components/schemas/ProjectDetailsModel"
+            "$ref": "#/components/schemas/ProjectDetailsStatisticsModel"
           }
         }
       },
-      "AllOpenersProjectsModel": {
+      "AllOpenersProjectsStatisticsModel": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
@@ -3329,7 +3329,7 @@
           }
         }
       },
-      "NewProjectsInThisMonth": {
+      "ThisMonthNewProjectsStatisticsModel": {
         "type": "object",
         "additionalProperties": false,
         "properties": {

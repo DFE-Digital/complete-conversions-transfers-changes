@@ -1,8 +1,6 @@
 ﻿using Dfe.Complete.Application.Projects.Interfaces;
 using Dfe.Complete.Application.Projects.Models;
 using Dfe.Complete.Application.Projects.Queries.ListAllProjects;
-using Dfe.Complete.Application.Users.Interfaces;
-using Dfe.Complete.Application.Users.Models;
 using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Domain.ValueObjects;
 using Dfe.Complete.Utils;
@@ -15,34 +13,29 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
     public class ListAllProjectsStatisticsQueryHandlerTests
     {
         private readonly Mock<IProjectsQueryBuilder> _projectsQueryBuilderMock = new();
-        private readonly Mock<IUsersQueryBuilder> _usersQueryBuilderMock = new();
+        private readonly Mock<IReadUserRepository> _readUserRepositoryMock = new();
         private readonly Mock<ILogger<ListAllProjectsStatisticsQueryHandler>> _loggerMock = new();
 
         private ListAllProjectsStatisticsQueryHandler CreateHandler(
             List<Domain.Entities.Project> projects = null!,
             List<string> usersPerTeam = null!)
         {
-            if (projects != null)
+            if (projects != null && usersPerTeam != null)
             {
-                var projectsQueryable = (projects).BuildMock();
+                var projectsQueryable = projects.BuildMock();
                 _projectsQueryBuilderMock.Setup(x => x.ApplyProjectFilters(It.IsAny<ProjectFilters>()))
                     .Returns(_projectsQueryBuilderMock.Object);
                 _projectsQueryBuilderMock.Setup(x => x.GetProjects())
                     .Returns(projectsQueryable);
-            }
-            // Setup users
-            _usersQueryBuilderMock.Setup(x => x.ApplyUsersFilters(It.IsAny<UsersFilters>()))
-                .Returns(_usersQueryBuilderMock.Object);
-            _usersQueryBuilderMock.Setup(x => x.Where(It.IsAny<System.Linq.Expressions.Expression<Func<Domain.Entities.User, bool>>>()))
-                .Returns(_usersQueryBuilderMock.Object);
-            _usersQueryBuilderMock.Setup(x => x.GetUsers())
-                .Returns((usersPerTeam ?? [])
+
+                _readUserRepositoryMock.Setup(x => x.Users)
+                .Returns((usersPerTeam)
                     .Select(kvp => new Domain.Entities.User { Team = kvp, Id = new UserId(Guid.NewGuid()) })
                     .BuildMock());
-
+            }
             return new ListAllProjectsStatisticsQueryHandler(
                 _projectsQueryBuilderMock.Object,
-                _usersQueryBuilderMock.Object,
+                _readUserRepositoryMock.Object,
                 _loggerMock.Object
             );
         }
@@ -51,7 +44,7 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
         public async Task Handle_ShouldReturns_CorrectStatistics()
         {
             // Arrange
-            var dateTime = new DateTime(2025, 06, 30);
+            var dateTime = DateTime.Now;
             var projects = SetUpProjects(dateTime); 
             var regions = GetRegions(projects);
             var teams = projects.DistinctBy(x => x.Team)
@@ -65,16 +58,16 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
             // Assert
             Assert.True(result.IsSuccess);
             Assert.NotNull(result.Value);
-            Assert.Equal(9, result.Value.OveraAllProjects.Conversions.TotalProjects);
-            Assert.Equal(2, result.Value.OveraAllProjects.Conversions.InProgressProjects);
-            Assert.Equal(2, result.Value.OveraAllProjects.Conversions.CompletedProjects);
-            Assert.Equal(4, result.Value.OveraAllProjects.Conversions.DaoRevokedProjects);
-            Assert.Equal(1, result.Value.OveraAllProjects.Conversions.UnassignedProjects);
-            Assert.Equal(8, result.Value.OveraAllProjects.Transfers.TotalProjects);
-            Assert.Equal(2, result.Value.OveraAllProjects.Transfers.InProgressProjects);
-            Assert.Equal(2, result.Value.OveraAllProjects.Transfers.CompletedProjects);
-            Assert.Equal(3, result.Value.OveraAllProjects.Transfers.DaoRevokedProjects);
-            Assert.Equal(1, result.Value.OveraAllProjects.Transfers.UnassignedProjects);
+            Assert.Equal(9, result.Value.OverAllProjects.Conversions.TotalProjects);
+            Assert.Equal(2, result.Value.OverAllProjects.Conversions.InProgressProjects);
+            Assert.Equal(2, result.Value.OverAllProjects.Conversions.CompletedProjects);
+            Assert.Equal(4, result.Value.OverAllProjects.Conversions.DaoRevokedProjects);
+            Assert.Equal(1, result.Value.OverAllProjects.Conversions.UnassignedProjects);
+            Assert.Equal(8, result.Value.OverAllProjects.Transfers.TotalProjects);
+            Assert.Equal(2, result.Value.OverAllProjects.Transfers.InProgressProjects);
+            Assert.Equal(2, result.Value.OverAllProjects.Transfers.CompletedProjects);
+            Assert.Equal(3, result.Value.OverAllProjects.Transfers.DaoRevokedProjects);
+            Assert.Equal(1, result.Value.OverAllProjects.Transfers.UnassignedProjects);
 
             Assert.Equal(4, result.Value.RegionalCaseworkServicesProjects.Conversions.TotalProjects);
             Assert.Equal(1, result.Value.RegionalCaseworkServicesProjects.Conversions.InProgressProjects);
@@ -131,7 +124,7 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
             }
         }
 
-        private static void AssertNewProjectsInAMonth(DateTime dateTime, NewProjectsInThisMonth newProjects)
+        private static void AssertNewProjectsInAMonth(DateTime dateTime, ThisMonthNewProjectsStatisticsModel newProjects)
         { 
             var monthYear = $"{dateTime:MMMM} {dateTime.Year}";
             Assert.Equal(monthYear, newProjects.Date);
@@ -140,7 +133,7 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
             Assert.Equal(8, newProjects.TotalTransfers);
         }
 
-        private static void AssertSixMonthViewOfAllProjectOpeners(DateTime dateTime, List<AllOpenersProjectsModel> projects)
+        private static void AssertSixMonthViewOfAllProjectOpeners(DateTime dateTime, List<AllOpenersProjectsStatisticsModel> projects)
         {
             for (int i = 1; i <= projects.Count; i++)
             {
@@ -152,7 +145,7 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
                 Assert.Equal(0, project.Tranfers);
             }
         }
-        private static void AssertProjectsPerRegion(Dictionary<string, Dictionary<ProjectType, ProjectDetailsModel>> regions, List<RegionProjectDetailsModel> projectsPerRegion, ProjectType projectType)
+        private static void AssertProjectsPerRegion(Dictionary<string, Dictionary<ProjectType, ProjectDetailsStatisticsModel>> regions, List<RegionalProjectsStatisticsModel> projectsPerRegion, ProjectType projectType)
         {
             foreach (var region in regions)
             {
@@ -200,7 +193,7 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
                 new() { Type = ProjectType.Transfer, State = ProjectState.DaoRevoked, AssignedToId = new UserId(Guid.NewGuid()), Region = Region.EastOfEngland, Team = ProjectTeam.RegionalCaseWorkerServices, CreatedAt = dateTime },
             ];
 
-        private static Dictionary<string, Dictionary<ProjectType, ProjectDetailsModel>> GetRegions(List<Domain.Entities.Project> projects) =>
+        private static Dictionary<string, Dictionary<ProjectType, ProjectDetailsStatisticsModel>> GetRegions(List<Domain.Entities.Project> projects) =>
             projects
             .GroupBy(p => p.Region?.ToDescription() ?? "Unassigned")
             .ToDictionary(
@@ -209,7 +202,7 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
                     .GroupBy(p => p.Type ?? ProjectType.Conversion)
                     .ToDictionary(
                         typeGroup => typeGroup.Key,
-                        typeGroup => new ProjectDetailsModel(
+                        typeGroup => new ProjectDetailsStatisticsModel(
                             typeGroup.Count(p => p.State == ProjectState.Active && p.AssignedToId != null),
                             typeGroup.Count(p => p.State == ProjectState.Completed),
                             typeGroup.Count(p => p.State == ProjectState.Active && p.AssignedToId == null),

@@ -145,36 +145,5 @@ public class IQueryableProjectsExtensionTests
 
         // Assert
         Assert.Equal(expectedOrder.Select(p => p.Id), result.Select(p => p.Id));
-    } 
-
-    [Theory]
-    [CustomAutoData(
-        typeof(UserCustomization))]
-    public void OrderUserBy_CreatedAt_Ascending(IFixture fixture)
-    {
-        var users = fixture.CreateMany<User>(10).AsQueryable();
-
-        var result = users.OrderUserBy(new OrderUserQueryBy(OrderUserByField.CreatedAt, OrderByDirection.Ascending)).ToList();
-        for (int i = 0; i < result.Count - 1; i++)
-        {
-            Assert.True(result[i].CreatedAt <= result[i + 1].CreatedAt,
-                $"User at index {i} (CreatedAt: {result[i].CreatedAt}) should be <= user at index {i + 1} (CreatedAt: {result[i + 1].CreatedAt})");
-        }
     }
-
-    [Theory]
-    [CustomAutoData(
-       typeof(UserCustomization))]
-    public void OrderUserBy_CreatedAt_Descending(IFixture fixture)
-    {
-        var users = fixture.CreateMany<User>(10).AsQueryable();
-
-        var result = users.OrderUserBy(new OrderUserQueryBy(OrderUserByField.CreatedAt, OrderByDirection.Descending)).ToList();
-
-        for (int i = 0; i < result.Count - 1; i++)
-        {
-            Assert.True(result[i].CreatedAt >= result[i + 1].CreatedAt,
-                $"User at index {i} (CreatedAt: {result[i].CreatedAt}) should be >= user at index {i + 1} (CreatedAt: {result[i + 1].CreatedAt})");
-        }
-    } 
 }

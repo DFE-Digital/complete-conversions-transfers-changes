@@ -2123,26 +2123,26 @@ namespace Dfe.Complete.Client.Contracts
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.2.0.0 (NJsonSchema v11.1.0.0 (Newtonsoft.Json v13.0.0.0))")]
     public partial class ListAllProjectsStatisticsModel
     {
-        [Newtonsoft.Json.JsonProperty("overaAllProjects", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public ProjectsModel? OveraAllProjects { get; set; } = default!;
+        [Newtonsoft.Json.JsonProperty("overAllProjects", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public ProjectStatisticsModel? OverAllProjects { get; set; } = default!;
 
         [Newtonsoft.Json.JsonProperty("regionalCaseworkServicesProjects", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public ProjectsModel? RegionalCaseworkServicesProjects { get; set; } = default!;
+        public ProjectStatisticsModel? RegionalCaseworkServicesProjects { get; set; } = default!;
 
         [Newtonsoft.Json.JsonProperty("notRegionalCaseworkServicesProjects", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public ProjectsModel? NotRegionalCaseworkServicesProjects { get; set; } = default!;
+        public ProjectStatisticsModel? NotRegionalCaseworkServicesProjects { get; set; } = default!;
 
         [Newtonsoft.Json.JsonProperty("conversionsPerRegion", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.Collections.Generic.List<RegionProjectDetailsModel>? ConversionsPerRegion { get; set; } = default!;
+        public System.Collections.Generic.List<RegionalProjectsStatisticsModel>? ConversionsPerRegion { get; set; } = default!;
 
         [Newtonsoft.Json.JsonProperty("transfersPerRegion", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.Collections.Generic.List<RegionProjectDetailsModel>? TransfersPerRegion { get; set; } = default!;
+        public System.Collections.Generic.List<RegionalProjectsStatisticsModel>? TransfersPerRegion { get; set; } = default!;
 
         [Newtonsoft.Json.JsonProperty("sixMonthViewOfAllProjectOpeners", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.Collections.Generic.List<AllOpenersProjectsModel>? SixMonthViewOfAllProjectOpeners { get; set; } = default!;
+        public System.Collections.Generic.List<AllOpenersProjectsStatisticsModel>? SixMonthViewOfAllProjectOpeners { get; set; } = default!;
 
         [Newtonsoft.Json.JsonProperty("newProjects", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public NewProjectsInThisMonth? NewProjects { get; set; } = default!;
+        public ThisMonthNewProjectsStatisticsModel? NewProjects { get; set; } = default!;
 
         [Newtonsoft.Json.JsonProperty("usersPerTeam", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public System.Collections.Generic.Dictionary<string, int>? UsersPerTeam { get; set; } = default!;
@@ -2163,13 +2163,13 @@ namespace Dfe.Complete.Client.Contracts
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.2.0.0 (NJsonSchema v11.1.0.0 (Newtonsoft.Json v13.0.0.0))")]
-    public partial class ProjectsModel
+    public partial class ProjectStatisticsModel
     {
         [Newtonsoft.Json.JsonProperty("conversions", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public ProjectDetailsModel? Conversions { get; set; } = default!;
+        public ProjectDetailsStatisticsModel? Conversions { get; set; } = default!;
 
         [Newtonsoft.Json.JsonProperty("transfers", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public ProjectDetailsModel? Transfers { get; set; } = default!;
+        public ProjectDetailsStatisticsModel? Transfers { get; set; } = default!;
 
         public string ToJson()
         {
@@ -2177,17 +2177,17 @@ namespace Dfe.Complete.Client.Contracts
             return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonSerializerSettings());
 
         }
-        public static ProjectsModel FromJson(string data)
+        public static ProjectStatisticsModel FromJson(string data)
         {
 
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<ProjectsModel>(data, new Newtonsoft.Json.JsonSerializerSettings());
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<ProjectStatisticsModel>(data, new Newtonsoft.Json.JsonSerializerSettings());
 
         }
 
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.2.0.0 (NJsonSchema v11.1.0.0 (Newtonsoft.Json v13.0.0.0))")]
-    public partial class ProjectDetailsModel
+    public partial class ProjectDetailsStatisticsModel
     {
         [Newtonsoft.Json.JsonProperty("inProgressProjects", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public int? InProgressProjects { get; set; } = default!;
@@ -2210,23 +2210,23 @@ namespace Dfe.Complete.Client.Contracts
             return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonSerializerSettings());
 
         }
-        public static ProjectDetailsModel FromJson(string data)
+        public static ProjectDetailsStatisticsModel FromJson(string data)
         {
 
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<ProjectDetailsModel>(data, new Newtonsoft.Json.JsonSerializerSettings());
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<ProjectDetailsStatisticsModel>(data, new Newtonsoft.Json.JsonSerializerSettings());
 
         }
 
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.2.0.0 (NJsonSchema v11.1.0.0 (Newtonsoft.Json v13.0.0.0))")]
-    public partial class RegionProjectDetailsModel
+    public partial class RegionalProjectsStatisticsModel
     {
         [Newtonsoft.Json.JsonProperty("regionName", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string? RegionName { get; set; } = default!;
 
         [Newtonsoft.Json.JsonProperty("details", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public ProjectDetailsModel? Details { get; set; } = default!;
+        public ProjectDetailsStatisticsModel? Details { get; set; } = default!;
 
         public string ToJson()
         {
@@ -2234,17 +2234,17 @@ namespace Dfe.Complete.Client.Contracts
             return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonSerializerSettings());
 
         }
-        public static RegionProjectDetailsModel FromJson(string data)
+        public static RegionalProjectsStatisticsModel FromJson(string data)
         {
 
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<RegionProjectDetailsModel>(data, new Newtonsoft.Json.JsonSerializerSettings());
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<RegionalProjectsStatisticsModel>(data, new Newtonsoft.Json.JsonSerializerSettings());
 
         }
 
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.2.0.0 (NJsonSchema v11.1.0.0 (Newtonsoft.Json v13.0.0.0))")]
-    public partial class AllOpenersProjectsModel
+    public partial class AllOpenersProjectsStatisticsModel
     {
         [Newtonsoft.Json.JsonProperty("date", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string? Date { get; set; } = default!;
@@ -2261,17 +2261,17 @@ namespace Dfe.Complete.Client.Contracts
             return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonSerializerSettings());
 
         }
-        public static AllOpenersProjectsModel FromJson(string data)
+        public static AllOpenersProjectsStatisticsModel FromJson(string data)
         {
 
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<AllOpenersProjectsModel>(data, new Newtonsoft.Json.JsonSerializerSettings());
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<AllOpenersProjectsStatisticsModel>(data, new Newtonsoft.Json.JsonSerializerSettings());
 
         }
 
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.2.0.0 (NJsonSchema v11.1.0.0 (Newtonsoft.Json v13.0.0.0))")]
-    public partial class NewProjectsInThisMonth
+    public partial class ThisMonthNewProjectsStatisticsModel
     {
         [Newtonsoft.Json.JsonProperty("date", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string? Date { get; set; } = default!;
@@ -2291,10 +2291,10 @@ namespace Dfe.Complete.Client.Contracts
             return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonSerializerSettings());
 
         }
-        public static NewProjectsInThisMonth FromJson(string data)
+        public static ThisMonthNewProjectsStatisticsModel FromJson(string data)
         {
 
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<NewProjectsInThisMonth>(data, new Newtonsoft.Json.JsonSerializerSettings());
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<ThisMonthNewProjectsStatisticsModel>(data, new Newtonsoft.Json.JsonSerializerSettings());
 
         }
 
