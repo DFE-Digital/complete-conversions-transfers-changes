@@ -111,18 +111,32 @@ export class ProjectDetailsPage extends BasePage {
         cy.get("@summaryCounter").then((counter) => {
             const nextIndex = Number(counter) + 1;
             cy.wrap(nextIndex).as("summaryCounter");
-
-            cy.getById(this.sectionId).within(() => {
-                cy.get(".govuk-summary-list__key").eq(nextIndex).should("contains.text", key);
+            cy.get("@subSectionId").then((subSectionId) => {
+                const id = subSectionId ? subSectionId.toString() : this.sectionId;
+                cy.getById(id).find(".govuk-summary-list__key").eq(nextIndex).shouldHaveText(key);
             });
         });
         return this;
     }
 
     hasValue(value: string | number): this {
+        this.hasValueWithLink(value);
+        return this;
+    }
+
+    hasValueWithLink(value: string | number, link?: string): this {
         cy.get("@summaryCounter").then((counter) => {
-            cy.getById(this.sectionId).within(() => {
-                cy.get(".govuk-summary-list__value").eq(Number(counter)).should("contains.text", value);
+            cy.get("@subSectionId").then((subSectionId) => {
+                const id = subSectionId ? subSectionId.toString() : this.sectionId;
+                cy.getById(id)
+                    .find(".govuk-summary-list__value")
+                    .eq(Number(counter))
+                    .shouldHaveText(value)
+                    .then(($el) => {
+                        if (link) {
+                            cy.wrap($el).find("a").should("have.attr", "href", link);
+                        }
+                    });
             });
         });
         return this;
@@ -130,12 +144,15 @@ export class ProjectDetailsPage extends BasePage {
 
     hasTextWithLink(text: string, link: string, position: number = -1): this {
         cy.get("@summaryCounter").then((counter) => {
-            cy.getById(this.sectionId).within(() => {
-                cy.get(".govuk-summary-list__actions")
+            cy.get("@subSectionId").then((subSectionId) => {
+                const id = subSectionId ? subSectionId.toString() : this.sectionId;
+                cy.getById(id)
+                    .find(".govuk-summary-list__value")
                     .eq(Number(counter))
+                    .next("dd")
                     .find("a")
                     .eq(position)
-                    .should("contains.text", text)
+                    .should("contain.text", text)
                     .should("have.attr", "href", link);
             });
         });
