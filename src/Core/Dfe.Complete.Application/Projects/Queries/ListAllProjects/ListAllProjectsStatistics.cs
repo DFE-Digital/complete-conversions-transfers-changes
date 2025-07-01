@@ -15,21 +15,22 @@ namespace Dfe.Complete.Application.Projects.Queries.ListAllProjects
 
     public class ListAllProjectsStatisticsQueryHandler(IProjectReadRepository projectReadRepository, IReadUserRepository readUserRepository,  ILogger<ListAllProjectsStatisticsQueryHandler> logger) : IRequestHandler<ListAllProjectsStatisticsQuery, Result<ListAllProjectsStatisticsModel>>
     { 
-        public async Task<Result<ListAllProjectsStatisticsModel>> Handle(ListAllProjectsStatisticsQuery request, CancellationToken cancellationToken)
+public async Task<Result<ListAllProjectsStatisticsModel>> Handle(ListAllProjectsStatisticsQuery request, CancellationToken cancellationToken)
         {
             try
-            {
-                var projects = await new StateQuery([ProjectState.Active, ProjectState.DaoRevoked, ProjectState.Completed])
-                  .Apply(projectReadRepository.Projects.AsNoTracking())
-                  .ToListAsync(cancellationToken);
+            { 
+                var projectsQuery = new StateQuery([ProjectState.Active, ProjectState.DaoRevoked, ProjectState.Completed])
+                    .Apply(projectReadRepository.Projects.AsNoTracking());
 
-                var conversions = projects.Where(p => p.Type == ProjectType.Conversion).ToList();
-                var transfers = projects.Where(p => p.Type == ProjectType.Transfer).ToList();
-                  
-                var conversionsWithRegionalCasework = conversions.Where(IsAssignedToRegionalCasework).ToList();
-                var conversionsNotWithRegionalCasework = conversions.Where(IsNotAssignedToRegionalCasework).ToList();
-                var transfersWithRegionalCasework = transfers.Where(IsAssignedToRegionalCasework).ToList();
-                var transfersNotWithRegionalCasework = transfers.Where(IsNotAssignedToRegionalCasework).ToList();
+                var conversions = await projectsQuery
+                    .Where(p => p.Type == ProjectType.Conversion)
+                    .ToListAsync(cancellationToken);
+                var transfers = await projectsQuery
+                    .Where(p => p.Type == ProjectType.Transfer)
+                    .ToListAsync(cancellationToken);
+                 
+                var (conversionsWithRegionalCasework ,  conversionsNotWithRegionalCasework) = SplitProjectsByRegionalCasework(conversions);
+                var (transfersWithRegionalCasework, transfersNotWithRegionalCasework) = SplitProjectsByRegionalCasework(transfers);
 
                 var regionalTeams = GetRegions();
 
@@ -52,6 +53,19 @@ namespace Dfe.Complete.Application.Projects.Queries.ListAllProjects
                 logger.LogError(e, "Exception for {Name} Request - {@Request}", nameof(ListAllProjectsForTeamQueryHandler), request);
                 return Result<ListAllProjectsStatisticsModel>.Failure(e.Message);
             }
+        }
+        private static (List<Project> regionalCaseworkProjects, List<Project> notRegionalCaseworkProjects) SplitProjectsByRegionalCasework(List<Project> projects)
+        {
+            var regionalCaseworkProjects = new List<Project>();
+            var notRegionalCaseworkProjects = new List<Project>();
+            foreach (var project in projects)
+            {
+                if (IsAssignedToRegionalCasework(project))
+                    regionalCaseworkProjects.Add(project);
+                else
+                    notRegionalCaseworkProjects.Add(project);
+            }
+            return (regionalCaseworkProjects, notRegionalCaseworkProjects);
         }
 
         private static ProjectDetailsStatisticsModel GetProjectsStats(List<Project> projects, bool includeDaoRevokedCount = true) => new(
@@ -114,14 +128,14 @@ namespace Dfe.Complete.Application.Projects.Queries.ListAllProjects
 
         public static async Task<Dictionary<string, int>> GetUsersPerTeamAsync(List<Region> regions, IReadUserRepository readUserRepository, CancellationToken cancellationToken)
         {
-            var usersGroupedByTeam = await readUserRepository  
-                .Users
-                .Where(x => !string.IsNullOrWhiteSpace(x.Team))
-                .GroupBy(u => u.Team ?? string.Empty)
-                .ToDictionaryAsync(
-                    group => group.Key,
-                    group => group.Count(user => user.Id != null),
-                    cancellationToken);
+            var usersGroupedByTeam = await readUserRepository
+               .Users
+               .Where(x => !string.IsNullOrWhiteSpace(x.Team) && x.Id != null)
+               .GroupBy(u => u.Team ?? string.Empty)
+               .ToDictionaryAsync(
+                   group => group.Key,
+                   group => group.Count(),
+                   cancellationToken);
 
             return regions.Select(x => x.ToDescription()).Concat(
             [
@@ -140,8 +154,7 @@ namespace Dfe.Complete.Application.Projects.Queries.ListAllProjects
         private static bool IsCompleted(Project p) => p.State == ProjectState.Completed;
         private static bool IsDaoRevoked(Project p) => p.State == ProjectState.DaoRevoked;
         private static bool IsUnassigned(Project p) => p.State == ProjectState.Active && p.AssignedToId == null;
-        private static bool IsAssignedToRegionalCasework(Project p) => p.Team == ProjectTeam.RegionalCaseWorkerServices;
-        private static bool IsNotAssignedToRegionalCasework(Project p) => p.Team != ProjectTeam.RegionalCaseWorkerServices && !string.IsNullOrEmpty(p.Team?.ToString());
+        private static bool IsAssignedToRegionalCasework(Project p) => p.Team == ProjectTeam.RegionalCaseWorkerServices; 
 
         private static List<Region> GetRegions() => [
                Region.London,
