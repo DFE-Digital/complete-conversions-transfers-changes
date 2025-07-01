@@ -1,5 +1,4 @@
 using Dfe.Complete.Application.Projects.Models;
-using Dfe.Complete.Application.Users.Models;
 using Dfe.Complete.Domain.Entities;
 using Dfe.Complete.Domain.Enums;
 

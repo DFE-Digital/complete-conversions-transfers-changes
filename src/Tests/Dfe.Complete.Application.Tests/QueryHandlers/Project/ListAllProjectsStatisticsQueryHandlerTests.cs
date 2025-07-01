@@ -12,7 +12,7 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
 {
     public class ListAllProjectsStatisticsQueryHandlerTests
     {
-        private readonly Mock<IProjectsQueryBuilder> _projectsQueryBuilderMock = new();
+        private readonly Mock<IProjectReadRepository> _projectReadRepositoryMock = new();
         private readonly Mock<IReadUserRepository> _readUserRepositoryMock = new();
         private readonly Mock<ILogger<ListAllProjectsStatisticsQueryHandler>> _loggerMock = new();
 
@@ -23,9 +23,7 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
             if (projects != null && usersPerTeam != null)
             {
                 var projectsQueryable = projects.BuildMock();
-                _projectsQueryBuilderMock.Setup(x => x.ApplyProjectFilters(It.IsAny<ProjectFilters>()))
-                    .Returns(_projectsQueryBuilderMock.Object);
-                _projectsQueryBuilderMock.Setup(x => x.GetProjects())
+                _projectReadRepositoryMock.Setup(x => x.Projects)
                     .Returns(projectsQueryable);
 
                 _readUserRepositoryMock.Setup(x => x.Users)
@@ -34,7 +32,7 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
                     .BuildMock());
             }
             return new ListAllProjectsStatisticsQueryHandler(
-                _projectsQueryBuilderMock.Object,
+                _projectReadRepositoryMock.Object,
                 _readUserRepositoryMock.Object,
                 _loggerMock.Object
             );
@@ -105,7 +103,7 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
         public async Task Handle_ReturnsFailure_OnException()
         {
             // Arrange
-            _projectsQueryBuilderMock.Setup(x => x.ApplyProjectFilters(It.IsAny<ProjectFilters>()))
+            _projectReadRepositoryMock.Setup(x => x.Projects)
                 .Throws(new Exception("Test exception"));
             var handler = CreateHandler();
 

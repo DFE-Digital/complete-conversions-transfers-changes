@@ -1,6 +1,7 @@
 ﻿using Dfe.Complete.Application.Common.Models;
 using Dfe.Complete.Application.Projects.Interfaces;
 using Dfe.Complete.Application.Projects.Models;
+using Dfe.Complete.Application.Projects.Queries.QueryFilters;
 using Dfe.Complete.Domain.Entities;
 using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Utils;
@@ -12,20 +13,19 @@ namespace Dfe.Complete.Application.Projects.Queries.ListAllProjects
 {
     public record ListAllProjectsStatisticsQuery() : IRequest<Result<ListAllProjectsStatisticsModel>>;
 
-    public class ListAllProjectsStatisticsQueryHandler(IProjectsQueryBuilder projectsQueryBuilder, IReadUserRepository readUserRepository,  ILogger<ListAllProjectsStatisticsQueryHandler> logger) : IRequestHandler<ListAllProjectsStatisticsQuery, Result<ListAllProjectsStatisticsModel>>
+    public class ListAllProjectsStatisticsQueryHandler(IProjectReadRepository projectReadRepository, IReadUserRepository readUserRepository,  ILogger<ListAllProjectsStatisticsQueryHandler> logger) : IRequestHandler<ListAllProjectsStatisticsQuery, Result<ListAllProjectsStatisticsModel>>
     { 
         public async Task<Result<ListAllProjectsStatisticsModel>> Handle(ListAllProjectsStatisticsQuery request, CancellationToken cancellationToken)
         {
             try
             {
-                var projectStates = new List<ProjectState> { ProjectState.Active, ProjectState.DaoRevoked, ProjectState.Completed };
-                var filters = new ProjectFilters(null, null, ProjectStatuses: projectStates);
-                var allProjects = await projectsQueryBuilder.ApplyProjectFilters(filters) 
-                    .GetProjects()
-                    .ToListAsync(cancellationToken); 
-                 
-                var conversions = allProjects.Where(p => p.Type == ProjectType.Conversion).ToList();
-                var transfers = allProjects.Where(p => p.Type == ProjectType.Transfer).ToList();
+                var projectStates = new List<ProjectState> { };
+                var projects = await new StateQuery([ProjectState.Active, ProjectState.DaoRevoked, ProjectState.Completed])
+                  .Apply(projectReadRepository.Projects.AsNoTracking())
+                  .ToListAsync(cancellationToken);
+
+                var conversions = projects.Where(p => p.Type == ProjectType.Conversion).ToList();
+                var transfers = projects.Where(p => p.Type == ProjectType.Transfer).ToList();
                   
                 var conversionsWithRegionalCasework = conversions.Where(IsAssignedToRegionalCasework).ToList();
                 var conversionsNotWithRegionalCasework = conversions.Where(IsNotAssignedToRegionalCasework).ToList();
