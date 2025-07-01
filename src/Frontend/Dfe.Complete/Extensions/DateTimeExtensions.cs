@@ -58,6 +58,11 @@ namespace Dfe.Complete.Extensions
 
 			return dateTime.Value.ToString(DateFormatConstants.FullMonthAndYearFormat, GbCulture);
 		}
+		
+		public static string ToUkDateTimeWithAmPmString(this DateTime dateTime)
+		{
+			return dateTime.ToString(DateFormatConstants.DateTimeWithAmPmString, GbCulture);
+		}
 	}
 	
 }

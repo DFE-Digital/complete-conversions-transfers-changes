@@ -10,6 +10,7 @@ namespace Dfe.Complete.Tests.Common.Customizations.Models
         public SignificantDateHistoryId? Id { get; set; }
 
         public ProjectId? ProjectId { get; set; }
+        public User? User { get; set; }
 
         public void Customize(IFixture fixture)
         {
@@ -17,7 +18,9 @@ namespace Dfe.Complete.Tests.Common.Customizations.Models
                     new DateOnlyCustomization()))
                 .Customize<SignificantDateHistory>(composer => composer
                     .With(x => x.Id, Id ?? fixture.Create<SignificantDateHistoryId>())
-                    .With(x => x.ProjectId, ProjectId ?? fixture.Create<ProjectId>()));
+                    .With(x => x.ProjectId, ProjectId ?? fixture.Create<ProjectId>())
+                    .With(x => x.User, User ?? fixture.Create<User>())
+                    .With(x => x.Reason, fixture.Create<SignificantDateHistoryReason>()));
         }
     }
 }

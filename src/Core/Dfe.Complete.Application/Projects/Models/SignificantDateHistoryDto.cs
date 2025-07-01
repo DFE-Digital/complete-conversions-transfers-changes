@@ -1,11 +1,11 @@
-﻿using Dfe.Complete.Domain.Common;
+﻿using Dfe.Complete.Domain.Entities;
 using Dfe.Complete.Domain.ValueObjects;
 
-namespace Dfe.Complete.Domain.Entities;
+namespace Dfe.Complete.Application.Projects.Models;
 
-public class SignificantDateHistory: IEntity<SignificantDateHistoryId>
+public class SignificantDateHistoryDto
 {
-    public SignificantDateHistoryId Id { get; set; }
+    public SignificantDateHistoryId? Id { get; set; }
 
     public DateOnly? RevisedDate { get; set; }
 
@@ -19,7 +19,7 @@ public class SignificantDateHistory: IEntity<SignificantDateHistoryId>
 
     public UserId? UserId { get; set; }
     
-    public virtual SignificantDateHistoryReason? Reason { get; set; }
+    public SignificantDateHistoryReasonDto? Reason { get; set; }
     
     public virtual User? User { get; set; }
 }

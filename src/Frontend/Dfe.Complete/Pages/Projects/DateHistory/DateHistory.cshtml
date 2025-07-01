@@ -1,0 +1,69 @@
+@page "/projects/{projectId}/date-history"
+@model Dfe.Complete.Pages.Projects.DateHistory.DateHistoryProjectModel
+
+@{
+  Layout = "_ProjectLayout";
+  ViewData["Title"] = Model.Establishment.Name;
+
+  var significantDateHistories = Model.Project.SignificantDateHistories;
+}
+
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-full">
+    <section>
+      <h2>Current proposed conversion date</h2>
+      <p class="govuk-!-margin-bottom-8">The current proposed conversion date is <strong>@Model.Project.SignificantDate.ToDateString()</strong></p>
+    </section>
+
+    <h2 class="govuk-heading-l">Conversion date history</h2>
+    
+    @{
+      if (@significantDateHistories.Count > 0)
+      {
+        foreach (var significantDateHistory in significantDateHistories.OrderByDescending(p => p.CreatedAt))
+        {
+
+          var reasonLabel = Model.MapSignificantDateReason(Model.Project, significantDateHistory.Reason);
+          
+          <div class="govuk-summary-card">
+            <div class="govuk-summary-card__title-wrapper">
+              <h2 class="govuk-summary-card__title">@significantDateHistory.CreatedAt.ToUkDateTimeWithAmPmString()</h2>
+            </div>
+            <div class="govuk-summary-card__content">
+            
+              <dl class="govuk-summary-list">
+                <div class="govuk-summary-list__row">
+                  <dt class="govuk-summary-list__key">Changed by</dt><dd class="govuk-summary-list__value">@(significantDateHistory.User != null ? significantDateHistory.User.Email : "User not found") </dd>
+                </div>
+                <div class="govuk-summary-list__row">
+                  <dt class="govuk-summary-list__key">Date changed to</dt><dd class="govuk-summary-list__value">@significantDateHistory.RevisedDate.ToDateString()</dd>
+                </div>
+                <div class="govuk-summary-list__row">
+                  <dt class="govuk-summary-list__key">Date changed from</dt><dd class="govuk-summary-list__value">@significantDateHistory.PreviousDate.ToDateString()</dd>
+                </div>
+                <div class="govuk-summary-list__row">
+                  <dt class="govuk-summary-list__key">Reason for new date</dt>
+                  <dd class="govuk-summary-list__value">
+                    <ul class="govuk-list">
+                      <li>
+                        <h5 class="govuk-heading-xs govuk-!-margin-0">
+                          @reasonLabel.Item1
+                        </h5>
+                        @reasonLabel.Item2
+                      </li>
+                    </ul>
+                
+                  </dd>
+                </div>
+              </dl>
+            </div>
+          </div>
+        }
+      }
+      else
+      {
+        <div class="govuk-inset-text">No date history</div>
+      }
+    }
+  </div>
+</div>

@@ -23,6 +23,7 @@ Security in case of vulnerabilities.
 ## Unreleased  
 
 ### Added
+- Project Significant History Dates `/projects/{projectId}/date-history`
 
 ### Changed  
 
