@@ -19,7 +19,6 @@ namespace Dfe.Complete.Application.Projects.Queries.ListAllProjects
         {
             try
             {
-                var projectStates = new List<ProjectState> { };
                 var projects = await new StateQuery([ProjectState.Active, ProjectState.DaoRevoked, ProjectState.Completed])
                   .Apply(projectReadRepository.Projects.AsNoTracking())
                   .ToListAsync(cancellationToken);
