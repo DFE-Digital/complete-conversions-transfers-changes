@@ -26,7 +26,7 @@ public class ListAllProjectsForUserQueryHandler(
     : IRequestHandler<ListAllProjectsForUserQuery, PaginatedResult<List<ListAllProjectsForUserQueryResultModel>>>
 {
     public async Task<PaginatedResult<List<ListAllProjectsForUserQueryResultModel>>> Handle(
-        ListAllProjectsForUserQuery request, CancellationToken cancellationToken)
+       ListAllProjectsForUserQuery request, CancellationToken cancellationToken)
     {
         try
         {
@@ -44,13 +44,16 @@ public class ListAllProjectsForUserQueryHandler(
             var allProjectTrustUkPrns = projectsForUser
                 .SelectMany(p => new[]
                 {
-                    p.Project?.IncomingTrustUkprn?.Value.ToString() ?? string.Empty,
-                    p.Project?.OutgoingTrustUkprn?.Value.ToString() ?? string.Empty
+                   p.Project?.IncomingTrustUkprn?.Value.ToString() ?? string.Empty,
+                   p.Project?.OutgoingTrustUkprn?.Value.ToString() ?? string.Empty
                 })
                 .Where(ukPrn => !string.IsNullOrEmpty(ukPrn))
                 .ToList();
 
-            var allTrusts = allProjectTrustUkPrns?.Count > 0 ? await trustsClient.GetByUkprnsAllAsync(allProjectTrustUkPrns, cancellationToken) : null;
+            var allTrusts = allProjectTrustUkPrns.Count > 0
+                ? await trustsClient.GetByUkprnsAllAsync(allProjectTrustUkPrns, cancellationToken)
+                : null;
+
             var result = projectsForUser
                 .Skip(request.Page * request.Count)
                 .Take(request.Count)

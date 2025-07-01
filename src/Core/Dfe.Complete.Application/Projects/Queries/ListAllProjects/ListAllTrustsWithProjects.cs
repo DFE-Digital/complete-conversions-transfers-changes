@@ -55,8 +55,8 @@ namespace Dfe.Complete.Application.Projects.Queries.ListAllProjects
                     .Distinct()
                     .ToList();
 
-                var apiDtos = ukprnStrings?.Count > 0 ? await trustsClient
-                    .GetByUkprnsAllAsync(ukprnStrings, cancellationToken) : null;
+                var apiDtos = ukprnStrings.Count > 0 ? await trustsClient
+                   .GetByUkprnsAllAsync(ukprnStrings, cancellationToken) : null;
 
                 var apiDtoDictionary = apiDtos == null
                     ? []
