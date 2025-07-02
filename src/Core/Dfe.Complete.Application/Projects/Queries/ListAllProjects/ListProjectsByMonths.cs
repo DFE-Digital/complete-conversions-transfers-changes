@@ -45,7 +45,7 @@ namespace Dfe.Complete.Application.Projects.Queries.ListProjectsByMonth
                 var outgoingTrustUkprns = projects.Where(p => p.Project.OutgoingTrustUkprn != null).Select(p => p.Project.OutgoingTrustUkprn!.Value.ToString()).ToList();
                 var allUkprns = ukprns.Concat(outgoingTrustUkprns).Distinct();
 
-                var trusts = allUkprns != null && allUkprns.Any() ? await trustsClient.GetByUkprnsAllAsync(allUkprns!, cancellationToken) : null;
+                var trusts = allUkprns.Any() ? await trustsClient.GetByUkprnsAllAsync(allUkprns!, cancellationToken) : null;
 
                 var result = projects
                     .Select(item =>
