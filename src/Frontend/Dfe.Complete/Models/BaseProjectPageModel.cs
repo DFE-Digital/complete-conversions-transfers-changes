@@ -98,7 +98,6 @@ public abstract class BaseProjectPageModel(ISender sender) : PageModel
     }
 
     public virtual async Task<IActionResult> OnGet()
-    
     {
         await UpdateCurrentProject();
 
@@ -112,8 +111,6 @@ public abstract class BaseProjectPageModel(ISender sender) : PageModel
 
         return Page();
     }
-
-
 
     public string FormatRouteWithProjectId(string route) => string.Format(route, ProjectId);
 }
