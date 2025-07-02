@@ -26,12 +26,12 @@ namespace Dfe.Complete.Tests.Pages.Projects
 {
     public class AboutTheProjectModelTests
     {
-        private UserDto GetUser()
+        private static UserDto GetUser()
         {
             return new UserDto { ActiveDirectoryUserId = "test-ad-id", FirstName = "Test", LastName = "User", Team = "Support team" };
         }
 
-        private PageContext GetPageContext()
+        private static PageContext GetPageContext()
         {
             var expectedUser = GetUser();
             var claims = new List<Claim> { new Claim("objectidentifier", expectedUser?.ActiveDirectoryUserId!) };
