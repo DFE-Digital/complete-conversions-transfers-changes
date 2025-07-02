@@ -21,6 +21,11 @@ export const testTrust = {
     referenceNumber: "TR09999",
 };
 export const today = new Date();
+export const todayFormatted = today.toLocaleDateString("default", {
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+});
 export const currentMonthLong = `${today.toLocaleString("default", { month: "long" })} ${today.getFullYear()}`;
 export const currentMonthShort = `${today.toLocaleString("default", { month: "short" })} ${today.getFullYear()}`;
 export const nextMonth = new Date(today.setMonth(today.getMonth() + 1));

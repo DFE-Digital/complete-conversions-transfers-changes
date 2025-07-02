@@ -36,7 +36,7 @@ describe("About the project page - conversion projects: ", () => {
         cy.visit(`projects/${projectId}/tasks`);
     });
 
-    it.only("Should display the project details on the about project section for Conversion form a MAT project", () => {
+    it("Should display the project details on the about project section for Conversion form a MAT project", () => {
         Logger.log("Go to the about project section");
         projectDetailsPage.navigateTo("About the project").containsSubHeading("About the project");
 

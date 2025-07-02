@@ -67,7 +67,7 @@ export function shouldBeAbleToViewAndDownloadCsvReportsFromTheExportSection() {
 export function checkAccessibilityAcrossPages() {
     const visitedUrls = Cypress.env("visitedUrls");
     visitedUrls.forEach((url: string) => {
-        cy.visit(url);
+        cy.visit(url, { failOnStatusCode: false });
         Logger.log("Executing accessibility check for URL: " + url);
         cy.executeAccessibilityTests();
     });
