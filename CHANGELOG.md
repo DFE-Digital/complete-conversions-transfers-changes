@@ -23,6 +23,10 @@ Security in case of vulnerabilities.
 ## Unreleased  
 
 ### Added
+- New route /projects/service-support/without-academy-urn
+- Service support Conversion URNs (/projects/service-support/without-academy-urn)
+- New route /projects/{projectId}/academy-urn
+- Service support Create Academy URN (/projects/{projectId}/academy-urn)
 
 ### Changed  
 
