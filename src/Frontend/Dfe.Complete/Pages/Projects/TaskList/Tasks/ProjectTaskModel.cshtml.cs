@@ -43,7 +43,7 @@ public class TaskListModel(ISender sender) : BaseProjectPageModel(sender)
 
         var noteQuery = new GetProjectTaskNotesByProjectIdQuery(new ProjectId(Guid.Parse(ProjectId.ToString())), (NoteTaskIdentifier)validTaskIdentifier!);
         var response = await sender.Send(noteQuery);
-        Notes = response.IsSuccess ? response.Value : new List<NoteDto>();
+        Notes = response.IsSuccess && response.Value != null ? response.Value : [];
 
         return Page();
     }

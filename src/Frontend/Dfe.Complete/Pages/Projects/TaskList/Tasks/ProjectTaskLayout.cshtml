@@ -38,6 +38,9 @@
                         <p class="govuk-body govuk-!-margin-bottom-0">@note.CreatedAt.ToString("dd MMM yyyy")</p>
                         <h3 class="govuk-heading-s govuk-!-padding-top-0 govuk-!-margin-bottom-1">@note.UserFullName</h3>
                         <p class="govuk-body govuk-!-margin-bottom-1">@note.Body</p>
+                        <div class="app-task-note-actions govuk-!-margin-bottom-1">
+                          <a class="govuk-link govuk-link--no-visited-state app-task-note-edit-link" href="@string.Format(RouteConstants.ProjectEditNote, Model.ProjectId, note.Id.Value, Model.TaskIdentifier)">Edit note</a>
+                        </div>
                         <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible govuk-!-margin-bottom-2" />
                     </li>
                 }
