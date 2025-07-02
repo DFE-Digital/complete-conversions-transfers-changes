@@ -19,6 +19,7 @@ namespace Dfe.Complete.Pages
 			else if (User.IsInRole(UserRolesConstants.ManageTeam)) route = RouteConstants.TeamProjectsUnassigned;
 			else route = RouteConstants.YourProjectsInProgress;
 
+			route = "/projects/865631c0-4542-449a-b63f-78a27279530d/tasks/handover";
 			return Redirect(route);
 		}
 	}
