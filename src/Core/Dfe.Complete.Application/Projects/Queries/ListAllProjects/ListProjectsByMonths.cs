@@ -42,10 +42,10 @@ namespace Dfe.Complete.Application.Projects.Queries.ListProjectsByMonth
                 var projects = await projectsQuery.Paginate(request.Page, request.Count).ToListAsync(cancellationToken);
 
                 var ukprns = projects.Select(p => p.Project.IncomingTrustUkprn?.Value.ToString()).ToList();
-                var outgoingTrustUkprns = projects.Where(p => p.Project.OutgoingTrustUkprn != null).Select(p => p.Project.OutgoingTrustUkprn.Value.ToString()).ToList();
+                var outgoingTrustUkprns = projects.Where(p => p.Project.OutgoingTrustUkprn != null).Select(p => p.Project.OutgoingTrustUkprn!.Value.ToString()).ToList();
                 var allUkprns = ukprns.Concat(outgoingTrustUkprns).Distinct();
 
-                var trusts = await trustsClient.GetByUkprnsAllAsync(allUkprns, cancellationToken);
+                var trusts = allUkprns != null && allUkprns.Any() ? await trustsClient.GetByUkprnsAllAsync(allUkprns!, cancellationToken) : null;
 
                 var result = projects
                     .Select(item =>
@@ -53,7 +53,7 @@ namespace Dfe.Complete.Application.Projects.Queries.ListProjectsByMonth
                         var project = item.Project;
 
                         var confirmedDate = project.SignificantDate?.ToString(DateFormatConstants.MonthAndYearFormat);
-                        var originalDate = project.SignificantDateHistories.Any()
+                        var originalDate = project.SignificantDateHistories.Count != 0
                             ? project.SignificantDateHistories
                                 .OrderBy(s => s.CreatedAt)
                                 .FirstOrDefault()?.PreviousDate?.ToString(DateFormatConstants.MonthAndYearFormat)
@@ -62,24 +62,24 @@ namespace Dfe.Complete.Application.Projects.Queries.ListProjectsByMonth
 
                         var incomingTrust = isMatProject
                             ? project.NewTrustName
-                            : trusts.FirstOrDefault(t => t.Ukprn == project.IncomingTrustUkprn)?.Name;
+                            : trusts?.FirstOrDefault(t => t.Ukprn! == project.IncomingTrustUkprn)?.Name;
 
-                        var outgoingTrust = trusts.FirstOrDefault(t => t.Ukprn == project.OutgoingTrustUkprn)?.Name;
+                        var outgoingTrust = trusts?.FirstOrDefault(t => t.Ukprn! == project.OutgoingTrustUkprn)?.Name;
 
-                        var allConditions = project.AllConditionsMet.Value ? "Yes" : "Not yet";
+                        var allConditions = project.AllConditionsMet!.Value ? "Yes" : "Not yet";
 
                         var confirmedAndOriginalDate = string.IsNullOrEmpty(originalDate) ? confirmedDate : $"{confirmedDate} ({originalDate})";
 
                         return new ListProjectsByMonthResultModel(
-                            item.Establishment.Name,
+                            item.Establishment!.Name,
                             project.Region.ToDisplayDescription(),
-                            item.Establishment.LocalAuthorityName,
-                            outgoingTrust,
+                            item.Establishment.LocalAuthorityName!,
+                            outgoingTrust!,
                             project.Id,
                             project.Urn,
-                            incomingTrust,
+                            incomingTrust!,
                             allConditions,
-                            confirmedAndOriginalDate,
+                            confirmedAndOriginalDate!,
                             project.Type);
                     })
                     .ToList();
