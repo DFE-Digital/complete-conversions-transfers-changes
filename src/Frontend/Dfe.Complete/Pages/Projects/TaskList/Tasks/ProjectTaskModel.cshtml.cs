@@ -8,24 +8,28 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Dfe.Complete.Domain.ValueObjects;
 using Dfe.Complete.Application.Projects.Models;
 using System.ComponentModel.DataAnnotations;
+using Dfe.Complete.Application.Projects.Queries.GetProject;
+using Dfe.Complete.Models;
 
 namespace Dfe.Complete.Pages.Projects;
 
-public class TaskListModel(ISender sender) : PageModel
+public class TaskListModel(ISender sender) : BaseProjectPageModel(sender)
 {
-    private readonly ISender _sender = sender;
-
-    [BindProperty(SupportsGet = true)]
-    public Guid ProjectId { get; set; }
-
     [BindProperty(SupportsGet = true, Name = "task_identifier")]
     [Required]
     public required string TaskIdentifier { get; set; }
     public List<NoteDto> Notes { get; set; } = new();
     public string Title { get; set; }
+    public string SchoolName { get; set; }
 
-    public async Task<IActionResult> OnGetAsync()
+    public override async Task<IActionResult> OnGetAsync()
     {
+        var baseResult = await base.OnGetAsync();
+        if (baseResult is not PageResult)
+        {
+            return baseResult;
+        }
+
         NoteTaskIdentifier? validTaskIdentifier = null;
         if (TaskIdentifier != null)
         {
@@ -34,10 +38,11 @@ public class TaskListModel(ISender sender) : PageModel
                 return NotFound();
         }
 
+        SchoolName = Establishment?.Name ?? string.Empty;
         Title = $"{validTaskIdentifier}";
 
-        var noteQuery = new GetProjectTaskNotesByProjectIdQuery(new ProjectId(ProjectId), (NoteTaskIdentifier)validTaskIdentifier!);
-        var response = await _sender.Send(noteQuery);
+        var noteQuery = new GetProjectTaskNotesByProjectIdQuery(new ProjectId(Guid.Parse(ProjectId.ToString())), (NoteTaskIdentifier)validTaskIdentifier!);
+        var response = await sender.Send(noteQuery);
         Notes = response.IsSuccess ? response.Value : new List<NoteDto>();
 
         return Page();
