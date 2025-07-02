@@ -1,14 +1,13 @@
 
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
+using Dfe.Complete.Application.Notes.Queries;
 using Dfe.Complete.Domain.Enums;
 using MediatR;
-using Dfe.Complete.Domain.Entities;
-using Dfe.Complete.Domain.Extensions;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
+using Dfe.Complete.Domain.ValueObjects;
+using Dfe.Complete.Application.Projects.Models;
 
 namespace Dfe.Complete.Pages.Projects;
-
-
 
 public class TaskListModel(ISender sender) : PageModel
 {
@@ -17,29 +16,24 @@ public class TaskListModel(ISender sender) : PageModel
     [BindProperty(SupportsGet = true)]
     public Guid ProjectId { get; set; }
 
-
-    /// <summary>
-    /// The task identifier, as a string from the route. Used to match against NoteTaskIdentifier by description.
-    /// </summary>
     [BindProperty(SupportsGet = true)]
     public string TaskIdentifier { get; set; }
 
-    public List<Note> Notes { get; set; } = new();
+    public List<NoteDto> Notes { get; set; } = new();
     public string Title { get; set; }
-
 
     public async Task<IActionResult> OnGetAsync()
     {
-        var taskIdentifier = TaskIdentifier.FromDescriptionValue<NoteTaskIdentifier>();
-        if (taskIdentifier == null)
+        if (!Enum.TryParse<NoteTaskIdentifier>(TaskIdentifier, true, out var taskIdentifier))
         {
             return NotFound();
         }
 
-        Title = taskIdentifier.Value.ToDescription();
+        Title = $"{taskIdentifier}";
 
-        var notesQuery = new Complete.Application.Notes.Queries.GetProjectTaskNotesByProjectIdQuery(ProjectId, taskIdentifier.Value);
-        Notes = await _sender.Send(notesQuery);
+        var noteQuery = new GetProjectTaskNotesByProjectIdQuery(new ProjectId(ProjectId), taskIdentifier);
+        var response = await _sender.Send(noteQuery);
+        Notes = response.IsSuccess ? response.Value : new List<NoteDto>();
 
         return Page();
     }
