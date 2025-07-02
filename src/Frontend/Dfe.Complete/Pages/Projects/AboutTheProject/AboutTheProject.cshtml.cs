@@ -60,21 +60,13 @@ namespace Dfe.Complete.Pages.Projects.AboutTheProject
 
         public override async Task<IActionResult> OnGet()
         {
-            await UpdateCurrentProject();
-
-            await SetEstablishmentAsync();
-
-            await SetIncomingTrustAsync();
-
-            await SetOutgoingTrustAsync();
+            await base.OnGet();
 
             await SetAcademyAsync();
 
             await SetProjectGroupAsync();
 
             await SetTransferTaskDataAsync();
-
-            await SetCurrentUserTeamAsync();
 
             return Page();
         }

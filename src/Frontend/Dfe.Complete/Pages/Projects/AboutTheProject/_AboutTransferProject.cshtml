@@ -44,199 +44,195 @@
     <div class="govuk-grid-column-three-quarters" id="projectInformationList">
         <h2 class="govuk-heading-l">About the project</h2>
 
-        <div id="projectDetails" class="project-information-block">
-            <h3 class="govuk-heading-m" data-testid="title">Project details</h3>
+        @await Html.PartialAsync("Common/_ProjectDetails", Model)
 
-            @await Html.PartialAsync("Common/_ProjectDetails", Model)
+        @await Html.PartialAsync("Common/_ProjectAssignment", Model)
 
-            @await Html.PartialAsync("Common/_ProjectAssignment", Model)
+        <section id="reasonsForTransfer" class="app-summary-card govuk-!-margin-bottom-6">
+            <header class="app-summary-card__header">
+                <h2 class="app-summary-card__title">
+                    Reasons for the transfer
+                </h2>
+            </header>
+            <div class="app-summary-card__body">
+                <govuk-summary-list>
+                    <govuk-summary-list-row>
+                        <govuk-summary-list-row-key>Is this transfer due to 2RI?</govuk-summary-list-row-key>
+                        <govuk-summary-list-row-value>
+                            @(Model.Project.TwoRequiresImprovement != null && Model.Project.TwoRequiresImprovement.Value ? "Yes" : "No")
+                        </govuk-summary-list-row-value>
+                        <govuk-summary-list-row-actions>
+                            <govuk-summary-list-row-action href="#" visually-hidden-text="Is this transfer due to 2RI?">Change</govuk-summary-list-row-action>
+                        </govuk-summary-list-row-actions>
+                    </govuk-summary-list-row>
+                    <govuk-summary-list-row>
+                        <govuk-summary-list-row-key>Is this transfer due to an inadequate Ofsted rating?</govuk-summary-list-row-key>
+                        <govuk-summary-list-row-value>
+                            @(Model.TransferTaskData?.InadequateOfsted != null && Model.TransferTaskData.InadequateOfsted.Value ? "Yes" : "No")
+                        </govuk-summary-list-row-value>
+                        <govuk-summary-list-row-actions>
+                            <govuk-summary-list-row-action href="#" visually-hidden-text="Is this transfer due to an inadequate Ofsted rating?">Change</govuk-summary-list-row-action>
+                        </govuk-summary-list-row-actions>
+                    </govuk-summary-list-row>
+                    <govuk-summary-list-row>
+                        <govuk-summary-list-row-key>Is this transfer due to financial, safeguarding or governance issues?</govuk-summary-list-row-key>
+                        <govuk-summary-list-row-value>
+                            @(Model.TransferTaskData?.FinancialSafeguardingGovernanceIssues != null && Model.TransferTaskData.FinancialSafeguardingGovernanceIssues.Value ? "Yes" : "No")
+                        </govuk-summary-list-row-value>
+                        <govuk-summary-list-row-actions>
+                            <govuk-summary-list-row-action href="#" visually-hidden-text="Is this transfer due to financial, safeguarding or governance issues?">Change</govuk-summary-list-row-action>
+                        </govuk-summary-list-row-actions>
+                    </govuk-summary-list-row>
+                </govuk-summary-list>
+            </div>
+        </section>
 
-            <section id="reasonsForTransfer" class="app-summary-card govuk-!-margin-bottom-6">
-                <header class="app-summary-card__header">
-                    <h2 class="app-summary-card__title">
-                        Reasons for the transfer
-                    </h2>
-                </header>
-                <div class="app-summary-card__body">
-                    <govuk-summary-list>
-                        <govuk-summary-list-row>
-                            <govuk-summary-list-row-key>Is this transfer due to 2RI?</govuk-summary-list-row-key>
-                            <govuk-summary-list-row-value>
-                                @(Model.Project.TwoRequiresImprovement != null && Model.Project.TwoRequiresImprovement.Value ? "Yes" : "No")
-                            </govuk-summary-list-row-value>
-                            <govuk-summary-list-row-actions>
-                                <govuk-summary-list-row-action href="#" visually-hidden-text="Is this transfer due to 2RI?">Change</govuk-summary-list-row-action>
-                            </govuk-summary-list-row-actions>
-                        </govuk-summary-list-row>
-                        <govuk-summary-list-row>
-                            <govuk-summary-list-row-key>Is this transfer due to an inadequate Ofsted rating?</govuk-summary-list-row-key>
-                            <govuk-summary-list-row-value>
-                                @(Model.TransferTaskData?.InadequateOfsted != null && Model.TransferTaskData.InadequateOfsted.Value ? "Yes" : "No")
-                            </govuk-summary-list-row-value>
-                            <govuk-summary-list-row-actions>
-                                <govuk-summary-list-row-action href="#" visually-hidden-text="Is this transfer due to an inadequate Ofsted rating?">Change</govuk-summary-list-row-action>
-                            </govuk-summary-list-row-actions>
-                        </govuk-summary-list-row>
-                        <govuk-summary-list-row>
-                            <govuk-summary-list-row-key>Is this transfer due to financial, safeguarding or governance issues?</govuk-summary-list-row-key>
-                            <govuk-summary-list-row-value>
-                                @(Model.TransferTaskData?.FinancialSafeguardingGovernanceIssues != null && Model.TransferTaskData.FinancialSafeguardingGovernanceIssues.Value ? "Yes" : "No")
-                            </govuk-summary-list-row-value>
-                            <govuk-summary-list-row-actions>
-                                <govuk-summary-list-row-action href="#" visually-hidden-text="Is this transfer due to financial, safeguarding or governance issues?">Change</govuk-summary-list-row-action>
-                            </govuk-summary-list-row-actions>
-                        </govuk-summary-list-row>
-                    </govuk-summary-list>
-                </div>
-            </section>
+        @await Html.PartialAsync("Common/_AdvisoryBoardDetails", Model)
 
-            @await Html.PartialAsync("Common/_AdvisoryBoardDetails", Model)
-
-            <section id="academyDetails" class="app-summary-card govuk-!-margin-bottom-6">
-                <header class="app-summary-card__header">
-                    <h2 class="app-summary-card__title">
-                        Academy details
-                    </h2>
-                </header>
-                @if (Model.Establishment != null)
-                {
-                    <div class="app-summary-card__body">
-                        <govuk-summary-list>
-                            <govuk-summary-list-row>
-                                <govuk-summary-list-row-key>Name</govuk-summary-list-row-key>
-                                <govuk-summary-list-row-value>
-                                    @Model.Establishment.Name<br />
-                                    <a class="govuk-link" href="https://get-information-schools.service.gov.uk/Establishments/Establishment/Details/@Model.Establishment.Urn" target="_blank">View the school's information in GIAS (opens in new tab)</a>
-                                </govuk-summary-list-row-value>
-                            </govuk-summary-list-row>
-                            <govuk-summary-list-row>
-                                <govuk-summary-list-row-key>Academy URN (unique reference number)</govuk-summary-list-row-key>
-                                <govuk-summary-list-row-value>
-                                    @Model.Establishment.Urn?.ToString()
-                                </govuk-summary-list-row-value>
-                            </govuk-summary-list-row>
-                            <govuk-summary-list-row>
-                                <govuk-summary-list-row-key>Type</govuk-summary-list-row-key>
-                                <govuk-summary-list-row-value>
-                                    @Model.Establishment.EstablishmentType?.Name
-                                </govuk-summary-list-row-value>
-                            </govuk-summary-list-row>
-                            <govuk-summary-list-row>
-                                <govuk-summary-list-row-key>Age range</govuk-summary-list-row-key>
-                                <govuk-summary-list-row-value>
-                                    @Model.Establishment.StatutoryLowAge to @Model.Establishment.StatutoryHighAge
-                                </govuk-summary-list-row-value>
-                            </govuk-summary-list-row>
-                            <govuk-summary-list-row>
-                                <govuk-summary-list-row-key>Phase</govuk-summary-list-row-key>
-                                <govuk-summary-list-row-value>
-                                    @(Model.Establishment?.PhaseOfEducation?.Name ?? "Not applicable")
-                                </govuk-summary-list-row-value>
-                            </govuk-summary-list-row>
-                            <govuk-summary-list-row>
-                                <govuk-summary-list-row-key>SharePoint folder</govuk-summary-list-row-key>
-                                <govuk-summary-list-row-value>
-                                    <a class="govuk-link" href="@Model.Project.EstablishmentSharepointLink" target="_blank">View the academy SharePoint folder (opens in new tab)</a>
-                                </govuk-summary-list-row-value>
-                                <govuk-summary-list-row-actions>
-                                    <govuk-summary-list-row-action href="#" visually-hidden-text="Academy sharePoint folder">Change</govuk-summary-list-row-action>
-                                </govuk-summary-list-row-actions>
-                            </govuk-summary-list-row>
-                        </govuk-summary-list>
-                    </div>
-                }
-                else
-                {
-                    <div class="app-summary-card__body" style="border-left: 4px solid #b1b4b6;">
-                        <govuk-inset-text>
-                            @(Model.Project.AcademyUrn?.Value.ToString() ?? "Academy URN has not been provided")
-                        </govuk-inset-text>
-                    </div>
-                }
-            </section>
-
-            @await Html.PartialAsync("Common/_IncomingTrustDetails", Model)
-
-            <section id="outgoingTrustDetails" class="app-summary-card govuk-!-margin-bottom-6">
-                <header class="app-summary-card__header">
-                    <h2 class="app-summary-card__title">
-                        Outgoing trust details
-                    </h2>
-                </header>
+        <section id="academyDetails" class="app-summary-card govuk-!-margin-bottom-6">
+            <header class="app-summary-card__header">
+                <h2 class="app-summary-card__title">
+                    Academy details
+                </h2>
+            </header>
+            @if (Model.Establishment != null)
+            {
                 <div class="app-summary-card__body">
                     <govuk-summary-list>
                         <govuk-summary-list-row>
                             <govuk-summary-list-row-key>Name</govuk-summary-list-row-key>
                             <govuk-summary-list-row-value>
-                                @Model.OutgoingTrust?.Name<br />
-                                <a class="govuk-link" href="https://get-information-schools.service.gov.uk/Groups/Search?GroupSearchModel.Text=@Model.Project.OutgoingTrustUkprn" target="_blank">View the trust information in GIAS (opens in new tab)</a>
+                                @Model.Establishment.Name<br />
+                                <a class="govuk-link" href="https://get-information-schools.service.gov.uk/Establishments/Establishment/Details/@Model.Establishment.Urn" target="_blank">View the school's information in GIAS (opens in new tab)</a>
                             </govuk-summary-list-row-value>
                         </govuk-summary-list-row>
                         <govuk-summary-list-row>
-                            <govuk-summary-list-row-key>UKPRN (UK provider reference number)</govuk-summary-list-row-key>
-                            <govuk-summary-list-row-value>@Model.Project.OutgoingTrustUkprn</govuk-summary-list-row-value>
-                            <govuk-summary-list-row-actions>
-                                <govuk-summary-list-row-action href="#" visually-hidden-text="UK provider reference number">Change</govuk-summary-list-row-action>
-                            </govuk-summary-list-row-actions>
-                        </govuk-summary-list-row>
-                        <govuk-summary-list-row>
-                            <govuk-summary-list-row-key>Group ID (identifier)</govuk-summary-list-row-key>
-                            <govuk-summary-list-row-value>@Model.OutgoingTrust?.ReferenceNumber</govuk-summary-list-row-value>
-                        </govuk-summary-list-row>
-                        <govuk-summary-list-row>
-                            <govuk-summary-list-row-key>Companies House number</govuk-summary-list-row-key>
+                            <govuk-summary-list-row-key>Academy URN (unique reference number)</govuk-summary-list-row-key>
                             <govuk-summary-list-row-value>
-                                @Model.OutgoingTrust?.CompaniesHouseNumber<br />
-                                <a class="govuk-link" href="https://find-and-update.company-information.service.gov.uk/company/@Model.OutgoingTrust?.CompaniesHouseNumber" target="_blank">View the companiesHouse information (opens in new tab)</a>
+                                @Model.Establishment.Urn?.ToString()
                             </govuk-summary-list-row-value>
                         </govuk-summary-list-row>
                         <govuk-summary-list-row>
-                            <govuk-summary-list-row-key>Address</govuk-summary-list-row-key>
+                            <govuk-summary-list-row-key>Type</govuk-summary-list-row-key>
                             <govuk-summary-list-row-value>
-                                @if (!string.IsNullOrWhiteSpace(@Model.OutgoingTrust?.Address?.Street))
-                                {
-                                    @Model.OutgoingTrust?.Address?.Street <br />
-                                }
-                                @if (!string.IsNullOrWhiteSpace(@Model.OutgoingTrust?.Address?.Town))
-                                {
-                                    @Model.OutgoingTrust?.Address?.Town <br />
-                                }
-                                @if (!string.IsNullOrWhiteSpace(@Model.OutgoingTrust?.Address?.County))
-                                {
-                                    @Model.OutgoingTrust?.Address?.County <br />
-                                }
-                                @if (!string.IsNullOrWhiteSpace(@Model.OutgoingTrust?.Address?.Postcode))
-                                {
-                                    @Model.OutgoingTrust?.Address?.Postcode
-                                }
+                                @Model.Establishment.EstablishmentType?.Name
+                            </govuk-summary-list-row-value>
+                        </govuk-summary-list-row>
+                        <govuk-summary-list-row>
+                            <govuk-summary-list-row-key>Age range</govuk-summary-list-row-key>
+                            <govuk-summary-list-row-value>
+                                @Model.Establishment.StatutoryLowAge to @Model.Establishment.StatutoryHighAge
+                            </govuk-summary-list-row-value>
+                        </govuk-summary-list-row>
+                        <govuk-summary-list-row>
+                            <govuk-summary-list-row-key>Phase</govuk-summary-list-row-key>
+                            <govuk-summary-list-row-value>
+                                @(Model.Establishment?.PhaseOfEducation?.Name ?? "Not applicable")
                             </govuk-summary-list-row-value>
                         </govuk-summary-list-row>
                         <govuk-summary-list-row>
                             <govuk-summary-list-row-key>SharePoint folder</govuk-summary-list-row-key>
                             <govuk-summary-list-row-value>
-                                <a class="govuk-link" href="@Model.Project.OutgoingTrustSharepointLink" target="_blank">View the trust SharePoint folder (opens in new tab)</a>
+                                <a class="govuk-link" href="@Model.Project.EstablishmentSharepointLink" target="_blank">View the academy SharePoint folder (opens in new tab)</a>
                             </govuk-summary-list-row-value>
                             <govuk-summary-list-row-actions>
-                                <govuk-summary-list-row-action href="#" visually-hidden-text="Trust sharePoint folder">Change</govuk-summary-list-row-action>
-                            </govuk-summary-list-row-actions>
-                        </govuk-summary-list-row>
-                        <govuk-summary-list-row>
-                            @{
-                                var toClose = "";
-                                if (Model.TransferTaskData?.OutgoingTrustToClose != null)
-                                {
-                                    toClose = Model.TransferTaskData.OutgoingTrustToClose == true ? "Yes" : "No";
-                                }
-                            }
-                            <govuk-summary-list-row-key>Will the outgoing trust close once this transfer is completed?</govuk-summary-list-row-key>
-                            <govuk-summary-list-row-value>@toClose</govuk-summary-list-row-value>
-                            <govuk-summary-list-row-actions>
-                                <govuk-summary-list-row-action href="#" visually-hidden-text="Will the outgoing trust close once this transfer is completed">Change</govuk-summary-list-row-action>
+                                <govuk-summary-list-row-action href="#" visually-hidden-text="Academy sharePoint folder">Change</govuk-summary-list-row-action>
                             </govuk-summary-list-row-actions>
                         </govuk-summary-list-row>
                     </govuk-summary-list>
                 </div>
-            </section>
-        </div>
+            }
+            else
+            {
+                <div class="app-summary-card__body" style="border-left: 4px solid #b1b4b6;">
+                    <govuk-inset-text>
+                        @(Model.Project.AcademyUrn?.Value.ToString() ?? "Academy URN has not been provided")
+                    </govuk-inset-text>
+                </div>
+            }
+        </section>
+
+        @await Html.PartialAsync("Common/_IncomingTrustDetails", Model)
+
+        <section id="outgoingTrustDetails" class="app-summary-card govuk-!-margin-bottom-6">
+            <header class="app-summary-card__header">
+                <h2 class="app-summary-card__title">
+                    Outgoing trust details
+                </h2>
+            </header>
+            <div class="app-summary-card__body">
+                <govuk-summary-list>
+                    <govuk-summary-list-row>
+                        <govuk-summary-list-row-key>Name</govuk-summary-list-row-key>
+                        <govuk-summary-list-row-value>
+                            @Model.OutgoingTrust?.Name<br />
+                            <a class="govuk-link" href="https://get-information-schools.service.gov.uk/Groups/Search?GroupSearchModel.Text=@Model.Project.OutgoingTrustUkprn" target="_blank">View the trust information in GIAS (opens in new tab)</a>
+                        </govuk-summary-list-row-value>
+                    </govuk-summary-list-row>
+                    <govuk-summary-list-row>
+                        <govuk-summary-list-row-key>UKPRN (UK provider reference number)</govuk-summary-list-row-key>
+                        <govuk-summary-list-row-value>@Model.Project.OutgoingTrustUkprn</govuk-summary-list-row-value>
+                        <govuk-summary-list-row-actions>
+                            <govuk-summary-list-row-action href="#" visually-hidden-text="UK provider reference number">Change</govuk-summary-list-row-action>
+                        </govuk-summary-list-row-actions>
+                    </govuk-summary-list-row>
+                    <govuk-summary-list-row>
+                        <govuk-summary-list-row-key>Group ID (identifier)</govuk-summary-list-row-key>
+                        <govuk-summary-list-row-value>@Model.OutgoingTrust?.ReferenceNumber</govuk-summary-list-row-value>
+                    </govuk-summary-list-row>
+                    <govuk-summary-list-row>
+                        <govuk-summary-list-row-key>Companies House number</govuk-summary-list-row-key>
+                        <govuk-summary-list-row-value>
+                            @Model.OutgoingTrust?.CompaniesHouseNumber<br />
+                            <a class="govuk-link" href="https://find-and-update.company-information.service.gov.uk/company/@Model.OutgoingTrust?.CompaniesHouseNumber" target="_blank">View the Companies House information (opens in new tab)</a>
+                        </govuk-summary-list-row-value>
+                    </govuk-summary-list-row>
+                    <govuk-summary-list-row>
+                        <govuk-summary-list-row-key>Address</govuk-summary-list-row-key>
+                        <govuk-summary-list-row-value>
+                            @if (!string.IsNullOrWhiteSpace(@Model.OutgoingTrust?.Address?.Street))
+                            {
+                                @Model.OutgoingTrust?.Address?.Street <br />
+                            }
+                            @if (!string.IsNullOrWhiteSpace(@Model.OutgoingTrust?.Address?.Town))
+                            {
+                                @Model.OutgoingTrust?.Address?.Town <br />
+                            }
+                            @if (!string.IsNullOrWhiteSpace(@Model.OutgoingTrust?.Address?.County))
+                            {
+                                @Model.OutgoingTrust?.Address?.County <br />
+                            }
+                            @if (!string.IsNullOrWhiteSpace(@Model.OutgoingTrust?.Address?.Postcode))
+                            {
+                                @Model.OutgoingTrust?.Address?.Postcode
+                            }
+                        </govuk-summary-list-row-value>
+                    </govuk-summary-list-row>
+                    <govuk-summary-list-row>
+                        <govuk-summary-list-row-key>SharePoint folder</govuk-summary-list-row-key>
+                        <govuk-summary-list-row-value>
+                            <a class="govuk-link" href="@Model.Project.OutgoingTrustSharepointLink" target="_blank">View the trust SharePoint folder (opens in new tab)</a>
+                        </govuk-summary-list-row-value>
+                        <govuk-summary-list-row-actions>
+                            <govuk-summary-list-row-action href="#" visually-hidden-text="Trust sharePoint folder">Change</govuk-summary-list-row-action>
+                        </govuk-summary-list-row-actions>
+                    </govuk-summary-list-row>
+                    <govuk-summary-list-row>
+                        @{
+                            var toClose = "";
+                            if (Model.TransferTaskData?.OutgoingTrustToClose != null)
+                            {
+                                toClose = Model.TransferTaskData.OutgoingTrustToClose == true ? "Yes" : "No";
+                            }
+                        }
+                        <govuk-summary-list-row-key>Will the outgoing trust close once this transfer is completed?</govuk-summary-list-row-key>
+                        <govuk-summary-list-row-value>@toClose</govuk-summary-list-row-value>
+                        <govuk-summary-list-row-actions>
+                            <govuk-summary-list-row-action href="#" visually-hidden-text="Will the outgoing trust close once this transfer is completed">Change</govuk-summary-list-row-action>
+                        </govuk-summary-list-row-actions>
+                    </govuk-summary-list-row>
+                </govuk-summary-list>
+            </div>
+        </section>
     </div>
 </div>
