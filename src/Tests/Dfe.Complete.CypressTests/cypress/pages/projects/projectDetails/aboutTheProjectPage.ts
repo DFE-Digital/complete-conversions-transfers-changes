@@ -46,19 +46,8 @@ export class AboutTheProjectPage extends ProjectDetailsPage {
         return this;
     }
 
-    jumpToSection(section: string) {
-        cy.contains("Jump to section")
-            .parents("nav")
-            .within(() => {
-                cy.contains(section).click();
-            });
-        return this;
-    }
-
-    pageHasMovedToSection(section: string) {
-        cy.url().should("include", `#${this.sections[section]}`);
-        cy.contains("h2", section).isInViewport();
-        return this;
+    pageHasMovedToSection(section: string): this {
+        return super.pageHasMovedToSection(section, this.sections);
     }
 }
 

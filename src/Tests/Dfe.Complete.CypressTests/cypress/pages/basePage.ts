@@ -86,6 +86,21 @@ class BasePage {
         return this;
     }
 
+    jumpToSection(section: string) {
+        cy.contains("Jump to section")
+            .parents("nav")
+            .within(() => {
+                cy.contains(section).click();
+            });
+        return this;
+    }
+
+    protected pageHasMovedToSection(section: string, sections: Record<string, string>) {
+        cy.url().should("include", `#${sections[section]}`);
+        cy.contains("h2", section).isInViewport();
+        return this;
+    }
+
     private containsBannerWithMessage(bannerType: string, title: string, message?: string) {
         cy.getByClass(this.bannerClass).within(() => {
             cy.get("h2").shouldHaveText(bannerType);
