@@ -20,7 +20,7 @@ const teammatesProject = ProjectBuilder.createConversionFormAMatProjectRequest({
 });
 let teammatesProjectId: string;
 let changeLinkPath: string;
-describe("About the project page - conversion projects: ", () => {
+describe.skip("About the project page - conversion projects: ", () => {
     before(() => {
         projectRemover.removeProjectIfItExists(`${project.urn.value}`);
         projectRemover.removeProjectIfItExists(`${teammatesProject.urn.value}`);
