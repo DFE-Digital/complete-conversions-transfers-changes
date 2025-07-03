@@ -24,7 +24,7 @@ const formAMATSchoolName = "Priory Rise School";
 const formAMATLocalAuthority = "Milton Keynes";
 const formAMATRegion = "South East";
 
-describe.skip("About the project page - transfer projects: ", () => {
+describe("About the project page - transfer projects: ", () => {
     before(() => {
         projectRemover.removeProjectIfItExists(`${project.urn.value}`);
         projectRemover.removeProjectIfItExists(`${projectFormAMat.urn.value}`);
@@ -62,21 +62,20 @@ describe.skip("About the project page - transfer projects: ", () => {
 
         aboutTheProjectPage
             .inOrder()
-            // bug 221328
-            // .subSection("Project details")
-            // .hasSubHeading("Project details")
-            // .summaryShows("Type")
-            // .hasValue("Transfer")
-            // .summaryShows("Transfer date")
-            // .hasValue(significateDateToDisplayDate(project.significantDate))
-            // .summaryShows("Local authority")
-            // .hasValue(localAuthority)
-            // .summaryShows("Diocese")
-            // .hasValue("Not applicable")
-            // .summaryShows("Region")
-            // .hasValue(region)
-            // .summaryShows("Group reference number")
-            // .hasValue(project.groupReferenceNumber!)
+            .subSection("Project details")
+            .hasSubHeading("Project details")
+            .summaryShows("Type")
+            .hasValue("Transfer")
+            .summaryShows("Transfer date")
+            .hasValue(significateDateToDisplayDate(project.significantDate))
+            .summaryShows("Local authority")
+            .hasValue(localAuthority)
+            .summaryShows("Diocese")
+            .hasValue("Not applicable")
+            .summaryShows("Region")
+            .hasValue(region)
+            .summaryShows("Group reference number")
+            .hasValue(project.groupReferenceNumber!)
             // .hasChangeLink(`${changeLinkPath}group-reference-number`) // not implemented 219174
 
             .subSection("Project assignment")
@@ -141,10 +140,10 @@ describe.skip("About the project page - transfer projects: ", () => {
             .summaryShows("Group ID (identifier)")
             .hasValue(incomingTrust.referenceNumber)
             .summaryShows("Companies House number")
-            // .hasValueWithLink(
-            //     `${incomingTrust.companiesHouseNumber} View the Companies House information (opens in new tab)`,
-            //     `https://find-and-update.company-information.service.gov.uk/company/${incomingTrust.companiesHouseNumber}`,
-            // ) // bug 221328
+            .hasValueWithLink(
+                `${incomingTrust.companiesHouseNumber} View the Companies House information (opens in new tab)`,
+                `https://find-and-update.company-information.service.gov.uk/company/${incomingTrust.companiesHouseNumber}`,
+            )
             .summaryShows("Address")
             .hasValue(incomingTrust.address)
             .summaryShows("SharePoint folder")
@@ -167,10 +166,10 @@ describe.skip("About the project page - transfer projects: ", () => {
             .summaryShows("Group ID (identifier)")
             .hasValue(outgoingTrust.referenceNumber)
             .summaryShows("Companies House number")
-            // .hasValueWithLink(
-            //     `${outgoingTrust.companiesHouseNumber} View the Companies House information (opens in new tab)`,
-            //     `https://find-and-update.company-information.service.gov.uk/company/${outgoingTrust.companiesHouseNumber}`,
-            // ) // bug 221328
+            .hasValueWithLink(
+                `${outgoingTrust.companiesHouseNumber} View the Companies House information (opens in new tab)`,
+                `https://find-and-update.company-information.service.gov.uk/company/${outgoingTrust.companiesHouseNumber}`,
+            )
             .summaryShows("Address")
             .hasValue(outgoingTrust.address)
             .summaryShows("SharePoint folder")
@@ -203,21 +202,20 @@ describe.skip("About the project page - transfer projects: ", () => {
         Logger.log("About projects details sections are displayed as expected");
         aboutTheProjectPage
             .inOrder()
-            // bug 221328
-            // .subSection("Project details")
-            // .hasSubHeading("Project details")
-            // .summaryShows("Type")
-            // .hasValue("Transfer")
-            // .summaryShows("Transfer date")
-            // .hasValue(significateDateToDisplayDate(project.significantDate))
-            // .summaryShows("Local authority")
-            // .hasValue(formAMATLocalAuthority)
-            // .summaryShows("Diocese")
-            // .hasValue("Not applicable")
-            // .summaryShows("Region")
-            // .hasValue(formAMATRegion)
-            // .summaryShows("Group reference number")
-            // .hasValue("Not grouped")
+            .subSection("Project details")
+            .hasSubHeading("Project details")
+            .summaryShows("Type")
+            .hasValue("Transfer")
+            .summaryShows("Transfer date")
+            .hasValue(significateDateToDisplayDate(project.significantDate))
+            .summaryShows("Local authority")
+            .hasValue(formAMATLocalAuthority)
+            .summaryShows("Diocese")
+            .hasValue("Not applicable")
+            .summaryShows("Region")
+            .hasValue(formAMATRegion)
+            .summaryShows("Group reference number")
+            .hasValue("Not grouped")
             // .hasChangeLink(`${formAMATChangeLinkPath}group-reference-number`) // not implemented 219174
 
             .subSection("Project assignment")
@@ -275,7 +273,7 @@ describe.skip("About the project page - transfer projects: ", () => {
             // .summaryShows("Name")
             // .hasValueWithLink(
             //     `${projectFormAMat.newTrustName.toUpperCase()} View the trust information in GIAS (opens in new tab)`,
-            //     `${giasUrl}/Groups/Search?GroupSearchModel.Text=${incomingTrust.ukprn}`,
+            //     `${giasUrl}/Groups/Search?GroupSearchModel.Text=${incomingTrust.ukprn}`
             // )
             // .summaryShows("UKPRN (UK provider reference number)")
             // .hasValue(incomingTrust.ukprn)
@@ -283,16 +281,16 @@ describe.skip("About the project page - transfer projects: ", () => {
             // .summaryShows("Group ID (identifier)")
             // .hasValue(projectFormAMat.newTrustReferenceNumber)
             // .summaryShows("Companies House number")
-            // // .hasValueWithLink(
-            // //     `${incomingTrust.companiesHouseNumber} View the Companies House information (opens in new tab)`,
-            // //     `https://find-and-update.company-information.service.gov.uk/company/${incomingTrust.companiesHouseNumber}`,
-            // // ) // bug 221328
+            // .hasValueWithLink(
+            //     `${incomingTrust.companiesHouseNumber} View the Companies House information (opens in new tab)`,
+            //     `https://find-and-update.company-information.service.gov.uk/company/${incomingTrust.companiesHouseNumber}`
+            // )
             // .summaryShows("Address")
             // .hasValue(incomingTrust.address)
             // .summaryShows("SharePoint folder")
             // .hasValueWithLink(
             //     "View the trust SharePoint folder (opens in new tab)",
-            //     projectFormAMat.incomingTrustSharepointLink,
+            //     projectFormAMat.incomingTrustSharepointLink
             // )
             // .hasChangeLink(`${formAMATChangeLinkPath}sharepoint-folder-links`); // not implemented 219174
 
@@ -309,10 +307,10 @@ describe.skip("About the project page - transfer projects: ", () => {
             .summaryShows("Group ID (identifier)")
             .hasValue(outgoingTrust.referenceNumber)
             .summaryShows("Companies House number")
-            // .hasValueWithLink(
-            //     `${outgoingTrust.companiesHouseNumber} View the Companies House information (opens in new tab)`,
-            //     `https://find-and-update.company-information.service.gov.uk/company/${outgoingTrust.companiesHouseNumber}`,
-            // ) // bug 221328
+            .hasValueWithLink(
+                `${outgoingTrust.companiesHouseNumber} View the Companies House information (opens in new tab)`,
+                `https://find-and-update.company-information.service.gov.uk/company/${outgoingTrust.companiesHouseNumber}`,
+            )
             .summaryShows("Address")
             .hasValue(outgoingTrust.address)
             .summaryShows("SharePoint folder")

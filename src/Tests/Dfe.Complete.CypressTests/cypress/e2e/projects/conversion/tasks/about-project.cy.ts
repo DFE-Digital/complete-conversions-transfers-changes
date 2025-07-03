@@ -20,7 +20,7 @@ const teammatesProject = ProjectBuilder.createConversionFormAMatProjectRequest({
 });
 let teammatesProjectId: string;
 let changeLinkPath: string;
-describe.skip("About the project page - conversion projects: ", () => {
+describe("About the project page - conversion projects: ", () => {
     before(() => {
         projectRemover.removeProjectIfItExists(`${project.urn.value}`);
         projectRemover.removeProjectIfItExists(`${teammatesProject.urn.value}`);
@@ -48,8 +48,8 @@ describe.skip("About the project page - conversion projects: ", () => {
             .hasConversionTag()
             .hasConversionDate(project.significantDate)
             .hasIncomingTrust(macclesfieldTrust.name)
-            .hasLAAndRegion("Bath And North East Somerset", region);
-        // .hasSharePointLinks(project.establishmentSharepointLink, project.incomingTrustSharepointLink); // bug 221328
+            .hasLAAndRegion("Bath And North East Somerset", region)
+            .hasSharePointLinks(project.establishmentSharepointLink, project.incomingTrustSharepointLink);
 
         Logger.log("Project details sections are displayed as expected");
 
