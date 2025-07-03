@@ -13,17 +13,21 @@ public class HandoverWithDeliveryOfficerTaskModel(ISender sender) : ProjectTaskM
 
     [BindProperty(Name = "review-project-information")]
     public bool? ReviewProjectInformation { get; set; }
-    
+
     [BindProperty(Name = "make-notes")]
     public bool? MakeNotes { get; set; }
 
     [BindProperty(Name = "attend-handover-meeting")]
     public bool? AttendHandoverMeeting { get; set; }
 
-    public override async Task<IActionResult> OnGetAsync()
+
+    public override Task<IActionResult> OnGetAsync()
     {
-        return await InitializeTaskDataAsync("handover");
+        TaskIdentifier = "handover";
+        base.OnGetAsync();
+        return Task.FromResult<IActionResult>(Page());
     }
+
 
     public override Task<IActionResult> OnPostAsync()
     {

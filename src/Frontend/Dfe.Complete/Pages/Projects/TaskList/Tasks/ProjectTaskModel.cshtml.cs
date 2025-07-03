@@ -6,8 +6,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Dfe.Complete.Domain.ValueObjects;
 using Dfe.Complete.Application.Projects.Models;
-using System.ComponentModel.DataAnnotations;
-using Dfe.Complete.Application.Projects.Queries.GetProject;
 using Dfe.Complete.Models;
 
 namespace Dfe.Complete.Pages.Projects;
@@ -24,15 +22,13 @@ public class ProjectTaskModel(ISender sender) : BaseProjectPageModel(sender)
         return Task.FromResult<IActionResult>(RedirectToPage("Success"));
     }
 
-    protected async Task<IActionResult> InitializeTaskDataAsync(string taskIdentifier)
+    public override async Task<IActionResult> OnGetAsync()
     {
-        TaskIdentifier = taskIdentifier;
-        
         var baseResult = await base.OnGetAsync();
         if (baseResult is not PageResult)
         {
             return baseResult;
-        }
+        }   
 
         NoteTaskIdentifier? validTaskIdentifier = null;
         if (TaskIdentifier != null)
