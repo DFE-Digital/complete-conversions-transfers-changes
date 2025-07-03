@@ -72,7 +72,6 @@ describe("Capabilities and permissions of the regional delivery officer team lea
     });
 
     it("Should be able to assign unassigned projects to users", () => {
-        cy.pause();
         navBar.goToYourTeamProjects();
         yourTeamProjects
             .filterProjects("Unassigned")
