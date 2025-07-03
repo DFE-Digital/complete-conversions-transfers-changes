@@ -1,4 +1,7 @@
-﻿namespace Dfe.Complete.Application.Projects.Models
+﻿using Dfe.Complete.Domain.Enums;
+using Dfe.Complete.Domain.ValueObjects;
+
+namespace Dfe.Complete.Application.Projects.Models
 {
     public class ListAllProjectsStatisticsModel
     {
@@ -18,4 +21,5 @@
     public record AllOpenersProjectsStatisticsModel(string Date, int Conversions, int Tranfers); 
     public record ProjectDetailsStatisticsModel(int InProgressProjects, int CompletedProjects, int UnassignedProjects, int TotalProjects, int? DaoRevokedProjects = null); 
     public record ThisMonthNewProjectsStatisticsModel(string Date, int TotalProjects, int TotalConversions, int TotalTransfers);
+    public record ProjectModel(ProjectType? Type, ProjectState? State, UserId? AssignedToId, ProjectTeam? Team, Region? Region, bool? SignificantDateProvisional, DateOnly? SignificantDate, DateTime? CreatedAt);
 }

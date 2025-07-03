@@ -1329,7 +1329,7 @@ public partial class ProjectsControllerTests
         await dbContext.GiasEstablishments.AddAsync(giasEstablishment);
         await dbContext.Projects.AddRangeAsync(projects);
         await dbContext.SaveChangesAsync();
-        var excludeStates = new List<ProjectState> { ProjectState.Deleted, ProjectState.Inactive };
+        var excludeStates = new List<ProjectState> { ProjectState.Deleted };
         var expectedConversionProjects = projects.Where(p => p.Type == ProjectType.Conversion && !excludeStates.Contains(p.State));
         var expectedTransfersProjects = projects.Where(p => p.Type == ProjectType.Transfer && !excludeStates.Contains(p.State));
         
