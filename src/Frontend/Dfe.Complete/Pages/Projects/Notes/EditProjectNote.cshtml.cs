@@ -55,7 +55,7 @@ public class EditProjectNoteModel(ISender sender, ErrorService errorService) : P
 
         var response = await Sender.Send(new UpdateNoteCommand(new NoteId(NoteId), NoteText));
 
-        if (!response.IsSuccess)
+        if (!response.IsSuccess || response.Value == null)
             throw new ApplicationException($"An error occurred when updating note {NoteId} for project {ProjectId}");
 
         TempData.SetNotification(
@@ -64,7 +64,7 @@ public class EditProjectNoteModel(ISender sender, ErrorService errorService) : P
             "Your note has been edited"
         );
 
-        return Redirect(string.Format(RouteConstants.ProjectViewNotes, ProjectId));
+        return Redirect(GetReturnUrl(response.Value.TaskIdentifier));
     }
 }
 
