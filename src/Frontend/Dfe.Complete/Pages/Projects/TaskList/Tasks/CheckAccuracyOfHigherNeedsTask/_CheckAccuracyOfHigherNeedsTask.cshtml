@@ -1,0 +1,30 @@
+@model Dfe.Complete.Pages.Projects.TaskList.Tasks.CheckAccuracyOfHigherNeedsTask.CheckAccuracyOfHigherNeedsTaskModel
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-three-quarters">
+        <h1 class="govuk-heading-l">Check accuracy of higher needs</h1>
+        
+        <p class="govuk-body">Review and verify the accuracy of higher needs information for this project.</p>
+        
+        <!-- Task-specific content for check accuracy of higher needs -->
+        <div class="govuk-form-group">
+            <label class="govuk-label govuk-label--m" for="higher-needs-check">
+                Higher needs verification status
+            </label>
+            <div class="govuk-radios" data-module="govuk-radios">
+                <div class="govuk-radios__item">
+                    <input class="govuk-radios__input" id="higher-needs-verified" name="higher-needs-status" type="radio" value="verified">
+                    <label class="govuk-label govuk-radios__label" for="higher-needs-verified">
+                        Verified as accurate
+                    </label>
+                </div>
+                <div class="govuk-radios__item">
+                    <input class="govuk-radios__input" id="higher-needs-pending" name="higher-needs-status" type="radio" value="pending">
+                    <label class="govuk-label govuk-radios__label" for="higher-needs-pending">
+                        Pending verification
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

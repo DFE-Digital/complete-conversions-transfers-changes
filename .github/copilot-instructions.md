@@ -8,3 +8,6 @@
 * random_number: 10392
 * Always favour primary constructor
 * For frontend pages, always inject ISender for query usage
+* Always make sure code compiles
+* Always solve build errors
+* Never introduce warnings

@@ -1,4 +1,3 @@
-
 using Dfe.Complete.Application.Notes.Queries;
 using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Utils;
@@ -13,14 +12,14 @@ using Dfe.Complete.Models;
 
 namespace Dfe.Complete.Pages.Projects;
 
-public class TaskListModel(ISender sender) : BaseProjectPageModel(sender)
+public class ProjectTaskModel(ISender sender) : BaseProjectPageModel(sender)
 {
     [BindProperty(SupportsGet = true, Name = "task_identifier")]
     [Required]
     public required string TaskIdentifier { get; set; }
-    public List<NoteDto> Notes { get; set; } = new();
-    public string Title { get; set; }
-    public string SchoolName { get; set; }
+    public List<NoteDto> Notes { get; set; } = [];
+    public string Title { get; set; } = string.Empty;
+    public string SchoolName { get; set; } = string.Empty;
 
     public override async Task<IActionResult> OnGetAsync()
     {
@@ -48,9 +47,36 @@ public class TaskListModel(ISender sender) : BaseProjectPageModel(sender)
         return Page();
     }
 
-    public IActionResult OnPost()
+    public virtual Task<IActionResult> OnPostAsync()
     {
-        // Handle form submission here
-        return RedirectToPage("Success");
+        return Task.FromResult<IActionResult>(RedirectToPage("Success"));
+    }
+
+    public string GetTaskName(string taskIdentifier)
+    {
+        var validTaskIdentifier = EnumExtensions.FromDescriptionValue<NoteTaskIdentifier>(taskIdentifier);
+
+        return validTaskIdentifier switch
+        {
+            NoteTaskIdentifier.Handover => "TaskList/Tasks/HandoverWithDeliveryOfficerTask/_HandoverWithDeliveryOfficerTask",
+            NoteTaskIdentifier.StakeholderKickOff => "TaskList/Tasks/StakeholderKickOffTask/_StakeholderKickOffTask",
+            NoteTaskIdentifier.RiskProtectionArrangement => "TaskList/Tasks/RiskProtectionArrangementTask/_RiskProtectionArrangementTask",
+            NoteTaskIdentifier.CheckAccuracyOfHigherNeeds => "TaskList/Tasks/CheckAccuracyOfHigherNeedsTask/_CheckAccuracyOfHigherNeedsTask",
+            NoteTaskIdentifier.CompleteNotificationOfChange => "TaskList/Tasks/CompleteNotificationOfChangeTask/_CompleteNotificationOfChangeTask"
+        };
+    }
+
+    public object GetTaskSpecificModel()
+    {
+        var validTaskIdentifier = EnumExtensions.FromDescriptionValue<NoteTaskIdentifier>(TaskIdentifier);
+
+        return validTaskIdentifier switch
+        {
+            NoteTaskIdentifier.Handover => new TaskList.Tasks.HandoverWithDeliveryOfficerTask.HandoverWithDeliveryOfficerTaskModel(sender) { TaskIdentifier = this.TaskIdentifier, Project = this.Project },
+            NoteTaskIdentifier.StakeholderKickOff => new TaskList.Tasks.StakeholderKickOffTask.StakeholderKickOffTaskModel(sender) { TaskIdentifier = this.TaskIdentifier, Project = this.Project },
+            NoteTaskIdentifier.RiskProtectionArrangement => new TaskList.Tasks.RiskProtectionArrangementTask.RiskProtectionArrangementTaskModel(sender) { TaskIdentifier = this.TaskIdentifier, Project = this.Project },
+            NoteTaskIdentifier.CheckAccuracyOfHigherNeeds => new TaskList.Tasks.CheckAccuracyOfHigherNeedsTask.CheckAccuracyOfHigherNeedsTaskModel(sender) { TaskIdentifier = this.TaskIdentifier, Project = this.Project },
+            NoteTaskIdentifier.CompleteNotificationOfChange => new TaskList.Tasks.CompleteNotificationOfChangeTask.CompleteNotificationOfChangeTaskModel(sender) { TaskIdentifier = this.TaskIdentifier, Project = this.Project }
+        };
     }
 }

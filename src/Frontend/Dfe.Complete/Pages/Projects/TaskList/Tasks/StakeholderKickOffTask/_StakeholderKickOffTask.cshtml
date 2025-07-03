@@ -1,0 +1,26 @@
+@model Dfe.Complete.Pages.Projects.TaskList.Tasks.StakeholderKickOffTask.StakeholderKickOffTaskModel
+
+<form method="post" novalidate>
+    <div class="govuk-form-group">
+        <h3 class="govuk-heading-m">Stakeholder kick off</h3>
+        
+        <div class="govuk-form-group">
+            <label class="govuk-label" for="task-note">
+                Additional notes
+            </label>
+            <div class="govuk-hint">
+                Add any notes about the stakeholder kick off process.
+            </div>
+            <textarea asp-for="TaskNote" class="govuk-textarea" id="task-note" name="task-note" rows="5"></textarea>
+        </div>
+
+        <div class="govuk-button-group">
+            <button class="govuk-button" data-module="govuk-button" type="submit">
+                Save and continue
+            </button>
+            <a class="govuk-link" href="@Url.Page("/Projects/TaskList/Index", new { projectId = Model.ProjectId })">
+                Cancel
+            </a>
+        </div>
+    </div>
+</form>

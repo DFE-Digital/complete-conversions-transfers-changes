@@ -1251,6 +1251,7 @@
         "operationId": "Projects_CreateProjectNote",
         "requestBody": {
           "x-name": "request",
+          "description": "The request.",
           "content": {
             "application/json": {
               "schema": {
@@ -1285,6 +1286,7 @@
         "operationId": "Projects_UpdateProjectNote",
         "requestBody": {
           "x-name": "request",
+          "description": "The request.",
           "content": {
             "application/json": {
               "schema": {
@@ -3359,6 +3361,10 @@
           "createdAt": {
             "type": "string",
             "format": "date-time"
+          },
+          "taskIdentifier": {
+            "type": "string",
+            "nullable": true
           }
         }
       },
@@ -3374,8 +3380,118 @@
           },
           "body": {
             "type": "string"
+          },
+          "taskIdentifier": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/NoteTaskIdentifier"
+              }
+            ]
           }
         }
+      },
+      "NoteTaskIdentifier": {
+        "type": "string",
+        "description": "",
+        "x-enumNames": [
+          "Handover",
+          "StakeholderKickOff",
+          "RiskProtectionArrangement",
+          "CheckAccuracyOfHigherNeeds",
+          "CompleteNotificationOfChange",
+          "ConversionGrant",
+          "SponsoredSupportGrant",
+          "AcademyDetails",
+          "ConfirmHeadteacherContact",
+          "ConfirmChairOfGovernorsContact",
+          "ConfirmIncomingTrustCeoContact",
+          "MainContact",
+          "ProposedCapacityOfTheAcademy",
+          "LandQuestionnaire",
+          "LandRegistry",
+          "SupplementalFundingAgreement",
+          "ChurchSupplementalAgreement",
+          "MasterFundingAgreement",
+          "ArticlesOfAssociation",
+          "DeedOfVariation",
+          "TrustModificationOrder",
+          "DirectionToTransfer",
+          "OneHundredAndTwentyFiveYearLease",
+          "Subleases",
+          "TenancyAtWill",
+          "CommercialTransferAgreement",
+          "SchoolCompleted",
+          "ConditionsMet",
+          "ShareInformation",
+          "ConfirmDateAcademyOpened",
+          "RedactAndSend",
+          "ReceiveGrantPaymentCertificate",
+          "RpaPolicy",
+          "ConfirmOutgoingTrustCeoContact",
+          "RequestNewUrnAndRecord",
+          "CheckAndConfirmFinancialInformation",
+          "FormM",
+          "LandConsentLetter",
+          "DeedOfNovationAndVariation",
+          "DeedOfTerminationForTheMasterFundingAgreement",
+          "DeedTerminationChurchAgreement",
+          "ClosureOrTransferDeclaration",
+          "BankDetailsChanging",
+          "ConfirmIncomingTrustHasCompletedAllActions",
+          "ConfirmDateAcademyTransferred",
+          "RedactAndSendDocuments",
+          "DeclarationOfExpenditureCertificate"
+        ],
+        "enum": [
+          "Handover",
+          "StakeholderKickOff",
+          "RiskProtectionArrangement",
+          "CheckAccuracyOfHigherNeeds",
+          "CompleteNotificationOfChange",
+          "ConversionGrant",
+          "SponsoredSupportGrant",
+          "AcademyDetails",
+          "ConfirmHeadteacherContact",
+          "ConfirmChairOfGovernorsContact",
+          "ConfirmIncomingTrustCeoContact",
+          "MainContact",
+          "ProposedCapacityOfTheAcademy",
+          "LandQuestionnaire",
+          "LandRegistry",
+          "SupplementalFundingAgreement",
+          "ChurchSupplementalAgreement",
+          "MasterFundingAgreement",
+          "ArticlesOfAssociation",
+          "DeedOfVariation",
+          "TrustModificationOrder",
+          "DirectionToTransfer",
+          "OneHundredAndTwentyFiveYearLease",
+          "Subleases",
+          "TenancyAtWill",
+          "CommercialTransferAgreement",
+          "SchoolCompleted",
+          "ConditionsMet",
+          "ShareInformation",
+          "ConfirmDateAcademyOpened",
+          "RedactAndSend",
+          "ReceiveGrantPaymentCertificate",
+          "RpaPolicy",
+          "ConfirmOutgoingTrustCeoContact",
+          "RequestNewUrnAndRecord",
+          "CheckAndConfirmFinancialInformation",
+          "FormM",
+          "LandConsentLetter",
+          "DeedOfNovationAndVariation",
+          "DeedOfTerminationForTheMasterFundingAgreement",
+          "DeedTerminationChurchAgreement",
+          "ClosureOrTransferDeclaration",
+          "BankDetailsChanging",
+          "ConfirmIncomingTrustHasCompletedAllActions",
+          "ConfirmDateAcademyTransferred",
+          "RedactAndSendDocuments",
+          "DeclarationOfExpenditureCertificate"
+        ]
       },
       "UpdateNoteCommand": {
         "type": "object",
