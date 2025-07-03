@@ -1,8 +1,7 @@
-@page "/projects/{projectId}/tasks/{task_identifier}"
-@using Dfe.Complete.Constants;
+@using Dfe.Complete.Constants
 @model Dfe.Complete.Pages.Projects.ProjectTaskModel
 @{
-    ViewData["Title"] = Model.Title;
+    Layout = "Shared/_Layout";
     var backLink = string.Format(RouteConstants.ProjectTaskList, Model.ProjectId);
 }
 
@@ -15,10 +14,7 @@
     <div class="govuk-grid-column-two-thirds">
         <span class="govuk-caption-l">@Model.SchoolName</span>
         <h1 class="govuk-heading-xl govuk-!-margin-bottom-2">@Model.Title</h1>
-        @{
-            var taskModel = Model.GetTaskSpecificModel();
-        }
-        @await Html.PartialAsync($"{Model.GetTaskName(Model.TaskIdentifier)}", taskModel)
+        @RenderSection("TaskContent", required: true)
     </div>
     <div class="govuk-grid-column-one-third">
         <aside>
@@ -27,18 +23,18 @@
             <ul class="list-style-none govuk-!-margin-bottom-0">
             @if (Model.Notes != null && Model.Notes.Any())
             {
-                    @foreach (var note in Model.Notes)
-                    {
-                        <li class="govuk-!-margin-bottom-2">
-                            <p class="govuk-body govuk-!-margin-bottom-0">@note.CreatedAt.ToString("dd MMM yyyy")</p>
-                            <h3 class="govuk-heading-s govuk-!-padding-top-0 govuk-!-margin-bottom-1">@note.UserFullName</h3>
-                            <p class="govuk-body govuk-!-margin-bottom-1">@note.Body</p>
-                            <div class="app-task-note-actions govuk-!-margin-bottom-1">
+                foreach (var note in Model.Notes)
+                {
+                    <li class="govuk-!-margin-bottom-2">
+                        <p class="govuk-body govuk-!-margin-bottom-0">@note.CreatedAt.ToString("dd MMM yyyy")</p>
+                        <h3 class="govuk-heading-s govuk-!-padding-top-0 govuk-!-margin-bottom-1">@note.UserFullName</h3>
+                        <p class="govuk-body govuk-!-margin-bottom-1">@note.Body</p>
+                        <div class="app-task-note-actions govuk-!-margin-bottom-1">
                             <a class="govuk-link govuk-link--no-visited-state app-task-note-edit-link" href="@string.Format(RouteConstants.ProjectEditNote, Model.ProjectId, note.Id.Value, Model.TaskIdentifier)">Edit note</a>
-                            </div>
-                            <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible govuk-!-margin-bottom-2" />
-                        </li>
-                    }
+                        </div>
+                        <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible govuk-!-margin-bottom-2" />
+                    </li>
+                }
             }
             </ul>
         </aside>

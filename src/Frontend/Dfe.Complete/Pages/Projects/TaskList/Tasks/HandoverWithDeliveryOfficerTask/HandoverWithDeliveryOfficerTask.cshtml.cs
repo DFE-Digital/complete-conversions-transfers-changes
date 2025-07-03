@@ -20,6 +20,11 @@ public class HandoverWithDeliveryOfficerTaskModel(ISender sender) : ProjectTaskM
     [BindProperty(Name = "attend-handover-meeting")]
     public bool? AttendHandoverMeeting { get; set; }
 
+    public override async Task<IActionResult> OnGetAsync()
+    {
+        return await InitializeTaskDataAsync("handover");
+    }
+
     public override Task<IActionResult> OnPostAsync()
     {
         return Task.FromResult<IActionResult>(RedirectToPage("/Projects/TaskList/TaskList", new { projectId = ProjectId }));
