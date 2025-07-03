@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Dfe.Complete.Domain.ValueObjects;
 using Dfe.Complete.Application.Projects.Models;
 using Dfe.Complete.Models;
+using Dfe.Complete.Constants;
 
 namespace Dfe.Complete.Pages.Projects;
 
@@ -14,8 +15,10 @@ public class ProjectTaskModel(ISender sender) : BaseProjectPageModel(sender)
 {
     public string TaskIdentifier { get; set; } = string.Empty;
     public List<NoteDto> Notes { get; set; } = [];
-    public string Title { get; set; } = string.Empty;
+    public required string Title { get; set; }
     public string SchoolName { get; set; } = string.Empty;
+
+    public string GetReturnUrl() => string.Format(RouteConstants.ProjectTaskList, ProjectId);
 
     public virtual Task<IActionResult> OnPostAsync()
     {
@@ -39,7 +42,6 @@ public class ProjectTaskModel(ISender sender) : BaseProjectPageModel(sender)
         }
 
         SchoolName = Establishment?.Name ?? string.Empty;
-        Title = $"{validTaskIdentifier}";
 
         var noteQuery = new GetProjectTaskNotesByProjectIdQuery(new ProjectId(Guid.Parse(ProjectId.ToString())), (NoteTaskIdentifier)validTaskIdentifier!);
         var response = await sender.Send(noteQuery);
