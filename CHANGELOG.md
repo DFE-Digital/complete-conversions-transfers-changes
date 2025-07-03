@@ -42,6 +42,7 @@ See the [full commit history](https://github.com/DFE-Digital/complete-conversion
 - footer links for production
 - privacy link
 - show 'service not working' on unexpected error
+- Updated body message on `Page not found` page.
 
 See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-06-24.451...production-2025-06-27.463) for everything in the release
 ---
