@@ -39,8 +39,22 @@ Security in case of vulnerabilities.
 
 ### Fixed
 
-See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-06-24.451...main) for everything awaiting release
+See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-06-27.463...main) for everything awaiting release
 
+---
+
+## [1.7.0](https://github.com/DFE-Digital/complete-conversions-transfers-changes/releases/tag/production-2025-06-27.463) - 2025-06-27
+
+### Added
+- Internal contacts page and edit pages `/projects/{projectId}/internal-contacts`
+- app settings for test environment
+
+### Fixed
+- footer links for production
+- privacy link
+- show 'service not working' on unexpected error
+
+See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-06-24.451...production-2025-06-27.463) for everything in the release
 ---
 
 ## [1.6.2](https://github.com/DFE-Digital/complete-conversions-transfers-changes/releases/tag/production-2025-06-24.451) - 2025-06-24
