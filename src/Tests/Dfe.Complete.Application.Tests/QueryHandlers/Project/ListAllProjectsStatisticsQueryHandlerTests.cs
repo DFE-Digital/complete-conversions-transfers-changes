@@ -71,14 +71,14 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
             Assert.Equal(1, result.Value.RegionalCaseworkServicesProjects.Conversions.InProgressProjects);
             Assert.Equal(1, result.Value.RegionalCaseworkServicesProjects.Conversions.CompletedProjects);
             Assert.Equal(0, result.Value.RegionalCaseworkServicesProjects.Conversions.UnassignedProjects);
-            Assert.Null(result.Value.RegionalCaseworkServicesProjects.Conversions.DaoRevokedProjects);
+            Assert.Equal(0, result.Value.RegionalCaseworkServicesProjects.Conversions.DaoRevokedProjects);
             Assert.Equal(3, result.Value.RegionalCaseworkServicesProjects.Transfers.TotalProjects);
             Assert.Equal(1, result.Value.RegionalCaseworkServicesProjects.Transfers.InProgressProjects);
             Assert.Equal(1, result.Value.RegionalCaseworkServicesProjects.Transfers.CompletedProjects);
-            Assert.Null(result.Value.RegionalCaseworkServicesProjects.Transfers.DaoRevokedProjects);
+            Assert.Equal(0, result.Value.RegionalCaseworkServicesProjects.Transfers.DaoRevokedProjects);
             Assert.Equal(0, result.Value.RegionalCaseworkServicesProjects.Conversions.UnassignedProjects);
 
-            Assert.Null(result.Value.NotRegionalCaseworkServicesProjects.Conversions.DaoRevokedProjects);
+            Assert.Equal(0, result.Value.NotRegionalCaseworkServicesProjects.Conversions.DaoRevokedProjects);
             Assert.Equal(5, result.Value.NotRegionalCaseworkServicesProjects.Conversions.TotalProjects);
             Assert.Equal(1, result.Value.NotRegionalCaseworkServicesProjects.Conversions.InProgressProjects);
             Assert.Equal(1, result.Value.NotRegionalCaseworkServicesProjects.Conversions.CompletedProjects);
@@ -87,7 +87,7 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
             Assert.Equal(1, result.Value.NotRegionalCaseworkServicesProjects.Transfers.InProgressProjects);
             Assert.Equal(1, result.Value.NotRegionalCaseworkServicesProjects.Transfers.CompletedProjects);
             Assert.Equal(1, result.Value.NotRegionalCaseworkServicesProjects.Transfers.UnassignedProjects);
-            Assert.Null(result.Value.NotRegionalCaseworkServicesProjects.Transfers.DaoRevokedProjects);
+            Assert.Equal(0, result.Value.NotRegionalCaseworkServicesProjects.Transfers.DaoRevokedProjects);
 
             AssertProjectsPerRegion(regions, result.Value.ConversionsPerRegion, ProjectType.Conversion); 
             AssertProjectsPerRegion(regions, result.Value.TransfersPerRegion, ProjectType.Transfer);
@@ -155,7 +155,7 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
                 Assert.Equal(typeProject.Value.InProgressProjects, project.Details.InProgressProjects);
                 Assert.Equal(typeProject.Value.CompletedProjects, project.Details.CompletedProjects);
                 Assert.Equal(typeProject.Value.UnassignedProjects, project.Details.UnassignedProjects);
-                Assert.Null(project.Details.DaoRevokedProjects);
+                Assert.Equal(0, project.Details.DaoRevokedProjects);
             }
         }
 
