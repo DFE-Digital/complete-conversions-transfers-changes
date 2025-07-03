@@ -1,0 +1,41 @@
+﻿@using Dfe.Complete.Pages.Projects.ServiceSupport
+@using MediatR;
+
+@model ServiceSupportModel
+@{
+    Layout = "Shared/_Layout";
+    var ariaCurrentValue = "page";
+    string? IsCurrentNav(string tabName) => Model.CurrentNavigationItem == tabName ? ariaCurrentValue : null;
+}
+
+@section BeforeMainFullWidth
+{
+        <div class="moj-primary-navigation">
+            <div class="moj-primary-navigation__container">
+                <div class="moj-primary-navigation__nav">
+                    <nav class="moj-primary-navigation" aria-label="Primary navigation">
+                        <ul class="moj-primary-navigation__list">
+                            <li class="moj-primary-navigation__item">
+                                <a class="moj-primary-navigation__link" aria-current="@IsCurrentNav(ServiceSupportModel.ConversionURNsNavigation)"
+                                   href="/projects/service-support/without-academy-urn">Conversion URNs</a>
+                            </li>
+                            <li class="moj-primary-navigation__item">
+                                    <a class="moj-primary-navigation__link" aria-current="@IsCurrentNav(ServiceSupportModel.LocalAuthoriesNavigation)"
+                                   href="/service-support/local-authorities">Local authorities</a>
+                            </li>
+                            <li class="moj-primary-navigation__item">
+                                <a class="moj-primary-navigation__link" aria-current="@IsCurrentNav(ServiceSupportModel.UsersNavigation)"
+                                   href="/service-support/users">Users</a>
+                            </li> 
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </div>
+}
+@RenderBody()
+
+@if (Model.Pagination != null)
+{
+    @await Html.PartialAsync("/Pages/Pagination/_Pagination.cshtml", model: Model.Pagination)
+}

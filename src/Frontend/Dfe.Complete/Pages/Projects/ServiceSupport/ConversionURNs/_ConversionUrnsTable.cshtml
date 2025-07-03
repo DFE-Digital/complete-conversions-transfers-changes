@@ -1,0 +1,56 @@
+﻿@using Dfe.Complete.Constants
+@using Dfe.Complete.Pages.Projects.List
+@model IEnumerable<Dfe.Complete.Application.Projects.Models.ListAllProjectsConvertingQueryResultModel>
+
+<table class="govuk-table" name="projects_table" aria-label="Projects table">
+    <thead class="govuk-table__head">
+    <tr class="govuk-table__row">
+        <th class="govuk-table__header" scope="col">School or academy</th>
+        <th class="govuk-table__header" scope="col">URN</th>
+        <th class="govuk-table__header" scope="col">Conversion date</th>
+        <th class="govuk-table__header" scope="col">Academy name</th>
+        <th class="govuk-table__header" scope="col">Academy URN</th>
+        <th class="govuk-table__header" scope="col">View Project</th>
+    </tr>
+    </thead>
+    <tbody class="govuk-table__body">
+
+    @foreach(var project in Model)
+    {
+        <tr class="govuk-table__row">
+            <td class="govuk-table__header govuk-table__cell">
+                @project.EstablishmentName
+            </td>
+            <td class="govuk-table__cell">@project.Urn</td>
+            <td class="govuk-table__cell">@project.ConversionDate.ToMonthYearString()</td>
+            <td class="govuk-table__cell">
+                @{
+                    if (@project.AcademyName == null)
+                    {
+                        <strong class="govuk-tag govuk-tag--grey">Unconfirmed</strong>
+                    }
+                    else
+                    {
+                        @project.AcademyName
+                    }
+                }
+            </td>
+            <td class="govuk-table__cell">
+                @{
+                    if (project.AcademyUrn == null)
+                    {
+                        <a class="govuk-link" href="@string.Format(RouteConstants.ServiceSupportAssignAcademyUrn, project.ProjectId.Value)">Create academy URN</a>
+                    }
+                    else
+                    {
+                        @project.AcademyUrn
+                    }
+                }
+            </td>
+            <td class="govuk-table__cell">
+                <a class="govuk-link" href="@AllProjectsModel.GetProjectSummaryUrl(project.ProjectId)">View project</a>
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>

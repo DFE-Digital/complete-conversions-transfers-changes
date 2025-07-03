@@ -15,7 +15,7 @@ namespace Dfe.Complete.Pages
 			string route;
 
 			if (User.IsInRole(UserRolesConstants.BusinessSupport) || User.IsInRole(UserRolesConstants.DataConsumers)) route = RouteConstants.ProjectsInProgress;
-			else if (User.IsInRole(UserRolesConstants.ServiceSupport)) route = RouteConstants.ServiceSupportProjects;
+			else if (User.IsInRole(UserRolesConstants.ServiceSupport)) route = RouteConstants.ServiceSupportProjectsWithoutAcademyUrn;
 			else if (User.IsInRole(UserRolesConstants.ManageTeam)) route = RouteConstants.TeamProjectsUnassigned;
 			else route = RouteConstants.YourProjectsInProgress;
 

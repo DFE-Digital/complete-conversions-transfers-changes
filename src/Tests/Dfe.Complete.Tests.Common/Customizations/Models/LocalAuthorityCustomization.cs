@@ -7,6 +7,7 @@ namespace Dfe.Complete.Tests.Common.Customizations.Models;
 public class LocalAuthorityCustomization : ICustomization
 {
     public string? LocalAuthorityCode { get; set; }
+    public string? LocalAuthorityName { get; set; }
 
     public void Customize(IFixture fixture)
     {
@@ -16,6 +17,7 @@ public class LocalAuthorityCustomization : ICustomization
         fixture
             .Customize<LocalAuthority>(composer => composer
                 .With(x => x.Code, LocalAuthorityCode ?? fixture.Create<string>())
+                .With(x => x.Name, LocalAuthorityName ?? fixture.Create<string>())
                 .Do(x => x.Id = fixture.Create<LocalAuthorityId>()));
     }
 }
