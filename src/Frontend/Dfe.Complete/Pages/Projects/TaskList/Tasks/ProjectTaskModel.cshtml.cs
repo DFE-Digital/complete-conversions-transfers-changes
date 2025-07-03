@@ -49,13 +49,6 @@ public class ProjectTaskModel(ISender sender) : BaseProjectPageModel(sender)
         var response = await sender.Send(noteQuery);
         Notes = response.IsSuccess && response.Value != null ? response.Value : [];
 
-        // Set ViewData properties for the layout
-        ViewData["ProjectId"] = ProjectId;
-        ViewData["TaskIdentifier"] = TaskIdentifier;
-        ViewData["Title"] = Title;
-        ViewData["SchoolName"] = SchoolName;
-        ViewData["Notes"] = Notes;
-
         return Page();
     }
 
