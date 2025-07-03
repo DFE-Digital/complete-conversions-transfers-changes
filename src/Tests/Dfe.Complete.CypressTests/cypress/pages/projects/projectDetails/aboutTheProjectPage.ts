@@ -2,6 +2,17 @@ import { ProjectDetailsPage } from "cypress/pages/projects/projectDetails/projec
 import { significateDateToDisplayDate } from "cypress/support/formatDate";
 
 export class AboutTheProjectPage extends ProjectDetailsPage {
+    sections = {
+        "Project details": "projectDetails",
+        "Project assignment": "projectAssignment",
+        "Reasons for the conversion": "reasonsForConversion",
+        "Reasons for the transfer": "reasonsForTransfer",
+        "Advisory board details": "advisoryBoardDetails",
+        "School details": "schoolDetails",
+        "Academy details": "academyDetails",
+        "Incoming trust details": "incomingTrustDetails",
+        "Outgoing trust details": "outgoingTrustDetails",
+    };
     protected readonly giasUrl = "https://get-information-schools.service.gov.uk";
 
     hasProjectDetails(
@@ -129,15 +140,7 @@ export class AboutTheProjectPage extends ProjectDetailsPage {
     }
 
     pageHasMovedToSection(section: string) {
-        cy.url().should(
-            "include",
-            `#${section
-                .split(" ")
-                .map((word, index) =>
-                    index === 0 ? word.toLowerCase() : word.charAt(0).toUpperCase() + word.slice(1).toLowerCase(),
-                )
-                .join("")}`,
-        );
+        cy.url().should("include", `#${this.sections[section]}`);
         cy.contains("h2", section).isInViewport();
         return this;
     }

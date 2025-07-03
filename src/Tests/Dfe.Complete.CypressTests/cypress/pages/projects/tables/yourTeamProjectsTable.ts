@@ -7,7 +7,7 @@ class YourTeamProjectsTable extends ProjectTable {
     }
 
     assignProject(schoolName: string) {
-        this.clickButtonInRow(schoolName, "Assign project");
+        this.clickButtonInRow(schoolName, "Assign Project");
         return this;
     }
 }
