@@ -1,0 +1,53 @@
+
+@model Dfe.Complete.Application.Projects.Models.TransferTasks.TransferFormMTaskDataDto
+
+<form method="post" class="new_transfer_task_form_m_task_form" id="new_transfer_task_form_m_task_form">
+    <div class="govuk-form-group">
+        <div class="govuk-checkboxes__item">
+            <input type="hidden" name="Input.FormMNotApplicable" value="false" />
+            <input type="checkbox" name="Input.FormMNotApplicable" id="form_m_not_applicable" value="true" class="govuk-checkboxes__input" @(Model?.FormMNotApplicable == true ? "checked" : "") />
+            <label class="govuk-label govuk-checkboxes__label" for="form_m_not_applicable">Not applicable</label>
+        </div>
+    </div>
+
+    <div class="govuk-form-group">
+        <h2 class="govuk-heading-l">Check and clear Form M</h2>
+        <div class="app-task-section__hint">
+            <p>You must check for anything that contradicts or references information in the 125 year lease.</p>
+            <p>Contact the real estate team to discuss any issues.</p>
+            <p>The names of the people you need to contact are in <a href="https://educationgovuk.sharepoint.com/:w:/r/sites/lvedfe00116/WorkplaceDocuments/ARDG%20Internal%20Guidance/6.%20Taking%20action%20with%20underperforming%20open%20academies%20and%20free%20schools/Academy%20transfer/Transfer_of_land_guidance_January_2023.docx?d=we1401195a189494a9b530895909cdd39&csf=1&web=1&e=2SfXLo" target="_blank">the Form M guidance (Word document)</a>.</p>
+        </div>
+
+        <div class="govuk-checkboxes__item">
+            <input type="hidden" name="Input.FormMReceivedFormM" value="false" />
+            <input type="checkbox" name="Input.FormMReceivedFormM" id="form_m_received_form_m" value="true" class="govuk-checkboxes__input" @(Model?.FormMReceivedFormM == true ? "checked" : "") />
+            <label class="govuk-label govuk-checkboxes__label" for="form_m_received_form_m">Received completed Form M from outgoing trust</label>
+        </div>
+
+        <div class="govuk-checkboxes__item">
+            <input type="hidden" name="Input.FormMReceivedTitlePlans" value="false" />
+            <input type="checkbox" name="Input.FormMReceivedTitlePlans" id="form_m_received_title_plans" value="true" class="govuk-checkboxes__input" @(Model?.FormMReceivedTitlePlans == true ? "checked" : "") />
+            <label class="govuk-label govuk-checkboxes__label" for="form_m_received_title_plans">Received title plans, numbers and freehold information</label>
+        </div>
+
+        <div class="govuk-checkboxes__item">
+            <input type="hidden" name="Input.FormMCleared" value="false" />
+            <input type="checkbox" name="Input.FormMCleared" id="form_m_cleared" value="true" class="govuk-checkboxes__input" @(Model?.FormMCleared == true ? "checked" : "") />
+            <label class="govuk-label govuk-checkboxes__label" for="form_m_cleared">Cleared</label>
+        </div>
+
+        <div class="govuk-checkboxes__item">
+            <input type="hidden" name="Input.FormMSigned" value="false" />
+            <input type="checkbox" name="Input.FormMSigned" id="form_m_signed" value="true" class="govuk-checkboxes__input" @(Model?.FormMSigned == true ? "checked" : "") />
+            <label class="govuk-label govuk-checkboxes__label" for="form_m_signed">Signed by outgoing trust</label>
+        </div>
+
+        <div class="govuk-checkboxes__item">
+            <input type="hidden" name="Input.FormMSaved" value="false" />
+            <input type="checkbox" name="Input.FormMSaved" id="form_m_saved" value="true" class="govuk-checkboxes__input" @(Model?.FormMSaved == true ? "checked" : "") />
+            <label class="govuk-label govuk-checkboxes__label" for="form_m_saved">Saved in the academy SharePoint folder</label>
+        </div>
+    </div>
+
+    <button type="submit" formnovalidate="formnovalidate" class="govuk-button" data-module="govuk-button" data-prevent-double-click="true">Save and return</button>
+</form>
