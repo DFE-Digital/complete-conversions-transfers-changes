@@ -63,16 +63,18 @@ namespace Dfe.Complete.Infrastructure
                 };
 
                 // https://stackexchange.github.io/StackExchange.Redis/ThreadTheft.html
-                ConnectionMultiplexer.SetFeatureFlag("preventthreadtheft", true);
-
-                IConnectionMultiplexer redisConnectionMultiplexer = ConnectionMultiplexer.Connect(redisConfigurationOptions);
+                ConnectionMultiplexer.SetFeatureFlag("preventthreadtheft", true); 
 
                 services.AddStackExchangeRedisCache(redisCacheConfig =>
                 {
                     redisCacheConfig.ConfigurationOptions = redisConfigurationOptions;
-                    redisCacheConfig.ConnectionMultiplexerFactory = () => Task.FromResult(redisConnectionMultiplexer);
+                    redisCacheConfig.ConnectionMultiplexerFactory = async () =>
+                    {
+                        return await ConnectionMultiplexer.ConnectAsync(redisConfigurationOptions);
+                    };
                     redisCacheConfig.InstanceName = "redis-master";
                 });
+
             }
 
             return services;
