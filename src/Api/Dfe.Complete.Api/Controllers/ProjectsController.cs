@@ -413,7 +413,7 @@ namespace Dfe.Complete.Api.Controllers
                 return StatusCode(500, result.Error);
             }
 
-            return Ok(new NoteId(result.Value.Value));
+            return Ok(result.Value.Id);
         }
 
         /// <summary>

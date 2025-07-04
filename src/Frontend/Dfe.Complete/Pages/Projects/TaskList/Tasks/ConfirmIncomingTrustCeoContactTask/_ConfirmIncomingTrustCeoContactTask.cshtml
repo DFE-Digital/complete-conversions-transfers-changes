@@ -1,0 +1,29 @@
+@model Dfe.Complete.Pages.Projects.TaskList.Tasks.ConfirmIncomingTrustCeoContactTask.ConfirmIncomingTrustCeoContactTaskModel
+@{
+    ViewBag.Title = "Confirm incoming trust CEO contact";
+    Layout = "_layout";
+}
+
+<div class="task-section">
+    <h3 class="govuk-heading-m">Confirm incoming trust CEO contact</h3>
+    
+    <div class="govuk-body">
+        <p>Task for confirming the incoming trust CEO contact details.</p>
+    </div>
+    
+    @if (Model.Notes.Any())
+    {
+        <div class="govuk-!-margin-top-6">
+            <h2 class="govuk-heading-m">Notes</h2>
+            @foreach (var note in Model.Notes)
+            {
+                <div class="govuk-!-margin-bottom-3">
+                    <p class="govuk-body">@note.Body</p>
+                    <p class="govuk-body-s govuk-!-margin-bottom-0">
+                        Added by @note.UserFullName on @note.CreatedAt.ToString("dd/MM/yyyy")
+                    </p>
+                </div>
+            }
+        </div>
+    }
+</div>

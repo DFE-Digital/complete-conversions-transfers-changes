@@ -2332,6 +2332,7 @@ namespace Dfe.Complete.Client
         /// <summary>
         /// Create a new Note for a Project
         /// </summary>
+        /// <param name="request">The request.</param>
         /// <returns>Note ID</returns>
         /// <exception cref="CompleteApiException">A server side error occurred.</exception>
         public virtual System.Threading.Tasks.Task<NoteId> CreateProjectNoteAsync(CreateNoteCommand request)
@@ -2343,6 +2344,7 @@ namespace Dfe.Complete.Client
         /// <summary>
         /// Create a new Note for a Project
         /// </summary>
+        /// <param name="request">The request.</param>
         /// <returns>Note ID</returns>
         /// <exception cref="CompleteApiException">A server side error occurred.</exception>
         public virtual async System.Threading.Tasks.Task<NoteId> CreateProjectNoteAsync(CreateNoteCommand request, System.Threading.CancellationToken cancellationToken)
@@ -2429,6 +2431,7 @@ namespace Dfe.Complete.Client
         /// <summary>
         /// Update a Note for a Project
         /// </summary>
+        /// <param name="request">The request.</param>
         /// <returns>Note ID</returns>
         /// <exception cref="CompleteApiException">A server side error occurred.</exception>
         public virtual System.Threading.Tasks.Task<NoteId> UpdateProjectNoteAsync(UpdateNoteCommand request)
@@ -2440,6 +2443,7 @@ namespace Dfe.Complete.Client
         /// <summary>
         /// Update a Note for a Project
         /// </summary>
+        /// <param name="request">The request.</param>
         /// <returns>Note ID</returns>
         /// <exception cref="CompleteApiException">A server side error occurred.</exception>
         public virtual async System.Threading.Tasks.Task<NoteId> UpdateProjectNoteAsync(UpdateNoteCommand request, System.Threading.CancellationToken cancellationToken)
