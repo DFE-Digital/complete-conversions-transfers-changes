@@ -1,0 +1,39 @@
+@using Dfe.Complete.Constants
+@using Dfe.Complete.Extensions;
+@using Dfe.Complete.Domain.Enums;
+@using Dfe.Complete.Domain.Constants;
+
+@model Dfe.Complete.Pages.Projects.TaskList.Tasks.ProjectTaskBaseModel
+@{
+    var addNoteLink = string.Format(RouteConstants.ProjectAddNote, Model.ProjectId);
+    var userId = User.GetUserId();
+}
+
+<aside>
+    <h2 class="govuk-heading-m">Task notes</h2>
+    <p>@Model.Notes.Count
+    </p>
+    <ul class="list-style-none">
+    @for(var iNote = 0; iNote < Model.Notes.Count; iNote++)
+    {
+            var note = Model.Notes[iNote];
+            var editNoteLink = string.Format(RouteConstants.ProjectEditNote, Model.ProjectId, note.Id.Value);
+
+            @if (iNote > 0)
+            {
+                <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible" />
+            }
+            <li>
+                <p class="govuk-body govuk-!-margin-bottom-0">@note.CreatedAt.ToDateString()</p>
+                <h3 class="govuk-heading-s govuk-!-padding-top-0">@note.UserFullName</h3>
+                <p class="govuk-body-m">@note.Body</p>
+                @if (Model.CanEditNote(note.UserId))
+                {
+                    <p class="govuk-body govuk-!-font-size-16">
+                        <a class="govuk-link" href="@editNoteLink">Edit</a>
+                    </p>
+                }
+            </li>
+        }
+    </ul>
+</aside>

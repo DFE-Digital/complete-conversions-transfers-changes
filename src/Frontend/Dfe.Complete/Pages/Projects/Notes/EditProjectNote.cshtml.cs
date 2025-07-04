@@ -2,10 +2,12 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using Dfe.Complete.Application.Notes.Commands;
 using Dfe.Complete.Constants;
+using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Domain.ValueObjects;
 using Dfe.Complete.Extensions;
 using Dfe.Complete.Models;
 using Dfe.Complete.Services;
+using Dfe.Complete.Utils;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -24,6 +26,7 @@ public class EditProjectNoteModel(ISender sender, ErrorService errorService) : P
 
     public async override Task<IActionResult> OnGetAsync()
     {
+
         var baseResult = await base.OnGetAsync();
         if (baseResult is not PageResult) return baseResult;
 
@@ -55,7 +58,7 @@ public class EditProjectNoteModel(ISender sender, ErrorService errorService) : P
 
         var response = await Sender.Send(new UpdateNoteCommand(new NoteId(NoteId), NoteText));
 
-        if (!response.IsSuccess)
+        if (!response.IsSuccess || response.Value == null)
             throw new ApplicationException($"An error occurred when updating note {NoteId} for project {ProjectId}");
 
         TempData.SetNotification(
@@ -64,7 +67,7 @@ public class EditProjectNoteModel(ISender sender, ErrorService errorService) : P
             "Your note has been edited"
         );
 
-        return Redirect(string.Format(RouteConstants.ProjectViewNotes, ProjectId));
+        return Redirect(GetReturnUrl(response.Value.TaskIdentifier));
     }
 }
 
