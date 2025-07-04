@@ -2,6 +2,7 @@
 using Dfe.Complete.Application.Common.Models;
 using Dfe.Complete.Application.Projects.Models;
 using Dfe.Complete.Application.Users.Queries.GetUser;
+using Dfe.Complete.Domain.Constants;
 using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Extensions;
 using Dfe.Complete.Utils;
@@ -30,7 +31,7 @@ namespace Dfe.Complete.Tests.Extensions
         }
 
         [Fact]
-        public void GetUserAdId_Returns_Throws_When_ObjectIdentifier_Claim_Does_Not_Exist()
+        public void GetUserAdId_Throws_When_ObjectIdentifier_Claim_Does_Not_Exist()
         {
             // Arrange
             var claims = new List<Claim>
@@ -44,6 +45,23 @@ namespace Dfe.Complete.Tests.Extensions
                 principal.GetUserAdId());
 
             Assert.Equal("User does not have an objectidentifier claim.", exception.Message);
+        }
+
+        [Fact]
+        public void GetUserId_ReturnsUsersId()
+        {
+            // Arrange
+            var userId = "00000000-0000-0000-0000-000000000125";
+
+            var claims = new[] { new Claim(CustomClaimTypeConstants.UserId, userId) };
+            var claimsPrincipal = new ClaimsPrincipal(new ClaimsIdentity(claims));
+
+            // Act
+            var result = claimsPrincipal.GetUserId();
+
+            // Assert
+            var userIdValue = result.Value.ToString();
+            Assert.Equal("00000000-0000-0000-0000-000000000125", userIdValue);
         }
 
         [Fact]

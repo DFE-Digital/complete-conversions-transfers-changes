@@ -11,5 +11,6 @@ public static class UserPolicyConstants
     public const string CanViewServiceSupport = "CanViewServiceSupport";
     public const string CanViewAllProjectsHandover = "CanViewAllProjectsHandover";
     public const string CanViewAllProjectsExports = "CanViewAllProjectsExports";
+    public const string CanAddNotes = "CanAddNotes";
     public const string HasGlobalNavigation = "HasGlobalNavigation";
 }

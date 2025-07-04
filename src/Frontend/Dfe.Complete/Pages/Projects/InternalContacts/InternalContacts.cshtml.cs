@@ -14,9 +14,9 @@ public class InternalContacts(ISender sender, ILogger<InternalContacts> logger) 
     public ProjectTeam? TeamAssignedTo { get; set; }
     public UserDto? UserAddedBy { get; set; }
 
-    public override async Task<IActionResult> OnGet()
+    public override async Task<IActionResult> OnGetAsync()
     {
-        await base.OnGet();
+        await base.OnGetAsync();
         if (Project.AssignedToId is not null)
         {
             var assignedToUserQuery = new GetUserByIdQuery(Project.AssignedToId);
