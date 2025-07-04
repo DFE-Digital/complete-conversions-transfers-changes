@@ -41,13 +41,13 @@ namespace Dfe.Complete.Infrastructure
 
             AddInfrastructureHealthChecks(services);
 
+           
             var redisAppSettings = config.GetSection("Redis");
             if (redisAppSettings.GetValue<bool>("Enable"))
             {
                 // Configure Redis Based Distributed Session
                 var redisConfigurationOptions = new ConfigurationOptions
                 {
-                    AbortOnConnectFail = false,
                     ResolveDns = true,
                     Ssl = true,
                     EndPoints =
