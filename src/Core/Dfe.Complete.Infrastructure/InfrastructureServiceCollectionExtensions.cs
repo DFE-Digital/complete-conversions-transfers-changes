@@ -45,17 +45,14 @@ namespace Dfe.Complete.Infrastructure
             var redisAppSettings = config.GetSection("Redis"); 
             if (redisAppSettings.GetValue<bool>("Enable"))
             {
-                var host = redisAppSettings.GetValue<string>("Host") ?? throw new Exception("Redis::host missing");
-                var port = redisAppSettings.GetValue<string>("Port") ?? throw new Exception("Redis::port missing");
-                var password = redisAppSettings.GetValue<string>("Password") ?? throw new Exception("Redis::password missing");
                 // Configure Redis Based Distributed Session
                 var redisConfigurationOptions = new ConfigurationOptions
                 {
                     AbortOnConnectFail = false,
                     ResolveDns = true,
                     Ssl = true,
-                    EndPoints = { $"{host}:{port}" },
-                    Password = password,
+                    EndPoints = { $"{redisAppSettings.GetValue<string>("Host")}:{redisAppSettings.GetValue<int>("Port")}" },
+                    Password = redisAppSettings.GetValue<string>("Password"),
                     ClientName = "Dfe.Complete",
                     DefaultVersion = new Version(6, 0),
                     AsyncTimeout = 15000,
