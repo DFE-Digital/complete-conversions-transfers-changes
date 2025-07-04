@@ -22,7 +22,7 @@ namespace Dfe.Complete.Application.Projects.Queries.ListAllProjects
         {
             try
             {
-                var baseQ = new StateQuery(ProjectState.Active)
+                var baseQ = new StateQuery([ProjectState.Active])
                     .Apply(repo.Projects.AsNoTracking());
 
                 var nonMatGroups = await new FormAMatQuery(false)

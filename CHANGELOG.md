@@ -22,7 +22,8 @@ Security in case of vulnerabilities.
 
 ## Unreleased  
 
-### Added
+### Added  
+- Added `Statistics` page
 
 ### Changed  
 
