@@ -56,7 +56,7 @@ namespace Dfe.Complete.Infrastructure
                     ClientName = "Dfe.Complete",
                     DefaultVersion = new Version(6, 0),
                     AsyncTimeout = 15000,
-                    SyncTimeout = 15000,
+                    SyncTimeout = 15000
                 };
 
                 // https://stackexchange.github.io/StackExchange.Redis/ThreadTheft.html
