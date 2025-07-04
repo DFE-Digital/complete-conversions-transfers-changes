@@ -41,8 +41,8 @@ namespace Dfe.Complete.Infrastructure
             //services.AddCustomAuthorization(config);
 
             AddInfrastructureHealthChecks(services);
-         
-            var redisAppSettings = config.GetSection("Redis"); 
+
+            var redisAppSettings = config.GetSection("Redis");
             if (redisAppSettings.GetValue<bool>("Enable"))
             {
                 // Configure Redis Based Distributed Session
