@@ -16,3 +16,4 @@
 * Please define query and command models in the same file as the handler
 * Do not comment code
 * Always double check your work
+* The startup project is complete-api/src/Frontend/Dfe.Complete (complete-api\src\Frontend\Dfe.Complete\Dfe.Complete.csproj)
