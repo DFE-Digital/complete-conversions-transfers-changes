@@ -10,4 +10,9 @@
 * For frontend pages, always inject ISender for query usage
 * Always make sure code compiles
 * Always solve build errors
+* Ensure that there are no build errors
 * Never introduce warnings
+* Please define query and command models as records
+* Please define query and command models in the same file as the handler
+* Do not comment code
+* Always double check your work
