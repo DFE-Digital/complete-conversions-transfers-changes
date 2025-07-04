@@ -322,4 +322,48 @@ public class ListAllProjectsForUserTests
         }
     }
 
+    [Theory]
+    [InlineAutoData(ProjectUserFilter.AssignedTo, OrderProjectByField.SignificantDate, OrderByDirection.Ascending)]
+    [InlineAutoData(ProjectUserFilter.CreatedBy, OrderProjectByField.SignificantDate, OrderByDirection.Descending)]
+    public async Task Handle_ShouldReturnCorrectList_WhenGetByUkprnsAllAsyncIsNotCalled(
+       ProjectUserFilter filter,
+       OrderProjectQueryBy ordering,
+       [Frozen] IListAllProjectsQueryService mockListAllProjectsQueryService,
+       [Frozen] Mock<ISender> mockSender,
+       IFixture fixture,
+       Mock<ILogger<ListAllProjectsForUserQueryHandler>> _mockLogger)
+    {
+        //Arrange 
+        var mockTrustsClient = new Mock<ITrustsV4Client>();
+
+        var handler = new ListAllProjectsForUserQueryHandler(mockListAllProjectsQueryService, mockTrustsClient.Object,
+            mockSender.Object, _mockLogger.Object);
+
+        var userDto = fixture.Create<UserDto>();
+        mockSender.Setup(sender => sender.Send(It.IsAny<GetUserByAdIdQuery>(), It.IsAny<CancellationToken>()))
+            .ReturnsAsync(Result<UserDto?>.Success(userDto));
+
+        var mockListAllProjectsForUserQueryModels = fixture.CreateMany<ListAllProjectsQueryModel>(0);
+
+        mockListAllProjectsQueryService.ListAllProjects(new ProjectFilters(ProjectState.Active, null,
+                AssignedToUserId: filter == ProjectUserFilter.AssignedTo ? userDto.Id : null,
+                CreatedByUserId: filter == ProjectUserFilter.CreatedBy ? userDto.Id : null),
+                orderBy: Arg.Any<OrderProjectQueryBy>())
+            .Returns(mockListAllProjectsForUserQueryModels.BuildMock());
+
+        Assert.NotNull(userDto.ActiveDirectoryUserId);
+        var query = new ListAllProjectsForUserQuery(ProjectState.Active, userDto.ActiveDirectoryUserId, filter,
+            ordering)
+        { Page = 50 };
+
+        //Act
+        var result = await handler.Handle(query, default);
+
+        //Assert
+        Assert.NotNull(result);
+        Assert.True(result.IsSuccess);
+        Assert.Equal(0, result.Value?.Count);
+        mockTrustsClient.Verify(service => service.GetByUkprnsAllAsync(It.IsAny<IEnumerable<string>>(), default), Times.Never);
+    }
+
 }
