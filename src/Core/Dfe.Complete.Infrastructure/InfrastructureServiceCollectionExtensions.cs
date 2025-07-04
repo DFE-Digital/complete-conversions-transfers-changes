@@ -42,11 +42,11 @@ namespace Dfe.Complete.Infrastructure
             AddInfrastructureHealthChecks(services);
          
             var redisAppSettings = config.GetSection("Redis"); 
-            var host = redisAppSettings.GetValue<string>("Host") ?? throw new Exception("Redis::host missing");
-            var port = redisAppSettings.GetValue<string>("Port") ?? throw new Exception("Redis::port missing");
-            var password = redisAppSettings.GetValue<string>("Password") ?? throw new Exception("Redis::password missing");
             if (redisAppSettings.GetValue<bool>("Enable"))
             {
+                var host = redisAppSettings.GetValue<string>("Host") ?? throw new Exception("Redis::host missing");
+                var port = redisAppSettings.GetValue<string>("Port") ?? throw new Exception("Redis::port missing");
+                var password = redisAppSettings.GetValue<string>("Password") ?? throw new Exception("Redis::password missing");
                 // Configure Redis Based Distributed Session
                 var redisConfigurationOptions = new ConfigurationOptions
                 {
