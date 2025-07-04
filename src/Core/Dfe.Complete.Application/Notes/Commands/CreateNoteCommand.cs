@@ -1,13 +1,15 @@
 using Dfe.Complete.Application.Common.Models;
 using Dfe.Complete.Application.Notes.Interfaces;
 using Dfe.Complete.Domain.Entities;
+using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Domain.ValueObjects;
+using DfE.CoreLibs.Utilities.Extensions;
 using MediatR;
 using Microsoft.Extensions.Logging;
 
 namespace Dfe.Complete.Application.Notes.Commands;
 
-public record CreateNoteCommand(ProjectId ProjectId, UserId UserId, string Body) : IRequest<Result<NoteId>>;
+public record CreateNoteCommand(ProjectId ProjectId, UserId UserId, string Body, NoteTaskIdentifier? TaskIdentifier = null) : IRequest<Result<NoteId>>;
 
 public class CreateNoteCommandHandler(
     INoteWriteRepository _repo,
@@ -24,6 +26,7 @@ public class CreateNoteCommandHandler(
                 ProjectId = request.ProjectId,
                 UserId = request.UserId,
                 Body = request.Body,
+                TaskIdentifier = request.TaskIdentifier.ToDescription(),
                 CreatedAt = DateTime.UtcNow,
                 UpdatedAt = DateTime.UtcNow
             };

@@ -1,17 +1,52 @@
-﻿@page "/projects/{projectId}/tasks/handover"
-@using Dfe.Complete.Domain.Enums
+﻿@page "/projects/{projectId:guid}/tasks/handover"
 @model Dfe.Complete.Pages.Projects.TaskList.Tasks.HandoverWithDeliveryOfficerTask.HandoverWithDeliveryOfficerTaskModel
-
 @{
-  ViewData["Title"] = "Handover with regional delivery officer";
+    Layout = "../ProjectTaskLayout";
 }
 
-@if (Model.Project.Type == ProjectType.Conversion)
+@section TaskContent
 {
-  @await Html.PartialAsync("_ConversionHandoverWithDeliveryOfficerTask", Model)
-}
-
-@if (Model.Project.Type == ProjectType.Transfer)
-{
-  @await Html.PartialAsync("_TransferHandoverWithDeliveryOfficerTask", Model)
+    <form method="post" class="govuk-form-group govuk-!-margin-bottom-0">
+        <div class="govuk-form-group">
+            <fieldset class="govuk-fieldset">
+                <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
+                    <h2 class="govuk-fieldset__heading">
+                        Handover with delivery officer
+                    </h2>
+                </legend>
+                <div class="govuk-checkboxes" data-module="govuk-checkboxes">
+                    <div class="govuk-checkboxes__item">
+                        <input class="govuk-checkboxes__input" id="review-project-information" name="review-project-information" type="checkbox" value="true" @(Model.ReviewProjectInformation == true ? "checked" : "")>
+                        <label class="govuk-label govuk-checkboxes__label" for="review-project-information">
+                            Review project information
+                        </label>
+                    </div>
+                    <div class="govuk-checkboxes__item">
+                        <input class="govuk-checkboxes__input" id="make-notes" name="make-notes" type="checkbox" value="true" @(Model.MakeNotes == true ? "checked" : "")>
+                        <label class="govuk-label govuk-checkboxes__label" for="make-notes">
+                            Make notes
+                        </label>
+                    </div>
+                    <div class="govuk-checkboxes__item">
+                        <input class="govuk-checkboxes__input" id="attend-handover-meeting" name="attend-handover-meeting" type="checkbox" value="true" @(Model.AttendHandoverMeeting == true ? "checked" : "")>
+                        <label class="govuk-label govuk-checkboxes__label" for="attend-handover-meeting">
+                            Attend handover meeting
+                        </label>
+                    </div>
+                    <div class="govuk-checkboxes__divider">or</div>
+                    <div class="govuk-checkboxes__item">
+                        <input class="govuk-checkboxes__input" id="not-applicable" name="not-applicable" type="checkbox" value="true" @(Model.NotApplicable == true ? "checked" : "")>
+                        <label class="govuk-label govuk-checkboxes__label" for="not-applicable">
+                            Not applicable
+                        </label>
+                    </div>
+                </div>
+            </fieldset>
+        </div>
+        <div class="govuk-button-group">
+            <button type="submit" class="govuk-button" data-module="govuk-button">
+                Save and continue
+            </button>
+        </div>
+    </form>
 }
