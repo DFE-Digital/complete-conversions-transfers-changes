@@ -27,7 +27,7 @@
                 <div class="govuk-checkboxes__item">
                     <input class="govuk-checkboxes__input" id="NotApplicable" name="not-applicable" type="checkbox"
                         value="true" @(Model.NotApplicable ? "checked" : "") />
-                    <label class="govuk-label govuk-checkboxes__label" for="NotApplicable">Not applicable</label>
+                    <label class="govuk-label govuk-checkboxes__label govuk-label--s" for="NotApplicable"><strong>Not applicable</strong></label>
                 </div>
             </div>
         </div>
@@ -37,19 +37,55 @@
                 <div class="govuk-checkboxes__item">
                     <input class="govuk-checkboxes__input" id="ReviewProjectInformation" name="review-project-information"
                         type="checkbox" value="true" @(Model.ReviewProjectInformation ? "checked" : "") />
-                    <label class="govuk-label govuk-checkboxes__label" for="ReviewProjectInformation">Review project
-                        information</label>
+                    <label class="govuk-label govuk-checkboxes__label govuk-label--s" for="ReviewProjectInformation">
+                        <strong>Review the project information, check the documents and carry out research</strong>
+                        <div class="guidance">
+                            <details data-module="govuk-details" class="govuk-details">
+                                <summary class="govuk-details__summary">
+                                    <span class="govuk-details__summary-text">What to check for</span>
+                                </summary>
+                                <div class="govuk-details__text">
+                                    <p>You should check existing project documents, including:</p>
+                                    <ul>
+                                        <li>academy order</li>
+                                        <li>application to convert</li>
+                                    </ul>
+                                    <p>Check that no information is missing and there are no errors. You should also research the background of the project before you meet with the regional delivery officer.</p>
+                                    <p>Things to check during your background research include:</p>
+                                    <ul>
+                                        <li>project information, such as advisory board conditions</li>
+                                        <li>school or trust website for more information about the school</li>
+                                        <li>Google Maps for potential land issues</li>
+                                    </ul>
+                                </div>
+                            </details>
+                        </div>
+                    </label>
                 </div>
                 <div class="govuk-checkboxes__item">
                     <input class="govuk-checkboxes__input" id="MakeNotes" name="make-notes" type="checkbox" value="true"
                         @(Model.MakeNotes ? "checked" : "") />
-                    <label class="govuk-label govuk-checkboxes__label" for="MakeNotes">Make notes</label>
+                    <label class="govuk-label govuk-checkboxes__label govuk-label--s" for="MakeNotes">
+                        <strong>Make notes and write questions to ask the regional delivery officer</strong>
+                        <div class="guidance">
+                            <details data-module="govuk-details" class="govuk-details">
+                                <summary class="govuk-details__summary">
+                                    <span class="govuk-details__summary-text">What to make notes about</span>
+                                </summary>
+                                <div class="govuk-details__text">
+                                    <p>Note down things you want to ask and talk about with the regional delivery officer at the handover meeting.</p>
+                                    <p>This is an opportunity to clarify anything that you're unsure about after reviewing the project and doing your background research.</p>
+                                </div>
+                            </details>
+                        </div>
+                    </label>
                 </div>
                 <div class="govuk-checkboxes__item">
                     <input class="govuk-checkboxes__input" id="AttendHandoverMeeting" name="attend-handover-meeting"
                         type="checkbox" value="true" @(Model.AttendHandoverMeeting ? "checked" : "") />
-                    <label class="govuk-label govuk-checkboxes__label" for="AttendHandoverMeeting">Attend handover
-                        meeting</label>
+                    <label class="govuk-label govuk-checkboxes__label govuk-label--s" for="AttendHandoverMeeting">
+                        <strong>Attend handover meeting with regional delivery officer</strong>
+                    </label>
                 </div>
             </div>
         </div>
