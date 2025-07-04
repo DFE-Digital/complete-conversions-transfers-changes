@@ -23,11 +23,6 @@ public class ProjectTaskModel(ISender sender, IAuthorizationService _authorizati
 
     public string GetReturnUrl() => string.Format(RouteConstants.ProjectTaskList, ProjectId);
 
-    // public virtual Task<IActionResult> OnPostAsync()
-    // {
-    //     return Task.FromResult<IActionResult>(RedirectToPage("Success"));
-    // }
-
     public override async Task<IActionResult> OnGetAsync()
     {
         var baseResult = await base.OnGetAsync();
@@ -47,7 +42,7 @@ public class ProjectTaskModel(ISender sender, IAuthorizationService _authorizati
         SchoolName = Establishment?.Name ?? string.Empty;
 
         var noteQuery = new GetProjectTaskNotesByProjectIdQuery(new ProjectId(Guid.Parse(ProjectId.ToString())), (NoteTaskIdentifier)validTaskIdentifier!);
-        var response = await sender.Send(noteQuery);
+        var response = await Sender.Send(noteQuery);
         Notes = response.IsSuccess && response.Value != null ? response.Value : [];
 
         return Page();
