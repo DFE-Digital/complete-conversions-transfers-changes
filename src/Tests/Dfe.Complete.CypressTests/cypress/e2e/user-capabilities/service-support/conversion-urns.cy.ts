@@ -10,6 +10,7 @@ import projectDetailsPage from "cypress/pages/projects/projectDetails/projectDet
 import validationComponent from "cypress/pages/validationComponent";
 import projectRemover from "cypress/api/projectRemover";
 import projectApi from "cypress/api/projectApi";
+import { checkAccessibilityAcrossPages } from "cypress/support/reusableTests";
 
 const project = ProjectBuilder.createConversionProjectRequest(nextMonth);
 const schoolName = "St Chad's Catholic Primary School";
@@ -176,5 +177,9 @@ describe("Service support user - Local authorities: ", () => {
 
         Logger.log("Verify that the enter academy URN page is displayed");
         conversionURNsPage.containsHeading(`Create academy URN for ${schoolName2} conversion`);
+    });
+
+    it("Check accessibility across pages", () => {
+        checkAccessibilityAcrossPages();
     });
 });

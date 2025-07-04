@@ -1,6 +1,8 @@
 import {
     shouldNotHaveAccessToViewAndEditUsers,
+    shouldNotHaveAccessToViewConversionURNsPage,
     shouldNotHaveAccessToViewHandedOverProjects,
+    shouldNotHaveAccessToViewLocalAuthorities,
     shouldNotHaveAccessToViewProjectExports,
     shouldNotHaveAccessToViewYourTeamUnassignedProjects,
 } from "cypress/support/reusableTests";
@@ -12,8 +14,18 @@ import allProjects from "cypress/pages/projects/allProjects";
 import projectsByMonthPage from "cypress/pages/projects/projectsByMonthPage";
 import { nextMonthLong } from "cypress/constants/stringTestConstants";
 import yourProjects from "cypress/pages/projects/yourProjects";
+import projectRemover from "cypress/api/projectRemover";
+import projectApi from "cypress/api/projectApi";
+import { ProjectBuilder } from "cypress/api/projectBuilder";
 
+const date = new Date("2027-04-01");
+const project = ProjectBuilder.createConversionProjectRequest(date);
+let projectId: string;
 describe("Capabilities and permissions of the regional casework services user", () => {
+    before(() => {
+        projectRemover.removeProjectIfItExists(`${project.urn.value}`);
+        projectApi.createConversionProject(project).then((response) => (projectId = response.value));
+    });
     beforeEach(() => {
         cy.login(regionalCaseworkerUser);
         cy.acceptCookies();
@@ -39,7 +51,7 @@ describe("Capabilities and permissions of the regional casework services user", 
             "By trust",
             "By local authority",
             "Completed",
-            "Statistics"
+            "Statistics",
         ]);
     });
 
@@ -73,5 +85,13 @@ describe("Capabilities and permissions of the regional casework services user", 
     it.skip("Should NOT have access to view and edit users", () => {
         // not implemented
         shouldNotHaveAccessToViewAndEditUsers();
+    });
+
+    it("Should NOT be able to view and edit local authorities", () => {
+        shouldNotHaveAccessToViewLocalAuthorities();
+    });
+
+    it("Should NOT be able to view conversion URNs", () => {
+        shouldNotHaveAccessToViewConversionURNsPage(projectId);
     });
 });
