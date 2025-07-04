@@ -47,24 +47,28 @@ public class CustomPoliciesIntegrationTests
     }
 
     public static readonly object[][] HasPolicyTestData = {
-        ["CanViewTeamProjectsUnassigned", new string[] { "service_support" }, false],
-        ["CanViewTeamProjectsUnassigned", new string[] { "service_support", "manage_team" }, false],
-        ["CanViewTeamProjectsUnassigned", new string[] { "regional_casework_services" }, false],
-        ["CanViewTeamProjectsUnassigned", new string[] { "regional_casework_services", "manage_team" }, true],
-        ["CanViewTeamProjectsUnassigned", new string[] { "regional_delivery_officer" }, false],
-        ["CanViewTeamProjectsUnassigned", new string[] { "regional_delivery_officer", "manage_team" }, true],
-        ["CanViewYourProjects", new string[] { "service_support" }, false],
-        ["CanViewYourProjects", new string[] { "service_support", "manage_team" }, false],
-        ["CanViewYourProjects", new string[] { "regional_casework_services" }, true],
-        ["CanViewYourProjects", new string[] { "regional_casework_services", "manage_team" }, false],
-        ["CanViewYourProjects", new string[] { "regional_delivery_officer" }, true],
-        ["CanViewYourProjects", new string[] { "regional_delivery_officer", "manage_team" }, true],
-        ["CanCreateProjects", new string[] { "service_support" }, false],
-        ["CanCreateProjects", new string[] { "service_support", "manage_team" }, false],
-        ["CanCreateProjects", new string[] { "regional_casework_services" }, true],
-        ["CanCreateProjects", new string[] { "regional_casework_services", "manage_team" }, false],
-        ["CanCreateProjects", new string[] { "regional_delivery_officer" }, true],
-        ["CanCreateProjects", new string[] { "regional_delivery_officer", "manage_team" }, true]
+        ["CanViewTeamProjectsUnassigned", new[] { "service_support" }, false],
+        ["CanViewTeamProjectsUnassigned", new[] { "service_support", "manage_team" }, false],
+        ["CanViewTeamProjectsUnassigned", new[] { "regional_casework_services" }, false],
+        ["CanViewTeamProjectsUnassigned", new[] { "regional_casework_services", "manage_team" }, true],
+        ["CanViewTeamProjectsUnassigned", new[] { "regional_delivery_officer" }, false],
+        ["CanViewTeamProjectsUnassigned", new[] { "regional_delivery_officer", "manage_team" }, true],
+        ["CanViewYourProjects", new[] { "service_support" }, false],
+        ["CanViewYourProjects", new[] { "service_support", "manage_team" }, false],
+        ["CanViewYourProjects", new[] { "regional_casework_services" }, true],
+        ["CanViewYourProjects", new[] { "regional_casework_services", "manage_team" }, false],
+        ["CanViewYourProjects", new[] { "regional_delivery_officer" }, true],
+        ["CanViewYourProjects", new[] { "regional_delivery_officer", "manage_team" }, true],
+        ["CanCreateProjects", new[] { "service_support" }, false],
+        ["CanCreateProjects", new[] { "service_support", "manage_team" }, false],
+        ["CanCreateProjects", new[] { "regional_casework_services" }, true],
+        ["CanCreateProjects", new[] { "regional_casework_services", "manage_team" }, false],
+        ["CanCreateProjects", new[] { "regional_delivery_officer" }, true],
+        ["CanCreateProjects", new[] { "regional_delivery_officer", "manage_team" }, true],
+        ["CanEditAddedByUser", new[] { "regional_delivery_officer" }, false],
+        ["CanEditAddedByUser", new[] { "regional_delivery_officer", "manage_team" }, true],
+        ["CanEditAddedByUser", new[] { "regional_casework_services" }, false],
+        ["CanEditAddedByUser", new[] { "service_support" }, true]
     };
 
     [Theory]
@@ -84,7 +88,7 @@ public class CustomPoliciesIntegrationTests
         identity.AddClaim(new Claim("sub", "test-user"));
         var user = new ClaimsPrincipal(identity);
 
-        var context = CreateHttpContext(user);
+        _ = CreateHttpContext(user);
         var services = new ServiceCollection();
         services.AddLogging();
         services.AddAuthorization(options =>

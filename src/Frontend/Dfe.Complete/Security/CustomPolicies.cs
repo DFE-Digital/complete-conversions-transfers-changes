@@ -39,6 +39,6 @@ public static class CustomPolicies
                     user.IsInRole(UserRolesConstants.ManageTeam) &&
                     (user.IsInRole(UserRolesConstants.RegionalCaseworkServices) || user.IsInRole(UserRolesConstants.RegionalDeliveryOfficer));
             });
-        },
+        }
     };
 }
