@@ -1,6 +1,16 @@
+// Constants
+const TASK_GROUPS = {
+    PROJECT_KICKOFF: 'Project kick-off',
+    PROJECT_DETAILS: 'Project details',
+    LEGAL_DOCUMENTS: 'Clear and sign legal documents',
+    READY_FOR_OPENING: 'Get ready for opening',
+    AFTER_OPENING: 'After opening'
+} as const;
+
 class ConversionTaskListPage {
     taskGroups = {
         projectKickOff: [
+            TASK_GROUPS.PROJECT_KICKOFF,
             'Handover with regional delivery officer',
             'External stakeholder kick-off',
             'Check accuracy of high needs places information',
@@ -12,7 +22,7 @@ class ConversionTaskListPage {
             'Add chair of governors\' contact details',
             'Confirm the proposed capacity of the academy'
         ],
-        clearAndSignLegalDocuments: [
+        legalDocuments: [
             'Land questionnaire',
             'Land registry title plans',
             'Supplemental funding agreement',
@@ -27,7 +37,7 @@ class ConversionTaskListPage {
             'Tenancy at will',
             'Commercial transfer agreement'
         ],
-        getReadyForOpening: [
+        readyForOpening: [
             'Confirm the academy\'s risk protection arrangements',
             'Complete and send single worksheet',
             'Confirm the school has completed all actions',

@@ -50,7 +50,6 @@ describe('Conversion Handover With Delivery Officer Task Page', () => {
     });
 
     it('should show task status based on the checkboxes are checked', () => {
-        // Check not applicable checkboxes
         conversionHandoverWithDeliveryOfficerTaskPage
             .selectButtonOrCheckbox('not-applicable')
             .saveAndReturn()
@@ -72,17 +71,15 @@ describe('Conversion Handover With Delivery Officer Task Page', () => {
 
     it('should load the handover task list page within 2 seconds', () => {
         const start = Date.now();
-        // cy.visit('/projects/PROJECT_ID/tasks'); // Replace PROJECT_ID as needed
         cy.get('form').should('be.visible').then(() => {
             const duration = Date.now() - start;
             expect(duration).to.be.lessThan(2000);
         });
     });
 
-    it('should be able to nabigate back from the task page', () => {
+    it('should be able to navigate back from the task page', () => {
         cy.get('a.govuk-back-link').should('contain', 'Back')
-          .click();
-        // Assert that the URL changes to the expected task list page
+            .click();
         cy.url().should('not.include', 'handover-task-list');
     });
 
