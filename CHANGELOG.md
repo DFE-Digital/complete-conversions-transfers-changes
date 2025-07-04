@@ -24,6 +24,7 @@ Security in case of vulnerabilities.
 
 ### Added
 - Project Significant History Dates `/projects/{projectId}/date-history`
+- Added `Statistics` page
 
 ### Changed  
 
