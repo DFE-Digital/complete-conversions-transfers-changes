@@ -2,6 +2,8 @@
 @model Dfe.Complete.Pages.Projects.ProjectTaskModel
 @{
     Layout = "Shared/_Layout";
+    ViewData["Title"] = $"{Model.Title} - Complete conversions, transfers and changes";
+
     var backLink = string.Format(RouteConstants.ProjectTaskList, Model.ProjectId);
 }
 
@@ -19,7 +21,11 @@
     <div class="govuk-grid-column-one-third">
         <aside>
             <h2 class="govuk-heading-m govuk-!-margin-bottom-2">Task notes</h2>
-            <a class="govuk-button govuk-button--secondary govuk-!-margin-bottom-2" href="@Url.Page("/Projects/Notes/New", new { projectId = Model.ProjectId, task_identifier = Model.TaskIdentifier })">Add a new task note</a>
+            <form method="post" asp-page-handler="AddNote">
+                <button data-module="govuk-button" class="govuk-button govuk-button--secondary govuk-!-margin-bottom-2" type="submit">
+                    Add a new task note
+                </button>
+            </form>
             <ul class="list-style-none govuk-!-margin-bottom-0">
             @if (Model.Notes != null && Model.Notes.Any())
             {

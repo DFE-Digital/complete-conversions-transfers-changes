@@ -27,6 +27,7 @@ public class HandoverWithDeliveryOfficerTaskModel(ISender sender) : ProjectTaskM
     public async override Task<IActionResult> OnGetAsync()
     {
         TaskIdentifier = "handover";
+        Title = "Handover with regional delivery officer";
         await base.OnGetAsync();
 
         var response = await sender.Send(new GetHandoverTaskDataByProjectIdQuery(new ProjectId(new Guid(ProjectId))));
@@ -43,7 +44,7 @@ public class HandoverWithDeliveryOfficerTaskModel(ISender sender) : ProjectTaskM
     }
 
 
-    public async override Task<IActionResult> OnPostAsync()
+    public async Task<IActionResult> OnPostAsync()
     {
         await sender.Send(new UpdateHandoverTaskDataByProjectIdCommand(
             new ProjectId(new Guid(ProjectId)),
@@ -53,7 +54,6 @@ public class HandoverWithDeliveryOfficerTaskModel(ISender sender) : ProjectTaskM
             AttendHandoverMeeting
         ));
 
-        return Page();
-        // return Task.FromResult<IActionResult>(RedirectToPage("/Projects/TaskList/TaskList", new { projectId = ProjectId }));
+        return Redirect(string.Format(RouteConstants.ProjectTaskList, ProjectId));
     }
 }
