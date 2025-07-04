@@ -39,6 +39,9 @@
                         type="checkbox" value="true" @(Model.ReviewProjectInformation ? "checked" : "") />
                     <label class="govuk-label govuk-checkboxes__label govuk-label--s" for="ReviewProjectInformation">
                         <strong>Review the project information, check the documents and carry out research</strong>
+                        <div class="govuk-hint">
+                            <p>Check that no information is missing from the existing project documents and there are no errors.</p>
+                        </div>
                         <div class="guidance">
                             <details data-module="govuk-details" class="govuk-details">
                                 <summary class="govuk-details__summary">
@@ -85,6 +88,9 @@
                         type="checkbox" value="true" @(Model.AttendHandoverMeeting ? "checked" : "") />
                     <label class="govuk-label govuk-checkboxes__label govuk-label--s" for="AttendHandoverMeeting">
                         <strong>Attend handover meeting with regional delivery officer</strong>
+                        <div class="govuk-hint">
+                            <p>Discuss any questions you have about the project in the meeting.</p>
+                        </div>
                     </label>
                 </div>
             </div>
