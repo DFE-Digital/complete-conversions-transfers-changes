@@ -2332,6 +2332,7 @@ namespace Dfe.Complete.Client
         /// <summary>
         /// Create a new Note for a Project
         /// </summary>
+        /// <param name="request">The request.</param>
         /// <returns>Note ID</returns>
         /// <exception cref="CompleteApiException">A server side error occurred.</exception>
         public virtual System.Threading.Tasks.Task<NoteId> CreateProjectNoteAsync(CreateNoteCommand request)
@@ -2343,6 +2344,7 @@ namespace Dfe.Complete.Client
         /// <summary>
         /// Create a new Note for a Project
         /// </summary>
+        /// <param name="request">The request.</param>
         /// <returns>Note ID</returns>
         /// <exception cref="CompleteApiException">A server side error occurred.</exception>
         public virtual async System.Threading.Tasks.Task<NoteId> CreateProjectNoteAsync(CreateNoteCommand request, System.Threading.CancellationToken cancellationToken)
@@ -2429,6 +2431,7 @@ namespace Dfe.Complete.Client
         /// <summary>
         /// Update a Note for a Project
         /// </summary>
+        /// <param name="request">The request.</param>
         /// <returns>Note ID</returns>
         /// <exception cref="CompleteApiException">A server side error occurred.</exception>
         public virtual System.Threading.Tasks.Task<NoteId> UpdateProjectNoteAsync(UpdateNoteCommand request)
@@ -2440,6 +2443,7 @@ namespace Dfe.Complete.Client
         /// <summary>
         /// Update a Note for a Project
         /// </summary>
+        /// <param name="request">The request.</param>
         /// <returns>Note ID</returns>
         /// <exception cref="CompleteApiException">A server side error occurred.</exception>
         public virtual async System.Threading.Tasks.Task<NoteId> UpdateProjectNoteAsync(UpdateNoteCommand request, System.Threading.CancellationToken cancellationToken)
@@ -2605,6 +2609,96 @@ namespace Dfe.Complete.Client
                         {
                             string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
                             throw new CompleteApiException("Project not found\nor\nNote not found", status_, responseText_, headers_, null);
+                        }
+                        else
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new CompleteApiException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                        }
+                    }
+                    finally
+                    {
+                        if (disposeResponse_)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+                if (disposeClient_)
+                    client_.Dispose();
+            }
+        }
+
+        /// <summary>
+        /// Returns a list of all projects statistics.
+        /// </summary>
+        /// <returns>Project</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        public virtual System.Threading.Tasks.Task<ListAllProjectsStatisticsModel> ListAllProjectsStatisticsAsync()
+        {
+            return ListAllProjectsStatisticsAsync(System.Threading.CancellationToken.None);
+        }
+
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>
+        /// Returns a list of all projects statistics.
+        /// </summary>
+        /// <returns>Project</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        public virtual async System.Threading.Tasks.Task<ListAllProjectsStatisticsModel> ListAllProjectsStatisticsAsync(System.Threading.CancellationToken cancellationToken)
+        {
+            var client_ = _httpClient;
+            var disposeClient_ = false;
+            try
+            {
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                {
+                    request_.Method = new System.Net.Http.HttpMethod("GET");
+                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
+
+                    var urlBuilder_ = new System.Text.StringBuilder();
+                    if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
+                    // Operation Path: "v1/Projects/List/All/Statistics"
+                    urlBuilder_.Append("v1/Projects/List/All/Statistics");
+
+                    PrepareRequest(client_, request_, urlBuilder_);
+
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+
+                    PrepareRequest(client_, request_, url_);
+
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    var disposeResponse_ = true;
+                    try
+                    {
+                        var headers_ = new System.Collections.Generic.Dictionary<string, System.Collections.Generic.IEnumerable<string>>();
+                        foreach (var item_ in response_.Headers)
+                            headers_[item_.Key] = item_.Value;
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+
+                        ProcessResponse(client_, response_);
+
+                        var status_ = (int)response_.StatusCode;
+                        if (status_ == 200)
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<ListAllProjectsStatisticsModel>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            if (objectResponse_.Object == null)
+                            {
+                                throw new CompleteApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                            }
+                            return objectResponse_.Object;
+                        }
+                        else
+                        if (status_ == 400)
+                        {
+                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new CompleteApiException("Invalid request data.", status_, responseText_, headers_, null);
                         }
                         else
                         {

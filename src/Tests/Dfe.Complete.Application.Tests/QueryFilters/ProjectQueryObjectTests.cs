@@ -204,7 +204,7 @@ namespace Dfe.Complete.Application.Tests.QueryFilters
                 new Project { State = ProjectState.Active },
                 new Project { State = ProjectState.Completed }
             }.AsQueryable();
-            Assert.Single(new StateQuery(ProjectState.Active).Apply(list));
+            Assert.Single(new StateQuery([ProjectState.Active]).Apply(list));
             Assert.Equal(2, new StateQuery(null).Apply(list).Count());
         }
 
