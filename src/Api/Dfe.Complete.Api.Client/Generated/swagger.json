@@ -1206,6 +1206,30 @@
         }
       }
     },
+    "/v1/Projects/List/All/Statistics": {
+      "get": {
+        "tags": [
+          "Projects"
+        ],
+        "summary": "Returns a list of all projects statistics.",
+        "operationId": "Projects_ListAllProjectsStatistics",
+        "responses": {
+          "200": {
+            "description": "Project",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ListAllProjectsStatisticsModel"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request data."
+          }
+        }
+      }
+    },
     "/v1/ServiceSupport/LocalAuthority/Create": {
       "post": {
         "tags": [
@@ -3378,6 +3402,138 @@
                 "$ref": "#/components/schemas/GiasEstablishment"
               }
             ]
+          }
+        }
+      },
+      "ListAllProjectsStatisticsModel": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "overAllProjects": {
+            "$ref": "#/components/schemas/ProjectStatisticsModel"
+          },
+          "regionalCaseworkServicesProjects": {
+            "$ref": "#/components/schemas/ProjectStatisticsModel"
+          },
+          "notRegionalCaseworkServicesProjects": {
+            "$ref": "#/components/schemas/ProjectStatisticsModel"
+          },
+          "conversionsPerRegion": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/RegionalProjectsStatisticsModel"
+            }
+          },
+          "transfersPerRegion": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/RegionalProjectsStatisticsModel"
+            }
+          },
+          "sixMonthViewOfAllProjectOpeners": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AllOpenersProjectsStatisticsModel"
+            }
+          },
+          "newProjects": {
+            "$ref": "#/components/schemas/ThisMonthNewProjectsStatisticsModel"
+          },
+          "usersPerTeam": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        }
+      },
+      "ProjectStatisticsModel": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "conversions": {
+            "$ref": "#/components/schemas/ProjectDetailsStatisticsModel"
+          },
+          "transfers": {
+            "$ref": "#/components/schemas/ProjectDetailsStatisticsModel"
+          }
+        }
+      },
+      "ProjectDetailsStatisticsModel": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "inProgressProjects": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "completedProjects": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "unassignedProjects": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "totalProjects": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "daoRevokedProjects": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          }
+        }
+      },
+      "RegionalProjectsStatisticsModel": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "regionName": {
+            "type": "string"
+          },
+          "details": {
+            "$ref": "#/components/schemas/ProjectDetailsStatisticsModel"
+          }
+        }
+      },
+      "AllOpenersProjectsStatisticsModel": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "date": {
+            "type": "string"
+          },
+          "conversions": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "tranfers": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "ThisMonthNewProjectsStatisticsModel": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "date": {
+            "type": "string"
+          },
+          "totalProjects": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "totalConversions": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "totalTransfers": {
+            "type": "integer",
+            "format": "int32"
           }
         }
       },

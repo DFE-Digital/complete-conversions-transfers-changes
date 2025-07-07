@@ -315,6 +315,21 @@ namespace Dfe.Complete.Client.Contracts
         /// <exception cref="CompleteApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<ListAllProjectsQueryModel>> ListAllProjectsByTrustRefAsync(string? referenceNumber, int? page, int? count, System.Threading.CancellationToken cancellationToken);
 
+        /// <summary>
+        /// Returns a list of all projects statistics.
+        /// </summary>
+        /// <returns>Project</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<ListAllProjectsStatisticsModel> ListAllProjectsStatisticsAsync();
+
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>
+        /// Returns a list of all projects statistics.
+        /// </summary>
+        /// <returns>Project</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<ListAllProjectsStatisticsModel> ListAllProjectsStatisticsAsync(System.Threading.CancellationToken cancellationToken);
+
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "14.2.0.0 (NJsonSchema v11.1.0.0 (Newtonsoft.Json v13.0.0.0))")]
@@ -2186,6 +2201,186 @@ namespace Dfe.Complete.Client.Contracts
         {
 
             return Newtonsoft.Json.JsonConvert.DeserializeObject<ListAllProjectsQueryModel>(data, new Newtonsoft.Json.JsonSerializerSettings());
+
+        }
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.2.0.0 (NJsonSchema v11.1.0.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class ListAllProjectsStatisticsModel
+    {
+        [Newtonsoft.Json.JsonProperty("overAllProjects", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public ProjectStatisticsModel? OverAllProjects { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("regionalCaseworkServicesProjects", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public ProjectStatisticsModel? RegionalCaseworkServicesProjects { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("notRegionalCaseworkServicesProjects", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public ProjectStatisticsModel? NotRegionalCaseworkServicesProjects { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("conversionsPerRegion", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.List<RegionalProjectsStatisticsModel>? ConversionsPerRegion { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("transfersPerRegion", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.List<RegionalProjectsStatisticsModel>? TransfersPerRegion { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("sixMonthViewOfAllProjectOpeners", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.List<AllOpenersProjectsStatisticsModel>? SixMonthViewOfAllProjectOpeners { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("newProjects", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public ThisMonthNewProjectsStatisticsModel? NewProjects { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("usersPerTeam", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.Dictionary<string, int>? UsersPerTeam { get; set; } = default!;
+
+        public string ToJson()
+        {
+
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonSerializerSettings());
+
+        }
+        public static ListAllProjectsStatisticsModel FromJson(string data)
+        {
+
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<ListAllProjectsStatisticsModel>(data, new Newtonsoft.Json.JsonSerializerSettings());
+
+        }
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.2.0.0 (NJsonSchema v11.1.0.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class ProjectStatisticsModel
+    {
+        [Newtonsoft.Json.JsonProperty("conversions", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public ProjectDetailsStatisticsModel? Conversions { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("transfers", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public ProjectDetailsStatisticsModel? Transfers { get; set; } = default!;
+
+        public string ToJson()
+        {
+
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonSerializerSettings());
+
+        }
+        public static ProjectStatisticsModel FromJson(string data)
+        {
+
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<ProjectStatisticsModel>(data, new Newtonsoft.Json.JsonSerializerSettings());
+
+        }
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.2.0.0 (NJsonSchema v11.1.0.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class ProjectDetailsStatisticsModel
+    {
+        [Newtonsoft.Json.JsonProperty("inProgressProjects", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? InProgressProjects { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("completedProjects", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? CompletedProjects { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("unassignedProjects", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? UnassignedProjects { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("totalProjects", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? TotalProjects { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("daoRevokedProjects", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? DaoRevokedProjects { get; set; } = default!;
+
+        public string ToJson()
+        {
+
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonSerializerSettings());
+
+        }
+        public static ProjectDetailsStatisticsModel FromJson(string data)
+        {
+
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<ProjectDetailsStatisticsModel>(data, new Newtonsoft.Json.JsonSerializerSettings());
+
+        }
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.2.0.0 (NJsonSchema v11.1.0.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class RegionalProjectsStatisticsModel
+    {
+        [Newtonsoft.Json.JsonProperty("regionName", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string? RegionName { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("details", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public ProjectDetailsStatisticsModel? Details { get; set; } = default!;
+
+        public string ToJson()
+        {
+
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonSerializerSettings());
+
+        }
+        public static RegionalProjectsStatisticsModel FromJson(string data)
+        {
+
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<RegionalProjectsStatisticsModel>(data, new Newtonsoft.Json.JsonSerializerSettings());
+
+        }
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.2.0.0 (NJsonSchema v11.1.0.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class AllOpenersProjectsStatisticsModel
+    {
+        [Newtonsoft.Json.JsonProperty("date", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string? Date { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("conversions", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? Conversions { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("tranfers", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? Tranfers { get; set; } = default!;
+
+        public string ToJson()
+        {
+
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonSerializerSettings());
+
+        }
+        public static AllOpenersProjectsStatisticsModel FromJson(string data)
+        {
+
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<AllOpenersProjectsStatisticsModel>(data, new Newtonsoft.Json.JsonSerializerSettings());
+
+        }
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.2.0.0 (NJsonSchema v11.1.0.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class ThisMonthNewProjectsStatisticsModel
+    {
+        [Newtonsoft.Json.JsonProperty("date", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string? Date { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("totalProjects", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? TotalProjects { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("totalConversions", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? TotalConversions { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("totalTransfers", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? TotalTransfers { get; set; } = default!;
+
+        public string ToJson()
+        {
+
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonSerializerSettings());
+
+        }
+        public static ThisMonthNewProjectsStatisticsModel FromJson(string data)
+        {
+
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<ThisMonthNewProjectsStatisticsModel>(data, new Newtonsoft.Json.JsonSerializerSettings());
 
         }
 
