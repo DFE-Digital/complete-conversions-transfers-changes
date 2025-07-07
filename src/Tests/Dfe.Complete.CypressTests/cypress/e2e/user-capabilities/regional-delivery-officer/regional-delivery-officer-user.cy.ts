@@ -1,5 +1,7 @@
 import {
     shouldNotHaveAccessToViewAndEditUsers,
+    shouldNotHaveAccessToViewConversionURNsPage,
+    shouldNotHaveAccessToViewLocalAuthorities,
     shouldNotHaveAccessToViewProjectExports,
     shouldNotHaveAccessToViewYourTeamUnassignedProjects,
 } from "cypress/support/reusableTests";
@@ -9,8 +11,18 @@ import navBar from "cypress/pages/navBar";
 import yourProjects from "cypress/pages/projects/yourProjects";
 import yourTeamProjects from "cypress/pages/projects/yourTeamProjects";
 import allProjects from "cypress/pages/projects/allProjects";
+import { ProjectBuilder } from "cypress/api/projectBuilder";
+import projectRemover from "cypress/api/projectRemover";
+import projectApi from "cypress/api/projectApi";
 
+const date = new Date("2027-04-01");
+const project = ProjectBuilder.createConversionProjectRequest(date);
+let projectId: string;
 describe("Capabilities and permissions of the regional delivery officer user", () => {
+    before(() => {
+        projectRemover.removeProjectIfItExists(`${project.urn.value}`);
+        projectApi.createConversionProject(project).then((response) => (projectId = response.value));
+    });
     beforeEach(() => {
         cy.login(cypressUser);
         cy.acceptCookies();
@@ -56,5 +68,13 @@ describe("Capabilities and permissions of the regional delivery officer user", (
     it.skip("Should NOT have access to view and edit users", () => {
         // not implemented
         shouldNotHaveAccessToViewAndEditUsers();
+    });
+
+    it("Should NOT be able to view and edit local authorities", () => {
+        shouldNotHaveAccessToViewLocalAuthorities();
+    });
+
+    it("Should NOT be able to view conversion URNs", () => {
+        shouldNotHaveAccessToViewConversionURNsPage(projectId);
     });
 });
