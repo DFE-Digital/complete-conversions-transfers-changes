@@ -5,6 +5,7 @@ import selectProjectType from "cypress/pages/projects/new/selectProjectTypePage"
 import validationComponent from "cypress/pages/validationComponent";
 import { macclesfieldTrust, testTrust } from "cypress/constants/stringTestConstants";
 import { checkAccessibilityAcrossPages } from "cypress/support/reusableTests";
+import projectDetailsPage from "cypress/pages/projects/projectDetails/projectDetailsPage";
 
 const urn: string = "111394";
 const urnMAT: string = "103846";
@@ -40,11 +41,13 @@ describe("Create a new Conversion Project", () => {
 
         validationComponent.hasNoValidationErrors();
 
-        cy.get("h2").should("contain", "Project created");
+        projectDetailsPage
+            .containsSubHeading("Project created")
+            .containsSubHeading("Add contact details")
+            .containsSubHeading("What happens next");
     });
 
-    // bug 216887
-    it.skip("Should be able to create a new Form a MAT conversion project", () => {
+    it("Should be able to create a new Form a MAT conversion project", () => {
         homePage.addAProject();
 
         selectProjectType.selectFormAMATConversion().continue();
@@ -65,7 +68,10 @@ describe("Create a new Conversion Project", () => {
             .continue();
 
         validationComponent.hasNoValidationErrors();
-        cy.get("h2").should("contain", "Project created");
+        projectDetailsPage
+            .containsSubHeading("Project created")
+            .containsSubHeading("Add contact details")
+            .containsSubHeading("What happens next");
     });
 
     it("Should show multiple validation errors when continuing with no input", () => {

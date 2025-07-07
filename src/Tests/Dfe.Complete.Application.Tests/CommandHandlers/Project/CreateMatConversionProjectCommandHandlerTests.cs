@@ -17,7 +17,7 @@ using Dfe.Complete.Application.Common.Models;
 using Dfe.Complete.Application.Projects.Models;
 using Dfe.Complete.Application.Projects.Queries.GetLocalAuthority;
 using Dfe.Complete.Application.Projects.Queries.GetProject;
-using Dfe.Complete.Application.Projects.Queries.GetUser;
+using Dfe.Complete.Application.Users.Queries.GetUser;
 using Dfe.Complete.Tests.Common.Customizations.Models;
 
 namespace Dfe.Complete.Application.Tests.CommandHandlers.Project;
