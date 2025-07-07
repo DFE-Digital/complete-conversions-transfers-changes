@@ -50,9 +50,11 @@ public class ListAllProjectsForUserQueryHandler(
                 .Where(ukPrn => !string.IsNullOrEmpty(ukPrn))
                 .ToList();
 
-            var allTrusts = allProjectTrustUkPrns.Count > 0
-                ? await trustsClient.GetByUkprnsAllAsync(allProjectTrustUkPrns, cancellationToken)
-                : null;
+            if(allProjectTrustUkPrns.Count == 0)
+            {
+                return PaginatedResult<List<ListAllProjectsForUserQueryResultModel>>.Success([], projectsForUser.Count);
+            }
+            var allTrusts = await trustsClient.GetByUkprnsAllAsync(allProjectTrustUkPrns, cancellationToken);
 
             var result = projectsForUser
                 .Skip(request.Page * request.Count)
