@@ -388,7 +388,7 @@ namespace Dfe.Complete.Api.Controllers
             if (!result.IsSuccess || result.Value is null)
                 return StatusCode(500, result.Error);
 
-            return Created("", new NoteId(result.Value.Value));
+            return Created("", result.Value);
         }
 
         /// <summary>
@@ -408,12 +408,12 @@ namespace Dfe.Complete.Api.Controllers
 
             if (!result.IsSuccess || result.Value is null)
             {
-                if (result.ErrorType == ErrorType.Unauthorized)
-                    return Unauthorized(result.Error);
-                return StatusCode(500, result.Error);
+                return result.ErrorType == ErrorType.Unauthorized
+                    ? Unauthorized(result.Error)
+                    : StatusCode(500, result.Error);
             }
 
-            return Ok(new NoteId(result.Value.Value));
+            return Ok(result.Value.Id);
         }
 
         /// <summary>
@@ -433,9 +433,9 @@ namespace Dfe.Complete.Api.Controllers
 
             if (!result.IsSuccess)
             {
-                if (result.ErrorType == ErrorType.Unauthorized)
-                    return Unauthorized(result.Error);
-                return StatusCode(500, result.Error);
+                return result.ErrorType == ErrorType.Unauthorized
+                    ? Unauthorized(result.Error)
+                    : StatusCode(500, result.Error);
             }
 
             return Ok(result.Value);
@@ -454,6 +454,6 @@ namespace Dfe.Complete.Api.Controllers
         {
             var statistics = await sender.Send(new ListAllProjectsStatisticsQuery(), cancellationToken);
             return Ok(statistics.Value);
-        } 
+        }
     }
 }

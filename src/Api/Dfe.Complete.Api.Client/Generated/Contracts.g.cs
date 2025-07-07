@@ -2205,6 +2205,9 @@ namespace Dfe.Complete.Client.Contracts
         [Newtonsoft.Json.JsonProperty("createdAt", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public System.DateTime? CreatedAt { get; set; } = default!;
 
+        [Newtonsoft.Json.JsonProperty("taskIdentifier", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string? TaskIdentifier { get; set; } = default!;
+
         public string ToJson()
         {
 
@@ -2232,6 +2235,10 @@ namespace Dfe.Complete.Client.Contracts
         [Newtonsoft.Json.JsonProperty("body", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string? Body { get; set; } = default!;
 
+        [Newtonsoft.Json.JsonProperty("taskIdentifier", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
+        public NoteTaskIdentifier? TaskIdentifier { get; set; } = default!;
+
         public string ToJson()
         {
 
@@ -2244,6 +2251,96 @@ namespace Dfe.Complete.Client.Contracts
             return Newtonsoft.Json.JsonConvert.DeserializeObject<CreateNoteCommand>(data, new Newtonsoft.Json.JsonSerializerSettings());
 
         }
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.2.0.0 (NJsonSchema v11.1.0.0 (Newtonsoft.Json v13.0.0.0))")]
+    public enum NoteTaskIdentifier
+    {
+
+        [System.Runtime.Serialization.EnumMember(Value = @"Handover")]
+        Handover = 0,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"StakeholderKickOff")]
+        StakeholderKickOff = 1,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"RpaPolicy")]
+        RpaPolicy = 2,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"ConfirmHeadteacherContact")]
+        ConfirmHeadteacherContact = 3,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"ConfirmIncomingTrustCeoContact")]
+        ConfirmIncomingTrustCeoContact = 4,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"ConfirmOutgoingTrustCeoContact")]
+        ConfirmOutgoingTrustCeoContact = 5,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"MainContact")]
+        MainContact = 6,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"RequestNewUrnAndRecord")]
+        RequestNewUrnAndRecord = 7,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"SponsoredSupportGrant")]
+        SponsoredSupportGrant = 8,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"CheckAndConfirmFinancialInformation")]
+        CheckAndConfirmFinancialInformation = 9,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"FormM")]
+        FormM = 10,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"LandConsentLetter")]
+        LandConsentLetter = 11,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"SupplementalFundingAgreement")]
+        SupplementalFundingAgreement = 12,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"DeedOfNovationAndVariation")]
+        DeedOfNovationAndVariation = 13,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"ChurchSupplementalAgreement")]
+        ChurchSupplementalAgreement = 14,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"MasterFundingAgreement")]
+        MasterFundingAgreement = 15,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"ArticlesOfAssociation")]
+        ArticlesOfAssociation = 16,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"DeedOfVariation")]
+        DeedOfVariation = 17,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"DeedOfTerminationForTheMasterFundingAgreement")]
+        DeedOfTerminationForTheMasterFundingAgreement = 18,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"DeedTerminationChurchAgreement")]
+        DeedTerminationChurchAgreement = 19,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"CommercialTransferAgreement")]
+        CommercialTransferAgreement = 20,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"ClosureOrTransferDeclaration")]
+        ClosureOrTransferDeclaration = 21,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"BankDetailsChanging")]
+        BankDetailsChanging = 22,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"ConfirmIncomingTrustHasCompletedAllActions")]
+        ConfirmIncomingTrustHasCompletedAllActions = 23,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"ConditionsMet")]
+        ConditionsMet = 24,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"ConfirmDateAcademyTransferred")]
+        ConfirmDateAcademyTransferred = 25,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"RedactAndSendDocuments")]
+        RedactAndSendDocuments = 26,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"DeclarationOfExpenditureCertificate")]
+        DeclarationOfExpenditureCertificate = 27,
 
     }
 
