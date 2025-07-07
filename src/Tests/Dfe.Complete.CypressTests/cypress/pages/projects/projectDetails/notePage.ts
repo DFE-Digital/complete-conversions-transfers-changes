@@ -39,6 +39,10 @@ class NotePage extends ProjectDetailsPage {
         return this;
     }
 
+    noEditNoteLink() {
+        this.getNoteDiv().contains("Edit").should("not.exist");
+    }
+
     private getNoteDiv() {
         return cy.contains('div[id*="note-entry-NoteId"]', this.noteText).should("exist");
     }

@@ -16,6 +16,11 @@ class BasePage {
         return this;
     }
 
+    doesntContain(text: string) {
+        cy.contains(text).should("not.exist");
+        return this;
+    }
+
     containsImportantBannerWithMessage(title: string, message?: string) {
         return this.containsBannerWithMessage("Important", title, message);
     }
