@@ -1,9 +1,9 @@
 using Dfe.Complete.Application.Common.Models;
 using Dfe.Complete.Application.Notes.Interfaces;
+using Dfe.Complete.Application.Notes.Queries.QueryFilters;
 using Dfe.Complete.Domain.ValueObjects;
 using Dfe.Complete.Utils;
 using MediatR;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 
 namespace Dfe.Complete.Application.Notes.Commands;
@@ -11,7 +11,8 @@ namespace Dfe.Complete.Application.Notes.Commands;
 public record RemoveNoteCommand(NoteId NoteId) : IRequest<Result<bool>>;
 
 public class RemoveNoteCommandHandler(
-    INoteWriteRepository _repo,
+    INoteWriteRepository _noteWriteRepo,
+    INoteReadRepository _noteReadRepo,
     ILogger<RemoveNoteCommandHandler> logger
 ) : IRequestHandler<RemoveNoteCommand, Result<bool>>
 {
@@ -19,8 +20,13 @@ public class RemoveNoteCommandHandler(
     {
         try
         {
-            var note = await _repo.GetNoteByIdAsync(request.NoteId, cancellationToken) ?? throw new NotFoundException($"Note with ID {request.NoteId.Value} not found");
-            await _repo.RemoveNoteAsync(note, cancellationToken);
+            var note = new NoteIdQuery(request.NoteId)
+                .Apply(_noteReadRepo.Notes())
+                .FirstOrDefault();
+
+            if (note is null) return Result<bool>.Failure($"Note with ID {request.NoteId.Value} not found", ErrorType.NotFound);
+
+            await _noteWriteRepo.RemoveNoteAsync(note, cancellationToken);
 
             return Result<bool>.Success(true);
         }

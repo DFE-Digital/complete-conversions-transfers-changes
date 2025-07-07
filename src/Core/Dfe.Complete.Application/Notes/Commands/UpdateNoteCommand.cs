@@ -1,11 +1,8 @@
 using Dfe.Complete.Application.Common.Models;
 using Dfe.Complete.Application.Notes.Interfaces;
 using Dfe.Complete.Application.Notes.Queries.QueryFilters;
-using Dfe.Complete.Domain.Entities;
 using Dfe.Complete.Domain.ValueObjects;
-using Dfe.Complete.Utils;
 using MediatR;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 
 namespace Dfe.Complete.Application.Notes.Commands;
@@ -24,7 +21,9 @@ public class UpdateNoteCommandHandler(
         {
             var note = new NoteIdQuery(request.NoteId)
                 .Apply(_noteReadRepo.Notes())
-                .FirstOrDefault() ?? throw new NotFoundException($"Note with ID {request.NoteId.Value} not found");
+                .FirstOrDefault();
+
+            if (note is null) return Result<NoteId>.Failure($"Note with ID {request.NoteId.Value} not found", ErrorType.NotFound);
 
             note.Body = request.Body;
             await _noteWriteRepo.UpdateNoteAsync(note, cancellationToken);

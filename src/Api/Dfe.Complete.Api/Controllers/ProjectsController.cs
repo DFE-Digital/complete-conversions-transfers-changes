@@ -392,8 +392,7 @@ namespace Dfe.Complete.Api.Controllers
         /// </summary>
         /// <param name="request">The request.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
-        //[Authorize(Policy = "CanReadWriteUpdate")]
-        [Authorize]
+        [Authorize(Policy = "CanReadWriteUpdate")]
         [HttpPut]
         [Route("Notes")]
         [SwaggerResponse(200, "Note ID", typeof(NoteId))]
@@ -402,6 +401,13 @@ namespace Dfe.Complete.Api.Controllers
         public async Task<IActionResult> UpdateProjectNoteAsync([FromBody] UpdateNoteCommand request, CancellationToken cancellationToken)
         {
             var result = await sender.Send(request, cancellationToken);
+
+            if (!result.IsSuccess)
+            {
+                return result.ErrorType == ErrorType.NotFound
+                    ? NotFound(result.Error)
+                    : StatusCode(500);
+            }
             return Ok(result.Value);
         }
 
@@ -419,6 +425,12 @@ namespace Dfe.Complete.Api.Controllers
         public async Task<IActionResult> DeleteProjectNoteAsync([FromBody] RemoveNoteCommand request, CancellationToken cancellationToken)
         {
             var result = await sender.Send(request, cancellationToken);
+            if (!result.IsSuccess)
+            {
+                return result.ErrorType == ErrorType.NotFound
+                    ? NotFound(result.Error)
+                    : StatusCode(500);
+            }
             return Ok(result.Value);
         }
 
