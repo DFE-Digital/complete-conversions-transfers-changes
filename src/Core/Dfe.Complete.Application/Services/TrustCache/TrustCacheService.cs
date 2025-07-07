@@ -5,14 +5,14 @@ namespace Dfe.Complete.Application.Services.TrustCache
 {
     public class TrustCacheService(ITrustsV4Client trustsClient) : ITrustCache
     {
-        private Dictionary<Ukprn, TrustDto> UkprnCache = new();
-        private Dictionary<string, TrustDto> TrnCache = new();
+        private readonly Dictionary<Ukprn, TrustDto> UkprnCache = [];
+        private readonly Dictionary<string, TrustDto> TrnCache = [];
 
         public async Task<TrustDto> GetTrustAsync(Ukprn ukprn)
         {
-            if (UkprnCache.ContainsKey(ukprn))
+            if (UkprnCache.TryGetValue(ukprn, out TrustDto? value))
             {
-                return UkprnCache[ukprn];
+                return value;
             }
 
             var trust = await trustsClient.GetTrustByUkprn2Async(ukprn.ToString());
@@ -24,9 +24,9 @@ namespace Dfe.Complete.Application.Services.TrustCache
 
         public async Task<TrustDto> GetTrustByTrnAsync(string trn)
         {
-            if (TrnCache.ContainsKey(trn))
+            if (TrnCache.TryGetValue(trn, out TrustDto? value))
             {
-                return TrnCache[trn];
+                return value;
             }
 
             var trust = await trustsClient.GetTrustByTrustReferenceNumberAsync(trn);
@@ -40,27 +40,26 @@ namespace Dfe.Complete.Application.Services.TrustCache
         {
             if (trust != null)
             {
-                if (!UkprnCache.ContainsKey(trust.Ukprn))
+                if (trust.Ukprn != null)
                 {
-                    UkprnCache.Add(trust.Ukprn, trust);
+                    UkprnCache.TryAdd(trust.Ukprn, trust); 
+                    UkprnCache[trust.Ukprn!] = trust;
                 }
-
-                UkprnCache[trust.Ukprn] = trust;
-
-                if (!TrnCache.ContainsKey(trust.ReferenceNumber))
+                if (trust.ReferenceNumber != null)
                 {
-                    TrnCache.Add(trust.ReferenceNumber, trust);
+                    TrnCache.TryAdd(trust.ReferenceNumber, trust);
+                    TrnCache[trust.ReferenceNumber!] = trust;
                 }
-
-                TrnCache[trust.ReferenceNumber] = trust;
             }
         }
 
         public async Task HydrateCache(IEnumerable<Ukprn> ukprns)
         {
-            var trusts = await trustsClient.GetByUkprnsAllAsync(ukprns.Select(ukprn => ukprn.ToString()));
-
-            ////var trusts = ukprns.Select(ukprn => trustsClient.GetTrustByUkprn2Async(ukprn.ToString())).Select(t => t.Result);
+            if (ukprns == null || !ukprns.Any())
+            {
+                return;
+            }
+            var trusts = await trustsClient.GetByUkprnsAllAsync(ukprns.Select(ukprn => ukprn.ToString())); 
 
             foreach (var trust in trusts)
             {
