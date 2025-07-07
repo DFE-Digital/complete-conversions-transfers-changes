@@ -12,7 +12,6 @@ public record RemoveNoteCommand(NoteId NoteId) : IRequest<Result<bool>>;
 
 public class RemoveNoteCommandHandler(
     INoteWriteRepository _repo,
-    IHttpContextAccessor _httpContextAccessor,
     ILogger<RemoveNoteCommandHandler> logger
 ) : IRequestHandler<RemoveNoteCommand, Result<bool>>
 {
@@ -20,25 +19,10 @@ public class RemoveNoteCommandHandler(
     {
         try
         {
-            var userIdClaim = _httpContextAccessor.HttpContext?.User?.FindFirst("sub")?.Value
-                     ?? _httpContextAccessor.HttpContext?.User?.FindFirst("uid")?.Value;
-
-            if (!Guid.TryParse(userIdClaim, out var parsedUserId))
-                throw new UnauthorizedAccessException($"Could not delete note {request.NoteId.Value}");
-
             var note = await _repo.GetNoteByIdAsync(request.NoteId, cancellationToken) ?? throw new NotFoundException($"Note with ID {request.NoteId.Value} not found");
-
-            if (note.UserId != new UserId(parsedUserId))
-                throw new UnauthorizedAccessException($"Could not delete note {request.NoteId.Value}");
-
             await _repo.RemoveNoteAsync(note, cancellationToken);
 
             return Result<bool>.Success(true);
-        }
-        catch (UnauthorizedAccessException ex)
-        {
-            logger.LogWarning(ex, "Exception for {Name} Request - {@Request}", nameof(RemoveNoteCommandHandler), request);
-            return Result<bool>.Failure(ex.Message, ErrorType.Unauthorized);
         }
         catch (Exception ex)
         {

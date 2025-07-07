@@ -384,11 +384,7 @@ namespace Dfe.Complete.Api.Controllers
         public async Task<IActionResult> CreateProjectNoteAsync([FromBody] CreateNoteCommand request, CancellationToken cancellationToken)
         {
             var result = await sender.Send(request, cancellationToken);
-
-            if (!result.IsSuccess || result.Value is null)
-                return StatusCode(500, result.Error);
-
-            return Created("", new NoteId(result.Value.Value));
+            return Created("", result.Value);
         }
 
         /// <summary>
@@ -396,7 +392,8 @@ namespace Dfe.Complete.Api.Controllers
         /// </summary>
         /// <param name="request">The request.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
-        [Authorize(Policy = "CanReadWriteUpdate")]
+        //[Authorize(Policy = "CanReadWriteUpdate")]
+        [Authorize]
         [HttpPut]
         [Route("Notes")]
         [SwaggerResponse(200, "Note ID", typeof(NoteId))]
@@ -405,15 +402,7 @@ namespace Dfe.Complete.Api.Controllers
         public async Task<IActionResult> UpdateProjectNoteAsync([FromBody] UpdateNoteCommand request, CancellationToken cancellationToken)
         {
             var result = await sender.Send(request, cancellationToken);
-
-            if (!result.IsSuccess || result.Value is null)
-            {
-                if (result.ErrorType == ErrorType.Unauthorized)
-                    return Unauthorized(result.Error);
-                return StatusCode(500, result.Error);
-            }
-
-            return Ok(new NoteId(result.Value.Value));
+            return Ok(result.Value);
         }
 
         /// <summary>
@@ -430,14 +419,6 @@ namespace Dfe.Complete.Api.Controllers
         public async Task<IActionResult> DeleteProjectNoteAsync([FromBody] RemoveNoteCommand request, CancellationToken cancellationToken)
         {
             var result = await sender.Send(request, cancellationToken);
-
-            if (!result.IsSuccess)
-            {
-                if (result.ErrorType == ErrorType.Unauthorized)
-                    return Unauthorized(result.Error);
-                return StatusCode(500, result.Error);
-            }
-
             return Ok(result.Value);
         }
 
@@ -454,6 +435,6 @@ namespace Dfe.Complete.Api.Controllers
         {
             var statistics = await sender.Send(new ListAllProjectsStatisticsQuery(), cancellationToken);
             return Ok(statistics.Value);
-        } 
+        }
     }
 }
