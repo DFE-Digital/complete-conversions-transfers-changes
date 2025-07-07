@@ -39,6 +39,7 @@ namespace Dfe.Complete.Infrastructure
             services.AddScoped<INoteWriteRepository, NoteWriteRepository>();
             services.AddScoped<IProjectReadRepository, ProjectReadRepository>();
             services.AddScoped<INoteReadRepository, NoteReadRepository>();
+            services.AddScoped<IReadUserRepository,ReadUserRepository>();
 
             // Authentication
             //services.AddCustomAuthorization(config);

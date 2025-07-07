@@ -18,6 +18,11 @@
     <div class="govuk-grid-column-two-thirds">
         <h2 class="govuk-heading-l">Notes</h2>
 
+        @if (Model.Notes.Count == 0)
+        {
+            <div class="govuk-inset-text">There are not any notes for this project yet.</div>
+        }
+
         <div class="govuk-!-margin-bottom-5">
             <form method="post" asp-page-handler="AddNote">
                 <button data-module="govuk-button" class="govuk-button" type="submit">
@@ -25,11 +30,6 @@
                 </button>
             </form>
         </div>
-
-        @if (Model.Notes.Count == 0)
-        {
-            <div class="govuk-inset-text">There are not any notes for this project yet.</div>
-        }
 
         @for (var iNote = 0; iNote < Model.Notes.Count; iNote++)
         {

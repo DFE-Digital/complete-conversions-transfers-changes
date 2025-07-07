@@ -23,7 +23,6 @@ Security in case of vulnerabilities.
 ## Unreleased  
 
 ### Added  
-- Internal contacts page and edit pages `/projects/{projectId}/internal-contacts`
 - Add notes repository
 - Add `GetNotesByProjectId` query and handler
 - Add `GetNoteById` query and handler
@@ -34,6 +33,7 @@ Security in case of vulnerabilities.
 - Add project notes creation page (`/projects/{projectId}/notes/new`)
 - Add ability to delete note (`/projects/{projectId}/notes/{noteId}/delete`)
 - Attach user ID from DB as custom claim
+- Added `Statistics` page
 
 ### Changed  
 

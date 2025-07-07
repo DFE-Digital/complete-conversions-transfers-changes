@@ -134,6 +134,11 @@
       "Controller": "TrustController",
       "Action": "ListAllTrustsWithProjectsAsync",
       "ExpectedSecurity": "Authorize: Policy=CanRead"
+    },
+    {
+      "Controller": "ProjectsController",
+      "Action": "ListAllProjectsStatisticsAsync",
+      "ExpectedSecurity": "Authorize: Policy=CanRead"
     }
   ]
 }

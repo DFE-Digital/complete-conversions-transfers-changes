@@ -440,5 +440,20 @@ namespace Dfe.Complete.Api.Controllers
 
             return Ok(result.Value);
         }
+
+        /// <summary>
+        /// Returns a list of all projects statistics.
+        /// </summary> 
+        /// <param name="cancellationToken">The cancellation token.</param>
+        [Authorize(Policy = "CanRead")]
+        [HttpGet]
+        [Route("List/All/Statistics")]
+        [SwaggerResponse(200, "Project", typeof(ListAllProjectsStatisticsModel))]
+        [SwaggerResponse(400, "Invalid request data.")]
+        public async Task<IActionResult> ListAllProjectsStatisticsAsync(CancellationToken cancellationToken)
+        {
+            var statistics = await sender.Send(new ListAllProjectsStatisticsQuery(), cancellationToken);
+            return Ok(statistics.Value);
+        } 
     }
 }

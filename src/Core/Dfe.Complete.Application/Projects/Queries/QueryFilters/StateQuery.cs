@@ -4,10 +4,10 @@ using Dfe.Complete.Domain.Enums;
 
 namespace Dfe.Complete.Application.Projects.Queries.QueryFilters;
 
-public class StateQuery(ProjectState? state) : IQueryObject<Project>
+public class StateQuery(List<ProjectState>? states) : IQueryObject<Project>
 {
-    public IQueryable<Project> Apply(IQueryable<Project> query) =>
-        state.HasValue
-            ? query.Where(p => p.State == state.Value)
+    public IQueryable<Project> Apply(IQueryable<Project> query) 
+        => states != null && states.Count != 0
+            ? query.Where(p => states.Contains(p.State))
             : query;
 }
