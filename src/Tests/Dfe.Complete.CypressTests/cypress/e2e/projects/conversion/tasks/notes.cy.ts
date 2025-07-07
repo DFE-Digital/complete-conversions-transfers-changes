@@ -13,16 +13,13 @@ import noteApi from "cypress/api/noteApi";
 const project = ProjectBuilder.createConversionFormAMatProjectRequest();
 let projectId: string;
 
-const userId = "8320E4FC-DBDF-42F1-9835-32D4C50918E8";
-const teammateUserId = "01B72BA3-47BA-4E53-A802-047120A92460";
-
 before(() => {
     projectRemover.removeProjectIfItExists(`${project.urn.value}`);
     projectApi.createMatConversionProject(project).then((response) => {
         projectId = response.value;
-        noteApi.createNote(projectId, userId, "My note to edit");
-        noteApi.createNote(projectId, userId, "My note to delete");
-        noteApi.createNote(projectId, teammateUserId, "Other user note");
+        noteApi.createNote(projectId, cypressUser.id, "My note to edit");
+        noteApi.createNote(projectId, cypressUser.id, "My note to delete");
+        noteApi.createNote(projectId, rdoLondonUser.id, "Other user note");
     });
 });
 beforeEach(() => {
