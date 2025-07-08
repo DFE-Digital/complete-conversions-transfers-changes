@@ -1,0 +1,308 @@
+﻿@page "/projects/all/statistics"
+@model Dfe.Complete.Pages.Projects.List.Statistics.StatisticsModel
+@{
+    Layout = "List/Statistics/_StatisticsLayout";
+    ViewData["Title"] = "Statistics";
+
+    @functions {
+        string DisplayValue(int? value) => value.HasValue && value.Value != 0 ? value.ToStringOrDefault() : "NA";
+    }
+}
+@section PageHeading
+{
+    <h1 class="govuk-heading-l">
+        Statistics
+    </h1>
+}
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-one-quarter">
+        <nav>
+            <h2 class="govuk-heading-m">Jump to section</h2>
+            <ul class="list-style-none govuk-!-padding-0">
+                <li>
+                    <a class="govuk-link govuk-link--no-visited-state" href="#projectOverview">Overview of all projects</a>
+                </li>
+
+                <li>
+                    <a class="govuk-link govuk-link--no-visited-state" href="#projectsRCS">Projects with Regional casework services</a>
+                </li>
+
+                <li>
+                    <a class="govuk-link govuk-link--no-visited-state" href="#projectsNotRCS">Projects not with Regional casework services</a>
+                </li>
+
+                <li>
+                    <a class="govuk-link govuk-link--no-visited-state" href="#conversionProjectsPerRegion">Conversion projects per region</a>
+                </li>
+
+                <li>
+                    <a class="govuk-link govuk-link--no-visited-state" href="#transferProjectsPerRegion">Transfer projects per region</a>
+                </li>
+
+                <li>
+                    <a class="govuk-link govuk-link--no-visited-state" href="#sixMonthView">6 month view of all project openers</a>
+                </li>
+
+                <li>
+                    <a class="govuk-link govuk-link--no-visited-state" href="#newProjects">New projects this month</a>
+                </li>
+
+                <li>
+                    <a class="govuk-link govuk-link--no-visited-state" href="#usersPerTeam">Users per team</a>
+                </li> 
+            </ul>
+        </nav> 
+    </div>
+
+    <div class="govuk-grid-column-three-quarters">
+        <div class="govuk-grid-row">
+            <div class="govuk-grid-column-three-quarters">
+                <h2 class="govuk-heading-l" id="projectOverview">Overview of all projects</h2>
+                <table class="govuk-table" name="statistics_table" aria-label="Project statistics">
+                    <thead class="govuk-table__head">
+                        <tr class="govuk-table__row">
+                            <th class="govuk-table__header" scope="col">Detail</th>
+                            <th class="govuk-table__header govuk-table__header--numeric" scope="col">Conversions</th>
+                            <th class="govuk-table__header govuk-table__header--numeric" scope="col">Transfers</th>
+                        </tr>
+                    </thead>
+                    <tbody class="govuk-table__body"> 
+                        <tr class="govuk-table__row" id="in_progress">
+                            <th scope="row" class="govuk-table__cell">In progress projects</th>
+                            <td class="govuk-table__cell govuk-table__cell--numeric">@DisplayValue(Model.Statistics.OverAllProjects.Conversions.InProgressProjects)</td>
+                            <td class="govuk-table__cell govuk-table__cell--numeric">@DisplayValue(Model.Statistics.OverAllProjects.Transfers.InProgressProjects)</td>
+                        </tr>
+                        <tr class="govuk-table__row" id="completed">
+                            <th scope="row" class="govuk-table__cell">Completed projects</th>
+                            <td class="govuk-table__cell govuk-table__cell--numeric">@DisplayValue(Model.Statistics.OverAllProjects.Conversions.CompletedProjects)</td>
+                            <td class="govuk-table__cell govuk-table__cell--numeric">@DisplayValue(Model.Statistics.OverAllProjects.Transfers.CompletedProjects)</td>
+                        </tr>
+                        <tr class="govuk-table__row" id="unassigned">
+                            <th scope="row" class="govuk-table__cell">Unassigned projects</th>
+                            <td class="govuk-table__cell govuk-table__cell--numeric">@DisplayValue(Model.Statistics.OverAllProjects.Conversions.UnassignedProjects)</td>
+                            <td class="govuk-table__cell govuk-table__cell--numeric">@DisplayValue(Model.Statistics.OverAllProjects.Transfers.UnassignedProjects)</td>
+                        </tr>
+                        <tr class="govuk-table__row" id="dao_revoked">
+                            <th scope="row" class="govuk-table__cell">DAO revoked projects</th>
+                            <td class="govuk-table__cell govuk-table__cell--numeric">@DisplayValue(Model.Statistics.OverAllProjects.Conversions.DaoRevokedProjects)</td>
+                            <td class="govuk-table__cell govuk-table__cell--numeric">@DisplayValue(Model.Statistics.OverAllProjects.Transfers.DaoRevokedProjects)</td>
+                        </tr>
+                        <tr class="govuk-table__row" id="all_projects">
+                            <th scope="row" class="govuk-table__cell">All projects</th>
+                            <td class="govuk-table__cell govuk-table__cell--numeric">@DisplayValue(Model.Statistics.OverAllProjects.Conversions.TotalProjects)</td>
+                            <td class="govuk-table__cell govuk-table__cell--numeric">@DisplayValue(Model.Statistics.OverAllProjects.Transfers.TotalProjects)</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="govuk-grid-row">
+            <div class="govuk-grid-column-three-quarters">
+                <h2 class="govuk-heading-l" id="projectsRCS">Projects with Regional casework services</h2>
+                <table class="govuk-table" name="regional_casework_services_statistics_table" aria-label="Regional casework services statistics">
+                    <thead class="govuk-table__head">
+                        <tr class="govuk-table__row">
+                            <th class="govuk-table__header" scope="col">Detail</th>
+                            <th class="govuk-table__header govuk-table__header--numeric" scope="col">Conversions</th>
+                            <th class="govuk-table__header govuk-table__header--numeric" scope="col">Transfers</th>
+                        </tr>
+                    </thead>
+                    <tbody class="govuk-table__body" id="conversion_projects">
+                        <tr class="govuk-table__row" id="in_progress">
+                            <th scope="row" class="govuk-table__cell">In progress projects</th>
+                            <td class="govuk-table__cell govuk-table__cell--numeric">@DisplayValue(Model.Statistics.RegionalCaseworkServicesProjects.Conversions.InProgressProjects)</td>
+                            <td class="govuk-table__cell govuk-table__cell--numeric">@DisplayValue(Model.Statistics.RegionalCaseworkServicesProjects.Transfers.InProgressProjects)</td>
+                        </tr>
+                        <tr class="govuk-table__row" id="completed">
+                            <th scope="row" class="govuk-table__cell">Completed projects</th>
+                            <td class="govuk-table__cell govuk-table__cell--numeric">@DisplayValue(Model.Statistics.RegionalCaseworkServicesProjects.Conversions.CompletedProjects)</td>
+                            <td class="govuk-table__cell govuk-table__cell--numeric">@DisplayValue(Model.Statistics.RegionalCaseworkServicesProjects.Transfers.CompletedProjects)</td>
+                        </tr>
+                        <tr class="govuk-table__row" id="unassigned">
+                            <th scope="row" class="govuk-table__cell">Unassigned projects</th>
+                            <td class="govuk-table__cell govuk-table__cell--numeric">@DisplayValue(Model.Statistics.RegionalCaseworkServicesProjects.Conversions.UnassignedProjects)</td>
+                            <td class="govuk-table__cell govuk-table__cell--numeric">@DisplayValue(Model.Statistics.RegionalCaseworkServicesProjects.Transfers.UnassignedProjects)</td>
+                        </tr>
+                        <tr class="govuk-table__row" id="all_projects">
+                            <th scope="row" class="govuk-table__cell">All projects with Regional casework services</th>
+                            <td class="govuk-table__cell govuk-table__cell--numeric">@DisplayValue(Model.Statistics.RegionalCaseworkServicesProjects.Conversions.TotalProjects)</td>
+                            <td class="govuk-table__cell govuk-table__cell--numeric">@DisplayValue(Model.Statistics.RegionalCaseworkServicesProjects.Transfers.TotalProjects)</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="govuk-grid-row">
+            <div class="govuk-grid-column-three-quarters">
+                <h2 class="govuk-heading-l" id="projectsNotRCS">Projects not with Regional casework services</h2>
+                <table class="govuk-table" name="not_with_regional_casework_services_statistics_table" aria-label="Not with Regional casework services statistics">
+                    <thead class="govuk-table__head">
+                        <tr class="govuk-table__row">
+                            <th class="govuk-table__header" scope="col">Detail</th>
+                            <th class="govuk-table__header govuk-table__header--numeric" scope="col">Conversions</th>
+                            <th class="govuk-table__header govuk-table__header--numeric" scope="col">Transfers</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="govuk-table__row" id="in_progress">
+                            <th scope="row" class="govuk-table__cell">In progress projects</th>
+                            <td class="govuk-table__cell govuk-table__cell--numeric">@Model.Statistics.NotRegionalCaseworkServicesProjects.Conversions.InProgressProjects</td>
+                            <td class="govuk-table__cell govuk-table__cell--numeric">@Model.Statistics.NotRegionalCaseworkServicesProjects.Transfers.InProgressProjects</td>
+                        </tr>
+                        <tr class="govuk-table__row" id="completed">
+                            <th scope="row" class="govuk-table__cell">Completed projects</th>
+                            <td class="govuk-table__cell govuk-table__cell--numeric">@Model.Statistics.NotRegionalCaseworkServicesProjects.Conversions.CompletedProjects</td>
+                            <td class="govuk-table__cell govuk-table__cell--numeric">@Model.Statistics.NotRegionalCaseworkServicesProjects.Transfers.CompletedProjects</td>
+                        </tr>
+                        <tr class="govuk-table__row" id="unassigned">
+                            <th scope="row" class="govuk-table__cell">Unassigned projects</th>
+                            <td class="govuk-table__cell govuk-table__cell--numeric">@Model.Statistics.NotRegionalCaseworkServicesProjects.Conversions.UnassignedProjects</td>
+                            <td class="govuk-table__cell govuk-table__cell--numeric">@Model.Statistics.NotRegionalCaseworkServicesProjects.Transfers.UnassignedProjects</td>
+                        </tr>
+                        <tr class="govuk-table__row" id="all_projects">
+                            <th scope="row" class="govuk-table__cell">All projects not with Regional casework services</th>
+                            <td class="govuk-table__cell govuk-table__cell--numeric">@Model.Statistics.NotRegionalCaseworkServicesProjects.Conversions.TotalProjects</td>
+                            <td class="govuk-table__cell govuk-table__cell--numeric">@Model.Statistics.NotRegionalCaseworkServicesProjects.Transfers.TotalProjects</td>
+                        </tr> 
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="govuk-grid-row">
+            <div class="govuk-grid-column-full">
+                <h2 class="govuk-heading-l" id="conversionProjectsPerRegion">Conversion projects per region</h2>
+                <table class="govuk-table" name="not_with_regional_casework_services_statistics_table" aria-label="Conversion projects per region statistics">
+                    <thead class="govuk-table__head">
+                        <tr class="govuk-table__row">
+                            <th class="govuk-table__header" scope="col">Region</th>
+                            <th class="govuk-table__header govuk-table__header--numeric" scope="col">In-progress projects</th>
+                            <th class="govuk-table__header govuk-table__header--numeric" scope="col">Completed projects</th>
+                            <th class="govuk-table__header govuk-table__header--numeric" scope="col">Unassigned projects</th>
+                            <th class="govuk-table__header govuk-table__header--numeric" scope="col">All projects</th>
+                        </tr>
+                    </thead>
+                    <tbody class="govuk-table__body">
+                        @foreach (var region in Model.Statistics.ConversionsPerRegion)
+                        {
+                            <tr class="govuk-table__row" id="@region.RegionName.ToLower().Replace(" ", "-")">
+                                <th scope="row" class="govuk-table__cell">@region.RegionName</th>
+                                <td class="govuk-table__cell govuk-table__cell--numeric">@region.Details.InProgressProjects</td>
+                                <td class="govuk-table__cell govuk-table__cell--numeric">@region.Details.CompletedProjects</td>
+                                <td class="govuk-table__cell govuk-table__cell--numeric">@region.Details.UnassignedProjects</td>
+                                <td class="govuk-table__cell govuk-table__cell--numeric">@region.Details.TotalProjects</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="govuk-grid-row">
+            <div class="govuk-grid-column-full">
+                <h2 class="govuk-heading-l" id="transferProjectsPerRegion">Transfer projects per region</h2>
+                <table class="govuk-table" name="not_with_regional_casework_services_statistics_table" aria-label="Transfer projects per region statistics">
+                    <thead class="govuk-table__head">
+                        <tr class="govuk-table__row">
+                            <th class="govuk-table__header" scope="col">Region</th>
+                            <th class="govuk-table__header govuk-table__header--numeric" scope="col">In-progress projects</th>
+                            <th class="govuk-table__header govuk-table__header--numeric" scope="col">Completed projects</th>
+                            <th class="govuk-table__header govuk-table__header--numeric" scope="col">Unassigned projects</th>
+                            <th class="govuk-table__header govuk-table__header--numeric" scope="col">All projects</th>
+                        </tr>
+                    </thead>
+                    <tbody class="govuk-table__body">
+                        @foreach (var region in Model.Statistics.TransfersPerRegion)
+                        {
+                            <tr class="govuk-table__row" id="@region.RegionName.ToLower().Replace(" ", "-")">
+                                <th scope="row" class="govuk-table__cell">@region.RegionName</th>
+                                <td class="govuk-table__cell govuk-table__cell--numeric">@region.Details.InProgressProjects</td>
+                                <td class="govuk-table__cell govuk-table__cell--numeric">@region.Details.CompletedProjects</td>
+                                <td class="govuk-table__cell govuk-table__cell--numeric">@region.Details.UnassignedProjects</td>
+                                <td class="govuk-table__cell govuk-table__cell--numeric">@region.Details.TotalProjects</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="govuk-grid-row">
+            <div class="govuk-grid-column-three-quarters">
+                <h2 class="govuk-heading-l" id="sixMonthView">6 month view of all project openers</h2>
+                <table class="govuk-table" name="statistics_table" aria-label="Project statistics">
+                    <thead class="govuk-table__head">
+                        <tr class="govuk-table__row">
+                            <th class="govuk-table__header" scope="col">Project opener date</th>
+                            <th class="govuk-table__header govuk-table__header--numeric" scope="col">Conversions</th>
+                            <th class="govuk-table__header govuk-table__header--numeric" scope="col">Transfers</th>
+                        </tr>
+                    </thead>
+                    <tbody class="govuk-table__body">
+                        @foreach (var project in Model.Statistics.SixMonthViewOfAllProjectOpeners)
+                        {
+                            <tr class="govuk-table__row">
+                                <th scope="row" class="govuk-table__cell">@project.Date</th>
+                                <td class="govuk-table__cell govuk-table__cell--numeric">@project.Conversions</td>
+                                <td class="govuk-table__cell govuk-table__cell--numeric">@project.Tranfers</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="govuk-grid-row">
+            <div class="govuk-grid-column-three-quarters">
+                <h2 class="govuk-heading-l" id="newProjects">New projects this month (@Model.Statistics.NewProjects.Date)</h2>
+                <table class="govuk-table" name="statistics_table" aria-label="Project statistics">
+                    <tbody class="govuk-table__body">
+                        <tr>
+                            <th scope="row" class="govuk-table__cell">
+                                Total
+                            </th>
+                            <td class="govuk-table__cell govuk-table__cell--numeric">@Model.Statistics.NewProjects.TotalProjects</td>
+                        </tr>
+                        <tr>
+                            <th scope="row" class="govuk-table__cell">
+                                Conversions
+                            </th>
+                            <td class="govuk-table__cell govuk-table__cell--numeric">@Model.Statistics.NewProjects.TotalConversions</td>
+                        </tr>
+                        <tr>
+                            <th scope="row" class="govuk-table__cell">
+                                Transfers
+                            </th>
+                            <td class="govuk-table__cell govuk-table__cell--numeric">@Model.Statistics.NewProjects.TotalTransfers</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="govuk-grid-row">
+            <div class="govuk-grid-column-three-quarters">
+                <h2 class="govuk-heading-l" id="usersPerTeam">Users per team</h2>
+                <table class="govuk-table" name="statistics_table" aria-label="Users count by team">
+                    <thead class="govuk-table__head">
+                        <tr class="govuk-table__row">
+                            <th class="govuk-table__header" scope="col">Team</th>
+                            <th class="govuk-table__header govuk-table__header--numeric" scope="col">Number of users</th>
+                        </tr>
+                    </thead>
+                    <tbody class="govuk-table__body">
+                        @foreach (var usersPerTeam in Model.Statistics.UsersPerTeam)
+                        {
+                            <tr class="govuk-table__row" id="users_@usersPerTeam.Key.ToLower().Replace(" ", "-")">
+                                <th scope="row" class="govuk-table__cell">@usersPerTeam.Key</th>
+                                <td class="govuk-table__cell govuk-table__cell--numeric">@usersPerTeam.Value</td>
+                            </tr>
+                        } 
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

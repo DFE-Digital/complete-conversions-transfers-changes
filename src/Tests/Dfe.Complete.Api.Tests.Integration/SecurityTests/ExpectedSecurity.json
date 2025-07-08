@@ -149,6 +149,11 @@
       "Controller": "ServiceSupportController",
       "Action": "RemoveLocalAuthorityAsync",
       "ExpectedSecurity": "Authorize: Policy=CanReadWriteUpdateDelete"
+    },
+    {
+      "Controller": "ProjectsController",
+      "Action": "ListAllProjectsStatisticsAsync",
+      "ExpectedSecurity": "Authorize: Policy=CanRead"
     }
   ]
 }
