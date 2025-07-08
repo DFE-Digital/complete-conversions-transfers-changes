@@ -146,8 +146,8 @@ public class ListAllProjectsConvertingQueryHandlerTests
 
         // Assert
         Assert.True(result.IsSuccess);
-        var expectedProject = result.Value.Single();
-        Assert.Equal("Academy Name From TaskData", expectedProject.AcademyName);
+        var expectedProject = result.Value?.Single();
+        Assert.Equal("Academy Name From TaskData", expectedProject?.AcademyName);
     }
 
 }

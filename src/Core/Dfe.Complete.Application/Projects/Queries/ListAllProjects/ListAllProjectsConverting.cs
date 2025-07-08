@@ -30,7 +30,7 @@ namespace Dfe.Complete.Application.Projects.Queries.ListAllProjects
                     .ToListAsync(cancellationToken);
                 
                 var taskDataIds = convertingProjects.Select(p => p.Project.TasksDataId).ToList();
-                var taskData = await taskDataRepo.FetchAsync(t => taskDataIds.Contains(t.Id));
+                var taskData = await taskDataRepo.FetchAsync(t => taskDataIds.Contains(t.Id), cancellationToken);
                
                List<GiasEstablishment> giasEstablishments = new List<GiasEstablishment>();
                
