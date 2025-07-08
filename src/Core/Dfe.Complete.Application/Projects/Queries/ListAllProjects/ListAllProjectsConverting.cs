@@ -43,7 +43,7 @@ namespace Dfe.Complete.Application.Projects.Queries.ListAllProjects
                 var projects = convertingProjects
                     .Select(item =>
                         {
-                            var establishmentName =
+                            var academyName =
                                 taskData.FirstOrDefault(t => t.Id == item.Project.TasksDataId)?.AcademyDetailsName ??
                                 giasEstablishments.FirstOrDefault(e => e.Urn == item.Project.AcademyUrn)?.Name;
                             
@@ -51,7 +51,7 @@ namespace Dfe.Complete.Application.Projects.Queries.ListAllProjects
                                 item.Establishment?.Name, 
                                 item.Establishment?.Urn?.Value, 
                                 item.Project.SignificantDate,
-                                establishmentName,
+                                academyName,
                                 item.Project.AcademyUrn?.Value);
                         }
                     );
