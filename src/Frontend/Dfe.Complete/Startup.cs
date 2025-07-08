@@ -63,10 +63,10 @@ public class Startup
         services
             .AddRazorPages(options =>
             {
-                if (!_env.IsProduction())
-                {
-                    options.Conventions.ConfigureFilter(new IgnoreAntiforgeryTokenAttribute());
-                }
+                // if (!_env.IsProduction())
+                // {
+                //     options.Conventions.ConfigureFilter(new IgnoreAntiforgeryTokenAttribute());
+                // }
 
                 options.Conventions.AuthorizeFolder("/");
                 options.Conventions.AddPageRoute("/Projects/EditProjectNote", "projects/{projectId}/notes/edit");
