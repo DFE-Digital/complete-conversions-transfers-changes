@@ -26,7 +26,7 @@ public class ListAllProjectsForUserQueryHandler(
     : IRequestHandler<ListAllProjectsForUserQuery, PaginatedResult<List<ListAllProjectsForUserQueryResultModel>>>
 {
     public async Task<PaginatedResult<List<ListAllProjectsForUserQueryResultModel>>> Handle(
-        ListAllProjectsForUserQuery request, CancellationToken cancellationToken)
+       ListAllProjectsForUserQuery request, CancellationToken cancellationToken)
     {
         try
         {
@@ -44,24 +44,29 @@ public class ListAllProjectsForUserQueryHandler(
             var allProjectTrustUkPrns = projectsForUser
                 .SelectMany(p => new[]
                 {
-                    p.Project?.IncomingTrustUkprn?.Value.ToString() ?? string.Empty,
-                    p.Project?.OutgoingTrustUkprn?.Value.ToString() ?? string.Empty
+                   p.Project?.IncomingTrustUkprn?.Value.ToString() ?? string.Empty,
+                   p.Project?.OutgoingTrustUkprn?.Value.ToString() ?? string.Empty
                 })
                 .Where(ukPrn => !string.IsNullOrEmpty(ukPrn))
                 .ToList();
 
+            if(allProjectTrustUkPrns.Count == 0)
+            {
+                return PaginatedResult<List<ListAllProjectsForUserQueryResultModel>>.Success([], projectsForUser.Count);
+            }
             var allTrusts = await trustsClient.GetByUkprnsAllAsync(allProjectTrustUkPrns, cancellationToken);
+
             var result = projectsForUser
                 .Skip(request.Page * request.Count)
                 .Take(request.Count)
                 .Select(p =>
                 {
-                    var incomingTrustName = p.Project.FormAMat ? p.Project.NewTrustName : allTrusts.FirstOrDefault(trust => trust.Ukprn == p.Project?.IncomingTrustUkprn?.Value.ToString())?.Name;
+                    var incomingTrustName = p.Project.FormAMat ? p.Project.NewTrustName : allTrusts?.FirstOrDefault(trust => trust.Ukprn == p.Project?.IncomingTrustUkprn?.Value.ToString())?.Name;
                     return ListAllProjectsForUserQueryResultModel
                         .MapProjectAndEstablishmentToListAllProjectsForUserQueryResultModel(
                             p.Project,
                             p.Establishment!,
-                            outgoingTrustName: allTrusts.FirstOrDefault(trust =>
+                            outgoingTrustName: allTrusts?.FirstOrDefault(trust =>
                                 trust.Ukprn == p.Project?.OutgoingTrustUkprn?.Value.ToString())?.Name,
                             incomingTrustName: incomingTrustName);
                 })
