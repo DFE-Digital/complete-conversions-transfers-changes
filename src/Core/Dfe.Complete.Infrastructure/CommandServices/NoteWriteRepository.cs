@@ -9,11 +9,6 @@ internal class NoteWriteRepository(CompleteContext context) : INoteWriteReposito
 {
     private readonly CompleteContext _context = context;
 
-    public async Task<Note?> GetNoteByIdAsync(NoteId noteId, CancellationToken cancellationToken)
-    {
-        return await _context.Notes.FindAsync([noteId], cancellationToken);
-    }
-
     public async Task CreateNoteAsync(Note note, CancellationToken cancellationToken)
     {
         await _context.Notes.AddAsync(note, cancellationToken);

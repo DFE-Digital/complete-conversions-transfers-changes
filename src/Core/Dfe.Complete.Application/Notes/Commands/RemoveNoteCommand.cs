@@ -2,7 +2,6 @@ using Dfe.Complete.Application.Common.Models;
 using Dfe.Complete.Application.Notes.Interfaces;
 using Dfe.Complete.Application.Notes.Queries.QueryFilters;
 using Dfe.Complete.Domain.ValueObjects;
-using Dfe.Complete.Utils;
 using MediatR;
 using Microsoft.Extensions.Logging;
 
