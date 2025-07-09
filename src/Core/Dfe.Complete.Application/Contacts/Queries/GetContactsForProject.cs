@@ -14,10 +14,18 @@ public class GetContactsForProject(ICompleteRepository<Contact> contactsReposito
 
     public async Task<Result<List<Contact>>> Handle(GetContactsForProjectQuery request, CancellationToken cancellationToken)
     {
-        var contactsCollection =
-            await contactsRepository.FetchAsync(contact => contact.ProjectId != null && contact.ProjectId == request.ProjectId,
-                cancellationToken);
-        var contactsList = contactsCollection.ToList();
-        return Result<List<Contact>>.Success(contactsList);
+        try
+        {
+            var contactsCollection =
+                await contactsRepository.FetchAsync(contact => contact.ProjectId != null && contact.ProjectId == request.ProjectId,
+                    cancellationToken);
+            var contactsList = contactsCollection.ToList();
+            return Result<List<Contact>>.Success(contactsList);
+        }
+        catch (Exception e)
+        {
+            return Result<List<Contact>>.Failure(e.Message);
+        }
+        
     }
 }

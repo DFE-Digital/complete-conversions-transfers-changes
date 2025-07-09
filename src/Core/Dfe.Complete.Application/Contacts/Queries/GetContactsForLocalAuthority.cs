@@ -14,12 +14,20 @@ public class GetContactsForLocalAuthority(ICompleteRepository<Contact> contactsR
     public async Task<Result<List<Contact>>> Handle(GetContactsForLocalAuthorityQuery request,
         CancellationToken cancellationToken)
     {
-        var contactsCollection =
-            await contactsRepository.FetchAsync(
-                contact => contact.LocalAuthorityId != null &&
-                           contact.LocalAuthorityId == request.LocalAuthority,
-                cancellationToken);
-        var contactsList = contactsCollection.ToList();
-        return Result<List<Contact>>.Success(contactsList);
+        try
+        {
+            var contactsCollection =
+                await contactsRepository.FetchAsync(
+                    contact => contact.LocalAuthorityId != null &&
+                               contact.LocalAuthorityId == request.LocalAuthority,
+                    cancellationToken);
+            var contactsList = contactsCollection.ToList();
+            return Result<List<Contact>>.Success(contactsList);
+        }
+        catch (Exception e)
+        {
+            return Result<List<Contact>>.Failure(e.Message);
+        }
+        
     }
 }
