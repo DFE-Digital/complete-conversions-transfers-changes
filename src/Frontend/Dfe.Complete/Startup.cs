@@ -14,7 +14,7 @@ using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.FeatureManagement;
 using Microsoft.Identity.Web;
-using Microsoft.Identity.Web.UI; 
+using Microsoft.Identity.Web.UI;
 using DfE.CoreLibs.Security.Cypress;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using DfE.CoreLibs.Http.Middlewares.CorrelationId;
@@ -77,6 +77,7 @@ public class Startup
             });
          
         ConfigureCustomAntiforgery(services);
+        SetupApplicationInsights();
 
         services.AddControllersWithViews()
            .AddMicrosoftIdentityUI()
@@ -199,7 +200,8 @@ public class Startup
                    options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
                }
            });
-    } 
+    }
+    private void SetupApplicationInsights() => GetTypedConfigurationFor<ApplicationInsightsOptions>();
 
     private static void ConfigureCustomAntiforgery(IServiceCollection services)
     {

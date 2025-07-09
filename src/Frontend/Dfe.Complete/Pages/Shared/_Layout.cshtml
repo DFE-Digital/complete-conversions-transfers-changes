@@ -4,7 +4,7 @@
 
 @{
   var showAnalytics = Configuration["GoogleAnalytics:Enable"] == "Yes" && AnalytisConsentService.HasConsent();
-
+  var enableAppInsightsAnalytics = Configuration["ApplicationInsights:EnableBrowserAnalytics"] == "Yes" && showAnalytics;
   const string titleDescription = "Complete conversions, transfers and changes";
   var inputTitle = ViewData["Title"];
   var title = inputTitle?.ToString() != null && !inputTitle.ToString()!.IsEmpty() ? $"{inputTitle} - {titleDescription}" : titleDescription;
@@ -27,6 +27,10 @@
                         'https://www.googletagmanager.com/gtm.js?id=' + i + dl; f.parentNode.insertBefore(j, f);
             })(window, document, 'script', 'dataLayer', 'GTM-5TFNH73B');</script>
     <!-- End Google Tag Manager -->
+  }
+  @if (enableAppInsightsAnalytics)
+  {
+    <partial name="_AppInsights" asp-add-nonce="true" />
   }
 
   <meta charset="utf-8"/>

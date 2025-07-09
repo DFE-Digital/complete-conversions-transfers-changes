@@ -1,4 +1,3 @@
-using System;
 using System.Reflection;
 using Dfe.Complete.Validators;
 using DfE.CoreLibs.Security.Antiforgery;
@@ -7,12 +6,10 @@ using DfE.CoreLibs.Security.Enums;
 using DfE.CoreLibs.Security.Interfaces;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Options;
-using Moq;
 
 namespace Dfe.Complete.Tests;
 
@@ -96,7 +93,8 @@ public sealed class StartupDataProtectionTests : IDisposable
         var dict = new Dictionary<string, string?>
         {
             ["DataProtection:DpTargetPath"] = dpTargetPath,
-            ["DataProtection:KeyVaultKey"] = keyVaultKey
+            ["DataProtection:KeyVaultKey"] = keyVaultKey,
+            ["ApplicationInsights:EnableBrowserAnalytics"] = "false"
         };
         return new ConfigurationBuilder().AddInMemoryCollection(dict).Build();
     }
