@@ -24,6 +24,7 @@ Security in case of vulnerabilities.
 
 ### Added  
 - Added `Statistics` page
+- Added `App Insight` for tracking users clicks and page views
 
 ### Changed  
 

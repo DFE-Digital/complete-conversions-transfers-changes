@@ -24,6 +24,7 @@ using Microsoft.AspNetCore.Mvc;
 using DfE.CoreLibs.Security.Antiforgery;
 using Dfe.Complete.Validators;
 using DfE.CoreLibs.Security.Enums;
+using Dfe.Complete.Application.Extensions;
 
 namespace Dfe.Complete;
 
@@ -63,7 +64,7 @@ public class Startup
         services
             .AddRazorPages(options =>
             {
-                if (!_env.IsProduction())
+                if (_env.IsTest())
                 {
                     options.Conventions.ConfigureFilter(new IgnoreAntiforgeryTokenAttribute());
                 }
@@ -75,7 +76,7 @@ public class Startup
             {
                 options.HtmlHelperOptions.ClientValidationEnabled = false;
             });
-         
+
         ConfigureCustomAntiforgery(services);
         SetupApplicationInsights();
 
@@ -205,7 +206,7 @@ public class Startup
 
     private static void ConfigureCustomAntiforgery(IServiceCollection services)
     {
-        services.AddCustomRequestCheckerProvider<HasHeaderKeyExistsInRequestValidator>(); 
+        services.AddCustomRequestCheckerProvider<HasHeaderKeyExistsInRequestValidator>();
     }
 
     private void RegisterClients(IServiceCollection services)

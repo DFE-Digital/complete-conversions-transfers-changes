@@ -32,7 +32,7 @@ public class EditAssignedTeam(ISender sender, ErrorService errorService, ILogger
             errorService.AddErrors(ModelState);
             return await OnGet();
         }
-        var updateRequest = new UpdateAssignedTeamCommand(Project.Urn, Team);
+        var updateRequest = new UpdateAssignedTeamCommand(Project.Id, Team);
         await sender.Send(updateRequest);
         TempData.SetNotification(NotificationType.Success, "Success", "Project has been assigned to team successfully");
         return Redirect(FormatRouteWithProjectId(RouteConstants.ProjectInternalContacts));
