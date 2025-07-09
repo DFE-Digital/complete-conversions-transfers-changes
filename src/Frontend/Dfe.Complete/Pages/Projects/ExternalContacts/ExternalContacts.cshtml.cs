@@ -1,30 +1,27 @@
 ﻿using Dfe.Complete.Application.Contacts.Queries;
 using Dfe.Complete.Application.LocalAuthorities.Queries.GetLocalAuthority;
-using Dfe.Complete.Application.Users.Queries.GetUser;
-using Dfe.Complete.Domain.Entities;
 using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Pages.Projects.ProjectView;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace Dfe.Complete.Pages.Projects.ExternalContacts;
 
-public class ExternalContacts(ISender sender, ILogger<ExternalContacts> logger)
+public class ExternalContacts(ISender sender)
     : ProjectLayoutModel(sender, ExternalContactsNavigation)
 {
     private readonly ISender _sender = sender;
 
-    public List<ExternalContactModel> EstablishmentContacts = [];
-    public List<ExternalContactModel> IncomingTrustContacts = [];
-    public List<ExternalContactModel> OutgoingTrustContacts = [];
-    public List<ExternalContactModel> LocalAuthorityContacts = [];
-    public List<ExternalContactModel> SolicitorContacts = [];
-    public List<ExternalContactModel> DioceseContacts = [];
-    public List<ExternalContactModel> OtherContacts = [];
-    public List<ExternalContactModel> ParliamentaryContacts = [];
-    public string LocalAuthorityName = "";
-    public bool ProjectContactsExist;
+    public List<ExternalContactModel> EstablishmentContacts { get; set; } = [];
+    public List<ExternalContactModel> IncomingTrustContacts { get; set; } = [];
+    public List<ExternalContactModel> OutgoingTrustContacts { get; set; } = [];
+    public List<ExternalContactModel> LocalAuthorityContacts { get; set; }= [];
+    public List<ExternalContactModel> SolicitorContacts { get; set; } = [];
+    public List<ExternalContactModel> DioceseContacts { get; set; } = [];
+    public List<ExternalContactModel> OtherContacts { get; set; } = [];
+    public List<ExternalContactModel> ParliamentaryContacts { get; set; } = [];
+    public string LocalAuthorityName { get; set; } = "";
+    public bool ProjectContactsExist { get; set; }
 
     public override async Task<IActionResult> OnGet()
     {
@@ -90,9 +87,9 @@ public class ExternalContacts(ISender sender, ILogger<ExternalContacts> logger)
                 new ExternalContactModel(contact, false)));
         }
 
-        if (Establishment.ParliamentaryConstituency?.Code is null) return Page();
+        if (Establishment.ParliamentaryConstituency?.Name is null) return Page();
         
-        var mpContactQuery = new GetContactForConstituencyQuery(Establishment.ParliamentaryConstituency.Code);
+        var mpContactQuery = new GetContactForConstituencyQuery(Establishment.ParliamentaryConstituency.Name);
         
         var mpContact = await _sender.Send(mpContactQuery);
         

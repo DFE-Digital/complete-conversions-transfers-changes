@@ -21,10 +21,11 @@ public class GetContactForConstituency(IConstituenciesClient client)
             if (result is null) throw new NotFoundException($"No MP found for constituency {request.Constituency}");
             var contact = new Contact()
             {
-                Name = result.DisplayName,
+                Name = result.DisplayNameWithTitle,
                 Category = ContactCategory.Other,
                 Email = result.Email,
-                Phone = result.Phone
+                Phone = result.Phone,
+                Title = "Member of Parliament"
             };
             return Result<Contact>.Success(contact);
         }
