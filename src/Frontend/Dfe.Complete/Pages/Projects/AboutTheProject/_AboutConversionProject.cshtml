@@ -177,7 +177,7 @@
                         <govuk-summary-list-row>
                             <govuk-summary-list-row-key>Academy URN (unique reference number)</govuk-summary-list-row-key>
                             <govuk-summary-list-row-value>
-                                @Model.Academy.Urn?.ToString()
+                                @Model.Academy.Urn?.Value.ToString()
                             </govuk-summary-list-row-value>
                         </govuk-summary-list-row>
                         <govuk-summary-list-row>
@@ -189,19 +189,19 @@
                         <govuk-summary-list-row>
                             <govuk-summary-list-row-key>Type</govuk-summary-list-row-key>
                             <govuk-summary-list-row-value>
-                                @Model.Academy.EstablishmentType?.Name
+                                @Model.Academy.TypeName
                             </govuk-summary-list-row-value>
                         </govuk-summary-list-row>
                         <govuk-summary-list-row>
                             <govuk-summary-list-row-key>Age range</govuk-summary-list-row-key>
                             <govuk-summary-list-row-value>
-                                @Model.Academy.StatutoryLowAge to @Model.Academy.StatutoryHighAge
+                                @Model.Academy.AgeRangeLower to @Model.Academy.AgeRangeUpper
                             </govuk-summary-list-row-value>
                         </govuk-summary-list-row>
                         <govuk-summary-list-row>
                             <govuk-summary-list-row-key>Phase</govuk-summary-list-row-key>
                             <govuk-summary-list-row-value>
-                                @(Model.Academy?.PhaseOfEducation?.Name ?? "Not applicable")
+                                @(Model.Academy?.PhaseName ?? "Not applicable")
                             </govuk-summary-list-row-value>
                         </govuk-summary-list-row>
                         <govuk-summary-list-row>

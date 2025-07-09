@@ -1,8 +1,7 @@
-using Dfe.AcademiesApi.Client.Contracts;
 using Dfe.Complete.Application.Projects.Models;
+using Dfe.Complete.Application.Projects.Queries.GetGiasEstablishment;
 using Dfe.Complete.Application.Projects.Queries.GetProject;
 using Dfe.Complete.Application.Projects.Queries.GetTransferTasksData;
-using Dfe.Complete.Application.Services.AcademiesApi;
 using Dfe.Complete.Pages.Projects.ProjectView;
 using Dfe.Complete.Utils;
 using MediatR;
@@ -12,7 +11,7 @@ namespace Dfe.Complete.Pages.Projects.AboutTheProject
 {
     public class AboutTheProjectModel(ISender sender) : ProjectLayoutModel(sender, AboutTheProjectNavigation)
     {
-        public EstablishmentDto? Academy { get; set; }
+        public GiasEstablishmentDto? Academy { get; set; }
         public ProjectGroupDto? ProjectGroup { get; set; }
         public TransferTaskDataDto? TransferTaskData { get; set; }
 
@@ -20,7 +19,7 @@ namespace Dfe.Complete.Pages.Projects.AboutTheProject
         {
             if (Project.AcademyUrn != null)
             {
-                var academyQuery = new GetEstablishmentByUrnRequest(Project.AcademyUrn.Value.ToString());
+                var academyQuery = new GetGiasEstablishmentByUrnQuery(Project.AcademyUrn);
                 var academyResult = await sender.Send(academyQuery);
 
                 if (!academyResult.IsSuccess || academyResult.Value == null)

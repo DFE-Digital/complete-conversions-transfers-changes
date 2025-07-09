@@ -9,7 +9,8 @@ namespace Dfe.Complete.Application.Common.Mappers
 		public AutoMapping()
 		{
 			CreateMap<Project, ProjectDto>();
-			CreateMap<ProjectGroup, ProjectGroupDto>();
+            CreateMap<GiasEstablishment, GiasEstablishmentDto>();
+            CreateMap<ProjectGroup, ProjectGroupDto>();
             CreateMap<TransferTasksData, TransferTaskDataDto>();
             CreateMap<User, UserDto>();
         }

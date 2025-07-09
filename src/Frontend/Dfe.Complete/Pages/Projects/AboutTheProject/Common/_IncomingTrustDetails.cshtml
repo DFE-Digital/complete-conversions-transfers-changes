@@ -12,8 +12,15 @@
             <govuk-summary-list-row>
                 <govuk-summary-list-row-key>Name</govuk-summary-list-row-key>
                 <govuk-summary-list-row-value>
-                    @Model.IncomingTrust?.Name<br />
-                    <a class="govuk-link" href="https://get-information-schools.service.gov.uk/Groups/Search?GroupSearchModel.Text=@Model.Project.IncomingTrustUkprn" target="_blank">View the trust information in GIAS (opens in new tab)</a>
+                    @if (!String.IsNullOrWhiteSpace(Model.IncomingTrust?.Name))
+                    {
+                        @Model.IncomingTrust.Name<br />
+                        <a class="govuk-link" href="https://get-information-schools.service.gov.uk/Groups/Search?GroupSearchModel.Text=@Model.Project.IncomingTrustUkprn" target="_blank">View the trust information in GIAS (opens in new tab)</a>
+                    }
+                    else
+                    {
+                        @Model.Project.NewTrustName
+                    }
                 </govuk-summary-list-row-value>
             </govuk-summary-list-row>
             <govuk-summary-list-row>
@@ -25,13 +32,25 @@
             </govuk-summary-list-row>
             <govuk-summary-list-row>
                 <govuk-summary-list-row-key>Group ID (identifier)</govuk-summary-list-row-key>
-                <govuk-summary-list-row-value>@Model.IncomingTrust?.ReferenceNumber</govuk-summary-list-row-value>
+                <govuk-summary-list-row-value>
+                    @if (!String.IsNullOrWhiteSpace(Model.IncomingTrust?.ReferenceNumber))
+                    {
+                        @Model.IncomingTrust?.ReferenceNumber
+                    }
+                    else
+                    {
+                        @Model.Project.NewTrustReferenceNumber
+                    }
+                </govuk-summary-list-row-value>
             </govuk-summary-list-row>
             <govuk-summary-list-row>
                 <govuk-summary-list-row-key>Companies House number</govuk-summary-list-row-key>
                 <govuk-summary-list-row-value>
-                    @Model.IncomingTrust?.CompaniesHouseNumber<br />
-                    <a class="govuk-link" href="https://find-and-update.company-information.service.gov.uk/company/@Model.IncomingTrust?.CompaniesHouseNumber" target="_blank">View the Companies House information (opens in new tab)</a>
+                    @if (!String.IsNullOrWhiteSpace(Model.IncomingTrust?.CompaniesHouseNumber))
+                    {
+                        @Model.IncomingTrust?.CompaniesHouseNumber<br />
+                        <a class="govuk-link" href="https://find-and-update.company-information.service.gov.uk/company/@Model.IncomingTrust?.CompaniesHouseNumber" target="_blank">View the Companies House information (opens in new tab)</a>
+                    }
                 </govuk-summary-list-row-value>
             </govuk-summary-list-row>
             <govuk-summary-list-row>
