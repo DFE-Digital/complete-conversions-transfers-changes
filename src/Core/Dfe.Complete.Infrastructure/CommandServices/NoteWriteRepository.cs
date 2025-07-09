@@ -1,6 +1,5 @@
 using Dfe.Complete.Application.Notes.Interfaces;
 using Dfe.Complete.Domain.Entities;
-using Dfe.Complete.Domain.ValueObjects;
 using Dfe.Complete.Infrastructure.Database;
 using Microsoft.EntityFrameworkCore;
 
@@ -9,13 +8,6 @@ namespace Dfe.Complete.Infrastructure.CommandServices;
 internal class NoteWriteRepository(CompleteContext context) : INoteWriteRepository
 {
     private readonly CompleteContext _context = context;
-
-    public async Task<Note?> GetNoteByIdAsync(NoteId noteId, CancellationToken cancellationToken)
-    {
-        return await _context.Notes
-            .Include(n => n.User)
-            .FirstOrDefaultAsync(n => n.Id == noteId, cancellationToken);
-    }
 
     public async Task CreateNoteAsync(Note note, CancellationToken cancellationToken)
     {

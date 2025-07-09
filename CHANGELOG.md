@@ -39,6 +39,8 @@ Security in case of vulnerabilities.
 
 ### Fixed
 
+- Throw exception if redis configs are not present and redis is enabled.
+
 See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-06-27.463...main) for everything awaiting release
 
 ---
@@ -53,6 +55,8 @@ See the [full commit history](https://github.com/DFE-Digital/complete-conversion
 - footer links for production
 - privacy link
 - show 'service not working' on unexpected error
+- Fixed trust not found issue.
+- Updated body message on `Page not found` page.
 
 See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-06-24.451...production-2025-06-27.463) for everything in the release
 ---

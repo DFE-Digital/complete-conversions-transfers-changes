@@ -1,9 +1,8 @@
 using Dfe.Complete.Application.Common.Models;
 using Dfe.Complete.Application.Notes.Interfaces;
+using Dfe.Complete.Application.Notes.Queries.QueryFilters;
 using Dfe.Complete.Domain.ValueObjects;
-using Dfe.Complete.Utils;
 using MediatR;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 
 namespace Dfe.Complete.Application.Notes.Commands;
@@ -11,8 +10,8 @@ namespace Dfe.Complete.Application.Notes.Commands;
 public record RemoveNoteCommand(NoteId NoteId) : IRequest<Result<bool>>;
 
 public class RemoveNoteCommandHandler(
-    INoteWriteRepository _repo,
-    IHttpContextAccessor _httpContextAccessor,
+    INoteWriteRepository _noteWriteRepo,
+    INoteReadRepository _noteReadRepo,
     ILogger<RemoveNoteCommandHandler> logger
 ) : IRequestHandler<RemoveNoteCommand, Result<bool>>
 {
@@ -20,25 +19,15 @@ public class RemoveNoteCommandHandler(
     {
         try
         {
-            var userIdClaim = _httpContextAccessor.HttpContext?.User?.FindFirst("sub")?.Value
-                     ?? _httpContextAccessor.HttpContext?.User?.FindFirst("uid")?.Value;
+            var note = new NoteIdQuery(request.NoteId)
+                .Apply(_noteReadRepo.Notes())
+                .FirstOrDefault();
 
-            if (!Guid.TryParse(userIdClaim, out var parsedUserId))
-                throw new UnauthorizedAccessException($"Could not delete note {request.NoteId.Value}");
+            if (note is null) return Result<bool>.Failure($"Note with ID {request.NoteId.Value} not found", ErrorType.NotFound);
 
-            var note = await _repo.GetNoteByIdAsync(request.NoteId, cancellationToken) ?? throw new NotFoundException($"Note with ID {request.NoteId.Value} not found");
-
-            if (note.UserId != new UserId(parsedUserId))
-                throw new UnauthorizedAccessException($"Could not delete note {request.NoteId.Value}");
-
-            await _repo.RemoveNoteAsync(note, cancellationToken);
+            await _noteWriteRepo.RemoveNoteAsync(note, cancellationToken);
 
             return Result<bool>.Success(true);
-        }
-        catch (UnauthorizedAccessException ex)
-        {
-            logger.LogWarning(ex, "Exception for {Name} Request - {@Request}", nameof(RemoveNoteCommandHandler), request);
-            return Result<bool>.Failure(ex.Message, ErrorType.Unauthorized);
         }
         catch (Exception ex)
         {

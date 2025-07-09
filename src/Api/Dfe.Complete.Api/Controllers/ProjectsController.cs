@@ -384,10 +384,6 @@ namespace Dfe.Complete.Api.Controllers
         public async Task<IActionResult> CreateProjectNoteAsync([FromBody] CreateNoteCommand request, CancellationToken cancellationToken)
         {
             var result = await sender.Send(request, cancellationToken);
-
-            if (!result.IsSuccess || result.Value is null)
-                return StatusCode(500, result.Error);
-
             return Created("", result.Value);
         }
 
@@ -408,19 +404,17 @@ namespace Dfe.Complete.Api.Controllers
 
             if (!result.IsSuccess || result.Value is null)
             {
-                return result.ErrorType == ErrorType.Unauthorized
-                    ? Unauthorized(result.Error)
+                return result.ErrorType == ErrorType.NotFound
+                    ? NotFound(result.Error)
                     : StatusCode(500, result.Error);
             }
 
             return Ok(result.Value.Id);
         }
-
         /// <summary>
         /// Delete a Note for a Project
         /// </summary>
         /// <param name="request"></param>
-        /// <param name="cancellationToken">The cancellation token.</param>
         [Authorize(Policy = "CanReadWriteUpdateDelete")]
         [HttpDelete]
         [Route("Notes")]
@@ -430,14 +424,12 @@ namespace Dfe.Complete.Api.Controllers
         public async Task<IActionResult> DeleteProjectNoteAsync([FromBody] RemoveNoteCommand request, CancellationToken cancellationToken)
         {
             var result = await sender.Send(request, cancellationToken);
-
             if (!result.IsSuccess)
             {
-                return result.ErrorType == ErrorType.Unauthorized
-                    ? Unauthorized(result.Error)
-                    : StatusCode(500, result.Error);
+                return result.ErrorType == ErrorType.NotFound
+                    ? NotFound(result.Error)
+                    : StatusCode(500);
             }
-
             return Ok(result.Value);
         }
 

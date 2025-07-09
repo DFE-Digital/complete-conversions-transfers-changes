@@ -4,6 +4,7 @@
     {
         None,
         Unauthorized,
+        NotFound,
         Unknown
     }
 
