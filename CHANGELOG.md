@@ -24,6 +24,7 @@ Security in case of vulnerabilities.
 
 ### Added  
 - Added `Statistics` page
+- Added `/projects/{projectId}/external-contacts` page
 
 ### Changed  
 
