@@ -4,7 +4,7 @@
 
 @{
   var showAnalytics = Configuration["GoogleAnalytics:Enable"] == "Yes" && AnalytisConsentService.HasConsent();
-  var enableAppInsightsAnalytics = Configuration["ApplicationInsights:EnableBrowserAnalytics"] == "Yes" && showAnalytics;
+  var enableAppInsightsAnalytics = Configuration["ApplicationInsights:EnableBrowserAnalytics"] == "Yes" && AnalytisConsentService.HasConsent();
   const string titleDescription = "Complete conversions, transfers and changes";
   var inputTitle = ViewData["Title"];
   var title = inputTitle?.ToString() != null && !inputTitle.ToString()!.IsEmpty() ? $"{inputTitle} - {titleDescription}" : titleDescription;
