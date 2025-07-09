@@ -78,7 +78,7 @@ public class Startup
             });
 
         ConfigureCustomAntiforgery(services);
-        SetupApplicationInsights();
+        SetupApplicationInsights(services);
 
         services.AddControllersWithViews()
            .AddMicrosoftIdentityUI()
@@ -202,7 +202,7 @@ public class Startup
                }
            });
     }
-    private void SetupApplicationInsights() => GetTypedConfigurationFor<ApplicationInsightsOptions>();
+    private void SetupApplicationInsights(IServiceCollection services) => services.Configure<ApplicationInsightsOptions>(Configuration.GetSection("ApplicationInsights"));
 
     private static void ConfigureCustomAntiforgery(IServiceCollection services)
     {
