@@ -34,8 +34,9 @@ public class GetContactsForProjectQueryHandlerTests
         var result = await handler.Handle(query, default);
 
         // Assert
-        Assert.NotNull(result);
         Assert.True(result.IsSuccess);
+        Assert.NotNull(result);
+        Assert.NotNull(result.Value);
         Assert.Equal(contacts.Count, result.Value.Count);
         Assert.All(result.Value, contact =>
             Assert.Equal(query.ProjectId, contact.ProjectId));
@@ -60,6 +61,7 @@ public class GetContactsForProjectQueryHandlerTests
 
         // Assert
         Assert.NotNull(result);
+        Assert.NotNull(result.Value);
         Assert.True(result.IsSuccess);
         Assert.Empty(result.Value);
     }
@@ -83,6 +85,7 @@ public class GetContactsForProjectQueryHandlerTests
 
         // Assert
         Assert.NotNull(result);
+        Assert.Null(result.Value);
         Assert.False(result.IsSuccess);
         Assert.Equal(expectedErrorMessage, result.Error);
     }

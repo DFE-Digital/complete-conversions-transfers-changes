@@ -35,6 +35,7 @@ public class GetContactsForLocalAuthorityQueryHandlerTests
 
         // Assert
         Assert.NotNull(result);
+        Assert.NotNull(result.Value);
         Assert.True(result.IsSuccess);
         Assert.Equal(contacts.Count, result.Value.Count);
         Assert.All(result.Value, contact =>
@@ -60,6 +61,7 @@ public class GetContactsForLocalAuthorityQueryHandlerTests
 
         // Assert
         Assert.NotNull(result);
+        Assert.NotNull(result.Value);
         Assert.True(result.IsSuccess);
         Assert.Empty(result.Value);
     }
@@ -83,6 +85,7 @@ public class GetContactsForLocalAuthorityQueryHandlerTests
 
         // Assert
         Assert.NotNull(result);
+        Assert.Null(result.Value);
         Assert.False(result.IsSuccess);
         Assert.Equal(expectedErrorMessage, result.Error);
     }
