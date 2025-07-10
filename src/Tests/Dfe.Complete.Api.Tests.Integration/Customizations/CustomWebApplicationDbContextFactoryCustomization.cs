@@ -115,6 +115,7 @@ namespace Dfe.Complete.Api.Tests.Integration.Customizations
                 services.AddCompleteApiClient<ITransferTasksDataClient, TransferTasksDataClient>(config, client);
                 services.AddCompleteApiClient<ICsvExportClient, CsvExportClient>(config, client);
                 services.AddCompleteApiClient<IUsersClient, UsersClient>(config, client);
+                services.AddCompleteApiClient<IServiceSupportClient, ServiceSupportClient>(config, client);
                 var serviceProvider = services.BuildServiceProvider();
 
                 fixture.Inject(factory);
@@ -125,6 +126,7 @@ namespace Dfe.Complete.Api.Tests.Integration.Customizations
                 fixture.Inject(serviceProvider.GetRequiredService<ITransferTasksDataClient>());
                 fixture.Inject(serviceProvider.GetRequiredService<ICsvExportClient>());
                 fixture.Inject(serviceProvider.GetRequiredService<IUsersClient>());
+                fixture.Inject(serviceProvider.GetRequiredService<IServiceSupportClient>());
                 fixture.Inject(new List<Claim>());
 
                 return factory;

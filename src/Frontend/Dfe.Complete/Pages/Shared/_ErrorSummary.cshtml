@@ -13,11 +13,11 @@
 					<li>
 						@if (!string.IsNullOrWhiteSpace(error.Key))
 						{
-							<a id="@($"{error.Key}-error-link")"  href=#@error.Key>@error.Message</a>
+                            <a id="@($"{error.Key}-error-link")" href="#@error.Key">@error.Key @error.Message</a>
 						}
 						else
 						{
-							<a id="@(error.Key)" href="#@(error.Key)">@error.Message</a>
+							<a id="@(error.Key)" href="#@(error.Key)">@error.Key @error.Message</a>
 						}
 					</li>
 				}

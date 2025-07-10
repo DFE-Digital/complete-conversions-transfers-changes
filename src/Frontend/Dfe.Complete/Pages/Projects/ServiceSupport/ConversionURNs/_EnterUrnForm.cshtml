@@ -1,0 +1,33 @@
+﻿@using Dfe.Complete.Constants
+@using GovUk.Frontend.AspNetCore.TagHelpers
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model Dfe.Complete.Pages.Projects.ServiceSupport.ConversionURNs.CreateAcademyUrnModel
+@inject Dfe.Complete.Services.ErrorService ErrorService
+
+@{
+    const string urnField = nameof(Model.URN);
+}
+
+<h1 class="govuk-heading-l">
+    Create academy URN for @Model.Establishment.Name conversion
+</h1>
+
+<p>This is the URN for the academy that the school is converting to.</p>
+<p>To add the academy URN you must have already created a new academy in GIAS.</p>
+<p>It can take up to 24 hours for changes to the academy URN to appear on the project information page.</p>
+
+<form method="post">
+    <govuk-input id="@urnField" name="@urnField" input-class="govuk-input--width-10" asp-for="URN">
+        <govuk-input-label class="govuk-label--m">Enter academy URN</govuk-input-label>
+        <govuk-input-hint>A URN is a 6 digit number.</govuk-input-hint>
+        @if (ErrorService.HasErrorForKey(urnField))
+        {
+            <govuk-input-error-message>@ErrorService.GetErrorMessage(urnField)</govuk-input-error-message>
+        }
+    </govuk-input>
+
+    <div class="govuk-button-group">
+        <govuk-button type="submit">Save and return</govuk-button>
+        <a class="govuk-link" href="@RouteConstants.ServiceSupportProjectsWithoutAcademyUrn">Cancel</a>
+    </div>
+</form>
