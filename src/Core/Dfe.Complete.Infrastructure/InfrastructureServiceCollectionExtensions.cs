@@ -52,28 +52,27 @@ namespace Dfe.Complete.Infrastructure
                     AbortOnConnectFail = false,
                     ResolveDns = true,
                     Ssl = true,
-                    EndPoints =
-                    {
-                        { redisAppSettings.GetValue<string>("Host")!, redisAppSettings.GetValue<int>("Port") }
-                    },
+                    EndPoints = { $"{redisAppSettings.GetValue<string>("Host")}:{redisAppSettings.GetValue<int>("Port")}" },
                     Password = redisAppSettings.GetValue<string>("Password"),
                     ClientName = "Dfe.Complete",
                     DefaultVersion = new Version(6, 0),
                     AsyncTimeout = 15000,
-                    SyncTimeout = 15000,
+                    SyncTimeout = 15000
                 };
 
                 // https://stackexchange.github.io/StackExchange.Redis/ThreadTheft.html
-                ConnectionMultiplexer.SetFeatureFlag("preventthreadtheft", true);
-
-                IConnectionMultiplexer redisConnectionMultiplexer = ConnectionMultiplexer.Connect(redisConfigurationOptions);
+                ConnectionMultiplexer.SetFeatureFlag("preventthreadtheft", true); 
 
                 services.AddStackExchangeRedisCache(redisCacheConfig =>
                 {
                     redisCacheConfig.ConfigurationOptions = redisConfigurationOptions;
-                    redisCacheConfig.ConnectionMultiplexerFactory = () => Task.FromResult(redisConnectionMultiplexer);
+                    redisCacheConfig.ConnectionMultiplexerFactory = async () =>
+                    {
+                        return await ConnectionMultiplexer.ConnectAsync(redisConfigurationOptions);
+                    };
                     redisCacheConfig.InstanceName = "redis-master";
                 });
+
             }
 
             return services;
