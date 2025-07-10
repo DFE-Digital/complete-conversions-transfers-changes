@@ -1,7 +1,6 @@
 using Dfe.Complete.Application.Notes.Interfaces;
 using Dfe.Complete.Domain.Entities;
 using Dfe.Complete.Infrastructure.Database;
-using Microsoft.EntityFrameworkCore;
 
 namespace Dfe.Complete.Infrastructure.CommandServices;
 

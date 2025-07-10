@@ -27,7 +27,6 @@ public class EditProjectNoteModel(ISender sender, ErrorService errorService) : P
 
     public async override Task<IActionResult> OnGetAsync()
     {
-
         var baseResult = await base.OnGetAsync();
         if (baseResult is not PageResult) return baseResult;
 
