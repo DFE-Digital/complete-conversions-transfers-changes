@@ -51,7 +51,7 @@ See the [full commit history](https://github.com/DFE-Digital/complete-conversion
 ### Security
 - Use only custom antiforgery for cookies due to requiring anonymous access
 
-See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-06-27.463...production-2025-07-10.519) for everything awaiting release
+See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-06-27.463...production-2025-07-10.519) for everything in the release
 
 ---
 
