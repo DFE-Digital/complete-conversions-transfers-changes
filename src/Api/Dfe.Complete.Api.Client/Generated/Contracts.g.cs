@@ -48,6 +48,26 @@ namespace Dfe.Complete.Client.Contracts
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "14.2.0.0 (NJsonSchema v11.1.0.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial interface IProjectGroupClient
+    {
+        /// <summary>
+        /// Gets the Project group by Id.
+        /// </summary>
+        /// <returns>Project Group returned successfully.</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<ProjectGroupDto> GetProjectGroupByIdAsync(System.Guid? id_Value);
+
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>
+        /// Gets the Project group by Id.
+        /// </summary>
+        /// <returns>Project Group returned successfully.</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<ProjectGroupDto> GetProjectGroupByIdAsync(System.Guid? id_Value, System.Threading.CancellationToken cancellationToken);
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NSwag", "14.2.0.0 (NJsonSchema v11.1.0.0 (Newtonsoft.Json v13.0.0.0))")]
     public partial interface IProjectsClient
     {
         /// <summary>
@@ -355,6 +375,26 @@ namespace Dfe.Complete.Client.Contracts
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "14.2.0.0 (NJsonSchema v11.1.0.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial interface ITransferTasksDataClient
+    {
+        /// <summary>
+        /// Gets the transfer tasks data by Id.
+        /// </summary>
+        /// <returns>Transfer tasks data returned successfully.</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<TransferTaskDataDto> GetTransferTasksDataByIdAsync(System.Guid? id_Value);
+
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>
+        /// Gets the transfer tasks data by Id.
+        /// </summary>
+        /// <returns>Transfer tasks data returned successfully.</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<TransferTaskDataDto> GetTransferTasksDataByIdAsync(System.Guid? id_Value, System.Threading.CancellationToken cancellationToken);
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NSwag", "14.2.0.0 (NJsonSchema v11.1.0.0 (Newtonsoft.Json v13.0.0.0))")]
     public partial interface ITrustClient
     {
         /// <summary>
@@ -406,6 +446,81 @@ namespace Dfe.Complete.Client.Contracts
         /// <returns>Project</returns>
         /// <exception cref="CompleteApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<ListAllUsersWithProjectsResultModel>> ListAllUsersWithProjectsAsync(ProjectState? state, ProjectTeam? team, bool? requireUserHasProjects, int? page, int? count, System.Threading.CancellationToken cancellationToken);
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.2.0.0 (NJsonSchema v11.1.0.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class ProjectGroupDto
+    {
+        [Newtonsoft.Json.JsonProperty("id", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public ProjectGroupId? Id { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("groupIdentifier", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string? GroupIdentifier { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("trustUkprn", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public Ukprn? TrustUkprn { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("createdAt", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.DateTime? CreatedAt { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("updatedAt", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.DateTime? UpdatedAt { get; set; } = default!;
+
+        public string ToJson()
+        {
+
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonSerializerSettings());
+
+        }
+        public static ProjectGroupDto FromJson(string data)
+        {
+
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<ProjectGroupDto>(data, new Newtonsoft.Json.JsonSerializerSettings());
+
+        }
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.2.0.0 (NJsonSchema v11.1.0.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class ProjectGroupId
+    {
+        [Newtonsoft.Json.JsonProperty("value", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Guid? Value { get; set; } = default!;
+
+        public string ToJson()
+        {
+
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonSerializerSettings());
+
+        }
+        public static ProjectGroupId FromJson(string data)
+        {
+
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<ProjectGroupId>(data, new Newtonsoft.Json.JsonSerializerSettings());
+
+        }
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.2.0.0 (NJsonSchema v11.1.0.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class Ukprn
+    {
+        [Newtonsoft.Json.JsonProperty("value", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? Value { get; set; } = default!;
+
+        public string ToJson()
+        {
+
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonSerializerSettings());
+
+        }
+        public static Ukprn FromJson(string data)
+        {
+
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<Ukprn>(data, new Newtonsoft.Json.JsonSerializerSettings());
+
+        }
 
     }
 
@@ -508,27 +623,6 @@ namespace Dfe.Complete.Client.Contracts
         {
 
             return Newtonsoft.Json.JsonConvert.DeserializeObject<Urn>(data, new Newtonsoft.Json.JsonSerializerSettings());
-
-        }
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.2.0.0 (NJsonSchema v11.1.0.0 (Newtonsoft.Json v13.0.0.0))")]
-    public partial class Ukprn
-    {
-        [Newtonsoft.Json.JsonProperty("value", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public int? Value { get; set; } = default!;
-
-        public string ToJson()
-        {
-
-            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonSerializerSettings());
-
-        }
-        public static Ukprn FromJson(string data)
-        {
-
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<Ukprn>(data, new Newtonsoft.Json.JsonSerializerSettings());
 
         }
 
@@ -1081,27 +1175,6 @@ namespace Dfe.Complete.Client.Contracts
 
         [System.Runtime.Serialization.EnumMember(Value = @"Inactive")]
         Inactive = 4,
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.2.0.0 (NJsonSchema v11.1.0.0 (Newtonsoft.Json v13.0.0.0))")]
-    public partial class ProjectGroupId
-    {
-        [Newtonsoft.Json.JsonProperty("value", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.Guid? Value { get; set; } = default!;
-
-        public string ToJson()
-        {
-
-            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonSerializerSettings());
-
-        }
-        public static ProjectGroupId FromJson(string data)
-        {
-
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<ProjectGroupId>(data, new Newtonsoft.Json.JsonSerializerSettings());
-
-        }
 
     }
 
@@ -2064,39 +2137,6 @@ namespace Dfe.Complete.Client.Contracts
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.2.0.0 (NJsonSchema v11.1.0.0 (Newtonsoft.Json v13.0.0.0))")]
-    public partial class ProjectGroupDto
-    {
-        [Newtonsoft.Json.JsonProperty("id", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public ProjectGroupId? Id { get; set; } = default!;
-
-        [Newtonsoft.Json.JsonProperty("groupIdentifier", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string? GroupIdentifier { get; set; } = default!;
-
-        [Newtonsoft.Json.JsonProperty("trustUkprn", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public Ukprn? TrustUkprn { get; set; } = default!;
-
-        [Newtonsoft.Json.JsonProperty("createdAt", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.DateTime? CreatedAt { get; set; } = default!;
-
-        [Newtonsoft.Json.JsonProperty("updatedAt", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.DateTime? UpdatedAt { get; set; } = default!;
-
-        public string ToJson()
-        {
-
-            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonSerializerSettings());
-
-        }
-        public static ProjectGroupDto FromJson(string data)
-        {
-
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<ProjectGroupDto>(data, new Newtonsoft.Json.JsonSerializerSettings());
-
-        }
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.2.0.0 (NJsonSchema v11.1.0.0 (Newtonsoft.Json v13.0.0.0))")]
     public partial class ListAllProjectsQueryModel
     {
         [Newtonsoft.Json.JsonProperty("project", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
@@ -2295,6 +2335,362 @@ namespace Dfe.Complete.Client.Contracts
         {
 
             return Newtonsoft.Json.JsonConvert.DeserializeObject<ThisMonthNewProjectsStatisticsModel>(data, new Newtonsoft.Json.JsonSerializerSettings());
+
+        }
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.2.0.0 (NJsonSchema v11.1.0.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class TransferTaskDataDto
+    {
+        [Newtonsoft.Json.JsonProperty("id", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public TaskDataId? Id { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("createdAt", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.DateTime? CreatedAt { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("updatedAt", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.DateTime? UpdatedAt { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("handoverReview", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? HandoverReview { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("handoverNotes", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? HandoverNotes { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("handoverMeeting", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? HandoverMeeting { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("handoverNotApplicable", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? HandoverNotApplicable { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("stakeholderKickOffIntroductoryEmails", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? StakeholderKickOffIntroductoryEmails { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("stakeholderKickOffSetupMeeting", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? StakeholderKickOffSetupMeeting { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("stakeholderKickOffMeeting", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? StakeholderKickOffMeeting { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("masterFundingAgreementReceived", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? MasterFundingAgreementReceived { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("masterFundingAgreementCleared", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? MasterFundingAgreementCleared { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("masterFundingAgreementSigned", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? MasterFundingAgreementSigned { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("masterFundingAgreementSaved", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? MasterFundingAgreementSaved { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("masterFundingAgreementSignedSecretaryState", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? MasterFundingAgreementSignedSecretaryState { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("masterFundingAgreementNotApplicable", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? MasterFundingAgreementNotApplicable { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("deedOfNovationAndVariationReceived", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? DeedOfNovationAndVariationReceived { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("deedOfNovationAndVariationCleared", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? DeedOfNovationAndVariationCleared { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("deedOfNovationAndVariationSignedOutgoingTrust", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? DeedOfNovationAndVariationSignedOutgoingTrust { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("deedOfNovationAndVariationSignedIncomingTrust", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? DeedOfNovationAndVariationSignedIncomingTrust { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("deedOfNovationAndVariationSaved", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? DeedOfNovationAndVariationSaved { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("deedOfNovationAndVariationSignedSecretaryState", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? DeedOfNovationAndVariationSignedSecretaryState { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("deedOfNovationAndVariationSaveAfterSign", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? DeedOfNovationAndVariationSaveAfterSign { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("articlesOfAssociationReceived", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? ArticlesOfAssociationReceived { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("articlesOfAssociationCleared", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? ArticlesOfAssociationCleared { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("articlesOfAssociationSigned", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? ArticlesOfAssociationSigned { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("articlesOfAssociationSaved", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? ArticlesOfAssociationSaved { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("articlesOfAssociationNotApplicable", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? ArticlesOfAssociationNotApplicable { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("commercialTransferAgreementConfirmAgreed", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? CommercialTransferAgreementConfirmAgreed { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("commercialTransferAgreementConfirmSigned", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? CommercialTransferAgreementConfirmSigned { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("commercialTransferAgreementSaveConfirmationEmails", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? CommercialTransferAgreementSaveConfirmationEmails { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("supplementalFundingAgreementReceived", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? SupplementalFundingAgreementReceived { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("supplementalFundingAgreementCleared", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? SupplementalFundingAgreementCleared { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("supplementalFundingAgreementSaved", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? SupplementalFundingAgreementSaved { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("deedOfVariationReceived", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? DeedOfVariationReceived { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("deedOfVariationCleared", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? DeedOfVariationCleared { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("deedOfVariationSigned", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? DeedOfVariationSigned { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("deedOfVariationSaved", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? DeedOfVariationSaved { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("deedOfVariationSent", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? DeedOfVariationSent { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("deedOfVariationSignedSecretaryState", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? DeedOfVariationSignedSecretaryState { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("deedOfVariationNotApplicable", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? DeedOfVariationNotApplicable { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("landConsentLetterDrafted", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? LandConsentLetterDrafted { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("landConsentLetterSigned", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? LandConsentLetterSigned { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("landConsentLetterSent", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? LandConsentLetterSent { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("landConsentLetterSaved", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? LandConsentLetterSaved { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("landConsentLetterNotApplicable", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? LandConsentLetterNotApplicable { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("rpaPolicyConfirm", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? RpaPolicyConfirm { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("formMReceivedFormM", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? FormMReceivedFormM { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("formMReceivedTitlePlans", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? FormMReceivedTitlePlans { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("formMCleared", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? FormMCleared { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("formMSigned", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? FormMSigned { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("formMSaved", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? FormMSaved { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("churchSupplementalAgreementReceived", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? ChurchSupplementalAgreementReceived { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("churchSupplementalAgreementCleared", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? ChurchSupplementalAgreementCleared { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("churchSupplementalAgreementSignedIncomingTrust", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? ChurchSupplementalAgreementSignedIncomingTrust { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("churchSupplementalAgreementSignedDiocese", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? ChurchSupplementalAgreementSignedDiocese { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("churchSupplementalAgreementSavedAfterSigningByTrustDiocese", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? ChurchSupplementalAgreementSavedAfterSigningByTrustDiocese { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("churchSupplementalAgreementSignedSecretaryState", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? ChurchSupplementalAgreementSignedSecretaryState { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("churchSupplementalAgreementSavedAfterSigningBySecretaryState", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? ChurchSupplementalAgreementSavedAfterSigningBySecretaryState { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("churchSupplementalAgreementNotApplicable", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? ChurchSupplementalAgreementNotApplicable { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("deedOfTerminationForTheMasterFundingAgreementReceived", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? DeedOfTerminationForTheMasterFundingAgreementReceived { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("deedOfTerminationForTheMasterFundingAgreementCleared", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? DeedOfTerminationForTheMasterFundingAgreementCleared { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("deedOfTerminationForTheMasterFundingAgreementSigned", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? DeedOfTerminationForTheMasterFundingAgreementSigned { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("deedOfTerminationForTheMasterFundingAgreementSavedAcademyAndOutgoingTrustSharepoint", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? DeedOfTerminationForTheMasterFundingAgreementSavedAcademyAndOutgoingTrustSharepoint { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("deedOfTerminationForTheMasterFundingAgreementContactFinancialReportingTeam", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? DeedOfTerminationForTheMasterFundingAgreementContactFinancialReportingTeam { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("deedOfTerminationForTheMasterFundingAgreementSignedSecretaryState", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? DeedOfTerminationForTheMasterFundingAgreementSignedSecretaryState { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("deedOfTerminationForTheMasterFundingAgreementSavedInAcademySharepointFolder", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? DeedOfTerminationForTheMasterFundingAgreementSavedInAcademySharepointFolder { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("deedOfTerminationForTheMasterFundingAgreementNotApplicable", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? DeedOfTerminationForTheMasterFundingAgreementNotApplicable { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("deedTerminationChurchAgreementReceived", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? DeedTerminationChurchAgreementReceived { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("deedTerminationChurchAgreementCleared", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? DeedTerminationChurchAgreementCleared { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("deedTerminationChurchAgreementSignedOutgoingTrust", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? DeedTerminationChurchAgreementSignedOutgoingTrust { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("deedTerminationChurchAgreementSignedDiocese", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? DeedTerminationChurchAgreementSignedDiocese { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("deedTerminationChurchAgreementSaved", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? DeedTerminationChurchAgreementSaved { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("deedTerminationChurchAgreementSignedSecretaryState", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? DeedTerminationChurchAgreementSignedSecretaryState { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("deedTerminationChurchAgreementSavedAfterSigningBySecretaryState", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? DeedTerminationChurchAgreementSavedAfterSigningBySecretaryState { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("deedTerminationChurchAgreementNotApplicable", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? DeedTerminationChurchAgreementNotApplicable { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("closureOrTransferDeclarationNotApplicable", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? ClosureOrTransferDeclarationNotApplicable { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("closureOrTransferDeclarationReceived", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? ClosureOrTransferDeclarationReceived { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("closureOrTransferDeclarationCleared", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? ClosureOrTransferDeclarationCleared { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("closureOrTransferDeclarationSaved", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? ClosureOrTransferDeclarationSaved { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("closureOrTransferDeclarationSent", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? ClosureOrTransferDeclarationSent { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("confirmIncomingTrustHasCompletedAllActionsEmailed", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? ConfirmIncomingTrustHasCompletedAllActionsEmailed { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("confirmIncomingTrustHasCompletedAllActionsSaved", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? ConfirmIncomingTrustHasCompletedAllActionsSaved { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("redactAndSendDocumentsSendToEsfa", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? RedactAndSendDocumentsSendToEsfa { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("redactAndSendDocumentsRedact", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? RedactAndSendDocumentsRedact { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("redactAndSendDocumentsSaved", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? RedactAndSendDocumentsSaved { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("redactAndSendDocumentsSendToFundingTeam", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? RedactAndSendDocumentsSendToFundingTeam { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("redactAndSendDocumentsSendToSolicitors", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? RedactAndSendDocumentsSendToSolicitors { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("requestNewUrnAndRecordNotApplicable", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? RequestNewUrnAndRecordNotApplicable { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("requestNewUrnAndRecordComplete", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? RequestNewUrnAndRecordComplete { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("requestNewUrnAndRecordReceive", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? RequestNewUrnAndRecordReceive { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("requestNewUrnAndRecordGive", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? RequestNewUrnAndRecordGive { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("inadequateOfsted", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? InadequateOfsted { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("financialSafeguardingGovernanceIssues", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? FinancialSafeguardingGovernanceIssues { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("outgoingTrustToClose", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? OutgoingTrustToClose { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("bankDetailsChangingYesNo", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? BankDetailsChangingYesNo { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("checkAndConfirmFinancialInformationNotApplicable", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? CheckAndConfirmFinancialInformationNotApplicable { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("checkAndConfirmFinancialInformationAcademySurplusDeficit", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string? CheckAndConfirmFinancialInformationAcademySurplusDeficit { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("checkAndConfirmFinancialInformationTrustSurplusDeficit", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string? CheckAndConfirmFinancialInformationTrustSurplusDeficit { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("confirmDateAcademyTransferredDateTransferred", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonConverter(typeof(DateFormatConverter))]
+        public System.DateTime? ConfirmDateAcademyTransferredDateTransferred { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("sponsoredSupportGrantNotApplicable", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? SponsoredSupportGrantNotApplicable { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("sponsoredSupportGrantType", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string? SponsoredSupportGrantType { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("declarationOfExpenditureCertificateDateReceived", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonConverter(typeof(DateFormatConverter))]
+        public System.DateTime? DeclarationOfExpenditureCertificateDateReceived { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("declarationOfExpenditureCertificateCorrect", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? DeclarationOfExpenditureCertificateCorrect { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("declarationOfExpenditureCertificateSaved", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? DeclarationOfExpenditureCertificateSaved { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("declarationOfExpenditureCertificateNotApplicable", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? DeclarationOfExpenditureCertificateNotApplicable { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("conditionsMetCheckAnyInformationChanged", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? ConditionsMetCheckAnyInformationChanged { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("conditionsMetBaselineSheetApproved", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? ConditionsMetBaselineSheetApproved { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("formMNotApplicable", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? FormMNotApplicable { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("articlesOfAssociationSent", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? ArticlesOfAssociationSent { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("commercialTransferAgreementQuestionsReceived", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? CommercialTransferAgreementQuestionsReceived { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("commercialTransferAgreementQuestionsChecked", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? CommercialTransferAgreementQuestionsChecked { get; set; } = default!;
+
+        public string ToJson()
+        {
+
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonSerializerSettings());
+
+        }
+        public static TransferTaskDataDto FromJson(string data)
+        {
+
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<TransferTaskDataDto>(data, new Newtonsoft.Json.JsonSerializerSettings());
 
         }
 

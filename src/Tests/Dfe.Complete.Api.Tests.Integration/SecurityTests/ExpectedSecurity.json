@@ -116,6 +116,16 @@
       "ExpectedSecurity": "Authorize: Policy=CanRead"
     },
     {
+      "Controller": "ProjectGroupController",
+      "Action": "GetProjectGroupByIdAsync",
+      "ExpectedSecurity": "Authorize: Policy=CanRead"
+    },
+    {
+      "Controller": "TransferTasksDataController",
+      "Action": "GetTransferTasksDataByIdAsync",
+      "ExpectedSecurity": "Authorize: Policy=CanRead"
+    },
+    {
       "Controller": "ProjectsController",
       "Action": "ListAllProjectsStatisticsAsync",
       "ExpectedSecurity": "Authorize: Policy=CanRead"

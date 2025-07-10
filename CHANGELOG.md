@@ -277,3 +277,6 @@ See the [full commit history](https://github.com/DFE-Digital/complete-conversion
  - Captures prior production releases retroactively, for syncing purposes.
 
 See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/082ba69cfa1b5b098d5dd5e2c804e8f5c58c2a00...development-2025-03-05.78) for everything in the release
+
+### Added
+ - New route (About the project page) `/projects/{urn or ukprn}/information`
