@@ -1,9 +1,13 @@
+using System.Linq.Expressions;
 using AutoFixture;
 using AutoFixture.Xunit2;
 using Dfe.Complete.Application.Projects.Interfaces;
 using Dfe.Complete.Application.Projects.Models;
 using Dfe.Complete.Application.Projects.Queries.ListAllProjects;
+using Dfe.Complete.Domain.Entities;
 using Dfe.Complete.Domain.Enums;
+using Dfe.Complete.Domain.Interfaces.Repositories;
+using Dfe.Complete.Domain.ValueObjects;
 using Dfe.Complete.Tests.Common.Customizations.Behaviours;
 using Dfe.Complete.Tests.Common.Customizations.Models;
 using DfE.CoreLibs.Testing.AutoFixture.Attributes;
@@ -74,4 +78,76 @@ public class ListAllProjectsConvertingQueryHandlerTests
         Assert.Equal(5, result.Value?.Count());
         Assert.Equal(projects.Count, result.ItemCount);
     }
+    
+    [Theory]
+    [CustomAutoData]
+    public async Task Handle_ShouldUseTaskDataAcademyDetailsName_WhenAvailable(
+        [Frozen] IListAllProjectsQueryService mockListAllProjectsQueryService,
+        [Frozen] ICompleteRepository<GiasEstablishment> mockEstablishmentRepo,
+        [Frozen] ICompleteRepository<ConversionTasksData> mockTaskDataRepo,
+        ListAllProjectsConvertingQueryHandler handler)
+    {
+        // Arrange
+        var taskDataId = new TaskDataId(Guid.NewGuid());
+        var academyUrn = new Urn(123456);
+        var now = DateTime.UtcNow;
+
+        var project = new Domain.Entities.Project
+        {
+            Id = new ProjectId(Guid.NewGuid()),
+            TasksDataId = taskDataId,
+            AcademyUrn = academyUrn,
+            SignificantDate = DateOnly.FromDateTime(DateTime.UtcNow)
+        };
+
+        var establishment = new GiasEstablishment()
+        {
+            Name = "Some Establishment",
+            Urn = new Urn(999999)
+        };
+
+        var projectModel = new ListAllProjectsQueryModel(project, establishment);
+
+        var mockQueryable = new List<ListAllProjectsQueryModel> { projectModel }.BuildMock();
+        var orderBy = new OrderProjectQueryBy { Field = OrderProjectByField.SignificantDate, Direction = OrderByDirection.Ascending };
+
+        mockListAllProjectsQueryService
+            .ListAllProjects(
+                new ProjectFilters(ProjectState.Active, ProjectType.Conversion, WithAcademyUrn: true),
+                null,
+                orderBy)
+            .Returns(mockQueryable);
+
+        mockTaskDataRepo
+            .FetchAsync(Arg.Any<Expression<Func<ConversionTasksData, bool>>>())
+            .Returns(new List<ConversionTasksData>
+            {
+                new (taskDataId, now, now)
+                {
+                    AcademyDetailsName = "Academy Name From TaskData"
+                }
+            });
+
+        mockEstablishmentRepo
+            .FetchAsync(Arg.Any<Expression<Func<GiasEstablishment, bool>>>(), Arg.Any<CancellationToken>())
+            .Returns(new List<GiasEstablishment>
+            {
+                new GiasEstablishment
+                {
+                    Urn = academyUrn,
+                    Name = "Academy Name From GIAS"
+                }
+            });
+
+        var request = new ListAllProjectsConvertingQuery(WithAcademyUrn: true) { Page = 0, Count = 10 };
+
+        // Act
+        var result = await handler.Handle(request, CancellationToken.None);
+
+        // Assert
+        Assert.True(result.IsSuccess);
+        var expectedProject = result.Value?.Single();
+        Assert.Equal("Academy Name From TaskData", expectedProject?.AcademyName);
+    }
+
 }
