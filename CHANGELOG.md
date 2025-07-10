@@ -35,6 +35,9 @@ Security in case of vulnerabilities.
 
 - Throw exception if redis configs are not present and redis is enabled.
 
+### Security
+- Use only custom antiforgery for cookies due to requiring anonymous access
+
 See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-06-27.463...main) for everything awaiting release
 
 ---
