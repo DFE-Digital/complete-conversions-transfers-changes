@@ -23,6 +23,19 @@ Security in case of vulnerabilities.
 ## Unreleased  
 
 ### Added
+
+### Changed  
+
+### Fixed
+
+### Security
+
+See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-07-10.519...main) for everything awaiting release
+---
+
+## [1.8.0](https://github.com/DFE-Digital/complete-conversions-transfers-changes/releases/tag/production-2025-07-10.519) - 2025-07-10
+
+### Added
 - New route /projects/service-support/without-academy-urn
 - Service support Conversion URNs (/projects/service-support/without-academy-urn)
 - New route /projects/{projectId}/academy-urn
@@ -38,7 +51,7 @@ Security in case of vulnerabilities.
 ### Security
 - Use only custom antiforgery for cookies due to requiring anonymous access
 
-See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-06-27.463...main) for everything awaiting release
+See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-06-27.463...production-2025-07-10.519) for everything in the release
 
 ---
 
