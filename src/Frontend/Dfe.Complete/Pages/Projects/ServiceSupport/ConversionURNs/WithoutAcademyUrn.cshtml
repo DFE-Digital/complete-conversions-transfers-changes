@@ -1,0 +1,14 @@
+﻿@page "/projects/service-support/without-academy-urn"
+@model Dfe.Complete.Pages.Projects.ServiceSupport.ConversionURNs.WithoutAcademyUrnModel
+@{
+    Layout = "ServiceSupport/_ServiceSupportLayout";
+    ViewData["Title"] = "Conversion URNs";
+}
+
+<partial name="_ConversionURNs"/>
+
+<h2 class="govuk-heading-m">
+    URNs to create
+</h2>
+
+<partial name="_ConversionUrnsTable" model="@Model.Projects"/>

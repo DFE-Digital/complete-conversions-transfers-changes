@@ -74,7 +74,7 @@ class ProjectTable extends BasePage {
                     throw new Error("School name is not set. Call withSchool() before asserting table cell value.");
                 }
                 cy.getProjectTableRow(tableRowKey).then((row) => {
-                    const actualValue = row.find("td").eq(tableColumnIndex).text();
+                    const actualValue = row.find("td").eq(tableColumnIndex).text().trim();
                     if (exactMatch) {
                         expect(actualValue).to.equal(expectedValue);
                     } else {

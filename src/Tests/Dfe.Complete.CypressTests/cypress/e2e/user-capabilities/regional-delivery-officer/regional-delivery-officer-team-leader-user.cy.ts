@@ -2,6 +2,8 @@ import {
     shouldBeAbleToChangeTheAddedByUserOfAProject,
     shouldBeAbleToViewMultipleMonthsOfProjects,
     shouldNotHaveAccessToViewAndEditUsers,
+    shouldNotHaveAccessToViewConversionURNsPage,
+    shouldNotHaveAccessToViewLocalAuthorities
 } from "cypress/support/reusableTests";
 import { before, beforeEach } from "mocha";
 import projectRemover from "cypress/api/projectRemover";
@@ -109,11 +111,11 @@ describe("Capabilities and permissions of the regional delivery officer team lea
         shouldNotHaveAccessToViewAndEditUsers();
     });
 
-    it.skip("Should NOT be able to view and edit local authorities", () => {
-        // this can be viewed in the Ruby app currently?
+    it("Should NOT be able to view and edit local authorities", () => {
+        shouldNotHaveAccessToViewLocalAuthorities();
     });
 
-    it.skip("Should NOT be able to view conversion URNs", () => {
-        // this can be viewed in the Ruby app currently?
+    it("Should NOT be able to view conversion URNs", () => {
+        shouldNotHaveAccessToViewConversionURNsPage(projectId);
     });
 });

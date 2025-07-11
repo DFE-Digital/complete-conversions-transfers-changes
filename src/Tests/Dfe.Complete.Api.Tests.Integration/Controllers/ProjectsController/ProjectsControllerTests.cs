@@ -18,6 +18,8 @@ using ProjectType = Dfe.Complete.Domain.Enums.ProjectType;
 using ProjectState = Dfe.Complete.Domain.Enums.ProjectState;
 using Project = Dfe.Complete.Domain.Entities.Project;
 using Ukprn = Dfe.Complete.Domain.ValueObjects.Ukprn;
+using Dfe.Complete.Utils;
+using Urn = Dfe.Complete.Domain.ValueObjects.Urn;
 
 namespace Dfe.Complete.Api.Tests.Integration.Controllers.ProjectsController;
 
@@ -1301,4 +1303,116 @@ public partial class ProjectsControllerTests
         Assert.NotNull(results);
         Assert.Empty(results);
     }
+     
+    [Theory]
+    [CustomAutoData(typeof(CustomWebApplicationDbContextFactoryCustomization), typeof(GiasEstablishmentsCustomization))]
+    public async Task ListAllProjectsStatistics_Async_ShouldReturnStatistics(
+        CustomWebApplicationDbContextFactory<Program> factory,
+        IProjectsClient projectsClient,
+        IFixture fixture)
+    {
+        factory.TestClaims = [new Claim(ClaimTypes.Role, ApiRoles.ReadRole)];
+
+        // Arrange
+        var dbContext = factory.GetDbContext<CompleteContext>();
+
+        var testUser = await dbContext.Users.FirstAsync();
+        const string userAdId = "test-user-adid";
+        testUser.ActiveDirectoryUserId = userAdId; 
+
+        var giasEstablishment = fixture.Create<GiasEstablishment>();
+        var projects = fixture.Customize(new ProjectCustomization { RegionalDeliveryOfficerId = testUser.Id, Urn = giasEstablishment.Urn! })
+            .CreateMany<Project>(50).ToList();
+         
+        var localAuthority = dbContext.LocalAuthorities.AsEnumerable().MinBy(_ => Guid.NewGuid()); 
+        projects.ForEach(p => p.LocalAuthorityId = localAuthority!.Id);
+
+        await dbContext.GiasEstablishments.AddAsync(giasEstablishment);
+        await dbContext.Projects.AddRangeAsync(projects);
+        await dbContext.SaveChangesAsync();
+        var excludeStates = new List<ProjectState> { ProjectState.Deleted };
+        var expectedConversionProjects = projects.Where(p => p.Type == ProjectType.Conversion && !excludeStates.Contains(p.State));
+        var expectedTransfersProjects = projects.Where(p => p.Type == ProjectType.Transfer && !excludeStates.Contains(p.State));
+        
+        // Act
+        var results = await projectsClient.ListAllProjectsStatisticsAsync(CancellationToken.None);
+
+        // Assert
+        Assert.NotNull(results);
+        Assert.NotNull(results.OverAllProjects);
+        Assert.NotNull(results.OverAllProjects.Conversions);
+        Assert.NotNull(results.OverAllProjects.Transfers);
+        Assert.Equal(expectedConversionProjects.Count(), results.OverAllProjects.Conversions.TotalProjects);
+        Assert.Equal(expectedTransfersProjects.Count(), results.OverAllProjects.Transfers.TotalProjects);
+        Assert.NotNull(results.ConversionsPerRegion);
+        Assert.NotNull(results.TransfersPerRegion);
+        Assert.NotNull(results.NewProjects);
+        Assert.NotNull(results.RegionalCaseworkServicesProjects);
+        Assert.NotNull(results.NotRegionalCaseworkServicesProjects);
+        Assert.NotNull(results.UsersPerTeam);
+        Assert.NotNull(results.SixMonthViewOfAllProjectOpeners); 
+    }
+    
+    [Theory]
+    [CustomAutoData(typeof(CustomWebApplicationDbContextFactoryCustomization), typeof(GiasEstablishmentsCustomization))]
+    public async Task ListAllConvertingProjects_Async_ShouldReturnList(
+        CustomWebApplicationDbContextFactory<Program> factory,
+        IProjectsClient projectsClient,
+        IFixture fixture)
+    {
+        factory.TestClaims = [new Claim(ClaimTypes.Role, ApiRoles.ReadRole)];
+
+        // Arrange
+        var dbContext = factory.GetDbContext<CompleteContext>();
+        var testUser = await dbContext.Users.FirstAsync();
+
+        var establishments = fixture.CreateMany<GiasEstablishment>(50).ToList();
+        await dbContext.GiasEstablishments.AddRangeAsync(establishments);
+        
+        var localAuthority = dbContext.LocalAuthorities.AsEnumerable().MinBy(_ => Guid.NewGuid());
+        Assert.NotNull(localAuthority);
+
+        var projects = establishments.Select(est =>
+        {
+            var project = fixture.Customize(new ProjectCustomization
+            {
+                RegionalDeliveryOfficerId = testUser.Id,
+                CaseworkerId = testUser.Id,
+                AssignedToId = testUser.Id,
+                LocalAuthorityId = localAuthority.Id,
+            }).Create<Project>();
+            project.Urn = est.Urn ?? project.Urn;
+            project.AcademyUrn = est.Urn;
+            project.Type = ProjectType.Conversion;
+            project.State = ProjectState.Active;
+            return project;
+        }).ToList();
+
+        await dbContext.Projects.AddRangeAsync(projects);
+        await dbContext.SaveChangesAsync();
+
+        // Act
+        var results = await projectsClient.ListAllProjectsConvertingAsync(true, 0, 50);
+
+        // Assert
+        Assert.NotNull(results);
+        Assert.Equal(50, results.Count);
+
+        foreach (var result in results)
+        {
+            var matchingProject = projects.FirstOrDefault(p => p.Id.Value == result.ProjectId?.Value);
+            var matchingEstablishment = establishments.FirstOrDefault(e => e.Urn?.Value == result.AcademyUrn);
+
+            Assert.NotNull(result.ProjectId);
+            Assert.Equal(matchingProject?.Id.Value, result.ProjectId.Value);
+
+            Assert.NotNull(result.AcademyUrn);
+            Assert.Equal(matchingProject?.AcademyUrn?.Value, result.AcademyUrn.Value);
+
+            Assert.NotNull(result.AcademyName);
+            Assert.Equal(matchingEstablishment?.Name, result.AcademyName);
+        }
+    }
+
+    
 }

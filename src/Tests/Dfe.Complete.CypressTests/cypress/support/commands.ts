@@ -168,3 +168,9 @@ Cypress.Commands.add("shouldHaveText", { prevSubject: true }, (subject, expected
             return subject;
         });
 });
+
+Cypress.Commands.add("revisitCurrentUrl", () => {
+    cy.url().then((url: string) => {
+        cy.visit(url);
+    });
+});
