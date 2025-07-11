@@ -12,7 +12,7 @@ export class AboutTheProjectPage extends ProjectDetailsPage {
         "Incoming trust details": "incomingTrustDetails",
         "Outgoing trust details": "outgoingTrustDetails",
     };
-    private readonly sectionId = "projectInformationList";
+    protected readonly sectionId = "projectInformationList";
 
     inOrder() {
         cy.wrap(this.sectionId).as("sectionId");

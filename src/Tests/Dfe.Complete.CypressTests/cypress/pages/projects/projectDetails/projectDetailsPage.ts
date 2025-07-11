@@ -2,10 +2,12 @@ import BasePage from "cypress/pages/basePage";
 import { significateDateToDisplayDate } from "cypress/support/formatDate";
 
 export class ProjectDetailsPage extends BasePage {
+    protected readonly sectionId: string = "main-content";
     private readonly captionClass = "govuk-caption-l";
     private readonly navBarClass = "moj-sub-navigation";
 
     inOrder() {
+        cy.wrap(this.sectionId).as("sectionId");
         cy.wrap(-1).as("summaryCounter");
         return this;
     }
@@ -109,6 +111,18 @@ export class ProjectDetailsPage extends BasePage {
 
     hasValue(value: string | number): this {
         this.hasValueWithLink(value);
+        return this;
+    }
+
+    containsValue(value: string | number): this {
+        cy.get("@summaryCounter").then((counter) => {
+            cy.get("@sectionId").then((id) => {
+                cy.getById(id.toString())
+                    .find(".govuk-summary-list__value")
+                    .eq(Number(counter))
+                    .should("contain.text", value);
+            });
+        });
         return this;
     }
 
