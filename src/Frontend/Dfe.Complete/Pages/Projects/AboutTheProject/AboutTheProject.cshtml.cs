@@ -57,9 +57,9 @@ namespace Dfe.Complete.Pages.Projects.AboutTheProject
             }
         }
 
-        public override async Task<IActionResult> OnGet()
+        public override async Task<IActionResult> OnGetAsync()
         {
-            await base.OnGet();
+            await base.OnGetAsync();
 
             await SetAcademyAsync();
 
