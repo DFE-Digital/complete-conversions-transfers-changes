@@ -1,0 +1,39 @@
+﻿@using Dfe.Complete.Constants
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model Dfe.Complete.Pages.Projects.ServiceSupport.ConversionURNs.CreateAcademyUrnModel
+
+<h1 class="govuk-heading-l">Are these details correct?</h1>
+
+<p>GIAS (Get Information about Schools) has the following information for URN @Model.URN:</p>
+
+<form method="post" asp-page-handler="Save">
+    <input type="hidden" name="URN" value="@Model.URN" />
+
+    <dl class="govuk-summary-list">
+        <div class="govuk-summary-list__row govuk-summary-list__row--no-actions">
+            <dt class="govuk-summary-list__key">Academy name</dt>
+            <dd class="govuk-summary-list__value">@Model.SelectedAcademy.Name</dd>
+        </div>
+        <div class="govuk-summary-list__row govuk-summary-list__row--no-actions">
+            <dt class="govuk-summary-list__key">Academy address</dt>
+            <dd class="govuk-summary-list__value">
+                <address class="govuk-address">
+                    @Html.Raw(Model.ToDisplayAddress(Model.SelectedAcademy.Address))
+                </address>
+            </dd>
+        </div>
+        <div class="govuk-summary-list__row govuk-summary-list__row--no-actions">
+            <dt class="govuk-summary-list__key">Local authority</dt>
+            <dd class="govuk-summary-list__value">@Model.SelectedAcademy.LocalAuthorityName</dd>
+        </div>
+        <div class="govuk-summary-list__row govuk-summary-list__row--no-actions">
+            <dt class="govuk-summary-list__key">School phase</dt>
+            <dd class="govuk-summary-list__value">@Model.SelectedAcademy.PhaseOfEducation.Name</dd>
+        </div>
+    </dl>
+
+    <div class="govuk-button-group">
+        <button type="submit" class="govuk-button" data-module="govuk-button" data-prevent-double-click="true">Yes, save and return</button>
+        <a class="govuk-link" href="@RouteConstants.ServiceSupportProjectsWithoutAcademyUrn">Cancel</a>
+    </div>
+</form>

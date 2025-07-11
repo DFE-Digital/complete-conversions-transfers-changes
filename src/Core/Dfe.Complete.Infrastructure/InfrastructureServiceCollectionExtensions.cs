@@ -40,6 +40,7 @@ namespace Dfe.Complete.Infrastructure
             services.AddScoped<IProjectReadRepository, ProjectReadRepository>();
             services.AddScoped<INoteReadRepository, NoteReadRepository>();
             services.AddScoped<IReadUserRepository,ReadUserRepository>();
+            services.AddScoped<ILocalAuthoritiesQueryService, LocalAuthoritiesQueryService>();
 
             // Authentication
             //services.AddCustomAuthorization(config);

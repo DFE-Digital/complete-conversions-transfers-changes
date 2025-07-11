@@ -14,4 +14,5 @@ public static class UserPolicyConstants
     public const string CanAddNotes = "CanAddNotes";
     public const string HasGlobalNavigation = "HasGlobalNavigation";
     public const string CanEditAddedByUser = "CanEditAddedByUser";
+    public const string ManageLocalAuthorities = "ManageLocalAuthorities";
 }
