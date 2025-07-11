@@ -61,6 +61,16 @@
         public const string Groups = "/groups";
 
         // Service support
+        public const string ServiceSupportProjectsWithoutAcademyUrn = "/projects/service-support/without-academy-urn";
+        public const string ServiceSupportProjectsWithAcademyUrn = "/projects/service-support/with-academy-urn";
+        public const string ServiceSupportAssignAcademyUrn = "/projects/{0}/academy-urn";
         public const string ServiceSupportProjects = "/projects/service-support/without-academy-urn";
+
+        //Local authorities
+        public const string ListLocalAuthorities = "/service-support/local-authorities";
+        public const string LocalAuthorityDetails = "/service-support/local-authorities/{0}";
+        public const string CreateNewLocalAuthority = "/service-support/local-authorities/new";
+        public const string EditLocalAuthorityDetails = "/service-support/local-authorities/{0}/edit";
+        public const string DeleteLocalAuthorityDetails = "/service-support/local-authorities/{0}/delete";
     }
 }
