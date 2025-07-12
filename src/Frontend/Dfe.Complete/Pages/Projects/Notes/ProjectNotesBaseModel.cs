@@ -35,10 +35,13 @@ public class ProjectNotesBaseModel(ISender sender, string notesNavigation) : Pro
 
     public string GetReturnUrl(string? taskIdentifier = null)
     {
-        NoteTaskIdentifier? noteTaskIdentifier = EnumExtensions.FromDescriptionValue<NoteTaskIdentifier>(taskIdentifier);
-        if (noteTaskIdentifier == null)
-            return string.Format(RouteConstants.ProjectViewNotes, ProjectId);
+        if (taskIdentifier != null)
+        {
+            NoteTaskIdentifier? noteTaskIdentifier = EnumExtensions.FromDescriptionValue<NoteTaskIdentifier>(taskIdentifier);
+            if (noteTaskIdentifier != null)
+                return string.Format(RouteConstants.ProjectTask, ProjectId, noteTaskIdentifier);
+        }
 
-        return string.Format(RouteConstants.ProjectTask, ProjectId, noteTaskIdentifier);
+        return string.Format(RouteConstants.ProjectViewNotes, ProjectId);
     }
 }

@@ -61,7 +61,10 @@ public class AddProjectNoteModel(ISender sender, ErrorService errorService) : Pr
             return Page();
         }
 
-        NoteTaskIdentifier? noteTaskIdentifier = EnumExtensions.FromDescriptionValue<NoteTaskIdentifier>(TaskIdentifier);
+        NoteTaskIdentifier? noteTaskIdentifier = null;
+        if (TaskIdentifier != null)
+            noteTaskIdentifier = EnumExtensions.FromDescriptionValue<NoteTaskIdentifier>(TaskIdentifier);
+
         var newNoteQuery = new CreateNoteCommand(
             new ProjectId(Guid.Parse(ProjectId)),
             User.GetUserId(),
