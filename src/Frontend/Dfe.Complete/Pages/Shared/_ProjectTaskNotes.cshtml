@@ -3,7 +3,7 @@
 @using Dfe.Complete.Domain.Enums;
 @using Dfe.Complete.Domain.Constants;
 
-@model Dfe.Complete.Pages.Projects.TaskList.Tasks.ProjectTaskBaseModel
+@model Dfe.Complete.Pages.Projects.TaskList.Tasks.BaseProjectTaskModel
 @{
     var addNoteLink = string.Format(RouteConstants.ProjectAddNote, Model.ProjectId);
     var userId = User.GetUserId();
@@ -11,8 +11,17 @@
 
 <aside>
     <h2 class="govuk-heading-m">Task notes</h2>
-    <p>@Model.Notes.Count
-    </p>
+    <form method="post" asp-page-handler="AddNote" class="govuk-!-margin-bottom-3">
+        <input type="hidden" name="ProjectId" value="@Model.ProjectId" />
+        <input type="hidden" name="TaskIdentifier" value="@Model.TaskIdentifier" />
+        <button 
+            type="submit" 
+            class="govuk-button govuk-button--secondary govuk-!-margin-bottom-3" 
+            data-module="govuk-button"
+        >
+            Add a new task note
+        </button>
+    </form>
     <ul class="list-style-none">
     @for(var iNote = 0; iNote < Model.Notes.Count; iNote++)
     {
@@ -30,7 +39,7 @@
                 @if (Model.CanEditNote(note.UserId))
                 {
                     <p class="govuk-body govuk-!-font-size-16">
-                        <a class="govuk-link" href="@editNoteLink">Edit</a>
+                        <a class="govuk-link" href="@editNoteLink">Edit note</a>
                     </p>
                 }
             </li>

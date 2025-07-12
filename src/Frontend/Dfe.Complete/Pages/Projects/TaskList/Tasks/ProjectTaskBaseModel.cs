@@ -1,4 +1,3 @@
-using System.ComponentModel.DataAnnotations;
 using Dfe.Complete.Constants;
 using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Models;
@@ -14,13 +13,10 @@ using Dfe.Complete.Extensions;
 using Microsoft.AspNetCore.Authorization;
 namespace Dfe.Complete.Pages.Projects.TaskList.Tasks;
 
-public class ProjectTaskBaseModel(ISender sender, IAuthorizationService _authorizationService) : BaseProjectPageModel(sender)
+public class BaseProjectTaskModel(ISender sender, IAuthorizationService _authorizationService) : BaseProjectPageModel(sender)
 {
-    [BindProperty(SupportsGet = true, Name = "task_identifier")]
-    [Required]
-    public required string TaskIdentifier { get; set; }
-
     protected ISender Sender { get; } = sender;
+    public required string TaskIdentifier { get; set; }
     public IReadOnlyList<NoteDto> Notes { get; private set; } = [];
 
     public bool CanAddNotes => Project.State != ProjectState.Deleted && Project.State != ProjectState.Completed && Project.State != ProjectState.DaoRevoked;
@@ -54,11 +50,6 @@ public class ProjectTaskBaseModel(ISender sender, IAuthorizationService _authori
         return Page();
     }
 
-    public virtual IActionResult OnPost()
-    {
-        return Redirect(string.Format(RouteConstants.ProjectTask, ProjectId, TaskIdentifier));
-    }
-
     public async Task<IActionResult> OnPostAddNoteAsync()
     {
         var baseResult = await base.OnGetAsync();
@@ -84,3 +75,4 @@ public class ProjectTaskBaseModel(ISender sender, IAuthorizationService _authori
         return Redirect(string.Format(RouteConstants.ProjectAddNote, ProjectId));
     }
 }
+// TODO we need to retain the previously visited page for cancelling

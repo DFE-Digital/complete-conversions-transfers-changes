@@ -37,6 +37,7 @@
 
         public const string ProjectViewNotes = Project + "/notes";
         public const string ProjectAddNote = ProjectViewNotes + "/new";
+        public const string ProjectAddTaskNote = ProjectViewNotes + "/new?task_identifier={1}";
         public const string ProjectEditNote = ProjectViewNotes + "/{1}/edit";
 
         public const string ProjectInternalContacts = Project + "/internal-contacts";
