@@ -2,6 +2,7 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using Dfe.Complete.Application.Notes.Commands;
 using Dfe.Complete.Constants;
+using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Domain.ValueObjects;
 using Dfe.Complete.Extensions;
 using Dfe.Complete.Models;
@@ -21,6 +22,8 @@ public class EditProjectNoteModel(ISender sender, ErrorService errorService) : P
     [Required]
     [DisplayName("note")]
     public required string NoteText { get; set; }
+
+    public string? TaskIdentifier { get; set; }
 
     public async override Task<IActionResult> OnGetAsync()
     {
@@ -42,6 +45,8 @@ public class EditProjectNoteModel(ISender sender, ErrorService errorService) : P
         }
 
         NoteText = note.Body;
+        TaskIdentifier = note.TaskIdentifier;
+
         return Page();
     }
 

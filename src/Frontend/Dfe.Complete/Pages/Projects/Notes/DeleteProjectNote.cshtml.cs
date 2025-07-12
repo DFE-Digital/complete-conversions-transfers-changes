@@ -14,6 +14,9 @@ public class DeleteProjectNoteModel(ISender sender) : ProjectNotesBaseModel(send
     [BindProperty(SupportsGet = true, Name = "noteId")]
     public required Guid NoteId { get; set; }
 
+    [BindProperty]
+    public string? TaskIdentifier { get; set; }
+
     public async override Task<IActionResult> OnGetAsync()
     {
         var baseResult = await base.OnGetAsync();
@@ -33,6 +36,8 @@ public class DeleteProjectNoteModel(ISender sender) : ProjectNotesBaseModel(send
             return Redirect(string.Format(RouteConstants.ProjectViewNotes, ProjectId));
         }
 
+        TaskIdentifier = note.TaskIdentifier;
+
         return Page();
     }
     public async Task<IActionResult> OnPostAsync()
@@ -48,6 +53,6 @@ public class DeleteProjectNoteModel(ISender sender) : ProjectNotesBaseModel(send
             "Your note has been deleted"
         );
 
-        return Redirect(string.Format(RouteConstants.ProjectViewNotes, ProjectId));
+        return Redirect(GetReturnUrl(TaskIdentifier));
     }
 }

@@ -45,3 +45,6 @@ public class ProjectNotesBaseModel(ISender sender, string notesNavigation) : Pro
         return string.Format(RouteConstants.ProjectViewNotes, ProjectId);
     }
 }
+
+// TODO delete - use hidden field in OnGet. OnPost can use the bind property
+// I need to get isnotable on the dto anyway
