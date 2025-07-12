@@ -13,10 +13,10 @@ using Dfe.Complete.Extensions;
 using Microsoft.AspNetCore.Authorization;
 namespace Dfe.Complete.Pages.Projects.TaskList.Tasks;
 
-public class BaseProjectTaskModel(ISender sender, IAuthorizationService _authorizationService, string taskIdentifier) : BaseProjectPageModel(sender)
+public class BaseProjectTaskModel(ISender sender, IAuthorizationService _authorizationService, NoteTaskIdentifier taskIdentifier) : BaseProjectPageModel(sender)
 {
     protected ISender Sender { get; } = sender;
-    public required string TaskIdentifier { get; set; } = taskIdentifier;
+    public required NoteTaskIdentifier TaskIdentifier { get; set; } = taskIdentifier;
     public IReadOnlyList<NoteDto> Notes { get; private set; } = [];
 
     public bool CanAddNotes => Project.State != ProjectState.Deleted && Project.State != ProjectState.Completed && Project.State != ProjectState.DaoRevoked;
@@ -30,18 +30,10 @@ public class BaseProjectTaskModel(ISender sender, IAuthorizationService _authori
 
     public override async Task<IActionResult> OnGetAsync()
     {
-        NoteTaskIdentifier? validTaskIdentifier = null;
-        if (TaskIdentifier != null)
-        {
-            validTaskIdentifier = EnumExtensions.FromDescriptionValue<NoteTaskIdentifier>(TaskIdentifier);
-            if (validTaskIdentifier == null)
-                return NotFound();
-        }
-
         var baseResult = await base.OnGetAsync();
         if (baseResult is not PageResult) return baseResult;
 
-        var notesResult = await Sender.Send(new GetTaskNotesByProjectIdQuery(new ProjectId(Guid.Parse(ProjectId)), (NoteTaskIdentifier)validTaskIdentifier!));
+        var notesResult = await Sender.Send(new GetTaskNotesByProjectIdQuery(new ProjectId(Guid.Parse(ProjectId)), TaskIdentifier));
         if (!notesResult.IsSuccess)
             throw new ApplicationException($"Could not load notes for project {ProjectId}");
 

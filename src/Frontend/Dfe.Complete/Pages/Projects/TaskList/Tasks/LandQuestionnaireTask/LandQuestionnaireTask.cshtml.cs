@@ -1,10 +1,11 @@
+using Dfe.Complete.Domain.Enums;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.LandQuestionnaireTask
 {
-    public class LandQuestionnaireTaskModel(ISender sender, IAuthorizationService authorizationService) : BaseProjectTaskModel(sender, authorizationService,"")
+    public class LandQuestionnaireTaskModel(ISender sender, IAuthorizationService authorizationService) : BaseProjectTaskModel(sender, authorizationService, NoteTaskIdentifier.Handover)
     {
         [BindProperty(Name = "cleared")]
         public bool? Cleared { get; set; }

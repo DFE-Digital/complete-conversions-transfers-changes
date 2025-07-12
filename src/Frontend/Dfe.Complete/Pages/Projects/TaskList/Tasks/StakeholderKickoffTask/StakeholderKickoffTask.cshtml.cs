@@ -1,10 +1,11 @@
+using Dfe.Complete.Domain.Enums;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.StakeholderKickoffTask
 {
-    public class StakeholderKickoffTaskModel(ISender sender, IAuthorizationService authorizationService) : BaseProjectTaskModel(sender, authorizationService,"")
+    public class StakeholderKickoffTaskModel(ISender sender, IAuthorizationService authorizationService) : BaseProjectTaskModel(sender, authorizationService, NoteTaskIdentifier.ArticlesOfAssociation)
     {
         [BindProperty(Name = "send-intro-emails")]
         public bool? SendIntroEmails { get; set; }
