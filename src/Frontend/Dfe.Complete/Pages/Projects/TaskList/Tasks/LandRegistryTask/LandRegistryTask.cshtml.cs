@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.LandRegistryTask
 {
-    public class LandRegistryTaskModel(ISender sender, IAuthorizationService authorizationService) : BaseProjectTaskModel(sender, authorizationService)
+    public class LandRegistryTaskModel(ISender sender, IAuthorizationService authorizationService) : BaseProjectTaskModel(sender, authorizationService,"")
     {
         [BindProperty(Name = "cleared")]
         public bool? Cleared { get; set; }

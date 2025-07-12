@@ -13,10 +13,10 @@ using Dfe.Complete.Extensions;
 using Microsoft.AspNetCore.Authorization;
 namespace Dfe.Complete.Pages.Projects.TaskList.Tasks;
 
-public class BaseProjectTaskModel(ISender sender, IAuthorizationService _authorizationService) : BaseProjectPageModel(sender)
+public class BaseProjectTaskModel(ISender sender, IAuthorizationService _authorizationService, string taskIdentifier) : BaseProjectPageModel(sender)
 {
     protected ISender Sender { get; } = sender;
-    public required string TaskIdentifier { get; set; }
+    public required string TaskIdentifier { get; set; } = taskIdentifier;
     public IReadOnlyList<NoteDto> Notes { get; private set; } = [];
 
     public bool CanAddNotes => Project.State != ProjectState.Deleted && Project.State != ProjectState.Completed && Project.State != ProjectState.DaoRevoked;
@@ -72,7 +72,7 @@ public class BaseProjectTaskModel(ISender sender, IAuthorizationService _authori
             return RedirectToPage(new { projectId = ProjectId });
         }
 
-        return Redirect(string.Format(RouteConstants.ProjectAddNote, ProjectId));
+        return Redirect(string.Format(RouteConstants.ProjectAddTaskNote, ProjectId, TaskIdentifier));
     }
 }
 // TODO we need to retain the previously visited page for cancelling

@@ -4,7 +4,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.HandoverWithDeliveryOfficerTask;
 
-public class HandoverWithDeliveryOfficerTaskModel(ISender sender, IAuthorizationService authorizationService) : BaseProjectTaskModel(sender, authorizationService)
+// TODO convert yo NoteTaskIdentifier on parent
+public class HandoverWithDeliveryOfficerTaskModel(ISender sender, IAuthorizationService authorizationService) : BaseProjectTaskModel(sender, authorizationService, "handover")
 {
     [BindProperty(Name = "not-applicable")]
     public bool? NotApplicable { get; set; }
@@ -18,9 +19,9 @@ public class HandoverWithDeliveryOfficerTaskModel(ISender sender, IAuthorization
     [BindProperty(Name = "attend-handover-meeting")]
     public bool? AttendHandoverMeeting { get; set; }
 
-    public override async Task<IActionResult> OnGetAsync() {
-        TaskIdentifier = "handover";
+    public override async Task<IActionResult> OnGetAsync()
+    {
         await base.OnGetAsync();
         return Page();
     }
-}    
+}

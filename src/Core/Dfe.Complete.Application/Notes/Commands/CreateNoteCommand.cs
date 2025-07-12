@@ -26,7 +26,7 @@ public class CreateNoteCommandHandler(
                 ProjectId = request.ProjectId,
                 UserId = request.UserId,
                 Body = request.Body,
-                TaskIdentifier = request.TaskIdentifier.ToDescription(),
+                TaskIdentifier = request.TaskIdentifier?.ToDescription(),
                 CreatedAt = DateTime.UtcNow,
                 UpdatedAt = DateTime.UtcNow
             };
