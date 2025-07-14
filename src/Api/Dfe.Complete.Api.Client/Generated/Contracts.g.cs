@@ -2366,6 +2366,9 @@ namespace Dfe.Complete.Client.Contracts
         [Newtonsoft.Json.JsonProperty("taskIdentifier", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string? TaskIdentifier { get; set; } = default!;
 
+        [Newtonsoft.Json.JsonProperty("isNotable", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? IsNotable { get; set; } = default!;
+
         public string ToJson()
         {
 

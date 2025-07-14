@@ -3734,6 +3734,10 @@
           "taskIdentifier": {
             "type": "string",
             "nullable": true
+          },
+          "isNotable": {
+            "type": "boolean",
+            "nullable": true
           }
         }
       },

@@ -34,7 +34,26 @@ Security in case of vulnerabilities.
 
 ### Fixed
 
-See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-07-10.519...main) for everything awaiting release
+See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-07-14.525...main) for everything awaiting release
+
+---
+
+## [1.9.0](https://github.com/DFE-Digital/complete-conversions-transfers-changes/releases/tag/production-2025-07-14.525) - 2025-07-14
+
+### Added  
+- Add notes repository, along with create, read, update and delete queries/commands
+- Add project notes page (`/projects/{projectId}/notes`)
+- Add project notes editing page (`/projects/{projectId}/notes/{noteId}/edit`)
+- Add project notes creation page (`/projects/{projectId}/notes/new`)
+- Add ability to delete note (`/projects/{projectId}/notes/{noteId}/delete`)
+- Attach user ID from DB as custom claim
+
+### Changed  
+
+### Fixed
+
+See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-07-10.519...production-2025-07-14.525) for everything in the release
+
 ---
 
 ## [1.8.0](https://github.com/DFE-Digital/complete-conversions-transfers-changes/releases/tag/production-2025-07-10.519) - 2025-07-10

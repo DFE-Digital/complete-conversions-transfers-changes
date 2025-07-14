@@ -2,7 +2,6 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using Dfe.Complete.Application.Notes.Commands;
 using Dfe.Complete.Constants;
-using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Domain.ValueObjects;
 using Dfe.Complete.Extensions;
 using Dfe.Complete.Models;
