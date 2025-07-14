@@ -6,6 +6,7 @@ import { currentMonthLong, currentMonthShort } from "cypress/constants/stringTes
 import { Logger } from "cypress/common/logger";
 import internalContactsPage from "cypress/pages/projects/projectDetails/internalContactsPage";
 import { TestUser } from "cypress/constants/TestUser";
+import notePage from "cypress/pages/projects/projectDetails/notePage";
 
 export function shouldNotHaveAccessToViewHandedOverProjects() {
     cy.visit("/projects/all/in-progress/all");
@@ -48,6 +49,12 @@ export function shouldNotBeAbleToCreateAProject() {
     cy.visit("/projects/transfers/new").notAuthorisedToPerformAction();
     cy.visit("/projects/conversions/new_mat").notAuthorisedToPerformAction();
     cy.visit("/projects/transfers/new_mat").notAuthorisedToPerformAction();
+}
+
+export function shouldNotBeAbleToAddAProjectNote(projectId: string) {
+    cy.visit(`/projects/${projectId}/notes`);
+    notePage.clickButton("Add note").notAuthorisedToPerformThisActionBanner();
+    cy.visit(`/projects/${projectId}/notes/new`).notAuthorisedToPerformAction();
 }
 
 export function shouldNotHaveAccessToViewAndEditUsers() {

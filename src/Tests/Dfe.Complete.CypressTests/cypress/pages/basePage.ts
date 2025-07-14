@@ -38,6 +38,11 @@ class BasePage {
         return this;
     }
 
+    notAuthorisedToPerformThisActionBanner() {
+        this.containsImportantBannerWithMessage("You are not authorised to perform this action.");
+        return this;
+    }
+
     clickLink(linkText: string) {
         cy.getByClass("govuk-link").contains(linkText).click();
         return this;
@@ -107,13 +112,15 @@ class BasePage {
     }
 
     private containsBannerWithMessage(bannerType: string, title: string, message?: string) {
-        cy.getByClass(this.bannerClass).within(() => {
-            cy.get("h2").should("contain.text", bannerType);
-            cy.get("h3").shouldHaveText(title);
-            if (message) {
-                cy.get("p").shouldHaveText(message);
-            }
-        });
+        cy.getByClass(this.bannerClass)
+            .first()
+            .within(() => {
+                cy.get("h2").should("contain.text", bannerType);
+                cy.get("h3").shouldHaveText(title);
+                if (message) {
+                    cy.get("p").shouldHaveText(message);
+                }
+            });
         return this;
     }
 }
