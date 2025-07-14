@@ -24,7 +24,8 @@ Security in case of vulnerabilities.
 
 ### Added
 
-### Changed  
+### Changed 
+- Reduce log level from error to warning when project routes receive bad GUID or project not found 
 
 ### Fixed
 

@@ -8,7 +8,7 @@ using MediatR;
 
 namespace Dfe.Complete.Pages.Projects.Notes;
 
-public class ProjectNotesBaseModel(ISender sender, string notesNavigation) : ProjectLayoutModel(sender, notesNavigation)
+public class ProjectNotesBaseModel(ISender sender, ILogger _logger, string notesNavigation) : ProjectLayoutModel(sender, _logger, notesNavigation)
 {
     public async Task<NoteDto?> GetNoteById(Guid noteId)
     {
