@@ -28,7 +28,7 @@ namespace Dfe.Complete.Pages.Projects.ServiceSupport.ConversionURNs
 
         public async Task<IActionResult> OnPost(CancellationToken cancellationToken)
         {
-            await OnGet();
+            await OnGetAsync();
 
             if (!ModelState.IsValid)
             {
@@ -44,7 +44,7 @@ namespace Dfe.Complete.Pages.Projects.ServiceSupport.ConversionURNs
         
         public async Task<IActionResult> OnPostSave(CancellationToken cancellationToken)
         {
-            await OnGet();
+            await OnGetAsync();
 
             if (!ModelState.IsValid)
             {

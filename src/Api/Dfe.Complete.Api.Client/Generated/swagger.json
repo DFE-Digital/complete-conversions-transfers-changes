@@ -1241,6 +1241,151 @@
         }
       }
     },
+    "/v1/Projects/Notes": {
+      "get": {
+        "tags": [
+          "Projects"
+        ],
+        "summary": "Returns a list of Notes for a Project",
+        "operationId": "Projects_GetNotesByProjectId",
+        "parameters": [
+          {
+            "name": "ProjectId.Value",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "guid"
+            },
+            "x-position": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Notes for project",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/NoteDto"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Project not found"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Projects"
+        ],
+        "summary": "Create a new Note for a Project",
+        "operationId": "Projects_CreateProjectNote",
+        "requestBody": {
+          "x-name": "request",
+          "description": "The request.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateNoteCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "201": {
+            "description": "Note ID",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NoteId"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Note not found"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Projects"
+        ],
+        "summary": "Update a Note for a Project",
+        "operationId": "Projects_UpdateProjectNote",
+        "requestBody": {
+          "x-name": "request",
+          "description": "The request.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateNoteCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "200": {
+            "description": "Note ID",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NoteId"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized access"
+          },
+          "404": {
+            "description": "Note not found"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Projects"
+        ],
+        "summary": "Delete a Note for a Project",
+        "operationId": "Projects_DeleteProjectNote",
+        "requestBody": {
+          "x-name": "request",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RemoveNoteCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "boolean"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Project not found\nor\nNote not found"
+          }
+        }
+      }
+    },
     "/v1/Projects/List/All/Statistics": {
       "get": {
         "tags": [
@@ -3560,6 +3705,67 @@
                 "$ref": "#/components/schemas/GiasEstablishment"
               }
             ]
+          }
+        }
+      },
+      "NoteDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "$ref": "#/components/schemas/NoteId"
+          },
+          "body": {
+            "type": "string"
+          },
+          "projectId": {
+            "$ref": "#/components/schemas/ProjectId"
+          },
+          "userId": {
+            "$ref": "#/components/schemas/UserId"
+          },
+          "userFullName": {
+            "type": "string"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "CreateNoteCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "projectId": {
+            "$ref": "#/components/schemas/ProjectId"
+          },
+          "userId": {
+            "$ref": "#/components/schemas/UserId"
+          },
+          "body": {
+            "type": "string"
+          }
+        }
+      },
+      "UpdateNoteCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "noteId": {
+            "$ref": "#/components/schemas/NoteId"
+          },
+          "body": {
+            "type": "string"
+          }
+        }
+      },
+      "RemoveNoteCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "noteId": {
+            "$ref": "#/components/schemas/NoteId"
           }
         }
       },

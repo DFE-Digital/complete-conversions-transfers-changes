@@ -21,9 +21,9 @@ public class EditAssignedUser(ISender sender, ErrorService errorService, ILogger
 
     public UserDto AssignedUser { get; set; } = default!;
 
-    public override async Task<IActionResult> OnGet()
+    public override async Task<IActionResult> OnGetAsync()
     {
-        await base.OnGet();
+        await base.OnGetAsync();
         if (Project.AssignedToId is null) return Page();
 
         var assignedToUserQuery = new GetUserByIdQuery(Project.AssignedToId);
@@ -49,7 +49,7 @@ public class EditAssignedUser(ISender sender, ErrorService errorService, ILogger
         if (!ModelState.IsValid)
         {
             errorService.AddErrors(ModelState);
-            return await OnGet();
+            return await OnGetAsync();
         }
 
         var assignedToUserQuery = new GetUserByEmailQuery(Email);
@@ -72,18 +72,18 @@ public class EditAssignedUser(ISender sender, ErrorService errorService, ILogger
 
                 errorService.AddErrors(ModelState);
 
-                return await OnGet();
+                return await OnGetAsync();
             }
             catch (Exception ex)
             {
                 logger.LogInformation(ex, "Error occurred while updating the assigned user.");
                 ModelState.AddModelError("", "An unexpected error occurred. Please try again later.");
-                return await OnGet();
+                return await OnGetAsync();
             }
         }
 
         logger.LogError("Email not found or not assignable - {Email}", assignedToUserQuery.Email);
         ModelState.AddModelError("Email", "Email is not assignable");
-        return await OnGet();
+        return await OnGetAsync();
     }
 }

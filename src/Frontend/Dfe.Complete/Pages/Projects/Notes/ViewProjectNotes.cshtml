@@ -1,42 +1,57 @@
 ﻿@page "/projects/{projectId}/notes"
 @using Dfe.Complete.Constants
+@using Dfe.Complete.Extensions;
+@using Dfe.Complete.Domain.Enums;
+@using Dfe.Complete.Domain.Constants;
 @model Dfe.Complete.Pages.Projects.Notes.ViewProjectNotesModel
 @{
     Layout = "_ProjectLayout";
     ViewData["Title"] = "Project notes";
 
     var addNoteLink = string.Format(RouteConstants.ProjectAddNote, Model.ProjectId);
+    var userId = User.GetUserId();
 }
 
-<govuk-project-tabs project-id="@Model.Project.Id" project-type="" />
+<govuk-project-tabs project-id="@Model.ProjectId" project-type="" />
 
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
         <h2 class="govuk-heading-l">Notes</h2>
 
+        @if (Model.Notes.Count == 0)
+        {
+            <div class="govuk-inset-text">There are not any notes for this project yet.</div>
+        }
+
         <div class="govuk-!-margin-bottom-5">
-            <a data-module="govuk-button" draggable="false" role="button" class="govuk-button" href="@addNoteLink">Add note</a>
+            <form method="post" asp-page-handler="AddNote">
+                <button data-module="govuk-button" class="govuk-button" type="submit">
+                    Add note
+                </button>
+            </form>
         </div>
-        @* *@
-        @* @if (notesList.Count == 0) *@
-        @* { *@
-        @*     <div class="govuk-inset-text">There are not any notes for this project yet.</div> *@
-        @* } *@
-        @* *@
-        @* @foreach (var note in notesList) *@
-        @* { *@
-        @*     var editNoteLink = string.Format(RouteConstants.ProjectEditNote, Model.ProjectId, note.Id); *@
-        @* *@
-        @*     <div id="note-entry-@note.Id"> *@
-        @*         <span class="govuk-caption-m">@note.DateCreated.ToDateString()</span> *@
-        @*         <h3 class="govuk-heading-m">@note.CreatedBy</h3> *@
-        @*         <p class="govuk-body-m">@note.Text</p> *@
-        @*         <p class="govuk-body govuk-!-font-size-16"> *@
-        @*             <a class="govuk-link" href="@editNoteLink">Edit</a> *@
-        @*         </p> *@
-        @*         <hr class="govuk-section-break govuk-section-break--xl govuk-section-break--visible"> *@
-        @*     </div> *@
-        @* } *@
+
+        @for (var iNote = 0; iNote < Model.Notes.Count; iNote++)
+        {
+            var note = Model.Notes[iNote];
+            var editNoteLink = string.Format(RouteConstants.ProjectEditNote, Model.ProjectId, note.Id.Value);
+
+            @if (iNote > 0)
+            {
+                <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible" />
+            }
+            <div id="note-entry-@note.Id">
+                <span class="govuk-caption-m">@note.CreatedAt.ToDateString()</span>
+                <h3 class="govuk-heading-m">@note.UserFullName</h3>
+                <p class="govuk-body-m">@note.Body</p>
+                @if (Model.CanEditNote(note.UserId))
+                {
+                    <p class="govuk-body govuk-!-font-size-16">
+                        <a class="govuk-link" href="@editNoteLink">Edit</a>
+                    </p>
+                }
+            </div>
+        }
 
     </div>
 </div>
