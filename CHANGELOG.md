@@ -25,6 +25,7 @@ Security in case of vulnerabilities.
 ### Added
 
 ### Changed  
+- Add a redirect from projects/{id} to projects/{id}/tasks
 
 ### Fixed
 
