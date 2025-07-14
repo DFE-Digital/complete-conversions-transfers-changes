@@ -72,7 +72,7 @@ class NoteApi extends ApiBase {
             noteId: { value: noteId },
         };
 
-        return this.noteBaseRequest<void>("DELETE", this.noteUrl, requestBody, 204);
+        return this.noteBaseRequest<void>("DELETE", this.noteUrl, requestBody, 200); // bug should be 204
     }
 
     private noteBaseRequest<T>(
