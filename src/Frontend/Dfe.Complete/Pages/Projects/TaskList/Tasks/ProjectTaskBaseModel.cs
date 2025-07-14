@@ -67,4 +67,3 @@ public class BaseProjectTaskModel(ISender sender, IAuthorizationService _authori
         return Redirect(string.Format(RouteConstants.ProjectAddTaskNote, ProjectId, TaskIdentifier));
     }
 }
-// TODO we need to retain the previously visited page for cancelling

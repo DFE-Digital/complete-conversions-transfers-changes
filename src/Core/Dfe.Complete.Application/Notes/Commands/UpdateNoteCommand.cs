@@ -36,7 +36,8 @@ public class UpdateNoteCommandHandler(
                 note.UserId,
                 note.User.FullName,
                 note.CreatedAt,
-                note.TaskIdentifier
+                note.TaskIdentifier,
+                note.NotableId != null && note.NotableType != null
             );
 
             return Result<NoteDto>.Success(noteDto);

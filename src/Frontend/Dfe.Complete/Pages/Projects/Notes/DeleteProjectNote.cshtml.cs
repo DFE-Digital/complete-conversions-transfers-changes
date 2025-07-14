@@ -26,7 +26,7 @@ public class DeleteProjectNoteModel(ISender sender) : ProjectNotesBaseModel(send
         if (note == null)
             return NotFound();
 
-        if (!CanEditNote(note.UserId))
+        if (!CanDeleteNote(note.UserId, note.IsNotable))
         {
             TempData.SetNotification(
                 NotificationType.Error,

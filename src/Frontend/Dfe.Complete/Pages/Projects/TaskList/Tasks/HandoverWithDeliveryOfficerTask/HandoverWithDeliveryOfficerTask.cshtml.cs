@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.HandoverWithDeliveryOfficerTask;
 
-// TODO convert yo NoteTaskIdentifier on parent
 public class HandoverWithDeliveryOfficerTaskModel(ISender sender, IAuthorizationService authorizationService) : BaseProjectTaskModel(sender, authorizationService, NoteTaskIdentifier.Handover)
 {
     [BindProperty(Name = "not-applicable")]
