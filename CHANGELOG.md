@@ -22,7 +22,24 @@ Security in case of vulnerabilities.
 
 ## Unreleased  
 
-### Added  
+### Added
+
+### Changed  
+
+### Fixed
+
+### Security
+
+See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-07-10.519...main) for everything awaiting release
+---
+
+## [1.8.0](https://github.com/DFE-Digital/complete-conversions-transfers-changes/releases/tag/production-2025-07-10.519) - 2025-07-10
+
+### Added
+- New route /projects/service-support/without-academy-urn
+- Service support Conversion URNs (/projects/service-support/without-academy-urn)
+- New route /projects/{projectId}/academy-urn
+- Service support Create Academy URN (/projects/{projectId}/academy-urn) 
 - Added `Statistics` page
 - Added `App Insight` for tracking users clicks and page views
 
@@ -30,7 +47,12 @@ Security in case of vulnerabilities.
 
 ### Fixed
 
-See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-06-27.463...main) for everything awaiting release
+- Throw exception if redis configs are not present and redis is enabled.
+
+### Security
+- Use only custom antiforgery for cookies due to requiring anonymous access
+
+See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-06-27.463...production-2025-07-10.519) for everything in the release
 
 ---
 
@@ -276,3 +298,6 @@ See the [full commit history](https://github.com/DFE-Digital/complete-conversion
  - Captures prior production releases retroactively, for syncing purposes.
 
 See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/082ba69cfa1b5b098d5dd5e2c804e8f5c58c2a00...development-2025-03-05.78) for everything in the release
+
+### Added
+ - New route (About the project page) `/projects/{urn or ukprn}/information`

@@ -54,6 +54,17 @@ export function shouldNotHaveAccessToViewAndEditUsers() {
     cy.visit("/service-support/users").notAuthorisedToPerformAction();
 }
 
+export function shouldNotHaveAccessToViewLocalAuthorities() {
+    cy.visit("/service-support/local-authorities").notAuthorisedToPerformAction();
+    cy.visit("/service-support/local-authorities/new").notAuthorisedToPerformAction();
+}
+
+export function shouldNotHaveAccessToViewConversionURNsPage(projectId: string) {
+    cy.visit("/projects/service-support/without-academy-urn").notAuthorisedToPerformAction();
+    cy.visit("/projects/service-support/with-academy-urn").notAuthorisedToPerformAction();
+    cy.visit(`/projects/${projectId}/academy-urn`).notAuthorisedToPerformAction();
+}
+
 export function shouldBeAbleToViewMultipleMonthsOfProjects() {
     cy.visit("/projects/all/in-progress/all");
     allProjects.filterProjects("By month").containsHeading(`${currentMonthLong} to ${currentMonthLong}`);
