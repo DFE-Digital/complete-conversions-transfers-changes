@@ -64,7 +64,10 @@ namespace Dfe.Complete.Logging.Middleware
         private async Task HandleUnauthorizedResponseAsync(HttpContext context)
         {
             logger.LogWarning("Unauthorized access attempt detected.");
+
+            if (context.Response.HasStarted) return;
             context.Response.ContentType = ContentTypeJson;
+
             var errorResponse = new ErrorResponse
             {
                 StatusCode = context.Response.StatusCode,

@@ -19,5 +19,6 @@ public record ProjectFilters(
     string? NewTrustReferenceNumber = "",
     string? IncomingTrustUkprn = null,
     DateRangeFilter? SignificantDateRange = null,
-    List<ProjectState>? ProjectStatuses = null
+    List<ProjectState>? ProjectStatuses = null,
+    bool? WithAcademyUrn = null
 );

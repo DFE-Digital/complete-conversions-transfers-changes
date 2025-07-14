@@ -188,6 +188,28 @@ namespace Dfe.Complete.Infrastructure.Repositories
             await this.DbContext.SaveChangesAsync(cancellationToken);
             return entity;
         }
+        /// <summary>
+        /// Checks if an entity exists in the database based on a given predicate.
+        /// </summary>
+        /// <param name="predicate">A function to test an entity for a condition.</param>
+        /// <returns>True if the entity exists, otherwise false.</returns>
+        public virtual bool Exists(Expression<Func<TAggregate, bool>> predicate)
+        {
+            return this.DbSet().Any(predicate);
+        }
+
+        /// <summary>
+        /// Asynchronously checks if an entity exists in the database based on a given predicate.
+        /// </summary>
+        /// <param name="predicate">A function to test an entity for a condition.</param>
+        /// <param name="cancellationToken">A cancellation token.</param>
+        /// <returns>True if the entity exists, otherwise false.</returns>
+        public virtual async Task<bool> ExistsAsync(
+            Expression<Func<TAggregate, bool>> predicate,
+            CancellationToken cancellationToken = default)
+        {
+            return await this.DbSet().AnyAsync(predicate, cancellationToken);
+        }
     }
 #pragma warning restore CS8603, S2436
 }
