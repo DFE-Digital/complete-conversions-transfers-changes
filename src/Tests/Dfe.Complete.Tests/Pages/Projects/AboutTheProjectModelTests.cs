@@ -103,7 +103,7 @@ namespace Dfe.Complete.Tests.Pages.Projects
                 .ReturnsAsync(Result<GiasEstablishmentDto?>.Failure("Database error"));
 
             // Act & Assert
-            var ex = await Assert.ThrowsAsync<NotFoundException>(() => model.OnGet());
+            var ex = await Assert.ThrowsAsync<NotFoundException>(() => model.OnGetAsync());
 
             Assert.Equal($"Academy {project.AcademyUrn.Value} does not exist.", ex.Message);
         }
@@ -199,7 +199,7 @@ namespace Dfe.Complete.Tests.Pages.Projects
                .ReturnsAsync(Result<TransferTaskDataDto>.Success(transferTask));
 
             //Act  
-            await model.OnGet();
+            await model.OnGetAsync();
 
             // Assert  
             Assert.NotNull(model.Project);

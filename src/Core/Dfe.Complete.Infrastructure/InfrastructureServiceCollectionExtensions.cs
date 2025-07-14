@@ -1,8 +1,10 @@
 using Dfe.Complete.Application.Common.Interfaces;
+using Dfe.Complete.Application.Notes.Interfaces;
 using Dfe.Complete.Application.Projects.Interfaces;
 using Dfe.Complete.Application.Projects.Interfaces.CsvExport;
 using Dfe.Complete.Domain.Interfaces.Repositories;
 using Dfe.Complete.Infrastructure.Database;
+using Dfe.Complete.Infrastructure.CommandServices;
 using Dfe.Complete.Infrastructure.QueryServices;
 using Dfe.Complete.Infrastructure.QueryServices.CsvExport;
 using Dfe.Complete.Infrastructure.Repositories;
@@ -34,7 +36,9 @@ namespace Dfe.Complete.Infrastructure
             services.AddScoped<IListAllProjectsQueryService, ListAllProjectsQueryService>();
             services.AddScoped<IProjectsQueryBuilder, ProjectsQueryBuilder>();
             services.AddScoped<IConversionCsvQueryService, ConversionCsvQueryService>();
+            services.AddScoped<INoteWriteRepository, NoteWriteRepository>();
             services.AddScoped<IProjectReadRepository, ProjectReadRepository>();
+            services.AddScoped<INoteReadRepository, NoteReadRepository>();
             services.AddScoped<IReadUserRepository,ReadUserRepository>();
             services.AddScoped<ILocalAuthoritiesQueryService, LocalAuthoritiesQueryService>();
 
@@ -78,7 +82,8 @@ namespace Dfe.Complete.Infrastructure
             return services;
         }
 
-        public static void AddInfrastructureHealthChecks(this IServiceCollection services) {
+        public static void AddInfrastructureHealthChecks(this IServiceCollection services)
+        {
             services.AddHealthChecks()
                 .AddDbContextCheck<CompleteContext>("Complete Database");
         }

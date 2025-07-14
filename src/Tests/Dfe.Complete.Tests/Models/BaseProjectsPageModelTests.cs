@@ -32,7 +32,7 @@ public class BaseProjectsPageModelTests
         model.ProjectId = "an-invalid-guid";
 
         // Act & Assert
-        var ex = await Assert.ThrowsAsync<InvalidDataException>(() => model.OnGet());
+        var ex = await Assert.ThrowsAsync<InvalidDataException>(() => model.OnGetAsync());
         Assert.Equal($"{model.ProjectId} is not a valid Guid.", ex.Message);
     }
 
@@ -47,7 +47,7 @@ public class BaseProjectsPageModelTests
             .ReturnsAsync(Result<ProjectDto?>.Success(null));
 
         // Act & Assert
-        var ex = await Assert.ThrowsAsync<NotFoundException>(() => model.OnGet());
+        var ex = await Assert.ThrowsAsync<NotFoundException>(() => model.OnGetAsync());
         Assert.Equal($"Project {model.ProjectId} does not exist.", ex.Message);
     }
 
@@ -80,7 +80,7 @@ public class BaseProjectsPageModelTests
             .ReturnsAsync(Result<EstablishmentDto>.Failure("Database error"));
 
         // Act & Assert
-        var ex = await Assert.ThrowsAsync<NotFoundException>(() => model.OnGet());
+        var ex = await Assert.ThrowsAsync<NotFoundException>(() => model.OnGetAsync());
         Assert.Equal($"Establishment {project.Urn.Value} does not exist.", ex.Message);
     }
 
@@ -131,7 +131,7 @@ public class BaseProjectsPageModelTests
             .ReturnsAsync(Result<TrustDto>.Failure("Database error"));
 
         // Act & Assert
-        var ex = await Assert.ThrowsAsync<NotFoundException>(() => model.OnGet());
+        var ex = await Assert.ThrowsAsync<NotFoundException>(() => model.OnGetAsync());
 
         Assert.Equal($"Trust {project.IncomingTrustUkprn.Value} does not exist.", ex.Message);
     }
@@ -193,7 +193,7 @@ public class BaseProjectsPageModelTests
             .ReturnsAsync(Result<TrustDto>.Failure("Database error"));
 
         // Act & Assert
-        var ex = await Assert.ThrowsAsync<NotFoundException>(() => model.OnGet());
+        var ex = await Assert.ThrowsAsync<NotFoundException>(() => model.OnGetAsync());
 
         Assert.Equal($"Trust {project.OutgoingTrustUkprn.Value} does not exist.", ex.Message);
     }
