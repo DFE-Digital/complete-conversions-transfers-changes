@@ -34,7 +34,7 @@ public class UpdateSignificantDateCommandHandlerTests
             {
                 { SignificantDateReason.Buildings, "Reason for change" }
             },
-            user.Email
+            "test.user@education.gov.uk"
         );
 
         mockProjectRepository.FindAsync(Arg.Any<Expression<Func<Domain.Entities.Project, bool>>>(), Arg.Any<CancellationToken>())
@@ -82,7 +82,7 @@ public class UpdateSignificantDateCommandHandlerTests
         mockProjectRepository.FindAsync(Arg.Any<Expression<Func<Domain.Entities.Project, bool>>>(), Arg.Any<CancellationToken>())
             .Returns(project);
 
-        mockUserRepository.FindAsync(Arg.Any<Expression<Func<User, bool>>>(), Arg.Any<CancellationToken>())
+        mockUserRepository.FindAsync(Arg.Any<Expression<Func<User, bool>>>(), Arg.Any<CancellationToken>())!
             .Returns((User?)null);
 
         var handler = new UpdateSignificantDateCommandHandler(

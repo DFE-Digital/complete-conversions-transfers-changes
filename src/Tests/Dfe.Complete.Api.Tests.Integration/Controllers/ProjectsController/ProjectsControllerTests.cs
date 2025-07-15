@@ -1447,7 +1447,7 @@ public partial class ProjectsControllerTests
 
         // Assert
         Assert.NotNull(result);
-        Assert.Equal(project.Id.Value, result.Id.Value);
+        Assert.Equal(project.Id.Value, result.Id?.Value);
         Assert.Equal(project.SignificantDate, DateOnly.FromDateTime(result.SignificantDate!.Value));
     }
 }
