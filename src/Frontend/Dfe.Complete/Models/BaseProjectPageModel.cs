@@ -97,7 +97,7 @@ public abstract class BaseProjectPageModel(ISender sender) : PageModel
         CurrentUserTeam = await User.GetUserTeam(sender);
     }
 
-    public virtual async Task<IActionResult> OnGet()
+    public virtual async Task<IActionResult> OnGetAsync()
     {
         await UpdateCurrentProject();
 

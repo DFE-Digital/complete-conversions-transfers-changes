@@ -19,13 +19,13 @@ public class EditAddedByUser(ISender sender, ErrorService errorService, ILogger<
 {
     private readonly ISender _sender = sender;
 
-    [BindProperty] [InternalEmail] public string Email { get; set; } = default!;
+    [BindProperty][InternalEmail] public string Email { get; set; } = default!;
 
     public UserDto AddedByUser { get; set; } = default!;
 
-    public override async Task<IActionResult> OnGet()
+    public override async Task<IActionResult> OnGetAsync()
     {
-        await base.OnGet();
+        await base.OnGetAsync();
         var addedByUserQuery = new GetUserByIdQuery(Project.RegionalDeliveryOfficerId);
         var addedbyResult = await _sender.Send(addedByUserQuery);
         if (addedbyResult is { IsSuccess: true, Value: not null })
@@ -49,7 +49,7 @@ public class EditAddedByUser(ISender sender, ErrorService errorService, ILogger<
         if (!ModelState.IsValid)
         {
             errorService.AddErrors(ModelState);
-            return await OnGet();
+            return await OnGetAsync();
         }
 
         var addedByUserQuery = new GetUserByEmailQuery(Email);
@@ -66,11 +66,11 @@ public class EditAddedByUser(ISender sender, ErrorService errorService, ILogger<
             }
             logger.LogInformation("An error occured when trying up update the assigned user.");
             ModelState.AddModelError("Misc", "An error occured when trying up update.");
-            return await OnGet();
+            return await OnGetAsync();
         }
 
         logger.LogInformation("Email not found or not assignable - {Email}", addedByUserQuery.Email);
         ModelState.AddModelError("Email", "Email is not assignable");
-        return await OnGet();
+        return await OnGetAsync();
     }
 }

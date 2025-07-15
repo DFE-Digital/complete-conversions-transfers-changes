@@ -136,7 +136,7 @@ namespace Dfe.Complete.Tests.Constants
             var noteId = "n1";
             var notesBase = $"/projects/{projectId}/notes";
             Assert.Equal(notesBase, string.Format(RouteConstants.ProjectViewNotes, projectId));
-            Assert.Equal(notesBase + "/edit", string.Format(RouteConstants.ProjectAddNote, projectId));
+            Assert.Equal(notesBase + "/new", string.Format(RouteConstants.ProjectAddNote, projectId));
             Assert.Equal($"{notesBase}/{noteId}/edit", string.Format(RouteConstants.ProjectEditNote, projectId, noteId));
         }
 
