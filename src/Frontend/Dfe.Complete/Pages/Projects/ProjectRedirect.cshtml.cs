@@ -1,3 +1,4 @@
+using Dfe.Complete.Constants;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Dfe.Complete.Pages.Projects;
@@ -10,6 +11,6 @@ public class RedirectController : Controller
 
     public IActionResult OnGet()
     {
-        return Redirect($"/projects/{ProjectId}/tasks");
+        return Redirect(string.Format(RouteConstants.ProjectTaskList, ProjectId));
     }
 }
