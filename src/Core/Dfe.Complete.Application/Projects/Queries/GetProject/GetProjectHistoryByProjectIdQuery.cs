@@ -30,7 +30,7 @@ namespace Dfe.Complete.Application.Projects.Queries.GetProject
                     .Include(p => p.SignificantDateHistories)
                         .ThenInclude(ph => ph.User)
                     .Include(p => p.SignificantDateHistories)
-                        .ThenInclude(ph => ph.Reason)
+                        .ThenInclude(ph => ph.Reasons)
                     .FirstOrDefaultAsync(cancellationToken);
 
                 if (result!.SignificantDateHistories.Any(p => p.User == null))
