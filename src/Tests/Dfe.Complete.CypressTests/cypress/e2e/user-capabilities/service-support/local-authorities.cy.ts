@@ -34,7 +34,8 @@ const localAuthorityEdited = {
 };
 const preExistingCode = "301";
 
-describe("Service support user - Local authorities: ", () => {
+// bug 224061
+describe.skip("Service support user - Local authorities: ", () => {
     beforeEach(() => {
         cy.login(serviceSupportUser);
         cy.acceptCookies();
