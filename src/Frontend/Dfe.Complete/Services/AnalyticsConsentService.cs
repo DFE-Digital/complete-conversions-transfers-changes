@@ -1,6 +1,4 @@
-﻿using Azure;
-
-namespace Dfe.Complete.Services
+﻿namespace Dfe.Complete.Services
 {
     public interface IAnalyticsConsentService
     {
