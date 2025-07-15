@@ -187,6 +187,11 @@
     },
     {
       "Controller": "ProjectsController",
+      "Action": "GetProjectSignificantDateAsync",
+      "ExpectedSecurity": "Authorize: Policy=CanRead"
+    },
+    {
+      "Controller": "ProjectsController",
       "Action": "UpdateSignificantDateAsync",
       "ExpectedSecurity": "Authorize: Policy=CanReadWrite"
     }
