@@ -2,6 +2,7 @@ import { beforeEach } from "mocha";
 import {
     checkAccessibilityAcrossPages,
     shouldBeAbleToViewAndDownloadCsvReportsFromTheExportSection,
+    shouldNotBeAbleToAddAProjectNote,
     shouldNotBeAbleToCreateAProject,
     shouldNotHaveAccessToViewAndEditUsers,
     shouldNotHaveAccessToViewConversionURNsPage,
@@ -114,6 +115,10 @@ describe("Capabilities and permissions of the business support user", () => {
 
     it("Should NOT be able to create a project", () => {
         shouldNotBeAbleToCreateAProject();
+    });
+
+    it("Should NOT be able to add a note to a project", () => {
+        shouldNotBeAbleToAddAProjectNote(projectId);
     });
 
     it.skip("Should NOT be able to soft delete projects", () => {
