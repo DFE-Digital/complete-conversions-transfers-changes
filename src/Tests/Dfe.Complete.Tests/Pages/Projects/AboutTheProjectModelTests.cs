@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.Extensions.Logging;
 using Moq;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Routing;
@@ -57,12 +58,12 @@ namespace Dfe.Complete.Tests.Pages.Projects
 
         [Theory]
         [CustomAutoData(typeof(DateOnlyCustomization))]
-        public async Task OnGet_When_AcademyUrn_IsNotSupplied_ThrowsException([Frozen] Mock<ISender> mockSender)
+        public async Task OnGet_When_AcademyUrn_IsNotSupplied_ThrowsException([Frozen] Mock<ISender> mockSender, [Frozen] ILogger<AboutTheProjectModel> _logger)
         {
             var projectIdGuid = Guid.NewGuid();
             var now = DateTime.UtcNow;
 
-            var model = new AboutTheProjectModel(mockSender.Object)
+            var model = new AboutTheProjectModel(mockSender.Object, _logger)
             {
                 PageContext = GetPageContext(),
                 ProjectId = projectIdGuid.ToString()
@@ -110,12 +111,12 @@ namespace Dfe.Complete.Tests.Pages.Projects
 
         [Theory]
         [CustomAutoData(typeof(DateOnlyCustomization))]
-        public async Task OnGet_Loads_Correctly([Frozen] Mock<ISender> mockSender)
+        public async Task OnGet_Loads_Correctly([Frozen] Mock<ISender> mockSender, [Frozen] ILogger<AboutTheProjectModel> _logger)
         {
             var projectIdGuid = Guid.NewGuid();
             var now = DateTime.UtcNow;
 
-            var model = new AboutTheProjectModel(mockSender.Object)
+            var model = new AboutTheProjectModel(mockSender.Object, _logger)
             {
                 PageContext = GetPageContext(),
                 ProjectId = projectIdGuid.ToString()

@@ -26,6 +26,7 @@ Security in case of vulnerabilities.
 
 ### Changed  
 - Add a redirect from projects/{id} to projects/{id}/tasks
+- Reduce log level from error to warning when project routes receive bad GUID or project not found 
 
 ### Fixed
 

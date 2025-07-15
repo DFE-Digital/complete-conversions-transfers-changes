@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Dfe.Complete.Pages.Projects.InternalContacts;
 
-public class EditAssignedTeam(ISender sender, ErrorService errorService, ILogger<InternalContacts> logger) : BaseProjectPageModel(sender)
+public class EditAssignedTeam(ISender sender, ErrorService errorService, ILogger<InternalContacts> logger) : BaseProjectPageModel(sender, logger)
 {
     [BindProperty]
     [Required]
@@ -33,7 +33,7 @@ public class EditAssignedTeam(ISender sender, ErrorService errorService, ILogger
             return await OnGetAsync();
         }
         var updateRequest = new UpdateAssignedTeamCommand(Project.Id, Team);
-        await sender.Send(updateRequest);
+        await Sender.Send(updateRequest);
         TempData.SetNotification(NotificationType.Success, "Success", "Project has been assigned to team successfully");
         return Redirect(FormatRouteWithProjectId(RouteConstants.ProjectInternalContacts));
 
