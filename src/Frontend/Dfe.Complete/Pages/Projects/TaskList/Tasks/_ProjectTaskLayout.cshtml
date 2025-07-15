@@ -16,7 +16,8 @@
     <div class="govuk-grid-column-two-thirds">
         <h1 class="govuk-heading-xl" data-testid="title">
             <span class="govuk-caption-l" data-testid="school-name">@Model.Establishment.Name</span>
-            @Model.TaskIdentifier.ToDescription()
+            @Model.TaskIdentifier.ToDisplayDescription()
+            @RenderSection("TaskHeaderHintSection", required: false)
         </h1>
     </div>
     <div class="govuk-grid-row">

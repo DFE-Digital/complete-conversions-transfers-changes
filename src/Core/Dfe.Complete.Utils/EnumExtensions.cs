@@ -28,7 +28,7 @@ public static class EnumExtensions
 
 	public static string ToDisplayDescription<T>(this T source)
 	{
-		if (EqualityComparer<T>.Default.Equals(source, default!))
+		if (source == null)
 			return string.Empty;
 
 		var fi = source.GetType().GetField(source.ToString() ?? string.Empty);
