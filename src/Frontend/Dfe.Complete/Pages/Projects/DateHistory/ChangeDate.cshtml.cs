@@ -16,7 +16,7 @@ namespace Dfe.Complete.Pages.Projects.DateHistory
         
         public async Task<IActionResult> OnPost()
         {
-            await base.OnGet();
+            await base.OnGetAsync();
 
             if (SignificantDate == Project.SignificantDate)
             {

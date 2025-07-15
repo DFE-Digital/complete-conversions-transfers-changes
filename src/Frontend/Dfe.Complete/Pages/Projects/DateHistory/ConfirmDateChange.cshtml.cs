@@ -7,9 +7,9 @@ namespace Dfe.Complete.Pages.Projects.DateHistory
     
     public class ConfirmDateChangeModel(ISender sender) : ProjectLayoutModel(sender, ConversionDateHistoryNavigation)
     {
-        public override async Task<IActionResult> OnGet()
+        public override async Task<IActionResult> OnGetAsync()
         {
-            await base.OnGet();
+            await base.OnGetAsync();
             return Page();
         }
     }

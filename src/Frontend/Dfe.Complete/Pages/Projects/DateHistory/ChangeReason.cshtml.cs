@@ -23,7 +23,7 @@ namespace Dfe.Complete.Pages.Projects.DateHistory
 
         public Dictionary<SignificantDateReason, string> ReasonNotes { get; private set; } = new();
 
-        public override async Task<IActionResult> OnGet()
+        public override async Task<IActionResult> OnGetAsync()
         {
             await PopulatePage();
             return Page();
@@ -74,7 +74,7 @@ namespace Dfe.Complete.Pages.Projects.DateHistory
 
         private async Task PopulatePage()
         {
-            await base.OnGet();
+            await base.OnGetAsync();
             
             var previousDate = Project.SignificantDate;
             var dateString = TempData["SignificantDate"]?.ToString() ?? SignificantDateString;

@@ -10,9 +10,9 @@ namespace Dfe.Complete.Pages.Projects.DateHistory
 {
     public class DateHistoryProjectModel(ISender sender) : ProjectLayoutModel(sender, ConversionDateHistoryNavigation)
     {
-        public override async Task<IActionResult> OnGet()
+        public override async Task<IActionResult> OnGetAsync()
         {
-            await base.OnGet();
+            await base.OnGetAsync();
             
             var projectWithHistories = new GetProjectHistoryByProjectIdQuery(ProjectId);
             var result = await sender.Send(projectWithHistories);
