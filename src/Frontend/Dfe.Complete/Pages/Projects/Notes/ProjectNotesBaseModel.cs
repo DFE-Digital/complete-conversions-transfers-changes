@@ -44,7 +44,7 @@ public class ProjectNotesBaseModel(ISender sender, string notesNavigation) : Pro
         {
             NoteTaskIdentifier? noteTaskIdentifier = EnumExtensions.FromDescriptionValue<NoteTaskIdentifier>(taskIdentifier);
             if (noteTaskIdentifier != null)
-                return string.Format(RouteConstants.ProjectTask, ProjectId, noteTaskIdentifier);
+                return string.Format(RouteConstants.ProjectTask, ProjectId, noteTaskIdentifier.ToDescription());
         }
 
         return string.Format(RouteConstants.ProjectViewNotes, ProjectId);

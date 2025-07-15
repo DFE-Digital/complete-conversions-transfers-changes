@@ -1,10 +1,12 @@
 using System.ComponentModel;
+using Dfe.Complete.Utils.Attributes;
 
 namespace Dfe.Complete.Domain.Enums;
 
 public enum NoteTaskIdentifier
 {
     [Description("handover")]
+    [DisplayDescription("Handover with regional delivery officer")]
     Handover,
 
     [Description("stakeholder_kick_off")]

@@ -1,4 +1,6 @@
 @using Dfe.Complete.Constants
+@using Dfe.Complete.Utils
+
 @model Dfe.Complete.Pages.Projects.TaskList.Tasks.BaseProjectTaskModel
 @{
     Layout = "Shared/_Layout";
@@ -12,7 +14,10 @@
 
 <div class="govuk-grid-row govuk-!-margin-bottom-9">
     <div class="govuk-grid-column-two-thirds">
-        @RenderSection("TaskHeaderSection", required: true)
+        <h1 class="govuk-heading-xl" data-testid="title">
+            <span class="govuk-caption-l" data-testid="school-name">@Model.Establishment.Name</span>
+            @Model.TaskIdentifier.ToDescription()
+        </h1>
     </div>
     <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
