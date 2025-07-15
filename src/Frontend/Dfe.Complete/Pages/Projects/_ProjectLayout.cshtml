@@ -1,4 +1,3 @@
-@using Dfe.Complete.Pages.Projects.Team;
 @using Dfe.Complete.Constants;
 @using Dfe.Complete.Utils;
 @using Dfe.Complete.Domain.Enums
@@ -11,6 +10,11 @@
   Layout = "Shared/_Layout";
 
   string? IsCurrentNav(string tabName) => Model.CurrentNavigationItem == tabName ? "page" : null;
+
+  var projectIsAssignedToUser = Model.Project.AssignedToId?.Value.ToString() == User.GetUserAdId();
+  var significantDateIsConfirmed = Model.Project.SignificantDateProvisional.HasValue && Model.Project.SignificantDateProvisional.Value == false;
+
+  var canEditSignificantDate = significantDateIsConfirmed && (projectIsAssignedToUser || Model.CurrentUserTeam.TeamIsServiceSupport());
 }
 
 <div class="govuk-grid-row">
@@ -123,6 +127,17 @@ Model.CurrentUserTeam.TeamIsServiceSupport())
 
   </div>
 </div>
+
+<div class="govuk-button-group">
+  @{
+    if (canEditSignificantDate)
+    {
+      <a data-module="govuk-button" draggable="false" role="button" class="govuk-button govuk-button--secondary" href="@String.Format(RouteConstants.ChangeProjectDateHistory, Model.Project.Id.Value)">Change @(Model.Project.Type == ProjectType.Conversion ? "conversion" : "transfer") date</a>
+    }
+  }
+  <a data-module="govuk-button" draggable="false" role="button" class="govuk-button govuk-button--warning" href="#">Delete project</a>
+</div>
+
 
 <div class="govuk-grid-row">
   <div class="govuk-grid-column-full">

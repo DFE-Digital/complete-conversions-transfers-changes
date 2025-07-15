@@ -1,0 +1,31 @@
+@page "/projects/{projectId}/date-history/reasons/later"
+@using Dfe.Complete.Constants
+@using Dfe.Complete.Domain.Enums
+@using Dfe.Complete.Pages.Projects.DateHistory
+@model Dfe.Complete.Pages.Projects.DateHistory.ConfirmDateChangeModel
+
+@{
+  Layout = "_Layout";
+
+  var isConversion = Model.Project.Type == ProjectType.Conversion;
+  var projectTypeString = isConversion ? "conversion" : "transfer";
+}
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        <div class="govuk-panel govuk-panel--confirmation">
+            <h1 class="govuk-panel__title">@SigDateHelper.CapitliseFirstLetter(projectTypeString) date changed</h1>
+        </div>
+        <p>You have changed the @projectTypeString date for @Model.Establishment.Name, URN @Model.Establishment.Urn.</p> 
+        <h2 class="govuk-heading-m">New @projectTypeString date</h2> 
+        <p>The new @projectTypeString date is @Model.Project.SignificantDate.ToDateString().</p>
+        
+        <h2 class="govuk-heading-m">What happens next</h2>
+        <p>The @projectTypeString has moved to the new month in your project list.</p>
+        <p>You can <a href="@Model.FormatRouteWithProjectId(RouteConstants.ProjectTaskList)">continue working on this @projectTypeString</a>, or <a href="@RouteConstants.YourProjectsInProgress">choose another project to work on</a> from your list.</p> 
+        
+        <h2 class="govuk-heading-m">Changing the date again</h2> 
+        <p>You can change the @projectTypeString date as many times as you need to.</p> 
+        <p>Enter the @projectTypeString date again if this change was not right.</p> 
+        <p>You can alter the @projectTypeString date at any time if there are changes to the project in the future.</p>
+    </div>
+</div>

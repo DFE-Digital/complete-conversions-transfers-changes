@@ -21,6 +21,9 @@ Security in case of vulnerabilities.
 ---
 
 ## Unreleased  
+- added change significant date page "/projects/{projectId}/date-history/new"
+- added significant date change reason page "/projects/{projectId}/date-history/reason"
+- added confirm significant date change "/projects/{projectId}/date-history/reasons/later"
 
 ### Added
 - New route `/projects/{projectId}/date-history`

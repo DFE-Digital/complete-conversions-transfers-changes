@@ -3,6 +3,7 @@ using AutoFixture;
 using AutoFixture.Xunit2;
 using Dfe.AcademiesApi.Client.Contracts;
 using Dfe.Complete.Api.Tests.Integration.Customizations;
+using Dfe.Complete.Application.Projects.Commands.UpdateProject;
 using Dfe.Complete.Client.Contracts;
 using Dfe.Complete.Infrastructure.Database;
 using Dfe.Complete.Tests.Common.Constants;
@@ -1413,6 +1414,40 @@ public partial class ProjectsControllerTests
             Assert.Equal(matchingEstablishment?.Name, result.AcademyName);
         }
     }
-
     
+    [Theory]
+    [CustomAutoData(typeof(CustomWebApplicationDbContextFactoryCustomization), typeof(GiasEstablishmentsCustomization))]
+    public async Task GetProjectSignificantDateAsync_ShouldReturnProjectDto(
+        CustomWebApplicationDbContextFactory<Program> factory,
+        IProjectsClient projectsClient,
+        IFixture fixture)
+    {
+        factory.TestClaims = [new Claim(ClaimTypes.Role, ApiRoles.ReadRole)];
+
+        // Arrange
+        var dbContext = factory.GetDbContext<CompleteContext>();
+        var testUser = await dbContext.Users.FirstAsync();
+
+        var giasEstablishment = fixture.Create<GiasEstablishment>();
+        var project = fixture.Customize(new ProjectCustomization
+        {
+            RegionalDeliveryOfficerId = testUser.Id,
+            Urn = giasEstablishment.Urn!
+        }).Create<Project>();
+
+        var localAuthority = dbContext.LocalAuthorities.AsEnumerable().MinBy(_ => Guid.NewGuid());
+        project.LocalAuthorityId = localAuthority!.Id;
+
+        await dbContext.GiasEstablishments.AddAsync(giasEstablishment);
+        await dbContext.Projects.AddAsync(project);
+        await dbContext.SaveChangesAsync();
+
+        // Act
+        var result = await projectsClient.GetProjectSignificantDateAsync(project.Id.Value.ToString());
+
+        // Assert
+        Assert.NotNull(result);
+        Assert.Equal(project.Id.Value, result.Id.Value);
+        Assert.Equal(project.SignificantDate, DateOnly.FromDateTime(result.SignificantDate!.Value));
+    }
 }

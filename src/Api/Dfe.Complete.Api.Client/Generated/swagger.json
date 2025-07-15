@@ -1498,6 +1498,71 @@
         }
       }
     },
+    "/v1/Projects/project/significant-date": {
+      "get": {
+        "tags": [
+          "Projects"
+        ],
+        "summary": "Gets a Project's significant date history",
+        "operationId": "Projects_GetProjectSignificantDate",
+        "parameters": [
+          {
+            "name": "ProjectId",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "x-position": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Project",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProjectDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request data."
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "Projects"
+        ],
+        "summary": "Updates the Significant date for a specific project.",
+        "operationId": "Projects_UpdateSignificantDate",
+        "requestBody": {
+          "x-name": "request",
+          "description": "The update command.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateSignificantDateCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "204": {
+            "description": "Significant Date updated successfully."
+          },
+          "400": {
+            "description": "Invalid request data."
+          },
+          "404": {
+            "description": "Project/User not found."
+          }
+        }
+      }
+    },
     "/v1/ServiceSupport/LocalAuthority/Create": {
       "post": {
         "tags": [
@@ -3448,13 +3513,11 @@
               }
             ]
           },
-          "reason": {
-            "nullable": true,
-            "oneOf": [
-              {
-                "$ref": "#/components/schemas/SignificantDateHistoryReason"
-              }
-            ]
+          "reasons": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SignificantDateHistoryReason"
+            }
           },
           "user": {
             "nullable": true,
@@ -3477,33 +3540,40 @@
         }
       },
       "SignificantDateHistoryReason": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-          "id": {
-            "$ref": "#/components/schemas/SignificantDateHistoryReasonId"
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/BaseAggregateRoot"
           },
-          "createdAt": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "updatedAt": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "reasonType": {
-            "type": "string",
-            "nullable": true
-          },
-          "significantDateHistoryId": {
-            "nullable": true,
-            "oneOf": [
-              {
-                "$ref": "#/components/schemas/SignificantDateHistoryId"
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "id": {
+                "$ref": "#/components/schemas/SignificantDateHistoryReasonId"
+              },
+              "createdAt": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "updatedAt": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "reasonType": {
+                "type": "string",
+                "nullable": true
+              },
+              "significantDateHistoryId": {
+                "nullable": true,
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/SignificantDateHistoryId"
+                  }
+                ]
               }
-            ]
+            }
           }
-        }
+        ]
       },
       "SignificantDateHistoryReasonId": {
         "type": "object",
@@ -3561,13 +3631,11 @@
               }
             ]
           },
-          "reason": {
-            "nullable": true,
-            "oneOf": [
-              {
-                "$ref": "#/components/schemas/SignificantDateHistoryReasonDto"
-              }
-            ]
+          "reasons": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SignificantDateHistoryReasonDto"
+            }
           },
           "user": {
             "nullable": true,
@@ -4103,6 +4171,81 @@
             "$ref": "#/components/schemas/Urn"
           }
         }
+      },
+      "UpdateSignificantDateCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "projectId": {
+            "$ref": "#/components/schemas/ProjectId"
+          },
+          "significantDate": {
+            "type": "string",
+            "format": "date"
+          },
+          "reasonNotes": {
+            "type": "object",
+            "x-dictionaryKey": {
+              "$ref": "#/components/schemas/SignificantDateReason"
+            },
+            "additionalProperties": {
+              "type": "string"
+            }
+          },
+          "userEmail": {
+            "type": "string"
+          }
+        }
+      },
+      "SignificantDateReason": {
+        "type": "string",
+        "description": "",
+        "x-enumNames": [
+          "AdvisoryBoardConditions",
+          "Buildings",
+          "CorrectingAnError",
+          "Diocese",
+          "Finance",
+          "Governance",
+          "IncomingTrust",
+          "Land",
+          "LegacyReason",
+          "LegalDocuments",
+          "LocalAuthority",
+          "NegativePress",
+          "OutgoingTrust",
+          "Pensions",
+          "ProgressingFasterThanExpected",
+          "School",
+          "StakeholderKickOff",
+          "Tupe",
+          "Union",
+          "Viability",
+          "VoluntaryDeferral"
+        ],
+        "enum": [
+          "AdvisoryBoardConditions",
+          "Buildings",
+          "CorrectingAnError",
+          "Diocese",
+          "Finance",
+          "Governance",
+          "IncomingTrust",
+          "Land",
+          "LegacyReason",
+          "LegalDocuments",
+          "LocalAuthority",
+          "NegativePress",
+          "OutgoingTrust",
+          "Pensions",
+          "ProgressingFasterThanExpected",
+          "School",
+          "StakeholderKickOff",
+          "Tupe",
+          "Union",
+          "Viability",
+          "VoluntaryDeferral"
+        ]
       },
       "CreateLocalAuthorityCommand": {
         "type": "object",
