@@ -23,9 +23,9 @@ public class ExternalContacts(ISender sender)
     public string LocalAuthorityName { get; set; } = "";
     public bool ProjectContactsExist { get; set; }
 
-    public override async Task<IActionResult> OnGet()
+    public override async Task<IActionResult> OnGetAsync()
     {
-        await base.OnGet();
+        await base.OnGetAsync();
 
         var projectQuery = new GetContactsForProjectQuery(Project.Id);
 
