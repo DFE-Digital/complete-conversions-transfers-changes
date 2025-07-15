@@ -29,6 +29,7 @@ Security in case of vulnerabilities.
 - Reduce log level from error to warning when project routes receive bad GUID or project not found 
 
 ### Fixed
+- Remove double pagination on Service Support > Local authorities
 
 See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-07-14.525...main) for everything awaiting release
 
