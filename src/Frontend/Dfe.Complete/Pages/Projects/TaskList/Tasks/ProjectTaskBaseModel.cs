@@ -1,7 +1,6 @@
 using Dfe.Complete.Constants;
 using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Models;
-using Dfe.Complete.Utils;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -35,7 +34,7 @@ public class BaseProjectTaskModel(ISender sender, IAuthorizationService _authori
 
         var notesResult = await Sender.Send(new GetTaskNotesByProjectIdQuery(new ProjectId(Guid.Parse(ProjectId)), TaskIdentifier));
         if (!notesResult.IsSuccess)
-            throw new ApplicationException($"Could not load notes for project {ProjectId}");
+            throw new InvalidOperationException($"Could not load notes for project {ProjectId}");
 
         Notes = notesResult.Value ?? [];
 

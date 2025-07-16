@@ -75,7 +75,7 @@ public class AddProjectNoteModel(ISender sender, ErrorService errorService) : Pr
         var response = await Sender.Send(newNoteQuery);
 
         if (!response.IsSuccess)
-            throw new ApplicationException($"An error occurred when creating a new note for project {ProjectId}");
+            throw new InvalidOperationException($"An error occurred when creating a new note for project {ProjectId}");
 
         TempData.SetNotification(
             NotificationType.Success,

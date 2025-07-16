@@ -23,7 +23,7 @@ public class ViewProjectNotesModel(ISender sender, IAuthorizationService _author
 
         var notesResult = await Sender.Send(new GetNotesByProjectIdQuery(new ProjectId(Guid.Parse(ProjectId))));
         if (!notesResult.IsSuccess)
-            throw new ApplicationException($"Could not load notes for project {ProjectId}");
+            throw new InvalidOperationException($"Could not load notes for project {ProjectId}");
 
         Notes = notesResult.Value ?? [];
         return Page();

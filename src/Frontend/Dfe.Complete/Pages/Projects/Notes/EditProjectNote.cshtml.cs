@@ -60,7 +60,7 @@ public class EditProjectNoteModel(ISender sender, ErrorService errorService) : P
         var response = await Sender.Send(new UpdateNoteCommand(new NoteId(NoteId), NoteText));
 
         if (!response.IsSuccess || response.Value == null)
-            throw new ApplicationException($"An error occurred when updating note {NoteId} for project {ProjectId}");
+            throw new InvalidOperationException($"An error occurred when updating note {NoteId} for project {ProjectId}");
 
         TempData.SetNotification(
             NotificationType.Success,

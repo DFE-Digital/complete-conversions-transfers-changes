@@ -45,7 +45,7 @@ public class DeleteProjectNoteModel(ISender sender) : ProjectNotesBaseModel(send
         var response = await Sender.Send(new RemoveNoteCommand(new NoteId(NoteId)));
 
         if (!(response.IsSuccess || response.Value == true))
-            throw new ApplicationException($"An error occurred when deleting note {NoteId} for project {ProjectId}");
+            throw new InvalidOperationException($"An error occurred when deleting note {NoteId} for project {ProjectId}");
 
         TempData.SetNotification(
             NotificationType.Success,
