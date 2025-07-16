@@ -15,7 +15,6 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks;
 
 public class BaseProjectTaskModel(ISender sender, IAuthorizationService authorizationService, ILogger logger, NoteTaskIdentifier taskIdentifier) : BaseProjectPageModel(sender, logger)
 {
-    protected ISender Sender { get; } = sender;
     public required NoteTaskIdentifier TaskIdentifier { get; set; } = taskIdentifier;
     public IReadOnlyList<NoteDto> Notes { get; private set; } = [];
 

@@ -417,6 +417,7 @@ namespace Dfe.Complete.Api.Controllers
         /// Delete a Note for a Project
         /// </summary>
         /// <param name="request"></param>
+        /// <param name="cancellationToken"></param>
         [Authorize(Policy = "CanReadWriteUpdateDelete")]
         [HttpDelete]
         [Route("Notes")]

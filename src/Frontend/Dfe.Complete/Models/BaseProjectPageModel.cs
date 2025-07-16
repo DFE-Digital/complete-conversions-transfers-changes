@@ -12,10 +12,10 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace Dfe.Complete.Models;
 
-public abstract class BaseProjectPageModel(ISender sender, ILogger _logger) : PageModel
+public abstract class BaseProjectPageModel(ISender sender, ILogger logger) : PageModel
 {
     protected readonly ISender Sender = sender;
-    protected ILogger Logger = _logger;
+    protected ILogger Logger = logger;
 
 
     [BindProperty(SupportsGet = true, Name = "projectId")]

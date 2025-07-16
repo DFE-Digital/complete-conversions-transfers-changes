@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace Dfe.Complete.Pages.Projects.Notes;
 
-public class DeleteProjectNoteModel(ISender sender, ILogger<DeleteProjectNoteModel> _logger) : BaseProjectNotesModel(sender, _logger, NotesNavigation)
+public class DeleteProjectNoteModel(ISender sender, ILogger<DeleteProjectNoteModel> logger) : BaseProjectNotesModel(sender, logger, NotesNavigation)
 {
     [BindProperty(SupportsGet = true, Name = "noteId")]
     public required Guid NoteId { get; set; }

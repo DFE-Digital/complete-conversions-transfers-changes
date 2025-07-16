@@ -12,7 +12,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace Dfe.Complete.Pages.Projects.Notes;
 
-public class ViewProjectNotesModel(ISender sender, IAuthorizationService _authorizationService, ILogger<ViewProjectNotesModel> _logger) : BaseProjectNotesModel(sender, _logger, NotesNavigation)
+public class ViewProjectNotesModel(ISender sender, IAuthorizationService authorizationService, ILogger<ViewProjectNotesModel> logger) : BaseProjectNotesModel(sender, logger, NotesNavigation)
 {
     public IReadOnlyList<NoteDto> Notes { get; private set; } = [];
 
@@ -37,7 +37,7 @@ public class ViewProjectNotesModel(ISender sender, IAuthorizationService _author
         string? errorMessage = null;
         if (!CanAddNotes)
             errorMessage = "The project is not active and no further notes can be added.";
-        else if (!(await _authorizationService.AuthorizeAsync(User, UserPolicyConstants.CanAddNotes)).Succeeded)
+        else if (!(await authorizationService.AuthorizeAsync(User, UserPolicyConstants.CanAddNotes)).Succeeded)
             errorMessage = "You are not authorised to perform this action.";
 
         if (errorMessage != null)
