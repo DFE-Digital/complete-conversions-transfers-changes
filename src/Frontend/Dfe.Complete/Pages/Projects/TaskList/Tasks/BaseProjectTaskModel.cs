@@ -13,7 +13,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace Dfe.Complete.Pages.Projects.TaskList.Tasks;
 
-public class BaseProjectTaskModel(ISender sender, IAuthorizationService _authorizationService, NoteTaskIdentifier taskIdentifier) : BaseProjectPageModel(sender)
+public class BaseProjectTaskModel(ISender sender, IAuthorizationService authorizationService, ILogger logger, NoteTaskIdentifier taskIdentifier) : BaseProjectPageModel(sender, logger)
 {
     protected ISender Sender { get; } = sender;
     public required NoteTaskIdentifier TaskIdentifier { get; set; } = taskIdentifier;
@@ -50,7 +50,7 @@ public class BaseProjectTaskModel(ISender sender, IAuthorizationService _authori
         string? errorMessage = null;
         if (!CanAddNotes)
             errorMessage = "The project is not active and no further notes can be added.";
-        else if (!(await _authorizationService.AuthorizeAsync(User, UserPolicyConstants.CanAddNotes)).Succeeded)
+        else if (!(await authorizationService.AuthorizeAsync(User, UserPolicyConstants.CanAddNotes)).Succeeded)
             errorMessage = "You are not authorised to perform this action.";
 
         if (errorMessage != null)

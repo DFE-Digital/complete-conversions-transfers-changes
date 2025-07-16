@@ -5,8 +5,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.SupplementalFundingAgreementTask
 {
-    public class SupplementalFundingAgreementTaskModel(ISender sender, IAuthorizationService authorizationService)
-        : BaseProjectTaskModel(sender, authorizationService, NoteTaskIdentifier.SupplementalFundingAgreement)
+    public class SupplementalFundingAgreementTaskModel(ISender sender, IAuthorizationService authorizationService, ILogger<SupplementalFundingAgreementTaskModel> logger)
+        : BaseProjectTaskModel(sender, authorizationService, logger, NoteTaskIdentifier.SupplementalFundingAgreement)
     {
         [BindProperty(Name = "cleared")]
         public bool? Cleared { get; set; }
