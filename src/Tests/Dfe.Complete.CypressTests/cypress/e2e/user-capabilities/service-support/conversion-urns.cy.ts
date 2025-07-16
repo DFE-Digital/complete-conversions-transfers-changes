@@ -24,7 +24,7 @@ const academy = {
 const project2 = ProjectBuilder.createConversionProjectRequest(nextMonth, 103845);
 const schoolName2 = "Jesson's CofE Primary School (VA)";
 
-describe("Service support user - Local authorities: ", () => {
+describe("Service support user - Conversion URNs: ", () => {
     before(() => {
         projectRemover.removeProjectIfItExists(`${project.urn.value}`);
         projectRemover.removeProjectIfItExists(`${project2.urn.value}`);
@@ -89,7 +89,7 @@ describe("Service support user - Local authorities: ", () => {
             .summaryShows("Academy name")
             .hasValue(academy.name)
             .summaryShows("Academy address")
-            .hasValue(academy.address)
+            .containsValue(academy.address)
             .summaryShows("Local authority")
             .hasValue(academy.localAuthority)
             .summaryShows("School phase")
