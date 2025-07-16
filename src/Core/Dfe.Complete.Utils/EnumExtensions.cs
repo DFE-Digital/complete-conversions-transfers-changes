@@ -26,24 +26,22 @@ public static class EnumExtensions
 		return (attributes.Length > 0 ? attributes[0].Description : source.ToString()) ?? string.Empty;
 	}
 
-	public static string ToDisplayDescription<T>(this T? source) //where T : Enum?
+	public static string ToDisplayDescription<T>(this T source)
 	{
-		if (source == null)
+		if (EqualityComparer<T>.Default.Equals(source, default!))
 			return string.Empty;
 
-		var name = source?.ToString() ?? string.Empty;
-		if (string.IsNullOrEmpty(name))
-			return string.Empty;
+		var fi = source.GetType().GetField(source.ToString() ?? string.Empty);
 
-		var fi = typeof(T).GetField(name);
 		if (fi == null)
 			return string.Empty;
 
-		var attributes = (DisplayDescriptionAttribute[])fi.GetCustomAttributes(typeof(DisplayDescriptionAttribute), false);
+		var attributes = (DisplayDescriptionAttribute[])fi
+			.GetCustomAttributes(typeof(DisplayDescriptionAttribute), false);
 
 		return attributes.Length > 0
 			? attributes[0].DisplayDescription
-			: name;
+			: source.ToString() ?? string.Empty;
 	}
 
 	public static T? FromDescription<T>(this string? description) where T : Enum
