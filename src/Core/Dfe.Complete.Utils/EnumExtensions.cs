@@ -31,17 +31,19 @@ public static class EnumExtensions
 		if (source == null)
 			return string.Empty;
 
-		var fi = source.GetType().GetField(source.ToString() ?? string.Empty);
+		var name = source.ToString();
+		if (string.IsNullOrEmpty(name))
+			return string.Empty;
 
+		var fi = typeof(T).GetField(name);
 		if (fi == null)
 			return string.Empty;
 
-		var attributes = (DisplayDescriptionAttribute[])fi
-			.GetCustomAttributes(typeof(DisplayDescriptionAttribute), false);
+		var attributes = (DisplayDescriptionAttribute[])fi.GetCustomAttributes(typeof(DisplayDescriptionAttribute), false);
 
 		return attributes.Length > 0
 			? attributes[0].DisplayDescription
-			: source.ToString() ?? string.Empty;
+			: name;
 	}
 
 	public static T? FromDescription<T>(this string? description) where T : Enum
