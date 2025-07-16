@@ -80,8 +80,8 @@ public sealed class StartupDataProtectionTests : IDisposable
 
         Assert.Single(configuredOptions.CheckerGroups);
         Assert.Equal(2, configuredOptions.CheckerGroups.First().TypeNames.Length);
-        Assert.Equal(nameof(HasHeaderKeyExistsInRequestValidator), configuredOptions.CheckerGroups[0].TypeNames[0]);
-        Assert.Equal(nameof(CypressRequestChecker), configuredOptions.CheckerGroups[0].TypeNames[1]);
+        Assert.Equal(typeof(HasHeaderKeyExistsInRequestValidator).FullName, configuredOptions.CheckerGroups[0].TypeNames[0]);
+        Assert.Equal(typeof(CypressRequestChecker).FullName, configuredOptions.CheckerGroups[0].TypeNames[1]);
         Assert.Equal(CheckerOperator.Or, configuredOptions.CheckerGroups[0].CheckerOperator);
     }
 
