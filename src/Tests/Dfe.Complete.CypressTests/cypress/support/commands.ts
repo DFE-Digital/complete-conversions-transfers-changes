@@ -154,6 +154,21 @@ Cypress.Commands.add("isInViewport", { prevSubject: true }, (subject) => {
     return subject;
 });
 
+Cypress.Commands.add("shouldHaveText", { prevSubject: true }, (subject, expectedText) => {
+    return cy
+        .wrap(subject)
+        .invoke("text")
+        .then((text) => {
+            // Remove new lines and normalize whitespace
+            const cleanedText = text
+                .replace(/[\r\n]+/g, "")
+                .replace(/\s+/g, " ")
+                .trim();
+            expect(cleanedText).to.equal(`${expectedText}`);
+            return subject;
+        });
+});
+
 Cypress.Commands.add("revisitCurrentUrl", () => {
     cy.url().then((url: string) => {
         cy.visit(url);

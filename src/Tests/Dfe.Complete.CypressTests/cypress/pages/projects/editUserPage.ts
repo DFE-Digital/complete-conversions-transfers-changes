@@ -2,6 +2,7 @@ import { ProjectDetailsPage } from "cypress/pages/projects/projectDetails/projec
 
 export class EditUserPage extends ProjectDetailsPage {
     private readonly userInputId = "user-autocomplete";
+    private readonly userOptionsId = "user-autocomplete__listbox";
     private readonly firstOptionId = "user-autocomplete__option--0";
 
     hasLabel(label: string) {
@@ -11,6 +12,9 @@ export class EditUserPage extends ProjectDetailsPage {
 
     assignTo(user: string) {
         cy.getById(this.userInputId).clear().type(user);
+        cy.getById(this.userOptionsId).within(() => {
+            cy.get('li').should('have.length', 1);
+        });
         cy.getById(this.firstOptionId).click();
         return this;
     }

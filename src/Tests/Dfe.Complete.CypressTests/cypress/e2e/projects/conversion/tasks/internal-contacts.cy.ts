@@ -93,8 +93,7 @@ describe("Internal contacts page: ", () => {
             .hasValue("North East");
     });
 
-    // bug 220830
-    it.skip("Should NOT be able to change the added by user of the project", () => {
+    it("Should NOT be able to change the added by user of the project", () => {
         cy.visit(`projects/${projectId}/internal-contacts`);
 
         Logger.log("Check the added by user is displayed and click change");
@@ -128,7 +127,7 @@ describe("Internal contacts page: ", () => {
     });
 
     unassignableUsers.forEach((unassignableUser) => {
-        it(`Should not be able to assign project to a ${unassignableUser.lastName} user`, () => {
+        it(`Should NOT be able to assign project to a ${unassignableUser.lastName} user`, () => {
             Logger.log("Go to project internal contacts page and change assigned user");
             cy.visit(`projects/${projectId}/internal-contacts`);
             internalContactsPage.change("Assigned to user");
