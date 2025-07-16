@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.HandoverWithDeliveryOfficerTask
 {
-    public class HandoverWithDeliveryOfficerTaskModel(ISender sender) : BaseProjectPageModel(sender)
+    public class HandoverWithDeliveryOfficerTaskModel(ISender sender, ILogger<HandoverWithDeliveryOfficerTaskModel> _logger) : BaseProjectPageModel(sender, _logger)
     {
         [BindProperty(Name = "not-applicable")]
         public bool? NotApplicable { get; set; }
