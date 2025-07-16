@@ -25,6 +25,8 @@ using DfE.CoreLibs.Security.Antiforgery;
 using Dfe.Complete.Validators;
 using DfE.CoreLibs.Security.Enums;
 using Dfe.Complete.Application.Extensions;
+using DfE.CoreLibs.Security.Interfaces;
+using Microsoft.AspNetCore.Antiforgery;
 
 namespace Dfe.Complete;
 
@@ -85,8 +87,12 @@ public class Startup
            {
                opts.CheckerGroups =
                [
-                   new() {
-                       TypeNames   = [nameof(HasHeaderKeyExistsInRequestValidator), nameof(CypressRequestChecker)],
+                   new()
+                   {
+                       TypeNames = [
+                           typeof(HasHeaderKeyExistsInRequestValidator).FullName!,
+                           typeof(CypressRequestChecker).FullName!
+                       ],
                        CheckerOperator = CheckerOperator.Or
                    }
                ];
