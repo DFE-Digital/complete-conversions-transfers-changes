@@ -10,7 +10,7 @@ using MediatR;
 
 namespace Dfe.Complete.Pages.Projects.Notes;
 
-public class ProjectNotesBaseModel(ISender sender, string notesNavigation) : ProjectLayoutModel(sender, notesNavigation)
+public class BaseProjectNotesModel(ISender sender, string notesNavigation) : ProjectLayoutModel(sender, notesNavigation)
 {
     public async Task<NoteDto?> GetNoteById(Guid noteId)
     {

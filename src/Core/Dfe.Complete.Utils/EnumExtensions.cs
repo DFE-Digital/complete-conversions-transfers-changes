@@ -31,7 +31,7 @@ public static class EnumExtensions
 		if (source == null)
 			return string.Empty;
 
-		var name = source.ToString();
+		var name = source?.ToString() ?? string.Empty;
 		if (string.IsNullOrEmpty(name))
 			return string.Empty;
 

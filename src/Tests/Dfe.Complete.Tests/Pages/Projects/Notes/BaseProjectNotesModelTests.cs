@@ -13,7 +13,7 @@ using Moq;
 
 namespace Dfe.Complete.Tests.Pages.Projects.Notes;
 
-public class ProjectNotesBaseModelTests
+public class BaseProjectNotesModelTests
 {
     private readonly Mock<ISender> _mockSender = new();
 
@@ -21,7 +21,7 @@ public class ProjectNotesBaseModelTests
     public async Task GetNoteById_NoNoteId_ReturnsNull()
     {
         // Arrange
-        var model = new ProjectNotesBaseModel(_mockSender.Object, "");
+        var model = new BaseProjectNotesModel(_mockSender.Object, "");
 
         // Act
         var result = await model.GetNoteById(Guid.Empty);
@@ -38,7 +38,7 @@ public class ProjectNotesBaseModelTests
 
         _mockSender.Setup(x => x.Send(It.Is<GetNoteByIdQuery>(q => q.NoteId == new NoteId(noteId)), It.IsAny<CancellationToken>()))
             .ReturnsAsync(Result<NoteDto>.Failure(""));
-        var model = new ProjectNotesBaseModel(_mockSender.Object, "");
+        var model = new BaseProjectNotesModel(_mockSender.Object, "");
 
         // Act
         var result = await model.GetNoteById(noteId);
@@ -65,7 +65,7 @@ public class ProjectNotesBaseModelTests
             .ReturnsAsync(Result<NoteDto>.Success(expectedNote));
 
 
-        var model = new ProjectNotesBaseModel(_mockSender.Object, "");
+        var model = new BaseProjectNotesModel(_mockSender.Object, "");
 
         // Act
         var result = await model.GetNoteById(noteId);
@@ -83,7 +83,7 @@ public class ProjectNotesBaseModelTests
     public void CanAddNotes_ReturnsExpectedResult(ProjectState projectState, bool expected)
     {
         // Arrange
-        var model = new ProjectNotesBaseModel(_mockSender.Object, "")
+        var model = new BaseProjectNotesModel(_mockSender.Object, "")
         {
             Project = new ProjectDto { State = projectState }
         };
@@ -111,7 +111,7 @@ public class ProjectNotesBaseModelTests
             new Claim(CustomClaimTypeConstants.UserId, currentUserGuidString)
         ]));
 
-        var model = new ProjectNotesBaseModel(_mockSender.Object, "")
+        var model = new BaseProjectNotesModel(_mockSender.Object, "")
         {
             Project = new ProjectDto { State = projectState },
             PageContext = new PageContext
@@ -147,7 +147,7 @@ public class ProjectNotesBaseModelTests
             new Claim(CustomClaimTypeConstants.UserId, currentUserGuidString)
         ]));
 
-        var model = new ProjectNotesBaseModel(_mockSender.Object, "")
+        var model = new BaseProjectNotesModel(_mockSender.Object, "")
         {
             Project = new ProjectDto { State = projectState },
             PageContext = new PageContext
@@ -172,7 +172,7 @@ public class ProjectNotesBaseModelTests
     public void GetReturnUrl_ReturnsExpectedUrl(string? taskIdentifier, string expectedUrl)
     {
         // Arrange
-        var model = new ProjectNotesBaseModel(_mockSender.Object, "")
+        var model = new BaseProjectNotesModel(_mockSender.Object, "")
         {
             ProjectId = "00000000-0000-0000-0000-000000000010"
         };

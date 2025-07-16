@@ -12,7 +12,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace Dfe.Complete.Pages.Projects.Notes;
 
-public class ViewProjectNotesModel(ISender sender, IAuthorizationService _authorizationService) : ProjectNotesBaseModel(sender, NotesNavigation)
+public class ViewProjectNotesModel(ISender sender, IAuthorizationService _authorizationService) : BaseProjectNotesModel(sender, NotesNavigation)
 {
     public IReadOnlyList<NoteDto> Notes { get; private set; } = [];
 

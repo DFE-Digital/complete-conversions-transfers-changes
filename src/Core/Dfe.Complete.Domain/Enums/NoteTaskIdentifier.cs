@@ -7,21 +7,21 @@ public enum NoteTaskIdentifier
 {
     [Description("handover")]
     [DisplayDescription("Handover with regional delivery officer")]
-    Handover,
+    Handover = 1,
 
     [Description("land_questionnaire")]
     [DisplayDescription("Land questionnaire")]
-    LandQuestionnaire,
+    LandQuestionnaire = 2,
 
     [Description("land_registry")]
     [DisplayDescription("Land registry title plans")]
-    LandRegistry,
+    LandRegistry = 3,
 
     [Description("stakeholder_kick_off")]
     [DisplayDescription("External stakeholder kick-off")]
-    StakeholderKickoff,
+    StakeholderKickoff = 4,
 
     [Description("supplemental_funding_agreement")]
     [DisplayDescription("Supplemental funding agreement")]
-    SupplementalFundingAgreement
+    SupplementalFundingAgreement = 5
 }
