@@ -5,9 +5,8 @@ using MediatR;
 namespace Dfe.Complete.Pages.Projects.ProjectView;
 
 [ExcludeFromCodeCoverage]
-public abstract class ProjectLayoutModel(ISender sender, string currentNavigation) : BaseProjectPageModel(sender)
+public abstract class ProjectLayoutModel(ISender sender, ILogger _logger, string currentNavigation) : BaseProjectPageModel(sender, _logger)
 {
-    protected ISender Sender { get; } = sender;
     public string CurrentNavigationItem { get; } = currentNavigation;
 
     public const string TaskListNavigation = "task-list";
