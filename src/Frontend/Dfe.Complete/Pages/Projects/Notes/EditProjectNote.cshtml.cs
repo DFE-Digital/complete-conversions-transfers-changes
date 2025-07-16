@@ -12,7 +12,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace Dfe.Complete.Pages.Projects.Notes;
 
-public class EditProjectNoteModel(ISender sender, ErrorService errorService) : ProjectNotesBaseModel(sender, NotesNavigation)
+public class EditProjectNoteModel(ISender sender, ErrorService errorService) : BaseProjectNotesModel(sender, NotesNavigation)
 {
     [BindProperty(SupportsGet = true, Name = "noteId")]
     public required Guid NoteId { get; set; }

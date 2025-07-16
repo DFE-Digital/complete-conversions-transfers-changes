@@ -26,12 +26,12 @@ public static class EnumExtensions
 		return (attributes.Length > 0 ? attributes[0].Description : source.ToString()) ?? string.Empty;
 	}
 
-	public static string ToDisplayDescription<T>(this T source)
+	public static string ToDisplayDescription<T>(this T? source) //where T : Enum?
 	{
 		if (source == null)
 			return string.Empty;
 
-		var name = source.ToString();
+		var name = source?.ToString() ?? string.Empty;
 		if (string.IsNullOrEmpty(name))
 			return string.Empty;
 
