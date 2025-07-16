@@ -7,12 +7,10 @@ using DfE.CoreLibs.Security.Enums;
 using DfE.CoreLibs.Security.Interfaces;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Options;
-using Moq;
 
 namespace Dfe.Complete.Tests;
 
@@ -31,8 +29,7 @@ public sealed class StartupDataProtectionTests : IDisposable
     {
         // Arrange
         IConfiguration cfg = BuildConfiguration(_tempDpTargetPath, keyVaultKey: string.Empty);
-        var env = BuildEnvironment();
-        var startup = new Startup(cfg, env);
+        var startup = new Startup(cfg);
         var services = new ServiceCollection();
 
         // Act
@@ -50,8 +47,7 @@ public sealed class StartupDataProtectionTests : IDisposable
         // Arrange
         var fakeKeyVaultUri = "https://contoso.vault.azure.net/keys/dp-unit-test/0000000000000000";
         IConfiguration cfg = BuildConfiguration(_tempDpTargetPath, fakeKeyVaultUri);
-        var env = BuildEnvironment();
-        var startup = new Startup(cfg, env);
+        var startup = new Startup(cfg);
         var services = new ServiceCollection();
 
         // Act
@@ -67,8 +63,7 @@ public sealed class StartupDataProtectionTests : IDisposable
     {
         // Arrange
         IConfiguration cfg = BuildConfiguration(_tempDpTargetPath, keyVaultKey: string.Empty);
-        var env = BuildEnvironment();
-        var startup = new Startup(cfg, env);
+        var startup = new Startup(cfg);
         var services = new ServiceCollection();
 
         // Act

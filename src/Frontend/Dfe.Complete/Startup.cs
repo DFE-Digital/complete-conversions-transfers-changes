@@ -20,25 +20,19 @@ using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using DfE.CoreLibs.Http.Middlewares.CorrelationId;
 using DfE.CoreLibs.Http.Interfaces;
 using Dfe.Complete.Logging.Middleware;
-using Microsoft.AspNetCore.Mvc;
 using DfE.CoreLibs.Security.Antiforgery;
 using Dfe.Complete.Validators;
 using DfE.CoreLibs.Security.Enums;
-using Dfe.Complete.Application.Extensions;
-using DfE.CoreLibs.Security.Interfaces;
-using Microsoft.AspNetCore.Antiforgery;
 
 namespace Dfe.Complete;
 
 public class Startup
 {
     private readonly TimeSpan _authenticationExpiration;
-    private readonly IWebHostEnvironment _env;
 
-    public Startup(IConfiguration configuration, IWebHostEnvironment env)
+    public Startup(IConfiguration configuration)
     {
         Configuration = configuration;
-        _env = env;
         _authenticationExpiration = TimeSpan.FromMinutes(int.Parse(Configuration["AuthenticationExpirationInMinutes"] ?? "60"));
     }
 
