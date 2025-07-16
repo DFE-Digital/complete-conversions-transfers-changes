@@ -1,4 +1,3 @@
-using System;
 using System.Reflection;
 using Dfe.Complete.Validators;
 using DfE.CoreLibs.Security.Antiforgery;
@@ -39,6 +38,7 @@ public sealed class StartupDataProtectionTests : IDisposable
         // Assert
         Assert.NotNull(sp.GetService<IDataProtectionProvider>());
         Assert.True(Directory.Exists(_tempDpTargetPath));
+
     }
 
     [Fact]
@@ -75,18 +75,13 @@ public sealed class StartupDataProtectionTests : IDisposable
         var configuredOptions = sp.GetRequiredService<IOptions<CustomAwareAntiForgeryOptions>>().Value;
         Assert.NotNull(configuredOptions.CheckerGroups);
 
-        Assert.Contains(services,
-            d => d.ServiceType == typeof(ICustomRequestChecker) &&
-                 d.ImplementationType == typeof(CypressRequestChecker));
-        Assert.Contains(services,
-            d => d.ServiceType == typeof(ICustomRequestChecker) &&
-                 d.ImplementationType == typeof(HasHeaderKeyExistsInRequestValidator));
+        Assert.Contains(services, d => d.ServiceType == typeof(ICustomRequestChecker) && d.ImplementationType == typeof(CypressRequestChecker));
+        Assert.Contains(services, d => d.ServiceType == typeof(ICustomRequestChecker) && d.ImplementationType == typeof(HasHeaderKeyExistsInRequestValidator));
 
         Assert.Single(configuredOptions.CheckerGroups);
         Assert.Equal(2, configuredOptions.CheckerGroups.First().TypeNames.Length);
-        Assert.Equal(typeof(HasHeaderKeyExistsInRequestValidator).FullName,
-            configuredOptions.CheckerGroups[0].TypeNames[0]);
-        Assert.Equal(typeof(CypressRequestChecker).FullName, configuredOptions.CheckerGroups[0].TypeNames[1]);
+        Assert.Equal(nameof(HasHeaderKeyExistsInRequestValidator), configuredOptions.CheckerGroups[0].TypeNames[0]);
+        Assert.Equal(nameof(CypressRequestChecker), configuredOptions.CheckerGroups[0].TypeNames[1]);
         Assert.Equal(CheckerOperator.Or, configuredOptions.CheckerGroups[0].CheckerOperator);
     }
 
@@ -114,8 +109,8 @@ public sealed class StartupDataProtectionTests : IDisposable
     private static void InvokeSetupDataProtection(Startup startup, IServiceCollection services)
     {
         MethodInfo? mi = typeof(Startup).GetMethod(
-            "SetupDataProtection",
-            BindingFlags.Instance | BindingFlags.NonPublic);
+                            "SetupDataProtection",
+                            BindingFlags.Instance | BindingFlags.NonPublic);
         Assert.NotNull(mi);
         mi.Invoke(startup, [services]);
     }
@@ -132,12 +127,7 @@ public sealed class StartupDataProtectionTests : IDisposable
 
     public void Dispose()
     {
-        try
-        {
-            Directory.Delete(_tempDpTargetPath, recursive: true);
-        }
-        catch
-        {
-        }
+        try { Directory.Delete(_tempDpTargetPath, recursive: true); }
+        catch { }
     }
 }
