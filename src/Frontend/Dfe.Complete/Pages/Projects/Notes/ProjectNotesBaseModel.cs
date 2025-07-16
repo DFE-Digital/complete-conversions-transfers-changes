@@ -38,6 +38,7 @@ public class ProjectNotesBaseModel(ISender sender, string notesNavigation) : Pro
         if (isNotable == true) return false;
         return CanEditNote(noteUserId);
     }
+
     public string GetReturnUrl(string? taskIdentifier = null)
     {
         if (taskIdentifier != null)

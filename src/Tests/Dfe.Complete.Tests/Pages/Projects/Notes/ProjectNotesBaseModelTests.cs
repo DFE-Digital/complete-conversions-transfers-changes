@@ -129,4 +129,58 @@ public class ProjectNotesBaseModelTests
         // Assert
         Assert.Equal(expected, result);
     }
+
+    [Theory]
+    [InlineData(ProjectState.Completed, "00000000-0000-0000-0000-000000000001", false, false)]
+    [InlineData(ProjectState.Active, "00000000-0000-0000-0000-000000000001", false, true)]
+    [InlineData(ProjectState.Active, "00000000-0000-0000-0000-000000000001", true, false)]
+    [InlineData(ProjectState.Active, "00000000-0000-0000-0000-000000000002", false, false)]
+    public void CanDeleteNote_ReturnsExpectedResult(ProjectState projectState, string currentUserGuidString, bool isNotable, bool expected)
+    {
+        // Arrange
+        var assignedUserGuid = new Guid("00000000-0000-0000-0000-000000000001");
+        var assignedUserId = new UserId(assignedUserGuid);
+
+        var claimsPrincipal = new ClaimsPrincipal(new ClaimsIdentity(
+        [
+            new Claim("objectidentifier", currentUserGuidString),
+            new Claim(CustomClaimTypeConstants.UserId, currentUserGuidString)
+        ]));
+
+        var model = new ProjectNotesBaseModel(_mockSender.Object, "")
+        {
+            Project = new ProjectDto { State = projectState },
+            PageContext = new PageContext
+            {
+                HttpContext = new DefaultHttpContext
+                {
+                    User = claimsPrincipal
+                }
+            }
+        };
+
+        // Act
+        var result = model.CanDeleteNote(assignedUserId, isNotable);
+
+        // Assert
+        Assert.Equal(expected, result);
+    }
+
+    [Theory]
+    [InlineData(null, "/projects/00000000-0000-0000-0000-000000000010/notes")]
+    [InlineData("Handover", "/projects/00000000-0000-0000-0000-000000000010/tasks/handover")]
+    public void GetReturnUrl_ReturnsExpectedUrl(string? taskIdentifier, string expectedUrl)
+    {
+        // Arrange
+        var model = new ProjectNotesBaseModel(_mockSender.Object, "")
+        {
+            ProjectId = "00000000-0000-0000-0000-000000000010"
+        };
+
+        // Act
+        var result = model.GetReturnUrl(taskIdentifier);
+
+        // Assert
+        Assert.Equal(expectedUrl, result);
+    }
 }

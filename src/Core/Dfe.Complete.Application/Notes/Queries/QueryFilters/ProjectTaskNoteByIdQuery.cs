@@ -9,6 +9,6 @@ namespace Dfe.Complete.Application.Notes.Queries.QueryFilters;
 public class ProjectTaskNoteByIdQuery(ProjectId projectId, NoteTaskIdentifier taskIdentifier) : IQueryObject<Note>
 {
     public IQueryable<Note> Apply(IQueryable<Note> query)
-        => projectId == null ? query : query.Where(note => note.ProjectId == projectId
+        => query.Where(note => note.ProjectId == projectId
             && note.TaskIdentifier == taskIdentifier.ToDescription());
 }
