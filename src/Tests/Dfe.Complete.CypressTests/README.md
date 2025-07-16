@@ -60,7 +60,7 @@ IF NOT EXISTS (SELECT *
                WHERE 'TEST-AD-ID' = active_directory_user_id)
     BEGIN
         INSERT INTO [complete].[users]
-        VALUES ( NEWID()
+        VALUES ( 'C29AF147-F2F5-4D30-B8A5-C68BF83A148A'
                , 'cypress.testuser@education.gov.uk'
                , GETDATE()
                , GETDATE()
@@ -84,7 +84,7 @@ IF NOT EXISTS (SELECT *
                WHERE 'TEST-AD-ID-RDO' = active_directory_user_id)
     BEGIN
         INSERT INTO [complete].[users]
-        VALUES ( NEWID()
+        VALUES ( 'FD190446-DAFB-4ED7-8FB5-1AB473DDD114'
                , 'cypress.rdo-london@education.gov.uk'
                , GETDATE()
                , GETDATE()
@@ -108,7 +108,7 @@ IF NOT EXISTS (SELECT *
                WHERE 'TEST-AD-ID-RCS' = active_directory_user_id)
     BEGIN
         INSERT INTO [complete].[users]
-        VALUES ( NEWID()
+        VALUES ( 'C8371E6E-FD7F-42F7-8E38-F58E7308962E'
                , 'cypress.regional-casework-services@education.gov.uk'
                , GETDATE()
                , GETDATE()
@@ -132,7 +132,7 @@ IF NOT EXISTS (SELECT *
                WHERE 'TEST-AD-ID-RDO-TL' = active_directory_user_id)
     BEGIN
         INSERT INTO [complete].[users]
-        VALUES ( NEWID()
+        VALUES ( 'B0DFB912-F806-4FC2-837F-FBE2F1779789'
                , 'cypress.rdo-team-leader@education.gov.uk'
                , GETDATE()
                , GETDATE()
@@ -156,7 +156,7 @@ IF NOT EXISTS (SELECT *
                WHERE 'TEST-AD-ID-RCS-TL' = active_directory_user_id)
     BEGIN
         INSERT INTO [complete].[users]
-        VALUES ( NEWID()
+        VALUES ( 'A7FC973C-893A-472B-89F0-5CEE72C70C80'
                , 'cypress.rcs-team-leader@education.gov.uk'
                , GETDATE()
                , GETDATE()
@@ -180,7 +180,7 @@ IF NOT EXISTS (SELECT *
                WHERE 'TEST-AD-ID-BS' = active_directory_user_id)
     BEGIN
         INSERT INTO [complete].[users]
-        VALUES ( NEWID()
+        VALUES ( 'B62A3AC5-2C54-4E85-8A83-DE9199D0BCCE'
                , 'cypress.business-support@education.gov.uk'
                , GETDATE()
                , GETDATE()
@@ -204,7 +204,7 @@ IF NOT EXISTS (SELECT *
                WHERE 'TEST-AD-ID-DC' = active_directory_user_id)
     BEGIN
         INSERT INTO [complete].[users]
-        VALUES ( NEWID()
+        VALUES ( '9353003F-3359-4684-A696-5A96CDAB43E2'
                , 'cypress.data-consumers@education.gov.uk'
                , GETDATE()
                , GETDATE()
@@ -228,7 +228,7 @@ IF NOT EXISTS (SELECT *
                WHERE 'TEST-AD-ID-SS' = active_directory_user_id)
     BEGIN
         INSERT INTO [complete].[users]
-        VALUES ( NEWID()
+        VALUES ( '65F5A723-101D-4E29-B5C3-3A704D229477'
                , 'cypress.service-support@education.gov.uk'
                , GETDATE()
                , GETDATE()

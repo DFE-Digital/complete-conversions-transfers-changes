@@ -9,6 +9,7 @@ using Dfe.Complete.Pages.Projects.Notes;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.Extensions.Logging;
 using Moq;
 
 namespace Dfe.Complete.Tests.Pages.Projects.Notes;
@@ -16,12 +17,13 @@ namespace Dfe.Complete.Tests.Pages.Projects.Notes;
 public class ProjectNotesBaseModelTests
 {
     private readonly Mock<ISender> _mockSender = new();
+    private readonly Mock<ILogger<ProjectNotesBaseModel>> _mockLogger = new();
 
     [Fact]
     public async Task GetNoteById_NoNoteId_ReturnsNull()
     {
         // Arrange
-        var model = new ProjectNotesBaseModel(_mockSender.Object, "");
+        var model = new ProjectNotesBaseModel(_mockSender.Object, _mockLogger.Object, "");
 
         // Act
         var result = await model.GetNoteById(Guid.Empty);
@@ -38,7 +40,7 @@ public class ProjectNotesBaseModelTests
 
         _mockSender.Setup(x => x.Send(It.Is<GetNoteByIdQuery>(q => q.NoteId == new NoteId(noteId)), It.IsAny<CancellationToken>()))
             .ReturnsAsync(Result<NoteDto>.Failure(""));
-        var model = new ProjectNotesBaseModel(_mockSender.Object, "");
+        var model = new ProjectNotesBaseModel(_mockSender.Object, _mockLogger.Object, "");
 
         // Act
         var result = await model.GetNoteById(noteId);
@@ -65,7 +67,7 @@ public class ProjectNotesBaseModelTests
             .ReturnsAsync(Result<NoteDto>.Success(expectedNote));
 
 
-        var model = new ProjectNotesBaseModel(_mockSender.Object, "");
+        var model = new ProjectNotesBaseModel(_mockSender.Object, _mockLogger.Object, "");
 
         // Act
         var result = await model.GetNoteById(noteId);
@@ -83,7 +85,7 @@ public class ProjectNotesBaseModelTests
     public void CanAddNotes_ReturnsExpectedResult(ProjectState projectState, bool expected)
     {
         // Arrange
-        var model = new ProjectNotesBaseModel(_mockSender.Object, "")
+        var model = new ProjectNotesBaseModel(_mockSender.Object, _mockLogger.Object, "")
         {
             Project = new ProjectDto { State = projectState }
         };
@@ -111,7 +113,7 @@ public class ProjectNotesBaseModelTests
             new Claim(CustomClaimTypeConstants.UserId, currentUserGuidString)
         ]));
 
-        var model = new ProjectNotesBaseModel(_mockSender.Object, "")
+        var model = new ProjectNotesBaseModel(_mockSender.Object, _mockLogger.Object, "")
         {
             Project = new ProjectDto { State = projectState },
             PageContext = new PageContext
