@@ -17,7 +17,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 namespace Dfe.Complete.Pages.Projects.Notes;
 
 [Authorize(policy: UserPolicyConstants.CanAddNotes)]
-public class AddProjectNoteModel(ISender sender, ErrorService errorService) : BaseProjectNotesModel(sender, NotesNavigation)
+public class AddProjectNoteModel(ISender sender, ErrorService errorService, ILogger<AddProjectNoteModel> _logger) : BaseProjectNotesModel(sender, _logger, NotesNavigation)
 {
     [BindProperty(Name = "note-text")]
     [Required]

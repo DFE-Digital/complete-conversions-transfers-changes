@@ -3,7 +3,6 @@ using Dfe.AcademiesApi.Client.Contracts;
 using Dfe.Complete.Application.Common.Models;
 using Dfe.Complete.Application.Projects.Models;
 using Dfe.Complete.Application.Projects.Queries.GetProject;
-using Dfe.Complete.Application.Projects.Queries.GetTransferTasksData;
 using Dfe.Complete.Application.Services.AcademiesApi;
 using Dfe.Complete.Constants;
 using Dfe.Complete.Domain.Enums;
@@ -16,9 +15,11 @@ using Dfe.Complete.Utils;
 using DfE.CoreLibs.Testing.AutoFixture.Attributes;
 using DfE.CoreLibs.Testing.AutoFixture.Customizations;
 using MediatR;
-using Moq;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
+using Moq;
 using System.Reflection;
+using Dfe.Complete.Tests.Common.Assertions;
 
 namespace Dfe.Complete.Tests.Models;
 
@@ -26,39 +27,45 @@ public class BaseProjectsPageModelTests
 {
     [Theory]
     [CustomAutoData(typeof(DateOnlyCustomization))]
-    public async Task OnGet_When_ProjectId_NotValidGuid_ThrowsException([Frozen] Mock<ISender> mockSender)
+    public async Task OnGet_When_ProjectId_NotValidGuid_ThrowsException([Frozen] Mock<ISender> mockSender, [Frozen] ILogger<AboutTheProjectModel> _logger)
     {
-        var model = new AboutTheProjectModel(mockSender.Object);
+        var model = new AboutTheProjectModel(mockSender.Object, _logger);
         model.ProjectId = "an-invalid-guid";
 
-        // Act & Assert
-        var ex = await Assert.ThrowsAsync<InvalidDataException>(() => model.OnGetAsync());
-        Assert.Equal($"{model.ProjectId} is not a valid Guid.", ex.Message);
+        // Act
+        await model.OnGetAsync();
+
+        // Assert
+        _logger.ShouldHaveLogged("an-invalid-guid is not a valid Guid.", LogLevel.Warning);
+        Assert.Null(model.Project);
     }
 
     [Theory]
     [CustomAutoData(typeof(DateOnlyCustomization))]
-    public async Task OnGet_When_Project_DoesNotExist_ThrowsException([Frozen] Mock<ISender> mockSender)
+    public async Task OnGet_When_Project_DoesNotExist_ThrowsException([Frozen] Mock<ISender> mockSender, [Frozen] ILogger<AboutTheProjectModel> _logger)
     {
-        var model = new AboutTheProjectModel(mockSender.Object);
+        var model = new AboutTheProjectModel(mockSender.Object, _logger);
         model.ProjectId = Guid.NewGuid().ToString();
 
         mockSender.Setup(s => s.Send(It.IsAny<GetProjectByIdQuery>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(Result<ProjectDto?>.Success(null));
 
-        // Act & Assert
-        var ex = await Assert.ThrowsAsync<NotFoundException>(() => model.OnGetAsync());
-        Assert.Equal($"Project {model.ProjectId} does not exist.", ex.Message);
+        // Act
+        await model.OnGetAsync();
+
+        // Assert
+        _logger.ShouldHaveLogged($"Project {model.ProjectId} does not exist.", LogLevel.Warning);
+        Assert.Null(model.Project);
     }
 
     [Theory]
     [CustomAutoData(typeof(DateOnlyCustomization))]
-    public async Task OnGet_When_Establishment_DoesNotExist_ThrowsException([Frozen] Mock<ISender> mockSender)
+    public async Task OnGet_When_Establishment_DoesNotExist_ThrowsException([Frozen] Mock<ISender> mockSender, [Frozen] ILogger<AboutTheProjectModel> _logger)
     {
         var projectIdGuid = Guid.NewGuid();
         var now = DateTime.UtcNow;
 
-        var model = new AboutTheProjectModel(mockSender.Object);
+        var model = new AboutTheProjectModel(mockSender.Object, _logger);
         model.ProjectId = projectIdGuid.ToString();
 
         var project = new ProjectDto
@@ -86,12 +93,12 @@ public class BaseProjectsPageModelTests
 
     [Theory]
     [CustomAutoData(typeof(DateOnlyCustomization))]
-    public async Task OnGet_When_IncomingTrustUkprn_IsSupplied_But_Invalid_ThrowsException([Frozen] Mock<ISender> mockSender)
+    public async Task OnGet_When_IncomingTrustUkprn_IsSupplied_But_Invalid_ThrowsException([Frozen] Mock<ISender> mockSender, [Frozen] ILogger<AboutTheProjectModel> _logger)
     {
         var projectIdGuid = Guid.NewGuid();
         var now = DateTime.UtcNow;
 
-        var model = new AboutTheProjectModel(mockSender.Object);
+        var model = new AboutTheProjectModel(mockSender.Object, _logger);
         model.ProjectId = projectIdGuid.ToString();
 
         var project = new ProjectDto
@@ -138,12 +145,12 @@ public class BaseProjectsPageModelTests
 
     [Theory]
     [CustomAutoData(typeof(DateOnlyCustomization))]
-    public async Task OnGet_When_Transfer_And_OutgoingTrustUkprn_Not_Invalid_ThrowsException([Frozen] Mock<ISender> mockSender)
+    public async Task OnGet_When_Transfer_And_OutgoingTrustUkprn_Not_Invalid_ThrowsException([Frozen] Mock<ISender> mockSender, [Frozen] ILogger<AboutTheProjectModel> _logger)
     {
         var projectIdGuid = Guid.NewGuid();
         var now = DateTime.UtcNow;
 
-        var model = new AboutTheProjectModel(mockSender.Object);
+        var model = new AboutTheProjectModel(mockSender.Object, _logger);
         model.ProjectId = projectIdGuid.ToString();
 
         var project = new ProjectDto

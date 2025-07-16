@@ -5,7 +5,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.StakeholderKickoffTask
 {
-    public class StakeholderKickoffTaskModel(ISender sender, IAuthorizationService authorizationService) : BaseProjectTaskModel(sender, authorizationService, NoteTaskIdentifier.StakeholderKickoff)
+    public class StakeholderKickoffTaskModel(ISender sender, IAuthorizationService authorizationService)
+        : BaseProjectTaskModel(sender, authorizationService, NoteTaskIdentifier.StakeholderKickoff)
     {
         [BindProperty(Name = "send-intro-emails")]
         public bool? SendIntroEmails { get; set; }
