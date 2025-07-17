@@ -12,7 +12,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace Dfe.Complete.Pages.Projects.Notes;
 
-public class EditProjectNoteModel(ISender sender, ErrorService errorService, ILogger<EditProjectNoteModel> _logger) : ProjectNotesBaseModel(sender, _logger, NotesNavigation)
+public class EditProjectNoteModel(ISender sender, ErrorService errorService, ILogger<EditProjectNoteModel> logger) : BaseProjectNotesModel(sender, logger, NotesNavigation)
 {
     [BindProperty(SupportsGet = true, Name = "noteId")]
     public required Guid NoteId { get; set; }
@@ -21,6 +21,8 @@ public class EditProjectNoteModel(ISender sender, ErrorService errorService, ILo
     [Required]
     [DisplayName("note")]
     public required string NoteText { get; set; }
+
+    public string? TaskIdentifier { get; set; }
 
     public async override Task<IActionResult> OnGetAsync()
     {
@@ -42,6 +44,8 @@ public class EditProjectNoteModel(ISender sender, ErrorService errorService, ILo
         }
 
         NoteText = note.Body;
+        TaskIdentifier = note.TaskIdentifier;
+
         return Page();
     }
 
@@ -55,8 +59,8 @@ public class EditProjectNoteModel(ISender sender, ErrorService errorService, ILo
 
         var response = await Sender.Send(new UpdateNoteCommand(new NoteId(NoteId), NoteText));
 
-        if (!response.IsSuccess)
-            throw new ApplicationException($"An error occurred when updating note {NoteId} for project {ProjectId}");
+        if (!response.IsSuccess || response.Value == null)
+            throw new InvalidOperationException($"An error occurred when updating note {NoteId} for project {ProjectId}");
 
         TempData.SetNotification(
             NotificationType.Success,
@@ -64,7 +68,7 @@ public class EditProjectNoteModel(ISender sender, ErrorService errorService, ILo
             "Your note has been edited"
         );
 
-        return Redirect(string.Format(RouteConstants.ProjectViewNotes, ProjectId));
+        return Redirect(GetReturnUrl(response.Value.TaskIdentifier));
     }
 }
 

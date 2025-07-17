@@ -14,7 +14,9 @@ namespace Dfe.Complete.Application.Common.Mappers
 			CreateMap<User, UserDto>();
 			CreateMap<Note, NoteDto>()
 				.ForCtorParam(nameof(NoteDto.UserFullName),
-					opt => opt.MapFrom(src => src.User.FullName));
+					opt => opt.MapFrom(src => src.User.FullName))
+				.ForCtorParam(nameof(NoteDto.IsNotable),
+					opt => opt.MapFrom(src => src.NotableId != null && src.NotableType != null));
 			CreateMap<GiasEstablishment, EstablishmentDto>()
 				.ForMember(dest => dest.Ukprn,
 					opt => opt.MapFrom(src => src.Ukprn != null ? src.Ukprn.ToString() : null))

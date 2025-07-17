@@ -3,5 +3,5 @@ using MediatR;
 
 namespace Dfe.Complete.Pages.Projects.TaskList
 {
-    public class TaskListModel(ISender sender, ILogger<TaskListModel> _logger) : ProjectLayoutModel(sender, _logger, TaskListNavigation);
+    public class TaskListModel(ISender sender, ILogger<TaskListModel> logger) : ProjectLayoutModel(sender, logger, TaskListNavigation);
 }
