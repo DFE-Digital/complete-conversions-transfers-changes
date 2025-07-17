@@ -1009,7 +1009,8 @@
             "name": "UserAdId",
             "in": "query",
             "schema": {
-              "type": "string"
+              "type": "string",
+              "nullable": true
             },
             "x-position": 2
           },
@@ -1038,13 +1039,22 @@
             "x-position": 5
           },
           {
+            "name": "UserEmail",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            },
+            "x-position": 6
+          },
+          {
             "name": "Page",
             "in": "query",
             "schema": {
               "type": "integer",
               "format": "int32"
             },
-            "x-position": 6
+            "x-position": 7
           },
           {
             "name": "Count",
@@ -1053,7 +1063,7 @@
               "type": "integer",
               "format": "int32"
             },
-            "x-position": 7
+            "x-position": 8
           }
         ],
         "responses": {
@@ -3720,7 +3730,12 @@
           },
           "createdDate": {
             "type": "string",
-            "format": "date",
+            "format": "date-time",
+            "nullable": true
+          },
+          "updatedDate": {
+            "type": "string",
+            "format": "date-time",
             "nullable": true
           }
         }

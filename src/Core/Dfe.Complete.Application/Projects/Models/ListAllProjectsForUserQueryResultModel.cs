@@ -17,7 +17,8 @@ public record ListAllProjectsForUserQueryResultModel(
     DateOnly? ConversionOrTransferDate,
     DateOnly? CompletionDate,
     User? AssignedTo,
-    DateOnly? CreatedDate
+    DateTime? CreatedDate,
+    DateTime? UpdatedDate
 )
 {
     public static ListAllProjectsForUserQueryResultModel MapProjectAndEstablishmentToListAllProjectsForUserQueryResultModel(Project project,
@@ -43,7 +44,8 @@ public record ListAllProjectsForUserQueryResultModel(
             project.SignificantDate,
             project.CompletedAt.HasValue ? DateOnly.FromDateTime(project.CompletedAt.Value) : null,
             project.AssignedTo,
-            DateOnly.FromDateTime(project.CreatedAt)
+            project.CreatedAt,
+            project.UpdatedAt
         );
     }
 }
