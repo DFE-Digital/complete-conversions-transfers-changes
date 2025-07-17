@@ -51,7 +51,9 @@
         public const string ProjectAbout = Project + "/information";
         public const string ProjectEditAbout = ProjectAbout + "/edit";
 
+        public const string ProjectDateHistory = Project + "/date-history";
         public const string ProjectTask = ProjectTaskList + "/{1}";
+        
         public const string ProjectHandoverWithDeliveryOfficerTask = ProjectTaskList + "/handover";
         public const string ProjectStakeholderKickoffTask = ProjectTaskList + "/stakeholder_kickoff";
         public const string ProjectLandQuestionnaireTask = ProjectTaskList + "/land_questionnaire";

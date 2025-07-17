@@ -2525,6 +2525,12 @@
               "$ref": "#/components/schemas/Note"
             }
           },
+          "significantDateHistories": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SignificantDateHistoryDto"
+            }
+          },
           "regionalDeliveryOfficer": {
             "$ref": "#/components/schemas/User"
           },
@@ -3497,6 +3503,22 @@
                 "$ref": "#/components/schemas/UserId"
               }
             ]
+          },
+          "reason": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/SignificantDateHistoryReason"
+              }
+            ]
+          },
+          "user": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/User"
+              }
+            ]
           }
         }
       },
@@ -3507,6 +3529,143 @@
           "value": {
             "type": "string",
             "format": "guid"
+          }
+        }
+      },
+      "SignificantDateHistoryReason": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "$ref": "#/components/schemas/SignificantDateHistoryReasonId"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "reasonType": {
+            "type": "string",
+            "nullable": true
+          },
+          "significantDateHistoryId": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/SignificantDateHistoryId"
+              }
+            ]
+          }
+        }
+      },
+      "SignificantDateHistoryReasonId": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "value": {
+            "type": "string",
+            "format": "guid"
+          }
+        }
+      },
+      "SignificantDateHistoryDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/SignificantDateHistoryId"
+              }
+            ]
+          },
+          "revisedDate": {
+            "type": "string",
+            "format": "date",
+            "nullable": true
+          },
+          "previousDate": {
+            "type": "string",
+            "format": "date",
+            "nullable": true
+          },
+          "projectId": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/ProjectId"
+              }
+            ]
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "userId": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/UserId"
+              }
+            ]
+          },
+          "reason": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/SignificantDateHistoryReasonDto"
+              }
+            ]
+          },
+          "user": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/User"
+              }
+            ]
+          }
+        }
+      },
+      "SignificantDateHistoryReasonDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/SignificantDateHistoryReasonId"
+              }
+            ]
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "reasonType": {
+            "type": "string",
+            "nullable": true
+          },
+          "significantDateHistoryId": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/SignificantDateHistoryId"
+              }
+            ]
           }
         }
       },
