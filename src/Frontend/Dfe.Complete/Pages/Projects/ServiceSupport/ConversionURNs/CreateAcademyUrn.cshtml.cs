@@ -17,7 +17,7 @@ namespace Dfe.Complete.Pages.Projects.ServiceSupport.ConversionURNs
 {
     [Authorize(policy: UserPolicyConstants.CanViewServiceSupport)]
     public class CreateAcademyUrnModel(ISender sender, 
-        ErrorService errorService) : BaseProjectPageModel(sender)
+        ErrorService errorService, ILogger<CreateAcademyUrnModel> _logger) : BaseProjectPageModel(sender, _logger)
     {
         [BindProperty]
         [AcademyUrn]
@@ -36,7 +36,7 @@ namespace Dfe.Complete.Pages.Projects.ServiceSupport.ConversionURNs
                 return Page();
             }
             
-            var result = await sender.Send(new GetEstablishmentByUrnQuery(URN.ToInt()), cancellationToken);
+            var result = await Sender.Send(new GetEstablishmentByUrnQuery(URN.ToInt()), cancellationToken);
             SelectedAcademy = result.Value;
 
             return Page();
@@ -57,7 +57,7 @@ namespace Dfe.Complete.Pages.Projects.ServiceSupport.ConversionURNs
 
             // Update the project
             var updateAcademyUrnCommand = new UpdateAcademyUrnCommand(projectId, urn);
-            await sender.Send(updateAcademyUrnCommand, cancellationToken);
+            await Sender.Send(updateAcademyUrnCommand, cancellationToken);
             
             var successMessage = string.Format("Academy URN {0} added to {1}, {2}", URN, Establishment?.Name, Establishment?.Urn);
 
