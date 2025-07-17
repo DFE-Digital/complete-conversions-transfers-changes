@@ -77,6 +77,13 @@
                         //Delete if domain matches - need both as we wont be sent the cookie if the domain doesnt match
 						_httpContextAccessor.HttpContext.Response.Cookies.Delete(cookie, new CookieOptions() { Domain = _analyticsDomain});
 					}
+
+                    // App Insights
+                    if (cookie.StartsWith("ai_"))
+                    {
+                        _logger.LogInformation("Expiring App insights cookie: {Cookie}", cookie);
+                        _httpContextAccessor.HttpContext.Response.Cookies.Append(cookie, string.Empty, new CookieOptions { Expires = DateTime.Now.AddYears(-1), Secure = true, SameSite = SameSiteMode.Lax, HttpOnly = true });
+                    }
                 }
             }
         }

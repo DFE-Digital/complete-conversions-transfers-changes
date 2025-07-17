@@ -69,6 +69,7 @@ public class Startup
             });
 
         ConfigureCustomAntiforgery(services);
+        SetupApplicationInsights(services);
 
         services.AddControllersWithViews()
            .AddMicrosoftIdentityUI()
@@ -88,6 +89,8 @@ public class Startup
            });
         services.AddControllers().AddMicrosoftIdentityUI();
         SetupDataProtection(services);
+
+        services.AddApplicationInsightsTelemetry(Configuration);
 
         services.AddCompleteClientProject(Configuration);
 
@@ -115,8 +118,8 @@ public class Startup
         authenticationBuilder.AddMicrosoftIdentityWebApp(Configuration);
 
         ConfigureCookies(services);
-        var appInsightsCnnStr = Configuration.GetSection("ApplicationInsights")?["ConnectionString"];
-        services.AddApplicationInsightsTelemetry(options => options.ConnectionString = appInsightsCnnStr);
+
+        services.AddApplicationInsightsTelemetry(Configuration);
 
         System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
 
@@ -196,6 +199,8 @@ public class Startup
                }
            });
     }
+
+    private void SetupApplicationInsights(IServiceCollection services) => services.Configure<ApplicationInsightsOptions>(Configuration.GetSection("ApplicationInsights"));
 
     private static void ConfigureCustomAntiforgery(IServiceCollection services)
     {

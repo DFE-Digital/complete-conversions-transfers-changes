@@ -90,7 +90,8 @@ public sealed class StartupDataProtectionTests : IDisposable
         var dict = new Dictionary<string, string?>
         {
             ["DataProtection:DpTargetPath"] = dpTargetPath,
-            ["DataProtection:KeyVaultKey"] = keyVaultKey
+            ["DataProtection:KeyVaultKey"] = keyVaultKey,
+            ["ApplicationInsights:EnableBrowserAnalytics"] = "false"
         };
         return new ConfigurationBuilder().AddInMemoryCollection(dict).Build();
     }

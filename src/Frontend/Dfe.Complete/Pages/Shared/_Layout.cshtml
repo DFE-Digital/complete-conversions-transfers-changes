@@ -1,51 +1,58 @@
-﻿@using DfE.CoreLibs.Utilities.Extensions
+﻿@using Microsoft.ApplicationInsights.AspNetCore.Extensions;
+@using DfE.CoreLibs.Utilities.Extensions
 @inject Microsoft.Extensions.Configuration.IConfiguration Configuration
 @inject Dfe.Complete.Services.IAnalyticsConsentService AnalytisConsentService
 
 @{
-  var showAnalytics = Configuration["GoogleAnalytics:Enable"] == "Yes" && AnalytisConsentService.HasConsent();
-
-  const string titleDescription = "Complete conversions, transfers and changes";
-  var inputTitle = ViewData["Title"];
-  var title = inputTitle?.ToString() != null && !inputTitle.ToString()!.IsEmpty() ? $"{inputTitle} - {titleDescription}" : titleDescription;
-  var currentTab = (TabNavigationModel?) ViewData[TabNavigationModel.ViewDataKey];
+    var showAnalytics = Configuration["GoogleAnalytics:Enable"] == "Yes" && AnalytisConsentService.HasConsent();
+    var enableAppInsightsAnalytics = Configuration["ApplicationInsights:EnableBrowserAnalytics"] == "Yes" && AnalytisConsentService.HasConsent();
+    const string titleDescription = "Complete conversions, transfers and changes";
+    var inputTitle = ViewData["Title"];
+    var title = inputTitle?.ToString() != null && !inputTitle.ToString()!.IsEmpty() ? $"{inputTitle} - {titleDescription}" : titleDescription;
+    var currentTab = (TabNavigationModel?) ViewData[TabNavigationModel.ViewDataKey];
+    var authenticatedUserId = (User.Identity is not null && User.Identity.IsAuthenticated) ? User.Identity.Name ?? "Unknown" : "Anonymous";
 }
 
 <!DOCTYPE html>
 <html class="govuk-template" lang="en">
 <head>
-  @if (showAnalytics)
-  {
-    <!-- Google Tag Manager -->
-    <script asp-add-nonce>
+    @if (showAnalytics)
+    {
+        <!-- Google Tag Manager -->
+        <script asp-add-nonce>
             (function (w, d, s, l, i) {
-                w[l] = w[l] || []; w[l].push({
-                    'gtm.start':
-                        new Date().getTime(), event: 'gtm.js'
-                }); var f = d.getElementsByTagName(s)[0],
-                    j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; j.src =
-                        'https://www.googletagmanager.com/gtm.js?id=' + i + dl; f.parentNode.insertBefore(j, f);
+            w[l] = w[l] || []; w[l].push({
+            'gtm.start':
+            new Date().getTime(), event: 'gtm.js'
+            }); var f = d.getElementsByTagName(s)[0],
+            j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; j.src =
+            'https://www.googletagmanager.com/gtm.js?id=' + i + dl; f.parentNode.insertBefore(j, f);
             })(window, document, 'script', 'dataLayer', 'GTM-5TFNH73B');</script>
-    <!-- End Google Tag Manager -->
-  }
+        <!-- End Google Tag Manager -->
+    }
 
-  <meta charset="utf-8"/>
+    @if (enableAppInsightsAnalytics)
+    {
+       <partial name="_AppInsights" asp-add-nonce="true" />
+    }
 
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="theme-color" content="#0b0c0c">
-  <meta name="robots" content="noindex, nofollow">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta charset="utf-8"/>
 
-  <link rel="shortcut icon" sizes="16x16 32x32 48x48" href="/dist/assets/images/favicon.ico" type="image/x-icon">
-  <link rel="mask-icon" href="/dist/assets/images/govuk-mask-icon.svg" color="#0b0c0c">
-  <link rel="apple-touch-icon" sizes="180x180" href="/dist/assets/images/govuk-apple-touch-icon-180x180.png">
-  <link rel="apple-touch-icon" sizes="167x167" href="/dist/assets/images/govuk-apple-touch-icon-167x167.png">
-  <link rel="apple-touch-icon" sizes="152x152" href="/dist/assets/images/govuk-apple-touch-icon-152x152.png">
-  <link rel="apple-touch-icon" href="/dist/assets/images/govuk-apple-touch-icon.png">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <meta name="theme-color" content="#0b0c0c">
+    <meta name="robots" content="noindex, nofollow">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
-  <title>@title</title>
-  <link rel="stylesheet" href="~/dist/site.css"/>
-  <link rel="stylesheet" href="~/dist/accessible-autocomplete.min.css" asp-add-nonce/>
+    <link rel="shortcut icon" sizes="16x16 32x32 48x48" href="/dist/assets/images/favicon.ico" type="image/x-icon">
+    <link rel="mask-icon" href="/dist/assets/images/govuk-mask-icon.svg" color="#0b0c0c">
+    <link rel="apple-touch-icon" sizes="180x180" href="/dist/assets/images/govuk-apple-touch-icon-180x180.png">
+    <link rel="apple-touch-icon" sizes="167x167" href="/dist/assets/images/govuk-apple-touch-icon-167x167.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="/dist/assets/images/govuk-apple-touch-icon-152x152.png">
+    <link rel="apple-touch-icon" href="/dist/assets/images/govuk-apple-touch-icon.png">
+
+    <title>@title</title>
+    <link rel="stylesheet" href="~/dist/site.css"/>
+    <link rel="stylesheet" href="~/dist/accessible-autocomplete.min.css" asp-add-nonce/>
 </head>
 <body class="govuk-template__body">
 <partial name="_EnvironmentHeader"/>
@@ -57,7 +64,6 @@
   </noscript>
   <!-- End Google Tag Manager (noscript) -->
 }
-
 
 <script asp-add-nonce>
         document.body.className = ((document.body.className) ? document.body.className + ' js-enabled' : 'js-enabled');
