@@ -4,12 +4,6 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/). To see an example from a mature product in the program [see the Complete products changelog that follows the same methodology](https://github.com/DFE-Digital/dfe-complete-conversions-transfers-and-changes/blob/main/CHANGELOG.md).
 
-
-## Notes
-### Releases
- - Unreleased: Developed and tested, has not yet deployed to prod
- - [TEST]/[PROD]: Feature/fix is considered ready for dual running in this environment
-
 ### Statuses
 Added for new features.  
 Changed for changes in existing functionality.  
@@ -23,16 +17,12 @@ Security in case of vulnerabilities.
 ## Unreleased  
 
 ### Added  
-- Add notes repository, along with create, read, update and delete queries/commands
-- Add project notes page (`/projects/{projectId}/notes`)
-- Add project notes editing page (`/projects/{projectId}/notes/{noteId}/edit`)
-- Add project notes creation page (`/projects/{projectId}/notes/new`)
-- Add ability to delete note (`/projects/{projectId}/notes/{noteId}/delete`)
-- Attach user ID from DB as custom claim
 
 ### Changed  
 - Add a redirect from projects/{id} to projects/{id}/tasks
 - Reduce log level from error to warning when project routes receive bad GUID or project not found 
+- Restructured the task page to be more generic
+- Update CRUD endpoints to account for TaskIdentifier
 
 ### Fixed
 - Remove double pagination on Service Support > Local authorities
