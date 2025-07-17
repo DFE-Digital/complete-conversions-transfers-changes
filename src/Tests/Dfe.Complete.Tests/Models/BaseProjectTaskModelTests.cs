@@ -205,6 +205,6 @@ public class BaseProjectTaskModelTests
         var result = await _model.OnPostAddNoteAsync();
 
         var redirect = Assert.IsType<RedirectResult>(result);
-        Assert.Equal($"/projects/{ValidProjectId}/notes/new?task_identifier=Handover", redirect.Url);
+        Assert.Equal($"/projects/{ValidProjectId}/notes/new?task_identifier=handover", redirect.Url);
     }
 }

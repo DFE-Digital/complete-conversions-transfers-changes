@@ -374,6 +374,26 @@ namespace Dfe.Complete.Api.Controllers
         }
 
         /// <summary>
+        /// Returns a list of task notes for a Project
+        /// </summary>
+        /// <param name="request">The request.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        [Authorize(Policy = "CanRead")]
+        [HttpGet]
+        [Route("Tasks/Notes")]
+        [SwaggerResponse(200, "Notes for project", typeof(List<NoteDto>))]
+        [SwaggerResponse(404, "Project not found")]
+        public async Task<IActionResult> GetTaskNotesByProjectIdQueryAsync([FromQuery] GetTaskNotesByProjectIdQuery request, CancellationToken cancellationToken)
+        {
+            var result = await sender.Send(request, cancellationToken);
+
+            if (!result.IsSuccess || result.Value is null)
+                return NotFound();
+
+            return Ok(result.Value);
+        }
+
+        /// <summary>
         /// Create a new Note for a Project
         /// </summary>
         /// <param name="request">The request.</param>
@@ -449,8 +469,8 @@ namespace Dfe.Complete.Api.Controllers
         {
             var statistics = await sender.Send(new ListAllProjectsStatisticsQuery(), cancellationToken);
             return Ok(statistics.Value);
-        } 
-        
+        }
+
         /// <summary>
         /// Returns a list of Projects converting to an academy
         /// </summary>
@@ -466,7 +486,7 @@ namespace Dfe.Complete.Api.Controllers
             var project = await sender.Send(request, cancellationToken);
             return Ok(project.Value ?? []);
         }
-        
+
         /// <summary>
         /// Updates the Academy URN for a specific project.
         /// </summary>

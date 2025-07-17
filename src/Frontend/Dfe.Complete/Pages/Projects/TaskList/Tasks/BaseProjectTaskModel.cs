@@ -10,6 +10,7 @@ using Dfe.Complete.Domain.Constants;
 using Dfe.Complete.Domain.ValueObjects;
 using Dfe.Complete.Extensions;
 using Microsoft.AspNetCore.Authorization;
+using DfE.CoreLibs.Utilities.Extensions;
 
 namespace Dfe.Complete.Pages.Projects.TaskList.Tasks;
 
@@ -63,6 +64,6 @@ public class BaseProjectTaskModel(ISender sender, IAuthorizationService authoriz
             return RedirectToPage(new { projectId = ProjectId });
         }
 
-        return Redirect(string.Format(RouteConstants.ProjectAddTaskNote, ProjectId, TaskIdentifier));
+        return Redirect(string.Format(RouteConstants.ProjectAddTaskNote, ProjectId, TaskIdentifier.ToDescription()));
     }
 }

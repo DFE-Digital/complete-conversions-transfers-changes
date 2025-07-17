@@ -19,7 +19,6 @@ public class GetTaskNotesByProjectIdQueryHandler(INoteReadRepository noteReadRep
     ILogger<GetTaskNotesByProjectIdQueryHandler> logger
 ) : IRequestHandler<GetTaskNotesByProjectIdQuery, Result<List<NoteDto>>>
 {
-
     public async Task<Result<List<NoteDto>>> Handle(
         GetTaskNotesByProjectIdQuery request, CancellationToken cancellationToken)
     {
