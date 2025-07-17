@@ -13,9 +13,10 @@ namespace Dfe.Complete.Application.Projects.Queries.ListAllProjects;
 
 public record ListAllProjectsForUserQuery(
     ProjectState? State,
-    string UserAdId,
+    string? UserAdId,
     ProjectUserFilter ProjectUserFilter,
-    OrderProjectQueryBy? OrderProjectQueryBy)
+    OrderProjectQueryBy? OrderProjectQueryBy,
+    string? UserEmail = null)
     : PaginatedRequest<PaginatedResult<List<ListAllProjectsForUserQueryResultModel>>>;
 
 public class ListAllProjectsForUserQueryHandler(
@@ -30,8 +31,18 @@ public class ListAllProjectsForUserQueryHandler(
     {
         try
         {
-            var user = await sender.Send(new GetUserByAdIdQuery(request.UserAdId), cancellationToken);
-            if (!user.IsSuccess || user.Value == null)
+            Result<UserDto?>? user = null;
+            if(!string.IsNullOrEmpty(request.UserAdId))
+            {
+                user = await sender.Send(new GetUserByAdIdQuery(request.UserAdId), cancellationToken);
+            }
+
+            if (!string.IsNullOrEmpty(request.UserEmail))
+            {
+                user = await sender.Send(new GetUserByEmailQuery(request.UserEmail), cancellationToken);
+            }
+
+            if (user == null || !user.IsSuccess || user.Value == null)
                 throw new NotFoundException("User not found.");
 
             var assignedTo = request.ProjectUserFilter == ProjectUserFilter.AssignedTo ? user.Value?.Id : null;

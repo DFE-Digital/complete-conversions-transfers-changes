@@ -15,7 +15,7 @@ namespace Dfe.Complete.Pages.Projects.InternalContacts;
 
 [Authorize(Policy = UserPolicyConstants.CanEditAddedByUser)]
 public class EditAddedByUser(ISender sender, ErrorService errorService, ILogger<InternalContacts> logger)
-    : BaseProjectPageModel(sender)
+    : BaseProjectPageModel(sender, logger)
 {
     private readonly ISender _sender = sender;
 
