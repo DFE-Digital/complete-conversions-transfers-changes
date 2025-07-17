@@ -75,9 +75,16 @@ namespace Dfe.Complete.Tests.Constants
         [Fact]
         public void ProjectsByRegion_ShouldFormatCorrectly()
         {
+            var expected = $"/projects/all/regions";
+            Assert.Equal(expected, string.Format(RouteConstants.ProjectsByRegion));
+        }
+
+        [Fact]
+        public void ProjectsForRegion_ShouldFormatCorrectly()
+        {
             var region = "north-west";
             var expected = $"/projects/all/regions/{region}";
-            Assert.Equal(expected, string.Format(RouteConstants.ProjectsByRegion, region));
+            Assert.Equal(expected, string.Format(RouteConstants.ProjectsForRegion, region));
         }
 
         [Fact]

@@ -17,7 +17,7 @@ public abstract class AllProjectsModel(string currentNavigation) : BaseProjectsP
     public const string ByLocalAuthorityNavigation = "by-local-authority";
     public const string CompletedNavigation = "completed";
     public const string StatisticsNavigation = "Statistics";
-    public const string ExportsNavigation = "all-projects-exports";
+    public const string ReportsNavigation = "all-projects-reports";
 
     public static string GetTrustProjectsUrl(ListTrustsWithProjectsResultModel trustModel)
     {

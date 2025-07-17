@@ -1,6 +1,10 @@
 {
   "Endpoints": [
     {
+      "Route": "/Projects/List/Reports/Reports",
+      "ExpectedSecurity": "Authorize: Policy=CanViewAllProjectsExports"
+    },
+    {
       "Route": "/Projects/Team/ProjectsByUser/ProjectsForUser",
       "ExpectedSecurity": "Authorize: Policy=CanViewTeamProjects"
     },
