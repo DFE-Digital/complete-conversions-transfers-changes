@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Dfe.Complete.Pages.Projects.DateHistory
 {
-    public class ChangeDateProjectModel(ISender sender, ErrorService errorService) : ProjectLayoutModel(sender, ConversionDateHistoryNavigation)
+    public class ChangeDateProjectModel(ISender sender, ErrorService errorService, ILogger<ChangeDateProjectModel> logger) : ProjectLayoutModel(sender, logger,ConversionDateHistoryNavigation)
     {
         [BindProperty]
         [Required(ErrorMessage = "Enter a valid month and year for the revised date, like 9 2024")]

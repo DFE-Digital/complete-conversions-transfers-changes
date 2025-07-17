@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Dfe.Complete.Pages.Projects.DateHistory
 {
-    public class ChangeReasonProjectModel(ISender sender, ErrorService errorService) : ProjectLayoutModel(sender, ConversionDateHistoryNavigation)
+    public class ChangeReasonProjectModel(ISender sender, ErrorService errorService, ILogger<ChangeReasonProjectModel> logger) : ProjectLayoutModel(sender, logger, ConversionDateHistoryNavigation)
     {
         [BindProperty]
         public string SignificantDateString { get; set; }

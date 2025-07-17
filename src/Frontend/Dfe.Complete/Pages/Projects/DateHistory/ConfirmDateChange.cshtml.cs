@@ -4,8 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Dfe.Complete.Pages.Projects.DateHistory
 {
-    
-    public class ConfirmDateChangeModel(ISender sender) : ProjectLayoutModel(sender, ConversionDateHistoryNavigation)
+    public class ConfirmDateChangeModel(ISender sender, ILogger<ConfirmDateChangeModel> logger) : ProjectLayoutModel(sender, logger, ConversionDateHistoryNavigation)
     {
         public override async Task<IActionResult> OnGetAsync()
         {
