@@ -21,7 +21,7 @@ export const testTrust = {
     referenceNumber: "TR09999",
 };
 export const today = new Date();
-export const todayFormatted = today.toLocaleDateString("default", {
+export const todayFormatted = today.toLocaleDateString("en-GB", {
     day: "numeric",
     month: "long",
     year: "numeric",
