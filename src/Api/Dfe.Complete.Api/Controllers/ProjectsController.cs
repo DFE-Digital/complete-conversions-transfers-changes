@@ -10,7 +10,11 @@ using Dfe.Complete.Application.Projects.Queries.ListAllProjects;
 using Dfe.Complete.Application.Projects.Models;
 using Microsoft.AspNetCore.Authorization;
 using Dfe.Complete.Application.Projects.Commands.RemoveProject;
+using Dfe.Complete.Application.Projects.Commands.UpdateProject;
 using Dfe.Complete.Application.Projects.Queries.SearchProjects;
+using Dfe.Complete.Application.Notes.Queries;
+using Dfe.Complete.Application.Notes.Commands;
+using Dfe.Complete.Application.Common.Models;
 
 namespace Dfe.Complete.Api.Controllers
 {
@@ -145,7 +149,7 @@ namespace Dfe.Complete.Api.Controllers
             var project = await sender.Send(request, cancellationToken);
             return Ok(project.Value ?? []);
         }
-        
+
         /// <summary>
         /// Returns the number of Projects
         /// </summary>
@@ -289,11 +293,12 @@ namespace Dfe.Complete.Api.Controllers
 
             return Ok(ukprn);
         }
-        
+
         /// <summary>
         /// Removes project based on URN for test purposes.
         /// </summary>
         /// <param name="urn">Urn to remove.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
         [HttpDelete]
         [Authorize(Policy = "CanReadWriteUpdateDelete")]
         [SwaggerResponse(204, "Project Group returned successfully.")]
@@ -347,6 +352,90 @@ namespace Dfe.Complete.Api.Controllers
             var project = await sender.Send(request, cancellationToken);
             return Ok(project.Value?.ProjectModels ?? []);
         }
+
+        /// <summary>
+        /// Returns a list of Notes for a Project
+        /// </summary>
+        /// <param name="request">The request.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        [Authorize(Policy = "CanRead")]
+        [HttpGet]
+        [Route("Notes")]
+        [SwaggerResponse(200, "Notes for project", typeof(List<NoteDto>))]
+        [SwaggerResponse(404, "Project not found")]
+        public async Task<IActionResult> GetNotesByProjectIdAsync([FromQuery] GetNotesByProjectIdQuery request, CancellationToken cancellationToken)
+        {
+            var result = await sender.Send(request, cancellationToken);
+
+            if (!result.IsSuccess || result.Value is null)
+                return NotFound();
+
+            return Ok(result.Value);
+        }
+
+        /// <summary>
+        /// Create a new Note for a Project
+        /// </summary>
+        /// <param name="request">The request.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        [Authorize(Policy = "CanReadWrite")]
+        [HttpPost]
+        [Route("Notes")]
+        [SwaggerResponse(201, "Note ID", typeof(NoteId))]
+        [SwaggerResponse(404, "Note not found")]
+        public async Task<IActionResult> CreateProjectNoteAsync([FromBody] CreateNoteCommand request, CancellationToken cancellationToken)
+        {
+            var result = await sender.Send(request, cancellationToken);
+            return Created("", result.Value);
+        }
+
+        /// <summary>
+        /// Update a Note for a Project
+        /// </summary>
+        /// <param name="request">The request.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        [Authorize(Policy = "CanReadWriteUpdate")]
+        [HttpPut]
+        [Route("Notes")]
+        [SwaggerResponse(200, "Note ID", typeof(NoteId))]
+        [SwaggerResponse(401, "Unauthorized access")]
+        [SwaggerResponse(404, "Note not found")]
+        public async Task<IActionResult> UpdateProjectNoteAsync([FromBody] UpdateNoteCommand request, CancellationToken cancellationToken)
+        {
+            var result = await sender.Send(request, cancellationToken);
+
+            if (!result.IsSuccess)
+            {
+                return result.ErrorType == ErrorType.NotFound
+                    ? NotFound(result.Error)
+                    : StatusCode(500);
+            }
+            return Ok(result.Value);
+        }
+
+        /// <summary>
+        /// Delete a Note for a Project
+        /// </summary>
+        /// <param name="request"></param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        [Authorize(Policy = "CanReadWriteUpdateDelete")]
+        [HttpDelete]
+        [Route("Notes")]
+        [SwaggerResponse(200, "Success", typeof(bool))]
+        [SwaggerResponse(404, "Project not found")]
+        [SwaggerResponse(404, "Note not found")]
+        public async Task<IActionResult> DeleteProjectNoteAsync([FromBody] RemoveNoteCommand request, CancellationToken cancellationToken)
+        {
+            var result = await sender.Send(request, cancellationToken);
+            if (!result.IsSuccess)
+            {
+                return result.ErrorType == ErrorType.NotFound
+                    ? NotFound(result.Error)
+                    : StatusCode(500);
+            }
+            return Ok(result.Value);
+        }
+
         /// <summary>
         /// Returns a list of all projects statistics.
         /// </summary> 
@@ -361,5 +450,39 @@ namespace Dfe.Complete.Api.Controllers
             var statistics = await sender.Send(new ListAllProjectsStatisticsQuery(), cancellationToken);
             return Ok(statistics.Value);
         } 
+        
+        /// <summary>
+        /// Returns a list of Projects converting to an academy
+        /// </summary>
+        /// <param name="request">The request.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        [Authorize(Policy = "CanRead")]
+        [HttpGet]
+        [Route("List/All/Converting")]
+        [SwaggerResponse(200, "Project", typeof(List<ListAllProjectsConvertingQueryResultModel>))]
+        [SwaggerResponse(400, "Invalid request data.")]
+        public async Task<IActionResult> ListAllProjectsConvertingAsync([FromQuery] ListAllProjectsConvertingQuery request, CancellationToken cancellationToken)
+        {
+            var project = await sender.Send(request, cancellationToken);
+            return Ok(project.Value ?? []);
+        }
+        
+        /// <summary>
+        /// Updates the Academy URN for a specific project.
+        /// </summary>
+        /// <param name="request">The update command.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        [Authorize(Policy = "CanReadWrite")]
+        [HttpPatch("project/academy-urn")]
+        [SwaggerResponse(204, "Academy URN updated successfully.")]
+        [SwaggerResponse(400, "Invalid request data.")]
+        [SwaggerResponse(404, "Project not found.")]
+        public async Task<IActionResult> UpdateAcademyUrnAsync(
+            [FromBody] UpdateAcademyUrnCommand request,
+            CancellationToken cancellationToken)
+        {
+            await sender.Send(request, cancellationToken);
+            return NoContent();
+        }
     }
 }

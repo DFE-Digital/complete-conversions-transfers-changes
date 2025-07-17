@@ -159,7 +159,18 @@ Cypress.Commands.add("shouldHaveText", { prevSubject: true }, (subject, expected
         .wrap(subject)
         .invoke("text")
         .then((text) => {
-            expect(text.trim()).to.equal(expectedText);
+            // Remove new lines and normalize whitespace
+            const cleanedText = text
+                .replace(/[\r\n]+/g, "")
+                .replace(/\s+/g, " ")
+                .trim();
+            expect(cleanedText).to.equal(`${expectedText}`);
             return subject;
         });
+});
+
+Cypress.Commands.add("revisitCurrentUrl", () => {
+    cy.url().then((url: string) => {
+        cy.visit(url);
+    });
 });

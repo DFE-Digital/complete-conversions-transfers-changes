@@ -1,4 +1,6 @@
-class ProjectTable {
+import BasePage from "cypress/pages/basePage";
+
+class ProjectTable extends BasePage {
     protected readonly tableClass = "govuk-table";
     protected readonly tableData = "govuk-table__body";
     private readonly tableHeadClass = "govuk-table__head";
@@ -27,6 +29,13 @@ class ProjectTable {
 
     goToUserProjects(userName: string) {
         cy.getByClass(this.tableClass).contains(userName).click();
+        return this;
+    }
+
+    tableHasTableHeaders(table: string, headers: string[]) {
+        cy.getById(table).within(() => {
+            this.hasTableHeaders(headers);
+        });
         return this;
     }
 
@@ -65,7 +74,7 @@ class ProjectTable {
                     throw new Error("School name is not set. Call withSchool() before asserting table cell value.");
                 }
                 cy.getProjectTableRow(tableRowKey).then((row) => {
-                    const actualValue = row.find("td").eq(tableColumnIndex).text();
+                    const actualValue = row.find("td").eq(tableColumnIndex).text().trim();
                     if (exactMatch) {
                         expect(actualValue).to.equal(expectedValue);
                     } else {

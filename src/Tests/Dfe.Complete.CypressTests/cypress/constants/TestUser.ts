@@ -1,8 +1,10 @@
 export class TestUser {
+    id: string;
     username: string;
     adId: string;
 
-    constructor(username: string, adId: string) {
+    constructor(id: string, username: string, adId: string) {
+        this.id = id;
         this.username = username;
         this.adId = adId;
     }
