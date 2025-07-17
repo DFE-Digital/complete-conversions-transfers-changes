@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.LandQuestionnaireTask
 {
-    public class LandQuestionnaireTaskModel(ISender sender) : BaseProjectPageModel(sender)
+    public class LandQuestionnaireTaskModel(ISender sender, ILogger<LandQuestionnaireTaskModel> _logger) : BaseProjectPageModel(sender, _logger)
     {
         [BindProperty(Name = "cleared")]
         public bool? Cleared { get; set; }

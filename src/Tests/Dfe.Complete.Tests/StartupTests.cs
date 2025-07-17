@@ -1,4 +1,3 @@
-using System;
 using System.Reflection;
 using Dfe.Complete.Validators;
 using DfE.CoreLibs.Security.Antiforgery;
@@ -7,12 +6,10 @@ using DfE.CoreLibs.Security.Enums;
 using DfE.CoreLibs.Security.Interfaces;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Options;
-using Moq;
 
 namespace Dfe.Complete.Tests;
 
@@ -31,8 +28,7 @@ public sealed class StartupDataProtectionTests : IDisposable
     {
         // Arrange
         IConfiguration cfg = BuildConfiguration(_tempDpTargetPath, keyVaultKey: string.Empty);
-        var env = BuildEnvironment();
-        var startup = new Startup(cfg, env);
+        var startup = new Startup(cfg);
         var services = new ServiceCollection();
 
         // Act
@@ -51,8 +47,7 @@ public sealed class StartupDataProtectionTests : IDisposable
         // Arrange
         var fakeKeyVaultUri = "https://contoso.vault.azure.net/keys/dp-unit-test/0000000000000000";
         IConfiguration cfg = BuildConfiguration(_tempDpTargetPath, fakeKeyVaultUri);
-        var env = BuildEnvironment();
-        var startup = new Startup(cfg, env);
+        var startup = new Startup(cfg);
         var services = new ServiceCollection();
 
         // Act
@@ -68,8 +63,7 @@ public sealed class StartupDataProtectionTests : IDisposable
     {
         // Arrange
         IConfiguration cfg = BuildConfiguration(_tempDpTargetPath, keyVaultKey: string.Empty);
-        var env = BuildEnvironment();
-        var startup = new Startup(cfg, env);
+        var startup = new Startup(cfg);
         var services = new ServiceCollection();
 
         // Act
@@ -86,8 +80,8 @@ public sealed class StartupDataProtectionTests : IDisposable
 
         Assert.Single(configuredOptions.CheckerGroups);
         Assert.Equal(2, configuredOptions.CheckerGroups.First().TypeNames.Length);
-        Assert.Equal(nameof(HasHeaderKeyExistsInRequestValidator), configuredOptions.CheckerGroups[0].TypeNames[0]);
-        Assert.Equal(nameof(CypressRequestChecker), configuredOptions.CheckerGroups[0].TypeNames[1]);
+        Assert.Equal(typeof(HasHeaderKeyExistsInRequestValidator).FullName, configuredOptions.CheckerGroups[0].TypeNames[0]);
+        Assert.Equal(typeof(CypressRequestChecker).FullName, configuredOptions.CheckerGroups[0].TypeNames[1]);
         Assert.Equal(CheckerOperator.Or, configuredOptions.CheckerGroups[0].CheckerOperator);
     }
 

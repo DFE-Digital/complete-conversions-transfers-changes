@@ -12,8 +12,12 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace Dfe.Complete.Models;
 
-public abstract class BaseProjectPageModel(ISender sender) : PageModel
+public abstract class BaseProjectPageModel(ISender sender, ILogger _logger) : PageModel
 {
+    protected readonly ISender Sender = sender;
+    protected ILogger Logger = _logger;
+
+
     [BindProperty(SupportsGet = true, Name = "projectId")]
 
     public string ProjectId { get; set; }
@@ -34,14 +38,16 @@ public abstract class BaseProjectPageModel(ISender sender) : PageModel
 
         if (!success)
         {
-            throw new InvalidDataException($"{ProjectId} is not a valid Guid.");
+            Logger.LogWarning("{ProjectId} is not a valid Guid.", ProjectId);
+            return;
         }
 
         var query = new GetProjectByIdQuery(new ProjectId(guid));
-        var result = await sender.Send(query);
+        var result = await Sender.Send(query);
         if (!result.IsSuccess || result.Value == null)
         {
-            throw new NotFoundException($"Project {ProjectId} does not exist.");
+            Logger.LogWarning("Project {ProjectId} does not exist.", ProjectId);
+            return;
         }
 
         Project = result.Value;
@@ -50,7 +56,7 @@ public abstract class BaseProjectPageModel(ISender sender) : PageModel
     protected async Task SetEstablishmentAsync()
     {
         var establishmentQuery = new GetEstablishmentByUrnRequest(Project.Urn.Value.ToString());
-        var establishmentResult = await sender.Send(establishmentQuery);
+        var establishmentResult = await Sender.Send(establishmentQuery);
 
         if (!establishmentResult.IsSuccess || establishmentResult.Value == null)
         {
@@ -65,7 +71,7 @@ public abstract class BaseProjectPageModel(ISender sender) : PageModel
         if (!Project.FormAMat && Project.IncomingTrustUkprn != null)
         {
             var incomingTrustQuery = new GetTrustByUkprnRequest(Project.IncomingTrustUkprn.Value.ToString());
-            var incomingTrustResult = await sender.Send(incomingTrustQuery);
+            var incomingTrustResult = await Sender.Send(incomingTrustQuery);
 
             if (!incomingTrustResult.IsSuccess || incomingTrustResult.Value == null)
             {
@@ -81,7 +87,7 @@ public abstract class BaseProjectPageModel(ISender sender) : PageModel
         if (Project.Type == ProjectType.Transfer && Project.OutgoingTrustUkprn != null)
         {
             var outgoingtrustQuery = new GetTrustByUkprnRequest(Project.OutgoingTrustUkprn.Value.ToString());
-            var outgoingTrustResult = await sender.Send(outgoingtrustQuery);
+            var outgoingTrustResult = await Sender.Send(outgoingtrustQuery);
 
             if (!outgoingTrustResult.IsSuccess || outgoingTrustResult.Value == null)
             {
@@ -94,12 +100,15 @@ public abstract class BaseProjectPageModel(ISender sender) : PageModel
 
     protected async Task SetCurrentUserTeamAsync()
     {
-        CurrentUserTeam = await User.GetUserTeam(sender);
+        CurrentUserTeam = await User.GetUserTeam(Sender);
     }
 
     public virtual async Task<IActionResult> OnGetAsync()
     {
         await UpdateCurrentProject();
+
+        if (Project == null)
+            return NotFound();
 
         await SetEstablishmentAsync();
 
