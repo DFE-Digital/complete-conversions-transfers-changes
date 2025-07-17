@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Dfe.Complete.Pages.Projects.DateHistory
 {
-    public class DateHistoryProjectModel(ISender sender) : ProjectLayoutModel(sender, ConversionDateHistoryNavigation)
+    public class DateHistoryProjectModel(ISender sender, ILogger<DateHistoryProjectModel> logger) : ProjectLayoutModel(sender, logger, ConversionDateHistoryNavigation)
     {
         public override async Task<IActionResult> OnGetAsync()
         {
@@ -17,7 +17,7 @@ namespace Dfe.Complete.Pages.Projects.DateHistory
             var projectWithHistories = new GetProjectHistoryByProjectIdQuery(ProjectId);
             var result = await sender.Send(projectWithHistories);
             
-            Project = result.Value;
+            Project = result.Value!;
             
             return Page();
         }

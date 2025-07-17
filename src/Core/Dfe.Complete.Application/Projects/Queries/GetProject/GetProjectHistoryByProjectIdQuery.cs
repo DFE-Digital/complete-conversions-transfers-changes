@@ -1,9 +1,8 @@
 using MediatR;
-using Dfe.Complete.Domain.Interfaces.Repositories;
 using Dfe.Complete.Application.Common.Models;
 using Dfe.Complete.Application.Projects.Models;
-using Dfe.Complete.Domain.Entities;
 using AutoMapper;
+using Dfe.Complete.Application.Projects.Interfaces;
 using Dfe.Complete.Domain.ValueObjects;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -12,7 +11,7 @@ namespace Dfe.Complete.Application.Projects.Queries.GetProject
 {
     public record GetProjectHistoryByProjectIdQuery(string ProjectId) : IRequest<Result<ProjectDto>>;
 
-    public class GetProjectHistoryByProjectIdHandler(ICompleteRepository<Project> projectRepository,
+    public class GetProjectHistoryByProjectIdHandler(IProjectReadRepository projectRepository,
         IMapper mapper,
         ILogger<GetProjectHistoryByProjectIdHandler> logger)
         : IRequestHandler<GetProjectHistoryByProjectIdQuery, Result<ProjectDto>>
@@ -23,8 +22,7 @@ namespace Dfe.Complete.Application.Projects.Queries.GetProject
             {
                 var projectId = new ProjectId(Guid.Parse(request.ProjectId));
                 
-                var result = await projectRepository
-                    .Query()
+                var result = await projectRepository.Projects
                     .Where(p => p.Id == projectId)
                     .Include(p => p.Notes)
                     .Include(p => p.SignificantDateHistories)
