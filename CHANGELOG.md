@@ -61,6 +61,8 @@ See the [full commit history](https://github.com/DFE-Digital/complete-conversion
 - New route /projects/{projectId}/academy-urn
 - Service support Create Academy URN (/projects/{projectId}/academy-urn) 
 - Added `Statistics` page
+- Added Project Significant History Dates `/projects/{projectId}/date-history`
+
 
 ### Changed  
 
