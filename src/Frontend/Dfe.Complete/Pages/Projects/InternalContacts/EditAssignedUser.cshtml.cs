@@ -13,7 +13,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Dfe.Complete.Pages.Projects.InternalContacts;
 
 public class EditAssignedUser(ISender sender, ErrorService errorService, ILogger<InternalContacts> logger)
-    : BaseProjectPageModel(sender)
+    : BaseProjectPageModel(sender, logger)
 {
     private readonly ISender _sender = sender;
 
