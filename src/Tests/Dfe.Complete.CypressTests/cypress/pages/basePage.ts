@@ -92,7 +92,11 @@ class BasePage {
     }
 
     goToLastPage() {
-        cy.getByClass("govuk-pagination__list").find("li").last().click();
+        cy.get("body").then(($body) => {
+            if ($body.find(".govuk-pagination__list").length > 0) {
+                cy.getByClass("govuk-pagination__list").find("li").last().click();
+            }
+        });
         return this;
     }
 

@@ -23,13 +23,19 @@ const academy = {
 };
 const project2 = ProjectBuilder.createConversionProjectRequest(nextMonth, 103845);
 const schoolName2 = "Jesson's CofE Primary School (VA)";
+const projectWithAcademy = ProjectBuilder.createConversionProjectRequest(nextMonth);
+const schoolWithAcademyName = "St Chad's Catholic Primary School";
 
 describe("Service support user - Conversion URNs: ", () => {
     before(() => {
         projectRemover.removeProjectIfItExists(`${project.urn.value}`);
         projectRemover.removeProjectIfItExists(`${project2.urn.value}`);
+        projectRemover.removeProjectIfItExists(`${projectWithAcademy.urn.value}`);
         projectApi.createConversionProject(project);
         projectApi.createConversionProject(project2);
+        projectApi.createConversionProject(projectWithAcademy).then((response) => {
+            projectApi.updateProjectAcademyUrn(response.value, academy.urn);
+        });
     });
     beforeEach(() => {
         cy.login(serviceSupportUser);
@@ -109,7 +115,7 @@ describe("Service support user - Conversion URNs: ", () => {
         conversionURNsPage.viewURNsAdded().containsSubHeading("URNs added");
 
         Logger.log("Verify that the academy project is displayed with correct details");
-        conversionURNsPage.goToLastPage().goToPreviousPageUntilFieldIsVisible(schoolName);
+        conversionURNsPage.goToLastPage().goToPreviousPageUntilFieldIsVisible(schoolWithAcademyName);
         conversionURNsTable
             .hasTableHeaders([
                 "School or academy",
@@ -119,13 +125,13 @@ describe("Service support user - Conversion URNs: ", () => {
                 "Academy URN",
                 "View Project",
             ])
-            .withSchool(schoolName)
-            .columnHasValue("URN", `${project.urn.value}`)
+            .withSchool(schoolWithAcademyName)
+            .columnHasValue("URN", `${projectWithAcademy.urn.value}`)
             .columnHasValue("Conversion date", nextMonthShort)
             .columnHasValue("Academy name", academy.name)
             .columnHasValue("Academy URN", `${academy.urn}`)
             .columnHasValue("View Project", "View project")
-            .viewProject(schoolName);
+            .viewProject(schoolWithAcademyName);
 
         Logger.log("Verify that the project details page is displayed");
         projectDetailsPage.containsHeading(schoolName);
