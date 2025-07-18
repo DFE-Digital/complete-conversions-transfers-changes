@@ -1,0 +1,76 @@
+﻿@model  Dfe.Complete.Pages.Projects.ExternalContacts.ExternalContactModel
+<govuk-summary-card>
+  <govuk-summary-card-title heading-level="3">
+    @Model.Contact.Title
+  </govuk-summary-card-title>
+  <govuk-summary-card-actions>
+    <govuk-summary-card-action href="#">
+      Edit contact
+    </govuk-summary-card-action>
+  </govuk-summary-card-actions>
+  <govuk-summary-list>
+    <govuk-summary-list-row>
+      <govuk-summary-list-row-key>
+        Name
+      </govuk-summary-list-row-key>
+      <govuk-summary-list-row-value>
+        @Model.Contact.Name
+      </govuk-summary-list-row-value>
+    </govuk-summary-list-row>
+    @if (Model.Contact.OrganisationName is not null)
+    {
+    <govuk-summary-list-row>
+      <govuk-summary-list-row-key>
+        Organisation
+      </govuk-summary-list-row-key>
+      <govuk-summary-list-row-value>
+        @Model.Contact.OrganisationName
+      </govuk-summary-list-row-value>
+    </govuk-summary-list-row>
+    }
+    @if (Model.Contact.Email is not null)
+    {
+      <govuk-summary-list-row>
+        <govuk-summary-list-row-key>
+          Email
+        </govuk-summary-list-row-key>
+        <govuk-summary-list-row-value>
+          @Model.Contact.Email
+        </govuk-summary-list-row-value>
+      </govuk-summary-list-row>
+    }
+    @if (Model.Contact.Phone is not null && !string.IsNullOrEmpty(Model.Contact.Phone))
+    {
+    <govuk-summary-list-row>
+      <govuk-summary-list-row-key>
+        Phone
+      </govuk-summary-list-row-key>
+      <govuk-summary-list-row-value>
+        @Model.Contact.Phone
+      </govuk-summary-list-row-value>
+    </govuk-summary-list-row>
+    }
+    @if (Model.IsProjectMainContact is true)
+    {
+    <govuk-summary-list-row>
+      <govuk-summary-list-row-key>
+        Project main contact
+      </govuk-summary-list-row-key>
+      <govuk-summary-list-row-value>
+        @Model.IsProjectMainContact.ToYesNoString()
+      </govuk-summary-list-row-value>
+    </govuk-summary-list-row>
+    }
+    @if (Model.IsOrganisationPrimaryContact is not null)
+    {
+    <govuk-summary-list-row>
+      <govuk-summary-list-row-key>
+        Primary contact at organisation?
+      </govuk-summary-list-row-key>
+      <govuk-summary-list-row-value>
+        @Model.IsOrganisationPrimaryContact.ToYesNoString()
+      </govuk-summary-list-row-value>
+    </govuk-summary-list-row>
+    }
+  </govuk-summary-list>
+</govuk-summary-card>

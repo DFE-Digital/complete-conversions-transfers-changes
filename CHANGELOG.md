@@ -23,6 +23,8 @@ Security in case of vulnerabilities.
 ## Unreleased  
 
 ### Added
+- Added Project Significant History Dates `/projects/{projectId}/date-history`
+- Added `/projects/{projectId}/external-contacts` page
 
 ### Changed  
 - Add a redirect from projects/{id} to projects/{id}/tasks
@@ -61,8 +63,6 @@ See the [full commit history](https://github.com/DFE-Digital/complete-conversion
 - New route /projects/{projectId}/academy-urn
 - Service support Create Academy URN (/projects/{projectId}/academy-urn) 
 - Added `Statistics` page
-- Added Project Significant History Dates `/projects/{projectId}/date-history`
-
 
 ### Changed  
 

@@ -45,6 +45,8 @@
         public const string ProjectInternalContactsEditAssignedTeam = ProjectInternalContacts + "/team/edit";
         public const string ProjectDeleteNote = ProjectViewNotes + "/{1}/delete";
         
+        public const string ProjectExternalContacts = Project + "/external-contacts";
+        
         public const string ProjectTaskList = Project + "/tasks";
         
         public const string ProjectAbout = Project + "/information";
