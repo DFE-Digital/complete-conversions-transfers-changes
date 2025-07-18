@@ -23,6 +23,11 @@ Security in case of vulnerabilities.
 ## Unreleased  
 
 ### Added
+- added view significant date history `/projects/{projectId}/date-history`
+- added change significant date page "/projects/{projectId}/date-history/new"
+- added significant date change reason page "/projects/{projectId}/date-history/reason"
+- added confirm significant date change "/projects/{projectId}/date-history/reasons/later"
+
 
 ### Changed  
 - Add a redirect from projects/{id} to projects/{id}/tasks
@@ -61,8 +66,6 @@ See the [full commit history](https://github.com/DFE-Digital/complete-conversion
 - New route /projects/{projectId}/academy-urn
 - Service support Create Academy URN (/projects/{projectId}/academy-urn) 
 - Added `Statistics` page
-- Added Project Significant History Dates `/projects/{projectId}/date-history`
-
 
 ### Changed  
 

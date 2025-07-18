@@ -1,0 +1,66 @@
+@page "/projects/{projectId}/date-history/new"
+@using Dfe.Complete.Constants
+@using Dfe.Complete.Domain.Enums
+@using Dfe.Complete.Pages.Projects.DateHistory
+@using GovUk.Frontend.AspNetCore.TagHelpers
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model Dfe.Complete.Pages.Projects.DateHistory.ChangeDateProjectModel
+@inject Dfe.Complete.Services.ErrorService ErrorService
+
+@{
+  Layout = "_Layout";
+
+  const string provisionalSignificantDateField = nameof(Model.SignificantDate);
+  var isConversion = Model.Project.Type == ProjectType.Conversion;
+  var projectTypeString = isConversion ? "conversion" : "transfer";
+  
+  ViewData["Title"] = $"Enter new {projectTypeString} date";
+}
+
+<div class="govuk-grid-row">
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      <span class="govuk-caption-xl">@Model.Establishment.Name</span>
+      <h1 class="govuk-heading-xl">@SigDateHelper.CapitliseFirstLetter(projectTypeString) date</h1>
+
+      <p>The current @projectTypeString date is <span class="govuk-body govuk-!-font-weight-bold">@Model.Project.SignificantDate.ToDateString()</span>.</p>
+
+      <form method="post">
+        
+        <fieldset class="govuk-fieldset"><legend class="govuk-fieldset__legend govuk-fieldset__legend--l">Enter new @projectTypeString date</legend>
+          <p>You may need to change the @projectTypeString date if there are delays or complications with the project.</p>
+          <details data-module="govuk-details" class="govuk-details">
+            <summary class="govuk-details__summary">
+              <span class="govuk-details__summary-text">Changing the @projectTypeString date</span>
+            </summary>
+            <div class="govuk-details__text">
+              <p>You can change the @projectTypeString date at any time during the project. Any new date must be agreed with the school and all other stakeholders.</p>
+              <p>You should change the @projectTypeString date if there are delays or complications that mean it is likely the current date will not be met.</p>
+              <p>It is essential you enter a new date if it changes. This information is used by funding teams to prepare and organise grant payments.</p>
+              <p>If you do not update this information, academies may not get their funding on time.</p></div>
+          </details>
+          <div class="govuk-form-group">
+            <fieldset class="govuk-fieldset" aria-describedby="new-date-history-form-revised-date-hint">
+              <div class="govuk-hint" id="new-date-history-form-revised-date-hint">You only need to enter a month and year as all schools @(isConversion ? "convert" : "transfer") on the first day of the month. For example, 3 2021</div>
+
+              <govuk-date-input id="@provisionalSignificantDateField" name-prefix="@provisionalSignificantDateField" asp-for="@Model.SignificantDate" >
+
+                <govuk-date-input-fieldset>
+                  @if (ErrorService.HasErrorForKey(provisionalSignificantDateField))
+                  {
+                    <govuk-date-input-error-message>@(ErrorService.GetErrorMessage(provisionalSignificantDateField))</govuk-date-input-error-message>
+                  }
+                </govuk-date-input-fieldset>
+              </govuk-date-input >
+            </fieldset>
+          </div>
+        </fieldset>
+        
+        <div class="govuk-button-group">
+          <button type="submit" class="govuk-button" data-module="govuk-button" data-prevent-double-click="true">Save and continue</button>
+          <a class="govuk-link" href="@String.Format(RouteConstants.Project, Model.Project.Id.Value)">Cancel</a>
+        </div>
+      </form>  
+      </div>
+  </div>
+</div>

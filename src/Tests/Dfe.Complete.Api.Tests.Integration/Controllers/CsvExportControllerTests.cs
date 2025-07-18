@@ -189,7 +189,7 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers
                 }
             ).Create<SignificantDateHistoryReason>();
             
-            significantDateHistory.Reason = significantDateHistoryReason;
+            significantDateHistory.Reasons = new List<SignificantDateHistoryReason>() { significantDateHistoryReason };
 
             dbContext.SignificantDateHistories.Add(significantDateHistory);
 
@@ -363,7 +363,7 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers
                     User = createdBy,
                 }
                 ).Create<SignificantDateHistory>();
-            
+
             var significantDateHistoryReason = fixture.Customize(
                 new SignificantDateHistoryReasonCustomization()
                 {
@@ -371,7 +371,7 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers
                 }
             ).Create<SignificantDateHistoryReason>();
             
-            significantDateHistory.Reason = significantDateHistoryReason;
+            significantDateHistory.Reasons = new List<SignificantDateHistoryReason>() { significantDateHistoryReason };
 
             dbContext.SignificantDateHistories.Add(significantDateHistory);
 
