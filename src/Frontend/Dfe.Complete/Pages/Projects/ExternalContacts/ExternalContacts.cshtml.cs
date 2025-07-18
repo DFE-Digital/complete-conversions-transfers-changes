@@ -1,4 +1,4 @@
-﻿﻿using Dfe.Complete.Application.Contacts.Queries;
+﻿using Dfe.Complete.Application.Contacts.Queries;
 using Dfe.Complete.Application.LocalAuthorities.Queries.GetLocalAuthority;
 using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Pages.Projects.ProjectView;
@@ -7,8 +7,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Dfe.Complete.Pages.Projects.ExternalContacts;
 
-public class ExternalContacts(ISender sender)
-    : ProjectLayoutModel(sender, ExternalContactsNavigation)
+public class ExternalContacts(ISender sender, ILogger<ExternalContacts> logger)
+    : ProjectLayoutModel(sender, logger, ExternalContactsNavigation)
 {
     private readonly ISender _sender = sender;
 
