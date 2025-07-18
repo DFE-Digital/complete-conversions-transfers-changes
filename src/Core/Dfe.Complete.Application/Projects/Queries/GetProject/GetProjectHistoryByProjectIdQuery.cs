@@ -3,6 +3,7 @@ using Dfe.Complete.Application.Common.Models;
 using Dfe.Complete.Application.Projects.Models;
 using AutoMapper;
 using Dfe.Complete.Application.Projects.Interfaces;
+using Dfe.Complete.Domain.Entities;
 using Dfe.Complete.Domain.ValueObjects;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -41,7 +42,7 @@ namespace Dfe.Complete.Application.Projects.Queries.GetProject
                 var projectDto = mapper.Map<ProjectDto>(result);
 
                 // Added to prevent circular reference in integration test
-                projectDto.RegionalDeliveryOfficer = null;
+                projectDto.RegionalDeliveryOfficer = new User();
 
                 return Result<ProjectDto>.Success(projectDto);
             }
