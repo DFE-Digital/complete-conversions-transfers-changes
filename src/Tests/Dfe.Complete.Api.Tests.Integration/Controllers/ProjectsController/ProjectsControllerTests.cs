@@ -3,10 +3,10 @@ using AutoFixture;
 using AutoFixture.Xunit2;
 using Dfe.AcademiesApi.Client.Contracts;
 using Dfe.Complete.Api.Tests.Integration.Customizations;
-using Dfe.Complete.Application.Projects.Commands.UpdateProject;
 using Dfe.Complete.Client.Contracts;
 using Dfe.Complete.Infrastructure.Database;
 using Dfe.Complete.Tests.Common.Constants;
+using Dfe.Complete.Tests.Common.Customizations.Behaviours;
 using Dfe.Complete.Tests.Common.Customizations.Models;
 using DfE.CoreLibs.Testing.AutoFixture.Attributes;
 using DfE.CoreLibs.Testing.AutoFixture.Customizations;
@@ -1415,15 +1415,17 @@ public partial class ProjectsControllerTests
         }
     }
     
-    [Theory(Skip = "Temporarily skipping due to API failure under test")]
-    [CustomAutoData(typeof(CustomWebApplicationDbContextFactoryCustomization), typeof(GiasEstablishmentsCustomization))]
+    [Theory]
+    [CustomAutoData(typeof(CustomWebApplicationDbContextFactoryCustomization), 
+        typeof(GiasEstablishmentsCustomization),
+        typeof(IgnoreVirtualMembersCustomisation))]
     public async Task GetProjectSignificantDateAsync_ShouldReturnProjectDto(
         CustomWebApplicationDbContextFactory<Program> factory,
         IProjectsClient projectsClient,
         IFixture fixture)
     {
         factory.TestClaims = [new Claim(ClaimTypes.Role, ApiRoles.ReadRole)];
-
+        
         // Arrange
         var dbContext = factory.GetDbContext<CompleteContext>();
         var testUser = await dbContext.Users.FirstAsync();
@@ -1432,19 +1434,18 @@ public partial class ProjectsControllerTests
         var project = fixture.Customize(new ProjectCustomization
         {
             RegionalDeliveryOfficerId = testUser.Id,
-            Urn = giasEstablishment.Urn!
+            Urn = giasEstablishment.Urn!,
         }).Create<Project>();
 
         var localAuthority = dbContext.LocalAuthorities.AsEnumerable().MinBy(_ => Guid.NewGuid());
         project.LocalAuthorityId = localAuthority!.Id;
-
+        
         await dbContext.GiasEstablishments.AddAsync(giasEstablishment);
         await dbContext.Projects.AddAsync(project);
         await dbContext.SaveChangesAsync();
 
-        // Act
         var result = await projectsClient.GetProjectSignificantDateAsync(project.Id.Value.ToString());
-
+        
         // Assert
         Assert.NotNull(result);
         Assert.Equal(project.Id.Value, result.Id?.Value);

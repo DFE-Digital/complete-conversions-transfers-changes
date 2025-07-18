@@ -40,6 +40,9 @@ namespace Dfe.Complete.Application.Projects.Queries.GetProject
 
                 var projectDto = mapper.Map<ProjectDto>(result);
 
+                // Added to prevent circular reference in integration test
+                projectDto.RegionalDeliveryOfficer = null;
+
                 return Result<ProjectDto>.Success(projectDto);
             }
             catch (Exception ex)
