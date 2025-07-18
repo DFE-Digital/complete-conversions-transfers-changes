@@ -40,9 +40,7 @@ namespace Dfe.Complete.Application.Projects.Queries.GetProject
 
                 var projectDto = mapper.Map<ProjectDto>(result);
 
-                var t = Result<ProjectDto>.Success(projectDto);
-                
-                return t;
+                return Result<ProjectDto>.Success(projectDto);
             }
             catch (Exception ex)
             {

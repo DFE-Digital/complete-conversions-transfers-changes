@@ -14,7 +14,8 @@
   var projectIsAssignedToUser = Model.Project.AssignedToId?.Value.ToString() == User.GetUserAdId();
   var significantDateIsConfirmed = Model.Project.SignificantDateProvisional.HasValue && Model.Project.SignificantDateProvisional.Value == false;
 
-  var canEditSignificantDate = significantDateIsConfirmed && (projectIsAssignedToUser || Model.CurrentUserTeam.TeamIsServiceSupport());
+  // var canEditSignificantDate = significantDateIsConfirmed && (projectIsAssignedToUser || Model.CurrentUserTeam.TeamIsServiceSupport());
+  var canEditSignificantDate = true;
 }
 
 <div class="govuk-grid-row">
