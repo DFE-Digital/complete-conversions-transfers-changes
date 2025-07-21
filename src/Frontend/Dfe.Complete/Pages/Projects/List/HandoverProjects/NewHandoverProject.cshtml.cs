@@ -15,7 +15,7 @@ using System.ComponentModel.DataAnnotations;
 namespace Dfe.Complete.Pages.Projects.List.HandoverProjects
 {
     [Authorize(policy: UserPolicyConstants.CanViewAllProjectsHandover)]
-    public class NewHandoverProjectModel(ISender sender, ErrorService errorService) : BaseProjectPageModel(sender)
+    public class NewHandoverProjectModel(ISender sender, ErrorService errorService, ILogger<NewHandoverProjectModel> logger) : BaseProjectPageModel(sender, logger)
     { 
         [BindProperty]
         public ProjectType? Type { get; set; }

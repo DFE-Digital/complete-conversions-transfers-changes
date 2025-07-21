@@ -22,6 +22,7 @@ using Dfe.Complete.Logging.Middleware;
 using DfE.CoreLibs.Security.Antiforgery;
 using Dfe.Complete.Validators;
 using DfE.CoreLibs.Security.Enums;
+using Dfe.Complete.Application.Mappers;
 
 namespace Dfe.Complete;
 

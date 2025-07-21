@@ -490,7 +490,7 @@ namespace Dfe.Complete.Api.Controllers
         /// </summary>
         /// <param name="request">The update command.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
-        [Authorize(Policy = "CanReadWrite")]
+        [Authorize(Policy = "CanReadWriteUpdate")]
         [HttpPatch("project/handover/assign")]
         [SwaggerResponse(204, "Invalid request data.")]
         [SwaggerResponse(404, "Project not found.")]

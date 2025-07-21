@@ -125,10 +125,6 @@
       "ExpectedSecurity": "Authorize: Policy=ManageLocalAuthorities"
     },
     {
-      "Route": "Projects/List/HandoverProjects/HandoverProjectAssigned",
-      "ExpectedSecurity": "Authorize: Policy=CanViewAllProjectsHandover"
-    },
-    {
       "Route": "Projects/List/HandoverProjects/HandoverProjectCheck",
       "ExpectedSecurity": "Authorize: Policy=CanViewAllProjectsHandover"
     },
@@ -137,7 +133,7 @@
       "ExpectedSecurity": "Authorize: Policy=CanViewAllProjectsHandover"
     },
     {
-      "Route": "Projects/List/NewHandoverProject",
+      "Route": "Projects/List/HandoverProjects/NewHandoverProject",
       "ExpectedSecurity": "Authorize: Policy=CanViewAllProjectsHandover"
     }
   ]
