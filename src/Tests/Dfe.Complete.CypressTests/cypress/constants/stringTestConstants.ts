@@ -18,10 +18,10 @@ export const dimensionsTrust = {
 };
 export const testTrust = {
     name: "Test Trust",
-    referenceNumber: "TR09999",
+    referenceNumber: "TR99999",
 };
 export const today = new Date();
-export const todayFormatted = today.toLocaleDateString("default", {
+export const todayFormatted = today.toLocaleDateString("en-GB", {
     day: "numeric",
     month: "long",
     year: "numeric",
