@@ -449,8 +449,8 @@ namespace Dfe.Complete.Api.Controllers
         {
             var statistics = await sender.Send(new ListAllProjectsStatisticsQuery(), cancellationToken);
             return Ok(statistics.Value);
-        } 
-        
+        }
+
         /// <summary>
         /// Returns a list of Projects converting to an academy
         /// </summary>
@@ -466,7 +466,7 @@ namespace Dfe.Complete.Api.Controllers
             var project = await sender.Send(request, cancellationToken);
             return Ok(project.Value ?? []);
         }
-        
+
         /// <summary>
         /// Updates the Academy URN for a specific project.
         /// </summary>
@@ -483,6 +483,69 @@ namespace Dfe.Complete.Api.Controllers
         {
             await sender.Send(request, cancellationToken);
             return NoContent();
+        }
+
+        /// <summary>
+        /// Assign the handover project to a specific team or user.
+        /// </summary>
+        /// <param name="request">The update command.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        [Authorize(Policy = "CanReadWrite")]
+        [HttpPatch("project/handover/assign")]
+        [SwaggerResponse(204, "Invalid request data.")]
+        [SwaggerResponse(404, "Project not found.")]
+        public async Task<IActionResult> AssignHandoverProjectAsync(
+            [FromBody] UpdateHandoverProjectCommand request,
+            CancellationToken cancellationToken)
+        {
+            await sender.Send(request, cancellationToken);
+            return NoContent();
+        }
+
+        /// <summary>
+        /// Returns the details of a project for handover.
+        /// </summary>
+        /// <param name="request">The request.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        [Authorize(Policy = "CanRead")]
+        [HttpGet]
+        [Route("project/handover/details")]
+        [SwaggerResponse(200, "Project", typeof(ProjectWithEstablishmentQueryModel))]
+        [SwaggerResponse(404, "project not found.")]
+        public async Task<IActionResult> GetHandoverProjectDetailsAsync([FromQuery] GetProjectWithEstablishmentByIdQuery request, CancellationToken cancellationToken)
+        {
+            var project = await sender.Send(request, cancellationToken);
+            return Ok(project.Value);
+        }
+        /// <summary>
+        /// Returns the details of a project for handover.
+        /// </summary>
+        /// <param name="request">The request.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        [Authorize(Policy = "CanRead")]
+        [HttpGet]
+        [Route("List/all/handover")]
+        [SwaggerResponse(200, "Project", typeof(ProjectWithEstablishmentQueryModel))]
+        [SwaggerResponse(404, "project not found.")]
+        public async Task<IActionResult> ListAllProjectsHandoverAsync([FromQuery] ListAllProjectsHandoverQuery request, CancellationToken cancellationToken)
+        {
+            var project = await sender.Send(request, cancellationToken);
+            return Ok(project.Value);
+        }
+        /// <summary>
+        /// Returns the details of a project by ID.
+        /// </summary>
+        /// <param name="request">The request.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        [Authorize(Policy = "CanRead")]
+        [HttpGet]
+        [Route("project/details")]
+        [SwaggerResponse(200, "Project", typeof(ProjectDto))]
+        [SwaggerResponse(404, "project not found.")]
+        public async Task<IActionResult> GetProjectByIdAsync([FromQuery] GetProjectByIdQuery request, CancellationToken cancellationToken)
+        {
+            var project = await sender.Send(request, cancellationToken);
+            return Ok(project.Value);
         }
     }
 }

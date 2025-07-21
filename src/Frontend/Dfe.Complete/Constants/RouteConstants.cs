@@ -15,7 +15,10 @@
         public const string TransfersProjectsByMonths = AllProjectsPrefix + "/by-month/transfers/from/{0}/{1}/to/{2}/{3}";
         public const string ProjectsByRegion = AllProjectsPrefix + "/regions/{0}";
         public const string CompletedProjects = AllProjectsPrefix + "/completed";
-        
+        public const string HandoverProjects = AllProjectsPrefix + "/handover";
+        public const string HandoverProjectCheck = HandoverProjects + "/{0}/check";
+        public const string NewHandoverProject = HandoverProjects + "/{0}/new";
+
         // Your projects
         private const string YourProjectsPrefix = "/projects/yours";
         public const string YourProjectsInProgress = YourProjectsPrefix + "/in-progress";
@@ -32,6 +35,7 @@
         // Project
         public const string Project = "/projects/{0}";
         public const string CreateNewProject = "/projects/CreateNewProject";
+        public const string ProjectCreated = "/projects/{0}/created";
 
         public const string SelectCreateProjectType = "/projects/new";
         
@@ -44,7 +48,8 @@
         public const string ProjectInternalContactsEditAddedByUser = ProjectInternalContacts + "/added-by-user/edit";
         public const string ProjectInternalContactsEditAssignedTeam = ProjectInternalContacts + "/team/edit";
         public const string ProjectDeleteNote = ProjectViewNotes + "/{1}/delete";
-        
+        public const string ProjectExternalContacts = Project + "/external-contacts";
+
         public const string ProjectTaskList = Project + "/tasks";
         
         public const string ProjectAbout = Project + "/information";

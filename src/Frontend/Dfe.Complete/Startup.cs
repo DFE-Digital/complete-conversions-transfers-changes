@@ -1,5 +1,4 @@
 using Azure.Identity;
-using Dfe.Complete.Application.Common.Mappers;
 using Dfe.Complete.Configuration;
 using DataProtectionOptions = Dfe.Complete.Configuration.DataProtectionOptions;
 using Dfe.Complete.Infrastructure;
@@ -25,6 +24,7 @@ using DfE.CoreLibs.Security.Antiforgery;
 using Dfe.Complete.Validators;
 using DfE.CoreLibs.Security.Enums;
 using Dfe.Complete.Application.Extensions;
+using Dfe.Complete.Application.Mappers;
 
 namespace Dfe.Complete;
 
