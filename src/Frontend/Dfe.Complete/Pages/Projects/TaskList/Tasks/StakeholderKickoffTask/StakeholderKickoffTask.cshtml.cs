@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.StakeholderKickoffTask
 {
-    public class StakeholderKickoffTaskModel(ISender sender) : BaseProjectPageModel(sender)
+    public class StakeholderKickoffTaskModel(ISender sender, ILogger<StakeholderKickoffTaskModel> _logger) : BaseProjectPageModel(sender, _logger)
     {
         [BindProperty(Name = "send-intro-emails")]
         public bool? SendIntroEmails { get; set; }
