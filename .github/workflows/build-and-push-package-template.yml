@@ -83,7 +83,7 @@ jobs:
       shell: /usr/bin/bash -e {0}
 
     - name: Build, pack and publish
-      working-directory: Dfe.Complete.Api.Client
+      working-directory: src/Api/Dfe.Complete.Api.Client
       run: |
         dotnet build -c Release
         dotnet pack -c Release -p:PackageVersion=${{ env.NEW_VERSION }} --output .
