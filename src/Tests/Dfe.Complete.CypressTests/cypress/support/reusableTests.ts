@@ -6,6 +6,7 @@ import { currentMonthLong, currentMonthShort } from "cypress/constants/stringTes
 import { Logger } from "cypress/common/logger";
 import internalContactsPage from "cypress/pages/projects/projectDetails/internalContactsPage";
 import { TestUser } from "cypress/constants/TestUser";
+import notePage from "cypress/pages/projects/projectDetails/notePage";
 
 export function shouldNotHaveAccessToViewHandedOverProjects() {
     cy.visit("/projects/all/in-progress/all");
@@ -50,8 +51,25 @@ export function shouldNotBeAbleToCreateAProject() {
     cy.visit("/projects/transfers/new_mat").notAuthorisedToPerformAction();
 }
 
+export function shouldNotBeAbleToAddAProjectNote(projectId: string) {
+    cy.visit(`/projects/${projectId}/notes`);
+    notePage.clickButton("Add note").notAuthorisedToPerformThisActionBanner();
+    cy.visit(`/projects/${projectId}/notes/new`).notAuthorisedToPerformAction();
+}
+
 export function shouldNotHaveAccessToViewAndEditUsers() {
     cy.visit("/service-support/users").notAuthorisedToPerformAction();
+}
+
+export function shouldNotHaveAccessToViewLocalAuthorities() {
+    cy.visit("/service-support/local-authorities").notAuthorisedToPerformAction();
+    cy.visit("/service-support/local-authorities/new").notAuthorisedToPerformAction();
+}
+
+export function shouldNotHaveAccessToViewConversionURNsPage(projectId: string) {
+    cy.visit("/projects/service-support/without-academy-urn").notAuthorisedToPerformAction();
+    cy.visit("/projects/service-support/with-academy-urn").notAuthorisedToPerformAction();
+    cy.visit(`/projects/${projectId}/academy-urn`).notAuthorisedToPerformAction();
 }
 
 export function shouldBeAbleToViewMultipleMonthsOfProjects() {
@@ -67,7 +85,7 @@ export function shouldBeAbleToViewAndDownloadCsvReportsFromTheExportSection() {
 export function checkAccessibilityAcrossPages() {
     const visitedUrls = Cypress.env("visitedUrls");
     visitedUrls.forEach((url: string) => {
-        cy.visit(url);
+        cy.visit(url, { failOnStatusCode: false });
         Logger.log("Executing accessibility check for URL: " + url);
         cy.executeAccessibilityTests();
     });

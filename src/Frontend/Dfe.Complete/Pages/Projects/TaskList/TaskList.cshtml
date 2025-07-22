@@ -7,16 +7,16 @@
 @model Dfe.Complete.Pages.Projects.TaskList.TaskListModel
 
 @{
-  Layout = "_ProjectLayout";
-  ViewData["Title"] = Model.Establishment.Name;
+    Layout = "Projects/_ProjectLayout";
+    ViewData["Title"] = Model.Establishment.Name;
 }
 
 @if (Model.Project.Type == ProjectType.Conversion)
 {
-  @await Html.PartialAsync("_ConversionTaskList", Model)
+    @await Html.PartialAsync("_ConversionTaskList", Model)
 }
 
 @if (Model.Project.Type == ProjectType.Transfer)
 {
-  @await Html.PartialAsync("_TransferTaskList", Model)
+    @await Html.PartialAsync("_TransferTaskList", Model)
 }

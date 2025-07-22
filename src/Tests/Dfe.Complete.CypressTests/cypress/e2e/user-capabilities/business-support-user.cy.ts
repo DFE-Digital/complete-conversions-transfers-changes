@@ -2,9 +2,12 @@ import { beforeEach } from "mocha";
 import {
     checkAccessibilityAcrossPages,
     shouldBeAbleToViewAndDownloadCsvReportsFromTheExportSection,
+    shouldNotBeAbleToAddAProjectNote,
     shouldNotBeAbleToCreateAProject,
     shouldNotHaveAccessToViewAndEditUsers,
+    shouldNotHaveAccessToViewConversionURNsPage,
     shouldNotHaveAccessToViewHandedOverProjects,
+    shouldNotHaveAccessToViewLocalAuthorities,
     shouldNotHaveAccessToViewYourProjectsSections,
     shouldNotHaveAccessToViewYourTeamProjectsSections,
 } from "cypress/support/reusableTests";
@@ -21,11 +24,12 @@ import projectDetailsPage from "cypress/pages/projects/projectDetails/projectDet
 
 const date = new Date("2027-04-01");
 const project = ProjectBuilder.createConversionProjectRequest(date);
+let projectId: string;
 const schoolName = "St Chad's Catholic Primary School";
 describe("Capabilities and permissions of the business support user", () => {
     before(() => {
         projectRemover.removeProjectIfItExists(`${project.urn.value}`);
-        projectApi.createConversionProject(project);
+        projectApi.createConversionProject(project).then((response) => (projectId = response.value));
     });
     beforeEach(() => {
         cy.login(businessSupportUser);
@@ -113,16 +117,20 @@ describe("Capabilities and permissions of the business support user", () => {
         shouldNotBeAbleToCreateAProject();
     });
 
+    it("Should NOT be able to add a note to a project", () => {
+        shouldNotBeAbleToAddAProjectNote(projectId);
+    });
+
     it.skip("Should NOT be able to soft delete projects", () => {
         // not implemented
     });
 
-    it.skip("Should NOT be able to view and edit local authorities", () => {
-        // this can be viewed in the Ruby app currently?
+    it("Should NOT be able to view and edit local authorities", () => {
+        shouldNotHaveAccessToViewLocalAuthorities();
     });
 
-    it.skip("Should NOT be able to view conversion URNs", () => {
-        // this can be viewed in the Ruby app currently?
+    it("Should NOT be able to view conversion URNs", () => {
+        shouldNotHaveAccessToViewConversionURNsPage(projectId);
     });
 
     it("Check accessibility across pages", () => {
