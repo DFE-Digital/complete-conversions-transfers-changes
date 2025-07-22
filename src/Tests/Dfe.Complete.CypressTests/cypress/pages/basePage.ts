@@ -38,6 +38,11 @@ class BasePage {
         return this;
     }
 
+    hasButton(buttonText: string) {
+        cy.getByClass("govuk-button").contains(buttonText).should("be.visible").should("not.be.disabled");
+        return this;
+    }
+
     notAuthorisedToPerformThisActionBanner() {
         this.containsImportantBannerWithMessage("You are not authorised to perform this action.");
         return this;
