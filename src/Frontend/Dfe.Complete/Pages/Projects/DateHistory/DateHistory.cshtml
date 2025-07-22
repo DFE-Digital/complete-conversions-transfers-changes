@@ -1,6 +1,6 @@
 @page "/projects/{projectId}/date-history"
 @using Dfe.Complete.Domain.Enums
-@using Dfe.Complete.Pages.Projects.DateHistory
+@using Dfe.Complete.Utils
 @model Dfe.Complete.Pages.Projects.DateHistory.DateHistoryProjectModel
 
 @{
@@ -9,8 +9,7 @@
 
   var significantDateHistories = Model.Project.SignificantDateHistories;
   
-  var isConversion = Model.Project.Type == ProjectType.Conversion;
-  var projectTypeString = isConversion ? "conversion" : "transfer";
+  var projectTypeString = Model.Project.Type == ProjectType.Conversion ? "conversion" : "transfer";
 }
 
 <div class="govuk-grid-row">
@@ -20,7 +19,7 @@
       <p class="govuk-!-margin-bottom-8">The current proposed @projectTypeString date is <strong>@Model.Project.SignificantDate.ToDateString()</strong></p>
     </section>
 
-    <h2 class="govuk-heading-l">@SigDateHelper.CapitliseFirstLetter(projectTypeString) date history</h2>
+    <h2 class="govuk-heading-l">@projectTypeString.ToTitleCase() date history</h2>
     
     @{
       if (@significantDateHistories.Count > 0)

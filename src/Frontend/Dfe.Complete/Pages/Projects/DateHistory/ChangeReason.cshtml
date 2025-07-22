@@ -12,8 +12,7 @@
 
   var significantDateField = nameof(Model.SignificantDateString);
   
-  var isConversion = Model.Project.Type == ProjectType.Conversion;
-  var projectTypeString = isConversion ? "conversion" : "transfer";
+  var projectTypeString = Model.Project.Type == ProjectType.Conversion ? "conversion" : "transfer";
 }
 <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
@@ -58,7 +57,7 @@
                                        aria-controls="@noteKey"
                                        aria-expanded="@isChecked"
                                        @(isChecked ? "checked" : "")/>
-                                <label class="govuk-label govuk-checkboxes__label" for="@checkboxId"><strong>@SigDateHelper.MapLabel(reason)</strong></label>
+                                <label class="govuk-label govuk-checkboxes__label" for="@checkboxId"><strong>@reason.ToDisplayDescription()</strong></label>
                             </div>
                             <div class="govuk-checkboxes__conditional @(isChecked ? "" : "govuk-checkboxes__conditional--hidden")" id="@noteKey">
                                 <div class="govuk-form-group @(hasError ? "govuk-form-group--error" : "")">

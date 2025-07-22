@@ -468,20 +468,17 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
         SignificantDate = date;
     }
     
-    public void AddSignificantDateHistory(SignificantDateHistory? significantDateHistory)
+    public void AddSignificantDateHistory(SignificantDateHistory significantDateHistory)
     {
-        if (significantDateHistory != null)
+        SignificantDateHistories.Add(new SignificantDateHistory
         {
-            SignificantDateHistories.Add(new SignificantDateHistory
-            {
-                Id = significantDateHistory.Id,
-                CreatedAt = significantDateHistory.CreatedAt,
-                UpdatedAt = significantDateHistory.UpdatedAt,
-                ProjectId = significantDateHistory.ProjectId,
-                UserId = significantDateHistory.UserId,
-                PreviousDate = significantDateHistory.PreviousDate,
-                RevisedDate = significantDateHistory.RevisedDate,
-            });
-        }
+            Id = significantDateHistory.Id,
+            CreatedAt = significantDateHistory.CreatedAt,
+            UpdatedAt = significantDateHistory.UpdatedAt,
+            ProjectId = significantDateHistory.ProjectId,
+            UserId = significantDateHistory.UserId,
+            PreviousDate = significantDateHistory.PreviousDate,
+            RevisedDate = significantDateHistory.RevisedDate,
+        });
     }
 }

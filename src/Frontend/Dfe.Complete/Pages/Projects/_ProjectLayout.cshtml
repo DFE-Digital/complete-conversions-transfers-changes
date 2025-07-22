@@ -1,20 +1,18 @@
 @using Dfe.Complete.Constants;
+@using Dfe.Complete.Domain.Constants
 @using Dfe.Complete.Utils;
 @using Dfe.Complete.Domain.Enums
 @using Dfe.Complete.Domain.Extensions
+@using Dfe.Complete.Pages.Projects.DateHistory
 @using GovUk.Frontend.AspNetCore.TagHelpers
 @using Dfe.Complete.Pages.Projects.ProjectView
+@using Dfe.Complete.TagHelpers
 
 @model Dfe.Complete.Pages.Projects.ProjectView.ProjectLayoutModel
 @{
   Layout = "Shared/_Layout";
 
   string? IsCurrentNav(string tabName) => Model.CurrentNavigationItem == tabName ? "page" : null;
-
-  var projectIsAssignedToUser = Model.Project.AssignedToId?.Value.ToString() == User.GetUserAdId();
-  var significantDateIsConfirmed = Model.Project.SignificantDateProvisional.HasValue && Model.Project.SignificantDateProvisional.Value == false;
-
-  var canEditSignificantDate = significantDateIsConfirmed && (projectIsAssignedToUser || Model.CurrentUserTeam.TeamIsServiceSupport());
 }
 
 <div class="govuk-grid-row">
@@ -130,12 +128,12 @@ Model.CurrentUserTeam.TeamIsServiceSupport())
 
 <div class="govuk-button-group">
   @{
-    if (canEditSignificantDate)
+    if (SigDateHelper.CanEditSignificantDate(Model.Project, User, Model.CurrentUserTeam))
     {
       <a data-module="govuk-button" draggable="false" role="button" class="govuk-button govuk-button--secondary" href="@String.Format(RouteConstants.ChangeProjectDateHistory, Model.Project.Id.Value)">Change @(Model.Project.Type == ProjectType.Conversion ? "conversion" : "transfer") date</a>
     }
   }
-  <a data-module="govuk-button" draggable="false" role="button" class="govuk-button govuk-button--warning" href="#">Delete project</a>
+  <a data-module="govuk-button" draggable="false" role="button" asp-policy="@UserPolicyConstants.CanViewServiceSupport" class="govuk-button govuk-button--warning" href="#">Delete project</a>
 </div>
 
 

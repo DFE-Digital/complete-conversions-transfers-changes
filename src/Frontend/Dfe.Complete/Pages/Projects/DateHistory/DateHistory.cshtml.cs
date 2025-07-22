@@ -29,7 +29,7 @@ namespace Dfe.Complete.Pages.Projects.DateHistory
 
             var reasonType = EnumExtensions.FromDescription<SignificantDateReason>(reason.ReasonType);
 
-            var label = SigDateHelper.MapLabel(reasonType);
+            var label = reasonType.ToDisplayDescription();
 
             return (label, notesBody);
         }
