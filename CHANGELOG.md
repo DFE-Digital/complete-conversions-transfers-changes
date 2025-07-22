@@ -25,13 +25,17 @@ Security in case of vulnerabilities.
 ### Added
 - Added Project Significant History Dates `/projects/{projectId}/date-history`
 - Added `/projects/{projectId}/external-contacts` page
+- New route `/projects/all/reports`
+- Add reports landing page under All projects > Reports (`/projects/all/reports`)
 
 ### Changed  
 - Add a redirect from projects/{id} to projects/{id}/tasks
 - Reduce log level from error to warning when project routes receive bad GUID or project not found 
+- Add a redirect from `/projects/all/export` to `/projects/all/reports`
 
 ### Fixed
 - Remove double pagination on Service Support > Local authorities
+- Resolve "ABout the Project" academy crash
 
 See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-07-14.525...main) for everything awaiting release
 
