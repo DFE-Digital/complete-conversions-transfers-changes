@@ -20,6 +20,7 @@
         public const string TransfersProjectsByMonths = AllProjectsPrefix + "/by-month/transfers/from/{0}/{1}/to/{2}/{3}";
         public const string CompletedProjects = AllProjectsPrefix + "/completed";
         public const string Statistics = AllProjectsPrefix + "/statistics";
+        public const string Export = AllProjectsPrefix + "/export";
         public const string Reports = AllProjectsPrefix + "/reports";
         
         // Your projects

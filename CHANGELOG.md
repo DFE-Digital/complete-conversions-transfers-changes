@@ -29,6 +29,7 @@ Security in case of vulnerabilities.
 ### Changed
 
 ### Fixed
+- HOTFIX: Reports tab now points to exports and dotnet app will handle redirect
 
 See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-07-22.553...main) for everything awaiting release
 
