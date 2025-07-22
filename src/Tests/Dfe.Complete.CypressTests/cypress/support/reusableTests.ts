@@ -35,10 +35,10 @@ export function shouldNotHaveAccessToViewYourTeamProjectsSections() {
     cy.visit("/projects/team/handed-over").notAuthorisedToPerformAction();
 }
 
-export function shouldNotHaveAccessToViewProjectExports() {
+export function shouldNotHaveAccessToViewProjectReports() {
     navBar.goToAllProjects();
-    allProjects.unableToViewFilter("Exports");
-    // cy.visit("/projects/all/export").notAuthorisedToPerformAction(); // not implemented
+    allProjects.unableToViewFilter("Reports");
+    cy.visit("/projects/all/reports").notAuthorisedToPerformAction();
 }
 
 export function shouldNotBeAbleToCreateAProject() {
@@ -78,8 +78,16 @@ export function shouldBeAbleToViewMultipleMonthsOfProjects() {
     projectsByMonthPage.filterIsFromDateToDate(currentMonthShort, currentMonthShort);
 }
 
-export function shouldBeAbleToViewAndDownloadCsvReportsFromTheExportSection() {
-    // not implemented
+export function shouldBeAbleToViewReportsLandingPage() {
+    cy.visit("/projects/all/in-progress/all");
+    allProjects
+        .filterProjects("Reports")
+        .containsHeading("Reports")
+        .contains("You can now view and download reports on academy conversions and transfers in Power BI.")
+        .containsSubHeading("Conversions")
+        .containsSubHeading("Transfers")
+        .contains("The reports open in a new tab and include guidance to help you find the data you need.")
+        .hasButton("View reports in Power BI");
 }
 
 export function checkAccessibilityAcrossPages() {
