@@ -3,11 +3,14 @@
   <govuk-summary-card-title heading-level="3">
     @Model.Contact.Title
   </govuk-summary-card-title>
-  <govuk-summary-card-actions>
-    <govuk-summary-card-action href="#">
-      Edit contact
-    </govuk-summary-card-action>
-  </govuk-summary-card-actions>
+  @if (Model.IsEditable)
+  {
+    <govuk-summary-card-actions>
+      <govuk-summary-card-action href="#">
+        Edit contact
+      </govuk-summary-card-action>
+    </govuk-summary-card-actions>
+  }
   <govuk-summary-list>
     <govuk-summary-list-row>
       <govuk-summary-list-row-key>
@@ -17,7 +20,7 @@
         @Model.Contact.Name
       </govuk-summary-list-row-value>
     </govuk-summary-list-row>
-    @if (Model.Contact.OrganisationName is not null)
+    @if (Model is { ShowOrganisation: true, Contact.OrganisationName: not null })
     {
     <govuk-summary-list-row>
       <govuk-summary-list-row-key>

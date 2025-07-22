@@ -15,7 +15,7 @@ public class ExternalContacts(ISender sender, ILogger<ExternalContacts> logger)
     public List<ExternalContactModel> EstablishmentContacts { get; set; } = [];
     public List<ExternalContactModel> IncomingTrustContacts { get; set; } = [];
     public List<ExternalContactModel> OutgoingTrustContacts { get; set; } = [];
-    public List<ExternalContactModel> LocalAuthorityContacts { get; set; }= [];
+    public List<ExternalContactModel> LocalAuthorityContacts { get; set; } = [];
     public List<ExternalContactModel> SolicitorContacts { get; set; } = [];
     public List<ExternalContactModel> DioceseContacts { get; set; } = [];
     public List<ExternalContactModel> OtherContacts { get; set; } = [];
@@ -57,15 +57,21 @@ public class ExternalContacts(ISender sender, ILogger<ExternalContacts> logger)
                             contact.Id == Project.MainContactId,
                             contact.Id == Project.OutgoingTrustMainContactId
                         )));
+            LocalAuthorityContacts.AddRange(
+                projectContacts.Value.FindAll(contact => contact.Category == ContactCategory.LocalAuthority).Select(
+                    contact =>
+                        new ExternalContactModel(contact, true)));
             SolicitorContacts.AddRange(
-                projectContacts.Value.FindAll(contact => contact.Category == ContactCategory.Solicitor).Select(contact =>
-                    new ExternalContactModel(contact, true)));
-            DioceseContacts.AddRange(projectContacts.Value.FindAll(contact => contact.Category == ContactCategory.Diocese)
+                projectContacts.Value.FindAll(contact => contact.Category == ContactCategory.Solicitor).Select(
+                    contact =>
+                        new ExternalContactModel(contact, true)));
+            DioceseContacts.AddRange(projectContacts.Value
+                .FindAll(contact => contact.Category == ContactCategory.Diocese)
                 .Select(contact =>
                     new ExternalContactModel(contact, true)));
             OtherContacts.AddRange(projectContacts.Value.FindAll(contact => contact.Category == ContactCategory.Other)
                 .Select(contact =>
-                    new ExternalContactModel(contact, true)));
+                    new ExternalContactModel(contact, true, ShowOrganisation: true)));
         }
 
         if (Establishment.LocalAuthorityCode == null) return Page();
