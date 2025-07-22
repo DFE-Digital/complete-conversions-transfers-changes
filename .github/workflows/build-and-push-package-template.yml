@@ -86,5 +86,5 @@ jobs:
       working-directory: src/Api/Dfe.Complete.Api.Client
       run: |
         dotnet build -c Release
-        dotnet pack -c Release -p:PackageVersion=${{ env.NEW_VERSION }} --output .
+        dotnet pack src/Api/Dfe.Complete.Api.Client/Dfe.Complete.Api.Client.csproj -c Release -p:PackageVersion=${{ env.NEW_VERSION }} --output .
         dotnet nuget push "*.nupkg" --api-key ${{ secrets.GITHUB_TOKEN }} --source https://nuget.pkg.github.com/DFE-Digital/index.json
