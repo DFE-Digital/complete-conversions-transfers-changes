@@ -21,7 +21,7 @@ const academy = {
     address: "Church Road",
     localAuthority: "Dudley",
     schoolPhase: "Primary",
-    sharePointLink: "https://educationgovuk.sharepoint.com/",
+    sharePointLink: "https://educationgovuk.sharepoint.com",
 };
 
 const projectFormAMAT = ProjectBuilder.createConversionFormAMatProjectRequest();
@@ -58,8 +58,7 @@ describe("About the project page - conversion projects: ", () => {
         cy.visit(`projects/${projectFormAMATId}/tasks`);
     });
 
-    // bug 223996
-    it.skip("Should display the project details on the about the project section for a Conversion project", () => {
+    it("Should display the project details on the about the project section for a Conversion project", () => {
         cy.visit(`/projects/${projectId}/tasks`);
         Logger.log("Go to the about project section");
         projectDetailsPage.navigateTo("About the project").containsSubHeading("About the project");
@@ -147,7 +146,7 @@ describe("About the project page - conversion projects: ", () => {
             .hasSubHeading("Academy details")
             .summaryShows("Name")
             .hasValueWithLink(
-                `${schoolName} View the school's information in GIAS (opens in new tab)`,
+                `${academy.name} View the school's information in GIAS (opens in new tab)`,
                 `${giasUrl}/Establishments/Establishment/Details/${academy.urn}`,
             )
             .summaryShows("Academy URN (unique reference number)")
