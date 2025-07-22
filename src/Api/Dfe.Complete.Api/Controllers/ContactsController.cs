@@ -1,4 +1,4 @@
-﻿﻿using Asp.Versioning;
+﻿using Asp.Versioning;
 using Dfe.Complete.Application.Contacts.Queries;
 using Dfe.Complete.Domain.Entities;
 using MediatR;
