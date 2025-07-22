@@ -1,6 +1,6 @@
 import { beforeEach } from "mocha";
 import {
-    shouldBeAbleToViewAndDownloadCsvReportsFromTheExportSection,
+    shouldBeAbleToViewReportsLandingPage,
     shouldBeAbleToViewMultipleMonthsOfProjects,
     shouldNotBeAbleToAddAProjectNote,
     shouldNotBeAbleToCreateAProject,
@@ -67,9 +67,8 @@ describe("Capabilities and permissions of the service support user", () => {
         shouldBeAbleToViewMultipleMonthsOfProjects();
     });
 
-    it.skip("Should be able to view and download csv reports from the export section", () => {
-        // not implemented 187516
-        shouldBeAbleToViewAndDownloadCsvReportsFromTheExportSection();
+    it("Should be able to view the reports landing page", () => {
+        shouldBeAbleToViewReportsLandingPage();
     });
 
     it.skip("Should be able to review projects newly handed over from prepare", () => {

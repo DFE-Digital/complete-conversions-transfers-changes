@@ -1,7 +1,7 @@
 import { beforeEach } from "mocha";
 import {
     checkAccessibilityAcrossPages,
-    shouldBeAbleToViewAndDownloadCsvReportsFromTheExportSection,
+    shouldBeAbleToViewReportsLandingPage,
     shouldNotBeAbleToAddAProjectNote,
     shouldNotBeAbleToCreateAProject,
     shouldNotHaveAccessToViewAndEditUsers,
@@ -108,9 +108,8 @@ describe("Capabilities and permissions of the business support user", () => {
             .filterIsFromDateToDate(currentMonthShort, currentMonthShort);
     });
 
-    it.skip("Should be able to view and download csv reports from the export section", () => {
-        // not implemented 187516
-        shouldBeAbleToViewAndDownloadCsvReportsFromTheExportSection();
+    it("Should be able to view the reports landing page", () => {
+        shouldBeAbleToViewReportsLandingPage();
     });
 
     it("Should NOT be able to create a project", () => {
