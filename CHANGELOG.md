@@ -25,6 +25,7 @@ Security in case of vulnerabilities.
 ### Added
 
 ### Changed
+- exclude markdown files from deployment checks
 
 ### Fixed
 
