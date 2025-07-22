@@ -3,7 +3,7 @@ import {
     shouldNotHaveAccessToViewConversionURNsPage,
     shouldNotHaveAccessToViewHandedOverProjects,
     shouldNotHaveAccessToViewLocalAuthorities,
-    shouldNotHaveAccessToViewProjectExports,
+    shouldNotHaveAccessToViewProjectReports,
     shouldNotHaveAccessToViewYourTeamUnassignedProjects,
 } from "cypress/support/reusableTests";
 import { beforeEach } from "mocha";
@@ -78,8 +78,8 @@ describe("Capabilities and permissions of the regional casework services user", 
         shouldNotHaveAccessToViewHandedOverProjects();
     });
 
-    it("Should NOT have access to view All projects -> exports", () => {
-        shouldNotHaveAccessToViewProjectExports();
+    it("Should NOT have access to view All projects -> Reports", () => {
+        shouldNotHaveAccessToViewProjectReports();
     });
 
     it.skip("Should NOT have access to view and edit users", () => {

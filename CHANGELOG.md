@@ -23,15 +23,13 @@ Security in case of vulnerabilities.
 ## Unreleased  
 
 ### Added
-- added view significant date history `/projects/{projectId}/date-history`
-- added change significant date page "/projects/{projectId}/date-history/new"
-- added significant date change reason page "/projects/{projectId}/date-history/reason"
-- added confirm significant date change "/projects/{projectId}/date-history/reasons/later"
-
+- New route `/projects/all/reports`
+- Add reports landing page under All projects > Reports (`/projects/all/reports`)
 
 ### Changed  
 - Add a redirect from projects/{id} to projects/{id}/tasks
 - Reduce log level from error to warning when project routes receive bad GUID or project not found 
+- Add a redirect from `/projects/all/export` to `/projects/all/reports`
 
 ### Fixed
 - Remove double pagination on Service Support > Local authorities
@@ -66,6 +64,8 @@ See the [full commit history](https://github.com/DFE-Digital/complete-conversion
 - New route /projects/{projectId}/academy-urn
 - Service support Create Academy URN (/projects/{projectId}/academy-urn) 
 - Added `Statistics` page
+- Added Project Significant History Dates `/projects/{projectId}/date-history`
+
 
 ### Changed  
 
