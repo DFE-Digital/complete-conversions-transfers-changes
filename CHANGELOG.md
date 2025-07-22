@@ -25,6 +25,7 @@ Security in case of vulnerabilities.
 ### Added
 
 ### Changed
+- Update publish workflow to include API correctly 
 
 ### Fixed
 

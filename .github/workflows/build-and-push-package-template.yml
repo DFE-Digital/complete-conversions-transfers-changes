@@ -5,7 +5,7 @@ on:
     branches:
     - release/*
     paths:
-    - 'Dfe.Complete.Api.Client*/**'
+    - '**/Dfe.Complete.Api.Client*/**'
 
 env:
   DOTNET_VERSION: '8.0.x'
