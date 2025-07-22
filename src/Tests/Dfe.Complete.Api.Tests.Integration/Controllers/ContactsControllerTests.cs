@@ -29,6 +29,8 @@ public class ContactsControllerTests
         var localAuth = await dbContext.LocalAuthorities.FirstAsync();
         var establishment = await dbContext.GiasEstablishments.FirstAsync();
 
+        Assert.NotNull(establishment.Urn);
+
         var testProject = fixture.Customize(new ProjectCustomization
         {
             RegionalDeliveryOfficerId = testUser.Id,
@@ -55,7 +57,11 @@ public class ContactsControllerTests
         // Assert
         Assert.NotNull(result);
         Assert.Equal(5, result.Count);
-        Assert.All(result, c => Assert.Equal(testProject.Id.Value, c.ProjectId.Value));
+        Assert.All(result, c =>
+        {
+            Assert.NotNull(c.ProjectId);
+            Assert.Equal(testProject.Id.Value, c.ProjectId.Value);
+        });
     }
     
     
@@ -92,6 +98,9 @@ public class ContactsControllerTests
         Assert.NotNull(response);
         Assert.Equal(5, response.Count);
         Assert.All(response, contact =>
-            Assert.Equal(localAuth.Id.Value, contact.LocalAuthorityId.Value));
+        {
+            Assert.NotNull(contact.LocalAuthorityId);
+            Assert.Equal(localAuth.Id.Value, contact.LocalAuthorityId.Value);
+        });
     }
 }
