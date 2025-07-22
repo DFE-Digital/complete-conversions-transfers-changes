@@ -37,7 +37,7 @@ export function shouldNotHaveAccessToViewYourTeamProjectsSections() {
 
 export function shouldNotHaveAccessToViewProjectExports() {
     navBar.goToAllProjects();
-    allProjects.unableToViewFilter("Exports");
+    allProjects.unableToViewFilter("Reports");
     // cy.visit("/projects/all/export").notAuthorisedToPerformAction(); // not implemented
 }
 

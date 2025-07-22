@@ -61,7 +61,7 @@ describe("Capabilities and permissions of the regional delivery officer team lea
             "By local authority",
             "Completed",
             "Statistics",
-            "Exports",
+            "Reports",
         ]);
     });
 

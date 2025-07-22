@@ -47,7 +47,7 @@ describe("Capabilities and permissions of the service support user", () => {
             "By local authority",
             "Completed",
             "Statistics",
-            "Exports",
+            "Reports",
         ]);
     });
 

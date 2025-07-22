@@ -52,7 +52,7 @@ describe("Capabilities and permissions of the business support user", () => {
             "By local authority",
             "Completed",
             "Statistics",
-            "Exports",
+            "Reports",
         ]);
     });
 

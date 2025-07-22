@@ -60,7 +60,7 @@ describe("Capabilities and permissions of the regional casework services team le
             "By local authority",
             "Completed",
             "Statistics",
-            "Exports",
+            "Reports",
         ]);
     });
 
