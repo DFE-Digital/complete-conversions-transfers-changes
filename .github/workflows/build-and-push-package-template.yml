@@ -91,5 +91,5 @@ jobs:
         echo "Directory contents:"
         ls -la
         dotnet build Dfe.Complete.Api.Client.csproj -c Release
-        dotnet pack Dfe.Complete.Api.Client.csproj -c Release -p:PackageVersion=${{ env.NEW_VERSION }} --output .
+        dotnet pack Dfe.Complete.Api.Client.csproj -c Release -p:PackageVersion=1.0.6 --output .
         dotnet nuget push "*.nupkg" --api-key ${{ secrets.GITHUB_TOKEN }} --source https://nuget.pkg.github.com/DFE-Digital/index.json
