@@ -1,8 +1,18 @@
 import { EditUserPage } from "cypress/pages/projects/editUserPage";
 
 class InternalContactsPage extends EditUserPage {
-    constructor() {
-        super("projectInternalContacts");
+    private readonly sectionId = "projectInternalContacts";
+
+    inOrder() {
+        cy.wrap(this.sectionId).as("sectionId");
+        cy.wrap(-1).as("summaryCounter");
+        return this;
+    }
+
+    row(row: number) {
+        cy.wrap(this.sectionId).as("sectionId");
+        cy.wrap(row - 2).as("summaryCounter");
+        return this;
     }
 
     hasEmailLink(email: string) {

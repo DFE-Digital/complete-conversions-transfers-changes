@@ -7,16 +7,16 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Dfe.Complete.Pages.Projects.InternalContacts;
 
-public class InternalContacts(ISender sender, ILogger<InternalContacts> logger) :  ProjectLayoutModel(sender, InternalContactsNavigation)
+public class InternalContacts(ISender sender, ILogger<InternalContacts> logger) :  ProjectLayoutModel(sender, logger, InternalContactsNavigation)
 {
     private readonly ISender _sender = sender;
     public UserDto? UserAssignedTo { get; set; }
     public ProjectTeam? TeamAssignedTo { get; set; }
     public UserDto? UserAddedBy { get; set; }
 
-    public override async Task<IActionResult> OnGet()
+    public override async Task<IActionResult> OnGetAsync()
     {
-        await base.OnGet();
+        await base.OnGetAsync();
         if (Project.AssignedToId is not null)
         {
             var assignedToUserQuery = new GetUserByIdQuery(Project.AssignedToId);

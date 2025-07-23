@@ -1,0 +1,28 @@
+﻿@using Dfe.Complete.Pages.Projects.ServiceSupport.ConversionURNs
+@{
+    var ariaCurrentValue = "page";
+    string? IsCurrentNav(string tabName) => Model.CurrentNavigationItem == tabName ? ariaCurrentValue : null;
+}
+
+<h1 class="govuk-heading-l">
+    Conversion URNs
+</h1>
+
+<nav class="moj-sub-navigation" aria-label="Project sub-navigation">
+    <ul class="moj-sub-navigation__list">
+
+        <li class="moj-sub-navigation__item">
+            <a class="moj-sub-navigation__link"
+               aria-current="@IsCurrentNav(ConversionsUrnModel.WithoutAcademyURNSubNavigation)"
+               asp-page="WithoutAcademyUrn">
+                URNs to create
+            </a>
+        </li>
+
+        <li class="moj-sub-navigation__item">
+            <a class="moj-sub-navigation__link"
+               aria-current="@IsCurrentNav(ConversionsUrnModel.WithAcademyURNSubNavigation)"
+               asp-page="WithAcademyUrn">URNs added</a>
+        </li>
+    </ul>
+</nav>

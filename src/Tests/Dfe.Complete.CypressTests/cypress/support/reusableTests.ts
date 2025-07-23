@@ -6,6 +6,7 @@ import { currentMonthLong, currentMonthShort } from "cypress/constants/stringTes
 import { Logger } from "cypress/common/logger";
 import internalContactsPage from "cypress/pages/projects/projectDetails/internalContactsPage";
 import { TestUser } from "cypress/constants/TestUser";
+import notePage from "cypress/pages/projects/projectDetails/notePage";
 
 export function shouldNotHaveAccessToViewHandedOverProjects() {
     cy.visit("/projects/all/in-progress/all");
@@ -34,10 +35,10 @@ export function shouldNotHaveAccessToViewYourTeamProjectsSections() {
     cy.visit("/projects/team/handed-over").notAuthorisedToPerformAction();
 }
 
-export function shouldNotHaveAccessToViewProjectExports() {
+export function shouldNotHaveAccessToViewProjectReports() {
     navBar.goToAllProjects();
-    allProjects.unableToViewFilter("Exports");
-    // cy.visit("/projects/all/export").notAuthorisedToPerformAction(); // not implemented
+    allProjects.unableToViewFilter("Reports");
+    cy.visit("/projects/all/reports").notAuthorisedToPerformAction();
 }
 
 export function shouldNotBeAbleToCreateAProject() {
@@ -50,8 +51,25 @@ export function shouldNotBeAbleToCreateAProject() {
     cy.visit("/projects/transfers/new_mat").notAuthorisedToPerformAction();
 }
 
+export function shouldNotBeAbleToAddAProjectNote(projectId: string) {
+    cy.visit(`/projects/${projectId}/notes`);
+    notePage.clickButton("Add note").notAuthorisedToPerformThisActionBanner();
+    cy.visit(`/projects/${projectId}/notes/new`).notAuthorisedToPerformAction();
+}
+
 export function shouldNotHaveAccessToViewAndEditUsers() {
     cy.visit("/service-support/users").notAuthorisedToPerformAction();
+}
+
+export function shouldNotHaveAccessToViewLocalAuthorities() {
+    cy.visit("/service-support/local-authorities").notAuthorisedToPerformAction();
+    cy.visit("/service-support/local-authorities/new").notAuthorisedToPerformAction();
+}
+
+export function shouldNotHaveAccessToViewConversionURNsPage(projectId: string) {
+    cy.visit("/projects/service-support/without-academy-urn").notAuthorisedToPerformAction();
+    cy.visit("/projects/service-support/with-academy-urn").notAuthorisedToPerformAction();
+    cy.visit(`/projects/${projectId}/academy-urn`).notAuthorisedToPerformAction();
 }
 
 export function shouldBeAbleToViewMultipleMonthsOfProjects() {
@@ -60,14 +78,22 @@ export function shouldBeAbleToViewMultipleMonthsOfProjects() {
     projectsByMonthPage.filterIsFromDateToDate(currentMonthShort, currentMonthShort);
 }
 
-export function shouldBeAbleToViewAndDownloadCsvReportsFromTheExportSection() {
-    // not implemented
+export function shouldBeAbleToViewReportsLandingPage() {
+    cy.visit("/projects/all/in-progress/all");
+    allProjects
+        .filterProjects("Reports")
+        .containsHeading("Reports")
+        .contains("You can now view and download reports on academy conversions and transfers in Power BI.")
+        .containsSubHeading("Conversions")
+        .containsSubHeading("Transfers")
+        .contains("The reports open in a new tab and include guidance to help you find the data you need.")
+        .hasButton("View reports in Power BI");
 }
 
 export function checkAccessibilityAcrossPages() {
     const visitedUrls = Cypress.env("visitedUrls");
     visitedUrls.forEach((url: string) => {
-        cy.visit(url);
+        cy.visit(url, { failOnStatusCode: false });
         Logger.log("Executing accessibility check for URL: " + url);
         cy.executeAccessibilityTests();
     });

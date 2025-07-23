@@ -1,7 +1,8 @@
 import { beforeEach } from "mocha";
 import {
-    shouldBeAbleToViewAndDownloadCsvReportsFromTheExportSection,
+    shouldBeAbleToViewReportsLandingPage,
     shouldBeAbleToViewMultipleMonthsOfProjects,
+    shouldNotBeAbleToAddAProjectNote,
     shouldNotBeAbleToCreateAProject,
     shouldNotHaveAccessToViewYourProjectsSections,
     shouldNotHaveAccessToViewYourTeamProjectsSections,
@@ -9,8 +10,19 @@ import {
 import navBar from "cypress/pages/navBar";
 import { serviceSupportUser } from "cypress/constants/cypressConstants";
 import allProjects from "cypress/pages/projects/allProjects";
+import projectRemover from "cypress/api/projectRemover";
+import projectApi from "cypress/api/projectApi";
+import { ProjectBuilder } from "cypress/api/projectBuilder";
+import { nextMonth } from "cypress/constants/stringTestConstants";
 
+const project
+    = ProjectBuilder.createConversionProjectRequest(nextMonth);
+let projectId: string;
 describe("Capabilities and permissions of the service support user", () => {
+    before(() => {
+        projectRemover.removeProjectIfItExists(`${project.urn.value}`);
+        projectApi.createConversionProject(project).then((response) => (projectId = response.value));
+    });
     beforeEach(() => {
         cy.login(serviceSupportUser);
         cy.acceptCookies();
@@ -35,7 +47,7 @@ describe("Capabilities and permissions of the service support user", () => {
             "By local authority",
             "Completed",
             "Statistics",
-            "Exports",
+            "Reports",
         ]);
     });
 
@@ -55,9 +67,8 @@ describe("Capabilities and permissions of the service support user", () => {
         shouldBeAbleToViewMultipleMonthsOfProjects();
     });
 
-    it.skip("Should be able to view and download csv reports from the export section", () => {
-        // not implemented 187516
-        shouldBeAbleToViewAndDownloadCsvReportsFromTheExportSection();
+    it("Should be able to view the reports landing page", () => {
+        shouldBeAbleToViewReportsLandingPage();
     });
 
     it.skip("Should be able to review projects newly handed over from prepare", () => {
@@ -86,5 +97,9 @@ describe("Capabilities and permissions of the service support user", () => {
 
     it("Should NOT be able to create a project", () => {
         shouldNotBeAbleToCreateAProject();
+    });
+
+    it("Should NOT be able to add a note to a project", () => {
+        shouldNotBeAbleToAddAProjectNote(projectId);
     });
 });

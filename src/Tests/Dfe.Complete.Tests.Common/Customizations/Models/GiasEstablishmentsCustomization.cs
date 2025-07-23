@@ -23,8 +23,9 @@ namespace Dfe.Complete.Tests.Common.Customizations.Models
                     new DateOnlyCustomization()))
                 .Customize<GiasEstablishment>(composer =>
                     composer
+                        .With(x => x.Id, () => new GiasEstablishmentId(fixture.Create<Guid>()))
                         .With(x => x.Urn, () => Urn ?? fixture.Customize(new UrnCustomization()).Create<Urn>())
-                        .With(x => x.RegionCode, regionCode) 
+                        .With(x => x.RegionCode, regionCode)
                         .With(x => x.EstablishmentNumber, EstablishmentNumber)
                         .With(x => x.LocalAuthorityCode, LocalAuthority?.Code ?? fixture.Customize(new LocalAuthorityCustomization()).Create<LocalAuthority>().Code)
                         .With(x => x.LocalAuthorityName, LocalAuthority?.Name ?? fixture.Customize(new LocalAuthorityCustomization()).Create<LocalAuthority>().Code)
