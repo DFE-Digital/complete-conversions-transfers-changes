@@ -133,6 +133,8 @@ public class Startup
 
         // AutoMapper
         services.AddAutoMapper(typeof(AutoMapping));
+
+        services.Configure<ExternalLinksOptions>(Configuration.GetSection(ExternalLinksOptions.Section));
     }
 
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

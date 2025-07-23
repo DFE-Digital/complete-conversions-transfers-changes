@@ -5,7 +5,12 @@
         // All projects
 
         private const string AllProjectsPrefix = "/projects/all";
+        public const string ProjectsHandover = AllProjectsPrefix + "/handover";
         public const string ProjectsInProgress = AllProjectsPrefix + "/in-progress/all";
+        public const string ProjectsByRegion = AllProjectsPrefix + "/regions";
+        public const string ProjectsForRegion = AllProjectsPrefix + "/regions/{0}";
+        public const string ProjectsByUser = AllProjectsPrefix + "/users";
+        public const string ProjectsByLocalAuthority = AllProjectsPrefix + "/local-authorities";
         public const string ProjectsByTrust = AllProjectsPrefix + "/trusts";
         public const string TrustProjects = AllProjectsPrefix + "/trusts/ukprn/{0}";
         public const string TrustMATProjects = AllProjectsPrefix + "/trusts/reference/{0}";
@@ -13,14 +18,17 @@
         public const string TransfersProjectsByMonth = AllProjectsPrefix + "/by-month/transfers/{0}/{1}";
         public const string ConversionProjectsByMonths = AllProjectsPrefix + "/by-month/conversions/from/{0}/{1}/to/{2}/{3}";
         public const string TransfersProjectsByMonths = AllProjectsPrefix + "/by-month/transfers/from/{0}/{1}/to/{2}/{3}";
-        public const string ProjectsByRegion = AllProjectsPrefix + "/regions/{0}";
         public const string CompletedProjects = AllProjectsPrefix + "/completed";
         public const string HandoverProjects = AllProjectsPrefix + "/handover";
         public const string HandoverProjectCheck = HandoverProjects + "/{0}/check";
         public const string NewHandoverProject = HandoverProjects + "/{0}/new";
 
+        public const string Statistics = AllProjectsPrefix + "/statistics";
+        public const string Export = AllProjectsPrefix + "/export";
+        public const string Reports = AllProjectsPrefix + "/reports";
+        
         // Your projects
-        private const string YourProjectsPrefix = "/projects/yours";
+                private const string YourProjectsPrefix = "/projects/yours";
         public const string YourProjectsInProgress = YourProjectsPrefix + "/in-progress";
         public const string YourProjectsCompleted = YourProjectsPrefix + "/completed";
 
