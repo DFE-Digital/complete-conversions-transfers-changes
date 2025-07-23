@@ -8,6 +8,7 @@ using Dfe.Complete.Utils;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using System.Collections.ObjectModel;
 
 namespace Dfe.Complete.Application.Projects.Queries.GetProject
 { 
@@ -34,13 +35,9 @@ namespace Dfe.Complete.Application.Projects.Queries.GetProject
                 {
                     project?.IncomingTrustUkprn?.Value.ToString() ?? string.Empty,
                    project?.OutgoingTrustUkprn?.Value.ToString() ?? string.Empty
-                };
+                }; 
 
-                if (allProjectTrustUkPrns.Length == 0)
-                {
-                    return Result<ProjectWithEstablishmentQueryModel>.Success(null!);
-                }
-                var allTrusts = await trustsClient.GetByUkprnsAllAsync(allProjectTrustUkPrns, cancellationToken);
+                var allTrusts = await GetTrustsByUkprns(allProjectTrustUkPrns, cancellationToken);
 
                 var incomingTrustName = project!.FormAMat ? project.NewTrustName : allTrusts?.FirstOrDefault(trust => trust.Ukprn == project?.IncomingTrustUkprn?.Value.ToString())?.Name;
                 var outgoingTrustName = allTrusts?.FirstOrDefault(trust => trust.Ukprn == project?.OutgoingTrustUkprn?.Value.ToString())?.Name;
@@ -53,5 +50,8 @@ namespace Dfe.Complete.Application.Projects.Queries.GetProject
                 return Result<ProjectWithEstablishmentQueryModel>.Failure(ex.Message);
             }
         }
+        private async Task<ObservableCollection<TrustDto>> GetTrustsByUkprns(string[] allProjectTrustUkPrns, CancellationToken cancellationToken)
+           => allProjectTrustUkPrns.All(string.IsNullOrEmpty) ?
+               [] : await trustsClient.GetByUkprnsAllAsync(allProjectTrustUkPrns, cancellationToken);
     }
 }

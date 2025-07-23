@@ -22,6 +22,7 @@ namespace Dfe.Complete.Extensions
 			string sentence = input.ToLower();
 			return char.ToUpper(sentence[0]) + sentence[1..];
 		}
+
         public static string ToCamelCase(this string input)
         {
             return string.IsNullOrWhiteSpace(input)

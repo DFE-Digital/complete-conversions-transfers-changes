@@ -1631,11 +1631,14 @@
         ],
         "responses": {
           "200": {
-            "description": "Project",
+            "description": "A list of Projects",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ProjectWithEstablishmentQueryModel"
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ListAllProjectsResultModel"
+                  }
                 }
               }
             }
@@ -1646,12 +1649,12 @@
         }
       }
     },
-    "/v1/Projects/project/details": {
+    "/v1/Projects/List/project/id": {
       "get": {
         "tags": [
           "Projects"
         ],
-        "summary": "Returns the details of a project by ID.",
+        "summary": "Gets a Project by Id",
         "operationId": "Projects_GetProjectById",
         "parameters": [
           {

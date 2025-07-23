@@ -525,21 +525,21 @@ namespace Dfe.Complete.Api.Controllers
         [Authorize(Policy = "CanRead")]
         [HttpGet]
         [Route("List/all/handover")]
-        [SwaggerResponse(200, "Project", typeof(ProjectWithEstablishmentQueryModel))]
+        [SwaggerResponse(200, "A list of Projects", typeof(List<ListAllProjectsResultModel>))]
         [SwaggerResponse(404, "project not found.")]
         public async Task<IActionResult> ListAllProjectsHandoverAsync([FromQuery] ListAllProjectsHandoverQuery request, CancellationToken cancellationToken)
         {
             var project = await sender.Send(request, cancellationToken);
             return Ok(project.Value);
-        }
+        } 
         /// <summary>
-        /// Returns the details of a project by ID.
+        /// Gets a Project by Id
         /// </summary>
         /// <param name="request">The request.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
         [Authorize(Policy = "CanRead")]
         [HttpGet]
-        [Route("project/details")]
+        [Route("List/project/id")]
         [SwaggerResponse(200, "Project", typeof(ProjectDto))]
         [SwaggerResponse(404, "project not found.")]
         public async Task<IActionResult> GetProjectByIdAsync([FromQuery] GetProjectByIdQuery request, CancellationToken cancellationToken)

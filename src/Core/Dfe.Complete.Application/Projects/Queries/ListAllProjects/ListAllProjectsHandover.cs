@@ -6,6 +6,7 @@ using Dfe.Complete.Domain.Enums;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using System.Collections.ObjectModel;
 
 namespace Dfe.Complete.Application.Projects.Queries.ListAllProjects
 {
@@ -38,11 +39,7 @@ namespace Dfe.Complete.Application.Projects.Queries.ListAllProjects
                 .Where(ukPrn => !string.IsNullOrEmpty(ukPrn))
                 .ToList();
 
-                if (allProjectTrustUkPrns.Count == 0)
-                {
-                    return PaginatedResult<List<ListAllProjectsResultModel>>.Success([], projectList.Count);
-                }
-                var allTrusts = await trustsClient.GetByUkprnsAllAsync(allProjectTrustUkPrns, cancellationToken);
+                var allTrusts = await GetTrustsByUkprns(allProjectTrustUkPrns, cancellationToken);
 
                 var result = projectList
                     .Skip(request.Page * request.Count)
@@ -63,5 +60,9 @@ namespace Dfe.Complete.Application.Projects.Queries.ListAllProjects
                 return PaginatedResult<List<ListAllProjectsResultModel>>.Failure(ex.Message);
             }
         }
+        private async Task<ObservableCollection<TrustDto>> GetTrustsByUkprns(List<string> allProjectTrustUkPrns, CancellationToken cancellationToken)
+            => (allProjectTrustUkPrns == null || allProjectTrustUkPrns.Count == 0) ?
+                [] : await trustsClient.GetByUkprnsAllAsync(allProjectTrustUkPrns, cancellationToken);
+
     }
 }

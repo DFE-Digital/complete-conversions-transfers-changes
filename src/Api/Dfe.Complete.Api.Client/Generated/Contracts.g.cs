@@ -481,20 +481,20 @@ namespace Dfe.Complete.Client.Contracts
         /// <summary>
         /// Returns the details of a project for handover.
         /// </summary>
-        /// <returns>Project</returns>
+        /// <returns>A list of Projects</returns>
         /// <exception cref="CompleteApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<ProjectWithEstablishmentQueryModel> ListAllProjectsHandoverAsync(ProjectState? projectStatus, OrderProjectByField? orderBy_Field, OrderByDirection? orderBy_Direction, int? page, int? count);
+        System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<ListAllProjectsResultModel>> ListAllProjectsHandoverAsync(ProjectState? projectStatus, OrderProjectByField? orderBy_Field, OrderByDirection? orderBy_Direction, int? page, int? count);
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>
         /// Returns the details of a project for handover.
         /// </summary>
-        /// <returns>Project</returns>
+        /// <returns>A list of Projects</returns>
         /// <exception cref="CompleteApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<ProjectWithEstablishmentQueryModel> ListAllProjectsHandoverAsync(ProjectState? projectStatus, OrderProjectByField? orderBy_Field, OrderByDirection? orderBy_Direction, int? page, int? count, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<ListAllProjectsResultModel>> ListAllProjectsHandoverAsync(ProjectState? projectStatus, OrderProjectByField? orderBy_Field, OrderByDirection? orderBy_Direction, int? page, int? count, System.Threading.CancellationToken cancellationToken);
 
         /// <summary>
-        /// Returns the details of a project by ID.
+        /// Gets a Project by Id
         /// </summary>
         /// <returns>Project</returns>
         /// <exception cref="CompleteApiException">A server side error occurred.</exception>
@@ -502,7 +502,7 @@ namespace Dfe.Complete.Client.Contracts
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>
-        /// Returns the details of a project by ID.
+        /// Gets a Project by Id
         /// </summary>
         /// <returns>Project</returns>
         /// <exception cref="CompleteApiException">A server side error occurred.</exception>

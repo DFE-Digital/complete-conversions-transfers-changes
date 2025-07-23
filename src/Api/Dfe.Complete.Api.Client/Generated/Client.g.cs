@@ -3375,9 +3375,9 @@ namespace Dfe.Complete.Client
         /// <summary>
         /// Returns the details of a project for handover.
         /// </summary>
-        /// <returns>Project</returns>
+        /// <returns>A list of Projects</returns>
         /// <exception cref="CompleteApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<ProjectWithEstablishmentQueryModel> ListAllProjectsHandoverAsync(ProjectState? projectStatus, OrderProjectByField? orderBy_Field, OrderByDirection? orderBy_Direction, int? page, int? count)
+        public virtual System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<ListAllProjectsResultModel>> ListAllProjectsHandoverAsync(ProjectState? projectStatus, OrderProjectByField? orderBy_Field, OrderByDirection? orderBy_Direction, int? page, int? count)
         {
             return ListAllProjectsHandoverAsync(projectStatus, orderBy_Field, orderBy_Direction, page, count, System.Threading.CancellationToken.None);
         }
@@ -3386,9 +3386,9 @@ namespace Dfe.Complete.Client
         /// <summary>
         /// Returns the details of a project for handover.
         /// </summary>
-        /// <returns>Project</returns>
+        /// <returns>A list of Projects</returns>
         /// <exception cref="CompleteApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<ProjectWithEstablishmentQueryModel> ListAllProjectsHandoverAsync(ProjectState? projectStatus, OrderProjectByField? orderBy_Field, OrderByDirection? orderBy_Direction, int? page, int? count, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<ListAllProjectsResultModel>> ListAllProjectsHandoverAsync(ProjectState? projectStatus, OrderProjectByField? orderBy_Field, OrderByDirection? orderBy_Direction, int? page, int? count, System.Threading.CancellationToken cancellationToken)
         {
             var client_ = _httpClient;
             var disposeClient_ = false;
@@ -3451,7 +3451,7 @@ namespace Dfe.Complete.Client
                         var status_ = (int)response_.StatusCode;
                         if (status_ == 200)
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<ProjectWithEstablishmentQueryModel>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            var objectResponse_ = await ReadObjectResponseAsync<System.Collections.ObjectModel.ObservableCollection<ListAllProjectsResultModel>>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
                                 throw new CompleteApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
@@ -3485,7 +3485,7 @@ namespace Dfe.Complete.Client
         }
 
         /// <summary>
-        /// Returns the details of a project by ID.
+        /// Gets a Project by Id
         /// </summary>
         /// <returns>Project</returns>
         /// <exception cref="CompleteApiException">A server side error occurred.</exception>
@@ -3496,7 +3496,7 @@ namespace Dfe.Complete.Client
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>
-        /// Returns the details of a project by ID.
+        /// Gets a Project by Id
         /// </summary>
         /// <returns>Project</returns>
         /// <exception cref="CompleteApiException">A server side error occurred.</exception>
@@ -3513,8 +3513,8 @@ namespace Dfe.Complete.Client
 
                     var urlBuilder_ = new System.Text.StringBuilder();
                     if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
-                    // Operation Path: "v1/Projects/project/details"
-                    urlBuilder_.Append("v1/Projects/project/details");
+                    // Operation Path: "v1/Projects/List/project/id"
+                    urlBuilder_.Append("v1/Projects/List/project/id");
                     urlBuilder_.Append('?');
                     if (projectId_Value != null)
                     {
