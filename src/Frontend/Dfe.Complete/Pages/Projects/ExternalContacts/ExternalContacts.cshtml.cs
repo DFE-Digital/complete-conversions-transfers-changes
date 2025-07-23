@@ -60,7 +60,7 @@ public class ExternalContacts(ISender sender, ILogger<ExternalContacts> logger)
             LocalAuthorityContacts.AddRange(
                 projectContacts.Value.FindAll(contact => contact.Category == ContactCategory.LocalAuthority).Select(
                     contact =>
-                        new ExternalContactModel(contact, true)));
+                        new ExternalContactModel(contact, true, contact.Id == Project.MainContactId)));
             SolicitorContacts.AddRange(
                 projectContacts.Value.FindAll(contact => contact.Category == ContactCategory.Solicitor).Select(
                     contact =>
