@@ -3,7 +3,13 @@ name: .NET
 on:
   push:
     branches: [ main ]
+    paths-ignore:
+      - '**/*.md'
+      - '**/*.yml'
   pull_request:
+    paths-ignore:
+      - '**/*.md'
+      - '**/*.yml'
 
 env:
   JAVA_VERSION: '21'
