@@ -14,20 +14,45 @@ Security in case of vulnerabilities.
 
 ---
 
-## Unreleased  
+## Unreleased
 
 ### Added  
 
-### Changed  
-- Add a redirect from projects/{id} to projects/{id}/tasks
-- Reduce log level from error to warning when project routes receive bad GUID or project not found 
+### Changed
 - Restructured the task page to be more generic
 - Update CRUD endpoints to account for TaskIdentifier
 
 ### Fixed
-- Remove double pagination on Service Support > Local authorities
 
-See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-07-14.525...main) for everything awaiting release
+See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-07-22.558...main) for everything awaiting release
+
+---
+
+## [1.10.1](https://github.com/DFE-Digital/complete-conversions-transfers-changes/releases/tag/production-2025-07-22.558) - 2025-07-22
+
+### Fixed
+- HOTFIX: Reports tab now points to exports and dotnet app will handle redirect
+
+See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-07-22.553...production-2025-07-22.558) for everything in the release
+
+---
+
+## [1.10.0](https://github.com/DFE-Digital/complete-conversions-transfers-changes/releases/tag/production-2025-07-22.553) - 2025-07-22
+
+### Added
+- New route `/projects/all/reports`
+- Add reports landing page under All projects > Reports (`/projects/all/reports`)
+
+### Changed  
+- Add a redirect from projects/{id} to projects/{id}/tasks
+- Reduce log level from error to warning when project routes receive bad GUID or project not found 
+- Add a redirect from `/projects/all/export` to `/projects/all/reports`
+
+### Fixed
+- Remove double pagination on Service Support > Local authorities
+- Resolve "About the Project" academy crash
+
+See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-07-14.525...production-2025-07-22.553) for everything in the release
 
 ---
 

@@ -17,6 +17,7 @@ namespace Dfe.Complete.Application.Common.Mappers
 					opt => opt.MapFrom(src => src.User.FullName))
 				.ForCtorParam(nameof(NoteDto.IsNotable),
 					opt => opt.MapFrom(src => src.NotableId != null && src.NotableType != null));
+			CreateMap<GiasEstablishment, GiasEstablishmentDto>();
 			CreateMap<GiasEstablishment, EstablishmentDto>()
 				.ForMember(dest => dest.Ukprn,
 					opt => opt.MapFrom(src => src.Ukprn != null ? src.Ukprn.ToString() : null))
@@ -84,8 +85,8 @@ namespace Dfe.Complete.Application.Common.Mappers
 				.ForMember(dest => dest.Census, opt => opt.Ignore())
 				.ForMember(dest => dest.MisEstablishment, opt => opt.Ignore());
 			CreateMap<TransferTasksData, TransferTaskDataDto>();
-            CreateMap<SignificantDateHistory, SignificantDateHistoryDto>();
-            CreateMap<SignificantDateHistoryReason, SignificantDateHistoryReasonDto>();
+			CreateMap<SignificantDateHistory, SignificantDateHistoryDto>();
+			CreateMap<SignificantDateHistoryReason, SignificantDateHistoryReasonDto>();
 		}
 	}
 }
