@@ -20,23 +20,19 @@ using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using DfE.CoreLibs.Http.Middlewares.CorrelationId;
 using DfE.CoreLibs.Http.Interfaces;
 using Dfe.Complete.Logging.Middleware;
-using Microsoft.AspNetCore.Mvc;
 using DfE.CoreLibs.Security.Antiforgery;
 using Dfe.Complete.Validators;
 using DfE.CoreLibs.Security.Enums;
-using Dfe.Complete.Application.Extensions;
 
 namespace Dfe.Complete;
 
 public class Startup
 {
     private readonly TimeSpan _authenticationExpiration;
-    private readonly IWebHostEnvironment _env;
 
-    public Startup(IConfiguration configuration, IWebHostEnvironment env)
+    public Startup(IConfiguration configuration)
     {
         Configuration = configuration;
-        _env = env;
         _authenticationExpiration = TimeSpan.FromMinutes(int.Parse(Configuration["AuthenticationExpirationInMinutes"] ?? "60"));
     }
 
@@ -64,11 +60,6 @@ public class Startup
         services
             .AddRazorPages(options =>
             {
-                if (_env.IsTest())
-                {
-                    options.Conventions.ConfigureFilter(new IgnoreAntiforgeryTokenAttribute());
-                }
-
                 options.Conventions.AuthorizeFolder("/");
                 options.Conventions.AddPageRoute("/Projects/EditProjectNote", "projects/{projectId}/notes/edit");
             })
@@ -86,8 +77,12 @@ public class Startup
            {
                opts.CheckerGroups =
                [
-                   new() {
-                       TypeNames   = [nameof(HasHeaderKeyExistsInRequestValidator), nameof(CypressRequestChecker)],
+                   new()
+                   {
+                       TypeNames = [
+                           typeof(HasHeaderKeyExistsInRequestValidator).FullName!,
+                           typeof(CypressRequestChecker).FullName!
+                       ],
                        CheckerOperator = CheckerOperator.Or
                    }
                ];
@@ -141,6 +136,8 @@ public class Startup
 
         // AutoMapper
         services.AddAutoMapper(typeof(AutoMapping));
+
+        services.Configure<ExternalLinksOptions>(Configuration.GetSection(ExternalLinksOptions.Section));
     }
 
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

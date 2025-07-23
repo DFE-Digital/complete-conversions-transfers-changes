@@ -38,6 +38,25 @@ class ProjectApi extends ApiBase {
         return this.createProjectBase(request, "MatTransfer", username);
     }
 
+    updateProjectAcademyUrn(projectId: string, academyUrn: number) {
+        return this.authenticatedRequest().then((headers) => {
+            return cy
+                .request<CreateProjectResponse>({
+                    method: "PATCH",
+                    url: Cypress.env(EnvApi) + "/v1/projects/project/academy-urn",
+                    headers: headers,
+                    body: {
+                        projectId: { value: projectId },
+                        urn: { value: academyUrn },
+                    },
+                })
+                .then((response) => {
+                    expect(response.status).to.eq(204);
+                    return response.body;
+                });
+        });
+    }
+
     private createProjectBase(
         request: ProjectRequest,
         projectType: string,
