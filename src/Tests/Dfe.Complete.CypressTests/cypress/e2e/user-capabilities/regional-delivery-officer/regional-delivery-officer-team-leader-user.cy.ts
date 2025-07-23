@@ -1,9 +1,10 @@
 import {
     shouldBeAbleToChangeTheAddedByUserOfAProject,
+    shouldBeAbleToViewReportsLandingPage,
     shouldBeAbleToViewMultipleMonthsOfProjects,
     shouldNotHaveAccessToViewAndEditUsers,
     shouldNotHaveAccessToViewConversionURNsPage,
-    shouldNotHaveAccessToViewLocalAuthorities
+    shouldNotHaveAccessToViewLocalAuthorities,
 } from "cypress/support/reusableTests";
 import { before, beforeEach } from "mocha";
 import projectRemover from "cypress/api/projectRemover";
@@ -61,7 +62,7 @@ describe("Capabilities and permissions of the regional delivery officer team lea
             "By local authority",
             "Completed",
             "Statistics",
-            "Exports",
+            "Reports",
         ]);
     });
 
@@ -100,6 +101,10 @@ describe("Capabilities and permissions of the regional delivery officer team lea
 
     it("Should be able to change the added by user of the project in internal projects", () => {
         shouldBeAbleToChangeTheAddedByUserOfAProject(project.urn.value, projectId, cypressUser, regionalCaseworkerUser);
+    });
+
+    it("Should be able to view the reports landing page", () => {
+        shouldBeAbleToViewReportsLandingPage();
     });
 
     it.skip("Should NOT be able to soft delete projects", () => {
