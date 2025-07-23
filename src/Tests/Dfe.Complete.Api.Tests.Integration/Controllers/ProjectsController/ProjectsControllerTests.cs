@@ -1669,7 +1669,7 @@ public partial class ProjectsControllerTests
         Assert.Equal(dbProject.EstablishmentSharepointLink, command.SchoolSharepointLink);
         Assert.Equal(dbProject.OutgoingTrustSharepointLink, command.OutgoingTrustSharepointLink);
         Assert.Equal(dbProject.AssignedToId?.Value, command.UserId.Value);
-        Assert.Equal(dbProject.Notes.Count(), 0);
+        Assert.Equal(0, dbProject.Notes.Count);
         Assert.Null(dbProject.TwoRequiresImprovement);
     }
 }
