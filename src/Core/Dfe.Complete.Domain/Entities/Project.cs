@@ -419,7 +419,7 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
         return project;
     }
 
-    private void AddNote(Note? note)
+    public void AddNote(Note? note)
     {
         if (note != null)
         {
@@ -437,7 +437,6 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
             });
         }
     }
-
 
     public void RemoveNote(NoteId id)
     {

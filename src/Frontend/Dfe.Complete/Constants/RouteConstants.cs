@@ -34,7 +34,10 @@
         public const string CreateNewProject = "/projects/CreateNewProject";
 
         public const string SelectCreateProjectType = "/projects/new";
-        
+
+        public const string ProjectConversionEdit = "/projects/conversions/{0}";
+        public const string ProjectTransferEdit = "/projects/transfers/{0}";
+
         public const string ProjectViewNotes = Project + "/notes";
         public const string ProjectAddNote = ProjectViewNotes + "/new";
         public const string ProjectEditNote = ProjectViewNotes + "/{1}/edit";

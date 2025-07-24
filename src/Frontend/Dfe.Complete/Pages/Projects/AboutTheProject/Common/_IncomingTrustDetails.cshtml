@@ -27,7 +27,7 @@
                 <govuk-summary-list-row-key>UKPRN (UK provider reference number)</govuk-summary-list-row-key>
                 <govuk-summary-list-row-value>@Model.Project.IncomingTrustUkprn</govuk-summary-list-row-value>
                 <govuk-summary-list-row-actions>
-                    <govuk-summary-list-row-action href="#" visually-hidden-text="UK provider reference number">Change</govuk-summary-list-row-action>
+                    <govuk-summary-list-row-action href="@Model.GetChangeLinkUrl("incoming-trust-ukprn")" visually-hidden-text="UK provider reference number">Change</govuk-summary-list-row-action>
                 </govuk-summary-list-row-actions>
             </govuk-summary-list-row>
             <govuk-summary-list-row>
@@ -80,7 +80,7 @@
                     <a class="govuk-link" href="@Model.Project.IncomingTrustSharepointLink" target="_blank">View the trust SharePoint folder (opens in new tab)</a>
                 </govuk-summary-list-row-value>
                 <govuk-summary-list-row-actions>
-                    <govuk-summary-list-row-action href="#" visually-hidden-text="Trust sharePoint folder">Change</govuk-summary-list-row-action>
+                    <govuk-summary-list-row-action href="@Model.GetChangeLinkUrl("sharepoint-folder-links")" visually-hidden-text="Trust sharePoint folder">Change</govuk-summary-list-row-action>
                 </govuk-summary-list-row-actions>
             </govuk-summary-list-row>
         </govuk-summary-list>
