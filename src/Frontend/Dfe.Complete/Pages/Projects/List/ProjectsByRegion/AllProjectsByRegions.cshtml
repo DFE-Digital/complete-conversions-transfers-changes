@@ -24,7 +24,7 @@
         <tbody class="govuk-table__body">
         @foreach (var resultModel in Model.ListAllProjectsByRegionResultModel)
         {
-            var projectByRegionPageLink = string.Format(RouteConstants.ProjectsByRegion, resultModel.Region.ToDescription());
+            var projectByRegionPageLink = string.Format(RouteConstants.ProjectsForRegion, resultModel.Region.ToDescription());
             
             <tr class="govuk-table__row">
                 <td class="govuk-table__cell">

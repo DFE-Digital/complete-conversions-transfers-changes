@@ -1,23 +1,22 @@
 using System.Reflection;
+using Dfe.Complete.Configuration;
 using Dfe.Complete.Validators;
 using DfE.CoreLibs.Security.Antiforgery;
 using DfE.CoreLibs.Security.Cypress;
 using DfE.CoreLibs.Security.Enums;
 using DfE.CoreLibs.Security.Interfaces;
 using Microsoft.AspNetCore.DataProtection;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Options;
 
-namespace Dfe.Complete.Tests;
+namespace Dfe.Complete.StartupTests;
 
-public sealed class StartupDataProtectionTests : IDisposable
+public sealed class StartupTests : IDisposable
 {
     private readonly string _tempDpTargetPath;
 
-    public StartupDataProtectionTests()
+    public StartupTests()
     {
         _tempDpTargetPath = Path.Combine(Path.GetTempPath(), "dp-" + Guid.NewGuid());
         Directory.CreateDirectory(_tempDpTargetPath);
@@ -80,9 +79,38 @@ public sealed class StartupDataProtectionTests : IDisposable
 
         Assert.Single(configuredOptions.CheckerGroups);
         Assert.Equal(2, configuredOptions.CheckerGroups.First().TypeNames.Length);
-        Assert.Equal(typeof(HasHeaderKeyExistsInRequestValidator).FullName, configuredOptions.CheckerGroups[0].TypeNames[0]);
-        Assert.Equal(typeof(CypressRequestChecker).FullName, configuredOptions.CheckerGroups[0].TypeNames[1]);
+        Assert.Equal(nameof(HasHeaderKeyExistsInRequestValidator), configuredOptions.CheckerGroups[0].TypeNames[0]);
+        Assert.Equal(nameof(CypressRequestChecker), configuredOptions.CheckerGroups[0].TypeNames[1]);
         Assert.Equal(CheckerOperator.Or, configuredOptions.CheckerGroups[0].CheckerOperator);
+    }
+
+    [Fact]
+    public void ConfigureServices_Binds_ExternalLinksOptions_From_Config()
+    {
+        // Arrange
+        const string expectedUrl = "https://powerbi.contoso/awesome-report";
+        var dict = new Dictionary<string, string?>
+        {
+            ["ExternalLinks:PowerBiReports"] = expectedUrl,
+            ["DataProtection:DpTargetPath"] = Path.GetTempPath(),
+            ["DataProtection:KeyVaultKey"] = string.Empty
+        };
+
+        IConfiguration cfg = new ConfigurationBuilder()
+            .AddInMemoryCollection(dict)
+            .Build();
+
+        var startup = new Startup(cfg);
+        var services = new ServiceCollection();
+
+        startup.ConfigureServices(services);
+
+        // Act
+        var provider = services.BuildServiceProvider();
+        var options = provider.GetRequiredService<IOptions<ExternalLinksOptions>>().Value;
+
+        // Assert
+        Assert.Equal(expectedUrl, options.PowerBiReports);
     }
 
     private static IConfiguration BuildConfiguration(string dpTargetPath, string? keyVaultKey)
@@ -95,17 +123,6 @@ public sealed class StartupDataProtectionTests : IDisposable
         return new ConfigurationBuilder().AddInMemoryCollection(dict).Build();
     }
 
-    private static FakeWebHostEnvironment BuildEnvironment() =>
-        new()
-        {
-            EnvironmentName = "Test",
-            ApplicationName = "UnitTestApp",
-            ContentRootPath = Directory.GetCurrentDirectory(),
-            WebRootPath = Directory.GetCurrentDirectory(),
-            ContentRootFileProvider = new NullFileProvider(),
-            WebRootFileProvider = new NullFileProvider()
-        };
-
     private static void InvokeSetupDataProtection(Startup startup, IServiceCollection services)
     {
         MethodInfo? mi = typeof(Startup).GetMethod(
@@ -113,16 +130,6 @@ public sealed class StartupDataProtectionTests : IDisposable
                             BindingFlags.Instance | BindingFlags.NonPublic);
         Assert.NotNull(mi);
         mi.Invoke(startup, [services]);
-    }
-
-    private sealed class FakeWebHostEnvironment : IWebHostEnvironment
-    {
-        public required string EnvironmentName { get; set; }
-        public required string ApplicationName { get; set; }
-        public required string WebRootPath { get; set; }
-        public required IFileProvider WebRootFileProvider { get; set; }
-        public required string ContentRootPath { get; set; }
-        public required IFileProvider ContentRootFileProvider { get; set; }
     }
 
     public void Dispose()

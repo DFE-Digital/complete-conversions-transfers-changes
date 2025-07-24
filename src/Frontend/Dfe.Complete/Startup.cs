@@ -76,12 +76,8 @@ public class Startup
            {
                opts.CheckerGroups =
                [
-                   new()
-                   {
-                       TypeNames = [
-                           typeof(HasHeaderKeyExistsInRequestValidator).FullName!,
-                           typeof(CypressRequestChecker).FullName!
-                       ],
+                   new() {
+                       TypeNames   = [nameof(HasHeaderKeyExistsInRequestValidator), nameof(CypressRequestChecker)],
                        CheckerOperator = CheckerOperator.Or
                    }
                ];
@@ -133,6 +129,8 @@ public class Startup
 
         // AutoMapper
         services.AddAutoMapper(typeof(AutoMapping));
+
+        services.Configure<ExternalLinksOptions>(Configuration.GetSection(ExternalLinksOptions.Section));
     }
 
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
