@@ -29,6 +29,7 @@ Security in case of vulnerabilities.
 ### Changed
 
 ### Fixed
+- HOTFIX: antiforgery issue when accepting cookies from Ruby app
 
 See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-07-22.558...main) for everything awaiting release
 
