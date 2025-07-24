@@ -18,10 +18,9 @@
         public const string TransfersProjectsByMonth = AllProjectsPrefix + "/by-month/transfers/{0}/{1}";
         public const string ConversionProjectsByMonths = AllProjectsPrefix + "/by-month/conversions/from/{0}/{1}/to/{2}/{3}";
         public const string TransfersProjectsByMonths = AllProjectsPrefix + "/by-month/transfers/from/{0}/{1}/to/{2}/{3}";
-        public const string CompletedProjects = AllProjectsPrefix + "/completed";
-        public const string HandoverProjects = AllProjectsPrefix + "/handover";
-        public const string HandoverProjectCheck = HandoverProjects + "/{0}/check";
-        public const string NewHandoverProject = HandoverProjects + "/{0}/new";
+        public const string CompletedProjects = AllProjectsPrefix + "/completed"; 
+        public const string ProjectsHandoverCheck = ProjectsHandover + "/{0}/check";
+        public const string ProjectsHandoverNew = ProjectsHandover + "/{0}/new";
 
         public const string Statistics = AllProjectsPrefix + "/statistics";
         public const string Export = AllProjectsPrefix + "/export";

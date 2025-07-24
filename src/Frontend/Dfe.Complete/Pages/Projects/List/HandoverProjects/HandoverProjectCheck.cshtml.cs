@@ -27,7 +27,7 @@ namespace Dfe.Complete.Pages.Projects.List.HandoverProjects
         }
         public  IActionResult OnPost()
         {
-            return Redirect(string.Format(RouteConstants.NewHandoverProject, ProjectId));
+            return Redirect(string.Format(RouteConstants.ProjectsHandoverNew, ProjectId));
         }
     }
 }

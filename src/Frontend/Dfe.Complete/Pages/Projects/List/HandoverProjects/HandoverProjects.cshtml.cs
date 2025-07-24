@@ -25,13 +25,13 @@ namespace Dfe.Complete.Pages.Projects.List.HandoverProjects
             var listResponse = await sender.Send(handoverProjectsQuery);
             Projects = [.. (listResponse.Value ?? [])];
 
-            Pagination = new PaginationModel(RouteConstants.HandoverProjects, PageNumber, listResponse.ItemCount, PageSize);
+            Pagination = new PaginationModel(RouteConstants.ProjectsHandover, PageNumber, listResponse.ItemCount, PageSize);
 
             var hasPageFound = HasPageFound(Pagination.IsOutOfRangePage, Pagination.TotalPages);
             return hasPageFound ?? Page();
         }
 
         public string GetHandoverProjectUrl(ProjectId projectId) =>
-            string.Format(RouteConstants.HandoverProjectCheck, projectId.Value);
+            string.Format(RouteConstants.ProjectsHandoverCheck, projectId.Value);
     }
 }

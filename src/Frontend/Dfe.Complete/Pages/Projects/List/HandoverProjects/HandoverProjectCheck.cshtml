@@ -66,7 +66,7 @@
         {
             <div class="govuk-summary-list__row">
                 <dt class="govuk-summary-list__key">Type of academy order</dt>
-                <dd class="govuk-summary-list__value">@Model.Project.AcademyOrderType.ToDescription()</dd>
+                <dd class="govuk-summary-list__value">@Model.Project.AcademyOrderType.ToDisplayDescription()</dd>
             </div>
         } 
         <div class="govuk-summary-list__row">
@@ -75,7 +75,7 @@
         </div>
     </dl> 
     <div class="govuk-button-group">
-        <a id="confirm-project" class="govuk-button" href="@(string.Format(RouteConstants.NewHandoverProject, Model.ProjectId))">Confirm</a>
-        <a id="choose-different-project" class="govuk-link" href="@(RouteConstants.HandoverProjects)">Choose a different project</a>
+        <a id="confirm-project" class="govuk-button" href="@(string.Format(RouteConstants.ProjectsHandoverNew, Model.ProjectId))">Confirm</a>
+        <a id="choose-different-project" class="govuk-link" href="@(RouteConstants.ProjectsHandover)">Choose a different project</a>
     </div> 
 </div>

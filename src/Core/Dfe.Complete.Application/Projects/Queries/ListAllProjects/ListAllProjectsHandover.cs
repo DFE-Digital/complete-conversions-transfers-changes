@@ -29,6 +29,8 @@ namespace Dfe.Complete.Application.Projects.Queries.ListAllProjects
             {
                 var projectList = await listAllProjectsQueryService
                    .ListAllProjects(new ProjectFilters(request.ProjectStatus, null), orderBy: request.OrderBy)
+                   .Skip(request.Page * request.Count)
+                   .Take(request.Count)
                    .ToListAsync(cancellationToken);
                 var allProjectTrustUkPrns = projectList
                 .SelectMany(p => new[]
@@ -37,13 +39,12 @@ namespace Dfe.Complete.Application.Projects.Queries.ListAllProjects
                    p.Project?.OutgoingTrustUkprn?.Value.ToString() ?? string.Empty
                 })
                 .Where(ukPrn => !string.IsNullOrEmpty(ukPrn))
+                .Distinct()
                 .ToList();
 
                 var allTrusts = await GetTrustsByUkprns(allProjectTrustUkPrns, cancellationToken);
 
                 var result = projectList
-                    .Skip(request.Page * request.Count)
-                    .Take(request.Count)
                     .Select(p =>
                     {
                         p.Project.NewTrustName = p.Project.FormAMat ? p.Project.NewTrustName : allTrusts?.FirstOrDefault(trust => trust.Ukprn == p.Project?.IncomingTrustUkprn?.Value.ToString())?.Name;

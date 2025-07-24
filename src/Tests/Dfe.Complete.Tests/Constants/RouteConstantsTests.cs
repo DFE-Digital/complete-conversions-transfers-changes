@@ -196,21 +196,21 @@ namespace Dfe.Complete.Tests.Constants
         [Fact]
         public void HandoverProjects_ShouldBeCorrect()
         {
-            Assert.Equal("/projects/all/handover", RouteConstants.HandoverProjects);
+            Assert.Equal("/projects/all/handover", RouteConstants.ProjectsHandover);
         }
 
         [Fact]
         public void HandoverProjectCheck_ShouldBeCorrect()
         {
             var projectId = Guid.NewGuid();
-            Assert.Equal($"/projects/all/handover/{projectId}/check", string.Format(RouteConstants.HandoverProjectCheck, projectId));
+            Assert.Equal($"/projects/all/handover/{projectId}/check", string.Format(RouteConstants.ProjectsHandoverCheck, projectId));
         }
 
         [Fact]
         public void NewHandoverProject_ShouldBeCorrect()
         {
             var projectId = Guid.NewGuid();
-            Assert.Equal($"/projects/all/handover/{projectId}/new", string.Format(RouteConstants.NewHandoverProject, projectId));
+            Assert.Equal($"/projects/all/handover/{projectId}/new", string.Format(RouteConstants.ProjectsHandoverNew, projectId));
         }
         [Fact]
         public void ProjectCreated_ShouldBeCorrect()

@@ -62,7 +62,7 @@ namespace Dfe.Complete.Application.Projects.Commands.UpdateProject
                     ProjectId = request.ProjectId,
                     UserId = request.UserId,
                     Body = request.HandoverComments!,
-                    TaskIdentifier = TaskIdentifier.Handover.ToDescription(),
+                    TaskIdentifier = NoteTaskIdentifier.Handover.ToDescription(),
                     CreatedAt = dateTime,
                     UpdatedAt = dateTime
                 });

@@ -11,7 +11,7 @@ namespace Dfe.Complete.Domain.Tests.Enums
         public void TaskIdentifier_ShouldHaveCorrectDescription(AcademyOrderType academyOrderType, string expectedDescription)
         {
             // Act
-            var description = academyOrderType.ToDescription();
+            var description = academyOrderType.ToDisplayDescription();
 
             // Assert
             Assert.Equal(expectedDescription, description);
