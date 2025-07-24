@@ -1,5 +1,4 @@
 ﻿using Dfe.Complete.Utils.Attributes;
-using System.ComponentModel; 
 
 namespace Dfe.Complete.Domain.Enums
 {
