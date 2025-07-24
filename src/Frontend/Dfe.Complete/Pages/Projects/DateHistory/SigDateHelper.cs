@@ -10,11 +10,9 @@ public static class SigDateHelper
 {
     public static bool CanEditSignificantDate(ProjectDto project, ClaimsPrincipal user, ProjectTeam currentUserTeam)
     {
-        var projectIsAssignedToUser = project.AssignedToId?.Value.ToString() == user.GetUserAdId();
+        var projectIsAssignedToUser = project.AssignedToId == user.GetUserId();
         var significantDateIsConfirmed = project.SignificantDateProvisional is false;
 
-        var canEditSignificantDate = significantDateIsConfirmed && (projectIsAssignedToUser || currentUserTeam.TeamIsServiceSupport());
-        
-        return canEditSignificantDate;
+        return significantDateIsConfirmed && (projectIsAssignedToUser || currentUserTeam.TeamIsServiceSupport());
     }
 }

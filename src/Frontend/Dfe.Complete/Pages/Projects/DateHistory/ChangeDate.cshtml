@@ -40,15 +40,13 @@
               <p>If you do not update this information, academies may not get their funding on time.</p></div>
           </details>
           <div class="govuk-form-group">
-
             <govuk-date-input id="@provisionalSignificantDateField" name-prefix="@provisionalSignificantDateField" asp-for="@Model.SignificantDate">
-              <govuk-date-input-fieldset aria-describedby="new-date-history-form-revised-date-hint">
+              <govuk-date-input-fieldset>
                 <govuk-date-input-fieldset-legend class="govuk-fieldset__legend--m"></govuk-date-input-fieldset-legend>
-                <govuk-date-input-hint id="new-date-history-form-revised-date-hint">
+                <govuk-date-input-hint>
                   <p>
                     You only need to enter a month and year as all schools @(isConversion ? "convert" : "transfer") on the first day of the month. For example, 3 2021
                   </p>
-
                   @if (ErrorService.HasErrorForKey(provisionalSignificantDateField))
                   {
                     <govuk-date-input-error-message>@(ErrorService.GetErrorMessage(provisionalSignificantDateField))</govuk-date-input-error-message>
