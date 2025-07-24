@@ -27,6 +27,7 @@ Security in case of vulnerabilities.
 ### Changed
 
 ### Fixed
+- Fixed cookies page's URL by including query string.
 
 See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-07-24.577...main) for everything awaiting release
 
