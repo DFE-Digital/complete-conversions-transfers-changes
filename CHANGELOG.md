@@ -24,6 +24,8 @@ Security in case of vulnerabilities.
 
 ### Added
 
+- Added `Handover with Regional Delivery Officer` task page
+
 ### Changed
 
 ### Fixed

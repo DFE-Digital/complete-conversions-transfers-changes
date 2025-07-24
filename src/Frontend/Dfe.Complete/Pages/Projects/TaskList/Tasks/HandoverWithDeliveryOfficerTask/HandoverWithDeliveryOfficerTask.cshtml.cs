@@ -1,4 +1,6 @@
+using Dfe.Complete.Application.Projects.Commands.UpdateProject;
 using Dfe.Complete.Constants;
+using Dfe.Complete.Domain.ValueObjects;
 using Dfe.Complete.Models;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -21,6 +23,7 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.HandoverWithDeliveryOfficer
 
         public async Task<IActionResult> OnPost()
         {
+            _ = await sender.Send(new UpdateHandoverWithDeliveryOfficerCommand(new ProjectId(Guid.Parse(ProjectId)), NotApplicable, ReviewProjectInformation, MakeNotes, AttendHandoverMeeting));
             return Redirect(string.Format(RouteConstants.ProjectHandoverWithDeliveryOfficerTask, ProjectId));
         }
     }
