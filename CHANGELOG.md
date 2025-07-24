@@ -27,10 +27,23 @@ Security in case of vulnerabilities.
 ### Changed
 
 ### Fixed
-
+- Fixed cookies page's URL by including query string.
 - Fixed `Local Authority` service support endpoints
 
-See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-07-22.558...main) for everything awaiting release
+See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-07-24.577...main) for everything awaiting release
+
+---
+
+## [1.10.2](https://github.com/DFE-Digital/complete-conversions-transfers-changes/releases/tag/production-2025-07-24.577) - 2025-07-24
+
+### Added
+
+### Changed
+
+### Fixed
+- HOTFIX: antiforgery issue when accepting cookies from Ruby app
+
+See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-07-22.558...production-2025-07-24.577) for everything in the release
 
 ---
 
