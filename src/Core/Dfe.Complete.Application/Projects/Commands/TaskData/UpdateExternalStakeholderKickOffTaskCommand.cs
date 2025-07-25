@@ -31,7 +31,7 @@ namespace Dfe.Complete.Application.Projects.Commands.TaskData
             
             if (project == null)
             {
-                return;
+                throw new NotFoundException("Project not found");
             }
             
             var user = await userRepository.FindAsync(u => u.Email == request.UserEmail, cancellationToken);
