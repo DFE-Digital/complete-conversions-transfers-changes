@@ -3,12 +3,13 @@ using Dfe.Complete.Application.Projects.Queries.GetConversionTasksData;
 using Dfe.Complete.Application.Projects.Queries.GetProject;
 using Dfe.Complete.Constants;
 using Dfe.Complete.Models;
+using Dfe.Complete.Services;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.StakeholderKickoffTask
 {
-    public class StakeholderKickoffTaskModel(ISender sender, ILogger<StakeholderKickoffTaskModel> _logger) : BaseProjectPageModel(sender, _logger)
+    public class StakeholderKickoffTaskModel(ISender sender, ErrorService errorService, ILogger<StakeholderKickoffTaskModel> _logger) : BaseProjectPageModel(sender, _logger)
     {
         [BindProperty(Name = "send-intro-emails")]
         public bool? SendIntroEmails { get; set; }
@@ -54,6 +55,17 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.StakeholderKickoffTask
         public async Task<IActionResult> OnPost()
         {
             await base.OnGetAsync();
+            
+            if (SignificantDate?.ToDateTime(new TimeOnly()) < DateTime.Today)
+            {
+                ModelState.AddModelError(nameof(SignificantDate), "The Significant date cannot be in the past");
+            }
+            
+            if (!ModelState.IsValid)
+            {
+                errorService.AddErrors(ModelState);
+                return Page();
+            }
             
             var request = new UpdateExternalStakeholderKickOffTaskCommand(Project.Id, 
                 SendIntroEmails, 
