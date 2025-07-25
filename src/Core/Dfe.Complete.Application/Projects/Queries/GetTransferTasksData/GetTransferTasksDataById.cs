@@ -6,7 +6,6 @@ using AutoMapper;
 using Microsoft.Extensions.Logging;
 using MediatR;
 using Dfe.Complete.Domain.ValueObjects;
-using Dfe.Complete.Application.Projects.Queries.GetProject;
 
 namespace Dfe.Complete.Application.Projects.Queries.GetTransferTasksData
 {

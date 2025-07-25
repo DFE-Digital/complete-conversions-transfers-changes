@@ -189,6 +189,11 @@
       "Controller": "ConversionTasksDataController",
       "Action": "GetConversionTasksDataByIdAsync",
       "ExpectedSecurity": "Authorize: Policy=CanRead"
+    },
+    {
+      "Controller": "ConversionTasksDataController",
+      "Action": "UpdateExternalStakeholderKickOffTaskAsync",
+      "ExpectedSecurity": "Authorize: Policy=CanReadWrite"
     }
   ]
 }

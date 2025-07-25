@@ -41,7 +41,7 @@ namespace Dfe.Complete.Api.Controllers
         [SwaggerResponse(204, "External stakeholder kickoff Task updated successfully.")]
         [SwaggerResponse(400, "Invalid request data.")]
         [SwaggerResponse(404, "Project/User not found.")]
-        public async Task<IActionResult> UpdateAcademyUrnAsync(
+        public async Task<IActionResult> UpdateExternalStakeholderKickOffTaskAsync(
             [FromBody] UpdateExternalStakeholderKickOffTaskCommand request,
             CancellationToken cancellationToken)
         {
