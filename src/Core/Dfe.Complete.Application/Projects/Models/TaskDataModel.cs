@@ -6,7 +6,8 @@ namespace Dfe.Complete.Application.Projects.Models
     public record TaskDataModel(TaskDataId TaskDataId,
         bool? HandoverReview,
         bool? HandoverNotes,
-        bool? HandoverMeeting)
+        bool? HandoverMeeting,
+        bool? HandoverNotApplicable)
     {
         public static TaskDataModel MapConversionTaskDataToModel(ConversionTasksData taskData)
         {
@@ -14,7 +15,8 @@ namespace Dfe.Complete.Application.Projects.Models
                 taskData.Id,
                 taskData.HandoverReview,
                 taskData.HandoverNotes,
-                taskData.HandoverMeeting);
+                taskData.HandoverMeeting,
+                taskData.HandoverNotApplicable);
         }
         public static TaskDataModel MapTransferTaskDataToModel(TransferTasksData taskData)
         {
@@ -22,7 +24,8 @@ namespace Dfe.Complete.Application.Projects.Models
                 taskData.Id,
                 taskData.HandoverReview,
                 taskData.HandoverNotes,
-                taskData.HandoverMeeting);
+                taskData.HandoverMeeting,
+                taskData.HandoverNotApplicable);
         }
     }
 }

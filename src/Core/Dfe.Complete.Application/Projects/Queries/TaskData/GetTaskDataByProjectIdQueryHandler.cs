@@ -1,6 +1,7 @@
 ﻿using Dfe.Complete.Application.Common.Models;
 using Dfe.Complete.Application.Projects.Interfaces;
 using Dfe.Complete.Application.Projects.Models;
+using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Domain.ValueObjects;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -18,7 +19,7 @@ namespace Dfe.Complete.Application.Projects.Queries.TaskData
                 var project = await projectReadRepository.Projects.FirstOrDefaultAsync(p => p.Id == request.ProjectId, cancellationToken) ??
                     throw new Exception($"Project with ID {request.ProjectId} not found.");
 
-                if (project.Type == Domain.Enums.ProjectType.Conversion)
+                if (project.Type == ProjectType.Conversion)
                 {
                     var taskData = await GetConversionTaskDataAsync(project.TasksDataId, cancellationToken);
                     return Result<TaskDataModel?>.Success(taskData);

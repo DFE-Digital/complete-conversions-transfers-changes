@@ -51,7 +51,9 @@
                                 <span class="app-task-list__task-name">
                                     <a aria-describedby="handover-with-delivery-officer-status" class="govuk-link" href="@handoverWithDeliveryOfficerLink">Handover with regional delivery officer</a>
                                 </span>
-                                <strong class="govuk-tag govuk-tag--orange app-task-list__tag" id="handover-with-delivery-officer-status">In progress</strong>
+                                <div class="govuk-task-list__status" id="handover_rdo_status">
+                                    <partial name="Shared/_TaskListStatus" model="@Model.HandoverWithRegionalDeliveryOfficer" />
+                                </div>
                             </li>
                             <li class="app-task-list__item">
                                 <span class="app-task-list__task-name">
