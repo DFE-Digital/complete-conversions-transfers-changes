@@ -1508,7 +1508,7 @@
         }
       }
     },
-    "/v1/ServiceSupport/LocalAuthority/Create": {
+    "/v1/ServiceSupport/LocalAuthority": {
       "post": {
         "tags": [
           "ServiceSupport"
@@ -1539,6 +1539,95 @@
                 }
               }
             }
+          },
+          "400": {
+            "description": "Invalid request data."
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "ServiceSupport"
+        ],
+        "summary": "Get the local authority details",
+        "operationId": "ServiceSupport_GetLocalAuthorityDetails",
+        "parameters": [
+          {
+            "name": "LocalAuthorityId.Value",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "guid"
+            },
+            "x-position": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Local authority details.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LocalAuthorityDetailsModel"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request data."
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "ServiceSupport"
+        ],
+        "summary": "Update the local authority details.",
+        "operationId": "ServiceSupport_UpdateLocalAuthorityDetails",
+        "requestBody": {
+          "x-name": "request",
+          "description": "The request.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateLocalAuthorityCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "204": {
+            "description": "local authoirty details updated successfully."
+          },
+          "400": {
+            "description": "Invalid request data."
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "ServiceSupport"
+        ],
+        "summary": "Removes the local authority.",
+        "operationId": "ServiceSupport_RemoveLocalAuthority",
+        "requestBody": {
+          "x-name": "request",
+          "description": "The request.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DeleteLocalAuthorityCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "204": {
+            "description": "local authority deleted successfully."
           },
           "400": {
             "description": "Invalid request data."
@@ -1586,101 +1675,6 @@
                 }
               }
             }
-          },
-          "400": {
-            "description": "Invalid request data."
-          }
-        }
-      }
-    },
-    "/v1/ServiceSupport/LocalAuthority/details": {
-      "get": {
-        "tags": [
-          "ServiceSupport"
-        ],
-        "summary": "Get the local authority details",
-        "operationId": "ServiceSupport_GetLocalAuthorityDetails",
-        "parameters": [
-          {
-            "name": "LocalAuthorityId.Value",
-            "in": "query",
-            "schema": {
-              "type": "string",
-              "format": "guid"
-            },
-            "x-position": 1
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Local authority details.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/LocalAuthorityDetailsModel"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid request data."
-          }
-        }
-      }
-    },
-    "/v1/ServiceSupport/LocalAuthority/Delete": {
-      "patch": {
-        "tags": [
-          "ServiceSupport"
-        ],
-        "summary": "Update the local authority details.",
-        "operationId": "ServiceSupport_UpdateLocalAuthorityDetails",
-        "requestBody": {
-          "x-name": "request",
-          "description": "The request.",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/UpdateLocalAuthorityCommand"
-              }
-            }
-          },
-          "required": true,
-          "x-position": 1
-        },
-        "responses": {
-          "204": {
-            "description": "local authoirty details updated successfully."
-          },
-          "400": {
-            "description": "Invalid request data."
-          }
-        }
-      }
-    },
-    "/v1/ServiceSupport": {
-      "delete": {
-        "tags": [
-          "ServiceSupport"
-        ],
-        "summary": "Removes the local authority.",
-        "operationId": "ServiceSupport_RemoveLocalAuthority",
-        "requestBody": {
-          "x-name": "request",
-          "description": "The request.",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/DeleteLocalAuthorityCommand"
-              }
-            }
-          },
-          "required": true,
-          "x-position": 1
-        },
-        "responses": {
-          "204": {
-            "description": "local authority deleted successfully."
           },
           "400": {
             "description": "Invalid request data."
