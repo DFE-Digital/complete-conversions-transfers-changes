@@ -20,6 +20,7 @@ namespace Dfe.Complete.Application.Projects.Commands.TaskData
     public class UpdateExternalStakeholderKickOffTaskHandler(
         ICompleteRepository<Project> projectRepository,
         ICompleteRepository<ConversionTasksData> conversionTaskDataRepository,
+        ICompleteRepository<TransferTasksData> transferTaskDataRepository,
         ICompleteRepository<User> userRepository,
         ICompleteRepository<SignificantDateHistoryReason> significantDateReasonHistoryRepository
         )
@@ -39,14 +40,29 @@ namespace Dfe.Complete.Application.Projects.Commands.TaskData
             {
                 throw new NotFoundException("User not found", "email");
             }
+
+            var isConversion = project.Type == ProjectType.Conversion;
+            var projectTypeString = isConversion ? "Conversion" : "Transfer";
+
+            if (isConversion)
+            {
+                var conversionTasksData = await conversionTaskDataRepository.Query().FirstOrDefaultAsync(x => x.Id == project.TasksDataId, cancellationToken);
+
+                conversionTasksData!.StakeholderKickOffIntroductoryEmails = request.StakeholderKickOffIntroductoryEmails;
+                conversionTasksData!.StakeholderKickOffLocalAuthorityProforma = request.LocalAuthorityProforma;
+                conversionTasksData.StakeholderKickOffCheckProvisionalConversionDate = request.CheckProvisionalDate;
+                conversionTasksData!.StakeholderKickOffSetupMeeting = request.StakeholderKickOffSetupMeeting;
+                conversionTasksData!.StakeholderKickOffMeeting = request.StakeholderKickOffMeeting;
+            }
+            else
+            {
+                var transferTasksData = await transferTaskDataRepository.Query().FirstOrDefaultAsync(x => x.Id == project.TasksDataId, cancellationToken);
             
-            var taskData = await conversionTaskDataRepository.Query().FirstOrDefaultAsync(x => x.Id == project.TasksDataId, cancellationToken);
+                transferTasksData!.StakeholderKickOffIntroductoryEmails = request.StakeholderKickOffIntroductoryEmails;
+                transferTasksData!.StakeholderKickOffSetupMeeting = request.StakeholderKickOffSetupMeeting;
+                transferTasksData!.StakeholderKickOffMeeting = request.StakeholderKickOffMeeting;
+            }
             
-            taskData!.StakeholderKickOffIntroductoryEmails = request.StakeholderKickOffIntroductoryEmails;
-            taskData!.StakeholderKickOffLocalAuthorityProforma = request.LocalAuthorityProforma;
-            taskData.StakeholderKickOffCheckProvisionalConversionDate = request.CheckProvisionalDate;
-            taskData!.StakeholderKickOffSetupMeeting = request.StakeholderKickOffSetupMeeting;
-            taskData!.StakeholderKickOffMeeting = request.StakeholderKickOffMeeting;
             
             if (request.SignificantDate.HasValue)
             {
@@ -72,11 +88,12 @@ namespace Dfe.Complete.Application.Projects.Commands.TaskData
                     ReasonType = SignificantDateReason.StakeholderKickOff.ToDescription()
                 };
 
+
                 var note = new Note()
                 {
                     CreatedAt = now,
                     UpdatedAt = now,
-                    Body = "Conversion date confirmed as part of the External stakeholder kick off task.",
+                    Body = $"{projectTypeString} date confirmed as part of the External stakeholder kick off task.",
                     ProjectId = project.Id,
                     TaskIdentifier = significantDateHistoryReason.Id.Value.ToString(),
                     UserId = user.Id,

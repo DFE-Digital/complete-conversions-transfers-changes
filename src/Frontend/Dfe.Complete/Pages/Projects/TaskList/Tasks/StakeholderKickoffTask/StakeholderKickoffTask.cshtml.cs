@@ -1,7 +1,9 @@
 using Dfe.Complete.Application.Projects.Commands.TaskData;
 using Dfe.Complete.Application.Projects.Queries.GetConversionTasksData;
 using Dfe.Complete.Application.Projects.Queries.GetProject;
+using Dfe.Complete.Application.Projects.Queries.GetTransferTasksData;
 using Dfe.Complete.Constants;
+using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Extensions;
 using Dfe.Complete.Models;
 using Dfe.Complete.Services;
@@ -36,18 +38,33 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.StakeholderKickoffTask
 
             var result = await sender.Send(new GetProjectHistoryByProjectIdQuery(ProjectId));
             Project = result.Value;
+            var isConversion = Project.Type == ProjectType.Conversion;
+
+            if (isConversion)
+            {
+                var request =  new GetConversionTasksDataByIdQuery(Project.TasksDataId);
+                var taskDataResult = await sender.Send(request);
+
+                var taskData = taskDataResult.Value;
+
+                SendIntroEmails = taskData?.StakeholderKickOffIntroductoryEmails;
+                SendInvites = taskData?.StakeholderKickOffSetupMeeting;
+                HostMeetingOrCall = taskData?.StakeholderKickOffMeeting;
+                LocalAuthorityProforma = taskData?.StakeholderKickOffLocalAuthorityProforma;
+                LocalAuthorityAbleToConvert = taskData?.StakeholderKickOffCheckProvisionalConversionDate;
+            }
+            else
+            {
+                var request =  new GetTransferTasksDataByIdQuery(Project.TasksDataId);
+                var taskDataResult = await sender.Send(request);
+
+                var taskData = taskDataResult.Value;
+
+                SendIntroEmails = taskData?.StakeholderKickOffIntroductoryEmails;
+                SendInvites = taskData?.StakeholderKickOffSetupMeeting;
+                HostMeetingOrCall = taskData?.StakeholderKickOffMeeting;
+            }
             
-            var request = new GetConversionTasksDataByIdQuery(Project.TasksDataId);
-            var taskDataResult = await sender.Send(request);
-
-            var taskData = taskDataResult.Value;
-
-            SendIntroEmails = taskData?.StakeholderKickOffIntroductoryEmails;
-            SendInvites = taskData?.StakeholderKickOffSetupMeeting;
-            HostMeetingOrCall = taskData?.StakeholderKickOffMeeting;
-            LocalAuthorityProforma = taskData?.StakeholderKickOffLocalAuthorityProforma;
-            LocalAuthorityAbleToConvert = taskData?.StakeholderKickOffCheckProvisionalConversionDate;
-
             SignificantDate = Project.SignificantDateProvisional is true ? null : Project.SignificantDate;
 
             return Page();
@@ -57,12 +74,12 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.StakeholderKickoffTask
         {
             await base.OnGetAsync();
             
-            if (SignificantDate?.ToDateTime(new TimeOnly()) < DateTime.Today)
+            if (SignificantDate.HasValue && SignificantDate?.ToDateTime(new TimeOnly()) < DateTime.Today)
             {
-                ModelState.AddModelError(nameof(SignificantDate), "The Significant date cannot be in the past");
+                ModelState.AddModelError(nameof(SignificantDate), "The Significant date must be in the future.");
             }
             
-            if (!ModelState.IsValid)
+            if (SignificantDate.HasValue && !ModelState.IsValid)
             {
                 errorService.AddErrors(ModelState);
                 return Page();
