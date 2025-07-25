@@ -1,6 +1,4 @@
-﻿using Dfe.Complete.Utils.Attributes; 
-
-namespace Dfe.Complete.Models
+﻿namespace Dfe.Complete.Models
 {
     public enum TaskListStatus
     { 
