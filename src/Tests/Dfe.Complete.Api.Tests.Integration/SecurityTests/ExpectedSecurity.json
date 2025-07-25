@@ -184,6 +184,11 @@
       "Controller": "ProjectsController",
       "Action": "ListAllProjectsStatisticsAsync",
       "ExpectedSecurity": "Authorize: Policy=CanRead"
+    },
+    {
+      "Controller": "ConversionTasksDataController",
+      "Action": "GetConversionTasksDataByIdAsync",
+      "ExpectedSecurity": "Authorize: Policy=CanRead"
     }
   ]
 }

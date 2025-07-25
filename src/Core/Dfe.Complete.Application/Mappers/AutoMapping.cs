@@ -83,8 +83,9 @@ namespace Dfe.Complete.Application.Common.Mappers
 				.ForMember(dest => dest.Census, opt => opt.Ignore())
 				.ForMember(dest => dest.MisEstablishment, opt => opt.Ignore());
 			CreateMap<TransferTasksData, TransferTaskDataDto>();
-            CreateMap<SignificantDateHistory, SignificantDateHistoryDto>();
-            CreateMap<SignificantDateHistoryReason, SignificantDateHistoryReasonDto>();
+			CreateMap<ConversionTasksData, ConversionTaskDataDto>();
+			CreateMap<SignificantDateHistory, SignificantDateHistoryDto>();
+			CreateMap<SignificantDateHistoryReason, SignificantDateHistoryReasonDto>();
 		}
 	}
 }

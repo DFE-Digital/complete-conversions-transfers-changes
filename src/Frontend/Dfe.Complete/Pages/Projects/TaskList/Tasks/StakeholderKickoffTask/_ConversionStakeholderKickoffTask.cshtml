@@ -148,24 +148,39 @@
         </govuk-checkboxes-fieldset>
       </govuk-checkboxes>
 
-      <govuk-date-input id="conversion-date" name-prefix="conversion-date" asp-for="@Model.ConversionDate">
-        <govuk-date-input-fieldset>
-          <govuk-date-input-fieldset-legend class="govuk-fieldset__legend--m">
-            Enter the confirmed conversion date
-          </govuk-date-input-fieldset-legend>
-          <govuk-date-input-hint>
-            <p>
-              Everyone should have agreed to and know the confirmed conversion date.
-            </p>
-
-            <p>
-              You only need to enter a month and year. All schools convert on the first day of the month.
-            </p>
-          </govuk-date-input-hint>
-        </govuk-date-input-fieldset>
-      </govuk-date-input>
-
+      @{
+        if (!Model.Project.SignificantDateProvisional is false)
+        {
+          <govuk-date-input id="SignificantDate" name-prefix="significant-date" asp-for="@Model.SignificantDate">
+            <govuk-date-input-fieldset>
+              <govuk-date-input-fieldset-legend class="govuk-fieldset__legend--m">
+                Enter the confirmed conversion date
+              </govuk-date-input-fieldset-legend>
+              <govuk-date-input-hint>
+                <p>
+                  Everyone should have agreed to and know the confirmed conversion date.
+                </p>
+      
+                <p>
+                  You only need to enter a month and year. All schools convert on the first day of the month.
+                </p>
+              </govuk-date-input-hint>
+            </govuk-date-input-fieldset>
+          </govuk-date-input>
+        }
+        else
+        {
+          <div class="govuk-inset-text">
+            <p>The conversion date has been confirmed and is currently @Model.Project.SignificantDate.ToDateString()</p>
+            <p>The provisional conversion date was @Model.Project.SignificantDateHistories?.OrderBy(p => p.CreatedAt).First().PreviousDate.ToDateString().</p>
+            <p>Any further changes to the conversion date must be recorded on the main project screen.</p>
+          </div>
+        }
+      }
+      
       <button type="submit" formnovalidate="formnovalidate" class="govuk-button" data-module="govuk-button" data-prevent-double-click="true">Save and return</button>
     </form>
+  
+  
   </div>
 </div>
