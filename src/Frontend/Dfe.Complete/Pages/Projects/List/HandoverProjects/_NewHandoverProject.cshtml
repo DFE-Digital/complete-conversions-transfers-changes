@@ -1,0 +1,115 @@
+﻿@using Dfe.Complete.Constants
+@using Dfe.Complete.Domain.Enums
+@inject Dfe.Complete.Services.ErrorService ErrorService
+@model Dfe.Complete.Pages.Projects.List.HandoverProjects.NewHandoverProjectModel
+@{
+    const string assignedToRegionalCaseworkerTeamField = nameof(Model.AssignedToRegionalCaseworkerTeam);
+    const string schoolSharePointLinkField = nameof(Model.SchoolSharePointLink);
+    const string incomingTrustSharePointLinkField = nameof(Model.IncomingTrustSharePointLink);
+    const string outgoingTrustSharePointLinkField = nameof(Model.OutgoingTrustSharePointLink);
+    const string twoRequiresImprovementField = nameof(Model.TwoRequiresImprovement);
+}
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        @{
+            <form method="post">
+                <input type="hidden" name="Type" value="@Model.Type" />
+                <input type="hidden" name="UrnId" value="@Model.UrnId" />
+                <input type="hidden" name="EstablishmentName" value="@Model.EstablishmentName" />
+                <govuk-radios name="@assignedToRegionalCaseworkerTeamField" asp-for="@Model.AssignedToRegionalCaseworkerTeam ">
+                    <govuk-radios-fieldset>
+                        <govuk-radios-fieldset-legend class="govuk-fieldset__legend--m">
+                            Will RCS (Regional Casework Services) manage this project next?
+                        </govuk-radios-fieldset-legend>
+
+                        @if (ErrorService.HasErrorForKey(assignedToRegionalCaseworkerTeamField))
+                        {
+                            <govuk-radios-error-message>@(ErrorService.GetErrorMessage(assignedToRegionalCaseworkerTeamField))</govuk-radios-error-message>
+                        }
+
+                        <govuk-radios-item value="true" checked="@Model.AssignedToRegionalCaseworkerTeam">Yes</govuk-radios-item>
+                        <govuk-radios-item value="false" checked="@(!Model.AssignedToRegionalCaseworkerTeam)">No</govuk-radios-item>
+
+                    </govuk-radios-fieldset>
+                </govuk-radios>
+                <govuk-textarea name="HandoverComments" asp-for="@Model.HandoverComments">
+                    <govuk-textarea-label class="govuk-label--m">
+                        Handover comments
+                    </govuk-textarea-label>
+
+                    <govuk-textarea-hint>
+                        <p>
+                            You must describe how the project has progressed so far and highlight any issues or concerns.
+                        </p>
+
+                        <p>Include information about:</p>
+
+                        <ul>
+                            <li>whether the provisional conversion date has been discussed with the local authority</li>
+                            <li>if the local authority proforma has been received or requested</li>
+                            <li>who the Schools Financial Support and Oversight lead is</li>
+                            <li>if the introduction and next steps email has been sent to external stakeholders</li>
+                        </ul>
+                    </govuk-textarea-hint>
+                </govuk-textarea>
+                <govuk-input name="@schoolSharePointLinkField" asp-for="@Model.SchoolSharePointLink">
+                    <govuk-input-label class="govuk-label--m">School or academy SharePoint link</govuk-input-label>
+                    <govuk-input-hint>
+                        <p>
+                            If the school applied to convert, you must save the application form in the Schools' SharePoint folder.
+                        </p>
+                        <p>
+                            You must also save the academy order and advisory board template. Do this whether the school applied to convert or not.
+                        </p>
+                    </govuk-input-hint>
+                    @if (ErrorService.HasErrorForKey(schoolSharePointLinkField))
+                    {
+                        <govuk-input-error-message>@(ErrorService.GetErrorMessage(schoolSharePointLinkField))</govuk-input-error-message>
+                    }
+                </govuk-input>
+
+                <govuk-input name="@incomingTrustSharePointLinkField" asp-for="@Model.IncomingTrustSharePointLink">
+                    <govuk-input-label class="govuk-label--m">Incoming trust SharePoint link</govuk-input-label>
+                    <govuk-input-hint>Provide a link to the SharePoint folder for the incoming trust. This is where you save all the relevant trust documents.</govuk-input-hint>
+                    @if (ErrorService.HasErrorForKey(incomingTrustSharePointLinkField))
+                    {
+                        <govuk-input-error-message>@(ErrorService.GetErrorMessage(incomingTrustSharePointLinkField))</govuk-input-error-message>
+                    }
+                </govuk-input>
+                @if (Model.Type == ProjectType.Transfer)
+                {
+                    <govuk-input name="@outgoingTrustSharePointLinkField" asp-for="@Model.OutgoingTrustSharePointLink">
+                        <govuk-input-label class="govuk-label--m">Outgoing trust SharePoint link</govuk-input-label>
+                        <govuk-input-hint>Provide a link to the SharePoint folder for the outgoing trust. This is where you save all the relevant trust documents.</govuk-input-hint>
+                        @if (ErrorService.HasErrorForKey(outgoingTrustSharePointLinkField))
+                        {
+                            <govuk-input-error-message>@(ErrorService.GetErrorMessage(outgoingTrustSharePointLinkField))</govuk-input-error-message>
+                        }
+                    </govuk-input>
+                }
+                else
+                {
+                    <govuk-radios name="@twoRequiresImprovementField" asp-for="@Model.TwoRequiresImprovement ">
+                        <govuk-radios-fieldset>
+                            <govuk-radios-fieldset-legend class="govuk-fieldset__legend--m">
+                                Is this conversion due to intervention following 2RI?
+                            </govuk-radios-fieldset-legend>
+                            <govuk-radios-hint>
+                                If the school is converting due to intervention following 2RI, you must save the 2RI letter in the SharePoint folder.
+                            </govuk-radios-hint>
+                            @if (ErrorService.HasErrorForKey(twoRequiresImprovementField))
+                            {
+                                <govuk-radios-error-message>@(ErrorService.GetErrorMessage(twoRequiresImprovementField))</govuk-radios-error-message>
+                            }
+
+                            <govuk-radios-item value="true" checked="@Model.TwoRequiresImprovement">Yes</govuk-radios-item>
+                            <govuk-radios-item value="false" checked="@(!Model.TwoRequiresImprovement)">No</govuk-radios-item>
+
+                        </govuk-radios-fieldset>
+                    </govuk-radios>
+                }
+                <govuk-button type="submit">Confirm</govuk-button>
+            </form>
+        }
+    </div>
+</div>
