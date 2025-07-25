@@ -76,12 +76,8 @@ public class Startup
            {
                opts.CheckerGroups =
                [
-                   new()
-                   {
-                       TypeNames = [
-                           typeof(HasHeaderKeyExistsInRequestValidator).FullName!,
-                           typeof(CypressRequestChecker).FullName!
-                       ],
+                   new() {
+                       TypeNames   = [nameof(HasHeaderKeyExistsInRequestValidator), nameof(CypressRequestChecker)],
                        CheckerOperator = CheckerOperator.Or
                    }
                ];
