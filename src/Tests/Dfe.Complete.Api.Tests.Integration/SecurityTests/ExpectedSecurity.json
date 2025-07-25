@@ -100,7 +100,7 @@
       "Action": "UpdateAcademyUrnAsync",
       "ExpectedSecurity": "Authorize: Policy=CanReadWrite"
     },
-        {
+    {
       "Controller": "ProjectsController",
       "Action": "GetNotesByProjectIdAsync",
       "ExpectedSecurity": "Authorize: Policy=CanRead"
@@ -176,13 +176,23 @@
       "ExpectedSecurity": "Authorize: Policy=CanRead"
     },
     {
-      "Controller": "TransferTasksDataController",
+      "Controller": "TasksDataController",
       "Action": "GetTransferTasksDataByIdAsync",
       "ExpectedSecurity": "Authorize: Policy=CanRead"
     },
     {
       "Controller": "ProjectsController",
       "Action": "ListAllProjectsStatisticsAsync",
+      "ExpectedSecurity": "Authorize: Policy=CanRead"
+    },
+    {
+      "Controller": "TasksDataController",
+      "Action": "UpdateHandoverWithDeliveryOfficerTaskDataByProjectIdAsync",
+      "ExpectedSecurity": "Authorize: Policy=CanReadWriteUpdate"
+    },
+    {
+      "Controller": "TasksDataController",
+      "Action": "GetTaskDataByProjectIdAsync",
       "ExpectedSecurity": "Authorize: Policy=CanRead"
     }
   ]
