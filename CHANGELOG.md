@@ -20,7 +20,42 @@ Security in case of vulnerabilities.
 
 ---
 
-## Unreleased  
+## Unreleased
+
+### Added
+
+### Changed
+
+### Fixed
+- Fixed cookies page's URL by including query string.
+
+See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-07-24.577...main) for everything awaiting release
+
+---
+
+## [1.10.2](https://github.com/DFE-Digital/complete-conversions-transfers-changes/releases/tag/production-2025-07-24.577) - 2025-07-24
+
+### Added
+
+### Changed
+
+### Fixed
+- HOTFIX: antiforgery issue when accepting cookies from Ruby app
+
+See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-07-22.558...production-2025-07-24.577) for everything in the release
+
+---
+
+## [1.10.1](https://github.com/DFE-Digital/complete-conversions-transfers-changes/releases/tag/production-2025-07-22.558) - 2025-07-22
+
+### Fixed
+- HOTFIX: Reports tab now points to exports and dotnet app will handle redirect
+
+See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-07-22.553...production-2025-07-22.558) for everything in the release
+
+---
+
+## [1.10.0](https://github.com/DFE-Digital/complete-conversions-transfers-changes/releases/tag/production-2025-07-22.553) - 2025-07-22
 
 ### Added
 - New route `/projects/all/reports`
@@ -33,9 +68,9 @@ Security in case of vulnerabilities.
 
 ### Fixed
 - Remove double pagination on Service Support > Local authorities
-- Resolve "ABout the Project" academy crash
+- Resolve "About the Project" academy crash
 
-See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-07-14.525...main) for everything awaiting release
+See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-07-14.525...production-2025-07-22.553) for everything in the release
 
 ---
 
