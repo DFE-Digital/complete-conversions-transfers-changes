@@ -118,7 +118,8 @@ public sealed class StartupTests : IDisposable
         var dict = new Dictionary<string, string?>
         {
             ["DataProtection:DpTargetPath"] = dpTargetPath,
-            ["DataProtection:KeyVaultKey"] = keyVaultKey
+            ["DataProtection:KeyVaultKey"] = keyVaultKey,
+            ["ApplicationInsights:EnableBrowserAnalytics"] = "false"
         };
         return new ConfigurationBuilder().AddInMemoryCollection(dict).Build();
     }
@@ -131,7 +132,7 @@ public sealed class StartupTests : IDisposable
         Assert.NotNull(mi);
         mi.Invoke(startup, [services]);
     }
-
+    
     public void Dispose()
     {
         try { Directory.Delete(_tempDpTargetPath, recursive: true); }

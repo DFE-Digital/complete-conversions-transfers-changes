@@ -110,7 +110,8 @@ namespace Dfe.Complete.Tests.Authorization
                 { "AzureAd:TenantId", "tenant-id" },
                 { "AzureAd:ClientId", "client-id" },
                 { "AzureAd:CallbackPath", "/signin-oidc" },
-                { "DataProtection:__dummy", string.Empty }
+                { "DataProtection:__dummy", string.Empty },
+                { "ApplicationInsights:EnableBrowserAnalytics", "false"}
             }!).Build();
 
             services.AddSingleton<IConfiguration>(configuration);

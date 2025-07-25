@@ -23,6 +23,7 @@ Security in case of vulnerabilities.
 ## Unreleased
 
 ### Added
+- Added `App Insight` for tracking users clicks and page views
 
 ### Changed
 
@@ -102,7 +103,6 @@ See the [full commit history](https://github.com/DFE-Digital/complete-conversion
 - Service support Create Academy URN (/projects/{projectId}/academy-urn) 
 - Added `Statistics` page
 - Added Project Significant History Dates `/projects/{projectId}/date-history`
-
 
 ### Changed  
 
