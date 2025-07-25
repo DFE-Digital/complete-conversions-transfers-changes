@@ -27,28 +27,34 @@ namespace Dfe.Complete.Application.Projects.Commands.UpdateProject
     {
         public async Task<Result<bool>> Handle(UpdateHandoverWithDeliveryOfficerCommand request, CancellationToken cancellationToken)
         {
-            var project = await projectReadRepository.Projects.FirstOrDefaultAsync(p => p.Id == request.ProjectId, cancellationToken)
-                          ?? throw new NotFoundException($"Project {request.ProjectId} not found.");
-
-            if (project.TasksDataId != null)
+            try
             {
-                if (project.Type == ProjectType.Conversion)
+                var project = await projectReadRepository.Projects.FirstOrDefaultAsync(p => p.Id == request.ProjectId, cancellationToken)
+                              ?? throw new NotFoundException($"Project {request.ProjectId} not found.");
+
+                if (project.TasksDataId != null)
                 {
-                    await UpdateConversionTaskDataAsync(project.TasksDataId, request, cancellationToken);
+                    if (project.Type == ProjectType.Conversion)
+                    {
+                        await UpdateConversionTaskDataAsync(project.TasksDataId, request, cancellationToken);
+                    }
+                    else if (project.Type == ProjectType.Transfer)
+                    {
+                        await UpdateTransferTaskDataAsync(project.TasksDataId, request, cancellationToken);
+                    }
                 }
-                else if (project.Type == ProjectType.Transfer)
-                {
-                    await UpdateTransferTaskDataAsync(project.TasksDataId, request, cancellationToken);
-                }
+                return Result<bool>.Success(true);
             }
-            return Result<bool>.Success(true);
+            catch (Exception ex)
+            {
+                Result<bool>.Failure(ex.Message);
+            }
         }
 
 
         private async Task UpdateConversionTaskDataAsync(TaskDataId taskDataId, UpdateHandoverWithDeliveryOfficerCommand request, CancellationToken cancellationToken)
         {
-            var tasksData = await conversionTaskRepository.FindAsync(p => p.Id == taskDataId, cancellationToken)
-                            ?? throw new NotFoundException($"Conversion task data {taskDataId} not found.");
+            var tasksData = await conversionTaskRepository.FindAsync(p => p.Id == taskDataId, cancellationToken);
 
             tasksData.HandoverMeeting = request.NotApplicable == true ? null : request.HandoverMeetings;
             tasksData.HandoverNotes = request.NotApplicable == true ? null : request.HandoverNotes;
@@ -60,8 +66,7 @@ namespace Dfe.Complete.Application.Projects.Commands.UpdateProject
 
         private async Task UpdateTransferTaskDataAsync(TaskDataId taskDataId, UpdateHandoverWithDeliveryOfficerCommand request, CancellationToken cancellationToken)
         {
-            var tasksData = await transferTaskRepository.FindAsync(p => p.Id == taskDataId, cancellationToken)
-                            ?? throw new NotFoundException($"Transfer task data {taskDataId} not found.");
+            var tasksData = await transferTaskRepository.FindAsync(p => p.Id == taskDataId, cancellationToken);
 
             tasksData.HandoverMeeting = request.NotApplicable == true ? null : request.HandoverMeetings;
             tasksData.HandoverNotes = request.NotApplicable == true ? null : request.HandoverNotes;
