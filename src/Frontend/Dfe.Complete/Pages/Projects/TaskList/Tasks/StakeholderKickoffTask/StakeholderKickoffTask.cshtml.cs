@@ -2,6 +2,7 @@ using Dfe.Complete.Application.Projects.Commands.TaskData;
 using Dfe.Complete.Application.Projects.Queries.GetConversionTasksData;
 using Dfe.Complete.Application.Projects.Queries.GetProject;
 using Dfe.Complete.Constants;
+using Dfe.Complete.Extensions;
 using Dfe.Complete.Models;
 using Dfe.Complete.Services;
 using MediatR;
@@ -78,7 +79,9 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.StakeholderKickoffTask
             
             await sender.Send(request);
             
-            return Redirect(string.Format(RouteConstants.ProjectStakeholderKickoffTask, ProjectId));
+            TempData.SetNotification(NotificationType.Success, "Success", "Task updated successfully");
+            
+            return Redirect(string.Format(RouteConstants.ProjectTaskList, ProjectId));
         }
     }
 }
