@@ -1682,13 +1682,13 @@
         }
       }
     },
-    "/v1/TransferTasksData": {
+    "/v1/TasksData/TaskData/Transfer": {
       "get": {
         "tags": [
-          "TransferTasksData"
+          "TasksData"
         ],
         "summary": "Gets the transfer tasks data by Id.",
-        "operationId": "TransferTasksData_GetTransferTasksDataById",
+        "operationId": "TasksData_GetTransferTasksDataById",
         "parameters": [
           {
             "name": "Id.Value",
@@ -1713,6 +1713,71 @@
           },
           "404": {
             "description": "Transfer tasks data not found for the given Id."
+          }
+        }
+      }
+    },
+    "/v1/TasksData/TaskData/Handover/DeliverOfficer": {
+      "patch": {
+        "tags": [
+          "TasksData"
+        ],
+        "summary": "Updates the handover with delivery officer for either conversion or transfer tasks data.",
+        "operationId": "TasksData_UpdateHandoverWithDeliveryOfficerTaskDataByProjectId",
+        "requestBody": {
+          "x-name": "request",
+          "description": "The update task data command.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateHandoverWithDeliveryOfficerCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "204": {
+            "description": "Successfully updated the conversion or trasnfer task data"
+          },
+          "404": {
+            "description": "Transfer or Conversion task data not found for the given project Id."
+          }
+        }
+      }
+    },
+    "/v1/TasksData/TaskData/ProjectId": {
+      "get": {
+        "tags": [
+          "TasksData"
+        ],
+        "summary": "Gets the Task Data by Project Id for either conversion or transfer project.",
+        "operationId": "TasksData_GetTaskDataByProjectId",
+        "parameters": [
+          {
+            "name": "ProjectId.Value",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "guid"
+            },
+            "x-position": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns conversion or transfer task data.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TaskDataModel"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No task data found for the given Id."
           }
         }
       }
@@ -4796,6 +4861,56 @@
             "nullable": true
           },
           "commercialTransferAgreementQuestionsChecked": {
+            "type": "boolean",
+            "nullable": true
+          }
+        }
+      },
+      "UpdateHandoverWithDeliveryOfficerCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "projectId": {
+            "$ref": "#/components/schemas/ProjectId"
+          },
+          "notApplicable": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "handoverReview": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "handoverNotes": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "handoverMeetings": {
+            "type": "boolean",
+            "nullable": true
+          }
+        }
+      },
+      "TaskDataModel": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "taskDataId": {
+            "$ref": "#/components/schemas/TaskDataId"
+          },
+          "handoverReview": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "handoverNotes": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "handoverMeeting": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "handoverNotApplicable": {
             "type": "boolean",
             "nullable": true
           }
