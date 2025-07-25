@@ -21,8 +21,7 @@ namespace Dfe.Complete.Application.Projects.Queries.GetProject
             try
             {
                 var result = await new ProjectIdQuery(request.ProjectId)
-                    .Apply(projectReadRepository.Projects.AsNoTracking())
-                    .Include(p => p.GiasEstablishment)
+                    .Apply(projectReadRepository.Projects.AsNoTracking()) 
                     .FirstOrDefaultAsync(cancellationToken) ?? throw new NotFoundException($"No project found for Id: {request.ProjectId.Value}.");
 
                 var projectDto = mapper.Map<ProjectDto?>(result);

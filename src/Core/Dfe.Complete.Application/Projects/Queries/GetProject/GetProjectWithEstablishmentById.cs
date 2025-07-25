@@ -28,7 +28,6 @@ namespace Dfe.Complete.Application.Projects.Queries.GetProject
             {
                 var project = await new ProjectIdQuery(request.ProjectId)
                    .Apply(projectReadRepository.Projects.AsNoTracking())
-                   .Include(p => p.GiasEstablishment)
                    .FirstOrDefaultAsync(cancellationToken) ?? throw new NotFoundException($"Project {request.ProjectId} not found", nameof(request.ProjectId));
 
                 var allProjectTrustUkPrns = new[]
