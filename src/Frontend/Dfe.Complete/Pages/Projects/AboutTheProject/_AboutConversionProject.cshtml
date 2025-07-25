@@ -66,7 +66,7 @@
                             @(Model.Project.DirectiveAcademyOrder != null && Model.Project.DirectiveAcademyOrder.Value ? "Yes" : "No")
                         </govuk-summary-list-row-value>
                         <govuk-summary-list-row-actions>
-                            <govuk-summary-list-row-action href="#" visually-hidden-text="Has a directive academy order been issued?">Change</govuk-summary-list-row-action>
+                            <govuk-summary-list-row-action href="@Model.GetChangeLinkUrl("directive-academy-order")" visually-hidden-text="Has a directive academy order been issued?">Change</govuk-summary-list-row-action>
                         </govuk-summary-list-row-actions>
                     </govuk-summary-list-row>
                     <govuk-summary-list-row>
@@ -75,7 +75,7 @@
                             @(Model.Project.TwoRequiresImprovement != null && Model.Project.TwoRequiresImprovement.Value ? "Yes" : "No")
                         </govuk-summary-list-row-value>
                         <govuk-summary-list-row-actions>
-                            <govuk-summary-list-row-action href="#" visually-hidden-text="Is this conversion due to intervention following 2RI?">Change</govuk-summary-list-row-action>
+                            <govuk-summary-list-row-action href="@Model.GetChangeLinkUrl("two-requires-improvement")" visually-hidden-text="Is this conversion due to intervention following 2RI?">Change</govuk-summary-list-row-action>
                         </govuk-summary-list-row-actions>
                     </govuk-summary-list-row>
                 </govuk-summary-list>
@@ -150,7 +150,7 @@
                             <a class="govuk-link" href="@Model.Project.EstablishmentSharepointLink" target="_blank">View the school SharePoint folder (opens in new tab)</a>
                         </govuk-summary-list-row-value>
                         <govuk-summary-list-row-actions>
-                            <govuk-summary-list-row-action href="#" visually-hidden-text="School sharePoint folder">Change</govuk-summary-list-row-action>
+                            <govuk-summary-list-row-action href="@Model.GetChangeLinkUrl("sharepoint-folder-links")" visually-hidden-text="School sharePoint folder">Change</govuk-summary-list-row-action>
                         </govuk-summary-list-row-actions>
                     </govuk-summary-list-row>
                 </govuk-summary-list>
@@ -210,7 +210,7 @@
                                 <a class="govuk-link" href="@Model.Project.EstablishmentSharepointLink" target="_blank">View the academy SharePoint folder (opens in new tab)</a>
                             </govuk-summary-list-row-value>
                             <govuk-summary-list-row-actions>
-                                <govuk-summary-list-row-action href="#" visually-hidden-text="Academy sharePoint folder">Change</govuk-summary-list-row-action>
+                                <govuk-summary-list-row-action href="@Model.GetChangeLinkUrl("sharepoint-folder-links")" visually-hidden-text="Academy sharePoint folder">Change</govuk-summary-list-row-action>
                             </govuk-summary-list-row-actions>
                         </govuk-summary-list-row>
                     </govuk-summary-list>
