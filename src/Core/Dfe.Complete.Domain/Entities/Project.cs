@@ -419,7 +419,7 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
         return project;
     }
 
-    private void AddNote(Note? note)
+    public void AddNote(Note? note)
     {
         if (note != null)
         {
@@ -461,5 +461,24 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
     public void AddAcademyUrn(Urn urn)
     {
         AcademyUrn = urn;
+    }
+    
+    public void UpdateSignificantDate(DateOnly date)
+    {
+        SignificantDate = date;
+    }
+    
+    public void AddSignificantDateHistory(SignificantDateHistory significantDateHistory)
+    {
+        SignificantDateHistories.Add(new SignificantDateHistory
+        {
+            Id = significantDateHistory.Id,
+            CreatedAt = significantDateHistory.CreatedAt,
+            UpdatedAt = significantDateHistory.UpdatedAt,
+            ProjectId = significantDateHistory.ProjectId,
+            UserId = significantDateHistory.UserId,
+            PreviousDate = significantDateHistory.PreviousDate,
+            RevisedDate = significantDateHistory.RevisedDate,
+        });
     }
 }
