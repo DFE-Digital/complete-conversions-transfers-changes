@@ -16,7 +16,7 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers.ProjectsController
         [CustomAutoData(typeof(CustomWebApplicationDbContextFactoryCustomization))]
         public async Task GetProjectGroupByIdAsync_ShouldReturn_A_ProjectGroup(
             CustomWebApplicationDbContextFactory<Program> factory,
-            ITransferTasksDataClient transferTasksDatClient,
+            ITasksDataClient tasksDataClient,
             IFixture fixture)
         {
             // Arrange
@@ -32,7 +32,7 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers.ProjectsController
             await dbContext.SaveChangesAsync();
 
             // Act
-            var result = await transferTasksDatClient.GetTransferTasksDataByIdAsync(task.Id.Value);
+            var result = await tasksDataClient.GetTransferTasksDataByIdAsync(task.Id.Value);
 
             // Assert
             Assert.NotNull(result);
