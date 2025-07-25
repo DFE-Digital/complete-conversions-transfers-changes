@@ -15,7 +15,7 @@ namespace Dfe.Complete.Application.Projects.Commands.TaskData
         bool? StakeholderKickOffSetupMeeting, 
         bool? StakeholderKickOffMeeting, 
         DateOnly? SignificantDate,
-        string UserEmail) : IRequest;
+        string? UserEmail) : IRequest;
 
     public class UpdateExternalStakeholderKickOffTaskHandler(
         ICompleteRepository<Project> projectRepository,
