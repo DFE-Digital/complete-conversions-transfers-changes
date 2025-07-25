@@ -1,0 +1,7 @@
+﻿@using Dfe.Complete.Pages.Projects.ExternalContacts
+@model  ExternalContactsSectionModel
+<h3 class="govuk-heading-m">@Model.SectionTitle contacts</h3>
+@foreach (var contact in Model.Contacts)
+{
+  <partial name="_ExternalContact" model="@contact"/>
+}
