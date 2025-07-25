@@ -23,8 +23,10 @@ Security in case of vulnerabilities.
 ## Unreleased
 
 ### Added
+- Added `ConversionTasksDataController`
 
 ### Changed
+- Updated the implementation of `StakeholderKickoffTaskModel`
 
 ### Fixed
 - Fixed cookies page's URL by including query string.
