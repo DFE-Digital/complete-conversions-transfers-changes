@@ -17,7 +17,7 @@ namespace Dfe.Complete.Pages.Projects.ServiceSupport.ConversionURNs
 {
     [Authorize(policy: UserPolicyConstants.CanViewServiceSupport)]
     public class CreateAcademyUrnModel(ISender sender, 
-        ErrorService errorService, ILogger<CreateAcademyUrnModel> _logger) : BaseProjectPageModel(sender, _logger)
+        ErrorService errorService, ILogger<CreateAcademyUrnModel> logger) : BaseProjectPageModel(sender, logger)
     {
         [BindProperty]
         [AcademyUrn]

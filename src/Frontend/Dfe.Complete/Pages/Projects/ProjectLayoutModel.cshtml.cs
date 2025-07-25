@@ -5,7 +5,7 @@ using MediatR;
 namespace Dfe.Complete.Pages.Projects.ProjectView;
 
 [ExcludeFromCodeCoverage]
-public abstract class ProjectLayoutModel(ISender sender, ILogger _logger, string currentNavigation) : BaseProjectPageModel(sender, _logger)
+public abstract class ProjectLayoutModel(ISender sender, ILogger logger, string currentNavigation) : BaseProjectPageModel(sender, logger)
 {
     public string CurrentNavigationItem { get; } = currentNavigation;
 

@@ -1,11 +1,12 @@
-using Dfe.Complete.Constants;
-using Dfe.Complete.Models;
+using Dfe.Complete.Domain.Enums;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.SupplementalFundingAgreementTask
 {
-    public class SupplementalFundingAgreementTaskModel(ISender sender, ILogger<SupplementalFundingAgreementTaskModel> _logger) : BaseProjectPageModel(sender, _logger)
+    public class SupplementalFundingAgreementTaskModel(ISender sender, IAuthorizationService authorizationService, ILogger<SupplementalFundingAgreementTaskModel> logger)
+        : BaseProjectTaskModel(sender, authorizationService, logger, NoteTaskIdentifier.SupplementalFundingAgreement)
     {
         [BindProperty(Name = "cleared")]
         public bool? Cleared { get; set; }
@@ -24,11 +25,5 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.SupplementalFundingAgreemen
 
         [BindProperty(Name = "signed-secretary-state")]
         public bool? SignedSecretaryState { get; set; }
-
-        
-        public async Task<IActionResult> OnPost()
-        {
-            return Redirect(string.Format(RouteConstants.ProjectSupplementalFundingAgreementTask, ProjectId));
-        }
     }
 }

@@ -155,10 +155,10 @@ namespace Dfe.Complete.Tests.Constants
 
             Assert.Equal(basePath, string.Format(RouteConstants.ProjectTaskList, projectId));
             Assert.Equal(basePath + "/handover", string.Format(RouteConstants.ProjectHandoverWithDeliveryOfficerTask, projectId));
-            Assert.Equal(basePath + "/stakeholder-kickoff", string.Format(RouteConstants.ProjectStakeholderKickoffTask, projectId));
-            Assert.Equal(basePath + "/land-questionnaire", string.Format(RouteConstants.ProjectLandQuestionnaireTask, projectId));
-            Assert.Equal(basePath + "/land-registry", string.Format(RouteConstants.ProjectLandRegistryTask, projectId));
-            Assert.Equal(basePath + "/supplemental-funding-agreement", string.Format(RouteConstants.ProjectSupplementalFundingAgreementTask, projectId));
+            Assert.Equal(basePath + "/stakeholder_kickoff", string.Format(RouteConstants.ProjectStakeholderKickoffTask, projectId));
+            Assert.Equal(basePath + "/land_questionnaire", string.Format(RouteConstants.ProjectLandQuestionnaireTask, projectId));
+            Assert.Equal(basePath + "/land_registry", string.Format(RouteConstants.ProjectLandRegistryTask, projectId));
+            Assert.Equal(basePath + "/supplemental_funding_agreement", string.Format(RouteConstants.ProjectSupplementalFundingAgreementTask, projectId));
         }
 
         [Fact]

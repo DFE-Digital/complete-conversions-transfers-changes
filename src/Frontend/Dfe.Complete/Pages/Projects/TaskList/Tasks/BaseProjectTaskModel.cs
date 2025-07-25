@@ -1,31 +1,44 @@
+using Dfe.Complete.Constants;
+using Dfe.Complete.Domain.Enums;
+using Dfe.Complete.Models;
+using MediatR;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 using Dfe.Complete.Application.Notes.Queries;
 using Dfe.Complete.Application.Projects.Models;
-using Dfe.Complete.Constants;
 using Dfe.Complete.Domain.Constants;
 using Dfe.Complete.Domain.ValueObjects;
 using Dfe.Complete.Extensions;
-using Dfe.Complete.Models;
-using MediatR;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
+using DfE.CoreLibs.Utilities.Extensions;
 
-namespace Dfe.Complete.Pages.Projects.Notes;
+namespace Dfe.Complete.Pages.Projects.TaskList.Tasks;
 
-public class ViewProjectNotesModel(ISender sender, IAuthorizationService authorizationService, ILogger<ViewProjectNotesModel> logger) : BaseProjectNotesModel(sender, logger, NotesNavigation)
+public class BaseProjectTaskModel(ISender sender, IAuthorizationService authorizationService, ILogger logger, NoteTaskIdentifier taskIdentifier) : BaseProjectPageModel(sender, logger)
 {
+    public required NoteTaskIdentifier TaskIdentifier { get; set; } = taskIdentifier;
     public IReadOnlyList<NoteDto> Notes { get; private set; } = [];
+
+    public bool CanAddNotes => Project.State != ProjectState.Deleted && Project.State != ProjectState.Completed && Project.State != ProjectState.DaoRevoked;
+
+    public bool CanEditNote(UserId noteUserId)
+    {
+        if (Project.State == ProjectState.Completed || noteUserId != User.GetUserId())
+            return false;
+        return true;
+    }
 
     public override async Task<IActionResult> OnGetAsync()
     {
         var baseResult = await base.OnGetAsync();
         if (baseResult is not PageResult) return baseResult;
 
-        var notesResult = await Sender.Send(new GetNotesByProjectIdQuery(new ProjectId(Guid.Parse(ProjectId))));
+        var notesResult = await Sender.Send(new GetTaskNotesByProjectIdQuery(new ProjectId(Guid.Parse(ProjectId)), TaskIdentifier));
         if (!notesResult.IsSuccess)
             throw new InvalidOperationException($"Could not load notes for project {ProjectId}");
 
         Notes = notesResult.Value ?? [];
+
         return Page();
     }
 
@@ -51,6 +64,6 @@ public class ViewProjectNotesModel(ISender sender, IAuthorizationService authori
             return RedirectToPage(new { projectId = ProjectId });
         }
 
-        return Redirect(string.Format(RouteConstants.ProjectAddNote, ProjectId));
+        return Redirect(string.Format(RouteConstants.ProjectAddTaskNote, ProjectId, TaskIdentifier.ToDescription()));
     }
 }

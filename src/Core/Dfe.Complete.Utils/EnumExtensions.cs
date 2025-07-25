@@ -10,22 +10,22 @@ public static class EnumExtensions
 	{
 		return enumValue.HasValue ? ((char)Convert.ToUInt16(enumValue.Value)).ToString() : string.Empty;
 	}
-		
+
 	public static string ToDescription<T>(this T source)
 	{
-		if (source == null) 
+		if (source == null)
 			return string.Empty;
 
 		var fi = source.GetType().GetField(source.ToString() ?? string.Empty);
 
-		if (fi == null) 
+		if (fi == null)
 			return string.Empty;
-        
-		var attributes = (DescriptionAttribute[]) fi.GetCustomAttributes(typeof(DescriptionAttribute), false);
+
+		var attributes = (DescriptionAttribute[])fi.GetCustomAttributes(typeof(DescriptionAttribute), false);
 
 		return (attributes.Length > 0 ? attributes[0].Description : source.ToString()) ?? string.Empty;
 	}
-	
+
 	public static string ToDisplayDescription<T>(this T source)
 	{
 		if (EqualityComparer<T>.Default.Equals(source, default!))
@@ -43,7 +43,7 @@ public static class EnumExtensions
 			? attributes[0].DisplayDescription
 			: source.ToString() ?? string.Empty;
 	}
-		
+
 	public static T? FromDescription<T>(this string? description) where T : Enum
 	{
 		if (string.IsNullOrEmpty(description))
@@ -51,7 +51,7 @@ public static class EnumExtensions
 
 		foreach (var field in typeof(T).GetFields())
 		{
-			if (field.IsLiteral) 
+			if (field.IsLiteral)
 			{
 				var attribute = field.GetCustomAttribute<DescriptionAttribute>();
 				if (attribute != null && attribute.Description == description)
@@ -65,7 +65,7 @@ public static class EnumExtensions
 
 		return default;
 	}
-		
+
 	public static TEnum? FromDescriptionValue<TEnum>(this string? description) where TEnum : struct, Enum
 	{
 		if (string.IsNullOrEmpty(description))

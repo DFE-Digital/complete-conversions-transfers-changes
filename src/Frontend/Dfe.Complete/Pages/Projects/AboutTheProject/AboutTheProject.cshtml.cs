@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace Dfe.Complete.Pages.Projects.AboutTheProject
 {
-    public class AboutTheProjectModel(ISender sender, ILogger<AboutTheProjectModel> _logger) : ProjectLayoutModel(sender, _logger, AboutTheProjectNavigation)
+    public class AboutTheProjectModel(ISender sender, ILogger<AboutTheProjectModel> logger) : ProjectLayoutModel(sender, logger, AboutTheProjectNavigation)
     {
         public GiasEstablishmentDto? Academy { get; set; }
         public ProjectGroupDto? ProjectGroup { get; set; }
