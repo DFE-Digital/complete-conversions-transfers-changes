@@ -1,10 +1,12 @@
 ﻿using Dfe.Complete.Application.Common.Models;
+using Dfe.Complete.Application.Projects.Interfaces;
 using Dfe.Complete.Domain.Entities;
 using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Domain.Interfaces.Repositories;
 using Dfe.Complete.Domain.ValueObjects;
 using Dfe.Complete.Utils;
-using MediatR; 
+using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 namespace Dfe.Complete.Application.Projects.Commands.UpdateProject
 {
@@ -18,14 +20,14 @@ namespace Dfe.Complete.Application.Projects.Commands.UpdateProject
     ) : IRequest<Result<bool>>;
 
     public class UpdateHandoverWithDeliveryOfficerCommandHandler(
-        ICompleteRepository<Project> projectRepository,
+        IProjectReadRepository projectReadRepository,
         ICompleteRepository<ConversionTasksData> conversionTaskRepository,
         ICompleteRepository<TransferTasksData> transferTaskRepository)
         : IRequestHandler<UpdateHandoverWithDeliveryOfficerCommand, Result<bool>>
     {
         public async Task<Result<bool>> Handle(UpdateHandoverWithDeliveryOfficerCommand request, CancellationToken cancellationToken)
         {
-            var project = await projectRepository.FindAsync(p => p.Id == request.ProjectId, cancellationToken)
+            var project = await projectReadRepository.Projects.FirstOrDefaultAsync(p => p.Id == request.ProjectId, cancellationToken)
                           ?? throw new NotFoundException($"Project {request.ProjectId} not found.");
 
             if (project.TasksDataId != null)
@@ -34,18 +36,18 @@ namespace Dfe.Complete.Application.Projects.Commands.UpdateProject
                 var notApplicable = request.NotApplicable.HasValue && request.NotApplicable.Value;
                 if (project.Type == ProjectType.Conversion)
                 {
-                    await UpdateConversionTaskData(project.TasksDataId, notApplicable, request, cancellationToken);
+                    await UpdateConversionTaskDataAsync(project.TasksDataId, notApplicable, request, cancellationToken);
                 }
                 else if (project.Type == ProjectType.Transfer)
                 {
-                    await UpdateTransferTaskData(project.TasksDataId, notApplicable, request, cancellationToken);
+                    await UpdateTransferTaskDataAsync(project.TasksDataId, notApplicable, request, cancellationToken);
                 }
             }
             return Result<bool>.Success(true);
         }
 
 
-        private async Task UpdateConversionTaskData(TaskDataId taskDataId, bool notApplicable, UpdateHandoverWithDeliveryOfficerCommand request, CancellationToken cancellationToken)
+        private async Task UpdateConversionTaskDataAsync(TaskDataId taskDataId, bool notApplicable, UpdateHandoverWithDeliveryOfficerCommand request, CancellationToken cancellationToken)
         {
             var tasksData = await conversionTaskRepository.FindAsync(p => p.Id == taskDataId, cancellationToken)
                             ?? throw new NotFoundException($"Conversion task data {taskDataId} not found.");
@@ -56,14 +58,14 @@ namespace Dfe.Complete.Application.Projects.Commands.UpdateProject
             await conversionTaskRepository.UpdateAsync(tasksData, cancellationToken);
         }
 
-        private async Task UpdateTransferTaskData(TaskDataId taskDataId, bool notApplicable, UpdateHandoverWithDeliveryOfficerCommand request, CancellationToken cancellationToken)
+        private async Task UpdateTransferTaskDataAsync(TaskDataId taskDataId, bool notApplicable, UpdateHandoverWithDeliveryOfficerCommand request, CancellationToken cancellationToken)
         {
             var tasksData = await transferTaskRepository.FindAsync(p => p.Id == taskDataId, cancellationToken)
                             ?? throw new NotFoundException($"Transfer task data {taskDataId} not found.");
-            
+
             tasksData.HandoverMeeting = notApplicable ? null : request.HandoverMeetings;
             tasksData.HandoverNotes = notApplicable ? null : request.HandoverNotes;
-            tasksData.HandoverReview = notApplicable ? null : request.HandoverReview; 
+            tasksData.HandoverReview = notApplicable ? null : request.HandoverReview;
 
             await transferTaskRepository.UpdateAsync(tasksData, cancellationToken);
         }
