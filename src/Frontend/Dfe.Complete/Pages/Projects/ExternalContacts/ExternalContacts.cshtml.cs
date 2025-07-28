@@ -21,7 +21,6 @@ public class ExternalContacts(ISender sender, ILogger<ExternalContacts> logger)
     public List<ExternalContactModel> OtherContacts { get; set; } = [];
     public List<ExternalContactModel> ParliamentaryContacts { get; set; } = [];
     public string LocalAuthorityName { get; set; } = "";
-    public bool ProjectContactsExist { get; set; }
 
     public override async Task<IActionResult> OnGetAsync()
     {
@@ -33,7 +32,6 @@ public class ExternalContacts(ISender sender, ILogger<ExternalContacts> logger)
 
         if (projectContacts is { IsSuccess: true, Value: not null })
         {
-            ProjectContactsExist = projectContacts.Value.Count > 0;
             EstablishmentContacts.AddRange(projectContacts.Value
                 .FindAll(contact => contact.Category == ContactCategory.SchoolOrAcademy).Select(contact =>
                     new ExternalContactModel(contact,
@@ -60,7 +58,10 @@ public class ExternalContacts(ISender sender, ILogger<ExternalContacts> logger)
             LocalAuthorityContacts.AddRange(
                 projectContacts.Value.FindAll(contact => contact.Category == ContactCategory.LocalAuthority).Select(
                     contact =>
-                        new ExternalContactModel(contact, true, contact.Id == Project.MainContactId)));
+                        new ExternalContactModel(contact, 
+                            true, 
+                            contact.Id == Project.MainContactId,
+                            contact.Id == Project.LocalAuthorityMainContactId)));
             SolicitorContacts.AddRange(
                 projectContacts.Value.FindAll(contact => contact.Category == ContactCategory.Solicitor).Select(
                     contact =>
@@ -71,7 +72,10 @@ public class ExternalContacts(ISender sender, ILogger<ExternalContacts> logger)
                     new ExternalContactModel(contact, true)));
             OtherContacts.AddRange(projectContacts.Value.FindAll(contact => contact.Category == ContactCategory.Other)
                 .Select(contact =>
-                    new ExternalContactModel(contact, true, ShowOrganisation: true)));
+                    new ExternalContactModel(contact,
+                        true, 
+                        contact.Id == Project.MainContactId,
+                        ShowOrganisation: true)));
         }
 
         if (Establishment.LocalAuthorityCode == null) return Page();
