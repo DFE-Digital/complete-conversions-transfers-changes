@@ -188,7 +188,7 @@
     {
       "Controller": "TasksDataController",
       "Action": "UpdateHandoverWithDeliveryOfficerTaskDataByProjectIdAsync",
-      "ExpectedSecurity": "Authorize: Policy=CanReadWrite"
+      "ExpectedSecurity": "Authorize: Policy=CanReadWriteUpdate"
     },
     {
       "Controller": "TasksDataController",

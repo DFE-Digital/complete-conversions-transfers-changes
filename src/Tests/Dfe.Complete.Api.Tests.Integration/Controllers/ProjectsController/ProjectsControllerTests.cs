@@ -18,8 +18,6 @@ using ProjectType = Dfe.Complete.Domain.Enums.ProjectType;
 using ProjectState = Dfe.Complete.Domain.Enums.ProjectState;
 using Project = Dfe.Complete.Domain.Entities.Project;
 using Ukprn = Dfe.Complete.Domain.ValueObjects.Ukprn;
-using Dfe.Complete.Utils;
-using Urn = Dfe.Complete.Domain.ValueObjects.Urn;
 
 namespace Dfe.Complete.Api.Tests.Integration.Controllers.ProjectsController;
 

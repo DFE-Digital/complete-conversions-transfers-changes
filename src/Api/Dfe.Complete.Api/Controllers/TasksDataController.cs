@@ -37,7 +37,7 @@ namespace Dfe.Complete.Api.Controllers
         /// </summary>
         /// <param name="request">The update task data command.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
-        [Authorize(Policy = "CanReadWrite")]
+        [Authorize(Policy = "CanReadWriteUpdate")]
         [HttpPatch]
         [Route("TaskData/Handover/DeliverOfficer")]
         [SwaggerResponse(204, "Successfully updated the conversion or trasnfer task data")]
