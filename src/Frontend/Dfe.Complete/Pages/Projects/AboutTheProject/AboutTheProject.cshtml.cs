@@ -4,11 +4,14 @@ using Dfe.Complete.Application.Projects.Queries.GetProject;
 using Dfe.Complete.Application.Projects.Queries.GetTransferTasksData;
 using Dfe.Complete.Constants;
 using Dfe.Complete.Domain.Enums;
+using Dfe.Complete.Extensions;
+using Dfe.Complete.Domain.Extensions;
 using Dfe.Complete.Pages.Projects.ProjectView;
 using Dfe.Complete.Utils;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using System.Net.NetworkInformation;
 
 namespace Dfe.Complete.Pages.Projects.AboutTheProject
 {
@@ -62,6 +65,11 @@ namespace Dfe.Complete.Pages.Projects.AboutTheProject
 
         public string GetChangeLinkUrl(string fragment)
         {
+            if (User.GetUserAdId() != Project.AssignedToId?.Value.ToString() && !CurrentUserTeam.TeamIsServiceSupport()) // This project is not assigned to the user and the user is not service support
+            {
+                return "#";
+            }
+
             if (Project.Type == ProjectType.Conversion)
             {
                 return $"{string.Format(RouteConstants.ProjectConversionEdit, ProjectId)}#{fragment}";
