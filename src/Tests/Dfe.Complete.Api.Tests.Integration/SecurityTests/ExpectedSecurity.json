@@ -184,6 +184,16 @@
       "Controller": "ProjectsController",
       "Action": "ListAllProjectsStatisticsAsync",
       "ExpectedSecurity": "Authorize: Policy=CanRead"
+    },
+    {
+      "Controller": "ContactsController",
+      "Action": "ListAllContactsForProjectAsync",
+      "ExpectedSecurity": "Authorize: Policy=CanRead"
+    },
+    {
+      "Controller": "ContactsController",
+      "Action": "ListAllContactsForLocalAuthorityAsync",
+      "ExpectedSecurity": "Authorize: Policy=CanRead"
     }
   ]
 }
