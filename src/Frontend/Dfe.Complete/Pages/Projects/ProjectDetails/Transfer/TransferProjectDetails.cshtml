@@ -7,7 +7,6 @@
 
     const string outgoingUkprnField = nameof(Model.OutgoingTrustUkprn);
     const string incomingUkprnField = nameof(Model.IncomingTrustUkprn);
-    const string trustRefNumber = nameof(Model.NewTrustReferenceNumber);
     const string dateOfAdvisoryBoardField = nameof(Model.AdvisoryBoardDate);
     const string schoolSharePointLinkField = nameof(Model.EstablishmentSharepointLink);
     const string incomingTrustSharePointLinkField = nameof(Model.IncomingTrustSharepointLink);
@@ -16,7 +15,7 @@
     const string isDueToInedaquateOfstedRatingField = nameof(Model.InadequateOfsted);
     const string isDueToIssuesField = nameof(Model.FinancialSafeguardingGovernanceIssues);
     const string outgoingTrustWillCloseField = nameof(Model.IsHandingToRCS);
-    const string handingToRSCField = nameof(Model.OutgoingTrustWillClose);
+    const string handingToRSCField = nameof(Model.OutgoingTrustToClose);
 }
 
 <div class="govuk-grid-row">
@@ -64,15 +63,7 @@
                 </govuk-input>
             </div>
 
-            <div class="govuk-form-group" id="new_trust_reference_number">
-                <govuk-input name="@trustRefNumber" input-class="govuk-input--width-10" asp-for="@Model.NewTrustReferenceNumber">
-                    <govuk-input-label class="govuk-label--m">Trust reference number (TRN)</govuk-input-label>
-                    @if (Model.ErrorService.HasErrorForKey(trustRefNumber))
-                    {
-                        <govuk-input-error-message>@(Model.ErrorService.GetErrorMessage(trustRefNumber))</govuk-input-error-message>
-                    }
-                </govuk-input>
-            </div>
+            @await Html.PartialAsync("Common/_NewTrustReferenceNumber", Model)
 
             <div class="govuk-form-group" id="group-reference-number">
                 <govuk-input input-class="govuk-input--width-10" asp-for="@Model.GroupReferenceNumber">
@@ -197,7 +188,7 @@
             </div>
 
             <div class="govuk-form-group" id="outgoing-trust-to-close">
-                <govuk-radios name="@outgoingTrustWillCloseField" asp-for="@Model.OutgoingTrustWillClose">
+                <govuk-radios name="@outgoingTrustWillCloseField" asp-for="@Model.OutgoingTrustToClose">
                     <govuk-radios-fieldset>
                         <govuk-radios-fieldset-legend class="govuk-fieldset__legend--m">
                             Will the outgoing trust close once this transfer is completed?
@@ -208,35 +199,16 @@
                             <govuk-radios-error-message>@(Model.ErrorService.GetErrorMessage(outgoingTrustWillCloseField))</govuk-radios-error-message>
                         }
 
-                        <govuk-radios-item checked="@Model.OutgoingTrustWillClose" value="true">Yes</govuk-radios-item>
-                        <govuk-radios-item checked="@(!Model.OutgoingTrustWillClose)" value="false">No</govuk-radios-item>
+                        <govuk-radios-item checked="@Model.OutgoingTrustToClose" value="true">Yes</govuk-radios-item>
+                        <govuk-radios-item checked="@(!Model.OutgoingTrustToClose)" value="false">No</govuk-radios-item>
                     </govuk-radios-fieldset>
                 </govuk-radios>
             </div>
 
             <div class="govuk-form-group" id="project-assignment">
-                <govuk-radios name="@handingToRSCField" asp-for="@Model.IsHandingToRCS">
-                    <govuk-radios-fieldset>
-                        <govuk-radios-fieldset-legend class="govuk-fieldset__legend--m">
-                            Are you handing this project over to RCS (Regional Casework Services)?
-                        </govuk-radios-fieldset-legend>
+                @await Html.PartialAsync("Common/_IsHandingToRCS", Model)
 
-                        @if (Model.ErrorService.HasErrorForKey(handingToRSCField))
-                        {
-                            <govuk-radios-error-message>@(Model.ErrorService.GetErrorMessage(handingToRSCField))</govuk-radios-error-message>
-                        }
-
-                        <govuk-radios-item value="true" checked="@Model.IsHandingToRCS">Yes</govuk-radios-item>
-                        <govuk-radios-item value="false" checked="@(!Model.IsHandingToRCS)">No</govuk-radios-item>
-
-                    </govuk-radios-fieldset>
-                </govuk-radios>
-
-                <govuk-textarea name="HandoverComments" asp-for="@Model.HandoverComments">
-                    <govuk-textarea-label class="govuk-label--m">
-                        Handover comments
-                    </govuk-textarea-label>
-                </govuk-textarea>
+                @await Html.PartialAsync("Common/_HandoverComments", Model)
             </div>
 
             <div class="govuk-button-group">

@@ -9,29 +9,34 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Dfe.Complete.Application.Projects.Commands.UpdateProject
 {
-    public record UpdateConversionProjectCommand(
+    public record UpdateTransferProjectCommand(
         ProjectId ProjectId,
         Ukprn IncomingTrustUkprn,
+        Ukprn OutgoingTrustUkprn,
         string? NewTrustReferenceNumber,
         string? GroupReferenceNumber,
         DateOnly AdvisoryBoardDate,
         string? AdvisoryBoardConditions,
         string EstablishmentSharepointLink,
         string IncomingTrustSharepointLink,
+        string OutgoingTrustSharepointLink,
+        bool TwoRequiresImprovement,
+        bool InadequateOfsted,
+        bool FinancialSafeguardingGovernanceIssues,
+        bool OutgoingTrustToClose,
         bool IsHandingToRCS,
         string? HandoverComments,
-        bool DirectiveAcademyOrder,
-        bool TwoRequiresImprovement,
         UserDto User
     ) : IRequest;
 
-    public class UpdateConversionProjectCommandHandler(
+    public class UpdateTransferProjectCommandHandler(
         ICompleteRepository<Project> projectRepository,
         ICompleteRepository<ProjectGroup> projectGroupRepository,
+        ICompleteRepository<TransferTasksData> transferTaskDataRepository,
         ICompleteRepository<Note> noteRepository
-    ) : IRequestHandler<UpdateConversionProjectCommand>
+    ) : IRequestHandler<UpdateTransferProjectCommand>
     {
-        public async Task Handle(UpdateConversionProjectCommand request, CancellationToken cancellationToken)
+        public async Task Handle(UpdateTransferProjectCommand request, CancellationToken cancellationToken)
         {
             var project = await projectRepository.Query().FirstOrDefaultAsync(x => x.Id == request.ProjectId, cancellationToken);
 
@@ -41,7 +46,9 @@ namespace Dfe.Complete.Application.Projects.Commands.UpdateProject
             }
 
             project.IncomingTrustUkprn = request.IncomingTrustUkprn;
+            project.OutgoingTrustUkprn = request.OutgoingTrustUkprn;
             project.NewTrustReferenceNumber = request.NewTrustReferenceNumber;
+
 
             if (!string.IsNullOrEmpty(request.GroupReferenceNumber))
             {
@@ -61,8 +68,22 @@ namespace Dfe.Complete.Application.Projects.Commands.UpdateProject
 
             project.AdvisoryBoardDate = request.AdvisoryBoardDate;
             project.AdvisoryBoardConditions = request.AdvisoryBoardConditions;
+
             project.EstablishmentSharepointLink = request.EstablishmentSharepointLink;
             project.IncomingTrustSharepointLink = request.IncomingTrustSharepointLink;
+            project.OutgoingTrustSharepointLink = request.OutgoingTrustSharepointLink;
+
+            project.TwoRequiresImprovement = request.TwoRequiresImprovement;
+
+            var tasksData = await transferTaskDataRepository.GetAsync(p => p.Id == project.TasksDataId);
+            if (tasksData != null) // we take for granted that each project has a TasksData record attached
+            {
+                tasksData.InadequateOfsted = request.InadequateOfsted;
+                tasksData.FinancialSafeguardingGovernanceIssues = request.FinancialSafeguardingGovernanceIssues;
+                tasksData.OutgoingTrustToClose = request.OutgoingTrustToClose;
+
+                await transferTaskDataRepository.UpdateAsync(tasksData, cancellationToken);
+            }
 
             if (request.IsHandingToRCS)
             {
@@ -106,8 +127,6 @@ namespace Dfe.Complete.Application.Projects.Commands.UpdateProject
                 });
             }
 
-            project.DirectiveAcademyOrder = request.DirectiveAcademyOrder;
-            project.TwoRequiresImprovement = request.TwoRequiresImprovement;
 
             await projectRepository.UpdateAsync(project, cancellationToken);
         }

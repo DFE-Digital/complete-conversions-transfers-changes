@@ -1,5 +1,4 @@
 ﻿using Dfe.Complete.Models;
-using Dfe.Complete.Pages.Projects.ProjectDetails.Conversion;
 using Dfe.Complete.Services;
 using Dfe.Complete.Validators;
 using MediatR;
@@ -15,7 +14,7 @@ using Dfe.Complete.Domain.Enums;
 
 namespace Dfe.Complete.Pages.Projects.ProjectDetails
 {
-    public class BaseProjectDetailsPageModel(ISender sender, IErrorService errorService, ILogger<ConversationProjectDetailsModel> _logger) : BaseProjectPageModel(sender, _logger)
+    public class BaseProjectDetailsPageModel(ISender sender, IErrorService errorService, ILogger _logger) : BaseProjectPageModel(sender, _logger)
     {
         public IErrorService ErrorService
         {
@@ -106,17 +105,6 @@ namespace Dfe.Complete.Pages.Projects.ProjectDetails
             }
         }
 
-        protected bool ValidateModel()
-        {
-            if (!ModelState.IsValid)
-            {
-                ErrorService.AddErrors(ModelState);
-                return false;
-            }
-
-            return true;
-        }
-
         public override async Task<IActionResult> OnGetAsync()
         {
             var baseResult = await base.OnGetAsync();
@@ -134,25 +122,13 @@ namespace Dfe.Complete.Pages.Projects.ProjectDetails
             AdvisoryBoardConditions = Project.AdvisoryBoardConditions;
             EstablishmentSharepointLink = HttpUtility.UrlDecode(Project.EstablishmentSharepointLink);
             IncomingTrustSharepointLink = HttpUtility.UrlDecode(Project.IncomingTrustSharepointLink);
-            IsHandingToRCS = Project.Team == Domain.Enums.ProjectTeam.RegionalCaseWorkerServices;
+            IsHandingToRCS = Project.Team == ProjectTeam.RegionalCaseWorkerServices;
 
             await SetHandoverComments();
 
-            //DirectiveAcademyOrder = Project.DirectiveAcademyOrder ?? false;
             TwoRequiresImprovement = Project.TwoRequiresImprovement ?? false;
 
             return Page();
         }
-
-        
-
-        //public virtual async Task<IActionResult> OnPostAsync(CancellationToken cancellationToken)
-        //{
-        //    if (!ModelState.IsValid)
-        //    {
-        //        errorService.AddErrors(ModelState);
-        //        return Page();
-        //    }
-        //}
     }
 }

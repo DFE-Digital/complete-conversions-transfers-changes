@@ -33,14 +33,12 @@ namespace Dfe.Complete.Pages.Projects.ProjectDetails.Conversion
 
         public async Task<IActionResult> OnPostAsync(CancellationToken cancellationToken)
         {
-            if (!ValidateModel())
+            if (!ModelState.IsValid)
             {
-                var errors = ErrorService.GetErrors();
-                var hasErrors = ErrorService.HasErrors();
-
+                ErrorService.AddErrors(ModelState);
                 return Page();
             }
-               
+
             var user = await Sender.Send(new GetUserByAdIdQuery(User.GetUserAdId()), cancellationToken);
 
             if (user is not { IsSuccess: true })
@@ -51,7 +49,7 @@ namespace Dfe.Complete.Pages.Projects.ProjectDetails.Conversion
                 ProjectId: new ProjectId(Guid.Parse(ProjectId)),
                 IncomingTrustUkprn: new Ukprn(IncomingTrustUkprn!.ToInt()),
                 NewTrustReferenceNumber: NewTrustReferenceNumber,
-                GroupIdentifier: !string.IsNullOrEmpty(GroupReferenceNumber) ? new ProjectGroupId(Guid.Parse(GroupReferenceNumber)) : null,
+                GroupReferenceNumber: GroupReferenceNumber,
                 AdvisoryBoardDate: AdvisoryBoardDate.HasValue
                     ? DateOnly.FromDateTime(AdvisoryBoardDate.Value)
                     : default,
