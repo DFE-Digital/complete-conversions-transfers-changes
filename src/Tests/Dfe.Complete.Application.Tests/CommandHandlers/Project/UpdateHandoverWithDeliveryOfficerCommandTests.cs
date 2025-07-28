@@ -40,10 +40,10 @@ namespace Dfe.Complete.Application.Tests.CommandHandlers.Project
                 mockProjectRepository, mockConversionRepository, mockTransferRepository);
 
             // Act
-            var exception = await Assert.ThrowsAsync<NotFoundException>(() => handler.Handle(command, default));
+            var response = await handler.Handle(command, default);
 
             // Assert
-            Assert.Equal($"No task data associated with Project {sourceProject.Id}.", exception.Message);
+            Assert.Equal($"No task data associated with Project {sourceProject.Id}.", response.Error);
 
         }
         [Theory]
