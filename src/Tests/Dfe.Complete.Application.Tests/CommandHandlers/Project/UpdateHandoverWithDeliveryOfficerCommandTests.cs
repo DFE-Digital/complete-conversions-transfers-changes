@@ -43,7 +43,7 @@ namespace Dfe.Complete.Application.Tests.CommandHandlers.Project
             var exception = await Assert.ThrowsAsync<NotFoundException>(() => handler.Handle(command, default));
 
             // Assert
-            Assert.Equal($"Conversion task data {sourceProject.TasksDataId} not found.", exception.Message);
+            Assert.Equal($"No task data associated with Project {sourceProject.Id}.", exception.Message);
 
         }
         [Theory]
