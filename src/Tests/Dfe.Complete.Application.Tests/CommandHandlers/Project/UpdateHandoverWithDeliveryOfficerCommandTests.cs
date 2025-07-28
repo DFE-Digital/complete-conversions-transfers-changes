@@ -19,6 +19,35 @@ namespace Dfe.Complete.Application.Tests.CommandHandlers.Project
     {
         [Theory]
         [CustomAutoData(typeof(DateOnlyCustomization), typeof(IgnoreVirtualMembersCustomisation))]
+        public async Task Handle_ShouldReturnNotFoundException_IfNoTaskDataIdAssociated(
+        [Frozen] IProjectReadRepository mockProjectRepository,
+        [Frozen] ICompleteRepository<Domain.Entities.ConversionTasksData> mockConversionRepository,
+        [Frozen] ICompleteRepository<Domain.Entities.TransferTasksData> mockTransferRepository,
+        UpdateHandoverWithDeliveryOfficerCommand command
+        )
+        {
+            // Arrange
+            var now = DateTime.UtcNow;
+
+            var sourceProject = Domain.Entities.Project.CreateConversionProject(command.ProjectId, new Urn(123456), now, now, TaskType.Conversion, ProjectType.Conversion, Guid.NewGuid(),
+                DateOnly.MinValue, true, new Ukprn(2), Region.London, true, true, DateOnly.MinValue, "", "", "", null, default, new UserId(Guid.NewGuid()), null,
+                null, null, Guid.NewGuid());
+            sourceProject.TasksDataId = null;
+
+            mockProjectRepository.Projects.Returns(new List<Domain.Entities.Project> { sourceProject }.AsQueryable().BuildMock());
+
+            var handler = new UpdateHandoverWithDeliveryOfficerCommandHandler(
+                mockProjectRepository, mockConversionRepository, mockTransferRepository);
+
+            // Act
+            var exception = await Assert.ThrowsAsync<NotFoundException>(() => handler.Handle(command, default));
+
+            // Assert
+            Assert.Equal($"Conversion task data {sourceProject.TasksDataId} not found.", exception.Message);
+
+        }
+        [Theory]
+        [CustomAutoData(typeof(DateOnlyCustomization), typeof(IgnoreVirtualMembersCustomisation))]
         public async Task Handle_ShouldReturnNotFoundException_IfConversionTaskDataDoesNotExist(
         [Frozen] IProjectReadRepository mockProjectRepository,
         [Frozen] ICompleteRepository<Domain.Entities.ConversionTasksData> mockConversionRepository,
