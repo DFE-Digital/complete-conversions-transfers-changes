@@ -76,7 +76,7 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
                         new()
                         {
                             User = null,
-                            Reason = new SignificantDateHistoryReason()
+                            Reasons = new List<SignificantDateHistoryReason>(){ new SignificantDateHistoryReason() }
                         }
                     }
                 }
