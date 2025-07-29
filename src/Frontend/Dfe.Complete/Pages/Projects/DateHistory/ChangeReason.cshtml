@@ -25,8 +25,8 @@
 
         <form method="post">
             
-            <div class="govuk-form-group">
-                <fieldset class="govuk-fieldset" aria-describedby="reasons-hint">
+            <div class="govuk-form-group @(ErrorService.HasErrorForKey(significantDateField) ? "govuk-form-group--error" : "")">
+                <fieldset class="govuk-fieldset" aria-describedby="reasons-hint @(ErrorService.HasErrorForKey(significantDateField) ? "reasons-error" : "")">
                     <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
                         <h2 class="govuk-fieldset__heading">
                             Reasons for date change
@@ -35,6 +35,14 @@
                     <div id="reasons-hint" class="govuk-hint">
                         Select all that apply.
                     </div>
+                    
+                    @if (ErrorService.HasErrorForKey(significantDateField))
+                    {
+                        <p id="reasons-error" class="govuk-error-message">
+                            <span class="govuk-visually-hidden">Error:</span> @ErrorService.GetErrorMessage(significantDateField)
+                        </p>
+                    }
+                    
                     <div class="govuk-checkboxes" data-module="govuk-checkboxes">
                         @foreach (var reason in Model.Reasons)
                         {
