@@ -3,16 +3,13 @@ using Dfe.Complete.Application.Notes.Interfaces;
 using Dfe.Complete.Application.Projects.Commands.UpdateProject;
 using Dfe.Complete.Application.Projects.Interfaces;
 using Dfe.Complete.Domain.Enums;
-using Dfe.Complete.Domain.Interfaces.Repositories;
 using Dfe.Complete.Domain.ValueObjects;
 using Dfe.Complete.Tests.Common.Customizations.Behaviours;
 using Dfe.Complete.Utils;
 using DfE.CoreLibs.Testing.AutoFixture.Attributes;
 using DfE.CoreLibs.Testing.AutoFixture.Customizations;
 using MockQueryable;
-using Moq;
 using NSubstitute;
-using System.Linq.Expressions;
 
 namespace Dfe.Complete.Application.Tests.CommandHandlers.Project
 {
@@ -136,8 +133,7 @@ namespace Dfe.Complete.Application.Tests.CommandHandlers.Project
             // Assert
             Assert.NotNull(result);
             Assert.True(result.IsSuccess);
-            Assert.True(result.Value);
-
+            Assert.True(result.Value); 
         }
     }
 }
