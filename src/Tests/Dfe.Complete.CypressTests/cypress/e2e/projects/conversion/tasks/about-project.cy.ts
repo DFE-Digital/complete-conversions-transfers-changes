@@ -179,6 +179,8 @@ describe("About the project page - conversion projects: ", () => {
                 `${macclesfieldTrust.companiesHouseNumber} View the Companies House information (opens in new tab)`,
                 `https://find-and-update.company-information.service.gov.uk/company/${macclesfieldTrust.companiesHouseNumber}`,
             )
+            // .summaryShows("New trust reference number (TRN)") // bug 227460
+            // .hasValue("")
             .summaryShows("Address")
             .hasValue("Macclesfield College Macclesfield SK11 8LF")
             .summaryShows("SharePoint folder")
@@ -290,6 +292,8 @@ describe("About the project page - conversion projects: ", () => {
             .hasValue(macclesfieldTrust.referenceNumber)
             .summaryShows("Companies House number")
             .hasValue("")
+            // .summaryShows("New trust reference number (TRN)") // bug 227460
+            // .hasValue(projectFormAMAT.newTrustReferenceNumber)
             .summaryShows("Address")
             .hasValue("")
             .summaryShows("SharePoint folder")
