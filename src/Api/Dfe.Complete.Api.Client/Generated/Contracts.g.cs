@@ -523,21 +523,6 @@ namespace Dfe.Complete.Client.Contracts
         System.Threading.Tasks.Task<System.Guid> CreateLocalAuthorityAsync(CreateLocalAuthorityCommand request, System.Threading.CancellationToken cancellationToken);
 
         /// <summary>
-        /// Returns a list of local authorities
-        /// </summary>
-        /// <returns>List of local authorities.</returns>
-        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<LocalAuthorityQueryModel>> ListAllLocalAuthoritiesAsync(int? page, int? count);
-
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <summary>
-        /// Returns a list of local authorities
-        /// </summary>
-        /// <returns>List of local authorities.</returns>
-        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<LocalAuthorityQueryModel>> ListAllLocalAuthoritiesAsync(int? page, int? count, System.Threading.CancellationToken cancellationToken);
-
-        /// <summary>
         /// Get the local authority details
         /// </summary>
         /// <returns>Local authority details.</returns>
@@ -585,6 +570,21 @@ namespace Dfe.Complete.Client.Contracts
         /// <returns>local authority deleted successfully.</returns>
         /// <exception cref="CompleteApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task RemoveLocalAuthorityAsync(DeleteLocalAuthorityCommand request, System.Threading.CancellationToken cancellationToken);
+
+        /// <summary>
+        /// Returns a list of local authorities
+        /// </summary>
+        /// <returns>List of local authorities.</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<LocalAuthorityQueryModel>> ListAllLocalAuthoritiesAsync(int? page, int? count);
+
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>
+        /// Returns a list of local authorities
+        /// </summary>
+        /// <returns>List of local authorities.</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<LocalAuthorityQueryModel>> ListAllLocalAuthoritiesAsync(int? page, int? count, System.Threading.CancellationToken cancellationToken);
 
     }
 
