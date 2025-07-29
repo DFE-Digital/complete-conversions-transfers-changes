@@ -6,7 +6,6 @@ using AutoMapper;
 using Microsoft.Extensions.Logging;
 using MediatR;
 using Dfe.Complete.Domain.ValueObjects;
-using Dfe.Complete.Application.Projects.Queries.GetProject;
 
 namespace Dfe.Complete.Application.Projects.Queries.GetTransferTasksData
 {
@@ -30,7 +29,7 @@ namespace Dfe.Complete.Application.Projects.Queries.GetTransferTasksData
             }
             catch (Exception ex)
             {
-                logger.LogError(ex, "Exception for {Name} Request - {@Request}", nameof(GetProjectGroupByIdQueryHandler), request);
+                logger.LogError(ex, "Exception for {Name} Request - {@Request}", nameof(GetTransferTasksDataByIdQueryHandler), request);
                 return Result<TransferTaskDataDto>.Failure(ex.Message);
             }
         }
