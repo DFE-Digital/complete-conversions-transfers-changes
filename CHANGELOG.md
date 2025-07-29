@@ -29,6 +29,7 @@ Security in case of vulnerabilities.
 ### Fixed
 - Fixed cookies page's URL by including query string.
 - Fixed `Local Authority` service support endpoints
+- Fixed _ProjectLayout to correctly show the unassigned banner based on whether the user is service support or assigned to the project
 
 See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-07-24.577...main) for everything awaiting release
 
