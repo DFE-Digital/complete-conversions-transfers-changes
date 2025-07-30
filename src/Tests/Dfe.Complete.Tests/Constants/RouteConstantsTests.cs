@@ -224,6 +224,12 @@ namespace Dfe.Complete.Tests.Constants
             var projectId = Guid.NewGuid();
             Assert.Equal($"/projects/{projectId}/external-contacts", string.Format(RouteConstants.ProjectExternalContacts, projectId));
         }
+        [Fact]
+        public void NewProjectExternalContacts_ShouldBeCorrect()
+        {
+            var projectId = Guid.NewGuid();
+            Assert.Equal($"/projects/{projectId}/external-contacts/new", string.Format(RouteConstants.NewProjectExternalContacts, projectId));
+        }
         
     }
 }
