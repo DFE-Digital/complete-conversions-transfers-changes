@@ -15,7 +15,7 @@
                     @(Model.Project.Team == Dfe.Complete.Domain.Enums.ProjectTeam.RegionalCaseWorkerServices ? "Yes" : "No")
                 </govuk-summary-list-row-value>
                 <govuk-summary-list-row-actions>
-                    <govuk-summary-list-row-action href="#" visually-hidden-text="Are you handing this project over Regional Casework Services?">Change</govuk-summary-list-row-action>
+                    <govuk-summary-list-row-action href="@Model.GetChangeLinkUrl("project-assignment")" visually-hidden-text="Are you handing this project over Regional Casework Services?">Change</govuk-summary-list-row-action>
                 </govuk-summary-list-row-actions>
             </govuk-summary-list-row>
 

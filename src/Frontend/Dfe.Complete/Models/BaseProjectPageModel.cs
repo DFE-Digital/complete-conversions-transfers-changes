@@ -17,7 +17,6 @@ public abstract class BaseProjectPageModel(ISender sender, ILogger _logger) : Pa
     protected readonly ISender Sender = sender;
     protected ILogger Logger = _logger;
 
-
     [BindProperty(SupportsGet = true, Name = "projectId")]
 
     public string ProjectId { get; set; }

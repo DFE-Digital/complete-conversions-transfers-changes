@@ -2,6 +2,10 @@ using Dfe.Complete.Application.Projects.Models;
 using Dfe.Complete.Application.Projects.Queries.GetGiasEstablishment;
 using Dfe.Complete.Application.Projects.Queries.GetProject;
 using Dfe.Complete.Application.Projects.Queries.GetTransferTasksData;
+using Dfe.Complete.Constants;
+using Dfe.Complete.Domain.Enums;
+using Dfe.Complete.Extensions;
+using Dfe.Complete.Domain.Extensions;
 using Dfe.Complete.Pages.Projects.ProjectView;
 using Dfe.Complete.Utils;
 using MediatR;
@@ -58,9 +62,25 @@ namespace Dfe.Complete.Pages.Projects.AboutTheProject
             }
         }
 
+        public string GetChangeLinkUrl(string fragment)
+        {
+            if (User.GetUserAdId() != Project.AssignedToId?.Value.ToString() && !CurrentUserTeam.TeamIsServiceSupport()) // This project is not assigned to the user and the user is not service support
+            {
+                return "#";
+            }
+
+            if (Project.Type == ProjectType.Conversion)
+            {
+                return $"{string.Format(RouteConstants.ProjectConversionEdit, ProjectId)}#{fragment}";
+            }
+            else
+            {
+                return $"{string.Format(RouteConstants.ProjectTransferEdit, ProjectId)}#{fragment}";
+            }
+        }
+
         public override async Task<IActionResult> OnGetAsync()
         {
-            //await base.OnGetAsync();
             var baseResult = await base.OnGetAsync();
             if (baseResult is not PageResult) return baseResult;
 

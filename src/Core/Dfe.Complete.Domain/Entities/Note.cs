@@ -3,7 +3,7 @@ using Dfe.Complete.Domain.ValueObjects;
 
 namespace Dfe.Complete.Domain.Entities;
 
-public class Note : IEntity<NoteId>
+public class Note : BaseAggregateRoot, IEntity<NoteId>
 {
     public NoteId Id { get; set; } = default!;
 
