@@ -48,7 +48,7 @@ namespace Dfe.Complete.Application.Projects.Commands.UpdateProject
         {
             project.Team = request.AssignedToRegionalCaseworkerTeam ? ProjectTeam.RegionalCaseWorkerServices : request.UserTeam;
             project.AssignedToId = request.AssignedToRegionalCaseworkerTeam ? null : request.UserId;
-            project.AssignedAt = DateTime.Now;
+            project.AssignedAt = DateTime.UtcNow;
         }
 
         private static void AddNoteWhenHandoverCommentsPresent(Project project, UpdateHandoverProjectCommand request)
