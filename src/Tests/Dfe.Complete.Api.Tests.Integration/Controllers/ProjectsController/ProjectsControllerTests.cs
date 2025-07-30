@@ -1529,7 +1529,7 @@ public partial class ProjectsControllerTests
         Assert.NotNull(result.EstablishmentName);
         Assert.NotNull(matchingEstablishment);
         Assert.Equal(matchingEstablishment.Name, result.EstablishmentName);
-    } 
+    }
     [Theory]
     [CustomAutoData(typeof(CustomWebApplicationDbContextFactoryCustomization), typeof(GiasEstablishmentsCustomization))]
     public async Task AssignHandoverProject_Async_WithConversionType_ShouldAssignToRegionalCaseworkerTeam(
