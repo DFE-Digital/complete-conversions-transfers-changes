@@ -27,20 +27,25 @@ namespace Dfe.Complete.Application.Projects.Queries.ListAllProjects
         {
             try
             {
-                var projectList = await listAllProjectsQueryService
-                   .ListAllProjects(new ProjectFilters(request.ProjectStatus, null), orderBy: request.OrderBy)
-                   .Skip(request.Page * request.Count)
-                   .Take(request.Count)
-                   .ToListAsync(cancellationToken);
+                var projectListQuery = listAllProjectsQueryService
+                   .ListAllProjects(new ProjectFilters(request.ProjectStatus, null), orderBy: request.OrderBy);
+                  
+                var totalProjects = await projectListQuery.CountAsync(cancellationToken);
+
+                var projectList = await projectListQuery
+                    .Skip(request.Page * request.Count)
+                    .Take(request.Count)
+                    .ToListAsync(cancellationToken);
+
                 var allProjectTrustUkPrns = projectList
-                .SelectMany(p => new[]
-                {
-                   p.Project?.IncomingTrustUkprn?.Value.ToString() ?? string.Empty,
-                   p.Project?.OutgoingTrustUkprn?.Value.ToString() ?? string.Empty
-                })
-                .Where(ukPrn => !string.IsNullOrEmpty(ukPrn))
-                .Distinct()
-                .ToList();
+                    .SelectMany(p => new[]
+                    {
+                       p.Project?.IncomingTrustUkprn?.Value.ToString() ?? string.Empty,
+                       p.Project?.OutgoingTrustUkprn?.Value.ToString() ?? string.Empty
+                    })
+                    .Where(ukPrn => !string.IsNullOrEmpty(ukPrn))
+                    .Distinct()
+                    .ToList();
 
                 var allTrusts = await GetTrustsByUkprns(allProjectTrustUkPrns, cancellationToken);
 
@@ -53,7 +58,7 @@ namespace Dfe.Complete.Application.Projects.Queries.ListAllProjects
                                 p.Establishment!);
                     })
                     .ToList();
-                return PaginatedResult<List<ListAllProjectsResultModel>>.Success(result, projectList.Count);
+                return PaginatedResult<List<ListAllProjectsResultModel>>.Success(result, totalProjects);
             }
             catch (Exception ex)
             {
