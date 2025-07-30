@@ -53,7 +53,7 @@
                     </govuk-textarea-hint>
                 </govuk-textarea>
                 <govuk-input name="@schoolSharePointLinkField" asp-for="@Model.SchoolSharePointLink">
-                    <govuk-input-label class="govuk-label--m">School or academy SharePoint link</govuk-input-label>
+                    <govuk-input-label class="govuk-label--m">School SharePoint link</govuk-input-label>
                     <govuk-input-hint>
                         <p>
                             If the school applied to convert, you must save the application form in the Schools' SharePoint folder.
@@ -95,7 +95,7 @@
                                 Is this conversion due to intervention following 2RI?
                             </govuk-radios-fieldset-legend>
                             <govuk-radios-hint>
-                                If the school is converting due to intervention following 2RI, you must save the 2RI letter in the SharePoint folder.
+                                A 2RI conversion is when a local authority maintained school becomes an academy after getting at least 2 overall Requires Improvement ratings from Ofsted.
                             </govuk-radios-hint>
                             @if (ErrorService.HasErrorForKey(twoRequiresImprovementField))
                             {
