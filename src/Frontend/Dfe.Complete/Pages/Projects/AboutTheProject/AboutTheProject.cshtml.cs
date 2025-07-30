@@ -11,7 +11,6 @@ using Dfe.Complete.Utils;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using System.Net.NetworkInformation;
 
 namespace Dfe.Complete.Pages.Projects.AboutTheProject
 {

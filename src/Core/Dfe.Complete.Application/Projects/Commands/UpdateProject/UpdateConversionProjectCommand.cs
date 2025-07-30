@@ -33,8 +33,7 @@ namespace Dfe.Complete.Application.Projects.Commands.UpdateProject
     {
         public async Task Handle(UpdateConversionProjectCommand request, CancellationToken cancellationToken)
         {
-            var project = await projectRepository.Query().FirstOrDefaultAsync(x => x.Id == request.ProjectId, cancellationToken);
-
+            var project = await projectRepository.FindAsync(x => x.Id == request.ProjectId, cancellationToken);
             if (project == null)
             {
                 return;
@@ -45,10 +44,7 @@ namespace Dfe.Complete.Application.Projects.Commands.UpdateProject
 
             if (!string.IsNullOrEmpty(request.GroupReferenceNumber))
             {
-                var group = projectGroupRepository.Query()
-                    .Where(x => x.GroupIdentifier == request.GroupReferenceNumber)
-                    .FirstOrDefaultAsync(cancellationToken);
-
+                var group = projectGroupRepository.FindAsync(x => x.GroupIdentifier == request.GroupReferenceNumber, cancellationToken);
                 if (group != null)
                 {
                     project.GroupId = group.Result?.Id;
