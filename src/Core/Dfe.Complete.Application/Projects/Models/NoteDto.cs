@@ -8,5 +8,7 @@ public sealed record NoteDto(
     ProjectId ProjectId,
     UserId UserId,
     string UserFullName,
-    DateTime CreatedAt
+    DateTime CreatedAt,
+    string? TaskIdentifier = null,
+    bool? IsNotable = false
 );
