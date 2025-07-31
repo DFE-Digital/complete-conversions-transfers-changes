@@ -26,11 +26,10 @@ describe("Capabilities and permissions of the service support user", () => {
     beforeEach(() => {
         cy.login(serviceSupportUser);
         cy.acceptCookies();
-        cy.visit("/projects/all/in-progress/all"); // visit '/' goes to service support that is not implemented yet
+        cy.visit("/");
     });
 
-    // not implemented 187518
-    it.skip("Should direct user to all Service support -> without academy URNs after login", () => {
+    it("Should direct user to all Service support -> without academy URNs after login", () => {
         cy.url().should("include", "/projects/service-support/without-academy-urn");
     });
 
