@@ -33,7 +33,7 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
                 new() { IncomingTrustUkprn = new Ukprn(100), Type = ProjectType.Conversion },
                 new() { IncomingTrustUkprn = new Ukprn(100), Type = ProjectType.Transfer },
                 new() { IncomingTrustUkprn = new Ukprn(200), Type = ProjectType.Conversion },
-                new() { IncomingTrustUkprn = new Ukprn(200), NewTrustReferenceNumber = "T1", NewTrustName = "Trust One", Type = ProjectType.Transfer }
+                new() { NewTrustReferenceNumber = "T1", NewTrustName = "Trust One", Type = ProjectType.Transfer }
             }.AsQueryable().BuildMock();
 
             repo.Projects.Returns(projects);
@@ -164,7 +164,7 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
 
         [Theory]
         [CustomAutoData]
-        public async Task Handle_ShouldReturnOnlyMatTrusts_WhenOnlyMatProjects(
+        public async Task Handle_ShouldReturnOnlyIncomingUkprnTrusts_WhenOnlyIncomingUkprnProjects(
             [Frozen] IProjectReadRepository repo,
             [Frozen] ITrustsV4Client trustsClient,
             [Frozen] ILogger<ListAllTrustsWithProjectsQueryHandler> logger)
@@ -172,8 +172,8 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
             // Arrange: two MAT projects
             var projects = new List<ProjectEntity>
             {
-                new() { State = ProjectState.Active, NewTrustReferenceNumber = "M1", IncomingTrustUkprn = "121", NewTrustName = "Mat One", Type = ProjectType.Conversion },
-                new() { State = ProjectState.Active, NewTrustReferenceNumber = "M2", IncomingTrustUkprn = "121", NewTrustName = "Mat Two", Type = ProjectType.Transfer }
+                new() { State = ProjectState.Active, NewTrustReferenceNumber = "M1", NewTrustName = "Mat One", Type = ProjectType.Conversion },
+                new() { State = ProjectState.Active, NewTrustReferenceNumber = "M2", NewTrustName = "Mat Two", Type = ProjectType.Transfer }
             }.AsQueryable().BuildMock();
             repo.Projects.Returns(projects);
 
