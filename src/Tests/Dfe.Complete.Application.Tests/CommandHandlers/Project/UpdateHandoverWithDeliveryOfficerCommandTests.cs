@@ -48,10 +48,10 @@ namespace Dfe.Complete.Application.Tests.CommandHandlers.Project
         [Theory]
         [CustomAutoData(typeof(DateOnlyCustomization), typeof(IgnoreVirtualMembersCustomisation))]
         public async Task Handle_ShouldReturnNotFoundException_IfConversionTaskDataDoesNotExist(
-        [Frozen] IProjectReadRepository mockProjectRepository,
+            [Frozen] IProjectReadRepository mockProjectRepository,
             [Frozen] ITaskDataReadRepository taskDataReadRepository,
             [Frozen] ITaskDataWriteRepository taskDataWriteRepository,
-        UpdateHandoverWithDeliveryOfficerCommand command
+            UpdateHandoverWithDeliveryOfficerCommand command
         )
         {
             // Arrange
@@ -79,10 +79,10 @@ namespace Dfe.Complete.Application.Tests.CommandHandlers.Project
         [Theory]
         [CustomAutoData(typeof(DateOnlyCustomization), typeof(IgnoreVirtualMembersCustomisation))]
         public async Task Handle_ShouldThrowNotFoundExcepiton_IfTransferTaskDataDoesNotExist(
-        [Frozen] IProjectReadRepository mockProjectRepository,
+            [Frozen] IProjectReadRepository mockProjectRepository,
             [Frozen] ITaskDataReadRepository taskDataReadRepository,
             [Frozen] ITaskDataWriteRepository taskDataWriteRepository,
-        UpdateHandoverWithDeliveryOfficerCommand command)
+            UpdateHandoverWithDeliveryOfficerCommand command)
         {
             // Arrange
             var now = DateTime.UtcNow;
@@ -108,10 +108,10 @@ namespace Dfe.Complete.Application.Tests.CommandHandlers.Project
         [Theory]
         [CustomAutoData(typeof(DateOnlyCustomization), typeof(IgnoreVirtualMembersCustomisation))]
         public async Task Handle_ShouldUpdate_IfConversionTaskDataExists(
-           [Frozen] IProjectReadRepository mockProjectRepository,
+            [Frozen] IProjectReadRepository mockProjectRepository,
             [Frozen] ITaskDataReadRepository taskDataReadRepository,
             [Frozen] ITaskDataWriteRepository taskDataWriteRepository,
-           UpdateHandoverWithDeliveryOfficerCommand command
+            UpdateHandoverWithDeliveryOfficerCommand command
         )
         {
             // Arrange
