@@ -324,8 +324,7 @@ describe("About the project page - conversion projects: ", () => {
             .pageHasMovedToSection("Incoming trust details");
     });
 
-    // bug 221367
-    it.skip("Should display 'Not assigned to project' banner when viewing a project that is not assigned to the user", () => {
+    it("Should display 'Not assigned to project' banner when viewing a project that is not assigned to the user", () => {
         Logger.log("Go to unassigned project");
         cy.visit(`projects/${teammatesProjectId}/tasks`);
 
