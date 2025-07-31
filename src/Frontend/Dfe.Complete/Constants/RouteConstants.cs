@@ -45,9 +45,10 @@
         public const string ProjectCreated = "/projects/{0}/created";
 
         public const string SelectCreateProjectType = "/projects/new";
-        
+
         public const string ProjectViewNotes = Project + "/notes";
         public const string ProjectAddNote = ProjectViewNotes + "/new";
+        public const string ProjectAddTaskNote = ProjectViewNotes + "/new?task_identifier={1}";
         public const string ProjectEditNote = ProjectViewNotes + "/{1}/edit";
 
         public const string ProjectInternalContacts = Project + "/internal-contacts";
@@ -59,16 +60,18 @@
         public const string NewProjectExternalContacts = ProjectExternalContacts + "/new";
 
         public const string ProjectTaskList = Project + "/tasks";
-        
+
         public const string ProjectAbout = Project + "/information";
         public const string ProjectEditAbout = ProjectAbout + "/edit";
+
         public const string ProjectDateHistory = Project + "/date-history";
+        public const string ProjectTask = ProjectTaskList + "/{1}";
         
         public const string ProjectHandoverWithDeliveryOfficerTask = ProjectTaskList + "/handover";
-        public const string ProjectStakeholderKickoffTask = ProjectTaskList + "/stakeholder-kickoff";
-        public const string ProjectLandQuestionnaireTask = ProjectTaskList + "/land-questionnaire";
-        public const string ProjectLandRegistryTask = ProjectTaskList + "/land-registry";
-        public const string ProjectSupplementalFundingAgreementTask = ProjectTaskList + "/supplemental-funding-agreement";
+        public const string ProjectStakeholderKickoffTask = ProjectTaskList + "/stakeholder_kickoff";
+        public const string ProjectLandQuestionnaireTask = ProjectTaskList + "/land_questionnaire";
+        public const string ProjectLandRegistryTask = ProjectTaskList + "/land_registry";
+        public const string ProjectSupplementalFundingAgreementTask = ProjectTaskList + "/supplemental_funding_agreement";
 
         // Groups
         public const string Groups = "/groups";

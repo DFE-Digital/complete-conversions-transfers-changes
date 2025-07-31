@@ -17,12 +17,12 @@ public class BaseProjectPageModelTests
 {
     [Theory]
     [CustomAutoData(typeof(IgnoreVirtualMembersCustomisation))]
-    public async Task UpdateCurrentProject_ThrowsInvalidDataException_WhenProjectIdIsInvalid(
+    public async Task UpdateCurrentProject_LogsWarning_WhenProjectIdIsInvalid(
         [Frozen] ISender sender,
-        [Frozen] ILogger _logger)
+        [Frozen] ILogger logger)
     {
         // Arrange
-        var model = new TestBaseProjectPageModel(sender, _logger)
+        var model = new TestBaseProjectPageModel(sender, logger)
         {
             ProjectId = "not-a-guid"
         };
@@ -31,19 +31,19 @@ public class BaseProjectPageModelTests
         await model.UpdateCurrentProject();
 
         // Assert
-        _logger.ShouldHaveLogged("not-a-guid is not a valid Guid.", LogLevel.Warning);
+        logger.ShouldHaveLogged("not-a-guid is not a valid Guid.", LogLevel.Warning);
         Assert.Null(model.Project);
     }
 
     [Theory]
     [CustomAutoData(typeof(IgnoreVirtualMembersCustomisation))]
-    public async Task UpdateCurrentProject_ThrowsNotFoundException_WhenResultIsFailure(
+    public async Task UpdateCurrentProject_LogsWarning_WhenResultIsFailure(
         [Frozen] ISender sender,
-        [Frozen] ILogger _logger,
+        [Frozen] ILogger logger,
         Guid guid)
     {
         // Arrange
-        var model = new TestBaseProjectPageModel(sender, _logger)
+        var model = new TestBaseProjectPageModel(sender, logger)
         {
             ProjectId = guid.ToString()
         };
@@ -57,19 +57,19 @@ public class BaseProjectPageModelTests
         await model.UpdateCurrentProject();
 
         // Assert
-        _logger.ShouldHaveLogged($"Project {guid} does not exist.", LogLevel.Warning);
+        logger.ShouldHaveLogged($"Project {guid} does not exist.", LogLevel.Warning);
         Assert.Null(model.Project);
     }
 
     [Theory]
     [CustomAutoData(typeof(IgnoreVirtualMembersCustomisation))]
-    public async Task UpdateCurrentProject_ThrowsNotFoundException_WhenResultValueIsNull(
+    public async Task UpdateCurrentProject_LogsWarning_WhenResultValueIsNull(
         [Frozen] ISender sender,
-        [Frozen] ILogger _logger,
+        [Frozen] ILogger logger,
         Guid guid)
     {
         // Arrange
-        var model = new TestBaseProjectPageModel(sender, _logger)
+        var model = new TestBaseProjectPageModel(sender, logger)
         {
             ProjectId = guid.ToString()
         };
@@ -83,7 +83,7 @@ public class BaseProjectPageModelTests
         await model.UpdateCurrentProject();
 
         // Assert
-        _logger.ShouldHaveLogged($"Project {guid} does not exist.", LogLevel.Warning);
+        logger.ShouldHaveLogged($"Project {guid} does not exist.", LogLevel.Warning);
         Assert.Null(model.Project);
     }
 
@@ -91,12 +91,12 @@ public class BaseProjectPageModelTests
     [CustomAutoData(typeof(IgnoreVirtualMembersCustomisation), typeof(DateOnlyCustomization))]
     public async Task UpdateCurrentProject_SetsProject_WhenResultIsSuccessful(
         [Frozen] ISender sender,
-        [Frozen] ILogger _logger,
+        [Frozen] ILogger logger,
         Guid guid,
         ProjectDto projectDto)
     {
         // Arrange
-        var model = new TestBaseProjectPageModel(sender, _logger)
+        var model = new TestBaseProjectPageModel(sender, logger)
         {
             ProjectId = guid.ToString()
         };
@@ -114,6 +114,6 @@ public class BaseProjectPageModelTests
     }
 }
 
-public class TestBaseProjectPageModel(ISender sender, ILogger _logger) : BaseProjectPageModel(sender, _logger)
+public class TestBaseProjectPageModel(ISender sender, ILogger logger) : BaseProjectPageModel(sender, logger)
 {
 }

@@ -4,12 +4,6 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/). To see an example from a mature product in the program [see the Complete products changelog that follows the same methodology](https://github.com/DFE-Digital/dfe-complete-conversions-transfers-and-changes/blob/main/CHANGELOG.md).
 
-
-## Notes
-### Releases
- - Unreleased: Developed and tested, has not yet deployed to prod
- - [TEST]/[PROD]: Feature/fix is considered ready for dual running in this environment
-
 ### Statuses
 Added for new features.  
 Changed for changes in existing functionality.  
@@ -22,13 +16,16 @@ Security in case of vulnerabilities.
 
 ## Unreleased
 
-### Added
+### Added  
 
 ### Changed
+- Restructured the task page to be more generic
+- Update CRUD endpoints to account for TaskIdentifier
 
 ### Fixed
 - Fixed cookies page's URL by including query string.
 - Fixed `Local Authority` service support endpoints
+- Fixed _ProjectLayout to correctly show the unassigned banner based on whether the user is service support or assigned to the project
 
 See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-07-24.577...main) for everything awaiting release
 

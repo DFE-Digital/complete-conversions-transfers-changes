@@ -279,6 +279,6 @@ namespace Dfe.Complete.Application.Tests.QueryFilters
 
             Assert.Equal(expected, q.Count());
         }
-    
-}
+
+    }
 }

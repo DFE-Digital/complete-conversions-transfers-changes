@@ -124,8 +124,8 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
 
         private static void AssertNewProjectsInAMonth(DateTime dateTime, ThisMonthNewProjectsStatisticsModel newProjects)
         { 
-            var monthYear = $"{dateTime:MMMM} {dateTime.Year}";
-            Assert.Equal(monthYear, newProjects.Date);
+            var currentMonthYear = $"{DateTime.UtcNow:MMMM} {DateTime.UtcNow.Year}";
+            Assert.Equal(currentMonthYear, newProjects.Date);
             Assert.Equal(17, newProjects.TotalProjects);
             Assert.Equal(9, newProjects.TotalConversions);
             Assert.Equal(8, newProjects.TotalTransfers);
@@ -135,7 +135,7 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
         {
             for (int i = 1; i <= projects.Count; i++)
             {
-                var targetMonth = dateTime.AddMonths(i);
+                var targetMonth = DateTime.UtcNow.AddMonths(i);
                 var monthYear = $"{targetMonth:MMMM} {targetMonth.Year}";
                 var project = projects[i - 1];
                 Assert.Equal(monthYear, project.Date);

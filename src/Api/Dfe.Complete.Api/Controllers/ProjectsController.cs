@@ -374,6 +374,26 @@ namespace Dfe.Complete.Api.Controllers
         }
 
         /// <summary>
+        /// Returns a list of task notes for a Project
+        /// </summary>
+        /// <param name="request">The request.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        [Authorize(Policy = "CanRead")]
+        [HttpGet]
+        [Route("Tasks/Notes")]
+        [SwaggerResponse(200, "Notes for project", typeof(List<NoteDto>))]
+        [SwaggerResponse(404, "Project not found")]
+        public async Task<IActionResult> GetTaskNotesByProjectIdQueryAsync([FromQuery] GetTaskNotesByProjectIdQuery request, CancellationToken cancellationToken)
+        {
+            var result = await sender.Send(request, cancellationToken);
+
+            if (!result.IsSuccess || result.Value is null)
+                return NotFound();
+
+            return Ok(result.Value);
+        }
+
+        /// <summary>
         /// Create a new Note for a Project
         /// </summary>
         /// <param name="request">The request.</param>
@@ -404,20 +424,20 @@ namespace Dfe.Complete.Api.Controllers
         {
             var result = await sender.Send(request, cancellationToken);
 
-            if (!result.IsSuccess)
+            if (!result.IsSuccess || result.Value is null)
             {
                 return result.ErrorType == ErrorType.NotFound
                     ? NotFound(result.Error)
-                    : StatusCode(500);
+                    : StatusCode(500, result.Error);
             }
-            return Ok(result.Value);
-        }
 
+            return Ok(result.Value.Id);
+        }
         /// <summary>
         /// Delete a Note for a Project
         /// </summary>
         /// <param name="request"></param>
-        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <param name="cancellationToken"></param>
         [Authorize(Policy = "CanReadWriteUpdateDelete")]
         [HttpDelete]
         [Route("Notes")]
