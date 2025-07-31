@@ -18,6 +18,8 @@ Security in case of vulnerabilities.
 
 ### Added  
 
+- Added `Handover with Regional Delivery Officer` task page
+
 ### Changed
 - Restructured the task page to be more generic
 - Update CRUD endpoints to account for TaskIdentifier
