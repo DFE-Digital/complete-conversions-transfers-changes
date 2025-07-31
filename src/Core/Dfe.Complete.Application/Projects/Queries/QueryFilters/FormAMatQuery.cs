@@ -7,10 +7,12 @@ public class FormAMatQuery(bool? isForm) : IQueryObject<Project>
 {
     public IQueryable<Project> Apply(IQueryable<Project> query)
     {
-        if (isForm.HasValue) return isForm.Value
-                ? query.Where(p => p.NewTrustReferenceNumber != null)
-                : query.Where(p => p.NewTrustReferenceNumber == null);
-
+        if (isForm.HasValue)
+            return isForm.Value
+                ? query.Where(project => !(string.IsNullOrEmpty(project.NewTrustReferenceNumber) &&
+                                           string.IsNullOrEmpty(project.NewTrustName)))
+                : query.Where(project => string.IsNullOrEmpty(project.NewTrustReferenceNumber) &&
+                                         string.IsNullOrEmpty(project.NewTrustName));
         return query;
     }
 }
