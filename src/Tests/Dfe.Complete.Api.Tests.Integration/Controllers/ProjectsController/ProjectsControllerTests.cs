@@ -1417,6 +1417,66 @@ public partial class ProjectsControllerTests
     }
     [Theory]
     [CustomAutoData(typeof(CustomWebApplicationDbContextFactoryCustomization), typeof(GiasEstablishmentsCustomization))]
+    public async Task ListAllProjectsHandover_Async_ShouldReturnProjectByUrn(
+        CustomWebApplicationDbContextFactory<Program> factory,
+        IProjectsClient projectsClient,
+        IFixture fixture)
+    {
+        factory.TestClaims = [new Claim(ClaimTypes.Role, ApiRoles.ReadRole)];
+
+        // Arrange
+        var dbContext = factory.GetDbContext<CompleteContext>();
+
+        var testUser = await dbContext.Users.FirstAsync();
+
+        var establishments = fixture.Customize(new GiasEstablishmentsCustomization()).CreateMany<GiasEstablishment>(10)
+            .ToList();
+        var localAuthority = dbContext.LocalAuthorities.AsEnumerable().MinBy(_ => Guid.NewGuid());
+        Assert.NotNull(localAuthority);
+
+        await dbContext.GiasEstablishments.AddRangeAsync(establishments);
+        var trustPref = "TR12345";
+        var trustReference = string.Concat(trustPref, 0);
+        var projects = establishments.Select((establishment, i) =>
+        {
+            var project = fixture.Customize(new ProjectCustomization
+            {
+                LocalAuthorityId = localAuthority.Id,
+                RegionalDeliveryOfficerId = testUser.Id,
+            }).Create<Project>();
+            project.Urn = establishment.Urn ?? project.Urn;
+            project.State = ProjectState.Inactive;
+            project.IncomingTrustUkprn = null;
+            project.OutgoingTrustUkprn = null;
+            return project;
+        }).ToList();
+
+        await dbContext.Projects.AddRangeAsync(projects);
+        await dbContext.SaveChangesAsync();
+        var urn = projects.First().Urn;
+
+        // Act
+        var results = await projectsClient.ListAllProjectsHandoverAsync(Complete.Client.Contracts.ProjectState.Inactive, urn.Value, OrderProjectByField.SignificantDate, OrderByDirection.Ascending, 0, 50, CancellationToken.None);
+
+        // Assert
+        Assert.NotNull(results);
+        Assert.Single(results);
+
+        foreach (var result in results)
+        {
+            var matchingProject = projects.FirstOrDefault(p => p.Id.Value == result.ProjectId?.Value);
+            var matchingEstablishment = establishments.FirstOrDefault(e => e.Urn?.Value == result.Urn?.Value);
+
+            Assert.NotNull(result.ProjectId);
+            Assert.Equal(matchingProject?.Id.Value, result.ProjectId.Value);
+
+            Assert.NotNull(result.EstablishmentName);
+            Assert.NotNull(matchingEstablishment);
+            Assert.Equal(matchingEstablishment.Name, result.EstablishmentName);
+        }
+    }
+    [Theory]
+    [CustomAutoData(typeof(CustomWebApplicationDbContextFactoryCustomization), typeof(GiasEstablishmentsCustomization))]
     public async Task ListAllProjectsHandover_Async_ShouldReturnList(
         CustomWebApplicationDbContextFactory<Program> factory,
         IProjectsClient projectsClient, 
@@ -1455,7 +1515,7 @@ public partial class ProjectsControllerTests
         await dbContext.SaveChangesAsync(); 
 
         // Act
-        var results = await projectsClient.ListAllProjectsHandoverAsync(Complete.Client.Contracts.ProjectState.Inactive, OrderProjectByField.SignificantDate, OrderByDirection.Ascending, 0, 50, CancellationToken.None);
+        var results = await projectsClient.ListAllProjectsHandoverAsync(Complete.Client.Contracts.ProjectState.Inactive, null, OrderProjectByField.SignificantDate, OrderByDirection.Ascending, 0, 50, CancellationToken.None);
 
         // Assert
         Assert.NotNull(results);

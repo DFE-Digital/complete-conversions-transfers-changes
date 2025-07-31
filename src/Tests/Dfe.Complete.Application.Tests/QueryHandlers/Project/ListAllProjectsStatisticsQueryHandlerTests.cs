@@ -42,7 +42,7 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
         public async Task Handle_ShouldReturns_CorrectStatistics()
         {
             // Arrange
-            var dateTime = DateTime.Now;
+            var dateTime = new DateTime(2025, 07, 1);
             var projects = SetUpProjects(dateTime); 
             var regions = GetRegions(projects);
             var teams = projects.DistinctBy(x => x.Team)
