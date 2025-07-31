@@ -203,7 +203,7 @@ public class ProjectsQueryBuilder(CompleteContext context) : IProjectsQueryBuild
     private static IQueryable<Project> FilterByUrn(IQueryable<Project> projects, Urn? urn)
     {
         if (urn != null)
-            projects = projects = projects.Where(project => project.Urn == urn);
+            projects = projects.Where(project => project.Urn == urn);
         return projects;
     }
 }
