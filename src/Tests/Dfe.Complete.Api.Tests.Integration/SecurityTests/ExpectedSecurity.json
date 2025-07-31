@@ -107,6 +107,11 @@
     },
     {
       "Controller": "ProjectsController",
+      "Action": "GetTaskNotesByProjectIdQueryAsync",
+      "ExpectedSecurity": "Authorize: Policy=CanRead"
+    },
+    {
+      "Controller": "ProjectsController",
       "Action": "CreateProjectNoteAsync",
       "ExpectedSecurity": "Authorize: Policy=CanReadWrite"
     },
