@@ -3,6 +3,7 @@ import {
     shouldBeAbleToViewMultipleMonthsOfProjects,
     shouldBeAbleToViewReportsLandingPage,
     shouldNotBeAbleToAddAProjectNote,
+    shouldNotBeAbleToAddAProjectTaskNote,
     shouldNotBeAbleToCreateAProject,
     shouldNotHaveAccessToViewYourProjectsSections,
     shouldNotHaveAccessToViewYourTeamProjectsSections,
@@ -91,5 +92,9 @@ describe("Capabilities and permissions of the service support user", () => {
 
     it("Should NOT be able to add a note to a project", () => {
         shouldNotBeAbleToAddAProjectNote(projectId);
+    });
+
+    it("Should NOT be able to add a task note to a project", () => {
+        shouldNotBeAbleToAddAProjectTaskNote(projectId);
     });
 });
