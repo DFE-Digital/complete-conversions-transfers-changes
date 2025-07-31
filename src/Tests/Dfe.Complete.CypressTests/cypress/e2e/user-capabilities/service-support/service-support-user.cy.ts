@@ -1,7 +1,7 @@
 import { beforeEach } from "mocha";
 import {
-    shouldBeAbleToViewReportsLandingPage,
     shouldBeAbleToViewMultipleMonthsOfProjects,
+    shouldBeAbleToViewReportsLandingPage,
     shouldNotBeAbleToAddAProjectNote,
     shouldNotBeAbleToCreateAProject,
     shouldNotHaveAccessToViewYourProjectsSections,
@@ -15,8 +15,7 @@ import projectApi from "cypress/api/projectApi";
 import { ProjectBuilder } from "cypress/api/projectBuilder";
 import { nextMonth } from "cypress/constants/stringTestConstants";
 
-const project
-    = ProjectBuilder.createConversionProjectRequest(nextMonth);
+const project = ProjectBuilder.createConversionProjectRequest(nextMonth);
 let projectId: string;
 describe("Capabilities and permissions of the service support user", () => {
     before(() => {
@@ -26,11 +25,10 @@ describe("Capabilities and permissions of the service support user", () => {
     beforeEach(() => {
         cy.login(serviceSupportUser);
         cy.acceptCookies();
-        cy.visit("/projects/all/in-progress/all"); // visit '/' goes to service support that is not implemented yet
+        cy.visit("/");
     });
 
-    // not implemented 187518
-    it.skip("Should direct user to all Service support -> without academy URNs after login", () => {
+    it("Should direct user to all Service support -> without academy URNs after login", () => {
         cy.url().should("include", "/projects/service-support/without-academy-urn");
     });
 
