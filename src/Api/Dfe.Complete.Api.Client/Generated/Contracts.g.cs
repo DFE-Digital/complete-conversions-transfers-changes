@@ -400,6 +400,21 @@ namespace Dfe.Complete.Client.Contracts
         System.Threading.Tasks.Task<bool> DeleteProjectNoteAsync(RemoveNoteCommand request, System.Threading.CancellationToken cancellationToken);
 
         /// <summary>
+        /// Returns a list of task notes for a Project
+        /// </summary>
+        /// <returns>Notes for project</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<NoteDto>> GetTaskNotesByProjectIdQueryAsync(System.Guid? projectId_Value, NoteTaskIdentifier? taskIdentifier);
+
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>
+        /// Returns a list of task notes for a Project
+        /// </summary>
+        /// <returns>Notes for project</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<NoteDto>> GetTaskNotesByProjectIdQueryAsync(System.Guid? projectId_Value, NoteTaskIdentifier? taskIdentifier, System.Threading.CancellationToken cancellationToken);
+
+        /// <summary>
         /// Returns a list of all projects statistics.
         /// </summary>
         /// <returns>Project</returns>
@@ -491,21 +506,6 @@ namespace Dfe.Complete.Client.Contracts
         System.Threading.Tasks.Task<System.Guid> CreateLocalAuthorityAsync(CreateLocalAuthorityCommand request, System.Threading.CancellationToken cancellationToken);
 
         /// <summary>
-        /// Returns a list of local authorities
-        /// </summary>
-        /// <returns>List of local authorities.</returns>
-        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<LocalAuthorityQueryModel>> ListAllLocalAuthoritiesAsync(int? page, int? count);
-
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <summary>
-        /// Returns a list of local authorities
-        /// </summary>
-        /// <returns>List of local authorities.</returns>
-        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<LocalAuthorityQueryModel>> ListAllLocalAuthoritiesAsync(int? page, int? count, System.Threading.CancellationToken cancellationToken);
-
-        /// <summary>
         /// Get the local authority details
         /// </summary>
         /// <returns>Local authority details.</returns>
@@ -553,6 +553,21 @@ namespace Dfe.Complete.Client.Contracts
         /// <returns>local authority deleted successfully.</returns>
         /// <exception cref="CompleteApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task RemoveLocalAuthorityAsync(DeleteLocalAuthorityCommand request, System.Threading.CancellationToken cancellationToken);
+
+        /// <summary>
+        /// Returns a list of local authorities
+        /// </summary>
+        /// <returns>List of local authorities.</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<LocalAuthorityQueryModel>> ListAllLocalAuthoritiesAsync(int? page, int? count);
+
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>
+        /// Returns a list of local authorities
+        /// </summary>
+        /// <returns>List of local authorities.</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<LocalAuthorityQueryModel>> ListAllLocalAuthoritiesAsync(int? page, int? count, System.Threading.CancellationToken cancellationToken);
 
     }
 
@@ -2508,6 +2523,12 @@ namespace Dfe.Complete.Client.Contracts
         [Newtonsoft.Json.JsonProperty("createdAt", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public System.DateTime? CreatedAt { get; set; } = default!;
 
+        [Newtonsoft.Json.JsonProperty("taskIdentifier", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string? TaskIdentifier { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("isNotable", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? IsNotable { get; set; } = default!;
+
         public string ToJson()
         {
 
@@ -2524,6 +2545,27 @@ namespace Dfe.Complete.Client.Contracts
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.2.0.0 (NJsonSchema v11.1.0.0 (Newtonsoft.Json v13.0.0.0))")]
+    public enum NoteTaskIdentifier
+    {
+
+        [System.Runtime.Serialization.EnumMember(Value = @"Handover")]
+        Handover = 0,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"LandQuestionnaire")]
+        LandQuestionnaire = 1,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"LandRegistry")]
+        LandRegistry = 2,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"StakeholderKickoff")]
+        StakeholderKickoff = 3,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"SupplementalFundingAgreement")]
+        SupplementalFundingAgreement = 4,
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.2.0.0 (NJsonSchema v11.1.0.0 (Newtonsoft.Json v13.0.0.0))")]
     public partial class CreateNoteCommand
     {
         [Newtonsoft.Json.JsonProperty("projectId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
@@ -2534,6 +2576,10 @@ namespace Dfe.Complete.Client.Contracts
 
         [Newtonsoft.Json.JsonProperty("body", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string? Body { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("taskIdentifier", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
+        public NoteTaskIdentifier? TaskIdentifier { get; set; } = default!;
 
         public string ToJson()
         {

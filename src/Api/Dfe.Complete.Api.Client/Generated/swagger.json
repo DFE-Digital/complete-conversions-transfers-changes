@@ -1396,6 +1396,52 @@
         }
       }
     },
+    "/v1/Projects/Tasks/Notes": {
+      "get": {
+        "tags": [
+          "Projects"
+        ],
+        "summary": "Returns a list of task notes for a Project",
+        "operationId": "Projects_GetTaskNotesByProjectIdQuery",
+        "parameters": [
+          {
+            "name": "ProjectId.Value",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "guid"
+            },
+            "x-position": 1
+          },
+          {
+            "name": "TaskIdentifier",
+            "in": "query",
+            "schema": {
+              "$ref": "#/components/schemas/NoteTaskIdentifier"
+            },
+            "x-position": 2
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Notes for project",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/NoteDto"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Project not found"
+          }
+        }
+      }
+    },
     "/v1/Projects/List/All/Statistics": {
       "get": {
         "tags": [
@@ -1508,7 +1554,7 @@
         }
       }
     },
-    "/v1/ServiceSupport/LocalAuthority/Create": {
+    "/v1/ServiceSupport/LocalAuthority": {
       "post": {
         "tags": [
           "ServiceSupport"
@@ -1539,6 +1585,95 @@
                 }
               }
             }
+          },
+          "400": {
+            "description": "Invalid request data."
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "ServiceSupport"
+        ],
+        "summary": "Get the local authority details",
+        "operationId": "ServiceSupport_GetLocalAuthorityDetails",
+        "parameters": [
+          {
+            "name": "LocalAuthorityId.Value",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "guid"
+            },
+            "x-position": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Local authority details.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LocalAuthorityDetailsModel"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request data."
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "ServiceSupport"
+        ],
+        "summary": "Update the local authority details.",
+        "operationId": "ServiceSupport_UpdateLocalAuthorityDetails",
+        "requestBody": {
+          "x-name": "request",
+          "description": "The request.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateLocalAuthorityCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "204": {
+            "description": "local authoirty details updated successfully."
+          },
+          "400": {
+            "description": "Invalid request data."
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "ServiceSupport"
+        ],
+        "summary": "Removes the local authority.",
+        "operationId": "ServiceSupport_RemoveLocalAuthority",
+        "requestBody": {
+          "x-name": "request",
+          "description": "The request.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DeleteLocalAuthorityCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "204": {
+            "description": "local authority deleted successfully."
           },
           "400": {
             "description": "Invalid request data."
@@ -1586,101 +1721,6 @@
                 }
               }
             }
-          },
-          "400": {
-            "description": "Invalid request data."
-          }
-        }
-      }
-    },
-    "/v1/ServiceSupport/LocalAuthority/details": {
-      "get": {
-        "tags": [
-          "ServiceSupport"
-        ],
-        "summary": "Get the local authority details",
-        "operationId": "ServiceSupport_GetLocalAuthorityDetails",
-        "parameters": [
-          {
-            "name": "LocalAuthorityId.Value",
-            "in": "query",
-            "schema": {
-              "type": "string",
-              "format": "guid"
-            },
-            "x-position": 1
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Local authority details.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/LocalAuthorityDetailsModel"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid request data."
-          }
-        }
-      }
-    },
-    "/v1/ServiceSupport/LocalAuthority/Delete": {
-      "patch": {
-        "tags": [
-          "ServiceSupport"
-        ],
-        "summary": "Update the local authority details.",
-        "operationId": "ServiceSupport_UpdateLocalAuthorityDetails",
-        "requestBody": {
-          "x-name": "request",
-          "description": "The request.",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/UpdateLocalAuthorityCommand"
-              }
-            }
-          },
-          "required": true,
-          "x-position": 1
-        },
-        "responses": {
-          "204": {
-            "description": "local authoirty details updated successfully."
-          },
-          "400": {
-            "description": "Invalid request data."
-          }
-        }
-      }
-    },
-    "/v1/ServiceSupport": {
-      "delete": {
-        "tags": [
-          "ServiceSupport"
-        ],
-        "summary": "Removes the local authority.",
-        "operationId": "ServiceSupport_RemoveLocalAuthority",
-        "requestBody": {
-          "x-name": "request",
-          "description": "The request.",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/DeleteLocalAuthorityCommand"
-              }
-            }
-          },
-          "required": true,
-          "x-position": 1
-        },
-        "responses": {
-          "204": {
-            "description": "local authority deleted successfully."
           },
           "400": {
             "description": "Invalid request data."
@@ -3911,8 +3951,34 @@
           "createdAt": {
             "type": "string",
             "format": "date-time"
+          },
+          "taskIdentifier": {
+            "type": "string",
+            "nullable": true
+          },
+          "isNotable": {
+            "type": "boolean",
+            "nullable": true
           }
         }
+      },
+      "NoteTaskIdentifier": {
+        "type": "string",
+        "description": "",
+        "x-enumNames": [
+          "Handover",
+          "LandQuestionnaire",
+          "LandRegistry",
+          "StakeholderKickoff",
+          "SupplementalFundingAgreement"
+        ],
+        "enum": [
+          "Handover",
+          "LandQuestionnaire",
+          "LandRegistry",
+          "StakeholderKickoff",
+          "SupplementalFundingAgreement"
+        ]
       },
       "CreateNoteCommand": {
         "type": "object",
@@ -3926,6 +3992,14 @@
           },
           "body": {
             "type": "string"
+          },
+          "taskIdentifier": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/NoteTaskIdentifier"
+              }
+            ]
           }
         }
       },
