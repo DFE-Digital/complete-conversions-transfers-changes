@@ -85,14 +85,6 @@ describe("Capabilities and permissions of the service support user", () => {
         // not implemented 187527
     });
 
-    it.skip("Should be able to create local authority details", () => {
-        // not implemented 187525
-    });
-
-    it.skip("Should be able to edit local authority details", () => {
-        // not implemented 187525
-    });
-
     it("Should NOT be able to create a project", () => {
         shouldNotBeAbleToCreateAProject();
     });
