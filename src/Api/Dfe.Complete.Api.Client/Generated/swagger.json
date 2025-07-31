@@ -1595,12 +1595,21 @@
             "x-position": 1
           },
           {
+            "name": "Urn.Value",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "x-position": 2
+          },
+          {
             "name": "OrderBy.Field",
             "in": "query",
             "schema": {
               "$ref": "#/components/schemas/OrderProjectByField"
             },
-            "x-position": 2
+            "x-position": 3
           },
           {
             "name": "OrderBy.Direction",
@@ -1608,7 +1617,7 @@
             "schema": {
               "$ref": "#/components/schemas/OrderByDirection"
             },
-            "x-position": 3
+            "x-position": 4
           },
           {
             "name": "Page",
@@ -1617,7 +1626,7 @@
               "type": "integer",
               "format": "int32"
             },
-            "x-position": 4
+            "x-position": 5
           },
           {
             "name": "Count",
@@ -1626,7 +1635,7 @@
               "type": "integer",
               "format": "int32"
             },
-            "x-position": 5
+            "x-position": 6
           }
         ],
         "responses": {

@@ -4,16 +4,49 @@
 @model Dfe.Complete.Pages.Projects.List.HandoverProjects.HandoverProjectsModel
 
 @{
-  Layout = "List/HandoverProjects/_HandoverProjectsLayout";
+    Layout = "List/HandoverProjects/_HandoverProjectsLayout";
     ViewData["Title"] = "Projects to handover";
 }
 
 @section PageHeading
 {
+    @if (Model.DisplayMessage)
+    {
+        <div class="govuk-grid-row">
+            <div class="govuk-grid-column-two-thirds">
+                <govuk-notification-banner class="govuk-notification-banner">
+                    <govuk-notification-banner-title>
+                        Important
+                    </govuk-notification-banner-title>
+                    <h3 class="govuk-notification-banner__heading" id="no-urn">
+                        No project to be handed over with URN was found
+                    </h3>
+                </govuk-notification-banner>
+            </div>
+        </div>
+    }
   <h1 class="govuk-heading-l">
         Projects to handover
   </h1>
 }  
+
+@if(Model.Pagination?.TotalPages > 1)
+{ 
+    <div class="govuk-inset-text">
+        <div class="dfe-body__search">
+            <div>
+                <form accept-charset="UTF-8" method="post">
+                    <govuk-input id="@nameof(Model.URN)" name="@nameof(Model.URN)" input-class="govuk-input--width-10" asp-for="@Model.URN">
+                        <govuk-input-label class="govuk-label--m">Search by URN</govuk-input-label>
+                    </govuk-input>
+                    <button class="govuk-button" type="submit">
+                        Search
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+}
 <div class="govuk-grid-column-full">
     <p class="govuk-body">These projects have been worked on in Prepare, approved, and automatically added to Complete.</p>
     <p class="govuk-body">However, you must add some missing details before the project can continue.</p>

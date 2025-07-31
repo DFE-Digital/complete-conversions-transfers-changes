@@ -3377,9 +3377,9 @@ namespace Dfe.Complete.Client
         /// </summary>
         /// <returns>A list of Projects</returns>
         /// <exception cref="CompleteApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<ListAllProjectsResultModel>> ListAllProjectsHandoverAsync(ProjectState? projectStatus, OrderProjectByField? orderBy_Field, OrderByDirection? orderBy_Direction, int? page, int? count)
+        public virtual System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<ListAllProjectsResultModel>> ListAllProjectsHandoverAsync(ProjectState? projectStatus, int? urn_Value, OrderProjectByField? orderBy_Field, OrderByDirection? orderBy_Direction, int? page, int? count)
         {
-            return ListAllProjectsHandoverAsync(projectStatus, orderBy_Field, orderBy_Direction, page, count, System.Threading.CancellationToken.None);
+            return ListAllProjectsHandoverAsync(projectStatus, urn_Value, orderBy_Field, orderBy_Direction, page, count, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -3388,7 +3388,7 @@ namespace Dfe.Complete.Client
         /// </summary>
         /// <returns>A list of Projects</returns>
         /// <exception cref="CompleteApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<ListAllProjectsResultModel>> ListAllProjectsHandoverAsync(ProjectState? projectStatus, OrderProjectByField? orderBy_Field, OrderByDirection? orderBy_Direction, int? page, int? count, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<ListAllProjectsResultModel>> ListAllProjectsHandoverAsync(ProjectState? projectStatus, int? urn_Value, OrderProjectByField? orderBy_Field, OrderByDirection? orderBy_Direction, int? page, int? count, System.Threading.CancellationToken cancellationToken)
         {
             var client_ = _httpClient;
             var disposeClient_ = false;
@@ -3407,6 +3407,10 @@ namespace Dfe.Complete.Client
                     if (projectStatus != null)
                     {
                         urlBuilder_.Append(System.Uri.EscapeDataString("ProjectStatus")).Append('=').Append(System.Uri.EscapeDataString(ConvertToString(projectStatus, System.Globalization.CultureInfo.InvariantCulture))).Append('&');
+                    }
+                    if (urn_Value != null)
+                    {
+                        urlBuilder_.Append(System.Uri.EscapeDataString("Urn.Value")).Append('=').Append(System.Uri.EscapeDataString(ConvertToString(urn_Value, System.Globalization.CultureInfo.InvariantCulture))).Append('&');
                     }
                     if (orderBy_Field != null)
                     {

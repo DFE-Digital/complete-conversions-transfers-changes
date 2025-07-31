@@ -3,6 +3,7 @@ using Dfe.Complete.Application.Common.Models;
 using Dfe.Complete.Application.Projects.Interfaces;
 using Dfe.Complete.Application.Projects.Models;
 using Dfe.Complete.Domain.Enums;
+using Dfe.Complete.Domain.ValueObjects;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -12,6 +13,7 @@ namespace Dfe.Complete.Application.Projects.Queries.ListAllProjects
 {
     public record ListAllProjectsHandoverQuery(
         ProjectState? ProjectStatus = ProjectState.Inactive, 
+        Urn? Urn = null,
         OrderProjectQueryBy? OrderBy = null,
         int Page = 0,
         int Count = 20) : IRequest<PaginatedResult<List<ListAllProjectsResultModel>>>;
@@ -28,7 +30,7 @@ namespace Dfe.Complete.Application.Projects.Queries.ListAllProjects
             try
             {
                 var projectListQuery = listAllProjectsQueryService
-                   .ListAllProjects(new ProjectFilters(request.ProjectStatus, null), orderBy: request.OrderBy);
+                   .ListAllProjects(new ProjectFilters(request.ProjectStatus, null, Urn: request.Urn), orderBy: request.OrderBy);
                   
                 var totalProjects = await projectListQuery.CountAsync(cancellationToken);
 
