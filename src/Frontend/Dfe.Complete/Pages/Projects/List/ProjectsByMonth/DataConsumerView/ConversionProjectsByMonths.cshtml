@@ -2,10 +2,11 @@
 @using Microsoft.AspNetCore.Mvc.TagHelpers
 @using MediatR
 @model Dfe.Complete.Pages.Projects.List.ProjectsByMonth.ConversionProjectsByMonths
-@inject ISender Sender
 @{
     Layout = "List/ProjectsByMonth/DataConsumerView/_ProjectsByMonthsLayout";
     ViewData["Title"] = "Academies opening or transferring";
+
+    var exportLink = $"/projects/all/export/by-significant-date/conversions/all-data/from/{Model.FromMonth}/{Model.FromYear}/to/{Model.ToMonth}/{Model.ToYear}/csv";
 }
 @section PageHeading
 {
@@ -14,6 +15,8 @@
     @Model.DateRangeDisplay
 </h1>
 <p>Schools that will become academies, and academies that will move to a different trust.</p>
+
+<p>You can also <a href="@exportLink">download a more detailed version of the data as a CSV file.</a></p>
 
 @await Html.PartialAsync("_DateRangeForm", Model)
 }
