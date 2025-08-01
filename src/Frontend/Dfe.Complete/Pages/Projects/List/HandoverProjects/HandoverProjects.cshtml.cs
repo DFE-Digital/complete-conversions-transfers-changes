@@ -23,15 +23,7 @@ namespace Dfe.Complete.Pages.Projects.List.HandoverProjects
         public async Task<IActionResult> OnGetAsync()
         {
             ViewData[TabNavigationModel.ViewDataKey] = AllProjectsTabNavigationModel;
-            var orderByClause = new OrderProjectQueryBy(OrderProjectByField.SignificantDate);
-            var handoverProjectsQuery = new ListAllProjectsHandoverQuery(null, OrderBy: orderByClause, Page: PageNumber - 1, Count: PageSize);
-
-            var listResponse = await sender.Send(handoverProjectsQuery);
-
-            Projects = [.. (listResponse.Value ?? [])];
-            Pagination = new PaginationModel(RouteConstants.ProjectsHandover, PageNumber, listResponse.ItemCount, PageSize);
-            var hasPageFound = HasPageFound(Pagination.IsOutOfRangePage, Pagination.TotalPages);
-            return hasPageFound ?? Page(); ;
+            return await GetProjects();
         }
 
         public string GetHandoverProjectUrl(ProjectId projectId) =>
