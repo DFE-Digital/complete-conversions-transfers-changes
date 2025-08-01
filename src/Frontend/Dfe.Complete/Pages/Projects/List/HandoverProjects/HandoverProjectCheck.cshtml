@@ -3,7 +3,7 @@
 @using Dfe.Complete.Constants
 @using Dfe.Complete.Domain.Enums
 @using Dfe.Complete.Utils
-<h1 class="govuk-heading-l">
+<h1 class="govuk-heading-xl">
     Check you have the right project
 </h1>
 <div class="govuk-grid-column-three-quarters">
@@ -27,22 +27,22 @@
         @if (Model.Project.ProjectType == ProjectType.Conversion)
         {
             <div class="govuk-summary-list__row">
-                <dt class="govuk-summary-list__key">Incoming trust name</dt>
+                <dt class="govuk-summary-list__key">@(Model.Project.IsFormAMAT ? "New trust" : "Incoming trust name")</dt>
                 <dd class="govuk-summary-list__value">@Model.Project.IncomingTrustName!.ToCamelCase()</dd>
             </div>
             <div class="govuk-summary-list__row">
-                <dt class="govuk-summary-list__key">Incoming trust UKPRN</dt>
+                <dt class="govuk-summary-list__key">@(Model.Project.IsFormAMAT ? "Trust reference number" : "Incoming trust UKPRN")</dt>
                 <dd class="govuk-summary-list__value">@(Model.Project.IncomingTrustUkprn?.Value.ToString() ?? Model.Project.NewTrustReferenceNumber)</dd>
             </div>
         }
         else
         {
             <div class="govuk-summary-list__row">
-                <dt class="govuk-summary-list__key">New trust name</dt>
+                <dt class="govuk-summary-list__key">@(Model.Project.IsFormAMAT ? "New trust" : "Incoming trust name")</dt>
                 <dd class="govuk-summary-list__value">@Model.Project.NewTrustName!.ToCamelCase()</dd>
             </div>
             <div class="govuk-summary-list__row">
-                <dt class="govuk-summary-list__key">Trust reference number</dt>
+                <dt class="govuk-summary-list__key">@(Model.Project.IsFormAMAT ? "Trust reference number" : "Incoming trust UKPRN")</dt>
                 <dd class="govuk-summary-list__value">@(Model.Project.NewTrustReferenceNumber ?? Model.Project.IncomingTrustUkprn?.Value.ToString())</dd>
             </div>
             <div class="govuk-summary-list__row">
