@@ -59,6 +59,7 @@ public class ListAllProjectsForUserQueryHandler(
                    p.Project?.OutgoingTrustUkprn?.Value.ToString() ?? string.Empty
                 })
                 .Where(ukPrn => !string.IsNullOrEmpty(ukPrn))
+                .Distinct()
                 .ToList();
 
             if(allProjectTrustUkPrns.Count == 0)

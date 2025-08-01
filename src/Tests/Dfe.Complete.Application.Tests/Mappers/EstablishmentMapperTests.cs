@@ -2,8 +2,8 @@ using DfE.CoreLibs.Testing.AutoFixture.Attributes;
 using DfE.CoreLibs.Testing.AutoFixture.Customizations;
 using AutoMapper;
 using Dfe.AcademiesApi.Client.Contracts;
-using Dfe.Complete.Application.Common.Mappers;
 using Dfe.Complete.Tests.Common.Customizations.Behaviours;
+using Dfe.Complete.Application.Mappers;
 
 namespace Dfe.Complete.Application.Tests.Mappers
 {
