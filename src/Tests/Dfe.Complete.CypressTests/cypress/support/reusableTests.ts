@@ -57,6 +57,12 @@ export function shouldNotBeAbleToAddAProjectNote(projectId: string) {
     cy.visit(`/projects/${projectId}/notes/new`).notAuthorisedToPerformAction();
 }
 
+export function shouldNotBeAbleToAddAProjectTaskNote(projectId: string) {
+    cy.visit(`/projects/${projectId}/tasks/handover`);
+    notePage.clickButton("Add a new task note").notAuthorisedToPerformThisActionBanner();
+    cy.visit(`/projects/${projectId}/notes/new?task_identifier=handover`).notAuthorisedToPerformAction();
+}
+
 export function shouldNotHaveAccessToViewAndEditUsers() {
     cy.visit("/service-support/users").notAuthorisedToPerformAction();
 }
