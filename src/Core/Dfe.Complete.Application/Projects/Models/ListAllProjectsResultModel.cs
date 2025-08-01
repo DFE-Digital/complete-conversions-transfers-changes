@@ -21,8 +21,7 @@ public record ListAllProjectsResultModel(
     DateTime CreatedAt,
     string? RegionalDeliveryOfficerFullName,
     string? NewTrustName,
-    string? NewTrustReferenceNumber,
-    DateOnly? AdvisoryBoardDate
+    string? NewTrustReferenceNumber
 )
 {
     public static ListAllProjectsResultModel MapProjectAndEstablishmentToListAllProjectResultModel(Project project, GiasEstablishment? establishment)
@@ -44,8 +43,7 @@ public record ListAllProjectsResultModel(
             project.CreatedAt,
             project.RegionalDeliveryOfficer?.FullName,
             project.NewTrustName,
-            project.NewTrustReferenceNumber,
-            project.AdvisoryBoardDate
+            project.NewTrustReferenceNumber
         );
     }
 }

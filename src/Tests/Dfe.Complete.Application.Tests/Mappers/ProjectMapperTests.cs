@@ -4,7 +4,7 @@ using Dfe.Complete.Tests.Common.Customizations.Behaviours;
 using Dfe.Complete.Tests.Common.Customizations.Models;
 using Dfe.Complete.Application.Projects.Models;
 using AutoMapper;
-using Dfe.Complete.Application.Mappers;
+using Dfe.Complete.Application.Common.Mappers;
 
 namespace Dfe.Complete.Application.Tests.Mappers
 {

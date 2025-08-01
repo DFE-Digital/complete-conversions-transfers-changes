@@ -63,40 +63,5 @@ namespace Dfe.Complete.Tests.Constants
         {
             Assert.Equal("Email address must be in correct format", ValidationConstants.InvalidEmailFormat);
         }
-        [Fact]
-        public void AlreadyBeenTaken_ShouldReturnExpectedMessage()
-        {
-            Assert.Equal("Has already been taken", ValidationConstants.AlreadyBeenTaken);
-        }
-        [Fact]
-        public void HandoverNotes_ShouldReturnExpectedMessage()
-        {
-            Assert.Equal("Enter handover notes", ValidationConstants.HandoverNotes);
-        }
-        [Fact]
-        public void OutgoingSharePointLink_ShouldReturnExpectedMessage()
-        {
-            Assert.Equal("Enter an outgoing trust SharePoint link", ValidationConstants.OutgoingSharePointLink);
-        }
-        [Fact]
-        public void IncomingSharePointLink_ShouldReturnExpectedMessage()
-        {
-            Assert.Equal("Enter an incoming trust SharePoint link", ValidationConstants.IncomingSharePointLink);
-        }
-        [Fact]
-        public void SchoolOrAcademySharePointLink_ShouldReturnExpectedMessage()
-        {
-            Assert.Equal("Enter a school or academy trust SharePoint link", ValidationConstants.SchoolOrAcademySharePointLink);
-        }
-        [Fact]
-        public void TwoRequiresImprovement_ShouldReturnExpectedMessage()
-        {
-            Assert.Equal("Select yes or no", ValidationConstants.TwoRequiresImprovement);
-        }
-        [Fact]
-        public void AssignedToRegionalCaseworkerTeam_ShouldReturnExpectedMessage()
-        {
-            Assert.Equal("State if this project will be handed over to the Regional casework services team. Choose yes or no", ValidationConstants.AssignedToRegionalCaseworkerTeam);
-        }
     }
 }

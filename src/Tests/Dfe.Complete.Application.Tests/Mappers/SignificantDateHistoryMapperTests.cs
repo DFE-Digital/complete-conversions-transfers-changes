@@ -1,7 +1,7 @@
 using DfE.CoreLibs.Testing.AutoFixture.Attributes;
 using DfE.CoreLibs.Testing.AutoFixture.Customizations;
 using AutoMapper;
-using Dfe.Complete.Application.Mappers;
+using Dfe.Complete.Application.Common.Mappers;
 using Dfe.Complete.Application.Projects.Models;
 using Dfe.Complete.Tests.Common.Customizations.Behaviours;
 
