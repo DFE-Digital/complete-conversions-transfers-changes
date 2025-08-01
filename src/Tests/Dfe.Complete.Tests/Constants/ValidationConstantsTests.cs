@@ -84,9 +84,9 @@ namespace Dfe.Complete.Tests.Constants
             Assert.Equal("Enter an incoming trust SharePoint link", ValidationConstants.IncomingSharePointLink);
         }
         [Fact]
-        public void SchoolOrAcademySharePointLink_ShouldReturnExpectedMessage()
+        public void SchoolSharePointLink_ShouldReturnExpectedMessage()
         {
-            Assert.Equal("Enter a school or academy trust SharePoint link", ValidationConstants.SchoolOrAcademySharePointLink);
+            Assert.Equal("Enter a school SharePoint link", ValidationConstants.SchoolSharePointLink);
         }
         [Fact]
         public void TwoRequiresImprovement_ShouldReturnExpectedMessage()

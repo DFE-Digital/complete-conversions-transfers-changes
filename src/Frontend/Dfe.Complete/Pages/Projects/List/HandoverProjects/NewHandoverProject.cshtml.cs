@@ -22,19 +22,19 @@ namespace Dfe.Complete.Pages.Projects.List.HandoverProjects
 
         [BindProperty]
         [SharePointLink]
-        [Required]
-        [Display(Name = ValidationConstants.SchoolOrAcademySharePointLink)]
+        [Required(ErrorMessage = ValidationConstants.SchoolSharePointLink)]
+        [Display(Name = "school sharepoint link")]
         public required string SchoolSharePointLink { get; set; }
 
         [BindProperty]
         [SharePointLink]
-        [Required]
-        [Display(Name = ValidationConstants.IncomingSharePointLink)]
+        [Required(ErrorMessage = ValidationConstants.IncomingSharePointLink)]
+        [Display(Name = "incoming trust sharepoint link")]
         public required string IncomingTrustSharePointLink { get; set; }
 
         [BindProperty]
         [SharePointLink]
-        [Display(Name = ValidationConstants.OutgoingSharePointLink)]
+        [Display(Name = "outgoing trust sharepoint link")]
         public string? OutgoingTrustSharePointLink { get; set; }
 
         [BindProperty]

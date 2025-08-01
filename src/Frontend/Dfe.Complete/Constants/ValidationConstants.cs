@@ -14,7 +14,7 @@
         public const string HandoverNotes = "Enter handover notes";
         public const string OutgoingSharePointLink = "Enter an outgoing trust SharePoint link";
         public const string IncomingSharePointLink = "Enter an incoming trust SharePoint link";
-        public const string SchoolOrAcademySharePointLink = "Enter a school or academy trust SharePoint link";
+        public const string SchoolSharePointLink = "Enter a school SharePoint link";
         public const string TwoRequiresImprovement = "Select yes or no";
         public const string AssignedToRegionalCaseworkerTeam = "State if this project will be handed over to the Regional casework services team. Choose yes or no";
     }
