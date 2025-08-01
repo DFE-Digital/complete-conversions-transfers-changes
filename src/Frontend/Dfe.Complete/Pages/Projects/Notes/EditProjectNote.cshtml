@@ -5,7 +5,7 @@
 @model Dfe.Complete.Pages.Projects.Notes.EditProjectNoteModel
 @{
     ViewData["Title"] = "Complete conversions, tranfers and changes";
-    var backLink = string.Format(RouteConstants.ProjectViewNotes, Model.ProjectId);
+    var backLink = Model.GetReturnUrl(Model.TaskIdentifier);
 }
 
 @section BeforeMain
