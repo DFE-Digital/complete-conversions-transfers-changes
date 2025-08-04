@@ -9,7 +9,7 @@
 <div class="govuk-grid-column-three-quarters">
     <dl class="govuk-summary-list" id="project-summary">
         <div class="govuk-summary-list__row">
-            <dt class="govuk-summary-list__key">@(Model.Project.ProjectType == ProjectType.Conversion? "Academy": "School") name</dt>
+            <dt class="govuk-summary-list__key">@(Model.Project.ProjectType == ProjectType.Transfer ? "Academy" : "School") name</dt>
             <dd class="govuk-summary-list__value">@Model.Project.EstablishmentName</dd>
         </div>
         <div class="govuk-summary-list__row">

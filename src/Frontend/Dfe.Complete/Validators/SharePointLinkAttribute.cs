@@ -28,7 +28,7 @@ namespace Dfe.Complete.Validators
 
             if (!link.StartsWith("https://educationgovuk.sharepoint.com") && !link.StartsWith("https://educationgovuk-my.sharepoint.com/"))
             {
-                var errorMessage = $"Enter {(displayName.StartsWith("a", StringComparison.OrdinalIgnoreCase) ? "a" : "an")} {displayName} in the correct format. SharePoint links start with 'https://educationgovuk.sharepoint.com' or 'https://educationgovuk-my.sharepoint.com/'";
+                var errorMessage = $"Enter {(displayName.StartsWith("s", StringComparison.OrdinalIgnoreCase) ? "a" : "an")} {displayName} in the correct format. SharePoint links start with 'https://educationgovuk.sharepoint.com' or 'https://educationgovuk-my.sharepoint.com/'";
                 return new ValidationResult(errorMessage);
             }
 
