@@ -6,7 +6,7 @@ using Dfe.AcademiesApi.Client.Contracts;
 using Dfe.AcademiesApi.Client.Security;
 using Dfe.AcademiesApi.Client.Settings;
 using Dfe.Complete.Api.Client.Extensions;
-using Dfe.Complete.Application.Common.Mappers;
+using Dfe.Complete.Application.Mappers;
 using Dfe.Complete.Client;
 using Dfe.Complete.Client.Contracts;
 using Dfe.Complete.Infrastructure.Database;

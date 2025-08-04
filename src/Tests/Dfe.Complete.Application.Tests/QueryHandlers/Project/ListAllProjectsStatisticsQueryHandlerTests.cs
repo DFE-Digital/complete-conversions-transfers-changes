@@ -124,7 +124,7 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
         }
 
         private static void AssertNewProjectsInAMonth(DateTime dateTime, ThisMonthNewProjectsStatisticsModel newProjects)
-        { 
+        {
             var currentMonthYear = $"{DateTime.UtcNow:MMMM} {DateTime.UtcNow.Year}";
             Assert.Equal(currentMonthYear, newProjects.Date);
             Assert.Equal(17, newProjects.TotalProjects);
