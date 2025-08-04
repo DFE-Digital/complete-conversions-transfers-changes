@@ -51,7 +51,7 @@
     </div>
   </div>
 }
-else if (User.GetUserAdId() != Model.Project.AssignedToId?.Value.ToString() &&
+else if (User.GetUserId() != Model.Project.AssignedToId &&
 !Model.CurrentUserTeam.TeamIsServiceSupport())
 {
   <div class="govuk-grid-row">
