@@ -56,5 +56,5 @@
         hint="Discuss any questions you have about the project in the meeting."
         add-margin=false />
 
-    <button type="submit" formnovalidate="formnovalidate" class="govuk-button" data-module="govuk-button" data-prevent-double-click="true">Save and return</button>
+    @await Html.PartialAsync("_TaskSaveAndReturn", Model.Project.Team)
 </form>

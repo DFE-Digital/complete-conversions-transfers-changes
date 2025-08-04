@@ -2,7 +2,6 @@ using Dfe.Complete.Application.Projects.Commands.UpdateProject;
 using Dfe.Complete.Application.Projects.Queries.TaskData;
 using Dfe.Complete.Constants;
 using Dfe.Complete.Domain.ValueObjects;
-using Dfe.Complete.Models;
 using Dfe.Complete.Domain.Enums;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
