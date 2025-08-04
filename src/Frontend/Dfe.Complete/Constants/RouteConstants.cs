@@ -41,9 +41,10 @@
         public const string CreateNewProject = "/projects/CreateNewProject";
 
         public const string SelectCreateProjectType = "/projects/new";
-        
+
         public const string ProjectViewNotes = Project + "/notes";
         public const string ProjectAddNote = ProjectViewNotes + "/new";
+        public const string ProjectAddTaskNote = ProjectViewNotes + "/new?task_identifier={1}";
         public const string ProjectEditNote = ProjectViewNotes + "/{1}/edit";
 
         public const string ProjectInternalContacts = Project + "/internal-contacts";
@@ -51,12 +52,14 @@
         public const string ProjectInternalContactsEditAddedByUser = ProjectInternalContacts + "/added-by-user/edit";
         public const string ProjectInternalContactsEditAssignedTeam = ProjectInternalContacts + "/team/edit";
         public const string ProjectDeleteNote = ProjectViewNotes + "/{1}/delete";
-        
+
         public const string ProjectTaskList = Project + "/tasks";
-        
+
         public const string ProjectAbout = Project + "/information";
         public const string ProjectEditAbout = ProjectAbout + "/edit";
+
         public const string ProjectDateHistory = Project + "/date-history";
+        public const string ProjectTask = ProjectTaskList + "/{1}";
         
         public const string ProjectHandoverWithDeliveryOfficerTask = ProjectTaskList + "/handover";
         public const string ProjectStakeholderKickoffTask = ProjectTaskList + "/stakeholder-kickoff";
@@ -108,6 +111,10 @@
         public const string ProjectConfirmDateAcademyTransferredTask = ProjectTaskList + "/confirm_date_academy_transferred";
         public const string ProjectRedactAndSendDocumentsTask = ProjectTaskList + "/redact_and_send_documents";
         public const string ProjectDeclarationOfExpenditureCertificateTask = ProjectTaskList + "/declaration_of_expenditure_certificate"; 
+        public const string ProjectStakeholderKickoffTask = ProjectTaskList + "/stakeholder_kickoff";
+        public const string ProjectLandQuestionnaireTask = ProjectTaskList + "/land_questionnaire";
+        public const string ProjectLandRegistryTask = ProjectTaskList + "/land_registry";
+        public const string ProjectSupplementalFundingAgreementTask = ProjectTaskList + "/supplemental_funding_agreement";
 
         // Groups
         public const string Groups = "/groups";
