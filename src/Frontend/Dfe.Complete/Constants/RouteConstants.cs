@@ -110,11 +110,7 @@
         public const string ProjectConfirmIncomingTrustHasCompletedAllActionsTask = ProjectTaskList + "/confirm_incoming_trust_has_completed_all_actions";
         public const string ProjectConfirmDateAcademyTransferredTask = ProjectTaskList + "/confirm_date_academy_transferred";
         public const string ProjectRedactAndSendDocumentsTask = ProjectTaskList + "/redact_and_send_documents";
-        public const string ProjectDeclarationOfExpenditureCertificateTask = ProjectTaskList + "/declaration_of_expenditure_certificate"; 
-        public const string ProjectStakeholderKickoffTask = ProjectTaskList + "/stakeholder_kickoff";
-        public const string ProjectLandQuestionnaireTask = ProjectTaskList + "/land_questionnaire";
-        public const string ProjectLandRegistryTask = ProjectTaskList + "/land_registry";
-        public const string ProjectSupplementalFundingAgreementTask = ProjectTaskList + "/supplemental_funding_agreement";
+        public const string ProjectDeclarationOfExpenditureCertificateTask = ProjectTaskList + "/declaration_of_expenditure_certificate";
 
         // Groups
         public const string Groups = "/groups";
