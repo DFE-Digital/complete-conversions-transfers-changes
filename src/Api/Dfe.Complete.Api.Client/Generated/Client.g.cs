@@ -3221,8 +3221,8 @@ namespace Dfe.Complete.Client
 
                     var urlBuilder_ = new System.Text.StringBuilder();
                     if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
-                    // Operation Path: "v1/Projects/project/academy-urn"
-                    urlBuilder_.Append("v1/Projects/project/academy-urn");
+                    // Operation Path: "v1/Projects/Project/AcademyUrn"
+                    urlBuilder_.Append("v1/Projects/Project/AcademyUrn");
 
                     PrepareRequest(client_, request_, urlBuilder_);
 
@@ -3262,6 +3262,407 @@ namespace Dfe.Complete.Client
                         {
                             string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
                             throw new CompleteApiException("Project not found.", status_, responseText_, headers_, null);
+                        }
+                        else
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new CompleteApiException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                        }
+                    }
+                    finally
+                    {
+                        if (disposeResponse_)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+                if (disposeClient_)
+                    client_.Dispose();
+            }
+        }
+
+        /// <summary>
+        /// Assign the handover project to a specific team or user.
+        /// </summary>
+        /// <param name="request">The update command.</param>
+        /// <returns>Invalid request data.</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        public virtual System.Threading.Tasks.Task AssignHandoverProjectAsync(UpdateHandoverProjectCommand request)
+        {
+            return AssignHandoverProjectAsync(request, System.Threading.CancellationToken.None);
+        }
+
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>
+        /// Assign the handover project to a specific team or user.
+        /// </summary>
+        /// <param name="request">The update command.</param>
+        /// <returns>Invalid request data.</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        public virtual async System.Threading.Tasks.Task AssignHandoverProjectAsync(UpdateHandoverProjectCommand request, System.Threading.CancellationToken cancellationToken)
+        {
+            if (request == null)
+                throw new System.ArgumentNullException("request");
+
+            var client_ = _httpClient;
+            var disposeClient_ = false;
+            try
+            {
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                {
+                    var json_ = Newtonsoft.Json.JsonConvert.SerializeObject(request, JsonSerializerSettings);
+                    var content_ = new System.Net.Http.StringContent(json_);
+                    content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
+                    request_.Content = content_;
+                    request_.Method = new System.Net.Http.HttpMethod("PATCH");
+
+                    var urlBuilder_ = new System.Text.StringBuilder();
+                    if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
+                    // Operation Path: "v1/Projects/Project/Handover/Assign"
+                    urlBuilder_.Append("v1/Projects/Project/Handover/Assign");
+
+                    PrepareRequest(client_, request_, urlBuilder_);
+
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+
+                    PrepareRequest(client_, request_, url_);
+
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    var disposeResponse_ = true;
+                    try
+                    {
+                        var headers_ = new System.Collections.Generic.Dictionary<string, System.Collections.Generic.IEnumerable<string>>();
+                        foreach (var item_ in response_.Headers)
+                            headers_[item_.Key] = item_.Value;
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+
+                        ProcessResponse(client_, response_);
+
+                        var status_ = (int)response_.StatusCode;
+                        if (status_ == 204)
+                        {
+                            return;
+                        }
+                        else
+                        if (status_ == 404)
+                        {
+                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new CompleteApiException("Project not found.", status_, responseText_, headers_, null);
+                        }
+                        else
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new CompleteApiException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                        }
+                    }
+                    finally
+                    {
+                        if (disposeResponse_)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+                if (disposeClient_)
+                    client_.Dispose();
+            }
+        }
+
+        /// <summary>
+        /// Returns the details of a project for handover.
+        /// </summary>
+        /// <returns>Project</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        public virtual System.Threading.Tasks.Task<ProjectWithEstablishmentQueryModel> GetHandoverProjectDetailsAsync(System.Guid? projectId_Value)
+        {
+            return GetHandoverProjectDetailsAsync(projectId_Value, System.Threading.CancellationToken.None);
+        }
+
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>
+        /// Returns the details of a project for handover.
+        /// </summary>
+        /// <returns>Project</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        public virtual async System.Threading.Tasks.Task<ProjectWithEstablishmentQueryModel> GetHandoverProjectDetailsAsync(System.Guid? projectId_Value, System.Threading.CancellationToken cancellationToken)
+        {
+            var client_ = _httpClient;
+            var disposeClient_ = false;
+            try
+            {
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                {
+                    request_.Method = new System.Net.Http.HttpMethod("GET");
+                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
+
+                    var urlBuilder_ = new System.Text.StringBuilder();
+                    if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
+                    // Operation Path: "v1/Projects/Project/Handover/Details"
+                    urlBuilder_.Append("v1/Projects/Project/Handover/Details");
+                    urlBuilder_.Append('?');
+                    if (projectId_Value != null)
+                    {
+                        urlBuilder_.Append(System.Uri.EscapeDataString("ProjectId.Value")).Append('=').Append(System.Uri.EscapeDataString(ConvertToString(projectId_Value, System.Globalization.CultureInfo.InvariantCulture))).Append('&');
+                    }
+                    urlBuilder_.Length--;
+
+                    PrepareRequest(client_, request_, urlBuilder_);
+
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+
+                    PrepareRequest(client_, request_, url_);
+
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    var disposeResponse_ = true;
+                    try
+                    {
+                        var headers_ = new System.Collections.Generic.Dictionary<string, System.Collections.Generic.IEnumerable<string>>();
+                        foreach (var item_ in response_.Headers)
+                            headers_[item_.Key] = item_.Value;
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+
+                        ProcessResponse(client_, response_);
+
+                        var status_ = (int)response_.StatusCode;
+                        if (status_ == 200)
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<ProjectWithEstablishmentQueryModel>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            if (objectResponse_.Object == null)
+                            {
+                                throw new CompleteApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                            }
+                            return objectResponse_.Object;
+                        }
+                        else
+                        if (status_ == 404)
+                        {
+                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new CompleteApiException("project not found.", status_, responseText_, headers_, null);
+                        }
+                        else
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new CompleteApiException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                        }
+                    }
+                    finally
+                    {
+                        if (disposeResponse_)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+                if (disposeClient_)
+                    client_.Dispose();
+            }
+        }
+
+        /// <summary>
+        /// Returns the details of a project for handover.
+        /// </summary>
+        /// <returns>A list of Projects</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        public virtual System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<ListAllProjectsResultModel>> ListAllProjectsHandoverAsync(ProjectState? projectStatus, int? urn_Value, OrderProjectByField? orderBy_Field, OrderByDirection? orderBy_Direction, int? page, int? count)
+        {
+            return ListAllProjectsHandoverAsync(projectStatus, urn_Value, orderBy_Field, orderBy_Direction, page, count, System.Threading.CancellationToken.None);
+        }
+
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>
+        /// Returns the details of a project for handover.
+        /// </summary>
+        /// <returns>A list of Projects</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        public virtual async System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<ListAllProjectsResultModel>> ListAllProjectsHandoverAsync(ProjectState? projectStatus, int? urn_Value, OrderProjectByField? orderBy_Field, OrderByDirection? orderBy_Direction, int? page, int? count, System.Threading.CancellationToken cancellationToken)
+        {
+            var client_ = _httpClient;
+            var disposeClient_ = false;
+            try
+            {
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                {
+                    request_.Method = new System.Net.Http.HttpMethod("GET");
+                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
+
+                    var urlBuilder_ = new System.Text.StringBuilder();
+                    if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
+                    // Operation Path: "v1/Projects/List/All/Handover"
+                    urlBuilder_.Append("v1/Projects/List/All/Handover");
+                    urlBuilder_.Append('?');
+                    if (projectStatus != null)
+                    {
+                        urlBuilder_.Append(System.Uri.EscapeDataString("ProjectStatus")).Append('=').Append(System.Uri.EscapeDataString(ConvertToString(projectStatus, System.Globalization.CultureInfo.InvariantCulture))).Append('&');
+                    }
+                    if (urn_Value != null)
+                    {
+                        urlBuilder_.Append(System.Uri.EscapeDataString("Urn.Value")).Append('=').Append(System.Uri.EscapeDataString(ConvertToString(urn_Value, System.Globalization.CultureInfo.InvariantCulture))).Append('&');
+                    }
+                    if (orderBy_Field != null)
+                    {
+                        urlBuilder_.Append(System.Uri.EscapeDataString("OrderBy.Field")).Append('=').Append(System.Uri.EscapeDataString(ConvertToString(orderBy_Field, System.Globalization.CultureInfo.InvariantCulture))).Append('&');
+                    }
+                    if (orderBy_Direction != null)
+                    {
+                        urlBuilder_.Append(System.Uri.EscapeDataString("OrderBy.Direction")).Append('=').Append(System.Uri.EscapeDataString(ConvertToString(orderBy_Direction, System.Globalization.CultureInfo.InvariantCulture))).Append('&');
+                    }
+                    if (page != null)
+                    {
+                        urlBuilder_.Append(System.Uri.EscapeDataString("Page")).Append('=').Append(System.Uri.EscapeDataString(ConvertToString(page, System.Globalization.CultureInfo.InvariantCulture))).Append('&');
+                    }
+                    if (count != null)
+                    {
+                        urlBuilder_.Append(System.Uri.EscapeDataString("Count")).Append('=').Append(System.Uri.EscapeDataString(ConvertToString(count, System.Globalization.CultureInfo.InvariantCulture))).Append('&');
+                    }
+                    urlBuilder_.Length--;
+
+                    PrepareRequest(client_, request_, urlBuilder_);
+
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+
+                    PrepareRequest(client_, request_, url_);
+
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    var disposeResponse_ = true;
+                    try
+                    {
+                        var headers_ = new System.Collections.Generic.Dictionary<string, System.Collections.Generic.IEnumerable<string>>();
+                        foreach (var item_ in response_.Headers)
+                            headers_[item_.Key] = item_.Value;
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+
+                        ProcessResponse(client_, response_);
+
+                        var status_ = (int)response_.StatusCode;
+                        if (status_ == 200)
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<System.Collections.ObjectModel.ObservableCollection<ListAllProjectsResultModel>>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            if (objectResponse_.Object == null)
+                            {
+                                throw new CompleteApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                            }
+                            return objectResponse_.Object;
+                        }
+                        else
+                        if (status_ == 404)
+                        {
+                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new CompleteApiException("project not found.", status_, responseText_, headers_, null);
+                        }
+                        else
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new CompleteApiException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                        }
+                    }
+                    finally
+                    {
+                        if (disposeResponse_)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+                if (disposeClient_)
+                    client_.Dispose();
+            }
+        }
+
+        /// <summary>
+        /// Gets a Project by Id
+        /// </summary>
+        /// <returns>Project</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        public virtual System.Threading.Tasks.Task<ProjectDto> GetProjectByIdAsync(System.Guid? projectId_Value)
+        {
+            return GetProjectByIdAsync(projectId_Value, System.Threading.CancellationToken.None);
+        }
+
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>
+        /// Gets a Project by Id
+        /// </summary>
+        /// <returns>Project</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        public virtual async System.Threading.Tasks.Task<ProjectDto> GetProjectByIdAsync(System.Guid? projectId_Value, System.Threading.CancellationToken cancellationToken)
+        {
+            var client_ = _httpClient;
+            var disposeClient_ = false;
+            try
+            {
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                {
+                    request_.Method = new System.Net.Http.HttpMethod("GET");
+                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
+
+                    var urlBuilder_ = new System.Text.StringBuilder();
+                    if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
+                    // Operation Path: "v1/Projects/List/Project/Id"
+                    urlBuilder_.Append("v1/Projects/List/Project/Id");
+                    urlBuilder_.Append('?');
+                    if (projectId_Value != null)
+                    {
+                        urlBuilder_.Append(System.Uri.EscapeDataString("ProjectId.Value")).Append('=').Append(System.Uri.EscapeDataString(ConvertToString(projectId_Value, System.Globalization.CultureInfo.InvariantCulture))).Append('&');
+                    }
+                    urlBuilder_.Length--;
+
+                    PrepareRequest(client_, request_, urlBuilder_);
+
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+
+                    PrepareRequest(client_, request_, url_);
+
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    var disposeResponse_ = true;
+                    try
+                    {
+                        var headers_ = new System.Collections.Generic.Dictionary<string, System.Collections.Generic.IEnumerable<string>>();
+                        foreach (var item_ in response_.Headers)
+                            headers_[item_.Key] = item_.Value;
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+
+                        ProcessResponse(client_, response_);
+
+                        var status_ = (int)response_.StatusCode;
+                        if (status_ == 200)
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<ProjectDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            if (objectResponse_.Object == null)
+                            {
+                                throw new CompleteApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                            }
+                            return objectResponse_.Object;
+                        }
+                        else
+                        if (status_ == 404)
+                        {
+                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new CompleteApiException("project not found.", status_, responseText_, headers_, null);
                         }
                         else
                         {
@@ -3477,10 +3878,10 @@ namespace Dfe.Complete.Client
 
                     var urlBuilder_ = new System.Text.StringBuilder();
                     if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
-                    // Operation Path: "v1/Projects/{groupReferenceNumber}/project_group"
+                    // Operation Path: "v1/Projects/{groupReferenceNumber}/ProjectGroup"
                     urlBuilder_.Append("v1/Projects/");
                     urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(groupReferenceNumber, System.Globalization.CultureInfo.InvariantCulture)));
-                    urlBuilder_.Append("/project_group");
+                    urlBuilder_.Append("/ProjectGroup");
 
                     PrepareRequest(client_, request_, urlBuilder_);
 
