@@ -84,6 +84,9 @@ See the [full commit history](https://github.com/DFE-Digital/complete-conversion
 - Add project notes creation page (`/projects/{projectId}/notes/new`)
 - Add ability to delete note (`/projects/{projectId}/notes/{noteId}/delete`)
 - Attach user ID from DB as custom claim
+- Add handover page  (`/projects/all/handover`)
+- Add handover project check page  (`/projects/all/handover/{projectId}/check`)
+- Add handover project add detail & confirmation page  (`/projects/all/handover/{projectId}/new`)
 
 ### Changed  
 

@@ -461,6 +461,68 @@ namespace Dfe.Complete.Client.Contracts
         /// <exception cref="CompleteApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task UpdateAcademyUrnAsync(UpdateAcademyUrnCommand request, System.Threading.CancellationToken cancellationToken);
 
+        /// <summary>
+        /// Assign the handover project to a specific team or user.
+        /// </summary>
+        /// <param name="request">The update command.</param>
+        /// <returns>Invalid request data.</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task AssignHandoverProjectAsync(UpdateHandoverProjectCommand request);
+
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>
+        /// Assign the handover project to a specific team or user.
+        /// </summary>
+        /// <param name="request">The update command.</param>
+        /// <returns>Invalid request data.</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task AssignHandoverProjectAsync(UpdateHandoverProjectCommand request, System.Threading.CancellationToken cancellationToken);
+
+        /// <summary>
+        /// Returns the details of a project for handover.
+        /// </summary>
+        /// <returns>Project</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<ProjectWithEstablishmentQueryModel> GetHandoverProjectDetailsAsync(System.Guid? projectId_Value);
+
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>
+        /// Returns the details of a project for handover.
+        /// </summary>
+        /// <returns>Project</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<ProjectWithEstablishmentQueryModel> GetHandoverProjectDetailsAsync(System.Guid? projectId_Value, System.Threading.CancellationToken cancellationToken);
+
+        /// <summary>
+        /// Returns the details of a project for handover.
+        /// </summary>
+        /// <returns>A list of Projects</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<ListAllProjectsResultModel>> ListAllProjectsHandoverAsync(ProjectState? projectStatus, int? urn_Value, OrderProjectByField? orderBy_Field, OrderByDirection? orderBy_Direction, int? page, int? count);
+
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>
+        /// Returns the details of a project for handover.
+        /// </summary>
+        /// <returns>A list of Projects</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<ListAllProjectsResultModel>> ListAllProjectsHandoverAsync(ProjectState? projectStatus, int? urn_Value, OrderProjectByField? orderBy_Field, OrderByDirection? orderBy_Direction, int? page, int? count, System.Threading.CancellationToken cancellationToken);
+
+        /// <summary>
+        /// Gets a Project by Id
+        /// </summary>
+        /// <returns>Project</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<ProjectDto> GetProjectByIdAsync(System.Guid? projectId_Value);
+
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>
+        /// Gets a Project by Id
+        /// </summary>
+        /// <returns>Project</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<ProjectDto> GetProjectByIdAsync(System.Guid? projectId_Value, System.Threading.CancellationToken cancellationToken);
+
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "14.2.0.0 (NJsonSchema v11.1.0.0 (Newtonsoft.Json v13.0.0.0))")]
@@ -1208,6 +1270,9 @@ namespace Dfe.Complete.Client.Contracts
 
         [Newtonsoft.Json.JsonProperty("formAMat", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public bool? FormAMat { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("establishmentName", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string? EstablishmentName { get; set; } = default!;
 
         public string ToJson()
         {
@@ -2325,6 +2390,10 @@ namespace Dfe.Complete.Client.Contracts
         [Newtonsoft.Json.JsonProperty("newTrustReferenceNumber", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string? NewTrustReferenceNumber { get; set; } = default!;
 
+        [Newtonsoft.Json.JsonProperty("advisoryBoardDate", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonConverter(typeof(DateFormatConverter))]
+        public System.DateTime? AdvisoryBoardDate { get; set; } = default!;
+
         public string ToJson()
         {
 
@@ -2911,6 +2980,134 @@ namespace Dfe.Complete.Client.Contracts
             return Newtonsoft.Json.JsonConvert.DeserializeObject<UpdateAcademyUrnCommand>(data, new Newtonsoft.Json.JsonSerializerSettings());
 
         }
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.2.0.0 (NJsonSchema v11.1.0.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class UpdateHandoverProjectCommand
+    {
+        [Newtonsoft.Json.JsonProperty("projectId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public ProjectId? ProjectId { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("schoolSharepointLink", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string? SchoolSharepointLink { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("incomingTrustSharepointLink", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string? IncomingTrustSharepointLink { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("outgoingTrustSharepointLink", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string? OutgoingTrustSharepointLink { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("assignedToRegionalCaseworkerTeam", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? AssignedToRegionalCaseworkerTeam { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("handoverComments", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string? HandoverComments { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("userId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public UserId? UserId { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("userTeam", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
+        public ProjectTeam? UserTeam { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("twoRequiresImprovement", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? TwoRequiresImprovement { get; set; } = default!;
+
+        public string ToJson()
+        {
+
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonSerializerSettings());
+
+        }
+        public static UpdateHandoverProjectCommand FromJson(string data)
+        {
+
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<UpdateHandoverProjectCommand>(data, new Newtonsoft.Json.JsonSerializerSettings());
+
+        }
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.2.0.0 (NJsonSchema v11.1.0.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class ProjectWithEstablishmentQueryModel
+    {
+        [Newtonsoft.Json.JsonProperty("establishmentName", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string? EstablishmentName { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("projectId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public ProjectId? ProjectId { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("urn", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public Urn? Urn { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("conversionOrTransferDate", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonConverter(typeof(DateFormatConverter))]
+        public System.DateTime? ConversionOrTransferDate { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("projectType", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
+        public ProjectType? ProjectType { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("isFormAMAT", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? IsFormAMAT { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("regionalDeliveryOfficer", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string? RegionalDeliveryOfficer { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("createdAt", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.DateTime? CreatedAt { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("newTrustName", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string? NewTrustName { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("newTrustReferenceNumber", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string? NewTrustReferenceNumber { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("advisoryBoardDate", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonConverter(typeof(DateFormatConverter))]
+        public System.DateTime? AdvisoryBoardDate { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("outgoingTrustName", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string? OutgoingTrustName { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("outgoingTrustUkprn", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public Ukprn? OutgoingTrustUkprn { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("academyOrderType", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
+        public AcademyOrderType? AcademyOrderType { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("incomingTrustName", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string? IncomingTrustName { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("incomingTrustUkprn", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public Ukprn? IncomingTrustUkprn { get; set; } = default!;
+
+        public string ToJson()
+        {
+
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonSerializerSettings());
+
+        }
+        public static ProjectWithEstablishmentQueryModel FromJson(string data)
+        {
+
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<ProjectWithEstablishmentQueryModel>(data, new Newtonsoft.Json.JsonSerializerSettings());
+
+        }
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.2.0.0 (NJsonSchema v11.1.0.0 (Newtonsoft.Json v13.0.0.0))")]
+    public enum AcademyOrderType
+    {
+
+        [System.Runtime.Serialization.EnumMember(Value = @"AcademyOrder")]
+        AcademyOrder = 0,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"DirectiveAcademyOrder")]
+        DirectiveAcademyOrder = 1,
 
     }
 

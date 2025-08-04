@@ -12,12 +12,12 @@ using System.Text;
 using System.Text.Json.Serialization;
 using Asp.Versioning;
 using Asp.Versioning.ApiExplorer;
-using Dfe.Complete.Application.Common.Mappers;
 using Dfe.Complete.Infrastructure;
 using Dfe.Complete.Infrastructure.Security.Authorization;
 using DfE.CoreLibs.Http.Middlewares.CorrelationId;
 using DfE.CoreLibs.Http.Interfaces;
 using Dfe.Complete.Logging.Middleware;
+using Dfe.Complete.Application.Mappers;
 
 namespace Dfe.Complete.Api
 {
