@@ -1,8 +1,9 @@
 import { beforeEach } from "mocha";
 import {
-    shouldBeAbleToViewReportsLandingPage,
     shouldBeAbleToViewMultipleMonthsOfProjects,
+    shouldBeAbleToViewReportsLandingPage,
     shouldNotBeAbleToAddAProjectNote,
+    shouldNotBeAbleToAddAProjectTaskNote,
     shouldNotBeAbleToCreateAProject,
     shouldNotHaveAccessToViewYourProjectsSections,
     shouldNotHaveAccessToViewYourTeamProjectsSections,
@@ -15,8 +16,7 @@ import projectApi from "cypress/api/projectApi";
 import { ProjectBuilder } from "cypress/api/projectBuilder";
 import { nextMonth } from "cypress/constants/stringTestConstants";
 
-const project
-    = ProjectBuilder.createConversionProjectRequest(nextMonth);
+const project = ProjectBuilder.createConversionProjectRequest(nextMonth);
 let projectId: string;
 describe("Capabilities and permissions of the service support user", () => {
     before(() => {
@@ -26,11 +26,10 @@ describe("Capabilities and permissions of the service support user", () => {
     beforeEach(() => {
         cy.login(serviceSupportUser);
         cy.acceptCookies();
-        cy.visit("/projects/all/in-progress/all"); // visit '/' goes to service support that is not implemented yet
+        cy.visit("/");
     });
 
-    // not implemented 187518
-    it.skip("Should direct user to all Service support -> without academy URNs after login", () => {
+    it("Should direct user to all Service support -> without academy URNs after login", () => {
         cy.url().should("include", "/projects/service-support/without-academy-urn");
     });
 
@@ -87,19 +86,15 @@ describe("Capabilities and permissions of the service support user", () => {
         // not implemented 187527
     });
 
-    it.skip("Should be able to create local authority details", () => {
-        // not implemented 187525
-    });
-
-    it.skip("Should be able to edit local authority details", () => {
-        // not implemented 187525
-    });
-
     it("Should NOT be able to create a project", () => {
         shouldNotBeAbleToCreateAProject();
     });
 
     it("Should NOT be able to add a note to a project", () => {
         shouldNotBeAbleToAddAProjectNote(projectId);
+    });
+
+    it("Should NOT be able to add a task note to a project", () => {
+        shouldNotBeAbleToAddAProjectTaskNote(projectId);
     });
 });

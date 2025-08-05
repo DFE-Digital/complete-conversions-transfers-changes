@@ -9,6 +9,7 @@ interface NoteCreateRequest {
     projectId: NoteIdObject;
     userId: NoteIdObject;
     body: string;
+    taskIdentifier?: string;
 }
 
 interface NoteDeleteRequest {
@@ -57,13 +58,15 @@ class NoteApi extends ApiBase {
         });
     }
 
-    public createNote(projectId: string, userId: string, note: string) {
+    public createNote(projectId: string, userId: string, note: string, taskIdentifier?: string) {
         const requestBody: NoteCreateRequest = {
             projectId: { value: projectId },
             userId: { value: userId },
             body: note,
         };
-
+        if (taskIdentifier) {
+            requestBody.taskIdentifier = taskIdentifier;
+        }
         return this.noteBaseRequest<NoteResponse>("POST", this.noteUrl, requestBody, 201);
     }
 
