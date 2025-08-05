@@ -16,7 +16,23 @@ Security in case of vulnerabilities.
 
 ## Unreleased
 
-### Added  
+### Added
+
+### Changed
+
+### Fixed
+
+See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-08-05.608...main) for everything awaiting release
+
+---
+
+## [1.11.0](https://github.com/DFE-Digital/complete-conversions-transfers-changes/releases/tag/production-2025-08-05.608) - 2025-08-05
+
+### Added
+- Add handover page  (`/projects/all/handover`)
+- Add handover project check page  (`/projects/all/handover/{projectId}/check`)
+- Add handover project add detail & confirmation page  (`/projects/all/handover/{projectId}/new`)
+- Added `App Insight` for tracking users clicks and page views
 
 - Added `Handover with Regional Delivery Officer` task page
 
@@ -30,7 +46,7 @@ Security in case of vulnerabilities.
 - Fixed all trust list page by filtering to incoming ukprn instead of MAT and non MAT projects
 - Fixed _ProjectLayout to correctly show the unassigned banner based on whether the user is service support or assigned to the project
 
-See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-07-24.577...main) for everything awaiting release
+See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-07-24.577...production-2025-08-05.608) for everything in the release
 
 ---
 
@@ -84,9 +100,6 @@ See the [full commit history](https://github.com/DFE-Digital/complete-conversion
 - Add project notes creation page (`/projects/{projectId}/notes/new`)
 - Add ability to delete note (`/projects/{projectId}/notes/{noteId}/delete`)
 - Attach user ID from DB as custom claim
-- Add handover page  (`/projects/all/handover`)
-- Add handover project check page  (`/projects/all/handover/{projectId}/check`)
-- Add handover project add detail & confirmation page  (`/projects/all/handover/{projectId}/new`)
 
 ### Changed  
 
@@ -105,7 +118,6 @@ See the [full commit history](https://github.com/DFE-Digital/complete-conversion
 - Service support Create Academy URN (/projects/{projectId}/academy-urn) 
 - Added `Statistics` page
 - Added Project Significant History Dates `/projects/{projectId}/date-history`
-
 
 ### Changed  
 

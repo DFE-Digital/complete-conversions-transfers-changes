@@ -2,8 +2,26 @@ namespace Dfe.Complete.Security
 {	
 	public static class SecurityHeadersDefinitions
 	{
-		static string GoogleTagManagerUri => "https://www.googletagmanager.com";
-		static string GoogleAnalyticsUri => "https://www.google-analytics.com/";
+        private static readonly string[] DefaultSrcExclusions = ["wss://localhost:*/Dfe.Complete/"];
+
+        private static readonly string[] ScriptSrcExclusions =
+		[
+			"https://*.googletagmanager.com", "https://*.google-analytics.com",
+			"https://js.monitor.azure.com/scripts/b/ext/ai.clck.2.8.18.min.js",
+			"https://js.monitor.azure.com/scripts/b/ai.3.gbl.min.js"
+		];
+
+        private static readonly string[] ConnectSrcExclusions =
+		[
+			"https://js.monitor.azure.com/scripts/b/ai.config.1.cfg.json",
+			"https://*.in.applicationinsights.azure.com/v2/track", "https://*.googletagmanager.com",
+			"https://*.google-analytics.com"
+		];
+
+        private static readonly string[] ImageSrcExclusions =
+		[
+			"https://www.googletagmanager.com", "https://*.google-analytics.com"
+		];
 
 		public static HeaderPolicyCollection GetHeaderPolicyCollection(bool isDev)
 		{			
@@ -28,17 +46,18 @@ namespace Dfe.Complete.Security
 				})
 				.AddContentSecurityPolicy(builder =>
 				{
-					builder.AddObjectSrc().None();
+                    builder.AddDefaultSrc().Self().From(DefaultSrcExclusions);
+                    builder.AddScriptSrc().Self().WithNonce().From(ScriptSrcExclusions);
+                    builder.AddConnectSrc().Self().From(ConnectSrcExclusions);
+                    builder.AddImgSrc().Self().From(ImageSrcExclusions);
+                    builder.AddObjectSrc().None();
 					builder.AddBlockAllMixedContent();
-					builder.AddImgSrc().Self().From("data:").From(GoogleAnalyticsUri)
-						.From(GoogleTagManagerUri);
 					builder.AddFormAction().Self();
 					builder.AddFormAction().OverHttps();
 					builder.AddFontSrc().Self();
 					builder.AddStyleSrc().Self();
 					builder.AddBaseUri().Self();
-					builder.AddScriptSrc().From(GoogleTagManagerUri).UnsafeInline().WithNonce();
-               builder.AddFrameAncestors().None();
+					builder.AddFrameAncestors().None();
 				})
 				.RemoveServerHeader()
 				.AddPermissionsPolicy(builder =>

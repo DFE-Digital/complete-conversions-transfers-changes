@@ -109,7 +109,7 @@ describe("Create a new Transfer Project", () => {
             .hasLinkedValidationError("The School or academy SharePoint link must have the https scheme")
             .hasLinkedValidationError("The Incoming trust SharePoint link must have the https scheme")
             .hasLinkedValidationError(
-                "Enter Outgoing trust SharePoint link in the correct format. SharePoint links start with 'https://educationgovuk.sharepoint.com' or 'https://educationgovuk-my.sharepoint.com/'",
+                "Enter an Outgoing trust SharePoint link in the correct format. SharePoint links start with 'https://educationgovuk.sharepoint.com' or 'https://educationgovuk-my.sharepoint.com/",
             )
             .hasLinkedValidationError("Advisory Board Date must be a real date")
             .hasLinkedValidationError("Provisional Transfer Date must be a real date")
