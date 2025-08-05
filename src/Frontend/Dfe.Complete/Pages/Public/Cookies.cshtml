@@ -107,7 +107,7 @@
         </p>
         <p class="govuk-body">
             Google Analytics is not allowed to use or share our analytics data with anyone.
-            Application Insights stores anonymised information about:
+            Application Insights stores information about:
         </p>
         <ul class="govuk-list govuk-list--bullet">
             <li>how you got to this website</li>
@@ -136,8 +136,23 @@
                     <td class="govuk-table__cell">Remembers your last session</td>
                     <td class="govuk-table__cell">2 years</td>
                 </tr>
+                <tr class="govuk-table__row">
+                    <td class="govuk-table__cell">ai_session</td>
+                    <td class="govuk-table__cell">This helps us track activity happening over a single browser session</td>
+                    <td class="govuk-table__cell">1 hour</td>
+                </tr>
+                <tr class="govuk-table__row">
+                    <td class="govuk-table__cell">ai_user</td>
+                    <td class="govuk-table__cell">This helps us to identify the number of distinct users accessing the site over time by tracking if you've visited before</td>
+                    <td class="govuk-table__cell">1 year</td>
+                </tr>
+                <tr class="govuk-table__row">
+                    <td class="govuk-table__cell">ai_authuser</td>
+                    <td class="govuk-table__cell">This helps us to identify authenticated users and how they interact with the site</td>
+                    <td class="govuk-table__cell">When you close your browser</td>
+                </tr>
             </tbody>
-        </table>
+        </table> 
         <form method="post">
             <input type="hidden" name="returnUrl" value="@Model.ReturnPath" />
             <div class="govuk-form-group">
