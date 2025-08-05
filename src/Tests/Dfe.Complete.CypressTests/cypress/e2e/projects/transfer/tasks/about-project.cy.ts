@@ -144,6 +144,8 @@ describe("About the project page - transfer projects: ", () => {
                 `${incomingTrust.companiesHouseNumber} View the Companies House information (opens in new tab)`,
                 `https://find-and-update.company-information.service.gov.uk/company/${incomingTrust.companiesHouseNumber}`,
             )
+            // .summaryShows("New trust reference number (TRN)") // bug 227460
+            // .hasValue("")
             .summaryShows("Address")
             .hasValue(incomingTrust.address)
             .summaryShows("SharePoint folder")
@@ -267,31 +269,26 @@ describe("About the project page - transfer projects: ", () => {
             )
             // .hasChangeLink(`${formAMATChangeLinkPath}sharepoint-folder-links`) // not implemented 219174
 
-            // bug 221303
-            // .subSection("Incoming trust details")
-            // .hasSubHeading("Incoming trust details")
-            // .summaryShows("Name")
-            // .hasValueWithLink(
-            //     `${projectFormAMat.newTrustName.toUpperCase()} View the trust information in GIAS (opens in new tab)`,
-            //     `${giasUrl}/Groups/Search?GroupSearchModel.Text=${incomingTrust.ukprn}`
-            // )
-            // .summaryShows("UKPRN (UK provider reference number)")
-            // .hasValue(incomingTrust.ukprn)
-            // // .hasChangeLink(`${formAMATChangeLinkPath}incoming-trust-ukprn`) // not implemented 219174
-            // .summaryShows("Group ID (identifier)")
+            .subSection("Incoming trust details")
+            .hasSubHeading("Incoming trust details")
+            .summaryShows("Name")
+            .hasValueWithLink(incomingTrust.name)
+            .summaryShows("UKPRN (UK provider reference number)")
+            .hasValue("")
+            // .hasChangeLink(`${formAMATChangeLinkPath}incoming-trust-ukprn`) // not implemented 219174
+            .summaryShows("Group ID (identifier)")
+            .hasValue(incomingTrust.referenceNumber)
+            .summaryShows("Companies House number")
+            .hasValueWithLink("")
+            // .summaryShows("New trust reference number (TRN)") // bug 227460
             // .hasValue(projectFormAMat.newTrustReferenceNumber)
-            // .summaryShows("Companies House number")
-            // .hasValueWithLink(
-            //     `${incomingTrust.companiesHouseNumber} View the Companies House information (opens in new tab)`,
-            //     `https://find-and-update.company-information.service.gov.uk/company/${incomingTrust.companiesHouseNumber}`
-            // )
-            // .summaryShows("Address")
-            // .hasValue(incomingTrust.address)
-            // .summaryShows("SharePoint folder")
-            // .hasValueWithLink(
-            //     "View the trust SharePoint folder (opens in new tab)",
-            //     projectFormAMat.incomingTrustSharepointLink
-            // )
+            .summaryShows("Address")
+            .hasValue("")
+            .summaryShows("SharePoint folder")
+            .hasValueWithLink(
+                "View the trust SharePoint folder (opens in new tab)",
+                projectFormAMat.incomingTrustSharepointLink,
+            )
             // .hasChangeLink(`${formAMATChangeLinkPath}sharepoint-folder-links`); // not implemented 219174
 
             .subSection("Outgoing trust details")

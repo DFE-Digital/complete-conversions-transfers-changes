@@ -9,10 +9,13 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace Dfe.Complete.Pages.Projects.Notes;
 
-public class DeleteProjectNoteModel(ISender sender, ILogger<DeleteProjectNoteModel> _logger) : ProjectNotesBaseModel(sender, _logger, NotesNavigation)
+public class DeleteProjectNoteModel(ISender sender, ILogger<DeleteProjectNoteModel> logger) : BaseProjectNotesModel(sender, logger, NotesNavigation)
 {
     [BindProperty(SupportsGet = true, Name = "noteId")]
     public required Guid NoteId { get; set; }
+
+    [BindProperty]
+    public string? TaskIdentifier { get; set; }
 
     public async override Task<IActionResult> OnGetAsync()
     {
@@ -23,7 +26,7 @@ public class DeleteProjectNoteModel(ISender sender, ILogger<DeleteProjectNoteMod
         if (note == null)
             return NotFound();
 
-        if (!CanEditNote(note.UserId))
+        if (!CanDeleteNote(note.UserId, note.IsNotable))
         {
             TempData.SetNotification(
                 NotificationType.Error,
@@ -33,6 +36,8 @@ public class DeleteProjectNoteModel(ISender sender, ILogger<DeleteProjectNoteMod
             return Redirect(string.Format(RouteConstants.ProjectViewNotes, ProjectId));
         }
 
+        TaskIdentifier = note.TaskIdentifier;
+
         return Page();
     }
     public async Task<IActionResult> OnPostAsync()
@@ -40,7 +45,7 @@ public class DeleteProjectNoteModel(ISender sender, ILogger<DeleteProjectNoteMod
         var response = await Sender.Send(new RemoveNoteCommand(new NoteId(NoteId)));
 
         if (!(response.IsSuccess || response.Value == true))
-            throw new ApplicationException($"An error occurred when deleting note {NoteId} for project {ProjectId}");
+            throw new InvalidOperationException($"An error occurred when deleting note {NoteId} for project {ProjectId}");
 
         TempData.SetNotification(
             NotificationType.Success,
@@ -48,6 +53,6 @@ public class DeleteProjectNoteModel(ISender sender, ILogger<DeleteProjectNoteMod
             "Your note has been deleted"
         );
 
-        return Redirect(string.Format(RouteConstants.ProjectViewNotes, ProjectId));
+        return Redirect(GetReturnUrl(TaskIdentifier));
     }
 }

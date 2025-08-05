@@ -14,6 +14,7 @@ using GiasEstablishment = Dfe.Complete.Domain.Entities.GiasEstablishment;
 using LocalAuthority = Dfe.Complete.Domain.Entities.LocalAuthority;
 using Note = Dfe.Complete.Domain.Entities.Note;
 using Dfe.Complete.Domain.Constants;
+using DfE.CoreLibs.Utilities.Extensions;
 
 namespace Dfe.Complete.Api.Tests.Integration.Controllers.ProjectsController;
 
@@ -79,6 +80,71 @@ public partial class ProjectsControllerTests
         Assert.NotNull(results);
         Assert.Equal(7, results.Count);
         Assert.All(results, x => Assert.Equivalent(firstProjectId, x.ProjectId));
+    }
+
+    [Theory]
+    [CustomAutoData(
+        typeof(CustomWebApplicationDbContextFactoryCustomization),
+        typeof(DateOnlyCustomization),
+        typeof(OmitCircularReferenceCustomization),
+        typeof(ProjectCustomization),
+        typeof(NoteCustomization))]
+    public async Task GetTaskNotesByProjectIdQueryAsync_ShouldReturnList(
+        CustomWebApplicationDbContextFactory<Program> factory,
+        IProjectsClient projectsClient,
+        IFixture fixture)
+    {
+        factory.TestClaims = [new Claim(ClaimTypes.Role, ApiRoles.ReadRole)];
+
+        // Arrange
+        var dbContext = factory.GetDbContext<CompleteContext>();
+        var testUser = await dbContext.Users.FirstAsync();
+
+        var establishments = fixture.Customize(new GiasEstablishmentsCustomization()).CreateMany<GiasEstablishment>(50)
+            .ToList();
+
+        await dbContext.GiasEstablishments.AddRangeAsync(establishments);
+        var projects = establishments.Select(establishment =>
+        {
+            var project = fixture.Customize(new ProjectCustomization
+            {
+                RegionalDeliveryOfficerId = testUser.Id,
+                CaseworkerId = testUser.Id,
+                AssignedToId = testUser.Id
+            })
+                .Create<Project>();
+            project.Urn = establishment.Urn ?? project.Urn;
+            return project;
+        }).ToList();
+
+        var localAuthority = dbContext.LocalAuthorities.AsEnumerable().MinBy(_ => Guid.NewGuid());
+        Assert.NotNull(localAuthority);
+        projects.ForEach(x => x.LocalAuthorityId = localAuthority.Id);
+
+        var firstProjectId = projects.First().Id;
+        var notesForProject = fixture.Customize(new NoteCustomization { ProjectId = firstProjectId, UserId = testUser.Id }).CreateMany<Note>(10).ToList();
+        var notesForOtherProject = fixture.Customize(new NoteCustomization { ProjectId = projects[1].Id, UserId = testUser.Id }).CreateMany<Note>(5).ToList();
+
+        notesForProject[7].TaskIdentifier = Domain.Enums.NoteTaskIdentifier.Handover.ToDescription();
+        notesForProject[8].TaskIdentifier = Domain.Enums.NoteTaskIdentifier.LandQuestionnaire.ToDescription();
+        notesForProject[9].TaskIdentifier = Domain.Enums.NoteTaskIdentifier.LandQuestionnaire.ToDescription();
+
+        await dbContext.Notes.AddRangeAsync(notesForProject);
+        await dbContext.Notes.AddRangeAsync(notesForOtherProject);
+        await dbContext.Projects.AddRangeAsync(projects);
+        await dbContext.SaveChangesAsync();
+
+        // Act
+        var results = await projectsClient.GetTaskNotesByProjectIdQueryAsync(firstProjectId.Value, NoteTaskIdentifier.LandQuestionnaire);
+
+        // Assert
+        Assert.NotNull(results);
+        Assert.Equal(2, results.Count);
+        Assert.All(results, x =>
+        {
+            Assert.Equivalent(firstProjectId, x.ProjectId);
+            Assert.Equal("land_questionnaire", x.TaskIdentifier);
+        });
     }
 
     [Theory]

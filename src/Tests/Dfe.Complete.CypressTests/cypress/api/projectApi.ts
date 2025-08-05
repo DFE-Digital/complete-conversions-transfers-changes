@@ -43,7 +43,7 @@ class ProjectApi extends ApiBase {
             return cy
                 .request<CreateProjectResponse>({
                     method: "PATCH",
-                    url: Cypress.env(EnvApi) + "/v1/projects/project/academy-urn",
+                    url: Cypress.env(EnvApi) + "/v1/Projects/Project/AcademyUrn",
                     headers: headers,
                     body: {
                         projectId: { value: projectId },
