@@ -42,7 +42,8 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
         public async Task Handle_ShouldReturns_CorrectStatistics()
         {
             // Arrange
-            var dateTime = DateTime.Now;
+            var now = DateTime.UtcNow;
+            var dateTime = new DateTime(now.Year, now.Month, 15, now.Hour, now.Minute, now.Second, DateTimeKind.Utc);
             var projects = SetUpProjects(dateTime); 
             var regions = GetRegions(projects);
             var teams = projects.DistinctBy(x => x.Team)
@@ -123,9 +124,9 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
         }
 
         private static void AssertNewProjectsInAMonth(DateTime dateTime, ThisMonthNewProjectsStatisticsModel newProjects)
-        { 
-            var monthYear = $"{dateTime:MMMM} {dateTime.Year}";
-            Assert.Equal(monthYear, newProjects.Date);
+        {
+            var currentMonthYear = $"{DateTime.UtcNow:MMMM} {DateTime.UtcNow.Year}";
+            Assert.Equal(currentMonthYear, newProjects.Date);
             Assert.Equal(17, newProjects.TotalProjects);
             Assert.Equal(9, newProjects.TotalConversions);
             Assert.Equal(8, newProjects.TotalTransfers);
@@ -135,7 +136,7 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
         {
             for (int i = 1; i <= projects.Count; i++)
             {
-                var targetMonth = dateTime.AddMonths(i);
+                var targetMonth = DateTime.UtcNow.AddMonths(i);
                 var monthYear = $"{targetMonth:MMMM} {targetMonth.Year}";
                 var project = projects[i - 1];
                 Assert.Equal(monthYear, project.Date);

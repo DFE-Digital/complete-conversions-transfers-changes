@@ -1165,7 +1165,7 @@
         }
       }
     },
-    "/v1/Projects/{groupReferenceNumber}/project_group": {
+    "/v1/Projects/{groupReferenceNumber}/ProjectGroup": {
       "get": {
         "tags": [
           "Projects"
@@ -1472,6 +1472,52 @@
         }
       }
     },
+    "/v1/Projects/Tasks/Notes": {
+      "get": {
+        "tags": [
+          "Projects"
+        ],
+        "summary": "Returns a list of task notes for a Project",
+        "operationId": "Projects_GetTaskNotesByProjectIdQuery",
+        "parameters": [
+          {
+            "name": "ProjectId.Value",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "guid"
+            },
+            "x-position": 1
+          },
+          {
+            "name": "TaskIdentifier",
+            "in": "query",
+            "schema": {
+              "$ref": "#/components/schemas/NoteTaskIdentifier"
+            },
+            "x-position": 2
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Notes for project",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/NoteDto"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Project not found"
+          }
+        }
+      }
+    },
     "/v1/Projects/List/All/Statistics": {
       "get": {
         "tags": [
@@ -1551,7 +1597,7 @@
         }
       }
     },
-    "/v1/Projects/project/academy-urn": {
+    "/v1/Projects/Project/AcademyUrn": {
       "patch": {
         "tags": [
           "Projects"
@@ -1580,6 +1626,191 @@
           },
           "404": {
             "description": "Project not found."
+          }
+        }
+      }
+    },
+    "/v1/Projects/Project/Handover/Assign": {
+      "patch": {
+        "tags": [
+          "Projects"
+        ],
+        "summary": "Assign the handover project to a specific team or user.",
+        "operationId": "Projects_AssignHandoverProject",
+        "requestBody": {
+          "x-name": "request",
+          "description": "The update command.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateHandoverProjectCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "204": {
+            "description": "Invalid request data."
+          },
+          "404": {
+            "description": "Project not found."
+          }
+        }
+      }
+    },
+    "/v1/Projects/Project/Handover/Details": {
+      "get": {
+        "tags": [
+          "Projects"
+        ],
+        "summary": "Returns the details of a project for handover.",
+        "operationId": "Projects_GetHandoverProjectDetails",
+        "parameters": [
+          {
+            "name": "ProjectId.Value",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "guid"
+            },
+            "x-position": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Project",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProjectWithEstablishmentQueryModel"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "project not found."
+          }
+        }
+      }
+    },
+    "/v1/Projects/List/All/Handover": {
+      "get": {
+        "tags": [
+          "Projects"
+        ],
+        "summary": "Returns the details of a project for handover.",
+        "operationId": "Projects_ListAllProjectsHandover",
+        "parameters": [
+          {
+            "name": "ProjectStatus",
+            "in": "query",
+            "schema": {
+              "nullable": true,
+              "oneOf": [
+                {
+                  "$ref": "#/components/schemas/ProjectState"
+                }
+              ]
+            },
+            "x-position": 1
+          },
+          {
+            "name": "Urn.Value",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "x-position": 2
+          },
+          {
+            "name": "OrderBy.Field",
+            "in": "query",
+            "schema": {
+              "$ref": "#/components/schemas/OrderProjectByField"
+            },
+            "x-position": 3
+          },
+          {
+            "name": "OrderBy.Direction",
+            "in": "query",
+            "schema": {
+              "$ref": "#/components/schemas/OrderByDirection"
+            },
+            "x-position": 4
+          },
+          {
+            "name": "Page",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "x-position": 5
+          },
+          {
+            "name": "Count",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "x-position": 6
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A list of Projects",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ListAllProjectsResultModel"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "project not found."
+          }
+        }
+      }
+    },
+    "/v1/Projects/List/Project/Id": {
+      "get": {
+        "tags": [
+          "Projects"
+        ],
+        "summary": "Gets a Project by Id",
+        "operationId": "Projects_GetProjectById",
+        "parameters": [
+          {
+            "name": "ProjectId.Value",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "guid"
+            },
+            "x-position": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Project",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProjectDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "project not found."
           }
         }
       }
@@ -3592,6 +3823,10 @@
           },
           "formAMat": {
             "type": "boolean"
+          },
+          "establishmentName": {
+            "type": "string",
+            "nullable": true
           }
         }
       },
@@ -3773,6 +4008,11 @@
           },
           "newTrustReferenceNumber": {
             "type": "string",
+            "nullable": true
+          },
+          "advisoryBoardDate": {
+            "type": "string",
+            "format": "date",
             "nullable": true
           }
         }
@@ -3974,8 +4214,34 @@
           "createdAt": {
             "type": "string",
             "format": "date-time"
+          },
+          "taskIdentifier": {
+            "type": "string",
+            "nullable": true
+          },
+          "isNotable": {
+            "type": "boolean",
+            "nullable": true
           }
         }
+      },
+      "NoteTaskIdentifier": {
+        "type": "string",
+        "description": "",
+        "x-enumNames": [
+          "Handover",
+          "LandQuestionnaire",
+          "LandRegistry",
+          "StakeholderKickoff",
+          "SupplementalFundingAgreement"
+        ],
+        "enum": [
+          "Handover",
+          "LandQuestionnaire",
+          "LandRegistry",
+          "StakeholderKickoff",
+          "SupplementalFundingAgreement"
+        ]
       },
       "CreateNoteCommand": {
         "type": "object",
@@ -3989,6 +4255,14 @@
           },
           "body": {
             "type": "string"
+          },
+          "taskIdentifier": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/NoteTaskIdentifier"
+              }
+            ]
           }
         }
       },
@@ -4188,6 +4462,134 @@
             "$ref": "#/components/schemas/Urn"
           }
         }
+      },
+      "UpdateHandoverProjectCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "projectId": {
+            "$ref": "#/components/schemas/ProjectId"
+          },
+          "schoolSharepointLink": {
+            "type": "string"
+          },
+          "incomingTrustSharepointLink": {
+            "type": "string"
+          },
+          "outgoingTrustSharepointLink": {
+            "type": "string",
+            "nullable": true
+          },
+          "assignedToRegionalCaseworkerTeam": {
+            "type": "boolean"
+          },
+          "handoverComments": {
+            "type": "string",
+            "nullable": true
+          },
+          "userId": {
+            "$ref": "#/components/schemas/UserId"
+          },
+          "userTeam": {
+            "$ref": "#/components/schemas/ProjectTeam"
+          },
+          "twoRequiresImprovement": {
+            "type": "boolean",
+            "nullable": true
+          }
+        }
+      },
+      "ProjectWithEstablishmentQueryModel": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "establishmentName": {
+            "type": "string",
+            "nullable": true
+          },
+          "projectId": {
+            "$ref": "#/components/schemas/ProjectId"
+          },
+          "urn": {
+            "$ref": "#/components/schemas/Urn"
+          },
+          "conversionOrTransferDate": {
+            "type": "string",
+            "format": "date",
+            "nullable": true
+          },
+          "projectType": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/ProjectType"
+              }
+            ]
+          },
+          "isFormAMAT": {
+            "type": "boolean"
+          },
+          "regionalDeliveryOfficer": {
+            "type": "string",
+            "nullable": true
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "newTrustName": {
+            "type": "string",
+            "nullable": true
+          },
+          "newTrustReferenceNumber": {
+            "type": "string",
+            "nullable": true
+          },
+          "advisoryBoardDate": {
+            "type": "string",
+            "format": "date",
+            "nullable": true
+          },
+          "outgoingTrustName": {
+            "type": "string",
+            "nullable": true
+          },
+          "outgoingTrustUkprn": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/Ukprn"
+              }
+            ]
+          },
+          "academyOrderType": {
+            "$ref": "#/components/schemas/AcademyOrderType"
+          },
+          "incomingTrustName": {
+            "type": "string",
+            "nullable": true
+          },
+          "incomingTrustUkprn": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/Ukprn"
+              }
+            ]
+          }
+        }
+      },
+      "AcademyOrderType": {
+        "type": "string",
+        "description": "",
+        "x-enumNames": [
+          "AcademyOrder",
+          "DirectiveAcademyOrder"
+        ],
+        "enum": [
+          "AcademyOrder",
+          "DirectiveAcademyOrder"
+        ]
       },
       "CreateLocalAuthorityCommand": {
         "type": "object",

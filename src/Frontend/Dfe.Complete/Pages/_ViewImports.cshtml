@@ -1,9 +1,12 @@
 ﻿@using Dfe.Complete
+@using Dfe.Complete.Configuration
 @using Dfe.Complete.Models
 @using Dfe.Complete.ViewModels
 @using Dfe.Complete.Extensions
+@using Microsoft.Extensions.Options
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @* @addTagHelper *, Dfe.Complete *@
 @addTagHelper Dfe.Complete.TagHelpers.PolicyCheckTagHelper, Dfe.Complete
 @addTagHelper *, NetEscapades.AspNetCore.SecurityHeaders.TagHelpers
 @addTagHelper *, GovUk.Frontend.AspNetCore
+@inject IOptions<ApplicationInsightsOptions> ApplicationInsightsOptions

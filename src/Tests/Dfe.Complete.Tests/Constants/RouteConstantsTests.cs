@@ -155,10 +155,10 @@ namespace Dfe.Complete.Tests.Constants
 
             Assert.Equal(basePath, string.Format(RouteConstants.ProjectTaskList, projectId));
             Assert.Equal(basePath + "/handover", string.Format(RouteConstants.ProjectHandoverWithDeliveryOfficerTask, projectId));
-            Assert.Equal(basePath + "/stakeholder-kickoff", string.Format(RouteConstants.ProjectStakeholderKickoffTask, projectId));
-            Assert.Equal(basePath + "/land-questionnaire", string.Format(RouteConstants.ProjectLandQuestionnaireTask, projectId));
-            Assert.Equal(basePath + "/land-registry", string.Format(RouteConstants.ProjectLandRegistryTask, projectId));
-            Assert.Equal(basePath + "/supplemental-funding-agreement", string.Format(RouteConstants.ProjectSupplementalFundingAgreementTask, projectId));
+            Assert.Equal(basePath + "/stakeholder_kickoff", string.Format(RouteConstants.ProjectStakeholderKickoffTask, projectId));
+            Assert.Equal(basePath + "/land_questionnaire", string.Format(RouteConstants.ProjectLandQuestionnaireTask, projectId));
+            Assert.Equal(basePath + "/land_registry", string.Format(RouteConstants.ProjectLandRegistryTask, projectId));
+            Assert.Equal(basePath + "/supplemental_funding_agreement", string.Format(RouteConstants.ProjectSupplementalFundingAgreementTask, projectId));
         }
 
         [Fact]
@@ -192,6 +192,44 @@ namespace Dfe.Complete.Tests.Constants
             Assert.Equal($"/service-support/local-authorities/{localAuthorityId}/edit", string.Format(RouteConstants.EditLocalAuthorityDetails, localAuthorityId));
             Assert.Equal($"/service-support/local-authorities/{localAuthorityId}/delete", string.Format(RouteConstants.DeleteLocalAuthorityDetails, localAuthorityId));
         }
-    }
 
+        [Fact]
+        public void HandoverProjects_ShouldBeCorrect()
+        {
+            Assert.Equal("/projects/all/handover", RouteConstants.ProjectsHandover);
+        }
+
+        [Fact]
+        public void HandoverProjectCheck_ShouldBeCorrect()
+        {
+            var projectId = Guid.NewGuid();
+            Assert.Equal($"/projects/all/handover/{projectId}/check", string.Format(RouteConstants.ProjectsHandoverCheck, projectId));
+        }
+
+        [Fact]
+        public void NewHandoverProject_ShouldBeCorrect()
+        {
+            var projectId = Guid.NewGuid();
+            Assert.Equal($"/projects/all/handover/{projectId}/new", string.Format(RouteConstants.ProjectsHandoverNew, projectId));
+        }
+        [Fact]
+        public void ProjectCreated_ShouldBeCorrect()
+        {
+            var projectId = Guid.NewGuid();
+            Assert.Equal($"/projects/{projectId}/created", string.Format(RouteConstants.ProjectCreated, projectId));
+        }
+        [Fact]
+        public void ProjectExternalContacts_ShouldBeCorrect()
+        {
+            var projectId = Guid.NewGuid();
+            Assert.Equal($"/projects/{projectId}/external-contacts", string.Format(RouteConstants.ProjectExternalContacts, projectId));
+        }
+        [Fact]
+        public void NewProjectExternalContacts_ShouldBeCorrect()
+        {
+            var projectId = Guid.NewGuid();
+            Assert.Equal($"/projects/{projectId}/external-contacts/new", string.Format(RouteConstants.NewProjectExternalContacts, projectId));
+        }
+        
+    }
 }
