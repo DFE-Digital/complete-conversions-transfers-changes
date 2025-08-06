@@ -1,0 +1,46 @@
+@page "/groups"
+@model Dfe.Complete.Pages.Projects.Groups.ProjectGroupsModel
+@{
+    Layout = "ServiceSupport/_ServiceSupportLayout";
+    ViewData["Title"] = "Groups";
+}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        <h1 class="govuk-heading-xl">
+            Groups
+        </h1>
+        <p>Schools and academies joining an existing trust together.</p> <p>Groups can include any type of conversion or transfer.</p>
+    </div>
+</div>
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-full">
+
+        <table class="govuk-table" name="project-groups-table" aria-label="Project groups table">
+            <thead class="govuk-table__head">
+            <tr class="govuk-table__row">
+                <th class="govuk-table__header" scope="col">Group</th>
+                <th class="govuk-table__header" scope="col">Group reference number</th>
+                <th class="govuk-table__header" scope="col">Trust UKPRN</th>
+                <th class="govuk-table__header" scope="col">Schools or academies included</th>
+            </tr>
+            </thead>
+            <tbody class="govuk-table__body">
+            @{
+                foreach (var pg in Model.ProjectGroups)
+                {
+                    <tr class="govuk-table__row">
+                        <td class="govuk-table__header govuk-table__cell">
+                            <a class="govuk-link govuk-link--no-visited-state" href="/groups/1ADAB304-5C9A-46D3-99E7-EDD65D2FE452">@pg.groupName</a>
+                        </td>
+                        <td class="govuk-table__cell">@pg.groupIdentifier</td>
+                        <td class="govuk-table__cell">@pg.trustUkprn</td>
+                        <td class="govuk-table__cell">@pg.includedEstablishments</td>
+                    </tr>
+                }
+            }
+            </tbody>
+        </table>
+    </div>
+</div>
