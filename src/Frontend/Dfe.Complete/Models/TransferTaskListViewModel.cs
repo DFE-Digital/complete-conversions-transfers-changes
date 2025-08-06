@@ -33,196 +33,196 @@ namespace Dfe.Complete.Models
         public TaskListStatus RedactAndSendDocuments { get; set; }
         public TaskListStatus DeclarationOfExpenditureCertificate { get; set; }  
 
-        public static TransferTaskListViewModel Create(TransferTaskDataModel taskDataModel)
+        public static TransferTaskListViewModel Create(TransferTaskDataDto taskData, ProjectDto project)
         {
             return new TransferTaskListViewModel
             {
-                HandoverWithRegionalDeliveryOfficer = HandoverWithRegionalDeliveryOfficerTaskStatus(taskDataModel),
-                ExternalStakeHolderKickoff = ExternalStakeHolderKickoffTaskStatus(taskDataModel),
-                ConfirmAcademyRiskProtectionArrangements = ConfirmAcademyRiskProtectionArrangementsTaskStatus(taskDataModel),
-                ConfirmHeadTeacherDetails = ConfirmHeadTeacherDetailsTaskStatus(taskDataModel),
-                ConfirmIncomingTrustCeoDetails = ConfirmIncomingTrustCeoDetailsTaskStatus(taskDataModel),
-                ConfirmOutgoingTrustCeoDetails = ConfirmOutgoingTrustCeoDetailsTaskStatus(taskDataModel),
-                ConfirmMainContact = ConfirmMainContactTaskStatus(taskDataModel),
-                RequestNewURNAndRecordForTheAcademy = RequestNewURNAndRecordForTheAcademyTaskStatus(taskDataModel),
-                ConfirmTransferGrantFundingLevel = ConfirmTransferGrantFundingLevelTaskStatus(taskDataModel),
-                CheckAndConfirmAcademyAndTrustFinancialInfo = CheckAndConfirmAcademyAndTrustFinancialInfoTaskStatus(taskDataModel),
-                FormM = FormMTaskStatus(taskDataModel),
-                LandConsentLetter = LandConsentLetterTaskStatus(taskDataModel),
-                SupplementalFundingAgreement = SupplementalFundingAgreementTaskStatus(taskDataModel),
-                DeedOfNovationAndVariation = DeedOfNovationAndVariationTaskStatus(taskDataModel),
-                ChurchSupplementalAgreement = ChurchSupplementalAgreementTaskStatus(taskDataModel),
-                MasterFundingAgreement = MasterFundingAgreementTaskStatus(taskDataModel),
-                ArticlesOfAssociation = ArticlesOfAssociationTaskStatus(taskDataModel),
-                DeedoOfVariation = DeedoOfVariationTaskStatus(taskDataModel),
-                DeedOfTerminationForTheMasterFundingAgreement = DeedOfTerminationForTheMasterFundingAgreementTaskStatus(taskDataModel),
-                DeedOfTerminationForChurchSupplementalAreement = DeedOfTerminationForChurchSupplementalAreementTaskStatus(taskDataModel),
-                CommercialTransferAgreement = CommercialTransferAgreementTaskStatus(taskDataModel),
-                ClosureOrTransferDeclaration = ClosureOrTransferDeclarationTaskStatus(taskDataModel),
-                ConfirmBankDetailsChangingForGeneralAnnualGrantPayment = ConfirmBankDetailsChangingForGeneralAnnualGrantPaymentTaskStatus(taskDataModel),
-                ConfirmIncomingTrustHasCompletedAllActions = ConfirmIncomingTrustHasCompletedAllActionsTaskStatus(taskDataModel),
-                ConfirmThisTransferHasAuthorityToProceed = ConfirmThisTransferHasAuthorityToProceedTaskStatus(taskDataModel),
-                ConfirmDateAcademyTransferred = ConfirmDateAcademyTransferredTaskStatus(taskDataModel),
-                RedactAndSendDocuments = RedactAndSendDocumentsTaskStatus(taskDataModel),
-                DeclarationOfExpenditureCertificate = DeclarationOfExpenditureCertificateTaskStatus(taskDataModel)
+                HandoverWithRegionalDeliveryOfficer = HandoverWithRegionalDeliveryOfficerTaskStatus(taskData),
+                ExternalStakeHolderKickoff = ExternalStakeHolderKickoffTaskStatus(taskData),
+                ConfirmAcademyRiskProtectionArrangements = ConfirmAcademyRiskProtectionArrangementsTaskStatus(taskData),
+                ConfirmHeadTeacherDetails = ConfirmHeadTeacherDetailsTaskStatus(taskData),
+                ConfirmIncomingTrustCeoDetails = ConfirmIncomingTrustCeoDetailsTaskStatus(taskData),
+                ConfirmOutgoingTrustCeoDetails = ConfirmOutgoingTrustCeoDetailsTaskStatus(taskData),
+                ConfirmMainContact = ConfirmMainContactTaskStatus(taskData),
+                RequestNewURNAndRecordForTheAcademy = RequestNewURNAndRecordForTheAcademyTaskStatus(taskData),
+                ConfirmTransferGrantFundingLevel = ConfirmTransferGrantFundingLevelTaskStatus(taskData),
+                CheckAndConfirmAcademyAndTrustFinancialInfo = CheckAndConfirmAcademyAndTrustFinancialInfoTaskStatus(taskData),
+                FormM = FormMTaskStatus(taskData),
+                LandConsentLetter = LandConsentLetterTaskStatus(taskData),
+                SupplementalFundingAgreement = SupplementalFundingAgreementTaskStatus(taskData),
+                DeedOfNovationAndVariation = DeedOfNovationAndVariationTaskStatus(taskData),
+                ChurchSupplementalAgreement = ChurchSupplementalAgreementTaskStatus(taskData),
+                MasterFundingAgreement = MasterFundingAgreementTaskStatus(taskData),
+                ArticlesOfAssociation = ArticlesOfAssociationTaskStatus(taskData),
+                DeedoOfVariation = DeedoOfVariationTaskStatus(taskData),
+                DeedOfTerminationForTheMasterFundingAgreement = DeedOfTerminationForTheMasterFundingAgreementTaskStatus(taskData),
+                DeedOfTerminationForChurchSupplementalAreement = DeedOfTerminationForChurchSupplementalAreementTaskStatus(taskData),
+                CommercialTransferAgreement = CommercialTransferAgreementTaskStatus(taskData),
+                ClosureOrTransferDeclaration = ClosureOrTransferDeclarationTaskStatus(taskData),
+                ConfirmBankDetailsChangingForGeneralAnnualGrantPayment = ConfirmBankDetailsChangingForGeneralAnnualGrantPaymentTaskStatus(taskData),
+                ConfirmIncomingTrustHasCompletedAllActions = ConfirmIncomingTrustHasCompletedAllActionsTaskStatus(taskData),
+                ConfirmThisTransferHasAuthorityToProceed = ConfirmThisTransferHasAuthorityToProceedTaskStatus(taskData),
+                ConfirmDateAcademyTransferred = ConfirmDateAcademyTransferredTaskStatus(taskData),
+                RedactAndSendDocuments = RedactAndSendDocumentsTaskStatus(taskData),
+                DeclarationOfExpenditureCertificate = DeclarationOfExpenditureCertificateTaskStatus(taskData)
             };
         }
 
-        public static TaskListStatus HandoverWithRegionalDeliveryOfficerTaskStatus(TransferTaskDataModel taskDataModel)
+        public static TaskListStatus HandoverWithRegionalDeliveryOfficerTaskStatus(TransferTaskDataDto taskData)
         {
-            if (!taskDataModel.HandoverReview.HasValue &&
-                !taskDataModel.HandoverMeeting.HasValue &&
-                !taskDataModel.HandoverNotes.HasValue &&
-                !taskDataModel.HandoverNotApplicable.HasValue)
+            if (!taskData.HandoverReview.HasValue &&
+                !taskData.HandoverMeeting.HasValue &&
+                !taskData.HandoverNotes.HasValue &&
+                !taskData.HandoverNotApplicable.HasValue)
             {
                 return TaskListStatus.NotStarted;
             }
-            if (taskDataModel.HandoverNotApplicable == true)
+            if (taskData.HandoverNotApplicable == true)
             {
                 return TaskListStatus.NotApplicable;
             }
 
-            if (taskDataModel.HandoverReview.Equals(true) &&
-                taskDataModel.HandoverMeeting.Equals(true) &&
-                taskDataModel.HandoverNotes.Equals(true))
+            if (taskData.HandoverReview.Equals(true) &&
+                taskData.HandoverMeeting.Equals(true) &&
+                taskData.HandoverNotes.Equals(true))
             {
                 return TaskListStatus.Completed;
             }
 
             return TaskListStatus.InProgress;
         }
-        public static TaskListStatus ExternalStakeHolderKickoffTaskStatus(TransferTaskDataModel taskDataModel)
+        public static TaskListStatus ExternalStakeHolderKickoffTaskStatus(TransferTaskDataDto taskData)
         {
-            // Assuming ExternalStakeHolderKickoff is not part of the taskDataModel, returning NotStarted for now.
+            // Assuming ExternalStakeHolderKickoff is not part of the taskData, returning NotStarted for now.
             // This can be updated based on actual requirements.
             return TaskListStatus.NotStarted;
         }
-        private static TaskListStatus ConfirmOutgoingTrustCeoDetailsTaskStatus(TransferTaskDataModel taskDataModel)
+        private static TaskListStatus ConfirmOutgoingTrustCeoDetailsTaskStatus(TransferTaskDataDto taskData)
         {
            return TaskListStatus.NotStarted;
         }
 
-        private static TaskListStatus DeclarationOfExpenditureCertificateTaskStatus(TransferTaskDataModel taskDataModel)
+        private static TaskListStatus DeclarationOfExpenditureCertificateTaskStatus(TransferTaskDataDto taskData)
         {
            return TaskListStatus.NotStarted;
         }
 
-        private static TaskListStatus RedactAndSendDocumentsTaskStatus(TransferTaskDataModel taskDataModel)
+        private static TaskListStatus RedactAndSendDocumentsTaskStatus(TransferTaskDataDto taskData)
         {
            return TaskListStatus.NotStarted;
         }
 
-        private static TaskListStatus ConfirmDateAcademyTransferredTaskStatus(TransferTaskDataModel taskDataModel)
+        private static TaskListStatus ConfirmDateAcademyTransferredTaskStatus(TransferTaskDataDto taskData)
         {
            return TaskListStatus.NotStarted;
         }
 
-        private static TaskListStatus ConfirmThisTransferHasAuthorityToProceedTaskStatus(TransferTaskDataModel taskDataModel)
+        private static TaskListStatus ConfirmThisTransferHasAuthorityToProceedTaskStatus(TransferTaskDataDto taskData)
         {
            return TaskListStatus.NotStarted;
         }
 
-        private static TaskListStatus ConfirmIncomingTrustHasCompletedAllActionsTaskStatus(TransferTaskDataModel taskDataModel)
+        private static TaskListStatus ConfirmIncomingTrustHasCompletedAllActionsTaskStatus(TransferTaskDataDto taskData)
         {
            return TaskListStatus.NotStarted;
         }
 
-        private static TaskListStatus ConfirmBankDetailsChangingForGeneralAnnualGrantPaymentTaskStatus(TransferTaskDataModel taskDataModel)
+        private static TaskListStatus ConfirmBankDetailsChangingForGeneralAnnualGrantPaymentTaskStatus(TransferTaskDataDto taskData)
         {
            return TaskListStatus.NotStarted;
         }
 
-        private static TaskListStatus ClosureOrTransferDeclarationTaskStatus(TransferTaskDataModel taskDataModel)
+        private static TaskListStatus ClosureOrTransferDeclarationTaskStatus(TransferTaskDataDto taskData)
         {
            return TaskListStatus.NotStarted;
         }
 
-        private static TaskListStatus CommercialTransferAgreementTaskStatus(TransferTaskDataModel taskDataModel)
+        private static TaskListStatus CommercialTransferAgreementTaskStatus(TransferTaskDataDto taskData)
         {
            return TaskListStatus.NotStarted;
         }
 
-        private static TaskListStatus DeedOfTerminationForChurchSupplementalAreementTaskStatus(TransferTaskDataModel taskDataModel)
+        private static TaskListStatus DeedOfTerminationForChurchSupplementalAreementTaskStatus(TransferTaskDataDto taskData)
         {
            return TaskListStatus.NotStarted;
         }
 
-        private static TaskListStatus DeedOfTerminationForTheMasterFundingAgreementTaskStatus(TransferTaskDataModel taskDataModel)
+        private static TaskListStatus DeedOfTerminationForTheMasterFundingAgreementTaskStatus(TransferTaskDataDto taskData)
         {
            return TaskListStatus.NotStarted;
         }
 
-        private static TaskListStatus DeedoOfVariationTaskStatus(TransferTaskDataModel taskDataModel)
+        private static TaskListStatus DeedoOfVariationTaskStatus(TransferTaskDataDto taskData)
         {
            return TaskListStatus.NotStarted;
         }
 
-        private static TaskListStatus ArticlesOfAssociationTaskStatus(TransferTaskDataModel taskDataModel)
+        private static TaskListStatus ArticlesOfAssociationTaskStatus(TransferTaskDataDto taskData)
         {
            return TaskListStatus.NotStarted;
         }
 
-        private static TaskListStatus MasterFundingAgreementTaskStatus(TransferTaskDataModel taskDataModel)
+        private static TaskListStatus MasterFundingAgreementTaskStatus(TransferTaskDataDto taskData)
         {
            return TaskListStatus.NotStarted;
         }
 
-        private static TaskListStatus ChurchSupplementalAgreementTaskStatus(TransferTaskDataModel taskDataModel)
+        private static TaskListStatus ChurchSupplementalAgreementTaskStatus(TransferTaskDataDto taskData)
         {
            return TaskListStatus.NotStarted;
         }
 
-        private static TaskListStatus DeedOfNovationAndVariationTaskStatus(TransferTaskDataModel taskDataModel)
+        private static TaskListStatus DeedOfNovationAndVariationTaskStatus(TransferTaskDataDto taskData)
         {
            return TaskListStatus.NotStarted;
         }
 
-        private static TaskListStatus SupplementalFundingAgreementTaskStatus(TransferTaskDataModel taskDataModel)
+        private static TaskListStatus SupplementalFundingAgreementTaskStatus(TransferTaskDataDto taskData)
         {
            return TaskListStatus.NotStarted;
         }
 
-        private static TaskListStatus LandConsentLetterTaskStatus(TransferTaskDataModel taskDataModel)
+        private static TaskListStatus LandConsentLetterTaskStatus(TransferTaskDataDto taskData)
         {
            return TaskListStatus.NotStarted;
         }
 
-        private static TaskListStatus FormMTaskStatus(TransferTaskDataModel taskDataModel)
+        private static TaskListStatus FormMTaskStatus(TransferTaskDataDto taskData)
         {
            return TaskListStatus.NotStarted;
         }
 
-        private static TaskListStatus CheckAndConfirmAcademyAndTrustFinancialInfoTaskStatus(TransferTaskDataModel taskDataModel)
+        private static TaskListStatus CheckAndConfirmAcademyAndTrustFinancialInfoTaskStatus(TransferTaskDataDto taskData)
         {
            return TaskListStatus.NotStarted;
         }
 
-        private static TaskListStatus ConfirmTransferGrantFundingLevelTaskStatus(TransferTaskDataModel taskDataModel)
+        private static TaskListStatus ConfirmTransferGrantFundingLevelTaskStatus(TransferTaskDataDto taskData)
         {
            return TaskListStatus.NotStarted;
         }
 
-        private static TaskListStatus RequestNewURNAndRecordForTheAcademyTaskStatus(TransferTaskDataModel taskDataModel)
+        private static TaskListStatus RequestNewURNAndRecordForTheAcademyTaskStatus(TransferTaskDataDto taskData)
         {
            return TaskListStatus.NotStarted;
         }
 
-        private static TaskListStatus ConfirmMainContactTaskStatus(TransferTaskDataModel taskDataModel)
+        private static TaskListStatus ConfirmMainContactTaskStatus(TransferTaskDataDto taskData)
         {
            return TaskListStatus.NotStarted;
         }
 
-        private static TaskListStatus ConfirmIncomingTrustCeoDetailsTaskStatus(TransferTaskDataModel taskDataModel)
+        private static TaskListStatus ConfirmIncomingTrustCeoDetailsTaskStatus(TransferTaskDataDto taskData)
         {
            return TaskListStatus.NotStarted;
         }
 
-        private static TaskListStatus ConfirmHeadTeacherDetailsTaskStatus(TransferTaskDataModel taskDataModel)
+        private static TaskListStatus ConfirmHeadTeacherDetailsTaskStatus(TransferTaskDataDto taskData)
         {
            return TaskListStatus.NotStarted;
         }
 
-        private static TaskListStatus ConfirmAcademyRiskProtectionArrangementsTaskStatus(TransferTaskDataModel taskDataModel)
+        private static TaskListStatus ConfirmAcademyRiskProtectionArrangementsTaskStatus(TransferTaskDataDto taskData)
         {
            return TaskListStatus.NotStarted;
         }

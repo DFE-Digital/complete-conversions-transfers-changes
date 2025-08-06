@@ -10,7 +10,7 @@ using Dfe.Complete.Application.Projects.Queries.GetProject;
 
 namespace Dfe.Complete.Application.Projects.Queries.GetTransferTasksData
 {
-    public record GetTransferTasksDataByIdQuery(TaskDataId Id) : IRequest<Result<TransferTaskDataDto>>;
+    public record GetTransferTasksDataByIdQuery(TaskDataId? Id) : IRequest<Result<TransferTaskDataDto>>;
 
     public class GetTransferTasksDataByIdQueryHandler(
         ICompleteRepository<TransferTasksData> transferTaskDataRepository,

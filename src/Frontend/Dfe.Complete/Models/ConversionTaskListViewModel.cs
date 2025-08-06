@@ -1,4 +1,5 @@
 ﻿using Dfe.Complete.Application.Projects.Models;
+using Dfe.Complete.Domain.Enums;
 
 namespace Dfe.Complete.Models
 {
@@ -35,64 +36,64 @@ namespace Dfe.Complete.Models
         public TaskListStatus ShareTheInformationAboutOpening { get; set; }
         public TaskListStatus ConfirmDateAcademyOpened { get; set; }
         public TaskListStatus RedactAndSendDocuments { get; set; }
-        public TaskListStatus ReceiveGrantPaymentCertificate { get; set; } 
+        public TaskListStatus ProjectReceiveDeclarationOfExpenditureCertificate { get; set; } 
 
-        public static ConversionTaskListViewModel Create(ConversionTaskDataModel taskDataModel)
+        public static ConversionTaskListViewModel Create(ConversionTaskDataDto taskData, ProjectDto project)
         {
             return new ConversionTaskListViewModel
             {
-                HandoverWithRegionalDeliveryOfficer = HandoverWithRegionalDeliveryOfficerTaskStatus(taskDataModel),
-                ExternalStakeHolderKickoff = ExternalStakeHolderKickoffTaskStatus(taskDataModel),
-                ConfirmAcademyRiskProtectionArrangements = ConfirmAcademyRiskProtectionArrangementsTaskStatus(taskDataModel),
-                CheckAccuracyOfHigherNeeds = CheckAccuracyOfHigherNeedsTaskStatus(taskDataModel),
-                CompleteNotificationOfChange = CompleteNotificationOfChangeTaskStatus(taskDataModel),
-                ProcessConversionSupportGrant = ProcessConversionSupportGrantTaskStatus(taskDataModel),
-                ConfirmAndProcessSponsoredSupportGrant = ConfirmAndProcessSponsoredSupportGrantTaskStatus(taskDataModel),
-                ConfirmAcademyName = ConfirmAcademyNameTaskStatus(taskDataModel),
-                ConfirmHeadTeacherDetails = ConfirmHeadTeacherDetailsTaskStatus(taskDataModel),
-                ConfirmChairOfGovernorsDetails = ConfirmChairOfGovernorsDetailsTaskStatus(taskDataModel),
-                ConfirmIncomingTrustCeoDetails = ConfirmIncomingTrustCeoDetailsTaskStatus(taskDataModel),
-                ArticlesOfAssociation = ArticlesOfAssociationTaskStatus(taskDataModel),
-                ChurchSupplementalAgreement = ChurchSupplementalAgreementTaskStatus(taskDataModel),
-                ConfirmMainContact = ConfirmMainContactTaskStatus(taskDataModel),
-                ConfirmProposedCapacityOfTheAcademy = ConfirmProposedCapacityOfTheAcademyTaskStatus(taskDataModel),
-                LandQuestionnaire = LandQuestionnaireTaskStatus(taskDataModel),
-                LandRegistry = LandRegistryTaskStatus(taskDataModel),
-                SupplementalFundingAgreement = SupplementalFundingAgreementTaskStatus(taskDataModel),
-                MasterFundingAgreement = MasterFundingAgreementTaskStatus(taskDataModel),
-                DeedOfVariation = DeedOfVariationTaskStatus(taskDataModel),
-                TrustModificationOrder = TrustModificationOrderTaskStatus(taskDataModel),
-                DirectionToTransfer = DirectionToTransferTaskStatus(taskDataModel),
-                OneHundredAndTwentyFiveYearLease = OneHundredAndTwentyFiveYearLeaseTaskStatus(taskDataModel),
-                Tubleases = TubleasesTaskStatus(taskDataModel),
-                TenancyAtWill = TenancyAtWillTaskStatus(taskDataModel),
-                CommercialTransferAgreement = CommercialTransferAgreementTaskStatus(taskDataModel),
-                ConfirmTheSchoolHasCompletedAllActions = ConfirmTheSchoolHasCompletedAllActionsTaskStatus(taskDataModel),
-                ConfirmAllConditionsHaveBeenMet = ConfirmAllConditionsHaveBeenMetTaskStatus(taskDataModel),
-                ShareTheInformationAboutOpening = ShareTheInformationAboutOpeningTaskStatus(taskDataModel),
-                ConfirmDateAcademyOpened = ConfirmDateAcademyOpenedTaskStatus(taskDataModel),
-                RedactAndSendDocuments = RedactAndSendDocumentsTaskStatus(taskDataModel),
-                ReceiveGrantPaymentCertificate = ReceiveGrantPaymentCertificateTaskStatus(taskDataModel)
+                HandoverWithRegionalDeliveryOfficer = HandoverWithRegionalDeliveryOfficerTaskStatus(taskData),
+                ExternalStakeHolderKickoff = ExternalStakeHolderKickoffTaskStatus(taskData, project),
+                ConfirmAcademyRiskProtectionArrangements = ConfirmAcademyRiskProtectionArrangementsTaskStatus(taskData),
+                CheckAccuracyOfHigherNeeds = CheckAccuracyOfHigherNeedsTaskStatus(taskData),
+                CompleteNotificationOfChange = CompleteNotificationOfChangeTaskStatus(taskData),
+                ProcessConversionSupportGrant = ProcessConversionSupportGrantTaskStatus(taskData),
+                ConfirmAndProcessSponsoredSupportGrant = ConfirmAndProcessSponsoredSupportGrantTaskStatus(taskData),
+                ConfirmAcademyName = ConfirmAcademyNameTaskStatus(taskData),
+                ConfirmHeadTeacherDetails = ConfirmHeadTeacherDetailsTaskStatus(taskData),
+                ConfirmChairOfGovernorsDetails = ConfirmChairOfGovernorsDetailsTaskStatus(taskData),
+                ConfirmIncomingTrustCeoDetails = ConfirmIncomingTrustCeoDetailsTaskStatus(taskData),
+                ArticlesOfAssociation = ArticlesOfAssociationTaskStatus(taskData),
+                ChurchSupplementalAgreement = ChurchSupplementalAgreementTaskStatus(taskData),
+                ConfirmMainContact = ConfirmMainContactTaskStatus(taskData),
+                ConfirmProposedCapacityOfTheAcademy = ConfirmProposedCapacityOfTheAcademyTaskStatus(taskData),
+                LandQuestionnaire = LandQuestionnaireTaskStatus(taskData),
+                LandRegistry = LandRegistryTaskStatus(taskData),
+                SupplementalFundingAgreement = SupplementalFundingAgreementTaskStatus(taskData),
+                MasterFundingAgreement = MasterFundingAgreementTaskStatus(taskData),
+                DeedOfVariation = DeedOfVariationTaskStatus(taskData),
+                TrustModificationOrder = TrustModificationOrderTaskStatus(taskData),
+                DirectionToTransfer = DirectionToTransferTaskStatus(taskData),
+                OneHundredAndTwentyFiveYearLease = OneHundredAndTwentyFiveYearLeaseTaskStatus(taskData),
+                Tubleases = TubleasesTaskStatus(taskData),
+                TenancyAtWill = TenancyAtWillTaskStatus(taskData),
+                CommercialTransferAgreement = CommercialTransferAgreementTaskStatus(taskData),
+                ConfirmTheSchoolHasCompletedAllActions = ConfirmTheSchoolHasCompletedAllActionsTaskStatus(taskData),
+                ConfirmAllConditionsHaveBeenMet = ConfirmAllConditionsHaveBeenMetTaskStatus(taskData),
+                ShareTheInformationAboutOpening = ShareTheInformationAboutOpeningTaskStatus(taskData),
+                ConfirmDateAcademyOpened = ConfirmDateAcademyOpenedTaskStatus(taskData),
+                RedactAndSendDocuments = RedactAndSendDocumentsTaskStatus(taskData),
+                ProjectReceiveDeclarationOfExpenditureCertificate = ProjectReceiveDeclarationOfExpenditureCertificateTaskStatus(taskData)
             };
         }
 
-        public static TaskListStatus HandoverWithRegionalDeliveryOfficerTaskStatus(ConversionTaskDataModel taskDataModel)
+        public static TaskListStatus HandoverWithRegionalDeliveryOfficerTaskStatus(ConversionTaskDataDto taskData)
         {
-            if (!taskDataModel.HandoverReview.HasValue &&
-                !taskDataModel.HandoverMeeting.HasValue &&
-                !taskDataModel.HandoverNotes.HasValue &&
-                !taskDataModel.HandoverNotApplicable.HasValue)
+            if (!taskData.HandoverReview.HasValue &&
+                !taskData.HandoverMeeting.HasValue &&
+                !taskData.HandoverNotes.HasValue &&
+                !taskData.HandoverNotApplicable.HasValue)
             {
                 return TaskListStatus.NotStarted;
             }
-            if (taskDataModel.HandoverNotApplicable == true)
+            if (taskData.HandoverNotApplicable == true)
             {
                 return TaskListStatus.NotApplicable;
             }
 
-            if (taskDataModel.HandoverReview.Equals(true) &&
-                taskDataModel.HandoverMeeting.Equals(true) &&
-                taskDataModel.HandoverNotes.Equals(true))
+            if (taskData.HandoverReview.Equals(true) &&
+                taskData.HandoverMeeting.Equals(true) &&
+                taskData.HandoverNotes.Equals(true))
             {
                 return TaskListStatus.Completed;
             }
@@ -100,161 +101,325 @@ namespace Dfe.Complete.Models
             return TaskListStatus.InProgress;
         }
 
-        public static TaskListStatus ExternalStakeHolderKickoffTaskStatus(ConversionTaskDataModel taskDataModel)
+        public static TaskListStatus ExternalStakeHolderKickoffTaskStatus(ConversionTaskDataDto taskData, ProjectDto project)
         {
-            // Assuming ExternalStakeHolderKickoff is not part of the taskDataModel, returning NotStarted for now.
-            // This can be updated based on actual requirements.
+            if ((taskData.StakeholderKickOffIntroductoryEmails == false ||
+                   taskData.StakeholderKickOffLocalAuthorityProforma == false ||
+                   taskData.StakeholderKickOffSetupMeeting == false ||
+                   taskData.StakeholderKickOffMeeting == false ||
+                   taskData.StakeholderKickOffCheckProvisionalConversionDate == false) ||
+                   project.SignificantDateProvisional == true)
+            {
+                return TaskListStatus.InProgress;
+            }
+            if ((taskData.StakeholderKickOffIntroductoryEmails == true &&
+                 taskData.StakeholderKickOffLocalAuthorityProforma == true &&
+                 taskData.StakeholderKickOffSetupMeeting == true &&
+                 taskData.StakeholderKickOffMeeting == true &&
+                 taskData.StakeholderKickOffCheckProvisionalConversionDate == true) &&
+                 project.SignificantDateProvisional == false)
+            {
+                return TaskListStatus.Completed;
+            }
             return TaskListStatus.NotStarted;
         }
 
-        private static TaskListStatus ReceiveGrantPaymentCertificateTaskStatus(ConversionTaskDataModel taskDataModel)
+        private static TaskListStatus ProjectReceiveDeclarationOfExpenditureCertificateTaskStatus(ConversionTaskDataDto taskData)
         {
-            return TaskListStatus.NotStarted;
+            if(!taskData.ConversionGrantCheckVendorAccount.HasValue &&
+                !taskData.ConversionGrantPaymentForm.HasValue &&
+                !taskData.ConversionGrantSendInformation.HasValue &&
+                !taskData.ConversionGrantSharePaymentDate.HasValue)
+            {
+                return TaskListStatus.NotStarted;
+            }
+            if(taskData.ConversionGrantCheckVendorAccount == true &&
+                taskData.ConversionGrantPaymentForm == true &&
+                taskData.ConversionGrantSendInformation == true &&
+                taskData.ConversionGrantSharePaymentDate == true)
+            {
+                return TaskListStatus.Completed;
+            }
+            if(taskData.ConversionGrantNotApplicable == true)
+            {
+                return TaskListStatus.NotApplicable;
+            }
+            return TaskListStatus.InProgress;
         }
 
-        private static TaskListStatus RedactAndSendDocumentsTaskStatus(ConversionTaskDataModel taskDataModel)
+        private static TaskListStatus RedactAndSendDocumentsTaskStatus(ConversionTaskDataDto taskData)
         {
-            return TaskListStatus.NotStarted;
+            if (!taskData.RedactAndSendRedact.HasValue &&
+               !taskData.RedactAndSendSaveRedaction.HasValue &&
+               !taskData.RedactAndSendSendRedaction.HasValue &&
+               !taskData.RedactAndSendSendSolicitors.HasValue)
+            {
+                return TaskListStatus.NotStarted; 
+            }
+            if (taskData.RedactAndSendRedact == true &&
+                taskData.RedactAndSendSaveRedaction == true &&
+                taskData.RedactAndSendSendRedaction == true &&
+                taskData.RedactAndSendSendSolicitors == true)
+            {
+                return TaskListStatus.Completed;
+            }
+
+            return TaskListStatus.InProgress;
         }
 
-        private static TaskListStatus ConfirmDateAcademyOpenedTaskStatus(ConversionTaskDataModel taskDataModel)
+        private static TaskListStatus ConfirmDateAcademyOpenedTaskStatus(ConversionTaskDataDto taskData)
         {
-            return TaskListStatus.NotStarted;
+            if (!taskData.ConfirmDateAcademyOpenedDateOpened.HasValue)
+            {
+                return TaskListStatus.NotStarted;
+            }
+            if (taskData.ConfirmDateAcademyOpenedDateOpened.HasValue)
+            {
+                return TaskListStatus.Completed;
+            }
+            return TaskListStatus.InProgress;
         }
 
-        private static TaskListStatus ShareTheInformationAboutOpeningTaskStatus(ConversionTaskDataModel taskDataModel)
-        {
-            return TaskListStatus.NotStarted;
-        }
-
-        private static TaskListStatus ConfirmTheSchoolHasCompletedAllActionsTaskStatus(ConversionTaskDataModel taskDataModel)
-        {
-            return TaskListStatus.NotStarted;
-        }
-
-        private static TaskListStatus ConfirmAllConditionsHaveBeenMetTaskStatus(ConversionTaskDataModel taskDataModel)
-        {
-            return TaskListStatus.NotStarted;
-        }
-
-        private static TaskListStatus CommercialTransferAgreementTaskStatus(ConversionTaskDataModel taskDataModel)
-        {
-            return TaskListStatus.NotStarted;
-        }
-
-        private static TaskListStatus TenancyAtWillTaskStatus(ConversionTaskDataModel taskDataModel)
-        {
-            return TaskListStatus.NotStarted;
-        }
-
-        private static TaskListStatus TubleasesTaskStatus(ConversionTaskDataModel taskDataModel)
-        {
-            return TaskListStatus.NotStarted;
-        }
-
-        private static TaskListStatus OneHundredAndTwentyFiveYearLeaseTaskStatus(ConversionTaskDataModel taskDataModel)
-        {
-            return TaskListStatus.NotStarted;
-        }
-
-        private static TaskListStatus DirectionToTransferTaskStatus(ConversionTaskDataModel taskDataModel)
-        {
-            return TaskListStatus.NotStarted;
-        }
-
-        private static TaskListStatus TrustModificationOrderTaskStatus(ConversionTaskDataModel taskDataModel)
-        {
-            return TaskListStatus.NotStarted;
-        }
-
-        private static TaskListStatus MasterFundingAgreementTaskStatus(ConversionTaskDataModel taskDataModel)
-        {
-            return TaskListStatus.NotStarted;
-        }
-
-        private static TaskListStatus DeedOfVariationTaskStatus(ConversionTaskDataModel taskDataModel)
-        {
-            return TaskListStatus.NotStarted;
-        }
-
-        private static TaskListStatus SupplementalFundingAgreementTaskStatus(ConversionTaskDataModel taskDataModel)
-        {
-            return TaskListStatus.NotStarted;
-        }
-
-        private static TaskListStatus LandRegistryTaskStatus(ConversionTaskDataModel taskDataModel)
+        private static TaskListStatus ShareTheInformationAboutOpeningTaskStatus(ConversionTaskDataDto taskData)
         {
             return TaskListStatus.NotStarted;
         }
 
-        private static TaskListStatus LandQuestionnaireTaskStatus(ConversionTaskDataModel taskDataModel)
+        private static TaskListStatus ConfirmTheSchoolHasCompletedAllActionsTaskStatus(ConversionTaskDataDto taskData)
         {
             return TaskListStatus.NotStarted;
         }
 
-        private static TaskListStatus ConfirmProposedCapacityOfTheAcademyTaskStatus(ConversionTaskDataModel taskDataModel)
+        private static TaskListStatus ConfirmAllConditionsHaveBeenMetTaskStatus(ConversionTaskDataDto taskData)
         {
             return TaskListStatus.NotStarted;
         }
 
-        private static TaskListStatus ConfirmMainContactTaskStatus(ConversionTaskDataModel taskDataModel)
+        private static TaskListStatus CommercialTransferAgreementTaskStatus(ConversionTaskDataDto taskData)
         {
             return TaskListStatus.NotStarted;
         }
 
-        private static TaskListStatus ChurchSupplementalAgreementTaskStatus(ConversionTaskDataModel taskDataModel)
+        private static TaskListStatus TenancyAtWillTaskStatus(ConversionTaskDataDto taskData)
         {
             return TaskListStatus.NotStarted;
         }
 
-        private static TaskListStatus ArticlesOfAssociationTaskStatus(ConversionTaskDataModel taskDataModel)
+        private static TaskListStatus TubleasesTaskStatus(ConversionTaskDataDto taskData)
         {
             return TaskListStatus.NotStarted;
         }
 
-        private static TaskListStatus ConfirmIncomingTrustCeoDetailsTaskStatus(ConversionTaskDataModel taskDataModel)
+        private static TaskListStatus OneHundredAndTwentyFiveYearLeaseTaskStatus(ConversionTaskDataDto taskData)
         {
             return TaskListStatus.NotStarted;
         }
 
-        private static TaskListStatus ConfirmChairOfGovernorsDetailsTaskStatus(ConversionTaskDataModel taskDataModel)
+        private static TaskListStatus DirectionToTransferTaskStatus(ConversionTaskDataDto taskData)
         {
             return TaskListStatus.NotStarted;
         }
 
-        private static TaskListStatus ConfirmHeadTeacherDetailsTaskStatus(ConversionTaskDataModel taskDataModel)
+        private static TaskListStatus TrustModificationOrderTaskStatus(ConversionTaskDataDto taskData)
         {
             return TaskListStatus.NotStarted;
         }
 
-        private static TaskListStatus ConfirmAcademyNameTaskStatus(ConversionTaskDataModel taskDataModel)
+        private static TaskListStatus MasterFundingAgreementTaskStatus(ConversionTaskDataDto taskData)
         {
             return TaskListStatus.NotStarted;
         }
 
-        private static TaskListStatus ConfirmAndProcessSponsoredSupportGrantTaskStatus(ConversionTaskDataModel taskDataModel)
+        private static TaskListStatus DeedOfVariationTaskStatus(ConversionTaskDataDto taskData)
         {
             return TaskListStatus.NotStarted;
         }
 
-        private static TaskListStatus ProcessConversionSupportGrantTaskStatus(ConversionTaskDataModel taskDataModel)
+        private static TaskListStatus SupplementalFundingAgreementTaskStatus(ConversionTaskDataDto taskData)
         {
             return TaskListStatus.NotStarted;
         }
 
-        private static TaskListStatus CompleteNotificationOfChangeTaskStatus(ConversionTaskDataModel taskDataModel)
+        private static TaskListStatus LandRegistryTaskStatus(ConversionTaskDataDto taskData)
         {
             return TaskListStatus.NotStarted;
         }
 
-        private static TaskListStatus CheckAccuracyOfHigherNeedsTaskStatus(ConversionTaskDataModel taskDataModel)
+        private static TaskListStatus LandQuestionnaireTaskStatus(ConversionTaskDataDto taskData)
         {
             return TaskListStatus.NotStarted;
         }
 
-        private static TaskListStatus ConfirmAcademyRiskProtectionArrangementsTaskStatus(ConversionTaskDataModel taskDataModel)
+        private static TaskListStatus ConfirmProposedCapacityOfTheAcademyTaskStatus(ConversionTaskDataDto taskData)
+        {
+            if(!taskData.ProposedCapacityOfTheAcademyNotApplicable.HasValue &&
+               string.IsNullOrWhiteSpace(taskData.ProposedCapacityOfTheAcademyReceptionToSixYears) &&
+               string.IsNullOrWhiteSpace(taskData.ProposedCapacityOfTheAcademySevenToElevenYears) &&
+               string.IsNullOrWhiteSpace(taskData.ProposedCapacityOfTheAcademyTwelveOrAboveYears))
+            {
+                return TaskListStatus.NotStarted;
+            }
+            if (taskData.ProposedCapacityOfTheAcademyNotApplicable == false ||
+                (!string.IsNullOrWhiteSpace(taskData.ProposedCapacityOfTheAcademyReceptionToSixYears) &&
+                 !string.IsNullOrWhiteSpace(taskData.ProposedCapacityOfTheAcademySevenToElevenYears) &&
+                 !string.IsNullOrWhiteSpace(taskData.ProposedCapacityOfTheAcademyTwelveOrAboveYears)))
+            {
+                return TaskListStatus.Completed;
+            }
+            if (taskData.ProposedCapacityOfTheAcademyNotApplicable == true)
+            { 
+                return TaskListStatus.NotApplicable;
+            }
+            return TaskListStatus.InProgress;
+        }
+
+        private static TaskListStatus ConfirmMainContactTaskStatus(ConversionTaskDataDto taskData)
+        {
+            //Get main from coontact table by project id
+            return TaskListStatus.NotStarted;
+        }
+
+        private static TaskListStatus ChurchSupplementalAgreementTaskStatus(ConversionTaskDataDto taskData)
         {
             return TaskListStatus.NotStarted;
+        }
+
+        private static TaskListStatus ArticlesOfAssociationTaskStatus(ConversionTaskDataDto taskData)
+        {
+            return TaskListStatus.NotStarted;
+        }
+
+        private static TaskListStatus ConfirmIncomingTrustCeoDetailsTaskStatus(ConversionTaskDataDto taskData)
+        {
+            //Get CEO details from coontact table by project id
+            return TaskListStatus.NotStarted;
+        }
+
+        private static TaskListStatus ConfirmChairOfGovernorsDetailsTaskStatus(ConversionTaskDataDto taskData)
+        {
+            //Get chair of governers details from coontact table by project id
+            return TaskListStatus.NotStarted;
+        }
+
+        private static TaskListStatus ConfirmHeadTeacherDetailsTaskStatus(ConversionTaskDataDto taskData)
+        {
+            //Get head teacher details from coontact table by project id
+            return TaskListStatus.NotStarted;
+        }
+
+        private static TaskListStatus ConfirmAcademyNameTaskStatus(ConversionTaskDataDto taskData)
+        {
+            if(string.IsNullOrWhiteSpace(taskData.AcademyDetailsName))
+            {
+                return TaskListStatus.NotStarted;
+            }
+            if(!string.IsNullOrWhiteSpace(taskData.AcademyDetailsName))
+            {
+                return TaskListStatus.Completed;
+            }
+            return TaskListStatus.InProgress;
+        }
+
+        private static TaskListStatus ConfirmAndProcessSponsoredSupportGrantTaskStatus(ConversionTaskDataDto taskData)
+        {
+            if (!taskData.SponsoredSupportGrantInformTrust.HasValue &&
+                !taskData.SponsoredSupportGrantPaymentForm.HasValue &&
+                !taskData.SponsoredSupportGrantSendInformation.HasValue &&
+                !taskData.SponsoredSupportGrantPaymentAmount.HasValue &&
+                string.IsNullOrWhiteSpace(taskData.SponsoredSupportGrantType))
+            {
+                return TaskListStatus.NotStarted;
+            }
+            if (taskData.SponsoredSupportGrantInformTrust == true &&
+                taskData.SponsoredSupportGrantPaymentForm == true &&
+                taskData.SponsoredSupportGrantSendInformation == true &&
+                taskData.SponsoredSupportGrantPaymentAmount == true &&
+                !string.IsNullOrWhiteSpace(taskData.SponsoredSupportGrantType))
+            {
+                return TaskListStatus.Completed;
+            }
+            if (taskData.SponsoredSupportGrantNotApplicable == true)
+            {
+                return TaskListStatus.NotApplicable;
+            }
+            return TaskListStatus.InProgress;
+        }
+
+        private static TaskListStatus ProcessConversionSupportGrantTaskStatus(ConversionTaskDataDto taskData)
+        {
+            if(!taskData.ConversionGrantCheckVendorAccount.HasValue &&
+                !taskData.ConversionGrantPaymentForm.HasValue &&
+                !taskData.ConversionGrantSendInformation.HasValue &&
+                !taskData.ConversionGrantSharePaymentDate.HasValue)
+            {
+                return TaskListStatus.NotStarted;
+            }
+            if(taskData.ConversionGrantCheckVendorAccount == true &&
+                taskData.ConversionGrantPaymentForm == true &&
+                taskData.ConversionGrantSendInformation == true &&
+                taskData.ConversionGrantSharePaymentDate == true)
+            {
+                return TaskListStatus.Completed;
+            }
+            if (taskData.ConversionGrantNotApplicable == true)
+            {
+                return TaskListStatus.NotApplicable;
+            }
+            return TaskListStatus.InProgress;
+        }
+
+        private static TaskListStatus CompleteNotificationOfChangeTaskStatus(ConversionTaskDataDto taskData)
+        {
+            if (!taskData.CompleteNotificationOfChangeCheckDocument.HasValue &&
+                !taskData.CompleteNotificationOfChangeNotApplicable.HasValue &&
+                !taskData.CompleteNotificationOfChangeSendDocument.HasValue &&
+                !taskData.CompleteNotificationOfChangeTellLocalAuthority.HasValue)
+            {
+                return TaskListStatus.NotStarted;
+            }
+            if (taskData.CompleteNotificationOfChangeNotApplicable == true)
+            {
+                return TaskListStatus.NotApplicable;
+            }
+            if (taskData.CompleteNotificationOfChangeCheckDocument == true &&
+                taskData.CompleteNotificationOfChangeNotApplicable == false &&
+                taskData.CompleteNotificationOfChangeSendDocument == true &&
+                taskData.CompleteNotificationOfChangeTellLocalAuthority == true)
+            {
+                return TaskListStatus.Completed;
+            }
+            return TaskListStatus.InProgress;
+        }
+
+        private static TaskListStatus CheckAccuracyOfHigherNeedsTaskStatus(ConversionTaskDataDto taskData)
+        {
+            if(!taskData.CheckAccuracyOfHigherNeedsConfirmNumber.HasValue &&
+                !taskData.CheckAccuracyOfHigherNeedsConfirmPublishedNumber.HasValue)
+            {
+                return TaskListStatus.NotStarted;
+            }
+            if(taskData.CheckAccuracyOfHigherNeedsConfirmNumber == true &&
+                taskData.CheckAccuracyOfHigherNeedsConfirmPublishedNumber == true)
+            {
+                return TaskListStatus.Completed;
+            }
+            return TaskListStatus.InProgress;
+        }
+
+        private static TaskListStatus ConfirmAcademyRiskProtectionArrangementsTaskStatus(ConversionTaskDataDto taskData)
+        {
+            if(!taskData.RiskProtectionArrangementOption.HasValue &&
+               string.IsNullOrWhiteSpace(taskData.RiskProtectionArrangementReason))
+            {
+                return TaskListStatus.NotStarted;
+            }
+            if (taskData.RiskProtectionArrangementOption == RiskProtectionArrangementOption.Standard ||
+                taskData.RiskProtectionArrangementOption == RiskProtectionArrangementOption.ChurchOrTrust ||
+                taskData.RiskProtectionArrangementOption == RiskProtectionArrangementOption.Commercial && !string.IsNullOrWhiteSpace(taskData.RiskProtectionArrangementReason))
+            {
+                return TaskListStatus.Completed;
+            }
+            return TaskListStatus.InProgress;
         }
     }
 }

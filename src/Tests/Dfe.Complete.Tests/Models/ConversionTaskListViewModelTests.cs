@@ -1,4 +1,5 @@
 ﻿using Dfe.Complete.Application.Projects.Models;
+using Dfe.Complete.Domain.ValueObjects;
 using Dfe.Complete.Models;
 
 namespace Dfe.Complete.Tests.Models
@@ -18,7 +19,14 @@ namespace Dfe.Complete.Tests.Models
         [InlineData(null, true, true, true, TaskListStatus.Completed)]
         public void HandoverWithRegionalDeliveryOfficerTaskStatus_ShouldReturns_CorrectResult(bool? handoverNotApplicable, bool? handoverReview, bool? handoverNotes, bool? handoverMeeting, TaskListStatus taskListStatus)
         {
-            var model = new ConversionTaskDataModel(new Domain.ValueObjects.TaskDataId(Guid.NewGuid()), handoverReview, handoverNotes, handoverMeeting, handoverNotApplicable);
+            var model = new ConversionTaskDataDto
+            {
+                Id = new TaskDataId(Guid.NewGuid()),
+                HandoverReview = handoverReview,
+                HandoverNotes = handoverNotes,
+                HandoverMeeting = handoverMeeting,
+                HandoverNotApplicable = handoverNotApplicable
+            };
             var result = ConversionTaskListViewModel.HandoverWithRegionalDeliveryOfficerTaskStatus(model);
             Assert.Equal(taskListStatus, result);
         }

@@ -155,10 +155,64 @@ namespace Dfe.Complete.Tests.Constants
 
             Assert.Equal(basePath, string.Format(RouteConstants.ProjectTaskList, projectId));
             Assert.Equal(basePath + "/handover", string.Format(RouteConstants.ProjectHandoverWithDeliveryOfficerTask, projectId));
-            Assert.Equal(basePath + "/stakeholder_kickoff", string.Format(RouteConstants.ProjectStakeholderKickoffTask, projectId));
+            Assert.Equal(basePath + "/stakeholder_kick_off", string.Format(RouteConstants.ProjectStakeholderKickoffTask, projectId));
             Assert.Equal(basePath + "/land_questionnaire", string.Format(RouteConstants.ProjectLandQuestionnaireTask, projectId));
             Assert.Equal(basePath + "/land_registry", string.Format(RouteConstants.ProjectLandRegistryTask, projectId));
             Assert.Equal(basePath + "/supplemental_funding_agreement", string.Format(RouteConstants.ProjectSupplementalFundingAgreementTask, projectId));
+
+            Assert.Equal(basePath + "/risk_protection_arrangement", string.Format(RouteConstants.ProjectRiskProtectionArrangementTask, projectId));
+            Assert.Equal(basePath + "/check_accuracy_of_higher_needs", string.Format(RouteConstants.ProjectCheckAccuracyOfHigherNeedsTask, projectId));
+            Assert.Equal(basePath + "/complete_notification_of_change", string.Format(RouteConstants.ProjectCompleteNotificationOfChangeTask, projectId));
+            Assert.Equal(basePath + "/conversion_grant", string.Format(RouteConstants.ProjectProcessConversionSupportGrantTask, projectId));
+            Assert.Equal(basePath + "/sponsored_support_grant", string.Format(RouteConstants.ProjectConfirmAndProcessSponsoredSupportGrantTask, projectId));
+            Assert.Equal(basePath + "/academy_details", string.Format(RouteConstants.ProjectConfirmAcademyNameTask, projectId));
+            Assert.Equal(basePath + "/confirm_headteacher_contact", string.Format(RouteConstants.ProjectConfirmHeadTeacherDetailsTask, projectId));
+            Assert.Equal(basePath + "/confirm_chair_of_governors_contact", string.Format(RouteConstants.ProjectConfirmChairOfGovernorsDetailsTask, projectId));
+            Assert.Equal(basePath + "/confirm_incoming_trust_ceo_contact", string.Format(RouteConstants.ProjectConfirmIncomingTrustCeoDetailsTask, projectId));
+            Assert.Equal(basePath + "/main_contact", string.Format(RouteConstants.ProjectConfirmMainContactTask, projectId));
+            Assert.Equal(basePath + "/proposed_capacity_of_the_academy", string.Format(RouteConstants.ProjectConfirmProposedCapacityOfTheAcademyTask, projectId));
+            Assert.Equal(basePath + "/articles_of_association", string.Format(RouteConstants.ProjectArticlesOfAssociationTask, projectId));
+            Assert.Equal(basePath + "/deed_of_variation", string.Format(RouteConstants.ProjectDeedOfVariationTask, projectId));
+            Assert.Equal(basePath + "/trust_modification_order", string.Format(RouteConstants.ProjectTrustModificationOrderTask, projectId));
+            Assert.Equal(basePath + "/direction_to_transfer", string.Format(RouteConstants.ProjectDirectionToTransferTask, projectId));
+            Assert.Equal(basePath + "/one_hundred_and_twenty_five_year_lease", string.Format(RouteConstants.ProjectOneHundredAndTwentyFiveYearLeaseTask, projectId));
+            Assert.Equal(basePath + "/subleases", string.Format(RouteConstants.ProjectSubleasesTask, projectId));
+            Assert.Equal(basePath + "/tenancy_at_will", string.Format(RouteConstants.ProjectTenancyAtWillTask, projectId));
+            Assert.Equal(basePath + "/commercial_transfer_agreement", string.Format(RouteConstants.ProjectCommercialTransferAgreementTask, projectId));
+            Assert.Equal(basePath + "/school_completed", string.Format(RouteConstants.ProjectConfirmTheSchoolHasCompletedAllActionsTask, projectId));
+            Assert.Equal(basePath + "/conditions_met", string.Format(RouteConstants.ProjectConfirmAllConditionsHaveBeenMetTask, projectId));
+            Assert.Equal(basePath + "/share_information", string.Format(RouteConstants.ProjectShareTheInformationAboutOpeningTask, projectId));
+            Assert.Equal(basePath + "/confirm_date_academy_opened", string.Format(RouteConstants.ProjectConfirmDateAcademyOpenedTask, projectId));
+            Assert.Equal(basePath + "/redact_and_send", string.Format(RouteConstants.ProjectRedactAndSendTask, projectId));
+            Assert.Equal(basePath + "/receive_grant_payment_certificate", string.Format(RouteConstants.ProjectReceiveDeclarationOfExpenditureCertificateTask, projectId));
+            Assert.Equal(basePath + "/confirm_outgoing_trust_ceo_contact", string.Format(RouteConstants.ProjectConfirmOutingTrustCeoDetailsTask, projectId));
+            Assert.Equal(basePath + "/request_new_urn_and_record", string.Format(RouteConstants.ProjectRequestNewURNAndRecordForTheAcademyTask, projectId));
+            Assert.Equal(basePath + "/check_and_confirm_financial_information", string.Format(RouteConstants.ProjectCheckAndConfirmAcademyAndTrustFinancialInfoTask, projectId));
+            Assert.Equal(basePath + "/confirm_new_urn_and_record", string.Format(RouteConstants.ProjectConfirmTransferGrantFundingLevelTask, projectId));
+
+            Assert.Equal(basePath + "/form_m", string.Format(RouteConstants.ProjectFormMTask, projectId));
+            Assert.Equal(basePath + "/land_consent_letter", string.Format(RouteConstants.ProjectLandConsentLetterTask, projectId));
+            Assert.Equal(basePath + "/deed_of_novation_and_variation", string.Format(RouteConstants.ProjectDeedOfNovationAndVariationTask, projectId));
+            Assert.Equal(basePath + "/church_supplemental_agreement", string.Format(RouteConstants.ProjectChurchSupplementalAgreementTask, projectId));
+            Assert.Equal(basePath + "/master_funding_agreement", string.Format(RouteConstants.ProjectMasterFundingAgreementTask, projectId));
+            Assert.Equal(basePath + "/deed_of_termination_for_the_master_funding_agreement", string.Format(RouteConstants.ProjectDeedOfTerminationForTheMasterFundingAgreementTask, projectId));
+            Assert.Equal(basePath + "/deed_termination_church_agreement", string.Format(RouteConstants.ProjectDeedOfTerminationForChurchSupplementalAreementTask, projectId));
+            Assert.Equal(basePath + "/closure_or_transfer_declaration", string.Format(RouteConstants.ProjectClosureOrTransferDeclarationTask, projectId));
+            Assert.Equal(basePath + "/bank_details_changing", string.Format(RouteConstants.ProjectConfirmBankDetailsChangingForGeneralAnnualGrantPaymentTask, projectId));
+            Assert.Equal(basePath + "/confirm_incoming_trust_has_completed_all_actions", string.Format(RouteConstants.ProjectConfirmIncomingTrustHasCompletedAllActionsTask, projectId));
+            Assert.Equal(basePath + "/confirm_date_academy_transferred", string.Format(RouteConstants.ProjectConfirmDateAcademyTransferredTask, projectId));
+            Assert.Equal(basePath + "/redact_and_send_documents", string.Format(RouteConstants.ProjectRedactAndSendDocumentsTask, projectId));
+            Assert.Equal(basePath + "/declaration_of_expenditure_certificate", string.Format(RouteConstants.ProjectDeclarationOfExpenditureCertificateTask, projectId));
+
+            
+        }
+        [Fact]
+        public void TaskPageRoutes_ShouldFormatCorrectly()
+        {
+            var projectId = Guid.NewGuid();
+            var projectPath = $"/projects/{projectId}";
+            Assert.Equal(projectPath + "/complete", string.Format(RouteConstants.ProjectComplete, projectId));
+            Assert.Equal(projectPath + "/dao-revocation", string.Format(RouteConstants.ProjectDaoRevocation, projectId));
         }
 
         [Fact]

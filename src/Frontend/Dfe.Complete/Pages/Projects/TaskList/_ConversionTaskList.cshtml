@@ -2,43 +2,43 @@
 @using Dfe.Complete.TagHelpers
 @model Dfe.Complete.Pages.Projects.TaskList.TaskListModel
 @{
-    var handoverWithDeliveryOfficerLink = string.Format(RouteConstants.ProjectHandoverWithDeliveryOfficerTask, Model.ProjectId); 
-    var externalStakeHolderKickoff = string.Format(RouteConstants.ProjectStakeholderKickoffTask, Model.ProjectId);
+    var handoverWithDeliveryOfficerLink = string.Format(RouteConstants.ProjectHandoverWithDeliveryOfficerTask, Model.ProjectId);
+    var externalStakeHolderKickoffLink = string.Format(RouteConstants.ProjectStakeholderKickoffTask, Model.ProjectId);
     var confirmAcademyRiskProtectionArrangementsLink = string.Format(RouteConstants.ProjectRiskProtectionArrangementTask, Model.ProjectId);
-    var checkAccuracyOfHigherNeedsTask = string.Format(RouteConstants.ProjectCheckAccuracyOfHigherNeedsTask, Model.ProjectId); 
-    var completeNotificationOfChangeTask = string.Format(RouteConstants.ProjectCompleteNotificationOfChangeTask, Model.ProjectId);
-    var processConversionSupportGrantTask = string.Format(RouteConstants.ProjectProcessConversionSupportGrantTask, Model.ProjectId);
-    var confirmAndProcessSponsoredSupportGrantTask = string.Format(RouteConstants.ProjectConfirmAndProcessSponsoredSupportGrantTask, Model.ProjectId);
-    var confirmAcademyNameTask = string.Format(RouteConstants.ProjectConfirmAcademyNameTask, Model.ProjectId);
-    var confirmHeadTeacherDetailsTask = string.Format(RouteConstants.ProjectConfirmHeadTeacherDetailsTask, Model.ProjectId);
-    var confirmChairOfGovernorsDetailsTask = string.Format(RouteConstants.ProjectConfirmChairOfGovernorsDetailsTask, Model.ProjectId);
-    var confirmIncomingTrustCeoDetailsTask = string.Format(RouteConstants.ProjectConfirmIncomingTrustCeoDetailsTask, Model.ProjectId);
-    var confirmMainContactTask = string.Format(RouteConstants.ProjectConfirmMainContactTask, Model.ProjectId);
-    var confirmProposedCapacityOfTheAcademyTask = string.Format(RouteConstants.ProjectConfirmProposedCapacityOfTheAcademyTask, Model.ProjectId); 
+    var checkAccuracyOfHigherNeedsLink = string.Format(RouteConstants.ProjectCheckAccuracyOfHigherNeedsTask, Model.ProjectId);
+    var completeNotificationOfChangeLink = string.Format(RouteConstants.ProjectCompleteNotificationOfChangeTask, Model.ProjectId);
+    var processConversionSupportGrantLink = string.Format(RouteConstants.ProjectProcessConversionSupportGrantTask, Model.ProjectId);
+    var confirmAndProcessSponsoredSupportGrantLink = string.Format(RouteConstants.ProjectConfirmAndProcessSponsoredSupportGrantTask, Model.ProjectId);
+    var confirmAcademyNameLink = string.Format(RouteConstants.ProjectConfirmAcademyNameTask, Model.ProjectId);
+    var confirmHeadTeacherDetailsLink = string.Format(RouteConstants.ProjectConfirmHeadTeacherDetailsTask, Model.ProjectId);
+    var confirmChairOfGovernorsDetailsLink = string.Format(RouteConstants.ProjectConfirmChairOfGovernorsDetailsTask, Model.ProjectId);
+    var confirmIncomingTrustCeoDetailsLink = string.Format(RouteConstants.ProjectConfirmIncomingTrustCeoDetailsTask, Model.ProjectId);
+    var confirmMainContactLink = string.Format(RouteConstants.ProjectConfirmMainContactTask, Model.ProjectId);
+    var confirmProposedCapacityOfTheAcademyLink = string.Format(RouteConstants.ProjectConfirmProposedCapacityOfTheAcademyTask, Model.ProjectId);
 
     var aboutConversionProject = string.Format(RouteConstants.ProjectAbout, Model.ProjectId);
-     
+
     var landQuestionnaireLink = string.Format(RouteConstants.ProjectLandQuestionnaireTask, Model.ProjectId);
     var landRegistryLink = string.Format(RouteConstants.ProjectLandRegistryTask, Model.ProjectId);
     var supplementalFundingAgreementLink = string.Format(RouteConstants.ProjectSupplementalFundingAgreementTask, Model.ProjectId);
-    var churchSupplementalAgreementTask = string.Format(RouteConstants.ProjectSupplementalFundingAgreementTask, Model.ProjectId);
-    var masterFundingAgreementTask = string.Format(RouteConstants.ProjectSupplementalFundingAgreementTask, Model.ProjectId);
-    var articlesOfAssociationTask = string.Format(RouteConstants.ProjectArticlesOfAssociationTask, Model.ProjectId);
-    var deedOfVariationTask = string.Format(RouteConstants.ProjectDeedOfVariationTask, Model.ProjectId);
-    var trustModificationOrderTask = string.Format(RouteConstants.ProjectTrustModificationOrderTask, Model.ProjectId);
-    var directionToTransferTask = string.Format(RouteConstants.ProjectDirectionToTransferTask, Model.ProjectId);
-    var oneHundredAndTwentyFiveYearLeaseTask = string.Format(RouteConstants.ProjectOneHundredAndTwentyFiveYearLeaseTask, Model.ProjectId);
-    var subleasesTask = string.Format(RouteConstants.ProjectSubleasesTask, Model.ProjectId);
-    var tenancyAtWillTask = string.Format(RouteConstants.ProjectTenancyAtWillTask, Model.ProjectId);
-    var commercialTransferAgreementTask = string.Format(RouteConstants.ProjectCommercialTransferAgreementTask, Model.ProjectId);
+    var churchSupplementalAgreementLink = string.Format(RouteConstants.ProjectSupplementalFundingAgreementTask, Model.ProjectId);
+    var masterFundingAgreementLink = string.Format(RouteConstants.ProjectSupplementalFundingAgreementTask, Model.ProjectId);
+    var articlesOfAssociationLink = string.Format(RouteConstants.ProjectArticlesOfAssociationTask, Model.ProjectId);
+    var deedOfVariationLink = string.Format(RouteConstants.ProjectDeedOfVariationTask, Model.ProjectId);
+    var trustModificationOrderLink = string.Format(RouteConstants.ProjectTrustModificationOrderTask, Model.ProjectId);
+    var directionToTransferLink = string.Format(RouteConstants.ProjectDirectionToTransferTask, Model.ProjectId);
+    var oneHundredAndTwentyFiveYearLeaseLink = string.Format(RouteConstants.ProjectOneHundredAndTwentyFiveYearLeaseTask, Model.ProjectId);
+    var subleasesLink = string.Format(RouteConstants.ProjectSubleasesTask, Model.ProjectId);
+    var tenancyAtWillLink = string.Format(RouteConstants.ProjectTenancyAtWillTask, Model.ProjectId);
+    var commercialTransferAgreementLink = string.Format(RouteConstants.ProjectCommercialTransferAgreementTask, Model.ProjectId);
 
-    var confirmTheSchoolHasCompletedAllActionsTask = string.Format(RouteConstants.ProjectConfirmTheSchoolHasCompletedAllActionsTask, Model.ProjectId);
-    var confirmAllConditionsHaveBeenMetTask = string.Format(RouteConstants.ProjectConfirmAllConditionsHaveBeenMetTask, Model.ProjectId);
-    var shareTheInformationAboutOpeningTask = string.Format(RouteConstants.ProjectShareTheInformationAboutOpeningTask, Model.ProjectId);
+    var confirmTheSchoolHasCompletedAllActionsLink = string.Format(RouteConstants.ProjectConfirmTheSchoolHasCompletedAllActionsTask, Model.ProjectId);
+    var confirmAllConditionsHaveBeenMetLink = string.Format(RouteConstants.ProjectConfirmAllConditionsHaveBeenMetTask, Model.ProjectId);
+    var shareTheInformationAboutOpeningLink = string.Format(RouteConstants.ProjectShareTheInformationAboutOpeningTask, Model.ProjectId);
 
-    var confirmDateAcademyOpenedTask = string.Format(RouteConstants.ProjectConfirmDateAcademyOpenedTask, Model.ProjectId);
-    var redactAndSendDocumentsTask = string.Format(RouteConstants.ProjectRedactAndSendTask, Model.ProjectId);
-    var receiveGrantPaymentCertificateTask = string.Format(RouteConstants.ProjectReceiveGrantPaymentCertificateTask, Model.ProjectId);
+    var confirmDateAcademyOpenedLink = string.Format(RouteConstants.ProjectConfirmDateAcademyOpenedTask, Model.ProjectId);
+    var redactAndSendDocumentsLink = string.Format(RouteConstants.ProjectRedactAndSendTask, Model.ProjectId);
+    var receiveDeclarationOfExpenditureCertificateLink = string.Format(RouteConstants.ProjectReceiveDeclarationOfExpenditureCertificateTask, Model.ProjectId);
 }
 
 <div class="govuk-grid-row">
@@ -86,79 +86,79 @@
                                 <span class="app-task-list__task-name">
                                     <a aria-describedby="handover-with-delivery-officer-status" class="govuk-link" href="@handoverWithDeliveryOfficerLink">Handover with regional delivery officer</a>
                                 </span>
-                                <strong class="govuk-tag govuk-tag--orange app-task-list__tag" id="handover-with-delivery-officer-status">In progress</strong>
+                                <partial name="Shared/_TaskListStatus" model="@Model.ConversionTaskList.HandoverWithRegionalDeliveryOfficer" />
                             </li>
                             <li class="app-task-list__item">
                                 <span class="app-task-list__task-name">
-                                    <a aria-describedby="external-stakeholder-kick-off-status" class="govuk-link" href="@externalStakeHolderKickoff">External stakeholder kick-off</a>
+                                    <a aria-describedby="external-stakeholder-kick-off-status" class="govuk-link" href="@externalStakeHolderKickoffLink">External stakeholder kick-off</a>
                                 </span>
-                                <strong class="govuk-tag govuk-tag--orange app-task-list__tag" id="external-stakeholder-kick-off-status">In progress</strong>
+                                <partial name="Shared/_TaskListStatus" model="@Model.ConversionTaskList.ExternalStakeHolderKickoff" />
                             </li>
                             <li class="app-task-list__item">
                                 <span class="app-task-list__task-name">
                                     <a aria-describedby="check-accuracy-of-high-needs-places-information-status" class="govuk-link" href="@confirmAcademyRiskProtectionArrangementsLink">Confirm the academy's risk protection arrangements</a>
                                 </span>
-                                <strong class="govuk-tag govuk-tag--blue app-task-list__tag" id="check-accuracy-of-high-needs-places-information-status">Not started</strong>
+                                <partial name="Shared/_TaskListStatus" model="@Model.ConversionTaskList.ConfirmAcademyRiskProtectionArrangements" />
                             </li>
                             <li class="app-task-list__item">
                                 <span class="app-task-list__task-name">
-                                    <a aria-describedby="check-accuracy-of-high-needs-places-information-status" class="govuk-link" href="@checkAccuracyOfHigherNeedsTask">Check accuracy of high needs places information</a>
+                                    <a aria-describedby="check-accuracy-of-high-needs-places-information-status" class="govuk-link" href="@checkAccuracyOfHigherNeedsLink">Check accuracy of high needs places information</a>
                                 </span>
-                                <strong class="govuk-tag govuk-tag--blue app-task-list__tag" id="check-accuracy-of-high-needs-places-information-status">Not started</strong>
+                                <partial name="Shared/_TaskListStatus" model="@Model.ConversionTaskList.CheckAccuracyOfHigherNeeds" />
                             </li>
                             <li class="app-task-list__item">
                                 <span class="app-task-list__task-name">
-                                    <a aria-describedby="complete-a-notification-of-changes-to-funded-high-needs-places-form-status" class="govuk-link" href="@completeNotificationOfChangeTask">Complete a notification of changes to funded high needs places form</a>
+                                    <a aria-describedby="complete-a-notification-of-changes-to-funded-high-needs-places-form-status" class="govuk-link" href="@completeNotificationOfChangeLink">Complete a notification of changes to funded high needs places form</a>
                                 </span>
-                                <strong class="govuk-tag govuk-tag--blue app-task-list__tag" id="complete-a-notification-of-changes-to-funded-high-needs-places-form-status">Not started</strong>
+                                <partial name="Shared/_TaskListStatus" model="@Model.ConversionTaskList.CompleteNotificationOfChange" />
                             </li>
                             <li class="app-task-list__item">
                                 <span class="app-task-list__task-name">
-                                    <a aria-describedby="process-conversion-grant-status" class="govuk-link" href="@processConversionSupportGrantTask">Process conversion support grant</a>
+                                    <a aria-describedby="process-conversion-grant-status" class="govuk-link" href="@processConversionSupportGrantLink">Process conversion support grant</a>
                                 </span>
-                                <strong class="govuk-tag govuk-tag--blue app-task-list__tag" id="process-conversion-grant-status">Not started</strong>
+                                <partial name="Shared/_TaskListStatus" model="@Model.ConversionTaskList.ProcessConversionSupportGrant" />
                             </li>
                             <li class="app-task-list__item">
                                 <span class="app-task-list__task-name">
-                                    <a aria-describedby="confirm-and-process-the-sponsored-support-grant-status" class="govuk-link" href="@confirmAndProcessSponsoredSupportGrantTask">Confirm and process the sponsored support grant</a>
+                                    <a aria-describedby="confirm-and-process-the-sponsored-support-grant-status" class="govuk-link" href="@confirmAndProcessSponsoredSupportGrantLink">Confirm and process the sponsored support grant</a>
                                 </span>
-                                <strong class="govuk-tag govuk-tag--blue app-task-list__tag" id="confirm-and-process-the-sponsored-support-grant-status">Not started</strong>
+                                <partial name="Shared/_TaskListStatus" model="@Model.ConversionTaskList.ConfirmAndProcessSponsoredSupportGrant" />
                             </li>
                             <li class="app-task-list__item">
                                 <span class="app-task-list__task-name">
-                                    <a aria-describedby="confirm-the-academy-name-status" class="govuk-link" href="@confirmAcademyNameTask">Confirm the academy name</a>
+                                    <a aria-describedby="confirm-the-academy-name-status" class="govuk-link" href="@confirmAcademyNameLink">Confirm the academy name</a>
                                 </span>
-                                <strong class="govuk-tag govuk-tag--turquoise app-task-list__tag" id="confirm-the-academy-name-status">Completed</strong>
+                                <partial name="Shared/_TaskListStatus" model="@Model.ConversionTaskList.ConfirmAcademyName" />
                             </li>
                             <li class="app-task-list__item">
                                 <span class="app-task-list__task-name">
-                                    <a aria-describedby="confirm-the-academy-name-status" class="govuk-link" href="@confirmHeadTeacherDetailsTask">Confirm the headteacher's details</a>
+                                    <a aria-describedby="confirm-the-academy-name-status" class="govuk-link" href="@confirmHeadTeacherDetailsLink">Confirm the headteacher's details</a>
                                 </span>
-                                <strong class="govuk-tag govuk-tag--turquoise app-task-list__tag" id="confirm-the-academy-name-status">Completed</strong>
+                                <partial name="Shared/_TaskListStatus" model="@Model.ConversionTaskList.ConfirmHeadTeacherDetails" />
                             </li>
                             <li class="app-task-list__item">
                                 <span class="app-task-list__task-name">
-                                    <a aria-describedby="add-chair-of-governors-contact-details-status" class="govuk-link" href="@confirmChairOfGovernorsDetailsTask">Add chair of governors' contact details</a>
+                                    <a aria-describedby="add-chair-of-governors-contact-details-status" class="govuk-link" href="@confirmChairOfGovernorsDetailsLink">Add chair of governors' contact details</a>
                                 </span>
-                                <strong class="govuk-tag govuk-tag--blue app-task-list__tag" id="add-chair-of-governors-contact-details-status">Not started</strong>
+                                <partial name="Shared/_TaskListStatus" model="@Model.ConversionTaskList.ConfirmChairOfGovernorsDetails" />
                             </li>
                             <li class="app-task-list__item">
                                 <span class="app-task-list__task-name">
-                                    <a aria-describedby="confirm-the-main-contact-status" class="govuk-link" href="@confirmIncomingTrustCeoDetailsTask">Confirm the incoming trust CEO's details</a>
+                                    <a aria-describedby="confirm-the-main-contact-status" class="govuk-link" href="@confirmIncomingTrustCeoDetailsLink">Confirm the incoming trust CEO's details</a>
                                 </span>
-                                <strong class="govuk-tag govuk-tag--blue app-task-list__tag" id="confirm-the-main-contact-status">Not started</strong>
+                                <partial name="Shared/_TaskListStatus" model="@Model.ConversionTaskList.ConfirmIncomingTrustCeoDetails" />
                             </li>
                             <li class="app-task-list__item">
                                 <span class="app-task-list__task-name">
-                                    <a aria-describedby="confirm-the-main-contact-status" class="govuk-link" href="@confirmMainContactTask">Confirm the main contact</a>
+                                    <a aria-describedby="confirm-the-main-contact-status" class="govuk-link" href="@confirmMainContactLink">Confirm the main contact</a>
                                 </span>
-                                <strong class="govuk-tag govuk-tag--blue app-task-list__tag" id="confirm-the-main-contact-status">Not started</strong>
+                                <partial name="Shared/_TaskListStatus" model="@Model.ConversionTaskList.ConfirmMainContact" />
                             </li>
                             <li class="app-task-list__item">
                                 <span class="app-task-list__task-name">
-                                    <a aria-describedby="confirm-the-proposed-capacity-of-the-academy-status" class="govuk-link" href="@confirmProposedCapacityOfTheAcademyTask">Confirm the proposed capacity of the academy</a>
+                                    <a aria-describedby="confirm-the-proposed-capacity-of-the-academy-status" class="govuk-link" href="@confirmProposedCapacityOfTheAcademyLink">Confirm the proposed capacity of the academy</a>
                                 </span>
-                                <strong class="govuk-tag govuk-tag--turquoise app-task-list__tag" id="confirm-the-proposed-capacity-of-the-academy-status">Completed</strong>
+                                <partial name="Shared/_TaskListStatus" model="@Model.ConversionTaskList.ConfirmProposedCapacityOfTheAcademy" />
                             </li>
                         </ul>
                     </li>
@@ -171,79 +171,79 @@
                                 <span class="app-task-list__task-name">
                                     <a aria-describedby="land-questionnaire-status" class="govuk-link" href="@landQuestionnaireLink">Land questionnaire</a>
                                 </span>
-                                <strong class="govuk-tag govuk-tag--blue app-task-list__tag" id="land-questionnaire-status">Not started</strong>
+                                <partial name="Shared/_TaskListStatus" model="@Model.ConversionTaskList.LandQuestionnaire" />
                             </li>
                             <li class="app-task-list__item">
                                 <span class="app-task-list__task-name">
                                     <a aria-describedby="land-registry-title-plans-status" class="govuk-link" href="@landRegistryLink">Land registry title plans</a>
                                 </span>
-                                <strong class="govuk-tag govuk-tag--blue app-task-list__tag" id="land-registry-title-plans-status">Not started</strong>
+                                <partial name="Shared/_TaskListStatus" model="@Model.ConversionTaskList.LandRegistry" />
                             </li>
                             <li class="app-task-list__item">
                                 <span class="app-task-list__task-name">
                                     <a aria-describedby="supplemental-funding-agreement-status" class="govuk-link" href="@supplementalFundingAgreementLink">Supplemental funding agreement</a>
                                 </span>
-                                <strong class="govuk-tag govuk-tag--blue app-task-list__tag" id="supplemental-funding-agreement-status">Not started</strong>
+                                <partial name="Shared/_TaskListStatus" model="@Model.ConversionTaskList.SupplementalFundingAgreement" />
                             </li>
                             <li class="app-task-list__item">
                                 <span class="app-task-list__task-name">
-                                    <a aria-describedby="church-supplemental-agreement-status" class="govuk-link" href="@churchSupplementalAgreementTask">Church supplemental agreement</a>
+                                    <a aria-describedby="church-supplemental-agreement-status" class="govuk-link" href="@churchSupplementalAgreementLink">Church supplemental agreement</a>
                                 </span>
-                                <strong class="govuk-tag govuk-tag--blue app-task-list__tag" id="church-supplemental-agreement-status">Not started</strong>
+                                <partial name="Shared/_TaskListStatus" model="@Model.ConversionTaskList.ChurchSupplementalAgreement" />
                             </li>
                             <li class="app-task-list__item">
                                 <span class="app-task-list__task-name">
-                                    <a aria-describedby="master-funding-agreement-status" class="govuk-link" href="@masterFundingAgreementTask">Master funding agreement</a>
+                                    <a aria-describedby="master-funding-agreement-status" class="govuk-link" href="@masterFundingAgreementLink">Master funding agreement</a>
                                 </span>
-                                <strong class="govuk-tag govuk-tag--blue app-task-list__tag" id="master-funding-agreement-status">Not started</strong>
+                                <partial name="Shared/_TaskListStatus" model="@Model.ConversionTaskList.MasterFundingAgreement" />
                             </li>
                             <li class="app-task-list__item">
                                 <span class="app-task-list__task-name">
-                                    <a aria-describedby="articles-of-association-status" class="govuk-link" href="@articlesOfAssociationTask">Articles of association</a>
+                                    <a aria-describedby="articles-of-association-status" class="govuk-link" href="@articlesOfAssociationLink">Articles of association</a>
                                 </span>
-                                <strong class="govuk-tag govuk-tag--blue app-task-list__tag" id="articles-of-association-status">Not started</strong>
+                                <partial name="Shared/_TaskListStatus" model="@Model.ConversionTaskList.ArticlesOfAssociation" />
                             </li>
                             <li class="app-task-list__item">
                                 <span class="app-task-list__task-name">
-                                    <a aria-describedby="deed-of-variation-status" class="govuk-link" href="@deedOfVariationTask">Deed of variation</a>
+                                    <a aria-describedby="deed-of-variation-status" class="govuk-link" href="@deedOfVariationLink">Deed of variation</a>
                                 </span>
-                                <strong class="govuk-tag govuk-tag--blue app-task-list__tag" id="deed-of-variation-status">Not started</strong>
+                                <partial name="Shared/_TaskListStatus" model="@Model.ConversionTaskList.DeedOfVariation" />
                             </li>
                             <li class="app-task-list__item">
                                 <span class="app-task-list__task-name">
-                                    <a aria-describedby="trust-modification-order-status" class="govuk-link" href="@trustModificationOrderTask">Trust modification order</a>
+                                    <a aria-describedby="trust-modification-order-status" class="govuk-link" href="@trustModificationOrderLink">Trust modification order</a>
                                 </span>
-                                <strong class="govuk-tag govuk-tag--blue app-task-list__tag" id="trust-modification-order-status">Not started</strong>
+                                <partial name="Shared/_TaskListStatus" model="@Model.ConversionTaskList.TrustModificationOrder" />
                             </li>
                             <li class="app-task-list__item">
                                 <span class="app-task-list__task-name">
-                                    <a aria-describedby="direction-to-transfer-status" class="govuk-link" href="@directionToTransferTask">Direction to transfer</a>
+                                    <a aria-describedby="direction-to-transfer-status" class="govuk-link" href="@directionToTransferLink">Direction to transfer</a>
                                 </span>
-                                <strong class="govuk-tag govuk-tag--blue app-task-list__tag" id="direction-to-transfer-status">Not started</strong>
+                                <partial name="Shared/_TaskListStatus" model="@Model.ConversionTaskList.DirectionToTransfer" />
                             </li>
                             <li class="app-task-list__item">
                                 <span class="app-task-list__task-name">
-                                    <a aria-describedby="125-year-lease-status" class="govuk-link" href="@oneHundredAndTwentyFiveYearLeaseTask">125 year lease</a>
+                                    <a aria-describedby="125-year-lease-status" class="govuk-link" href="@oneHundredAndTwentyFiveYearLeaseLink">125 year lease</a>
                                 </span>
-                                <strong class="govuk-tag govuk-tag--blue app-task-list__tag" id="125-year-lease-status">Not started</strong>
+                                <partial name="Shared/_TaskListStatus" model="@Model.ConversionTaskList.OneHundredAndTwentyFiveYearLease" />
                             </li>
                             <li class="app-task-list__item">
                                 <span class="app-task-list__task-name">
-                                    <a aria-describedby="subleases-status" class="govuk-link" href="@subleasesTask">Subleases</a>
+                                    <a aria-describedby="subleases-status" class="govuk-link" href="@subleasesLink">Subleases</a>
                                 </span>
-                                <strong class="govuk-tag govuk-tag--blue app-task-list__tag" id="subleases-status">Not started</strong>
+                                <partial name="Shared/_TaskListStatus" model="@Model.ConversionTaskList.Tubleases" />
                             </li>
                             <li class="app-task-list__item">
                                 <span class="app-task-list__task-name">
-                                    <a aria-describedby="tenancy-at-will-status" class="govuk-link" href="@tenancyAtWillTask">Tenancy at will</a>
+                                    <a aria-describedby="tenancy-at-will-status" class="govuk-link" href="@tenancyAtWillLink">Tenancy at will</a>
                                 </span>
-                                <strong class="govuk-tag govuk-tag--blue app-task-list__tag" id="tenancy-at-will-status">Not started</strong>
+                                <partial name="Shared/_TaskListStatus" model="@Model.ConversionTaskList.TenancyAtWill" />
                             </li>
                             <li class="app-task-list__item">
                                 <span class="app-task-list__task-name">
-                                    <a aria-describedby="commercial-transfer-agreement-status" class="govuk-link" href="@commercialTransferAgreementTask">Commercial transfer agreement</a>
+                                    <a aria-describedby="commercial-transfer-agreement-status" class="govuk-link" href="@commercialTransferAgreementLink">Commercial transfer agreement</a>
                                 </span>
-                                <strong class="govuk-tag govuk-tag--blue app-task-list__tag" id="commercial-transfer-agreement-status">Not started</strong>
+                                <partial name="Shared/_TaskListStatus" model="@Model.ConversionTaskList.CommercialTransferAgreement" />
                             </li>
                         </ul>
                     </li>
@@ -254,21 +254,20 @@
                         <ul class="app-task-list__items">
                             <li class="app-task-list__item">
                                 <span class="app-task-list__task-name">
-                                    <a aria-describedby="confirm-the-academy-s-risk-protection-arrangements-status" class="govuk-link" href="@confirmTheSchoolHasCompletedAllActionsTask">Confirm the school has completed all actions</a>
+                                    <a aria-describedby="confirm-the-academy-s-risk-protection-arrangements-status" class="govuk-link" href="@confirmTheSchoolHasCompletedAllActionsLink">Confirm the school has completed all actions</a>
                                 </span>
-                                <strong class="govuk-tag govuk-tag--blue app-task-list__tag" id="confirm-the-academy-s-risk-protection-arrangements-status">Not started</strong>
+                                <partial name="Shared/_TaskListStatus" model="@Model.ConversionTaskList.ConfirmTheSchoolHasCompletedAllActions" />
                             </li>
                             <li class="app-task-list__item">
                                 <span class="app-task-list__task-name">
-                                    <a aria-describedby="complete-and-send-single-worksheet-status" class="govuk-link" href="@confirmAllConditionsHaveBeenMetTask">Confirm all conditions have been met</a>
+                                    <a aria-describedby="complete-and-send-single-worksheet-status" class="govuk-link" href="@confirmAllConditionsHaveBeenMetLink">Confirm all conditions have been met</a>
                                 </span>
-                                <strong class="govuk-tag govuk-tag--blue app-task-list__tag" id="complete-and-send-single-worksheet-status">Not started</strong>
-                            </li> 
+                                <partial name="Shared/_TaskListStatus" model="@Model.ConversionTaskList.ConfirmAllConditionsHaveBeenMet" />
                             <li class="app-task-list__item">
                                 <span class="app-task-list__task-name">
-                                    <a aria-describedby="share-the-grant-certificate-and-information-about-opening-status" class="govuk-link" href="@shareTheInformationAboutOpeningTask">Share the information about opening</a>
+                                    <a aria-describedby="share-the-grant-certificate-and-information-about-opening-status" class="govuk-link" href="@shareTheInformationAboutOpeningLink">Share the information about opening</a>
                                 </span>
-                                <strong class="govuk-tag govuk-tag--blue app-task-list__tag" id="share-the-grant-certificate-and-information-about-opening-status">Not started</strong>
+                                <partial name="Shared/_TaskListStatus" model="@Model.ConversionTaskList.ShareTheInformationAboutOpening" />
                             </li>
                         </ul>
                     </li>
@@ -279,21 +278,21 @@
                         <ul class="app-task-list__items">
                             <li class="app-task-list__item">
                                 <span class="app-task-list__task-name">
-                                    <a aria-describedby="confirm-the-date-the-academy-opened-status" class="govuk-link" href="@confirmDateAcademyOpenedTask">Confirm the date the academy opened</a>
+                                    <a aria-describedby="confirm-the-date-the-academy-opened-status" class="govuk-link" href="@confirmDateAcademyOpenedLink">Confirm the date the academy opened</a>
                                 </span>
-                                <strong class="govuk-tag govuk-tag--turquoise app-task-list__tag" id="confirm-the-date-the-academy-opened-status">Completed</strong>
+                                <partial name="Shared/_TaskListStatus" model="@Model.ConversionTaskList.ConfirmDateAcademyOpened" />
                             </li>
                             <li class="app-task-list__item">
                                 <span class="app-task-list__task-name">
-                                    <a aria-describedby="redact-and-send-documents-status" class="govuk-link" href="@redactAndSendDocumentsTask">Redact and send documents</a>
+                                    <a aria-describedby="redact-and-send-documents-status" class="govuk-link" href="@redactAndSendDocumentsLink">Redact and send documents</a>
                                 </span>
-                                <strong class="govuk-tag govuk-tag--blue app-task-list__tag" id="redact-and-send-documents-status">Not started</strong>
+                                <partial name="Shared/_TaskListStatus" model="@Model.ConversionTaskList.RedactAndSendDocuments" />
                             </li>
                             <li class="app-task-list__item">
                                 <span class="app-task-list__task-name">
-                                    <a aria-describedby="receive-grant-payment-certificate-status" class="govuk-link" href="@receiveGrantPaymentCertificateTask">Receive grant payment certificate</a>
+                                    <a aria-describedby="receive-grant-payment-certificate-status" class="govuk-link" href="@receiveDeclarationOfExpenditureCertificateLink">Receive grant payment certificate</a>
                                 </span>
-                                <strong class="govuk-tag govuk-tag--blue app-task-list__tag" id="receive-grant-payment-certificate-status">Not started</strong>
+                                <partial name="Shared/_TaskListStatus" model="@Model.ConversionTaskList.ProjectReceiveDeclarationOfExpenditureCertificate" />
                             </li>
                         </ul>
                     </li>
@@ -306,7 +305,7 @@
                             Completing a project
                         </h2>
                         <p class="govuk-body">You should only complete the project when you have finished every task and marked any that are not needed as not applicable.</p>
-                        <p class ="govuk-body">You will not be able to change this project once it is completed.</p>
+                        <p class="govuk-body">You will not be able to change this project once it is completed.</p>
                         <div class="govuk-button-group">
                             <button data-prevent-double-click="true" class="govuk-button" data-module="govuk-button" role="button" id="save">
                                 Complete project
@@ -316,7 +315,7 @@
                 </div>
             </div>
             <div class="govuk-grid-row" id="revoke_a_directive_academy_order">
-                <div class="govuk-grid-column-two-thirds"> 
+                <div class="govuk-grid-column-two-thirds">
                     <h2 class="govuk-heading-m">
                         Revoke a Directive Academy Order
                     </h2>
