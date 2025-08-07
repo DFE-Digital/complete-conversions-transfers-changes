@@ -4,12 +4,6 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/). To see an example from a mature product in the program [see the Complete products changelog that follows the same methodology](https://github.com/DFE-Digital/dfe-complete-conversions-transfers-and-changes/blob/main/CHANGELOG.md).
 
-
-## Notes
-### Releases
- - Unreleased: Developed and tested, has not yet deployed to prod
- - [TEST]/[PROD]: Feature/fix is considered ready for dual running in this environment
-
 ### Statuses
 Added for new features.  
 Changed for changes in existing functionality.  
@@ -20,15 +14,121 @@ Security in case of vulnerabilities.
 
 ---
 
-## Unreleased  
+## Unreleased
 
 ### Added
+- Added Project Significant History Dates `/projects/{projectId}/date-history`
+- Added `/projects/{projectId}/external-contacts` page
+
+### Changed
+
+### Fixed
+
+See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-08-05.608...main) for everything awaiting release
+
+---
+
+## [1.11.0](https://github.com/DFE-Digital/complete-conversions-transfers-changes/releases/tag/production-2025-08-05.608) - 2025-08-05
+
+### Added
+- Add handover page  (`/projects/all/handover`)
+- Add handover project check page  (`/projects/all/handover/{projectId}/check`)
+- Add handover project add detail & confirmation page  (`/projects/all/handover/{projectId}/new`)
+- Added `App Insight` for tracking users clicks and page views
+
+### Changed
+- Restructured the task page to be more generic
+- Update CRUD endpoints to account for TaskIdentifier
+
+### Fixed
+- Fixed cookies page's URL by including query string.
+- Fixed `Local Authority` service support endpoints
+- Fixed all trust list page by filtering to incoming ukprn instead of MAT and non MAT projects
+- Fixed _ProjectLayout to correctly show the unassigned banner based on whether the user is service support or assigned to the project
+
+See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-07-24.577...production-2025-08-05.608) for everything in the release
+
+---
+
+## [1.10.2](https://github.com/DFE-Digital/complete-conversions-transfers-changes/releases/tag/production-2025-07-24.577) - 2025-07-24
+
+### Added
+
+### Changed
+
+### Fixed
+- HOTFIX: antiforgery issue when accepting cookies from Ruby app
+
+See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-07-22.558...production-2025-07-24.577) for everything in the release
+
+---
+
+## [1.10.1](https://github.com/DFE-Digital/complete-conversions-transfers-changes/releases/tag/production-2025-07-22.558) - 2025-07-22
+
+### Fixed
+- HOTFIX: Reports tab now points to exports and dotnet app will handle redirect
+
+See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-07-22.553...production-2025-07-22.558) for everything in the release
+
+---
+
+## [1.10.0](https://github.com/DFE-Digital/complete-conversions-transfers-changes/releases/tag/production-2025-07-22.553) - 2025-07-22
+
+### Added
+- New route `/projects/all/reports`
+- Add reports landing page under All projects > Reports (`/projects/all/reports`)
+
+### Changed  
+- Add a redirect from projects/{id} to projects/{id}/tasks
+- Reduce log level from error to warning when project routes receive bad GUID or project not found 
+- Add a redirect from `/projects/all/export` to `/projects/all/reports`
+
+### Fixed
+- Remove double pagination on Service Support > Local authorities
+- Resolve "About the Project" academy crash
+
+See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-07-14.525...production-2025-07-22.553) for everything in the release
+
+---
+
+## [1.9.0](https://github.com/DFE-Digital/complete-conversions-transfers-changes/releases/tag/production-2025-07-14.525) - 2025-07-14
+
+### Added  
+- Add notes repository, along with create, read, update and delete queries/commands
+- Add project notes page (`/projects/{projectId}/notes`)
+- Add project notes editing page (`/projects/{projectId}/notes/{noteId}/edit`)
+- Add project notes creation page (`/projects/{projectId}/notes/new`)
+- Add ability to delete note (`/projects/{projectId}/notes/{noteId}/delete`)
+- Attach user ID from DB as custom claim
 
 ### Changed  
 
 ### Fixed
 
-See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-06-27.463...main) for everything awaiting release
+See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-07-10.519...production-2025-07-14.525) for everything in the release
+
+---
+
+## [1.8.0](https://github.com/DFE-Digital/complete-conversions-transfers-changes/releases/tag/production-2025-07-10.519) - 2025-07-10
+
+### Added
+- New route /projects/service-support/without-academy-urn
+- Service support Conversion URNs (/projects/service-support/without-academy-urn)
+- New route /projects/{projectId}/academy-urn
+- Service support Create Academy URN (/projects/{projectId}/academy-urn) 
+- Added `Statistics` page
+- Added Project Significant History Dates `/projects/{projectId}/date-history`
+
+### Changed  
+
+### Fixed
+
+- Throw exception if redis configs are not present and redis is enabled.
+
+### Security
+- Use only custom antiforgery for cookies due to requiring anonymous access
+
+See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-06-27.463...production-2025-07-10.519) for everything in the release
 
 ---
 
@@ -42,6 +142,8 @@ See the [full commit history](https://github.com/DFE-Digital/complete-conversion
 - footer links for production
 - privacy link
 - show 'service not working' on unexpected error
+- Fixed trust not found issue.
+- Updated body message on `Page not found` page.
 
 See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-06-24.451...production-2025-06-27.463) for everything in the release
 ---
@@ -272,3 +374,6 @@ See the [full commit history](https://github.com/DFE-Digital/complete-conversion
  - Captures prior production releases retroactively, for syncing purposes.
 
 See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/082ba69cfa1b5b098d5dd5e2c804e8f5c58c2a00...development-2025-03-05.78) for everything in the release
+
+### Added
+ - New route (About the project page) `/projects/{urn or ukprn}/information`

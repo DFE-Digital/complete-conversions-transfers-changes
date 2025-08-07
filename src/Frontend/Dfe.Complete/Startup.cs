@@ -1,5 +1,4 @@
 using Azure.Identity;
-using Dfe.Complete.Application.Common.Mappers;
 using Dfe.Complete.Configuration;
 using DataProtectionOptions = Dfe.Complete.Configuration.DataProtectionOptions;
 using Dfe.Complete.Infrastructure;
@@ -14,28 +13,26 @@ using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.FeatureManagement;
 using Microsoft.Identity.Web;
-using Microsoft.Identity.Web.UI; 
+using Microsoft.Identity.Web.UI;
 using DfE.CoreLibs.Security.Cypress;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using DfE.CoreLibs.Http.Middlewares.CorrelationId;
 using DfE.CoreLibs.Http.Interfaces;
 using Dfe.Complete.Logging.Middleware;
-using Microsoft.AspNetCore.Mvc;
 using DfE.CoreLibs.Security.Antiforgery;
 using Dfe.Complete.Validators;
 using DfE.CoreLibs.Security.Enums;
+using Dfe.Complete.Application.Mappers;
 
 namespace Dfe.Complete;
 
 public class Startup
 {
     private readonly TimeSpan _authenticationExpiration;
-    private readonly IWebHostEnvironment _env;
 
-    public Startup(IConfiguration configuration, IWebHostEnvironment env)
+    public Startup(IConfiguration configuration)
     {
         Configuration = configuration;
-        _env = env;
         _authenticationExpiration = TimeSpan.FromMinutes(int.Parse(Configuration["AuthenticationExpirationInMinutes"] ?? "60"));
     }
 
@@ -63,11 +60,6 @@ public class Startup
         services
             .AddRazorPages(options =>
             {
-                if (!_env.IsProduction())
-                {
-                    options.Conventions.ConfigureFilter(new IgnoreAntiforgeryTokenAttribute());
-                }
-
                 options.Conventions.AuthorizeFolder("/");
                 options.Conventions.AddPageRoute("/Projects/EditProjectNote", "projects/{projectId}/notes/edit");
             })
@@ -75,8 +67,9 @@ public class Startup
             {
                 options.HtmlHelperOptions.ClientValidationEnabled = false;
             });
-         
+
         ConfigureCustomAntiforgery(services);
+        SetupApplicationInsights(services);
 
         services.AddControllersWithViews()
            .AddMicrosoftIdentityUI()
@@ -92,6 +85,8 @@ public class Startup
            });
         services.AddControllers().AddMicrosoftIdentityUI();
         SetupDataProtection(services);
+
+        services.AddApplicationInsightsTelemetry(Configuration);
 
         services.AddCompleteClientProject(Configuration);
 
@@ -119,8 +114,8 @@ public class Startup
         authenticationBuilder.AddMicrosoftIdentityWebApp(Configuration);
 
         ConfigureCookies(services);
-        var appInsightsCnnStr = Configuration.GetSection("ApplicationInsights")?["ConnectionString"];
-        services.AddApplicationInsightsTelemetry(options => options.ConnectionString = appInsightsCnnStr);
+
+        services.AddApplicationInsightsTelemetry(Configuration);
 
         System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
 
@@ -137,6 +132,8 @@ public class Startup
 
         // AutoMapper
         services.AddAutoMapper(typeof(AutoMapping));
+
+        services.Configure<ExternalLinksOptions>(Configuration.GetSection(ExternalLinksOptions.Section));
     }
 
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -199,11 +196,13 @@ public class Startup
                    options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
                }
            });
-    } 
+    }
+
+    private void SetupApplicationInsights(IServiceCollection services) => services.Configure<ApplicationInsightsOptions>(Configuration.GetSection("ApplicationInsights"));
 
     private static void ConfigureCustomAntiforgery(IServiceCollection services)
     {
-        services.AddCustomRequestCheckerProvider<HasHeaderKeyExistsInRequestValidator>(); 
+        services.AddCustomRequestCheckerProvider<HasHeaderKeyExistsInRequestValidator>();
     }
 
     private void RegisterClients(IServiceCollection services)

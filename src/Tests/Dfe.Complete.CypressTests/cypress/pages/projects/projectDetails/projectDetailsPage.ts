@@ -2,22 +2,13 @@ import BasePage from "cypress/pages/basePage";
 import { significateDateToDisplayDate } from "cypress/support/formatDate";
 
 export class ProjectDetailsPage extends BasePage {
-    protected readonly sectionId: string;
+    protected readonly sectionId: string = "main-content";
     private readonly captionClass = "govuk-caption-l";
     private readonly navBarClass = "moj-sub-navigation";
 
-    constructor(sectionId: string = "") {
-        super();
-        this.sectionId = sectionId;
-    }
-
     inOrder() {
+        cy.wrap(this.sectionId).as("sectionId");
         cy.wrap(-1).as("summaryCounter");
-        return this;
-    }
-
-    row(row: number) {
-        cy.wrap(row - 2).as("summaryCounter");
         return this;
     }
 
@@ -111,18 +102,42 @@ export class ProjectDetailsPage extends BasePage {
         cy.get("@summaryCounter").then((counter) => {
             const nextIndex = Number(counter) + 1;
             cy.wrap(nextIndex).as("summaryCounter");
-
-            cy.getById(this.sectionId).within(() => {
-                cy.get(".govuk-summary-list__key").eq(nextIndex).should("contains.text", key);
+            cy.get("@sectionId").then((id) => {
+                cy.getById(id.toString()).find(".govuk-summary-list__key").eq(nextIndex).shouldHaveText(key);
             });
         });
         return this;
     }
 
     hasValue(value: string | number): this {
+        this.hasValueWithLink(value);
+        return this;
+    }
+
+    containsValue(value: string | number): this {
         cy.get("@summaryCounter").then((counter) => {
-            cy.getById(this.sectionId).within(() => {
-                cy.get(".govuk-summary-list__value").eq(Number(counter)).should("contains.text", value);
+            cy.get("@sectionId").then((id) => {
+                cy.getById(id.toString())
+                    .find(".govuk-summary-list__value")
+                    .eq(Number(counter))
+                    .should("contain.text", value);
+            });
+        });
+        return this;
+    }
+
+    hasValueWithLink(value: string | number, link?: string): this {
+        cy.get("@summaryCounter").then((counter) => {
+            cy.get("@sectionId").then((id) => {
+                cy.getById(id.toString())
+                    .find(".govuk-summary-list__value")
+                    .eq(Number(counter))
+                    .shouldHaveText(value)
+                    .then(($el) => {
+                        if (link) {
+                            cy.wrap($el).find("a").should("have.attr", "href", link);
+                        }
+                    });
             });
         });
         return this;
@@ -130,12 +145,14 @@ export class ProjectDetailsPage extends BasePage {
 
     hasTextWithLink(text: string, link: string, position: number = -1): this {
         cy.get("@summaryCounter").then((counter) => {
-            cy.getById(this.sectionId).within(() => {
-                cy.get(".govuk-summary-list__actions")
+            cy.get("@sectionId").then((id) => {
+                cy.getById(id.toString())
+                    .find(".govuk-summary-list__value")
                     .eq(Number(counter))
+                    .next("dd")
                     .find("a")
                     .eq(position)
-                    .should("contains.text", text)
+                    .should("contain.text", text)
                     .should("have.attr", "href", link);
             });
         });

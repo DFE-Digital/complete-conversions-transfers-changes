@@ -28,8 +28,8 @@ public class UpdateRegionalDeliveryOfficerCommandHandlerTests
         var now = DateTime.UtcNow;
 
         var sourceProject = Domain.Entities.Project.CreateConversionProject(
-            new ProjectId(Guid.NewGuid()),
-            command.ProjectUrn,
+            command.ProjectId,
+            new Urn(123456),
             now,
             now,
             Domain.Enums.TaskType.Conversion,
@@ -53,8 +53,39 @@ public class UpdateRegionalDeliveryOfficerCommandHandlerTests
             null,
             Guid.NewGuid());
 
-        mockProjectRepository.FindAsync(Arg.Any<Expression<Func<Domain.Entities.Project, bool>>>())
+        var updatedProject = Domain.Entities.Project.CreateConversionProject(
+            command.ProjectId,
+            new Urn(123456),
+            now,
+            now,
+            Domain.Enums.TaskType.Conversion,
+            Domain.Enums.ProjectType.Conversion,
+            Guid.NewGuid(),
+            DateOnly.MinValue,
+            true,
+            new Domain.ValueObjects.Ukprn(2),
+            Region.London,
+            true,
+            true,
+            DateOnly.MinValue,
+            "",
+            "",
+            "",
+            null,
+            default,
+            command.RegionalDeliveryOfficer,
+            null,
+            null,
+            null,
+            Guid.NewGuid());
+
+        mockProjectRepository.FindAsync(Arg.Any<Expression<Func<Domain.Entities.Project, bool>>>(),
+                Arg.Any<CancellationToken>())
             .Returns(sourceProject);
+        mockProjectRepository
+            .UpdateAsync(
+                Arg.Is<Domain.Entities.Project>(p => p.RegionalDeliveryOfficerId == command.RegionalDeliveryOfficer),
+                Arg.Any<CancellationToken>()).Returns(updatedProject);
         mockUserRepository
             .GetAsync(Arg.Is<UserId>(id => id.Value.ToString() == command.RegionalDeliveryOfficer.Value.ToString()),
                 Arg.Any<CancellationToken>()).Returns(new User
@@ -84,8 +115,8 @@ public class UpdateRegionalDeliveryOfficerCommandHandlerTests
         var now = DateTime.UtcNow;
 
         var sourceProject = Domain.Entities.Project.CreateConversionProject(
-            new ProjectId(Guid.NewGuid()),
-            command.ProjectUrn,
+            command.ProjectId,
+            new Urn(123456),
             now,
             now,
             Domain.Enums.TaskType.Conversion,

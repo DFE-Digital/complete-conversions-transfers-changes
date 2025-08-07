@@ -54,15 +54,16 @@
 	  <PackageReference Include="Dfe.AcademiesApi.Client" Version="1.0.5" />
 	  <PackageReference Include="DfE.CoreLibs.Http" Version="1.0.8" />
 	  <PackageReference Include="DfE.CoreLibs.Security" Version="1.1.9" />
-	  <PackageReference Include="DfE.CoreLibs.Utilities" Version="1.0.11" />
+	  <PackageReference Include="DfE.CoreLibs.Utilities" Version="1.0.12" />
 	  <PackageReference Include="DocumentFormat.OpenXml" Version="2.20.0" />
 	  <PackageReference Include="ExcelDataReader" Version="3.6.0" />
 	  <PackageReference Include="ExcelDataReader.DataSet" Version="3.6.0" />
 	  <PackageReference Include="FluentValidation" Version="11.11.0" />
-	  <PackageReference Include="GovUk.Frontend.AspNetCore" Version="2.2.0" />
-	  <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.22.0" />
-	  <PackageReference Include="Microsoft.AspNetCore.DataProtection" Version="9.0.4" />
-	  <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="8.0.15" />
+	  <PackageReference Include="GovUk.Frontend.AspNetCore" Version="2.2.1" />
+	  <PackageReference Include="Microsoft.AspNetCore.DataProtection" Version="9.0.7" />
+	  <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="8.0.18" />
+	  <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.23.0" />
+	  <PackageReference Include="Microsoft.Extensions.Logging.ApplicationInsights" Version="2.23.0" />
 	  <PackageReference Include="Microsoft.FeatureManagement.AspNetCore" Version="2.6.1" />
 	  <PackageReference Include="Microsoft.Identity.Web" Version="3.8.4" />
 	  <PackageReference Include="Microsoft.Identity.Web.UI" Version="3.8.4" />

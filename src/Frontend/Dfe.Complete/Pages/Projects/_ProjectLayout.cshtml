@@ -51,8 +51,8 @@
     </div>
   </div>
 }
-else if (User.GetUserAdId() != Model.Project.AssignedToId?.Value.ToString() &&
-Model.CurrentUserTeam.TeamIsServiceSupport())
+else if (User.GetUserId() != Model.Project.AssignedToId &&
+!Model.CurrentUserTeam.TeamIsServiceSupport())
 {
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
@@ -75,7 +75,7 @@ Model.CurrentUserTeam.TeamIsServiceSupport())
       <div class="govuk-summary-list__row">
         <dt class="govuk-summary-list__key">@Model.Project.Type.ToDisplayDescription() date</dt>
         <dd class="govuk-summary-list__value">
-          @Model.Project.SignificantDate
+          @Model.Project.SignificantDate.ToDateString()
           @if (Model.Project.SignificantDateProvisional is true)
           {
             <strong class="govuk-tag govuk-tag--grey">provisional</strong>
@@ -142,7 +142,7 @@ Model.CurrentUserTeam.TeamIsServiceSupport())
             aria-current="@IsCurrentNav(ProjectLayoutModel.NotesNavigation)">Notes</a>
         </li>
         <li class="moj-sub-navigation__item">
-          <a class="moj-sub-navigation__link" href="#"
+          <a class="moj-sub-navigation__link" href="@String.Format(RouteConstants.ProjectExternalContacts, Model.Project.Id.Value)"
             aria-current="@IsCurrentNav(ProjectLayoutModel.ExternalContactsNavigation)">External contacts</a>
         </li>
         <li class="moj-sub-navigation__item">
@@ -150,7 +150,7 @@ Model.CurrentUserTeam.TeamIsServiceSupport())
             aria-current="@IsCurrentNav(ProjectLayoutModel.InternalContactsNavigation)">Internal contacts</a>
         </li>
         <li class="moj-sub-navigation__item">
-          <a class="moj-sub-navigation__link" href="#"
+          <a class="moj-sub-navigation__link" href="@String.Format(RouteConstants.ProjectDateHistory, Model.Project.Id.Value)"
             aria-current="@IsCurrentNav(ProjectLayoutModel.ConversionDateHistoryNavigation)">@Model.Project.Type.ToDisplayDescription()
             date history</a>
         </li>

@@ -1,9 +1,9 @@
 import {
-    shouldBeAbleToChangeTheAddedByUserOfAProject,
+    shouldBeAbleToChangeTheAddedByUserOfAProject, shouldBeAbleToViewReportsLandingPage,
     shouldBeAbleToViewMultipleMonthsOfProjects,
     shouldNotBeAbleToCreateAProject,
-    shouldNotHaveAccessToViewAndEditUsers,
-    shouldNotHaveAccessToViewHandedOverProjects,
+    shouldNotHaveAccessToViewAndEditUsers, shouldNotHaveAccessToViewConversionURNsPage,
+    shouldNotHaveAccessToViewHandedOverProjects, shouldNotHaveAccessToViewLocalAuthorities
 } from "cypress/support/reusableTests";
 import { ProjectBuilder } from "cypress/api/projectBuilder";
 import { before, beforeEach } from "mocha";
@@ -60,7 +60,7 @@ describe("Capabilities and permissions of the regional casework services team le
             "By local authority",
             "Completed",
             "Statistics",
-            "Exports",
+            "Reports",
         ]);
     });
 
@@ -118,6 +118,10 @@ describe("Capabilities and permissions of the regional casework services team le
         shouldBeAbleToChangeTheAddedByUserOfAProject(project.urn.value, projectId, cypressUser, regionalCaseworkerUser);
     });
 
+    it("Should be able to view the reports landing page", () => {
+        shouldBeAbleToViewReportsLandingPage();
+    });
+
     it("Should NOT be able to create a project", () => {
         shouldNotBeAbleToCreateAProject();
     });
@@ -126,11 +130,11 @@ describe("Capabilities and permissions of the regional casework services team le
         // not implemented
     });
 
-    it.skip("Should NOT be able to view and edit local authorities", () => {
-        // this can be viewed in the Ruby app currently?
+    it("Should NOT be able to view and edit local authorities", () => {
+        shouldNotHaveAccessToViewLocalAuthorities();
     });
 
-    it.skip("Should NOT be able to view conversion URNs", () => {
-        // this can be viewed in the Ruby app currently?
+    it("Should NOT be able to view conversion URNs", () => {
+        shouldNotHaveAccessToViewConversionURNsPage(projectId);
     });
 });

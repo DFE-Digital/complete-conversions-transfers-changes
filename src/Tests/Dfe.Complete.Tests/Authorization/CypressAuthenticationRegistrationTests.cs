@@ -110,15 +110,13 @@ namespace Dfe.Complete.Tests.Authorization
                 { "AzureAd:TenantId", "tenant-id" },
                 { "AzureAd:ClientId", "client-id" },
                 { "AzureAd:CallbackPath", "/signin-oidc" },
-                { "DataProtection:__dummy", string.Empty }
+                { "DataProtection:__dummy", string.Empty },
+                { "ApplicationInsights:EnableBrowserAnalytics", "false"}
             }!).Build();
 
             services.AddSingleton<IConfiguration>(configuration);
 
-            var mockEnv = new Mock<IWebHostEnvironment>();
-            mockEnv.Setup(env => env.EnvironmentName).Returns("Development");
-            services.AddSingleton<IHostEnvironment>(mockEnv.Object);
-            var startup = new Startup(configuration, mockEnv.Object);
+            var startup = new Startup(configuration);
             startup.ConfigureServices(services);
 
             var serviceProvider = services.BuildServiceProvider();

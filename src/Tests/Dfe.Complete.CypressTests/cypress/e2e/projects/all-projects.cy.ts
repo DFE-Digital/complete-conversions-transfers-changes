@@ -3,6 +3,7 @@ import allProjects from "cypress/pages/projects/allProjects";
 import { projectTable } from "cypress/pages/projects/tables/projectTable";
 import { beforeEach } from "mocha";
 import {
+    currentMonthLong,
     dimensionsTrust,
     macclesfieldTrust,
     nextMonth,
@@ -18,6 +19,7 @@ import projectDetailsPage from "cypress/pages/projects/projectDetails/projectDet
 import userProjectTable from "cypress/pages/projects/tables/userProjectTable";
 import formAMATProjectTable from "cypress/pages/projects/tables/formAMATProjectTable";
 import { checkAccessibilityAcrossPages } from "cypress/support/reusableTests";
+import allProjectsStatisticsPage from "cypress/pages/projects/allProjectsStatisticsPage";
 
 const project = ProjectBuilder.createConversionProjectRequest(nextMonth);
 let projectId: string;
@@ -32,6 +34,7 @@ const transferSchoolName = "Abbey College Manchester";
 const transferRegion = "North West";
 const transferFormAMatProject = ProjectBuilder.createTransferFormAMatProjectRequest();
 const transferFormAMatSchoolName = "Priory Rise School";
+const nextMonthShortUS = `${nextMonth.toLocaleString("en-US", { month: "short" })} ${nextMonth.getFullYear()}`; // bug 228624
 
 describe("View all projects", () => {
     before(() => {
@@ -187,8 +190,8 @@ describe("View all projects", () => {
             .columnHasValue("Local authority", localAuthorityShort)
             .columnHasValue("Incoming trust", macclesfieldTrust.name.toUpperCase()) // bug 208086
             .columnHasValue("All conditions met", "Not yet")
-            .columnHasValue("Confirmed date (Original date)", nextMonthShort)
-            .goTo(`${schoolName} ${project.urn.value}`);
+            .columnHasValue("Confirmed date (Original date)", nextMonthShortUS) // bug 228624
+            .goTo(schoolName);
         projectDetailsPage.containsHeading(schoolName);
     });
 
@@ -211,7 +214,7 @@ describe("View all projects", () => {
             .columnHasValue("Outgoing trust", macclesfieldTrust.name.toUpperCase()) // bug 208086
             .columnHasValue("Incoming trust", dimensionsTrust.name.toUpperCase()) // bug 208086
             .columnHasValue("Authority to proceed", "Not yet")
-            .columnHasValue("Confirmed date (Original date)", nextMonthShort)
+            .columnHasValue("Confirmed date (Original date)", nextMonthShortUS) // bug 228624
             .goTo(`${transferSchoolName} ${transferProject.urn.value}`);
         projectDetailsPage.containsHeading(transferSchoolName);
     });
@@ -319,6 +322,56 @@ describe("View all projects", () => {
             ])
             .goTo(schoolName);
         projectDetailsPage.containsHeading(schoolName);
+    });
+
+    it("Should be able to view all projects statistics and jump to sections", () => {
+        navBar.goToAllProjects();
+        allProjects.filterProjects("Statistics").containsHeading("Statistics");
+
+        allProjectsStatisticsPage
+            .jumpToSection("Overview of all projects")
+            .pageHasMovedToSection("Overview of all projects")
+            .tableHasTableHeaders("Overview of all projects", ["Detail", "Conversions", "Transfers"])
+            .jumpToSection("Projects with Regional casework services")
+            .pageHasMovedToSection("Projects with Regional casework services")
+            .tableHasTableHeaders("Projects with Regional casework services", ["Detail", "Conversions", "Transfers"])
+            .jumpToSection("Projects not with Regional casework services")
+            .pageHasMovedToSection("Projects not with Regional casework services")
+            .tableHasTableHeaders("Projects not with Regional casework services", [
+                "Detail",
+                "Conversions",
+                "Transfers",
+            ])
+            .jumpToSection("Conversion projects per region")
+            .pageHasMovedToSection("Conversion projects per region")
+            .tableHasTableHeaders("Conversion projects per region", [
+                "Region",
+                "In-progress projects",
+                "Completed projects",
+                "Unassigned projects",
+                "All projects",
+            ])
+            .jumpToSection("Transfer projects per region")
+            .pageHasMovedToSection("Transfer projects per region")
+            .tableHasTableHeaders("Transfer projects per region", [
+                "Region",
+                "In-progress projects",
+                "Completed projects",
+                "Unassigned projects",
+                "All projects",
+            ])
+            .jumpToSection("6 month view of all project openers")
+            .pageHasMovedToSection("6 month view of all project openers")
+            .tableHasTableHeaders("6 month view of all project openers", [
+                "Project opener date",
+                "Conversions",
+                "Transfers",
+            ])
+            .jumpToSection("New projects this month")
+            .pageHasMovedToSection(`New projects this month (${currentMonthLong})`)
+            .jumpToSection("Users per team")
+            .pageHasMovedToSection("Users per team")
+            .tableHasTableHeaders("Users per team", ["Team", "Number of users"]);
     });
 
     it("Check accessibility across pages", () => {

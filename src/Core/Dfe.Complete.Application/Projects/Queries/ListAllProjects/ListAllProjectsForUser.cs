@@ -13,9 +13,10 @@ namespace Dfe.Complete.Application.Projects.Queries.ListAllProjects;
 
 public record ListAllProjectsForUserQuery(
     ProjectState? State,
-    string UserAdId,
+    string? UserAdId,
     ProjectUserFilter ProjectUserFilter,
-    OrderProjectQueryBy? OrderProjectQueryBy)
+    OrderProjectQueryBy? OrderProjectQueryBy,
+    string? UserEmail = null)
     : PaginatedRequest<PaginatedResult<List<ListAllProjectsForUserQueryResultModel>>>;
 
 public class ListAllProjectsForUserQueryHandler(
@@ -26,12 +27,22 @@ public class ListAllProjectsForUserQueryHandler(
     : IRequestHandler<ListAllProjectsForUserQuery, PaginatedResult<List<ListAllProjectsForUserQueryResultModel>>>
 {
     public async Task<PaginatedResult<List<ListAllProjectsForUserQueryResultModel>>> Handle(
-        ListAllProjectsForUserQuery request, CancellationToken cancellationToken)
+       ListAllProjectsForUserQuery request, CancellationToken cancellationToken)
     {
         try
         {
-            var user = await sender.Send(new GetUserByAdIdQuery(request.UserAdId), cancellationToken);
-            if (!user.IsSuccess || user.Value == null)
+            Result<UserDto?>? user = null;
+            if(!string.IsNullOrEmpty(request.UserAdId))
+            {
+                user = await sender.Send(new GetUserByAdIdQuery(request.UserAdId), cancellationToken);
+            }
+
+            if (!string.IsNullOrEmpty(request.UserEmail))
+            {
+                user = await sender.Send(new GetUserByEmailQuery(request.UserEmail), cancellationToken);
+            }
+
+            if (user == null || !user.IsSuccess || user.Value == null)
                 throw new NotFoundException("User not found.");
 
             var assignedTo = request.ProjectUserFilter == ProjectUserFilter.AssignedTo ? user.Value?.Id : null;
@@ -44,24 +55,30 @@ public class ListAllProjectsForUserQueryHandler(
             var allProjectTrustUkPrns = projectsForUser
                 .SelectMany(p => new[]
                 {
-                    p.Project?.IncomingTrustUkprn?.Value.ToString() ?? string.Empty,
-                    p.Project?.OutgoingTrustUkprn?.Value.ToString() ?? string.Empty
+                   p.Project?.IncomingTrustUkprn?.Value.ToString() ?? string.Empty,
+                   p.Project?.OutgoingTrustUkprn?.Value.ToString() ?? string.Empty
                 })
                 .Where(ukPrn => !string.IsNullOrEmpty(ukPrn))
+                .Distinct()
                 .ToList();
 
+            if(allProjectTrustUkPrns.Count == 0)
+            {
+                return PaginatedResult<List<ListAllProjectsForUserQueryResultModel>>.Success([], projectsForUser.Count);
+            }
             var allTrusts = await trustsClient.GetByUkprnsAllAsync(allProjectTrustUkPrns, cancellationToken);
+
             var result = projectsForUser
                 .Skip(request.Page * request.Count)
                 .Take(request.Count)
                 .Select(p =>
                 {
-                    var incomingTrustName = p.Project.FormAMat ? p.Project.NewTrustName : allTrusts.FirstOrDefault(trust => trust.Ukprn == p.Project?.IncomingTrustUkprn?.Value.ToString())?.Name;
+                    var incomingTrustName = p.Project.FormAMat ? p.Project.NewTrustName : allTrusts?.FirstOrDefault(trust => trust.Ukprn == p.Project?.IncomingTrustUkprn?.Value.ToString())?.Name;
                     return ListAllProjectsForUserQueryResultModel
                         .MapProjectAndEstablishmentToListAllProjectsForUserQueryResultModel(
                             p.Project,
                             p.Establishment!,
-                            outgoingTrustName: allTrusts.FirstOrDefault(trust =>
+                            outgoingTrustName: allTrusts?.FirstOrDefault(trust =>
                                 trust.Ukprn == p.Project?.OutgoingTrustUkprn?.Value.ToString())?.Name,
                             incomingTrustName: incomingTrustName);
                 })

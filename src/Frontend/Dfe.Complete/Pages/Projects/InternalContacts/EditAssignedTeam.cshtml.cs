@@ -10,15 +10,15 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Dfe.Complete.Pages.Projects.InternalContacts;
 
-public class EditAssignedTeam(ISender sender, ErrorService errorService, ILogger<InternalContacts> logger) : BaseProjectPageModel(sender)
+public class EditAssignedTeam(ISender sender, ErrorService errorService, ILogger<InternalContacts> logger) : BaseProjectPageModel(sender, logger)
 {
     [BindProperty]
     [Required]
     public ProjectTeam? Team { get; set; } = default!;
     
-    public override async Task<IActionResult> OnGet()
+    public override async Task<IActionResult> OnGetAsync()
     {
-        await base.OnGet();
+        await base.OnGetAsync();
         Team = Project.Team;
         return Page();
     }
@@ -30,10 +30,10 @@ public class EditAssignedTeam(ISender sender, ErrorService errorService, ILogger
         if (!ModelState.IsValid)
         {
             errorService.AddErrors(ModelState);
-            return await OnGet();
+            return await OnGetAsync();
         }
-        var updateRequest = new UpdateAssignedTeamCommand(Project.Urn, Team);
-        await sender.Send(updateRequest);
+        var updateRequest = new UpdateAssignedTeamCommand(Project.Id, Team);
+        await Sender.Send(updateRequest);
         TempData.SetNotification(NotificationType.Success, "Success", "Project has been assigned to team successfully");
         return Redirect(FormatRouteWithProjectId(RouteConstants.ProjectInternalContacts));
 

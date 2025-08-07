@@ -13,7 +13,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Dfe.Complete.Pages.Projects.InternalContacts;
 
 public class EditAssignedUser(ISender sender, ErrorService errorService, ILogger<InternalContacts> logger)
-    : BaseProjectPageModel(sender)
+    : BaseProjectPageModel(sender, logger)
 {
     private readonly ISender _sender = sender;
 
@@ -21,9 +21,9 @@ public class EditAssignedUser(ISender sender, ErrorService errorService, ILogger
 
     public UserDto AssignedUser { get; set; } = default!;
 
-    public override async Task<IActionResult> OnGet()
+    public override async Task<IActionResult> OnGetAsync()
     {
-        await base.OnGet();
+        await base.OnGetAsync();
         if (Project.AssignedToId is null) return Page();
 
         var assignedToUserQuery = new GetUserByIdQuery(Project.AssignedToId);
@@ -35,7 +35,7 @@ public class EditAssignedUser(ISender sender, ErrorService errorService, ILogger
         }
         else
         {
-            logger.LogError("Assigned to user id exists but user was not found by query - {Id}",
+            logger.LogInformation("Assigned to user id exists but user was not found by query - {Id}",
                 assignedToUserQuery.UserId.Value.ToString());
         }
 
@@ -49,7 +49,7 @@ public class EditAssignedUser(ISender sender, ErrorService errorService, ILogger
         if (!ModelState.IsValid)
         {
             errorService.AddErrors(ModelState);
-            return await OnGet();
+            return await OnGetAsync();
         }
 
         var assignedToUserQuery = new GetUserByEmailQuery(Email);
@@ -59,31 +59,31 @@ public class EditAssignedUser(ISender sender, ErrorService errorService, ILogger
         {
             try
             {
-                var updateRequest = new UpdateAssignedUserCommand(Project.Urn, assignedResult.Value.Id);
+                var updateRequest = new UpdateAssignedUserCommand(Project.Id, assignedResult.Value.Id);
                 await _sender.Send(updateRequest);
                 TempData.SetNotification(NotificationType.Success, "Success", "Project has been assigned successfully");
                 return Redirect(FormatRouteWithProjectId(RouteConstants.ProjectInternalContacts));
             }
             catch (NotFoundException notFoundException)
             {
-                logger.LogError(notFoundException, notFoundException.Message, notFoundException.InnerException);
+                logger.LogInformation(notFoundException, notFoundException.Message, notFoundException.InnerException);
 
                 ModelState.AddModelError(notFoundException.Field ?? "NotFound", notFoundException.Message);
 
                 errorService.AddErrors(ModelState);
 
-                return await OnGet();
+                return await OnGetAsync();
             }
             catch (Exception ex)
             {
-                logger.LogError(ex, "Error occurred while updating the assigned user.");
+                logger.LogInformation(ex, "Error occurred while updating the assigned user.");
                 ModelState.AddModelError("", "An unexpected error occurred. Please try again later.");
-                return await OnGet();
+                return await OnGetAsync();
             }
         }
 
         logger.LogError("Email not found or not assignable - {Email}", assignedToUserQuery.Email);
         ModelState.AddModelError("Email", "Email is not assignable");
-        return await OnGet();
+        return await OnGetAsync();
     }
 }

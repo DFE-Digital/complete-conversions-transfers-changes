@@ -204,8 +204,21 @@ namespace Dfe.Complete.Application.Tests.QueryFilters
                 new Project { State = ProjectState.Active },
                 new Project { State = ProjectState.Completed }
             }.AsQueryable();
-            Assert.Single(new StateQuery(ProjectState.Active).Apply(list));
+            Assert.Single(new StateQuery([ProjectState.Active]).Apply(list));
             Assert.Equal(2, new StateQuery(null).Apply(list).Count());
+        }
+
+        [Fact]
+        public void ProjectIdQuery_Various()
+        { 
+            var projectId = new ProjectId(Guid.NewGuid());
+            var list = new[]
+            {
+                new Project { Id = new ProjectId(Guid.NewGuid()) },
+                new Project { Id = projectId }
+            }.AsQueryable();
+            Assert.Single(new ProjectIdQuery(projectId).Apply(list));
+            Assert.Equal(2, new ProjectIdQuery(null).Apply(list).Count());
         }
 
         [Fact]
@@ -266,6 +279,6 @@ namespace Dfe.Complete.Application.Tests.QueryFilters
 
             Assert.Equal(expected, q.Count());
         }
-    
-}
+
+    }
 }

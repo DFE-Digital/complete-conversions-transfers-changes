@@ -1,0 +1,47 @@
+@using Dfe.Complete.Constants
+@using Dfe.Complete.Extensions;
+@using Dfe.Complete.Domain.Enums;
+@using Dfe.Complete.Domain.Constants;
+
+@model Dfe.Complete.Pages.Projects.TaskList.Tasks.BaseProjectTaskModel
+@{
+    var userId = User.GetUserId();
+}
+
+<aside>
+    <h2 class="govuk-heading-m">Task notes</h2>
+    <form method="post" asp-page-handler="AddNote" class="govuk-!-margin-bottom-3">
+        <input type="hidden" name="ProjectId" value="@Model.ProjectId" />
+        <input type="hidden" name="TaskIdentifier" value="@Model.TaskIdentifier" />
+        <button 
+            type="submit" 
+            class="govuk-button govuk-button--secondary govuk-!-margin-bottom-3" 
+            data-module="govuk-button"
+        >
+            Add a new task note
+        </button>
+    </form>
+    <ul class="list-style-none">
+    @for(var iNote = 0; iNote < Model.Notes.Count; iNote++)
+    {
+            var note = Model.Notes[iNote];
+            var editNoteLink = string.Format(RouteConstants.ProjectEditNote, Model.ProjectId, note.Id.Value);
+
+            @if (iNote > 0)
+            {
+                <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible" />
+            }
+            <li>
+                <p class="govuk-body govuk-!-margin-bottom-0">@note.CreatedAt.ToDateString()</p>
+                <h3 class="govuk-heading-s govuk-!-padding-top-0">@note.UserFullName</h3>
+                <p class="govuk-body-m">@note.Body</p>
+                @if (Model.CanEditNote(note.UserId))
+                {
+                    <p class="govuk-body govuk-!-font-size-16">
+                        <a class="govuk-link" href="@editNoteLink">Edit note</a>
+                    </p>
+                }
+            </li>
+        }
+    </ul>
+</aside>

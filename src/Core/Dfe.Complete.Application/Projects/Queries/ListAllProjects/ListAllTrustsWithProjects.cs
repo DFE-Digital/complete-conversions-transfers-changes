@@ -22,12 +22,10 @@ namespace Dfe.Complete.Application.Projects.Queries.ListAllProjects
         {
             try
             {
-                var baseQ = new StateQuery(ProjectState.Active)
+                var baseQ = new StateQuery([ProjectState.Active])
                     .Apply(repo.Projects.AsNoTracking());
-
-                var nonMatGroups = await new FormAMatQuery(false)
-                    .Apply(baseQ)
-                    .GroupBy(p => p.IncomingTrustUkprn)
+                
+                var ukprnGroups = await baseQ.GroupBy(p => p.IncomingTrustUkprn)
                     .Where(p => p.Key != null)
                     .Select(g => new
                     {
@@ -36,9 +34,9 @@ namespace Dfe.Complete.Application.Projects.Queries.ListAllProjects
                         Transfers = g.Count(p => p.Type == ProjectType.Transfer)
                     })
                     .ToListAsync(cancellationToken);
-
-                var matGroups = await new FormAMatQuery(true)
-                    .Apply(baseQ)
+                
+                var trnGroups = await baseQ.Where(p => p.IncomingTrustUkprn == null && !string.IsNullOrEmpty(
+                        p.NewTrustReferenceNumber) && !string.IsNullOrEmpty(p.NewTrustName))
                     .GroupBy(p => new { NewTrustReferenceNumber = p.NewTrustReferenceNumber!, NewTrustName = p.NewTrustName! })
                     .Select(g => new
                     {
@@ -50,19 +48,19 @@ namespace Dfe.Complete.Application.Projects.Queries.ListAllProjects
                     })
                     .ToListAsync(cancellationToken);
 
-                var ukprnStrings = nonMatGroups
+                var ukprnStrings = ukprnGroups
                     .Select(x => x.UkprnInt!.Value.ToString())
                     .Distinct()
                     .ToList();
 
-                var apiDtos = await trustsClient
-                    .GetByUkprnsAllAsync(ukprnStrings, cancellationToken);
+                var apiDtos = ukprnStrings.Count > 0 ? await trustsClient
+                   .GetByUkprnsAllAsync(ukprnStrings, cancellationToken) : null;
 
                 var apiDtoDictionary = apiDtos == null
-                    ? new Dictionary<string, TrustDto>()
+                    ? []
                     : apiDtos.ToDictionary(dto => dto.Ukprn!, dto => dto);
 
-                var nonMatResults = nonMatGroups
+                var ukprnResults = ukprnGroups
                     .Select(g =>
                     {
                         var uk = g.UkprnInt!.Value.ToString();
@@ -82,7 +80,7 @@ namespace Dfe.Complete.Application.Projects.Queries.ListAllProjects
                     .Cast<ListTrustsWithProjectsResultModel>()
                     .ToList();
 
-                var matResults = matGroups
+                var trnResults = trnGroups
                     .Select(g => new ListTrustsWithProjectsResultModel(
                         Identifier: g.Key,
                         TrustName: g.Name,
@@ -90,8 +88,8 @@ namespace Dfe.Complete.Application.Projects.Queries.ListAllProjects
                         ConversionCount: g.Conversions,
                         TransfersCount: g.Transfers));
 
-                var all = nonMatResults
-                    .Concat(matResults)
+                var all = ukprnResults
+                    .Concat(trnResults)
                     .OrderBy(r => r.TrustName)
                     .ToList();
 

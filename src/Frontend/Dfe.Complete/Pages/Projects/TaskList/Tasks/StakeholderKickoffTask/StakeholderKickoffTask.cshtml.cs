@@ -1,11 +1,12 @@
-using Dfe.Complete.Constants;
-using Dfe.Complete.Models;
+using Dfe.Complete.Domain.Enums;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.StakeholderKickoffTask
 {
-    public class StakeholderKickoffTaskModel(ISender sender) : BaseProjectPageModel(sender)
+    public class StakeholderKickoffTaskModel(ISender sender, IAuthorizationService authorizationService, ILogger<StakeholderKickoffTaskModel> logger)
+        : BaseProjectTaskModel(sender, authorizationService, logger, NoteTaskIdentifier.StakeholderKickoff)
     {
         [BindProperty(Name = "send-intro-emails")]
         public bool? SendIntroEmails { get; set; }
@@ -24,10 +25,5 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.StakeholderKickoffTask
 
         [BindProperty(Name = "conversion-date")]
         public DateTime? ConversionDate { get; set; }
-
-        public async Task<IActionResult> OnPost()
-        {
-            return Redirect(string.Format(RouteConstants.ProjectStakeholderKickoffTask, ProjectId));
-        }
     }
 }

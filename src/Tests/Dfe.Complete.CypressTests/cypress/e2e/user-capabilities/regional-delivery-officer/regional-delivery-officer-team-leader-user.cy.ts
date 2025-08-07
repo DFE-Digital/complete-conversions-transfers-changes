@@ -1,7 +1,10 @@
 import {
     shouldBeAbleToChangeTheAddedByUserOfAProject,
+    shouldBeAbleToViewReportsLandingPage,
     shouldBeAbleToViewMultipleMonthsOfProjects,
     shouldNotHaveAccessToViewAndEditUsers,
+    shouldNotHaveAccessToViewConversionURNsPage,
+    shouldNotHaveAccessToViewLocalAuthorities,
 } from "cypress/support/reusableTests";
 import { before, beforeEach } from "mocha";
 import projectRemover from "cypress/api/projectRemover";
@@ -59,7 +62,7 @@ describe("Capabilities and permissions of the regional delivery officer team lea
             "By local authority",
             "Completed",
             "Statistics",
-            "Exports",
+            "Reports",
         ]);
     });
 
@@ -72,7 +75,6 @@ describe("Capabilities and permissions of the regional delivery officer team lea
     });
 
     it("Should be able to assign unassigned projects to users", () => {
-        cy.pause();
         navBar.goToYourTeamProjects();
         yourTeamProjects
             .filterProjects("Unassigned")
@@ -101,6 +103,10 @@ describe("Capabilities and permissions of the regional delivery officer team lea
         shouldBeAbleToChangeTheAddedByUserOfAProject(project.urn.value, projectId, cypressUser, regionalCaseworkerUser);
     });
 
+    it("Should be able to view the reports landing page", () => {
+        shouldBeAbleToViewReportsLandingPage();
+    });
+
     it.skip("Should NOT be able to soft delete projects", () => {
         // not implemented
     });
@@ -110,11 +116,11 @@ describe("Capabilities and permissions of the regional delivery officer team lea
         shouldNotHaveAccessToViewAndEditUsers();
     });
 
-    it.skip("Should NOT be able to view and edit local authorities", () => {
-        // this can be viewed in the Ruby app currently?
+    it("Should NOT be able to view and edit local authorities", () => {
+        shouldNotHaveAccessToViewLocalAuthorities();
     });
 
-    it.skip("Should NOT be able to view conversion URNs", () => {
-        // this can be viewed in the Ruby app currently?
+    it("Should NOT be able to view conversion URNs", () => {
+        shouldNotHaveAccessToViewConversionURNsPage(projectId);
     });
 });

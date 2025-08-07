@@ -12,24 +12,50 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace Dfe.Complete.Models;
 
-public abstract class BaseProjectPageModel(ISender sender) : PageModel
+public abstract class BaseProjectPageModel(ISender sender, ILogger logger) : PageModel
 {
-    [BindProperty(SupportsGet = true, Name = "projectId")]
+    protected readonly ISender Sender = sender;
+    protected ILogger Logger = logger;
 
+
+    [BindProperty(SupportsGet = true, Name = "projectId")]
     public string ProjectId { get; set; }
 
     public ProjectDto Project { get; set; }
+
     public EstablishmentDto Establishment { get; set; }
+
     public TrustDto? IncomingTrust { get; set; }
+
     public TrustDto? OutgoingTrust { get; set; }
+
     public ProjectTeam CurrentUserTeam { get; set; }
 
-    public virtual async Task<IActionResult> OnGet()
+    public async Task UpdateCurrentProject()
     {
-        await UpdateCurrentProject();
+        var success = Guid.TryParse(ProjectId, out var guid);
 
+        if (!success)
+        {
+            Logger.LogWarning("{ProjectId} is not a valid Guid.", ProjectId);
+            return;
+        }
+
+        var query = new GetProjectByIdQuery(new ProjectId(guid));
+        var result = await Sender.Send(query);
+        if (!result.IsSuccess || result.Value == null)
+        {
+            Logger.LogWarning("Project {ProjectId} does not exist.", ProjectId);
+            return;
+        }
+
+        Project = result.Value;
+    }
+
+    protected async Task SetEstablishmentAsync()
+    {
         var establishmentQuery = new GetEstablishmentByUrnRequest(Project.Urn.Value.ToString());
-        var establishmentResult = await sender.Send(establishmentQuery);
+        var establishmentResult = await Sender.Send(establishmentQuery);
 
         if (!establishmentResult.IsSuccess || establishmentResult.Value == null)
         {
@@ -37,11 +63,14 @@ public abstract class BaseProjectPageModel(ISender sender) : PageModel
         }
 
         Establishment = establishmentResult.Value;
+    }
 
-        if (!Project.FormAMat)
+    protected async Task SetIncomingTrustAsync()
+    {
+        if (!Project.FormAMat && Project.IncomingTrustUkprn != null)
         {
             var incomingTrustQuery = new GetTrustByUkprnRequest(Project.IncomingTrustUkprn.Value.ToString());
-            var incomingTrustResult = await sender.Send(incomingTrustQuery);
+            var incomingTrustResult = await Sender.Send(incomingTrustQuery);
 
             if (!incomingTrustResult.IsSuccess || incomingTrustResult.Value == null)
             {
@@ -50,42 +79,45 @@ public abstract class BaseProjectPageModel(ISender sender) : PageModel
 
             IncomingTrust = incomingTrustResult.Value;
         }
+    }
 
-        if (Project.Type == ProjectType.Transfer)
+    protected async Task SetOutgoingTrustAsync()
+    {
+        if (Project.Type == ProjectType.Transfer && Project.OutgoingTrustUkprn != null)
         {
             var outgoingtrustQuery = new GetTrustByUkprnRequest(Project.OutgoingTrustUkprn.Value.ToString());
-            var outgoingTrustResult = await sender.Send(outgoingtrustQuery);
+            var outgoingTrustResult = await Sender.Send(outgoingtrustQuery);
 
             if (!outgoingTrustResult.IsSuccess || outgoingTrustResult.Value == null)
             {
-                throw new NotFoundException($"Trust {Project.IncomingTrustUkprn.Value} does not exist.");
+                throw new NotFoundException($"Trust {Project.OutgoingTrustUkprn.Value} does not exist.");
             }
 
             OutgoingTrust = outgoingTrustResult.Value;
         }
-
-        CurrentUserTeam = await User.GetUserTeam(sender);
-
-        return Page();
     }
 
-    public async Task UpdateCurrentProject()
+    protected async Task SetCurrentUserTeamAsync()
     {
-        var success = Guid.TryParse(ProjectId, out var guid);
+        CurrentUserTeam = await User.GetUserTeam(Sender);
+    }
 
-        if (!success)
-        {
-            throw new InvalidDataException($"{ProjectId} is not a valid Guid.");
-        }
+    public virtual async Task<IActionResult> OnGetAsync()
+    {
+        await UpdateCurrentProject();
 
-        var query = new GetProjectByIdQuery(new ProjectId(guid));
-        var result = await sender.Send(query);
-        if (!result.IsSuccess || result.Value == null)
-        {
-            throw new NotFoundException($"Project {ProjectId} does not exist.");
-        }
+        if (Project == null)
+            return NotFound();
 
-        Project = result.Value;
+        await SetEstablishmentAsync();
+
+        await SetIncomingTrustAsync();
+
+        await SetOutgoingTrustAsync();
+
+        await SetCurrentUserTeamAsync();
+
+        return Page();
     }
 
     public string FormatRouteWithProjectId(string route) => string.Format(route, ProjectId);

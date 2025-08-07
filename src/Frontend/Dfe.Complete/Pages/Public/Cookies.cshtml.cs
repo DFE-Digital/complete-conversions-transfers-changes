@@ -6,17 +6,20 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace Dfe.Complete.Pages.Public
 {
-	[AllowAnonymous] 
+	[AllowAnonymous]
+	// This only disables the global (razor/mvc) antiforgery token validation.
+	// It does not disable the custom antiforgery validation AddCustomAntiForgeryHandling
+	[IgnoreAntiforgeryToken]
     public class Cookies(IAnalyticsConsentService analyticsConsentService) : PageModel
 	{
 		public bool? Consent { get; set; }
 		public bool PreferencesSet { get; set; } = false;
 
-        public string ReturnPath { get; set; } = string.Empty;
+		public string ReturnPath { get; set; } = string.Empty;
 
-        public string TransfersCookiesUrl { get; set; } = string.Empty;
+		public string TransfersCookiesUrl { get; set; } = string.Empty;
 
-        public ActionResult OnGet(bool? consent, string returnUrl)
+		public ActionResult OnGet(bool? consent, string returnUrl)
 		{
 			ReturnPath = string.IsNullOrWhiteSpace(returnUrl) ? GetReturnUrl() : returnUrl;
 
@@ -25,21 +28,21 @@ namespace Dfe.Complete.Pages.Public
 				returnUrl = Uri.UnescapeDataString(GetReturnUrl().Replace("/cookies?returnUrl=", ""));
 
 			}
-            Consent = analyticsConsentService.ConsentValue();
+			Consent = analyticsConsentService.ConsentValue();
 
-            if (consent.HasValue)
+			if (consent.HasValue)
 			{
 				PreferencesSet = true;
-				if(TempData["IsRubyRequest"] == null)
-                {
-                    TempData["PreferencesSet"] = true;
-                }
-                else
-                {
+				if (TempData["IsRubyRequest"] == null)
+				{
+					TempData["PreferencesSet"] = true;
+				}
+				else
+				{
 					Response.Headers.Append("x-preference-set", "dotnet");
-                }
+				}
 
-                ApplyCookieConsent(consent.Value);
+				ApplyCookieConsent(consent.Value);
 
 				if (!string.IsNullOrEmpty(returnUrl))
 				{
@@ -52,23 +55,23 @@ namespace Dfe.Complete.Pages.Public
 			return Page();
 		}
 
-        public IActionResult OnPost(bool? consent, string returnUrl, [FromForm(Name ="cookies_form[accept_optional_cookies]")] bool? cookiesConsent)
+		public IActionResult OnPost(bool? consent, string returnUrl, [FromForm(Name = "cookies_form[accept_optional_cookies]")] bool? cookiesConsent)
 		{
 			ReturnPath = string.IsNullOrWhiteSpace(returnUrl) ? GetReturnUrl() : returnUrl;
 
-            if (!consent.HasValue)
-            {
+			if (!consent.HasValue)
+			{
 				consent = cookiesConsent;
-            }
+			}
 
-            Consent = analyticsConsentService.ConsentValue();
+			Consent = analyticsConsentService.ConsentValue();
 
 			if (consent.HasValue)
 			{
 				Consent = consent;
-				PreferencesSet = true; 
+				PreferencesSet = true;
 
-                ApplyCookieConsent(consent.Value);
+				ApplyCookieConsent(consent.Value);
 
 				if (cookiesConsent != null)
 				{
@@ -79,17 +82,18 @@ namespace Dfe.Complete.Pages.Public
 				{
 					TempData.Clear();
 				}
-            }
+			}
 
 			return Page();
 		}
 
-        private string GetReturnUrl()
+		private string GetReturnUrl()
 			=> Request.Headers.Referer.ToString().Replace("https://", string.Empty).Replace(HttpContext.Request.Host.Value, string.Empty);
 
-        private void ApplyCookieConsent(bool consent)
+		private void ApplyCookieConsent(bool consent)
 		{
-			if (consent) { 
+			if (consent)
+			{
 				analyticsConsentService.AllowConsent();
 			}
 			else

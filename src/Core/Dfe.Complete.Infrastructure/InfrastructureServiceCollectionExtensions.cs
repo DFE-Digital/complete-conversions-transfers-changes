@@ -1,8 +1,10 @@
 using Dfe.Complete.Application.Common.Interfaces;
+using Dfe.Complete.Application.Notes.Interfaces;
 using Dfe.Complete.Application.Projects.Interfaces;
 using Dfe.Complete.Application.Projects.Interfaces.CsvExport;
 using Dfe.Complete.Domain.Interfaces.Repositories;
 using Dfe.Complete.Infrastructure.Database;
+using Dfe.Complete.Infrastructure.CommandServices;
 using Dfe.Complete.Infrastructure.QueryServices;
 using Dfe.Complete.Infrastructure.QueryServices.CsvExport;
 using Dfe.Complete.Infrastructure.Repositories;
@@ -34,7 +36,11 @@ namespace Dfe.Complete.Infrastructure
             services.AddScoped<IListAllProjectsQueryService, ListAllProjectsQueryService>();
             services.AddScoped<IProjectsQueryBuilder, ProjectsQueryBuilder>();
             services.AddScoped<IConversionCsvQueryService, ConversionCsvQueryService>();
+            services.AddScoped<INoteWriteRepository, NoteWriteRepository>();
             services.AddScoped<IProjectReadRepository, ProjectReadRepository>();
+            services.AddScoped<INoteReadRepository, NoteReadRepository>();
+            services.AddScoped<IReadUserRepository,ReadUserRepository>();
+            services.AddScoped<ILocalAuthoritiesQueryService, LocalAuthoritiesQueryService>();
 
             // Authentication
             //services.AddCustomAuthorization(config);
@@ -50,34 +56,34 @@ namespace Dfe.Complete.Infrastructure
                     AbortOnConnectFail = false,
                     ResolveDns = true,
                     Ssl = true,
-                    EndPoints =
-                    {
-                        { redisAppSettings.GetValue<string>("Host")!, redisAppSettings.GetValue<int>("Port") }
-                    },
+                    EndPoints = { $"{redisAppSettings.GetValue<string>("Host")}:{redisAppSettings.GetValue<int>("Port")}" },
                     Password = redisAppSettings.GetValue<string>("Password"),
                     ClientName = "Dfe.Complete",
                     DefaultVersion = new Version(6, 0),
                     AsyncTimeout = 15000,
-                    SyncTimeout = 15000,
+                    SyncTimeout = 15000
                 };
 
                 // https://stackexchange.github.io/StackExchange.Redis/ThreadTheft.html
-                ConnectionMultiplexer.SetFeatureFlag("preventthreadtheft", true);
-
-                IConnectionMultiplexer redisConnectionMultiplexer = ConnectionMultiplexer.Connect(redisConfigurationOptions);
+                ConnectionMultiplexer.SetFeatureFlag("preventthreadtheft", true); 
 
                 services.AddStackExchangeRedisCache(redisCacheConfig =>
                 {
                     redisCacheConfig.ConfigurationOptions = redisConfigurationOptions;
-                    redisCacheConfig.ConnectionMultiplexerFactory = () => Task.FromResult(redisConnectionMultiplexer);
+                    redisCacheConfig.ConnectionMultiplexerFactory = async () =>
+                    {
+                        return await ConnectionMultiplexer.ConnectAsync(redisConfigurationOptions);
+                    };
                     redisCacheConfig.InstanceName = "redis-master";
                 });
+
             }
 
             return services;
         }
 
-        public static void AddInfrastructureHealthChecks(this IServiceCollection services) {
+        public static void AddInfrastructureHealthChecks(this IServiceCollection services)
+        {
             services.AddHealthChecks()
                 .AddDbContextCheck<CompleteContext>("Complete Database");
         }
