@@ -1,7 +1,6 @@
 @page "/groups"
 @model Dfe.Complete.Pages.Projects.Groups.ProjectGroupsModel
 @{
-    Layout = "ServiceSupport/_ServiceSupportLayout";
     ViewData["Title"] = "Groups";
 }
 
@@ -30,13 +29,15 @@
             @{
                 foreach (var pg in Model.ProjectGroups)
                 {
+                    var id = $"/groups/{pg.GroupId}";
+                    
                     <tr class="govuk-table__row">
                         <td class="govuk-table__header govuk-table__cell">
-                            <a class="govuk-link govuk-link--no-visited-state" href="/groups/1ADAB304-5C9A-46D3-99E7-EDD65D2FE452">@pg.groupName</a>
+                            <a class="govuk-link govuk-link--no-visited-state" href=@id>@pg.GroupName</a>
                         </td>
-                        <td class="govuk-table__cell">@pg.groupIdentifier</td>
-                        <td class="govuk-table__cell">@pg.trustUkprn</td>
-                        <td class="govuk-table__cell">@pg.includedEstablishments</td>
+                        <td class="govuk-table__cell">@pg.GroupIdentifier</td>
+                        <td class="govuk-table__cell">@pg.TrustUkprn</td>
+                        <td class="govuk-table__cell">@pg.IncludedEstablishments</td>
                     </tr>
                 }
             }

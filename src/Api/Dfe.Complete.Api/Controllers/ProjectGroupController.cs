@@ -29,5 +29,20 @@ namespace Dfe.Complete.Api.Controllers
 
             return Ok(projectGroup.Value);
         }
+        
+        /// <summary>
+        /// Gets a list of the projects group and included establishments.
+        /// </summary>
+        /// <param name="request"></param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        [Authorize(Policy = "CanRead")]
+        [HttpGet]
+        [SwaggerResponse(200, "Project Groups returned successfully.", typeof(ListProjectsGroupsModel))]
+        public async Task<IActionResult> GetProjectGroupsAsync([FromQuery] GetProjectGroupsQuery request, CancellationToken cancellationToken)
+        {
+            var projectGroups = await sender.Send(request, cancellationToken);
+
+            return Ok(projectGroups.Value);
+        }
     }
 }

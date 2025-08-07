@@ -1,13 +1,12 @@
 using Dfe.Complete.Application.Projects.Models;
 using Dfe.Complete.Application.Projects.Queries.GetProject;
+using Dfe.Complete.Models;
 using Dfe.Complete.Pages.Pagination;
-using Dfe.Complete.Pages.Projects.ServiceSupport;
-using Dfe.Complete.Pages.Projects.ServiceSupport.ConversionURNs;
 using MediatR;
 
 namespace Dfe.Complete.Pages.Projects.Groups
 {
-    public class ProjectGroupsModel(ISender sender) : ServiceSupportModel(ConversionsUrnModel.WithAcademyURNSubNavigation)
+    public class ProjectGroupsModel(ISender sender) : BaseProjectsPageModel(String.Empty)
     {
         public List<ListProjectsGroupsModel>? ProjectGroups { get; set; }
         
@@ -18,8 +17,7 @@ namespace Dfe.Complete.Pages.Projects.Groups
             
             ProjectGroups = response.Value;
             
-            
-            Pagination = new PaginationModel($"/projects/service-support/with-academy-urn", PageNumber, 10, PageSize);
+            Pagination = new PaginationModel($"/groups", PageNumber, ProjectGroups.Count, PageSize);
         }
     }
 }

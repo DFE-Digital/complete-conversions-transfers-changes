@@ -14,6 +14,7 @@ namespace Dfe.Complete.Application.Projects.Queries.GetProject
     public class GetProjectGroupsQueryHandler(ICompleteRepository<ProjectGroup> projectGroupRepository,
         ICompleteRepository<Project> projectRepository,
         ITrustsV4Client trustsClient,
+        IEstablishmentsV4Client establishmentsClient,
         ILogger<GetProjectGroupsQueryHandler> logger)
         : IRequestHandler<GetProjectGroupsQuery, PaginatedResult<List<ListProjectsGroupsModel>>>
     {
@@ -21,52 +22,45 @@ namespace Dfe.Complete.Application.Projects.Queries.GetProject
         {
             try
             {
-                var projectGroups = await projectGroupRepository.Query()
-                    .OrderBy(pg => pg.GroupIdentifier)
+                var projectGroups = await projectGroupRepository
+                    .Query()
+                    .OrderByDescending(pg => pg.GroupIdentifier)
                     .ToListAsync(cancellationToken);
                 
-                var projectGroupsDto = new List<ListProjectsGroupsModel>();
+                var projectGroupIds = projectGroups.Select(p => p.Id).Distinct();
+                var projectGroupUkprns = projectGroups.Select(p => p.TrustUkprn.Value.ToString()).Distinct();
                 
-                foreach (var group in projectGroups)
+                var projectsInGroups = await projectRepository
+                    .Query()
+                    .Where(p => projectGroupIds.Contains(p.GroupId))
+                    .ToListAsync(cancellationToken);
+                
+                var projectUrns = projectsInGroups.Select(p => p.Urn.Value).Distinct();
+                var establishments = await establishmentsClient.GetByUrns2Async(projectUrns, cancellationToken);
+                
+                var trusts = await trustsClient.GetByUkprnsAllAsync(projectGroupUkprns, cancellationToken);
+
+                var projectGroupsDto = projectGroups.Select(pg =>
                 {
-                    // Get all projects for this group
-                    var projectsInGroup = await projectRepository.Query()
-                        .Where(p => p.GroupId == group.Id)
-                        .Include(p => p.GiasEstablishment)
-                        .ToListAsync(cancellationToken);
-                    
-                    // Skip groups that have no projects (no schools/academies)
-                    if (!projectsInGroup.Any())
-                    {
-                        continue;
-                    }
-                    
-                    // Get establishment names from the projects in this group
-                    var establishmentNames = projectsInGroup
-                        .Where(p => p.GiasEstablishment != null)
-                        .Select(p => p.GiasEstablishment!.Name)
-                        .Distinct()
-                        .ToList();
-                    
-                    // Get trust name from external API if TrustUkprn is available
-                    string groupName;
-                    if (group.TrustUkprn != null)
-                    {
-                        var establishments = await trustsClient.GetByUkprnsAllAsync([group.TrustUkprn.Value.ToString()], cancellationToken);
-                        groupName = establishments.FirstOrDefault()?.Name ?? group.GroupIdentifier ?? "Unknown Group";
-                    }
-                    else
-                    {
-                        groupName = group.GroupIdentifier ?? "Unknown Group";
-                    }
-                    
-                    projectGroupsDto.Add(new ListProjectsGroupsModel(
-                        group.Id.Value.ToString(),
-                        groupName,
-                        group.GroupIdentifier ?? string.Empty,
-                        group.TrustUkprn?.Value ?? 0,
-                        string.Join("; ", establishmentNames)));
-                }
+                   var groupName = trusts.FirstOrDefault(e => e.Ukprn == pg.TrustUkprn)?.Name;
+                   
+                   var urnsForThisGroup = projectsInGroups
+                       .Where(p => p.GroupId == pg.Id)
+                       .Select(p => p.Urn.Value.ToString());
+                   
+                   var establishmentInThisGroup = establishments
+                       .Where(e => urnsForThisGroup.Contains(e.Urn))
+                       .OrderBy(e => e.Name)
+                       .Select(e => e.Name)
+                       .Distinct();
+
+                   return new ListProjectsGroupsModel(
+                       pg.Id.Value.ToString(),
+                       groupName,
+                       pg.GroupIdentifier,
+                       pg.TrustUkprn.Value.ToString(),
+                       string.Join("; ", establishmentInThisGroup));
+                }).ToList();
                 
                 return PaginatedResult<List<ListProjectsGroupsModel>>.Success(projectGroupsDto, projectGroupsDto.Count);
             }
