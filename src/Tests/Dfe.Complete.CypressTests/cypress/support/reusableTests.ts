@@ -11,7 +11,7 @@ import notePage from "cypress/pages/projects/projectDetails/notePage";
 export function shouldNotHaveAccessToViewHandedOverProjects() {
     cy.visit("/projects/all/in-progress/all");
     allProjects.unableToViewFilter("Handover");
-    // cy.visit("/projects/all/handover").notAuthorisedToPerformAction(); // not implemented 187511
+    cy.visit("/projects/all/handover").notAuthorisedToPerformAction();
 }
 
 export function shouldNotHaveAccessToViewYourTeamUnassignedProjects() {
