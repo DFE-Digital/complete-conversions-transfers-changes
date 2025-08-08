@@ -181,7 +181,7 @@
       "ExpectedSecurity": "Authorize: Policy=CanRead"
     },
     {
-      "Controller": "TransferTasksDataController",
+      "Controller": "TasksDataController",
       "Action": "GetTransferTasksDataByIdAsync",
       "ExpectedSecurity": "Authorize: Policy=CanRead"
     },
@@ -219,6 +219,16 @@
       "Controller": "ProjectsController",
       "Action": "AssignHandoverProjectAsync",
       "ExpectedSecurity": "Authorize: Policy=CanReadWriteUpdate"
+    },
+    {
+      "Controller": "TasksDataController",
+      "Action": "UpdateHandoverWithDeliveryOfficerTaskDataByProjectIdAsync",
+      "ExpectedSecurity": "Authorize: Policy=CanReadWriteUpdate"
+    },
+    {
+      "Controller": "TasksDataController",
+      "Action": "GetTaskDataByProjectIdAsync",
+      "ExpectedSecurity": "Authorize: Policy=CanRead"
     }
   ]
 }

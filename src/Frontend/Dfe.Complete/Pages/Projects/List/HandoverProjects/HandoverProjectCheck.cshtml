@@ -59,7 +59,7 @@
             <dd class="govuk-summary-list__value">@Model.Project.AdvisoryBoardDate.ToDateString()</dd>
         </div>
         <div class="govuk-summary-list__row">
-            <dt class="govuk-summary-list__key">Provisional @(Model.Project.ProjectType == ProjectType.Conversion ? "transfer": "conversion") date</dt>
+            <dt class="govuk-summary-list__key">Provisional @(Model.Project.ProjectType == ProjectType.Conversion ? "conversion": "transfer") date</dt>
             <dd class="govuk-summary-list__value">@Model.Project.ConversionOrTransferDate.ToDateString()</dd>
         </div>
         @if(Model.Project.ProjectType == ProjectType.Conversion)
