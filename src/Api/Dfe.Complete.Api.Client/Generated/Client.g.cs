@@ -4881,8 +4881,8 @@ namespace Dfe.Complete.Client
 
                     var urlBuilder_ = new System.Text.StringBuilder();
                     if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
-                    // Operation Path: "v1/TasksData/TaskData/Handover/DeliverOfficer"
-                    urlBuilder_.Append("v1/TasksData/TaskData/Handover/DeliverOfficer");
+                    // Operation Path: "v1/TasksData/TaskData/Handover/DeliveryOfficer"
+                    urlBuilder_.Append("v1/TasksData/TaskData/Handover/DeliveryOfficer");
 
                     PrepareRequest(client_, request_, urlBuilder_);
 

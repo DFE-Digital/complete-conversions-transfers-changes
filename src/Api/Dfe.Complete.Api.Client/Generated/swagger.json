@@ -1948,7 +1948,7 @@
         }
       }
     },
-    "/v1/TasksData/TaskData/Handover/DeliverOfficer": {
+    "/v1/TasksData/TaskData/Handover/DeliveryOfficer": {
       "patch": {
         "tags": [
           "TasksData"

@@ -39,7 +39,7 @@ namespace Dfe.Complete.Api.Controllers
         /// <param name="cancellationToken">The cancellation token.</param>
         [Authorize(Policy = "CanReadWriteUpdate")]
         [HttpPatch]
-        [Route("TaskData/Handover/DeliverOfficer")]
+        [Route("TaskData/Handover/DeliveryOfficer")]
         [SwaggerResponse(204, "Successfully updated the conversion or trasnfer task data")]
         [SwaggerResponse(404, "Transfer or Conversion task data not found for the given project Id.")]
         public async Task<IActionResult> UpdateHandoverWithDeliveryOfficerTaskDataByProjectIdAsync([FromBody] UpdateHandoverWithDeliveryOfficerCommand request, CancellationToken cancellationToken)
