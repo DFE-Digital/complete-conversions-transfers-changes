@@ -32,10 +32,11 @@ namespace Dfe.Complete.Tests.Models
         }
 
         [Theory]
-        [InlineData(null, null, null, null, null, null, TaskListStatus.NotStarted)]
-        [InlineData(null, false, null, false, null, false, TaskListStatus.NotStarted)] 
-        [InlineData(false, false, false, false, false, false, TaskListStatus.InProgress)]
+        [InlineData(false, null, null, null, null, null, TaskListStatus.NotStarted)]
+        [InlineData(true, false, null, false, null, false, TaskListStatus.InProgress)] 
+        [InlineData(false, false, false, false, false, false, TaskListStatus.NotStarted)]
         [InlineData(true, true, false, false, false, false, TaskListStatus.InProgress)]
+        [InlineData(true, null, null, null, null, null, TaskListStatus.InProgress)]
         [InlineData(true, true, true, true, true, true, TaskListStatus.InProgress)]
         [InlineData(false, true, true, true, true, true, TaskListStatus.Completed)] 
         public void ExternalStakeHolderKickoffTaskStatus_ShouldReturn_CorrectStatus(

@@ -100,21 +100,24 @@ namespace Dfe.Complete.Models
 
         public static TaskListStatus ExternalStakeHolderKickoffTaskStatus(ConversionTaskDataDto taskData, ProjectDto project)
         { 
-            if((project.SignificantDateProvisional == false) || 
-                (taskData.StakeholderKickOffIntroductoryEmails == true ||
-                   taskData.StakeholderKickOffLocalAuthorityProforma == true ||
-                   taskData.StakeholderKickOffSetupMeeting == true ||
-                   taskData.StakeholderKickOffMeeting == true))
-            {
-                return TaskListStatus.InProgress;
-            }
-            return (taskData.StakeholderKickOffIntroductoryEmails == true &&
+            if(taskData.StakeholderKickOffIntroductoryEmails == true &&
                  taskData.StakeholderKickOffLocalAuthorityProforma == true &&
                  taskData.StakeholderKickOffSetupMeeting == true &&
                  taskData.StakeholderKickOffMeeting == true &&
                  taskData.StakeholderKickOffCheckProvisionalConversionDate == true &&
                  project.SignificantDateProvisional == false)
-                    ? TaskListStatus.Completed : TaskListStatus.NotStarted;
+            {
+                return TaskListStatus.Completed;
+            }
+            if(project.SignificantDateProvisional == true)
+            {
+                return TaskListStatus.InProgress;
+            }
+            return (taskData.StakeholderKickOffIntroductoryEmails == true ||
+                   taskData.StakeholderKickOffLocalAuthorityProforma == true ||
+                   taskData.StakeholderKickOffSetupMeeting == true ||
+                   taskData.StakeholderKickOffMeeting == true)
+                    ? TaskListStatus.InProgress : TaskListStatus.NotStarted;
         }
 
         private static TaskListStatus ProjectReceiveDeclarationOfExpenditureCertificateTaskStatus(ConversionTaskDataDto taskData)
