@@ -38,7 +38,7 @@ namespace Dfe.Complete.Models
             return new TransferTaskListViewModel
             {
                 HandoverWithRegionalDeliveryOfficer = HandoverWithRegionalDeliveryOfficerTaskStatus(taskData),
-                ExternalStakeHolderKickoff = ExternalStakeHolderKickoffTaskStatus(taskData),
+                ExternalStakeHolderKickoff = ExternalStakeHolderKickoffTaskStatus(taskData, project),
                 ConfirmAcademyRiskProtectionArrangements = ConfirmAcademyRiskProtectionArrangementsTaskStatus(taskData),
                 ConfirmHeadTeacherDetails = ConfirmHeadTeacherDetailsTaskStatus(taskData),
                 ConfirmIncomingTrustCeoDetails = ConfirmIncomingTrustCeoDetailsTaskStatus(taskData),
@@ -61,7 +61,7 @@ namespace Dfe.Complete.Models
                 ClosureOrTransferDeclaration = ClosureOrTransferDeclarationTaskStatus(taskData),
                 ConfirmBankDetailsChangingForGeneralAnnualGrantPayment = ConfirmBankDetailsChangingForGeneralAnnualGrantPaymentTaskStatus(taskData),
                 ConfirmIncomingTrustHasCompletedAllActions = ConfirmIncomingTrustHasCompletedAllActionsTaskStatus(taskData),
-                ConfirmThisTransferHasAuthorityToProceed = ConfirmThisTransferHasAuthorityToProceedTaskStatus(taskData),
+                ConfirmThisTransferHasAuthorityToProceed = ConfirmThisTransferHasAuthorityToProceedTaskStatus(taskData, project),
                 ConfirmDateAcademyTransferred = ConfirmDateAcademyTransferredTaskStatus(taskData),
                 RedactAndSendDocuments = RedactAndSendDocumentsTaskStatus(taskData),
                 DeclarationOfExpenditureCertificate = DeclarationOfExpenditureCertificateTaskStatus(taskData)
@@ -82,149 +82,454 @@ namespace Dfe.Complete.Models
                 return TaskListStatus.NotApplicable;
             }
 
-            if (taskData.HandoverReview.Equals(true) &&
+            return (taskData.HandoverReview.Equals(true) &&
                 taskData.HandoverMeeting.Equals(true) &&
                 taskData.HandoverNotes.Equals(true))
+                ? TaskListStatus.Completed : TaskListStatus.InProgress;
+        }
+        public static TaskListStatus ExternalStakeHolderKickoffTaskStatus(TransferTaskDataDto taskData, ProjectDto project)
+        {
+            if (project.SignificantDateProvisional == false ||
+                (taskData.StakeholderKickOffIntroductoryEmails == true ||
+                   taskData.StakeholderKickOffSetupMeeting == true ||
+                   taskData.StakeholderKickOffMeeting == true))
             {
-                return TaskListStatus.Completed;
+                return TaskListStatus.InProgress;
             }
 
-            return TaskListStatus.InProgress;
-        }
-        public static TaskListStatus ExternalStakeHolderKickoffTaskStatus(TransferTaskDataDto taskData)
-        {
-            // Assuming ExternalStakeHolderKickoff is not part of the taskData, returning NotStarted for now.
-            // This can be updated based on actual requirements.
-            return TaskListStatus.NotStarted;
+            return (taskData.StakeholderKickOffIntroductoryEmails == true &&
+                 taskData.StakeholderKickOffSetupMeeting == true &&
+                 taskData.StakeholderKickOffMeeting == true &&
+                 project.SignificantDateProvisional == false)
+                 ? TaskListStatus.Completed : TaskListStatus.NotStarted;
         }
         private static TaskListStatus ConfirmOutgoingTrustCeoDetailsTaskStatus(TransferTaskDataDto taskData)
         {
-           return TaskListStatus.NotStarted;
+            //Get head teacher details from coontact table by project id 
+            return TaskListStatus.NotStarted;
         }
 
         private static TaskListStatus DeclarationOfExpenditureCertificateTaskStatus(TransferTaskDataDto taskData)
         {
-           return TaskListStatus.NotStarted;
+            if(!taskData.DeclarationOfExpenditureCertificateCorrect.HasValue &&
+               !taskData.DeclarationOfExpenditureCertificateSaved.HasValue &&
+               !taskData.DeclarationOfExpenditureCertificateDateReceived.HasValue &&
+               !taskData.DeclarationOfExpenditureCertificateNotApplicable.HasValue)
+            {
+                return TaskListStatus.NotStarted;
+            }
+            if(taskData.DeclarationOfExpenditureCertificateNotApplicable == true)
+            {
+                return TaskListStatus.NotApplicable;
+            }
+            return (taskData.DeclarationOfExpenditureCertificateCorrect == true &&
+               taskData.DeclarationOfExpenditureCertificateSaved == true &&
+               taskData.DeclarationOfExpenditureCertificateDateReceived.HasValue)
+               ? TaskListStatus.Completed : TaskListStatus.InProgress;
         }
 
         private static TaskListStatus RedactAndSendDocumentsTaskStatus(TransferTaskDataDto taskData)
         {
-           return TaskListStatus.NotStarted;
+            if(!taskData.RedactAndSendDocumentsRedact.HasValue &&
+                !taskData.RedactAndSendDocumentsSaved.HasValue &&
+                !taskData.RedactAndSendDocumentsSendToEsfa.HasValue &&
+                !taskData.RedactAndSendDocumentsSendToFundingTeam.HasValue &&
+                !taskData.RedactAndSendDocumentsSendToSolicitors.HasValue)
+            {
+                return TaskListStatus.NotStarted;
+            }
+            return (taskData.RedactAndSendDocumentsRedact == true &&
+               taskData.RedactAndSendDocumentsSaved == true &&
+               taskData.RedactAndSendDocumentsSendToEsfa == true &&
+               taskData.RedactAndSendDocumentsSendToFundingTeam == true &&
+               taskData.RedactAndSendDocumentsSendToSolicitors == true)
+               ? TaskListStatus.Completed : TaskListStatus.InProgress;
         }
 
         private static TaskListStatus ConfirmDateAcademyTransferredTaskStatus(TransferTaskDataDto taskData)
         {
-           return TaskListStatus.NotStarted;
+            return taskData.ConfirmDateAcademyTransferredDateTransferred.HasValue
+                ? TaskListStatus.Completed : TaskListStatus.NotStarted;
         }
 
-        private static TaskListStatus ConfirmThisTransferHasAuthorityToProceedTaskStatus(TransferTaskDataDto taskData)
+        private static TaskListStatus ConfirmThisTransferHasAuthorityToProceedTaskStatus(TransferTaskDataDto taskData, ProjectDto project)
         {
-           return TaskListStatus.NotStarted;
+            if (project.AllConditionsMet == true ||
+                (taskData.ConditionsMetBaselineSheetApproved == true ||
+                taskData.ConditionsMetCheckAnyInformationChanged == true))
+            {
+                return TaskListStatus.InProgress;
+            }
+            return (taskData.ConditionsMetBaselineSheetApproved == true &&
+                 taskData.ConditionsMetCheckAnyInformationChanged == true &&
+                 project.AllConditionsMet == false)
+                 ? TaskListStatus.Completed : TaskListStatus.NotStarted;
         }
 
         private static TaskListStatus ConfirmIncomingTrustHasCompletedAllActionsTaskStatus(TransferTaskDataDto taskData)
         {
-           return TaskListStatus.NotStarted;
+            if(!taskData.ConfirmIncomingTrustHasCompletedAllActionsEmailed.HasValue &&
+               !taskData.ConfirmIncomingTrustHasCompletedAllActionsSaved.HasValue)
+            {
+                return TaskListStatus.NotStarted;
+            }
+            return (taskData.ConfirmIncomingTrustHasCompletedAllActionsEmailed == true &&
+                taskData.ConfirmIncomingTrustHasCompletedAllActionsSaved == true)
+                ? TaskListStatus.Completed : TaskListStatus.InProgress;
         }
 
         private static TaskListStatus ConfirmBankDetailsChangingForGeneralAnnualGrantPaymentTaskStatus(TransferTaskDataDto taskData)
         {
-           return TaskListStatus.NotStarted;
+            return taskData.BankDetailsChangingYesNo.HasValue
+               ? TaskListStatus.Completed : TaskListStatus.NotStarted;
         }
 
         private static TaskListStatus ClosureOrTransferDeclarationTaskStatus(TransferTaskDataDto taskData)
         {
-           return TaskListStatus.NotStarted;
+            if(!taskData.ClosureOrTransferDeclarationReceived.HasValue &&
+               !taskData.ClosureOrTransferDeclarationCleared.HasValue &&
+               !taskData.ClosureOrTransferDeclarationSent.HasValue &&
+               !taskData.ClosureOrTransferDeclarationSaved.HasValue &&
+               !taskData.ClosureOrTransferDeclarationNotApplicable.HasValue)
+            {
+                return TaskListStatus.NotStarted;
+            }
+            if(taskData.ClosureOrTransferDeclarationNotApplicable == true)
+            {
+                return TaskListStatus.NotApplicable;
+            }
+            return (taskData.ClosureOrTransferDeclarationReceived == true &&
+               taskData.ClosureOrTransferDeclarationCleared == true &&
+               taskData.ClosureOrTransferDeclarationSent == true &&
+               taskData.ClosureOrTransferDeclarationSaved == true)
+               ? TaskListStatus.Completed : TaskListStatus.InProgress;
         }
 
         private static TaskListStatus CommercialTransferAgreementTaskStatus(TransferTaskDataDto taskData)
         {
-           return TaskListStatus.NotStarted;
+            if(!taskData.CommercialTransferAgreementConfirmAgreed.HasValue &&
+               !taskData.CommercialTransferAgreementConfirmSigned.HasValue &&
+               !taskData.CommercialTransferAgreementQuestionsChecked.HasValue &&
+               !taskData.CommercialTransferAgreementQuestionsReceived.HasValue &&
+               !taskData.CommercialTransferAgreementSaveConfirmationEmails.HasValue)
+            {
+                return TaskListStatus.NotStarted;
+            }
+            return (taskData.CommercialTransferAgreementConfirmAgreed == true &&
+               taskData.CommercialTransferAgreementConfirmSigned == true &&
+               taskData.CommercialTransferAgreementQuestionsChecked == true &&
+               taskData.CommercialTransferAgreementQuestionsReceived == true &&
+               taskData.CommercialTransferAgreementSaveConfirmationEmails == true) 
+               ? TaskListStatus.Completed : TaskListStatus.InProgress;
         }
 
         private static TaskListStatus DeedOfTerminationForChurchSupplementalAreementTaskStatus(TransferTaskDataDto taskData)
         {
-           return TaskListStatus.NotStarted;
+            if(!taskData.DeedTerminationChurchAgreementCleared.HasValue &&
+               !taskData.DeedTerminationChurchAgreementNotApplicable.HasValue &&
+               !taskData.DeedTerminationChurchAgreementReceived.HasValue &&
+               !taskData.DeedTerminationChurchAgreementSaved.HasValue &&
+               !taskData.DeedTerminationChurchAgreementSavedAfterSigningBySecretaryState.HasValue &&
+               !taskData.DeedTerminationChurchAgreementSignedDiocese.HasValue &&
+               !taskData.DeedTerminationChurchAgreementSignedOutgoingTrust.HasValue &&
+               !taskData.DeedTerminationChurchAgreementSignedSecretaryState.HasValue)
+            {
+                return TaskListStatus.NotStarted;
+            }
+            if(taskData.DeedTerminationChurchAgreementNotApplicable == true)
+            {
+                return TaskListStatus.NotApplicable;
+            }
+            return (taskData.DeedTerminationChurchAgreementReceived == true &&
+               taskData.DeedTerminationChurchAgreementCleared == true &&
+               taskData.DeedTerminationChurchAgreementSignedOutgoingTrust == true &&
+               taskData.DeedTerminationChurchAgreementSignedDiocese == true &&
+               taskData.DeedTerminationChurchAgreementSaved == true &&
+               taskData.DeedTerminationChurchAgreementSignedSecretaryState == true &&
+               taskData.DeedTerminationChurchAgreementSavedAfterSigningBySecretaryState == true)
+                ? TaskListStatus.Completed : TaskListStatus.InProgress;
         }
 
         private static TaskListStatus DeedOfTerminationForTheMasterFundingAgreementTaskStatus(TransferTaskDataDto taskData)
         {
-           return TaskListStatus.NotStarted;
+            if (!taskData.DeedOfTerminationForTheMasterFundingAgreementCleared.HasValue &&
+               !taskData.DeedOfTerminationForTheMasterFundingAgreementContactFinancialReportingTeam.HasValue &&
+               !taskData.DeedOfTerminationForTheMasterFundingAgreementNotApplicable.HasValue &&
+               !taskData.DeedOfTerminationForTheMasterFundingAgreementReceived.HasValue &&
+               !taskData.DeedOfTerminationForTheMasterFundingAgreementSavedAcademyAndOutgoingTrustSharepoint.HasValue &&
+               !taskData.DeedOfTerminationForTheMasterFundingAgreementSavedInAcademySharepointFolder.HasValue &&
+               !taskData.DeedOfTerminationForTheMasterFundingAgreementSigned.HasValue &&
+               !taskData.DeedOfTerminationForTheMasterFundingAgreementSignedSecretaryState.HasValue)
+            {
+                return TaskListStatus.NotStarted;
+            }
+            if(taskData.DeedOfTerminationForTheMasterFundingAgreementNotApplicable == true)
+            {
+                return TaskListStatus.NotApplicable;
+            }
+            return (taskData.DeedOfTerminationForTheMasterFundingAgreementReceived == true &&
+                taskData.DeedOfTerminationForTheMasterFundingAgreementCleared == true &&
+                taskData.DeedOfTerminationForTheMasterFundingAgreementSigned == true &&
+                taskData.DeedOfTerminationForTheMasterFundingAgreementSavedAcademyAndOutgoingTrustSharepoint == true &&
+                taskData.DeedOfTerminationForTheMasterFundingAgreementContactFinancialReportingTeam == true &&
+                taskData.DeedOfTerminationForTheMasterFundingAgreementSignedSecretaryState == true &&
+                taskData.DeedOfTerminationForTheMasterFundingAgreementSavedInAcademySharepointFolder == true)
+                    ? TaskListStatus.Completed : TaskListStatus.InProgress;
         }
 
         private static TaskListStatus DeedoOfVariationTaskStatus(TransferTaskDataDto taskData)
         {
-           return TaskListStatus.NotStarted;
+            if(!taskData.DeedOfVariationCleared.HasValue &&
+               !taskData.DeedOfVariationNotApplicable.HasValue &&
+               !taskData.DeedOfVariationReceived.HasValue &&
+               !taskData.DeedOfVariationSaved.HasValue &&
+               !taskData.DeedOfVariationSent.HasValue &&
+               !taskData.DeedOfVariationSigned.HasValue &&
+               !taskData.DeedOfVariationSignedSecretaryState.HasValue)
+            {
+                return TaskListStatus.NotStarted;
+            }
+            if (taskData.DeedOfVariationNotApplicable == true)
+            {
+                return TaskListStatus.NotApplicable;
+            }
+            return (taskData.DeedOfVariationReceived == true &&
+                taskData.DeedOfVariationCleared == true &&
+                taskData.DeedOfVariationSigned == true &&
+                taskData.DeedOfVariationSaved == true &&
+                taskData.DeedOfVariationSent == true &&
+                taskData.DeedOfVariationSignedSecretaryState == true)
+                ? TaskListStatus.Completed : TaskListStatus.InProgress;
         }
 
         private static TaskListStatus ArticlesOfAssociationTaskStatus(TransferTaskDataDto taskData)
         {
-           return TaskListStatus.NotStarted;
+            if(!taskData.ArticlesOfAssociationReceived.HasValue &&
+                !taskData.ArticlesOfAssociationCleared.HasValue &&
+                !taskData.ArticlesOfAssociationSigned.HasValue &&
+                !taskData.ArticlesOfAssociationSaved.HasValue &&
+                !taskData.ArticlesOfAssociationNotApplicable.HasValue)
+            {
+                return TaskListStatus.NotStarted;
+            }
+            if(taskData.ArticlesOfAssociationNotApplicable == true)
+            {
+                return TaskListStatus.NotApplicable;
+            }
+            return (taskData.ArticlesOfAssociationReceived == true &&
+                taskData.ArticlesOfAssociationCleared == true &&
+                taskData.ArticlesOfAssociationSigned == true &&
+                taskData.ArticlesOfAssociationSaved == true)
+                ? TaskListStatus.Completed : TaskListStatus.InProgress;
         }
 
         private static TaskListStatus MasterFundingAgreementTaskStatus(TransferTaskDataDto taskData)
         {
-           return TaskListStatus.NotStarted;
+            if (!taskData.MasterFundingAgreementReceived.HasValue &&
+                !taskData.MasterFundingAgreementCleared.HasValue &&
+                !taskData.MasterFundingAgreementSigned.HasValue &&
+                !taskData.MasterFundingAgreementSaved.HasValue &&
+                !taskData.MasterFundingAgreementSignedSecretaryState.HasValue &&
+                !taskData.MasterFundingAgreementNotApplicable.HasValue)
+            {
+                return TaskListStatus.NotStarted;
+            }
+            if (taskData.MasterFundingAgreementNotApplicable == true)
+            {
+                return TaskListStatus.NotApplicable;
+            }
+            return (taskData.MasterFundingAgreementReceived == true &&
+                taskData.MasterFundingAgreementCleared == true &&
+                taskData.MasterFundingAgreementSigned == true &&
+                taskData.MasterFundingAgreementSaved == true &&
+                taskData.MasterFundingAgreementSignedSecretaryState == true)
+                ? TaskListStatus.Completed : TaskListStatus.InProgress;
         }
 
         private static TaskListStatus ChurchSupplementalAgreementTaskStatus(TransferTaskDataDto taskData)
         {
-           return TaskListStatus.NotStarted;
+           if(!taskData.ChurchSupplementalAgreementCleared.HasValue &&
+                !taskData.ChurchSupplementalAgreementNotApplicable.HasValue &&
+                !taskData.ChurchSupplementalAgreementReceived.HasValue &&
+                !taskData.ChurchSupplementalAgreementSavedAfterSigningBySecretaryState.HasValue &&
+                !taskData.ChurchSupplementalAgreementSavedAfterSigningByTrustDiocese.HasValue &&
+                !taskData.ChurchSupplementalAgreementSignedDiocese.HasValue &&
+                !taskData.ChurchSupplementalAgreementSignedIncomingTrust.HasValue &&
+                !taskData.ChurchSupplementalAgreementSignedSecretaryState.HasValue)
+            {
+                return TaskListStatus.NotStarted;
+            }
+            if (taskData.ChurchSupplementalAgreementNotApplicable == true)
+            {
+                return TaskListStatus.NotApplicable;
+            }
+            return (taskData.ChurchSupplementalAgreementReceived == true &&
+                taskData.ChurchSupplementalAgreementCleared == true &&
+                taskData.ChurchSupplementalAgreementSignedIncomingTrust == true &&
+                taskData.ChurchSupplementalAgreementSignedDiocese == true &&
+                taskData.ChurchSupplementalAgreementSavedAfterSigningByTrustDiocese == true &&
+                taskData.ChurchSupplementalAgreementSignedSecretaryState == true &&
+                taskData.ChurchSupplementalAgreementSavedAfterSigningBySecretaryState == true)
+                ? TaskListStatus.Completed : TaskListStatus.InProgress;
         }
 
         private static TaskListStatus DeedOfNovationAndVariationTaskStatus(TransferTaskDataDto taskData)
         {
-           return TaskListStatus.NotStarted;
+           if(!taskData.DeedOfNovationAndVariationReceived.HasValue &&
+                !taskData.DeedOfNovationAndVariationCleared.HasValue &&
+                !taskData.DeedOfNovationAndVariationSignedOutgoingTrust.HasValue &&
+                !taskData.DeedOfNovationAndVariationSignedIncomingTrust.HasValue &&
+                !taskData.DeedOfNovationAndVariationSaved.HasValue &&
+                !taskData.DeedOfNovationAndVariationSignedSecretaryState.HasValue &&
+                !taskData.DeedOfNovationAndVariationSaveAfterSign.HasValue)
+            {
+                return TaskListStatus.NotStarted;
+            }
+            return (taskData.DeedOfNovationAndVariationReceived == true &&
+                taskData.DeedOfNovationAndVariationCleared == true &&
+                taskData.DeedOfNovationAndVariationSignedOutgoingTrust == true &&
+                taskData.DeedOfNovationAndVariationSignedIncomingTrust == true &&
+                taskData.DeedOfNovationAndVariationSaved == true &&
+                taskData.DeedOfNovationAndVariationSignedSecretaryState == true &&
+                taskData.DeedOfNovationAndVariationSaveAfterSign == true)
+                ? TaskListStatus.Completed : TaskListStatus.InProgress;
         }
 
         private static TaskListStatus SupplementalFundingAgreementTaskStatus(TransferTaskDataDto taskData)
         {
-           return TaskListStatus.NotStarted;
+            if(!taskData.SupplementalFundingAgreementReceived.HasValue &&
+                !taskData.SupplementalFundingAgreementCleared.HasValue && 
+                !taskData.SupplementalFundingAgreementSaved.HasValue)
+            {
+                return TaskListStatus.NotStarted;
+            }
+            return (taskData.SupplementalFundingAgreementReceived == true &&
+                taskData.SupplementalFundingAgreementCleared == true &&
+                taskData.SupplementalFundingAgreementSaved == true)
+                ? TaskListStatus.Completed : TaskListStatus.InProgress;
         }
 
         private static TaskListStatus LandConsentLetterTaskStatus(TransferTaskDataDto taskData)
         {
-           return TaskListStatus.NotStarted;
+            if(!taskData.LandConsentLetterDrafted.HasValue &&
+                !taskData.LandConsentLetterSent.HasValue &&
+                !taskData.LandConsentLetterSigned.HasValue &&
+                !taskData.LandConsentLetterSaved.HasValue &&
+                !taskData.LandConsentLetterNotApplicable.HasValue)
+            {
+                return TaskListStatus.NotStarted;
+            }
+            if (taskData.LandConsentLetterNotApplicable == true)
+            {
+                return TaskListStatus.NotApplicable;
+            }
+            return (taskData.LandConsentLetterDrafted == true &&
+                taskData.LandConsentLetterSent == true &&
+                taskData.LandConsentLetterSigned == true &&
+                taskData.LandConsentLetterSaved == true)
+                ? TaskListStatus.Completed : TaskListStatus.InProgress;
         }
 
         private static TaskListStatus FormMTaskStatus(TransferTaskDataDto taskData)
         {
-           return TaskListStatus.NotStarted;
+            if(!taskData.FormMReceivedTitlePlans.HasValue &&
+                !taskData.FormMCleared.HasValue &&
+                !taskData.FormMSigned.HasValue &&
+                !taskData.FormMSaved.HasValue &&
+                !taskData.FormMNotApplicable.HasValue &&
+                !taskData.FormMReceivedFormM.HasValue)
+            {
+                return TaskListStatus.NotStarted;
+            }
+            if(taskData.FormMNotApplicable == true)
+            {
+                return TaskListStatus.NotApplicable;
+            }
+            return (taskData.FormMReceivedTitlePlans == true &&
+                taskData.FormMCleared == true &&
+                taskData.FormMSigned == true &&
+                taskData.FormMSaved == true &&
+                taskData.FormMReceivedFormM == true)
+                ? TaskListStatus.Completed : TaskListStatus.InProgress;
         }
 
         private static TaskListStatus CheckAndConfirmAcademyAndTrustFinancialInfoTaskStatus(TransferTaskDataDto taskData)
         {
-           return TaskListStatus.NotStarted;
+            if(string.IsNullOrWhiteSpace(taskData.CheckAndConfirmFinancialInformationAcademySurplusDeficit) &&
+                taskData.CheckAndConfirmFinancialInformationNotApplicable.HasValue &&
+                string.IsNullOrWhiteSpace(taskData.CheckAndConfirmFinancialInformationTrustSurplusDeficit))
+            {
+                return TaskListStatus.NotStarted;
+            }
+            if(taskData.CheckAndConfirmFinancialInformationNotApplicable == true)
+            {
+                return TaskListStatus.NotApplicable;
+            } 
+            return(!string.IsNullOrWhiteSpace(taskData.CheckAndConfirmFinancialInformationAcademySurplusDeficit) &&
+                !string.IsNullOrWhiteSpace(taskData.CheckAndConfirmFinancialInformationTrustSurplusDeficit))
+                ? TaskListStatus.Completed : TaskListStatus.InProgress;
         }
 
         private static TaskListStatus ConfirmTransferGrantFundingLevelTaskStatus(TransferTaskDataDto taskData)
         {
-           return TaskListStatus.NotStarted;
+            if(!taskData.SponsoredSupportGrantNotApplicable.HasValue &&
+                string.IsNullOrWhiteSpace(taskData.SponsoredSupportGrantType))
+            {
+                return TaskListStatus.NotStarted;
+            }
+            if(taskData.SponsoredSupportGrantNotApplicable == true)
+            {
+                return TaskListStatus.NotApplicable;
+            }
+            return (!string.IsNullOrWhiteSpace(taskData.SponsoredSupportGrantType))
+                ? TaskListStatus.Completed : TaskListStatus.InProgress;
         }
 
         private static TaskListStatus RequestNewURNAndRecordForTheAcademyTaskStatus(TransferTaskDataDto taskData)
         {
-           return TaskListStatus.NotStarted;
+            if(!taskData.RequestNewUrnAndRecordComplete.HasValue &&
+                !taskData.RequestNewUrnAndRecordGive.HasValue &&
+                !taskData.RequestNewUrnAndRecordNotApplicable.HasValue &&
+                !taskData.RequestNewUrnAndRecordReceive.HasValue)
+            {
+                return TaskListStatus.NotStarted;
+            }
+            if(taskData.RequestNewUrnAndRecordNotApplicable == true)
+            {
+                return TaskListStatus.NotApplicable;
+            }
+            return (taskData.RequestNewUrnAndRecordComplete == true &&
+                taskData.RequestNewUrnAndRecordGive == true &&
+                taskData.RequestNewUrnAndRecordReceive == true)
+                ? TaskListStatus.Completed : TaskListStatus.InProgress;
         }
 
         private static TaskListStatus ConfirmMainContactTaskStatus(TransferTaskDataDto taskData)
         {
-           return TaskListStatus.NotStarted;
+            //Get main contact details from coontact table by project id 
+            return TaskListStatus.NotStarted;
         }
 
         private static TaskListStatus ConfirmIncomingTrustCeoDetailsTaskStatus(TransferTaskDataDto taskData)
         {
-           return TaskListStatus.NotStarted;
+            //Get CEO details from coontact table by project id 
+            return TaskListStatus.NotStarted;
         }
 
         private static TaskListStatus ConfirmHeadTeacherDetailsTaskStatus(TransferTaskDataDto taskData)
         {
-           return TaskListStatus.NotStarted;
+            //Get head teacher details from coontact table by project id 
+            return TaskListStatus.NotStarted;
         }
 
         private static TaskListStatus ConfirmAcademyRiskProtectionArrangementsTaskStatus(TransferTaskDataDto taskData)
         {
-           return TaskListStatus.NotStarted;
+            if(!taskData.RpaPolicyConfirm.HasValue)
+            {
+                return TaskListStatus.NotStarted;
+            }
+            return (taskData.RpaPolicyConfirm == true) 
+                ? TaskListStatus.Completed : TaskListStatus.InProgress;
         }
     }
 }
