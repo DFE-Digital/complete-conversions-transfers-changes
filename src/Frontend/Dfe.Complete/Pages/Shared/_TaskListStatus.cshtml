@@ -1,0 +1,30 @@
+﻿@using Dfe.Complete.Utils
+@model TaskListStatus
+
+@{
+    string output;
+    string colour;
+
+    switch (Model)
+    {
+        case TaskListStatus.Completed:
+            output = "COMPLETED";
+            colour = "turquoise";
+            break;
+        case TaskListStatus.InProgress:
+            output = "IN PROGRESS";
+            colour = "orange";
+            break;
+        case TaskListStatus.NotApplicable:
+            output = "NOT APPLICABLE";
+            colour = "grey";
+            break;
+        case TaskListStatus.NotStarted:
+        default:
+            output = "NOT STARTED";
+            colour = "blue";
+            break;
+    }
+}
+
+<strong class="govuk-tag govuk-tag--@colour app-task-list__tag" id="">@output</strong>

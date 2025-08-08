@@ -11,6 +11,8 @@ using Dfe.Complete.Domain.ValueObjects;
 using Dfe.Complete.Extensions;
 using Microsoft.AspNetCore.Authorization;
 using DfE.CoreLibs.Utilities.Extensions;
+using Dfe.Complete.Application.Projects.Queries.GetConversionTasksData;
+using Dfe.Complete.Application.Projects.Queries.GetTransferTasksData;
 
 namespace Dfe.Complete.Pages.Projects.TaskList.Tasks;
 
@@ -26,7 +28,7 @@ public class BaseProjectTaskModel(ISender sender, IAuthorizationService authoriz
         if (Project.State == ProjectState.Completed || noteUserId != User.GetUserId())
             return false;
         return true;
-    }
+    } 
 
     public override async Task<IActionResult> OnGetAsync()
     {
@@ -38,6 +40,8 @@ public class BaseProjectTaskModel(ISender sender, IAuthorizationService authoriz
             throw new InvalidOperationException($"Could not load notes for project {ProjectId}");
 
         Notes = notesResult.Value ?? [];
+
+        await GetProjectTaskDataAsync();
 
         return Page();
     }

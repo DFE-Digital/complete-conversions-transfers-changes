@@ -3,7 +3,7 @@ using Dfe.Complete.Domain.ValueObjects;
 
 namespace Dfe.Complete.Domain.Entities;
 
-public class KeyContact : IEntity<KeyContactId>
+public class KeyContact : BaseAggregateRoot, IEntity<KeyContactId>
 {
     public KeyContactId Id { get; set; }
 

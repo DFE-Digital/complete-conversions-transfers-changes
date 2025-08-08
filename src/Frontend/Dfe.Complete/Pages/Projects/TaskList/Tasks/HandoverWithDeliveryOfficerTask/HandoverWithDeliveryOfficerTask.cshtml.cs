@@ -22,7 +22,7 @@ public class HandoverWithDeliveryOfficerTaskModel(ISender sender, IAuthorization
 
     public override async Task<IActionResult> OnGetAsync()
     {
-        await base.OnGetAsync();
+        await base.OnGetAsync(); 
         return Page();
     }
 }
