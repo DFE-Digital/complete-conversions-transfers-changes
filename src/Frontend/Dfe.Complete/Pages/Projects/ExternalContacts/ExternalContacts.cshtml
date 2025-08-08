@@ -1,0 +1,76 @@
+﻿@page "/projects/{projectId}/external-contacts"
+@using Dfe.Complete.Domain.Enums
+@using Dfe.Complete.Pages.Projects.ExternalContacts
+@using DfE.CoreLibs.Utilities.Extensions
+@model Dfe.Complete.Pages.Projects.ExternalContacts.ExternalContacts
+
+@{
+  Layout = "_ProjectLayout";
+  ViewData["Title"] = Model.Establishment.Name;
+}
+
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-two-thirds" id="projectInternalContacts">
+    <h2 class="govuk-heading-l">External Contacts</h2>
+    @if (Model.Project.Type == ProjectType.Conversion)
+    {
+      <div class="govuk-!-margin-bottom-5">
+        <p class="govuk-hint">
+          Add contacts for the school or academy, trust, solicitor and local authority. If this is a faith school, add a contact for the diocese too.
+        </p>
+        <p class="govuk-hint">
+          You might be able to get missing contact information from the person who prepared this project for, or presented at, the advisory board.
+        </p>
+      </div>
+    }
+    <govuk-button-link href="#">Add contact</govuk-button-link>
+    @if (Model.EstablishmentContacts.Any())
+    {
+      <partial
+        name="_ExternalContactsSection"
+        model="@(new ExternalContactsSectionModel(Model.EstablishmentContacts, Model.Establishment.Name))"/>
+    }
+    @if (Model.IncomingTrustContacts.Any())
+    {
+      <partial
+        name="_ExternalContactsSection"
+        model="@(new ExternalContactsSectionModel(Model.IncomingTrustContacts, Model.IncomingTrust?.Name?.ToTitleCase()))"/>
+    }
+    @if (Model.OutgoingTrustContacts.Any())
+    {
+      <partial
+        name="_ExternalContactsSection"
+        model="@(new ExternalContactsSectionModel(Model.OutgoingTrustContacts, Model.OutgoingTrust?.Name?.ToTitleCase()))"/>
+    }
+    @if (Model.LocalAuthorityContacts.Any())
+    {
+      <partial
+        name="_ExternalContactsSection"
+        model="@(new ExternalContactsSectionModel(Model.LocalAuthorityContacts, Model.LocalAuthorityName))"/>
+    }
+    @if (Model.SolicitorContacts.Any())
+    {
+    <partial
+      name="_ExternalContactsSection"
+      model="@(new ExternalContactsSectionModel(Model.SolicitorContacts, "Solicitors"))"/>
+    }
+    @if (Model.DioceseContacts.Any())
+    {
+    <partial
+      name="_ExternalContactsSection"
+      model="@(new ExternalContactsSectionModel(Model.DioceseContacts, "Diocese"))"/>
+    }
+    @if (Model.OtherContacts.Any())
+    {
+    <partial
+      name="_ExternalContactsSection"
+      model="@(new ExternalContactsSectionModel(Model.OtherContacts, "Other"))"/>
+    }
+    @if (Model.ParliamentaryContacts.Any())
+    {
+    <partial
+      name="_ExternalContactsSection"
+      model="@(new ExternalContactsSectionModel(Model.ParliamentaryContacts, "Parliamentary"))"/>
+    }
+  </div>
+</div>
