@@ -93,6 +93,8 @@ namespace Dfe.Complete.Application.Projects.Models
         public User RegionalDeliveryOfficer { get; set; } = default!;
 
         public bool FormAMat => NewTrustReferenceNumber != null && NewTrustName != null && IncomingTrustUkprn == null;
+         
+        public string? EstablishmentName { get; set; }
 
     }
 }
