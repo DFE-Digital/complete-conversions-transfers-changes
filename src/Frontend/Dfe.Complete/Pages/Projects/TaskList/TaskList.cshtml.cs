@@ -1,6 +1,3 @@
-using Dfe.Complete.Application.Projects.Queries.GetConversionTasksData;
-using Dfe.Complete.Application.Projects.Queries.GetTransferTasksData; 
-using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Models;
 using Dfe.Complete.Pages.Projects.ProjectView;
 using MediatR;
@@ -17,24 +14,12 @@ namespace Dfe.Complete.Pages.Projects.TaskList
         {
             await UpdateCurrentProject();
             await SetEstablishmentAsync();
+            await GetProjectTaskDataAsync();
+            await GetKeyContactForProjectsAsyc();
 
-            if (Project?.Type == ProjectType.Transfer)
-            {
-                var result = await sender.Send(new GetTransferTasksDataByIdQuery(Project.TasksDataId));
-                if (result.IsSuccess && result.Value != null)
-                {
-                    TransferTaskList = TransferTaskListViewModel.Create(result.Value, Project);
-                }
-            }
-            if (Project?.Type == ProjectType.Conversion)
-            {
-                var result = await sender.Send(new GetConversionTasksDataByIdQuery(Project.TasksDataId));
-                if (result.IsSuccess && result.Value != null)
-                {
-                    ConversionTaskList = ConversionTaskListViewModel.Create(result.Value, Project);
-                }
-            }
+            TransferTaskList = TransferTaskListViewModel.Create(TransferTaskData, Project, KeyContacts);
+            ConversionTaskList = ConversionTaskListViewModel.Create(ConversionTaskData, Project, KeyContacts);
             return Page();
-        } 
+        }  
     }
 }

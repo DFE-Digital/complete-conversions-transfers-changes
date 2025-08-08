@@ -30,5 +30,42 @@ namespace Dfe.Complete.Tests.Models
             var result = ConversionTaskListViewModel.HandoverWithRegionalDeliveryOfficerTaskStatus(model);
             Assert.Equal(taskListStatus, result);
         }
+
+        [Theory]
+        [InlineData(null, null, null, null, null, null, TaskListStatus.NotStarted)]
+        [InlineData(null, false, null, false, null, false, TaskListStatus.NotStarted)] 
+        [InlineData(false, false, false, false, false, false, TaskListStatus.InProgress)]
+        [InlineData(true, true, false, false, false, false, TaskListStatus.InProgress)]
+        [InlineData(true, true, true, true, true, true, TaskListStatus.InProgress)]
+        [InlineData(false, true, true, true, true, true, TaskListStatus.Completed)] 
+        public void ExternalStakeHolderKickoffTaskStatus_ShouldReturn_CorrectStatus(
+            bool? significantDateProvisional,
+            bool? introEmails,
+            bool? proforma,
+            bool? setupMeeting,
+            bool? meeting,
+            bool? checkProvisionalDate,
+            TaskListStatus expectedStatus)
+        {
+            var taskData = new ConversionTaskDataDto
+            {
+                Id = new TaskDataId(Guid.NewGuid()),
+                StakeholderKickOffIntroductoryEmails = introEmails,
+                StakeholderKickOffLocalAuthorityProforma = proforma,
+                StakeholderKickOffSetupMeeting = setupMeeting,
+                StakeholderKickOffMeeting = meeting,
+                StakeholderKickOffCheckProvisionalConversionDate = checkProvisionalDate
+            };
+
+            var project = new ProjectDto
+            {
+                SignificantDateProvisional = significantDateProvisional
+            };
+
+            var result = ConversionTaskListViewModel.ExternalStakeHolderKickoffTaskStatus(taskData, project);
+
+            Assert.Equal(expectedStatus, result);
+        }
+
     }
 }
