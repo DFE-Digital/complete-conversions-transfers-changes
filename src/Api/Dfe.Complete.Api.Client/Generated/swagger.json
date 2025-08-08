@@ -6,6 +6,82 @@
     "version": "1.0.0"
   },
   "paths": {
+    "/v1/Contacts/List/Project": {
+      "get": {
+        "tags": [
+          "Contacts"
+        ],
+        "summary": "Returns a list of Contacts for a specific Project",
+        "operationId": "Contacts_ListAllContactsForProject",
+        "parameters": [
+          {
+            "name": "ProjectId.Value",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "guid"
+            },
+            "x-position": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Contact",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Contact"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request data."
+          }
+        }
+      }
+    },
+    "/v1/Contacts/List/La": {
+      "get": {
+        "tags": [
+          "Contacts"
+        ],
+        "summary": "Returns a list of Contacts for a specific Project",
+        "operationId": "Contacts_ListAllContactsForLocalAuthority",
+        "parameters": [
+          {
+            "name": "LocalAuthority.Value",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "guid"
+            },
+            "x-position": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Contact",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Contact"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request data."
+          }
+        }
+      }
+    },
     "/v1/CsvExport": {
       "post": {
         "tags": [
@@ -2159,6 +2235,1078 @@
   },
   "components": {
     "schemas": {
+      "Contact": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/BaseAggregateRoot"
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "id": {
+                "$ref": "#/components/schemas/ContactId"
+              },
+              "projectId": {
+                "nullable": true,
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/ProjectId"
+                  }
+                ]
+              },
+              "name": {
+                "type": "string"
+              },
+              "title": {
+                "type": "string"
+              },
+              "email": {
+                "type": "string",
+                "nullable": true
+              },
+              "phone": {
+                "type": "string",
+                "nullable": true
+              },
+              "createdAt": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "updatedAt": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "category": {
+                "$ref": "#/components/schemas/ContactCategory"
+              },
+              "organisationName": {
+                "type": "string",
+                "nullable": true
+              },
+              "type": {
+                "type": "string",
+                "nullable": true
+              },
+              "localAuthorityId": {
+                "nullable": true,
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/LocalAuthorityId"
+                  }
+                ]
+              },
+              "establishmentUrn": {
+                "type": "integer",
+                "format": "int32",
+                "nullable": true
+              },
+              "project": {
+                "nullable": true,
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/Project"
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      },
+      "ContactId": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "value": {
+            "type": "string",
+            "format": "guid"
+          }
+        }
+      },
+      "ProjectId": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "value": {
+            "type": "string",
+            "format": "guid"
+          }
+        }
+      },
+      "ContactCategory": {
+        "type": "string",
+        "description": "",
+        "x-enumNames": [
+          "Other",
+          "SchoolOrAcademy",
+          "IncomingTrust",
+          "LocalAuthority",
+          "Diocese",
+          "Solicitor",
+          "OutgoingTrust"
+        ],
+        "enum": [
+          "Other",
+          "SchoolOrAcademy",
+          "IncomingTrust",
+          "LocalAuthority",
+          "Diocese",
+          "Solicitor",
+          "OutgoingTrust"
+        ]
+      },
+      "LocalAuthorityId": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "value": {
+            "type": "string",
+            "format": "guid"
+          }
+        }
+      },
+      "Project": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/BaseAggregateRoot"
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "id": {
+                "$ref": "#/components/schemas/ProjectId"
+              },
+              "urn": {
+                "$ref": "#/components/schemas/Urn"
+              },
+              "createdAt": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "updatedAt": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "incomingTrustUkprn": {
+                "nullable": true,
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/Ukprn"
+                  }
+                ]
+              },
+              "regionalDeliveryOfficerId": {
+                "$ref": "#/components/schemas/UserId"
+              },
+              "caseworkerId": {
+                "nullable": true,
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/UserId"
+                  }
+                ]
+              },
+              "assignedAt": {
+                "type": "string",
+                "format": "date-time",
+                "nullable": true
+              },
+              "advisoryBoardDate": {
+                "type": "string",
+                "format": "date",
+                "nullable": true
+              },
+              "advisoryBoardConditions": {
+                "type": "string",
+                "nullable": true
+              },
+              "establishmentSharepointLink": {
+                "type": "string",
+                "nullable": true
+              },
+              "completedAt": {
+                "type": "string",
+                "format": "date-time",
+                "nullable": true
+              },
+              "incomingTrustSharepointLink": {
+                "type": "string",
+                "nullable": true
+              },
+              "type": {
+                "nullable": true,
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/ProjectType"
+                  }
+                ]
+              },
+              "assignedToId": {
+                "nullable": true,
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/UserId"
+                  }
+                ]
+              },
+              "significantDate": {
+                "type": "string",
+                "format": "date",
+                "nullable": true
+              },
+              "significantDateProvisional": {
+                "type": "boolean",
+                "nullable": true
+              },
+              "directiveAcademyOrder": {
+                "type": "boolean",
+                "nullable": true
+              },
+              "region": {
+                "nullable": true,
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/Region"
+                  }
+                ]
+              },
+              "academyUrn": {
+                "nullable": true,
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/Urn"
+                  }
+                ]
+              },
+              "tasksDataId": {
+                "nullable": true,
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/TaskDataId"
+                  }
+                ]
+              },
+              "tasksDataType": {
+                "nullable": true,
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/TaskType"
+                  }
+                ]
+              },
+              "outgoingTrustUkprn": {
+                "nullable": true,
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/Ukprn"
+                  }
+                ]
+              },
+              "team": {
+                "nullable": true,
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/ProjectTeam"
+                  }
+                ]
+              },
+              "twoRequiresImprovement": {
+                "type": "boolean",
+                "nullable": true
+              },
+              "outgoingTrustSharepointLink": {
+                "type": "string",
+                "nullable": true
+              },
+              "allConditionsMet": {
+                "type": "boolean",
+                "nullable": true
+              },
+              "mainContactId": {
+                "nullable": true,
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/ContactId"
+                  }
+                ]
+              },
+              "establishmentMainContactId": {
+                "nullable": true,
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/ContactId"
+                  }
+                ]
+              },
+              "incomingTrustMainContactId": {
+                "nullable": true,
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/ContactId"
+                  }
+                ]
+              },
+              "outgoingTrustMainContactId": {
+                "nullable": true,
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/ContactId"
+                  }
+                ]
+              },
+              "newTrustReferenceNumber": {
+                "type": "string",
+                "nullable": true
+              },
+              "newTrustName": {
+                "type": "string",
+                "nullable": true
+              },
+              "state": {
+                "$ref": "#/components/schemas/ProjectState"
+              },
+              "prepareId": {
+                "type": "integer",
+                "format": "int32",
+                "nullable": true
+              },
+              "localAuthorityMainContactId": {
+                "nullable": true,
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/ContactId"
+                  }
+                ]
+              },
+              "groupId": {
+                "nullable": true,
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/ProjectGroupId"
+                  }
+                ]
+              },
+              "localAuthorityId": {
+                "$ref": "#/components/schemas/LocalAuthorityId"
+              },
+              "formAMat": {
+                "type": "boolean"
+              },
+              "giasEstablishment": {
+                "nullable": true,
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/GiasEstablishment"
+                  }
+                ]
+              },
+              "assignedTo": {
+                "nullable": true,
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/User"
+                  }
+                ]
+              },
+              "caseworker": {
+                "nullable": true,
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/User"
+                  }
+                ]
+              },
+              "contacts": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/Contact"
+                }
+              },
+              "notes": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/Note"
+                }
+              },
+              "regionalDeliveryOfficer": {
+                "nullable": true,
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/User"
+                  }
+                ]
+              },
+              "localAuthority": {
+                "nullable": true,
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/LocalAuthority"
+                  }
+                ]
+              },
+              "significantDateHistories": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/SignificantDateHistory"
+                }
+              }
+            }
+          }
+        ]
+      },
+      "Urn": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "value": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "Ukprn": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "value": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "UserId": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "value": {
+            "type": "string",
+            "format": "guid"
+          }
+        }
+      },
+      "ProjectType": {
+        "type": "string",
+        "description": "",
+        "x-enumNames": [
+          "Conversion",
+          "Transfer"
+        ],
+        "enum": [
+          "Conversion",
+          "Transfer"
+        ]
+      },
+      "Region": {
+        "type": "string",
+        "description": "",
+        "x-enumNames": [
+          "NorthEast",
+          "NorthWest",
+          "YorkshireAndTheHumber",
+          "EastMidlands",
+          "WestMidlands",
+          "EastOfEngland",
+          "London",
+          "SouthEast",
+          "SouthWest"
+        ],
+        "enum": [
+          "NorthEast",
+          "NorthWest",
+          "YorkshireAndTheHumber",
+          "EastMidlands",
+          "WestMidlands",
+          "EastOfEngland",
+          "London",
+          "SouthEast",
+          "SouthWest"
+        ]
+      },
+      "TaskDataId": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "value": {
+            "type": "string",
+            "format": "guid"
+          }
+        }
+      },
+      "TaskType": {
+        "type": "string",
+        "description": "",
+        "x-enumNames": [
+          "Conversion",
+          "Transfer"
+        ],
+        "enum": [
+          "Conversion",
+          "Transfer"
+        ]
+      },
+      "ProjectTeam": {
+        "type": "string",
+        "description": "",
+        "x-enumNames": [
+          "RegionalCaseWorkerServices",
+          "ServiceSupport",
+          "London",
+          "SouthEast",
+          "YorkshireAndTheHumber",
+          "NorthWest",
+          "EastOfEngland",
+          "WestMidlands",
+          "NorthEast",
+          "SouthWest",
+          "EastMidlands",
+          "BusinessSupport",
+          "DataConsumers"
+        ],
+        "enum": [
+          "RegionalCaseWorkerServices",
+          "ServiceSupport",
+          "London",
+          "SouthEast",
+          "YorkshireAndTheHumber",
+          "NorthWest",
+          "EastOfEngland",
+          "WestMidlands",
+          "NorthEast",
+          "SouthWest",
+          "EastMidlands",
+          "BusinessSupport",
+          "DataConsumers"
+        ]
+      },
+      "ProjectState": {
+        "type": "string",
+        "description": "",
+        "x-enumNames": [
+          "Active",
+          "Completed",
+          "Deleted",
+          "DaoRevoked",
+          "Inactive"
+        ],
+        "enum": [
+          "Active",
+          "Completed",
+          "Deleted",
+          "DaoRevoked",
+          "Inactive"
+        ]
+      },
+      "ProjectGroupId": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "value": {
+            "type": "string",
+            "format": "guid"
+          }
+        }
+      },
+      "GiasEstablishment": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/BaseAggregateRoot"
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "id": {
+                "$ref": "#/components/schemas/GiasEstablishmentId"
+              },
+              "urn": {
+                "nullable": true,
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/Urn"
+                  }
+                ]
+              },
+              "ukprn": {
+                "nullable": true,
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/Ukprn"
+                  }
+                ]
+              },
+              "name": {
+                "type": "string",
+                "nullable": true
+              },
+              "establishmentNumber": {
+                "type": "string",
+                "nullable": true
+              },
+              "localAuthorityName": {
+                "type": "string",
+                "nullable": true
+              },
+              "localAuthorityCode": {
+                "type": "string",
+                "nullable": true
+              },
+              "regionName": {
+                "type": "string",
+                "nullable": true
+              },
+              "regionCode": {
+                "type": "string",
+                "nullable": true
+              },
+              "typeName": {
+                "type": "string",
+                "nullable": true
+              },
+              "typeCode": {
+                "type": "string",
+                "nullable": true
+              },
+              "ageRangeLower": {
+                "type": "integer",
+                "format": "int32",
+                "nullable": true
+              },
+              "ageRangeUpper": {
+                "type": "integer",
+                "format": "int32",
+                "nullable": true
+              },
+              "phaseName": {
+                "type": "string",
+                "nullable": true
+              },
+              "phaseCode": {
+                "type": "string",
+                "nullable": true
+              },
+              "dioceseName": {
+                "type": "string",
+                "nullable": true
+              },
+              "dioceseCode": {
+                "type": "string",
+                "nullable": true
+              },
+              "parliamentaryConstituencyName": {
+                "type": "string",
+                "nullable": true
+              },
+              "parliamentaryConstituencyCode": {
+                "type": "string",
+                "nullable": true
+              },
+              "addressStreet": {
+                "type": "string",
+                "nullable": true
+              },
+              "addressLocality": {
+                "type": "string",
+                "nullable": true
+              },
+              "addressAdditional": {
+                "type": "string",
+                "nullable": true
+              },
+              "addressTown": {
+                "type": "string",
+                "nullable": true
+              },
+              "addressCounty": {
+                "type": "string",
+                "nullable": true
+              },
+              "addressPostcode": {
+                "type": "string",
+                "nullable": true
+              },
+              "url": {
+                "type": "string",
+                "nullable": true
+              },
+              "createdAt": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "updatedAt": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "openDate": {
+                "type": "string",
+                "format": "date",
+                "nullable": true
+              },
+              "statusName": {
+                "type": "string",
+                "nullable": true
+              }
+            }
+          }
+        ]
+      },
+      "GiasEstablishmentId": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "value": {
+            "type": "string",
+            "format": "guid"
+          }
+        }
+      },
+      "BaseAggregateRoot": {
+        "type": "object",
+        "x-abstract": true,
+        "additionalProperties": false,
+        "properties": {
+          "domainEvents": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/IDomainEvent"
+            }
+          }
+        }
+      },
+      "IDomainEvent": {
+        "type": "object",
+        "x-abstract": true,
+        "additionalProperties": false,
+        "properties": {
+          "occurredOn": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "User": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/BaseAggregateRoot"
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "id": {
+                "$ref": "#/components/schemas/UserId"
+              },
+              "email": {
+                "type": "string",
+                "nullable": true
+              },
+              "createdAt": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "updatedAt": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "manageTeam": {
+                "type": "boolean",
+                "nullable": true
+              },
+              "addNewProject": {
+                "type": "boolean"
+              },
+              "firstName": {
+                "type": "string",
+                "nullable": true
+              },
+              "lastName": {
+                "type": "string",
+                "nullable": true
+              },
+              "activeDirectoryUserId": {
+                "type": "string",
+                "nullable": true
+              },
+              "assignToProject": {
+                "type": "boolean",
+                "nullable": true
+              },
+              "manageUserAccounts": {
+                "type": "boolean",
+                "nullable": true
+              },
+              "activeDirectoryUserGroupIds": {
+                "type": "string",
+                "nullable": true
+              },
+              "team": {
+                "type": "string",
+                "nullable": true
+              },
+              "deactivatedAt": {
+                "type": "string",
+                "format": "date-time",
+                "nullable": true
+              },
+              "manageConversionUrns": {
+                "type": "boolean",
+                "nullable": true
+              },
+              "manageLocalAuthorities": {
+                "type": "boolean",
+                "nullable": true
+              },
+              "latestSession": {
+                "type": "string",
+                "format": "date-time",
+                "nullable": true
+              },
+              "fullName": {
+                "type": "string"
+              },
+              "notes": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/Note"
+                }
+              },
+              "projectAssignedTos": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/Project"
+                }
+              },
+              "projectCaseworkers": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/Project"
+                }
+              },
+              "projectRegionalDeliveryOfficers": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/Project"
+                }
+              }
+            }
+          }
+        ]
+      },
+      "Note": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "$ref": "#/components/schemas/NoteId"
+          },
+          "body": {
+            "type": "string"
+          },
+          "projectId": {
+            "$ref": "#/components/schemas/ProjectId"
+          },
+          "userId": {
+            "$ref": "#/components/schemas/UserId"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "taskIdentifier": {
+            "type": "string",
+            "nullable": true
+          },
+          "notableId": {
+            "type": "string",
+            "format": "guid",
+            "nullable": true
+          },
+          "notableType": {
+            "type": "string",
+            "nullable": true
+          },
+          "project": {
+            "$ref": "#/components/schemas/Project"
+          },
+          "user": {
+            "$ref": "#/components/schemas/User"
+          }
+        }
+      },
+      "NoteId": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "value": {
+            "type": "string",
+            "format": "guid"
+          }
+        }
+      },
+      "LocalAuthority": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/BaseAggregateRoot"
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "id": {
+                "$ref": "#/components/schemas/LocalAuthorityId"
+              },
+              "name": {
+                "type": "string"
+              },
+              "code": {
+                "type": "string"
+              },
+              "address1": {
+                "type": "string"
+              },
+              "address2": {
+                "type": "string",
+                "nullable": true
+              },
+              "address3": {
+                "type": "string",
+                "nullable": true
+              },
+              "addressTown": {
+                "type": "string",
+                "nullable": true
+              },
+              "addressCounty": {
+                "type": "string",
+                "nullable": true
+              },
+              "addressPostcode": {
+                "type": "string"
+              },
+              "createdAt": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "updatedAt": {
+                "type": "string",
+                "format": "date-time"
+              }
+            }
+          }
+        ]
+      },
+      "SignificantDateHistory": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "$ref": "#/components/schemas/SignificantDateHistoryId"
+          },
+          "revisedDate": {
+            "type": "string",
+            "format": "date",
+            "nullable": true
+          },
+          "previousDate": {
+            "type": "string",
+            "format": "date",
+            "nullable": true
+          },
+          "projectId": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/ProjectId"
+              }
+            ]
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "userId": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/UserId"
+              }
+            ]
+          },
+          "reason": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/SignificantDateHistoryReason"
+              }
+            ]
+          },
+          "user": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/User"
+              }
+            ]
+          }
+        }
+      },
+      "SignificantDateHistoryId": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "value": {
+            "type": "string",
+            "format": "guid"
+          }
+        }
+      },
+      "SignificantDateHistoryReason": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "$ref": "#/components/schemas/SignificantDateHistoryReasonId"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "reasonType": {
+            "type": "string",
+            "nullable": true
+          },
+          "significantDateHistoryId": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/SignificantDateHistoryId"
+              }
+            ]
+          }
+        }
+      },
+      "SignificantDateHistoryReasonId": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "value": {
+            "type": "string",
+            "format": "guid"
+          }
+        }
+      },
       "ProjectGroupDto": {
         "type": "object",
         "additionalProperties": false,
@@ -2185,36 +3333,6 @@
           "updatedAt": {
             "type": "string",
             "format": "date-time"
-          }
-        }
-      },
-      "ProjectGroupId": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-          "value": {
-            "type": "string",
-            "format": "guid"
-          }
-        }
-      },
-      "Ukprn": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-          "value": {
-            "type": "integer",
-            "format": "int32"
-          }
-        }
-      },
-      "ProjectId": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-          "value": {
-            "type": "string",
-            "format": "guid"
           }
         }
       },
@@ -2267,16 +3385,6 @@
           "userAdId": {
             "type": "string",
             "nullable": true
-          }
-        }
-      },
-      "Urn": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-          "value": {
-            "type": "integer",
-            "format": "int32"
           }
         }
       },
@@ -2719,1038 +3827,6 @@
           "establishmentName": {
             "type": "string",
             "nullable": true
-          }
-        }
-      },
-      "UserId": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-          "value": {
-            "type": "string",
-            "format": "guid"
-          }
-        }
-      },
-      "ProjectType": {
-        "type": "string",
-        "description": "",
-        "x-enumNames": [
-          "Conversion",
-          "Transfer"
-        ],
-        "enum": [
-          "Conversion",
-          "Transfer"
-        ]
-      },
-      "Region": {
-        "type": "string",
-        "description": "",
-        "x-enumNames": [
-          "NorthEast",
-          "NorthWest",
-          "YorkshireAndTheHumber",
-          "EastMidlands",
-          "WestMidlands",
-          "EastOfEngland",
-          "London",
-          "SouthEast",
-          "SouthWest"
-        ],
-        "enum": [
-          "NorthEast",
-          "NorthWest",
-          "YorkshireAndTheHumber",
-          "EastMidlands",
-          "WestMidlands",
-          "EastOfEngland",
-          "London",
-          "SouthEast",
-          "SouthWest"
-        ]
-      },
-      "TaskDataId": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-          "value": {
-            "type": "string",
-            "format": "guid"
-          }
-        }
-      },
-      "TaskType": {
-        "type": "string",
-        "description": "",
-        "x-enumNames": [
-          "Conversion",
-          "Transfer"
-        ],
-        "enum": [
-          "Conversion",
-          "Transfer"
-        ]
-      },
-      "ProjectTeam": {
-        "type": "string",
-        "description": "",
-        "x-enumNames": [
-          "RegionalCaseWorkerServices",
-          "ServiceSupport",
-          "London",
-          "SouthEast",
-          "YorkshireAndTheHumber",
-          "NorthWest",
-          "EastOfEngland",
-          "WestMidlands",
-          "NorthEast",
-          "SouthWest",
-          "EastMidlands",
-          "BusinessSupport",
-          "DataConsumers"
-        ],
-        "enum": [
-          "RegionalCaseWorkerServices",
-          "ServiceSupport",
-          "London",
-          "SouthEast",
-          "YorkshireAndTheHumber",
-          "NorthWest",
-          "EastOfEngland",
-          "WestMidlands",
-          "NorthEast",
-          "SouthWest",
-          "EastMidlands",
-          "BusinessSupport",
-          "DataConsumers"
-        ]
-      },
-      "ContactId": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-          "value": {
-            "type": "string",
-            "format": "guid"
-          }
-        }
-      },
-      "ProjectState": {
-        "type": "string",
-        "description": "",
-        "x-enumNames": [
-          "Active",
-          "Completed",
-          "Deleted",
-          "DaoRevoked",
-          "Inactive"
-        ],
-        "enum": [
-          "Active",
-          "Completed",
-          "Deleted",
-          "DaoRevoked",
-          "Inactive"
-        ]
-      },
-      "User": {
-        "allOf": [
-          {
-            "$ref": "#/components/schemas/BaseAggregateRoot"
-          },
-          {
-            "type": "object",
-            "additionalProperties": false,
-            "properties": {
-              "id": {
-                "$ref": "#/components/schemas/UserId"
-              },
-              "email": {
-                "type": "string",
-                "nullable": true
-              },
-              "createdAt": {
-                "type": "string",
-                "format": "date-time"
-              },
-              "updatedAt": {
-                "type": "string",
-                "format": "date-time"
-              },
-              "manageTeam": {
-                "type": "boolean",
-                "nullable": true
-              },
-              "addNewProject": {
-                "type": "boolean"
-              },
-              "firstName": {
-                "type": "string",
-                "nullable": true
-              },
-              "lastName": {
-                "type": "string",
-                "nullable": true
-              },
-              "activeDirectoryUserId": {
-                "type": "string",
-                "nullable": true
-              },
-              "assignToProject": {
-                "type": "boolean",
-                "nullable": true
-              },
-              "manageUserAccounts": {
-                "type": "boolean",
-                "nullable": true
-              },
-              "activeDirectoryUserGroupIds": {
-                "type": "string",
-                "nullable": true
-              },
-              "team": {
-                "type": "string",
-                "nullable": true
-              },
-              "deactivatedAt": {
-                "type": "string",
-                "format": "date-time",
-                "nullable": true
-              },
-              "manageConversionUrns": {
-                "type": "boolean",
-                "nullable": true
-              },
-              "manageLocalAuthorities": {
-                "type": "boolean",
-                "nullable": true
-              },
-              "latestSession": {
-                "type": "string",
-                "format": "date-time",
-                "nullable": true
-              },
-              "fullName": {
-                "type": "string"
-              },
-              "notes": {
-                "type": "array",
-                "items": {
-                  "$ref": "#/components/schemas/Note"
-                }
-              },
-              "projectAssignedTos": {
-                "type": "array",
-                "items": {
-                  "$ref": "#/components/schemas/Project"
-                }
-              },
-              "projectCaseworkers": {
-                "type": "array",
-                "items": {
-                  "$ref": "#/components/schemas/Project"
-                }
-              },
-              "projectRegionalDeliveryOfficers": {
-                "type": "array",
-                "items": {
-                  "$ref": "#/components/schemas/Project"
-                }
-              }
-            }
-          }
-        ]
-      },
-      "Note": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-          "id": {
-            "$ref": "#/components/schemas/NoteId"
-          },
-          "body": {
-            "type": "string"
-          },
-          "projectId": {
-            "$ref": "#/components/schemas/ProjectId"
-          },
-          "userId": {
-            "$ref": "#/components/schemas/UserId"
-          },
-          "createdAt": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "updatedAt": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "taskIdentifier": {
-            "type": "string",
-            "nullable": true
-          },
-          "notableId": {
-            "type": "string",
-            "format": "guid",
-            "nullable": true
-          },
-          "notableType": {
-            "type": "string",
-            "nullable": true
-          },
-          "project": {
-            "$ref": "#/components/schemas/Project"
-          },
-          "user": {
-            "$ref": "#/components/schemas/User"
-          }
-        }
-      },
-      "NoteId": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-          "value": {
-            "type": "string",
-            "format": "guid"
-          }
-        }
-      },
-      "Project": {
-        "allOf": [
-          {
-            "$ref": "#/components/schemas/BaseAggregateRoot"
-          },
-          {
-            "type": "object",
-            "additionalProperties": false,
-            "properties": {
-              "id": {
-                "$ref": "#/components/schemas/ProjectId"
-              },
-              "urn": {
-                "$ref": "#/components/schemas/Urn"
-              },
-              "createdAt": {
-                "type": "string",
-                "format": "date-time"
-              },
-              "updatedAt": {
-                "type": "string",
-                "format": "date-time"
-              },
-              "incomingTrustUkprn": {
-                "nullable": true,
-                "oneOf": [
-                  {
-                    "$ref": "#/components/schemas/Ukprn"
-                  }
-                ]
-              },
-              "regionalDeliveryOfficerId": {
-                "$ref": "#/components/schemas/UserId"
-              },
-              "caseworkerId": {
-                "nullable": true,
-                "oneOf": [
-                  {
-                    "$ref": "#/components/schemas/UserId"
-                  }
-                ]
-              },
-              "assignedAt": {
-                "type": "string",
-                "format": "date-time",
-                "nullable": true
-              },
-              "advisoryBoardDate": {
-                "type": "string",
-                "format": "date",
-                "nullable": true
-              },
-              "advisoryBoardConditions": {
-                "type": "string",
-                "nullable": true
-              },
-              "establishmentSharepointLink": {
-                "type": "string",
-                "nullable": true
-              },
-              "completedAt": {
-                "type": "string",
-                "format": "date-time",
-                "nullable": true
-              },
-              "incomingTrustSharepointLink": {
-                "type": "string",
-                "nullable": true
-              },
-              "type": {
-                "nullable": true,
-                "oneOf": [
-                  {
-                    "$ref": "#/components/schemas/ProjectType"
-                  }
-                ]
-              },
-              "assignedToId": {
-                "nullable": true,
-                "oneOf": [
-                  {
-                    "$ref": "#/components/schemas/UserId"
-                  }
-                ]
-              },
-              "significantDate": {
-                "type": "string",
-                "format": "date",
-                "nullable": true
-              },
-              "significantDateProvisional": {
-                "type": "boolean",
-                "nullable": true
-              },
-              "directiveAcademyOrder": {
-                "type": "boolean",
-                "nullable": true
-              },
-              "region": {
-                "nullable": true,
-                "oneOf": [
-                  {
-                    "$ref": "#/components/schemas/Region"
-                  }
-                ]
-              },
-              "academyUrn": {
-                "nullable": true,
-                "oneOf": [
-                  {
-                    "$ref": "#/components/schemas/Urn"
-                  }
-                ]
-              },
-              "tasksDataId": {
-                "nullable": true,
-                "oneOf": [
-                  {
-                    "$ref": "#/components/schemas/TaskDataId"
-                  }
-                ]
-              },
-              "tasksDataType": {
-                "nullable": true,
-                "oneOf": [
-                  {
-                    "$ref": "#/components/schemas/TaskType"
-                  }
-                ]
-              },
-              "outgoingTrustUkprn": {
-                "nullable": true,
-                "oneOf": [
-                  {
-                    "$ref": "#/components/schemas/Ukprn"
-                  }
-                ]
-              },
-              "team": {
-                "nullable": true,
-                "oneOf": [
-                  {
-                    "$ref": "#/components/schemas/ProjectTeam"
-                  }
-                ]
-              },
-              "twoRequiresImprovement": {
-                "type": "boolean",
-                "nullable": true
-              },
-              "outgoingTrustSharepointLink": {
-                "type": "string",
-                "nullable": true
-              },
-              "allConditionsMet": {
-                "type": "boolean",
-                "nullable": true
-              },
-              "mainContactId": {
-                "nullable": true,
-                "oneOf": [
-                  {
-                    "$ref": "#/components/schemas/ContactId"
-                  }
-                ]
-              },
-              "establishmentMainContactId": {
-                "nullable": true,
-                "oneOf": [
-                  {
-                    "$ref": "#/components/schemas/ContactId"
-                  }
-                ]
-              },
-              "incomingTrustMainContactId": {
-                "nullable": true,
-                "oneOf": [
-                  {
-                    "$ref": "#/components/schemas/ContactId"
-                  }
-                ]
-              },
-              "outgoingTrustMainContactId": {
-                "nullable": true,
-                "oneOf": [
-                  {
-                    "$ref": "#/components/schemas/ContactId"
-                  }
-                ]
-              },
-              "newTrustReferenceNumber": {
-                "type": "string",
-                "nullable": true
-              },
-              "newTrustName": {
-                "type": "string",
-                "nullable": true
-              },
-              "state": {
-                "$ref": "#/components/schemas/ProjectState"
-              },
-              "prepareId": {
-                "type": "integer",
-                "format": "int32",
-                "nullable": true
-              },
-              "localAuthorityMainContactId": {
-                "nullable": true,
-                "oneOf": [
-                  {
-                    "$ref": "#/components/schemas/ContactId"
-                  }
-                ]
-              },
-              "groupId": {
-                "nullable": true,
-                "oneOf": [
-                  {
-                    "$ref": "#/components/schemas/ProjectGroupId"
-                  }
-                ]
-              },
-              "localAuthorityId": {
-                "$ref": "#/components/schemas/LocalAuthorityId"
-              },
-              "formAMat": {
-                "type": "boolean"
-              },
-              "giasEstablishment": {
-                "nullable": true,
-                "oneOf": [
-                  {
-                    "$ref": "#/components/schemas/GiasEstablishment"
-                  }
-                ]
-              },
-              "assignedTo": {
-                "nullable": true,
-                "oneOf": [
-                  {
-                    "$ref": "#/components/schemas/User"
-                  }
-                ]
-              },
-              "caseworker": {
-                "nullable": true,
-                "oneOf": [
-                  {
-                    "$ref": "#/components/schemas/User"
-                  }
-                ]
-              },
-              "contacts": {
-                "type": "array",
-                "items": {
-                  "$ref": "#/components/schemas/Contact"
-                }
-              },
-              "notes": {
-                "type": "array",
-                "items": {
-                  "$ref": "#/components/schemas/Note"
-                }
-              },
-              "regionalDeliveryOfficer": {
-                "nullable": true,
-                "oneOf": [
-                  {
-                    "$ref": "#/components/schemas/User"
-                  }
-                ]
-              },
-              "localAuthority": {
-                "nullable": true,
-                "oneOf": [
-                  {
-                    "$ref": "#/components/schemas/LocalAuthority"
-                  }
-                ]
-              },
-              "significantDateHistories": {
-                "type": "array",
-                "items": {
-                  "$ref": "#/components/schemas/SignificantDateHistory"
-                }
-              }
-            }
-          }
-        ]
-      },
-      "LocalAuthorityId": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-          "value": {
-            "type": "string",
-            "format": "guid"
-          }
-        }
-      },
-      "GiasEstablishment": {
-        "allOf": [
-          {
-            "$ref": "#/components/schemas/BaseAggregateRoot"
-          },
-          {
-            "type": "object",
-            "additionalProperties": false,
-            "properties": {
-              "id": {
-                "$ref": "#/components/schemas/GiasEstablishmentId"
-              },
-              "urn": {
-                "nullable": true,
-                "oneOf": [
-                  {
-                    "$ref": "#/components/schemas/Urn"
-                  }
-                ]
-              },
-              "ukprn": {
-                "nullable": true,
-                "oneOf": [
-                  {
-                    "$ref": "#/components/schemas/Ukprn"
-                  }
-                ]
-              },
-              "name": {
-                "type": "string",
-                "nullable": true
-              },
-              "establishmentNumber": {
-                "type": "string",
-                "nullable": true
-              },
-              "localAuthorityName": {
-                "type": "string",
-                "nullable": true
-              },
-              "localAuthorityCode": {
-                "type": "string",
-                "nullable": true
-              },
-              "regionName": {
-                "type": "string",
-                "nullable": true
-              },
-              "regionCode": {
-                "type": "string",
-                "nullable": true
-              },
-              "typeName": {
-                "type": "string",
-                "nullable": true
-              },
-              "typeCode": {
-                "type": "string",
-                "nullable": true
-              },
-              "ageRangeLower": {
-                "type": "integer",
-                "format": "int32",
-                "nullable": true
-              },
-              "ageRangeUpper": {
-                "type": "integer",
-                "format": "int32",
-                "nullable": true
-              },
-              "phaseName": {
-                "type": "string",
-                "nullable": true
-              },
-              "phaseCode": {
-                "type": "string",
-                "nullable": true
-              },
-              "dioceseName": {
-                "type": "string",
-                "nullable": true
-              },
-              "dioceseCode": {
-                "type": "string",
-                "nullable": true
-              },
-              "parliamentaryConstituencyName": {
-                "type": "string",
-                "nullable": true
-              },
-              "parliamentaryConstituencyCode": {
-                "type": "string",
-                "nullable": true
-              },
-              "addressStreet": {
-                "type": "string",
-                "nullable": true
-              },
-              "addressLocality": {
-                "type": "string",
-                "nullable": true
-              },
-              "addressAdditional": {
-                "type": "string",
-                "nullable": true
-              },
-              "addressTown": {
-                "type": "string",
-                "nullable": true
-              },
-              "addressCounty": {
-                "type": "string",
-                "nullable": true
-              },
-              "addressPostcode": {
-                "type": "string",
-                "nullable": true
-              },
-              "url": {
-                "type": "string",
-                "nullable": true
-              },
-              "createdAt": {
-                "type": "string",
-                "format": "date-time"
-              },
-              "updatedAt": {
-                "type": "string",
-                "format": "date-time"
-              },
-              "openDate": {
-                "type": "string",
-                "format": "date",
-                "nullable": true
-              },
-              "statusName": {
-                "type": "string",
-                "nullable": true
-              }
-            }
-          }
-        ]
-      },
-      "GiasEstablishmentId": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-          "value": {
-            "type": "string",
-            "format": "guid"
-          }
-        }
-      },
-      "BaseAggregateRoot": {
-        "type": "object",
-        "x-abstract": true,
-        "additionalProperties": false,
-        "properties": {
-          "domainEvents": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/IDomainEvent"
-            }
-          }
-        }
-      },
-      "IDomainEvent": {
-        "type": "object",
-        "x-abstract": true,
-        "additionalProperties": false,
-        "properties": {
-          "occurredOn": {
-            "type": "string",
-            "format": "date-time"
-          }
-        }
-      },
-      "Contact": {
-        "allOf": [
-          {
-            "$ref": "#/components/schemas/BaseAggregateRoot"
-          },
-          {
-            "type": "object",
-            "additionalProperties": false,
-            "properties": {
-              "id": {
-                "$ref": "#/components/schemas/ContactId"
-              },
-              "projectId": {
-                "nullable": true,
-                "oneOf": [
-                  {
-                    "$ref": "#/components/schemas/ProjectId"
-                  }
-                ]
-              },
-              "name": {
-                "type": "string"
-              },
-              "title": {
-                "type": "string"
-              },
-              "email": {
-                "type": "string",
-                "nullable": true
-              },
-              "phone": {
-                "type": "string",
-                "nullable": true
-              },
-              "createdAt": {
-                "type": "string",
-                "format": "date-time"
-              },
-              "updatedAt": {
-                "type": "string",
-                "format": "date-time"
-              },
-              "category": {
-                "$ref": "#/components/schemas/ContactCategory"
-              },
-              "organisationName": {
-                "type": "string",
-                "nullable": true
-              },
-              "type": {
-                "type": "string",
-                "nullable": true
-              },
-              "localAuthorityId": {
-                "nullable": true,
-                "oneOf": [
-                  {
-                    "$ref": "#/components/schemas/LocalAuthorityId"
-                  }
-                ]
-              },
-              "establishmentUrn": {
-                "type": "integer",
-                "format": "int32",
-                "nullable": true
-              },
-              "project": {
-                "nullable": true,
-                "oneOf": [
-                  {
-                    "$ref": "#/components/schemas/Project"
-                  }
-                ]
-              }
-            }
-          }
-        ]
-      },
-      "ContactCategory": {
-        "type": "string",
-        "description": "",
-        "x-enumNames": [
-          "Other",
-          "SchoolOrAcademy",
-          "IncomingTrust",
-          "LocalAuthority",
-          "Diocese",
-          "Solicitor",
-          "OutgoingTrust"
-        ],
-        "enum": [
-          "Other",
-          "SchoolOrAcademy",
-          "IncomingTrust",
-          "LocalAuthority",
-          "Diocese",
-          "Solicitor",
-          "OutgoingTrust"
-        ]
-      },
-      "LocalAuthority": {
-        "allOf": [
-          {
-            "$ref": "#/components/schemas/BaseAggregateRoot"
-          },
-          {
-            "type": "object",
-            "additionalProperties": false,
-            "properties": {
-              "id": {
-                "$ref": "#/components/schemas/LocalAuthorityId"
-              },
-              "name": {
-                "type": "string"
-              },
-              "code": {
-                "type": "string"
-              },
-              "address1": {
-                "type": "string"
-              },
-              "address2": {
-                "type": "string",
-                "nullable": true
-              },
-              "address3": {
-                "type": "string",
-                "nullable": true
-              },
-              "addressTown": {
-                "type": "string",
-                "nullable": true
-              },
-              "addressCounty": {
-                "type": "string",
-                "nullable": true
-              },
-              "addressPostcode": {
-                "type": "string"
-              },
-              "createdAt": {
-                "type": "string",
-                "format": "date-time"
-              },
-              "updatedAt": {
-                "type": "string",
-                "format": "date-time"
-              }
-            }
-          }
-        ]
-      },
-      "SignificantDateHistory": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-          "id": {
-            "$ref": "#/components/schemas/SignificantDateHistoryId"
-          },
-          "revisedDate": {
-            "type": "string",
-            "format": "date",
-            "nullable": true
-          },
-          "previousDate": {
-            "type": "string",
-            "format": "date",
-            "nullable": true
-          },
-          "projectId": {
-            "nullable": true,
-            "oneOf": [
-              {
-                "$ref": "#/components/schemas/ProjectId"
-              }
-            ]
-          },
-          "createdAt": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "updatedAt": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "userId": {
-            "nullable": true,
-            "oneOf": [
-              {
-                "$ref": "#/components/schemas/UserId"
-              }
-            ]
-          },
-          "reason": {
-            "nullable": true,
-            "oneOf": [
-              {
-                "$ref": "#/components/schemas/SignificantDateHistoryReason"
-              }
-            ]
-          },
-          "user": {
-            "nullable": true,
-            "oneOf": [
-              {
-                "$ref": "#/components/schemas/User"
-              }
-            ]
-          }
-        }
-      },
-      "SignificantDateHistoryId": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-          "value": {
-            "type": "string",
-            "format": "guid"
-          }
-        }
-      },
-      "SignificantDateHistoryReason": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-          "id": {
-            "$ref": "#/components/schemas/SignificantDateHistoryReasonId"
-          },
-          "createdAt": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "updatedAt": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "reasonType": {
-            "type": "string",
-            "nullable": true
-          },
-          "significantDateHistoryId": {
-            "nullable": true,
-            "oneOf": [
-              {
-                "$ref": "#/components/schemas/SignificantDateHistoryId"
-              }
-            ]
-          }
-        }
-      },
-      "SignificantDateHistoryReasonId": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-          "value": {
-            "type": "string",
-            "format": "guid"
           }
         }
       },
