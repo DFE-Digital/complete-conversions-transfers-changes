@@ -32,8 +32,7 @@ namespace Dfe.Complete.Application.Tests.CommandHandlers.Project
         [CustomAutoData(typeof(DateOnlyCustomization))]
         public async Task Handle_ExistingGroupIdentifier_IsHandlingRSC_True_ExistingLastComment_WithHandoverComment_UpdatesProject(
             [Frozen] ICompleteRepository<Domain.Entities.Project> mockProjectRepository,
-            [Frozen] ICompleteRepository<Domain.Entities.ProjectGroup> projectGroupRepository,
-            [Frozen] ICompleteRepository<Domain.Entities.Note> noteRepository)
+            [Frozen] ICompleteRepository<Domain.Entities.ProjectGroup> projectGroupRepository)
         {
             // Setup the user dto
             const ProjectTeam team = ProjectTeam.WestMidlands;
@@ -63,7 +62,7 @@ namespace Dfe.Complete.Application.Tests.CommandHandlers.Project
             };
 
             projectGroupRepository
-                .FindAsync(Arg.Any<Expression<Func<Domain.Entities.ProjectGroup, bool>>>(), Arg.Any<CancellationToken>())
+                .FindAsync(Arg.Any<Expression<Func<ProjectGroup, bool>>>(), Arg.Any<CancellationToken>())
                 .Returns(Task.FromResult(group));
 
             var handOverText = "Initial handover note";
@@ -78,7 +77,7 @@ namespace Dfe.Complete.Application.Tests.CommandHandlers.Project
             };
 
             var notesQueryable = new[] { note }.AsQueryable().BuildMock();
-            noteRepository.Query().Returns(notesQueryable);
+            // noteRepository.Query().Returns(notesQueryable);
 
             var command = new UpdateConversionProjectCommand(
                projectId,
@@ -96,21 +95,12 @@ namespace Dfe.Complete.Application.Tests.CommandHandlers.Project
                User: userDto
             );
 
-            var handler = new UpdateConversionProjectCommandHandler(mockProjectRepository, projectGroupRepository, noteRepository);
+            var handler = new UpdateConversionProjectCommandHandler(mockProjectRepository, projectGroupRepository);
 
             // Act
             await handler.Handle(command, CancellationToken.None);
 
             // Assert
-            await noteRepository
-                .Received(1)
-                .UpdateAsync(Arg.Is<Domain.Entities.Note>(
-                    x => x.ProjectId == projectId
-                        && x.UserId == userDto.Id
-                        && x.TaskIdentifier == NoteTaskIdentifier.Handover.ToDescription()
-                        && x.Body == command.HandoverComments
-                ), default);
-
             await mockProjectRepository
                 .Received(1)
                 .UpdateAsync(Arg.Is<Domain.Entities.Project>(
@@ -130,8 +120,7 @@ namespace Dfe.Complete.Application.Tests.CommandHandlers.Project
         [CustomAutoData(typeof(DateOnlyCustomization))]
         public async Task Handle_Dettaches_GroupIdentifier_UpdatesProject(
             [Frozen] ICompleteRepository<Domain.Entities.Project> mockProjectRepository,
-            [Frozen] ICompleteRepository<Domain.Entities.ProjectGroup> projectGroupRepository,
-            [Frozen] ICompleteRepository<Domain.Entities.Note> noteRepository)
+            [Frozen] ICompleteRepository<Domain.Entities.ProjectGroup> projectGroupRepository)
         {
             // Setup the user dto
             const ProjectTeam team = ProjectTeam.WestMidlands;
@@ -164,7 +153,7 @@ namespace Dfe.Complete.Application.Tests.CommandHandlers.Project
             };
 
             var notesQueryable = new[] { note }.AsQueryable().BuildMock();
-            noteRepository.Query().Returns(notesQueryable);
+            // noteRepository.Query().Returns(notesQueryable);
 
             var command = new UpdateConversionProjectCommand(
                projectId,
@@ -182,21 +171,12 @@ namespace Dfe.Complete.Application.Tests.CommandHandlers.Project
                User: userDto
             );
 
-            var handler = new UpdateConversionProjectCommandHandler(mockProjectRepository, projectGroupRepository, noteRepository);
+            var handler = new UpdateConversionProjectCommandHandler(mockProjectRepository, projectGroupRepository);
 
             // Act
             await handler.Handle(command, CancellationToken.None);
 
             // Assert
-            await noteRepository
-                .Received(1)
-                .UpdateAsync(Arg.Is<Domain.Entities.Note>(
-                    x => x.ProjectId == projectId
-                        && x.UserId == userDto.Id
-                        && x.TaskIdentifier == NoteTaskIdentifier.Handover.ToDescription()
-                        && x.Body == command.HandoverComments
-                ), default);
-
             await mockProjectRepository
                 .Received(1)
                 .UpdateAsync(Arg.Is<Domain.Entities.Project>(
@@ -216,8 +196,7 @@ namespace Dfe.Complete.Application.Tests.CommandHandlers.Project
         [CustomAutoData(typeof(DateOnlyCustomization))]
         public async Task Handle_IsHandlingRCS_False_UpdatesProject(
             [Frozen] ICompleteRepository<Domain.Entities.Project> mockProjectRepository,
-            [Frozen] ICompleteRepository<Domain.Entities.ProjectGroup> projectGroupRepository,
-            [Frozen] ICompleteRepository<Domain.Entities.Note> noteRepository)
+            [Frozen] ICompleteRepository<Domain.Entities.ProjectGroup> projectGroupRepository)
         {
             // Setup the user dto
             const ProjectTeam team = ProjectTeam.WestMidlands;
@@ -262,7 +241,7 @@ namespace Dfe.Complete.Application.Tests.CommandHandlers.Project
             };
 
             var notesQueryable = new[] { note }.AsQueryable().BuildMock();
-            noteRepository.Query().Returns(notesQueryable);
+            // noteRepository.Query().Returns(notesQueryable);
 
             var command = new UpdateConversionProjectCommand(
                projectId,
@@ -280,21 +259,12 @@ namespace Dfe.Complete.Application.Tests.CommandHandlers.Project
                User: userDto
             );
 
-            var handler = new UpdateConversionProjectCommandHandler(mockProjectRepository, projectGroupRepository, noteRepository);
+            var handler = new UpdateConversionProjectCommandHandler(mockProjectRepository, projectGroupRepository);
 
             // Act
             await handler.Handle(command, CancellationToken.None);
 
             // Assert
-            await noteRepository
-                .Received(1)
-                .UpdateAsync(Arg.Is<Domain.Entities.Note>(
-                    x => x.ProjectId == projectId
-                        && x.UserId == userDto.Id
-                        && x.TaskIdentifier == NoteTaskIdentifier.Handover.ToDescription()
-                        && x.Body == command.HandoverComments
-                ), default);
-
             await mockProjectRepository
                 .Received(1)
                 .UpdateAsync(Arg.Is<Domain.Entities.Project>(
@@ -316,8 +286,7 @@ namespace Dfe.Complete.Application.Tests.CommandHandlers.Project
         [CustomAutoData(typeof(DateOnlyCustomization))]
         public async Task Handle_LastComment_Without_HandoverNotes_Removes_ExistingNote_UpdatesProject(
             [Frozen] ICompleteRepository<Domain.Entities.Project> mockProjectRepository,
-            [Frozen] ICompleteRepository<Domain.Entities.ProjectGroup> projectGroupRepository,
-            [Frozen] ICompleteRepository<Domain.Entities.Note> noteRepository)
+            [Frozen] ICompleteRepository<Domain.Entities.ProjectGroup> projectGroupRepository)
         {
             // Setup the user dto
             const ProjectTeam team = ProjectTeam.WestMidlands;
@@ -368,7 +337,7 @@ namespace Dfe.Complete.Application.Tests.CommandHandlers.Project
                 .Returns(Task.FromResult(group));
 
             var notesQueryable = new[] { note }.AsQueryable().BuildMock();
-            noteRepository.Query().Returns(notesQueryable);
+            // noteRepository.Query().Returns(notesQueryable);
 
             var command = new UpdateConversionProjectCommand(
                projectId,
@@ -386,13 +355,12 @@ namespace Dfe.Complete.Application.Tests.CommandHandlers.Project
                User: userDto
             );
 
-            var handler = new UpdateConversionProjectCommandHandler(mockProjectRepository, projectGroupRepository, noteRepository);
+            var handler = new UpdateConversionProjectCommandHandler(mockProjectRepository, projectGroupRepository);
 
             // Act
             await handler.Handle(command, CancellationToken.None);
 
             // Assert
-
             await mockProjectRepository
                 .Received(1)
                 .UpdateAsync(Arg.Is<Domain.Entities.Project>(
@@ -413,8 +381,7 @@ namespace Dfe.Complete.Application.Tests.CommandHandlers.Project
         [CustomAutoData(typeof(DateOnlyCustomization))]
         public async Task Handle_NO_LastComment_With_HandoverNotes_AddsNewNote_UpdatesProject(
             [Frozen] ICompleteRepository<Domain.Entities.Project> mockProjectRepository,
-            [Frozen] ICompleteRepository<Domain.Entities.ProjectGroup> projectGroupRepository,
-            [Frozen] ICompleteRepository<Domain.Entities.Note> noteRepository)
+            [Frozen] ICompleteRepository<Domain.Entities.ProjectGroup> projectGroupRepository)
         {
             // Setup the user dto
             const ProjectTeam team = ProjectTeam.WestMidlands;
@@ -448,7 +415,7 @@ namespace Dfe.Complete.Application.Tests.CommandHandlers.Project
                 .Returns(Task.FromResult(group));
 
             var notesQueryable = new List<Note>().AsQueryable().BuildMock();
-            noteRepository.Query().Returns(notesQueryable);
+            // noteRepository.Query().Returns(notesQueryable);
 
             var command = new UpdateConversionProjectCommand(
                projectId,
@@ -466,7 +433,7 @@ namespace Dfe.Complete.Application.Tests.CommandHandlers.Project
                User: userDto
             );
 
-            var handler = new UpdateConversionProjectCommandHandler(mockProjectRepository, projectGroupRepository, noteRepository);
+            var handler = new UpdateConversionProjectCommandHandler(mockProjectRepository, projectGroupRepository);
 
             // Act
             await handler.Handle(command, CancellationToken.None);

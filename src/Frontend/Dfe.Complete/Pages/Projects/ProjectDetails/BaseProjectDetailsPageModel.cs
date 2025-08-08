@@ -93,7 +93,7 @@ namespace Dfe.Complete.Pages.Projects.ProjectDetails
         protected async Task SetHandoverComments()
         {
             var projectId = new ProjectId(Guid.Parse(ProjectId));
-            var query = new GetHandoverNotesByProjectIdQuery(projectId);
+            var query = new GetTaskNotesByProjectIdQuery(projectId, NoteTaskIdentifier.Handover);
             var notesResult = await Sender.Send(query);
 
             if (notesResult.IsSuccess)

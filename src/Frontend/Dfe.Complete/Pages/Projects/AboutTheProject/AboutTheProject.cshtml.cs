@@ -64,6 +64,8 @@ namespace Dfe.Complete.Pages.Projects.AboutTheProject
 
         public string GetChangeLinkUrl(string fragment)
         {
+            // TODO instead of `GetChangeLinkUrl`, check if user is authorized to edit the project and display the banner - don't return '#'
+            // Then, we can update the string const (route) to use a fragment like /edit#{1}
             if (User.GetUserAdId() != Project.AssignedToId?.Value.ToString() && !CurrentUserTeam.TeamIsServiceSupport()) // This project is not assigned to the user and the user is not service support
             {
                 return "#";

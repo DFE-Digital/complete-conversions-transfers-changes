@@ -2774,56 +2774,49 @@
         ]
       },
       "Note": {
-        "allOf": [
-          {
-            "$ref": "#/components/schemas/BaseAggregateRoot"
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "$ref": "#/components/schemas/NoteId"
           },
-          {
-            "type": "object",
-            "additionalProperties": false,
-            "properties": {
-              "id": {
-                "$ref": "#/components/schemas/NoteId"
-              },
-              "body": {
-                "type": "string"
-              },
-              "projectId": {
-                "$ref": "#/components/schemas/ProjectId"
-              },
-              "userId": {
-                "$ref": "#/components/schemas/UserId"
-              },
-              "createdAt": {
-                "type": "string",
-                "format": "date-time"
-              },
-              "updatedAt": {
-                "type": "string",
-                "format": "date-time"
-              },
-              "taskIdentifier": {
-                "type": "string",
-                "nullable": true
-              },
-              "notableId": {
-                "type": "string",
-                "format": "guid",
-                "nullable": true
-              },
-              "notableType": {
-                "type": "string",
-                "nullable": true
-              },
-              "project": {
-                "$ref": "#/components/schemas/Project"
-              },
-              "user": {
-                "$ref": "#/components/schemas/User"
-              }
-            }
+          "body": {
+            "type": "string"
+          },
+          "projectId": {
+            "$ref": "#/components/schemas/ProjectId"
+          },
+          "userId": {
+            "$ref": "#/components/schemas/UserId"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "taskIdentifier": {
+            "type": "string",
+            "nullable": true
+          },
+          "notableId": {
+            "type": "string",
+            "format": "guid",
+            "nullable": true
+          },
+          "notableType": {
+            "type": "string",
+            "nullable": true
+          },
+          "project": {
+            "$ref": "#/components/schemas/Project"
+          },
+          "user": {
+            "$ref": "#/components/schemas/User"
           }
-        ]
+        }
       },
       "NoteId": {
         "type": "object",
