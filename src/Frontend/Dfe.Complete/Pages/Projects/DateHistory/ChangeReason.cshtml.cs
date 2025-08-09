@@ -96,26 +96,35 @@ namespace Dfe.Complete.Pages.Projects.DateHistory
 
             if (SignificantDate > previousDate)
             {
-                Reasons = new()
+                var reasons = new List<SignificantDateReason>();
+
+                reasons.Add(SignificantDateReason.IncomingTrust);
+                if (Project.Type == ProjectType.Transfer)
                 {
-                    SignificantDateReason.IncomingTrust,
-                    SignificantDateReason.School,
-                    SignificantDateReason.LocalAuthority,
-                    SignificantDateReason.Diocese,
-                    SignificantDateReason.Tupe,
-                    SignificantDateReason.Pensions,
-                    SignificantDateReason.Union,
-                    SignificantDateReason.NegativePress,
-                    SignificantDateReason.Governance,
-                    SignificantDateReason.Finance,
-                    SignificantDateReason.Viability,
-                    SignificantDateReason.Land,
-                    SignificantDateReason.Buildings,
-                    SignificantDateReason.LegalDocuments,
-                    SignificantDateReason.CorrectingAnError,
-                    SignificantDateReason.VoluntaryDeferral,
-                    SignificantDateReason.AdvisoryBoardConditions,
-                };
+                    reasons.Add(SignificantDateReason.OutgoingTrust);
+                }
+                reasons.Add(SignificantDateReason.School);
+                reasons.Add(SignificantDateReason.LocalAuthority);
+                reasons.Add(SignificantDateReason.Diocese);
+                reasons.Add(SignificantDateReason.Tupe);
+                reasons.Add(SignificantDateReason.Pensions);
+                reasons.Add(SignificantDateReason.Union);
+                reasons.Add(SignificantDateReason.NegativePress);
+                reasons.Add(SignificantDateReason.Governance);
+                reasons.Add(SignificantDateReason.Finance);
+                reasons.Add(SignificantDateReason.Viability);
+                reasons.Add(SignificantDateReason.Land);
+                reasons.Add(SignificantDateReason.Buildings);
+                reasons.Add(SignificantDateReason.LegalDocuments);
+                if (Project.Type == ProjectType.Transfer)
+                {
+                    reasons.Add(SignificantDateReason.CommercialTransferAgreement);
+                }
+                reasons.Add(SignificantDateReason.CorrectingAnError);
+                reasons.Add(SignificantDateReason.VoluntaryDeferral);
+                reasons.Add(SignificantDateReason.AdvisoryBoardConditions);
+
+                Reasons = reasons;
             }
             else
             {

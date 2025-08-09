@@ -47,10 +47,6 @@
                   <p>
                     You only need to enter a month and year as all schools @(isConversion ? "convert" : "transfer") on the first day of the month. For example, 3 2021
                   </p>
-                  @if (ErrorService.HasErrorForKey(provisionalSignificantDateField))
-                  {
-                    <govuk-date-input-error-message>@(ErrorService.GetErrorMessage(provisionalSignificantDateField))</govuk-date-input-error-message>
-                  }
                 </govuk-date-input-hint>
               </govuk-date-input-fieldset>
             </govuk-date-input>

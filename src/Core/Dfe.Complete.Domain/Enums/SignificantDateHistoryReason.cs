@@ -16,13 +16,13 @@ public enum SignificantDateReason
     [DisplayDescription("Correcting an error")]
     CorrectingAnError = 3,
     [Description("Diocese")]
-    [DisplayDescription("Advisory board conditions not met")]
+    [DisplayDescription("Diocese")]
     Diocese = 4,
     [Description("Finance")]
-    [DisplayDescription("Advisory board conditions not met")]
+    [DisplayDescription("Finance")]
     Finance = 5,
     [Description("Governance")]
-    [DisplayDescription("Advisory board conditions not met")]
+    [DisplayDescription("Governance")]
     Governance = 6,
     [Description("incoming_trust")]
     [DisplayDescription("Incoming trust")]
@@ -40,7 +40,7 @@ public enum SignificantDateReason
     [DisplayDescription("Local Authority")]
     LocalAuthority = 11,
     [Description("negative_press")]
-    [DisplayDescription("Negative press")]
+    [DisplayDescription("Negative press coverage")]
     NegativePress = 12,
     [Description("outgoing_trust")]
     [DisplayDescription("Outgoing trust")]
@@ -68,5 +68,8 @@ public enum SignificantDateReason
     Viability = 20,
     [Description("voluntary_deferral")]
     [DisplayDescription("Voluntary deferral")]
-    VoluntaryDeferral = 21
+    VoluntaryDeferral = 21,
+    [Description("commercial_transfer_agreement")]
+    [DisplayDescription("Commercial transfer agreement")]
+    CommercialTransferAgreement = 22
 }
