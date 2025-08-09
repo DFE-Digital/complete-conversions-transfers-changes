@@ -17,6 +17,8 @@ Security in case of vulnerabilities.
 ## Unreleased
 
 ### Added
+- Added Project Significant History Dates `/projects/{projectId}/date-history`
+- Added `/projects/{projectId}/external-contacts` page
 
 ### Changed
 
