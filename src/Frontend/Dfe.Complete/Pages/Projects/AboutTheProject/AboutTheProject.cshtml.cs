@@ -73,11 +73,11 @@ namespace Dfe.Complete.Pages.Projects.AboutTheProject
 
             if (Project.Type == ProjectType.Conversion)
             {
-                return $"{string.Format(RouteConstants.ProjectConversionEdit, ProjectId)}#{fragment}";
+                return $"{string.Format(RouteConstants.ProjectConversionEdit, ProjectId, fragment)}";
             }
             else
             {
-                return $"{string.Format(RouteConstants.ProjectTransferEdit, ProjectId)}#{fragment}";
+                return $"{string.Format(RouteConstants.ProjectTransferEdit, ProjectId, fragment)}";
             }
         }
 
