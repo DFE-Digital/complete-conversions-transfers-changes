@@ -45,9 +45,8 @@ namespace Dfe.Complete.Application.Tests.CommandHandlers.Project
             var projectId = new ProjectId(Guid.NewGuid());
             var project = new Domain.Entities.Project { Id = projectId, CreatedAt = DateTime.UtcNow };
 
-            mockProjectRepository
-                .FindAsync(Arg.Any<Expression<Func<Domain.Entities.Project, bool>>>(), Arg.Any<CancellationToken>())
-                .Returns(Task.FromResult(project));
+            var projectsQueryable = new[] { project }.AsQueryable().BuildMock();
+            mockProjectRepository.Query().Returns(projectsQueryable);
 
             mockProjectRepository.AddAsync(Arg.Do<Domain.Entities.Project>(proj => project = proj),
                     Arg.Any<CancellationToken>())
@@ -133,9 +132,8 @@ namespace Dfe.Complete.Application.Tests.CommandHandlers.Project
             var projectId = new ProjectId(Guid.NewGuid());
             var project = new Domain.Entities.Project { Id = projectId, CreatedAt = DateTime.UtcNow };
 
-            mockProjectRepository
-                .FindAsync(Arg.Any<Expression<Func<Domain.Entities.Project, bool>>>(), Arg.Any<CancellationToken>())
-                .Returns(Task.FromResult(project));
+            var projectsQueryable = new[] { project }.AsQueryable().BuildMock();
+            mockProjectRepository.Query().Returns(projectsQueryable);
 
             mockProjectRepository.AddAsync(Arg.Do<Domain.Entities.Project>(proj => project = proj),
                     Arg.Any<CancellationToken>())
@@ -209,9 +207,8 @@ namespace Dfe.Complete.Application.Tests.CommandHandlers.Project
             var projectId = new ProjectId(Guid.NewGuid());
             var project = new Domain.Entities.Project { Id = projectId, CreatedAt = DateTime.UtcNow };
 
-            mockProjectRepository
-                .FindAsync(Arg.Any<Expression<Func<Domain.Entities.Project, bool>>>(), Arg.Any<CancellationToken>())
-                .Returns(Task.FromResult(project));
+            var projectsQueryable = new[] { project }.AsQueryable().BuildMock();
+            mockProjectRepository.Query().Returns(projectsQueryable);
 
             mockProjectRepository.AddAsync(Arg.Do<Domain.Entities.Project>(proj => project = proj),
                     Arg.Any<CancellationToken>())
@@ -316,9 +313,8 @@ namespace Dfe.Complete.Application.Tests.CommandHandlers.Project
                 Notes = new List<Domain.Entities.Note> { note } // Existing note
             };
 
-            mockProjectRepository
-                .FindAsync(Arg.Any<Expression<Func<Domain.Entities.Project, bool>>>(), Arg.Any<CancellationToken>())
-                .Returns(Task.FromResult(project));
+            var projectsQueryable = new[] { project }.AsQueryable().BuildMock();
+            mockProjectRepository.Query().Returns(projectsQueryable);
 
             mockProjectRepository.AddAsync(Arg.Do<Domain.Entities.Project>(proj => project = proj),
                     Arg.Any<CancellationToken>())
@@ -394,9 +390,8 @@ namespace Dfe.Complete.Application.Tests.CommandHandlers.Project
             var projectId = new ProjectId(Guid.NewGuid());
             var project = new Domain.Entities.Project { Id = projectId, CreatedAt = DateTime.UtcNow };
 
-            mockProjectRepository
-                .FindAsync(Arg.Any<Expression<Func<Domain.Entities.Project, bool>>>(), Arg.Any<CancellationToken>())
-                .Returns(Task.FromResult(project));
+            var projectsQueryable = new[] { project }.AsQueryable().BuildMock();
+            mockProjectRepository.Query().Returns(projectsQueryable);
 
             mockProjectRepository.AddAsync(Arg.Do<Domain.Entities.Project>(proj => project = proj),
                     Arg.Any<CancellationToken>())

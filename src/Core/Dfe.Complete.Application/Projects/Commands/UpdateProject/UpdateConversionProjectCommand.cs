@@ -33,7 +33,6 @@ namespace Dfe.Complete.Application.Projects.Commands.UpdateProject
         public async Task Handle(UpdateConversionProjectCommand request, CancellationToken cancellationToken)
         {
             var project = await projectRepository.Query()
-            // TODO ideally expose a repository for this instead of leaking infra into application layer
                 .Include(p => p.Notes)
                 .FirstOrDefaultAsync(x => x.Id == request.ProjectId, cancellationToken);
             if (project == null)

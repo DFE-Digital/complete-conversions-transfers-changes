@@ -32,7 +32,6 @@ namespace Dfe.Complete.Application.Projects.Commands.UpdateProject
     public class UpdateTransferProjectCommandHandler(
         ICompleteRepository<Project> projectRepository,
         ICompleteRepository<ProjectGroup> projectGroupRepository,
-        // TODO figure out why this happens but not on conversion alternative
         ICompleteRepository<TransferTasksData> transferTaskDataRepository
     ) : IRequestHandler<UpdateTransferProjectCommand>
     {
