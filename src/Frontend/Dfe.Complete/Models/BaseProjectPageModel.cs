@@ -6,7 +6,6 @@ using Dfe.Complete.Application.Projects.Queries.GetConversionTasksData;
 using Dfe.Complete.Application.Projects.Queries.GetProject;
 using Dfe.Complete.Application.Projects.Queries.GetTransferTasksData;
 using Dfe.Complete.Application.Services.AcademiesApi;
-using Dfe.Complete.Domain.Entities;
 using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Domain.ValueObjects;
 using Dfe.Complete.Extensions;
@@ -135,17 +134,17 @@ public abstract class BaseProjectPageModel(ISender sender, ILogger logger) : Pag
     {
         if (Project.TasksDataId != null)
         {
-            if (Project?.Type == ProjectType.Transfer)
+            if (Project.Type == ProjectType.Transfer)
             {
-                var result = await sender.Send(new GetTransferTasksDataByIdQuery(Project.TasksDataId));
+                var result = await Sender.Send(new GetTransferTasksDataByIdQuery(Project.TasksDataId));
                 if (result.IsSuccess && result.Value != null)
                 {
                     TransferTaskData = result.Value;
                 }
             }
-            if (Project?.Type == ProjectType.Conversion)
+            if (Project.Type == ProjectType.Conversion)
             {
-                var result = await sender.Send(new GetConversionTasksDataByIdQuery(Project.TasksDataId));
+                var result = await Sender.Send(new GetConversionTasksDataByIdQuery(Project.TasksDataId));
                 if (result.IsSuccess && result.Value != null)
                 {
                     ConversionTaskData = result.Value;

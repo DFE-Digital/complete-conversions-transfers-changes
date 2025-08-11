@@ -11,8 +11,6 @@ using Dfe.Complete.Domain.ValueObjects;
 using Dfe.Complete.Extensions;
 using Microsoft.AspNetCore.Authorization;
 using DfE.CoreLibs.Utilities.Extensions;
-using Dfe.Complete.Application.Projects.Queries.GetConversionTasksData;
-using Dfe.Complete.Application.Projects.Queries.GetTransferTasksData;
 
 namespace Dfe.Complete.Pages.Projects.TaskList.Tasks;
 

@@ -122,22 +122,20 @@ namespace Dfe.Complete.Models
 
         private static TaskListStatus ProjectReceiveDeclarationOfExpenditureCertificateTaskStatus(ConversionTaskDataDto taskData)
         {
-            if((!taskData.ConversionGrantCheckVendorAccount.HasValue || taskData.ConversionGrantCheckVendorAccount == false) &&
-                (!taskData.ConversionGrantPaymentForm.HasValue || taskData.ConversionGrantPaymentForm == false) &&
-                (!taskData.ConversionGrantSendInformation.HasValue || taskData.ConversionGrantSendInformation == false) &&
-                (!taskData.ConversionGrantSharePaymentDate.HasValue || taskData.ConversionGrantSharePaymentDate == false) &&
-                (!taskData.ConversionGrantNotApplicable.HasValue || taskData.ConversionGrantNotApplicable == false))
+            if((!taskData.ReceiveGrantPaymentCertificateCheckCertificate.HasValue || taskData.ReceiveGrantPaymentCertificateCheckCertificate == false) &&
+                (!taskData.ReceiveGrantPaymentCertificateSaveCertificate.HasValue || taskData.ReceiveGrantPaymentCertificateSaveCertificate == false) &&
+                !taskData.ReceiveGrantPaymentCertificateDateReceived.HasValue)// && 
+                //(!taskData.ReceiveGrantPaymentCertificateNotApplicable.HasValue || taskData.ReceiveGrantPaymentCertificateNotApplicable == false))
             {
                 return TaskListStatus.NotStarted;
             }
-            if (taskData.ConversionGrantNotApplicable == true)
-            {
-                return TaskListStatus.NotApplicable;
-            }
-            return (taskData.ConversionGrantCheckVendorAccount == true &&
-                taskData.ConversionGrantPaymentForm == true &&
-                taskData.ConversionGrantSendInformation == true &&
-                taskData.ConversionGrantSharePaymentDate == true)
+            //if (taskData.ReceiveGrantPaymentCertificateNotApplicable == true)
+            //{
+            //    return TaskListStatus.NotApplicable;
+            //}
+            return (taskData.ReceiveGrantPaymentCertificateCheckCertificate == true &&
+                taskData.ReceiveGrantPaymentCertificateSaveCertificate == true &&
+                taskData.ReceiveGrantPaymentCertificateDateReceived.HasValue)
                 ? TaskListStatus.Completed : TaskListStatus.InProgress;
         }
 
@@ -169,7 +167,7 @@ namespace Dfe.Complete.Models
 
         private static TaskListStatus ShareTheInformationAboutOpeningTaskStatus(ConversionTaskDataDto taskData)
         {
-            if(!taskData.ShareInformationEmail.HasValue)
+            if(!taskData.ShareInformationEmail.HasValue || taskData.ShareInformationEmail == false)
             {
                 return TaskListStatus.NotStarted;
             }
