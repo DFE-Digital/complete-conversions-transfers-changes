@@ -39,7 +39,7 @@ namespace Dfe.Complete.Models
         public TaskListStatus RedactAndSendDocuments { get; set; }
         public TaskListStatus ProjectReceiveDeclarationOfExpenditureCertificate { get; set; } 
 
-        public static ConversionTaskListViewModel Create(ConversionTaskDataDto taskData, ProjectDto project, KeyContactsDto keyContacts)
+        public static ConversionTaskListViewModel Create(ConversionTaskDataDto taskData, ProjectDto project, KeyContactsDto? keyContacts)
         {
             return (taskData == null) ? new() : new ConversionTaskListViewModel
             {
@@ -78,7 +78,7 @@ namespace Dfe.Complete.Models
             };
         }
 
-        public static TaskListStatus HandoverWithRegionalDeliveryOfficerTaskStatus(ConversionTaskDataDto taskData)
+        private static TaskListStatus HandoverWithRegionalDeliveryOfficerTaskStatus(ConversionTaskDataDto taskData)
         {
             if ((!taskData.HandoverReview.HasValue || taskData.HandoverReview == false) &&
                 (!taskData.HandoverMeeting.HasValue || taskData.HandoverMeeting == false) &&
@@ -98,7 +98,7 @@ namespace Dfe.Complete.Models
                 ? TaskListStatus.Completed : TaskListStatus.InProgress;
         }
 
-        public static TaskListStatus ExternalStakeHolderKickoffTaskStatus(ConversionTaskDataDto taskData, ProjectDto project)
+        private static TaskListStatus ExternalStakeHolderKickoffTaskStatus(ConversionTaskDataDto taskData, ProjectDto project)
         { 
             if(taskData.StakeholderKickOffIntroductoryEmails == true &&
                  taskData.StakeholderKickOffLocalAuthorityProforma == true &&
@@ -124,15 +124,15 @@ namespace Dfe.Complete.Models
         {
             if((!taskData.ReceiveGrantPaymentCertificateCheckCertificate.HasValue || taskData.ReceiveGrantPaymentCertificateCheckCertificate == false) &&
                 (!taskData.ReceiveGrantPaymentCertificateSaveCertificate.HasValue || taskData.ReceiveGrantPaymentCertificateSaveCertificate == false) &&
-                !taskData.ReceiveGrantPaymentCertificateDateReceived.HasValue)// && 
-                //(!taskData.ReceiveGrantPaymentCertificateNotApplicable.HasValue || taskData.ReceiveGrantPaymentCertificateNotApplicable == false))
+                !taskData.ReceiveGrantPaymentCertificateDateReceived.HasValue &&
+                (!taskData.ReceiveGrantPaymentCertificateNotApplicable.HasValue || taskData.ReceiveGrantPaymentCertificateNotApplicable == false))
             {
                 return TaskListStatus.NotStarted;
             }
-            //if (taskData.ReceiveGrantPaymentCertificateNotApplicable == true)
-            //{
-            //    return TaskListStatus.NotApplicable;
-            //}
+            if (taskData.ReceiveGrantPaymentCertificateNotApplicable == true)
+            {
+                return TaskListStatus.NotApplicable;
+            }
             return (taskData.ReceiveGrantPaymentCertificateCheckCertificate == true &&
                 taskData.ReceiveGrantPaymentCertificateSaveCertificate == true &&
                 taskData.ReceiveGrantPaymentCertificateDateReceived.HasValue)
@@ -493,31 +493,27 @@ namespace Dfe.Complete.Models
                 ? TaskListStatus.Completed : TaskListStatus.InProgress;
         }
 
-        private static TaskListStatus ConfirmIncomingTrustCeoDetailsTaskStatus(KeyContactsDto keyContacts)
+        private static TaskListStatus ConfirmIncomingTrustCeoDetailsTaskStatus(KeyContactsDto? keyContacts)
         {
-            return keyContacts.IncomingTrustCeoId != null
+            return keyContacts?.IncomingTrustCeoId != null
                 ? TaskListStatus.Completed : TaskListStatus.NotStarted;
         }
 
-        private static TaskListStatus ConfirmChairOfGovernorsDetailsTaskStatus(KeyContactsDto keyContacts)
+        private static TaskListStatus ConfirmChairOfGovernorsDetailsTaskStatus(KeyContactsDto? keyContacts)
         {
-            return keyContacts.ChairOfGovernorsId != null
+            return keyContacts?.ChairOfGovernorsId != null
                  ? TaskListStatus.Completed : TaskListStatus.NotStarted;
         }
 
-        private static TaskListStatus ConfirmHeadTeacherDetailsTaskStatus(KeyContactsDto keyContacts)
+        private static TaskListStatus ConfirmHeadTeacherDetailsTaskStatus(KeyContactsDto? keyContacts)
         {
-            return keyContacts.HeadteacherId != null
+            return keyContacts?.HeadteacherId != null
                 ? TaskListStatus.Completed : TaskListStatus.NotStarted;
         }
         private static TaskListStatus ConfirmAcademyNameTaskStatus(ConversionTaskDataDto taskData)
         {
-            if(string.IsNullOrWhiteSpace(taskData.AcademyDetailsName))
-            {
-                return TaskListStatus.NotStarted;
-            }
-            return (!string.IsNullOrWhiteSpace(taskData.AcademyDetailsName))
-                ? TaskListStatus.Completed : TaskListStatus.InProgress;
+            return (string.IsNullOrWhiteSpace(taskData.AcademyDetailsName))
+                ? TaskListStatus.NotStarted : TaskListStatus.Completed;
         }
 
         private static TaskListStatus ConfirmAndProcessSponsoredSupportGrantTaskStatus(ConversionTaskDataDto taskData)

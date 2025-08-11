@@ -34,7 +34,7 @@ namespace Dfe.Complete.Models
         public TaskListStatus RedactAndSendDocuments { get; set; }
         public TaskListStatus DeclarationOfExpenditureCertificate { get; set; }  
 
-        public static TransferTaskListViewModel Create(TransferTaskDataDto taskData, ProjectDto project, KeyContactsDto keyContacts)
+        public static TransferTaskListViewModel Create(TransferTaskDataDto taskData, ProjectDto project, KeyContactsDto? keyContacts)
         {
             return (taskData == null) ? new() : new TransferTaskListViewModel
             {
@@ -69,7 +69,7 @@ namespace Dfe.Complete.Models
             };
         }
 
-        public static TaskListStatus HandoverWithRegionalDeliveryOfficerTaskStatus(TransferTaskDataDto taskData)
+        private static TaskListStatus HandoverWithRegionalDeliveryOfficerTaskStatus(TransferTaskDataDto taskData)
         {
             if ((!taskData.HandoverReview.HasValue || taskData.HandoverReview == false) &&
                 (!taskData.HandoverMeeting.HasValue || taskData.HandoverReview == false) &&
@@ -88,21 +88,21 @@ namespace Dfe.Complete.Models
                 taskData.HandoverNotes.Equals(true))
                 ? TaskListStatus.Completed : TaskListStatus.InProgress;
         }
-        public static TaskListStatus ExternalStakeHolderKickoffTaskStatus(TransferTaskDataDto taskData, ProjectDto project)
+        private static TaskListStatus ExternalStakeHolderKickoffTaskStatus(TransferTaskDataDto taskData, ProjectDto project)
         {
-            if (project.SignificantDateProvisional == false ||
-                (taskData.StakeholderKickOffIntroductoryEmails == true ||
-                   taskData.StakeholderKickOffSetupMeeting == true ||
-                   taskData.StakeholderKickOffMeeting == true))
-            {
-                return TaskListStatus.InProgress;
-            }
-
-            return (taskData.StakeholderKickOffIntroductoryEmails == true &&
+            if (taskData.StakeholderKickOffIntroductoryEmails == true &&
                  taskData.StakeholderKickOffSetupMeeting == true &&
                  taskData.StakeholderKickOffMeeting == true &&
                  project.SignificantDateProvisional == false)
-                 ? TaskListStatus.Completed : TaskListStatus.NotStarted;
+            {
+                return TaskListStatus.Completed;
+            }
+
+            return (project.SignificantDateProvisional == false ||
+                (taskData.StakeholderKickOffIntroductoryEmails == true ||
+                   taskData.StakeholderKickOffSetupMeeting == true ||
+                   taskData.StakeholderKickOffMeeting == true))
+                 ? TaskListStatus.InProgress : TaskListStatus.NotStarted;
         }
 
         private static TaskListStatus DeclarationOfExpenditureCertificateTaskStatus(TransferTaskDataDto taskData)
@@ -151,16 +151,17 @@ namespace Dfe.Complete.Models
 
         private static TaskListStatus ConfirmThisTransferHasAuthorityToProceedTaskStatus(TransferTaskDataDto taskData, ProjectDto project)
         {
-            if (project.AllConditionsMet == true ||
-                (taskData.ConditionsMetBaselineSheetApproved == true ||
-                taskData.ConditionsMetCheckAnyInformationChanged == true))
-            {
-                return TaskListStatus.InProgress;
-            }
-            return (taskData.ConditionsMetBaselineSheetApproved == true &&
+            if (taskData.ConditionsMetBaselineSheetApproved == true &&
                  taskData.ConditionsMetCheckAnyInformationChanged == true &&
                  project.AllConditionsMet == false)
-                 ? TaskListStatus.Completed : TaskListStatus.NotStarted;
+            {
+                return TaskListStatus.Completed;
+            }
+               
+            return (project.AllConditionsMet == true ||
+                (taskData.ConditionsMetBaselineSheetApproved == true ||
+                taskData.ConditionsMetCheckAnyInformationChanged == true))
+                 ? TaskListStatus.InProgress : TaskListStatus.NotStarted;
         }
 
         private static TaskListStatus ConfirmIncomingTrustHasCompletedAllActionsTaskStatus(TransferTaskDataDto taskData)
@@ -378,7 +379,7 @@ namespace Dfe.Complete.Models
                 (!taskData.DeedOfNovationAndVariationSignedOutgoingTrust.HasValue || taskData.DeedOfNovationAndVariationSignedOutgoingTrust == false) &&
                 (!taskData.DeedOfNovationAndVariationSignedIncomingTrust.HasValue || taskData.DeedOfNovationAndVariationSignedIncomingTrust == false) &&
                 (!taskData.DeedOfNovationAndVariationSaved.HasValue || taskData.DeedOfNovationAndVariationSaved == false) &&
-                (!taskData.DeedOfNovationAndVariationSignedSecretaryState.HasValue && !taskData.DeedOfNovationAndVariationSignedSecretaryState.HasValue))
+                (!taskData.DeedOfNovationAndVariationSignedSecretaryState.HasValue || taskData.DeedOfNovationAndVariationSignedSecretaryState == false))
             {
                 return TaskListStatus.NotStarted;
             }
@@ -502,14 +503,14 @@ namespace Dfe.Complete.Models
                 ? TaskListStatus.Completed : TaskListStatus.InProgress;
         }
 
-        private static TaskListStatus ConfirmOutgoingTrustCeoDetailsTaskStatus(KeyContactsDto keyContacts)
+        private static TaskListStatus ConfirmOutgoingTrustCeoDetailsTaskStatus(KeyContactsDto? keyContacts)
         {
-            return keyContacts.OutgoingTrustCeoId != null
+            return keyContacts?.OutgoingTrustCeoId != null
                 ? TaskListStatus.Completed : TaskListStatus.NotStarted;
         }
-        private static TaskListStatus ConfirmIncomingTrustCeoDetailsTaskStatus(KeyContactsDto keyContacts)
+        private static TaskListStatus ConfirmIncomingTrustCeoDetailsTaskStatus(KeyContactsDto? keyContacts)
         {
-            return keyContacts.IncomingTrustCeoId != null
+            return keyContacts?.IncomingTrustCeoId != null
                 ? TaskListStatus.Completed : TaskListStatus.NotStarted;
         }
         private static TaskListStatus ConfirmMainContactTaskStatus(ProjectDto project)
@@ -518,20 +519,16 @@ namespace Dfe.Complete.Models
                ? TaskListStatus.Completed : TaskListStatus.NotStarted;
         }
 
-        private static TaskListStatus ConfirmHeadTeacherDetailsTaskStatus(KeyContactsDto keyContacts)
+        private static TaskListStatus ConfirmHeadTeacherDetailsTaskStatus(KeyContactsDto? keyContacts)
         {
-            return keyContacts.HeadteacherId != null
+            return keyContacts?.HeadteacherId != null
                 ? TaskListStatus.Completed : TaskListStatus.NotStarted;
         }
 
         private static TaskListStatus ConfirmAcademyRiskProtectionArrangementsTaskStatus(TransferTaskDataDto taskData)
         {
-            if(!taskData.RpaPolicyConfirm.HasValue)
-            {
-                return TaskListStatus.NotStarted;
-            }
             return (taskData.RpaPolicyConfirm == true) 
-                ? TaskListStatus.Completed : TaskListStatus.InProgress;
+                ? TaskListStatus.Completed : TaskListStatus.NotStarted;
         }
     }
 }

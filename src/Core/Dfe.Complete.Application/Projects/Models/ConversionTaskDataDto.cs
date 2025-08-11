@@ -228,6 +228,8 @@ namespace Dfe.Complete.Application.Projects.Models
         public DateOnly? ReceiveGrantPaymentCertificateDateReceived { get; set; }
 
         public bool? ReceiveGrantPaymentCertificateCheckCertificate { get; set; }
+        
+        public bool? ReceiveGrantPaymentCertificateNotApplicable { get; set; }
 
         public DateOnly? ConfirmDateAcademyOpenedDateOpened { get; set; }
 
