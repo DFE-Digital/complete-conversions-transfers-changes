@@ -40,10 +40,12 @@
             <govuk-summary-list-row>
                 <govuk-summary-list-row-key>Group reference number</govuk-summary-list-row-key>
                 <govuk-summary-list-row-value>@(Model.ProjectGroup != null ? @Model.ProjectGroup.GroupIdentifier : "Not grouped")</govuk-summary-list-row-value>
-                <govuk-summary-list-row-actions>
-                    @* <govuk-summary-list-row-action href="@(string.Format(RouteConstants.Project, Model.ProjectId))" visually-hidden-text="Change project group">Change</govuk-summary-list-row-action> *@
-                    <govuk-summary-list-row-action href="@Model.GetChangeLinkUrl("group-reference-number")" visually-hidden-text="Change project group">Change</govuk-summary-list-row-action>
-                </govuk-summary-list-row-actions>
+                @if(Model.HasEditAccess()) {
+                    <govuk-summary-list-row-actions>
+                        @* <govuk-summary-list-row-action href="@(string.Format(RouteConstants.Project, Model.ProjectId))" visually-hidden-text="Change project group">Change</govuk-summary-list-row-action> *@
+                        <govuk-summary-list-row-action href="@Model.GetChangeLinkUrl("group-reference-number")" visually-hidden-text="Change project group">Change</govuk-summary-list-row-action>
+                    </govuk-summary-list-row-actions>
+                }
             </govuk-summary-list-row>
         </govuk-summary-list>
     </div>
