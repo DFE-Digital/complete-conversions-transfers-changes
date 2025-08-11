@@ -29,6 +29,17 @@ namespace Dfe.Complete.Pages.Projects.ProjectDetails.Conversion
             if (Project.Type != Domain.Enums.ProjectType.Conversion)
                 throw new NotFoundException($"Project {ProjectId} is not a conversion project.");
 
+            if (!UserHasEditAccess())
+            {
+                TempData.SetNotification(
+                    NotificationType.Error,
+                    "Important",
+                    "You are not authorised to perform this action."
+                );
+
+                return Redirect(string.Format(RouteConstants.ProjectAbout, ProjectId));
+            }
+
             DirectiveAcademyOrder = Project.DirectiveAcademyOrder ?? false;
 
             return Page();

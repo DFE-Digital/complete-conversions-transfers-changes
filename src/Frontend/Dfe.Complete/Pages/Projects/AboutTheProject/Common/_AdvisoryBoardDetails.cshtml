@@ -14,7 +14,7 @@
                 <govuk-summary-list-row-value>
                     @Model.Project.AdvisoryBoardDate?.ToDateString()
                 </govuk-summary-list-row-value>
-                @if(Model.HasEditAccess()) {
+                @if(Model.UserHasEditAccess()) {
                     <govuk-summary-list-row-actions>
                         <govuk-summary-list-row-action href="@Model.GetChangeLinkUrl("advisory-board")" visually-hidden-text="Date of advisory board">Change</govuk-summary-list-row-action>
                     </govuk-summary-list-row-actions>
@@ -31,7 +31,7 @@
                         }
                     }
                 </govuk-summary-list-row-value>
-                @if(Model.HasEditAccess()) {
+                @if(Model.UserHasEditAccess()) {
                     <govuk-summary-list-row-actions>
                         <govuk-summary-list-row-action href="@Model.GetChangeLinkUrl("advisory-board")" visually-hidden-text="Conditions from advisory board">Change</govuk-summary-list-row-action>
                     </govuk-summary-list-row-actions>

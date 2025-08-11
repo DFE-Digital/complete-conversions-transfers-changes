@@ -61,7 +61,7 @@
                         <govuk-summary-list-row-value>
                             @(Model.Project.DirectiveAcademyOrder != null && Model.Project.DirectiveAcademyOrder.Value ? "Yes" : "No")
                         </govuk-summary-list-row-value>
-                        @if(Model.HasEditAccess()) {
+                        @if(Model.UserHasEditAccess()) {
                             <govuk-summary-list-row-actions>
                                 <govuk-summary-list-row-action href="@Model.GetChangeLinkUrl("directive-academy-order")" visually-hidden-text="Has a directive academy order been issued?">Change</govuk-summary-list-row-action>
                             </govuk-summary-list-row-actions>
@@ -72,7 +72,7 @@
                         <govuk-summary-list-row-value>
                             @(Model.Project.TwoRequiresImprovement != null && Model.Project.TwoRequiresImprovement.Value ? "Yes" : "No")
                         </govuk-summary-list-row-value>
-                        @if(Model.HasEditAccess()) {
+                        @if(Model.UserHasEditAccess()) {
                             <govuk-summary-list-row-actions>
                                 <govuk-summary-list-row-action href="@Model.GetChangeLinkUrl("two-requires-improvement")" visually-hidden-text="Is this conversion due to intervention following 2RI?">Change</govuk-summary-list-row-action>
                             </govuk-summary-list-row-actions>
@@ -149,7 +149,7 @@
                         <govuk-summary-list-row-value>
                             <a class="govuk-link" href="@Model.Project.EstablishmentSharepointLink" target="_blank">View the school SharePoint folder (opens in new tab)</a>
                         </govuk-summary-list-row-value>
-                        @if(Model.HasEditAccess()) {
+                        @if(Model.UserHasEditAccess()) {
                             <govuk-summary-list-row-actions>
                                 <govuk-summary-list-row-action href="@Model.GetChangeLinkUrl("sharepoint-folder-links")" visually-hidden-text="School sharePoint folder">Change</govuk-summary-list-row-action>
                             </govuk-summary-list-row-actions>
@@ -211,7 +211,7 @@
                             <govuk-summary-list-row-value>
                                 <a class="govuk-link" href="@Model.Project.EstablishmentSharepointLink" target="_blank">View the academy SharePoint folder (opens in new tab)</a>
                             </govuk-summary-list-row-value>
-                            @if(Model.HasEditAccess()) {
+                            @if(Model.UserHasEditAccess()) {
                                 <govuk-summary-list-row-actions>
                                     <govuk-summary-list-row-action href="@Model.GetChangeLinkUrl("sharepoint-folder-links")" visually-hidden-text="Academy sharePoint folder">Change</govuk-summary-list-row-action>
                                 </govuk-summary-list-row-actions>

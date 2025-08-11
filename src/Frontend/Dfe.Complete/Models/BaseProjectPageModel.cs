@@ -3,6 +3,7 @@ using Dfe.Complete.Application.Projects.Models;
 using Dfe.Complete.Application.Projects.Queries.GetProject;
 using Dfe.Complete.Application.Services.AcademiesApi;
 using Dfe.Complete.Domain.Enums;
+using Dfe.Complete.Domain.Extensions;
 using Dfe.Complete.Domain.ValueObjects;
 using Dfe.Complete.Extensions;
 using Dfe.Complete.Utils;
@@ -29,6 +30,9 @@ public abstract class BaseProjectPageModel(ISender sender, ILogger logger) : Pag
     public TrustDto? OutgoingTrust { get; set; }
 
     public ProjectTeam CurrentUserTeam { get; set; }
+
+    public bool UserHasEditAccess() =>
+        User.GetUserId() == Project.AssignedToId || CurrentUserTeam.TeamIsServiceSupport();
 
     public async Task UpdateCurrentProject()
     {

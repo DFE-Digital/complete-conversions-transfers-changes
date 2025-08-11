@@ -61,7 +61,7 @@
                         <govuk-summary-list-row-value>
                             @(Model.Project.TwoRequiresImprovement != null && Model.Project.TwoRequiresImprovement.Value ? "Yes" : "No")
                         </govuk-summary-list-row-value>
-                        @if(Model.HasEditAccess()) {
+                        @if(Model.UserHasEditAccess()) {
                             <govuk-summary-list-row-actions>
                                 <govuk-summary-list-row-action href="@Model.GetChangeLinkUrl("two-requires-improvement")" visually-hidden-text="Is this transfer due to 2RI?">Change</govuk-summary-list-row-action>
                             </govuk-summary-list-row-actions>
@@ -72,7 +72,7 @@
                         <govuk-summary-list-row-value>
                             @(Model.TransferTaskData?.InadequateOfsted != null && Model.TransferTaskData.InadequateOfsted.Value ? "Yes" : "No")
                         </govuk-summary-list-row-value>
-                        @if(Model.HasEditAccess()) {
+                        @if(Model.UserHasEditAccess()) {
                             <govuk-summary-list-row-actions>
                                 <govuk-summary-list-row-action href="@Model.GetChangeLinkUrl("inadequate-ofsted")" visually-hidden-text="Is this transfer due to an inadequate Ofsted rating?">Change</govuk-summary-list-row-action>
                             </govuk-summary-list-row-actions>
@@ -83,7 +83,7 @@
                         <govuk-summary-list-row-value>
                             @(Model.TransferTaskData?.FinancialSafeguardingGovernanceIssues != null && Model.TransferTaskData.FinancialSafeguardingGovernanceIssues.Value ? "Yes" : "No")
                         </govuk-summary-list-row-value>
-                        @if(Model.HasEditAccess()) {
+                        @if(Model.UserHasEditAccess()) {
                             <govuk-summary-list-row-actions>
                                 <govuk-summary-list-row-action href="@Model.GetChangeLinkUrl("financial-safeguarding-governance-issues")" visually-hidden-text="Is this transfer due to financial, safeguarding or governance issues?">Change</govuk-summary-list-row-action>
                             </govuk-summary-list-row-actions>
@@ -141,7 +141,7 @@
                             <govuk-summary-list-row-value>
                                 <a class="govuk-link" href="@Model.Project.EstablishmentSharepointLink" target="_blank">View the academy SharePoint folder (opens in new tab)</a>
                             </govuk-summary-list-row-value>
-                            @if(Model.HasEditAccess()) {
+                            @if(Model.UserHasEditAccess()) {
                                 <govuk-summary-list-row-actions>
                                     <govuk-summary-list-row-action href="@Model.GetChangeLinkUrl("sharepoint-folder-links")" visually-hidden-text="Academy sharePoint folder">Change</govuk-summary-list-row-action>
                                 </govuk-summary-list-row-actions>
@@ -180,7 +180,7 @@
                     <govuk-summary-list-row>
                         <govuk-summary-list-row-key>UKPRN (UK provider reference number)</govuk-summary-list-row-key>
                         <govuk-summary-list-row-value>@Model.Project.OutgoingTrustUkprn</govuk-summary-list-row-value>
-                        @if(Model.HasEditAccess()) {
+                        @if(Model.UserHasEditAccess()) {
                             <govuk-summary-list-row-actions>
                                 <govuk-summary-list-row-action href="@Model.GetChangeLinkUrl("outgoing-trust-ukprn")" visually-hidden-text="UK provider reference number">Change</govuk-summary-list-row-action>
                             </govuk-summary-list-row-actions>
@@ -223,7 +223,7 @@
                         <govuk-summary-list-row-value>
                             <a class="govuk-link" href="@Model.Project.OutgoingTrustSharepointLink" target="_blank">View the trust SharePoint folder (opens in new tab)</a>
                         </govuk-summary-list-row-value>
-                        @if(Model.HasEditAccess()) {
+                        @if(Model.UserHasEditAccess()) {
                             <govuk-summary-list-row-actions>
                                 <govuk-summary-list-row-action href="@Model.GetChangeLinkUrl("sharepoint-folder-links")" visually-hidden-text="Trust sharePoint folder">Change</govuk-summary-list-row-action>
                             </govuk-summary-list-row-actions>
@@ -239,7 +239,7 @@
                         }
                         <govuk-summary-list-row-key>Will the outgoing trust close once this transfer is completed?</govuk-summary-list-row-key>
                         <govuk-summary-list-row-value>@toClose</govuk-summary-list-row-value>
-                        @if(Model.HasEditAccess()) {
+                        @if(Model.UserHasEditAccess()) {
                             <govuk-summary-list-row-actions>
                                 <govuk-summary-list-row-action href="@Model.GetChangeLinkUrl("outgoing-trust-to-close")" visually-hidden-text="Will the outgoing trust close once this transfer is completed">Change</govuk-summary-list-row-action>
                             </govuk-summary-list-row-actions>

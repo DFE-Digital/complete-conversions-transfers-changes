@@ -74,6 +74,17 @@ namespace Dfe.Complete.Pages.Projects.ProjectDetails.Transfer
             if (Project.Type != Domain.Enums.ProjectType.Transfer)
                 throw new NotFoundException($"Project {ProjectId} is not a transfer project.");
 
+            if (!UserHasEditAccess())
+            {
+                TempData.SetNotification(
+                    NotificationType.Error,
+                    "Important",
+                    "You are not authorised to perform this action."
+                );
+
+                return Redirect(string.Format(RouteConstants.ProjectAbout, ProjectId));
+            }
+
             EstablishmentName = Establishment?.Name;
 
             OutgoingTrustUkprn = Project.OutgoingTrustUkprn?.ToString();

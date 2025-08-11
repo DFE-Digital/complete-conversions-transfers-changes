@@ -4,8 +4,6 @@ using Dfe.Complete.Application.Projects.Queries.GetProject;
 using Dfe.Complete.Application.Projects.Queries.GetTransferTasksData;
 using Dfe.Complete.Constants;
 using Dfe.Complete.Domain.Enums;
-using Dfe.Complete.Domain.Extensions;
-using Dfe.Complete.Extensions;
 using Dfe.Complete.Pages.Projects.ProjectView;
 using Dfe.Complete.Utils;
 using MediatR;
@@ -68,9 +66,6 @@ namespace Dfe.Complete.Pages.Projects.AboutTheProject
                 ? $"{string.Format(RouteConstants.ProjectConversionEdit, ProjectId, fragment)}"
                 : $"{string.Format(RouteConstants.ProjectTransferEdit, ProjectId, fragment)}";
         }
-
-        public bool HasEditAccess() =>
-            User.GetUserId() == Project.AssignedToId || CurrentUserTeam.TeamIsServiceSupport();
 
         public override async Task<IActionResult> OnGetAsync()
         {
