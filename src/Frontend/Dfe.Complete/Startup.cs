@@ -1,5 +1,4 @@
 using Azure.Identity;
-using Dfe.Complete.Application.Common.Mappers;
 using Dfe.Complete.Configuration;
 using DataProtectionOptions = Dfe.Complete.Configuration.DataProtectionOptions;
 using Dfe.Complete.Infrastructure;
@@ -23,6 +22,7 @@ using Dfe.Complete.Logging.Middleware;
 using DfE.CoreLibs.Security.Antiforgery;
 using Dfe.Complete.Validators;
 using DfE.CoreLibs.Security.Enums;
+using Dfe.Complete.Application.Mappers;
 
 namespace Dfe.Complete;
 
@@ -69,6 +69,7 @@ public class Startup
             });
 
         ConfigureCustomAntiforgery(services);
+        SetupApplicationInsights(services);
 
         services.AddControllersWithViews()
            .AddMicrosoftIdentityUI()
@@ -76,18 +77,16 @@ public class Startup
            {
                opts.CheckerGroups =
                [
-                   new()
-                   {
-                       TypeNames = [
-                           typeof(HasHeaderKeyExistsInRequestValidator).FullName!,
-                           typeof(CypressRequestChecker).FullName!
-                       ],
+                   new() {
+                       TypeNames   = [nameof(HasHeaderKeyExistsInRequestValidator), nameof(CypressRequestChecker)],
                        CheckerOperator = CheckerOperator.Or
                    }
                ];
            });
         services.AddControllers().AddMicrosoftIdentityUI();
         SetupDataProtection(services);
+
+        services.AddApplicationInsightsTelemetry(Configuration);
 
         services.AddCompleteClientProject(Configuration);
 
@@ -115,8 +114,8 @@ public class Startup
         authenticationBuilder.AddMicrosoftIdentityWebApp(Configuration);
 
         ConfigureCookies(services);
-        var appInsightsCnnStr = Configuration.GetSection("ApplicationInsights")?["ConnectionString"];
-        services.AddApplicationInsightsTelemetry(options => options.ConnectionString = appInsightsCnnStr);
+
+        services.AddApplicationInsightsTelemetry(Configuration);
 
         System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
 
@@ -198,6 +197,8 @@ public class Startup
                }
            });
     }
+
+    private void SetupApplicationInsights(IServiceCollection services) => services.Configure<ApplicationInsightsOptions>(Configuration.GetSection("ApplicationInsights"));
 
     private static void ConfigureCustomAntiforgery(IServiceCollection services)
     {

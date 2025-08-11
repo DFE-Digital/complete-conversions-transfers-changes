@@ -21,7 +21,7 @@ namespace Dfe.Complete.Api.Controllers
         /// <param name="cancellationToken">The cancellation token.</param>
         [Authorize(Policy = "CanReadWrite")]
         [HttpPost]
-        [Route("LocalAuthority/Create")]
+        [Route("LocalAuthority")]
         [SwaggerResponse(201, "Local authority created successfully.", typeof(Guid))]
         [SwaggerResponse(400, "Invalid request data.")]
         public async Task<IActionResult> CreateLocalAuthorityAsync([FromBody] CreateLocalAuthorityCommand request, CancellationToken cancellationToken)
@@ -53,7 +53,7 @@ namespace Dfe.Complete.Api.Controllers
         /// <param name="cancellationToken">The cancellation token.</param>
         [Authorize(Policy = "CanRead")]
         [HttpGet]
-        [Route("LocalAuthority/details")]
+        [Route("LocalAuthority")]
         [SwaggerResponse(200, "Local authority details.", typeof(LocalAuthorityDetailsModel))]
         [SwaggerResponse(400, "Invalid request data.")]
         public async Task<IActionResult> GetLocalAuthorityDetailsAsync([FromQuery] GetLocalAuthorityDetailsQuery request, CancellationToken cancellationToken)
@@ -69,7 +69,7 @@ namespace Dfe.Complete.Api.Controllers
         /// <param name="cancellationToken">The cancellation token.</param>
         [Authorize(Policy = "CanReadWriteUpdate")]
         [HttpPatch]
-        [Route("LocalAuthority/Delete")]
+        [Route("LocalAuthority")]
         [SwaggerResponse(204, "local authoirty details updated successfully.")]
         [SwaggerResponse(400, "Invalid request data.")]
         public async Task<IActionResult> UpdateLocalAuthorityDetailsAsync([FromBody] UpdateLocalAuthorityCommand request, CancellationToken cancellationToken)
@@ -85,6 +85,7 @@ namespace Dfe.Complete.Api.Controllers
         /// <param name="cancellationToken">The cancellation token.</param>
         [HttpDelete]
         [Authorize(Policy = "CanReadWriteUpdateDelete")]
+        [Route("LocalAuthority")]
         [SwaggerResponse(204, "local authority deleted successfully.")]
         [SwaggerResponse(400, "Invalid request data.")]
         public async Task<IActionResult> RemoveLocalAuthorityAsync(DeleteLocalAuthorityCommand request, CancellationToken cancellationToken)

@@ -4,12 +4,6 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/). To see an example from a mature product in the program [see the Complete products changelog that follows the same methodology](https://github.com/DFE-Digital/dfe-complete-conversions-transfers-and-changes/blob/main/CHANGELOG.md).
 
-
-## Notes
-### Releases
- - Unreleased: Developed and tested, has not yet deployed to prod
- - [TEST]/[PROD]: Feature/fix is considered ready for dual running in this environment
-
 ### Statuses
 Added for new features.  
 Changed for changes in existing functionality.  
@@ -23,12 +17,49 @@ Security in case of vulnerabilities.
 ## Unreleased
 
 ### Added
+- Added Project Significant History Dates `/projects/{projectId}/date-history`
+- Added `/projects/{projectId}/external-contacts` page
 
 ### Changed
 
 ### Fixed
 
-See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-07-22.558...main) for everything awaiting release
+See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-08-05.608...main) for everything awaiting release
+
+---
+
+## [1.11.0](https://github.com/DFE-Digital/complete-conversions-transfers-changes/releases/tag/production-2025-08-05.608) - 2025-08-05
+
+### Added
+- Add handover page  (`/projects/all/handover`)
+- Add handover project check page  (`/projects/all/handover/{projectId}/check`)
+- Add handover project add detail & confirmation page  (`/projects/all/handover/{projectId}/new`)
+- Added `App Insight` for tracking users clicks and page views
+
+### Changed
+- Restructured the task page to be more generic
+- Update CRUD endpoints to account for TaskIdentifier
+
+### Fixed
+- Fixed cookies page's URL by including query string.
+- Fixed `Local Authority` service support endpoints
+- Fixed all trust list page by filtering to incoming ukprn instead of MAT and non MAT projects
+- Fixed _ProjectLayout to correctly show the unassigned banner based on whether the user is service support or assigned to the project
+
+See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-07-24.577...production-2025-08-05.608) for everything in the release
+
+---
+
+## [1.10.2](https://github.com/DFE-Digital/complete-conversions-transfers-changes/releases/tag/production-2025-07-24.577) - 2025-07-24
+
+### Added
+
+### Changed
+
+### Fixed
+- HOTFIX: antiforgery issue when accepting cookies from Ruby app
+
+See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-07-22.558...production-2025-07-24.577) for everything in the release
 
 ---
 
@@ -87,7 +118,6 @@ See the [full commit history](https://github.com/DFE-Digital/complete-conversion
 - Service support Create Academy URN (/projects/{projectId}/academy-urn) 
 - Added `Statistics` page
 - Added Project Significant History Dates `/projects/{projectId}/date-history`
-
 
 ### Changed  
 

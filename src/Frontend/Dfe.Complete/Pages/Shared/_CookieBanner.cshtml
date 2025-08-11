@@ -2,6 +2,7 @@
     var isCookiesPage = Context.Request.Path.Value?.Contains("/cookies") ?? false;
     var isPost = string.Equals(Context.Request.Method, "POST", StringComparison.OrdinalIgnoreCase);
     var showBanner = !(isCookiesPage && isPost) && !Context.Request.Cookies.ContainsKey("ACCEPT_OPTIONAL_COOKIES");
+    var returnUrl = Context.Request.Path + Context.Request.QueryString;
 }
 
 @if (showBanner)
@@ -22,16 +23,16 @@
       <div class="govuk-button-group">
         <a role="button" draggable="false" data-testid="cookie-banner-accept"
            class="govuk-button" asp-page="@Links.Public.CookiePreferences.Page"
-           asp-route-consent="true" asp-route-returnUrl="@Context.Request.Path">
+                   asp-route-consent="true" asp-route-returnUrl="@returnUrl">
           Accept optional cookies
         </a>
         <a role="button" draggable="false" data-testid="cookie-banner-reject"
            class="govuk-button" asp-page="@Links.Public.CookiePreferences.Page"
-           asp-route-consent="false" asp-route-returnUrl="@Context.Request.Path">
+                   asp-route-consent="false" asp-route-returnUrl="@returnUrl">
           Reject optional cookies
         </a>
         <a class="govuk-link" data-testid="cookie-banner-link-2"
-           asp-page="@Links.Public.CookiePreferences.Page" asp-route-returnUrl="@Context.Request.Path">
+                   asp-page="@Links.Public.CookiePreferences.Page" asp-route-returnUrl="@returnUrl">
           View cookies
         </a>
       </div>

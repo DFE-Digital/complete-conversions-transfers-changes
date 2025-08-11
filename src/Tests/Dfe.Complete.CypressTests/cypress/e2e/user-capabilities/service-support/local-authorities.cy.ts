@@ -7,6 +7,8 @@ import localAuthorityPage from "cypress/pages/service-support/localAuthorityPage
 import editLocalAuthorityPage from "cypress/pages/service-support/editLocalAuthorityPage";
 import deleteLocalAuthorityPage from "cypress/pages/service-support/deleteLocalAuthorityPage";
 import { Logger } from "cypress/common/logger";
+import localAuthorityApi from "cypress/api/localAuthorityApi";
+import { LocalAuthorityBuilder } from "cypress/api/localAuthorityBuilder";
 
 const localAuthority = {
     name: "Test Local Authority",
@@ -20,9 +22,14 @@ const localAuthority = {
     dcsEmail: "test@email.com",
     dcsPhone: "01234567890",
 };
+const localAuthorityToEdit = LocalAuthorityBuilder.createLocalAuthorityRequest({ name: "Test Local Auth to edit" });
+const localAuthorityToDelete = LocalAuthorityBuilder.createLocalAuthorityRequest({
+    name: "Test Local Auth to delete",
+    code: "125",
+});
 const localAuthorityEdited = {
     name: "Test Local Authority - Edited",
-    code: "123-edited",
+    code: "124-edited",
     addressLines: ["Test Address Line 1 - Edited", "Test Address Line 2 - Edited", "Test Address Line 3 - Edited"],
     town: "Test Town - Edited",
     county: "Test County - Edited",
@@ -32,18 +39,25 @@ const localAuthorityEdited = {
     dcsEmail: "edited-test@email.com",
     dcsPhone: "01234567891",
 };
-const preExistingCode = "301";
 
-// bug 224061
-describe.skip("Service support user - Local authorities: ", () => {
+describe("Service support user - Local authorities: ", () => {
+    before(() => {
+        localAuthorityApi.createLocalAuthority(localAuthorityToEdit);
+        localAuthorityApi.createLocalAuthority(localAuthorityToDelete);
+    });
+
     beforeEach(() => {
         cy.login(serviceSupportUser);
         cy.acceptCookies();
         cy.visit("/service-support/local-authorities");
     });
 
-    // NOTE: these tests are currently chained, in that they depend on each other.
-    // this is not preferred practice, but there is currently no way to manipulate this data
+    after(() => {
+        localAuthorityApi.deleteLocalAuthority(localAuthorityToEdit.id.value, localAuthorityToEdit.contactId.value);
+        localAuthorityApi.deleteLocalAuthority(localAuthorityToDelete.id.value, localAuthorityToDelete.contactId.value);
+        localAuthorityApi.deleteLocalAuthorityByName(localAuthority.name);
+    });
+
     it("Should be able to add a new local authority", () => {
         cy.visit("/");
         Logger.log("Navigate to Local Authorities page");
@@ -89,26 +103,26 @@ describe.skip("Service support user - Local authorities: ", () => {
         Logger.log("View local authority details");
         localAuthoritiesPage
             .goToLastPage()
-            .goToPreviousPageUntilFieldIsVisible(localAuthority.name)
-            .viewLocalAuthorityDetails(localAuthority.name);
+            .goToPreviousPageUntilFieldIsVisible(localAuthorityToEdit.name)
+            .viewLocalAuthorityDetails(localAuthorityToEdit.name);
 
         Logger.log("Edit local authority");
         localAuthorityPage.edit();
 
         Logger.log("Verify current local authority details on edit page");
         editLocalAuthorityPage
-            .containsHeading(`Change details for ${localAuthority.name}`)
-            .hasCode(localAuthority.code)
-            .hasAddressLine1(localAuthority.addressLines[0])
-            .hasAddressLine2(localAuthority.addressLines[1])
-            .hasAddressLine3(localAuthority.addressLines[2])
-            .hasTown(localAuthority.town)
-            .hasCounty(localAuthority.county)
-            .hasPostcode(localAuthority.postcode)
-            .hasDCSPosition(localAuthority.dcsPosition)
-            .hasDCSName(localAuthority.dcsName)
-            .hasDCSEmail(localAuthority.dcsEmail)
-            .hasDCSPhone(localAuthority.dcsPhone);
+            .containsHeading(`Change details for ${localAuthorityToEdit.name}`)
+            .hasCode(localAuthorityToEdit.code)
+            .hasAddressLine1(localAuthorityToEdit.address1)
+            .hasAddressLine2(localAuthorityToEdit.address2)
+            .hasAddressLine3(localAuthorityToEdit.address3)
+            .hasTown(localAuthorityToEdit.addressTown)
+            .hasCounty(localAuthorityToEdit.addressCounty)
+            .hasPostcode(localAuthorityToEdit.addressPostcode)
+            .hasDCSPosition(localAuthorityToEdit.title)
+            .hasDCSName(localAuthorityToEdit.contactName)
+            .hasDCSEmail(localAuthorityToEdit.email)
+            .hasDCSPhone(localAuthorityToEdit.phone);
 
         Logger.log("Edit local authority details and save");
         editLocalAuthorityPage
@@ -128,7 +142,7 @@ describe.skip("Service support user - Local authorities: ", () => {
         Logger.log("Verify local authority was updated successfully with correct details");
         localAuthorityPage
             .detailsUpdatedSuccessMessage()
-            .containsHeading(localAuthority.name)
+            .containsHeading(localAuthorityToEdit.name)
             .hasCode(localAuthorityEdited.code)
             .hasAddressLines(localAuthorityEdited.addressLines)
             .hasTown(localAuthorityEdited.town)
@@ -140,12 +154,12 @@ describe.skip("Service support user - Local authorities: ", () => {
             .hasDCSPhone(localAuthorityEdited.dcsPhone);
     });
 
-    it("Should show validation errors when trying to edit a local authority with blank fields", () => {
+    it("Should show validation errors when trying to edit a local authority with blank fields or duplicate code", () => {
         Logger.log("View local authority details");
         localAuthoritiesPage
             .goToLastPage()
-            .goToPreviousPageUntilFieldIsVisible(localAuthority.name)
-            .viewLocalAuthorityDetails(localAuthority.name);
+            .goToPreviousPageUntilFieldIsVisible(localAuthorityToEdit.name)
+            .viewLocalAuthorityDetails(localAuthorityToEdit.name);
 
         Logger.log("Edit local authority");
         localAuthorityPage.edit();
@@ -167,29 +181,10 @@ describe.skip("Service support user - Local authorities: ", () => {
         cy.revisitCurrentUrl();
 
         Logger.log("Submit form with duplicate code");
-        editLocalAuthorityPage.editCode(preExistingCode).saveAndReturn();
+        editLocalAuthorityPage.editCode(localAuthorityToDelete.code).saveAndReturn();
 
         Logger.log("Verify validation error for duplicate code");
         validationComponent.hasLinkedValidationErrorForField("Code", "Has already been taken");
-    });
-
-    it("Should be able to delete an existing local authority", () => {
-        Logger.log("View local authority details");
-        localAuthoritiesPage
-            .goToLastPage()
-            .goToPreviousPageUntilFieldIsVisible(localAuthority.name)
-            .viewLocalAuthorityDetails(localAuthority.name);
-
-        Logger.log("Delete local authority");
-        localAuthorityPage.delete();
-
-        Logger.log("Confirm delete local authority");
-        deleteLocalAuthorityPage.hasAreYouSureYouWantToDeleteMessage(localAuthority.name).confirmDelete();
-
-        Logger.log("Success message is displayed and verify local authority is no longer listed");
-        localAuthoritiesPage
-            .authorityDeletedSuccessMessage()
-            .localAuthorityDoesNotExistAcrossAllPages(localAuthority.name);
     });
 
     it("Should show validation errors when trying to add a new local authority with no input", () => {
@@ -213,13 +208,34 @@ describe.skip("Service support user - Local authorities: ", () => {
 
         Logger.log("Input local authority details with duplicate code");
         newLocalAuthorityPage
-            .withName(localAuthority.name)
-            .withCode(preExistingCode)
-            .withAddressLines(localAuthority.addressLines[0])
-            .withPostcode(localAuthority.postcode)
+            .withName("Test some name")
+            .withCode(localAuthorityToDelete.code)
+            .withAddressLines("some address")
+            .withPostcode("W1A 1AA")
             .saveAndReturn();
 
         Logger.log("Verify validation error for duplicate code");
         validationComponent.hasLinkedValidationErrorForField("Code", "Has already been taken");
+    });
+
+    // bug 227256
+    it.skip("Should be able to delete an existing local authority", () => {
+        Logger.log("View local authority details");
+        localAuthoritiesPage
+            .goToLastPage()
+            .goToPreviousPageUntilFieldIsVisible(localAuthorityToDelete.name)
+            .viewLocalAuthorityDetails(localAuthorityToDelete.name);
+
+        Logger.log("Delete local authority");
+
+        localAuthorityPage.delete();
+        Logger.log("Confirm delete local authority");
+
+        deleteLocalAuthorityPage.hasAreYouSureYouWantToDeleteMessage(localAuthorityToDelete.name).confirmDelete();
+
+        Logger.log("Success message is displayed and verify local authority is no longer listed");
+        localAuthoritiesPage
+            .authorityDeletedSuccessMessage()
+            .localAuthorityDoesNotExistAcrossAllPages(localAuthorityToDelete.name);
     });
 });

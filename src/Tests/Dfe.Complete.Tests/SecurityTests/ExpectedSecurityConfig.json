@@ -127,6 +127,18 @@
     {
       "Route": "Projects/ServiceSupport/LocalAuthorities/CreateNewLocalAuthority",
       "ExpectedSecurity": "Authorize: Policy=ManageLocalAuthorities"
+    },
+    {
+      "Route": "Projects/List/HandoverProjects/HandoverProjectCheck",
+      "ExpectedSecurity": "Authorize: Policy=CanViewAllProjectsHandover"
+    },
+    {
+      "Route": "Projects/List/HandoverProjects/HandoverProjects",
+      "ExpectedSecurity": "Authorize: Policy=CanViewAllProjectsHandover"
+    },
+    {
+      "Route": "Projects/List/HandoverProjects/NewHandoverProject",
+      "ExpectedSecurity": "Authorize: Policy=CanViewAllProjectsHandover"
     }
   ]
 }

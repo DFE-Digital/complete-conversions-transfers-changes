@@ -79,8 +79,8 @@ public sealed class StartupTests : IDisposable
 
         Assert.Single(configuredOptions.CheckerGroups);
         Assert.Equal(2, configuredOptions.CheckerGroups.First().TypeNames.Length);
-        Assert.Equal(typeof(HasHeaderKeyExistsInRequestValidator).FullName, configuredOptions.CheckerGroups[0].TypeNames[0]);
-        Assert.Equal(typeof(CypressRequestChecker).FullName, configuredOptions.CheckerGroups[0].TypeNames[1]);
+        Assert.Equal(nameof(HasHeaderKeyExistsInRequestValidator), configuredOptions.CheckerGroups[0].TypeNames[0]);
+        Assert.Equal(nameof(CypressRequestChecker), configuredOptions.CheckerGroups[0].TypeNames[1]);
         Assert.Equal(CheckerOperator.Or, configuredOptions.CheckerGroups[0].CheckerOperator);
     }
 
@@ -118,7 +118,8 @@ public sealed class StartupTests : IDisposable
         var dict = new Dictionary<string, string?>
         {
             ["DataProtection:DpTargetPath"] = dpTargetPath,
-            ["DataProtection:KeyVaultKey"] = keyVaultKey
+            ["DataProtection:KeyVaultKey"] = keyVaultKey,
+            ["ApplicationInsights:EnableBrowserAnalytics"] = "false"
         };
         return new ConfigurationBuilder().AddInMemoryCollection(dict).Build();
     }
@@ -131,7 +132,7 @@ public sealed class StartupTests : IDisposable
         Assert.NotNull(mi);
         mi.Invoke(startup, [services]);
     }
-
+    
     public void Dispose()
     {
         try { Directory.Delete(_tempDpTargetPath, recursive: true); }

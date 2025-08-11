@@ -140,3 +140,24 @@ export enum Region {
     SouthWest = 8,
     EastMidlands = 9,
 }
+
+export type CreateLocalAuthorityRequest = {
+    id: {
+        value: string;
+    };
+    code: string;
+    name: string;
+    address1: string;
+    address2: string;
+    address3: string;
+    addressTown: string;
+    addressCounty: string;
+    addressPostcode: string;
+    contactId: {
+        value: string;
+    };
+    title: string;
+    contactName: string;
+    email: string;
+    phone: string;
+}
