@@ -71,6 +71,9 @@ namespace Dfe.Complete.Pages.Projects.ProjectDetails.Transfer
             var baseResult = await base.OnGetAsync();
             if (baseResult is not PageResult) return baseResult;
 
+            if (Project.Type != Domain.Enums.ProjectType.Transfer)
+                throw new NotFoundException($"Project {ProjectId} is not a transfer project.");
+
             EstablishmentName = Establishment?.Name;
 
             OutgoingTrustUkprn = Project.OutgoingTrustUkprn?.ToString();

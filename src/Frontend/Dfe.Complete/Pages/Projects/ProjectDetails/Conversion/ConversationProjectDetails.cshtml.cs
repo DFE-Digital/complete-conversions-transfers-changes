@@ -26,6 +26,9 @@ namespace Dfe.Complete.Pages.Projects.ProjectDetails.Conversion
             var baseResult = await base.OnGetAsync();
             if (baseResult is not PageResult) return baseResult;
 
+            if (Project.Type != Domain.Enums.ProjectType.Conversion)
+                throw new NotFoundException($"Project {ProjectId} is not a conversion project.");
+
             DirectiveAcademyOrder = Project.DirectiveAcademyOrder ?? false;
 
             return Page();
