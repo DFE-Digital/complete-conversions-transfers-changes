@@ -574,7 +574,7 @@ namespace Dfe.Complete.Api.Controllers
         /// <param name="request">The request.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
         [Authorize(Policy = "CanRead")]
-        [HttpGet("project/significant-date")]
+        [HttpGet("project/SignificantDate")]
         [SwaggerResponse(200, "Project", typeof(ProjectDto))]
         [SwaggerResponse(400, "Invalid request data.")]
         public async Task<IActionResult> GetProjectSignificantDateAsync([FromQuery] GetProjectHistoryByProjectIdQuery request, CancellationToken cancellationToken)
@@ -589,7 +589,7 @@ namespace Dfe.Complete.Api.Controllers
         /// <param name="request">The update command.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
         [Authorize(Policy = "CanReadWrite")]
-        [HttpPatch("project/significant-date")]
+        [HttpPatch("project/SignificantDate")]
         [SwaggerResponse(204, "Significant Date updated successfully.")]
         [SwaggerResponse(400, "Invalid request data.")]
         [SwaggerResponse(404, "Project/User not found.")]

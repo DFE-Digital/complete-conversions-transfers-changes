@@ -103,7 +103,11 @@ namespace Dfe.Complete.Pages.Projects.DateHistory
                 {
                     reasons.Add(SignificantDateReason.OutgoingTrust);
                 }
-                reasons.Add(SignificantDateReason.School);
+                if (Project.Type == ProjectType.Conversion)
+                {
+                    reasons.Add(SignificantDateReason.School);
+                }
+                
                 reasons.Add(SignificantDateReason.LocalAuthority);
                 reasons.Add(SignificantDateReason.Diocese);
                 reasons.Add(SignificantDateReason.Tupe);
