@@ -219,6 +219,16 @@
       "Controller": "ProjectsController",
       "Action": "AssignHandoverProjectAsync",
       "ExpectedSecurity": "Authorize: Policy=CanReadWriteUpdate"
+    },
+    {
+      "Controller": "ConversionTasksDataController",
+      "Action": "GetConversionTasksDataByIdAsync",
+      "ExpectedSecurity": "Authorize: Policy=CanRead"
+    },
+    {
+      "Controller": "ProjectsController",
+      "Action": "GetKeyContactByProjectIdAsync",
+      "ExpectedSecurity": "Authorize: Policy=CanRead"
     }
   ]
 }

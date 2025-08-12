@@ -1,10 +1,10 @@
 ﻿using AutoMapper;
 using Dfe.Complete.Application.Common.Models;
+using Dfe.Complete.Application.Projects.Interfaces;
 using Dfe.Complete.Application.Projects.Models;
-using Dfe.Complete.Domain.Entities;
-using Dfe.Complete.Domain.Interfaces.Repositories;
 using Dfe.Complete.Domain.ValueObjects;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
 namespace Dfe.Complete.Application.Projects.Queries.GetConversionTasksData
@@ -12,7 +12,7 @@ namespace Dfe.Complete.Application.Projects.Queries.GetConversionTasksData
     public record GetConversionTasksDataByIdQuery(TaskDataId? Id) : IRequest<Result<ConversionTaskDataDto>>;
 
     public class GetConversionTasksDataByIdQueryHandler(
-        ICompleteRepository<ConversionTasksData> conversionTaskDataRepository,
+        ITaskDataReadRepository taskDataReadRepository,
         IMapper mapper,
         ILogger<GetConversionTasksDataByIdQueryHandler> logger)
         : IRequestHandler<GetConversionTasksDataByIdQuery, Result<ConversionTaskDataDto>>
@@ -21,8 +21,7 @@ namespace Dfe.Complete.Application.Projects.Queries.GetConversionTasksData
         {
             try
             {
-                var result = await conversionTaskDataRepository.GetAsync(p => p.Id == request.Id);
-
+                var result = await taskDataReadRepository.ConversionTaskData.FirstAsync(p => p.Id == request.Id, cancellationToken);
                 var conversionTaskData = mapper.Map<ConversionTaskDataDto>(result);
 
                 return Result<ConversionTaskDataDto>.Success(conversionTaskData);

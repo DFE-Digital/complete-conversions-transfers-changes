@@ -10,23 +10,21 @@ namespace Dfe.Complete.Application.Contacts.Queries;
 
 public record GetKeyContactsForProjectQuery(ProjectId ProjectId) : IRequest<Result<KeyContactsDto>>;
 
-
-public class GetKeyContactsForProject(ICompleteRepository<KeyContact> keyContactsRepository, IMapper mapper) : IRequestHandler<GetKeyContactsForProjectQuery, Result<KeyContactsDto>>
+public class GetKeyContactsForProjectQueryHandler(ICompleteRepository<KeyContact> keyContactsRepository, IMapper mapper) 
+    : IRequestHandler<GetKeyContactsForProjectQuery, Result<KeyContactsDto>>
 {
-
     public async Task<Result<KeyContactsDto>> Handle(GetKeyContactsForProjectQuery request, CancellationToken cancellationToken)
     {
         try
         {
             var keyContacts = await keyContactsRepository.FindAsync(contact => contact.ProjectId != null && contact.ProjectId == request.ProjectId,
-                    cancellationToken); 
-            
-            return Result<KeyContactsDto>.Success(mapper.Map<KeyContactsDto>(keyContacts));
+                    cancellationToken);
+
+            return Result<KeyContactsDto>.Success(keyContacts == null ? new KeyContactsDto() : mapper.Map<KeyContactsDto>(keyContacts));
         }
         catch (Exception e)
         {
             return Result<KeyContactsDto>.Failure(e.Message);
         }
-        
     }
 }

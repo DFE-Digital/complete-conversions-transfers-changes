@@ -18,7 +18,7 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.Contacts
         public async Task Handle_ShouldReturnMatchingContacts_WhenLocalAuthorityIdIsValid(
         [Frozen] ICompleteRepository<KeyContact> mockKeyContactRepo,
         [Frozen] IMapper mockMapper,
-        GetKeyContactsForProject handler,
+        GetKeyContactsForProjectQueryHandler handler,
         GetKeyContactsForProjectQuery query,
         KeyContact keyContact,
         KeyContactsDto keyContactsDto)
