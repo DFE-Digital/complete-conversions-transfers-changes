@@ -4679,8 +4679,8 @@
               "type": "string"
             }
           },
-          "userEmail": {
-            "type": "string"
+          "userId": {
+            "$ref": "#/components/schemas/UserId"
           }
         }
       },
@@ -4708,7 +4708,8 @@
           "Tupe",
           "Union",
           "Viability",
-          "VoluntaryDeferral"
+          "VoluntaryDeferral",
+          "CommercialTransferAgreement"
         ],
         "enum": [
           "AdvisoryBoardConditions",
@@ -4731,7 +4732,8 @@
           "Tupe",
           "Union",
           "Viability",
-          "VoluntaryDeferral"
+          "VoluntaryDeferral",
+          "CommercialTransferAgreement"
         ]
       },
       "CreateLocalAuthorityCommand": {

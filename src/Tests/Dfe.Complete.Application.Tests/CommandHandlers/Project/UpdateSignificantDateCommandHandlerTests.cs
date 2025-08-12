@@ -9,6 +9,7 @@ using DfE.CoreLibs.Testing.AutoFixture.Attributes;
 using DfE.CoreLibs.Testing.AutoFixture.Customizations;
 using NSubstitute;
 using System.Linq.Expressions;
+using Dfe.Complete.Domain.ValueObjects;
 using Dfe.Complete.Utils;
 
 namespace Dfe.Complete.Application.Tests.CommandHandlers.Project;
@@ -34,7 +35,7 @@ public class UpdateSignificantDateCommandHandlerTests
             {
                 { SignificantDateReason.Buildings, "Reason for change" }
             },
-            "test.user@education.gov.uk"
+            user.Id
         );
 
         mockProjectRepository.FindAsync(Arg.Any<Expression<Func<Domain.Entities.Project, bool>>>(), Arg.Any<CancellationToken>())
@@ -76,7 +77,7 @@ public class UpdateSignificantDateCommandHandlerTests
             {
                 { SignificantDateReason.Buildings, "Reason" }
             },
-            "nonexistent.user@example.com"
+            new UserId(Guid.NewGuid())
         );
 
         mockProjectRepository.FindAsync(Arg.Any<Expression<Func<Domain.Entities.Project, bool>>>(), Arg.Any<CancellationToken>())
