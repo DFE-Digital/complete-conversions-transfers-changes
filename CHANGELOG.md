@@ -20,6 +20,7 @@ Security in case of vulnerabilities.
 
 - Added Project Significant History Dates `/projects/{projectId}/date-history`
 - Added `/projects/{projectId}/external-contacts` page
+- Added `/privacy` page
 - Added `Conversion` and `Transfer` task list with their statuses.
 
 ### Changed
