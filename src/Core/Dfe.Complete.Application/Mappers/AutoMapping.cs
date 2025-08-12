@@ -3,14 +3,15 @@ using Dfe.AcademiesApi.Client.Contracts;
 using Dfe.Complete.Application.Projects.Models;
 using Dfe.Complete.Domain.Entities;
 
-namespace Dfe.Complete.Application.Common.Mappers
+namespace Dfe.Complete.Application.Mappers
 {
 	public sealed class AutoMapping : Profile
 	{
 		public AutoMapping()
 		{
-			CreateMap<Project, ProjectDto>();
-			CreateMap<ProjectGroup, ProjectGroupDto>();
+			CreateMap<Project, ProjectDto>()
+                .ForMember(p => p.EstablishmentName, opt => opt.Ignore());
+            CreateMap<ProjectGroup, ProjectGroupDto>();
 			CreateMap<User, UserDto>();
 			CreateMap<Note, NoteDto>()
 				.ForCtorParam(nameof(NoteDto.UserFullName),

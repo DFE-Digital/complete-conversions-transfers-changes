@@ -2,14 +2,14 @@ import { beforeEach } from "mocha";
 import {
     checkAccessibilityAcrossPages,
     shouldBeAbleToViewReportsLandingPage,
-    shouldNotBeAbleToAddAProjectNote,
+    shouldNotBeAbleToAddAProjectNote, shouldNotBeAbleToAddAProjectTaskNote,
     shouldNotBeAbleToCreateAProject,
     shouldNotHaveAccessToViewAndEditUsers,
     shouldNotHaveAccessToViewConversionURNsPage,
     shouldNotHaveAccessToViewHandedOverProjects,
     shouldNotHaveAccessToViewLocalAuthorities,
     shouldNotHaveAccessToViewYourProjectsSections,
-    shouldNotHaveAccessToViewYourTeamProjectsSections,
+    shouldNotHaveAccessToViewYourTeamProjectsSections
 } from "cypress/support/reusableTests";
 import { businessSupportUser } from "cypress/constants/cypressConstants";
 import navBar from "cypress/pages/navBar";
@@ -118,6 +118,10 @@ describe("Capabilities and permissions of the business support user", () => {
 
     it("Should NOT be able to add a note to a project", () => {
         shouldNotBeAbleToAddAProjectNote(projectId);
+    });
+
+    it("Should NOT be able to add a task note to a project", () => {
+        shouldNotBeAbleToAddAProjectTaskNote(projectId);
     });
 
     it.skip("Should NOT be able to soft delete projects", () => {

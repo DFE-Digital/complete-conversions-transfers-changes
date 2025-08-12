@@ -1,0 +1,81 @@
+﻿@page "/projects/all/handover/{projectId}/check"
+@model Dfe.Complete.Pages.Projects.List.HandoverProjects.HandoverProjectCheckModel
+@using Dfe.Complete.Constants
+@using Dfe.Complete.Domain.Enums
+@using Dfe.Complete.Utils
+<h1 class="govuk-heading-xl">
+    Check you have the right project
+</h1>
+<div class="govuk-grid-column-three-quarters">
+    <dl class="govuk-summary-list" id="project-summary">
+        <div class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__key">@(Model.Project.ProjectType == ProjectType.Transfer ? "Academy" : "School") name</dt>
+            <dd class="govuk-summary-list__value">@Model.Project.EstablishmentName</dd>
+        </div>
+        <div class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__key">URN</dt>
+            <dd class="govuk-summary-list__value">@Model.Project.Urn.Value</dd>
+        </div>
+        <div class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__key">Project type</dt>
+            <dd class="govuk-summary-list__value">@Model.Project.ProjectType</dd>
+        </div>
+        <div class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__key">Form a MAT?</dt>
+            <dd class="govuk-summary-list__value">@(Model.Project.IsFormAMAT? "Yes": "No")</dd>
+        </div>
+        @if (Model.Project.ProjectType == ProjectType.Conversion)
+        {
+            <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">@(Model.Project.IsFormAMAT ? "New trust" : "Incoming trust name")</dt>
+                <dd class="govuk-summary-list__value">@Model.Project.IncomingTrustName!.ToCamelCase()</dd>
+            </div>
+            <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">@(Model.Project.IsFormAMAT ? "Trust reference number" : "Incoming trust UKPRN")</dt>
+                <dd class="govuk-summary-list__value">@(Model.Project.IncomingTrustUkprn?.Value.ToString() ?? Model.Project.NewTrustReferenceNumber)</dd>
+            </div>
+        }
+        else
+        {
+            <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">@(Model.Project.IsFormAMAT ? "New trust" : "Incoming trust name")</dt>
+                <dd class="govuk-summary-list__value">@Model.Project.NewTrustName!.ToCamelCase()</dd>
+            </div>
+            <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">@(Model.Project.IsFormAMAT ? "Trust reference number" : "Incoming trust UKPRN")</dt>
+                <dd class="govuk-summary-list__value">@(Model.Project.NewTrustReferenceNumber ?? Model.Project.IncomingTrustUkprn?.Value.ToString())</dd>
+            </div>
+            <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">Outgoing trust name</dt>
+                <dd class="govuk-summary-list__value">@Model.Project.OutgoingTrustName!.ToCamelCase()</dd>
+            </div>
+            <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">Outgoing trust UKPRN</dt>
+                <dd class="govuk-summary-list__value">@Model.Project.OutgoingTrustUkprn</dd>
+            </div>
+        }
+        <div class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__key">Advisory board date</dt>
+            <dd class="govuk-summary-list__value">@Model.Project.AdvisoryBoardDate.ToDateString()</dd>
+        </div>
+        <div class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__key">Provisional @(Model.Project.ProjectType == ProjectType.Conversion ? "transfer": "conversion") date</dt>
+            <dd class="govuk-summary-list__value">@Model.Project.ConversionOrTransferDate.ToDateString()</dd>
+        </div>
+        @if(Model.Project.ProjectType == ProjectType.Conversion)
+        {
+            <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">Type of academy order</dt>
+                <dd class="govuk-summary-list__value">@Model.Project.AcademyOrderType.ToDisplayDescription()</dd>
+            </div>
+        } 
+        <div class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__key">Assigned to in Prepare</dt>
+            <dd class="govuk-summary-list__value">@Model.Project.RegionalDeliveryOfficer</dd>
+        </div>
+    </dl> 
+    <div class="govuk-button-group">
+        <a id="confirm-project" class="govuk-button" href="@(string.Format(RouteConstants.ProjectsHandoverNew, Model.ProjectId))">Confirm</a>
+        <a id="choose-different-project" class="govuk-link" href="@(RouteConstants.ProjectsHandover)">Choose a different project</a>
+    </div> 
+</div>

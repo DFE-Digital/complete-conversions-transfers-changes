@@ -189,6 +189,46 @@
       "Controller": "ProjectsController",
       "Action": "ListAllProjectsStatisticsAsync",
       "ExpectedSecurity": "Authorize: Policy=CanRead"
+    },
+    {
+      "Controller": "ContactsController",
+      "Action": "ListAllContactsForProjectAsync",
+      "ExpectedSecurity": "Authorize: Policy=CanRead"
+    },
+    {
+      "Controller": "ContactsController",
+      "Action": "ListAllContactsForLocalAuthorityAsync",
+      "ExpectedSecurity": "Authorize: Policy=CanRead"
+    },
+    {
+      "Controller": "ProjectsController",
+      "Action": "GetProjectByIdAsync",
+      "ExpectedSecurity": "Authorize: Policy=CanRead"
+    },
+    {
+      "Controller": "ProjectsController",
+      "Action": "ListAllProjectsHandoverAsync",
+      "ExpectedSecurity": "Authorize: Policy=CanRead"
+    },
+    {
+      "Controller": "ProjectsController",
+      "Action": "GetHandoverProjectDetailsAsync",
+      "ExpectedSecurity": "Authorize: Policy=CanRead"
+    },
+    {
+      "Controller": "ProjectsController",
+      "Action": "AssignHandoverProjectAsync",
+      "ExpectedSecurity": "Authorize: Policy=CanReadWriteUpdate"
+    },
+    {
+      "Controller": "ProjectsController",
+      "Action": "GetProjectSignificantDateAsync",
+      "ExpectedSecurity": "Authorize: Policy=CanRead"
+    },
+    {
+      "Controller": "ProjectsController",
+      "Action": "UpdateSignificantDateAsync",
+      "ExpectedSecurity": "Authorize: Policy=CanReadWrite"
     }
   ]
 }

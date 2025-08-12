@@ -16,7 +16,38 @@ Security in case of vulnerabilities.
 
 ## Unreleased
 
-### Added  
+### Added
+
+### Changed
+
+### Fixed
+
+See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-08-12.625...main) for everything awaiting release
+
+---
+
+## [1.12.0](https://github.com/DFE-Digital/complete-conversions-transfers-changes/releases/tag/production-2025-08-12.625) - 2025-08-12
+
+### Added
+- Added Project Significant History Dates `/projects/{projectId}/date-history`
+- Added `/projects/{projectId}/external-contacts` page
+- Added `/privacy` page
+
+### Changed
+
+### Fixed
+
+See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-08-05.608...production-2025-08-12.625) for everything in the release
+
+---
+
+## [1.11.0](https://github.com/DFE-Digital/complete-conversions-transfers-changes/releases/tag/production-2025-08-05.608) - 2025-08-05
+
+### Added
+- Add handover page  (`/projects/all/handover`)
+- Add handover project check page  (`/projects/all/handover/{projectId}/check`)
+- Add handover project add detail & confirmation page  (`/projects/all/handover/{projectId}/new`)
+- Added `App Insight` for tracking users clicks and page views
 
 ### Changed
 - Restructured the task page to be more generic
@@ -25,9 +56,10 @@ Security in case of vulnerabilities.
 ### Fixed
 - Fixed cookies page's URL by including query string.
 - Fixed `Local Authority` service support endpoints
+- Fixed all trust list page by filtering to incoming ukprn instead of MAT and non MAT projects
 - Fixed _ProjectLayout to correctly show the unassigned banner based on whether the user is service support or assigned to the project
 
-See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-07-24.577...main) for everything awaiting release
+See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-07-24.577...production-2025-08-05.608) for everything in the release
 
 ---
 
@@ -58,6 +90,10 @@ See the [full commit history](https://github.com/DFE-Digital/complete-conversion
 ### Added
 - New route `/projects/all/reports`
 - Add reports landing page under All projects > Reports (`/projects/all/reports`)
+- New route `/projects/{projectId}/date-history`
+- New route `/projects/{projectId}/date-history/new`
+- New route `/projects/{projectId}/date-history/reason`
+- New route `/projects/{projectId}/date-history/reasons/later`
 
 ### Changed  
 - Add a redirect from projects/{id} to projects/{id}/tasks
@@ -99,7 +135,6 @@ See the [full commit history](https://github.com/DFE-Digital/complete-conversion
 - Service support Create Academy URN (/projects/{projectId}/academy-urn) 
 - Added `Statistics` page
 - Added Project Significant History Dates `/projects/{projectId}/date-history`
-
 
 ### Changed  
 
