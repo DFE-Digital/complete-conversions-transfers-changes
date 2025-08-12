@@ -331,64 +331,6 @@ public class BaseProjectDetailsPageModelTests
         Assert.Equal("Test handover comments", model.HandoverComments);
         Assert.True(model.TwoRequiresImprovement);
     }
-
-    //[Theory]
-    //[CustomAutoData(typeof(IgnoreVirtualMembersCustomisation), typeof(DateOnlyCustomization))]
-    //public async Task OnGetAsync_WhenProjectTeamIsNotRCS_SetsIsHandingToRCSToFalse(
-    //    [Frozen] ISender mockSender,
-    //    [Frozen] IErrorService mockErrorService,
-    //    [Frozen] ILogger mockLogger,
-    //    ProjectDto project,
-    //    EstablishmentDto establishment)
-    //{
-    //    // Arrange
-    //    project.Team = ProjectTeam.WestMidlands;
-    //    establishment.Name = "Test School";
-
-    //    var model = new TestBaseProjectDetailsPageModel(mockSender, mockErrorService, mockLogger)
-    //    {
-    //        Project = project,
-    //        Establishment = establishment
-    //    };
-
-    //    model.SetBaseOnGetResult(new PageResult());
-
-    //    // Act
-    //    var result = await model.OnGetAsync();
-
-    //    // Assert
-    //    Assert.IsType<PageResult>(result);
-    //    Assert.False(model.IsHandingToRCS);
-    //}
-
-    //[Theory]
-    //[CustomAutoData(typeof(IgnoreVirtualMembersCustomisation), typeof(DateOnlyCustomization))]
-    //public async Task OnGetAsync_WhenTwoRequiresImprovementIsNull_DefaultsToFalse(
-    //    [Frozen] ISender mockSender,
-    //    [Frozen] IErrorService mockErrorService,
-    //    [Frozen] ILogger mockLogger,
-    //    ProjectDto project,
-    //    EstablishmentDto establishment)
-    //{
-    //    // Arrange
-    //    project.TwoRequiresImprovement = null;
-    //    establishment.Name = "Test School";
-
-    //    var model = new TestBaseProjectDetailsPageModel(mockSender, mockErrorService, mockLogger)
-    //    {
-    //        Project = project,
-    //        Establishment = establishment
-    //    };
-
-    //    model.SetBaseOnGetResult(new PageResult());
-
-    //    // Act
-    //    var result = await model.OnGetAsync();
-
-    //    // Assert
-    //    Assert.IsType<PageResult>(result);
-    //    Assert.False(model.TwoRequiresImprovement);
-    //}
 }
 
 public class TestBaseProjectDetailsPageModel(ISender sender, IErrorService errorService, ILogger logger) 
