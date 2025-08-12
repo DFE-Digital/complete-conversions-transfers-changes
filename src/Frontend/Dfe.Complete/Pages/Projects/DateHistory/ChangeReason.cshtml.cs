@@ -79,7 +79,7 @@ namespace Dfe.Complete.Pages.Projects.DateHistory
             if (!ModelState.IsValid)
                 return Page();
             
-            var command = new UpdateSignificantDateCommand(Project.Id, DateOnly.Parse(SignificantDateString), ReasonNotes, User.Identity?.Name);
+            var command = new UpdateSignificantDateCommand(Project.Id, DateOnly.Parse(SignificantDateString), ReasonNotes, User.GetUserId());
             await sender.Send(command);
             
             return Redirect(FormatRouteWithProjectId(RouteConstants.ChangeProjectDateHistoryConfirm));

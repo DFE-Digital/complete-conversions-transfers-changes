@@ -11,7 +11,7 @@ public record UpdateSignificantDateCommand(
     ProjectId ProjectId,
     DateOnly SignificantDate,
     Dictionary<SignificantDateReason, string> ReasonNotes,
-    string UserEmail
+    UserId UserId
     ) : IRequest;
 
 public class UpdateSignificantDateCommandHandler(
@@ -24,10 +24,10 @@ public class UpdateSignificantDateCommandHandler(
     public async Task Handle(UpdateSignificantDateCommand request, CancellationToken cancellationToken)
     {
         var project = await projectRepository.FindAsync(p => p.Id == request.ProjectId, cancellationToken);
-        var user = await userRepository.FindAsync(u => u.Email == request.UserEmail, cancellationToken);
+        var user = await userRepository.FindAsync(u => u.Id == request.UserId, cancellationToken);
         if (user is null)
         {
-            throw new NotFoundException("User not found", "email");
+            throw new NotFoundException("User not found", "Id");
         }
         
         var now = DateTime.UtcNow;

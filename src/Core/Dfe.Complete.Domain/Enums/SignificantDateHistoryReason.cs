@@ -15,13 +15,13 @@ public enum SignificantDateReason
     [Description("correcting_an_error")]
     [DisplayDescription("Correcting an error")]
     CorrectingAnError = 3,
-    [Description("Diocese")]
+    [Description("diocese")]
     [DisplayDescription("Diocese")]
     Diocese = 4,
-    [Description("Finance")]
+    [Description("finance")]
     [DisplayDescription("Finance")]
     Finance = 5,
-    [Description("Governance")]
+    [Description("governance")]
     [DisplayDescription("Governance")]
     Governance = 6,
     [Description("incoming_trust")]
