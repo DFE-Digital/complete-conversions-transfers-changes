@@ -39,7 +39,7 @@ namespace Dfe.Complete.Models
         public TaskListStatus RedactAndSendDocuments { get; set; }
         public TaskListStatus ProjectReceiveDeclarationOfExpenditureCertificate { get; set; } 
 
-        public static ConversionTaskListViewModel Create(ConversionTaskDataDto taskData, ProjectDto project, KeyContactsDto? keyContacts)
+        public static ConversionTaskListViewModel Create(ConversionTaskDataDto taskData, ProjectDto project, KeyContactDto? keyContacts)
         {
             return (taskData == null) ? new() : new ConversionTaskListViewModel
             {
@@ -493,19 +493,19 @@ namespace Dfe.Complete.Models
                 ? TaskListStatus.Completed : TaskListStatus.InProgress;
         }
 
-        private static TaskListStatus ConfirmIncomingTrustCeoDetailsTaskStatus(KeyContactsDto? keyContacts)
+        private static TaskListStatus ConfirmIncomingTrustCeoDetailsTaskStatus(KeyContactDto? keyContacts)
         {
             return keyContacts?.IncomingTrustCeoId != null
                 ? TaskListStatus.Completed : TaskListStatus.NotStarted;
         }
 
-        private static TaskListStatus ConfirmChairOfGovernorsDetailsTaskStatus(KeyContactsDto? keyContacts)
+        private static TaskListStatus ConfirmChairOfGovernorsDetailsTaskStatus(KeyContactDto? keyContacts)
         {
             return keyContacts?.ChairOfGovernorsId != null
                  ? TaskListStatus.Completed : TaskListStatus.NotStarted;
         }
 
-        private static TaskListStatus ConfirmHeadTeacherDetailsTaskStatus(KeyContactsDto? keyContacts)
+        private static TaskListStatus ConfirmHeadTeacherDetailsTaskStatus(KeyContactDto? keyContacts)
         {
             return keyContacts?.HeadteacherId != null
                 ? TaskListStatus.Completed : TaskListStatus.NotStarted;

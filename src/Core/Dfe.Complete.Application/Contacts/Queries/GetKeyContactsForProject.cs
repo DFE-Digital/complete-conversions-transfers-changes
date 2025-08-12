@@ -1,30 +1,30 @@
 ﻿using AutoMapper;
 using Dfe.Complete.Application.Common.Models;
 using Dfe.Complete.Application.Contacts.Models;
-using Dfe.Complete.Domain.Entities;
-using Dfe.Complete.Domain.Interfaces.Repositories;
+using Dfe.Complete.Application.Projects.Interfaces; 
 using Dfe.Complete.Domain.ValueObjects;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 namespace Dfe.Complete.Application.Contacts.Queries;
 
-public record GetKeyContactsForProjectQuery(ProjectId ProjectId) : IRequest<Result<KeyContactsDto>>;
+public record GetKeyContactsForProjectQuery(ProjectId ProjectId) : IRequest<Result<KeyContactDto>>;
 
-public class GetKeyContactsForProjectQueryHandler(ICompleteRepository<KeyContact> keyContactsRepository, IMapper mapper) 
-    : IRequestHandler<GetKeyContactsForProjectQuery, Result<KeyContactsDto>>
+public class GetKeyContactsForProjectQueryHandler(IKeyContactReadRepository keyContactsRepository, IMapper mapper) 
+    : IRequestHandler<GetKeyContactsForProjectQuery, Result<KeyContactDto>>
 {
-    public async Task<Result<KeyContactsDto>> Handle(GetKeyContactsForProjectQuery request, CancellationToken cancellationToken)
+    public async Task<Result<KeyContactDto>> Handle(GetKeyContactsForProjectQuery request, CancellationToken cancellationToken)
     {
         try
         {
-            var keyContacts = await keyContactsRepository.FindAsync(contact => contact.ProjectId != null && contact.ProjectId == request.ProjectId,
+            var keyContacts = await keyContactsRepository.KeyContacts.FirstOrDefaultAsync(contact => contact.ProjectId != null && contact.ProjectId == request.ProjectId,
                     cancellationToken);
 
-            return Result<KeyContactsDto>.Success(keyContacts == null ? new KeyContactsDto() : mapper.Map<KeyContactsDto>(keyContacts));
+            return Result<KeyContactDto>.Success(keyContacts == null ? new KeyContactDto() : mapper.Map<KeyContactDto>(keyContacts));
         }
         catch (Exception e)
         {
-            return Result<KeyContactsDto>.Failure(e.Message);
+            return Result<KeyContactDto>.Failure(e.Message);
         }
     }
 }

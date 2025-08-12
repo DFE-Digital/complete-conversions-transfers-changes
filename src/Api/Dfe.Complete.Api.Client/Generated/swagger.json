@@ -1874,7 +1874,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/KeyContactsDto"
+                  "$ref": "#/components/schemas/KeyContactDto"
                 }
               }
             }
@@ -5170,7 +5170,7 @@
           "DirectiveAcademyOrder"
         ]
       },
-      "KeyContactsDto": {
+      "KeyContactDto": {
         "type": "object",
         "additionalProperties": false,
         "properties": {

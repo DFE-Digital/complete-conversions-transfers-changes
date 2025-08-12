@@ -251,7 +251,7 @@ namespace Dfe.Complete.Tests.Models
                 Id = new TaskDataId(Guid.NewGuid())
             };
 
-            var keyContacts = new KeyContactsDto
+            var keyContacts = new KeyContactDto
             {
                 IncomingTrustCeoId = string.IsNullOrWhiteSpace(incomingTrustCeoId) ? null : new ContactId(Guid.Parse(incomingTrustCeoId))
             };
@@ -276,7 +276,7 @@ namespace Dfe.Complete.Tests.Models
                 Id = new TaskDataId(Guid.NewGuid())
             };
 
-            var keyContacts = new KeyContactsDto
+            var keyContacts = new KeyContactDto
             {
                 ChairOfGovernorsId = string.IsNullOrWhiteSpace(chairOfGovernorsId) ? null : new ContactId(Guid.Parse(chairOfGovernorsId))
             };
@@ -301,7 +301,7 @@ namespace Dfe.Complete.Tests.Models
                 Id = new TaskDataId(Guid.NewGuid())
             };
 
-            var keyContacts = new KeyContactsDto
+            var keyContacts = new KeyContactDto
             {
                 Id = new KeyContactId(Guid.NewGuid()),
                 HeadteacherId = string.IsNullOrWhiteSpace(headteacherId) ? null : new ContactId(Guid.Parse(headteacherId))

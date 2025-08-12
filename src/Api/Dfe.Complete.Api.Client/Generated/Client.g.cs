@@ -4297,7 +4297,7 @@ namespace Dfe.Complete.Client
         /// </summary>
         /// <returns>KeyContact</returns>
         /// <exception cref="CompleteApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<KeyContactsDto> GetKeyContactByProjectIdAsync(System.Guid? projectId_Value)
+        public virtual System.Threading.Tasks.Task<KeyContactDto> GetKeyContactByProjectIdAsync(System.Guid? projectId_Value)
         {
             return GetKeyContactByProjectIdAsync(projectId_Value, System.Threading.CancellationToken.None);
         }
@@ -4308,7 +4308,7 @@ namespace Dfe.Complete.Client
         /// </summary>
         /// <returns>KeyContact</returns>
         /// <exception cref="CompleteApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<KeyContactsDto> GetKeyContactByProjectIdAsync(System.Guid? projectId_Value, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<KeyContactDto> GetKeyContactByProjectIdAsync(System.Guid? projectId_Value, System.Threading.CancellationToken cancellationToken)
         {
             var client_ = _httpClient;
             var disposeClient_ = false;
@@ -4355,7 +4355,7 @@ namespace Dfe.Complete.Client
                         var status_ = (int)response_.StatusCode;
                         if (status_ == 200)
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<KeyContactsDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            var objectResponse_ = await ReadObjectResponseAsync<KeyContactDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
                                 throw new CompleteApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);

@@ -2,7 +2,7 @@
 
 namespace Dfe.Complete.Application.Contacts.Models
 {
-    public class KeyContactsDto
+    public class KeyContactDto
     {
         public KeyContactId? Id { get; set; }
         public ContactId? HeadteacherId { get; set; }

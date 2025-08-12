@@ -577,7 +577,7 @@ namespace Dfe.Complete.Api.Controllers
         [Authorize(Policy = "CanRead")]
         [HttpGet]
         [Route("List/Project/KeyContact")]
-        [SwaggerResponse(200, "KeyContact", typeof(KeyContactsDto))]
+        [SwaggerResponse(200, "KeyContact", typeof(KeyContactDto))]
         [SwaggerResponse(404, "key contact not found.")]
         public async Task<IActionResult> GetKeyContactByProjectIdAsync([FromQuery] GetKeyContactsForProjectQuery request, CancellationToken cancellationToken)
         {

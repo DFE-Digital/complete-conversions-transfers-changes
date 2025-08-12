@@ -34,7 +34,7 @@ namespace Dfe.Complete.Models
         public TaskListStatus RedactAndSendDocuments { get; set; }
         public TaskListStatus DeclarationOfExpenditureCertificate { get; set; }  
 
-        public static TransferTaskListViewModel Create(TransferTaskDataDto taskData, ProjectDto project, KeyContactsDto? keyContacts)
+        public static TransferTaskListViewModel Create(TransferTaskDataDto taskData, ProjectDto project, KeyContactDto? keyContacts)
         {
             return (taskData == null) ? new() : new TransferTaskListViewModel
             {
@@ -503,12 +503,12 @@ namespace Dfe.Complete.Models
                 ? TaskListStatus.Completed : TaskListStatus.InProgress;
         }
 
-        private static TaskListStatus ConfirmOutgoingTrustCeoDetailsTaskStatus(KeyContactsDto? keyContacts)
+        private static TaskListStatus ConfirmOutgoingTrustCeoDetailsTaskStatus(KeyContactDto? keyContacts)
         {
             return keyContacts?.OutgoingTrustCeoId != null
                 ? TaskListStatus.Completed : TaskListStatus.NotStarted;
         }
-        private static TaskListStatus ConfirmIncomingTrustCeoDetailsTaskStatus(KeyContactsDto? keyContacts)
+        private static TaskListStatus ConfirmIncomingTrustCeoDetailsTaskStatus(KeyContactDto? keyContacts)
         {
             return keyContacts?.IncomingTrustCeoId != null
                 ? TaskListStatus.Completed : TaskListStatus.NotStarted;
@@ -519,7 +519,7 @@ namespace Dfe.Complete.Models
                ? TaskListStatus.Completed : TaskListStatus.NotStarted;
         }
 
-        private static TaskListStatus ConfirmHeadTeacherDetailsTaskStatus(KeyContactsDto? keyContacts)
+        private static TaskListStatus ConfirmHeadTeacherDetailsTaskStatus(KeyContactDto? keyContacts)
         {
             return keyContacts?.HeadteacherId != null
                 ? TaskListStatus.Completed : TaskListStatus.NotStarted;

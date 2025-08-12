@@ -579,7 +579,7 @@ namespace Dfe.Complete.Tests.Models
             };
 
             var project = new ProjectDto();
-            var keyContacts = new KeyContactsDto
+            var keyContacts = new KeyContactDto
             {
                 OutgoingTrustCeoId = string.IsNullOrWhiteSpace(outgoingTrustCeoId) ? null : new ContactId(Guid.Parse(outgoingTrustCeoId))
             };
@@ -600,7 +600,7 @@ namespace Dfe.Complete.Tests.Models
             };
 
             var project = new ProjectDto();
-            var keyContacts = new KeyContactsDto
+            var keyContacts = new KeyContactDto
             {
                 IncomingTrustCeoId = string.IsNullOrEmpty(incomingTrustCeoId) ? null : new ContactId(Guid.Parse(incomingTrustCeoId))
             };
@@ -642,7 +642,7 @@ namespace Dfe.Complete.Tests.Models
             };
 
             var project = new ProjectDto();
-            var keyContacts = new KeyContactsDto
+            var keyContacts = new KeyContactDto
             {
                 HeadteacherId = string.IsNullOrEmpty(headteacherId) ? null : new ContactId(Guid.Parse(headteacherId))
             };
