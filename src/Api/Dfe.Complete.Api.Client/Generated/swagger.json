@@ -4709,7 +4709,8 @@
           "Union",
           "Viability",
           "VoluntaryDeferral",
-          "CommercialTransferAgreement"
+          "CommercialTransferAgreement",
+          "Academy"
         ],
         "enum": [
           "AdvisoryBoardConditions",
@@ -4733,7 +4734,8 @@
           "Union",
           "Viability",
           "VoluntaryDeferral",
-          "CommercialTransferAgreement"
+          "CommercialTransferAgreement",
+          "Academy"
         ]
       },
       "CreateLocalAuthorityCommand": {
