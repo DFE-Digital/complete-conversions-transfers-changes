@@ -16,8 +16,17 @@ Security in case of vulnerabilities.
 
 ## Unreleased
 
-### Added
+### Changed
 
+### Fixed
+
+See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-08-12.625...main) for everything awaiting release
+
+---
+
+## [1.12.0](https://github.com/DFE-Digital/complete-conversions-transfers-changes/releases/tag/production-2025-08-12.625) - 2025-08-12
+
+### Added
 - Added Project Significant History Dates `/projects/{projectId}/date-history`
 - Added `/projects/{projectId}/external-contacts` page
 - Added `/privacy` page
@@ -27,7 +36,7 @@ Security in case of vulnerabilities.
 
 ### Fixed
 
-See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-08-05.608...main) for everything awaiting release
+See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-08-05.608...production-2025-08-12.625) for everything in the release
 
 ---
 
