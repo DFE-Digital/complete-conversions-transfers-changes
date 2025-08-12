@@ -4065,8 +4065,8 @@ namespace Dfe.Complete.Client
 
                     var urlBuilder_ = new System.Text.StringBuilder();
                     if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
-                    // Operation Path: "v1/Projects/project/significant-date"
-                    urlBuilder_.Append("v1/Projects/project/significant-date");
+                    // Operation Path: "v1/Projects/project/SignificantDate"
+                    urlBuilder_.Append("v1/Projects/project/SignificantDate");
                     urlBuilder_.Append('?');
                     if (projectId != null)
                     {
@@ -4169,8 +4169,8 @@ namespace Dfe.Complete.Client
 
                     var urlBuilder_ = new System.Text.StringBuilder();
                     if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
-                    // Operation Path: "v1/Projects/project/significant-date"
-                    urlBuilder_.Append("v1/Projects/project/significant-date");
+                    // Operation Path: "v1/Projects/project/SignificantDate"
+                    urlBuilder_.Append("v1/Projects/project/SignificantDate");
 
                     PrepareRequest(client_, request_, urlBuilder_);
 

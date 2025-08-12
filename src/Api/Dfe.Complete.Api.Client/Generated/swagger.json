@@ -1815,7 +1815,7 @@
         }
       }
     },
-    "/v1/Projects/project/significant-date": {
+    "/v1/Projects/project/SignificantDate": {
       "get": {
         "tags": [
           "Projects"
