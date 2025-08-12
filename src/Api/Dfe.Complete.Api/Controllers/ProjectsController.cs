@@ -567,5 +567,38 @@ namespace Dfe.Complete.Api.Controllers
             var project = await sender.Send(request, cancellationToken);
             return Ok(project.Value);
         }
+        
+        /// <summary>
+        /// Gets a Project's significant date history
+        /// </summary>
+        /// <param name="request">The request.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        [Authorize(Policy = "CanRead")]
+        [HttpGet("project/SignificantDate")]
+        [SwaggerResponse(200, "Project", typeof(ProjectDto))]
+        [SwaggerResponse(400, "Invalid request data.")]
+        public async Task<IActionResult> GetProjectSignificantDateAsync([FromQuery] GetProjectHistoryByProjectIdQuery request, CancellationToken cancellationToken)
+        {
+            var project = await sender.Send(request, cancellationToken);
+            return Ok(project.Value);
+        }
+        
+        /// <summary>
+        /// Updates the Significant date for a specific project.
+        /// </summary>
+        /// <param name="request">The update command.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        [Authorize(Policy = "CanReadWrite")]
+        [HttpPatch("project/SignificantDate")]
+        [SwaggerResponse(204, "Significant Date updated successfully.")]
+        [SwaggerResponse(400, "Invalid request data.")]
+        [SwaggerResponse(404, "Project/User not found.")]
+        public async Task<IActionResult> UpdateSignificantDateAsync(
+            [FromBody] UpdateSignificantDateCommand request,
+            CancellationToken cancellationToken)
+        {
+            await sender.Send(request, cancellationToken);
+            return NoContent();
+        }
     }
 }
