@@ -80,18 +80,18 @@ namespace Dfe.Complete.Application.Projects.Models
 
         public ProjectGroupId? GroupId { get; set; }
 
-        public User? AssignedTo { get; set; }
+        public  User? AssignedTo { get; set; }
 
-        public User? Caseworker { get; set; }
+        public  User? Caseworker { get; set; }
 
-        public ICollection<Contact> Contacts { get; set; } = new List<Contact>();
+        public  ICollection<Contact> Contacts { get; set; } = new List<Contact>();
 
         public  ICollection<Note> Notes { get; set; } = new List<Note>();
         
         public  ICollection<SignificantDateHistoryDto> SignificantDateHistories { get; set; } = new List<SignificantDateHistoryDto>();
 
         public User RegionalDeliveryOfficer { get; set; } = default!;
-
+        
         public bool FormAMat => NewTrustReferenceNumber != null && NewTrustName != null && IncomingTrustUkprn == null;
          
         public string? EstablishmentName { get; set; }

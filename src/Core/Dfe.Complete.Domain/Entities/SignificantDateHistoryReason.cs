@@ -3,7 +3,7 @@ using Dfe.Complete.Domain.ValueObjects;
 
 namespace Dfe.Complete.Domain.Entities;
 
-public class SignificantDateHistoryReason : IEntity<SignificantDateHistoryReasonId>
+public class SignificantDateHistoryReason : BaseAggregateRoot, IEntity<SignificantDateHistoryReasonId>
 {
     public SignificantDateHistoryReasonId Id { get; set; }
 
