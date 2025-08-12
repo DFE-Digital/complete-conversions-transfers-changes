@@ -71,5 +71,8 @@ public enum SignificantDateReason
     VoluntaryDeferral = 21,
     [Description("commercial_transfer_agreement")]
     [DisplayDescription("Commercial transfer agreement")]
-    CommercialTransferAgreement = 22
+    CommercialTransferAgreement = 22,
+    [Description("academy")]
+    [DisplayDescription("Academy")]
+    Academy = 16,
 }

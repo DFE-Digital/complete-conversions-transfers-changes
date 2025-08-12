@@ -107,6 +107,10 @@ namespace Dfe.Complete.Pages.Projects.DateHistory
                 {
                     reasons.Add(SignificantDateReason.School);
                 }
+                else
+                {
+                    reasons.Add(SignificantDateReason.Academy);
+                }
                 
                 reasons.Add(SignificantDateReason.LocalAuthority);
                 reasons.Add(SignificantDateReason.Diocese);
