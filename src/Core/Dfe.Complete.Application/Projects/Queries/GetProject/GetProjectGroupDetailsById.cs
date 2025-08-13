@@ -29,8 +29,10 @@ namespace Dfe.Complete.Application.Projects.Queries.GetProject
                 var projectGroup = await projectGroupRepository
                     .Query()
                     .FirstOrDefaultAsync(pg => pg.Id == request.ProjectGroupId, cancellationToken);
+
+                var trustUkprn = projectGroup.TrustUkprn.ToString();
                 
-                var trust = await trustsClient.GetTrustByUkprn2Async(projectGroup.TrustUkprn.ToString(), cancellationToken);
+                var trust = await trustsClient.GetTrustByUkprn2Async(trustUkprn, cancellationToken);
                 
                 var projectsInGroups = await projectRepository
                     .Query()
@@ -44,13 +46,18 @@ namespace Dfe.Complete.Application.Projects.Queries.GetProject
                 var cardDetails = projectsInGroups.Select(p =>
                 {
                     var urn = p.Urn.Value.ToString();
-                    var e = establishments.FirstOrDefault(e => e.Urn == urn);
+                    var establishmentName = establishments.FirstOrDefault(e => e.Urn == urn)?.Name ?? string.Empty;
                     var projectType = p.Type == ProjectType.Conversion ? "Conversion" : "Transfer";
 
-                    return new ProjectGroupCardDetails(p.Id.Value.ToString(), e.Name, urn, projectType, p.LocalAuthority.Name, p.Region.ToDisplayDescription());
+                    return new ProjectGroupCardDetails(p.Id.Value.ToString(), establishmentName, urn, projectType, p.LocalAuthority!.Name, p.Region.ToDisplayDescription());
                 });
                 
-                var result = new ProjectGroupDetails(projectGroup.Id.Value.ToString(), trust.Name, trust.ReferenceNumber, projectGroup.GroupIdentifier, cardDetails);
+                
+                string trustName = trust.Name ?? string.Empty;
+                string trustReference = trust.ReferenceNumber ?? string.Empty;
+                string groupIdentifier = projectGroup.GroupIdentifier ?? string.Empty;
+                
+                var result = new ProjectGroupDetails(projectGroup.Id.Value.ToString(), trustName, trustReference, groupIdentifier, cardDetails);
 
                 return Result<ProjectGroupDetails>.Success(result);
             }

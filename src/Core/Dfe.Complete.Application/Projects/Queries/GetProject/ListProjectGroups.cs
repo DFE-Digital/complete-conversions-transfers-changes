@@ -28,7 +28,7 @@ namespace Dfe.Complete.Application.Projects.Queries.GetProject
                     .ToListAsync(cancellationToken);
                 
                 var projectGroupIds = projectGroups.Select(p => p.Id).Distinct();
-                var projectGroupUkprns = projectGroups.Select(p => p.TrustUkprn.Value.ToString()).Distinct();
+                var projectGroupUkprns = projectGroups.Select(p => p.TrustUkprn?.Value.ToString()).Distinct();
                 
                 var projectsInGroups = await projectRepository
                     .Query()
@@ -42,7 +42,9 @@ namespace Dfe.Complete.Application.Projects.Queries.GetProject
 
                 var projectGroupsDto = projectGroups.Select(pg =>
                 {
-                   var groupName = trusts.FirstOrDefault(e => e.Ukprn == pg.TrustUkprn)?.Name;
+                   var groupName = trusts.FirstOrDefault(e => e.Ukprn == pg.TrustUkprn)?.Name ?? string.Empty;
+                   var groupIdentifier = pg.GroupIdentifier ?? string.Empty;
+                   var trustUkprn = pg.TrustUkprn!.Value.ToString() ?? string.Empty;
                    
                    var urnsForThisGroup = projectsInGroups
                        .Where(p => p.GroupId == pg.Id)
@@ -57,8 +59,8 @@ namespace Dfe.Complete.Application.Projects.Queries.GetProject
                    return new ListProjectsGroupsModel(
                        pg.Id.Value.ToString(),
                        groupName,
-                       pg.GroupIdentifier,
-                       pg.TrustUkprn.Value.ToString(),
+                       groupIdentifier,
+                       trustUkprn,
                        string.Join("; ", establishmentInThisGroup));
                 }).ToList();
                 

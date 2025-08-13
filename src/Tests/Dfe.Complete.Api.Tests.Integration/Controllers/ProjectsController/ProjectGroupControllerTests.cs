@@ -67,7 +67,7 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers.ProjectsController
 
             // Stub external trust lookup
             var trustDto = fixture
-                .Customize(new TrustDtoCustomization { Ukprn = projectGroup.TrustUkprn.Value.ToString() })
+                .Customize(new TrustDtoCustomization { Ukprn = projectGroup.TrustUkprn!.Value.ToString() })
                 .Create<TrustDto>();
             factory.WireMockServer!.AddGetWithJsonResponse($"/v4/trust/{trustDto.Ukprn}", trustDto);
             
