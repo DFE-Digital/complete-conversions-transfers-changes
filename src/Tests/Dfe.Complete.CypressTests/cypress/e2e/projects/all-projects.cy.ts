@@ -5,9 +5,9 @@ import { beforeEach } from "mocha";
 import {
     currentMonthLong,
     dimensionsTrust,
-    macclesfieldTrust,
+    macclesfieldTrust, nextMonth,
     nextMonthLong,
-    nextMonthShort,
+    nextMonthShort
 } from "cypress/constants/stringTestConstants";
 import projectApi from "cypress/api/projectApi";
 import { ProjectBuilder } from "cypress/api/projectBuilder";
@@ -34,6 +34,7 @@ const transferSchoolName = "Abbey College Manchester";
 const transferRegion = "North West";
 const transferFormAMatProject = ProjectBuilder.createTransferFormAMatProjectRequest();
 const transferFormAMatSchoolName = "Priory Rise School";
+const nextMonthShortUS = `${nextMonth.toLocaleString("en-US", { month: "short" })} ${nextMonth.getFullYear()}`; // bug 228624
 
 describe("View all projects", () => {
     before(() => {
@@ -189,7 +190,7 @@ describe("View all projects", () => {
             .columnHasValue("Local authority", localAuthorityShort)
             .columnHasValue("Incoming trust", macclesfieldTrust.name.toUpperCase()) // bug 208086
             .columnHasValue("All conditions met", "Not yet")
-            .columnHasValue("Confirmed date (Original date)", nextMonthShort)
+            .columnHasValue("Confirmed date (Original date)", nextMonthShortUS) // bug 228624
             .goTo(schoolName);
         projectDetailsPage.containsHeading(schoolName);
     });
@@ -213,7 +214,7 @@ describe("View all projects", () => {
             .columnHasValue("Outgoing trust", macclesfieldTrust.name.toUpperCase()) // bug 208086
             .columnHasValue("Incoming trust", dimensionsTrust.name.toUpperCase()) // bug 208086
             .columnHasValue("Authority to proceed", "Not yet")
-            .columnHasValue("Confirmed date (Original date)", nextMonthShort)
+            .columnHasValue("Confirmed date (Original date)", nextMonthShortUS) // bug 228624
             .goTo(`${transferSchoolName} ${transferProject.urn.value}`);
         projectDetailsPage.containsHeading(transferSchoolName);
     });
