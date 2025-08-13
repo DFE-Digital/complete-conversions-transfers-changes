@@ -65,7 +65,7 @@ public class BaseProjectDetailsPageModelTests
             Project = project
         };
 
-        var successResult = Result<ProjectGroupDto?>.Success(projectGroup);
+        var successResult = Result<ProjectGroupDto>.Success(projectGroup);
         mockSender.Send(Arg.Any<GetProjectGroupByIdQuery>(), Arg.Any<CancellationToken>())
             .Returns(successResult);
 
@@ -96,7 +96,7 @@ public class BaseProjectDetailsPageModelTests
             Project = project
         };
 
-        var failureResult = Result<ProjectGroupDto?>.Failure("Database error");
+        var failureResult = Result<ProjectGroupDto>.Failure("Database error");
         mockSender.Send(Arg.Any<GetProjectGroupByIdQuery>(), Arg.Any<CancellationToken>())
             .Returns(failureResult);
 
@@ -124,7 +124,7 @@ public class BaseProjectDetailsPageModelTests
             Project = project
         };
 
-        var nullResult = Result<ProjectGroupDto?>.Success(null);
+        var nullResult = Result<ProjectGroupDto>.Success(default!);
         mockSender.Send(Arg.Any<GetProjectGroupByIdQuery>(), Arg.Any<CancellationToken>())
             .Returns(nullResult);
 
@@ -300,12 +300,12 @@ public class BaseProjectDetailsPageModelTests
         };
 
         // Mock the group query
-        var groupSuccessResult = Result<ProjectGroupDto?>.Success(projectGroup);
+        var groupSuccessResult = Result<ProjectGroupDto>.Success(projectGroup);
         mockSender.Send(Arg.Any<GetProjectGroupByIdQuery>(), Arg.Any<CancellationToken>())
             .Returns(groupSuccessResult);
 
         // Mock the notes query
-        var notesSuccessResult = Result<List<NoteDto>>.Success(new List<NoteDto> { handoverNote });
+        var notesSuccessResult = Result<List<NoteDto>>.Success([handoverNote]);
         mockSender.Send(Arg.Any<GetTaskNotesByProjectIdQuery>(), Arg.Any<CancellationToken>())
             .Returns(notesSuccessResult);
 

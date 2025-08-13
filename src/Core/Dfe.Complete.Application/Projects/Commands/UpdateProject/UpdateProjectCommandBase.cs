@@ -59,7 +59,7 @@ namespace Dfe.Complete.Application.Projects.Commands.UpdateProject
             project.TwoRequiresImprovement = request.TwoRequiresImprovement;
         }
 
-        protected void UpdateTeamAssignment(Project project, TRequest request)
+        protected static void UpdateTeamAssignment(Project project, TRequest request)
         {
             if (request.IsHandingToRCS)
                 project.Team = ProjectTeam.RegionalCaseWorkerServices;

@@ -662,7 +662,7 @@ namespace Dfe.Complete.Application.Tests.CommandHandlers.Project
             // Return null for transfer tasks data
             transferTaskDataRepository
                 .GetAsync(Arg.Any<Expression<Func<TransferTasksData, bool>>>())
-                .Returns(Task.FromResult<TransferTasksData>(null));
+                .Returns(Task.FromResult<TransferTasksData>(default!));
 
             var command = new UpdateTransferProjectCommand(
                projectId,
