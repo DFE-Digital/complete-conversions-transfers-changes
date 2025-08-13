@@ -558,6 +558,38 @@ namespace Dfe.Complete.Client.Contracts
         /// <exception cref="CompleteApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<ProjectDto> GetProjectByIdAsync(System.Guid? projectId_Value, System.Threading.CancellationToken cancellationToken);
 
+        /// <summary>
+        /// Gets a Project's significant date history
+        /// </summary>
+        /// <returns>Project</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<ProjectDto> GetProjectSignificantDateAsync(string? projectId);
+
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>
+        /// Gets a Project's significant date history
+        /// </summary>
+        /// <returns>Project</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<ProjectDto> GetProjectSignificantDateAsync(string? projectId, System.Threading.CancellationToken cancellationToken);
+
+        /// <summary>
+        /// Updates the Significant date for a specific project.
+        /// </summary>
+        /// <param name="request">The update command.</param>
+        /// <returns>Significant Date updated successfully.</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task UpdateSignificantDateAsync(UpdateSignificantDateCommand request);
+
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>
+        /// Updates the Significant date for a specific project.
+        /// </summary>
+        /// <param name="request">The update command.</param>
+        /// <returns>Significant Date updated successfully.</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task UpdateSignificantDateAsync(UpdateSignificantDateCommand request, System.Threading.CancellationToken cancellationToken);
+
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "14.2.0.0 (NJsonSchema v11.1.0.0 (Newtonsoft.Json v13.0.0.0))")]
@@ -1725,8 +1757,8 @@ namespace Dfe.Complete.Client.Contracts
         [Newtonsoft.Json.JsonProperty("userId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public UserId? UserId { get; set; } = default!;
 
-        [Newtonsoft.Json.JsonProperty("reason", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public SignificantDateHistoryReason? Reason { get; set; } = default!;
+        [Newtonsoft.Json.JsonProperty("reasons", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.List<SignificantDateHistoryReason>? Reasons { get; set; } = default!;
 
         [Newtonsoft.Json.JsonProperty("user", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public User? User { get; set; } = default!;
@@ -1768,7 +1800,7 @@ namespace Dfe.Complete.Client.Contracts
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.2.0.0 (NJsonSchema v11.1.0.0 (Newtonsoft.Json v13.0.0.0))")]
-    public partial class SignificantDateHistoryReason
+    public partial class SignificantDateHistoryReason : BaseAggregateRoot
     {
         [Newtonsoft.Json.JsonProperty("id", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public SignificantDateHistoryReasonId? Id { get; set; } = default!;
@@ -2312,8 +2344,8 @@ namespace Dfe.Complete.Client.Contracts
         [Newtonsoft.Json.JsonProperty("userId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public UserId? UserId { get; set; } = default!;
 
-        [Newtonsoft.Json.JsonProperty("reason", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public SignificantDateHistoryReasonDto? Reason { get; set; } = default!;
+        [Newtonsoft.Json.JsonProperty("reasons", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.List<SignificantDateHistoryReasonDto>? Reasons { get; set; } = default!;
 
         [Newtonsoft.Json.JsonProperty("user", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public User? User { get; set; } = default!;
@@ -3143,6 +3175,112 @@ namespace Dfe.Complete.Client.Contracts
 
         [System.Runtime.Serialization.EnumMember(Value = @"DirectiveAcademyOrder")]
         DirectiveAcademyOrder = 1,
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.2.0.0 (NJsonSchema v11.1.0.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class UpdateSignificantDateCommand
+    {
+        [Newtonsoft.Json.JsonProperty("projectId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public ProjectId? ProjectId { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("significantDate", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonConverter(typeof(DateFormatConverter))]
+        public System.DateTime? SignificantDate { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("reasonNotes", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.Dictionary<SignificantDateReason, string>? ReasonNotes { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("userId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public UserId? UserId { get; set; } = default!;
+
+        public string ToJson()
+        {
+
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonSerializerSettings());
+
+        }
+        public static UpdateSignificantDateCommand FromJson(string data)
+        {
+
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<UpdateSignificantDateCommand>(data, new Newtonsoft.Json.JsonSerializerSettings());
+
+        }
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.2.0.0 (NJsonSchema v11.1.0.0 (Newtonsoft.Json v13.0.0.0))")]
+    public enum SignificantDateReason
+    {
+
+        [System.Runtime.Serialization.EnumMember(Value = @"AdvisoryBoardConditions")]
+        AdvisoryBoardConditions = 0,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"Buildings")]
+        Buildings = 1,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"CorrectingAnError")]
+        CorrectingAnError = 2,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"Diocese")]
+        Diocese = 3,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"Finance")]
+        Finance = 4,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"Governance")]
+        Governance = 5,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"IncomingTrust")]
+        IncomingTrust = 6,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"Land")]
+        Land = 7,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"LegacyReason")]
+        LegacyReason = 8,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"LegalDocuments")]
+        LegalDocuments = 9,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"LocalAuthority")]
+        LocalAuthority = 10,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"NegativePress")]
+        NegativePress = 11,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"OutgoingTrust")]
+        OutgoingTrust = 12,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"Pensions")]
+        Pensions = 13,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"ProgressingFasterThanExpected")]
+        ProgressingFasterThanExpected = 14,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"School")]
+        School = 15,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"StakeholderKickOff")]
+        StakeholderKickOff = 16,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"Tupe")]
+        Tupe = 17,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"Union")]
+        Union = 18,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"Viability")]
+        Viability = 19,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"VoluntaryDeferral")]
+        VoluntaryDeferral = 20,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"CommercialTransferAgreement")]
+        CommercialTransferAgreement = 21,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"Academy")]
+        Academy = 22,
 
     }
 

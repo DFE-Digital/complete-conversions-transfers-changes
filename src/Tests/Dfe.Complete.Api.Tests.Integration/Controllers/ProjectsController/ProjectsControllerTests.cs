@@ -18,6 +18,11 @@ using ProjectType = Dfe.Complete.Domain.Enums.ProjectType;
 using ProjectState = Dfe.Complete.Domain.Enums.ProjectState;
 using Project = Dfe.Complete.Domain.Entities.Project;
 using Ukprn = Dfe.Complete.Domain.ValueObjects.Ukprn;
+using Dfe.Complete.Utils;
+using Urn = Dfe.Complete.Domain.ValueObjects.Urn;
+using Dfe.Complete.Domain.Entities;
+using Dfe.Complete.Domain.ValueObjects;
+using Dfe.Complete.Tests.Common.Customizations.Behaviours;
 
 namespace Dfe.Complete.Api.Tests.Integration.Controllers.ProjectsController;
 
@@ -1728,5 +1733,42 @@ public partial class ProjectsControllerTests
         Assert.Empty(dbProject.Notes); 
         Assert.Null(dbProject.TwoRequiresImprovement);
         Assert.NotNull(dbProject.AssignedAt);
+    }
+    
+    [Theory]
+    [CustomAutoData(typeof(CustomWebApplicationDbContextFactoryCustomization), 
+        typeof(GiasEstablishmentsCustomization),
+        typeof(IgnoreVirtualMembersCustomisation))]
+    public async Task GetProjectSignificantDateAsync_ShouldReturnProjectDto(
+        CustomWebApplicationDbContextFactory<Program> factory,
+        IProjectsClient projectsClient,
+        IFixture fixture)
+    {
+        factory.TestClaims = [new Claim(ClaimTypes.Role, ApiRoles.ReadRole)];
+        
+        // Arrange
+        var dbContext = factory.GetDbContext<CompleteContext>();
+        var testUser = await dbContext.Users.FirstAsync();
+
+        var giasEstablishment = fixture.Create<GiasEstablishment>();
+        var project = fixture.Customize(new ProjectCustomization
+        {
+            RegionalDeliveryOfficerId = testUser.Id,
+            Urn = giasEstablishment.Urn!,
+        }).Create<Project>();
+
+        var localAuthority = dbContext.LocalAuthorities.AsEnumerable().MinBy(_ => Guid.NewGuid());
+        project.LocalAuthorityId = localAuthority!.Id;
+        
+        await dbContext.GiasEstablishments.AddAsync(giasEstablishment);
+        await dbContext.Projects.AddAsync(project);
+        await dbContext.SaveChangesAsync();
+
+        var result = await projectsClient.GetProjectSignificantDateAsync(project.Id.Value.ToString());
+        
+        // Assert
+        Assert.NotNull(result);
+        Assert.Equal(project.Id.Value, result.Id?.Value);
+        Assert.Equal(project.SignificantDate, DateOnly.FromDateTime(result.SignificantDate!.Value));
     }
 }
