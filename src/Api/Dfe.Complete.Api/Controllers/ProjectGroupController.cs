@@ -37,12 +37,29 @@ namespace Dfe.Complete.Api.Controllers
         /// <param name="cancellationToken">The cancellation token.</param>
         [Authorize(Policy = "CanRead")]
         [HttpGet]
+        [Route("List")]
         [SwaggerResponse(200, "Project Groups returned successfully.", typeof(ListProjectsGroupsModel))]
-        public async Task<IActionResult> GetProjectGroupsAsync([FromQuery] GetProjectGroupsQuery request, CancellationToken cancellationToken)
+        public async Task<IActionResult> GetProjectGroupsAsync([FromQuery] ListProjectGroupsQuery request, CancellationToken cancellationToken)
         {
             var projectGroups = await sender.Send(request, cancellationToken);
 
             return Ok(projectGroups.Value);
+        }
+
+        /// <summary>
+        /// Gets the Project group details by Id.
+        /// </summary>
+        /// <param name="request">The details request.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        [Authorize(Policy = "CanRead")]
+        [HttpGet]
+        [Route("Details")]
+        [SwaggerResponse(200, "Project Group details returned successfully.", typeof(ProjectGroupDetails))]
+        [SwaggerResponse(404, "Project Group not found for the given Id.")]
+        public async Task<IActionResult> GetProjectGroupDetailsAsync([FromQuery] GetProjectGroupDetailsQuery request, CancellationToken cancellationToken)
+        {
+            var projectGroupDetails = await sender.Send(request, cancellationToken);
+            return Ok(projectGroupDetails.Value);
         }
     }
 }

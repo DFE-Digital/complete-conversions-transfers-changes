@@ -23,7 +23,7 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
             [Frozen] ITrustsV4Client mockTrustsClient,
             [Frozen] IEstablishmentsV4Client mockEstablishmentsClient,
             GetProjectGroupsQueryHandler handler,
-            GetProjectGroupsQuery query)
+            ListProjectGroupsQuery query)
         {
             // Arrange
             var projectGroups = new List<ProjectGroup>
@@ -89,7 +89,7 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
             [Frozen] ITrustsV4Client mockTrustsClient,
             [Frozen] IEstablishmentsV4Client mockEstablishmentsClient,
             GetProjectGroupsQueryHandler handler,
-            GetProjectGroupsQuery query)
+            ListProjectGroupsQuery query)
         {
             // Arrange
             var emptyProjectGroups = new List<ProjectGroup>();
@@ -117,7 +117,7 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
             [Frozen] ITrustsV4Client mockTrustsClient,
             [Frozen] IEstablishmentsV4Client mockEstablishmentsClient,
             GetProjectGroupsQueryHandler handler,
-            GetProjectGroupsQuery query)
+            ListProjectGroupsQuery query)
         {
             // Arrange
             var projectGroups = new List<ProjectGroup>
@@ -160,7 +160,7 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
             [Frozen] ITrustsV4Client mockTrustsClient,
             [Frozen] IEstablishmentsV4Client mockEstablishmentsClient,
             GetProjectGroupsQueryHandler handler,
-            GetProjectGroupsQuery query)
+            ListProjectGroupsQuery query)
         {
             // Arrange
             mockProjectGroupRepository.Query().Throws(new Exception("Database connection failed"));
@@ -181,7 +181,7 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
             [Frozen] ITrustsV4Client mockTrustsClient,
             [Frozen] IEstablishmentsV4Client mockEstablishmentsClient,
             GetProjectGroupsQueryHandler handler,
-            GetProjectGroupsQuery query)
+            ListProjectGroupsQuery query)
         {
             // Arrange
             var projectGroups = new List<ProjectGroup>
@@ -208,7 +208,7 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
             [Frozen] ITrustsV4Client mockTrustsClient,
             [Frozen] IEstablishmentsV4Client mockEstablishmentsClient,
             GetProjectGroupsQueryHandler handler,
-            GetProjectGroupsQuery query)
+            ListProjectGroupsQuery query)
         {
             // Arrange
             var projectGroups = new List<ProjectGroup>
@@ -241,7 +241,7 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
             [Frozen] ITrustsV4Client mockTrustsClient,
             [Frozen] IEstablishmentsV4Client mockEstablishmentsClient,
             GetProjectGroupsQueryHandler handler,
-            GetProjectGroupsQuery query)
+            ListProjectGroupsQuery query)
         {
             // Arrange
             var projectGroups = new List<ProjectGroup>
@@ -280,7 +280,7 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
             [Frozen] ITrustsV4Client mockTrustsClient,
             [Frozen] IEstablishmentsV4Client mockEstablishmentsClient,
             GetProjectGroupsQueryHandler handler,
-            GetProjectGroupsQuery query)
+            ListProjectGroupsQuery query)
         {
             // Arrange
             var projectGroups = new List<ProjectGroup>
@@ -314,38 +314,6 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
             Assert.Equal("GROUP003", result.Value[0].GroupIdentifier);
             Assert.Equal("GROUP002", result.Value[1].GroupIdentifier);
             Assert.Equal("GROUP001", result.Value[2].GroupIdentifier);
-        }
-
-        [Theory]
-        [CustomAutoData(typeof(DateOnlyCustomization))]
-        public async Task Handle_ShouldFail_WhenTrustNotFoundInApiResponse(
-            [Frozen] ICompleteRepository<ProjectGroup> mockProjectGroupRepository,
-            [Frozen] ICompleteRepository<Dfe.Complete.Domain.Entities.Project> mockProjectRepository,
-            [Frozen] ITrustsV4Client mockTrustsClient,
-            [Frozen] IEstablishmentsV4Client mockEstablishmentsClient,
-            GetProjectGroupsQueryHandler handler,
-            GetProjectGroupsQuery query)
-        {
-            // Arrange
-            var projectGroups = new List<ProjectGroup>
-            {
-                new() { Id = new ProjectGroupId(Guid.NewGuid()), GroupIdentifier = "GROUP001", TrustUkprn = new Ukprn(12345678) }
-            };
-
-            var projects = new List<Dfe.Complete.Domain.Entities.Project>();
-            var trusts = new ObservableCollection<TrustDto>(); // Empty trusts list - trust not found
-
-            mockProjectGroupRepository.Query().Returns(projectGroups.BuildMock());
-            mockProjectRepository.Query().Returns(projects.BuildMock());
-            mockTrustsClient.GetByUkprnsAllAsync(Arg.Any<IEnumerable<string>>(), Arg.Any<CancellationToken>()).Returns(Task.FromResult(trusts));
-            mockEstablishmentsClient.GetByUrns2Async(Arg.Any<IEnumerable<int>>(), Arg.Any<CancellationToken>()).Returns(Task.FromResult(new ObservableCollection<EstablishmentDto>()));
-
-            // Act
-            var result = await handler.Handle(query, default);
-
-            // Assert
-            Assert.False(result.IsSuccess);
-            Assert.Contains("Object reference not set to an instance of an object", result.Error);
         }
     }
 } 

@@ -9,16 +9,16 @@ using Dfe.AcademiesApi.Client.Contracts;
 
 namespace Dfe.Complete.Application.Projects.Queries.GetProject
 {
-    public record GetProjectGroupsQuery() : PaginatedRequest<PaginatedResult<List<ListProjectsGroupsModel>>>;
+    public record ListProjectGroupsQuery() : PaginatedRequest<PaginatedResult<List<ListProjectsGroupsModel>>>;
 
     public class GetProjectGroupsQueryHandler(ICompleteRepository<ProjectGroup> projectGroupRepository,
         ICompleteRepository<Project> projectRepository,
         ITrustsV4Client trustsClient,
         IEstablishmentsV4Client establishmentsClient,
         ILogger<GetProjectGroupsQueryHandler> logger)
-        : IRequestHandler<GetProjectGroupsQuery, PaginatedResult<List<ListProjectsGroupsModel>>>
+        : IRequestHandler<ListProjectGroupsQuery, PaginatedResult<List<ListProjectsGroupsModel>>>
     {
-        public async Task<PaginatedResult<List<ListProjectsGroupsModel>>> Handle(GetProjectGroupsQuery request, CancellationToken cancellationToken)
+        public async Task<PaginatedResult<List<ListProjectsGroupsModel>>> Handle(ListProjectGroupsQuery request, CancellationToken cancellationToken)
         {
             try
             {

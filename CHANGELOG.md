@@ -17,8 +17,17 @@ Security in case of vulnerabilities.
 ## Unreleased
 
 ### Added
+ - Project groups: new API endpoints
+   - `/v1/ProjectGroup/List` – list project groups (with establishments)
+   - `/v1/ProjectGroup/Details` – project group details by id
+   - `/v1/ProjectGroup` – get project group by id
+ - Frontend routes and pages for project groups
+   - `/groups` – project groups list
+   - `/groups/{groupId}` – project group details
 
 ### Changed
+ - Rename `GetProjectGroups` query to `ListProjectGroups`
+ - Regenerate API client to include project group endpoints
 
 ### Fixed
 

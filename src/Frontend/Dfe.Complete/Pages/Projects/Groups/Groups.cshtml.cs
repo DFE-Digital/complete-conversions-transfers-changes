@@ -12,7 +12,7 @@ namespace Dfe.Complete.Pages.Projects.Groups
         
         public async Task OnGet()
         {
-            var request = new GetProjectGroupsQuery() { Page = PageNumber - 1, Count = PageSize };
+            var request = new ListProjectGroupsQuery() { Page = PageNumber - 1, Count = PageSize };
             var response = await sender.Send(request);
             
             ProjectGroups = response.Value;
