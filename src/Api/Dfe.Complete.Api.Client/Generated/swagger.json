@@ -82,6 +82,130 @@
         }
       }
     },
+    "/v1/Contacts/Create": {
+      "post": {
+        "tags": [
+          "Contacts"
+        ],
+        "summary": "Returns a list of Contacts for a specific Project",
+        "operationId": "Contacts_CreateExternalContact",
+        "parameters": [
+          {
+            "name": "FullName",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "x-position": 1
+          },
+          {
+            "name": "Role",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "x-position": 2
+          },
+          {
+            "name": "Email",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "x-position": 3
+          },
+          {
+            "name": "PhoneNumber",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "x-position": 4
+          },
+          {
+            "name": "Category",
+            "in": "query",
+            "schema": {
+              "$ref": "#/components/schemas/ContactCategory"
+            },
+            "x-position": 5
+          },
+          {
+            "name": "IsPrimaryContact",
+            "in": "query",
+            "schema": {
+              "type": "boolean"
+            },
+            "x-position": 6
+          },
+          {
+            "name": "ProjectId.Value",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "guid"
+            },
+            "x-position": 7
+          },
+          {
+            "name": "EstablishmentUrn",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "nullable": true
+            },
+            "x-position": 8
+          },
+          {
+            "name": "OrganisationName",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            },
+            "x-position": 9
+          },
+          {
+            "name": "LocalAuthorityId.Value",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "guid"
+            },
+            "x-position": 10
+          },
+          {
+            "name": "Type",
+            "in": "query",
+            "schema": {
+              "nullable": true,
+              "oneOf": [
+                {
+                  "$ref": "#/components/schemas/ContactType"
+                }
+              ]
+            },
+            "x-position": 11
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "ContactId",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ContactId"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request data."
+          }
+        }
+      }
+    },
     "/v1/CsvExport": {
       "post": {
         "tags": [
@@ -2285,8 +2409,12 @@
                 "nullable": true
               },
               "type": {
-                "type": "string",
-                "nullable": true
+                "nullable": true,
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/ContactType"
+                  }
+                ]
               },
               "localAuthorityId": {
                 "nullable": true,
@@ -2353,6 +2481,20 @@
           "Diocese",
           "Solicitor",
           "OutgoingTrust"
+        ]
+      },
+      "ContactType": {
+        "type": "string",
+        "description": "",
+        "x-enumNames": [
+          "Project",
+          "Establishment",
+          "DirectorOfChildServices"
+        ],
+        "enum": [
+          "Project",
+          "Establishment",
+          "DirectorOfChildServices"
         ]
       },
       "LocalAuthorityId": {

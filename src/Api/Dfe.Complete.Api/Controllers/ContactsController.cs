@@ -1,6 +1,8 @@
 ﻿using Asp.Versioning;
+using Dfe.Complete.Application.Contacts.Commands;
 using Dfe.Complete.Application.Contacts.Queries;
 using Dfe.Complete.Domain.Entities;
+using Dfe.Complete.Domain.ValueObjects;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -25,8 +27,8 @@ public class ContactsController(ISender sender) : ControllerBase
     [SwaggerResponse(400, "Invalid request data.")]
     public async Task<IActionResult> ListAllContactsForProjectAsync([FromQuery] GetContactsForProjectQuery request, CancellationToken cancellationToken)
     {
-        var project = await sender.Send(request, cancellationToken);
-        return Ok(project.Value);
+        var contacts = await sender.Send(request, cancellationToken);
+        return Ok(contacts.Value);
     }
 
     /// <summary>
@@ -41,7 +43,23 @@ public class ContactsController(ISender sender) : ControllerBase
     [SwaggerResponse(400, "Invalid request data.")]
     public async Task<IActionResult> ListAllContactsForLocalAuthorityAsync([FromQuery] GetContactsForLocalAuthorityQuery request, CancellationToken cancellationToken)
     {
-        var project = await sender.Send(request, cancellationToken);
-        return Ok(project.Value);
+        var contacts = await sender.Send(request, cancellationToken);
+        return Ok(contacts.Value);
+    }
+    
+    /// <summary>
+    /// Returns a list of Contacts for a specific Project
+    /// </summary>
+    /// <param name="request">The request.</param>
+    /// <param name="cancellationToken">The cancellation token.</param>
+    [Authorize(Policy = "CanWrite")]
+    [HttpPost]
+    [Route("Create")]
+    [SwaggerResponse(200, "ContactId", typeof(ContactId))]
+    [SwaggerResponse(400, "Invalid request data.")]
+    public async Task<IActionResult> CreateExternalContactAsync([FromQuery] CreateExternalContactRequest request, CancellationToken cancellationToken)
+    {
+        var contactId = await sender.Send(request, cancellationToken);
+        return Ok(contactId.Value);
     }
 }
