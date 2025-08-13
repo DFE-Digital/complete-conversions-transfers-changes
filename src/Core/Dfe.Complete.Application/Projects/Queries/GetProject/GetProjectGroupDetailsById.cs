@@ -30,7 +30,7 @@ namespace Dfe.Complete.Application.Projects.Queries.GetProject
                     .Query()
                     .FirstOrDefaultAsync(pg => pg.Id == request.ProjectGroupId, cancellationToken);
 
-                var trustUkprn = projectGroup!.TrustUkprn.ToString();
+                var trustUkprn = projectGroup?.TrustUkprn?.ToString();
                 
                 var trust = await trustsClient.GetTrustByUkprn2Async(trustUkprn, cancellationToken);
                 
@@ -55,7 +55,7 @@ namespace Dfe.Complete.Application.Projects.Queries.GetProject
                 
                 string trustName = trust.Name ?? string.Empty;
                 string trustReference = trust.ReferenceNumber ?? string.Empty;
-                string groupIdentifier = projectGroup.GroupIdentifier ?? string.Empty;
+                string groupIdentifier = projectGroup?.GroupIdentifier ?? string.Empty;
                 
                 var result = new ProjectGroupDetails(projectGroup.Id.Value.ToString(), trustName, trustReference, groupIdentifier, cardDetails);
 
