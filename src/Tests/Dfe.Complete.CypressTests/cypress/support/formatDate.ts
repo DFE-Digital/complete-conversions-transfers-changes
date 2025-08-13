@@ -9,7 +9,16 @@ export function significateDateToDisplayDate(significantDate: string): string {
 
 export function getDateMonthsFromNow(months: number): Date {
     const baseDate = new Date();
-    return new Date(baseDate.getFullYear(), baseDate.getMonth() + months, 1);
+    const currentYear = baseDate.getFullYear();
+    const currentMonth = baseDate.getMonth();
+
+    // Calculate target year and month properly
+    const totalMonths = currentMonth + months;
+    const targetYear = currentYear + Math.floor(totalMonths / 12);
+    const targetMonth = totalMonths % 12;
+
+    // Create date using UTC to avoid timezone issues
+    return new Date(Date.UTC(targetYear, targetMonth, 1));
 }
 
 export function getSignificantDateString(months: number): string {
