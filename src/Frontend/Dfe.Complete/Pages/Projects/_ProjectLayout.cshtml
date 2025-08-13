@@ -1,10 +1,12 @@
-@using Dfe.Complete.Pages.Projects.Team;
 @using Dfe.Complete.Constants;
+@using Dfe.Complete.Domain.Constants
 @using Dfe.Complete.Utils;
 @using Dfe.Complete.Domain.Enums
 @using Dfe.Complete.Domain.Extensions
+@using Dfe.Complete.Pages.Projects.DateHistory
 @using GovUk.Frontend.AspNetCore.TagHelpers
 @using Dfe.Complete.Pages.Projects.ProjectView
+@using Dfe.Complete.TagHelpers
 
 @model Dfe.Complete.Pages.Projects.ProjectView.ProjectLayoutModel
 @{
@@ -124,6 +126,17 @@ else if (User.GetUserId() != Model.Project.AssignedToId &&
   </div>
 </div>
 
+<div class="govuk-button-group">
+  @{
+    if (SigDateHelper.CanEditSignificantDate(Model.Project, User, Model.CurrentUserTeam))
+    {
+      <a data-module="govuk-button" draggable="false" role="button" class="govuk-button govuk-button--secondary" href="@String.Format(RouteConstants.ChangeProjectDateHistory, Model.Project.Id.Value)">Change @(Model.Project.Type == ProjectType.Conversion ? "conversion" : "transfer") date</a>
+    }
+  }
+  <a data-module="govuk-button" draggable="false" role="button" asp-policy="@UserPolicyConstants.CanViewServiceSupport" class="govuk-button govuk-button--warning" href="#">Delete project</a>
+</div>
+
+
 <div class="govuk-grid-row">
   <div class="govuk-grid-column-full">
     <nav class="moj-sub-navigation" aria-label="Project sub-navigation">
@@ -142,7 +155,7 @@ else if (User.GetUserId() != Model.Project.AssignedToId &&
             aria-current="@IsCurrentNav(ProjectLayoutModel.NotesNavigation)">Notes</a>
         </li>
         <li class="moj-sub-navigation__item">
-          <a class="moj-sub-navigation__link" href="#"
+          <a class="moj-sub-navigation__link" href="@String.Format(RouteConstants.ProjectExternalContacts, Model.Project.Id.Value)"
             aria-current="@IsCurrentNav(ProjectLayoutModel.ExternalContactsNavigation)">External contacts</a>
         </li>
         <li class="moj-sub-navigation__item">
