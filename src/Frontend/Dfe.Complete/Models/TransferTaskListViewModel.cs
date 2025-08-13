@@ -97,12 +97,11 @@ namespace Dfe.Complete.Models
             {
                 return TaskListStatus.Completed;
             }
-
-            return (project.SignificantDateProvisional == false ||
-                (taskData.StakeholderKickOffIntroductoryEmails == true ||
+            return (taskData.StakeholderKickOffIntroductoryEmails == true ||
                    taskData.StakeholderKickOffSetupMeeting == true ||
-                   taskData.StakeholderKickOffMeeting == true))
-                 ? TaskListStatus.InProgress : TaskListStatus.NotStarted;
+                   taskData.StakeholderKickOffMeeting == true ||
+                    project.SignificantDateProvisional == false)
+                    ? TaskListStatus.InProgress : TaskListStatus.NotStarted;
         }
 
         private static TaskListStatus DeclarationOfExpenditureCertificateTaskStatus(TransferTaskDataDto taskData)

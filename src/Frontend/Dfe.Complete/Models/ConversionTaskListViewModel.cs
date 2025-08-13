@@ -99,8 +99,8 @@ namespace Dfe.Complete.Models
         }
 
         private static TaskListStatus ExternalStakeHolderKickoffTaskStatus(ConversionTaskDataDto taskData, ProjectDto project)
-        { 
-            if(taskData.StakeholderKickOffIntroductoryEmails == true &&
+        {
+            if (taskData.StakeholderKickOffIntroductoryEmails == true &&
                  taskData.StakeholderKickOffLocalAuthorityProforma == true &&
                  taskData.StakeholderKickOffSetupMeeting == true &&
                  taskData.StakeholderKickOffMeeting == true &&
@@ -109,14 +109,11 @@ namespace Dfe.Complete.Models
             {
                 return TaskListStatus.Completed;
             }
-            if(project.SignificantDateProvisional == true)
-            {
-                return TaskListStatus.InProgress;
-            }
             return (taskData.StakeholderKickOffIntroductoryEmails == true ||
                    taskData.StakeholderKickOffLocalAuthorityProforma == true ||
                    taskData.StakeholderKickOffSetupMeeting == true ||
-                   taskData.StakeholderKickOffMeeting == true)
+                   taskData.StakeholderKickOffMeeting == true ||
+                    project.SignificantDateProvisional == false)
                     ? TaskListStatus.InProgress : TaskListStatus.NotStarted;
         }
 
