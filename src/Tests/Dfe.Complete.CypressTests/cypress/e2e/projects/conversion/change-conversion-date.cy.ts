@@ -12,8 +12,11 @@ import {
     getSignificantDateString,
     getYearNumber,
 } from "cypress/support/formatDate";
+import validationComponent from "cypress/pages/validationComponent";
 
 const inSixMonthsSignificantDate = getSignificantDateString(6);
+const inSixMonthsMonth = getMonthNumber(6);
+const inSixMonthsYear = getYearNumber(6);
 const inThreeMonthsDate = getDisplayDateString(3);
 const inThreeMonthsMonth = getMonthNumber(3);
 const inThreeMonthsYear = getYearNumber(3);
@@ -61,6 +64,20 @@ describe("Change the conversion date tests", () => {
     beforeEach(() => {
         cy.login();
         cy.acceptCookies();
+    });
+
+    it("Should display error when trying to change conversion date to same date", () => {
+        cy.visit(`projects/${confirmedDateProjectId}/date-history`);
+
+        Logger.log("Click 'Change conversion date' button");
+        projectDetailsPage.clickButton("Change conversion date");
+
+        Logger.log("Enter same date as current conversion date");
+        changeDatePage.enterDate(inSixMonthsMonth, inSixMonthsYear).saveAndContinue();
+
+        validationComponent.hasLinkedValidationError(
+            "The new date cannot be the same as the current date. Check you have entered the correct date.",
+        );
     });
 
     it("Should be able to change conversion date to an earlier date for your project that has the conversion date confirmed", () => {
@@ -164,6 +181,33 @@ describe("Change the conversion date tests", () => {
 
         Logger.log("Assert that the 'change conversion date' button is not visible");
         projectDetailsPage.doesntContain("Change conversion date");
+    });
+
+    it("Should display error when trying to change conversion date to a past date", () => {
+        cy.visit(`projects/${confirmedDateProjectId}/date-history`);
+
+        Logger.log("Click 'Change conversion date' button");
+        projectDetailsPage.clickButton("Change conversion date");
+
+        Logger.log("Enter past date");
+        changeDatePage.enterDate(1, 2025).saveAndContinue();
+
+        validationComponent.hasLinkedValidationError("The Significant date cannot be in the past");
+    });
+
+    it("Should NOT be able to submit a change conversion date request with no reasons selected", () => {
+        cy.visit(`projects/${confirmedDateProjectId}/tasks`);
+
+        Logger.log("Click 'Change conversion date' button");
+        projectDetailsPage.clickButton("Change conversion date");
+
+        Logger.log("Enter new date");
+        changeDatePage.enterDate(getMonthNumber(12), getYearNumber(12)).saveAndContinue();
+
+        Logger.log("Click continue without selecting any reasons for change");
+        changeDatePage.saveAndContinue();
+
+        validationComponent.hasErrorMessage("You must choose at least one reason");
     });
 
     it("Check accessibility across pages", () => {
