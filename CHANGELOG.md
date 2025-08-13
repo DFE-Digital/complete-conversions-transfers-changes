@@ -17,6 +17,7 @@ Security in case of vulnerabilities.
 ## Unreleased
 
 ### Added
+ - Ability to edit project information for conversions and transfers
 
 ### Changed
 
