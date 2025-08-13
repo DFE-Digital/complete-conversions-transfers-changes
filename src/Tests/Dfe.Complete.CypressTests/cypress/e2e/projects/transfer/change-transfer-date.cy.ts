@@ -119,8 +119,7 @@ describe("Change the transfer date tests", () => {
             .contains("Reasons for date change")
             .selectReasonWithDetails("Incoming trust", "The trust we are joining has requested a later date.")
             .selectReasonWithDetails("Outgoing trust", "The trust we are leaving has requested a later date.")
-            // .selectReasonWithDetails("Academy", "The school needs more time to prepare for the transfer.") //todo bug
-            .selectReasonWithDetails("School", "The school needs more time to prepare for the transfer.")
+            .selectReasonWithDetails("Academy", "The academy needs more time to prepare for the transfer.")
             .selectReasonWithDetails("Local Authority", "The local authority has requested a later date.")
             .selectReasonWithDetails("Diocese", "The diocese has requested a later date.")
             .selectReasonWithDetails(
