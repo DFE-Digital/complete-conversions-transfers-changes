@@ -26,8 +26,6 @@ Security in case of vulnerabilities.
    - `/groups/{groupId}` – project group details
 
 ### Changed
- - Rename `GetProjectGroups` query to `ListProjectGroups`
- - Regenerate API client to include project group endpoints
 
 ### Fixed
 
