@@ -30,7 +30,7 @@ namespace Dfe.Complete.Application.Projects.Queries.GetProject
                     .Query()
                     .FirstOrDefaultAsync(pg => pg.Id == request.ProjectGroupId, cancellationToken);
 
-                var trustUkprn = projectGroup.TrustUkprn.ToString();
+                var trustUkprn = projectGroup!.TrustUkprn.ToString();
                 
                 var trust = await trustsClient.GetTrustByUkprn2Async(trustUkprn, cancellationToken);
                 

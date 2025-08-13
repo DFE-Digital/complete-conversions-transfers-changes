@@ -38,11 +38,11 @@ namespace Dfe.Complete.Application.Projects.Queries.GetProject
                 var projectUrns = projectsInGroups.Select(p => p.Urn.Value).Distinct();
                 var establishments = await establishmentsClient.GetByUrns2Async(projectUrns, cancellationToken);
                 
-                var trusts = await trustsClient.GetByUkprnsAllAsync(projectGroupUkprns, cancellationToken);
+                var trusts = await trustsClient.GetByUkprnsAllAsync(projectGroupUkprns!, cancellationToken);
 
                 var projectGroupsDto = projectGroups.Select(pg =>
                 {
-                   var groupName = trusts.FirstOrDefault(e => e.Ukprn == pg.TrustUkprn)?.Name ?? string.Empty;
+                   var groupName = trusts.FirstOrDefault(e => e.Ukprn! == pg.TrustUkprn)?.Name ?? string.Empty;
                    var groupIdentifier = pg.GroupIdentifier ?? string.Empty;
                    var trustUkprn = pg.TrustUkprn!.Value.ToString() ?? string.Empty;
                    
