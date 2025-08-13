@@ -22,6 +22,13 @@ public class ExternalContacts(ISender sender, ILogger<ExternalContacts> logger)
     public List<ExternalContactModel> ParliamentaryContacts { get; set; } = [];
     public string LocalAuthorityName { get; set; } = "";
 
+    [BindProperty(Name = $"new_transfer_contact_form[contact_type]")]
+    public string? TransferContactType { get; set; }
+    
+    [BindProperty(Name = $"new_conversion_contact_form[contact_type]")]
+    public string? ConversionContactType { get; set; }
+    
+
     public override async Task<IActionResult> OnGetAsync()
     {
         await base.OnGetAsync();
@@ -98,5 +105,36 @@ public class ExternalContacts(ISender sender, ILogger<ExternalContacts> logger)
         }
 
         return Page();
+    }
+    
+
+    public IActionResult OnPost()
+    {
+        var inputString = ConversionContactType ?? TransferContactType;
+        
+        if (inputString is null)
+        {
+            ModelState.AddModelError("", "Please select a contact type.");
+            
+            return RedirectToPage("Projects/ExternalContacts/New/NewExternalContact", new { ProjectId });
+        }
+        
+        switch (inputString)
+        {
+            case "headteacher":
+                return RedirectToPage("New/CreateHeadteacher", new { ProjectId });
+            case "incoming_trust_ceo":
+                return RedirectToPage("New/CreateIncomingTrustCeo", new { ProjectId });
+            case "outgoing_trust_ceo":
+                return RedirectToPage("New/CreateOutgoingTrustCeo", new { ProjectId });
+            case "chair_of_governors":
+                return RedirectToPage("New/CreateIncomingTrustCeo", new { ProjectId });
+            case "other":
+                return RedirectToPage("New/CreateOtherExternalContact", new { ProjectId });
+            default:
+                ModelState.AddModelError("", "Contact type in invalid");
+                return RedirectToPage("New/NewExternalContact", new { ProjectId });
+            
+        }
     }
 }

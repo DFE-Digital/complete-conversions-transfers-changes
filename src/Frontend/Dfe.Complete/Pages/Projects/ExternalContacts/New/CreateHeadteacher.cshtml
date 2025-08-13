@@ -1,0 +1,74 @@
+﻿@page
+@model Dfe.Complete.Pages.Projects.ExternalContacts.New.CreateHeadteacher
+
+@{
+  Layout = "Shared/_Layout";
+}
+
+<div class="govuk-width-container ">
+  <nav aria-label="back link">
+    <a class="govuk-back-link" href="/projects/@Model.ProjectId/external-contacts">Back</a>
+  </nav>
+  <main class="govuk-main-wrapper app-content" id="main-content" role="main">
+
+
+    <div class="govuk-grid-row govuk-body">
+      <div class="govuk-grid-column-full">
+        <span class="govuk-caption-l">Add a contact</span>
+        <h1 class="govuk-heading-l">Enter contact details</h1>
+
+        <div class="app-task-hint">
+          <p>Check the contact details you have for the headteacher against GIAS (Get information about schools). You can edit these details later if you need to.</p>
+        </div>
+
+        <details data-module="govuk-details" class="govuk-details">
+          <summary class="govuk-details__summary">
+            <span class="govuk-details__summary-text">What to do if the headteacher contact details are different</span>
+          </summary>
+          <div class="govuk-details__text">
+            Check which contact is correct with the school and ask that they update GIAS if necessary. This will help to make sure they get their funding and legal paperwork at the right time.
+          </div>
+        </details>
+      </div>
+    </div>
+
+    <div class="govuk-grid-row govuk-body">
+      <div class="govuk-grid-column-full">
+        <form class="new_contact_create_headteacher_contact_form" id="new_contact_create_headteacher_contact_form" accept-charset="UTF-8" method="post">
+          @Html.AntiForgeryToken()
+          <govuk-input name="contact_create_headteacher_contact_form[name]">
+            <govuk-input-label class="govuk-label--m">Full name</govuk-input-label>
+          </govuk-input>
+          <govuk-input name="contact_create_headteacher_contact_form[email]" type="email">
+            <govuk-input-label class="govuk-label--m">Email</govuk-input-label>
+            <govuk-input-hint>This must be the person's work email address, or address at the school, academy or trust their role is relevant to.</govuk-input-hint>
+          </govuk-input>
+          <govuk-input name="contact_create_headteacher_contact_form[phone]" type="tel" class="govuk-input--width-10">
+            <govuk-input-label class="govuk-label--m">Full name</govuk-input-label>
+          </govuk-input>
+
+          <govuk-radios name="contact_create_headteacher_contact_form[primary_contact_for_category]">
+            <govuk-radios-fieldset>
+              <govuk-radios-fieldset-legend class="govuk-fieldset__legend--m">
+                Is this person the primary project contact for this organisation?
+              </govuk-radios-fieldset-legend>
+
+              <govuk-radios-hint>
+                A primary project contact is the person you most often to get in touch with first if you have any questions about the project.
+              </govuk-radios-hint>
+
+              <govuk-radios-item value="true">Yes</govuk-radios-item>
+              <govuk-radios-item value="false">No</govuk-radios-item>
+            </govuk-radios-fieldset>
+          </govuk-radios>
+
+          <div class="govuk-button-group">
+            <button type="submit" formnovalidate="formnovalidate" class="govuk-button" data-module="govuk-button" data-prevent-double-click="true">Save and continue</button>
+            <a class="govuk-link" href="/projects/@Model.ProjectId/external-contacts">Cancel</a>
+          </div>
+        </form>
+      </div>
+    </div>
+
+  </main>
+</div>

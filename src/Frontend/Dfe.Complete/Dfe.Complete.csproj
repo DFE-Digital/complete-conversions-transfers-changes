@@ -99,4 +99,10 @@
 	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
 	  </Content>
 	</ItemGroup>
+	<ItemGroup>
+	  <_ContentIncludedByDefault Remove="Pages\Projects\ExternalContacts\Add\AddConversionExternalContact.cshtml" />
+	  <_ContentIncludedByDefault Remove="Pages\Projects\ExternalContacts\Add\AddOtherExternalContact.cshtml" />
+	  <_ContentIncludedByDefault Remove="Pages\Projects\ExternalContacts\Add\AddSpecificExternalContact.cshtml" />
+	  <_ContentIncludedByDefault Remove="Pages\Projects\ExternalContacts\Add\AddTransferExternalContact.cshtml" />
+	</ItemGroup>
 </Project>
