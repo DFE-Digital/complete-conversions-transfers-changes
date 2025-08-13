@@ -1,6 +1,6 @@
 using AutoFixture.Xunit2;
 using DfE.CoreLibs.Testing.AutoFixture.Attributes;
-using Dfe.Complete.Domain.Interfaces.Repositories;
+using Dfe.Complete.Application.Projects.Interfaces;
 using NSubstitute;
 using DfE.CoreLibs.Testing.AutoFixture.Customizations;
 using Dfe.Complete.Application.Projects.Queries.GetProject;
@@ -17,8 +17,8 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
         [Theory]
         [CustomAutoData(typeof(DateOnlyCustomization))]
         public async Task Handle_ShouldReturnDetails_WhenQueryIsValid(
-            [Frozen] ICompleteRepository<ProjectGroup> mockProjectGroupRepository,
-            [Frozen] ICompleteRepository<Dfe.Complete.Domain.Entities.Project> mockProjectRepository,
+            [Frozen] IProjectGroupReadRepository mockProjectGroupRepository,
+            [Frozen] IProjectReadRepository mockProjectRepository,
             [Frozen] ITrustsV4Client mockTrustsClient,
             [Frozen] IEstablishmentsV4Client mockEstablishmentsClient,
             GetProjectGroupDetailsQueryHandler handler,
@@ -67,10 +67,11 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
                 new() { Urn = "100002", Name = "School Two" }
             };
 
-            mockProjectGroupRepository.Query().Returns(new List<ProjectGroup> { projectGroup }.BuildMock());
+            mockProjectGroupRepository.ProjectGroups.Returns(new List<ProjectGroup> { projectGroup }.BuildMock());
             mockTrustsClient.GetTrustByUkprn2Async(projectGroup.TrustUkprn.Value.ToString(), Arg.Any<CancellationToken>())
                 .Returns(Task.FromResult(trusts));
-            mockProjectRepository.Query().Returns(projects.BuildMock());
+            mockProjectRepository.ProjectsNoIncludes.Returns(projects.BuildMock());
+            mockProjectRepository.Projects.Returns(projects.BuildMock());
             mockEstablishmentsClient.GetByUrns2Async(Arg.Any<IEnumerable<int>>(), Arg.Any<CancellationToken>())
                 .Returns(Task.FromResult(establishments));
 
@@ -90,12 +91,12 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
         [Theory]
         [CustomAutoData(typeof(DateOnlyCustomization))]
         public async Task Handle_ShouldFail_WhenProjectGroupNotFound(
-            [Frozen] ICompleteRepository<ProjectGroup> mockProjectGroupRepository,
+            [Frozen] IProjectGroupReadRepository mockProjectGroupRepository,
             GetProjectGroupDetailsQueryHandler handler,
             GetProjectGroupDetailsQuery query)
         {
             // Arrange
-            mockProjectGroupRepository.Query().Returns(new List<ProjectGroup>().BuildMock());
+            mockProjectGroupRepository.ProjectGroups.Returns(new List<ProjectGroup>().BuildMock());
 
             // Act
             var result = await handler.Handle(query, default);
@@ -108,14 +109,14 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
         [Theory]
         [CustomAutoData(typeof(DateOnlyCustomization))]
         public async Task Handle_ShouldFail_WhenTrustsClientThrows(
-            [Frozen] ICompleteRepository<ProjectGroup> mockProjectGroupRepository,
+            [Frozen] IProjectGroupReadRepository mockProjectGroupRepository,
             [Frozen] ITrustsV4Client mockTrustsClient,
             GetProjectGroupDetailsQueryHandler handler,
             GetProjectGroupDetailsQuery query)
         {
             // Arrange
             var group = new ProjectGroup { Id = query.ProjectGroupId, TrustUkprn = new Ukprn(12345678), GroupIdentifier = "GROUP" };
-            mockProjectGroupRepository.Query().Returns(new List<ProjectGroup> { group }.BuildMock());
+            mockProjectGroupRepository.ProjectGroups.Returns(new List<ProjectGroup> { group }.BuildMock());
             mockTrustsClient.GetTrustByUkprn2Async(Arg.Any<string>(), Arg.Any<CancellationToken>())
                 .Throws(new Exception("Trusts API failed"));
 

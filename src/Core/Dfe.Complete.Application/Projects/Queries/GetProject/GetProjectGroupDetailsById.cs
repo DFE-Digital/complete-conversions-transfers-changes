@@ -1,11 +1,10 @@
-using Dfe.Complete.Domain.Interfaces.Repositories;
 using Dfe.Complete.Application.Common.Models;
 using Dfe.Complete.Application.Projects.Models;
-using Dfe.Complete.Domain.Entities;
 using Microsoft.Extensions.Logging;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Dfe.AcademiesApi.Client.Contracts;
+using Dfe.Complete.Application.Projects.Interfaces;
 using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Domain.ValueObjects;
 using Dfe.Complete.Utils;
@@ -15,8 +14,8 @@ namespace Dfe.Complete.Application.Projects.Queries.GetProject
 {
     public record GetProjectGroupDetailsQuery(ProjectGroupId ProjectGroupId) : IRequest<Result<ProjectGroupDetails>>;
 
-    public class GetProjectGroupDetailsQueryHandler(ICompleteRepository<ProjectGroup> projectGroupRepository,
-        ICompleteRepository<Project> projectRepository,
+    public class GetProjectGroupDetailsQueryHandler(IProjectGroupReadRepository projectGroupRepository,
+        IProjectReadRepository projectReadRepository,
         ITrustsV4Client trustsClient,
         IEstablishmentsV4Client establishmentsClient,
         ILogger<GetProjectGroupDetailsQueryHandler> logger)
@@ -26,16 +25,14 @@ namespace Dfe.Complete.Application.Projects.Queries.GetProject
         {
             try
             {
-                var projectGroup = await projectGroupRepository
-                    .Query()
+                var projectGroup = await projectGroupRepository.ProjectGroups.AsNoTracking()
                     .FirstOrDefaultAsync(pg => pg.Id == request.ProjectGroupId, cancellationToken);
-
+     
                 var trustUkprn = projectGroup?.TrustUkprn?.ToString();
                 
                 var trust = await trustsClient.GetTrustByUkprn2Async(trustUkprn!, cancellationToken);
                 
-                var projectsInGroups = await projectRepository
-                    .Query()
+                var projectsInGroups = await projectReadRepository.ProjectsNoIncludes
                         .Include(p => p.LocalAuthority)
                     .Where(p => p.GroupId == request.ProjectGroupId)
                     .ToListAsync(cancellationToken);
@@ -51,7 +48,6 @@ namespace Dfe.Complete.Application.Projects.Queries.GetProject
 
                     return new ProjectGroupCardDetails(p.Id.Value.ToString(), establishmentName, urn, projectType, p.LocalAuthority!.Name, p.Region.ToDisplayDescription());
                 });
-                
                 
                 string trustName = trust.Name ?? string.Empty;
                 string trustReference = trust.ReferenceNumber ?? string.Empty;
