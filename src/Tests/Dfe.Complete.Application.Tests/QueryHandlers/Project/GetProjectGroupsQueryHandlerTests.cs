@@ -156,9 +156,6 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
         [CustomAutoData(typeof(DateOnlyCustomization))]
         public async Task Handle_ShouldFail_WhenProjectGroupRepositoryThrowsException(
             [Frozen] ICompleteRepository<ProjectGroup> mockProjectGroupRepository,
-            [Frozen] ICompleteRepository<Dfe.Complete.Domain.Entities.Project> mockProjectRepository,
-            [Frozen] ITrustsV4Client mockTrustsClient,
-            [Frozen] IEstablishmentsV4Client mockEstablishmentsClient,
             GetProjectGroupsQueryHandler handler,
             ListProjectGroupsQuery query)
         {
@@ -178,8 +175,6 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
         public async Task Handle_ShouldFail_WhenProjectRepositoryThrowsException(
             [Frozen] ICompleteRepository<ProjectGroup> mockProjectGroupRepository,
             [Frozen] ICompleteRepository<Dfe.Complete.Domain.Entities.Project> mockProjectRepository,
-            [Frozen] ITrustsV4Client mockTrustsClient,
-            [Frozen] IEstablishmentsV4Client mockEstablishmentsClient,
             GetProjectGroupsQueryHandler handler,
             ListProjectGroupsQuery query)
         {
@@ -206,7 +201,6 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
             [Frozen] ICompleteRepository<ProjectGroup> mockProjectGroupRepository,
             [Frozen] ICompleteRepository<Dfe.Complete.Domain.Entities.Project> mockProjectRepository,
             [Frozen] ITrustsV4Client mockTrustsClient,
-            [Frozen] IEstablishmentsV4Client mockEstablishmentsClient,
             GetProjectGroupsQueryHandler handler,
             ListProjectGroupsQuery query)
         {
