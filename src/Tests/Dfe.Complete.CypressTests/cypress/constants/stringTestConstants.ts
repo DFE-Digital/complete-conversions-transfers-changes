@@ -28,7 +28,7 @@ export const todayFormatted = today.toLocaleDateString("en-GB", {
 });
 export const currentMonthLong = `${today.toLocaleString("en-GB", { month: "long" })} ${today.getFullYear()}`;
 export const currentMonthShort = `${today.toLocaleString("en-GB", { month: "short" })} ${today.getFullYear()}`;
-export const nextMonth = new Date(today.setMonth(today.getMonth() + 1));
+export const nextMonth = new Date(today.getFullYear(), today.getMonth() + 1);
 export const nextMonthLong = `${nextMonth.toLocaleString("en-GB", { month: "long" })} ${nextMonth.getFullYear()}`;
 export const nextMonthShort = `${nextMonth.toLocaleString("en-GB", { month: "short" })} ${nextMonth.getFullYear()}`;
 export const giasUrl = "https://get-information-schools.service.gov.uk";
