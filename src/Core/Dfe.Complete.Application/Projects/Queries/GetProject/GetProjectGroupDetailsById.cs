@@ -56,7 +56,7 @@ namespace Dfe.Complete.Application.Projects.Queries.GetProject
                 string trustName = trust.Name ?? string.Empty;
                 string trustReference = trust.ReferenceNumber ?? string.Empty;
                 string groupIdentifier = projectGroup?.GroupIdentifier ?? string.Empty;
-                string id = projectGroup?.Id.ToString() ?? string.Empty;
+                string id = projectGroup?.Id.Value.ToString() ?? string.Empty;
                 
                 var result = new ProjectGroupDetails(id, trustName, trustReference, groupIdentifier, cardDetails);
 
