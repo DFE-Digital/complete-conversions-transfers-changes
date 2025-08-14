@@ -58,7 +58,7 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
             mockEstablishmentsClient.GetByUrns2Async(Arg.Any<IEnumerable<int>>(), Arg.Any<CancellationToken>()).Returns(Task.FromResult(establishments));
 
             // Act
-            var result = await handler.Handle(query, default);
+            var result = await handler.Handle(query with { Page = 0, Count = 100 }, default);
 
             // Assert
             Assert.True(result.IsSuccess);
@@ -101,7 +101,7 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
             mockEstablishmentsClient.GetByUrns2Async(Arg.Any<IEnumerable<int>>(), Arg.Any<CancellationToken>()).Returns(Task.FromResult(new ObservableCollection<EstablishmentDto>()));
 
             // Act
-            var result = await handler.Handle(query, default);
+            var result = await handler.Handle(query with { Page = 0, Count = 100 }, default);
 
             // Assert
             Assert.True(result.IsSuccess);
@@ -137,7 +137,7 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
             mockEstablishmentsClient.GetByUrns2Async(Arg.Any<IEnumerable<int>>(), Arg.Any<CancellationToken>()).Returns(Task.FromResult(new ObservableCollection<EstablishmentDto>()));
 
             // Act
-            var result = await handler.Handle(query, default);
+            var result = await handler.Handle(query with { Page = 0, Count = 100 }, default);
 
             // Assert
             Assert.True(result.IsSuccess);
@@ -298,7 +298,7 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
             mockEstablishmentsClient.GetByUrns2Async(Arg.Any<IEnumerable<int>>(), Arg.Any<CancellationToken>()).Returns(Task.FromResult(new ObservableCollection<EstablishmentDto>()));
 
             // Act
-            var result = await handler.Handle(query, default);
+            var result = await handler.Handle(query with { Page = 0, Count = 100 }, default);
 
             // Assert
             Assert.True(result.IsSuccess);
