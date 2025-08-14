@@ -6,22 +6,15 @@ import {
 } from "./apiDomain";
 import { dimensionsTrust, groupReferenceNumber, macclesfieldTrust } from "cypress/constants/stringTestConstants";
 import { cypressUser } from "cypress/constants/cypressConstants";
+import { getSignificantDateString } from "cypress/support/formatDate";
 
 export class ProjectBuilder {
     public static createConversionProjectRequest(
-        significantDate: Date,
-        urn?: number,
-        userAdId?: string,
+        options: Partial<CreateConversionProjectRequest> = {},
     ): CreateConversionProjectRequest {
-        // force significant date to be first day of the month
-        significantDate.setDate(1);
-        const significantDateFormatted = significantDate.toISOString().split("T")[0];
-        const urnValue = urn ?? 103844;
-        const userAdIdValue = userAdId ?? cypressUser.adId;
-
         return {
-            urn: { value: urnValue },
-            significantDate: significantDateFormatted,
+            urn: { value: 103844 },
+            significantDate: getSignificantDateString(1),
             isSignificantDateProvisional: false,
             incomingTrustUkprn: {
                 value: macclesfieldTrust.ukprn,
@@ -35,7 +28,8 @@ export class ProjectBuilder {
             groupReferenceNumber: groupReferenceNumber,
             handingOverToRegionalCaseworkService: false,
             handoverComments: "test 2",
-            userAdId: userAdIdValue,
+            userAdId: cypressUser.adId,
+            ...options,
         };
     }
 
