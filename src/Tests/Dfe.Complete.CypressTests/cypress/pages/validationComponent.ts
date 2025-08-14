@@ -9,6 +9,11 @@ class ValidationComponent {
         return this;
     }
 
+    public hasErrorMessage(message: string): this {
+        cy.getByClass("govuk-error-message").should("contain.text", message);
+        return this;
+    }
+
     public hasLinkedValidationError(message: string): this {
         cy.get(".govuk-error-summary")
             .contains(message)
