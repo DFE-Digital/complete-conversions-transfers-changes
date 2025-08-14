@@ -1,5 +1,5 @@
 import { ProjectBuilder } from "cypress/api/projectBuilder";
-import { nextMonth, nextMonthShort } from "cypress/constants/stringTestConstants";
+import { nextMonthShort } from "cypress/constants/stringTestConstants";
 import { before } from "mocha";
 import search from "cypress/pages/search";
 import searchResultsPage from "cypress/pages/searchResultsPage";
@@ -9,7 +9,7 @@ import projectRemover from "cypress/api/projectRemover";
 import projectApi from "cypress/api/projectApi";
 import { checkAccessibilityAcrossPages } from "cypress/support/reusableTests";
 
-const project = ProjectBuilder.createConversionProjectRequest(nextMonth);
+const project = ProjectBuilder.createConversionProjectRequest();
 const schoolName = "St Chad's Catholic Primary School";
 
 describe("Search bar tests", () => {
