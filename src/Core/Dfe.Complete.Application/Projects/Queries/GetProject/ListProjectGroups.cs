@@ -6,6 +6,7 @@ using Microsoft.Extensions.Logging;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Dfe.AcademiesApi.Client.Contracts;
+using Dfe.Complete.Utils;
 
 namespace Dfe.Complete.Application.Projects.Queries.GetProject
 {
@@ -22,25 +23,41 @@ namespace Dfe.Complete.Application.Projects.Queries.GetProject
         {
             try
             {
-                var projectGroups = await projectGroupRepository
+                var projectGroupsQuery = projectGroupRepository
                     .Query()
-                    .OrderByDescending(pg => pg.GroupIdentifier)
+                    .OrderByDescending(pg => pg.GroupIdentifier);
+
+                var totalCount = await projectGroupsQuery.CountAsync(cancellationToken);
+
+                var pageOfProjectGroups = await projectGroupsQuery
+                    .Paginate(request.Page, request.Count)
                     .ToListAsync(cancellationToken);
                 
-                var projectGroupIds = projectGroups.Select(p => p.Id).Distinct();
-                var projectGroupUkprns = projectGroups.Select(p => p.TrustUkprn?.Value.ToString()).Distinct();
-                
+
+                var projectGroupIds = pageOfProjectGroups
+                    .Select(p => p.Id)
+                    .Distinct()
+                    .ToList();
+
+                var projectGroupUkprns = pageOfProjectGroups
+                    .Select(p => p.TrustUkprn?.Value.ToString())
+                    .Where(ukprn => !string.IsNullOrWhiteSpace(ukprn))
+                    .Distinct()
+                    .ToList();
+
                 var projectsInGroups = await projectRepository
                     .Query()
                     .Where(p => projectGroupIds.Contains(p.GroupId))
                     .ToListAsync(cancellationToken);
-                
-                var projectUrns = projectsInGroups.Select(p => p.Urn.Value).Distinct();
+
+                var projectUrns = projectsInGroups
+                    .Select(p => p.Urn.Value)
+                    .Distinct();
                 var establishments = await establishmentsClient.GetByUrns2Async(projectUrns, cancellationToken);
-                
+
                 var trusts = await trustsClient.GetByUkprnsAllAsync(projectGroupUkprns!, cancellationToken);
 
-                var projectGroupsDto = projectGroups.Select(pg =>
+                var projectGroupsDto = pageOfProjectGroups.Select(pg =>
                 {
                    var groupName = trusts.FirstOrDefault(e => e.Ukprn! == pg.TrustUkprn)?.Name ?? string.Empty;
                    var groupIdentifier = pg.GroupIdentifier ?? string.Empty;
@@ -62,9 +79,9 @@ namespace Dfe.Complete.Application.Projects.Queries.GetProject
                        groupIdentifier,
                        trustUkprn,
                        string.Join("; ", establishmentInThisGroup));
-                }).ToList();
-                
-                return PaginatedResult<List<ListProjectsGroupsModel>>.Success(projectGroupsDto, projectGroupsDto.Count);
+                 }).ToList();
+
+                return PaginatedResult<List<ListProjectsGroupsModel>>.Success(projectGroupsDto, totalCount);
             }
             catch (Exception ex)
             {
