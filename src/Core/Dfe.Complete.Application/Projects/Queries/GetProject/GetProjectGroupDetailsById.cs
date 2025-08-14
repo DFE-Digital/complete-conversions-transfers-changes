@@ -30,7 +30,16 @@ namespace Dfe.Complete.Application.Projects.Queries.GetProject
      
                 var trustUkprn = projectGroup?.TrustUkprn?.ToString();
                 
-                var trust = await trustsClient.GetTrustByUkprn2Async(trustUkprn!, cancellationToken);
+                string trustName = "Could Not Find Trust For Ukprn";
+                string trustReference =  string.Empty;
+
+                if (!string.IsNullOrEmpty(trustUkprn))
+                {
+                    var trust = await trustsClient.GetTrustByUkprn2Async(trustUkprn!, cancellationToken);
+                    
+                    trustName = trust.Name!;
+                    trustReference = trust.ReferenceNumber!;
+                }
                 
                 var projectsInGroups = await projectReadRepository.ProjectsNoIncludes
                         .Include(p => p.LocalAuthority)
@@ -49,12 +58,11 @@ namespace Dfe.Complete.Application.Projects.Queries.GetProject
                     return new ProjectGroupCardDetails(p.Id.Value.ToString(), establishmentName, urn, projectType, p.LocalAuthority!.Name, p.Region.ToDisplayDescription());
                 });
                 
-                string trustName = trust.Name ?? string.Empty;
-                string trustReference = trust.ReferenceNumber ?? string.Empty;
+                
                 string groupIdentifier = projectGroup?.GroupIdentifier ?? string.Empty;
                 string id = projectGroup?.Id.Value.ToString() ?? string.Empty;
                 
-                var result = new ProjectGroupDetails(id, trustName, trustReference, groupIdentifier, cardDetails);
+                var result = new ProjectGroupDetails(id, trustName, trustReference, groupIdentifier, cardDetails.OrderBy(c => c.EstablishmentName));
 
                 return Result<ProjectGroupDetails>.Success(result);
             }

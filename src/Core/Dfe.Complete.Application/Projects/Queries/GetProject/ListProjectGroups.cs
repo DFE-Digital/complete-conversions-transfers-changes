@@ -44,7 +44,7 @@ namespace Dfe.Complete.Application.Projects.Queries.GetProject
                 {
                    var groupName = trusts.FirstOrDefault(e => e.Ukprn! == pg.TrustUkprn)?.Name ?? string.Empty;
                    var groupIdentifier = pg.GroupIdentifier ?? string.Empty;
-                   var trustUkprn = pg.TrustUkprn!.Value.ToString() ?? string.Empty;
+                   var trustUkprn = pg.TrustUkprn?.Value.ToString() ?? string.Empty;
                    
                    var urnsForThisGroup = projectsInGroups
                        .Where(p => p.GroupId == pg.Id)
