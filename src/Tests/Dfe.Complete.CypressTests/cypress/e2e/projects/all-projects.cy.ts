@@ -20,18 +20,18 @@ import userProjectTable from "cypress/pages/projects/tables/userProjectTable";
 import formAMATProjectTable from "cypress/pages/projects/tables/formAMATProjectTable";
 import { checkAccessibilityAcrossPages } from "cypress/support/reusableTests";
 import allProjectsStatisticsPage from "cypress/pages/projects/allProjectsStatisticsPage";
+import { getSignificantDateString, significateDateToDisplayDate } from "cypress/support/formatDate";
 import { PrepareProjectBuilder } from "cypress/api/prepareProjectBuilder";
 import prepareProjectApi from "cypress/api/prepareProjectApi";
-import { significateDateToDisplayDate } from "cypress/support/formatDate";
 
-const project = ProjectBuilder.createConversionProjectRequest(nextMonth);
+const project = ProjectBuilder.createConversionProjectRequest();
 let projectId: string;
 const schoolName = "St Chad's Catholic Primary School";
 const region = "West Midlands";
 const localAuthority = "Dudley Metropolitan Borough Council";
 const localAuthorityShort = localAuthority.split(" ")[0];
 const transferProject = ProjectBuilder.createTransferProjectRequest({
-    significantDate: nextMonth.toISOString().split("T")[0],
+    significantDate: getSignificantDateString(1),
 });
 const transferSchoolName = "Abbey College Manchester";
 const transferRegion = "North West";

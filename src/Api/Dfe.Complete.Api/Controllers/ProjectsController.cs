@@ -15,6 +15,8 @@ using Dfe.Complete.Application.Projects.Queries.SearchProjects;
 using Dfe.Complete.Application.Notes.Queries;
 using Dfe.Complete.Application.Notes.Commands;
 using Dfe.Complete.Application.Common.Models;
+using Dfe.Complete.Application.Contacts.Queries;
+using Dfe.Complete.Application.Contacts.Models;
 
 namespace Dfe.Complete.Api.Controllers
 {
@@ -566,6 +568,54 @@ namespace Dfe.Complete.Api.Controllers
         {
             var project = await sender.Send(request, cancellationToken);
             return Ok(project.Value);
+        } 
+        /// <summary>
+        /// Gets key contacts of a project.
+        /// </summary>
+        /// <param name="request">The request.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        [Authorize(Policy = "CanRead")]
+        [HttpGet]
+        [Route("List/Project/KeyContact")]
+        [SwaggerResponse(200, "KeyContact", typeof(KeyContactDto))]
+        [SwaggerResponse(404, "key contact not found.")]
+        public async Task<IActionResult> GetKeyContactByProjectIdAsync([FromQuery] GetKeyContactsForProjectQuery request, CancellationToken cancellationToken)
+        {
+            var keyContact = await sender.Send(request, cancellationToken);
+            return Ok(keyContact.Value);
+        }
+        
+        /// <summary>
+        /// Gets a Project's significant date history
+        /// </summary>
+        /// <param name="request">The request.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        [Authorize(Policy = "CanRead")]
+        [HttpGet("project/SignificantDate")]
+        [SwaggerResponse(200, "Project", typeof(ProjectDto))]
+        [SwaggerResponse(400, "Invalid request data.")]
+        public async Task<IActionResult> GetProjectSignificantDateAsync([FromQuery] GetProjectHistoryByProjectIdQuery request, CancellationToken cancellationToken)
+        {
+            var project = await sender.Send(request, cancellationToken);
+            return Ok(project.Value);
+        }
+        
+        /// <summary>
+        /// Updates the Significant date for a specific project.
+        /// </summary>
+        /// <param name="request">The update command.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        [Authorize(Policy = "CanReadWrite")]
+        [HttpPatch("project/SignificantDate")]
+        [SwaggerResponse(204, "Significant Date updated successfully.")]
+        [SwaggerResponse(400, "Invalid request data.")]
+        [SwaggerResponse(404, "Project/User not found.")]
+        public async Task<IActionResult> UpdateSignificantDateAsync(
+            [FromBody] UpdateSignificantDateCommand request,
+            CancellationToken cancellationToken)
+        {
+            await sender.Send(request, cancellationToken);
+            return NoContent();
         }
     }
 }
