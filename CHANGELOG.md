@@ -17,7 +17,8 @@ Security in case of vulnerabilities.
 ## Unreleased
 
 ### Added
- - Ability to edit project information for conversions and transfers
+- Ability to edit project information for conversions and transfers
+- Added `Conversion` and `Transfer` task list with their statuses.
 
 ### Changed
 

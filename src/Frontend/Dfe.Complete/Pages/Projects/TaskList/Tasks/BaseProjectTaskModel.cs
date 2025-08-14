@@ -26,7 +26,7 @@ public class BaseProjectTaskModel(ISender sender, IAuthorizationService authoriz
         if (Project.State == ProjectState.Completed || noteUserId != User.GetUserId())
             return false;
         return true;
-    }
+    } 
 
     public override async Task<IActionResult> OnGetAsync()
     {
@@ -38,6 +38,8 @@ public class BaseProjectTaskModel(ISender sender, IAuthorizationService authoriz
             throw new InvalidOperationException($"Could not load notes for project {ProjectId}");
 
         Notes = notesResult.Value ?? [];
+
+        await GetProjectTaskDataAsync();
 
         return Page();
     }
