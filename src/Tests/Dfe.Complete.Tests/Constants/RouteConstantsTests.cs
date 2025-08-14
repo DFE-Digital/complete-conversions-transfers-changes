@@ -159,7 +159,7 @@ namespace Dfe.Complete.Tests.Constants
             Assert.Equal(basePath + "/land_questionnaire", string.Format(RouteConstants.ProjectLandQuestionnaireTask, projectId));
             Assert.Equal(basePath + "/land_registry", string.Format(RouteConstants.ProjectLandRegistryTask, projectId));
             Assert.Equal(basePath + "/supplemental_funding_agreement", string.Format(RouteConstants.ProjectSupplementalFundingAgreementTask, projectId));
-
+            Assert.Equal(basePath + "/rpa_policy", string.Format(RouteConstants.ProjectRiskProtectionArrangementPolicyTask, projectId));
             Assert.Equal(basePath + "/risk_protection_arrangement", string.Format(RouteConstants.ProjectRiskProtectionArrangementTask, projectId));
             Assert.Equal(basePath + "/check_accuracy_of_higher_needs", string.Format(RouteConstants.ProjectCheckAccuracyOfHigherNeedsTask, projectId));
             Assert.Equal(basePath + "/complete_notification_of_change", string.Format(RouteConstants.ProjectCompleteNotificationOfChangeTask, projectId));
@@ -203,8 +203,6 @@ namespace Dfe.Complete.Tests.Constants
             Assert.Equal(basePath + "/confirm_date_academy_transferred", string.Format(RouteConstants.ProjectConfirmDateAcademyTransferredTask, projectId));
             Assert.Equal(basePath + "/redact_and_send_documents", string.Format(RouteConstants.ProjectRedactAndSendDocumentsTask, projectId));
             Assert.Equal(basePath + "/declaration_of_expenditure_certificate", string.Format(RouteConstants.ProjectDeclarationOfExpenditureCertificateTask, projectId));
-
-            
         }
         [Fact]
         public void TaskPageRoutes_ShouldFormatCorrectly()
