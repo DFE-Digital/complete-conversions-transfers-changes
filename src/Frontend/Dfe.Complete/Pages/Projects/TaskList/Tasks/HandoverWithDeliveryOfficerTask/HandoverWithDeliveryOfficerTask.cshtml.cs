@@ -1,6 +1,7 @@
 using Dfe.Complete.Application.Projects.Commands.UpdateProject; 
 using Dfe.Complete.Constants; 
 using Dfe.Complete.Domain.Enums;
+using Dfe.Complete.Domain.ValueObjects;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -22,11 +23,17 @@ public class HandoverWithDeliveryOfficerTaskModel(ISender sender, IAuthorization
     [BindProperty(Name = "attend-handover-meeting")]
     public bool? AttendHandoverMeeting { get; set; }
 
+    [BindProperty]
+    public Guid? TasksDataId { get; set; }
+    [BindProperty]
+    public ProjectType? ProjectType { get; set; }
 
     public override async Task<IActionResult> OnGetAsync()
     {
-        await base.OnGetAsync(); 
-        if (Project.Type == ProjectType.Transfer)
+        await base.OnGetAsync();
+        ProjectType = Project.Type;
+        TasksDataId = Project.TasksDataId?.Value;
+        if (Project.Type == Domain.Enums.ProjectType.Transfer)
         {
             ReviewProjectInformation = TransferTaskData.HandoverReview;
             MakeNotes = TransferTaskData.HandoverNotes;
@@ -45,7 +52,7 @@ public class HandoverWithDeliveryOfficerTaskModel(ISender sender, IAuthorization
 
     public async Task<IActionResult> OnPost()
     {
-        _ = await sender.Send(new UpdateHandoverWithDeliveryOfficerCommand(Project.TasksDataId!, Project.Type, NotApplicable, ReviewProjectInformation, MakeNotes, AttendHandoverMeeting));
+        _ = await sender.Send(new UpdateHandoverWithDeliveryOfficerCommand(new TaskDataId(TasksDataId.GetValueOrDefault())!, ProjectType, NotApplicable, ReviewProjectInformation, MakeNotes, AttendHandoverMeeting));
         return Redirect(string.Format(RouteConstants.ProjectTaskList, ProjectId));
     }
 }

@@ -1,7 +1,7 @@
 ﻿@model Dfe.Complete.Application.Projects.Models.ProjectDto
 @using Dfe.Complete.Domain.Extensions;
 
-@if (Model.AssignedToId?.Value == User.GetUserId().Value || (Model.Team != null && Model.Team.Value.TeamIsServiceSupport()))
+@if (Model.State != Dfe.Complete.Domain.Enums.ProjectState.Completed || Model.AssignedToId?.Value == User.GetUserId().Value || (Model.Team != null && Model.Team.Value.TeamIsServiceSupport()))
 {
 	<div class="govuk-form-group">
 		<button type="submit" formnovalidate="formnovalidate" class="govuk-button" data-module="govuk-button" data-prevent-double-click="true">Save and return</button>
