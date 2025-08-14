@@ -39,7 +39,7 @@ const transferFormAMatProject = ProjectBuilder.createTransferFormAMatProjectRequ
 const transferFormAMatSchoolName = "Priory Rise School";
 const prepareProject = PrepareProjectBuilder.createConversionProjectRequest({
     urn: 151111,
-    provisional_conversion_date: "2025-09-01", //todo fix hardcoded date
+    provisional_conversion_date: getSignificantDateString(1),
 });
 let prepareProjectId: string;
 const prepareProjectName = "Our Lady of Walsingham Primary School";
