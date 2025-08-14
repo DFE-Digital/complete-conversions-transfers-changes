@@ -232,13 +232,18 @@
     },
     {
       "Controller": "TasksDataController",
-      "Action": "UpdateHandoverWithDeliveryOfficerTaskDataByProjectIdAsync",
-      "ExpectedSecurity": "Authorize: Policy=CanReadWriteUpdate"
+      "Action": "GetConversionTasksDataByIdAsync",
+      "ExpectedSecurity": "Authorize: Policy=CanRead"
+    },
+    {
+      "Controller": "ProjectsController",
+      "Action": "GetKeyContactByProjectIdAsync",
+      "ExpectedSecurity": "Authorize: Policy=CanRead"
     },
     {
       "Controller": "TasksDataController",
-      "Action": "GetTaskDataByProjectIdAsync",
-      "ExpectedSecurity": "Authorize: Policy=CanRead"
+      "Action": "UpdateHandoverWithDeliveryOfficerTaskDataByTaskDataIdAsync",
+      "ExpectedSecurity": "Authorize: Policy=CanReadWriteUpdate"
     }
   ]
 }

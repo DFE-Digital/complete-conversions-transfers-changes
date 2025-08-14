@@ -1,7 +1,5 @@
-using Dfe.Complete.Application.Projects.Commands.UpdateProject;
-using Dfe.Complete.Application.Projects.Queries.TaskData;
-using Dfe.Complete.Constants;
-using Dfe.Complete.Domain.ValueObjects;
+using Dfe.Complete.Application.Projects.Commands.UpdateProject; 
+using Dfe.Complete.Constants; 
 using Dfe.Complete.Domain.Enums;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -27,21 +25,27 @@ public class HandoverWithDeliveryOfficerTaskModel(ISender sender, IAuthorization
 
     public override async Task<IActionResult> OnGetAsync()
     {
-        await base.OnGetAsync();
-        var result = await sender.Send(new GetTaskDataByProjectIdQuery(new ProjectId(Guid.Parse(ProjectId))));
-        if (result.IsSuccess && result.Value != null)
+        await base.OnGetAsync(); 
+        if (Project.Type == ProjectType.Transfer)
         {
-            ReviewProjectInformation = result.Value.HandoverReview;
-            MakeNotes = result.Value.HandoverNotes;
-            AttendHandoverMeeting = result.Value.HandoverMeeting;
-            NotApplicable = result.Value.HandoverNotApplicable;
+            ReviewProjectInformation = TransferTaskData.HandoverReview;
+            MakeNotes = TransferTaskData.HandoverNotes;
+            AttendHandoverMeeting = TransferTaskData.HandoverMeeting;
+            NotApplicable = TransferTaskData.HandoverNotApplicable;
+        }
+        else
+        {
+            ReviewProjectInformation = ConversionTaskData.HandoverReview;
+            MakeNotes = ConversionTaskData.HandoverNotes;
+            AttendHandoverMeeting = ConversionTaskData.HandoverMeeting;
+            NotApplicable = ConversionTaskData.HandoverNotApplicable;
         }
         return Page();
-    }
+    } 
 
     public async Task<IActionResult> OnPost()
     {
-        _ = await sender.Send(new UpdateHandoverWithDeliveryOfficerCommand(new ProjectId(Guid.Parse(ProjectId)), NotApplicable, ReviewProjectInformation, MakeNotes, AttendHandoverMeeting));
+        _ = await sender.Send(new UpdateHandoverWithDeliveryOfficerCommand(Project.TasksDataId!, Project.Type, NotApplicable, ReviewProjectInformation, MakeNotes, AttendHandoverMeeting));
         return Redirect(string.Format(RouteConstants.ProjectTaskList, ProjectId));
     }
 }

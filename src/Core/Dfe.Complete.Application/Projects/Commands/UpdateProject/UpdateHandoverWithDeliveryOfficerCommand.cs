@@ -10,7 +10,8 @@ using Microsoft.EntityFrameworkCore;
 namespace Dfe.Complete.Application.Projects.Commands.UpdateProject
 {
     public record UpdateHandoverWithDeliveryOfficerCommand(
-        ProjectId ProjectId,
+        TaskDataId TaskDataId,
+        ProjectType? ProjectType,
         bool? NotApplicable,
         bool? HandoverReview,
         bool? HandoverNotes,
@@ -19,27 +20,19 @@ namespace Dfe.Complete.Application.Projects.Commands.UpdateProject
     ) : IRequest<Result<bool>>;
 
     public class UpdateHandoverWithDeliveryOfficerCommandHandler(
-        IProjectReadRepository projectReadRepository,
         ITaskDataReadRepository taskDataReadRepository,
         ITaskDataWriteRepository taskDataWriteRepository)
         : IRequestHandler<UpdateHandoverWithDeliveryOfficerCommand, Result<bool>>
     {
         public async Task<Result<bool>> Handle(UpdateHandoverWithDeliveryOfficerCommand request, CancellationToken cancellationToken)
-        {
-            var project = await projectReadRepository.Projects.FirstOrDefaultAsync(p => p.Id == request.ProjectId, cancellationToken)
-                          ?? throw new NotFoundException($"Project {request.ProjectId} not found.");
-
-            if (project.TasksDataId == null)
+        { 
+            if (request.ProjectType == ProjectType.Conversion)
             {
-                return Result<bool>.Failure($"No task data associated with Project {project.Id}.");
+                await UpdateConversionTaskDataAsync(request.TaskDataId, request, cancellationToken);
             }
-            if (project.Type == ProjectType.Conversion)
+            else if (request.ProjectType == ProjectType.Transfer)
             {
-                await UpdateConversionTaskDataAsync(project.TasksDataId, request, cancellationToken);
-            }
-            else if (project.Type == ProjectType.Transfer)
-            {
-                await UpdateTransferTaskDataAsync(project.TasksDataId, request, cancellationToken);
+                await UpdateTransferTaskDataAsync(request.TaskDataId, request, cancellationToken);
             }
 
             return Result<bool>.Success(true);

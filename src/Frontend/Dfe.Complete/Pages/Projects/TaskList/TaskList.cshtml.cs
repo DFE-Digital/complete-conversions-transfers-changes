@@ -1,5 +1,3 @@
-using Dfe.Complete.Application.Projects.Queries.TaskData;
-using Dfe.Complete.Domain.ValueObjects;
 using Dfe.Complete.Models;
 using Dfe.Complete.Pages.Projects.ProjectView;
 using MediatR;
@@ -9,19 +7,19 @@ namespace Dfe.Complete.Pages.Projects.TaskList
 {
     public class TaskListModel(ISender sender, ILogger<TaskListModel> _logger) : ProjectLayoutModel(sender, _logger, TaskListNavigation)
     {
-        public TaskListStatus HandoverWithRegionalDeliveryOfficer { get; set; }
+        public TransferTaskListViewModel TransferTaskList { get; set; } = null!;
+        public ConversionTaskListViewModel ConversionTaskList { get; set; } = null!;
 
         public override async Task<IActionResult> OnGetAsync()
         {
             await UpdateCurrentProject();
             await SetEstablishmentAsync();
+            await GetProjectTaskDataAsync();
+            await GetKeyContactForProjectsAsyc();
 
-            var result = await sender.Send(new GetTaskDataByProjectIdQuery(new ProjectId(Guid.Parse(ProjectId))));
-            if (result.IsSuccess && result.Value != null)
-            {
-                HandoverWithRegionalDeliveryOfficer = TaskListViewModel.HandoverWithRegionalDeliveryOfficerTaskStatus(result.Value);
-            }
+            TransferTaskList = TransferTaskListViewModel.Create(TransferTaskData, Project, KeyContacts);
+            ConversionTaskList = ConversionTaskListViewModel.Create(ConversionTaskData, Project, KeyContacts);
             return Page();
-        }
+        }  
     }
 }

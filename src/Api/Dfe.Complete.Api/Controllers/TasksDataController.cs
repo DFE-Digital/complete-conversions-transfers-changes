@@ -6,7 +6,7 @@ using Dfe.Complete.Application.Projects.Models;
 using Microsoft.AspNetCore.Authorization;
 using Dfe.Complete.Application.Projects.Queries.GetTransferTasksData;
 using Dfe.Complete.Application.Projects.Commands.UpdateProject;
-using Dfe.Complete.Application.Projects.Queries.TaskData;
+using Dfe.Complete.Application.Projects.Queries.GetConversionTasksData;
 
 namespace Dfe.Complete.Api.Controllers
 {
@@ -33,6 +33,22 @@ namespace Dfe.Complete.Api.Controllers
             return Ok(transferTasksData.Value);
         }
         /// <summary>
+        /// Gets the Conversion tasks data by Id.
+        /// </summary>
+        /// <param name="request">The Conversion tasks data Id.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        [Authorize(Policy = "CanRead")]
+        [HttpGet]
+        [Route("TaskData/Conversion")]
+        [SwaggerResponse(200, "Conversion tasks data returned successfully.", typeof(ConversionTaskDataDto))]
+        [SwaggerResponse(404, "Conversion tasks data not found for the given Id.")]
+        public async Task<IActionResult> GetConversionTasksDataByIdAsync([FromQuery] GetConversionTasksDataByIdQuery request, CancellationToken cancellationToken)
+        {
+            var conversionTasksData = await sender.Send(request, cancellationToken);
+
+            return Ok(conversionTasksData.Value);
+        }
+        /// <summary>
         /// Updates the handover with delivery officer for either conversion or transfer tasks data.
         /// </summary>
         /// <param name="request">The update task data command.</param>
@@ -41,28 +57,11 @@ namespace Dfe.Complete.Api.Controllers
         [HttpPatch]
         [Route("TaskData/Handover/DeliveryOfficer")]
         [SwaggerResponse(204, "Successfully updated the conversion or trasnfer task data")]
-        [SwaggerResponse(404, "Transfer or Conversion task data not found for the given project Id.")]
-        public async Task<IActionResult> UpdateHandoverWithDeliveryOfficerTaskDataByProjectIdAsync([FromBody] UpdateHandoverWithDeliveryOfficerCommand request, CancellationToken cancellationToken)
+        [SwaggerResponse(404, "Transfer or Conversion task data not found for the given task data Id.")]
+        public async Task<IActionResult> UpdateHandoverWithDeliveryOfficerTaskDataByTaskDataIdAsync([FromBody] UpdateHandoverWithDeliveryOfficerCommand request, CancellationToken cancellationToken)
         {
             await sender.Send(request, cancellationToken); 
             return NoContent();
         }
-
-        /// <summary>
-        /// Gets the Task Data by Project Id for either conversion or transfer project.
-        /// </summary>
-        /// <param name="request">The transfer tasks data Id.</param>
-        /// <param name="cancellationToken">The cancellation token.</param>
-        [Authorize(Policy = "CanRead")]
-        [HttpGet]
-        [Route("TaskData/ProjectId")]
-        [SwaggerResponse(200, "Returns conversion or transfer task data.", typeof(TaskDataModel))]
-        [SwaggerResponse(404, "No task data found for the given Id.")]
-        public async Task<IActionResult> GetTaskDataByProjectIdAsync([FromQuery] GetTaskDataByProjectIdQuery request, CancellationToken cancellationToken)
-        {
-            var tasksData = await sender.Send(request, cancellationToken);
-
-            return Ok(tasksData.Value);
-        } 
     }
 }
