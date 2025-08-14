@@ -16,6 +16,9 @@ Security in case of vulnerabilities.
 
 ## Unreleased
 
+### Added
+- Added `Conversion` and `Transfer` task list with their statuses.
+
 ### Changed
 
 ### Fixed
@@ -30,7 +33,6 @@ See the [full commit history](https://github.com/DFE-Digital/complete-conversion
 - Added Project Significant History Dates `/projects/{projectId}/date-history`
 - Added `/projects/{projectId}/external-contacts` page
 - Added `/privacy` page
-- Added `Conversion` and `Transfer` task list with their statuses.
 
 ### Changed
 
