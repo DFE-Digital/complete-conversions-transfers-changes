@@ -28,6 +28,7 @@ public class CreateExternalContact(ICompleteRepository<Contact> ContactRepositor
 
         var contact = new Contact()
         {
+            Id = new ContactId(Guid.NewGuid()),
             Category = request.Category,
             CreatedAt = DateTime.Now,
             UpdatedAt = DateTime.Now,
