@@ -57,6 +57,27 @@ class ProjectApi extends ApiBase {
         });
     }
 
+    updateProjectSignificantDate(projectId: string, significantDate: string, reasonNotes: any, userId: string) {
+        return this.authenticatedRequest().then((headers) => {
+            return cy
+                .request<CreateProjectResponse>({
+                    method: "PATCH",
+                    url: Cypress.env(EnvApi) + "/v1/Projects/Project/SignificantDate",
+                    headers: headers,
+                    body: {
+                        projectId: { value: projectId },
+                        significantDate: significantDate,
+                        reasonNotes: reasonNotes,
+                        userId: { value: userId },
+                    },
+                })
+                .then((response) => {
+                    expect(response.status).to.eq(204);
+                    return response.body;
+                });
+        });
+    }
+
     private createProjectBase(
         request: ProjectRequest,
         projectType: string,

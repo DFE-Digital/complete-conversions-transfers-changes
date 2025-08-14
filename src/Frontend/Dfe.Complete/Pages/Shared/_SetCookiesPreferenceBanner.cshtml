@@ -1,6 +1,16 @@
 ﻿@{
     var hasCookiesSet = TempData["PreferencesSet"];
-    TempData.Clear();
+
+    @if (TempData["PreferencesSet"] != null)
+    {
+        TempData["PreferencesSet"] = null;
+    }
+
+    @if (TempData["IsRubyRequest"] != null)
+    {
+        TempData["IsRubyRequest"] = null;
+    }
+    
 }
 
 @if (hasCookiesSet != null)

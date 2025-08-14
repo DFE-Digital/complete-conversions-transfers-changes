@@ -138,6 +138,7 @@ public class ConversionTasksData : BaseAggregateRoot, IEntity<TaskDataId>
     public bool? UpdateEsfaUpdate { get; set; }
 
     public bool? ReceiveGrantPaymentCertificateSaveCertificate { get; set; }
+    public bool? ReceiveGrantPaymentCertificateNotApplicable { get; set; }
 
     public bool? OneHundredAndTwentyFiveYearLeaseEmail { get; set; }
 

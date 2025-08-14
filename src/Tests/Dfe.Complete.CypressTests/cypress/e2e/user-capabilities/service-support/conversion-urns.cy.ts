@@ -1,6 +1,6 @@
 import { serviceSupportUser } from "cypress/constants/cypressConstants";
 import { ProjectBuilder } from "cypress/api/projectBuilder";
-import { nextMonth, nextMonthShort } from "cypress/constants/stringTestConstants";
+import { nextMonthShort } from "cypress/constants/stringTestConstants";
 import serviceSupport from "cypress/pages/service-support/service-support";
 import conversionURNsPage from "cypress/pages/service-support/conversionURNsPage";
 import { Logger } from "cypress/common/logger";
@@ -12,7 +12,7 @@ import projectRemover from "cypress/api/projectRemover";
 import projectApi from "cypress/api/projectApi";
 import { checkAccessibilityAcrossPages } from "cypress/support/reusableTests";
 
-const project = ProjectBuilder.createConversionProjectRequest(nextMonth);
+const project = ProjectBuilder.createConversionProjectRequest();
 const schoolName = "St Chad's Catholic Primary School";
 const academy = {
     urn: 103846,
@@ -21,9 +21,9 @@ const academy = {
     localAuthority: "Dudley",
     schoolPhase: "Primary",
 };
-const project2 = ProjectBuilder.createConversionProjectRequest(nextMonth, 103845);
+const project2 = ProjectBuilder.createConversionProjectRequest({ urn: { value: 103845 } });
 const schoolName2 = "Jesson's CofE Primary School (VA)";
-const projectWithAcademy = ProjectBuilder.createConversionProjectRequest(nextMonth);
+const projectWithAcademy = ProjectBuilder.createConversionProjectRequest();
 const schoolWithAcademyName = "St Chad's Catholic Primary School";
 
 describe("Service support user - Conversion URNs: ", () => {

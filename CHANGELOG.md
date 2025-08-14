@@ -17,6 +17,7 @@ Security in case of vulnerabilities.
 ## Unreleased
 
 ### Added
+- Added `Conversion` and `Transfer` task list with their statuses.
 
 ### Changed
 
