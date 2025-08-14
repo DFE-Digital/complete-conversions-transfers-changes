@@ -21,8 +21,6 @@ namespace Dfe.Complete.Pages.Projects.ServiceSupport.LocalAuthorities
         {
             var localAuthorityResponse = await sender.Send(new GetLocalAuthorityDetailsQuery(new LocalAuthorityId(new Guid(Id))));
             Details = localAuthorityResponse?.Value!;
-            TempData["LA_Name"] = Details.LocalAuthority.Name;
-            TempData["LA_ContactId"] = Details.Contact?.Id.Value;
         }
 
         public string DeleteLocalAuthorityUrl() => string.Format(RouteConstants.DeleteLocalAuthorityDetails, Id);
