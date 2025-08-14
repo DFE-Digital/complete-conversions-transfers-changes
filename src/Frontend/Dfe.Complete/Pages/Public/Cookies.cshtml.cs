@@ -80,7 +80,15 @@ namespace Dfe.Complete.Pages.Public
 				}
 				else
 				{
-					TempData.Clear();
+                    if(TempData["PreferencesSet"] != null)
+					{ 
+						TempData["PreferencesSet"] = null;
+                    }
+
+                    if(TempData["IsRubyRequest"] != null)
+					{
+						TempData["IsRubyRequest"] = null;
+                    }
 				}
 			}
 
