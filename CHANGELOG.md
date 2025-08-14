@@ -18,13 +18,7 @@ Security in case of vulnerabilities.
 
 ### Added
 - Added `Conversion` and `Transfer` task list with their statuses.
-- Project groups: new API endpoints
-  - `/v1/ProjectGroup/List` – list project groups (with establishments)
-  - `/v1/ProjectGroup/Details` – project group details by id
-  - `/v1/ProjectGroup` – get project group by id
-- Frontend routes and pages for project groups
-  - `/groups` – project groups list
-  - `/groups/{groupId}` – project group details
+
 ### Changed
 
 ### Fixed
