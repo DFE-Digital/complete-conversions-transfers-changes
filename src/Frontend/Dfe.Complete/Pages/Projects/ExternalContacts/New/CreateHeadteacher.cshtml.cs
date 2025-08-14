@@ -17,6 +17,6 @@ public class CreateHeadteacher(ISender sender, ILogger<CreateHeadteacher> logger
     
     public async Task<IActionResult> OnPostAsync()
     {
-        return RedirectToPage("ExternalContacts", new { ProjectId });
+        return RedirectToPage("../ExternalContacts", new { ProjectId });
     }
 }

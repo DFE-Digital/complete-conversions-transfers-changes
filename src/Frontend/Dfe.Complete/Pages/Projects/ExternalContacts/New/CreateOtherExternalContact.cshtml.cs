@@ -17,6 +17,6 @@ public class CreateOtherExternalContact(ISender sender, ILogger<CreateHeadteache
     
     public async Task<IActionResult> OnPostAsync()
     {
-        return RedirectToPage("ExternalContacts", new { ProjectId });
+        return RedirectToPage("../ExternalContacts", new { ProjectId });
     }
 }

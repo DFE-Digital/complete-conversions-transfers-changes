@@ -17,6 +17,6 @@ public class CreateIncomingTrustCeo(ISender sender, ILogger<CreateHeadteacher> l
     
     public async Task<IActionResult> OnPostAsync()
     {
-        return RedirectToPage("ExternalContacts", new { ProjectId });
+        return RedirectToPage("../ExternalContacts", new { ProjectId });
     }
 }
