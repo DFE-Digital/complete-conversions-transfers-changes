@@ -47,7 +47,7 @@ namespace Dfe.Complete.Application.Projects.Queries.GetProject
 
                 var projectsInGroups = await projectRepository
                     .Query()
-                    .Where(p => projectGroupIds.Contains(p.GroupId))
+                    .Where(p => p.GroupId != null && projectGroupIds.Contains(p.GroupId))
                     .ToListAsync(cancellationToken);
 
                 var projectUrns = projectsInGroups
