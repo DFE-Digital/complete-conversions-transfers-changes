@@ -62,7 +62,7 @@ public class EditAssignedUser(ISender sender, ErrorService errorService, ILogger
                 var updateRequest = new UpdateAssignedUserCommand(Project.Id, assignedResult.Value.Id);
                 await _sender.Send(updateRequest);
                 TempData.SetNotification(NotificationType.Success, "Success", "Project has been assigned successfully");
-                return Redirect(FormatRouteWithProjectId(RouteConstants.ProjectInternalContacts));
+                return Redirect(FormatRouteWithProjectId(RouteConstants.TeamProjectsUnassigned));
             }
             catch (NotFoundException notFoundException)
             {
