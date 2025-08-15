@@ -27,7 +27,7 @@
         public const string Reports = AllProjectsPrefix + "/reports";
         
         // Your projects
-                private const string YourProjectsPrefix = "/projects/yours";
+        private const string YourProjectsPrefix = "/projects/yours";
         public const string YourProjectsInProgress = YourProjectsPrefix + "/in-progress";
         public const string YourProjectsCompleted = YourProjectsPrefix + "/completed";
 
@@ -123,6 +123,7 @@
 
         // Groups
         public const string Groups = "/groups";
+        public const string GroupDetails = "/groups/{0}";
 
         // Service support
         public const string ServiceSupportProjectsWithoutAcademyUrn = "/projects/service-support/without-academy-urn";

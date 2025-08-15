@@ -21,5 +21,6 @@ public record ProjectFilters(
     DateRangeFilter? SignificantDateRange = null,
     List<ProjectState>? ProjectStatuses = null,
     bool? WithAcademyUrn = null,
-    Urn? Urn = null
+    Urn? Urn = null,
+    ProjectGroupId? GroupId = null
 );
