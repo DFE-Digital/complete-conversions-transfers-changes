@@ -32,7 +32,8 @@ public class ProjectsQueryBuilder(CompleteContext context) : IProjectsQueryBuild
         _projects = FilterByProjectStatuses(_projects, filters.ProjectStatuses);
         _projects = FilterByHasAcademyUrn(_projects, filters.WithAcademyUrn);
         _projects = FilterByUrn(_projects, filters.Urn);
-
+        _projects = FilterByGroupId(_projects, filters.GroupId);
+        
         return this;
     }
 
@@ -204,6 +205,13 @@ public class ProjectsQueryBuilder(CompleteContext context) : IProjectsQueryBuild
     {
         if (urn != null)
             projects = projects.Where(project => project.Urn == urn);
+        return projects;
+    }
+
+    private static IQueryable<Project> FilterByGroupId(IQueryable<Project> projects, ProjectGroupId? groupId)
+    {
+        if (groupId != null && groupId.Value != Guid.Empty)
+            projects = projects.Where(project => project.GroupId != null && project.GroupId == groupId);
         return projects;
     }
 }
