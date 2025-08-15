@@ -26,14 +26,14 @@ public class HandoverWithDeliveryOfficerTaskModel(ISender sender, IAuthorization
     [BindProperty]
     public Guid? TasksDataId { get; set; }
     [BindProperty]
-    public ProjectType? ProjectType { get; set; }
+    public ProjectType? Type { get; set; }
 
     public override async Task<IActionResult> OnGetAsync()
     {
         await base.OnGetAsync();
-        ProjectType = Project.Type;
+        Type = Project.Type;
         TasksDataId = Project.TasksDataId?.Value;
-        if (Project.Type == Domain.Enums.ProjectType.Transfer)
+        if (Project.Type == ProjectType.Transfer)
         {
             ReviewProjectInformation = TransferTaskData.HandoverReview;
             MakeNotes = TransferTaskData.HandoverNotes;
@@ -52,7 +52,7 @@ public class HandoverWithDeliveryOfficerTaskModel(ISender sender, IAuthorization
 
     public async Task<IActionResult> OnPost()
     {
-        _ = await sender.Send(new UpdateHandoverWithDeliveryOfficerCommand(new TaskDataId(TasksDataId.GetValueOrDefault())!, ProjectType, NotApplicable, ReviewProjectInformation, MakeNotes, AttendHandoverMeeting));
+        await sender.Send(new UpdateHandoverWithDeliveryOfficerCommand(new TaskDataId(TasksDataId.GetValueOrDefault())!, Type, NotApplicable, ReviewProjectInformation, MakeNotes, AttendHandoverMeeting));
         return Redirect(string.Format(RouteConstants.ProjectTaskList, ProjectId));
     }
 }
