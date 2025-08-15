@@ -18,8 +18,6 @@ using ProjectType = Dfe.Complete.Domain.Enums.ProjectType;
 using ProjectState = Dfe.Complete.Domain.Enums.ProjectState;
 using Project = Dfe.Complete.Domain.Entities.Project;
 using Ukprn = Dfe.Complete.Domain.ValueObjects.Ukprn;
-using Dfe.Complete.Utils;
-using Urn = Dfe.Complete.Domain.ValueObjects.Urn;
 using Dfe.Complete.Domain.Entities;
 using Dfe.Complete.Domain.ValueObjects;
 using Dfe.Complete.Tests.Common.Customizations.Behaviours;
@@ -1770,5 +1768,60 @@ public partial class ProjectsControllerTests
         Assert.NotNull(result);
         Assert.Equal(project.Id.Value, result.Id?.Value);
         Assert.Equal(project.SignificantDate, DateOnly.FromDateTime(result.SignificantDate!.Value));
+    }
+    [Theory]
+    [CustomAutoData(typeof(CustomWebApplicationDbContextFactoryCustomization), typeof(GiasEstablishmentsCustomization))]
+    public async Task GetKeyContactByProjectIdAsync_Async_ShouldReturn_KeyContacts(
+        CustomWebApplicationDbContextFactory<Program> factory,
+        IProjectsClient projectsClient,
+        IFixture fixture)
+    {
+        factory.TestClaims = [new Claim(ClaimTypes.Role, ApiRoles.ReadRole)];
+
+        // Arrange
+        var dbContext = factory.GetDbContext<CompleteContext>();
+
+        var testUser = await dbContext.Users.FirstAsync();
+
+        var establishments = fixture.Customize(new GiasEstablishmentsCustomization()).CreateMany<GiasEstablishment>(1)
+            .ToList();
+        var localAuthority = dbContext.LocalAuthorities.AsEnumerable().MinBy(_ => Guid.NewGuid());
+        Assert.NotNull(localAuthority);
+
+        await dbContext.GiasEstablishments.AddRangeAsync(establishments);
+        var trustPref = "TR12345";
+        var trustReference = string.Concat(trustPref, 0);
+        var projects = establishments.Select((establishment, i) =>
+        {
+            var project = fixture.Customize(new ProjectCustomization
+            {
+                LocalAuthorityId = localAuthority.Id,
+                RegionalDeliveryOfficerId = testUser.Id,
+            }).Create<Project>();
+            project.Urn = establishment.Urn ?? project.Urn;
+            project.IncomingTrustUkprn = null;
+            project.OutgoingTrustUkprn = null;
+            project.State = ProjectState.Inactive;
+            return project;
+        }).ToList();
+        await dbContext.Projects.AddRangeAsync(projects);
+        var projectId = projects.First().Id;
+        var keyContact = fixture.Customize(new KeyContactCustomimzation
+        {
+            ProjectId = projectId,
+        }).Create<KeyContact>();
+        await dbContext.KeyContacts.AddAsync(keyContact);
+        await dbContext.SaveChangesAsync();
+        
+        // Act
+        var result = await projectsClient.GetKeyContactByProjectIdAsync(projectId.Value, CancellationToken.None);
+
+        // Assert
+        Assert.NotNull(result);
+        Assert.Equal(keyContact.Id?.Value, result.Id?.Value);
+        Assert.Equal(keyContact.HeadteacherId?.Value, result.HeadteacherId?.Value);
+        Assert.Equal(keyContact.OutgoingTrustCeoId?.Value, result.OutgoingTrustCeoId?.Value);
+        Assert.Equal(keyContact.IncomingTrustCeoId?.Value, result.IncomingTrustCeoId?.Value);
+        Assert.Equal(keyContact.ChairOfGovernorsId?.Value, result.ChairOfGovernorsId?.Value);
     }
 }

@@ -181,6 +181,16 @@
       "ExpectedSecurity": "Authorize: Policy=CanRead"
     },
     {
+      "Controller": "ProjectGroupController",
+      "Action": "GetProjectGroupsAsync",
+      "ExpectedSecurity": "Authorize: Policy=CanRead"
+    },
+    {
+      "Controller": "ProjectGroupController",
+      "Action": "GetProjectGroupDetailsAsync",
+      "ExpectedSecurity": "Authorize: Policy=CanRead"
+    },
+    {
       "Controller": "TransferTasksDataController",
       "Action": "GetTransferTasksDataByIdAsync",
       "ExpectedSecurity": "Authorize: Policy=CanRead"
@@ -229,6 +239,16 @@
       "Controller": "ProjectsController",
       "Action": "UpdateSignificantDateAsync",
       "ExpectedSecurity": "Authorize: Policy=CanReadWrite"
+    },
+    {
+      "Controller": "ConversionTasksDataController",
+      "Action": "GetConversionTasksDataByIdAsync",
+      "ExpectedSecurity": "Authorize: Policy=CanRead"
+    },
+    {
+      "Controller": "ProjectsController",
+      "Action": "GetKeyContactByProjectIdAsync",
+      "ExpectedSecurity": "Authorize: Policy=CanRead"
     }
   ]
 }

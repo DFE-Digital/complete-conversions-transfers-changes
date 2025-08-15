@@ -1,7 +1,7 @@
 import { ProjectBuilder } from "cypress/api/projectBuilder";
 import { Logger } from "cypress/common/logger";
 import projectDetailsPage from "cypress/pages/projects/projectDetails/projectDetailsPage";
-import { giasUrl, groupReferenceNumber, macclesfieldTrust, nextMonth } from "cypress/constants/stringTestConstants";
+import { giasUrl, groupReferenceNumber, macclesfieldTrust } from "cypress/constants/stringTestConstants";
 import projectApi from "cypress/api/projectApi";
 import projectRemover from "cypress/api/projectRemover";
 import { rdoLondonUser } from "cypress/constants/cypressConstants";
@@ -9,7 +9,7 @@ import aboutTheProjectPage from "cypress/pages/projects/projectDetails/aboutTheP
 import { checkAccessibilityAcrossPages } from "cypress/support/reusableTests";
 import { significateDateToDisplayDate } from "cypress/support/formatDate";
 
-const project = ProjectBuilder.createConversionProjectRequest(nextMonth);
+const project = ProjectBuilder.createConversionProjectRequest();
 let projectId: string;
 let changeLinkPath: string;
 const schoolName = "St Chad's Catholic Primary School";

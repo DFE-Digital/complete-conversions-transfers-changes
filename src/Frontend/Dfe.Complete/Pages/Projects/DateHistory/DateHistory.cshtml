@@ -47,7 +47,7 @@
                   <dd class="govuk-summary-list__value">
                     <ul class="govuk-list">
                       @{
-                        foreach (var reason in significantDateHistory.Reasons)
+                        foreach (var reason in significantDateHistory.Reasons.OrderBy(r => r.ReasonType))
                         {
                           var reasonLabel = Model.MapSignificantDateReason(Model.Project, reason);
 
