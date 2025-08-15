@@ -28,6 +28,7 @@ Security in case of vulnerabilities.
 ### Changed
 
 ### Fixed
+- GetProjectByUrn doesn't return notes
 
 See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-08-12.625...main) for everything awaiting release
 
