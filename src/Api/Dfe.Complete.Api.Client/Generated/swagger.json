@@ -201,6 +201,82 @@
         }
       }
     },
+    "/v1/ProjectGroup/List": {
+      "get": {
+        "tags": [
+          "ProjectGroup"
+        ],
+        "summary": "Gets a list of the projects group and included establishments.",
+        "operationId": "ProjectGroup_GetProjectGroups",
+        "parameters": [
+          {
+            "name": "Page",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "x-position": 1
+          },
+          {
+            "name": "Count",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "x-position": 2
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Project Groups returned successfully.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ListProjectsGroupsModel"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/ProjectGroup/Details": {
+      "get": {
+        "tags": [
+          "ProjectGroup"
+        ],
+        "summary": "Gets the Project group details by Id.",
+        "operationId": "ProjectGroup_GetProjectGroupDetails",
+        "parameters": [
+          {
+            "name": "ProjectGroupId.Value",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "guid"
+            },
+            "x-position": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Project Group details returned successfully.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProjectGroupDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Project Group not found for the given Id."
+          }
+        }
+      }
+    },
     "/v1/Projects/Create/Conversion": {
       "post": {
         "tags": [
@@ -3503,6 +3579,75 @@
           "updatedAt": {
             "type": "string",
             "format": "date-time"
+          }
+        }
+      },
+      "ListProjectsGroupsModel": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "groupId": {
+            "type": "string"
+          },
+          "groupName": {
+            "type": "string"
+          },
+          "groupIdentifier": {
+            "type": "string"
+          },
+          "trustUkprn": {
+            "type": "string"
+          },
+          "includedEstablishments": {
+            "type": "string"
+          }
+        }
+      },
+      "ProjectGroupDetails": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "groupId": {
+            "type": "string"
+          },
+          "trustName": {
+            "type": "string"
+          },
+          "trustReference": {
+            "type": "string"
+          },
+          "groupReference": {
+            "type": "string"
+          },
+          "projectDetails": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ProjectGroupCardDetails"
+            }
+          }
+        }
+      },
+      "ProjectGroupCardDetails": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "projectId": {
+            "type": "string"
+          },
+          "establishmentName": {
+            "type": "string"
+          },
+          "urn": {
+            "type": "string"
+          },
+          "projectType": {
+            "type": "string"
+          },
+          "localAuthority": {
+            "type": "string"
+          },
+          "region": {
+            "type": "string"
           }
         }
       },
