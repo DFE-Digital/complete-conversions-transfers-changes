@@ -1,7 +1,8 @@
-﻿@model Dfe.Complete.Application.Projects.Models.ProjectDto
+﻿@model Dfe.Complete.Models.TaskSaveAndReturnModel
 @using Dfe.Complete.Domain.Extensions;
+@using Dfe.Complete.Domain.Enums;
 
-@if (Model.State != Dfe.Complete.Domain.Enums.ProjectState.Completed || Model.AssignedToId?.Value == User.GetUserId().Value || (Model.Team != null && Model.Team.Value.TeamIsServiceSupport()))
+@if ((Model.CurrentUserTeam == ProjectTeam.ServiceSupport) || (Model.Project.State != ProjectState.Completed && (Model.Project.AssignedToId?.Value == User.GetUserId().Value)))
 {
 	<div class="govuk-form-group">
 		<button type="submit" formnovalidate="formnovalidate" class="govuk-button" data-module="govuk-button" data-prevent-double-click="true">Save and return</button>
