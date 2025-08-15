@@ -74,7 +74,7 @@ namespace Dfe.Complete.Application.Projects.Queries.GetProject
                        var projectsInThisGroup = projectsInGroups.Where(p => p.GroupId == pg.Id);
                        var formAMatProject = projectsInThisGroup
                            .Where(p => p.FormAMat)
-                           .OrderByDescending(p => p.CreatedAt)
+                           .OrderBy(p => p.CreatedAt)
                            .FirstOrDefault();
                        
                        if (formAMatProject != null)
