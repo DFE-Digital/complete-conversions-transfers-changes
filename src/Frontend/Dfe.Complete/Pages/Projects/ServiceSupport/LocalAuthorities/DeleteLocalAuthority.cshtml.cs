@@ -1,4 +1,5 @@
 using Dfe.Complete.Application.LocalAuthorities.Commands;
+using Dfe.Complete.Application.LocalAuthorities.Queries;
 using Dfe.Complete.Constants;
 using Dfe.Complete.Domain.Constants;
 using Dfe.Complete.Domain.ValueObjects;
@@ -20,10 +21,14 @@ namespace Dfe.Complete.Pages.Projects.ServiceSupport.LocalAuthorities
         [BindProperty(Name = nameof(ContactId))]
         public Guid? ContactId { get; set; }
 
-        public void OnGet()
+        public async Task<IActionResult> OnGetAsync()
         {
-            Name = TempData["LA_Name"] as string ?? string.Empty;
-            ContactId = TempData["LA_ContactId"] as Guid? ?? null;
+            var localAuthorityResponse = await sender.Send(new GetLocalAuthorityDetailsQuery(new LocalAuthorityId(Id)));
+            var details = localAuthorityResponse?.Value!;
+            Name = details.LocalAuthority.Name;
+            ContactId = details.Contact?.Id.Value;
+
+            return Page();
         }
 
         public async Task<IActionResult> OnPostAsync()
