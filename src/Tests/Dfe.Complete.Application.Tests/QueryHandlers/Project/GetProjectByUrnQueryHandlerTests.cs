@@ -1,15 +1,15 @@
 using AutoFixture.Xunit2;
 using DfE.CoreLibs.Testing.AutoFixture.Attributes;
-using Dfe.Complete.Domain.Interfaces.Repositories;
 using NSubstitute;
 using DfE.CoreLibs.Testing.AutoFixture.Customizations;
 using Dfe.Complete.Application.Projects.Queries.GetProject;
-using System.Linq.Expressions;
 using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Domain.ValueObjects;
 using AutoMapper;
 using Dfe.Complete.Application.Projects.Models;
 using NSubstitute.ExceptionExtensions;
+using Dfe.Complete.Application.Projects.Interfaces;
+using MockQueryable;
 
 namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
 {
@@ -18,7 +18,7 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
         [Theory]
         [CustomAutoData(typeof(DateOnlyCustomization))]
         public async Task Handle_ShouldGetAProjectByUrn_WhenCommandIsValid(
-            [Frozen] ICompleteRepository<Domain.Entities.Project> mockProjectRepository,
+            [Frozen] IProjectReadRepository mockProjectRepository,
             [Frozen] IMapper mockMapper,
             GetProjectByUrnQueryHandler handler,
             GetProjectByUrnQuery command
@@ -31,12 +31,12 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
                 command.Urn,
                 now,
                 now,
-                Domain.Enums.TaskType.Conversion,
-                Domain.Enums.ProjectType.Conversion,
+                TaskType.Conversion,
+                ProjectType.Conversion,
                 Guid.NewGuid(),
                 DateOnly.MinValue,
                 true,
-                new Domain.ValueObjects.Ukprn(2),
+                new Ukprn(2),
                 Region.London,
                 true,
                 true,
@@ -53,8 +53,8 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
                 Guid.NewGuid());
 
             // Arrange
-            mockProjectRepository.GetAsync(Arg.Any<Expression<Func<Domain.Entities.Project, bool>>>())
-                .Returns(project);
+            var queryableProjects = new List<Domain.Entities.Project> { project }.AsQueryable().BuildMock();
+            mockProjectRepository.Projects.Returns(queryableProjects);
 
             mockMapper.Map<ProjectDto>(project).Returns(new ProjectDto()
             {
@@ -66,8 +66,6 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
             var result = await handler.Handle(command, default);
 
             // Assert
-            await mockProjectRepository.Received(1)
-                .GetAsync(Arg.Any<Expression<Func<Domain.Entities.Project, bool>>>());
             Assert.True(result.IsSuccess);
             Assert.True(result.Value?.Urn == command.Urn);
         }
@@ -76,29 +74,28 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
         [Theory]
         [CustomAutoData(typeof(DateOnlyCustomization))]
         public async Task Handle_ShouldSucceedAndReturnNullWhenUnfoundProjectByUrn_WhenCommandIsValid(
-            [Frozen] ICompleteRepository<Domain.Entities.Project> mockProjectRepository,
+            [Frozen] IProjectReadRepository mockProjectRepository,
             GetProjectByUrnQueryHandler handler,
             GetProjectByUrnQuery command
         )
         {
             // Arrange
-            mockProjectRepository.GetAsync(Arg.Any<Expression<Func<Domain.Entities.Project?, bool>>>())
-                .Returns((Domain.Entities.Project?)null);
+            var noProjects = new List<Domain.Entities.Project> { }.AsQueryable().BuildMock();
+            mockProjectRepository.Projects.Returns(noProjects);
 
             // Act
             var result = await handler.Handle(command, default);
 
             // Assert
-            await mockProjectRepository.Received(1)
-                .GetAsync(Arg.Any<Expression<Func<Domain.Entities.Project, bool>>>());
-            Assert.True(result.IsSuccess);
-            Assert.True(result.Value == null);
+            Assert.False(result.IsSuccess);
+            Assert.Null(result.Value);
+            Assert.Contains("No project found for Urn:", result.Error);
         }
 
         [Theory]
         [CustomAutoData(typeof(DateOnlyCustomization))]
         public async Task Handle_ShouldFailAndReturnErrorMessage_WhenExceptionIsThrown(
-            [Frozen] ICompleteRepository<Domain.Entities.Project> mockProjectRepository,
+            [Frozen] IProjectReadRepository mockProjectRepository,
             GetProjectByUrnQueryHandler handler,
             GetProjectByUrnQuery command
         )
@@ -106,15 +103,12 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
             // Arrange
             var expectedErrorMessage = "Expected Error Message";
 
-            mockProjectRepository.GetAsync(Arg.Any<Expression<Func<Domain.Entities.Project?, bool>>>())
-                .Throws(new Exception(expectedErrorMessage));
+            mockProjectRepository.Projects.Throws(new Exception(expectedErrorMessage));
 
             // Act
             var result = await handler.Handle(command, default);
 
             // Assert
-            await mockProjectRepository.Received(1)
-                .GetAsync(Arg.Any<Expression<Func<Domain.Entities.Project, bool>>>());
             Assert.False(result.IsSuccess);
             Assert.Equal(result.Error, expectedErrorMessage);
         }
