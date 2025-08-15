@@ -59,9 +59,31 @@ namespace Dfe.Complete.Application.Projects.Queries.GetProject
 
                 var projectGroupsDto = pageOfProjectGroups.Select(pg =>
                 {
-                   var groupName = trusts.FirstOrDefault(e => e.Ukprn! == pg.TrustUkprn)?.Name ?? string.Empty;
-                   var groupIdentifier = pg.GroupIdentifier ?? string.Empty;
+                   // Determine group name: use trust name from API if TrustUkprn exists, otherwise use NewTrustName for Form a MAT projects
+                   var groupName = string.Empty;
                    var trustUkprn = pg.TrustUkprn?.Value.ToString() ?? string.Empty;
+                   
+                   if (pg.TrustUkprn != null)
+                   {
+                       // Regular project group with trust UKPRN - get name from Academies API
+                       groupName = trusts.FirstOrDefault(e => e.Ukprn! == pg.TrustUkprn)?.Name ?? string.Empty;
+                   }
+                   else
+                   {
+                       // Form a MAT project group - use NewTrustName from projects in this group
+                       var projectsInThisGroup = projectsInGroups.Where(p => p.GroupId == pg.Id);
+                       var formAMatProject = projectsInThisGroup
+                           .Where(p => p.FormAMat)
+                           .OrderByDescending(p => p.CreatedAt)
+                           .FirstOrDefault();
+                       
+                       if (formAMatProject != null)
+                       {
+                           groupName = formAMatProject.NewTrustName ?? string.Empty;
+                       }
+                   }
+                   
+                   var groupIdentifier = pg.GroupIdentifier ?? string.Empty;
                    
                    var urnsForThisGroup = projectsInGroups
                        .Where(p => p.GroupId == pg.Id)
