@@ -1,8 +1,9 @@
 ﻿@model Dfe.Complete.Models.TaskSaveAndReturnModel
 @using Dfe.Complete.Domain.Extensions;
 @using Dfe.Complete.Domain.Enums;
+@inject Dfe.Complete.Services.IProjectPermissionService projectPermissionService;
 
-@if ((Model.CurrentUserTeam == ProjectTeam.ServiceSupport) || (Model.Project.State != ProjectState.Completed && (Model.Project.AssignedToId?.Value == User.GetUserId().Value)))
+@if (projectPermissionService.UserCanEdit(Model.Project, Model.CurrentUserTeam, User))
 {
 	<div class="govuk-form-group">
 		<button type="submit" formnovalidate="formnovalidate" class="govuk-button" data-module="govuk-button" data-prevent-double-click="true">Save and return</button>
