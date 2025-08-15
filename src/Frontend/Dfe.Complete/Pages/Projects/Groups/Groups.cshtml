@@ -1,0 +1,52 @@
+@page "/groups"
+@model Dfe.Complete.Pages.Projects.Groups.ProjectGroupsModel
+@{
+    ViewData["Title"] = "Groups";
+}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        <h1 class="govuk-heading-xl">
+            Groups
+        </h1>
+        <p>Schools and academies joining an existing trust together.</p> <p>Groups can include any type of conversion or transfer.</p>
+    </div>
+</div>
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-full">
+
+        <table class="govuk-table" name="project-groups-table" aria-label="Project groups table">
+            <thead class="govuk-table__head">
+            <tr class="govuk-table__row">
+                <th class="govuk-table__header" scope="col">Group</th>
+                <th class="govuk-table__header" scope="col">Group reference number</th>
+                <th class="govuk-table__header" scope="col">Trust UKPRN</th>
+                <th class="govuk-table__header" scope="col">Schools or academies included</th>
+            </tr>
+            </thead>
+            <tbody class="govuk-table__body">
+            @{
+                foreach (var pg in Model.ProjectGroups)
+                {
+                    var id = $"/groups/{pg.GroupId}";
+                    
+                    <tr class="govuk-table__row">
+                        <td class="govuk-table__header govuk-table__cell">
+                            <a class="govuk-link govuk-link--no-visited-state" href=@id>@pg.GroupName</a>
+                        </td>
+                        <td class="govuk-table__cell">@pg.GroupIdentifier</td>
+                        <td class="govuk-table__cell">@pg.TrustUkprn</td>
+                        <td class="govuk-table__cell">@pg.IncludedEstablishments</td>
+                    </tr>
+                }
+            }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@if (Model.Pagination != null)
+{
+    @await Html.PartialAsync("/Pages/Pagination/_Pagination.cshtml", model: Model.Pagination)
+}
