@@ -1,5 +1,6 @@
 ﻿using Dfe.Complete.Application.Projects.Interfaces;
 using Dfe.Complete.Domain.Entities;
+using Dfe.Complete.Domain.ValueObjects;
 using Dfe.Complete.Infrastructure.Database;
 using Microsoft.EntityFrameworkCore;
 
@@ -19,5 +20,16 @@ namespace Dfe.Complete.Infrastructure.QueryServices
             ctx.Projects
                 .AsNoTracking();
 
+        public IQueryable<Project> ProjectsAllIncludes =>
+            ctx.Projects
+                .AsNoTracking()
+                .Include(p => p.RegionalDeliveryOfficer)
+                .Include(p => p.LocalAuthority)
+                .Include(p => p.SignificantDateHistories)
+                .Include(p => p.GiasEstablishment)
+                .Include(p => p.Notes)
+                .Include(p => p.Contacts)
+                .Include(p => p.AssignedTo)
+                .Include(p => p.Caseworker);
     }
 }

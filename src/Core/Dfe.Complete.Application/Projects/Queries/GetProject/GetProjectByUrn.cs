@@ -1,17 +1,19 @@
 using MediatR;
 using Dfe.Complete.Domain.ValueObjects;
-using Dfe.Complete.Domain.Interfaces.Repositories;
-using Dfe.Complete.Domain.Entities;
 using Dfe.Complete.Application.Common.Models;
 using AutoMapper;
 using Dfe.Complete.Application.Projects.Models;
 using Microsoft.Extensions.Logging;
+using Dfe.Complete.Application.Projects.Interfaces;
+using Dfe.Complete.Application.Projects.Queries.QueryFilters;
+using Dfe.Complete.Utils;
+using Microsoft.EntityFrameworkCore;
 
 namespace Dfe.Complete.Application.Projects.Queries.GetProject
 {
     public record GetProjectByUrnQuery(Urn Urn) : IRequest<Result<ProjectDto?>>;
 
-    public class GetProjectByUrnQueryHandler(ICompleteRepository<Project> projectRepository,
+    public class GetProjectByUrnQueryHandler(IProjectReadRepository projectReadRepository,
          IMapper mapper,
          ILogger<GetProjectByUrnQueryHandler> logger)
         : IRequestHandler<GetProjectByUrnQuery, Result<ProjectDto?>>
@@ -20,7 +22,9 @@ namespace Dfe.Complete.Application.Projects.Queries.GetProject
         {
             try
             {
-                var result = await projectRepository.GetAsync(p => p.Urn == request.Urn);
+                var result = await new ProjectUrnQuery(request.Urn)
+                    .Apply(projectReadRepository.Projects)
+                    .FirstOrDefaultAsync(cancellationToken) ?? throw new NotFoundException($"No project found for Urn: {request.Urn.Value}.");
 
                 var projectDto = mapper.Map<ProjectDto?>(result);
 
