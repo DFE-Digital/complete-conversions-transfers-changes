@@ -25,7 +25,7 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
             [Frozen] IMapper mockMapper,
             GetProjectByIdQueryHandler handler,
             Domain.Entities.Project project,
-             ProjectDto mappedProject)
+            ProjectDto mappedProject)
         {
             // Arrange
             var queryableProjects = new List<Domain.Entities.Project> { project }.AsQueryable().BuildMock();
