@@ -38,10 +38,13 @@ namespace Dfe.Complete.Infrastructure
             services.AddScoped<IConversionCsvQueryService, ConversionCsvQueryService>();
             services.AddScoped<INoteWriteRepository, NoteWriteRepository>();
             services.AddScoped<IProjectReadRepository, ProjectReadRepository>();
+            services.AddScoped<IProjectGroupReadRepository, ProjectGroupReadRepository>();
             services.AddScoped<INoteReadRepository, NoteReadRepository>();
             services.AddScoped<IReadUserRepository,ReadUserRepository>();
             services.AddScoped<ILocalAuthoritiesQueryService, LocalAuthoritiesQueryService>();
-
+            services.AddScoped<ITaskDataReadRepository, TaskDataReadRepository>();
+            services.AddScoped<ITaskDataWriteRepository, TaskDataWriteRepository>();
+            services.AddScoped<IKeyContactReadRepository, KeyContactReadRepository>();
             // Authentication
             //services.AddCustomAuthorization(config);
 
