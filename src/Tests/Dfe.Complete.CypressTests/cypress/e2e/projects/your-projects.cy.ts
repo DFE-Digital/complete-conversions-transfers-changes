@@ -8,7 +8,10 @@ import { cypressUser } from "cypress/constants/cypressConstants";
 import projectDetailsPage from "cypress/pages/projects/projectDetails/projectDetailsPage";
 import { checkAccessibilityAcrossPages } from "cypress/support/reusableTests";
 
-const conversionProject = ProjectBuilder.createConversionProjectRequest(new Date("2026-04-01"), 111394);
+const conversionProject = ProjectBuilder.createConversionProjectRequest({
+    significantDate: "2026-04-01",
+    urn: { value: 111394 },
+});
 const conversionSchoolName = "Farnworth Church of England Controlled Primary School";
 const transferProject = ProjectBuilder.createTransferProjectRequest();
 const transferSchoolName = "Abbey College Manchester";

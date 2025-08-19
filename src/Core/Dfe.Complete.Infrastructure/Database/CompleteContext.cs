@@ -551,6 +551,7 @@ public partial class CompleteContext : DbContext
         projectConfiguration.Property(e => e.ReceiveGrantPaymentCertificateCheckCertificate).HasColumnName("receive_grant_payment_certificate_check_certificate");
         projectConfiguration.Property(e => e.ReceiveGrantPaymentCertificateDateReceived).HasColumnName("receive_grant_payment_certificate_date_received");
         projectConfiguration.Property(e => e.ReceiveGrantPaymentCertificateSaveCertificate).HasColumnName("receive_grant_payment_certificate_save_certificate");
+        projectConfiguration.Property(e => e.ReceiveGrantPaymentCertificateNotApplicable).HasColumnName("receive_grant_payment_certificate_not_applicable");
         projectConfiguration.Property(e => e.RedactAndSendRedact).HasColumnName("redact_and_send_redact");
         projectConfiguration.Property(e => e.RedactAndSendSaveRedaction).HasColumnName("redact_and_send_save_redaction");
         projectConfiguration.Property(e => e.RedactAndSendSendRedaction).HasColumnName("redact_and_send_send_redaction");
