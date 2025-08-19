@@ -1,7 +1,9 @@
 ﻿using System.Linq.Expressions;
 using AutoFixture;
 using AutoFixture.Xunit2;
+using Dfe.Complete.Application.Notes.Interfaces;
 using Dfe.Complete.Application.Projects.Commands.TaskData;
+using Dfe.Complete.Application.Projects.Interfaces;
 using Dfe.Complete.Domain.Entities;
 using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Domain.Interfaces.Repositories;
@@ -20,8 +22,8 @@ public class UpdateExternalStakeholderKickOffTaskHandlerTests
     [CustomAutoData(typeof(DateOnlyCustomization), typeof(IgnoreVirtualMembersCustomisation))]
     public async Task Handle_ShouldUpdateConversionTaskDataAndSignificantDate_WhenConversionProject(
         [Frozen] ICompleteRepository<Domain.Entities.Project> mockProjectRepository,
-        [Frozen] ICompleteRepository<ConversionTasksData> mockConversionTaskDataRepository,
-        [Frozen] ICompleteRepository<TransferTasksData> mockTransferTaskDataRepository,
+        [Frozen] ITaskDataReadRepository mockTaskDataReadRepository,
+        [Frozen] ITaskDataWriteRepository mockTaskDataWriteRepository,
         [Frozen] ICompleteRepository<User> mockUserRepository,
         [Frozen] ICompleteRepository<SignificantDateHistoryReason> mockSignificantDateReasonRepository,
         UpdateExternalStakeholderKickOffTaskCommand command,
@@ -40,13 +42,13 @@ public class UpdateExternalStakeholderKickOffTaskHandlerTests
         project.TasksDataId = taskData.Id;
 
         mockProjectRepository.Query().Returns(new[] { project }.AsQueryable().BuildMock());
-        mockConversionTaskDataRepository.Query().Returns(new[] { taskData }.AsQueryable().BuildMock());
+        mockTaskDataReadRepository.ConversionTaskData.Returns(new[] { taskData }.AsQueryable().BuildMock());
         mockUserRepository.FindAsync(Arg.Any<Expression<Func<User, bool>>>(), Arg.Any<CancellationToken>()).Returns(user);
 
         var handler = new UpdateExternalStakeholderKickOffTaskHandler(
             mockProjectRepository,
-            mockConversionTaskDataRepository,
-            mockTransferTaskDataRepository,
+            mockTaskDataReadRepository,
+            mockTaskDataWriteRepository,
             mockUserRepository,
             mockSignificantDateReasonRepository
         );
@@ -64,8 +66,8 @@ public class UpdateExternalStakeholderKickOffTaskHandlerTests
     [CustomAutoData(typeof(DateOnlyCustomization), typeof(IgnoreVirtualMembersCustomisation))]
     public async Task Handle_ShouldUpdateTransferTaskData_WhenTransferProject(
         [Frozen] ICompleteRepository<Domain.Entities.Project> mockProjectRepository,
-        [Frozen] ICompleteRepository<ConversionTasksData> mockConversionTaskDataRepository,
-        [Frozen] ICompleteRepository<TransferTasksData> mockTransferTaskDataRepository,
+        [Frozen] ITaskDataReadRepository mockTaskDataReadRepository,
+        [Frozen] ITaskDataWriteRepository mockTaskDataWriteRepository,
         [Frozen] ICompleteRepository<User> mockUserRepository,
         [Frozen] ICompleteRepository<SignificantDateHistoryReason> mockSignificantDateReasonRepository,
         UpdateExternalStakeholderKickOffTaskCommand command,
@@ -84,13 +86,13 @@ public class UpdateExternalStakeholderKickOffTaskHandlerTests
         project.TasksDataId = taskData.Id;
 
         mockProjectRepository.Query().Returns(new[] { project }.AsQueryable().BuildMock());
-        mockTransferTaskDataRepository.Query().Returns(new[] { taskData }.AsQueryable().BuildMock());
+        mockTaskDataReadRepository.TransferTaskData.Returns(new[] { taskData }.AsQueryable().BuildMock());
         mockUserRepository.FindAsync(Arg.Any<Expression<Func<User, bool>>>(), Arg.Any<CancellationToken>()).Returns(user);
 
         var handler = new UpdateExternalStakeholderKickOffTaskHandler(
             mockProjectRepository,
-            mockConversionTaskDataRepository,
-            mockTransferTaskDataRepository,
+            mockTaskDataReadRepository,
+            mockTaskDataWriteRepository,
             mockUserRepository,
             mockSignificantDateReasonRepository
         );
@@ -108,8 +110,8 @@ public class UpdateExternalStakeholderKickOffTaskHandlerTests
     [CustomAutoData(typeof(DateOnlyCustomization), typeof(IgnoreVirtualMembersCustomisation))]
     public async Task Handle_ShouldThrow_WhenUserNotFound(
         [Frozen] ICompleteRepository<Domain.Entities.Project> mockProjectRepository,
-        [Frozen] ICompleteRepository<ConversionTasksData> mockConversionTaskDataRepository,
-        [Frozen] ICompleteRepository<TransferTasksData> mockTransferTaskDataRepository,
+        [Frozen] ITaskDataReadRepository mockTaskDataReadRepository,
+        [Frozen] ITaskDataWriteRepository mockTaskDataWriteRepository,
         [Frozen] ICompleteRepository<User> mockUserRepository,
         [Frozen] ICompleteRepository<SignificantDateHistoryReason> mockSignificantDateReasonRepository,
         UpdateExternalStakeholderKickOffTaskCommand command,
@@ -124,13 +126,13 @@ public class UpdateExternalStakeholderKickOffTaskHandlerTests
         project.TasksDataId = taskData.Id;
 
         mockProjectRepository.Query().Returns(new[] { project }.AsQueryable().BuildMock());
-        mockConversionTaskDataRepository.Query().Returns(new[] { taskData }.AsQueryable().BuildMock());
+        mockTaskDataReadRepository.ConversionTaskData.Returns(new[] { taskData }.AsQueryable().BuildMock());
         mockUserRepository.FindAsync(Arg.Any<Expression<Func<User, bool>>>(), Arg.Any<CancellationToken>())!.Returns((User?)null);
 
         var handler = new UpdateExternalStakeholderKickOffTaskHandler(
             mockProjectRepository,
-            mockConversionTaskDataRepository,
-            mockTransferTaskDataRepository,
+            mockTaskDataReadRepository,
+            mockTaskDataWriteRepository,
             mockUserRepository,
             mockSignificantDateReasonRepository
         );

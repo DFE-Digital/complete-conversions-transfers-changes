@@ -191,7 +191,7 @@
       "ExpectedSecurity": "Authorize: Policy=CanRead"
     },
     {
-      "Controller": "TransferTasksDataController",
+      "Controller": "TasksDataController",
       "Action": "GetTransferTasksDataByIdAsync",
       "ExpectedSecurity": "Authorize: Policy=CanRead"
     },
@@ -241,7 +241,7 @@
       "ExpectedSecurity": "Authorize: Policy=CanReadWrite"
     },
     {
-      "Controller": "ConversionTasksDataController",
+      "Controller": "TasksDataController",
       "Action": "GetConversionTasksDataByIdAsync",
       "ExpectedSecurity": "Authorize: Policy=CanRead"
     },
@@ -251,7 +251,12 @@
       "ExpectedSecurity": "Authorize: Policy=CanRead"
     },
     {
-      "Controller": "ConversionTasksDataController",
+      "Controller": "TasksDataController",
+      "Action": "UpdateHandoverWithDeliveryOfficerTaskDataByTaskDataIdAsync",
+      "ExpectedSecurity": "Authorize: Policy=CanReadWriteUpdate"
+    },
+    {
+      "Controller": "TasksDataController",
       "Action": "UpdateExternalStakeholderKickOffTaskAsync",
       "ExpectedSecurity": "Authorize: Policy=CanReadWrite"
     }

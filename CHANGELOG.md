@@ -57,6 +57,8 @@ See the [full commit history](https://github.com/DFE-Digital/complete-conversion
 - Add handover project add detail & confirmation page  (`/projects/all/handover/{projectId}/new`)
 - Added `App Insight` for tracking users clicks and page views
 
+- Added `Handover with Regional Delivery Officer` task page
+
 ### Changed
 - Restructured the task page to be more generic
 - Update CRUD endpoints to account for TaskIdentifier
