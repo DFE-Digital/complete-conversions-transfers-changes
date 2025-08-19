@@ -43,6 +43,7 @@ namespace Dfe.Complete.Infrastructure
             services.AddScoped<IReadUserRepository,ReadUserRepository>();
             services.AddScoped<ILocalAuthoritiesQueryService, LocalAuthoritiesQueryService>();
             services.AddScoped<ITaskDataReadRepository, TaskDataReadRepository>();
+            services.AddScoped<ITaskDataWriteRepository, TaskDataWriteRepository>();
             services.AddScoped<IKeyContactReadRepository, KeyContactReadRepository>();
             // Authentication
             //services.AddCustomAuthorization(config);
