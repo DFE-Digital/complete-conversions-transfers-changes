@@ -19,6 +19,12 @@ Security in case of vulnerabilities.
 ### Added
 - Ability to edit project information for conversions and transfers
 - Added `Conversion` and `Transfer` task list with their statuses.
+- Project groups: new API endpoints
+  - `/v1/ProjectGroup/List` – list project groups (with establishments)
+  - `/v1/ProjectGroup/Details` – project group details by id
+- Frontend routes and pages for project groups
+    - `/groups` – project groups list
+    - `/groups/{groupId}` – project group details
 
 ### Changed
 
@@ -50,6 +56,8 @@ See the [full commit history](https://github.com/DFE-Digital/complete-conversion
 - Add handover project check page  (`/projects/all/handover/{projectId}/check`)
 - Add handover project add detail & confirmation page  (`/projects/all/handover/{projectId}/new`)
 - Added `App Insight` for tracking users clicks and page views
+
+- Added `Handover with Regional Delivery Officer` task page
 
 ### Changed
 - Restructured the task page to be more generic
