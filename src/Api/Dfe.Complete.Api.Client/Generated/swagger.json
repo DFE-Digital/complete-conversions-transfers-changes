@@ -201,6 +201,43 @@
         }
       }
     },
+    "/v1/Handover/projects/conversions": {
+      "post": {
+        "tags": [
+          "Handover"
+        ],
+        "summary": "Creates a new conversion project (handover version).",
+        "operationId": "Handover_CreateConversionProject",
+        "requestBody": {
+          "x-name": "request",
+          "description": "The request.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateHandoverConversionProjectCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "201": {
+            "description": "Project created successfully.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProjectId"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request data."
+          }
+        }
+      }
+    },
     "/v1/ProjectGroup": {
       "get": {
         "tags": [
@@ -4031,6 +4068,49 @@
           "ChurchOrTrust",
           "Commercial"
         ]
+      },
+      "CreateHandoverConversionProjectCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "urn": {
+            "$ref": "#/components/schemas/Urn"
+          },
+          "incomingTrustUkprn": {
+            "$ref": "#/components/schemas/Ukprn"
+          },
+          "advisoryBoardDate": {
+            "type": "string",
+            "format": "date"
+          },
+          "advisoryBoardConditions": {
+            "type": "string"
+          },
+          "provisionalConversionDate": {
+            "type": "string",
+            "format": "date"
+          },
+          "createdByEmail": {
+            "type": "string"
+          },
+          "createdByFirstName": {
+            "type": "string"
+          },
+          "createdByLastName": {
+            "type": "string"
+          },
+          "prepareId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "directiveAcademyOrder": {
+            "type": "boolean"
+          },
+          "groupId": {
+            "type": "string",
+            "nullable": true
+          }
+        }
       },
       "ProjectGroupDto": {
         "type": "object",
