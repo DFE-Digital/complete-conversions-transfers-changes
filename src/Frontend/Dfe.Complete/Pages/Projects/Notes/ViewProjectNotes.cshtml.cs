@@ -12,7 +12,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace Dfe.Complete.Pages.Projects.Notes;
 
-public class ViewProjectNotesModel(ISender sender, IAuthorizationService _authorizationService, ILogger<ViewProjectNotesModel> _logger) : ProjectNotesBaseModel(sender, _logger, NotesNavigation)
+public class ViewProjectNotesModel(ISender sender, IAuthorizationService authorizationService, ILogger<ViewProjectNotesModel> logger) : BaseProjectNotesModel(sender, logger, NotesNavigation)
 {
     public IReadOnlyList<NoteDto> Notes { get; private set; } = [];
 
@@ -23,7 +23,7 @@ public class ViewProjectNotesModel(ISender sender, IAuthorizationService _author
 
         var notesResult = await Sender.Send(new GetNotesByProjectIdQuery(new ProjectId(Guid.Parse(ProjectId))));
         if (!notesResult.IsSuccess)
-            throw new ApplicationException($"Could not load notes for project {ProjectId}");
+            throw new InvalidOperationException($"Could not load notes for project {ProjectId}");
 
         Notes = notesResult.Value ?? [];
         return Page();
@@ -37,7 +37,7 @@ public class ViewProjectNotesModel(ISender sender, IAuthorizationService _author
         string? errorMessage = null;
         if (!CanAddNotes)
             errorMessage = "The project is not active and no further notes can be added.";
-        else if (!(await _authorizationService.AuthorizeAsync(User, UserPolicyConstants.CanAddNotes)).Succeeded)
+        else if (!(await authorizationService.AuthorizeAsync(User, UserPolicyConstants.CanAddNotes)).Succeeded)
             errorMessage = "You are not authorised to perform this action.";
 
         if (errorMessage != null)
@@ -53,5 +53,4 @@ public class ViewProjectNotesModel(ISender sender, IAuthorizationService _author
 
         return Redirect(string.Format(RouteConstants.ProjectAddNote, ProjectId));
     }
-
 }

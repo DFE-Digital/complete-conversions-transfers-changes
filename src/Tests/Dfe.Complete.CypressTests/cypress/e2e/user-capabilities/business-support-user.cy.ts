@@ -3,6 +3,7 @@ import {
     checkAccessibilityAcrossPages,
     shouldBeAbleToViewReportsLandingPage,
     shouldNotBeAbleToAddAProjectNote,
+    shouldNotBeAbleToAddAProjectTaskNote,
     shouldNotBeAbleToCreateAProject,
     shouldNotHaveAccessToViewAndEditUsers,
     shouldNotHaveAccessToViewConversionURNsPage,
@@ -22,8 +23,7 @@ import { projectTable } from "cypress/pages/projects/tables/projectTable";
 import { currentMonthLong, currentMonthShort, macclesfieldTrust } from "cypress/constants/stringTestConstants";
 import projectDetailsPage from "cypress/pages/projects/projectDetails/projectDetailsPage";
 
-const date = new Date("2027-04-01");
-const project = ProjectBuilder.createConversionProjectRequest(date);
+const project = ProjectBuilder.createConversionProjectRequest({ significantDate: "2027-04-01" });
 let projectId: string;
 const schoolName = "St Chad's Catholic Primary School";
 describe("Capabilities and permissions of the business support user", () => {
@@ -118,6 +118,10 @@ describe("Capabilities and permissions of the business support user", () => {
 
     it("Should NOT be able to add a note to a project", () => {
         shouldNotBeAbleToAddAProjectNote(projectId);
+    });
+
+    it("Should NOT be able to add a task note to a project", () => {
+        shouldNotBeAbleToAddAProjectTaskNote(projectId);
     });
 
     it.skip("Should NOT be able to soft delete projects", () => {

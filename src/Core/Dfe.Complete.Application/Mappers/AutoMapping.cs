@@ -1,20 +1,24 @@
 ﻿using AutoMapper;
 using Dfe.AcademiesApi.Client.Contracts;
+using Dfe.Complete.Application.Contacts.Models;
 using Dfe.Complete.Application.Projects.Models;
 using Dfe.Complete.Domain.Entities;
 
-namespace Dfe.Complete.Application.Common.Mappers
+namespace Dfe.Complete.Application.Mappers
 {
 	public sealed class AutoMapping : Profile
 	{
 		public AutoMapping()
 		{
-			CreateMap<Project, ProjectDto>();
-			CreateMap<ProjectGroup, ProjectGroupDto>();
+			CreateMap<Project, ProjectDto>()
+                .ForMember(p => p.EstablishmentName, opt => opt.Ignore());
+            CreateMap<ProjectGroup, ProjectGroupDto>();
 			CreateMap<User, UserDto>();
 			CreateMap<Note, NoteDto>()
 				.ForCtorParam(nameof(NoteDto.UserFullName),
-					opt => opt.MapFrom(src => src.User.FullName));
+					opt => opt.MapFrom(src => src.User.FullName))
+				.ForCtorParam(nameof(NoteDto.IsNotable),
+					opt => opt.MapFrom(src => src.NotableId != null && src.NotableType != null));
 			CreateMap<GiasEstablishment, GiasEstablishmentDto>();
 			CreateMap<GiasEstablishment, EstablishmentDto>()
 				.ForMember(dest => dest.Ukprn,
@@ -83,8 +87,9 @@ namespace Dfe.Complete.Application.Common.Mappers
 				.ForMember(dest => dest.Census, opt => opt.Ignore())
 				.ForMember(dest => dest.MisEstablishment, opt => opt.Ignore());
 			CreateMap<TransferTasksData, TransferTaskDataDto>();
-			CreateMap<ConversionTasksData, ConversionTaskDataDto>();
-			CreateMap<SignificantDateHistory, SignificantDateHistoryDto>();
+            CreateMap<ConversionTasksData, ConversionTaskDataDto>();
+			CreateMap<KeyContact, KeyContactDto>();
+            CreateMap<SignificantDateHistory, SignificantDateHistoryDto>();
 			CreateMap<SignificantDateHistoryReason, SignificantDateHistoryReasonDto>();
 		}
 	}

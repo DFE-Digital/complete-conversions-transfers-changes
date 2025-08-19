@@ -1,6 +1,10 @@
 using Dfe.AcademiesApi.Client.Contracts;
+using Dfe.Complete.Application.Contacts.Models;
+using Dfe.Complete.Application.Contacts.Queries;
 using Dfe.Complete.Application.Projects.Models;
+using Dfe.Complete.Application.Projects.Queries.GetConversionTasksData;
 using Dfe.Complete.Application.Projects.Queries.GetProject;
+using Dfe.Complete.Application.Projects.Queries.GetTransferTasksData;
 using Dfe.Complete.Application.Services.AcademiesApi;
 using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Domain.ValueObjects;
@@ -12,14 +16,13 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace Dfe.Complete.Models;
 
-public abstract class BaseProjectPageModel(ISender sender, ILogger _logger) : PageModel
+public abstract class BaseProjectPageModel(ISender sender, ILogger logger) : PageModel
 {
     protected readonly ISender Sender = sender;
-    protected ILogger Logger = _logger;
+    protected ILogger Logger = logger;
 
 
     [BindProperty(SupportsGet = true, Name = "projectId")]
-
     public string ProjectId { get; set; }
 
     public ProjectDto Project { get; set; }
@@ -31,6 +34,10 @@ public abstract class BaseProjectPageModel(ISender sender, ILogger _logger) : Pa
     public TrustDto? OutgoingTrust { get; set; }
 
     public ProjectTeam CurrentUserTeam { get; set; }
+
+    public TransferTaskDataDto TransferTaskData { get; private set; } = null!;
+    public ConversionTaskDataDto ConversionTaskData { get; private set; } = null!;
+    public KeyContactDto KeyContacts { get; private set; } = null!;
 
     public async Task UpdateCurrentProject()
     {
@@ -122,4 +129,36 @@ public abstract class BaseProjectPageModel(ISender sender, ILogger _logger) : Pa
     }
 
     public string FormatRouteWithProjectId(string route) => string.Format(route, ProjectId);
+
+    protected async Task GetProjectTaskDataAsync()
+    {
+        if (Project.TasksDataId != null)
+        {
+            if (Project.Type == ProjectType.Transfer)
+            {
+                var result = await Sender.Send(new GetTransferTasksDataByIdQuery(Project.TasksDataId));
+                if (result.IsSuccess && result.Value != null)
+                {
+                    TransferTaskData = result.Value;
+                }
+            }
+            if (Project.Type == ProjectType.Conversion)
+            {
+                var result = await Sender.Send(new GetConversionTasksDataByIdQuery(Project.TasksDataId));
+                if (result.IsSuccess && result.Value != null)
+                {
+                    ConversionTaskData = result.Value;
+                }
+            }
+        }
+    }
+    protected async Task GetKeyContactForProjectsAsyc()
+    {
+        var contactsResult = await Sender.Send(new GetKeyContactsForProjectQuery(new ProjectId(Guid.Parse(ProjectId))));
+        if (!contactsResult.IsSuccess)
+        {
+            throw new NotFoundException($"Could not find key contacts for project {ProjectId}");
+        }
+        KeyContacts = contactsResult.Value ?? new();
+    }
 }

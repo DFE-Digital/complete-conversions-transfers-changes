@@ -54,6 +54,15 @@
                 </govuk-summary-list-row-value>
             </govuk-summary-list-row>
             <govuk-summary-list-row>
+                <govuk-summary-list-row-key>New trust reference number (TRN)</govuk-summary-list-row-key>
+                <govuk-summary-list-row-value>
+                    @Model.Project.NewTrustReferenceNumber
+                </govuk-summary-list-row-value>
+                <govuk-summary-list-row-actions>
+                    <govuk-summary-list-row-action href="#" visually-hidden-text="New trust reference number (TRN)">Change</govuk-summary-list-row-action>
+                </govuk-summary-list-row-actions>
+            </govuk-summary-list-row>
+            <govuk-summary-list-row>
                 <govuk-summary-list-row-key>Address</govuk-summary-list-row-key>
                 <govuk-summary-list-row-value>
                     @if (!string.IsNullOrWhiteSpace(@Model.IncomingTrust?.Address?.Street))

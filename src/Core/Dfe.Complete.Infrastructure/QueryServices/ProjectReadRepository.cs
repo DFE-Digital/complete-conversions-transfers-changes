@@ -15,5 +15,9 @@ namespace Dfe.Complete.Infrastructure.QueryServices
                 .Include(p => p.SignificantDateHistories)
                 .Include(p => p.GiasEstablishment);
 
+        public IQueryable<Project> ProjectsNoIncludes =>
+            ctx.Projects
+                .AsNoTracking();
+
     }
 }

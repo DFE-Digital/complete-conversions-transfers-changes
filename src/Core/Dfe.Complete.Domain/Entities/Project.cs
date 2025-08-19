@@ -428,6 +428,7 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
             {
                 Id = new NoteId(Guid.NewGuid()),
                 CreatedAt = note.CreatedAt,
+                UpdatedAt = note.UpdatedAt,
                 Body = note.Body,
                 ProjectId = note.ProjectId,
                 TaskIdentifier = note.TaskIdentifier,
@@ -437,7 +438,6 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
             });
         }
     }
-
 
     public void RemoveNote(NoteId id)
     {

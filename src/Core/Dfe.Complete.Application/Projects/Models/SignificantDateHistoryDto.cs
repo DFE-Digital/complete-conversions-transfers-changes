@@ -19,7 +19,7 @@ public class SignificantDateHistoryDto
 
     public UserId? UserId { get; set; }
     
-    public SignificantDateHistoryReasonDto? Reason { get; set; }
+    public virtual ICollection<SignificantDateHistoryReasonDto> Reasons { get; set; } = new List<SignificantDateHistoryReasonDto>();
     
     public virtual User? User { get; set; }
 }

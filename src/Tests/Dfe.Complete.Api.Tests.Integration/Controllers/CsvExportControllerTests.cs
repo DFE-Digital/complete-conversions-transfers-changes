@@ -157,7 +157,7 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers
             keyContact.HeadteacherId = headteacher.Id;
             keyContact.IncomingTrustCeoId = incomingCeoContact.Id;
             keyContact.ProjectId = project.Id;
-            keyContact.Id = new KeyContactId(Guid.NewGuid());
+            keyContact.Id = new Domain.ValueObjects.KeyContactId(Guid.NewGuid());
             dbContext.KeyContacts.Add(keyContact);
 
             var projectContacts = new List<Contact>
@@ -189,7 +189,7 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers
                 }
             ).Create<SignificantDateHistoryReason>();
             
-            significantDateHistory.Reason = significantDateHistoryReason;
+            significantDateHistory.Reasons = new List<SignificantDateHistoryReason>() { significantDateHistoryReason };
 
             dbContext.SignificantDateHistories.Add(significantDateHistory);
 
@@ -339,7 +339,7 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers
             keyContact.HeadteacherId = headteacher.Id;
             keyContact.IncomingTrustCeoId = incomingCeoContact.Id;
             keyContact.ProjectId = project.Id;
-            keyContact.Id = new KeyContactId(Guid.NewGuid());
+            keyContact.Id = new Domain.ValueObjects.KeyContactId(Guid.NewGuid());
             dbContext.KeyContacts.Add(keyContact);
 
             var projectContacts = new List<Contact>
@@ -363,7 +363,7 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers
                     User = createdBy,
                 }
                 ).Create<SignificantDateHistory>();
-            
+
             var significantDateHistoryReason = fixture.Customize(
                 new SignificantDateHistoryReasonCustomization()
                 {
@@ -371,7 +371,7 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers
                 }
             ).Create<SignificantDateHistoryReason>();
             
-            significantDateHistory.Reason = significantDateHistoryReason;
+            significantDateHistory.Reasons = new List<SignificantDateHistoryReason>() { significantDateHistoryReason };
 
             dbContext.SignificantDateHistories.Add(significantDateHistory);
 
@@ -506,7 +506,7 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers
             keyContact.HeadteacherId = null;
             keyContact.IncomingTrustCeoId = null;
             keyContact.ProjectId = project.Id;
-            keyContact.Id = new KeyContactId(Guid.NewGuid());
+            keyContact.Id = new Domain.ValueObjects.KeyContactId(Guid.NewGuid());
             dbContext.KeyContacts.Add(keyContact);
 
             await dbContext.SaveChangesAsync();

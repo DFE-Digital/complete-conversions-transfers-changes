@@ -43,11 +43,32 @@ class ProjectApi extends ApiBase {
             return cy
                 .request<CreateProjectResponse>({
                     method: "PATCH",
-                    url: Cypress.env(EnvApi) + "/v1/projects/project/academy-urn",
+                    url: Cypress.env(EnvApi) + "/v1/Projects/Project/AcademyUrn",
                     headers: headers,
                     body: {
                         projectId: { value: projectId },
                         urn: { value: academyUrn },
+                    },
+                })
+                .then((response) => {
+                    expect(response.status).to.eq(204);
+                    return response.body;
+                });
+        });
+    }
+
+    updateProjectSignificantDate(projectId: string, significantDate: string, reasonNotes: any, userId: string) {
+        return this.authenticatedRequest().then((headers) => {
+            return cy
+                .request<CreateProjectResponse>({
+                    method: "PATCH",
+                    url: Cypress.env(EnvApi) + "/v1/Projects/Project/SignificantDate",
+                    headers: headers,
+                    body: {
+                        projectId: { value: projectId },
+                        significantDate: significantDate,
+                        reasonNotes: reasonNotes,
+                        userId: { value: userId },
                     },
                 })
                 .then((response) => {

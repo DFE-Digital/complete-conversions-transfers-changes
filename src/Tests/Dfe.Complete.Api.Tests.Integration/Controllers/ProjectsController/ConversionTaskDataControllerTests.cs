@@ -14,10 +14,10 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers.ProjectsController
     {
         [Theory]
         [CustomAutoData(typeof(CustomWebApplicationDbContextFactoryCustomization))]
-        public async Task GetConversionTaskDataByIdAsync_ShouldReturn_A_ProjectGroup(
-            CustomWebApplicationDbContextFactory<Program> factory,
-            IConversionTasksDataClient conversionTasksDatClient,
-            IFixture fixture)
+        public async Task GetConversionTasksDataByIdAsync_ShouldReturn_A_TaskDaa(
+        CustomWebApplicationDbContextFactory<Program> factory,
+        IConversionTasksDataClient conversionTasksDatClient,
+        IFixture fixture)
         {
             // Arrange
             factory.TestClaims = [new Claim(ClaimTypes.Role, ApiRoles.ReadRole)];

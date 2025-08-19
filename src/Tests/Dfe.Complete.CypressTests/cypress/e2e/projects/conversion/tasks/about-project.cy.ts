@@ -1,7 +1,7 @@
 import { ProjectBuilder } from "cypress/api/projectBuilder";
 import { Logger } from "cypress/common/logger";
 import projectDetailsPage from "cypress/pages/projects/projectDetails/projectDetailsPage";
-import { giasUrl, groupReferenceNumber, macclesfieldTrust, nextMonth } from "cypress/constants/stringTestConstants";
+import { giasUrl, groupReferenceNumber, macclesfieldTrust } from "cypress/constants/stringTestConstants";
 import projectApi from "cypress/api/projectApi";
 import projectRemover from "cypress/api/projectRemover";
 import { rdoLondonUser } from "cypress/constants/cypressConstants";
@@ -9,7 +9,7 @@ import aboutTheProjectPage from "cypress/pages/projects/projectDetails/aboutTheP
 import { checkAccessibilityAcrossPages } from "cypress/support/reusableTests";
 import { significateDateToDisplayDate } from "cypress/support/formatDate";
 
-const project = ProjectBuilder.createConversionProjectRequest(nextMonth);
+const project = ProjectBuilder.createConversionProjectRequest();
 let projectId: string;
 let changeLinkPath: string;
 const schoolName = "St Chad's Catholic Primary School";
@@ -179,6 +179,8 @@ describe("About the project page - conversion projects: ", () => {
                 `${macclesfieldTrust.companiesHouseNumber} View the Companies House information (opens in new tab)`,
                 `https://find-and-update.company-information.service.gov.uk/company/${macclesfieldTrust.companiesHouseNumber}`,
             )
+            // .summaryShows("New trust reference number (TRN)") // bug 227460
+            // .hasValue("")
             .summaryShows("Address")
             .hasValue("Macclesfield College Macclesfield SK11 8LF")
             .summaryShows("SharePoint folder")
@@ -290,6 +292,8 @@ describe("About the project page - conversion projects: ", () => {
             .hasValue(macclesfieldTrust.referenceNumber)
             .summaryShows("Companies House number")
             .hasValue("")
+            // .summaryShows("New trust reference number (TRN)") // bug 227460
+            // .hasValue(projectFormAMAT.newTrustReferenceNumber)
             .summaryShows("Address")
             .hasValue("")
             .summaryShows("SharePoint folder")
@@ -320,8 +324,7 @@ describe("About the project page - conversion projects: ", () => {
             .pageHasMovedToSection("Incoming trust details");
     });
 
-    // bug 221367
-    it.skip("Should display 'Not assigned to project' banner when viewing a project that is not assigned to the user", () => {
+    it("Should display 'Not assigned to project' banner when viewing a project that is not assigned to the user", () => {
         Logger.log("Go to unassigned project");
         cy.visit(`projects/${teammatesProjectId}/tasks`);
 

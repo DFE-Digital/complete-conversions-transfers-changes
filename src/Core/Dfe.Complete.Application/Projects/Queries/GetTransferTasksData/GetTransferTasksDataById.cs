@@ -1,18 +1,18 @@
-﻿using Dfe.Complete.Domain.Interfaces.Repositories;
-using Dfe.Complete.Application.Common.Models;
+﻿using Dfe.Complete.Application.Common.Models;
 using Dfe.Complete.Application.Projects.Models;
-using Dfe.Complete.Domain.Entities;
 using AutoMapper;
 using Microsoft.Extensions.Logging;
 using MediatR;
 using Dfe.Complete.Domain.ValueObjects;
+using Dfe.Complete.Application.Projects.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace Dfe.Complete.Application.Projects.Queries.GetTransferTasksData
 {
-    public record GetTransferTasksDataByIdQuery(TaskDataId Id) : IRequest<Result<TransferTaskDataDto>>;
+    public record GetTransferTasksDataByIdQuery(TaskDataId? Id) : IRequest<Result<TransferTaskDataDto>>;
 
     public class GetTransferTasksDataByIdQueryHandler(
-        ICompleteRepository<TransferTasksData> transferTaskDataRepository,
+        ITaskDataReadRepository taskDataReadRepository,
         IMapper mapper,
         ILogger<GetTransferTasksDataByIdQueryHandler> logger)
         : IRequestHandler<GetTransferTasksDataByIdQuery, Result<TransferTaskDataDto>>
@@ -21,7 +21,7 @@ namespace Dfe.Complete.Application.Projects.Queries.GetTransferTasksData
         {
             try
             {
-                var result = await transferTaskDataRepository.GetAsync(p => p.Id == request.Id);
+                var result = await taskDataReadRepository.TransferTaskData.FirstAsync(p => p.Id == request.Id, cancellationToken);
 
                 var transferTaskData = mapper.Map<TransferTaskDataDto>(result);
 

@@ -14,6 +14,8 @@
     string? IsCurrentNav(string tabName) => Model.CurrentSubNavigationItem == tabName ? ariaCurrentValue : null;
 
     var user = await User.GetUser(Sender);
+    
+    var exportLink = $"/projects/all/export/by-significant-date/transfers/all-data/from/{Model.FromMonth}/{Model.FromYear}/to/{Model.ToMonth}/{Model.ToYear}/csv";
 }
 @section PageHeading
 {
@@ -22,6 +24,8 @@
     @Model.DateRangeDisplay
 </h1>
 <p>Schools that will become academies, and academies that will move to a different trust.</p>
+
+<p>You can also <a href="@exportLink">download a more detailed version of the data as a CSV file.</a></p>
 
 @await Html.PartialAsync("_DateRangeForm", Model)
 

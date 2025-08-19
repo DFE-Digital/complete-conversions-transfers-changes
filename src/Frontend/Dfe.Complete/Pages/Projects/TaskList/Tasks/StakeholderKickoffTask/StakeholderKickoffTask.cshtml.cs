@@ -1,18 +1,17 @@
 using Dfe.Complete.Application.Projects.Commands.TaskData;
-using Dfe.Complete.Application.Projects.Queries.GetConversionTasksData;
-using Dfe.Complete.Application.Projects.Queries.GetProject;
-using Dfe.Complete.Application.Projects.Queries.GetTransferTasksData;
 using Dfe.Complete.Constants;
 using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Extensions;
 using Dfe.Complete.Models;
 using Dfe.Complete.Services;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.StakeholderKickoffTask
 {
-    public class StakeholderKickoffTaskModel(ISender sender, ErrorService errorService, ILogger<StakeholderKickoffTaskModel> _logger) : BaseProjectPageModel(sender, _logger)
+    public class StakeholderKickoffTaskModel(ISender sender, IAuthorizationService authorizationService, ILogger<StakeholderKickoffTaskModel> logger, IErrorService errorService)
+        : BaseProjectTaskModel(sender, authorizationService, logger, NoteTaskIdentifier.StakeholderKickoff)
     {
         [BindProperty(Name = "send-intro-emails")]
         public bool? SendIntroEmails { get; set; }
@@ -34,35 +33,22 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.StakeholderKickoffTask
 
         public override async Task<IActionResult> OnGetAsync()
         {
-            await base.OnGetAsync();
-
-            var result = await sender.Send(new GetProjectHistoryByProjectIdQuery(ProjectId));
-            Project = result.Value;
+            await base.OnGetAsync(); 
             var isConversion = Project.Type == ProjectType.Conversion;
 
             if (isConversion)
-            {
-                var request =  new GetConversionTasksDataByIdQuery(Project.TasksDataId);
-                var taskDataResult = await sender.Send(request);
-
-                var taskData = taskDataResult.Value;
-
-                SendIntroEmails = taskData?.StakeholderKickOffIntroductoryEmails;
-                SendInvites = taskData?.StakeholderKickOffSetupMeeting;
-                HostMeetingOrCall = taskData?.StakeholderKickOffMeeting;
-                LocalAuthorityProforma = taskData?.StakeholderKickOffLocalAuthorityProforma;
-                LocalAuthorityAbleToConvert = taskData?.StakeholderKickOffCheckProvisionalConversionDate;
+            { 
+                SendIntroEmails = ConversionTaskData.StakeholderKickOffIntroductoryEmails;
+                SendInvites = ConversionTaskData.StakeholderKickOffSetupMeeting;
+                HostMeetingOrCall = ConversionTaskData.StakeholderKickOffMeeting;
+                LocalAuthorityProforma = ConversionTaskData.StakeholderKickOffLocalAuthorityProforma;
+                LocalAuthorityAbleToConvert = ConversionTaskData.StakeholderKickOffCheckProvisionalConversionDate;
             }
             else
-            {
-                var request =  new GetTransferTasksDataByIdQuery(Project.TasksDataId);
-                var taskDataResult = await sender.Send(request);
-
-                var taskData = taskDataResult.Value;
-
-                SendIntroEmails = taskData?.StakeholderKickOffIntroductoryEmails;
-                SendInvites = taskData?.StakeholderKickOffSetupMeeting;
-                HostMeetingOrCall = taskData?.StakeholderKickOffMeeting;
+            { 
+                SendIntroEmails = TransferTaskData.StakeholderKickOffIntroductoryEmails;
+                SendInvites = TransferTaskData.StakeholderKickOffSetupMeeting;
+                HostMeetingOrCall = TransferTaskData.StakeholderKickOffMeeting;
             }
             
             SignificantDate = Project.SignificantDateProvisional is true ? null : Project.SignificantDate;
@@ -92,7 +78,7 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.StakeholderKickoffTask
                 SendInvites, 
                 HostMeetingOrCall, 
                 SignificantDate,
-                User.Identity.Name);
+                User.Identity!.Name);
             
             await sender.Send(request);
             

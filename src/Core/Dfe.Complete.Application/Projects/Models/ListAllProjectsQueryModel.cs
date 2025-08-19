@@ -20,5 +20,7 @@ public record ProjectFilters(
     string? IncomingTrustUkprn = null,
     DateRangeFilter? SignificantDateRange = null,
     List<ProjectState>? ProjectStatuses = null,
-    bool? WithAcademyUrn = null
+    bool? WithAcademyUrn = null,
+    Urn? Urn = null,
+    ProjectGroupId? GroupId = null
 );
