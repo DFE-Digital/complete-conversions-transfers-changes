@@ -17,6 +17,7 @@
 	  <Compile Remove="ViewComponents\**" />
 	  <Content Remove="ViewComponents\**" />
 	  <EmbeddedResource Remove="ViewComponents\**" />
+	  <None Remove="Services\Project\**" />
 	  <None Remove="ViewComponents\**" />
 	  <Compile Remove="Pages\Projects\List\AllProjectsInTrustViewModel.cs" />
 	</ItemGroup>
