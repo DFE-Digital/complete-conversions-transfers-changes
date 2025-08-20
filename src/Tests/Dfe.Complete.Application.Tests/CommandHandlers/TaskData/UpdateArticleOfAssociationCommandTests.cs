@@ -11,16 +11,16 @@ using DfE.CoreLibs.Testing.AutoFixture.Customizations;
 using MockQueryable;
 using NSubstitute;
 
-namespace Dfe.Complete.Application.Tests.CommandHandlers.Project
+namespace Dfe.Complete.Application.Tests.CommandHandlers.TaskData
 {
-    public class UpdateHandoverWithDeliveryOfficerCommandTests
+    public class UpdateArticleOfAssociationTaskCommandTests
     {
         [Theory]
         [CustomAutoData(typeof(DateOnlyCustomization), typeof(IgnoreVirtualMembersCustomisation))]
         public async Task Handle_ShouldReturnNotFoundException_IfConversionTaskDataDoesNotExist(
             [Frozen] ITaskDataReadRepository taskDataReadRepository,
             [Frozen] ITaskDataWriteRepository taskDataWriteRepository,
-            UpdateHandoverWithDeliveryOfficerTaskCommand command
+            UpdateArticleOfAssociationTaskCommand command
         )
         {
             // Arrange
@@ -29,13 +29,13 @@ namespace Dfe.Complete.Application.Tests.CommandHandlers.Project
             var tasksData = new Domain.Entities.ConversionTasksData(new TaskDataId(Guid.NewGuid()), now, now);
             taskDataReadRepository.ConversionTaskData.Returns(new List<Domain.Entities.ConversionTasksData> { tasksData }.AsQueryable().BuildMock());
 
-            var handler = new UpdateHandoverWithDeliveryOfficerCommandHandler( taskDataReadRepository, taskDataWriteRepository);
+            var handler = new UpdateArticleOfAssociationTaskCommandHandler(taskDataReadRepository, taskDataWriteRepository);
 
             // Act
             var exception = await Assert.ThrowsAsync<NotFoundException>(() => handler.Handle(command, default));
 
             // Assert
-            Assert.Equal($"Conversion task data {command.TaskDataId} not found.", exception.Message); 
+            Assert.Equal($"Conversion task data {command.TaskDataId} not found.", exception.Message);
 
         }
 
@@ -44,7 +44,7 @@ namespace Dfe.Complete.Application.Tests.CommandHandlers.Project
         public async Task Handle_ShouldThrowNotFoundExcepiton_IfTransferTaskDataDoesNotExist(
             [Frozen] ITaskDataReadRepository taskDataReadRepository,
             [Frozen] ITaskDataWriteRepository taskDataWriteRepository,
-            UpdateHandoverWithDeliveryOfficerTaskCommand command)
+            UpdateArticleOfAssociationTaskCommand command)
         {
             // Arrange  
             command = command with { ProjectType = ProjectType.Transfer };
@@ -52,7 +52,7 @@ namespace Dfe.Complete.Application.Tests.CommandHandlers.Project
             var tasksData = new Domain.Entities.TransferTasksData(new TaskDataId(Guid.NewGuid()), now, now, false, false, false);
             taskDataReadRepository.TransferTaskData.Returns(new List<Domain.Entities.TransferTasksData> { tasksData }.AsQueryable().BuildMock());
 
-            var handler = new UpdateHandoverWithDeliveryOfficerCommandHandler(
+            var handler = new UpdateArticleOfAssociationTaskCommandHandler(
                  taskDataReadRepository, taskDataWriteRepository);
 
             // Act  
@@ -67,16 +67,16 @@ namespace Dfe.Complete.Application.Tests.CommandHandlers.Project
         public async Task Handle_ShouldUpdate_IfConversionTaskDataExists(
             [Frozen] ITaskDataReadRepository taskDataReadRepository,
             [Frozen] ITaskDataWriteRepository taskDataWriteRepository,
-            UpdateHandoverWithDeliveryOfficerTaskCommand command
+            UpdateArticleOfAssociationTaskCommand command
         )
         {
             // Arrange
             command = command with { ProjectType = ProjectType.Conversion };
             var now = DateTime.UtcNow;
             var tasksData = new Domain.Entities.ConversionTasksData(command.TaskDataId, now, now);
-            taskDataReadRepository.ConversionTaskData.Returns(new List<Domain.Entities.ConversionTasksData> { tasksData }.AsQueryable().BuildMock()); 
-            
-            var handler = new UpdateHandoverWithDeliveryOfficerCommandHandler(taskDataReadRepository, taskDataWriteRepository);
+            taskDataReadRepository.ConversionTaskData.Returns(new List<Domain.Entities.ConversionTasksData> { tasksData }.AsQueryable().BuildMock());
+
+            var handler = new UpdateArticleOfAssociationTaskCommandHandler(taskDataReadRepository, taskDataWriteRepository);
 
             // Act
             var result = await handler.Handle(command, default);
@@ -84,14 +84,14 @@ namespace Dfe.Complete.Application.Tests.CommandHandlers.Project
             // Assert
             Assert.NotNull(result);
             Assert.True(result.IsSuccess);
-            Assert.True(result.Value); 
+            Assert.True(result.Value);
         }
         [Theory]
         [CustomAutoData(typeof(DateOnlyCustomization), typeof(IgnoreVirtualMembersCustomisation))]
         public async Task Handle_ShouldUpdate_IfTransferTaskDataExists(
             [Frozen] ITaskDataReadRepository taskDataReadRepository,
             [Frozen] ITaskDataWriteRepository taskDataWriteRepository,
-            UpdateHandoverWithDeliveryOfficerTaskCommand command
+            UpdateArticleOfAssociationTaskCommand command
         )
         {
             // Arrange
@@ -100,7 +100,7 @@ namespace Dfe.Complete.Application.Tests.CommandHandlers.Project
             var tasksData = new Domain.Entities.TransferTasksData(command.TaskDataId, now, now, false, false, false);
             taskDataReadRepository.TransferTaskData.Returns(new List<Domain.Entities.TransferTasksData> { tasksData }.AsQueryable().BuildMock());
 
-            var handler = new UpdateHandoverWithDeliveryOfficerCommandHandler(taskDataReadRepository, taskDataWriteRepository);
+            var handler = new UpdateArticleOfAssociationTaskCommandHandler(taskDataReadRepository, taskDataWriteRepository);
 
             // Act
             var result = await handler.Handle(command, default);

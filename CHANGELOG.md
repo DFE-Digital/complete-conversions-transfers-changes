@@ -18,6 +18,8 @@ Security in case of vulnerabilities.
 
 ### Added
 
+- Added `Article of Association` task page.
+
 ### Changed
 
 ### Fixed
