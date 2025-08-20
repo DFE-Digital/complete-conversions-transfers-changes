@@ -1,0 +1,19 @@
+﻿@page "/projects/{projectId}/tasks/articles_of_association"
+@using Dfe.Complete.Domain.Enums
+@model Dfe.Complete.Pages.Projects.TaskList.Tasks.ArticlesOfAssociationTask.ArticlesOfAssociationModel 
+@{
+  Layout = "_ProjectTaskLayout";
+    ViewData["Title"] = "Articles of association";
+}
+
+@section TaskSection {
+  @if (Model.Project.Type == ProjectType.Conversion)
+  {
+      @await Html.PartialAsync("_ConversionArticlesOfAssociationTask", Model)
+  }
+
+  @if (Model.Project.Type == ProjectType.Transfer)
+  {
+      @await Html.PartialAsync("_TransferArticlesOfAssociationTask", Model)
+  }
+}

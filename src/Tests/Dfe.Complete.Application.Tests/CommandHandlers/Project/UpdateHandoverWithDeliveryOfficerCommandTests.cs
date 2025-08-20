@@ -1,6 +1,6 @@
 ﻿using AutoFixture.Xunit2;
 using Dfe.Complete.Application.Notes.Interfaces;
-using Dfe.Complete.Application.Projects.Commands.UpdateProject;
+using Dfe.Complete.Application.Projects.Commands.TaskData;
 using Dfe.Complete.Application.Projects.Interfaces;
 using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Domain.ValueObjects;
@@ -20,7 +20,7 @@ namespace Dfe.Complete.Application.Tests.CommandHandlers.Project
         public async Task Handle_ShouldReturnNotFoundException_IfConversionTaskDataDoesNotExist(
             [Frozen] ITaskDataReadRepository taskDataReadRepository,
             [Frozen] ITaskDataWriteRepository taskDataWriteRepository,
-            UpdateHandoverWithDeliveryOfficerCommand command
+            UpdateHandoverWithDeliveryOfficerTaskCommand command
         )
         {
             // Arrange
@@ -44,7 +44,7 @@ namespace Dfe.Complete.Application.Tests.CommandHandlers.Project
         public async Task Handle_ShouldThrowNotFoundExcepiton_IfTransferTaskDataDoesNotExist(
             [Frozen] ITaskDataReadRepository taskDataReadRepository,
             [Frozen] ITaskDataWriteRepository taskDataWriteRepository,
-            UpdateHandoverWithDeliveryOfficerCommand command)
+            UpdateHandoverWithDeliveryOfficerTaskCommand command)
         {
             // Arrange  
             command = command with { ProjectType = ProjectType.Transfer };
@@ -67,7 +67,7 @@ namespace Dfe.Complete.Application.Tests.CommandHandlers.Project
         public async Task Handle_ShouldUpdate_IfConversionTaskDataExists(
             [Frozen] ITaskDataReadRepository taskDataReadRepository,
             [Frozen] ITaskDataWriteRepository taskDataWriteRepository,
-            UpdateHandoverWithDeliveryOfficerCommand command
+            UpdateHandoverWithDeliveryOfficerTaskCommand command
         )
         {
             // Arrange
@@ -91,7 +91,7 @@ namespace Dfe.Complete.Application.Tests.CommandHandlers.Project
         public async Task Handle_ShouldUpdate_IfTransferTaskDataExists(
             [Frozen] ITaskDataReadRepository taskDataReadRepository,
             [Frozen] ITaskDataWriteRepository taskDataWriteRepository,
-            UpdateHandoverWithDeliveryOfficerCommand command
+            UpdateHandoverWithDeliveryOfficerTaskCommand command
         )
         {
             // Arrange

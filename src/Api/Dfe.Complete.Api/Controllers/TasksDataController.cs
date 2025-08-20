@@ -5,7 +5,6 @@ using Swashbuckle.AspNetCore.Annotations;
 using Dfe.Complete.Application.Projects.Models;
 using Microsoft.AspNetCore.Authorization;
 using Dfe.Complete.Application.Projects.Queries.GetTransferTasksData;
-using Dfe.Complete.Application.Projects.Commands.UpdateProject;
 using Dfe.Complete.Application.Projects.Queries.GetConversionTasksData;
 using Dfe.Complete.Application.Projects.Commands.TaskData;
 
@@ -59,7 +58,7 @@ namespace Dfe.Complete.Api.Controllers
         [Route("TaskData/Handover/DeliveryOfficer")]
         [SwaggerResponse(204, "Successfully updated the conversion or trasnfer task data")]
         [SwaggerResponse(404, "Transfer or Conversion task data not found for the given task data Id.")]
-        public async Task<IActionResult> UpdateHandoverWithDeliveryOfficerTaskDataByTaskDataIdAsync([FromBody] UpdateHandoverWithDeliveryOfficerCommand request, CancellationToken cancellationToken)
+        public async Task<IActionResult> UpdateHandoverWithDeliveryOfficerTaskDataByTaskDataIdAsync([FromBody] UpdateHandoverWithDeliveryOfficerTaskCommand request, CancellationToken cancellationToken)
         {
             await sender.Send(request, cancellationToken); 
             return NoContent();
