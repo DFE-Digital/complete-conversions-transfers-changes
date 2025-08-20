@@ -4,33 +4,29 @@ using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Domain.ValueObjects;
 using Dfe.Complete.Extensions;
 using Dfe.Complete.Models;
-using Dfe.Complete.Pages.Projects.TaskList.Tasks.HandoverWithDeliveryOfficerTask;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.ArticlesOfAssociationTask
 {
-    public class ArticlesOfAssociationModel(ISender sender, IAuthorizationService authorizationService, ILogger<HandoverWithDeliveryOfficerTaskModel> logger)
-    : BaseProjectTaskModel(sender, authorizationService, logger, NoteTaskIdentifier.Handover)
+    public class ArticlesOfAssociationTaskModel(ISender sender, IAuthorizationService authorizationService, ILogger<ArticlesOfAssociationTaskModel> logger)
+    : BaseProjectTaskModel(sender, authorizationService, logger, NoteTaskIdentifier.ArticleOfAssociation)
     {
-        [BindProperty(Name = "not-applicable")]
+        [BindProperty(Name = "notapplicable")]
         public bool? NotApplicable { get; set; }
 
-        [BindProperty(Name = "articles_of_association_cleared")]
-        public bool? ArticlesOfAssociationCleared { get; set; }
+        [BindProperty(Name = "cleared")]
+        public bool? Cleared { get; set; } 
 
-        [BindProperty(Name = "articles_of_association_not_applicable")]
-        public bool? ArticlesOfAssociationNotApplicable { get; set; }
-
-        [BindProperty(Name = "articles_of_association_received")]
-        public bool? ArticlesOfAssociationReceived { get; set; }
-        [BindProperty(Name = "articles_of_association_sent")]
-        public bool? ArticlesOfAssociationSent { get; set; }
-        [BindProperty(Name = "articles_of_association_signed")]
-        public bool? ArticlesOfAssociationSigned { get; set; }
-        [BindProperty(Name = "articles_of_association_saved")]
-        public bool? ArticlesOfAssociationSaved { get; set; }
+        [BindProperty(Name = "received")]
+        public bool? Received { get; set; }
+        [BindProperty(Name = "sent")]
+        public bool? Sent { get; set; }
+        [BindProperty(Name = "signed")]
+        public bool?Signed { get; set; }
+        [BindProperty(Name = "saved")]
+        public bool? Saved { get; set; }
 
         [BindProperty]
         public Guid? TasksDataId { get; set; }
@@ -43,27 +39,27 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.ArticlesOfAssociationTask
             TasksDataId = Project.TasksDataId?.Value;
             if (Project.Type == ProjectType.Transfer)
             {
-                ArticlesOfAssociationCleared = TransferTaskData.ArticlesOfAssociationCleared;
-                ArticlesOfAssociationNotApplicable = TransferTaskData.ArticlesOfAssociationNotApplicable;
-                ArticlesOfAssociationReceived = TransferTaskData.ArticlesOfAssociationReceived;
-                ArticlesOfAssociationSent = TransferTaskData.ArticlesOfAssociationSent;
-                ArticlesOfAssociationSigned = TransferTaskData.ArticlesOfAssociationSigned;
-                ArticlesOfAssociationSaved = TransferTaskData.ArticlesOfAssociationSaved;
+                Cleared = TransferTaskData.ArticlesOfAssociationCleared;
+                NotApplicable = TransferTaskData.ArticlesOfAssociationNotApplicable;
+                Received = TransferTaskData.ArticlesOfAssociationReceived;
+                Sent = TransferTaskData.ArticlesOfAssociationSent;
+                Signed = TransferTaskData.ArticlesOfAssociationSigned;
+                Saved = TransferTaskData.ArticlesOfAssociationSaved;
             }
             else
             {
-                ArticlesOfAssociationCleared = ConversionTaskData.ArticlesOfAssociationCleared;
-                ArticlesOfAssociationNotApplicable = ConversionTaskData.ArticlesOfAssociationNotApplicable;
-                ArticlesOfAssociationReceived = ConversionTaskData.ArticlesOfAssociationReceived;
-                ArticlesOfAssociationSent = ConversionTaskData.ArticlesOfAssociationSent;
-                ArticlesOfAssociationSigned = ConversionTaskData.ArticlesOfAssociationSigned;
-                ArticlesOfAssociationSaved = ConversionTaskData.ArticlesOfAssociationSaved;
+                Cleared = ConversionTaskData.ArticlesOfAssociationCleared;
+                NotApplicable = ConversionTaskData.ArticlesOfAssociationNotApplicable;
+                Received = ConversionTaskData.ArticlesOfAssociationReceived;
+                Sent = ConversionTaskData.ArticlesOfAssociationSent;
+                Signed = ConversionTaskData.ArticlesOfAssociationSigned;
+                Saved = ConversionTaskData.ArticlesOfAssociationSaved;
             }
             return Page();
         }
         public async Task<IActionResult> OnPost()
         {
-            await sender.Send(new UpdateArticleOfAssociationTaskCommand(new TaskDataId(TasksDataId.GetValueOrDefault())!, Type, NotApplicable, ArticlesOfAssociationCleared, ArticlesOfAssociationReceived, ArticlesOfAssociationSent, ArticlesOfAssociationSigned, ArticlesOfAssociationSaved));
+            await sender.Send(new UpdateArticleOfAssociationTaskCommand(new TaskDataId(TasksDataId.GetValueOrDefault())!, Type, NotApplicable, Cleared, Received, Sent, Signed, Saved));
             TempData.SetNotification(NotificationType.Success, "Success", "Task updated successfully");
             return Redirect(string.Format(RouteConstants.ProjectTaskList, ProjectId));
         }

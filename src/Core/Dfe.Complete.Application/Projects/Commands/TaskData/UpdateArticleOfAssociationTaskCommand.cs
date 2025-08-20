@@ -13,11 +13,11 @@ namespace Dfe.Complete.Application.Projects.Commands.TaskData
         TaskDataId TaskDataId,
         ProjectType? ProjectType,
         bool? NotApplicable,
-        bool? ArticlesOfAssociationCleared,
-        bool? ArticlesOfAssociationReceived,
-        bool? ArticlesOfAssociationSent,
-        bool? ArticlesOfAssociationSigned,
-        bool? ArticlesOfAssociationSaved
+        bool? Cleared,
+        bool? Received,
+        bool? Sent,
+        bool? Signed,
+        bool? Saved
     ) : IRequest<Result<bool>>;
 
     public class UpdateArticleOfAssociationTaskCommandHandler(
@@ -45,12 +45,12 @@ namespace Dfe.Complete.Application.Projects.Commands.TaskData
             var tasksData = await taskDataReadRepository.ConversionTaskData.FirstOrDefaultAsync(p => p.Id == taskDataId, cancellationToken)
                 ?? throw new NotFoundException($"Conversion task data {taskDataId} not found.");
 
-            tasksData.ArticlesOfAssociationCleared = request.NotApplicable == true ? null : request.ArticlesOfAssociationCleared;
+            tasksData.ArticlesOfAssociationCleared = request.NotApplicable == true ? null : request.Cleared;
             tasksData.ArticlesOfAssociationNotApplicable = request.NotApplicable;
-            tasksData.ArticlesOfAssociationReceived = request.NotApplicable == true ? null : request.ArticlesOfAssociationReceived;
-            tasksData.ArticlesOfAssociationSent = request.NotApplicable == true ? null : request.ArticlesOfAssociationSent;
-            tasksData.ArticlesOfAssociationSigned = request.NotApplicable == true ? null : request.ArticlesOfAssociationSigned;
-            tasksData.ArticlesOfAssociationSaved = request.NotApplicable == true ? null : request.ArticlesOfAssociationSaved;
+            tasksData.ArticlesOfAssociationReceived = request.NotApplicable == true ? null : request.Received;
+            tasksData.ArticlesOfAssociationSent = request.NotApplicable == true ? null : request.Sent;
+            tasksData.ArticlesOfAssociationSigned = request.NotApplicable == true ? null : request.Signed;
+            tasksData.ArticlesOfAssociationSaved = request.NotApplicable == true ? null : request.Saved;
 
             await taskDataWriteRepository.UpdateConversionAsync(tasksData, cancellationToken);
         }
@@ -60,12 +60,12 @@ namespace Dfe.Complete.Application.Projects.Commands.TaskData
             var tasksData = await taskDataReadRepository.TransferTaskData.FirstOrDefaultAsync(p => p.Id == taskDataId, cancellationToken)
                 ?? throw new NotFoundException($"Transfer task data {taskDataId} not found.");
 
-            tasksData.ArticlesOfAssociationCleared = request.NotApplicable == true ? null : request.ArticlesOfAssociationCleared;
+            tasksData.ArticlesOfAssociationCleared = request.NotApplicable == true ? null : request.Cleared;
             tasksData.ArticlesOfAssociationNotApplicable = request.NotApplicable;
-            tasksData.ArticlesOfAssociationReceived = request.NotApplicable == true ? null : request.ArticlesOfAssociationReceived;
-            tasksData.ArticlesOfAssociationSent = request.NotApplicable == true ? null : request.ArticlesOfAssociationSent;
-            tasksData.ArticlesOfAssociationSigned = request.NotApplicable == true ? null : request.ArticlesOfAssociationSigned;
-            tasksData.ArticlesOfAssociationSaved = request.NotApplicable == true ? null : request.ArticlesOfAssociationSaved;
+            tasksData.ArticlesOfAssociationReceived = request.NotApplicable == true ? null : request.Received;
+            tasksData.ArticlesOfAssociationSent = request.NotApplicable == true ? null : request.Sent;
+            tasksData.ArticlesOfAssociationSigned = request.NotApplicable == true ? null : request.Signed;
+            tasksData.ArticlesOfAssociationSaved = request.NotApplicable == true ? null : request.Saved;
 
             await taskDataWriteRepository.UpdateTransferAsync(tasksData, cancellationToken);
         }

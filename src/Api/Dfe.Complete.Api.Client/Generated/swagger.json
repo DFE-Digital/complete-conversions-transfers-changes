@@ -2235,7 +2235,7 @@
         }
       }
     },
-    "/v1/TasksData/TaskData/Handover/DeliveryOfficer": {
+    "/v1/TasksData/TaskData/HandoverDeliveryOfficer": {
       "patch": {
         "tags": [
           "TasksData"
@@ -2248,7 +2248,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/UpdateHandoverWithDeliveryOfficerCommand"
+                "$ref": "#/components/schemas/UpdateHandoverWithDeliveryOfficerTaskCommand"
               }
             }
           },
@@ -2265,12 +2265,12 @@
         }
       }
     },
-    "/v1/TasksData/external-stakeholder-kickoff": {
+    "/v1/TasksData/TaskData/ExternalStakeholderKickoff": {
       "patch": {
         "tags": [
           "TasksData"
         ],
-        "summary": "Updates the External stakeholder kickoff Task Data for a specific task data.",
+        "summary": "Updates the external stakeholder kickoff task Data for conversion or trasnfer project.",
         "operationId": "TasksData_UpdateExternalStakeholderKickOffTask",
         "requestBody": {
           "x-name": "request",
@@ -2287,7 +2287,40 @@
         },
         "responses": {
           "204": {
-            "description": "External stakeholder kickoff Task updated successfully."
+            "description": "Conversion or trannsfer's external stakeholder kickoff task updated successfully."
+          },
+          "400": {
+            "description": "Invalid request data."
+          },
+          "404": {
+            "description": "Project/User not found."
+          }
+        }
+      }
+    },
+    "/v1/TasksData/TaskData/ArticleOfAssociation": {
+      "patch": {
+        "tags": [
+          "TasksData"
+        ],
+        "summary": "Updates the article of association task Data for conversion or trasnfer project.",
+        "operationId": "TasksData_UpdateArticleOfAssociationTask",
+        "requestBody": {
+          "x-name": "request",
+          "description": "The update command.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateArticleOfAssociationTaskCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "204": {
+            "description": "Conversion or trannsfer's article of association task updated successfully."
           },
           "400": {
             "description": "Invalid request data."
@@ -4579,14 +4612,16 @@
           "LandQuestionnaire",
           "LandRegistry",
           "StakeholderKickoff",
-          "SupplementalFundingAgreement"
+          "SupplementalFundingAgreement",
+          "ArticleOfAssociation"
         ],
         "enum": [
           "Handover",
           "LandQuestionnaire",
           "LandRegistry",
           "StakeholderKickoff",
-          "SupplementalFundingAgreement"
+          "SupplementalFundingAgreement",
+          "ArticleOfAssociation"
         ]
       },
       "CreateNoteCommand": {
@@ -6277,7 +6312,7 @@
           "Commercial"
         ]
       },
-      "UpdateHandoverWithDeliveryOfficerCommand": {
+      "UpdateHandoverWithDeliveryOfficerTaskCommand": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
@@ -6344,6 +6379,47 @@
           },
           "userEmail": {
             "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "UpdateArticleOfAssociationTaskCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "taskDataId": {
+            "$ref": "#/components/schemas/TaskDataId"
+          },
+          "projectType": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/ProjectType"
+              }
+            ]
+          },
+          "notApplicable": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "cleared": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "received": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "sent": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "signed": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "saved": {
+            "type": "boolean",
             "nullable": true
           }
         }

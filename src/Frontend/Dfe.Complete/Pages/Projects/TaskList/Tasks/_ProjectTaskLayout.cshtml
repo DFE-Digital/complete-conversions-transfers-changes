@@ -14,11 +14,11 @@
 
 <div class="govuk-grid-row govuk-!-margin-bottom-9">
     <div class="govuk-grid-column-two-thirds">
-        <h1 class="govuk-heading-xl" data-testid="title">
+        <h1 class="govuk-heading-xl govuk-!-margin-bottom-2" data-testid="title">
             <span class="govuk-caption-l" data-testid="school-name">@Model.Establishment.Name</span>
             @Model.TaskIdentifier.ToDisplayDescription()
-            @RenderSection("TaskHeaderHintSection", required: false)
         </h1>
+        @RenderSection("TaskHeaderHintSection", required: false)
     </div>
     <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">

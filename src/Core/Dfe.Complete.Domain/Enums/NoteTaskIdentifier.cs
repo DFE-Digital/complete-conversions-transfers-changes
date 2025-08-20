@@ -23,5 +23,9 @@ public enum NoteTaskIdentifier
 
     [Description("supplemental_funding_agreement")]
     [DisplayDescription("Supplemental funding agreement")]
-    SupplementalFundingAgreement = 5
+    SupplementalFundingAgreement = 5,
+
+    [Description("article_of_association")]
+    [DisplayDescription("Articles of association")]
+    ArticleOfAssociation = 6
 }

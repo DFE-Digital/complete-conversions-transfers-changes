@@ -55,7 +55,7 @@ namespace Dfe.Complete.Api.Controllers
         /// <param name="cancellationToken">The cancellation token.</param>
         [Authorize(Policy = "CanReadWriteUpdate")]
         [HttpPatch]
-        [Route("TaskData/Handover/DeliveryOfficer")]
+        [Route("TaskData/HandoverDeliveryOfficer")]
         [SwaggerResponse(204, "Successfully updated the conversion or trasnfer task data")]
         [SwaggerResponse(404, "Transfer or Conversion task data not found for the given task data Id.")]
         public async Task<IActionResult> UpdateHandoverWithDeliveryOfficerTaskDataByTaskDataIdAsync([FromBody] UpdateHandoverWithDeliveryOfficerTaskCommand request, CancellationToken cancellationToken)
@@ -65,13 +65,14 @@ namespace Dfe.Complete.Api.Controllers
         }
 
         /// <summary>
-        /// Updates the External stakeholder kickoff Task Data for a specific task data.
+        /// Updates the external stakeholder kickoff task Data for conversion or trasnfer project.
         /// </summary>
         /// <param name="request">The update command.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
         [Authorize(Policy = "CanReadWrite")]
-        [HttpPatch("external-stakeholder-kickoff")]
-        [SwaggerResponse(204, "External stakeholder kickoff Task updated successfully.")]
+        [HttpPatch]
+        [Route("TaskData/ExternalStakeholderKickoff")]
+        [SwaggerResponse(204, "Conversion or trannsfer's external stakeholder kickoff task updated successfully.")]
         [SwaggerResponse(400, "Invalid request data.")]
         [SwaggerResponse(404, "Project/User not found.")]
         public async Task<IActionResult> UpdateExternalStakeholderKickOffTaskAsync(
@@ -81,5 +82,23 @@ namespace Dfe.Complete.Api.Controllers
             await sender.Send(request, cancellationToken);
             return NoContent();
         }
+        /// <summary>
+        /// Updates the article of association task Data for conversion or trasnfer project.
+        /// </summary>
+        /// <param name="request">The update command.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        [Authorize(Policy = "CanReadWrite")]
+        [HttpPatch]
+        [Route("TaskData/ArticleOfAssociation")]
+        [SwaggerResponse(204, "Conversion or trannsfer's article of association task updated successfully.")]
+        [SwaggerResponse(400, "Invalid request data.")]
+        [SwaggerResponse(404, "Project/User not found.")]
+        public async Task<IActionResult> UpdateArticleOfAssociationTaskAsync(
+            [FromBody] UpdateArticleOfAssociationTaskCommand request,
+            CancellationToken cancellationToken)
+        {
+            await sender.Send(request, cancellationToken);
+            return NoContent();
+        } 
     }
 }
