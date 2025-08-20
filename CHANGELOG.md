@@ -17,13 +17,31 @@ Security in case of vulnerabilities.
 ## Unreleased
 
 ### Added
-- Added `Conversion` and `Transfer` task list with their statuses.
 
 ### Changed
 
 ### Fixed
 
-See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-08-12.625...main) for everything awaiting release
+See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-08-20.658...main) for everything awaiting release
+
+---
+
+## [1.13.0](https://github.com/DFE-Digital/complete-conversions-transfers-changes/releases/tag/production-2025-08-20.658) - 2025-08-20
+
+### Added
+- Added `Conversion` and `Transfer` task list with their statuses.
+- Project groups: new API endpoints
+  - `/v1/ProjectGroup/List` – list project groups (with establishments)
+  - `/v1/ProjectGroup/Details` – project group details by id
+- Frontend routes and pages for project groups
+    - `/groups` – project groups list
+    - `/groups/{groupId}` – project group details
+
+### Changed
+
+### Fixed
+
+See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-08-12.625...production-2025-08-20.658) for everything in the release
 
 ---
 
@@ -49,6 +67,8 @@ See the [full commit history](https://github.com/DFE-Digital/complete-conversion
 - Add handover project check page  (`/projects/all/handover/{projectId}/check`)
 - Add handover project add detail & confirmation page  (`/projects/all/handover/{projectId}/new`)
 - Added `App Insight` for tracking users clicks and page views
+
+- Added `Handover with Regional Delivery Officer` task page
 
 ### Changed
 - Restructured the task page to be more generic

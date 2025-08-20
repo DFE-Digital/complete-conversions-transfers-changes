@@ -144,8 +144,8 @@ describe("About the project page - transfer projects: ", () => {
                 `${incomingTrust.companiesHouseNumber} View the Companies House information (opens in new tab)`,
                 `https://find-and-update.company-information.service.gov.uk/company/${incomingTrust.companiesHouseNumber}`,
             )
-            // .summaryShows("New trust reference number (TRN)") // bug 227460
-            // .hasValue("")
+            .summaryShows("New trust reference number (TRN)")
+            .hasValue("")
             .summaryShows("Address")
             .hasValue(incomingTrust.address)
             .summaryShows("SharePoint folder")
@@ -280,8 +280,8 @@ describe("About the project page - transfer projects: ", () => {
             .hasValue(incomingTrust.referenceNumber)
             .summaryShows("Companies House number")
             .hasValueWithLink("")
-            // .summaryShows("New trust reference number (TRN)") // bug 227460
-            // .hasValue(projectFormAMat.newTrustReferenceNumber)
+            .summaryShows("New trust reference number (TRN)")
+            .hasValue(projectFormAMat.newTrustReferenceNumber)
             .summaryShows("Address")
             .hasValue("")
             .summaryShows("SharePoint folder")
