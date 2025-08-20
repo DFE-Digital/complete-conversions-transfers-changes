@@ -10,13 +10,14 @@
   var significantDateHistories = Model.Project.SignificantDateHistories;
   
   var projectTypeString = Model.Project.Type == ProjectType.Conversion ? "conversion" : "transfer";
+  var isConfirmedString = Model.Project.SignificantDateProvisional is true ? "proposed" : "confirmed";
 }
 
 <div class="govuk-grid-row">
   <div class="govuk-grid-column-full">
     <section>
-      <h2>Current proposed @projectTypeString date</h2>
-      <p class="govuk-!-margin-bottom-8">The current proposed @projectTypeString date is <strong>@Model.Project.SignificantDate.ToDateString()</strong></p>
+      <h2>Current @isConfirmedString @projectTypeString date</h2>
+      <p class="govuk-!-margin-bottom-8">The current @isConfirmedString @projectTypeString date is <strong>@Model.Project.SignificantDate.ToDateString()</strong></p>
     </section>
 
     <h2 class="govuk-heading-l">@projectTypeString.ToTitleCase() date history</h2>
