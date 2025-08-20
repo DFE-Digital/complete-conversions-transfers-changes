@@ -18,6 +18,18 @@ Security in case of vulnerabilities.
 
 ### Added
 - Ability to edit project information for conversions and transfers
+
+### Changed
+
+### Fixed
+
+See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-08-20.658...main) for everything awaiting release
+
+---
+
+## [1.13.0](https://github.com/DFE-Digital/complete-conversions-transfers-changes/releases/tag/production-2025-08-20.658) - 2025-08-20
+
+### Added
 - Added `Conversion` and `Transfer` task list with their statuses.
 - Project groups: new API endpoints
   - `/v1/ProjectGroup/List` – list project groups (with establishments)
@@ -30,7 +42,7 @@ Security in case of vulnerabilities.
 
 ### Fixed
 
-See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-08-12.625...main) for everything awaiting release
+See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-08-12.625...production-2025-08-20.658) for everything in the release
 
 ---
 
