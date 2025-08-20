@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace Dfe.Complete.Pages.Projects
 {
-    [Authorize(policy: UserPolicyConstants.CanCreateProjects)]
+    //[Authorize(policy: UserPolicyConstants.CanCreateProjects)]
     public class CreateNewProjectModel : PageModel
     {
         [BindProperty]

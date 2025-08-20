@@ -1,13 +1,12 @@
 ﻿@page "/projects/{projectId}/external-contacts/new"
 @using Dfe.Complete.Domain.Enums
+@using Dfe.Complete.Utils;
 @using Microsoft.AspNetCore.Components.Forms
 @model Dfe.Complete.Pages.Projects.ExternalContacts.New.NewExternalContact
 
 @{
   Layout = "Shared/_Layout";
-  var isTransferProject = Model.Project.Type == ProjectType.Transfer;
-  var projectTypeText = isTransferProject ? "transfer" : "conversion";
-  var inputName = $"new_{projectTypeText}_contact_form[contact_type]";
+  var isTransferProject = Model.Project.Type == ProjectType.Transfer;  
 }
 
 <div class="govuk-width-container ">
@@ -20,28 +19,28 @@
       <div class="govuk-grid-column-full">
         <form action="/projects/@Model.ProjectId/external-contacts" accept-charset="UTF-8" method="post">
           @Html.AntiForgeryToken()
-          <govuk-radios name="@inputName">
+          <govuk-radios name="new_externalcontact_form_contact_type">
             <govuk-radios-fieldset>
               <govuk-radios-fieldset-legend is-page-heading="true"><h1 class="govuk-heading-xl">Who do you want to add as a contact?</h1></govuk-radios-fieldset-legend>
               <govuk-radios-hint>
                 <p>The person's job title may be different to the options in this list. Choose the role that is most similar.</p>
                 <p>For example, if the person's job title is principal or head teacher choose headteacher.</p>
               </govuk-radios-hint>
-              <govuk-radios-item value="headteacher">Headteacher</govuk-radios-item>
-              <govuk-radios-item value="incoming_trust_ceo">Incoming trust CEO (Chief executive officer)</govuk-radios-item>
+                            <govuk-radios-item value="@ExternalContactType.HeadTeacher">@ExternalContactType.HeadTeacher.ToDisplayDescription()</govuk-radios-item>
+                            <govuk-radios-item value="ExternalContactType.IncomingTrustCEO">@ExternalContactType.IncomingTrustCEO.ToDisplayDescription()</govuk-radios-item>
               @if (isTransferProject)
               {
-                <govuk-radios-item value="outgoing_trust_ceo">Outgoing trust CEO (Chief executive officer)</govuk-radios-item>
+                             <govuk-radios-item value="@ExternalContactType.OutgoingTrustCEO">@ExternalContactType.OutgoingTrustCEO.ToDisplayDescription()</govuk-radios-item>
               }
               else
               {
-                <govuk-radios-item value="chair_of_governors">Chair of governors</govuk-radios-item>
+                                <govuk-radios-item value="@ExternalContactType.ChairOfGovernors">@ExternalContactType.ChairOfGovernors.ToDisplayDescription()</govuk-radios-item>
               }
-              <govuk-radios-item value="other" checked="true">Someone else</govuk-radios-item>
+                            <govuk-radios-item value="@ExternalContactType.Other" checked="true">@ExternalContactType.Other.ToDisplayDescription()</govuk-radios-item>
             </govuk-radios-fieldset>
           </govuk-radios>
           <div class="govuk-button-group">
-            <govuk-button type="submit">Continue</govuk-button>
+            <govuk-button type="submit">Save and Continue</govuk-button>
             <a class="govuk-link" href="/projects/@Model.ProjectId/external-contacts">Cancel</a>
           </div>
         </form>

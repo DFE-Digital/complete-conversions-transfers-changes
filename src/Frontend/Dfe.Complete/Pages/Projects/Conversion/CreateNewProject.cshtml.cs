@@ -13,7 +13,7 @@ using Dfe.Complete.Domain.Constants;
 
 namespace Dfe.Complete.Pages.Projects.Conversion
 {
-    [Authorize(policy: UserPolicyConstants.CanCreateProjects)]
+    //[Authorize(policy: UserPolicyConstants.CanCreateProjects)]
     public class CreateNewProjectModel(
         ISender sender,
         ErrorService errorService,

@@ -1,5 +1,6 @@
 ﻿using Dfe.Complete.Infrastructure.Gateways;
 using Dfe.Complete.Services;
+using Dfe.Complete.Services.Interfaces;
 
 namespace Dfe.Complete.StartupConfiguration
 {
@@ -9,9 +10,9 @@ namespace Dfe.Complete.StartupConfiguration
         {
             services.AddScoped<IErrorService, ErrorService>();
             services.AddScoped<CompleteApiClient, CompleteApiClient>();
-
             services.AddScoped<IAnalyticsConsentService, AnalyticsConsentService>();
-            
+            services.AddScoped<IProjectService, ProjectService>();
+
             return services;
         }
     }

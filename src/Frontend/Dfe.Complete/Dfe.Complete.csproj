@@ -15,9 +15,8 @@
 
 	<ItemGroup>
 	  <Compile Remove="ViewComponents\**" />
-	  <Content Remove="ViewComponents\**" />
+	  <Content Remove="ViewComponents\**" />	  
 	  <EmbeddedResource Remove="ViewComponents\**" />
-	  <None Remove="Services\Project\**" />
 	  <None Remove="ViewComponents\**" />
 	  <Compile Remove="Pages\Projects\List\AllProjectsInTrustViewModel.cs" />
 	</ItemGroup>
@@ -85,7 +84,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Folder Include="Services\Project\" />
 	  <Folder Include="wwwroot\src\images" />
 	</ItemGroup>
 
