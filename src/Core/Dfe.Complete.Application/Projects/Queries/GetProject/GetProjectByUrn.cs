@@ -6,7 +6,6 @@ using Dfe.Complete.Application.Projects.Models;
 using Microsoft.Extensions.Logging;
 using Dfe.Complete.Application.Projects.Interfaces;
 using Dfe.Complete.Application.Projects.Queries.QueryFilters;
-using Dfe.Complete.Utils;
 using Microsoft.EntityFrameworkCore;
 
 namespace Dfe.Complete.Application.Projects.Queries.GetProject
@@ -24,7 +23,7 @@ namespace Dfe.Complete.Application.Projects.Queries.GetProject
             {
                 var result = await new ProjectUrnQuery(request.Urn)
                     .Apply(projectReadRepository.Projects)
-                    .FirstOrDefaultAsync(cancellationToken) ?? throw new NotFoundException($"No project found for Urn: {request.Urn.Value}.");
+                    .FirstOrDefaultAsync(cancellationToken);
 
                 var projectDto = mapper.Map<ProjectDto?>(result);
 

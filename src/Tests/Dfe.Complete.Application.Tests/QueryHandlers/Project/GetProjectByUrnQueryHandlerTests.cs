@@ -87,9 +87,8 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
             var result = await handler.Handle(command, default);
 
             // Assert
-            Assert.False(result.IsSuccess);
+            Assert.True(result.IsSuccess);
             Assert.Null(result.Value);
-            Assert.Contains("No project found for Urn:", result.Error);
         }
 
         [Theory]
