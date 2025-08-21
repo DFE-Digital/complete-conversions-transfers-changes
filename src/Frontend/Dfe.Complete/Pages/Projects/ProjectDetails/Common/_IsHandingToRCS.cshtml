@@ -2,18 +2,18 @@
 @model Dfe.Complete.Pages.Projects.ProjectDetails.BaseProjectDetailsPageModel
 
 @{
-    const string handingToRSCField = nameof(Model.IsHandingToRCS);
+    const string handingToRCSField = nameof(Model.IsHandingToRCS);
 }
 
-<govuk-radios name="@handingToRSCField" asp-for="@Model.IsHandingToRCS">
+<govuk-radios name="@handingToRCSField" asp-for="@Model.IsHandingToRCS">
     <govuk-radios-fieldset>
         <govuk-radios-fieldset-legend class="govuk-fieldset__legend--m">
             Are you handing this project over to RCS (Regional Casework Services)?
         </govuk-radios-fieldset-legend>
 
-        @if (Model.ErrorService.HasErrorForKey(handingToRSCField))
+        @if (Model.ErrorService.HasErrorForKey(handingToRCSField))
         {
-            <govuk-radios-error-message>@(Model.ErrorService.GetErrorMessage(handingToRSCField))</govuk-radios-error-message>
+            <govuk-radios-error-message>@(Model.ErrorService.GetErrorMessage(handingToRCSField))</govuk-radios-error-message>
         }
 
         <govuk-radios-item value="true" checked="@Model.IsHandingToRCS">Yes</govuk-radios-item>
