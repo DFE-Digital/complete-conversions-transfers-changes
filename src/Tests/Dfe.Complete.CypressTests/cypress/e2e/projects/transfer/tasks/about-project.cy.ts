@@ -28,10 +28,14 @@ describe("About the project page - transfer projects: ", () => {
     before(() => {
         projectRemover.removeProjectIfItExists(`${project.urn.value}`);
         projectRemover.removeProjectIfItExists(`${projectFormAMat.urn.value}`);
-        projectApi.createTransferProject(project).then((response) => (projectId = response.value));
-        changeLinkPath = `/projects/transfers/${projectId}/edit#`;
-        projectApi.createMatTransferProject(projectFormAMat).then((response) => (projectFormAMatId = response.value));
-        formAMATChangeLinkPath = `/projects/transfers/${projectFormAMatId}/edit#`;
+        projectApi.createTransferProject(project).then((response) => {
+            projectId = response.value;
+            changeLinkPath = `/projects/transfers/${projectId}/edit#`;
+        });
+        projectApi.createMatTransferProject(projectFormAMat).then((response) => {
+            projectFormAMatId = response.value;
+            formAMATChangeLinkPath = `/projects/transfers/${projectFormAMatId}/edit#`;
+        });
     });
 
     beforeEach(() => {
@@ -76,34 +80,34 @@ describe("About the project page - transfer projects: ", () => {
             .hasValue(region)
             .summaryShows("Group reference number")
             .hasValue(project.groupReferenceNumber!)
-            // .hasChangeLink(`${changeLinkPath}group-reference-number`) // not implemented 219174
+            .hasChangeLink(`${changeLinkPath}group-reference-number`)
 
             .subSection("Project assignment")
             .hasSubHeading("Project assignment")
             .summaryShows("Are you handing this project over to RCS (Regional Casework Services)?")
             .hasValue(project.handingOverToRegionalCaseworkService ? "Yes" : "No")
-            // .hasChangeLink(`${changeLinkPath}project-assignment`) // not implemented 219174
+            .hasChangeLink(`${changeLinkPath}project-assignment`)
 
             .subSection("Reasons for the transfer")
             .hasSubHeading("Reasons for the transfer")
             .summaryShows("Is this transfer due to 2RI?")
             .hasValue(project.isDueTo2Ri ? "Yes" : "No")
-            // .hasChangeLink(`${changeLinkPath}two-requires-improvement`) // not implemented 219174
+            .hasChangeLink(`${changeLinkPath}two-requires-improvement`)
             .summaryShows("Is this transfer due to an inadequate Ofsted rating?")
             .hasValue(project.isDueToInedaquateOfstedRating ? "Yes" : "No")
-            // .hasChangeLink(`${changeLinkPath}inadequate-ofsted`) // not implemented 219174
+            .hasChangeLink(`${changeLinkPath}inadequate-ofsted`)
             .summaryShows("Is this transfer due to financial, safeguarding or governance issues?")
             .hasValue(project.isDueToIssues ? "Yes" : "No")
-            // .hasChangeLink(`${changeLinkPath}financial-safeguarding-governance-issues`) // not implemented 219174
+            .hasChangeLink(`${changeLinkPath}financial-safeguarding-governance-issues`)
 
             .subSection("Advisory board details")
             .hasSubHeading("Advisory board details")
             .summaryShows("Date of advisory board")
             .hasValue(significateDateToDisplayDate(project.advisoryBoardDate))
-            // .hasChangeLink(`${changeLinkPath}advisory-board`) // not implemented 219174
+            .hasChangeLink(`${changeLinkPath}advisory-board`)
             .summaryShows("Conditions from advisory board")
             .hasValue(project.advisoryBoardConditions)
-            // .hasChangeLink(`${changeLinkPath}advisory-board`) // not implemented 219174
+            .hasChangeLink(`${changeLinkPath}advisory-board`)
 
             .subSection("Academy details")
             .hasSubHeading("Academy details")
@@ -125,7 +129,7 @@ describe("About the project page - transfer projects: ", () => {
                 "View the academy SharePoint folder (opens in new tab)",
                 project.establishmentSharepointLink,
             )
-            // .hasChangeLink(`${changeLinkPath}sharepoint-folder-links`) // not implemented 219174
+            .hasChangeLink(`${changeLinkPath}sharepoint-folder-links`)
 
             .subSection("Incoming trust details")
             .hasSubHeading("Incoming trust details")
@@ -136,7 +140,7 @@ describe("About the project page - transfer projects: ", () => {
             )
             .summaryShows("UKPRN (UK provider reference number)")
             .hasValue(incomingTrust.ukprn)
-            // // .hasChangeLink(`${changeLinkPath}incoming-trust-ukprn`) // not implemented 219174
+            // .hasChangeLink(`${changeLinkPath}incoming-trust-ukprn`)
             .summaryShows("Group ID (identifier)")
             .hasValue(incomingTrust.referenceNumber)
             .summaryShows("Companies House number")
@@ -153,7 +157,7 @@ describe("About the project page - transfer projects: ", () => {
                 "View the trust SharePoint folder (opens in new tab)",
                 project.incomingTrustSharepointLink,
             )
-            // .hasChangeLink(`${changeLinkPath}sharepoint-folder-links`); // not implemented 219174
+            .hasChangeLink(`${changeLinkPath}sharepoint-folder-links`)
 
             .subSection("Outgoing trust details")
             .hasSubHeading("Outgoing trust details")
@@ -164,7 +168,7 @@ describe("About the project page - transfer projects: ", () => {
             )
             .summaryShows("UKPRN (UK provider reference number)")
             .hasValue(outgoingTrust.ukprn)
-            // .hasChangeLink(`${changeLinkPath}incoming-trust-ukprn`) // not implemented 219174
+            .hasChangeLink(`${changeLinkPath}outgoing-trust-ukprn`)
             .summaryShows("Group ID (identifier)")
             .hasValue(outgoingTrust.referenceNumber)
             .summaryShows("Companies House number")
@@ -179,10 +183,10 @@ describe("About the project page - transfer projects: ", () => {
                 "View the trust SharePoint folder (opens in new tab)",
                 project.outgoingTrustSharepointLink,
             )
-            // .hasChangeLink(`${changeLinkPath}sharepoint-folder-links`); // not implemented 219174
+            .hasChangeLink(`${changeLinkPath}sharepoint-folder-links`)
             .summaryShows("Will the outgoing trust close once this transfer is completed?")
-            .hasValue(project.outGoingTrustWillClose ? "Yes" : "No");
-        // .hasChangeLink(`${changeLinkPath}outgoing-trust-to-close`); // not implemented 219174
+            .hasValue(project.outGoingTrustWillClose ? "Yes" : "No")
+            .hasChangeLink(`${changeLinkPath}outgoing-trust-to-close`);
     });
 
     it("Should display the project details on the about project section for a transfer form a MAT project", () => {
@@ -218,34 +222,34 @@ describe("About the project page - transfer projects: ", () => {
             .hasValue(formAMATRegion)
             .summaryShows("Group reference number")
             .hasValue("Not grouped")
-            // .hasChangeLink(`${formAMATChangeLinkPath}group-reference-number`) // not implemented 219174
+            .hasChangeLink(`${formAMATChangeLinkPath}group-reference-number`)
 
             .subSection("Project assignment")
             .hasSubHeading("Project assignment")
             .summaryShows("Are you handing this project over to RCS (Regional Casework Services)?")
             .hasValue(projectFormAMat.handingOverToRegionalCaseworkService ? "Yes" : "No")
-            // .hasChangeLink(`${formAMATChangeLinkPath}project-assignment`) // not implemented 219174
+            .hasChangeLink(`${formAMATChangeLinkPath}project-assignment`)
 
             .subSection("Reasons for the transfer")
             .hasSubHeading("Reasons for the transfer")
             .summaryShows("Is this transfer due to 2RI?")
             .hasValue(projectFormAMat.isDueTo2Ri ? "Yes" : "No")
-            // .hasChangeLink(`${formAMATChangeLinkPath}two-requires-improvement`) // not implemented 219174
+            .hasChangeLink(`${formAMATChangeLinkPath}two-requires-improvement`)
             .summaryShows("Is this transfer due to an inadequate Ofsted rating?")
             .hasValue(projectFormAMat.isDueToInedaquateOfstedRating ? "Yes" : "No")
-            // .hasChangeLink(`${formAMATChangeLinkPath}inadequate-ofsted`) // not implemented 219174
+            .hasChangeLink(`${formAMATChangeLinkPath}inadequate-ofsted`)
             .summaryShows("Is this transfer due to financial, safeguarding or governance issues?")
             .hasValue(projectFormAMat.isDueToIssues ? "Yes" : "No")
-            // .hasChangeLink(`${formAMATChangeLinkPath}financial-safeguarding-governance-issues`) // not implemented 219174
+            .hasChangeLink(`${formAMATChangeLinkPath}financial-safeguarding-governance-issues`)
 
             .subSection("Advisory board details")
             .hasSubHeading("Advisory board details")
             .summaryShows("Date of advisory board")
             .hasValue(significateDateToDisplayDate(projectFormAMat.advisoryBoardDate))
-            // .hasChangeLink(`${formAMATChangeLinkPath}advisory-board`) // not implemented 219174
+            .hasChangeLink(`${formAMATChangeLinkPath}advisory-board`)
             .summaryShows("Conditions from advisory board")
             .hasValue(projectFormAMat.advisoryBoardConditions)
-            // .hasChangeLink(`${formAMATChangeLinkPath}advisory-board`) // not implemented 219174
+            .hasChangeLink(`${formAMATChangeLinkPath}advisory-board`)
 
             .subSection("Academy details")
             .hasSubHeading("Academy details")
@@ -267,7 +271,7 @@ describe("About the project page - transfer projects: ", () => {
                 "View the academy SharePoint folder (opens in new tab)",
                 projectFormAMat.establishmentSharepointLink,
             )
-            // .hasChangeLink(`${formAMATChangeLinkPath}sharepoint-folder-links`) // not implemented 219174
+            .hasChangeLink(`${formAMATChangeLinkPath}sharepoint-folder-links`)
 
             .subSection("Incoming trust details")
             .hasSubHeading("Incoming trust details")
@@ -275,7 +279,7 @@ describe("About the project page - transfer projects: ", () => {
             .hasValueWithLink(incomingTrust.name)
             .summaryShows("UKPRN (UK provider reference number)")
             .hasValue("")
-            // .hasChangeLink(`${formAMATChangeLinkPath}incoming-trust-ukprn`) // not implemented 219174
+            .hasChangeLink(`${formAMATChangeLinkPath}incoming-trust-ukprn`)
             .summaryShows("Group ID (identifier)")
             .hasValue(incomingTrust.referenceNumber)
             .summaryShows("Companies House number")
@@ -289,7 +293,7 @@ describe("About the project page - transfer projects: ", () => {
                 "View the trust SharePoint folder (opens in new tab)",
                 projectFormAMat.incomingTrustSharepointLink,
             )
-            // .hasChangeLink(`${formAMATChangeLinkPath}sharepoint-folder-links`); // not implemented 219174
+            .hasChangeLink(`${formAMATChangeLinkPath}sharepoint-folder-links`)
 
             .subSection("Outgoing trust details")
             .hasSubHeading("Outgoing trust details")
@@ -300,7 +304,7 @@ describe("About the project page - transfer projects: ", () => {
             )
             .summaryShows("UKPRN (UK provider reference number)")
             .hasValue(outgoingTrust.ukprn)
-            // .hasChangeLink(`${formAMATChangeLinkPath}incoming-trust-ukprn`) // not implemented 219174
+            .hasChangeLink(`${formAMATChangeLinkPath}outgoing-trust-ukprn`)
             .summaryShows("Group ID (identifier)")
             .hasValue(outgoingTrust.referenceNumber)
             .summaryShows("Companies House number")
@@ -315,10 +319,10 @@ describe("About the project page - transfer projects: ", () => {
                 "View the trust SharePoint folder (opens in new tab)",
                 project.outgoingTrustSharepointLink,
             )
-            // .hasChangeLink(`${formAMATChangeLinkPath}sharepoint-folder-links`); // not implemented 219174
+            .hasChangeLink(`${formAMATChangeLinkPath}sharepoint-folder-links`)
             .summaryShows("Will the outgoing trust close once this transfer is completed?")
-            .hasValue(project.outGoingTrustWillClose ? "Yes" : "No");
-        // .hasChangeLink(`${formAMATChangeLinkPath}outgoing-trust-to-close`); // not implemented 219174
+            .hasValue(project.outGoingTrustWillClose ? "Yes" : "No")
+            .hasChangeLink(`${formAMATChangeLinkPath}outgoing-trust-to-close`);
     });
 
     it("Should display page links that navigate to different sections of the about project page", () => {

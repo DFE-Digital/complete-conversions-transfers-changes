@@ -1,15 +1,19 @@
 import { ProjectBuilder } from "cypress/api/projectBuilder";
 import { Logger } from "cypress/common/logger";
 import projectDetailsPage from "cypress/pages/projects/projectDetails/projectDetailsPage";
-import { giasUrl, groupReferenceNumber, macclesfieldTrust } from "cypress/constants/stringTestConstants";
+import { dimensionsTrust, giasUrl, macclesfieldTrust } from "cypress/constants/stringTestConstants";
 import projectApi from "cypress/api/projectApi";
 import projectRemover from "cypress/api/projectRemover";
 import { rdoLondonUser } from "cypress/constants/cypressConstants";
 import aboutTheProjectPage from "cypress/pages/projects/projectDetails/aboutTheProjectPage";
 import { checkAccessibilityAcrossPages } from "cypress/support/reusableTests";
 import { significateDateToDisplayDate } from "cypress/support/formatDate";
+import groupApi from "cypress/api/groupApi";
 
-const project = ProjectBuilder.createConversionProjectRequest();
+const project = ProjectBuilder.createConversionProjectRequest({
+    incomingTrustUkprn: { value: dimensionsTrust.ukprn },
+    groupReferenceNumber: dimensionsTrust.groupReferenceNumber,
+});
 let projectId: string;
 let changeLinkPath: string;
 const schoolName = "St Chad's Catholic Primary School";
@@ -36,6 +40,7 @@ const teammatesProject = ProjectBuilder.createConversionFormAMatProjectRequest({
 });
 let teammatesProjectId: string;
 let formAMATChangeLinkPath: string;
+let groupId: string;
 describe("About the project page - conversion projects: ", () => {
     before(() => {
         projectRemover.removeProjectIfItExists(`${project.urn.value}`);
@@ -44,13 +49,22 @@ describe("About the project page - conversion projects: ", () => {
         projectApi.createConversionProject(project).then((response) => {
             projectId = response.value;
             projectApi.updateProjectAcademyUrn(projectId, academy.urn);
+            changeLinkPath = `/projects/conversions/${projectId}/edit#`;
         });
-        projectApi.createMatConversionProject(projectFormAMAT).then((response) => (projectFormAMATId = response.value));
+        projectApi.createMatConversionProject(projectFormAMAT).then((response) => {
+            projectFormAMATId = response.value;
+            formAMATChangeLinkPath = `/projects/conversions/${projectFormAMATId}/edit#`;
+        });
         projectApi
             .createMatConversionProject(teammatesProject, rdoLondonUser.email)
             .then((response) => (teammatesProjectId = response.value));
-        changeLinkPath = `/projects/conversions/${projectId}/edit#`;
-        formAMATChangeLinkPath = `/projects/conversions/${projectFormAMATId}/edit#`;
+        groupApi.getGroupBy("groupIdentifier", dimensionsTrust.groupReferenceNumber).then((groups) => {
+            if (groups.length > 0) {
+                groupId = groups[0].groupId;
+            } else {
+                throw new Error("Group does not exist");
+            }
+        });
     });
     beforeEach(() => {
         cy.login();
@@ -70,7 +84,7 @@ describe("About the project page - conversion projects: ", () => {
             .hasConversionTag()
             .hasInAGroupTag()
             .hasConversionDate(project.significantDate)
-            .hasIncomingTrust(macclesfieldTrust.name)
+            .hasIncomingTrust(dimensionsTrust.name)
             .hasLAAndRegion(localAuthority, region)
             .hasSharePointLinks(project.establishmentSharepointLink, project.incomingTrustSharepointLink);
 
@@ -91,32 +105,32 @@ describe("About the project page - conversion projects: ", () => {
             .summaryShows("Region")
             .hasValue(region)
             .summaryShows("Group reference number")
-            .hasValue(groupReferenceNumber)
-            // .hasChangeLink(`${changeLinkPath}group-reference-number`) // not implemented 219174
+            .hasValueWithLink(dimensionsTrust.groupReferenceNumber, `/groups/${groupId}`)
+            .hasChangeLink(`${changeLinkPath}group-reference-number`)
 
             .subSection("Project assignment")
             .hasSubHeading("Project assignment")
             .summaryShows("Are you handing this project over to RCS (Regional Casework Services)?")
             .hasValue(project.handingOverToRegionalCaseworkService ? "Yes" : "No")
-            // .hasChangeLink(`${changeLinkPath}project-assignment`) // not implemented 219174
+            .hasChangeLink(`${changeLinkPath}project-assignment`)
 
             .subSection("Reasons for the conversion")
             .hasSubHeading("Reasons for the conversion")
             .summaryShows("Has a directive academy order been issued?")
             .hasValue(project.hasAcademyOrderBeenIssued ? "Yes" : "No")
-            // .hasChangeLink(`${changeLinkPath}directive-academy-order`) // not implemented 219174
+            .hasChangeLink(`${changeLinkPath}directive-academy-order`)
             .summaryShows("Is this conversion due to intervention following 2RI?")
             .hasValue(project.isDueTo2Ri ? "Yes" : "No")
-            // .hasChangeLink(`${changeLinkPath}two-requires-improvement`) // not implemented 219174
+            .hasChangeLink(`${changeLinkPath}two-requires-improvement`)
 
             .subSection("Advisory board details")
             .hasSubHeading("Advisory board details")
             .summaryShows("Date of advisory board")
             .hasValue(significateDateToDisplayDate(project.advisoryBoardDate))
-            // .hasChangeLink(`${changeLinkPath}advisory-board`) // not implemented 219174
+            .hasChangeLink(`${changeLinkPath}advisory-board`)
             .summaryShows("Conditions from advisory board")
             .hasValue(project.advisoryBoardConditions)
-            // .hasChangeLink(`${changeLinkPath}advisory-board`) // not implemented 219174
+            .hasChangeLink(`${changeLinkPath}advisory-board`)
 
             .subSection("School details")
             .hasSubHeading("School details")
@@ -140,7 +154,7 @@ describe("About the project page - conversion projects: ", () => {
                 "View the school SharePoint folder (opens in new tab)",
                 project.establishmentSharepointLink,
             )
-            // .hasChangeLink(`${changeLinkPath}sharepoint-folder-links`) // not implemented 219174
+            .hasChangeLink(`${changeLinkPath}sharepoint-folder-links`)
 
             .subSection("Academy details")
             .hasSubHeading("Academy details")
@@ -166,29 +180,29 @@ describe("About the project page - conversion projects: ", () => {
             .hasSubHeading("Incoming trust details")
             .summaryShows("Name")
             .hasValueWithLink(
-                `${macclesfieldTrust.name.toUpperCase()} View the trust information in GIAS (opens in new tab)`,
-                `${giasUrl}/Groups/Search?GroupSearchModel.Text=${macclesfieldTrust.ukprn}`,
+                `${dimensionsTrust.name.toUpperCase()} View the trust information in GIAS (opens in new tab)`,
+                `${giasUrl}/Groups/Search?GroupSearchModel.Text=${dimensionsTrust.ukprn}`,
             )
             .summaryShows("UKPRN (UK provider reference number)")
-            .hasValue(macclesfieldTrust.ukprn)
-            // .hasChangeLink(`${changeLinkPath}incoming-trust-ukprn`) // not implemented 219174
+            .hasValue(dimensionsTrust.ukprn)
+            .hasChangeLink(`${changeLinkPath}incoming-trust-ukprn`)
             .summaryShows("Group ID (identifier)")
-            .hasValue(macclesfieldTrust.referenceNumber)
+            .hasValue(dimensionsTrust.referenceNumber)
             .summaryShows("Companies House number")
             .hasValueWithLink(
-                `${macclesfieldTrust.companiesHouseNumber} View the Companies House information (opens in new tab)`,
-                `https://find-and-update.company-information.service.gov.uk/company/${macclesfieldTrust.companiesHouseNumber}`,
+                `${dimensionsTrust.companiesHouseNumber} View the Companies House information (opens in new tab)`,
+                `https://find-and-update.company-information.service.gov.uk/company/${dimensionsTrust.companiesHouseNumber}`,
             )
             .summaryShows("New trust reference number (TRN)")
             .hasValue("")
             .summaryShows("Address")
-            .hasValue("Macclesfield College Macclesfield SK11 8LF")
+            .hasValue(dimensionsTrust.address)
             .summaryShows("SharePoint folder")
             .hasValueWithLink(
                 "View the trust SharePoint folder (opens in new tab)",
                 project.incomingTrustSharepointLink,
-            );
-        // .hasChangeLink(`${changeLinkPath}sharepoint-folder-links`); // not implemented 219174
+            )
+            .hasChangeLink(`${changeLinkPath}sharepoint-folder-links`);
     });
 
     it("Should display the project details on the about project section for Conversion form a MAT project", () => {
@@ -227,31 +241,31 @@ describe("About the project page - conversion projects: ", () => {
             .hasValue(formAMATRegion)
             .summaryShows("Group reference number")
             .hasValue("Not grouped")
-            // .hasChangeLink(`${changeLinkPath}group-reference-number`) // not implemented 219174
+            .hasChangeLink(`${formAMATChangeLinkPath}group-reference-number`)
 
             .subSection("Project assignment")
             .hasSubHeading("Project assignment")
             .summaryShows("Are you handing this project over to RCS (Regional Casework Services)?")
             .hasValue(projectFormAMAT.handingOverToRegionalCaseworkService ? "Yes" : "No")
-            // .hasChangeLink(`${changeLinkPath}project-assignment`) // not implemented 219174
+            .hasChangeLink(`${formAMATChangeLinkPath}project-assignment`)
 
             .subSection("Reasons for the conversion")
             .hasSubHeading("Reasons for the conversion")
             .summaryShows("Has a directive academy order been issued?")
             .hasValue(projectFormAMAT.hasAcademyOrderBeenIssued ? "Yes" : "No")
-            // .hasChangeLink(`${changeLinkPath}directive-academy-order`) // not implemented 219174
+            .hasChangeLink(`${formAMATChangeLinkPath}directive-academy-order`)
             .summaryShows("Is this conversion due to intervention following 2RI?")
             .hasValue(projectFormAMAT.isDueTo2Ri ? "Yes" : "No")
-            // .hasChangeLink(`${changeLinkPath}two-requires-improvement`) // not implemented 219174
+            .hasChangeLink(`${formAMATChangeLinkPath}two-requires-improvement`)
 
             .subSection("Advisory board details")
             .hasSubHeading("Advisory board details")
             .summaryShows("Date of advisory board")
             .hasValue(significateDateToDisplayDate(projectFormAMAT.advisoryBoardDate))
-            // .hasChangeLink(`${changeLinkPath}advisory-board`) // not implemented 219174
+            .hasChangeLink(`${formAMATChangeLinkPath}advisory-board`)
             .summaryShows("Conditions from advisory board")
             .hasValue(projectFormAMAT.advisoryBoardConditions)
-            // .hasChangeLink(`${changeLinkPath}advisory-board`) // not implemented 219174
+            .hasChangeLink(`${formAMATChangeLinkPath}advisory-board`)
 
             .subSection("School details")
             .hasSubHeading("School details")
@@ -275,7 +289,7 @@ describe("About the project page - conversion projects: ", () => {
                 "View the school SharePoint folder (opens in new tab)",
                 projectFormAMAT.establishmentSharepointLink,
             )
-            // .hasChangeLink(`${changeLinkPath}sharepoint-folder-links`) // not implemented 219174
+            .hasChangeLink(`${formAMATChangeLinkPath}sharepoint-folder-links`)
 
             .subSection("Academy details")
             .hasSubHeading("Academy details")
@@ -287,7 +301,7 @@ describe("About the project page - conversion projects: ", () => {
             .hasValue(macclesfieldTrust.name)
             .summaryShows("UKPRN (UK provider reference number)")
             .hasValue("")
-            // .hasChangeLink(`${changeLinkPath}incoming-trust-ukprn`) // not implemented 219174
+            .hasChangeLink(`${formAMATChangeLinkPath}incoming-trust-ukprn`)
             .summaryShows("Group ID (identifier)")
             .hasValue(macclesfieldTrust.referenceNumber)
             .summaryShows("Companies House number")
@@ -300,8 +314,8 @@ describe("About the project page - conversion projects: ", () => {
             .hasValueWithLink(
                 "View the trust SharePoint folder (opens in new tab)",
                 projectFormAMAT.incomingTrustSharepointLink,
-            );
-        // .hasChangeLink(`${changeLinkPath}sharepoint-folder-links`); // not implemented 219174
+            )
+            .hasChangeLink(`${formAMATChangeLinkPath}sharepoint-folder-links`);
     });
 
     it("Should display page links that navigate to different sections of the about project page", () => {
@@ -324,7 +338,7 @@ describe("About the project page - conversion projects: ", () => {
             .pageHasMovedToSection("Incoming trust details");
     });
 
-    it("Should display 'Not assigned to project' banner when viewing a project that is not assigned to the user", () => {
+    it("Should display 'Not assigned to project' banner and cannot change the project details when viewing a project that is not assigned to the user", () => {
         Logger.log("Go to unassigned project");
         cy.visit(`projects/${teammatesProjectId}/tasks`);
 
@@ -336,6 +350,12 @@ describe("About the project page - conversion projects: ", () => {
             "Not assigned to project",
             "This project is not assigned to you and cannot be changed, you can add notes or contacts if required.",
         );
+
+        Logger.log("Check that the user cannot change the project details");
+        projectDetailsPage.navigateTo("About the project").containsSubHeading("About the project");
+        aboutTheProjectPage.linkDoesNotExist("Change");
+
+        cy.visit(`projects/conversions/${teammatesProjectId}/edit`).notAuthorisedToPerformAction();
     });
 
     it("Check accessibility across pages", () => {

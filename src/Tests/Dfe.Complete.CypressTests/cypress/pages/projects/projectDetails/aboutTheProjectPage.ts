@@ -36,7 +36,7 @@ export class AboutTheProjectPage extends ProjectDetailsPage {
     }
 
     hasChangeLink(linkPath: string) {
-        return this.hasTextWithLink("Change", `${Cypress.config("baseUrl")}${linkPath}`);
+        return this.hasTextWithLink("Change", linkPath);
     }
 
     hasNoAcademyDetailsAsURNNotProvided() {
