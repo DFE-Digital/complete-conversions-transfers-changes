@@ -6,7 +6,7 @@ using DfE.CoreLibs.Testing.AutoFixture.Customizations;
 
 namespace Dfe.Complete.Domain.Tests.Aggregates
 {
-    public class ConversionTaksDataTests
+    public class ConversionTaskDataTests
     {
         [Theory]
         [CustomAutoData(typeof(DateOnlyCustomization))]

@@ -6,7 +6,7 @@ using Dfe.Complete.Domain.Entities;
 
 namespace Dfe.Complete.Domain.Tests.Aggregates
 {
-    public class TransferTaksDataTests
+    public class TransferTaskDataTests
     {
         [Theory]
         [CustomAutoData(typeof(DateOnlyCustomization))]
