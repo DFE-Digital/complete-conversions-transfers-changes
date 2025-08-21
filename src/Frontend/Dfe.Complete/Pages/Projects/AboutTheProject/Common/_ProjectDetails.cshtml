@@ -39,7 +39,18 @@
             </govuk-summary-list-row>
             <govuk-summary-list-row>
                 <govuk-summary-list-row-key>Group reference number</govuk-summary-list-row-key>
-                <govuk-summary-list-row-value>@(Model.ProjectGroup != null ? @Model.ProjectGroup.GroupIdentifier : "Not grouped")</govuk-summary-list-row-value>
+                    @if (Model.ProjectGroup != null)
+                    {
+                        <govuk-summary-list-row-value>
+                            <a href="@string.Format(RouteConstants.GroupDetails, Model.ProjectGroup.Id.Value)">@Model.ProjectGroup.GroupIdentifier</a>
+                        </govuk-summary-list-row-value>
+                    }
+                    else
+                    {
+                        <govuk-summary-list-row-value>
+                            Not grouped
+                        </govuk-summary-list-row-value>
+                    }
                 @if(Model.UserHasEditAccess()) {
                     <govuk-summary-list-row-actions>
                         @* <govuk-summary-list-row-action href="@(string.Format(RouteConstants.Project, Model.ProjectId))" visually-hidden-text="Change project group">Change</govuk-summary-list-row-action> *@
