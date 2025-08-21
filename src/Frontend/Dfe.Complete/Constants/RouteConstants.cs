@@ -88,5 +88,9 @@
         public const string CreateNewLocalAuthority = "/service-support/local-authorities/new";
         public const string EditLocalAuthorityDetails = "/service-support/local-authorities/{0}/edit";
         public const string DeleteLocalAuthorityDetails = "/service-support/local-authorities/{0}/delete";
+
+        // External contacts        
+        public const string ProjectsExternalContactAdd = NewProjectExternalContacts + "/create-contact?externalcontacttype={1}";
+        public const string ProjectsExternalContactAddTypeOther = NewProjectExternalContacts + "/create-contact-type-other";
     }
 }

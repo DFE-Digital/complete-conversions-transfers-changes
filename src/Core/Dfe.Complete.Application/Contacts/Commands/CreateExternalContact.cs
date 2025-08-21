@@ -24,8 +24,6 @@ public class CreateExternalContact(ICompleteRepository<Contact> ContactRepositor
 {
     public async Task<ContactId> Handle(CreateExternalContactRequest request, CancellationToken cancellationToken)
     {
-        
-
         var contact = new Contact()
         {
             Id = new ContactId(Guid.NewGuid()),

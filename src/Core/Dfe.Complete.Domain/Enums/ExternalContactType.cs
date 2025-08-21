@@ -1,39 +1,40 @@
 ﻿using Dfe.Complete.Utils.Attributes;
 using System.ComponentModel;
+using System.Runtime.Serialization;
 
 namespace Dfe.Complete.Domain.Enums;
 
 public enum ExternalContactType
 {
-    [Description("HeadTeacher")]
+    [Description("headteacher")]
     [DisplayDescription("Headteacher")]
     HeadTeacher = 1,
 
-    [Description("IncomingTrustCEO")]
-    [DisplayDescription("Incoming trust CEO (Chief executive officer)")]
+    [Description("incomingtrustceo")]
+    [DisplayDescription("Incoming trust CEO (Chief executive officer)")]   
     IncomingTrustCEO = 2,
 
-    [Description("OutgoingTrustCEO")]
+    [Description("outgoingtrustceo")]
     [DisplayDescription("Outgoing trust CEO (Chief executive officer)")]
     OutgoingTrustCEO = 3,
 
-    [Description("ChairOfGovernors")]
+    [Description("chairofgovernors")]
     [DisplayDescription("Chair of governors")]
     ChairOfGovernors = 4,
 
-    [Description("LocalAuthority")]
+    [Description("localauthority")]
     [DisplayDescription("Local authority")]
     LocalAuthority = 5,
 
-    [Description("Solicitor")]
-    [DisplayDescription("Solicitor")]
+    [Description("solicitor")]
+    [DisplayDescription("Solicitor")]    
     Solicitor = 6,
 
-    [Description("Diocese")]
+    [Description("diocese")]
     [DisplayDescription("Diocese")]
     Diocese = 7,
 
-    [Description("Other")]
+    [Description("other")]
     [DisplayDescription("Someone else")]
     Other = 8,
 }
