@@ -72,7 +72,7 @@ namespace Dfe.Complete.Api.Controllers
         [Authorize(Policy = "CanReadWrite")]
         [HttpPatch]
         [Route("TaskData/ArticleOfAssociation")]
-        [SwaggerResponse(204, "Conversion or trannsfer's article of association task updated successfully.")]
+        [SwaggerResponse(204, "Conversion or transfer's article of association task updated successfully.")]
         [SwaggerResponse(400, "Invalid request data.")]
         [SwaggerResponse(404, "Project/User not found.")]
         public async Task<IActionResult> UpdateArticleOfAssociationTaskAsync(
