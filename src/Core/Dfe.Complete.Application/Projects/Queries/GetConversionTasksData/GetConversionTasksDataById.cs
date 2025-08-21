@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+using AutoMapper;
 using Dfe.Complete.Application.Common.Models;
 using Dfe.Complete.Application.Projects.Interfaces;
 using Dfe.Complete.Application.Projects.Models;

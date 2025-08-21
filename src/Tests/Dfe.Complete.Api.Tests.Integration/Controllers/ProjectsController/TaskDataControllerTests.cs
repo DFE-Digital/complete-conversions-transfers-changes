@@ -1,5 +1,6 @@
 ﻿using AutoFixture;
 using Dfe.Complete.Api.Tests.Integration.Customizations;
+using Dfe.Complete.Application.Projects.Commands.UpdateProject;
 using Dfe.Complete.Client.Contracts;
 using Dfe.Complete.Domain.Entities;
 using Dfe.Complete.Infrastructure.Database;
@@ -8,6 +9,7 @@ using DfE.CoreLibs.Testing.AutoFixture.Attributes;
 using DfE.CoreLibs.Testing.Mocks.WebApplicationFactory;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
+using UpdateHandoverWithDeliveryOfficerCommand = Dfe.Complete.Client.Contracts.UpdateHandoverWithDeliveryOfficerCommand;
 
 namespace Dfe.Complete.Api.Tests.Integration.Controllers.ProjectsController
 {
