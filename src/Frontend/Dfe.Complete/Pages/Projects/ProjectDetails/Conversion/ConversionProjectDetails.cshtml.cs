@@ -13,7 +13,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Dfe.Complete.Pages.Projects.ProjectDetails.Conversion
 {
-    public class ConversationProjectDetailsModel(ISender sender, IErrorService errorService, ILogger<ConversationProjectDetailsModel> _logger) : BaseProjectDetailsPageModel(sender, errorService, _logger)
+    public class ConversionProjectDetailsModel(ISender sender, IErrorService errorService, ILogger<ConversionProjectDetailsModel> _logger) : BaseProjectDetailsPageModel(sender, errorService, _logger)
     {
         [BindProperty]
         [Required(ErrorMessage =
