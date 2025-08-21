@@ -36,10 +36,13 @@ See the [full commit history](https://github.com/DFE-Digital/complete-conversion
 - Frontend routes and pages for project groups
     - `/groups` – project groups list
     - `/groups/{groupId}` – project group details
+- Added `Handover with Regional Delivery Officer` task page
 
 ### Changed
 
 ### Fixed
+- local authority name missing on delete local authority dialog
+- add missing incoming trust details on project page
 
 See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-08-12.625...production-2025-08-20.658) for everything in the release
 
@@ -68,8 +71,6 @@ See the [full commit history](https://github.com/DFE-Digital/complete-conversion
 - Add handover project check page  (`/projects/all/handover/{projectId}/check`)
 - Add handover project add detail & confirmation page  (`/projects/all/handover/{projectId}/new`)
 - Added `App Insight` for tracking users clicks and page views
-
-- Added `Handover with Regional Delivery Officer` task page
 
 ### Changed
 - Restructured the task page to be more generic
