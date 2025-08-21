@@ -375,7 +375,7 @@ public partial class ProjectsControllerTests
     }
 
     [Theory]
-    [CustomAutoData(typeof(CustomWebApplicationDbContextFactoryCustomization), typeof(GiasEstablishmentsCustomization))]
+    [CustomAutoData(typeof(CustomWebApplicationDbContextFactoryCustomization), typeof(GiasEstablishmentsCustomization), typeof(OmitCircularReferenceCustomization))]
     public async Task GetProjectByUrn_should_return_the_correct_project(
         CustomWebApplicationDbContextFactory<Program> factory,
         IProjectsClient projectsClient,
