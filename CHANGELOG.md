@@ -17,7 +17,7 @@ Security in case of vulnerabilities.
 ## Unreleased
 
 ### Added
-
+- Added `Article of association` task data for both conversion and trasnfer projects.
 ### Changed
 
 ### Fixed

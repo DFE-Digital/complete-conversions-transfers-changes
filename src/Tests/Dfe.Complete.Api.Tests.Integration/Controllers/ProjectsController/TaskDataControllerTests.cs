@@ -1,5 +1,6 @@
 ﻿using AutoFixture;
 using Dfe.Complete.Api.Tests.Integration.Customizations;
+using Dfe.Complete.Application.Projects.Commands.TaskData;
 using Dfe.Complete.Client.Contracts;
 using Dfe.Complete.Domain.Entities;
 using Dfe.Complete.Infrastructure.Database;
@@ -45,7 +46,7 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers.ProjectsController
         public async Task UpdateHandoverWithDeliveryOfficerTaskDataByProjectIdAsync_ShouldUpdate_ConversionTaskData(
             CustomWebApplicationDbContextFactory<Program> factory,
             ITasksDataClient tasksDataClient,
-            UpdateHandoverWithDeliveryOfficerCommand command,
+            Complete.Client.Contracts.UpdateHandoverWithDeliveryOfficerTaskCommand command,
             IFixture fixture)
         {
             // Arrange
@@ -78,7 +79,7 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers.ProjectsController
         public async Task UpdateHandoverWithDeliveryOfficerTaskDataByProjectIdAsync_ShouldUpdate_TransferTaskData(
             CustomWebApplicationDbContextFactory<Program> factory,
             ITasksDataClient tasksDataClient,
-            UpdateHandoverWithDeliveryOfficerCommand command,
+            Complete.Client.Contracts.UpdateHandoverWithDeliveryOfficerTaskCommand command,
             IFixture fixture)
         {
             // Arrange
@@ -110,7 +111,7 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers.ProjectsController
         } 
         [Theory]
         [CustomAutoData(typeof(CustomWebApplicationDbContextFactoryCustomization))]
-        public async Task GetConversionTasksDataByIdAsync_ShouldReturn_A_TaskDaa(
+        public async Task GetConversionTasksDataByIdAsync_ShouldReturn_A_TaskData(
         CustomWebApplicationDbContextFactory<Program> factory,
         ITasksDataClient tasksDatClient,
         IFixture fixture)
@@ -133,6 +134,40 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers.ProjectsController
             // Assert
             Assert.NotNull(result);
             Assert.Equal(task.Id.Value, result.Id!.Value);
+        }
+        [Theory]
+        [CustomAutoData(typeof(CustomWebApplicationDbContextFactoryCustomization))]
+        public async Task UpdateArticleOfAssociationTaskAsync_ShouldUpdate_ConversionTaskData(
+            CustomWebApplicationDbContextFactory<Program> factory,
+            ITasksDataClient tasksDataClient,
+            Complete.Client.Contracts.UpdateArticleOfAssociationTaskCommand command,
+            IFixture fixture)
+        {
+            // Arrange
+            factory.TestClaims = [new Claim(ClaimTypes.Role, ApiRoles.ReadRole), new Claim(ClaimTypes.Role, ApiRoles.UpdateRole), new Claim(ClaimTypes.Role, ApiRoles.WriteRole)];
+
+            var dbContext = factory.GetDbContext<CompleteContext>();
+
+            var taskData = fixture.Create<ConversionTasksData>();
+            dbContext.ConversionTasksData.Add(taskData);
+
+            await dbContext.SaveChangesAsync();
+            command.TaskDataId = new TaskDataId { Value = taskData.Id.Value };
+            command.ProjectType = ProjectType.Conversion;
+            command.NotApplicable = true;
+
+            // Act
+            await tasksDataClient.UpdateArticleOfAssociationTaskAsync(command, default);
+
+            // Assert
+            dbContext.ChangeTracker.Clear();
+            var existingTaskData = await dbContext.ConversionTasksData.SingleOrDefaultAsync(x => x.Id == taskData.Id);
+            Assert.NotNull(existingTaskData);
+            Assert.True(existingTaskData.ArticlesOfAssociationNotApplicable);
+            Assert.Null(existingTaskData.ArticlesOfAssociationCleared);
+            Assert.Null(existingTaskData.ArticlesOfAssociationReceived);
+            Assert.Null(existingTaskData.ArticlesOfAssociationSaved);
+            Assert.Null(existingTaskData.ArticlesOfAssociationSent);
         }
     }
 }
