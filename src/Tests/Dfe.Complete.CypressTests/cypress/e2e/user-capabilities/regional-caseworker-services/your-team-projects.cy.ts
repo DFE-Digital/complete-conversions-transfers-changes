@@ -9,17 +9,17 @@ import { projectTable } from "cypress/pages/projects/tables/projectTable";
 import yourTeamProjectsTable from "cypress/pages/projects/tables/yourTeamProjectsTable";
 import { currentMonthShort } from "cypress/constants/stringTestConstants";
 
-const project = ProjectBuilder.createConversionProjectRequest(
-    new Date("2026-04-01"),
-    111396,
-    regionalCaseworkerUser.adId,
-);
+const project = ProjectBuilder.createConversionProjectRequest({
+    significantDate: "2026-04-01",
+    urn: { value: 111396 },
+    userAdId: regionalCaseworkerUser.adId,
+});
 const schoolName = "Blacon High School, A Specialist Sports College";
-const teammatesProject = ProjectBuilder.createConversionProjectRequest(
-    new Date("2026-04-01"),
-    111400,
-    regionalCaseworkerTeamLeaderUser.adId,
-);
+const teammatesProject = ProjectBuilder.createConversionProjectRequest({
+    significantDate: "2026-04-01",
+    urn: { value: 111400 },
+    userAdId: regionalCaseworkerTeamLeaderUser.adId,
+});
 const teammatesSchoolName = "The Heath School";
 
 describe("Regional caseworker services user - View your team projects", () => {

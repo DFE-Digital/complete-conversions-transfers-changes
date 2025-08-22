@@ -1,4 +1,6 @@
 @page "/projects/{projectId}/date-history"
+@using Dfe.Complete.Domain.Enums
+@using Dfe.Complete.Utils
 @model Dfe.Complete.Pages.Projects.DateHistory.DateHistoryProjectModel
 
 @{
@@ -6,25 +8,25 @@
   ViewData["Title"] = Model.Establishment.Name;
 
   var significantDateHistories = Model.Project.SignificantDateHistories;
+  
+  var projectTypeString = Model.Project.Type == ProjectType.Conversion ? "conversion" : "transfer";
+  var isConfirmedString = Model.Project.SignificantDateProvisional is true ? "proposed" : "confirmed";
 }
 
 <div class="govuk-grid-row">
   <div class="govuk-grid-column-full">
     <section>
-      <h2>Current proposed conversion date</h2>
-      <p class="govuk-!-margin-bottom-8">The current proposed conversion date is <strong>@Model.Project.SignificantDate.ToDateString()</strong></p>
+      <h2>Current @isConfirmedString @projectTypeString date</h2>
+      <p class="govuk-!-margin-bottom-8">The current @isConfirmedString @projectTypeString date is <strong>@Model.Project.SignificantDate.ToDateString()</strong></p>
     </section>
 
-    <h2 class="govuk-heading-l">Conversion date history</h2>
+    <h2 class="govuk-heading-l">@projectTypeString.ToTitleCase() date history</h2>
     
     @{
       if (@significantDateHistories.Count > 0)
       {
         foreach (var significantDateHistory in significantDateHistories.OrderByDescending(p => p.CreatedAt))
         {
-
-          var reasonLabel = Model.MapSignificantDateReason(Model.Project, significantDateHistory.Reason);
-          
           <div class="govuk-summary-card">
             <div class="govuk-summary-card__title-wrapper">
               <h2 class="govuk-summary-card__title">@significantDateHistory.CreatedAt.ToUkDateTimeWithAmPmString()</h2>
@@ -45,12 +47,19 @@
                   <dt class="govuk-summary-list__key">Reason for new date</dt>
                   <dd class="govuk-summary-list__value">
                     <ul class="govuk-list">
-                      <li>
-                        <h5 class="govuk-heading-xs govuk-!-margin-0">
-                          @reasonLabel.Item1
-                        </h5>
-                        @reasonLabel.Item2
-                      </li>
+                      @{
+                        foreach (var reason in significantDateHistory.Reasons.OrderBy(r => r.ReasonType))
+                        {
+                          var reasonLabel = Model.MapSignificantDateReason(Model.Project, reason);
+
+                          <li>
+                            <h5 class="govuk-heading-xs govuk-!-margin-0">
+                              @reasonLabel.Item1
+                            </h5>
+                            @reasonLabel.Item2
+                          </li>
+                        }
+                      }
                     </ul>
                 
                   </dd>

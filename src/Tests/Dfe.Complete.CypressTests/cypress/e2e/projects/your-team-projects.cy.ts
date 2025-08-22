@@ -12,13 +12,16 @@ import projectDetailsPage from "cypress/pages/projects/projectDetails/projectDet
 import { checkAccessibilityAcrossPages } from "cypress/support/reusableTests";
 
 const team = "London";
-const myLondonProject = ProjectBuilder.createConversionProjectRequest(new Date("2026-04-01"), 143659);
+const myLondonProject = ProjectBuilder.createConversionProjectRequest({
+    significantDate: "2026-04-01",
+    urn: { value: 143659 },
+});
 const myLondonSchoolName = "City of London Academy, Highgate Hill";
-const teammatesLondonRegionProject = ProjectBuilder.createConversionProjectRequest(
-    new Date("2026-04-01"),
-    100830,
-    rdoLondonUser.adId,
-);
+const teammatesLondonRegionProject = ProjectBuilder.createConversionProjectRequest({
+    significantDate: "2026-04-01",
+    urn: { value: 100830 },
+    userAdId: rdoLondonUser.adId,
+});
 const teammatesLondonSchoolName = "St John's and St Clement's Church of England Primary School";
 const handedOverProject = ProjectBuilder.createTransferProjectRequest({
     urn: { value: 135587 },

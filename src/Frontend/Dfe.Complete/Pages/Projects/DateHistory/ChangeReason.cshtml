@@ -1,0 +1,100 @@
+@page "/projects/{projectId}/date-history/reason"
+@using Dfe.Complete.Constants
+@using Dfe.Complete.Domain.Enums
+@using Dfe.Complete.Pages.Projects.DateHistory
+@using Dfe.Complete.Utils
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model Dfe.Complete.Pages.Projects.DateHistory.ChangeReasonProjectModel
+@inject Dfe.Complete.Services.ErrorService ErrorService
+
+@{
+  Layout = "_Layout";
+
+  var significantDateField = nameof(Model.SignificantDateString);
+  
+  var projectTypeString = Model.Project.Type == ProjectType.Conversion ? "conversion" : "transfer";
+}
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        <partial name="_NotificationSummary"/>
+        
+        <span class="govuk-caption-xl">@Model.Establishment.Name</span>
+        <h1 class="govuk-heading-xl">Reasons for @projectTypeString date change</h1>
+
+        <p>The new proposed @projectTypeString date is <span class="govuk-body govuk-!-font-weight-bold">@Model.SignificantDate.ToDateString()</span>.</p>
+
+        <form method="post">
+            
+            <div class="govuk-form-group @(ErrorService.HasErrorForKey(significantDateField) ? "govuk-form-group--error" : "")">
+                <fieldset class="govuk-fieldset" aria-describedby="reasons-hint @(ErrorService.HasErrorForKey(significantDateField) ? "reasons-error" : "")">
+                    <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
+                        <h2 class="govuk-fieldset__heading">
+                            Reasons for date change
+                        </h2>
+                    </legend>
+                    <div id="reasons-hint" class="govuk-hint">
+                        Select all that apply.
+                    </div>
+                    
+                    @if (ErrorService.HasErrorForKey(significantDateField))
+                    {
+                        <p id="reasons-error" class="govuk-error-message">
+                            <span class="govuk-visually-hidden">Error:</span> @ErrorService.GetErrorMessage(significantDateField)
+                        </p>
+                    }
+                    
+                    <div class="govuk-checkboxes" data-module="govuk-checkboxes">
+                        @foreach (var reason in Model.Reasons)
+                        {
+                            var name = reason.ToDescription();
+                            var noteKey = $"{name}_note";
+                            var checkboxId = $"date_history_reasons_{name}";
+                            var noteId = $"date_history_reasons_{noteKey}";
+
+                            var isChecked = Model.FormValues?.TryGetValue($"date_history_reasons[{name}]", out var checkboxVal) == true && checkboxVal == "1";
+                            var noteValue = Model.FormValues?.TryGetValue($"date_history_reasons[{noteKey}]", out var noteInput) == true ? noteInput.ToString() : string.Empty;
+
+                            var hasError = ErrorService.HasErrorForKey(noteKey);
+
+                            <div class="govuk-checkboxes__item">
+                                <input class="govuk-checkboxes__input"
+                                       type="checkbox"
+                                       name="date_history_reasons[@name]"
+                                       value="1"
+                                       id="@checkboxId"
+                                       aria-controls="@noteKey"
+                                       aria-expanded="@isChecked"
+                                       @(isChecked ? "checked" : "")/>
+                                <label class="govuk-label govuk-checkboxes__label" for="@checkboxId"><strong>@reason.ToDisplayDescription()</strong></label>
+                            </div>
+                            <div class="govuk-checkboxes__conditional @(isChecked ? "" : "govuk-checkboxes__conditional--hidden")" id="@noteKey">
+                                <div class="govuk-form-group @(hasError ? "govuk-form-group--error" : "")">
+                                    <label class="govuk-label" for="@noteId">Enter details about the reason for the change.</label>
+
+                                    @if (hasError)
+                                    {
+                                        <p class="govuk-error-message">
+                                            <span class="govuk-visually-hidden">Error:</span> @ErrorService.GetErrorMessage(noteKey)
+                                        </p>
+                                    }
+
+                                    <textarea class="govuk-textarea"
+                                          name="date_history_reasons[@noteKey]"
+                                          id="@noteId">@noteValue</textarea>
+                                </div>
+                            </div>
+                        }
+                    </div>
+
+                    <input type="hidden" name="@significantDateField" value="@Model.SignificantDate.ToString()"/>
+                </fieldset>
+            </div>
+
+            <div class="govuk-button-group">
+                <button type="submit" formnovalidate="formnovalidate" class="govuk-button" data-module="govuk-button" data-prevent-double-click="true">Save and continue</button>
+                <a class="govuk-link" href="@Model.FormatRouteWithProjectId(RouteConstants.ProjectTaskList)">Cancel</a>
+            </div>
+
+        </form>
+    </div>
+</div>

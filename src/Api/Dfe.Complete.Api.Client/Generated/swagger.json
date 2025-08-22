@@ -201,6 +201,82 @@
         }
       }
     },
+    "/v1/ProjectGroup/List": {
+      "get": {
+        "tags": [
+          "ProjectGroup"
+        ],
+        "summary": "Gets a list of the projects group and included establishments.",
+        "operationId": "ProjectGroup_GetProjectGroups",
+        "parameters": [
+          {
+            "name": "Page",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "x-position": 1
+          },
+          {
+            "name": "Count",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "x-position": 2
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Project Groups returned successfully.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ListProjectsGroupsModel"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/ProjectGroup/Details": {
+      "get": {
+        "tags": [
+          "ProjectGroup"
+        ],
+        "summary": "Gets the Project group details by Id.",
+        "operationId": "ProjectGroup_GetProjectGroupDetails",
+        "parameters": [
+          {
+            "name": "ProjectGroupId.Value",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "guid"
+            },
+            "x-position": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Project Group details returned successfully.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProjectGroupDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Project Group not found for the given Id."
+          }
+        }
+      }
+    },
     "/v1/Projects/Create/Conversion": {
       "post": {
         "tags": [
@@ -1815,6 +1891,106 @@
         }
       }
     },
+    "/v1/Projects/List/Project/KeyContact": {
+      "get": {
+        "tags": [
+          "Projects"
+        ],
+        "summary": "Gets key contacts of a project.",
+        "operationId": "Projects_GetKeyContactByProjectId",
+        "parameters": [
+          {
+            "name": "ProjectId.Value",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "guid"
+            },
+            "x-position": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "KeyContact",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/KeyContactDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "key contact not found."
+          }
+        }
+      }
+    },
+    "/v1/Projects/project/SignificantDate": {
+      "get": {
+        "tags": [
+          "Projects"
+        ],
+        "summary": "Gets a Project's significant date history",
+        "operationId": "Projects_GetProjectSignificantDate",
+        "parameters": [
+          {
+            "name": "ProjectId",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "x-position": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Project",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProjectDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request data."
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "Projects"
+        ],
+        "summary": "Updates the Significant date for a specific project.",
+        "operationId": "Projects_UpdateSignificantDate",
+        "requestBody": {
+          "x-name": "request",
+          "description": "The update command.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateSignificantDateCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "204": {
+            "description": "Significant Date updated successfully."
+          },
+          "400": {
+            "description": "Invalid request data."
+          },
+          "404": {
+            "description": "Project/User not found."
+          }
+        }
+      }
+    },
     "/v1/ServiceSupport/LocalAuthority": {
       "post": {
         "tags": [
@@ -1989,13 +2165,13 @@
         }
       }
     },
-    "/v1/TransferTasksData": {
+    "/v1/TasksData/TaskData/Transfer": {
       "get": {
         "tags": [
-          "TransferTasksData"
+          "TasksData"
         ],
         "summary": "Gets the transfer tasks data by Id.",
-        "operationId": "TransferTasksData_GetTransferTasksDataById",
+        "operationId": "TasksData_GetTransferTasksDataById",
         "parameters": [
           {
             "name": "Id.Value",
@@ -2020,6 +2196,71 @@
           },
           "404": {
             "description": "Transfer tasks data not found for the given Id."
+          }
+        }
+      }
+    },
+    "/v1/TasksData/TaskData/Conversion": {
+      "get": {
+        "tags": [
+          "TasksData"
+        ],
+        "summary": "Gets the Conversion tasks data by Id.",
+        "operationId": "TasksData_GetConversionTasksDataById",
+        "parameters": [
+          {
+            "name": "Id.Value",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "guid"
+            },
+            "x-position": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Conversion tasks data returned successfully.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ConversionTaskDataDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Conversion tasks data not found for the given Id."
+          }
+        }
+      }
+    },
+    "/v1/TasksData/TaskData/Handover/DeliveryOfficer": {
+      "patch": {
+        "tags": [
+          "TasksData"
+        ],
+        "summary": "Updates the handover with delivery officer for either conversion or transfer tasks data.",
+        "operationId": "TasksData_UpdateHandoverWithDeliveryOfficerTaskDataByTaskDataId",
+        "requestBody": {
+          "x-name": "request",
+          "description": "The update task data command.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateHandoverWithDeliveryOfficerCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "204": {
+            "description": "Successfully updated the conversion or trasnfer task data"
+          },
+          "404": {
+            "description": "Transfer or Conversion task data not found for the given task data Id."
           }
         }
       }
@@ -3240,13 +3481,11 @@
               }
             ]
           },
-          "reason": {
-            "nullable": true,
-            "oneOf": [
-              {
-                "$ref": "#/components/schemas/SignificantDateHistoryReason"
-              }
-            ]
+          "reasons": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SignificantDateHistoryReason"
+            }
           },
           "user": {
             "nullable": true,
@@ -3269,33 +3508,40 @@
         }
       },
       "SignificantDateHistoryReason": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-          "id": {
-            "$ref": "#/components/schemas/SignificantDateHistoryReasonId"
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/BaseAggregateRoot"
           },
-          "createdAt": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "updatedAt": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "reasonType": {
-            "type": "string",
-            "nullable": true
-          },
-          "significantDateHistoryId": {
-            "nullable": true,
-            "oneOf": [
-              {
-                "$ref": "#/components/schemas/SignificantDateHistoryId"
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "id": {
+                "$ref": "#/components/schemas/SignificantDateHistoryReasonId"
+              },
+              "createdAt": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "updatedAt": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "reasonType": {
+                "type": "string",
+                "nullable": true
+              },
+              "significantDateHistoryId": {
+                "nullable": true,
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/SignificantDateHistoryId"
+                  }
+                ]
               }
-            ]
+            }
           }
-        }
+        ]
       },
       "SignificantDateHistoryReasonId": {
         "type": "object",
@@ -3333,6 +3579,75 @@
           "updatedAt": {
             "type": "string",
             "format": "date-time"
+          }
+        }
+      },
+      "ListProjectsGroupsModel": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "groupId": {
+            "type": "string"
+          },
+          "groupName": {
+            "type": "string"
+          },
+          "groupIdentifier": {
+            "type": "string"
+          },
+          "trustUkprn": {
+            "type": "string"
+          },
+          "includedEstablishments": {
+            "type": "string"
+          }
+        }
+      },
+      "ProjectGroupDetails": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "groupId": {
+            "type": "string"
+          },
+          "trustName": {
+            "type": "string"
+          },
+          "trustReference": {
+            "type": "string"
+          },
+          "groupReference": {
+            "type": "string"
+          },
+          "projectDetails": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ProjectGroupCardDetails"
+            }
+          }
+        }
+      },
+      "ProjectGroupCardDetails": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "projectId": {
+            "type": "string"
+          },
+          "establishmentName": {
+            "type": "string"
+          },
+          "urn": {
+            "type": "string"
+          },
+          "projectType": {
+            "type": "string"
+          },
+          "localAuthority": {
+            "type": "string"
+          },
+          "region": {
+            "type": "string"
           }
         }
       },
@@ -3876,13 +4191,11 @@
               }
             ]
           },
-          "reason": {
-            "nullable": true,
-            "oneOf": [
-              {
-                "$ref": "#/components/schemas/SignificantDateHistoryReasonDto"
-              }
-            ]
+          "reasons": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SignificantDateHistoryReasonDto"
+            }
           },
           "user": {
             "nullable": true,
@@ -4591,6 +4904,149 @@
           "DirectiveAcademyOrder"
         ]
       },
+      "KeyContactDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/KeyContactId"
+              }
+            ]
+          },
+          "headteacherId": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/ContactId"
+              }
+            ]
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "chairOfGovernorsId": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/ContactId"
+              }
+            ]
+          },
+          "incomingTrustCeoId": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/ContactId"
+              }
+            ]
+          },
+          "outgoingTrustCeoId": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/ContactId"
+              }
+            ]
+          }
+        }
+      },
+      "KeyContactId": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "value": {
+            "type": "string",
+            "format": "guid"
+          }
+        }
+      },
+      "UpdateSignificantDateCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "projectId": {
+            "$ref": "#/components/schemas/ProjectId"
+          },
+          "significantDate": {
+            "type": "string",
+            "format": "date"
+          },
+          "reasonNotes": {
+            "type": "object",
+            "x-dictionaryKey": {
+              "$ref": "#/components/schemas/SignificantDateReason"
+            },
+            "additionalProperties": {
+              "type": "string"
+            }
+          },
+          "userId": {
+            "$ref": "#/components/schemas/UserId"
+          }
+        }
+      },
+      "SignificantDateReason": {
+        "type": "string",
+        "description": "",
+        "x-enumNames": [
+          "AdvisoryBoardConditions",
+          "Buildings",
+          "CorrectingAnError",
+          "Diocese",
+          "Finance",
+          "Governance",
+          "IncomingTrust",
+          "Land",
+          "LegacyReason",
+          "LegalDocuments",
+          "LocalAuthority",
+          "NegativePress",
+          "OutgoingTrust",
+          "Pensions",
+          "ProgressingFasterThanExpected",
+          "School",
+          "StakeholderKickOff",
+          "Tupe",
+          "Union",
+          "Viability",
+          "VoluntaryDeferral",
+          "CommercialTransferAgreement",
+          "Academy"
+        ],
+        "enum": [
+          "AdvisoryBoardConditions",
+          "Buildings",
+          "CorrectingAnError",
+          "Diocese",
+          "Finance",
+          "Governance",
+          "IncomingTrust",
+          "Land",
+          "LegacyReason",
+          "LegalDocuments",
+          "LocalAuthority",
+          "NegativePress",
+          "OutgoingTrust",
+          "Pensions",
+          "ProgressingFasterThanExpected",
+          "School",
+          "StakeholderKickOff",
+          "Tupe",
+          "Union",
+          "Viability",
+          "VoluntaryDeferral",
+          "CommercialTransferAgreement",
+          "Academy"
+        ]
+      },
       "CreateLocalAuthorityCommand": {
         "type": "object",
         "additionalProperties": false,
@@ -5274,6 +5730,548 @@
             "nullable": true
           },
           "commercialTransferAgreementQuestionsChecked": {
+            "type": "boolean",
+            "nullable": true
+          }
+        }
+      },
+      "ConversionTaskDataDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "$ref": "#/components/schemas/TaskDataId"
+          },
+          "handoverReview": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "handoverNotes": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "handoverMeeting": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "stakeholderKickOffIntroductoryEmails": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "stakeholderKickOffLocalAuthorityProforma": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "stakeholderKickOffSetupMeeting": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "stakeholderKickOffMeeting": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "conversionGrantCheckVendorAccount": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "conversionGrantPaymentForm": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "conversionGrantSendInformation": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "conversionGrantSharePaymentDate": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "landQuestionnaireReceived": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "landQuestionnaireCleared": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "landQuestionnaireSigned": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "landQuestionnaireSaved": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "landRegistryReceived": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "landRegistryCleared": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "landRegistrySaved": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "supplementalFundingAgreementReceived": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "supplementalFundingAgreementCleared": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "supplementalFundingAgreementSigned": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "supplementalFundingAgreementSaved": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "supplementalFundingAgreementSent": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "supplementalFundingAgreementSignedSecretaryState": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "churchSupplementalAgreementReceived": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "churchSupplementalAgreementCleared": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "churchSupplementalAgreementSigned": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "churchSupplementalAgreementSignedDiocese": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "churchSupplementalAgreementSaved": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "churchSupplementalAgreementSent": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "churchSupplementalAgreementSignedSecretaryState": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "masterFundingAgreementReceived": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "masterFundingAgreementCleared": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "masterFundingAgreementSigned": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "masterFundingAgreementSaved": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "masterFundingAgreementSent": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "masterFundingAgreementSignedSecretaryState": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "articlesOfAssociationReceived": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "articlesOfAssociationCleared": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "articlesOfAssociationSigned": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "articlesOfAssociationSaved": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "deedOfVariationReceived": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "deedOfVariationCleared": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "deedOfVariationSigned": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "deedOfVariationSaved": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "deedOfVariationSent": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "deedOfVariationSignedSecretaryState": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "trustModificationOrderReceived": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "trustModificationOrderSentLegal": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "trustModificationOrderCleared": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "trustModificationOrderSaved": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "directionToTransferReceived": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "directionToTransferCleared": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "directionToTransferSigned": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "directionToTransferSaved": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "schoolCompletedEmailed": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "schoolCompletedSaved": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "redactAndSendRedact": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "redactAndSendSaveRedaction": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "redactAndSendSendRedaction": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "updateEsfaUpdate": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "receiveGrantPaymentCertificateSaveCertificate": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "oneHundredAndTwentyFiveYearLeaseEmail": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "oneHundredAndTwentyFiveYearLeaseReceive": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "oneHundredAndTwentyFiveYearLeaseSaveLease": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "subleasesReceived": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "subleasesCleared": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "subleasesSigned": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "subleasesSaved": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "subleasesEmailSigned": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "subleasesReceiveSigned": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "subleasesSaveSigned": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "tenancyAtWillEmailSigned": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "tenancyAtWillReceiveSigned": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "tenancyAtWillSaveSigned": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "shareInformationEmail": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "redactAndSendSendSolicitors": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "articlesOfAssociationNotApplicable": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "churchSupplementalAgreementNotApplicable": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "deedOfVariationNotApplicable": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "directionToTransferNotApplicable": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "masterFundingAgreementNotApplicable": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "oneHundredAndTwentyFiveYearLeaseNotApplicable": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "subleasesNotApplicable": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "tenancyAtWillNotApplicable": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "trustModificationOrderNotApplicable": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "stakeholderKickOffCheckProvisionalConversionDate": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "conversionGrantNotApplicable": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "sponsoredSupportGrantPaymentAmount": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "sponsoredSupportGrantPaymentForm": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "sponsoredSupportGrantSendInformation": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "sponsoredSupportGrantInformTrust": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "sponsoredSupportGrantNotApplicable": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "handoverNotApplicable": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "academyDetailsName": {
+            "type": "string",
+            "nullable": true
+          },
+          "riskProtectionArrangementOption": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/RiskProtectionArrangementOption"
+              }
+            ]
+          },
+          "checkAccuracyOfHigherNeedsConfirmNumber": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "checkAccuracyOfHigherNeedsConfirmPublishedNumber": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "completeNotificationOfChangeNotApplicable": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "completeNotificationOfChangeTellLocalAuthority": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "completeNotificationOfChangeCheckDocument": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "completeNotificationOfChangeSendDocument": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "sponsoredSupportGrantType": {
+            "type": "string",
+            "nullable": true
+          },
+          "proposedCapacityOfTheAcademyNotApplicable": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "proposedCapacityOfTheAcademyReceptionToSixYears": {
+            "type": "string",
+            "nullable": true
+          },
+          "proposedCapacityOfTheAcademySevenToElevenYears": {
+            "type": "string",
+            "nullable": true
+          },
+          "proposedCapacityOfTheAcademyTwelveOrAboveYears": {
+            "type": "string",
+            "nullable": true
+          },
+          "receiveGrantPaymentCertificateDateReceived": {
+            "type": "string",
+            "format": "date",
+            "nullable": true
+          },
+          "receiveGrantPaymentCertificateCheckCertificate": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "receiveGrantPaymentCertificateNotApplicable": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "confirmDateAcademyOpenedDateOpened": {
+            "type": "string",
+            "format": "date",
+            "nullable": true
+          },
+          "riskProtectionArrangementReason": {
+            "type": "string",
+            "nullable": true
+          },
+          "articlesOfAssociationSent": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "commercialTransferAgreementAgreed": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "commercialTransferAgreementSigned": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "commercialTransferAgreementQuestionsReceived": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "commercialTransferAgreementQuestionsChecked": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "commercialTransferAgreementSaved": {
+            "type": "boolean",
+            "nullable": true
+          }
+        }
+      },
+      "RiskProtectionArrangementOption": {
+        "type": "string",
+        "description": "",
+        "x-enumNames": [
+          "Standard",
+          "ChurchOrTrust",
+          "Commercial"
+        ],
+        "enum": [
+          "Standard",
+          "ChurchOrTrust",
+          "Commercial"
+        ]
+      },
+      "UpdateHandoverWithDeliveryOfficerCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "taskDataId": {
+            "$ref": "#/components/schemas/TaskDataId"
+          },
+          "projectType": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/ProjectType"
+              }
+            ]
+          },
+          "notApplicable": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "handoverReview": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "handoverNotes": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "handoverMeetings": {
             "type": "boolean",
             "nullable": true
           }

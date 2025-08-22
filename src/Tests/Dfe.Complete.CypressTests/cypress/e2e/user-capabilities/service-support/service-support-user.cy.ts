@@ -14,9 +14,8 @@ import allProjects from "cypress/pages/projects/allProjects";
 import projectRemover from "cypress/api/projectRemover";
 import projectApi from "cypress/api/projectApi";
 import { ProjectBuilder } from "cypress/api/projectBuilder";
-import { nextMonth } from "cypress/constants/stringTestConstants";
 
-const project = ProjectBuilder.createConversionProjectRequest(nextMonth);
+const project = ProjectBuilder.createConversionProjectRequest();
 let projectId: string;
 describe("Capabilities and permissions of the service support user", () => {
     before(() => {
