@@ -1,4 +1,5 @@
-﻿using Dfe.Complete.Infrastructure.Gateways;
+﻿using Dfe.Complete.Application.Services.TrustCache;
+using Dfe.Complete.Infrastructure.Gateways;
 using Dfe.Complete.Services;
 using Dfe.Complete.Services.Interfaces;
 
@@ -12,6 +13,7 @@ namespace Dfe.Complete.StartupConfiguration
             services.AddScoped<CompleteApiClient, CompleteApiClient>();
             services.AddScoped<IAnalyticsConsentService, AnalyticsConsentService>();
             services.AddScoped<IProjectService, ProjectService>();
+            services.AddScoped<ITrustCache, TrustCacheService>();
 
             return services;
         }

@@ -1,5 +1,6 @@
 using Dfe.AcademiesApi.Client.Contracts;
 using Dfe.Complete.Application.Projects.Models;
+using Dfe.Complete.Application.Services.AcademiesApi;
 using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Services.Interfaces;
 using Dfe.Complete.Utils;
@@ -30,6 +31,10 @@ public abstract class ExternalContactBasePageModel(IProjectService projectServic
     public virtual async Task<IActionResult> OnGetAsync()
     {  
         await GetProject();
+
+        if (Project == null)
+            return NotFound();
+
         return Page();
     }
 }
