@@ -49,6 +49,26 @@ export class AboutTheProjectPage extends ProjectDetailsPage {
     pageHasMovedToSection(section: string): this {
         return super.pageHasMovedToSection(section, this.sections);
     }
+
+    keyHasValue(key: string, value: string | number) {
+        cy.get("@sectionId").then((id) => {
+            cy.getById(id.toString()).contains("dt", key).next("dd").shouldHaveText(value);
+        });
+        return this;
+    }
+
+    keyHasValueWithLink(key: string, value: string | number, link: string) {
+        cy.get("@sectionId").then((id) => {
+            cy.getById(id.toString())
+                .contains("dt", key)
+                .next("dd")
+                .within(() => {
+                    cy.contains(value);
+                    cy.get("a").should("have.attr", "href", link);
+                });
+        });
+        return this;
+    }
 }
 
 const aboutTheProjectPage = new AboutTheProjectPage();

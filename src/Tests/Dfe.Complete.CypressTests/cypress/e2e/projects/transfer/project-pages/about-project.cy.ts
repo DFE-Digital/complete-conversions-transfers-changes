@@ -1,25 +1,35 @@
 import { Logger } from "cypress/common/logger";
 import { ProjectBuilder } from "cypress/api/projectBuilder";
 import projectDetailsPage from "cypress/pages/projects/projectDetails/projectDetailsPage";
-import { dimensionsTrust, giasUrl, macclesfieldTrust } from "cypress/constants/stringTestConstants";
+import { companiesHouseUrl, dimensionsTrust, giasUrl, macclesfieldTrust } from "cypress/constants/stringTestConstants";
 import projectRemover from "cypress/api/projectRemover";
 import projectApi from "cypress/api/projectApi";
 import aboutTheProjectPage from "cypress/pages/projects/projectDetails/aboutTheProjectPage";
 import { checkAccessibilityAcrossPages } from "cypress/support/reusableTests";
 import { significateDateToDisplayDate } from "cypress/support/formatDate";
+import editTransferProjectPage from "cypress/pages/projects/edit/editTransferProjectPage";
+import groupApi from "cypress/api/groupApi";
 
-const project = ProjectBuilder.createTransferProjectRequest();
+const project = ProjectBuilder.createTransferProjectRequest({
+    incomingTrustUkprn: { value: macclesfieldTrust.ukprn },
+    outgoingTrustUkprn: { value: dimensionsTrust.ukprn },
+});
 let projectId: string;
 let changeLinkPath: string;
 const schoolName = "Abbey College Manchester";
 const localAuthority = "Manchester";
 const region = "North West";
-const incomingTrust = dimensionsTrust;
-const outgoingTrust = macclesfieldTrust;
+const incomingTrust = macclesfieldTrust;
+const outgoingTrust = dimensionsTrust;
 
-const projectFormAMat = ProjectBuilder.createTransferFormAMatProjectRequest();
+const projectFormAMat = ProjectBuilder.createTransferFormAMatProjectRequest({
+    newTrustName: macclesfieldTrust.name,
+    newTrustReferenceNumber: macclesfieldTrust.referenceNumber,
+    outgoingTrustUkprn: { value: dimensionsTrust.ukprn },
+});
 let projectFormAMatId: string;
 let formAMATChangeLinkPath: string;
+let groupId: string;
 const formAMATSchoolName = "Priory Rise School";
 const formAMATLocalAuthority = "Milton Keynes";
 const formAMATRegion = "South East";
@@ -36,6 +46,9 @@ describe("About the project page - transfer projects: ", () => {
             projectFormAMatId = response.value;
             formAMATChangeLinkPath = `/projects/transfers/${projectFormAMatId}/edit#`;
         });
+        groupApi
+            .getGroupBy("groupIdentifier", dimensionsTrust.groupReferenceNumber)
+            .then((groups) => (groupId = groups[0].groupId));
     });
 
     beforeEach(() => {
@@ -146,7 +159,7 @@ describe("About the project page - transfer projects: ", () => {
             .summaryShows("Companies House number")
             .hasValueWithLink(
                 `${incomingTrust.companiesHouseNumber} View the Companies House information (opens in new tab)`,
-                `https://find-and-update.company-information.service.gov.uk/company/${incomingTrust.companiesHouseNumber}`,
+                `${companiesHouseUrl}${incomingTrust.companiesHouseNumber}`,
             )
             .summaryShows("New trust reference number (TRN)")
             .hasValue("")
@@ -174,7 +187,7 @@ describe("About the project page - transfer projects: ", () => {
             .summaryShows("Companies House number")
             .hasValueWithLink(
                 `${outgoingTrust.companiesHouseNumber} View the Companies House information (opens in new tab)`,
-                `https://find-and-update.company-information.service.gov.uk/company/${outgoingTrust.companiesHouseNumber}`,
+                `${companiesHouseUrl}${outgoingTrust.companiesHouseNumber}`,
             )
             .summaryShows("Address")
             .hasValue(outgoingTrust.address)
@@ -310,7 +323,7 @@ describe("About the project page - transfer projects: ", () => {
             .summaryShows("Companies House number")
             .hasValueWithLink(
                 `${outgoingTrust.companiesHouseNumber} View the Companies House information (opens in new tab)`,
-                `https://find-and-update.company-information.service.gov.uk/company/${outgoingTrust.companiesHouseNumber}`,
+                `${companiesHouseUrl}${outgoingTrust.companiesHouseNumber}`,
             )
             .summaryShows("Address")
             .hasValue(outgoingTrust.address)
@@ -345,6 +358,94 @@ describe("About the project page - transfer projects: ", () => {
             .pageHasMovedToSection("Incoming trust details")
             .jumpToSection("Outgoing trust details")
             .pageHasMovedToSection("Outgoing trust details");
+    });
+
+    it("Should be able to make changes to your project's details", () => {
+        const newIncomingTrust = dimensionsTrust;
+        const newOutgoingTrust = macclesfieldTrust;
+        cy.visit(`projects/${projectId}/information`);
+
+        Logger.log("Go to change form");
+        aboutTheProjectPage.change("Group reference number");
+
+        Logger.log("Update project details");
+        editTransferProjectPage
+            .withOutgoingTrustUKPRN(newOutgoingTrust.ukprn)
+            .withIncomingTrustUKPRN(newIncomingTrust.ukprn)
+            .withTrustReferenceNumber("")
+            .withGroupReferenceNumber(newIncomingTrust.groupReferenceNumber)
+            .withAdvisoryBoardDate("10", "01", "2024")
+            .withAdvisoryBoardConditions("Updated advisory board conditions")
+            .withSchoolOrAcademySharePointLink("https://educationgovuk.sharepoint.com/11")
+            .withIncomingTrustSharePointLink("https://educationgovuk.sharepoint.com/22")
+            .withOutgoingTrustSharePointLink("https://educationgovuk.sharepoint.com/33")
+            .with2RI("Yes")
+            .withTransferDueToInadequateOfstedRating("Yes")
+            .withTransferDueToFinancialSafeguardingGovernanceIssues("Yes")
+            .withOutgoingTrustWillCloseAfterTransfer("Yes")
+            .withHandingOverToRCS("Yes")
+            .withHandoverComments("Updated handover comments")
+            .continue();
+
+        aboutTheProjectPage
+            .containsSuccessBannerWithMessage("Project has been updated successfully")
+            .subSection("Project details")
+            .keyHasValueWithLink("Group reference number", newIncomingTrust.groupReferenceNumber, `/groups/${groupId}`)
+            .subSection("Project assignment")
+            .keyHasValue("Are you handing this project over to RCS (Regional Casework Services)?", "Yes")
+            .subSection("Reasons for the transfer")
+            .keyHasValue("Is this transfer due to 2RI?", "Yes")
+            .keyHasValue("Is this transfer due to an inadequate Ofsted rating?", "Yes")
+            .keyHasValue("Is this transfer due to financial, safeguarding or governance issues?", "Yes")
+            .subSection("Advisory board details")
+            .keyHasValue("Date of advisory board", "10 January 2024")
+            .keyHasValue("Conditions from advisory board", "Updated advisory board conditions")
+            .subSection("Academy details")
+            .keyHasValueWithLink(
+                "SharePoint folder",
+                "View the academy SharePoint folder (opens in new tab)",
+                "https://educationgovuk.sharepoint.com/11",
+            )
+            .subSection("Incoming trust details")
+            .keyHasValueWithLink(
+                "Name",
+                `${newIncomingTrust.name.toUpperCase()} View the trust information in GIAS (opens in new tab)`,
+                `${giasUrl}/Groups/Search?GroupSearchModel.Text=${newIncomingTrust.ukprn}`,
+            )
+            .keyHasValue("UKPRN (UK provider reference number)", newIncomingTrust.ukprn)
+            .keyHasValue("Group ID (identifier)", newIncomingTrust.referenceNumber)
+            .keyHasValueWithLink(
+                "Companies House number",
+                `${newIncomingTrust.companiesHouseNumber} View the Companies House information (opens in new tab)`,
+                `${companiesHouseUrl}${newIncomingTrust.companiesHouseNumber}`,
+            )
+            .keyHasValue("New trust reference number (TRN)", "")
+            .keyHasValue("Address", newIncomingTrust.address)
+            .keyHasValueWithLink(
+                "SharePoint folder",
+                "View the trust SharePoint folder (opens in new tab)",
+                "https://educationgovuk.sharepoint.com/22",
+            )
+            .subSection("Outgoing trust details")
+            .keyHasValueWithLink(
+                "Name",
+                `${newOutgoingTrust.name.toUpperCase()} View the trust information in GIAS (opens in new tab)`,
+                `${giasUrl}/Groups/Search?GroupSearchModel.Text=${newOutgoingTrust.ukprn}`,
+            )
+            .keyHasValue("UKPRN (UK provider reference number)", newOutgoingTrust.ukprn)
+            .keyHasValue("Group ID (identifier)", newOutgoingTrust.referenceNumber)
+            .keyHasValueWithLink(
+                "Companies House number",
+                `${newOutgoingTrust.companiesHouseNumber} View the Companies House information (opens in new tab)`,
+                `${companiesHouseUrl}${newOutgoingTrust.companiesHouseNumber}`,
+            )
+            .keyHasValue("Address", newOutgoingTrust.address)
+            .keyHasValueWithLink(
+                "SharePoint folder",
+                "View the trust SharePoint folder (opens in new tab)",
+                "https://educationgovuk.sharepoint.com/33",
+            )
+            .keyHasValue("Will the outgoing trust close once this transfer is completed?", "Yes");
     });
 
     it("Check accessibility across pages", () => {

@@ -1,7 +1,7 @@
 import { ProjectBuilder } from "cypress/api/projectBuilder";
 import { Logger } from "cypress/common/logger";
 import projectDetailsPage from "cypress/pages/projects/projectDetails/projectDetailsPage";
-import { dimensionsTrust, giasUrl, macclesfieldTrust } from "cypress/constants/stringTestConstants";
+import { companiesHouseUrl, dimensionsTrust, giasUrl, macclesfieldTrust } from "cypress/constants/stringTestConstants";
 import projectApi from "cypress/api/projectApi";
 import projectRemover from "cypress/api/projectRemover";
 import { rdoLondonUser } from "cypress/constants/cypressConstants";
@@ -9,6 +9,7 @@ import aboutTheProjectPage from "cypress/pages/projects/projectDetails/aboutTheP
 import { checkAccessibilityAcrossPages } from "cypress/support/reusableTests";
 import { significateDateToDisplayDate } from "cypress/support/formatDate";
 import groupApi from "cypress/api/groupApi";
+import editConversionProjectPage from "cypress/pages/projects/edit/editConversionProjectPage";
 
 const project = ProjectBuilder.createConversionProjectRequest({
     incomingTrustUkprn: { value: dimensionsTrust.ukprn },
@@ -58,25 +59,17 @@ describe("About the project page - conversion projects: ", () => {
         projectApi
             .createMatConversionProject(teammatesProject, rdoLondonUser.email)
             .then((response) => (teammatesProjectId = response.value));
-        groupApi.getGroupBy("groupIdentifier", dimensionsTrust.groupReferenceNumber).then((groups) => {
-            if (groups.length > 0) {
-                groupId = groups[0].groupId;
-            } else {
-                throw new Error("Group does not exist");
-            }
-        });
+        groupApi
+            .getGroupBy("groupIdentifier", dimensionsTrust.groupReferenceNumber)
+            .then((groups) => (groupId = groups[0].groupId));
     });
     beforeEach(() => {
         cy.login();
         cy.acceptCookies();
-        cy.visit(`projects/${projectFormAMATId}/tasks`);
+        cy.visit(`/projects/${projectId}/information`);
     });
 
     it("Should display the project details on the about the project section for a Conversion project", () => {
-        cy.visit(`/projects/${projectId}/tasks`);
-        Logger.log("Go to the about project section");
-        projectDetailsPage.navigateTo("About the project").containsSubHeading("About the project");
-
         Logger.log("Project summary details are still displayed at the top of the page");
         projectDetailsPage
             .containsHeading(schoolName)
@@ -191,7 +184,7 @@ describe("About the project page - conversion projects: ", () => {
             .summaryShows("Companies House number")
             .hasValueWithLink(
                 `${dimensionsTrust.companiesHouseNumber} View the Companies House information (opens in new tab)`,
-                `https://find-and-update.company-information.service.gov.uk/company/${dimensionsTrust.companiesHouseNumber}`,
+                `${companiesHouseUrl}${dimensionsTrust.companiesHouseNumber}`,
             )
             .summaryShows("New trust reference number (TRN)")
             .hasValue("")
@@ -206,6 +199,7 @@ describe("About the project page - conversion projects: ", () => {
     });
 
     it("Should display the project details on the about project section for Conversion form a MAT project", () => {
+        cy.visit(`projects/${projectFormAMATId}/tasks`);
         Logger.log("Go to the about project section");
         projectDetailsPage.navigateTo("About the project").containsSubHeading("About the project");
 
@@ -319,9 +313,6 @@ describe("About the project page - conversion projects: ", () => {
     });
 
     it("Should display page links that navigate to different sections of the about project page", () => {
-        Logger.log("Go to the about project section");
-        cy.visit(`projects/${projectFormAMATId}/information`);
-
         Logger.log("Check that the page links correctly navigate to the different sections");
         aboutTheProjectPage
             .jumpToSection("Project details")
@@ -355,7 +346,77 @@ describe("About the project page - conversion projects: ", () => {
         projectDetailsPage.navigateTo("About the project").containsSubHeading("About the project");
         aboutTheProjectPage.linkDoesNotExist("Change");
 
-        cy.visit(`projects/conversions/${teammatesProjectId}/edit`).notAuthorisedToPerformAction();
+        Logger.log(
+            "Check that the user is redirected to the information tab if they try to access the edit page directly",
+        );
+        cy.visit(`projects/conversions/${teammatesProjectId}/edit`)
+            .url()
+            .should("include", `/projects/${teammatesProjectId}/information`);
+    });
+
+    it("Should be able to make changes to your project's details", () => {
+        Logger.log("Go to change form");
+        aboutTheProjectPage.change("Group reference number");
+
+        Logger.log("Update project details");
+        editConversionProjectPage
+            .withIncomingTrustUKPRN(macclesfieldTrust.ukprn)
+            .withTrustReferenceNumber(macclesfieldTrust.referenceNumber)
+            .withGroupReferenceNumber("")
+            .withAdvisoryBoardDate("28", "02", "2023")
+            .withAdvisoryBoardConditions("New advisory board conditions")
+            .withSchoolOrAcademySharePointLink("https://educationgovuk.sharepoint.com/11")
+            .withIncomingTrustSharePointLink("https://educationgovuk.sharepoint.com/22")
+            .withHandingOverToRCS("Yes")
+            .withHandoverComments("New handover comments")
+            .withAcademyOrder("Academy order")
+            .with2RI("Yes")
+            .continue();
+
+        aboutTheProjectPage
+            .containsSuccessBannerWithMessage("Project has been updated successfully")
+            .subSection("Project details")
+            .keyHasValue("Group reference number", "Not grouped")
+            .subSection("Project assignment")
+            .keyHasValue("Are you handing this project over to RCS (Regional Casework Services)?", "Yes")
+            .subSection("Reasons for the conversion")
+            .keyHasValue("Has a directive academy order been issued?", "No")
+            .keyHasValue("Is this conversion due to intervention following 2RI?", "Yes")
+            .subSection("Advisory board details")
+            .keyHasValue("Date of advisory board", "28 February 2023")
+            .keyHasValue("Conditions from advisory board", "New advisory board conditions")
+            .subSection("School details")
+            .keyHasValueWithLink(
+                "SharePoint folder",
+                "View the school SharePoint folder (opens in new tab)",
+                "https://educationgovuk.sharepoint.com/11",
+            )
+            .subSection("Academy details")
+            .keyHasValueWithLink(
+                "SharePoint folder",
+                "View the academy SharePoint folder (opens in new tab)",
+                "https://educationgovuk.sharepoint.com/11",
+            )
+            .subSection("Incoming trust details")
+            .keyHasValueWithLink(
+                "Name",
+                `${macclesfieldTrust.name.toUpperCase()} View the trust information in GIAS (opens in new tab)`,
+                `${giasUrl}/Groups/Search?GroupSearchModel.Text=${macclesfieldTrust.ukprn}`,
+            )
+            .keyHasValue("UKPRN (UK provider reference number)", macclesfieldTrust.ukprn)
+            .keyHasValue("Group ID (identifier)", macclesfieldTrust.referenceNumber)
+            .keyHasValueWithLink(
+                "Companies House number",
+                `${macclesfieldTrust.companiesHouseNumber} View the Companies House information (opens in new tab)`,
+                `${companiesHouseUrl}${macclesfieldTrust.companiesHouseNumber}`,
+            )
+            .keyHasValue("New trust reference number (TRN)", macclesfieldTrust.referenceNumber)
+            .keyHasValue("Address", macclesfieldTrust.address)
+            .keyHasValueWithLink(
+                "SharePoint folder",
+                "View the trust SharePoint folder (opens in new tab)",
+                "https://educationgovuk.sharepoint.com/22",
+            );
     });
 
     it("Check accessibility across pages", () => {
