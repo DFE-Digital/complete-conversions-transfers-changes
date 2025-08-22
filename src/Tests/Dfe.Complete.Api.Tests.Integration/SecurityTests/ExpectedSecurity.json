@@ -254,6 +254,11 @@
       "Controller": "TasksDataController",
       "Action": "UpdateHandoverWithDeliveryOfficerTaskDataByTaskDataIdAsync",
       "ExpectedSecurity": "Authorize: Policy=CanReadWriteUpdate"
+    },
+    {
+      "Controller": "TasksDataController",
+      "Action": "UpdateSupplementalFundingAgreementTaskAsync",
+      "ExpectedSecurity": "Authorize: Policy=CanReadWriteUpdate"
     }
   ]
 }
