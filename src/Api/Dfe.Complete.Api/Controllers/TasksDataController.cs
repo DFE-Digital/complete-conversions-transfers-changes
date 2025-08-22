@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 using Dfe.Complete.Application.Projects.Queries.GetTransferTasksData;
 using Dfe.Complete.Application.Projects.Commands.UpdateProject;
 using Dfe.Complete.Application.Projects.Queries.GetConversionTasksData;
+using Dfe.Complete.Application.Projects.Commands.TaskData;
 
 namespace Dfe.Complete.Api.Controllers
 {
@@ -55,7 +56,7 @@ namespace Dfe.Complete.Api.Controllers
         /// <param name="cancellationToken">The cancellation token.</param>
         [Authorize(Policy = "CanReadWriteUpdate")]
         [HttpPatch]
-        [Route("TaskData/Handover/DeliveryOfficer")]
+        [Route("TaskData/HandoverDeliveryOfficer")]
         [SwaggerResponse(204, "Successfully updated the conversion or trasnfer task data")]
         [SwaggerResponse(404, "Transfer or Conversion task data not found for the given task data Id.")]
         public async Task<IActionResult> UpdateHandoverWithDeliveryOfficerTaskDataByTaskDataIdAsync([FromBody] UpdateHandoverWithDeliveryOfficerCommand request, CancellationToken cancellationToken)
@@ -63,5 +64,24 @@ namespace Dfe.Complete.Api.Controllers
             await sender.Send(request, cancellationToken); 
             return NoContent();
         }
+
+        /// <summary>
+        /// Updates the supplemental funding agreement task Data for conversion or trasnfer project.
+        /// </summary>
+        /// <param name="request">The update command.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        [Authorize(Policy = "CanReadWrite")]
+        [HttpPatch]
+        [Route("TaskData/SupplementalFundingAgreement")]
+        [SwaggerResponse(204, "Conversion or transfer's supplemental funding agreement task updated successfully.")]
+        [SwaggerResponse(400, "Invalid request data.")]
+        [SwaggerResponse(404, "Project/User not found.")]
+        public async Task<IActionResult> UpdateSupplementalFundingAgreementTaskAsync(
+            [FromBody] UpdateSupplementalFundingAgreementTaskCommand request,
+            CancellationToken cancellationToken)
+        {
+            await sender.Send(request, cancellationToken);
+            return NoContent();
+        } 
     }
 }

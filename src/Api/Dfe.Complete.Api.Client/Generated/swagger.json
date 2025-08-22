@@ -2235,7 +2235,7 @@
         }
       }
     },
-    "/v1/TasksData/TaskData/Handover/DeliveryOfficer": {
+    "/v1/TasksData/TaskData/HandoverDeliveryOfficer": {
       "patch": {
         "tags": [
           "TasksData"
@@ -2261,6 +2261,39 @@
           },
           "404": {
             "description": "Transfer or Conversion task data not found for the given task data Id."
+          }
+        }
+      }
+    },
+    "/v1/TasksData/TaskData/SupplementalFundingAgreement": {
+      "patch": {
+        "tags": [
+          "TasksData"
+        ],
+        "summary": "Updates the supplemental funding agreement task Data for conversion or trasnfer project.",
+        "operationId": "TasksData_UpdateSupplementalFundingAgreementTask",
+        "requestBody": {
+          "x-name": "request",
+          "description": "The update command.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateSupplementalFundingAgreementTaskCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "204": {
+            "description": "Conversion or transfer's supplemental funding agreement task updated successfully."
+          },
+          "400": {
+            "description": "Invalid request data."
+          },
+          "404": {
+            "description": "Project/User not found."
           }
         }
       }
@@ -6272,6 +6305,47 @@
             "nullable": true
           },
           "handoverMeetings": {
+            "type": "boolean",
+            "nullable": true
+          }
+        }
+      },
+      "UpdateSupplementalFundingAgreementTaskCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "taskDataId": {
+            "$ref": "#/components/schemas/TaskDataId"
+          },
+          "projectType": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/ProjectType"
+              }
+            ]
+          },
+          "received": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "cleared": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "sent": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "saved": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "signed": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "signedSecretaryState": {
             "type": "boolean",
             "nullable": true
           }

@@ -18,6 +18,8 @@ Security in case of vulnerabilities.
 
 ### Added
 
+- Added `Supplemental Funding Agreement` task data for both conversion and transfer projects.
+
 ### Changed
 
 ### Fixed
