@@ -6,6 +6,41 @@ class TaskListPage {
                 return new TaskSummary(element);
             });
     }
+
+     public hasTasks(): this {
+        cy.contains('Handover with regional delivery officer');
+        cy.contains('External stakeholder kick-off');
+
+        return this;
+    }
+
+    public selectTask(taskName: string) {
+        cy.contains(taskName).click();
+
+        return this;
+    }
+
+    public hasTasksNotStartedElementsPresent(): this {
+        cy.get("#confirm-eligibility-status").contains('Not Started');
+
+        return this;
+    }
+
+        public hasTaskStatusNotApplicable(id: string) {
+        cy.get(`#${id}`).contains("Not Applicabale");
+
+        return this;
+    }
+
+    public hasTaskStatusCompleted(id: string) {
+        cy.get(`#${id}`).contains("Completed");
+
+        return this;
+    }
+
+    public hasTaskStatusInProgress(id: string) {
+        cy.get(`#${id}`).contains("In Progress");
+    }
 }
 
 class TaskSummary {
@@ -49,7 +84,8 @@ class TaskSummary {
 
         return this;
     }
-}
+
+   }
 
 export const ConversionTaskNames = {
     HandoverWithRegionalDeliveryOfficer: "Handover with regional delivery officer"
