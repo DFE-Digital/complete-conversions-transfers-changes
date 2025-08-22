@@ -64,7 +64,7 @@ describe("Handover process tests for transfer projects", () => {
             .hasValue(macclesfieldTrust.ukprn)
             .summaryShows("Advisory board date")
             .hasValue(significateDateToDisplayDate(project.advisory_board_date))
-            .summaryShows("Provisional conversion date") // bug todo
+            .summaryShows("Provisional transfer date")
             .hasValue(significateDateToDisplayDate(project.provisional_transfer_date))
             .summaryShows("Assigned to in Prepare")
             .hasValue(cypressUser.username)
@@ -82,8 +82,15 @@ describe("Handover process tests for transfer projects", () => {
         Logger.log("Verify project handed over");
         cy.contains("Project handed over to Regional Casework Services");
         cy.contains(`${academyName} URN ${project.urn}`);
-        // cy.contains("This project will appear in the Regional Casework Services' project list."); //todo bug typo
-        // cy.contains("It will only be assigned to a caseworker when external contacts have been added."); // todo bug
+        // todo
+        // cy.contains("This project will appear in the Regional Casework Services' project list."); // typo
+
+        // below is what was in ruby, but doesn't make any sense as the project appears in RCS unassigned projects
+        // cy.contains("It will only be assigned to a caseworker when external contacts have been added.");
+
+        // this would make more sense:
+        // cy.contains("This project will appear in the Regional Casework Services' unassigned project list.")
+        // cy.contains("Regional Casework Services team leaders can assign it to a caseworker.");
 
         Logger.log("Login with RCS team leader user");
         cy.clearCookies();
@@ -121,7 +128,7 @@ describe("Handover process tests for transfer projects", () => {
             .hasValue(macclesfieldTrust.ukprn)
             .summaryShows("Advisory board date")
             .hasValue(significateDateToDisplayDate(formAMATProject.advisory_board_date))
-            .summaryShows("Provisional conversion date") // todo bug
+            .summaryShows("Provisional transfer date")
             .hasValue(significateDateToDisplayDate(formAMATProject.provisional_transfer_date))
             .summaryShows("Assigned to in Prepare")
             .hasValue(cypressUser.username)

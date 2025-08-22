@@ -75,7 +75,7 @@ describe("View all projects", () => {
             .hasTableHeaders([
                 "School or academy",
                 "URN",
-                "Incomg trust", //todo bug
+                "Incoming trust",
                 "Provisional conversion or transfer date",
                 "Advisory board date",
                 "Project type",
@@ -83,7 +83,7 @@ describe("View all projects", () => {
             ])
             .withSchool(prepareProjectName)
             .columnHasValue("URN", `${prepareProject.urn}`)
-            .columnHasValue("Incomg trust", dimensionsTrust.name) // todo bug
+            .columnHasValue("Incoming trust", dimensionsTrust.name)
             .columnHasValue("Provisional conversion or transfer date", nextMonthShort)
             .columnHasValue("Advisory board date", significateDateToDisplayDate(prepareProject.advisory_board_date))
             .columnHasValue("Project type", "Conversion")

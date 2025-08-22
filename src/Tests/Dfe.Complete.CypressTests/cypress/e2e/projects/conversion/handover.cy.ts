@@ -60,7 +60,7 @@ describe("Handover process tests for conversion projects", () => {
             .hasValue(dimensionsTrust.ukprn)
             .summaryShows("Advisory board date")
             .hasValue(significateDateToDisplayDate(project.advisory_board_date))
-            .summaryShows("Provisional transfer date") // todo bug
+            .summaryShows("Provisional conversion date")
             .hasValue(significateDateToDisplayDate(project.provisional_conversion_date))
             .summaryShows("Type of academy order")
             .hasValue("AO (Academy order)")
@@ -80,8 +80,15 @@ describe("Handover process tests for conversion projects", () => {
         Logger.log("Verify project handed over");
         cy.contains("Project handed over to Regional Casework Services");
         cy.contains(`${schoolName} URN ${project.urn}`);
-        // cy.contains("This project will appear in the Regional Casework Services' project list."); //todo bug typo
-        // cy.contains("It will only be assigned to a caseworker when external contacts have been added."); // todo bug
+        // todo
+        // cy.contains("This project will appear in the Regional Casework Services' project list."); // typo
+
+        // below is what was in ruby, but doesn't make any sense as the project appears in RCS unassigned projects
+        // cy.contains("It will only be assigned to a caseworker when external contacts have been added.");
+
+        // this would make more sense:
+        // cy.contains("This project will appear in the Regional Casework Services' unassigned project list.")
+        // cy.contains("Regional Casework Services team leaders can assign it to a caseworker.");
 
         Logger.log("Login with RCS team leader user");
         cy.clearCookies();
@@ -115,7 +122,7 @@ describe("Handover process tests for conversion projects", () => {
             .hasValue(dimensionsTrust.referenceNumber)
             .summaryShows("Advisory board date")
             .hasValue(significateDateToDisplayDate(formAMATProject.advisory_board_date))
-            .summaryShows("Provisional transfer date") // todo bug
+            .summaryShows("Provisional conversion date")
             .hasValue(significateDateToDisplayDate(formAMATProject.provisional_conversion_date))
             .summaryShows("Type of academy order")
             .hasValue("AO (Academy order)")
