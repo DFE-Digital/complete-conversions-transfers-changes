@@ -70,7 +70,7 @@ namespace Dfe.Complete.Api.Controllers
         /// </summary>
         /// <param name="request">The update command.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
-        [Authorize(Policy = "CanReadWrite")]
+        [Authorize(Policy = "CanReadWriteUpdate")]
         [HttpPatch]
         [Route("TaskData/SupplementalFundingAgreement")]
         [SwaggerResponse(204, "Conversion or transfer's supplemental funding agreement task updated successfully.")]

@@ -157,6 +157,7 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers.ProjectsController
             command.Saved = false;
             command.Received = true;
             command.Signed = true;
+            command.Sent = false;
             command.SignedSecretaryState = true;
 
             // Act
@@ -168,8 +169,8 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers.ProjectsController
             Assert.NotNull(existingTaskData);
             Assert.True(existingTaskData.SupplementalFundingAgreementCleared);
             Assert.True(existingTaskData.SupplementalFundingAgreementReceived);
-            Assert.True(existingTaskData.SupplementalFundingAgreementSaved);
-            Assert.True(existingTaskData.SupplementalFundingAgreementSent);
+            Assert.False(existingTaskData.SupplementalFundingAgreementSaved);
+            Assert.False(existingTaskData.SupplementalFundingAgreementSent);
             Assert.True(existingTaskData.SupplementalFundingAgreementSigned);
             Assert.True(existingTaskData.SupplementalFundingAgreementSignedSecretaryState);
         }
@@ -205,7 +206,7 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers.ProjectsController
             Assert.NotNull(existingTaskData);
             Assert.True(existingTaskData.SupplementalFundingAgreementCleared);
             Assert.True(existingTaskData.SupplementalFundingAgreementReceived);
-            Assert.True(existingTaskData.SupplementalFundingAgreementSaved); 
+            Assert.False(existingTaskData.SupplementalFundingAgreementSaved); 
         }
     }
 }
