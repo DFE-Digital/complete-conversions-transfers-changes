@@ -90,7 +90,7 @@
         public const string DeleteLocalAuthorityDetails = "/service-support/local-authorities/{0}/delete";
 
         // External contacts        
-        public const string ProjectsExternalContactAdd = NewProjectExternalContacts + "/create-contact?externalcontacttype={1}";
+        public const string ProjectsExternalContactAdd = NewProjectExternalContacts + "/create-contact";
         public const string ProjectsExternalContactAddTypeOther = NewProjectExternalContacts + "/create-contact-type-other";
     }
 }

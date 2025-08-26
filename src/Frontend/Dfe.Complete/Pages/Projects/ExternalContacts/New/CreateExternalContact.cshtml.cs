@@ -8,17 +8,15 @@ using Dfe.Complete.Helpers;
 using Dfe.Complete.Models;
 using Dfe.Complete.Models.ExternalContact;
 using Dfe.Complete.Services;
-using Dfe.Complete.Services.Interfaces;
 using Dfe.Complete.Utils;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Dfe.Complete.Pages.Projects.ExternalContacts.New;
 
-public class CreateExternalContact(ISender sender, ITrustCache TrustCacheService,  ErrorService errorService, IProjectService projectService, ILogger<CreateExternalContact> logger)
-    : ExternalContactBasePageModel(projectService, logger)
-{
-    protected readonly ISender Sender = sender;
+public class CreateExternalContact(ISender sender, ITrustCache TrustCacheService,  ErrorService errorService, ILogger<CreateExternalContact> logger)
+    : ExternalContactBasePageModel(sender, logger)
+{   
     protected readonly ITrustCache trustCacheService = TrustCacheService;
 
     [FromQuery(Name = "externalcontacttype")]
@@ -49,7 +47,7 @@ public class CreateExternalContact(ISender sender, ITrustCache TrustCacheService
         {
             try
             {
-                await GetProject();
+                await base.GetCurrentProject();
 
                 var contactType = EnumExtensions.FromDescription<ExternalContactType>(this.SelectedExternalContactType);
                 var organisationName = string.Empty;
@@ -81,7 +79,7 @@ public class CreateExternalContact(ISender sender, ITrustCache TrustCacheService
                         return Page();
                 }
 
-                var newExternalContactRequest = new CreateExternalContactRequest(
+                var newExternalContactCommand = new CreateExternalContactCommand(
                     FullName: this.ExternalContactDetails.FullName,
                     Role: role,
                     Email: this.ExternalContactDetails.Email ?? string.Empty,
@@ -95,7 +93,7 @@ public class CreateExternalContact(ISender sender, ITrustCache TrustCacheService
                     Type: ContactType.Project
                 );
 
-                var response = await Sender.Send(newExternalContactRequest);
+                var response = await Sender.Send(newExternalContactCommand);
                 var contactId = response.Value;
 
                 TempData.SetNotification(

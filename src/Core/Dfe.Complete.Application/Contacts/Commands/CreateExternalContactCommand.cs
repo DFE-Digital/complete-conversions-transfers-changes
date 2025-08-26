@@ -7,7 +7,7 @@ using MediatR;
 
 namespace Dfe.Complete.Application.Contacts.Commands;
 
-public record CreateExternalContactRequest(string FullName, 
+public record CreateExternalContactCommand(string FullName, 
     string Role, 
     string Email, 
     string PhoneNumber, 
@@ -20,9 +20,9 @@ public record CreateExternalContactRequest(string FullName,
     ContactType? Type) : IRequest<ContactId>;
 
 
-public class CreateExternalContact(ICompleteRepository<Contact> ContactRepository, ISender sender) : IRequestHandler<CreateExternalContactRequest, ContactId>
+public class CreateExternalContactCommandHandler(ICompleteRepository<Contact> ContactRepository, ISender sender) : IRequestHandler<CreateExternalContactCommand, ContactId>
 {
-    public async Task<ContactId> Handle(CreateExternalContactRequest request, CancellationToken cancellationToken)
+    public async Task<ContactId> Handle(CreateExternalContactCommand request, CancellationToken cancellationToken)
     {
         var contact = new Contact()
         {

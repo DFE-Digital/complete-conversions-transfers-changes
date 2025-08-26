@@ -3,12 +3,13 @@ using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Models.ExternalContact;
 using Dfe.Complete.Services.Interfaces;
 using Dfe.Complete.Utils;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Dfe.Complete.Pages.Projects.ExternalContacts.New;
 
-public class NewExternalContact(IProjectService projectService, ILogger<NewExternalContact> logger)
-    : ExternalContactBasePageModel(projectService, logger)
+public class NewExternalContact(ISender sender, ILogger<NewExternalContact> logger)
+    : ExternalContactBasePageModel(sender, logger)
 {
     public ExternalContactType[] ContactTypeRadioOptions { get; set; }
 
@@ -25,13 +26,17 @@ public class NewExternalContact(IProjectService projectService, ILogger<NewExter
 
     public IActionResult OnPost()
     {
-        var pageToRedirectTo = EnumExtensions.FromDescription<ExternalContactType>(this.SelectedExternalContactType) switch
+        var contactType = EnumExtensions.FromDescription<ExternalContactType>(this.SelectedExternalContactType);
+
+        var pageToRedirectTo = contactType switch
         {
-            ExternalContactType .Other => string.Format(RouteConstants.ProjectsExternalContactAddTypeOther, ProjectId),
-            _ => string.Format(RouteConstants.ProjectsExternalContactAdd, ProjectId, SelectedExternalContactType)
+            ExternalContactType.Other => string.Format(RouteConstants.ProjectsExternalContactAddTypeOther, ProjectId),
+            ExternalContactType.HeadTeacher or ExternalContactType.IncomingTrustCEO or ExternalContactType.OutgoingTrustCEO or ExternalContactType.ChairOfGovernors
+                => string.Format(RouteConstants.ProjectsExternalContactAdd, ProjectId, this.SelectedExternalContactType),
+            _ => string.Empty
         };
 
-        return Redirect(pageToRedirectTo);
+        return RedirectToPage(pageToRedirectTo, new { externalcontacttype = this.SelectedExternalContactType });
     }
 
     private void SetExternalContactTypes()

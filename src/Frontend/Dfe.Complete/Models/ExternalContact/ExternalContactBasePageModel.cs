@@ -1,17 +1,18 @@
 using Dfe.AcademiesApi.Client.Contracts;
 using Dfe.Complete.Application.Projects.Models;
-using Dfe.Complete.Application.Services.AcademiesApi;
-using Dfe.Complete.Domain.Enums;
-using Dfe.Complete.Services.Interfaces;
+using Dfe.Complete.Application.Projects.Queries.GetProject;
+using Dfe.Complete.Domain.ValueObjects;
 using Dfe.Complete.Utils;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Dfe.Complete.Models.ExternalContact;
 
-public abstract class ExternalContactBasePageModel(IProjectService projectService, ILogger logger) : PageModel
+public abstract class ExternalContactBasePageModel(ISender sender, ILogger logger) : PageModel
 {
-    protected readonly IProjectService ProjectService = projectService;
+    protected readonly ISender Sender = sender;
     protected ILogger Logger = logger;
 
     [BindProperty(SupportsGet = true, Name = "projectId")]
@@ -21,20 +22,39 @@ public abstract class ExternalContactBasePageModel(IProjectService projectServic
 
     public TrustDto? IncomingTrust { get; set; }
 
-    public TrustDto? OutgoingTrust { get; set; }
-
-    public async Task GetProject()
-    {
-       Project = await ProjectService.GetProjectById(ProjectId);
-    }
+    public TrustDto? OutgoingTrust { get; set; }   
 
     public virtual async Task<IActionResult> OnGetAsync()
     {  
-        await GetProject();
+        await GetCurrentProject();
 
         if (Project == null)
             return NotFound();
 
         return Page();
+    }
+
+    public async Task GetCurrentProject()
+    {
+        var success = Guid.TryParse(ProjectId, out var guid);
+
+        if (!success)
+        {
+            var error = $"{ProjectId} is not a valid Guid.";
+
+            Logger.LogError(error);
+            throw new NotFoundException(error);                       
+        }
+
+        var query = new GetProjectByIdQuery(new ProjectId(guid));
+        var result = await Sender.Send(query);
+        if (!result.IsSuccess || result.Value == null)
+        {
+            var error = $"Project {ProjectId} does not exist.";
+            Logger.LogError(error);
+            throw new NotFoundException(error);
+        }
+
+        Project = result.Value;
     }
 }

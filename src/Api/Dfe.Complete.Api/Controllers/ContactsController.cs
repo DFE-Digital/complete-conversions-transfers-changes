@@ -57,7 +57,7 @@ public class ContactsController(ISender sender) : ControllerBase
     [Route("Create")]
     [SwaggerResponse(200, "ContactId", typeof(ContactId))]
     [SwaggerResponse(400, "Invalid request data.")]
-    public async Task<IActionResult> CreateExternalContactAsync([FromQuery] CreateExternalContactRequest request, CancellationToken cancellationToken)
+    public async Task<IActionResult> CreateExternalContactAsync([FromQuery] CreateExternalContactCommand request, CancellationToken cancellationToken)
     {
         var contactId = await sender.Send(request, cancellationToken);
         return Ok(contactId.Value);
