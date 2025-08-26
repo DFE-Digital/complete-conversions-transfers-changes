@@ -22,6 +22,9 @@ Security in case of vulnerabilities.
 
 ### Fixed
 
+### Security
+- update "CanViewYourProjects" to depend exclusively on "assign_to_project"
+
 See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-08-20.658...main) for everything awaiting release
 
 ---
