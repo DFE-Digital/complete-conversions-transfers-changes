@@ -1,0 +1,123 @@
+﻿@page "/projects/{projectId}/tasks/deed_of_variation"
+@using Dfe.Complete.Domain.Enums
+@model Dfe.Complete.Pages.Projects.TaskList.Tasks.DeedOfVariation.DeedOfVariationModel
+@{
+    Layout = "_ProjectTaskLayout";
+    ViewData["Title"] = "Deed of variation";
+}
+@section TaskHeaderHintSection
+{
+    <div class="govuk-hint">
+        @if (Model.Type == ProjectType.Conversion)
+        {
+            <p>You'll only need to complete and clear a deed of variation if there are changes to the funding agreements.</p>
+        }
+        else if (Model.Type == ProjectType.Transfer)
+        {
+            <p class="govuk-body">You only need to use a deed of variation if both the following are true.</p>
+            <p class="govuk-body">The incoming trust is:</p>
+            <ul>
+                <li>updating an old master funding agrfeement that covers all current academies in the trust</li>
+                <li>not using an additional master funding agreement for the transfer of this academy</li>
+            </ul> 
+        }
+    </div>
+}
+@section TaskSection { 
+    <form method="post">
+        <input type="hidden" asp-for="TasksDataId" />
+        <input type="hidden" asp-for="Type" />
+        <govuk-checkboxes name="options">
+            <govuk-checkboxes-fieldset>
+                <govuk-checkboxes-fieldset-legend>
+                </govuk-checkboxes-fieldset-legend>
+                <govuk-checkboxes-item id="not-applicable" asp-for="@Model.NotApplicable" value="true" name="not-applicable" checked="@Model.NotApplicable">
+                    <b>Not applicable</b>
+                </govuk-checkboxes-item>
+            </govuk-checkboxes-fieldset>
+        </govuk-checkboxes>
+        <h2 class="govuk-heading-l">
+            Check and clear the deed of variation
+        </h2>
+        <div class="govuk-hint">
+            <p>You can <a href="https://educationgovuk.sharepoint.com/sites/lvewp00030/SitePages/Funding-Agreement.aspx" target="_blank">find the right deed of variation to use (opens in new tab)</a> on SharePoint.</p>
+            @if (Model.Type == ProjectType.Transfer)
+            {
+                <p>Deed of varation model documents are not available on GOV.UK. You may need to send copies to the solicitor or trust for them to complete.</p>
+            }
+            </div>
+        <govuk-details>
+            <govuk-details-summary>
+                <span class="govuk-details__summary-text">Help checking for changes</span>
+            </govuk-details-summary>
+            <govuk-details-text>
+                @if (Model.Type == ProjectType.Transfer)
+                {
+                    <p>Changes that personalise the model documents to an academy or trust are expected. The wording of clauses should not change.</p>
+                }
+                else
+                {
+                    <p>Changes that personalise the model documents to a school or trust, and remove or add optional clauses, are expected. The wording of clauses should not change.</p>
+                }
+                <p>You'll need to <a href="https://educationgovuk.sharepoint.com/sites/lvewp00030/SitePages/Resources/Request%20for%20advice%20from%20the%20AOPU.aspx" target="_blank">contact the policy team (opens in new tab)</a> about changes to clause text.</p>
+            </govuk-details-text>
+        </govuk-details>
+         
+        <govuk-checkboxes name="options">
+            <govuk-checkboxes-fieldset>
+                <govuk-checkboxes-fieldset-legend>
+                </govuk-checkboxes-fieldset-legend>
+                <govuk-checkboxes-item id="received" asp-for="@Model.Received" value="true" name="received" checked="@Model.Received">
+                    <b>Received</b>
+                </govuk-checkboxes-item>
+                <govuk-checkboxes-item id="cleared" asp-for="@Model.Cleared" value="true" name="cleared" checked="@Model.Cleared">
+                    <b>Cleared</b>
+                </govuk-checkboxes-item>
+                <govuk-checkboxes-item id="signed" asp-for="@Model.Signed" value="true" name="signed" checked="@Model.Signed">
+                    <b>Signed by @(Model.Type == ProjectType.Conversion ? "school or":"academy or incoming") trust</b>
+                </govuk-checkboxes-item>
+                <govuk-checkboxes-item id="saved" asp-for="@Model.Saved" value="true" name="saved" checked="@Model.Saved">
+                    <b>Saved in the @(Model.Type == ProjectType.Conversion ? "school's'" : "academy") SharePoint folder</b>
+                </govuk-checkboxes-item>
+            </govuk-checkboxes-fieldset>
+        </govuk-checkboxes>
+        <div>
+            <h2 class="govuk-heading-l">
+                Signed by the Secretary of State
+            </h2>
+            @if (Model.Type == ProjectType.Conversion)
+            {
+                <div class="govuk-caption-m">
+                    <p>The Secretary of State, or somebody with the authority to act on their behalf, must sign the Deed of variation.</p>
+                    <p>Usually this is your team leader or the deputy director.</p>
+                </div>
+            }
+            else
+            {
+                <govuk-details>
+                    <govuk-details-summary>
+                        <span class="govuk-details__summary-text">How to sign the deed of variation</span>
+                    </govuk-details-summary>
+                    <govuk-details-text>
+                        <p>The Secretary of State, or somebody with the authority to act on their behalf, must sign the deed of variation.</p>
+                        <p>Each team may have a different process for signing and sealing documents. Follow your team's signing process.</p>
+                        <p>Once you have the signed version of the document, save it as a PDF in SharePoint.</p>
+                    </govuk-details-text>
+                </govuk-details>
+            }
+            <govuk-checkboxes name="options">
+                <govuk-checkboxes-fieldset>
+                    <govuk-checkboxes-fieldset-legend>
+                    </govuk-checkboxes-fieldset-legend>
+                    <govuk-checkboxes-item id="sent" asp-for="@Model.Sent" value="true" name="sent" checked="@Model.Sent">
+                        <b>Sent to team leader or deputy director</b>
+                    </govuk-checkboxes-item>
+                    <govuk-checkboxes-item id="signed_secretary_state" asp-for="@Model.SignedSecretaryState" value="true" name="signed_secretary_state" checked="@Model.SignedSecretaryState">
+                        <b>Document signed on behalf of the Secretary of State</b>
+                    </govuk-checkboxes-item>
+                </govuk-checkboxes-fieldset>
+            </govuk-checkboxes>
+        </div>
+        @await Html.PartialAsync("_TaskSaveAndReturn", new TaskSaveAndReturnModel(Model.Project, Model.CurrentUserTeam))
+    </form>
+}

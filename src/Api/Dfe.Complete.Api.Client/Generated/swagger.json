@@ -2265,6 +2265,39 @@
         }
       }
     },
+    "/v1/TasksData/TaskData/DeedOfVariation": {
+      "patch": {
+        "tags": [
+          "TasksData"
+        ],
+        "summary": "Updates the deed of variation task Data for conversion or trasnfer project.",
+        "operationId": "TasksData_UpdateDeedOfVariationTask",
+        "requestBody": {
+          "x-name": "request",
+          "description": "The update command.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateDeedOfVariationTaskCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "204": {
+            "description": "Conversion or transfer's deed of variation task updated successfully."
+          },
+          "400": {
+            "description": "Invalid request data."
+          },
+          "404": {
+            "description": "Project/User not found."
+          }
+        }
+      }
+    },
     "/v1/Trust/List/All": {
       "get": {
         "tags": [
@@ -4546,14 +4579,16 @@
           "LandQuestionnaire",
           "LandRegistry",
           "StakeholderKickoff",
-          "SupplementalFundingAgreement"
+          "SupplementalFundingAgreement",
+          "DeedOfVariation"
         ],
         "enum": [
           "Handover",
           "LandQuestionnaire",
           "LandRegistry",
           "StakeholderKickoff",
-          "SupplementalFundingAgreement"
+          "SupplementalFundingAgreement",
+          "DeedOfVariation"
         ]
       },
       "CreateNoteCommand": {
@@ -6272,6 +6307,51 @@
             "nullable": true
           },
           "handoverMeetings": {
+            "type": "boolean",
+            "nullable": true
+          }
+        }
+      },
+      "UpdateDeedOfVariationTaskCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "taskDataId": {
+            "$ref": "#/components/schemas/TaskDataId"
+          },
+          "projectType": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/ProjectType"
+              }
+            ]
+          },
+          "received": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "cleared": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "sent": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "saved": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "signed": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "signedSecretaryState": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "notApplicable": {
             "type": "boolean",
             "nullable": true
           }

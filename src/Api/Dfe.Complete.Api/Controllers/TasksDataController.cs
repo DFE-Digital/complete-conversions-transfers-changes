@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 using Dfe.Complete.Application.Projects.Queries.GetTransferTasksData;
 using Dfe.Complete.Application.Projects.Commands.UpdateProject;
 using Dfe.Complete.Application.Projects.Queries.GetConversionTasksData;
+using Dfe.Complete.Application.Projects.Commands.TaskData;
 
 namespace Dfe.Complete.Api.Controllers
 {
@@ -61,6 +62,24 @@ namespace Dfe.Complete.Api.Controllers
         public async Task<IActionResult> UpdateHandoverWithDeliveryOfficerTaskDataByTaskDataIdAsync([FromBody] UpdateHandoverWithDeliveryOfficerCommand request, CancellationToken cancellationToken)
         {
             await sender.Send(request, cancellationToken); 
+            return NoContent();
+        }
+        /// <summary>
+        /// Updates the deed of variation task Data for conversion or trasnfer project.
+        /// </summary>
+        /// <param name="request">The update command.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        [Authorize(Policy = "CanReadWriteUpdate")]
+        [HttpPatch]
+        [Route("TaskData/DeedOfVariation")]
+        [SwaggerResponse(204, "Conversion or transfer's deed of variation task updated successfully.")]
+        [SwaggerResponse(400, "Invalid request data.")]
+        [SwaggerResponse(404, "Project/User not found.")]
+        public async Task<IActionResult> UpdateDeedOfVariationTaskAsync(
+            [FromBody] UpdateDeedOfVariationTaskCommand request,
+            CancellationToken cancellationToken)
+        {
+            await sender.Send(request, cancellationToken);
             return NoContent();
         }
     }
