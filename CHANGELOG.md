@@ -21,6 +21,7 @@ Security in case of vulnerabilities.
 ### Changed
 
 ### Fixed
+- GetProjectByUrn doesn't return notes
 
 ### Security
 - update "CanViewYourProjects" to depend exclusively on "assign_to_project"

@@ -38,7 +38,11 @@ namespace Dfe.Complete.Api
             });
 
             builder.Services.AddControllers()
-                .AddJsonOptions(c => { c.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()); });
+                .AddJsonOptions(options =>
+                {
+                    options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+                    options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
+                });
 
             builder.Services.AddApiVersioning(config =>
             {
