@@ -1,54 +1,55 @@
 // Constants
 const TASK_GROUPS = {
-    PROJECT_KICKOFF: 'Project kick-off',
-    PROJECT_DETAILS: 'Project details',
-    LEGAL_DOCUMENTS: 'Clear and sign legal documents',
-    READY_FOR_OPENING: 'Get ready for opening',
-    AFTER_OPENING: 'After opening'
+    PROJECT_KICKOFF: "Project kick-off",
+    PROJECT_DETAILS: "Project details",
+    LEGAL_DOCUMENTS: "Clear and sign legal documents",
+    READY_FOR_OPENING: "Get ready for opening",
+    AFTER_OPENING: "After opening",
 } as const;
 
 class ConversionTaskListPage {
     taskGroups = {
         projectKickOff: [
             TASK_GROUPS.PROJECT_KICKOFF,
-            'Handover with regional delivery officer',
-            'External stakeholder kick-off',
-            'Check accuracy of high needs places information',
-            'Complete a notification of changes to funded high needs places form',
-            'Process conversion grant',
-            'Confirm and process the sponsored support grant',
-            'Confirm the academy name',
-            'Confirm the main contact',
-            'Add chair of governors\' contact details',
-            'Confirm the proposed capacity of the academy'
+            "Handover with regional delivery officer",
+            "External stakeholder kick-off",
+            "Confirm the academy's risk protection arrangements",
+            "Check accuracy of high needs places information",
+            "Complete a notification of changes to funded high needs places form",
+            "Process conversion support grant",
+            "Confirm and process the sponsored support grant",
+            "Confirm the academy name",
+            "Confirm the headteacher's details",
+            "Confirm the chair of governors' details",
+            "Confirm the incoming trust CEO's details",
+            "Confirm the main contact",
+            "Confirm the proposed capacity of the academy",
         ],
         legalDocuments: [
-            'Land questionnaire',
-            'Land registry title plans',
-            'Supplemental funding agreement',
-            'Church supplemental agreement',
-            'Master funding agreement',
-            'Articles of association',
-            'Deed of variation',
-            'Trust modification order',
-            'Direction to transfer',
-            '125 year lease',
-            'Subleases',
-            'Tenancy at will',
-            'Commercial transfer agreement'
+            "Land questionnaire",
+            "Land registry title plans",
+            "Supplemental funding agreement",
+            "Church supplemental agreement",
+            "Master funding agreement",
+            "Articles of association",
+            "Deed of variation",
+            "Trust modification order",
+            "Direction to transfer",
+            "125 year lease",
+            "Subleases",
+            "Tenancy at will",
+            "Commercial transfer agreement",
         ],
         readyForOpening: [
-            'Confirm the academy\'s risk protection arrangements',
-            'Complete and send single worksheet',
-            'Confirm the school has completed all actions',
-            'Confirm all conditions have been met',
-            'Share the grant certificate and information about opening'
+            "Confirm the school has completed all actions",
+            "Confirm all conditions have been met",
+            "Share the information about opening",
         ],
         afterOpening: [
-            'Confirm the date the academy opened',
-            'Redact and send documents',
-            'Receive grant payment certificate'
-        ]
+            "Confirm the date the academy opened",
+            "Redact and send documents",
+            "Receive declaration of expenditure certificate",
+        ],
     };
 
     visit(projectId: string) {
@@ -57,24 +58,19 @@ class ConversionTaskListPage {
     }
 
     verifyTaskGroupExists(groupName: string) {
-        cy.contains('h3', groupName).should('be.visible');
+        cy.contains("h3", groupName).should("be.visible");
         return this;
     }
 
     verifyTaskExists(taskName: string) {
-        cy.contains('a', taskName).should('be.visible');
+        cy.contains("a", taskName).should("be.visible");
         return this;
     }
 
     verifyAllTasksInGroup(tasks: string[]) {
-        tasks.forEach(task => {
+        tasks.forEach((task) => {
             this.verifyTaskExists(task);
         });
-        return this;
-    }
-
-    clickTask(taskName: string) {
-        cy.contains('a', taskName).click();
         return this;
     }
 }
