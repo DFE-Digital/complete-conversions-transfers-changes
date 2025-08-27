@@ -23,8 +23,18 @@ Security in case of vulnerabilities.
 ### Changed
 
 ### Fixed
+- GetProjectByUrn doesn't return notes
 
-See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-08-20.658...main) for everything awaiting release
+See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-08-26.669...main) for everything awaiting release
+
+---
+
+## [1.13.1](https://github.com/DFE-Digital/complete-conversions-transfers-changes/releases/tag/production-2025-08-26.669) - 2025-08-26
+
+### Security
+- update "CanViewYourProjects" to depend exclusively on "assign_to_project"
+
+See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-08-20.658...production-2025-08-26.669) for everything in the release
 
 ---
 
