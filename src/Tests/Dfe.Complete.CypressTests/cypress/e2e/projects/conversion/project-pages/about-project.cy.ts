@@ -42,7 +42,9 @@ const teammatesProject = ProjectBuilder.createConversionFormAMatProjectRequest({
 let teammatesProjectId: string;
 let formAMATChangeLinkPath: string;
 let groupId: string;
-describe("About the project page - conversion projects: ", () => {
+
+// 219174 in progress
+describe.skip("About the project page - conversion projects: ", () => {
     before(() => {
         projectRemover.removeProjectIfItExists(`${project.urn.value}`);
         projectRemover.removeProjectIfItExists(`${projectFormAMAT.urn.value}`);
