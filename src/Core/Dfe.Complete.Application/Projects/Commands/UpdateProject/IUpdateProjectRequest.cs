@@ -18,7 +18,6 @@ namespace Dfe.Complete.Application.Projects.Commands.UpdateProject
         string IncomingTrustSharepointLink { get; }
         bool TwoRequiresImprovement { get; }
         bool IsHandingToRCS { get; }
-        string? HandoverComments { get; }
         UserDto User { get; }
     }
 }

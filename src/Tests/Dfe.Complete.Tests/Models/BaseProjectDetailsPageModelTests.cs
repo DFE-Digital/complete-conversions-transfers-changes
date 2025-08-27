@@ -137,108 +137,6 @@ public class BaseProjectDetailsPageModelTests
 
     [Theory]
     [CustomAutoData(typeof(IgnoreVirtualMembersCustomisation), typeof(DateOnlyCustomization))]
-    public async Task SetHandoverComments_WhenNotesExist_SetsHandoverCommentsToLatestNote(
-        [Frozen] ISender mockSender,
-        [Frozen] IErrorService mockErrorService,
-        [Frozen] ILogger mockLogger,
-        Guid projectId)
-    {
-        // Arrange
-        var model = new TestBaseProjectDetailsPageModel(mockSender, mockErrorService, mockLogger)
-        {
-            ProjectId = projectId.ToString()
-        };
-
-        var olderNote = new NoteDto(
-            Id: new NoteId(Guid.NewGuid()),
-            Body: "Older handover note",
-            ProjectId: new ProjectId(Guid.NewGuid()),
-            UserId: new UserId(Guid.NewGuid()),
-            UserFullName: "Old User",
-            CreatedAt: DateTime.UtcNow.AddDays(-2)
-        );
-
-        var newerNote = new NoteDto(
-            Id: new NoteId(Guid.NewGuid()),
-            Body: "Latest handover note",
-            ProjectId: new ProjectId(Guid.NewGuid()),
-            UserId: new UserId(Guid.NewGuid()),
-            UserFullName: "New User",
-            CreatedAt: DateTime.UtcNow.AddDays(-1)
-        );
-
-        var notes = new List<NoteDto> { olderNote, newerNote };
-        var successResult = Result<List<NoteDto>>.Success(notes);
-
-        mockSender.Send(Arg.Any<GetTaskNotesByProjectIdQuery>(), Arg.Any<CancellationToken>())
-            .Returns(successResult);
-
-        // Act
-        await model.TestSetHandoverComments();
-
-        // Assert
-        Assert.Equal("Latest handover note", model.HandoverComments);
-        await mockSender.Received(1).Send(
-            Arg.Is<GetTaskNotesByProjectIdQuery>(q => 
-                q.ProjectId.Value == projectId && 
-                q.TaskIdentifier == NoteTaskIdentifier.Handover), 
-            Arg.Any<CancellationToken>());
-    }
-
-    [Theory]
-    [CustomAutoData(typeof(IgnoreVirtualMembersCustomisation), typeof(DateOnlyCustomization))]
-    public async Task SetHandoverComments_WhenNoNotesExist_DoesNotSetHandoverComments(
-        [Frozen] ISender mockSender,
-        [Frozen] IErrorService mockErrorService,
-        [Frozen] ILogger mockLogger,
-        Guid projectId)
-    {
-        // Arrange
-        var model = new TestBaseProjectDetailsPageModel(mockSender, mockErrorService, mockLogger)
-        {
-            ProjectId = projectId.ToString()
-        };
-
-        var emptyNotes = new List<NoteDto>();
-        var successResult = Result<List<NoteDto>>.Success(emptyNotes);
-
-        mockSender.Send(Arg.Any<GetTaskNotesByProjectIdQuery>(), Arg.Any<CancellationToken>())
-            .Returns(successResult);
-
-        // Act
-        await model.TestSetHandoverComments();
-
-        // Assert
-        Assert.Null(model.HandoverComments);
-    }
-
-    [Theory]
-    [CustomAutoData(typeof(IgnoreVirtualMembersCustomisation), typeof(DateOnlyCustomization))]
-    public async Task SetHandoverComments_WhenQueryFails_DoesNotSetHandoverComments(
-        [Frozen] ISender mockSender,
-        [Frozen] IErrorService mockErrorService,
-        [Frozen] ILogger mockLogger,
-        Guid projectId)
-    {
-        // Arrange
-        var model = new TestBaseProjectDetailsPageModel(mockSender, mockErrorService, mockLogger)
-        {
-            ProjectId = projectId.ToString()
-        };
-
-        var failureResult = Result<List<NoteDto>>.Failure("Database error");
-        mockSender.Send(Arg.Any<GetTaskNotesByProjectIdQuery>(), Arg.Any<CancellationToken>())
-            .Returns(failureResult);
-
-        // Act
-        await model.TestSetHandoverComments();
-
-        // Assert
-        Assert.Null(model.HandoverComments);
-    }
-
-    [Theory]
-    [CustomAutoData(typeof(IgnoreVirtualMembersCustomisation), typeof(DateOnlyCustomization))]
     public async Task OnGetAsync_WhenBaseOnGetReturnsNonPageResult_ReturnsBaseResult(
         [Frozen] ISender mockSender,
         [Frozen] IErrorService mockErrorService,
@@ -264,8 +162,7 @@ public class BaseProjectDetailsPageModelTests
         [Frozen] ILogger mockLogger,
         ProjectDto project,
         EstablishmentDto establishment,
-        ProjectGroupDto projectGroup,
-        NoteDto handoverNote)
+        ProjectGroupDto projectGroup)
     {
         // Arrange
         var projectId = Guid.NewGuid();
@@ -283,14 +180,6 @@ public class BaseProjectDetailsPageModelTests
 
         establishment.Name = "Test School";
         projectGroup.GroupIdentifier = "GR789012";
-        handoverNote = new NoteDto(
-            Id: new NoteId(Guid.NewGuid()),
-            Body: "Test handover comments",
-            ProjectId: new ProjectId(Guid.NewGuid()),
-            UserId: new UserId(Guid.NewGuid()),
-            UserFullName: "Test User",
-            CreatedAt: DateTime.UtcNow
-        );
 
         var model = new TestBaseProjectDetailsPageModel(mockSender, mockErrorService, mockLogger)
         {
@@ -303,11 +192,6 @@ public class BaseProjectDetailsPageModelTests
         var groupSuccessResult = Result<ProjectGroupDto>.Success(projectGroup);
         mockSender.Send(Arg.Any<GetProjectGroupByIdQuery>(), Arg.Any<CancellationToken>())
             .Returns(groupSuccessResult);
-
-        // Mock the notes query
-        var notesSuccessResult = Result<List<NoteDto>>.Success([handoverNote]);
-        mockSender.Send(Arg.Any<GetTaskNotesByProjectIdQuery>(), Arg.Any<CancellationToken>())
-            .Returns(notesSuccessResult);
 
         model.SetBaseOnGetResult(new PageResult());
 
@@ -328,7 +212,6 @@ public class BaseProjectDetailsPageModelTests
         Assert.Equal("https://example.com/establishment", model.EstablishmentSharepointLink);
         Assert.Equal("https://example.com/trust", model.IncomingTrustSharepointLink);
         Assert.True(model.IsHandingToRCS);
-        Assert.Equal("Test handover comments", model.HandoverComments);
         Assert.True(model.TwoRequiresImprovement);
     }
 }
@@ -364,9 +247,6 @@ public class TestBaseProjectDetailsPageModel(ISender sender, IErrorService error
             EstablishmentSharepointLink = HttpUtility.UrlDecode(Project.EstablishmentSharepointLink);
             IncomingTrustSharepointLink = HttpUtility.UrlDecode(Project.IncomingTrustSharepointLink);
             IsHandingToRCS = Project.Team == ProjectTeam.RegionalCaseWorkerServices;
-
-            await SetHandoverComments();
-
             TwoRequiresImprovement = Project.TwoRequiresImprovement ?? false;
 
             return Page();
@@ -378,10 +258,5 @@ public class TestBaseProjectDetailsPageModel(ISender sender, IErrorService error
     public async Task TestSetGroupReferenceNumberAsync()
     {
         await SetGroupReferenceNumberAsync();
-    }
-
-    public async Task TestSetHandoverComments()
-    {
-        await SetHandoverComments();
     }
 }

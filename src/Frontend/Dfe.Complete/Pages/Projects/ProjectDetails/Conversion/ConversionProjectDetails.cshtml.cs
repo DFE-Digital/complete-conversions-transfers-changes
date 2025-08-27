@@ -71,7 +71,6 @@ namespace Dfe.Complete.Pages.Projects.ProjectDetails.Conversion
                 EstablishmentSharepointLink: EstablishmentSharepointLink ?? string.Empty,
                 IncomingTrustSharepointLink: IncomingTrustSharepointLink ?? string.Empty,
                 IsHandingToRCS: IsHandingToRCS ?? false,
-                HandoverComments: HandoverComments ?? string.Empty,
                 DirectiveAcademyOrder: DirectiveAcademyOrder ?? false,
                 TwoRequiresImprovement: TwoRequiresImprovement ?? false,
                 User: user.Value!

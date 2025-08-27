@@ -16,7 +16,6 @@ namespace Dfe.Complete.Application.Projects.Commands.UpdateProject
         string EstablishmentSharepointLink,
         string IncomingTrustSharepointLink,
         bool IsHandingToRCS,
-        string? HandoverComments,
         bool DirectiveAcademyOrder,
         bool TwoRequiresImprovement,
         UserDto User

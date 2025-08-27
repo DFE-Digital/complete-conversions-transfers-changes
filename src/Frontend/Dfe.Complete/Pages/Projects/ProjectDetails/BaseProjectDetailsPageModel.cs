@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel;
 using Dfe.Complete.Application.Projects.Queries.GetProject;
-using Dfe.Complete.Application.Notes.Queries;
 using Dfe.Complete.Domain.ValueObjects;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Web;
@@ -70,8 +69,6 @@ namespace Dfe.Complete.Pages.Projects.ProjectDetails
         [Display(Name = "Is Handing To RCS")]
         public bool? IsHandingToRCS { get; set; } // Common
 
-        [BindProperty] public string? HandoverComments { get; set; } // Common
-
         [BindProperty]
         [Required(ErrorMessage = "State if the conversion is due to 2RI. Choose yes or no")]
         [Display(Name = "IsDueTo2RI")]
@@ -87,21 +84,6 @@ namespace Dfe.Complete.Pages.Projects.ProjectDetails
                 {
                     GroupReferenceNumber = projectGroup.Value.GroupIdentifier;
                 }
-            }
-        }
-
-        protected async Task SetHandoverComments()
-        {
-            var projectId = new ProjectId(Guid.Parse(ProjectId));
-            var query = new GetTaskNotesByProjectIdQuery(projectId, NoteTaskIdentifier.Handover);
-            var notesResult = await Sender.Send(query);
-
-            if (notesResult.IsSuccess)
-            {
-                HandoverComments = (notesResult.Value ?? [])
-                    .OrderByDescending(x => x.CreatedAt)
-                    .FirstOrDefault()?
-                    .Body;
             }
         }
 
@@ -123,9 +105,6 @@ namespace Dfe.Complete.Pages.Projects.ProjectDetails
             EstablishmentSharepointLink = HttpUtility.UrlDecode(Project.EstablishmentSharepointLink);
             IncomingTrustSharepointLink = HttpUtility.UrlDecode(Project.IncomingTrustSharepointLink);
             IsHandingToRCS = Project.Team == ProjectTeam.RegionalCaseWorkerServices;
-
-            await SetHandoverComments();
-
             TwoRequiresImprovement = Project.TwoRequiresImprovement ?? false;
 
             return Page();

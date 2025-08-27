@@ -104,7 +104,6 @@ namespace Dfe.Complete.Pages.Projects.ProjectDetails.Transfer
             await SetTransferTaskDataAsync();
 
             IsHandingToRCS = Project.Team == Domain.Enums.ProjectTeam.RegionalCaseWorkerServices;
-            HandoverComments = Project.Notes.FirstOrDefault()?.Body;
 
             return Page();
         }
@@ -140,7 +139,6 @@ namespace Dfe.Complete.Pages.Projects.ProjectDetails.Transfer
                 FinancialSafeguardingGovernanceIssues: FinancialSafeguardingGovernanceIssues ?? false,
                 OutgoingTrustToClose: OutgoingTrustToClose ?? false,
                 IsHandingToRCS: IsHandingToRCS ?? false,
-                HandoverComments: HandoverComments ?? string.Empty,
                 User: user.Value!
             );
 

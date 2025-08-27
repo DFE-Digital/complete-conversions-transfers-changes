@@ -22,7 +22,6 @@ namespace Dfe.Complete.Application.Projects.Commands.UpdateProject
         bool FinancialSafeguardingGovernanceIssues,
         bool OutgoingTrustToClose,
         bool IsHandingToRCS,
-        string? HandoverComments,
         UserDto User
     ) : IRequest, IUpdateProjectRequest;
 

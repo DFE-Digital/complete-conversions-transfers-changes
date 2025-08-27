@@ -1,7 +1,6 @@
 using Dfe.Complete.Domain.Entities;
 using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Domain.Interfaces.Repositories;
-using Dfe.Complete.Domain.ValueObjects;
 using Dfe.Complete.Utils;
 using Microsoft.EntityFrameworkCore;
 
@@ -23,7 +22,6 @@ namespace Dfe.Complete.Application.Projects.Commands.UpdateProject
         public async Task Handle(TRequest request, CancellationToken cancellationToken)
         {
             var project = await ProjectRepository.Query()
-                .Include(p => p.Notes)
                 .FirstOrDefaultAsync(x => x.Id == request.ProjectId, cancellationToken);
             
             if (project == null)
@@ -32,7 +30,6 @@ namespace Dfe.Complete.Application.Projects.Commands.UpdateProject
             await UpdateCommonProjectProperties(project, request, cancellationToken);
             await UpdateSpecificProjectProperties(project, request, cancellationToken);
             UpdateTeamAssignment(project, request);
-            UpdateHandoverComments(project, request);
 
             await ProjectRepository.UpdateAsync(project, cancellationToken);
         }
@@ -68,38 +65,6 @@ namespace Dfe.Complete.Application.Projects.Commands.UpdateProject
                 project.AssignedToId = request.User.Id;
                 project.AssignedAt = DateTime.UtcNow;
                 project.Team = request.User.Team.FromDescription<ProjectTeam>();
-            }
-        }
-
-        protected void UpdateHandoverComments(Project project, TRequest request)
-        {
-            var userId = new UserId(request.User.Id.Value);
-
-            var lastComment = project.Notes
-                .Where(x => x.UserId == userId && x.TaskIdentifier == NoteTaskIdentifier.Handover.ToDescription())
-                .OrderByDescending(x => x.CreatedAt)
-                .FirstOrDefault();
-
-            if (lastComment != null) // we have a comment in database for this project, user and type
-            {
-                if (string.IsNullOrEmpty(request.HandoverComments))
-                    project.RemoveNote(lastComment.Id);
-                else
-                {
-                    lastComment.Body = request.HandoverComments;
-                    project.UpdateNote(lastComment);
-                }
-            }
-            else if (!string.IsNullOrEmpty(request.HandoverComments)) // there is no current comment and we want to add a comment
-            {
-                project.AddNote(new Note
-                {
-                    CreatedAt = project.CreatedAt,
-                    ProjectId = project.Id,
-                    Body = request.HandoverComments,
-                    TaskIdentifier = NoteTaskIdentifier.Handover.ToDescription(),
-                    UserId = userId
-                });
             }
         }
 

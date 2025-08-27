@@ -10,7 +10,7 @@ namespace Dfe.Complete.Domain.Tests.Aggregates
     {
         [Theory]
         [CustomAutoData(typeof(DateOnlyCustomization))]
-        public void Constructor_ShouldThrowArgumentNullException_WhenConversionTaskIsDefault(TaskDataId id, DateTime updatedAt)
+        public void Constructor_ShouldThrowArgumentNullException_WhenConversionTaskIsDefault(DateTime updatedAt)
         {
             // Act & Assert
             var exception = Assert.Throws<ArgumentNullException>(() =>

@@ -87,7 +87,6 @@ namespace Dfe.Complete.Application.Tests.CommandHandlers.Project
                EstablishmentSharepointLink: "https://example.com/establishment",
                IncomingTrustSharepointLink: "https://example.com/incoming-trust",
                IsHandingToRCS: true,
-               HandoverComments: handOverText,
                DirectiveAcademyOrder: true,
                TwoRequiresImprovement: true,
                User: userDto
@@ -138,19 +137,6 @@ namespace Dfe.Complete.Application.Tests.CommandHandlers.Project
                     Arg.Any<CancellationToken>())
                 .Returns(Task.FromResult(project));
 
-            var handOverText = "Initial handover note";
-            Note note = new Note
-            {
-                Id = new NoteId(Guid.NewGuid()),
-                ProjectId = projectId,
-                UserId = userDto.Id,
-                TaskIdentifier = NoteTaskIdentifier.Handover.ToDescription(),
-                Body = handOverText,
-                CreatedAt = DateTime.UtcNow
-            };
-
-            var notesQueryable = new[] { note }.AsQueryable().BuildMock();
-
             var command = new UpdateConversionProjectCommand(
                projectId,
                IncomingTrustUkprn: new Ukprn(21),
@@ -161,7 +147,6 @@ namespace Dfe.Complete.Application.Tests.CommandHandlers.Project
                EstablishmentSharepointLink: "https://example.com/establishment",
                IncomingTrustSharepointLink: "https://example.com/incoming-trust",
                IsHandingToRCS: true,
-               HandoverComments: handOverText,
                DirectiveAcademyOrder: true,
                TwoRequiresImprovement: true,
                User: userDto
@@ -224,19 +209,6 @@ namespace Dfe.Complete.Application.Tests.CommandHandlers.Project
                 .FindAsync(Arg.Any<Expression<Func<Domain.Entities.ProjectGroup, bool>>>(), Arg.Any<CancellationToken>())
                 .Returns(Task.FromResult(group));
 
-            var handOverText = "Initial handover note";
-            Note note = new Note
-            {
-                Id = new NoteId(Guid.NewGuid()),
-                ProjectId = projectId,
-                UserId = userDto.Id,
-                TaskIdentifier = NoteTaskIdentifier.Handover.ToDescription(),
-                Body = handOverText,
-                CreatedAt = DateTime.UtcNow
-            };
-
-            var notesQueryable = new[] { note }.AsQueryable().BuildMock();
-
             var command = new UpdateConversionProjectCommand(
                projectId,
                IncomingTrustUkprn: new Ukprn(21),
@@ -247,7 +219,6 @@ namespace Dfe.Complete.Application.Tests.CommandHandlers.Project
                EstablishmentSharepointLink: "https://example.com/establishment",
                IncomingTrustSharepointLink: "https://example.com/incoming-trust",
                IsHandingToRCS: false, // Not handling to RCS
-               HandoverComments: handOverText,
                DirectiveAcademyOrder: true,
                TwoRequiresImprovement: true,
                User: userDto
@@ -292,193 +263,10 @@ namespace Dfe.Complete.Application.Tests.CommandHandlers.Project
 
             var projectId = new ProjectId(Guid.NewGuid());
 
-            var handOverText = "Initial handover note";
-            Note note = new Note
-            {
-                Id = new NoteId(Guid.NewGuid()),
-                ProjectId = projectId,
-                UserId = userDto.Id,
-                TaskIdentifier = NoteTaskIdentifier.Handover.ToDescription(),
-                Body = handOverText,
-                CreatedAt = DateTime.UtcNow
-            };
-
             var project = new Domain.Entities.Project 
             { 
                 Id = projectId, 
                 CreatedAt = DateTime.UtcNow,
-                Notes = new List<Domain.Entities.Note> { note } // Existing note
-            };
-
-            var projectsQueryable = new[] { project }.AsQueryable().BuildMock();
-            mockProjectRepository.Query().Returns(projectsQueryable);
-
-            mockProjectRepository.AddAsync(Arg.Do<Domain.Entities.Project>(proj => project = proj),
-                    Arg.Any<CancellationToken>())
-                .Returns(Task.FromResult(project));
-
-            var groupIdentifier = "GR123";
-
-            var group = new ProjectGroup
-            {
-                Id = new ProjectGroupId(Guid.NewGuid()),
-                GroupIdentifier = groupIdentifier
-            };
-
-            projectGroupRepository
-                .FindAsync(Arg.Any<Expression<Func<Domain.Entities.ProjectGroup, bool>>>(), Arg.Any<CancellationToken>())
-                .Returns(Task.FromResult(group));
-
-            var notesQueryable = new[] { note }.AsQueryable().BuildMock();
-
-            var command = new UpdateConversionProjectCommand(
-               projectId,
-               IncomingTrustUkprn: new Ukprn(21),
-               NewTrustReferenceNumber: "TR123",
-               GroupReferenceNumber: groupIdentifier,
-               AdvisoryBoardDate: DateOnly.FromDateTime(DateTime.UtcNow),
-               AdvisoryBoardConditions: "Conditions",
-               EstablishmentSharepointLink: "https://example.com/establishment",
-               IncomingTrustSharepointLink: "https://example.com/incoming-trust",
-               IsHandingToRCS: true,
-               HandoverComments: null, // no handover comments
-               DirectiveAcademyOrder: true,
-               TwoRequiresImprovement: true,
-               User: userDto
-            );
-
-            var handler = new UpdateConversionProjectCommandHandler(mockProjectRepository, projectGroupRepository);
-
-            // Act
-            await handler.Handle(command, CancellationToken.None);
-
-            // Assert
-            await mockProjectRepository
-                .Received(1)
-                .UpdateAsync(Arg.Is<Domain.Entities.Project>(
-                    x => x.Id == projectId
-                        && x.IncomingTrustUkprn == command.IncomingTrustUkprn
-                        && x.NewTrustReferenceNumber == command.NewTrustReferenceNumber
-                        && x.GroupId == group.Id
-                        && x.AdvisoryBoardDate == command.AdvisoryBoardDate
-                        && x.AdvisoryBoardConditions == command.AdvisoryBoardConditions
-                        && x.EstablishmentSharepointLink == command.EstablishmentSharepointLink
-                        && x.IncomingTrustSharepointLink == command.IncomingTrustSharepointLink
-                        && x.Team == ProjectTeam.RegionalCaseWorkerServices
-                        //&& x.Notes.Count == 0 // No notes should be present
-                ), default);
-        }
-
-        [Theory]
-        [CustomAutoData(typeof(DateOnlyCustomization))]
-        public async Task Handle_NO_LastComment_With_HandoverNotes_AddsNewNote_UpdatesProject(
-            [Frozen] ICompleteRepository<Domain.Entities.Project> mockProjectRepository,
-            [Frozen] ICompleteRepository<Domain.Entities.ProjectGroup> projectGroupRepository)
-        {
-            // Setup the user dto
-            const ProjectTeam team = ProjectTeam.WestMidlands;
-            var userDto = new UserDto
-            {
-                Id = new UserId(Guid.NewGuid()),
-                Team = team.ToDescription()
-            };
-
-            var projectId = new ProjectId(Guid.NewGuid());
-            var project = new Domain.Entities.Project { Id = projectId, CreatedAt = DateTime.UtcNow };
-
-            var projectsQueryable = new[] { project }.AsQueryable().BuildMock();
-            mockProjectRepository.Query().Returns(projectsQueryable);
-
-            mockProjectRepository.AddAsync(Arg.Do<Domain.Entities.Project>(proj => project = proj),
-                    Arg.Any<CancellationToken>())
-                .Returns(Task.FromResult(project));
-
-            var groupIdentifier = "GR123";
-
-            var group = new ProjectGroup
-            {
-                Id = new ProjectGroupId(Guid.NewGuid()),
-                GroupIdentifier = groupIdentifier
-            };
-
-            projectGroupRepository
-                .FindAsync(Arg.Any<Expression<Func<Domain.Entities.ProjectGroup, bool>>>(), Arg.Any<CancellationToken>())
-                .Returns(Task.FromResult(group));
-
-            var notesQueryable = new List<Note>().AsQueryable().BuildMock();
-
-            var command = new UpdateConversionProjectCommand(
-               projectId,
-               IncomingTrustUkprn: new Ukprn(21),
-               NewTrustReferenceNumber: "TR123",
-               GroupReferenceNumber: groupIdentifier,
-               AdvisoryBoardDate: DateOnly.FromDateTime(DateTime.UtcNow),
-               AdvisoryBoardConditions: "Conditions",
-               EstablishmentSharepointLink: "https://example.com/establishment",
-               IncomingTrustSharepointLink: "https://example.com/incoming-trust",
-               IsHandingToRCS: true,
-               HandoverComments: "Initial handover note",
-               DirectiveAcademyOrder: true,
-               TwoRequiresImprovement: true,
-               User: userDto
-            );
-
-            var handler = new UpdateConversionProjectCommandHandler(mockProjectRepository, projectGroupRepository);
-
-            // Act
-            await handler.Handle(command, CancellationToken.None);
-
-            // Assert
-            await mockProjectRepository
-                .Received(1)
-                .UpdateAsync(Arg.Is<Domain.Entities.Project>(
-                    x => x.Id == projectId
-                        && x.IncomingTrustUkprn == command.IncomingTrustUkprn
-                        && x.NewTrustReferenceNumber == command.NewTrustReferenceNumber
-                        && x.GroupId == group.Id
-                        && x.AdvisoryBoardDate == command.AdvisoryBoardDate
-                        && x.AdvisoryBoardConditions == command.AdvisoryBoardConditions
-                        && x.EstablishmentSharepointLink == command.EstablishmentSharepointLink
-                        && x.IncomingTrustSharepointLink == command.IncomingTrustSharepointLink
-                        && x.Team == ProjectTeam.RegionalCaseWorkerServices
-                        && x.Notes.Count == 1 // One note should be present
-                ), default);
-        }
-
-        [Theory]
-        [CustomAutoData(typeof(DateOnlyCustomization))]
-        public async Task Handle_LastComment_With_HandoverNotes_Updates_ExistingNote_UpdatesProject(
-            [Frozen] ICompleteRepository<Domain.Entities.Project> mockProjectRepository,
-            [Frozen] ICompleteRepository<Domain.Entities.ProjectGroup> projectGroupRepository)
-        {
-            // Setup the user dto
-            const ProjectTeam team = ProjectTeam.WestMidlands;
-            var userDto = new UserDto
-            {
-                Id = new UserId(Guid.NewGuid()),
-                Team = team.ToDescription()
-            };
-
-            var projectId = new ProjectId(Guid.NewGuid());
-
-            var originalHandOverText = "Original handover note";
-            var updatedHandOverText = "Updated handover note";
-            
-            Note note = new Note
-            {
-                Id = new NoteId(Guid.NewGuid()),
-                ProjectId = projectId,
-                UserId = userDto.Id,
-                TaskIdentifier = NoteTaskIdentifier.Handover.ToDescription(),
-                Body = originalHandOverText,
-                CreatedAt = DateTime.UtcNow
-            };
-
-            var project = new Domain.Entities.Project 
-            { 
-                Id = projectId, 
-                CreatedAt = DateTime.UtcNow,
-                Notes = new List<Domain.Entities.Note> { note } // Existing note
             };
 
             var projectsQueryable = new[] { project }.AsQueryable().BuildMock();
@@ -510,7 +298,6 @@ namespace Dfe.Complete.Application.Tests.CommandHandlers.Project
                EstablishmentSharepointLink: "https://example.com/establishment",
                IncomingTrustSharepointLink: "https://example.com/incoming-trust",
                IsHandingToRCS: true,
-               HandoverComments: updatedHandOverText, // Updated handover comments
                DirectiveAcademyOrder: true,
                TwoRequiresImprovement: true,
                User: userDto
@@ -534,8 +321,6 @@ namespace Dfe.Complete.Application.Tests.CommandHandlers.Project
                         && x.EstablishmentSharepointLink == command.EstablishmentSharepointLink
                         && x.IncomingTrustSharepointLink == command.IncomingTrustSharepointLink
                         && x.Team == ProjectTeam.RegionalCaseWorkerServices
-                        && x.Notes.Count == 1 // One note should still be present
-                        && x.Notes.First().Body == updatedHandOverText // Note body should be updated
                 ), default);
         }
     }
