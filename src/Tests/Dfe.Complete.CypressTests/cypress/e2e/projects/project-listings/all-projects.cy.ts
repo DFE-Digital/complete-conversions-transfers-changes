@@ -53,9 +53,6 @@ describe("View all projects", () => {
         projectApi.createConversionProject(project).then((response) => (projectId = response.value));
         projectApi.createTransferProject(transferProject);
         projectApi.createMatTransferProject(transferFormAMatProject);
-        // prepareProjectApi
-        //     .createConversionProject(prepareProject)
-        //     .then((response) => (prepareProjectId = response.conversion_project_id)); // skip as prepare endpoint not implemented in dotnet 214917
     });
 
     beforeEach(() => {
