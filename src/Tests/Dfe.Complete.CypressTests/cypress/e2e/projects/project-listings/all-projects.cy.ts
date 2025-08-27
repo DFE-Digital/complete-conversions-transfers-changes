@@ -22,7 +22,6 @@ import { checkAccessibilityAcrossPages } from "cypress/support/reusableTests";
 import allProjectsStatisticsPage from "cypress/pages/projects/allProjectsStatisticsPage";
 import { getSignificantDateString, significateDateToDisplayDate } from "cypress/support/formatDate";
 import { PrepareProjectBuilder } from "cypress/api/prepareProjectBuilder";
-import prepareProjectApi from "cypress/api/prepareProjectApi";
 
 const project = ProjectBuilder.createConversionProjectRequest();
 let projectId: string;
@@ -54,9 +53,9 @@ describe("View all projects", () => {
         projectApi.createConversionProject(project).then((response) => (projectId = response.value));
         projectApi.createTransferProject(transferProject);
         projectApi.createMatTransferProject(transferFormAMatProject);
-        prepareProjectApi
-            .createConversionProject(prepareProject)
-            .then((response) => (prepareProjectId = response.conversion_project_id));
+        // prepareProjectApi
+        //     .createConversionProject(prepareProject)
+        //     .then((response) => (prepareProjectId = response.conversion_project_id)); // skip as prepare endpoint not implemented in dotnet 214917
     });
 
     beforeEach(() => {
@@ -65,7 +64,8 @@ describe("View all projects", () => {
         cy.visit(`/projects/all/in-progress/all`);
     });
 
-    it("Should be able to view my team projects that are handed over", () => {
+    // skip as prepare endpoint not implemented in dotnet 214917
+    it.skip("Should be able to view my team projects that are handed over", () => {
         navBar.goToAllProjects();
         allProjects
             .filterProjects("Handover")

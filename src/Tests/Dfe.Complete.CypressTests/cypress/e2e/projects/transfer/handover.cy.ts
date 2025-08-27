@@ -23,7 +23,8 @@ const formAMATAcademyName = "Two Mile Hill Primary School";
 const otherProject = PrepareProjectBuilder.createTransferProjectRequest({ urn: 151118 });
 const otherAcademyName = "Park View";
 
-describe("Handover process tests for transfer projects", () => {
+// skip as prepare endpoint not implemented in dotnet 214917
+describe.skip("Handover process tests for transfer projects", () => {
     before(() => {
         projectRemover.removeProjectIfItExists(`${project.urn}`);
         projectRemover.removeProjectIfItExists(`${formAMATProject.urn}`);

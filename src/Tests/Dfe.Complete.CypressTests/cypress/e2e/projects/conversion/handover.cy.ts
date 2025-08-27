@@ -23,7 +23,8 @@ const formAMATSchoolName = "Hope Brook CofE Primary School";
 const otherProject = PrepareProjectBuilder.createConversionProjectRequest({ urn: 151114 });
 const otherSchoolName = "Moor Park Primary School";
 
-describe("Handover process tests for conversion projects", () => {
+// skip as prepare endpoint not implemented in dotnet 214917
+describe.skip("Handover process tests for conversion projects", () => {
     before(() => {
         projectRemover.removeProjectIfItExists(`${project.urn}`);
         projectRemover.removeProjectIfItExists(`${formAMATProject.urn}`);
