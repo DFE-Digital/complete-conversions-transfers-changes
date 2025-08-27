@@ -48,7 +48,6 @@ public class CreateExternalContactCommandTests
     [CustomAutoData(typeof(IgnoreVirtualMembersCustomisation))]
     public async Task Handle_ShouldReturnFailure_WhenExceptionOccurs(
       [Frozen] ICompleteRepository<Contact> mockContactRepository,
-        IFixture fixture,
         CreateExternalContactCommand command,
         CreateExternalContactCommandHandler sut)
     {

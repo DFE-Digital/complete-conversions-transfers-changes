@@ -8,12 +8,13 @@ namespace Dfe.Complete.Tests.Pages.Projects.ExternalContacts.New
     using Dfe.Complete.Domain.Enums;
     using Dfe.Complete.Domain.ValueObjects;
     using Dfe.Complete.Pages.Projects.ExternalContacts.New;
+    using Dfe.Complete.Tests.Common.Customizations.Behaviours;
+    using Dfe.Complete.Tests.Common.Customizations.Models;
     using Dfe.Complete.Tests.MockData;
-    using Dfe.Complete.Utils;
-    using DfE.CoreLibs.Testing.AutoFixture.Attributes;
+    using Dfe.Complete.Utils;    
     using DfE.CoreLibs.Testing.AutoFixture.Customizations;
     using MediatR;
-    using Microsoft.AspNetCore.Mvc;
+    using Microsoft.AspNetCore.Mvc;    
     using Microsoft.Extensions.Logging;
     using Moq;
     using System;
@@ -21,166 +22,109 @@ namespace Dfe.Complete.Tests.Pages.Projects.ExternalContacts.New
     using Xunit;
 
     public class NewExternalContactTests
-    {   
+    {
         private readonly Mock<ISender> mockSender;
-        private readonly Mock<ILogger<NewExternalContact>> mockLogger;        
-        private readonly IFixture fixture = new Fixture().Customize(new AutoMoqCustomization());
-
+        private readonly Mock<ILogger<NewExternalContact>> mockLogger;
+        private readonly IFixture fixture = new Fixture().Customize(new CompositeCustomization(new AutoMoqCustomization(), new ProjectIdCustomization(), new DateOnlyCustomization(), new IgnoreVirtualMembersCustomisation()));
+      
         public NewExternalContactTests()
         {
             mockSender = fixture.Freeze<Mock<ISender>>();
-            mockLogger = fixture.Freeze<Mock<ILogger<NewExternalContact>>>(); 
+            mockLogger = fixture.Freeze<Mock<ILogger<NewExternalContact>>>();
         }
-        
+
         [Theory]        
         [InlineData(ProjectType.Conversion, ExternalContactType.ChairOfGovernors)]
         [InlineData(ProjectType.Transfer, ExternalContactType.OutgoingTrustCEO)]
-        [CustomAutoData(typeof(DateOnlyCustomization))]
         public async Task OnGetAsync_Loads_Successfully(ProjectType projectType, ExternalContactType expectedContactType)
         {
             //Arrange            
 
-            Guid projectIdGuid = Guid.NewGuid();
-            ProjectId projectId = new ProjectId(projectIdGuid);
-            var now = DateTime.UtcNow;
+            ProjectId projectId = fixture.Create<ProjectId>();
 
-            var testClass = new NewExternalContact(mockSender.Object, mockLogger.Object)
-            {
-                PageContext = PageDataHelper.GetPageContext(),
-                ProjectId = projectIdGuid.ToString()
-            };
+            var testClass = fixture.Build<NewExternalContact>()
+               .With(t => t.PageContext, PageDataHelper.GetPageContext())
+               .With(t => t.ProjectId, projectId.Value.ToString())
+               .With(t => t.SelectedExternalContactType, string.Empty)
+               .Create();
 
-            var project = new ProjectDto
-            {
-                Id = projectId,
-                Urn = new Urn(133274),               
-                AcademyUrn = new Urn(123456),
-                Type = projectType,
-                CreatedAt = now,
-                UpdatedAt = now
-            };
-
-            var getProjectByIdQuery = new GetProjectByIdQuery(project.Id);
-
-            mockSender.Setup(s => s.Send(getProjectByIdQuery, It.IsAny<CancellationToken>()))
-                .ReturnsAsync(Result<ProjectDto?>.Success(project));
+            var projectDto = fixture.Build<ProjectDto>()
+               .With(t => t.Id, projectId)
+               .With(t => t.Type, projectType)
+               .Create();
+            
+            mockSender.Setup(s => s.Send(It.IsAny<GetProjectByIdQuery>(), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(Result<ProjectDto?>.Success(projectDto));
 
             // Act
             var result = await testClass.OnGetAsync();
 
             // Assert
-            Assert.NotNull(testClass.Project);
-            Assert.Equal(project.Id, testClass.Project.Id);
-            Assert.Equal(4, testClass.ContactTypeRadioOptions.Count());
-            Assert.Equal(ExternalContactType.Other.ToDescription(), testClass.SelectedExternalContactType);
-            Assert.Contains(ExternalContactType.HeadTeacher, testClass.ContactTypeRadioOptions);
-            Assert.Contains(ExternalContactType.IncomingTrustCEO, testClass.ContactTypeRadioOptions);
-            Assert.Contains(ExternalContactType.Other, testClass.ContactTypeRadioOptions);
-            Assert.Contains(expectedContactType, testClass.ContactTypeRadioOptions);
+
+            Assert.Multiple(
+                () => Assert.NotNull(testClass.Project),
+                () => Assert.Equal(projectDto.Id, testClass.Project.Id),
+                () => Assert.Equal(4, testClass.ContactTypeRadioOptions.Count()),
+                () => Assert.Contains(ExternalContactType.HeadTeacher, testClass.ContactTypeRadioOptions),
+                () => Assert.Contains(ExternalContactType.IncomingTrustCEO, testClass.ContactTypeRadioOptions),
+                () => Assert.Contains(ExternalContactType.Other, testClass.ContactTypeRadioOptions),
+                () => Assert.Contains(expectedContactType, testClass.ContactTypeRadioOptions)
+            );
+            
         }
 
         [Theory]
-        [InlineData("")]
-        [InlineData("0000-0000-0000-0000")]
-        [CustomAutoData(typeof(DateOnlyCustomization))]
-        public async Task OnGetAsync_WhenProjectId_IsNotValid_ThrowsError(string projectIdSupplied)
+        [InlineData("headteacher", "ed11d27b-c35f-4c61-b794-b9317a28a30b", "/projects/ed11d27b-c35f-4c61-b794-b9317a28a30b/external-contacts/new/create-contact?externalcontacttype=headteacher")]
+        [InlineData("incomingtrustceo", "ed11d27b-c35f-4c61-b794-b9317a28a30b", "/projects/ed11d27b-c35f-4c61-b794-b9317a28a30b/external-contacts/new/create-contact?externalcontacttype=incomingtrustceo")]
+        [InlineData("outgoingtrustceo", "ed11d27b-c35f-4c61-b794-b9317a28a30b", "/projects/ed11d27b-c35f-4c61-b794-b9317a28a30b/external-contacts/new/create-contact?externalcontacttype=outgoingtrustceo")]
+        [InlineData("chairofgovernors", "ed11d27b-c35f-4c61-b794-b9317a28a30b", "/projects/ed11d27b-c35f-4c61-b794-b9317a28a30b/external-contacts/new/create-contact?externalcontacttype=chairofgovernors")]
+        [InlineData("other", "ed11d27b-c35f-4c61-b794-b9317a28a30b", "/projects/ed11d27b-c35f-4c61-b794-b9317a28a30b/external-contacts/new/create-contact-type-other")]
+        public void OnPost_Valid_ReturnsRedirectResult(string contactType, string guidValue, string expectedRedirectUrl)
         {
-            // Arrange            
-            Guid projectIdGuid = Guid.NewGuid();
+            // Arrange
+            Guid projectIdGuid = Guid.Parse(guidValue);
             ProjectId projectId = new ProjectId(projectIdGuid);
-            var now = DateTime.UtcNow;
-
-            var testClass = new NewExternalContact(mockSender.Object, mockLogger.Object)
-            {
-                PageContext = PageDataHelper.GetPageContext(),
-                ProjectId = projectIdSupplied
-            };
-
-            var project = new ProjectDto
-            {
-                Id = projectId,
-                Urn = new Urn(133274),
-                AcademyUrn = new Urn(123456),
-                CreatedAt = now,
-                UpdatedAt = now
-            };
-
-            var getProjectByIdQuery = new GetProjectByIdQuery(project.Id);
-
+            
+            var testClass = fixture.Build<NewExternalContact>()
+               .With(t => t.PageContext, PageDataHelper.GetPageContext())
+               .With(t => t.ProjectId, projectIdGuid.ToString())
+               .With(t => t.SelectedExternalContactType, contactType)
+               .Create();
+           
             // Act
-            var result = await Assert.ThrowsAsync<NotFoundException>(() => testClass.OnGetAsync());
+            var result = testClass.OnPost();
 
-            Assert.Equal($"{projectIdSupplied} is not a valid Guid.", result.Message);
+            // Assert
+            var redirectResult = Assert.IsType<RedirectResult>(result);
+            Assert.Equal(expectedRedirectUrl, redirectResult.Url);
         }
 
-        [Fact]        
-        public async Task OnGetAsyncThrowsExceptionReturnsPageNotFound()
+        
+        [Fact]
+        public void OnPost_WhenNotFoundExceptionThrown_LogsErrorAndReturnsPageResult()
         {
-            // Arrange            
-            Guid projectIdGuid = Guid.NewGuid();
-            ProjectId projectId = new ProjectId(projectIdGuid);
-            var now = DateTime.UtcNow;
+            // Arrange
+            string invalidContactType = "headteacher_invalid";            
 
-            var testClass = new NewExternalContact(mockSender.Object, mockLogger.Object)
-            {
-                PageContext = PageDataHelper.GetPageContext(),
-                ProjectId = projectIdGuid.ToString()
-            };
+            var testClass = fixture.Build<NewExternalContact>()
+              .With(t => t.PageContext, PageDataHelper.GetPageContext())              
+              .With(t => t.SelectedExternalContactType, invalidContactType)
+              .Create();
+            
+            // Act and Assert            
+            var result = Assert.Throws<NotFoundException>(() => testClass.OnPost());
+            string messagePart = $"The selected contact type '{invalidContactType}' is invalid.";
 
-            var project = new ProjectDto
-            {
-                Id = projectId,
-                Urn = new Urn(133274),
-                AcademyUrn = new Urn(123456),
-                CreatedAt = now,
-                UpdatedAt = now
-            };
-
-            var getProjectByIdQuery = new GetProjectByIdQuery(project.Id);
-
-            mockSender.Setup(s => s.Send(getProjectByIdQuery, It.IsAny<CancellationToken>()))
-                 .ReturnsAsync(Result<ProjectDto?>.Failure("Database error"));
-
-            // Act
-            var result = await Assert.ThrowsAsync<NotFoundException>(() => testClass.OnGetAsync());
-
-            Assert.Equal($"Project {projectIdGuid.ToString()} does not exist.", result.Message);
+            Assert.Multiple(                
+                () => Assert.Equal(messagePart, result.Message),
+                () => mockLogger.Verify(x => x.Log(
+                It.Is<LogLevel>(l => l == LogLevel.Error),
+                It.IsAny<EventId>(),
+                It.Is<It.IsAnyType>((v, t) =>
+                    v.ToString().Contains(messagePart)),
+                It.Is<Exception>(ex => ex.Message == messagePart),
+                It.IsAny<Func<It.IsAnyType, Exception, string>>()!),
+            Times.Once));            
         }
-
-
-        //[Theory]
-        //[InlineData("headteacher", "/projects/{projectId}/external-contacts/new/create-contact?externalcontacttype=headteacher")]
-        //[InlineData("incomingtrustceo", "/projects/{projectId}/external-contacts/new/create-contact?externalcontacttype=incomingtrustceo")]
-        //[InlineData("outgoingtrustceo", "/projects/{projectId}/external-contacts/new/create-contact?externalcontacttype=outgoingtrustceo")]
-        //[InlineData("chairofgovernors", "/projects/{projectId}/external-contacts/new/create-contact?externalcontacttype=chairofgovernors")]
-        //[InlineData("other", "/projects/{projectId}/external-contacts/new/create-contact-type-other")]
-        //public void OnPost_RedirectsToCorrectPage_BasedOnContactType(string contactType, string expectedRedirectPage)
-        //{
-        //    // Arrange
-        //    Guid projectIdGuid = Guid.NewGuid();
-        //    ProjectId projectId = new ProjectId(projectIdGuid);
-        //    var now = DateTime.UtcNow;
-
-        //    var testClass = new NewExternalContact(mockSender.Object, mockLogger.Object)
-        //    {
-        //        PageContext = PageDataHelper.GetPageContext(),
-        //        ProjectId = projectIdGuid.ToString(),
-        //        SelectedExternalContactType = contactType
-        //    };
-
-        //    // Act
-        //    var result = testClass.OnPost() as RedirectToPageResult;
-        //    expectedRedirectPage = expectedRedirectPage.Replace("{projectId}", projectIdGuid.ToString());
-
-        //    // Assert
-        //    if (string.IsNullOrEmpty(expectedRedirectPage))
-        //    {
-        //        Assert.Null(result);
-        //    }
-        //    else
-        //    {
-        //        Assert.Equal(expectedRedirectPage, result.PageName);
-        //    }
-        //}
     }
 }

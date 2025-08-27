@@ -8,18 +8,22 @@ using Dfe.Complete.Helpers;
 using Dfe.Complete.Models;
 using Dfe.Complete.Models.ExternalContact;
 using Dfe.Complete.Services;
+using Dfe.Complete.Services.Interfaces;
 using Dfe.Complete.Utils;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel;
 
 namespace Dfe.Complete.Pages.Projects.ExternalContacts.New;
 
-public class CreateExternalContact(ISender sender, ITrustCache TrustCacheService,  ErrorService errorService, ILogger<CreateExternalContact> logger)
+public class CreateExternalContact(ITrustCache trustCacheService,  IErrorService errorService, ISender sender, ILogger<CreateExternalContact> logger)
     : ExternalContactBasePageModel(sender, logger)
 {   
-    protected readonly ITrustCache trustCacheService = TrustCacheService;
+    protected readonly ITrustCache _trustCacheService = trustCacheService;
+    protected readonly IErrorService _errorService = errorService;
 
     [FromQuery(Name = "externalcontacttype")]
+    [DefaultValue("other")]
     public string? SelectedExternalContactType { get; set; }
 
     [BindProperty]
@@ -28,11 +32,6 @@ public class CreateExternalContact(ISender sender, ITrustCache TrustCacheService
     public override async Task<IActionResult> OnGetAsync()
     {   
         await base.OnGetAsync();
-
-        if (string.IsNullOrWhiteSpace(SelectedExternalContactType))
-        {
-            this.SelectedExternalContactType = ExternalContactType.Other.ToDescription();
-        }
         return Page();
     }
 
@@ -40,7 +39,7 @@ public class CreateExternalContact(ISender sender, ITrustCache TrustCacheService
     {
         if (!ModelState.IsValid)
         {
-            errorService.AddErrors(ModelState);
+            this._errorService.AddErrors(ModelState);
             return Page();
         }
         else
@@ -63,19 +62,19 @@ public class CreateExternalContact(ISender sender, ITrustCache TrustCacheService
                     case ExternalContactType.IncomingTrustCEO:
                         if (!this.Project.FormAMat && Project.IncomingTrustUkprn != null)
                         {  
-                            var incomingTrust = await this.trustCacheService.GetTrustAsync(this.Project.IncomingTrustUkprn);
+                            var incomingTrust = await this._trustCacheService.GetTrustAsync(this.Project.IncomingTrustUkprn);
                             organisationName = incomingTrust.Name?.ToTitleCase();
                         }
                         break;
                     case ExternalContactType.OutgoingTrustCEO:
                         if (this.Project?.Type == ProjectType.Transfer && this.Project.OutgoingTrustUkprn != null)
                         {
-                            var outgoingTrust = await this.trustCacheService.GetTrustAsync(this.Project.OutgoingTrustUkprn);
+                            var outgoingTrust = await this._trustCacheService.GetTrustAsync(this.Project.OutgoingTrustUkprn);
                             organisationName = outgoingTrust.Name?.ToTitleCase();
                         }
                         break;                    
                     default:
-                        ModelState.AddModelError("InvalidContactType", "The selected contact type is not valid.");
+                        ModelState.AddModelError("InvalidContactType", "The selected contact type is invalid.");
                         return Page();
                 }
 

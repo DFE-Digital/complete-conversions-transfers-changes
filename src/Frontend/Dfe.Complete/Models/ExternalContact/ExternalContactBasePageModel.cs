@@ -6,7 +6,6 @@ using Dfe.Complete.Utils;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Dfe.Complete.Models.ExternalContact;
 

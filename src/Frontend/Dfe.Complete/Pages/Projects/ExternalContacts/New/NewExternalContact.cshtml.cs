@@ -1,7 +1,7 @@
-﻿using Dfe.Complete.Constants;
+﻿using Ardalis.GuardClauses;
+using Dfe.Complete.Constants;
 using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Models.ExternalContact;
-using Dfe.Complete.Services.Interfaces;
 using Dfe.Complete.Utils;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -36,7 +36,15 @@ public class NewExternalContact(ISender sender, ILogger<NewExternalContact> logg
             _ => string.Empty
         };
 
-        return RedirectToPage(pageToRedirectTo, new { externalcontacttype = this.SelectedExternalContactType });
+        if (string.IsNullOrWhiteSpace(pageToRedirectTo))
+        {
+            var error = $"The selected contact type '{this.SelectedExternalContactType}' is invalid.";
+            var notFoundException = new Utils.NotFoundException(error);
+            logger.LogError(notFoundException, notFoundException.Message, notFoundException.InnerException);
+            throw notFoundException;
+        }
+
+        return Redirect(pageToRedirectTo);
     }
 
     private void SetExternalContactTypes()
