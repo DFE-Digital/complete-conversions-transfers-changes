@@ -101,6 +101,10 @@ namespace Dfe.Complete.Api.Controllers
         public async Task<IActionResult> GetProjectAsync([FromQuery] GetProjectByUrnQuery request, CancellationToken cancellationToken)
         {
             var project = await sender.Send(request, cancellationToken);
+
+            if (project?.Value is null)
+                return NotFound();
+
             return Ok(project.Value);
         }
 
@@ -553,7 +557,7 @@ namespace Dfe.Complete.Api.Controllers
         {
             var project = await sender.Send(request, cancellationToken);
             return Ok(project.Value);
-        } 
+        }
         /// <summary>
         /// Gets a Project by Id
         /// </summary>
@@ -568,7 +572,7 @@ namespace Dfe.Complete.Api.Controllers
         {
             var project = await sender.Send(request, cancellationToken);
             return Ok(project.Value);
-        } 
+        }
         /// <summary>
         /// Gets key contacts of a project.
         /// </summary>
@@ -584,7 +588,7 @@ namespace Dfe.Complete.Api.Controllers
             var keyContact = await sender.Send(request, cancellationToken);
             return Ok(keyContact.Value);
         }
-        
+
         /// <summary>
         /// Gets a Project's significant date history
         /// </summary>
@@ -599,7 +603,7 @@ namespace Dfe.Complete.Api.Controllers
             var project = await sender.Send(request, cancellationToken);
             return Ok(project.Value);
         }
-        
+
         /// <summary>
         /// Updates the Significant date for a specific project.
         /// </summary>
