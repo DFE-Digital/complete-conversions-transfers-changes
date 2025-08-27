@@ -18,6 +18,8 @@ Security in case of vulnerabilities.
 
 ### Added
 
+- Added 'Deed of variation' task for both conversion and transfer projects. 
+
 ### Changed
 
 ### Fixed
