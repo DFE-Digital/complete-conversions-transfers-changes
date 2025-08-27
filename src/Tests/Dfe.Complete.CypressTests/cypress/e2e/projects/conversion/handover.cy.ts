@@ -81,7 +81,7 @@ describe.skip("Handover process tests for conversion projects", () => {
         Logger.log("Verify project handed over");
         cy.contains("Project handed over to Regional Casework Services");
         cy.contains(`${schoolName} URN ${project.urn}`);
-        // todo
+        // bug 234289
         // cy.contains("This project will appear in the Regional Casework Services' project list."); // typo
 
         // below is what was in ruby, but doesn't make any sense as the project appears in RCS unassigned projects
