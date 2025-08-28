@@ -8,38 +8,45 @@ using Dfe.Complete.Helpers;
 using Dfe.Complete.Models;
 using Dfe.Complete.Models.ExternalContact;
 using Dfe.Complete.Services;
-using Dfe.Complete.Services.Interfaces;
 using Dfe.Complete.Utils;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 
 namespace Dfe.Complete.Pages.Projects.ExternalContacts.New;
 
-public class CreateExternalContact(ITrustCache trustCacheService,  IErrorService errorService, ISender sender, ILogger<CreateExternalContact> logger)
+public class CreateExternalContact(ITrustCache trustCacheService,  ErrorService errorService, ISender sender, ILogger<CreateExternalContact> logger)
     : ExternalContactBasePageModel(sender, logger)
 {   
-    protected readonly ITrustCache _trustCacheService = trustCacheService;
-    protected readonly IErrorService _errorService = errorService;
-
-    [FromQuery(Name = "externalcontacttype")]
-    [DefaultValue("other")]
-    public string? SelectedExternalContactType { get; set; }
+    private const string invalidContactTypeErrorMessage = "The selected contact type is invalid";
 
     [BindProperty]
-    public ExternalContactDetailsModel ExternalContactDetails { get; set; }
+    [Required(ErrorMessage = "Enter a name")]
+    public string FullName { get; set; }
+
+    [BindProperty]
+    public string? Email { get; set; }
+
+    [BindProperty]
+    public string? Phone { get; set; }
+
+    [BindProperty]
+    public bool IsPrimaryProjectContact { get; set; }
+   
+    [BindProperty(SupportsGet = true, Name = "externalcontacttype")]
+    public string SelectedExternalContactType { get; set; }
 
     public override async Task<IActionResult> OnGetAsync()
-    {   
+    {
         await base.OnGetAsync();
-        return Page();
+        return GetExternalContactType();
     }
-
+    
     public async Task<IActionResult> OnPostAsync()
     {
         if (!ModelState.IsValid)
         {
-            this._errorService.AddErrors(ModelState);
+            errorService.AddErrors(ModelState);
             return Page();
         }
         else
@@ -62,29 +69,29 @@ public class CreateExternalContact(ITrustCache trustCacheService,  IErrorService
                     case ExternalContactType.IncomingTrustCEO:
                         if (!this.Project.FormAMat && Project.IncomingTrustUkprn != null)
                         {  
-                            var incomingTrust = await this._trustCacheService.GetTrustAsync(this.Project.IncomingTrustUkprn);
+                            var incomingTrust = await trustCacheService.GetTrustAsync(this.Project.IncomingTrustUkprn);
                             organisationName = incomingTrust.Name?.ToTitleCase();
                         }
                         break;
                     case ExternalContactType.OutgoingTrustCEO:
                         if (this.Project?.Type == ProjectType.Transfer && this.Project.OutgoingTrustUkprn != null)
                         {
-                            var outgoingTrust = await this._trustCacheService.GetTrustAsync(this.Project.OutgoingTrustUkprn);
+                            var outgoingTrust = await trustCacheService.GetTrustAsync(this.Project.OutgoingTrustUkprn);
                             organisationName = outgoingTrust.Name?.ToTitleCase();
                         }
                         break;                    
                     default:
-                        ModelState.AddModelError("InvalidContactType", "The selected contact type is invalid.");
+                        ModelState.AddModelError("InvalidContactType", invalidContactTypeErrorMessage);
                         return Page();
                 }
 
                 var newExternalContactCommand = new CreateExternalContactCommand(
-                    FullName: this.ExternalContactDetails.FullName,
+                    FullName: this.FullName,
                     Role: role,
-                    Email: this.ExternalContactDetails.Email ?? string.Empty,
-                    PhoneNumber: this.ExternalContactDetails.Phone ?? string.Empty,
+                    Email: this.Email ?? string.Empty,
+                    PhoneNumber: this.Phone ?? string.Empty,
                     Category: category,
-                    IsPrimaryContact: this.ExternalContactDetails.IsPrimaryProjectContact,
+                    IsPrimaryContact: this.IsPrimaryProjectContact,
                     ProjectId: new ProjectId(Guid.Parse(this.ProjectId)),
                     EstablishmentUrn: null,
                     OrganisationName: organisationName,
@@ -110,5 +117,20 @@ public class CreateExternalContact(ITrustCache trustCacheService,  IErrorService
 
             return Redirect(string.Format(RouteConstants.ProjectExternalContacts, ProjectId));
         }
+    }
+
+    public IActionResult GetExternalContactType()
+    {
+        var contactType = EnumExtensions.FromDescription<ExternalContactType>(this.SelectedExternalContactType);
+
+        if (contactType == default)
+        {   
+            var notFoundException = new Utils.NotFoundException(invalidContactTypeErrorMessage);
+
+            logger.LogError(notFoundException, notFoundException.Message, notFoundException.InnerException);
+            return NotFound();
+        }
+
+        return Page();
     }
 }

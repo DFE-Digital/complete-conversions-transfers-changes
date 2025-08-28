@@ -1,5 +1,4 @@
-﻿using Ardalis.GuardClauses;
-using Dfe.Complete.Constants;
+﻿using Dfe.Complete.Constants;
 using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Models.ExternalContact;
 using Dfe.Complete.Utils;
@@ -20,7 +19,6 @@ public class NewExternalContact(ISender sender, ILogger<NewExternalContact> logg
     {
         await base.OnGetAsync();
         this.SetExternalContactTypes();
-
         return Page();
     }
 
@@ -40,6 +38,7 @@ public class NewExternalContact(ISender sender, ILogger<NewExternalContact> logg
         {
             var error = $"The selected contact type '{this.SelectedExternalContactType}' is invalid.";
             var notFoundException = new Utils.NotFoundException(error);
+
             logger.LogError(notFoundException, notFoundException.Message, notFoundException.InnerException);
             throw notFoundException;
         }
@@ -49,10 +48,10 @@ public class NewExternalContact(ISender sender, ILogger<NewExternalContact> logg
 
     private void SetExternalContactTypes()
     {
-        if(this.Project?.Type == ProjectType.Transfer)
+        if (this.Project?.Type == ProjectType.Transfer)
         {
-           this.ContactTypeRadioOptions = new[]
-           {
+            this.ContactTypeRadioOptions = new[]
+            {
                 ExternalContactType.HeadTeacher,
                 ExternalContactType.IncomingTrustCEO,
                 ExternalContactType.OutgoingTrustCEO,
@@ -70,7 +69,7 @@ public class NewExternalContact(ISender sender, ILogger<NewExternalContact> logg
             };
         }
 
-        if(string.IsNullOrWhiteSpace(this.SelectedExternalContactType)) 
+        if (string.IsNullOrWhiteSpace(this.SelectedExternalContactType))
             this.SelectedExternalContactType = EnumExtensions.ToDescription<ExternalContactType>(ExternalContactType.Other);
     }
 }

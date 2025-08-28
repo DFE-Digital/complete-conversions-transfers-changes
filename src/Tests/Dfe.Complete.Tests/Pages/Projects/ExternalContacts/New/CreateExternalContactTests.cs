@@ -8,22 +8,20 @@ namespace Dfe.Complete.Tests.Pages.Projects.ExternalContacts.New
     using Dfe.Complete.Application.Projects.Queries.GetProject;
     using Dfe.Complete.Application.Services.TrustCache;
     using Dfe.Complete.Domain.Enums;
-    using Dfe.Complete.Domain.ValueObjects;
+    using Dfe.Complete.Domain.ValueObjects;    
     using Dfe.Complete.Pages.Projects.ExternalContacts.New;
     using Dfe.Complete.Services.Interfaces;
     using Dfe.Complete.Tests.Common.Customizations.Behaviours;
     using Dfe.Complete.Tests.Common.Customizations.Models;
     using Dfe.Complete.Tests.MockData;
-    using Dfe.Complete.Utils;
-    using DfE.CoreLibs.Testing.AutoFixture.Attributes;
+    using Dfe.Complete.Utils;    
     using DfE.CoreLibs.Testing.AutoFixture.Customizations;
-    using MediatR;
-    using Microsoft.AspNetCore.Http;
+    using DfE.CoreLibs.Utilities.Extensions;
+    using Fare;
+    using MediatR;    
     using Microsoft.AspNetCore.Mvc;    
     using Microsoft.Extensions.Logging;
-    using Moq;
-    using System;
-    using System.Security.Claims;
+    using Moq;    
     using System.Threading.Tasks;
     using Xunit;
 
@@ -74,7 +72,7 @@ namespace Dfe.Complete.Tests.Pages.Projects.ExternalContacts.New
             // Assert
             Assert.NotNull(testClass.Project);
             Assert.Equal(projectDto.Id, testClass.Project.Id);
-            Assert.Equal(ExternalContactType.Other.ToDescription(), testClass.SelectedExternalContactType);
+            Assert.Equal("other", testClass.SelectedExternalContactType);
         }
 
         [Theory]
@@ -115,65 +113,57 @@ namespace Dfe.Complete.Tests.Pages.Projects.ExternalContacts.New
             Assert.Contains($"/projects/{projectId.Value}/external-contacts", redirectResult.Url);
         }
 
-        //[Theory]
-        //[InlineData("headteacher", "ed11d27b-c35f-4c61-b794-b9317a28a30b", "/projects/ed11d27b-c35f-4c61-b794-b9317a28a30b/external-contacts/new/create-contact?externalcontacttype=headteacher")]
-        //[InlineData("incomingtrustceo", "ed11d27b-c35f-4c61-b794-b9317a28a30b", "/projects/ed11d27b-c35f-4c61-b794-b9317a28a30b/external-contacts/new/create-contact?externalcontacttype=incomingtrustceo")]
-        //[InlineData("outgoingtrustceo", "ed11d27b-c35f-4c61-b794-b9317a28a30b", "/projects/ed11d27b-c35f-4c61-b794-b9317a28a30b/external-contacts/new/create-contact?externalcontacttype=outgoingtrustceo")]
-        //[InlineData("chairofgovernors", "ed11d27b-c35f-4c61-b794-b9317a28a30b", "/projects/ed11d27b-c35f-4c61-b794-b9317a28a30b/external-contacts/new/create-contact?externalcontacttype=chairofgovernors")]
-        //[InlineData("other", "ed11d27b-c35f-4c61-b794-b9317a28a30b", "/projects/ed11d27b-c35f-4c61-b794-b9317a28a30b/external-contacts/new/create-contact-type-other")]
-        //public void OnPost_Valid_ReturnsRedirectResult(string contactType, string guidValue, string expectedRedirectUrl)
-        //{
-        //    // Arrange
-        //    Guid projectIdGuid = Guid.Parse(guidValue);
-        //    ProjectId projectId = new ProjectId(projectIdGuid);
-        //    var now = DateTime.UtcNow;
+        [Fact]       
+        public async Task OnPost_WhenExceptionThrown_LogsErrorAndReturnsPageResult()
+        {
+            // Arrange             
+            ProjectId projectId = fixture.Create<ProjectId>();
 
-        //    var testClass = new NewExternalContact(mockSender.Object, mockLogger.Object)
-        //    {
-        //        PageContext = PageDataHelper.GetPageContext(),
-        //        ProjectId = guidValue,
-        //        SelectedExternalContactType = contactType
-        //    };
+            var testClass = fixture.Build<CreateExternalContact>()
+               .With(t => t.PageContext, PageDataHelper.GetPageContext())
+               .With(t => t.ProjectId, projectId.Value.ToString())
+               .With(t => t.SelectedExternalContactType, "headteacher")
+               .Create();               
 
-        //    // Act
-        //    var result = testClass.OnPost();
+            var projectDto = fixture.Build<ProjectDto>()
+               .With(t => t.Id, projectId)
+               .With(t => t.Type, ProjectType.Transfer)
+               .With(t => t.EstablishmentName, "Test School")
+               .Create();
 
-        //    // Assert
-        //    var redirectResult = Assert.IsType<RedirectResult>(result);
-        //    Assert.Equal(expectedRedirectUrl, redirectResult.Url);
-        //}
+            var contactId = fixture.Create<ContactId>();
 
+            mockSender.
+                Setup(s => s.Send(It.IsAny<GetProjectByIdQuery>(), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(Result<ProjectDto?>.Success(projectDto));
 
-        //[Fact]
-        //public void OnPost_WhenNotFoundExceptionThrown_LogsErrorAndReturnsPageResult()
-        //{
-        //    // Arrange
-        //    string invalidContactType = "headteacher_invalid";
-        //    Guid projectIdGuid = Guid.NewGuid();
-        //    ProjectId projectId = new ProjectId(projectIdGuid);
-        //    var now = DateTime.UtcNow;
+            mockSender.
+                Setup(s => s.Send(It.IsAny<CreateExternalContactCommand>(), It.IsAny<CancellationToken>()))
+               .ReturnsAsync(contactId);
 
-        //    var testClass = new NewExternalContact(mockSender.Object, mockLogger.Object)
-        //    {
-        //        PageContext = PageDataHelper.GetPageContext(),
-        //        ProjectId = projectIdGuid.ToString(),
-        //        SelectedExternalContactType = invalidContactType
-        //    };
+            var exceptionMessage = "Error message";
+            var exception = new Exception(exceptionMessage);
+            mockSender
+                .Setup(s => s.Send(It.IsAny<CreateExternalContactCommand>(), It.IsAny<CancellationToken>()))
+                .ThrowsAsync(exception);
 
-        //    // Act and Assert            
-        //    var result = Assert.Throws<NotFoundException>(() => testClass.OnPost());
-        //    string messagePart = $"The selected contact type '{invalidContactType}' is invalid.";
+            // Act
+            await testClass.OnPostAsync();
 
-        //    Assert.Equal(messagePart, result.Message);
+            // Assert
 
-        //    mockLogger.Verify(x => x.Log(
-        //        It.Is<LogLevel>(l => l == LogLevel.Error),
-        //        It.IsAny<EventId>(),
-        //        It.Is<It.IsAnyType>((v, t) =>
-        //            v.ToString().Contains(messagePart)),
-        //        It.Is<Exception>(ex => ex.Message == messagePart),
-        //        It.IsAny<Func<It.IsAnyType, Exception, string>>()!),
-        //    Times.Once);
-        //}
+            Assert.True(testClass.ModelState.ContainsKey("UnexpectedError"));
+            Assert.Equal("An unexpected error occurred. Please try again later.",
+                testClass.ModelState["UnexpectedError"]?.Errors[0].ErrorMessage);
+
+            mockLogger.Verify(
+            logger => logger.Log(
+                It.Is<LogLevel>(logLevel => logLevel == LogLevel.Error),
+                It.IsAny<EventId>(),
+                It.Is<It.IsAnyType>((@object, @type) => true),
+                It.IsAny<Exception>(),
+                It.IsAny<Func<It.IsAnyType, Exception?, string>>()),
+            Times.Once);
+        }
     }
 }

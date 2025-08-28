@@ -1,28 +1,29 @@
-﻿@page "/projects/{projectId}/external-contacts/new/create-contact"
+﻿@page "/projects/{projectId}/external-contacts/new/create-contact/{externalcontacttype}"
 @using Dfe.Complete.Domain.Enums;
 @using Dfe.Complete.Utils;
 @model Dfe.Complete.Pages.Projects.ExternalContacts.New.CreateExternalContact
 @inject Dfe.Complete.Services.ErrorService ErrorService
 
 @{
+
+    ViewData["Title"] = "Add an external contact";
     Layout = "Shared/_Layout";
 
-    var contactdetails = Model.ExternalContactDetails;
-    const string fullname = nameof(contactdetails.FullName);
-    const string email = nameof(contactdetails.Email);
-    const string phone = nameof(contactdetails.Phone);
-    const string primaryprojectcontact = nameof(contactdetails.IsPrimaryProjectContact);
+    const string fullname = nameof(Model.FullName);
+    const string email = nameof(Model.Email);
+    const string phone = nameof(Model.Phone);
+    const string primaryprojectcontact = nameof(Model.IsPrimaryProjectContact);
 }
 
 <div class="govuk-width-container ">
-  <nav aria-label="back link">
+    <nav aria-label="back link">
         <a class="govuk-back-link" href="/projects/@Model.ProjectId/external-contacts">Back</a>
-  </nav>
-  <main class="govuk-main-wrapper app-content" id="main-content" role="main">
-    <div class="govuk-grid-row govuk-body">
-      <div class="govuk-grid-column-full">
-        <span class="govuk-caption-l">Add a contact</span>
-        <h1 class="govuk-heading-l">Enter contact details</h1>
+    </nav>
+    <main class="govuk-main-wrapper app-content" id="main-content" role="main">
+        <div class="govuk-grid-row govuk-body">
+            <div class="govuk-grid-column-full">
+                <span class="govuk-caption-l">Add a contact</span>
+                <h1 class="govuk-heading-l">Enter contact details</h1>
                 @{
                     switch (EnumExtensions.FromDescription<ExternalContactType>(Model.SelectedExternalContactType))
                     {
@@ -40,48 +41,49 @@
                             break;
                     }
                 }
-      </div>
-    </div>
+            </div>
+        </div>
 
-    <div class="govuk-grid-row govuk-body">
-      <div class="govuk-grid-column-full">
-         <form method="post">
-            <govuk-input name="@fullname" id="@fullname" asp-for="@contactdetails.FullName">
-            <govuk-input-label class="govuk-label--m">Full name</govuk-input-label>
+        <div class="govuk-grid-row govuk-body">
+            <div class="govuk-grid-column-full">
+                <form method="post">
+                    <govuk-input name="@fullname" id="@fullname" asp-for="@Model.FullName">
+                        <govuk-input-label class="govuk-label--m">Full name</govuk-input-label>
                         @if (ErrorService.HasErrorForKey(@fullname))
                         {
                             <govuk-input-error-message>@(ErrorService.GetErrorMessage(fullname))</govuk-input-error-message>
                         }
-            </govuk-input>
-            <govuk-input name="@email" id="@email" asp-for="@contactdetails.Email" type="email">
-                <govuk-input-label class="govuk-label--m">Email</govuk-input-label>
-                <govuk-input-hint>This must be the person's work email address, or address at the school, academy or trust their role is relevant to.</govuk-input-hint>
-            </govuk-input>            
-            <govuk-input name="@phone" id="@phone" input-class="govuk-input--width-10" asp-for="@contactdetails.Phone" type="tel">
-                <govuk-input-label class="govuk-label--m">Phone</govuk-input-label>
-            </govuk-input>
-           <govuk-radios name="@primaryprojectcontact" id="@primaryprojectcontact">
-            <govuk-radios-fieldset>
-              <govuk-radios-fieldset-legend class="govuk-fieldset__legend--m">
-                Is this person the primary project contact for this organisation?
-              </govuk-radios-fieldset-legend>
+                    </govuk-input>
+                    <govuk-input name="@email" id="@email" asp-for="@Model.Email" type="email">
+                        <govuk-input-label class="govuk-label--m">Email</govuk-input-label>
+                        <govuk-input-hint>This must be the person's work email address, or address at the school, academy or trust their role is relevant to.</govuk-input-hint>
+                    </govuk-input>
+                    <govuk-input name="@phone" id="@phone" input-class="govuk-input--width-10" asp-for="@Model.Phone" type="tel">
+                        <govuk-input-label class="govuk-label--m">Phone</govuk-input-label>
+                    </govuk-input>
+                    <govuk-radios name="@primaryprojectcontact" id="@primaryprojectcontact">
+                        <govuk-radios-fieldset>
+                            <govuk-radios-fieldset-legend class="govuk-fieldset__legend--m">
+                                Is this person the primary project contact for this organisation?
+                            </govuk-radios-fieldset-legend>
 
-              <govuk-radios-hint>
-                A primary project contact is the person you most often to get in touch with first if you have any questions about the project.
-              </govuk-radios-hint>
+                            <govuk-radios-hint>
+                                A primary project contact is the person you most often to get in touch with first if you have any questions about the project.
+                            </govuk-radios-hint>
 
-              <govuk-radios-item value="true">Yes</govuk-radios-item>
-              <govuk-radios-item value="false">No</govuk-radios-item>
-            </govuk-radios-fieldset>
-          </govuk-radios>
+                            <govuk-radios-item value="true">Yes</govuk-radios-item>
+                            <govuk-radios-item value="false">No</govuk-radios-item>
+                        </govuk-radios-fieldset>
+                    </govuk-radios>
 
-          <div class="govuk-button-group">
-            <button type="submit" formnovalidate="formnovalidate" class="govuk-button" data-module="govuk-button" data-prevent-double-click="true">Save and continue</button>
-            <a class="govuk-link" href="/projects/@Model.ProjectId/external-contacts">Cancel</a>
-          </div>
-        </form>
-      </div>
-    </div>
-
-  </main>
+                    <div class="govuk-button-group">
+                        <govuk-button type="submit" data-prevent-double-click="true">
+                            Save and continue
+                        </govuk-button>
+                        <a class="govuk-link" href="/projects/@Model.ProjectId/external-contacts">Cancel</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </main>
 </div>

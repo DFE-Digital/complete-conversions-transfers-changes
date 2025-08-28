@@ -14,6 +14,7 @@ namespace Dfe.Complete.Tests.Pages.Projects.ExternalContacts.New
     using Dfe.Complete.Utils;    
     using DfE.CoreLibs.Testing.AutoFixture.Customizations;
     using MediatR;
+    using Microsoft.AspNetCore.Http.HttpResults;
     using Microsoft.AspNetCore.Mvc;    
     using Microsoft.Extensions.Logging;
     using Moq;
@@ -45,7 +46,7 @@ namespace Dfe.Complete.Tests.Pages.Projects.ExternalContacts.New
             var testClass = fixture.Build<NewExternalContact>()
                .With(t => t.PageContext, PageDataHelper.GetPageContext())
                .With(t => t.ProjectId, projectId.Value.ToString())
-               .With(t => t.SelectedExternalContactType, string.Empty)
+               //.With(t => t.SelectedExternalContactType, string.Empty)
                .Create();
 
             var projectDto = fixture.Build<ProjectDto>()
@@ -74,10 +75,10 @@ namespace Dfe.Complete.Tests.Pages.Projects.ExternalContacts.New
         }
 
         [Theory]
-        [InlineData("headteacher", "ed11d27b-c35f-4c61-b794-b9317a28a30b", "/projects/ed11d27b-c35f-4c61-b794-b9317a28a30b/external-contacts/new/create-contact?externalcontacttype=headteacher")]
-        [InlineData("incomingtrustceo", "ed11d27b-c35f-4c61-b794-b9317a28a30b", "/projects/ed11d27b-c35f-4c61-b794-b9317a28a30b/external-contacts/new/create-contact?externalcontacttype=incomingtrustceo")]
-        [InlineData("outgoingtrustceo", "ed11d27b-c35f-4c61-b794-b9317a28a30b", "/projects/ed11d27b-c35f-4c61-b794-b9317a28a30b/external-contacts/new/create-contact?externalcontacttype=outgoingtrustceo")]
-        [InlineData("chairofgovernors", "ed11d27b-c35f-4c61-b794-b9317a28a30b", "/projects/ed11d27b-c35f-4c61-b794-b9317a28a30b/external-contacts/new/create-contact?externalcontacttype=chairofgovernors")]
+        [InlineData("headteacher", "ed11d27b-c35f-4c61-b794-b9317a28a30b", "/projects/ed11d27b-c35f-4c61-b794-b9317a28a30b/external-contacts/new/create-contact/headteacher")]
+        [InlineData("incomingtrustceo", "ed11d27b-c35f-4c61-b794-b9317a28a30b", "/projects/ed11d27b-c35f-4c61-b794-b9317a28a30b/external-contacts/new/create-contact/incomingtrustceo")]
+        [InlineData("outgoingtrustceo", "ed11d27b-c35f-4c61-b794-b9317a28a30b", "/projects/ed11d27b-c35f-4c61-b794-b9317a28a30b/external-contacts/new/create-contact/outgoingtrustceo")]
+        [InlineData("chairofgovernors", "ed11d27b-c35f-4c61-b794-b9317a28a30b", "/projects/ed11d27b-c35f-4c61-b794-b9317a28a30b/external-contacts/new/create-contact/chairofgovernors")]
         [InlineData("other", "ed11d27b-c35f-4c61-b794-b9317a28a30b", "/projects/ed11d27b-c35f-4c61-b794-b9317a28a30b/external-contacts/new/create-contact-type-other")]
         public void OnPost_Valid_ReturnsRedirectResult(string contactType, string guidValue, string expectedRedirectUrl)
         {
