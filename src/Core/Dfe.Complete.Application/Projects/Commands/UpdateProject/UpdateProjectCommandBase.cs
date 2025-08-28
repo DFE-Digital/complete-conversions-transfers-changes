@@ -1,6 +1,7 @@
 using Dfe.Complete.Domain.Entities;
 using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Domain.Interfaces.Repositories;
+using Dfe.Complete.Domain.ValueObjects;
 using Dfe.Complete.Utils;
 using Microsoft.EntityFrameworkCore;
 
@@ -45,6 +46,18 @@ namespace Dfe.Complete.Application.Projects.Commands.UpdateProject
                 var group = await ProjectGroupRepository.FindAsync(x => x.GroupIdentifier == request.GroupReferenceNumber, cancellationToken);
                 if (group != null)
                     project.GroupId = group.Id;
+                else
+                {
+                    // Create new group
+                    group = new ProjectGroup
+                    {
+                        Id = new ProjectGroupId(Guid.NewGuid()),
+                        GroupIdentifier = request.GroupReferenceNumber,
+                        TrustUkprn = request.IncomingTrustUkprn,
+                    };
+                    await ProjectGroupRepository.AddAsync(group, cancellationToken);
+                    project.GroupId = group.Id;
+                }
             }
             else
                 project.GroupId = null;
