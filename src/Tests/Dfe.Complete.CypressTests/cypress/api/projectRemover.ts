@@ -26,6 +26,7 @@ class ProjectRemover extends ApiBase {
                     url: Cypress.env(EnvApi) + "/v1/Projects",
                     qs: { "urn.Value": urn },
                     headers: headers,
+                    failOnStatusCode: false,
                 })
                 .then((response) => {
                     return response;
@@ -33,10 +34,24 @@ class ProjectRemover extends ApiBase {
         });
     }
 
-    public removeProjectIfItExists(urn: string): Cypress.Chainable<boolean> {
+    public removeProjectIfItExists(
+        urn: string,
+        maxAttempts: number = 10,
+        currentAttempt: number = 0,
+    ): Cypress.Chainable<boolean> {
+        // fix issue where there are multiple projects with the same URN
+
+        if (currentAttempt >= maxAttempts) {
+            cy.log(`Max attempts (${maxAttempts}) reached when trying to remove project ${urn}`);
+            return cy.wrap(false);
+        }
+
         return this.getProject(urn).then((response) => {
             if (response.status === 200) {
-                return this.removeProject(urn).then(() => true);
+                return this.removeProject(urn).then(() => {
+                    // Recursively call this method to check if more projects exist
+                    return this.removeProjectIfItExists(urn, maxAttempts, currentAttempt + 1);
+                });
             }
             return cy.wrap(true);
         });
