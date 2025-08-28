@@ -37,6 +37,11 @@ export class ProjectDetailsPage extends BasePage {
         return this;
     }
 
+    change(key: string) {
+        cy.contains("dt", key).next("dd").next("dd").contains("Change").click();
+        return this;
+    }
+
     // tags
     hasConversionTag() {
         return this.hasTag("Conversion");
