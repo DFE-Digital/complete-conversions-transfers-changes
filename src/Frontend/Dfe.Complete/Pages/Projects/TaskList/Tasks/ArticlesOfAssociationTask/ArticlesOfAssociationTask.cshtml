@@ -10,20 +10,19 @@
         <p>You must update the articles of association if any of the following statements are true:</p>
         <ul>
             <li>the trust currently uses a version from February 2016 or earlier</li>
-            <li>a different type of academy is joining the trust. For example, a faith academy joining a trust containing only community academies</li>
+            <li>a different type of academy is joining the trust. For example, a faith @(Model.Type == ProjectType.Conversion? "school":"academy") joining a trust containing only community academies</li>
             <li>it is a condition of the advisory board's decision</li>
         </ul>
         <p>You do not always need to update the articles but it is strongly advised, even when not required.</p>
-
-        <details data-module="govuk-details" class="govuk-details">
-            <summary class="govuk-details__summary">
+        <govuk-details>
+            <govuk-details-summary> 
                 <span class="govuk-details__summary-text">Partially updating articles of association</span>
-            </summary>
-            <div class="govuk-details__text">
+            </govuk-details-summary>
+            <govuk-details-text>
                 <p>Trusts do not have to adopt the latest version of the articles entirely. Although this is DfE's preferred option.</p>
                 <p>They can choose to just add the missing clauses in their existing articles.</p>
-            </div>
-        </details>
+            </govuk-details-text>
+        </govuk-details>
     </div>
 }
 @section TaskSection { 
@@ -49,12 +48,12 @@
             <govuk-details data-module="govuk-details" class="govuk-details">
                 <govuk-details-summary>
                     <span class="govuk-details__summary-text">Help checking for changes</span>
-                    </govuk-details-summary>
-                    <govuk-details-text>
-                        <p>Changes that personalise the model documents to a school or trust, and remove or add optional clauses, are expected. The wording of clauses should not change.</p>
-                        <p>You'll need to <a href="https://educationgovuk.sharepoint.com/sites/lvewp00030/SitePages/Resources/Request%20for%20advice%20from%20the%20AOPU.aspx" target="_blank">contact the policy team (opens in new tab)</a> about changes to clause text.</p>
-                    </govuk-details-text>
-                </govuk-details>
+                </govuk-details-summary>
+                <govuk-details-text>
+                    <p>Changes that personalise the model documents to a school or trust, and remove or add optional clauses, are expected. The wording of clauses should not change.</p>
+                    <p>You'll need to <a href="https://educationgovuk.sharepoint.com/sites/lvewp00030/SitePages/Resources/Request%20for%20advice%20from%20the%20AOPU.aspx" target="_blank">contact the policy team (opens in new tab)</a> about changes to clause text.</p>
+                </govuk-details-text>
+            </govuk-details>
         </div>
         <govuk-checkboxes name="options">
             <govuk-checkboxes-fieldset>
