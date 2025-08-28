@@ -1,4 +1,4 @@
-using Dfe.Complete.Application.Projects.Commands.UpdateProject; 
+using Dfe.Complete.Application.Projects.Commands.TaskData;
 using Dfe.Complete.Constants; 
 using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Domain.ValueObjects;
@@ -52,7 +52,7 @@ public class HandoverWithDeliveryOfficerTaskModel(ISender sender, IAuthorization
 
     public async Task<IActionResult> OnPost()
     {
-        await sender.Send(new UpdateHandoverWithDeliveryOfficerCommand(new TaskDataId(TasksDataId.GetValueOrDefault())!, Type, NotApplicable, ReviewProjectInformation, MakeNotes, AttendHandoverMeeting));
+        await sender.Send(new UpdateHandoverWithDeliveryOfficerTaskCommand(new TaskDataId(TasksDataId.GetValueOrDefault())!, Type, NotApplicable, ReviewProjectInformation, MakeNotes, AttendHandoverMeeting));
         return Redirect(string.Format(RouteConstants.ProjectTaskList, ProjectId));
     }
 }
