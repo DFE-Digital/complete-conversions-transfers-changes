@@ -1,4 +1,4 @@
-﻿using Dfe.Complete.Domain.Enums;
+using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Domain.ValueObjects; 
 
 namespace Dfe.Complete.Application.Projects.Models
@@ -247,5 +247,6 @@ namespace Dfe.Complete.Application.Projects.Models
 
         public bool? CommercialTransferAgreementSaved { get; set; } 
 
+        
     }
 }

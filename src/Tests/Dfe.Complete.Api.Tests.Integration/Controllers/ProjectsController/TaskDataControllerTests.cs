@@ -1,6 +1,5 @@
 ﻿using AutoFixture;
 using Dfe.Complete.Api.Tests.Integration.Customizations;
-using Dfe.Complete.Application.Projects.Commands.TaskData;
 using Dfe.Complete.Client.Contracts;
 using Dfe.Complete.Domain.Entities;
 using Dfe.Complete.Infrastructure.Database;

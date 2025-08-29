@@ -799,7 +799,7 @@ namespace Dfe.Complete.Client.Contracts
         /// Updates the article of association task Data for conversion or trasnfer project.
         /// </summary>
         /// <param name="request">The update command.</param>
-        /// <returns>Conversion or trannsfer's article of association task updated successfully.</returns>
+        /// <returns>Conversion or transfer's article of association task updated successfully.</returns>
         /// <exception cref="CompleteApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task UpdateArticleOfAssociationTaskAsync(UpdateArticleOfAssociationTaskCommand request);
 
@@ -808,9 +808,26 @@ namespace Dfe.Complete.Client.Contracts
         /// Updates the article of association task Data for conversion or trasnfer project.
         /// </summary>
         /// <param name="request">The update command.</param>
-        /// <returns>Conversion or trannsfer's article of association task updated successfully.</returns>
+        /// <returns>Conversion or transfer's article of association task updated successfully.</returns>
         /// <exception cref="CompleteApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task UpdateArticleOfAssociationTaskAsync(UpdateArticleOfAssociationTaskCommand request, System.Threading.CancellationToken cancellationToken);
+
+        /// <summary>
+        /// Updates the External stakeholder kickoff Task Data for a specific task data.
+        /// </summary>
+        /// <param name="request">The update command.</param>
+        /// <returns>External stakeholder kickoff Task updated successfully.</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task UpdateExternalStakeholderKickOffTaskAsync(UpdateExternalStakeholderKickOffTaskCommand request);
+
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>
+        /// Updates the External stakeholder kickoff Task Data for a specific task data.
+        /// </summary>
+        /// <param name="request">The update command.</param>
+        /// <returns>External stakeholder kickoff Task updated successfully.</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task UpdateExternalStakeholderKickOffTaskAsync(UpdateExternalStakeholderKickOffTaskCommand request, System.Threading.CancellationToken cancellationToken);
 
     }
 
@@ -4614,6 +4631,49 @@ namespace Dfe.Complete.Client.Contracts
         {
 
             return Newtonsoft.Json.JsonConvert.DeserializeObject<UpdateArticleOfAssociationTaskCommand>(data, new Newtonsoft.Json.JsonSerializerSettings());
+
+        }
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.2.0.0 (NJsonSchema v11.1.0.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class UpdateExternalStakeholderKickOffTaskCommand
+    {
+        [Newtonsoft.Json.JsonProperty("projectId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public ProjectId? ProjectId { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("stakeholderKickOffIntroductoryEmails", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? StakeholderKickOffIntroductoryEmails { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("localAuthorityProforma", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? LocalAuthorityProforma { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("checkProvisionalDate", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? CheckProvisionalDate { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("stakeholderKickOffSetupMeeting", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? StakeholderKickOffSetupMeeting { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("stakeholderKickOffMeeting", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? StakeholderKickOffMeeting { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("significantDate", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonConverter(typeof(DateFormatConverter))]
+        public System.DateTime? SignificantDate { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("userEmail", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string? UserEmail { get; set; } = default!;
+
+        public string ToJson()
+        {
+
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonSerializerSettings());
+
+        }
+        public static UpdateExternalStakeholderKickOffTaskCommand FromJson(string data)
+        {
+
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<UpdateExternalStakeholderKickOffTaskCommand>(data, new Newtonsoft.Json.JsonSerializerSettings());
 
         }
 
