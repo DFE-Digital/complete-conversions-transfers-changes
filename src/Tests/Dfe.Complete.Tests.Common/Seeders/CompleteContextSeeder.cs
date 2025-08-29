@@ -17,11 +17,30 @@ public static class CompleteContextSeeder
             Id = new UserId(Guid.NewGuid()),
             Team = ProjectTeam.WestMidlands.ToDescription()
         };
-        
+
         var secondProjectUser = new User
         {
             Id = new UserId(Guid.NewGuid()),
-            Team = ProjectTeam.SouthWest.ToDescription()
+            Team = ProjectTeam.SouthWest.ToDescription(),
+        };
+
+        var duplicateAdidProjectUserOne = new User
+        {
+            Id = new UserId(Guid.NewGuid()),
+            Team = ProjectTeam.SouthWest.ToDescription(),
+            CreatedAt = DateTime.UtcNow.AddDays(-2),
+            DeactivatedAt = DateTime.UtcNow.AddDays(-1),
+            FirstName = "Deactivated",
+            ActiveDirectoryUserId = "duplicateAdId"
+        };
+
+        var duplicateAdidProjectUserTwo = new User
+        {
+            Id = new UserId(Guid.NewGuid()),
+            Team = ProjectTeam.SouthWest.ToDescription(),
+            ActiveDirectoryUserId = "duplicateAdId",
+            CreatedAt = DateTime.UtcNow.AddDays(-1),
+            FirstName = "Active"
         };
 
         var projectGroup = new ProjectGroup
@@ -30,18 +49,20 @@ public static class CompleteContextSeeder
             CreatedAt = DateTime.Now,
             UpdatedAt = DateTime.Now
         };
-        
+
         var giasEstablishment = fixture.Customize(new GiasEstablishmentsCustomization()).Create<GiasEstablishment>();
-        
+
         var localAuthorities = fixture.CreateMany<LocalAuthority>(10);
         var authorities = localAuthorities.ToList();
         authorities.FirstOrDefault()!.Code = giasEstablishment.LocalAuthorityCode!;
-        
+
         context.GiasEstablishments.Add(giasEstablishment);
         context.LocalAuthorities.AddRange(authorities);
         context.ProjectGroups.Add(projectGroup);
         context.Users.Add(projectUser);
         context.Users.Add(secondProjectUser);
+        context.Users.Add(duplicateAdidProjectUserOne);
+        context.Users.Add(duplicateAdidProjectUserTwo);
         context.SaveChanges();
     }
 }

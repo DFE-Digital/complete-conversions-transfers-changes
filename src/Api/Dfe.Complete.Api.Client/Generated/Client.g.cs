@@ -5870,7 +5870,7 @@ namespace Dfe.Complete.Client
         /// Updates the article of association task Data for conversion or trasnfer project.
         /// </summary>
         /// <param name="request">The update command.</param>
-        /// <returns>Conversion or trannsfer's article of association task updated successfully.</returns>
+        /// <returns>Conversion or transfer's article of association task updated successfully.</returns>
         /// <exception cref="CompleteApiException">A server side error occurred.</exception>
         public virtual System.Threading.Tasks.Task UpdateArticleOfAssociationTaskAsync(UpdateArticleOfAssociationTaskCommand request)
         {
@@ -5882,7 +5882,7 @@ namespace Dfe.Complete.Client
         /// Updates the article of association task Data for conversion or trasnfer project.
         /// </summary>
         /// <param name="request">The update command.</param>
-        /// <returns>Conversion or trannsfer's article of association task updated successfully.</returns>
+        /// <returns>Conversion or transfer's article of association task updated successfully.</returns>
         /// <exception cref="CompleteApiException">A server side error occurred.</exception>
         public virtual async System.Threading.Tasks.Task UpdateArticleOfAssociationTaskAsync(UpdateArticleOfAssociationTaskCommand request, System.Threading.CancellationToken cancellationToken)
         {
