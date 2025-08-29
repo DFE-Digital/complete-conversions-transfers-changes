@@ -15,12 +15,14 @@ public static class CompleteContextSeeder
         var projectUser = new User
         {
             Id = new UserId(Guid.NewGuid()),
+            CreatedAt = DateTime.UtcNow.AddDays(-4),
             Team = ProjectTeam.WestMidlands.ToDescription()
         };
 
         var secondProjectUser = new User
         {
             Id = new UserId(Guid.NewGuid()),
+            CreatedAt = DateTime.UtcNow.AddDays(-3),
             Team = ProjectTeam.SouthWest.ToDescription(),
         };
 

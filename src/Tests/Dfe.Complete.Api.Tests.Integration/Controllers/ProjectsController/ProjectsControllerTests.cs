@@ -866,7 +866,7 @@ public partial class ProjectsControllerTests
 
         // Arrange
         var dbContext = factory.GetDbContext<CompleteContext>();
-        var testUser = await dbContext.Users.FirstAsync();
+        var testUser = await dbContext.Users.OrderBy(user => user.CreatedAt).FirstAsync();
         var otherUser = await dbContext.Users.FirstAsync(user => user.Id != testUser.Id);
         const string userAdId = "test-user-adid";
 
@@ -970,8 +970,8 @@ public partial class ProjectsControllerTests
         // Arrange
         var dbContext = factory.GetDbContext<CompleteContext>();
 
-        var otherUser = await dbContext.Users.FirstOrDefaultAsync(user => user.FirstName == "Deactivated");
-        var testUser = await dbContext.Users.FirstOrDefaultAsync(user => user.FirstName == "Active"); // We want this one to return projects
+        var otherUser = await dbContext.Users.FirstAsync(user => user.FirstName == "Deactivated");
+        var testUser = await dbContext.Users.FirstAsync(user => user.FirstName == "Active"); // We want this one to return projects
 
         var incomingTrust = new TrustDto { Ukprn = "12345678", Name = "Trust One" };
         var outgoingTrust = new TrustDto { Ukprn = "87654321", Name = "Trust Two" };
