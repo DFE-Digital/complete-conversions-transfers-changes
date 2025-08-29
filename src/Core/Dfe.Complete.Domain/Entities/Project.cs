@@ -439,12 +439,22 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
         }
     }
 
+    public void UpdateNote(Note updatedNote)
+    {
+        ArgumentNullException.ThrowIfNull(updatedNote);
+
+        var note = Notes.FirstOrDefault(x => x.Id == updatedNote.Id) ?? throw new NotFoundException($"No note found with Id {updatedNote.Id.Value}");
+
+        note.Body = updatedNote.Body;
+        note.TaskIdentifier = updatedNote.TaskIdentifier;
+        note.UserId = updatedNote.UserId;
+        note.NotableId = updatedNote.NotableId;
+        note.NotableType = updatedNote.NotableType;
+    }
+
     public void RemoveNote(NoteId id)
     {
-        var note = Notes.FirstOrDefault(x => x.Id == id);
-
-        if (note is null) throw new NotFoundException($"No note found with Id {id.Value}");
-
+        var note = Notes.FirstOrDefault(x => x.Id == id) ?? throw new NotFoundException($"No note found with Id {id.Value}");
         Notes.Remove(note);
     }
 

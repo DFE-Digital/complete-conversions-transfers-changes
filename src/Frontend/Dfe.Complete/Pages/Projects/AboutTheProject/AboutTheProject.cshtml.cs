@@ -2,6 +2,8 @@ using Dfe.Complete.Application.Projects.Models;
 using Dfe.Complete.Application.Projects.Queries.GetGiasEstablishment;
 using Dfe.Complete.Application.Projects.Queries.GetProject;
 using Dfe.Complete.Application.Projects.Queries.GetTransferTasksData;
+using Dfe.Complete.Constants;
+using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Pages.Projects.ProjectView;
 using Dfe.Complete.Utils;
 using MediatR;
@@ -58,9 +60,15 @@ namespace Dfe.Complete.Pages.Projects.AboutTheProject
             }
         }
 
+        public string GetChangeLinkUrl(string fragment)
+        {
+            return Project.Type == ProjectType.Conversion
+                ? $"{string.Format(RouteConstants.ProjectConversionEdit, ProjectId, fragment)}"
+                : $"{string.Format(RouteConstants.ProjectTransferEdit, ProjectId, fragment)}";
+        }
+
         public override async Task<IActionResult> OnGetAsync()
         {
-            //await base.OnGetAsync();
             var baseResult = await base.OnGetAsync();
             if (baseResult is not PageResult) return baseResult;
 
