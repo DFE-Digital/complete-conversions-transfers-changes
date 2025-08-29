@@ -1,5 +1,6 @@
 class BasePage {
     private readonly bannerClass = "govuk-notification-banner";
+    private readonly linkClass = "govuk-link";
 
     containsHeading(heading: string) {
         cy.get("h1").contains(heading);
@@ -49,7 +50,12 @@ class BasePage {
     }
 
     clickLink(linkText: string) {
-        cy.getByClass("govuk-link").contains(linkText).click();
+        cy.getByClass(this.linkClass).contains(linkText).click();
+        return this;
+    }
+
+    linkDoesNotExist(linkText: string) {
+        cy.getByClass(this.linkClass).contains(linkText).should("not.exist");
         return this;
     }
 

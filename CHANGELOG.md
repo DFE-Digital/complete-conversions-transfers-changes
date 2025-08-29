@@ -18,11 +18,15 @@ Security in case of vulnerabilities.
 
 ### Added
 - Ability to edit project information for conversions and transfers
+- ProjectGroup is created when a project is edited with a new GRN
+- Added `Article of association` task data for both conversion and trasnfer projects.
 
 ### Changed
+- Group reference number links to the group on "About the project"
 
 ### Fixed
 - GetProjectByUrn doesn't return notes
+- GroupReferenceNumberAttribute failed when there was no existing group
 
 See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-08-26.669...main) for everything awaiting release
 
