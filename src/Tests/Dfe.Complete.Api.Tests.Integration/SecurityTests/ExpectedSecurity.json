@@ -259,6 +259,11 @@
       "Controller": "TasksDataController",
       "Action": "UpdateDeedOfNovationAndVariationTaskAsync",
       "ExpectedSecurity": "Authorize: Policy=CanReadWriteUpdate"
+    },
+    {
+      "Controller": "TasksDataController",
+      "Action": "UpdateArticleOfAssociationTaskAsync",
+      "ExpectedSecurity": "Authorize: Policy=CanReadWrite"
     }
   ]
 }
