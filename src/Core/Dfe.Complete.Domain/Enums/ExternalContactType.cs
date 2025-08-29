@@ -34,9 +34,17 @@ public enum ExternalContactType
     [DisplayDescription("Diocese")]
     Diocese = 7,
 
-    [Description("other")]
+    [Description("schoolacademy")]
+    [DisplayDescription("School or academy")]
+    SchoolOrAcademy = 8,
+
+    [Description("someoneelse")]
     [DisplayDescription("Someone else")]
-    Other = 8,
+    SomeOneElse = 9,
+
+    [Description("other")]
+    [DisplayDescription("Other")]
+    Other = 9,
 }
 
 

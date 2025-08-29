@@ -6,16 +6,16 @@
 
 @{
 
-    ViewData["Title"] = "Add an external contact";
+    ViewData["Title"] = "Add contact";
     Layout = "Shared/_Layout";
-
-    const string fullname = nameof(Model.FullName);
-    const string email = nameof(Model.Email);
-    const string phone = nameof(Model.Phone);
-    const string primaryprojectcontact = nameof(Model.IsPrimaryProjectContact);
+    var ExternalContactInput = Model.ExternalContactInput;
+    const string fullname = nameof(ExternalContactInput.FullName);
+    const string email = nameof(ExternalContactInput.Email);
+    const string phone = nameof(ExternalContactInput.Phone);
+    const string primaryprojectcontact = nameof(ExternalContactInput.IsPrimaryProjectContact);
 }
 
-<div class="govuk-width-container ">
+<div class="govuk-width-container">
     <nav aria-label="back link">
         <a class="govuk-back-link" href="/projects/@Model.ProjectId/external-contacts">Back</a>
     </nav>
@@ -47,21 +47,21 @@
         <div class="govuk-grid-row govuk-body">
             <div class="govuk-grid-column-full">
                 <form method="post">
-                    <govuk-input name="@fullname" id="@fullname" asp-for="@Model.FullName">
+                    <govuk-input name="@fullname" id="@fullname" asp-for="@ExternalContactInput.FullName">
                         <govuk-input-label class="govuk-label--m">Full name</govuk-input-label>
                         @if (ErrorService.HasErrorForKey(@fullname))
                         {
                             <govuk-input-error-message>@(ErrorService.GetErrorMessage(fullname))</govuk-input-error-message>
                         }
                     </govuk-input>
-                    <govuk-input name="@email" id="@email" asp-for="@Model.Email" type="email">
+                    <govuk-input name="@email" id="@email" asp-for="@ExternalContactInput.Email" type="email">
                         <govuk-input-label class="govuk-label--m">Email</govuk-input-label>
                         <govuk-input-hint>This must be the person's work email address, or address at the school, academy or trust their role is relevant to.</govuk-input-hint>
                     </govuk-input>
-                    <govuk-input name="@phone" id="@phone" input-class="govuk-input--width-10" asp-for="@Model.Phone" type="tel">
+                    <govuk-input name="@phone" id="@phone" input-class="govuk-input--width-10" asp-for="@ExternalContactInput.Phone" type="tel">
                         <govuk-input-label class="govuk-label--m">Phone</govuk-input-label>
                     </govuk-input>
-                    <govuk-radios name="@primaryprojectcontact" id="@primaryprojectcontact">
+                    <govuk-radios name="@primaryprojectcontact" id="@primaryprojectcontact" asp-for="@ExternalContactInput.IsPrimaryProjectContact">
                         <govuk-radios-fieldset>
                             <govuk-radios-fieldset-legend class="govuk-fieldset__legend--m">
                                 Is this person the primary project contact for this organisation?
@@ -71,8 +71,8 @@
                                 A primary project contact is the person you most often to get in touch with first if you have any questions about the project.
                             </govuk-radios-hint>
 
-                            <govuk-radios-item value="true">Yes</govuk-radios-item>
-                            <govuk-radios-item value="false">No</govuk-radios-item>
+                            <govuk-radios-item value="true" checked="@(ExternalContactInput.IsPrimaryProjectContact)">Yes</govuk-radios-item>
+                            <govuk-radios-item value="false" checked="@(!ExternalContactInput.IsPrimaryProjectContact)">No</govuk-radios-item>
                         </govuk-radios-fieldset>
                     </govuk-radios>
 

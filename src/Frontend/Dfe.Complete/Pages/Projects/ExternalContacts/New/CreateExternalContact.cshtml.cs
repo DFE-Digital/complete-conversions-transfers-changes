@@ -11,7 +11,6 @@ using Dfe.Complete.Services;
 using Dfe.Complete.Utils;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using System.ComponentModel.DataAnnotations;
 
 namespace Dfe.Complete.Pages.Projects.ExternalContacts.New;
 
@@ -21,25 +20,17 @@ public class CreateExternalContact(ITrustCache trustCacheService,  ErrorService 
     private const string invalidContactTypeErrorMessage = "The selected contact type is invalid";
 
     [BindProperty]
-    [Required(ErrorMessage = "Enter a name")]
-    public string FullName { get; set; }
-
-    [BindProperty]
-    public string? Email { get; set; }
-
-    [BindProperty]
-    public string? Phone { get; set; }
-
-    [BindProperty]
-    public bool IsPrimaryProjectContact { get; set; }
+    public ExternalContactInputModel ExternalContactInput { get; set; } = new();
    
+    //[BindProperty]
+    //[FromRoute(Name = "externalcontacttype")]
     [BindProperty(SupportsGet = true, Name = "externalcontacttype")]
     public string SelectedExternalContactType { get; set; }
 
     public override async Task<IActionResult> OnGetAsync()
     {
         await base.OnGetAsync();
-        return GetExternalContactType();
+        return GetPage();
     }
     
     public async Task<IActionResult> OnPostAsync()
@@ -86,12 +77,12 @@ public class CreateExternalContact(ITrustCache trustCacheService,  ErrorService 
                 }
 
                 var newExternalContactCommand = new CreateExternalContactCommand(
-                    FullName: this.FullName,
+                    FullName: this.ExternalContactInput.FullName,
                     Role: role,
-                    Email: this.Email ?? string.Empty,
-                    PhoneNumber: this.Phone ?? string.Empty,
+                    Email: this.ExternalContactInput.Email ?? string.Empty,
+                    PhoneNumber: this.ExternalContactInput.Phone ?? string.Empty,
                     Category: category,
-                    IsPrimaryContact: this.IsPrimaryProjectContact,
+                    IsPrimaryContact: this.ExternalContactInput.IsPrimaryProjectContact,
                     ProjectId: new ProjectId(Guid.Parse(this.ProjectId)),
                     EstablishmentUrn: null,
                     OrganisationName: organisationName,
@@ -119,7 +110,7 @@ public class CreateExternalContact(ITrustCache trustCacheService,  ErrorService 
         }
     }
 
-    public IActionResult GetExternalContactType()
+    private IActionResult GetPage()
     {
         var contactType = EnumExtensions.FromDescription<ExternalContactType>(this.SelectedExternalContactType);
 

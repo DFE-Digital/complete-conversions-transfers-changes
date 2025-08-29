@@ -1,16 +1,16 @@
-﻿@page "/projects/{projectId}/external-contacts/other_contact"
+﻿@page "/projects/{projectId}/external-contacts/new/create-other-contact"
 @model Dfe.Complete.Pages.Projects.ExternalContacts.New.CreateOtherExternalContact
 
 @{
+  ViewData["Title"] = "Add contact";
   Layout = "Shared/_Layout";
 }
 
-<div class="govuk-width-container ">
+<div class="govuk-width-container">
   <nav aria-label="back link">
     <a class="govuk-back-link" href="/projects/@Model.ProjectId/external-contacts">Back</a>
   </nav>
   <main class="govuk-main-wrapper app-content" id="main-content" role="main">
-
 
     <div class="govuk-grid-row govuk-body">
       <div class="govuk-grid-column-full">
@@ -18,99 +18,18 @@
         <h1 class="govuk-heading-l">Enter contact details</h1>
       </div>
     </div>
-
     <div class="govuk-grid-row govuk-body">
-      <div class="govuk-grid-column-two-thirds">
-        <form class="new_contact_create_project_contact_form" id="new_contact_create_project_contact_form" action="/projects/@Model.ProjectId/external-contacts/other_contact" accept-charset="UTF-8" method="post">
-          @Html.AntiForgeryToken()
-
-          <govuk-input name="contact-create-project-contact-form[name]">
-            <govuk-input-label class="govuk-label--m">Full name</govuk-input-label>
-          </govuk-input>
-          <govuk-input name="contact-create-project-contact-form[title]">
-            <govuk-input-label class="govuk-label--m">Role</govuk-input-label>
-          </govuk-input>
-          <govuk-input name="contact-create-project-contact-form[email]" type="email">
-            <govuk-input-hint>This must be the person's work email address, or address at the school, academy or trust their role is relevant to.</govuk-input-hint>
-            <govuk-input-label class="govuk-label--m">Email</govuk-input-label>
-          </govuk-input>
-          <govuk-input name="contact-create-project-contact-form[phone]" type="tel">
-            <govuk-input-label class="govuk-label--m">Phone</govuk-input-label>
-          </govuk-input>
-
-          <govuk-radios name="contact_create_project_contact_form[category]">
-            <govuk-radios-fieldset>
-              <govuk-radios-fieldset-legend class="govuk-fieldset__legend--m">
-                <h2 class="govuk-fieldset__heading">
-                  Which organisation is the contact for?
-                </h2>
-              </govuk-radios-fieldset-legend>
-
-              <govuk-radios-item value="school_or_academy">
-                School or academy
-              </govuk-radios-item>
-              <govuk-radios-item value="school_or_academy">
-                Incoming trust
-              </govuk-radios-item>
-              <govuk-radios-item value="school_or_academy">
-                Outgoing trust
-              </govuk-radios-item>
-              <govuk-radios-item value="school_or_academy">
-                Local authority
-              </govuk-radios-item>
-
-              <govuk-radios-item value="solicitor">
-                Solicitor
-                <govuk-radios-item-conditional>
-                  <govuk-input id="contact_create_project_contact_form_organisation_name" name="contact_create_project_contact_form[organisation_name]">
-                    <govuk-input-label>Enter the organisation this contact is for</govuk-input-label>
-                  </govuk-input>
-                </govuk-radios-item-conditional>
-              </govuk-radios-item>
-
-              <govuk-radios-item value="text">
-                Diocese
-                <govuk-radios-item-conditional>
-                  <govuk-input id="contact_create_project_contact_form_organisation_name" name="contact_create_project_contact_form[organisation_name]">
-                    <govuk-input-label>Enter the organisation this contact is for</govuk-input-label>
-                  </govuk-input>
-                </govuk-radios-item-conditional>
-              </govuk-radios-item>
-              
-              <govuk-radios-item value="text">
-                Other
-                <govuk-radios-item-conditional>
-                  <govuk-input id="contact_create_project_contact_form_organisation_name" name="contact_create_project_contact_form[organisation_name]">
-                    <govuk-input-label>Enter the organisation this contact is for</govuk-input-label>
-                  </govuk-input>
-                </govuk-radios-item-conditional>
-              </govuk-radios-item>
-              
-            </govuk-radios-fieldset>
-          </govuk-radios>
-
-          <govuk-radios name="contact_create_project_contact_form[primary_contact_for_category]">
-            <govuk-radios-fieldset>
-              <govuk-radios-fieldset-legend class="govuk-fieldset__legend--m">
-                Is this person the primary project contact for this organisation?
-              </govuk-radios-fieldset-legend>
-
-              <govuk-radios-hint>
-                A primary project contact is the person you most often to get in touch with first if you have any questions about the project.
-              </govuk-radios-hint>
-
-              <govuk-radios-item value="true">Yes</govuk-radios-item>
-              <govuk-radios-item value="false">No</govuk-radios-item>
-            </govuk-radios-fieldset>
-          </govuk-radios>
-
-          <div class="govuk-button-group">
-            <button type="submit" formnovalidate="formnovalidate" class="govuk-button" data-module="govuk-button" data-prevent-double-click="true">Save and continue</button>
-            <a class="govuk-link" href="/projects/@Model.ProjectId/external-contacts">Cancel</a>
-          </div>
-        </form>
-      </div>
+        <div class="govuk-grid-column-two-thirds">
+            <form method="post">                
+                    @await Html.PartialAsync("_OtherExternalContactForm", model: Model.ExternalContactInput)
+                    <div class="govuk-button-group">
+                        <govuk-button type="submit" data-prevent-double-click="true">
+                            Save and continue
+                        </govuk-button>
+                        <a class="govuk-link" href="/projects/@Model.ProjectId/external-contacts">Cancel</a>
+                    </div>
+            </form>
+        </div>
     </div>
-
   </main>
 </div>

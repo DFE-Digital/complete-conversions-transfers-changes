@@ -91,6 +91,6 @@
 
         // External contacts        
         public const string ProjectsExternalContactAdd = NewProjectExternalContacts + "/create-contact/{1}";
-        public const string ProjectsExternalContactAddTypeOther = NewProjectExternalContacts + "/create-contact-type-other";
+        public const string ProjectsExternalContactAddTypeOther = NewProjectExternalContacts + "/create-other-contact";
     }
 }

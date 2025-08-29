@@ -12,7 +12,7 @@ public class NewExternalContact(ISender sender, ILogger<NewExternalContact> logg
 {
     public ExternalContactType[] ContactTypeRadioOptions { get; set; }
 
-    [BindProperty(SupportsGet = true, Name = "SelectedExternalContactType")]
+    [BindProperty]
     public string? SelectedExternalContactType { get; set; }
 
     public override async Task<IActionResult> OnGetAsync()
@@ -28,7 +28,7 @@ public class NewExternalContact(ISender sender, ILogger<NewExternalContact> logg
 
         var pageToRedirectTo = contactType switch
         {
-            ExternalContactType.Other => string.Format(RouteConstants.ProjectsExternalContactAddTypeOther, ProjectId),
+            ExternalContactType.SomeOneElse => string.Format(RouteConstants.ProjectsExternalContactAddTypeOther, ProjectId),
             ExternalContactType.HeadTeacher or ExternalContactType.IncomingTrustCEO or ExternalContactType.OutgoingTrustCEO or ExternalContactType.ChairOfGovernors
                 => string.Format(RouteConstants.ProjectsExternalContactAdd, ProjectId, this.SelectedExternalContactType),
             _ => string.Empty
@@ -55,7 +55,7 @@ public class NewExternalContact(ISender sender, ILogger<NewExternalContact> logg
                 ExternalContactType.HeadTeacher,
                 ExternalContactType.IncomingTrustCEO,
                 ExternalContactType.OutgoingTrustCEO,
-                ExternalContactType.Other,
+                ExternalContactType.SomeOneElse,
             };
         }
         else
@@ -65,11 +65,8 @@ public class NewExternalContact(ISender sender, ILogger<NewExternalContact> logg
                 ExternalContactType.HeadTeacher,
                 ExternalContactType.IncomingTrustCEO,
                 ExternalContactType.ChairOfGovernors,
-                ExternalContactType.Other,
+                ExternalContactType.SomeOneElse,
             };
         }
-
-        if (string.IsNullOrWhiteSpace(this.SelectedExternalContactType))
-            this.SelectedExternalContactType = EnumExtensions.ToDescription<ExternalContactType>(ExternalContactType.Other);
     }
 }
