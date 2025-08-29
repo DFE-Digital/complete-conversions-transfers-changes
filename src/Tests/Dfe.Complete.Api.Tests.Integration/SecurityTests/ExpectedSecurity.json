@@ -257,6 +257,11 @@
     },
     {
       "Controller": "TasksDataController",
+      "Action": "UpdateArticleOfAssociationTaskAsync",
+      "ExpectedSecurity": "Authorize: Policy=CanReadWrite"
+    },
+    {
+      "Controller": "TasksDataController",
       "Action": "UpdateSupplementalFundingAgreementTaskAsync",
       "ExpectedSecurity": "Authorize: Policy=CanReadWriteUpdate"
     }

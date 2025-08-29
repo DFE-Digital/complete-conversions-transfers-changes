@@ -17,7 +17,7 @@ Security in case of vulnerabilities.
 ## Unreleased
 
 ### Added
-
+- Added `Article of association` task data for both conversion and trasnfer projects.
 - Added `Supplemental Funding Agreement` task data for both conversion and transfer projects.
 
 ### Changed

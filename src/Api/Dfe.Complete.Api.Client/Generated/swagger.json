@@ -2248,7 +2248,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/UpdateHandoverWithDeliveryOfficerCommand"
+                "$ref": "#/components/schemas/UpdateHandoverWithDeliveryOfficerTaskCommand"
               }
             }
           },
@@ -2261,6 +2261,39 @@
           },
           "404": {
             "description": "Transfer or Conversion task data not found for the given task data Id."
+          }
+        }
+      }
+    },
+    "/v1/TasksData/TaskData/ArticleOfAssociation": {
+      "patch": {
+        "tags": [
+          "TasksData"
+        ],
+        "summary": "Updates the article of association task Data for conversion or trasnfer project.",
+        "operationId": "TasksData_UpdateArticleOfAssociationTask",
+        "requestBody": {
+          "x-name": "request",
+          "description": "The update command.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateArticleOfAssociationTaskCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "204": {
+            "description": "Conversion or transfer's article of association task updated successfully."
+          },
+          "400": {
+            "description": "Invalid request data."
+          },
+          "404": {
+            "description": "Project/User not found."
           }
         }
       }
@@ -4579,14 +4612,16 @@
           "LandQuestionnaire",
           "LandRegistry",
           "StakeholderKickoff",
-          "SupplementalFundingAgreement"
+          "SupplementalFundingAgreement",
+          "ArticleOfAssociation"
         ],
         "enum": [
           "Handover",
           "LandQuestionnaire",
           "LandRegistry",
           "StakeholderKickoff",
-          "SupplementalFundingAgreement"
+          "SupplementalFundingAgreement",
+          "ArticleOfAssociation"
         ]
       },
       "CreateNoteCommand": {
@@ -6277,7 +6312,7 @@
           "Commercial"
         ]
       },
-      "UpdateHandoverWithDeliveryOfficerCommand": {
+      "UpdateHandoverWithDeliveryOfficerTaskCommand": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
@@ -6305,6 +6340,47 @@
             "nullable": true
           },
           "handoverMeetings": {
+            "type": "boolean",
+            "nullable": true
+          }
+        }
+      },
+      "UpdateArticleOfAssociationTaskCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "taskDataId": {
+            "$ref": "#/components/schemas/TaskDataId"
+          },
+          "projectType": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/ProjectType"
+              }
+            ]
+          },
+          "notApplicable": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "cleared": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "received": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "sent": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "signed": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "saved": {
             "type": "boolean",
             "nullable": true
           }
