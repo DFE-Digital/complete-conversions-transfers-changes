@@ -32,3 +32,4 @@ export const nextMonth = new Date(today.getFullYear(), today.getMonth() + 1);
 export const nextMonthLong = `${nextMonth.toLocaleString("en-GB", { month: "long" })} ${nextMonth.getFullYear()}`;
 export const nextMonthShort = `${nextMonth.toLocaleString("en-GB", { month: "short" })} ${nextMonth.getFullYear()}`;
 export const giasUrl = "https://get-information-schools.service.gov.uk";
+export const companiesHouseUrl = "https://find-and-update.company-information.service.gov.uk/company/";

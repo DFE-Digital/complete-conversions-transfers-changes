@@ -60,12 +60,22 @@ class ProjectTable extends BasePage {
         return this;
     }
 
-    protected clickButtonInRow(schoolName: string, buttonName: string) {
+    columnHasValueWithLink(tableColumn: string, expectedValue: string, link: string) {
+        this.assertTableCellValue(this.schoolName, tableColumn, expectedValue, true, link);
+    }
+
+    clickButtonInRow(schoolName: string, buttonName: string) {
         cy.getProjectTableRow(schoolName).contains(buttonName).click();
         return this;
     }
 
-    protected assertTableCellValue(tableRowKey: string, tableColumn: string, expectedValue: string, exactMatch = true) {
+    protected assertTableCellValue(
+        tableRowKey: string,
+        tableColumn: string,
+        expectedValue: string,
+        exactMatch = true,
+        link?: string,
+    ) {
         cy.getByClass(this.tableHeadersClass)
             .contains(tableColumn)
             .then((header) => {
@@ -74,11 +84,19 @@ class ProjectTable extends BasePage {
                     throw new Error("School name is not set. Call withSchool() before asserting table cell value.");
                 }
                 cy.getProjectTableRow(tableRowKey).then((row) => {
-                    const actualValue = row.find("td").eq(tableColumnIndex).text().trim();
+                    const cell = row.find("td").eq(tableColumnIndex);
+                    const actualValue = cell.text().trim();
+
                     if (exactMatch) {
                         expect(actualValue).to.equal(expectedValue);
                     } else {
                         expect(actualValue).contains(expectedValue);
+                    }
+
+                    if (link) {
+                        const linkElement = cell.find("a");
+                        expect(linkElement).to.exist;
+                        expect(linkElement.attr("href")).to.contain(link);
                     }
                 });
             });
