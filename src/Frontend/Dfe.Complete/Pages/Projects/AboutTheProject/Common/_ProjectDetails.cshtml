@@ -53,7 +53,6 @@
                     }
                 @if(Model.UserHasEditAccess()) {
                     <govuk-summary-list-row-actions>
-                        @* <govuk-summary-list-row-action href="@(string.Format(RouteConstants.Project, Model.ProjectId))" visually-hidden-text="Change project group">Change</govuk-summary-list-row-action> *@
                         <govuk-summary-list-row-action href="@Model.GetChangeLinkUrl("group-reference-number")" visually-hidden-text="Change project group">Change</govuk-summary-list-row-action>
                     </govuk-summary-list-row-actions>
                 }
