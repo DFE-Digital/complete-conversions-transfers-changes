@@ -1,6 +1,7 @@
 ﻿@page "/projects/{projectId}/tasks/stakeholder_kick_off"
 @using Dfe.Complete.Constants
 @using Dfe.Complete.Domain.Enums
+@inject Microsoft.Extensions.Configuration.IConfiguration _configuration
 @model Dfe.Complete.Pages.Projects.TaskList.Tasks.StakeholderKickoffTask.StakeholderKickoffTaskModel
 @inject Dfe.Complete.Services.ErrorService ErrorService
 @{
@@ -44,7 +45,7 @@
                         <span class="govuk-details__summary-text">What to include in introductory emails</span>
                     </govuk-details-summary>
                     <govuk-details-text>
-                        <p>You can <a class="govuk-link" href="https://educationgovuk.sharepoint.com/:f:/s/ServiceDeliveryDirectorate/ElWeWBJ7zxtLhJe3fepy1j4BCRuJnb9DEYgiQiKdCkLt1w?e=EkRZIL" target="_blank">choose an email template (opens in new tab)</a> to help you write your introductory emails. There are templates for the school or trust and their solicitors.</p>
+                                <p>You can <a class="govuk-link" href="@_configuration["ExternalLinks:EmailTemplate"]" target="_blank">choose an email template (opens in new tab)</a> to help you write your introductory emails. There are templates for the school or trust and their solicitors.</p>
                         <p>This will help you to:</p>
                         <ul>
                             <li>organise kick-off meetings</li>
@@ -75,7 +76,7 @@
                             <p>However, some local authorities will not share the proforma until after the academy order has been issued.</p>
                             <p>If it is not in SharePoint, check if the person who prepared the project has asked for it.</p>
                             <p>If they have not, ask the local authority to send the proforma to you and save it in SharePoint.</p>
-                            <p>You can <a class="govuk-link" href="https://educationgovuk.sharepoint.com/sites/ServiceDeliveryDirectorate/Shared%20Documents/Forms/AllItems.aspx?FolderCTID=0x012000265B42F1C27524438F6B1CC14FCF9E05&amp;id=%2Fsites%2FServiceDeliveryDirectorate%2FShared%20Documents%2FOperational%20Delivery%2FGuidance%2C%20Training%20and%20Resources%2F%281%29%20CONVERSIONS%20%2D%20Guidance%20and%20Templates%2FCONVERSIONS%20%2D%20Template%20Emails%20%26%20Documents&amp;viewid=84d1a8e7%2D052b%2D4a94%2D8d1b%2D850c4e6f284f" target="blank">use a local authority email template (opens in new tab)</a> to help you write this email.</p>
+                                    <p>You can <a class="govuk-link" href="@_configuration["ExternalLinks:LocalAuthorityEmailTemplate"]" target="blank">use a local authority email template (opens in new tab)</a> to help you write this email.</p>
                         </govuk-details-text>
                     </govuk-details> 
                 </govuk-checkboxes-item-hint>
@@ -128,7 +129,7 @@
                     </govuk-details-summary>
                     <govuk-details-text>
                         <p>You should discuss and record issues that might complicate or delay the project.</p>
-                        <p>You can <a class="govuk-link" href="https://educationgovuk.sharepoint.com/:w:/s/ServiceDeliveryDirectorate/EZx-RuHD_JxEuaCF68ZXpe8BvSQ3ITlysjfNJ28t0_xzfQ?e=hxRZxt" target="_blank">use the @projectTypeString checklist (opens in new tab)</a> to guide the conversation and make sure you talk about everything you need to.</p>
+                                <p>You can <a class="govuk-link" href="@_configuration["ExternalLinks:ConversionChecklist"]" target="_blank">use the @projectTypeString checklist (opens in new tab)</a> to guide the conversation and make sure you talk about everything you need to.</p>
                     </govuk-details-text>
                 </govuk-details>
             </govuk-checkboxes-item-hint>
