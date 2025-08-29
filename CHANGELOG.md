@@ -18,6 +18,8 @@ Security in case of vulnerabilities.
 
 ### Added
 - Added `Article of association` task data for both conversion and trasnfer projects.
+- Added 'Deed of novation and variation' task for transfer projects.
+
 ### Changed
 
 ### Fixed
