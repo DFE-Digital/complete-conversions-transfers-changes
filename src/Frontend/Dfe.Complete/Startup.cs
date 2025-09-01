@@ -1,6 +1,7 @@
 using Azure.Identity;
 using Dfe.Complete.Configuration;
 using DataProtectionOptions = Dfe.Complete.Configuration.DataProtectionOptions;
+using Dfe.Complete.Domain.Constants;
 using Dfe.Complete.Infrastructure;
 using Dfe.Complete.Infrastructure.Security.Authorization;
 using Dfe.Complete.Security;
@@ -9,6 +10,7 @@ using Dfe.Complete.StartupConfiguration;
 using DfE.CoreLibs.Security.Authorization;
 using GovUk.Frontend.AspNetCore;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.FeatureManagement;
@@ -60,7 +62,7 @@ public class Startup
         services
             .AddRazorPages(options =>
             {
-                options.Conventions.AuthorizeFolder("/");
+                options.Conventions.AuthorizeFolder("/", UserPolicyConstants.ActiveUser);
                 options.Conventions.AddPageRoute("/Projects/EditProjectNote", "projects/{projectId}/notes/edit");
             })
             .AddViewOptions(options =>
@@ -104,6 +106,8 @@ public class Startup
         services.AddHttpContextAccessor();
 
         services.AddApplicationAuthorization(Configuration, CustomPolicies.PolicyCustomizations);
+
+        services.AddScoped<IAuthorizationHandler, ActiveUserAuthorizationHandler>();
 
         var authenticationBuilder = services.AddAuthentication(options =>
         {
