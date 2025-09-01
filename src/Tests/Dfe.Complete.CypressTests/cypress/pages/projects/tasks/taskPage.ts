@@ -1,6 +1,18 @@
 import BasePage from "cypress/pages/basePage";
 
 class TaskPage extends BasePage {
+    // information dropdowns
+    clickDropdown(summaryText: string) {
+        cy.contains("summary", summaryText).click();
+        return this;
+    }
+
+    hasDropdownContent(content: string) {
+        cy.contains(content).should("be.visible");
+        return this;
+    }
+
+    // options
     hasCheckboxLabel(text: string) {
         cy.contains("label", text).should("exist");
         cy.wrap(text).as("label");
