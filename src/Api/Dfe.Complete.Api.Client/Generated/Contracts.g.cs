@@ -813,6 +813,40 @@ namespace Dfe.Complete.Client.Contracts
         System.Threading.Tasks.Task UpdateArticleOfAssociationTaskAsync(UpdateArticleOfAssociationTaskCommand request, System.Threading.CancellationToken cancellationToken);
 
         /// <summary>
+        /// Updates the deed of variation task Data for conversion or trasnfer project.
+        /// </summary>
+        /// <param name="request">The update command.</param>
+        /// <returns>Transfer's deed of variation task updated successfully.</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task UpdateDeedOfNovationAndVariationTaskAsync(UpdateDeedOfNovationAndVariationTaskCommand request);
+
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>
+        /// Updates the deed of variation task Data for conversion or trasnfer project.
+        /// </summary>
+        /// <param name="request">The update command.</param>
+        /// <returns>Transfer's deed of variation task updated successfully.</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task UpdateDeedOfNovationAndVariationTaskAsync(UpdateDeedOfNovationAndVariationTaskCommand request, System.Threading.CancellationToken cancellationToken);
+
+        /// <summary>
+        /// Updates the deed of variation task Data for conversion or trasnfer project.
+        /// </summary>
+        /// <param name="request">The update command.</param>
+        /// <returns>Conversion or transfer's deed of variation task updated successfully.</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task UpdateDeedOfVariationTaskAsync(UpdateDeedOfVariationTaskCommand request);
+
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>
+        /// Updates the deed of variation task Data for conversion or trasnfer project.
+        /// </summary>
+        /// <param name="request">The update command.</param>
+        /// <returns>Conversion or transfer's deed of variation task updated successfully.</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task UpdateDeedOfVariationTaskAsync(UpdateDeedOfVariationTaskCommand request, System.Threading.CancellationToken cancellationToken);
+
+        /// <summary>
         /// Updates the External stakeholder kickoff Task Data for a specific task data.
         /// </summary>
         /// <param name="request">The update command.</param>
@@ -2915,6 +2949,12 @@ namespace Dfe.Complete.Client.Contracts
         [System.Runtime.Serialization.EnumMember(Value = @"ArticleOfAssociation")]
         ArticleOfAssociation = 5,
 
+        [System.Runtime.Serialization.EnumMember(Value = @"DeedOfNovationAndVariation")]
+        DeedOfNovationAndVariation = 6,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"DeedOfVariation")]
+        DeedOfVariation = 7,
+
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.2.0.0 (NJsonSchema v11.1.0.0 (Newtonsoft.Json v13.0.0.0))")]
@@ -4631,6 +4671,94 @@ namespace Dfe.Complete.Client.Contracts
         {
 
             return Newtonsoft.Json.JsonConvert.DeserializeObject<UpdateArticleOfAssociationTaskCommand>(data, new Newtonsoft.Json.JsonSerializerSettings());
+
+        }
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.2.0.0 (NJsonSchema v11.1.0.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class UpdateDeedOfNovationAndVariationTaskCommand
+    {
+        [Newtonsoft.Json.JsonProperty("taskDataId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public TaskDataId? TaskDataId { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("received", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? Received { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("cleared", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? Cleared { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("signedOutgoingTrust", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? SignedOutgoingTrust { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("signedIncomingTrust", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? SignedIncomingTrust { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("saved", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? Saved { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("signedSecretaryState", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? SignedSecretaryState { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("savedAfterSign", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? SavedAfterSign { get; set; } = default!;
+
+        public string ToJson()
+        {
+
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonSerializerSettings());
+
+        }
+        public static UpdateDeedOfNovationAndVariationTaskCommand FromJson(string data)
+        {
+
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<UpdateDeedOfNovationAndVariationTaskCommand>(data, new Newtonsoft.Json.JsonSerializerSettings());
+
+        }
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.2.0.0 (NJsonSchema v11.1.0.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class UpdateDeedOfVariationTaskCommand
+    {
+        [Newtonsoft.Json.JsonProperty("taskDataId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public TaskDataId? TaskDataId { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("projectType", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
+        public ProjectType? ProjectType { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("received", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? Received { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("cleared", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? Cleared { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("sent", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? Sent { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("saved", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? Saved { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("signed", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? Signed { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("signedSecretaryState", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? SignedSecretaryState { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("notApplicable", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? NotApplicable { get; set; } = default!;
+
+        public string ToJson()
+        {
+
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonSerializerSettings());
+
+        }
+        public static UpdateDeedOfVariationTaskCommand FromJson(string data)
+        {
+
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<UpdateDeedOfVariationTaskCommand>(data, new Newtonsoft.Json.JsonSerializerSettings());
 
         }
 
