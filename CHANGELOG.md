@@ -31,6 +31,7 @@ See the [full commit history](https://github.com/DFE-Digital/complete-conversion
 ### Added
 - Added `Article of association` task data for both conversion and trasnfer projects.
 - Added 'Deed of novation and variation' task for transfer projects.
+- Added 'Deed of variation' task for both conversion and transfer projects. 
 
 ### Changed
 
