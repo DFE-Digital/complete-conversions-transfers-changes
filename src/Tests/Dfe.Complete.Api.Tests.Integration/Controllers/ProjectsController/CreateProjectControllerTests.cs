@@ -29,10 +29,9 @@ public partial class ProjectsControllerTests
         IFixture fixture)
     {
         factory.TestClaims = [new Claim(ClaimTypes.Role, ApiRoles.WriteRole), new Claim(ClaimTypes.Role, ApiRoles.ReadRole)];
-
         var dbContext = factory.GetDbContext<CompleteContext>();
 
-        var testUser = await dbContext.Users.FirstOrDefaultAsync();
+        var testUser = await dbContext.Users.OrderBy(u=>u.CreatedAt).FirstOrDefaultAsync();
         Assert.NotNull(testUser);
         testUser.ActiveDirectoryUserId = createConversionProjectCommand.UserAdId;
 
@@ -91,7 +90,7 @@ public partial class ProjectsControllerTests
 
         var dbContext = factory.GetDbContext<CompleteContext>();
 
-        var testUser = await dbContext.Users.FirstOrDefaultAsync();
+        var testUser = await dbContext.Users.OrderBy(user => user.CreatedAt).FirstOrDefaultAsync();
         Assert.NotNull(testUser);
         testUser.ActiveDirectoryUserId = createTransferProjectCommand.UserAdId;
 
@@ -145,7 +144,7 @@ public partial class ProjectsControllerTests
 
         var dbContext = factory.GetDbContext<CompleteContext>();
 
-        var testUser = await dbContext.Users.FirstOrDefaultAsync();
+        var testUser = await dbContext.Users.OrderBy(user => user.CreatedAt).FirstOrDefaultAsync();
         Assert.NotNull(testUser);
         testUser.ActiveDirectoryUserId = createMatConversionProjectCommand.UserAdId;
 
@@ -198,7 +197,7 @@ public partial class ProjectsControllerTests
 
         var dbContext = factory.GetDbContext<CompleteContext>();
 
-        var testUser = await dbContext.Users.FirstOrDefaultAsync();
+        var testUser = await dbContext.Users.OrderBy(user => user.CreatedAt).FirstOrDefaultAsync();
         Assert.NotNull(testUser);
         testUser.ActiveDirectoryUserId = createMatTransferProjectCommand.UserAdId;
 

@@ -458,5 +458,4 @@ public class ListAllProjectsForUserTests
         Assert.Equal(0, result.Value?.Count);
         mockTrustsClient.Verify(service => service.GetByUkprnsAllAsync(It.IsAny<IEnumerable<string>>(), default), Times.Never);
     }
-
 }

@@ -17,6 +17,18 @@ Security in case of vulnerabilities.
 ## Unreleased
 
 ### Added
+
+### Changed
+
+### Fixed
+
+See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-09-01.688...main) for everything awaiting release
+
+---
+
+## [1.14.0](https://github.com/DFE-Digital/complete-conversions-transfers-changes/releases/tag/production-2025-09-01.688) - 2025-09-01
+
+### Added
 - Added `Article of association` task data for both conversion and trasnfer projects.
 - Added 'Deed of variation' task for both conversion and transfer projects. 
 
@@ -24,8 +36,10 @@ Security in case of vulnerabilities.
 
 ### Fixed
 - GetProjectByUrn doesn't return notes
+- Incoming and Outgoing trust information missing from project header
+- HOTFIX: Get user by active directory ID only returns active user
 
-See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-08-26.669...main) for everything awaiting release
+See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-08-26.669...production-2025-09-01.688) for everything in the release
 
 ---
 
