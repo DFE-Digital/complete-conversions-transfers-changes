@@ -2287,7 +2287,7 @@
         },
         "responses": {
           "204": {
-            "description": "Conversion or trannsfer's article of association task updated successfully."
+            "description": "Conversion or transfer's article of association task updated successfully."
           },
           "400": {
             "description": "Invalid request data."
