@@ -16,14 +16,16 @@ Security in case of vulnerabilities.
 
 ## Unreleased
 
-### Added
+See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-09-01.697...main) for everything awaiting release
 
-### Changed
+---
+
+## [1.14.1](https://github.com/DFE-Digital/complete-conversions-transfers-changes/releases/tag/production-2025-09-01.697) - 2025-09-01
 
 ### Fixed
 - hotfix - fetch only active users when attaching claims from database roles
 
-See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-09-01.688...main) for everything awaiting release
+See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-09-01.688...production-2025-09-01.697) for everything in the release
 
 ---
 
