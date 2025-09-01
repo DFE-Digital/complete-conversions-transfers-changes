@@ -27,7 +27,7 @@ namespace Dfe.Complete.Infrastructure.Database
             var services = new ServiceCollection();
 
             var optionsBuilder = new DbContextOptionsBuilder<TContext>();
-            optionsBuilder.UseSqlServer(connectionString);
+            optionsBuilder.UseCompleteSqlServer(connectionString!);
 
             services.AddMediatR(cfg =>
             {
