@@ -15,11 +15,13 @@ namespace Dfe.Complete.Pages.Projects.TaskList
             await UpdateCurrentProject();
             await SetEstablishmentAsync();
             await GetProjectTaskDataAsync();
+            await SetIncomingTrustAsync();
+            await SetOutgoingTrustAsync();
             await GetKeyContactForProjectsAsyc();
 
             TransferTaskList = TransferTaskListViewModel.Create(TransferTaskData, Project, KeyContacts);
             ConversionTaskList = ConversionTaskListViewModel.Create(ConversionTaskData, Project, KeyContacts);
             return Page();
-        }  
+        }
     }
 }
