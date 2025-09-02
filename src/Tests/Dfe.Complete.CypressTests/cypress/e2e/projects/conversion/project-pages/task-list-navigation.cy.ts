@@ -2,11 +2,6 @@ import conversionTaskListPage from "cypress/pages/projects/conversionTaskListPag
 import { ProjectBuilder } from "cypress/api/projectBuilder";
 import projectApi from "cypress/api/projectApi";
 
-const TIMEOUT = {
-    DEFAULT: 10000,
-    EXTENDED: 15000,
-} as const;
-
 const project = ProjectBuilder.createConversionFormAMatProjectRequest();
 let projectId: string;
 
