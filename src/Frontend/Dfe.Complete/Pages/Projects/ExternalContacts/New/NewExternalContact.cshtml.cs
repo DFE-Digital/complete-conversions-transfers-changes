@@ -13,7 +13,7 @@ public class NewExternalContact(ISender sender, ILogger<NewExternalContact> logg
     public ExternalContactType[] ContactTypeRadioOptions { get; set; }
 
     [BindProperty]
-    public string? SelectedExternalContactType { get; set; }
+    public string? SelectedExternalContactType { get; set; } = ExternalContactType.SomeOneElse.ToDescription();
 
     public override async Task<IActionResult> OnGetAsync()
     {

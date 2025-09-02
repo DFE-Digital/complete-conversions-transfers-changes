@@ -28,7 +28,9 @@
                   </govuk-radios-hint>
                   @foreach (var externalContactType in Model.ContactTypeRadioOptions)
                   {
-                     <govuk-radios-item value="@externalContactType.ToDescription()">@externalContactType.ToDisplayDescription()</govuk-radios-item>
+                      var description = externalContactType.ToDescription();
+                      var selected = Model.SelectedExternalContactType == description;
+                     <govuk-radios-item value="@description" checked="@selected">@externalContactType.ToDisplayDescription()</govuk-radios-item>
                   }                                              
                 </govuk-radios-fieldset>
               </govuk-radios>

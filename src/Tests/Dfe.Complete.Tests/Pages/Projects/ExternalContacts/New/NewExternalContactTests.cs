@@ -44,7 +44,8 @@ namespace Dfe.Complete.Tests.Pages.Projects.ExternalContacts.New
 
             var testClass = fixture.Build<NewExternalContact>()
                .With(t => t.PageContext, PageDataHelper.GetPageContext())
-               .With(t => t.ProjectId, projectId.Value.ToString())               
+               .With(t => t.ProjectId, projectId.Value.ToString())
+               .With(t => t.SelectedExternalContactType, ExternalContactType.SomeOneElse.ToDescription())
                .Create();
 
             var projectDto = fixture.Build<ProjectDto>()
@@ -67,7 +68,8 @@ namespace Dfe.Complete.Tests.Pages.Projects.ExternalContacts.New
                 () => Assert.Contains(ExternalContactType.HeadTeacher, testClass.ContactTypeRadioOptions),
                 () => Assert.Contains(ExternalContactType.IncomingTrustCEO, testClass.ContactTypeRadioOptions),
                 () => Assert.Contains(ExternalContactType.SomeOneElse, testClass.ContactTypeRadioOptions),
-                () => Assert.Contains(expectedContactType, testClass.ContactTypeRadioOptions)
+                () => Assert.Contains(expectedContactType, testClass.ContactTypeRadioOptions),
+                () => Assert.Equal("someoneelse", testClass.SelectedExternalContactType)
             );
             
         }
@@ -77,7 +79,7 @@ namespace Dfe.Complete.Tests.Pages.Projects.ExternalContacts.New
         [InlineData("incomingtrustceo", "ed11d27b-c35f-4c61-b794-b9317a28a30b", "/projects/ed11d27b-c35f-4c61-b794-b9317a28a30b/external-contacts/new/create-contact/incomingtrustceo")]
         [InlineData("outgoingtrustceo", "ed11d27b-c35f-4c61-b794-b9317a28a30b", "/projects/ed11d27b-c35f-4c61-b794-b9317a28a30b/external-contacts/new/create-contact/outgoingtrustceo")]
         [InlineData("chairofgovernors", "ed11d27b-c35f-4c61-b794-b9317a28a30b", "/projects/ed11d27b-c35f-4c61-b794-b9317a28a30b/external-contacts/new/create-contact/chairofgovernors")]
-        [InlineData("other", "ed11d27b-c35f-4c61-b794-b9317a28a30b", "/projects/ed11d27b-c35f-4c61-b794-b9317a28a30b/external-contacts/new/create-other-contact")]
+        [InlineData("someoneelse", "ed11d27b-c35f-4c61-b794-b9317a28a30b", "/projects/ed11d27b-c35f-4c61-b794-b9317a28a30b/external-contacts/new/create-other-contact")]
         public void OnPost_Valid_ReturnsRedirectResult(string contactType, string guidValue, string expectedRedirectUrl)
         {
             // Arrange
