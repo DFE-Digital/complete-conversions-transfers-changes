@@ -18,9 +18,13 @@ Security in case of vulnerabilities.
 
 ### Added
 
+- Enabled `DB retry` logic on failure.
+
 ### Changed
 
 ### Fixed
+
+- Fixed `Signed Secretary state` checkbox data on the `Deed of novation and variation` task page.
 
 See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-09-01.688...main) for everything awaiting release
 

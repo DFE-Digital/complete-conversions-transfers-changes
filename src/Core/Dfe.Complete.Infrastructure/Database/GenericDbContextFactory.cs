@@ -27,7 +27,7 @@ namespace Dfe.Complete.Infrastructure.Database
             var services = new ServiceCollection();
 
             var optionsBuilder = new DbContextOptionsBuilder<TContext>();
-            optionsBuilder.UseCompleteSqlServer(connectionString!);
+            optionsBuilder.UseCompleteSqlServer(connectionString!, configuration.GetValue("EnableSQLRetryOnFailure", false));
 
             services.AddMediatR(cfg =>
             {
