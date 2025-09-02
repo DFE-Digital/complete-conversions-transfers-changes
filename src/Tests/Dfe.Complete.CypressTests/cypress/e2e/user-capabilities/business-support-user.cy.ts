@@ -94,7 +94,7 @@ describe("Capabilities and permissions of the business support user", () => {
             .columnHasValue("Incoming trust", macclesfieldTrust.name.toUpperCase()) // bug 208086
             .columnHasValue("All conditions met", "Not yet")
             .columnHasValue("Confirmed date (Original date)", "Apr 2027")
-            .goTo(`${schoolName} ${project.urn.value}`);
+            .goTo(schoolName);
         projectDetailsPage.containsHeading(schoolName);
     });
 
