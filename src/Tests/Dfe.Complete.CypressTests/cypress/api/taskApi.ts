@@ -36,6 +36,18 @@ interface UpdateDeedOfNovationAndVariationTaskRequest {
     saveAfterSign?: boolean;
 }
 
+interface UpdateDeedOfVariationTaskRequest {
+    taskDataId: TaskDataIdObject;
+    projectType?: ProjectType;
+    notApplicable?: boolean;
+    received?: boolean;
+    cleared?: boolean;
+    sent?: boolean;
+    saved?: boolean;
+    signed?: boolean;
+    signedSecretaryState?: boolean;
+}
+
 export enum ProjectType {
     Conversion = "Conversion",
     Transfer = "Transfer",
@@ -372,6 +384,32 @@ class TaskApi extends ApiBase {
         );
     }
 
+    public updateDeedOfVariationTask(
+        taskDataId: string,
+        projectType: ProjectType,
+        notApplicable = false,
+        received = false,
+        cleared = false,
+        sent = false,
+        saved = false,
+        signed = false,
+        signedSecretaryState = false,
+    ) {
+        const requestBody: UpdateDeedOfVariationTaskRequest = {
+            taskDataId: { value: taskDataId },
+            notApplicable,
+            received,
+            cleared,
+            sent,
+            saved,
+            signed,
+            signedSecretaryState,
+            projectType,
+        };
+
+        return this.taskDataBaseRequest<void>("PATCH", `${this.taskDataUrl}/DeedOfVariation`, requestBody, 204);
+    }
+
     public updateArticleOfAssociationTask(
         taskDataId: string,
         projectType: ProjectType,
@@ -402,7 +440,8 @@ class TaskApi extends ApiBase {
         body:
             | UpdateHandoverWithDeliveryOfficerTaskRequest
             | UpdateArticleOfAssociationTaskRequest
-            | UpdateDeedOfNovationAndVariationTaskRequest,
+            | UpdateDeedOfNovationAndVariationTaskRequest
+            | UpdateDeedOfVariationTaskRequest,
         expectedStatus: number,
     ) {
         return this.authenticatedRequest().then((headers) => {
