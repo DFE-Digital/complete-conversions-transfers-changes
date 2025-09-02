@@ -21,7 +21,10 @@ public abstract class ExternalContactBasePageModel(ISender sender, ILogger logge
 
     public TrustDto? IncomingTrust { get; set; }
 
-    public TrustDto? OutgoingTrust { get; set; }   
+    public TrustDto? OutgoingTrust { get; set; }
+
+    public EstablishmentDto Establishment { get; set; }
+
 
     public virtual async Task<IActionResult> OnGetAsync()
     {  

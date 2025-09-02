@@ -7,8 +7,7 @@
     const string fullname = nameof(Model.FullName);
     const string email = nameof(Model.Email);
     const string phone = nameof(Model.Phone);
-    const string role = nameof(Model.Role);
-    const string organisation = nameof(Model.Organisation);
+    const string role = nameof(Model.Role);    
     const string primaryprojectcontact = nameof(Model.IsPrimaryProjectContact);
     const string contactType = nameof(Model.SelectedExternalContactType);
     var selectedContactType = EnumExtensions.FromDescription<ExternalContactType>(Model.SelectedExternalContactType);
@@ -45,16 +44,33 @@
         </govuk-radios-fieldset-legend>
         @foreach (var externalContactType in Model.ContactTypeRadioOptions)
         {
+            var organisationName = $"organisation-{@externalContactType.ToDescription()}";
             <govuk-radios-item value="@externalContactType.ToDescription()" checked="@(externalContactType == selectedContactType)">
                 @externalContactType.ToDisplayDescription()
-                @if (@externalContactType == ExternalContactType.Solicitor || @externalContactType == ExternalContactType.Diocese || @externalContactType == ExternalContactType.Other)
-                {
+                @if (@externalContactType == ExternalContactType.Solicitor)
+                {   
                     <govuk-radios-item-conditional>
-                        <govuk-input id="@organisation" name="@organisation">
+                        <govuk-input id="@organisationName" name="@organisationName" asp-for="@Model.OrganisationSolicitor">
                         <govuk-input-label>Enter the organisation this contact is for</govuk-input-label>
                     </govuk-input>
                     </govuk-radios-item-conditional>
-                }            
+                }
+                @if (@externalContactType == ExternalContactType.Diocese)
+                {
+                    <govuk-radios-item-conditional>
+                        <govuk-input id="@organisationName" name="@organisationName" asp-for="@Model.OrganisationDiocese">
+                            <govuk-input-label>Enter the organisation this contact is for</govuk-input-label>
+                        </govuk-input>
+                    </govuk-radios-item-conditional>
+                }
+                @if (@externalContactType == ExternalContactType.Other)
+                {   
+                    <govuk-radios-item-conditional>
+                        <govuk-input id="@organisationName" name="@organisationName" asp-for="@Model.OrganisationOther">
+                            <govuk-input-label>Enter the organisation this contact is for</govuk-input-label>
+                        </govuk-input>
+                    </govuk-radios-item-conditional>
+                }
             </govuk-radios-item>
         }
     </govuk-radios-fieldset>
@@ -68,9 +84,13 @@
         <govuk-radios-hint>
             A primary project contact is the person you most often to get in touch with first if you have any questions about the project.
         </govuk-radios-hint>
-
+        @if (ErrorService.HasErrorForKey(@primaryprojectcontact))
+        {
+            <govuk-radios-error-message>@(ErrorService.GetErrorMessage(primaryprojectcontact))</govuk-radios-error-message>
+        }
         <govuk-radios-item value="true" checked="@(Model.IsPrimaryProjectContact)">Yes</govuk-radios-item>
         <govuk-radios-item value="false" checked="@(!Model.IsPrimaryProjectContact)">No</govuk-radios-item>
+
     </govuk-radios-fieldset>
 </govuk-radios>
 

@@ -23,7 +23,7 @@ public class CreateExternalContact(ITrustCache trustCacheService,  ErrorService 
     public ExternalContactInputModel ExternalContactInput { get; set; } = new();
    
     //[BindProperty]
-    //[FromRoute(Name = "externalcontacttype")]
+    [FromRoute(Name = "externalcontacttype")]
     [BindProperty(SupportsGet = true, Name = "externalcontacttype")]
     public string SelectedExternalContactType { get; set; }
 

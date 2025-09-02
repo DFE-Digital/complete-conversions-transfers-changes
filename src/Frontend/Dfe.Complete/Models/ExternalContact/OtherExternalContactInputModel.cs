@@ -1,6 +1,7 @@
 ﻿using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Utils;
-using System.ComponentModel;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using System.ComponentModel.DataAnnotations;
 
 namespace Dfe.Complete.Models.ExternalContact
@@ -10,9 +11,16 @@ namespace Dfe.Complete.Models.ExternalContact
         [Required(ErrorMessage = "Enter a role")]
         public string Role { get; set; }
 
-        public string? Organisation { get; set; }
+        [BindProperty(Name = "organisation-solicitor")]
+        public string? OrganisationSolicitor { get; set; }
 
-        public string SelectedExternalContactType { get; set; } = ExternalContactType.Other.ToDescription();
+        [BindProperty(Name = "organisation-diocese")]
+        public string? OrganisationDiocese { get; set; }
+
+        [BindProperty(Name = "organisation-other")]
+        public string? OrganisationOther { get; set; }
+
+        public string? SelectedExternalContactType { get; set; }
 
         public ExternalContactType[]? ContactTypeRadioOptions { get; set; }
     }

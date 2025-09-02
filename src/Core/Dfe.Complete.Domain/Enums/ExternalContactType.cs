@@ -44,7 +44,7 @@ public enum ExternalContactType
 
     [Description("other")]
     [DisplayDescription("Other")]
-    Other = 9,
+    Other = 10,
 }
 
 
