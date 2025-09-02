@@ -47,7 +47,7 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.DeedOfNovationAndVariationT
             Saved = TransferTaskData.DeedOfNovationAndVariationSaved;
             SignedOutgoingTrust = TransferTaskData.DeedOfNovationAndVariationSignedOutgoingTrust;
             SignedIncomingTrust = TransferTaskData.DeedOfNovationAndVariationSignedIncomingTrust;
-            SignedSecretaryState = TransferTaskData.DeedOfVariationSignedSecretaryState;
+            SignedSecretaryState = TransferTaskData.DeedOfNovationAndVariationSignedSecretaryState;
             return Page();
         }
         public async Task<IActionResult> OnPost()
