@@ -18,6 +18,7 @@ Security in case of vulnerabilities.
 
 ### Changed
 - Complete project button will hide when users don't have access
+- Sort "Your projects in progress" in ascending date order
 
 ### Fixed
 - Complete project post no longer throws antiforgery error
