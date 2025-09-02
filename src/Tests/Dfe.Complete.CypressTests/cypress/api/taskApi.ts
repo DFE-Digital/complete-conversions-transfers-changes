@@ -25,6 +25,17 @@ interface UpdateArticleOfAssociationTaskRequest {
     saved?: boolean;
 }
 
+interface UpdateDeedOfNovationAndVariationTaskRequest {
+    taskDataId: TaskDataIdObject;
+    received?: boolean;
+    cleared?: boolean;
+    signedOutgoingTrust?: boolean;
+    signedIncomingTrust?: boolean;
+    saved?: boolean;
+    signedSecretaryState?: boolean;
+    saveAfterSign?: boolean;
+}
+
 export enum ProjectType {
     Conversion = "Conversion",
     Transfer = "Transfer",
@@ -332,6 +343,35 @@ class TaskApi extends ApiBase {
         return this.taskDataBaseRequest<void>("PATCH", `${this.taskDataUrl}/HandoverDeliveryOfficer`, requestBody, 204);
     }
 
+    public updateDeedOfNovationAndVariationTask(
+        taskDataId: string,
+        received = false,
+        cleared = false,
+        signedOutgoingTrust = false,
+        signedIncomingTrust = false,
+        saved = false,
+        signedSecretaryState = false,
+        saveAfterSign = false,
+    ) {
+        const requestBody: UpdateDeedOfNovationAndVariationTaskRequest = {
+            taskDataId: { value: taskDataId },
+            received,
+            cleared,
+            signedOutgoingTrust,
+            signedIncomingTrust,
+            saved,
+            signedSecretaryState,
+            saveAfterSign,
+        };
+
+        return this.taskDataBaseRequest<void>(
+            "PATCH",
+            `${this.taskDataUrl}/DeedOfNovationAndVariation`,
+            requestBody,
+            204,
+        );
+    }
+
     public updateArticleOfAssociationTask(
         taskDataId: string,
         projectType: ProjectType,
@@ -359,7 +399,10 @@ class TaskApi extends ApiBase {
     private taskDataBaseRequest<T>(
         method: string,
         url: string,
-        body: UpdateHandoverWithDeliveryOfficerTaskRequest | UpdateArticleOfAssociationTaskRequest,
+        body:
+            | UpdateHandoverWithDeliveryOfficerTaskRequest
+            | UpdateArticleOfAssociationTaskRequest
+            | UpdateDeedOfNovationAndVariationTaskRequest,
         expectedStatus: number,
     ) {
         return this.authenticatedRequest().then((headers) => {

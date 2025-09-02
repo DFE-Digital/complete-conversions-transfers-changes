@@ -19,6 +19,12 @@ class TaskPage extends BasePage {
         return this;
     }
 
+    noNotApplicableOptionExists() {
+        cy.getById("not-applicable").should("not.exist");
+        cy.contains("label", /not applicable/i).should("not.exist");
+        return this;
+    }
+
     // input checkbox
     tickNotApplicable() {
         cy.getById("not-applicable").check();
