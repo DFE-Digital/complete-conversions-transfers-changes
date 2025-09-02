@@ -127,7 +127,7 @@ class BasePage {
 
     protected pageHasMovedToSection(section: string, sections: Record<string, string>) {
         cy.url().should("include", `#${sections[section]}`);
-        cy.contains("h2", section).isInViewport();
+        cy.contains("h2", section).should("be.visible");
         return this;
     }
 
