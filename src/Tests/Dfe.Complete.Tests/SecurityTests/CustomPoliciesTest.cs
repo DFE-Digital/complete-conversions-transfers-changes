@@ -61,7 +61,7 @@ public class CustomPoliciesIntegrationTests
         ["CanCreateProjects", new[] { "regional_casework_services", "manage_team" }, false],
         ["CanCreateProjects", new[] { "regional_delivery_officer" }, true],
         ["CanCreateProjects", new[] { "regional_delivery_officer", "manage_team" }, true],
-        ["ActiveUser", new string[] { }, false],
+        ["ActiveUser", Array.Empty<string>(), false],
         ["ActiveUser", new[] { "some_role" }, false],
         ["ActiveUser", new[] { "some_role" }, true, true] // true for hasUserId parameter
     };
@@ -122,14 +122,12 @@ public class CustomPoliciesIntegrationTests
         // Arrange
         var services = new ServiceCollection();
         services.AddLogging();
-        services.AddAuthorization(options =>
-        {
-            options.AddPolicy(UserPolicyConstants.ActiveUser, builder =>
+        services.AddAuthorizationBuilder()
+            .AddPolicy(UserPolicyConstants.ActiveUser, builder =>
             {
                 builder.RequireAuthenticatedUser();
                 builder.AddRequirements(new ActiveUserRequirement());
             });
-        });
         services.AddScoped<IAuthorizationHandler, ActiveUserAuthorizationHandler>();
         
         var serviceProvider = services.BuildServiceProvider();

@@ -16,6 +16,12 @@ Security in case of vulnerabilities.
 
 ## Unreleased
 
+### Added
+- Enabled `DB retry` logic on failure.
+
+### Fixed
+- Fixed `Signed Secretary state` checkbox data on the `Deed of novation and variation` task page.
+
 ### Security
 - prevent inactive users from signing in
 
