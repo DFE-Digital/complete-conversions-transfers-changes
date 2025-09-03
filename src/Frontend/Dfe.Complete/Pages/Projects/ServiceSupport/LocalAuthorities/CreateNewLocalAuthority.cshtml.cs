@@ -61,7 +61,7 @@ namespace Dfe.Complete.Pages.Projects.ServiceSupport.LocalAuthorities
             }
             var localAuthorityId = new LocalAuthorityId(Guid.NewGuid());
             var response = await sender.Send(new CreateLocalAuthorityCommand(localAuthorityId, Code, Name, Address1, Address2, Address3,
-                AddressTown, AddressCounty, AddressPostcode, new ContactId(Guid.NewGuid()), Title!, ContactName!, Email, Phone));
+                AddressTown, AddressCounty, AddressPostcode.ToUpper(), new ContactId(Guid.NewGuid()), Title!, ContactName!, Email, Phone));
 
             if (response.IsSuccess)
             {
