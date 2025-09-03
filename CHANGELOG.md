@@ -16,6 +16,10 @@ Security in case of vulnerabilities.
 
 ## Unreleased
 
+### Changed
+- Postcode validation now insensitive
+- UK phone number validation to include a wider range
+
 See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-09-01.697...main) for everything awaiting release
 
 ---
