@@ -16,14 +16,42 @@ Security in case of vulnerabilities.
 
 ## Unreleased
 
+See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-09-01.697...main) for everything awaiting release
+
+---
+
+## [1.14.1](https://github.com/DFE-Digital/complete-conversions-transfers-changes/releases/tag/production-2025-09-01.697) - 2025-09-01
+
+### Added
+
+- Enabled `DB retry` logic on failure.
+
+### Changed
+
+### Fixed
+
+- hotfix - fetch only active users when attaching claims from database roles
+- Fixed `Signed Secretary state` checkbox data on the `Deed of novation and variation` task page.
+
+See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-09-01.688...production-2025-09-01.697) for everything in the release
+
+---
+
+## [1.14.0](https://github.com/DFE-Digital/complete-conversions-transfers-changes/releases/tag/production-2025-09-01.688) - 2025-09-01
+
 ### Added
 - Added `Article of association` task data for both conversion and trasnfer projects.
+- Added 'Deed of novation and variation' task for transfer projects.
+- Added 'Deed of variation' task for both conversion and transfer projects. 
+
 ### Changed
 
 ### Fixed
 - GetProjectByUrn doesn't return notes
+- Incoming and Outgoing trust information missing from project header
+- HOTFIX: Get user by active directory ID only returns active user
 
-See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-08-26.669...main) for everything awaiting release
+See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-08-26.669...production-2025-09-01.688) for everything in the release
 
 ---
 
@@ -66,6 +94,7 @@ See the [full commit history](https://github.com/DFE-Digital/complete-conversion
 - Added `/privacy` page
 
 ### Changed
+- Updated the implementation of `StakeholderKickoffTaskModel`
 
 ### Fixed
 
