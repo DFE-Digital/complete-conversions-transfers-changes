@@ -1,4 +1,9 @@
+using Dfe.Complete.Application.Projects.Commands.TaskData;
+using Dfe.Complete.Constants;
 using Dfe.Complete.Domain.Enums;
+using Dfe.Complete.Domain.ValueObjects;
+using Dfe.Complete.Extensions;
+using Dfe.Complete.Models;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -23,7 +28,40 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.SupplementalFundingAgreemen
         [BindProperty(Name = "sent")]
         public bool? Sent { get; set; }
 
-        [BindProperty(Name = "signed-secretary-state")]
+        [BindProperty(Name = "signed_secretary_state")]
         public bool? SignedSecretaryState { get; set; }
+
+        [BindProperty]
+        public Guid? TasksDataId { get; set; }
+        [BindProperty]
+        public ProjectType? Type { get; set; }
+        public override async Task<IActionResult> OnGetAsync()
+        {
+            await base.OnGetAsync();
+            Type = Project.Type;
+            TasksDataId = Project.TasksDataId?.Value;
+            if (Project.Type == ProjectType.Transfer)
+            {
+                Received = TransferTaskData.SupplementalFundingAgreementReceived;
+                Cleared = TransferTaskData.SupplementalFundingAgreementCleared;
+                Saved = TransferTaskData.SupplementalFundingAgreementSaved;
+            }
+            else
+            {
+                Received = ConversionTaskData.SupplementalFundingAgreementReceived;
+                Cleared = ConversionTaskData.SupplementalFundingAgreementCleared;
+                Sent = ConversionTaskData.SupplementalFundingAgreementSent;
+                Saved = ConversionTaskData.SupplementalFundingAgreementSaved;
+                Signed = ConversionTaskData.SupplementalFundingAgreementSigned;
+                SignedSecretaryState = ConversionTaskData.SupplementalFundingAgreementSignedSecretaryState;
+            }
+            return Page();
+        }
+        public async Task<IActionResult> OnPost()
+        {
+            await sender.Send(new UpdateSupplementalFundingAgreementTaskCommand(new TaskDataId(TasksDataId.GetValueOrDefault())!, Type, Received, Cleared, Sent, Saved, Signed, SignedSecretaryState));
+            TempData.SetNotification(NotificationType.Success, "Success", "Task updated successfully");
+            return Redirect(string.Format(RouteConstants.ProjectTaskList, ProjectId));
+        }
     }
 }
