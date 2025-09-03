@@ -50,7 +50,7 @@ describe("Transfer tasks - Articles of association", () => {
     it("should submit the form and persist selections", () => {
         Logger.log("Select the 'Not applicable' checkbox and save");
         taskPage.tickNotApplicable().saveAndReturn();
-        taskListPage.hasTaskStatusInProgress("Articles of association").selectTask("Articles of association");
+        taskListPage.hasTaskStatusNotApplicable("Articles of association").selectTask("Articles of association");
 
         Logger.log("Unselect the 'Not applicable' checkbox and save");
         taskPage.hasCheckboxLabel("Not applicable").isTicked().untick().saveAndReturn();
@@ -62,6 +62,7 @@ describe("Transfer tasks - Articles of association", () => {
         cy.visit(`projects/${projectId}/tasks`);
 
         taskApi.updateArticleOfAssociationTask(taskId, ProjectType.Transfer);
+        cy.reload();
         taskListPage.hasTaskStatusNotStarted("Articles of association");
 
         taskApi.updateArticleOfAssociationTask(taskId, ProjectType.Transfer, true);
