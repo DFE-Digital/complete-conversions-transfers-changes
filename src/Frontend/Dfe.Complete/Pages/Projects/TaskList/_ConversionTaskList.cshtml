@@ -301,22 +301,7 @@
                     </li>
                 </ol>
             </div>
-            <div class="govuk-grid-row" id="completing_a_project">
-                <div class="govuk-grid-column-two-thirds">
-                    <form action="@string.Format(RouteConstants.ProjectComplete, Model.ProjectId)" accept-charset="UTF-8" method="post">
-                        <h2 class="govuk-heading-m">
-                            Completing a project
-                        </h2>
-                        <p class="govuk-body">You should only complete the project when you have finished every task and marked any that are not needed as not applicable.</p>
-                        <p class="govuk-body">You will not be able to change this project once it is completed.</p>
-                        <div class="govuk-button-group">
-                            <button data-prevent-double-click="true" class="govuk-button" data-module="govuk-button" role="button" id="save">
-                                Complete project
-                            </button>
-                        </div>
-                    </form>
-                </div>
-            </div>
+            <partial name="Projects/TaskList/_CompleteProject" model="Model" />
             @if(Model.Project.DirectiveAcademyOrder == true && Model.Project.State != ProjectState.DaoRevoked)
             {
                 <div class="govuk-grid-row" id="revoke_a_directive_academy_order">
