@@ -16,7 +16,24 @@ Security in case of vulnerabilities.
 
 ## Unreleased
 
-See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-09-01.697...main) for everything awaiting release
+### Added
+
+### Changed
+
+### Fixed
+
+See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-09-03.710...main) for everything awaiting release
+
+---
+
+## [1.15.0](https://github.com/DFE-Digital/complete-conversions-transfers-changes/releases/tag/production-2025-09-03.710) - 2025-09-03
+
+### Changed
+- Postcode validation now insensitive
+- UK phone number validation to include a wider range
+- Updated the implementation of `StakeholderKickoffTaskModel`
+
+See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-09-01.697...production-2025-09-03.710) for everything in the release
 
 ---
 
@@ -95,7 +112,6 @@ See the [full commit history](https://github.com/DFE-Digital/complete-conversion
 - Added `/privacy` page
 
 ### Changed
-- Updated the implementation of `StakeholderKickoffTaskModel`
 
 ### Fixed
 
