@@ -78,7 +78,7 @@
                     <b>Signed by @(Model.Type == ProjectType.Conversion ? "school or":"academy or incoming") trust</b>
                 </govuk-checkboxes-item>
                 <govuk-checkboxes-item id="saved" asp-for="@Model.Saved" value="true" name="saved" checked="@Model.Saved">
-                    <b>Saved in the @(Model.Type == ProjectType.Conversion ? "school's'" : "academy") SharePoint folder</b>
+                    <b>Saved in the @(Model.Type == ProjectType.Conversion ? "school's" : "academy") SharePoint folder</b>
                 </govuk-checkboxes-item>
             </govuk-checkboxes-fieldset>
         </govuk-checkboxes>
