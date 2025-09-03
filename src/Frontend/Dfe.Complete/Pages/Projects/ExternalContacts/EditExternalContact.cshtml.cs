@@ -1,4 +1,4 @@
-﻿using Dfe.Complete.Application.Contacts.Commands;
+using Dfe.Complete.Application.Contacts.Commands;
 using Dfe.Complete.Application.Services.TrustCache;
 using Dfe.Complete.Constants;
 using Dfe.Complete.Domain.Enums;
@@ -12,15 +12,13 @@ using Dfe.Complete.Utils;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Dfe.Complete.Pages.Projects.ExternalContacts.New;
+namespace Dfe.Complete.Pages.Projects.ExternalContacts;
 
-public class CreateOtherExternalContact(ITrustCache trustCacheService, ErrorService errorService, ISender sender, ILogger<CreateOtherExternalContact> logger)
-    : ExternalContactAddEditPageModel(trustCacheService, sender, logger)
+public class EditOtherExternalContact(ITrustCache trustCacheService, ErrorService errorService, ISender sender, ILogger<EditOtherExternalContact> logger)
+     : ExternalContactAddEditPageModel(trustCacheService, sender, logger)
 {
-    private readonly ISender _sender = sender;    
-
     public async override Task<IActionResult> OnGetAsync()
-    {   
+    {        
         return await this.GetPage();
     }
 
@@ -29,12 +27,13 @@ public class CreateOtherExternalContact(ITrustCache trustCacheService, ErrorServ
         if (!ModelState.IsValid)
         {
             errorService.AddErrors(ModelState);
-            return await this.GetPage();
+            return await this.OnGetAsync();
         }
         else
         {
             try
             {
+
                 var contactType = EnumExtensions.FromDescription<ExternalContactType>(this.ExternalContactInput.SelectedExternalContactType);
 
                 if ((contactType == ExternalContactType.Solicitor || contactType == ExternalContactType.Diocese || contactType == ExternalContactType.Other) && this.ExternalContactInput.IsPrimaryProjectContact)
@@ -44,10 +43,10 @@ public class CreateOtherExternalContact(ITrustCache trustCacheService, ErrorServ
                     return await this.GetPage();
                 }
 
-                await this.GetCurrentProject();
-
+                var organisationName = string.Empty;
                 var category = ExternalContactHelper.GetCategoryByContactType(contactType);
-                var organisationName = await this.GetOrganisationName(contactType);
+
+                await base.GetCurrentProject();
 
                 var newExternalContactCommand = new CreateExternalContactCommand(
                     FullName: this.ExternalContactInput.FullName,
@@ -63,7 +62,7 @@ public class CreateOtherExternalContact(ITrustCache trustCacheService, ErrorServ
                     Type: ContactType.Project
                 );
 
-                var response = await _sender.Send(newExternalContactCommand);
+                var response = await sender.Send(newExternalContactCommand);
                 var contactId = response.Value;
 
                 TempData.SetNotification(
@@ -78,12 +77,13 @@ public class CreateOtherExternalContact(ITrustCache trustCacheService, ErrorServ
             {
                 logger.LogError(ex, "An error occurred when creating a new external contact for project {ProjectId}", ProjectId);
                 ModelState.AddModelError("UnexpectedError", "An unexpected error occurred. Please try again later.");
-                return await GetPage();
+                return await this.GetPage();
             }
         }
-    }
+    }    
+  
 
-    private async Task<IActionResult> GetPage()
+    protected async Task<IActionResult> GetPage()
     {
         await base.OnGetAsync();
         return Page();

@@ -5,18 +5,19 @@ namespace Dfe.Complete.Tests.Pages.Projects.ExternalContacts.New
     using Dfe.Complete.Application.Common.Models;
     using Dfe.Complete.Application.Contacts.Commands;
     using Dfe.Complete.Application.Projects.Models;
-    using Dfe.Complete.Application.Projects.Queries.GetProject;
-    using Dfe.Complete.Application.Services.TrustCache;
+    using Dfe.Complete.Application.Projects.Queries.GetProject;    
     using Dfe.Complete.Domain.Enums;
     using Dfe.Complete.Domain.ValueObjects;    
     using Dfe.Complete.Pages.Projects.ExternalContacts.New;
     using Dfe.Complete.Services.Interfaces;
     using Dfe.Complete.Tests.Common.Customizations.Behaviours;
     using Dfe.Complete.Tests.Common.Customizations.Models;
-    using Dfe.Complete.Tests.MockData;    
+    using Dfe.Complete.Tests.MockData;
+    using Dfe.Complete.Utils;
     using DfE.CoreLibs.Testing.AutoFixture.Customizations;    
     using MediatR;    
-    using Microsoft.AspNetCore.Mvc;    
+    using Microsoft.AspNetCore.Mvc;
+    using Microsoft.AspNetCore.Mvc.RazorPages;
     using Microsoft.Extensions.Logging;
     using Moq;    
     using System.Threading.Tasks;
@@ -44,7 +45,8 @@ namespace Dfe.Complete.Tests.Pages.Projects.ExternalContacts.New
 
             var testClass = fixture.Build<CreateExternalContact>()
                .With(t => t.PageContext, PageDataHelper.GetPageContext())
-               .With(t => t.ProjectId, projectId.Value.ToString())               
+               .With(t => t.ProjectId, projectId.Value.ToString())   
+               .With(t => t.SelectedExternalContactType, ExternalContactType.HeadTeacher.ToDescription())
                .Create();
 
             var projectDto = fixture.Build<ProjectDto>()
@@ -61,8 +63,10 @@ namespace Dfe.Complete.Tests.Pages.Projects.ExternalContacts.New
             // Act
             var result = await testClass.OnGetAsync();
 
+
             // Assert
             Assert.Multiple(
+                () => Assert.IsType<PageResult>(result),
                 () => Assert.NotNull(testClass.Project),
                 () => Assert.Equal(projectDto.Id, testClass.Project.Id)
             );

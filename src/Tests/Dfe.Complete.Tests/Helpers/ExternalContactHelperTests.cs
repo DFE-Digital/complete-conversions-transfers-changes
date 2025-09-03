@@ -30,6 +30,7 @@ namespace Dfe.Complete.Tests.Helpers
         [InlineData(ExternalContactType.OutgoingTrustCEO, ContactCategory.OutgoingTrust)]
         [InlineData(ExternalContactType.HeadTeacher, ContactCategory.SchoolOrAcademy)]
         [InlineData(ExternalContactType.ChairOfGovernors, ContactCategory.SchoolOrAcademy)]
+        [InlineData(ExternalContactType.SchoolOrAcademy, ContactCategory.SchoolOrAcademy)]
         [InlineData(ExternalContactType.LocalAuthority, ContactCategory.LocalAuthority)]
         [InlineData(ExternalContactType.Solicitor, ContactCategory.Solicitor)]
         [InlineData(ExternalContactType.Diocese, ContactCategory.Diocese)]

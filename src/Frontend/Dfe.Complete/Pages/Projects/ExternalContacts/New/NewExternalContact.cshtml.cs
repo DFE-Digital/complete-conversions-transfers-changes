@@ -15,9 +15,15 @@ public class NewExternalContact(ISender sender, ILogger<NewExternalContact> logg
     [BindProperty]
     public string? SelectedExternalContactType { get; set; } = ExternalContactType.SomeOneElse.ToDescription();
 
-    public override async Task<IActionResult> OnGetAsync()
+    public async Task<IActionResult> OnGetAsync()
     {
-        await base.OnGetAsync();
+        await this.GetCurrentProject();
+
+        if (this.Project == null)
+        {  
+            return NotFound();
+        }
+
         this.SetExternalContactTypes();
         return Page();
     }

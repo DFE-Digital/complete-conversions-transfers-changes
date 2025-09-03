@@ -18,6 +18,7 @@ public class CreateExternalContact(ITrustCache trustCacheService,  ErrorService 
     : ExternalContactBasePageModel(sender, logger)
 {   
     private const string invalidContactTypeErrorMessage = "The selected contact type is invalid";
+    private readonly ISender _sender = sender;
 
     [BindProperty]
     public ExternalContactInputModel ExternalContactInput { get; set; } = new();
@@ -27,18 +28,17 @@ public class CreateExternalContact(ITrustCache trustCacheService,  ErrorService 
     [BindProperty(SupportsGet = true, Name = "externalcontacttype")]
     public string SelectedExternalContactType { get; set; }
 
-    public override async Task<IActionResult> OnGetAsync()
+    public async virtual Task<IActionResult> OnGetAsync()
     {
-        await base.OnGetAsync();
-        return GetPage();
+        return await this.GetPage();
     }
-    
+
     public async Task<IActionResult> OnPostAsync()
     {
         if (!ModelState.IsValid)
         {
             errorService.AddErrors(ModelState);
-            return Page();
+            return await this.GetPage();
         }
         else
         {
@@ -90,7 +90,7 @@ public class CreateExternalContact(ITrustCache trustCacheService,  ErrorService 
                     Type: ContactType.Project
                 );
 
-                var response = await Sender.Send(newExternalContactCommand);
+                var response = await _sender.Send(newExternalContactCommand);
                 var contactId = response.Value;
 
                 TempData.SetNotification(
@@ -103,25 +103,26 @@ public class CreateExternalContact(ITrustCache trustCacheService,  ErrorService 
             {
                 logger.LogError(ex, "An error occurred when creating a new external contact for project {ProjectId}", ProjectId);
                 ModelState.AddModelError("UnexpectedError", "An unexpected error occurred. Please try again later.");
-                return Page();
+                return await this.GetPage();
             }
 
             return Redirect(string.Format(RouteConstants.ProjectExternalContacts, ProjectId));
         }
-    }
+    }    
 
-    private IActionResult GetPage()
+    private async Task<IActionResult> GetPage()
     {
         var contactType = EnumExtensions.FromDescription<ExternalContactType>(this.SelectedExternalContactType);
 
         if (contactType == default)
-        {   
+        {
             var notFoundException = new Utils.NotFoundException(invalidContactTypeErrorMessage);
 
             logger.LogError(notFoundException, notFoundException.Message, notFoundException.InnerException);
             return NotFound();
         }
 
+        await base.GetCurrentProject();
         return Page();
     }
 }

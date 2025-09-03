@@ -8,7 +8,7 @@ namespace Dfe.Complete.Pages.Projects.ExternalContacts.New;
 public class CreateHeadteacher(ISender sender, ILogger<CreateHeadteacher> logger)
     : ProjectLayoutModel(sender, logger, ExternalContactsNavigation)
 {
-    public override async Task<IActionResult>  OnGetAsync()
+    public override async Task<IActionResult> OnGetAsync()
     {
         await base.OnGetAsync();
 

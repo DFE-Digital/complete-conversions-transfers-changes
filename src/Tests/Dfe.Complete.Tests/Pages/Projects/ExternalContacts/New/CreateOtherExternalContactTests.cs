@@ -5,8 +5,7 @@ namespace Dfe.Complete.Tests.Pages.Projects.ExternalContacts.New
     using Dfe.Complete.Application.Common.Models;
     using Dfe.Complete.Application.Contacts.Commands;
     using Dfe.Complete.Application.Projects.Models;
-    using Dfe.Complete.Application.Projects.Queries.GetProject;
-    using Dfe.Complete.Application.Services.TrustCache;
+    using Dfe.Complete.Application.Projects.Queries.GetProject;    
     using Dfe.Complete.Domain.Enums;
     using Dfe.Complete.Domain.ValueObjects;
     using Dfe.Complete.Models.ExternalContact;
@@ -46,6 +45,10 @@ namespace Dfe.Complete.Tests.Pages.Projects.ExternalContacts.New
             var testClass = fixture.Build<CreateOtherExternalContact>()
                .With(t => t.PageContext, PageDataHelper.GetPageContext())
                .With(t => t.ProjectId, projectId.Value.ToString())               
+               .With(t => t.ExternalContactInput, fixture.Build<OtherExternalContactInputModel>()
+                   .With(e => e.SelectedExternalContactType, string.Empty)     
+                   .Without(e => e.ContactTypeRadioOptions)
+                   .Create())
                .Create();
 
             var projectDto = fixture.Build<ProjectDto>()
@@ -65,7 +68,7 @@ namespace Dfe.Complete.Tests.Pages.Projects.ExternalContacts.New
             // Assert
             Assert.Multiple(
                 () => Assert.NotNull(testClass.Project),
-                () =>Assert.Equal(projectDto.Id, testClass.Project.Id),
+                () => Assert.Equal(projectDto.Id, testClass.Project.Id),
                 () => Assert.Equal(7, testClass.ExternalContactInput.ContactTypeRadioOptions.Count()),
                 () => Assert.Contains(ExternalContactType.SchoolOrAcademy, testClass.ExternalContactInput.ContactTypeRadioOptions),
                 () => Assert.Contains(ExternalContactType.IncomingTrustCEO, testClass.ExternalContactInput.ContactTypeRadioOptions),
@@ -73,7 +76,7 @@ namespace Dfe.Complete.Tests.Pages.Projects.ExternalContacts.New
                 () => Assert.Contains(ExternalContactType.LocalAuthority, testClass.ExternalContactInput.ContactTypeRadioOptions),
                 () => Assert.Contains(ExternalContactType.Solicitor, testClass.ExternalContactInput.ContactTypeRadioOptions),
                 () => Assert.Contains(ExternalContactType.Diocese, testClass.ExternalContactInput.ContactTypeRadioOptions),
-                () => Assert.Contains(ExternalContactType.Other, testClass.ExternalContactInput.ContactTypeRadioOptions)                
+                () => Assert.Contains(ExternalContactType.Other, testClass.ExternalContactInput.ContactTypeRadioOptions)
             );
         }
 

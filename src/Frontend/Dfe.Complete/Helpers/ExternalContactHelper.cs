@@ -9,7 +9,7 @@ namespace Dfe.Complete.Helpers
         {
             return contactType switch
             {
-                ExternalContactType.HeadTeacher or ExternalContactType.ChairOfGovernors => ContactCategory.SchoolOrAcademy,                
+                ExternalContactType.HeadTeacher or ExternalContactType.ChairOfGovernors or ExternalContactType.SchoolOrAcademy => ContactCategory.SchoolOrAcademy,                
                 ExternalContactType.IncomingTrustCEO => ContactCategory.IncomingTrust,
                 ExternalContactType.OutgoingTrustCEO => ContactCategory.OutgoingTrust,
                 ExternalContactType.LocalAuthority => ContactCategory.LocalAuthority,

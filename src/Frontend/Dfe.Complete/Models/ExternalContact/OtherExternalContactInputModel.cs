@@ -1,7 +1,6 @@
 ﻿using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Utils;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
 using System.ComponentModel.DataAnnotations;
 
 namespace Dfe.Complete.Models.ExternalContact
@@ -20,7 +19,7 @@ namespace Dfe.Complete.Models.ExternalContact
         [BindProperty(Name = "organisation-other")]
         public string? OrganisationOther { get; set; }
 
-        public string? SelectedExternalContactType { get; set; }
+        public string SelectedExternalContactType { get; set; } = ExternalContactType.Other.ToDescription();
 
         public ExternalContactType[]? ContactTypeRadioOptions { get; set; }
     }
