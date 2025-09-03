@@ -33,7 +33,7 @@ interface UpdateDeedOfNovationAndVariationTaskRequest {
     signedIncomingTrust?: boolean;
     saved?: boolean;
     signedSecretaryState?: boolean;
-    saveAfterSign?: boolean;
+    savedAfterSign?: boolean;
 }
 
 interface UpdateDeedOfVariationTaskRequest {
@@ -363,7 +363,7 @@ class TaskApi extends ApiBase {
         signedIncomingTrust = false,
         saved = false,
         signedSecretaryState = false,
-        saveAfterSign = false,
+        savedAfterSign = false,
     ) {
         const requestBody: UpdateDeedOfNovationAndVariationTaskRequest = {
             taskDataId: { value: taskDataId },
@@ -373,7 +373,7 @@ class TaskApi extends ApiBase {
             signedIncomingTrust,
             saved,
             signedSecretaryState,
-            saveAfterSign,
+            savedAfterSign,
         };
 
         return this.taskDataBaseRequest<void>(
