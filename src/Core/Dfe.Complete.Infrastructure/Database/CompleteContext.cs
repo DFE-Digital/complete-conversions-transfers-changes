@@ -63,7 +63,7 @@ public partial class CompleteContext : DbContext
         if (!optionsBuilder.IsConfigured)
         {
             var connectionString = _configuration!.GetConnectionString("DefaultConnection");
-            optionsBuilder.UseSqlServer(connectionString);
+            optionsBuilder.UseCompleteSqlServer(connectionString!, _configuration!.GetValue("EnableSQLRetryOnFailure", false));
         }
 
         var mediator = _serviceProvider.GetRequiredService<IMediator>();
