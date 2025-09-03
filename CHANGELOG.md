@@ -31,6 +31,7 @@ See the [full commit history](https://github.com/DFE-Digital/complete-conversion
 ### Changed
 - Postcode validation now insensitive
 - UK phone number validation to include a wider range
+- Updated the implementation of `StakeholderKickoffTaskModel`
 
 See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-09-01.697...production-2025-09-03.710) for everything in the release
 
@@ -110,7 +111,6 @@ See the [full commit history](https://github.com/DFE-Digital/complete-conversion
 - Added `/privacy` page
 
 ### Changed
-- Updated the implementation of `StakeholderKickoffTaskModel`
 
 ### Fixed
 
