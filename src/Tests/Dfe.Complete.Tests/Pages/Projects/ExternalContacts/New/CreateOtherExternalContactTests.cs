@@ -9,8 +9,7 @@ namespace Dfe.Complete.Tests.Pages.Projects.ExternalContacts.New
     using Dfe.Complete.Domain.Enums;
     using Dfe.Complete.Domain.ValueObjects;
     using Dfe.Complete.Models.ExternalContact;
-    using Dfe.Complete.Pages.Projects.ExternalContacts.New;
-    using Dfe.Complete.Services.Interfaces;
+    using Dfe.Complete.Pages.Projects.ExternalContacts.New;    
     using Dfe.Complete.Tests.Common.Customizations.Behaviours;
     using Dfe.Complete.Tests.Common.Customizations.Models;
     using Dfe.Complete.Tests.MockData;    
