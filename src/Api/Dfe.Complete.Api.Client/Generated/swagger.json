@@ -2364,6 +2364,39 @@
         }
       }
     },
+    "/v1/TasksData/external-stakeholder-kickoff": {
+      "patch": {
+        "tags": [
+          "TasksData"
+        ],
+        "summary": "Updates the External stakeholder kickoff Task Data for a specific task data.",
+        "operationId": "TasksData_UpdateExternalStakeholderKickOffTask",
+        "requestBody": {
+          "x-name": "request",
+          "description": "The update command.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateExternalStakeholderKickOffTaskCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "204": {
+            "description": "External stakeholder kickoff Task updated successfully."
+          },
+          "400": {
+            "description": "Invalid request data."
+          },
+          "404": {
+            "description": "Project/User not found."
+          }
+        }
+      }
+    },
     "/v1/TasksData/TaskData/RedactAndSendDocuments": {
       "patch": {
         "tags": [
@@ -6536,6 +6569,44 @@
           },
           "notApplicable": {
             "type": "boolean",
+            "nullable": true
+          }
+        }
+      },
+      "UpdateExternalStakeholderKickOffTaskCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "projectId": {
+            "$ref": "#/components/schemas/ProjectId"
+          },
+          "stakeholderKickOffIntroductoryEmails": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "localAuthorityProforma": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "checkProvisionalDate": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "stakeholderKickOffSetupMeeting": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "stakeholderKickOffMeeting": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "significantDate": {
+            "type": "string",
+            "format": "date",
+            "nullable": true
+          },
+          "userEmail": {
+            "type": "string",
             "nullable": true
           }
         }

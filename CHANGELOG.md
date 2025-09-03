@@ -94,6 +94,7 @@ See the [full commit history](https://github.com/DFE-Digital/complete-conversion
 - Added `/privacy` page
 
 ### Changed
+- Updated the implementation of `StakeholderKickoffTaskModel`
 
 ### Fixed
 

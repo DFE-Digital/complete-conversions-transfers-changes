@@ -121,6 +121,24 @@ namespace Dfe.Complete.Api.Controllers
         }
 
         /// <summary>
+        /// Updates the External stakeholder kickoff Task Data for a specific task data.
+        /// </summary>
+        /// <param name="request">The update command.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        [Authorize(Policy = "CanReadWrite")]
+        [HttpPatch("external-stakeholder-kickoff")]
+        [SwaggerResponse(204, "External stakeholder kickoff Task updated successfully.")]
+        [SwaggerResponse(400, "Invalid request data.")]
+        [SwaggerResponse(404, "Project/User not found.")]
+        public async Task<IActionResult> UpdateExternalStakeholderKickOffTaskAsync(
+            [FromBody] UpdateExternalStakeholderKickOffTaskCommand request,
+            CancellationToken cancellationToken)
+        {
+            await sender.Send(request, cancellationToken);
+            return NoContent();
+        }
+
+        /// <summary>
         /// Updates the redact and send documents task Data for conversion or trasnfer project.
         /// </summary>
         /// <param name="request">The update command.</param>
