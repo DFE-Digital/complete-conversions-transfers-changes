@@ -2,11 +2,11 @@ import { ProjectBuilder } from "cypress/api/projectBuilder";
 import projectApi from "cypress/api/projectApi";
 import { checkAccessibilityAcrossPages } from "cypress/support/reusableTests";
 import taskListPage from "cypress/pages/projects/tasks/taskListPage";
-import taskApi from "cypress/api/taskApi";
 import projectRemover from "cypress/api/projectRemover";
 import { rdoLondonUser } from "cypress/constants/cypressConstants";
 import taskPage from "cypress/pages/projects/tasks/taskPage";
 import { Logger } from "cypress/common/logger";
+import TaskHelper from "cypress/api/taskHelper";
 
 const project = ProjectBuilder.createTransferProjectRequest();
 let projectId: string;
@@ -79,15 +79,15 @@ describe("Transfers tasks - Deed of novation and variation", () => {
     it("should show task status based on the checkboxes that are checked", () => {
         cy.visit(`projects/${projectId}/tasks`);
 
-        taskApi.updateDeedOfNovationAndVariationTask(taskId);
+        TaskHelper.updateDeedOfNovationAndVariation(taskId, "notStarted");
         cy.reload();
         taskListPage.hasTaskStatusNotStarted("Deed of novation and variation");
 
-        taskApi.updateDeedOfNovationAndVariationTask(taskId, true);
+        TaskHelper.updateDeedOfNovationAndVariation(taskId, "inProgress");
         cy.reload();
         taskListPage.hasTaskStatusInProgress("Deed of novation and variation");
 
-        taskApi.updateDeedOfNovationAndVariationTask(taskId, true, true, true, true, true, true, true);
+        TaskHelper.updateDeedOfNovationAndVariation(taskId, "completed");
         cy.reload();
         taskListPage.hasTaskStatusCompleted("Deed of novation and variation");
     });

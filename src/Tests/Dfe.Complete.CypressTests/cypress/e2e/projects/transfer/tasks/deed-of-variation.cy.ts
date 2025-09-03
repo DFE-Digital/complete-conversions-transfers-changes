@@ -2,11 +2,12 @@ import { ProjectBuilder } from "cypress/api/projectBuilder";
 import projectApi from "cypress/api/projectApi";
 import { checkAccessibilityAcrossPages } from "cypress/support/reusableTests";
 import taskListPage from "cypress/pages/projects/tasks/taskListPage";
-import taskApi, { ProjectType } from "cypress/api/taskApi";
+import { ProjectType } from "cypress/api/taskApi";
 import projectRemover from "cypress/api/projectRemover";
 import { rdoLondonUser } from "cypress/constants/cypressConstants";
 import taskPage from "cypress/pages/projects/tasks/taskPage";
 import { Logger } from "cypress/common/logger";
+import TaskHelper from "cypress/api/taskHelper";
 
 const project = ProjectBuilder.createTransferProjectRequest();
 let projectId: string;
@@ -59,19 +60,19 @@ describe("Transfers tasks - Deed of variation", () => {
     it("should show task status based on the checkboxes that are checked", () => {
         cy.visit(`projects/${projectId}/tasks`);
 
-        taskApi.updateDeedOfVariationTask(taskId, ProjectType.Transfer);
+        TaskHelper.updateDeedOfVariation(taskId, ProjectType.Transfer, "notStarted");
         cy.reload();
         taskListPage.hasTaskStatusNotStarted("Deed of variation");
 
-        taskApi.updateDeedOfVariationTask(taskId, ProjectType.Transfer, true);
+        TaskHelper.updateDeedOfVariation(taskId, ProjectType.Transfer, "notApplicable");
         cy.reload();
         taskListPage.hasTaskStatusNotApplicable("Deed of variation");
 
-        taskApi.updateDeedOfVariationTask(taskId, ProjectType.Transfer, false, true);
+        TaskHelper.updateDeedOfVariation(taskId, ProjectType.Transfer, "inProgress");
         cy.reload();
         taskListPage.hasTaskStatusInProgress("Deed of variation");
 
-        taskApi.updateDeedOfVariationTask(taskId, ProjectType.Transfer, false, true, true, true, true, true, true);
+        TaskHelper.updateDeedOfVariation(taskId, ProjectType.Transfer, "completed");
         cy.reload();
         taskListPage.hasTaskStatusCompleted("Deed of variation");
     });

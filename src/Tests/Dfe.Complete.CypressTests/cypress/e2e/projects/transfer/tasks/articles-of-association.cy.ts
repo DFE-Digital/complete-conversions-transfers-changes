@@ -2,11 +2,12 @@ import { ProjectBuilder } from "cypress/api/projectBuilder";
 import projectApi from "cypress/api/projectApi";
 import { checkAccessibilityAcrossPages } from "cypress/support/reusableTests";
 import taskListPage from "cypress/pages/projects/tasks/taskListPage";
-import taskApi, { ProjectType } from "cypress/api/taskApi";
+import { ProjectType } from "cypress/api/taskApi";
 import projectRemover from "cypress/api/projectRemover";
 import { rdoLondonUser } from "cypress/constants/cypressConstants";
 import taskPage from "cypress/pages/projects/tasks/taskPage";
 import { Logger } from "cypress/common/logger";
+import TaskHelper from "cypress/api/taskHelper";
 
 const project = ProjectBuilder.createTransferProjectRequest();
 let projectId: string;
@@ -61,19 +62,19 @@ describe("Transfer tasks - Articles of association", () => {
     it("should show task status based on the checkboxes are checked", () => {
         cy.visit(`projects/${projectId}/tasks`);
 
-        taskApi.updateArticleOfAssociationTask(taskId, ProjectType.Transfer);
+        TaskHelper.updateArticleOfAssociation(taskId, ProjectType.Transfer, "notStarted");
         cy.reload();
         taskListPage.hasTaskStatusNotStarted("Articles of association");
 
-        taskApi.updateArticleOfAssociationTask(taskId, ProjectType.Transfer, true);
+        TaskHelper.updateArticleOfAssociation(taskId, ProjectType.Transfer, "notApplicable");
         cy.reload();
         taskListPage.hasTaskStatusNotApplicable("Articles of association");
 
-        taskApi.updateArticleOfAssociationTask(taskId, ProjectType.Transfer, false, true);
+        TaskHelper.updateArticleOfAssociation(taskId, ProjectType.Transfer, "inProgress");
         cy.reload();
         taskListPage.hasTaskStatusInProgress("Articles of association");
 
-        taskApi.updateArticleOfAssociationTask(taskId, ProjectType.Transfer, false, true, true, true, true, true);
+        TaskHelper.updateArticleOfAssociation(taskId, ProjectType.Transfer, "completed");
         cy.reload();
         taskListPage.hasTaskStatusCompleted("Articles of association");
     });
