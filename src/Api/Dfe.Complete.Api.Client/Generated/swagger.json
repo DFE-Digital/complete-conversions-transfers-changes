@@ -2298,6 +2298,105 @@
         }
       }
     },
+    "/v1/TasksData/TaskData/DeedOfNovationAndVariation": {
+      "patch": {
+        "tags": [
+          "TasksData"
+        ],
+        "summary": "Updates the deed of variation task Data for conversion or trasnfer project.",
+        "operationId": "TasksData_UpdateDeedOfNovationAndVariationTask",
+        "requestBody": {
+          "x-name": "request",
+          "description": "The update command.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateDeedOfNovationAndVariationTaskCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "204": {
+            "description": "Transfer's deed of variation task updated successfully."
+          },
+          "400": {
+            "description": "Invalid request data."
+          },
+          "404": {
+            "description": "Project/User not found."
+          }
+        }
+      }
+    },
+    "/v1/TasksData/TaskData/DeedOfVariation": {
+      "patch": {
+        "tags": [
+          "TasksData"
+        ],
+        "summary": "Updates the deed of variation task Data for conversion or trasnfer project.",
+        "operationId": "TasksData_UpdateDeedOfVariationTask",
+        "requestBody": {
+          "x-name": "request",
+          "description": "The update command.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateDeedOfVariationTaskCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "204": {
+            "description": "Conversion or transfer's deed of variation task updated successfully."
+          },
+          "400": {
+            "description": "Invalid request data."
+          },
+          "404": {
+            "description": "Project/User not found."
+          }
+        }
+      }
+    },
+    "/v1/TasksData/external-stakeholder-kickoff": {
+      "patch": {
+        "tags": [
+          "TasksData"
+        ],
+        "summary": "Updates the External stakeholder kickoff Task Data for a specific task data.",
+        "operationId": "TasksData_UpdateExternalStakeholderKickOffTask",
+        "requestBody": {
+          "x-name": "request",
+          "description": "The update command.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateExternalStakeholderKickOffTaskCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "204": {
+            "description": "External stakeholder kickoff Task updated successfully."
+          },
+          "400": {
+            "description": "Invalid request data."
+          },
+          "404": {
+            "description": "Project/User not found."
+          }
+        }
+      }
+    },
     "/v1/TasksData/TaskData/SupplementalFundingAgreement": {
       "patch": {
         "tags": [
@@ -4613,7 +4712,9 @@
           "LandRegistry",
           "StakeholderKickoff",
           "SupplementalFundingAgreement",
-          "ArticleOfAssociation"
+          "ArticleOfAssociation",
+          "DeedOfNovationAndVariation",
+          "DeedOfVariation"
         ],
         "enum": [
           "Handover",
@@ -4621,7 +4722,9 @@
           "LandRegistry",
           "StakeholderKickoff",
           "SupplementalFundingAgreement",
-          "ArticleOfAssociation"
+          "ArticleOfAssociation",
+          "DeedOfNovationAndVariation",
+          "DeedOfVariation"
         ]
       },
       "CreateNoteCommand": {
@@ -6423,6 +6526,126 @@
           },
           "signedSecretaryState": {
             "type": "boolean",
+            "nullable": true
+          }
+        }
+      },
+      "UpdateDeedOfNovationAndVariationTaskCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "taskDataId": {
+            "$ref": "#/components/schemas/TaskDataId"
+          },
+          "received": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "cleared": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "signedOutgoingTrust": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "signedIncomingTrust": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "saved": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "signedSecretaryState": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "savedAfterSign": {
+            "type": "boolean",
+            "nullable": true
+          }
+        }
+      },
+      "UpdateDeedOfVariationTaskCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "taskDataId": {
+            "$ref": "#/components/schemas/TaskDataId"
+          },
+          "projectType": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/ProjectType"
+              }
+            ]
+          },
+          "received": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "cleared": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "sent": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "saved": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "signed": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "signedSecretaryState": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "notApplicable": {
+            "type": "boolean",
+            "nullable": true
+          }
+        }
+      },
+      "UpdateExternalStakeholderKickOffTaskCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "projectId": {
+            "$ref": "#/components/schemas/ProjectId"
+          },
+          "stakeholderKickOffIntroductoryEmails": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "localAuthorityProforma": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "checkProvisionalDate": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "stakeholderKickOffSetupMeeting": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "stakeholderKickOffMeeting": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "significantDate": {
+            "type": "string",
+            "format": "date",
+            "nullable": true
+          },
+          "userEmail": {
+            "type": "string",
             "nullable": true
           }
         }

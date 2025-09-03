@@ -9,27 +9,25 @@
 
 @section BeforeMain
 {
-    <div class="govuk-grid-row">
-        <govuk-back-link href="@backlink" xmlns="http://www.w3.org/1999/html" />
-    </div>
+    <govuk-back-link href="@backlink" xmlns="http://www.w3.org/1999/html" />
 }
-
+ 
 <main class="govuk-grid-row govuk-!-margin-bottom-9">
     <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
-            <h1 class="govuk-heading-xl" data-testid="title">
+            <h1 class="govuk-heading-xl govuk-!-margin-bottom-2" data-testid="title">
                 <span class="govuk-caption-l" data-testid="school-name">@Model.Establishment.Name</span>
                 @Model.TaskIdentifier.ToDisplayDescription()
-                @RenderSection("TaskHeaderHintSection", required: false)
             </h1>
+            @await RenderSectionAsync("TaskHeaderHintSection", required: false)
         </div>
     </div>
     <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
-            @RenderSection("TaskSection", required: true)
+            @await RenderSectionAsync("TaskSection", required: true)
         </div>
         <div class="govuk-grid-column-one-third">
             @await Html.PartialAsync("_ProjectTaskNotes", Model)
         </div>
     </div>
-</main>
+</main> 

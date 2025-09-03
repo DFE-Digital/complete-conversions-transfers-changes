@@ -134,6 +134,128 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers.ProjectsController
             Assert.NotNull(result);
             Assert.Equal(task.Id.Value, result.Id!.Value);
         }
+
+        [Theory]
+        [CustomAutoData(typeof(CustomWebApplicationDbContextFactoryCustomization))]
+        public async Task UpdateDeedOfVariationTaskAsync_ShouldUpdate_ConversionTaskData(
+            CustomWebApplicationDbContextFactory<Program> factory,
+            ITasksDataClient tasksDataClient,
+            Complete.Client.Contracts.UpdateDeedOfVariationTaskCommand command,
+            IFixture fixture)
+        {
+            // Arrange
+            factory.TestClaims = [new Claim(ClaimTypes.Role, ApiRoles.ReadRole), new Claim(ClaimTypes.Role, ApiRoles.UpdateRole), new Claim(ClaimTypes.Role, ApiRoles.WriteRole)];
+
+            var dbContext = factory.GetDbContext<CompleteContext>();
+
+            var taskData = fixture.Create<ConversionTasksData>();
+            dbContext.ConversionTasksData.Add(taskData);
+
+            await dbContext.SaveChangesAsync();
+            command.TaskDataId = new TaskDataId { Value = taskData.Id.Value };
+            command.ProjectType = ProjectType.Conversion;
+            command.Cleared = true;
+            command.Saved = false;
+            command.Received = true;
+            command.Signed = true;
+            command.Sent = false;
+            command.SignedSecretaryState = true;
+
+            // Act
+            await tasksDataClient.UpdateDeedOfVariationTaskAsync(command, default);
+
+            // Assert
+            dbContext.ChangeTracker.Clear();
+            var existingTaskData = await dbContext.ConversionTasksData.SingleOrDefaultAsync(x => x.Id == taskData.Id);
+            Assert.NotNull(existingTaskData);
+            Assert.True(existingTaskData.DeedOfVariationCleared);
+            Assert.True(existingTaskData.DeedOfVariationReceived);
+            Assert.False(existingTaskData.DeedOfVariationSaved);
+            Assert.False(existingTaskData.DeedOfVariationSent);
+            Assert.True(existingTaskData.DeedOfVariationSigned);
+            Assert.True(existingTaskData.DeedOfVariationSignedSecretaryState);
+        }
+        [Theory]
+        [CustomAutoData(typeof(CustomWebApplicationDbContextFactoryCustomization))]
+        public async Task UpdateDeedOfVariationTaskAsync_ShouldUpdate_TransferTaskData(
+            CustomWebApplicationDbContextFactory<Program> factory,
+            ITasksDataClient tasksDataClient,
+            Complete.Client.Contracts.UpdateDeedOfVariationTaskCommand command,
+            IFixture fixture)
+        {
+            // Arrange
+            factory.TestClaims = [new Claim(ClaimTypes.Role, ApiRoles.ReadRole), new Claim(ClaimTypes.Role, ApiRoles.WriteRole), new Claim(ClaimTypes.Role, ApiRoles.UpdateRole)];
+
+            var dbContext = factory.GetDbContext<CompleteContext>();
+
+            var taskData = fixture.Create<TransferTasksData>();
+            dbContext.TransferTasksData.Add(taskData);
+
+            await dbContext.SaveChangesAsync();
+            command.TaskDataId = new TaskDataId { Value = taskData.Id.Value };
+            command.ProjectType = ProjectType.Transfer;
+            command.Cleared = true;
+            command.Saved = false;
+            command.Received = true;
+            command.Signed = true;
+            command.Sent = false;
+            command.SignedSecretaryState = true;
+
+            // Act
+            await tasksDataClient.UpdateDeedOfVariationTaskAsync(command, default);
+
+            // Assert
+            dbContext.ChangeTracker.Clear();
+            var existingTaskData = await dbContext.TransferTasksData.SingleOrDefaultAsync(x => x.Id == taskData.Id);
+            Assert.NotNull(existingTaskData);
+            Assert.True(existingTaskData.DeedOfVariationCleared);
+            Assert.True(existingTaskData.DeedOfVariationReceived);
+            Assert.False(existingTaskData.DeedOfVariationSaved);
+            Assert.False(existingTaskData.DeedOfVariationSent);
+            Assert.True(existingTaskData.DeedOfVariationSigned);
+            Assert.True(existingTaskData.DeedOfVariationSignedSecretaryState);
+        }
+        [Theory]
+        [CustomAutoData(typeof(CustomWebApplicationDbContextFactoryCustomization))]
+        public async Task UpdateDeedOfNovationAndVariationAsync_ShouldUpdate_TransferTaskData(
+            CustomWebApplicationDbContextFactory<Program> factory,
+            ITasksDataClient tasksDataClient,
+            UpdateDeedOfNovationAndVariationTaskCommand command,
+            IFixture fixture)
+        {
+            // Arrange
+            factory.TestClaims = [new Claim(ClaimTypes.Role, ApiRoles.ReadRole), new Claim(ClaimTypes.Role, ApiRoles.WriteRole), new Claim(ClaimTypes.Role, ApiRoles.UpdateRole)];
+
+            var dbContext = factory.GetDbContext<CompleteContext>();
+
+            var taskData = fixture.Create<TransferTasksData>();
+            dbContext.TransferTasksData.Add(taskData);
+
+            await dbContext.SaveChangesAsync();
+            command.TaskDataId = new TaskDataId { Value = taskData.Id.Value }; 
+            command.Cleared = true;
+            command.Saved = false;
+            command.Received = true;
+            command.SignedOutgoingTrust = true;
+            command.SignedIncomingTrust = false;
+            command.SignedSecretaryState = true;
+            command.SavedAfterSign = true;
+
+            // Act
+            await tasksDataClient.UpdateDeedOfNovationAndVariationTaskAsync(command, default);
+
+            // Assert
+            dbContext.ChangeTracker.Clear();
+            var existingTaskData = await dbContext.TransferTasksData.SingleOrDefaultAsync(x => x.Id == taskData.Id);
+            Assert.NotNull(existingTaskData);
+            Assert.True(existingTaskData.DeedOfNovationAndVariationCleared);
+            Assert.True(existingTaskData.DeedOfNovationAndVariationReceived);
+            Assert.False(existingTaskData.DeedOfNovationAndVariationSaved);
+            Assert.True(existingTaskData.DeedOfNovationAndVariationSignedOutgoingTrust);
+            Assert.False(existingTaskData.DeedOfNovationAndVariationSignedIncomingTrust);
+            Assert.True(existingTaskData.DeedOfNovationAndVariationSignedSecretaryState);
+            Assert.True(existingTaskData.DeedOfNovationAndVariationSaveAfterSign);
+        }
         [Theory]
         [CustomAutoData(typeof(CustomWebApplicationDbContextFactoryCustomization))]
         public async Task UpdateSupplementalFundingAgreementTaskAsync_ShouldUpdate_ConversionTaskData(

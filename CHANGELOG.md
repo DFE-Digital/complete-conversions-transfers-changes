@@ -16,13 +16,24 @@ Security in case of vulnerabilities.
 
 ## Unreleased
 
+See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-09-01.697...main) for everything awaiting release
+
+---
+
+## [1.14.1](https://github.com/DFE-Digital/complete-conversions-transfers-changes/releases/tag/production-2025-09-01.697) - 2025-09-01
+
 ### Added
+
+- Enabled `DB retry` logic on failure.
 
 ### Changed
 
 ### Fixed
 
-See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-09-01.688...main) for everything awaiting release
+- hotfix - fetch only active users when attaching claims from database roles
+- Fixed `Signed Secretary state` checkbox data on the `Deed of novation and variation` task page.
+
+See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-09-01.688...production-2025-09-01.697) for everything in the release
 
 ---
 
@@ -30,6 +41,8 @@ See the [full commit history](https://github.com/DFE-Digital/complete-conversion
 
 ### Added
 - Added `Article of association` task data for both conversion and trasnfer projects.
+- Added 'Deed of novation and variation' task for transfer projects.
+- Added 'Deed of variation' task for both conversion and transfer projects. 
 - Added `Supplemental Funding Agreement` task data for both conversion and transfer projects.
 
 ### Changed
@@ -82,6 +95,7 @@ See the [full commit history](https://github.com/DFE-Digital/complete-conversion
 - Added `/privacy` page
 
 ### Changed
+- Updated the implementation of `StakeholderKickoffTaskModel`
 
 ### Fixed
 

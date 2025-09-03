@@ -257,8 +257,23 @@
     },
     {
       "Controller": "TasksDataController",
+      "Action": "UpdateDeedOfNovationAndVariationTaskAsync",
+      "ExpectedSecurity": "Authorize: Policy=CanReadWriteUpdate"
+    },
+    {
+      "Controller": "TasksDataController",
+      "Action": "UpdateExternalStakeholderKickOffTaskAsync",
+      "ExpectedSecurity": "Authorize: Policy=CanReadWrite"
+    },
+    {
+      "Controller": "TasksDataController",
       "Action": "UpdateArticleOfAssociationTaskAsync",
       "ExpectedSecurity": "Authorize: Policy=CanReadWrite"
+    },
+    {
+      "Controller": "TasksDataController",
+      "Action": "UpdateDeedOfVariationTaskAsync",
+      "ExpectedSecurity": "Authorize: Policy=CanReadWriteUpdate"
     },
     {
       "Controller": "TasksDataController",
