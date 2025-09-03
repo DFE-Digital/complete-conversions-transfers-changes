@@ -1,5 +1,6 @@
 ﻿@page "/projects/{projectId}/tasks/redact_and_send_documents"
 @model Dfe.Complete.Pages.Projects.TaskList.Tasks.RedactAndSendDocuments.RedactAndSendDocumentsModel
+@inject Microsoft.Extensions.Configuration.IConfiguration _configuration
 @{
   Layout = "_ProjectTaskLayout";
     ViewData["Title"] = "Redact and send documents";
@@ -60,7 +61,7 @@
                 <govuk-checkboxes-item id="send" asp-for="@Model.Send" value="true" name="send" checked="@Model.Send">
                     <b>Send the redacted documents to the funding agreements mailbox to be published on GOV.UK</b>
                     <govuk-checkboxes-item-hint>
-                        <p>Share link here</p>
+                        <a href="@_configuration["ExternalLinks:HelpRedactingDocuments"]" class="govuk-link" target="_blank">Help redacting the documents (opens in new tab)</a>
                     </govuk-checkboxes-item-hint>
                 </govuk-checkboxes-item>
                 <govuk-checkboxes-item id="send_to_solicitors" asp-for="@Model.SendToSolicitors" value="true" name="send_to_solicitors" checked="@Model.SendToSolicitors">
