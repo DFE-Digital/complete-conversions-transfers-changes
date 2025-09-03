@@ -64,6 +64,7 @@ describe("View your projects", () => {
     });
 
     it("Should be able to view newly created transfer project in Your projects -> in progress", () => {
+        yourProjects.goToNextPageUntilFieldIsVisible(transferSchoolName);
         projectTable
             .withSchool(transferSchoolName)
             .columnHasValue("URN", `${transferProject.urn.value}`)
@@ -78,6 +79,7 @@ describe("View your projects", () => {
     });
 
     it("Should be able to view newly created conversion form a MAT project in Your projects -> in progress", () => {
+        yourProjects.goToNextPageUntilFieldIsVisible(conversionFormAMatSchoolName);
         projectTable
             .withSchool(conversionFormAMatSchoolName)
             .columnHasValue("URN", `${conversionFormAMatProject.urn.value}`)
@@ -92,6 +94,7 @@ describe("View your projects", () => {
     });
 
     it("Should be able to view newly created transfer form a MAT project in Your projects -> in progress", () => {
+        yourProjects.goToNextPageUntilFieldIsVisible(transferFormAMatSchoolName);
         projectTable
             .withSchool(transferFormAMatSchoolName)
             .columnHasValue("URN", `${transferFormAMatProject.urn.value}`)
@@ -106,7 +109,10 @@ describe("View your projects", () => {
     });
 
     it("Should be able to view newly created conversion project in Your projects -> added by you", () => {
-        yourProjects.filterProjects("Added by you").containsHeading("Added by you");
+        yourProjects
+            .filterProjects("Added by you")
+            .containsHeading("Added by you")
+            .goToNextPageUntilFieldIsVisible(conversionSchoolName);
         projectTable
             .hasTableHeaders([
                 "School or academy",

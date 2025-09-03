@@ -5,9 +5,10 @@ import { beforeEach } from "mocha";
 import {
     currentMonthLong,
     dimensionsTrust,
-    macclesfieldTrust, nextMonth,
+    macclesfieldTrust,
+    nextMonth,
     nextMonthLong,
-    nextMonthShort
+    nextMonthShort,
 } from "cypress/constants/stringTestConstants";
 import projectApi from "cypress/api/projectApi";
 import { ProjectBuilder } from "cypress/api/projectBuilder";
@@ -19,7 +20,8 @@ import userProjectTable from "cypress/pages/projects/tables/userProjectTable";
 import formAMATProjectTable from "cypress/pages/projects/tables/formAMATProjectTable";
 import { checkAccessibilityAcrossPages } from "cypress/support/reusableTests";
 import allProjectsStatisticsPage from "cypress/pages/projects/allProjectsStatisticsPage";
-import { getSignificantDateString } from "cypress/support/formatDate";
+import { getSignificantDateString, significateDateToDisplayDate } from "cypress/support/formatDate";
+import { PrepareProjectBuilder } from "cypress/api/prepareProjectBuilder";
 
 const project = ProjectBuilder.createConversionProjectRequest();
 let projectId: string;
@@ -34,6 +36,12 @@ const transferSchoolName = "Abbey College Manchester";
 const transferRegion = "North West";
 const transferFormAMatProject = ProjectBuilder.createTransferFormAMatProjectRequest();
 const transferFormAMatSchoolName = "Priory Rise School";
+const prepareProject = PrepareProjectBuilder.createConversionProjectRequest({
+    urn: 151111,
+    provisional_conversion_date: getSignificantDateString(1),
+});
+let prepareProjectId: string;
+const prepareProjectName = "Our Lady of Walsingham Primary School";
 const nextMonthShortUS = `${nextMonth.toLocaleString("en-US", { month: "short" })} ${nextMonth.getFullYear()}`; // bug 228624
 
 describe("View all projects", () => {
@@ -41,6 +49,7 @@ describe("View all projects", () => {
         projectRemover.removeProjectIfItExists(`${project.urn.value}`);
         projectRemover.removeProjectIfItExists(`${transferProject.urn.value}`);
         projectRemover.removeProjectIfItExists(`${transferFormAMatProject.urn.value}`);
+        projectRemover.removeProjectIfItExists(`${prepareProject.urn}`);
         projectApi.createConversionProject(project).then((response) => (projectId = response.value));
         projectApi.createTransferProject(transferProject);
         projectApi.createMatTransferProject(transferFormAMatProject);
@@ -52,10 +61,34 @@ describe("View all projects", () => {
         cy.visit(`/projects/all/in-progress/all`);
     });
 
+    // skip as prepare endpoint not implemented in dotnet 214917
     it.skip("Should be able to view my team projects that are handed over", () => {
-        // not implemented 211995
         navBar.goToAllProjects();
-        allProjects.filterProjects("Handover").containsHeading("Projects to handover");
+        allProjects
+            .filterProjects("Handover")
+            .containsHeading("Projects to handover")
+            .goToNextPageUntilFieldIsVisible(prepareProjectName);
+        projectTable
+            .hasTableHeaders([
+                "School or academy",
+                "URN",
+                "Incoming trust",
+                "Provisional conversion or transfer date",
+                "Advisory board date",
+                "Project type",
+                "Add handover details",
+            ])
+            .withSchool(prepareProjectName)
+            .columnHasValue("URN", `${prepareProject.urn}`)
+            .columnHasValue("Incoming trust", dimensionsTrust.name)
+            .columnHasValue("Provisional conversion or transfer date", nextMonthShort)
+            .columnHasValue("Advisory board date", significateDateToDisplayDate(prepareProject.advisory_board_date))
+            .columnHasValue("Project type", "Conversion")
+            .columnHasValueWithLink(
+                "Add handover details",
+                "Add handover details",
+                `/projects/all/handover/${prepareProjectId.toLowerCase()}/check`,
+            );
     });
 
     it("Should be able to view newly created conversion project in All projects in progress and Conversions projects", () => {

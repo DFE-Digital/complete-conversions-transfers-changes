@@ -1,4 +1,6 @@
-class NavBar {
+import BasePage from "cypress/pages/basePage";
+
+class NavBar extends BasePage {
     private readonly navHeaderId = "header-navigation";
 
     goToAllProjects() {

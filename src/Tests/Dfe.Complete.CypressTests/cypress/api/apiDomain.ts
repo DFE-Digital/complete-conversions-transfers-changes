@@ -160,4 +160,86 @@ export type CreateLocalAuthorityRequest = {
     contactName: string;
     email: string;
     phone: string;
-}
+};
+
+// prepare project api domain
+
+export type CreateConversionPrepareRequest = {
+    urn: number;
+    advisory_board_date: string;
+    advisory_board_conditions: string;
+    provisional_conversion_date: string;
+    directive_academy_order: boolean;
+    created_by_email: string;
+    created_by_first_name: string;
+    created_by_last_name: string;
+    prepare_id: number;
+    group_id: string;
+    incoming_trust_ukprn: number;
+};
+
+export type CreateConversionFormAMatPrepareRequest = {
+    urn: number;
+    advisory_board_date: string;
+    advisory_board_conditions: string;
+    provisional_conversion_date: string;
+    directive_academy_order: boolean;
+    created_by_email: string;
+    created_by_first_name: string;
+    created_by_last_name: string;
+    prepare_id: number;
+    group_id: string;
+    new_trust_reference_number: string;
+    new_trust_name: string;
+};
+
+export type CreateTransferPrepareRequest = {
+    urn: number;
+    advisory_board_date: string;
+    advisory_board_conditions: string;
+    provisional_transfer_date: string;
+    created_by_email: string;
+    created_by_first_name: string;
+    created_by_last_name: string;
+    inadequate_ofsted: boolean;
+    financial_safeguarding_governance_issues: boolean;
+    outgoing_trust_ukprn: number;
+    outgoing_trust_to_close: boolean;
+    prepare_id: number;
+    group_id: string;
+    incoming_trust_ukprn: number;
+};
+
+export type CreateTransferFormAMatPrepareRequest = {
+    urn: number;
+    advisory_board_date: string;
+    advisory_board_conditions: string;
+    provisional_transfer_date: string;
+    created_by_email: string;
+    created_by_first_name: string;
+    created_by_last_name: string;
+    inadequate_ofsted: boolean;
+    financial_safeguarding_governance_issues: boolean;
+    outgoing_trust_ukprn: number;
+    outgoing_trust_to_close: boolean;
+    prepare_id: number;
+    group_id: string;
+    new_trust_reference_number: string;
+    new_trust_name: string;
+};
+
+export type PrepareProjectRequest =
+    | CreateConversionPrepareRequest
+    | CreateTransferPrepareRequest
+    | CreateConversionFormAMatPrepareRequest
+    | CreateTransferFormAMatPrepareRequest;
+
+export type CreateConversionPrepareResponse = {
+    conversion_project_id: string;
+};
+
+export type CreateTransferPrepareResponse = {
+    transfer_project_id: string;
+};
+
+export type CreatePrepareProjectResponse = CreateConversionPrepareResponse | CreateTransferPrepareResponse;

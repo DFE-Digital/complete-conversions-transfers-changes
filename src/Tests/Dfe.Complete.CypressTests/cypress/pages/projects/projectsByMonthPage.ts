@@ -18,6 +18,8 @@ class ProjectsByMonthPage extends BasePage {
     }
 
     filterDoesNotExist() {
+        cy.getById(this.fromDateId).should("not.exist");
+        cy.getById(this.toDateId).should("not.exist");
         return this;
     }
 

@@ -17,6 +17,74 @@ Security in case of vulnerabilities.
 ## Unreleased
 
 ### Added
+
+### Changed
+
+### Fixed
+
+See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-09-03.710...main) for everything awaiting release
+
+---
+
+## [1.15.0](https://github.com/DFE-Digital/complete-conversions-transfers-changes/releases/tag/production-2025-09-03.710) - 2025-09-03
+
+### Changed
+- Postcode validation now insensitive
+- UK phone number validation to include a wider range
+- Updated the implementation of `StakeholderKickoffTaskModel`
+
+See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-09-01.697...production-2025-09-03.710) for everything in the release
+
+---
+
+## [1.14.1](https://github.com/DFE-Digital/complete-conversions-transfers-changes/releases/tag/production-2025-09-01.697) - 2025-09-01
+
+### Added
+
+- Enabled `DB retry` logic on failure.
+
+### Changed
+
+### Fixed
+
+- hotfix - fetch only active users when attaching claims from database roles
+- Fixed `Signed Secretary state` checkbox data on the `Deed of novation and variation` task page.
+
+See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-09-01.688...production-2025-09-01.697) for everything in the release
+
+---
+
+## [1.14.0](https://github.com/DFE-Digital/complete-conversions-transfers-changes/releases/tag/production-2025-09-01.688) - 2025-09-01
+
+### Added
+- Added `Article of association` task data for both conversion and trasnfer projects.
+- Added 'Deed of novation and variation' task for transfer projects.
+- Added 'Deed of variation' task for both conversion and transfer projects. 
+- Added `Supplemental Funding Agreement` task data for both conversion and transfer projects.
+
+### Changed
+
+### Fixed
+- GetProjectByUrn doesn't return notes
+- Incoming and Outgoing trust information missing from project header
+- HOTFIX: Get user by active directory ID only returns active user
+
+See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-08-26.669...production-2025-09-01.688) for everything in the release
+
+---
+
+## [1.13.1](https://github.com/DFE-Digital/complete-conversions-transfers-changes/releases/tag/production-2025-08-26.669) - 2025-08-26
+
+### Security
+- update "CanViewYourProjects" to depend exclusively on "assign_to_project"
+
+See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-08-20.658...production-2025-08-26.669) for everything in the release
+
+---
+
+## [1.13.0](https://github.com/DFE-Digital/complete-conversions-transfers-changes/releases/tag/production-2025-08-20.658) - 2025-08-20
+
+### Added
 - Added `Conversion` and `Transfer` task list with their statuses.
 - Project groups: new API endpoints
   - `/v1/ProjectGroup/List` – list project groups (with establishments)
@@ -24,12 +92,15 @@ Security in case of vulnerabilities.
 - Frontend routes and pages for project groups
     - `/groups` – project groups list
     - `/groups/{groupId}` – project group details
+- Added `Handover with Regional Delivery Officer` task page
 
 ### Changed
 
 ### Fixed
+- local authority name missing on delete local authority dialog
+- add missing incoming trust details on project page
 
-See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-08-12.625...main) for everything awaiting release
+See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-08-12.625...production-2025-08-20.658) for everything in the release
 
 ---
 

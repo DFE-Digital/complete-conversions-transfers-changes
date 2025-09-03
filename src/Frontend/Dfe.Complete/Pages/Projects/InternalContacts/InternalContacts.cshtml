@@ -29,7 +29,7 @@
           {
             <govuk-summary-list-row-action href="mailto:@Model.UserAssignedTo.Email" visually-hidden-text="Assigned to user">Email</govuk-summary-list-row-action>
           }
-          <govuk-summary-list-row-action href="@Model.FormatRouteWithProjectId(RouteConstants.ProjectInternalContactsEditAssignedUser)" visually-hidden-text="Assigned to user">Change</govuk-summary-list-row-action>
+          <govuk-summary-list-row-action href="@Model.FormatRouteWithProjectId(RouteConstants.ProjectInternalContactsEditAssignedUser)?returnUrl=internal-contacts" visually-hidden-text="Assigned to user">Change</govuk-summary-list-row-action>
         </govuk-summary-list-row-actions>
       </govuk-summary-list-row>
 

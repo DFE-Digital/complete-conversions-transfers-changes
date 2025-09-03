@@ -218,8 +218,7 @@ describe("Service support user - Local authorities: ", () => {
         validationComponent.hasLinkedValidationErrorForField("Code", "Has already been taken");
     });
 
-    // bug 227256
-    it.skip("Should be able to delete an existing local authority", () => {
+    it("Should be able to delete an existing local authority", () => {
         Logger.log("View local authority details");
         localAuthoritiesPage
             .goToLastPage()

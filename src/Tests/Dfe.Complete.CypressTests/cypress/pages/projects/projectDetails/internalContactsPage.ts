@@ -1,7 +1,7 @@
 import { EditUserPage } from "cypress/pages/projects/editUserPage";
 
 class InternalContactsPage extends EditUserPage {
-    private readonly sectionId = "projectInternalContacts";
+    protected readonly sectionId = "projectInternalContacts";
 
     inOrder() {
         cy.wrap(this.sectionId).as("sectionId");
@@ -21,11 +21,6 @@ class InternalContactsPage extends EditUserPage {
 
     hasChangeLink(link: string) {
         return this.hasTextWithLink("Change", link);
-    }
-
-    change(key: string) {
-        cy.contains("dt", key).next("dd").next("dd").contains("Change").click();
-        return this;
     }
 
     hasNoChangeLink(key: string) {

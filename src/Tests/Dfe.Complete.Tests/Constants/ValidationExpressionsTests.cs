@@ -14,6 +14,7 @@ namespace Dfe.Complete.Tests.Constants
 
         [Theory]
         [InlineData("SW1A 1AA", true)]
+        [InlineData("sw1a 1aa", true)]
         [InlineData("M1 1AE", true)]
         [InlineData("B33 8TH", true)]
         [InlineData("CR2 6XH", true)]
@@ -38,6 +39,7 @@ namespace Dfe.Complete.Tests.Constants
         [InlineData("INVALID", false)]
         [InlineData("123456", false)]
         [InlineData("020 8327 3737", true)]
+        [InlineData("0330 222 9331", true)]
         public void UKPhone_Validation(string input, bool expectedIsValid)
         {
             var isValid = UKPhoneRegex().IsMatch(input);

@@ -42,7 +42,7 @@ describe("Internal contacts page: ", () => {
             .summaryShows("Assigned to user")
             .hasValue(cypressUser.username)
             .hasEmailLink(cypressUser.email)
-            .hasChangeLink(`/projects/${projectId}/internal-contacts/assigned-user/edit`)
+            .hasChangeLink(`/projects/${projectId}/internal-contacts/assigned-user/edit?returnUrl=internal-contacts`)
             .summaryShows("Assigned to team")
             .hasChangeLink(`/projects/${projectId}/internal-contacts/team/edit`)
             .hasValue("London")

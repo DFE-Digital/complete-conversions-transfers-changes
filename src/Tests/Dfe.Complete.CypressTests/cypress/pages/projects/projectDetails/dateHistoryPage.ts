@@ -1,67 +1,17 @@
-import BasePage from "cypress/pages/basePage";
+import { DetailsPage } from "cypress/pages/detailsPage";
 
-class DateHistoryPage extends BasePage {
-    private readonly dateHistoryItemClass = "govuk-summary-card";
-
-    inOrder() {
-        cy.wrap(-1).as("dateHistoryCounter");
-        return this;
-    }
-
+class DateHistoryPage extends DetailsPage {
     hasDateHistoryItem() {
-        cy.wrap(-1).as("summaryCounter");
-        cy.wrap(-1).as("reasonCounter");
-        cy.get("@dateHistoryCounter").then((counter) => {
-            const nextIndex = Number(counter) + 1;
-            cy.wrap(nextIndex).as("dateHistoryCounter");
-            cy.getByClass(this.dateHistoryItemClass).eq(nextIndex).should("exist");
-        });
-        return this;
+        return this.hasSectionItem();
     }
-
-    hasSubHeading(subHeading: string) {
-        cy.get("@dateHistoryCounter").then((index) => {
-            cy.getByClass(this.dateHistoryItemClass).eq(Number(index)).find("h2").contains(subHeading);
-        });
-        return this;
-    }
-
-    summaryShows(key: string): this {
-        cy.get("@dateHistoryCounter").then((dateHistoryItem) => {
-            cy.get("@summaryCounter").then((counter) => {
-                const nextIndex = Number(counter) + 1;
-                cy.wrap(nextIndex).as("summaryCounter");
-                cy.getByClass(this.dateHistoryItemClass)
-                    .eq(Number(dateHistoryItem))
-                    .find(".govuk-summary-list__key")
-                    .eq(nextIndex)
-                    .shouldHaveText(key);
-            });
-        });
-        return this;
-    }
-
-    hasValue(value: string | number) {
-        cy.get("@dateHistoryCounter").then((dateHistoryItem) => {
-            cy.get("@summaryCounter").then((counter) => {
-                cy.getByClass(this.dateHistoryItemClass)
-                    .eq(Number(dateHistoryItem))
-                    .find(".govuk-summary-list__value")
-                    .eq(Number(counter))
-                    .shouldHaveText(value);
-            });
-        });
-        return this;
-    }
-
     hasReasonNewDate(category: string, reason: string) {
-        cy.get("@dateHistoryCounter").then((dateHistoryItem) => {
+        cy.get("@sectionCounter").then((sectionItem) => {
             cy.get("@summaryCounter").then((counter) => {
                 cy.get("@reasonCounter").then((reasonCounter) => {
                     const nextIndex = Number(reasonCounter) + 1;
                     cy.wrap(nextIndex).as("reasonCounter");
-                    cy.getByClass(this.dateHistoryItemClass)
-                        .eq(Number(dateHistoryItem))
+                    cy.getByClass(this.sectionItemClass)
+                        .eq(Number(sectionItem))
                         .find(".govuk-summary-list__value")
                         .eq(Number(counter))
                         .find("li")
