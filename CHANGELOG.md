@@ -16,6 +16,10 @@ Security in case of vulnerabilities.
 
 ## Unreleased
 
+### Added
+
+- Added `Receivee declaration of expenditure certificate` task for conversion and transfer projects.
+
 ### Security
 - prevent inactive users from signing in
 

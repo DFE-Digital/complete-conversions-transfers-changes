@@ -4714,7 +4714,8 @@
           "SupplementalFundingAgreement",
           "ArticleOfAssociation",
           "DeedOfNovationAndVariation",
-          "DeedOfVariation"
+          "DeedOfVariation",
+          "DeclarationOfExpenditureCertificate"
         ],
         "enum": [
           "Handover",
@@ -4724,7 +4725,8 @@
           "SupplementalFundingAgreement",
           "ArticleOfAssociation",
           "DeedOfNovationAndVariation",
-          "DeedOfVariation"
+          "DeedOfVariation",
+          "DeclarationOfExpenditureCertificate"
         ]
       },
       "CreateNoteCommand": {
@@ -6489,47 +6491,6 @@
           }
         }
       },
-      "UpdateSupplementalFundingAgreementTaskCommand": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-          "taskDataId": {
-            "$ref": "#/components/schemas/TaskDataId"
-          },
-          "projectType": {
-            "nullable": true,
-            "oneOf": [
-              {
-                "$ref": "#/components/schemas/ProjectType"
-              }
-            ]
-          },
-          "received": {
-            "type": "boolean",
-            "nullable": true
-          },
-          "cleared": {
-            "type": "boolean",
-            "nullable": true
-          },
-          "sent": {
-            "type": "boolean",
-            "nullable": true
-          },
-          "saved": {
-            "type": "boolean",
-            "nullable": true
-          },
-          "signed": {
-            "type": "boolean",
-            "nullable": true
-          },
-          "signedSecretaryState": {
-            "type": "boolean",
-            "nullable": true
-          }
-        }
-      },
       "UpdateDeedOfNovationAndVariationTaskCommand": {
         "type": "object",
         "additionalProperties": false,
@@ -6646,6 +6607,47 @@
           },
           "userEmail": {
             "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "UpdateSupplementalFundingAgreementTaskCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "taskDataId": {
+            "$ref": "#/components/schemas/TaskDataId"
+          },
+          "projectType": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/ProjectType"
+              }
+            ]
+          },
+          "received": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "cleared": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "sent": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "saved": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "signed": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "signedSecretaryState": {
+            "type": "boolean",
             "nullable": true
           }
         }

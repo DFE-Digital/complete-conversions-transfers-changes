@@ -813,23 +813,6 @@ namespace Dfe.Complete.Client.Contracts
         System.Threading.Tasks.Task UpdateArticleOfAssociationTaskAsync(UpdateArticleOfAssociationTaskCommand request, System.Threading.CancellationToken cancellationToken);
 
         /// <summary>
-        /// Updates the supplemental funding agreement task Data for conversion or trasnfer project.
-        /// </summary>
-        /// <param name="request">The update command.</param>
-        /// <returns>Conversion or transfer's supplemental funding agreement task updated successfully.</returns>
-        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task UpdateSupplementalFundingAgreementTaskAsync(UpdateSupplementalFundingAgreementTaskCommand request);
-
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <summary>
-        /// Updates the supplemental funding agreement task Data for conversion or trasnfer project.
-        /// </summary>
-        /// <param name="request">The update command.</param>
-        /// <returns>Conversion or transfer's supplemental funding agreement task updated successfully.</returns>
-        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task UpdateSupplementalFundingAgreementTaskAsync(UpdateSupplementalFundingAgreementTaskCommand request, System.Threading.CancellationToken cancellationToken);
-
-        /// <summary>
         /// Updates the deed of variation task Data for conversion or trasnfer project.
         /// </summary>
         /// <param name="request">The update command.</param>
@@ -879,6 +862,23 @@ namespace Dfe.Complete.Client.Contracts
         /// <returns>External stakeholder kickoff Task updated successfully.</returns>
         /// <exception cref="CompleteApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task UpdateExternalStakeholderKickOffTaskAsync(UpdateExternalStakeholderKickOffTaskCommand request, System.Threading.CancellationToken cancellationToken);
+
+        /// <summary>
+        /// Updates the supplemental funding agreement task Data for conversion or trasnfer project.
+        /// </summary>
+        /// <param name="request">The update command.</param>
+        /// <returns>Conversion or transfer's supplemental funding agreement task updated successfully.</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task UpdateSupplementalFundingAgreementTaskAsync(UpdateSupplementalFundingAgreementTaskCommand request);
+
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>
+        /// Updates the supplemental funding agreement task Data for conversion or trasnfer project.
+        /// </summary>
+        /// <param name="request">The update command.</param>
+        /// <returns>Conversion or transfer's supplemental funding agreement task updated successfully.</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task UpdateSupplementalFundingAgreementTaskAsync(UpdateSupplementalFundingAgreementTaskCommand request, System.Threading.CancellationToken cancellationToken);
 
     }
 
@@ -2971,6 +2971,9 @@ namespace Dfe.Complete.Client.Contracts
 
         [System.Runtime.Serialization.EnumMember(Value = @"DeedOfVariation")]
         DeedOfVariation = 7,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"DeclarationOfExpenditureCertificate")]
+        DeclarationOfExpenditureCertificate = 8,
 
     }
 

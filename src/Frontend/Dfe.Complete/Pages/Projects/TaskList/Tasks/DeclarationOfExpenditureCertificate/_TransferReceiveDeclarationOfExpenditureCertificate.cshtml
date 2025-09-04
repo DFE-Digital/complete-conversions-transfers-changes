@@ -1,0 +1,70 @@
+﻿@page "/projects/{projectId}/tasks/declaration_of_expenditure_certificate"
+@using Dfe.Complete.Domain.Enums
+@inject Microsoft.Extensions.Configuration.IConfiguration _configuration
+@inject Dfe.Complete.Services.ErrorService ErrorService
+@model Dfe.Complete.Pages.Projects.TaskList.Tasks.DeclarationOfExpenditureCertificate.DeclarationOfExpenditureCertificateModel
+@{
+    Layout = "_ProjectTaskLayout";
+    ViewData["Title"] = "Receive declaration of expenditure certificate";
+}
+@section TaskHeaderHintSection
+{
+    <div class="govuk-hint">
+        <p>Only do this task if the incoming trust got academy transfer grant funding.</p>
+        <p>3 months after the transfer date, remind the trust to complete and return the declaration of expenditure certificate.</p>
+        <govuk-details>
+            <govuk-details-summary>
+                <span class="govuk-details__summary-text">What to do if you have not received the certificate</span>
+            </govuk-details-summary>
+            <govuk-details-text>
+                <p>The incoming trust should send the certificate back to you within 10 days of the first reminder.</p>
+                <p>If they do not, send them another reminder.</p>
+                <p>Remind them every 10 days until they send it back.</p>
+            </govuk-details-text>
+        </govuk-details>
+    </div>
+}
+@section TaskSection {
+    <form method="post">
+        <input type="hidden" asp-for="TasksDataId" />
+        <input type="hidden" asp-for="Type" />
+        <govuk-checkboxes name="options">
+            <govuk-checkboxes-fieldset>
+                <govuk-checkboxes-fieldset-legend>
+                </govuk-checkboxes-fieldset-legend>
+                <govuk-checkboxes-item id="not-applicable" asp-for="@Model.NotApplicable" value="true" name="not-applicable" checked="@Model.NotApplicable">
+                    <b>Not applicable</b>
+                </govuk-checkboxes-item>
+            </govuk-checkboxes-fieldset>
+        </govuk-checkboxes>
+        <h2 class="govuk-heading-l">
+            Enter the date you received the declaration of expenditure certificate
+        </h2>
+        <govuk-date-input id="date-received" name-prefix="date-received" asp-for="@Model.DateReceived">
+            <govuk-date-input-fieldset>
+                <govuk-date-input-fieldset-legend class="govuk-fieldset__legend--m">
+                    For example 27 5 2007
+                </govuk-date-input-fieldset-legend>
+                <govuk-date-input-hint>
+                    @if (ErrorService.HasErrorForKey("date-received"))
+                    {
+                        <govuk-date-input-error-message>@(ErrorService.GetErrorMessage("date-received"))</govuk-date-input-error-message>
+                    }
+                </govuk-date-input-hint>
+            </govuk-date-input-fieldset>
+        </govuk-date-input>
+        <govuk-checkboxes name="options">
+            <govuk-checkboxes-fieldset>
+                <govuk-checkboxes-fieldset-legend>
+                </govuk-checkboxes-fieldset-legend>
+                <govuk-checkboxes-item id="check-certificate" asp-for="@Model.CheckCertificate" value="true" name="check-certificate" checked="@Model.CheckCertificate">
+                    <b>Check the declaration of expenditure certificate is correct</b>
+                </govuk-checkboxes-item>
+                <govuk-checkboxes-item id="saved" asp-for="@Model.Saved" value="true" name="saved" checked="@Model.Saved">
+                    <b>Save the declaration of expenditure certificate in the academy's SharePoint folder</b>
+                </govuk-checkboxes-item>
+            </govuk-checkboxes-fieldset>
+        </govuk-checkboxes>
+        @await Html.PartialAsync("_TaskSaveAndReturn", new TaskSaveAndReturnModel(Model.Project, Model.CurrentUserTeam))
+    </form>
+}
