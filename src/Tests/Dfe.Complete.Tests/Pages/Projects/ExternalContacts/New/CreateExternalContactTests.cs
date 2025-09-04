@@ -8,8 +8,7 @@ namespace Dfe.Complete.Tests.Pages.Projects.ExternalContacts.New
     using Dfe.Complete.Application.Projects.Queries.GetProject;    
     using Dfe.Complete.Domain.Enums;
     using Dfe.Complete.Domain.ValueObjects;    
-    using Dfe.Complete.Pages.Projects.ExternalContacts.New;
-    using Dfe.Complete.Services.Interfaces;
+    using Dfe.Complete.Pages.Projects.ExternalContacts.New;    
     using Dfe.Complete.Tests.Common.Customizations.Behaviours;
     using Dfe.Complete.Tests.Common.Customizations.Models;
     using Dfe.Complete.Tests.MockData;
@@ -100,7 +99,7 @@ namespace Dfe.Complete.Tests.Pages.Projects.ExternalContacts.New
 
             mockSender.
                 Setup(s => s.Send(It.IsAny<CreateExternalContactCommand>(), It.IsAny<CancellationToken>()))
-               .ReturnsAsync(contactId);
+               .ReturnsAsync(Result<ContactId>.Success(contactId));
 
             // Act
             var result = await testClass.OnPostAsync();
@@ -136,7 +135,7 @@ namespace Dfe.Complete.Tests.Pages.Projects.ExternalContacts.New
 
             mockSender.
                 Setup(s => s.Send(It.IsAny<CreateExternalContactCommand>(), It.IsAny<CancellationToken>()))
-               .ReturnsAsync(contactId);
+               .ReturnsAsync(Result<ContactId>.Success(contactId));
 
             var exceptionMessage = "Error message";
             var exception = new Exception(exceptionMessage);

@@ -46,7 +46,7 @@ public class CreateOtherExternalContact(ITrustCache trustCacheService, ErrorServ
 
                 await this.GetCurrentProject();
 
-                var category = ExternalContactHelper.GetCategoryByContactType(contactType);
+                var category = ExternalContactMapper.MapContactTypeToCategory(contactType);
                 var organisationName = await this.GetOrganisationName(contactType);
 
                 var newExternalContactCommand = new CreateExternalContactCommand(

@@ -70,8 +70,8 @@ namespace Dfe.Complete.Tests.Pages.Projects.ExternalContacts.New
                 () => Assert.Equal(projectDto.Id, testClass.Project.Id),
                 () => Assert.Equal(7, testClass.ExternalContactInput.ContactTypeRadioOptions.Count()),
                 () => Assert.Contains(ExternalContactType.SchoolOrAcademy, testClass.ExternalContactInput.ContactTypeRadioOptions),
-                () => Assert.Contains(ExternalContactType.IncomingTrustCEO, testClass.ExternalContactInput.ContactTypeRadioOptions),
-                () => Assert.Contains(ExternalContactType.OutgoingTrustCEO, testClass.ExternalContactInput.ContactTypeRadioOptions),
+                () => Assert.Contains(ExternalContactType.IncomingTrust, testClass.ExternalContactInput.ContactTypeRadioOptions),
+                () => Assert.Contains(ExternalContactType.OutgoingTrust, testClass.ExternalContactInput.ContactTypeRadioOptions),
                 () => Assert.Contains(ExternalContactType.LocalAuthority, testClass.ExternalContactInput.ContactTypeRadioOptions),
                 () => Assert.Contains(ExternalContactType.Solicitor, testClass.ExternalContactInput.ContactTypeRadioOptions),
                 () => Assert.Contains(ExternalContactType.Diocese, testClass.ExternalContactInput.ContactTypeRadioOptions),
@@ -111,7 +111,7 @@ namespace Dfe.Complete.Tests.Pages.Projects.ExternalContacts.New
 
             mockSender.
                 Setup(s => s.Send(It.IsAny<CreateExternalContactCommand>(), It.IsAny<CancellationToken>()))
-               .ReturnsAsync(contactId);
+               .ReturnsAsync(Result<ContactId>.Success(contactId));
 
             // Act
             var result = await testClass.OnPostAsync();
@@ -150,7 +150,7 @@ namespace Dfe.Complete.Tests.Pages.Projects.ExternalContacts.New
 
             mockSender.
                 Setup(s => s.Send(It.IsAny<CreateExternalContactCommand>(), It.IsAny<CancellationToken>()))
-               .ReturnsAsync(contactId);
+               .ReturnsAsync(Result<ContactId>.Success(contactId));
 
             var exceptionMessage = "Error message";
             var exception = new Exception(exceptionMessage);

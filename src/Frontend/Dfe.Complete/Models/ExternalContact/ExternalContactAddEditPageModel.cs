@@ -4,6 +4,7 @@ using Dfe.Complete.Application.Services.TrustCache;
 using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Utils;
 using MediatR;
+using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Dfe.Complete.Models.ExternalContact;
@@ -30,14 +31,14 @@ public class ExternalContactAddEditPageModel(ITrustCache trustCacheService, ISen
             case ExternalContactType.SchoolOrAcademy:
                 organisationName = this.Project?.EstablishmentName?.ToTitleCase();
                 break;
-            case ExternalContactType.IncomingTrustCEO:
+            case ExternalContactType.IncomingTrust:
                 if (!this.Project.FormAMat && Project.IncomingTrustUkprn != null)
                 {
                     var incomingTrust = await trustCacheService.GetTrustAsync(this.Project.IncomingTrustUkprn);
                     organisationName = incomingTrust.Name?.ToTitleCase();
                 }
                 break;
-            case ExternalContactType.OutgoingTrustCEO:
+            case ExternalContactType.OutgoingTrust:
                 if (this.Project?.Type == ProjectType.Transfer && this.Project.OutgoingTrustUkprn != null)
                 {
                     var outgoingTrust = await trustCacheService.GetTrustAsync(this.Project.OutgoingTrustUkprn);
@@ -89,20 +90,22 @@ public class ExternalContactAddEditPageModel(ITrustCache trustCacheService, ISen
 
     private void SetExternalContactTypes()
     {
-        this.ExternalContactInput.ContactTypeRadioOptions = new[]
+        var contactTypeRadioOptions = new List<ExternalContactType>
         {
                 ExternalContactType.SchoolOrAcademy,
-                ExternalContactType.IncomingTrustCEO,
-                ExternalContactType.OutgoingTrustCEO,
+                ExternalContactType.IncomingTrust,
+                ExternalContactType.OutgoingTrust,
                 ExternalContactType.LocalAuthority,
                 ExternalContactType.Solicitor,
                 ExternalContactType.Diocese,
                 ExternalContactType.Other,
         };
 
-        //if (string.IsNullOrWhiteSpace(this.ExternalContactInput.SelectedExternalContactType))
-        //{
-        //    this.ExternalContactInput.SelectedExternalContactType = ExternalContactType.Other.ToDescription();
-        //}
+        if (this.Project.Type == ProjectType.Conversion)
+        {
+            contactTypeRadioOptions.RemoveAll(x => x == ExternalContactType.OutgoingTrust);
+        }
+
+        this.ExternalContactInput.ContactTypeRadioOptions = contactTypeRadioOptions.ToArray();
     }   
 }

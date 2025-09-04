@@ -48,8 +48,8 @@ public class CreateExternalContact(ITrustCache trustCacheService,  ErrorService 
 
                 var contactType = EnumExtensions.FromDescription<ExternalContactType>(this.SelectedExternalContactType);
                 var organisationName = string.Empty;
-                var role = ExternalContactHelper.GetRoleByContactType(contactType);
-                var category = ExternalContactHelper.GetCategoryByContactType(contactType);
+                var role = ExternalContactMapper.GetRoleByContactType(contactType);
+                var category = ExternalContactMapper.MapContactTypeToCategory(contactType);
 
                 switch (contactType)
                 {
@@ -57,14 +57,14 @@ public class CreateExternalContact(ITrustCache trustCacheService,  ErrorService 
                     case ExternalContactType.ChairOfGovernors:
                         organisationName = this.Project?.EstablishmentName?.ToTitleCase();
                         break;
-                    case ExternalContactType.IncomingTrustCEO:
+                    case ExternalContactType.IncomingTrust:
                         if (!this.Project.FormAMat && Project.IncomingTrustUkprn != null)
                         {  
                             var incomingTrust = await trustCacheService.GetTrustAsync(this.Project.IncomingTrustUkprn);
                             organisationName = incomingTrust.Name?.ToTitleCase();
                         }
                         break;
-                    case ExternalContactType.OutgoingTrustCEO:
+                    case ExternalContactType.OutgoingTrust:
                         if (this.Project?.Type == ProjectType.Transfer && this.Project.OutgoingTrustUkprn != null)
                         {
                             var outgoingTrust = await trustCacheService.GetTrustAsync(this.Project.OutgoingTrustUkprn);

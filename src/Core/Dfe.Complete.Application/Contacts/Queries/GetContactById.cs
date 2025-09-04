@@ -1,28 +1,36 @@
+using AutoMapper;
 using Dfe.Complete.Application.Common.Models;
+using Dfe.Complete.Application.Contacts.Models;
+using Dfe.Complete.Domain.Constants;
 using Dfe.Complete.Domain.Entities;
 using Dfe.Complete.Domain.Interfaces.Repositories;
-using Dfe.Complete.Domain.ValueObjects; 
+using Dfe.Complete.Domain.ValueObjects;
 using MediatR;
 using Microsoft.Extensions.Logging;
 
 namespace Dfe.Complete.Application.Projects.Queries.GetProject
 {
-    public record GetContactByIdQuery(ContactId ContactId) : IRequest<Result<Contact?>>;
+    public record GetContactByIdQuery(ContactId ContactId) : IRequest<Result<ContactDto?>>;
 
-    public class GetContactIdQueryHandler(ICompleteRepository<Contact> contactsRepository, ILogger<GetContactIdQueryHandler> logger)
-        : IRequestHandler<GetContactByIdQuery, Result<Contact?>>
+    public class GetContactIdQueryHandler(
+        ICompleteRepository<Contact> contactsRepository,
+        IMapper mapper,
+        ILogger<GetContactIdQueryHandler> logger)
+        : IRequestHandler<GetContactByIdQuery, Result<ContactDto?>>
     {
-        public async Task<Result<Contact?>> Handle(GetContactByIdQuery request, CancellationToken cancellationToken)
+        public async Task<Result<ContactDto?>> Handle(GetContactByIdQuery request, CancellationToken cancellationToken)
         {
             try
             {
-                var result = await contactsRepository.GetAsync(x => x.Id == request.ContactId);                
-                return Result<Contact?>.Success(result);
+                var result = await contactsRepository.GetAsync(x => x.Id == request.ContactId);
+                var contactDto = mapper.Map<ContactDto?>(result);
+                return Result<ContactDto?>.Success(contactDto);
             }
             catch (Exception ex)
             {
-                logger.LogError(ex, "Exception for {ContactId} Request - {@Request}", nameof(GetContactIdQueryHandler), request);
-                return Result<Contact?>.Failure(ex.Message);
+                var message = string.Format(ErrorMessagesConstants.ExceptionGettingExternalContact, request.ContactId?.Value);
+                logger.LogError(ex, message);
+                return Result<ContactDto?>.Failure(message);
             }
         }
     }

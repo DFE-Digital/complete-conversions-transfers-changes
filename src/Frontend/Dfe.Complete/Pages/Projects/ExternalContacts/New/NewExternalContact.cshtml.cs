@@ -35,7 +35,7 @@ public class NewExternalContact(ISender sender, ILogger<NewExternalContact> logg
         var pageToRedirectTo = contactType switch
         {
             ExternalContactType.SomeOneElse => string.Format(RouteConstants.ProjectsExternalContactAddTypeOther, ProjectId),
-            ExternalContactType.HeadTeacher or ExternalContactType.IncomingTrustCEO or ExternalContactType.OutgoingTrustCEO or ExternalContactType.ChairOfGovernors
+            ExternalContactType.HeadTeacher or ExternalContactType.IncomingTrust or ExternalContactType.OutgoingTrust or ExternalContactType.ChairOfGovernors
                 => string.Format(RouteConstants.ProjectsExternalContactAdd, ProjectId, this.SelectedExternalContactType),
             _ => string.Empty
         };
@@ -59,8 +59,8 @@ public class NewExternalContact(ISender sender, ILogger<NewExternalContact> logg
             this.ContactTypeRadioOptions = new[]
             {
                 ExternalContactType.HeadTeacher,
-                ExternalContactType.IncomingTrustCEO,
-                ExternalContactType.OutgoingTrustCEO,
+                ExternalContactType.IncomingTrust,
+                ExternalContactType.OutgoingTrust,
                 ExternalContactType.SomeOneElse,
             };
         }
@@ -69,7 +69,7 @@ public class NewExternalContact(ISender sender, ILogger<NewExternalContact> logg
             this.ContactTypeRadioOptions = new[]
             {
                 ExternalContactType.HeadTeacher,
-                ExternalContactType.IncomingTrustCEO,
+                ExternalContactType.IncomingTrust,
                 ExternalContactType.ChairOfGovernors,
                 ExternalContactType.SomeOneElse,
             };

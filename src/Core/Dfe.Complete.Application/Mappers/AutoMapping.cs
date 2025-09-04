@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Dfe.AcademiesApi.Client.Contracts;
 using Dfe.Complete.Application.Projects.Models;
+using Dfe.Complete.Application.Contacts.Models;
 using Dfe.Complete.Domain.Entities;
 
 namespace Dfe.Complete.Application.Mappers
@@ -88,6 +89,7 @@ namespace Dfe.Complete.Application.Mappers
 			CreateMap<TransferTasksData, TransferTaskDataDto>();
 			CreateMap<SignificantDateHistory, SignificantDateHistoryDto>();
 			CreateMap<SignificantDateHistoryReason, SignificantDateHistoryReasonDto>();
-		}
+            CreateMap<Contact, ContactDto>();
+        }
 	}
 }

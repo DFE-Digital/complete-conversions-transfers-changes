@@ -10,13 +10,13 @@ public enum ExternalContactType
     [DisplayDescription("Headteacher")]
     HeadTeacher = 1,
 
-    [Description("incomingtrustceo")]
+    [Description("incomingtrust")]
     [DisplayDescription("Incoming trust CEO (Chief executive officer)")]   
-    IncomingTrustCEO = 2,
+    IncomingTrust = 2,
 
-    [Description("outgoingtrustceo")]
+    [Description("outgoingtrust")]
     [DisplayDescription("Outgoing trust CEO (Chief executive officer)")]
-    OutgoingTrustCEO = 3,
+    OutgoingTrust = 3,
 
     [Description("chairofgovernors")]
     [DisplayDescription("Chair of governors")]

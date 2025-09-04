@@ -1,9 +1,12 @@
-﻿using Dfe.Complete.Application.Projects.Commands.UpdateProject;
+﻿using Dfe.Complete.Application.Common.Models;
+using Dfe.Complete.Application.Projects.Commands.UpdateProject;
+using Dfe.Complete.Domain.Constants;
 using Dfe.Complete.Domain.Entities;
 using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Domain.Interfaces.Repositories;
 using Dfe.Complete.Domain.ValueObjects;
 using MediatR;
+using Microsoft.Extensions.Logging;
 
 namespace Dfe.Complete.Application.Contacts.Commands;
 
@@ -17,36 +20,48 @@ public record CreateExternalContactCommand(string FullName,
     int? EstablishmentUrn, 
     string? OrganisationName,
     LocalAuthorityId? LocalAuthorityId,
-    ContactType? Type) : IRequest<ContactId>;
+    ContactType? Type) : IRequest<Result<ContactId>>;
 
-
-public class CreateExternalContactCommandHandler(ICompleteRepository<Contact> ContactRepository, ISender sender) : IRequestHandler<CreateExternalContactCommand, ContactId>
+public class CreateExternalContactCommandHandler(
+    ICompleteRepository<Contact> ContactRepository,
+    ILogger<CreateExternalContactCommandHandler> logger,
+    ISender sender) 
+    : IRequestHandler<CreateExternalContactCommand, Result<ContactId>>
 {
-    public async Task<ContactId> Handle(CreateExternalContactCommand request, CancellationToken cancellationToken)
+    public async Task<Result<ContactId>> Handle(CreateExternalContactCommand request, CancellationToken cancellationToken)
     {
-        var contact = new Contact()
+        try
         {
-            Id = new ContactId(Guid.NewGuid()),
-            Category = request.Category,
-            CreatedAt = DateTime.Now,
-            UpdatedAt = DateTime.Now,
-            Email = request.Email,
-            Phone = request.PhoneNumber,
-            EstablishmentUrn = request.EstablishmentUrn,
-            LocalAuthorityId = request.LocalAuthorityId,
-            Name = request.FullName,
-            Title = request.Role,
-            OrganisationName = request.OrganisationName,
-            ProjectId = request.ProjectId,
-            Type = request.Type
-        };
-        var result = await ContactRepository.AddAsync(contact, cancellationToken);
+            var contact = new Contact()
+            {
+                Id = new ContactId(Guid.NewGuid()),
+                Category = request.Category,
+                CreatedAt = DateTime.UtcNow,
+                UpdatedAt = DateTime.UtcNow,
+                Email = request.Email,
+                Phone = request.PhoneNumber,
+                EstablishmentUrn = request.EstablishmentUrn,
+                LocalAuthorityId = request.LocalAuthorityId,
+                Name = request.FullName,
+                Title = request.Role,
+                OrganisationName = request.OrganisationName,
+                ProjectId = request.ProjectId,
+                Type = request.Type
+            };
+            var result = await ContactRepository.AddAsync(contact, cancellationToken);
 
-        if (request.IsPrimaryContact)
-        {
-            await sender.Send(new UpdatePrimaryContactAtOrganisationCommand(contact.ProjectId, result));
+            if (request.IsPrimaryContact)
+            {
+                await sender.Send(new UpdatePrimaryContactAtOrganisationCommand(contact.ProjectId, result));
+            }
+
+            return Result<ContactId>.Success(result.Id);            
         }
-
-        return result.Id;
+        catch (Exception ex)
+        {
+            var message = string.Format(ErrorMessagesConstants.CouldNotCreateExternalContact, request.ProjectId?.Value);
+            logger.LogError(ex, message);            
+            return Result<ContactId>.Failure(message);
+        }
     }
 }
