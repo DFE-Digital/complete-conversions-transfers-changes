@@ -89,7 +89,7 @@ namespace Dfe.Complete.Pages.Projects.ServiceSupport.LocalAuthorities
             //get contact id. 
             var contactId = ContactId.HasValue ? new ContactId(ContactId.Value) : new ContactId(Guid.NewGuid());
             var response = await sender.Send(new UpdateLocalAuthorityCommand(new LocalAuthorityId(new Guid(Id)), Code, Address1,
-                Address2, Address3, AddressTown, AddressCounty, AddressPostcode, contactId, Title, ContactName, Email, Phone));
+                Address2, Address3, AddressTown, AddressCounty, AddressPostcode.ToUpper(), contactId, Title, ContactName, Email, Phone));
             if (response.IsSuccess)
             {
                 TempData["HasUpdatedLaDetails"] = true;

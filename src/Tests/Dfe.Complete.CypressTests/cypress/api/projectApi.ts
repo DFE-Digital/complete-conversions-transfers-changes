@@ -6,10 +6,26 @@ import {
     CreateMatTransferProjectRequest,
     CreateProjectResponse,
     CreateTransferProjectRequest,
+    GetProjectResponse,
     ProjectRequest,
 } from "./apiDomain";
 
 class ProjectApi extends ApiBase {
+    public getProject(urn: number): Cypress.Chainable<Cypress.Response<GetProjectResponse>> {
+        return this.authenticatedRequest().then((headers) => {
+            return cy
+                .request<GetProjectResponse>({
+                    method: "GET",
+                    url: Cypress.env(EnvApi) + "/v1/Projects",
+                    qs: { "urn.Value": urn },
+                    headers: headers,
+                    failOnStatusCode: false,
+                })
+                .then((response) => {
+                    return response;
+                });
+        });
+    }
     public createConversionProject(
         request: CreateConversionProjectRequest,
         username?: string,

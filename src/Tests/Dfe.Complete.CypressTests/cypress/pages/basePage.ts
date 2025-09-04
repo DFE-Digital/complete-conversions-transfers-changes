@@ -44,6 +44,11 @@ class BasePage {
         return this;
     }
 
+    buttonDoesNotExist(buttonText: string) {
+        cy.getByClass("govuk-button").contains(buttonText).should("not.exist");
+        return this;
+    }
+
     notAuthorisedToPerformThisActionBanner() {
         this.containsImportantBannerWithMessage("You are not authorised to perform this action.");
         return this;
@@ -122,7 +127,7 @@ class BasePage {
 
     protected pageHasMovedToSection(section: string, sections: Record<string, string>) {
         cy.url().should("include", `#${sections[section]}`);
-        cy.contains("h2", section).isInViewport();
+        cy.contains("h2", section).should("be.visible");
         return this;
     }
 

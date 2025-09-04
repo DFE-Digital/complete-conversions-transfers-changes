@@ -13,7 +13,7 @@ namespace Dfe.Complete.Services
     {
         public bool UserCanEdit(ProjectDto project, ProjectTeam currentUserTeam,  ClaimsPrincipal user)
         {
-            return (currentUserTeam == ProjectTeam.ServiceSupport || (project.State != ProjectState.Completed && project.AssignedToId?.Value == user.GetUserId().Value));
+            return currentUserTeam == ProjectTeam.ServiceSupport || (project.State != ProjectState.Completed && project.AssignedToId?.Value == user.GetUserId().Value);
         }
     }
 }
