@@ -15,4 +15,5 @@ public static class UserPolicyConstants
     public const string HasGlobalNavigation = "HasGlobalNavigation";
     public const string CanEditAddedByUser = "CanEditAddedByUser";
     public const string ManageLocalAuthorities = "ManageLocalAuthorities";
+    public const string ActiveUser = "ActiveUser";
 }
