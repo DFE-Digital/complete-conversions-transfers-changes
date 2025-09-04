@@ -126,12 +126,29 @@ namespace Dfe.Complete.Api.Controllers
         /// <param name="request">The update command.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
         [Authorize(Policy = "CanReadWrite")]
-        [HttpPatch("external-stakeholder-kickoff")]
-        [SwaggerResponse(204, "External stakeholder kickoff Task updated successfully.")]
+        [HttpPatch("TaskData/ExternalStakeholderKickoff")]
+        [SwaggerResponse(204, "External stakeholder kickoff task updated successfully.")]
         [SwaggerResponse(400, "Invalid request data.")]
         [SwaggerResponse(404, "Project/User not found.")]
         public async Task<IActionResult> UpdateExternalStakeholderKickOffTaskAsync(
             [FromBody] UpdateExternalStakeholderKickOffTaskCommand request,
+            CancellationToken cancellationToken)
+        {
+            await sender.Send(request, cancellationToken);
+            return NoContent();
+        }
+        /// <summary>
+        /// Updates the confirm proposed capacity of the academy for a specific task data.
+        /// </summary>
+        /// <param name="request">The update command.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        [Authorize(Policy = "CanReadWriteUpdate")]
+        [HttpPatch("TaskData/ConfirmProposedAcademyCapacity")]
+        [SwaggerResponse(204, "Confirm proposed capacity of the academy task updated successfully.")]
+        [SwaggerResponse(400, "Invalid request data.")]
+        [SwaggerResponse(404, "Project/User not found.")]
+        public async Task<IActionResult> UpdateConfirmProposedCapacityOfTheAcademyTaskAsync(
+            [FromBody] UpdateConfirmProposedCapacityOfTheAcademyTaskCommand request,
             CancellationToken cancellationToken)
         {
             await sender.Send(request, cancellationToken);
