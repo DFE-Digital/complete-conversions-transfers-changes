@@ -74,8 +74,6 @@ declare global {
 
             typeText(element: Chainable<Element>, text: string): Chainable<Element>;
 
-            isInViewport(): Chainable<Element>;
-
             shouldHaveText(expectedText: string | number): Chainable<Element>;
 
             revisitCurrentUrl(): Chainable<Element>;
