@@ -158,7 +158,7 @@ namespace Dfe.Complete.Api.Controllers
         } 
 
         /// <summary>
-        /// Updates the redact and send documents task Data for conversion or trasnfer project.
+        /// Updates the redact and send documents task Data for conversion or transfer project.
         /// </summary>
         /// <param name="request">The update command.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
