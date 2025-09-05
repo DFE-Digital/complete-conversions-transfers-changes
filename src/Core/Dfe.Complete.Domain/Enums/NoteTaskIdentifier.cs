@@ -36,4 +36,8 @@ public enum NoteTaskIdentifier
     [Description("deed_of_variation")]
     [DisplayDescription("Deed of variation")]
     DeedOfVariation = 8,
+
+    [Description("proposed_capacity_of_the_academy")]
+    [DisplayDescription("Confirm Proposed Capacity Of TheAcademy")]
+    ConfirmProposedCapacityOfTheAcademy = 9
 }

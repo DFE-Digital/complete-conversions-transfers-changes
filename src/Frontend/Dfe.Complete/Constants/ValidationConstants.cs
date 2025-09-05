@@ -1,6 +1,6 @@
 ﻿namespace Dfe.Complete.Constants
 {
-    public class ValidationConstants
+    public static class ValidationConstants
     {
         public const string TextValidationMessage = "The {0} must be {1} characters or less";
         public const string NumberValidationMessage = "{0} must be between {1} and {2}";
@@ -17,5 +17,9 @@
         public const string SchoolSharePointLink = "Enter a school SharePoint link";
         public const string TwoRequiresImprovement = "Select yes or no";
         public const string AssignedToRegionalCaseworkerTeam = "State if this project will be handed over to the Regional casework services team. Choose yes or no";
+        public const string ReceptionToSixYears = "Enter the proposed capacity for pupils in reception to year 6";
+        public const string SevenToElevenYears = "Enter the proposed capacity for pupils in years 7 to 11";
+        public const string TwelveOrAboveYears = "Enter the proposed capacity for students in year 12 or above";
+        public const string ProposedCapacityMustBeNumber = "Proposed capacity must be a number, like 345";
     }
 }

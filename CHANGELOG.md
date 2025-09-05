@@ -16,6 +16,10 @@ Security in case of vulnerabilities.
 
 ## Unreleased
 
+### Added
+
+- Added `Confirm proposed capacity of the academy` task for conversion project.
+
 ### Security
 - prevent inactive users from signing in
 
