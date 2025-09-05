@@ -10,6 +10,7 @@ using Dfe.Complete.Validators;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Reflection;
 
 namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.ConfirmProposedCapacityOfTheAcademy
 {
@@ -20,18 +21,16 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.ConfirmProposedCapacityOfTh
         public bool? NotApplicable { get; set; }
 
         [BindProperty(Name = "reception-to-six-years")]
-        [RequiredIfNotApplicableIsNotSet("NotApplicable", ErrorMessage = ValidationConstants.ReceptionToSixYears)]
         [ValidNumber(0, int.MaxValue, "NotApplicable", ErrorMessage = ValidationConstants.ProposedCapacityMustBeNumber)]
-        public string ReceptionToSixYears { get; set; } = "";
+        public string? ReceptionToSixYears { get; set; }
+
         [BindProperty(Name = "seven-to-eleven-years")]
-        [RequiredIfNotApplicableIsNotSet("NotApplicable", ErrorMessage = ValidationConstants.SevenToElevenYears)]
-        [ValidNumber(0, int.MaxValue, "NotApplicable",ErrorMessage = ValidationConstants.ProposedCapacityMustBeNumber)]
-        public string SevenToElevenYears { get; set; } = "";
+        [ValidNumber(0, int.MaxValue, "NotApplicable", ErrorMessage = ValidationConstants.ProposedCapacityMustBeNumber)]
+        public string? SevenToElevenYears { get; set; }
 
         [BindProperty(Name = "twelve-or-above-years")]
-        [RequiredIfNotApplicableIsNotSet("NotApplicable", ErrorMessage = ValidationConstants.TwelveOrAboveYears)]
         [ValidNumber(0, int.MaxValue, "NotApplicable", ErrorMessage = ValidationConstants.ProposedCapacityMustBeNumber)]
-        public string TwelveOrAboveYears { get; set; } = "";
+        public string? TwelveOrAboveYears { get; set; }
 
         [BindProperty]
         public Guid? TasksDataId { get; set; }
@@ -49,7 +48,10 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.ConfirmProposedCapacityOfTh
         }
         public async Task<IActionResult> OnPost()
         {
-            if (!ModelState.IsValid)
+            ValidateProperty(nameof(TwelveOrAboveYears), TwelveOrAboveYears, ValidationConstants.TwelveOrAboveYears);
+            ValidateProperty(nameof(SevenToElevenYears), SevenToElevenYears, ValidationConstants.SevenToElevenYears);
+            ValidateProperty(nameof(ReceptionToSixYears), ReceptionToSixYears, ValidationConstants.ReceptionToSixYears);
+            if (errorService.HasErrors()|| !ModelState.IsValid)
             {
                 await base.OnGetAsync();
                 errorService.AddErrors(ModelState.Keys, ModelState);
@@ -58,6 +60,17 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.ConfirmProposedCapacityOfTh
             await sender.Send(new UpdateConfirmProposedCapacityOfTheAcademyTaskCommand(new TaskDataId(TasksDataId.GetValueOrDefault())!, NotApplicable, ReceptionToSixYears, SevenToElevenYears, TwelveOrAboveYears));
             TempData.SetNotification(NotificationType.Success, "Success", "Task updated successfully");
             return Redirect(string.Format(RouteConstants.ProjectTaskList, ProjectId));
+        }
+
+        private void ValidateProperty(string name, string? value, string errorMessage)
+        {
+            var prop = typeof(ConfirmProposedCapacityOfTheAcademyModel).GetProperty(name);
+            if(prop == null) return;
+            var bindAttr = prop.GetCustomAttribute<BindPropertyAttribute>();
+            if (bindAttr != null && NotApplicable != true && string.IsNullOrWhiteSpace(value))
+            {
+                errorService.AddError(bindAttr.Name!, errorMessage);
+            }
         }
     }
 }

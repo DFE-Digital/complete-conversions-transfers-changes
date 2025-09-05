@@ -3,7 +3,7 @@
 namespace Dfe.Complete.Validators
 {
     [AttributeUsage(AttributeTargets.Property)]
-    public class RequiredIfNotApplicableIsNotSetAttribute(string dependentProperty) : ValidationAttribute
+    public class RequiredIfNotApplicableIsNullOrFalseAttribute(string dependentProperty) : ValidationAttribute
     {
         protected override ValidationResult? IsValid(object? value, ValidationContext validationContext)
         {
