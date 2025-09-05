@@ -155,6 +155,24 @@ namespace Dfe.Complete.Api.Controllers
         {
             await sender.Send(request, cancellationToken);
             return NoContent();
-        } 
+        }
+        /// <summary>
+        /// Updates the receive declaration of expenditure certificate task Data for conversion or trasnfer project.
+        /// </summary>
+        /// <param name="request">The update command.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        [Authorize(Policy = "CanReadWriteUpdate")]
+        [HttpPatch]
+        [Route("TaskData/ReceiveDeclarationOfExpenditureCertificate")]
+        [SwaggerResponse(204, "Conversion or transfer's receive declaration of expenditure certificate task updated successfully.")]
+        [SwaggerResponse(400, "Invalid request data.")]
+        [SwaggerResponse(404, "Project/User not found.")]
+        public async Task<IActionResult> UpdateDeclarationOfExpenditureCertificateTaskAsync(
+            [FromBody] UpdateDeclarationOfExpenditureCertificateTaskCommand request,
+            CancellationToken cancellationToken)
+        {
+            await sender.Send(request, cancellationToken);
+            return NoContent();
+        }
     }
 }

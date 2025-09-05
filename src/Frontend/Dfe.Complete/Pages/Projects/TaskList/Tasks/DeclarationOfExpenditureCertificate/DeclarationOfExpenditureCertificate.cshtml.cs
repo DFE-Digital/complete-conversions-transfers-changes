@@ -1,11 +1,17 @@
+using Dfe.Complete.Application.Projects.Commands.TaskData;
+using Dfe.Complete.Constants;
 using Dfe.Complete.Domain.Enums;
+using Dfe.Complete.Domain.ValueObjects;
+using Dfe.Complete.Extensions;
+using Dfe.Complete.Models;
+using Dfe.Complete.Services;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.DeclarationOfExpenditureCertificate
 {
-    public class DeclarationOfExpenditureCertificateModel(ISender sender, IAuthorizationService authorizationService, ILogger<DeclarationOfExpenditureCertificateModel> logger)
+    public class DeclarationOfExpenditureCertificateModel(ISender sender, IAuthorizationService authorizationService, ILogger<DeclarationOfExpenditureCertificateModel> logger, ErrorService errorService)
     : BaseProjectTaskModel(sender, authorizationService, logger, NoteTaskIdentifier.DeclarationOfExpenditureCertificate)
     {
         [BindProperty(Name = "not-applicable")]
@@ -43,6 +49,19 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.DeclarationOfExpenditureCer
                 Saved = ConversionTaskData.ReceiveGrantPaymentCertificateSaveCertificate;
             }
             return Page();
+        }
+
+        public async Task<IActionResult> OnPost()
+        {
+            if (!ModelState.IsValid)
+            {
+                await base.OnGetAsync();
+                errorService.AddErrors(ModelState);
+                return Page();
+            }
+            await sender.Send(new UpdateDeclarationOfExpenditureCertificateTaskCommand(new TaskDataId(TasksDataId.GetValueOrDefault())!, Type, DateReceived, NotApplicable, CheckCertificate, Saved));
+            TempData.SetNotification(NotificationType.Success, "Success", "Task updated successfully");
+            return Redirect(string.Format(RouteConstants.ProjectTaskList, ProjectId));
         }
     }
 }

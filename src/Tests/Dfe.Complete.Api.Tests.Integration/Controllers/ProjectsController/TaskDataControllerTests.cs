@@ -364,5 +364,79 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers.ProjectsController
             Assert.Null(existingTaskData.ArticlesOfAssociationSaved);
             Assert.Null(existingTaskData.ArticlesOfAssociationSent);
         }
+
+        [Theory]
+        [CustomAutoData(typeof(CustomWebApplicationDbContextFactoryCustomization))]
+        public async Task UpdateDeclarationOfExpenditureCertificateTaskAsync_ShouldUpdate_ConversionTaskData(
+            CustomWebApplicationDbContextFactory<Program> factory,
+            ITasksDataClient tasksDataClient,
+            UpdateDeclarationOfExpenditureCertificateTaskCommand command,
+            IFixture fixture)
+        {
+            // Arrange
+            factory.TestClaims = [new Claim(ClaimTypes.Role, ApiRoles.ReadRole), new Claim(ClaimTypes.Role, ApiRoles.UpdateRole), new Claim(ClaimTypes.Role, ApiRoles.WriteRole)];
+
+            var dbContext = factory.GetDbContext<CompleteContext>();
+
+            var taskData = fixture.Create<ConversionTasksData>();
+            dbContext.ConversionTasksData.Add(taskData);
+
+            await dbContext.SaveChangesAsync();
+            command.TaskDataId = new TaskDataId { Value = taskData.Id.Value };
+            command.ProjectType = ProjectType.Conversion;
+            command.CheckCertificate = true;
+            command.Saved = false;
+            command.NotApplicable = false;
+            command.DateReceived = new DateTime(2025, 1, 1);
+
+            // Act
+            await tasksDataClient.UpdateDeclarationOfExpenditureCertificateTaskAsync(command, default);
+
+            // Assert
+            dbContext.ChangeTracker.Clear();
+            var existingTaskData = await dbContext.ConversionTasksData.SingleOrDefaultAsync(x => x.Id == taskData.Id);
+            Assert.NotNull(existingTaskData);
+            Assert.False(existingTaskData.ReceiveGrantPaymentCertificateNotApplicable);
+            Assert.True(existingTaskData.ReceiveGrantPaymentCertificateCheckCertificate);
+            Assert.NotNull(existingTaskData.ReceiveGrantPaymentCertificateDateReceived);
+            Assert.False(existingTaskData.ReceiveGrantPaymentCertificateSaveCertificate); 
+        }
+        [Theory]
+        [CustomAutoData(typeof(CustomWebApplicationDbContextFactoryCustomization))]
+        public async Task UpdateDeclarationOfExpenditureCertificateTaskAsync_ShouldUpdate_TransferTaskData(
+            CustomWebApplicationDbContextFactory<Program> factory,
+            ITasksDataClient tasksDataClient,
+            UpdateDeclarationOfExpenditureCertificateTaskCommand command,
+            IFixture fixture)
+        {
+            // Arrange
+            factory.TestClaims = [new Claim(ClaimTypes.Role, ApiRoles.ReadRole), new Claim(ClaimTypes.Role, ApiRoles.UpdateRole), new Claim(ClaimTypes.Role, ApiRoles.WriteRole)];
+
+            var dbContext = factory.GetDbContext<CompleteContext>();
+
+            var taskData = fixture.Create<TransferTasksData>();
+            dbContext.TransferTasksData.Add(taskData);
+
+            await dbContext.SaveChangesAsync();
+            command.TaskDataId = new TaskDataId { Value = taskData.Id.Value };
+            command.ProjectType = ProjectType.Transfer;
+            command.CheckCertificate = true;
+            command.Saved = false;
+            command.NotApplicable = false;
+            command.DateReceived = new DateTime(2025, 1, 1);
+
+            // Act
+            await tasksDataClient.UpdateDeclarationOfExpenditureCertificateTaskAsync(command, default);
+
+            // Assert
+            dbContext.ChangeTracker.Clear();
+            var existingTaskData = await dbContext.TransferTasksData.SingleOrDefaultAsync(x => x.Id == taskData.Id);
+            Assert.NotNull(existingTaskData);
+            Assert.NotNull(existingTaskData);
+            Assert.False(existingTaskData.DeclarationOfExpenditureCertificateSaved);
+            Assert.True(existingTaskData.DeclarationOfExpenditureCertificateCorrect);
+            Assert.NotNull(existingTaskData.DeclarationOfExpenditureCertificateDateReceived);
+            Assert.False(existingTaskData.DeclarationOfExpenditureCertificateNotApplicable);
+        }
     }
 }

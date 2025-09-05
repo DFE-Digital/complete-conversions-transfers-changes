@@ -5,7 +5,7 @@
 @model Dfe.Complete.Pages.Projects.TaskList.Tasks.DeclarationOfExpenditureCertificate.DeclarationOfExpenditureCertificateModel
 @{
     Layout = "_ProjectTaskLayout";
-    ViewData["Title"] = "Receive declaration of expenditure certificate";
+    ViewData["Title"] = "Receive Declaration of expenditure certificate";
 }
 @section TaskHeaderHintSection
 {
@@ -32,6 +32,9 @@
                 </govuk-checkboxes-fieldset-legend>
                 <govuk-checkboxes-item id="not-applicable" asp-for="@Model.NotApplicable" value="true" name="not-applicable" checked="@Model.NotApplicable">
                     <b>Not applicable</b>
+                    <govuk-checkboxes-item-hint>
+                        <p>No grant was received</p>
+                    </govuk-checkboxes-item-hint>
                 </govuk-checkboxes-item>
             </govuk-checkboxes-fieldset>
         </govuk-checkboxes>
@@ -40,10 +43,10 @@
         </h2>
         <govuk-date-input id="date-received" name-prefix="date-received" asp-for="@Model.DateReceived">
             <govuk-date-input-fieldset>
-                <govuk-date-input-fieldset-legend class="govuk-fieldset__legend--m">
-                    For example 27 5 2007
+                <govuk-date-input-fieldset-legend class="govuk-fieldset__legend"> 
                 </govuk-date-input-fieldset-legend>
-                <govuk-date-input-hint> 
+                <govuk-date-input-hint>
+                    <p>For example 27 5 2007</p>
                     @if (ErrorService.HasErrorForKey("date-received"))
                     {
                         <govuk-date-input-error-message>@(ErrorService.GetErrorMessage("date-received"))</govuk-date-input-error-message>
@@ -57,6 +60,16 @@
                 </govuk-checkboxes-fieldset-legend>
                 <govuk-checkboxes-item id="check-certificate" asp-for="@Model.CheckCertificate" value="true" name="check-certificate" checked="@Model.CheckCertificate">
                     <b>Check the declaration of expenditure certificate is correct</b>
+                    <govuk-checkboxes-item-hint>
+                        <p>Once they have sent it to you, check they've used the right template and there is no missing information.</p>
+                        <govuk-details>
+                            <govuk-details-summary>Using the right certificate</govuk-details-summary>
+                            <govuk-details-text>
+                                <p>If the school only received the £25,000 pre-opening support grant, they need to download and <a href="@_configuration["ExternalLinks:CompleteAcademyConversionsSupportGrantCertificate"]" target="_blank">complete the academy conversions, support grant certificate (opens in new tab)</a>.</p>
+                                <p>If the school or trust received a sponsored grant, they need to <a href="@_configuration["ExternalLinks:CompleteCertificateinAnnex2SponsoredAcademiesFunding"]" target="_blank">complete the certificate in Annex 2 of the Sponsored academies funding - advice for sponsors PDF (opens in a new tab)</a>.</p>
+                            </govuk-details-text>
+                        </govuk-details>
+                    </govuk-checkboxes-item-hint>
                 </govuk-checkboxes-item>
                 <govuk-checkboxes-item id="saved" asp-for="@Model.Saved" value="true" name="saved" checked="@Model.Saved">
                     <b>Save the declaration of expenditure certificate in the academy's SharePoint folder</b>

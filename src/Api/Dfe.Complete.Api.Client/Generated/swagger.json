@@ -2430,6 +2430,39 @@
         }
       }
     },
+    "/v1/TasksData/TaskData/ReceiveDeclarationOfExpenditureCertificate": {
+      "patch": {
+        "tags": [
+          "TasksData"
+        ],
+        "summary": "Updates the receive declaration of expenditure certificate task Data for conversion or trasnfer project.",
+        "operationId": "TasksData_UpdateDeclarationOfExpenditureCertificateTask",
+        "requestBody": {
+          "x-name": "request",
+          "description": "The update command.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateDeclarationOfExpenditureCertificateTaskCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "204": {
+            "description": "Conversion or transfer's receive declaration of expenditure certificate task updated successfully."
+          },
+          "400": {
+            "description": "Invalid request data."
+          },
+          "404": {
+            "description": "Project/User not found."
+          }
+        }
+      }
+    },
     "/v1/Trust/List/All": {
       "get": {
         "tags": [
@@ -6647,6 +6680,40 @@
             "nullable": true
           },
           "signedSecretaryState": {
+            "type": "boolean",
+            "nullable": true
+          }
+        }
+      },
+      "UpdateDeclarationOfExpenditureCertificateTaskCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "taskDataId": {
+            "$ref": "#/components/schemas/TaskDataId"
+          },
+          "projectType": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/ProjectType"
+              }
+            ]
+          },
+          "dateReceived": {
+            "type": "string",
+            "format": "date",
+            "nullable": true
+          },
+          "notApplicable": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "checkCertificate": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "saved": {
             "type": "boolean",
             "nullable": true
           }
