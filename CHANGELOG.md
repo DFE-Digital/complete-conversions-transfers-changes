@@ -23,12 +23,18 @@ Security in case of vulnerabilities.
 ### Security
 - prevent inactive users from signing in
 
+### Added
+- Ability to edit project information for conversions and transfers
+- ProjectGroup is created when a project is edited with a new GRN
+
 ### Changed
 - Complete project button will hide when users don't have access
 - Sort "Your projects in progress" in ascending date order
+- Group reference number links to the group on "About the project"
 
 ### Fixed
 - Complete project post no longer throws antiforgery error
+- GroupReferenceNumberAttribute failed when there was no existing group
 
 
 See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-09-03.710...main) for everything awaiting release
@@ -68,6 +74,7 @@ See the [full commit history](https://github.com/DFE-Digital/complete-conversion
 - Added `Supplemental Funding Agreement` task data for both conversion and transfer projects.
 
 ### Changed
+- Group reference number links to the group on "About the project"
 
 ### Fixed
 - GetProjectByUrn doesn't return notes
