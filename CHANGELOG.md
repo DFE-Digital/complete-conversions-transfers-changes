@@ -16,6 +16,10 @@ Security in case of vulnerabilities.
 
 ## Unreleased
 
+### Added
+
+- Added `Redact and send document` task for both conversion and transfer projects.
+
 ### Security
 - prevent inactive users from signing in
 
