@@ -12,8 +12,16 @@
             <govuk-panel-body>@Model.EstablishmentName <br /><strong>URN @Model.UrnId</strong></govuk-panel-body>
         </govuk-panel>
         <h2>What happens next?</h2>
-        <p>This project will appear in @(Model.AssignedToRegionalCaseworkerTeam == true ? "Regional Casework Serices": "your") project list.</p>
-        <p>You can assign it to a different delivery officer if you will not work on it any more.</p>
+        @if (Model.AssignedToRegionalCaseworkerTeam == true)
+        {
+            <p>This project will appear in the Regional Casework Services' project list.</p>
+            <p>It will only be assigned to a caseworker when external contacts have been added.</p>
+        }
+        else
+        {
+            <p>This project will appear in your project list.</p>
+            <p>You can assign it to a different delivery officer if you will not work on it any more.</p>
+        }
 
         <h2>Add contact details</h2>
 
@@ -36,7 +44,7 @@
             <p class="govuk-body">This will make sure that teams who process funding letters and other legal documents can contact the relevant people.</p>
         } 
         <a id="confirm-project" class="govuk-button" href="@string.Format(RouteConstants.NewProjectExternalContacts, Model.ProjectId)">Add contacts</a>
-        <h2>Hand over a another project</h2>
+        <h2>Hand over another project</h2>
 
         <p class="govuk-body">You can <a href="@RouteConstants.ProjectsHandover">return to the list of projects to handover</a> if you need to add details to others.</p>
     </div>
