@@ -22,8 +22,9 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.DeclarationOfExpenditureCer
         [BindProperty(Name = "check-certificate")]
         public bool? CheckCertificate { get; set; }
 
-        [BindProperty(Name = "date-received")]
-        public DateOnly? DateReceived { get; set; }
+        [BindProperty(Name = "date-received", BinderType = typeof(DateInputModelBinder))]
+        [DateValidation(DateRangeValidationService.DateRange.PastOrToday)]
+        public DateTime? DateReceived { get; set; }
 
         [BindProperty]
         public Guid? TasksDataId { get; set; }
@@ -38,14 +39,14 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.DeclarationOfExpenditureCer
             {
                 NotApplicable = TransferTaskData.DeclarationOfExpenditureCertificateNotApplicable;
                 CheckCertificate = TransferTaskData.DeclarationOfExpenditureCertificateCorrect;
-                DateReceived = TransferTaskData.DeclarationOfExpenditureCertificateDateReceived;
+                DateReceived = TransferTaskData.DeclarationOfExpenditureCertificateDateReceived?.ToDateTime(default);
                 Saved = TransferTaskData.DeclarationOfExpenditureCertificateSaved;
             }
             else
             {
                 NotApplicable = ConversionTaskData.ReceiveGrantPaymentCertificateNotApplicable;
                 CheckCertificate = ConversionTaskData.ReceiveGrantPaymentCertificateCheckCertificate;
-                DateReceived = ConversionTaskData.ReceiveGrantPaymentCertificateDateReceived;
+                DateReceived = ConversionTaskData.ReceiveGrantPaymentCertificateDateReceived?.ToDateTime(default);
                 Saved = ConversionTaskData.ReceiveGrantPaymentCertificateSaveCertificate;
             }
             return Page();
