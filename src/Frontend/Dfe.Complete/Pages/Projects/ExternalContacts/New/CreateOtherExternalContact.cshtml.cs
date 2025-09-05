@@ -16,8 +16,10 @@ namespace Dfe.Complete.Pages.Projects.ExternalContacts.New;
 
 public class CreateOtherExternalContact(ITrustCache trustCacheService, ErrorService errorService, ISender sender, ILogger<CreateOtherExternalContact> logger)
     : ExternalContactAddEditPageModel(trustCacheService, sender, logger)
-{
-    private readonly ISender _sender = sender;    
+{    
+    private readonly ErrorService errorService = errorService;
+    private readonly ISender sender = sender;
+    private readonly ILogger<CreateOtherExternalContact> logger = logger;
 
     public async override Task<IActionResult> OnGetAsync()
     {   
@@ -63,7 +65,7 @@ public class CreateOtherExternalContact(ITrustCache trustCacheService, ErrorServ
                     Type: ContactType.Project
                 );
 
-                var response = await _sender.Send(newExternalContactCommand);
+                var response = await sender.Send(newExternalContactCommand);
                 var contactId = response.Value;
 
                 TempData.SetNotification(

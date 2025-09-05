@@ -10,8 +10,6 @@ using DfE.CoreLibs.Testing.AutoFixture.Customizations;
 using Moq;
 using NSubstitute;
 using NSubstitute.ExceptionExtensions;
-using System.Reflection.Metadata;
-using System.Threading;
 using Entities = Dfe.Complete.Domain.Entities;
 
 namespace Dfe.Complete.Application.Tests.CommandHandlers.Contact;   

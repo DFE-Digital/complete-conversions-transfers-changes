@@ -18,7 +18,9 @@ public class CreateExternalContact(ITrustCache trustCacheService,  ErrorService 
     : ExternalContactBasePageModel(sender, logger)
 {   
     private const string invalidContactTypeErrorMessage = "The selected contact type is invalid";
-    private readonly ISender _sender = sender;
+    private readonly ErrorService errorService = errorService;
+    private readonly ISender sender = sender;
+    private readonly ILogger<CreateExternalContact> logger = logger;
 
     [BindProperty]
     public ExternalContactInputModel ExternalContactInput { get; set; } = new();   
@@ -89,7 +91,7 @@ public class CreateExternalContact(ITrustCache trustCacheService,  ErrorService 
                     Type: ContactType.Project
                 );
 
-                var response = await _sender.Send(newExternalContactCommand);
+                var response = await sender.Send(newExternalContactCommand);
                 var contactId = response.Value;
 
                 TempData.SetNotification(

@@ -4,7 +4,6 @@ using Dfe.Complete.Application.Services.TrustCache;
 using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Utils;
 using MediatR;
-using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Dfe.Complete.Models.ExternalContact;

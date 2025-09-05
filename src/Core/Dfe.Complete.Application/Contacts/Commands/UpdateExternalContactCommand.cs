@@ -15,7 +15,7 @@ namespace Dfe.Complete.Application.Contacts.Commands;
 public record UpdateExternalContactCommand(ContactId ContactId, ContactDto contactDto) : IRequest<Result<ContactDto>>;
 
 public class UpdateExternalContactCommandHandler(
-    ICompleteRepository<Contact> contactsRepository,
+    ICompleteRepository<Contact> contactRepository,
     IMapper mapper,
     ISender sender,
     ILogger<UpdateExternalContactCommandHandler> logger
@@ -25,7 +25,7 @@ public class UpdateExternalContactCommandHandler(
     {
         try
         {
-            var contactEntity = await contactsRepository.GetAsync(x => x.Id == request.ContactId);
+            var contactEntity = await contactRepository.GetAsync(x => x.Id == request.ContactId);
             if (contactEntity is null) return Result<ContactDto?>.Failure(string.Format(ErrorMessagesConstants.NotFoundExternalContact, request.ContactId.Value), ErrorType.NotFound);
 
             var updateDto = request.contactDto;
@@ -38,7 +38,7 @@ public class UpdateExternalContactCommandHandler(
             contactEntity.OrganisationName = updateDto.OrganisationName;
             contactEntity.UpdatedAt = DateTime.UtcNow;
 
-            var savedEntity = await contactsRepository.UpdateAsync(contactEntity, cancellationToken);
+            var savedEntity = await contactRepository.UpdateAsync(contactEntity, cancellationToken);
 
             var result = mapper.Map<ContactDto?>(savedEntity);
 

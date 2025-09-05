@@ -1,0 +1,32 @@
+﻿@page "/projects/{projectId}/external-contacts/{contactId}/delete"
+@using Dfe.Complete.Pages.Projects.ExternalContacts
+@model Dfe.Complete.Pages.Projects.ExternalContacts.DeleteExternalContact
+
+@{
+    Layout = "Shared/_Layout";
+    ViewData["Title"] = $"Are you sure you want to delete {Model.FullName}";
+}
+
+<div class="govuk-width-container ">
+    <nav aria-label="back link">
+        <a class="govuk-back-link" href="/projects/@Model.ProjectId/external-contacts/@Model.ContactId/edit">Back</a>
+    </nav>
+    <main class="govuk-main-wrapper app-content" id="main-content" role="main">
+        <div class="govuk-grid-row govuk-body">
+            <div class="govuk-grid-column-two-thirds">
+                <form class="edit_contact_project" id="delete_contact_project" accept-charset="UTF-8" method="post" novalidate>
+                    <h1 class="govuk-heading-l">Are you sure you want to delete @Model.FullName?</h1>
+                    <p>This will remove the contact for @Model.Role called @Model.FullName from the contacts list.</p>
+
+                    <div class="govuk-button-group">
+                        <govuk-button type="submit" class="govuk-button--warning" data-prevent-double-click="true">
+                        Delete
+                        </govuk-button>                      
+                        <a class="govuk-link" href="/projects/@Model.ProjectId/external-contacts/@Model.ContactId/edit">Cancel</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+    </main>
+</div>

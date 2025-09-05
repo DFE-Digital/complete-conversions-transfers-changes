@@ -176,11 +176,7 @@ namespace Dfe.Complete.Tests.Pages.Projects.ExternalContacts.New
 
             mockSender.
                 Setup(s => s.Send(It.IsAny<GetProjectByIdQuery>(), It.IsAny<CancellationToken>()))
-                .ReturnsAsync(Result<ProjectDto?>.Success(projectDto));
-
-            //mockSender.
-              //  Setup(s => s.Send(It.IsAny<UpdateExternalContactCommand>(), It.IsAny<CancellationToken>()))
-              // .ReturnsAsync(Result<ContactId>.Success(contactId));
+                .ReturnsAsync(Result<ProjectDto?>.Success(projectDto));           
 
             var exceptionMessage = "Error message";
             var exception = new Exception(exceptionMessage);

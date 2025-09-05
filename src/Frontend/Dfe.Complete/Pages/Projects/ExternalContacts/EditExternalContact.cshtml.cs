@@ -16,15 +16,18 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Dfe.Complete.Pages.Projects.ExternalContacts;
 
-public class EditExternalContact(ITrustCache trustCacheService, ErrorService errorService, ISender sender, ILogger<EditExternalContact> logger)
-     : ExternalContactAddEditPageModel(trustCacheService, sender, logger)
+public class EditExternalContact(ITrustCache trustCacheService, ErrorService errorService, ISender sender, ILogger<EditExternalContact> logger) : ExternalContactAddEditPageModel(trustCacheService, sender, logger)
 {
+    private readonly ErrorService errorService = errorService;
+    private readonly ISender sender = sender;
+    private readonly ILogger<EditExternalContact> logger = logger;
+
     [BindProperty(SupportsGet = true, Name = "contactId")]
     public string ContactId { get; set; }
 
     public async override Task<IActionResult> OnGetAsync()
     {        
-        return await this.GetPage();
+        return await GetPage();
     }
 
     public async Task<IActionResult> OnPostAsync()
