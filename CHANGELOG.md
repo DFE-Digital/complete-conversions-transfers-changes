@@ -16,7 +16,19 @@ Security in case of vulnerabilities.
 
 ## Unreleased
 
+
+### Added
+- Added `Redact and send document` task for both conversion and transfer projects.
+
+### Security
+- prevent inactive users from signing in
+
+### Changed
+- Complete project button will hide when users don't have access
+- Sort "Your projects in progress" in ascending date order
+
 ### Fixed
+- Complete project post no longer throws antiforgery error
 - Correct wording on handover complete confirmation page
 
 
@@ -38,13 +50,9 @@ See the [full commit history](https://github.com/DFE-Digital/complete-conversion
 ## [1.14.1](https://github.com/DFE-Digital/complete-conversions-transfers-changes/releases/tag/production-2025-09-01.697) - 2025-09-01
 
 ### Added
-
 - Enabled `DB retry` logic on failure.
 
-### Changed
-
 ### Fixed
-
 - hotfix - fetch only active users when attaching claims from database roles
 - Fixed `Signed Secretary state` checkbox data on the `Deed of novation and variation` task page.
 

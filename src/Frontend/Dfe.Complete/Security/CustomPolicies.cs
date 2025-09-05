@@ -1,4 +1,5 @@
 using Dfe.Complete.Domain.Constants;
+using Dfe.Complete.Infrastructure.Security.Authorization;
 using Microsoft.AspNetCore.Authorization;
 
 namespace Dfe.Complete.Security;
@@ -28,6 +29,11 @@ public static class CustomPolicies
                     user.IsInRole(UserRolesConstants.ManageTeam) &&
                     (user.IsInRole(UserRolesConstants.RegionalCaseworkServices) || user.IsInRole(UserRolesConstants.RegionalDeliveryOfficer));
             });
+        },
+        [UserPolicyConstants.ActiveUser] = builder =>
+        {
+            builder.RequireAuthenticatedUser();
+            builder.AddRequirements(new ActiveUserRequirement());
         }
     };
 }
