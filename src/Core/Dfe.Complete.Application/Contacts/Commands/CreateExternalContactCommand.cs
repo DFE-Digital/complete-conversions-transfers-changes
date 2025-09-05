@@ -50,10 +50,7 @@ public class CreateExternalContactCommandHandler(
             };
             var result = await ContactRepository.AddAsync(contact, cancellationToken);
 
-            if (request.IsPrimaryContact)
-            {
-                await sender.Send(new UpdatePrimaryContactAtOrganisationCommand(contact.ProjectId, result));
-            }
+            await sender.Send(new UpdatePrimaryContactAtOrganisationCommand(contact.ProjectId, request.IsPrimaryContact, result));
 
             return Result<ContactId>.Success(result.Id);            
         }

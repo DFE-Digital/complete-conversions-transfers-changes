@@ -1,12 +1,14 @@
 using AutoMapper;
 using Dfe.Complete.Application.Common.Models;
 using Dfe.Complete.Application.Contacts.Models;
+using Dfe.Complete.Application.Projects.Commands.UpdateProject;
 using Dfe.Complete.Domain.Constants;
 using Dfe.Complete.Domain.Entities;
 using Dfe.Complete.Domain.Interfaces.Repositories;
 using Dfe.Complete.Domain.ValueObjects;
 using MediatR;
 using Microsoft.Extensions.Logging;
+using System.Reflection;
 
 namespace Dfe.Complete.Application.Contacts.Commands;
 
@@ -15,6 +17,7 @@ public record UpdateExternalContactCommand(ContactId ContactId, ContactDto conta
 public class UpdateExternalContactCommandHandler(
     ICompleteRepository<Contact> contactsRepository,
     IMapper mapper,
+    ISender sender,
     ILogger<UpdateExternalContactCommandHandler> logger
 ) : IRequestHandler<UpdateExternalContactCommand, Result<ContactDto>>
 {
@@ -38,6 +41,9 @@ public class UpdateExternalContactCommandHandler(
             var savedEntity = await contactsRepository.UpdateAsync(contactEntity, cancellationToken);
 
             var result = mapper.Map<ContactDto?>(savedEntity);
+
+            await sender.Send(new UpdatePrimaryContactAtOrganisationCommand(savedEntity.ProjectId, request.contactDto.PrimaryContact, savedEntity));
+
             return Result<ContactDto?>.Success(result);
         }
         catch (Exception ex)

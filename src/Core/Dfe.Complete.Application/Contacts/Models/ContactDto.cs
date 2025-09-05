@@ -27,5 +27,7 @@ namespace Dfe.Complete.Application.Contacts.Models
 
         public int? EstablishmentUrn { get; set; }
 
+        public bool PrimaryContact { get; set; }
+
     }
 }

@@ -47,28 +47,26 @@ public class EditExternalContact(ITrustCache trustCacheService, ErrorService err
                     return await this.GetPage();
                 }
 
-                var organisationName = string.Empty;
-                var category = ExternalContactMapper.MapContactTypeToCategory(contactType);
-
                 await base.GetCurrentProject();
 
-                //var editExternalContactCommand = new CreateExternalContactCommand(
-                //    FullName: this.ExternalContactInput.FullName,
-                //    Role: this.ExternalContactInput.Role,
-                //    Email: this.ExternalContactInput.Email ?? string.Empty,
-                //    PhoneNumber: this.ExternalContactInput.Phone ?? string.Empty,
-                //    Category: category,
-                //    IsPrimaryContact: this.ExternalContactInput.IsPrimaryProjectContact,
-                //    ProjectId: new ProjectId(Guid.Parse(this.ProjectId)),
-                //    EstablishmentUrn: null,
-                //    OrganisationName: organisationName,
-                //    LocalAuthorityId: null,
-                //    Type: ContactType.Project
-                //);
+                var organisationName = await this.GetOrganisationName(contactType);
+                var category = ExternalContactMapper.MapContactTypeToCategory(contactType);
 
-                //var response = await sender.Send(editExternalContactCommand);
-                //var contactId = response.Value;
+                var contactDto = new ContactDto
+                {
+                    Name = this.ExternalContactInput.FullName,
+                    Title = this.ExternalContactInput.Role,
+                    Email = this.ExternalContactInput.Email ?? string.Empty,
+                    Phone = this.ExternalContactInput.Phone ?? string.Empty,
+                    Category = category,
+                    PrimaryContact = this.ExternalContactInput.IsPrimaryProjectContact,
+                    OrganisationName = organisationName
+                };
 
+                var updateExternalContactCommand = new UpdateExternalContactCommand(new ContactId (Guid.Parse(ContactId)), contactDto );
+
+                var response = await sender.Send(updateExternalContactCommand);
+                
                 TempData.SetNotification(
                     NotificationType.Success,
                     "Success",
@@ -119,18 +117,30 @@ public class EditExternalContact(ITrustCache trustCacheService, ErrorService err
 
     private void MapContactDtoToModel(ContactDto contactDto)
     {
-        var model = new OtherExternalContactInputModel
-        {
-            FullName = contactDto.Name,
-            Role = contactDto.Title,
-            Email = contactDto.Email,
-            Phone = contactDto.Phone
-        };
+        this.ExternalContactInput.FullName = contactDto.Name;
+        this.ExternalContactInput.Role = contactDto.Title;
+        this.ExternalContactInput.Email = contactDto.Email;
+        this.ExternalContactInput.Phone = contactDto.Phone;        
 
         var externalContactType = ExternalContactMapper.MapCategoryToContactType(contactDto.Category);
-        model.SelectedExternalContactType = externalContactType.ToDescription();
-        
+        this.ExternalContactInput.SelectedExternalContactType = externalContactType.ToDescription();
+
         this.ExternalContactInput.IsPrimaryProjectContact = IsExternalContactPrimaryContact(externalContactType, contactDto);
+
+        switch (externalContactType)
+        {
+            case ExternalContactType.Solicitor:
+                this.ExternalContactInput.OrganisationSolicitor = contactDto.OrganisationName;
+                break;
+            case ExternalContactType.Diocese:     
+              this.ExternalContactInput.OrganisationDiocese = contactDto.OrganisationName;
+              break;
+            case ExternalContactType.Other:
+                this.ExternalContactInput.OrganisationOther = contactDto.OrganisationName;
+                break;
+            default:                      
+                break;
+        }
     }
 
     private bool IsExternalContactPrimaryContact(ExternalContactType externalContactType, ContactDto contactDto)
@@ -140,6 +150,7 @@ public class EditExternalContact(ITrustCache trustCacheService, ErrorService err
             ExternalContactType.SchoolOrAcademy => this.Project?.EstablishmentMainContactId == contactDto.Id,
             ExternalContactType.IncomingTrust => this.Project?.IncomingTrustMainContactId == contactDto.Id,
             ExternalContactType.OutgoingTrust => this.Project?.OutgoingTrustMainContactId == contactDto.Id,
+            ExternalContactType.LocalAuthority => this.Project?.LocalAuthorityMainContactId == contactDto.Id,
             _ => false
         };
     }

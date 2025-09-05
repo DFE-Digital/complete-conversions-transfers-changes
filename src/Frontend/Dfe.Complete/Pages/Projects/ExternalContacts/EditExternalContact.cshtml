@@ -30,11 +30,12 @@
             <div class="govuk-grid-column-two-thirds">
                 @await Html.PartialAsync("_ErrorSummary", model: errorSummaryModel)
                 <form method="post" novalidate>
-                    @await Html.PartialAsync("_OtherExternalContactForm", model: Model.ExternalContactInput)
+                    @await Html.PartialAsync("New/_OtherExternalContactForm", model: Model.ExternalContactInput)
                     <div class="govuk-button-group">
                         <govuk-button type="submit" data-prevent-double-click="true">
-                            Save and continue
+                            Save contact
                         </govuk-button>
+                        <a class="govuk-button govuk-button--warning" data-module="govuk-button" draggable="false" role="button" href="/projects/@Model.ProjectId/external-contacts/@Model.ContactId/delete">Delete</a>
                         <a class="govuk-link" href="/projects/@Model.ProjectId/external-contacts">Cancel</a>
                     </div>
                 </form>

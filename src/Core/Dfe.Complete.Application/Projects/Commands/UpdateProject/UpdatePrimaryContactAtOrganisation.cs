@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Dfe.Complete.Application.Projects.Commands.UpdateProject;
 
-public record UpdatePrimaryContactAtOrganisationCommand(ProjectId ProjectId, Contact Contact) : IRequest;
+public record UpdatePrimaryContactAtOrganisationCommand(ProjectId ProjectId, bool PrimaryContact, Contact Contact) : IRequest;
 
 public class UpdatePrimaryContactAtOrganisation(ICompleteRepository<Project> projectRepository)
     : IRequestHandler<UpdatePrimaryContactAtOrganisationCommand>
@@ -31,16 +31,132 @@ public class UpdatePrimaryContactAtOrganisation(ICompleteRepository<Project> pro
         switch (request.Contact.Category)
         {
             case ContactCategory.SchoolOrAcademy:
-                project.EstablishmentMainContactId = request.Contact.Id;
+
+                if (project.IncomingTrustMainContactId == request.Contact.Id)
+                {
+                    project.IncomingTrustMainContactId = null;
+                }
+                if (project.OutgoingTrustMainContactId == request.Contact.Id)
+                {
+                    project.OutgoingTrustMainContactId = null;
+                }
+                if (project.LocalAuthorityMainContactId == request.Contact.Id)
+                {
+                    project.LocalAuthorityMainContactId = null;
+                }
+
+                if (project.EstablishmentMainContactId == request.Contact.Id && !request.PrimaryContact)
+                {
+                    project.EstablishmentMainContactId = null;
+                }
+                else
+                {
+                    if (request.PrimaryContact)
+                    {
+                        project.EstablishmentMainContactId = request.Contact.Id;
+                    }
+                    else
+                    {
+                        return;
+                    }
+                }
+                
                 break;
             case ContactCategory.IncomingTrust:
-                project.IncomingTrustMainContactId = request.Contact.Id;
+
+                if (project.EstablishmentMainContactId == request.Contact.Id)
+                {
+                    project.EstablishmentMainContactId = null;
+                }
+                if (project.OutgoingTrustMainContactId == request.Contact.Id)
+                {
+                    project.OutgoingTrustMainContactId = null;
+                }
+                if (project.LocalAuthorityMainContactId == request.Contact.Id)
+                {
+                    project.LocalAuthorityMainContactId = null;
+                }
+
+                if (project.IncomingTrustMainContactId == request.Contact.Id && !request.PrimaryContact)
+                {
+                    project.IncomingTrustMainContactId = null;
+                }
+                else
+                {
+                    if (request.PrimaryContact)
+                    {
+                        project.IncomingTrustMainContactId = request.Contact.Id;
+                    }
+                    else
+                    {
+                        return;
+                    }
+                }
+                
                 break;
             case ContactCategory.OutgoingTrust:
-                project.OutgoingTrustMainContactId = request.Contact.Id;
+
+                if (project.EstablishmentMainContactId == request.Contact.Id)
+                {
+                    project.EstablishmentMainContactId = null;
+                }
+                if (project.IncomingTrustMainContactId == request.Contact.Id)
+                {
+                    project.IncomingTrustMainContactId = null;
+                }
+                if (project.LocalAuthorityMainContactId == request.Contact.Id)
+                {
+                    project.LocalAuthorityMainContactId = null;
+                }
+
+                if (project.OutgoingTrustMainContactId == request.Contact.Id && !request.PrimaryContact)
+                {
+                    project.OutgoingTrustMainContactId = null;
+                }
+                else
+                {
+                    if (request.PrimaryContact)
+                    {
+                        project.OutgoingTrustMainContactId = request.Contact.Id;
+                    }
+                    else
+                    {
+                        return;
+                    }
+                }                
+               
                 break;
             case ContactCategory.LocalAuthority:
-                project.LocalAuthorityMainContactId = request.Contact.Id;
+
+                if (project.EstablishmentMainContactId == request.Contact.Id)
+                {
+                    project.EstablishmentMainContactId = null;
+                }
+                if (project.IncomingTrustMainContactId == request.Contact.Id)
+                {
+                    project.IncomingTrustMainContactId = null;
+                }
+                if (project.OutgoingTrustMainContactId == request.Contact.Id)
+                {
+                    project.OutgoingTrustMainContactId = null;
+                }
+
+                if (project.LocalAuthorityMainContactId == request.Contact.Id && !request.PrimaryContact)
+                {
+                    project.LocalAuthorityMainContactId = null;
+                }
+                else
+                {
+                    if (request.PrimaryContact)
+                    {
+                        project.LocalAuthorityMainContactId = request.Contact.Id;
+                    }
+                    else
+                    {
+                        return;
+                    }
+                }
+                
                 break;
             case ContactCategory.Diocese:
             case ContactCategory.Other:

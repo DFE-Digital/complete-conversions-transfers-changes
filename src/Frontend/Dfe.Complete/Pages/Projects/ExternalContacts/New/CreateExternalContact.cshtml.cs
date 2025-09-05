@@ -21,9 +21,8 @@ public class CreateExternalContact(ITrustCache trustCacheService,  ErrorService 
     private readonly ISender _sender = sender;
 
     [BindProperty]
-    public ExternalContactInputModel ExternalContactInput { get; set; } = new();
-   
-    //[BindProperty]
+    public ExternalContactInputModel ExternalContactInput { get; set; } = new();   
+    
     [FromRoute(Name = "externalcontacttype")]
     [BindProperty(SupportsGet = true, Name = "externalcontacttype")]
     public string SelectedExternalContactType { get; set; }
