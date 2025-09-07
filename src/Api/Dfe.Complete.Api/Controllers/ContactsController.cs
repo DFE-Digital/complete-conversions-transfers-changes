@@ -12,6 +12,7 @@ namespace Dfe.Complete.Api.Controllers;
 
 [ApiController]
 [ApiVersion("1.0")]
+[Authorize(Policy = "CanRead")]
 [Route("v{version:apiVersion}/[controller]")]
 public class ContactsController(ISender sender) : ControllerBase
 {

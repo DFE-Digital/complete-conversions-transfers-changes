@@ -1,12 +1,15 @@
 ﻿using Dfe.Complete.Constants;
+using Dfe.Complete.Domain.Constants;
 using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Models.ExternalContact;
 using Dfe.Complete.Utils;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Dfe.Complete.Pages.Projects.ExternalContacts.New;
 
+[Authorize(Policy = UserPolicyConstants.CanViewAddContact)]
 public class NewExternalContact(ISender sender, ILogger<NewExternalContact> logger)
     : ExternalContactBasePageModel(sender, logger)
 {

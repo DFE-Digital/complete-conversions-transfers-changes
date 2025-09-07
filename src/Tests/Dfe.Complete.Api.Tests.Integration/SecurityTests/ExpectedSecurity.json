@@ -201,6 +201,11 @@
       "ExpectedSecurity": "Authorize: Policy=CanRead"
     },
     {
+      "Controller": "ContactsController",
+      "Action": "CreateExternalContactAsync",
+      "ExpectedSecurity": "Authorize: Policy=CanWrite"
+    },
+    {
       "Controller": "ProjectsController",
       "Action": "GetProjectByIdAsync",
       "ExpectedSecurity": "Authorize: Policy=CanRead"

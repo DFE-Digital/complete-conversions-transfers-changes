@@ -1,19 +1,24 @@
 using Dfe.Complete.Application.Contacts.Commands;
 using Dfe.Complete.Application.Projects.Queries.GetProject;
 using Dfe.Complete.Constants;
+using Dfe.Complete.Domain.Constants;
 using Dfe.Complete.Domain.ValueObjects;
 using Dfe.Complete.Extensions;
 using Dfe.Complete.Models;
+using Dfe.Complete.Services;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace Dfe.Complete.Pages.Projects.ExternalContacts
-{   
-    public class DeleteExternalContact(ISender sender, ILogger<DeleteExternalContact> logger)
+{
+    [Authorize(Policy = UserPolicyConstants.CanEditDeleteContact)]
+    public class DeleteExternalContact(ISender sender, ErrorService errorService, ILogger<DeleteExternalContact> logger)
      : PageModel
     {   
         private readonly ISender sender = sender;
+        private readonly ErrorService errorService = errorService;
         private readonly ILogger<DeleteExternalContact> logger = logger;
 
         [BindProperty(SupportsGet = true, Name = "projectId")]
@@ -36,8 +41,12 @@ namespace Dfe.Complete.Pages.Projects.ExternalContacts
             try{
 
                 var deleteExternalContactCommand = new DeleteExternalContactCommand(new ContactId(Guid.Parse(ContactId)));
-
                 var response = await sender.Send(deleteExternalContactCommand);
+
+                if (!(response.IsSuccess || response.Value == true))
+                {
+                    throw new InvalidOperationException($"An error occurred when deleting contact {ContactId} for project {ProjectId}");
+                }
 
                 TempData.SetNotification(
                     NotificationType.Success,
@@ -50,8 +59,9 @@ namespace Dfe.Complete.Pages.Projects.ExternalContacts
             }
             catch (Exception ex)
             {
-                logger.LogError(ex, "An error occurred on deletin an external contact for project {ProjectId}", ProjectId);
+                logger.LogError(ex, "An error occurred on deleting an external contact for project {ProjectId}", ProjectId);
                 ModelState.AddModelError("UnexpectedError", "An unexpected error occurred. Please try again later.");
+                errorService.AddErrors(ModelState);
                 return await this.GetPage();
             }
         }

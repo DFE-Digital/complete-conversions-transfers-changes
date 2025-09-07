@@ -3,6 +3,7 @@ using Dfe.Complete.Application.Contacts.Models;
 using Dfe.Complete.Application.Projects.Queries.GetProject;
 using Dfe.Complete.Application.Services.TrustCache;
 using Dfe.Complete.Constants;
+using Dfe.Complete.Domain.Constants;
 using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Domain.ValueObjects;
 using Dfe.Complete.Extensions;
@@ -12,10 +13,12 @@ using Dfe.Complete.Models.ExternalContact;
 using Dfe.Complete.Services;
 using Dfe.Complete.Utils;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Dfe.Complete.Pages.Projects.ExternalContacts;
 
+[Authorize(Policy = UserPolicyConstants.CanEditDeleteContact)]
 public class EditExternalContact(ITrustCache trustCacheService, ErrorService errorService, ISender sender, ILogger<EditExternalContact> logger) : ExternalContactAddEditPageModel(trustCacheService, sender, logger)
 {
     private readonly ErrorService errorService = errorService;

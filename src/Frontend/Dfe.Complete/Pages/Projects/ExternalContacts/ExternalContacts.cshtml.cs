@@ -1,12 +1,15 @@
 ﻿using Dfe.Complete.Application.Contacts.Queries;
 using Dfe.Complete.Application.LocalAuthorities.Queries.GetLocalAuthority;
+using Dfe.Complete.Domain.Constants;
 using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Pages.Projects.ProjectView;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Dfe.Complete.Pages.Projects.ExternalContacts;
 
+[Authorize(Policy = UserPolicyConstants.CanViewAddContact)]
 public class ExternalContacts(ISender sender, ILogger<ExternalContacts> logger)
     : ProjectLayoutModel(sender, logger, ExternalContactsNavigation)
 {

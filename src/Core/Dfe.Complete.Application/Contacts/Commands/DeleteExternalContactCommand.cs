@@ -15,7 +15,7 @@ public class DeleteExternalContactCommandHandler(
     IUnitOfWork unitOfWork,
     ICompleteRepository<Project> projectRepository,
     ICompleteRepository<Contact> contactRepository,    
-    ILogger<DeleteExternalContactCommand> logger
+    ILogger<DeleteExternalContactCommandHandler> logger
 ) : IRequestHandler<DeleteExternalContactCommand, Result<bool>>
 {
     public async Task<Result<bool>> Handle(DeleteExternalContactCommand request, CancellationToken cancellationToken)
@@ -24,8 +24,13 @@ public class DeleteExternalContactCommandHandler(
         {
             await unitOfWork.BeginTransactionAsync();
 
-            var contactEntity = await contactRepository.GetAsync(x => x.Id == request.ContactId);
-            if (contactEntity is null) return Result<bool>.Failure(string.Format(ErrorMessagesConstants.NotFoundExternalContact, request.ContactId.Value), ErrorType.NotFound);
+            var contactEntity = await contactRepository.FindAsync(request.ContactId, cancellationToken);
+            
+            if (contactEntity is null)
+            {
+                await unitOfWork.RollBackAsync();
+                return Result<bool>.Failure(string.Format(ErrorMessagesConstants.NotFoundExternalContact, request.ContactId.Value), ErrorType.NotFound);
+            }
 
             var project = await projectRepository.FindAsync(x => x.IncomingTrustMainContactId == request.ContactId
            || x.EstablishmentMainContactId == request.ContactId || x.OutgoingTrustMainContactId == request.ContactId
@@ -65,7 +70,6 @@ public class DeleteExternalContactCommandHandler(
         catch (Exception ex)
         {
             await unitOfWork.RollBackAsync();
-
             var message = string.Format(ErrorMessagesConstants.CouldNotDeleteExternalContact, request.ContactId.Value);
             logger.LogError(ex, message);
             return Result<bool>.Failure(message);

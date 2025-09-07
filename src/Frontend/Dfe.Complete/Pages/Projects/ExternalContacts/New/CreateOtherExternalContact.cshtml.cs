@@ -1,6 +1,7 @@
 ﻿using Dfe.Complete.Application.Contacts.Commands;
 using Dfe.Complete.Application.Services.TrustCache;
 using Dfe.Complete.Constants;
+using Dfe.Complete.Domain.Constants;
 using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Domain.ValueObjects;
 using Dfe.Complete.Extensions;
@@ -10,10 +11,12 @@ using Dfe.Complete.Models.ExternalContact;
 using Dfe.Complete.Services;
 using Dfe.Complete.Utils;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Dfe.Complete.Pages.Projects.ExternalContacts.New;
 
+[Authorize(Policy = UserPolicyConstants.CanViewAddContact)]
 public class CreateOtherExternalContact(ITrustCache trustCacheService, ErrorService errorService, ISender sender, ILogger<CreateOtherExternalContact> logger)
     : ExternalContactAddEditPageModel(trustCacheService, sender, logger)
 {    

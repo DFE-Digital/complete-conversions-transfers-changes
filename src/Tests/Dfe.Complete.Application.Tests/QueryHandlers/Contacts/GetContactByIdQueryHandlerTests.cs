@@ -2,6 +2,7 @@
 using AutoMapper;
 using Dfe.Complete.Application.Contacts.Models;
 using Dfe.Complete.Application.Projects.Queries.GetProject;
+using Dfe.Complete.Domain.Constants;
 using Dfe.Complete.Domain.Entities;
 using Dfe.Complete.Domain.Interfaces.Repositories;
 using Dfe.Complete.Tests.Common.Customizations.Behaviours;
@@ -48,10 +49,10 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
         public async Task Handle_ShouldReturnFailure_WhenRepositoryThrowsException(
            [Frozen] ICompleteRepository<Contact> mockContactRepository,
            GetContactIdQueryHandler handler,
-           Domain.Entities.Contact contact)
+           Contact contact)
         {
             // Arrange
-            var expectedMessage = "Repository error";
+            var expectedMessage = string.Format(ErrorMessagesConstants.ExceptionGettingExternalContact, contact.Id);
             mockContactRepository.GetAsync(Arg.Any<Expression<Func<Contact, bool>>>())
                 .Throws(new Exception(expectedMessage));
 
