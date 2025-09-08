@@ -156,6 +156,25 @@ namespace Dfe.Complete.Api.Controllers
             await sender.Send(request, cancellationToken);
             return NoContent();
         } 
+
+        /// <summary>
+        /// Updates the redact and send documents task Data for conversion or transfer project.
+        /// </summary>
+        /// <param name="request">The update command.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        [Authorize(Policy = "CanReadWriteUpdate")]
+        [HttpPatch]
+        [Route("TaskData/RedactAndSendDocuments")]
+        [SwaggerResponse(204, "Conversion or transfer's redact and send documents task updated successfully.")]
+        [SwaggerResponse(400, "Invalid request data.")]
+        [SwaggerResponse(404, "Project/User not found.")]
+        public async Task<IActionResult> UpdateRedactAndSendDocumentsTaskAsync(
+            [FromBody] UpdateRedactAndSendDocumentsTaskCommand request,
+            CancellationToken cancellationToken)
+        {
+            await sender.Send(request, cancellationToken);
+            return NoContent();
+        }
         /// <summary>
         /// Updates the confirm proposed capacity of the academy for a specific task data.
         /// </summary>
