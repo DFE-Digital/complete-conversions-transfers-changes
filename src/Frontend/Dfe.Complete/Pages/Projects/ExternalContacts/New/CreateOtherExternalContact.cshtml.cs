@@ -10,6 +10,7 @@ using Dfe.Complete.Models;
 using Dfe.Complete.Models.ExternalContact;
 using Dfe.Complete.Services;
 using Dfe.Complete.Utils;
+using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -17,12 +18,17 @@ using Microsoft.AspNetCore.Mvc;
 namespace Dfe.Complete.Pages.Projects.ExternalContacts.New;
 
 [Authorize(Policy = UserPolicyConstants.CanViewAddContact)]
-public class CreateOtherExternalContact(ITrustCache trustCacheService, ErrorService errorService, ISender sender, ILogger<CreateOtherExternalContact> logger)
+public class CreateOtherExternalContact(
+    IValidator<OtherExternalContactInputModel> otherExternalContactInputModelValidator,
+    ITrustCache trustCacheService, ErrorService errorService, 
+    ISender sender, 
+    ILogger<CreateOtherExternalContact> logger)
     : ExternalContactAddEditPageModel(trustCacheService, sender, logger)
 {    
     private readonly ErrorService errorService = errorService;
     private readonly ISender sender = sender;
     private readonly ILogger<CreateOtherExternalContact> logger = logger;
+    private readonly IValidator<OtherExternalContactInputModel> validator = otherExternalContactInputModelValidator;
 
     public async override Task<IActionResult> OnGetAsync()
     {   
@@ -31,23 +37,23 @@ public class CreateOtherExternalContact(ITrustCache trustCacheService, ErrorServ
 
     public async Task<IActionResult> OnPostAsync()
     {
-        if (!ModelState.IsValid)
+        // Use FluentValidation.Results.ValidationResult instead of System.ComponentModel.DataAnnotations.ValidationResult
+        FluentValidation.Results.ValidationResult result = await validator.ValidateAsync(ExternalContactInput);
+
+        if (!result.IsValid)
         {
+            foreach (var error in result.Errors)
+            {
+                ModelState.AddModelError(error.PropertyName, error.ErrorMessage);
+            }
             errorService.AddErrors(ModelState);
             return await this.GetPage();
-        }
+        }      
         else
         {
             try
             {
                 var contactType = EnumExtensions.FromDescription<ExternalContactType>(this.ExternalContactInput.SelectedExternalContactType);
-
-                if ((contactType == ExternalContactType.Solicitor || contactType == ExternalContactType.Diocese || contactType == ExternalContactType.Other) && this.ExternalContactInput.IsPrimaryProjectContact)
-                {
-                    ModelState.AddModelError(nameof(this.ExternalContactInput.IsPrimaryProjectContact), "Only the incoming trust, outgoing trust and school or academy categories can have a primary contact.");
-                    errorService.AddErrors(ModelState);
-                    return await this.GetPage();
-                }
 
                 await this.GetCurrentProject();
 

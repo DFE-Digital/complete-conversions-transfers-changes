@@ -6,8 +6,7 @@ using System.ComponentModel.DataAnnotations;
 namespace Dfe.Complete.Models.ExternalContact
 {
     public class OtherExternalContactInputModel : ExternalContactInputModel
-    {  
-        [Required(ErrorMessage = "Enter a role")]
+    {   
         public string Role { get; set; }
 
         [BindProperty(Name = "organisation-solicitor")]

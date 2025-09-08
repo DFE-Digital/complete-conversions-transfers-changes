@@ -10,6 +10,7 @@ using Dfe.Complete.Models;
 using Dfe.Complete.Models.ExternalContact;
 using Dfe.Complete.Services;
 using Dfe.Complete.Utils;
+using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -17,13 +18,19 @@ using Microsoft.AspNetCore.Mvc;
 namespace Dfe.Complete.Pages.Projects.ExternalContacts.New;
 
 [Authorize(Policy = UserPolicyConstants.CanViewAddContact)]
-public class CreateExternalContact(ITrustCache trustCacheService,  ErrorService errorService, ISender sender, ILogger<CreateExternalContact> logger)
+public class CreateExternalContact(
+    IValidator<ExternalContactInputModel> externalContactInputModelValidator,
+    ITrustCache trustCacheService,  
+    ErrorService errorService, 
+    ISender sender, 
+    ILogger<CreateExternalContact> logger)
     : ExternalContactBasePageModel(sender, logger)
 {   
     private const string invalidContactTypeErrorMessage = "The selected contact type is invalid";
     private readonly ErrorService errorService = errorService;
     private readonly ISender sender = sender;
     private readonly ILogger<CreateExternalContact> logger = logger;
+    private readonly IValidator<ExternalContactInputModel> validator = externalContactInputModelValidator;
 
     [BindProperty]
     public ExternalContactInputModel ExternalContactInput { get; set; } = new();   
@@ -38,9 +45,15 @@ public class CreateExternalContact(ITrustCache trustCacheService,  ErrorService 
     }
 
     public async Task<IActionResult> OnPostAsync()
-    {
-        if (!ModelState.IsValid)
+    {  
+        FluentValidation.Results.ValidationResult result = await validator.ValidateAsync(ExternalContactInput);
+
+        if (!result.IsValid)
         {
+            foreach (var error in result.Errors)
+            {
+                ModelState.AddModelError(error.PropertyName, error.ErrorMessage);
+            }
             errorService.AddErrors(ModelState);
             return await this.GetPage();
         }
