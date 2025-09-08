@@ -162,6 +162,40 @@ class TaskHelper {
         }
     }
 
+    updateRedactAndSendDocuments(taskDataId: string, projectType: ProjectType, status: TaskStatus) {
+        const defaultBody = {
+            taskDataId: { value: taskDataId },
+            projectType: projectType,
+            redact: false,
+            saved: false,
+            sendToEsfa: false,
+            send: false,
+            sendToSolicitors: false,
+        };
+
+        switch (status) {
+            case "inProgress":
+                return taskApi.updateRedactAndSendDocumentsTask({
+                    ...defaultBody,
+                    redact: true,
+                });
+
+            case "completed":
+                return taskApi.updateRedactAndSendDocumentsTask({
+                    taskDataId: { value: taskDataId },
+                    projectType: projectType,
+                    redact: true,
+                    saved: true,
+                    sendToEsfa: true,
+                    send: true,
+                    sendToSolicitors: true,
+                });
+
+            default:
+                return taskApi.updateRedactAndSendDocumentsTask(defaultBody);
+        }
+    }
+
     updateSupplementalFundingAgreement(taskDataId: string, projectType: ProjectType, status: TaskStatus) {
         const defaultBody = {
             taskDataId: { value: taskDataId },
