@@ -37,6 +37,10 @@ public enum NoteTaskIdentifier
     [DisplayDescription("Deed of variation")]
     DeedOfVariation = 8,
 
+    [Description("redact_and_send_documents")]
+    [DisplayDescription("Redact and send documents")]
+    RedactAndSendDocuments = 9,
+
     [Description("receive_declaration_of_expenditure_certificate")]
     [DisplayDescription("Receive declaration of expenditure certificate")]
     DeclarationOfExpenditureCertificate = 10

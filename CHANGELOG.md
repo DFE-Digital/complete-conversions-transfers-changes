@@ -18,6 +18,7 @@ Security in case of vulnerabilities.
 
 ### Added
 
+- Added `Redact and send document` task for both conversion and transfer projects.
 - Added `Receivee declaration of expenditure certificate` task for conversion and transfer projects.
 
 ### Security

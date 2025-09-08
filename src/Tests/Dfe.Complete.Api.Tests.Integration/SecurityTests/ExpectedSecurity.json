@@ -282,6 +282,11 @@
     },
     {
       "Controller": "TasksDataController",
+      "Action": "UpdateRedactAndSendDocumentsTaskAsync",
+      "ExpectedSecurity": "Authorize: Policy=CanReadWriteUpdate"
+    },
+    {
+      "Controller": "TasksDataController",
       "Action": "UpdateDeclarationOfExpenditureCertificateTaskAsync",
       "ExpectedSecurity": "Authorize: Policy=CanReadWriteUpdate"
     }

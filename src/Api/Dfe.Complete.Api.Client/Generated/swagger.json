@@ -2430,12 +2430,45 @@
         }
       }
     },
+    "/v1/TasksData/TaskData/RedactAndSendDocuments": {
+      "patch": {
+        "tags": [
+          "TasksData"
+        ],
+        "summary": "Updates the redact and send documents task Data for conversion or transfer project.",
+        "operationId": "TasksData_UpdateRedactAndSendDocumentsTask",
+        "requestBody": {
+          "x-name": "request",
+          "description": "The update command.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateRedactAndSendDocumentsTaskCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "204": {
+            "description": "Conversion or transfer's redact and send documents task updated successfully."
+          },
+          "400": {
+            "description": "Invalid request data."
+          },
+          "404": {
+            "description": "Project/User not found."
+          }
+        }
+      }
+    },
     "/v1/TasksData/TaskData/ReceiveDeclarationOfExpenditureCertificate": {
       "patch": {
         "tags": [
           "TasksData"
         ],
-        "summary": "Updates the receive declaration of expenditure certificate task Data for conversion or trasnfer project.",
+        "summary": "Updates the receive declaration of expenditure certificate task Data for conversion or transfer project.",
         "operationId": "TasksData_UpdateDeclarationOfExpenditureCertificateTask",
         "requestBody": {
           "x-name": "request",
@@ -4748,6 +4781,7 @@
           "ArticleOfAssociation",
           "DeedOfNovationAndVariation",
           "DeedOfVariation",
+          "RedactAndSendDocuments",
           "DeclarationOfExpenditureCertificate"
         ],
         "enum": [
@@ -4759,6 +4793,7 @@
           "ArticleOfAssociation",
           "DeedOfNovationAndVariation",
           "DeedOfVariation",
+          "RedactAndSendDocuments",
           "DeclarationOfExpenditureCertificate"
         ]
       },
@@ -6685,6 +6720,43 @@
           }
         }
       },
+      "UpdateRedactAndSendDocumentsTaskCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "taskDataId": {
+            "$ref": "#/components/schemas/TaskDataId"
+          },
+          "projectType": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/ProjectType"
+              }
+            ]
+          },
+          "redact": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "saved": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "sendToEsfa": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "send": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "sendToSolicitors": {
+            "type": "boolean",
+            "nullable": true
+          }
+        }
+      },
       "UpdateDeclarationOfExpenditureCertificateTaskCommand": {
         "type": "object",
         "additionalProperties": false,
@@ -6702,7 +6774,7 @@
           },
           "dateReceived": {
             "type": "string",
-            "format": "date",
+            "format": "date-time",
             "nullable": true
           },
           "notApplicable": {
