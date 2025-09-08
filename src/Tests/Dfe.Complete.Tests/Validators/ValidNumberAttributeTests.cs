@@ -1,17 +1,23 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using Dfe.Complete.Models;
+using Dfe.Complete.Validators;
 
 namespace Dfe.Complete.Tests.Validators
 {
     public class ValidNumberAttributeTests
     {
+        private class TestModel
+        {
+            public bool? DependentFlag { get; set; }
+            public string? NumberValue { get; set; }
+        }
+
         [Theory]
-        [InlineData("25", 10, 30, true)]  // Valid number in range
-        [InlineData("5", 10, 30, false)]  // Number below range
-        [InlineData("35", 10, 30, false)] // Number above range
-        [InlineData("abc", 10, 30, false)] // Non-numeric string
-        [InlineData("", 10, 30, true)]    // Empty string
-        [InlineData(null, 10, 30, true)]  // Null value
+        [InlineData("25", 10, 30, true)]
+        [InlineData("5", 10, 30, false)]
+        [InlineData("35", 10, 30, false)]
+        [InlineData("abc", 10, 30, false)] 
+        [InlineData("", 10, 30, true)]  
+        [InlineData(null, 10, 30, true)] 
         public void ValidNumberAttribute_Validation_WorksAsExpected(string value, int minValue, int maxValue, bool expectedIsValid)
         {
             // Arrange
@@ -24,10 +30,45 @@ namespace Dfe.Complete.Tests.Validators
                 value,
                 validationContext,
                 validationResults,
-                new List<ValidationAttribute> { attribute });
+                [attribute]);
 
             // Assert
             Assert.Equal(expectedIsValid, isValid);
         }
+
+        [Theory]
+        [InlineData("25", 10, 30, true, true)]
+        [InlineData("25", 10, 30, true, false)]
+        [InlineData("abc", 10, 30, true, true)]
+        [InlineData("abc", 10, 30, false, false)]
+        [InlineData("", 10, 30, true, true)]   
+        [InlineData(null, 10, 30, true, true)]  
+        public void ValidNumberAttributeWithDepentableFlag_Validation_WorksAsExpected(
+                string value,
+                int minValue,
+                int maxValue,
+                bool expectedIsValid,
+                bool dependentFlag)
+        {
+            // Arrange
+            var model = new TestModel
+            {
+                DependentFlag = dependentFlag,
+                NumberValue = value
+            };
+
+            var attribute = new ValidNumberAttribute(minValue, maxValue, nameof(TestModel.DependentFlag));
+            var validationContext = new ValidationContext(model)
+            {
+                MemberName = nameof(TestModel.NumberValue)
+            };
+
+            // Act
+            var result = attribute.GetValidationResult(value, validationContext);
+
+            // Assert
+            Assert.Equal(expectedIsValid, result == ValidationResult.Success);
+        }
+
     }
 }
