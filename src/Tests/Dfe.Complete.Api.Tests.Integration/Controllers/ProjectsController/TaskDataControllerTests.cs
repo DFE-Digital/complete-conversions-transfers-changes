@@ -78,7 +78,7 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers.ProjectsController
         public async Task UpdateHandoverWithDeliveryOfficerTaskDataByProjectIdAsync_ShouldUpdate_TransferTaskData(
             CustomWebApplicationDbContextFactory<Program> factory,
             ITasksDataClient tasksDataClient,
-            Complete.Client.Contracts.UpdateHandoverWithDeliveryOfficerTaskCommand command,
+            UpdateHandoverWithDeliveryOfficerTaskCommand command,
             IFixture fixture)
         {
             // Arrange
@@ -258,10 +258,84 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers.ProjectsController
         }
         [Theory]
         [CustomAutoData(typeof(CustomWebApplicationDbContextFactoryCustomization))]
+        public async Task UpdateSupplementalFundingAgreementTaskAsync_ShouldUpdate_ConversionTaskData(
+            CustomWebApplicationDbContextFactory<Program> factory,
+            ITasksDataClient tasksDataClient,
+            UpdateSupplementalFundingAgreementTaskCommand command,
+            IFixture fixture)
+        {
+            // Arrange
+            factory.TestClaims = [new Claim(ClaimTypes.Role, ApiRoles.ReadRole), new Claim(ClaimTypes.Role, ApiRoles.UpdateRole), new Claim(ClaimTypes.Role, ApiRoles.WriteRole)];
+
+            var dbContext = factory.GetDbContext<CompleteContext>();
+
+            var taskData = fixture.Create<ConversionTasksData>();
+            dbContext.ConversionTasksData.Add(taskData);
+
+            await dbContext.SaveChangesAsync();
+            command.TaskDataId = new TaskDataId { Value = taskData.Id.Value };
+            command.ProjectType = ProjectType.Conversion;
+            command.Cleared = true;
+            command.Saved = false;
+            command.Received = true;
+            command.Signed = true;
+            command.Sent = false;
+            command.SignedSecretaryState = true;
+
+            // Act
+            await tasksDataClient.UpdateSupplementalFundingAgreementTaskAsync(command, default);
+
+            // Assert
+            dbContext.ChangeTracker.Clear();
+            var existingTaskData = await dbContext.ConversionTasksData.SingleOrDefaultAsync(x => x.Id == taskData.Id);
+            Assert.NotNull(existingTaskData);
+            Assert.True(existingTaskData.SupplementalFundingAgreementCleared);
+            Assert.True(existingTaskData.SupplementalFundingAgreementReceived);
+            Assert.False(existingTaskData.SupplementalFundingAgreementSaved);
+            Assert.False(existingTaskData.SupplementalFundingAgreementSent);
+            Assert.True(existingTaskData.SupplementalFundingAgreementSigned);
+            Assert.True(existingTaskData.SupplementalFundingAgreementSignedSecretaryState);
+        }
+        [Theory]
+        [CustomAutoData(typeof(CustomWebApplicationDbContextFactoryCustomization))]
+        public async Task UpdateSupplementalFundingAgreementTaskAsync_ShouldUpdate_TransferTaskData(
+            CustomWebApplicationDbContextFactory<Program> factory,
+            ITasksDataClient tasksDataClient,
+            UpdateSupplementalFundingAgreementTaskCommand command,
+            IFixture fixture)
+        {
+            // Arrange
+            factory.TestClaims = [new Claim(ClaimTypes.Role, ApiRoles.ReadRole), new Claim(ClaimTypes.Role, ApiRoles.WriteRole), new Claim(ClaimTypes.Role, ApiRoles.UpdateRole)];
+
+            var dbContext = factory.GetDbContext<CompleteContext>();
+
+            var taskData = fixture.Create<TransferTasksData>();
+            dbContext.TransferTasksData.Add(taskData);
+
+            await dbContext.SaveChangesAsync();
+            command.TaskDataId = new TaskDataId { Value = taskData.Id.Value };
+            command.ProjectType = ProjectType.Transfer;
+            command.Cleared = true;
+            command.Saved = false;
+            command.Received = true;
+
+            // Act
+            await tasksDataClient.UpdateSupplementalFundingAgreementTaskAsync(command, default);
+
+            // Assert
+            dbContext.ChangeTracker.Clear();
+            var existingTaskData = await dbContext.TransferTasksData.SingleOrDefaultAsync(x => x.Id == taskData.Id);
+            Assert.NotNull(existingTaskData);
+            Assert.True(existingTaskData.SupplementalFundingAgreementCleared);
+            Assert.True(existingTaskData.SupplementalFundingAgreementReceived);
+            Assert.False(existingTaskData.SupplementalFundingAgreementSaved); 
+        }
+        [Theory]
+        [CustomAutoData(typeof(CustomWebApplicationDbContextFactoryCustomization))]
         public async Task UpdateArticleOfAssociationTaskAsync_ShouldUpdate_ConversionTaskData(
             CustomWebApplicationDbContextFactory<Program> factory,
             ITasksDataClient tasksDataClient,
-            Complete.Client.Contracts.UpdateArticleOfAssociationTaskCommand command,
+            UpdateArticleOfAssociationTaskCommand command,
             IFixture fixture)
         {
             // Arrange
@@ -289,6 +363,81 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers.ProjectsController
             Assert.Null(existingTaskData.ArticlesOfAssociationReceived);
             Assert.Null(existingTaskData.ArticlesOfAssociationSaved);
             Assert.Null(existingTaskData.ArticlesOfAssociationSent);
+        }
+
+        [Theory]
+        [CustomAutoData(typeof(CustomWebApplicationDbContextFactoryCustomization))]
+        public async Task UpdateRedactAndSendDocumentsTaskAsync_ShouldUpdate_ConversionTaskData(
+           CustomWebApplicationDbContextFactory<Program> factory,
+           ITasksDataClient tasksDataClient,
+           UpdateRedactAndSendDocumentsTaskCommand command,
+           IFixture fixture)
+        {
+            // Arrange
+            factory.TestClaims = [new Claim(ClaimTypes.Role, ApiRoles.ReadRole), new Claim(ClaimTypes.Role, ApiRoles.UpdateRole), new Claim(ClaimTypes.Role, ApiRoles.WriteRole)];
+
+            var dbContext = factory.GetDbContext<CompleteContext>();
+
+            var taskData = fixture.Create<ConversionTasksData>();
+            dbContext.ConversionTasksData.Add(taskData);
+
+            await dbContext.SaveChangesAsync();
+            command.TaskDataId = new TaskDataId { Value = taskData.Id.Value };
+            command.ProjectType = ProjectType.Conversion;
+            command.Redact = true;
+            command.Saved = true; 
+            command.SendToSolicitors = true;
+            command.Send = false;
+
+            // Act
+            await tasksDataClient.UpdateRedactAndSendDocumentsTaskAsync(command, default);
+
+            // Assert
+            dbContext.ChangeTracker.Clear();
+            var existingTaskData = await dbContext.ConversionTasksData.SingleOrDefaultAsync(x => x.Id == taskData.Id);
+            Assert.NotNull(existingTaskData);
+            Assert.True(existingTaskData.RedactAndSendRedact);
+            Assert.True(existingTaskData.RedactAndSendSaveRedaction);
+            Assert.False(existingTaskData.RedactAndSendSendRedaction);
+            Assert.True(existingTaskData.RedactAndSendSendSolicitors);
+        }
+        [Theory]
+        [CustomAutoData(typeof(CustomWebApplicationDbContextFactoryCustomization))]
+        public async Task UpdateRedactAndSendDocumentsTaskAsync_ShouldUpdate_TransferTaskData(
+            CustomWebApplicationDbContextFactory<Program> factory,
+            ITasksDataClient tasksDataClient,
+            UpdateRedactAndSendDocumentsTaskCommand command,
+            IFixture fixture)
+        {
+            // Arrange
+            factory.TestClaims = [new Claim(ClaimTypes.Role, ApiRoles.ReadRole), new Claim(ClaimTypes.Role, ApiRoles.WriteRole), new Claim(ClaimTypes.Role, ApiRoles.UpdateRole)];
+
+            var dbContext = factory.GetDbContext<CompleteContext>();
+
+            var taskData = fixture.Create<TransferTasksData>();
+            dbContext.TransferTasksData.Add(taskData);
+
+            await dbContext.SaveChangesAsync();
+            command.TaskDataId = new TaskDataId { Value = taskData.Id.Value };
+            command.ProjectType = ProjectType.Transfer;
+            command.Redact = true;
+            command.Saved = false;
+            command.SendToEsfa = true;
+            command.SendToSolicitors = true;
+            command.Send = false;
+
+            // Act
+            await tasksDataClient.UpdateRedactAndSendDocumentsTaskAsync(command, default);
+
+            // Assert
+            dbContext.ChangeTracker.Clear();
+            var existingTaskData = await dbContext.TransferTasksData.SingleOrDefaultAsync(x => x.Id == taskData.Id);
+            Assert.NotNull(existingTaskData);
+            Assert.True(existingTaskData.RedactAndSendDocumentsRedact);
+            Assert.False(existingTaskData.RedactAndSendDocumentsSaved);
+            Assert.True(existingTaskData.RedactAndSendDocumentsSendToEsfa);
+            Assert.False(existingTaskData.RedactAndSendDocumentsSendToFundingTeam);
+            Assert.True(existingTaskData.RedactAndSendDocumentsSendToSolicitors);
         }
     }
 }
