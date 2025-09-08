@@ -157,10 +157,6 @@ namespace Dfe.Complete.Tests.Pages.Projects.ExternalContacts.New
                 Setup(s => s.Send(It.IsAny<GetProjectByIdQuery>(), It.IsAny<CancellationToken>()))
                 .ReturnsAsync(Result<ProjectDto?>.Success(projectDto));
 
-            //mockSender.
-            //    Setup(s => s.Send(It.IsAny<CreateExternalContactCommand>(), It.IsAny<CancellationToken>()))
-            //   .ReturnsAsync(Result<ContactId>.Success(contactId));
-
             var exceptionMessage = "Error message";
             var exception = new Exception(exceptionMessage);
             mockSender
@@ -173,10 +169,8 @@ namespace Dfe.Complete.Tests.Pages.Projects.ExternalContacts.New
             // Assert
             Assert.Multiple(
                 () => Assert.True(testClass.ModelState.ContainsKey("UnexpectedError")),
-                () => Assert.Equal("An unexpected error occurred. Please try again later.", testClass.ModelState["UnexpectedError"]?.Errors[0].ErrorMessage),
-                //() => mockSender.Verify(
-                //sender => sender.Send(It.IsAny<CreateExternalContactCommand>(), It.IsAny<CancellationToken>()), Times.Never),
-            () => mockLogger.Verify(
+                () => Assert.Equal("An unexpected error occurred. Please try again later.", testClass.ModelState["UnexpectedError"]?.Errors[0].ErrorMessage),               
+                () => mockLogger.Verify(
                 logger => logger.Log(
                     It.Is<LogLevel>(logLevel => logLevel == LogLevel.Error),
                     It.IsAny<EventId>(),
