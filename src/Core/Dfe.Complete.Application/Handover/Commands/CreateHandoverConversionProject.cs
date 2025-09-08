@@ -22,6 +22,7 @@ public record CreateHandoverConversionProjectCommand(
     bool DirectiveAcademyOrder = false,
     string? GroupId = null) : IRequest<ProjectId>;
 
+// TODO use query pattern not ICompleteRepository
 public class CreateHandoverConversionProjectCommandHandler(
     ICompleteRepository<Project> projectRepository,
     ICompleteRepository<User> userRepository,
@@ -45,11 +46,11 @@ public class CreateHandoverConversionProjectCommandHandler(
 
         // Parse group ID if provided
         ProjectGroupId? groupId = null;
-        // if (!string.IsNullOrEmpty(request.GroupId))
-        // {
-        //     await ValidateGroupId(request.GroupId, request.IncomingTrustUkprn, cancellationToken);
-        //     groupId = new ProjectGroupId(Guid.NewGuid()); // You may need to implement group lookup
-        // }
+        if (!string.IsNullOrEmpty(request.GroupId))
+        {
+            await ValidateGroupId(request.GroupId, request.IncomingTrustUkprn, cancellationToken);
+            groupId = new ProjectGroupId(Guid.NewGuid()); // You may need to implement group lookup
+        }
 
         // Create conversion task data
         var conversionTaskId = Guid.NewGuid();
@@ -203,23 +204,23 @@ public class CreateHandoverConversionProjectCommandHandler(
         return defaultLocalAuthority;
     }
 
-    // private async Task ValidateGroupId(string groupId, Ukprn trustUkprn, CancellationToken cancellationToken)
-    // {
-    //     // Check if group exists and trust UKPRN matches other projects in the group
-    //     var existingProjectsInGroup = await projectRepository.Query()
-    //         .Where(p => p.GroupReferenceNumber == groupId)
-    //         .ToListAsync(cancellationToken);
+    private async Task ValidateGroupId(string groupId, Ukprn trustUkprn, CancellationToken cancellationToken)
+    {
+        // Check if group exists and trust UKPRN matches other projects in the group
+        var existingProjectsInGroup = await projectRepository.Query()
+            .Where(p => p.GroupId!.Value.ToString() == groupId)
+            .ToListAsync(cancellationToken);
 
-    //     if (existingProjectsInGroup.Any())
-    //     {
-    //         var differentUkprns = existingProjectsInGroup
-    //             .Where(p => p.IncomingTrustUkprn != trustUkprn)
-    //             .Any();
+        if (existingProjectsInGroup.Any())
+        {
+            var differentUkprns = existingProjectsInGroup
+                .Where(p => p.IncomingTrustUkprn != trustUkprn)
+                .Any();
 
-    //         if (differentUkprns)
-    //         {
-    //             throw new ValidationException($"Trust UKPRN {trustUkprn.Value} does not match other projects in group {groupId}");
-    //         }
-    //     }
-    // }
+            if (differentUkprns)
+            {
+                throw new ValidationException($"Trust UKPRN {trustUkprn.Value} does not match other projects in group {groupId}");
+            }
+        }
+    }
 }
