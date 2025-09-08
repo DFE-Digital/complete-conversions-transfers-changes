@@ -1,0 +1,85 @@
+﻿@page "/projects/{projectId}/tasks/articles_of_association"
+@using Dfe.Complete.Domain.Enums
+@inject Microsoft.Extensions.Configuration.IConfiguration _configuration
+@model Dfe.Complete.Pages.Projects.TaskList.Tasks.ArticlesOfAssociationTask.ArticlesOfAssociationTaskModel
+@{
+  Layout = "_ProjectTaskLayout";
+    ViewData["Title"] = "Articles of association";
+}
+@section TaskHeaderHintSection {
+    <div class="govuk-hint">
+        <p>You must update the articles of association if any of the following statements are true:</p>
+        <ul>
+            <li>the trust currently uses a version from February 2016 or earlier</li>
+            <li>a different type of academy is joining the trust. For example, a faith @(Model.Type == ProjectType.Conversion? "school":"academy") joining a trust containing only community academies</li>
+            <li>it is a condition of the advisory board's decision</li>
+        </ul>
+        <p>You do not always need to update the articles but it is strongly advised, even when not required.</p>
+        <govuk-details>
+            <govuk-details-summary> 
+                <span class="govuk-details__summary-text">Partially updating articles of association</span>
+            </govuk-details-summary>
+            <govuk-details-text>
+                <p>Trusts do not have to adopt the latest version of the articles entirely. Although this is DfE's preferred option.</p>
+                <p>They can choose to just add the missing clauses in their existing articles.</p>
+            </govuk-details-text>
+        </govuk-details>
+    </div>
+}
+@section TaskSection { 
+      
+    <form method="post">
+        <input type="hidden" asp-for="TasksDataId" />
+        <input type="hidden" asp-for="Type" />
+        <govuk-checkboxes name="options">
+            <govuk-checkboxes-fieldset>
+                <govuk-checkboxes-fieldset-legend>
+                </govuk-checkboxes-fieldset-legend>
+                <govuk-checkboxes-item id="not-applicable" asp-for="@Model.NotApplicable" value="true" name="@nameof(Model.NotApplicable)" checked="@Model.NotApplicable">
+                    <b>Not applicable</b>
+                </govuk-checkboxes-item>
+            </govuk-checkboxes-fieldset>
+        </govuk-checkboxes>
+        <div class="govuk-form-group">
+            <h2 class="govuk-heading-l">Check and clear the articles of association</h2>
+            <div class="govuk-hint">
+                <p>You can use the <a href="@_configuration["ExternalLinks:AcademyGovernanceGuidance"]" target="_blank">academy governance guidance (opens in new tab)</a> to help you check and clear the articles of association.</p>
+            </div>
+
+            <govuk-details data-module="govuk-details" class="govuk-details">
+                <govuk-details-summary>
+                    <span class="govuk-details__summary-text">Help checking for changes</span>
+                </govuk-details-summary>
+                <govuk-details-text>
+                    <p>Changes that personalise the model documents to @(Model.Type == ProjectType.Conversion ? "a school" : "an academy" ) or trust, and remove or add optional clauses, are expected. The wording of clauses should not change.</p>
+                    <p>You'll need to <a href="@_configuration["ExternalLinks:ContactPolicyTeam"]" target="_blank">contact the policy team (opens in new tab)</a> about changes to clause text.</p>
+                </govuk-details-text>
+            </govuk-details>
+        </div>
+        <govuk-checkboxes name="options">
+            <govuk-checkboxes-fieldset>
+                <govuk-checkboxes-fieldset-legend>
+                </govuk-checkboxes-fieldset-legend>
+                <govuk-checkboxes-item id="@(nameof(Model.Received))" asp-for="@Model.Received" value="true" name="@(nameof(Model.Received))" checked="@Model.Received">
+                    <b>Received</b> 
+                </govuk-checkboxes-item>
+                <govuk-checkboxes-item id="@(nameof(Model.Cleared))" asp-for="@Model.Cleared" value="true" name="@(nameof(Model.Cleared))" checked="@Model.Cleared">
+                    <b>Cleared</b>
+                </govuk-checkboxes-item>
+                <govuk-checkboxes-item id="@(nameof(Model.Sent))" asp-for="@Model.Sent" value="true" name="@(nameof(Model.Sent))" checked="@Model.Sent">
+                    <b>Sent cleared version to trust's solicitors</b>
+                </govuk-checkboxes-item>
+                <govuk-checkboxes-item id="@(nameof(Model.Signed))" asp-for="@Model.Signed" value="true" name="@(nameof(Model.Signed))" checked="@Model.Signed">
+                    <b>Checked with solicitors that incoming trust have signed the articles</b>
+                    <govuk-checkboxes-item-hint>
+                        <p>It can be helpful to check the <a href="@_configuration["ExternalLinks:CompaniesHouseWebsite"]" target="_blank">Companies House website (opens in a new tab)</a> to make sure the signed articles have been uploaded</p>
+                    </govuk-checkboxes-item-hint>
+                </govuk-checkboxes-item>
+                <govuk-checkboxes-item id="@(nameof(Model.Saved))" asp-for="@Model.Saved" value="true" name="@(nameof(Model.Saved))" checked="@Model.Saved">
+                    <b>Saved copy of articles in the school and trust's SharePoint folders</b>
+                </govuk-checkboxes-item> 
+            </govuk-checkboxes-fieldset>
+        </govuk-checkboxes>
+        @await Html.PartialAsync("_TaskSaveAndReturn", new TaskSaveAndReturnModel(Model.Project, Model.CurrentUserTeam))
+    </form>
+}

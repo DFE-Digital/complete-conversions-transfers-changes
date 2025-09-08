@@ -2,14 +2,15 @@ import { beforeEach } from "mocha";
 import {
     checkAccessibilityAcrossPages,
     shouldBeAbleToViewReportsLandingPage,
-    shouldNotBeAbleToAddAProjectNote, shouldNotBeAbleToAddAProjectTaskNote,
+    shouldNotBeAbleToAddAProjectNote,
+    shouldNotBeAbleToAddAProjectTaskNote,
     shouldNotBeAbleToCreateAProject,
     shouldNotHaveAccessToViewAndEditUsers,
     shouldNotHaveAccessToViewConversionURNsPage,
     shouldNotHaveAccessToViewHandedOverProjects,
     shouldNotHaveAccessToViewLocalAuthorities,
     shouldNotHaveAccessToViewYourProjectsSections,
-    shouldNotHaveAccessToViewYourTeamProjectsSections
+    shouldNotHaveAccessToViewYourTeamProjectsSections,
 } from "cypress/support/reusableTests";
 import { businessSupportUser } from "cypress/constants/cypressConstants";
 import navBar from "cypress/pages/navBar";
@@ -22,8 +23,7 @@ import { projectTable } from "cypress/pages/projects/tables/projectTable";
 import { currentMonthLong, currentMonthShort, macclesfieldTrust } from "cypress/constants/stringTestConstants";
 import projectDetailsPage from "cypress/pages/projects/projectDetails/projectDetailsPage";
 
-const date = new Date("2027-04-01");
-const project = ProjectBuilder.createConversionProjectRequest(date);
+const project = ProjectBuilder.createConversionProjectRequest({ significantDate: "2027-04-01" });
 let projectId: string;
 const schoolName = "St Chad's Catholic Primary School";
 describe("Capabilities and permissions of the business support user", () => {
@@ -94,7 +94,7 @@ describe("Capabilities and permissions of the business support user", () => {
             .columnHasValue("Incoming trust", macclesfieldTrust.name.toUpperCase()) // bug 208086
             .columnHasValue("All conditions met", "Not yet")
             .columnHasValue("Confirmed date (Original date)", "Apr 2027")
-            .goTo(`${schoolName} ${project.urn.value}`);
+            .goTo(schoolName);
         projectDetailsPage.containsHeading(schoolName);
     });
 

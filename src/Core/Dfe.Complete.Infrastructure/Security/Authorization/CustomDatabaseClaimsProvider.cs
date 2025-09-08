@@ -25,7 +25,7 @@ namespace Dfe.Complete.Infrastructure.Security.Authorization
 
             if (!cache.TryGetValue(cacheKey, out List<Claim>? additionalClaims))
             {
-                var userRecord = await userRepository.FindAsync(u => u.ActiveDirectoryUserId == userId);
+                var userRecord = await userRepository.FindAsync(u => u.ActiveDirectoryUserId == userId && u.DeactivatedAt == null);
                 if (userRecord == null!)
                     return [];
 

@@ -15,8 +15,7 @@ import { ProjectBuilder } from "cypress/api/projectBuilder";
 import projectRemover from "cypress/api/projectRemover";
 import projectApi from "cypress/api/projectApi";
 
-const date = new Date("2027-04-01");
-const project = ProjectBuilder.createConversionProjectRequest(date);
+const project = ProjectBuilder.createConversionProjectRequest({ significantDate: "2027-04-01" });
 let projectId: string;
 describe("Capabilities and permissions of the regional delivery officer user", () => {
     before(() => {

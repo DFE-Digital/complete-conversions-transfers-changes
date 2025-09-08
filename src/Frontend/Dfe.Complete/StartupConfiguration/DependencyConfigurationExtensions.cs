@@ -12,6 +12,8 @@ namespace Dfe.Complete.StartupConfiguration
             services.AddScoped<IErrorService, ErrorService>();
             services.AddScoped<CompleteApiClient, CompleteApiClient>();
             services.AddScoped<IAnalyticsConsentService, AnalyticsConsentService>();
+            services.AddScoped<IProjectPermissionService, ProjectPermissionService>();
+
             services.AddScoped<ITrustCache, TrustCacheService>();
 
             return services;
