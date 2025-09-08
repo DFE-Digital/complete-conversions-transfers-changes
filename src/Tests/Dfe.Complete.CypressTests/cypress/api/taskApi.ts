@@ -48,6 +48,17 @@ interface UpdateDeedOfVariationTaskRequest {
     signedSecretaryState?: boolean;
 }
 
+interface UpdateSupplementalFundingAgreementTaskRequest {
+    taskDataId: TaskDataId;
+    projectType?: ProjectType;
+    received?: boolean;
+    cleared?: boolean;
+    sent?: boolean;
+    saved?: boolean;
+    signed?: boolean;
+    signedSecretaryState?: boolean;
+}
+
 export enum ProjectType {
     Conversion = "Conversion",
     Transfer = "Transfer",
@@ -75,6 +86,10 @@ class TaskApi extends ApiBase {
 
     public updateArticleOfAssociationTask(requestBody: UpdateArticleOfAssociationTaskRequest) {
         return this.taskDataBaseRequest<void>("PATCH", `${this.taskDataUrl}/ArticleOfAssociation`, requestBody, 204);
+    }
+
+    public updateSupplementalFundingAgreementTask(requestBody: UpdateSupplementalFundingAgreementTaskRequest) {
+        return this.taskDataBaseRequest<void>("PATCH", `${this.taskDataUrl}/SupplementalFundingAgreement`, requestBody, 204);
     }
 
     private taskDataBaseRequest<T>(

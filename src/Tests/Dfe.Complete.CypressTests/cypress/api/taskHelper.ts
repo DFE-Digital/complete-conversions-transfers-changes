@@ -161,6 +161,41 @@ class TaskHelper {
                 return taskApi.updateHandoverWithDeliveryOfficerTask(defaultBody);
         }
     }
+
+    updateSupplementalFundingAgreement(taskDataId: string, projectType: ProjectType, status: TaskStatus) {
+        const defaultBody = {
+            taskDataId: { value: taskDataId },
+            projectType: projectType,
+            received: false,
+            cleared: false,
+            sent: false,
+            signed: false,
+            saved: false,
+            signedSecretaryState: false,
+        };
+        switch (status) {
+            case "inProgress":
+                return taskApi.updateSupplementalFundingAgreementTask({
+                    ...defaultBody,
+                    received: true,
+                });
+
+            case "completed":
+                return taskApi.updateSupplementalFundingAgreementTask({
+                    taskDataId: { value: taskDataId },
+                    projectType: projectType,
+                    received: true,
+                    cleared: true,
+                    sent: true,
+                    signed: true,
+                    saved: true,
+                    signedSecretaryState: true,
+                });
+
+            default:
+                return taskApi.updateSupplementalFundingAgreementTask(defaultBody);
+        }
+    }
 }
 
 const taskHelper = new TaskHelper();
