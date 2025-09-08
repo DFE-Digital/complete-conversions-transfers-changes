@@ -8,6 +8,8 @@ using Dfe.Complete.Services;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel.DataAnnotations;
+using static Dfe.Complete.Services.DateRangeValidationService;
 
 namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.DeclarationOfExpenditureCertificate
 {
@@ -22,9 +24,9 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.DeclarationOfExpenditureCer
         [BindProperty(Name = "check-certificate")]
         public bool? CheckCertificate { get; set; }
 
-        [BindProperty(Name = "date-received", BinderType = typeof(DateInputModelBinder))]
-        [DateValidation(DateRangeValidationService.DateRange.PastOrToday)]
-        public DateTime? DateReceived { get; set; }
+        [BindProperty(Name = "received-date", BinderType = typeof(DateInputModelBinder))]
+        [DateValidation(DateRange.PastOrToday)]
+        public DateTime? ReceivedDate { get; set; }
 
         [BindProperty]
         public Guid? TasksDataId { get; set; }
@@ -39,14 +41,14 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.DeclarationOfExpenditureCer
             {
                 NotApplicable = TransferTaskData.DeclarationOfExpenditureCertificateNotApplicable;
                 CheckCertificate = TransferTaskData.DeclarationOfExpenditureCertificateCorrect;
-                DateReceived = TransferTaskData.DeclarationOfExpenditureCertificateDateReceived?.ToDateTime(default);
+                ReceivedDate = TransferTaskData.DeclarationOfExpenditureCertificateDateReceived?.ToDateTime(default);
                 Saved = TransferTaskData.DeclarationOfExpenditureCertificateSaved;
             }
             else
             {
                 NotApplicable = ConversionTaskData.ReceiveGrantPaymentCertificateNotApplicable;
                 CheckCertificate = ConversionTaskData.ReceiveGrantPaymentCertificateCheckCertificate;
-                DateReceived = ConversionTaskData.ReceiveGrantPaymentCertificateDateReceived?.ToDateTime(default);
+                ReceivedDate = ConversionTaskData.ReceiveGrantPaymentCertificateDateReceived?.ToDateTime(default);
                 Saved = ConversionTaskData.ReceiveGrantPaymentCertificateSaveCertificate;
             }
             return Page();
@@ -60,7 +62,7 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.DeclarationOfExpenditureCer
                 errorService.AddErrors(ModelState);
                 return Page();
             }
-            await sender.Send(new UpdateDeclarationOfExpenditureCertificateTaskCommand(new TaskDataId(TasksDataId.GetValueOrDefault())!, Type, DateReceived, NotApplicable, CheckCertificate, Saved));
+            await sender.Send(new UpdateDeclarationOfExpenditureCertificateTaskCommand(new TaskDataId(TasksDataId.GetValueOrDefault())!, Type, ReceivedDate, NotApplicable, CheckCertificate, Saved));
             TempData.SetNotification(NotificationType.Success, "Success", "Task updated successfully");
             return Redirect(string.Format(RouteConstants.ProjectTaskList, ProjectId));
         }

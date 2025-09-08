@@ -41,19 +41,28 @@
         <h2 class="govuk-heading-l">
             Enter the date you received the declaration of expenditure certificate
         </h2>
-        <govuk-date-input id="date-received" name-prefix="date-received" asp-for="@Model.DateReceived">
-            <govuk-date-input-fieldset>
-                <govuk-date-input-fieldset-legend class="govuk-fieldset__legend"> 
-                </govuk-date-input-fieldset-legend>
-                <govuk-date-input-hint>
-                    <p>For example 27 5 2007</p>
-                    @if (ErrorService.HasErrorForKey("date-received"))
+        @if (Model.ReceivedDate == null)
+        {
+            <govuk-date-input id="received-date" name="received-date" asp-for="@Model.ReceivedDate" data-testid="received-date-input" label="Received date">
+                <govuk-date-input-fieldset>
+                    <govuk-date-input-fieldset-legend class="govuk-fieldset__legend"> 
+                    </govuk-date-input-fieldset-legend>
+                    <govuk-date-input-hint>
+                        <p>For example 27 5 2007</p>
+                    </govuk-date-input-hint>
+                    @if (ErrorService.HasErrorForKey("received-date"))
                     {
-                        <govuk-date-input-error-message>@(ErrorService.GetErrorMessage("date-received"))</govuk-date-input-error-message>
+                        <govuk-date-input-error-message>@(ErrorService.GetErrorMessage("received-date"))</govuk-date-input-error-message>
                     }
-                </govuk-date-input-hint>
-            </govuk-date-input-fieldset>
-        </govuk-date-input>
+                </govuk-date-input-fieldset>
+            </govuk-date-input>
+        }
+        else
+        {
+            <div class="govuk-inset-text">
+                <p>DfE received the declaration of expenditure certificate on @Model.ReceivedDate.ToDateString()</p> 
+            </div> 
+        }
         <govuk-checkboxes name="options">
             <govuk-checkboxes-fieldset>
                 <govuk-checkboxes-fieldset-legend>
