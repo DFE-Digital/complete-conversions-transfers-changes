@@ -287,6 +287,11 @@
     },
     {
       "Controller": "TasksDataController",
+      "Action": "UpdateConfirmProposedCapacityOfTheAcademyTaskAsync",
+      "ExpectedSecurity": "Authorize: Policy=CanReadWriteUpdate"
+    },
+    {
+      "Controller": "TasksDataController",
       "Action": "UpdateDeclarationOfExpenditureCertificateTaskAsync",
       "ExpectedSecurity": "Authorize: Policy=CanReadWriteUpdate"
     }

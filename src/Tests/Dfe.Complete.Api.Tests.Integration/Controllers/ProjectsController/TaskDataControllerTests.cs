@@ -283,7 +283,7 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers.ProjectsController
             command.SignedSecretaryState = true;
 
             // Act
-            await tasksDataClient.UpdateSupplementalFundingAgreementTaskAsync(command, default);
+            await tasksDataClient.UpdateSupplementalFundingAgreementTaskAsync(command);
 
             // Assert
             dbContext.ChangeTracker.Clear();
@@ -320,7 +320,7 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers.ProjectsController
             command.Received = true;
 
             // Act
-            await tasksDataClient.UpdateSupplementalFundingAgreementTaskAsync(command, default);
+            await tasksDataClient.UpdateSupplementalFundingAgreementTaskAsync(command);
 
             // Assert
             dbContext.ChangeTracker.Clear();
@@ -438,6 +438,76 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers.ProjectsController
             Assert.True(existingTaskData.RedactAndSendDocumentsSendToEsfa);
             Assert.False(existingTaskData.RedactAndSendDocumentsSendToFundingTeam);
             Assert.True(existingTaskData.RedactAndSendDocumentsSendToSolicitors);
+        }
+        [Theory]
+        [CustomAutoData(typeof(CustomWebApplicationDbContextFactoryCustomization))]
+        public async Task UpdateConfirmProposedCapacityOfTheAcademyTaskAsync_WithFalseNotApplicable_ShouldUpdate_ConversionTaskData(
+            CustomWebApplicationDbContextFactory<Program> factory,
+            ITasksDataClient tasksDataClient,
+            UpdateConfirmProposedCapacityOfTheAcademyTaskCommand command,
+            IFixture fixture)
+        {
+            // Arrange
+            factory.TestClaims = [new Claim(ClaimTypes.Role, ApiRoles.ReadRole), new Claim(ClaimTypes.Role, ApiRoles.UpdateRole), new Claim(ClaimTypes.Role, ApiRoles.WriteRole)];
+
+            var dbContext = factory.GetDbContext<CompleteContext>();
+
+            var taskData = fixture.Create<ConversionTasksData>();
+            dbContext.ConversionTasksData.Add(taskData);
+
+            await dbContext.SaveChangesAsync();
+            command.TaskDataId = new TaskDataId { Value = taskData.Id.Value }; 
+            command.SevenToElevenYears = "3";
+            command.TwelveOrAboveYears = "3";
+            command.ReceptionToSixYears = "3";
+            command.NotApplicable = false;
+
+            // Act
+            await tasksDataClient.UpdateConfirmProposedCapacityOfTheAcademyTaskAsync(command, default);
+
+            // Assert
+            dbContext.ChangeTracker.Clear();
+            var existingTaskData = await dbContext.ConversionTasksData.SingleOrDefaultAsync(x => x.Id == taskData.Id);
+            Assert.NotNull(existingTaskData);
+            Assert.False(existingTaskData.ProposedCapacityOfTheAcademyNotApplicable);
+            Assert.Equal(existingTaskData.ProposedCapacityOfTheAcademyReceptionToSixYears, command.ReceptionToSixYears);
+            Assert.Equal(existingTaskData.ProposedCapacityOfTheAcademyTwelveOrAboveYears, command.TwelveOrAboveYears);
+            Assert.Equal(existingTaskData.ProposedCapacityOfTheAcademySevenToElevenYears, command.SevenToElevenYears);
+        }
+        [Theory]
+        [CustomAutoData(typeof(CustomWebApplicationDbContextFactoryCustomization))]
+        public async Task UpdateConfirmProposedCapacityOfTheAcademyTaskAsync_WithTrueNotApplicable_ShouldUpdate_ConversionTaskData(
+            CustomWebApplicationDbContextFactory<Program> factory,
+            ITasksDataClient tasksDataClient,
+            UpdateConfirmProposedCapacityOfTheAcademyTaskCommand command,
+            IFixture fixture)
+        {
+            // Arrange
+            factory.TestClaims = [new Claim(ClaimTypes.Role, ApiRoles.ReadRole), new Claim(ClaimTypes.Role, ApiRoles.UpdateRole), new Claim(ClaimTypes.Role, ApiRoles.WriteRole)];
+
+            var dbContext = factory.GetDbContext<CompleteContext>();
+
+            var taskData = fixture.Create<ConversionTasksData>();
+            dbContext.ConversionTasksData.Add(taskData);
+
+            await dbContext.SaveChangesAsync();
+            command.TaskDataId = new TaskDataId { Value = taskData.Id.Value };
+            command.SevenToElevenYears = "3";
+            command.TwelveOrAboveYears = "3";
+            command.ReceptionToSixYears = "3";
+            command.NotApplicable = true;
+
+            // Act
+            await tasksDataClient.UpdateConfirmProposedCapacityOfTheAcademyTaskAsync(command, default);
+
+            // Assert
+            dbContext.ChangeTracker.Clear();
+            var existingTaskData = await dbContext.ConversionTasksData.SingleOrDefaultAsync(x => x.Id == taskData.Id);
+            Assert.NotNull(existingTaskData);
+            Assert.True(existingTaskData.ProposedCapacityOfTheAcademyNotApplicable);
+            Assert.Null(existingTaskData.ProposedCapacityOfTheAcademyReceptionToSixYears);
+            Assert.Null(existingTaskData.ProposedCapacityOfTheAcademyTwelveOrAboveYears);
+            Assert.Null(existingTaskData.ProposedCapacityOfTheAcademySevenToElevenYears);
         }
 
         [Theory]

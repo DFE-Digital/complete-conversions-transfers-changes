@@ -19,7 +19,9 @@ Security in case of vulnerabilities.
 
 ### Added
 - Added `Redact and send document` task for both conversion and transfer projects.
+- Added `Confirm proposed capacity of the academy` task for conversion project.
 - Added `Receivee declaration of expenditure certificate` task for conversion and transfer projects.
+
 
 ### Security
 - prevent inactive users from signing in

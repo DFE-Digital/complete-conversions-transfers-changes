@@ -850,7 +850,7 @@ namespace Dfe.Complete.Client.Contracts
         /// Updates the External stakeholder kickoff Task Data for a specific task data.
         /// </summary>
         /// <param name="request">The update command.</param>
-        /// <returns>External stakeholder kickoff Task updated successfully.</returns>
+        /// <returns>External stakeholder kickoff task updated successfully.</returns>
         /// <exception cref="CompleteApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task UpdateExternalStakeholderKickOffTaskAsync(UpdateExternalStakeholderKickOffTaskCommand request);
 
@@ -859,7 +859,7 @@ namespace Dfe.Complete.Client.Contracts
         /// Updates the External stakeholder kickoff Task Data for a specific task data.
         /// </summary>
         /// <param name="request">The update command.</param>
-        /// <returns>External stakeholder kickoff Task updated successfully.</returns>
+        /// <returns>External stakeholder kickoff task updated successfully.</returns>
         /// <exception cref="CompleteApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task UpdateExternalStakeholderKickOffTaskAsync(UpdateExternalStakeholderKickOffTaskCommand request, System.Threading.CancellationToken cancellationToken);
 
@@ -896,6 +896,23 @@ namespace Dfe.Complete.Client.Contracts
         /// <returns>Conversion or transfer's redact and send documents task updated successfully.</returns>
         /// <exception cref="CompleteApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task UpdateRedactAndSendDocumentsTaskAsync(UpdateRedactAndSendDocumentsTaskCommand request, System.Threading.CancellationToken cancellationToken);
+
+        /// <summary>
+        /// Updates the confirm proposed capacity of the academy for a specific task data.
+        /// </summary>
+        /// <param name="request">The update command.</param>
+        /// <returns>Confirm proposed capacity of the academy task updated successfully.</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task UpdateConfirmProposedCapacityOfTheAcademyTaskAsync(UpdateConfirmProposedCapacityOfTheAcademyTaskCommand request);
+
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>
+        /// Updates the confirm proposed capacity of the academy for a specific task data.
+        /// </summary>
+        /// <param name="request">The update command.</param>
+        /// <returns>Confirm proposed capacity of the academy task updated successfully.</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task UpdateConfirmProposedCapacityOfTheAcademyTaskAsync(UpdateConfirmProposedCapacityOfTheAcademyTaskCommand request, System.Threading.CancellationToken cancellationToken);
 
         /// <summary>
         /// Updates the receive declaration of expenditure certificate task Data for conversion or transfer project.
@@ -3009,8 +3026,11 @@ namespace Dfe.Complete.Client.Contracts
         [System.Runtime.Serialization.EnumMember(Value = @"RedactAndSendDocuments")]
         RedactAndSendDocuments = 8,
 
+        [System.Runtime.Serialization.EnumMember(Value = @"ConfirmProposedCapacityOfTheAcademy")]
+        ConfirmProposedCapacityOfTheAcademy = 9,
+
         [System.Runtime.Serialization.EnumMember(Value = @"DeclarationOfExpenditureCertificate")]
-        DeclarationOfExpenditureCertificate = 9,
+        DeclarationOfExpenditureCertificate = 10,
 
     }
 
@@ -4942,6 +4962,39 @@ namespace Dfe.Complete.Client.Contracts
         {
 
             return Newtonsoft.Json.JsonConvert.DeserializeObject<UpdateRedactAndSendDocumentsTaskCommand>(data, new Newtonsoft.Json.JsonSerializerSettings());
+
+        }
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.2.0.0 (NJsonSchema v11.1.0.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class UpdateConfirmProposedCapacityOfTheAcademyTaskCommand
+    {
+        [Newtonsoft.Json.JsonProperty("taskDataId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public TaskDataId? TaskDataId { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("notApplicable", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? NotApplicable { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("receptionToSixYears", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string? ReceptionToSixYears { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("sevenToElevenYears", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string? SevenToElevenYears { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("twelveOrAboveYears", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string? TwelveOrAboveYears { get; set; } = default!;
+
+        public string ToJson()
+        {
+
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonSerializerSettings());
+
+        }
+        public static UpdateConfirmProposedCapacityOfTheAcademyTaskCommand FromJson(string data)
+        {
+
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<UpdateConfirmProposedCapacityOfTheAcademyTaskCommand>(data, new Newtonsoft.Json.JsonSerializerSettings());
 
         }
 

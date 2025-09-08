@@ -30,7 +30,7 @@ public enum NoteTaskIdentifier
     ArticleOfAssociation = 6,
 
     [Description("deed_of_novation_and_variation")]
-    [DisplayDescription("Deed of novation and variation\r\n")]
+    [DisplayDescription("Deed of novation and variation")]
     DeedOfNovationAndVariation = 7,
 
     [Description("deed_of_variation")]
@@ -41,7 +41,11 @@ public enum NoteTaskIdentifier
     [DisplayDescription("Redact and send documents")]
     RedactAndSendDocuments = 9,
 
+    [Description("proposed_capacity_of_the_academy")]
+    [DisplayDescription("Confirm Proposed Capacity Of TheAcademy")]
+    ConfirmProposedCapacityOfTheAcademy = 10,
+
     [Description("receive_declaration_of_expenditure_certificate")]
     [DisplayDescription("Receive declaration of expenditure certificate")]
-    DeclarationOfExpenditureCertificate = 10
+    DeclarationOfExpenditureCertificate = 11
 }
