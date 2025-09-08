@@ -2559,7 +2559,7 @@
         "tags": [
           "TasksData"
         ],
-        "summary": "Updates the redact and send documents task Data for conversion or trasnfer project.",
+        "summary": "Updates the redact and send documents task Data for conversion or transfer project.",
         "operationId": "TasksData_UpdateRedactAndSendDocumentsTask",
         "requestBody": {
           "x-name": "request",
@@ -6666,47 +6666,6 @@
           }
         }
       },
-      "UpdateSupplementalFundingAgreementTaskCommand": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-          "taskDataId": {
-            "$ref": "#/components/schemas/TaskDataId"
-          },
-          "projectType": {
-            "nullable": true,
-            "oneOf": [
-              {
-                "$ref": "#/components/schemas/ProjectType"
-              }
-            ]
-          },
-          "received": {
-            "type": "boolean",
-            "nullable": true
-          },
-          "cleared": {
-            "type": "boolean",
-            "nullable": true
-          },
-          "sent": {
-            "type": "boolean",
-            "nullable": true
-          },
-          "saved": {
-            "type": "boolean",
-            "nullable": true
-          },
-          "signed": {
-            "type": "boolean",
-            "nullable": true
-          },
-          "signedSecretaryState": {
-            "type": "boolean",
-            "nullable": true
-          }
-        }
-      },
       "UpdateDeedOfNovationAndVariationTaskCommand": {
         "type": "object",
         "additionalProperties": false,
@@ -6823,6 +6782,47 @@
           },
           "userEmail": {
             "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "UpdateSupplementalFundingAgreementTaskCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "taskDataId": {
+            "$ref": "#/components/schemas/TaskDataId"
+          },
+          "projectType": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/ProjectType"
+              }
+            ]
+          },
+          "received": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "cleared": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "sent": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "saved": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "signed": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "signedSecretaryState": {
+            "type": "boolean",
             "nullable": true
           }
         }

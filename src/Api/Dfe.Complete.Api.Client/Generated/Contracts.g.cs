@@ -828,23 +828,6 @@ namespace Dfe.Complete.Client.Contracts
         System.Threading.Tasks.Task UpdateArticleOfAssociationTaskAsync(UpdateArticleOfAssociationTaskCommand request, System.Threading.CancellationToken cancellationToken);
 
         /// <summary>
-        /// Updates the supplemental funding agreement task Data for conversion or trasnfer project.
-        /// </summary>
-        /// <param name="request">The update command.</param>
-        /// <returns>Conversion or transfer's supplemental funding agreement task updated successfully.</returns>
-        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task UpdateSupplementalFundingAgreementTaskAsync(UpdateSupplementalFundingAgreementTaskCommand request);
-
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <summary>
-        /// Updates the supplemental funding agreement task Data for conversion or trasnfer project.
-        /// </summary>
-        /// <param name="request">The update command.</param>
-        /// <returns>Conversion or transfer's supplemental funding agreement task updated successfully.</returns>
-        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task UpdateSupplementalFundingAgreementTaskAsync(UpdateSupplementalFundingAgreementTaskCommand request, System.Threading.CancellationToken cancellationToken);
-
-        /// <summary>
         /// Updates the deed of variation task Data for conversion or trasnfer project.
         /// </summary>
         /// <param name="request">The update command.</param>
@@ -896,7 +879,24 @@ namespace Dfe.Complete.Client.Contracts
         System.Threading.Tasks.Task UpdateExternalStakeholderKickOffTaskAsync(UpdateExternalStakeholderKickOffTaskCommand request, System.Threading.CancellationToken cancellationToken);
 
         /// <summary>
-        /// Updates the redact and send documents task Data for conversion or trasnfer project.
+        /// Updates the supplemental funding agreement task Data for conversion or trasnfer project.
+        /// </summary>
+        /// <param name="request">The update command.</param>
+        /// <returns>Conversion or transfer's supplemental funding agreement task updated successfully.</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task UpdateSupplementalFundingAgreementTaskAsync(UpdateSupplementalFundingAgreementTaskCommand request);
+
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>
+        /// Updates the supplemental funding agreement task Data for conversion or trasnfer project.
+        /// </summary>
+        /// <param name="request">The update command.</param>
+        /// <returns>Conversion or transfer's supplemental funding agreement task updated successfully.</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task UpdateSupplementalFundingAgreementTaskAsync(UpdateSupplementalFundingAgreementTaskCommand request, System.Threading.CancellationToken cancellationToken);
+
+        /// <summary>
+        /// Updates the redact and send documents task Data for conversion or transfer project.
         /// </summary>
         /// <param name="request">The update command.</param>
         /// <returns>Conversion or transfer's redact and send documents task updated successfully.</returns>
@@ -905,7 +905,7 @@ namespace Dfe.Complete.Client.Contracts
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>
-        /// Updates the redact and send documents task Data for conversion or trasnfer project.
+        /// Updates the redact and send documents task Data for conversion or transfer project.
         /// </summary>
         /// <param name="request">The update command.</param>
         /// <returns>Conversion or transfer's redact and send documents task updated successfully.</returns>
