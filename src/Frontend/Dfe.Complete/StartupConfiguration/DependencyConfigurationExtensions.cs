@@ -5,7 +5,6 @@ using Dfe.Complete.Services;
 using Dfe.Complete.Services.Interfaces;
 using Dfe.Complete.Validators;
 using FluentValidation;
-using Microsoft.AspNetCore.Identity;
 
 namespace Dfe.Complete.StartupConfiguration
 {
