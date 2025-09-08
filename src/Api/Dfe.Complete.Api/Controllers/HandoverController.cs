@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 using Microsoft.AspNetCore.Authorization;
 using Dfe.Complete.Application.Handover.Commands;
+using System.ComponentModel.DataAnnotations;
 
 namespace Dfe.Complete.Api.Controllers
 {
@@ -25,8 +26,17 @@ namespace Dfe.Complete.Api.Controllers
         [SwaggerResponse(400, "Invalid request data.")]
         public async Task<IActionResult> CreateConversionProjectAsync([FromBody] CreateHandoverConversionProjectCommand request, CancellationToken cancellationToken)
         {
-            var projectId = await sender.Send(request, cancellationToken);
-            return Created("", projectId);
+            ProjectId result;
+            try
+            {   
+                result = await sender.Send(request, cancellationToken);
+            }
+            catch (ValidationException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
+            return Created("", result.Value);
         }
     }
 }
