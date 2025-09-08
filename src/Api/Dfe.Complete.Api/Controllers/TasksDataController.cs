@@ -157,7 +157,7 @@ namespace Dfe.Complete.Api.Controllers
             return NoContent();
         }
         /// <summary>
-        /// Updates the receive declaration of expenditure certificate task Data for conversion or trasnfer project.
+        /// Updates the receive declaration of expenditure certificate task Data for conversion or transfer project.
         /// </summary>
         /// <param name="request">The update command.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
