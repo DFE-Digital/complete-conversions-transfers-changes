@@ -16,6 +16,10 @@ Security in case of vulnerabilities.
 
 ## Unreleased
 
+### Added
+
+- Added `Receive declaration of expenditure certificate` task for conversion and transfer projects.
+
 
 See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-09-09.731...main) for everything awaiting release
 
@@ -27,7 +31,6 @@ See the [full commit history](https://github.com/DFE-Digital/complete-conversion
 - Added `Redact and send document` task for both conversion and transfer projects.
 - Added `Confirm proposed capacity of the academy` task for conversion project.
 - Added `Supplemental Funding Agreement` task data for both conversion and transfer projects.
-- Added `Receive declaration of expenditure certificate` task for conversion and transfer projects.
 
 ### Security
 - prevent inactive users from signing in
