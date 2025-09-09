@@ -3,7 +3,12 @@ namespace Dfe.Complete.Tests.Models.ExternalContact
     using AutoFixture;
     using AutoFixture.AutoMoq;
     using Dfe.AcademiesApi.Client.Contracts;
+    using Dfe.Complete.Application.Common.Models;
+    using Dfe.Complete.Application.LocalAuthorities.Models;
+    using Dfe.Complete.Application.LocalAuthorities.Queries.GetLocalAuthority;
     using Dfe.Complete.Application.Projects.Models;
+    using Dfe.Complete.Application.Projects.Queries.GetProject;
+    using Dfe.Complete.Application.Services.AcademiesApi;
     using Dfe.Complete.Application.Services.TrustCache;
     using Dfe.Complete.Domain.Enums;
     using Dfe.Complete.Domain.ValueObjects;
@@ -35,10 +40,12 @@ namespace Dfe.Complete.Tests.Models.ExternalContact
         
         private readonly Mock<ITrustCache> trustCacheService;        
         private readonly IFixture fixture = new Fixture().Customize(new CompositeCustomization(new AutoMoqCustomization(), new ProjectIdCustomization(), new DateOnlyCustomization(), new IgnoreVirtualMembersCustomisation()));
+        private readonly Mock<ISender> mockSender;
 
         public ExternalContactAddEditPageModelTests()
         {  
-            trustCacheService = fixture.Freeze<Mock<ITrustCache>>();                
+            trustCacheService = fixture.Freeze<Mock<ITrustCache>>();
+            mockSender = fixture.Freeze<Mock<ISender>>();
         }
 
         [Theory]
@@ -47,7 +54,7 @@ namespace Dfe.Complete.Tests.Models.ExternalContact
         [InlineData(ExternalContactType.HeadTeacher, "test organisation", "Test Organisation")]
         [InlineData(ExternalContactType.ChairOfGovernors, "test organisation", "Test Organisation")]
         [InlineData(ExternalContactType.SchoolOrAcademy, "test organisation", "Test Organisation")]
-        [InlineData(ExternalContactType.LocalAuthority, "test organisation", "Test Organisation")]
+        [InlineData(ExternalContactType.LocalAuthority, "test organisation", "test Organisation")]
         [InlineData(ExternalContactType.Solicitor, "test organisation", "test organisation")]
         [InlineData(ExternalContactType.Diocese, "test organisation", "test organisation")]
         [InlineData(ExternalContactType.Other, "test organisation", "test organisation")]
@@ -56,9 +63,18 @@ namespace Dfe.Complete.Tests.Models.ExternalContact
             // Arrange
             
             ProjectId projectId = fixture.Create<ProjectId>();
-            ContactId contactId = fixture.Create<ContactId>();            
-           
-            var mockTrustDto = fixture.Build<TrustDto>().With(x => x.Name, input).Create();           
+            ContactId contactId = fixture.Create<ContactId>(); 
+            string urn = "123";
+            string localAuthorityCode = fixture.Create<string>();
+
+            var mockTrustDto = fixture.Build<TrustDto>().With(x => x.Name, input).Create();   
+            var mockEstablishmentDto = fixture.Build<EstablishmentDto>()
+                .With(x => x.Name, input)
+                .With(x => x.Urn, urn)
+                .With(x => x.LocalAuthorityCode, localAuthorityCode)
+                .Create();
+
+            var mockLocalAuthorityDto = fixture.Build<LocalAuthorityDto>().With(x => x.Name, input).Create();
 
             TestExternalContactAddEditPageModel testClass = fixture.Build<TestExternalContactAddEditPageModel>()
                .With(t => t.PageContext, PageDataHelper.GetPageContext())
@@ -67,7 +83,9 @@ namespace Dfe.Complete.Tests.Models.ExternalContact
                   .With(t => t.Id, projectId)
                   .With(t => t.Type, ProjectType.Transfer)
                   .With(t => t.EstablishmentName, input)
+                  .With(t => t.Urn, new Urn(Convert.ToInt32(urn)))
                   .Create())
+
                .With(t => t.ExternalContactInput, fixture.Build<OtherExternalContactInputModel>()
                    .With(e => e.SelectedExternalContactType, contactType.ToDescription())
                    .With(e => e.OrganisationDiocese, input)
@@ -76,6 +94,16 @@ namespace Dfe.Complete.Tests.Models.ExternalContact
                    .Without(e => e.ContactTypeRadioOptions)
                    .Create())
                .Create();
+
+            var establishmentQuery = new GetEstablishmentByUrnRequest(urn);
+
+            mockSender.Setup(s => s.Send(establishmentQuery, It.IsAny<CancellationToken>()))
+               .ReturnsAsync(Result<EstablishmentDto?>.Success(mockEstablishmentDto));
+
+            var laQuery = new GetLocalAuthorityByCodeQuery(localAuthorityCode);
+
+            mockSender.Setup(s => s.Send(laQuery, It.IsAny<CancellationToken>()))
+             .ReturnsAsync(Result<LocalAuthorityDto?>.Success(mockLocalAuthorityDto));
 
             trustCacheService.Setup(x => x.GetTrustAsync(It.IsAny<Ukprn>())).ReturnsAsync(mockTrustDto);           
 

@@ -209,12 +209,7 @@
       "Controller": "ContactsController",
       "Action": "ListAllContactsForLocalAuthorityAsync",
       "ExpectedSecurity": "Authorize: Policy=CanRead"
-    },
-    {
-      "Controller": "ContactsController",
-      "Action": "CreateExternalContactAsync",
-      "ExpectedSecurity": "Authorize: Policy=CanWrite"
-    },
+    },    
     {
       "Controller": "ProjectsController",
       "Action": "GetProjectByIdAsync",
