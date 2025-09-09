@@ -20,62 +20,73 @@ public class ExternalContactAddEditPageModel(ITrustCache trustCacheService, ISen
         return await this.GetPage();
     }
 
-    protected async Task<string?> GetOrganisationName(ExternalContactType contactType)
+    public async Task<string?> GetOrganisationNameAsync(ExternalContactType contactType)
     {
-        var organisationName = string.Empty;
+        if (Project == null)
+            return string.Empty;
 
-        switch (contactType)
+        return contactType switch
         {
-            case ExternalContactType.HeadTeacher:
-            case ExternalContactType.ChairOfGovernors:
-            case ExternalContactType.SchoolOrAcademy:
-                organisationName = this.Project?.EstablishmentName?.ToTitleCase();
-                break;
-            case ExternalContactType.IncomingTrust:
-                if (Project != null && !Project.FormAMat && Project.IncomingTrustUkprn != null)
-                {
-                    var incomingTrust = await trustCacheService.GetTrustAsync(this.Project.IncomingTrustUkprn);
-                    organisationName = incomingTrust.Name?.ToTitleCase();
-                }
-                break;
-            case ExternalContactType.OutgoingTrust:
-                if (this.Project?.Type == ProjectType.Transfer && this.Project.OutgoingTrustUkprn != null)
-                {
-                    var outgoingTrust = await trustCacheService.GetTrustAsync(this.Project.OutgoingTrustUkprn);
-                    organisationName = outgoingTrust.Name?.ToTitleCase();
-                }
-                break;
-            case ExternalContactType.Solicitor:
-                organisationName = this.ExternalContactInput.OrganisationSolicitor;
-                break;
-            case ExternalContactType.Diocese:
-                organisationName = this.ExternalContactInput.OrganisationDiocese;
-                break;
-            case ExternalContactType.LocalAuthority:            
-                if (Project?.Urn != null)
-                {
-                    var establishmentQuery = new GetEstablishmentByUrnRequest(Project.Urn.Value.ToString());
-                    var establishmentResult = await sender.Send(establishmentQuery);
+            ExternalContactType.HeadTeacher or ExternalContactType.ChairOfGovernors or ExternalContactType.SchoolOrAcademy
+                => Project.EstablishmentName?.ToTitleCase(),
 
-                    if (establishmentResult.IsSuccess && establishmentResult.Value != null && !string.IsNullOrEmpty(establishmentResult.Value.LocalAuthorityCode))
-                    {
-                        var laQuery = new GetLocalAuthorityByCodeQuery(establishmentResult.Value.LocalAuthorityCode);
+            ExternalContactType.IncomingTrust
+                => await GetIncomingTrustNameAsync(),
 
-                        var la = await sender.Send(laQuery);
-                        if (la.IsSuccess && la.Value != null)
-                        {
-                            organisationName = la.Value?.Name;
-                        }
-                    }                   
-                }
-                break;                
-            default:
-                organisationName = this.ExternalContactInput.OrganisationOther;
-                break;
+            ExternalContactType.OutgoingTrust
+                => await GetOutgoingTrustNameAsync(),
+
+            ExternalContactType.Solicitor
+                => ExternalContactInput.OrganisationSolicitor,
+
+            ExternalContactType.Diocese
+                => ExternalContactInput.OrganisationDiocese,
+
+            ExternalContactType.LocalAuthority
+                => await GetLocalAuthorityNameAsync(),
+
+            _ => ExternalContactInput.OrganisationOther
+        };
+    }
+
+    private async Task<string> GetIncomingTrustNameAsync()
+    {
+        if (Project != null && !Project.FormAMat && Project.IncomingTrustUkprn != null)
+        {
+            var trust = await trustCacheService.GetTrustAsync(Project.IncomingTrustUkprn);
+            return trust?.Name?.ToTitleCase();
         }
 
-        return organisationName;
+        return string.Empty;
     }
+
+    private async Task<string> GetOutgoingTrustNameAsync()
+    {
+        if (this.Project?.Type == ProjectType.Transfer && this.Project.OutgoingTrustUkprn != null)
+        {
+            var trust = await trustCacheService.GetTrustAsync(Project.OutgoingTrustUkprn);
+            return trust?.Name?.ToTitleCase();
+        }
+
+        return string.Empty;
+    }
+
+    private async Task<string> GetLocalAuthorityNameAsync()
+    {
+        if (Project?.Urn == null)
+            return string.Empty;
+
+        var establishmentQuery = new GetEstablishmentByUrnRequest(Project.Urn.Value.ToString());
+        var establishmentResult = await sender.Send(establishmentQuery);
+
+        if (!establishmentResult.IsSuccess || establishmentResult.Value == null || string.IsNullOrEmpty(establishmentResult.Value.LocalAuthorityCode))
+            return string.Empty;
+
+        var laQuery = new GetLocalAuthorityByCodeQuery(establishmentResult.Value.LocalAuthorityCode);
+        var laResult = await sender.Send(laQuery);
+
+        return laResult.IsSuccess ? laResult.Value?.Name : string.Empty;
+    }   
 
     private async Task<IActionResult> GetPage()
     {   
@@ -102,7 +113,7 @@ public class ExternalContactAddEditPageModel(ITrustCache trustCacheService, ISen
                 ExternalContactType.Other,
         };
 
-        if (this.Project.Type == ProjectType.Conversion)
+        if (this.Project?.Type == ProjectType.Conversion)
         {
             contactTypeRadioOptions.RemoveAll(x => x == ExternalContactType.OutgoingTrust);
         }

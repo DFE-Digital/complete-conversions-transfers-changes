@@ -6,7 +6,7 @@ namespace Dfe.Complete.Models.ExternalContact
 {
     public class OtherExternalContactInputModel : ExternalContactInputModel
     {   
-        public string Role { get; set; }
+        public string? Role { get; set; }
 
         [BindProperty(Name = "organisation-solicitor")]
         public string? OrganisationSolicitor { get; set; }

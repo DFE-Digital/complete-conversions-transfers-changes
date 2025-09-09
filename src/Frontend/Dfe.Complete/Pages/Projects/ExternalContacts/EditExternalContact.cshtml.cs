@@ -62,7 +62,7 @@ public class EditExternalContact(
 
                 await base.GetCurrentProject();
 
-                var organisationName = await this.GetOrganisationName(contactType);
+                var organisationName = await this.GetOrganisationNameAsync(contactType);
                 var category = ExternalContactMapper.MapContactTypeToCategory(contactType);
 
                 var contactDto = new ContactDto

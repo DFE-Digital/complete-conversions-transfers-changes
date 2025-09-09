@@ -28,7 +28,7 @@ public abstract class ExternalContactBasePageModel(ISender sender, ILogger logge
         if (!success)
         {
             var error = $"{ProjectId} is not a valid Guid.";
-            logger.LogError(error, ProjectId);
+            logger.LogError("{Error}", error);            
             return;
         }
 
@@ -38,7 +38,7 @@ public abstract class ExternalContactBasePageModel(ISender sender, ILogger logge
         if (!result.IsSuccess || result.Value == null)
         {
             var error = $"Project {ProjectId} does not exist.";
-            logger.LogError(error, ProjectId);
+            logger.LogError("{Error}", error);
             return;
         }
 

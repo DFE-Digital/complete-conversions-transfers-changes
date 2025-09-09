@@ -79,7 +79,7 @@ namespace Dfe.Complete.Pages.Projects.ExternalContacts
             if (!success)
             {
                 var error = $"{ContactId} is not a valid Guid.";
-                logger.LogError(error);
+                logger.LogError("{Error}", error);
                 return;
             }
 
@@ -89,7 +89,7 @@ namespace Dfe.Complete.Pages.Projects.ExternalContacts
             if (!result.IsSuccess || result.Value == null)
             {
                 var error = $"Contact {ContactId} does not exist.";
-                logger.LogError(error);
+                logger.LogError("{Error}", error);
                 return;
             }
 

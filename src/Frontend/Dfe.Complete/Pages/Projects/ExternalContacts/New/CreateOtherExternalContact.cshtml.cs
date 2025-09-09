@@ -58,7 +58,7 @@ public class CreateOtherExternalContact(
                 await this.GetCurrentProject();
 
                 var category = ExternalContactMapper.MapContactTypeToCategory(contactType);
-                var organisationName = await this.GetOrganisationName(contactType);
+                var organisationName = await this.GetOrganisationNameAsync(contactType);
 
                 var newExternalContactCommand = new CreateExternalContactCommand(
                     FullName: this.ExternalContactInput.FullName,

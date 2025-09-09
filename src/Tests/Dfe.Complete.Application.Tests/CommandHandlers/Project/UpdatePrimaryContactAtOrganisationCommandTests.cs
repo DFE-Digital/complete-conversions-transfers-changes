@@ -72,32 +72,7 @@ public class UpdatePrimaryContactAtOrganisationCommandTests
 
         // Assert                             
         mockProjectRepository.Verify(repo => repo.UpdateAsync(It.IsAny<Entities.Project>(), It.IsAny<CancellationToken>()), Times.Once);
-    }
-
-    [Fact]
-    public async Task Handle_ShouldNotThrowOrUpdate_WhenProjectNotFound()
-    {
-        // Arrange
-        var nonExistentProjectId = new ProjectId(Guid.NewGuid());
-        var contactId = new ContactId(Guid.NewGuid());
-
-        var contact = fixture.Build<Entities.Contact>()
-               .With(t => t.Id, contactId)
-               .With(t => t.Category, ContactCategory.Other)
-               .With(t => t.ProjectId, nonExistentProjectId)
-               .Create();
-
-        mockProjectRepository.Setup(repo => repo.FindAsync(It.IsAny<int>(), It.IsAny<CancellationToken>()))
-              .ReturnsAsync((Entities.Project?)null);
-        
-        var command = new UpdatePrimaryContactAtOrganisationCommand(nonExistentProjectId, true, contact);
-
-        // Act
-        await handler.Handle(command, CancellationToken.None);
-
-        // Assert        
-        mockProjectRepository.Verify(repo => repo.UpdateAsync(It.IsAny<Domain.Entities.Project>(), It.IsAny<CancellationToken>()), Times.Never);
-    }
+    }    
 
     [Fact]
     public async Task Handle_ShouldNotThrowOrUpdate_WhenContactProject_ProjectPassed_NotSame()

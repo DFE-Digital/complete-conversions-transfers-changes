@@ -20,17 +20,17 @@ public class UpdateExternalContactCommandHandler(
     ILogger<UpdateExternalContactCommandHandler> logger
 ) : IRequestHandler<UpdateExternalContactCommand, Result<ContactDto>>
 {
-    public async Task<Result<ContactDto?>> Handle(UpdateExternalContactCommand request, CancellationToken cancellationToken)
+    public async Task<Result<ContactDto>> Handle(UpdateExternalContactCommand request, CancellationToken cancellationToken)
     {
         try
         {
             var contactEntity = await contactRepository.GetAsync(x => x.Id == request.ContactId);
-            if (contactEntity is null) return Result<ContactDto?>.Failure(string.Format(ErrorMessagesConstants.NotFoundExternalContact, request.ContactId.Value), ErrorType.NotFound);
+            if (contactEntity is null) return Result<ContactDto>.Failure(string.Format(ErrorMessagesConstants.NotFoundExternalContact, request.ContactId.Value), ErrorType.NotFound);
 
             var updateDto = request.contactDto;
 
             contactEntity.Name = updateDto.Name;
-            contactEntity.Title = updateDto.Title;  
+            contactEntity.Title = updateDto.Title;
             contactEntity.Phone = updateDto.Phone;
             contactEntity.Email = updateDto.Email;
             contactEntity.Category = updateDto.Category;
@@ -39,17 +39,17 @@ public class UpdateExternalContactCommandHandler(
 
             var savedEntity = await contactRepository.UpdateAsync(contactEntity, cancellationToken);
 
-            var result = mapper.Map<ContactDto?>(savedEntity);
+            var result = mapper.Map<ContactDto>(savedEntity);
 
             await sender.Send(new UpdatePrimaryContactAtOrganisationCommand(savedEntity.ProjectId!, request.contactDto.PrimaryContact, savedEntity), cancellationToken);
 
-            return Result<ContactDto?>.Success(result);
+            return Result<ContactDto>.Success(result);
         }
         catch (Exception ex)
         {
             var message = string.Format(ErrorMessagesConstants.CouldNotUpdateExternalContact, request.contactDto.Id.Value);
-            logger.LogError(ex, "Could not update external contact with Id {Id}.", request.contactDto.Id);            
-            return Result<ContactDto?>.Failure(message);
+            logger.LogError(ex, "Could not update external contact with Id {Id}.", request.contactDto.Id);
+            return Result<ContactDto>.Failure(message);
         }
     }
 }
