@@ -17,9 +17,16 @@ Security in case of vulnerabilities.
 ## Unreleased
 
 
+See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-09-09.731...main) for everything awaiting release
+
+---
+
+## [1.16.0](https://github.com/DFE-Digital/complete-conversions-transfers-changes/releases/tag/production-2025-09-09.731) - 2025-09-09
+
 ### Added
 - Added `Redact and send document` task for both conversion and transfer projects.
 - Added `Confirm proposed capacity of the academy` task for conversion project.
+- Added `Supplemental Funding Agreement` task data for both conversion and transfer projects.
 
 ### Security
 - prevent inactive users from signing in
@@ -32,8 +39,7 @@ Security in case of vulnerabilities.
 - Complete project post no longer throws antiforgery error
 - Correct wording on handover complete confirmation page
 
-
-See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-09-03.710...main) for everything awaiting release
+See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-09-03.710...production-2025-09-09.731) for everything in the release
 
 ---
 
@@ -67,7 +73,6 @@ See the [full commit history](https://github.com/DFE-Digital/complete-conversion
 - Added `Article of association` task data for both conversion and trasnfer projects.
 - Added 'Deed of novation and variation' task for transfer projects.
 - Added 'Deed of variation' task for both conversion and transfer projects. 
-- Added `Supplemental Funding Agreement` task data for both conversion and transfer projects.
 
 ### Changed
 
