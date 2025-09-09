@@ -98,5 +98,25 @@ namespace Dfe.Complete.Tests.Constants
         {
             Assert.Equal("State if this project will be handed over to the Regional casework services team. Choose yes or no", ValidationConstants.AssignedToRegionalCaseworkerTeam);
         }
+        [Fact]
+        public void ReceptionToSixYears_ShouldReturnExpectedMessage()
+        {
+            Assert.Equal("Enter the proposed capacity for pupils in reception to year 6", ValidationConstants.ReceptionToSixYears);
+        }
+        [Fact]
+        public void SevenToElevenYears_ShouldReturnExpectedMessage()
+        {
+            Assert.Equal("Enter the proposed capacity for pupils in years 7 to 11", ValidationConstants.SevenToElevenYears);
+        }
+        [Fact]
+        public void TwelveOrAboveYears_ShouldReturnExpectedMessage()
+        {
+            Assert.Equal("Enter the proposed capacity for students in year 12 or above", ValidationConstants.TwelveOrAboveYears);
+        }
+        [Fact]
+        public void ProposedCapacityMustBeNumber_ShouldReturnExpectedMessage()
+        {
+            Assert.Equal("Proposed capacity must be a number, like 345", ValidationConstants.ProposedCapacityMustBeNumber);
+        } 
     }
 }
