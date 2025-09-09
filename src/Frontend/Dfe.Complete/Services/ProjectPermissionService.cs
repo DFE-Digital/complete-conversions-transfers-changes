@@ -9,9 +9,10 @@ namespace Dfe.Complete.Services
     {
         bool UserCanEdit(ProjectDto project, ProjectTeam currentUserTeam, ClaimsPrincipal user);
     }
+
     public class ProjectPermissionService : IProjectPermissionService
     {
-        public bool UserCanEdit(ProjectDto project, ProjectTeam currentUserTeam,  ClaimsPrincipal user)
+        public bool UserCanEdit(ProjectDto project, ProjectTeam currentUserTeam, ClaimsPrincipal user)
         {
             return currentUserTeam == ProjectTeam.ServiceSupport || (project.State != ProjectState.Completed && project.AssignedToId?.Value == user.GetUserId().Value);
         }
