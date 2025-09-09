@@ -32,7 +32,7 @@ namespace Dfe.Complete.Tests.Models.ExternalContact
             {
             }
 
-            public Task<string> PublicGetOrganisationName(ExternalContactType contactType)
+            public Task<string?> PublicGetOrganisationName(ExternalContactType contactType)
             {
                 return base.GetOrganisationName(contactType);
             }

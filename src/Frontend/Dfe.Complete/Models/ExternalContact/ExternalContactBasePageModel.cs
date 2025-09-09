@@ -19,7 +19,7 @@ public abstract class ExternalContactBasePageModel(ISender sender, ILogger logge
 
     public TrustDto? OutgoingTrust { get; set; }
 
-    public EstablishmentDto Establishment { get; set; }
+    public EstablishmentDto? Establishment { get; set; }
 
     public async Task GetCurrentProject()
     {

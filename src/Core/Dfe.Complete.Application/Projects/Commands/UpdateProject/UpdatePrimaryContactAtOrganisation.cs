@@ -81,7 +81,7 @@ public class UpdatePrimaryContactAtOrganisation(ICompleteRepository<Project> pro
         await projectRepository.UpdateAsync(project, cancellationToken);
     }
 
-    void ClearIfMatching(ref ContactId? field, ContactId contactId)
+    static void ClearIfMatching(ref ContactId? field, ContactId contactId)
     {
         if (field?.Value == contactId.Value)
         {

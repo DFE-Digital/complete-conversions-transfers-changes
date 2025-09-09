@@ -67,7 +67,7 @@ namespace Dfe.Complete.Tests.Pages.Projects.ExternalContacts.New
             Assert.Multiple(
                 () => Assert.IsType<PageResult>(result),
                 () => Assert.NotNull(testClass.Project),
-                () => Assert.Equal(projectDto.Id, testClass.Project.Id)
+                () => Assert.Equal(projectDto.Id, testClass.Project?.Id)
             );
         }
 

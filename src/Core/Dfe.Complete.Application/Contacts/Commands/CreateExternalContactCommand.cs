@@ -56,8 +56,8 @@ public class CreateExternalContactCommandHandler(
         }
         catch (Exception ex)
         {
-            var message = string.Format(ErrorMessagesConstants.CouldNotCreateExternalContact, request.ProjectId?.Value);
-            logger.LogError(ex, message);            
+            var message = string.Format(ErrorMessagesConstants.CouldNotCreateExternalContact, request.ProjectId);
+            logger.LogError(ex, ErrorMessagesConstants.CouldNotCreateExternalContact, request.ProjectId);            
             return Result<ContactId>.Failure(message);
         }
     }

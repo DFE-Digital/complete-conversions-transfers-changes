@@ -32,7 +32,7 @@ public class ExternalContactAddEditPageModel(ITrustCache trustCacheService, ISen
                 organisationName = this.Project?.EstablishmentName?.ToTitleCase();
                 break;
             case ExternalContactType.IncomingTrust:
-                if (!this.Project.FormAMat && Project.IncomingTrustUkprn != null)
+                if (Project != null && !Project.FormAMat && Project.IncomingTrustUkprn != null)
                 {
                     var incomingTrust = await trustCacheService.GetTrustAsync(this.Project.IncomingTrustUkprn);
                     organisationName = incomingTrust.Name?.ToTitleCase();
@@ -51,23 +51,24 @@ public class ExternalContactAddEditPageModel(ITrustCache trustCacheService, ISen
             case ExternalContactType.Diocese:
                 organisationName = this.ExternalContactInput.OrganisationDiocese;
                 break;
-            case ExternalContactType.LocalAuthority:
-
-                var establishmentQuery = new GetEstablishmentByUrnRequest(this.Project.Urn.Value.ToString());
-                var establishmentResult = await sender.Send(establishmentQuery);
-
-                if (establishmentResult.IsSuccess && establishmentResult.Value != null)
+            case ExternalContactType.LocalAuthority:            
+                if (Project?.Urn != null)
                 {
-                    var laQuery = new GetLocalAuthorityByCodeQuery(establishmentResult.Value?.LocalAuthorityCode);
+                    var establishmentQuery = new GetEstablishmentByUrnRequest(Project.Urn.Value.ToString());
+                    var establishmentResult = await sender.Send(establishmentQuery);
 
-                    var la = await sender.Send(laQuery);
-                    if (la.IsSuccess && la.Value != null)
+                    if (establishmentResult.IsSuccess && establishmentResult.Value != null && !string.IsNullOrEmpty(establishmentResult.Value.LocalAuthorityCode))
                     {
-                        organisationName = la.Value?.Name;
-                    }
-                }
+                        var laQuery = new GetLocalAuthorityByCodeQuery(establishmentResult.Value.LocalAuthorityCode);
 
-                break;
+                        var la = await sender.Send(laQuery);
+                        if (la.IsSuccess && la.Value != null)
+                        {
+                            organisationName = la.Value?.Name;
+                        }
+                    }                   
+                }
+                break;                
             default:
                 organisationName = this.ExternalContactInput.OrganisationOther;
                 break;
