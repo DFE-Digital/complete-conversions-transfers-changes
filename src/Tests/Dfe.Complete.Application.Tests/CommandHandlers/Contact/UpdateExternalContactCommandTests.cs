@@ -13,7 +13,6 @@ using Moq;
 using NSubstitute;
 using NSubstitute.ExceptionExtensions;
 using System.Linq.Expressions;
-using System.Reflection.Metadata;
 
 namespace Dfe.Complete.Application.Tests.CommandHandlers.Contact;
 

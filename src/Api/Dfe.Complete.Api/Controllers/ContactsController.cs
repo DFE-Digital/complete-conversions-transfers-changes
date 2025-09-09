@@ -47,20 +47,4 @@ public class ContactsController(ISender sender) : ControllerBase
         var contacts = await sender.Send(request, cancellationToken);
         return Ok(contacts.Value);
     }
-    
-    /// <summary>
-    /// Returns a list of Contacts for a specific Project
-    /// </summary>
-    /// <param name="request">The request.</param>
-    /// <param name="cancellationToken">The cancellation token.</param>
-    [Authorize(Policy = "CanWrite")]
-    [HttpPost]
-    [Route("Create")]
-    [SwaggerResponse(200, "ContactId", typeof(ContactId))]
-    [SwaggerResponse(400, "Invalid request data.")]
-    public async Task<IActionResult> CreateExternalContactAsync([FromQuery] CreateExternalContactCommand request, CancellationToken cancellationToken)
-    {
-        var contactId = await sender.Send(request, cancellationToken);
-        return Ok(contactId.Value);
-    }
 }

@@ -57,21 +57,6 @@ namespace Dfe.Complete.Client.Contracts
         /// <exception cref="CompleteApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<Contact>> ListAllContactsForLocalAuthorityAsync(System.Guid? localAuthority_Value, System.Threading.CancellationToken cancellationToken);
 
-        /// <summary>
-        /// Returns a list of Contacts for a specific Project
-        /// </summary>
-        /// <returns>ContactId</returns>
-        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<ContactId> CreateExternalContactAsync(string? fullName, string? role, string? email, string? phoneNumber, ContactCategory? category, bool? isPrimaryContact, System.Guid? projectId_Value, int? establishmentUrn, string? organisationName, System.Guid? localAuthorityId_Value, ContactType? type);
-
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <summary>
-        /// Returns a list of Contacts for a specific Project
-        /// </summary>
-        /// <returns>ContactId</returns>
-        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<ContactId> CreateExternalContactAsync(string? fullName, string? role, string? email, string? phoneNumber, ContactCategory? category, bool? isPrimaryContact, System.Guid? projectId_Value, int? establishmentUrn, string? organisationName, System.Guid? localAuthorityId_Value, ContactType? type, System.Threading.CancellationToken cancellationToken);
-
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "14.2.0.0 (NJsonSchema v11.1.0.0 (Newtonsoft.Json v13.0.0.0))")]

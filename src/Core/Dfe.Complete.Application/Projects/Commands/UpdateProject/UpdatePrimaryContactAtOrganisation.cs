@@ -20,8 +20,7 @@ public class UpdatePrimaryContactAtOrganisation(ICompleteRepository<Project> pro
             return;
         }
         
-        var project = await projectRepository.Query()
-            .FirstOrDefaultAsync(x => x.Id == request.ProjectId, cancellationToken);
+        var project = await projectRepository.FindAsync(request.ProjectId, cancellationToken);
 
         if (project == null)
         {
