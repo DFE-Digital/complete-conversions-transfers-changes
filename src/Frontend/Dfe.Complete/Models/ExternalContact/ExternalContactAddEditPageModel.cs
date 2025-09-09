@@ -49,43 +49,44 @@ public class ExternalContactAddEditPageModel(ITrustCache trustCacheService, ISen
         };
     }
 
-    private async Task<string> GetIncomingTrustNameAsync()
+    private async Task<string?> GetIncomingTrustNameAsync()
     {
-        if (Project != null && !Project.FormAMat && Project.IncomingTrustUkprn != null)
-        {
-            var trust = await trustCacheService.GetTrustAsync(Project.IncomingTrustUkprn);
-            return trust?.Name?.ToTitleCase();
-        }
+        if (Project is null || Project.FormAMat || Project.IncomingTrustUkprn is null)
+            return null;
 
-        return string.Empty;
+        var trust = await trustCacheService.GetTrustAsync(Project.IncomingTrustUkprn);
+        return trust?.Name?.ToTitleCase();        
     }
 
-    private async Task<string> GetOutgoingTrustNameAsync()
+    private async Task<string?> GetOutgoingTrustNameAsync()
     {
-        if (this.Project?.Type == ProjectType.Transfer && this.Project.OutgoingTrustUkprn != null)
-        {
-            var trust = await trustCacheService.GetTrustAsync(Project.OutgoingTrustUkprn);
-            return trust?.Name?.ToTitleCase();
-        }
+        if (Project?.Type != ProjectType.Transfer || Project.OutgoingTrustUkprn is null)
+            return null;
 
-        return string.Empty;
+        var trust = await trustCacheService.GetTrustAsync(Project.OutgoingTrustUkprn);
+        return trust?.Name?.ToTitleCase();        
     }
 
-    private async Task<string> GetLocalAuthorityNameAsync()
+    private async Task<string?> GetLocalAuthorityNameAsync()
     {
-        if (Project?.Urn == null)
-            return string.Empty;
+        if (Project?.Urn is null)
+            return null;
 
-        var establishmentQuery = new GetEstablishmentByUrnRequest(Project.Urn.Value.ToString());
-        var establishmentResult = await sender.Send(establishmentQuery);
+        var establishmentResult = await sender.Send(
+            new GetEstablishmentByUrnRequest(Project.Urn.Value.ToString())
+        );
 
-        if (!establishmentResult.IsSuccess || establishmentResult.Value == null || string.IsNullOrEmpty(establishmentResult.Value.LocalAuthorityCode))
-            return string.Empty;
+        if (!establishmentResult.IsSuccess ||
+            establishmentResult.Value?.LocalAuthorityCode is null or "")
+        {
+            return null;
+        }
 
-        var laQuery = new GetLocalAuthorityByCodeQuery(establishmentResult.Value.LocalAuthorityCode);
-        var laResult = await sender.Send(laQuery);
+        var laResult = await sender.Send(
+            new GetLocalAuthorityByCodeQuery(establishmentResult.Value.LocalAuthorityCode)
+        );
 
-        return laResult.IsSuccess ? laResult.Value?.Name : string.Empty;
+        return laResult.IsSuccess ? laResult.Value?.Name ?? null : null;
     }   
 
     private async Task<IActionResult> GetPage()
