@@ -82,26 +82,26 @@ namespace Dfe.Complete.Tests.Pages.Projects.ExternalContacts.New
             // Assert
             Assert.Multiple(
                 () => Assert.NotNull(testClass.Project),
-                () => Assert.Equal(projectDto.Id, testClass.Project.Id),
+                () => Assert.Equal(projectDto.Id, testClass.Project?.Id),
                 () => Assert.Equal(contactDto.Name, testClass.ExternalContactInput.FullName),
                 () => Assert.Equal(contactDto.Email, testClass.ExternalContactInput.Email),
-                () => Assert.Contains(ExternalContactType.SchoolOrAcademy, testClass.ExternalContactInput.ContactTypeRadioOptions),
-                () => Assert.Contains(ExternalContactType.IncomingTrust, testClass.ExternalContactInput.ContactTypeRadioOptions),                
-                () => Assert.Contains(ExternalContactType.LocalAuthority, testClass.ExternalContactInput.ContactTypeRadioOptions),
-                () => Assert.Contains(ExternalContactType.Solicitor, testClass.ExternalContactInput.ContactTypeRadioOptions),
-                () => Assert.Contains(ExternalContactType.Diocese, testClass.ExternalContactInput.ContactTypeRadioOptions),
-                () => Assert.Contains(ExternalContactType.Other, testClass.ExternalContactInput.ContactTypeRadioOptions)
+                () => Assert.Contains(ExternalContactType.SchoolOrAcademy, testClass.ExternalContactInput.ContactTypeRadioOptions!),
+                () => Assert.Contains(ExternalContactType.IncomingTrust, testClass.ExternalContactInput.ContactTypeRadioOptions!),                
+                () => Assert.Contains(ExternalContactType.LocalAuthority, testClass.ExternalContactInput.ContactTypeRadioOptions!),
+                () => Assert.Contains(ExternalContactType.Solicitor, testClass.ExternalContactInput.ContactTypeRadioOptions!),
+                () => Assert.Contains(ExternalContactType.Diocese, testClass.ExternalContactInput.ContactTypeRadioOptions!),
+                () => Assert.Contains(ExternalContactType.Other, testClass.ExternalContactInput.ContactTypeRadioOptions!)
             );
 
             if(projectType == ProjectType.Transfer)
             {
-                Assert.Contains(ExternalContactType.OutgoingTrust, testClass.ExternalContactInput.ContactTypeRadioOptions);
-                Assert.Equal(7, testClass.ExternalContactInput.ContactTypeRadioOptions.Count());
+                Assert.Contains(ExternalContactType.OutgoingTrust, testClass.ExternalContactInput.ContactTypeRadioOptions!);
+                Assert.Equal(7, testClass.ExternalContactInput.ContactTypeRadioOptions?.Length);
             }
             else
             {
-                Assert.DoesNotContain(ExternalContactType.OutgoingTrust, testClass.ExternalContactInput.ContactTypeRadioOptions);
-                Assert.Equal(6, testClass.ExternalContactInput.ContactTypeRadioOptions.Count());
+                Assert.DoesNotContain(ExternalContactType.OutgoingTrust, testClass.ExternalContactInput.ContactTypeRadioOptions!);
+                Assert.Equal(6, testClass.ExternalContactInput.ContactTypeRadioOptions?.Length);
             }
         }
 

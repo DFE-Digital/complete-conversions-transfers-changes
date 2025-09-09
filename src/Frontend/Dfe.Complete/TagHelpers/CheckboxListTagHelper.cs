@@ -1,5 +1,4 @@
-﻿using Dfe.Complete.Services;
-using Dfe.Complete.Services.Interfaces;
+﻿using Dfe.Complete.Services.Interfaces;
 using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Razor.TagHelpers;

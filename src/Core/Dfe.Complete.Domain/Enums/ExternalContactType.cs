@@ -1,6 +1,5 @@
 ﻿using Dfe.Complete.Utils.Attributes;
 using System.ComponentModel;
-using System.Runtime.Serialization;
 
 namespace Dfe.Complete.Domain.Enums;
 

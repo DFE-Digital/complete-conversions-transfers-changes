@@ -69,9 +69,9 @@ public class DeleteExternalContactCommandHandler(
         }
         catch (Exception ex)
         {
-            await unitOfWork.RollBackAsync();
+            await unitOfWork.RollBackAsync();            
+            logger.LogError(ex, ErrorMessagesConstants.CouldNotDeleteExternalContact, request.ContactId.Value);
             var message = string.Format(ErrorMessagesConstants.CouldNotDeleteExternalContact, request.ContactId.Value);
-            logger.LogError(ex, message);
             return Result<bool>.Failure(message);
         }
     }

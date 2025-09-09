@@ -98,7 +98,7 @@ namespace Dfe.Complete.Tests.Models.ExternalContact
             var establishmentQuery = new GetEstablishmentByUrnRequest(urn);
 
             mockSender.Setup(s => s.Send(establishmentQuery, It.IsAny<CancellationToken>()))
-               .ReturnsAsync(Result<EstablishmentDto?>.Success(mockEstablishmentDto));
+               .ReturnsAsync(Result<EstablishmentDto>.Success(mockEstablishmentDto));
 
             var laQuery = new GetLocalAuthorityByCodeQuery(localAuthorityCode);
 

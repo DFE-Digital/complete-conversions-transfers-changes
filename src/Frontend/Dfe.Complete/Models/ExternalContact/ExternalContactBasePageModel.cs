@@ -11,7 +11,7 @@ namespace Dfe.Complete.Models.ExternalContact;
 public abstract class ExternalContactBasePageModel(ISender sender, ILogger logger) : PageModel
 {
     [BindProperty(SupportsGet = true, Name = "projectId")]
-    public string ProjectId { get; set; }
+    public string? ProjectId { get; set; }
 
     public ProjectDto? Project { get; set; }
 
@@ -28,7 +28,7 @@ public abstract class ExternalContactBasePageModel(ISender sender, ILogger logge
         if (!success)
         {
             var error = $"{ProjectId} is not a valid Guid.";
-            logger.LogError(error);
+            logger.LogError(error, ProjectId);
             return;
         }
 
@@ -38,7 +38,7 @@ public abstract class ExternalContactBasePageModel(ISender sender, ILogger logge
         if (!result.IsSuccess || result.Value == null)
         {
             var error = $"Project {ProjectId} does not exist.";
-            logger.LogError(error);
+            logger.LogError(error, ProjectId);
             return;
         }
 

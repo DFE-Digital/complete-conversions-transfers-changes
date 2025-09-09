@@ -1,8 +1,6 @@
 ﻿using Asp.Versioning;
-using Dfe.Complete.Application.Contacts.Commands;
 using Dfe.Complete.Application.Contacts.Queries;
 using Dfe.Complete.Domain.Entities;
-using Dfe.Complete.Domain.ValueObjects;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

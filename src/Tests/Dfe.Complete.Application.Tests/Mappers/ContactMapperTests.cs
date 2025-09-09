@@ -26,13 +26,12 @@ namespace Dfe.Complete.Application.Tests.Mappers
 
         [Theory]
         [CustomAutoData(typeof(DateOnlyCustomization), typeof(IgnoreVirtualMembersCustomisation))]        
-        public async Task Map_ContactToContactDto_ShouldMapAllPropertiesCorrectly(Contact contact)
+        public void Map_ContactToContactDto_ShouldMapAllPropertiesCorrectly(Contact contact)
         {
             // Act
             var contactDto = _mapper.Map<ContactDto>(contact);
 
             // Assert
-
             Assert.Multiple(
                 () => Assert.NotNull(contactDto),
                 () => Assert.Equal(contact.Id, contactDto.Id),

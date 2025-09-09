@@ -63,8 +63,8 @@ namespace Dfe.Complete.Tests.Pages.Projects.ExternalContacts.New
 
             Assert.Multiple(
                 () => Assert.NotNull(testClass.Project),
-                () => Assert.Equal(projectDto.Id, testClass.Project.Id),
-                () => Assert.Equal(4, testClass.ContactTypeRadioOptions.Count()),
+                () => Assert.Equal(projectDto.Id, testClass.Project?.Id),
+                () => Assert.Equal(4, testClass.ContactTypeRadioOptions.Length),
                 () => Assert.Contains(ExternalContactType.HeadTeacher, testClass.ContactTypeRadioOptions),
                 () => Assert.Contains(ExternalContactType.IncomingTrust, testClass.ContactTypeRadioOptions),
                 () => Assert.Contains(ExternalContactType.SomeOneElse, testClass.ContactTypeRadioOptions),

@@ -3,7 +3,6 @@ using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Domain.Interfaces.Repositories;
 using Dfe.Complete.Domain.ValueObjects;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 
 namespace Dfe.Complete.Application.Projects.Commands.UpdateProject;
 
@@ -13,8 +12,7 @@ public class UpdatePrimaryContactAtOrganisation(ICompleteRepository<Project> pro
     : IRequestHandler<UpdatePrimaryContactAtOrganisationCommand>
 {
     public async Task Handle(UpdatePrimaryContactAtOrganisationCommand request, CancellationToken cancellationToken)
-    {
-        
+    {        
         if (request.Contact.ProjectId != request.ProjectId)
         {
             return;
@@ -27,143 +25,79 @@ public class UpdatePrimaryContactAtOrganisation(ICompleteRepository<Project> pro
             return;
         }
 
+        // Use local variables for ref assignment, then update the properties after
+        ContactId? establishmentMainContactId = project.EstablishmentMainContactId;
+        ContactId? incomingTrustMainContactId = project.IncomingTrustMainContactId;
+        ContactId? outgoingTrustMainContactId = project.OutgoingTrustMainContactId;
+        ContactId? localAuthorityMainContactId = project.LocalAuthorityMainContactId;
+
         switch (request.Contact.Category)
         {
             case ContactCategory.SchoolOrAcademy:
+                ClearIfMatching(ref incomingTrustMainContactId, request.Contact.Id);
+                ClearIfMatching(ref outgoingTrustMainContactId, request.Contact.Id);
+                ClearIfMatching(ref localAuthorityMainContactId, request.Contact.Id);
 
-                if (project.IncomingTrustMainContactId == request.Contact.Id)
-                {
-                    project.IncomingTrustMainContactId = null;
-                }
-                if (project.OutgoingTrustMainContactId == request.Contact.Id)
-                {
-                    project.OutgoingTrustMainContactId = null;
-                }
-                if (project.LocalAuthorityMainContactId == request.Contact.Id)
-                {
-                    project.LocalAuthorityMainContactId = null;
-                }
-
-                if (project.EstablishmentMainContactId == request.Contact.Id && !request.PrimaryContact)
-                {
-                    project.EstablishmentMainContactId = null;
-                }
-                else
-                {
-                    if (request.PrimaryContact)
-                    {
-                        project.EstablishmentMainContactId = request.Contact.Id;
-                    }
-                    else
-                    {
-                        return;
-                    }
-                }
-                
+                UpdateMainContactId(ref establishmentMainContactId, request.Contact, request.PrimaryContact);
                 break;
+
             case ContactCategory.IncomingTrust:
+                ClearIfMatching(ref establishmentMainContactId, request.Contact.Id);
+                ClearIfMatching(ref outgoingTrustMainContactId, request.Contact.Id);
+                ClearIfMatching(ref localAuthorityMainContactId, request.Contact.Id);
 
-                if (project.EstablishmentMainContactId == request.Contact.Id)
-                {
-                    project.EstablishmentMainContactId = null;
-                }
-                if (project.OutgoingTrustMainContactId == request.Contact.Id)
-                {
-                    project.OutgoingTrustMainContactId = null;
-                }
-                if (project.LocalAuthorityMainContactId == request.Contact.Id)
-                {
-                    project.LocalAuthorityMainContactId = null;
-                }
-
-                if (project.IncomingTrustMainContactId == request.Contact.Id && !request.PrimaryContact)
-                {
-                    project.IncomingTrustMainContactId = null;
-                }
-                else
-                {
-                    if (request.PrimaryContact)
-                    {
-                        project.IncomingTrustMainContactId = request.Contact.Id;
-                    }
-                    else
-                    {
-                        return;
-                    }
-                }
-                
+                UpdateMainContactId(ref incomingTrustMainContactId, request.Contact, request.PrimaryContact);
                 break;
+
             case ContactCategory.OutgoingTrust:
+                ClearIfMatching(ref establishmentMainContactId, request.Contact.Id);
+                ClearIfMatching(ref incomingTrustMainContactId, request.Contact.Id);
+                ClearIfMatching(ref localAuthorityMainContactId, request.Contact.Id);
 
-                if (project.EstablishmentMainContactId == request.Contact.Id)
-                {
-                    project.EstablishmentMainContactId = null;
-                }
-                if (project.IncomingTrustMainContactId == request.Contact.Id)
-                {
-                    project.IncomingTrustMainContactId = null;
-                }
-                if (project.LocalAuthorityMainContactId == request.Contact.Id)
-                {
-                    project.LocalAuthorityMainContactId = null;
-                }
-
-                if (project.OutgoingTrustMainContactId == request.Contact.Id && !request.PrimaryContact)
-                {
-                    project.OutgoingTrustMainContactId = null;
-                }
-                else
-                {
-                    if (request.PrimaryContact)
-                    {
-                        project.OutgoingTrustMainContactId = request.Contact.Id;
-                    }
-                    else
-                    {
-                        return;
-                    }
-                }                
-               
+                UpdateMainContactId(ref outgoingTrustMainContactId, request.Contact, request.PrimaryContact);
                 break;
+
             case ContactCategory.LocalAuthority:
+                ClearIfMatching(ref establishmentMainContactId, request.Contact.Id);
+                ClearIfMatching(ref incomingTrustMainContactId, request.Contact.Id);
+                ClearIfMatching(ref outgoingTrustMainContactId, request.Contact.Id);
 
-                if (project.EstablishmentMainContactId == request.Contact.Id)
-                {
-                    project.EstablishmentMainContactId = null;
-                }
-                if (project.IncomingTrustMainContactId == request.Contact.Id)
-                {
-                    project.IncomingTrustMainContactId = null;
-                }
-                if (project.OutgoingTrustMainContactId == request.Contact.Id)
-                {
-                    project.OutgoingTrustMainContactId = null;
-                }
-
-                if (project.LocalAuthorityMainContactId == request.Contact.Id && !request.PrimaryContact)
-                {
-                    project.LocalAuthorityMainContactId = null;
-                }
-                else
-                {
-                    if (request.PrimaryContact)
-                    {
-                        project.LocalAuthorityMainContactId = request.Contact.Id;
-                    }
-                    else
-                    {
-                        return;
-                    }
-                }
-                
+                UpdateMainContactId(ref localAuthorityMainContactId, request.Contact, request.PrimaryContact);
                 break;
+
             case ContactCategory.Diocese:
             case ContactCategory.Other:
             case ContactCategory.Solicitor:
             default:
-                return;    
+                return;
         }
-        
+
+        // Assign the updated local variables back to the properties
+        project.EstablishmentMainContactId = establishmentMainContactId;
+        project.IncomingTrustMainContactId = incomingTrustMainContactId;
+        project.OutgoingTrustMainContactId = outgoingTrustMainContactId;
+        project.LocalAuthorityMainContactId = localAuthorityMainContactId;
+
         await projectRepository.UpdateAsync(project, cancellationToken);
+    }
+
+    void ClearIfMatching(ref ContactId? field, ContactId contactId)
+    {
+        if (field?.Value == contactId.Value)
+        {
+            field = null;
+        }
+    }
+
+    void UpdateMainContactId(ref ContactId? mainContactId, Contact requestContact, bool isPrimary)
+    {
+        if (mainContactId?.Value == requestContact.Id.Value && !isPrimary)
+        {
+            mainContactId = null;
+        }
+        else if (isPrimary)
+        {
+            mainContactId = requestContact.Id;
+        }
     }
 }

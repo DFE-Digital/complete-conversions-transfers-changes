@@ -8,7 +8,6 @@ using Dfe.Complete.Domain.Interfaces.Repositories;
 using Dfe.Complete.Domain.ValueObjects;
 using MediatR;
 using Microsoft.Extensions.Logging;
-using System.Reflection;
 
 namespace Dfe.Complete.Application.Contacts.Commands;
 
@@ -42,7 +41,7 @@ public class UpdateExternalContactCommandHandler(
 
             var result = mapper.Map<ContactDto?>(savedEntity);
 
-            await sender.Send(new UpdatePrimaryContactAtOrganisationCommand(savedEntity.ProjectId, request.contactDto.PrimaryContact, savedEntity));
+            await sender.Send(new UpdatePrimaryContactAtOrganisationCommand(savedEntity.ProjectId!, request.contactDto.PrimaryContact, savedEntity), cancellationToken);
 
             return Result<ContactDto?>.Success(result);
         }
