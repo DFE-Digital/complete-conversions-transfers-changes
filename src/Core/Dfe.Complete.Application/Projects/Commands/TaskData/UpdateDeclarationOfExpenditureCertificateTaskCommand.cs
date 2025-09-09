@@ -11,7 +11,7 @@ namespace Dfe.Complete.Application.Projects.Commands.TaskData
 {
     public record UpdateDeclarationOfExpenditureCertificateTaskCommand(TaskDataId TaskDataId,
          ProjectType? ProjectType,
-         DateTime? DateReceived,
+         DateOnly? DateReceived,
          bool? NotApplicable,
          bool? CheckCertificate,
          bool? Saved) : IRequest<Result<bool>>;
@@ -43,7 +43,7 @@ namespace Dfe.Complete.Application.Projects.Commands.TaskData
 
             tasksData.ReceiveGrantPaymentCertificateSaveCertificate = request.NotApplicable == true ? null : request.Saved;
             tasksData.ReceiveGrantPaymentCertificateCheckCertificate = request.NotApplicable == true ? null : request.CheckCertificate;
-            tasksData.ReceiveGrantPaymentCertificateDateReceived = request.NotApplicable == true ? null : request.DateReceived.ToDateOnly();
+            tasksData.ReceiveGrantPaymentCertificateDateReceived = request.NotApplicable == true ? null : request.DateReceived;
             tasksData.ReceiveGrantPaymentCertificateNotApplicable = request.NotApplicable;
 
             await taskDataWriteRepository.UpdateConversionAsync(tasksData, cancellationToken);
@@ -55,7 +55,7 @@ namespace Dfe.Complete.Application.Projects.Commands.TaskData
                 ?? throw new NotFoundException($"Transfer task data {taskDataId} not found.");
 
             tasksData.DeclarationOfExpenditureCertificateCorrect = request.NotApplicable == true ? null : request.CheckCertificate;
-            tasksData.DeclarationOfExpenditureCertificateDateReceived = request.NotApplicable == true ? null : request.DateReceived.ToDateOnly();
+            tasksData.DeclarationOfExpenditureCertificateDateReceived = request.NotApplicable == true ? null : request.DateReceived;
             tasksData.DeclarationOfExpenditureCertificateSaved = request.NotApplicable == true ? null : request.Saved;
             tasksData.DeclarationOfExpenditureCertificateNotApplicable = request.NotApplicable;
 
