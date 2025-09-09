@@ -54,7 +54,7 @@ namespace Dfe.Complete.Tests.Models.ExternalContact
         [InlineData(ExternalContactType.HeadTeacher, "test organisation", "Test Organisation")]
         [InlineData(ExternalContactType.ChairOfGovernors, "test organisation", "Test Organisation")]
         [InlineData(ExternalContactType.SchoolOrAcademy, "test organisation", "Test Organisation")]
-        [InlineData(ExternalContactType.LocalAuthority, "test organisation", "test Organisation")]
+        [InlineData(ExternalContactType.LocalAuthority, "test organisation", "test organisation")]
         [InlineData(ExternalContactType.Solicitor, "test organisation", "test organisation")]
         [InlineData(ExternalContactType.Diocese, "test organisation", "test organisation")]
         [InlineData(ExternalContactType.Other, "test organisation", "test organisation")]
