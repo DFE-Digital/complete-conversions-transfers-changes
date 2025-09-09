@@ -102,7 +102,12 @@ public static class EnumExtensions
             var attribute = Attribute.GetCustomAttribute(field, typeof(EnumMemberAttribute)) as EnumMemberAttribute;
             if (attribute != null && attribute.Value == value)
             {
-                return (TEnum)field.GetValue(null);
+                object? fieldValue = field.GetValue(null);
+                if (fieldValue is TEnum enumValue)
+                {
+                    return enumValue;
+                }
+                throw new ArgumentException($"Field value for '{field.Name}' is null or not of type {typeof(TEnum).Name}.");
             }
         }
 

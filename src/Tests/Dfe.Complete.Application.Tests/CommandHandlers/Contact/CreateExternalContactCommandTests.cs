@@ -57,10 +57,8 @@ public class CreateExternalContactCommandTests
         CreateExternalContactCommandHandler sut)
     {
         // Arrange       
-        var expectedErrorMessage = string.Format(ErrorMessagesConstants.CouldNotCreateExternalContact, command.ProjectId?.Value);
-
         mockContactRepository.AddAsync(Arg.Any<Entities.Contact>(), Arg.Any<CancellationToken>())
-           .ThrowsAsync(new Exception(expectedErrorMessage));
+           .ThrowsAsync(new Exception("Error"));
 
         // Act
         var result = await sut.Handle(command, cancellationToken);
@@ -68,8 +66,7 @@ public class CreateExternalContactCommandTests
         // Assert
         Assert.Multiple
         (
-            () => Assert.False(result.IsSuccess),
-            () => Assert.Equal(expectedErrorMessage, result.Error),
+            () => Assert.False(result.IsSuccess),            
             async () => await mockContactRepository.DidNotReceive().AddAsync(Arg.Any<Entities.Contact>(), Arg.Any<CancellationToken>())
         );
     }

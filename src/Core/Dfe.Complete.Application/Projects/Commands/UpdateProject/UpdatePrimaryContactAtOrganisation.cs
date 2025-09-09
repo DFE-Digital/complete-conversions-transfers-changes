@@ -88,8 +88,7 @@ public class UpdatePrimaryContactAtOrganisation(ICompleteRepository<Project> pro
             field = null;
         }
     }
-
-    void UpdateMainContactId(ref ContactId? mainContactId, Contact requestContact, bool isPrimary)
+    static void UpdateMainContactId(ref ContactId? mainContactId, Contact requestContact, bool isPrimary)
     {
         if (mainContactId?.Value == requestContact.Id.Value && !isPrimary)
         {

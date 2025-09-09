@@ -6,6 +6,7 @@ using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Domain.Interfaces.Repositories;
 using Dfe.Complete.Domain.ValueObjects;
 using MediatR;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.Extensions.Logging;
 
 namespace Dfe.Complete.Application.Contacts.Commands;
@@ -57,7 +58,7 @@ public class CreateExternalContactCommandHandler(
         catch (Exception ex)
         {
             var message = string.Format(ErrorMessagesConstants.CouldNotCreateExternalContact, request.ProjectId);
-            logger.LogError(ex, ErrorMessagesConstants.CouldNotCreateExternalContact, request.ProjectId);            
+            logger.LogError(ex, "Could not create external contact with project {ProjectId}.", request.ProjectId);            
             return Result<ContactId>.Failure(message);
         }
     }

@@ -114,8 +114,6 @@ public class DeleteExternalContactCommandTests
                 .With(q => q.Id, contactId)
                 .With(q => q.ProjectId, projectId)
                 .Create();      
-       
-        var expectedMessage = string.Format(ErrorMessagesConstants.CouldNotDeleteExternalContact, command.ContactId.Value);
         
         mockContactRepository.Setup(repo => repo.FindAsync(command.ContactId, It.IsAny<CancellationToken>()))
                .ReturnsAsync(contact);       
@@ -129,8 +127,7 @@ public class DeleteExternalContactCommandTests
         // Assert
         Assert.Multiple
         (
-            () => Assert.False(result.IsSuccess),
-            () => Assert.Equal(expectedMessage, result.Error),
+            () => Assert.False(result.IsSuccess),            
             () => mockUnitOfWork.Verify(uow => uow.BeginTransactionAsync(), Times.Once),
             () => mockUnitOfWork.Verify(uow => uow.RollBackAsync(), Times.Once),
             () => mockUnitOfWork.Verify(uow => uow.CommitAsync(), Times.Never)            

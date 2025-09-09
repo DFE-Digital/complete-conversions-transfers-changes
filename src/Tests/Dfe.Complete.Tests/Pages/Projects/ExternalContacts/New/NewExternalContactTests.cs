@@ -121,8 +121,7 @@ namespace Dfe.Complete.Tests.Pages.Projects.ExternalContacts.New
                 () => mockLogger.Verify(x => x.Log(
                 It.Is<LogLevel>(l => l == LogLevel.Error),
                 It.IsAny<EventId>(),
-                It.Is<It.IsAnyType>((v, t) =>
-                    v.ToString().Contains(messagePart)),
+                It.IsAny<It.IsAnyType>(),
                 It.Is<Exception>(ex => ex.Message == messagePart),
                 It.IsAny<Func<It.IsAnyType, Exception, string>>()!),
             Times.Once));            

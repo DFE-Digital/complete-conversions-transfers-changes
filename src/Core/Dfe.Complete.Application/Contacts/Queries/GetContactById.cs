@@ -29,7 +29,7 @@ namespace Dfe.Complete.Application.Projects.Queries.GetProject
             catch (Exception ex)
             {
                 var message = string.Format(ErrorMessagesConstants.ExceptionGettingExternalContact, request.ContactId?.Value);
-                logger.LogError(ex, ErrorMessagesConstants.ExceptionGettingExternalContact, request.ContactId?.Value);
+                logger.LogError(ex, "Error occurred while getting external contact with Id {Id}.", request.ContactId?.Value);
                 return Result<ContactDto?>.Failure(message);
             }
         }
