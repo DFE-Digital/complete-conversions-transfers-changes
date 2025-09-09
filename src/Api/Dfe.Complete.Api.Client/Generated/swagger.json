@@ -2364,7 +2364,7 @@
         }
       }
     },
-    "/v1/TasksData/external-stakeholder-kickoff": {
+    "/v1/TasksData/TaskData/ExternalStakeholderKickoff": {
       "patch": {
         "tags": [
           "TasksData"
@@ -2386,7 +2386,7 @@
         },
         "responses": {
           "204": {
-            "description": "External stakeholder kickoff Task updated successfully."
+            "description": "External stakeholder kickoff task updated successfully."
           },
           "400": {
             "description": "Invalid request data."
@@ -2435,7 +2435,7 @@
         "tags": [
           "TasksData"
         ],
-        "summary": "Updates the redact and send documents task Data for conversion or trasnfer project.",
+        "summary": "Updates the redact and send documents task Data for conversion or transfer project.",
         "operationId": "TasksData_UpdateRedactAndSendDocumentsTask",
         "requestBody": {
           "x-name": "request",
@@ -2453,6 +2453,39 @@
         "responses": {
           "204": {
             "description": "Conversion or transfer's redact and send documents task updated successfully."
+          },
+          "400": {
+            "description": "Invalid request data."
+          },
+          "404": {
+            "description": "Project/User not found."
+          }
+        }
+      }
+    },
+    "/v1/TasksData/TaskData/ConfirmProposedAcademyCapacity": {
+      "patch": {
+        "tags": [
+          "TasksData"
+        ],
+        "summary": "Updates the confirm proposed capacity of the academy for a specific task data.",
+        "operationId": "TasksData_UpdateConfirmProposedCapacityOfTheAcademyTask",
+        "requestBody": {
+          "x-name": "request",
+          "description": "The update command.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateConfirmProposedCapacityOfTheAcademyTaskCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "204": {
+            "description": "Confirm proposed capacity of the academy task updated successfully."
           },
           "400": {
             "description": "Invalid request data."
@@ -4748,7 +4781,8 @@
           "ArticleOfAssociation",
           "DeedOfNovationAndVariation",
           "DeedOfVariation",
-          "RedactAndSendDocuments"
+          "RedactAndSendDocuments",
+          "ConfirmProposedCapacityOfTheAcademy"
         ],
         "enum": [
           "Handover",
@@ -4759,7 +4793,8 @@
           "ArticleOfAssociation",
           "DeedOfNovationAndVariation",
           "DeedOfVariation",
-          "RedactAndSendDocuments"
+          "RedactAndSendDocuments",
+          "ConfirmProposedCapacityOfTheAcademy"
         ]
       },
       "CreateNoteCommand": {
@@ -6524,47 +6559,6 @@
           }
         }
       },
-      "UpdateSupplementalFundingAgreementTaskCommand": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-          "taskDataId": {
-            "$ref": "#/components/schemas/TaskDataId"
-          },
-          "projectType": {
-            "nullable": true,
-            "oneOf": [
-              {
-                "$ref": "#/components/schemas/ProjectType"
-              }
-            ]
-          },
-          "received": {
-            "type": "boolean",
-            "nullable": true
-          },
-          "cleared": {
-            "type": "boolean",
-            "nullable": true
-          },
-          "sent": {
-            "type": "boolean",
-            "nullable": true
-          },
-          "saved": {
-            "type": "boolean",
-            "nullable": true
-          },
-          "signed": {
-            "type": "boolean",
-            "nullable": true
-          },
-          "signedSecretaryState": {
-            "type": "boolean",
-            "nullable": true
-          }
-        }
-      },
       "UpdateDeedOfNovationAndVariationTaskCommand": {
         "type": "object",
         "additionalProperties": false,
@@ -6685,6 +6679,47 @@
           }
         }
       },
+      "UpdateSupplementalFundingAgreementTaskCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "taskDataId": {
+            "$ref": "#/components/schemas/TaskDataId"
+          },
+          "projectType": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/ProjectType"
+              }
+            ]
+          },
+          "received": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "cleared": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "sent": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "saved": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "signed": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "signedSecretaryState": {
+            "type": "boolean",
+            "nullable": true
+          }
+        }
+      },
       "UpdateRedactAndSendDocumentsTaskCommand": {
         "type": "object",
         "additionalProperties": false,
@@ -6718,6 +6753,31 @@
           },
           "sendToSolicitors": {
             "type": "boolean",
+            "nullable": true
+          }
+        }
+      },
+      "UpdateConfirmProposedCapacityOfTheAcademyTaskCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "taskDataId": {
+            "$ref": "#/components/schemas/TaskDataId"
+          },
+          "notApplicable": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "receptionToSixYears": {
+            "type": "string",
+            "nullable": true
+          },
+          "sevenToElevenYears": {
+            "type": "string",
+            "nullable": true
+          },
+          "twelveOrAboveYears": {
+            "type": "string",
             "nullable": true
           }
         }

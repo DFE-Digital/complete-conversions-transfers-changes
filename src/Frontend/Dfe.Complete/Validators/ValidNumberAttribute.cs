@@ -1,39 +1,42 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using Dfe.Complete.Constants;
 
-namespace Dfe.Complete.Models;
+namespace Dfe.Complete.Validators;
 
 [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field | AttributeTargets.Parameter,
     AllowMultiple = false)]
-public class ValidNumberAttribute : ValidationAttribute
+public class ValidNumberAttribute(int minValue, int maxValue, string dependentProperty = "") : ValidationAttribute
 {
-    private readonly int _minValue;
-    private readonly int _maxValue;
-
-    public ValidNumberAttribute(int minValue, int maxValue)
-    {
-        _minValue = minValue;
-        _maxValue = maxValue;
-    }
-
     protected override ValidationResult IsValid(object value, ValidationContext validationContext)
     {
-        if (value is null)
-            return ValidationResult.Success;
+        bool? dependentValue = false;
+        if (!string.IsNullOrWhiteSpace(dependentProperty))
+        {
+            var property = validationContext.ObjectType.GetProperty(dependentProperty);
+            if (property == null)
+            {
+                return new ValidationResult($"Unknown property: {dependentProperty}");
+            }
+            dependentValue = property.GetValue(validationContext.ObjectInstance, null) as bool?;
+        }
+        if (dependentValue != true)
+        {
+            if (value is null)
+                return ValidationResult.Success!;
 
-        var valueAsString = (string)value;
+            var valueAsString = (string)value;
 
-        if (string.IsNullOrWhiteSpace(valueAsString))
-            return ValidationResult.Success;
+            if (string.IsNullOrWhiteSpace(valueAsString))
+                return ValidationResult.Success!;
 
-        bool success = int.TryParse(valueAsString, out int valueAsInt);
+            bool success = int.TryParse(valueAsString, out int valueAsInt);
 
-        if (!success)
-            return new ValidationResult($"{validationContext.DisplayName} must be a number, like 30");
+            if (!success)
+                return new ValidationResult(ErrorMessage ?? $"{validationContext.DisplayName} must be a number, like 30");
 
-        if (valueAsInt < _minValue || valueAsInt > _maxValue)
-            return new ValidationResult(string.Format(ValidationConstants.NumberValidationMessage, validationContext.DisplayName, _minValue, _maxValue));
-
-        return ValidationResult.Success;
+            if (valueAsInt < minValue || valueAsInt > maxValue)
+                return new ValidationResult(ErrorMessage ?? string.Format(ValidationConstants.NumberValidationMessage, validationContext.DisplayName, minValue, maxValue));
+        }
+        return ValidationResult.Success!;
     }
 }
