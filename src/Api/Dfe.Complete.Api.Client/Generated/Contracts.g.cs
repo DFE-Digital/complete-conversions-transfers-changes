@@ -5011,6 +5011,7 @@ namespace Dfe.Complete.Client.Contracts
         public ProjectType? ProjectType { get; set; } = default!;
 
         [Newtonsoft.Json.JsonProperty("dateReceived", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonConverter(typeof(DateFormatConverter))]
         public System.DateTime? DateReceived { get; set; } = default!;
 
         [Newtonsoft.Json.JsonProperty("notApplicable", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
