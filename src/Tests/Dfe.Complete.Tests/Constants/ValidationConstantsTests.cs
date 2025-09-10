@@ -117,6 +117,11 @@ namespace Dfe.Complete.Tests.Constants
         public void ProposedCapacityMustBeNumber_ShouldReturnExpectedMessage()
         {
             Assert.Equal("Proposed capacity must be a number, like 345", ValidationConstants.ProposedCapacityMustBeNumber);
+        }
+        [Fact]
+        public void ValidDate_ShouldReturnExpectedMessage()
+        {
+            Assert.Equal("Enter a valid date, like 1 1 2025", ValidationConstants.ValidDate);
         } 
     }
 }

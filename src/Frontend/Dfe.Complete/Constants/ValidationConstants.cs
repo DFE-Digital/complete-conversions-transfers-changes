@@ -21,5 +21,6 @@
         public const string SevenToElevenYears = "Enter the proposed capacity for pupils in years 7 to 11";
         public const string TwelveOrAboveYears = "Enter the proposed capacity for students in year 12 or above";
         public const string ProposedCapacityMustBeNumber = "Proposed capacity must be a number, like 345";
+        public const string ValidDate = "Enter a valid date, like 1 1 2025";
     }
 }
