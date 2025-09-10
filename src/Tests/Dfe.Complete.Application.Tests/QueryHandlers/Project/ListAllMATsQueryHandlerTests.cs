@@ -1,7 +1,7 @@
 using System.Collections.ObjectModel;
 using AutoFixture;
 using AutoFixture.Xunit2;
-using DfE.CoreLibs.Testing.AutoFixture.Attributes;
+using GovUK.Dfe.CoreLibs.Testing.AutoFixture.Attributes;
 using Dfe.AcademiesApi.Client.Contracts;
 using Dfe.Complete.Application.Projects.Interfaces;
 using Dfe.Complete.Application.Projects.Models;
@@ -10,7 +10,7 @@ using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Domain.ValueObjects;
 using Dfe.Complete.Tests.Common.Customizations.Models;
 using NSubstitute;
-using DfE.CoreLibs.Testing.AutoFixture.Customizations;
+using GovUK.Dfe.CoreLibs.Testing.AutoFixture.Customizations;
 using MockQueryable;
 using NSubstitute.ExceptionExtensions;
 
