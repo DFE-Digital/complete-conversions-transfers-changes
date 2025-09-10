@@ -162,6 +162,48 @@ class TaskHelper {
                 return taskApi.updateHandoverWithDeliveryOfficerTask(defaultBody);
         }
     }
+    updateReceiveDeclarationOfExpenditureCertificate(
+        taskDataId: string,
+        projectType: ProjectType,
+        status: TaskStatus,
+        significantDate?: string,
+    ) {
+        const defaultBody = {
+            taskDataId: { value: taskDataId },
+            projectType: projectType,
+            dateReceived: significantDate || "2025-09-09",
+            notApplicable: false,
+            checkCertificate: false,
+            saved: false,
+        };
+
+        switch (status) {
+            case "notApplicable":
+                return taskApi.updateReceiveDeclarationOfExpenditureCertificateTask({
+                    ...defaultBody,
+                    notApplicable: true,
+                });
+
+            case "inProgress":
+                return taskApi.updateReceiveDeclarationOfExpenditureCertificateTask({
+                    ...defaultBody,
+                    checkCertificate: true,
+                });
+
+            case "completed":
+                return taskApi.updateReceiveDeclarationOfExpenditureCertificateTask({
+                    taskDataId: { value: taskDataId },
+                    projectType: projectType,
+                    dateReceived: significantDate || "2025-09-09",
+                    notApplicable: false,
+                    checkCertificate: true,
+                    saved: true,
+                });
+
+            default:
+                return taskApi.updateReceiveDeclarationOfExpenditureCertificateTask(defaultBody);
+        }
+    }
 
     updateRedactAndSendDocuments(taskDataId: string, projectType: ProjectType, status: TaskStatus) {
         const defaultBody = {

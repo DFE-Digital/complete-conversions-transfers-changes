@@ -59,6 +59,15 @@ interface UpdateExternalStakeholderKickOffTaskRequest {
     userEmail?: string;
 }
 
+interface UpdateReceiveDeclarationOfExpenditureCertificateTaskRequest {
+    taskDataId: TaskDataId;
+    projectType: ProjectType;
+    dateReceived?: string;
+    notApplicable?: boolean;
+    checkCertificate?: boolean;
+    saved?: boolean;
+}
+
 interface UpdateRedactAndSendDocumentsTaskRequest {
     taskDataId: TaskDataId;
     projectType: ProjectType;
@@ -116,6 +125,17 @@ class TaskApi extends ApiBase {
 
     public updateArticleOfAssociationTask(requestBody: UpdateArticleOfAssociationTaskRequest) {
         return this.taskDataBaseRequest<void>("PATCH", `${this.taskDataUrl}/ArticleOfAssociation`, requestBody, 204);
+    }
+
+    public updateReceiveDeclarationOfExpenditureCertificateTask(
+        requestBody: UpdateReceiveDeclarationOfExpenditureCertificateTaskRequest,
+    ) {
+        return this.taskDataBaseRequest<void>(
+            "PATCH",
+            `${this.taskDataUrl}/ReceiveDeclarationOfExpenditureCertificate`,
+            requestBody,
+            204,
+        );
     }
 
     public updateRedactAndSendDocumentsTask(requestBody: UpdateRedactAndSendDocumentsTaskRequest) {
