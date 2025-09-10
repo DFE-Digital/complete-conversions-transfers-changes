@@ -1,6 +1,6 @@
 import BasePage from "cypress/pages/basePage";
 
-class TaskPage extends BasePage {
+export class TaskPage extends BasePage {
     // information dropdowns
     clickDropdown(summaryText: string) {
         cy.contains("summary", summaryText).click();

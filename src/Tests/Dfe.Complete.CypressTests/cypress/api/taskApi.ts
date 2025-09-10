@@ -48,6 +48,17 @@ interface UpdateDeedOfVariationTaskRequest {
     signedSecretaryState?: boolean;
 }
 
+interface UpdateExternalStakeholderKickOffTaskRequest {
+    projectId: TaskDataId;
+    stakeholderKickOffIntroductoryEmails?: boolean;
+    localAuthorityProforma?: boolean;
+    checkProvisionalDate?: boolean;
+    stakeholderKickOffSetupMeeting?: boolean;
+    stakeholderKickOffMeeting?: boolean;
+    significantDate?: string;
+    userEmail?: string;
+}
+
 interface UpdateRedactAndSendDocumentsTaskRequest {
     taskDataId: TaskDataId;
     projectType: ProjectType;
@@ -94,6 +105,15 @@ class TaskApi extends ApiBase {
         return this.taskDataBaseRequest<void>("PATCH", `${this.taskDataUrl}/DeedOfVariation`, requestBody, 204);
     }
 
+    public updateExternalStakeholderKickOffTask(requestBody: UpdateExternalStakeholderKickOffTaskRequest) {
+        return this.taskDataBaseRequest<void>(
+            "PATCH",
+            `${this.taskDataUrl}/ExternalStakeholderKickOff`,
+            requestBody,
+            204,
+        );
+    }
+
     public updateArticleOfAssociationTask(requestBody: UpdateArticleOfAssociationTaskRequest) {
         return this.taskDataBaseRequest<void>("PATCH", `${this.taskDataUrl}/ArticleOfAssociation`, requestBody, 204);
     }
@@ -103,7 +123,12 @@ class TaskApi extends ApiBase {
     }
 
     public updateSupplementalFundingAgreementTask(requestBody: UpdateSupplementalFundingAgreementTaskRequest) {
-        return this.taskDataBaseRequest<void>("PATCH", `${this.taskDataUrl}/SupplementalFundingAgreement`, requestBody, 204);
+        return this.taskDataBaseRequest<void>(
+            "PATCH",
+            `${this.taskDataUrl}/SupplementalFundingAgreement`,
+            requestBody,
+            204,
+        );
     }
 
     private taskDataBaseRequest<T>(
@@ -113,7 +138,8 @@ class TaskApi extends ApiBase {
             | UpdateHandoverWithDeliveryOfficerTaskRequest
             | UpdateArticleOfAssociationTaskRequest
             | UpdateDeedOfNovationAndVariationTaskRequest
-            | UpdateDeedOfVariationTaskRequest,
+            | UpdateDeedOfVariationTaskRequest
+            | UpdateExternalStakeholderKickOffTaskRequest,
         expectedStatus: number,
     ) {
         return this.authenticatedRequest().then((headers) => {

@@ -59,6 +59,14 @@ export class ProjectDetailsPage extends BasePage {
         return this.hasTag("In a group");
     }
 
+    hasProvisionalDateTag() {
+        cy.contains("dt", /^(Conversion|Transfer) date$/).next("dd").contains("provisional");
+    }
+
+    doesntHaveProvisionalDateTag() {
+        cy.contains("dt", /^(Conversion|Transfer) date$/).next("dd").should("not.contain.text", "provisional");
+    }
+
     // data
 
     hasConversionDate(significantDate: string) {

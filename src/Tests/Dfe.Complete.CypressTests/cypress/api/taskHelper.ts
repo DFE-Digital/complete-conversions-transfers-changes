@@ -1,4 +1,5 @@
 import taskApi, { ProjectType } from "./taskApi";
+import { cypressUser } from "cypress/constants/cypressConstants";
 
 export type TaskStatus = "notStarted" | "notApplicable" | "inProgress" | "completed";
 
@@ -228,6 +229,48 @@ class TaskHelper {
 
             default:
                 return taskApi.updateSupplementalFundingAgreementTask(defaultBody);
+        }
+    }
+
+    // task that also updates significant date on project
+    updateExternalStakeholderKickOff(
+        projectId: string,
+        status: TaskStatus,
+        significantDate?: string,
+        userEmail?: string,
+    ) {
+        const defaultBody = {
+            projectId: { value: projectId },
+            stakeholderKickOffIntroductoryEmails: false,
+            localAuthorityProforma: false,
+            checkProvisionalDate: false,
+            stakeholderKickOffSetupMeeting: false,
+            stakeholderKickOffMeeting: false,
+            significantDate: significantDate || "2027-09-01",
+            userEmail: userEmail || cypressUser.email,
+        };
+
+        switch (status) {
+            case "inProgress":
+                return taskApi.updateExternalStakeholderKickOffTask({
+                    ...defaultBody,
+                    stakeholderKickOffIntroductoryEmails: true,
+                });
+
+            case "completed":
+                return taskApi.updateExternalStakeholderKickOffTask({
+                    projectId: { value: projectId },
+                    stakeholderKickOffIntroductoryEmails: true,
+                    localAuthorityProforma: true,
+                    checkProvisionalDate: true,
+                    stakeholderKickOffSetupMeeting: true,
+                    stakeholderKickOffMeeting: true,
+                    significantDate: significantDate || "2027-09-01",
+                    userEmail: userEmail || cypressUser.email,
+                });
+
+            default:
+                return taskApi.updateExternalStakeholderKickOffTask(defaultBody);
         }
     }
 }
