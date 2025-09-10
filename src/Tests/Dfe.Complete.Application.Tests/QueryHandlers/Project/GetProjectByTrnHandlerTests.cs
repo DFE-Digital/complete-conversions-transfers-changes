@@ -1,7 +1,7 @@
 using System.Linq.Expressions;
 using AutoFixture.Xunit2;
-using DfE.CoreLibs.Testing.AutoFixture.Attributes;        
-using DfE.CoreLibs.Testing.AutoFixture.Customizations;   
+using GovUK.Dfe.CoreLibs.Testing.AutoFixture.Attributes;        
+using GovUK.Dfe.CoreLibs.Testing.AutoFixture.Customizations;   
 using Dfe.Complete.Application.Projects.Queries.GetProject;
 using Dfe.Complete.Domain.Interfaces.Repositories;
 using Dfe.Complete.Tests.Common.Customizations.Behaviours;

@@ -20,7 +20,7 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="DfE.CoreLibs.Testing" Version="1.1.19" />
+    <PackageReference Include="GovUK.Dfe.CoreLibs.Testing" Version="1.1.21" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="8.0.18" />
     <PackageReference Include="Microsoft.Data.Sqlite.Core" Version="8.0.18" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.18" />

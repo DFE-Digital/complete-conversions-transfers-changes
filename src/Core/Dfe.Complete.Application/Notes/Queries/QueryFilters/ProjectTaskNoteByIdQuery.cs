@@ -2,7 +2,7 @@
 using Dfe.Complete.Domain.Entities;
 using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Domain.ValueObjects;
-using DfE.CoreLibs.Utilities.Extensions;
+using GovUK.Dfe.CoreLibs.Utilities.Extensions;
 
 namespace Dfe.Complete.Application.Notes.Queries.QueryFilters;
 

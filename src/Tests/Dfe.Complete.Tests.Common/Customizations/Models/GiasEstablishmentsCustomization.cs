@@ -2,7 +2,7 @@
 using Dfe.Complete.Domain.Entities;
 using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Domain.ValueObjects;
-using DfE.CoreLibs.Testing.AutoFixture.Customizations;
+using GovUK.Dfe.CoreLibs.Testing.AutoFixture.Customizations;
 
 namespace Dfe.Complete.Tests.Common.Customizations.Models
 {
