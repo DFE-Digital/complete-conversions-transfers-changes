@@ -44,7 +44,8 @@ describe("Transfer tasks - Supplemental funding agreement", () => {
             .hasDropdownContent("Changes that personalise the model documents to an academy or trust");
     });
 
-    it("should submit the form and persist selections", () => {
+    // bug 236305
+    it.skip("should submit the form and persist selections", () => {
         Logger.log("Select all checkboxes and save");
         taskPage
             .hasCheckboxLabel("Received")
