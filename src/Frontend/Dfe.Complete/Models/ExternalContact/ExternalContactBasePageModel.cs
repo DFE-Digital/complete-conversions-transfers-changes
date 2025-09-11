@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace Dfe.Complete.Models.ExternalContact;
 
-public abstract class ExternalContactBasePageModel(ISender sender, ILogger logger) : PageModel
+public abstract class ExternalContactBasePageModel(ISender sender) : PageModel
 {
     [BindProperty(SupportsGet = true, Name = "projectId")]
     public string? ProjectId { get; set; }
