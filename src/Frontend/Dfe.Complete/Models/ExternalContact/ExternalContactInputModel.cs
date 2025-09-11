@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace Dfe.Complete.Models.ExternalContact
+﻿namespace Dfe.Complete.Models.ExternalContact
 {
     public class ExternalContactInputModel
     {   
