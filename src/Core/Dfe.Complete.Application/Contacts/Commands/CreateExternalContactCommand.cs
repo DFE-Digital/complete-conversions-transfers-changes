@@ -7,7 +7,6 @@ using Dfe.Complete.Domain.Interfaces.Repositories;
 using Dfe.Complete.Domain.ValueObjects;
 using MediatR;
 using Microsoft.Extensions.Logging;
-using System.Globalization;
 
 namespace Dfe.Complete.Application.Contacts.Commands;
 
