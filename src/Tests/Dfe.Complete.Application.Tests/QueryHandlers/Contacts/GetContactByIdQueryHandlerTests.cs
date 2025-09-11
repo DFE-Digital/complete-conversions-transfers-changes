@@ -52,7 +52,7 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
            Contact contact)
         {
             // Arrange
-            var expectedMessage = string.Format(ErrorMessagesConstants.ExceptionGettingExternalContact, contact.Id);
+            var expectedMessage = $"Error occurred while getting external contact with Id {contact.Id}.";
             mockContactRepository.GetAsync(Arg.Any<Expression<Func<Contact, bool>>>())
                 .Throws(new Exception(expectedMessage));
 

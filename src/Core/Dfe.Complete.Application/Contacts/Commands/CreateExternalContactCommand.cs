@@ -7,6 +7,7 @@ using Dfe.Complete.Domain.Interfaces.Repositories;
 using Dfe.Complete.Domain.ValueObjects;
 using MediatR;
 using Microsoft.Extensions.Logging;
+using System.Globalization;
 
 namespace Dfe.Complete.Application.Contacts.Commands;
 
@@ -55,9 +56,9 @@ public class CreateExternalContactCommandHandler(
             return Result<ContactId>.Success(result.Id);            
         }
         catch (Exception ex)
-        {
-            var message = string.Format(ErrorMessagesConstants.CouldNotCreateExternalContact, request.ProjectId);
-            logger.LogError(ex, message);            
+        {   
+            var message = ErrorMessagesConstants.CouldNotCreateExternalContact.Replace("{Id}", request.ProjectId?.Value.ToString());
+            logger.LogError(ex, ErrorMessagesConstants.CouldNotCreateExternalContact, request.ProjectId);            
             return Result<ContactId>.Failure(message);
         }
     }

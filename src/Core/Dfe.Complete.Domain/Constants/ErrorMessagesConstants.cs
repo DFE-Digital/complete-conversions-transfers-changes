@@ -9,10 +9,10 @@
         public const string NotFoundLocalAuthority = "Local authority with Id {0} not found.";
         public const string ExceptionWhileDeletingLocalAuthority = "Error occurred while deleting local authority with ID {Id}.";
         public const string ExceptionWhileCreatingLocalAuthority = "Error occurred while creating LocalAuthority with code {Code}.";
-        public const string CouldNotCreateExternalContact = "Could not create external contact with project {0}.";
-        public const string CouldNotUpdateExternalContact = "Could not update external contact with Id {0}.";
-        public const string CouldNotDeleteExternalContact = "Could not delete external contact with Id {0}.";
-        public const string NotFoundExternalContact = "External contact with Id {0} not found.";
-        public const string ExceptionGettingExternalContact = "Error occurred while getting external contact with Id {0}.";
+        public const string CouldNotCreateExternalContact = "Could not create external contact with project {ProjectId}.";
+        public const string CouldNotUpdateExternalContact = "Could not update external contact with Id {Id}.";
+        public const string CouldNotDeleteExternalContact = "Could not delete external contact with Id {Id}.";
+        public const string NotFoundExternalContact = "External contact with Id {Id} not found.";
+        public const string ExceptionGettingExternalContact = "Error occurred while getting external contact with Id {Id}.";
     }
 }

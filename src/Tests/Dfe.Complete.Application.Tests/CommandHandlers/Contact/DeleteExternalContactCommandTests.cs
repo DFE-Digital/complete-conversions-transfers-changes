@@ -121,13 +121,16 @@ public class DeleteExternalContactCommandTests
         mockContactRepository.Setup(repo => repo.RemoveAsync(It.IsAny<Entities.Contact>(), It.IsAny<CancellationToken>()))
            .ThrowsAsync(new Exception("throws error"));
 
+        var expectedMessage = $"Could not delete external contact with Id {contactId.Value}.";
+
         // Act
         var result = await handler.Handle(command, CancellationToken.None);
 
         // Assert
         Assert.Multiple
         (
-            () => Assert.False(result.IsSuccess),            
+            () => Assert.False(result.IsSuccess),
+            () => Assert.Equal(expectedMessage, result.Error),
             () => mockUnitOfWork.Verify(uow => uow.BeginTransactionAsync(), Times.Once),
             () => mockUnitOfWork.Verify(uow => uow.RollBackAsync(), Times.Once),
             () => mockUnitOfWork.Verify(uow => uow.CommitAsync(), Times.Never)            
@@ -140,7 +143,7 @@ public class DeleteExternalContactCommandTests
         // Arrange
         ContactId contactId = fixture.Create<ContactId>();
         var command = new DeleteExternalContactCommand(contactId);
-        var expectedMessage = string.Format(ErrorMessagesConstants.NotFoundExternalContact, command.ContactId.Value);
+        var expectedMessage = $"External contact with Id {contactId.Value} not found.";
 
         // Act
         var result = await handler.Handle(command, CancellationToken.None);
@@ -152,8 +155,7 @@ public class DeleteExternalContactCommandTests
             () => Assert.Equal(expectedMessage, result.Error),
             () => mockUnitOfWork.Verify(uow => uow.BeginTransactionAsync(), Times.Once),
             () => mockUnitOfWork.Verify(uow => uow.RollBackAsync(), Times.Once),
-            () => mockUnitOfWork.Verify(uow => uow.CommitAsync(), Times.Never),
-            () => mockUnitOfWork.Verify(uow => uow.CommitAsync(), Times.Never),
+            () => mockUnitOfWork.Verify(uow => uow.CommitAsync(), Times.Never),            
             () => mockContactRepository.Verify(repo => repo.RemoveAsync(It.IsAny<Entities.Contact>(), It.IsAny<CancellationToken>()), Times.Never)
         );
     }

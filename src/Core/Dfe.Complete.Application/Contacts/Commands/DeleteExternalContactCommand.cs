@@ -29,7 +29,8 @@ public class DeleteExternalContactCommandHandler(
             if (contactEntity is null)
             {
                 await unitOfWork.RollBackAsync();
-                return Result<bool>.Failure(string.Format(ErrorMessagesConstants.NotFoundExternalContact, request.ContactId.Value), ErrorType.NotFound);
+                var message = ErrorMessagesConstants.NotFoundExternalContact.Replace("{Id}", request.ContactId.Value.ToString());
+                return Result<bool>.Failure(message, ErrorType.NotFound);
             }
 
             var project = await projectRepository.FindAsync(x => x.IncomingTrustMainContactId == request.ContactId
@@ -69,9 +70,11 @@ public class DeleteExternalContactCommandHandler(
         }
         catch (Exception ex)
         {
-            await unitOfWork.RollBackAsync();
-            var message = string.Format(ErrorMessagesConstants.CouldNotDeleteExternalContact, request.ContactId);
-            logger.LogError(ex, message);
+            await unitOfWork.RollBackAsync();           
+
+            var message = ErrorMessagesConstants.CouldNotDeleteExternalContact.Replace("{Id}", request.ContactId.Value.ToString());
+            logger.LogError(ex, ErrorMessagesConstants.CouldNotDeleteExternalContact, request.ContactId);
+
             return Result<bool>.Failure(message);
         }
     }

@@ -60,7 +60,7 @@ public class UpdateExternalContactCommandTests
         UpdateExternalContactCommandHandler sut)
     {
         // Arrange
-        var expectedMessage = string.Format(ErrorMessagesConstants.CouldNotUpdateExternalContact, command.contactDto.Id.Value);
+        var expectedMessage = $"Could not update external contact with Id {command.contactDto.Id.Value}.";
 
         var contact = fixture.Build<Entities.Contact>()
            .With(q => q.Id, new ContactId(Guid.NewGuid()))
@@ -92,7 +92,7 @@ public class UpdateExternalContactCommandTests
       UpdateExternalContactCommandHandler sut)
     {
         // Arrange
-        var expectedMessage = string.Format(ErrorMessagesConstants.NotFoundExternalContact, command.ContactId.Value);
+        var expectedMessage = $"External contact with Id {command.ContactId.Value} not found.";        
         mockContactRepository.GetAsync(Arg.Any<Entities.Contact>(), Arg.Any<CancellationToken>()).Returns((Entities.Contact)null!);
 
         // Act

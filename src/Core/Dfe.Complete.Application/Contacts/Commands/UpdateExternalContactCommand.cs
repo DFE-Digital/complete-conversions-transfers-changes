@@ -25,7 +25,7 @@ public class UpdateExternalContactCommandHandler(
         try
         {
             var contactEntity = await contactRepository.GetAsync(x => x.Id == request.ContactId);
-            if (contactEntity is null) return Result<ContactDto>.Failure(string.Format(ErrorMessagesConstants.NotFoundExternalContact, request.ContactId.Value), ErrorType.NotFound);
+            if (contactEntity is null) return Result<ContactDto>.Failure(ErrorMessagesConstants.NotFoundExternalContact.Replace("{Id}", request.ContactId.Value.ToString()), ErrorType.NotFound);
 
             var updateDto = request.contactDto;
 
@@ -47,8 +47,9 @@ public class UpdateExternalContactCommandHandler(
         }
         catch (Exception ex)
         {
-            var message = string.Format(ErrorMessagesConstants.CouldNotUpdateExternalContact, request.contactDto.Id.Value);
-            logger.LogError(ex, message);
+            var message = ErrorMessagesConstants.CouldNotUpdateExternalContact.Replace("{Id}", request.contactDto.Id.Value.ToString());
+            logger.LogError(ex, ErrorMessagesConstants.CouldNotUpdateExternalContact, request.contactDto.Id);
+
             return Result<ContactDto>.Failure(message);
         }
     }
