@@ -4,7 +4,7 @@ using Dfe.Complete.Domain.Entities;
 using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Infrastructure.Extensions;
 using Dfe.Complete.Tests.Common.Customizations.Models;
-using DfE.CoreLibs.Testing.AutoFixture.Attributes;
+using GovUK.Dfe.CoreLibs.Testing.AutoFixture.Attributes;
 using NetEscapades.AspNetCore.SecurityHeaders.Headers.FeaturePolicy;
 
 namespace Dfe.Complete.Tests.Extensions;

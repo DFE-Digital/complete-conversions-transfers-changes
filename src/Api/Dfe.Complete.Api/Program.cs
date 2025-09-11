@@ -14,8 +14,8 @@ using Asp.Versioning;
 using Asp.Versioning.ApiExplorer;
 using Dfe.Complete.Infrastructure;
 using Dfe.Complete.Infrastructure.Security.Authorization;
-using DfE.CoreLibs.Http.Middlewares.CorrelationId;
-using DfE.CoreLibs.Http.Interfaces;
+using GovUK.Dfe.CoreLibs.Http.Middlewares.CorrelationId;
+using GovUK.Dfe.CoreLibs.Http.Interfaces;
 using Dfe.Complete.Logging.Middleware;
 using Dfe.Complete.Application.Mappers;
 

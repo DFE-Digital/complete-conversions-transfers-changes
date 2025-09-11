@@ -5,7 +5,7 @@ using Dfe.Complete.Application.Projects.Models;
 using Dfe.Complete.Domain.Enums;
 using MediatR;
 using Dfe.Complete.Utils;
-using DfE.CoreLibs.Utilities.Constants;
+using GovUK.Dfe.CoreLibs.Utilities.Constants;
 using Microsoft.Extensions.Logging;
 using Microsoft.EntityFrameworkCore;
 
