@@ -51,6 +51,16 @@ export class TaskPage extends BasePage {
         return this;
     }
 
+    input(text: string) {
+        this.performLabelContainerAction(() => cy.get("input").clear().typeFast(text));
+        return this;
+    }
+
+    hasValue(value: string) {
+        this.performLabelContainerAction(() => cy.get("input").should("have.value", value));
+        return this;
+    }
+
     // checkbox validation
 
     expandGuidance(summaryText: string) {
