@@ -24,7 +24,7 @@ public class CreateExternalContact(
     ErrorService errorService, 
     ISender sender, 
     ILogger<CreateExternalContact> logger)
-    : ExternalContactBasePageModel(sender, logger)
+    : ExternalContactBasePageModel(sender)
 {   
     private const string invalidContactTypeErrorMessage = "The selected contact type is invalid";
     private readonly ErrorService errorService = errorService;

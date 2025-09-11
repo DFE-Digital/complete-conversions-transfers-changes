@@ -3,8 +3,8 @@
 namespace Dfe.Complete.Models.ExternalContact
 {
     public class ExternalContactInputModel
-    {        
-        public required string FullName { get; set; }
+    {   
+        public string? FullName { get; set; }
      
         public string? Email { get; set; }
         

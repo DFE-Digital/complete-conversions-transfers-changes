@@ -24,7 +24,7 @@ public class EditExternalContact(
     IValidator<OtherExternalContactInputModel> otherExternalContactInputModelValidator,
     ITrustCache trustCacheService, ErrorService errorService, 
     ISender sender, 
-    ILogger<EditExternalContact> logger) : ExternalContactAddEditPageModel(trustCacheService, sender, logger)
+    ILogger<EditExternalContact> logger) : ExternalContactAddEditPageModel(trustCacheService, sender)
 {
     private readonly ErrorService errorService = errorService;
     private readonly ISender sender = sender;

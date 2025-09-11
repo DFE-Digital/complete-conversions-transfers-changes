@@ -27,7 +27,7 @@ namespace Dfe.Complete.Tests.Models.ExternalContact
     {
         private class TestExternalContactAddEditPageModel : ExternalContactAddEditPageModel
         {
-            public TestExternalContactAddEditPageModel(ITrustCache trustCacheService, ISender sender, ILogger logger) : base(trustCacheService, sender, logger)
+            public TestExternalContactAddEditPageModel(ITrustCache trustCacheService, ISender sender, ILogger logger) : base(trustCacheService, sender)
             {
             }
 

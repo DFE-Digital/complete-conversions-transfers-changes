@@ -23,7 +23,7 @@ public class CreateOtherExternalContact(
     ITrustCache trustCacheService, ErrorService errorService, 
     ISender sender, 
     ILogger<CreateOtherExternalContact> logger)
-    : ExternalContactAddEditPageModel(trustCacheService, sender, logger)
+    : ExternalContactAddEditPageModel(trustCacheService, sender)
 {    
     private readonly ErrorService errorService = errorService;
     private readonly ISender sender = sender;

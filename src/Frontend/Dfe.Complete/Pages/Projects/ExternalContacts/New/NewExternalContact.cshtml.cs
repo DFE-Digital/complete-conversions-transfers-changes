@@ -11,7 +11,7 @@ namespace Dfe.Complete.Pages.Projects.ExternalContacts.New;
 
 [Authorize(Policy = UserPolicyConstants.CanViewAddContact)]
 public class NewExternalContact(ISender sender, ILogger<NewExternalContact> logger)
-    : ExternalContactBasePageModel(sender, logger)
+    : ExternalContactBasePageModel(sender)
 {
     public ExternalContactType[] ContactTypeRadioOptions { get; set; }
 

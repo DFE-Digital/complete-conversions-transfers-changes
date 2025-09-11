@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Dfe.Complete.Models.ExternalContact;
 
-public class ExternalContactAddEditPageModel(ITrustCache trustCacheService, ISender sender, ILogger logger) : ExternalContactBasePageModel(sender, logger)
+public class ExternalContactAddEditPageModel(ITrustCache trustCacheService, ISender sender) : ExternalContactBasePageModel(sender)
 {
     private readonly ISender sender = sender;
 
