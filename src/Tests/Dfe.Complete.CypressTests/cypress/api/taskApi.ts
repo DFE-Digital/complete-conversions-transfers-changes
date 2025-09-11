@@ -98,62 +98,42 @@ class TaskApi extends ApiBase {
     private readonly taskDataUrl = `${Cypress.env(EnvApi)}/v1/TasksData/TaskData`;
 
     public updateHandoverWithDeliveryOfficerTask(requestBody: UpdateHandoverWithDeliveryOfficerTaskRequest) {
-        return this.taskDataBaseRequest<void>("PATCH", `${this.taskDataUrl}/HandoverDeliveryOfficer`, requestBody, 204);
+        return this.taskDataBaseRequest<void>("PATCH", "HandoverDeliveryOfficer", requestBody, 204);
     }
 
     public updateDeedOfNovationAndVariationTask(requestBody: UpdateDeedOfNovationAndVariationTaskRequest) {
-        return this.taskDataBaseRequest<void>(
-            "PATCH",
-            `${this.taskDataUrl}/DeedOfNovationAndVariation`,
-            requestBody,
-            204,
-        );
+        return this.taskDataBaseRequest<void>("PATCH", "DeedOfNovationAndVariation", requestBody, 204);
     }
 
     public updateDeedOfVariationTask(requestBody: UpdateDeedOfVariationTaskRequest) {
-        return this.taskDataBaseRequest<void>("PATCH", `${this.taskDataUrl}/DeedOfVariation`, requestBody, 204);
+        return this.taskDataBaseRequest<void>("PATCH", "DeedOfVariation", requestBody, 204);
     }
 
     public updateExternalStakeholderKickOffTask(requestBody: UpdateExternalStakeholderKickOffTaskRequest) {
-        return this.taskDataBaseRequest<void>(
-            "PATCH",
-            `${this.taskDataUrl}/ExternalStakeholderKickOff`,
-            requestBody,
-            204,
-        );
+        return this.taskDataBaseRequest<void>("PATCH", "ExternalStakeholderKickOff", requestBody, 204);
     }
 
     public updateArticleOfAssociationTask(requestBody: UpdateArticleOfAssociationTaskRequest) {
-        return this.taskDataBaseRequest<void>("PATCH", `${this.taskDataUrl}/ArticleOfAssociation`, requestBody, 204);
+        return this.taskDataBaseRequest<void>("PATCH", "ArticleOfAssociation", requestBody, 204);
     }
 
     public updateReceiveDeclarationOfExpenditureCertificateTask(
         requestBody: UpdateReceiveDeclarationOfExpenditureCertificateTaskRequest,
     ) {
-        return this.taskDataBaseRequest<void>(
-            "PATCH",
-            `${this.taskDataUrl}/ReceiveDeclarationOfExpenditureCertificate`,
-            requestBody,
-            204,
-        );
+        return this.taskDataBaseRequest<void>("PATCH", "ReceiveDeclarationOfExpenditureCertificate", requestBody, 204);
     }
 
     public updateRedactAndSendDocumentsTask(requestBody: UpdateRedactAndSendDocumentsTaskRequest) {
-        return this.taskDataBaseRequest<void>("PATCH", `${this.taskDataUrl}/RedactAndSendDocuments`, requestBody, 204);
+        return this.taskDataBaseRequest<void>("PATCH", "RedactAndSendDocuments", requestBody, 204);
     }
 
     public updateSupplementalFundingAgreementTask(requestBody: UpdateSupplementalFundingAgreementTaskRequest) {
-        return this.taskDataBaseRequest<void>(
-            "PATCH",
-            `${this.taskDataUrl}/SupplementalFundingAgreement`,
-            requestBody,
-            204,
-        );
+        return this.taskDataBaseRequest<void>("PATCH", "SupplementalFundingAgreement", requestBody, 204);
     }
 
     private taskDataBaseRequest<T>(
         method: string,
-        url: string,
+        task: string,
         body:
             | UpdateHandoverWithDeliveryOfficerTaskRequest
             | UpdateArticleOfAssociationTaskRequest
@@ -166,7 +146,7 @@ class TaskApi extends ApiBase {
             return cy
                 .request<T>({
                     method,
-                    url,
+                    url: `${this.taskDataUrl}/${task}`,
                     headers,
                     body,
                 })
