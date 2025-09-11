@@ -5,7 +5,7 @@ using Dfe.Complete.Application.Contacts.Queries;
 using Dfe.Complete.Application.Projects.Interfaces;
 using Dfe.Complete.Domain.Entities;
 using Dfe.Complete.Tests.Common.Customizations.Behaviours;
-using DfE.CoreLibs.Testing.AutoFixture.Attributes;
+using GovUK.Dfe.CoreLibs.Testing.AutoFixture.Attributes;
 using MockQueryable;
 using NSubstitute;
 
