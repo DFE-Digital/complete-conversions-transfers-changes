@@ -83,15 +83,8 @@ describe.skip("Handover process tests for transfer projects", () => {
         Logger.log("Verify project handed over");
         cy.contains("Project handed over to Regional Casework Services");
         cy.contains(`${academyName} URN ${project.urn}`);
-        // bug 234289
-        // cy.contains("This project will appear in the Regional Casework Services' project list."); // typo
-
-        // below is what was in ruby, but doesn't make any sense as the project appears in RCS unassigned projects
-        // cy.contains("It will only be assigned to a caseworker when external contacts have been added.");
-
-        // this would make more sense:
-        // cy.contains("This project will appear in the Regional Casework Services' unassigned project list.")
-        // cy.contains("Regional Casework Services team leaders can assign it to a caseworker.");
+        cy.contains("This project will appear in the Regional Casework Services' project list.");
+        cy.contains("It will only be assigned to a caseworker when external contacts have been added.");
 
         Logger.log("Login with RCS team leader user");
         cy.clearCookies();
