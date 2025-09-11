@@ -48,7 +48,7 @@ public class UpdateExternalContactCommandHandler(
         catch (Exception ex)
         {
             var message = string.Format(ErrorMessagesConstants.CouldNotUpdateExternalContact, request.contactDto.Id.Value);
-            logger.LogError(ex, "Could not update external contact with Id {Id}.", request.contactDto.Id);
+            logger.LogError(ex, message);
             return Result<ContactDto>.Failure(message);
         }
     }

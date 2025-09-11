@@ -40,60 +40,28 @@ public class EditExternalContact(
     }
 
     public async Task<IActionResult> OnPostAsync()
-    { 
-        FluentValidation.Results.ValidationResult result = await validator.ValidateAsync(ExternalContactInput);
+    {
+        var result = await validator.ValidateAsync(ExternalContactInput);
 
         if (!result.IsValid)
-        {
-            foreach (var error in result.Errors)
-            {
-                ModelState.AddModelError(error.PropertyName, error.ErrorMessage);
-            }
-            errorService.AddErrors(ModelState);
+            return await HandleValidationFailure(result);
 
-            await base.OnGetAsync();
-            return Page();
+        try
+        {
+            var updateCommand = await BuildUpdateCommandAsync();
+            var response = await sender.Send(updateCommand);
+
+            TempData.SetNotification(
+                NotificationType.Success,
+                "Success",
+                "Contact updated"
+            );
+
+            return Redirect(string.Format(RouteConstants.ProjectExternalContacts, ProjectId));
         }
-        else
+        catch (Exception ex)
         {
-            try
-            {
-                var contactType = EnumExtensions.FromDescription<ExternalContactType>(this.ExternalContactInput.SelectedExternalContactType);
-
-                await base.GetCurrentProject();
-
-                var organisationName = await this.GetOrganisationNameAsync(contactType);
-                var category = ExternalContactMapper.MapContactTypeToCategory(contactType);
-
-                var contactDto = new ContactDto
-                {
-                    Name = this.ExternalContactInput.FullName,
-                    Title = this.ExternalContactInput.Role,
-                    Email = this.ExternalContactInput.Email ?? string.Empty,
-                    Phone = this.ExternalContactInput.Phone ?? string.Empty,
-                    Category = category,
-                    PrimaryContact = this.ExternalContactInput.IsPrimaryProjectContact,
-                    OrganisationName = organisationName
-                };
-
-                var updateExternalContactCommand = new UpdateExternalContactCommand(new ContactId (Guid.Parse(ContactId)), contactDto );
-
-                var response = await sender.Send(updateExternalContactCommand);
-                
-                TempData.SetNotification(
-                    NotificationType.Success,
-                    "Success",
-                    "Contact updated"
-                );
-
-                return Redirect(string.Format(RouteConstants.ProjectExternalContacts, ProjectId));
-            }
-            catch (Exception ex)
-            {
-                logger.LogError(ex, "An error occurred when creating a new external contact for project {ProjectId}", ProjectId);
-                ModelState.AddModelError("UnexpectedError", "An unexpected error occurred. Please try again later.");
-                return await this.GetPage();
-            }
+            return await HandleUnexpectedErrorAsync(ex);
         }
     }      
 
@@ -104,15 +72,63 @@ public class EditExternalContact(
         return Page();
     }
 
+    private async Task<IActionResult> HandleValidationFailure(FluentValidation.Results.ValidationResult result)
+    {
+        foreach (var error in result.Errors)
+        {
+            ModelState.AddModelError(error.PropertyName, error.ErrorMessage);
+        }
+
+        errorService.AddErrors(ModelState);
+        await base.OnGetAsync();
+
+        return Page();
+    }
+
+    private async Task<UpdateExternalContactCommand> BuildUpdateCommandAsync()
+    {
+        var contactType = EnumExtensions.FromDescription<ExternalContactType>(ExternalContactInput.SelectedExternalContactType);
+
+        await base.GetCurrentProjectAsync();
+
+        var organisationName = await GetOrganisationNameAsync(contactType);
+        var category = ExternalContactMapper.MapContactTypeToCategory(contactType);
+
+        var contactDto = new ContactDto
+        {
+            Name = ExternalContactInput.FullName,
+            Title = ExternalContactInput.Role,
+            Email = ExternalContactInput.Email ?? string.Empty,
+            Phone = ExternalContactInput.Phone ?? string.Empty,
+            Category = category,
+            PrimaryContact = ExternalContactInput.IsPrimaryProjectContact,
+            OrganisationName = organisationName
+        };
+
+        return new UpdateExternalContactCommand(
+            new ContactId(Guid.Parse(ContactId)),
+            contactDto
+        );
+    }
+
+    private async Task<IActionResult> HandleUnexpectedErrorAsync(Exception ex)
+    {
+        logger.LogError(ex, "An error occurred while creating a new external contact for project {ProjectId}", ProjectId);
+        ModelState.AddModelError("UnexpectedError", "An unexpected error occurred. Please try again later.");
+        errorService.AddErrors(ModelState);
+        await base.OnGetAsync();
+
+        return Page();
+    }
+
     private async Task GetContactDetails()
     {
         var success = Guid.TryParse(ContactId, out var guid);
 
         if (!success)
         {
-            var error = $"{ContactId} is not a valid Guid.";
-            logger.LogError(error);
-            return;
+            var error = string.Format(ValidationConstants.InvalidGuid, ContactId);
+            throw new NotFoundException(error);
         }
 
         var query = new GetContactByIdQuery(new ContactId(guid));
@@ -120,9 +136,8 @@ public class EditExternalContact(
 
         if (!result.IsSuccess || result.Value == null)
         {
-            var error = $"Contact {ContactId} does not exist.";
-            logger.LogError(error);
-            return;
+            var error = string.Format(ValidationConstants.ContactNotFound, ContactId);
+            throw new NotFoundException(error);
         }
 
         MapContactDtoToModel(result.Value);

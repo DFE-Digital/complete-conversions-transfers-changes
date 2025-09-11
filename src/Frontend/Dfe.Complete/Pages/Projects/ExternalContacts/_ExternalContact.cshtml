@@ -1,10 +1,12 @@
-﻿@model  Dfe.Complete.Pages.Projects.ExternalContacts.ExternalContactModel
+﻿@using Dfe.Complete.Constants
+@using Dfe.Complete.Models.ExternalContact
+@model  ExternalContactModel
 @{
     var editContactPageRoute = "#";
 
     if (!string.IsNullOrWhiteSpace(Model.Contact.ProjectId?.Value.ToString()))
     {
-         editContactPageRoute = string.Format("/projects/{0}/external-contacts/{1}/edit", Model.Contact.ProjectId.Value, Model.Contact.Id.Value);
+        editContactPageRoute = string.Format(RouteConstants.ProjectsExternalContactEdit, Model.Contact.ProjectId.Value, Model.Contact.Id.Value);     
     }
 }
 

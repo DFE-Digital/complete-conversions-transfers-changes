@@ -20,7 +20,7 @@ public class NewExternalContact(ISender sender, ILogger<NewExternalContact> logg
 
     public async Task<IActionResult> OnGetAsync()
     {
-        await this.GetCurrentProject();
+        await this.GetCurrentProjectAsync();
 
         if (this.Project == null)
         {  

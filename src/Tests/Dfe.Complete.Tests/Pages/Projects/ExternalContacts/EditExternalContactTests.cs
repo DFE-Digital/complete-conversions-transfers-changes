@@ -25,7 +25,7 @@ namespace Dfe.Complete.Tests.Pages.Projects.ExternalContacts.New
 
     public class EditExternalContactTests
     {
-        private readonly IFixture fixture = new Fixture().Customize(new CompositeCustomization(new AutoMoqCustomization(), new ProjectIdCustomization(), new DateOnlyCustomization(), new IgnoreVirtualMembersCustomisation()));
+        private readonly IFixture fixture = new Fixture().Customize(new CompositeCustomization(new AutoMoqCustomization(), new ProjectIdCustomization(), new ContactIdCustomization(), new DateOnlyCustomization(), new IgnoreVirtualMembersCustomisation()));
         private readonly Mock<ISender> mockSender;
         private readonly Mock<ILogger<EditExternalContact>> mockLogger;        
 
@@ -162,9 +162,10 @@ namespace Dfe.Complete.Tests.Pages.Projects.ExternalContacts.New
             var testClass = fixture.Build<EditExternalContact>()
                .With(t => t.PageContext, PageDataHelper.GetPageContext())
                .With(t => t.ProjectId, projectId.Value.ToString())
+               .With(t => t.ContactId, contactId.Value.ToString())
                .With(t => t.ExternalContactInput, fixture.Build<OtherExternalContactInputModel>()
                    .With(e => e.SelectedExternalContactType, "solicitor")
-                   .With(e => e.IsPrimaryProjectContact, false) 
+                   .With(e => e.IsPrimaryProjectContact, false)                    
                    .Create())
                .Create();
 
@@ -190,8 +191,7 @@ namespace Dfe.Complete.Tests.Pages.Projects.ExternalContacts.New
             // Assert
             Assert.Multiple(
                 () => Assert.True(testClass.ModelState.ContainsKey("UnexpectedError")),
-                () => Assert.Equal("An unexpected error occurred. Please try again later.", testClass.ModelState["UnexpectedError"]?.Errors[0].ErrorMessage),
-                () => mockSender.Verify(sender => sender.Send(It.IsAny<UpdateExternalContactCommand>(), It.IsAny<CancellationToken>()), Times.Never),
+                () => Assert.Equal("An unexpected error occurred. Please try again later.", testClass.ModelState["UnexpectedError"]?.Errors[0].ErrorMessage),                
                 () => mockLogger.Verify(
                 logger => logger.Log(
                     It.Is<LogLevel>(logLevel => logLevel == LogLevel.Error),

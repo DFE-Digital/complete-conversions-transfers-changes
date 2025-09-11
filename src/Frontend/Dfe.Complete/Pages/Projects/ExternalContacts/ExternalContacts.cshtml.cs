@@ -2,6 +2,7 @@
 using Dfe.Complete.Application.LocalAuthorities.Queries.GetLocalAuthority;
 using Dfe.Complete.Domain.Constants;
 using Dfe.Complete.Domain.Enums;
+using Dfe.Complete.Models.ExternalContact;
 using Dfe.Complete.Pages.Projects.ProjectView;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -108,36 +109,5 @@ public class ExternalContacts(ISender sender, ILogger<ExternalContacts> logger)
         }
 
         return Page();
-    }
-    
-
-    public IActionResult OnPost()
-    {
-        var inputString = ConversionContactType ?? TransferContactType;
-        
-        if (inputString is null)
-        {
-            ModelState.AddModelError("", "Please select a contact type.");
-            
-            return RedirectToPage("Projects/ExternalContacts/New/NewExternalContact", new { ProjectId });
-        }
-        
-        switch (inputString)
-        {
-            case "headteacher":
-                return RedirectToPage("New/CreateHeadteacher", new { ProjectId });
-            case "incoming_trust_ceo":
-                return RedirectToPage("New/CreateIncomingTrustCeo", new { ProjectId });
-            case "outgoing_trust_ceo":
-                return RedirectToPage("New/CreateOutgoingTrustCeo", new { ProjectId });
-            case "chair_of_governors":
-                return RedirectToPage("New/CreateIncomingTrustCeo", new { ProjectId });
-            case "other":
-                return RedirectToPage("New/CreateOtherExternalContact", new { ProjectId });
-            default:
-                ModelState.AddModelError("", "Contact type in invalid");
-                return RedirectToPage("New/NewExternalContact", new { ProjectId });
-            
-        }
-    }
+    }   
 }

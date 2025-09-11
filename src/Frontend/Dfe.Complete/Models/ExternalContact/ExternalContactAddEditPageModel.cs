@@ -91,7 +91,7 @@ public class ExternalContactAddEditPageModel(ITrustCache trustCacheService, ISen
 
     private async Task<IActionResult> GetPage()
     {   
-        await this.GetCurrentProject();
+        await this.GetCurrentProjectAsync();
         if (this.Project == null)
         {
             return NotFound();

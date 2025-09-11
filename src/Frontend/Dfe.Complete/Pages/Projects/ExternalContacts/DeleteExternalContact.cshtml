@@ -1,10 +1,13 @@
 ﻿@page "/projects/{projectId}/external-contacts/{contactId}/delete"
 @using Dfe.Complete.Pages.Projects.ExternalContacts
+@using Dfe.Complete.Constants
 @model Dfe.Complete.Pages.Projects.ExternalContacts.DeleteExternalContact
 
 @{
     Layout = "Shared/_Layout";
     ViewData["Title"] = $"Are you sure you want to delete {Model.FullName}";
+
+    var projectsExternalContactEditLink = string.Format(RouteConstants.ProjectsExternalContactEdit, Model.ProjectId, Model.ContactId);
 
     var errorSummaryModel = new Dfe.Complete.Models.ErrorSummaryModel
     {
@@ -14,7 +17,7 @@
 
 <div class="govuk-width-container ">
     <nav aria-label="back link">
-        <a class="govuk-back-link" href="/projects/@Model.ProjectId/external-contacts/@Model.ContactId/edit">Back</a>
+        <a class="govuk-back-link" href="@projectsExternalContactEditLink">Back</a>
     </nav>
     <main class="govuk-main-wrapper app-content" id="main-content" role="main">
         <div class="govuk-grid-row govuk-body">
@@ -28,7 +31,7 @@
                         <govuk-button type="submit" class="govuk-button--warning" data-prevent-double-click="true">
                         Delete
                         </govuk-button>                      
-                        <a class="govuk-link" href="/projects/@Model.ProjectId/external-contacts/@Model.ContactId/edit">Cancel</a>
+                        <a class="govuk-link" href="@projectsExternalContactEditLink">Cancel</a>
                     </div>
                 </form>
             </div>

@@ -55,7 +55,7 @@ public class CreateOtherExternalContact(
             {
                 var contactType = EnumExtensions.FromDescription<ExternalContactType>(this.ExternalContactInput.SelectedExternalContactType);
 
-                await this.GetCurrentProject();
+                await this.GetCurrentProjectAsync();
 
                 var category = ExternalContactMapper.MapContactTypeToCategory(contactType);
                 var organisationName = await this.GetOrganisationNameAsync(contactType);
@@ -67,7 +67,7 @@ public class CreateOtherExternalContact(
                     PhoneNumber: this.ExternalContactInput.Phone ?? string.Empty,
                     Category: category,
                     IsPrimaryContact: this.ExternalContactInput.IsPrimaryProjectContact,
-                    ProjectId: new ProjectId(Guid.Parse(this.ProjectId)),
+                    ProjectId: new ProjectId(Guid.Parse(this.ProjectId!)),
                     EstablishmentUrn: null,
                     OrganisationName: organisationName,
                     LocalAuthorityId: null,

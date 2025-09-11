@@ -21,5 +21,9 @@
         public const string SevenToElevenYears = "Enter the proposed capacity for pupils in years 7 to 11";
         public const string TwelveOrAboveYears = "Enter the proposed capacity for students in year 12 or above";
         public const string ProposedCapacityMustBeNumber = "Proposed capacity must be a number, like 345";
+        public const string InvalidGuid = "{0} is not a valid Guid.";
+        public const string ContactNotFound = "Contact {0} does not exist.";
+        public const string ProjectNotFound = "Project {0} does not exist.";
+
     }
 }

@@ -1,7 +1,9 @@
 using Dfe.AcademiesApi.Client.Contracts;
 using Dfe.Complete.Application.Projects.Models;
 using Dfe.Complete.Application.Projects.Queries.GetProject;
+using Dfe.Complete.Constants;
 using Dfe.Complete.Domain.ValueObjects;
+using Dfe.Complete.Utils;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -21,25 +23,21 @@ public abstract class ExternalContactBasePageModel(ISender sender, ILogger logge
 
     public EstablishmentDto? Establishment { get; set; }
 
-    public async Task GetCurrentProject()
+    public async Task GetCurrentProjectAsync()
     {
-        var success = Guid.TryParse(ProjectId, out var guid);
-
-        if (!success)
+        if (!Guid.TryParse(ProjectId, out var projectGuid))
         {
-            var error = $"{ProjectId} is not a valid Guid.";
-            logger.LogError("{Error}", error);            
-            return;
+            var errorMessage = string.Format(ValidationConstants.InvalidGuid, ProjectId);
+            throw new NotFoundException(errorMessage);
         }
 
-        var query = new GetProjectByIdQuery(new ProjectId(guid));
+        var query = new GetProjectByIdQuery(new ProjectId(projectGuid));
         var result = await sender.Send(query);
 
         if (!result.IsSuccess || result.Value == null)
         {
-            var error = $"Project {ProjectId} does not exist.";
-            logger.LogError("{Error}", error);
-            return;
+            var errorMessage = string.Format(ValidationConstants.ProjectNotFound, ProjectId);
+            throw new NotFoundException(errorMessage);
         }
 
         Project = result.Value;

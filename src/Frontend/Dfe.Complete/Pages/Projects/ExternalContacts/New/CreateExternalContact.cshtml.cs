@@ -41,93 +41,107 @@ public class CreateExternalContact(
 
     public async virtual Task<IActionResult> OnGetAsync()
     {
-        return await this.GetPage();
+        return await this.GetPageAsync();
     }
 
     public async Task<IActionResult> OnPostAsync()
-    {  
-        FluentValidation.Results.ValidationResult result = await validator.ValidateAsync(ExternalContactInput);
+    {
+        var validationResult = await validator.ValidateAsync(ExternalContactInput);
 
-        if (!result.IsValid)
+        if (!validationResult.IsValid)
         {
-            foreach (var error in result.Errors)
-            {
-                ModelState.AddModelError(error.PropertyName, error.ErrorMessage);
-            }
+            AddValidationErrorsToModelState(validationResult);
             errorService.AddErrors(ModelState);
-            return await this.GetPage();
+            return await GetPageAsync();
         }
-        else
+
+        try
         {
-            try
+            await base.GetCurrentProjectAsync();
+
+            var contactType = EnumExtensions.FromDescription<ExternalContactType>(SelectedExternalContactType);
+
+            if (contactType == default)
             {
-                await base.GetCurrentProject();
-
-                var contactType = EnumExtensions.FromDescription<ExternalContactType>(this.SelectedExternalContactType);
-                var organisationName = string.Empty;
-                var role = ExternalContactMapper.GetRoleByContactType(contactType);
-                var category = ExternalContactMapper.MapContactTypeToCategory(contactType);
-
-                switch (contactType)
-                {
-                    case ExternalContactType.HeadTeacher:
-                    case ExternalContactType.ChairOfGovernors:
-                        organisationName = this.Project?.EstablishmentName?.ToTitleCase();
-                        break;
-                    case ExternalContactType.IncomingTrust:
-                        if (!this.Project.FormAMat && Project.IncomingTrustUkprn != null)
-                        {  
-                            var incomingTrust = await trustCacheService.GetTrustAsync(this.Project.IncomingTrustUkprn);
-                            organisationName = incomingTrust.Name?.ToTitleCase();
-                        }
-                        break;
-                    case ExternalContactType.OutgoingTrust:
-                        if (this.Project?.Type == ProjectType.Transfer && this.Project.OutgoingTrustUkprn != null)
-                        {
-                            var outgoingTrust = await trustCacheService.GetTrustAsync(this.Project.OutgoingTrustUkprn);
-                            organisationName = outgoingTrust.Name?.ToTitleCase();
-                        }
-                        break;                    
-                    default:
-                        ModelState.AddModelError("InvalidContactType", invalidContactTypeErrorMessage);
-                        return Page();
-                }
-
-                var newExternalContactCommand = new CreateExternalContactCommand(
-                    FullName: this.ExternalContactInput.FullName,
-                    Role: role,
-                    Email: this.ExternalContactInput.Email ?? string.Empty,
-                    PhoneNumber: this.ExternalContactInput.Phone ?? string.Empty,
-                    Category: category,
-                    IsPrimaryContact: this.ExternalContactInput.IsPrimaryProjectContact,
-                    ProjectId: new ProjectId(Guid.Parse(this.ProjectId)),
-                    EstablishmentUrn: null,
-                    OrganisationName: organisationName,
-                    LocalAuthorityId: null,
-                    Type: ContactType.Project
-                );
-
-                var response = await sender.Send(newExternalContactCommand);
-                var contactId = response.Value;
-
-                TempData.SetNotification(
-                    NotificationType.Success,
-                    "Success",
-                    "Contact added"
-                );
+                ModelState.AddModelError("InvalidContactType", invalidContactTypeErrorMessage);
+                return await GetPageAsync();
             }
-            catch (Exception ex)
+
+            var organisationName = await GetOrganisationNameAsync(contactType);
+
+            if (organisationName == null && RequiresOrganisationName(contactType))
             {
-                logger.LogError(ex, "An error occurred when creating a new external contact for project {ProjectId}", ProjectId);
-                ModelState.AddModelError("UnexpectedError", "An unexpected error occurred. Please try again later.");
-                return await this.GetPage();
+                ModelState.AddModelError("InvalidContactType", invalidContactTypeErrorMessage);
+                return await GetPageAsync();
             }
+
+            var command = BuildCreateContactCommand(contactType, organisationName!);
+
+            var response = await sender.Send(command);
+            var contactId = response.Value;
+
+            TempData.SetNotification(
+                NotificationType.Success,
+                "Success",
+                "Contact added"
+            );
 
             return Redirect(string.Format(RouteConstants.ProjectExternalContacts, ProjectId));
         }
-    }    
+        catch (Exception ex)
+        {
+            logger.LogError(ex, "An error occurred when creating a new external contact for project {ProjectId}", ProjectId);
+            ModelState.AddModelError("UnexpectedError", "An unexpected error occurred. Please try again later.");
+            return await GetPageAsync();
+        }
+    }
 
-    private async Task<IActionResult> GetPage()
+    private void AddValidationErrorsToModelState(FluentValidation.Results.ValidationResult result)
+    {
+        foreach (var error in result.Errors)
+        {
+            ModelState.AddModelError(error.PropertyName, error.ErrorMessage);
+        }
+    }
+
+    private bool RequiresOrganisationName(ExternalContactType contactType)
+        => contactType is ExternalContactType.IncomingTrust or ExternalContactType.OutgoingTrust;    
+
+    private async Task<string?> GetOrganisationNameAsync(ExternalContactType contactType)
+    {
+        return contactType switch
+        {
+            ExternalContactType.HeadTeacher or ExternalContactType.ChairOfGovernors
+                => Project?.EstablishmentName?.ToTitleCase(),
+
+            ExternalContactType.IncomingTrust when Project?.FormAMat == false && Project.IncomingTrustUkprn != null
+                => (await trustCacheService.GetTrustAsync(Project.IncomingTrustUkprn))?.Name?.ToTitleCase(),
+
+            ExternalContactType.OutgoingTrust when Project?.Type == ProjectType.Transfer && Project.OutgoingTrustUkprn != null
+                => (await trustCacheService.GetTrustAsync(Project.OutgoingTrustUkprn))?.Name?.ToTitleCase(),
+
+            _ => null
+        };
+    }
+
+    private CreateExternalContactCommand BuildCreateContactCommand(ExternalContactType contactType, string organisationName)
+    {
+        return new CreateExternalContactCommand(
+            FullName: ExternalContactInput.FullName,
+            Role: ExternalContactMapper.GetRoleByContactType(contactType),
+            Email: ExternalContactInput.Email ?? string.Empty,
+            PhoneNumber: ExternalContactInput.Phone ?? string.Empty,
+            Category: ExternalContactMapper.MapContactTypeToCategory(contactType),
+            IsPrimaryContact: ExternalContactInput.IsPrimaryProjectContact,
+            ProjectId: new ProjectId(Guid.Parse(ProjectId)),
+            EstablishmentUrn: null,
+            OrganisationName: organisationName,
+            LocalAuthorityId: null,
+            Type: ContactType.Project
+        );
+    }
+
+    private async Task<IActionResult> GetPageAsync()
     {
         var contactType = EnumExtensions.FromDescription<ExternalContactType>(this.SelectedExternalContactType);
 
@@ -139,7 +153,7 @@ public class CreateExternalContact(
             return NotFound();
         }
 
-        await base.GetCurrentProject();
+        await base.GetCurrentProjectAsync();
         return Page();
     }
 }

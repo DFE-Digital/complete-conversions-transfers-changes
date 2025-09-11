@@ -1,4 +1,5 @@
 ﻿@page "/projects/{projectId}/external-contacts/new"
+@using Dfe.Complete.Constants
 @using Dfe.Complete.Domain.Enums
 @using Dfe.Complete.Utils;
 @using Microsoft.AspNetCore.Components.Forms
@@ -8,11 +9,12 @@
   ViewData["Title"] = "Add contact";
   Layout = "Shared/_Layout";  
   const string contactType = nameof(Model.SelectedExternalContactType);
+  var projectsExternalContactLink = string.Format(RouteConstants.ProjectExternalContacts, Model.ProjectId);
 }
 
 <div class="govuk-width-container">
   <nav aria-label="back link">
-    <a class="govuk-back-link" href="/projects/@Model.ProjectId/external-contacts">Back</a>
+        <a class="govuk-back-link" href="@projectsExternalContactLink">Back</a>
   </nav>
   <main class="govuk-main-wrapper app-content" id="main-content" role="main">
     <span class="govuk-caption-l">Add a contact</span>
@@ -36,7 +38,7 @@
               </govuk-radios>
           <div class="govuk-button-group">
             <govuk-button type="submit">Save and Continue</govuk-button>
-            <a class="govuk-link" href="/projects/@Model.ProjectId/external-contacts">Cancel</a>
+                        <a class="govuk-link" href="@projectsExternalContactLink">Cancel</a>
           </div>
         </form>
       </div>

@@ -6,6 +6,7 @@ using Dfe.Complete.Domain.ValueObjects;
 using Dfe.Complete.Extensions;
 using Dfe.Complete.Models;
 using Dfe.Complete.Services;
+using Dfe.Complete.Utils;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -22,14 +23,14 @@ namespace Dfe.Complete.Pages.Projects.ExternalContacts
         private readonly ILogger<DeleteExternalContact> logger = logger;
 
         [BindProperty(SupportsGet = true, Name = "projectId")]
-        public string ProjectId { get; set; }
+        public string? ProjectId { get; set; }
 
         [BindProperty(SupportsGet = true, Name = "contactId")]
-        public string ContactId { get; set; }
+        public string? ContactId { get; set; }
 
-        public string FullName { get; set; }
+        public string? FullName { get; set; }
 
-        public string Role { get; set; }
+        public string? Role { get; set; }
 
         public async Task<IActionResult> OnGetAsync()
         {
@@ -67,8 +68,26 @@ namespace Dfe.Complete.Pages.Projects.ExternalContacts
         }
 
         private async Task<IActionResult> GetPage()
-        {   
-            await this.GetContactDetails();
+        {
+            try
+            {
+                await this.GetContactDetails();
+            }
+            catch (NotFoundException notFoundException)
+            {
+                logger.LogError(notFoundException, notFoundException.Message, notFoundException.InnerException);
+                ModelState.AddModelError(notFoundException.Field ?? "NotFound", notFoundException.Message);
+                errorService.AddErrors(ModelState);
+
+                return Page();
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex, "Error occurred while getting contact details.");
+                ModelState.AddModelError("", "An unexpected error occurred. Please try again later.");
+                return Page();
+            }
+
             return Page();
         }
 
@@ -78,19 +97,17 @@ namespace Dfe.Complete.Pages.Projects.ExternalContacts
 
             if (!success)
             {
-                var error = $"{ContactId} is not a valid Guid.";
-                logger.LogError("{Error}", error);
-                return;
+                var error = string.Format(ValidationConstants.InvalidGuid, ContactId);                
+                throw new NotFoundException(error);                
             }
 
             var query = new GetContactByIdQuery(new ContactId(guid));
             var result = await sender.Send(query);
 
             if (!result.IsSuccess || result.Value == null)
-            {
-                var error = $"Contact {ContactId} does not exist.";
-                logger.LogError("{Error}", error);
-                return;
+            {                
+                var error = string.Format(ValidationConstants.ContactNotFound, ContactId);
+                throw new NotFoundException(error);
             }
 
             var contact = result.Value;
