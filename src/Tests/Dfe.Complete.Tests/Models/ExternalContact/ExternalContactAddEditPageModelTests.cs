@@ -6,8 +6,7 @@ namespace Dfe.Complete.Tests.Models.ExternalContact
     using Dfe.Complete.Application.Common.Models;
     using Dfe.Complete.Application.LocalAuthorities.Models;
     using Dfe.Complete.Application.LocalAuthorities.Queries.GetLocalAuthority;
-    using Dfe.Complete.Application.Projects.Models;
-    using Dfe.Complete.Application.Projects.Queries.GetProject;
+    using Dfe.Complete.Application.Projects.Models;    
     using Dfe.Complete.Application.Services.AcademiesApi;
     using Dfe.Complete.Application.Services.TrustCache;
     using Dfe.Complete.Domain.Enums;
@@ -16,8 +15,8 @@ namespace Dfe.Complete.Tests.Models.ExternalContact
     using Dfe.Complete.Tests.Common.Customizations.Behaviours;
     using Dfe.Complete.Tests.Common.Customizations.Models;
     using Dfe.Complete.Tests.MockData;
-    using Dfe.Complete.Utils;
-    using DfE.CoreLibs.Testing.AutoFixture.Customizations;
+    using Dfe.Complete.Utils;    
+    using GovUK.Dfe.CoreLibs.Testing.AutoFixture.Customizations;
     using MediatR;
     using Microsoft.Extensions.Logging;
     using Moq;

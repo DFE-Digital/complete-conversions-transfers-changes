@@ -3,8 +3,8 @@ using Dfe.Complete.Application.Contacts.Models;
 using Dfe.Complete.Application.Mappers;
 using Dfe.Complete.Domain.Entities;
 using Dfe.Complete.Tests.Common.Customizations.Behaviours;
-using DfE.CoreLibs.Testing.AutoFixture.Attributes;
-using DfE.CoreLibs.Testing.AutoFixture.Customizations;
+using GovUK.Dfe.CoreLibs.Testing.AutoFixture.Attributes;
+using GovUK.Dfe.CoreLibs.Testing.AutoFixture.Customizations;
 
 namespace Dfe.Complete.Application.Tests.Mappers
 {

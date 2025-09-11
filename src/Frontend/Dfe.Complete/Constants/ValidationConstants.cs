@@ -24,7 +24,6 @@
         public const string InvalidGuid = "{0} is not a valid Guid.";
         public const string ContactNotFound = "Contact {0} does not exist.";
         public const string ProjectNotFound = "Project {0} does not exist.";
-
         public const string ValidDate = "Enter a valid date, like 1 1 2025";
     }
 }

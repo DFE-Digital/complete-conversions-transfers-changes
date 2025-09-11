@@ -5,20 +5,20 @@ namespace Dfe.Complete.Tests.Pages.Projects.ExternalContacts.New
     using Dfe.Complete.Application.Common.Models;
     using Dfe.Complete.Application.Contacts.Commands;
     using Dfe.Complete.Application.Projects.Models;
-    using Dfe.Complete.Application.Projects.Queries.GetProject;    
+    using Dfe.Complete.Application.Projects.Queries.GetProject;
     using Dfe.Complete.Domain.Enums;
-    using Dfe.Complete.Domain.ValueObjects;    
-    using Dfe.Complete.Pages.Projects.ExternalContacts.New;    
+    using Dfe.Complete.Domain.ValueObjects;
+    using Dfe.Complete.Pages.Projects.ExternalContacts.New;
     using Dfe.Complete.Tests.Common.Customizations.Behaviours;
     using Dfe.Complete.Tests.Common.Customizations.Models;
     using Dfe.Complete.Tests.MockData;
     using Dfe.Complete.Utils;
-    using DfE.CoreLibs.Testing.AutoFixture.Customizations;    
-    using MediatR;    
+    using GovUK.Dfe.CoreLibs.Testing.AutoFixture.Customizations;
+    using MediatR;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Mvc.RazorPages;
     using Microsoft.Extensions.Logging;
-    using Moq;    
+    using Moq;
     using System.Threading.Tasks;
     using Xunit;
 
