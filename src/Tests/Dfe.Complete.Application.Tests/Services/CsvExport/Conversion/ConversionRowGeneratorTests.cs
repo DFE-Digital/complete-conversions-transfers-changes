@@ -5,7 +5,7 @@ using Dfe.Complete.Application.Services.CsvExport.Conversion;
 using Dfe.Complete.Application.Services.TrustCache;
 using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Tests.Common.Customizations.Models;
-using DfE.CoreLibs.Testing.AutoFixture.Attributes;
+using GovUK.Dfe.CoreLibs.Testing.AutoFixture.Attributes;
 using NSubstitute;
 namespace Dfe.Complete.Application.Tests.Services.CsvExport.Conversion
 {

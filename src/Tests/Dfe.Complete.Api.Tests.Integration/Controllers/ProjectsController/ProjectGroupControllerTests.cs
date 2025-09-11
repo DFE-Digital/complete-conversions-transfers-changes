@@ -5,9 +5,9 @@ using Dfe.Complete.Client.Contracts;
 using Dfe.Complete.Domain.Entities;
 using Dfe.Complete.Infrastructure.Database;
 using Dfe.Complete.Tests.Common.Constants;
-using DfE.CoreLibs.Testing.AutoFixture.Attributes;
-using DfE.CoreLibs.Testing.Mocks.WebApplicationFactory;
-using DfE.CoreLibs.Testing.Mocks.WireMock;
+using GovUK.Dfe.CoreLibs.Testing.AutoFixture.Attributes;
+using GovUK.Dfe.CoreLibs.Testing.Mocks.WebApplicationFactory;
+using GovUK.Dfe.CoreLibs.Testing.Mocks.WireMock;
 using Dfe.Complete.Tests.Common.Customizations.Models;
 using Dfe.AcademiesApi.Client.Contracts;
 

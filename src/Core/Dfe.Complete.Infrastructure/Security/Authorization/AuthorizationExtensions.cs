@@ -1,4 +1,4 @@
-using DfE.CoreLibs.Security.Authorization;
+using GovUK.Dfe.CoreLibs.Security.Authorization;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;

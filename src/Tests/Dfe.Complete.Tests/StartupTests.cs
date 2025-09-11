@@ -1,10 +1,10 @@
 using System.Reflection;
 using Dfe.Complete.Configuration;
 using Dfe.Complete.Validators;
-using DfE.CoreLibs.Security.Antiforgery;
-using DfE.CoreLibs.Security.Cypress;
-using DfE.CoreLibs.Security.Enums;
-using DfE.CoreLibs.Security.Interfaces;
+using GovUK.Dfe.CoreLibs.Security.Antiforgery;
+using GovUK.Dfe.CoreLibs.Security.Cypress;
+using GovUK.Dfe.CoreLibs.Security.Enums;
+using GovUK.Dfe.CoreLibs.Security.Interfaces;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;

@@ -1,5 +1,5 @@
 using System.Globalization;
-using DfE.CoreLibs.Utilities.Constants;
+using GovUK.Dfe.CoreLibs.Utilities.Constants;
 
 namespace Dfe.Complete.Extensions
 {

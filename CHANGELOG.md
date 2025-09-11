@@ -17,7 +17,10 @@ Security in case of vulnerabilities.
 ## Unreleased
 
 ### Added
+
+- Added `Receive declaration of expenditure certificate` task for conversion and transfer projects.
 - Added `Add, Edit and Delete External Contacts for both conversion and transfer projects.
+
 
 See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-09-09.731...main) for everything awaiting release
 

@@ -5,7 +5,7 @@ using Dfe.Complete.Domain.Entities;
 using Dfe.Complete.Domain.Interfaces.Repositories;
 using Dfe.Complete.Domain.ValueObjects;
 using Dfe.Complete.Infrastructure.Security.Authorization;
-using DfE.CoreLibs.Security.Interfaces;
+using GovUK.Dfe.CoreLibs.Security.Interfaces;
 using Microsoft.Extensions.Caching.Memory;
 using NSubstitute;
 

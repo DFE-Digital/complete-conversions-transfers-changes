@@ -1,5 +1,5 @@
-﻿using DfE.CoreLibs.Security.Cypress;
-using DfE.CoreLibs.Security.Interfaces;
+﻿using GovUK.Dfe.CoreLibs.Security.Cypress;
+using GovUK.Dfe.CoreLibs.Security.Interfaces;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
