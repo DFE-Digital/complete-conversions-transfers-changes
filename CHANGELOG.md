@@ -20,6 +20,8 @@ Security in case of vulnerabilities.
 
 - Added `Receive declaration of expenditure certificate` task for conversion and transfer projects.
 
+### Fixed
+- update "Give feedback about service" to use correct link
 
 See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-09-09.731...main) for everything awaiting release
 
