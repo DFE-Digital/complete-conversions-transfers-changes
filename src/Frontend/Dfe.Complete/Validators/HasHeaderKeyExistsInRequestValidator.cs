@@ -1,4 +1,4 @@
-﻿using DfE.CoreLibs.Security.Interfaces;
+﻿using GovUK.Dfe.CoreLibs.Security.Interfaces;
 
 namespace Dfe.Complete.Validators
 {

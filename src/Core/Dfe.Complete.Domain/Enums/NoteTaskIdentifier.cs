@@ -43,5 +43,9 @@ public enum NoteTaskIdentifier
 
     [Description("proposed_capacity_of_the_academy")]
     [DisplayDescription("Confirm the proposed capacity of the academy")]
-    ConfirmProposedCapacityOfTheAcademy = 10
+    ConfirmProposedCapacityOfTheAcademy = 10,
+
+    [Description("receive_declaration_of_expenditure_certificate")]
+    [DisplayDescription("Receive declaration of expenditure certificate")]
+    DeclarationOfExpenditureCertificate = 11
 }

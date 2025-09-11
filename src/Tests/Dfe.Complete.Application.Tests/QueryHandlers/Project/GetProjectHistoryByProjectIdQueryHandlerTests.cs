@@ -1,5 +1,5 @@
 using AutoFixture.Xunit2;
-using DfE.CoreLibs.Testing.AutoFixture.Attributes;
+using GovUK.Dfe.CoreLibs.Testing.AutoFixture.Attributes;
 using Dfe.Complete.Application.Projects.Models;
 using Dfe.Complete.Application.Projects.Queries.GetProject;
 using Dfe.Complete.Domain.Entities;
@@ -7,7 +7,7 @@ using Dfe.Complete.Domain.ValueObjects;
 using NSubstitute;
 using AutoMapper;
 using Dfe.Complete.Application.Projects.Interfaces;
-using DfE.CoreLibs.Testing.AutoFixture.Customizations;
+using GovUK.Dfe.CoreLibs.Testing.AutoFixture.Customizations;
 using MockQueryable;
 
 namespace Dfe.Complete.Application.Tests.QueryHandlers.Project

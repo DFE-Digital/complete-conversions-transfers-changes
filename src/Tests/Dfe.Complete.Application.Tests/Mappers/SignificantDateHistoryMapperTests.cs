@@ -1,5 +1,5 @@
-using DfE.CoreLibs.Testing.AutoFixture.Attributes;
-using DfE.CoreLibs.Testing.AutoFixture.Customizations;
+using GovUK.Dfe.CoreLibs.Testing.AutoFixture.Attributes;
+using GovUK.Dfe.CoreLibs.Testing.AutoFixture.Customizations;
 using AutoMapper;
 using Dfe.Complete.Application.Mappers;
 using Dfe.Complete.Application.Projects.Models;
