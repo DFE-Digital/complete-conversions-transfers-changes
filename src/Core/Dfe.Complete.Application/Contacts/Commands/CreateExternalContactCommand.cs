@@ -4,7 +4,6 @@ using Dfe.Complete.Application.Projects.Commands.UpdateProject;
 using Dfe.Complete.Domain.Constants;
 using Dfe.Complete.Domain.Entities;
 using Dfe.Complete.Domain.Enums;
-using Dfe.Complete.Domain.Interfaces.Repositories;
 using Dfe.Complete.Domain.ValueObjects;
 using MediatR;
 using Microsoft.Extensions.Logging;
