@@ -17,7 +17,7 @@ const otherUserProject = ProjectBuilder.createTransferFormAMatProjectRequest({
 });
 let otherUserProjectId: string;
 
-describe("Transfers tasks - Deed of variation", () => {
+describe("Transfer tasks - Redact and send documents", () => {
     before(() => {
         projectRemover.removeProjectIfItExists(`${project.urn.value}`);
         projectRemover.removeProjectIfItExists(`${otherUserProject.urn.value}`);
@@ -35,50 +35,60 @@ describe("Transfers tasks - Deed of variation", () => {
     beforeEach(() => {
         cy.login();
         cy.acceptCookies();
-        cy.visit(`projects/${projectId}/tasks/deed_of_variation`);
+        cy.visit(`projects/${projectId}/tasks/redact_and_send_documents`);
     });
 
     it("should expand and collapse guidance details", () => {
         taskPage
-            .clickDropdown("Help checking for changes")
-            .hasDropdownContent("Changes that personalise the model documents to an academy or trust are expected.")
-            .clickDropdown("How to sign the deed of variation")
-            .hasDropdownContent("The Secretary of State, or somebody with the authority to act on their behalf");
+            .hasCheckboxLabel("Redact all relevant documents")
+            .expandGuidance("Help redacting the documents")
+            .hasGuidance("You need to create a redacted version of each document")
+            .hasGuidance("deed of novation and variation")
+            .hasGuidance("deed of termination");
     });
 
     it("should submit the form and persist selections", () => {
-        Logger.log("Select 'not applicable' checkbox and save");
-        taskPage.tickNotApplicable().saveAndReturn();
-        taskListPage.hasTaskStatusNotApplicable("Deed of variation").selectTask("Deed of variation");
+        Logger.log("Select first checkbox and save");
+        taskPage
+            .hasCheckboxLabel("Send relevant redacted documents to ESFA (Education and Skills Funding Agency)")
+            .tick()
+            .saveAndReturn();
+        taskListPage.hasTaskStatusInProgress("Redact and send documents").selectTask("Redact and send documents");
 
-        Logger.log("Unselect 'not applicable' checkbox and save");
-        taskPage.hasCheckboxLabel("Not applicable").isTicked().untick().saveAndReturn();
-        taskListPage.hasTaskStatusNotStarted("Deed of variation").selectTask("Deed of variation");
-        taskPage.hasCheckboxLabel("Not applicable").isUnticked();
+        Logger.log("Unselect same checkbox and save");
+        taskPage
+            .hasCheckboxLabel("Send relevant redacted documents to ESFA (Education and Skills Funding Agency)")
+            .isTicked()
+            .untick()
+            .saveAndReturn();
+        taskListPage.hasTaskStatusNotStarted("Redact and send documents").selectTask("Redact and send documents");
+        taskPage
+            .hasCheckboxLabel("Send relevant redacted documents to ESFA (Education and Skills Funding Agency)")
+            .isUnticked();
     });
 
     it("should show task status based on the checkboxes that are checked", () => {
         cy.visit(`projects/${projectId}/tasks`);
 
-        TaskHelper.updateDeedOfVariation(taskId, ProjectType.Transfer, "notStarted");
+        TaskHelper.updateRedactAndSendDocuments(taskId, ProjectType.Transfer, "notStarted");
         cy.reload();
-        taskListPage.hasTaskStatusNotStarted("Deed of variation");
+        taskListPage.hasTaskStatusNotStarted("Redact and send documents");
 
-        TaskHelper.updateDeedOfVariation(taskId, ProjectType.Transfer, "notApplicable");
+        TaskHelper.updateRedactAndSendDocuments(taskId, ProjectType.Transfer, "inProgress");
         cy.reload();
-        taskListPage.hasTaskStatusNotApplicable("Deed of variation");
+        taskListPage.hasTaskStatusInProgress("Redact and send documents");
 
-        TaskHelper.updateDeedOfVariation(taskId, ProjectType.Transfer, "inProgress");
+        TaskHelper.updateRedactAndSendDocuments(taskId, ProjectType.Transfer, "completed");
         cy.reload();
-        taskListPage.hasTaskStatusInProgress("Deed of variation");
+        taskListPage.hasTaskStatusCompleted("Redact and send documents");
+    });
 
-        TaskHelper.updateDeedOfVariation(taskId, ProjectType.Transfer, "completed");
-        cy.reload();
-        taskListPage.hasTaskStatusCompleted("Deed of variation");
+    it("Should NOT see the not applicable option for this task", () => {
+        taskPage.noNotApplicableOptionExists();
     });
 
     it("Should NOT see the 'save and return' button for another user's project", () => {
-        cy.visit(`projects/${otherUserProjectId}/tasks/deed_of_variation`);
+        cy.visit(`projects/${otherUserProjectId}/tasks/redact_and_send_documents`);
         taskPage.noSaveAndReturnExists();
     });
 

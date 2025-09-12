@@ -79,8 +79,8 @@ describe("View the conversion date history tests", () => {
         Logger.log("Go to Conversion date history section");
         projectDetailsPage
             .navigateTo("Conversion date history")
-            // .containsSubHeading("Current confirmed conversion date") // bug 231908
-            // .contains(`The current confirmed conversion date is ${inSixMonthsDisplayDate}.`)
+            .containsSubHeading("Current confirmed conversion date")
+            .contains(`The current confirmed conversion date is ${inNineMonthsDisplayDate}`)
             .containsSubHeading("Conversion date history");
 
         Logger.log("Check the history of conversion dates");

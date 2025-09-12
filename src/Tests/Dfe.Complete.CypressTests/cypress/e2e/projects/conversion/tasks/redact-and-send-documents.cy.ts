@@ -17,7 +17,7 @@ const otherUserProject = ProjectBuilder.createConversionFormAMatProjectRequest({
 });
 let otherUserProjectId: string;
 
-describe("Conversion tasks - Deed of variation", () => {
+describe("Conversion tasks - Redact and send documents", () => {
     before(() => {
         projectRemover.removeProjectIfItExists(`${project.urn.value}`);
         projectRemover.removeProjectIfItExists(`${otherUserProject.urn.value}`);
@@ -35,64 +35,49 @@ describe("Conversion tasks - Deed of variation", () => {
     beforeEach(() => {
         cy.login();
         cy.acceptCookies();
-        cy.visit(`projects/${projectId}/tasks/deed_of_variation`);
+        cy.visit(`projects/${projectId}/tasks/redact_and_send`);
     });
 
     it("should expand and collapse guidance details", () => {
         taskPage
-            .clickDropdown("Help checking for changes")
-            .hasDropdownContent("Changes that personalise the model documents to a school or trust");
+            .hasCheckboxLabel("Redact all relevant documents")
+            .expandGuidance("Help redacting the documents")
+            .hasGuidance("You need to create a redacted version of each applicable document");
     });
 
     it("should submit the form and persist selections", () => {
-        Logger.log("Select some checkboxes and save");
-        taskPage
-            .hasCheckboxLabel("Signed by school or trust")
-            .tick()
-            .hasCheckboxLabel("Saved in the school's SharePoint folder")
-            .tick()
-            .saveAndReturn();
-        taskListPage.hasTaskStatusInProgress("Deed of variation").selectTask("Deed of variation");
+        Logger.log("Select first checkbox and save");
+        taskPage.hasCheckboxLabel("Redact all relevant documents").tick().saveAndReturn();
+        taskListPage.hasTaskStatusInProgress("Redact and send documents").selectTask("Redact and send documents");
 
-        Logger.log("Unselect same checkboxes and save");
-        taskPage
-            .hasCheckboxLabel("Signed by school or trust")
-            .isTicked()
-            .untick()
-            .hasCheckboxLabel("Saved in the school's SharePoint folder")
-            .isTicked()
-            .untick()
-            .saveAndReturn();
-        taskListPage.hasTaskStatusNotStarted("Deed of variation").selectTask("Deed of variation");
-        taskPage
-            .hasCheckboxLabel("Signed by school or trust")
-            .isUnticked()
-            .hasCheckboxLabel("Saved in the school's SharePoint folder")
-            .isUnticked();
+        Logger.log("Unselect same checkbox and save");
+        taskPage.hasCheckboxLabel("Redact all relevant documents").isTicked().untick().saveAndReturn();
+        taskListPage.hasTaskStatusNotStarted("Redact and send documents").selectTask("Redact and send documents");
+        taskPage.hasCheckboxLabel("Redact all relevant documents").isUnticked();
     });
 
     it("should show task status based on the checkboxes that are checked", () => {
         cy.visit(`projects/${projectId}/tasks`);
 
-        TaskHelper.updateDeedOfVariation(taskId, ProjectType.Conversion, "notStarted");
+        TaskHelper.updateRedactAndSendDocuments(taskId, ProjectType.Conversion, "notStarted");
         cy.reload();
-        taskListPage.hasTaskStatusNotStarted("Deed of variation");
+        taskListPage.hasTaskStatusNotStarted("Redact and send documents");
 
-        TaskHelper.updateDeedOfVariation(taskId, ProjectType.Conversion, "notApplicable");
+        TaskHelper.updateRedactAndSendDocuments(taskId, ProjectType.Conversion, "inProgress");
         cy.reload();
-        taskListPage.hasTaskStatusNotApplicable("Deed of variation");
+        taskListPage.hasTaskStatusInProgress("Redact and send documents");
 
-        TaskHelper.updateDeedOfVariation(taskId, ProjectType.Conversion, "inProgress");
+        TaskHelper.updateRedactAndSendDocuments(taskId, ProjectType.Conversion, "completed");
         cy.reload();
-        taskListPage.hasTaskStatusInProgress("Deed of variation");
+        taskListPage.hasTaskStatusCompleted("Redact and send documents");
+    });
 
-        TaskHelper.updateDeedOfVariation(taskId, ProjectType.Conversion, "completed");
-        cy.reload();
-        taskListPage.hasTaskStatusCompleted("Deed of variation");
+    it("Should NOT see the not applicable option for this task", () => {
+        taskPage.noNotApplicableOptionExists();
     });
 
     it("Should NOT see the 'save and return' button for another user's project", () => {
-        cy.visit(`projects/${otherUserProjectId}/tasks/deed_of_variation`);
+        cy.visit(`projects/${otherUserProjectId}/tasks/redact_and_send`);
         taskPage.noSaveAndReturnExists();
     });
 

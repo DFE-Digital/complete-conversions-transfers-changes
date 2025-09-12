@@ -17,7 +17,7 @@ const otherUserProject = ProjectBuilder.createConversionFormAMatProjectRequest({
 });
 let otherUserProjectId: string;
 
-describe("Conversion tasks - Deed of variation", () => {
+describe("Conversion tasks - Supplemental funding agreement", () => {
     before(() => {
         projectRemover.removeProjectIfItExists(`${project.urn.value}`);
         projectRemover.removeProjectIfItExists(`${otherUserProject.urn.value}`);
@@ -35,64 +35,68 @@ describe("Conversion tasks - Deed of variation", () => {
     beforeEach(() => {
         cy.login();
         cy.acceptCookies();
-        cy.visit(`projects/${projectId}/tasks/deed_of_variation`);
+        cy.visit(`projects/${projectId}/tasks/supplemental_funding_agreement`);
     });
 
     it("should expand and collapse guidance details", () => {
         taskPage
-            .clickDropdown("Help checking for changes")
+            .clickDropdown("Help checking the supplemental funding agreement")
             .hasDropdownContent("Changes that personalise the model documents to a school or trust");
     });
 
     it("should submit the form and persist selections", () => {
         Logger.log("Select some checkboxes and save");
         taskPage
-            .hasCheckboxLabel("Signed by school or trust")
+            .hasCheckboxLabel("Sent to team leader or deputy director")
             .tick()
-            .hasCheckboxLabel("Saved in the school's SharePoint folder")
+            .hasCheckboxLabel("Document signed on behalf of the Secretary of State")
             .tick()
             .saveAndReturn();
-        taskListPage.hasTaskStatusInProgress("Deed of variation").selectTask("Deed of variation");
+        taskListPage
+            .hasTaskStatusInProgress("Supplemental funding agreement")
+            .selectTask("Supplemental funding agreement");
 
         Logger.log("Unselect same checkboxes and save");
         taskPage
-            .hasCheckboxLabel("Signed by school or trust")
+            .hasCheckboxLabel("Sent to team leader or deputy director")
             .isTicked()
             .untick()
-            .hasCheckboxLabel("Saved in the school's SharePoint folder")
+            .hasCheckboxLabel("Document signed on behalf of the Secretary of State")
             .isTicked()
             .untick()
             .saveAndReturn();
-        taskListPage.hasTaskStatusNotStarted("Deed of variation").selectTask("Deed of variation");
+        taskListPage
+            .hasTaskStatusNotStarted("Supplemental funding agreement")
+            .selectTask("Supplemental funding agreement");
         taskPage
-            .hasCheckboxLabel("Signed by school or trust")
+            .hasCheckboxLabel("Sent to team leader or deputy director")
             .isUnticked()
-            .hasCheckboxLabel("Saved in the school's SharePoint folder")
+            .hasCheckboxLabel("Document signed on behalf of the Secretary of State")
             .isUnticked();
     });
 
     it("should show task status based on the checkboxes that are checked", () => {
         cy.visit(`projects/${projectId}/tasks`);
 
-        TaskHelper.updateDeedOfVariation(taskId, ProjectType.Conversion, "notStarted");
+        TaskHelper.updateSupplementalFundingAgreement(taskId, ProjectType.Conversion, "notStarted");
         cy.reload();
-        taskListPage.hasTaskStatusNotStarted("Deed of variation");
+        taskListPage.hasTaskStatusNotStarted("Supplemental funding agreement");
 
-        TaskHelper.updateDeedOfVariation(taskId, ProjectType.Conversion, "notApplicable");
+        TaskHelper.updateSupplementalFundingAgreement(taskId, ProjectType.Conversion, "inProgress");
         cy.reload();
-        taskListPage.hasTaskStatusNotApplicable("Deed of variation");
+        taskListPage.hasTaskStatusInProgress("Supplemental funding agreement");
 
-        TaskHelper.updateDeedOfVariation(taskId, ProjectType.Conversion, "inProgress");
+        TaskHelper.updateSupplementalFundingAgreement(taskId, ProjectType.Conversion, "completed");
         cy.reload();
-        taskListPage.hasTaskStatusInProgress("Deed of variation");
+        taskListPage.hasTaskStatusCompleted("Supplemental funding agreement");
+    });
 
-        TaskHelper.updateDeedOfVariation(taskId, ProjectType.Conversion, "completed");
-        cy.reload();
-        taskListPage.hasTaskStatusCompleted("Deed of variation");
+    it("Should NOT see the not applicable option for this task", () => {
+        taskPage.noNotApplicableOptionExists();
     });
 
     it("Should NOT see the 'save and return' button for another user's project", () => {
-        cy.visit(`projects/${otherUserProjectId}/tasks/deed_of_variation`);
+        cy.visit(`projects/${otherUserProjectId}/tasks/supplemental_funding_agreement`);
         taskPage.noSaveAndReturnExists();
     });
 
