@@ -1,6 +1,6 @@
 using Dfe.Complete.Application.Contacts.Commands;
 using Dfe.Complete.Application.Contacts.Models;
-using Dfe.Complete.Application.Projects.Queries.GetProject;
+using Dfe.Complete.Application.Contacts.Queries;
 using Dfe.Complete.Application.Services.TrustCache;
 using Dfe.Complete.Constants;
 using Dfe.Complete.Domain.Constants;

@@ -2,13 +2,14 @@ using AutoFixture;
 using AutoFixture.AutoMoq;
 using Dfe.Complete.Application.Common.Interfaces;
 using Dfe.Complete.Application.Contacts.Commands;
-using Dfe.Complete.Domain.Constants;
+using Dfe.Complete.Application.Contacts.Interfaces;
 using Dfe.Complete.Domain.Interfaces.Repositories;
 using Dfe.Complete.Domain.ValueObjects;
 using Dfe.Complete.Tests.Common.Customizations.Behaviours;
 using Dfe.Complete.Tests.Common.Customizations.Models;
 using GovUK.Dfe.CoreLibs.Testing.AutoFixture.Customizations;
 using Microsoft.Extensions.Logging;
+using MockQueryable;
 using Moq;
 using System.Linq.Expressions;
 using Entities = Dfe.Complete.Domain.Entities;
@@ -19,7 +20,8 @@ public class DeleteExternalContactCommandTests
 {
     private readonly Mock<IUnitOfWork> mockUnitOfWork;
     private readonly Mock<ICompleteRepository<Entities.Project>> mockProjectRepository;    
-    private readonly Mock<ICompleteRepository<Entities.Contact>> mockContactRepository;
+    private readonly Mock<IContactReadRepository> mockContactReadRepository;
+    private readonly Mock<IContactWriteRepository> mockContactWriteRepository;
     private readonly Mock<ILogger<DeleteExternalContactCommandHandler>> mockLogger;
     private readonly DeleteExternalContactCommandHandler handler;
     private readonly IFixture fixture = new Fixture().Customize(new CompositeCustomization(new AutoMoqCustomization(), new ProjectIdCustomization(), new DateOnlyCustomization(), new IgnoreVirtualMembersCustomisation()));
@@ -28,12 +30,14 @@ public class DeleteExternalContactCommandTests
     {
         mockUnitOfWork = new Mock<IUnitOfWork>();
         mockProjectRepository = new Mock<ICompleteRepository<Entities.Project>>();        
-        mockContactRepository = new Mock<ICompleteRepository<Entities.Contact>>();
+        mockContactReadRepository = new Mock<IContactReadRepository>();
+        mockContactWriteRepository = new Mock<IContactWriteRepository>();
         mockLogger = new Mock<ILogger<DeleteExternalContactCommandHandler>>();
         handler = new DeleteExternalContactCommandHandler(
             mockUnitOfWork.Object,
             mockProjectRepository.Object,
-            mockContactRepository.Object,            
+            mockContactReadRepository.Object,
+            mockContactWriteRepository.Object,
             mockLogger.Object);
     }
 
@@ -70,14 +74,14 @@ public class DeleteExternalContactCommandTests
                .With(t => t.LocalAuthorityMainContactId, LocalAuthorityMainContactId == null ? fixture.Create<ContactId>() : new ContactId(Guid.Parse(LocalAuthorityMainContactId)))
                .Create();
 
-        mockContactRepository.Setup(repo => repo.FindAsync(command.ContactId, It.IsAny<CancellationToken>()))
-               .ReturnsAsync(contact);
+        // Arrange
+        var queryableContacts = new List<Entities.Contact> { contact }.AsQueryable().BuildMock();
+        mockContactReadRepository.Setup(repo => repo.Contacts).Returns(queryableContacts);
 
         mockProjectRepository.Setup(repo => repo.FindAsync(It.IsAny<Expression<Func<Entities.Project, bool>>>(), It.IsAny<CancellationToken>()))
                .ReturnsAsync(project);
 
-        mockContactRepository.Setup(repo => repo.RemoveAsync(It.IsAny<Entities.Contact>(), It.IsAny<CancellationToken>()))
-               .ReturnsAsync(contact);
+        mockContactWriteRepository.Setup(repo => repo.RemoveContactAsync(It.IsAny<Entities.Contact>(), It.IsAny<CancellationToken>())).Returns(Task.CompletedTask);
 
         mockProjectRepository.Setup(repo => repo.UpdateAsync(It.IsAny<Entities.Project>(), It.IsAny<CancellationToken>()))
               .ReturnsAsync(project);
@@ -92,7 +96,7 @@ public class DeleteExternalContactCommandTests
         (
             () => Assert.NotNull(result),
             () => Assert.True(result.IsSuccess),
-            () => mockContactRepository.Verify(repo => repo.RemoveAsync(It.IsAny<Entities.Contact>(), It.IsAny<CancellationToken>()), Times.Once),
+            () => mockContactWriteRepository.Verify(repo => repo.RemoveContactAsync(It.IsAny<Entities.Contact>(), It.IsAny<CancellationToken>()), Times.Once),
             () => mockProjectRepository.Verify(repo => repo.UpdateAsync(It.IsAny<Entities.Project>(), It.IsAny<CancellationToken>()), Times.Once),
             () => mockUnitOfWork.Verify(uow => uow.BeginTransactionAsync(), Times.Once),
             () => mockUnitOfWork.Verify(uow => uow.CommitAsync(), Times.Once),
@@ -113,12 +117,13 @@ public class DeleteExternalContactCommandTests
         var contact = fixture.Build<Entities.Contact>()
                 .With(q => q.Id, contactId)
                 .With(q => q.ProjectId, projectId)
-                .Create();      
-        
-        mockContactRepository.Setup(repo => repo.FindAsync(command.ContactId, It.IsAny<CancellationToken>()))
-               .ReturnsAsync(contact);       
+                .Create();
 
-        mockContactRepository.Setup(repo => repo.RemoveAsync(It.IsAny<Entities.Contact>(), It.IsAny<CancellationToken>()))
+        // Arrange
+        var queryableContacts = new List<Entities.Contact> { contact }.AsQueryable().BuildMock();
+        mockContactReadRepository.Setup(repo => repo.Contacts).Returns(queryableContacts);
+
+        mockContactWriteRepository.Setup(repo => repo.RemoveContactAsync(It.IsAny<Entities.Contact>(), It.IsAny<CancellationToken>()))
            .ThrowsAsync(new Exception("throws error"));
 
         var expectedMessage = $"Could not delete external contact with Id {contactId.Value}.";
@@ -156,7 +161,7 @@ public class DeleteExternalContactCommandTests
             () => mockUnitOfWork.Verify(uow => uow.BeginTransactionAsync(), Times.Once),
             () => mockUnitOfWork.Verify(uow => uow.RollBackAsync(), Times.Once),
             () => mockUnitOfWork.Verify(uow => uow.CommitAsync(), Times.Never),            
-            () => mockContactRepository.Verify(repo => repo.RemoveAsync(It.IsAny<Entities.Contact>(), It.IsAny<CancellationToken>()), Times.Never)
+            () => mockContactWriteRepository.Verify(repo => repo.RemoveContactAsync(It.IsAny<Entities.Contact>(), It.IsAny<CancellationToken>()), Times.Never)
         );
     }
 }

@@ -1,5 +1,7 @@
 using Dfe.Complete.Application.Common.Interfaces;
 using Dfe.Complete.Application.Common.Models;
+using Dfe.Complete.Application.Contacts.Interfaces;
+using Dfe.Complete.Application.Contacts.Queries.QueryFilters;
 using Dfe.Complete.Domain.Constants;
 using Dfe.Complete.Domain.Entities;
 using Dfe.Complete.Domain.Interfaces.Repositories;
@@ -14,7 +16,8 @@ public record DeleteExternalContactCommand(ContactId ContactId) : IRequest<Resul
 public class DeleteExternalContactCommandHandler(
     IUnitOfWork unitOfWork,
     ICompleteRepository<Project> projectRepository,
-    ICompleteRepository<Contact> contactRepository,    
+    IContactReadRepository contactReadRepository,
+    IContactWriteRepository contactWriteRepository,
     ILogger<DeleteExternalContactCommandHandler> logger
 ) : IRequestHandler<DeleteExternalContactCommand, Result<bool>>
 {
@@ -24,8 +27,10 @@ public class DeleteExternalContactCommandHandler(
         {
             await unitOfWork.BeginTransactionAsync();
 
-            var contactEntity = await contactRepository.FindAsync(request.ContactId, cancellationToken);
-            
+            var contactEntity = new ContactIdQuery(request.ContactId)
+                .Apply(contactReadRepository.Contacts)
+                .FirstOrDefault();
+
             if (contactEntity is null)
             {
                 await unitOfWork.RollBackAsync();
@@ -62,7 +67,7 @@ public class DeleteExternalContactCommandHandler(
                 await projectRepository.UpdateAsync(project, cancellationToken);
             }
 
-            await contactRepository.RemoveAsync(contactEntity, cancellationToken);
+            await contactWriteRepository.RemoveContactAsync(contactEntity, cancellationToken);
 
             await unitOfWork.CommitAsync();
 

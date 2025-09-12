@@ -5,6 +5,7 @@ namespace Dfe.Complete.Tests.Pages.Projects.ExternalContacts.New
     using Dfe.Complete.Application.Common.Models;
     using Dfe.Complete.Application.Contacts.Commands;
     using Dfe.Complete.Application.Contacts.Models;
+    using Dfe.Complete.Application.Contacts.Queries;
     using Dfe.Complete.Application.Projects.Models;
     using Dfe.Complete.Application.Projects.Queries.GetProject;
     using Dfe.Complete.Domain.Enums;
@@ -141,7 +142,7 @@ namespace Dfe.Complete.Tests.Pages.Projects.ExternalContacts.New
 
             mockSender.
                 Setup(s => s.Send(It.IsAny<UpdateExternalContactCommand>(), It.IsAny<CancellationToken>()))
-               .ReturnsAsync(Result<ContactDto>.Success(contactDto));
+               .ReturnsAsync(Result<bool>.Success(true));
 
             // Act
             var result = await testClass.OnPostAsync();

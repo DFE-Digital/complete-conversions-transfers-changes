@@ -1,6 +1,7 @@
 using AutoFixture;
 using AutoFixture.Xunit2;
 using Dfe.Complete.Application.Contacts.Commands;
+using Dfe.Complete.Application.Contacts.Interfaces;
 using Dfe.Complete.Domain.Constants;
 using Dfe.Complete.Domain.Interfaces.Repositories;
 using Dfe.Complete.Domain.ValueObjects;
@@ -22,7 +23,7 @@ public class CreateExternalContactCommandTests
     [CustomAutoData(typeof(DateOnlyCustomization),
         typeof(IgnoreVirtualMembersCustomisation))]
     public async Task Handle_ShouldCreateExternalContactSuccessfully(
-        [Frozen] ICompleteRepository<Entities.Contact> mockContactRepository,
+        [Frozen] IContactWriteRepository mockContactWriteRepository,
         IFixture fixture,
         CreateExternalContactCommand command,
         CreateExternalContactCommandHandler sut        
@@ -33,7 +34,7 @@ public class CreateExternalContactCommandTests
             .With(q => q.Id, new ContactId(Guid.NewGuid()))
             .Create();
 
-        mockContactRepository.AddAsync(Arg.Any<Entities.Contact>(), Arg.Any<CancellationToken>()).Returns(contact);
+        mockContactWriteRepository.CreateContactAsync(Arg.Any<Entities.Contact>(), Arg.Any<CancellationToken>()).Returns(Task.CompletedTask);
 
         // Act
         var result = await sut.Handle(command, cancellationToken);
@@ -44,7 +45,7 @@ public class CreateExternalContactCommandTests
             () => Assert.NotNull(result),
             () => Assert.True(result.IsSuccess),
             () => Assert.IsType<ContactId>(result.Value),
-            async () => await mockContactRepository.Received(1).AddAsync(Arg.Any<Entities.Contact>(), Arg.Any<CancellationToken>())
+            async () => await mockContactWriteRepository.Received(1).CreateContactAsync(Arg.Any<Entities.Contact>(), Arg.Any<CancellationToken>())
         );
     }
 
@@ -52,13 +53,13 @@ public class CreateExternalContactCommandTests
     [Theory]
     [CustomAutoData(typeof(IgnoreVirtualMembersCustomisation))]
     public async Task Handle_ShouldReturnFailure_WhenExceptionOccurs(
-      [Frozen] ICompleteRepository<Entities.Contact> mockContactRepository,
+       [Frozen] IContactWriteRepository mockContactWriteRepository,
         CreateExternalContactCommand command,
         CreateExternalContactCommandHandler sut)
     {
         // Arrange       
-        mockContactRepository.AddAsync(Arg.Any<Entities.Contact>(), Arg.Any<CancellationToken>())
-           .ThrowsAsync(new Exception("Error"));
+        mockContactWriteRepository.CreateContactAsync(Arg.Any<Entities.Contact>(), Arg.Any<CancellationToken>())
+            .ThrowsAsync(new Exception("Error"));
 
         // Act
         var result = await sut.Handle(command, cancellationToken);
@@ -67,7 +68,7 @@ public class CreateExternalContactCommandTests
         Assert.Multiple
         (
             () => Assert.False(result.IsSuccess),            
-            async () => await mockContactRepository.DidNotReceive().AddAsync(Arg.Any<Entities.Contact>(), Arg.Any<CancellationToken>())
+            async () => await mockContactWriteRepository.DidNotReceive().CreateContactAsync(Arg.Any<Entities.Contact>(), Arg.Any<CancellationToken>())
         );
     }
 

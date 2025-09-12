@@ -1,19 +1,20 @@
 using AutoMapper;
 using Dfe.Complete.Application.Common.Models;
+using Dfe.Complete.Application.Contacts.Interfaces;
 using Dfe.Complete.Application.Contacts.Models;
+using Dfe.Complete.Application.Contacts.Queries.QueryFilters;
 using Dfe.Complete.Domain.Constants;
-using Dfe.Complete.Domain.Entities;
-using Dfe.Complete.Domain.Interfaces.Repositories;
 using Dfe.Complete.Domain.ValueObjects;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
-namespace Dfe.Complete.Application.Projects.Queries.GetProject
+namespace Dfe.Complete.Application.Contacts.Queries
 {
-    public record GetContactByIdQuery(ContactId ContactId) : IRequest<Result<ContactDto?>>;
+    public record GetContactByIdQuery(ContactId ContactId) : IRequest<Result<ContactDto?>>;   
 
     public class GetContactIdQueryHandler(
-        ICompleteRepository<Contact> contactsRepository,
+        IContactReadRepository contactReadRepository,
         IMapper mapper,
         ILogger<GetContactIdQueryHandler> logger)
         : IRequestHandler<GetContactByIdQuery, Result<ContactDto?>>
@@ -22,8 +23,11 @@ namespace Dfe.Complete.Application.Projects.Queries.GetProject
         {
             try
             {
-                var result = await contactsRepository.GetAsync(x => x.Id == request.ContactId);
-                var contactDto = mapper.Map<ContactDto?>(result);
+                var contact = await new ContactIdQuery(request.ContactId)
+                    .Apply(contactReadRepository.Contacts.AsNoTracking())
+                    .FirstOrDefaultAsync(cancellationToken);               
+                
+                var contactDto = mapper.Map<ContactDto?>(contact);
                 return Result<ContactDto?>.Success(contactDto);
             }
             catch (Exception ex)

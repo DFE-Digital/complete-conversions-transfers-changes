@@ -1,4 +1,5 @@
 ﻿using Dfe.Complete.Application.Common.Models;
+using Dfe.Complete.Application.Contacts.Interfaces;
 using Dfe.Complete.Application.Projects.Commands.UpdateProject;
 using Dfe.Complete.Domain.Constants;
 using Dfe.Complete.Domain.Entities;
@@ -23,7 +24,7 @@ public record CreateExternalContactCommand(string FullName,
     ContactType? Type) : IRequest<Result<ContactId>>;
 
 public class CreateExternalContactCommandHandler(
-    ICompleteRepository<Contact> ContactRepository,
+    IContactWriteRepository contactWriteRepository,
     ILogger<CreateExternalContactCommandHandler> logger,
     ISender sender) 
     : IRequestHandler<CreateExternalContactCommand, Result<ContactId>>
@@ -48,11 +49,12 @@ public class CreateExternalContactCommandHandler(
                 ProjectId = request.ProjectId,
                 Type = request.Type
             };
-            var result = await ContactRepository.AddAsync(contact, cancellationToken);
 
-            await sender.Send(new UpdatePrimaryContactAtOrganisationCommand(contact.ProjectId!, request.IsPrimaryContact, result), cancellationToken);
+            await contactWriteRepository.CreateContactAsync(contact, cancellationToken);
 
-            return Result<ContactId>.Success(result.Id);            
+            await sender.Send(new UpdatePrimaryContactAtOrganisationCommand(contact.ProjectId!, request.IsPrimaryContact, contact), cancellationToken);
+
+            return Result<ContactId>.Success(contact.Id);            
         }
         catch (Exception ex)
         {   

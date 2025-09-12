@@ -5,7 +5,7 @@ namespace Dfe.Complete.Tests.Pages.Projects.ExternalContacts.New
     using Dfe.Complete.Application.Common.Models;
     using Dfe.Complete.Application.Contacts.Commands;
     using Dfe.Complete.Application.Contacts.Models;    
-    using Dfe.Complete.Application.Projects.Queries.GetProject;        
+    using Dfe.Complete.Application.Contacts.Queries;
     using Dfe.Complete.Domain.ValueObjects;    
     using Dfe.Complete.Pages.Projects.ExternalContacts;    
     using Dfe.Complete.Tests.Common.Customizations.Behaviours;
