@@ -27,7 +27,7 @@ public class ContactCustomization : ICustomization
                 .With(c => c.UpdatedAt, DateTime.UtcNow)
                 .With(c => c.Category, fixture.Create<ContactCategory>())
                 .With(c => c.OrganisationName, fixture.Create<string>())
-                .With(c => c.Type, fixture.Create<string>())
+                .With(c => c.Type, fixture.Create<ContactType>())
                 .With(c => c.ProjectId, ProjectId)
                 .With(c => c.LocalAuthorityId, LocalAuthorityId ?? fixture.Create<LocalAuthorityId>())
                 .With(c => c.EstablishmentUrn, Urn ?? fixture.CreateInt(10000, 99999))

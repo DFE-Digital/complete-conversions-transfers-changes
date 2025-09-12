@@ -282,6 +282,33 @@ namespace Dfe.Complete.Tests.Constants
             var projectId = Guid.NewGuid();
             Assert.Equal($"/projects/{projectId}/external-contacts/new", string.Format(RouteConstants.NewProjectExternalContacts, projectId));
         }
-        
+        [Fact]
+        public void ProjectsExternalContactAdd_ShouldBeCorrect()
+        {
+            var projectId = Guid.NewGuid();
+            var contactType = "headteacher";
+            Assert.Equal($"/projects/{projectId}/external-contacts/new/create-contact/{contactType}", string.Format(RouteConstants.ProjectsExternalContactAdd, projectId, contactType));
+        }
+        [Fact]
+        public void ProjectsExternalContactAddTypeOther_ShouldBeCorrect()
+        {
+            var projectId = Guid.NewGuid();
+            Assert.Equal($"/projects/{projectId}/external-contacts/new/create-other-contact", string.Format(RouteConstants.ProjectsExternalContactAddTypeOther, projectId));
+        }
+        [Fact]
+        public void ProjectsExternalContactDelete_ShouldBeCorrect()
+        {
+            var projectId = Guid.NewGuid();
+            var contactId = Guid.NewGuid();
+            Assert.Equal($"/projects/{projectId}/external-contacts/{contactId}/delete", string.Format(RouteConstants.ProjectsExternalContactDelete, projectId, contactId));
+        }
+        [Fact]
+        public void ProjectsExternalContactEdit_ShouldBeCorrect()
+        {
+            var projectId = Guid.NewGuid();
+            var contactId = Guid.NewGuid();
+            Assert.Equal($"/projects/{projectId}/external-contacts/{contactId}/edit", string.Format(RouteConstants.ProjectsExternalContactEdit, projectId, contactId));
+        }
+
     }
 }

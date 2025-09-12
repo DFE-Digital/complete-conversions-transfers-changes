@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.StakeholderKickoffTask
 {
-    public class StakeholderKickoffTaskModel(ISender sender, IAuthorizationService authorizationService, ILogger<StakeholderKickoffTaskModel> logger, IErrorService errorService)
+    public class StakeholderKickoffTaskModel(ISender sender, IAuthorizationService authorizationService, ILogger<StakeholderKickoffTaskModel> logger, ErrorService errorService)
         : BaseProjectTaskModel(sender, authorizationService, logger, NoteTaskIdentifier.StakeholderKickoff)
     {
         [BindProperty(Name = "send-intro-emails")]

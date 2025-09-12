@@ -1,0 +1,49 @@
+﻿@page "/projects/{projectId}/external-contacts/{contactId}/edit"
+@using Dfe.Complete.Domain.Enums
+@using Dfe.Complete.Utils;
+@using Microsoft.AspNetCore.Components.Forms
+@using Dfe.Complete.Constants
+@model Dfe.Complete.Pages.Projects.ExternalContacts.EditExternalContact
+
+@{
+    ViewData["Title"] = "Edit contact";
+    Layout = "Shared/_Layout";
+
+    var projectsExternalContactLink = string.Format(RouteConstants.ProjectExternalContacts, Model.ProjectId);
+    var projectsExternalDeleteLink = string.Format(RouteConstants.ProjectsExternalContactDelete, Model.ProjectId, Model.ContactId);
+
+    var errorSummaryModel = new Dfe.Complete.Models.ErrorSummaryModel
+    {
+        HideKeyInErrorMessage = true
+    };
+}
+
+<div class="govuk-width-container">
+    <nav aria-label="back link">
+        <a class="govuk-back-link" href="@projectsExternalContactLink">Back</a>
+    </nav>
+    <main class="govuk-main-wrapper app-content" id="main-content" role="main">
+
+        <div class="govuk-grid-row govuk-body">
+            <div class="govuk-grid-column-full">
+                <span class="govuk-caption-l">Add a contact</span>
+                <h1 class="govuk-heading-l">Enter contact details</h1>
+            </div>
+        </div>
+        <div class="govuk-grid-row govuk-body">
+            <div class="govuk-grid-column-two-thirds">
+                @await Html.PartialAsync("_ErrorSummary", model: errorSummaryModel)
+                <form method="post" novalidate>
+                    @await Html.PartialAsync("New/_OtherExternalContactForm", model: Model.ExternalContactInput)
+                    <div class="govuk-button-group">
+                        <govuk-button type="submit" data-prevent-double-click="true">
+                            Save contact
+                        </govuk-button>
+                        <a class="govuk-button govuk-button--warning" data-module="govuk-button" draggable="false" role="button" href="@projectsExternalDeleteLink">Delete</a>
+                        <a class="govuk-link" href="@projectsExternalContactLink">Cancel</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </main>
+</div>

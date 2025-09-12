@@ -10,6 +10,7 @@ namespace Dfe.Complete.Api.Controllers;
 
 [ApiController]
 [ApiVersion("1.0")]
+[Authorize(Policy = "CanRead")]
 [Route("v{version:apiVersion}/[controller]")]
 public class ContactsController(ISender sender) : ControllerBase
 {
@@ -25,8 +26,8 @@ public class ContactsController(ISender sender) : ControllerBase
     [SwaggerResponse(400, "Invalid request data.")]
     public async Task<IActionResult> ListAllContactsForProjectAsync([FromQuery] GetContactsForProjectQuery request, CancellationToken cancellationToken)
     {
-        var project = await sender.Send(request, cancellationToken);
-        return Ok(project.Value);
+        var contacts = await sender.Send(request, cancellationToken);
+        return Ok(contacts.Value);
     }
 
     /// <summary>
@@ -41,7 +42,7 @@ public class ContactsController(ISender sender) : ControllerBase
     [SwaggerResponse(400, "Invalid request data.")]
     public async Task<IActionResult> ListAllContactsForLocalAuthorityAsync([FromQuery] GetContactsForLocalAuthorityQuery request, CancellationToken cancellationToken)
     {
-        var project = await sender.Send(request, cancellationToken);
-        return Ok(project.Value);
+        var contacts = await sender.Send(request, cancellationToken);
+        return Ok(contacts.Value);
     }
 }

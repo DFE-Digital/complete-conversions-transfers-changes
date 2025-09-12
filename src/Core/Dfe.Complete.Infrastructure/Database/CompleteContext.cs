@@ -435,7 +435,10 @@ public partial class CompleteContext : DbContext
             .HasColumnName("title");
         projectConfiguration.Property(e => e.Type)
             .HasMaxLength(4000)
-            .HasColumnName("type");
+            .HasColumnName("type")
+            .HasConversion(
+                contactType => contactType.ToDescription(), 
+                contactTypeDbValue => contactTypeDbValue.FromDescriptionValue<ContactType>());
         projectConfiguration.Property(e => e.UpdatedAt)
             .HasPrecision(6)
             .HasColumnName("updated_at");

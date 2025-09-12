@@ -29,6 +29,7 @@ See the [full commit history](https://github.com/DFE-Digital/complete-conversion
 ### Added
 
 - Added `Receive declaration of expenditure certificate` task for conversion and transfer projects.
+- Added `Add, Edit and Delete External Contacts for both conversion and transfer projects.
 
 ### Fixed
 - update "Give feedback about service" to use correct link

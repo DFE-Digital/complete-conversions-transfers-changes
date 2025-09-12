@@ -11,7 +11,8 @@ namespace Dfe.Complete.Application.Mappers
 		public AutoMapping()
 		{
 			CreateMap<Project, ProjectDto>()
-                .ForMember(p => p.EstablishmentName, opt => opt.Ignore());
+                .ForMember(p => p.EstablishmentName, opt => opt.Ignore())
+                .ForMember(p => p.Contacts, opt => opt.Ignore());
             CreateMap<ProjectGroup, ProjectGroupDto>();
 			CreateMap<User, UserDto>();
 			CreateMap<Note, NoteDto>()
@@ -86,11 +87,15 @@ namespace Dfe.Complete.Application.Mappers
 				.ForMember(dest => dest.ReligiousCharacter, opt => opt.Ignore())
 				.ForMember(dest => dest.Census, opt => opt.Ignore())
 				.ForMember(dest => dest.MisEstablishment, opt => opt.Ignore());
+
 			CreateMap<TransferTasksData, TransferTaskDataDto>();
             CreateMap<ConversionTasksData, ConversionTaskDataDto>();
 			CreateMap<KeyContact, KeyContactDto>();
             CreateMap<SignificantDateHistory, SignificantDateHistoryDto>();
 			CreateMap<SignificantDateHistoryReason, SignificantDateHistoryReasonDto>();
-		}
+
+            CreateMap<Contact, ContactDto>()
+            .ForMember(p => p.PrimaryContact, opt => opt.Ignore());
+        }
 	}
 }

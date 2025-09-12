@@ -1,6 +1,6 @@
 ﻿using Dfe.Complete.Domain.Entities;
 
-namespace Dfe.Complete.Pages.Projects.ExternalContacts;
+namespace Dfe.Complete.Models.ExternalContact;
 
 public record ExternalContactModel(
     Contact Contact,
