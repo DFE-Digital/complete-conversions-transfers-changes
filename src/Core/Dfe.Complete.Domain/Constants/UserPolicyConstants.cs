@@ -16,6 +16,6 @@ public static class UserPolicyConstants
     public const string CanEditAddedByUser = "CanEditAddedByUser";
     public const string ManageLocalAuthorities = "ManageLocalAuthorities";
     public const string ActiveUser = "ActiveUser";
-    public const string CanViewAddContact = "CanViewAddContact";
-    public const string CanEditDeleteContact = "CanEditDeleteContact";
+    public const string CanAddContact = "CanAddContact";
+    public const string CanViewEditDeleteContact = "CanViewEditDeleteContact";
 }

@@ -19,7 +19,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Dfe.Complete.Pages.Projects.ExternalContacts;
 
-[Authorize(Policy = UserPolicyConstants.CanEditDeleteContact)]
+[Authorize(Policy = UserPolicyConstants.CanViewEditDeleteContact)]
 public class EditExternalContact(
     IValidator<OtherExternalContactInputModel> otherExternalContactInputModelValidator,
     ITrustCache trustCacheService, ErrorService errorService, 

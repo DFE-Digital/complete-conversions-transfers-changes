@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Dfe.Complete.Pages.Projects.ExternalContacts.New;
 
-[Authorize(Policy = UserPolicyConstants.CanViewAddContact)]
+[Authorize(Policy = UserPolicyConstants.CanAddContact)]
 public class NewExternalContact(ISender sender, ILogger<NewExternalContact> logger)
     : ExternalContactBasePageModel(sender)
 {

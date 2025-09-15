@@ -14,7 +14,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace Dfe.Complete.Pages.Projects.ExternalContacts
 {
-    [Authorize(Policy = UserPolicyConstants.CanEditDeleteContact)]
+    [Authorize(Policy = UserPolicyConstants.CanViewEditDeleteContact)]
     public class DeleteExternalContact(ISender sender, ErrorService errorService, ILogger<DeleteExternalContact> logger)
      : PageModel
     {   
