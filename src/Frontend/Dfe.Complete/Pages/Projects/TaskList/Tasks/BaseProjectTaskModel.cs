@@ -10,7 +10,7 @@ using Dfe.Complete.Domain.Constants;
 using Dfe.Complete.Domain.ValueObjects;
 using Dfe.Complete.Extensions;
 using Microsoft.AspNetCore.Authorization;
-using DfE.CoreLibs.Utilities.Extensions;
+using GovUK.Dfe.CoreLibs.Utilities.Extensions;
 
 namespace Dfe.Complete.Pages.Projects.TaskList.Tasks;
 

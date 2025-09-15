@@ -1,27 +1,29 @@
 using Azure.Identity;
 using Dfe.Complete.Configuration;
 using DataProtectionOptions = Dfe.Complete.Configuration.DataProtectionOptions;
+using Dfe.Complete.Domain.Constants;
 using Dfe.Complete.Infrastructure;
 using Dfe.Complete.Infrastructure.Security.Authorization;
 using Dfe.Complete.Security;
 using Dfe.Complete.Services;
 using Dfe.Complete.StartupConfiguration;
-using DfE.CoreLibs.Security.Authorization;
+using GovUK.Dfe.CoreLibs.Security.Authorization;
 using GovUk.Frontend.AspNetCore;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.FeatureManagement;
 using Microsoft.Identity.Web;
 using Microsoft.Identity.Web.UI;
-using DfE.CoreLibs.Security.Cypress;
+using GovUK.Dfe.CoreLibs.Security.Cypress;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
-using DfE.CoreLibs.Http.Middlewares.CorrelationId;
-using DfE.CoreLibs.Http.Interfaces;
+using GovUK.Dfe.CoreLibs.Http.Middlewares.CorrelationId;
+using GovUK.Dfe.CoreLibs.Http.Interfaces;
 using Dfe.Complete.Logging.Middleware;
-using DfE.CoreLibs.Security.Antiforgery;
+using GovUK.Dfe.CoreLibs.Security.Antiforgery;
 using Dfe.Complete.Validators;
-using DfE.CoreLibs.Security.Enums;
+using GovUK.Dfe.CoreLibs.Security.Enums;
 using Dfe.Complete.Application.Mappers;
 
 namespace Dfe.Complete;
@@ -60,8 +62,9 @@ public class Startup
         services
             .AddRazorPages(options =>
             {
-                options.Conventions.AuthorizeFolder("/");
+                options.Conventions.AuthorizeFolder("/", UserPolicyConstants.ActiveUser);
                 options.Conventions.AddPageRoute("/Projects/EditProjectNote", "projects/{projectId}/notes/edit");
+                options.Conventions.AllowAnonymousToFolder("/Public");
             })
             .AddViewOptions(options =>
             {
@@ -104,6 +107,8 @@ public class Startup
         services.AddHttpContextAccessor();
 
         services.AddApplicationAuthorization(Configuration, CustomPolicies.PolicyCustomizations);
+
+        services.AddScoped<IAuthorizationHandler, ActiveUserAuthorizationHandler>();
 
         var authenticationBuilder = services.AddAuthentication(options =>
         {

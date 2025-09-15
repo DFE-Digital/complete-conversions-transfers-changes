@@ -1,6 +1,6 @@
 import { EnvApi } from "cypress/constants/cypressConstants";
 import { ApiBase } from "./apiBase";
-import { GetProjectResponse } from "./apiDomain";
+import projectApi from "cypress/api/projectApi";
 
 class ProjectRemover extends ApiBase {
     public removeProject(urn: string): Cypress.Chainable<boolean> {
@@ -18,22 +18,6 @@ class ProjectRemover extends ApiBase {
         });
     }
 
-    public getProject(urn: string): Cypress.Chainable<Cypress.Response<GetProjectResponse>> {
-        return this.authenticatedRequest().then((headers) => {
-            return cy
-                .request<GetProjectResponse>({
-                    method: "GET",
-                    url: Cypress.env(EnvApi) + "/v1/Projects",
-                    qs: { "urn.Value": urn },
-                    headers: headers,
-                    failOnStatusCode: false,
-                })
-                .then((response) => {
-                    return response;
-                });
-        });
-    }
-
     public removeProjectIfItExists(
         urn: string,
         maxAttempts: number = 10,
@@ -46,7 +30,7 @@ class ProjectRemover extends ApiBase {
             return cy.wrap(false);
         }
 
-        return this.getProject(urn).then((response) => {
+        return projectApi.getProject(Number(urn)).then((response) => {
             if (response.status === 200) {
                 return this.removeProject(urn).then(() => {
                     // Recursively call this method to check if more projects exist

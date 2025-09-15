@@ -1,8 +1,8 @@
 using AutoFixture.Xunit2;
-using DfE.CoreLibs.Testing.AutoFixture.Attributes;
+using GovUK.Dfe.CoreLibs.Testing.AutoFixture.Attributes;
 using Dfe.Complete.Domain.Interfaces.Repositories;
 using NSubstitute;
-using DfE.CoreLibs.Testing.AutoFixture.Customizations;
+using GovUK.Dfe.CoreLibs.Testing.AutoFixture.Customizations;
 using Dfe.Complete.Application.Projects.Queries.GetProject;
 using System.Linq.Expressions;
 using AutoMapper;

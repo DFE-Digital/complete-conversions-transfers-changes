@@ -18,7 +18,8 @@ namespace Dfe.Complete.Pages.Projects.TaskList
             await SetIncomingTrustAsync();
             await SetOutgoingTrustAsync();
             await GetKeyContactForProjectsAsyc();
-
+            await SetCurrentUserTeamAsync();
+            
             TransferTaskList = TransferTaskListViewModel.Create(TransferTaskData, Project, KeyContacts);
             ConversionTaskList = ConversionTaskListViewModel.Create(ConversionTaskData, Project, KeyContacts);
             return Page();

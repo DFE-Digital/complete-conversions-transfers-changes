@@ -1,7 +1,7 @@
 ﻿using Dfe.Complete.Application.Projects.Models;
 using Dfe.Complete.Constants;
 using Dfe.Complete.Tests.Common.Customizations.Models;
-using DfE.CoreLibs.Testing.AutoFixture.Attributes;
+using GovUK.Dfe.CoreLibs.Testing.AutoFixture.Attributes;
 using AllProjectsInTrustViewModel = Dfe.Complete.Pages.Projects.List.AllProjectsInTrust.AllProjectsInTrustViewModel;
 
 namespace Dfe.Complete.Tests.Pages.Projects.List;

@@ -1,4 +1,4 @@
-﻿using DfE.CoreLibs.AsyncProcessing.Interfaces;
+﻿using GovUK.Dfe.CoreLibs.AsyncProcessing.Interfaces;
 
 namespace Dfe.Complete.Application.Services.BackgroundServices.Events
 {

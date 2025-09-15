@@ -35,7 +35,7 @@
             <govuk-checkboxes-fieldset>
                 <govuk-checkboxes-fieldset-legend>
                 </govuk-checkboxes-fieldset-legend>
-                <govuk-checkboxes-item id="@nameof(Model.NotApplicable)" asp-for="@Model.NotApplicable" value="true" name="@nameof(Model.NotApplicable)" checked="@Model.NotApplicable">
+                <govuk-checkboxes-item id="not-applicable" asp-for="@Model.NotApplicable" value="true" name="@nameof(Model.NotApplicable)" checked="@Model.NotApplicable">
                     <b>Not applicable</b>
                 </govuk-checkboxes-item>
             </govuk-checkboxes-fieldset>
@@ -51,7 +51,7 @@
                     <span class="govuk-details__summary-text">Help checking for changes</span>
                 </govuk-details-summary>
                 <govuk-details-text>
-                    <p>Changes that personalise the model documents to a school or trust, and remove or add optional clauses, are expected. The wording of clauses should not change.</p>
+                    <p>Changes that personalise the model documents to @(Model.Type == ProjectType.Conversion ? "a school" : "an academy" ) or trust, and remove or add optional clauses, are expected. The wording of clauses should not change.</p>
                     <p>You'll need to <a href="@_configuration["ExternalLinks:ContactPolicyTeam"]" target="_blank">contact the policy team (opens in new tab)</a> about changes to clause text.</p>
                 </govuk-details-text>
             </govuk-details>

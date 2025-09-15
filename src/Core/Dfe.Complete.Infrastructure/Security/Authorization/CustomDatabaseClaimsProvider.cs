@@ -4,7 +4,7 @@ using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Domain.Extensions;
 using Dfe.Complete.Domain.Interfaces.Repositories;
 using Dfe.Complete.Utils;
-using DfE.CoreLibs.Security.Interfaces;
+using GovUK.Dfe.CoreLibs.Security.Interfaces;
 using Microsoft.Extensions.Caching.Memory;
 using System.Security.Claims;
 
