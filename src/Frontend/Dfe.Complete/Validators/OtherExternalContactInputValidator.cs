@@ -1,10 +1,6 @@
 ﻿using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Models.ExternalContact;
 using Dfe.Complete.Utils;
-using DocumentFormat.OpenXml.Office2016.Drawing.ChartDrawing;
-using DocumentFormat.OpenXml.Spreadsheet;
-using DocumentFormat.OpenXml.Vml;
-using DocumentFormat.OpenXml.Wordprocessing;
 using FluentValidation;
 
 namespace Dfe.Complete.Validators
