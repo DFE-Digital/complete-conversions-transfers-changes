@@ -12,32 +12,28 @@
         HideKeyInErrorMessage = true
     };
 }
+@section BeforeMain
+{
+    <govuk-back-link href="@projectsExternalContactLink" xmlns="http://www.w3.org/1999/html" />
+}
 
-<div class="govuk-width-container">
-    <nav aria-label="back link">
-        <a class="govuk-back-link" href="@projectsExternalContactLink">Back</a>
-    </nav>
-    <main class="govuk-main-wrapper app-content" id="main-content" role="main">
-
-        <div class="govuk-grid-row govuk-body">
-            <div class="govuk-grid-column-full">
-                <span class="govuk-caption-l">Add a contact</span>
-                <h1 class="govuk-heading-l">Enter contact details</h1>
+<div class="govuk-grid-row govuk-body">
+    <div class="govuk-grid-column-full">
+        <span class="govuk-caption-l">Add a contact</span>
+        <h1 class="govuk-heading-l">Enter contact details</h1>
+    </div>
+</div>
+<div class="govuk-grid-row govuk-body">
+    <div class="govuk-grid-column-two-thirds">
+        @await Html.PartialAsync("_ErrorSummary", model: errorSummaryModel)
+        <form method="post" novalidate>
+            @await Html.PartialAsync("_OtherExternalContactForm", model: Model.ExternalContactInput)
+            <div class="govuk-button-group">
+                <govuk-button type="submit" data-prevent-double-click="true">
+                    Save and continue
+                </govuk-button>
+                <a class="govuk-link" href="@projectsExternalContactLink">Cancel</a>
             </div>
-        </div>
-        <div class="govuk-grid-row govuk-body">
-            <div class="govuk-grid-column-two-thirds">                
-                @await Html.PartialAsync("_ErrorSummary", model: errorSummaryModel)
-                <form method="post" novalidate>
-                    @await Html.PartialAsync("_OtherExternalContactForm", model: Model.ExternalContactInput)
-                    <div class="govuk-button-group">
-                        <govuk-button type="submit" data-prevent-double-click="true">
-                            Save and continue
-                        </govuk-button>
-                        <a class="govuk-link" href="@projectsExternalContactLink">Cancel</a>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </main>
+        </form>
+    </div>
 </div>

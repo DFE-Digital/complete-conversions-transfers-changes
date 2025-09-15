@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Dfe.Complete.Pages.Projects.ExternalContacts;
 
-[Authorize(Policy = UserPolicyConstants.CanViewAddContact)]
+[Authorize(Policy = UserPolicyConstants.CanEditDeleteContact)]
 public class ExternalContacts(ISender sender, ILogger<ExternalContacts> logger)
     : ProjectLayoutModel(sender, logger, ExternalContactsNavigation)
 {

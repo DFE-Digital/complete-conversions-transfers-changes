@@ -1,6 +1,10 @@
 ﻿using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Models.ExternalContact;
 using Dfe.Complete.Utils;
+using DocumentFormat.OpenXml.Office2016.Drawing.ChartDrawing;
+using DocumentFormat.OpenXml.Spreadsheet;
+using DocumentFormat.OpenXml.Vml;
+using DocumentFormat.OpenXml.Wordprocessing;
 using FluentValidation;
 
 namespace Dfe.Complete.Validators
@@ -23,6 +27,11 @@ namespace Dfe.Complete.Validators
                     RuleFor(x => x.IsPrimaryProjectContact).Equal(false).WithMessage("Only the incoming trust, outgoing trust, school or academy and local authority categories can have a primary contact.");
                     }
                 );
+
+            RuleFor(x => x.Email)
+            .EmailAddress()
+            .Unless(x => string.IsNullOrEmpty(x.Email))
+            .WithMessage("Enter an email address in the correct format, like name@example.com");
         }
     }
 }

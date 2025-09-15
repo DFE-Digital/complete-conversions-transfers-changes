@@ -27,6 +27,7 @@ public class OtherExternalInputValidatorTests
             Role = role,
             SelectedExternalContactType = selectedExternalContactType,
             IsPrimaryProjectContact = isPrimaryContact,
+            Email = "test@education.gov.uk"
         };
 
         var validator = new OtherExternalContactInputValidator();
@@ -43,12 +44,13 @@ public class OtherExternalInputValidatorTests
     }
 
     [Theory]
-    [InlineData(null, "HeadTeacher", "schoolacademy", true, "FullName")]
-    [InlineData("TestUser", null, "schoolacademy", false, "Role")]    
-    [InlineData("TestUser", "HeadTeacher", "solicitor", true, "IsPrimaryProjectContact")]
-    [InlineData("TestUser", "HeadTeacher", "diocese", true, "IsPrimaryProjectContact")]
-    [InlineData("TestUser", "HeadTeacher", "other", true, "IsPrimaryProjectContact")]
-    public void Should_Have_Errors_When_Invalid_Input(string fullName, string role, string selectedExternalContactType, bool isPrimaryContact, string expectedPropertyNameInErrorList)
+    [InlineData(null, "HeadTeacher", "schoolacademy", "test@education.gov.uk", true, "FullName")]
+    [InlineData("TestUser", null, "schoolacademy", "test@education.gov.uk", false, "Role")]    
+    [InlineData("TestUser", "HeadTeacher", "solicitor", "test@education.gov.uk", true, "IsPrimaryProjectContact")]
+    [InlineData("TestUser", "HeadTeacher", "diocese", "test@education.gov.uk", true, "IsPrimaryProjectContact")]
+    [InlineData("TestUser", "HeadTeacher", "other", "test@education.gov.uk", true, "IsPrimaryProjectContact")]
+    [InlineData("TestUser", "HeadTeacher", "schoolacademy", "test", true, "Email")]
+    public void Should_Have_Errors_When_Invalid_Input(string fullName, string role, string selectedExternalContactType, string email, bool isPrimaryContact, string expectedPropertyNameInErrorList)
     {
        
         // Arrange       
@@ -58,6 +60,7 @@ public class OtherExternalInputValidatorTests
             Role = role,
             SelectedExternalContactType = selectedExternalContactType,
             IsPrimaryProjectContact = isPrimaryContact,
+            Email = email
         };
 
         var validator = new OtherExternalContactInputValidator();
