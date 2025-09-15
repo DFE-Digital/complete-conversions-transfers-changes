@@ -3,7 +3,7 @@ using Dfe.Complete.Application.Common.Models;
 using Dfe.Complete.Domain.Entities;
 using Dfe.Complete.Tests.Common.Customizations.Behaviours;
 using Dfe.Complete.Tests.Common.Customizations.Models;
-using DfE.CoreLibs.Testing.AutoFixture.Customizations;
+using GovUK.Dfe.CoreLibs.Testing.AutoFixture.Customizations;
 
 namespace Dfe.Complete.Application.Tests.Services.CsvExport
 {

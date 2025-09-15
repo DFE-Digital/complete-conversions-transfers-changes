@@ -42,6 +42,10 @@ public enum NoteTaskIdentifier
     RedactAndSendDocuments = 9,
 
     [Description("proposed_capacity_of_the_academy")]
-    [DisplayDescription("Confirm Proposed Capacity Of TheAcademy")]
-    ConfirmProposedCapacityOfTheAcademy = 10
+    [DisplayDescription("Confirm the proposed capacity of the academy")]
+    ConfirmProposedCapacityOfTheAcademy = 10,
+
+    [Description("receive_declaration_of_expenditure_certificate")]
+    [DisplayDescription("Receive declaration of expenditure certificate")]
+    DeclarationOfExpenditureCertificate = 11
 }

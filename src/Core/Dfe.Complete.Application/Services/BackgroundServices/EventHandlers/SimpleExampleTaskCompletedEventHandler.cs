@@ -1,4 +1,4 @@
-﻿using DfE.CoreLibs.AsyncProcessing.Interfaces;
+﻿using GovUK.Dfe.CoreLibs.AsyncProcessing.Interfaces;
 using Dfe.Complete.Application.Services.BackgroundServices.Events;
 using Microsoft.Extensions.Logging;
 

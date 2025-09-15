@@ -69,8 +69,21 @@ else if (User.GetUserId() != Model.Project.AssignedToId &&
   </div>
 }
 
-@* TODO Add DAO Revoked message *@
-
+@if(TempData["RecordedDaoRevocation"] != null)
+{
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+            <govuk-notification-banner class="govuk-notification-banner--success">
+                <govuk-notification-banner-title>
+                    Success
+                </govuk-notification-banner-title>
+                <h3 class="govuk-notification-banner__heading" id="dao-revocation">
+                    DAO revocation recoreded successfully
+                </h3>
+            </govuk-notification-banner>
+        </div>
+    </div>
+}
 <div class="govuk-grid-row">
   <div class="govuk-grid-column-three-quarters">
     <dl class="govuk-summary-list dfe-summary-list--project-summary" id="project-summary">

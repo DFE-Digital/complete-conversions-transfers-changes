@@ -1,4 +1,5 @@
 import taskApi, { ProjectType } from "./taskApi";
+import { cypressUser } from "cypress/constants/cypressConstants";
 
 export type TaskStatus = "notStarted" | "notApplicable" | "inProgress" | "completed";
 
@@ -159,6 +160,159 @@ class TaskHelper {
 
             default:
                 return taskApi.updateHandoverWithDeliveryOfficerTask(defaultBody);
+        }
+    }
+    updateReceiveDeclarationOfExpenditureCertificate(
+        taskDataId: string,
+        projectType: ProjectType,
+        status: TaskStatus,
+        significantDate?: string,
+    ) {
+        const defaultBody = {
+            taskDataId: { value: taskDataId },
+            projectType: projectType,
+            dateReceived: significantDate || "2025-09-09",
+            notApplicable: false,
+            checkCertificate: false,
+            saved: false,
+        };
+
+        switch (status) {
+            case "notApplicable":
+                return taskApi.updateReceiveDeclarationOfExpenditureCertificateTask({
+                    ...defaultBody,
+                    notApplicable: true,
+                });
+
+            case "inProgress":
+                return taskApi.updateReceiveDeclarationOfExpenditureCertificateTask({
+                    ...defaultBody,
+                    checkCertificate: true,
+                });
+
+            case "completed":
+                return taskApi.updateReceiveDeclarationOfExpenditureCertificateTask({
+                    taskDataId: { value: taskDataId },
+                    projectType: projectType,
+                    dateReceived: significantDate || "2025-09-09",
+                    notApplicable: false,
+                    checkCertificate: true,
+                    saved: true,
+                });
+
+            default:
+                return taskApi.updateReceiveDeclarationOfExpenditureCertificateTask(defaultBody);
+        }
+    }
+
+    updateRedactAndSendDocuments(taskDataId: string, projectType: ProjectType, status: TaskStatus) {
+        const defaultBody = {
+            taskDataId: { value: taskDataId },
+            projectType: projectType,
+            redact: false,
+            saved: false,
+            sendToEsfa: false,
+            send: false,
+            sendToSolicitors: false,
+        };
+
+        switch (status) {
+            case "inProgress":
+                return taskApi.updateRedactAndSendDocumentsTask({
+                    ...defaultBody,
+                    redact: true,
+                });
+
+            case "completed":
+                return taskApi.updateRedactAndSendDocumentsTask({
+                    taskDataId: { value: taskDataId },
+                    projectType: projectType,
+                    redact: true,
+                    saved: true,
+                    sendToEsfa: true,
+                    send: true,
+                    sendToSolicitors: true,
+                });
+
+            default:
+                return taskApi.updateRedactAndSendDocumentsTask(defaultBody);
+        }
+    }
+
+    updateSupplementalFundingAgreement(taskDataId: string, projectType: ProjectType, status: TaskStatus) {
+        const defaultBody = {
+            taskDataId: { value: taskDataId },
+            projectType: projectType,
+            received: false,
+            cleared: false,
+            sent: false,
+            signed: false,
+            saved: false,
+            signedSecretaryState: false,
+        };
+        switch (status) {
+            case "inProgress":
+                return taskApi.updateSupplementalFundingAgreementTask({
+                    ...defaultBody,
+                    received: true,
+                });
+
+            case "completed":
+                return taskApi.updateSupplementalFundingAgreementTask({
+                    taskDataId: { value: taskDataId },
+                    projectType: projectType,
+                    received: true,
+                    cleared: true,
+                    sent: true,
+                    signed: true,
+                    saved: true,
+                    signedSecretaryState: true,
+                });
+
+            default:
+                return taskApi.updateSupplementalFundingAgreementTask(defaultBody);
+        }
+    }
+
+    // task that also updates significant date on project
+    updateExternalStakeholderKickOff(
+        projectId: string,
+        status: TaskStatus,
+        significantDate?: string,
+        userEmail?: string,
+    ) {
+        const defaultBody = {
+            projectId: { value: projectId },
+            stakeholderKickOffIntroductoryEmails: false,
+            localAuthorityProforma: false,
+            checkProvisionalDate: false,
+            stakeholderKickOffSetupMeeting: false,
+            stakeholderKickOffMeeting: false,
+            significantDate: significantDate || "2027-09-01",
+            userEmail: userEmail || cypressUser.email,
+        };
+
+        switch (status) {
+            case "inProgress":
+                return taskApi.updateExternalStakeholderKickOffTask({
+                    ...defaultBody,
+                    stakeholderKickOffIntroductoryEmails: true,
+                });
+
+            case "completed":
+                return taskApi.updateExternalStakeholderKickOffTask({
+                    projectId: { value: projectId },
+                    stakeholderKickOffIntroductoryEmails: true,
+                    localAuthorityProforma: true,
+                    checkProvisionalDate: true,
+                    stakeholderKickOffSetupMeeting: true,
+                    stakeholderKickOffMeeting: true,
+                    significantDate: significantDate || "2027-09-01",
+                    userEmail: userEmail || cypressUser.email,
+                });
+
+            default:
+                return taskApi.updateExternalStakeholderKickOffTask(defaultBody);
         }
     }
 }

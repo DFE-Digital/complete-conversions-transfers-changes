@@ -1,8 +1,8 @@
 using System.Net.Http.Headers;
 using System.Security.Claims;
 using AutoFixture;
-using DfE.CoreLibs.Testing.Mocks.Authentication;
-using DfE.CoreLibs.Testing.Mocks.WebApplicationFactory;
+using GovUK.Dfe.CoreLibs.Testing.Mocks.Authentication;
+using GovUK.Dfe.CoreLibs.Testing.Mocks.WebApplicationFactory;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;

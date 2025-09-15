@@ -21,7 +21,8 @@ namespace Dfe.Complete.Application.DaoRevoked.Commands
 
     public class AddDaoRevokedDecisionCommandHandler(
         IProjectReadRepository projectReadRepository,
-        INoteWriteRepository noteWriteRepository, 
+        IProjectWriteRepository projectWriteRepository,
+        INoteWriteRepository noteWriteRepository,  
         IDaoRevocationWriteRepository daoRevocationWriteRepository)
         : IRequestHandler<RecordDaoRevocationDecisionCommand, Result<bool>>
     {
@@ -32,9 +33,6 @@ namespace Dfe.Complete.Application.DaoRevoked.Commands
             {
                 throw new NotFoundException($"Project {request.ProjectId} not found");
             }
-            project.State = ProjectState.DaoRevoked;
-
-            //projectReadRepository.Projects.a
 
             var now = DateTime.UtcNow;
 
@@ -51,6 +49,8 @@ namespace Dfe.Complete.Application.DaoRevoked.Commands
 
             await AddDaoRevocationReason(request, daoRevocation.Id, now, cancellationToken);
 
+            project.State = ProjectState.DaoRevoked; 
+            await projectWriteRepository.UpdateProjectAsync(project, cancellationToken);
 
             return Result<bool>.Success(true);
         }

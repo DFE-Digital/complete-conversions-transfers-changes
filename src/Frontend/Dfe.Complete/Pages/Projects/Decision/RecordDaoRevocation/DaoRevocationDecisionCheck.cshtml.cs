@@ -2,7 +2,7 @@ using Dfe.Complete.Application.DaoRevoked.Commands;
 using Dfe.Complete.Constants;
 using Dfe.Complete.Extensions;
 using Dfe.Complete.Pages.Projects.Decision.RecordDaoRevocation.MinisterName;
-using DfE.CoreLibs.Caching.Interfaces;
+using GovUK.Dfe.CoreLibs.Caching.Interfaces;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -31,7 +31,7 @@ namespace Dfe.Complete.Pages.Projects.Decision.RecordDaoRevocation
             await sender.Send(decision);
 
             cacheService.Remove(CacheKey);
-
+            TempData["RecordedDaoRevocation"] = true;
             return Redirect(FormatRouteWithProjectId(RouteConstants.Project));
         }
     }

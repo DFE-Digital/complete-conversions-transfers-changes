@@ -1,6 +1,6 @@
 import BasePage from "cypress/pages/basePage";
 
-class TaskPage extends BasePage {
+export class TaskPage extends BasePage {
     // information dropdowns
     clickDropdown(summaryText: string) {
         cy.contains("summary", summaryText).click();
@@ -48,6 +48,16 @@ class TaskPage extends BasePage {
 
     isUnticked() {
         this.performLabelContainerAction(() => cy.get("input").should("not.be.checked"));
+        return this;
+    }
+
+    input(text: string) {
+        this.performLabelContainerAction(() => cy.get("input").clear().typeFast(text));
+        return this;
+    }
+
+    hasValue(value: string) {
+        this.performLabelContainerAction(() => cy.get("input").should("have.value", value));
         return this;
     }
 

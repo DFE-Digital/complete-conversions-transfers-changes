@@ -81,8 +81,8 @@ describe("View the transfer date history tests", () => {
         Logger.log("Go to Transfer date history section");
         projectDetailsPage
             .navigateTo("Transfer date history")
-            // .containsSubHeading("Current confirmed transfer date") // bug 231908
-            // .contains(`The current confirmed transfer date is ${inSixMonthsDisplayDate}.`)
+            .containsSubHeading("Current confirmed transfer date")
+            .contains(`The current confirmed transfer date is ${inNineMonthsDisplayDate}`)
             .containsSubHeading("Transfer date history");
 
         Logger.log("Check the history of transfer dates");

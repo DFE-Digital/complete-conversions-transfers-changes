@@ -2,8 +2,7 @@ using Dfe.Complete.Constants;
 using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Services;
 using Dfe.Complete.Utils;
-using DfE.CoreLibs.Caching.Interfaces;
-using DocumentFormat.OpenXml.Bibliography;
+using GovUK.Dfe.CoreLibs.Caching.Interfaces;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 

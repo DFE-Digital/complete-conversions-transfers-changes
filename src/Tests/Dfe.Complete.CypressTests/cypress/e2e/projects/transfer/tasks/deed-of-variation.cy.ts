@@ -78,7 +78,7 @@ describe("Transfers tasks - Deed of variation", () => {
     });
 
     it("Should NOT see the 'save and return' button for another user's project", () => {
-        cy.visit(`projects/${otherUserProjectId}/tasks/handover`);
+        cy.visit(`projects/${otherUserProjectId}/tasks/deed_of_variation`);
         taskPage.noSaveAndReturnExists();
     });
 

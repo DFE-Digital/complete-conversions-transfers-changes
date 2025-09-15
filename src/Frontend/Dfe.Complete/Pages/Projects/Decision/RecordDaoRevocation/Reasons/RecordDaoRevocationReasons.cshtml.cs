@@ -4,7 +4,7 @@ using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Domain.ValueObjects;
 using Dfe.Complete.Services;
 using Dfe.Complete.Utils;
-using DfE.CoreLibs.Caching.Interfaces; 
+using GovUK.Dfe.CoreLibs.Caching.Interfaces;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 

@@ -1,7 +1,7 @@
 using Dfe.Complete.Constants;
 using Dfe.Complete.Pages.Projects.Decision.RecordDaoRevocation.MinisterName;
 using Dfe.Complete.Services;
-using DfE.CoreLibs.Caching.Interfaces;
+using GovUK.Dfe.CoreLibs.Caching.Interfaces;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
