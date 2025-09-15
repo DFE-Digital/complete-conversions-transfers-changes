@@ -91,12 +91,21 @@
 	<ItemGroup>
 	  <ProjectReference Include="..\..\Core\Dfe.Complete.Application\Dfe.Complete.Application.csproj" />
 	  <ProjectReference Include="..\..\Core\Dfe.Complete.Infrastructure\Dfe.Complete.Infrastructure.csproj" />
+	  <ProjectReference Include="..\..\Core\Dfe.Complete.Utils\Dfe.Complete.Utils.csproj" />
 	  <ProjectReference Include="..\Dfe.Complete.Logging\Dfe.Complete.Logging.csproj" />
 	  <ProjectReference Include="..\Dfe.Complete.UserContext\Dfe.Complete.UserContext.csproj" />
 	</ItemGroup>
 	<ItemGroup>
 	  <Content Update="appsettings.json">
 	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </Content>
+	  <Content Update="Pages\Projects\Decision\RecordDaoRevocation\Date\AddDaoRevocationDecisionDate.cshtml">
+	    <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+	    <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+	  </Content>
+	  <Content Update="Pages\Projects\Decision\RecordDaoRevocation\Reasons\RecordDaoRevocationReasons.cshtml">
+	    <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+	    <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
 	  </Content>
 	</ItemGroup>
 </Project>

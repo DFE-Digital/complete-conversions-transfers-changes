@@ -146,7 +146,7 @@ namespace Dfe.Complete.Tests.Constants
             Assert.Equal(notesBase + "/new", string.Format(RouteConstants.ProjectAddNote, projectId));
             Assert.Equal($"{notesBase}/{noteId}/edit", string.Format(RouteConstants.ProjectEditNote, projectId, noteId));
         }
-
+         
         [Fact]
         public void ProjectTasksRoutes_ShouldFormatCorrectly()
         {
@@ -211,6 +211,24 @@ namespace Dfe.Complete.Tests.Constants
             var projectPath = $"/projects/{projectId}";
             Assert.Equal(projectPath + "/complete", string.Format(RouteConstants.ProjectComplete, projectId));
             Assert.Equal(projectPath + "/dao-revocation", string.Format(RouteConstants.ProjectDaoRevocation, projectId));
+        }
+
+        [Fact]
+        public void ProjectDaoRevocationRoutes_ShouldFormatCorrectly()
+        {
+            var projectId = Guid.NewGuid();
+            var basePath = $"/projects/{projectId}/dao-revocation";
+
+            Assert.Equal(basePath, string.Format(RouteConstants.ProjectDaoRevocation, projectId));
+            Assert.Equal(basePath + "/confirm", string.Format(RouteConstants.ProjectDaoRevocationConfirm, projectId));
+            Assert.Equal(basePath + "/reasons", string.Format(RouteConstants.ProjectDaoRevocationReason, projectId));
+            Assert.Equal(basePath + "/minister", string.Format(RouteConstants.ProjectDaoRevocationMinister, projectId));
+            Assert.Equal(basePath + "/date", string.Format(RouteConstants.ProjectDaoRevocationDate, projectId));
+            Assert.Equal(basePath + "/check", string.Format(RouteConstants.ProjectDaoRevocationCheck, projectId));
+
+            Assert.Equal(basePath + "/reasons/change", string.Format(RouteConstants.ChangeProjectDaoRevocationReason, projectId));
+            Assert.Equal(basePath + "/minister/change", string.Format(RouteConstants.ChangeProjectDaoRevocationMinister, projectId));
+            Assert.Equal(basePath + "/date/change", string.Format(RouteConstants.ChangeProjectDaoRevocationDate, projectId)); 
         }
 
         [Fact]

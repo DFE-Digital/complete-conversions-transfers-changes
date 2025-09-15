@@ -1,0 +1,84 @@
+﻿@page "/projects/{projectId}/dao-revocation/reasons"
+@inject Dfe.Complete.Services.ErrorService ErrorService
+@using Dfe.Complete.Utils
+@using Dfe.Complete.Constants
+@model Dfe.Complete.Pages.Projects.Decision.RecordDaoRevocation.Reasons.DaoRevocationReasonsModel
+@{
+    Layout = "_RecordDaoRevocationLayout";
+    ViewData["Title"] = "Minister’s name"; 
+
+    var errorKey = "select-dao-revoked-reason";
+}
+@section HeaderSection {
+    <span class="govuk-caption-xl">Revoke Directive Academy Order</span>
+    <h1 class="govuk-heading-xl">
+        Why was the DAO revoked?
+    </h1>
+}
+@section DecisionSection {
+    <form method="post">
+        <input type="hidden" asp-for="ProjectId" />
+        <div class="govuk-form-group @(ErrorService.HasErrorForKey(errorKey) ? "govuk-form-group--error" : "")">
+            <fieldset class="govuk-fieldset" aria-describedby="reasons-hint @(ErrorService.HasErrorForKey(errorKey) ? "reasons-error" : "")">
+                <legend class="govuk-fieldset__legend govuk-fieldset__legend--l"> </legend>
+                <div class="govuk-hint">
+                    <p>Select all that apply.</p>
+                </div>
+                @if (ErrorService.HasErrorForKey(errorKey))
+                {
+                    <p id="reasons-error" class="govuk-error-message">
+                        <span class="govuk-visually-hidden">Error:</span> @ErrorService.GetErrorMessage(errorKey)
+                    </p>
+                }
+
+                <div class="govuk-checkboxes" data-module="govuk-checkboxes">
+                    @foreach (var reason in Model.Reasons)
+                    {
+                        var name = reason.ToDescription();
+                        var noteKey = $"{name}_note";
+                        var checkboxId = $"dao_revoked_reasons_{name}";
+                        var noteId = $"dao_revoked_reasons_{noteKey}";
+
+                        var isChecked = Model.FormValues?.TryGetValue($"dao_revoked_reasons[{name}]", out var checkboxVal) == true && checkboxVal == "1";
+                        var noteValue = Model.FormValues?.TryGetValue($"dao_revoked_reasons[{noteKey}]", out var noteInput) == true ? noteInput.ToString() : string.Empty;
+
+                        var hasError = ErrorService.HasErrorForKey(noteKey);
+
+                        <div class="govuk-checkboxes__item">
+                            <input class="govuk-checkboxes__input"
+                                   type="checkbox"
+                                   name="dao_revoked_reasons[@name]"
+                                   value="1"
+                                   id="@checkboxId"
+                                   aria-controls="@noteKey"
+                                   aria-expanded="@isChecked"
+                            @(isChecked ? "checked" : "") />
+                            <label class="govuk-label govuk-checkboxes__label" for="@checkboxId"><strong>@reason.ToDisplayDescription()</strong></label>
+                        </div>
+                        <div class="govuk-checkboxes__conditional @(isChecked ? "" : "govuk-checkboxes__conditional--hidden")" id="@noteKey">
+                            <div class="govuk-form-group @(hasError ? "govuk-form-group--error" : "")">
+                                <label class="govuk-label" for="@noteId">Enter details about the reason for the change.</label>
+
+                                @if (hasError)
+                                {
+                                    <p class="govuk-error-message">
+                                        <span class="govuk-visually-hidden">Error:</span> @ErrorService.GetErrorMessage(noteKey)
+                                    </p>
+                                }
+
+                                <textarea class="govuk-textarea"
+                                          rows="5"
+                                          name="dao_revoked_reasons[@noteKey]"
+                                          id="@noteId">@noteValue</textarea>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </fieldset>
+        </div>
+        <div class="govuk-button-group">
+            <govuk-button type="submit">Continue</govuk-button>
+            <a class="govuk-link" href="@String.Format(RouteConstants.Project, Model.ProjectId)">Cancel</a>
+        </div>
+    </form>
+}

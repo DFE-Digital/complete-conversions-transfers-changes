@@ -21,5 +21,9 @@
         public const string SevenToElevenYears = "Enter the proposed capacity for pupils in years 7 to 11";
         public const string TwelveOrAboveYears = "Enter the proposed capacity for students in year 12 or above";
         public const string ProposedCapacityMustBeNumber = "Proposed capacity must be a number, like 345";
+        public const string ChooseAtLeastOneReason= "Select at least one reason";
+        public const string MustProvideDetails = "You must provide details";
+        public const string MinisterNameRequired = "Enter the name of the minister that approved the decision";
+        public const string DecisionDateRequired = "Enter a valid date the decision was made, like 27 3 2021";
     }
 }

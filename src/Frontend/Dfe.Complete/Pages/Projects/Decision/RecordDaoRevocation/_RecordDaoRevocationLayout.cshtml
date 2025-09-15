@@ -1,0 +1,37 @@
+@using Dfe.Complete.Constants;
+@using Dfe.Complete.Domain.Constants
+@using Dfe.Complete.Utils;
+@using Dfe.Complete.Domain.Enums
+@using Dfe.Complete.Domain.Extensions
+@using Dfe.Complete.Pages.Projects.DateHistory
+@using GovUk.Frontend.AspNetCore.TagHelpers
+@using Dfe.Complete.Pages.Projects.ProjectView
+@using Dfe.Complete.TagHelpers
+
+@model Dfe.Complete.Pages.Projects.ProjectView.ProjectLayoutModel
+@{
+  Layout = "Shared/_Layout";
+    var errorSummaryModel = new Dfe.Complete.Models.ErrorSummaryModel
+            {
+                HideKeyInErrorMessage = true
+            };
+}
+<main class="govuk-grid-row govuk-!-margin-bottom-9">
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+           @*  <partial name="_ErrorSummary" model="errorSummaryModel" /> *@
+        </div>
+    </div>
+    @await RenderSectionAsync("NotificationSection", required: false)
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds"> 
+            @await RenderSectionAsync("HeaderSection", required: true)
+            @await RenderSectionAsync("HeaderHintSection", required: false)
+        </div>
+    </div>
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+            @await RenderSectionAsync("DecisionSection", required: true)
+        </div>
+    </div>
+</main>

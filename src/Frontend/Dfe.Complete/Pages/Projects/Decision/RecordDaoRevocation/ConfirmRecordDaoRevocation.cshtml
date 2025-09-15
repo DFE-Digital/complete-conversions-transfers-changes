@@ -1,0 +1,94 @@
+﻿@page "/projects/{projectId}/dao-revocation/confirm"
+@using Dfe.Complete.Constants
+@model Dfe.Complete.Pages.Projects.Decision.RecordDaoRevocation.ConfirmDaoRevocationModel
+@{
+    Layout = "_RecordDaoRevocationLayout";
+    ViewData["Title"] = "Before you start";
+}
+@if ((bool?)TempData["ConfirmNotification"] == true){
+    @section NotificationSection{
+        <div class="govuk-grid-row">
+            <div class="govuk-grid-column-two-thirds">
+                <govuk-notification-banner>
+                    <govuk-notification-banner-title>
+                        Important
+                    </govuk-notification-banner-title>
+                    <h2>You cannot record this decision yet</h2>
+                    <p>Before you can record the decision to revoke an Academy Order:</p>
+                    <ul class="govuk-list govuk-list--bullet"> 
+                        <li>a minister must approve the decision</li> 
+                        <li>you must have sent the letter confirming the decision to the school</li> 
+                        <li>you must have saved a copy of the letter in SharePoint</li> 
+                    </ul> 
+                    <p>You can <a class="govuk-notification-banner__link" href="@string.Format(RouteConstants.Project, Model.ProjectId)">go back to the task list</a> and continue working on this project, or <a class="govuk-notification-banner__link" href="@RouteConstants.YourProjectsInProgress">choose another project from your project list.</a></p>
+                </govuk-notification-banner>
+            </div>
+        </div>
+    }
+}
+@section HeaderSection{
+    <span class="govuk-caption-xl">Revoke Directive Academy Order</span>
+    <h1 class="govuk-heading-xl">
+        Before you start
+    </h1>
+}
+@section HeaderHintSection {
+    <div class="govuk-hint">
+        <p>You cannot record a decision to revoke a DAO until you confirm that the following things have happened.</p>
+    </div>
+}
+@section DecisionSection{
+    <form method="post">
+        <input type="hidden" asp-for="@Model.ProjectId" />
+        <govuk-checkboxes name="approval-options">
+            <govuk-checkboxes-fieldset>
+                <govuk-checkboxes-fieldset-legend>
+                    <span class="govuk-fieldset__legend govuk-fieldset__legend--l">
+                        <h2 class="govuk-heading-l">A minister has approved this decision</h2>
+                    </span>
+                    <div class="govuk-hint" id="dao-revocation-stepped-form-confirm-minister-approved-hint">
+                        <p>The revocation of a DAO (Directive Academy Order) must be signed off by a minister. It cannot proceed without ministerial approval.</p>
+                    </div>
+                </govuk-checkboxes-fieldset-legend> 
+                <govuk-checkboxes-item id="@nameof(Model.Approval)" asp-for="@Model.Approval" value="true" name="@nameof(Model.Approval)" checked="@Model.Approval">
+                    <b>I confirm a minister has approved this decision</b>
+                </govuk-checkboxes-item> 
+            </govuk-checkboxes-fieldset>
+        </govuk-checkboxes>
+        <govuk-checkboxes name="sent-options">
+            <govuk-checkboxes-fieldset>
+                <govuk-checkboxes-fieldset-legend>
+                    <span class="govuk-fieldset__legend govuk-fieldset__legend--l">
+                        <h2 class="govuk-heading-l">You have sent a letter confirming the revocation decision</h2>
+                    </span>
+                    <div class="govuk-hint" id="dao-revocation-stepped-form-confirm-letter-sent-hint">
+                        <p>You must write and send a letter to the school’s governing body to confirm the minister’s decision.</p>
+                        <p>Use the letter templates in the revocation guidance (opens in a new tab) to help you.</p>
+                    </div>
+                </govuk-checkboxes-fieldset-legend>
+                <govuk-checkboxes-item id="@nameof(Model.Sent)" asp-for="@Model.Sent" value="true" name="@nameof(Model.Sent)" checked="@Model.Sent">
+                    <b>I confirm I have sent the letter confirming the revocation decision</b>
+                </govuk-checkboxes-item>
+            </govuk-checkboxes-fieldset>
+        </govuk-checkboxes>
+        <govuk-checkboxes name="saved-options">
+            <govuk-checkboxes-fieldset>
+                <govuk-checkboxes-fieldset-legend>
+                    <span class="govuk-fieldset__legend govuk-fieldset__legend--l">
+                        <h2 class="govuk-heading-l">You have saved a copy of the letter</h2>
+                    </span>
+                    <div class="govuk-hint" id="dao-revocation-stepped-form-confirm-letter-saved-hint">
+                        <p>You must save a copy of the letter in the school’s SharePoint folder.</p>
+                    </div>
+                </govuk-checkboxes-fieldset-legend>
+                <govuk-checkboxes-item id="@nameof(Model.Saved)" asp-for="@Model.Saved" value="true" name="@nameof(Model.Saved)" checked="@Model.Saved">
+                    <b>I confirm a minister has approved this decision</b>
+                </govuk-checkboxes-item>
+            </govuk-checkboxes-fieldset>
+        </govuk-checkboxes>
+        <div class="govuk-button-group">
+            <govuk-button type="submit">Continue</govuk-button>
+            <a class="govuk-link" href="@String.Format(RouteConstants.Project, Model.ProjectId)">Cancel</a>
+        </div>
+    </form>
+}

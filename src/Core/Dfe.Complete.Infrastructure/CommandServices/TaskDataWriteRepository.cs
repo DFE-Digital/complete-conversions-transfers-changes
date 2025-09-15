@@ -4,7 +4,7 @@ using Dfe.Complete.Infrastructure.Database;
 
 namespace Dfe.Complete.Infrastructure.CommandServices
 {
-    public class TaskDataWriteRepository(CompleteContext context) : ITaskDataWriteRepository
+    internal class TaskDataWriteRepository(CompleteContext context) : ITaskDataWriteRepository
     {
         public async Task UpdateConversionAsync(ConversionTasksData conversionTasksData, CancellationToken cancellationToken)
         {
