@@ -102,6 +102,8 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
 
     public virtual LocalAuthority? LocalAuthority { get; set; }
 
+    public virtual DaoRevocation? DaoRevocation { get; set; }   
+
     public virtual ICollection<SignificantDateHistory> SignificantDateHistories { get; set; } = new List<SignificantDateHistory>();
 
 
@@ -113,6 +115,7 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
         RegionalDeliveryOfficer = default!;
         LocalAuthorityId = default!;
         LocalAuthority = default!;
+        DaoRevocation = default!;
     }
 
     public Project(ProjectId id,

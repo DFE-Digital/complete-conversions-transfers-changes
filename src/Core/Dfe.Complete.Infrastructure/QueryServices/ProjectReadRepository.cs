@@ -14,7 +14,8 @@ namespace Dfe.Complete.Infrastructure.QueryServices
                 .Include(p => p.LocalAuthority)
                 .Include(p => p.SignificantDateHistories)
                 .Include(p => p.GiasEstablishment)
-                .Include(p => p.Notes);
+                .Include(p => p.Notes)
+                .Include(p => p.DaoRevocation);
 
         public IQueryable<Project> ProjectsNoIncludes =>
             ctx.Projects

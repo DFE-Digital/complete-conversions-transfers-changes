@@ -19,7 +19,7 @@ namespace Dfe.Complete.Application.DaoRevoked.Commands
         public DateOnly? DecisionDate { get; set; } = null!;
     }
 
-    public class AddDaoRevokedDecisionCommandHandler(
+    public class RecordDaoRevocationDecisionCommandHandler(
         IProjectReadRepository projectReadRepository,
         IProjectWriteRepository projectWriteRepository,
         INoteWriteRepository noteWriteRepository,  
@@ -49,10 +49,15 @@ namespace Dfe.Complete.Application.DaoRevoked.Commands
 
             await AddDaoRevocationReason(request, daoRevocation.Id, now, cancellationToken);
 
-            project.State = ProjectState.DaoRevoked; 
+            UpdateProjectWithDaoRevoked(project, now);
             await projectWriteRepository.UpdateProjectAsync(project, cancellationToken);
 
             return Result<bool>.Success(true);
+        }
+        private static void UpdateProjectWithDaoRevoked(Project project, DateTime now)
+        {
+            project.State = ProjectState.DaoRevoked;
+            project.UpdatedAt = now;
         }
 
         private async Task AddDaoRevocationReason(RecordDaoRevocationDecisionCommand request, DaoRevocationId daoRevocationId, DateTime creationTime, CancellationToken cancellationToken)
