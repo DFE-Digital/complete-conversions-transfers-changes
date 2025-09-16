@@ -1,6 +1,8 @@
 using Dfe.AcademiesApi.Client.Contracts;
 using Dfe.Complete.Application.Contacts.Models;
 using Dfe.Complete.Application.Contacts.Queries;
+using Dfe.Complete.Application.DaoRevoked.Models;
+using Dfe.Complete.Application.DaoRevoked.Queries;
 using Dfe.Complete.Application.Projects.Models;
 using Dfe.Complete.Application.Projects.Queries.GetConversionTasksData;
 using Dfe.Complete.Application.Projects.Queries.GetProject;
@@ -26,6 +28,8 @@ public abstract class BaseProjectPageModel(ISender sender, ILogger logger) : Pag
     public string ProjectId { get; set; }
 
     public ProjectDto Project { get; set; }
+
+    public DaoRevocationDto DaoRevocation { get; set; }
 
     public EstablishmentDto Establishment { get; set; }
 
@@ -72,7 +76,22 @@ public abstract class BaseProjectPageModel(ISender sender, ILogger logger) : Pag
 
         Establishment = establishmentResult.Value;
     }
+    protected async Task SetDaoRevocationIfProjectIsDaoRevoked()
+    {
+        if (Project.State != ProjectState.DaoRevoked)
+        {
+            return;
+        }
+        var daoRevocationQuery = new GetDaoRevocationByProjectIdQuery(Project.Id);
+        var daoRevocationResult = await Sender.Send(daoRevocationQuery);
 
+        if (!daoRevocationResult.IsSuccess || daoRevocationResult.Value == null)
+        {
+            throw new NotFoundException($"Dao revocation for project {Project.Id.Value} does not exist.");
+        }
+
+        DaoRevocation = daoRevocationResult.Value;
+    }
     protected async Task SetIncomingTrustAsync()
     {
         if (!Project.FormAMat && Project.IncomingTrustUkprn != null)

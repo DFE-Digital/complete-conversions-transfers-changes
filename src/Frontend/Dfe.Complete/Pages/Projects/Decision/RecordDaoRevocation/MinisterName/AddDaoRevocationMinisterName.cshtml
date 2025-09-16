@@ -6,6 +6,7 @@
     Layout = "_RecordDaoRevocationLayout";
     ViewData["Title"] = "Minister’s name";
     var hasError = ErrorService.HasErrors();
+    var fieldName = "minister-name";
 }
 
 @section HeaderSection {
@@ -18,14 +19,14 @@
 @section DecisionSection {
     <form method="post">
         <input type="hidden" asp-for="ProjectId" />
-        <govuk-input id="name" asp-for="@Model.Name">
+        <govuk-input id="fieldName" asp-for="@Model.Name">
             <govuk-input-label></govuk-input-label>
             <govuk-input-hint>
                 <p>Enter the name of the minister who made the decision.</p>
             </govuk-input-hint>
-            @if (ErrorService.HasErrors())
+            @if (ErrorService.HasErrorForKey(fieldName))
             {
-                <govuk-input-error-message>@ErrorService.GetErrorMessage(nameof(Model.Name))</govuk-input-error-message>
+                <govuk-input-error-message>@(ErrorService.GetErrorMessage(fieldName))</govuk-input-error-message>
             }
         </govuk-input>
         <div class="govuk-button-group">

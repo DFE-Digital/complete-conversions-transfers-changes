@@ -48,6 +48,7 @@ namespace Dfe.Complete.Infrastructure
             services.AddScoped<IKeyContactReadRepository, KeyContactReadRepository>();
             services.AddScoped<IDaoRevocationWriteRepository, DaoRevocationWriteRepository>();
             services.AddScoped<IProjectWriteRepository, ProjectWriteRepository>();
+            services.AddScoped<IDaoRevocationReadRepository, DaoRevocationReadRepository>();
 
             // Authentication
             //services.AddCustomAuthorization(config);

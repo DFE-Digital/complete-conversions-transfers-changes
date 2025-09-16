@@ -88,8 +88,6 @@ namespace Dfe.Complete.Application.Projects.Models
 
         public  ICollection<Note> Notes { get; set; } = new List<Note>();
 
-        public DaoRevocation DaoRevocation { get; set; }
-
         public  ICollection<SignificantDateHistoryDto> SignificantDateHistories { get; set; } = new List<SignificantDateHistoryDto>();
 
         public User RegionalDeliveryOfficer { get; set; } = default!;
