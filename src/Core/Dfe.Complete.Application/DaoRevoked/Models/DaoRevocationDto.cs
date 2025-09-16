@@ -4,7 +4,7 @@ namespace Dfe.Complete.Application.DaoRevoked.Models
 {
     public class DaoRevocationDto
     {
-        public DaoRevocationId Id { get; set; }
+        public DaoRevocationId Id { get; set; } = default!;
 
         public DateTime CreatedAt { get; set; }
 

@@ -3183,14 +3183,6 @@
                   }
                 ]
               },
-              "daoRevocation": {
-                "nullable": true,
-                "oneOf": [
-                  {
-                    "$ref": "#/components/schemas/DaoRevocation"
-                  }
-                ]
-              },
               "significantDateHistories": {
                 "type": "array",
                 "items": {
@@ -3744,57 +3736,6 @@
             }
           }
         ]
-      },
-      "DaoRevocation": {
-        "allOf": [
-          {
-            "$ref": "#/components/schemas/BaseAggregateRoot"
-          },
-          {
-            "type": "object",
-            "additionalProperties": false,
-            "properties": {
-              "id": {
-                "$ref": "#/components/schemas/DaoRevocationId"
-              },
-              "createdAt": {
-                "type": "string",
-                "format": "date-time"
-              },
-              "updatedAt": {
-                "type": "string",
-                "format": "date-time"
-              },
-              "dateOfDecision": {
-                "type": "string",
-                "format": "date",
-                "nullable": true
-              },
-              "decisionMakersName": {
-                "type": "string",
-                "nullable": true
-              },
-              "projectId": {
-                "nullable": true,
-                "oneOf": [
-                  {
-                    "$ref": "#/components/schemas/ProjectId"
-                  }
-                ]
-              }
-            }
-          }
-        ]
-      },
-      "DaoRevocationId": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-          "value": {
-            "type": "string",
-            "format": "guid"
-          }
-        }
       },
       "SignificantDateHistory": {
         "type": "object",
@@ -4482,9 +4423,6 @@
             "items": {
               "$ref": "#/components/schemas/Note"
             }
-          },
-          "daoRevocation": {
-            "$ref": "#/components/schemas/DaoRevocation"
           },
           "significantDateHistories": {
             "type": "array",
