@@ -2,7 +2,6 @@
 using Dfe.Complete.Application.Common.Models;
 using Dfe.Complete.Application.DaoRevoked.Interfaces;
 using Dfe.Complete.Application.DaoRevoked.Models;
-using Dfe.Complete.Application.LocalAuthorities.Queries;
 using Dfe.Complete.Domain.ValueObjects;
 using Dfe.Complete.Utils;
 using MediatR;
