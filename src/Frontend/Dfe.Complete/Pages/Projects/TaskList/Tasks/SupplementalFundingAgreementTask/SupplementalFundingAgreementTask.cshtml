@@ -47,9 +47,12 @@
                 <govuk-checkboxes-item id="cleared" asp-for="@Model.Cleared" value="true" name="cleared" checked="@Model.Cleared">
                     <b>Cleared</b>
                 </govuk-checkboxes-item>
-                <govuk-checkboxes-item id="signed" asp-for="@Model.Signed" value="true" name="signed" checked="@Model.Signed">
-                    <b>Signed by school or trust</b>
-                </govuk-checkboxes-item>
+                @if (Model.Project.Type == ProjectType.Conversion)
+                {
+                    <govuk-checkboxes-item id="signed" asp-for="@Model.Signed" value="true" name="signed" checked="@Model.Signed">
+                        <b>Signed by school or trust</b>
+                    </govuk-checkboxes-item>
+                }
                 <govuk-checkboxes-item id="saved" asp-for="@Model.Saved" value="true" name="saved" checked="@Model.Saved">
                     <b>Saved in the school's SharePoint folder</b>
                 </govuk-checkboxes-item> 
