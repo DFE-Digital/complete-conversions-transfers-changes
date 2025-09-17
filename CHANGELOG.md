@@ -17,13 +17,18 @@ Security in case of vulnerabilities.
 ## Unreleased
 
 ### Added
-
+- Ability to edit project information for conversions and transfers
+- ProjectGroup is created when a project is edited with a new GRN
 - Added `Dao Revocation` workflow. 
 - Configured Cache settings.
 
-### Fixed
+### Changed
+- Group reference number links to the group on "About the project"
 
+### Fixed
+- GroupReferenceNumberAttribute failed when there was no existing group
 - update "Task - Supplemental funding agreement - transfer - incorrect options"
+
 
 See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-09-12.746...main) for everything awaiting release
 

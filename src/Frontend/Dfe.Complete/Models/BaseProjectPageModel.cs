@@ -9,6 +9,7 @@ using Dfe.Complete.Application.Projects.Queries.GetProject;
 using Dfe.Complete.Application.Projects.Queries.GetTransferTasksData;
 using Dfe.Complete.Application.Services.AcademiesApi;
 using Dfe.Complete.Domain.Enums;
+using Dfe.Complete.Domain.Extensions;
 using Dfe.Complete.Domain.ValueObjects;
 using Dfe.Complete.Extensions;
 using Dfe.Complete.Utils;
@@ -22,7 +23,6 @@ public abstract class BaseProjectPageModel(ISender sender, ILogger logger) : Pag
 {
     protected readonly ISender Sender = sender;
     protected ILogger Logger = logger;
-
 
     [BindProperty(SupportsGet = true, Name = "projectId")]
     public string ProjectId { get; set; }
@@ -42,6 +42,9 @@ public abstract class BaseProjectPageModel(ISender sender, ILogger logger) : Pag
     public TransferTaskDataDto TransferTaskData { get; private set; } = null!;
     public ConversionTaskDataDto ConversionTaskData { get; private set; } = null!;
     public KeyContactDto KeyContacts { get; private set; } = null!;
+
+    public bool UserHasEditAccess() =>
+        User.GetUserId() == Project.AssignedToId || CurrentUserTeam.TeamIsServiceSupport();
 
     public async Task UpdateCurrentProject()
     {

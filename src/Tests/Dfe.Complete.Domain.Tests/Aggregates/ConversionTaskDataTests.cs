@@ -6,11 +6,11 @@ using GovUK.Dfe.CoreLibs.Testing.AutoFixture.Customizations;
 
 namespace Dfe.Complete.Domain.Tests.Aggregates
 {
-    public class ConversionTaksDataTests
+    public class ConversionTaskDataTests
     {
         [Theory]
         [CustomAutoData(typeof(DateOnlyCustomization))]
-        public void Constructor_ShouldThrowArgumentNullException_WhenConversionTaskIsDefault(TaskDataId id, DateTime updatedAt)
+        public void Constructor_ShouldThrowArgumentNullException_WhenConversionTaskIsDefault(DateTime updatedAt)
         {
             // Act & Assert
             var exception = Assert.Throws<ArgumentNullException>(() =>
