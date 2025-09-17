@@ -6,20 +6,21 @@ using Dfe.Complete.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 using System.Text.RegularExpressions;
+using Dfe.Complete.Application.Projects.Queries.QueryFilters;
 
 namespace Dfe.Complete.Application.Handover.Commands;
 
 public record CreateHandoverConversionProjectCommand(
-    [Required] Urn Urn,
-    [Required] Ukprn IncomingTrustUkprn,
-    [Required] DateOnly AdvisoryBoardDate,
-    [Required] string AdvisoryBoardConditions,
-    [Required] DateOnly ProvisionalConversionDate,
+    [Required] int? Urn,
+    [Required] int? IncomingTrustUkprn,
+    [Required] DateOnly? AdvisoryBoardDate,
+    [Required] DateOnly? ProvisionalConversionDate,
     [Required] string CreatedByEmail,
     [Required] string CreatedByFirstName,
     [Required] string CreatedByLastName,
-    [Required] int PrepareId,
-    bool DirectiveAcademyOrder = false,
+    [Required] int? PrepareId,
+    [Required] bool? DirectiveAcademyOrder,
+    string? AdvisoryBoardConditions,
     string? GroupId = null) : IRequest<ProjectId>;
 
 // TODO use query pattern not ICompleteRepository
@@ -42,13 +43,13 @@ public class CreateHandoverConversionProjectCommandHandler(
         var user = await GetOrCreateUser(request, now, cancellationToken);
 
         // Get local authority for the URN (you may need to implement this lookup)
-        var localAuthority = await GetLocalAuthorityForUrn(request.Urn, cancellationToken);
+        var localAuthority = await GetLocalAuthorityForUrn(new Urn(request.Urn!.Value), cancellationToken);
 
         // Parse group ID if provided
         ProjectGroupId? groupId = null;
         if (!string.IsNullOrEmpty(request.GroupId))
         {
-            await ValidateGroupId(request.GroupId, request.IncomingTrustUkprn, cancellationToken);
+            await ValidateGroupId(request.GroupId, new Ukprn(request.IncomingTrustUkprn!.Value), cancellationToken);
             groupId = new ProjectGroupId(Guid.NewGuid()); // You may need to implement group lookup
         }
 
@@ -59,19 +60,19 @@ public class CreateHandoverConversionProjectCommandHandler(
         // Create the project in inactive state
         var project = Project.CreateConversionProject(
             projectId,
-            request.Urn,
+            new Urn(request.Urn!.Value),
             now,
             now,
             TaskType.Conversion,
             ProjectType.Conversion,
             conversionTaskId,
-            request.ProvisionalConversionDate,
+            request.ProvisionalConversionDate!.Value,
             false, // Not provisional since we have a specific date
-            request.IncomingTrustUkprn,
+            new Ukprn(request.IncomingTrustUkprn!.Value),
             null, // TODO check against ruby
             false, // IsDueTo2Ri - not specified in handover version
             false, // HasAcademyOrderBeenIssued - use DirectiveAcademyOrder instead
-            request.AdvisoryBoardDate,
+            request.AdvisoryBoardDate!.Value,
             request.AdvisoryBoardConditions,
             string.Empty, // EstablishmentSharepointLink - not required in lightweight
             string.Empty, // IncomingTrustSharepointLink - not required in lightweight
@@ -85,12 +86,12 @@ public class CreateHandoverConversionProjectCommandHandler(
 
         project.State = ProjectState.Inactive;
 
-        if (request.DirectiveAcademyOrder)
+        if (request.DirectiveAcademyOrder!.Value)
         {
             project.DirectiveAcademyOrder = true;
         }
 
-        project.PrepareId = request.PrepareId;
+        project.PrepareId = request.PrepareId!.Value;
 
         await conversionTaskRepository.AddAsync(conversionTask, cancellationToken);
         await projectRepository.AddAsync(project, cancellationToken);
@@ -101,55 +102,43 @@ public class CreateHandoverConversionProjectCommandHandler(
     private async Task ValidateRequest(CreateHandoverConversionProjectCommand request, CancellationToken cancellationToken)
     {
         // Validate URN format (6 digits)
-        if (request.Urn.Value < 100000 || request.Urn.Value > 999999)
-        {
+        if (request.Urn < 100000 || request.Urn > 999999)
             throw new ValidationException("URN must be a 6-digit integer");
-        }
 
         // Validate UKPRN format (8 digits)
-        if (request.IncomingTrustUkprn.Value < 10000000 || request.IncomingTrustUkprn.Value > 99999999)
-        {
-            throw new ValidationException("Incoming trust UKPRN must be an 8-digit integer");
-        }
+        if (request.IncomingTrustUkprn < 10000000 || request.IncomingTrustUkprn > 19999999)
+            throw new ValidationException("Incoming trust UKPRN must be an 8 digit integer beginning with 1");
 
         // Validate advisory board date is in the past
-        if (request.AdvisoryBoardDate > DateOnly.FromDateTime(DateTime.Today))
-        {
+        if (request.AdvisoryBoardDate.Value > DateOnly.FromDateTime(DateTime.Today))
             throw new ValidationException("Advisory board date must be in the past");
-        }
 
         // Validate provisional conversion date is first day of month
-        if (request.ProvisionalConversionDate.Day != 1)
-        {
+        if (request.ProvisionalConversionDate.Value.Day != 1)
             throw new ValidationException("Provisional conversion date must be the first day of the month");
-        }
 
         // Validate email domain
         if (!request.CreatedByEmail.EndsWith("@education.gov.uk", StringComparison.OrdinalIgnoreCase))
-        {
             throw new ValidationException("Created by email must be from @education.gov.uk domain");
-        }
 
         // Validate group ID format if provided
         if (!string.IsNullOrEmpty(request.GroupId))
         {
             var groupIdPattern = @"^GRP_\d{8}$";
             if (!Regex.IsMatch(request.GroupId, groupIdPattern))
-            {
                 throw new ValidationException("Group ID must match format GRP_XXXXXXXX (8 digits)");
-            }
         }
 
         // Check if URN already exists in active/inactive conversion projects
-        var existingProject = await projectRepository.Query()
-            .Where(p => p.Urn == request.Urn &&
-                       p.Type == ProjectType.Conversion &&
-                       (p.State == ProjectState.Active || p.State == ProjectState.Inactive))
+        var existingProject = await new ProjectUrnQuery(new Urn((int)request.Urn!))
+            .Apply(new StateQuery([ProjectState.Active])
+            .Apply(new TypeQuery(ProjectType.Conversion)
+            .Apply(projectRepository.Query().AsNoTracking())))
             .FirstOrDefaultAsync(cancellationToken);
 
         if (existingProject != null)
         {
-            throw new ValidationException($"URN {request.Urn.Value} already exists in active/inactive conversion projects");
+            throw new ValidationException($"URN {request.Urn} already exists in active/inactive conversion projects");
         }
     }
 
