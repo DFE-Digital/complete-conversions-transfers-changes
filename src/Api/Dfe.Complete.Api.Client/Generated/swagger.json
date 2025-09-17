@@ -4290,21 +4290,24 @@
         "additionalProperties": false,
         "properties": {
           "urn": {
-            "$ref": "#/components/schemas/Urn"
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
           },
           "incomingTrustUkprn": {
-            "$ref": "#/components/schemas/Ukprn"
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
           },
           "advisoryBoardDate": {
             "type": "string",
-            "format": "date"
-          },
-          "advisoryBoardConditions": {
-            "type": "string"
+            "format": "date",
+            "nullable": true
           },
           "provisionalConversionDate": {
             "type": "string",
-            "format": "date"
+            "format": "date",
+            "nullable": true
           },
           "createdByEmail": {
             "type": "string"
@@ -4317,10 +4320,16 @@
           },
           "prepareId": {
             "type": "integer",
-            "format": "int32"
+            "format": "int32",
+            "nullable": true
           },
           "directiveAcademyOrder": {
-            "type": "boolean"
+            "type": "boolean",
+            "nullable": true
+          },
+          "advisoryBoardConditions": {
+            "type": "string",
+            "nullable": true
           },
           "groupId": {
             "type": "string",
