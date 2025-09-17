@@ -84,7 +84,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Folder Include="Services\Project\" />
 	  <Folder Include="wwwroot\src\images" />
 	</ItemGroup>
 
