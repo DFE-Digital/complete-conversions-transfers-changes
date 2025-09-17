@@ -53,8 +53,7 @@
     </div>
   </div>
 }
-else if (User.GetUserId() != Model.Project.AssignedToId &&
-!Model.CurrentUserTeam.TeamIsServiceSupport())
+else if (!@Model.UserHasEditAccess())
 {
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
