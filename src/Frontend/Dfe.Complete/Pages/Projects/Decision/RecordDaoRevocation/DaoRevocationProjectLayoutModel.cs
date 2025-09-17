@@ -15,6 +15,9 @@ namespace Dfe.Complete.Pages.Projects.Decision.RecordDaoRevocation
     {
         protected string CacheKey => $"DaoRevocation_{CacheKeyHelper.GenerateHashedCacheKey(ProjectId)}";
 
+        protected IActionResult ReturnPage(RecordDaoRevocationDecisionCommand decision)
+            => decision.ReasonNotes?.Count == 0 ? RedirectToDaoRevocationPage() : Page();
+
         protected async Task<RecordDaoRevocationDecisionCommand> GetCachedDecisionAsync()
         {
             return await cacheService.GetOrAddAsync(CacheKey, () =>

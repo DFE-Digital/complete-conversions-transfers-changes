@@ -8,16 +8,13 @@
     var hasError = ErrorService.HasErrors();
 }
 
-@section HeaderSection {
-    <span class="govuk-caption-xl">Revoke Directive Academy Order</span>
-    <h1 class="govuk-heading-xl">
-        Minister’s name
-    </h1>
-}
-
-@section DecisionSection {
-    <form method="post">
-        <input type="hidden" asp-for="ProjectId" />
+@section BodySection {
+    <govuk-error-summary />
+    <form method="post" novalidate>
+        <span class="govuk-caption-xl">Revoke Directive Academy Order</span>
+        <h1 class="govuk-heading-xl">
+            Minister’s name
+        </h1>
         <govuk-input id="name" asp-for="@Model.Name">
             <govuk-input-label></govuk-input-label>
             <govuk-input-hint>

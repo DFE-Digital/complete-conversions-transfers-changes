@@ -8,6 +8,7 @@ using Dfe.Complete.Domain.ValueObjects;
 using Dfe.Complete.Utils;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace Dfe.Complete.Application.DaoRevoked.Commands
 {
@@ -23,36 +24,41 @@ namespace Dfe.Complete.Application.DaoRevoked.Commands
         IProjectReadRepository projectReadRepository,
         IProjectWriteRepository projectWriteRepository,
         INoteWriteRepository noteWriteRepository,  
-        IDaoRevocationWriteRepository daoRevocationWriteRepository)
+        IDaoRevocationWriteRepository daoRevocationWriteRepository,
+        ILogger<RecordDaoRevocationDecisionCommandHandler> logger)
         : IRequestHandler<RecordDaoRevocationDecisionCommand, Result<bool>>
     {
         public async Task<Result<bool>> Handle(RecordDaoRevocationDecisionCommand request, CancellationToken cancellationToken)
         {
-            var project = await projectReadRepository.ProjectsNoIncludes.FirstOrDefaultAsync(u => u.Id == request.ProjectId, cancellationToken);
-            if (project is null)
+            try
             {
-                throw new NotFoundException($"Project {request.ProjectId} not found");
+                var project = await projectReadRepository.Projects.FirstOrDefaultAsync(u => u.Id == request.ProjectId, cancellationToken)
+                    ?? throw new NotFoundException($"Project {request.ProjectId} not found");
+                var now = DateTime.UtcNow;
+
+                var daoRevocation = new DaoRevocation
+                {
+                    Id = new DaoRevocationId(Guid.NewGuid()),
+                    DateOfDecision = request.DecisionDate,
+                    DecisionMakersName = request.MinisterName,
+                    ProjectId = request.ProjectId,
+                    CreatedAt = now,
+                    UpdatedAt = now
+                };
+                await daoRevocationWriteRepository.CreateDaoRevocationAsync(daoRevocation, cancellationToken);
+
+                await AddDaoRevocationReason(request, daoRevocation.Id, now, cancellationToken);
+
+                UpdateProjectWithDaoRevoked(project, now);
+                await projectWriteRepository.UpdateProjectAsync(project, cancellationToken);
+
+                return Result<bool>.Success(true);
             }
-
-            var now = DateTime.UtcNow;
-
-            var daoRevocation = new DaoRevocation
+            catch (Exception ex)
             {
-                Id = new DaoRevocationId(Guid.NewGuid()),
-                DateOfDecision = request.DecisionDate,
-                DecisionMakersName = request.MinisterName,
-                ProjectId = request.ProjectId,
-                CreatedAt = now,
-                UpdatedAt = now
-            };
-            await daoRevocationWriteRepository.CreateDaoRevocationAsync(daoRevocation, cancellationToken);
-
-            await AddDaoRevocationReason(request, daoRevocation.Id, now, cancellationToken);
-
-            UpdateProjectWithDaoRevoked(project, now);
-            await projectWriteRepository.UpdateProjectAsync(project, cancellationToken);
-
-            return Result<bool>.Success(true);
+                logger.LogError(ex, "Exception for {Name} Request - {@Request}", nameof(RecordDaoRevocationDecisionCommandHandler), request);
+                return Result<bool>.Failure(ex.Message);
+            }
         }
         private static void UpdateProjectWithDaoRevoked(Project project, DateTime now)
         {

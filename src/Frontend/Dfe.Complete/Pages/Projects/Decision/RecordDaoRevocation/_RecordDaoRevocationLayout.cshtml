@@ -11,19 +11,12 @@
 @model Dfe.Complete.Pages.Projects.ProjectView.ProjectLayoutModel
 @{
   Layout = "Shared/_Layout";
-    var errorSummaryModel = new Dfe.Complete.Models.ErrorSummaryModel
-            {
-                HideKeyInErrorMessage = true
-            };
 }
 <main class="govuk-grid-row govuk-!-margin-bottom-9">
     @await RenderSectionAsync("NotificationSection", required: false)
     <div class="govuk-grid-row">
-        <div class="govuk-grid-column-two-thirds">
-            <partial name="_ErrorSummary" model="errorSummaryModel" />
-            @await RenderSectionAsync("HeaderSection", required: true)
-            @await RenderSectionAsync("HeaderHintSection", required: false)
-            @await RenderSectionAsync("DecisionSection", required: true)
+        <div class="govuk-grid-column-two-thirds"> 
+            @await RenderSectionAsync("BodySection", required: false) 
         </div>
     </div> 
 </main>

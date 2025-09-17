@@ -15,11 +15,10 @@ namespace Dfe.Complete.Pages.Projects.Decision.RecordDaoRevocation.MinisterName
         public required string Name { get; set; }
         public override async Task<IActionResult> OnGetAsync()
         {
-            var command = await GetCachedDecisionAsync();
+            var decision = await GetCachedDecisionAsync();
+            Name = decision.MinisterName;
 
-            Name = command.MinisterName;
-
-            return command.ReasonNotes?.Count == 0 ? RedirectToDaoRevocationPage() : Page();
+            return ReturnPage(decision);
         }
 
         public async Task<IActionResult> OnPostAsync()

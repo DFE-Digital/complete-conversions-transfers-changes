@@ -8,17 +8,14 @@
     var hasError = ErrorService.HasErrors();
 }
 
-@section HeaderSection {
-    <span class="govuk-caption-xl">Revoke Directive Academy Order</span>
-    <h1 class="govuk-heading-xl">
-        Date of decision
-    </h1>
-
-}
-
-@section DecisionSection {
+@section BodySection {
+    <govuk-error-summary />
     <form method="post">
         <input type="hidden" asp-for="ProjectId" />
+        <span class="govuk-caption-xl">Revoke Directive Academy Order</span>
+        <h1 class="govuk-heading-xl">
+            Date of decision
+        </h1>
         <govuk-date-input id="date" name-prefix="date" asp-for="@Model.Date">
             <govuk-date-input-fieldset>
                 <govuk-date-input-fieldset-legend class="govuk-fieldset__legend">

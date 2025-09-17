@@ -78,7 +78,7 @@ public abstract class BaseProjectPageModel(ISender sender, ILogger logger) : Pag
     }
     protected async Task SetDaoRevocationIfProjectIsDaoRevoked()
     {
-        if (Project.State != ProjectState.DaoRevoked)
+        if (Project.State is not ProjectState.DaoRevoked)
         {
             return;
         }
@@ -143,6 +143,8 @@ public abstract class BaseProjectPageModel(ISender sender, ILogger logger) : Pag
         await SetOutgoingTrustAsync();
 
         await SetCurrentUserTeamAsync();
+
+        await SetDaoRevocationIfProjectIsDaoRevoked();
 
         return Page();
     }

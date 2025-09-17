@@ -9,22 +9,20 @@
     var fieldName = "minister-name";
 }
 
-@section HeaderSection {
-    <span class="govuk-caption-xl">Revoke Directive Academy Order</span>
-    <h1 class="govuk-heading-xl">
-        Minister’s name
-    </h1>
-}
-
-@section DecisionSection {
+@section BodySection {
+    <govuk-error-summary />
     <form method="post" novalidate>
-        <input type="hidden" asp-for="ProjectId" /> 
+        <input type="hidden" asp-for="ProjectId" />
+        <span class="govuk-caption-xl">Revoke Directive Academy Order</span>
+        <h1 class="govuk-heading-xl">
+            Minister’s name
+        </h1>
         <govuk-input id="@fieldName" asp-for="@Model.Name">
             <govuk-input-label></govuk-input-label>
             <govuk-input-hint>
                 <p>Enter the name of the minister who made the decision.</p>
             </govuk-input-hint>
-              @if (ErrorService.HasErrorForKey(fieldName))
+            @if (ErrorService.HasErrorForKey(fieldName))
             {
                 <govuk-input-error-message>@(ErrorService.GetErrorMessage(fieldName))</govuk-input-error-message>
             } 

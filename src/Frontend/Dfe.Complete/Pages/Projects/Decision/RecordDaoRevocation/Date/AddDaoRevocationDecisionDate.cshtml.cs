@@ -16,8 +16,9 @@ namespace Dfe.Complete.Pages.Projects.Decision.RecordDaoRevocation.Date
         public DateOnly? Date { get; set; }
 
         public override async Task<IActionResult> OnGetAsync()
-        { 
-            return Page();
+        {
+            var decision = await GetCachedDecisionAsync();
+            return ReturnPage(decision);
         }
 
         public async Task<IActionResult> OnPostAsync()

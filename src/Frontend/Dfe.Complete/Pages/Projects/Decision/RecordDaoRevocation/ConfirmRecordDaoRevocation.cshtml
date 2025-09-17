@@ -25,21 +25,17 @@
             </div>
         </div>
     }
-}
-@section HeaderSection{
-    <span class="govuk-caption-xl">Revoke Directive Academy Order</span>
-    <h1 class="govuk-heading-xl">
-        Before you start
-    </h1>
-}
-@section HeaderHintSection {
-    <div class="govuk-hint">
-        <p>You cannot record a decision to revoke a DAO until you confirm that the following things have happened.</p>
-    </div>
-}
-@section DecisionSection{
+} 
+@section BodySection{
     <form method="post">
         <input type="hidden" asp-for="@Model.ProjectId" />
+        <span class="govuk-caption-xl">Revoke Directive Academy Order</span>
+        <h1 class="govuk-heading-xl">
+            Before you start
+        </h1>
+        <div class="govuk-hint">
+            <p>You cannot record a decision to revoke a DAO until you confirm that the following things have happened.</p>
+        </div>
         <govuk-checkboxes name="approval-options">
             <govuk-checkboxes-fieldset>
                 <govuk-checkboxes-fieldset-legend>

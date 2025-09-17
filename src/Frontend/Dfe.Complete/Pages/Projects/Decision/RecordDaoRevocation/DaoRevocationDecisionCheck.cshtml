@@ -10,15 +10,12 @@
     var hasError = ErrorService.HasErrors();
 }
 
-@section HeaderSection {
-    <span class="govuk-caption-xl">Revoke Directive Academy Order</span>
-    <h1 class="govuk-heading-xl">
-        Check your answers before recording this decision
-    </h1>
-}
-
-@section DecisionSection {
+@section BodySection {
     <form method="post">
+        <span class="govuk-caption-xl">Revoke Directive Academy Order</span>
+        <h1 class="govuk-heading-xl">
+            Check your answers before recording this decision
+        </h1>
         <govuk-summary-list>
             <govuk-summary-list-row>
                 <govuk-summary-list-row-key>Decision</govuk-summary-list-row-key>

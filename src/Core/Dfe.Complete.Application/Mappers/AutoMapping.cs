@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Dfe.AcademiesApi.Client.Contracts;
 using Dfe.Complete.Application.Contacts.Models;
+using Dfe.Complete.Application.DaoRevoked.Models;
 using Dfe.Complete.Application.Projects.Models;
 using Dfe.Complete.Domain.Entities;
 
@@ -91,6 +92,7 @@ namespace Dfe.Complete.Application.Mappers
 			CreateMap<KeyContact, KeyContactDto>();
             CreateMap<SignificantDateHistory, SignificantDateHistoryDto>();
 			CreateMap<SignificantDateHistoryReason, SignificantDateHistoryReasonDto>();
+			CreateMap<DaoRevocation, DaoRevocationDto>();
 		}
 	}
 }

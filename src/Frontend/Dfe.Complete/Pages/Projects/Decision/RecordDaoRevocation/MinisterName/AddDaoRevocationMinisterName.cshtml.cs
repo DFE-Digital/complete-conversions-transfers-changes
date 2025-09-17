@@ -15,7 +15,8 @@ namespace Dfe.Complete.Pages.Projects.Decision.RecordDaoRevocation.MinisterName
         public required string Name { get; set; }
         public override async Task<IActionResult> OnGetAsync()
         {
-            return Page();
+            var decision = await GetCachedDecisionAsync(); 
+            return ReturnPage(decision); 
         }
 
         public async Task<IActionResult> OnPostAsync()

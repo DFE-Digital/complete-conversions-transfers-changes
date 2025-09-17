@@ -9,15 +9,18 @@
 
     var errorKey = "select-dao-revoked-reason";
 }
-@section HeaderSection {
-    <span class="govuk-caption-xl">Revoke Directive Academy Order</span>
-    <h1 class="govuk-heading-xl">
-        Why was the DAO revoked?
-    </h1>
-}
-@section DecisionSection {
+
+@section BodySection {
     <form method="post">
         <input type="hidden" asp-for="ProjectId" />
+        <partial name="_ErrorSummary" model="new ErrorSummaryModel
+            {
+                HideKeyInErrorMessage = true
+            }" />
+        <span class="govuk-caption-xl">Revoke Directive Academy Order</span>
+        <h1 class="govuk-heading-xl">
+            Why was the DAO revoked?
+        </h1>
         <div class="govuk-form-group @(ErrorService.HasErrorForKey(errorKey) ? "govuk-form-group--error" : "")">
             <fieldset class="govuk-fieldset" aria-describedby="reasons-hint @(ErrorService.HasErrorForKey(errorKey) ? "reasons-error" : "")">
                 <legend class="govuk-fieldset__legend govuk-fieldset__legend--l"> </legend>

@@ -17,13 +17,13 @@ namespace Dfe.Complete.Pages.Projects.Decision.RecordDaoRevocation.Date
 
         public override async Task<IActionResult> OnGetAsync()
         {
-            var command = await GetCachedDecisionAsync();
+            var decision = await GetCachedDecisionAsync();
 
-            if (command.ReasonNotes?.Count == 0)
+            if (decision.ReasonNotes?.Count == 0)
                 return RedirectToDaoRevocationPage();
              
-            Date = command.DecisionDate;
-            return command.ReasonNotes?.Count == 0 ? RedirectToDaoRevocationPage() : Page();
+            Date = decision.DecisionDate;
+            return ReturnPage(decision);
         }
 
         public async Task<IActionResult> OnPostAsync()
