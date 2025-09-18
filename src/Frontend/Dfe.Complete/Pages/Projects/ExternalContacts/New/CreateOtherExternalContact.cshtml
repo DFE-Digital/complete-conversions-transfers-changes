@@ -25,17 +25,14 @@
 {
     <govuk-back-link href="@projectsExternalContactLink" xmlns="http://www.w3.org/1999/html" />
 }
-
+@await Html.PartialAsync("_ErrorSummary", model: errorSummaryModel)
 <div class="govuk-grid-row govuk-body">
-    <div class="govuk-grid-column-full">
-        <span class="govuk-caption-l">Add a contact</span>
-        <h1 class="govuk-heading-l">Enter contact details</h1>
-    </div>
-</div>
-<div class="govuk-grid-row govuk-body">
-    <div class="govuk-grid-column-two-thirds">
-        @await Html.PartialAsync("_ErrorSummary", model: errorSummaryModel)
-        <form method="post" novalidate>
+    <form method="post" novalidate>
+        <div class="govuk-grid-column-full">            
+            <span class="govuk-caption-l">Add a contact</span>
+            <h1 class="govuk-heading-l">Enter contact details</h1>
+        </div>
+        <div class="govuk-grid-column-two-thirds">
             @await Html.PartialAsync("_OtherExternalContactForm", model: externalContactInputModel)
             <div class="govuk-button-group">
                 <govuk-button type="submit" data-prevent-double-click="true">
@@ -43,8 +40,8 @@
                 </govuk-button>
                 <a class="govuk-link" href="@projectsExternalContactLink">Cancel</a>
             </div>
-        </form>
-    </div>
+        </div>
+    </form>
 </div>
 
 

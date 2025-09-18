@@ -30,32 +30,30 @@
     <govuk-back-link href="@projectsExternalContactLink" xmlns="http://www.w3.org/1999/html" />
 }
 
-<div class="govuk-grid-row govuk-body">
-    <div class="govuk-grid-column-full">
-        <span class="govuk-caption-l">Add a contact</span>
-        <h1 class="govuk-heading-l">Enter contact details</h1>
-        @{
-            switch (EnumExtensions.FromDescription<ExternalContactType>(Model.SelectedExternalContactType))
-            {
-                case ExternalContactType.ChairOfGovernors:
-                    <partial name="_ChairOfGovernorsInfo" />
-                    break;
-                case ExternalContactType.IncomingTrust:
-                    <partial name="_IncomingTrustCEOInfo" />
-                    break;
-                case ExternalContactType.OutgoingTrust:
-                    <partial name="_OutgoingTrustCEOInfo" />
-                    break;
-                default:
-                    <partial name="_HeaderTeacherInfo" />
-                    break;
+<form method="post" novalidate>
+    <div class="govuk-grid-row govuk-body">
+        <div class="govuk-grid-column-full">
+            <span class="govuk-caption-l">Add a contact</span>
+            <h1 class="govuk-heading-l">Enter contact details</h1>
+            @{
+                switch (EnumExtensions.FromDescription<ExternalContactType>(Model.SelectedExternalContactType))
+                {
+                    case ExternalContactType.ChairOfGovernors:
+                        <partial name="_ChairOfGovernorsInfo" />
+                        break;
+                    case ExternalContactType.IncomingTrust:
+                        <partial name="_IncomingTrustCEOInfo" />
+                        break;
+                    case ExternalContactType.OutgoingTrust:
+                        <partial name="_OutgoingTrustCEOInfo" />
+                        break;
+                    default:
+                        <partial name="_HeaderTeacherInfo" />
+                        break;
+                }
             }
-        }
-    </div>
-</div>
-<div class="govuk-grid-row govuk-body">
-    <div class="govuk-grid-column-full">
-        <form method="post" novalidate>            
+        </div>        
+        <div class="govuk-grid-column-full">
             <govuk-input name="@fullname" id="@fullname" asp-for="@externalContactInput.FullName">
                 <govuk-input-label class="govuk-label--m">Full name</govuk-input-label>
                 @if (ErrorService.HasErrorForKey(@fullname))
@@ -99,6 +97,6 @@
                 </govuk-button>
                 <a class="govuk-link" href="@projectsExternalContactLink">Cancel</a>
             </div>
-        </form>
+        </div>
     </div>
-</div>
+</form>

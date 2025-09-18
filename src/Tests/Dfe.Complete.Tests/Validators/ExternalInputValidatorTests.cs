@@ -50,17 +50,19 @@ public class ExternalInputValidatorTests
             () => Assert.False(result.IsValid),
             () => Assert.Contains(result.Errors, x => x.PropertyName == "FullName")
         );
-
-    }
-
-    [Fact]
-    public void Should_Have_Errors_When_Email_Is_Invalid()
+    }   
+    
+    [Theory]
+    [InlineData("")]
+    [InlineData(null)]
+    [InlineData("test")]
+    public void Should_Have_Errors_When_Email_Is_Invalid(string email)
     {
 
         // Arrange       
         var model = new ExternalContactInputModel
         {
-            Email = "TestUser"
+            Email = email
         };
 
         var validator = new ExternalContactInputValidator<ExternalContactInputModel>();

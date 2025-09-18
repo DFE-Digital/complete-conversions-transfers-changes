@@ -12,8 +12,9 @@ namespace Dfe.Complete.Validators
                 .NotEmpty().WithMessage(ValidationConstants.FullNameRequiredMessage);
 
             RuleFor(x => x.Email)
-           .EmailAddress()
-           .Unless(x => string.IsNullOrEmpty(x.Email))
+           .NotEmpty()
+           .WithMessage(ValidationConstants.EmailRequiredMessage)
+           .EmailAddress()           
            .WithMessage(ValidationConstants.InvalidEmailMessage);
 
             RuleFor(x => x.Phone).Matches(ValidationExpressions.UKPhone)

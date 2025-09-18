@@ -19,6 +19,7 @@ Security in case of vulnerabilities.
 ### Added
 - Ability to edit project information for conversions and transfers
 - ProjectGroup is created when a project is edited with a new GRN
+- Added `Add, Edit and Delete External Contacts for both conversion and transfer projects.
 
 ### Changed
 - Group reference number links to the group on "About the project"
@@ -37,7 +38,6 @@ See the [full commit history](https://github.com/DFE-Digital/complete-conversion
 ### Added
 
 - Added `Receive declaration of expenditure certificate` task for conversion and transfer projects.
-- Added `Add, Edit and Delete External Contacts for both conversion and transfer projects.
 
 ### Fixed
 - update "Give feedback about service" to use correct link

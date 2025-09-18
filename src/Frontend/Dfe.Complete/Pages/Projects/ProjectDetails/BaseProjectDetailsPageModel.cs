@@ -10,6 +10,7 @@ using Dfe.Complete.Domain.ValueObjects;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Web;
 using Dfe.Complete.Domain.Enums;
+using Dfe.Complete.Services.Interfaces;
 
 namespace Dfe.Complete.Pages.Projects.ProjectDetails
 {
