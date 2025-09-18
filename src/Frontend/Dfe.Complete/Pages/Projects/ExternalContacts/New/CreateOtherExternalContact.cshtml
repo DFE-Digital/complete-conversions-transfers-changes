@@ -6,10 +6,19 @@
     ViewData["Title"] = "Add contact";
     Layout = "Shared/_Layout";
     var projectsExternalContactLink = string.Format(RouteConstants.ProjectExternalContacts, Model.ProjectId);
+    var externalContactInputModel = Model.ExternalContactInput;
+    const string fullname = nameof(externalContactInputModel.FullName);
+    const string email = nameof(externalContactInputModel.Email);
+    const string phone = nameof(externalContactInputModel.Phone);
+    const string role = nameof(externalContactInputModel.Role);
+    const string primaryprojectcontact = nameof(externalContactInputModel.IsPrimaryProjectContact);
+
+    List<string> fieldOrder = new List<string>(new string[] { fullname, role, email, phone, primaryprojectcontact }).Select(f => f.ToLower()).ToList();
 
     var errorSummaryModel = new Dfe.Complete.Models.ErrorSummaryModel
     {
-        HideKeyInErrorMessage = true
+        HideKeyInErrorMessage = true,
+        FieldOrder = fieldOrder
     };
 }
 @section BeforeMain
@@ -27,7 +36,7 @@
     <div class="govuk-grid-column-two-thirds">
         @await Html.PartialAsync("_ErrorSummary", model: errorSummaryModel)
         <form method="post" novalidate>
-            @await Html.PartialAsync("_OtherExternalContactForm", model: Model.ExternalContactInput)
+            @await Html.PartialAsync("_OtherExternalContactForm", model: externalContactInputModel)
             <div class="govuk-button-group">
                 <govuk-button type="submit" data-prevent-double-click="true">
                     Save and continue
@@ -37,3 +46,5 @@
         </form>
     </div>
 </div>
+
+

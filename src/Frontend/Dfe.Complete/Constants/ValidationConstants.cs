@@ -25,5 +25,11 @@
         public const string ContactNotFound = "Contact {0} does not exist.";
         public const string ProjectNotFound = "Project {0} does not exist.";
         public const string ValidDate = "Enter a valid date, like 1 1 2025";
+
+        // External Contact validation message
+        public const string FullNameRequiredMessage = "Enter a name";
+        public const string InvalidEmailMessage = "Enter an email address in the correct format, like name@example.com";
+        public const string RoleRequiredMessage = "Enter a role";
+        public const string InvalidPrimaryContactMessage = "Only the incoming trust, outgoing trust, school or academy and local authority categories can have a primary contact.";
     }
 }

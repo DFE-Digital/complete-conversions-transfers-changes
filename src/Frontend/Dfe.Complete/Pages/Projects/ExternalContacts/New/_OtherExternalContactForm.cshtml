@@ -37,6 +37,10 @@
 </govuk-input>
 <govuk-input name="@phone" id="@phone" input-class="govuk-input--width-10" type="tel" asp-for="@Model.Phone">
     <govuk-input-label class="govuk-label--m">Phone</govuk-input-label>
+    @if (ErrorService.HasErrorForKey(@phone))
+    {
+        <govuk-input-error-message>@(ErrorService.GetErrorMessage(phone))</govuk-input-error-message>
+    }
 </govuk-input>
 
 <govuk-radios name="@contactType" id="@contactType" asp-for="@Model.SelectedExternalContactType">

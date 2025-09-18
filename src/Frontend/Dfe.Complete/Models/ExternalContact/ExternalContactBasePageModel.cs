@@ -42,4 +42,12 @@ public abstract class ExternalContactBasePageModel(ISender sender) : PageModel
 
         Project = result.Value;
     }
+
+    protected void AddValidationErrorsToModelState(FluentValidation.Results.ValidationResult result)
+    {
+        foreach (var error in result.Errors)
+        {
+            ModelState.AddModelError(error.PropertyName, error.ErrorMessage);
+        }
+    }
 }

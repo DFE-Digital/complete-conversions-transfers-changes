@@ -64,6 +64,7 @@ public class CreateExternalContact(
             if (contactType == default)
             {
                 ModelState.AddModelError("InvalidContactType", invalidContactTypeErrorMessage);
+                errorService.AddErrors(ModelState);
                 return await GetPageAsync();
             }
 
@@ -72,6 +73,7 @@ public class CreateExternalContact(
             if (organisationName == null && RequiresOrganisationName(contactType))
             {
                 ModelState.AddModelError("InvalidContactType", invalidContactTypeErrorMessage);
+                errorService.AddErrors(ModelState);
                 return await GetPageAsync();
             }
 
@@ -94,15 +96,7 @@ public class CreateExternalContact(
             ModelState.AddModelError("UnexpectedError", "An unexpected error occurred. Please try again later.");
             return await GetPageAsync();
         }
-    }
-
-    private void AddValidationErrorsToModelState(FluentValidation.Results.ValidationResult result)
-    {
-        foreach (var error in result.Errors)
-        {
-            ModelState.AddModelError(error.PropertyName, error.ErrorMessage);
-        }
-    }
+    }   
 
     private bool RequiresOrganisationName(ExternalContactType contactType)
         => contactType is ExternalContactType.IncomingTrust or ExternalContactType.OutgoingTrust;    

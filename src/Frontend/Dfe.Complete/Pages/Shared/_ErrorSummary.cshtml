@@ -3,30 +3,41 @@
 
 @if (errorService.HasErrors())
 { 
-    var showKeyInErrorMessage = Model?.HideKeyInErrorMessage != true;
-<div class="govuk-error-summary" aria-labelledby="error-summary-title" tabindex="-1" data-module="govuk-error-summary" data-testid="error-summary">
-	<div role="alert">
-		<h2 class="govuk-error-summary__title" id="error-summary-title">
-			There is a problem
-		</h2>
-		<div class="govuk-error-summary__body">
-			<ul class="govuk-list govuk-error-summary__list" data-testid="error-summary-link">
-				@foreach (var error in errorService.GetErrors())
-				{
-					<li>
-						@if (!string.IsNullOrWhiteSpace(error.Key))
-						{
-							var errorDetail = showKeyInErrorMessage ? $"@error.Key @error.Message" : @error.Message;
-							<a id="@($"{error.Key}-error-link")" href="#@error.Key">@errorDetail</a>
-						}
-						else
-						{
-							<a id="@(error.Key)" href="#@(error.Key)">@error.Key @error.Message</a>
-						}
-					</li>
-				}
-			</ul>
+	var showKeyInErrorMessage = Model?.HideKeyInErrorMessage != true;
+    var errors = errorService.GetErrors().ToList();
+
+    if (Model?.FieldOrder != null && Model.FieldOrder.Any())
+	{
+		errors = errors.OrderBy(e =>
+		{
+			var index = Model?.FieldOrder.IndexOf(e.Key.ToLower());
+			return index == -1 ? int.MaxValue : index;
+		}).ToList();
+	}
+
+	<div class="govuk-error-summary" aria-labelledby="error-summary-title" tabindex="-1" data-module="govuk-error-summary" data-testid="error-summary">
+		<div role="alert">
+			<h2 class="govuk-error-summary__title" id="error-summary-title">
+				There is a problem
+			</h2>
+			<div class="govuk-error-summary__body">
+				<ul class="govuk-list govuk-error-summary__list" data-testid="error-summary-link">
+					@foreach (var error in errors)
+					{
+						<li>
+							@if (!string.IsNullOrWhiteSpace(error.Key))
+							{
+								var errorDetail = showKeyInErrorMessage ? $"@error.Key @error.Message" : @error.Message;
+								<a id="@($"{error.Key}-error-link")" href="#@error.Key">@errorDetail</a>
+							}
+							else
+							{
+								<a id="@(error.Key)" href="#@(error.Key)">@error.Key @error.Message</a>
+							}
+						</li>
+					}
+				</ul>
+			</div>
 		</div>
 	</div>
-</div>
 }

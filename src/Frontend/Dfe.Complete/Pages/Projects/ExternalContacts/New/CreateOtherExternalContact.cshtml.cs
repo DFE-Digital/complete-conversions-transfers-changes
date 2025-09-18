@@ -38,14 +38,11 @@ public class CreateOtherExternalContact(
     public async Task<IActionResult> OnPostAsync()
     {
         // Use FluentValidation.Results.ValidationResult instead of System.ComponentModel.DataAnnotations.ValidationResult
-        FluentValidation.Results.ValidationResult result = await validator.ValidateAsync(ExternalContactInput);
+        FluentValidation.Results.ValidationResult validationResult = await validator.ValidateAsync(ExternalContactInput);
 
-        if (!result.IsValid)
+        if (!validationResult.IsValid)
         {
-            foreach (var error in result.Errors)
-            {
-                ModelState.AddModelError(error.PropertyName, error.ErrorMessage);
-            }
+            AddValidationErrorsToModelState(validationResult);
             errorService.AddErrors(ModelState);
             return await this.GetPage();
         }      
@@ -98,5 +95,5 @@ public class CreateOtherExternalContact(
     {
         await base.OnGetAsync();
         return Page();
-    }
+    }    
 }

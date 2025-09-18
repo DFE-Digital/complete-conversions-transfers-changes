@@ -74,11 +74,7 @@ public class EditExternalContact(
 
     private async Task<IActionResult> HandleValidationFailure(FluentValidation.Results.ValidationResult result)
     {
-        foreach (var error in result.Errors)
-        {
-            ModelState.AddModelError(error.PropertyName, error.ErrorMessage);
-        }
-
+        AddValidationErrorsToModelState(result);
         errorService.AddErrors(ModelState);
         await base.OnGetAsync();
 

@@ -19,7 +19,7 @@ namespace Dfe.Complete.StartupConfiguration
 
             services.AddScoped<ITrustCache, TrustCacheService>();
 
-            services.AddScoped<IValidator<ExternalContactInputModel>, ExternalContactInputValidator>();
+            services.AddScoped<IValidator<ExternalContactInputModel>, ExternalContactInputValidator<ExternalContactInputModel>>();
             services.AddScoped<IValidator<OtherExternalContactInputModel>, OtherExternalContactInputValidator>();
 
             return services;
