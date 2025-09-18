@@ -15,6 +15,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using StackExchange.Redis;
 using Dfe.Complete.Application.DaoRevoked.Interfaces;
+using Dfe.Complete.Application.ProjectGroups.Interfaces;
 
 namespace Dfe.Complete.Infrastructure
 {
@@ -42,6 +43,7 @@ namespace Dfe.Complete.Infrastructure
             services.AddScoped<INoteWriteRepository, NoteWriteRepository>();
             services.AddScoped<IProjectReadRepository, ProjectReadRepository>();
             services.AddScoped<IProjectGroupReadRepository, ProjectGroupReadRepository>();
+            services.AddScoped<IProjectGroupWriteRepository, ProjectGroupWriteRepository>();
             services.AddScoped<INoteReadRepository, NoteReadRepository>();
             services.AddScoped<IUserReadRepository, UserReadRepository>();
             services.AddScoped<IUserWriteRepository, UserWriteRepository>();
