@@ -38,30 +38,21 @@
                     <govuk-checkboxes-item-hint><p>No grant was received</p></govuk-checkboxes-item-hint>
                 </govuk-checkboxes-item>
             </govuk-checkboxes-fieldset>
-        </govuk-checkboxes>
-        @if (Model.ReceivedDate == null)
-        {
-            <govuk-date-input id="received-date" name-prefix="received-date" asp-for="@Model.ReceivedDate">
-                <govuk-date-input-fieldset>
-                    <govuk-date-input-fieldset-legend class="govuk-fieldset__legend--s">
-                        Enter the date you received the declaration of expenditure certificate
-                    </govuk-date-input-fieldset-legend>
-                    <govuk-date-input-hint>
-                        <p>For example 27 5 2007</p>
-                        @if (ErrorService.HasErrorForKey("received-date"))
-                        {
-                            <govuk-date-input-error-message>@ValidationConstants.ValidDate</govuk-date-input-error-message>
-                        }
-                    </govuk-date-input-hint>
-                </govuk-date-input-fieldset>
-            </govuk-date-input>
-        }
-        else
-        {
-            <div class="govuk-inset-text">
-                <p>DfE received the declaration of expenditure certificate on @Model.ReceivedDate.ToDateString().</p>
-            </div>
-        }
+        </govuk-checkboxes> 
+        <govuk-date-input id="received-date" name-prefix="received-date" asp-for="@Model.ReceivedDate">
+            <govuk-date-input-fieldset>
+                <govuk-date-input-fieldset-legend class="govuk-fieldset__legend--s">
+                    Enter the date you received the declaration of expenditure certificate
+                </govuk-date-input-fieldset-legend>
+                <govuk-date-input-hint>
+                    <p>For example 27 5 2007</p>
+                    @if (ErrorService.HasErrorForKey("received-date"))
+                    {
+                        <govuk-date-input-error-message>@ValidationConstants.ValidDate</govuk-date-input-error-message>
+                    }
+                </govuk-date-input-hint>
+            </govuk-date-input-fieldset>
+        </govuk-date-input>
         <govuk-checkboxes name="options">
             <govuk-checkboxes-fieldset>
                 <govuk-checkboxes-fieldset-legend>
