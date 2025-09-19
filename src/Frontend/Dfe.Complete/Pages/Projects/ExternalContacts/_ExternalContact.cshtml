@@ -1,4 +1,15 @@
-﻿@model  Dfe.Complete.Pages.Projects.ExternalContacts.ExternalContactModel
+﻿@using Dfe.Complete.Constants
+@using Dfe.Complete.Models.ExternalContact
+@model  ExternalContactModel
+@{
+    var editContactPageRoute = "#";
+
+    if (!string.IsNullOrWhiteSpace(Model.Contact.ProjectId?.Value.ToString()))
+    {
+        editContactPageRoute = string.Format(RouteConstants.ProjectsExternalContactEdit, Model.Contact.ProjectId.Value, Model.Contact.Id.Value);     
+    }
+}
+
 <govuk-summary-card>
   <govuk-summary-card-title heading-level="3">
     @Model.Contact.Title
@@ -6,7 +17,7 @@
   @if (Model.IsEditable)
   {
     <govuk-summary-card-actions>
-      <govuk-summary-card-action href="#">
+            <govuk-summary-card-action href="@editContactPageRoute">
         Edit contact
       </govuk-summary-card-action>
     </govuk-summary-card-actions>

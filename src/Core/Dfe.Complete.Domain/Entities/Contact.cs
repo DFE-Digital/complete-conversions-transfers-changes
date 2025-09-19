@@ -1,7 +1,6 @@
 ﻿using Dfe.Complete.Domain.Common;
 using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Domain.ValueObjects;
-using Dfe.Complete.Utils;
 
 namespace Dfe.Complete.Domain.Entities;
 
@@ -27,7 +26,7 @@ public class Contact : BaseAggregateRoot, IEntity<ContactId>
 
     public string? OrganisationName { get; set; }
 
-    public string? Type { get; set; }
+    public ContactType? Type { get; set; }
 
     public LocalAuthorityId? LocalAuthorityId { get; set; }
 
@@ -53,7 +52,7 @@ public class Contact : BaseAggregateRoot, IEntity<ContactId>
             Phone = phone,
             LocalAuthorityId = localAuthorityId,
             Category = ContactCategory.LocalAuthority,
-            Type = ContactType.DirectorOfChildServices.ToDescription(),
+            Type = ContactType.DirectorOfChildServices,
             CreatedAt = createdAt
         };
     }
