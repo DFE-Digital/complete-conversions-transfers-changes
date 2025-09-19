@@ -155,8 +155,8 @@
                     Enter the confirmed @projectTypeString date
                 </govuk-date-input-fieldset-legend>
                 <govuk-date-input-hint>
-                    <p>Everyone should have agreed to and know the confirmed @projectTypeString date.</p> 
-                    <p>You only need to enter a month and year. All @(isConversion?"schools convert":"academies tranfer") on the first day of the month.</p>
+                    <p>Everyone should have agreed to and know the confirmed @projectTypeString date.</p>
+                        <p>You only need to enter a month and year. All @(isConversion ? "schools convert" : "academies transfer") on the first day of the month.</p>
                     @if (ErrorService.HasErrorForKey(significantDateField))
                     {
                         <govuk-date-input-error-message>@(ErrorService.GetErrorMessage(significantDateField))</govuk-date-input-error-message>
