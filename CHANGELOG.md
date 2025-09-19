@@ -16,6 +16,9 @@ Security in case of vulnerabilities.
 
 ## Unreleased
 
+### Removed
+- removed the 'Add Project' in your project button and disabled access to all related subpages 
+
 ### Added
 - Ability to edit project information for conversions and transfers
 - ProjectGroup is created when a project is edited with a new GRN
