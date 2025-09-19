@@ -46,7 +46,7 @@ namespace Dfe.Complete.Application.Projects.Commands.TaskData
             tasksData.ReceiveGrantPaymentCertificateDateReceived = request.NotApplicable == true ? null : request.DateReceived;
             tasksData.ReceiveGrantPaymentCertificateNotApplicable = request.NotApplicable;
 
-            await taskDataWriteRepository.UpdateConversionAsync(tasksData, cancellationToken);
+            await taskDataWriteRepository.UpdateConversionAsync(tasksData, DateTime.UtcNow, cancellationToken);
         }
 
         private async Task UpdateTransferTaskDataAsync(TaskDataId taskDataId, UpdateDeclarationOfExpenditureCertificateTaskCommand request, CancellationToken cancellationToken)
@@ -59,7 +59,7 @@ namespace Dfe.Complete.Application.Projects.Commands.TaskData
             tasksData.DeclarationOfExpenditureCertificateSaved = request.NotApplicable == true ? null : request.Saved;
             tasksData.DeclarationOfExpenditureCertificateNotApplicable = request.NotApplicable;
 
-            await taskDataWriteRepository.UpdateTransferAsync(tasksData, cancellationToken);
+            await taskDataWriteRepository.UpdateTransferAsync(tasksData, DateTime.UtcNow, cancellationToken);
         } 
     }
 }

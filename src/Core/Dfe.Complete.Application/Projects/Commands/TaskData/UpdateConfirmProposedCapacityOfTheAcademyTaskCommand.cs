@@ -29,7 +29,7 @@ namespace Dfe.Complete.Application.Projects.Commands.TaskData
             tasksData.ProposedCapacityOfTheAcademySevenToElevenYears = request.NotApplicable == true ? null : request.SevenToElevenYears;
             tasksData.ProposedCapacityOfTheAcademyTwelveOrAboveYears = request.NotApplicable == true ? null : request.TwelveOrAboveYears; 
 
-            await taskDataWriteRepository.UpdateConversionAsync(tasksData, cancellationToken);
+            await taskDataWriteRepository.UpdateConversionAsync(tasksData, DateTime.UtcNow, cancellationToken);
 
             return Result<bool>.Success(true);
         } 

@@ -931,6 +931,23 @@ namespace Dfe.Complete.Client.Contracts
         /// <exception cref="CompleteApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task UpdateDeclarationOfExpenditureCertificateTaskAsync(UpdateDeclarationOfExpenditureCertificateTaskCommand request, System.Threading.CancellationToken cancellationToken);
 
+        /// <summary>
+        /// Confirm transfer project has authority to proceed task updated successfully.
+        /// </summary>
+        /// <param name="request">The update command.</param>
+        /// <returns>Confirm transfer project has authority to proceed task updated successfully.</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task UpdateConfirmTransferHasAuthorityToProceedTaskAsync(UpdateConfirmTransferHasAuthorityToProceedTaskCommand request);
+
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>
+        /// Confirm transfer project has authority to proceed task updated successfully.
+        /// </summary>
+        /// <param name="request">The update command.</param>
+        /// <returns>Confirm transfer project has authority to proceed task updated successfully.</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task UpdateConfirmTransferHasAuthorityToProceedTaskAsync(UpdateConfirmTransferHasAuthorityToProceedTaskCommand request, System.Threading.CancellationToken cancellationToken);
+
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "14.2.0.0 (NJsonSchema v11.1.0.0 (Newtonsoft.Json v13.0.0.0))")]
@@ -3032,6 +3049,9 @@ namespace Dfe.Complete.Client.Contracts
         [System.Runtime.Serialization.EnumMember(Value = @"DeclarationOfExpenditureCertificate")]
         DeclarationOfExpenditureCertificate = 10,
 
+        [System.Runtime.Serialization.EnumMember(Value = @"ConfirmTransferHasAuthorityToProceed")]
+        ConfirmTransferHasAuthorityToProceed = 11,
+
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.2.0.0 (NJsonSchema v11.1.0.0 (Newtonsoft.Json v13.0.0.0))")]
@@ -5033,6 +5053,36 @@ namespace Dfe.Complete.Client.Contracts
         {
 
             return Newtonsoft.Json.JsonConvert.DeserializeObject<UpdateDeclarationOfExpenditureCertificateTaskCommand>(data, new Newtonsoft.Json.JsonSerializerSettings());
+
+        }
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.2.0.0 (NJsonSchema v11.1.0.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class UpdateConfirmTransferHasAuthorityToProceedTaskCommand
+    {
+        [Newtonsoft.Json.JsonProperty("taskDataId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public TaskDataId? TaskDataId { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("anyInformationChanged", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? AnyInformationChanged { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("baselineSheetApproved", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? BaselineSheetApproved { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("confirmToProceed", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? ConfirmToProceed { get; set; } = default!;
+
+        public string ToJson()
+        {
+
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonSerializerSettings());
+
+        }
+        public static UpdateConfirmTransferHasAuthorityToProceedTaskCommand FromJson(string data)
+        {
+
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<UpdateConfirmTransferHasAuthorityToProceedTaskCommand>(data, new Newtonsoft.Json.JsonSerializerSettings());
 
         }
 

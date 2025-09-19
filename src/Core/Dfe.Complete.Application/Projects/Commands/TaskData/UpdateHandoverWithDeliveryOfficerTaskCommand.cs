@@ -37,8 +37,6 @@ namespace Dfe.Complete.Application.Projects.Commands.TaskData
 
             return Result<bool>.Success(true);
         }
-
-
         private async Task UpdateConversionTaskDataAsync(TaskDataId taskDataId, UpdateHandoverWithDeliveryOfficerTaskCommand request, CancellationToken cancellationToken)
         {
             var tasksData = await taskDataReadRepository.ConversionTaskData.FirstOrDefaultAsync(p => p.Id == taskDataId, cancellationToken)
@@ -49,7 +47,7 @@ namespace Dfe.Complete.Application.Projects.Commands.TaskData
             tasksData.HandoverReview = request.NotApplicable == true ? null : request.HandoverReview;
             tasksData.HandoverNotApplicable = request.NotApplicable;
 
-            await taskDataWriteRepository.UpdateConversionAsync(tasksData, cancellationToken);
+            await taskDataWriteRepository.UpdateConversionAsync(tasksData, DateTime.Now, cancellationToken);
         }
 
         private async Task UpdateTransferTaskDataAsync(TaskDataId taskDataId, UpdateHandoverWithDeliveryOfficerTaskCommand request, CancellationToken cancellationToken)
@@ -62,7 +60,7 @@ namespace Dfe.Complete.Application.Projects.Commands.TaskData
             tasksData.HandoverReview = request.NotApplicable == true ? null : request.HandoverReview;
             tasksData.HandoverNotApplicable = request.NotApplicable;
 
-            await taskDataWriteRepository.UpdateTransferAsync(tasksData, cancellationToken);
+            await taskDataWriteRepository.UpdateTransferAsync(tasksData, DateTime.Now, cancellationToken);
         }
     }
 }

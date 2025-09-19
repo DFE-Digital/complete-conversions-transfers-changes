@@ -42,8 +42,8 @@ namespace Dfe.Complete.Application.Projects.Commands.TaskData
                 throw new NotFoundException("User not found", "email");
             }
 
-            var isConversion = project.Type == ProjectType.Conversion; 
-
+            var isConversion = project.Type == ProjectType.Conversion;
+            var now = DateTime.UtcNow;
             if (isConversion)
             {
                 var conversionTasksData = await taskDataReadRepository.ConversionTaskData.FirstOrDefaultAsync(x => x.Id == project.TasksDataId, cancellationToken);
@@ -53,7 +53,7 @@ namespace Dfe.Complete.Application.Projects.Commands.TaskData
                 conversionTasksData.StakeholderKickOffCheckProvisionalConversionDate = request.CheckProvisionalDate;
                 conversionTasksData!.StakeholderKickOffSetupMeeting = request.StakeholderKickOffSetupMeeting;
                 conversionTasksData!.StakeholderKickOffMeeting = request.StakeholderKickOffMeeting;
-                await taskDataWriteRepository.UpdateConversionAsync(conversionTasksData, cancellationToken);
+                await taskDataWriteRepository.UpdateConversionAsync(conversionTasksData, now, cancellationToken);
             }
             else
             {
@@ -63,14 +63,12 @@ namespace Dfe.Complete.Application.Projects.Commands.TaskData
                 transferTasksData!.StakeholderKickOffSetupMeeting = request.StakeholderKickOffSetupMeeting;
                 transferTasksData!.StakeholderKickOffMeeting = request.StakeholderKickOffMeeting;
 
-                await taskDataWriteRepository.UpdateTransferAsync(transferTasksData, cancellationToken);
+                await taskDataWriteRepository.UpdateTransferAsync(transferTasksData, now, cancellationToken);
             }
             
             
             if (request.SignificantDate.HasValue)
             {
-                var now = DateTime.UtcNow;
-
                 var significantDateHistory = new SignificantDateHistory
                 {
                     Id = new SignificantDateHistoryId(Guid.NewGuid()),
