@@ -1,5 +1,6 @@
 ﻿@using Dfe.Complete.Utils
 @using Dfe.Complete.Domain.Enums
+@using Dfe.Complete.Constants
 @model Dfe.Complete.Pages.Projects.AboutTheProject.AboutTheProjectModel
 
 <section id="projectDetails" class="app-summary-card govuk-!-margin-bottom-6">
@@ -38,10 +39,23 @@
             </govuk-summary-list-row>
             <govuk-summary-list-row>
                 <govuk-summary-list-row-key>Group reference number</govuk-summary-list-row-key>
-                <govuk-summary-list-row-value>@(Model.ProjectGroup != null ? @Model.ProjectGroup.GroupIdentifier : "Not grouped")</govuk-summary-list-row-value>
-                <govuk-summary-list-row-actions>
-                    <govuk-summary-list-row-action href="#" visually-hidden-text="Change project group">Change</govuk-summary-list-row-action>
-                </govuk-summary-list-row-actions>
+                    @if (Model.ProjectGroup != null)
+                    {
+                        <govuk-summary-list-row-value>
+                            <a href="@string.Format(RouteConstants.GroupDetails, Model.ProjectGroup.Id.Value)">@Model.ProjectGroup.GroupIdentifier</a>
+                        </govuk-summary-list-row-value>
+                    }
+                    else
+                    {
+                        <govuk-summary-list-row-value>
+                            Not grouped
+                        </govuk-summary-list-row-value>
+                    }
+                @if(Model.UserHasEditAccess()) {
+                    <govuk-summary-list-row-actions>
+                        <govuk-summary-list-row-action href="@Model.GetChangeLinkUrl("group-reference-number")" visually-hidden-text="Change project group">Change</govuk-summary-list-row-action>
+                    </govuk-summary-list-row-actions>
+                }
             </govuk-summary-list-row>
         </govuk-summary-list>
     </div>
