@@ -19,6 +19,7 @@ Security in case of vulnerabilities.
 ### Added
 - Ability to edit project information for conversions and transfers
 - ProjectGroup is created when a project is edited with a new GRN
+- Added `Add, Edit and Delete External Contacts for both conversion and transfer projects.
 
 ### Changed
 - Group reference number links to the group on "About the project"
