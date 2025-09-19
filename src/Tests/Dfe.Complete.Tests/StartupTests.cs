@@ -1,4 +1,3 @@
-using System.Reflection;
 using Dfe.Complete.Configuration;
 using Dfe.Complete.Validators;
 using GovUK.Dfe.CoreLibs.Security.Antiforgery;
@@ -9,6 +8,7 @@ using Microsoft.AspNetCore.DataProtection;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
+using System.Reflection;
 
 namespace Dfe.Complete.StartupTests;
 

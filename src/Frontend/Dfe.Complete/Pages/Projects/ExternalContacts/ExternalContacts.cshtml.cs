@@ -1,12 +1,16 @@
 ﻿using Dfe.Complete.Application.Contacts.Queries;
 using Dfe.Complete.Application.LocalAuthorities.Queries.GetLocalAuthority;
+using Dfe.Complete.Domain.Constants;
 using Dfe.Complete.Domain.Enums;
+using Dfe.Complete.Models.ExternalContact;
 using Dfe.Complete.Pages.Projects.ProjectView;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Dfe.Complete.Pages.Projects.ExternalContacts;
 
+[Authorize(Policy = UserPolicyConstants.CanViewEditDeleteContact)]
 public class ExternalContacts(ISender sender, ILogger<ExternalContacts> logger)
     : ProjectLayoutModel(sender, logger, ExternalContactsNavigation)
 {
@@ -21,6 +25,13 @@ public class ExternalContacts(ISender sender, ILogger<ExternalContacts> logger)
     public List<ExternalContactModel> OtherContacts { get; set; } = [];
     public List<ExternalContactModel> ParliamentaryContacts { get; set; } = [];
     public string LocalAuthorityName { get; set; } = "";
+
+    [BindProperty(Name = $"new_transfer_contact_form[contact_type]")]
+    public string? TransferContactType { get; set; }
+    
+    [BindProperty(Name = $"new_conversion_contact_form[contact_type]")]
+    public string? ConversionContactType { get; set; }
+    
 
     public override async Task<IActionResult> OnGetAsync()
     {
@@ -98,5 +109,5 @@ public class ExternalContacts(ISender sender, ILogger<ExternalContacts> logger)
         }
 
         return Page();
-    }
+    }   
 }
