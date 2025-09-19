@@ -1,16 +1,15 @@
-﻿using Dfe.Complete.Models;
-using Dfe.Complete.Services;
+﻿using Dfe.Complete.Application.Projects.Queries.GetProject;
+using Dfe.Complete.Domain.Enums;
+using Dfe.Complete.Domain.ValueObjects;
+using Dfe.Complete.Models;
+using Dfe.Complete.Services.Interfaces;
 using Dfe.Complete.Validators;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel;
-using Dfe.Complete.Application.Projects.Queries.GetProject;
-using Dfe.Complete.Domain.ValueObjects;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.Web;
-using Dfe.Complete.Domain.Enums;
-using Dfe.Complete.Services.Interfaces;
 
 namespace Dfe.Complete.Pages.Projects.ProjectDetails
 {
