@@ -1,10 +1,11 @@
 using Dfe.Complete.Application.Common.Interfaces;
+using Dfe.Complete.Application.Contacts.Interfaces;
 using Dfe.Complete.Application.Notes.Interfaces;
 using Dfe.Complete.Application.Projects.Interfaces;
 using Dfe.Complete.Application.Projects.Interfaces.CsvExport;
 using Dfe.Complete.Domain.Interfaces.Repositories;
-using Dfe.Complete.Infrastructure.Database;
 using Dfe.Complete.Infrastructure.CommandServices;
+using Dfe.Complete.Infrastructure.Database;
 using Dfe.Complete.Infrastructure.QueryServices;
 using Dfe.Complete.Infrastructure.QueryServices.CsvExport;
 using Dfe.Complete.Infrastructure.Repositories;
@@ -46,6 +47,8 @@ namespace Dfe.Complete.Infrastructure
             services.AddScoped<ITaskDataReadRepository, TaskDataReadRepository>();
             services.AddScoped<ITaskDataWriteRepository, TaskDataWriteRepository>();
             services.AddScoped<IKeyContactReadRepository, KeyContactReadRepository>();
+            services.AddScoped<IContactReadRepository, ContactReadRepository>();
+            services.AddScoped<IContactWriteRepository, ContactWriteRepository>();
             services.AddScoped<IDaoRevocationWriteRepository, DaoRevocationWriteRepository>();
             services.AddScoped<IProjectWriteRepository, ProjectWriteRepository>();
             services.AddScoped<IDaoRevocationReadRepository, DaoRevocationReadRepository>();

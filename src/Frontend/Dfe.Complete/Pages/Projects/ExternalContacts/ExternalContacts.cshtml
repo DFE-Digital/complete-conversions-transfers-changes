@@ -1,5 +1,6 @@
 ﻿@page "/projects/{projectId}/external-contacts"
 @using Dfe.Complete.Domain.Enums
+@using Dfe.Complete.Models.ExternalContact
 @using Dfe.Complete.Pages.Projects.ExternalContacts
 @using GovUK.Dfe.CoreLibs.Utilities.Extensions
 @model Dfe.Complete.Pages.Projects.ExternalContacts.ExternalContacts
@@ -23,7 +24,7 @@
         </p>
       </div>
     }
-    <govuk-button-link href="#">Add contact</govuk-button-link>
+    <govuk-button-link href="/projects/@Model.ProjectId/external-contacts/new">Add contact</govuk-button-link>
     @if (Model.EstablishmentContacts.Any())
     {
       <partial

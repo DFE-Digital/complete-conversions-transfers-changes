@@ -1,4 +1,4 @@
-namespace Dfe.Complete.Services
+namespace Dfe.Complete.Services.Interfaces
 {
 	public interface IDateValidationMessageProvider
 	{
