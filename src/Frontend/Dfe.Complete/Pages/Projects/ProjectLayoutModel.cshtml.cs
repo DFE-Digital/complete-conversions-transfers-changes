@@ -15,4 +15,5 @@ public abstract class ProjectLayoutModel(ISender sender, ILogger logger, string 
     public const string ExternalContactsNavigation = "external-contacts";
     public const string InternalContactsNavigation = "internal-contacts";
     public const string ConversionDateHistoryNavigation = "conversion-date-history";
+    public const string RecordDaoRevocationNavigation = "dao-revocation";
 }

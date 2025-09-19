@@ -24,6 +24,10 @@
         public const string InvalidGuid = "{0} is not a valid Guid.";
         public const string ContactNotFound = "Contact {0} does not exist.";
         public const string ProjectNotFound = "Project {0} does not exist.";
+        public const string ChooseAtLeastOneReason= "Select at least one reason";
+        public const string MustProvideDetails = "You must provide details";
+        public const string MinisterNameRequired = "Enter the name of the minister that approved the decision";
+        public const string DecisionDateRequired = "Enter a valid date the decision was made, like 27 3 2021";
         public const string ValidDate = "Enter a valid date, like 1 1 2025";
 
         // External Contact validation message

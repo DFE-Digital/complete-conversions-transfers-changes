@@ -15,6 +15,21 @@
   string? IsCurrentNav(string tabName) => Model.CurrentNavigationItem == tabName ? "page" : null;
 }
 
+@if (TempData["RecordedDaoRevocation"] != null)
+{
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+            <govuk-notification-banner class="govuk-notification-banner--success">
+                <govuk-notification-banner-title>
+                    Success
+                </govuk-notification-banner-title>
+                <h3 class="govuk-notification-banner__heading" id="dao-revocation">
+                    DAO revocation recoreded successfully
+                </h3>
+            </govuk-notification-banner>
+        </div>
+    </div>
+}
 <div class="govuk-grid-row">
   <div class="govuk-grid-column-two-thirds">
     <span class="govuk-caption-l">
@@ -25,15 +40,15 @@
       {
         <govuk-tag class="govuk-tag--pink">Form a MAT</govuk-tag>
       }
-
-      @* TODO: Add DAO Revoked *@
-
+      @if(Model.Project.State == ProjectState.DaoRevoked)
+      {
+          <govuk-tag class="govuk-tag govuk-tag--red">DAO REVOKED</govuk-tag>
+      } 
       @if (Model.Project.GroupId is not null)
       {
         <govuk-tag class="govuk-tag--turquoise">In a group</govuk-tag>
-      }
-
-    </span>
+      } 
+    </span> 
     <h1 class="govuk-heading-xl">@Model.Establishment.Name</h1>
   </div>
 </div>
@@ -67,9 +82,20 @@ else if (!@Model.UserHasEditAccess())
     </div>
   </div>
 }
-
-@* TODO Add DAO Revoked message *@
-
+ 
+@if(Model.Project.State == ProjectState.DaoRevoked){
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+            <govuk-notification-banner class="govuk-notification-banner">
+                <govuk-notification-banner-title>
+                    Important
+                </govuk-notification-banner-title>
+                <p>This project&lsquo;s Directive Academy Order was revoked on @Model.DaoRevocation.DateOfDecision.ToDateString().</p>
+                <p>Only Service Support team members can make changes to this project.</p>
+            </govuk-notification-banner>
+        </div>
+    </div>
+}
 <div class="govuk-grid-row">
   <div class="govuk-grid-column-three-quarters">
     <dl class="govuk-summary-list dfe-summary-list--project-summary" id="project-summary">

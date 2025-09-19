@@ -3,7 +3,7 @@ using Dfe.Complete.Domain.ValueObjects;
 
 namespace Dfe.Complete.Domain.Entities;
 
-public class DaoRevocation : IEntity<DaoRevocationId>
+public class DaoRevocation : BaseAggregateRoot, IEntity<DaoRevocationId>
 {
     public DaoRevocationId Id { get; set; }
 
