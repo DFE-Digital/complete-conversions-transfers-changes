@@ -1,0 +1,47 @@
+﻿@page "/projects/{projectId}/external-contacts/new"
+@using Dfe.Complete.Constants
+@using Dfe.Complete.Domain.Enums
+@using Dfe.Complete.Utils;
+@using Microsoft.AspNetCore.Components.Forms
+@model Dfe.Complete.Pages.Projects.ExternalContacts.New.NewExternalContact
+
+@{
+    ViewData["Title"] = "Add contact";
+    Layout = "Shared/_Layout";
+    const string contactType = nameof(Model.SelectedExternalContactType);
+    var projectsExternalContactLink = string.Format(RouteConstants.ProjectExternalContacts, Model.ProjectId);
+}
+
+@section BeforeMain
+{
+    <govuk-back-link href="@projectsExternalContactLink" xmlns="http://www.w3.org/1999/html" />
+}
+
+<div class="govuk-grid-row govuk-body">
+    <div class="govuk-grid-column-full">
+        <span class="govuk-caption-l">Add a contact</span>
+        <form method="post">
+            <govuk-radios name="@contactType" id="@contactType">
+                <govuk-radios-fieldset>
+                    <govuk-radios-fieldset-legend is-page-heading="true" class="govuk-fieldset__legend--xl">
+                        Who do you want to add as a contact?
+                    </govuk-radios-fieldset-legend>
+                    <govuk-radios-hint>
+                        <p>The person's job title may be different to the options in this list. Choose the role that is most similar.</p>
+                        <p>For example, if the person's job title is principal or head teacher choose headteacher.</p>
+                    </govuk-radios-hint>
+                    @foreach (var externalContactType in Model.ContactTypeRadioOptions)
+                    {
+                        var description = externalContactType.ToDescription();
+                        var selected = Model.SelectedExternalContactType == description;
+                        <govuk-radios-item value="@description" checked="@selected">@externalContactType.ToDisplayDescription()</govuk-radios-item>
+                    }
+                </govuk-radios-fieldset>
+            </govuk-radios>
+            <div class="govuk-button-group">
+                <govuk-button type="submit">Save and Continue</govuk-button>
+                <a class="govuk-link" href="@projectsExternalContactLink">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>
