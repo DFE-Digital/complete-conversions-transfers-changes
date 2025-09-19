@@ -1,0 +1,102 @@
+﻿@page "/projects/{projectId}/external-contacts/new/create-contact/{externalcontacttype}"
+@using Dfe.Complete.Constants
+@using Dfe.Complete.Domain.Enums;
+@using Dfe.Complete.Utils;
+@model Dfe.Complete.Pages.Projects.ExternalContacts.New.CreateExternalContact
+@inject Dfe.Complete.Services.ErrorService ErrorService
+
+@{
+
+    ViewData["Title"] = "Add contact";
+    Layout = "Shared/_Layout";
+    var externalContactInput = Model.ExternalContactInput;
+    const string fullname = nameof(externalContactInput.FullName);
+    const string email = nameof(externalContactInput.Email);
+    const string phone = nameof(externalContactInput.Phone);
+    const string primaryprojectcontact = nameof(externalContactInput.IsPrimaryProjectContact);
+    var projectsExternalContactLink = string.Format(RouteConstants.ProjectExternalContacts, Model.ProjectId);
+
+    List<string> fieldOrder = new List<string>(new string[] { fullname, email, phone }).Select(f => f.ToLower()).ToList();
+
+    var errorSummaryModel = new Dfe.Complete.Models.ErrorSummaryModel
+    {
+        HideKeyInErrorMessage = true,
+        FieldOrder = fieldOrder
+    };
+}
+
+@section BeforeMain
+{
+    <govuk-back-link href="@projectsExternalContactLink" xmlns="http://www.w3.org/1999/html" />
+}
+
+<form method="post" novalidate>
+    <div class="govuk-grid-row govuk-body">
+        <div class="govuk-grid-column-full">
+            <span class="govuk-caption-l">Add a contact</span>
+            <h1 class="govuk-heading-l">Enter contact details</h1>
+            @{
+                switch (EnumExtensions.FromDescription<ExternalContactType>(Model.SelectedExternalContactType))
+                {
+                    case ExternalContactType.ChairOfGovernors:
+                        <partial name="_ChairOfGovernorsInfo" />
+                        break;
+                    case ExternalContactType.IncomingTrust:
+                        <partial name="_IncomingTrustCEOInfo" />
+                        break;
+                    case ExternalContactType.OutgoingTrust:
+                        <partial name="_OutgoingTrustCEOInfo" />
+                        break;
+                    default:
+                        <partial name="_HeaderTeacherInfo" />
+                        break;
+                }
+            }
+        </div>        
+        <div class="govuk-grid-column-full">
+            <govuk-input name="@fullname" id="@fullname" asp-for="@externalContactInput.FullName">
+                <govuk-input-label class="govuk-label--m">Full name</govuk-input-label>
+                @if (ErrorService.HasErrorForKey(@fullname))
+                {
+                    <govuk-input-error-message>@(ErrorService.GetErrorMessage(fullname))</govuk-input-error-message>
+                }
+            </govuk-input>
+            <govuk-input name="@email" id="@email" asp-for="@externalContactInput.Email" type="email">
+                <govuk-input-label class="govuk-label--m">Email</govuk-input-label>
+                <govuk-input-hint>This must be the person's work email address, or address at the school, academy or trust their role is relevant to.</govuk-input-hint>
+                @if (ErrorService.HasErrorForKey(@email))
+                {
+                    <govuk-input-error-message>@(ErrorService.GetErrorMessage(email))</govuk-input-error-message>
+                }
+            </govuk-input>
+            <govuk-input name="@phone" id="@phone" input-class="govuk-input--width-10" asp-for="@externalContactInput.Phone" type="tel">
+                <govuk-input-label class="govuk-label--m">Phone</govuk-input-label>
+                @if (ErrorService.HasErrorForKey(@phone))
+                {
+                    <govuk-input-error-message>@(ErrorService.GetErrorMessage(phone))</govuk-input-error-message>
+                }
+            </govuk-input>
+            <govuk-radios name="@primaryprojectcontact" id="@primaryprojectcontact" asp-for="@externalContactInput.IsPrimaryProjectContact">
+                <govuk-radios-fieldset>
+                    <govuk-radios-fieldset-legend class="govuk-fieldset__legend--m">
+                        Is this person the primary project contact for this organisation?
+                    </govuk-radios-fieldset-legend>
+
+                    <govuk-radios-hint>
+                        A primary project contact is the person you most often to get in touch with first if you have any questions about the project.
+                    </govuk-radios-hint>
+
+                    <govuk-radios-item value="true" checked="@(externalContactInput.IsPrimaryProjectContact)">Yes</govuk-radios-item>
+                    <govuk-radios-item value="false" checked="@(!externalContactInput.IsPrimaryProjectContact)">No</govuk-radios-item>
+                </govuk-radios-fieldset>
+            </govuk-radios>
+
+            <div class="govuk-button-group">
+                <govuk-button type="submit" data-prevent-double-click="true">
+                    Save and continue
+                </govuk-button>
+                <a class="govuk-link" href="@projectsExternalContactLink">Cancel</a>
+            </div>
+        </div>
+    </div>
+</form>

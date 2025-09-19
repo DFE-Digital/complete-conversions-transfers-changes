@@ -15,7 +15,7 @@
 
 	<ItemGroup>
 	  <Compile Remove="ViewComponents\**" />
-	  <Content Remove="ViewComponents\**" />
+	  <Content Remove="ViewComponents\**" />	  
 	  <EmbeddedResource Remove="ViewComponents\**" />
 	  <None Remove="ViewComponents\**" />
 	  <Compile Remove="Pages\Projects\List\AllProjectsInTrustViewModel.cs" />
@@ -84,7 +84,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Folder Include="Services\Project\" />
 	  <Folder Include="wwwroot\src\images" />
 	</ItemGroup>
 
@@ -98,5 +97,5 @@
 	  <Content Update="appsettings.json">
 	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
 	  </Content>
-	</ItemGroup>
+	</ItemGroup>	
 </Project>

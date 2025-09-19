@@ -2823,8 +2823,12 @@
                 "nullable": true
               },
               "type": {
-                "type": "string",
-                "nullable": true
+                "nullable": true,
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/ContactType"
+                  }
+                ]
               },
               "localAuthorityId": {
                 "nullable": true,
@@ -2891,6 +2895,20 @@
           "Diocese",
           "Solicitor",
           "OutgoingTrust"
+        ]
+      },
+      "ContactType": {
+        "type": "string",
+        "description": "",
+        "x-enumNames": [
+          "Project",
+          "Establishment",
+          "DirectorOfChildServices"
+        ],
+        "enum": [
+          "Project",
+          "Establishment",
+          "DirectorOfChildServices"
         ]
       },
       "LocalAuthorityId": {

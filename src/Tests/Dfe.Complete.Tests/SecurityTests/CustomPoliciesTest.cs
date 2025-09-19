@@ -57,10 +57,10 @@ public class CustomPoliciesIntegrationTests
         ["CanViewTeamProjectsUnassigned", new[] { "regional_delivery_officer", "manage_team" }, true],
         ["CanCreateProjects", new[] { "service_support" }, false],
         ["CanCreateProjects", new[] { "service_support", "manage_team" }, false],
-        ["CanCreateProjects", new[] { "regional_casework_services" }, true],
+        ["CanCreateProjects", new[] { "regional_casework_services" }, false],
         ["CanCreateProjects", new[] { "regional_casework_services", "manage_team" }, false],
-        ["CanCreateProjects", new[] { "regional_delivery_officer" }, true],
-        ["CanCreateProjects", new[] { "regional_delivery_officer", "manage_team" }, true],
+        ["CanCreateProjects", new[] { "regional_delivery_officer" }, false],
+        ["CanCreateProjects", new[] { "regional_delivery_officer", "manage_team" }, false],
         ["ActiveUser", Array.Empty<string>(), false],
         ["ActiveUser", new[] { "some_role" }, false],
         ["ActiveUser", new[] { "some_role" }, true, true] // true for hasUserId parameter

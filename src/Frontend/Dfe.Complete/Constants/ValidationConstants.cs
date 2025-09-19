@@ -21,6 +21,16 @@
         public const string SevenToElevenYears = "Enter the proposed capacity for pupils in years 7 to 11";
         public const string TwelveOrAboveYears = "Enter the proposed capacity for students in year 12 or above";
         public const string ProposedCapacityMustBeNumber = "Proposed capacity must be a number, like 345";
+        public const string InvalidGuid = "{0} is not a valid Guid.";
+        public const string ContactNotFound = "Contact {0} does not exist.";
+        public const string ProjectNotFound = "Project {0} does not exist.";
         public const string ValidDate = "Enter a valid date, like 1 1 2025";
+
+        // External Contact validation message
+        public const string FullNameRequiredMessage = "Enter a name";
+        public const string EmailRequiredMessage = "Enter an email";
+        public const string InvalidEmailMessage = "Enter an email address in the correct format, like name@example.com";
+        public const string RoleRequiredMessage = "Enter a role";
+        public const string InvalidPrimaryContactMessage = "Only the incoming trust, outgoing trust, school or academy and local authority categories can have a primary contact.";
     }
 }
