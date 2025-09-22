@@ -52,6 +52,11 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.DeclarationOfExpenditureCer
 
         public async Task<IActionResult> OnPost()
         {
+            if (!NotApplicable.HasValue && ReceivedDate.HasValue && !(ReceivedDate?.ToDateTime(new TimeOnly()) < DateTime.Today))
+            {
+                ModelState.AddModelError("received-date", string.Format(ValidationConstants.DateInPast, nameof(ReceivedDate)));
+            }
+
             if (!ModelState.IsValid)
             {
                 await base.OnGetAsync();

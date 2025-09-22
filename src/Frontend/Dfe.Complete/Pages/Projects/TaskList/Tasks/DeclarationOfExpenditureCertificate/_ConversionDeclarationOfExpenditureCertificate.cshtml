@@ -49,7 +49,7 @@
                 </govuk-date-input-hint>
                 @if (ErrorService.HasErrorForKey("received-date"))
                 {
-                    <govuk-date-input-error-message>@ValidationConstants.ValidDate</govuk-date-input-error-message>
+                    <govuk-date-input-error-message>@ErrorService.GetErrorMessage("received-date")</govuk-date-input-error-message>
                 }
             </govuk-date-input-fieldset>
         </govuk-date-input> 
