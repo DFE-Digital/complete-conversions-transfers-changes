@@ -4,5 +4,5 @@ namespace Dfe.Complete.Application.ProjectGroups.Interfaces;
 
 public interface IProjectGroupWriteRepository
 {
-    Task<ProjectGroup> CreateProjectGroupAsync(ProjectGroup projectGroup, CancellationToken cancellationToken);
+    Task CreateProjectGroupAsync(ProjectGroup projectGroup, CancellationToken cancellationToken);
 }

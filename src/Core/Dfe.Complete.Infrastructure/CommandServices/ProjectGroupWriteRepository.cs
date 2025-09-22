@@ -8,10 +8,9 @@ internal class ProjectGroupWriteRepository(CompleteContext context) : IProjectGr
 {
     private readonly CompleteContext _context = context;
 
-    public async Task<ProjectGroup> CreateProjectGroupAsync(ProjectGroup projectGroup, CancellationToken cancellationToken)
+    public async Task CreateProjectGroupAsync(ProjectGroup projectGroup, CancellationToken cancellationToken)
     {
         await _context.ProjectGroups.AddAsync(projectGroup, cancellationToken);
         await _context.SaveChangesAsync(cancellationToken);
-        return projectGroup; // TODO remove
     }
 }
