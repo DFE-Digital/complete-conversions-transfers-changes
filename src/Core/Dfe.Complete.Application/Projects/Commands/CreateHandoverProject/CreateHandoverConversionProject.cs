@@ -212,11 +212,7 @@ public class CreateHandoverConversionProjectCommandHandler(
     protected async Task<Region> GetRegionForUrn(int urn, CancellationToken cancellationToken)
     {
         var establishment = await sender.Send(new GetGiasEstablishmentByUrnQuery(new Urn(urn)), cancellationToken);
-
         if (!establishment.IsSuccess
-            || establishment.Value == null)
-            throw new NotFoundException($"No establishment could be found for Urn: {urn}.");
-
         var region = (establishment.Value.RegionCode?.ToEnumFromChar<Region>()) ?? throw new NotFoundException($"No region could be found for establishment with Urn: {urn}.",
                 nameof(urn));
         return region;
