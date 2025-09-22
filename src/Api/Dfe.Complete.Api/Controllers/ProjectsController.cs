@@ -8,6 +8,7 @@ using Dfe.Complete.Application.Notes.Queries;
 using Dfe.Complete.Application.Projects.Commands.CreateProject;
 using Dfe.Complete.Application.Projects.Commands.RemoveProject;
 using Dfe.Complete.Application.Projects.Commands.UpdateProject;
+using Dfe.Complete.Application.Projects.Commands.CreateHandoverProject;
 using Dfe.Complete.Application.Projects.Models;
 using Dfe.Complete.Application.Projects.Queries.CountAllProjects;
 using Dfe.Complete.Application.Projects.Queries.GetProject;
@@ -18,6 +19,7 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
+using System.ComponentModel.DataAnnotations;
 
 namespace Dfe.Complete.Api.Controllers
 {
@@ -26,6 +28,35 @@ namespace Dfe.Complete.Api.Controllers
     [Route("v{version:apiVersion}/[controller]")]
     public class ProjectsController(ISender sender) : ControllerBase
     {
+        /// <summary>
+        /// Creates a new conversion project (handover version).
+        /// </summary>
+        /// <param name="request">The request.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        [Authorize(Policy = "CanReadWrite")]
+        [HttpPost]
+        [Route("projects/conversions")]
+        [SwaggerResponse(201, "Project created successfully.", typeof(ProjectId))]
+        [SwaggerResponse(400, "Invalid request data.")]
+        public async Task<IActionResult> CreateConversionProjectAsync([FromBody] CreateHandoverConversionProjectCommand request, CancellationToken cancellationToken)
+        {
+            ProjectId result;
+            try
+            {
+                result = await sender.Send(request, cancellationToken);
+            }
+            catch (ValidationException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+
+            return Created("", result.Value);
+        }
+
         /// <summary>
         /// Creates a new conversion project
         /// </summary>
