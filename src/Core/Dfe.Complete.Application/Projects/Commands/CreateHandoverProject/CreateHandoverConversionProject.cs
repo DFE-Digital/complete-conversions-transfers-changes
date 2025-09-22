@@ -10,7 +10,6 @@ using Dfe.Complete.Application.Projects.Queries.QueryFilters;
 using Dfe.Complete.Application.Projects.Models;
 using Dfe.Complete.Utils;
 using Dfe.Complete.Application.Projects.Queries.GetLocalAuthority;
-using Dfe.Complete.Application.Projects.Queries.GetEstablishment;
 using Dfe.Complete.Application.Projects.Queries.GetGiasEstablishment;
 using Dfe.Complete.Application.Projects.Queries.GetProject;
 using Dfe.Complete.Application.ProjectGroups.Interfaces;
