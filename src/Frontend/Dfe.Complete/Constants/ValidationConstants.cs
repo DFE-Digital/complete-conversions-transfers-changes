@@ -22,5 +22,18 @@
         public const string TwelveOrAboveYears = "Enter the proposed capacity for students in year 12 or above";
         public const string ProposedCapacityMustBeNumber = "Proposed capacity must be a number, like 345";
         public const string ValidDate = "Enter a valid date, like 1 1 2025";
+
+        // project completion validation messages
+        // For transfer
+        public const string TransferDateInPast = "The transfer date has been confirmed and is in the past";
+        public const string AuthorityToProceedComplete = "The confirm this transfer has authority to proceed task is completed";        
+        public const string ExpenditureCertificateComplete = "The receive declaration of expenditure certificate task is completed";
+        public const string AcademyTransferDateComplete = "The confirm the date the academy transferred task is completed";
+
+        // For conversion
+        public const string ConversionDateInPast = "The conversion date has been confirmed and is in the past";
+        public const string AllConditionsMetComplete = "The confirm all conditions have been met task is completed";
+        public const string AcademyOpenedDateComplete = "The confirm the date the academy opened task is completed";
+
     }
 }

@@ -124,6 +124,9 @@
         public const string ProjectRedactAndSendDocumentsTask = ProjectTaskList + "/redact_and_send_documents";
         public const string ProjectDeclarationOfExpenditureCertificateTask = ProjectTaskList + "/declaration_of_expenditure_certificate";
 
+        public const string ProjectCompleteConfirmation = Project + "/complete";
+
+
         // Groups
         public const string Groups = "/groups";
         public const string GroupDetails = "/groups/{0}";

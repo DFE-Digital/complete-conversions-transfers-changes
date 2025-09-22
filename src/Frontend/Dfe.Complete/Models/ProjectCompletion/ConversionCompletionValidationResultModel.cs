@@ -4,5 +4,6 @@ public class ConversionCompletionValidationResultModel : CompletionValidationRes
 {   
     public bool AcademyOpenedDateTaskCompleted { get; set; }
     public bool AllConditionsMetTaskCompleted { get; set; }
-    public bool ShowNotification =>  DateConfirmedAndInThePast || AcademyOpenedDateTaskCompleted || AllConditionsMetTaskCompleted;
+
+    public bool IsValid =>  DateConfirmedAndInThePast &&  AcademyOpenedDateTaskCompleted &&  AllConditionsMetTaskCompleted;
 }

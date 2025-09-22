@@ -1,5 +1,6 @@
 ﻿using Dfe.Complete.Infrastructure.Gateways;
 using Dfe.Complete.Services;
+using Dfe.Complete.Services.Project;
 
 namespace Dfe.Complete.StartupConfiguration
 {
@@ -12,6 +13,7 @@ namespace Dfe.Complete.StartupConfiguration
 
             services.AddScoped<IAnalyticsConsentService, AnalyticsConsentService>();
             services.AddScoped<IProjectPermissionService, ProjectPermissionService>();
+            services.AddScoped<IProjectService, ProjectService>();
 
             return services;
         }

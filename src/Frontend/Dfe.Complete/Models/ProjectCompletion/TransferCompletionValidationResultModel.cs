@@ -6,9 +6,9 @@ public class TransferCompletionValidationResultModel : CompletionValidationResul
     public bool ExpendentureCertificateTaskCompleted { get; set; }
     public bool AcademyTransferDateTaskCompleted { get; set; }
 
-    public bool ShowNotification => 
-    DateConfirmedAndInThePast ||
-    AuthorityToProceedCompleteTaskCompleted ||
-    ExpendentureCertificateTaskCompleted ||
+    public bool IsValid => 
+    DateConfirmedAndInThePast &&
+    AuthorityToProceedCompleteTaskCompleted &&
+    ExpendentureCertificateTaskCompleted &&
     AcademyTransferDateTaskCompleted;
 }
