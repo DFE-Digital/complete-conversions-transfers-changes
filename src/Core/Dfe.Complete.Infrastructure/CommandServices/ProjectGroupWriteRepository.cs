@@ -12,6 +12,6 @@ internal class ProjectGroupWriteRepository(CompleteContext context) : IProjectGr
     {
         await _context.ProjectGroups.AddAsync(projectGroup, cancellationToken);
         await _context.SaveChangesAsync(cancellationToken);
-        return projectGroup;
+        return projectGroup; // TODO remove
     }
 }

@@ -52,42 +52,30 @@ public class User : BaseAggregateRoot, IEntity<UserId>
     public static User Create(
         UserId id,
         string email,
-        DateTime createdAt,
-        DateTime updatedAt,
-        bool manageTeam,
-        bool addNewProject,
         string firstName,
         string lastName,
-        string activeDirectoryUserId,
-        bool assignToProject,
-        bool manageUserAccounts,
-        string activeDirectoryUserGroupIds,
-        string? projectTeam,
-        DateTime? deactivatedAt,
-        bool manageConversionUrns,
-        bool manageLocalAuthorities,
-        DateTime? latestSession)
+        string? team)
     {
 
         return new User
         {
             Id = id,
             Email = email,
-            CreatedAt = createdAt,
-            UpdatedAt = updatedAt,
-            ManageTeam = manageTeam,
-            AddNewProject = addNewProject,
             FirstName = firstName,
             LastName = lastName,
-            ActiveDirectoryUserId = activeDirectoryUserId,
-            AssignToProject = assignToProject,
-            ManageUserAccounts = manageUserAccounts,
-            ActiveDirectoryUserGroupIds = activeDirectoryUserGroupIds,
-            Team = projectTeam,
-            DeactivatedAt = deactivatedAt,
-            ManageConversionUrns = manageConversionUrns,
-            ManageLocalAuthorities = manageLocalAuthorities,
-            LatestSession = latestSession
+            Team = team,
+            CreatedAt = DateTime.UtcNow,
+            UpdatedAt = DateTime.UtcNow,
+            ActiveDirectoryUserId = null,
+            ActiveDirectoryUserGroupIds = null,
+            ManageUserAccounts = null,
+            ManageConversionUrns = false,
+            ManageLocalAuthorities = false,
+            ManageTeam = false,
+            AssignToProject = null,
+            AddNewProject = false,
+            DeactivatedAt = null,
+            LatestSession = null
         };
     }
 }

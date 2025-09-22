@@ -17,6 +17,8 @@ using Dfe.Complete.Application.Notes.Commands;
 using Dfe.Complete.Application.Common.Models;
 using Dfe.Complete.Application.Contacts.Queries;
 using Dfe.Complete.Application.Contacts.Models;
+using System.ComponentModel.DataAnnotations;
+using Dfe.Complete.Application.Projects.Commands.CreateHandoverProject;
 
 namespace Dfe.Complete.Api.Controllers
 {
@@ -25,6 +27,35 @@ namespace Dfe.Complete.Api.Controllers
     [Route("v{version:apiVersion}/[controller]")]
     public class ProjectsController(ISender sender) : ControllerBase
     {
+        /// <summary>
+        /// Creates a new conversion project (handover version).
+        /// </summary>
+        /// <param name="request">The request.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        [Authorize(Policy = "CanReadWrite")]
+        [HttpPost]
+        [Route("projects/conversions")]
+        [SwaggerResponse(201, "Project created successfully.", typeof(ProjectId))]
+        [SwaggerResponse(400, "Invalid request data.")]
+        public async Task<IActionResult> CreateConversionProjectAsync([FromBody] CreateHandoverConversionProjectCommand request, CancellationToken cancellationToken)
+        {
+            ProjectId result;
+            try
+            {
+                result = await sender.Send(request, cancellationToken);
+            }
+            catch (ValidationException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+
+            return Created("", result.Value);
+        }
+
         /// <summary>
         /// Creates a new conversion project
         /// </summary>
