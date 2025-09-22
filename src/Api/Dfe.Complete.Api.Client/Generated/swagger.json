@@ -367,7 +367,7 @@
           "Projects"
         ],
         "summary": "Creates a new conversion project",
-        "operationId": "Projects_CreateConversionProject2",
+        "operationId": "Projects_CreateConversionProject",
         "requestBody": {
           "x-name": "request",
           "description": "The request.",
