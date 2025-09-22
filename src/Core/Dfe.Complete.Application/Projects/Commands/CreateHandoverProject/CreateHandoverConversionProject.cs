@@ -29,7 +29,6 @@ public record CreateHandoverConversionProjectCommand(
     string? AdvisoryBoardConditions,
     string? GroupId = null) : IRequest<ProjectId>;
 
-// TODO use query pattern not ICompleteRepository
 public class CreateHandoverConversionProjectCommandHandler(
     ICompleteRepository<Project> projectRepository,
     ICompleteRepository<User> userRepository,
@@ -131,7 +130,7 @@ public class CreateHandoverConversionProjectCommandHandler(
         if (!string.IsNullOrEmpty(request.GroupId))
         {
             var groupIdPattern = @"^GRP_\d{8}$";
-            if (!Regex.IsMatch(request.GroupId, groupIdPattern))
+            if (!Regex.IsMatch(request.GroupId, groupIdPattern, RegexOptions.None, TimeSpan.FromMilliseconds(100)))
                 throw new ValidationException("Group ID must match format GRP_XXXXXXXX (8 digits)");
         }
 
