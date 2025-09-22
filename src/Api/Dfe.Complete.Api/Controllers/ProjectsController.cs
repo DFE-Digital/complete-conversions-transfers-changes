@@ -38,7 +38,7 @@ namespace Dfe.Complete.Api.Controllers
         [Route("projects/conversions")]
         [SwaggerResponse(201, "Project created successfully.", typeof(ProjectId))]
         [SwaggerResponse(400, "Invalid request data.")]
-        public async Task<IActionResult> CreateConversionProjectAsync([FromBody] CreateHandoverConversionProjectCommand request, CancellationToken cancellationToken)
+        public async Task<IActionResult> CreateHandoverConversionProjectAsync([FromBody] CreateHandoverConversionProjectCommand request, CancellationToken cancellationToken)
         {
             ProjectId result;
             try
@@ -54,7 +54,7 @@ namespace Dfe.Complete.Api.Controllers
                 return StatusCode(500, ex.Message);
             }
 
-            return Created("", result.Value);
+            return Created("", result);
         }
 
         /// <summary>

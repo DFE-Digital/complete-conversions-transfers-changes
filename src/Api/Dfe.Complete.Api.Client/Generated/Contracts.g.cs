@@ -156,7 +156,7 @@ namespace Dfe.Complete.Client.Contracts
         /// <param name="request">The request.</param>
         /// <returns>Project created successfully.</returns>
         /// <exception cref="CompleteApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<ProjectId> CreateConversionProjectAsync(CreateHandoverConversionProjectCommand request);
+        System.Threading.Tasks.Task<ProjectId> CreateHandoverConversionProjectAsync(CreateHandoverConversionProjectCommand request);
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>
@@ -165,7 +165,7 @@ namespace Dfe.Complete.Client.Contracts
         /// <param name="request">The request.</param>
         /// <returns>Project created successfully.</returns>
         /// <exception cref="CompleteApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<ProjectId> CreateConversionProjectAsync(CreateHandoverConversionProjectCommand request, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<ProjectId> CreateHandoverConversionProjectAsync(CreateHandoverConversionProjectCommand request, System.Threading.CancellationToken cancellationToken);
 
         /// <summary>
         /// Creates a new conversion project
@@ -173,7 +173,7 @@ namespace Dfe.Complete.Client.Contracts
         /// <param name="request">The request.</param>
         /// <returns>Project created successfully.</returns>
         /// <exception cref="CompleteApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<ProjectId> CreateConversionProject2Async(CreateConversionProjectCommand request);
+        System.Threading.Tasks.Task<ProjectId> CreateConversionProjectAsync(CreateConversionProjectCommand request);
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>
@@ -182,7 +182,7 @@ namespace Dfe.Complete.Client.Contracts
         /// <param name="request">The request.</param>
         /// <returns>Project created successfully.</returns>
         /// <exception cref="CompleteApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<ProjectId> CreateConversionProject2Async(CreateConversionProjectCommand request, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<ProjectId> CreateConversionProjectAsync(CreateConversionProjectCommand request, System.Threading.CancellationToken cancellationToken);
 
         /// <summary>
         /// Creates a new Transfer project
