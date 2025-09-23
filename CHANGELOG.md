@@ -47,6 +47,7 @@ See the [full commit history](https://github.com/DFE-Digital/complete-conversion
 ### Changed
 
 ### Fixed
+- Add new prepare to complete end point for adding conversion projects
 
 - Fixed broken task note urls.
 - Fixed all project by month query for conversion projects if all conditions met is null
