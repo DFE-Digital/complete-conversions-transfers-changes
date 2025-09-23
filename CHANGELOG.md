@@ -17,6 +17,9 @@ Security in case of vulnerabilities.
 ## Unreleased
 
 ### Added
+- Add service support - view users table
+- Add API end point for creating user
+- Add ability to create a user
 
 ### Changed
 
