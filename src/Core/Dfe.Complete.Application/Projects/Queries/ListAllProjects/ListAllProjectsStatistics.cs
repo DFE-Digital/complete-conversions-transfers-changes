@@ -2,6 +2,7 @@
 using Dfe.Complete.Application.Projects.Interfaces;
 using Dfe.Complete.Application.Projects.Models;
 using Dfe.Complete.Application.Projects.Queries.QueryFilters;
+using Dfe.Complete.Application.Users.Interfaces;
 using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Utils;
 using MediatR;
@@ -12,7 +13,7 @@ namespace Dfe.Complete.Application.Projects.Queries.ListAllProjects
 {
     public record ListAllProjectsStatisticsQuery() : IRequest<Result<ListAllProjectsStatisticsModel>>;
 
-    public class ListAllProjectsStatisticsQueryHandler(IProjectReadRepository projectReadRepository, IUserReadRepository readUserRepository, ILogger<ListAllProjectsStatisticsQueryHandler> logger) : IRequestHandler<ListAllProjectsStatisticsQuery, Result<ListAllProjectsStatisticsModel>>
+    public class ListAllProjectsStatisticsQueryHandler(IProjectReadRepository projectReadRepository, IUserReadRepository userReadRepository, ILogger<ListAllProjectsStatisticsQueryHandler> logger) : IRequestHandler<ListAllProjectsStatisticsQuery, Result<ListAllProjectsStatisticsModel>>
     {
         public async Task<Result<ListAllProjectsStatisticsModel>> Handle(ListAllProjectsStatisticsQuery request, CancellationToken cancellationToken)
         {  
@@ -45,7 +46,7 @@ namespace Dfe.Complete.Application.Projects.Queries.ListAllProjects
                     TransfersPerRegion = ProjectsPerRegion(regionalTeams, transfers),
                     SixMonthViewOfAllProjectOpeners = GetSixMonthViewOfAllProjectOpeners(conversions, transfers),
                     NewProjects = GetNewProjectsThisMonth(conversions, transfers),
-                    UsersPerTeam = await GetUsersPerTeamAsync(regionalTeams, readUserRepository, cancellationToken)
+                    UsersPerTeam = await GetUsersPerTeamAsync(regionalTeams, userReadRepository, cancellationToken)
                 };
 
                 return Result<ListAllProjectsStatisticsModel>.Success(result);
