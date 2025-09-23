@@ -4,7 +4,7 @@ using Dfe.Complete.Infrastructure.Database;
 
 namespace Dfe.Complete.Infrastructure.CommandServices
 {
-    public class ProjectWriteRepository(CompleteContext context) : IProjectWriteRepository
+    internal class ProjectWriteRepository(CompleteContext context) : IProjectWriteRepository
     {
         public async Task UpdateProjectAsync(Project project, CancellationToken cancellationToken)
         {

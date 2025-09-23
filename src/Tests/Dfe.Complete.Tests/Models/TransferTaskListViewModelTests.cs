@@ -129,7 +129,7 @@ namespace Dfe.Complete.Tests.Models
         [InlineData(true, false, false, TaskListStatus.InProgress)]
         [InlineData(false, true, false, TaskListStatus.InProgress)]
         [InlineData(false, false, true, TaskListStatus.InProgress)]
-        [InlineData(false, true, true, TaskListStatus.Completed)]
+        [InlineData(true, true, true, TaskListStatus.Completed)]
         [InlineData(false, false, false, TaskListStatus.NotStarted)]
         [InlineData(null, null, null, TaskListStatus.NotStarted)]
         public void ConfirmThisTransferHasAuthorityToProceedTaskStatus_ShouldReturn_CorrectStatus(

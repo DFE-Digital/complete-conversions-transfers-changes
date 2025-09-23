@@ -152,7 +152,7 @@ namespace Dfe.Complete.Models
         {
             if (taskData.ConditionsMetBaselineSheetApproved == true &&
                  taskData.ConditionsMetCheckAnyInformationChanged == true &&
-                 project.AllConditionsMet == false)
+                 project.AllConditionsMet == true)
             {
                 return TaskListStatus.Completed;
             }

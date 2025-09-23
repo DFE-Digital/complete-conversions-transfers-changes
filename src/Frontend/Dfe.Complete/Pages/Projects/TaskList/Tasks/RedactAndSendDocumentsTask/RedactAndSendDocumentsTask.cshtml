@@ -1,0 +1,12 @@
+﻿@using Dfe.Complete.Domain.Enums 
+@model Dfe.Complete.Pages.Projects.TaskList.Tasks.RedactAndSendDocumentsTask.RedactAndSendDocumentsTaskModel
+
+
+@if (Model.Project.Type == ProjectType.Conversion)
+{
+    @await Html.PartialAsync("_ConversionRedactAndSendDocumentsTask", Model)
+}
+else
+{ 
+    @await Html.PartialAsync("_TransferRedactAndSendDocumentsTask", Model)
+} 

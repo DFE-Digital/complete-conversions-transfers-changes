@@ -296,6 +296,11 @@
       "ExpectedSecurity": "Authorize: Policy=CanReadWriteUpdate"
     },
     {
+      "Controller": "TasksDataController",
+      "Action": "UpdateConfirmTransferHasAuthorityToProceedTaskAsync",
+      "ExpectedSecurity": "Authorize: Policy=CanReadWriteUpdate"
+    },
+    {
       "Controller": "ProjectsController",
       "Action": "RecordDaoRevocationDecisionAsync",
       "ExpectedSecurity": "Authorize: Policy=CanReadWriteUpdate"
