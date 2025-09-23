@@ -43,8 +43,7 @@ let teammatesProjectId: string;
 let formAMATChangeLinkPath: string;
 let groupId: string;
 
-// 219174 in progress
-describe.skip("About the project page - conversion projects: ", () => {
+describe("About the project page - conversion projects: ", () => {
     before(() => {
         projectRemover.removeProjectIfItExists(`${project.urn.value}`);
         projectRemover.removeProjectIfItExists(`${projectFormAMAT.urn.value}`);
@@ -170,6 +169,7 @@ describe.skip("About the project page - conversion projects: ", () => {
             .hasValue("Primary")
             .summaryShows("SharePoint folder")
             .hasValueWithLink("View the academy SharePoint folder (opens in new tab)", academy.sharePointLink)
+            .hasChangeLink(`${changeLinkPath}sharepoint-folder-links`)
 
             .subSection("Incoming trust details")
             .hasSubHeading("Incoming trust details")
@@ -190,6 +190,7 @@ describe.skip("About the project page - conversion projects: ", () => {
             )
             .summaryShows("New trust reference number (TRN)")
             .hasValue("")
+            .hasChangeLink(`${changeLinkPath}new_trust_reference_number`)
             .summaryShows("Address")
             .hasValue(dimensionsTrust.address)
             .summaryShows("SharePoint folder")
@@ -304,6 +305,7 @@ describe.skip("About the project page - conversion projects: ", () => {
             .hasValue("")
             .summaryShows("New trust reference number (TRN)")
             .hasValue(projectFormAMAT.newTrustReferenceNumber)
+            .hasChangeLink(`${formAMATChangeLinkPath}new_trust_reference_number`)
             .summaryShows("Address")
             .hasValue("")
             .summaryShows("SharePoint folder")
@@ -370,7 +372,6 @@ describe.skip("About the project page - conversion projects: ", () => {
             .withSchoolOrAcademySharePointLink("https://educationgovuk.sharepoint.com/11")
             .withIncomingTrustSharePointLink("https://educationgovuk.sharepoint.com/22")
             .withHandingOverToRCS("Yes")
-            .withHandoverComments("New handover comments")
             .withAcademyOrder("Academy order")
             .with2RI("Yes")
             .continue();
