@@ -32,20 +32,7 @@ public partial class ProjectsControllerTests
         var testUser = await dbContext.Users.OrderBy(u => u.CreatedAt).FirstOrDefaultAsync();
         Assert.NotNull(testUser);
 
-        var createHandoverConversionProjectCommand = new CreateHandoverConversionProjectCommand()
-        {
-            Urn = 121999,
-            IncomingTrustUkprn = 12129999,
-            AdvisoryBoardDate = DateTime.Parse("2025-05-02"),
-            ProvisionalConversionDate = DateTime.Parse("2025-05-01"),
-            CreatedByEmail = "testuseremail@education.gov.uk",
-            CreatedByFirstName = "First name",
-            CreatedByLastName = "Last name",
-            PrepareId = 123,
-            DirectiveAcademyOrder = true,
-            AdvisoryBoardConditions = "Advisory board conditions"
-        };
-
+        var createHandoverConversionProjectCommand = GenerateCreateHandoverConversionCommand();
         testUser.Email = createHandoverConversionProjectCommand.CreatedByEmail;
 
         var localAuthority = dbContext.LocalAuthorities.AsEnumerable().MinBy(_ => Guid.NewGuid());
@@ -56,7 +43,7 @@ public partial class ProjectsControllerTests
             .Customize(new GiasEstablishmentsCustomization()
             {
                 LocalAuthority = localAuthority,
-                Urn = new Domain.ValueObjects.Urn(createHandoverConversionProjectCommand.Urn.Value)
+                Urn = new Domain.ValueObjects.Urn(createHandoverConversionProjectCommand.Urn!.Value)
             })
             .Create<GiasEstablishment>();
         await dbContext.GiasEstablishments.AddAsync(giasEstablishment);
