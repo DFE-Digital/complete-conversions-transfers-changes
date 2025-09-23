@@ -17,12 +17,15 @@ Security in case of vulnerabilities.
 ## Unreleased
 
 ### Removed
+
 - removed the 'Add Project' in your project button and disabled access to all related subpages 
 
 ### Added
+
 - Ability to edit project information for conversions and transfers
 - ProjectGroup is created when a project is edited with a new GRN
 - Added `Add, Edit and Delete External Contacts for both conversion and transfer projects.
+- Added `Confirm all condition has been met` task for conversion projects.
 
 ### Changed
 - Group reference number links to the group on "About the project"

@@ -209,7 +209,7 @@
       "Controller": "ContactsController",
       "Action": "ListAllContactsForLocalAuthorityAsync",
       "ExpectedSecurity": "Authorize: Policy=CanRead"
-    },    
+    },
     {
       "Controller": "ProjectsController",
       "Action": "GetProjectByIdAsync",
@@ -293,6 +293,11 @@
     {
       "Controller": "TasksDataController",
       "Action": "UpdateDeclarationOfExpenditureCertificateTaskAsync",
+      "ExpectedSecurity": "Authorize: Policy=CanReadWriteUpdate"
+    },
+    {
+      "Controller": "TasksDataController",
+      "Action": "UpdateConfirmAllConditionsMetTaskAsync",
       "ExpectedSecurity": "Authorize: Policy=CanReadWriteUpdate"
     }
   ]

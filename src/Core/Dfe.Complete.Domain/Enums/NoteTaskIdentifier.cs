@@ -47,5 +47,9 @@ public enum NoteTaskIdentifier
 
     [Description("receive_declaration_of_expenditure_certificate")]
     [DisplayDescription("Receive declaration of expenditure certificate")]
-    DeclarationOfExpenditureCertificate = 11
+    DeclarationOfExpenditureCertificate = 11,
+
+    [Description("confirm_all_conditions_has_been_met")]
+    [DisplayDescription("Confirm all conditions have been met")]
+    ConfirmAllConditionsMet = 12
 }
