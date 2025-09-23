@@ -45,13 +45,14 @@ public class ListAllUsersWithProjectsHandler(ICompleteRepository<User> users, IL
                     user.Id,
                     user.FullName,
                     user.Email,
-                    user.Team.FromDescriptionValue<ProjectTeam>(),
+                    user.Team == null ? null : user.Team.FromDescriptionValue<ProjectTeam>(),
                     user.ProjectAssignedTos
                         .Where(project => request.State == null || project.State == request.State)
                         .Count(project => project.Type == ProjectType.Conversion),
                     user.ProjectAssignedTos
                         .Where(project => request.State == null || project.State == request.State)
-                        .Count(project => project.Type == ProjectType.Transfer)
+                        .Count(project => project.Type == ProjectType.Transfer),
+                    user.LatestSession
                 ))
                 .ToListAsync(cancellationToken);
 
