@@ -1,0 +1,10 @@
+﻿@using Dfe.Complete.Domain.Enums
+@model Dfe.Complete.Pages.Projects.TaskList.Tasks.DeclarationOfExpenditureCertificateTask.DeclarationOfExpenditureCertificateTaskModel
+@if (Model.Project.Type == ProjectType.Conversion)
+{
+    @await Html.PartialAsync("_ConversionDeclarationOfExpenditureCertificateTask", Model)
+}
+else
+{
+    @await Html.PartialAsync("_TransferDeclarationOfExpenditureCertificateTask", Model)
+} 

@@ -6,14 +6,16 @@ namespace Dfe.Complete.Infrastructure.CommandServices
 {
     public class TaskDataWriteRepository(CompleteContext context) : ITaskDataWriteRepository
     {
-        public async Task UpdateConversionAsync(ConversionTasksData conversionTasksData, CancellationToken cancellationToken)
+        public async Task UpdateConversionAsync(ConversionTasksData conversionTasksData, DateTime dateTime, CancellationToken cancellationToken)
         {
+            conversionTasksData.UpdatedAt = dateTime; 
             context.ConversionTasksData.Update(conversionTasksData);
             await context.SaveChangesAsync(cancellationToken);
         }
 
-        public async Task UpdateTransferAsync(TransferTasksData transferTasksData, CancellationToken cancellationToken)
+        public async Task UpdateTransferAsync(TransferTasksData transferTasksData, DateTime dateTime, CancellationToken cancellationToken)
         {
+            transferTasksData.UpdatedAt = dateTime;
             context.TransferTasksData.Update(transferTasksData);
             await context.SaveChangesAsync(cancellationToken);
         }
