@@ -1,6 +1,6 @@
 ﻿using Dfe.Complete.Domain.Entities;
 
-namespace Dfe.Complete.Application.Projects.Interfaces
+namespace Dfe.Complete.Application.Users.Interfaces
 {
     public interface IUserReadRepository
     {

@@ -3,6 +3,7 @@ using Dfe.Complete.Application.Contacts.Interfaces;
 using Dfe.Complete.Application.Notes.Interfaces;
 using Dfe.Complete.Application.Projects.Interfaces;
 using Dfe.Complete.Application.Projects.Interfaces.CsvExport;
+using Dfe.Complete.Application.Users.Interfaces;
 using Dfe.Complete.Domain.Interfaces.Repositories;
 using Dfe.Complete.Infrastructure.CommandServices;
 using Dfe.Complete.Infrastructure.Database;
@@ -42,7 +43,8 @@ namespace Dfe.Complete.Infrastructure
             services.AddScoped<IProjectReadRepository, ProjectReadRepository>();
             services.AddScoped<IProjectGroupReadRepository, ProjectGroupReadRepository>();
             services.AddScoped<INoteReadRepository, NoteReadRepository>();
-            services.AddScoped<IUserReadRepository,UserReadRepository>();
+            services.AddScoped<IUserReadRepository, UserReadRepository>();
+            services.AddScoped<IUserWriteRepository, UserWriteRepository>();
             services.AddScoped<ILocalAuthoritiesQueryService, LocalAuthoritiesQueryService>();
             services.AddScoped<ITaskDataReadRepository, TaskDataReadRepository>();
             services.AddScoped<ITaskDataWriteRepository, TaskDataWriteRepository>();
@@ -76,7 +78,7 @@ namespace Dfe.Complete.Infrastructure
                 };
 
                 // https://stackexchange.github.io/StackExchange.Redis/ThreadTheft.html
-                ConnectionMultiplexer.SetFeatureFlag("preventthreadtheft", true); 
+                ConnectionMultiplexer.SetFeatureFlag("preventthreadtheft", true);
 
                 services.AddStackExchangeRedisCache(redisCacheConfig =>
                 {
