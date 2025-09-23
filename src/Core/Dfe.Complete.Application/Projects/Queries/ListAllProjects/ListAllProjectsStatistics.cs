@@ -12,7 +12,7 @@ namespace Dfe.Complete.Application.Projects.Queries.ListAllProjects
 {
     public record ListAllProjectsStatisticsQuery() : IRequest<Result<ListAllProjectsStatisticsModel>>;
 
-    public class ListAllProjectsStatisticsQueryHandler(IProjectReadRepository projectReadRepository, IReadUserRepository readUserRepository, ILogger<ListAllProjectsStatisticsQueryHandler> logger) : IRequestHandler<ListAllProjectsStatisticsQuery, Result<ListAllProjectsStatisticsModel>>
+    public class ListAllProjectsStatisticsQueryHandler(IProjectReadRepository projectReadRepository, IUserReadRepository readUserRepository, ILogger<ListAllProjectsStatisticsQueryHandler> logger) : IRequestHandler<ListAllProjectsStatisticsQuery, Result<ListAllProjectsStatisticsModel>>
     {
         public async Task<Result<ListAllProjectsStatisticsModel>> Handle(ListAllProjectsStatisticsQuery request, CancellationToken cancellationToken)
         {  
@@ -133,7 +133,7 @@ namespace Dfe.Complete.Application.Projects.Queries.ListAllProjects
             return new ThisMonthNewProjectsStatisticsModel(monthYear, newConversionsThisMonth + newTransfersThisMonth, newConversionsThisMonth, newTransfersThisMonth);
         }
 
-        public static async Task<Dictionary<string, int>> GetUsersPerTeamAsync(List<Region> regions, IReadUserRepository readUserRepository, CancellationToken cancellationToken)
+        public static async Task<Dictionary<string, int>> GetUsersPerTeamAsync(List<Region> regions, IUserReadRepository readUserRepository, CancellationToken cancellationToken)
         {
             var usersGroupedByTeam = await readUserRepository
                 .Users

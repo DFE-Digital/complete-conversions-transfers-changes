@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Dfe.Complete.Infrastructure.QueryServices
 {
-    public class ReadUserRepository(CompleteContext ctx) : IReadUserRepository
+    public class UserReadRepository(CompleteContext ctx) : IUserReadRepository
     {
         public IQueryable<User> Users 
             => ctx.Users
