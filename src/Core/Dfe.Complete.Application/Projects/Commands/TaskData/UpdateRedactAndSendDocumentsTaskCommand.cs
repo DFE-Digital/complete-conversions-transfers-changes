@@ -35,8 +35,6 @@ namespace Dfe.Complete.Application.Projects.Commands.TaskData
 
             return Result<bool>.Success(true);
         }
-
-
         private async Task UpdateConversionTaskDataAsync(TaskDataId taskDataId, UpdateRedactAndSendDocumentsTaskCommand request, CancellationToken cancellationToken)
         {
             var tasksData = await taskDataReadRepository.ConversionTaskData.FirstOrDefaultAsync(p => p.Id == taskDataId, cancellationToken)
@@ -47,7 +45,7 @@ namespace Dfe.Complete.Application.Projects.Commands.TaskData
             tasksData.RedactAndSendSendRedaction =  request.Send;
             tasksData.RedactAndSendSendSolicitors =  request.SendToSolicitors;
 
-            await taskDataWriteRepository.UpdateConversionAsync(tasksData, cancellationToken);
+            await taskDataWriteRepository.UpdateConversionAsync(tasksData, DateTime.Now, cancellationToken);
         }
 
         private async Task UpdateTransferTaskDataAsync(TaskDataId taskDataId, UpdateRedactAndSendDocumentsTaskCommand request, CancellationToken cancellationToken)
@@ -61,7 +59,7 @@ namespace Dfe.Complete.Application.Projects.Commands.TaskData
             tasksData.RedactAndSendDocumentsSendToSolicitors = request.SendToSolicitors;
             tasksData.RedactAndSendDocumentsSendToEsfa = request.SendToEsfa;
 
-            await taskDataWriteRepository.UpdateTransferAsync(tasksData, cancellationToken);
+            await taskDataWriteRepository.UpdateTransferAsync(tasksData, DateTime.Now, cancellationToken);
         }
     }
 }

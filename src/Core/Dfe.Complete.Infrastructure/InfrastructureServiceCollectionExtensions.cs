@@ -48,6 +48,7 @@ namespace Dfe.Complete.Infrastructure
             services.AddScoped<IKeyContactReadRepository, KeyContactReadRepository>();
             services.AddScoped<IContactReadRepository, ContactReadRepository>();
             services.AddScoped<IContactWriteRepository, ContactWriteRepository>();
+            services.AddScoped<IProjectWriteRepository, ProjectWriteRepository>();
             // Authentication
             //services.AddCustomAuthorization(config);
 

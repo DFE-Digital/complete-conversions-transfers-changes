@@ -11,8 +11,8 @@ namespace Dfe.Complete.Application.Projects.Commands.TaskData
         bool? Confirm) : IRequest<Result<bool>>;
 
     public class UpdateConfirmAllConditionsMetTaskCommandHandler(
-        IProjectReadRepository projectReadRepository)
-        //IProjectWriteRepository projectWriteRepository)
+        IProjectReadRepository projectReadRepository,
+        IProjectWriteRepository projectWriteRepository)
         : IRequestHandler<UpdateConfirmAllConditionsMetTaskCommand, Result<bool>>
     {
         public async Task<Result<bool>> Handle(UpdateConfirmAllConditionsMetTaskCommand request, CancellationToken cancellationToken)
@@ -22,7 +22,7 @@ namespace Dfe.Complete.Application.Projects.Commands.TaskData
 
             project.AllConditionsMet = request.Confirm;
             project.UpdatedAt = DateTime.UtcNow;
-            //await projectWriteRepository.UpdateAsync(project, cancellationToken);
+            await projectWriteRepository.UpdateProjectAsync(project, cancellationToken);
 
             return Result<bool>.Success(true);
         }

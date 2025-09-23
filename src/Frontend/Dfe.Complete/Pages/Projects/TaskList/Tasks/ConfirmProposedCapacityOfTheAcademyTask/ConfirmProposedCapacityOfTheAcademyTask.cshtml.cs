@@ -12,9 +12,9 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Reflection;
 
-namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.ConfirmProposedCapacityOfTheAcademy
+namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.ConfirmProposedCapacityOfTheAcademyTask
 {
-    public class ConfirmProposedCapacityOfTheAcademyModel(ISender sender, IAuthorizationService authorizationService, ILogger<ArticlesOfAssociationTaskModel> logger, ErrorService errorService)
+    public class ConfirmProposedCapacityOfTheAcademyTaskModel(ISender sender, IAuthorizationService authorizationService, ILogger<ArticlesOfAssociationTaskModel> logger, ErrorService errorService)
     : BaseProjectTaskModel(sender, authorizationService, logger, NoteTaskIdentifier.ConfirmProposedCapacityOfTheAcademy)
     {
         [BindProperty(Name = "notapplicable")]
@@ -64,7 +64,7 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.ConfirmProposedCapacityOfTh
 
         private void ValidateProperty(string name, string? value, string errorMessage)
         {
-            var prop = typeof(ConfirmProposedCapacityOfTheAcademyModel).GetProperty(name);
+            var prop = typeof(ConfirmProposedCapacityOfTheAcademyTaskModel).GetProperty(name);
             if(prop == null) return;
             var bindAttr = prop.GetCustomAttribute<BindPropertyAttribute>();
             if (bindAttr != null && NotApplicable != true && string.IsNullOrWhiteSpace(value))
