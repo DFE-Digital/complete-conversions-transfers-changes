@@ -13,7 +13,7 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
     public class ListAllProjectsStatisticsQueryHandlerTests
     {
         private readonly Mock<IProjectReadRepository> _projectReadRepositoryMock = new();
-        private readonly Mock<IReadUserRepository> _readUserRepositoryMock = new();
+        private readonly Mock<IUserReadRepository> _readUserRepositoryMock = new();
         private readonly Mock<ILogger<ListAllProjectsStatisticsQueryHandler>> _loggerMock = new();
 
         private ListAllProjectsStatisticsQueryHandler CreateHandler(

@@ -2,7 +2,7 @@
 
 namespace Dfe.Complete.Application.Projects.Interfaces
 {
-    public interface IReadUserRepository
+    public interface IUserReadRepository
     {
         IQueryable<User> Users { get; }
     }
