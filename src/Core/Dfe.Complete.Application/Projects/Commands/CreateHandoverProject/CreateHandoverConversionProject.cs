@@ -13,6 +13,8 @@ using Dfe.Complete.Application.Projects.Queries.GetLocalAuthority;
 using Dfe.Complete.Application.Projects.Queries.GetGiasEstablishment;
 using Dfe.Complete.Application.Projects.Queries.GetProject;
 using Dfe.Complete.Application.ProjectGroups.Interfaces;
+using Dfe.Complete.Application.Common.Interfaces;
+using Microsoft.Extensions.Logging;
 
 namespace Dfe.Complete.Application.Projects.Commands.CreateHandoverProject;
 
@@ -30,81 +32,96 @@ public record CreateHandoverConversionProjectCommand(
     string? GroupId = null) : IRequest<ProjectId>;
 
 public class CreateHandoverConversionProjectCommandHandler(
+    IUnitOfWork unitOfWork,
     ICompleteRepository<Project> projectRepository,
     ICompleteRepository<User> userRepository,
     ICompleteRepository<ConversionTasksData> conversionTaskRepository,
     IProjectGroupWriteRepository projectGroupWriteRepository,
-    ISender sender)
+    ISender sender,
+    ILogger<CreateHandoverConversionProjectCommandHandler> logger)
     : IRequestHandler<CreateHandoverConversionProjectCommand, ProjectId>
 {
     public async Task<ProjectId> Handle(CreateHandoverConversionProjectCommand request, CancellationToken cancellationToken)
     {
-        // Validate the request
-        await ValidateRequest(request, cancellationToken);
-
-        var projectId = new ProjectId(Guid.NewGuid());
-        var now = DateTime.UtcNow;
-        var urn = request.Urn!.Value;
-        var localAuthorityId = await GetLocalAuthorityForUrn(urn, cancellationToken);
-        var region = await GetRegionForUrn(urn, cancellationToken);
-        var group = await GetGroupForGroupId(request.GroupId, cancellationToken);
-
-        if (group != null) ValidateGroupId(group, request.IncomingTrustUkprn!.Value);
-
-        ProjectGroupId? groupId = null;
-        if (group != null) groupId = group.Id;
-        if (group == null && request.GroupId != null) groupId = await CreateProjectGroup(request.GroupId, request.IncomingTrustUkprn!.Value, cancellationToken);
-
-        var user = await GetOrCreateUser(request, region, cancellationToken);
-
-        // Create conversion task data
-        var conversionTaskId = Guid.NewGuid();
-        var conversionTask = new ConversionTasksData(new TaskDataId(conversionTaskId), now, now);
-
-        // Create the project in inactive state
-        var project = Project.CreateConversionProject(
-            projectId,
-            new Urn(urn),
-            now,
-            now,
-            TaskType.Conversion,
-            ProjectType.Conversion,
-            conversionTaskId,
-            request.ProvisionalConversionDate!.Value,
-            true,
-            new Ukprn(request.IncomingTrustUkprn!.Value),
-            region,
-            false,
-            request.DirectiveAcademyOrder ?? false,
-            request.AdvisoryBoardDate!.Value,
-            request.AdvisoryBoardConditions ?? "",
-            string.Empty,
-            string.Empty,
-            groupId,
-            null,
-            user.Id,
-            null,
-            null,
-            string.Empty,
-            localAuthorityId);
-
-        project.State = ProjectState.Inactive;
-
-        if (request.DirectiveAcademyOrder!.Value)
+        try
         {
-            project.DirectiveAcademyOrder = true;
+            await unitOfWork.BeginTransactionAsync();
+
+            // Validate the request
+            await ValidateRequest(request, cancellationToken);
+
+            var projectId = new ProjectId(Guid.NewGuid());
+            var now = DateTime.UtcNow;
+            var urn = request.Urn!.Value;
+            var localAuthorityId = await GetLocalAuthorityForUrn(urn, cancellationToken);
+            var region = await GetRegionForUrn(urn, cancellationToken);
+            var group = await GetGroupForGroupId(request.GroupId, cancellationToken);
+
+            if (group != null) ValidateGroupId(group, request.IncomingTrustUkprn!.Value);
+
+            ProjectGroupId? groupId = null;
+            if (group != null) groupId = group.Id;
+            if (group == null && request.GroupId != null) groupId = await CreateProjectGroup(request.GroupId, request.IncomingTrustUkprn!.Value, cancellationToken);
+
+            var user = await GetOrCreateUser(request, region, cancellationToken);
+
+            // Create conversion task data
+            var conversionTaskId = Guid.NewGuid();
+            var conversionTask = new ConversionTasksData(new TaskDataId(conversionTaskId), now, now);
+
+            // Create the project in inactive state
+            var project = Project.CreateConversionProject(
+                projectId,
+                new Urn(urn),
+                now,
+                now,
+                TaskType.Conversion,
+                ProjectType.Conversion,
+                conversionTaskId,
+                request.ProvisionalConversionDate!.Value,
+                true,
+                new Ukprn(request.IncomingTrustUkprn!.Value),
+                region,
+                false,
+                request.DirectiveAcademyOrder ?? false,
+                request.AdvisoryBoardDate!.Value,
+                request.AdvisoryBoardConditions ?? "",
+                string.Empty,
+                string.Empty,
+                groupId,
+                null,
+                user.Id,
+                null,
+                null,
+                string.Empty,
+                localAuthorityId);
+
+            project.State = ProjectState.Inactive;
+
+            if (request.DirectiveAcademyOrder!.Value)
+            {
+                project.DirectiveAcademyOrder = true;
+            }
+
+            project.PrepareId = request.PrepareId!.Value;
+
+            await conversionTaskRepository.AddAsync(conversionTask, cancellationToken);
+            await projectRepository.AddAsync(project, cancellationToken);
+
+            await unitOfWork.CommitAsync();
+
+            return project.Id;
         }
-
-        project.PrepareId = request.PrepareId!.Value;
-
-        await conversionTaskRepository.AddAsync(conversionTask, cancellationToken);
-        await projectRepository.AddAsync(project, cancellationToken);
-
-        return project.Id;
+        catch (Exception ex)
+        {
+            await unitOfWork.RollBackAsync();
+            logger.LogError(ex, "Exception while creating handover conversion project for URN: {Urn}", request.Urn);
+            throw;
+        }
     }
 
     private async Task ValidateRequest(CreateHandoverConversionProjectCommand request, CancellationToken cancellationToken)
-{
+    {
         // Pure validation logic should be in domain layer. Move on next ticket
         // Validate URN format (6 digits)
         if (request.Urn < 100000 || request.Urn > 999999)
@@ -233,12 +250,3 @@ public class CreateHandoverConversionProjectCommandHandler(
         return id;
     }
 }
-
-// Test cases
-// Empty body
-// No LA found
-// No group found
-// Group found back ukprn
-// Group found good ukprn
-// No group provided - void groupid
-// Happy path
