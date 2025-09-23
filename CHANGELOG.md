@@ -21,6 +21,7 @@ Security in case of vulnerabilities.
 ### Changed
 
 ### Fixed
+- Add new prepare to complete end point for adding conversion projects
 
 See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-09-25.771...main) for everything awaiting release
 
