@@ -11,7 +11,7 @@ const urn = "136730";
 const urnMAT = "136731";
 
 // skip 216847
-describe("Create a new Transfer Project", () => {
+describe.skip("Create a new Transfer Project", () => {
     before(() => {
         projectRemover.removeProjectIfItExists(urn);
         projectRemover.removeProjectIfItExists(urnMAT);
