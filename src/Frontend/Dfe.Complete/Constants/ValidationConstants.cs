@@ -25,6 +25,7 @@
         public const string ContactNotFound = "Contact {0} does not exist.";
         public const string ProjectNotFound = "Project {0} does not exist.";
         public const string ValidDate = "Enter a valid date, like 1 1 2025";
+        public const string MustBePastDate = "{0} must be in the past";
 
         // External Contact validation message
         public const string FullNameRequiredMessage = "Enter a name";

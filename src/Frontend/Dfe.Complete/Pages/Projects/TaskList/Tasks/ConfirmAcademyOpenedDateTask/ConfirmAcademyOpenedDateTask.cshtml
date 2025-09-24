@@ -1,0 +1,34 @@
+﻿@page "/projects/{projectId}/tasks/confirm_date_academy_opened"
+@inject Dfe.Complete.Services.ErrorService ErrorService
+@model Dfe.Complete.Pages.Projects.TaskList.Tasks.ConfirmAcademyOpenedDateTask.ConfirmAcademyOpenedDateTaskModel
+@{
+    Layout = "_ProjectTaskLayout";
+    ViewData["Title"] = "Confirm the date the academy opened";
+    var openedDate = "opened-date";
+}
+@section TaskHeaderHintSection {
+    <div class="govuk-hint">
+        <p>Funding teams need to know when the academy opened so they can make payments related to any Risk Protection Agreements.</p>
+    </div>
+}
+@section TaskSection {  
+    <form method="post">
+        <input type="hidden" asp-for="TasksDataId" />
+        <govuk-date-input id="@openedDate" name-prefix="@openedDate" asp-for="@Model.OpenedDate">
+            <govuk-date-input-fieldset>
+                <govuk-date-input-fieldset-legend class="govuk-fieldset__legend--s">
+                    Enter the date you received the declaration of expenditure certificate
+                </govuk-date-input-fieldset-legend>
+                <govuk-date-input-hint>
+                    <p>For example 27 5 2007</p>
+                </govuk-date-input-hint>
+                @if (ErrorService.HasErrorForKey(@openedDate))
+                {
+                <govuk-date-input-error-message>@ErrorService.GetErrorMessage(@openedDate)</govuk-date-input-error-message>
+                }
+            </govuk-date-input-fieldset>
+        </govuk-date-input>
+        @await Html.PartialAsync("_TaskSaveAndReturn", new TaskSaveAndReturnModel(Model.Project, Model.CurrentUserTeam))
+    </form>
+}
+

@@ -51,5 +51,9 @@ public enum NoteTaskIdentifier
 
     [Description("confirm_this_transfer_has_authority_to_proceed")]
     [DisplayDescription("Confirm this transfer has authority to proceed")]
-    ConfirmTransferHasAuthorityToProceed = 12
+    ConfirmTransferHasAuthorityToProceed = 12,
+
+    [Description("confirm_the_date_the_academy_opened")]
+    [DisplayDescription("Confirm the date the academy opened")]
+    ConfirmAcademyOpenedDate = 13
 }
