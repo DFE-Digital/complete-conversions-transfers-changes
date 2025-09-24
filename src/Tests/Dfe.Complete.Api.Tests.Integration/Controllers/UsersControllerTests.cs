@@ -16,6 +16,68 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers;
 public class UsersControllerTests
 {
     [Theory]
+    [CustomAutoData(typeof(CustomWebApplicationDbContextFactoryCustomization))]
+    public async Task CreateUserAsync_ShouldCreateUser(
+        CustomWebApplicationDbContextFactory<Program> factory,
+        IUsersClient usersClient,
+        IFixture fixture)
+    {
+        factory.TestClaims = new[] { ApiRoles.ReadRole, ApiRoles.WriteRole }
+            .Select(x => new Claim(ClaimTypes.Role, x)).ToList();
+
+        var dbContext = factory.GetDbContext<CompleteContext>();
+        var command = new CreateUserCommand()
+        {
+            FirstName = fixture.Create<string>(),
+            LastName = fixture.Create<string>(),
+            Email = fixture.Create<string>() + "@education.gov.uk",
+            Team = fixture.Create<ProjectTeam>()
+        };
+        var userId = await usersClient.CreateUserAsync(command, CancellationToken.None);
+
+        Assert.IsType<Guid>(userId);
+    }
+
+    [Theory]
+    [CustomAutoData(typeof(CustomWebApplicationDbContextFactoryCustomization))]
+    public async Task CreateUserAsyncShould_UserAlreadyExists_ShouldNotCreateUser(
+        CustomWebApplicationDbContextFactory<Program> factory,
+        IUsersClient usersClient,
+        IFixture fixture)
+    {
+        factory.TestClaims = new[] { ApiRoles.ReadRole, ApiRoles.WriteRole }
+            .Select(x => new Claim(ClaimTypes.Role, x)).ToList();
+
+        var dbContext = factory.GetDbContext<CompleteContext>();
+
+        var existingEmail = fixture.Create<string>() + "@education.gov.uk";
+
+        var existingUser = Domain.Entities.User.Create(
+            new Domain.ValueObjects.UserId(Guid.NewGuid()),
+            existingEmail,
+            fixture.Create<string>(),
+            fixture.Create<string>(),
+            fixture.Create<ProjectTeam>().ToString()
+        );
+
+        dbContext.Users.Add(existingUser);
+        await dbContext.SaveChangesAsync();
+
+        var command = new CreateUserCommand()
+        {
+            FirstName = fixture.Create<string>(),
+            LastName = fixture.Create<string>(),
+            Email = existingEmail,
+            Team = fixture.Create<ProjectTeam>()
+        };
+
+        var exception = await Assert.ThrowsAsync<CompleteApiException>(async () =>
+            await usersClient.CreateUserAsync(command, CancellationToken.None));
+
+        Assert.Contains($"User with email '{existingEmail}' already exists", exception.Message);
+    }
+
+    [Theory]
     [CustomAutoData(typeof(CustomWebApplicationDbContextFactoryCustomization), typeof(GiasEstablishmentsCustomization))]
     public async Task ListUsersWithProjectsAsync_ShouldReturnList(
         CustomWebApplicationDbContextFactory<Program> factory,
@@ -29,24 +91,24 @@ public class UsersControllerTests
         testUser.FirstName = "Nick";
         testUser.LastName = "Warms";
         dbContext.Users.Update(testUser);
-        
+
         var establishments = fixture.CreateMany<GiasEstablishment>(50).ToList();
         await dbContext.GiasEstablishments.AddRangeAsync(establishments);
         var projects = establishments.Select(establishment =>
         {
             var project = fixture.Customize(new ProjectCustomization
-                {
-                    RegionalDeliveryOfficerId = testUser.Id,
-                    CaseworkerId = testUser.Id,
-                    AssignedToId = testUser.Id,
-                })
+            {
+                RegionalDeliveryOfficerId = testUser.Id,
+                CaseworkerId = testUser.Id,
+                AssignedToId = testUser.Id,
+            })
                 .Create<Project>();
             project.Urn = establishment.Urn ?? project.Urn;
             return project;
         }).ToList();
-        
+
         projects.ForEach(p => p.LocalAuthorityId = dbContext.LocalAuthorities.FirstOrDefault().Id);
-        
+
         await dbContext.Projects.AddRangeAsync(projects);
 
         await dbContext.SaveChangesAsync();
@@ -63,7 +125,7 @@ public class UsersControllerTests
         Assert.Equal(testUser.Id.Value, result.Id.Value);
         Assert.Equal($"{testUser.FirstName} {testUser.LastName}", result.FullName);
     }
-    
+
     [Theory]
     [CustomAutoData(typeof(CustomWebApplicationDbContextFactoryCustomization), typeof(GiasEstablishmentsCustomization))]
     public async Task GetUserWithProjectsAsync_ShouldReturnList(
@@ -80,30 +142,30 @@ public class UsersControllerTests
         dbContext.Users.Update(testUser);
 
         var localAuthorityId = dbContext.LocalAuthorities.FirstOrDefault().Id;
-        
+
         var establishments = fixture.CreateMany<GiasEstablishment>(50).ToList();
         await dbContext.GiasEstablishments.AddRangeAsync(establishments);
         var projects = establishments.Select(establishment =>
         {
             var project = fixture.Customize(new ProjectCustomization
-                {
-                    RegionalDeliveryOfficerId = testUser.Id,
-                    CaseworkerId = testUser.Id,
-                    AssignedToId = testUser.Id
-                })
+            {
+                RegionalDeliveryOfficerId = testUser.Id,
+                CaseworkerId = testUser.Id,
+                AssignedToId = testUser.Id
+            })
                 .Create<Project>();
             project.Urn = establishment.Urn ?? project.Urn;
             return project;
         }).ToList();
-        
+
         projects.ForEach(p => p.LocalAuthorityId = localAuthorityId);
-        
+
         await dbContext.Projects.AddRangeAsync(projects);
 
         await dbContext.SaveChangesAsync();
 
         // Act
-        var results = await usersClient.GetUserWithProjectsAsync( testUser.Id.Value,
+        var results = await usersClient.GetUserWithProjectsAsync(testUser.Id.Value,
             null, null, 0, 1000);
 
         // Assert
