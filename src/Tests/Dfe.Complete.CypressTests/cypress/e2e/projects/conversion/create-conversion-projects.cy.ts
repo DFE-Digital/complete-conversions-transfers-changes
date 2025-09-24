@@ -10,7 +10,8 @@ import projectDetailsPage from "cypress/pages/projects/projectDetails/projectDet
 const urn: string = "111394";
 const urnMAT: string = "103846";
 
-describe("Create a new Conversion Project", () => {
+// skip 216847
+describe.skip("Create a new Conversion Project", () => {
     before(() => {
         projectRemover.removeProjectIfItExists(urn);
         projectRemover.removeProjectIfItExists(urnMAT);

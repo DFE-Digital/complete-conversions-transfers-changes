@@ -52,7 +52,7 @@ namespace Dfe.Complete.Application.Projects.Commands.TaskData
             tasksData.DeedOfVariationSignedSecretaryState = request.NotApplicable == true ? null : request.SignedSecretaryState;
             tasksData.DeedOfVariationNotApplicable = request.NotApplicable;
 
-            await taskDataWriteRepository.UpdateConversionAsync(tasksData, cancellationToken);
+            await taskDataWriteRepository.UpdateConversionAsync(tasksData, DateTime.UtcNow, cancellationToken);
         }
 
         private async Task UpdateTransferTaskDataAsync(TaskDataId taskDataId, UpdateDeedOfVariationTaskCommand request, CancellationToken cancellationToken)
@@ -68,7 +68,7 @@ namespace Dfe.Complete.Application.Projects.Commands.TaskData
             tasksData.DeedOfVariationSignedSecretaryState = request.NotApplicable == true ? null : request.SignedSecretaryState;
             tasksData.DeedOfVariationNotApplicable = request.NotApplicable;
 
-            await taskDataWriteRepository.UpdateTransferAsync(tasksData, cancellationToken);
+            await taskDataWriteRepository.UpdateTransferAsync(tasksData, DateTime.UtcNow, cancellationToken);
         }
     }
 }

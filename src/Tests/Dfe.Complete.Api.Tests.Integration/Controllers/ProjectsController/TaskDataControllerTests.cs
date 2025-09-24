@@ -4,8 +4,10 @@ using Dfe.Complete.Client.Contracts;
 using Dfe.Complete.Domain.Entities;
 using Dfe.Complete.Infrastructure.Database;
 using Dfe.Complete.Tests.Common.Constants;
+using Dfe.Complete.Tests.Common.Customizations.Models;
 using GovUK.Dfe.CoreLibs.Testing.AutoFixture.Attributes;
 using GovUK.Dfe.CoreLibs.Testing.Mocks.WebApplicationFactory;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 
@@ -577,11 +579,69 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers.ProjectsController
             dbContext.ChangeTracker.Clear();
             var existingTaskData = await dbContext.TransferTasksData.SingleOrDefaultAsync(x => x.Id == taskData.Id);
             Assert.NotNull(existingTaskData);
-            Assert.NotNull(existingTaskData);
             Assert.False(existingTaskData.DeclarationOfExpenditureCertificateSaved);
             Assert.True(existingTaskData.DeclarationOfExpenditureCertificateCorrect);
             Assert.NotNull(existingTaskData.DeclarationOfExpenditureCertificateDateReceived);
             Assert.False(existingTaskData.DeclarationOfExpenditureCertificateNotApplicable);
+        }
+
+        [Theory]
+        [CustomAutoData(typeof(CustomWebApplicationDbContextFactoryCustomization))]
+        public async Task UpdateConfirmTransferHasAuthorityToProceedTaskAsync_ShouldUpdate_TransferTaskData(
+            CustomWebApplicationDbContextFactory<Program> factory,
+            ITasksDataClient tasksDataClient,
+            UpdateConfirmTransferHasAuthorityToProceedTaskCommand command,
+            IFixture fixture)
+        {
+            // Arrange
+            factory.TestClaims = [new Claim(ClaimTypes.Role, ApiRoles.ReadRole), new Claim(ClaimTypes.Role, ApiRoles.UpdateRole), new Claim(ClaimTypes.Role, ApiRoles.WriteRole)];
+
+            var dbContext = factory.GetDbContext<CompleteContext>();
+
+            var taskData = fixture.Create<TransferTasksData>();
+            dbContext.TransferTasksData.Add(taskData);
+
+            var testUser = await dbContext.Users.FirstOrDefaultAsync();
+            var establishment = fixture.Create<Domain.Entities.GiasEstablishment>();
+            var localAuthority = fixture.Create<Domain.Entities.LocalAuthority>();
+            await dbContext.LocalAuthorities.AddAsync(localAuthority);
+            await dbContext.GiasEstablishments.AddAsync(establishment);
+            await dbContext.LocalAuthorities.AddAsync(localAuthority);
+            await dbContext.GiasEstablishments.AddAsync(establishment);
+            var project = fixture.Customize(
+                new ProjectCustomization()
+                {
+                    Id = new Domain.ValueObjects.ProjectId(Guid.NewGuid()),
+                    Urn = establishment.Urn ?? new Domain.ValueObjects.Urn(123456),
+                    LocalAuthorityId = localAuthority.Id,
+                    RegionalDeliveryOfficerId = testUser!.Id,
+                    TasksDataId = taskData.Id,
+                    Type = Domain.Enums.ProjectType.Transfer,
+                    AllConditionsMet = false,
+                    TasksDataType = Domain.Enums.TaskType.Transfer,
+                }
+                ).Create<Domain.Entities.Project>();
+            dbContext.Projects.Add(project);
+
+            await dbContext.SaveChangesAsync();
+            command.TaskDataId = new TaskDataId { Value = taskData.Id.Value };
+            command.AnyInformationChanged = true;
+            command.ConfirmToProceed = true;
+            command.BaselineSheetApproved = false;
+
+            // Act
+            await tasksDataClient.UpdateConfirmTransferHasAuthorityToProceedTaskAsync(command, default);
+
+            // Assert
+            dbContext.ChangeTracker.Clear();
+            var existingTaskData = await dbContext.TransferTasksData.SingleOrDefaultAsync(x => x.Id == taskData.Id);
+            Assert.NotNull(existingTaskData);
+            Assert.False(existingTaskData.ConditionsMetBaselineSheetApproved);
+            Assert.True(existingTaskData.ConditionsMetCheckAnyInformationChanged);
+
+            var existingProject = await dbContext.Projects.SingleOrDefaultAsync(x => x.TasksDataId == taskData.Id);
+            Assert.NotNull(existingProject);
+            Assert.True(existingProject.AllConditionsMet);
         }
     }
 }

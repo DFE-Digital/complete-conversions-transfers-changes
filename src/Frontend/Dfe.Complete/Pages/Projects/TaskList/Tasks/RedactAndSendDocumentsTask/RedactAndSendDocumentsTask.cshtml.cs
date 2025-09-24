@@ -8,11 +8,10 @@ using Dfe.Complete.Pages.Projects.TaskList.Tasks.HandoverWithDeliveryOfficerTask
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.RedactAndSendDocuments
+namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.RedactAndSendDocumentsTask
 {
-    public class RedactAndSendDocumentsModel(ISender sender, IAuthorizationService authorizationService, ILogger<HandoverWithDeliveryOfficerTaskModel> logger)
+    public class RedactAndSendDocumentsTaskModel(ISender sender, IAuthorizationService authorizationService, ILogger<HandoverWithDeliveryOfficerTaskModel> logger)
     : BaseProjectTaskModel(sender, authorizationService, logger, NoteTaskIdentifier.RedactAndSendDocuments)
     {
         [BindProperty(Name = "redact")]

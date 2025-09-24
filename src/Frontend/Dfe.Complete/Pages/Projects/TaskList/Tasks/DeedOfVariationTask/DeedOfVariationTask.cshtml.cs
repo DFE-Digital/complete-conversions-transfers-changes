@@ -4,15 +4,13 @@ using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Domain.ValueObjects;
 using Dfe.Complete.Extensions;
 using Dfe.Complete.Models;
-using Dfe.Complete.Pages.Projects.TaskList.Tasks.HandoverWithDeliveryOfficerTask;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.DeedOfVariation
+namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.DeedOfVariationTask
 {
-    public class DeedOfVariationModel(ISender sender, IAuthorizationService authorizationService, ILogger<DeedOfVariationModel> logger)
+    public class DeedOfVariationTaskModel(ISender sender, IAuthorizationService authorizationService, ILogger<DeedOfVariationTaskModel> logger)
     : BaseProjectTaskModel(sender, authorizationService, logger, NoteTaskIdentifier.DeedOfVariation)
     {
         [BindProperty(Name = "not-applicable")]
