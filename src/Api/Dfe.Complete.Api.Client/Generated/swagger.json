@@ -4902,7 +4902,8 @@
           "ConfirmProposedCapacityOfTheAcademy",
           "DeclarationOfExpenditureCertificate",
           "ConfirmTransferHasAuthorityToProceed",
-          "ConfirmAllConditionsMet"
+          "ConfirmAllConditionsMet",
+          "ReceiveGrantPaymentCertificate"
         ],
         "enum": [
           "Handover",
@@ -4917,7 +4918,8 @@
           "ConfirmProposedCapacityOfTheAcademy",
           "DeclarationOfExpenditureCertificate",
           "ConfirmTransferHasAuthorityToProceed",
-          "ConfirmAllConditionsMet"
+          "ConfirmAllConditionsMet",
+          "ReceiveGrantPaymentCertificate"
         ]
       },
       "CreateNoteCommand": {

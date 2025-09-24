@@ -25,7 +25,7 @@ public enum NoteTaskIdentifier
     [DisplayDescription("Supplemental funding agreement")]
     SupplementalFundingAgreement = 5,
 
-    [Description("article_of_association")]
+    [Description("articles_of_association")]
     [DisplayDescription("Articles of association")]
     ArticleOfAssociation = 6,
 
@@ -45,15 +45,19 @@ public enum NoteTaskIdentifier
     [DisplayDescription("Confirm the proposed capacity of the academy")]
     ConfirmProposedCapacityOfTheAcademy = 10,
 
-    [Description("receive_declaration_of_expenditure_certificate")]
+    [Description("declaration_of_expenditure_certificate")]
     [DisplayDescription("Receive declaration of expenditure certificate")]
     DeclarationOfExpenditureCertificate = 11,
 
-    [Description("confirm_this_transfer_has_authority_to_proceed")]
+    [Description("conditions_met")]
     [DisplayDescription("Confirm this transfer has authority to proceed")]
     ConfirmTransferHasAuthorityToProceed = 12,
 
-    [Description("confirm_all_conditions_has_been_met")]
+    [Description("conditions_met")]
     [DisplayDescription("Confirm all conditions have been met")]
-    ConfirmAllConditionsMet = 13
+    ConfirmAllConditionsMet = 13,
+
+    [Description("receive_grant_payment_certificate")]
+    [DisplayDescription("Receive declaration of expenditure certificate")]
+    ReceiveGrantPaymentCertificate = 14,
 }
