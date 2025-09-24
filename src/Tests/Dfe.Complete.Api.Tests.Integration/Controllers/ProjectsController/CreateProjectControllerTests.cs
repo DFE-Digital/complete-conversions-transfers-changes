@@ -20,8 +20,7 @@ public partial class ProjectsControllerTests
     [Theory]
     [CustomAutoData(typeof(CustomWebApplicationDbContextFactoryCustomization),
         typeof(DateOnlyCustomization),
-        typeof(LocalAuthorityCustomization),
-        typeof(CreateConversionProjectCommandCustomization))]
+        typeof(LocalAuthorityCustomization))]
     public async Task CreateHandoverConversionProject_Async_ShouldCreateHandoverConversionProjectOnly(
         CustomWebApplicationDbContextFactory<Program> factory,
         IProjectsClient projectsClient,
@@ -71,8 +70,7 @@ public partial class ProjectsControllerTests
     [Theory]
     [CustomAutoData(typeof(CustomWebApplicationDbContextFactoryCustomization),
         typeof(DateOnlyCustomization),
-        typeof(LocalAuthorityCustomization),
-        typeof(CreateConversionProjectCommandCustomization))]
+        typeof(LocalAuthorityCustomization))]
     public async Task CreateHandoverConversionProject_Async_ShouldCreateProjectUserAndGroup(
         CustomWebApplicationDbContextFactory<Program> factory,
         IProjectsClient projectsClient,
@@ -115,8 +113,7 @@ public partial class ProjectsControllerTests
     [Theory]
     [CustomAutoData(typeof(CustomWebApplicationDbContextFactoryCustomization),
         typeof(DateOnlyCustomization),
-        typeof(LocalAuthorityCustomization),
-        typeof(CreateConversionProjectCommandCustomization))]
+        typeof(LocalAuthorityCustomization))]
     public async Task CreateHandoverConversionProject_Async_GroupUkprnDoesNotMatch_ShouldFailValidation(
         CustomWebApplicationDbContextFactory<Program> factory,
         IProjectsClient projectsClient,
