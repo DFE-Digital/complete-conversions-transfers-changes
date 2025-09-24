@@ -6,6 +6,7 @@ using Dfe.Complete.Application.Users.Models;
 using Dfe.Complete.Application.Users.Queries.GetUser;
 using Dfe.Complete.Application.Users.Queries.ListAllUsers;
 using Microsoft.AspNetCore.Authorization;
+using Dfe.Complete.Application.Users.Commands;
 
 namespace Dfe.Complete.Api.Controllers
 {
@@ -15,6 +16,24 @@ namespace Dfe.Complete.Api.Controllers
     [Route("v{version:apiVersion}/[controller]")]
     public class UsersController(ISender sender) : ControllerBase
     {
+        /// <summary>
+        /// Creates a new user.
+        /// </summary>
+        /// <param name="request">The request.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        [Authorize(Policy = "CanReadWrite")]
+        [HttpPost]
+        // [Route("User")]
+        [SwaggerResponse(201, "User created successfully.", typeof(Guid))]
+        [SwaggerResponse(400, "Invalid request data.")]
+        public async Task<IActionResult> CreateUserAsync([FromBody] CreateUserCommand request, CancellationToken cancellationToken)
+        {
+            var result = await sender.Send(request, cancellationToken);
+
+            if ( !result.IsSuccess || result.Value == null)
+                return BadRequest(result.Error);
+            return Created("", result.Value!.Value);
+        }
 
         /// <summary>
         /// Gets a User with their assigned projects
