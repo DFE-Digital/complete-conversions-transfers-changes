@@ -1,15 +1,17 @@
 using Dfe.Complete.Constants;
 using Dfe.Complete.Domain.Enums;
+using Dfe.Complete.Domain.ValueObjects;
 using Dfe.Complete.Extensions;
 using Dfe.Complete.Models;
 using Dfe.Complete.Services.Project;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Dfe.Complete.Application.Projects.Commands.UpdateProject;
 
 namespace Dfe.Complete.Pages.Projects.Completion;
 
-    public class CompleteProjectModel(IProjectService projectService, ISender sender, ILogger<CompleteProjectModel> logger)
-    : BaseProjectPageModel(sender, logger)
+public class CompleteProjectModel(ISender sender, IProjectService projectService, ILogger<CompleteProjectModel> logger)
+: BaseProjectPageModel(sender, logger)
 {
     private readonly IProjectService projectService = projectService;
 
@@ -29,7 +31,7 @@ namespace Dfe.Complete.Pages.Projects.Completion;
 
         if (Project.Type == ProjectType.Transfer)
         {
-            var transferTaskList = TransferTaskListViewModel.Create(TransferTaskData, Project, KeyContacts);           
+            var transferTaskList = TransferTaskListViewModel.Create(TransferTaskData, Project, KeyContacts);
 
             if (transferTaskList != null)
             {
@@ -37,10 +39,15 @@ namespace Dfe.Complete.Pages.Projects.Completion;
 
                 if (validationResult.IsValid)
                 {
+                    var updateProjectCompletedCommand = new UpdateProjectCompletedCommand(
+                        ProjectId: new ProjectId(Guid.Parse(ProjectId))
+                    );
+
+                    await Sender.Send(updateProjectCompletedCommand);
                     return Redirect(string.Format(RouteConstants.ProjectCompleteConfirmation, ProjectId));
                 }
                 else
-                {                    
+                {
                     TempData.Put("CompleteProjectValidationMessages", validationResult.ValidationErrors);
                     return Redirect(validationErrorUrl);
                 }
@@ -58,13 +65,18 @@ namespace Dfe.Complete.Pages.Projects.Completion;
 
             if (validationResult.IsValid)
             {
+                var updateProjectCompletedCommand = new UpdateProjectCompletedCommand(
+                      ProjectId: new ProjectId(Guid.Parse(ProjectId))
+                  );
+
+                await Sender.Send(updateProjectCompletedCommand);
                 return Redirect(string.Format(RouteConstants.ProjectCompleteConfirmation, ProjectId));
             }
             else
-            {                
-                TempData.Put("CompleteProjectValidationMessages", validationResult.ValidationErrors);                
+            {
+                TempData.Put("CompleteProjectValidationMessages", validationResult.ValidationErrors);
                 return Redirect(validationErrorUrl);
-            }            
+            }
         }
     }
 }

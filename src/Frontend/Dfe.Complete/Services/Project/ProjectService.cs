@@ -6,60 +6,47 @@ namespace Dfe.Complete.Services.Project;
 
 public class ProjectService : IProjectService
 {
-    public TransferCompletionValidationResultModel GetTransferProjectCompletionResult(DateOnly? SignificantDate, TransferTaskListViewModel taskList)
+    public TransferCompletionModel GetTransferProjectCompletionResult(DateOnly? SignificantDate, TransferTaskListViewModel taskList)
     {
-        TransferCompletionValidationResultModel validationResult = new();
+        TransferCompletionModel transferCompletionModel = new();
+        transferCompletionModel.ConversionOrTransferDate = SignificantDate;        
+        transferCompletionModel.ConfirmThisTransferHasAuthorityToProceed = taskList.ConfirmThisTransferHasAuthorityToProceed;
+        transferCompletionModel.ConfirmDateAcademyTransferred = taskList.ConfirmDateAcademyTransferred;
+        transferCompletionModel.DeclarationOfExpenditureCertificate = taskList.DeclarationOfExpenditureCertificate;          
 
-        // check date is in the past
-        if (SignificantDate.HasValue && SignificantDate < DateOnly.FromDateTime(DateTime.Now))
-        {
-            validationResult.DateConfirmedAndInThePast = true;
-        }
+        if(!transferCompletionModel.DateConfirmedAndInThePast)
+            transferCompletionModel.ValidationErrors.Add(ValidationConstants.TransferDateInPast);
 
-        // check all below tasks completed
-        validationResult.AuthorityToProceedCompleteTaskCompleted = taskList.ConfirmThisTransferHasAuthorityToProceed == TaskListStatus.Completed;
-        validationResult.AcademyTransferDateTaskCompleted = taskList.ConfirmDateAcademyTransferred == TaskListStatus.Completed;
-        validationResult.ExpendentureCertificateTaskCompleted = taskList.DeclarationOfExpenditureCertificate == TaskListStatus.Completed;          
+        if (!transferCompletionModel.AuthorityToProceedCompleteTaskCompleted)
+            transferCompletionModel.ValidationErrors.Add(ValidationConstants.AuthorityToProceedComplete);
 
-        if(!validationResult.DateConfirmedAndInThePast)         
-            validationResult.ValidationErrors.Add(ValidationConstants.TransferDateInPast);
+        if (!transferCompletionModel.ExpendentureCertificateTaskCompleted)
+            transferCompletionModel.ValidationErrors.Add(ValidationConstants.ExpenditureCertificateComplete);
 
-        if (!validationResult.AuthorityToProceedCompleteTaskCompleted)
-            validationResult.ValidationErrors.Add(ValidationConstants.AuthorityToProceedComplete);
+        if (!transferCompletionModel.AcademyTransferDateTaskCompleted)
+            transferCompletionModel.ValidationErrors.Add(ValidationConstants.AcademyTransferDateComplete);
 
-        if (!validationResult.ExpendentureCertificateTaskCompleted)
-            validationResult.ValidationErrors.Add(ValidationConstants.ExpenditureCertificateComplete);
-
-        if (!validationResult.AcademyTransferDateTaskCompleted)
-            validationResult.ValidationErrors.Add(ValidationConstants.AcademyTransferDateComplete);
-
-        return validationResult;
+        return transferCompletionModel;
     }
 
-    public ConversionCompletionValidationResultModel GetConversionProjectCompletionResult(DateOnly? SignificantDate, ConversionTaskListViewModel taskList)
+    public ConversionCompletionModel GetConversionProjectCompletionResult(DateOnly? SignificantDate, ConversionTaskListViewModel taskList)
     {
-        ConversionCompletionValidationResultModel validationResult = new();
+        ConversionCompletionModel conversionCompletionModel = new();
+        conversionCompletionModel.ConversionOrTransferDate = SignificantDate;
+        
+        conversionCompletionModel.ConfirmAllConditionsHaveBeenMet = taskList.ConfirmAllConditionsHaveBeenMet;
+        conversionCompletionModel.ConfirmDateAcademyOpened = taskList.ConfirmDateAcademyOpened;
 
-        // check date is in the past
-        if (SignificantDate.HasValue && SignificantDate < DateOnly.FromDateTime(DateTime.Now))
-        {
-            validationResult.DateConfirmedAndInThePast = true;
-        }
+        if (!conversionCompletionModel.DateConfirmedAndInThePast)
+            conversionCompletionModel.ValidationErrors.Add(ValidationConstants.ConversionDateInPast);
 
-        // check all below tasks completed
-        validationResult.AllConditionsMetTaskCompleted = taskList.ConfirmAllConditionsHaveBeenMet == TaskListStatus.Completed;
-        validationResult.AcademyOpenedDateTaskCompleted = taskList.ConfirmDateAcademyOpened == TaskListStatus.Completed;
+        if (!conversionCompletionModel.AllConditionsMetTaskCompleted)
+            conversionCompletionModel.ValidationErrors.Add(ValidationConstants.AllConditionsMetComplete);
 
-        if (!validationResult.DateConfirmedAndInThePast)
-            validationResult.ValidationErrors.Add(ValidationConstants.ConversionDateInPast);
+        if (!conversionCompletionModel.AcademyOpenedDateTaskCompleted)
+            conversionCompletionModel.ValidationErrors.Add(ValidationConstants.AcademyOpenedDateComplete);
 
-        if (!validationResult.AllConditionsMetTaskCompleted)
-            validationResult.ValidationErrors.Add(ValidationConstants.AllConditionsMetComplete);
-
-        if (!validationResult.AcademyOpenedDateTaskCompleted)
-            validationResult.ValidationErrors.Add(ValidationConstants.AcademyOpenedDateComplete);
-
-        return validationResult;
+        return conversionCompletionModel;
     }
 
 }
