@@ -8,6 +8,7 @@ using Dfe.Complete.Services;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel;
 namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.DeclarationOfExpenditureCertificateTask
 {
     public class DeclarationOfExpenditureCertificateTaskModel(ISender sender, IAuthorizationService authorizationService, ILogger<DeclarationOfExpenditureCertificateTaskModel> logger, ErrorService errorService)
@@ -22,6 +23,7 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.DeclarationOfExpenditureCer
         public bool? CheckCertificate { get; set; }
 
         [BindProperty(Name = "received-date")]
+        [DisplayName("Received date")]
         public DateOnly? ReceivedDate { get; set; }
 
         [BindProperty]
@@ -54,7 +56,7 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.DeclarationOfExpenditureCer
         {
             if (!NotApplicable.HasValue && ReceivedDate.HasValue && !(ReceivedDate?.ToDateTime(new TimeOnly()) < DateTime.Today))
             {
-                ModelState.AddModelError("received-date", string.Format(ValidationConstants.DateInPast, nameof(ReceivedDate)));
+                ModelState.AddModelError("received-date", string.Format(ValidationConstants.DateInPast, "Received date"));
             }
 
             if (!ModelState.IsValid)
