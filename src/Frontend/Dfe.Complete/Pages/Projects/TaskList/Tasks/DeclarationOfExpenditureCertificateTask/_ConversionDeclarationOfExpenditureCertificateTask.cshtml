@@ -31,7 +31,7 @@
             <govuk-checkboxes-fieldset>
                 <govuk-checkboxes-fieldset-legend>
                 </govuk-checkboxes-fieldset-legend>
-                <govuk-checkboxes-item id="not-applicable" asp-for="@Model.NotApplicable" value="true" name="not-applicable" checked="@Model.NotApplicable">
+                <govuk-checkboxes-item data-cy="not-applicable" id="not-applicable" asp-for="@Model.NotApplicable" value="true" name="not-applicable" checked="@Model.NotApplicable">
                     <b>Not applicable</b>
                     <govuk-checkboxes-item-hint>
                         <p>No grant was received</p>
@@ -41,7 +41,7 @@
         </govuk-checkboxes> 
         @if (Model.ReceivedDate == null)
         {
-            <govuk-date-input id="received-date" name-prefix="received-date" asp-for="@Model.ReceivedDate">
+            <govuk-date-input data-cy="received-date" id="received-date" name-prefix="received-date" asp-for="@Model.ReceivedDate">
                 <govuk-date-input-fieldset>
                     <govuk-date-input-fieldset-legend class="govuk-fieldset__legend--s">
                         Enter the date you received the declaration of expenditure certificate 
@@ -66,7 +66,7 @@
             <govuk-checkboxes-fieldset>
                 <govuk-checkboxes-fieldset-legend>
                 </govuk-checkboxes-fieldset-legend>
-                <govuk-checkboxes-item id="check-certificate" asp-for="@Model.CheckCertificate" value="true" name="check-certificate" checked="@Model.CheckCertificate">
+                <govuk-checkboxes-item data-cy="check-certificate" id="check-certificate" asp-for="@Model.CheckCertificate" value="true" name="check-certificate" checked="@Model.CheckCertificate">
                     <b>Check the declaration of expenditure certificate is correct</b>
                     <govuk-checkboxes-item-hint>
                         <p>Once they have sent it to you, check they've used the right template and there is no missing information.</p>
@@ -79,7 +79,7 @@
                         </govuk-details>
                     </govuk-checkboxes-item-hint>
                 </govuk-checkboxes-item>
-                <govuk-checkboxes-item id="saved" asp-for="@Model.Saved" value="true" name="saved" checked="@Model.Saved">
+                <govuk-checkboxes-item data-cy="saved" id="saved" asp-for="@Model.Saved" value="true" name="saved" checked="@Model.Saved">
                     <b>Save the declaration of expenditure certificate in the academy's SharePoint folder</b>
                 </govuk-checkboxes-item> 
             </govuk-checkboxes-fieldset>

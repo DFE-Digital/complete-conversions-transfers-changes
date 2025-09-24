@@ -14,7 +14,7 @@
 @section TaskSection {  
     <form method="post">
         <input type="hidden" asp-for="TasksDataId" />
-        <govuk-date-input id="@openedDate" name-prefix="@openedDate" asp-for="@Model.OpenedDate">
+        <govuk-date-input data-cy="@openedDate" id="@openedDate" name-prefix="@openedDate" asp-for="@Model.OpenedDate">
             <govuk-date-input-fieldset>
                 <govuk-date-input-fieldset-legend class="govuk-fieldset__legend--s">
                     Enter the date you received the declaration of expenditure certificate
