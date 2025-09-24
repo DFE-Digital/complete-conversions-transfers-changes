@@ -112,11 +112,11 @@ public class CreateHandoverConversionProjectCommandHandler(
 
             return project.Id;
         }
-        catch (Exception ex)
+        catch (Exception ex) when (ex is not NotFoundException && ex is not ValidationException)
         {
             await unitOfWork.RollBackAsync();
             logger.LogError(ex, "Exception while creating handover conversion project for URN: {Urn}", request.Urn);
-            throw new ApplicationException($"An error occurred while creating the handover conversion project for URN: {request.Urn}", ex);
+            throw new UnknownException($"An error occurred while creating the handover conversion project for URN: {request.Urn}", ex);
         }
     }
 
