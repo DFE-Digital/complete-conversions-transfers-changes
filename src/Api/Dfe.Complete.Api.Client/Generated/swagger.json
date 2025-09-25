@@ -2562,6 +2562,39 @@
         }
       }
     },
+    "/v1/TasksData/TaskData/ConfirmDateAcademyTransferred": {
+      "patch": {
+        "tags": [
+          "TasksData"
+        ],
+        "summary": "Confirm the date the academy transferred task updated successfully.",
+        "operationId": "TasksData_UpdateConfirmDateAcademyTransferredTask",
+        "requestBody": {
+          "x-name": "request",
+          "description": "The update command.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateConfirmDateAcademyTransferredTaskCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "204": {
+            "description": "Confirm the date the academy transferred task updated successfully."
+          },
+          "400": {
+            "description": "Invalid request data."
+          },
+          "404": {
+            "description": "Project/User not found."
+          }
+        }
+      }
+    },
     "/v1/TasksData/TaskData/ConfirmAllConditionsMet": {
       "patch": {
         "tags": [
@@ -4902,6 +4935,8 @@
           "ConfirmProposedCapacityOfTheAcademy",
           "DeclarationOfExpenditureCertificate",
           "ConfirmTransferHasAuthorityToProceed",
+          "ConfirmDateAcademyTransferred"
+          "ConfirmTransferHasAuthorityToProceed",
           "ConfirmAllConditionsMet",
           "ReceiveGrantPaymentCertificate"
         ],
@@ -4917,6 +4952,8 @@
           "RedactAndSendDocuments",
           "ConfirmProposedCapacityOfTheAcademy",
           "DeclarationOfExpenditureCertificate",
+          "ConfirmTransferHasAuthorityToProceed",
+          "ConfirmDateAcademyTransferred"
           "ConfirmTransferHasAuthorityToProceed",
           "ConfirmAllConditionsMet",
           "ReceiveGrantPaymentCertificate"
@@ -6958,6 +6995,20 @@
           },
           "confirmToProceed": {
             "type": "boolean",
+            "nullable": true
+          }
+        }
+      },
+      "UpdateConfirmDateAcademyTransferredTaskCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "taskDataId": {
+            "$ref": "#/components/schemas/TaskDataId"
+          },
+          "dateAcademyTransferred": {
+            "type": "string",
+            "format": "date",
             "nullable": true
           }
         }
