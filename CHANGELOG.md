@@ -36,6 +36,7 @@ See the [full commit history](https://github.com/DFE-Digital/complete-conversion
 - ProjectGroup is created when a project is edited with a new GRN
 - Added Add, Edit and Delete External Contacts for both conversion and transfer projects.
 - Added `Confirm this transfer has authority to proceed` task
+- Added new prepare to complete end point for adding conversion projects
 
 ### Changed
 - Group reference number links to the group on "About the project"
