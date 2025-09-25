@@ -17,7 +17,7 @@ public class ProjectService : IProjectService
         if(!transferCompletionModel.DateConfirmedAndInThePast)
             transferCompletionModel.ValidationErrors.Add(ValidationConstants.TransferDateInPast);
 
-        if (!transferCompletionModel.AuthorityToProceedCompleteTaskCompleted)
+        if (!transferCompletionModel.AuthorityToProceedTaskCompleted)
             transferCompletionModel.ValidationErrors.Add(ValidationConstants.AuthorityToProceedComplete);
 
         if (!transferCompletionModel.ExpendentureCertificateTaskCompleted)

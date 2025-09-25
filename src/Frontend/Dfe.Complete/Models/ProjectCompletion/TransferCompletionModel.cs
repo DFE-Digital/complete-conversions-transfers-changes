@@ -2,7 +2,7 @@
 
 public class TransferCompletionModel : CompletionModel
 {   
-    public bool AuthorityToProceedCompleteTaskCompleted => ConfirmThisTransferHasAuthorityToProceed == TaskListStatus.Completed;
+    public bool AuthorityToProceedTaskCompleted => ConfirmThisTransferHasAuthorityToProceed == TaskListStatus.Completed;
     public bool ExpendentureCertificateTaskCompleted => DeclarationOfExpenditureCertificate == TaskListStatus.Completed;
     public bool AcademyTransferDateTaskCompleted => ConfirmDateAcademyTransferred == TaskListStatus.Completed;
 
@@ -12,7 +12,7 @@ public class TransferCompletionModel : CompletionModel
 
     public bool IsValid => 
     DateConfirmedAndInThePast &&
-    AuthorityToProceedCompleteTaskCompleted &&
+    AuthorityToProceedTaskCompleted &&
     ExpendentureCertificateTaskCompleted &&
     AcademyTransferDateTaskCompleted;
 }
