@@ -19,14 +19,16 @@ namespace Dfe.Complete.Extensions
 
         public static T? Get<T>(this ITempDataDictionary tempData, string key) where T : class
         {
-            object o;
-            tempData.TryGetValue(key, out o);
-            return o == null ? null : JsonConvert.DeserializeObject<T>((string)o);
+            if (tempData.TryGetValue(key, out var value) && value is string json)
+            {
+                return JsonConvert.DeserializeObject<T>(json);
+            }
+
+            return null;
         }
         public static T? Peek<T>(this ITempDataDictionary tempData, string key) where T : class
         {
-            object o = tempData.Peek(key);
-            return o == null ? null : JsonConvert.DeserializeObject<T>((string)o);
+            return tempData.Peek(key) is not string json ? null : JsonConvert.DeserializeObject<T>(json);
         }
     }
 }

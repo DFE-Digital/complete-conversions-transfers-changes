@@ -27,7 +27,7 @@ public class UpdateProjectCompletedCommandHandler(
 
         project!.CompletedAt = DateTime.UtcNow;
         project!.State = ProjectState.Completed;
-        var success = await projectRepository.UpdateAsync(project, cancellationToken);
+        await projectRepository.UpdateAsync(project, cancellationToken);
         return Result<bool>.Success(true);
     }
 }
