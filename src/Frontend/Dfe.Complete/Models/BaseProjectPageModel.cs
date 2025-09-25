@@ -29,7 +29,7 @@ public abstract class BaseProjectPageModel(ISender sender, ILogger logger) : Pag
 
     public ProjectDto Project { get; set; }
 
-    public DaoRevocationDto DaoRevocation { get; set; }
+    public DaoRevocationDto? DaoRevocation { get; set; }
 
     public EstablishmentDto Establishment { get; set; }
 
