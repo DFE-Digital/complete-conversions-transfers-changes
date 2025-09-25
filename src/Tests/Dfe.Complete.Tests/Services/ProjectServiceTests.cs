@@ -22,19 +22,16 @@ namespace Dfe.Complete.Tests.Services
                 ConfirmThisTransferHasAuthorityToProceed = taskListStatus,
                 ConfirmDateAcademyTransferred = taskListStatus,
                 DeclarationOfExpenditureCertificate = taskListStatus
-            };
-            
+            };            
              
             // Act
-            var result = projectServiceMock.GetTransferProjectCompletionResult(NextMonthDate, taskList);
+            var result = projectServiceMock.GetTransferProjectCompletionValidationResult(NextMonthDate, taskList);
 
-            // Assert
-            var validationErrors = result.ValidationErrors;
-            Assert.False(result.IsValid);
-            Assert.Contains(ValidationConstants.TransferDateInPast, validationErrors);
-            Assert.Contains(ValidationConstants.AcademyTransferDateComplete, validationErrors);
-            Assert.Contains(ValidationConstants.AuthorityToProceedComplete, validationErrors);
-            Assert.Contains(ValidationConstants.ExpenditureCertificateComplete, validationErrors);
+            // Assert            
+            Assert.Contains(ValidationConstants.TransferDateInPast, result);
+            Assert.Contains(ValidationConstants.AcademyTransferDateComplete, result);
+            Assert.Contains(ValidationConstants.AuthorityToProceedComplete, result);
+            Assert.Contains(ValidationConstants.ExpenditureCertificateComplete, result);
         }
 
         [Theory]
@@ -49,17 +46,14 @@ namespace Dfe.Complete.Tests.Services
                 DeclarationOfExpenditureCertificate = taskListStatus
             };
 
-
             // Act
-            var result = projectServiceMock.GetTransferProjectCompletionResult(LastMonthDate, taskList);
+            var result = projectServiceMock.GetTransferProjectCompletionValidationResult(LastMonthDate, taskList);
 
-            // Assert
-            var validationErrors = result.ValidationErrors;
-            Assert.True(result.IsValid);            
-            Assert.DoesNotContain(ValidationConstants.TransferDateInPast, validationErrors);
-            Assert.DoesNotContain(ValidationConstants.AcademyTransferDateComplete, validationErrors);
-            Assert.DoesNotContain(ValidationConstants.AuthorityToProceedComplete, validationErrors);
-            Assert.DoesNotContain(ValidationConstants.ExpenditureCertificateComplete, validationErrors);
+            // Assert                    
+            Assert.DoesNotContain(ValidationConstants.TransferDateInPast, result);
+            Assert.DoesNotContain(ValidationConstants.AcademyTransferDateComplete, result);
+            Assert.DoesNotContain(ValidationConstants.AuthorityToProceedComplete, result);
+            Assert.DoesNotContain(ValidationConstants.ExpenditureCertificateComplete, result);
         }
 
         [Theory]
@@ -75,16 +69,13 @@ namespace Dfe.Complete.Tests.Services
                 ConfirmDateAcademyOpened = taskListStatus,                
             };
 
-
             // Act
-            var result = projectServiceMock.GetConversionProjectCompletionResult(NextMonthDate, taskList);
+            var result = projectServiceMock.GetConversionProjectCompletionValidationResult(NextMonthDate, taskList);
 
-            // Assert
-            var validationErrors = result.ValidationErrors;
-            Assert.False(result.IsValid);
-            Assert.Contains(ValidationConstants.ConversionDateInPast, validationErrors);
-            Assert.Contains(ValidationConstants.AllConditionsMetComplete, validationErrors);
-            Assert.Contains(ValidationConstants.AcademyOpenedDateComplete, validationErrors);            
+            // Assert           
+            Assert.Contains(ValidationConstants.ConversionDateInPast, result);
+            Assert.Contains(ValidationConstants.AllConditionsMetComplete, result);
+            Assert.Contains(ValidationConstants.AcademyOpenedDateComplete, result);            
         }
 
         [Theory]
@@ -98,16 +89,13 @@ namespace Dfe.Complete.Tests.Services
                 ConfirmDateAcademyOpened = taskListStatus,
             };
 
-
             // Act
-            var result = projectServiceMock.GetConversionProjectCompletionResult(LastMonthDate, taskList);
+            var result = projectServiceMock.GetConversionProjectCompletionValidationResult(LastMonthDate, taskList);
 
-            // Assert
-            var validationErrors = result.ValidationErrors;
-            Assert.True(result.IsValid);
-            Assert.DoesNotContain(ValidationConstants.ConversionDateInPast, validationErrors);
-            Assert.DoesNotContain(ValidationConstants.AllConditionsMetComplete, validationErrors);
-            Assert.DoesNotContain(ValidationConstants.AcademyOpenedDateComplete, validationErrors);            
+            // Assert            
+            Assert.DoesNotContain(ValidationConstants.ConversionDateInPast, result);
+            Assert.DoesNotContain(ValidationConstants.AllConditionsMetComplete, result);
+            Assert.DoesNotContain(ValidationConstants.AcademyOpenedDateComplete, result);            
         }
     }
 }

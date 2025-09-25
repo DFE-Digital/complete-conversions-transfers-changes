@@ -9,22 +9,20 @@
 {
     <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
-            <div class="govuk-notification-banner" role="alert" aria-labelledby="govuk-notification-banner-title" data-module="govuk-notification-banner">
-                <div class="govuk-notification-banner__header">
-                    <h2 class="govuk-notification-banner__title" id="govuk-notification-banner-title">
-                        Important
-                    </h2>
-                </div>
-                <div class="govuk-notification-banner__content">
-                    <p>This project cannot be completed until:</p>
-                    <ul>
-                        @foreach (var message in validationMessages)
-                        {
-                            <li>@message</li>
-                        }
-                    </ul>
-                </div>
-            </div>
+            <govuk-notification-banner class="govuk-notification-banner">
+                <govuk-notification-banner-title>
+                    Important
+                </govuk-notification-banner-title>
+
+                <p>This project cannot be completed until:</p>
+                <ul>
+                    @foreach (var message in validationMessages)
+                    {
+                        <li>@message</li>
+                    }
+                </ul>
+
+            </govuk-notification-banner>
         </div>
     </div>
 }

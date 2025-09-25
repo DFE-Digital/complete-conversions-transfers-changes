@@ -15,10 +15,10 @@ namespace Dfe.Complete.Tests.Models
         }       
 
         [Theory]
-        [InlineData(TaskListStatus.InProgress, TaskListStatus.InProgress, TaskListStatus.InProgress, false)]
-        [InlineData(TaskListStatus.NotStarted, TaskListStatus.NotStarted, TaskListStatus.NotStarted, false)]
-        [InlineData(TaskListStatus.NotApplicable, TaskListStatus.NotApplicable, TaskListStatus.NotApplicable, false)]
-        [InlineData(TaskListStatus.Completed, TaskListStatus.Completed, TaskListStatus.Completed, true)]
+        [InlineData(TaskListStatus.InProgress, TaskListStatus.InProgress, TaskListStatus.InProgress, true)]
+        [InlineData(TaskListStatus.NotStarted, TaskListStatus.NotStarted, TaskListStatus.NotStarted, true)]
+        [InlineData(TaskListStatus.NotApplicable, TaskListStatus.NotApplicable, TaskListStatus.NotApplicable, true)]
+        [InlineData(TaskListStatus.Completed, TaskListStatus.Completed, TaskListStatus.Completed, false)]
         public void Is_InValid_When_TasksConditionNotMet(TaskListStatus confirmThisTransferHasAuthorityToProceed, TaskListStatus confirmDateAcademyTransferred, TaskListStatus declarationOfExpenditureCertificate, bool expected)
         {
             // Arrange            
@@ -27,8 +27,11 @@ namespace Dfe.Complete.Tests.Models
             _testClass.ConfirmDateAcademyTransferred = confirmDateAcademyTransferred;
             _testClass.DeclarationOfExpenditureCertificate = declarationOfExpenditureCertificate;
 
+            // Act
+            var result = _testClass.Validate();
+
             // Assert
-            Assert.Equal(expected, _testClass.IsValid);
+            Assert.Equal(expected, result.Any());
         }
 
         [Fact]
@@ -40,10 +43,13 @@ namespace Dfe.Complete.Tests.Models
             _testClass.ConversionOrTransferDate = NextMonthDate;
             _testClass.ConfirmThisTransferHasAuthorityToProceed = statusCompleted;
             _testClass.ConfirmDateAcademyTransferred = statusCompleted;
-            _testClass.DeclarationOfExpenditureCertificate = statusCompleted;           
+            _testClass.DeclarationOfExpenditureCertificate = statusCompleted;
+
+            // Act
+            var result = _testClass.Validate();
 
             // Assert
-            Assert.False(_testClass.IsValid);
+            Assert.NotEmpty(result);
         }
 
         [Fact]
@@ -55,10 +61,13 @@ namespace Dfe.Complete.Tests.Models
             _testClass.ConversionOrTransferDate = PreviousMonthDate;
             _testClass.ConfirmThisTransferHasAuthorityToProceed = statusCompleted;
             _testClass.ConfirmDateAcademyTransferred = statusCompleted;
-            _testClass.DeclarationOfExpenditureCertificate = statusCompleted;           
+            _testClass.DeclarationOfExpenditureCertificate = statusCompleted;
+
+            // Act
+            var result = _testClass.Validate();
 
             // Assert
-            Assert.True(_testClass.IsValid);
+            Assert.Empty(result);
         }
     }
 }

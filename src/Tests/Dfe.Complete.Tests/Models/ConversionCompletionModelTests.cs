@@ -15,10 +15,10 @@ namespace Dfe.Complete.Tests.Models
         }
 
         [Theory]
-        [InlineData(TaskListStatus.InProgress, TaskListStatus.InProgress, false)]
-        [InlineData(TaskListStatus.NotStarted, TaskListStatus.NotStarted, false)]
-        [InlineData(TaskListStatus.NotApplicable, TaskListStatus.NotApplicable, false)]        
-        [InlineData(TaskListStatus.Completed, TaskListStatus.Completed, true)]       
+        [InlineData(TaskListStatus.InProgress, TaskListStatus.InProgress, true)]
+        [InlineData(TaskListStatus.NotStarted, TaskListStatus.NotStarted, true)]
+        [InlineData(TaskListStatus.NotApplicable, TaskListStatus.NotApplicable, true)]        
+        [InlineData(TaskListStatus.Completed, TaskListStatus.Completed, false)]       
         public void Is_InValid_When_TasksConditionNotMet(TaskListStatus academyOpenedDateTaskStatus, TaskListStatus allConditionsMetTaskStatus, bool expected)
         {
             // Arrange            
@@ -26,8 +26,11 @@ namespace Dfe.Complete.Tests.Models
             _testClass.ConfirmDateAcademyOpened = academyOpenedDateTaskStatus;
             _testClass.ConfirmAllConditionsHaveBeenMet = allConditionsMetTaskStatus;
 
+            // Act
+            var result = _testClass.Validate();
+
             // Assert
-            Assert.Equal(expected, _testClass.IsValid);
+            Assert.Equal(expected, result.Any());
         }
 
         [Fact]        
@@ -39,8 +42,11 @@ namespace Dfe.Complete.Tests.Models
             _testClass.ConfirmDateAcademyOpened = statusCompleted;
             _testClass.ConfirmAllConditionsHaveBeenMet = statusCompleted;
 
+            // Act
+            var result = _testClass.Validate();
+
             // Assert
-            Assert.False(_testClass.IsValid);
+            Assert.NotEmpty(result);
         }
 
         [Fact]
@@ -52,8 +58,11 @@ namespace Dfe.Complete.Tests.Models
             _testClass.ConfirmDateAcademyOpened = statusCompleted;
             _testClass.ConfirmAllConditionsHaveBeenMet = statusCompleted;
 
+            // Act
+            var result = _testClass.Validate();
+
             // Assert
-            Assert.True(_testClass.IsValid);
+            Assert.Empty(result);
         }
     }
 }

@@ -1,3 +1,4 @@
+using Dfe.Complete.Application.Projects.Commands.UpdateProject;
 using Dfe.Complete.Constants;
 using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Domain.ValueObjects;
@@ -6,7 +7,6 @@ using Dfe.Complete.Models;
 using Dfe.Complete.Services.Project;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using Dfe.Complete.Application.Projects.Commands.UpdateProject;
 
 namespace Dfe.Complete.Pages.Projects.Completion;
 
@@ -30,54 +30,73 @@ public class CompleteProjectModel(ISender sender, IProjectService projectService
         var validationErrorUrl = string.Format(RouteConstants.ProjectTaskList, ProjectId) + "?projectCompletionValidation=true";
 
         if (Project.Type == ProjectType.Transfer)
-        {
-            var transferTaskList = TransferTaskListViewModel.Create(TransferTaskData, Project, KeyContacts);
+            return await CompleteTransferProjectAsync();
+       
+        return await CompleteConversionProjectAsync();       
+    }
 
-            if (transferTaskList != null)
-            {
-                var validationResult = projectService.GetTransferProjectCompletionResult(Project.SignificantDate, transferTaskList);
+    private async Task<IActionResult> CompleteTransferProjectAsync()
+    {
+        var taskList = TransferTaskListViewModel.Create(TransferTaskData, Project, KeyContacts);
 
-                if (validationResult.IsValid)
-                {
-                    var updateProjectCompletedCommand = new UpdateProjectCompletedCommand(
-                        ProjectId: new ProjectId(Guid.Parse(ProjectId))
-                    );
-
-                    await Sender.Send(updateProjectCompletedCommand);
-                    return Redirect(string.Format(RouteConstants.ProjectCompleteConfirmation, ProjectId));
-                }
-                else
-                {
-                    TempData.Put("CompleteProjectValidationMessages", validationResult.ValidationErrors);
-                    return Redirect(validationErrorUrl);
-                }
-
-            }
-
-            return Redirect(string.Format(RouteConstants.ProjectTaskList, ProjectId));
-
+        if (taskList == null)
+        {   
+            return RedirectToProjectTaskList();
         }
-        else
+
+        var validationResult = projectService.GetTransferProjectCompletionValidationResult(Project.SignificantDate, taskList);
+        return await HandleProjectCompletionAsync(validationResult);
+    }   
+
+    private async Task<IActionResult> CompleteConversionProjectAsync()
+    {
+        var taskList = ConversionTaskListViewModel.Create(ConversionTaskData, Project, KeyContacts);
+        var validationResult = projectService.GetConversionProjectCompletionValidationResult(Project.SignificantDate, taskList);
+
+        return await HandleProjectCompletionAsync(validationResult);
+    }
+
+    private async Task<IActionResult> HandleProjectCompletionAsync(List<string> validationErrors)
+    {
+        if (validationErrors.Any())
         {
-            var conversionTaskList = ConversionTaskListViewModel.Create(ConversionTaskData, Project, KeyContacts);
-
-            var validationResult = projectService.GetConversionProjectCompletionResult(Project.SignificantDate, conversionTaskList);
-
-            if (validationResult.IsValid)
-            {
-                var updateProjectCompletedCommand = new UpdateProjectCompletedCommand(
-                      ProjectId: new ProjectId(Guid.Parse(ProjectId))
-                  );
-
-                await Sender.Send(updateProjectCompletedCommand);
-                return Redirect(string.Format(RouteConstants.ProjectCompleteConfirmation, ProjectId));
-            }
-            else
-            {
-                TempData.Put("CompleteProjectValidationMessages", validationResult.ValidationErrors);
-                return Redirect(validationErrorUrl);
-            }
+            StoreValidationErrors(validationErrors);
+            return RedirectToProjectTaskListWithValidation();
         }
+
+        await MarkProjectAsCompletedAsync();
+        return RedirectToProjectCompletePage();        
+    }
+
+    private async Task MarkProjectAsCompletedAsync()
+    {
+        var command = new UpdateProjectCompletedCommand(
+            ProjectId: new ProjectId(Guid.Parse(ProjectId))
+        );
+
+        await Sender.Send(command);
+    }
+
+    private void StoreValidationErrors(List<string> validationErrors)
+    {
+        TempData.Put("CompleteProjectValidationMessages", validationErrors);
+    }
+
+    private IActionResult RedirectToProjectTaskList()
+    {
+        var url = string.Format(RouteConstants.ProjectTaskList, ProjectId);
+        return Redirect(url);
+    }
+    
+    private IActionResult RedirectToProjectTaskListWithValidation()
+    {
+        var url = string.Format(RouteConstants.ProjectTaskList, ProjectId) + "?projectCompletionValidation=true";
+        return Redirect(url);
+    }
+    private IActionResult RedirectToProjectCompletePage()
+    {
+        var url = string.Format(RouteConstants.ProjectComplete, ProjectId);
+        return Redirect(url);
     }
 }
 

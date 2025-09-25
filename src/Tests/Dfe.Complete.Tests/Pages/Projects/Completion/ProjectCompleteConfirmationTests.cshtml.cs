@@ -11,7 +11,6 @@ using Dfe.Complete.Application.Projects.Queries.GetProject;
 using Dfe.Complete.Application.Projects.Queries.GetTransferTasksData;
 using Dfe.Complete.Domain.ValueObjects;
 using Dfe.Complete.Models;
-using Dfe.Complete.Models.ProjectCompletion;
 using Dfe.Complete.Pages.Projects.Completion;
 using Dfe.Complete.Services.Project;
 using Dfe.Complete.Tests.Common.Customizations.Behaviours;
@@ -68,13 +67,8 @@ public class CompleteProjectModelTests
         sender.Send(Arg.Any<GetKeyContactsForProjectQuery>(), Arg.Any<CancellationToken>())
            .Returns(Result<KeyContactDto>.Success(fixture.Create<KeyContactDto>()));
 
-        projectService.GetTransferProjectCompletionResult(Arg.Any<DateOnly?>(), Arg.Any<TransferTaskListViewModel>())
-            .Returns(new TransferCompletionModel {
-                ConfirmThisTransferHasAuthorityToProceed = TaskListStatus.Completed,
-                DeclarationOfExpenditureCertificate = TaskListStatus.Completed,
-                ConfirmDateAcademyTransferred = TaskListStatus.Completed,
-                ConversionOrTransferDate = projectDto.SignificantDate,
-            });     
+        projectService.GetTransferProjectCompletionValidationResult(Arg.Any<DateOnly?>(), Arg.Any<TransferTaskListViewModel>())
+            .Returns(new List<string>());     
 
         // Act
         var result = await testClass.OnPostAsync();
@@ -121,13 +115,8 @@ public class CompleteProjectModelTests
         sender.Send(Arg.Any<GetKeyContactsForProjectQuery>(), Arg.Any<CancellationToken>())
            .Returns(Result<KeyContactDto>.Success(fixture.Create<KeyContactDto>()));
 
-        projectService.GetConversionProjectCompletionResult(Arg.Any<DateOnly?>(), Arg.Any<ConversionTaskListViewModel>())
-            .Returns(new ConversionCompletionModel
-            {
-                ConfirmAllConditionsHaveBeenMet = TaskListStatus.Completed,
-                ConfirmDateAcademyOpened = TaskListStatus.Completed,                
-                ConversionOrTransferDate = projectDto.SignificantDate,
-            });       
+        projectService.GetConversionProjectCompletionValidationResult(Arg.Any<DateOnly?>(), Arg.Any<ConversionTaskListViewModel>())
+            .Returns(new List<string>());       
 
         // Act
         var result = await testClass.OnPostAsync();
@@ -183,14 +172,8 @@ public class CompleteProjectModelTests
         sender.Send(Arg.Any<GetKeyContactsForProjectQuery>(), Arg.Any<CancellationToken>())
            .Returns(Result<KeyContactDto>.Success(fixture.Create<KeyContactDto>()));
 
-        projectService.GetTransferProjectCompletionResult(Arg.Any<DateOnly?>(), Arg.Any<TransferTaskListViewModel>())
-            .Returns(new TransferCompletionModel
-            {
-                ConfirmThisTransferHasAuthorityToProceed = TaskListStatus.NotStarted,
-                DeclarationOfExpenditureCertificate = TaskListStatus.Completed,
-                ConfirmDateAcademyTransferred = TaskListStatus.Completed,
-                ConversionOrTransferDate = projectDto.SignificantDate,
-            });       
+        projectService.GetTransferProjectCompletionValidationResult(Arg.Any<DateOnly?>(), Arg.Any<TransferTaskListViewModel>())
+            .Returns(new List<string> { "validation message" });       
 
         // Act
         var result = await testClass.OnPostAsync();
@@ -249,13 +232,8 @@ public class CompleteProjectModelTests
         sender.Send(Arg.Any<GetKeyContactsForProjectQuery>(), Arg.Any<CancellationToken>())
            .Returns(Result<KeyContactDto>.Success(fixture.Create<KeyContactDto>()));
 
-        projectService.GetConversionProjectCompletionResult(Arg.Any<DateOnly?>(), Arg.Any<ConversionTaskListViewModel>())
-            .Returns(new ConversionCompletionModel
-            {
-                ConfirmAllConditionsHaveBeenMet = TaskListStatus.InProgress,
-                ConfirmDateAcademyOpened = TaskListStatus.Completed,
-                ConversionOrTransferDate = projectDto.SignificantDate,
-            });
+        projectService.GetConversionProjectCompletionValidationResult(Arg.Any<DateOnly?>(), Arg.Any<ConversionTaskListViewModel>())
+            .Returns(new List<string> { "validation message" });
 
         // Act
         var result = await testClass.OnPostAsync();

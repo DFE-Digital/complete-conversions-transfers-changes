@@ -12,7 +12,7 @@ public record UpdateProjectCompletedCommand(
     ProjectId ProjectId    
 ) : IRequest<Result<bool>>;
 
-public class UpdateProjectCompletedCommandHandler(
+internal class UpdateProjectCompletedCommandHandler(
     ICompleteRepository<Project> projectRepository)
     : IRequestHandler<UpdateProjectCompletedCommand, Result<bool>>
 {
