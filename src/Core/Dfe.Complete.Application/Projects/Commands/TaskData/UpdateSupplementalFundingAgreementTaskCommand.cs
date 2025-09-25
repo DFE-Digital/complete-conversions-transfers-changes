@@ -38,7 +38,6 @@ namespace Dfe.Complete.Application.Projects.Commands.TaskData
             return Result<bool>.Success(true);
         }
 
-
         private async Task UpdateConversionTaskDataAsync(TaskDataId taskDataId, UpdateSupplementalFundingAgreementTaskCommand request, CancellationToken cancellationToken)
         {
             var tasksData = await taskDataReadRepository.ConversionTaskData.FirstOrDefaultAsync(p => p.Id == taskDataId, cancellationToken)
@@ -51,7 +50,7 @@ namespace Dfe.Complete.Application.Projects.Commands.TaskData
             tasksData.SupplementalFundingAgreementSigned = request.Signed;
             tasksData.SupplementalFundingAgreementSignedSecretaryState = request.SignedSecretaryState;
 
-            await taskDataWriteRepository.UpdateConversionAsync(tasksData, cancellationToken);
+            await taskDataWriteRepository.UpdateConversionAsync(tasksData, DateTime.Now, cancellationToken);
         }
 
         private async Task UpdateTransferTaskDataAsync(TaskDataId taskDataId, UpdateSupplementalFundingAgreementTaskCommand request, CancellationToken cancellationToken)
@@ -63,7 +62,7 @@ namespace Dfe.Complete.Application.Projects.Commands.TaskData
             tasksData.SupplementalFundingAgreementCleared = request.Cleared;
             tasksData.SupplementalFundingAgreementReceived = request.Received; 
 
-            await taskDataWriteRepository.UpdateTransferAsync(tasksData, cancellationToken);
+            await taskDataWriteRepository.UpdateTransferAsync(tasksData, DateTime.Now, cancellationToken);
         }
     }
 }

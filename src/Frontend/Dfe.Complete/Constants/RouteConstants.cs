@@ -58,9 +58,7 @@
         public const string ProjectInternalContactsEditAssignedUser = ProjectInternalContacts + "/assigned-user/edit";
         public const string ProjectInternalContactsEditAddedByUser = ProjectInternalContacts + "/added-by-user/edit";
         public const string ProjectInternalContactsEditAssignedTeam = ProjectInternalContacts + "/team/edit";
-        public const string ProjectDeleteNote = ProjectViewNotes + "/{1}/delete";
-        public const string ProjectExternalContacts = Project + "/external-contacts";
-        public const string NewProjectExternalContacts = ProjectExternalContacts + "/new";
+        public const string ProjectDeleteNote = ProjectViewNotes + "/{1}/delete";       
 
         public const string ProjectTaskList = Project + "/tasks";
 
@@ -144,6 +142,12 @@
         public const string EditLocalAuthorityDetails = "/service-support/local-authorities/{0}/edit";
         public const string DeleteLocalAuthorityDetails = "/service-support/local-authorities/{0}/delete";
 
-
+        // Project External contacts        
+        public const string ProjectExternalContacts = Project + "/external-contacts";
+        public const string NewProjectExternalContacts = ProjectExternalContacts + "/new";
+        public const string ProjectsExternalContactAdd = NewProjectExternalContacts + "/create-contact/{1}";
+        public const string ProjectsExternalContactAddTypeOther = NewProjectExternalContacts + "/create-other-contact";
+        public const string ProjectsExternalContactDelete = ProjectExternalContacts + "/{1}/delete";
+        public const string ProjectsExternalContactEdit = ProjectExternalContacts + "/{1}/edit";
     }
 }

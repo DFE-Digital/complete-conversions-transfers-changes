@@ -44,7 +44,7 @@ namespace Dfe.Complete.Application.Projects.Commands.TaskData
         {
             var tasksData = await taskDataReadRepository.ConversionTaskData.FirstOrDefaultAsync(p => p.Id == taskDataId, cancellationToken)
                 ?? throw new NotFoundException($"Conversion task data {taskDataId} not found.");
-
+             
             tasksData.ArticlesOfAssociationCleared = request.NotApplicable == true ? null : request.Cleared;
             tasksData.ArticlesOfAssociationNotApplicable = request.NotApplicable;
             tasksData.ArticlesOfAssociationReceived = request.NotApplicable == true ? null : request.Received;
@@ -52,7 +52,7 @@ namespace Dfe.Complete.Application.Projects.Commands.TaskData
             tasksData.ArticlesOfAssociationSigned = request.NotApplicable == true ? null : request.Signed;
             tasksData.ArticlesOfAssociationSaved = request.NotApplicable == true ? null : request.Saved;
 
-            await taskDataWriteRepository.UpdateConversionAsync(tasksData, cancellationToken);
+            await taskDataWriteRepository.UpdateConversionAsync(tasksData, DateTime.UtcNow, cancellationToken);
         }
 
         private async Task UpdateTransferTaskDataAsync(TaskDataId taskDataId, UpdateArticleOfAssociationTaskCommand request, CancellationToken cancellationToken)
@@ -67,7 +67,7 @@ namespace Dfe.Complete.Application.Projects.Commands.TaskData
             tasksData.ArticlesOfAssociationSigned = request.NotApplicable == true ? null : request.Signed;
             tasksData.ArticlesOfAssociationSaved = request.NotApplicable == true ? null : request.Saved;
 
-            await taskDataWriteRepository.UpdateTransferAsync(tasksData, cancellationToken);
+            await taskDataWriteRepository.UpdateTransferAsync(tasksData, DateTime.UtcNow, cancellationToken);
         }
     }
 }

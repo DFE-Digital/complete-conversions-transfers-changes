@@ -35,7 +35,7 @@ namespace Dfe.Complete.Application.Projects.Commands.TaskData
             tasksData.DeedOfNovationAndVariationSignedSecretaryState = request.SignedSecretaryState;
             tasksData.DeedOfNovationAndVariationSaveAfterSign = request.SavedAfterSign;
 
-            await taskDataWriteRepository.UpdateTransferAsync(tasksData, cancellationToken);
+            await taskDataWriteRepository.UpdateTransferAsync(tasksData, DateTime.UtcNow, cancellationToken);
 
             return Result<bool>.Success(true);
         }

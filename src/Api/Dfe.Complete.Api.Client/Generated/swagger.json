@@ -2529,6 +2529,39 @@
         }
       }
     },
+    "/v1/TasksData/TaskData/ConfirmTransferHasAuthorityToProceed": {
+      "patch": {
+        "tags": [
+          "TasksData"
+        ],
+        "summary": "Confirm transfer project has authority to proceed task updated successfully.",
+        "operationId": "TasksData_UpdateConfirmTransferHasAuthorityToProceedTask",
+        "requestBody": {
+          "x-name": "request",
+          "description": "The update command.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateConfirmTransferHasAuthorityToProceedTaskCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "204": {
+            "description": "Confirm transfer project has authority to proceed task updated successfully."
+          },
+          "400": {
+            "description": "Invalid request data."
+          },
+          "404": {
+            "description": "Project/User not found."
+          }
+        }
+      }
+    },
     "/v1/Trust/List/All": {
       "get": {
         "tags": [
@@ -2790,8 +2823,12 @@
                 "nullable": true
               },
               "type": {
-                "type": "string",
-                "nullable": true
+                "nullable": true,
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/ContactType"
+                  }
+                ]
               },
               "localAuthorityId": {
                 "nullable": true,
@@ -2858,6 +2895,20 @@
           "Diocese",
           "Solicitor",
           "OutgoingTrust"
+        ]
+      },
+      "ContactType": {
+        "type": "string",
+        "description": "",
+        "x-enumNames": [
+          "Project",
+          "Establishment",
+          "DirectorOfChildServices"
+        ],
+        "enum": [
+          "Project",
+          "Establishment",
+          "DirectorOfChildServices"
         ]
       },
       "LocalAuthorityId": {
@@ -4816,7 +4867,8 @@
           "DeedOfVariation",
           "RedactAndSendDocuments",
           "ConfirmProposedCapacityOfTheAcademy",
-          "DeclarationOfExpenditureCertificate"
+          "DeclarationOfExpenditureCertificate",
+          "ConfirmTransferHasAuthorityToProceed"
         ],
         "enum": [
           "Handover",
@@ -4829,7 +4881,8 @@
           "DeedOfVariation",
           "RedactAndSendDocuments",
           "ConfirmProposedCapacityOfTheAcademy",
-          "DeclarationOfExpenditureCertificate"
+          "DeclarationOfExpenditureCertificate",
+          "ConfirmTransferHasAuthorityToProceed"
         ]
       },
       "CreateNoteCommand": {
@@ -6846,6 +6899,27 @@
             "nullable": true
           },
           "saved": {
+            "type": "boolean",
+            "nullable": true
+          }
+        }
+      },
+      "UpdateConfirmTransferHasAuthorityToProceedTaskCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "taskDataId": {
+            "$ref": "#/components/schemas/TaskDataId"
+          },
+          "anyInformationChanged": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "baselineSheetApproved": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "confirmToProceed": {
             "type": "boolean",
             "nullable": true
           }
