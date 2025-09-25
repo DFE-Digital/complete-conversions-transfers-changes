@@ -14,7 +14,7 @@ using static System.Runtime.InteropServices.JavaScript.JSType;
 namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.ConfirmAcademyOpenedDateTask
 {
     public class ConfirmAcademyOpenedDateTaskModel(ISender sender, IAuthorizationService authorizationService, ILogger<ConfirmAcademyOpenedDateTaskModel> logger, ErrorService errorService)
-    : BaseProjectTaskModel(sender, authorizationService, logger, NoteTaskIdentifier.ArticleOfAssociation)
+    : BaseProjectTaskModel(sender, authorizationService, logger, NoteTaskIdentifier.ConfirmAcademyOpenedDate)
     {
         [BindProperty(Name = "opened-date")]
         public DateOnly? OpenedDate { get; set; }
