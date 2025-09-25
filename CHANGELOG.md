@@ -34,7 +34,7 @@ See the [full commit history](https://github.com/DFE-Digital/complete-conversion
 ### Added
 - Ability to edit project information for conversions and transfers
 - ProjectGroup is created when a project is edited with a new GRN
-- Added `Add, Edit and Delete External Contacts for both conversion and transfer projects.
+- Added Add, Edit and Delete External Contacts for both conversion and transfer projects.
 - Added `Confirm this transfer has authority to proceed` task
 
 ### Changed
