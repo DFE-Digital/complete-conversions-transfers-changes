@@ -306,14 +306,16 @@
             @if(Model.Project.DirectiveAcademyOrder == true && Model.Project.State != ProjectState.DaoRevoked)
             {
                 <div class="govuk-grid-row" id="revoke_a_directive_academy_order">
-                    <div class="govuk-grid-column-two-thirds">
-                        <h2 class="govuk-heading-m">
-                            Revoke a Directive Academy Order
-                        </h2>
-                        <p class="govuk-body">You can record the decision to revoke a DAO (Directive Academy Order).</p>
-                        <p class="govuk-body">The decision must have been approved by a minister.</p>
-                        <div class="govuk-button-group">
-                            <a class="govuk-button govuk-button--secondary" href="@string.Format(RouteConstants.ProjectDaoRevocation, Model.ProjectId)">Record DAO revocation</a>
+                    <div class="govuk-grid-row">
+                        <div class="govuk-grid-column-two-thirds">
+                            <h2 class="govuk-heading-m">
+                                Revoke a Directive Academy Order
+                            </h2>
+                            <p class="govuk-body">You can record the decision to revoke a DAO (Directive Academy Order).</p>
+                            <p class="govuk-body">The decision must have been approved by a minister.</p>
+                            <div class="govuk-button-group">
+                                <a class="govuk-button govuk-button--secondary" href="@string.Format(RouteConstants.ProjectDaoRevocation, Model.ProjectId)">Record DAO revocation</a>
+                            </div>
                         </div>
                     </div>
                 </div>
