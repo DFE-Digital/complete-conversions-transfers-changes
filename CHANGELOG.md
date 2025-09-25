@@ -16,14 +16,26 @@ Security in case of vulnerabilities.
 
 ## Unreleased
 
+### Added
+
+### Changed
+
+### Fixed
+
+See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-09-25.771...main) for everything awaiting release
+
+---
+
+## [1.18.0](https://github.com/DFE-Digital/complete-conversions-transfers-changes/releases/tag/production-2025-09-25.771) - 2025-09-25
+
 ### Removed
 - removed the 'Add Project' in your project button and disabled access to all related subpages 
 
 ### Added
 - Ability to edit project information for conversions and transfers
 - ProjectGroup is created when a project is edited with a new GRN
-- Added `Add, Edit and Delete External Contacts for both conversion and transfer projects.
-- Added `Confirm this transfer has authority to proceed` task.
+- Added Add, Edit and Delete External Contacts for both conversion and transfer projects.
+- Added `Confirm this transfer has authority to proceed` task
 - Added `Confirm the date the academy opened` task.
 
 ### Changed
@@ -35,8 +47,7 @@ Security in case of vulnerabilities.
 - Fixed `External stakeholder kick off` task wording for both conversion and transfer projects. 
 - Fixed Error Summary partial view expect model, pass null wherever not required
 
-
-See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-09-12.746...main) for everything awaiting release
+See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-09-12.746...production-2025-09-25.771) for everything in the release
 
 ---
 
