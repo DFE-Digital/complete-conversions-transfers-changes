@@ -29,7 +29,7 @@
                         <div class="govuk-!-padding-bottom-3">
                             <h6 class="govuk-heading-xxs">@reason.Key.ToDisplayDescription():</h6>
                             <div class="govuk-body">
-                                <p>@reason.Value</p>
+                               @Html.SimpleFormat(@reason.Value)
                             </div>
                         </div> 
                     }

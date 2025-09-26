@@ -7108,6 +7108,11 @@
           "transferProjectsAssigned": {
             "type": "integer",
             "format": "int32"
+          },
+          "latestSession": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
           }
         }
       }
