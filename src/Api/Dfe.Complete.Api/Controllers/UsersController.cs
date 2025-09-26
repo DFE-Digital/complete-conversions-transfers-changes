@@ -23,7 +23,6 @@ namespace Dfe.Complete.Api.Controllers
         /// <param name="cancellationToken">The cancellation token.</param>
         [Authorize(Policy = "CanReadWrite")]
         [HttpPost]
-        // [Route("User")]
         [SwaggerResponse(201, "User created successfully.", typeof(Guid))]
         [SwaggerResponse(400, "Invalid request data.")]
         public async Task<IActionResult> CreateUserAsync([FromBody] CreateUserCommand request, CancellationToken cancellationToken)
