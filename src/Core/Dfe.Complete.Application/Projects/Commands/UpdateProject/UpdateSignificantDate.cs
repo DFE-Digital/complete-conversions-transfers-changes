@@ -63,8 +63,9 @@ public class UpdateSignificantDateCommandHandler(
             note.TaskIdentifier = historyReason.Id.Value.ToString();
             note.UserId = user.Id;
             note.NotableId = historyReason.Id.Value;
-            note.NotableType = "SignificantDateHistoryReason";
-            
+            note.NotableType = NotableType.SignificantDateHistoryReason.ToDescription();
+
+
             significantDateHistoryReasons.Add(historyReason);
             notes.Add(note);
         }

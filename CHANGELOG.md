@@ -18,6 +18,9 @@ Security in case of vulnerabilities.
 
 ### Added
 
+- Added `Dao Revocation` workflow.
+- Configured Cache settings.
+
 ### Changed
 
 ### Fixed

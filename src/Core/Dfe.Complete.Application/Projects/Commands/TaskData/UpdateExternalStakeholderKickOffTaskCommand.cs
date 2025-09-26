@@ -99,7 +99,7 @@ namespace Dfe.Complete.Application.Projects.Commands.TaskData
                     TaskIdentifier = significantDateHistoryReason.Id.Value.ToString(),
                     UserId = user.Id,
                     NotableId = significantDateHistoryReason.Id.Value,
-                    NotableType = "SignificantDateHistoryReason"
+                    NotableType = NotableType.SignificantDateHistoryReason.ToDescription()
                 };
                 
                 project.UpdateSignificantDate(request.SignificantDate.Value);
