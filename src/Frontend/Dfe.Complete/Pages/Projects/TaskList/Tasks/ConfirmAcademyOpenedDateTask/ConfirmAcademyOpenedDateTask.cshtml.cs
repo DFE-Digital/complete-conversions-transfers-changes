@@ -3,13 +3,11 @@ using Dfe.Complete.Constants;
 using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Domain.ValueObjects;
 using Dfe.Complete.Extensions;
-using Dfe.Complete.Models;
 using Dfe.Complete.Services;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
-using static System.Runtime.InteropServices.JavaScript.JSType;
+using System.ComponentModel;
 
 namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.ConfirmAcademyOpenedDateTask
 {
@@ -17,6 +15,7 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.ConfirmAcademyOpenedDateTas
     : BaseProjectTaskModel(sender, authorizationService, logger, NoteTaskIdentifier.ConfirmAcademyOpenedDate)
     {
         [BindProperty(Name = "opened-date")]
+        [DisplayName("Opened academy date")]
         public DateOnly? OpenedDate { get; set; }
         [BindProperty]
         public Guid? TasksDataId { get; set; }
@@ -30,9 +29,9 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.ConfirmAcademyOpenedDateTas
         }
         public async Task<IActionResult> OnPost()
         {
-            if(OpenedDate?.ToDateTime(new TimeOnly()) < DateTime.Today)
+            if(OpenedDate?.ToDateTime(new TimeOnly()) > DateTime.Today)
             {
-                ModelState.AddModelError(nameof(OpenedDate), string.Format(ValidationConstants.MustBePastDate, "OpenedDate"));
+                ModelState.AddModelError(nameof(OpenedDate), string.Format(ValidationConstants.MustBePastDate, "Opened academy date"));
             }
             if (!ModelState.IsValid)
             {
@@ -41,7 +40,7 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.ConfirmAcademyOpenedDateTas
                 return Page();
             }
             await sender.Send(new UpdateConfirmAcademyOpenedDateTaskCommand(new TaskDataId(TasksDataId.GetValueOrDefault())!, OpenedDate));
-            TempData.SetNotification(NotificationType.Success, "Success", "Task updated successfully");
+            TempData.SetTaskSuccessNotification();
             return Redirect(string.Format(RouteConstants.ProjectTaskList, ProjectId));
         }
     }
