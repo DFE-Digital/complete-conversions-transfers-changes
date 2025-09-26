@@ -1,0 +1,47 @@
+﻿@page "/service-support/users"
+@using Dfe.Complete.Constants
+@using Dfe.Complete.Extensions
+@using Dfe.Complete.Application.Mappers
+@model Dfe.Complete.Pages.Projects.ServiceSupport.Users.ListUsers
+@{
+    Layout = "ServiceSupport/Users/_UsersLayout";
+    ViewData["Title"] = "Users";
+}
+
+<div class="govuk-grid-column-full">
+    <h1 class="govuk-heading-xl">
+        Users
+    </h1>
+    <a data-module="govuk-button" draggable="false" role="button" class="govuk-button"
+        href="@RouteConstants.ServiceSupportUsersNew">Add a new user</a>
+    <table class="govuk-table" name="users_table" aria-label="Users table">
+        <thead class="govuk-table__head">
+            <tr class="govuk-table__row">
+                <th class="govuk-table__header" scope="col">Name</th>
+                <th class="govuk-table__header" scope="col">Email</th>
+                <th class="govuk-table__header" scope="col">Team</th>
+                <th class="govuk-table__header" scope="col">Last seen</th>
+                <th class="govuk-table__header" scope="col">Edit user</th>
+            </tr>
+        </thead>
+        <tbody class="govuk-table__body">
+
+            @foreach (var user in Model.Users)
+            {
+                <tr class="govuk-table__row">
+                    <td class="govuk-table__header govuk-table__cell">@user.FullName</td>
+                    <td class="govuk-table__cell">@user.Email</td>
+                    <td class="govuk-table__cell">@(user.Team != null ?
+                                            @ProjectTeamPresentationMapper.Map(user.Team) : "No team")</td>
+                    <td class="govuk-table__cell">@(user.LatestSession != null ?
+                                            ((DateTime)user.LatestSession).ToUkDateTimeWithAmPmString() : "N/A")</td>
+                    <td class="govuk-table__cell">
+                        <a class="govuk-link"
+                            href="@String.Format(RouteConstants.ServiceSupportUsersEdit, user.Id.Value.ToStringOrDefault())">Edit
+                            user</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
