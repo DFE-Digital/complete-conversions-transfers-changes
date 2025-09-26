@@ -34,8 +34,7 @@ const formAMATSchoolName = "Priory Rise School";
 const formAMATLocalAuthority = "Milton Keynes";
 const formAMATRegion = "South East";
 
-// 219174 in progress
-describe.skip("About the project page - transfer projects: ", () => {
+describe("About the project page - transfer projects: ", () => {
     before(() => {
         projectRemover.removeProjectIfItExists(`${project.urn.value}`);
         projectRemover.removeProjectIfItExists(`${projectFormAMat.urn.value}`);
@@ -154,7 +153,7 @@ describe.skip("About the project page - transfer projects: ", () => {
             )
             .summaryShows("UKPRN (UK provider reference number)")
             .hasValue(incomingTrust.ukprn)
-            // .hasChangeLink(`${changeLinkPath}incoming-trust-ukprn`)
+            .hasChangeLink(`${changeLinkPath}incoming-trust-ukprn`)
             .summaryShows("Group ID (identifier)")
             .hasValue(incomingTrust.referenceNumber)
             .summaryShows("Companies House number")
@@ -164,6 +163,7 @@ describe.skip("About the project page - transfer projects: ", () => {
             )
             .summaryShows("New trust reference number (TRN)")
             .hasValue("")
+            .hasChangeLink(`${changeLinkPath}new_trust_reference_number`)
             .summaryShows("Address")
             .hasValue(incomingTrust.address)
             .summaryShows("SharePoint folder")
@@ -299,6 +299,7 @@ describe.skip("About the project page - transfer projects: ", () => {
             .summaryShows("Companies House number")
             .hasValueWithLink("")
             .summaryShows("New trust reference number (TRN)")
+            .hasChangeLink(`${formAMATChangeLinkPath}new_trust_reference_number`)
             .hasValue(projectFormAMat.newTrustReferenceNumber)
             .summaryShows("Address")
             .hasValue("")
@@ -385,7 +386,6 @@ describe.skip("About the project page - transfer projects: ", () => {
             .withTransferDueToFinancialSafeguardingGovernanceIssues("Yes")
             .withOutgoingTrustWillCloseAfterTransfer("Yes")
             .withHandingOverToRCS("Yes")
-            .withHandoverComments("Updated handover comments")
             .continue();
 
         aboutTheProjectPage

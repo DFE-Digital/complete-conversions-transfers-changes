@@ -27,12 +27,12 @@
 						<li>
 							@if (!string.IsNullOrWhiteSpace(error.Key))
 							{
-								var errorDetail = showKeyInErrorMessage ? $"@error.Key @error.Message" : @error.Message;
+								var errorDetail = showKeyInErrorMessage ? string.Format("{0} {1}", error.Key, error.Message) : @error.Message;
 								<a id="@($"{error.Key}-error-link")" href="#@error.Key">@errorDetail</a>
 							}
 							else
 							{
-								<a id="@(error.Key)" href="#@(error.Key)">@error.Key @error.Message</a>
+								<a href="#">@error.Message</a>
 							}
 						</li>
 					}

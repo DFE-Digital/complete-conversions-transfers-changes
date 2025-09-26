@@ -42,11 +42,6 @@ class EditProjectPage extends BasePage {
         return this;
     }
 
-    withHandoverComments(text: string): this {
-        cy.getById("HandoverComments").clear().typeFast(text);
-        return this;
-    }
-
     with2RI(option: yesNoOption): this {
         cy.enterYesNo("TwoRequiresImprovement", option);
         return this;

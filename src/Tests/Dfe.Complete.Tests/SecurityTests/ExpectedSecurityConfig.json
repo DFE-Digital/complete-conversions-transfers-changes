@@ -129,6 +129,10 @@
       "ExpectedSecurity": "Authorize: Policy=ManageLocalAuthorities"
     },
     {
+      "Route": "Projects/ServiceSupport/Users/ListUsers",
+      "ExpectedSecurity": "Authorize: Policy=CanViewServiceSupport"
+    },
+    {
       "Route": "Projects/List/HandoverProjects/HandoverProjectCheck",
       "ExpectedSecurity": "Authorize: Policy=CanViewAllProjectsHandover"
     },

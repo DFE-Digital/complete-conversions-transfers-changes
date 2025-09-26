@@ -42,7 +42,8 @@ public class ListAllUsersWithProjectsHandlerTest
             user.Email,
             user.Team.FromDescriptionValue<ProjectTeam>(),
             user.ProjectAssignedTos.Count(project => project.Type == ProjectType.Conversion),
-            user.ProjectAssignedTos.Count(project => project.Type == ProjectType.Transfer)
+            user.ProjectAssignedTos.Count(project => project.Type == ProjectType.Transfer),
+            user.LatestSession
         )).ToList();
         var userQueryable = users.BuildMock();
 
@@ -122,7 +123,8 @@ public class ListAllUsersWithProjectsHandlerTest
             user.Email,
             user.Team.FromDescriptionValue<ProjectTeam>(),
             user.ProjectAssignedTos.Count(project => project.Type == ProjectType.Conversion),
-            user.ProjectAssignedTos.Count(project => project.Type == ProjectType.Transfer)
+            user.ProjectAssignedTos.Count(project => project.Type == ProjectType.Transfer),
+            user.LatestSession
         )).Skip(10).Take(5).ToList();
         var userQueryable = users.BuildMock();
 
@@ -170,7 +172,8 @@ public class ListAllUsersWithProjectsHandlerTest
             user.Email,
             user.Team.FromDescriptionValue<ProjectTeam>(),
             user.ProjectAssignedTos.Where(project => project.State == ProjectState.Active).Count(project => project.Type == ProjectType.Conversion),
-            user.ProjectAssignedTos.Where(project => project.State == ProjectState.Active).Count(project => project.Type == ProjectType.Transfer)
+            user.ProjectAssignedTos.Where(project => project.State == ProjectState.Active).Count(project => project.Type == ProjectType.Transfer),
+            user.LatestSession
         )).ToList();
         var userQueryable = users.BuildMock();
 
