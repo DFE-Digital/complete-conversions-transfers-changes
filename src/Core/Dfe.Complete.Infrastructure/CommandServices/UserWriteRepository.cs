@@ -13,4 +13,10 @@ internal class UserWriteRepository(CompleteContext context) : IUserWriteReposito
         await _context.Users.AddAsync(user, cancellationToken);
         await _context.SaveChangesAsync(cancellationToken);
     }
+
+    public async Task UpdateUserAsync(User user, CancellationToken cancellationToken)
+    {
+        _context.Users.Update(user);
+        await _context.SaveChangesAsync(cancellationToken);
+    }
 }

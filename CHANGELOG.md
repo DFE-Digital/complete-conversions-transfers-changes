@@ -20,6 +20,7 @@ Security in case of vulnerabilities.
 - Add service support - view users table
 - Add API end point for creating user
 - Add ability to create a user
+- Add API end point for editing user
 
 ### Changed
 
