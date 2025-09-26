@@ -9,4 +9,5 @@ public record ListAllUsersWithProjectsResultModel(
     string? Email,
     ProjectTeam? Team,
     int ConversionProjectsAssigned,
-    int TransferProjectsAssigned);
+    int TransferProjectsAssigned,
+    DateTime? LatestSession = null);

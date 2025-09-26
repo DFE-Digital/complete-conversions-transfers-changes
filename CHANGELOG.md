@@ -18,6 +18,8 @@ Security in case of vulnerabilities.
 
 ### Added
 
+- Added `Confirm the date the academy opened` task.
+
 ### Changed
 
 ### Fixed
@@ -36,7 +38,7 @@ See the [full commit history](https://github.com/DFE-Digital/complete-conversion
 - ProjectGroup is created when a project is edited with a new GRN
 - Added Add, Edit and Delete External Contacts for both conversion and transfer projects.
 - Added `Confirm this transfer has authority to proceed` task
-- Added `Confirm the date the academy opened` task.
+- Add service support - view users table
 
 ### Changed
 - Group reference number links to the group on "About the project"
