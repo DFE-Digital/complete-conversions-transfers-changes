@@ -32,6 +32,9 @@
                 <govuk-radios-fieldset-legend is-page-heading="false" class="govuk-fieldset__legend--l">
                     User team
                 </govuk-radios-fieldset-legend>
+                <govuk-radios-hint>
+                    All users must belong in one of the following teams. Sub-teams within these are not required.
+                </govuk-radios-hint>
                 @foreach (var team in Model.AvailableTeams)
                 {
                     var description = team.ToDisplayDescription();
