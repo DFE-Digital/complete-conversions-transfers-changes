@@ -17,10 +17,8 @@ Security in case of vulnerabilities.
 ## Unreleased
 
 ### Added
-- Add service support - view users table
-- Add API end point for creating user
-- Add ability to create a user
 - Add API end point for editing user
+- Add ability to edit a user
 
 ### Changed
 
@@ -42,6 +40,7 @@ See the [full commit history](https://github.com/DFE-Digital/complete-conversion
 - Added 'Closing of transfer or conversion project'.
 - Add API end point for creating user
 - Add ability to create a user
+- Add API end point for editing user
 
 ### Changed
 
