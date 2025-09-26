@@ -18,9 +18,13 @@ Security in case of vulnerabilities.
 
 ### Added
 
+- Added `Confirm all condition has been met` task for conversion projects.
+
 ### Changed
 
 ### Fixed
+
+- Fixed broken task note urls.
 
 See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-09-25.771...main) for everything awaiting release
 
@@ -38,7 +42,6 @@ See the [full commit history](https://github.com/DFE-Digital/complete-conversion
 - ProjectGroup is created when a project is edited with a new GRN
 - Added Add, Edit and Delete External Contacts for both conversion and transfer projects.
 - Added `Confirm this transfer has authority to proceed` task
-- Added `Confirm all condition has been met` task for conversion projects.
 
 ### Changed
 - Group reference number links to the group on "About the project"
@@ -48,7 +51,6 @@ See the [full commit history](https://github.com/DFE-Digital/complete-conversion
 - update "Task - Supplemental funding agreement - transfer - incorrect options"
 - Fixed `External stakeholder kick off` task wording for both conversion and transfer projects. 
 - Fixed Error Summary partial view expect model, pass null wherever not required
-- Fixed broken task note urls.
 
 See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-09-12.746...production-2025-09-25.771) for everything in the release
 
