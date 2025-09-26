@@ -131,6 +131,10 @@
         public const string ServiceSupportProjectsWithAcademyUrn = "/projects/service-support/with-academy-urn";
         public const string ServiceSupportAssignAcademyUrn = "/projects/{0}/academy-urn";
         public const string ServiceSupportProjects = "/projects/service-support/without-academy-urn";
+        public const string ServiceSupportUsers = "/service-support/users";
+        public const string ServiceSupportUsersNew = "/service-support/users/new";
+        public const string ServiceSupportUsersEdit = "/service-support/users/{0}/edit";
+
 
         //Local authorities
         public const string ListLocalAuthorities = "/service-support/local-authorities";
