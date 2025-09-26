@@ -292,6 +292,11 @@
     },
     {
       "Controller": "TasksDataController",
+      "Action": "UpdateConfirmDateAcademyTransferredTaskAsync",
+      "ExpectedSecurity": "Authorize: Policy=CanReadWriteUpdate"
+    },
+    {
+      "Controller": "TasksDataController",
       "Action": "UpdateDeclarationOfExpenditureCertificateTaskAsync",
       "ExpectedSecurity": "Authorize: Policy=CanReadWriteUpdate"
     },
