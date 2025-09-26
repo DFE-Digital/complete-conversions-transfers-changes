@@ -19,11 +19,7 @@
                 <span class="govuk-caption-l" data-testid="school-name">@Model.Establishment.Name</span>
                 @Model.TaskIdentifier.ToDisplayDescription()
             </h1>
-            @await RenderSectionAsync("TaskHeaderHintSection", required: false)
-        </div>
-    </div>
-    <div class="govuk-grid-row">
-        <div class="govuk-grid-column-two-thirds">
+            @await RenderSectionAsync("TaskHeaderHintSection", required: false) 
             @await RenderSectionAsync("TaskSection", required: true)
         </div>
         <div class="govuk-grid-column-one-third">

@@ -33,9 +33,9 @@
         <govuk-checkboxes name="options">
             <govuk-checkboxes-fieldset>
                 <govuk-checkboxes-fieldset-legend is-page-heading="true" class="govuk-fieldset__legend--l"> 
-                </govuk-checkboxes-fieldset-legend> 
+                </govuk-checkboxes-fieldset-legend>
 
-                <govuk-checkboxes-item id="stakeholder_kick_off_task_form_introductory_emails" asp-for="@Model.SendIntroEmails" value="true" name="send-intro-emails" checked="@Model.SendIntroEmails">
+                <govuk-checkboxes-item data-cy="stakeholder_kick_off_task_form_introductory_emails" id="stakeholder_kick_off_task_form_introductory_emails" asp-for="@Model.SendIntroEmails" value="true" name="send-intro-emails" checked="@Model.SendIntroEmails">
                     <b> Send introductory emails</b>
                     <govuk-checkboxes-item-hint>
                         <p>
@@ -64,7 +64,7 @@
 
                 @if (isConversion)
                 {
-                    <govuk-checkboxes-item id="stakeholder_kick_off_task_form_local_authority_proforma" asp-for="@Model.LocalAuthorityProforma" value="true" name="local-authority-proforma" checked="@Model.LocalAuthorityProforma">
+                    <govuk-checkboxes-item data-cy="stakeholder_kick_off_task_form_local_authority_proforma" id="stakeholder_kick_off_task_form_local_authority_proforma" asp-for="@Model.LocalAuthorityProforma" value="true" name="local-authority-proforma" checked="@Model.LocalAuthorityProforma">
                         <b>Check the local authority proforma</b>
                         <govuk-checkboxes-item-hint>
                             <p>Check the information is correct and there is no missing information. </p>
@@ -83,7 +83,7 @@
                         </govuk-checkboxes-item-hint>
                     </govuk-checkboxes-item>
 
-                    <govuk-checkboxes-item id="stakeholder_kick_off_task_form_Local_authority_able_to_convert" asp-for="@Model.LocalAuthorityAbleToConvert" value="true" name="local-authority-able-to-convert" checked="@Model.LocalAuthorityAbleToConvert">
+                    <govuk-checkboxes-item data-cy="stakeholder_kick_off_task_form_Local_authority_able_to_convert" id="stakeholder_kick_off_task_form_Local_authority_able_to_convert" asp-for="@Model.LocalAuthorityAbleToConvert" value="true" name="local-authority-able-to-convert" checked="@Model.LocalAuthorityAbleToConvert">
                         <b>Check the local authority is able to convert the school by the provisional conversion date: @Model.Project.SignificantDate.ToDateString()</b>
                         <govuk-checkboxes-item-hint>
                             <p>
@@ -101,9 +101,9 @@
                         </govuk-checkboxes-item-hint>
                     </govuk-checkboxes-item>
 
-                } 
+                }
 
-                <govuk-checkboxes-item id="stakeholder_kick_off_task_form_setup_meeting" asp-for="@Model.SendInvites" value="true" name="send-invites" checked="@Model.SendInvites">
+                <govuk-checkboxes-item data-cy="stakeholder_kick_off_task_form_setup_meeting" id="stakeholder_kick_off_task_form_setup_meeting" asp-for="@Model.SendInvites" value="true" name="send-invites" checked="@Model.SendInvites">
                     <b>Send invites to the kick-off meeting or call</b>
                     <govuk-checkboxes-item-hint>
                         <p>Check who the @(isConversion? "school or":"outgoing and incoming") trust would like to attend the kick-off meeting.</p>
@@ -120,7 +120,7 @@
                     </govuk-checkboxes-item-hint>
                 </govuk-checkboxes-item>
 
-                <govuk-checkboxes-item id="stakeholder_kick_off_task_form_meeting" asp-for="@Model.HostMeetingOrCall" value="true" name="host-meeting-or-call" checked="@Model.HostMeetingOrCall">
+                <govuk-checkboxes-item data-cy="stakeholder_kick_off_task_form_meeting" id="stakeholder_kick_off_task_form_meeting" asp-for="@Model.HostMeetingOrCall" value="true" name="host-meeting-or-call" checked="@Model.HostMeetingOrCall">
                     <b>Host the kick-off meeting or call</b>
                     <govuk-checkboxes-item-hint>
                         <p>Make sure all attendees understand what they need to do, and when they need to do it.</p>
@@ -149,7 +149,7 @@
 
         @if (!Model.Project.SignificantDateProvisional is false)
         {
-            <govuk-date-input id="SignificantDate" name-prefix="significant-date" asp-for="@Model.SignificantDate">
+            <govuk-date-input data-cy="SignificantDate" id="SignificantDate" name-prefix="significant-date" asp-for="@Model.SignificantDate">
             <govuk-date-input-fieldset>
                 <govuk-date-input-fieldset-legend class="govuk-fieldset__legend--m">
                     Enter the confirmed @projectTypeString date

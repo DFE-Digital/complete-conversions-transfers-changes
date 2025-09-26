@@ -3,7 +3,6 @@ using Dfe.Complete.Constants;
 using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Domain.ValueObjects;
 using Dfe.Complete.Extensions;
-using Dfe.Complete.Models;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -40,7 +39,7 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.ConfirmTransferHasAuthority
         public async Task<IActionResult> OnPost()
         {
             await sender.Send(new UpdateConfirmTransferHasAuthorityToProceedTaskCommand(new TaskDataId(TasksDataId.GetValueOrDefault())!, AnyInformationChanged, BaselineSheetApproved, ConfirmToProceed));
-            TempData.SetNotification(NotificationType.Success, "Success", "Task updated successfully");
+            TempData.SetTaskSuccessNotification();
             return Redirect(string.Format(RouteConstants.ProjectTaskList, ProjectId));
         }
     }

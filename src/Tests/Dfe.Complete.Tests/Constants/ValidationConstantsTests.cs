@@ -122,6 +122,11 @@ namespace Dfe.Complete.Tests.Constants
         public void ValidDate_ShouldReturnExpectedMessage()
         {
             Assert.Equal("Enter a valid date, like 1 1 2025", ValidationConstants.ValidDate);
-        } 
+        }
+        [Fact]
+        public void MustBePastDate_ShouldReturnExpectedMessage()
+        {
+            Assert.Equal("{0} must be in the past", ValidationConstants.MustBePastDate);
+        }
     }
 }

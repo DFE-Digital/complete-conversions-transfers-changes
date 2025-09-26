@@ -36,19 +36,19 @@
             <govuk-checkboxes-fieldset>
                 <govuk-checkboxes-fieldset-legend>
                 </govuk-checkboxes-fieldset-legend>
-                <govuk-checkboxes-item id="@anyInformationChanged" asp-for="@Model.AnyInformationChanged" value="true" name="@anyInformationChanged" checked="@Model.AnyInformationChanged">
+                <govuk-checkboxes-item data-cy="@anyInformationChanged" id="@anyInformationChanged" asp-for="@Model.AnyInformationChanged" value="true" name="@anyInformationChanged" checked="@Model.AnyInformationChanged">
                     <b>Check if any information has changed from the first baseline</b>
                     <govuk-checkboxes-item-hint>
                         <p>You must update any changed information in this month's <a href="@_configuration["ExternalLinks:SecondBaseLineSpreadsheet"]" target="_blank">second baseline spreadsheet (opens in new tab)</a>.</p>
                     </govuk-checkboxes-item-hint>
                 </govuk-checkboxes-item>
-                <govuk-checkboxes-item id="@baselineSheetApproved" asp-for="@Model.BaselineSheetApproved" value="true" name="@baselineSheetApproved" checked="@Model.BaselineSheetApproved">
+                <govuk-checkboxes-item data-cy="@baselineSheetApproved" id="@baselineSheetApproved" asp-for="@Model.BaselineSheetApproved" value="true" name="@baselineSheetApproved" checked="@Model.BaselineSheetApproved">
                     <b>Baseline spreadsheet approved</b>
                     <govuk-checkboxes-item-hint>
                         <p>A Deputy Director, or a Grade 6 civil servant with delegated authority, must sign-off on this month's transfers.</p>
                     </govuk-checkboxes-item-hint>
                 </govuk-checkboxes-item>
-                <govuk-checkboxes-item id="@confirmToProceed" asp-for="@Model.ConfirmToProceed" value="true" name="@confirmToProceed" checked="@Model.ConfirmToProceed">
+                <govuk-checkboxes-item data-cy="@confirmToProceed" id="@confirmToProceed" asp-for="@Model.ConfirmToProceed" value="true" name="@confirmToProceed" checked="@Model.ConfirmToProceed">
                     <b>Confirm the project has authority to proceed</b>
                     <govuk-checkboxes-item-hint>
                         <p>This will change the transfer's status on the By Month project list.</p>

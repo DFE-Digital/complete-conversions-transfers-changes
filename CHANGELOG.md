@@ -18,6 +18,8 @@ Security in case of vulnerabilities.
 
 ### Added
 
+- Added `Confirm the date the academy opened` task.
+
 ### Changed
 
 ### Fixed

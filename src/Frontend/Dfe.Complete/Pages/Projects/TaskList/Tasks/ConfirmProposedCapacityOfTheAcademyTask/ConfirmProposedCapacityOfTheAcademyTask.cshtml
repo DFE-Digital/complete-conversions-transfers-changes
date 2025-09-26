@@ -27,7 +27,7 @@
             <govuk-checkboxes-fieldset>
                 <govuk-checkboxes-fieldset-legend>
                 </govuk-checkboxes-fieldset-legend>
-                <govuk-checkboxes-item id="not-applicable" asp-for="@Model.NotApplicable" value="true" name="@nameof(Model.NotApplicable)" checked="@Model.NotApplicable">
+                <govuk-checkboxes-item data-cy="not-applicable" id="not-applicable" asp-for="@Model.NotApplicable" value="true" name="@nameof(Model.NotApplicable)" checked="@Model.NotApplicable">
                     <b>Not applicable</b>
                 </govuk-checkboxes-item>
             </govuk-checkboxes-fieldset>
@@ -54,7 +54,7 @@
                 </govuk-details>
             </div> 
         </div>
-        <govuk-input name="reception-to-six-years" inputmode="numeric" input-class="govuk-input--width-10" asp-for="@Model.ReceptionToSixYears">
+        <govuk-input data-cy="reception-to-six-years" name="reception-to-six-years" inputmode="numeric" input-class="govuk-input--width-10" asp-for="@Model.ReceptionToSixYears">
             <govuk-input-label class="govuk-label--m"><b>What is the proposed capacity for pupils in reception to year 6?</b></govuk-input-label>
             <govuk-input-hint>
                 <p>Enter 0 if the academy will not teach pupils in this age group</p>
@@ -63,8 +63,8 @@
             {
                 <govuk-input-error-message>@(ErrorService.GetErrorMessage("reception-to-six-years"))</govuk-input-error-message>
             }
-        </govuk-input> 
-        <govuk-input id="seven-to-eleven-years" name="seven-to-eleven-years" inputmode="numeric" input-class="govuk-input--width-10" asp-for="@Model.SevenToElevenYears">
+        </govuk-input>
+        <govuk-input data-cy="seven-to-eleven-years" id="seven-to-eleven-years" name="seven-to-eleven-years" inputmode="numeric" input-class="govuk-input--width-10" asp-for="@Model.SevenToElevenYears">
             <govuk-input-label class="govuk-label"><b>What is the proposed capacity for pupils in years 7 to 11?</b></govuk-input-label>
             <govuk-input-hint>Enter 0 if the academy will not teach pupils in this age group.</govuk-input-hint>
             @if (ErrorService.HasErrorForKey("seven-to-eleven-years"))
@@ -72,7 +72,7 @@
                 <govuk-input-error-message>@(ErrorService.GetErrorMessage("seven-to-eleven-years"))</govuk-input-error-message>
             }
         </govuk-input>
-        <govuk-input id="twelve-or-above-years" name="twelve-or-above-years" inputmode="numeric" input-class="govuk-input--width-10" asp-for="@Model.TwelveOrAboveYears">
+        <govuk-input data-cy="twelve-or-above-years" id="twelve-or-above-years" name="twelve-or-above-years" inputmode="numeric" input-class="govuk-input--width-10" asp-for="@Model.TwelveOrAboveYears">
             <govuk-input-label class="govuk-label"><b>What is the proposed capacity for students in year 12 or above?</b></govuk-input-label>
             <govuk-input-hint>Enter 0 if the academy will not teach pupils in this age group.</govuk-input-hint>
             @if (ErrorService.HasErrorForKey("twelve-or-above-years"))

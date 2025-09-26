@@ -3,7 +3,6 @@ using Dfe.Complete.Constants;
 using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Domain.ValueObjects;
 using Dfe.Complete.Extensions;
-using Dfe.Complete.Models;
 using Dfe.Complete.Pages.Projects.TaskList.Tasks.ArticlesOfAssociationTask;
 using Dfe.Complete.Services;
 using Dfe.Complete.Validators;
@@ -58,7 +57,7 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.ConfirmProposedCapacityOfTh
                 return Page();
             }
             await sender.Send(new UpdateConfirmProposedCapacityOfTheAcademyTaskCommand(new TaskDataId(TasksDataId.GetValueOrDefault())!, NotApplicable, ReceptionToSixYears, SevenToElevenYears, TwelveOrAboveYears));
-            TempData.SetNotification(NotificationType.Success, "Success", "Task updated successfully");
+            TempData.SetTaskSuccessNotification();
             return Redirect(string.Format(RouteConstants.ProjectTaskList, ProjectId));
         }
 

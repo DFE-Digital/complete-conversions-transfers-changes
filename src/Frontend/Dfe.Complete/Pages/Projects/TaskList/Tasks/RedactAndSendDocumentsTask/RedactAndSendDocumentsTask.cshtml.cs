@@ -3,7 +3,6 @@ using Dfe.Complete.Constants;
 using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Domain.ValueObjects;
 using Dfe.Complete.Extensions;
-using Dfe.Complete.Models;
 using Dfe.Complete.Pages.Projects.TaskList.Tasks.HandoverWithDeliveryOfficerTask;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -59,7 +58,7 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.RedactAndSendDocumentsTask
         {
             await sender.Send(new UpdateRedactAndSendDocumentsTaskCommand(
                 new TaskDataId(TasksDataId.GetValueOrDefault())!, Type, Redact, Saved, SendToEsfa, Send, SendToSolicitors));
-            TempData.SetNotification(NotificationType.Success, "Success", "Task updated successfully");
+            TempData.SetTaskSuccessNotification();
             return Redirect(string.Format(RouteConstants.ProjectTaskList, ProjectId));
         }
     }
