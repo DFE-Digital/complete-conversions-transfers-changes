@@ -1,0 +1,46 @@
+﻿@model Dfe.Complete.Pages.Projects.TaskList.Tasks.ConfirmAllConditionsMetOrTransferAuthorityToProceedTask.ConfirmAllConditionsMetOrTransferAuthorityToProceedTaskModel
+@inject Microsoft.Extensions.Configuration.IConfiguration _configuration
+@{ 
+    var confirmToProceed = "confirm";
+    var baselineSheetApproved = "baseline-sheet-approved";
+    var anyInformationChanged = "any-information-changed";
+}
+
+<form method="post">
+    <input type="hidden" asp-for="TasksDataId" />
+    <input type="hidden" asp-for="Type" />
+    <govuk-checkboxes name="options">
+        <govuk-checkboxes-fieldset>
+            <govuk-checkboxes-fieldset-legend>
+            </govuk-checkboxes-fieldset-legend>
+            <govuk-checkboxes-item id="@anyInformationChanged" asp-for="@Model.AnyInformationChanged" value="true" name="@anyInformationChanged" checked="@Model.AnyInformationChanged">
+                <b>Check if any information has changed from the first baseline</b>
+                <govuk-checkboxes-item-hint>
+                    <p>You must update any changed information in this month's <a href="@_configuration["ExternalLinks:SecondBaseLineSpreadsheet"]" target="_blank">second baseline spreadsheet (opens in new tab)</a>.</p>
+                </govuk-checkboxes-item-hint>
+            </govuk-checkboxes-item>
+            <govuk-checkboxes-item id="@baselineSheetApproved" asp-for="@Model.BaselineSheetApproved" value="true" name="@baselineSheetApproved" checked="@Model.BaselineSheetApproved">
+                <b>Baseline spreadsheet approved</b>
+                <govuk-checkboxes-item-hint>
+                    <p>A Deputy Director, or a Grade 6 civil servant with delegated authority, must sign-off on this month's transfers.</p>
+                </govuk-checkboxes-item-hint>
+            </govuk-checkboxes-item>
+            <govuk-checkboxes-item id="@confirmToProceed" asp-for="@Model.Confirm" value="true" name="@confirmToProceed" checked="@Model.Confirm">
+                <b>Confirm the project has authority to proceed</b>
+                <govuk-checkboxes-item-hint>
+                    <p>This will change the transfer's status on the By Month project list.</p>
+                    <p>SOPU and ESFA (Education and Skills Funding Agency) use it to prepare and send the GAG (general annual grant) funding.</p>
+                    <govuk-details>
+                        <govuk-details-summary>
+                            <span class="govuk-details__summary-text">What to do if the transfer does not have authority to proceed</span>
+                        </govuk-details-summary>
+                        <govuk-details-text>
+                            <p>You must agree a new transfer date with all stakeholders, then change the transfer date for this project.</p>
+                        </govuk-details-text>
+                    </govuk-details>
+                </govuk-checkboxes-item-hint>
+            </govuk-checkboxes-item>
+        </govuk-checkboxes-fieldset>
+    </govuk-checkboxes>
+    @await Html.PartialAsync("_TaskSaveAndReturn", new TaskSaveAndReturnModel(Model.Project, Model.CurrentUserTeam))
+</form>

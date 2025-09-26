@@ -42,6 +42,7 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.DeclarationOfExpenditureCer
             }
             else
             {
+                TaskIdentifier = NoteTaskIdentifier.ReceiveGrantPaymentCertificate;
                 NotApplicable = ConversionTaskData.ReceiveGrantPaymentCertificateNotApplicable;
                 CheckCertificate = ConversionTaskData.ReceiveGrantPaymentCertificateCheckCertificate;
                 ReceivedDate = ConversionTaskData.ReceiveGrantPaymentCertificateDateReceived;
