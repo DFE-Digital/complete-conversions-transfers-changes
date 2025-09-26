@@ -17,9 +17,9 @@
 
 @section TaskSection {
 
-    <form method="post" class="new_transfer_task_confirm_date_academy_transferred_task_form">
-        <input type="hidden" asp-for="TasksDataId" />
-        <govuk-date-input data-cy="@dateAcademyTransferred" id="@dateAcademyTransferred" name-prefix="@dateAcademyTransferred" asp-for="@Model.DateAcademyTransferred" class="govuk-form-group">
+    <form method="post" class="new_transfer_task_confirm_date_academy_transferred_task_form" data-cy="confirm-date-academy-transferred-form">
+        <input type="hidden" asp-for="TasksDataId" data-cy="tasks-data-id-input" />
+        <govuk-date-input data-cy="date-academy-transferred-input" id="@dateAcademyTransferred" name-prefix="@dateAcademyTransferred" asp-for="@Model.DateAcademyTransferred" class="govuk-form-group">
             <govuk-date-input-fieldset>
                 <govuk-date-input-fieldset-legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
                     Enter the date the academy transferred
