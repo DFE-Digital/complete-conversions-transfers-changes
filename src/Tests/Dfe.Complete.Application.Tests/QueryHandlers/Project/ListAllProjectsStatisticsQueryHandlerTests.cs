@@ -1,6 +1,7 @@
 ﻿using Dfe.Complete.Application.Projects.Interfaces;
 using Dfe.Complete.Application.Projects.Models;
 using Dfe.Complete.Application.Projects.Queries.ListAllProjects;
+using Dfe.Complete.Application.Users.Interfaces;
 using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Domain.ValueObjects;
 using Dfe.Complete.Utils;
@@ -13,7 +14,7 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
     public class ListAllProjectsStatisticsQueryHandlerTests
     {
         private readonly Mock<IProjectReadRepository> _projectReadRepositoryMock = new();
-        private readonly Mock<IReadUserRepository> _readUserRepositoryMock = new();
+        private readonly Mock<IUserReadRepository> _readUserRepositoryMock = new();
         private readonly Mock<ILogger<ListAllProjectsStatisticsQueryHandler>> _loggerMock = new();
 
         private ListAllProjectsStatisticsQueryHandler CreateHandler(

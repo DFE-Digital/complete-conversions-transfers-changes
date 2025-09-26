@@ -137,6 +137,11 @@
     },
     {
       "Controller": "UsersController",
+      "Action": "CreateUserAsync",
+      "ExpectedSecurity": "Authorize: Policy=CanReadWrite"
+    },
+    {
+      "Controller": "UsersController",
       "Action": "GetUserWithProjectsAsync",
       "ExpectedSecurity": "Authorize: Policy=CanRead"
     },

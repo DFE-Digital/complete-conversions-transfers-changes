@@ -1,4 +1,5 @@
 ﻿@using Dfe.Complete.Pages.Projects.ServiceSupport
+@using Dfe.Complete.Constants;
 @using MediatR;
 
 @model ServiceSupportModel
@@ -17,15 +18,15 @@
                         <ul class="moj-primary-navigation__list">
                             <li class="moj-primary-navigation__item">
                                 <a class="moj-primary-navigation__link" aria-current="@IsCurrentNav(ServiceSupportModel.ConversionURNsNavigation)"
-                                   href="/projects/service-support/without-academy-urn">Conversion URNs</a>
+                                   href="@RouteConstants.ServiceSupportProjectsWithoutAcademyUrn">Conversion URNs</a>
                             </li>
                             <li class="moj-primary-navigation__item">
                                     <a class="moj-primary-navigation__link" aria-current="@IsCurrentNav(ServiceSupportModel.LocalAuthoriesNavigation)"
-                                   href="/service-support/local-authorities">Local authorities</a>
+                                   href="@RouteConstants.ListLocalAuthorities">Local authorities</a>
                             </li>
                             <li class="moj-primary-navigation__item">
                                 <a class="moj-primary-navigation__link" aria-current="@IsCurrentNav(ServiceSupportModel.UsersNavigation)"
-                                   href="/service-support/users">Users</a>
+                                   href="@RouteConstants.ServiceSupportUsers">Users</a>
                             </li> 
                         </ul>
                     </nav>
