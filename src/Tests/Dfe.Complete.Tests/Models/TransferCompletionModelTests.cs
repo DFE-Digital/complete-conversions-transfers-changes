@@ -31,7 +31,7 @@ namespace Dfe.Complete.Tests.Models
             var result = _testClass.Validate();
 
             // Assert
-            Assert.Equal(expected, result.Any());
+            Assert.Equal(expected, result.Count > 0);
         }
 
         [Fact]
