@@ -1,0 +1,48 @@
+﻿@page "/service-support/users/new"
+@using Dfe.Complete.Constants
+@using Dfe.Complete.Utils
+@using Dfe.Complete.Models
+@model Dfe.Complete.Pages.Projects.ServiceSupport.Users.CreateUserModel
+@{
+    Layout = "ServiceSupport/_ServiceSupportLayout";
+    ViewData["Title"] = "Add a new user";
+}
+<div class="govuk-grid-column-two-thirds">   
+    <partial name="_ErrorSummary" model="null"/>
+    <h1 class="govuk-heading-l">
+        Add a new user
+    </h1>
+
+    <p>Users can only sign in to the application when they have a valid DfE Microsoft account.</p>
+    <p>Users require an account in the application to record who works on what and to control what features they can access, which is added here.</p>
+
+    <form method="post" novalidate>
+        <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">User details</legend>
+        <govuk-input input-class="govuk-input--width-10" asp-for="@Model.FirstName">
+            <govuk-input-label class="govuk-label--m">First name</govuk-input-label>
+        </govuk-input>
+        <govuk-input input-class="govuk-input--width-10" asp-for="@Model.LastName">
+            <govuk-input-label class="govuk-label--m">Last name</govuk-input-label>
+        </govuk-input> 
+        <govuk-input input-class="govuk-input--width-20" asp-for="@Model.Email">
+            <govuk-input-label class="govuk-label--m">Email address</govuk-input-label>
+        </govuk-input>
+        <govuk-radios asp-for="@Model.Team">
+            <govuk-radios-fieldset>
+                <govuk-radios-fieldset-legend is-page-heading="false" class="govuk-fieldset__legend--l">
+                    User team
+                </govuk-radios-fieldset-legend>
+                @foreach (var team in Model.AvailableTeams)
+                {
+                    var description = team.ToDisplayDescription();
+                    var selected = Model.Team == team;
+                    <govuk-radios-item value="@team" checked="@selected">@description</govuk-radios-item>
+                }
+            </govuk-radios-fieldset>
+        </govuk-radios>
+        <div class="govuk-button-group">
+            <button type="submit" formnovalidate="formnovalidate" class="govuk-button" data-module="govuk-button" data-prevent-double-click="true">Save and return</button>
+            <a class="govuk-link" href="@RouteConstants.ServiceSupportUsers">Cancel</a>
+        </div>
+    </form>
+</div>

@@ -49,6 +49,7 @@ See the [full commit history](https://github.com/DFE-Digital/complete-conversion
 
 - Add service support - view users table
 - Add API end point for creating user
+- Add ability to create a user
 
 ### Changed
 - Group reference number links to the group on "About the project"
