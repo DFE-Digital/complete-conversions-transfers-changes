@@ -17,7 +17,7 @@ namespace Dfe.Complete.Domain.Tests.Enums
         [InlineData(NoteTaskIdentifier.RedactAndSendDocuments, "redact_and_send_documents", "Redact and send documents")]
         [InlineData(NoteTaskIdentifier.ConfirmProposedCapacityOfTheAcademy, "proposed_capacity_of_the_academy", "Confirm the proposed capacity of the academy")]
         [InlineData(NoteTaskIdentifier.ConfirmTransferHasAuthorityToProceed, "confirm_this_transfer_has_authority_to_proceed", "Confirm this transfer has authority to proceed")]
-        
+        [InlineData(NoteTaskIdentifier.ChurchSupplementalAgreement, "church_supplemental_agreement", "Church supplemental agreement")]
         public void NoteTaskIdentifier_ShouldHaveCorrectDescription(NoteTaskIdentifier identifier, string expectedDescription, string expectedDisplayExpectation)
         {
             // Act
