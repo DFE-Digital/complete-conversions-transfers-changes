@@ -5,25 +5,29 @@ namespace Dfe.Complete.Services.Project;
 
 public class ProjectService : IProjectService
 {
-    public List<string> GetTransferProjectCompletionValidationResult(DateOnly? SignificantDate, TransferTaskListViewModel taskList)
+    public List<string> GetTransferProjectCompletionValidationResult(DateOnly? SignificantDate, bool SignificantDateProvisional, TransferTaskListViewModel taskList)
     {
-        TransferCompletionModel transferCompletionModel = new();
+        TransferCompletionModel transferCompletionModel = new()
+        {
+            ConversionOrTransferDate = SignificantDate,
+            IsConversionOrTransferDateProvisional = SignificantDateProvisional,
+            ConfirmThisTransferHasAuthorityToProceed = taskList.ConfirmThisTransferHasAuthorityToProceed,
+            ConfirmDateAcademyTransferred = taskList.ConfirmDateAcademyTransferred,
+            DeclarationOfExpenditureCertificate = taskList.DeclarationOfExpenditureCertificate
+        };
 
-        transferCompletionModel.ConversionOrTransferDate = SignificantDate;        
-        transferCompletionModel.ConfirmThisTransferHasAuthorityToProceed = taskList.ConfirmThisTransferHasAuthorityToProceed;
-        transferCompletionModel.ConfirmDateAcademyTransferred = taskList.ConfirmDateAcademyTransferred;
-        transferCompletionModel.DeclarationOfExpenditureCertificate = taskList.DeclarationOfExpenditureCertificate;          
-       
         return transferCompletionModel.Validate();
     }
 
-    public List<string> GetConversionProjectCompletionValidationResult(DateOnly? SignificantDate, ConversionTaskListViewModel taskList)
+    public List<string> GetConversionProjectCompletionValidationResult(DateOnly? SignificantDate, bool SignificantDateProvisional, ConversionTaskListViewModel taskList)
     {
-        ConversionCompletionModel conversionCompletionModel = new();
-
-        conversionCompletionModel.ConversionOrTransferDate = SignificantDate;        
-        conversionCompletionModel.ConfirmAllConditionsHaveBeenMet = taskList.ConfirmAllConditionsHaveBeenMet;
-        conversionCompletionModel.ConfirmDateAcademyOpened = taskList.ConfirmDateAcademyOpened;
+        ConversionCompletionModel conversionCompletionModel = new()
+        {
+            ConversionOrTransferDate = SignificantDate,
+            IsConversionOrTransferDateProvisional = SignificantDateProvisional,
+            ConfirmAllConditionsHaveBeenMet = taskList.ConfirmAllConditionsHaveBeenMet,
+            ConfirmDateAcademyOpened = taskList.ConfirmDateAcademyOpened
+        };
 
         return conversionCompletionModel.Validate();
     }

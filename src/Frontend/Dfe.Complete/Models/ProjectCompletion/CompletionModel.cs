@@ -3,5 +3,6 @@
 public class CompletionModel
 {
     public DateOnly? ConversionOrTransferDate { get; set; }
-    protected bool DateConfirmedAndInThePast  => ConversionOrTransferDate.HasValue && ConversionOrTransferDate <= DateOnly.FromDateTime(DateTime.Today);
+    public bool IsConversionOrTransferDateProvisional { get; set; }
+    protected bool DateConfirmedAndInThePast  => !IsConversionOrTransferDateProvisional && (ConversionOrTransferDate.HasValue && ConversionOrTransferDate <= DateOnly.FromDateTime(DateTime.Today));
 }

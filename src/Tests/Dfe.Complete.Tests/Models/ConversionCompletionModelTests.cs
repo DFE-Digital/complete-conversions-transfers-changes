@@ -54,6 +54,7 @@ namespace Dfe.Complete.Tests.Models
         {
             // Arrange            
             var statusCompleted = TaskListStatus.Completed;
+
             _testClass.ConversionOrTransferDate = PreviousMonthDate;
             _testClass.ConfirmDateAcademyOpened = statusCompleted;
             _testClass.ConfirmAllConditionsHaveBeenMet = statusCompleted;
@@ -63,6 +64,26 @@ namespace Dfe.Complete.Tests.Models
 
             // Assert
             Assert.Empty(result);
+        }
+
+        [Theory]
+        [InlineData(true, true)]
+        [InlineData(false, false)]
+        public void Test_When_TasksConditionMet_ConversionDateIsPastDate_WithProvisionalState(bool Provisional, bool expected)
+        {
+            // Arrange            
+            var statusCompleted = TaskListStatus.Completed;
+            
+            _testClass.IsConversionOrTransferDateProvisional = Provisional;
+            _testClass.ConversionOrTransferDate = PreviousMonthDate;
+            _testClass.ConfirmDateAcademyOpened = statusCompleted;
+            _testClass.ConfirmAllConditionsHaveBeenMet = statusCompleted;
+
+            // Act
+            var result = _testClass.Validate();
+
+            // Assert            
+            Assert.Equal(expected, result.Count > 0);
         }
     }
 }

@@ -29,7 +29,6 @@ using NSubstitute;
 using System;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using WireMock.Admin.Mappings;
 using Xunit;
 
 public class CompleteProjectModelTests
@@ -75,6 +74,7 @@ public class CompleteProjectModelTests
             .With(p => p.Type, Domain.Enums.ProjectType.Transfer)
             .With(p => p.SignificantDate, DateOnly.FromDateTime(DateTime.Today))
             .With(p => p.TasksDataId, new TaskDataId(Guid.NewGuid()))
+            .With(p => p.SignificantDateProvisional, false)
             .Create();
 
         UserDto? userDto = new UserDto { Team = "service_support" };
@@ -94,7 +94,7 @@ public class CompleteProjectModelTests
         sender.Send(Arg.Any<GetKeyContactsForProjectQuery>(), Arg.Any<CancellationToken>())
            .Returns(Result<KeyContactDto>.Success(fixture.Create<KeyContactDto>()));
 
-        projectService.GetTransferProjectCompletionValidationResult(Arg.Any<DateOnly?>(), Arg.Any<TransferTaskListViewModel>())
+        projectService.GetTransferProjectCompletionValidationResult(Arg.Any<DateOnly?>(), Arg.Any<bool>(), Arg.Any<TransferTaskListViewModel>())
             .Returns(new List<string>());  
 
         // Act
@@ -144,6 +144,7 @@ public class CompleteProjectModelTests
             .With(p => p.Id, projectId)
             .With(p => p.Type, Domain.Enums.ProjectType.Conversion)
             .With(p => p.SignificantDate, DateOnly.FromDateTime(DateTime.Today))
+            .With(p => p.SignificantDateProvisional, false)
             .With(p => p.TasksDataId, new TaskDataId(Guid.NewGuid()))
             .Create();
 
@@ -164,7 +165,7 @@ public class CompleteProjectModelTests
         sender.Send(Arg.Any<GetKeyContactsForProjectQuery>(), Arg.Any<CancellationToken>())
            .Returns(Result<KeyContactDto>.Success(fixture.Create<KeyContactDto>()));
 
-        projectService.GetConversionProjectCompletionValidationResult(Arg.Any<DateOnly?>(), Arg.Any<ConversionTaskListViewModel>())
+        projectService.GetConversionProjectCompletionValidationResult(Arg.Any<DateOnly?>(), Arg.Any<bool>(), Arg.Any<ConversionTaskListViewModel>())
             .Returns(new List<string>());       
 
         // Act
@@ -214,6 +215,7 @@ public class CompleteProjectModelTests
             .With(p => p.Id, projectId)
             .With(p => p.Type, Domain.Enums.ProjectType.Transfer)
             .With(p => p.SignificantDate, DateOnly.FromDateTime(DateTime.Today))
+            .With(p => p.SignificantDateProvisional, false)
             .With(p => p.TasksDataId, new TaskDataId(Guid.NewGuid()))
             .Create();
 
@@ -234,7 +236,7 @@ public class CompleteProjectModelTests
         sender.Send(Arg.Any<GetKeyContactsForProjectQuery>(), Arg.Any<CancellationToken>())
            .Returns(Result<KeyContactDto>.Success(fixture.Create<KeyContactDto>()));
 
-        projectService.GetTransferProjectCompletionValidationResult(Arg.Any<DateOnly?>(), Arg.Any<TransferTaskListViewModel>())
+        projectService.GetTransferProjectCompletionValidationResult(Arg.Any<DateOnly?>(), Arg.Any<bool>(), Arg.Any<TransferTaskListViewModel>())
             .Returns(new List<string> { "validation message" });       
 
         // Act
@@ -287,6 +289,7 @@ public class CompleteProjectModelTests
             .With(p => p.Id, projectId)
             .With(p => p.Type, Domain.Enums.ProjectType.Conversion)
             .With(p => p.SignificantDate, DateOnly.FromDateTime(DateTime.Today))
+            .With(p => p.SignificantDateProvisional, false)
             .With(p => p.TasksDataId, new TaskDataId(Guid.NewGuid()))
             .Create();
 
@@ -307,7 +310,7 @@ public class CompleteProjectModelTests
         sender.Send(Arg.Any<GetKeyContactsForProjectQuery>(), Arg.Any<CancellationToken>())
            .Returns(Result<KeyContactDto>.Success(fixture.Create<KeyContactDto>()));
 
-        projectService.GetConversionProjectCompletionValidationResult(Arg.Any<DateOnly?>(), Arg.Any<ConversionTaskListViewModel>())
+        projectService.GetConversionProjectCompletionValidationResult(Arg.Any<DateOnly?>(), Arg.Any<bool>(), Arg.Any<ConversionTaskListViewModel>())
             .Returns(new List<string> { "validation message" });
 
         // Act

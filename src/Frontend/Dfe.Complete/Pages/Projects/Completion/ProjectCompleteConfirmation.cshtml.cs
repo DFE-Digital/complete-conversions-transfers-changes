@@ -64,14 +64,14 @@ public class CompleteProjectModel(ISender sender, IProjectService projectService
             return RedirectToProjectTaskList();
         }
 
-        var validationResult = projectService.GetTransferProjectCompletionValidationResult(Project.SignificantDate, taskList);
+        var validationResult = projectService.GetTransferProjectCompletionValidationResult(Project.SignificantDate, Project.SignificantDateProvisional ?? true, taskList);
         return await HandleProjectCompletionAsync(validationResult);
     }   
 
     private async Task<IActionResult> CompleteConversionProjectAsync()
     {
         var taskList = ConversionTaskListViewModel.Create(ConversionTaskData, Project, KeyContacts);
-        var validationResult = projectService.GetConversionProjectCompletionValidationResult(Project.SignificantDate, taskList);
+        var validationResult = projectService.GetConversionProjectCompletionValidationResult(Project.SignificantDate, Project.SignificantDateProvisional ?? true, taskList);
 
         return await HandleProjectCompletionAsync(validationResult);
     }

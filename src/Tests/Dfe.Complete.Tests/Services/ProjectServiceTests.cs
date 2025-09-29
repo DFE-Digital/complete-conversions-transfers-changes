@@ -11,21 +11,29 @@ namespace Dfe.Complete.Tests.Services
         private DateOnly LastMonthDate = DateOnly.FromDateTime(DateTime.Now.AddMonths(months: -1));
 
         [Theory]        
-        [InlineData(TaskListStatus.NotApplicable)]
-        [InlineData(TaskListStatus.NotStarted)]
-        [InlineData(TaskListStatus.InProgress)]
-        public void GetTransferProjectCompletionResult_InValidData_ShouldReturn_Invalid__With_ValidationMessages(TaskListStatus taskListStatus)
+        [InlineData(TaskListStatus.NotApplicable, TaskListStatus.NotApplicable, TaskListStatus.NotStarted)]
+        [InlineData(TaskListStatus.NotStarted, TaskListStatus.NotStarted, TaskListStatus.NotStarted)]
+        [InlineData(TaskListStatus.InProgress, TaskListStatus.InProgress, TaskListStatus.NotStarted)]
+        [InlineData(TaskListStatus.NotApplicable, TaskListStatus.NotApplicable, TaskListStatus.InProgress)]
+        [InlineData(TaskListStatus.NotStarted, TaskListStatus.NotStarted, TaskListStatus.InProgress)]
+        [InlineData(TaskListStatus.InProgress, TaskListStatus.InProgress, TaskListStatus.InProgress)]
+        public void GetTransferProjectCompletionResult_InValidData_ShouldReturn_Invalid__With_ValidationMessages
+        (
+            TaskListStatus taskListStatusAuthorityToProceed,
+            TaskListStatus taskListStatusAcademyTransferred,
+            TaskListStatus taskListStatusExpenditureCertificate
+        )
         {            
             // Arrange           
             var taskList = new TransferTaskListViewModel
             {
-                ConfirmThisTransferHasAuthorityToProceed = taskListStatus,
-                ConfirmDateAcademyTransferred = taskListStatus,
-                DeclarationOfExpenditureCertificate = taskListStatus
+                ConfirmThisTransferHasAuthorityToProceed = taskListStatusAuthorityToProceed,
+                ConfirmDateAcademyTransferred = taskListStatusAcademyTransferred,
+                DeclarationOfExpenditureCertificate = taskListStatusExpenditureCertificate
             };            
              
             // Act
-            var result = projectServiceMock.GetTransferProjectCompletionValidationResult(NextMonthDate, taskList);
+            var result = projectServiceMock.GetTransferProjectCompletionValidationResult(NextMonthDate, false, taskList);
 
             // Assert            
             Assert.Contains(ValidationConstants.TransferDateInPast, result);
@@ -33,6 +41,25 @@ namespace Dfe.Complete.Tests.Services
             Assert.Contains(ValidationConstants.AuthorityToProceedComplete, result);
             Assert.Contains(ValidationConstants.ExpenditureCertificateComplete, result);
         }
+
+        [Fact]       
+        public void GetTransferProjectCompletionResult_DateIsProvisional_ShouldReturn_Invalid__With_ValidationMessages()
+        {
+            // Arrange           
+            var taskList = new TransferTaskListViewModel
+            {
+                ConfirmThisTransferHasAuthorityToProceed = TaskListStatus.Completed,
+                ConfirmDateAcademyTransferred = TaskListStatus.Completed,
+                DeclarationOfExpenditureCertificate = TaskListStatus.Completed
+            };
+
+            // Act
+            var result = projectServiceMock.GetTransferProjectCompletionValidationResult(NextMonthDate, true, taskList);
+
+            // Assert            
+            Assert.Contains(ValidationConstants.TransferDateInPast, result);            
+        }
+
 
         [Theory]
         [InlineData(TaskListStatus.Completed)]        
@@ -47,7 +74,7 @@ namespace Dfe.Complete.Tests.Services
             };
 
             // Act
-            var result = projectServiceMock.GetTransferProjectCompletionValidationResult(LastMonthDate, taskList);
+            var result = projectServiceMock.GetTransferProjectCompletionValidationResult(LastMonthDate, false, taskList);
 
             // Assert                    
             Assert.DoesNotContain(ValidationConstants.TransferDateInPast, result);
@@ -70,7 +97,7 @@ namespace Dfe.Complete.Tests.Services
             };
 
             // Act
-            var result = projectServiceMock.GetConversionProjectCompletionValidationResult(NextMonthDate, taskList);
+            var result = projectServiceMock.GetConversionProjectCompletionValidationResult(NextMonthDate, false, taskList);
 
             // Assert           
             Assert.Contains(ValidationConstants.ConversionDateInPast, result);
@@ -90,12 +117,30 @@ namespace Dfe.Complete.Tests.Services
             };
 
             // Act
-            var result = projectServiceMock.GetConversionProjectCompletionValidationResult(LastMonthDate, taskList);
+            var result = projectServiceMock.GetConversionProjectCompletionValidationResult(LastMonthDate, false, taskList);
 
             // Assert            
             Assert.DoesNotContain(ValidationConstants.ConversionDateInPast, result);
             Assert.DoesNotContain(ValidationConstants.AllConditionsMetComplete, result);
             Assert.DoesNotContain(ValidationConstants.AcademyOpenedDateComplete, result);            
         }
+
+        [Fact]
+        public void GetConversionProjectCompletionResult_DateIsProvisional_ShouldReturn_Invalid__With_ValidationMessages()
+        {
+            // Arrange           
+            var taskList = new ConversionTaskListViewModel
+            {
+                ConfirmAllConditionsHaveBeenMet = TaskListStatus.Completed,
+                ConfirmDateAcademyOpened = TaskListStatus.Completed                
+            };
+
+            // Act
+            var result = projectServiceMock.GetConversionProjectCompletionValidationResult(LastMonthDate, true, taskList);
+
+            // Assert            
+            Assert.Contains(ValidationConstants.ConversionDateInPast, result);
+        }
+
     }
 }
