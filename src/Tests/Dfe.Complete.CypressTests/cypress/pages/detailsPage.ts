@@ -8,6 +8,11 @@ export class DetailsPage extends BasePage {
         return this;
     }
 
+    setSectionCounter(index: number) {
+        cy.wrap(index).as("sectionCounter");
+        return this;
+    }
+
     hasSectionItem() {
         cy.wrap(-1).as("summaryCounter");
         cy.wrap(-1).as("reasonCounter");

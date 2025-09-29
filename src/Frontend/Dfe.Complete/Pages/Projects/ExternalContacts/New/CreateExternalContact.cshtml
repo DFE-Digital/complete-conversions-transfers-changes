@@ -76,7 +76,7 @@
                     <govuk-input-error-message>@(ErrorService.GetErrorMessage(phone))</govuk-input-error-message>
                 }
             </govuk-input>
-            <govuk-radios name="@primaryprojectcontact" id="@primaryprojectcontact" asp-for="@externalContactInput.IsPrimaryProjectContact">
+            <govuk-radios name="@primaryprojectcontact" id="@(primaryprojectcontact)-fieldset" asp-for="@externalContactInput.IsPrimaryProjectContact">
                 <govuk-radios-fieldset>
                     <govuk-radios-fieldset-legend class="govuk-fieldset__legend--m">
                         Is this person the primary project contact for this organisation?
