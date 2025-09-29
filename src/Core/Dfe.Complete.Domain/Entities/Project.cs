@@ -467,6 +467,22 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
             RemoveNote(noteId);
         }
     }
+    
+    public void RemoveContact(ContactId id)
+    {
+        var contact = Contacts.FirstOrDefault(x => x.Id == id) ?? throw new NotFoundException($"No contact found with Id {id.Value}");
+        Contacts.Remove(contact);
+    }
+    
+    public void RemoveAllContacts()
+    {
+        // Create new id so we don't copy by reference as otherwise the list changes as we delete each contact
+        var contactIds = Contacts.Select(contact => contact.Id).ToList();
+        foreach (var contactId in contactIds)
+        {
+            RemoveContact(contactId);
+        }
+    }
 
     public void AddAcademyUrn(Urn urn)
     {
