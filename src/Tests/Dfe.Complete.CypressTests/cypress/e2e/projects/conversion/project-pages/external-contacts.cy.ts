@@ -97,7 +97,7 @@ describe("Add external contacts tests:", () => {
         cy.acceptCookies();
         cy.visit(`projects/${projectId}/external-contacts`);
     });
-    contacts.forEach((contact) => {
+    for (const contact of contacts) {
         it(`Add someone else - '${contact.organisation}' contact type`, () => {
             Logger.log(`Add '${contact.organisation}' contact`);
 
@@ -132,7 +132,7 @@ describe("Add external contacts tests:", () => {
                 page.summaryShows("Primary contact at organisation?").hasValue(contact.primaryContact);
             }
         });
-    });
+    }
 
     it("Add headteacher contact type", () => {
         Logger.log("Add Headteacher contact");
