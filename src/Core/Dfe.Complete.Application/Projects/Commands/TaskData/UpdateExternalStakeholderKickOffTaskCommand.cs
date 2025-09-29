@@ -19,7 +19,7 @@ namespace Dfe.Complete.Application.Projects.Commands.TaskData
         DateOnly? SignificantDate,
         string? UserEmail) : IRequest;
 
-    public class UpdateExternalStakeholderKickOffTaskHandler(
+    internal class UpdateExternalStakeholderKickOffTaskHandler(
         ICompleteRepository<Project> projectRepository,
         ITaskDataReadRepository taskDataReadRepository,
         ITaskDataWriteRepository taskDataWriteRepository,

@@ -11,7 +11,7 @@ namespace Dfe.Complete.Application.Projects.Commands.TaskData
     public record UpdateConfirmAcademyOpenedDateTaskCommand(TaskDataId TaskDataId, 
         DateOnly? AcademyOpenedDate) : IRequest<Result<bool>>;
 
-    public class UpdateConfirmAcademyOpenedDateTaskCommandHandler(
+    internal class UpdateConfirmAcademyOpenedDateTaskCommandHandler(
         ITaskDataReadRepository taskDataReadRepository,
         ITaskDataWriteRepository taskDataWriteRepository)
         : IRequestHandler<UpdateConfirmAcademyOpenedDateTaskCommand, Result<bool>>
