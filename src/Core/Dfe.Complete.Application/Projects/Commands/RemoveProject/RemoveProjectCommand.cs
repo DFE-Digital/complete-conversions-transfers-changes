@@ -36,7 +36,7 @@ namespace Dfe.Complete.Application.Projects.Commands.RemoveProject
 
             try
             {
-                var project = await projectRepository.Query().Include(p => p.Notes)
+                var project = await projectRepository.Query().Include(p => p.Notes).Include(c => c.Contacts)
                     .FirstOrDefaultAsync(x => x.Urn == request.Urn, cancellationToken);
 
                 if (project == null)
@@ -45,6 +45,7 @@ namespace Dfe.Complete.Application.Projects.Commands.RemoveProject
                 }
 
                 project.RemoveAllNotes();
+                project.RemoveAllContacts();
                 await projectRepository.UpdateAsync(project, cancellationToken);
 
                 if (project is { TasksDataType: Domain.Enums.TaskType.Conversion, TasksDataId: not null })

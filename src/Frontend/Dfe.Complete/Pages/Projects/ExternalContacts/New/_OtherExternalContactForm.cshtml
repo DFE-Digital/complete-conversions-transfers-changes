@@ -97,7 +97,7 @@
         }
     </govuk-radios-fieldset>
 </govuk-radios>
-<govuk-radios name="@primaryprojectcontact" id="@primaryprojectcontact" asp-for="@Model.IsPrimaryProjectContact">
+<govuk-radios name="@primaryprojectcontact" id="@(primaryprojectcontact)-fieldset" asp-for="@Model.IsPrimaryProjectContact">
     <govuk-radios-fieldset>
         <govuk-radios-fieldset-legend class="govuk-fieldset__legend--m">
             Is this person the primary project contact for this organisation?
@@ -115,4 +115,3 @@
 
     </govuk-radios-fieldset>
 </govuk-radios>
-
