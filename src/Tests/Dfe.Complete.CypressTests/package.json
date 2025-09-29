@@ -34,7 +34,7 @@
     "csv-stringify": "6.4.6",
     "cypress": "14.4.1",
     "cypress-axe": "1.6.0",
-    "cypress-localstorage-commands": "2.2.7",
+    "cypress-localstorage-commands": "2.2.8",
     "cypress-multi-reporters": "1.6.4",
     "cypress-slack-reporter": "1.5.4",
     "eslint": "8.48.0",
