@@ -9,6 +9,8 @@ using Dfe.Complete.Application.Projects.Models;
 using Dfe.Complete.Application.Projects.Queries.GetConversionTasksData;
 using Dfe.Complete.Application.Projects.Queries.GetProject;
 using Dfe.Complete.Application.Projects.Queries.GetTransferTasksData;
+using Dfe.Complete.Application.Users.Queries.GetUser;
+using Dfe.Complete.Domain.Constants;
 using Dfe.Complete.Domain.ValueObjects;
 using Dfe.Complete.Models;
 using Dfe.Complete.Pages.Projects.Completion;
@@ -25,7 +27,9 @@ using Microsoft.Extensions.Logging;
 using Moq;
 using NSubstitute;
 using System;
+using System.Security.Claims;
 using System.Threading.Tasks;
+using WireMock.Admin.Mappings;
 using Xunit;
 
 public class CompleteProjectModelTests
@@ -42,12 +46,29 @@ public class CompleteProjectModelTests
     )
     {
         // Arrange
+        var userId = "00000000-0000-0000-0000-000000001234";
+
+        var claimsPrincipal = new ClaimsPrincipal(new ClaimsIdentity(
+           [
+               new Claim("objectidentifier", userId),
+               new Claim(CustomClaimTypeConstants.UserId, userId)
+           ]));
+
         var projectId = new ProjectId(Guid.NewGuid());
+
+        var httpContext = new DefaultHttpContext { User = claimsPrincipal };
+        var tempData = new TempDataDictionary(httpContext, Mock.Of<ITempDataProvider>());
 
         CompleteProjectModel testClass = new CompleteProjectModel(sender, projectService, logger)
         {
-            ProjectId = projectId.Value.ToString()
-        };
+            ProjectId = projectId.Value.ToString(),
+            CurrentUserTeam = Domain.Enums.ProjectTeam.ServiceSupport,
+            PageContext = new PageContext
+            {
+                HttpContext = httpContext
+            },
+            TempData = tempData
+        };       
 
         var projectDto = fixture.Build<ProjectDto>()
             .With(p => p.Id, projectId)
@@ -56,10 +77,16 @@ public class CompleteProjectModelTests
             .With(p => p.TasksDataId, new TaskDataId(Guid.NewGuid()))
             .Create();
 
+        UserDto? userDto = new UserDto { Team = "service_support" };
+        var userResult = Result<UserDto?>.Success(userDto);
+
         var successResult = Result<ProjectDto?>.Success(projectDto);           
 
         sender.Send(Arg.Any<GetProjectByIdQuery>(), Arg.Any<CancellationToken>())
             .Returns(successResult);
+
+        sender.Send(Arg.Any<GetUserByAdIdQuery>(), Arg.Any<CancellationToken>())
+            .Returns(userResult);
 
         sender.Send(Arg.Any<GetTransferTasksDataByIdQuery>(), Arg.Any<CancellationToken>())
             .Returns(Result<TransferTaskDataDto>.Success(fixture.Create<TransferTaskDataDto>()));
@@ -68,7 +95,7 @@ public class CompleteProjectModelTests
            .Returns(Result<KeyContactDto>.Success(fixture.Create<KeyContactDto>()));
 
         projectService.GetTransferProjectCompletionValidationResult(Arg.Any<DateOnly?>(), Arg.Any<TransferTaskListViewModel>())
-            .Returns(new List<string>());     
+            .Returns(new List<string>());  
 
         // Act
         var result = await testClass.OnPostAsync();
@@ -91,10 +118,26 @@ public class CompleteProjectModelTests
     {
         // Arrange
         var projectId = new ProjectId(Guid.NewGuid());
+        var userId = "00000000-0000-0000-0000-000000001234";
+
+        var claimsPrincipal = new ClaimsPrincipal(new ClaimsIdentity(
+           [
+               new Claim("objectidentifier", userId),
+               new Claim(CustomClaimTypeConstants.UserId, userId)
+           ]));
+
+        var httpContext = new DefaultHttpContext { User = claimsPrincipal };
+        var tempData = new TempDataDictionary(httpContext, Mock.Of<ITempDataProvider>());
 
         CompleteProjectModel testClass = new CompleteProjectModel(sender, projectService, logger)
         {
-            ProjectId = projectId.Value.ToString()
+            ProjectId = projectId.Value.ToString(),
+            CurrentUserTeam = Domain.Enums.ProjectTeam.ServiceSupport,
+            PageContext = new PageContext
+            {
+                HttpContext = httpContext
+            },
+            TempData = tempData
         };
 
         var projectDto = fixture.Build<ProjectDto>()
@@ -104,10 +147,16 @@ public class CompleteProjectModelTests
             .With(p => p.TasksDataId, new TaskDataId(Guid.NewGuid()))
             .Create();
 
+        UserDto? userDto = new UserDto { Team = "service_support" };
+        var userResult = Result<UserDto?>.Success(userDto);
+
         var successResult = Result<ProjectDto?>.Success(projectDto);
 
         sender.Send(Arg.Any<GetProjectByIdQuery>(), Arg.Any<CancellationToken>())
             .Returns(successResult);
+
+        sender.Send(Arg.Any<GetUserByAdIdQuery>(), Arg.Any<CancellationToken>())
+          .Returns(userResult);
 
         sender.Send(Arg.Any<GetConversionTasksDataByIdQuery>(), Arg.Any<CancellationToken>())
             .Returns(Result<ConversionTaskDataDto>.Success(fixture.Create<ConversionTaskDataDto>()));
@@ -138,20 +187,27 @@ public class CompleteProjectModelTests
     )
     {
         // Arrange
+        var userId = "00000000-0000-0000-0000-000000001234";
+
+        var claimsPrincipal = new ClaimsPrincipal(new ClaimsIdentity(
+           [
+               new Claim("objectidentifier", userId),
+               new Claim(CustomClaimTypeConstants.UserId, userId)
+           ]));
+
         var projectId = new ProjectId(Guid.NewGuid());
 
-        var httpContext = new DefaultHttpContext();
+        var httpContext = new DefaultHttpContext { User = claimsPrincipal };
         var tempData = new TempDataDictionary(httpContext, Mock.Of<ITempDataProvider>());
        
         CompleteProjectModel testClass = new CompleteProjectModel(sender, projectService, logger)
         {
             ProjectId = projectId.Value.ToString(),
             TempData = tempData,
-        };
-
-        testClass.PageContext = new PageContext
-        {
-            HttpContext = httpContext
+            PageContext = new PageContext
+            {
+                HttpContext = httpContext
+            },
         };
 
         var projectDto = fixture.Build<ProjectDto>()
@@ -163,8 +219,14 @@ public class CompleteProjectModelTests
 
         var successResult = Result<ProjectDto?>.Success(projectDto);
 
+        UserDto? userDto = new UserDto { Team = "service_support" };
+        var userResult = Result<UserDto?>.Success(userDto);
+
         sender.Send(Arg.Any<GetProjectByIdQuery>(), Arg.Any<CancellationToken>())
             .Returns(successResult);
+
+        sender.Send(Arg.Any<GetUserByAdIdQuery>(), Arg.Any<CancellationToken>())
+          .Returns(userResult);
 
         sender.Send(Arg.Any<GetTransferTasksDataByIdQuery>(), Arg.Any<CancellationToken>())
             .Returns(Result<TransferTaskDataDto>.Success(fixture.Create<TransferTaskDataDto>()));
@@ -198,21 +260,28 @@ public class CompleteProjectModelTests
     )
     {
         // Arrange
+        var userId = "00000000-0000-0000-0000-000000001234";
+
+        var claimsPrincipal = new ClaimsPrincipal(new ClaimsIdentity(
+           [
+               new Claim("objectidentifier", userId),
+               new Claim(CustomClaimTypeConstants.UserId, userId)
+           ]));
+
         var projectId = new ProjectId(Guid.NewGuid());
 
-        var httpContext = new DefaultHttpContext();
+        var httpContext = new DefaultHttpContext { User = claimsPrincipal };
         var tempData = new TempDataDictionary(httpContext, Mock.Of<ITempDataProvider>());
 
         CompleteProjectModel testClass = new CompleteProjectModel(sender, projectService, logger)
         {
             ProjectId = projectId.Value.ToString(),
             TempData = tempData,
-        };
-
-        testClass.PageContext = new PageContext
-        {
-            HttpContext = httpContext
-        };
+            PageContext = new PageContext
+            {
+                HttpContext = httpContext
+            },
+        };       
 
         var projectDto = fixture.Build<ProjectDto>()
             .With(p => p.Id, projectId)
@@ -221,10 +290,16 @@ public class CompleteProjectModelTests
             .With(p => p.TasksDataId, new TaskDataId(Guid.NewGuid()))
             .Create();
 
+        UserDto? userDto = new UserDto { Team = "service_support" };
+        var userResult = Result<UserDto?>.Success(userDto);
+
         var successResult = Result<ProjectDto?>.Success(projectDto);
 
         sender.Send(Arg.Any<GetProjectByIdQuery>(), Arg.Any<CancellationToken>())
             .Returns(successResult);
+
+        sender.Send(Arg.Any<GetUserByAdIdQuery>(), Arg.Any<CancellationToken>())
+         .Returns(userResult);
 
         sender.Send(Arg.Any<GetConversionTasksDataByIdQuery>(), Arg.Any<CancellationToken>())
             .Returns(Result<ConversionTaskDataDto>.Success(fixture.Create<ConversionTaskDataDto>()));

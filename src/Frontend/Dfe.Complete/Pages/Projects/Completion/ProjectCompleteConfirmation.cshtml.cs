@@ -17,12 +17,32 @@ public class CompleteProjectModel(ISender sender, IProjectService projectService
 
     public async override Task<IActionResult> OnGetAsync()
     {
-        await UpdateCurrentProject();
-        return Page();
+        if(TempData.ContainsKey("ShowProjectCompleteConfirmation"))
+        {
+            TempData.Remove("ShowProjectCompleteConfirmation");
+            await UpdateCurrentProject();
+            return Page();
+        }
+
+        return RedirectToProjectPage();
     }
 
     public async Task<IActionResult> OnPostAsync()
     {
+        await UpdateCurrentProject();
+        await SetCurrentUserTeamAsync();
+
+        if (!UserHasEditAccess())
+        {
+            TempData.SetNotification(
+                NotificationType.Error,
+                "Important",
+                "You are not authorised to perform this action."
+            );
+
+            return Redirect(string.Format(RouteConstants.ProjectAbout, ProjectId));
+        }
+
         await UpdateCurrentProject();
         await GetProjectTaskDataAsync();
         await GetKeyContactForProjectsAsyc();
@@ -96,6 +116,12 @@ public class CompleteProjectModel(ISender sender, IProjectService projectService
     private IActionResult RedirectToProjectCompletePage()
     {
         var url = string.Format(RouteConstants.ProjectComplete, ProjectId);
+        TempData.Add("ShowProjectCompleteConfirmation", true);
+        return Redirect(url);
+    }
+    private IActionResult RedirectToProjectPage()
+    {
+        var url = string.Format(RouteConstants.Project, ProjectId);
         return Redirect(url);
     }
 }
