@@ -134,6 +134,83 @@ describe("Add external contacts tests:", () => {
         });
     });
 
+    it("Add headteacher contact type", () => {
+        Logger.log("Add Headteacher contact");
+        externalContactsPage.clickButton("Add contact");
+
+        externalContactsAddPage
+            .selectHeadteacher()
+            .saveAndContinue()
+            .withName("Mr Headteacher")
+            .withEmail("headteacher@test.com")
+            .withPersonIsPrimaryContact("No")
+            .saveAndContinue();
+
+        Logger.log("Check headteacher contact");
+        externalContactsPage
+            .containsSuccessBannerWithMessage("Contact added")
+            .setContactItemByRoleHeading("Headteacher")
+            .hasContactItem()
+            .summaryShows("Name")
+            .hasValue("Mr Headteacher")
+            .summaryShows("Email")
+            .hasValue("headteacher@test.com")
+            .summaryShows("Primary contact at organisation?")
+            .hasValue("No");
+    });
+
+    it("Add incoming trust CEO contact type", () => {
+        Logger.log("Add Incoming trust CEO contact");
+        externalContactsPage.clickButton("Add contact");
+
+        externalContactsAddPage
+            .selectIncomingTrustCEO()
+            .saveAndContinue()
+            .withName("Ms CEO")
+            .withEmail("ceo@test.com")
+            .withPhone("01234567894")
+            .withPersonIsPrimaryContact("Yes")
+            .saveAndContinue();
+
+        Logger.log("Check incoming trust CEO contact");
+
+        externalContactsPage
+            .containsSuccessBannerWithMessage("Contact added")
+            .setContactItemByRoleHeading("CEO")
+            .hasContactItem()
+            .summaryShows("Name")
+            .hasValue("Ms CEO")
+            .summaryShows("Email")
+            .hasValue("ceo@test.com")
+            .summaryShows("Phone")
+            .hasValue("01234567894")
+            .summaryShows("Primary contact at organisation?")
+            .hasValue("Yes");
+    });
+
+    it("Add chair of governors contact type", () => {
+        Logger.log("Add Chair of governors");
+        externalContactsPage.clickButton("Add contact");
+        externalContactsAddPage
+            .selectChairOfGovernors()
+            .saveAndContinue()
+            .withName("Mrs Chair")
+            .withEmail("chair@test.com")
+            .saveAndContinue();
+
+        Logger.log("Check chair of governors contact");
+        externalContactsPage
+            .containsSuccessBannerWithMessage("Contact added")
+            .setContactItemByRoleHeading("Chair of governors")
+            .hasContactItem()
+            .summaryShows("Name")
+            .hasValue("Mrs Chair")
+            .summaryShows("Email")
+            .hasValue("chair@test.com")
+            .summaryShows("Primary contact at organisation?")
+            .hasValue("No");
+    });
+
     it("Check accessibility across pages", () => {
         checkAccessibilityAcrossPages();
     });

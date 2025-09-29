@@ -4,6 +4,21 @@ class ExternalContactsPage extends DetailsPage {
     setContactItem(index: number) {
         return this.setSectionCounter(index - 1);
     }
+
+    setContactItemByRoleHeading(role: string) {
+        cy.getByClass(this.sectionItemClass).each(($el, index) => {
+            cy.wrap($el)
+                .find("h3")
+                .then(($h3) => {
+                    if ($h3.text().trim() === role) {
+                        cy.wrap(index - 1).as("sectionCounter");
+                        return false; // break
+                    }
+                });
+        });
+        return this;
+    }
+
     containsOrganisationHeading(subHeading: string) {
         cy.get("h3").contains(subHeading);
         return this;
