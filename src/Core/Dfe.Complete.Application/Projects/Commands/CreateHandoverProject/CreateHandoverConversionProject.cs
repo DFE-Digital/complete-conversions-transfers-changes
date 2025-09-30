@@ -30,7 +30,7 @@ public record CreateHandoverConversionProjectCommand(
     [Required] bool? DirectiveAcademyOrder,
     string? AdvisoryBoardConditions,
     string? GroupId = null) : IRequest<ProjectId>;
-
+// TODO it looks like the newly created users have an active directory id? Bit concerning
 public class CreateHandoverConversionProjectCommandHandler(
     IUnitOfWork unitOfWork,
     ICompleteRepository<Project> projectRepository,
@@ -85,9 +85,9 @@ public class CreateHandoverConversionProjectCommandHandler(
                 false,
                 request.DirectiveAcademyOrder ?? false,
                 request.AdvisoryBoardDate!.Value,
-                request.AdvisoryBoardConditions ?? "",
-                string.Empty,
-                string.Empty,
+                request.AdvisoryBoardConditions ?? null,
+                null,
+                null,
                 groupId,
                 null,
                 user.Id,
@@ -95,6 +95,9 @@ public class CreateHandoverConversionProjectCommandHandler(
                 null,
                 string.Empty,
                 localAuthorityId);
+
+            project.IncomingTrustSharepointLink = null;
+            project.EstablishmentSharepointLink = null;
 
             project.State = ProjectState.Inactive;
 
@@ -212,7 +215,8 @@ public class CreateHandoverConversionProjectCommandHandler(
     protected async Task<Region> GetRegionForUrn(int urn, CancellationToken cancellationToken)
     {
         var establishment = await sender.Send(new GetGiasEstablishmentByUrnQuery(new Urn(urn)), cancellationToken);
-        if (!establishment.IsSuccess
+        if (!establishment.IsSuccess || establishment.Value == null)
+            throw new NotFoundException($"No establishment could be found for Urn: {urn}.");
         var region = (establishment.Value.RegionCode?.ToEnumFromChar<Region>()) ?? throw new NotFoundException($"No region could be found for establishment with Urn: {urn}.",
                 nameof(urn));
         return region;
