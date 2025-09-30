@@ -11,7 +11,6 @@ using Dfe.Complete.Domain.ValueObjects;
 using Dfe.Complete.Extensions;
 using Microsoft.AspNetCore.Authorization;
 using GovUK.Dfe.CoreLibs.Utilities.Extensions;
-using Microsoft.AspNetCore.Mvc.ViewFeatures;
 
 namespace Dfe.Complete.Pages.Projects.TaskList.Tasks;
 
