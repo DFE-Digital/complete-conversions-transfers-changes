@@ -12,7 +12,7 @@
     @if (isConversion)
     {
         <div class="govuk-hint">
-            <p>The deadline for meeting all conditions is in the email you got from the SOPU (Schools Operational Practice Unit) team. All conditions must be met before the deadline or the school will not be able to convert on 1 September 2002.</p>
+            <p>The deadline for meeting all conditions is in the email you got from the SOPU (Schools Operational Practice Unit) team. All conditions must be met before the deadline or the school will not be able to convert on @Model.Project.SignificantDate.ToDateString().</p>
             <govuk-details>
                 <govuk-details-summary>
                     <span class="govuk-details__summary-text">How to check all conditions have been met</span>
