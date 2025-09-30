@@ -303,7 +303,7 @@
                 </ol>
             </div>
             <partial name="Projects/TaskList/_CompleteProject" model="Model" />
-            @if(Model.Project.DirectiveAcademyOrder == true && Model.Project.State != ProjectState.DaoRevoked)
+            @if (projectPermissionService.UserCanDaoRevocation(Model.Project, Model.CurrentUserTeam, User))
             {
                 <div class="govuk-grid-row" id="revoke_a_directive_academy_order">
                     <div class="govuk-grid-row">
