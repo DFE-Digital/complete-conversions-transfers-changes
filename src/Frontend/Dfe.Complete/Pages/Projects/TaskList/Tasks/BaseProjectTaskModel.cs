@@ -11,6 +11,7 @@ using Dfe.Complete.Domain.ValueObjects;
 using Dfe.Complete.Extensions;
 using Microsoft.AspNetCore.Authorization;
 using GovUK.Dfe.CoreLibs.Utilities.Extensions;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
 
 namespace Dfe.Complete.Pages.Projects.TaskList.Tasks;
 
@@ -68,5 +69,9 @@ public class BaseProjectTaskModel(ISender sender, IAuthorizationService authoriz
         }
 
         return Redirect(string.Format(RouteConstants.ProjectAddTaskNote, ProjectId, TaskIdentifier.ToDescription()));
+    }
+    public void SetTaskSuccessNotification()
+    {
+        TempData.SetNotification(NotificationType.Success, "Success", "Task updated successfully");
     }
 }
