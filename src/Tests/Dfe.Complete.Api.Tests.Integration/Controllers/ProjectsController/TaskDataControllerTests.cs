@@ -10,6 +10,7 @@ using GovUK.Dfe.CoreLibs.Testing.Mocks.WebApplicationFactory;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace Dfe.Complete.Api.Tests.Integration.Controllers.ProjectsController
 {
@@ -534,7 +535,7 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers.ProjectsController
             command.CheckCertificate = true;
             command.Saved = false;
             command.NotApplicable = false;
-            command.DateReceived = new DateTime(2025, 1, 1);
+            command.DateReceived = new DateTime(2025, 1, 1, 0, 0, 0, DateTimeKind.Utc);
 
             // Act
             await tasksDataClient.UpdateDeclarationOfExpenditureCertificateTaskAsync(command, default);
@@ -570,7 +571,7 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers.ProjectsController
             command.CheckCertificate = true;
             command.Saved = false;
             command.NotApplicable = false;
-            command.DateReceived = new DateTime(2025, 1, 1);
+            command.DateReceived = new DateTime(2025, 1, 1, 0, 0, 0, DateTimeKind.Utc);
 
             // Act
             await tasksDataClient.UpdateDeclarationOfExpenditureCertificateTaskAsync(command, default);
