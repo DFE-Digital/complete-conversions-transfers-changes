@@ -30,13 +30,16 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.CommercialTransferAgreement
 
         [BindProperty]
         public Guid? TasksDataId { get; set; }
+
         [BindProperty]
         public ProjectType? Type { get; set; }
+
         public override async Task<IActionResult> OnGetAsync()
         {
             await base.OnGetAsync();
             Type = Project.Type;
             TasksDataId = Project.TasksDataId?.Value;
+
             if (Project.Type == ProjectType.Transfer)
             {
                 Agreed = TransferTaskData.CommercialTransferAgreementConfirmAgreed;
@@ -55,6 +58,7 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.CommercialTransferAgreement
             }
             return Page();
         }
+
         public async Task<IActionResult> OnPost()
         {
             await Sender.Send(new UpdateCommercialAgreementTaskCommand(new TaskDataId(TasksDataId.GetValueOrDefault())!, Type, Agreed, Signed, QuestionsReceived, QuestionsChecked, Saved));

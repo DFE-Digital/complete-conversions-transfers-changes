@@ -54,6 +54,6 @@ public enum NoteTaskIdentifier
     ConfirmTransferHasAuthorityToProceed = 12,
 
     [Description("commercial_transfer_agreement")]
-    [DisplayDescription("commercial transfer agreement")]
+    [DisplayDescription("Commercial transfer agreement")]
     CommercialTransferAgreement = 13
 }
