@@ -11,10 +11,5 @@ namespace Dfe.Complete.Extensions
 			tempData["NotificationTitle"] = notificationTitle;
 			tempData["NotificationMessage"] = notificationMessage;
 		}
-
-		public static void SetTaskSuccessNotification(this ITempDataDictionary tempData)
-		{
-			tempData.SetNotification(NotificationType.Success, "Success", "Task updated successfully");
-		}
 	}
 }

@@ -2,7 +2,6 @@ using Dfe.Complete.Application.Projects.Commands.TaskData;
 using Dfe.Complete.Constants;
 using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Domain.ValueObjects;
-using Dfe.Complete.Extensions;
 using Dfe.Complete.Pages.Projects.TaskList.Tasks.HandoverWithDeliveryOfficerTask;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -53,7 +52,7 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.DeedOfNovationAndVariationT
         {
             await sender.Send(new UpdateDeedOfNovationAndVariationTaskCommand(
                 new TaskDataId(TasksDataId.GetValueOrDefault())!, Received, Cleared, SignedOutgoingTrust, SignedIncomingTrust, Saved, SignedSecretaryState, SaveAfterSign));
-            TempData.SetTaskSuccessNotification();
+            SetTaskSuccessNotification();
             return Redirect(string.Format(RouteConstants.ProjectTaskList, ProjectId));
         }
     }
