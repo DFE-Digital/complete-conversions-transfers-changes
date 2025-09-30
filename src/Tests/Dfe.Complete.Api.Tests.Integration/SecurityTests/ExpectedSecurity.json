@@ -242,7 +242,7 @@
     },
     {
       "Controller": "ProjectsController",
-      "Action": "UpdatedCompleteAsync",
+      "Action": "UpdateCompleteAsync",
       "ExpectedSecurity": "Authorize: Policy=CanReadWrite"
     },
     {
