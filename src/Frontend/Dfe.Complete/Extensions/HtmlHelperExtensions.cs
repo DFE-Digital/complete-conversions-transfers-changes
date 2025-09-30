@@ -14,13 +14,10 @@ namespace Dfe.Complete.Extensions
         IDictionary<string, string>? htmlAttributes = null,
         bool htmlEncode = true)
         {
-            string text = input ?? string.Empty;
-
-            // Normalize line endings to \n
+            string text = input ?? string.Empty; 
             text = text.Replace("\r\n", "\n").Replace("\r", "\n");
 
-            // Split into paragraphs on 2+ newlines
-            string[] paragraphs = Regex.Split(text, "\n{2,}");
+            string[] paragraphs = Regex.Split(text, "\n{2,}",RegexOptions.None, TimeSpan.FromMilliseconds(100));
 
             var sb = new StringBuilder(text.Length + 32);
             string attributes = BuildAttributes(htmlAttributes);
@@ -29,10 +26,8 @@ namespace Dfe.Complete.Extensions
             {
                 string paragraph = paragraphs[i];
 
-                // Encode for safety unless explicitly disabled
                 string content = htmlEncode ? WebUtility.HtmlEncode(paragraph) : paragraph;
 
-                // Single newlines become <br />
                 content = content.Replace("\n", "<br />\n");
 
                 sb
@@ -49,7 +44,7 @@ namespace Dfe.Complete.Extensions
                 }
             }
 
-            return new HtmlString(sb.ToString()); ;
+            return new HtmlString(sb.ToString());
         }
 
         private static string BuildAttributes(IDictionary<string, string>? attrs)
