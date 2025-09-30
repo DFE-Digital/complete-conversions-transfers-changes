@@ -627,7 +627,7 @@ namespace Dfe.Complete.Api.Controllers
         /// </summary>
         /// <param name="request">The update command.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
-        //[Authorize(Policy = "CanReadWrite")]
+        [Authorize(Policy = "CanReadWrite")]
         [HttpPatch("project/Complete")]
         [SwaggerResponse(204, "Completed project.")]
         [SwaggerResponse(400, "Invalid request data.")]
