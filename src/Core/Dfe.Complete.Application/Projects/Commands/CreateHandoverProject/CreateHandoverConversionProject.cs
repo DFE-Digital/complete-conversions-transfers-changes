@@ -14,22 +14,45 @@ using Dfe.Complete.Application.Projects.Queries.GetGiasEstablishment;
 using Dfe.Complete.Application.Projects.Queries.GetProject;
 using Dfe.Complete.Application.ProjectGroups.Interfaces;
 using Dfe.Complete.Application.Common.Interfaces;
+using Dfe.Complete.Domain.Validators;
 using Microsoft.Extensions.Logging;
 
 namespace Dfe.Complete.Application.Projects.Commands.CreateHandoverProject;
 
 public record CreateHandoverConversionProjectCommand(
-    [Required] int? Urn,
-    [Required] int? IncomingTrustUkprn,
-    [Required] DateOnly? AdvisoryBoardDate,
-    [Required] DateOnly? ProvisionalConversionDate,
-    [Required] string CreatedByEmail,
+    [Required]
+    [Urn]
+    int? Urn,
+
+    [Required]
+    [Ukprn]
+    int? IncomingTrustUkprn,
+
+    [Required]
+    [PastDate (AllowToday = true)]
+    DateOnly? AdvisoryBoardDate,
+
+    [Required]
+    [FirstOfMonthDate]
+    DateOnly? ProvisionalConversionDate,
+
+    [Required]
+    [InternalEmail]
+    string CreatedByEmail,
+
     [Required] string CreatedByFirstName,
+
     [Required] string CreatedByLastName,
+
     [Required] int? PrepareId,
+
     [Required] bool? DirectiveAcademyOrder,
+
     string? AdvisoryBoardConditions,
+
+    [GroupReferenceNumber]
     string? GroupId = null) : IRequest<ProjectId>;
+
 // TODO it looks like the newly created users have an active directory id? Bit concerning
 public class CreateHandoverConversionProjectCommandHandler(
     IUnitOfWork unitOfWork,
@@ -125,35 +148,6 @@ public class CreateHandoverConversionProjectCommandHandler(
 
     private async Task ValidateRequest(CreateHandoverConversionProjectCommand request, CancellationToken cancellationToken)
     {
-        // Pure validation logic should be in domain layer. Move on next ticket
-        // Validate URN format (6 digits)
-        if (request.Urn < 100000 || request.Urn > 999999)
-            throw new ValidationException("URN must be a 6-digit integer");
-
-        // Validate UKPRN format (8 digits)
-        if (request.IncomingTrustUkprn < 10000000 || request.IncomingTrustUkprn > 19999999)
-            throw new ValidationException("Incoming trust UKPRN must be an 8 digit integer beginning with 1");
-
-        // Validate advisory board date is in the past
-        if (request.AdvisoryBoardDate!.Value > DateOnly.FromDateTime(DateTime.Today))
-            throw new ValidationException("Advisory board date must be in the past");
-
-        // Validate provisional conversion date is first day of month
-        if (request.ProvisionalConversionDate!.Value.Day != 1)
-            throw new ValidationException("Provisional conversion date must be the first day of the month");
-
-        // Validate email domain
-        if (!request.CreatedByEmail.EndsWith("@education.gov.uk", StringComparison.OrdinalIgnoreCase))
-            throw new ValidationException("Created by email must be from @education.gov.uk domain");
-
-        // Validate group ID format if provided
-        if (!string.IsNullOrEmpty(request.GroupId))
-        {
-            var groupIdPattern = @"^GRP_\d{8}$";
-            if (!Regex.IsMatch(request.GroupId, groupIdPattern, RegexOptions.None, TimeSpan.FromMilliseconds(100)))
-                throw new ValidationException("Group ID must match format GRP_XXXXXXXX (8 digits)");
-        }
-
         // Check if URN already exists in active/inactive conversion projects
         var existingProject = await new ProjectUrnQuery(new Urn((int)request.Urn!))
             .Apply(new StateQuery([ProjectState.Active, ProjectState.Inactive])

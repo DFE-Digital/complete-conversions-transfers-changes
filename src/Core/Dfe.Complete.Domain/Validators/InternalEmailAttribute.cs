@@ -1,28 +1,26 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using Dfe.Complete.Domain.Constants;
 
-namespace Dfe.Complete.Validators;
+namespace Dfe.Complete.Domain.Validators;
 
-[AttributeUsage(AttributeTargets.Property)]
-public class InternalEmailAttribute : ValidationAttribute
+[AttributeUsage(AttributeTargets.Property | AttributeTargets.Parameter)]
+public sealed class InternalEmailAttribute : ValidationAttribute
 {
+    public InternalEmailAttribute()
+        => ErrorMessage = ValidationConstants.InternalEmailValidationMessage;
+
     protected override ValidationResult? IsValid(object? value, ValidationContext validationContext)
     {
         var link = value as string;
 
         if (string.IsNullOrEmpty(link))
-        {
             return ValidationResult.Success;
-        }
 
         var emailValidator = new EmailAddressAttribute();
-        
-        if (!link.EndsWith("@education.gov.uk") || !emailValidator.IsValid(value))
-        {
-            var errorMessage = "Email must be @education.gov.uk";
 
-            return new ValidationResult(errorMessage);
-        }
-        
+        if (!link.EndsWith("@education.gov.uk") || !emailValidator.IsValid(value))
+            return new ValidationResult(ErrorMessage);
+
         return ValidationResult.Success;
     }
 }

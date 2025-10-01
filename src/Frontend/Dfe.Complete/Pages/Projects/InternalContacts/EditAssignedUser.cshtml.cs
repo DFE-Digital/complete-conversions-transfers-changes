@@ -6,7 +6,7 @@ using Dfe.Complete.Extensions;
 using Dfe.Complete.Models;
 using Dfe.Complete.Services;
 using Dfe.Complete.Utils;
-using Dfe.Complete.Validators;
+using Dfe.Complete.Domain.Validators;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
