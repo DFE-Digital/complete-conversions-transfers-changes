@@ -304,6 +304,11 @@
       "Controller": "TasksDataController",
       "Action": "UpdateConfirmAllConditionsMetTaskAsync",
       "ExpectedSecurity": "Authorize: Policy=CanReadWriteUpdate"
+    },
+    {
+      "Controller": "TasksDataController",
+      "Action": "UpdateCommercialTransferAgreementTaskAsync",
+      "ExpectedSecurity": "Authorize: Policy=CanReadWriteUpdate"
     }
   ]
 }
