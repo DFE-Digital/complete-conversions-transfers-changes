@@ -19,6 +19,7 @@ Security in case of vulnerabilities.
 ### Added
 
 - Added `Confirm all condition has been met` task for conversion projects.
+- Added `Update Commercial Transfer Agreement task for conversion and transfer projects.
 
 ### Changed
 
