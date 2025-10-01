@@ -247,6 +247,57 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
         return project;
     }
 
+
+    public static Project CreateHandoverConversionProject(
+        ProjectId id,
+        Urn urn,
+        Guid tasksDataId,
+        DateOnly significantDate,
+        Ukprn incomingTrustUkprn,
+        Region? region,
+        bool hasAcademyOrderBeenIssued,
+        DateOnly advisoryBoardDate,
+        string? advisoryBoardConditions,
+        ProjectGroupId? groupId,
+        UserId regionalDeliveryOfficerId,
+        Guid localAuthorityId)
+    {
+        var now = DateTime.UtcNow;
+
+        var project = new Project(
+            id,
+            urn,
+            now,
+            now,
+            TaskType.Conversion,
+            ProjectType.Conversion,
+            tasksDataId,
+            significantDate,
+            true,
+            incomingTrustUkprn,
+            null,
+            region,
+            false,
+            hasAcademyOrderBeenIssued,
+            advisoryBoardDate,
+            advisoryBoardConditions,
+            null,
+            null,
+            null,
+            groupId,
+            null,
+            regionalDeliveryOfficerId,
+            null,
+            null,
+            null,
+            null,
+            localAuthorityId);
+
+        project.AddDomainEvent(new ProjectCreatedEvent(project));
+
+        return project;
+    }
+
     public static Project CreateTransferProject
     (
         ProjectId id,
@@ -467,13 +518,13 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
             RemoveNote(noteId);
         }
     }
-    
+
     public void RemoveContact(ContactId id)
     {
         var contact = Contacts.FirstOrDefault(x => x.Id == id) ?? throw new NotFoundException($"No contact found with Id {id.Value}");
         Contacts.Remove(contact);
     }
-    
+
     public void RemoveAllContacts()
     {
         // Create new id so we don't copy by reference as otherwise the list changes as we delete each contact
@@ -488,12 +539,12 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
     {
         AcademyUrn = urn;
     }
-    
+
     public void UpdateSignificantDate(DateOnly date)
     {
         SignificantDate = date;
     }
-    
+
     public void AddSignificantDateHistory(SignificantDateHistory significantDateHistory)
     {
         SignificantDateHistories.Add(new SignificantDateHistory

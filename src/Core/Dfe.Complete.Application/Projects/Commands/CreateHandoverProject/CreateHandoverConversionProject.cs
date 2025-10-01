@@ -53,7 +53,6 @@ public record CreateHandoverConversionProjectCommand(
     [GroupReferenceNumber]
     string? GroupId = null) : IRequest<ProjectId>;
 
-// TODO it looks like the newly created users have an active directory id? Bit concerning
 public class CreateHandoverConversionProjectCommandHandler(
     IUnitOfWork unitOfWork,
     ICompleteRepository<Project> projectRepository,
@@ -84,7 +83,7 @@ public class CreateHandoverConversionProjectCommandHandler(
 
             ProjectGroupId? groupId = null;
             if (group != null) groupId = group.Id;
-            if (group == null && request.GroupId != null) groupId = await CreateProjectGroup(request.GroupId, request.IncomingTrustUkprn!.Value, cancellationToken);
+            if (group == null && !string.IsNullOrWhiteSpace(request.GroupId)) groupId = await CreateProjectGroup(request.GroupId, request.IncomingTrustUkprn!.Value, cancellationToken);
 
             var user = await GetOrCreateUser(request, region, cancellationToken);
 
@@ -92,31 +91,18 @@ public class CreateHandoverConversionProjectCommandHandler(
             var conversionTaskId = Guid.NewGuid();
             var conversionTask = new ConversionTasksData(new TaskDataId(conversionTaskId), now, now);
 
-            // Create the project in inactive state
-            var project = Project.CreateConversionProject(
+            var project = Project.CreateHandoverConversionProject(
                 projectId,
                 new Urn(urn),
-                now,
-                now,
-                TaskType.Conversion,
-                ProjectType.Conversion,
                 conversionTaskId,
                 request.ProvisionalConversionDate!.Value,
-                true,
                 new Ukprn(request.IncomingTrustUkprn!.Value),
                 region,
-                false,
                 request.DirectiveAcademyOrder ?? false,
                 request.AdvisoryBoardDate!.Value,
                 request.AdvisoryBoardConditions ?? null,
-                null,
-                null,
                 groupId,
-                null,
                 user.Id,
-                null,
-                null,
-                string.Empty,
                 localAuthorityId);
 
             project.IncomingTrustSharepointLink = null;
@@ -156,9 +142,7 @@ public class CreateHandoverConversionProjectCommandHandler(
             .FirstOrDefaultAsync(cancellationToken);
 
         if (existingProject != null)
-        {
             throw new ValidationException($"URN {request.Urn} already exists in active/inactive conversion projects");
-        }
     }
 
     private static void ValidateGroupId(ProjectGroupDto group, int trustUkprn)
@@ -232,7 +216,6 @@ public class CreateHandoverConversionProjectCommandHandler(
 
     protected async Task<ProjectGroupId> CreateProjectGroup(string groupId, int incomingTrustUkprn, CancellationToken cancellationToken)
     {
-        // Consider merging the logic in Get/Create/Validate group with the logic in UpdateProjectCommandBase - move to application service
         var id = new ProjectGroupId(Guid.NewGuid());
         var createdGroup = new ProjectGroup
         {
