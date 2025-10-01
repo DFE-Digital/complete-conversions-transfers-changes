@@ -5,7 +5,6 @@ using Dfe.Complete.Domain.Interfaces.Repositories;
 using Dfe.Complete.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
-using System.Text.RegularExpressions;
 using Dfe.Complete.Application.Projects.Queries.QueryFilters;
 using Dfe.Complete.Application.Projects.Models;
 using Dfe.Complete.Utils;
@@ -16,6 +15,8 @@ using Dfe.Complete.Application.ProjectGroups.Interfaces;
 using Dfe.Complete.Application.Common.Interfaces;
 using Dfe.Complete.Domain.Validators;
 using Microsoft.Extensions.Logging;
+using Dfe.AcademiesApi.Client.Contracts;
+using Dfe.Complete.Application.Constants;
 
 namespace Dfe.Complete.Application.Projects.Commands.CreateHandoverProject;
 
@@ -55,6 +56,7 @@ public record CreateHandoverConversionProjectCommand(
 
 public class CreateHandoverConversionProjectCommandHandler(
     IUnitOfWork unitOfWork,
+    ITrustsV4Client trustClient,
     ICompleteRepository<Project> projectRepository,
     ICompleteRepository<User> userRepository,
     ICompleteRepository<ConversionTasksData> conversionTaskRepository,
@@ -105,16 +107,6 @@ public class CreateHandoverConversionProjectCommandHandler(
                 user.Id,
                 localAuthorityId);
 
-            project.IncomingTrustSharepointLink = null;
-            project.EstablishmentSharepointLink = null;
-
-            project.State = ProjectState.Inactive;
-
-            if (request.DirectiveAcademyOrder!.Value)
-            {
-                project.DirectiveAcademyOrder = true;
-            }
-
             project.PrepareId = request.PrepareId!.Value;
 
             await conversionTaskRepository.AddAsync(conversionTask, cancellationToken);
@@ -142,12 +134,16 @@ public class CreateHandoverConversionProjectCommandHandler(
             .FirstOrDefaultAsync(cancellationToken);
 
         if (existingProject != null)
-            throw new ValidationException($"URN {request.Urn} already exists in active/inactive conversion projects");
+            throw new ValidationException(string.Format(ValidationConstants.UrnExistsValidationMessage, request.Urn));
+
+        var existingTrust = await trustClient.GetTrustByUkprn2Async(request.IncomingTrustUkprn!.Value.ToString(), cancellationToken);
+
+        if (existingTrust == null)
+            throw new ValidationException(ValidationConstants.NoTrustFoundValidationMessage);
     }
 
     private static void ValidateGroupId(ProjectGroupDto group, int trustUkprn)
     {
-        // Domain layer as pure logic
         if (group.TrustUkprn?.Value != trustUkprn)
             throw new ValidationException($"Trust UKPRN {trustUkprn} is not the same as the group UKPRN for group {group.GroupIdentifier}");
     }
