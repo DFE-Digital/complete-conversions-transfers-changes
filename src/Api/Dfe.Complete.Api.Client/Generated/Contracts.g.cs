@@ -3146,7 +3146,7 @@ namespace Dfe.Complete.Client.Contracts
         ReceiveGrantPaymentCertificate = 14,
 
         [System.Runtime.Serialization.EnumMember(Value = @"CommercialTransferAgreement")]
-        CommercialTransferAgreement = 14,
+        CommercialTransferAgreement = 15,
 
     }
 
