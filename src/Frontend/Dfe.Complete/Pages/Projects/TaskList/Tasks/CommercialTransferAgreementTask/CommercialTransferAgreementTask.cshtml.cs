@@ -61,8 +61,8 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.CommercialTransferAgreement
 
         public async Task<IActionResult> OnPost()
         {
-            await Sender.Send(new UpdateCommercialAgreementTaskCommand(new TaskDataId(TasksDataId.GetValueOrDefault())!, Type, Agreed, Signed, QuestionsReceived, QuestionsChecked, Saved));
-            TempData.SetNotification(NotificationType.Success, "Success", "Task updated successfully");
+            await Sender.Send(new UpdateCommercialAgreementTaskCommand(new TaskDataId(TasksDataId.GetValueOrDefault())!, Type, Agreed, Signed, QuestionsReceived, QuestionsChecked, Saved));            
+            SetTaskSuccessNotification();
             return Redirect(string.Format(RouteConstants.ProjectTaskList, ProjectId));
         }
     }

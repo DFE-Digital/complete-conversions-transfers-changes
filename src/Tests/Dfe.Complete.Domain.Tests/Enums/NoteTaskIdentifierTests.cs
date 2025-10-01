@@ -16,7 +16,7 @@ namespace Dfe.Complete.Domain.Tests.Enums
         [InlineData(NoteTaskIdentifier.DeedOfVariation, "deed_of_variation", "Deed of variation")]
         [InlineData(NoteTaskIdentifier.RedactAndSendDocuments, "redact_and_send_documents", "Redact and send documents")]
         [InlineData(NoteTaskIdentifier.ConfirmProposedCapacityOfTheAcademy, "proposed_capacity_of_the_academy", "Confirm the proposed capacity of the academy")]
-        [InlineData(NoteTaskIdentifier.ConfirmTransferHasAuthorityToProceed, "confirm_this_transfer_has_authority_to_proceed", "Confirm this transfer has authority to proceed")]   
+        [InlineData(NoteTaskIdentifier.ConfirmTransferHasAuthorityToProceed, "conditions_met", "Confirm this transfer has authority to proceed")]   
         [InlineData(NoteTaskIdentifier.DeclarationOfExpenditureCertificate, "declaration_of_expenditure_certificate", "Receive declaration of expenditure certificate")]
         [InlineData(NoteTaskIdentifier.ConfirmAllConditionsMet, "conditions_met", "Confirm all conditions have been met")]
         [InlineData(NoteTaskIdentifier.ReceiveGrantPaymentCertificate, "receive_grant_payment_certificate", "Receive declaration of expenditure certificate")]
