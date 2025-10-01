@@ -20,6 +20,8 @@ Security in case of vulnerabilities.
 - Added `Land Questionnaire` task for conversion project.
 
 - Added `Confirm all condition has been met` task for conversion projects.
+- Added `Dao Revocation` workflow.
+- Configured Cache settings.
 
 ### Changed
 
@@ -43,6 +45,8 @@ See the [full commit history](https://github.com/DFE-Digital/complete-conversion
 - ProjectGroup is created when a project is edited with a new GRN
 - Added Add, Edit and Delete External Contacts for both conversion and transfer projects.
 - Added `Confirm this transfer has authority to proceed` task
+- Added `Confirm the date the academy transferred` task
+
 - Add service support - view users table
 
 ### Changed
