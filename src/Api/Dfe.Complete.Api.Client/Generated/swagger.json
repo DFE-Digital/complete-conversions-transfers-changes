@@ -2557,7 +2557,40 @@
             "description": "Invalid request data."
           },
           "404": {
-            "description": "Project/User not found."
+            "description": "Project not found."
+          }
+        }
+      }
+    },
+    "/v1/TasksData/TaskData/LandQuestionnaire": {
+      "patch": {
+        "tags": [
+          "TasksData"
+        ],
+        "summary": "Confirm conversion project's land questionnaire task updated successfully.",
+        "operationId": "TasksData_UpdateLandQuestionnaireTask",
+        "requestBody": {
+          "x-name": "request",
+          "description": "The update command.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateLandQuestionnaireTaskCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "204": {
+            "description": "Confirm conversion project's land questionnaire task updated successfully."
+          },
+          "400": {
+            "description": "Invalid request data."
+          },
+          "404": {
+            "description": "Project not found."
           }
         }
       }
@@ -6920,6 +6953,31 @@
             "nullable": true
           },
           "confirmToProceed": {
+            "type": "boolean",
+            "nullable": true
+          }
+        }
+      },
+      "UpdateLandQuestionnaireTaskCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "taskDataId": {
+            "$ref": "#/components/schemas/TaskDataId"
+          },
+          "received": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "cleared": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "signed": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "saved": {
             "type": "boolean",
             "nullable": true
           }
