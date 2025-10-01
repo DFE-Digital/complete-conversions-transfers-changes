@@ -19,7 +19,8 @@ namespace Dfe.Complete.Pages.Projects.TaskList
             await SetOutgoingTrustAsync();
             await GetKeyContactForProjectsAsyc();
             await SetCurrentUserTeamAsync();
-            
+            await SetDaoRevocationIfProjectIsDaoRevoked(); 
+
             TransferTaskList = TransferTaskListViewModel.Create(TransferTaskData, Project, KeyContacts);
             ConversionTaskList = ConversionTaskListViewModel.Create(ConversionTaskData, Project, KeyContacts);
             return Page();
