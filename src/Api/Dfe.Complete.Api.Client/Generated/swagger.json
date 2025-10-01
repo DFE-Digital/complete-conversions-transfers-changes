@@ -1991,6 +1991,39 @@
         }
       }
     },
+    "/v1/Projects/project/DaoRevocationDecision": {
+      "patch": {
+        "tags": [
+          "Projects"
+        ],
+        "summary": "Record dao revoation decision for a specific project.",
+        "operationId": "Projects_RecordDaoRevocationDecision",
+        "requestBody": {
+          "x-name": "request",
+          "description": "The update command.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RecordDaoRevocationDecisionCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "204": {
+            "description": "Record dao revocation successfully."
+          },
+          "400": {
+            "description": "Invalid request data."
+          },
+          "404": {
+            "description": "Project/User not found."
+          }
+        }
+      }
+    },
     "/v1/ServiceSupport/LocalAuthority": {
       "post": {
         "tags": [
@@ -2552,6 +2585,39 @@
         "responses": {
           "204": {
             "description": "Confirm transfer project has authority to proceed task updated successfully."
+          },
+          "400": {
+            "description": "Invalid request data."
+          },
+          "404": {
+            "description": "Project/User not found."
+          }
+        }
+      }
+    },
+    "/v1/TasksData/TaskData/ConfirmDateAcademyTransferred": {
+      "patch": {
+        "tags": [
+          "TasksData"
+        ],
+        "summary": "Confirm the date the academy transferred task updated successfully.",
+        "operationId": "TasksData_UpdateConfirmDateAcademyTransferredTask",
+        "requestBody": {
+          "x-name": "request",
+          "description": "The update command.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateConfirmDateAcademyTransferredTaskCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "204": {
+            "description": "Confirm the date the academy transferred task updated successfully."
           },
           "400": {
             "description": "Invalid request data."
@@ -4902,6 +4968,7 @@
           "ConfirmProposedCapacityOfTheAcademy",
           "DeclarationOfExpenditureCertificate",
           "ConfirmTransferHasAuthorityToProceed",
+          "ConfirmDateAcademyTransferred",
           "ConfirmAllConditionsMet",
           "ReceiveGrantPaymentCertificate"
         ],
@@ -4918,6 +4985,7 @@
           "ConfirmProposedCapacityOfTheAcademy",
           "DeclarationOfExpenditureCertificate",
           "ConfirmTransferHasAuthorityToProceed",
+          "ConfirmDateAcademyTransferred",
           "ConfirmAllConditionsMet",
           "ReceiveGrantPaymentCertificate"
         ]
@@ -5411,6 +5479,54 @@
           "VoluntaryDeferral",
           "CommercialTransferAgreement",
           "Academy"
+        ]
+      },
+      "RecordDaoRevocationDecisionCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "projectId": {
+            "$ref": "#/components/schemas/ProjectId"
+          },
+          "decisionMakerRole": {
+            "type": "string"
+          },
+          "userId": {
+            "$ref": "#/components/schemas/UserId"
+          },
+          "reasonNotes": {
+            "type": "object",
+            "x-dictionaryKey": {
+              "$ref": "#/components/schemas/DaoRevokedReason"
+            },
+            "additionalProperties": {
+              "type": "string"
+            }
+          },
+          "ministerName": {
+            "type": "string"
+          },
+          "decisionDate": {
+            "type": "string",
+            "format": "date",
+            "nullable": true
+          }
+        }
+      },
+      "DaoRevokedReason": {
+        "type": "string",
+        "description": "",
+        "x-enumNames": [
+          "SchoolRatedGoodOrOutstanding",
+          "SafeguardingConcernsAddressed",
+          "SchoolClosedOrClosing",
+          "ChangeToGovernmentPolicy"
+        ],
+        "enum": [
+          "SchoolRatedGoodOrOutstanding",
+          "SafeguardingConcernsAddressed",
+          "SchoolClosedOrClosing",
+          "ChangeToGovernmentPolicy"
         ]
       },
       "CreateLocalAuthorityCommand": {
@@ -6958,6 +7074,20 @@
           },
           "confirmToProceed": {
             "type": "boolean",
+            "nullable": true
+          }
+        }
+      },
+      "UpdateConfirmDateAcademyTransferredTaskCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "taskDataId": {
+            "$ref": "#/components/schemas/TaskDataId"
+          },
+          "dateAcademyTransferred": {
+            "type": "string",
+            "format": "date",
             "nullable": true
           }
         }
