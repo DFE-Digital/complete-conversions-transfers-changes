@@ -6,10 +6,10 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.ConfirmTransferHasAuthorityToProceedTask
+namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.ConfirmAllConditionsMetOrTransferAuthorityToProceedTask
 {
-    public class ConfirmTransferHasAuthorityToProceedTaskModel(ISender sender, IAuthorizationService authorizationService, ILogger<ConfirmTransferHasAuthorityToProceedTaskModel> logger)
-    : BaseProjectTaskModel(sender, authorizationService, logger, NoteTaskIdentifier.ConfirmTransferHasAuthorityToProceed)
+    public class ConfirmAllConditionsMetOrTransferAuthorityToProceedTaskModel(ISender sender, IAuthorizationService authorizationService, ILogger<ConfirmAllConditionsMetOrTransferAuthorityToProceedTaskModel> logger)
+    : BaseProjectTaskModel(sender, authorizationService, logger, NoteTaskIdentifier.ConfirmAllConditionsMet)
     {
         public bool? Sent { get; set; }
         [BindProperty(Name = "any-information-changed")]
@@ -18,26 +18,32 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.ConfirmTransferHasAuthority
         [BindProperty(Name = "baseline-sheet-approved")]
         public bool? BaselineSheetApproved { get; set; }
 
-        [BindProperty(Name = "confirm-to-proceed")]
-        public bool? ConfirmToProceed { get; set; }
-
+        [BindProperty(Name = "confirm")]
+        public bool? Confirm { get; set; }
         [BindProperty]
         public Guid? TasksDataId { get; set; }
+        [BindProperty]
+        public ProjectType? Type { get; set; }
         public override async Task<IActionResult> OnGetAsync()
         {
-            await base.OnGetAsync(); 
+            await base.OnGetAsync();
             TasksDataId = Project.TasksDataId?.Value;
+            Type = Project.Type;
             if (Project.Type == ProjectType.Transfer)
             {
+                TaskIdentifier = NoteTaskIdentifier.ConfirmTransferHasAuthorityToProceed;
                 BaselineSheetApproved = TransferTaskData.ConditionsMetBaselineSheetApproved;
                 AnyInformationChanged = TransferTaskData.ConditionsMetCheckAnyInformationChanged;
-                ConfirmToProceed = Project.AllConditionsMet;
-            } 
+            }
+            Confirm = Project.AllConditionsMet;
             return Page();
         }
         public async Task<IActionResult> OnPost()
         {
-            await sender.Send(new UpdateConfirmTransferHasAuthorityToProceedTaskCommand(new TaskDataId(TasksDataId.GetValueOrDefault())!, AnyInformationChanged, BaselineSheetApproved, ConfirmToProceed));
+            await sender.Send(Type == ProjectType.Conversion 
+                ? new UpdateConfirmAllConditionsMetTaskCommand(new ProjectId(Guid.Parse(ProjectId)), Confirm)
+                : new UpdateConfirmTransferHasAuthorityToProceedTaskCommand(
+                    new TaskDataId(TasksDataId.GetValueOrDefault())!, AnyInformationChanged, BaselineSheetApproved, Confirm));
             SetTaskSuccessNotification();
             return Redirect(string.Format(RouteConstants.ProjectTaskList, ProjectId));
         }

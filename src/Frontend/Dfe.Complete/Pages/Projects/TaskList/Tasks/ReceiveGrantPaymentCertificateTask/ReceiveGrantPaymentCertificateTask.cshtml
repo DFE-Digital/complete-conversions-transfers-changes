@@ -1,26 +1,24 @@
-﻿@page "/projects/{projectId}/tasks/declaration_of_expenditure_certificate"
+﻿@page "/projects/{projectId}/tasks/receive_grant_payment_certificate"
 @using Dfe.Complete.Constants
 @using Dfe.Complete.Domain.Enums
 @inject Microsoft.Extensions.Configuration.IConfiguration _configuration
 @inject Dfe.Complete.Services.ErrorService ErrorService
-@model Dfe.Complete.Pages.Projects.TaskList.Tasks.DeclarationOfExpenditureCertificateTask.DeclarationOfExpenditureCertificateTaskModel
+@model Dfe.Complete.Pages.Projects.TaskList.Tasks.ReceiveGrantPaymentCertificateTask.ReceiveGrantPaymentCertificateTaskModel
 @{
     Layout = "_ProjectTaskLayout";
-    ViewData["Title"] = "Receive declaration of expenditure certificate";
+    ViewData["Title"] = "Receive Declaration of expenditure certificate";
 }
 @section TaskHeaderHintSection
 {
     <div class="govuk-hint">
-        <p>Only do this task if the incoming trust got academy transfer grant funding.</p>
-        <p>3 months after the transfer date, remind the trust to complete and return the declaration of expenditure certificate.</p>
+        <p>Remind the school and trust to complete and return the declaration of expenditure certificate.</p>
         <govuk-details>
             <govuk-details-summary>
-                <span class="govuk-details__summary-text">What to do if you have not received the certificate</span>
+                <span class="govuk-details__summary-text">Update the grant assurance spreadsheet</span>
             </govuk-details-summary>
             <govuk-details-text>
-                <p>The incoming trust should send the certificate back to you within 10 days of the first reminder.</p>
-                <p>If they do not, send them another reminder.</p>
-                <p>Remind them every 10 days until they send it back.</p>
+                <p>Regional Casework Services team members must <a href="@_configuration["ExternalLinks:UpdateSupportGrantAssuranceReportSpreadsheet"]" target="_blank">update the support grant assurance report spreadsheet (opens in new tab)</a>.</p>
+                <p>Do not update this grant assurance report spreadsheet if you work in a team in one of the Regions.</p>
             </govuk-details-text>
         </govuk-details>
     </div>
@@ -35,7 +33,9 @@
                 </govuk-checkboxes-fieldset-legend>
                 <govuk-checkboxes-item data-cy="not-applicable" id="not-applicable" asp-for="@Model.NotApplicable" value="true" name="not-applicable" checked="@Model.NotApplicable">
                     <b>Not applicable</b>
-                    <govuk-checkboxes-item-hint><p>No grant was received</p></govuk-checkboxes-item-hint>
+                    <govuk-checkboxes-item-hint>
+                        <p>No grant was received</p>
+                    </govuk-checkboxes-item-hint>
                 </govuk-checkboxes-item>
             </govuk-checkboxes-fieldset>
         </govuk-checkboxes>
@@ -48,11 +48,11 @@
                     </govuk-date-input-fieldset-legend>
                     <govuk-date-input-hint>
                         <p>For example 27 5 2007</p>
-                        @if (ErrorService.HasErrorForKey("received-date"))
-                        {
-                            <govuk-date-input-error-message>@ValidationConstants.ValidDate</govuk-date-input-error-message>
-                        }
                     </govuk-date-input-hint>
+                    @if (ErrorService.HasErrorForKey("received-date"))
+                    {
+                        <govuk-date-input-error-message>@ValidationConstants.ValidDate</govuk-date-input-error-message>
+                    }
                 </govuk-date-input-fieldset>
             </govuk-date-input>
         }
@@ -69,12 +69,12 @@
                 <govuk-checkboxes-item data-cy="check-certificate" id="check-certificate" asp-for="@Model.CheckCertificate" value="true" name="check-certificate" checked="@Model.CheckCertificate">
                     <b>Check the declaration of expenditure certificate is correct</b>
                     <govuk-checkboxes-item-hint>
-                        <p>Make sure the amounts mentioned are accurate. You also need to make sure the grant has been used for allowable expenses and that there is no missing information.</p>
-                        <p>Email <a href="mailto:@_configuration["Emails:CfugrantPaymentsRegionsGroup"]">@_configuration["Emails:CfugrantPaymentsRegionsGroup"]</a> if there are any issues.</p>
+                        <p>Once they have sent it to you, check they've used the right template and there is no missing information.</p>
                         <govuk-details>
-                            <govuk-details-summary>How to check the declaration of expenditure certificate</govuk-details-summary>
+                            <govuk-details-summary>Using the right certificate</govuk-details-summary>
                             <govuk-details-text>
-                                <p>You can read <a href="@_configuration["ExternalLinks:ProcessAndCheckDeclarationOfExpenditureCertificate"]" target="_blank">guidance on how to process and check the declaration of expenditure certificate (opens in new tab)</a> on SharePoint.</p>
+                                <p>If the school only received the £25,000 pre-opening support grant, they need to download and <a href="@_configuration["ExternalLinks:CompleteAcademyConversionsSupportGrantCertificate"]" target="_blank">complete the academy conversions, support grant certificate (opens in new tab)</a>.</p>
+                                <p>If the school or trust received a sponsored grant, they need to <a href="@_configuration["ExternalLinks:CompleteCertificateinAnnex2SponsoredAcademiesFunding"]" target="_blank">complete the certificate in Annex 2 of the Sponsored academies funding - advice for sponsors PDF (opens in a new tab)</a>.</p>
                             </govuk-details-text>
                         </govuk-details>
                     </govuk-checkboxes-item-hint>

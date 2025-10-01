@@ -302,6 +302,11 @@
     },
     {
       "Controller": "TasksDataController",
+      "Action": "UpdateConfirmAllConditionsMetTaskAsync",
+      "ExpectedSecurity": "Authorize: Policy=CanReadWriteUpdate"
+    },
+    {
+      "Controller": "TasksDataController",
       "Action": "UpdateConfirmAcademyOpenedDateTaskAsync",
       "ExpectedSecurity": "Authorize: Policy=CanReadWriteUpdate"
     }

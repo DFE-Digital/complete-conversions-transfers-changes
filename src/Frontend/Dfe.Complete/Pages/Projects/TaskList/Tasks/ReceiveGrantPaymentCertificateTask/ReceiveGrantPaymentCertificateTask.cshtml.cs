@@ -2,14 +2,16 @@ using Dfe.Complete.Application.Projects.Commands.TaskData;
 using Dfe.Complete.Constants;
 using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Domain.ValueObjects;
+using Dfe.Complete.Extensions;
+using Dfe.Complete.Models;
 using Dfe.Complete.Services;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.DeclarationOfExpenditureCertificateTask
+namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.ReceiveGrantPaymentCertificateTask
 {
-    public class DeclarationOfExpenditureCertificateTaskModel(ISender sender, IAuthorizationService authorizationService, ILogger<DeclarationOfExpenditureCertificateTaskModel> logger, ErrorService errorService)
-    : BaseProjectTaskModel(sender, authorizationService, logger, NoteTaskIdentifier.DeclarationOfExpenditureCertificate)
+    public class ReceiveGrantPaymentCertificateTaskModel(ISender sender, IAuthorizationService authorizationService, ILogger<ReceiveGrantPaymentCertificateTaskModel> logger, ErrorService errorService)
+    : BaseProjectTaskModel(sender, authorizationService, logger, NoteTaskIdentifier.ReceiveGrantPaymentCertificate)
     {
         [BindProperty(Name = "not-applicable")]
         public bool? NotApplicable { get; set; }
@@ -31,10 +33,11 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.DeclarationOfExpenditureCer
             await base.OnGetAsync();
             Type = Project.Type;
             TasksDataId = Project.TasksDataId?.Value;
-            NotApplicable = TransferTaskData.DeclarationOfExpenditureCertificateNotApplicable;
-            CheckCertificate = TransferTaskData.DeclarationOfExpenditureCertificateCorrect;
-            ReceivedDate = TransferTaskData.DeclarationOfExpenditureCertificateDateReceived;
-            Saved = TransferTaskData.DeclarationOfExpenditureCertificateSaved;
+
+            NotApplicable = ConversionTaskData.ReceiveGrantPaymentCertificateNotApplicable;
+            CheckCertificate = ConversionTaskData.ReceiveGrantPaymentCertificateCheckCertificate;
+            ReceivedDate = ConversionTaskData.ReceiveGrantPaymentCertificateDateReceived;
+            Saved = ConversionTaskData.ReceiveGrantPaymentCertificateSaveCertificate;
 
             return Page();
         }
@@ -48,7 +51,7 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.DeclarationOfExpenditureCer
                 return Page();
             }
             await sender.Send(new UpdateDeclarationOfExpenditureCertificateTaskCommand(new TaskDataId(TasksDataId.GetValueOrDefault())!, Type, ReceivedDate, NotApplicable, CheckCertificate, Saved));
-            SetTaskSuccessNotification();
+            TempData.SetNotification(NotificationType.Success, "Success", "Task updated successfully");
             return Redirect(string.Format(RouteConstants.ProjectTaskList, ProjectId));
         }
     }
