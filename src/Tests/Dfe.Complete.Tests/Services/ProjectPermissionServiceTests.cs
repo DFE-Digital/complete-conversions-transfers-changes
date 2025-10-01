@@ -24,7 +24,7 @@ namespace Dfe.Complete.Tests.Services
         [InlineData(ProjectState.Completed, ProjectTeam.London, false, false)]
         [InlineData(ProjectState.Active, ProjectTeam.London, true, true)]
         [InlineData(ProjectState.Active, ProjectTeam.London, false, false)]
-        public void UserCanEdit_WhenMatchesCondition_ShouldReturnCorrectResult(ProjectState projectState, ProjectTeam projectTeam, bool isProjectAssignTouser, bool expectedResult)
+        public void UserCanEdit_WhenMatchesCondition_ShouldReturnCorrectResult(ProjectState projectState, ProjectTeam projectTeam, bool isProjectAssignToUser, bool expectedResult)
         {
             // Arrange
             var userId = new UserId(Guid.NewGuid());
@@ -32,11 +32,38 @@ namespace Dfe.Complete.Tests.Services
             var project = new ProjectDto 
             { 
                 State = projectState,
-                AssignedToId = isProjectAssignTouser ? userId : new UserId(Guid.NewGuid())
+                AssignedToId = isProjectAssignToUser ? userId : new UserId(Guid.NewGuid())
             };
              
             // Act
             var result = _service.UserCanEdit(project, projectTeam, userClaimPrincipal);
+
+            // Assert
+            Assert.Equal(expectedResult, result);
+        }
+        [Theory]
+        [InlineData(ProjectState.Active, true, ProjectTeam.ServiceSupport, false, true)]
+        [InlineData(ProjectState.Completed, true, ProjectTeam.ServiceSupport, false, false)]
+        [InlineData(ProjectState.Active, false, ProjectTeam.ServiceSupport, false, false)]
+        [InlineData(ProjectState.Active, true, ProjectTeam.London, true, true)]
+        [InlineData(ProjectState.Active, false, ProjectTeam.London, true, false)]
+        [InlineData(ProjectState.Completed, true, ProjectTeam.London, true, false)]
+        [InlineData(ProjectState.Active, true, ProjectTeam.London, false, false)]
+        public void UserCanDaoRevocation_ShouldReturnCorrectResult(ProjectState projectState,bool directiveAcademyOrder,
+            ProjectTeam projectTeam, bool isProjectAssignToUser, bool expectedResult)
+        {
+            // Arrange
+            var userId = new UserId(Guid.NewGuid());
+            var userClaimPrincipal = CreateUserClaimPrincipal(userId);
+            var project = new ProjectDto
+            {
+                State = projectState,
+                DirectiveAcademyOrder = directiveAcademyOrder,
+                AssignedToId = isProjectAssignToUser ? userId : new UserId(Guid.NewGuid())
+            };
+
+            // Act
+            var result = _service.UserCanDaoRevocation(project, projectTeam, userClaimPrincipal);
 
             // Assert
             Assert.Equal(expectedResult, result);

@@ -19,6 +19,8 @@ Security in case of vulnerabilities.
 ### Added
 
 - Added `Confirm all condition has been met` task for conversion projects.
+- Added `Dao Revocation` workflow.
+- Configured Cache settings.
 - Added `Update Commercial Transfer Agreement task for conversion and transfer projects.
 
 ### Changed
