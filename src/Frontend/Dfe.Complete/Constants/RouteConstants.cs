@@ -69,6 +69,7 @@
         public const string ChangeProjectDateHistory = Project + "/date-history/new";
         public const string ChangeProjectDateHistoryReason = Project + "/date-history/reason";
         public const string ChangeProjectDateHistoryConfirm = Project + "/date-history/reasons/later";
+
         
         public const string ProjectHandoverWithDeliveryOfficerTask = ProjectTaskList + "/handover";
         public const string ProjectStakeholderKickoffTask = ProjectTaskList + "/stakeholder_kick_off";
@@ -103,6 +104,14 @@
         public const string ProjectReceiveDeclarationOfExpenditureCertificateTask = ProjectTaskList + "/receive_grant_payment_certificate";
         public const string ProjectComplete = Project + "/complete";
         public const string ProjectDaoRevocation = Project + "/dao-revocation";
+        public const string ProjectDaoRevocationConfirm = ProjectDaoRevocation + "/confirm";
+        public const string ProjectDaoRevocationReason = ProjectDaoRevocation + "/reasons";
+        public const string ChangeProjectDaoRevocationReason = ProjectDaoRevocationReason + "/change";
+        public const string ProjectDaoRevocationMinister = ProjectDaoRevocation + "/minister";
+        public const string ChangeProjectDaoRevocationMinister = ProjectDaoRevocationMinister + "/change";
+        public const string ProjectDaoRevocationDate = ProjectDaoRevocation + "/date";
+        public const string ChangeProjectDaoRevocationDate = ProjectDaoRevocationDate + "/change";
+        public const string ProjectDaoRevocationCheck = ProjectDaoRevocation + "/check";
         public const string ProjectConfirmOutingTrustCeoDetailsTask = ProjectTaskList + "/confirm_outgoing_trust_ceo_contact";
         public const string ProjectRequestNewURNAndRecordForTheAcademyTask = ProjectTaskList + "/request_new_urn_and_record";
         public const string ProjectCheckAndConfirmAcademyAndTrustFinancialInfoTask = ProjectTaskList + "/check_and_confirm_financial_information";

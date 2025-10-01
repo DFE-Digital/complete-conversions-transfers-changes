@@ -230,6 +230,25 @@ namespace Dfe.Complete.Api.Controllers
         }
 
         /// <summary>
+        /// Confirm the date the academy transferred task updated successfully.
+        /// </summary>
+        /// <param name="request">The update command.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        [Authorize(Policy = "CanReadWriteUpdate")]
+        [HttpPatch]
+        [Route("TaskData/ConfirmDateAcademyTransferred")]
+        [SwaggerResponse(204, "Confirm the date the academy transferred task updated successfully.")]
+        [SwaggerResponse(400, "Invalid request data.")]
+        [SwaggerResponse(404, "Project/User not found.")]
+        public async Task<IActionResult> UpdateConfirmDateAcademyTransferredTaskAsync(
+            [FromBody] UpdateConfirmDateAcademyTransferredTaskCommand request,
+            CancellationToken cancellationToken)
+        {
+            await sender.Send(request, cancellationToken);
+            return NoContent();
+        }
+
+        /// <summary>
         /// Updates confirmation of meeting all conditions met for a conversion project.
         /// </summary>
         /// <param name="request">The update command.</param>
