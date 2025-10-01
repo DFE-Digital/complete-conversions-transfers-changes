@@ -642,6 +642,58 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers.ProjectsController
             Assert.NotNull(existingProject);
             Assert.True(existingProject.AllConditionsMet);
         }
+
+        [Theory]
+        [CustomAutoData(typeof(CustomWebApplicationDbContextFactoryCustomization))]
+        public async Task UpdateConfirmAllConditionsMetTaskAsync_ShouldUpdate_TransferTaskData(
+           CustomWebApplicationDbContextFactory<Program> factory,
+           ITasksDataClient tasksDataClient,
+           UpdateConfirmAllConditionsMetTaskCommand command,
+           IFixture fixture)
+        {
+            // Arrange
+            factory.TestClaims = [new Claim(ClaimTypes.Role, ApiRoles.ReadRole), new Claim(ClaimTypes.Role, ApiRoles.UpdateRole), new Claim(ClaimTypes.Role, ApiRoles.WriteRole)];
+
+            var dbContext = factory.GetDbContext<CompleteContext>();
+
+            var taskData = fixture.Create<ConversionTasksData>();
+            dbContext.ConversionTasksData.Add(taskData);
+
+            var testUser = await dbContext.Users.FirstOrDefaultAsync();
+            var establishment = fixture.Create<Domain.Entities.GiasEstablishment>();
+            var localAuthority = fixture.Create<Domain.Entities.LocalAuthority>();
+            await dbContext.LocalAuthorities.AddAsync(localAuthority);
+            await dbContext.GiasEstablishments.AddAsync(establishment);
+            await dbContext.LocalAuthorities.AddAsync(localAuthority);
+            await dbContext.GiasEstablishments.AddAsync(establishment);
+            var project = fixture.Customize(
+                new ProjectCustomization()
+                {
+                    Id = new Domain.ValueObjects.ProjectId(Guid.NewGuid()),
+                    Urn = establishment.Urn ?? new Domain.ValueObjects.Urn(123456),
+                    LocalAuthorityId = localAuthority.Id,
+                    RegionalDeliveryOfficerId = testUser!.Id,
+                    TasksDataId = taskData.Id,
+                    Type = Domain.Enums.ProjectType.Transfer,
+                    AllConditionsMet = false,
+                    TasksDataType = Domain.Enums.TaskType.Transfer,
+                }
+                ).Create<Domain.Entities.Project>();
+            dbContext.Projects.Add(project);
+
+            await dbContext.SaveChangesAsync();
+            command.ProjectId = new ProjectId { Value = project.Id.Value };
+            command.Confirm = true;
+
+            // Act
+            await tasksDataClient.UpdateConfirmAllConditionsMetTaskAsync(command, default);
+
+            // Assert
+            dbContext.ChangeTracker.Clear(); 
+            var existingProject = await dbContext.Projects.SingleOrDefaultAsync(x => x.Id == project.Id);
+            Assert.NotNull(existingProject);
+            Assert.True(existingProject.AllConditionsMet);
+        }
         
         
         

@@ -209,7 +209,7 @@
       "Controller": "ContactsController",
       "Action": "ListAllContactsForLocalAuthorityAsync",
       "ExpectedSecurity": "Authorize: Policy=CanRead"
-    },    
+    },
     {
       "Controller": "ProjectsController",
       "Action": "GetProjectByIdAsync",
@@ -292,6 +292,11 @@
     },
     {
       "Controller": "TasksDataController",
+      "Action": "UpdateConfirmDateAcademyTransferredTaskAsync",
+      "ExpectedSecurity": "Authorize: Policy=CanReadWriteUpdate"
+    },
+    {
+      "Controller": "TasksDataController",
       "Action": "UpdateDeclarationOfExpenditureCertificateTaskAsync",
       "ExpectedSecurity": "Authorize: Policy=CanReadWriteUpdate"
     },
@@ -303,6 +308,16 @@
     {
       "Controller": "TasksDataController",
       "Action": "UpdateMasterFundingAgreementTaskAsync",
+      "ExpectedSecurity": "Authorize: Policy=CanReadWriteUpdate"
+    },
+    {
+      "Controller": "TasksDataController",
+      "Action": "UpdateConfirmAllConditionsMetTaskAsync",
+      "ExpectedSecurity": "Authorize: Policy=CanReadWriteUpdate"
+    },
+    {
+      "Controller": "ProjectsController",
+      "Action": "RecordDaoRevocationDecisionAsync",
       "ExpectedSecurity": "Authorize: Policy=CanReadWriteUpdate"
     }
   ]

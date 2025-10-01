@@ -33,20 +33,11 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.DeclarationOfExpenditureCer
             await base.OnGetAsync();
             Type = Project.Type;
             TasksDataId = Project.TasksDataId?.Value;
-            if (Project.Type == ProjectType.Transfer)
-            {
-                NotApplicable = TransferTaskData.DeclarationOfExpenditureCertificateNotApplicable;
-                CheckCertificate = TransferTaskData.DeclarationOfExpenditureCertificateCorrect;
-                ReceivedDate = TransferTaskData.DeclarationOfExpenditureCertificateDateReceived;
-                Saved = TransferTaskData.DeclarationOfExpenditureCertificateSaved;
-            }
-            else
-            {
-                NotApplicable = ConversionTaskData.ReceiveGrantPaymentCertificateNotApplicable;
-                CheckCertificate = ConversionTaskData.ReceiveGrantPaymentCertificateCheckCertificate;
-                ReceivedDate = ConversionTaskData.ReceiveGrantPaymentCertificateDateReceived;
-                Saved = ConversionTaskData.ReceiveGrantPaymentCertificateSaveCertificate;
-            }
+            NotApplicable = TransferTaskData.DeclarationOfExpenditureCertificateNotApplicable;
+            CheckCertificate = TransferTaskData.DeclarationOfExpenditureCertificateCorrect;
+            ReceivedDate = TransferTaskData.DeclarationOfExpenditureCertificateDateReceived;
+            Saved = TransferTaskData.DeclarationOfExpenditureCertificateSaved;
+
             return Page();
         }
 

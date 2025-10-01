@@ -1991,6 +1991,39 @@
         }
       }
     },
+    "/v1/Projects/project/DaoRevocationDecision": {
+      "patch": {
+        "tags": [
+          "Projects"
+        ],
+        "summary": "Record dao revoation decision for a specific project.",
+        "operationId": "Projects_RecordDaoRevocationDecision",
+        "requestBody": {
+          "x-name": "request",
+          "description": "The update command.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RecordDaoRevocationDecisionCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "204": {
+            "description": "Record dao revocation successfully."
+          },
+          "400": {
+            "description": "Invalid request data."
+          },
+          "404": {
+            "description": "Project/User not found."
+          }
+        }
+      }
+    },
     "/v1/ServiceSupport/LocalAuthority": {
       "post": {
         "tags": [
@@ -2562,20 +2595,20 @@
         }
       }
     },
-    "/v1/TasksData/TaskData/MasterFundingAgreement": {
+    "/v1/TasksData/TaskData/ConfirmDateAcademyTransferred": {
       "patch": {
         "tags": [
           "TasksData"
         ],
-        "summary": "Updates the mastre funding agreement task Data for conversion or transfer project.",
-        "operationId": "TasksData_UpdateMasterFundingAgreementTask",
+        "summary": "Confirm the date the academy transferred task updated successfully.",
+        "operationId": "TasksData_UpdateConfirmDateAcademyTransferredTask",
         "requestBody": {
           "x-name": "request",
           "description": "The update command.",
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/UpdateMasterFundingAgreementTaskCommand"
+                "$ref": "#/components/schemas/UpdateConfirmDateAcademyTransferredTaskCommand"
               }
             }
           },
@@ -2584,13 +2617,46 @@
         },
         "responses": {
           "204": {
-            "description": "Conversion or transfer's master funding agreement task updated successfully."
+            "description": "Confirm the date the academy transferred task updated successfully."
           },
           "400": {
             "description": "Invalid request data."
           },
           "404": {
             "description": "Project/User not found."
+          }
+        }
+      }
+    },
+    "/v1/TasksData/TaskData/ConfirmAllConditionsMet": {
+      "patch": {
+        "tags": [
+          "TasksData"
+        ],
+        "summary": "Updates confirmation of meeting all conditions met for a conversion project.",
+        "operationId": "TasksData_UpdateConfirmAllConditionsMetTask",
+        "requestBody": {
+          "x-name": "request",
+          "description": "The update command.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateConfirmAllConditionsMetTaskCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "204": {
+            "description": "Confirms all conditions are met successfully."
+          },
+          "400": {
+            "description": "Invalid request data."
+          },
+          "404": {
+            "description": "Project not found."
           }
         }
       }
@@ -4902,7 +4968,9 @@
           "ConfirmProposedCapacityOfTheAcademy",
           "DeclarationOfExpenditureCertificate",
           "ConfirmTransferHasAuthorityToProceed",
-          "MasterFundingAgreement"
+          "ConfirmDateAcademyTransferred",
+          "ConfirmAllConditionsMet",
+          "ReceiveGrantPaymentCertificate"
         ],
         "enum": [
           "Handover",
@@ -4917,7 +4985,9 @@
           "ConfirmProposedCapacityOfTheAcademy",
           "DeclarationOfExpenditureCertificate",
           "ConfirmTransferHasAuthorityToProceed",
-          "MasterFundingAgreement"
+          "ConfirmDateAcademyTransferred",
+          "ConfirmAllConditionsMet",
+          "ReceiveGrantPaymentCertificate"
         ]
       },
       "CreateNoteCommand": {
@@ -5409,6 +5479,54 @@
           "VoluntaryDeferral",
           "CommercialTransferAgreement",
           "Academy"
+        ]
+      },
+      "RecordDaoRevocationDecisionCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "projectId": {
+            "$ref": "#/components/schemas/ProjectId"
+          },
+          "decisionMakerRole": {
+            "type": "string"
+          },
+          "userId": {
+            "$ref": "#/components/schemas/UserId"
+          },
+          "reasonNotes": {
+            "type": "object",
+            "x-dictionaryKey": {
+              "$ref": "#/components/schemas/DaoRevokedReason"
+            },
+            "additionalProperties": {
+              "type": "string"
+            }
+          },
+          "ministerName": {
+            "type": "string"
+          },
+          "decisionDate": {
+            "type": "string",
+            "format": "date",
+            "nullable": true
+          }
+        }
+      },
+      "DaoRevokedReason": {
+        "type": "string",
+        "description": "",
+        "x-enumNames": [
+          "SchoolRatedGoodOrOutstanding",
+          "SafeguardingConcernsAddressed",
+          "SchoolClosedOrClosing",
+          "ChangeToGovernmentPolicy"
+        ],
+        "enum": [
+          "SchoolRatedGoodOrOutstanding",
+          "SafeguardingConcernsAddressed",
+          "SchoolClosedOrClosing",
+          "ChangeToGovernmentPolicy"
         ]
       },
       "CreateLocalAuthorityCommand": {
@@ -6960,46 +7078,28 @@
           }
         }
       },
-      "UpdateMasterFundingAgreementTaskCommand": {
+      "UpdateConfirmDateAcademyTransferredTaskCommand": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
           "taskDataId": {
             "$ref": "#/components/schemas/TaskDataId"
           },
-          "projectType": {
-            "nullable": true,
-            "oneOf": [
-              {
-                "$ref": "#/components/schemas/ProjectType"
-              }
-            ]
-          },
-          "notApplicable": {
-            "type": "boolean",
+          "dateAcademyTransferred": {
+            "type": "string",
+            "format": "date",
             "nullable": true
+          }
+        }
+      },
+      "UpdateConfirmAllConditionsMetTaskCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "projectId": {
+            "$ref": "#/components/schemas/ProjectId"
           },
-          "received": {
-            "type": "boolean",
-            "nullable": true
-          },
-          "cleared": {
-            "type": "boolean",
-            "nullable": true
-          },
-          "signed": {
-            "type": "boolean",
-            "nullable": true
-          },
-          "saved": {
-            "type": "boolean",
-            "nullable": true
-          },
-          "sent": {
-            "type": "boolean",
-            "nullable": true
-          },
-          "signedSecretaryState": {
+          "confirm": {
             "type": "boolean",
             "nullable": true
           }
