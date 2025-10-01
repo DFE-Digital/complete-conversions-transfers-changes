@@ -4903,8 +4903,7 @@
           "DeclarationOfExpenditureCertificate",
           "ConfirmTransferHasAuthorityToProceed",
           "ConfirmAllConditionsMet",
-          "ReceiveGrantPaymentCertificate"
-          "ConfirmTransferHasAuthorityToProceed",
+          "ReceiveGrantPaymentCertificate",
           "CommercialTransferAgreement"
         ],
         "enum": [
@@ -4921,8 +4920,7 @@
           "DeclarationOfExpenditureCertificate",
           "ConfirmTransferHasAuthorityToProceed",
           "ConfirmAllConditionsMet",
-          "ReceiveGrantPaymentCertificate"
-          "ConfirmTransferHasAuthorityToProceed",
+          "ReceiveGrantPaymentCertificate",
           "CommercialTransferAgreement"
         ]
       },

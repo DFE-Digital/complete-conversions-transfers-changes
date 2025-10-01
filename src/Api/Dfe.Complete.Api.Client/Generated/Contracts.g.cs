@@ -3084,7 +3084,6 @@ namespace Dfe.Complete.Client.Contracts
 
         [System.Runtime.Serialization.EnumMember(Value = @"ConfirmTransferHasAuthorityToProceed")]
         ConfirmTransferHasAuthorityToProceed = 11,
-       
 
         [System.Runtime.Serialization.EnumMember(Value = @"ConfirmAllConditionsMet")]
         ConfirmAllConditionsMet = 12,
@@ -3093,7 +3092,7 @@ namespace Dfe.Complete.Client.Contracts
         ReceiveGrantPaymentCertificate = 13,
 
         [System.Runtime.Serialization.EnumMember(Value = @"CommercialTransferAgreement")]
-        CommercialTransferAgreement = 16,
+        CommercialTransferAgreement = 14,
 
     }
 
