@@ -948,6 +948,23 @@ namespace Dfe.Complete.Client.Contracts
         /// <exception cref="CompleteApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task UpdateConfirmTransferHasAuthorityToProceedTaskAsync(UpdateConfirmTransferHasAuthorityToProceedTaskCommand request, System.Threading.CancellationToken cancellationToken);
 
+        /// <summary>
+        /// Updates confirmation of meeting all conditions met for a conversion project.
+        /// </summary>
+        /// <param name="request">The update command.</param>
+        /// <returns>Confirms all conditions are met successfully.</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task UpdateConfirmAllConditionsMetTaskAsync(UpdateConfirmAllConditionsMetTaskCommand request);
+
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>
+        /// Updates confirmation of meeting all conditions met for a conversion project.
+        /// </summary>
+        /// <param name="request">The update command.</param>
+        /// <returns>Confirms all conditions are met successfully.</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task UpdateConfirmAllConditionsMetTaskAsync(UpdateConfirmAllConditionsMetTaskCommand request, System.Threading.CancellationToken cancellationToken);
+
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "14.2.0.0 (NJsonSchema v11.1.0.0 (Newtonsoft.Json v13.0.0.0))")]
@@ -3067,9 +3084,16 @@ namespace Dfe.Complete.Client.Contracts
 
         [System.Runtime.Serialization.EnumMember(Value = @"ConfirmTransferHasAuthorityToProceed")]
         ConfirmTransferHasAuthorityToProceed = 11,
+       
+
+        [System.Runtime.Serialization.EnumMember(Value = @"ConfirmAllConditionsMet")]
+        ConfirmAllConditionsMet = 12,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"ReceiveGrantPaymentCertificate")]
+        ReceiveGrantPaymentCertificate = 13,
 
         [System.Runtime.Serialization.EnumMember(Value = @"CommercialTransferAgreement")]
-        CommercialTransferAgreement = 12,
+        CommercialTransferAgreement = 16,
 
     }
 
@@ -5102,6 +5126,30 @@ namespace Dfe.Complete.Client.Contracts
         {
 
             return Newtonsoft.Json.JsonConvert.DeserializeObject<UpdateConfirmTransferHasAuthorityToProceedTaskCommand>(data, new Newtonsoft.Json.JsonSerializerSettings());
+
+        }
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.2.0.0 (NJsonSchema v11.1.0.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class UpdateConfirmAllConditionsMetTaskCommand
+    {
+        [Newtonsoft.Json.JsonProperty("projectId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public ProjectId? ProjectId { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("confirm", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? Confirm { get; set; } = default!;
+
+        public string ToJson()
+        {
+
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonSerializerSettings());
+
+        }
+        public static UpdateConfirmAllConditionsMetTaskCommand FromJson(string data)
+        {
+
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<UpdateConfirmAllConditionsMetTaskCommand>(data, new Newtonsoft.Json.JsonSerializerSettings());
 
         }
 
