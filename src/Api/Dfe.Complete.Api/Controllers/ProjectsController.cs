@@ -40,6 +40,12 @@ namespace Dfe.Complete.Api.Controllers
         [SwaggerResponse(400, "Invalid request data.")]
         public async Task<IActionResult> CreateHandoverConversionProjectAsync([FromBody] CreateHandoverConversionProjectCommand request, CancellationToken cancellationToken)
         {
+            // Check for model binding errors (including additional properties)
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             ProjectId result;
             try
             {
