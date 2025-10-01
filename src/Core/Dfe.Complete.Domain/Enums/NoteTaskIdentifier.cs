@@ -55,5 +55,5 @@ public enum NoteTaskIdentifier
 
     [Description("commercial_transfer_agreement")]
     [DisplayDescription("Commercial transfer agreement")]
-    CommercialTransferAgreement = 13
+    CommercialTransferAgreement = 16
 }
