@@ -20,7 +20,7 @@
 		"@ministryofjustice/frontend": "^1.8.0",
 		"accessible-autocomplete": "^3.0.0",
 		"dfe-frontend": "^2.0.1",
-		"govuk-frontend": "^4.7.0",
+		"govuk-frontend": "^5.12.0",
 		"inter-ui": "^4.1.0",
 		"jquery": "^3.6.1"
 	}
