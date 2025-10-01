@@ -291,7 +291,10 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
             null,
             null,
             null,
-            localAuthorityId);
+            localAuthorityId)
+        {
+            State = ProjectState.Inactive
+        };
 
         project.AddDomainEvent(new ProjectCreatedEvent(project));
 
