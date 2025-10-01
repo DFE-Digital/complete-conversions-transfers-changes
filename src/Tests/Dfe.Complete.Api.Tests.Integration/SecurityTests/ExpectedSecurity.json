@@ -304,6 +304,11 @@
       "Controller": "TasksDataController",
       "Action": "UpdateConfirmAllConditionsMetTaskAsync",
       "ExpectedSecurity": "Authorize: Policy=CanReadWriteUpdate"
+    },
+    {
+      "Controller": "ProjectsController",
+      "Action": "RecordDaoRevocationDecisionAsync",
+      "ExpectedSecurity": "Authorize: Policy=CanReadWriteUpdate"
     }
   ]
 }
