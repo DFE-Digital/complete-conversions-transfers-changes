@@ -20,32 +20,32 @@
                     Land questionnaire
                 </govuk-checkboxes-fieldset-legend>
                 <govuk-checkboxes-hint>
-                    <p>You can <a href="@_configuration["ExternalLinks:LandTransferAdviceAndGuidance"]" class="govuk-link" target="_blank">use the land transfer advice and guidance to check for common problems (opens in new tab)</a>.</p>
+                    <p>You can <a data-cy="land-transfer-advice-guidance-link" href="@_configuration["ExternalLinks:LandTransferAdviceAndGuidance"]" class="govuk-link" target="_blank">use the land transfer advice and guidance to check for common problems (opens in new tab)</a>.</p>
                     <govuk-details>
                         <govuk-details-summary>
                             <span class="govuk-details__summary-text">How to clear a land questionnaire</span>
                         </govuk-details-summary>
                         <govuk-details-text>
-                            <p>You must <a href="@_configuration["ExternalLinks:AcademyConversionQuestionnaire"]" target="_blank">check the school is using the right land questionnaire (opens in new tab)</a>.</p>
+                            <p>You must <a data-cy="academy-conversion-questionnaire-link" href="@_configuration["ExternalLinks:AcademyConversionQuestionnaire"]" target="_blank">check the school is using the right land questionnaire (opens in new tab)</a>.</p>
                             <p>You need to clear the land questionnaire before the master funding agreement and the supplemental funding agreement.</p>
                             <p>The land questionnaire is critical. It is the basis for all land decisions.</p>
                             <p>The answers given inform how the land will be treated. It decides which leases, directions and other land agreements are needed.</p>
                         </govuk-details-text>
                     </govuk-details>
                 </govuk-checkboxes-hint>
-                <govuk-checkboxes-item id="@nameof(Model.Received)" asp-for="@Model.Received" value="true" name="@nameof(Model.Received)" checked="@Model.Received">
+                <govuk-checkboxes-item data-cy="@nameof(Model.Received)" id="@nameof(Model.Received)" asp-for="@Model.Received" value="true" name="@nameof(Model.Received)" checked="@Model.Received">
                     <b>Received</b>
                 </govuk-checkboxes-item>
 
-                <govuk-checkboxes-item id="@nameof(Model.Cleared)" asp-for="@Model.Cleared" value="true" name="@nameof(Model.Cleared)" checked="@Model.Cleared">
+                <govuk-checkboxes-item data-cy="@nameof(Model.Cleared)" id="@nameof(Model.Cleared)" asp-for="@Model.Cleared" value="true" name="@nameof(Model.Cleared)" checked="@Model.Cleared">
                     <b>Cleared</b>
                 </govuk-checkboxes-item>
 
-                <govuk-checkboxes-item id="@nameof(Model.Signed)" asp-for="@Model.Signed" value="true" name="@nameof(Model.Signed)" checked="@Model.Signed">
+                <govuk-checkboxes-item data-cy="@nameof(Model.Signed)" id="@nameof(Model.Signed)" asp-for="@Model.Signed" value="true" name="@nameof(Model.Signed)" checked="@Model.Signed">
                     <b>Signed by solicitor</b>
                 </govuk-checkboxes-item>
 
-                <govuk-checkboxes-item id="@nameof(Model.Saved)" asp-for="@Model.Saved" value="true" name="@nameof(Model.Saved)" checked="@Model.Saved">
+                <govuk-checkboxes-item data-cy="@nameof(Model.Saved)" id="@nameof(Model.Saved)" asp-for="@Model.Saved" value="true" name="@nameof(Model.Saved)" checked="@Model.Saved">
                     <b>Saved in the school's SharePoint folder</b>
                 </govuk-checkboxes-item>
             </govuk-checkboxes-fieldset>

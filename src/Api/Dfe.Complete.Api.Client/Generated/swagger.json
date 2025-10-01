@@ -2562,6 +2562,39 @@
         }
       }
     },
+    "/v1/TasksData/TaskData/ConfirmAllConditionsMet": {
+      "patch": {
+        "tags": [
+          "TasksData"
+        ],
+        "summary": "Updates confirmation of meeting all conditions met for a conversion project.",
+        "operationId": "TasksData_UpdateConfirmAllConditionsMetTask",
+        "requestBody": {
+          "x-name": "request",
+          "description": "The update command.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateConfirmAllConditionsMetTaskCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "204": {
+            "description": "Confirms all conditions are met successfully."
+          },
+          "400": {
+            "description": "Invalid request data."
+          },
+          "404": {
+            "description": "Project not found."
+          }
+        }
+      }
+    },
     "/v1/TasksData/TaskData/LandQuestionnaire": {
       "patch": {
         "tags": [
@@ -4901,7 +4934,9 @@
           "RedactAndSendDocuments",
           "ConfirmProposedCapacityOfTheAcademy",
           "DeclarationOfExpenditureCertificate",
-          "ConfirmTransferHasAuthorityToProceed"
+          "ConfirmTransferHasAuthorityToProceed",
+          "ConfirmAllConditionsMet",
+          "ReceiveGrantPaymentCertificate"
         ],
         "enum": [
           "Handover",
@@ -4915,7 +4950,9 @@
           "RedactAndSendDocuments",
           "ConfirmProposedCapacityOfTheAcademy",
           "DeclarationOfExpenditureCertificate",
-          "ConfirmTransferHasAuthorityToProceed"
+          "ConfirmTransferHasAuthorityToProceed",
+          "ConfirmAllConditionsMet",
+          "ReceiveGrantPaymentCertificate"
         ]
       },
       "CreateNoteCommand": {
@@ -6953,6 +6990,19 @@
             "nullable": true
           },
           "confirmToProceed": {
+            "type": "boolean",
+            "nullable": true
+          }
+        }
+      },
+      "UpdateConfirmAllConditionsMetTaskCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "projectId": {
+            "$ref": "#/components/schemas/ProjectId"
+          },
+          "confirm": {
             "type": "boolean",
             "nullable": true
           }
