@@ -2661,6 +2661,39 @@
         }
       }
     },
+    "/v1/TasksData/TaskData/MasterFundingAgreement": {
+      "patch": {
+        "tags": [
+          "TasksData"
+        ],
+        "summary": "Updates the mastre funding agreement task Data for conversion or transfer project.",
+        "operationId": "TasksData_UpdateMasterFundingAgreementTask",
+        "requestBody": {
+          "x-name": "request",
+          "description": "The update command.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateMasterFundingAgreementTaskCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "204": {
+            "description": "Conversion or transfer's master funding agreement task updated successfully."
+          },
+          "400": {
+            "description": "Invalid request data."
+          },
+          "404": {
+            "description": "Project/User not found."
+          }
+        }
+      }
+    },
     "/v1/Trust/List/All": {
       "get": {
         "tags": [
@@ -4970,7 +5003,8 @@
           "ConfirmTransferHasAuthorityToProceed",
           "ConfirmDateAcademyTransferred",
           "ConfirmAllConditionsMet",
-          "ReceiveGrantPaymentCertificate"
+          "ReceiveGrantPaymentCertificate",
+          "MasterFundingAgreement"
         ],
         "enum": [
           "Handover",
@@ -4987,7 +5021,8 @@
           "ConfirmTransferHasAuthorityToProceed",
           "ConfirmDateAcademyTransferred",
           "ConfirmAllConditionsMet",
-          "ReceiveGrantPaymentCertificate"
+          "ReceiveGrantPaymentCertificate",
+          "MasterFundingAgreement"
         ]
       },
       "CreateNoteCommand": {
@@ -7100,6 +7135,51 @@
             "$ref": "#/components/schemas/ProjectId"
           },
           "confirm": {
+            "type": "boolean",
+            "nullable": true
+          }
+        }
+      },
+      "UpdateMasterFundingAgreementTaskCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "taskDataId": {
+            "$ref": "#/components/schemas/TaskDataId"
+          },
+          "projectType": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/ProjectType"
+              }
+            ]
+          },
+          "notApplicable": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "received": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "cleared": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "signed": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "saved": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "sent": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "signedSecretaryState": {
             "type": "boolean",
             "nullable": true
           }
