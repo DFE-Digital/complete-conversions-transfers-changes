@@ -1,23 +1,23 @@
 using Asp.Versioning;
-using Dfe.Complete.Domain.ValueObjects;
-using MediatR;
-using Microsoft.AspNetCore.Mvc;
-using Swashbuckle.AspNetCore.Annotations;
+using Dfe.Complete.Application.Common.Models;
+using Dfe.Complete.Application.Contacts.Models;
+using Dfe.Complete.Application.Contacts.Queries;
+using Dfe.Complete.Application.DaoRevoked.Commands;
+using Dfe.Complete.Application.Notes.Commands;
+using Dfe.Complete.Application.Notes.Queries;
 using Dfe.Complete.Application.Projects.Commands.CreateProject;
+using Dfe.Complete.Application.Projects.Commands.RemoveProject;
+using Dfe.Complete.Application.Projects.Commands.UpdateProject;
+using Dfe.Complete.Application.Projects.Models;
 using Dfe.Complete.Application.Projects.Queries.CountAllProjects;
 using Dfe.Complete.Application.Projects.Queries.GetProject;
 using Dfe.Complete.Application.Projects.Queries.ListAllProjects;
-using Dfe.Complete.Application.Projects.Models;
-using Microsoft.AspNetCore.Authorization;
-using Dfe.Complete.Application.Projects.Commands.RemoveProject;
-using Dfe.Complete.Application.Projects.Commands.UpdateProject;
 using Dfe.Complete.Application.Projects.Queries.SearchProjects;
-using Dfe.Complete.Application.Notes.Queries;
-using Dfe.Complete.Application.Notes.Commands;
-using Dfe.Complete.Application.Common.Models;
-using Dfe.Complete.Application.Contacts.Queries;
-using Dfe.Complete.Application.Contacts.Models;
-using Dfe.Complete.Application.DaoRevoked.Commands;
+using Dfe.Complete.Domain.ValueObjects;
+using MediatR;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace Dfe.Complete.Api.Controllers
 {

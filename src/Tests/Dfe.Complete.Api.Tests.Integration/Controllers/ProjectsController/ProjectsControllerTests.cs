@@ -9,6 +9,7 @@ using Dfe.Complete.Infrastructure.Database;
 using Dfe.Complete.Tests.Common.Constants;
 using Dfe.Complete.Tests.Common.Customizations.Behaviours;
 using Dfe.Complete.Tests.Common.Customizations.Models;
+using Dfe.Complete.Utils;
 using GovUK.Dfe.CoreLibs.Testing.AutoFixture.Attributes;
 using GovUK.Dfe.CoreLibs.Testing.AutoFixture.Customizations;
 using GovUK.Dfe.CoreLibs.Testing.Mocks.WebApplicationFactory;
@@ -18,15 +19,12 @@ using System.Security.Claims;
 using GiasEstablishment = Dfe.Complete.Domain.Entities.GiasEstablishment;
 using LocalAuthority = Dfe.Complete.Domain.Entities.LocalAuthority;
 using Project = Dfe.Complete.Domain.Entities.Project;
+using ProjectId = Dfe.Complete.Client.Contracts.ProjectId;
 using ProjectState = Dfe.Complete.Domain.Enums.ProjectState;
 using ProjectType = Dfe.Complete.Domain.Enums.ProjectType;
 using Region = Dfe.Complete.Domain.Enums.Region;
 using Ukprn = Dfe.Complete.Domain.ValueObjects.Ukprn;
-using Dfe.Complete.Domain.Entities;
-using Dfe.Complete.Tests.Common.Customizations.Behaviours;
-using ProjectId = Dfe.Complete.Client.Contracts.ProjectId;
 using UserId = Dfe.Complete.Client.Contracts.UserId;
-using Dfe.Complete.Utils;
 
 namespace Dfe.Complete.Api.Tests.Integration.Controllers.ProjectsController;
 
