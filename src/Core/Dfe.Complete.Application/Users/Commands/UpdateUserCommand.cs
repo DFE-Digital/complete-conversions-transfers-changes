@@ -2,13 +2,13 @@ using Dfe.Complete.Application.Common.Models;
 using Dfe.Complete.Application.Users.Interfaces;
 using Dfe.Complete.Application.Users.Queries.QueryFilters;
 using Dfe.Complete.Domain.Constants;
-using Dfe.Complete.Domain.Entities;
 using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Domain.ValueObjects;
 using Dfe.Complete.Utils;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using Dfe.Complete.Domain.Validators;
 
 namespace Dfe.Complete.Application.Users.Commands
 {
@@ -16,7 +16,7 @@ namespace Dfe.Complete.Application.Users.Commands
        UserId Id,
        string FirstName,
        string LastName,
-       string Email,
+       [InternalEmail] string Email,
        ProjectTeam Team) : IRequest<Result<bool>>;
 
     internal class UpdateUserCommandHandler(
