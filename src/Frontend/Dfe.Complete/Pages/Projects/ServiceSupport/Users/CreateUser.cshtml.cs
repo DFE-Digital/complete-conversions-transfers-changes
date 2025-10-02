@@ -7,6 +7,8 @@ using Dfe.Complete.Services.Interfaces;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
+using ValidationConstants = Dfe.Complete.Constants.ValidationConstants;
+
 namespace Dfe.Complete.Pages.Projects.ServiceSupport.Users
 {
     public class CreateUserModel(ISender sender, IErrorService errorService) : UserDetailsModel(sender, errorService)
