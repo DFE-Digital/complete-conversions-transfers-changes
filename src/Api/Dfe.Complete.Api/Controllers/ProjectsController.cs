@@ -17,6 +17,7 @@ using Dfe.Complete.Application.Notes.Commands;
 using Dfe.Complete.Application.Common.Models;
 using Dfe.Complete.Application.Contacts.Queries;
 using Dfe.Complete.Application.Contacts.Models;
+using Dfe.Complete.Application.DaoRevoked.Commands;
 
 namespace Dfe.Complete.Api.Controllers
 {
@@ -621,6 +622,23 @@ namespace Dfe.Complete.Api.Controllers
             await sender.Send(request, cancellationToken);
             return NoContent();
         }
+        /// <summary>
+        /// Record dao revoation decision for a specific project.
+        /// </summary>
+        /// <param name="request">The update command.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        [Authorize(Policy = "CanReadWriteUpdate")]
+        [HttpPatch("project/DaoRevocationDecision")]
+        [SwaggerResponse(204, "Record dao revocation successfully.")]
+        [SwaggerResponse(400, "Invalid request data.")]
+        [SwaggerResponse(404, "Project/User not found.")]
+        public async Task<IActionResult> RecordDaoRevocationDecisionAsync(
+            [FromBody] RecordDaoRevocationDecisionCommand request,
+            CancellationToken cancellationToken)
+        {
+            await sender.Send(request, cancellationToken);
+            return NoContent();
+        } 
 
         /// <summary>
         /// Updates the completion for a specific project.

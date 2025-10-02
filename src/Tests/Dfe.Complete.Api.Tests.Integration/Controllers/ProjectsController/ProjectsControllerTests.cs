@@ -22,6 +22,11 @@ using ProjectState = Dfe.Complete.Domain.Enums.ProjectState;
 using ProjectType = Dfe.Complete.Domain.Enums.ProjectType;
 using Region = Dfe.Complete.Domain.Enums.Region;
 using Ukprn = Dfe.Complete.Domain.ValueObjects.Ukprn;
+using Dfe.Complete.Domain.Entities;
+using Dfe.Complete.Tests.Common.Customizations.Behaviours;
+using ProjectId = Dfe.Complete.Client.Contracts.ProjectId;
+using UserId = Dfe.Complete.Client.Contracts.UserId;
+using Dfe.Complete.Utils;
 
 namespace Dfe.Complete.Api.Tests.Integration.Controllers.ProjectsController;
 
@@ -1910,6 +1915,79 @@ public partial class ProjectsControllerTests
         Assert.Equal(keyContact.IncomingTrustCeoId?.Value, result.IncomingTrustCeoId?.Value);
         Assert.Equal(keyContact.ChairOfGovernorsId?.Value, result.ChairOfGovernorsId?.Value);
     }
+    [Theory]
+    [CustomAutoData(typeof(CustomWebApplicationDbContextFactoryCustomization), typeof(GiasEstablishmentsCustomization))]
+    public async Task RecordDaoRevocationDecisionAsync_Async_ShouldSet_DaoRevocation(
+        CustomWebApplicationDbContextFactory<Program> factory,
+        IProjectsClient projectsClient,
+        IFixture fixture)
+    {
+        factory.TestClaims = [
+           new Claim(ClaimTypes.Role, ApiRoles.ReadRole),
+            new Claim(ClaimTypes.Role, ApiRoles.WriteRole),
+            new Claim(ClaimTypes.Role, ApiRoles.UpdateRole)
+       ];
+
+        // Arrange
+        var dbContext = factory.GetDbContext<CompleteContext>();
+
+        var testUser = await dbContext.Users.FirstAsync();
+
+        var establishments = fixture.Customize(new GiasEstablishmentsCustomization()).CreateMany<GiasEstablishment>(1)
+            .ToList();
+        var localAuthority = dbContext.LocalAuthorities.AsEnumerable().MinBy(_ => Guid.NewGuid());
+        Assert.NotNull(localAuthority);
+
+        await dbContext.GiasEstablishments.AddRangeAsync(establishments); 
+        var projects = establishments.Select((establishment, i) =>
+        {
+            var project = fixture.Customize(new ProjectCustomization
+            {
+                LocalAuthorityId = localAuthority.Id,
+                RegionalDeliveryOfficerId = testUser.Id,
+            }).Create<Project>();
+            project.Urn = establishment.Urn ?? project.Urn;
+            project.IncomingTrustUkprn = null;
+            project.OutgoingTrustUkprn = null;
+            project.State = ProjectState.Active;
+            project.DirectiveAcademyOrder = true;
+            return project;
+        }).ToList();
+        await dbContext.Projects.AddRangeAsync(projects); 
+        await dbContext.SaveChangesAsync();
+        var decision = new RecordDaoRevocationDecisionCommand
+        {
+            ProjectId = new ProjectId { Value = projects.First().Id.Value },
+            UserId = new UserId { Value = testUser.Id.Value },
+            DecisionMakerRole = "Minister",
+            MinisterName = "Test Minister",
+            DecisionDate = DateTime.UtcNow, 
+            ReasonNotes = new Dictionary<DaoRevokedReason, string> { { DaoRevokedReason.SchoolClosedOrClosing, "Closing school" } }
+        };
+
+        // Act
+        await projectsClient.RecordDaoRevocationDecisionAsync(decision, CancellationToken.None);
+
+        // Assert
+        dbContext.ChangeTracker.Clear();
+        var dbProject = await dbContext.Projects.FirstAsync();
+        var dbDaoRevocation = await dbContext.DaoRevocations.FirstAsync();
+        Assert.NotNull(dbProject);
+        Assert.Equal(decision.ProjectId.Value, dbProject.Id.Value);
+        Assert.Equal(ProjectState.DaoRevoked, dbProject.State);
+        Assert.True(dbProject.DirectiveAcademyOrder);
+        Assert.NotNull(dbDaoRevocation);
+        Assert.Equal(dbDaoRevocation.DecisionMakersName, decision.MinisterName);
+        Assert.Equal(testUser.Id.Value, decision.UserId.Value);
+        Assert.NotNull(dbDaoRevocation.DateOfDecision);
+        var dbDaoRevocationReason = await dbContext.DaoRevocationReasons.FirstAsync();
+        Assert.NotNull(dbDaoRevocationReason);
+        var dbNotes = await dbContext.Notes.FirstAsync(x => x.NotableType == Domain.Enums.NotableType.DaoRevocationReason.ToDescription());
+        Assert.NotNull(dbNotes);
+        var note = decision.ReasonNotes.First();
+        Assert.Equal(note.Value, dbNotes.Body);
+        Assert.Equal(decision.ProjectId.Value, dbNotes.ProjectId.Value);
+    } 
 
     [Theory]
     [CustomAutoData(

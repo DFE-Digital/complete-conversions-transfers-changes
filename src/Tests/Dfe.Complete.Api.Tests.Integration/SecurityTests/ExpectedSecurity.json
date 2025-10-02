@@ -297,12 +297,27 @@
     },
     {
       "Controller": "TasksDataController",
+      "Action": "UpdateConfirmDateAcademyTransferredTaskAsync",
+      "ExpectedSecurity": "Authorize: Policy=CanReadWriteUpdate"
+    },
+    {
+      "Controller": "TasksDataController",
       "Action": "UpdateDeclarationOfExpenditureCertificateTaskAsync",
       "ExpectedSecurity": "Authorize: Policy=CanReadWriteUpdate"
     },
     {
       "Controller": "TasksDataController",
       "Action": "UpdateConfirmTransferHasAuthorityToProceedTaskAsync",
+      "ExpectedSecurity": "Authorize: Policy=CanReadWriteUpdate"
+    },
+    {
+      "Controller": "TasksDataController",
+      "Action": "UpdateConfirmAllConditionsMetTaskAsync",
+      "ExpectedSecurity": "Authorize: Policy=CanReadWriteUpdate"
+    },
+    {
+      "Controller": "ProjectsController",
+      "Action": "RecordDaoRevocationDecisionAsync",
       "ExpectedSecurity": "Authorize: Policy=CanReadWriteUpdate"
     }
   ]
