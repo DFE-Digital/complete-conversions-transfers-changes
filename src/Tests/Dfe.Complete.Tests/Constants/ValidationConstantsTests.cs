@@ -149,10 +149,15 @@ namespace Dfe.Complete.Tests.Constants
         [Fact]
         public void DateInPast_ShouldReturnExpectedMessage()
         {
-            var receivedDate = "Received Date";
-            var message = string.Format("{0} date must be in the past", receivedDate);
-
-            Assert.Equal(message, string.Format(ValidationConstants.DateInPast, receivedDate));
+            var dateField = "Opened academy";
+            Assert.Equal($"{dateField} date must be in the past", string.Format(ValidationConstants.DateInPast, dateField));
         }
+        [Fact]
+        public void MustBePastDate_ShouldReturnExpectedMessage()
+        {
+            var dateField = "Opened academy date";
+            Assert.Equal($"{dateField} must be in the past", string.Format(ValidationConstants.MustBePastDate, dateField));
+        } 
+        
     }
 }

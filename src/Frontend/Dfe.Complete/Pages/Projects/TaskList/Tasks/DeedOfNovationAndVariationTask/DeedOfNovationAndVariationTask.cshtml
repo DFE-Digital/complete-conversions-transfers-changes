@@ -36,19 +36,19 @@
             <govuk-checkboxes-fieldset>
                 <govuk-checkboxes-fieldset-legend>
                 </govuk-checkboxes-fieldset-legend>
-                <govuk-checkboxes-item id="received" asp-for="@Model.Received" value="true" name="received" checked="@Model.Received">
+                <govuk-checkboxes-item data-cy="received" id="received" asp-for="@Model.Received" value="true" name="received" checked="@Model.Received">
                     <b>Received</b>
                 </govuk-checkboxes-item>
-                <govuk-checkboxes-item id="cleared" asp-for="@Model.Cleared" value="true" name="cleared" checked="@Model.Cleared">
+                <govuk-checkboxes-item data-cy="cleared" id="cleared" asp-for="@Model.Cleared" value="true" name="cleared" checked="@Model.Cleared">
                     <b>Cleared</b>
                 </govuk-checkboxes-item>
-                <govuk-checkboxes-item id="signed_outgoing_trust" asp-for="@Model.SignedOutgoingTrust" value="true" name="signed_outgoing_trust" checked="@Model.SignedOutgoingTrust">
+                <govuk-checkboxes-item data-cy="signed_outgoing_trust" id="signed_outgoing_trust" asp-for="@Model.SignedOutgoingTrust" value="true" name="signed_outgoing_trust" checked="@Model.SignedOutgoingTrust">
                     <b>Signed by outgoing trust</b>
                 </govuk-checkboxes-item>
-                <govuk-checkboxes-item id="signed_incoming_trust" asp-for="@Model.SignedIncomingTrust" value="true" name="signed_incoming_trust" checked="@Model.SignedIncomingTrust">
+                <govuk-checkboxes-item data-cy="signed_incoming_trust" id="signed_incoming_trust" asp-for="@Model.SignedIncomingTrust" value="true" name="signed_incoming_trust" checked="@Model.SignedIncomingTrust">
                     <b>Signed by incoming trust</b>
                 </govuk-checkboxes-item>
-                <govuk-checkboxes-item id="saved" asp-for="@Model.Saved" value="true" name="saved" checked="@Model.Saved">
+                <govuk-checkboxes-item data-cy="saved" id="saved" asp-for="@Model.Saved" value="true" name="saved" checked="@Model.Saved">
                     <b>Saved in the academy SharePoint folder</b>
                 </govuk-checkboxes-item>
             </govuk-checkboxes-fieldset>
