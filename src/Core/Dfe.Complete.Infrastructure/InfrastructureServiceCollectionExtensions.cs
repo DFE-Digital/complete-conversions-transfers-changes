@@ -13,6 +13,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using StackExchange.Redis;
+using Dfe.Complete.Application.DaoRevoked.Interfaces;
 
 namespace Dfe.Complete.Infrastructure
 {
@@ -48,7 +49,10 @@ namespace Dfe.Complete.Infrastructure
             services.AddScoped<IKeyContactReadRepository, KeyContactReadRepository>();
             services.AddScoped<IContactReadRepository, ContactReadRepository>();
             services.AddScoped<IContactWriteRepository, ContactWriteRepository>();
+            services.AddScoped<IDaoRevocationWriteRepository, DaoRevocationWriteRepository>();
             services.AddScoped<IProjectWriteRepository, ProjectWriteRepository>();
+            services.AddScoped<IDaoRevocationReadRepository, DaoRevocationReadRepository>();
+
             // Authentication
             //services.AddCustomAuthorization(config);
 

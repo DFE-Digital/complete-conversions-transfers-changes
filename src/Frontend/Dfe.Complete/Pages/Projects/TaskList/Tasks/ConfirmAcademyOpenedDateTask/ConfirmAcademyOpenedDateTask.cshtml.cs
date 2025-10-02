@@ -30,7 +30,7 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.ConfirmAcademyOpenedDateTas
         {
             if(OpenedDate?.ToDateTime(new TimeOnly()) > DateTime.Today)
             {
-                ModelState.AddModelError(nameof(OpenedDate), string.Format(ValidationConstants.MustBePastDate, "Opened academy date"));
+                ModelState.AddModelError(nameof(OpenedDate), string.Format(ValidationConstants.DateInPast, "Opened academy"));
             }
             if (!ModelState.IsValid)
             {

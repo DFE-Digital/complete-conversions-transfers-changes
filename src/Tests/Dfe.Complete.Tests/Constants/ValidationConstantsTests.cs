@@ -122,11 +122,42 @@ namespace Dfe.Complete.Tests.Constants
         public void ValidDate_ShouldReturnExpectedMessage()
         {
             Assert.Equal("Enter a valid date, like 1 1 2025", ValidationConstants.ValidDate);
+        } 
+        [Fact]
+        public void ChooseAtLeastOneReason_ShouldReturnExpectedMessage()
+        {
+            Assert.Equal("Select at least one reason", ValidationConstants.ChooseAtLeastOneReason);
+        }
+        [Fact]
+        public void MustProvideDetails_ShouldReturnExpectedMessage()
+        {
+            Assert.Equal(
+                "You must provide details", ValidationConstants.MustProvideDetails);
+        }
+        [Fact]
+        public void MinisterNameRequired_ShouldReturnExpectedMessage()
+        {
+            Assert.Equal(
+                "Enter the name of the minister that approved the decision", ValidationConstants.MinisterNameRequired);
+        }
+        [Fact]
+        public void DecisionDateRequired_ShouldReturnExpectedMessage()
+        {
+            Assert.Equal(
+                "Enter a valid date the decision was made, like 27 3 2021", ValidationConstants.DecisionDateRequired);
+        }
+        [Fact]
+        public void DateInPast_ShouldReturnExpectedMessage()
+        {
+            var dateField = "Opened academy";
+            Assert.Equal($"{dateField} date must be in the past", string.Format(ValidationConstants.DateInPast, dateField));
         }
         [Fact]
         public void MustBePastDate_ShouldReturnExpectedMessage()
         {
-            Assert.Equal("{0} must be in the past", ValidationConstants.MustBePastDate);
-        }
+            var dateField = "Opened academy date";
+            Assert.Equal($"{dateField} must be in the past", string.Format(ValidationConstants.MustBePastDate, dateField));
+        } 
+        
     }
 }
