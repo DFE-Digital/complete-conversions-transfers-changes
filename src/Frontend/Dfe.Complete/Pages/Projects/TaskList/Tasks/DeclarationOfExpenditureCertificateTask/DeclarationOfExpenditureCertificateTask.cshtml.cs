@@ -3,15 +3,15 @@ using Dfe.Complete.Constants;
 using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Domain.ValueObjects;
 using Dfe.Complete.Extensions;
-using Dfe.Complete.Models;
-using Dfe.Complete.Services;
+using Dfe.Complete.Models; 
+using Dfe.Complete.Services.Interfaces;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel;
 namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.DeclarationOfExpenditureCertificateTask
 {
-    public class DeclarationOfExpenditureCertificateTaskModel(ISender sender, IAuthorizationService authorizationService, ILogger<DeclarationOfExpenditureCertificateTaskModel> logger, ErrorService errorService)
+    public class DeclarationOfExpenditureCertificateTaskModel(ISender sender, IAuthorizationService authorizationService, ILogger<DeclarationOfExpenditureCertificateTaskModel> logger, IErrorService errorService)
     : BaseProjectTaskModel(sender, authorizationService, logger, NoteTaskIdentifier.DeclarationOfExpenditureCertificate)
     {
         [BindProperty(Name = "not-applicable")]

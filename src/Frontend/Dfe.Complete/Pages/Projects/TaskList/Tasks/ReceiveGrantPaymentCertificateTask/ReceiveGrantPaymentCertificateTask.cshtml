@@ -2,7 +2,7 @@
 @using Dfe.Complete.Constants
 @using Dfe.Complete.Domain.Enums
 @inject Microsoft.Extensions.Configuration.IConfiguration _configuration
-@inject Dfe.Complete.Services.ErrorService ErrorService
+@inject Dfe.Complete.Services.Interfaces.IErrorService ErrorService
 @model Dfe.Complete.Pages.Projects.TaskList.Tasks.ReceiveGrantPaymentCertificateTask.ReceiveGrantPaymentCertificateTaskModel
 @{
     Layout = "_ProjectTaskLayout";

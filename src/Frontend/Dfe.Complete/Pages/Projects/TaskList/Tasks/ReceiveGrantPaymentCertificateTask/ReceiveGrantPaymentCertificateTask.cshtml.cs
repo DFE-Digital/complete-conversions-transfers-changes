@@ -4,13 +4,14 @@ using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Domain.ValueObjects;
 using Dfe.Complete.Extensions;
 using Dfe.Complete.Models;
-using Dfe.Complete.Services;
+using Dfe.Complete.Services.Interfaces;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel;
 namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.ReceiveGrantPaymentCertificateTask
 {
-    public class ReceiveGrantPaymentCertificateTaskModel(ISender sender, IAuthorizationService authorizationService, ILogger<ReceiveGrantPaymentCertificateTaskModel> logger, ErrorService errorService)
+    public class ReceiveGrantPaymentCertificateTaskModel(ISender sender, IAuthorizationService authorizationService, ILogger<ReceiveGrantPaymentCertificateTaskModel> logger, IErrorService errorService)
     : BaseProjectTaskModel(sender, authorizationService, logger, NoteTaskIdentifier.ReceiveGrantPaymentCertificate)
     {
         [BindProperty(Name = "not-applicable")]
@@ -22,6 +23,7 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.ReceiveGrantPaymentCertific
         public bool? CheckCertificate { get; set; }
 
         [BindProperty(Name = "received-date")]
+        [DisplayName("Received date")]
         public DateOnly? ReceivedDate { get; set; }
 
         [BindProperty]
@@ -44,6 +46,10 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.ReceiveGrantPaymentCertific
 
         public async Task<IActionResult> OnPost()
         {
+            if (!NotApplicable.HasValue && ReceivedDate.HasValue && !(ReceivedDate?.ToDateTime(new TimeOnly()) < DateTime.Today))
+            {
+                ModelState.AddModelError("received-date", string.Format(ValidationConstants.DateInPast, "Received date"));
+            }
             if (!ModelState.IsValid)
             {
                 await base.OnGetAsync();
