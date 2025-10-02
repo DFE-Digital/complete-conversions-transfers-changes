@@ -2,11 +2,11 @@
 using Dfe.Complete.Application.Projects.Models;
 using Dfe.Complete.Application.Users.Queries.GetUser;
 using Dfe.Complete.Constants;
+using Dfe.Complete.Domain.Validators;
 using Dfe.Complete.Extensions;
 using Dfe.Complete.Models;
 using Dfe.Complete.Services;
 using Dfe.Complete.Utils;
-using Dfe.Complete.Domain.Validators;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
