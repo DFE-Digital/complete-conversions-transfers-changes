@@ -22,6 +22,7 @@ Security in case of vulnerabilities.
 - Added `Dao Revocation` workflow.
 - Configured Cache settings.
 - Added `Confirm the date the academy opened` task.
+- Added 'Closing of transfer or conversion project'.
 
 ### Changed
 
