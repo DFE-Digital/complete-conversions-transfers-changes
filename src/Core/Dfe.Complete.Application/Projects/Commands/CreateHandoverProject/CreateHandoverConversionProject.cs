@@ -145,7 +145,7 @@ public class CreateHandoverConversionProjectCommandHandler(
     private static void ValidateGroupId(ProjectGroupDto group, int trustUkprn)
     {
         if (group.TrustUkprn?.Value != trustUkprn)
-            throw new ValidationException($"Trust UKPRN {trustUkprn} is not the same as the group UKPRN for group {group.GroupIdentifier}");
+            throw new ValidationException(string.Format(ValidationConstants.MismatchedTrustInGroupValidationMessage, trustUkprn, group.GroupIdentifier));
     }
 
     private async Task<User> GetOrCreateUser(CreateHandoverConversionProjectCommand request, Region region, CancellationToken cancellationToken)
