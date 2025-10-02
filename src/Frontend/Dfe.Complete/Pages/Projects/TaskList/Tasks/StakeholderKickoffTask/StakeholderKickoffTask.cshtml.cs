@@ -1,8 +1,6 @@
 using Dfe.Complete.Application.Projects.Commands.TaskData;
 using Dfe.Complete.Constants;
 using Dfe.Complete.Domain.Enums;
-using Dfe.Complete.Extensions;
-using Dfe.Complete.Models;
 using Dfe.Complete.Services;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -82,7 +80,7 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.StakeholderKickoffTask
             
             await sender.Send(request);
             
-            TempData.SetNotification(NotificationType.Success, "Success", "Task updated successfully");
+            SetTaskSuccessNotification();
             
             return Redirect(string.Format(RouteConstants.ProjectTaskList, ProjectId));
         }

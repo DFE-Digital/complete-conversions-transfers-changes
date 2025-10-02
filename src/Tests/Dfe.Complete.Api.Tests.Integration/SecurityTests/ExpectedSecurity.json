@@ -319,6 +319,11 @@
       "Controller": "ProjectsController",
       "Action": "RecordDaoRevocationDecisionAsync",
       "ExpectedSecurity": "Authorize: Policy=CanReadWriteUpdate"
+    },
+    {
+      "Controller": "TasksDataController",
+      "Action": "UpdateConfirmAcademyOpenedDateTaskAsync",
+      "ExpectedSecurity": "Authorize: Policy=CanReadWriteUpdate"
     }
   ]
 }

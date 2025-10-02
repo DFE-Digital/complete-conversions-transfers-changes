@@ -188,5 +188,18 @@ namespace Dfe.Complete.Tests.Constants
         {
             Assert.Equal("The confirm the date the academy opened task is completed", ValidationConstants.AcademyOpenedDateComplete);
         }
+        [Fact]
+        public void DateInPast_ShouldReturnExpectedMessage()
+        {
+            var dateField = "Opened academy";
+            Assert.Equal($"{dateField} date must be in the past", string.Format(ValidationConstants.DateInPast, dateField));
+        }
+        [Fact]
+        public void MustBePastDate_ShouldReturnExpectedMessage()
+        {
+            var dateField = "Opened academy date";
+            Assert.Equal($"{dateField} must be in the past", string.Format(ValidationConstants.MustBePastDate, dateField));
+        } 
+        
     }
 }

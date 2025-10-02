@@ -19,7 +19,7 @@ namespace Dfe.Complete.Application.Projects.Commands.TaskData
         bool? Signed,
         bool? SignedSecretaryState) : IRequest<Result<bool>>;
 
-    public class UpdateSupplementalFundingAgreementTaskCommandHandler(
+    internal class UpdateSupplementalFundingAgreementTaskCommandHandler(
         ITaskDataReadRepository taskDataReadRepository,
         ITaskDataWriteRepository taskDataWriteRepository)
         : IRequestHandler<UpdateSupplementalFundingAgreementTaskCommand, Result<bool>>
