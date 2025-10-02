@@ -63,10 +63,13 @@ public enum NoteTaskIdentifier
 
     [Description("receive_grant_payment_certificate")]
     [DisplayDescription("Receive declaration of expenditure certificate")]
-    ReceiveGrantPaymentCertificate = 15, 
+    ReceiveGrantPaymentCertificate = 15,
+
+    [Description("confirm_date_academy_opened")]
+    [DisplayDescription("Confirm the date the academy opened")]
+    ConfirmAcademyOpenedDate = 16,
 
     [Description("church_supplemental_agreement")]
     [DisplayDescription("Church supplemental agreement")]
-    ChurchSupplementalAgreement = 16,
-    
+    ChurchSupplementalAgreement = 17,
 }

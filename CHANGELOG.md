@@ -21,6 +21,7 @@ Security in case of vulnerabilities.
 - Added `Confirm all condition has been met` task for conversion projects.
 - Added `Dao Revocation` workflow.
 - Configured Cache settings.
+- Added `Confirm the date the academy opened` task.
 - Added `Church supplemental agreement` task for both conversion and transfer projects.
 
 ### Changed

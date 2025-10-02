@@ -50,16 +50,21 @@
 </govuk-checkboxes>
 <div class="govuk-form-group">
     <h2 class="govuk-heading-l">Signed by the Secretary of State</h2>
-    <div class="govuk-hint">
-        <p>The Secretary of State, or somebody with the authority to act on their behalf, must sign the church supplemental agreement.</p>
-        <p>Usually this is your team leader or the deputy director.</p>
-    </div> 
+    <govuk-details data-module="govuk-details" class="govuk-details">
+        <govuk-details-summary>
+            <span class="govuk-details__summary-text">How to sign the Church Supplemental Agreement</span>
+        </govuk-details-summary>
+        <govuk-details-text>
+            <p>The Secretary of State, or somebody with the authority to act on their behalf, must sign the church supplemental agreement.</p>
+            <p>Usually this is your team leader or the deputy director.</p>
+        </govuk-details-text>
+    </govuk-details>
 </div>
 <govuk-checkboxes name="options">
     <govuk-checkboxes-fieldset>
         <govuk-checkboxes-fieldset-legend>
         </govuk-checkboxes-fieldset-legend>
-        <govuk-checkboxes-item data-cy="@nameof(Model.SentOrSaved)" id="@nameof(Model.SentOrSaved)" asp-for="@Model.SentOrSaved" value="true" name="nameof(Model.SentOrSaved)" checked="@Model.SentOrSaved">
+        <govuk-checkboxes-item data-cy="@nameof(Model.SentOrSaved)" id="@nameof(Model.SentOrSaved)" asp-for="@Model.SentOrSaved" value="true" name="@nameof(Model.SentOrSaved)" checked="@Model.SentOrSaved">
             <b>Sent to team leader or deputy director</b>
         </govuk-checkboxes-item>
         <govuk-checkboxes-item data-cy="@nameof(Model.SignedBySecretaryState)" id="@nameof(Model.SignedBySecretaryState)" asp-for="@Model.SignedBySecretaryState" value="true" name="@nameof(Model.SignedBySecretaryState)" checked="@Model.SignedBySecretaryState">

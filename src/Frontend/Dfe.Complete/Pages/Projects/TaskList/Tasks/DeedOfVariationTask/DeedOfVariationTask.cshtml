@@ -32,7 +32,7 @@
             <govuk-checkboxes-fieldset>
                 <govuk-checkboxes-fieldset-legend>
                 </govuk-checkboxes-fieldset-legend>
-                <govuk-checkboxes-item id="not-applicable" asp-for="@Model.NotApplicable" value="true" name="not-applicable" checked="@Model.NotApplicable">
+                <govuk-checkboxes-item data-cy="not-applicable" id="not-applicable" asp-for="@Model.NotApplicable" value="true" name="not-applicable" checked="@Model.NotApplicable">
                     <b>Not applicable</b>
                 </govuk-checkboxes-item>
             </govuk-checkboxes-fieldset>
@@ -68,16 +68,16 @@
             <govuk-checkboxes-fieldset>
                 <govuk-checkboxes-fieldset-legend>
                 </govuk-checkboxes-fieldset-legend>
-                <govuk-checkboxes-item id="received" asp-for="@Model.Received" value="true" name="received" checked="@Model.Received">
+                <govuk-checkboxes-item data-cy="received" id="received" asp-for="@Model.Received" value="true" name="received" checked="@Model.Received">
                     <b>Received</b>
                 </govuk-checkboxes-item>
-                <govuk-checkboxes-item id="cleared" asp-for="@Model.Cleared" value="true" name="cleared" checked="@Model.Cleared">
+                <govuk-checkboxes-item data-cy="cleared" id="cleared" asp-for="@Model.Cleared" value="true" name="cleared" checked="@Model.Cleared">
                     <b>Cleared</b>
                 </govuk-checkboxes-item>
-                <govuk-checkboxes-item id="signed" asp-for="@Model.Signed" value="true" name="signed" checked="@Model.Signed">
+                <govuk-checkboxes-item data-cy="signed" id="signed" asp-for="@Model.Signed" value="true" name="signed" checked="@Model.Signed">
                     <b>Signed by @(Model.Type == ProjectType.Conversion ? "school or":"academy or incoming") trust</b>
                 </govuk-checkboxes-item>
-                <govuk-checkboxes-item id="saved" asp-for="@Model.Saved" value="true" name="saved" checked="@Model.Saved">
+                <govuk-checkboxes-item data-cy="saved" id="saved" asp-for="@Model.Saved" value="true" name="saved" checked="@Model.Saved">
                     <b>Saved in the @(Model.Type == ProjectType.Conversion ? "school's" : "academy") SharePoint folder</b>
                 </govuk-checkboxes-item>
             </govuk-checkboxes-fieldset>

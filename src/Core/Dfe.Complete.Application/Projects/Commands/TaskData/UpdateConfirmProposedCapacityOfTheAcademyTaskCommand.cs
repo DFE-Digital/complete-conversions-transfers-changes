@@ -14,7 +14,7 @@ namespace Dfe.Complete.Application.Projects.Commands.TaskData
         string? SevenToElevenYears,
         string? TwelveOrAboveYears) : IRequest<Result<bool>>;
 
-    public class UpdateConfirmProposedCapacityOfTheAcademyTaskCommandHandler(
+    internal class UpdateConfirmProposedCapacityOfTheAcademyTaskCommandHandler(
         ITaskDataReadRepository taskDataReadRepository,
         ITaskDataWriteRepository taskDataWriteRepository)
         : IRequestHandler<UpdateConfirmProposedCapacityOfTheAcademyTaskCommand, Result<bool>>
