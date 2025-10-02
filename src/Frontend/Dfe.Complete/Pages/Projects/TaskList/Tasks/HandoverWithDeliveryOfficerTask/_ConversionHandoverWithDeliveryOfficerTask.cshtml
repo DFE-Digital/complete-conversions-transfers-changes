@@ -8,11 +8,11 @@
     <govuk-checkboxes-fieldset>
       <govuk-checkboxes-fieldset-legend>
       </govuk-checkboxes-fieldset-legend>
-      <govuk-checkboxes-item id="not-applicable" asp-for="@Model.NotApplicable" value="true" name="not-applicable" checked="@Model.NotApplicable">
+            <govuk-checkboxes-item data-cy="not-applicable" id="not-applicable" asp-for="@Model.NotApplicable" value="true" name="not-applicable" checked="@Model.NotApplicable">
         <b>Not applicable</b>
       </govuk-checkboxes-item>
 
-      <govuk-checkboxes-item id="task_handover_task_form_review" asp-for="@Model.ReviewProjectInformation" value="true" name="review-project-information" checked="@Model.ReviewProjectInformation">
+            <govuk-checkboxes-item data-cy="task_handover_task_form_review" id="task_handover_task_form_review" asp-for="@Model.ReviewProjectInformation" value="true" name="review-project-information" checked="@Model.ReviewProjectInformation">
         <b>Review the project information, check the documents and carry out research</b>
         <govuk-checkboxes-item-hint>
           <p>
@@ -39,8 +39,7 @@
           </div>
         </govuk-checkboxes-item-hint>
       </govuk-checkboxes-item>
-
-      <govuk-checkboxes-item id="task_handover_task_form_notes" asp-for="@Model.MakeNotes" value="true" name="make-notes" checked="@Model.MakeNotes">
+      <govuk-checkboxes-item data-cy="task_handover_task_form_notes" id="task_handover_task_form_notes" asp-for="@Model.MakeNotes" value="true" name="make-notes" checked="@Model.MakeNotes">
         <b>Make notes and write questions to ask the regional delivery officer</b>
         <govuk-checkboxes-item-hint> 
           <div class="guidance">
@@ -57,7 +56,7 @@
         </govuk-checkboxes-item-hint>
       </govuk-checkboxes-item>
 
-      <govuk-checkboxes-item id="task_handover_task_form_meeting" asp-for="@Model.AttendHandoverMeeting" value="true" name="attend-handover-meeting" checked="@Model.AttendHandoverMeeting">
+        <govuk-checkboxes-item data-cy="task_handover_task_form_meeting" id="task_handover_task_form_meeting" asp-for="@Model.AttendHandoverMeeting" value="true" name="attend-handover-meeting" checked="@Model.AttendHandoverMeeting">
         <b>Attend handover meeting with regional delivery officer</b>
         <govuk-checkboxes-item-hint>
 

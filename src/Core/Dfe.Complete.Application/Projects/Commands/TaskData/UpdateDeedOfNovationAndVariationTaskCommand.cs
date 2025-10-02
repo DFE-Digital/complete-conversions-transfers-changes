@@ -17,7 +17,7 @@ namespace Dfe.Complete.Application.Projects.Commands.TaskData
         bool? Saved,
         bool? SignedSecretaryState,
         bool? SavedAfterSign) : IRequest<Result<bool>>;
-    public class UpdateDeedOfNovationAndVariationTaskCommandHandler(
+    internal class UpdateDeedOfNovationAndVariationTaskCommandHandler(
        ITaskDataReadRepository taskDataReadRepository,
        ITaskDataWriteRepository taskDataWriteRepository)
        : IRequestHandler<UpdateDeedOfNovationAndVariationTaskCommand, Result<bool>>
