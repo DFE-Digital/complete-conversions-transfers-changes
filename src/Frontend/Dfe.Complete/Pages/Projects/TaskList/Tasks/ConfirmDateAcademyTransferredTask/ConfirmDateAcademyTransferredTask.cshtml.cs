@@ -43,7 +43,7 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.ConfirmDateAcademyTransferr
             {
                 ModelState.AddModelError(
                     nameof(DateAcademyTransferred),
-                    string.Format(ValidationConstants.DateInPast, "Academy transferred date"));
+                    string.Format(ValidationConstants.DateInPast, "Academy transferred"));
             }
 
             if (!ModelState.IsValid)

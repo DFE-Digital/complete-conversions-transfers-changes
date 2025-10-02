@@ -19,7 +19,7 @@
             <govuk-checkboxes-fieldset>
                 <govuk-checkboxes-fieldset-legend>
                 </govuk-checkboxes-fieldset-legend>
-                <govuk-checkboxes-item id="redact" asp-for="@Model.Redact" value="true" name="redact" checked="@Model.Redact">
+                <govuk-checkboxes-item data-cy="redact" id="redact" asp-for="@Model.Redact" value="true" name="redact" checked="@Model.Redact">
                     <b>Redact all relevant documents</b>
                      <govuk-checkboxes-item-hint>
                          <govuk-details>
@@ -44,17 +44,17 @@
                             </govuk-details-text>
                          </govuk-details>
                      </govuk-checkboxes-item-hint>
-                </govuk-checkboxes-item> 
-                <govuk-checkboxes-item id="saved" asp-for="@Model.Saved" value="true" name="saved" checked="@Model.Saved">
+                </govuk-checkboxes-item>
+                <govuk-checkboxes-item data-cy="saved" id="saved" asp-for="@Model.Saved" value="true" name="saved" checked="@Model.Saved">
                     <b>Save relevant documents in the school's SharePoint folder</b>
                 </govuk-checkboxes-item>
-                <govuk-checkboxes-item id="send" asp-for="@Model.Send" value="true" name="send" checked="@Model.Send">
+                <govuk-checkboxes-item data-cy="send" id="send" asp-for="@Model.Send" value="true" name="send" checked="@Model.Send">
                     <b>Send the redacted documents to the funding agreements mailbox to be published on GOV.UK</b>
                     <govuk-checkboxes-item-hint>
                         <a href="@_configuration["ExternalLinks:HelpRedactingDocuments"]" class="govuk-link" target="_blank">Help redacting the documents (opens in new tab)</a>
                     </govuk-checkboxes-item-hint>
                 </govuk-checkboxes-item>
-                <govuk-checkboxes-item id="send_to_solicitors" asp-for="@Model.SendToSolicitors" value="true" name="send_to_solicitors" checked="@Model.SendToSolicitors">
+                <govuk-checkboxes-item data-cy="send_to_solicitors" id="send_to_solicitors" asp-for="@Model.SendToSolicitors" value="true" name="send_to_solicitors" checked="@Model.SendToSolicitors">
                     <b>Send the redacted and unredacted versions of documents to the solicitors</b>
                     <govuk-checkboxes-item-hint>
                         <p>You can copy the school and trust into this email too. They will publish relevant documents on their websites.</p>

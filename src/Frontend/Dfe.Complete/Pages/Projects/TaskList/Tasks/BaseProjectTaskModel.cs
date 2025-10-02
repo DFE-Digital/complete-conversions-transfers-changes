@@ -69,4 +69,8 @@ public class BaseProjectTaskModel(ISender sender, IAuthorizationService authoriz
 
         return Redirect(string.Format(RouteConstants.ProjectAddTaskNote, ProjectId, TaskIdentifier.ToDescription()));
     }
+    public void SetTaskSuccessNotification()
+    {
+        TempData.SetNotification(NotificationType.Success, "Success", "Task updated successfully");
+    }
 }

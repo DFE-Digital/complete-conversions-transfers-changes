@@ -316,6 +316,11 @@
       "ExpectedSecurity": "Authorize: Policy=CanReadWriteUpdate"
     },
     {
+      "Controller": "TasksDataController",
+      "Action": "UpdateConfirmAcademyOpenedDateTaskAsync",
+      "ExpectedSecurity": "Authorize: Policy=CanReadWriteUpdate"
+    },
+    {
       "Controller": "ProjectsController",
       "Action": "UpdateMainContactTaskAsync",
       "ExpectedSecurity": "Authorize: Policy=CanReadWriteUpdate"
