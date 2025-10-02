@@ -37,7 +37,7 @@ public class ExternalLinkTagHelper : TagHelper
 
     public override void Process(TagHelperContext context, TagHelperOutput output)
     {
-        if (string.IsNullOrEmpty(Href))
+        if (string.IsNullOrWhiteSpace(Href))
         {
             output.SuppressOutput();
             return;
@@ -56,17 +56,22 @@ public class ExternalLinkTagHelper : TagHelper
         var cssClasses = !string.IsNullOrEmpty(CssClass) ? CssClass : "govuk-link";
         output.Attributes.SetAttribute("class", cssClasses);
 
+        var existingContent = output.GetChildContentAsync().Result.GetContent();
+
         if (ShowNewTabText)
         {
-            var existingContent = output.GetChildContentAsync().Result.GetContent();
-            var newTabText = !string.IsNullOrEmpty(ScreenReaderDescription) 
-                ? ScreenReaderDescription 
+            var newTabText = !string.IsNullOrEmpty(ScreenReaderDescription)
+                ? ScreenReaderDescription
                 : "(opens in new tab)";
-            
+
             if (!existingContent.Contains("opens in", StringComparison.OrdinalIgnoreCase))
                 output.Content.SetHtmlContent($"{existingContent} {newTabText}");
             else
                 output.Content.SetHtmlContent(existingContent);
+        }
+        else
+        {
+            output.Content.SetHtmlContent(existingContent);
         }
     }
 }
