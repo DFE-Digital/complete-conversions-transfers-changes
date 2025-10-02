@@ -41,7 +41,7 @@
             Check and clear the deed of variation
         </h2>
         <div class="govuk-hint">
-            <p>You can <a href="@_configuration["ExternalLinks:DeedOfVariationLink"]" target="_blank">find the right deed of variation to use (opens in new tab)</a> on SharePoint.</p>
+            <p>You can <a href="@_configuration["ExternalLinks:DeedOfVariationLink"]" target="_blank" rel="noopener noreferrer">find the right deed of variation to use (opens in new tab)</a> on SharePoint.</p>
             @if (Model.Type == ProjectType.Transfer)
             {
                 <p>Deed of varation model documents are not available on GOV.UK. You may need to send copies to the solicitor or trust for them to complete.</p>
@@ -60,7 +60,7 @@
                 {
                     <p>Changes that personalise the model documents to a school or trust, and remove or add optional clauses, are expected. The wording of clauses should not change.</p>
                 }
-                <p>You'll need to <a href="@_configuration["ExternalLinks:ContactPolicyTeam"]" target="_blank">contact the policy team (opens in new tab)</a> about changes to clause text.</p>
+                <p>You'll need to <a href="@_configuration["ExternalLinks:ContactPolicyTeam"]" target="_blank" rel="noopener noreferrer">contact the policy team (opens in new tab)</a> about changes to clause text.</p>
             </govuk-details-text>
         </govuk-details>
          

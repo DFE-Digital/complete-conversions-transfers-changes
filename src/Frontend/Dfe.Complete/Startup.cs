@@ -157,6 +157,7 @@ public class Startup
         app.UseSecurityHeaders(
            SecurityHeadersDefinitions.GetHeaderPolicyCollection(env.IsDevelopment())
               .AddXssProtectionDisabled()
+              .AddCustomHeader("Cross-Origin-Opener-Policy", "same-origin")
         );
 
         app.UseStatusCodePagesWithReExecute("/Errors", "?statusCode={0}");
