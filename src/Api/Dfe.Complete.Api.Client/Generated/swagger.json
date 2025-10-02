@@ -2661,6 +2661,39 @@
         }
       }
     },
+    "/v1/TasksData/TaskData/ConfirmAcademyOpenedDate": {
+      "patch": {
+        "tags": [
+          "TasksData"
+        ],
+        "summary": "Confirm the date the academy opened for conversion project.",
+        "operationId": "TasksData_UpdateConfirmAcademyOpenedDateTask",
+        "requestBody": {
+          "x-name": "request",
+          "description": "The update command.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateConfirmAcademyOpenedDateTaskCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "204": {
+            "description": "Confirm the date the academy opened for conversion project successfully."
+          },
+          "400": {
+            "description": "Invalid request data."
+          },
+          "404": {
+            "description": "Project not found."
+          }
+        }
+      }
+    },
     "/v1/TasksData/TaskData/LandQuestionnaire": {
       "patch": {
         "tags": [
@@ -5003,7 +5036,8 @@
           "ConfirmTransferHasAuthorityToProceed",
           "ConfirmDateAcademyTransferred",
           "ConfirmAllConditionsMet",
-          "ReceiveGrantPaymentCertificate"
+          "ReceiveGrantPaymentCertificate",
+          "ConfirmAcademyOpenedDate"
         ],
         "enum": [
           "Handover",
@@ -5020,7 +5054,8 @@
           "ConfirmTransferHasAuthorityToProceed",
           "ConfirmDateAcademyTransferred",
           "ConfirmAllConditionsMet",
-          "ReceiveGrantPaymentCertificate"
+          "ReceiveGrantPaymentCertificate",
+          "ConfirmAcademyOpenedDate"
         ]
       },
       "CreateNoteCommand": {
@@ -7134,6 +7169,20 @@
           },
           "confirm": {
             "type": "boolean",
+            "nullable": true
+          }
+        }
+      },
+      "UpdateConfirmAcademyOpenedDateTaskCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "taskDataId": {
+            "$ref": "#/components/schemas/TaskDataId"
+          },
+          "academyOpenedDate": {
+            "type": "string",
+            "format": "date",
             "nullable": true
           }
         }

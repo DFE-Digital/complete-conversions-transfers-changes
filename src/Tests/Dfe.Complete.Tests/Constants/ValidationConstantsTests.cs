@@ -146,5 +146,18 @@ namespace Dfe.Complete.Tests.Constants
             Assert.Equal(
                 "Enter a valid date the decision was made, like 27 3 2021", ValidationConstants.DecisionDateRequired);
         }
+        [Fact]
+        public void DateInPast_ShouldReturnExpectedMessage()
+        {
+            var dateField = "Opened academy";
+            Assert.Equal($"{dateField} date must be in the past", string.Format(ValidationConstants.DateInPast, dateField));
+        }
+        [Fact]
+        public void MustBePastDate_ShouldReturnExpectedMessage()
+        {
+            var dateField = "Opened academy date";
+            Assert.Equal($"{dateField} must be in the past", string.Format(ValidationConstants.MustBePastDate, dateField));
+        } 
+        
     }
 }

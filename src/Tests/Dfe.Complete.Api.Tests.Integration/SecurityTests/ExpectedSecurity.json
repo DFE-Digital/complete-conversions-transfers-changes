@@ -317,6 +317,11 @@
     },
     {
       "Controller": "TasksDataController",
+      "Action": "UpdateConfirmAcademyOpenedDateTaskAsync",
+      "ExpectedSecurity": "Authorize: Policy=CanReadWriteUpdate"
+    },
+    {
+      "Controller": "TasksDataController",
       "Action": "UpdateLandQuestionnaireTaskAsync",
       "ExpectedSecurity": "Authorize: Policy=CanReadWriteUpdate"
     }

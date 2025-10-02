@@ -16,7 +16,7 @@ namespace Dfe.Complete.Application.Projects.Commands.TaskData
          bool? CheckCertificate,
          bool? Saved) : IRequest<Result<bool>>;
 
-    public class UpdateDeclarationOfExpenditureCertificateTaskCommandHandler(
+    internal class UpdateDeclarationOfExpenditureCertificateTaskCommandHandler(
        ITaskDataReadRepository taskDataReadRepository,
        ITaskDataWriteRepository taskDataWriteRepository)
        : IRequestHandler<UpdateDeclarationOfExpenditureCertificateTaskCommand, Result<bool>>

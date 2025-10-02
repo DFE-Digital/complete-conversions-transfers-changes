@@ -5,9 +5,9 @@ using Dfe.Complete.Domain.Entities;
 using Dfe.Complete.Infrastructure.Database;
 using Dfe.Complete.Tests.Common.Constants;
 using Dfe.Complete.Tests.Common.Customizations.Models;
+using Dfe.Complete.Utils;
 using GovUK.Dfe.CoreLibs.Testing.AutoFixture.Attributes;
-using GovUK.Dfe.CoreLibs.Testing.Mocks.WebApplicationFactory;
-using Microsoft.AspNetCore.Http.HttpResults;
+using GovUK.Dfe.CoreLibs.Testing.Mocks.WebApplicationFactory; 
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 
@@ -694,6 +694,36 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers.ProjectsController
             var existingProject = await dbContext.Projects.SingleOrDefaultAsync(x => x.Id == project.Id);
             Assert.NotNull(existingProject);
             Assert.True(existingProject.AllConditionsMet);
+        }
+        
+        [Theory]
+        [CustomAutoData(typeof(CustomWebApplicationDbContextFactoryCustomization))]
+        public async Task UpdateConfirmAcademyOpenedDateTaskAsync_ShouldUpdate_ConversionTaskData(
+            CustomWebApplicationDbContextFactory<Program> factory,
+            ITasksDataClient tasksDataClient,
+            UpdateConfirmAcademyOpenedDateTaskCommand command,
+            IFixture fixture)
+        {
+            // Arrange
+            factory.TestClaims = [new Claim(ClaimTypes.Role, ApiRoles.ReadRole), new Claim(ClaimTypes.Role, ApiRoles.UpdateRole), new Claim(ClaimTypes.Role, ApiRoles.WriteRole)];
+
+            var dbContext = factory.GetDbContext<CompleteContext>();
+
+            var taskData = fixture.Create<ConversionTasksData>();
+            dbContext.ConversionTasksData.Add(taskData);
+
+            await dbContext.SaveChangesAsync();
+            command.TaskDataId = new TaskDataId { Value = taskData.Id.Value }; 
+            command.AcademyOpenedDate = new DateTime(2025, 1, 1);
+
+            // Act
+            await tasksDataClient.UpdateConfirmAcademyOpenedDateTaskAsync(command, default);
+
+            // Assert
+            dbContext.ChangeTracker.Clear();
+            var existingTaskData = await dbContext.ConversionTasksData.SingleOrDefaultAsync(x => x.Id == taskData.Id);
+            Assert.NotNull(existingTaskData);
+            Assert.Equal(existingTaskData.ConfirmDateAcademyOpenedDateOpened, command.AcademyOpenedDate.ToDateOnly());
         }
 
         [Theory]
