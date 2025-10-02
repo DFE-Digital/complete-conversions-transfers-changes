@@ -17,7 +17,7 @@ namespace Dfe.Complete.Application.Projects.Commands.TaskData
         bool? SendToEsfa,
         bool? Send,
         bool? SendToSolicitors) : IRequest<Result<bool>>;
-    public class UpdateRedactAndSendDocumentsTaskCommandHandler(
+    internal class UpdateRedactAndSendDocumentsTaskCommandHandler(
        ITaskDataReadRepository taskDataReadRepository,
        ITaskDataWriteRepository taskDataWriteRepository)
        : IRequestHandler<UpdateRedactAndSendDocumentsTaskCommand, Result<bool>>
