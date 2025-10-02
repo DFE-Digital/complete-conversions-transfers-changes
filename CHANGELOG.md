@@ -51,6 +51,10 @@ See the [full commit history](https://github.com/DFE-Digital/complete-conversion
 - Fixed broken task note urls.
 - Fixed all project by month query for conversion projects if all conditions met is null
 
+### Security
+- patch reverse tabnabbing vulnerability by including nooper norefferer on external links (target="_blank")
+- add Cross-Origin-Opener-Policy HTTP security header to allow same origin only
+
 See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-09-25.771...production-2025-10-03.811) for everything in the release
 
 ---
