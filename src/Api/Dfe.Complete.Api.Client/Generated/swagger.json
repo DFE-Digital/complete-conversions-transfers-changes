@@ -2024,6 +2024,39 @@
         }
       }
     },
+    "/v1/Projects/project/Complete": {
+      "patch": {
+        "tags": [
+          "Projects"
+        ],
+        "summary": "Updates the completion for a specific project.",
+        "operationId": "Projects_UpdateComplete",
+        "requestBody": {
+          "x-name": "request",
+          "description": "The update command.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateProjectCompletedCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "204": {
+            "description": "Completed project."
+          },
+          "400": {
+            "description": "Invalid request data."
+          },
+          "404": {
+            "description": "Project not found."
+          }
+        }
+      }
+    },
     "/v1/ServiceSupport/LocalAuthority": {
       "post": {
         "tags": [
@@ -5563,6 +5596,15 @@
           "SchoolClosedOrClosing",
           "ChangeToGovernmentPolicy"
         ]
+      },
+      "UpdateProjectCompletedCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "projectId": {
+            "$ref": "#/components/schemas/ProjectId"
+          }
+        }
       },
       "CreateLocalAuthorityCommand": {
         "type": "object",
