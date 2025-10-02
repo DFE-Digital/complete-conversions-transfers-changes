@@ -64,4 +64,8 @@ public enum NoteTaskIdentifier
     [Description("receive_grant_payment_certificate")]
     [DisplayDescription("Receive declaration of expenditure certificate")]
     ReceiveGrantPaymentCertificate = 15,
+    
+    [Description("master_funding_agreement")]
+    [DisplayDescription("Master funding agreement")]
+    MasterFundingAgreement = 16
 }

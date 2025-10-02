@@ -21,11 +21,11 @@ Security in case of vulnerabilities.
 - Added `Confirm all condition has been met` task for conversion projects.
 - Added `Dao Revocation` workflow.
 - Configured Cache settings.
+- Added `Master Funding Agreement` task for both conversion and transfer projects.
 
 ### Changed
 
 ### Fixed
-
 - Fixed broken task note urls.
 
 See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-09-25.771...main) for everything awaiting release

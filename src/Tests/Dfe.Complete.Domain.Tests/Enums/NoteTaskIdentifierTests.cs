@@ -20,6 +20,7 @@ namespace Dfe.Complete.Domain.Tests.Enums
         [InlineData(NoteTaskIdentifier.DeclarationOfExpenditureCertificate, "declaration_of_expenditure_certificate", "Receive declaration of expenditure certificate")]
         [InlineData(NoteTaskIdentifier.ConfirmAllConditionsMet, "conditions_met", "Confirm all conditions have been met")]
         [InlineData(NoteTaskIdentifier.ReceiveGrantPaymentCertificate, "receive_grant_payment_certificate", "Receive declaration of expenditure certificate")] 
+        [InlineData(NoteTaskIdentifier.MasterFundingAgreement, "master_funding_agreement", "Master funding agreement")]
         public void NoteTaskIdentifier_ShouldHaveCorrectDescription(NoteTaskIdentifier identifier, string expectedDescription, string expectedDisplayExpectation)
         {
             // Act

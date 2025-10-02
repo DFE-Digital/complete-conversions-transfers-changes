@@ -28,6 +28,7 @@
 
 	<ItemGroup>
 	  <AdditionalFiles Include="..\.sonarlint\dfe-digital_a2b-internal\CSharp\SonarLint.xml" Link="SonarLint.xml" />
+	  <AdditionalFiles Include="Pages\Projects\TaskList\Tasks\MasterFundingAgreement\MasterFundingAgreement.cshtml" />
 	</ItemGroup>
 
 	<PropertyGroup Label="custom">
