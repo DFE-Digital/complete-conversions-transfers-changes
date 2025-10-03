@@ -28,7 +28,7 @@ namespace Dfe.Complete.Application.Users.Commands
         {
             try
             {
-                var existingUser = await new UserIdQuery(request.Id).Apply(userReadRepository.Users).FirstOrDefaultAsync(cancellationToken) ?? throw new NotFoundException(string.Format(ErrorMessagesConstants.NotFoundUser, request.Id));
+                var existingUser = await new UserIdQuery(request.Id).Apply(userReadRepository.Users).FirstOrDefaultAsync(cancellationToken) ?? throw new NotFoundException(string.Format(ErrorMessagesConstants.NotFoundUser, request.Id.Value));
 
                 existingUser.FirstName = request.FirstName;
                 existingUser.LastName = request.LastName;

@@ -218,13 +218,12 @@ public class UsersControllerTests
         var dbContext = factory.GetDbContext<CompleteContext>();
         
         // Create a user to update
-        var originalEmail = fixture.Create<string>() + "@education.gov.uk";
         var existingUser = Domain.Entities.User.Create(
             new Domain.ValueObjects.UserId(Guid.NewGuid()),
-            originalEmail,
-            fixture.Create<string>(),
-            fixture.Create<string>(),
-            fixture.Create<ProjectTeam>().ToString()
+            "oldemail@education.gov.uk",
+            "Old",
+            "User",
+            "London"
         );
         
         dbContext.Users.Add(existingUser);
@@ -233,21 +232,23 @@ public class UsersControllerTests
         var updateCommand = new UpdateUserCommand()
         {
             Id = new UserId() { Value = existingUser.Id.Value },
-            FirstName = fixture.Create<string>(),
-            LastName = fixture.Create<string>(),
-            Email = fixture.Create<string>() + "@education.gov.uk",
-            Team = fixture.Create<ProjectTeam>()
+            FirstName = "New",
+            LastName = "User",
+            Email = "updatedemail@education.gov.uk",
+            Team = ProjectTeam.SouthWest
         };
 
         await usersClient.UpdateUserAsync(updateCommand, CancellationToken.None);
 
+        dbContext.ChangeTracker.Clear();
+
         // Verify the user was updated
         var updatedUser = await dbContext.Users.FindAsync(existingUser.Id);
         Assert.NotNull(updatedUser);
-        Assert.Equal(updateCommand.FirstName, updatedUser.FirstName);
-        Assert.Equal(updateCommand.LastName, updatedUser.LastName);
-        Assert.Equal(updateCommand.Email, updatedUser.Email);
-        Assert.Equal(updateCommand.Team!.ToString(), updatedUser.Team);
+        Assert.Equal("New", updatedUser.FirstName);
+        Assert.Equal("User", updatedUser.LastName);
+        Assert.Equal("updatedemail@education.gov.uk", updatedUser.Email);
+        Assert.Equal("south_west", updatedUser.Team);
     }
 
     [Theory]
@@ -264,16 +265,16 @@ public class UsersControllerTests
         var updateCommand = new UpdateUserCommand()
         {
             Id = nonExistentUserId,
-            FirstName = fixture.Create<string>(),
-            LastName = fixture.Create<string>(),
-            Email = fixture.Create<string>() + "@education.gov.uk",
-            Team = fixture.Create<ProjectTeam>()
+            FirstName = "New",
+            LastName = "User",
+            Email = "updatedemail@education.gov.uk",
+            Team = ProjectTeam.SouthWest
         };
 
         var exception = await Assert.ThrowsAsync<CompleteApiException>(async () =>
             await usersClient.UpdateUserAsync(updateCommand, CancellationToken.None));
 
-        Assert.Contains($"User with id '{nonExistentUserId.Value}' was not found", exception.Message);
+        Assert.Contains($"User with id {nonExistentUserId.Value} not found", exception.Response);
     }
 
 
