@@ -45,4 +45,20 @@ public class ContactsController(ISender sender) : ControllerBase
         var contacts = await sender.Send(request, cancellationToken);
         return Ok(contacts.Value);
     }
+
+    /// <summary>
+    /// Returns a list of Contacts for a specific Project and local authority 
+    /// </summary>
+    /// <param name="request">The request.</param>
+    /// <param name="cancellationToken">The cancellation token.</param>
+    [Authorize(Policy = "CanRead")]
+    [HttpGet]
+    [Route("List/ProjectAndLocalAuthority")]
+    [SwaggerResponse(200, "Contact", typeof(List<Contact>))]
+    [SwaggerResponse(400, "Invalid request data.")]
+    public async Task<IActionResult> ListAllContactsForProjectAndLocalAuthorityAsync([FromQuery] GetContactsForProjectAndLocalAuthorityQuery request, CancellationToken cancellationToken)
+    {
+        var contacts = await sender.Send(request, cancellationToken);
+        return Ok(contacts.Value);
+    }
 }
