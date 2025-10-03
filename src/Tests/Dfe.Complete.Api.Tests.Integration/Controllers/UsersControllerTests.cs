@@ -204,4 +204,77 @@ public class UsersControllerTests
                 result.AssignedToFullName);
         }
     }
+
+    [Theory]
+    [CustomAutoData(typeof(CustomWebApplicationDbContextFactoryCustomization))]
+    public async Task UpdateUserAsync_ShouldUpdateUser(
+        CustomWebApplicationDbContextFactory<Program> factory,
+        IUsersClient usersClient,
+        IFixture fixture)
+    {
+        factory.TestClaims = new[] { ApiRoles.ReadRole, ApiRoles.WriteRole, ApiRoles.UpdateRole }
+            .Select(x => new Claim(ClaimTypes.Role, x)).ToList();
+
+        var dbContext = factory.GetDbContext<CompleteContext>();
+        
+        // Create a user to update
+        var originalEmail = fixture.Create<string>() + "@education.gov.uk";
+        var existingUser = Domain.Entities.User.Create(
+            new Domain.ValueObjects.UserId(Guid.NewGuid()),
+            originalEmail,
+            fixture.Create<string>(),
+            fixture.Create<string>(),
+            fixture.Create<ProjectTeam>().ToString()
+        );
+        
+        dbContext.Users.Add(existingUser);
+        await dbContext.SaveChangesAsync();
+
+        var updateCommand = new UpdateUserCommand()
+        {
+            Id = new UserId() { Value = existingUser.Id.Value },
+            FirstName = fixture.Create<string>(),
+            LastName = fixture.Create<string>(),
+            Email = fixture.Create<string>() + "@education.gov.uk",
+            Team = fixture.Create<ProjectTeam>()
+        };
+
+        await usersClient.UpdateUserAsync(updateCommand, CancellationToken.None);
+
+        // Verify the user was updated
+        var updatedUser = await dbContext.Users.FindAsync(existingUser.Id);
+        Assert.NotNull(updatedUser);
+        Assert.Equal(updateCommand.FirstName, updatedUser.FirstName);
+        Assert.Equal(updateCommand.LastName, updatedUser.LastName);
+        Assert.Equal(updateCommand.Email, updatedUser.Email);
+        Assert.Equal(updateCommand.Team!.ToString(), updatedUser.Team);
+    }
+
+    [Theory]
+    [CustomAutoData(typeof(CustomWebApplicationDbContextFactoryCustomization))]
+    public async Task UpdateUserAsync_UserNotFound_ShouldThrowException(
+        CustomWebApplicationDbContextFactory<Program> factory,
+        IUsersClient usersClient,
+        IFixture fixture)
+    {
+        factory.TestClaims = new[] { ApiRoles.ReadRole, ApiRoles.WriteRole, ApiRoles.UpdateRole }
+            .Select(x => new Claim(ClaimTypes.Role, x)).ToList();
+
+        var nonExistentUserId = new UserId() { Value = Guid.NewGuid() };
+        var updateCommand = new UpdateUserCommand()
+        {
+            Id = nonExistentUserId,
+            FirstName = fixture.Create<string>(),
+            LastName = fixture.Create<string>(),
+            Email = fixture.Create<string>() + "@education.gov.uk",
+            Team = fixture.Create<ProjectTeam>()
+        };
+
+        var exception = await Assert.ThrowsAsync<CompleteApiException>(async () =>
+            await usersClient.UpdateUserAsync(updateCommand, CancellationToken.None));
+
+        Assert.Contains($"User with id '{nonExistentUserId.Value}' was not found", exception.Message);
+    }
+
+
 }
