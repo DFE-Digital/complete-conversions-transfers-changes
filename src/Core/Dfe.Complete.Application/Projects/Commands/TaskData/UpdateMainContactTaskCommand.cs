@@ -26,7 +26,7 @@ namespace Dfe.Complete.Application.Projects.Commands.TaskData
             project.MainContactId = request.MainContactId;
             project.UpdatedAt = now;
             await projectWriteRepository.UpdateProjectAsync(project, cancellationToken);
-
+            
             return Result<bool>.Success(true);
         } 
     }

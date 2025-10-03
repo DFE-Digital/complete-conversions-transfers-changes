@@ -1,6 +1,7 @@
 ﻿@page "/projects/{projectId}/tasks/main_contact"
 @using Dfe.Complete.Constants
 @using Dfe.Complete.Domain.Enums
+@using Dfe.Complete.TagHelpers;
 @model Dfe.Complete.Pages.Projects.TaskList.Tasks.MainContactTask.MainContactTaskModel
 @{
     Layout = "_ProjectTaskLayout";
@@ -19,23 +20,12 @@
 @section TaskSection
 {
     <form method="post">
-        <govuk-radios name="options">
-            <govuk-radios-fieldset>
-                <govuk-radios-fieldset-legend class="govuk-fieldset__legend--l">
-                    Choose a contact 
-                </govuk-radios-fieldset-legend>
-                @foreach (var contact in Model.Project.Contacts)
-                {
-                    <govuk-radios-item value="@contact.Id" checked="@(contact.Id.Value == Model.MainContactId)">
-                        <b>@contact.Name</b>
-                        <br />
-                        <govuk-radios-hint>
-                            @contact.Title
-                        </govuk-radios-hint>
-                    </govuk-radios-item>
-                }
-            </govuk-radios-fieldset>
-        </govuk-radios> 
+        @await Html.PartialAsync("_ContactRadioList",
+            new ContactRadioListModel(Model.Contacts!, Model.MainContactId, "MainContactId")
+            {
+                Legend = "Choose a contact"
+            }
+        ) 
         @await Html.PartialAsync("_TaskSaveAndReturn", new TaskSaveAndReturnModel(Model.Project, Model.CurrentUserTeam))
     </form>
 }

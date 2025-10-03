@@ -23,6 +23,7 @@ Security in case of vulnerabilities.
 - Configured Cache settings.
 - Added `Confirm the date the academy opened` task.
 - Added 'Closing of transfer or conversion project'.
+- Added `Main contact` task page
 
 ### Changed
 

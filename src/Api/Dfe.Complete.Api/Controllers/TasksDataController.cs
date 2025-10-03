@@ -283,8 +283,7 @@ namespace Dfe.Complete.Api.Controllers
         {
             await sender.Send(request, cancellationToken);
             return NoContent();
-        }
-        
+        } 
 
         /// <summary>
         /// Updates the main contact for either conversion or transfer project.

@@ -326,9 +326,14 @@
       "ExpectedSecurity": "Authorize: Policy=CanReadWriteUpdate"
     },
     {
-      "Controller": "ProjectsController",
+      "Controller": "TasksDataController",
       "Action": "UpdateMainContactTaskAsync",
       "ExpectedSecurity": "Authorize: Policy=CanReadWriteUpdate"
+    },
+    {
+      "Controller": "ContactsController",
+      "Action": "ListAllContactsForProjectAndLocalAuthorityAsync",
+      "ExpectedSecurity": "Authorize: Policy=CanRead"
     }
   ]
 }
