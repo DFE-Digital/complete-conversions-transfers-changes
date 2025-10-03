@@ -35,7 +35,7 @@ namespace Dfe.Complete.Application.Users.Commands
                 if (!response.IsSuccess || response.Value == null)
                 {
                     logger.LogWarning("{Message} UserId: {UserId}", ErrorMessagesConstants.NotFoundUser, request.Id);
-                    return Result<bool>.Failure(string.Format(ErrorMessagesConstants.NotFoundUser, request.Id));
+                    return Result<bool>.Failure(string.Format(ErrorMessagesConstants.NotFoundUser, request.Id), ErrorType.NotFound);
                 }
 
                 var existingUser = response.Value;
