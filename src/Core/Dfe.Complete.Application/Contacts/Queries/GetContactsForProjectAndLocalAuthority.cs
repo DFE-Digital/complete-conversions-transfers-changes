@@ -12,7 +12,7 @@ public record GetContactsForProjectOrLocalAuthorityQuery(ProjectId ProjectId, Lo
 public class GetContactsForProjectAndLocalAuthority(ICompleteRepository<Contact> contactsRepository) : IRequestHandler<GetContactsForProjectOrLocalAuthorityQuery, Result<List<Contact>>>
 {
 
-    public async Task<Result<List<Contact>>> Handle(GetContactsForProjectOrLocalAuthorityQuery request, CancellationToken cancellationToken)
+    internal async Task<Result<List<Contact>>> Handle(GetContactsForProjectOrLocalAuthorityQuery request, CancellationToken cancellationToken)
     {
         try
         {

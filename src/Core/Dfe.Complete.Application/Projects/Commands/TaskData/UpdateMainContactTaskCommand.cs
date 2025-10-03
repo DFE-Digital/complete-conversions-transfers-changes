@@ -1,7 +1,5 @@
 ﻿using Dfe.Complete.Application.Common.Models;
-using Dfe.Complete.Application.Contacts.Interfaces;
 using Dfe.Complete.Application.Projects.Interfaces;
-using Dfe.Complete.Domain.Entities;
 using Dfe.Complete.Domain.ValueObjects;
 using Dfe.Complete.Utils;
 using MediatR;
