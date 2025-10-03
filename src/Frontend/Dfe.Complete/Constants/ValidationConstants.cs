@@ -37,5 +37,18 @@
         public const string InvalidEmailMessage = "Enter an email address in the correct format, like name@example.com";
         public const string RoleRequiredMessage = "Enter a role";
         public const string InvalidPrimaryContactMessage = "Only the incoming trust, outgoing trust, school or academy and local authority categories can have a primary contact.";
+
+        // project completion validation messages
+        // For transfer
+        public const string TransferDateInPast = "The transfer date has been confirmed and is in the past";
+        public const string AuthorityToProceedComplete = "The confirm this transfer has authority to proceed task is completed";        
+        public const string ExpenditureCertificateComplete = "The receive declaration of expenditure certificate task is completed";
+        public const string AcademyTransferDateComplete = "The confirm the date the academy transferred task is completed";
+
+        // For conversion
+        public const string ConversionDateInPast = "The conversion date has been confirmed and is in the past";
+        public const string AllConditionsMetComplete = "The confirm all conditions have been met task is completed";
+        public const string AcademyOpenedDateComplete = "The confirm the date the academy opened task is completed";
+
     }
 }
