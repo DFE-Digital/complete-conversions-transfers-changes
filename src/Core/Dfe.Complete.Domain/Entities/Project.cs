@@ -248,50 +248,38 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
     }
 
 
-    public static Project CreateHandoverConversionProject(
-        ProjectId id,
-        Urn urn,
-        Guid tasksDataId,
-        DateOnly significantDate,
-        Ukprn incomingTrustUkprn,
-        Region? region,
-        bool hasAcademyOrderBeenIssued,
-        DateOnly advisoryBoardDate,
-        string? advisoryBoardConditions,
-        ProjectGroupId? groupId,
-        UserId regionalDeliveryOfficerId,
-        Guid localAuthorityId)
+    public static Project CreateHandoverConversionProject(CreateHandoverConversionProjectParams parameters)
     {
         var now = DateTime.UtcNow;
 
         var project = new Project(
-            id,
-            urn,
+            parameters.Id,
+            parameters.Urn,
             now,
             now,
             TaskType.Conversion,
             ProjectType.Conversion,
-            tasksDataId,
-            significantDate,
+            parameters.TasksDataId,
+            parameters.SignificantDate,
             true,
-            incomingTrustUkprn,
+            parameters.IncomingTrustUkprn,
             null,
-            region,
+            parameters.Region,
             false,
-            hasAcademyOrderBeenIssued,
-            advisoryBoardDate,
-            advisoryBoardConditions,
+            parameters.HasAcademyOrderBeenIssued,
+            parameters.AdvisoryBoardDate,
+            parameters.AdvisoryBoardConditions,
             null,
             null,
             null,
-            groupId,
+            parameters.GroupId,
             null,
-            regionalDeliveryOfficerId,
-            null,
-            null,
+            parameters.RegionalDeliveryOfficerId,
             null,
             null,
-            localAuthorityId)
+            null,
+            null,
+            parameters.LocalAuthorityId)
         {
             State = ProjectState.Inactive
         };

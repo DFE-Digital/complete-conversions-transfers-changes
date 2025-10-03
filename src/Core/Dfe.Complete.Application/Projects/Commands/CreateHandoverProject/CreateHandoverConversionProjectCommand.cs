@@ -85,7 +85,7 @@ public class CreateHandoverConversionProjectCommandHandler(
             // Create conversion task data
             var conversionTask = handoverProjectService.CreateConversionTaskAsync();
 
-            var project = Project.CreateHandoverConversionProject(
+            var parameters = new CreateHandoverConversionProjectParams(
                 projectId,
                 new Urn(urn),
                 conversionTask.Id.Value,
@@ -98,6 +98,8 @@ public class CreateHandoverConversionProjectCommandHandler(
                 groupId,
                 userId,
                 localAuthorityId);
+            
+            var project = Project.CreateHandoverConversionProject(parameters);
 
             project.PrepareId = request.PrepareId!.Value;
 
