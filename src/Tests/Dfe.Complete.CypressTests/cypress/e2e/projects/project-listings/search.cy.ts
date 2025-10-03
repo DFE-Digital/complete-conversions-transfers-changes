@@ -14,7 +14,7 @@ const schoolName = "St Chad's Catholic Primary School";
 
 describe("Search bar tests", () => {
     before(() => {
-        projectRemover.removeProjectIfItExists(`${project.urn.value}`);
+        projectRemover.removeProjectIfItExists(project.urn.value);
         projectApi.createConversionProject(project);
     });
 

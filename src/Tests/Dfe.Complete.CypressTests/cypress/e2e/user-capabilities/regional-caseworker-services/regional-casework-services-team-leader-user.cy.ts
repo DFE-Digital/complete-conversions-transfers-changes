@@ -30,8 +30,8 @@ const project = ProjectBuilder.createConversionFormAMatProjectRequest();
 let projectId: string;
 describe("Capabilities and permissions of the regional casework services team leader user", () => {
     before(() => {
-        projectRemover.removeProjectIfItExists(`${unassignedProject.urn.value}`);
-        projectRemover.removeProjectIfItExists(`${project.urn.value}`);
+        projectRemover.removeProjectIfItExists(unassignedProject.urn.value);
+        projectRemover.removeProjectIfItExists(project.urn.value);
         projectApi.createTransferProject(unassignedProject);
         projectApi.createMatConversionProject(project).then((response) => (projectId = response.value));
     });

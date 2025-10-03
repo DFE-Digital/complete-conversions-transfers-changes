@@ -30,8 +30,8 @@ const transferAcademyName = "Madni Academy";
 
 describe("Groups tests: ", () => {
     before(() => {
-        projectRemover.removeProjectIfItExists(`${conversionSchoolWithGroup.urn.value}`);
-        projectRemover.removeProjectIfItExists(`${transferAcademyWithGroup.urn.value}`);
+        projectRemover.removeProjectIfItExists(conversionSchoolWithGroup.urn.value);
+        projectRemover.removeProjectIfItExists(transferAcademyWithGroup.urn.value);
         projectApi.createConversionProject(conversionSchoolWithGroup);
         projectApi.createTransferProject(transferAcademyWithGroup);
     });

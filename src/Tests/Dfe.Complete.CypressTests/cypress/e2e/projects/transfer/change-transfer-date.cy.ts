@@ -43,9 +43,9 @@ const otherUserProject = ProjectBuilder.createTransferProjectRequest({
 let otherUserProjectId: string;
 describe("Change the transfer date tests", () => {
     before(() => {
-        projectRemover.removeProjectIfItExists(`${confirmedDateProject.urn.value}`);
-        projectRemover.removeProjectIfItExists(`${provisionalDateProject.urn.value}`);
-        projectRemover.removeProjectIfItExists(`${otherUserProject.urn.value}`);
+        projectRemover.removeProjectIfItExists(confirmedDateProject.urn.value);
+        projectRemover.removeProjectIfItExists(provisionalDateProject.urn.value);
+        projectRemover.removeProjectIfItExists(otherUserProject.urn.value);
         projectApi
             .createTransferProject(confirmedDateProject)
             .then((response) => (confirmedDateProjectId = response.value));

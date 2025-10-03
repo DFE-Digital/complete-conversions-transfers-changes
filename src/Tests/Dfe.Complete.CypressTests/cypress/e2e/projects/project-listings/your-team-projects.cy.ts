@@ -32,9 +32,9 @@ const handedOverSchoolName = "City of London Academy Islington";
 
 describe("Regional delivery officer (London) user - View your team projects (projects with London region)", () => {
     before(() => {
-        projectRemover.removeProjectIfItExists(`${myLondonProject.urn.value}`);
-        projectRemover.removeProjectIfItExists(`${teammatesLondonRegionProject.urn.value}`);
-        projectRemover.removeProjectIfItExists(`${handedOverProject.urn.value}`);
+        projectRemover.removeProjectIfItExists(myLondonProject.urn.value);
+        projectRemover.removeProjectIfItExists(teammatesLondonRegionProject.urn.value);
+        projectRemover.removeProjectIfItExists(handedOverProject.urn.value);
         projectApi.createConversionProject(myLondonProject);
         projectApi.createConversionProject(teammatesLondonRegionProject, rdoLondonUser.email);
         projectApi.createTransferProject(handedOverProject, rdoLondonUser.email);

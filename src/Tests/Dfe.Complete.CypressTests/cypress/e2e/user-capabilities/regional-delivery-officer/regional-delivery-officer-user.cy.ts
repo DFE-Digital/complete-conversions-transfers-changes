@@ -19,7 +19,7 @@ const project = ProjectBuilder.createConversionProjectRequest({ significantDate:
 let projectId: string;
 describe("Capabilities and permissions of the regional delivery officer user", () => {
     before(() => {
-        projectRemover.removeProjectIfItExists(`${project.urn.value}`);
+        projectRemover.removeProjectIfItExists(project.urn.value);
         projectApi.createConversionProject(project).then((response) => (projectId = response.value));
     });
     beforeEach(() => {

@@ -52,7 +52,7 @@ const reasonsForChange2 = {
 
 describe("View the conversion date history tests", () => {
     before(() => {
-        projectRemover.removeProjectIfItExists(`${confirmedDateProject.urn.value}`);
+        projectRemover.removeProjectIfItExists(confirmedDateProject.urn.value);
         projectApi.createMatConversionProject(confirmedDateProject).then((response) => {
             confirmedDateProjectId = response.value;
             projectApi.updateProjectSignificantDate(

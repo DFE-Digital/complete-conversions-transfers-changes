@@ -47,9 +47,9 @@ let otherUserProjectId: string;
 
 describe("Change the conversion date tests", () => {
     before(() => {
-        projectRemover.removeProjectIfItExists(`${confirmedDateProject.urn.value}`);
-        projectRemover.removeProjectIfItExists(`${provisionalDateProject.urn.value}`);
-        projectRemover.removeProjectIfItExists(`${otherUserProject.urn.value}`);
+        projectRemover.removeProjectIfItExists(confirmedDateProject.urn.value);
+        projectRemover.removeProjectIfItExists(provisionalDateProject.urn.value);
+        projectRemover.removeProjectIfItExists(otherUserProject.urn.value);
         projectApi
             .createMatConversionProject(confirmedDateProject)
             .then((response) => (confirmedDateProjectId = response.value));

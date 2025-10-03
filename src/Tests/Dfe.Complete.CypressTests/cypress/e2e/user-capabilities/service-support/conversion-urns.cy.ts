@@ -28,9 +28,9 @@ const schoolWithAcademyName = "St Chad's Catholic Primary School";
 
 describe("Service support user - Conversion URNs: ", () => {
     before(() => {
-        projectRemover.removeProjectIfItExists(`${project.urn.value}`);
-        projectRemover.removeProjectIfItExists(`${project2.urn.value}`);
-        projectRemover.removeProjectIfItExists(`${projectWithAcademy.urn.value}`);
+        projectRemover.removeProjectIfItExists(project.urn.value);
+        projectRemover.removeProjectIfItExists(project2.urn.value);
+        projectRemover.removeProjectIfItExists(projectWithAcademy.urn.value);
         projectApi.createConversionProject(project);
         projectApi.createConversionProject(project2);
         projectApi.createConversionProject(projectWithAcademy).then((response) => {

@@ -22,10 +22,10 @@ const transferFormAMatSchoolName = "Priory Rise School";
 
 describe("View your projects", () => {
     before(() => {
-        projectRemover.removeProjectIfItExists(`${conversionProject.urn.value}`);
-        projectRemover.removeProjectIfItExists(`${transferProject.urn.value}`);
-        projectRemover.removeProjectIfItExists(`${conversionFormAMatProject.urn.value}`);
-        projectRemover.removeProjectIfItExists(`${transferFormAMatProject.urn.value}`);
+        projectRemover.removeProjectIfItExists(conversionProject.urn.value);
+        projectRemover.removeProjectIfItExists(transferProject.urn.value);
+        projectRemover.removeProjectIfItExists(conversionFormAMatProject.urn.value);
+        projectRemover.removeProjectIfItExists(transferFormAMatProject.urn.value);
         projectApi.createConversionProject(conversionProject);
         projectApi.createTransferProject(transferProject);
         projectApi.createMatConversionProject(conversionFormAMatProject);

@@ -30,8 +30,8 @@ let projectId: string;
 
 describe("Capabilities and permissions of the regional delivery officer team leader user", () => {
     before(() => {
-        projectRemover.removeProjectIfItExists(`${unassignedProject.urn.value}`);
-        projectRemover.removeProjectIfItExists(`${project.urn.value}`);
+        projectRemover.removeProjectIfItExists(unassignedProject.urn.value);
+        projectRemover.removeProjectIfItExists(project.urn.value);
         projectApi.createTransferProject(unassignedProject, rdoTeamLeaderUser.email);
         projectApi.createMatConversionProject(project).then((response) => (projectId = response.value));
     });

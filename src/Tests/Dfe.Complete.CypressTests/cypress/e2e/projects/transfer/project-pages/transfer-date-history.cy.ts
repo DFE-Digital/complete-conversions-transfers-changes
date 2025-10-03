@@ -54,7 +54,7 @@ const reasonsForChange2 = {
 
 describe("View the transfer date history tests", () => {
     before(() => {
-        projectRemover.removeProjectIfItExists(`${confirmedDateProject.urn.value}`);
+        projectRemover.removeProjectIfItExists(confirmedDateProject.urn.value);
         projectApi.createTransferProject(confirmedDateProject).then((response) => {
             confirmedDateProjectId = response.value;
             projectApi.updateProjectSignificantDate(

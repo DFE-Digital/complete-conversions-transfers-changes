@@ -37,9 +37,9 @@ let otherUserProjectId: string;
 
 describe("Conversion tasks - External stakeholder kick-off", () => {
     before(() => {
-        projectRemover.removeProjectIfItExists(`${project.urn.value}`);
-        projectRemover.removeProjectIfItExists(`${project2.urn.value}`);
-        projectRemover.removeProjectIfItExists(`${otherUserProject.urn.value}`);
+        projectRemover.removeProjectIfItExists(project.urn.value);
+        projectRemover.removeProjectIfItExists(project2.urn.value);
+        projectRemover.removeProjectIfItExists(otherUserProject.urn.value);
         projectApi.createMatConversionProject(project).then((createResponse) => {
             projectId = createResponse.value;
         });

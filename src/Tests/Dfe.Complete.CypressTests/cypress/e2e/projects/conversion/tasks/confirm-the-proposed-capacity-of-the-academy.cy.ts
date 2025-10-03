@@ -17,8 +17,8 @@ let otherUserProjectId: string;
 
 describe("Conversion tasks - Confirm the proposed capacity of the academy", () => {
     before(() => {
-        projectRemover.removeProjectIfItExists(`${project.urn.value}`);
-        projectRemover.removeProjectIfItExists(`${otherUserProject.urn.value}`);
+        projectRemover.removeProjectIfItExists(project.urn.value);
+        projectRemover.removeProjectIfItExists(otherUserProject.urn.value);
         projectApi.createMatConversionProject(project).then((createResponse) => (projectId = createResponse.value));
         projectApi.createMatConversionProject(otherUserProject).then((createResponse) => {
             otherUserProjectId = createResponse.value;

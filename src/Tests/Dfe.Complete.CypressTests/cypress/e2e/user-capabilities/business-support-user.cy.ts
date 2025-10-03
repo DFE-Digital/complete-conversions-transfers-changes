@@ -28,7 +28,7 @@ let projectId: string;
 const schoolName = "St Chad's Catholic Primary School";
 describe("Capabilities and permissions of the business support user", () => {
     before(() => {
-        projectRemover.removeProjectIfItExists(`${project.urn.value}`);
+        projectRemover.removeProjectIfItExists(project.urn.value);
         projectApi.createConversionProject(project).then((response) => (projectId = response.value));
     });
     beforeEach(() => {

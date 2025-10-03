@@ -46,10 +46,10 @@ const nextMonthShortUS = `${nextMonth.toLocaleString("en-US", { month: "short" }
 
 describe("View all projects", () => {
     before(() => {
-        projectRemover.removeProjectIfItExists(`${project.urn.value}`);
-        projectRemover.removeProjectIfItExists(`${transferProject.urn.value}`);
-        projectRemover.removeProjectIfItExists(`${transferFormAMatProject.urn.value}`);
-        projectRemover.removeProjectIfItExists(`${prepareProject.urn}`);
+        projectRemover.removeProjectIfItExists(project.urn.value);
+        projectRemover.removeProjectIfItExists(transferProject.urn.value);
+        projectRemover.removeProjectIfItExists(transferFormAMatProject.urn.value);
+        projectRemover.removeProjectIfItExists(prepareProject.urn);
         projectApi.createConversionProject(project).then((response) => (projectId = response.value));
         projectApi.createTransferProject(transferProject);
         projectApi.createMatTransferProject(transferFormAMatProject);

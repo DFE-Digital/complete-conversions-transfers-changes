@@ -24,7 +24,7 @@ const unassignableUsers = [regionalCaseworkerTeamLeaderUser, dataConsumerUser, b
 
 describe("Internal contacts page: ", () => {
     before(() => {
-        projectRemover.removeProjectIfItExists(`${project.urn.value}`);
+        projectRemover.removeProjectIfItExists(project.urn.value);
         projectApi.createMatConversionProject(project).then((response) => (projectId = response.value));
     });
     beforeEach(() => {

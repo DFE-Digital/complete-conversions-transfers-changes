@@ -45,9 +45,9 @@ let groupId: string;
 
 describe("About the project page - conversion projects: ", () => {
     before(() => {
-        projectRemover.removeProjectIfItExists(`${project.urn.value}`);
-        projectRemover.removeProjectIfItExists(`${projectFormAMAT.urn.value}`);
-        projectRemover.removeProjectIfItExists(`${teammatesProject.urn.value}`);
+        projectRemover.removeProjectIfItExists(project.urn.value);
+        projectRemover.removeProjectIfItExists(projectFormAMAT.urn.value);
+        projectRemover.removeProjectIfItExists(teammatesProject.urn.value);
         projectApi.createConversionProject(project).then((response) => {
             projectId = response.value;
             projectApi.updateProjectAcademyUrn(projectId, academy.urn);

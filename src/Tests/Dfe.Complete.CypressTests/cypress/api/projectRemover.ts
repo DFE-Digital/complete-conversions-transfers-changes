@@ -3,7 +3,7 @@ import { ApiBase } from "./apiBase";
 import projectApi from "cypress/api/projectApi";
 
 class ProjectRemover extends ApiBase {
-    public removeProject(urn: string): Cypress.Chainable<boolean> {
+    public removeProject(urn: number): Cypress.Chainable<boolean> {
         return this.authenticatedRequest().then((headers) => {
             return cy
                 .request<boolean>({
@@ -19,7 +19,7 @@ class ProjectRemover extends ApiBase {
     }
 
     public removeProjectIfItExists(
-        urn: string,
+        urn: number,
         maxAttempts: number = 10,
         currentAttempt: number = 0,
     ): Cypress.Chainable<boolean> {

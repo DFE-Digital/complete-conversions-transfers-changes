@@ -19,8 +19,8 @@ let otherUserProjectId: string;
 
 describe("Transfers tasks - Deed of variation", () => {
     before(() => {
-        projectRemover.removeProjectIfItExists(`${project.urn.value}`);
-        projectRemover.removeProjectIfItExists(`${otherUserProject.urn.value}`);
+        projectRemover.removeProjectIfItExists(project.urn.value);
+        projectRemover.removeProjectIfItExists(otherUserProject.urn.value);
         projectApi.createTransferProject(project).then((createResponse) => {
             projectId = createResponse.value;
             projectApi.getProject(project.urn.value).then((response) => {

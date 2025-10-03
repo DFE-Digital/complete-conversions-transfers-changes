@@ -19,8 +19,8 @@ let otherUserProjectId: string;
 
 describe("Conversion - Handover with regional delivery officer", () => {
     before(() => {
-        projectRemover.removeProjectIfItExists(`${project.urn.value}`);
-        projectRemover.removeProjectIfItExists(`${otherUserProject.urn.value}`);
+        projectRemover.removeProjectIfItExists(project.urn.value);
+        projectRemover.removeProjectIfItExists(otherUserProject.urn.value);
         projectApi.createMatConversionProject(project).then((createResponse) => {
             projectId = createResponse.value;
             projectApi.getProject(project.urn.value).then((response) => {

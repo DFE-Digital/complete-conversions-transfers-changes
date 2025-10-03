@@ -26,9 +26,9 @@ const otherSchoolName = "Moor Park Primary School";
 // skip as prepare endpoint not implemented in dotnet 214917
 describe.skip("Handover process tests for conversion projects", () => {
     before(() => {
-        projectRemover.removeProjectIfItExists(`${project.urn}`);
-        projectRemover.removeProjectIfItExists(`${formAMATProject.urn}`);
-        projectRemover.removeProjectIfItExists(`${otherProject.urn}`);
+        projectRemover.removeProjectIfItExists(project.urn);
+        projectRemover.removeProjectIfItExists(formAMATProject.urn);
+        projectRemover.removeProjectIfItExists(otherProject.urn);
         prepareProjectApi.createConversionProject(project);
         prepareProjectApi.createConversionFormAMatProject(formAMATProject);
         prepareProjectApi.createConversionProject(otherProject);
