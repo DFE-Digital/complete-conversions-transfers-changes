@@ -145,6 +145,48 @@ namespace Dfe.Complete.Tests.Constants
         {
             Assert.Equal(
                 "Enter a valid date the decision was made, like 27 3 2021", ValidationConstants.DecisionDateRequired);
+        }        
+
+        [Fact]
+        public void TransferDateInPast_ShouldReturnExpectedMessage()
+        {
+            Assert.Equal("The transfer date has been confirmed and is in the past", ValidationConstants.TransferDateInPast);
+        }
+
+        [Fact]
+        public void AuthorityToProceedComplete_ShouldReturnExpectedMessage()
+        {
+            Assert.Equal("The confirm this transfer has authority to proceed task is completed", ValidationConstants.AuthorityToProceedComplete);
+        }
+
+        [Fact]
+        public void ExpenditureCertificateComplete_ShouldReturnExpectedMessage()
+        {
+            Assert.Equal("The receive declaration of expenditure certificate task is completed", ValidationConstants.ExpenditureCertificateComplete);
+        }
+
+        [Fact]
+        public void AcademyTransferDateComplete_ShouldReturnExpectedMessage()
+        {
+            Assert.Equal("The confirm the date the academy transferred task is completed", ValidationConstants.AcademyTransferDateComplete);
+        }
+
+        [Fact]
+        public void ConversionDateInPast_ShouldReturnExpectedMessage()
+        {
+            Assert.Equal("The conversion date has been confirmed and is in the past", ValidationConstants.ConversionDateInPast);
+        }
+
+        [Fact]
+        public void AllConditionsMetComplete_ShouldReturnExpectedMessage()
+        {
+            Assert.Equal("The confirm all conditions have been met task is completed", ValidationConstants.AllConditionsMetComplete);
+        }
+
+        [Fact]
+        public void AcademyOpenedDateComplete_ShouldReturnExpectedMessage()
+        {
+            Assert.Equal("The confirm the date the academy opened task is completed", ValidationConstants.AcademyOpenedDateComplete);
         }
         [Fact]
         public void DateInPast_ShouldReturnExpectedMessage()

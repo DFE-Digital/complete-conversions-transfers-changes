@@ -30,6 +30,10 @@
         </div>
     </div>
 }
+@if (Model.ShowProjectCompletionValidationNotification)
+{
+    @await Html.PartialAsync("Completion/_ValidationNotification")
+}
 <div class="govuk-grid-row">
   <div class="govuk-grid-column-two-thirds">
     <span class="govuk-caption-l">

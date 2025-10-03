@@ -1,12 +1,12 @@
 ﻿using Asp.Versioning;
+using Dfe.Complete.Application.Projects.Commands.TaskData;
+using Dfe.Complete.Application.Projects.Models;
+using Dfe.Complete.Application.Projects.Queries.GetConversionTasksData;
+using Dfe.Complete.Application.Projects.Queries.GetTransferTasksData;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
-using Dfe.Complete.Application.Projects.Models;
-using Microsoft.AspNetCore.Authorization;
-using Dfe.Complete.Application.Projects.Queries.GetTransferTasksData;
-using Dfe.Complete.Application.Projects.Queries.GetConversionTasksData;
-using Dfe.Complete.Application.Projects.Commands.TaskData;
 
 namespace Dfe.Complete.Api.Controllers
 {
