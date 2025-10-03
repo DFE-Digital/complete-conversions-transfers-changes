@@ -129,14 +129,9 @@
             <govuk-checkboxes-fieldset>
                 <govuk-checkboxes-fieldset-legend>
                 </govuk-checkboxes-fieldset-legend>
-                @{
-                    if (isConversion)
-                    {
-                        <govuk-checkboxes-item id="@(nameof(Model.SavedInSchoolAndTrustSharepoint))" data-cy="sent" asp-for="@Model.SavedInSchoolAndTrustSharepoint" value="true" name="@(nameof(Model.SavedInSchoolAndTrustSharepoint))" checked="@Model.SavedInSchoolAndTrustSharepoint">
-                            <b>Saved in school and trust SharePoint folders</b>
-                        </govuk-checkboxes-item>
-                    }
-                }
+                <govuk-checkboxes-item id="@(nameof(Model.SavedInSchoolAndTrustSharepoint))" data-cy="sent" asp-for="@Model.SavedInSchoolAndTrustSharepoint" value="true" name="@(nameof(Model.SavedInSchoolAndTrustSharepoint))" checked="@Model.SavedInSchoolAndTrustSharepoint">
+                    <b>Saved in school and trust SharePoint folders</b>
+                </govuk-checkboxes-item>
                 <govuk-checkboxes-item id="@(nameof(Model.SignedOnBehalfOfSeceratyOfState))" data-cy="signed-by-secretary-of-state" asp-for="@Model.SignedOnBehalfOfSeceratyOfState" value="true" name="@(nameof(Model.SignedOnBehalfOfSeceratyOfState))" checked="@Model.SignedOnBehalfOfSeceratyOfState">
                     <b>Signed on behalf of Secretary of State</b>
                 </govuk-checkboxes-item>
