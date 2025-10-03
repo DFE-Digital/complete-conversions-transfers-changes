@@ -1,0 +1,29 @@
+﻿@page "/projects/{projectId}/tasks/church_supplemental_agreement"
+@using Dfe.Complete.Domain.Enums
+@inject Microsoft.Extensions.Configuration.IConfiguration _configuration
+@model Dfe.Complete.Pages.Projects.TaskList.Tasks.ChurchSupplementalAgreementTask.ChurchSupplementalAgreementTaskModel
+@{
+    Layout = "_ProjectTaskLayout";
+    ViewData["Title"] = "Church supplemental agreement";
+    var isTransfer = Model.Project.Type == ProjectType.Transfer;
+}
+@section TaskHeaderHintSection
+{
+    <div class="govuk-hint">
+        <p>This document is only required for Church of England and Catholic @(isTransfer ? "academies" : "schools").</p>
+        @if (isTransfer)
+        {
+            <p>Any existing church supplemental agreements should be terminated during a transfer and a new one written to replace it.</p>
+            <p>This can be done by deed of termination or deed of novation and variation. The department prefers to use a deed of termination.</p>
+        }
+    </div>
+}
+@section TaskSection {
+    <form method="post">
+        <input type="hidden" asp-for="TasksDataId" />
+        <input type="hidden" asp-for="Type" />
+        @await Html.PartialAsync(isTransfer ?
+            "_TransferChurchSupplementalAgreementTask" : "_ConversionChurchSupplementalAgreementTask", Model)
+        @await Html.PartialAsync("_TaskSaveAndReturn", new TaskSaveAndReturnModel(Model.Project, Model.CurrentUserTeam))
+    </form>
+}
