@@ -56,7 +56,6 @@ namespace Dfe.Complete.Api.Controllers
                 return StatusCode(500, response.Error);
             }
 
-
             return NoContent();
         }
 
