@@ -6,9 +6,11 @@ import { Logger } from "cypress/common/logger";
 import projectRemover from "cypress/api/projectRemover";
 import projectApi from "cypress/api/projectApi";
 import { checkAccessibilityAcrossPages } from "cypress/support/reusableTests";
+import { urnPool } from "cypress/constants/testUrns";
 
 const incomingTrust = macclesfieldTrust;
 const project = ProjectBuilder.createConversionProjectRequest({
+    urn: { value: urnPool.conversion.stChads },
     incomingTrustUkprn: { value: incomingTrust.ukprn },
 });
 let projectId: string;

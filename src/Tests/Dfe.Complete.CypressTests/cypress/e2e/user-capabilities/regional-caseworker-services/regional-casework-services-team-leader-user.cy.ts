@@ -1,9 +1,12 @@
 import {
-    shouldBeAbleToChangeTheAddedByUserOfAProject, shouldBeAbleToViewReportsLandingPage,
+    shouldBeAbleToChangeTheAddedByUserOfAProject,
     shouldBeAbleToViewMultipleMonthsOfProjects,
+    shouldBeAbleToViewReportsLandingPage,
     shouldNotBeAbleToCreateAProject,
-    shouldNotHaveAccessToViewAndEditUsers, shouldNotHaveAccessToViewConversionURNsPage,
-    shouldNotHaveAccessToViewHandedOverProjects, shouldNotHaveAccessToViewLocalAuthorities
+    shouldNotHaveAccessToViewAndEditUsers,
+    shouldNotHaveAccessToViewConversionURNsPage,
+    shouldNotHaveAccessToViewHandedOverProjects,
+    shouldNotHaveAccessToViewLocalAuthorities,
 } from "cypress/support/reusableTests";
 import { ProjectBuilder } from "cypress/api/projectBuilder";
 import { before, beforeEach } from "mocha";
@@ -20,13 +23,16 @@ import allProjects from "cypress/pages/projects/allProjects";
 import { projectTable } from "cypress/pages/projects/tables/projectTable";
 import yourTeamProjectsTable from "cypress/pages/projects/tables/yourTeamProjectsTable";
 import editUserPage from "cypress/pages/projects/editUserPage";
+import { urnPool } from "cypress/constants/testUrns";
 
 const unassignedProject = ProjectBuilder.createTransferProjectRequest({
-    urn: { value: 103846 },
+    urn: { value: urnPool.regionalCaseworker.moreton },
     handingOverToRegionalCaseworkService: true,
 });
-const unassignedProjectSchoolName = "Cradley CofE Primary School";
-const project = ProjectBuilder.createConversionFormAMatProjectRequest();
+const unassignedProjectSchoolName = "Moreton Say CofE Primary School";
+const project = ProjectBuilder.createConversionFormAMatProjectRequest({
+    urn: { value: urnPool.regionalCaseworker.morda },
+});
 let projectId: string;
 describe("Capabilities and permissions of the regional casework services team leader user", () => {
     before(() => {

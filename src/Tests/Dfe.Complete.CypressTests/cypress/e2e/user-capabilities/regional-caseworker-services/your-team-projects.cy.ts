@@ -8,16 +8,17 @@ import { regionalCaseworkerTeamLeaderUser, regionalCaseworkerUser } from "cypres
 import { projectTable } from "cypress/pages/projects/tables/projectTable";
 import yourTeamProjectsTable from "cypress/pages/projects/tables/yourTeamProjectsTable";
 import { currentMonthShort } from "cypress/constants/stringTestConstants";
+import { urnPool } from "cypress/constants/testUrns";
 
 const project = ProjectBuilder.createConversionProjectRequest({
     significantDate: "2026-04-01",
-    urn: { value: 111396 },
+    urn: { value: urnPool.regionalCaseworker.morda },
     userAdId: regionalCaseworkerUser.adId,
 });
 const schoolName = "Blacon High School, A Specialist Sports College";
 const teammatesProject = ProjectBuilder.createConversionProjectRequest({
     significantDate: "2026-04-01",
-    urn: { value: 111400 },
+    urn: { value: urnPool.regionalCaseworker.moreton },
     userAdId: regionalCaseworkerTeamLeaderUser.adId,
 });
 const teammatesSchoolName = "The Heath School";

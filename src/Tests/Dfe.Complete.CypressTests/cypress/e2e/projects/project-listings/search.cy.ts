@@ -8,9 +8,10 @@ import { cypressUser } from "cypress/constants/cypressConstants";
 import projectRemover from "cypress/api/projectRemover";
 import projectApi from "cypress/api/projectApi";
 import { checkAccessibilityAcrossPages } from "cypress/support/reusableTests";
+import { urnPool } from "cypress/constants/testUrns";
 
-const project = ProjectBuilder.createConversionProjectRequest();
-const schoolName = "St Chad's Catholic Primary School";
+const project = ProjectBuilder.createConversionProjectRequest({ urn: { value: urnPool.listings.heles } });
+const schoolName = "Hele's School";
 
 describe("Search bar tests", () => {
     before(() => {

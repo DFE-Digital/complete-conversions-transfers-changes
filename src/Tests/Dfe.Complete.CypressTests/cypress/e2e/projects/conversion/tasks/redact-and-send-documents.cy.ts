@@ -8,11 +8,15 @@ import { rdoLondonUser } from "cypress/constants/cypressConstants";
 import taskPage from "cypress/pages/projects/tasks/taskPage";
 import { Logger } from "cypress/common/logger";
 import TaskHelper from "cypress/api/taskHelper";
+import { urnPool } from "cypress/constants/testUrns";
 
-const project = ProjectBuilder.createConversionFormAMatProjectRequest();
+const project = ProjectBuilder.createConversionProjectRequest({
+    urn: { value: urnPool.conversion.stChads },
+});
 let projectId: string;
 let taskId: string;
 const otherUserProject = ProjectBuilder.createConversionFormAMatProjectRequest({
+    urn: { value: urnPool.conversion.whitchurch },
     userAdId: rdoLondonUser.adId,
 });
 let otherUserProjectId: string;
@@ -21,7 +25,7 @@ describe("Conversion tasks - Redact and send documents", () => {
     before(() => {
         projectRemover.removeProjectIfItExists(project.urn.value);
         projectRemover.removeProjectIfItExists(otherUserProject.urn.value);
-        projectApi.createMatConversionProject(project).then((createResponse) => {
+        projectApi.createConversionProject(project).then((createResponse) => {
             projectId = createResponse.value;
             projectApi.getProject(project.urn.value).then((response) => {
                 taskId = response.body.tasksDataId.value;

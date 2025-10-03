@@ -8,6 +8,7 @@ import projectDetailsPage from "cypress/pages/projects/projectDetails/projectDet
 import dateHistoryPage from "cypress/pages/projects/projectDetails/dateHistoryPage";
 import { today } from "cypress/constants/stringTestConstants";
 import { checkAccessibilityAcrossPages } from "cypress/support/reusableTests";
+import { urnPool } from "cypress/constants/testUrns";
 
 const inSixMonthsSignificantDate = getSignificantDateString(6);
 const inSixMonthsDisplayDate = getDisplayDateString(6);
@@ -17,7 +18,7 @@ const inNineMonthsSignificantDate = getSignificantDateString(9);
 const inNineMonthsDisplayDate = getDisplayDateString(9);
 
 const confirmedDateProject = ProjectBuilder.createTransferProjectRequest({
-    urn: { value: 103888 },
+    urn: { value: urnPool.transfer.batmans },
     significantDate: inSixMonthsSignificantDate,
     isSignificantDateProvisional: false,
 });

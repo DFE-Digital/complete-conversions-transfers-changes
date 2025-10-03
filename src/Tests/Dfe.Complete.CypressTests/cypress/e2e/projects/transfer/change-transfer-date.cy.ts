@@ -12,6 +12,7 @@ import {
     getSignificantDateString,
     getYearNumber,
 } from "cypress/support/formatDate";
+import { urnPool } from "cypress/constants/testUrns";
 
 const inSixMonthsSignificantDate = getSignificantDateString(6);
 const inThreeMonthsDate = getDisplayDateString(3);
@@ -22,7 +23,7 @@ const inNineMonthsYear = getYearNumber(9);
 const inNineMonthsDate = getDisplayDateString(9);
 
 const confirmedDateProject = ProjectBuilder.createTransferProjectRequest({
-    urn: { value: 105601 },
+    urn: { value: urnPool.transfer.abbey },
     significantDate: inSixMonthsSignificantDate,
     isSignificantDateProvisional: false,
 });
@@ -30,13 +31,13 @@ let confirmedDateProjectId: string;
 const confirmedDateSchoolName = "Abbey College Manchester";
 
 const provisionalDateProject = ProjectBuilder.createTransferFormAMatProjectRequest({
-    urn: { value: 149460 },
+    urn: { value: urnPool.transfer.priory },
     isSignificantDateProvisional: true,
 });
 let provisionalDateProjectId: string;
 
 const otherUserProject = ProjectBuilder.createTransferProjectRequest({
-    urn: { value: 123494 },
+    urn: { value: urnPool.transfer.prees },
     isSignificantDateProvisional: false,
     userAdId: rdoLondonUser.adId,
 });

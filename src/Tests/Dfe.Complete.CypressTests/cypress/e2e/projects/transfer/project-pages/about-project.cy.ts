@@ -9,8 +9,10 @@ import { checkAccessibilityAcrossPages } from "cypress/support/reusableTests";
 import { significateDateToDisplayDate } from "cypress/support/formatDate";
 import editTransferProjectPage from "cypress/pages/projects/edit/editTransferProjectPage";
 import groupApi from "cypress/api/groupApi";
+import { urnPool } from "cypress/constants/testUrns";
 
 const project = ProjectBuilder.createTransferProjectRequest({
+    urn: { value: urnPool.transfer.abbey },
     incomingTrustUkprn: { value: macclesfieldTrust.ukprn },
     outgoingTrustUkprn: { value: dimensionsTrust.ukprn },
 });
@@ -23,6 +25,7 @@ const incomingTrust = macclesfieldTrust;
 const outgoingTrust = dimensionsTrust;
 
 const projectFormAMat = ProjectBuilder.createTransferFormAMatProjectRequest({
+    urn: { value: urnPool.transfer.priory },
     newTrustName: macclesfieldTrust.name,
     newTrustReferenceNumber: macclesfieldTrust.referenceNumber,
     outgoingTrustUkprn: { value: dimensionsTrust.ukprn },

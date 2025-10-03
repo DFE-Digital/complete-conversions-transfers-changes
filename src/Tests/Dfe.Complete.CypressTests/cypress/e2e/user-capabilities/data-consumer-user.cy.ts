@@ -18,8 +18,12 @@ import allProjects from "cypress/pages/projects/allProjects";
 import projectRemover from "cypress/api/projectRemover";
 import projectApi from "cypress/api/projectApi";
 import { ProjectBuilder } from "cypress/api/projectBuilder";
+import { urnPool } from "cypress/constants/testUrns";
 
-const project = ProjectBuilder.createConversionProjectRequest({ significantDate: "2027-04-01" });
+const project = ProjectBuilder.createConversionProjectRequest({
+    urn: { value: urnPool.serviceSupport.whitcliffe },
+    significantDate: "2027-04-01",
+});
 let projectId: string;
 describe("Capabilities and permissions of the data consumer user", () => {
     before(() => {

@@ -7,10 +7,14 @@ import { rdoLondonUser } from "cypress/constants/cypressConstants";
 import taskPage from "cypress/pages/projects/tasks/taskPage";
 import { Logger } from "cypress/common/logger";
 import validationComponent from "cypress/pages/validationComponent";
+import { urnPool } from "cypress/constants/testUrns";
 
-const project = ProjectBuilder.createConversionFormAMatProjectRequest();
+const project = ProjectBuilder.createConversionProjectRequest({
+    urn: { value: urnPool.conversion.stChads },
+});
 let projectId: string;
 const otherUserProject = ProjectBuilder.createConversionFormAMatProjectRequest({
+    urn: { value: urnPool.conversion.whitchurch },
     userAdId: rdoLondonUser.adId,
 });
 let otherUserProjectId: string;
@@ -19,7 +23,7 @@ describe("Conversion tasks - Confirm the proposed capacity of the academy", () =
     before(() => {
         projectRemover.removeProjectIfItExists(project.urn.value);
         projectRemover.removeProjectIfItExists(otherUserProject.urn.value);
-        projectApi.createMatConversionProject(project).then((createResponse) => (projectId = createResponse.value));
+        projectApi.createConversionProject(project).then((createResponse) => (projectId = createResponse.value));
         projectApi.createMatConversionProject(otherUserProject).then((createResponse) => {
             otherUserProjectId = createResponse.value;
         });

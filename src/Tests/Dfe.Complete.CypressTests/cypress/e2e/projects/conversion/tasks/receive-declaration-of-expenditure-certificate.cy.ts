@@ -10,17 +10,21 @@ import { Logger } from "cypress/common/logger";
 import TaskHelper from "cypress/api/taskHelper";
 import { getSignificantDateString } from "cypress/support/formatDate";
 import receiveDeclarationOfExpenditureCertificateTaskPage from "cypress/pages/projects/tasks/receiveDeclarationOfExpenditureCertificateTaskPage";
+import { urnPool } from "cypress/constants/testUrns";
 
-const project = ProjectBuilder.createConversionProjectRequest();
+const project = ProjectBuilder.createConversionProjectRequest({
+    urn: { value: urnPool.conversion.stChads },
+});
 let projectId: string;
 let taskId: string;
 const project2 = ProjectBuilder.createConversionFormAMatProjectRequest({
     significantDate: getSignificantDateString(12),
     isSignificantDateProvisional: true,
-    urn: { value: 147803 },
+    urn: { value: urnPool.conversion.ramsey },
 });
 let project2Id: string;
 const otherUserProject = ProjectBuilder.createConversionFormAMatProjectRequest({
+    urn: { value: urnPool.conversion.whitchurch },
     userAdId: rdoLondonUser.adId,
 });
 let otherUserProjectId: string;

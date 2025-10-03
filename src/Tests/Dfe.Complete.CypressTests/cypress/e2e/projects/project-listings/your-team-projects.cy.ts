@@ -10,21 +10,22 @@ import yourTeamProjectsTable from "cypress/pages/projects/tables/yourTeamProject
 import { currentMonthShort } from "cypress/constants/stringTestConstants";
 import projectDetailsPage from "cypress/pages/projects/projectDetails/projectDetailsPage";
 import { checkAccessibilityAcrossPages } from "cypress/support/reusableTests";
+import { urnPool } from "cypress/constants/testUrns";
 
 const team = "London";
 const myLondonProject = ProjectBuilder.createConversionProjectRequest({
     significantDate: "2026-04-01",
-    urn: { value: 143659 },
+    urn: { value: urnPool.listings.cityHighgate },
 });
 const myLondonSchoolName = "City of London Academy, Highgate Hill";
 const teammatesLondonRegionProject = ProjectBuilder.createConversionProjectRequest({
     significantDate: "2026-04-01",
-    urn: { value: 100830 },
+    urn: { value: urnPool.listings.stJohns },
     userAdId: rdoLondonUser.adId,
 });
 const teammatesLondonSchoolName = "St John's and St Clement's Church of England Primary School";
 const handedOverProject = ProjectBuilder.createTransferProjectRequest({
-    urn: { value: 135587 },
+    urn: { value: urnPool.listings.cityIslington },
     handingOverToRegionalCaseworkService: true,
     userAdId: rdoLondonUser.adId,
 });

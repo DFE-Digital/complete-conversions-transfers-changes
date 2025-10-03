@@ -14,8 +14,9 @@ import allProjects from "cypress/pages/projects/allProjects";
 import projectRemover from "cypress/api/projectRemover";
 import projectApi from "cypress/api/projectApi";
 import { ProjectBuilder } from "cypress/api/projectBuilder";
+import { urnPool } from "cypress/constants/testUrns";
 
-const project = ProjectBuilder.createConversionProjectRequest();
+const project = ProjectBuilder.createConversionProjectRequest({ urn: { value: urnPool.serviceSupport.whitcliffe } });
 let projectId: string;
 describe("Capabilities and permissions of the service support user", () => {
     before(() => {

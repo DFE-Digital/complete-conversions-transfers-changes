@@ -9,8 +9,11 @@ import projectRemover from "cypress/api/projectRemover";
 import projectApi from "cypress/api/projectApi";
 import { checkAccessibilityAcrossPages } from "cypress/support/reusableTests";
 import noteApi from "cypress/api/noteApi";
+import { urnPool } from "cypress/constants/testUrns";
 
-const project = ProjectBuilder.createConversionFormAMatProjectRequest();
+const project = ProjectBuilder.createConversionFormAMatProjectRequest({
+    urn: { value: urnPool.conversion.whitchurch },
+});
 let projectId: string;
 
 before(() => {

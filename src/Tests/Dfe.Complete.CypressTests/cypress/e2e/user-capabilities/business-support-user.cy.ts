@@ -22,10 +22,14 @@ import projectsByMonthPage from "cypress/pages/projects/projectsByMonthPage";
 import { projectTable } from "cypress/pages/projects/tables/projectTable";
 import { currentMonthLong, currentMonthShort, macclesfieldTrust } from "cypress/constants/stringTestConstants";
 import projectDetailsPage from "cypress/pages/projects/projectDetails/projectDetailsPage";
+import { urnPool } from "cypress/constants/testUrns";
 
-const project = ProjectBuilder.createConversionProjectRequest({ significantDate: "2027-04-01" });
+const project = ProjectBuilder.createConversionProjectRequest({
+    urn: { value: urnPool.serviceSupport.whitcliffe },
+    significantDate: "2027-04-01",
+});
 let projectId: string;
-const schoolName = "St Chad's Catholic Primary School";
+const schoolName = "Whitcliffe Mount School";
 describe("Capabilities and permissions of the business support user", () => {
     before(() => {
         projectRemover.removeProjectIfItExists(project.urn.value);

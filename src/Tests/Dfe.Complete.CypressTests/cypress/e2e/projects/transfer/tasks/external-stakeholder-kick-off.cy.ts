@@ -16,21 +16,23 @@ import {
 import stakeholderKickOffTaskPage from "cypress/pages/projects/tasks/stakeholderKickOffTaskPage";
 import projectDetailsPage from "cypress/pages/projects/projectDetails/projectDetailsPage";
 import validationComponent from "cypress/pages/validationComponent";
+import { urnPool } from "cypress/constants/testUrns";
 
 const project = ProjectBuilder.createTransferProjectRequest({
+    urn: { value: urnPool.transfer.abbey },
     isSignificantDateProvisional: true,
 });
 let projectId: string;
 const project2 = ProjectBuilder.createTransferFormAMatProjectRequest({
     significantDate: getSignificantDateString(12),
     isSignificantDateProvisional: true,
-    urn: { value: 105602 },
+    urn: { value: urnPool.transfer.manchester },
 });
 let project2Id: string;
 const otherUserProject = ProjectBuilder.createTransferFormAMatProjectRequest({
     isSignificantDateProvisional: true,
     userAdId: rdoLondonUser.adId,
-    urn: { value: 105603 },
+    urn: { value: urnPool.transfer.bollin },
 });
 let otherUserProjectId: string;
 

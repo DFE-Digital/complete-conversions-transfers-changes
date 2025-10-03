@@ -15,8 +15,11 @@ import internalContactsPage from "cypress/pages/projects/projectDetails/internal
 import projectRemover from "cypress/api/projectRemover";
 import projectApi from "cypress/api/projectApi";
 import { checkAccessibilityAcrossPages } from "cypress/support/reusableTests";
+import { urnPool } from "cypress/constants/testUrns";
 
-const project = ProjectBuilder.createConversionFormAMatProjectRequest();
+const project = ProjectBuilder.createConversionFormAMatProjectRequest({
+    urn: { value: urnPool.conversion.whitchurch },
+});
 let projectId: string;
 const schoolName = "Whitchurch Primary School";
 const assignableUsers = [rdoLondonUser, rdoTeamLeaderUser, regionalCaseworkerUser];

@@ -1,7 +1,7 @@
 import {
     shouldBeAbleToChangeTheAddedByUserOfAProject,
-    shouldBeAbleToViewReportsLandingPage,
     shouldBeAbleToViewMultipleMonthsOfProjects,
+    shouldBeAbleToViewReportsLandingPage,
     shouldNotHaveAccessToViewAndEditUsers,
     shouldNotHaveAccessToViewConversionURNsPage,
     shouldNotHaveAccessToViewLocalAuthorities,
@@ -18,14 +18,17 @@ import allProjects from "cypress/pages/projects/allProjects";
 import { projectTable } from "cypress/pages/projects/tables/projectTable";
 import yourTeamProjectsTable from "cypress/pages/projects/tables/yourTeamProjectsTable";
 import editUserPage from "cypress/pages/projects/editUserPage";
+import { urnPool } from "cypress/constants/testUrns";
 
 const unassignedProject = ProjectBuilder.createTransferProjectRequest({
-    urn: { value: 143659 },
+    urn: { value: urnPool.regionalDeliveryOfficer.lower },
     handingOverToRegionalCaseworkService: true,
     userAdId: rdoTeamLeaderUser.adId,
 });
-const unassignedProjectSchoolName = "City of London Academy, Highgate Hill";
-const project = ProjectBuilder.createConversionFormAMatProjectRequest();
+const unassignedProjectSchoolName = "Lower Heath CofE Primary School";
+const project = ProjectBuilder.createConversionFormAMatProjectRequest({
+    urn: { value: urnPool.regionalDeliveryOfficer.longnor },
+});
 let projectId: string;
 
 describe("Capabilities and permissions of the regional delivery officer team leader user", () => {

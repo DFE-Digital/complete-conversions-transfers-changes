@@ -6,9 +6,10 @@ import validationComponent from "cypress/pages/validationComponent";
 import { dimensionsTrust, macclesfieldTrust, testTrust } from "cypress/constants/stringTestConstants";
 import { checkAccessibilityAcrossPages } from "cypress/support/reusableTests";
 import projectDetailsPage from "cypress/pages/projects/projectDetails/projectDetailsPage";
+import { urnPool } from "cypress/constants/testUrns";
 
-const urn = "136730";
-const urnMAT = "136731";
+const urn = urnPool.transfer.abbey;
+const urnMAT = urnPool.transfer.priory;
 
 // skip 216847
 describe.skip("Create a new Transfer Project", () => {
@@ -90,7 +91,7 @@ describe.skip("Create a new Transfer Project", () => {
         selectProjectTypePage.selectFormAMATTransfer().continue();
 
         newTransferPage
-            .withAcademyURN("123")
+            .withAcademyURN(123)
             .withOutgoingTrustUKPRN("a")
             .withTrustReferenceNumber("abcdef")
             .withTrustName("hi")

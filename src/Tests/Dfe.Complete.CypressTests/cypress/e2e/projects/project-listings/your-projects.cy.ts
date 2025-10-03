@@ -7,18 +7,23 @@ import { currentMonthShort, dimensionsTrust, macclesfieldTrust } from "cypress/c
 import { cypressUser } from "cypress/constants/cypressConstants";
 import projectDetailsPage from "cypress/pages/projects/projectDetails/projectDetailsPage";
 import { checkAccessibilityAcrossPages } from "cypress/support/reusableTests";
+import { urnPool } from "cypress/constants/testUrns";
 
 const conversionProject = ProjectBuilder.createConversionProjectRequest({
     significantDate: "2026-04-01",
-    urn: { value: 111394 },
+    urn: { value: urnPool.listings.heles },
 });
-const conversionSchoolName = "Farnworth Church of England Controlled Primary School";
-const transferProject = ProjectBuilder.createTransferProjectRequest();
-const transferSchoolName = "Abbey College Manchester";
-const conversionFormAMatProject = ProjectBuilder.createConversionFormAMatProjectRequest();
-const conversionFormAMatSchoolName = "Whitchurch Primary School";
-const transferFormAMatProject = ProjectBuilder.createTransferFormAMatProjectRequest();
-const transferFormAMatSchoolName = "Priory Rise School";
+const conversionSchoolName = "Hele's School";
+const transferProject = ProjectBuilder.createTransferProjectRequest({ urn: { value: urnPool.listings.queen } });
+const transferSchoolName = "Queen Elizabeth Grammar School Penrith";
+const conversionFormAMatProject = ProjectBuilder.createConversionFormAMatProjectRequest({
+    urn: { value: urnPool.listings.themount },
+});
+const conversionFormAMatSchoolName = "The Mount School";
+const transferFormAMatProject = ProjectBuilder.createTransferFormAMatProjectRequest({
+    urn: { value: urnPool.listings.myddle },
+});
+const transferFormAMatSchoolName = "Myddle CofE Primary School";
 
 describe("View your projects", () => {
     before(() => {

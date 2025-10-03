@@ -22,26 +22,32 @@ import { checkAccessibilityAcrossPages } from "cypress/support/reusableTests";
 import allProjectsStatisticsPage from "cypress/pages/projects/allProjectsStatisticsPage";
 import { getSignificantDateString, significateDateToDisplayDate } from "cypress/support/formatDate";
 import { PrepareProjectBuilder } from "cypress/api/prepareProjectBuilder";
+import { urnPool } from "cypress/constants/testUrns";
 
-const project = ProjectBuilder.createConversionProjectRequest();
+const project = ProjectBuilder.createConversionProjectRequest({
+    urn: { value: urnPool.listings.heles },
+});
 let projectId: string;
-const schoolName = "St Chad's Catholic Primary School";
-const region = "West Midlands";
-const localAuthority = "Dudley Metropolitan Borough Council";
+const schoolName = "Hele's School";
+const region = "South West";
+const localAuthority = "Plymouth";
 const localAuthorityShort = localAuthority.split(" ")[0];
 const transferProject = ProjectBuilder.createTransferProjectRequest({
+    urn: { value: urnPool.listings.queen },
     significantDate: getSignificantDateString(1),
 });
-const transferSchoolName = "Abbey College Manchester";
+const transferSchoolName = "Queen Elizabeth Grammar School Penrith";
 const transferRegion = "North West";
-const transferFormAMatProject = ProjectBuilder.createTransferFormAMatProjectRequest();
-const transferFormAMatSchoolName = "Priory Rise School";
+const transferFormAMatProject = ProjectBuilder.createTransferFormAMatProjectRequest({
+    urn: { value: urnPool.listings.myddle },
+});
+const transferFormAMatSchoolName = "Myddle CofE Primary School";
 const prepareProject = PrepareProjectBuilder.createConversionProjectRequest({
-    urn: 151111,
+    urn: urnPool.listings.themount,
     provisional_conversion_date: getSignificantDateString(1),
 });
 let prepareProjectId: string;
-const prepareProjectName = "Our Lady of Walsingham Primary School";
+const prepareProjectName = "The Mount School";
 const nextMonthShortUS = `${nextMonth.toLocaleString("en-US", { month: "short" })} ${nextMonth.getFullYear()}`; // bug 228624
 
 describe("View all projects", () => {

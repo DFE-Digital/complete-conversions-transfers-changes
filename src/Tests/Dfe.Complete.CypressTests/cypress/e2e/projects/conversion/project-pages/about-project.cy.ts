@@ -10,8 +10,10 @@ import { checkAccessibilityAcrossPages } from "cypress/support/reusableTests";
 import { significateDateToDisplayDate } from "cypress/support/formatDate";
 import groupApi from "cypress/api/groupApi";
 import editConversionProjectPage from "cypress/pages/projects/edit/editConversionProjectPage";
+import { urnPool } from "cypress/constants/testUrns";
 
 const project = ProjectBuilder.createConversionProjectRequest({
+    urn: { value: urnPool.conversion.stChads },
     incomingTrustUkprn: { value: dimensionsTrust.ukprn },
     groupReferenceNumber: dimensionsTrust.groupReferenceNumber,
 });
@@ -21,7 +23,7 @@ const schoolName = "St Chad's Catholic Primary School";
 const region = "West Midlands";
 const localAuthority = "Dudley";
 const academy = {
-    urn: 103846,
+    urn: urnPool.conversion.cradley,
     name: "Cradley CofE Primary School",
     address: "Church Road",
     localAuthority: "Dudley",
@@ -29,14 +31,16 @@ const academy = {
     sharePointLink: "https://educationgovuk.sharepoint.com",
 };
 
-const projectFormAMAT = ProjectBuilder.createConversionFormAMatProjectRequest();
+const projectFormAMAT = ProjectBuilder.createConversionFormAMatProjectRequest({
+    urn: { value: urnPool.conversion.whitchurch },
+});
 let projectFormAMATId: string;
 const formAMATSchoolName = "Whitchurch Primary School";
 const formAMATLocalAuthority = "Bath and North East Somerset";
 const formAMATRegion = "South West";
 
 const teammatesProject = ProjectBuilder.createConversionFormAMatProjectRequest({
-    urn: { value: 147801 },
+    urn: { value: urnPool.conversion.stMarks },
     userAdId: rdoLondonUser.adId,
 });
 let teammatesProjectId: string;

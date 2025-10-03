@@ -8,11 +8,15 @@ import { rdoLondonUser } from "cypress/constants/cypressConstants";
 import taskPage from "cypress/pages/projects/tasks/taskPage";
 import { Logger } from "cypress/common/logger";
 import TaskHelper from "cypress/api/taskHelper";
+import { urnPool } from "cypress/constants/testUrns";
 
-const project = ProjectBuilder.createTransferProjectRequest();
+const project = ProjectBuilder.createTransferProjectRequest({
+    urn: { value: urnPool.transfer.abbey },
+});
 let projectId: string;
 let taskId: string;
 const otherUserProject = ProjectBuilder.createTransferFormAMatProjectRequest({
+    urn: { value: urnPool.transfer.priory },
     userAdId: rdoLondonUser.adId,
 });
 let otherUserProjectId: string;

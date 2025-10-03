@@ -11,9 +11,12 @@ import validationComponent from "cypress/pages/validationComponent";
 import projectRemover from "cypress/api/projectRemover";
 import projectApi from "cypress/api/projectApi";
 import { checkAccessibilityAcrossPages } from "cypress/support/reusableTests";
+import { urnPool } from "cypress/constants/testUrns";
 
-const project = ProjectBuilder.createConversionProjectRequest();
-const schoolName = "St Chad's Catholic Primary School";
+const project = ProjectBuilder.createConversionProjectRequest({
+    urn: { value: urnPool.serviceSupport.kinnerley },
+});
+const schoolName = "Kinnerley Church of England Controlled Primary School";
 const academy = {
     urn: 103846,
     name: "Cradley CofE Primary School",
@@ -21,10 +24,12 @@ const academy = {
     localAuthority: "Dudley",
     schoolPhase: "Primary",
 };
-const project2 = ProjectBuilder.createConversionProjectRequest({ urn: { value: 103845 } });
-const schoolName2 = "Jesson's CofE Primary School (VA)";
-const projectWithAcademy = ProjectBuilder.createConversionProjectRequest();
-const schoolWithAcademyName = "St Chad's Catholic Primary School";
+const project2 = ProjectBuilder.createConversionProjectRequest({ urn: { value: urnPool.serviceSupport.whitcliffe } });
+const schoolName2 = "Whitcliffe Mount School";
+const projectWithAcademy = ProjectBuilder.createConversionProjectRequest({
+    urn: { value: urnPool.serviceSupport.kinnerley },
+});
+const schoolWithAcademyName = "Kinnerley Church of England Controlled Primary School";
 
 describe("Service support user - Conversion URNs: ", () => {
     before(() => {

@@ -8,12 +8,13 @@ import { dimensionsTrust, macclesfieldTrust } from "cypress/constants/stringTest
 import detailsPage from "cypress/pages/detailsPage";
 import { Logger } from "cypress/common/logger";
 import projectDetailsPage from "cypress/pages/projects/projectDetails/projectDetailsPage";
+import { urnPool } from "cypress/constants/testUrns";
 
 const groupReferenceNumber = "GRP_00000099";
 const incomingTrust = macclesfieldTrust;
 const outgoingTrust = dimensionsTrust;
 const conversionSchoolWithGroup = ProjectBuilder.createConversionProjectRequest({
-    urn: { value: 107793 },
+    urn: { value: urnPool.listings.islamia },
     groupReferenceNumber: groupReferenceNumber,
     incomingTrustUkprn: { value: incomingTrust.ukprn },
 });
@@ -21,7 +22,7 @@ const conversionSchoolName = "Islamia Girls' High School";
 const localAuthority = "Kirklees Council";
 const region = "Yorkshire and the Humber";
 const transferAcademyWithGroup = ProjectBuilder.createTransferProjectRequest({
-    urn: { value: 107794 },
+    urn: { value: urnPool.listings.madni },
     groupReferenceNumber: groupReferenceNumber,
     incomingTrustUkprn: { value: incomingTrust.ukprn },
     outgoingTrustUkprn: { value: outgoingTrust.ukprn },

@@ -6,9 +6,10 @@ import validationComponent from "cypress/pages/validationComponent";
 import { macclesfieldTrust, testTrust } from "cypress/constants/stringTestConstants";
 import { checkAccessibilityAcrossPages } from "cypress/support/reusableTests";
 import projectDetailsPage from "cypress/pages/projects/projectDetails/projectDetailsPage";
+import { urnPool } from "cypress/constants/testUrns";
 
-const urn: string = "111394";
-const urnMAT: string = "103846";
+const urn = urnPool.conversion.stChads;
+const urnMAT = urnPool.conversion.cradley;
 
 // skip 216847
 describe.skip("Create a new Conversion Project", () => {

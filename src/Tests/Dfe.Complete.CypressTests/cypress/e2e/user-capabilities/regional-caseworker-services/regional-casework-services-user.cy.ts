@@ -17,8 +17,12 @@ import yourProjects from "cypress/pages/projects/yourProjects";
 import projectRemover from "cypress/api/projectRemover";
 import projectApi from "cypress/api/projectApi";
 import { ProjectBuilder } from "cypress/api/projectBuilder";
+import { urnPool } from "cypress/constants/testUrns";
 
-const project = ProjectBuilder.createConversionProjectRequest({ significantDate: "2027-04-01" });
+const project = ProjectBuilder.createConversionProjectRequest({
+    urn: { value: urnPool.regionalCaseworker.morda },
+    significantDate: "2027-04-01",
+});
 let projectId: string;
 describe("Capabilities and permissions of the regional casework services user", () => {
     before(() => {
