@@ -1,11 +1,8 @@
 using MediatR;
 using Dfe.Complete.Domain.ValueObjects;
 using Dfe.Complete.Domain.Enums;
-using Dfe.Complete.Domain.Interfaces.Repositories;
 using Dfe.Complete.Domain.Entities;
-using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
-using Dfe.Complete.Application.Projects.Queries.QueryFilters;
 using Dfe.Complete.Application.Projects.Models;
 using Dfe.Complete.Utils;
 using Dfe.Complete.Application.Projects.Queries.GetLocalAuthority;
@@ -17,6 +14,7 @@ using Dfe.Complete.Domain.Validators;
 using Microsoft.Extensions.Logging;
 using Dfe.AcademiesApi.Client.Contracts;
 using Dfe.Complete.Application.Constants;
+using Dfe.Complete.Application.Projects.Services;
 
 namespace Dfe.Complete.Application.Projects.Commands.CreateHandoverProject;
 
@@ -24,42 +22,30 @@ public record CreateHandoverConversionProjectCommand(
     [Required]
     [Urn]
     int? Urn,
-
     [Required]
     [Ukprn]
     int? IncomingTrustUkprn,
-
     [Required]
     [PastDate (AllowToday = true)]
     DateOnly? AdvisoryBoardDate,
-
     [Required]
     [FirstOfMonthDate]
     DateOnly? ProvisionalConversionDate,
-
     [Required]
     [InternalEmail]
     string CreatedByEmail,
-
     [Required] string CreatedByFirstName,
-
     [Required] string CreatedByLastName,
-
     [Required] int? PrepareId,
-
     [Required] bool? DirectiveAcademyOrder,
-
     string? AdvisoryBoardConditions,
-
     [GroupReferenceNumber]
     string? GroupId = null) : IRequest<ProjectId>;
 
 public class CreateHandoverConversionProjectCommandHandler(
     IUnitOfWork unitOfWork,
     ITrustsV4Client trustClient,
-    ICompleteRepository<Project> projectRepository,
-    ICompleteRepository<User> userRepository,
-    ICompleteRepository<ConversionTasksData> conversionTaskRepository,
+    IHandoverProjectService handoverProjectService,
     IProjectGroupWriteRepository projectGroupWriteRepository,
     ISender sender,
     ILogger<CreateHandoverConversionProjectCommandHandler> logger)
@@ -87,16 +73,22 @@ public class CreateHandoverConversionProjectCommandHandler(
             if (group != null) groupId = group.Id;
             if (group == null && !string.IsNullOrWhiteSpace(request.GroupId)) groupId = await CreateProjectGroup(request.GroupId, request.IncomingTrustUkprn!.Value, cancellationToken);
 
-            var user = await GetOrCreateUser(request, region, cancellationToken);
+            var userDto = new UserDto
+            {
+                FirstName = request.CreatedByFirstName,
+                LastName = request.CreatedByLastName,
+                Email = request.CreatedByEmail,
+                Team = region.ToDescription()
+            };
+            var userId = await handoverProjectService.GetOrCreateUserAsync(userDto, cancellationToken);
 
             // Create conversion task data
-            var conversionTaskId = Guid.NewGuid();
-            var conversionTask = new ConversionTasksData(new TaskDataId(conversionTaskId), now, now);
+            var conversionTask = handoverProjectService.CreateConversionTaskAsync();
 
             var project = Project.CreateHandoverConversionProject(
                 projectId,
                 new Urn(urn),
-                conversionTaskId,
+                conversionTask.Id.Value,
                 request.ProvisionalConversionDate!.Value,
                 new Ukprn(request.IncomingTrustUkprn!.Value),
                 region,
@@ -104,13 +96,12 @@ public class CreateHandoverConversionProjectCommandHandler(
                 request.AdvisoryBoardDate!.Value,
                 request.AdvisoryBoardConditions ?? null,
                 groupId,
-                user.Id,
+                userId,
                 localAuthorityId);
 
             project.PrepareId = request.PrepareId!.Value;
 
-            await conversionTaskRepository.AddAsync(conversionTask, cancellationToken);
-            await projectRepository.AddAsync(project, cancellationToken);
+            await handoverProjectService.SaveProjectAndTaskAsync(project, conversionTask, cancellationToken);
 
             await unitOfWork.CommitAsync();
 
@@ -127,11 +118,7 @@ public class CreateHandoverConversionProjectCommandHandler(
     private async Task ValidateRequest(CreateHandoverConversionProjectCommand request, CancellationToken cancellationToken)
     {
         // Check if URN already exists in active/inactive conversion projects
-        var existingProject = await new ProjectUrnQuery(new Urn((int)request.Urn!))
-            .Apply(new StateQuery([ProjectState.Active, ProjectState.Inactive])
-            .Apply(new TypeQuery(ProjectType.Conversion)
-            .Apply(projectRepository.Query().AsNoTracking())))
-            .FirstOrDefaultAsync(cancellationToken);
+        var existingProject = await handoverProjectService.FindExistingProjectAsync(request.Urn!.Value, cancellationToken);
 
         if (existingProject != null)
             throw new ValidationException(string.Format(ValidationConstants.UrnExistsValidationMessage, request.Urn));
@@ -142,29 +129,6 @@ public class CreateHandoverConversionProjectCommandHandler(
     {
         if (group.TrustUkprn?.Value != trustUkprn)
             throw new ValidationException(string.Format(ValidationConstants.MismatchedTrustInGroupValidationMessage, trustUkprn, group.GroupIdentifier));
-    }
-
-    private async Task<User> GetOrCreateUser(CreateHandoverConversionProjectCommand request, Region region, CancellationToken cancellationToken)
-    {
-        var existingUser = await userRepository.Query()
-            .FirstOrDefaultAsync(u => u.Email == request.CreatedByEmail, cancellationToken);
-
-        if (existingUser != null)
-            return existingUser;
-
-        // Create new user
-        var userId = new UserId(Guid.NewGuid());
-
-        var newUser = User.Create(
-            userId,
-            request.CreatedByEmail,
-            request.CreatedByFirstName,
-            request.CreatedByLastName,
-            region.ToDescription()
-        );
-
-        await userRepository.AddAsync(newUser, cancellationToken);
-        return newUser;
     }
 
     protected async Task<Guid> GetLocalAuthorityForUrn(int urn, CancellationToken cancellationToken)

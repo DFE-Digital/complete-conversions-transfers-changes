@@ -5,14 +5,15 @@ using Dfe.Complete.Application.Common.Models;
 using Dfe.Complete.Application.Services.CsvExport;
 using Dfe.Complete.Application.Services.CsvExport.Builders;
 using Dfe.Complete.Application.Services.CsvExport.Conversion;
+using Dfe.Complete.Application.Projects.Services;
+using Dfe.Complete.Application.Projects.Commands.CreateProject;
+using Dfe.Complete.Application.Projects.Common;
+using Dfe.Complete.Application.Services.TrustCache;
 using Dfe.TramsDataApi.Client.Extensions;
 using FluentValidation;
 using MediatR;
 using Microsoft.Extensions.Configuration;
 using System.Reflection;
-using Dfe.Complete.Application.Projects.Commands.CreateProject;
-using Dfe.Complete.Application.Projects.Common;
-using Dfe.Complete.Application.Services.TrustCache;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
@@ -47,6 +48,7 @@ namespace Microsoft.Extensions.DependencyInjection
             services.AddScoped<IRowGenerator<ConversionCsvModel>, ConversionRowGenerator>();
             services.AddScoped<IHeaderGenerator<ConversionCsvModel>, ConversionRowGenerator>();
             services.AddScoped<ICreateProjectCommon, CreateProjectCommon>();
+            services.AddScoped<IHandoverProjectService, HandoverProjectService>();
 
             services.AddBackgroundService();
 

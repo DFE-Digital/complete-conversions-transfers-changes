@@ -13,9 +13,8 @@ public sealed class UrnAttribute : ValidationAttribute
         if (value == null)
             return ValidationResult.Success;
 
-        if (value is int urn)
-            if (urn >= 100000 && urn <= 999999)
-                return ValidationResult.Success;
+        if (value is int urn && urn >= 100000 && urn <= 999999)
+            return ValidationResult.Success;
 
         return new ValidationResult(ErrorMessage);
     }
