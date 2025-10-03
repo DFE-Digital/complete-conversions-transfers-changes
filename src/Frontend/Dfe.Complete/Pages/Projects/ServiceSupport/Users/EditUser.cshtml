@@ -1,0 +1,17 @@
+﻿@page "/service-support/users/{userId}/edit"
+@using Dfe.Complete.Constants
+@using Dfe.Complete.Utils
+@using Dfe.Complete.Models
+@model Dfe.Complete.Pages.Projects.ServiceSupport.Users.EditUserModel
+@{
+    Layout = "ServiceSupport/_ServiceSupportLayout";
+    ViewData["Title"] = "Edit a user";
+}
+<div class="govuk-grid-column-two-thirds">   
+    <partial name="_ErrorSummary" model="null"/>
+    <h1 class="govuk-heading-l">
+        Edit a user
+    </h1>
+
+    <partial name="UserDetailsForm" model="Model" />
+</div>
