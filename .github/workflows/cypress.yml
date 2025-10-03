@@ -96,6 +96,7 @@ jobs:
           CYPRESS_completeApiClientId: ${{ secrets.CYPRESS_COMPLETEAPI_CLIENTID }}
         with:
           browser: ${{ matrix.browser }}
+          spec: ${{ matrix.spec }}
           working-directory: ./src/Tests/Dfe.Complete.CypressTests
 
       - name: Upload screenshots
