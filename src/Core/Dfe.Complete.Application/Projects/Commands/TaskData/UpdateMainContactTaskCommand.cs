@@ -1,5 +1,7 @@
 ﻿using Dfe.Complete.Application.Common.Models;
+using Dfe.Complete.Application.Contacts.Interfaces;
 using Dfe.Complete.Application.Projects.Interfaces;
+using Dfe.Complete.Domain.Entities;
 using Dfe.Complete.Domain.ValueObjects;
 using Dfe.Complete.Utils;
 using MediatR;
@@ -13,7 +15,7 @@ namespace Dfe.Complete.Application.Projects.Commands.TaskData
     ) : IRequest<Result<bool>>;
 
     public class UpdateMainContactTaskCommandHandler(
-        IProjectReadRepository projectReadRepository,
+        IProjectReadRepository projectReadRepository, 
         IProjectWriteRepository projectWriteRepository)
         : IRequestHandler<UpdateMainContactTaskCommand, Result<bool>>
     {
@@ -22,9 +24,9 @@ namespace Dfe.Complete.Application.Projects.Commands.TaskData
             var project = await projectReadRepository.Projects
                 .FirstOrDefaultAsync(p => p.Id == request.ProjectId, cancellationToken)
                 ?? throw new NotFoundException($"Project {request.ProjectId} not found.");
-
+            var now = DateTime.UtcNow;
             project.MainContactId = request.MainContactId;
-            project.UpdatedAt = DateTime.UtcNow;
+            project.UpdatedAt = now;
             await projectWriteRepository.UpdateProjectAsync(project, cancellationToken);
 
             return Result<bool>.Success(true);

@@ -1,3 +1,4 @@
+using Dfe.Complete.Application.Contacts.Queries;
 using Dfe.Complete.Application.Projects.Commands.TaskData;
 using Dfe.Complete.Constants;
 using Dfe.Complete.Domain.Enums;
@@ -19,7 +20,9 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.MainContactTask
         public override async Task<IActionResult> OnGetAsync()
         {
             await base.OnGetAsync();
-
+            var contacts = await sender.Send(new GetContactsForProjectOrLocalAuthorityQuery(Project.Id, Project.LocalAuthorityId));
+ 
+            Project.Contacts = contacts?.Value!;
             MainContactId = Project.MainContactId?.Value; 
             return Page();
         }
