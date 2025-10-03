@@ -31,6 +31,11 @@ Security in case of vulnerabilities.
 - Fixed broken task note urls.
 - Fixed all project by month query for conversion projects if all conditions met is null
 
+### Security
+
+- Fixed reflected Cross-Site Scripting (XSS) vulnerability on cookies page (150001) - added server-side URL validation to prevent malicious script injection via returnUrl parameter
+
+
 See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-09-25.771...main) for everything awaiting release
 
 ---
