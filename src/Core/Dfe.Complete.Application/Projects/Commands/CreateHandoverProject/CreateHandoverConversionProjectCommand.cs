@@ -135,11 +135,7 @@ public class CreateHandoverConversionProjectCommandHandler(
 
         if (existingProject != null)
             throw new ValidationException(string.Format(ValidationConstants.UrnExistsValidationMessage, request.Urn));
-
-        var existingTrust = await trustClient.GetTrustByUkprn2Async(request.IncomingTrustUkprn!.Value.ToString(), cancellationToken);
-
-        if (existingTrust == null)
-            throw new ValidationException(ValidationConstants.NoTrustFoundValidationMessage);
+        _ = await trustClient.GetTrustByUkprn2Async(request.IncomingTrustUkprn!.Value.ToString(), cancellationToken) ?? throw new ValidationException(ValidationConstants.NoTrustFoundValidationMessage);
     }
 
     private static void ValidateGroupId(ProjectGroupDto group, int trustUkprn)

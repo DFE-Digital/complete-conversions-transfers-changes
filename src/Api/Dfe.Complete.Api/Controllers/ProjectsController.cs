@@ -40,16 +40,10 @@ namespace Dfe.Complete.Api.Controllers
         [SwaggerResponse(400, "Invalid request data.")]
         public async Task<IActionResult> CreateHandoverConversionProjectAsync([FromBody] CreateHandoverConversionProjectCommand request, CancellationToken cancellationToken)
         {
-            // Check for model binding errors (including additional properties)
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            ProjectId result;
             try
             {
-                result = await sender.Send(request, cancellationToken);
+                var result = await sender.Send(request, cancellationToken);
+                return Created("", result);
             }
             catch (ValidationException ex)
             {
@@ -59,8 +53,6 @@ namespace Dfe.Complete.Api.Controllers
             {
                 return StatusCode(500, ex.Message);
             }
-
-            return Created("", result);
         }
 
         /// <summary>
@@ -675,7 +667,7 @@ namespace Dfe.Complete.Api.Controllers
         {
             await sender.Send(request, cancellationToken);
             return NoContent();
-        } 
+        }
 
         /// <summary>
         /// Updates the completion for a specific project.

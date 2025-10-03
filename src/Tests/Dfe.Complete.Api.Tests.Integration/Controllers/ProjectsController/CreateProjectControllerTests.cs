@@ -1,6 +1,7 @@
 ﻿using System.Net;
 using System.Security.Claims;
 using AutoFixture;
+using Dfe.AcademiesApi.Client.Contracts;
 using Dfe.Complete.Api.Tests.Integration.Customizations;
 using Dfe.Complete.Client.Contracts;
 using Dfe.Complete.Infrastructure.Database;
@@ -10,6 +11,7 @@ using Dfe.Complete.Tests.Common.Customizations.Models;
 using GovUK.Dfe.CoreLibs.Testing.AutoFixture.Attributes;
 using GovUK.Dfe.CoreLibs.Testing.AutoFixture.Customizations;
 using GovUK.Dfe.CoreLibs.Testing.Mocks.WebApplicationFactory;
+using GovUK.Dfe.CoreLibs.Testing.Mocks.WireMock;
 using Microsoft.EntityFrameworkCore;
 using GiasEstablishment = Dfe.Complete.Domain.Entities.GiasEstablishment;
 
@@ -33,6 +35,12 @@ public partial class ProjectsControllerTests
 
         var createHandoverConversionProjectCommand = GenerateCreateHandoverConversionCommand();
         testUser.Email = createHandoverConversionProjectCommand.CreatedByEmail;
+
+        Assert.NotNull(factory.WireMockServer);
+        var trustDto = fixture.Customize(new TrustDtoCustomization() { Ukprn = createHandoverConversionProjectCommand.IncomingTrustUkprn.ToString() }).Create<TrustDto>();
+        factory.WireMockServer.AddGetWithJsonResponse(
+            string.Format(TrustClientEndpointConstants.GetTrustByUkprn2Async, createHandoverConversionProjectCommand.IncomingTrustUkprn),
+            trustDto);
 
         var localAuthority = dbContext.LocalAuthorities.AsEnumerable().MinBy(_ => Guid.NewGuid());
         Assert.NotNull(localAuthority);
@@ -82,6 +90,12 @@ public partial class ProjectsControllerTests
         var createHandoverConversionProjectCommand = GenerateCreateHandoverConversionCommand();
         createHandoverConversionProjectCommand.GroupId = "GRP_99999999";
 
+        Assert.NotNull(factory.WireMockServer);
+        var trustDto = fixture.Customize(new TrustDtoCustomization() { Ukprn = createHandoverConversionProjectCommand.IncomingTrustUkprn.ToString() }).Create<TrustDto>();
+        factory.WireMockServer.AddGetWithJsonResponse(
+            string.Format(TrustClientEndpointConstants.GetTrustByUkprn2Async, createHandoverConversionProjectCommand.IncomingTrustUkprn),
+            trustDto);
+
         var localAuthority = dbContext.LocalAuthorities.AsEnumerable().MinBy(_ => Guid.NewGuid());
         Assert.NotNull(localAuthority);
 
@@ -124,6 +138,12 @@ public partial class ProjectsControllerTests
 
         var createHandoverConversionProjectCommand = GenerateCreateHandoverConversionCommand();
         createHandoverConversionProjectCommand.GroupId = "GRP_88888888";
+
+        Assert.NotNull(factory.WireMockServer);
+        var trustDto = fixture.Customize(new TrustDtoCustomization() { Ukprn = "00000000" }).Create<TrustDto>();
+        factory.WireMockServer.AddGetWithJsonResponse(
+            string.Format(TrustClientEndpointConstants.GetTrustByUkprn2Async, createHandoverConversionProjectCommand.IncomingTrustUkprn),
+            trustDto);
 
         var localAuthority = dbContext.LocalAuthorities.AsEnumerable().MinBy(_ => Guid.NewGuid());
         Assert.NotNull(localAuthority);
@@ -197,7 +217,7 @@ public partial class ProjectsControllerTests
         var validationErrors = exception.Response;
         Assert.NotNull(validationErrors);
 
-        Assert.Contains("Created by email must be from @education.gov.uk domain", validationErrors);
+        Assert.Contains("Email must be @education.gov.uk", validationErrors);
     }
 
     [Theory]
