@@ -198,8 +198,8 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers
             var trustDto = fixture.Customize(new TrustDtoCustomization {Ukprn = project.IncomingTrustUkprn.Value.ToString()}).Create<TrustDto>();
         
             Assert.NotNull(factory.WireMockServer);
-            
-            factory.WireMockServer.AddGetWithJsonResponse($"/v4/trusts/bulk", new[]{trustDto}, new List<KeyValuePair<string, string>> {new("ukprns", trustDto.Ukprn!)});
+
+            factory.WireMockServer.AddGetWithJsonResponse(TrustClientEndpointConstants.GetByUkprnsAll, new[]{trustDto}, new List<KeyValuePair<string, string>> {new("ukprns", trustDto.Ukprn!)});
 
             // Act
             var results = await csvExportClient.GetConversionCsvByMonthAsync(1, 2025);
@@ -381,7 +381,7 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers
         
             Assert.NotNull(factory.WireMockServer);
             
-            factory.WireMockServer.AddGetWithJsonResponse($"/v4/trusts/bulk", new[]{trustDto}, new List<KeyValuePair<string, string>> {new("ukprns", trustDto.Ukprn!)});
+            factory.WireMockServer.AddGetWithJsonResponse(TrustClientEndpointConstants.GetByUkprnsAll, new[]{trustDto}, new List<KeyValuePair<string, string>> {new("ukprns", trustDto.Ukprn!)});
 
             // Act
             var results = await csvExportClient.GetConversionCsvByMonthContentsAsync(1, 2025);
@@ -514,8 +514,8 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers
             var trustDto = fixture.Customize(new TrustDtoCustomization(){Ukprn = project.IncomingTrustUkprn.Value.ToString()}).Create<TrustDto>();
 
             Assert.NotNull(factory.WireMockServer);
-            
-            factory.WireMockServer.AddGetWithJsonResponse($"/v4/trusts/bulk", new[]{trustDto}, new List<KeyValuePair<string, string>> {new("ukprns", trustDto.Ukprn!)});
+
+            factory.WireMockServer.AddGetWithJsonResponse(TrustClientEndpointConstants.GetByUkprnsAll, new[]{trustDto}, new List<KeyValuePair<string, string>> {new("ukprns", trustDto.Ukprn!)});
 
             // Act
             var results = await csvExportClient.GetConversionCsvByMonthAsync(1, 2025);
