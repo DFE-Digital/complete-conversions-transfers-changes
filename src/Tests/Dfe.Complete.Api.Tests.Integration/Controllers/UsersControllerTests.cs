@@ -255,8 +255,7 @@ public class UsersControllerTests
     [CustomAutoData(typeof(CustomWebApplicationDbContextFactoryCustomization))]
     public async Task UpdateUserAsync_UserNotFound_ShouldThrowException(
         CustomWebApplicationDbContextFactory<Program> factory,
-        IUsersClient usersClient,
-        IFixture fixture)
+        IUsersClient usersClient)
     {
         factory.TestClaims = new[] { ApiRoles.ReadRole, ApiRoles.WriteRole, ApiRoles.UpdateRole }
             .Select(x => new Claim(ClaimTypes.Role, x)).ToList();
@@ -274,7 +273,7 @@ public class UsersControllerTests
         var exception = await Assert.ThrowsAsync<CompleteApiException>(async () =>
             await usersClient.UpdateUserAsync(updateCommand, CancellationToken.None));
 
-        Assert.Contains($"User with id {nonExistentUserId.Value} not found", exception.Response);
+        Assert.Contains($"User with Id {nonExistentUserId.Value} not found", exception.Response);
     }
 
 
