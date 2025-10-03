@@ -136,17 +136,14 @@ else if (!@Model.UserHasEditAccess())
         @if (Model.Project.Type == ProjectType.Transfer)
         {
           <dd class="govuk-summary-list__value">
-            <a target="_blank" class="govuk-link" href="@Model.Project.EstablishmentSharepointLink">Academy folder (opens
-              in new tab)</a>
+            <external-link href="@Model.Project.EstablishmentSharepointLink">Academy folder</external-link>
           </dd>
         }
         @if (Model.Project.Type == ProjectType.Conversion)
         {
           <dd class="govuk-summary-list__value">
-            <a target="_blank" class="govuk-link" href="@Model.Project.EstablishmentSharepointLink">School folder (opens
-              in new tab)</a> &nbsp;|&nbsp;
-            <a target="_blank" class="govuk-link" href="@Model.Project.IncomingTrustSharepointLink">Trust folder (opens in
-              new tab)</a>
+            <external-link href="@Model.Project.EstablishmentSharepointLink">School folder</external-link> &nbsp;|&nbsp;
+            <external-link href="@Model.Project.IncomingTrustSharepointLink">Trust folder</external-link>
           </dd>
         }
       </div>
