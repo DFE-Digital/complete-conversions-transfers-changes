@@ -10,7 +10,7 @@ public sealed class PastDateAttribute : ValidationAttribute
     public PastDateAttribute()
         => ErrorMessage = string.Format(ValidationConstants.PastDateValidationMessage, "Date");
 
-    protected override ValidationResult? IsValid(object? value, ValidationContext ctx)
+    protected override ValidationResult? IsValid(object? value, ValidationContext validationContext)
     {
         if (value is null) return ValidationResult.Success;
 

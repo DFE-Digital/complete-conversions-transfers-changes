@@ -9,9 +9,9 @@ public sealed class FirstOfMonthDateAttribute : ValidationAttribute
     public FirstOfMonthDateAttribute()
         => ErrorMessage = string.Format(ValidationConstants.FirstOfMonthDateValidationMessage, "Date");
 
-    protected override ValidationResult? IsValid(object? value, ValidationContext ctx)
+    protected override ValidationResult? IsValid(object? value, ValidationContext validationContext)
     {
-        if (value is null) return ValidationResult.Success; // compose with [Required] if needed
+        if (value is null) return ValidationResult.Success;
 
         int? day = value switch
         {

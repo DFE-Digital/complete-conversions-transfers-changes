@@ -13,9 +13,8 @@ public sealed class UkprnAttribute : ValidationAttribute
         if (value == null)
             return ValidationResult.Success;
 
-        if (value is int urn)
-            if (urn >= 10000000 && urn <= 19999999)
-                return ValidationResult.Success;
+        if (value is int urn && urn >= 10000000 && urn <= 19999999)
+            return ValidationResult.Success;
 
         return new ValidationResult(ErrorMessage);
     }

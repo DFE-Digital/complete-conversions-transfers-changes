@@ -16,7 +16,7 @@ public sealed class GroupReferenceNumberAttribute : ValidationAttribute
     public GroupReferenceNumberAttribute()
         => ErrorMessage = string.Format(ValidationConstants.GroupReferenceNumberValidationMessage, "Group ID");
 
-    protected override ValidationResult? IsValid(object? value, ValidationContext _)
+    protected override ValidationResult? IsValid(object? value, ValidationContext validationContext)
     {
         if (value is null) return ValidationResult.Success;
 
