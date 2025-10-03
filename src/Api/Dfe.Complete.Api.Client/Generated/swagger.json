@@ -3118,6 +3118,9 @@
           },
           "400": {
             "description": "Invalid request data."
+          },
+          "404": {
+            "description": "User not found."
           }
         }
       },
