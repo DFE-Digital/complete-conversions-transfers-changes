@@ -137,6 +137,10 @@
       "ExpectedSecurity": "Authorize: Policy=CanViewServiceSupport"
     },
     {
+      "Route": "Projects/ServiceSupport/Users/EditUser",
+      "ExpectedSecurity": "Authorize: Policy=CanViewServiceSupport"
+    },
+    {
       "Route": "Projects/List/HandoverProjects/HandoverProjectCheck",
       "ExpectedSecurity": "Authorize: Policy=CanViewAllProjectsHandover"
     },
