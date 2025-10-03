@@ -7,6 +7,7 @@ using Dfe.Complete.Application.Users.Queries.GetUser;
 using Dfe.Complete.Application.Users.Queries.ListAllUsers;
 using Microsoft.AspNetCore.Authorization;
 using Dfe.Complete.Application.Users.Commands;
+using Dfe.Complete.Application.Common.Models;
 
 namespace Dfe.Complete.Api.Controllers
 {
@@ -43,9 +44,19 @@ namespace Dfe.Complete.Api.Controllers
         [HttpPut]
         [SwaggerResponse(204, "User updated successfully.")]
         [SwaggerResponse(400, "Invalid request data.")]
+        [SwaggerResponse(404, "User not found.")]
         public async Task<IActionResult> UpdateUserAsync([FromBody] UpdateUserCommand request, CancellationToken cancellationToken)
         {
-            await sender.Send(request, cancellationToken);
+            var response = await sender.Send(request, cancellationToken);
+
+            if (!response.IsSuccess)
+            {
+                if (response.ErrorType == ErrorType.NotFound)
+                    return NotFound(response.Error);
+                return StatusCode(500, response.Error);
+            }
+
+
             return NoContent();
         }
 
@@ -54,7 +65,7 @@ namespace Dfe.Complete.Api.Controllers
         /// </summary>
         /// <param name="request">The request.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
-        //[Authorize(Policy = "API.Read")]
+        [Authorize(Policy = "CanRead")]
         [HttpGet]
         [SwaggerResponse(200, "Project", typeof(UserWithProjectsDto))]
         [SwaggerResponse(400, "Invalid request data.")]
@@ -69,7 +80,7 @@ namespace Dfe.Complete.Api.Controllers
         /// </summary>
         /// <param name="request">The request.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
-        //[Authorize(Policy = "API.Read")]
+        [Authorize(Policy = "CanRead")]
         [HttpGet]
         [Route("List/All")]
         [SwaggerResponse(200, "Project", typeof(List<ListAllUsersWithProjectsResultModel>))]
