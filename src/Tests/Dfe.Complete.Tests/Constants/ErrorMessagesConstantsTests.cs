@@ -73,5 +73,14 @@ namespace Dfe.Complete.Tests.Constants
             var actual = ErrorMessagesConstants.ExceptionWhileCreatingUser.Replace("{Email}", email);
             Assert.Equal(expected, actual);
         }
+
+        [Fact]
+        public void InvalidGuid_ShouldReturnFormattedMessage()
+        {
+            var guid = "a-1-2-3";
+            var expected = "a-1-2-3 is not a valid GUID.";
+            var actual = string.Format(ErrorMessagesConstants.InvalidGuid, guid);
+            Assert.Equal(expected, actual);
+        }
     }
 }

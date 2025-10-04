@@ -26,8 +26,8 @@ public class EditUserModel(ISender sender, IErrorService errorService, ILogger<E
 
         if (!success)
         {
-            logger.LogWarning("{UserId} is not a valid Guid.", UserId);
-            throw new Exception("{UserId} is not a valid Guid.");
+            logger.LogWarning(string.Format(ErrorMessagesConstants.InvalidGuid, UserId), UserId);
+            throw new Exception(string.Format(ErrorMessagesConstants.InvalidGuid, UserId));
         }
 
         var userGuid = new UserId(guid);
