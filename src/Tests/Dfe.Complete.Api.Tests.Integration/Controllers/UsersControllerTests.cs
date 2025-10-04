@@ -209,8 +209,7 @@ public class UsersControllerTests
     [CustomAutoData(typeof(CustomWebApplicationDbContextFactoryCustomization))]
     public async Task UpdateUserAsync_ShouldUpdateUser(
         CustomWebApplicationDbContextFactory<Program> factory,
-        IUsersClient usersClient,
-        IFixture fixture)
+        IUsersClient usersClient)
     {
         factory.TestClaims = new[] { ApiRoles.ReadRole, ApiRoles.WriteRole, ApiRoles.UpdateRole }
             .Select(x => new Claim(ClaimTypes.Role, x)).ToList();
