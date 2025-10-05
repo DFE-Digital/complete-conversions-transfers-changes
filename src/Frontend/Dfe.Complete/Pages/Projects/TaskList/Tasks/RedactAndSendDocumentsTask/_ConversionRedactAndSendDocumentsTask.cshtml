@@ -51,7 +51,7 @@
                 <govuk-checkboxes-item data-cy="send" id="send" asp-for="@Model.Send" value="true" name="send" checked="@Model.Send">
                     <b>Send the redacted documents to the funding agreements mailbox to be published on GOV.UK</b>
                     <govuk-checkboxes-item-hint>
-                        <a href="@_configuration["ExternalLinks:HelpRedactingDocuments"]" class="govuk-link" target="_blank" rel="noopener noreferrer">Help redacting the documents (opens in new tab)</a>
+                        <external-link href="@_configuration["ExternalLinks:HelpRedactingDocuments"]">Help redacting the documents (opens in new tab)</external-link>
                     </govuk-checkboxes-item-hint>
                 </govuk-checkboxes-item>
                 <govuk-checkboxes-item data-cy="send_to_solicitors" id="send_to_solicitors" asp-for="@Model.SendToSolicitors" value="true" name="send_to_solicitors" checked="@Model.SendToSolicitors">

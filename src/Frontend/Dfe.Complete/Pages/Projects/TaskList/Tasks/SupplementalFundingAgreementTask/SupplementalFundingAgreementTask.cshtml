@@ -18,7 +18,7 @@
         Check and clear the supplemental funding agreement 
     </h2>
     <div class="govuk-caption-m">
-        <p class="govuk-body">You can <a href="@_configuration["ExternalLinks:ViewSupplementalFundingModelDocument"]" target="_blank" rel="noopener noreferrer">view the model documents (opens in new tab)</a> to check for changes.</p>
+        <p class="govuk-body">You can <external-link href="@_configuration["ExternalLinks:ViewSupplementalFundingModelDocument"]">view the model documents (opens in new tab)</external-link> to check for changes.</p>
     </div>
 
     <govuk-details>
@@ -27,7 +27,7 @@
         </govuk-details-summary>
         <govuk-details-text>
             <p>Changes that personalise the model documents to @(Model.Type == ProjectType.Conversion?"a school":"an academy") or trust, and remove or add optional clauses, are expected. The wording of clauses should not change.</p>
-            <p>You'll need to <a href="@_configuration["ExternalLinks:ContactPolicyTeam"]" class="govuk-link" target="_blank" rel="noopener noreferrer">contact the policy team (opens in new tab)</a> about changes to clause text.</p>
+            <p>You'll need to <external-link href="@_configuration["ExternalLinks:ContactPolicyTeam"]">contact the policy team (opens in new tab)</external-link> about changes to clause text.</p>
             <p>We only accept new supplemental funding agreements that use the 2020 edition of the model documents.</p>
             <p>Master funding agreements from 2018 onwards are compatible with supplemental funding agreements from 2020 onwards.</p>
         </govuk-details-text>
