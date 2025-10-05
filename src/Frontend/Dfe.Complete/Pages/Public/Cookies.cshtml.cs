@@ -10,7 +10,7 @@ namespace Dfe.Complete.Pages.Public
 	// This only disables the global (razor/mvc) antiforgery token validation.
 	// It does not disable the custom antiforgery validation AddCustomAntiForgeryHandling
 	[IgnoreAntiforgeryToken]
-    public class Cookies(IAnalyticsConsentService analyticsConsentService) : PageModel
+	public class Cookies(IAnalyticsConsentService analyticsConsentService) : PageModel
 	{
 		public bool? Consent { get; set; }
 		public bool PreferencesSet { get; set; } = false;
@@ -21,9 +21,7 @@ namespace Dfe.Complete.Pages.Public
 
 		public ActionResult OnGet(bool? consent, string returnUrl)
 		{
-			ReturnPath = string.IsNullOrWhiteSpace(returnUrl) ? GetReturnUrl() : returnUrl;
-
-			if (ReturnPath == "/cookies")
+			ReturnPath = string.IsNullOrWhiteSpace(returnUrl) ? GetReturnUrl() : ValidateReturnUrl(returnUrl); if (ReturnPath == "/cookies")
 			{
 				returnUrl = Uri.UnescapeDataString(GetReturnUrl().Replace("/cookies?returnUrl=", ""));
 
@@ -46,7 +44,7 @@ namespace Dfe.Complete.Pages.Public
 
 				if (!string.IsNullOrEmpty(returnUrl))
 				{
-					return Redirect(returnUrl);
+					return Redirect(ValidateReturnUrl(returnUrl));
 				}
 
 				return RedirectToPage(Links.Public.CookiePreferences);
@@ -80,15 +78,15 @@ namespace Dfe.Complete.Pages.Public
 				}
 				else
 				{
-                    if(TempData["PreferencesSet"] != null)
-					{ 
+					if (TempData["PreferencesSet"] != null)
+					{
 						TempData["PreferencesSet"] = null;
-                    }
+					}
 
-                    if(TempData["IsRubyRequest"] != null)
+					if (TempData["IsRubyRequest"] != null)
 					{
 						TempData["IsRubyRequest"] = null;
-                    }
+					}
 				}
 			}
 
@@ -97,6 +95,41 @@ namespace Dfe.Complete.Pages.Public
 
 		private string GetReturnUrl()
 			=> Request.Headers.Referer.ToString().Replace("https://", string.Empty).Replace(HttpContext.Request.Host.Value, string.Empty);
+
+		private string ValidateReturnUrl(string returnUrl)
+		{
+			// Prevent XSS attacks by validating the return URL
+			if (string.IsNullOrWhiteSpace(returnUrl))
+				return "/";
+
+			// Block javascript: and data: schemes to prevent XSS
+			if (returnUrl.StartsWith("javascript:", StringComparison.OrdinalIgnoreCase) ||
+				returnUrl.StartsWith("data:", StringComparison.OrdinalIgnoreCase) ||
+				returnUrl.StartsWith("vbscript:", StringComparison.OrdinalIgnoreCase))
+			{
+				return "/";
+			}
+
+			// Only allow relative URLs or URLs from the same host
+			if (Uri.TryCreate(returnUrl, UriKind.Absolute, out var uri))
+			{
+				// If it's an absolute URL, ensure it's from the same host
+				if (uri.Host.Equals(HttpContext.Request.Host.Host, StringComparison.OrdinalIgnoreCase))
+				{
+					return returnUrl;
+				}
+				return "/"; // Reject external URLs
+			}
+
+			// Allow relative URLs that start with /
+			if (returnUrl.StartsWith("/"))
+			{
+				return returnUrl;
+			}
+
+			// Default to home page for any other cases
+			return "/";
+		}
 
 		private void ApplyCookieConsent(bool consent)
 		{
