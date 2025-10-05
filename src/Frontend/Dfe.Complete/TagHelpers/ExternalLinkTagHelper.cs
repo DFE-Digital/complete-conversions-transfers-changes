@@ -53,8 +53,8 @@ public class ExternalLinkTagHelper : TagHelper
         output.Attributes.SetAttribute("target", "_blank");
         output.Attributes.SetAttribute("rel", "noopener noreferrer");
 
-        var cssClasses = !string.IsNullOrEmpty(CssClass) ? CssClass : "govuk-link";
-        output.Attributes.SetAttribute("class", cssClasses);
+        if (!string.IsNullOrEmpty(CssClass))
+            output.Attributes.SetAttribute("class", CssClass);
 
         var existingContent = output.GetChildContentAsync().Result.GetContent();
 
