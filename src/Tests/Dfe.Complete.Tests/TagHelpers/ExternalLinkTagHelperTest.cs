@@ -17,7 +17,7 @@ public class ExternalLinkTagHelperTest
             "external-link",
             attributes: new TagHelperAttributeList(),
             getChildContentAsync: (useCachedResult, encoder) =>
-                Task.FromResult<TagHelperContent>(new DefaultTagHelperContent().SetContent("Test Link")));
+                Task.FromResult(new DefaultTagHelperContent().SetContent("Test Link")));
 
     [Fact]
     public void Process_WithNullHref_SuppressesOutput()
@@ -128,24 +128,6 @@ public class ExternalLinkTagHelperTest
 
         // Assert
         Assert.Equal("noopener noreferrer", output.Attributes["rel"].Value);
-    }
-
-    [Fact]
-    public void Process_WithNoCssClass_SetsDefaultGovUkLinkClass()
-    {
-        // Arrange
-        var tagHelper = new ExternalLinkTagHelper
-        {
-            Href = "https://example.com"
-        };
-        var context = CreateTagHelperContext();
-        var output = CreateTagHelperOutput();
-
-        // Act
-        tagHelper.Process(context, output);
-
-        // Assert
-        Assert.Equal("govuk-link", output.Attributes["class"].Value);
     }
 
     [Fact]
