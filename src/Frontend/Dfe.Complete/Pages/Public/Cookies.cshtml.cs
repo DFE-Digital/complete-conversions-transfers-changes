@@ -44,7 +44,7 @@ namespace Dfe.Complete.Pages.Public
 
 				if (!string.IsNullOrEmpty(returnUrl))
 				{
-					return Redirect(ValidateReturnUrl(returnUrl));
+					return Redirect(ReturnPath);
 				}
 
 				return RedirectToPage(Links.Public.CookiePreferences);
