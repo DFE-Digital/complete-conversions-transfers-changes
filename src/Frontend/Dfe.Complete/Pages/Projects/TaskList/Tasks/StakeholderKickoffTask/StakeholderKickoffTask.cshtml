@@ -46,7 +46,7 @@
                                 <span class="govuk-details__summary-text">What to include in introductory emails</span>
                             </govuk-details-summary>
                             <govuk-details-text>
-                                <p>You can <a class="govuk-link" href="@_configuration["ExternalLinks:EmailTemplate"]" target="_blank" rel="noopener noreferrer">choose an email template (opens in new tab)</a> to help you write your introductory emails. There are templates for the @(isConversion ? "school or trust," : "outgoing trust, incoming trust") and their solicitors.</p>
+                                <p>You can <external-link href="@_configuration["ExternalLinks:EmailTemplate"]">choose an email template (opens in new tab)</external-link> to help you write your introductory emails. There are templates for the @(isConversion ? "school or trust," : "outgoing trust, incoming trust") and their solicitors.</p>
                                 <p>This will help you to:</p>
                                 <ul>
                                     <li>organise kick-off meetings</li>
@@ -132,7 +132,7 @@
                                 </govuk-details-summary>
                                 <govuk-details-text>
                                     <p>You should discuss and record issues that might complicate or delay the project.</p>
-                                    <p>You can <a class="govuk-link" href="@_configuration["ExternalLinks:ConversionChecklist"]" target="_blank" rel="noopener noreferrer">use the @projectTypeString checklist (opens in new tab)</a> to guide the conversation and make sure you talk about everything you need to.</p>
+                                    <p>You can <external-link href="@_configuration["ExternalLinks:ConversionChecklist"]">use the @projectTypeString checklist (opens in new tab)</external-link> to guide the conversation and make sure you talk about everything you need to.</p>
                                 </govuk-details-text>
                             </govuk-details>
                         }
