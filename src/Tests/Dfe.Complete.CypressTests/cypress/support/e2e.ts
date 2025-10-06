@@ -21,6 +21,7 @@ import { TestUser } from "cypress/constants/TestUser";
 
 Cypress.on("url:changed", (url) => {
     url = url.replace(`${Cypress.config("baseUrl")}`, "");
+    url = url.split("#")[0]; // Remove any hash fragments
     if (!Cypress.env("visitedUrls")) {
         Cypress.env("visitedUrls", new Set());
     }

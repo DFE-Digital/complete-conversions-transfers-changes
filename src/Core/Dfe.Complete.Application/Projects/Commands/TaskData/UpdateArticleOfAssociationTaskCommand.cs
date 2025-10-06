@@ -20,7 +20,7 @@ namespace Dfe.Complete.Application.Projects.Commands.TaskData
         bool? Saved
     ) : IRequest<Result<bool>>;
 
-    public class UpdateArticleOfAssociationTaskCommandHandler(
+    internal class UpdateArticleOfAssociationTaskCommandHandler(
         ITaskDataReadRepository taskDataReadRepository,
         ITaskDataWriteRepository taskDataWriteRepository)
         : IRequestHandler<UpdateArticleOfAssociationTaskCommand, Result<bool>>

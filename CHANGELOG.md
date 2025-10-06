@@ -18,9 +18,27 @@ Security in case of vulnerabilities.
 
 ### Added
 
+### Changed
+
+### Fixed
+
+See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-10-03.811...main) for everything awaiting release
+
+---
+
+## [1.19.0](https://github.com/DFE-Digital/complete-conversions-transfers-changes/releases/tag/production-2025-10-03.811) - 2025-10-03
+
+### Added
+
 - Added `Confirm all condition has been met` task for conversion projects.
 - Added `Dao Revocation` workflow.
 - Configured Cache settings.
+- Added `Confirm the date the academy opened` task.
+- Added `Confirm the date the academy transferred` task
+- Added 'Closing of transfer or conversion project'.
+- Add API end point for creating user
+- Add ability to create a user
+- Added `Church supplemental agreement` task for both conversion and transfer projects.
 - Added `Update Commercial Transfer Agreement task for conversion and transfer projects.
 
 ### Changed
@@ -28,8 +46,9 @@ Security in case of vulnerabilities.
 ### Fixed
 
 - Fixed broken task note urls.
+- Fixed all project by month query for conversion projects if all conditions met is null
 
-See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-09-25.771...main) for everything awaiting release
+See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-09-25.771...production-2025-10-03.811) for everything in the release
 
 ---
 
@@ -45,8 +64,6 @@ See the [full commit history](https://github.com/DFE-Digital/complete-conversion
 - ProjectGroup is created when a project is edited with a new GRN
 - Added Add, Edit and Delete External Contacts for both conversion and transfer projects.
 - Added `Confirm this transfer has authority to proceed` task
-- Added `Confirm the date the academy transferred` task
-
 - Add service support - view users table
 
 ### Changed
