@@ -41,6 +41,7 @@ See the [full commit history](https://github.com/DFE-Digital/complete-conversion
 - Add API end point for creating user
 - Add ability to create a user
 - Added `Church supplemental agreement` task for both conversion and transfer projects.
+- Added `Update Commercial Transfer Agreement task for conversion and transfer projects.
 
 ### Changed
 

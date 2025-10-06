@@ -21,7 +21,8 @@ namespace Dfe.Complete.Domain.Tests.Enums
         [InlineData(NoteTaskIdentifier.ConfirmAllConditionsMet, "conditions_met", "Confirm all conditions have been met")]
         [InlineData(NoteTaskIdentifier.ReceiveGrantPaymentCertificate, "receive_grant_payment_certificate", "Receive declaration of expenditure certificate")]
         [InlineData(NoteTaskIdentifier.ConfirmAcademyOpenedDate, "confirm_date_academy_opened", "Confirm the date the academy opened")]
-        [InlineData(NoteTaskIdentifier.ChurchSupplementalAgreement, "church_supplemental_agreement", "Church supplemental agreement")]
+        [InlineData(NoteTaskIdentifier.ChurchSupplementalAgreement, "church_supplemental_agreement", "Church supplemental agreement")]        
+        [InlineData(NoteTaskIdentifier.CommercialTransferAgreement, "commercial_transfer_agreement", "Commercial transfer agreement")]
         public void NoteTaskIdentifier_ShouldHaveCorrectDescription(NoteTaskIdentifier identifier, string expectedDescription, string expectedDisplayExpectation)
         {
             // Act
