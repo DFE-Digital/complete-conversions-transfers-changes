@@ -13,7 +13,7 @@ export class ProjectBuilder {
         options: Partial<CreateConversionProjectRequest> = {},
     ): CreateConversionProjectRequest {
         return {
-            urn: { value: 103844 },
+            urn: { value: 0 }, // specify a valid URN in request options
             significantDate: getSignificantDateString(1),
             isSignificantDateProvisional: false,
             incomingTrustUkprn: {
@@ -37,7 +37,7 @@ export class ProjectBuilder {
         options: Partial<CreateTransferProjectRequest> = {},
     ): CreateTransferProjectRequest {
         return {
-            urn: { value: 105601 },
+            urn: { value: 0 }, // specify a valid URN in request options
             outgoingTrustUkprn: { value: macclesfieldTrust.ukprn },
             incomingTrustUkprn: { value: dimensionsTrust.ukprn },
             significantDate: "2026-03-01",
@@ -63,7 +63,7 @@ export class ProjectBuilder {
         options: Partial<CreateMatConversionProjectRequest> = {},
     ): CreateMatConversionProjectRequest {
         return {
-            urn: { value: 147800 },
+            urn: { value: 0 }, // specify a valid URN in request options
             newTrustName: macclesfieldTrust.name,
             newTrustReferenceNumber: macclesfieldTrust.referenceNumber,
             significantDate: "2026-03-01",
@@ -85,7 +85,7 @@ export class ProjectBuilder {
         options: Partial<CreateMatTransferProjectRequest> = {},
     ): CreateMatTransferProjectRequest {
         return {
-            urn: { value: 149460 },
+            urn: { value: 0 }, // specify a valid URN in request options
             newTrustName: dimensionsTrust.name,
             newTrustReferenceNumber: dimensionsTrust.referenceNumber,
             outgoingTrustUkprn: { value: macclesfieldTrust.ukprn },

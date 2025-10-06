@@ -7,8 +7,8 @@ class NewConversionPage extends NewProjectPage {
         return this;
     }
 
-    public withSchoolURN(urn: string): this {
-        cy.getById("URN").typeFast(urn);
+    public withSchoolURN(urn: number): this {
+        cy.getById("URN").typeFast(String(urn));
         return this;
     }
 
