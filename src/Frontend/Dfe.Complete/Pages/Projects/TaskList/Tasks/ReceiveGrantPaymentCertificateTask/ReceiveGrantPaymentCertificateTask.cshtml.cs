@@ -48,7 +48,7 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.ReceiveGrantPaymentCertific
         {
             if (!NotApplicable.HasValue && ReceivedDate.HasValue && !(ReceivedDate?.ToDateTime(new TimeOnly()) < DateTime.Today))
             {
-                ModelState.AddModelError("received-date", string.Format(ValidationConstants.DateInPast, "Received date"));
+                ModelState.AddModelError("received-date", string.Format(ValidationConstants.DateInPast, "Received"));
             }
             if (!ModelState.IsValid)
             {
