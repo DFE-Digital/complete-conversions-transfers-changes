@@ -1,4 +1,4 @@
-using Dfe.Complete.Application.Projects.Commands.TaskData;
+﻿using Dfe.Complete.Application.Projects.Commands.TaskData;
 using Dfe.Complete.Constants;
 using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Domain.ValueObjects;
@@ -7,10 +7,11 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel;
-namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.ReceiveGrantPaymentCertificateTask
+
+namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.DeclarationOfExpenditureCertificateTask
 {
-    public class ReceiveGrantPaymentCertificateTaskModel(ISender sender, IAuthorizationService authorizationService, ILogger<ReceiveGrantPaymentCertificateTaskModel> logger, IErrorService errorService)
-    : BaseProjectTaskModel(sender, authorizationService, logger, NoteTaskIdentifier.ReceiveGrantPaymentCertificate)
+    public class BaseDeclarationOfExpenditureCertificateTaskModel(ISender sender, IAuthorizationService authorizationService, ILogger logger, NoteTaskIdentifier noteTaskIdentifier, IErrorService errorService)
+    : BaseProjectTaskModel(sender, authorizationService, logger, noteTaskIdentifier)
     {
         [BindProperty(Name = "not-applicable")]
         public bool? NotApplicable { get; set; }
@@ -28,19 +29,6 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.ReceiveGrantPaymentCertific
         public Guid? TasksDataId { get; set; }
         [BindProperty]
         public ProjectType? Type { get; set; }
-        public override async Task<IActionResult> OnGetAsync()
-        {
-            await base.OnGetAsync();
-            Type = Project.Type;
-            TasksDataId = Project.TasksDataId?.Value;
-
-            NotApplicable = ConversionTaskData.ReceiveGrantPaymentCertificateNotApplicable;
-            CheckCertificate = ConversionTaskData.ReceiveGrantPaymentCertificateCheckCertificate;
-            ReceivedDate = ConversionTaskData.ReceiveGrantPaymentCertificateDateReceived;
-            Saved = ConversionTaskData.ReceiveGrantPaymentCertificateSaveCertificate;
-
-            return Page();
-        }
 
         public async Task<IActionResult> OnPost()
         {
