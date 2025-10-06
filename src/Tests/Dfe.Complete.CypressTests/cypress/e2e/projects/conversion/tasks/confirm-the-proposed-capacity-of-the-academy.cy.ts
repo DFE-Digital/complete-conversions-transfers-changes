@@ -10,11 +10,11 @@ import validationComponent from "cypress/pages/validationComponent";
 import { urnPool } from "cypress/constants/testUrns";
 
 const project = ProjectBuilder.createConversionProjectRequest({
-    urn: { value: urnPool.conversion.stChads },
+    urn: { value: urnPool.conversionTasks.spen },
 });
 let projectId: string;
 const otherUserProject = ProjectBuilder.createConversionFormAMatProjectRequest({
-    urn: { value: urnPool.conversion.whitchurch },
+    urn: { value: urnPool.conversionTasks.grylls },
     userAdId: rdoLondonUser.adId,
 });
 let otherUserProjectId: string;

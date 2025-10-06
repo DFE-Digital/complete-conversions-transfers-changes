@@ -10,12 +10,12 @@ import TaskHelper from "cypress/api/taskHelper";
 import { urnPool } from "cypress/constants/testUrns";
 
 const project = ProjectBuilder.createTransferProjectRequest({
-    urn: { value: urnPool.transfer.abbey },
+    urn: { value: urnPool.transferTasks.coquet },
 });
 let projectId: string;
 let taskId: string;
 const otherUserProject = ProjectBuilder.createTransferFormAMatProjectRequest({
-    urn: { value: urnPool.transfer.priory },
+    urn: { value: urnPool.transferTasks.marden },
     userAdId: rdoLondonUser.adId,
 });
 let otherUserProjectId: string;

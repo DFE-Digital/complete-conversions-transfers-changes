@@ -13,7 +13,7 @@ import receiveDeclarationOfExpenditureCertificateTaskPage from "cypress/pages/pr
 import { urnPool } from "cypress/constants/testUrns";
 
 const project = ProjectBuilder.createTransferProjectRequest({
-    urn: { value: urnPool.transfer.abbey },
+    urn: { value: urnPool.transferTasks.coquet },
     isSignificantDateProvisional: true,
 });
 let projectId: string;
@@ -21,13 +21,13 @@ let taskId: string;
 const project2 = ProjectBuilder.createTransferFormAMatProjectRequest({
     significantDate: getSignificantDateString(12),
     isSignificantDateProvisional: true,
-    urn: { value: urnPool.transfer.manchester },
+    urn: { value: urnPool.transferTasks.marden },
 });
 let project2Id: string;
 const otherUserProject = ProjectBuilder.createTransferFormAMatProjectRequest({
     isSignificantDateProvisional: true,
     userAdId: rdoLondonUser.adId,
-    urn: { value: urnPool.transfer.bollin },
+    urn: { value: urnPool.transferTasks.whitley },
 });
 let otherUserProjectId: string;
 

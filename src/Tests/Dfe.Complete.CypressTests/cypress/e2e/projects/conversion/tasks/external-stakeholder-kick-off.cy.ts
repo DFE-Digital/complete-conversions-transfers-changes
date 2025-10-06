@@ -20,20 +20,20 @@ import validationComponent from "cypress/pages/validationComponent";
 import { urnPool } from "cypress/constants/testUrns";
 
 const project = ProjectBuilder.createConversionProjectRequest({
-    urn: { value: urnPool.conversion.stChads },
+    urn: { value: urnPool.conversionTasks.spen },
     isSignificantDateProvisional: true,
 });
 let projectId: string;
 const project2 = ProjectBuilder.createConversionFormAMatProjectRequest({
     significantDate: getSignificantDateString(12),
     isSignificantDateProvisional: true,
-    urn: { value: urnPool.conversion.ramsey },
+    urn: { value: urnPool.conversionTasks.grylls },
 });
 let project2Id: string;
 const otherUserProject = ProjectBuilder.createConversionFormAMatProjectRequest({
     isSignificantDateProvisional: true,
     userAdId: rdoLondonUser.adId,
-    urn: { value: urnPool.conversion.stMarks },
+    urn: { value: urnPool.conversionTasks.huddersfield },
 });
 let otherUserProjectId: string;
 

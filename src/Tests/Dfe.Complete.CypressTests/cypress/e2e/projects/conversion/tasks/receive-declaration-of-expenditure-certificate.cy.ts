@@ -13,18 +13,18 @@ import receiveDeclarationOfExpenditureCertificateTaskPage from "cypress/pages/pr
 import { urnPool } from "cypress/constants/testUrns";
 
 const project = ProjectBuilder.createConversionProjectRequest({
-    urn: { value: urnPool.conversion.stChads },
+    urn: { value: urnPool.conversionTasks.spen },
 });
 let projectId: string;
 let taskId: string;
 const project2 = ProjectBuilder.createConversionFormAMatProjectRequest({
     significantDate: getSignificantDateString(12),
     isSignificantDateProvisional: true,
-    urn: { value: urnPool.conversion.ramsey },
+    urn: { value: urnPool.conversionTasks.huddersfield },
 });
 let project2Id: string;
 const otherUserProject = ProjectBuilder.createConversionFormAMatProjectRequest({
-    urn: { value: urnPool.conversion.whitchurch },
+    urn: { value: urnPool.conversionTasks.grylls },
     userAdId: rdoLondonUser.adId,
 });
 let otherUserProjectId: string;

@@ -10,7 +10,13 @@ export const urnPool = {
         batmans: 103886,
         whitchurch: 147800,
         stMarks: 147801,
-        ramsey: 147803,
+    },
+
+    // conversion-tasks
+    conversionTasks: {
+        spen: 107778,
+        grylls: 107779,
+        huddersfield: 107786,
     },
 
     // transfer-project
@@ -21,6 +27,13 @@ export const urnPool = {
         bollin: 105603,
         prees: 123494,
         priory: 149460,
+    },
+
+    // transfer-tasks
+    transferTasks: {
+        coquet: 108590,
+        marden: 108635,
+        whitley: 108638,
     },
 
     // project-listings
