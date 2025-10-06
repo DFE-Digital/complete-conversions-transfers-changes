@@ -13,7 +13,7 @@
 <div class="govuk-form-group">
     <h2 class="govuk-heading-l">Check and clear the church supplemental agreement</h2>
     <div class="govuk-hint">
-        <p>You can <external-link data-cy="church-academies-model-doc-link" href="@_configuration["ExternalLinks:ChurchAcademiesModelDocument"]">view the model documents (opens in new tab)</external-link> to check for changes.</p>
+        <p>You can @await Html.PartialAsync("Links/_ViewModelDocumentsLink", "ExternalLinks:ChurchAcademiesModelDocument") to check for changes.</p>
     </div>
 
     <govuk-details data-module="govuk-details" class="govuk-details">
@@ -22,7 +22,7 @@
         </govuk-details-summary>
         <govuk-details-text>
             <p>Changes that personalise the model documents to an academy or trust, and remove or add optional clauses, are expected. The wording of clauses should not change.</p>
-            <p>You'll need to <external-link data-cy="contact-policy-team-link" href="@_configuration["ExternalLinks:ContactPolicyTeam"]">contact the policy team (opens in new tab)</external-link> about changes to clause text.</p>
+            <p>You'll need to @await Html.PartialAsync("Links/_ContactPolicyTeamLink") about changes to clause text.</p>
         </govuk-details-text>
     </govuk-details>
 </div>
