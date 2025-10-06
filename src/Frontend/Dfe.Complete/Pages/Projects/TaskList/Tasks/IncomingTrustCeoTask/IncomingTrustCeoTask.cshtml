@@ -1,0 +1,43 @@
+﻿@page "/projects/{projectId}/tasks/confirm_incoming_trust_ceo_contact"
+@using Dfe.Complete.Constants
+@inject Microsoft.Extensions.Configuration.IConfiguration _configuration
+@model Dfe.Complete.Pages.Projects.TaskList.Tasks.IncomingTrustCeoTask.IncomingTrustCeoTaskModel
+@{
+    Layout = "_ProjectTaskLayout";
+    ViewData["Title"] = "Confirm the incoming trust CEO’s details";
+    var projectsExternalContactLink = string.Format(RouteConstants.ProjectExternalContacts, Model.ProjectId);
+}
+@section TaskHeaderHintSection
+{
+    <span class="govuk-caption-m">
+        Confirm the incoming trust CEO’s details
+    </span>
+    <div class="govuk-hint">
+        <p>Check the contact details are correct,&nbsp;<a href="@projectsExternalContactLink" data-cy="external-contacts-link">edit incorrect contact details&nbsp;and&nbsp;add missing contacts</a>. You may need to contact the person who previously worked on the project to verify this.</p>
+    </div>
+}
+@section TaskSection {
+    @* <h2 class="govuk-heading-l">
+        Who is the incoming trust CEO?
+    </h2>
+    <div class="govuk-caption-m">
+        <p class="govuk-body">You can <a href="@_configuration["ExternalLinks:ViewSupplementalFundingModelDocument"]" target="_blank">view the model documents (opens in new tab)</a> to check for changes.</p>
+    </div> *@
+
+    <govuk-details>
+        <govuk-details-summary>
+            <span class="govuk-details__summary-text">Who is the incoming trust CEO?</span>
+        </govuk-details-summary>
+        <govuk-details-text>
+            <p>Choose the relevant person from the list of contacts. You may need to&nbsp;add a new contact&nbsp;if the person you are looking for is not in the list.</p>
+            <p>Their job title may be slightly different to the role described here. Choose the person whose role most closely matches the incoming trust CEO.</p>
+        </govuk-details-text>
+    </govuk-details>
+
+
+    <form method="post">
+        <input type="hidden" asp-for="KeyContactId" />
+        <input type="hidden" asp-for="Type" />       
+        @await Html.PartialAsync("_TaskSaveAndReturn", new TaskSaveAndReturnModel(Model.Project, Model.CurrentUserTeam))
+    </form>
+}

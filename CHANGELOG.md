@@ -17,6 +17,7 @@ Security in case of vulnerabilities.
 ## Unreleased
 
 ### Added
+Added `Incoming Trust CEO contact` task page
 
 ### Changed
 

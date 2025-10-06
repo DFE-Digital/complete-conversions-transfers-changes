@@ -5073,7 +5073,8 @@
           "ConfirmDateAcademyTransferred",
           "ConfirmAllConditionsMet",
           "ReceiveGrantPaymentCertificate",
-          "ConfirmAcademyOpenedDate"
+          "ConfirmAcademyOpenedDate",
+          "IncomingTrustCEOContact"
         ],
         "enum": [
           "Handover",
@@ -5091,7 +5092,8 @@
           "ConfirmDateAcademyTransferred",
           "ConfirmAllConditionsMet",
           "ReceiveGrantPaymentCertificate",
-          "ConfirmAcademyOpenedDate"
+          "ConfirmAcademyOpenedDate",
+          "IncomingTrustCEOContact"
         ]
       },
       "CreateNoteCommand": {

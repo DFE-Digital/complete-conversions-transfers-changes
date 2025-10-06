@@ -15,6 +15,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using StackExchange.Redis;
 using Dfe.Complete.Application.DaoRevoked.Interfaces;
+using Dfe.Complete.Application.KeyContacts.Interfaces;
 
 namespace Dfe.Complete.Infrastructure
 {
@@ -49,6 +50,7 @@ namespace Dfe.Complete.Infrastructure
             services.AddScoped<ITaskDataReadRepository, TaskDataReadRepository>();
             services.AddScoped<ITaskDataWriteRepository, TaskDataWriteRepository>();
             services.AddScoped<IKeyContactReadRepository, KeyContactReadRepository>();
+            services.AddScoped<IKeyContactWriteRepository, KeyContactWriteRepository>();
             services.AddScoped<IContactReadRepository, ContactReadRepository>();
             services.AddScoped<IContactWriteRepository, ContactWriteRepository>();
             services.AddScoped<IDaoRevocationWriteRepository, DaoRevocationWriteRepository>();

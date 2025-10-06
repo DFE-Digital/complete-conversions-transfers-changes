@@ -1,4 +1,4 @@
-﻿using Dfe.Complete.Application.Contacts.Models;
+﻿using Dfe.Complete.Application.KeyContacts.Models;
 using Dfe.Complete.Application.Projects.Models;
 using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Domain.ValueObjects;
