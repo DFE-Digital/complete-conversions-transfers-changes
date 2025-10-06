@@ -14,7 +14,7 @@ import { checkAccessibilityAcrossPages } from "cypress/support/reusableTests";
 import { urnPool } from "cypress/constants/testUrns";
 
 const project = ProjectBuilder.createConversionProjectRequest({
-    urn: { value: urnPool.serviceSupport.kinnerley },
+    urn: { value: urnPool.support.kinnerley },
 });
 const schoolName = "Kinnerley Church of England Controlled Primary School";
 const academy = {
@@ -24,10 +24,10 @@ const academy = {
     localAuthority: "Dudley",
     schoolPhase: "Primary",
 };
-const project2 = ProjectBuilder.createConversionProjectRequest({ urn: { value: urnPool.serviceSupport.whitcliffe } });
+const project2 = ProjectBuilder.createConversionProjectRequest({ urn: { value: urnPool.support.whitcliffe } });
 const schoolName2 = "Whitcliffe Mount School";
 const projectWithAcademy = ProjectBuilder.createConversionProjectRequest({
-    urn: { value: urnPool.serviceSupport.kinnerley },
+    urn: { value: urnPool.support.kinnerley },
 });
 const schoolWithAcademyName = "Kinnerley Church of England Controlled Primary School";
 
