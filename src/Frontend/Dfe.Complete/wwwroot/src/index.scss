@@ -11,16 +11,16 @@ $moj-page-width: $govuk-page-width;
 // Use the DfE font 'Inter', do not user GDS Transport
 $govuk-font-family: "Inter", blinkmacsystemfont, "Segoe UI", roboto,
 oxygen-sans, ubuntu, cantarell, "Helvetica Neue", sans-serif;
-$govuk-assets-path: "/node_modules/govuk-frontend/govuk/assets/";
+$govuk-assets-path: "/assets/";
 
-@import "node_modules/dfe-frontend/packages/dfefrontend";
-@import "node_modules/govuk-frontend/govuk/all";
+@import "node_modules/govuk-frontend/dist/govuk/all";
 @import "node_modules/@ministryofjustice/frontend/moj/all.scss";
 @import "./css/attachment.scss";
 @import "./css/related-items.scss";
 @import "./css/summary-card.scss";
 @import "./css/task-list.scss";
 @import "./css/cookie-banner.scss";
+@import "./css/header.scss";
 @import "./css/date-range.scss";
 @import "./css/risk.scss";
 @import "./css/project-overview.scss";

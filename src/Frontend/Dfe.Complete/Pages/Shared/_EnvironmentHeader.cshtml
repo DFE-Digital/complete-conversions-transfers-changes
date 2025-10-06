@@ -1,12 +1,16 @@
 ﻿@using Microsoft.Extensions.Hosting
 <environment include="Test">
-  <aside id="environment-banner" aria-label="environment banner">
-    <strong class="govuk-tag govuk-tag--orange environment-banner">TEST ENVIRONMENT</strong>
-  </aside>
+  <div class="environment-banner environment-banner--test">
+    <strong class="govuk-tag--orange environment-banner__tag">
+      TEST ENVIRONMENT
+    </strong>
+  </div>
 </environment>
 
 <environment include="@Environments.Development">
-  <aside id="environment-banner" aria-label="environment banner">
-    <strong class="govuk-tag govuk-tag--turquoise environment-banner">DEVELOPMENT ENVIRONMENT</strong>
-  </aside>
+  <div class="environment-banner environment-banner--development">
+    <strong class="govuk-tag--turquoise environment-banner__tag">
+      DEVELOPMENT ENVIRONMENT
+    </strong>
+  </div>
 </environment>
