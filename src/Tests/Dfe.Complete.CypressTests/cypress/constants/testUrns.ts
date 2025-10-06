@@ -36,14 +36,10 @@ export const urnPool = {
         cityHighgate: 143659,
     },
 
-    // user-capabilities-regional-caseworker-services
-    regionalCaseworker: {
+    // user-capabilities-regional-workers
+    regionalWorker: {
         morda: 123484,
         mountjoy: 107789,
-    },
-
-    // user-capabilities-regional-delivery-officer
-    regionalDeliveryOfficer: {
         longnor: 123482,
         ark: 135584,
     },
@@ -52,5 +48,5 @@ export const urnPool = {
     serviceSupport: {
         whitcliffe: 107780,
         kinnerley: 123481,
-    }
+    },
 };

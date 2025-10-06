@@ -17,7 +17,7 @@ import projectApi from "cypress/api/projectApi";
 import { urnPool } from "cypress/constants/testUrns";
 
 const project = ProjectBuilder.createConversionProjectRequest({
-    urn: { value: urnPool.regionalDeliveryOfficer.ark },
+    urn: { value: urnPool.regionalWorker.ark },
     significantDate: "2027-04-01",
 });
 let projectId: string;

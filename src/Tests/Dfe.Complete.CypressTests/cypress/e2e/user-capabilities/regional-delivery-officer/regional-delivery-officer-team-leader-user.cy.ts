@@ -21,13 +21,13 @@ import editUserPage from "cypress/pages/projects/editUserPage";
 import { urnPool } from "cypress/constants/testUrns";
 
 const unassignedProject = ProjectBuilder.createTransferProjectRequest({
-    urn: { value: urnPool.regionalDeliveryOfficer.ark },
+    urn: { value: urnPool.regionalWorker.ark },
     handingOverToRegionalCaseworkService: true,
     userAdId: rdoTeamLeaderUser.adId,
 });
 const unassignedProjectSchoolName = "Ark Globe Academy";
 const project = ProjectBuilder.createConversionFormAMatProjectRequest({
-    urn: { value: urnPool.regionalDeliveryOfficer.longnor },
+    urn: { value: urnPool.regionalWorker.longnor },
 });
 let projectId: string;
 

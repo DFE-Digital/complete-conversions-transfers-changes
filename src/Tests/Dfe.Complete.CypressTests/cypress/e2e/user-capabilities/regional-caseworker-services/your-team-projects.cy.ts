@@ -12,13 +12,13 @@ import { urnPool } from "cypress/constants/testUrns";
 
 const project = ProjectBuilder.createConversionProjectRequest({
     significantDate: "2026-04-01",
-    urn: { value: urnPool.regionalCaseworker.morda },
+    urn: { value: urnPool.regionalWorker.morda },
     userAdId: regionalCaseworkerUser.adId,
 });
 const schoolName = "Morda CofE Primary School";
 const teammatesProject = ProjectBuilder.createConversionProjectRequest({
     significantDate: "2026-04-01",
-    urn: { value: urnPool.regionalCaseworker.mountjoy },
+    urn: { value: urnPool.regionalWorker.mountjoy },
     userAdId: regionalCaseworkerTeamLeaderUser.adId,
 });
 const teammatesSchoolName = "Mountjoy House School";

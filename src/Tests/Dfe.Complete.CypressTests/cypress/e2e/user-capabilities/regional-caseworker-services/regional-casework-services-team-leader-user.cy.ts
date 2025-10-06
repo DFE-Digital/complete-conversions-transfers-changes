@@ -26,12 +26,12 @@ import editUserPage from "cypress/pages/projects/editUserPage";
 import { urnPool } from "cypress/constants/testUrns";
 
 const unassignedProject = ProjectBuilder.createTransferProjectRequest({
-    urn: { value: urnPool.regionalCaseworker.mountjoy },
+    urn: { value: urnPool.regionalWorker.mountjoy },
     handingOverToRegionalCaseworkService: true,
 });
 const unassignedProjectSchoolName = "Mountjoy House School";
 const project = ProjectBuilder.createConversionFormAMatProjectRequest({
-    urn: { value: urnPool.regionalCaseworker.morda },
+    urn: { value: urnPool.regionalWorker.morda },
 });
 let projectId: string;
 describe("Capabilities and permissions of the regional casework services team leader user", () => {

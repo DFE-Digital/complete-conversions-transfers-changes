@@ -61,13 +61,10 @@ jobs:
               cypress/e2e/projects/project-listings/*.cy.ts
               cypress/e2e/groups/group.cy.ts
               cypress/e2e/cookie-consent.cy.ts
-          - group: user-capabilities-regional-caseworker-services
+          - group: user-capabilities-regional-workers
             browser: "edge"
             spec: |
               cypress/e2e/user-capabilities/regional-caseworker-services/*.cy.ts
-          - group: user-capabilities-regional-delivery-officer
-            browser: "edge"
-            spec: |
               cypress/e2e/user-capabilities/regional-delivery-officer/*.cy.ts
           - group: user-capabilities-service-support
             browser: "edge"
