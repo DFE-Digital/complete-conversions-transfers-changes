@@ -3,6 +3,7 @@ using Dfe.Complete.Application.Projects.Models;
 using Dfe.Complete.Application.Projects.Queries.QueryFilters;
 using Dfe.Complete.Application.Users.Commands;
 using Dfe.Complete.Application.Users.Queries.GetUser;
+using Dfe.Complete.Domain.Constants;
 using Dfe.Complete.Domain.Entities;
 using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Domain.Interfaces.Repositories;
@@ -32,7 +33,7 @@ public class HandoverProjectService(
             userDto.Team.FromDescription<ProjectTeam>()), cancellationToken);
 
         if (!newUser.IsSuccess || newUser.Value == null)
-            throw new Exception($"Failed to create user with email {userDto.Email}: {newUser.Error}");
+            throw new UnknownException(string.Format(ErrorMessagesConstants.ExceptionCreatingUser, userDto.Email));
 
         return newUser.Value;
     }

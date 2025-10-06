@@ -61,7 +61,6 @@ public class CreateHandoverConversionProjectCommandHandler(
             await ValidateRequest(request, cancellationToken);
 
             var projectId = new ProjectId(Guid.NewGuid());
-            var now = DateTime.UtcNow;
             var urn = request.Urn!.Value;
             var localAuthorityId = await GetLocalAuthorityForUrn(urn, cancellationToken);
             var region = await GetRegionForUrn(urn, cancellationToken);
