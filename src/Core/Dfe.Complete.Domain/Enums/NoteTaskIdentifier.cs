@@ -71,5 +71,9 @@ public enum NoteTaskIdentifier
 
     [Description("church_supplemental_agreement")]
     [DisplayDescription("Church supplemental agreement")]
-    ChurchSupplementalAgreement = 17,
+    ChurchSupplementalAgreement = 17,    
+
+    [Description("commercial_transfer_agreement")]
+    [DisplayDescription("Commercial transfer agreement")]
+    CommercialTransferAgreement = 18
 }
