@@ -19,6 +19,7 @@
         public const string NotFoundExternalContact = "External contact with Id {Id} not found.";
         public const string ExceptionGettingExternalContact = "Error occurred while getting external contact with Id {Id}.";
         public const string ExceptionCreatingUser = "Error occurred while creating user with email {0}.";
-        public const string InvalidGuid = "{0} is not a valid GUID.";
+        public const string InvalidGuidLog = "{Guid} is not a valid GUID.";
+        public const string InvalidGuidException = "{0} is not a valid GUID.";
     }
 }
