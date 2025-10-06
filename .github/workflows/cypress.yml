@@ -42,10 +42,37 @@ jobs:
     runs-on: ubuntu-latest
     environment: ${{ inputs.environment }}
     strategy:
+      fail-fast: false
       matrix:
-        browser: [
-          "edge"
-        ]
+        include:
+          - group: conversion-tasks
+            browser: "edge"
+            spec: |
+              cypress/e2e/conversion-tasks/**/*.cy.ts
+          - group: conversions
+            browser: "edge"
+            spec: |
+              cypress/e2e/conversions/**/*.cy.ts
+          - group: project-listings
+            browser: "edge"
+            spec: |
+              cypress/e2e/project-listings/**/*.cy.ts
+          - group: transfer-tasks
+            browser: "edge"
+            spec: |
+              cypress/e2e/transfer-tasks/**/*.cy.ts
+          - group: transfers
+            browser: "edge"
+            spec: |
+              cypress/e2e/transfers/**/*.cy.ts
+          - group: user-capabilities-regional-workers
+            browser: "edge"
+            spec: |
+              cypress/e2e/user-capabilities-regional-workers/**/*.cy.ts
+          - group: user-capabilities-support
+            browser: "edge"
+            spec: |
+              cypress/e2e/user-capabilities-support/**/*.cy.ts
     container:
       image: cypress/browsers:22.15.1@sha256:753c6dd8dc176c2eb9e9a622146d2c260e308e86eb62ce2b3e6f12e7d67d7b13
     defaults:
@@ -69,13 +96,14 @@ jobs:
           CYPRESS_completeApiClientId: ${{ secrets.CYPRESS_COMPLETEAPI_CLIENTID }}
         with:
           browser: ${{ matrix.browser }}
+          spec: ${{ matrix.spec }}
           working-directory: ./src/Tests/Dfe.Complete.CypressTests
 
       - name: Upload screenshots
         if: ${{ failure() }}
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
-          name: screenshots-${{ inputs.environment }}-${{ matrix.browser }}
+          name: screenshots-${{ inputs.environment }}-${{ matrix.group }}
           path: src/Tests/Dfe.Complete.CypressTests/cypress/screenshots
 
       - name: Generate report
@@ -88,7 +116,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
-          name: reports-${{ inputs.environment }}-${{ matrix.browser }}
+          name: reports-${{ inputs.environment }}-${{ matrix.group }}
           path: src/Tests/Dfe.Complete.CypressTests/mochareports
 
       - name: Report results

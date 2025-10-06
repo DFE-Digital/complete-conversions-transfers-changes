@@ -2,8 +2,8 @@ import NewProjectPage from "./newProjectPage";
 import { yesNoOption } from "cypress/constants/stringTestConstants";
 
 class NewTransferPage extends NewProjectPage {
-    public withAcademyURN(urn: string): this {
-        cy.getById("URN").typeFast(urn);
+    public withAcademyURN(urn: number): this {
+        cy.getById("URN").typeFast(String(urn));
         return this;
     }
 
