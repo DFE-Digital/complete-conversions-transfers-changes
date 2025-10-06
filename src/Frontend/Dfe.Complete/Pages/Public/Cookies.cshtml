@@ -18,7 +18,7 @@
         </govuk-notification-banner-title>
         <h3>
             You’ve set your cookie preferences. <a class="govuk-notification-banner__link"
-                data-test="success-banner-return-link" href="@Model.ReturnPath">
+                data-test="success-banner-return-link" href="@Html.Encode(Model.ReturnPath)">
                 Go back to the page you were looking
                 at
             </a>.
