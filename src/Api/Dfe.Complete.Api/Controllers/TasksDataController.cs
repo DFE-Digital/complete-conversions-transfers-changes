@@ -304,5 +304,24 @@ namespace Dfe.Complete.Api.Controllers
             await sender.Send(request, cancellationToken);
             return NoContent();
         }
+
+        /// <summary>        
+        /// Updates the commercial transfer agreement task Data for conversion or transfer project.
+        /// </summary>
+        /// <param name="request">The update command.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        [Authorize(Policy = "CanReadWriteUpdate")]
+        [HttpPatch]
+        [Route("TaskData/CommercialTransferAgreement")]
+        [SwaggerResponse(204, "Commercial transfer agreement task updated successfully.")]
+        [SwaggerResponse(400, "Invalid request data.")]
+        [SwaggerResponse(404, "Project not found.")]
+        public async Task<IActionResult> UpdateCommercialTransferAgreementTaskAsync(
+            [FromBody] UpdateCommercialAgreementTaskCommand request,
+            CancellationToken cancellationToken)
+        {
+            await sender.Send(request, cancellationToken);
+            return NoContent();
+        }
     }
 }
