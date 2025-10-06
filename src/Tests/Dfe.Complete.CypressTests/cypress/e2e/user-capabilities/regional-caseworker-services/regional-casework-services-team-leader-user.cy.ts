@@ -26,10 +26,10 @@ import editUserPage from "cypress/pages/projects/editUserPage";
 import { urnPool } from "cypress/constants/testUrns";
 
 const unassignedProject = ProjectBuilder.createTransferProjectRequest({
-    urn: { value: urnPool.regionalCaseworker.moreton },
+    urn: { value: urnPool.regionalCaseworker.mountjoy },
     handingOverToRegionalCaseworkService: true,
 });
-const unassignedProjectSchoolName = "Moreton Say CofE Primary School";
+const unassignedProjectSchoolName = "Mountjoy House School";
 const project = ProjectBuilder.createConversionFormAMatProjectRequest({
     urn: { value: urnPool.regionalCaseworker.morda },
 });

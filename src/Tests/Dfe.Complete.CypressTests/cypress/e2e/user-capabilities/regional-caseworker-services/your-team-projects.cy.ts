@@ -15,13 +15,13 @@ const project = ProjectBuilder.createConversionProjectRequest({
     urn: { value: urnPool.regionalCaseworker.morda },
     userAdId: regionalCaseworkerUser.adId,
 });
-const schoolName = "Blacon High School, A Specialist Sports College";
+const schoolName = "Morda CofE Primary School";
 const teammatesProject = ProjectBuilder.createConversionProjectRequest({
     significantDate: "2026-04-01",
-    urn: { value: urnPool.regionalCaseworker.moreton },
+    urn: { value: urnPool.regionalCaseworker.mountjoy },
     userAdId: regionalCaseworkerTeamLeaderUser.adId,
 });
-const teammatesSchoolName = "The Heath School";
+const teammatesSchoolName = "Mountjoy House School";
 
 describe("Regional caseworker services user - View your team projects", () => {
     before(() => {
@@ -53,8 +53,8 @@ describe("Regional caseworker services user - View your team projects", () => {
             ])
             .withSchool(schoolName)
             .columnHasValue("URN", `${project.urn.value}`)
-            .columnHasValue("Local authority", "Cheshire West and Chester")
-            .columnHasValue("Region", "North West")
+            .columnHasValue("Local authority", "Shropshire")
+            .columnHasValue("Region", "West Midlands")
             .columnHasValue("Assigned to", regionalCaseworkerUser.username)
             .columnHasValue("Project type", "Conversion")
             .columnHasValue("Form a MAT project", "No")
@@ -80,8 +80,8 @@ describe("Regional caseworker services user - View your team projects", () => {
             ])
             .withSchool(teammatesSchoolName)
             .columnHasValue("URN", `${teammatesProject.urn.value}`)
-            .columnHasValue("Local authority", "Halton")
-            .columnHasValue("Region", "North West")
+            .columnHasValue("Local authority", "Kirklees")
+            .columnHasValue("Region", "Yorkshire and the Humber")
             .columnHasValue("Assigned to", regionalCaseworkerTeamLeaderUser.username)
             .columnHasValue("Project type", "Conversion")
             .columnHasValue("Form a MAT project", "No")
@@ -106,7 +106,7 @@ describe("Regional caseworker services user - View your team projects", () => {
             .withSchool(teammatesSchoolName)
             .columnHasValue("URN", `${teammatesProject.urn.value}`)
             .columnHasValue("Created at date", currentMonthShort)
-            .columnHasValue("Region", "North West")
+            .columnHasValue("Region", "Yorkshire and the Humber")
             .columnHasValue("Assigned to", regionalCaseworkerTeamLeaderUser.username)
             .columnHasValue("Project type", "Conversion")
             .columnHasValue("Conversion or transfer date", "Apr 2026")
