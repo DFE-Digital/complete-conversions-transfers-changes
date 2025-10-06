@@ -21,11 +21,11 @@ import editUserPage from "cypress/pages/projects/editUserPage";
 import { urnPool } from "cypress/constants/testUrns";
 
 const unassignedProject = ProjectBuilder.createTransferProjectRequest({
-    urn: { value: urnPool.regionalDeliveryOfficer.lower },
+    urn: { value: urnPool.regionalDeliveryOfficer.ark },
     handingOverToRegionalCaseworkService: true,
     userAdId: rdoTeamLeaderUser.adId,
 });
-const unassignedProjectSchoolName = "Lower Heath CofE Primary School";
+const unassignedProjectSchoolName = "Ark Globe Academy";
 const project = ProjectBuilder.createConversionFormAMatProjectRequest({
     urn: { value: urnPool.regionalDeliveryOfficer.longnor },
 });

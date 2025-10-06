@@ -45,7 +45,7 @@ export const urnPool = {
     // user-capabilities-regional-delivery-officer
     regionalDeliveryOfficer: {
         longnor: 123482,
-        lower: 123483,
+        ark: 135584,
     },
 
     // user-capabilities-service-support
