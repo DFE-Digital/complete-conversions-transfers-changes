@@ -21,11 +21,8 @@ namespace Dfe.Complete.Pages.Public
 
 		public ActionResult OnGet(bool? consent, string returnUrl)
 		{
-			ReturnPath = string.IsNullOrWhiteSpace(returnUrl) ? GetReturnUrl() : ValidateReturnUrl(returnUrl); if (ReturnPath == "/cookies")
-			{
-				returnUrl = Uri.UnescapeDataString(GetReturnUrl().Replace("/cookies?returnUrl=", ""));
+			ReturnPath = Url.IsLocalUrl(returnUrl) ? returnUrl : "/";
 
-			}
 			Consent = analyticsConsentService.ConsentValue();
 
 			if (consent.HasValue)
@@ -55,7 +52,7 @@ namespace Dfe.Complete.Pages.Public
 
 		public IActionResult OnPost(bool? consent, string returnUrl, [FromForm(Name = "cookies_form[accept_optional_cookies]")] bool? cookiesConsent)
 		{
-			ReturnPath = string.IsNullOrWhiteSpace(returnUrl) ? GetReturnUrl() : returnUrl;
+			ReturnPath = Url.IsLocalUrl(returnUrl) ? returnUrl : "/";
 
 			if (!consent.HasValue)
 			{
@@ -74,7 +71,7 @@ namespace Dfe.Complete.Pages.Public
 				if (cookiesConsent != null)
 				{
 					TempData["IsRubyRequest"] = false;
-					return Redirect($"/cookies?consent={cookiesConsent}&returnUrl={GetReturnUrl()}");
+					return Redirect($"/cookies?consent={cookiesConsent}&returnUrl={ReturnPath}");
 				}
 				else
 				{
@@ -93,43 +90,7 @@ namespace Dfe.Complete.Pages.Public
 			return Page();
 		}
 
-		private string GetReturnUrl()
-			=> Request.Headers.Referer.ToString().Replace("https://", string.Empty).Replace(HttpContext.Request.Host.Value, string.Empty);
 
-		private string ValidateReturnUrl(string returnUrl)
-		{
-			// Prevent XSS attacks by validating the return URL
-			if (string.IsNullOrWhiteSpace(returnUrl))
-				return "/";
-
-			// Block javascript: and data: schemes to prevent XSS
-			if (returnUrl.StartsWith("javascript:", StringComparison.OrdinalIgnoreCase) ||
-				returnUrl.StartsWith("data:", StringComparison.OrdinalIgnoreCase) ||
-				returnUrl.StartsWith("vbscript:", StringComparison.OrdinalIgnoreCase))
-			{
-				return "/";
-			}
-
-			// Only allow relative URLs or URLs from the same host
-			if (Uri.TryCreate(returnUrl, UriKind.Absolute, out var uri))
-			{
-				// If it's an absolute URL, ensure it's from the same host
-				if (uri.Host.Equals(HttpContext.Request.Host.Host, StringComparison.OrdinalIgnoreCase))
-				{
-					return returnUrl;
-				}
-				return "/"; // Reject external URLs
-			}
-
-			// Allow relative URLs that start with /
-			if (returnUrl.StartsWith("/"))
-			{
-				return returnUrl;
-			}
-
-			// Default to home page for any other cases
-			return "/";
-		}
 
 		private void ApplyCookieConsent(bool consent)
 		{
