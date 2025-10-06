@@ -93,8 +93,8 @@ describe("Capabilities and permissions of the business support user", () => {
                 "Confirmed date (Original date)",
             ])
             .withSchool(`${schoolName} ${project.urn.value}`)
-            .columnHasValue("Region", "West Midlands")
-            .columnHasValue("Local authority", "Dudley")
+            .columnHasValue("Region", "Yorkshire and the Humber")
+            .columnHasValue("Local authority", "Kirklees")
             .columnHasValue("Incoming trust", macclesfieldTrust.name.toUpperCase()) // bug 208086
             .columnHasValue("All conditions met", "Not yet")
             .columnHasValue("Confirmed date (Original date)", "Apr 2027")
