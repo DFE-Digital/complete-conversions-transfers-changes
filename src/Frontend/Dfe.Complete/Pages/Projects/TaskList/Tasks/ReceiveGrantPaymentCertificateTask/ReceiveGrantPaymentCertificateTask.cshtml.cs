@@ -2,8 +2,6 @@ using Dfe.Complete.Application.Projects.Commands.TaskData;
 using Dfe.Complete.Constants;
 using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Domain.ValueObjects;
-using Dfe.Complete.Extensions;
-using Dfe.Complete.Models;
 using Dfe.Complete.Services.Interfaces;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -46,7 +44,7 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.ReceiveGrantPaymentCertific
 
         public async Task<IActionResult> OnPost()
         {
-            if (!NotApplicable.HasValue && ReceivedDate.HasValue && !(ReceivedDate?.ToDateTime(new TimeOnly()) < DateTime.Today))
+            if (!NotApplicable.HasValue && !(ReceivedDate?.ToDateTime(new TimeOnly()) < DateTime.Today))
             {
                 ModelState.AddModelError("received-date", string.Format(ValidationConstants.DateInPast, "Received"));
             }
@@ -56,8 +54,8 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.ReceiveGrantPaymentCertific
                 errorService.AddErrors(ModelState);
                 return Page();
             }
-            await sender.Send(new UpdateDeclarationOfExpenditureCertificateTaskCommand(new TaskDataId(TasksDataId.GetValueOrDefault())!, Type, ReceivedDate, NotApplicable, CheckCertificate, Saved));
-            TempData.SetNotification(NotificationType.Success, "Success", "Task updated successfully");
+            await Sender.Send(new UpdateDeclarationOfExpenditureCertificateTaskCommand(new TaskDataId(TasksDataId.GetValueOrDefault())!, Type, ReceivedDate, NotApplicable, CheckCertificate, Saved));
+            SetTaskSuccessNotification();
             return Redirect(string.Format(RouteConstants.ProjectTaskList, ProjectId));
         }
     }
