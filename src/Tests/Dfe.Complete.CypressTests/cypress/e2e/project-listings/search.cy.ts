@@ -48,7 +48,7 @@ describe("Search bar tests", () => {
         },
     ];
 
-    searchCases.forEach(({ description, searchTerm }) => {
+    for (const { description, searchTerm } of searchCases) {
         it(description, () => {
             search.searchFor(searchTerm);
             searchResultsPage.hasSearchResultsTitle(searchTerm).goToNextPageUntilFieldIsVisible(schoolName);
@@ -67,7 +67,7 @@ describe("Search bar tests", () => {
                 .columnHasValue("Assigned to", cypressUser.username)
                 .goTo(schoolName);
         });
-    });
+    }
 
     it("Check accessibility across pages", () => {
         checkAccessibilityAcrossPages();

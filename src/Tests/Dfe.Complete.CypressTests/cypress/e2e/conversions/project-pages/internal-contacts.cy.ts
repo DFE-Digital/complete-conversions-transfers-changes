@@ -105,7 +105,7 @@ describe("Internal contacts page: ", () => {
         cy.visit(`/projects/${projectId}/internal-contacts/added-by-user/edit`).notAuthorisedToPerformAction();
     });
 
-    assignableUsers.forEach((assignableUser) => {
+    for (const assignableUser of assignableUsers) {
         it(`Should be able to assign project to a ${assignableUser.lastName} user`, () => {
             Logger.log("Go to project internal contacts page and change assigned user");
             cy.visit(`projects/${projectId}/internal-contacts`);
@@ -127,9 +127,9 @@ describe("Internal contacts page: ", () => {
                 .hasValue(assignableUser.username)
                 .hasEmailLink(assignableUser.email);
         });
-    });
+    }
 
-    unassignableUsers.forEach((unassignableUser) => {
+    for (const unassignableUser of unassignableUsers) {
         it(`Should NOT be able to assign project to a ${unassignableUser.lastName} user`, () => {
             Logger.log("Go to project internal contacts page and change assigned user");
             cy.visit(`projects/${projectId}/internal-contacts`);
@@ -143,7 +143,7 @@ describe("Internal contacts page: ", () => {
                 .assignToInvalidUser(unassignableUser.username)
                 .contains("No results found");
         });
-    });
+    }
 
     it("Check accessibility across pages", () => {
         checkAccessibilityAcrossPages();
