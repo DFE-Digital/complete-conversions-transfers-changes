@@ -40,11 +40,11 @@ describe("Search bar tests", () => {
         },
         {
             description: "Should be able to search for a project by establishment name",
-            searchTerm: "3304",
+            searchTerm: "4179",
         },
         {
             description: "Should be able to search for a project by partial school name",
-            searchTerm: "St Chad",
+            searchTerm: "Hele",
         },
     ];
 

@@ -62,7 +62,7 @@ describe("View your projects", () => {
             .columnHasValue("Form a MAT project", "No")
             // .columnHasValue("Incoming trust", trust) // bug 208086
             .columnContainsValue("Outgoing trust", "None")
-            .columnHasValue("Local authority", "Halton")
+            .columnHasValue("Local authority", "Plymouth")
             .columnHasValue("Conversion or transfer date", "Apr 2026")
             .goTo(conversionSchoolName);
         projectDetailsPage.containsHeading(conversionSchoolName);
@@ -77,7 +77,7 @@ describe("View your projects", () => {
             .columnHasValue("Form a MAT project", "No")
             .columnContainsValue("Incoming trust", dimensionsTrust.name.toUpperCase()) // bug 208086
             .columnContainsValue("Outgoing trust", macclesfieldTrust.name.toUpperCase()) // bug 208086
-            .columnHasValue("Local authority", "Manchester")
+            .columnHasValue("Local authority", "Westmorland and Furness")
             .columnHasValue("Conversion or transfer date", "Mar 2026")
             .goTo(transferSchoolName);
         projectDetailsPage.containsHeading(transferSchoolName);
@@ -92,7 +92,7 @@ describe("View your projects", () => {
             .columnHasValue("Form a MAT project", "Yes")
             .columnContainsValue("Incoming trust", macclesfieldTrust.name)
             .columnContainsValue("Outgoing trust", "None")
-            .columnHasValue("Local authority", "Bath and North East Somerset")
+            .columnHasValue("Local authority", "Kirklees")
             .columnHasValue("Conversion or transfer date", "Mar 2026")
             .goTo(conversionFormAMatSchoolName);
         projectDetailsPage.containsHeading(conversionFormAMatSchoolName);
@@ -107,7 +107,7 @@ describe("View your projects", () => {
             .columnHasValue("Form a MAT project", "Yes")
             .columnContainsValue("Incoming trust", dimensionsTrust.name)
             .columnContainsValue("Outgoing trust", macclesfieldTrust.name.toUpperCase()) // bug 208086
-            .columnHasValue("Local authority", "Milton Keynes")
+            .columnHasValue("Local authority", "Shropshire")
             .columnHasValue("Conversion or transfer date", "Mar 2026")
             .goTo(transferFormAMatSchoolName);
         projectDetailsPage.containsHeading(transferFormAMatSchoolName);
@@ -152,7 +152,7 @@ describe("View your projects", () => {
             ])
             .withSchool(transferSchoolName)
             .columnHasValue("URN", `${transferProject.urn.value}`)
-            .columnHasValue("Local authority", "Manchester")
+            .columnHasValue("Local authority", "Westmoreland and Furness")
             .columnHasValue("Team", "North West")
             .columnHasValue("Type of project", "Transfer")
             .columnHasValue("Conversion or transfer date", "Mar 2026")
