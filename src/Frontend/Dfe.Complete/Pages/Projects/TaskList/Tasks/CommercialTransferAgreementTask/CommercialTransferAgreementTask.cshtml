@@ -1,0 +1,67 @@
+﻿@page "/projects/{projectId}/tasks/commercial_transfer_agreement"
+@using Dfe.Complete.Domain.Enums
+@inject Microsoft.Extensions.Configuration.IConfiguration _configuration
+@model Dfe.Complete.Pages.Projects.TaskList.Tasks.CommercialTransferAgreementTask.CommercialTransferAgreementTaskModel
+@{
+    Layout = "_ProjectTaskLayout";
+    ViewData["Title"] = "Commercial transfer agreement ";
+    var isProjectTypeTransfer = Model.Project.Type == ProjectType.Transfer;
+}
+@section TaskHeaderHintSection
+{
+    <div class="govuk-hint"> 
+        <p>
+            The commercial transfer agreement is essential for all @(isProjectTypeTransfer ? "transfer" : "conversion") projects.
+        </p>
+        @if (isProjectTypeTransfer)
+        {
+            <p>It might not be agreed and signed until the final month before the academy is transferred.</p>
+        }
+    </div>
+}
+@section TaskSection {   
+
+    <govuk-details>
+        <govuk-details-summary>
+            How to check and assure the commercial transfer agreement
+        </govuk-details-summary>
+        <govuk-details-text>
+            <p>You can <a data-cy="commercial-transfer-agreement-guidance-doc-link"  href="@_configuration["ExternalLinks:CommercialTransferAgreementGuidance"]" class="govuk-link" target="_blank">read guidance about how use check and assure the agreement (opens in new tab)</a> on SharePoint.</p>
+        </govuk-details-text>
+    </govuk-details>
+
+
+    <form method="post">
+        <input type="hidden" asp-for="TasksDataId" />
+        <input type="hidden" asp-for="Type" />
+        <govuk-checkboxes name="options">
+            <govuk-checkboxes-fieldset>
+                <govuk-checkboxes-fieldset-legend>
+                </govuk-checkboxes-fieldset-legend>
+                <govuk-checkboxes-item id="agreed" asp-for="@Model.Agreed" value="true" name="agreed" checked="@Model.Agreed" data-cy="agreed-checkbox">
+                    <b>Confirm commercial transfer agreement is agreed</b>
+                </govuk-checkboxes-item>
+                <govuk-checkboxes-item id="signed" asp-for="@Model.Signed" value="true" name="signed" checked="@Model.Signed" data-cy="signed-checkbox">
+                    <b>Confirm commercial transfer agreement is signed</b>
+                </govuk-checkboxes-item>
+                <govuk-checkboxes-item id="questionsreceived" asp-for="@Model.QuestionsReceived" value="true" name="questionsreceived" checked="@Model.QuestionsReceived" data-cy="questions-received-checkbox">
+                    <b>Receive solicitor responses to assurance questions</b>
+                </govuk-checkboxes-item>
+                <govuk-checkboxes-item id="questionschecked" asp-for="@Model.QuestionsChecked" value="true" name="questionschecked" checked="@Model.QuestionsChecked" data-cy="questions-checked-checkbox">
+                    <b>Check solicitor responses to assurance questions</b>
+                </govuk-checkboxes-item>
+                <govuk-checkboxes-item id="saved" asp-for="@Model.Saved" value="true" name="saved" checked="@Model.Saved" data-cy="saved-checkbox">
+                    @if (isProjectTypeTransfer)
+                    {
+                        <b>Save a copy of the confirmation emails in the academy SharePoint folder</b>
+                    }
+                    else
+                    {
+                        <b>Save a copy of the confirmation email in the school's SharePoint folder</b>
+                    }
+                </govuk-checkboxes-item>                              
+            </govuk-checkboxes-fieldset> 
+        </govuk-checkboxes>         
+        @await Html.PartialAsync("_TaskSaveAndReturn", new TaskSaveAndReturnModel(Model.Project, Model.CurrentUserTeam))
+    </form>
+} 

@@ -337,6 +337,11 @@
     },
     {
       "Controller": "TasksDataController",
+      "Action": "UpdateCommercialTransferAgreementTaskAsync",
+      "ExpectedSecurity": "Authorize: Policy=CanReadWriteUpdate"
+    },
+    {
+      "Controller": "TasksDataController",
       "Action": "UpdateMainContactTaskAsync",
       "ExpectedSecurity": "Authorize: Policy=CanReadWriteUpdate"
     },

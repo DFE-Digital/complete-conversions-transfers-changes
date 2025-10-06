@@ -10,7 +10,6 @@ using GovUK.Dfe.CoreLibs.Testing.AutoFixture.Attributes;
 using GovUK.Dfe.CoreLibs.Testing.Mocks.WebApplicationFactory; 
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace Dfe.Complete.Api.Tests.Integration.Controllers.ProjectsController
 {
@@ -917,6 +916,84 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers.ProjectsController
             var existingProject = await dbContext.Projects.SingleOrDefaultAsync(x => x.Id == project.Id);
             Assert.NotNull(existingProject);
             Assert.NotNull(existingProject.SignificantDate);
+        }
+
+        [Theory]
+        [CustomAutoData(typeof(CustomWebApplicationDbContextFactoryCustomization))]
+        public async Task UpdateCommercialTransferAgreementTaskAsync_ShouldUpdate_TransferTaskData(
+          CustomWebApplicationDbContextFactory<Program> factory,
+          ITasksDataClient tasksDataClient,
+          UpdateCommercialAgreementTaskCommand command,
+          IFixture fixture)
+        {
+            // Arrange
+            factory.TestClaims = [new Claim(ClaimTypes.Role, ApiRoles.ReadRole), new Claim(ClaimTypes.Role, ApiRoles.WriteRole), new Claim(ClaimTypes.Role, ApiRoles.UpdateRole)];
+
+            var dbContext = factory.GetDbContext<CompleteContext>();
+
+            var taskData = fixture.Create<TransferTasksData>();
+            dbContext.TransferTasksData.Add(taskData);
+
+            await dbContext.SaveChangesAsync();
+            command.TaskDataId = new TaskDataId { Value = taskData.Id.Value };
+            command.Agreed = true;          
+            command.QuestionsReceived = true;
+            command.QuestionsChecked = true;
+            command.Saved = false;
+            command.Signed = false;
+            command.ProjectType = ProjectType.Transfer;      
+
+            // Act
+            await tasksDataClient.UpdateCommercialTransferAgreementTaskAsync(command, default);
+
+            // Assert
+            dbContext.ChangeTracker.Clear();
+            var existingTaskData = await dbContext.TransferTasksData.SingleOrDefaultAsync(x => x.Id == taskData.Id);
+            Assert.NotNull(existingTaskData);
+            Assert.True(existingTaskData.CommercialTransferAgreementConfirmAgreed);            
+            Assert.True(existingTaskData.CommercialTransferAgreementQuestionsReceived);
+            Assert.True(existingTaskData.CommercialTransferAgreementQuestionsChecked);
+            Assert.False(existingTaskData.CommercialTransferAgreementSaveConfirmationEmails);
+            Assert.False(existingTaskData.CommercialTransferAgreementConfirmSigned);            
+        }
+
+        [Theory]
+        [CustomAutoData(typeof(CustomWebApplicationDbContextFactoryCustomization))]
+        public async Task UpdateCommercialTransferAgreementTaskAsync_ShouldUpdate_ConversionTaskData(
+         CustomWebApplicationDbContextFactory<Program> factory,
+         ITasksDataClient tasksDataClient,
+         UpdateCommercialAgreementTaskCommand command,
+         IFixture fixture)
+        {
+            // Arrange
+            factory.TestClaims = [new Claim(ClaimTypes.Role, ApiRoles.ReadRole), new Claim(ClaimTypes.Role, ApiRoles.WriteRole), new Claim(ClaimTypes.Role, ApiRoles.UpdateRole)];
+
+            var dbContext = factory.GetDbContext<CompleteContext>();
+
+            var taskData = fixture.Create<ConversionTasksData>();
+            dbContext.ConversionTasksData.Add(taskData);
+
+            await dbContext.SaveChangesAsync();
+            command.TaskDataId = new TaskDataId { Value = taskData.Id.Value };
+            command.Agreed = true;
+            command.QuestionsReceived = true;
+            command.QuestionsChecked = true;
+            command.Saved = false;
+            command.Signed = false;
+            command.ProjectType = ProjectType.Conversion;
+
+            // Act
+            await tasksDataClient.UpdateCommercialTransferAgreementTaskAsync(command, default);
+
+            // Assert
+            dbContext.ChangeTracker.Clear();
+            var existingTaskData = await dbContext.ConversionTasksData.SingleOrDefaultAsync(x => x.Id == taskData.Id);
+            Assert.NotNull(existingTaskData);
+            Assert.True(existingTaskData.CommercialTransferAgreementAgreed);
+            Assert.True(existingTaskData.CommercialTransferAgreementQuestionsReceived);
+            Assert.True(existingTaskData.CommercialTransferAgreementQuestionsChecked);
+            Assert.False(existingTaskData.CommercialTransferAgreementSaved);
+            Assert.False(existingTaskData.CommercialTransferAgreementSigned);
         }
     }
 }

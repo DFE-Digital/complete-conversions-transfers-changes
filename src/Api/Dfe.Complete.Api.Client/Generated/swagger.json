@@ -2807,6 +2807,39 @@
         }
       }
     },
+    "/v1/TasksData/TaskData/CommercialTransferAgreement": {
+      "patch": {
+        "tags": [
+          "TasksData"
+        ],
+        "summary": "Updates the commercial transfer agreement task Data for conversion or transfer project.",
+        "operationId": "TasksData_UpdateCommercialTransferAgreementTask",
+        "requestBody": {
+          "x-name": "request",
+          "description": "The update command.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateCommercialAgreementTaskCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "204": {
+            "description": "Commercial transfer agreement task updated successfully."
+          },
+          "400": {
+            "description": "Invalid request data."
+          },
+          "404": {
+            "description": "Project not found."
+          }
+        }
+      }
+    },
     "/v1/TasksData/TaskData/MainContact": {
       "patch": {
         "tags": [
@@ -5196,6 +5229,7 @@
           "ReceiveGrantPaymentCertificate",
           "ConfirmAcademyOpenedDate",
           "ChurchSupplementalAgreement",
+          "CommercialTransferAgreement",
           "MainContact"
         ],
         "enum": [
@@ -5216,6 +5250,7 @@
           "ReceiveGrantPaymentCertificate",
           "ConfirmAcademyOpenedDate",
           "ChurchSupplementalAgreement",
+          "CommercialTransferAgreement",
           "MainContact"
         ]
       },
@@ -7401,6 +7436,43 @@
             "nullable": true
           },
           "sentOrSaved": {
+            "type": "boolean",
+            "nullable": true
+          }
+        }
+      },
+      "UpdateCommercialAgreementTaskCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "taskDataId": {
+            "$ref": "#/components/schemas/TaskDataId"
+          },
+          "projectType": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/ProjectType"
+              }
+            ]
+          },
+          "agreed": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "signed": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "questionsReceived": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "questionsChecked": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "saved": {
             "type": "boolean",
             "nullable": true
           }
