@@ -283,7 +283,27 @@ namespace Dfe.Complete.Api.Controllers
         {
             await sender.Send(request, cancellationToken);
             return NoContent();
-        } 
+        }
+        
+
+        /// <summary>
+        /// Update the church supplemental agreement task Data for conversion or transfer project.
+        /// </summary>
+        /// <param name="request">The update command.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        [Authorize(Policy = "CanReadWriteUpdate")]
+        [HttpPatch]
+        [Route("TaskData/ChurchSupplementalAgreement")]
+        [SwaggerResponse(204, "Conversion or transfer's church supplemental agreement task updated successfully.")]
+        [SwaggerResponse(400, "Invalid request data.")]
+        [SwaggerResponse(404, "Project/User not found.")]
+        public async Task<IActionResult> UpdateChurchSupplementalAgreementTaskAsync(
+            [FromBody] UpdateChurchSupplementalAgreementTaskCommand request,
+            CancellationToken cancellationToken)
+        {
+            await sender.Send(request, cancellationToken);
+            return NoContent();
+        }
 
         /// <summary>
         /// Updates the main contact for either conversion or transfer project.

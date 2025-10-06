@@ -2774,6 +2774,39 @@
         }
       }
     },
+    "/v1/TasksData/TaskData/ChurchSupplementalAgreement": {
+      "patch": {
+        "tags": [
+          "TasksData"
+        ],
+        "summary": "Update the church supplemental agreement task Data for conversion or transfer project.",
+        "operationId": "TasksData_UpdateChurchSupplementalAgreementTask",
+        "requestBody": {
+          "x-name": "request",
+          "description": "The update command.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateChurchSupplementalAgreementTaskCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "204": {
+            "description": "Conversion or transfer's church supplemental agreement task updated successfully."
+          },
+          "400": {
+            "description": "Invalid request data."
+          },
+          "404": {
+            "description": "Project/User not found."
+          }
+        }
+      }
+    },
     "/v1/TasksData/TaskData/MainContact": {
       "patch": {
         "tags": [
@@ -5162,6 +5195,7 @@
           "ConfirmAllConditionsMet",
           "ReceiveGrantPaymentCertificate",
           "ConfirmAcademyOpenedDate",
+          "ChurchSupplementalAgreement",
           "MainContact"
         ],
         "enum": [
@@ -5181,6 +5215,7 @@
           "ConfirmAllConditionsMet",
           "ReceiveGrantPaymentCertificate",
           "ConfirmAcademyOpenedDate",
+          "ChurchSupplementalAgreement",
           "MainContact"
         ]
       },
@@ -7318,6 +7353,55 @@
           "academyOpenedDate": {
             "type": "string",
             "format": "date",
+            "nullable": true
+          }
+        }
+      },
+      "UpdateChurchSupplementalAgreementTaskCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "taskDataId": {
+            "$ref": "#/components/schemas/TaskDataId"
+          },
+          "projectType": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/ProjectType"
+              }
+            ]
+          },
+          "notApplicable": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "received": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "cleared": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "signed": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "signedByDiocese": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "saved": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "signedBySecretaryState": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "sentOrSaved": {
+            "type": "boolean",
             "nullable": true
           }
         }
