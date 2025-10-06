@@ -3213,8 +3213,14 @@ namespace Dfe.Complete.Client.Contracts
         [System.Runtime.Serialization.EnumMember(Value = @"ReceiveGrantPaymentCertificate")]
         ReceiveGrantPaymentCertificate = 14,
 
+        [System.Runtime.Serialization.EnumMember(Value = @"ConfirmAcademyOpenedDate")]
+        ConfirmAcademyOpenedDate = 15,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"ChurchSupplementalAgreement")]
+        ChurchSupplementalAgreement = 16,
+
         [System.Runtime.Serialization.EnumMember(Value = @"CommercialTransferAgreement")]
-        CommercialTransferAgreement = 15,
+        CommercialTransferAgreement = 17,
 
     }
 

@@ -5139,6 +5139,8 @@
           "ConfirmDateAcademyTransferred",
           "ConfirmAllConditionsMet",
           "ReceiveGrantPaymentCertificate",
+          "ConfirmAcademyOpenedDate",
+          "ChurchSupplementalAgreement",
           "CommercialTransferAgreement"
         ],
         "enum": [
@@ -5157,6 +5159,8 @@
           "ConfirmDateAcademyTransferred",
           "ConfirmAllConditionsMet",
           "ReceiveGrantPaymentCertificate",
+          "ConfirmAcademyOpenedDate",
+          "ChurchSupplementalAgreement",
           "CommercialTransferAgreement"
         ]
       },
@@ -7279,6 +7283,69 @@
             "$ref": "#/components/schemas/ProjectId"
           },
           "confirm": {
+            "type": "boolean",
+            "nullable": true
+          }
+        }
+      },
+      "UpdateConfirmAcademyOpenedDateTaskCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "taskDataId": {
+            "$ref": "#/components/schemas/TaskDataId"
+          },
+          "academyOpenedDate": {
+            "type": "string",
+            "format": "date",
+            "nullable": true
+          }
+        }
+      },
+      "UpdateChurchSupplementalAgreementTaskCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "taskDataId": {
+            "$ref": "#/components/schemas/TaskDataId"
+          },
+          "projectType": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/ProjectType"
+              }
+            ]
+          },
+          "notApplicable": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "received": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "cleared": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "signed": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "signedByDiocese": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "saved": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "signedBySecretaryState": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "sentOrSaved": {
             "type": "boolean",
             "nullable": true
           }
