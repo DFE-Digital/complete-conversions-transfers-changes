@@ -3174,8 +3174,8 @@ namespace Dfe.Complete.Client.Contracts
         [System.Runtime.Serialization.EnumMember(Value = @"LandQuestionnaire")]
         LandQuestionnaire = 1,
 
-        [System.Runtime.Serialization.EnumMember(Value = @"LandRegistry")]
-        LandRegistry = 2,
+        [System.Runtime.Serialization.EnumMember(Value = @"LandRegistryTitlePlans")]
+        LandRegistryTitlePlans = 2,
 
         [System.Runtime.Serialization.EnumMember(Value = @"StakeholderKickoff")]
         StakeholderKickoff = 3,

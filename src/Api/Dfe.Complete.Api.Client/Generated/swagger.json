@@ -5126,7 +5126,7 @@
         "x-enumNames": [
           "Handover",
           "LandQuestionnaire",
-          "LandRegistry",
+          "LandRegistryTitlePlans",
           "StakeholderKickoff",
           "SupplementalFundingAgreement",
           "ArticleOfAssociation",
@@ -5145,7 +5145,7 @@
         "enum": [
           "Handover",
           "LandQuestionnaire",
-          "LandRegistry",
+          "LandRegistryTitlePlans",
           "StakeholderKickoff",
           "SupplementalFundingAgreement",
           "ArticleOfAssociation",
