@@ -1,5 +1,6 @@
 ﻿using AutoFixture;
 using Dfe.Complete.Api.Tests.Integration.Customizations;
+using Dfe.Complete.Application.Projects.Commands.TaskData;
 using Dfe.Complete.Client.Contracts;
 using Dfe.Complete.Domain.Entities;
 using Dfe.Complete.Infrastructure.Database;
@@ -814,6 +815,39 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers.ProjectsController
             Assert.False(existingTaskData.ChurchSupplementalAgreementSavedAfterSigningByTrustDiocese);
             Assert.True(existingTaskData.ChurchSupplementalAgreementSignedSecretaryState);
 
+        }
+        [Theory]
+        [CustomAutoData(typeof(CustomWebApplicationDbContextFactoryCustomization))]
+        public async Task UpdateLandRegistryTitlePlansTaskAsync_ShouldUpdate_ConversionTaskData(
+            CustomWebApplicationDbContextFactory<Program> factory,
+            ITasksDataClient tasksDataClient,
+            UpdateLandRegistryTitlePlansTaskCommand command,
+            IFixture fixture)
+        {
+            // Arrange
+            factory.TestClaims = [new Claim(ClaimTypes.Role, ApiRoles.ReadRole), new Claim(ClaimTypes.Role, ApiRoles.UpdateRole), new Claim(ClaimTypes.Role, ApiRoles.WriteRole)];
+
+            var dbContext = factory.GetDbContext<CompleteContext>();
+
+            var taskData = fixture.Create<ConversionTasksData>();
+            dbContext.ConversionTasksData.Add(taskData);
+
+            await dbContext.SaveChangesAsync();
+            command.TaskDataId = new TaskDataId { Value = taskData.Id.Value };  
+            command.Received = true;
+            command.Cleared = true;  
+            command.Saved = false;
+
+            // Act
+            await tasksDataClient.UpdateLandRegistryTitlePlansTaskAsync(command, default);
+
+            // Assert
+            dbContext.ChangeTracker.Clear();
+            var existingTaskData = await dbContext.ConversionTasksData.SingleOrDefaultAsync(x => x.Id == taskData.Id);
+            Assert.NotNull(existingTaskData);
+            Assert.True(existingTaskData.LandRegistryReceived);
+            Assert.True(existingTaskData.LandRegistryCleared);
+            Assert.False(existingTaskData.LandRegistrySaved);
         }
     }
 }

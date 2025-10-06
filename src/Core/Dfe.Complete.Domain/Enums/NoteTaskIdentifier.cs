@@ -15,7 +15,7 @@ public enum NoteTaskIdentifier
 
     [Description("land_registry")]
     [DisplayDescription("Land registry title plans")]
-    LandRegistry = 3,
+    LandRegistryTitlePlans = 3,
 
     [Description("stakeholder_kick_off")]
     [DisplayDescription("External stakeholder kick-off")]

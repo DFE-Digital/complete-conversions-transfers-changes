@@ -18,6 +18,8 @@ Security in case of vulnerabilities.
 
 ### Added
 
+- Added `Land registry title plans` task for converson project. 
+
 ### Changed
 
 ### Fixed

@@ -1,0 +1,54 @@
+﻿@page "/projects/{projectId}/tasks/land_registry"
+@using Dfe.Complete.Constants
+@model Dfe.Complete.Pages.Projects.TaskList.Tasks.LandRegistryTitlePlansTask.LandRegistryTitlePlansTaskModel
+@{
+  ViewData["Title"] = "Land registry";
+  var backlink = string.Format(RouteConstants.ProjectTaskList, Model.Project.Id.Value.ToString());
+}
+
+@section TaskHeaderHintSection {
+    <div class="govuk-hint">
+        <p>The land registry title plans are an essential document in all conversions.</p>
+    </div>
+}
+
+@section TaskSection {
+
+    <form method="post">
+        <input type="hidden" asp-for="TasksDataId" /> 
+        <div class="govuk-form-group">
+            <h2 class="govuk-heading-l">Check and clear the land registry title plans</h2>
+            <div class="govuk-hint">
+                <p>Check an official copy of the title plans for boundary issues and buildings that have not been excluded.</p>
+            </div>
+
+            <govuk-details data-module="govuk-details" class="govuk-details">
+                <govuk-details-summary>
+                    <span class="govuk-details__summary-text">Help checking the land registry title plans</span>
+                </govuk-details-summary>
+                <govuk-details-text>
+                    <p>Check you have an official copy of the title plans. An official copy will state that it's from the Land Registry, include a title plan and title number.</p>
+                    <p>It's a good idea to look at the site on Google Maps and compare that to the title plan. This can help you find out if there's anything to question on the title plan.</p>
+                    <p>The boundary should include all school or trust buildings. If the land has become unregistered you should check the title plan.</p>
+                    <p>Talk to your line manager or the relevant solicitor if you have questions about anything on the title plan.</p>
+                </govuk-details-text>
+            </govuk-details>
+        </div>
+        <govuk-checkboxes name="options">
+            <govuk-checkboxes-fieldset>
+                <govuk-checkboxes-fieldset-legend>
+                </govuk-checkboxes-fieldset-legend>
+                <govuk-checkboxes-item data-cy="@nameof(Model.Received)" id="@(nameof(Model.Received))" asp-for="@Model.Received" value="true" name="@(nameof(Model.Received))" checked="@Model.Received">
+                    <b>Received</b>
+                </govuk-checkboxes-item>
+                <govuk-checkboxes-item data-cy="@nameof(Model.Cleared)" id="@(nameof(Model.Cleared))" asp-for="@Model.Cleared" value="true" name="@(nameof(Model.Cleared))" checked="@Model.Cleared">
+                    <b>Cleared</b>
+                </govuk-checkboxes-item>
+                <govuk-checkboxes-item data-cy="@nameof(Model.Saved)" id="@(nameof(Model.Saved))" asp-for="@Model.Saved" value="true" name="@(nameof(Model.Saved))" checked="@Model.Saved">
+                    <b>Saved in the school's SharePoint folder</b>
+                </govuk-checkboxes-item>
+            </govuk-checkboxes-fieldset>
+        </govuk-checkboxes>
+        @await Html.PartialAsync("_TaskSaveAndReturn", new TaskSaveAndReturnModel(Model.Project, Model.CurrentUserTeam))
+    </form>
+}
