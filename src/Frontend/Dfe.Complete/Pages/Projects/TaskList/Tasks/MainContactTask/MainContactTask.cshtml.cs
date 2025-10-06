@@ -20,7 +20,7 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.MainContactTask
         public override async Task<IActionResult> OnGetAsync()
         {
             await base.OnGetAsync();
-            var contacts = await sender.Send(new GetContactsForProjectAndLocalAuthorityQuery(Project.Id,
+            var contacts = await Sender.Send(new GetContactsForProjectAndLocalAuthorityQuery(Project.Id,
                 Project.LocalAuthorityId));
 
             Contacts = contacts?.Value ?? [];
@@ -29,7 +29,7 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.MainContactTask
         }
         public async Task<IActionResult> OnPost()
         {
-            await sender.Send(new UpdateMainContactTaskCommand(new ProjectId(Guid.Parse(ProjectId)), new ContactId(MainContactId!.Value)));
+            await Sender.Send(new UpdateMainContactTaskCommand(new ProjectId(Guid.Parse(ProjectId)), new ContactId(MainContactId!.Value)));
             SetTaskSuccessNotification();
             
             return LocalRedirect(string.Format(RouteConstants.ProjectTaskList, ProjectId));
