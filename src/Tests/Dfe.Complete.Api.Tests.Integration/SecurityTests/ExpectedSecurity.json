@@ -334,6 +334,11 @@
       "Controller": "TasksDataController",
       "Action": "UpdateChurchSupplementalAgreementTaskAsync",
       "ExpectedSecurity": "Authorize: Policy=CanReadWriteUpdate"
+    },
+    {
+      "Controller": "TasksDataController",
+      "Action": "UpdateLandRegistryTitlePlansTaskAsync",
+      "ExpectedSecurity": "Authorize: Policy=CanReadWriteUpdate"
     }
   ]
 }
