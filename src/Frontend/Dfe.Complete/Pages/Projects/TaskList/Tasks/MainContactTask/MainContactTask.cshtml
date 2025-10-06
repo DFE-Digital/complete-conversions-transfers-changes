@@ -12,9 +12,7 @@
     <div class="govuk-hint">
         <p>This is your first point of contact if you have any questions about the project. You may know them as the external project lead.</p>
         <p>They might be from the school, trust, local authority, diocese or they could be a consultant.</p>
-        @if(isConversion){
-            <p>You must <a href="@string.Format(RouteConstants.ProjectExternalContacts, Model.ProjectId)">add a new contact</a> first if they are not already in the list of contacts.</p>
-        }
+        <p>You must <a href="@string.Format(RouteConstants.ProjectExternalContacts, Model.ProjectId)">add a new contact</a> first if they are not already in the list of contacts.</p>
     </div>
 }
 @section TaskSection
