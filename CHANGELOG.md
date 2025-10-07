@@ -18,6 +18,8 @@ Security in case of vulnerabilities.
 
 ### Added
 
+- Added `Main contact` task page
+
 ### Changed
 
 ### Fixed

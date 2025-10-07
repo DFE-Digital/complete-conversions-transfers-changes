@@ -75,5 +75,9 @@ public enum NoteTaskIdentifier
 
     [Description("commercial_transfer_agreement")]
     [DisplayDescription("Commercial transfer agreement")]
-    CommercialTransferAgreement = 18
+    CommercialTransferAgreement = 18,
+
+    [Description("main_contact")]
+    [DisplayDescription("Confirm the main contact")]
+    MainContact = 19
 }

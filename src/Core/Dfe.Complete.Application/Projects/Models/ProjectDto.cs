@@ -96,5 +96,7 @@ namespace Dfe.Complete.Application.Projects.Models
          
         public string? EstablishmentName { get; set; }
 
+        public LocalAuthorityId? LocalAuthorityId { get; set; }
+
     }
 }

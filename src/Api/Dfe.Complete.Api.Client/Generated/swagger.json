@@ -82,6 +82,53 @@
         }
       }
     },
+    "/v1/Contacts/List/ProjectAndLocalAuthority": {
+      "get": {
+        "tags": [
+          "Contacts"
+        ],
+        "summary": "Returns a list of Contacts for a specific Project and local authority",
+        "operationId": "Contacts_ListAllContactsForProjectAndLocalAuthority",
+        "parameters": [
+          {
+            "name": "ProjectId.Value",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "guid"
+            },
+            "x-position": 1
+          },
+          {
+            "name": "LocalAuthorityId.Value",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "guid"
+            },
+            "x-position": 2
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Contact",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Contact"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request data."
+          }
+        }
+      }
+    },
     "/v1/CsvExport": {
       "post": {
         "tags": [
@@ -2793,6 +2840,39 @@
         }
       }
     },
+    "/v1/TasksData/TaskData/MainContact": {
+      "patch": {
+        "tags": [
+          "TasksData"
+        ],
+        "summary": "Updates the main contact for either conversion or transfer project.",
+        "operationId": "TasksData_UpdateMainContactTask",
+        "requestBody": {
+          "x-name": "request",
+          "description": "The update command.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateMainContactTaskCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "204": {
+            "description": "Confirms all conditions are met successfully."
+          },
+          "400": {
+            "description": "Invalid request data."
+          },
+          "404": {
+            "description": "Project not found."
+          }
+        }
+      }
+    },
     "/v1/Trust/List/All": {
       "get": {
         "tags": [
@@ -4724,6 +4804,14 @@
           "establishmentName": {
             "type": "string",
             "nullable": true
+          },
+          "localAuthorityId": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/LocalAuthorityId"
+              }
+            ]
           }
         }
       },
@@ -5141,7 +5229,8 @@
           "ReceiveGrantPaymentCertificate",
           "ConfirmAcademyOpenedDate",
           "ChurchSupplementalAgreement",
-          "CommercialTransferAgreement"
+          "CommercialTransferAgreement",
+          "MainContact"
         ],
         "enum": [
           "Handover",
@@ -5161,7 +5250,8 @@
           "ReceiveGrantPaymentCertificate",
           "ConfirmAcademyOpenedDate",
           "ChurchSupplementalAgreement",
-          "CommercialTransferAgreement"
+          "CommercialTransferAgreement",
+          "MainContact"
         ]
       },
       "CreateNoteCommand": {
@@ -7385,6 +7475,18 @@
           "saved": {
             "type": "boolean",
             "nullable": true
+          }
+        }
+      },
+      "UpdateMainContactTaskCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "projectId": {
+            "$ref": "#/components/schemas/ProjectId"
+          },
+          "mainContactId": {
+            "$ref": "#/components/schemas/ContactId"
           }
         }
       },
