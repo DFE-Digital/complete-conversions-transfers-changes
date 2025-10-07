@@ -79,5 +79,13 @@ public enum NoteTaskIdentifier
 
     [Description("main_contact")]
     [DisplayDescription("Confirm the main contact")]
-    MainContact = 19
+    MainContact = 19,
+
+    [Description("risk_protection_arrangement")]
+    [DisplayDescription("Confirm the academy's risk protection arrangements")]
+    ConfirmRiskProtectionArrangements = 20,
+
+    [Description("rpa_policy")]
+    [DisplayDescription("Confirm the academy's risk protection arrangements")]
+    ConfirmRiskProtectionArrangementsPolicy = 21
 }

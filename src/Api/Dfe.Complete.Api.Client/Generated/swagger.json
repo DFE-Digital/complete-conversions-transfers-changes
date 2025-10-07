@@ -2906,6 +2906,39 @@
         }
       }
     },
+    "/v1/TasksData/TaskData/ConfirmAcademyRiskProtectionArrangements": {
+      "patch": {
+        "tags": [
+          "TasksData"
+        ],
+        "summary": "Confirm the academy risk protection arrangements task updated successfully for either conversion or transfer project.",
+        "operationId": "TasksData_UpdateConfirmAcademyRiskProtectionArrangementsTask",
+        "requestBody": {
+          "x-name": "request",
+          "description": "The update command.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateConfirmAcademyRiskProtectionArrangementsTaskCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "204": {
+            "description": "Confirm the academy risk protection arrangements task updated successfully."
+          },
+          "400": {
+            "description": "Invalid request data."
+          },
+          "404": {
+            "description": "Project not found."
+          }
+        }
+      }
+    },
     "/v1/Trust/List/All": {
       "get": {
         "tags": [
@@ -5263,7 +5296,8 @@
           "ConfirmAcademyOpenedDate",
           "ChurchSupplementalAgreement",
           "CommercialTransferAgreement",
-          "MainContact"
+          "MainContact",
+          "ConfirmRiskProtectionArrangements"
         ],
         "enum": [
           "Handover",
@@ -5284,7 +5318,8 @@
           "ConfirmAcademyOpenedDate",
           "ChurchSupplementalAgreement",
           "CommercialTransferAgreement",
-          "MainContact"
+          "MainContact",
+          "ConfirmRiskProtectionArrangements"
         ]
       },
       "CreateNoteCommand": {
@@ -7544,6 +7579,39 @@
           },
           "saved": {
             "type": "boolean",
+            "nullable": true
+          }
+        }
+      },
+      "UpdateConfirmAcademyRiskProtectionArrangementsTaskCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "taskDataId": {
+            "$ref": "#/components/schemas/TaskDataId"
+          },
+          "projectType": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/ProjectType"
+              }
+            ]
+          },
+          "rpaPolicyConfirm": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "rpaOption": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/RiskProtectionArrangementOption"
+              }
+            ]
+          },
+          "rpaReason": {
+            "type": "string",
             "nullable": true
           }
         }

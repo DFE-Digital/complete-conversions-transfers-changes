@@ -24,6 +24,8 @@ namespace Dfe.Complete.Domain.Tests.Enums
         [InlineData(NoteTaskIdentifier.ChurchSupplementalAgreement, "church_supplemental_agreement", "Church supplemental agreement")]        
         [InlineData(NoteTaskIdentifier.CommercialTransferAgreement, "commercial_transfer_agreement", "Commercial transfer agreement")]
         [InlineData(NoteTaskIdentifier.MainContact, "main_contact", "Confirm the main contact")]
+        [InlineData(NoteTaskIdentifier.ConfirmRiskProtectionArrangements, "risk_protection_arrangement", "Confirm the academy's risk protection arrangements")]
+        [InlineData(NoteTaskIdentifier.ConfirmRiskProtectionArrangementsPolicy, "rpa_policy", "Confirm the academy's risk protection arrangements")]
         public void NoteTaskIdentifier_ShouldHaveCorrectDescription(NoteTaskIdentifier identifier, string expectedDescription, string expectedDisplayExpectation)
         {
             // Act
