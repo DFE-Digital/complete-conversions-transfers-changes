@@ -9,6 +9,7 @@ using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Domain.ValueObjects;
 using Dfe.Complete.Utils;
 using Exception = System.Exception;
+using Dfe.Complete.Application.ProjectGroups.Interfaces;
 
 namespace Dfe.Complete.Application.Projects.Queries.GetProject
 {

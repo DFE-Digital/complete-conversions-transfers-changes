@@ -885,7 +885,7 @@ public partial class ProjectsControllerTests
         }
 
         Assert.NotNull(factory.WireMockServer);
-        factory.WireMockServer.AddGetWithJsonResponse($"/v4/trusts/bulk", trustResults.ToArray());
+        factory.WireMockServer.AddGetWithJsonResponse(TrustClientEndpointConstants.GetByUkprnsAll, trustResults.ToArray());
 
         var establishments = fixture.Customize(new GiasEstablishmentsCustomization())
             .CreateMany<GiasEstablishment>(numberOfEstablishments)
@@ -987,7 +987,7 @@ public partial class ProjectsControllerTests
         }
 
         Assert.NotNull(factory.WireMockServer);
-        factory.WireMockServer.AddGetWithJsonResponse($"/v4/trusts/bulk", trustResults.ToArray());
+        factory.WireMockServer.AddGetWithJsonResponse(TrustClientEndpointConstants.GetByUkprnsAll, trustResults.ToArray());
 
         var establishments = fixture.Customize(new GiasEstablishmentsCustomization())
             .CreateMany<GiasEstablishment>(numberOfEstablishments)
