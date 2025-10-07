@@ -359,6 +359,11 @@
       "Controller": "TasksDataController",
       "Action": "UpdateLandQuestionnaireTaskAsync",
       "ExpectedSecurity": "Authorize: Policy=CanReadWriteUpdate"
+    },
+    {
+      "Controller": "TasksDataController",
+      "Action": "UpdateLandRegistryTitlePlansTaskAsync",
+      "ExpectedSecurity": "Authorize: Policy=CanReadWriteUpdate"
     }
   ]
 }

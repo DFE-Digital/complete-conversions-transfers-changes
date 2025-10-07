@@ -17,6 +17,7 @@ Security in case of vulnerabilities.
 ## Unreleased
 
 ### Added
+-Land registry title plans` task for converson project.
 
 ### Changed
 
