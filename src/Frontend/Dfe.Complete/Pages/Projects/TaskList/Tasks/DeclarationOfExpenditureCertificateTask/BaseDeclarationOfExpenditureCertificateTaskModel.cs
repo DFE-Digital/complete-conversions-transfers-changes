@@ -32,7 +32,7 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.DeclarationOfExpenditureCer
 
         public async Task<IActionResult> OnPost()
         {
-            if (NotApplicable == false && (ReceivedDate?.ToDateTime(new TimeOnly()) > DateTime.Today))
+            if (!NotApplicable.HasValue && (ReceivedDate?.ToDateTime(new TimeOnly()) > DateTime.Today))
             {
                 ModelState.AddModelError("received-date", string.Format(ValidationConstants.DateInPast, "Received"));
             }
