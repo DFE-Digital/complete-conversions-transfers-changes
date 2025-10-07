@@ -9,6 +9,7 @@ using Dfe.Complete.Domain.ValueObjects;
 using Dfe.AcademiesApi.Client.Contracts;
 using MockQueryable;
 using NSubstitute.ExceptionExtensions;
+using Dfe.Complete.Application.ProjectGroups.Interfaces;
 
 namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
 {

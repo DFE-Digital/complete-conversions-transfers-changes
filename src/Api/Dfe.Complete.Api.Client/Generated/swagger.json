@@ -324,6 +324,43 @@
         }
       }
     },
+    "/v1/Projects/projects/conversions": {
+      "post": {
+        "tags": [
+          "Projects"
+        ],
+        "summary": "Creates a new conversion project (handover version).",
+        "operationId": "Projects_CreateHandoverConversionProject",
+        "requestBody": {
+          "x-name": "request",
+          "description": "The request.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateHandoverConversionProjectCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "201": {
+            "description": "Project created successfully.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProjectId"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request data."
+          }
+        }
+      }
+    },
     "/v1/Projects/Create/Conversion": {
       "post": {
         "tags": [
@@ -4343,6 +4380,58 @@
           },
           "region": {
             "type": "string"
+          }
+        }
+      },
+      "CreateHandoverConversionProjectCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "urn": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "incomingTrustUkprn": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "advisoryBoardDate": {
+            "type": "string",
+            "format": "date",
+            "nullable": true
+          },
+          "provisionalConversionDate": {
+            "type": "string",
+            "format": "date",
+            "nullable": true
+          },
+          "createdByEmail": {
+            "type": "string"
+          },
+          "createdByFirstName": {
+            "type": "string"
+          },
+          "createdByLastName": {
+            "type": "string"
+          },
+          "prepareId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "directiveAcademyOrder": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "advisoryBoardConditions": {
+            "type": "string",
+            "nullable": true
+          },
+          "groupId": {
+            "type": "string",
+            "nullable": true
           }
         }
       },

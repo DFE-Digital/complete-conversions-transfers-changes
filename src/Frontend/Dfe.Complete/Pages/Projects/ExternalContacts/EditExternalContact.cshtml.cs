@@ -17,6 +17,8 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
+using ValidationConstants = Dfe.Complete.Constants.ValidationConstants;
+
 namespace Dfe.Complete.Pages.Projects.ExternalContacts;
 
 [Authorize(Policy = UserPolicyConstants.CanViewEditDeleteContact)]
