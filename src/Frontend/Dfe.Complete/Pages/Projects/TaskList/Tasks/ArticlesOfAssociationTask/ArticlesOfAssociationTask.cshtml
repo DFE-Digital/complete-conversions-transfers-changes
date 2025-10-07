@@ -41,7 +41,7 @@
         <div class="govuk-form-group">
             <h2 class="govuk-heading-l">Check and clear the articles of association</h2>
             <div class="govuk-hint">
-                <p>You can use the <a href="@_configuration["ExternalLinks:AcademyGovernanceGuidance"]" target="_blank">academy governance guidance (opens in new tab)</a> to help you check and clear the articles of association.</p>
+                <p>You can use the <external-link href="@_configuration["ExternalLinks:AcademyGovernanceGuidance"]">academy governance guidance</external-link> to help you check and clear the articles of association.</p>
             </div>
 
             <govuk-details data-module="govuk-details" class="govuk-details">
@@ -50,7 +50,7 @@
                 </govuk-details-summary>
                 <govuk-details-text>
                     <p>Changes that personalise the model documents to @(Model.Type == ProjectType.Conversion ? "a school" : "an academy" ) or trust, and remove or add optional clauses, are expected. The wording of clauses should not change.</p>
-                    <p>You'll need to <a href="@_configuration["ExternalLinks:ContactPolicyTeam"]" target="_blank">contact the policy team (opens in new tab)</a> about changes to clause text.</p>
+                    <p>You'll need to <external-link href="@_configuration["ExternalLinks:ContactPolicyTeam"]">contact the policy team</external-link> about changes to clause text.</p>
                 </govuk-details-text>
             </govuk-details>
         </div>
@@ -70,7 +70,7 @@
                 <govuk-checkboxes-item id="@(nameof(Model.Signed))" asp-for="@Model.Signed" value="true" name="@(nameof(Model.Signed))" checked="@Model.Signed">
                     <b>Checked with solicitors that incoming trust have signed the articles</b>
                     <govuk-checkboxes-item-hint>
-                        <p>It can be helpful to check the <a href="@_configuration["ExternalLinks:CompaniesHouseWebsite"]" target="_blank">Companies House website (opens in a new tab)</a> to make sure the signed articles have been uploaded</p>
+                        <p>It can be helpful to check the <external-link href="@_configuration["ExternalLinks:CompaniesHouseWebsite"]">Companies House website</external-link> to make sure the signed articles have been uploaded</p>
                     </govuk-checkboxes-item-hint>
                 </govuk-checkboxes-item>
                 <govuk-checkboxes-item data-cy="@nameof(Model.Saved)" id="@(nameof(Model.Saved))" asp-for="@Model.Saved" value="true" name="@(nameof(Model.Saved))" checked="@Model.Saved">

@@ -2,6 +2,11 @@
   "Endpoints": [
     {
       "Controller": "ProjectsController",
+      "Action": "CreateHandoverConversionProjectAsync",
+      "ExpectedSecurity": "Authorize: Policy=CanReadWrite"
+    },
+    {
+      "Controller": "ProjectsController",
       "Action": "CreateConversionProjectAsync",
       "ExpectedSecurity": "Authorize: Policy=CanReadWrite"
     },
@@ -353,6 +358,11 @@
     {
       "Controller": "TasksDataController",
       "Action": "UpdateLandQuestionnaireTaskAsync",
+      "ExpectedSecurity": "Authorize: Policy=CanReadWriteUpdate"
+    },
+    {
+      "Controller": "TasksDataController",
+      "Action": "UpdateLandRegistryTitlePlansTaskAsync",
       "ExpectedSecurity": "Authorize: Policy=CanReadWriteUpdate"
     }
   ]

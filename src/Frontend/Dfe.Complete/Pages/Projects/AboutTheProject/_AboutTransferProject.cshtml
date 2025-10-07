@@ -109,7 +109,7 @@
                             <govuk-summary-list-row-key>Name</govuk-summary-list-row-key>
                             <govuk-summary-list-row-value>
                                 @Model.Establishment.Name<br />
-                                <a class="govuk-link" href="https://get-information-schools.service.gov.uk/Establishments/Establishment/Details/@Model.Establishment.Urn" target="_blank">View the school's information in GIAS (opens in new tab)</a>
+                                <external-link class="govuk-link" href="https://get-information-schools.service.gov.uk/Establishments/Establishment/Details/@Model.Establishment.Urn">View the school's information in GIAS</external-link>
                             </govuk-summary-list-row-value>
                         </govuk-summary-list-row>
                         <govuk-summary-list-row>
@@ -139,7 +139,7 @@
                         <govuk-summary-list-row>
                             <govuk-summary-list-row-key>SharePoint folder</govuk-summary-list-row-key>
                             <govuk-summary-list-row-value>
-                                <a class="govuk-link" href="@Model.Project.EstablishmentSharepointLink" target="_blank">View the academy SharePoint folder (opens in new tab)</a>
+                                <external-link class="govuk-link" href="@Model.Project.EstablishmentSharepointLink">View the academy SharePoint folder</external-link>
                             </govuk-summary-list-row-value>
                             @if(Model.UserHasEditAccess()) {
                                 <govuk-summary-list-row-actions>
@@ -174,7 +174,7 @@
                         <govuk-summary-list-row-key>Name</govuk-summary-list-row-key>
                         <govuk-summary-list-row-value>
                             @Model.OutgoingTrust?.Name<br />
-                            <a class="govuk-link" href="https://get-information-schools.service.gov.uk/Groups/Search?GroupSearchModel.Text=@Model.Project.OutgoingTrustUkprn" target="_blank">View the trust information in GIAS (opens in new tab)</a>
+                            <external-link class="govuk-link" href="https://get-information-schools.service.gov.uk/Groups/Search?GroupSearchModel.Text=@Model.Project.OutgoingTrustUkprn">View the trust information in GIAS (opens in new tab)</external-link>
                         </govuk-summary-list-row-value>
                     </govuk-summary-list-row>
                     <govuk-summary-list-row>
@@ -194,7 +194,7 @@
                         <govuk-summary-list-row-key>Companies House number</govuk-summary-list-row-key>
                         <govuk-summary-list-row-value>
                             @Model.OutgoingTrust?.CompaniesHouseNumber<br />
-                            <a class="govuk-link" href="https://find-and-update.company-information.service.gov.uk/company/@Model.OutgoingTrust?.CompaniesHouseNumber" target="_blank">View the Companies House information (opens in new tab)</a>
+                            <external-link class="govuk-link" href="https://find-and-update.company-information.service.gov.uk/company/@Model.OutgoingTrust?.CompaniesHouseNumber">View the Companies House information</external-link>
                         </govuk-summary-list-row-value>
                     </govuk-summary-list-row>
                     <govuk-summary-list-row>
@@ -221,7 +221,7 @@
                     <govuk-summary-list-row>
                         <govuk-summary-list-row-key>SharePoint folder</govuk-summary-list-row-key>
                         <govuk-summary-list-row-value>
-                            <a class="govuk-link" href="@Model.Project.OutgoingTrustSharepointLink" target="_blank">View the trust SharePoint folder (opens in new tab)</a>
+                            <external-link class="govuk-link" href="@Model.Project.OutgoingTrustSharepointLink">View the trust SharePoint folder (opens in new tab)</external-link>
                         </govuk-summary-list-row-value>
                         @if(Model.UserHasEditAccess()) {
                             <govuk-summary-list-row-actions>

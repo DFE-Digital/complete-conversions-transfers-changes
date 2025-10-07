@@ -324,6 +324,43 @@
         }
       }
     },
+    "/v1/Projects/projects/conversions": {
+      "post": {
+        "tags": [
+          "Projects"
+        ],
+        "summary": "Creates a new conversion project (handover version).",
+        "operationId": "Projects_CreateHandoverConversionProject",
+        "requestBody": {
+          "x-name": "request",
+          "description": "The request.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateHandoverConversionProjectCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "201": {
+            "description": "Project created successfully.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProjectId"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request data."
+          }
+        }
+      }
+    },
     "/v1/Projects/Create/Conversion": {
       "post": {
         "tags": [
@@ -2906,6 +2943,39 @@
         }
       }
     },
+    "/v1/TasksData/TaskData/LandRegistryTitlePlans": {
+      "patch": {
+        "tags": [
+          "TasksData"
+        ],
+        "summary": "Updaing the land registry title plans task data for transfer project.",
+        "operationId": "TasksData_UpdateLandRegistryTitlePlansTask",
+        "requestBody": {
+          "x-name": "request",
+          "description": "The update command.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateLandRegistryTitlePlansTaskCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "204": {
+            "description": "The land registry title plans task updated successfully."
+          },
+          "400": {
+            "description": "Invalid request data."
+          },
+          "404": {
+            "description": "Project not found."
+          }
+        }
+      }
+    },
     "/v1/Trust/List/All": {
       "get": {
         "tags": [
@@ -4346,6 +4416,58 @@
           }
         }
       },
+      "CreateHandoverConversionProjectCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "urn": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "incomingTrustUkprn": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "advisoryBoardDate": {
+            "type": "string",
+            "format": "date",
+            "nullable": true
+          },
+          "provisionalConversionDate": {
+            "type": "string",
+            "format": "date",
+            "nullable": true
+          },
+          "createdByEmail": {
+            "type": "string"
+          },
+          "createdByFirstName": {
+            "type": "string"
+          },
+          "createdByLastName": {
+            "type": "string"
+          },
+          "prepareId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "directiveAcademyOrder": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "advisoryBoardConditions": {
+            "type": "string",
+            "nullable": true
+          },
+          "groupId": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
       "CreateConversionProjectCommand": {
         "type": "object",
         "additionalProperties": false,
@@ -5247,7 +5369,7 @@
         "x-enumNames": [
           "Handover",
           "LandQuestionnaire",
-          "LandRegistry",
+          "LandRegistryTitlePlans",
           "StakeholderKickoff",
           "SupplementalFundingAgreement",
           "ArticleOfAssociation",
@@ -5268,7 +5390,7 @@
         "enum": [
           "Handover",
           "LandQuestionnaire",
-          "LandRegistry",
+          "LandRegistryTitlePlans",
           "StakeholderKickoff",
           "SupplementalFundingAgreement",
           "ArticleOfAssociation",
@@ -7539,6 +7661,27 @@
             "nullable": true
           },
           "signed": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "saved": {
+            "type": "boolean",
+            "nullable": true
+          }
+        }
+      },
+      "UpdateLandRegistryTitlePlansTaskCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "taskDataId": {
+            "$ref": "#/components/schemas/TaskDataId"
+          },
+          "received": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "cleared": {
             "type": "boolean",
             "nullable": true
           },

@@ -360,5 +360,24 @@ namespace Dfe.Complete.Api.Controllers
             await sender.Send(request, cancellationToken);
             return NoContent();
         } 
+
+        /// <summary>
+        /// Updaing the land registry title plans task data for transfer project.
+        /// </summary>
+        /// <param name="request">The update command.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        [Authorize(Policy = "CanReadWriteUpdate")]
+        [HttpPatch]
+        [Route("TaskData/LandRegistryTitlePlans")]
+        [SwaggerResponse(204, "The land registry title plans task updated successfully.")]
+        [SwaggerResponse(400, "Invalid request data.")]
+        [SwaggerResponse(404, "Project not found.")]
+        public async Task<IActionResult> UpdateLandRegistryTitlePlansTaskAsync(
+            [FromBody] UpdateLandRegistryTitlePlansTaskCommand request,
+            CancellationToken cancellationToken)
+        {
+            await sender.Send(request, cancellationToken);
+            return NoContent();
+        }
     }
 }
