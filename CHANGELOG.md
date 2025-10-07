@@ -17,7 +17,8 @@ Security in case of vulnerabilities.
 ## Unreleased
 
 ### Added
--Land registry title plans` task for converson project.
+- Land registry title plans` task for conversion project.
+- Added `Master Funding Agreement` task for both conversion and transfer projects.
 
 ### Changed
 
