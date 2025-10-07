@@ -10,10 +10,10 @@ namespace Dfe.Complete.Application.KeyContacts.Commands;
 
 public record UpdateIncomingTrustCeoCommand(KeyContactId KeyContactId, ContactId IncomingTrustCeoId) : IRequest<Result<bool>>;
 
-public class UpdateKeyContactIncomingTrustCEOCommandHandler(
+public class UpdateKeyContactIncomingTrustCeoCommandHandler(
     IKeyContactWriteRepository _keyContactWriteRepo,
     IKeyContactReadRepository _keyContactReadRepo,
-    ILogger<UpdateKeyContactIncomingTrustCEOCommandHandler> logger
+    ILogger<UpdateKeyContactIncomingTrustCeoCommandHandler> logger
 ) : IRequestHandler<UpdateIncomingTrustCeoCommand, Result<bool>>
 {
     public async Task<Result<bool>> Handle(UpdateIncomingTrustCeoCommand request, CancellationToken cancellationToken)
@@ -32,7 +32,7 @@ public class UpdateKeyContactIncomingTrustCEOCommandHandler(
         }
         catch (Exception ex)
         {
-            logger.LogError(ex, "Exception for {Name} Request - {@Request}", nameof(UpdateKeyContactIncomingTrustCEOCommandHandler), request);
+            logger.LogError(ex, "Exception for {Name} Request - {@Request}", nameof(UpdateKeyContactIncomingTrustCeoCommandHandler), request);
             return Result<bool>.Failure($"Could not update keycontact  {request.KeyContactId.Value}: {ex.Message}");
         }
     }

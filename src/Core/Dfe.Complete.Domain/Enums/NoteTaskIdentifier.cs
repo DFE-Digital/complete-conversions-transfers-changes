@@ -79,7 +79,7 @@ public enum NoteTaskIdentifier
 
     [Description("main_contact")]
     [DisplayDescription("Confirm the main contact")]
-    MainContact = 19    
+    MainContact = 19,    
 
     [Description("confirm_incoming_trust_ceo_contact")]
     [DisplayDescription("Confirm the incoming trust ceo contact")]

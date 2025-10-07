@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.IncomingTrustCeoTask
 {
     public class IncomingTrustCeoTaskModel(ISender sender, IAuthorizationService authorizationService, ILogger<IncomingTrustCeoTaskModel> logger)
-        : BaseProjectTaskModel(sender, authorizationService, logger, NoteTaskIdentifier.ConfirmIncomingTrustCEOContact)
+        : BaseProjectTaskModel(sender, authorizationService, logger, NoteTaskIdentifier.ConfirmIncomingTrustCeoContact)
     {
         [BindProperty]
         public Guid? IncomingTrustCeoContactId { get; set; }      

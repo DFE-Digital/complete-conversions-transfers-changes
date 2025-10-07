@@ -5296,8 +5296,8 @@
           "ConfirmAcademyOpenedDate",
           "ChurchSupplementalAgreement",
           "CommercialTransferAgreement",
-          "MainContact",          
-          "ConfirmIncomingTrustCEOContact"
+          "MainContact",
+          "ConfirmIncomingTrustCeoContact"
         ],
         "enum": [
           "Handover",
@@ -5318,8 +5318,8 @@
           "ConfirmAcademyOpenedDate",
           "ChurchSupplementalAgreement",
           "CommercialTransferAgreement",
-          "MainContact",          
-          "ConfirmIncomingTrustCEOContact"
+          "MainContact",
+          "ConfirmIncomingTrustCeoContact"
         ]
       },
       "CreateNoteCommand": {

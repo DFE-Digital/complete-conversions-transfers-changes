@@ -354,6 +354,11 @@
       "Controller": "TasksDataController",
       "Action": "UpdateLandQuestionnaireTaskAsync",
       "ExpectedSecurity": "Authorize: Policy=CanReadWriteUpdate"
+    },
+    {
+      "Controller": "TasksDataController",
+      "Action": "UpdateConfirmIncomingTrustCeoContactTaskAsync",
+      "ExpectedSecurity": "Authorize: Policy=CanReadWriteUpdate"
     }
   ]
 }
