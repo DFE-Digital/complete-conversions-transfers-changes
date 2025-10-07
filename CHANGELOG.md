@@ -17,15 +17,35 @@ Security in case of vulnerabilities.
 ## Unreleased
 
 ### Added
-- Added `Land Questionnaire` task for conversion project.
-- Added `Main contact` task page
-- Added `Master Funding Agreement` task for both conversion and transfer projects.
+-Land registry title plans` task for converson project.
 
 ### Changed
 
 ### Fixed
 
-See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-10-03.811...main) for everything awaiting release
+### Security
+
+See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-10-07.844...main) for everything awaiting release
+
+---
+
+## [1.20.0](https://github.com/DFE-Digital/complete-conversions-transfers-changes/releases/tag/production-2025-10-07.844) - 2025-10-07
+
+### Added
+- Added `Land Questionnaire` task for conversion project.
+- Added `Main contact` task page
+- Added `Church supplemental agreement` task for both conversion and transfer projects.
+- Added `Commercial Transfer Agreement` task for conversion and transfer projects.
+
+### Changed
+
+### Fixed
+
+### Security
+- patch reverse tabnabbing vulnerability by including noopener norefferer on external links (target="_blank") - 150222 Reverse Tabnabbing
+- add Cross-Origin-Opener-Policy HTTP security header to allow same origin only - 150222 Reverse Tabnabbing
+
+See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-10-03.811...production-2025-10-07.844) for everything in the release
 
 ---
 
@@ -41,12 +61,11 @@ See the [full commit history](https://github.com/DFE-Digital/complete-conversion
 - Added 'Closing of transfer or conversion project'.
 - Add API end point for creating user
 - Add ability to create a user
-- Added `Church supplemental agreement` task for both conversion and transfer projects.
-- Added `Update Commercial Transfer Agreement task for conversion and transfer projects.
 
 ### Changed
 
 ### Fixed
+- Add new prepare to complete end point for adding conversion projects
 
 - Fixed broken task note urls.
 - Fixed all project by month query for conversion projects if all conditions met is null

@@ -324,6 +324,43 @@
         }
       }
     },
+    "/v1/Projects/projects/conversions": {
+      "post": {
+        "tags": [
+          "Projects"
+        ],
+        "summary": "Creates a new conversion project (handover version).",
+        "operationId": "Projects_CreateHandoverConversionProject",
+        "requestBody": {
+          "x-name": "request",
+          "description": "The request.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateHandoverConversionProjectCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "201": {
+            "description": "Project created successfully.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProjectId"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request data."
+          }
+        }
+      }
+    },
     "/v1/Projects/Create/Conversion": {
       "post": {
         "tags": [
@@ -2906,20 +2943,20 @@
         }
       }
     },
-    "/v1/TasksData/TaskData/MasterFundingAgreement": {
+    "/v1/TasksData/TaskData/LandRegistryTitlePlans": {
       "patch": {
         "tags": [
           "TasksData"
         ],
-        "summary": "Updates the master funding agreement task Data for conversion or transfer project.",
-        "operationId": "TasksData_UpdateMasterFundingAgreementTask",
+        "summary": "Updaing the land registry title plans task data for transfer project.",
+        "operationId": "TasksData_UpdateLandRegistryTitlePlansTask",
         "requestBody": {
           "x-name": "request",
           "description": "The update command.",
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/UpdateMasterFundingAgreementTaskCommand"
+                "$ref": "#/components/schemas/UpdateLandRegistryTitlePlansTaskCommand"
               }
             }
           },
@@ -2928,13 +2965,13 @@
         },
         "responses": {
           "204": {
-            "description": "Conversion or transfer's master funding agreement task updated successfully."
+            "description": "The land registry title plans task updated successfully."
           },
           "400": {
             "description": "Invalid request data."
           },
           "404": {
-            "description": "Project/User not found."
+            "description": "Project not found."
           }
         }
       }
@@ -4379,6 +4416,58 @@
           }
         }
       },
+      "CreateHandoverConversionProjectCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "urn": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "incomingTrustUkprn": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "advisoryBoardDate": {
+            "type": "string",
+            "format": "date",
+            "nullable": true
+          },
+          "provisionalConversionDate": {
+            "type": "string",
+            "format": "date",
+            "nullable": true
+          },
+          "createdByEmail": {
+            "type": "string"
+          },
+          "createdByFirstName": {
+            "type": "string"
+          },
+          "createdByLastName": {
+            "type": "string"
+          },
+          "prepareId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "directiveAcademyOrder": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "advisoryBoardConditions": {
+            "type": "string",
+            "nullable": true
+          },
+          "groupId": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
       "CreateConversionProjectCommand": {
         "type": "object",
         "additionalProperties": false,
@@ -5280,7 +5369,7 @@
         "x-enumNames": [
           "Handover",
           "LandQuestionnaire",
-          "LandRegistry",
+          "LandRegistryTitlePlans",
           "StakeholderKickoff",
           "SupplementalFundingAgreement",
           "ArticleOfAssociation",
@@ -5296,13 +5385,12 @@
           "ConfirmAcademyOpenedDate",
           "ChurchSupplementalAgreement",
           "CommercialTransferAgreement",
-          "MainContact",
-          "MasterFundingAgreement"
+          "MainContact"
         ],
         "enum": [
           "Handover",
           "LandQuestionnaire",
-          "LandRegistry",
+          "LandRegistryTitlePlans",
           "StakeholderKickoff",
           "SupplementalFundingAgreement",
           "ArticleOfAssociation",
@@ -5318,8 +5406,7 @@
           "ConfirmAcademyOpenedDate",
           "ChurchSupplementalAgreement",
           "CommercialTransferAgreement",
-          "MainContact",
-          "MasterFundingAgreement"
+          "MainContact"
         ]
       },
       "CreateNoteCommand": {
@@ -7583,24 +7670,12 @@
           }
         }
       },
-      "UpdateMasterFundingAgreementTaskCommand": {
+      "UpdateLandRegistryTitlePlansTaskCommand": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
           "taskDataId": {
             "$ref": "#/components/schemas/TaskDataId"
-          },
-          "projectType": {
-            "nullable": true,
-            "oneOf": [
-              {
-                "$ref": "#/components/schemas/ProjectType"
-              }
-            ]
-          },
-          "notApplicable": {
-            "type": "boolean",
-            "nullable": true
           },
           "received": {
             "type": "boolean",
@@ -7610,19 +7685,7 @@
             "type": "boolean",
             "nullable": true
           },
-          "signed": {
-            "type": "boolean",
-            "nullable": true
-          },
           "saved": {
-            "type": "boolean",
-            "nullable": true
-          },
-          "sent": {
-            "type": "boolean",
-            "nullable": true
-          },
-          "signedSecretaryState": {
             "type": "boolean",
             "nullable": true
           }

@@ -1,4 +1,4 @@
-﻿using Dfe.Complete.Application.Projects.Interfaces;
+﻿using Dfe.Complete.Application.ProjectGroups.Interfaces;
 using Dfe.Complete.Domain.Entities;
 using Dfe.Complete.Infrastructure.Database;
 using Microsoft.EntityFrameworkCore;
