@@ -8,7 +8,6 @@ using Dfe.Complete.Tests.Common.Customizations.Models;
 using Dfe.Complete.Utils;
 using GovUK.Dfe.CoreLibs.Testing.AutoFixture.Attributes;
 using GovUK.Dfe.CoreLibs.Testing.Mocks.WebApplicationFactory; 
-using GovUK.Dfe.CoreLibs.Testing.Mocks.WebApplicationFactory;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 

@@ -1,4 +1,3 @@
-using Dfe.Complete.Application.Projects.Commands.TaskData;
 using Dfe.Complete.Constants;
 using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Domain.ValueObjects;
@@ -13,6 +12,8 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.MasterFundingAgreementTask
     public class MasterFundingAgreementTaskModel(ISender sender, IAuthorizationService authorizationService, ILogger<MasterFundingAgreementTaskModel> logger)
     : BaseProjectTaskModel(sender, authorizationService, logger, NoteTaskIdentifier.MasterFundingAgreement)
     {
+        private readonly ISender _sender = sender;
+
         [BindProperty(Name = "notapplicable")]
         public bool? NotApplicable { get; set; }
         
@@ -76,7 +77,7 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.MasterFundingAgreementTask
                 SavedInTheSchoolsSharepoint = true;
             }
             
-            await sender.Send(new UpdateMasterFundingAgreementTaskCommand(new TaskDataId(TasksDataId.GetValueOrDefault())!, Type, NotApplicable, Received, Cleared, SignedBySchoolOrTrust, SavedInTheSchoolsSharepoint, SavedInSchoolAndTrustSharepoint, SignedOnBehalfOfSeceratyOfState ));
+            await _sender.Send(new UpdateMasterFundingAgreementTaskCommand(new TaskDataId(TasksDataId.GetValueOrDefault())!, Type, NotApplicable, Received, Cleared, SignedBySchoolOrTrust, SavedInTheSchoolsSharepoint, SavedInSchoolAndTrustSharepoint, SignedOnBehalfOfSeceratyOfState ));
             TempData.SetNotification(NotificationType.Success, "Success", "Task updated successfully");
             return Redirect(string.Format(RouteConstants.ProjectTaskList, ProjectId));
         }
