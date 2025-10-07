@@ -17,6 +17,7 @@ Security in case of vulnerabilities.
 ## Unreleased
 
 ### Added
+- Added `Land Questionnaire` task for conversion project.
 
 - Added `Main contact` task page
 
