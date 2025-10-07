@@ -2943,6 +2943,39 @@
         }
       }
     },
+    "/v1/TasksData/TaskData/LandRegistryTitlePlans": {
+      "patch": {
+        "tags": [
+          "TasksData"
+        ],
+        "summary": "Updaing the land registry title plans task data for transfer project.",
+        "operationId": "TasksData_UpdateLandRegistryTitlePlansTask",
+        "requestBody": {
+          "x-name": "request",
+          "description": "The update command.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateLandRegistryTitlePlansTaskCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "204": {
+            "description": "The land registry title plans task updated successfully."
+          },
+          "400": {
+            "description": "Invalid request data."
+          },
+          "404": {
+            "description": "Project not found."
+          }
+        }
+      }
+    },
     "/v1/TasksData/TaskData/ConfirmIncomingTrustCeoContact": {
       "patch": {
         "tags": [
@@ -5369,7 +5402,7 @@
         "x-enumNames": [
           "Handover",
           "LandQuestionnaire",
-          "LandRegistry",
+          "LandRegistryTitlePlans",
           "StakeholderKickoff",
           "SupplementalFundingAgreement",
           "ArticleOfAssociation",
@@ -5391,7 +5424,7 @@
         "enum": [
           "Handover",
           "LandQuestionnaire",
-          "LandRegistry",
+          "LandRegistryTitlePlans",
           "StakeholderKickoff",
           "SupplementalFundingAgreement",
           "ArticleOfAssociation",
@@ -7669,18 +7702,6 @@
           "saved": {
             "type": "boolean",
             "nullable": true
-          }
-        }
-      },
-      "UpdateIncomingTrustCeoCommand": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-          "keyContactId": {
-            "$ref": "#/components/schemas/KeyContactId"
-          },
-          "incomingTrustCeoId": {
-            "$ref": "#/components/schemas/ContactId"
           }
         }
       },
