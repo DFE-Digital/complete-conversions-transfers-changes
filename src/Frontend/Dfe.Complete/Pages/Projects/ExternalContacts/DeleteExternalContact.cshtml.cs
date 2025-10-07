@@ -12,6 +12,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
+using ValidationConstants = Dfe.Complete.Constants.ValidationConstants;
+
 namespace Dfe.Complete.Pages.Projects.ExternalContacts
 {
     [Authorize(Policy = UserPolicyConstants.CanViewEditDeleteContact)]

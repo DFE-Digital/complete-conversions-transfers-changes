@@ -16,5 +16,6 @@
         public const string CouldNotDeleteExternalContact = "Could not delete external contact with Id {Id}.";
         public const string NotFoundExternalContact = "External contact with Id {Id} not found.";
         public const string ExceptionGettingExternalContact = "Error occurred while getting external contact with Id {Id}.";
+        public const string ExceptionCreatingUser = "Error occurred while creating user with email {0}.";
     }
 }

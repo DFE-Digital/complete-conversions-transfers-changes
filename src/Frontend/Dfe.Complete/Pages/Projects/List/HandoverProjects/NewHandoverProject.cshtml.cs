@@ -1,5 +1,4 @@
 using Dfe.Complete.Application.Projects.Commands.UpdateProject;
-using Dfe.Complete.Constants;
 using Dfe.Complete.Domain.Constants;
 using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Domain.ValueObjects;
@@ -10,13 +9,15 @@ using Dfe.Complete.Validators;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.ComponentModel.DataAnnotations; 
+using System.ComponentModel.DataAnnotations;
+
+using ValidationConstants = Dfe.Complete.Constants.ValidationConstants;
 
 namespace Dfe.Complete.Pages.Projects.List.HandoverProjects
 {
     [Authorize(policy: UserPolicyConstants.CanViewAllProjectsHandover)]
     public class NewHandoverProjectModel(ISender sender, ErrorService errorService, ILogger<NewHandoverProjectModel> logger) : BaseProjectPageModel(sender, logger)
-    { 
+    {
         [BindProperty]
         public ProjectType? Type { get; set; }
 
@@ -53,7 +54,7 @@ namespace Dfe.Complete.Pages.Projects.List.HandoverProjects
         [BindProperty]
         public int UrnId { get; set; }
         [BindProperty]
-        public string? EstablishmentName { get; set; } 
+        public string? EstablishmentName { get; set; }
 
         public override async Task<IActionResult> OnGetAsync()
         {
@@ -66,16 +67,16 @@ namespace Dfe.Complete.Pages.Projects.List.HandoverProjects
 
         public async Task<IActionResult> OnPostAsync(CancellationToken cancellationToken)
         {
-            ValidateOptionalPropertiesOnMeetingCertainCriteria(); 
+            ValidateOptionalPropertiesOnMeetingCertainCriteria();
             if (!ModelState.IsValid)
             {
                 errorService.AddErrors(ModelState);
                 return Page();
-            } 
+            }
             var userId = User.GetUserId();
             await SetCurrentUserTeamAsync();
 
-            await sender.Send(new UpdateHandoverProjectCommand(new ProjectId(new Guid(ProjectId)), SchoolSharePointLink, IncomingTrustSharePointLink, OutgoingTrustSharePointLink,
+            await Sender.Send(new UpdateHandoverProjectCommand(new ProjectId(new Guid(ProjectId)), SchoolSharePointLink, IncomingTrustSharePointLink, OutgoingTrustSharePointLink,
                 AssignedToRegionalCaseworkerTeam!.Value, HandoverComments, userId, CurrentUserTeam, TwoRequiresImprovement), cancellationToken);
             DisplayConfirmation = true;
 

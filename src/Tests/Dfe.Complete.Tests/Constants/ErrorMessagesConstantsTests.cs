@@ -64,5 +64,14 @@ namespace Dfe.Complete.Tests.Constants
             var actual = ErrorMessagesConstants.ExceptionWhileCreatingLocalAuthority.Replace("{Code}", code);
             Assert.Equal(expected, actual);
         }
+
+        [Fact]
+        public void ExceptionWhileCreatingUser_ShouldReturnFormattedMessage()
+        {
+            var email = "user@example.com";
+            var expected = $"Error occurred while creating User with email {email}.";
+            var actual = ErrorMessagesConstants.ExceptionWhileCreatingUser.Replace("{Email}", email);
+            Assert.Equal(expected, actual);
+        }
     }
 }
