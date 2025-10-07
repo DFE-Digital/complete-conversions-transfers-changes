@@ -5,10 +5,13 @@ using Dfe.Complete.Domain.Entities;
 using Dfe.Complete.Infrastructure.Database;
 using Dfe.Complete.Tests.Common.Constants;
 using Dfe.Complete.Tests.Common.Customizations.Models;
+using Dfe.Complete.Utils;
 using GovUK.Dfe.CoreLibs.Testing.AutoFixture.Attributes;
+using GovUK.Dfe.CoreLibs.Testing.Mocks.WebApplicationFactory; 
 using GovUK.Dfe.CoreLibs.Testing.Mocks.WebApplicationFactory;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace Dfe.Complete.Api.Tests.Integration.Controllers.ProjectsController
 {
@@ -533,7 +536,7 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers.ProjectsController
             command.CheckCertificate = true;
             command.Saved = false;
             command.NotApplicable = false;
-            command.DateReceived = new DateTime(2025, 1, 1);
+            command.DateReceived = new DateTime(2025, 1, 1, 0, 0, 0, DateTimeKind.Utc);
 
             // Act
             await tasksDataClient.UpdateDeclarationOfExpenditureCertificateTaskAsync(command, default);
@@ -569,7 +572,7 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers.ProjectsController
             command.CheckCertificate = true;
             command.Saved = false;
             command.NotApplicable = false;
-            command.DateReceived = new DateTime(2025, 1, 1);
+            command.DateReceived = new DateTime(2025, 1, 1, 0, 0, 0, DateTimeKind.Utc);
 
             // Act
             await tasksDataClient.UpdateDeclarationOfExpenditureCertificateTaskAsync(command, default);
@@ -693,6 +696,203 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers.ProjectsController
             var existingProject = await dbContext.Projects.SingleOrDefaultAsync(x => x.Id == project.Id);
             Assert.NotNull(existingProject);
             Assert.True(existingProject.AllConditionsMet);
+        }
+        
+        [Theory]
+        [CustomAutoData(typeof(CustomWebApplicationDbContextFactoryCustomization))]
+        public async Task UpdateConfirmAcademyOpenedDateTaskAsync_ShouldUpdate_ConversionTaskData(
+            CustomWebApplicationDbContextFactory<Program> factory,
+            ITasksDataClient tasksDataClient,
+            UpdateConfirmAcademyOpenedDateTaskCommand command,
+            IFixture fixture)
+        {
+            // Arrange
+            factory.TestClaims = [new Claim(ClaimTypes.Role, ApiRoles.ReadRole), new Claim(ClaimTypes.Role, ApiRoles.UpdateRole), new Claim(ClaimTypes.Role, ApiRoles.WriteRole)];
+
+            var dbContext = factory.GetDbContext<CompleteContext>();
+
+            var taskData = fixture.Create<ConversionTasksData>();
+            dbContext.ConversionTasksData.Add(taskData);
+
+            await dbContext.SaveChangesAsync();
+            command.TaskDataId = new TaskDataId { Value = taskData.Id.Value }; 
+            command.AcademyOpenedDate = new DateTime(2025, 1, 1);
+
+            // Act
+            await tasksDataClient.UpdateConfirmAcademyOpenedDateTaskAsync(command, default);
+
+            // Assert
+            dbContext.ChangeTracker.Clear();
+            var existingTaskData = await dbContext.ConversionTasksData.SingleOrDefaultAsync(x => x.Id == taskData.Id);
+            Assert.NotNull(existingTaskData);
+            Assert.Equal(existingTaskData.ConfirmDateAcademyOpenedDateOpened, command.AcademyOpenedDate.ToDateOnly());
+        }
+        [Theory]
+        [CustomAutoData(typeof(CustomWebApplicationDbContextFactoryCustomization))]
+        public async Task UpdateChurchSupplementalAgreementTaskAsync_ShouldUpdate_ConversionTaskData(
+            CustomWebApplicationDbContextFactory<Program> factory,
+            ITasksDataClient tasksDataClient,
+            UpdateChurchSupplementalAgreementTaskCommand command,
+            IFixture fixture)
+        {
+            // Arrange
+            factory.TestClaims = [new Claim(ClaimTypes.Role, ApiRoles.ReadRole), new Claim(ClaimTypes.Role, ApiRoles.UpdateRole), new Claim(ClaimTypes.Role, ApiRoles.WriteRole)];
+
+            var dbContext = factory.GetDbContext<CompleteContext>();
+
+            var taskData = fixture.Create<ConversionTasksData>();
+            dbContext.ConversionTasksData.Add(taskData);
+
+            await dbContext.SaveChangesAsync();
+            command.TaskDataId = new TaskDataId { Value = taskData.Id.Value };
+            command.ProjectType = ProjectType.Conversion;
+            command.NotApplicable = false;
+            command.Received = true;
+            command.Cleared = true;
+            command.Signed = true;
+            command.SignedByDiocese = true;
+            command.Saved = false;
+            command.SentOrSaved = true;
+            command.SignedBySecretaryState = true;
+
+            // Act
+            await tasksDataClient.UpdateChurchSupplementalAgreementTaskAsync(command, default);
+
+            // Assert
+            dbContext.ChangeTracker.Clear();
+            var existingTaskData = await dbContext.ConversionTasksData.SingleOrDefaultAsync(x => x.Id == taskData.Id);
+            Assert.NotNull(existingTaskData);
+            Assert.False(existingTaskData.ChurchSupplementalAgreementNotApplicable);
+            Assert.True(existingTaskData.ChurchSupplementalAgreementReceived); 
+            Assert.True(existingTaskData.ChurchSupplementalAgreementCleared);
+            Assert.True(existingTaskData.ChurchSupplementalAgreementSigned);
+            Assert.True(existingTaskData.ChurchSupplementalAgreementSignedDiocese);
+            Assert.False(existingTaskData.ChurchSupplementalAgreementSaved);
+            Assert.True(existingTaskData.ChurchSupplementalAgreementSent);
+            Assert.True(existingTaskData.ChurchSupplementalAgreementSignedSecretaryState);
+        }
+        [Theory]
+        [CustomAutoData(typeof(CustomWebApplicationDbContextFactoryCustomization))]
+        public async Task UpdateChurchSupplementalAgreementTaskAsync_ShouldUpdate_TransferTaskData(
+            CustomWebApplicationDbContextFactory<Program> factory,
+            ITasksDataClient tasksDataClient,
+            UpdateChurchSupplementalAgreementTaskCommand command,
+            IFixture fixture)
+        {
+            // Arrange
+            factory.TestClaims = [new Claim(ClaimTypes.Role, ApiRoles.ReadRole), new Claim(ClaimTypes.Role, ApiRoles.UpdateRole), new Claim(ClaimTypes.Role, ApiRoles.WriteRole)];
+
+            var dbContext = factory.GetDbContext<CompleteContext>();
+
+            var taskData = fixture.Create<TransferTasksData>();
+            dbContext.TransferTasksData.Add(taskData);
+
+            await dbContext.SaveChangesAsync();
+            command.TaskDataId = new TaskDataId { Value = taskData.Id.Value };
+            command.ProjectType = ProjectType.Transfer;
+            command.NotApplicable = false;
+            command.Received = true;
+            command.Cleared = true;
+            command.Signed = true;
+            command.SignedByDiocese = true;
+            command.Saved = false;
+            command.SentOrSaved = true;
+            command.SignedBySecretaryState = true;
+
+            // Act
+            await tasksDataClient.UpdateChurchSupplementalAgreementTaskAsync(command, default);
+
+            // Assert
+            dbContext.ChangeTracker.Clear();
+            var existingTaskData = await dbContext.TransferTasksData.SingleOrDefaultAsync(x => x.Id == taskData.Id);
+            Assert.NotNull(existingTaskData);
+            Assert.False(existingTaskData.ChurchSupplementalAgreementNotApplicable);
+            Assert.True(existingTaskData.ChurchSupplementalAgreementReceived);
+            Assert.True(existingTaskData.ChurchSupplementalAgreementCleared);
+            Assert.True(existingTaskData.ChurchSupplementalAgreementSignedIncomingTrust);
+            Assert.True(existingTaskData.ChurchSupplementalAgreementSignedDiocese);
+            Assert.True(existingTaskData.ChurchSupplementalAgreementSavedAfterSigningBySecretaryState);
+            Assert.False(existingTaskData.ChurchSupplementalAgreementSavedAfterSigningByTrustDiocese);
+            Assert.True(existingTaskData.ChurchSupplementalAgreementSignedSecretaryState);
+
+        }
+
+        [Theory]
+        [CustomAutoData(typeof(CustomWebApplicationDbContextFactoryCustomization))]
+        public async Task UpdateCommercialTransferAgreementTaskAsync_ShouldUpdate_TransferTaskData(
+          CustomWebApplicationDbContextFactory<Program> factory,
+          ITasksDataClient tasksDataClient,
+          UpdateCommercialAgreementTaskCommand command,
+          IFixture fixture)
+        {
+            // Arrange
+            factory.TestClaims = [new Claim(ClaimTypes.Role, ApiRoles.ReadRole), new Claim(ClaimTypes.Role, ApiRoles.WriteRole), new Claim(ClaimTypes.Role, ApiRoles.UpdateRole)];
+
+            var dbContext = factory.GetDbContext<CompleteContext>();
+
+            var taskData = fixture.Create<TransferTasksData>();
+            dbContext.TransferTasksData.Add(taskData);
+
+            await dbContext.SaveChangesAsync();
+            command.TaskDataId = new TaskDataId { Value = taskData.Id.Value };
+            command.Agreed = true;          
+            command.QuestionsReceived = true;
+            command.QuestionsChecked = true;
+            command.Saved = false;
+            command.Signed = false;
+            command.ProjectType = ProjectType.Transfer;      
+
+            // Act
+            await tasksDataClient.UpdateCommercialTransferAgreementTaskAsync(command, default);
+
+            // Assert
+            dbContext.ChangeTracker.Clear();
+            var existingTaskData = await dbContext.TransferTasksData.SingleOrDefaultAsync(x => x.Id == taskData.Id);
+            Assert.NotNull(existingTaskData);
+            Assert.True(existingTaskData.CommercialTransferAgreementConfirmAgreed);            
+            Assert.True(existingTaskData.CommercialTransferAgreementQuestionsReceived);
+            Assert.True(existingTaskData.CommercialTransferAgreementQuestionsChecked);
+            Assert.False(existingTaskData.CommercialTransferAgreementSaveConfirmationEmails);
+            Assert.False(existingTaskData.CommercialTransferAgreementConfirmSigned);            
+        }
+
+        [Theory]
+        [CustomAutoData(typeof(CustomWebApplicationDbContextFactoryCustomization))]
+        public async Task UpdateCommercialTransferAgreementTaskAsync_ShouldUpdate_ConversionTaskData(
+         CustomWebApplicationDbContextFactory<Program> factory,
+         ITasksDataClient tasksDataClient,
+         UpdateCommercialAgreementTaskCommand command,
+         IFixture fixture)
+        {
+            // Arrange
+            factory.TestClaims = [new Claim(ClaimTypes.Role, ApiRoles.ReadRole), new Claim(ClaimTypes.Role, ApiRoles.WriteRole), new Claim(ClaimTypes.Role, ApiRoles.UpdateRole)];
+
+            var dbContext = factory.GetDbContext<CompleteContext>();
+
+            var taskData = fixture.Create<ConversionTasksData>();
+            dbContext.ConversionTasksData.Add(taskData);
+
+            await dbContext.SaveChangesAsync();
+            command.TaskDataId = new TaskDataId { Value = taskData.Id.Value };
+            command.Agreed = true;
+            command.QuestionsReceived = true;
+            command.QuestionsChecked = true;
+            command.Saved = false;
+            command.Signed = false;
+            command.ProjectType = ProjectType.Conversion;
+
+            // Act
+            await tasksDataClient.UpdateCommercialTransferAgreementTaskAsync(command, default);
+
+            // Assert
+            dbContext.ChangeTracker.Clear();
+            var existingTaskData = await dbContext.ConversionTasksData.SingleOrDefaultAsync(x => x.Id == taskData.Id);
+            Assert.NotNull(existingTaskData);
+            Assert.True(existingTaskData.CommercialTransferAgreementAgreed);
+            Assert.True(existingTaskData.CommercialTransferAgreementQuestionsReceived);
+            Assert.True(existingTaskData.CommercialTransferAgreementQuestionsChecked);
+            Assert.False(existingTaskData.CommercialTransferAgreementSaved);
+            Assert.False(existingTaskData.CommercialTransferAgreementSigned);
         }
         
         

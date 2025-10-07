@@ -1,12 +1,12 @@
 ﻿using Asp.Versioning;
+using Dfe.Complete.Application.Projects.Commands.TaskData;
+using Dfe.Complete.Application.Projects.Models;
+using Dfe.Complete.Application.Projects.Queries.GetConversionTasksData;
+using Dfe.Complete.Application.Projects.Queries.GetTransferTasksData;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
-using Dfe.Complete.Application.Projects.Models;
-using Microsoft.AspNetCore.Authorization;
-using Dfe.Complete.Application.Projects.Queries.GetTransferTasksData;
-using Dfe.Complete.Application.Projects.Queries.GetConversionTasksData;
-using Dfe.Complete.Application.Projects.Commands.TaskData;
 
 namespace Dfe.Complete.Api.Controllers
 {
@@ -262,6 +262,63 @@ namespace Dfe.Complete.Api.Controllers
         [SwaggerResponse(404, "Project not found.")]
         public async Task<IActionResult> UpdateConfirmAllConditionsMetTaskAsync(
             [FromBody] UpdateConfirmAllConditionsMetTaskCommand request,
+            CancellationToken cancellationToken)
+        {
+            await sender.Send(request, cancellationToken);
+            return NoContent();
+        }
+        /// <summary>
+        /// Confirm the date the academy opened for conversion project.
+        /// </summary>
+        /// <param name="request">The update command.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        [Authorize(Policy = "CanReadWriteUpdate")]
+        [HttpPatch]
+        [Route("TaskData/ConfirmAcademyOpenedDate")]
+        [SwaggerResponse(204, "Confirm the date the academy opened for conversion project successfully.")]
+        [SwaggerResponse(400, "Invalid request data.")]
+        [SwaggerResponse(404, "Project not found.")]
+        public async Task<IActionResult> UpdateConfirmAcademyOpenedDateTaskAsync(
+            [FromBody] UpdateConfirmAcademyOpenedDateTaskCommand request,
+            CancellationToken cancellationToken)
+        {
+            await sender.Send(request, cancellationToken);
+            return NoContent();
+        }
+        
+
+        /// <summary>
+        /// Update the church supplemental agreement task Data for conversion or transfer project.
+        /// </summary>
+        /// <param name="request">The update command.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        [Authorize(Policy = "CanReadWriteUpdate")]
+        [HttpPatch]
+        [Route("TaskData/ChurchSupplementalAgreement")]
+        [SwaggerResponse(204, "Conversion or transfer's church supplemental agreement task updated successfully.")]
+        [SwaggerResponse(400, "Invalid request data.")]
+        [SwaggerResponse(404, "Project/User not found.")]
+        public async Task<IActionResult> UpdateChurchSupplementalAgreementTaskAsync(
+            [FromBody] UpdateChurchSupplementalAgreementTaskCommand request,
+            CancellationToken cancellationToken)
+        {
+            await sender.Send(request, cancellationToken);
+            return NoContent();
+        }
+
+        /// <summary>        
+        /// Updates the commercial transfer agreement task Data for conversion or transfer project.
+        /// </summary>
+        /// <param name="request">The update command.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        [Authorize(Policy = "CanReadWriteUpdate")]
+        [HttpPatch]
+        [Route("TaskData/CommercialTransferAgreement")]
+        [SwaggerResponse(204, "Commercial transfer agreement task updated successfully.")]
+        [SwaggerResponse(400, "Invalid request data.")]
+        [SwaggerResponse(404, "Project not found.")]
+        public async Task<IActionResult> UpdateCommercialTransferAgreementTaskAsync(
+            [FromBody] UpdateCommercialAgreementTaskCommand request,
             CancellationToken cancellationToken)
         {
             await sender.Send(request, cancellationToken);

@@ -19,7 +19,7 @@ namespace Dfe.Complete.Application.Projects.Commands.TaskData
 
     ) : IRequest<Result<bool>>;
 
-    public class UpdateHandoverWithDeliveryOfficerTaskCommandHandler(
+    internal class UpdateHandoverWithDeliveryOfficerTaskCommandHandler(
         ITaskDataReadRepository taskDataReadRepository,
         ITaskDataWriteRepository taskDataWriteRepository)
         : IRequestHandler<UpdateHandoverWithDeliveryOfficerTaskCommand, Result<bool>>

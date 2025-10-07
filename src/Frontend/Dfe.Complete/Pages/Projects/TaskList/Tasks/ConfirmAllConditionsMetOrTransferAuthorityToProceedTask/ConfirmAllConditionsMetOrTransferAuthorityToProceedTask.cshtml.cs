@@ -2,8 +2,6 @@ using Dfe.Complete.Application.Projects.Commands.TaskData;
 using Dfe.Complete.Constants;
 using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Domain.ValueObjects;
-using Dfe.Complete.Extensions;
-using Dfe.Complete.Models;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -42,17 +40,11 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.ConfirmAllConditionsMetOrTr
         }
         public async Task<IActionResult> OnPost()
         {
-            if (Type == ProjectType.Conversion) 
-            {
-                await sender.Send(new UpdateConfirmAllConditionsMetTaskCommand(
-                    new ProjectId(Guid.Parse(ProjectId)), Confirm));
-            }
-            else
-            {
-                await sender.Send(new UpdateConfirmTransferHasAuthorityToProceedTaskCommand(
+            await sender.Send(Type == ProjectType.Conversion 
+                ? new UpdateConfirmAllConditionsMetTaskCommand(new ProjectId(Guid.Parse(ProjectId)), Confirm)
+                : new UpdateConfirmTransferHasAuthorityToProceedTaskCommand(
                     new TaskDataId(TasksDataId.GetValueOrDefault())!, AnyInformationChanged, BaselineSheetApproved, Confirm));
-            } 
-            TempData.SetNotification(NotificationType.Success, "Success", "Task updated successfully");
+            SetTaskSuccessNotification();
             return Redirect(string.Format(RouteConstants.ProjectTaskList, ProjectId));
         }
     }

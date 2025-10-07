@@ -1,28 +1,30 @@
-using System.Security.Claims;
 using AutoFixture;
 using AutoFixture.Xunit2;
 using Dfe.AcademiesApi.Client.Contracts;
 using Dfe.Complete.Api.Tests.Integration.Customizations;
 using Dfe.Complete.Client.Contracts;
+using Dfe.Complete.Domain.Constants;
+using Dfe.Complete.Domain.Entities;
 using Dfe.Complete.Infrastructure.Database;
 using Dfe.Complete.Tests.Common.Constants;
+using Dfe.Complete.Tests.Common.Customizations.Behaviours;
 using Dfe.Complete.Tests.Common.Customizations.Models;
+using Dfe.Complete.Utils;
 using GovUK.Dfe.CoreLibs.Testing.AutoFixture.Attributes;
 using GovUK.Dfe.CoreLibs.Testing.AutoFixture.Customizations;
 using GovUK.Dfe.CoreLibs.Testing.Mocks.WebApplicationFactory;
 using GovUK.Dfe.CoreLibs.Testing.Mocks.WireMock;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 using GiasEstablishment = Dfe.Complete.Domain.Entities.GiasEstablishment;
-using Region = Dfe.Complete.Domain.Enums.Region;
-using ProjectType = Dfe.Complete.Domain.Enums.ProjectType;
-using ProjectState = Dfe.Complete.Domain.Enums.ProjectState;
+using LocalAuthority = Dfe.Complete.Domain.Entities.LocalAuthority;
 using Project = Dfe.Complete.Domain.Entities.Project;
-using Ukprn = Dfe.Complete.Domain.ValueObjects.Ukprn;
-using Dfe.Complete.Domain.Entities;
-using Dfe.Complete.Tests.Common.Customizations.Behaviours;
 using ProjectId = Dfe.Complete.Client.Contracts.ProjectId;
+using ProjectState = Dfe.Complete.Domain.Enums.ProjectState;
+using ProjectType = Dfe.Complete.Domain.Enums.ProjectType;
+using Region = Dfe.Complete.Domain.Enums.Region;
+using Ukprn = Dfe.Complete.Domain.ValueObjects.Ukprn;
 using UserId = Dfe.Complete.Client.Contracts.UserId;
-using Dfe.Complete.Utils;
 
 namespace Dfe.Complete.Api.Tests.Integration.Controllers.ProjectsController;
 
@@ -1984,4 +1986,57 @@ public partial class ProjectsControllerTests
         Assert.Equal(note.Value, dbNotes.Body);
         Assert.Equal(decision.ProjectId.Value, dbNotes.ProjectId.Value);
     } 
+
+    [Theory]
+    [CustomAutoData(
+        typeof(CustomWebApplicationDbContextFactoryCustomization),
+        typeof(DateOnlyCustomization),
+        typeof(OmitCircularReferenceCustomization),
+        typeof(ProjectCustomization))]
+    public async Task UpdateProjectCompleteAsync_ShouldUpdateProject(
+  CustomWebApplicationDbContextFactory<Program> factory,  
+  IProjectsClient projectsClient,
+  IFixture fixture)
+    {
+        // Arrange
+        var dbContext = factory.GetDbContext<CompleteContext>();
+
+        var testUser = await dbContext.Users.FirstOrDefaultAsync();
+
+        factory.TestClaims = [
+            new Claim(ClaimTypes.Role, ApiRoles.WriteRole),
+        new Claim(ClaimTypes.Role, ApiRoles.ReadRole),
+        new Claim(ClaimTypes.Role, ApiRoles.UpdateRole),
+        new Claim(CustomClaimTypeConstants.UserId, testUser!.Id.Value.ToString()),
+        ];
+        
+        var establishment = fixture.Create<GiasEstablishment>();
+        var localAuthority = fixture.Create<LocalAuthority>();
+        var project = fixture.Create<Project>();
+        project.Urn = establishment.Urn ?? project.Urn;
+        project.LocalAuthorityId = localAuthority.Id;
+        project.RegionalDeliveryOfficerId = testUser!.Id;
+        project.CaseworkerId = testUser!.Id;
+        project.AssignedToId = testUser!.Id;
+        await dbContext.LocalAuthorities.AddAsync(localAuthority);
+        await dbContext.GiasEstablishments.AddAsync(establishment);
+        await dbContext.Projects.AddAsync(project);
+        await dbContext.SaveChangesAsync();
+        
+        Assert.NotNull(testUser);
+
+        var command = fixture.Create<UpdateProjectCompletedCommand>();
+        command.ProjectId = new Complete.Client.Contracts.ProjectId { Value = project.Id.Value };
+
+        // Act
+        await projectsClient.UpdateCompleteAsync(command);
+
+        // Assert        
+        dbContext.ChangeTracker.Clear();
+        var projects = await dbContext.Projects.ToListAsync();
+        var updatedProject = projects.FirstOrDefault(n => n.Id.Value == project.Id.Value);
+
+        Assert.NotNull(project);
+        Assert.Equal(ProjectState.Completed, updatedProject?.State);
+    }
 }
