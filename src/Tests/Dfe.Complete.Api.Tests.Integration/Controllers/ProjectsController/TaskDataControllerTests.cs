@@ -995,5 +995,41 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers.ProjectsController
             Assert.False(existingTaskData.CommercialTransferAgreementSaved);
             Assert.False(existingTaskData.CommercialTransferAgreementSigned);
         }
+
+        [Theory]
+        [CustomAutoData(typeof(CustomWebApplicationDbContextFactoryCustomization))]
+        public async Task UpdateLandQuestionnaireTaskAsync_ShouldUpdate_ConversionTaskData(
+            CustomWebApplicationDbContextFactory<Program> factory,
+            ITasksDataClient tasksDataClient,
+            UpdateLandQuestionnaireTaskCommand command,
+            IFixture fixture)
+        {
+            // Arrange
+            factory.TestClaims = [new Claim(ClaimTypes.Role, ApiRoles.ReadRole), new Claim(ClaimTypes.Role, ApiRoles.UpdateRole), new Claim(ClaimTypes.Role, ApiRoles.WriteRole)];
+
+            var dbContext = factory.GetDbContext<CompleteContext>();
+
+            var taskData = fixture.Create<ConversionTasksData>();
+            dbContext.ConversionTasksData.Add(taskData);
+
+            await dbContext.SaveChangesAsync();
+            command.TaskDataId = new TaskDataId { Value = taskData.Id.Value };
+            command.Received = true;
+            command.Signed = true;
+            command.Saved = false;
+            command.Cleared = false;
+
+            // Act
+            await tasksDataClient.UpdateLandQuestionnaireTaskAsync(command, default);
+
+            // Assert
+            dbContext.ChangeTracker.Clear();
+            var existingTaskData = await dbContext.ConversionTasksData.SingleOrDefaultAsync(x => x.Id == taskData.Id);
+            Assert.NotNull(existingTaskData);
+            Assert.False(existingTaskData.LandQuestionnaireCleared);
+            Assert.True(existingTaskData.LandQuestionnaireReceived);
+            Assert.True(existingTaskData.LandQuestionnaireSigned);
+            Assert.False(existingTaskData.LandQuestionnaireSaved);
+        }
     }
 }
