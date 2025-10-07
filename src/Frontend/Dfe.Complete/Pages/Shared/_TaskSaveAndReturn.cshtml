@@ -6,6 +6,6 @@
 @if (projectPermissionService.UserCanEdit(Model.Project, Model.CurrentUserTeam, User))
 {
 	<div class="govuk-form-group">
-		<button type="submit" formnovalidate="formnovalidate" class="govuk-button" data-module="govuk-button" data-prevent-double-click="true" data-cy="save-and-return-button">Save and return</button>
+		<button type="submit" data-cy="save-return-btn" formnovalidate="formnovalidate" class="govuk-button" data-module="govuk-button" data-prevent-double-click="true">Save and return</button>
 	</div>
 }

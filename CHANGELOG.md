@@ -17,6 +17,7 @@ Security in case of vulnerabilities.
 ## Unreleased
 
 ### Added
+- Added `Land Questionnaire` task for conversion project.
 
 - Added `Main contact` task page
 - Added `Land registry title plans` task for converson project. 
