@@ -1,5 +1,4 @@
 using AutoFixture;
-using AutoFixture.Xunit2;
 using Dfe.Complete.Api.Tests.Integration.Customizations;
 using Dfe.Complete.Client.Contracts;
 using Dfe.Complete.Domain.Entities;
@@ -13,13 +12,13 @@ using System.Security.Claims;
 
 namespace Dfe.Complete.Api.Tests.Integration.Controllers.TasksDataController
 {
-    public class UpdateArticleOfAssociationTaskTests
+    public class UpdateChurchSupplementalAgreementTaskTests
     {
         [Theory]
         [CustomAutoData(
             typeof(CustomWebApplicationDbContextFactoryCustomization),
             typeof(TransferTaskDataCustomization))]
-        public async Task UpdateArticleOfAssociationTaskAsync_ShouldUpdate_TransferTaskData(
+        public async Task UpdateChurchSupplementalAgreementTaskAsync_ShouldUpdate_TransferTaskData(
             CustomWebApplicationDbContextFactory<Program> factory,
             ITasksDataClient tasksDataClient,
             IFixture fixture)
@@ -33,40 +32,43 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers.TasksDataController
 
             await dbContext.SaveChangesAsync();
 
-            var command = new UpdateArticleOfAssociationTaskCommand
+            var command = new UpdateChurchSupplementalAgreementTaskCommand
             {
                 TaskDataId = new TaskDataId { Value = taskData.Id.Value },
                 ProjectType = ProjectType.Transfer,
-                Received = true,
                 Cleared = true,
+                Received = true,
                 Saved = true,
-                Sent = true,
+                SentOrSaved = true,
                 Signed = true,
+                SignedByDiocese = true,
+                SignedBySecretaryState = true,
             };
 
             // Act
-            await tasksDataClient.UpdateArticleOfAssociationTaskAsync(command, default);
+            await tasksDataClient.UpdateChurchSupplementalAgreementTaskAsync(command, default);
 
             // Assert
             dbContext.ChangeTracker.Clear();
             var existingTaskData = await dbContext.TransferTasksData.SingleOrDefaultAsync(x => x.Id == taskData.Id);
             Assert.NotNull(existingTaskData);
-            Assert.True(existingTaskData.ArticlesOfAssociationReceived);
-            Assert.True(existingTaskData.ArticlesOfAssociationCleared);
-            Assert.True(existingTaskData.ArticlesOfAssociationSaved);
-            Assert.True(existingTaskData.ArticlesOfAssociationSent);
-            Assert.True(existingTaskData.ArticlesOfAssociationSigned);
-            Assert.Null(existingTaskData.ArticlesOfAssociationNotApplicable);
+            Assert.True(existingTaskData.ChurchSupplementalAgreementCleared);
+            Assert.True(existingTaskData.ChurchSupplementalAgreementReceived);
+            Assert.True(existingTaskData.ChurchSupplementalAgreementSavedAfterSigningBySecretaryState);
+            Assert.True(existingTaskData.ChurchSupplementalAgreementSavedAfterSigningByTrustDiocese);
+            Assert.True(existingTaskData.ChurchSupplementalAgreementSignedIncomingTrust);
+            Assert.True(existingTaskData.ChurchSupplementalAgreementSignedDiocese);
+            Assert.True(existingTaskData.ChurchSupplementalAgreementSignedSecretaryState);
+            Assert.Null(existingTaskData.ChurchSupplementalAgreementNotApplicable);
         }
 
         [Theory]
         [CustomAutoData(
             typeof(CustomWebApplicationDbContextFactoryCustomization),
             typeof(ConversionTaskDataCustomization))]
-        public async Task UpdateArticleOfAssociationTaskAsync_ShouldUpdate_ConversionTaskData(
+        public async Task UpdateChurchSupplementalAgreementTaskAsync_ShouldUpdate_ConversionTaskData(
             CustomWebApplicationDbContextFactory<Program> factory,
             ITasksDataClient tasksDataClient,
-            [Frozen]
             IFixture fixture)
         {
             // Arrange
@@ -79,37 +81,40 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers.TasksDataController
 
             await dbContext.SaveChangesAsync();
 
-            var command = new UpdateArticleOfAssociationTaskCommand
+            var command = new UpdateChurchSupplementalAgreementTaskCommand
             {
                 TaskDataId = new TaskDataId { Value = taskData.Id.Value },
                 ProjectType = ProjectType.Conversion,
                 Received = true,
                 Cleared = true,
-                Saved = true,
-                Sent = true,
                 Signed = true,
+                SignedByDiocese = true,
+                Saved = true,
+                SignedBySecretaryState = true,
+                SentOrSaved = true,
             };
 
             // Act
-            await tasksDataClient.UpdateArticleOfAssociationTaskAsync(command, default);
+            await tasksDataClient.UpdateChurchSupplementalAgreementTaskAsync(command, default);
 
             // Assert
             dbContext.ChangeTracker.Clear();
             var existingTaskData = await dbContext.ConversionTasksData.SingleOrDefaultAsync(x => x.Id == taskData.Id);
             Assert.NotNull(existingTaskData);
-            Assert.True(existingTaskData.ArticlesOfAssociationReceived);
-            Assert.True(existingTaskData.ArticlesOfAssociationCleared);
-            Assert.True(existingTaskData.ArticlesOfAssociationSaved);
-            Assert.True(existingTaskData.ArticlesOfAssociationSent);
-            Assert.True(existingTaskData.ArticlesOfAssociationSigned);
-            Assert.Null(existingTaskData.ArticlesOfAssociationNotApplicable);
+            Assert.True(existingTaskData.ChurchSupplementalAgreementReceived);
+            Assert.True(existingTaskData.ChurchSupplementalAgreementCleared);
+            Assert.True(existingTaskData.ChurchSupplementalAgreementSigned);
+            Assert.True(existingTaskData.ChurchSupplementalAgreementSaved);
+            Assert.True(existingTaskData.ChurchSupplementalAgreementSignedDiocese);
+            Assert.True(existingTaskData.ChurchSupplementalAgreementSignedSecretaryState);
+            Assert.Null(existingTaskData.ChurchSupplementalAgreementNotApplicable);
         }
 
         [Theory]
         [CustomAutoData(
             typeof(CustomWebApplicationDbContextFactoryCustomization),
             typeof(ConversionTaskDataCustomization))]
-        public async Task UpdateArticleOfAssociationTaskAsync_ShouldUpdateNotApplicableOnly(
+        public async Task UpdateChurchSupplementalAgreementTaskAsync_ShouldUpdateNotApplicableOnly(
             CustomWebApplicationDbContextFactory<Program> factory,
             ITasksDataClient tasksDataClient,
             IFixture fixture)
@@ -124,36 +129,42 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers.TasksDataController
 
             await dbContext.SaveChangesAsync();
 
-            var command = new UpdateArticleOfAssociationTaskCommand
+            var command = new UpdateChurchSupplementalAgreementTaskCommand
             {
                 TaskDataId = new TaskDataId { Value = taskData.Id.Value },
                 ProjectType = ProjectType.Conversion,
                 Received = true,
                 Cleared = true,
-                Saved = true,
-                Sent = true,
                 Signed = true,
+                SignedByDiocese = true,
+                Saved = true,
+                SignedBySecretaryState = true,
+                SentOrSaved = true,
                 NotApplicable = true
             };
 
             // Act
-            await tasksDataClient.UpdateArticleOfAssociationTaskAsync(command, default);
+            await tasksDataClient.UpdateChurchSupplementalAgreementTaskAsync(command, default);
 
             // Assert
             dbContext.ChangeTracker.Clear();
             var existingTaskData = await dbContext.ConversionTasksData.SingleOrDefaultAsync(x => x.Id == taskData.Id);
             Assert.NotNull(existingTaskData);
-            Assert.Null(existingTaskData.ArticlesOfAssociationReceived);
-            Assert.Null(existingTaskData.ArticlesOfAssociationCleared);
-            Assert.Null(existingTaskData.ArticlesOfAssociationSaved);
-            Assert.Null(existingTaskData.ArticlesOfAssociationSent);
-            Assert.Null(existingTaskData.ArticlesOfAssociationSigned);
-            Assert.True(existingTaskData.ArticlesOfAssociationNotApplicable);
+            Assert.Null(existingTaskData.ChurchSupplementalAgreementReceived);
+            Assert.Null(existingTaskData.ChurchSupplementalAgreementCleared);
+            Assert.Null(existingTaskData.ChurchSupplementalAgreementSigned);
+            Assert.Null(existingTaskData.ChurchSupplementalAgreementSignedDiocese);
+            Assert.Null(existingTaskData.ChurchSupplementalAgreementSaved);
+            Assert.Null(existingTaskData.ChurchSupplementalAgreementSignedSecretaryState);
+            Assert.Null(existingTaskData.ChurchSupplementalAgreementSent);
+            Assert.True(existingTaskData.ChurchSupplementalAgreementNotApplicable);
         }
 
         [Theory]
-        [CustomAutoData(typeof(CustomWebApplicationDbContextFactoryCustomization))]
-        public async Task UpdateArticleOfAssociationTaskAsync_ShouldFail_WhenProjectTypeOmitted(
+        [CustomAutoData(
+            typeof(CustomWebApplicationDbContextFactoryCustomization),
+            typeof(ConversionTaskDataCustomization))]
+        public async Task UpdateChurchSupplementalAgreementTaskAsync_ShouldFail_WhenProjectTypeOmitted(
             CustomWebApplicationDbContextFactory<Program> factory,
             ITasksDataClient tasksDataClient,
             IFixture fixture)
@@ -168,13 +179,13 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers.TasksDataController
 
             await dbContext.SaveChangesAsync();
 
-            var command = new UpdateArticleOfAssociationTaskCommand
+            var command = new UpdateChurchSupplementalAgreementTaskCommand
             {
                 TaskDataId = new TaskDataId { Value = taskData.Id.Value }
             };
 
             // Act + Assert
-            var exception = await Assert.ThrowsAsync<CompleteApiException>(() => tasksDataClient.UpdateArticleOfAssociationTaskAsync(command, default));
+            var exception = await Assert.ThrowsAsync<CompleteApiException>(() => tasksDataClient.UpdateChurchSupplementalAgreementTaskAsync(command, default));
 
             Assert.Equal(HttpStatusCode.BadRequest, (HttpStatusCode)exception.StatusCode);
 

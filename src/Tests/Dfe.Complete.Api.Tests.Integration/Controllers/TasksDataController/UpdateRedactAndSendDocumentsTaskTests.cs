@@ -1,5 +1,4 @@
 using AutoFixture;
-using AutoFixture.Xunit2;
 using Dfe.Complete.Api.Tests.Integration.Customizations;
 using Dfe.Complete.Client.Contracts;
 using Dfe.Complete.Domain.Entities;
@@ -13,13 +12,13 @@ using System.Security.Claims;
 
 namespace Dfe.Complete.Api.Tests.Integration.Controllers.TasksDataController
 {
-    public class UpdateArticleOfAssociationTaskTests
+    public class UpdateRedactAndSendDocumentsTaskTests
     {
         [Theory]
         [CustomAutoData(
             typeof(CustomWebApplicationDbContextFactoryCustomization),
             typeof(TransferTaskDataCustomization))]
-        public async Task UpdateArticleOfAssociationTaskAsync_ShouldUpdate_TransferTaskData(
+        public async Task UpdateRedactAndSendDocumentsTaskAsync_ShouldUpdate_TransferTaskData(
             CustomWebApplicationDbContextFactory<Program> factory,
             ITasksDataClient tasksDataClient,
             IFixture fixture)
@@ -28,45 +27,44 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers.TasksDataController
             factory.TestClaims = [new Claim(ClaimTypes.Role, ApiRoles.ReadRole), new Claim(ClaimTypes.Role, ApiRoles.UpdateRole), new Claim(ClaimTypes.Role, ApiRoles.WriteRole)];
 
             var dbContext = factory.GetDbContext<CompleteContext>();
+
             var taskData = fixture.Create<TransferTasksData>();
             dbContext.TransferTasksData.Add(taskData);
 
             await dbContext.SaveChangesAsync();
 
-            var command = new UpdateArticleOfAssociationTaskCommand
+            var command = new UpdateRedactAndSendDocumentsTaskCommand
             {
                 TaskDataId = new TaskDataId { Value = taskData.Id.Value },
                 ProjectType = ProjectType.Transfer,
-                Received = true,
-                Cleared = true,
+                Redact = true,
                 Saved = true,
-                Sent = true,
-                Signed = true,
+                SendToEsfa = true,
+                Send = true,
+                SendToSolicitors = true,
             };
 
             // Act
-            await tasksDataClient.UpdateArticleOfAssociationTaskAsync(command, default);
+            await tasksDataClient.UpdateRedactAndSendDocumentsTaskAsync(command, default);
 
             // Assert
             dbContext.ChangeTracker.Clear();
             var existingTaskData = await dbContext.TransferTasksData.SingleOrDefaultAsync(x => x.Id == taskData.Id);
             Assert.NotNull(existingTaskData);
-            Assert.True(existingTaskData.ArticlesOfAssociationReceived);
-            Assert.True(existingTaskData.ArticlesOfAssociationCleared);
-            Assert.True(existingTaskData.ArticlesOfAssociationSaved);
-            Assert.True(existingTaskData.ArticlesOfAssociationSent);
-            Assert.True(existingTaskData.ArticlesOfAssociationSigned);
-            Assert.Null(existingTaskData.ArticlesOfAssociationNotApplicable);
+            Assert.True(existingTaskData.RedactAndSendDocumentsRedact);
+            Assert.True(existingTaskData.RedactAndSendDocumentsSaved);
+            Assert.True(existingTaskData.RedactAndSendDocumentsSendToEsfa);
+            Assert.True(existingTaskData.RedactAndSendDocumentsSendToFundingTeam);
+            Assert.True(existingTaskData.RedactAndSendDocumentsSendToSolicitors);
         }
 
         [Theory]
         [CustomAutoData(
             typeof(CustomWebApplicationDbContextFactoryCustomization),
             typeof(ConversionTaskDataCustomization))]
-        public async Task UpdateArticleOfAssociationTaskAsync_ShouldUpdate_ConversionTaskData(
+        public async Task UpdateRedactAndSendDocumentsTaskAsync_ShouldUpdate_ConversionTaskData(
             CustomWebApplicationDbContextFactory<Program> factory,
             ITasksDataClient tasksDataClient,
-            [Frozen]
             IFixture fixture)
         {
             // Arrange
@@ -79,37 +77,35 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers.TasksDataController
 
             await dbContext.SaveChangesAsync();
 
-            var command = new UpdateArticleOfAssociationTaskCommand
+            var command = new UpdateRedactAndSendDocumentsTaskCommand
             {
                 TaskDataId = new TaskDataId { Value = taskData.Id.Value },
                 ProjectType = ProjectType.Conversion,
-                Received = true,
-                Cleared = true,
+                Redact = true,
                 Saved = true,
-                Sent = true,
-                Signed = true,
+                SendToEsfa = true,
+                Send = true,
+                SendToSolicitors = true,
             };
 
             // Act
-            await tasksDataClient.UpdateArticleOfAssociationTaskAsync(command, default);
+            await tasksDataClient.UpdateRedactAndSendDocumentsTaskAsync(command, default);
 
             // Assert
             dbContext.ChangeTracker.Clear();
             var existingTaskData = await dbContext.ConversionTasksData.SingleOrDefaultAsync(x => x.Id == taskData.Id);
             Assert.NotNull(existingTaskData);
-            Assert.True(existingTaskData.ArticlesOfAssociationReceived);
-            Assert.True(existingTaskData.ArticlesOfAssociationCleared);
-            Assert.True(existingTaskData.ArticlesOfAssociationSaved);
-            Assert.True(existingTaskData.ArticlesOfAssociationSent);
-            Assert.True(existingTaskData.ArticlesOfAssociationSigned);
-            Assert.Null(existingTaskData.ArticlesOfAssociationNotApplicable);
+            Assert.True(existingTaskData.RedactAndSendRedact);
+            Assert.True(existingTaskData.RedactAndSendSaveRedaction);
+            Assert.True(existingTaskData.RedactAndSendSaveRedaction);
+            Assert.True(existingTaskData.RedactAndSendSendSolicitors);
         }
 
         [Theory]
         [CustomAutoData(
             typeof(CustomWebApplicationDbContextFactoryCustomization),
             typeof(ConversionTaskDataCustomization))]
-        public async Task UpdateArticleOfAssociationTaskAsync_ShouldUpdateNotApplicableOnly(
+        public async Task UpdateRedactAndSendDocumentsTaskAsync_ShouldFail_WhenProjectTypeOmitted(
             CustomWebApplicationDbContextFactory<Program> factory,
             ITasksDataClient tasksDataClient,
             IFixture fixture)
@@ -124,57 +120,13 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers.TasksDataController
 
             await dbContext.SaveChangesAsync();
 
-            var command = new UpdateArticleOfAssociationTaskCommand
-            {
-                TaskDataId = new TaskDataId { Value = taskData.Id.Value },
-                ProjectType = ProjectType.Conversion,
-                Received = true,
-                Cleared = true,
-                Saved = true,
-                Sent = true,
-                Signed = true,
-                NotApplicable = true
-            };
-
-            // Act
-            await tasksDataClient.UpdateArticleOfAssociationTaskAsync(command, default);
-
-            // Assert
-            dbContext.ChangeTracker.Clear();
-            var existingTaskData = await dbContext.ConversionTasksData.SingleOrDefaultAsync(x => x.Id == taskData.Id);
-            Assert.NotNull(existingTaskData);
-            Assert.Null(existingTaskData.ArticlesOfAssociationReceived);
-            Assert.Null(existingTaskData.ArticlesOfAssociationCleared);
-            Assert.Null(existingTaskData.ArticlesOfAssociationSaved);
-            Assert.Null(existingTaskData.ArticlesOfAssociationSent);
-            Assert.Null(existingTaskData.ArticlesOfAssociationSigned);
-            Assert.True(existingTaskData.ArticlesOfAssociationNotApplicable);
-        }
-
-        [Theory]
-        [CustomAutoData(typeof(CustomWebApplicationDbContextFactoryCustomization))]
-        public async Task UpdateArticleOfAssociationTaskAsync_ShouldFail_WhenProjectTypeOmitted(
-            CustomWebApplicationDbContextFactory<Program> factory,
-            ITasksDataClient tasksDataClient,
-            IFixture fixture)
-        {
-            // Arrange
-            factory.TestClaims = [new Claim(ClaimTypes.Role, ApiRoles.ReadRole), new Claim(ClaimTypes.Role, ApiRoles.UpdateRole), new Claim(ClaimTypes.Role, ApiRoles.WriteRole)];
-
-            var dbContext = factory.GetDbContext<CompleteContext>();
-
-            var taskData = fixture.Create<ConversionTasksData>();
-            dbContext.ConversionTasksData.Add(taskData);
-
-            await dbContext.SaveChangesAsync();
-
-            var command = new UpdateArticleOfAssociationTaskCommand
+            var command = new UpdateRedactAndSendDocumentsTaskCommand
             {
                 TaskDataId = new TaskDataId { Value = taskData.Id.Value }
             };
 
             // Act + Assert
-            var exception = await Assert.ThrowsAsync<CompleteApiException>(() => tasksDataClient.UpdateArticleOfAssociationTaskAsync(command, default));
+            var exception = await Assert.ThrowsAsync<CompleteApiException>(() => tasksDataClient.UpdateRedactAndSendDocumentsTaskAsync(command, default));
 
             Assert.Equal(HttpStatusCode.BadRequest, (HttpStatusCode)exception.StatusCode);
 

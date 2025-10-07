@@ -6,12 +6,13 @@ using Dfe.Complete.Domain.ValueObjects;
 using Dfe.Complete.Utils;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
 
 namespace Dfe.Complete.Application.Projects.Commands.TaskData
 {
     public record UpdateArticleOfAssociationTaskCommand(
         TaskDataId TaskDataId,
-        ProjectType? ProjectType,
+        [Required] ProjectType? ProjectType,
         bool? NotApplicable,
         bool? Cleared,
         bool? Received,
