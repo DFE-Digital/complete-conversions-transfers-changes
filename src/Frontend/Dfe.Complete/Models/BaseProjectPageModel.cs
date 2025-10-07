@@ -3,6 +3,7 @@ using Dfe.Complete.Application.Contacts.Queries;
 using Dfe.Complete.Application.DaoRevoked.Models;
 using Dfe.Complete.Application.DaoRevoked.Queries;
 using Dfe.Complete.Application.KeyContacts.Models;
+using Dfe.Complete.Application.KeyContacts.Queries;
 using Dfe.Complete.Application.Projects.Models;
 using Dfe.Complete.Application.Projects.Queries.GetConversionTasksData;
 using Dfe.Complete.Application.Projects.Queries.GetProject;

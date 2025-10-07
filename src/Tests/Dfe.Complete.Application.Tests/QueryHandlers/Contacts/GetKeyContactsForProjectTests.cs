@@ -1,7 +1,7 @@
 ﻿using AutoFixture.Xunit2;
 using AutoMapper;
-using Dfe.Complete.Application.Contacts.Queries;
 using Dfe.Complete.Application.KeyContacts.Models;
+using Dfe.Complete.Application.KeyContacts.Queries;
 using Dfe.Complete.Application.Projects.Interfaces;
 using Dfe.Complete.Domain.Entities;
 using Dfe.Complete.Tests.Common.Customizations.Behaviours;
