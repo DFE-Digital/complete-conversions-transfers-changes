@@ -326,7 +326,7 @@ namespace Dfe.Complete.Api.Controllers
         }
         
         /// <summary>
-        /// Updates the mastre funding agreement task Data for conversion or transfer project.
+        /// Updates the master funding agreement task Data for conversion or transfer project.
         /// </summary>
         /// <param name="request">The update command.</param>
         /// <param name="cancellationToken">The cancellation token.</param>

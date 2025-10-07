@@ -17,6 +17,7 @@ Security in case of vulnerabilities.
 ## Unreleased
 
 ### Added
+- Added `Master Funding Agreement` task for both conversion and transfer projects.
 
 ### Changed
 
