@@ -342,6 +342,16 @@
     },
     {
       "Controller": "TasksDataController",
+      "Action": "UpdateMainContactTaskAsync",
+      "ExpectedSecurity": "Authorize: Policy=CanReadWriteUpdate"
+    },
+    {
+      "Controller": "ContactsController",
+      "Action": "ListAllContactsForProjectAndLocalAuthorityAsync",
+      "ExpectedSecurity": "Authorize: Policy=CanRead"
+    },
+    {
+      "Controller": "TasksDataController",
       "Action": "UpdateLandQuestionnaireTaskAsync",
       "ExpectedSecurity": "Authorize: Policy=CanReadWriteUpdate"
     }

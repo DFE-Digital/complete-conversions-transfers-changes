@@ -19,6 +19,8 @@ Security in case of vulnerabilities.
 ### Added
 - Added `Land Questionnaire` task for conversion project.
 
+- Added `Main contact` task page
+
 ### Changed
 
 ### Fixed
