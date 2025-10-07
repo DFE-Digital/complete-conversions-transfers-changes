@@ -48,4 +48,34 @@ public class User : BaseAggregateRoot, IEntity<UserId>
     public virtual ICollection<Project> ProjectCaseworkers { get; set; } = new List<Project>();
 
     public virtual ICollection<Project> ProjectRegionalDeliveryOfficers { get; set; } = new List<Project>();
+
+    public static User Create(
+        UserId id,
+        string email,
+        string firstName,
+        string lastName,
+        string? team)
+    {
+
+        return new User
+        {
+            Id = id,
+            Email = email,
+            FirstName = firstName,
+            LastName = lastName,
+            Team = team,
+            CreatedAt = DateTime.UtcNow,
+            UpdatedAt = DateTime.UtcNow,
+            ActiveDirectoryUserId = null,
+            ActiveDirectoryUserGroupIds = null,
+            ManageUserAccounts = null,
+            ManageConversionUrns = false,
+            ManageLocalAuthorities = false,
+            ManageTeam = false,
+            AssignToProject = null,
+            AddNewProject = false,
+            DeactivatedAt = null,
+            LatestSession = null
+        };
+    }
 }

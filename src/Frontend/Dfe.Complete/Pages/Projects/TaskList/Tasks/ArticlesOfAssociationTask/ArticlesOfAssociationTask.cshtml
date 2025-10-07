@@ -29,13 +29,11 @@
 @section TaskSection { 
       
     <form method="post">
-        <input type="hidden" asp-for="TasksDataId" />
-        <input type="hidden" asp-for="Type" />
         <govuk-checkboxes name="options">
             <govuk-checkboxes-fieldset>
                 <govuk-checkboxes-fieldset-legend>
                 </govuk-checkboxes-fieldset-legend>
-                <govuk-checkboxes-item id="not-applicable" asp-for="@Model.NotApplicable" value="true" name="@nameof(Model.NotApplicable)" checked="@Model.NotApplicable">
+                <govuk-checkboxes-item id="not-applicable" asp-for="@Model.NotApplicable" value="true" name="@nameof(Model.NotApplicable)" data-cy="@nameof(Model.NotApplicable)" checked="@Model.NotApplicable">
                     <b>Not applicable</b>
                 </govuk-checkboxes-item>
             </govuk-checkboxes-fieldset>
@@ -60,13 +58,13 @@
             <govuk-checkboxes-fieldset>
                 <govuk-checkboxes-fieldset-legend>
                 </govuk-checkboxes-fieldset-legend>
-                <govuk-checkboxes-item id="@(nameof(Model.Received))" asp-for="@Model.Received" value="true" name="@(nameof(Model.Received))" checked="@Model.Received">
+                <govuk-checkboxes-item data-cy="@nameof(Model.Received)" id="@(nameof(Model.Received))" asp-for="@Model.Received" value="true" name="@(nameof(Model.Received))" checked="@Model.Received">
                     <b>Received</b> 
                 </govuk-checkboxes-item>
-                <govuk-checkboxes-item id="@(nameof(Model.Cleared))" asp-for="@Model.Cleared" value="true" name="@(nameof(Model.Cleared))" checked="@Model.Cleared">
+                <govuk-checkboxes-item data-cy="@nameof(Model.Cleared)" id="@(nameof(Model.Cleared))" asp-for="@Model.Cleared" value="true" name="@(nameof(Model.Cleared))" checked="@Model.Cleared">
                     <b>Cleared</b>
                 </govuk-checkboxes-item>
-                <govuk-checkboxes-item id="@(nameof(Model.Sent))" asp-for="@Model.Sent" value="true" name="@(nameof(Model.Sent))" checked="@Model.Sent">
+                <govuk-checkboxes-item data-cy="@nameof(Model.Sent)" id="@(nameof(Model.Sent))" asp-for="@Model.Sent" value="true" name="@(nameof(Model.Sent))" checked="@Model.Sent">
                     <b>Sent cleared version to trust's solicitors</b>
                 </govuk-checkboxes-item>
                 <govuk-checkboxes-item id="@(nameof(Model.Signed))" asp-for="@Model.Signed" value="true" name="@(nameof(Model.Signed))" checked="@Model.Signed">
@@ -75,7 +73,7 @@
                         <p>It can be helpful to check the <a href="@_configuration["ExternalLinks:CompaniesHouseWebsite"]" target="_blank">Companies House website (opens in a new tab)</a> to make sure the signed articles have been uploaded</p>
                     </govuk-checkboxes-item-hint>
                 </govuk-checkboxes-item>
-                <govuk-checkboxes-item id="@(nameof(Model.Saved))" asp-for="@Model.Saved" value="true" name="@(nameof(Model.Saved))" checked="@Model.Saved">
+                <govuk-checkboxes-item data-cy="@nameof(Model.Saved)" id="@(nameof(Model.Saved))" asp-for="@Model.Saved" value="true" name="@(nameof(Model.Saved))" checked="@Model.Saved">
                     <b>Saved copy of articles in the school and trust's SharePoint folders</b>
                 </govuk-checkboxes-item> 
             </govuk-checkboxes-fieldset>

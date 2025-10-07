@@ -82,6 +82,53 @@
         }
       }
     },
+    "/v1/Contacts/List/ProjectAndLocalAuthority": {
+      "get": {
+        "tags": [
+          "Contacts"
+        ],
+        "summary": "Returns a list of Contacts for a specific Project and local authority",
+        "operationId": "Contacts_ListAllContactsForProjectAndLocalAuthority",
+        "parameters": [
+          {
+            "name": "ProjectId.Value",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "guid"
+            },
+            "x-position": 1
+          },
+          {
+            "name": "LocalAuthorityId.Value",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "guid"
+            },
+            "x-position": 2
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Contact",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Contact"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request data."
+          }
+        }
+      }
+    },
     "/v1/CsvExport": {
       "post": {
         "tags": [
@@ -2024,6 +2071,39 @@
         }
       }
     },
+    "/v1/Projects/project/Complete": {
+      "patch": {
+        "tags": [
+          "Projects"
+        ],
+        "summary": "Updates the completion for a specific project.",
+        "operationId": "Projects_UpdateComplete",
+        "requestBody": {
+          "x-name": "request",
+          "description": "The update command.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateProjectCompletedCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "204": {
+            "description": "Completed project."
+          },
+          "400": {
+            "description": "Invalid request data."
+          },
+          "404": {
+            "description": "Project not found."
+          }
+        }
+      }
+    },
     "/v1/ServiceSupport/LocalAuthority": {
       "post": {
         "tags": [
@@ -2590,6 +2670,39 @@
             "description": "Invalid request data."
           },
           "404": {
+            "description": "Project not found."
+          }
+        }
+      }
+    },
+    "/v1/TasksData/TaskData/ConfirmDateAcademyTransferred": {
+      "patch": {
+        "tags": [
+          "TasksData"
+        ],
+        "summary": "Confirm the date the academy transferred task updated successfully.",
+        "operationId": "TasksData_UpdateConfirmDateAcademyTransferredTask",
+        "requestBody": {
+          "x-name": "request",
+          "description": "The update command.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateConfirmDateAcademyTransferredTaskCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "204": {
+            "description": "Confirm the date the academy transferred task updated successfully."
+          },
+          "400": {
+            "description": "Invalid request data."
+          },
+          "404": {
             "description": "Project/User not found."
           }
         }
@@ -2618,6 +2731,171 @@
         "responses": {
           "204": {
             "description": "Confirms all conditions are met successfully."
+          },
+          "400": {
+            "description": "Invalid request data."
+          },
+          "404": {
+            "description": "Project not found."
+          }
+        }
+      }
+    },
+    "/v1/TasksData/TaskData/ConfirmAcademyOpenedDate": {
+      "patch": {
+        "tags": [
+          "TasksData"
+        ],
+        "summary": "Confirm the date the academy opened for conversion project.",
+        "operationId": "TasksData_UpdateConfirmAcademyOpenedDateTask",
+        "requestBody": {
+          "x-name": "request",
+          "description": "The update command.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateConfirmAcademyOpenedDateTaskCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "204": {
+            "description": "Confirm the date the academy opened for conversion project successfully."
+          },
+          "400": {
+            "description": "Invalid request data."
+          },
+          "404": {
+            "description": "Project not found."
+          }
+        }
+      }
+    },
+    "/v1/TasksData/TaskData/ChurchSupplementalAgreement": {
+      "patch": {
+        "tags": [
+          "TasksData"
+        ],
+        "summary": "Update the church supplemental agreement task Data for conversion or transfer project.",
+        "operationId": "TasksData_UpdateChurchSupplementalAgreementTask",
+        "requestBody": {
+          "x-name": "request",
+          "description": "The update command.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateChurchSupplementalAgreementTaskCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "204": {
+            "description": "Conversion or transfer's church supplemental agreement task updated successfully."
+          },
+          "400": {
+            "description": "Invalid request data."
+          },
+          "404": {
+            "description": "Project/User not found."
+          }
+        }
+      }
+    },
+    "/v1/TasksData/TaskData/CommercialTransferAgreement": {
+      "patch": {
+        "tags": [
+          "TasksData"
+        ],
+        "summary": "Updates the commercial transfer agreement task Data for conversion or transfer project.",
+        "operationId": "TasksData_UpdateCommercialTransferAgreementTask",
+        "requestBody": {
+          "x-name": "request",
+          "description": "The update command.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateCommercialAgreementTaskCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "204": {
+            "description": "Commercial transfer agreement task updated successfully."
+          },
+          "400": {
+            "description": "Invalid request data."
+          },
+          "404": {
+            "description": "Project not found."
+          }
+        }
+      }
+    },
+    "/v1/TasksData/TaskData/MainContact": {
+      "patch": {
+        "tags": [
+          "TasksData"
+        ],
+        "summary": "Updates the main contact for either conversion or transfer project.",
+        "operationId": "TasksData_UpdateMainContactTask",
+        "requestBody": {
+          "x-name": "request",
+          "description": "The update command.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateMainContactTaskCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "204": {
+            "description": "Confirms all conditions are met successfully."
+          },
+          "400": {
+            "description": "Invalid request data."
+          },
+          "404": {
+            "description": "Project not found."
+          }
+        }
+      }
+    },
+    "/v1/TasksData/TaskData/LandQuestionnaire": {
+      "patch": {
+        "tags": [
+          "TasksData"
+        ],
+        "summary": "Confirm conversion project's land questionnaire task updated successfully.",
+        "operationId": "TasksData_UpdateLandQuestionnaireTask",
+        "requestBody": {
+          "x-name": "request",
+          "description": "The update command.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateLandQuestionnaireTaskCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "204": {
+            "description": "Confirm conversion project's land questionnaire task updated successfully."
           },
           "400": {
             "description": "Invalid request data."
@@ -2676,6 +2954,42 @@
       }
     },
     "/v1/Users": {
+      "post": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Creates a new user.",
+        "operationId": "Users_CreateUser",
+        "requestBody": {
+          "x-name": "request",
+          "description": "The request.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateUserCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "201": {
+            "description": "User created successfully.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "format": "guid"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request data."
+          }
+        }
+      },
       "get": {
         "tags": [
           "Users"
@@ -4523,6 +4837,14 @@
           "establishmentName": {
             "type": "string",
             "nullable": true
+          },
+          "localAuthorityId": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/LocalAuthorityId"
+              }
+            ]
           }
         }
       },
@@ -4935,8 +5257,13 @@
           "ConfirmProposedCapacityOfTheAcademy",
           "DeclarationOfExpenditureCertificate",
           "ConfirmTransferHasAuthorityToProceed",
+          "ConfirmDateAcademyTransferred",
           "ConfirmAllConditionsMet",
-          "ReceiveGrantPaymentCertificate"
+          "ReceiveGrantPaymentCertificate",
+          "ConfirmAcademyOpenedDate",
+          "ChurchSupplementalAgreement",
+          "CommercialTransferAgreement",
+          "MainContact"
         ],
         "enum": [
           "Handover",
@@ -4951,8 +5278,13 @@
           "ConfirmProposedCapacityOfTheAcademy",
           "DeclarationOfExpenditureCertificate",
           "ConfirmTransferHasAuthorityToProceed",
+          "ConfirmDateAcademyTransferred",
           "ConfirmAllConditionsMet",
-          "ReceiveGrantPaymentCertificate"
+          "ReceiveGrantPaymentCertificate",
+          "ConfirmAcademyOpenedDate",
+          "ChurchSupplementalAgreement",
+          "CommercialTransferAgreement",
+          "MainContact"
         ]
       },
       "CreateNoteCommand": {
@@ -5493,6 +5825,15 @@
           "SchoolClosedOrClosing",
           "ChangeToGovernmentPolicy"
         ]
+      },
+      "UpdateProjectCompletedCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "projectId": {
+            "$ref": "#/components/schemas/ProjectId"
+          }
+        }
       },
       "CreateLocalAuthorityCommand": {
         "type": "object",
@@ -7043,6 +7384,20 @@
           }
         }
       },
+      "UpdateConfirmDateAcademyTransferredTaskCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "taskDataId": {
+            "$ref": "#/components/schemas/TaskDataId"
+          },
+          "dateAcademyTransferred": {
+            "type": "string",
+            "format": "date",
+            "nullable": true
+          }
+        }
+      },
       "UpdateConfirmAllConditionsMetTaskCommand": {
         "type": "object",
         "additionalProperties": false,
@@ -7051,6 +7406,143 @@
             "$ref": "#/components/schemas/ProjectId"
           },
           "confirm": {
+            "type": "boolean",
+            "nullable": true
+          }
+        }
+      },
+      "UpdateConfirmAcademyOpenedDateTaskCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "taskDataId": {
+            "$ref": "#/components/schemas/TaskDataId"
+          },
+          "academyOpenedDate": {
+            "type": "string",
+            "format": "date",
+            "nullable": true
+          }
+        }
+      },
+      "UpdateChurchSupplementalAgreementTaskCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "taskDataId": {
+            "$ref": "#/components/schemas/TaskDataId"
+          },
+          "projectType": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/ProjectType"
+              }
+            ]
+          },
+          "notApplicable": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "received": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "cleared": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "signed": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "signedByDiocese": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "saved": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "signedBySecretaryState": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "sentOrSaved": {
+            "type": "boolean",
+            "nullable": true
+          }
+        }
+      },
+      "UpdateCommercialAgreementTaskCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "taskDataId": {
+            "$ref": "#/components/schemas/TaskDataId"
+          },
+          "projectType": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/ProjectType"
+              }
+            ]
+          },
+          "agreed": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "signed": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "questionsReceived": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "questionsChecked": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "saved": {
+            "type": "boolean",
+            "nullable": true
+          }
+        }
+      },
+      "UpdateMainContactTaskCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "projectId": {
+            "$ref": "#/components/schemas/ProjectId"
+          },
+          "mainContactId": {
+            "$ref": "#/components/schemas/ContactId"
+          }
+        }
+      },
+      "UpdateLandQuestionnaireTaskCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "taskDataId": {
+            "$ref": "#/components/schemas/TaskDataId"
+          },
+          "received": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "cleared": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "signed": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "saved": {
             "type": "boolean",
             "nullable": true
           }
@@ -7076,6 +7568,24 @@
           "transfersCount": {
             "type": "integer",
             "format": "int32"
+          }
+        }
+      },
+      "CreateUserCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "firstName": {
+            "type": "string"
+          },
+          "lastName": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "team": {
+            "$ref": "#/components/schemas/ProjectTeam"
           }
         }
       },
