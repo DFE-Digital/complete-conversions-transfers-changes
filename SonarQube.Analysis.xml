@@ -12,5 +12,5 @@
   <Property Name="sonar.coverage.exclusions">**/Tests/Dfe.Complete.CypressTests/**, **/Frontend/Dfe.Complete/**/*.cshtml*</Property>
 
   <!-- duplication exclusions -->
-  <Property Name="sonar.cpd.exclusions">**/Tests/Dfe.Complete.CypressTests/cypress/e2e/**,**/Core/Dfe.Complete.Application/Projects/Models/**.cs</Property>
+  <Property Name="sonar.cpd.exclusions">**/Tests/Dfe.Complete.CypressTests/cypress/e2e/**,**/Core/Dfe.Complete.Application/Projects/Models/**.cs,**/Frontend/Dfe.Complete/**/*.cshtml</Property>
 </SonarQubeAnalysisProperties>

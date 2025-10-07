@@ -17,6 +17,8 @@ Security in case of vulnerabilities.
 ## Unreleased
 
 ### Added
+- Added `Land Questionnaire` task for conversion project.
+- Added `Main contact` task page
 - Added `Master Funding Agreement` task for both conversion and transfer projects.
 
 ### Changed
