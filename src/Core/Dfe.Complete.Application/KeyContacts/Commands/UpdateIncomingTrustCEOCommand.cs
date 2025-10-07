@@ -1,7 +1,6 @@
 using Dfe.Complete.Application.Common.Models;
 using Dfe.Complete.Application.KeyContacts.Interfaces;
 using Dfe.Complete.Application.Projects.Interfaces;
-using Dfe.Complete.Application.Projects.Models;
 using Dfe.Complete.Domain.ValueObjects;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -9,15 +8,15 @@ using Microsoft.Extensions.Logging;
 
 namespace Dfe.Complete.Application.KeyContacts.Commands;
 
-public record UpdateIncomingTrustCEOCommand(KeyContactId KeyContactId, ContactId IncomingTrustCEOId) : IRequest<Result<bool>>;
+public record UpdateIncomingTrustCeoCommand(KeyContactId KeyContactId, ContactId IncomingTrustCeoId) : IRequest<Result<bool>>;
 
 public class UpdateKeyContactIncomingTrustCEOCommandHandler(
     IKeyContactWriteRepository _keyContactWriteRepo,
     IKeyContactReadRepository _keyContactReadRepo,
     ILogger<UpdateKeyContactIncomingTrustCEOCommandHandler> logger
-) : IRequestHandler<UpdateIncomingTrustCEOCommand, Result<bool>>
+) : IRequestHandler<UpdateIncomingTrustCeoCommand, Result<bool>>
 {
-    public async Task<Result<bool>> Handle(UpdateIncomingTrustCEOCommand request, CancellationToken cancellationToken)
+    public async Task<Result<bool>> Handle(UpdateIncomingTrustCeoCommand request, CancellationToken cancellationToken)
     {
         try
         {
@@ -25,7 +24,7 @@ public class UpdateKeyContactIncomingTrustCEOCommandHandler(
 
             if (keycontact is null) return Result<bool>.Failure($"KeyContact with ID {request.KeyContactId.Value} not found", ErrorType.NotFound);
 
-            keycontact.IncomingTrustCeoId = request.IncomingTrustCEOId;
+            keycontact.IncomingTrustCeoId = request.IncomingTrustCeoId;
 
             await _keyContactWriteRepo.UpdateKeyContactAsync(keycontact, cancellationToken);
 
@@ -34,7 +33,7 @@ public class UpdateKeyContactIncomingTrustCEOCommandHandler(
         catch (Exception ex)
         {
             logger.LogError(ex, "Exception for {Name} Request - {@Request}", nameof(UpdateKeyContactIncomingTrustCEOCommandHandler), request);
-            return Result<bool>.Failure($"Could not keycontact  {request.KeyContactId.Value}: {ex.Message}");
+            return Result<bool>.Failure($"Could not update keycontact  {request.KeyContactId.Value}: {ex.Message}");
         }
     }
 }

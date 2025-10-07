@@ -71,5 +71,5 @@ public enum NoteTaskIdentifier
 
     [Description("confirm_incoming_trust_ceo_contact")]
     [DisplayDescription("Confirm the incoming trust ceo contact")]
-    IncomingTrustCEOContact = 18
+    ConfirmIncomingTrustCeoContact = 18
 }

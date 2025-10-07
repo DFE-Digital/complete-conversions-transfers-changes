@@ -1,7 +1,6 @@
 using Dfe.Complete.Application.Contacts.Models;
 using Dfe.Complete.Application.Contacts.Queries;
 using Dfe.Complete.Application.KeyContacts.Commands;
-using Dfe.Complete.Application.Projects.Commands.TaskData;
 using Dfe.Complete.Constants;
 using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Domain.ValueObjects;
@@ -12,10 +11,10 @@ using Microsoft.AspNetCore.Mvc;
 namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.IncomingTrustCeoTask
 {
     public class IncomingTrustCeoTaskModel(ISender sender, IAuthorizationService authorizationService, ILogger<IncomingTrustCeoTaskModel> logger)
-        : BaseProjectTaskModel(sender, authorizationService, logger, NoteTaskIdentifier.IncomingTrustCEOContact)
+        : BaseProjectTaskModel(sender, authorizationService, logger, NoteTaskIdentifier.ConfirmIncomingTrustCEOContact)
     {
         [BindProperty]
-        public Guid? SelectedCEOId { get; set; }      
+        public Guid? IncomingTrustCeoContactId { get; set; }      
 
         [BindProperty]
         public Guid? KeyContactId { get; set; }
@@ -30,9 +29,10 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.IncomingTrustCeoTask
             await base.OnGetAsync();
 
             var contacts = await Sender.Send(new GetContactsForProjectByCategoryQuery(Project.Id, ContactCategory.IncomingTrust));
-            var incomeTrustCeoId = await Sender.Send(new GetKeyContactsForProjectQuery(Project.Id));
+            var incomingTrustCeoKeyContactDto = await Sender.Send(new GetKeyContactsForProjectQuery(Project.Id));
 
-            SelectedCEOId = incomeTrustCeoId?.Value?.IncomingTrustCeoId?.Value;
+            IncomingTrustCeoContactId = incomingTrustCeoKeyContactDto?.Value?.IncomingTrustCeoId?.Value;
+            KeyContactId = incomingTrustCeoKeyContactDto?.Value?.Id?.Value;
 
             Contacts = contacts?.Value ?? [];
             Type = Project.Type;
@@ -41,7 +41,7 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.IncomingTrustCeoTask
         }
         public async Task<IActionResult> OnPost()
         {
-            await Sender.Send(new UpdateIncomingTrustCEOCommand(new KeyContactId(KeyContactId.GetValueOrDefault()), new ContactId(SelectedCEOId.GetValueOrDefault())));
+            await Sender.Send(new UpdateIncomingTrustCeoCommand(new KeyContactId(KeyContactId.GetValueOrDefault()), new ContactId(IncomingTrustCeoContactId.GetValueOrDefault())));
             SetTaskSuccessNotification();
             return Redirect(string.Format(RouteConstants.ProjectTaskList, ProjectId));
         }

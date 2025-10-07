@@ -2727,6 +2727,39 @@
         }
       }
     },
+    "/v1/TasksData/TaskData/ConfirmIncomingTrustCeoContact": {
+      "patch": {
+        "tags": [
+          "TasksData"
+        ],
+        "summary": "Confirm the incoming trust ceo contact for the project.",
+        "operationId": "TasksData_UpdateConfirmIncomingTrustCeoContactTask",
+        "requestBody": {
+          "x-name": "request",
+          "description": "The update command.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateIncomingTrustCeoCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "204": {
+            "description": "Confirm the incoming trust ceo contact for the project successfully."
+          },
+          "400": {
+            "description": "Invalid request data."
+          },
+          "404": {
+            "description": "Project not found."
+          }
+        }
+      }
+    },
     "/v1/Trust/List/All": {
       "get": {
         "tags": [
@@ -5074,7 +5107,7 @@
           "ConfirmAllConditionsMet",
           "ReceiveGrantPaymentCertificate",
           "ConfirmAcademyOpenedDate",
-          "IncomingTrustCEOContact"
+          "ConfirmIncomingTrustCEOContact"
         ],
         "enum": [
           "Handover",
@@ -5093,7 +5126,7 @@
           "ConfirmAllConditionsMet",
           "ReceiveGrantPaymentCertificate",
           "ConfirmAcademyOpenedDate",
-          "IncomingTrustCEOContact"
+          "ConfirmIncomingTrustCEOContact"
         ]
       },
       "CreateNoteCommand": {
@@ -7231,6 +7264,18 @@
             "type": "string",
             "format": "date",
             "nullable": true
+          }
+        }
+      },
+      "UpdateIncomingTrustCeoCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "keyContactId": {
+            "$ref": "#/components/schemas/KeyContactId"
+          },
+          "incomingTrustCeoId": {
+            "$ref": "#/components/schemas/ContactId"
           }
         }
       },
