@@ -1,7 +1,6 @@
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Dfe.Complete.Application.Common.Models;
-using Dfe.Complete.Application.KeyContacts.Interfaces;
 using Dfe.Complete.Application.KeyContacts.Models;
 using Dfe.Complete.Application.KeyContacts.Queries.QueryFilters;
 using Dfe.Complete.Application.Projects.Interfaces;
