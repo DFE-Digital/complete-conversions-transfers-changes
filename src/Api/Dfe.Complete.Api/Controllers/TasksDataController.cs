@@ -220,7 +220,7 @@ namespace Dfe.Complete.Api.Controllers
         [Route("TaskData/ConfirmTransferHasAuthorityToProceed")]
         [SwaggerResponse(204, "Confirm transfer project has authority to proceed task updated successfully.")]
         [SwaggerResponse(400, "Invalid request data.")]
-        [SwaggerResponse(404, "Project/User not found.")]
+        [SwaggerResponse(404, "Project not found.")]
         public async Task<IActionResult> UpdateConfirmTransferHasAuthorityToProceedTaskAsync(
             [FromBody] UpdateConfirmTransferHasAuthorityToProceedTaskCommand request,
             CancellationToken cancellationToken)
@@ -342,5 +342,23 @@ namespace Dfe.Complete.Api.Controllers
             await sender.Send(request, cancellationToken);
             return NoContent();
         }
+        /// <summary>
+        /// Confirm conversion project's land questionnaire task updated successfully.
+        /// </summary>
+        /// <param name="request">The update command.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        [Authorize(Policy = "CanReadWriteUpdate")]
+        [HttpPatch]
+        [Route("TaskData/LandQuestionnaire")]
+        [SwaggerResponse(204, "Confirm conversion project's land questionnaire task updated successfully.")]
+        [SwaggerResponse(400, "Invalid request data.")]
+        [SwaggerResponse(404, "Project not found.")]
+        public async Task<IActionResult> UpdateLandQuestionnaireTaskAsync(
+            [FromBody] UpdateLandQuestionnaireTaskCommand request,
+            CancellationToken cancellationToken)
+        {
+            await sender.Send(request, cancellationToken);
+            return NoContent();
+        } 
     }
 }
