@@ -325,6 +325,25 @@ namespace Dfe.Complete.Api.Controllers
         }
 
         /// <summary>
+        /// Updates the main contact for either conversion or transfer project.
+        /// </summary>
+        /// <param name="request">The update command.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        [Authorize(Policy = "CanReadWriteUpdate")]
+        [HttpPatch]
+        [Route("TaskData/MainContact")]
+        [SwaggerResponse(204, "Confirms all conditions are met successfully.")]
+        [SwaggerResponse(400, "Invalid request data.")]
+        [SwaggerResponse(404, "Project not found.")]
+        public async Task<IActionResult> UpdateMainContactTaskAsync(
+            [FromBody] UpdateMainContactTaskCommand request,
+            CancellationToken cancellationToken)
+        {
+            await sender.Send(request, cancellationToken);
+            return NoContent();
+        }
+
+        /// <summary>
         /// Updaing the land registry title plans task data for transfer project.
         /// </summary>
         /// <param name="request">The update command.</param>
