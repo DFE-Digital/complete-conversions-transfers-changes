@@ -1,0 +1,27 @@
+﻿@page "/projects/{projectId}/tasks/main_contact"
+@using Dfe.Complete.Constants
+@using Dfe.Complete.TagHelpers;
+@model Dfe.Complete.Pages.Projects.TaskList.Tasks.MainContactTask.MainContactTaskModel
+@{
+    Layout = "_ProjectTaskLayout";
+    ViewData["Title"] = "Confirm the main contact";
+}
+@section TaskHeaderHintSection {
+    <div class="govuk-hint">
+        <p>This is your first point of contact if you have any questions about the project. You may know them as the external project lead.</p>
+        <p>They might be from the school, trust, local authority, diocese or they could be a consultant.</p>
+        <p>You must <a href="@string.Format(RouteConstants.ProjectExternalContacts, Model.ProjectId)">add a new contact</a> first if they are not already in the list of contacts.</p>
+    </div>
+}
+@section TaskSection
+{
+    <form method="post">
+        @await Html.PartialAsync("_ContactRadioList",
+            new ContactRadioListModel(Model.Contacts!, Model.MainContactId, "MainContactId")
+            {
+                Legend = "Choose a contact"
+            }
+        ) 
+        @await Html.PartialAsync("_TaskSaveAndReturn", new TaskSaveAndReturnModel(Model.Project, Model.CurrentUserTeam))
+    </form>
+}

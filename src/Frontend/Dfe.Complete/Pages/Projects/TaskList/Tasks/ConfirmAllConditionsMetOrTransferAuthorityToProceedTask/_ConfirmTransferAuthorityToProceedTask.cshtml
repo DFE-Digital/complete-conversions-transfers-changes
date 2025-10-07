@@ -16,7 +16,7 @@
             <govuk-checkboxes-item id="@anyInformationChanged" asp-for="@Model.AnyInformationChanged" value="true" name="@anyInformationChanged" checked="@Model.AnyInformationChanged">
                 <b>Check if any information has changed from the first baseline</b>
                 <govuk-checkboxes-item-hint>
-                    <p>You must update any changed information in this month's <a href="@_configuration["ExternalLinks:SecondBaseLineSpreadsheet"]" target="_blank">second baseline spreadsheet (opens in new tab)</a>.</p>
+                    <p>You must update any changed information in this month's <external-link href="@_configuration["ExternalLinks:SecondBaseLineSpreadsheet"]">second baseline spreadsheet (opens in new tab)</external-link>.</p>
                 </govuk-checkboxes-item-hint>
             </govuk-checkboxes-item>
             <govuk-checkboxes-item id="@baselineSheetApproved" asp-for="@Model.BaselineSheetApproved" value="true" name="@baselineSheetApproved" checked="@Model.BaselineSheetApproved">

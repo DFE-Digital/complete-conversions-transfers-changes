@@ -69,7 +69,19 @@ public enum NoteTaskIdentifier
     [DisplayDescription("Confirm the date the academy opened")]
     ConfirmAcademyOpenedDate = 16,
 
+    [Description("church_supplemental_agreement")]
+    [DisplayDescription("Church supplemental agreement")]
+    ChurchSupplementalAgreement = 17,    
+
+    [Description("commercial_transfer_agreement")]
+    [DisplayDescription("Commercial transfer agreement")]
+    CommercialTransferAgreement = 18,
+
+    [Description("main_contact")]
+    [DisplayDescription("Confirm the main contact")]
+    MainContact = 19    
+
     [Description("confirm_incoming_trust_ceo_contact")]
     [DisplayDescription("Confirm the incoming trust ceo contact")]
-    ConfirmIncomingTrustCeoContact = 18
+    ConfirmIncomingTrustCeoContact = 20
 }

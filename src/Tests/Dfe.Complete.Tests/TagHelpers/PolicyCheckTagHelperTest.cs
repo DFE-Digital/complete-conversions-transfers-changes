@@ -1,10 +1,11 @@
 using System.Security.Claims;
+using Dfe.Complete.TagHelpers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Razor.TagHelpers;
 using NSubstitute;
 
-namespace Dfe.Complete.TagHelpers.Tests
+namespace Dfe.Complete.Tests.TagHelpers
 {
     public class PolicyCheckTagHelperTest
     {
