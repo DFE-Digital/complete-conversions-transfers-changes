@@ -11,7 +11,9 @@ public sealed class ProjectTypeAttribute : ValidationAttribute
 
     protected override ValidationResult? IsValid(object? value, ValidationContext validationContext)
     {
-        if (value == null || ((ProjectType)value != ProjectType.Conversion && (ProjectType)value != ProjectType.Transfer))
+        if (value == null) return ValidationResult.Success;
+
+        if (((ProjectType)value != ProjectType.Conversion && (ProjectType)value != ProjectType.Transfer))
             return new ValidationResult(ErrorMessage);
 
         return ValidationResult.Success;
