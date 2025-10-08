@@ -66,6 +66,15 @@ namespace Dfe.Complete.Tests.Constants
         }
 
         [Fact]
+        public void NotFoundUser_ShouldReturnFormattedMessage()
+        {
+            var id = "123";
+            var expected = $"User with Id 123 not found.";
+            var actual = string.Format(ErrorMessagesConstants.NotFoundUser, id);
+            Assert.Equal(expected, actual);
+        }
+
+        [Fact]
         public void ExceptionWhileCreatingUser_ShouldReturnFormattedMessage()
         {
             var email = "user@example.com";
