@@ -11,7 +11,7 @@ using GovUK.Dfe.CoreLibs.Testing.Mocks.WebApplicationFactory;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 
-namespace Dfe.Complete.Api.Tests.Integration.Controllers.ProjectsController
+namespace Dfe.Complete.Api.Tests.Integration.Controllers.TasksDataController
 {
     public class TaskDataControllerTests
     {

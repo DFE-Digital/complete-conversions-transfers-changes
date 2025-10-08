@@ -30,8 +30,6 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers.TasksDataController
             factory.TestClaims = [new Claim(ClaimTypes.Role, ApiRoles.ReadRole), new Claim(ClaimTypes.Role, ApiRoles.UpdateRole), new Claim(ClaimTypes.Role, ApiRoles.WriteRole)];
 
             var dbContext = factory.GetDbContext<CompleteContext>();
-
-
             var testUser = await dbContext.Users.FirstAsync();
 
             var establishments = fixture.Customize(new GiasEstablishmentsCustomization()).CreateMany<Domain.Entities.GiasEstablishment>(1)
