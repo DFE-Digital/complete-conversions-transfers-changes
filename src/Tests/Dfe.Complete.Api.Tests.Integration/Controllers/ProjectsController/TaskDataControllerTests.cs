@@ -1065,6 +1065,49 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers.ProjectsController
             Assert.True(existingTaskData.LandQuestionnaireSigned);
             Assert.False(existingTaskData.LandQuestionnaireSaved);
         }
+        
+        
+        
+        [Theory]
+        [CustomAutoData(typeof(CustomWebApplicationDbContextFactoryCustomization))]
+        public async Task UpdateMasterFundingAgreementTaskAsync_ShouldUpdate_TransferTaskData(
+            CustomWebApplicationDbContextFactory<Program> factory,
+            ITasksDataClient tasksDataClient,
+            UpdateMasterFundingAgreementTaskCommand command,
+            IFixture fixture)
+        {
+            // Arrange
+            factory.TestClaims = [new Claim(ClaimTypes.Role, ApiRoles.ReadRole), new Claim(ClaimTypes.Role, ApiRoles.UpdateRole), new Claim(ClaimTypes.Role, ApiRoles.WriteRole)];
+
+            var dbContext = factory.GetDbContext<CompleteContext>();
+
+            var taskData = fixture.Create<TransferTasksData>();
+            dbContext.TransferTasksData.Add(taskData);
+
+            await dbContext.SaveChangesAsync();
+            command.TaskDataId = new TaskDataId { Value = taskData.Id.Value };
+            command.ProjectType = ProjectType.Transfer;
+            command.NotApplicable = false;
+            command.Cleared = true;
+            command.Received = false;
+            command.Saved = true;
+            command.Signed = false;
+            command.SignedSecretaryState = true;
+
+            // Act
+            await tasksDataClient.UpdateMasterFundingAgreementTaskAsync(command, default);
+
+            // Assert
+            dbContext.ChangeTracker.Clear();
+            var existingTaskData = await dbContext.TransferTasksData.SingleOrDefaultAsync(x => x.Id == taskData.Id);
+            Assert.NotNull(existingTaskData);
+            Assert.False(existingTaskData.MasterFundingAgreementNotApplicable);
+            Assert.True(existingTaskData.MasterFundingAgreementCleared);
+            Assert.False(existingTaskData.MasterFundingAgreementReceived);
+            Assert.True(existingTaskData.MasterFundingAgreementSaved);
+            Assert.False(existingTaskData.MasterFundingAgreementSigned);
+            Assert.True(existingTaskData.MasterFundingAgreementSignedSecretaryState);
+        }
 
         [Theory]
         [CustomAutoData(typeof(CustomWebApplicationDbContextFactoryCustomization), typeof(OmitCircularReferenceCustomization))]
