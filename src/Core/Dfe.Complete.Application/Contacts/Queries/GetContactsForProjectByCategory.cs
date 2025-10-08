@@ -12,7 +12,7 @@ namespace Dfe.Complete.Application.Contacts.Queries;
 public record GetContactsForProjectByCategoryQuery(ProjectId ProjectId, ContactCategory ContactCategory) : IRequest<Result<List<ContactDto>>>;
 
 
-public class GetContactsForProjectByCategoryHandler(IContactReadRepository contactReadRepository, IMapper mapper) : IRequestHandler<GetContactsForProjectByCategoryQuery, Result<List<ContactDto>>>
+internal class GetContactsForProjectByCategoryHandler(IContactReadRepository contactReadRepository, IMapper mapper) : IRequestHandler<GetContactsForProjectByCategoryQuery, Result<List<ContactDto>>>
 {
 
     public async Task<Result<List<ContactDto>>> Handle(GetContactsForProjectByCategoryQuery request, CancellationToken cancellationToken)

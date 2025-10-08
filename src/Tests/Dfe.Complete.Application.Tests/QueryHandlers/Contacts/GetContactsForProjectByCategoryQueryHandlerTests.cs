@@ -9,6 +9,8 @@ using Dfe.Complete.Tests.Common.Customizations.Behaviours;
 using Dfe.Complete.Tests.Common.Customizations.Models;
 using GovUK.Dfe.CoreLibs.Testing.AutoFixture.Attributes;
 using GovUK.Dfe.CoreLibs.Testing.AutoFixture.Customizations;
+using MediatR;
+using Microsoft.Extensions.DependencyInjection;
 using MockQueryable;
 using NSubstitute;
 using NSubstitute.ExceptionExtensions;
@@ -17,19 +19,31 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.Contacts;
 
 public class GetContactsForProjectByCategoryQueryHandlerTests
 {
+
+
+
     [Theory]
     [CustomAutoData(typeof(DateOnlyCustomization), typeof(IgnoreVirtualMembersCustomisation), typeof(ContactCustomization))]
     public async Task Handle_ShouldReturnMatchingContacts_WhenProjectId_ContactCategory_IsValid(
         [Frozen] IContactReadRepository mockContactRepo,
-        [Frozen] IMapper mockMapper,
-        GetContactsForProjectByCategoryHandler handler,
+        [Frozen] IMapper mockMapper,        
         GetContactsForProjectByCategoryQuery query,
         Contact contact
         )
     {
+
+        var services = new ServiceCollection();
+        var serviceProvider = services
+             .AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(typeof(GetContactsForProjectByCategoryHandler).Assembly))
+             .AddScoped<IContactReadRepository>(_ => mockContactRepo)
+             .AddScoped<IMapper>(_ => mockMapper)
+             .BuildServiceProvider();
+
+        var sender = serviceProvider.GetRequiredService<IMediator>();
+
         // Arrange
         contact.ProjectId = query.ProjectId;
-        contact.Category = query.ContactCategory;   
+        contact.Category = query.ContactCategory;
         contact.Id = new ContactId(Guid.NewGuid());
 
         // Arrange
@@ -46,33 +60,41 @@ public class GetContactsForProjectByCategoryQueryHandlerTests
            );
 
         // Act
-        var result = await handler.Handle(query, default);
+        var result = await sender.Send(query, default);
 
         // Assert                
         Assert.NotNull(result);
         Assert.NotNull(result.Value);
         Assert.Single(result.Value);
         Assert.All(result.Value, contact =>
-            Assert.Equal(query.ProjectId, contact.ProjectId));
+        Assert.Equal(query.ProjectId, contact.ProjectId));
         Assert.All(result.Value, contact =>
-            Assert.Equal(query.ContactCategory, contact.Category));
+        Assert.Equal(query.ContactCategory, contact.Category));
     }
 
     [Theory]
     [CustomAutoData(typeof(DateOnlyCustomization), typeof(IgnoreVirtualMembersCustomisation))]
     public async Task Handle_ShouldReturnEmptyList_WhenNoContactsMatch(
         [Frozen] IContactReadRepository mockContactRepo,
-        [Frozen] IMapper mockMapper,
-        GetContactsForProjectByCategoryHandler handler,
+        [Frozen] IMapper mockMapper,        
         GetContactsForProjectByCategoryQuery query)
     {
         // Arrange
-        var emptyList = new List<Contact>();        
-        mockContactRepo.Contacts.Returns(emptyList.AsQueryable().BuildMock());        
+        var emptyList = new List<Contact>();
+        mockContactRepo.Contacts.Returns(emptyList.AsQueryable().BuildMock());
         mockMapper.Map<List<ContactDto>>(Arg.Any<List<Contact>>()).Returns([]);
 
+        var services = new ServiceCollection();
+        var serviceProvider = services
+             .AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(typeof(GetContactsForProjectByCategoryHandler).Assembly))
+             .AddScoped<IContactReadRepository>(_ => mockContactRepo)
+             .AddScoped<IMapper>(_ => mockMapper)
+             .BuildServiceProvider();
+
+        var sender = serviceProvider.GetRequiredService<IMediator>();
+
         // Act
-        var result = await handler.Handle(query, default);
+        var result = await sender.Send(query, default);
 
         // Assert
         Assert.NotNull(result);
@@ -85,20 +107,29 @@ public class GetContactsForProjectByCategoryQueryHandlerTests
     [CustomAutoData(typeof(DateOnlyCustomization), typeof(IgnoreVirtualMembersCustomisation))]
     public async Task Handle_ShouldReturnFailure_WhenRepositoryThrowsException(
         [Frozen] IContactReadRepository mockContactRepo,
-        GetContactsForProjectByCategoryHandler handler,
+        [Frozen] IMapper mockMapper,
         GetContactsForProjectByCategoryQuery query)
     {
         // Arrange
         const string expectedErrorMessage = "Unexpected database error";
 
+        var services = new ServiceCollection();
+        var serviceProvider = services
+             .AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(typeof(GetContactsForProjectByCategoryHandler).Assembly))
+             .AddScoped<IContactReadRepository>(_ => mockContactRepo)
+             .AddScoped<IMapper>(_ => mockMapper)
+             .BuildServiceProvider();
+
         mockContactRepo.Contacts.Throws(new Exception(expectedErrorMessage));
 
+        var sender = serviceProvider.GetRequiredService<IMediator>();
+
         // Act
-        var result = await handler.Handle(query, default);
+        var result = await sender.Send(query, default);
 
         // Assert
         Assert.NotNull(result);
-        Assert.Null(result.Value);        
+        Assert.Null(result.Value);
         Assert.Equal(expectedErrorMessage, result.Error);
     }
 }

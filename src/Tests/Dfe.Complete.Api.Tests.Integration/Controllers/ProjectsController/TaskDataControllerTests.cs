@@ -48,7 +48,7 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers.ProjectsController
         public async Task UpdateHandoverWithDeliveryOfficerTaskDataByProjectIdAsync_ShouldUpdate_ConversionTaskData(
             CustomWebApplicationDbContextFactory<Program> factory,
             ITasksDataClient tasksDataClient,
-            Complete.Client.Contracts.UpdateHandoverWithDeliveryOfficerTaskCommand command,
+            UpdateHandoverWithDeliveryOfficerTaskCommand command,
             IFixture fixture)
         {
             // Arrange

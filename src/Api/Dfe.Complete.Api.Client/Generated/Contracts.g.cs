@@ -3382,7 +3382,7 @@ namespace Dfe.Complete.Client.Contracts
         MainContact = 18,
 
         [System.Runtime.Serialization.EnumMember(Value = @"ConfirmIncomingTrustCeoContact")]
-        ConfirmIncomingTrustCeoContact = 19,
+        ConfirmIncomingTrustCeoContact = 20,
 
     }
 
