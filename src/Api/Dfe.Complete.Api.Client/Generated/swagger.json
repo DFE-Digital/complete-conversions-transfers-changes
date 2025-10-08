@@ -2232,7 +2232,7 @@
         },
         "responses": {
           "204": {
-            "description": "local authoirty details updated successfully."
+            "description": "Local authority details updated successfully."
           },
           "400": {
             "description": "Invalid request data."
@@ -3087,6 +3087,34 @@
                 }
               }
             }
+          },
+          "400": {
+            "description": "Invalid request data."
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Updates a user.",
+        "operationId": "Users_UpdateUser",
+        "requestBody": {
+          "x-name": "request",
+          "description": "The request.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateUserCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "204": {
+            "description": "User updated successfully."
           },
           "400": {
             "description": "Invalid request data."
@@ -7798,6 +7826,27 @@
         "type": "object",
         "additionalProperties": false,
         "properties": {
+          "firstName": {
+            "type": "string"
+          },
+          "lastName": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "team": {
+            "$ref": "#/components/schemas/ProjectTeam"
+          }
+        }
+      },
+      "UpdateUserCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "$ref": "#/components/schemas/UserId"
+          },
           "firstName": {
             "type": "string"
           },
