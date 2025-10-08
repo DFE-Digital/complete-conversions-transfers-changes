@@ -2,17 +2,17 @@
 using Dfe.Complete.Application.Notes.Interfaces;
 using Dfe.Complete.Application.Projects.Interfaces;
 using Dfe.Complete.Domain.Enums;
+using Dfe.Complete.Domain.Validators;
 using Dfe.Complete.Domain.ValueObjects;
 using Dfe.Complete.Utils;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using System.ComponentModel.DataAnnotations;
 
 namespace Dfe.Complete.Application.Projects.Commands.TaskData
 {
     public record UpdateArticleOfAssociationTaskCommand(
         TaskDataId TaskDataId,
-        [Required] ProjectType? ProjectType,
+        [ProjectType] ProjectType? ProjectType,
         bool? NotApplicable,
         bool? Cleared,
         bool? Received,
