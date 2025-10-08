@@ -10,7 +10,7 @@ namespace Dfe.Complete.Application.KeyContacts.Commands;
 
 public record UpdateIncomingTrustCeoCommand(KeyContactId KeyContactId, ContactId IncomingTrustCeoId) : IRequest<Result<bool>>;
 
-public class UpdateKeyContactIncomingTrustCeoCommandHandler(
+internal class UpdateKeyContactIncomingTrustCeoCommandHandler(
     IKeyContactWriteRepository _keyContactWriteRepo,
     IKeyContactReadRepository _keyContactReadRepo,
     ILogger<UpdateKeyContactIncomingTrustCeoCommandHandler> logger

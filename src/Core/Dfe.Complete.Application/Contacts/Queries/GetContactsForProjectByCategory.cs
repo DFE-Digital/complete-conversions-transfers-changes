@@ -21,10 +21,10 @@ public class GetContactsForProjectByCategoryHandler(IContactReadRepository conta
         {
             var filteredContacts  = contactReadRepository.Contacts.Where(Contacts => Contacts.ProjectId == request.ProjectId && Contacts.Category == request.ContactCategory);
 
-            var contactsList = await filteredContacts.ToListAsync(cancellationToken);
+            var contactsCollection = await filteredContacts.ToListAsync(cancellationToken);
+            var contactsDtoCollection = mapper.Map<List<ContactDto>>(contactsCollection);
 
-            var contactsListDto = mapper.Map<List<ContactDto>>(contactsList);
-            return Result<List<ContactDto>>.Success(contactsListDto);
+            return Result<List<ContactDto>>.Success(contactsDtoCollection);
         }
         catch (Exception e)
         {

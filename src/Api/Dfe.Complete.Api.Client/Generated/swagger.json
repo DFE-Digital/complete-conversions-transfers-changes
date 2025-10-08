@@ -7705,6 +7705,39 @@
           }
         }
       },
+      "UpdateLandRegistryTitlePlansTaskCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "taskDataId": {
+            "$ref": "#/components/schemas/TaskDataId"
+          },
+          "received": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "cleared": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "saved": {
+            "type": "boolean",
+            "nullable": true
+          }
+        }
+      },
+      "UpdateIncomingTrustCeoCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "keyContactId": {
+            "$ref": "#/components/schemas/KeyContactId"
+          },
+          "incomingTrustCeoId": {
+            "$ref": "#/components/schemas/ContactId"
+          }
+        }
+      },
       "ListTrustsWithProjectsResultModel": {
         "type": "object",
         "additionalProperties": false,
