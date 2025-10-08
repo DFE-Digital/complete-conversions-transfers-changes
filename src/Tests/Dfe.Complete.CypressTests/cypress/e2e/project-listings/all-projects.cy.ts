@@ -340,10 +340,9 @@ describe("View all projects", () => {
         projectDetailsPage.containsHeading(schoolName);
     });
 
-    it.skip("Should be able to view all completed projects", () => {
-        // project completion not implemented
-        cy.visit(`projects/${projectId}/tasks`);
-        // click complete project on tasks page
+    it("Should be able to view all completed projects", () => {
+        projectApi.completeProject(projectId);
+
         navBar.goToAllProjects();
         allProjects
             .filterProjects("Completed")
