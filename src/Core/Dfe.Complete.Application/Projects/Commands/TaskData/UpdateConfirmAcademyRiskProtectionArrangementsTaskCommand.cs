@@ -6,12 +6,13 @@ using Dfe.Complete.Domain.ValueObjects;
 using Dfe.Complete.Utils;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
 
 namespace Dfe.Complete.Application.Projects.Commands.TaskData
-{ 
+{
     public record UpdateConfirmAcademyRiskProtectionArrangementsTaskCommand(
         TaskDataId TaskDataId,
-        ProjectType? ProjectType,
+        [Required] ProjectType? ProjectType,
         bool? RpaPolicyConfirm,
         RiskProtectionArrangementOption? RpaOption,
         string? RpaReason
@@ -24,6 +25,10 @@ namespace Dfe.Complete.Application.Projects.Commands.TaskData
     {
         public async Task<Result<bool>> Handle(UpdateConfirmAcademyRiskProtectionArrangementsTaskCommand request, CancellationToken cancellationToken)
         {
+            if (request.ProjectType == null)
+            {
+                return Result<bool>.Failure("Project type is required.");
+            }
             if (request.ProjectType == ProjectType.Conversion)
             {
                 await UpdateConversionTaskDataAsync(request.TaskDataId, request, cancellationToken);

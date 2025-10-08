@@ -5,6 +5,7 @@
     Layout = "_ProjectTaskLayout";
     ViewData["Title"] = "Confirm the academy's risk protection arrangements";
     var rpaEmail = _configuration["Emails:RiskProtectionArrangement"];
+    var confirmPolicyField = nameof(Model.RpaPolicyConfirm);
 }
 @section TaskHeaderHintSection {
     <div class="govuk-hint">
@@ -20,7 +21,7 @@
             <govuk-checkboxes-fieldset>
                 <govuk-checkboxes-fieldset-legend>
                 </govuk-checkboxes-fieldset-legend>
-                <govuk-checkboxes-item id="@(nameof(Model.RpaPolicyConfirm))" asp-for="@Model.RpaPolicyConfirm" value="true" name="@(nameof(Model.RpaPolicyConfirm))" checked="@Model.RpaPolicyConfirm">
+                <govuk-checkboxes-item data-cy="@confirmPolicyField" id="@confirmPolicyField" asp-for="@Model.RpaPolicyConfirm" value="true" name="@confirmPolicyField" checked="@Model.RpaPolicyConfirm">
                     <b>Confirm if the academy's arrangements will continue or change</b>
                     <govuk-checkboxes-item-hint>
                         <p>Ask the outgoing trust if the academy is in an RPA or has commercial insurance. Ask the incoming trust if it wants to continue this arrangement or not.</p>

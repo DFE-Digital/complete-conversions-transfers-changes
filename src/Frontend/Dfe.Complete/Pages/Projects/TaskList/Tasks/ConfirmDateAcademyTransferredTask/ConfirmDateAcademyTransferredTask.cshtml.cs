@@ -56,7 +56,7 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.ConfirmDateAcademyTransferr
             await sender.Send(new UpdateConfirmDateAcademyTransferredTaskCommand(
                 new TaskDataId(TasksDataId.GetValueOrDefault())!, DateAcademyTransferred));
 
-            TempData.SetNotification(NotificationType.Success, "Success", "Task updated successfully");
+            SetTaskSuccessNotification();
             return Redirect(string.Format(RouteConstants.ProjectTaskList, ProjectId));
 
         }

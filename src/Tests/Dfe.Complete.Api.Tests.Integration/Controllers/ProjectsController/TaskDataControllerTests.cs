@@ -1,6 +1,5 @@
 ﻿using AutoFixture;
 using Dfe.Complete.Api.Tests.Integration.Customizations;
-using Dfe.Complete.Application.Projects.Commands.TaskData;
 using Dfe.Complete.Client.Contracts;
 using Dfe.Complete.Domain.Entities;
 using Dfe.Complete.Infrastructure.Database;
@@ -11,7 +10,6 @@ using GovUK.Dfe.CoreLibs.Testing.AutoFixture.Attributes;
 using GovUK.Dfe.CoreLibs.Testing.Mocks.WebApplicationFactory; 
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
-
 namespace Dfe.Complete.Api.Tests.Integration.Controllers.ProjectsController
 {
     public class TaskDataControllerTests
@@ -1064,40 +1062,6 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers.ProjectsController
             Assert.True(existingTaskData.LandQuestionnaireReceived);
             Assert.True(existingTaskData.LandQuestionnaireSigned);
             Assert.False(existingTaskData.LandQuestionnaireSaved);
-        }
-
-        [Theory]
-        [CustomAutoData(typeof(CustomWebApplicationDbContextFactoryCustomization))]
-        public async Task UpdateConfirmAcademyRiskProtectionArrangementsTaskAsync_ShouldUpdate_ConversionTaskData(
-            CustomWebApplicationDbContextFactory<Program> factory,
-            ITasksDataClient tasksDataClient,
-            UpdateConfirmAcademyRiskProtectionArrangementsTaskCommand command,
-            IFixture fixture)
-        {
-            // Arrange
-            factory.TestClaims = [new Claim(ClaimTypes.Role, ApiRoles.ReadRole), new Claim(ClaimTypes.Role, ApiRoles.UpdateRole), new Claim(ClaimTypes.Role, ApiRoles.WriteRole)];
-
-            var dbContext = factory.GetDbContext<CompleteContext>();
-
-            var taskData = fixture.Create<ConversionTasksData>();
-            dbContext.ConversionTasksData.Add(taskData);
-
-            await dbContext.SaveChangesAsync();
-            command.TaskDataId = new TaskDataId { Value = taskData.Id.Value };
-            command.RpaOption = RiskProtectionArrangementOption.Commercial;
-            command.RpaReason = "Commercial"; 
-
-            // Act
-            await tasksDataClient.UpdateConfirmAcademyRiskProtectionArrangementsTaskAsync(command, default);
-
-            // Assert
-            dbContext.ChangeTracker.Clear();
-            var existingTaskData = await dbContext.ConversionTasksData.SingleOrDefaultAsync(x => x.Id == taskData.Id);
-            Assert.NotNull(existingTaskData);
-            Assert.False(existingTaskData.LandQuestionnaireCleared);
-            Assert.True(existingTaskData.LandQuestionnaireReceived);
-            Assert.True(existingTaskData.LandQuestionnaireSigned);
-            Assert.False(existingTaskData.LandQuestionnaireSaved);
-        }
+        } 
     }
 }

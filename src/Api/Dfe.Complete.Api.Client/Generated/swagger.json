@@ -5419,7 +5419,8 @@
           "ChurchSupplementalAgreement",
           "CommercialTransferAgreement",
           "MainContact",
-          "ConfirmRiskProtectionArrangements"
+          "ConfirmRiskProtectionArrangements",
+          "ConfirmRiskProtectionArrangementsPolicy"
         ],
         "enum": [
           "Handover",
@@ -5441,7 +5442,8 @@
           "ChurchSupplementalAgreement",
           "CommercialTransferAgreement",
           "MainContact",
-          "ConfirmRiskProtectionArrangements"
+          "ConfirmRiskProtectionArrangements",
+          "ConfirmRiskProtectionArrangementsPolicy"
         ]
       },
       "CreateNoteCommand": {
@@ -7705,6 +7707,27 @@
           }
         }
       },
+      "UpdateLandRegistryTitlePlansTaskCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "taskDataId": {
+            "$ref": "#/components/schemas/TaskDataId"
+          },
+          "received": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "cleared": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "saved": {
+            "type": "boolean",
+            "nullable": true
+          }
+        }
+      },
       "UpdateConfirmAcademyRiskProtectionArrangementsTaskCommand": {
         "type": "object",
         "additionalProperties": false,
@@ -7734,27 +7757,6 @@
           },
           "rpaReason": {
             "type": "string",
-            "nullable": true
-          }
-        }
-      },
-      "UpdateLandRegistryTitlePlansTaskCommand": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-          "taskDataId": {
-            "$ref": "#/components/schemas/TaskDataId"
-          },
-          "received": {
-            "type": "boolean",
-            "nullable": true
-          },
-          "cleared": {
-            "type": "boolean",
-            "nullable": true
-          },
-          "saved": {
-            "type": "boolean",
             "nullable": true
           }
         }

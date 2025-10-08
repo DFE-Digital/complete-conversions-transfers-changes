@@ -17,7 +17,9 @@ Security in case of vulnerabilities.
 ## Unreleased
 
 ### Added
--Land registry title plans` task for converson project.
+
+- Land registry title plans` task for conversion project.
+- Added `Confirm the academy's risk protection agreements` task for both conversion and transfer projects.
 
 ### Changed
 
