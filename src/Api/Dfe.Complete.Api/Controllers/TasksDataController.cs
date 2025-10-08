@@ -228,8 +228,7 @@ namespace Dfe.Complete.Api.Controllers
         {
             await sender.Send(request, cancellationToken);
             return NoContent();
-        }
-        
+        }        
 
         /// <summary>
         /// Confirm the date the academy transferred task updated successfully.
@@ -399,8 +398,7 @@ namespace Dfe.Complete.Api.Controllers
         {
             await sender.Send(request, cancellationToken);
             return NoContent();
-        }
-        
+        }        
 
         /// <summary>
         /// Confirm the incoming trust ceo contact for the project.

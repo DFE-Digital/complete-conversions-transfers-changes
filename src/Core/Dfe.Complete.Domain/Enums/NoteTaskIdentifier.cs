@@ -83,7 +83,7 @@ public enum NoteTaskIdentifier
     
     [Description("master_funding_agreement")]
     [DisplayDescription("Master funding agreement")]
-    MasterFundingAgreement = 20    
+    MasterFundingAgreement = 20,
 
     [Description("confirm_incoming_trust_ceo_contact")]
     [DisplayDescription("Confirm the incoming trust ceo contact")]

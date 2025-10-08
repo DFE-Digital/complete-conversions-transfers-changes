@@ -5452,7 +5452,7 @@
           "ChurchSupplementalAgreement",
           "CommercialTransferAgreement",
           "MainContact",
-          "MasterFundingAgreement",         
+          "MasterFundingAgreement",
           "ConfirmIncomingTrustCeoContact"
         ],
         "enum": [
@@ -5475,7 +5475,7 @@
           "ChurchSupplementalAgreement",
           "CommercialTransferAgreement",
           "MainContact",
-          "MasterFundingAgreement",          
+          "MasterFundingAgreement",
           "ConfirmIncomingTrustCeoContact"
         ]
       },
