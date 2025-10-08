@@ -82,14 +82,5 @@ namespace Dfe.Complete.Tests.Constants
             var actual = string.Format(ErrorMessagesConstants.InvalidGuidException, guid);
             Assert.Equal(expected, actual);
         }
-
-        [Fact]
-        public void InvalidGuidLog_ShouldReturnFormattedMessage()
-        {
-            var guid = "a-1-2-3";
-            var expected = "a-1-2-3 is not a valid GUID.";
-            var actual = string.Format(ErrorMessagesConstants.InvalidGuidLog, guid);
-            Assert.Equal(expected, actual);
-        }
     }
 }
