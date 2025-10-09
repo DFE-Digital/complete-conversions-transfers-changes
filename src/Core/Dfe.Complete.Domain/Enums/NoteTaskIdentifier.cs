@@ -80,6 +80,10 @@ public enum NoteTaskIdentifier
     [Description("main_contact")]
     [DisplayDescription("Confirm the main contact")]
     MainContact = 19,
+    
+    [Description("master_funding_agreement")]
+    [DisplayDescription("Master funding agreement")]
+    MasterFundingAgreement = 20,
 
     [Description("risk_protection_arrangement")]
     [DisplayDescription("Confirm the academy's risk protection arrangements")]

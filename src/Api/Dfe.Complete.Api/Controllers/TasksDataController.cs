@@ -228,6 +228,7 @@ namespace Dfe.Complete.Api.Controllers
             await sender.Send(request, cancellationToken);
             return NoContent();
         }
+        
 
         /// <summary>
         /// Confirm the date the academy transferred task updated successfully.
@@ -379,6 +380,26 @@ namespace Dfe.Complete.Api.Controllers
             await sender.Send(request, cancellationToken);
             return NoContent();
         }
+        
+        /// <summary>
+        /// Updates the master funding agreement task Data for conversion or transfer project.
+        /// </summary>
+        /// <param name="request">The update command.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        [Authorize(Policy = "CanReadWriteUpdate")]
+        [HttpPatch]
+        [Route("TaskData/MasterFundingAgreement")]
+        [SwaggerResponse(204, "Conversion or transfer's master funding agreement task updated successfully.")]
+        [SwaggerResponse(400, "Invalid request data.")]
+        [SwaggerResponse(404, "Project/User not found.")]
+        public async Task<IActionResult> UpdateMasterFundingAgreementTaskAsync(
+            [FromBody] UpdateMasterFundingAgreementTaskCommand request,
+            CancellationToken cancellationToken)
+        {
+            await sender.Send(request, cancellationToken);
+            return NoContent();
+        }
+        
         /// <summary>
         /// Confirm the academy risk protection arrangements task updated successfully for either conversion or transfer project.
         /// </summary>

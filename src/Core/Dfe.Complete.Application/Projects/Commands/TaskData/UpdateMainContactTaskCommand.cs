@@ -12,7 +12,7 @@ namespace Dfe.Complete.Application.Projects.Commands.TaskData
         ContactId MainContactId
     ) : IRequest<Result<bool>>;
 
-    public class UpdateMainContactTaskCommandHandler(
+    internal class UpdateMainContactTaskCommandHandler(
         IProjectReadRepository projectReadRepository, 
         IProjectWriteRepository projectWriteRepository)
         : IRequestHandler<UpdateMainContactTaskCommand, Result<bool>>
@@ -21,13 +21,13 @@ namespace Dfe.Complete.Application.Projects.Commands.TaskData
         {
             var project = await projectReadRepository.Projects
                 .FirstOrDefaultAsync(p => p.Id == request.ProjectId, cancellationToken)
-                ?? throw new NotFoundException($"Project {request.ProjectId} not found.");
+                ?? throw new NotFoundException($"Project {request.ProjectId.Value} not found.");
             var now = DateTime.UtcNow;
             project.MainContactId = request.MainContactId;
             project.UpdatedAt = now;
             await projectWriteRepository.UpdateProjectAsync(project, cancellationToken);
             
             return Result<bool>.Success(true);
-        } 
+        }
     }
 }
