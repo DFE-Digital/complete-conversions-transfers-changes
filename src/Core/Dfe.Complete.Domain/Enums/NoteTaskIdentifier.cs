@@ -79,5 +79,13 @@ public enum NoteTaskIdentifier
 
     [Description("main_contact")]
     [DisplayDescription("Confirm the main contact")]
-    MainContact = 19
+    MainContact = 19,
+
+    [Description("sponsored_support_grant")]
+    [DisplayDescription("Confirm transfer grant funding level")]
+    ConfirmTransferGrantFundingLevel = 20,
+
+    [Description("sponsored_support_grant")]
+    [DisplayDescription("Confirm and process the sponsored support grant")]
+    ConfirmAndProcessTheSponsoredSupportGrant = 21
 }
