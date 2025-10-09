@@ -23,6 +23,7 @@ import allProjectsStatisticsPage from "cypress/pages/projects/allProjectsStatist
 import { getSignificantDateString, significateDateToDisplayDate } from "cypress/support/formatDate";
 import { PrepareProjectBuilder } from "cypress/api/prepareProjectBuilder";
 import { urnPool } from "cypress/constants/testUrns";
+import prepareProjectApi from "cypress/api/prepareProjectApi";
 
 const project = ProjectBuilder.createConversionProjectRequest({
     urn: { value: urnPool.listings.heles },
@@ -44,7 +45,7 @@ const transferFormAMatProject = ProjectBuilder.createTransferFormAMatProjectRequ
 const transferFormAMatSchoolName = "Myddle CofE Primary School";
 const prepareProject = PrepareProjectBuilder.createConversionProjectRequest({
     urn: urnPool.listings.themount,
-    provisional_conversion_date: getSignificantDateString(1),
+    provisionalConversionDate: getSignificantDateString(1),
 });
 let prepareProjectId: string;
 const prepareProjectName = "The Mount School";
@@ -59,6 +60,9 @@ describe("View all projects", () => {
         projectApi.createConversionProject(project).then((response) => (projectId = response.value));
         projectApi.createTransferProject(transferProject);
         projectApi.createMatTransferProject(transferFormAMatProject);
+        prepareProjectApi
+            .createConversionProject(prepareProject)
+            .then((response) => (prepareProjectId = response.value));
     });
 
     beforeEach(() => {
@@ -67,8 +71,7 @@ describe("View all projects", () => {
         cy.visit(`/projects/all/in-progress/all`);
     });
 
-    // skip as prepare endpoint not implemented in dotnet 214917
-    it.skip("Should be able to view my team projects that are handed over", () => {
+    it("Should be able to view my team projects that are handed over", () => {
         navBar.goToAllProjects();
         allProjects
             .filterProjects("Handover")
@@ -88,12 +91,12 @@ describe("View all projects", () => {
             .columnHasValue("URN", `${prepareProject.urn}`)
             .columnHasValue("Incoming trust", dimensionsTrust.name)
             .columnHasValue("Provisional conversion or transfer date", nextMonthShort)
-            .columnHasValue("Advisory board date", significateDateToDisplayDate(prepareProject.advisory_board_date))
+            .columnHasValue("Advisory board date", significateDateToDisplayDate(prepareProject.advisoryBoardDate))
             .columnHasValue("Project type", "Conversion")
             .columnHasValueWithLink(
                 "Add handover details",
                 "Add handover details",
-                `/projects/all/handover/${prepareProjectId.toLowerCase()}/check`,
+                `/projects/all/handover/${prepareProjectId}/check`,
             );
     });
 
