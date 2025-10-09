@@ -1121,24 +1121,19 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers.ProjectsController
 
             await dbContext.SaveChangesAsync();
             command.TaskDataId = new TaskDataId { Value = taskData.Id.Value };
-            command.SponsoredSupportGrantType = "fast track";
-            command.PaymentAmount = true;
-            command.PaymentForm = false;
-            command.SendInformation = false;
-            command.InformTrust = false;
+            command.ProjectType = ProjectType.Transfer;
+            command.NotApplicable = true;
+            command.SponsoredSupportGrantType = "standard";
 
             // Act
             await tasksDataClient.UpdateSponsoredSupportGrantTaskAsync(command, default);
 
             // Assert
             dbContext.ChangeTracker.Clear();
-            var existingTaskData = await dbContext.ConversionTasksData.SingleOrDefaultAsync(x => x.Id == taskData.Id);
+            var existingTaskData = await dbContext.TransferTasksData.SingleOrDefaultAsync(x => x.Id == taskData.Id);
             Assert.NotNull(existingTaskData);
-            Assert.Equal("fast track", existingTaskData.SponsoredSupportGrantType);
-            Assert.True(existingTaskData.SponsoredSupportGrantPaymentAmount);
-            Assert.False(existingTaskData.SponsoredSupportGrantPaymentForm);
-            Assert.False(existingTaskData.SponsoredSupportGrantSendInformation);
-            Assert.False(existingTaskData.SponsoredSupportGrantInformTrust);
+            Assert.NotNull(existingTaskData.SponsoredSupportGrantNotApplicable);
+            Assert.Null(existingTaskData.SponsoredSupportGrantType);
         }
     }
 }
