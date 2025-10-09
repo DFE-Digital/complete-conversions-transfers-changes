@@ -14,7 +14,9 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers.TasksDataController
     public class UpdateConfirmDateAcademyTransferredTaskTests
     {
         [Theory]
-        [CustomAutoData(typeof(CustomWebApplicationDbContextFactoryCustomization))]
+        [CustomAutoData(
+            typeof(CustomWebApplicationDbContextFactoryCustomization),
+            typeof(TransferTaskDataCustomization))]
         public async Task UpdateConfirmDateAcademyTransferredTaskAsync_ShouldUpdate_TransferTaskData(
             CustomWebApplicationDbContextFactory<Program> factory,
             ITasksDataClient tasksDataClient,
@@ -47,7 +49,9 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers.TasksDataController
         }
 
         [Theory]
-        [CustomAutoData(typeof(CustomWebApplicationDbContextFactoryCustomization))]
+        [CustomAutoData(
+            typeof(CustomWebApplicationDbContextFactoryCustomization),
+            typeof(TransferTaskDataCustomization))]
         public async Task UpdateConfirmDateAcademyTransferredTaskAsync_ShouldUpdate_WithNullDate(
             CustomWebApplicationDbContextFactory<Program> factory,
             ITasksDataClient tasksDataClient,
