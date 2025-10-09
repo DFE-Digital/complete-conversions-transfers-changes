@@ -7797,6 +7797,14 @@
           "saved": {
             "type": "boolean",
             "nullable": true
+          },
+          "sent": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "signedSecretaryState": {
+            "type": "boolean",
+            "nullable": true
           }
         }
       },
@@ -7816,14 +7824,6 @@
             ]
           },
           "rpaPolicyConfirm": {
-            "type": "boolean",
-            "nullable": true
-          },
-          "sent": {
-            "type": "boolean",
-            "nullable": true
-          },
-          "signedSecretaryState": {
             "type": "boolean",
             "nullable": true
           },

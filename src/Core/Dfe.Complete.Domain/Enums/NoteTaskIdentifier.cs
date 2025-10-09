@@ -87,9 +87,9 @@ public enum NoteTaskIdentifier
 
     [Description("risk_protection_arrangement")]
     [DisplayDescription("Confirm the academy's risk protection arrangements")]
-    ConfirmRiskProtectionArrangements = 20,
+    ConfirmRiskProtectionArrangements = 21,
 
     [Description("rpa_policy")]
     [DisplayDescription("Confirm the academy's risk protection arrangements")]
-    ConfirmRiskProtectionArrangementsPolicy = 21
+    ConfirmRiskProtectionArrangementsPolicy = 22
 }
