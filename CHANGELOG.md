@@ -18,6 +18,7 @@ Security in case of vulnerabilities.
 
 ### Added
 -Land registry title plans` task for converson project.
+- Sponsored support grant task for conversion and transfer project.
 
 ### Changed
 
