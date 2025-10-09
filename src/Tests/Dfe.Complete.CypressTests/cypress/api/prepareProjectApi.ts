@@ -1,7 +1,6 @@
 import {
     CreateConversionFormAMatPrepareRequest,
     CreateConversionPrepareRequest,
-    CreatePrepareProjectResponse,
     CreateProjectResponse,
     CreateTransferFormAMatPrepareRequest,
     CreateTransferPrepareRequest,
@@ -31,7 +30,7 @@ class PrepareProjectApi extends ApiBase {
         return this.ProjectBaseRequest("/transfers/form-a-mat", request, 201);
     }
 
-    private ProjectBaseRequest<T extends CreatePrepareProjectResponse>(
+    private ProjectBaseRequest(
         path: string,
         body: PrepareProjectRequest,
         expectedStatus: number = 201,
