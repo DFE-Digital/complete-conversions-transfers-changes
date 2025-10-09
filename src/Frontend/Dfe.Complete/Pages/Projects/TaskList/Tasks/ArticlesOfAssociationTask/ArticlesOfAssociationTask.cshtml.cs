@@ -1,6 +1,7 @@
 using Dfe.Complete.Application.Projects.Commands.TaskData;
 using Dfe.Complete.Constants;
 using Dfe.Complete.Domain.Enums;
+using Dfe.Complete.Domain.Validators;
 using Dfe.Complete.Domain.ValueObjects;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -15,20 +16,21 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.ArticlesOfAssociationTask
         public bool? NotApplicable { get; set; }
 
         [BindProperty(Name = "cleared")]
-        public bool? Cleared { get; set; } 
+        public bool? Cleared { get; set; }
 
         [BindProperty(Name = "received")]
         public bool? Received { get; set; }
         [BindProperty(Name = "sent")]
         public bool? Sent { get; set; }
         [BindProperty(Name = "signed")]
-        public bool?Signed { get; set; }
+        public bool? Signed { get; set; }
         [BindProperty(Name = "saved")]
         public bool? Saved { get; set; }
 
         [BindProperty]
         public Guid? TasksDataId { get; set; }
         [BindProperty]
+        [ProjectType]
         public ProjectType? Type { get; set; }
         public override async Task<IActionResult> OnGetAsync()
         {
@@ -57,7 +59,7 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.ArticlesOfAssociationTask
         }
         public async Task<IActionResult> OnPost()
         {
-            await sender.Send(new UpdateArticleOfAssociationTaskCommand(new TaskDataId(TasksDataId.GetValueOrDefault())!, Type, NotApplicable, Cleared, Received, Sent, Signed, Saved));
+            await Sender.Send(new UpdateArticleOfAssociationTaskCommand(new TaskDataId(TasksDataId.GetValueOrDefault())!, Type, NotApplicable, Cleared, Received, Sent, Signed, Saved));
             SetTaskSuccessNotification();
             return Redirect(string.Format(RouteConstants.ProjectTaskList, ProjectId));
         }
