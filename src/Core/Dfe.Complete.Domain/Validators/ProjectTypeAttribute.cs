@@ -1,7 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using Dfe.Complete.Domain.Constants;
 using Dfe.Complete.Domain.Enums;
-using System.ComponentModel.DataAnnotations;
 
 namespace Dfe.Complete.Domain.Validators;
 
