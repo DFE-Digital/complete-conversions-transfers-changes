@@ -11,7 +11,7 @@ using System.ComponentModel.DataAnnotations;
 namespace Dfe.Complete.Application.Projects.Commands.TaskData
 {
     public record UpdateConfirmAcademyRiskProtectionArrangementsTaskCommand(
-        TaskDataId TaskDataId,
+        [Required] TaskDataId TaskDataId,
         [Required] ProjectType? ProjectType,
         bool? RpaPolicyConfirm,
         RiskProtectionArrangementOption? RpaOption,
