@@ -1102,5 +1102,43 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers.ProjectsController
             Assert.False(existingTaskData.SponsoredSupportGrantSendInformation);
             Assert.False(existingTaskData.SponsoredSupportGrantInformTrust);
         }
+        
+        [Theory]
+        [CustomAutoData(typeof(CustomWebApplicationDbContextFactoryCustomization))]
+        public async Task UpdateConfirmSponsoredSupportGrantTaskAsync_ShouldUpdate_TransferTaskData(
+            CustomWebApplicationDbContextFactory<Program> factory,
+            ITasksDataClient tasksDataClient,
+            UpdateConfirmSponsoredSupportGrantTaskCommand command,
+            IFixture fixture)
+        {
+            // Arrange
+            factory.TestClaims = [new Claim(ClaimTypes.Role, ApiRoles.ReadRole), new Claim(ClaimTypes.Role, ApiRoles.UpdateRole), new Claim(ClaimTypes.Role, ApiRoles.WriteRole)];
+
+            var dbContext = factory.GetDbContext<CompleteContext>();
+
+            var taskData = fixture.Create<TransferTasksData>();
+            dbContext.TransferTasksData.Add(taskData);
+
+            await dbContext.SaveChangesAsync();
+            command.TaskDataId = new TaskDataId { Value = taskData.Id.Value };
+            command.SponsoredSupportGrantType = "fast track";
+            command.PaymentAmount = true;
+            command.PaymentForm = false;
+            command.SendInformation = false;
+            command.InformTrust = false;
+
+            // Act
+            await tasksDataClient.UpdateSponsoredSupportGrantTaskAsync(command, default);
+
+            // Assert
+            dbContext.ChangeTracker.Clear();
+            var existingTaskData = await dbContext.ConversionTasksData.SingleOrDefaultAsync(x => x.Id == taskData.Id);
+            Assert.NotNull(existingTaskData);
+            Assert.Equal("fast track", existingTaskData.SponsoredSupportGrantType);
+            Assert.True(existingTaskData.SponsoredSupportGrantPaymentAmount);
+            Assert.False(existingTaskData.SponsoredSupportGrantPaymentForm);
+            Assert.False(existingTaskData.SponsoredSupportGrantSendInformation);
+            Assert.False(existingTaskData.SponsoredSupportGrantInformTrust);
+        }
     }
 }
