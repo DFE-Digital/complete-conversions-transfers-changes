@@ -5,7 +5,6 @@ using Dfe.Complete.Application.Contacts.Commands;
 using Dfe.Complete.Application.Contacts.Interfaces;
 using Dfe.Complete.Application.KeyContacts.Interfaces;
 using Dfe.Complete.Application.Projects.Interfaces;
-using Dfe.Complete.Domain.Entities;
 using Dfe.Complete.Domain.Interfaces.Repositories;
 using Dfe.Complete.Domain.ValueObjects;
 using Dfe.Complete.Tests.Common.Customizations.Behaviours;
@@ -73,11 +72,7 @@ public class DeleteExternalContactCommandTests
         var contact = fixture.Build<Entities.Contact>()
                 .With(q => q.Id, contactId)
                 .With(q => q.ProjectId, projectId)
-                .Create();
-
-        //var keycontact = fixture.Build<Entities.KeyContact>()               
-        //       .With(q => q.ProjectId, projectId)
-        //       .Create();
+                .Create();       
 
         var project = fixture.Build<Entities.Project>()
                .With(t => t.Id, projectId)
@@ -196,11 +191,7 @@ public class DeleteExternalContactCommandTests
                 .With(q => q.Id, contactId)
                 .With(q => q.ProjectId, projectId)
                 .Create();
-
-        //var keycontact = fixture.Build<Entities.KeyContact>()
-        //      .With(q => q.ProjectId, projectId)
-        //      .Create();
-
+       
         // Arrange
         var queryableContacts = new List<Entities.Contact> { contact }.AsQueryable().BuildMock();
         mockContactReadRepository.Setup(repo => repo.Contacts).Returns(queryableContacts);
