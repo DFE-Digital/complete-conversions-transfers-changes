@@ -110,6 +110,16 @@ public class CreateHandoverTransferProjectCommandHandler(
 
             return project.Id;
         }
+        catch (AcademiesApiException ex)
+        {
+            if (ex.StatusCode == 404)
+            {
+                await unitOfWork.RollBackAsync();
+                logger.LogError(ex, "Exception while creating handover transfer project for URN: {Urn}", request.Urn);
+                throw new NotFoundException(ex.Message, ex);
+            }
+            throw new Exception(ex.Message);
+        }
         catch (Exception ex) when (ex is not NotFoundException && ex is not ValidationException)
         {
             await unitOfWork.RollBackAsync();
