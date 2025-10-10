@@ -34,7 +34,7 @@ public class DeleteExternalContactCommandHandler(
 
             var contactEntity = await new ContactIdQuery(request.ContactId)
                 .Apply(contactReadRepository.Contacts)
-                .FirstOrDefaultAsync();
+                .FirstOrDefaultAsync(cancellationToken);
 
             if (contactEntity is null)
             {
