@@ -13,14 +13,14 @@ using NSubstitute;
 
 namespace Dfe.Complete.Application.Tests.CommandHandlers.TaskData
 {
-    public class UpdateArticleOfAssociationTaskCommandTests
+    public class UpdateMasterFundingAgreementTaskCommandTests
     {
         [Theory]
         [CustomAutoData(typeof(DateOnlyCustomization), typeof(IgnoreVirtualMembersCustomisation))]
         public async Task Handle_ShouldReturnNotFoundException_IfConversionTaskDataDoesNotExist(
             [Frozen] ITaskDataReadRepository taskDataReadRepository,
             [Frozen] ITaskDataWriteRepository taskDataWriteRepository,
-            UpdateArticleOfAssociationTaskCommand command
+            UpdateMasterFundingAgreementTaskCommand command
         )
         {
             // Arrange
@@ -29,7 +29,7 @@ namespace Dfe.Complete.Application.Tests.CommandHandlers.TaskData
             var tasksData = new Domain.Entities.ConversionTasksData(new TaskDataId(Guid.NewGuid()), now, now);
             taskDataReadRepository.ConversionTaskData.Returns(new List<Domain.Entities.ConversionTasksData> { tasksData }.AsQueryable().BuildMock());
 
-            var handler = new UpdateArticleOfAssociationTaskCommandHandler(taskDataReadRepository, taskDataWriteRepository);
+            var handler = new UpdateMasterFundingAgreementTaskCommandHandler(taskDataReadRepository, taskDataWriteRepository);
 
             // Act
             var exception = await Assert.ThrowsAsync<NotFoundException>(() => handler.Handle(command, default));
@@ -44,7 +44,7 @@ namespace Dfe.Complete.Application.Tests.CommandHandlers.TaskData
         public async Task Handle_ShouldThrowNotFoundExcepiton_IfTransferTaskDataDoesNotExist(
             [Frozen] ITaskDataReadRepository taskDataReadRepository,
             [Frozen] ITaskDataWriteRepository taskDataWriteRepository,
-            UpdateArticleOfAssociationTaskCommand command)
+            UpdateMasterFundingAgreementTaskCommand command)
         {
             // Arrange  
             command = command with { ProjectType = ProjectType.Transfer };
@@ -52,7 +52,7 @@ namespace Dfe.Complete.Application.Tests.CommandHandlers.TaskData
             var tasksData = new Domain.Entities.TransferTasksData(new TaskDataId(Guid.NewGuid()), now, now, false, false, false);
             taskDataReadRepository.TransferTaskData.Returns(new List<Domain.Entities.TransferTasksData> { tasksData }.AsQueryable().BuildMock());
 
-            var handler = new UpdateArticleOfAssociationTaskCommandHandler(
+            var handler = new UpdateMasterFundingAgreementTaskCommandHandler(
                  taskDataReadRepository, taskDataWriteRepository);
 
             // Act  
@@ -67,7 +67,7 @@ namespace Dfe.Complete.Application.Tests.CommandHandlers.TaskData
         public async Task Handle_ShouldUpdate_IfConversionTaskDataExists(
             [Frozen] ITaskDataReadRepository taskDataReadRepository,
             [Frozen] ITaskDataWriteRepository taskDataWriteRepository,
-            UpdateArticleOfAssociationTaskCommand command
+            UpdateMasterFundingAgreementTaskCommand command
         )
         {
             // Arrange
@@ -76,7 +76,7 @@ namespace Dfe.Complete.Application.Tests.CommandHandlers.TaskData
             var tasksData = new Domain.Entities.ConversionTasksData(command.TaskDataId, now, now);
             taskDataReadRepository.ConversionTaskData.Returns(new List<Domain.Entities.ConversionTasksData> { tasksData }.AsQueryable().BuildMock());
 
-            var handler = new UpdateArticleOfAssociationTaskCommandHandler(taskDataReadRepository, taskDataWriteRepository);
+            var handler = new UpdateMasterFundingAgreementTaskCommandHandler(taskDataReadRepository, taskDataWriteRepository);
 
             // Act
             var result = await handler.Handle(command, default);
@@ -91,7 +91,7 @@ namespace Dfe.Complete.Application.Tests.CommandHandlers.TaskData
         public async Task Handle_ShouldUpdate_IfTransferTaskDataExists(
             [Frozen] ITaskDataReadRepository taskDataReadRepository,
             [Frozen] ITaskDataWriteRepository taskDataWriteRepository,
-            UpdateArticleOfAssociationTaskCommand command
+            UpdateMasterFundingAgreementTaskCommand command
         )
         {
             // Arrange
@@ -100,7 +100,7 @@ namespace Dfe.Complete.Application.Tests.CommandHandlers.TaskData
             var tasksData = new Domain.Entities.TransferTasksData(command.TaskDataId, now, now, false, false, false);
             taskDataReadRepository.TransferTaskData.Returns(new List<Domain.Entities.TransferTasksData> { tasksData }.AsQueryable().BuildMock());
 
-            var handler = new UpdateArticleOfAssociationTaskCommandHandler(taskDataReadRepository, taskDataWriteRepository);
+            var handler = new UpdateMasterFundingAgreementTaskCommandHandler(taskDataReadRepository, taskDataWriteRepository);
 
             // Act
             var result = await handler.Handle(command, default);
