@@ -367,3 +367,9 @@ variable "data_protection_subnet_prefix" {
   type        = string
   default     = "10.0.110.0/23"
 }
+
+variable "storage_subnet_cidr" {
+  description = "Specify a subnet prefix to use for the storage subnet"
+  type        = string
+  default     = ""
+}
