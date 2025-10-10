@@ -1,16 +1,19 @@
-using Dfe.AcademiesApi.Client.Contracts;
 using Dfe.AcademiesApi.Client;
+using Dfe.AcademiesApi.Client.Contracts;
 using Dfe.Complete.Application.Common.Behaviours;
 using Dfe.Complete.Application.Common.Models;
+using Dfe.Complete.Application.Projects.Commands.CreateProject;
+using Dfe.Complete.Application.Projects.Common;
+using Dfe.Complete.Application.Projects.Services;
 using Dfe.Complete.Application.Services.CsvExport;
 using Dfe.Complete.Application.Services.CsvExport.Builders;
 using Dfe.Complete.Application.Services.CsvExport.Conversion;
-using Dfe.Complete.Application.Projects.Services;
-using Dfe.Complete.Application.Projects.Commands.CreateProject;
-using Dfe.Complete.Application.Projects.Common;
 using Dfe.Complete.Application.Services.TrustCache;
 using Dfe.TramsDataApi.Client.Extensions;
 using FluentValidation;
+using GovUK.Dfe.PersonsApi.Client;
+using GovUK.Dfe.PersonsApi.Client.Contracts;
+using GovUK.Dfe.PersonsApi.Client.Extensions;
 using MediatR;
 using Microsoft.Extensions.Configuration;
 using System.Reflection;
@@ -28,6 +31,7 @@ namespace Microsoft.Extensions.DependencyInjection
 
             services.AddAcademiesApiClient<ITrustsV4Client, TrustsV4Client>(config);
             services.AddAcademiesApiClient<IEstablishmentsV4Client, EstablishmentsV4Client>(config);
+            services.AddPersonsApiClient<IConstituenciesClient, ConstituenciesClient>(config);
 
             services.AddMediatR(cfg =>
             {
