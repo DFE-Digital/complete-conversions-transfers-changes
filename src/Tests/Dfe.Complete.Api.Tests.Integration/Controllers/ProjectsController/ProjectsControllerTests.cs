@@ -1936,7 +1936,7 @@ public partial class ProjectsControllerTests
         var localAuthority = dbContext.LocalAuthorities.AsEnumerable().MinBy(_ => Guid.NewGuid());
         Assert.NotNull(localAuthority);
 
-        await dbContext.GiasEstablishments.AddRangeAsync(establishments); 
+        await dbContext.GiasEstablishments.AddRangeAsync(establishments);
         var projects = establishments.Select((establishment, i) =>
         {
             var project = fixture.Customize(new ProjectCustomization
@@ -1951,7 +1951,7 @@ public partial class ProjectsControllerTests
             project.DirectiveAcademyOrder = true;
             return project;
         }).ToList();
-        await dbContext.Projects.AddRangeAsync(projects); 
+        await dbContext.Projects.AddRangeAsync(projects);
         await dbContext.SaveChangesAsync();
         var decision = new RecordDaoRevocationDecisionCommand
         {
@@ -1959,7 +1959,7 @@ public partial class ProjectsControllerTests
             UserId = new UserId { Value = testUser.Id.Value },
             DecisionMakerRole = "Minister",
             MinisterName = "Test Minister",
-            DecisionDate = DateTime.UtcNow, 
+            DecisionDate = DateTime.UtcNow,
             ReasonNotes = new Dictionary<DaoRevokedReason, string> { { DaoRevokedReason.SchoolClosedOrClosing, "Closing school" } }
         };
 
@@ -1985,7 +1985,7 @@ public partial class ProjectsControllerTests
         var note = decision.ReasonNotes.First();
         Assert.Equal(note.Value, dbNotes.Body);
         Assert.Equal(decision.ProjectId.Value, dbNotes.ProjectId.Value);
-    } 
+    }
 
     [Theory]
     [CustomAutoData(
@@ -1994,7 +1994,7 @@ public partial class ProjectsControllerTests
         typeof(OmitCircularReferenceCustomization),
         typeof(ProjectCustomization))]
     public async Task UpdateProjectCompleteAsync_ShouldUpdateProject(
-  CustomWebApplicationDbContextFactory<Program> factory,  
+  CustomWebApplicationDbContextFactory<Program> factory,
   IProjectsClient projectsClient,
   IFixture fixture)
     {
@@ -2009,7 +2009,7 @@ public partial class ProjectsControllerTests
         new Claim(ClaimTypes.Role, ApiRoles.UpdateRole),
         new Claim(CustomClaimTypeConstants.UserId, testUser!.Id.Value.ToString()),
         ];
-        
+
         var establishment = fixture.Create<GiasEstablishment>();
         var localAuthority = fixture.Create<LocalAuthority>();
         var project = fixture.Create<Project>();
@@ -2022,7 +2022,7 @@ public partial class ProjectsControllerTests
         await dbContext.GiasEstablishments.AddAsync(establishment);
         await dbContext.Projects.AddAsync(project);
         await dbContext.SaveChangesAsync();
-        
+
         Assert.NotNull(testUser);
 
         var command = fixture.Create<UpdateProjectCompletedCommand>();
@@ -2038,5 +2038,64 @@ public partial class ProjectsControllerTests
 
         Assert.NotNull(project);
         Assert.Equal(ProjectState.Completed, updatedProject?.State);
+    }
+
+    [Theory]
+    [CustomAutoData(
+       typeof(CustomWebApplicationDbContextFactoryCustomization),
+       typeof(ProjectCustomization))]
+    public async Task UpdateCompleteAsync_ShouldUpdateCompleted_WhenProjectExists(
+        CustomWebApplicationDbContextFactory<Program> factory,
+        IProjectsClient projectsClient,
+        IFixture fixture)
+    {
+        // Arrange
+        factory.TestClaims = [new Claim(ClaimTypes.Role, ApiRoles.ReadRole), new Claim(ClaimTypes.Role, ApiRoles.UpdateRole), new Claim(ClaimTypes.Role, ApiRoles.WriteRole)];
+
+        var dbContext = factory.GetDbContext<CompleteContext>();
+        var testUser = await dbContext.Users.FirstAsync();
+
+        var establishments = fixture.Customize(new GiasEstablishmentsCustomization()).CreateMany<GiasEstablishment>(1)
+            .ToList();
+
+        await dbContext.GiasEstablishments.AddRangeAsync(establishments);
+
+        var projects = establishments.Select(establishment =>
+        {
+            var project = fixture.Customize(new ProjectCustomization
+            {
+                RegionalDeliveryOfficerId = testUser.Id,
+                CaseworkerId = testUser.Id,
+                AssignedToId = testUser.Id,
+                State = 0
+            })
+                .Create<Project>();
+            project.Urn = establishment.Urn ?? project.Urn;
+            return project;
+        }).ToList();
+
+        var localAuthority = dbContext.LocalAuthorities.AsEnumerable().MinBy(_ => Guid.NewGuid());
+        Assert.NotNull(localAuthority);
+        projects.ForEach(x => x.LocalAuthorityId = localAuthority.Id);
+        var transferTaskData = fixture.Create<TransferTasksData>();
+
+        await dbContext.Projects.AddRangeAsync(projects);
+        await dbContext.SaveChangesAsync();
+        var project = projects.First();
+
+        var command = new UpdateProjectCompletedCommand()
+        {
+            ProjectId = new ProjectId() { Value = project.Id.Value }
+        };
+
+        // Act
+        Assert.Equal(ProjectState.Active, project.State);
+        await projectsClient.UpdateCompleteAsync(command);
+
+        // Assert
+        dbContext.ChangeTracker.Clear();
+        var existingProject = await dbContext.Projects.SingleOrDefaultAsync(x => x.Id == project.Id);
+        Assert.NotNull(existingProject);
+        Assert.Equal(ProjectState.Completed, existingProject.State);
     }
 }
