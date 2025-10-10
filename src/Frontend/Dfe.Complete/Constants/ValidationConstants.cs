@@ -49,6 +49,7 @@
         public const string ConversionDateInPast = "The conversion date has been confirmed and is in the past";
         public const string AllConditionsMetComplete = "The confirm all conditions have been met task is completed";
         public const string AcademyOpenedDateComplete = "The confirm the date the academy opened task is completed";
-
+        public const string RequiredSummary = "Enter the summary";
+        public const string NotInTheList = "is not included in the list";
     }
 }

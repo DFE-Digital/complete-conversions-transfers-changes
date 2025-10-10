@@ -83,5 +83,13 @@ public enum NoteTaskIdentifier
     
     [Description("master_funding_agreement")]
     [DisplayDescription("Master funding agreement")]
-    MasterFundingAgreement = 20
+    MasterFundingAgreement = 20, 
+
+    [Description("risk_protection_arrangement")]
+    [DisplayDescription("Confirm the academy's risk protection arrangements")]
+    ConfirmRiskProtectionArrangements = 21,
+
+    [Description("rpa_policy")]
+    [DisplayDescription("Confirm the academy's risk protection arrangements")]
+    ConfirmRiskProtectionArrangementsPolicy = 22
 }
