@@ -5,6 +5,7 @@ using Dfe.Complete.Application.Contacts.Commands;
 using Dfe.Complete.Application.Contacts.Interfaces;
 using Dfe.Complete.Application.KeyContacts.Interfaces;
 using Dfe.Complete.Application.Projects.Interfaces;
+using Dfe.Complete.Domain.Entities;
 using Dfe.Complete.Domain.Interfaces.Repositories;
 using Dfe.Complete.Domain.ValueObjects;
 using Dfe.Complete.Tests.Common.Customizations.Behaviours;
@@ -74,6 +75,10 @@ public class DeleteExternalContactCommandTests
                 .With(q => q.ProjectId, projectId)
                 .Create();
 
+        //var keycontact = fixture.Build<Entities.KeyContact>()               
+        //       .With(q => q.ProjectId, projectId)
+        //       .Create();
+
         var project = fixture.Build<Entities.Project>()
                .With(t => t.Id, projectId)
                .With(t => t.EstablishmentMainContactId, EstablishmentMainContactId == null ? fixture.Create<ContactId>() : new ContactId(Guid.Parse(EstablishmentMainContactId)))
@@ -88,6 +93,9 @@ public class DeleteExternalContactCommandTests
 
         mockProjectRepository.Setup(repo => repo.FindAsync(It.IsAny<Expression<Func<Entities.Project, bool>>>(), It.IsAny<CancellationToken>()))
                .ReturnsAsync(project);
+
+        var queryableKeyContacts = new List<Entities.KeyContact>().AsQueryable().BuildMock();
+        mockKeyContactReadRepository.Setup(repo => repo.KeyContacts).Returns(queryableKeyContacts);
 
         mockContactWriteRepository.Setup(repo => repo.RemoveContactAsync(It.IsAny<Entities.Contact>(), It.IsAny<CancellationToken>())).Returns(Task.CompletedTask);
 
@@ -189,9 +197,16 @@ public class DeleteExternalContactCommandTests
                 .With(q => q.ProjectId, projectId)
                 .Create();
 
+        //var keycontact = fixture.Build<Entities.KeyContact>()
+        //      .With(q => q.ProjectId, projectId)
+        //      .Create();
+
         // Arrange
         var queryableContacts = new List<Entities.Contact> { contact }.AsQueryable().BuildMock();
         mockContactReadRepository.Setup(repo => repo.Contacts).Returns(queryableContacts);
+
+        var queryableKeyContacts = new List<Entities.KeyContact>().AsQueryable().BuildMock();
+        mockKeyContactReadRepository.Setup(repo => repo.KeyContacts).Returns(queryableKeyContacts);
 
         mockContactWriteRepository.Setup(repo => repo.RemoveContactAsync(It.IsAny<Entities.Contact>(), It.IsAny<CancellationToken>()))
            .ThrowsAsync(new Exception("throws error"));
@@ -219,6 +234,9 @@ public class DeleteExternalContactCommandTests
         ContactId contactId = fixture.Create<ContactId>();
         var command = new DeleteExternalContactCommand(contactId);
         var expectedMessage = $"External contact with Id {contactId.Value} not found.";
+
+        var queryableContacts = new List<Entities.Contact>().AsQueryable().BuildMock();
+        mockContactReadRepository.Setup(repo => repo.Contacts).Returns(queryableContacts);
 
         // Act
         var result = await handler.Handle(command, CancellationToken.None);
