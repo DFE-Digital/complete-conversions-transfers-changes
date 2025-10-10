@@ -18,10 +18,7 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.IncomingTrustCeoTask
         public Guid? IncomingTrustCeoContactId { get; set; }      
 
         [BindProperty]
-        public Guid? KeyContactId { get; set; }
-
-        [BindProperty]
-        public ProjectType? Type { get; set; }
+        public Guid? KeyContactId { get; set; }        
 
         public List<ContactDto>? Contacts { get; set; }
 
@@ -36,8 +33,7 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.IncomingTrustCeoTask
             KeyContactId = incomingTrustCeoKeyContactDto?.Value?.Id?.Value;
 
             Contacts = contacts?.Value ?? [];
-            Type = Project.Type;
-                       
+                                   
             return Page();
         }
         public async Task<IActionResult> OnPost()

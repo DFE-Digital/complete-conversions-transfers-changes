@@ -25,8 +25,7 @@
                 <p>Their job title may be slightly different to the role described here. Choose the person whose role most closely matches the incoming trust CEO.</p>
             </div>
 
-            <input type="hidden" asp-for="KeyContactId" />
-            <input type="hidden" asp-for="Type" />
+            <input type="hidden" asp-for="KeyContactId" />            
             @await Html.PartialAsync("_TaskContactRadioList",
             new ContactRadioListModel(Model.Contacts!, Model.IncomingTrustCeoContactId, "IncomingTrustCeoContactId")
             {
