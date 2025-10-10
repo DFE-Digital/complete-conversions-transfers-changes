@@ -2,7 +2,6 @@ using MediatR;
 using Dfe.Complete.Domain.ValueObjects;
 using Dfe.Complete.Domain.Entities;
 using System.ComponentModel.DataAnnotations;
-using Dfe.Complete.Application.Projects.Models;
 using Dfe.Complete.Utils;
 using Dfe.Complete.Application.Common.Interfaces;
 using Dfe.Complete.Domain.Validators;
@@ -109,7 +108,7 @@ public class CreateHandoverTransferProjectCommandHandler(
                 logger.LogError(ex, "Exception while creating handover transfer project for URN: {Urn}", request.Urn);
                 throw new NotFoundException(ex.Message, ex);
             }
-            throw new Exception(ex.Message);
+            throw new UnknownException(ex.Message);
         }
         catch (Exception ex) when (ex is not NotFoundException && ex is not ValidationException)
         {
