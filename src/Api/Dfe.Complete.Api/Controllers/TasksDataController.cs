@@ -228,7 +228,8 @@ namespace Dfe.Complete.Api.Controllers
         {
             await sender.Send(request, cancellationToken);
             return NoContent();
-        }        
+        }
+        
 
         /// <summary>
         /// Confirm the date the academy transferred task updated successfully.
