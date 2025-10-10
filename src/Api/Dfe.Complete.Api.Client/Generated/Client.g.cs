@@ -7947,24 +7947,24 @@ namespace Dfe.Complete.Client
         }
 
         /// <summary>
-        /// Confirm the sponsored support grant
+        /// Updates the master funding agreement task Data for conversion or transfer project.
         /// </summary>
         /// <param name="request">The update command.</param>
-        /// <returns>The sponsored support grant task updated successfully.</returns>
+        /// <returns>Conversion or transfer's master funding agreement task updated successfully.</returns>
         /// <exception cref="CompleteApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task UpdateSponsoredSupportGrantTaskAsync(UpdateConfirmSponsoredSupportGrantTaskCommand request)
+        public virtual System.Threading.Tasks.Task UpdateMasterFundingAgreementTaskAsync(UpdateMasterFundingAgreementTaskCommand request)
         {
-            return UpdateSponsoredSupportGrantTaskAsync(request, System.Threading.CancellationToken.None);
+            return UpdateMasterFundingAgreementTaskAsync(request, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>
-        /// Confirm the sponsored support grant
+        /// Updates the master funding agreement task Data for conversion or transfer project.
         /// </summary>
         /// <param name="request">The update command.</param>
-        /// <returns>The sponsored support grant task updated successfully.</returns>
+        /// <returns>Conversion or transfer's master funding agreement task updated successfully.</returns>
         /// <exception cref="CompleteApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task UpdateSponsoredSupportGrantTaskAsync(UpdateConfirmSponsoredSupportGrantTaskCommand request, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task UpdateMasterFundingAgreementTaskAsync(UpdateMasterFundingAgreementTaskCommand request, System.Threading.CancellationToken cancellationToken)
         {
             if (request == null)
                 throw new System.ArgumentNullException("request");
@@ -7983,8 +7983,8 @@ namespace Dfe.Complete.Client
 
                     var urlBuilder_ = new System.Text.StringBuilder();
                     if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
-                    // Operation Path: "v1/TasksData/TaskData/SponsoredSupportGrant"
-                    urlBuilder_.Append("v1/TasksData/TaskData/SponsoredSupportGrant");
+                    // Operation Path: "v1/TasksData/TaskData/MasterFundingAgreement"
+                    urlBuilder_.Append("v1/TasksData/TaskData/MasterFundingAgreement");
 
                     PrepareRequest(client_, request_, urlBuilder_);
 
@@ -8023,7 +8023,7 @@ namespace Dfe.Complete.Client
                         if (status_ == 404)
                         {
                             string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new CompleteApiException("Project not found.", status_, responseText_, headers_, null);
+                            throw new CompleteApiException("Project/User not found.", status_, responseText_, headers_, null);
                         }
                         else
                         {

@@ -1,4 +1,5 @@
-﻿using Dfe.Complete.Application.Common.Models;
+﻿using System.ComponentModel.DataAnnotations;
+using Dfe.Complete.Application.Common.Models;
 using Dfe.Complete.Application.Notes.Interfaces;
 using Dfe.Complete.Application.Projects.Interfaces;
 using Dfe.Complete.Domain.Enums;
@@ -11,7 +12,7 @@ namespace Dfe.Complete.Application.Projects.Commands.TaskData
 {
     public record UpdateRedactAndSendDocumentsTaskCommand(
         TaskDataId TaskDataId,
-        ProjectType? ProjectType,
+        [Required] ProjectType? ProjectType,
         bool? Redact,
         bool? Saved,
         bool? SendToEsfa,
@@ -41,9 +42,9 @@ namespace Dfe.Complete.Application.Projects.Commands.TaskData
                 ?? throw new NotFoundException($"Conversion task data {taskDataId} not found.");
 
             tasksData.RedactAndSendRedact = request.Redact;
-            tasksData.RedactAndSendSaveRedaction =  request.Saved;
-            tasksData.RedactAndSendSendRedaction =  request.Send;
-            tasksData.RedactAndSendSendSolicitors =  request.SendToSolicitors;
+            tasksData.RedactAndSendSaveRedaction = request.Saved;
+            tasksData.RedactAndSendSendRedaction = request.Send;
+            tasksData.RedactAndSendSendSolicitors = request.SendToSolicitors;
 
             await taskDataWriteRepository.UpdateConversionAsync(tasksData, DateTime.Now, cancellationToken);
         }

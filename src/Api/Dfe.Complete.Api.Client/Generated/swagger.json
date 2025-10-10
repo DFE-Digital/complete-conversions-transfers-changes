@@ -2976,20 +2976,20 @@
         }
       }
     },
-    "/v1/TasksData/TaskData/SponsoredSupportGrant": {
+    "/v1/TasksData/TaskData/MasterFundingAgreement": {
       "patch": {
         "tags": [
           "TasksData"
         ],
-        "summary": "Confirm the sponsored support grant",
-        "operationId": "TasksData_UpdateSponsoredSupportGrantTask",
+        "summary": "Updates the master funding agreement task Data for conversion or transfer project.",
+        "operationId": "TasksData_UpdateMasterFundingAgreementTask",
         "requestBody": {
           "x-name": "request",
           "description": "The update command.",
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/UpdateConfirmSponsoredSupportGrantTaskCommand"
+                "$ref": "#/components/schemas/UpdateMasterFundingAgreementTaskCommand"
               }
             }
           },
@@ -2998,13 +2998,13 @@
         },
         "responses": {
           "204": {
-            "description": "The sponsored support grant task updated successfully."
+            "description": "Conversion or transfer's master funding agreement task updated successfully."
           },
           "400": {
             "description": "Invalid request data."
           },
           "404": {
-            "description": "Project not found."
+            "description": "Project/User not found."
           }
         }
       }
@@ -5419,8 +5419,7 @@
           "ChurchSupplementalAgreement",
           "CommercialTransferAgreement",
           "MainContact",
-          "ConfirmTransferGrantFundingLevel",
-          "ConfirmAndProcessTheSponsoredSupportGrant"
+          "MasterFundingAgreement"
         ],
         "enum": [
           "Handover",
@@ -5442,8 +5441,7 @@
           "ChurchSupplementalAgreement",
           "CommercialTransferAgreement",
           "MainContact",
-          "ConfirmTransferGrantFundingLevel",
-          "ConfirmAndProcessTheSponsoredSupportGrant"
+          "MasterFundingAgreement"
         ]
       },
       "CreateNoteCommand": {
@@ -7728,7 +7726,7 @@
           }
         }
       },
-      "UpdateConfirmSponsoredSupportGrantTaskCommand": {
+      "UpdateMasterFundingAgreementTaskCommand": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
@@ -7747,23 +7745,27 @@
             "type": "boolean",
             "nullable": true
           },
-          "sponsoredSupportGrantType": {
-            "type": "string",
-            "nullable": true
-          },
-          "paymentAmount": {
+          "received": {
             "type": "boolean",
             "nullable": true
           },
-          "paymentForm": {
+          "cleared": {
             "type": "boolean",
             "nullable": true
           },
-          "sendInformation": {
+          "signed": {
             "type": "boolean",
             "nullable": true
           },
-          "informTrust": {
+          "saved": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "sent": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "signedSecretaryState": {
             "type": "boolean",
             "nullable": true
           }

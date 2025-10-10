@@ -17,7 +17,8 @@ Security in case of vulnerabilities.
 ## Unreleased
 
 ### Added
--Land registry title plans` task for converson project.
+- Land registry title plans` task for conversion project.
+- Added `Master Funding Agreement` task for both conversion and transfer projects.
 - Sponsored support grant task for conversion and transfer project.
 
 ### Changed
@@ -70,6 +71,10 @@ See the [full commit history](https://github.com/DFE-Digital/complete-conversion
 
 - Fixed broken task note urls.
 - Fixed all project by month query for conversion projects if all conditions met is null
+
+### Security
+
+- Fixed reflected Cross-Site Scripting (XSS) vulnerability on cookies page (150001) - added server-side URL validation to prevent malicious script injection via returnUrl parameter
 
 See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-09-25.771...production-2025-10-03.811) for everything in the release
 
