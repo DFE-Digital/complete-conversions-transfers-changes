@@ -164,11 +164,8 @@ public class HandoverProjectService(
 
     public async Task ValidateUrnAndTrustsAsync(int urn, int incomingTrustUkprn, int? outgoingTrustUkprn = null, CancellationToken cancellationToken = default)
     {
-        if (outgoingTrustUkprn.HasValue)
-        {
-            if (incomingTrustUkprn == outgoingTrustUkprn)
+        if (outgoingTrustUkprn.HasValue && incomingTrustUkprn == outgoingTrustUkprn)
                 throw new ValidationException(Constants.ValidationConstants.SameTrustValidationMessage);
-        }
             
         // Check if URN already exists in active/inactive projects
             var existingProject = await FindExistingProjectAsync(urn, cancellationToken);
