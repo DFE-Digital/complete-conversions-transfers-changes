@@ -1,4 +1,5 @@
-﻿using Dfe.Complete.Application.Common.Models;
+﻿using System.ComponentModel.DataAnnotations;
+using Dfe.Complete.Application.Common.Models;
 using Dfe.Complete.Application.Notes.Interfaces;
 using Dfe.Complete.Application.Projects.Interfaces;
 using Dfe.Complete.Domain.Enums;
@@ -10,11 +11,11 @@ using Microsoft.EntityFrameworkCore;
 namespace Dfe.Complete.Application.Projects.Commands.TaskData
 {
     public record UpdateDeclarationOfExpenditureCertificateTaskCommand(TaskDataId TaskDataId,
-         ProjectType? ProjectType,
-         DateOnly? DateReceived,
-         bool? NotApplicable,
-         bool? CheckCertificate,
-         bool? Saved) : IRequest<Result<bool>>;
+        [Required] ProjectType? ProjectType,
+        DateOnly? DateReceived,
+        bool? NotApplicable,
+        bool? CheckCertificate,
+        bool? Saved) : IRequest<Result<bool>>;
 
     internal class UpdateDeclarationOfExpenditureCertificateTaskCommandHandler(
        ITaskDataReadRepository taskDataReadRepository,
@@ -60,6 +61,6 @@ namespace Dfe.Complete.Application.Projects.Commands.TaskData
             tasksData.DeclarationOfExpenditureCertificateNotApplicable = request.NotApplicable;
 
             await taskDataWriteRepository.UpdateTransferAsync(tasksData, DateTime.UtcNow, cancellationToken);
-        } 
+        }
     }
 }

@@ -13,7 +13,7 @@ namespace Dfe.Complete.Application.Projects.Commands.TaskData
         DateOnly? DateAcademyTransferred
     ) : IRequest<Result<bool>>;
 
-    public class UpdateConfirmDateAcademyTransferredTaskCommandHandler(
+    internal class UpdateConfirmDateAcademyTransferredTaskCommandHandler(
         ITaskDataReadRepository taskDataReadRepository,
         ITaskDataWriteRepository taskDataWriteRepository)
         : IRequestHandler<UpdateConfirmDateAcademyTransferredTaskCommand, Result<bool>>

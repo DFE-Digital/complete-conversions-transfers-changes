@@ -15,7 +15,7 @@ namespace Dfe.Complete.Application.Projects.Commands.TaskData
         bool? ConfirmToProceed
     ) : IRequest<Result<bool>>;
 
-    public class UpdateConfirmTransferHasAuthorityToProceedTaskCommandHandler(
+    internal class UpdateConfirmTransferHasAuthorityToProceedTaskCommandHandler(
         IProjectReadRepository projectReadRepository,
         IProjectWriteRepository projectWriteRepository,
         ITaskDataReadRepository taskDataReadRepository,
@@ -26,7 +26,7 @@ namespace Dfe.Complete.Application.Projects.Commands.TaskData
         {
             var project = await projectReadRepository.Projects
                 .FirstOrDefaultAsync(p => p.TasksDataId == request.TaskDataId, cancellationToken)
-                ?? throw new NotFoundException($"Project with task data {request.TaskDataId} not found.");
+                ?? throw new NotFoundException($"Project with task data id {request.TaskDataId.Value} not found.");
             var now = DateTime.Now; 
             
             project.AllConditionsMet = request.ConfirmToProceed;
