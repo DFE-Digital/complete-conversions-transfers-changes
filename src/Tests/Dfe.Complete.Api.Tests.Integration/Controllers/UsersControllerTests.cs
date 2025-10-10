@@ -204,4 +204,76 @@ public class UsersControllerTests
                 result.AssignedToFullName);
         }
     }
+
+    [Theory]
+    [CustomAutoData(typeof(CustomWebApplicationDbContextFactoryCustomization))]
+    public async Task UpdateUserAsync_ShouldUpdateUser(
+        CustomWebApplicationDbContextFactory<Program> factory,
+        IUsersClient usersClient)
+    {
+        factory.TestClaims = new[] { ApiRoles.ReadRole, ApiRoles.WriteRole, ApiRoles.UpdateRole }
+            .Select(x => new Claim(ClaimTypes.Role, x)).ToList();
+
+        var dbContext = factory.GetDbContext<CompleteContext>();
+        
+        // Create a user to update
+        var existingUser = Domain.Entities.User.Create(
+            new Domain.ValueObjects.UserId(Guid.NewGuid()),
+            "oldemail@education.gov.uk",
+            "Old",
+            "User",
+            "London"
+        );
+        
+        dbContext.Users.Add(existingUser);
+        await dbContext.SaveChangesAsync();
+
+        var updateCommand = new UpdateUserCommand()
+        {
+            Id = new UserId() { Value = existingUser.Id.Value },
+            FirstName = "New",
+            LastName = "User",
+            Email = "updatedemail@education.gov.uk",
+            Team = ProjectTeam.SouthWest
+        };
+
+        await usersClient.UpdateUserAsync(updateCommand, CancellationToken.None);
+
+        dbContext.ChangeTracker.Clear();
+
+        // Verify the user was updated
+        var updatedUser = await dbContext.Users.FindAsync(existingUser.Id);
+        Assert.NotNull(updatedUser);
+        Assert.Equal("New", updatedUser.FirstName);
+        Assert.Equal("User", updatedUser.LastName);
+        Assert.Equal("updatedemail@education.gov.uk", updatedUser.Email);
+        Assert.Equal("south_west", updatedUser.Team);
+    }
+
+    [Theory]
+    [CustomAutoData(typeof(CustomWebApplicationDbContextFactoryCustomization))]
+    public async Task UpdateUserAsync_UserNotFound_ShouldThrowException(
+        CustomWebApplicationDbContextFactory<Program> factory,
+        IUsersClient usersClient)
+    {
+        factory.TestClaims = new[] { ApiRoles.ReadRole, ApiRoles.WriteRole, ApiRoles.UpdateRole }
+            .Select(x => new Claim(ClaimTypes.Role, x)).ToList();
+
+        var nonExistentUserId = new UserId() { Value = Guid.NewGuid() };
+        var updateCommand = new UpdateUserCommand()
+        {
+            Id = nonExistentUserId,
+            FirstName = "New",
+            LastName = "User",
+            Email = "updatedemail@education.gov.uk",
+            Team = ProjectTeam.SouthWest
+        };
+
+        var exception = await Assert.ThrowsAsync<CompleteApiException>(async () =>
+            await usersClient.UpdateUserAsync(updateCommand, CancellationToken.None));
+
+        Assert.Contains($"User with Id {nonExistentUserId.Value} not found", exception.Response);
+    }
+
+
 }
