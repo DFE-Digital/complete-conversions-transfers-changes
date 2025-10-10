@@ -8,7 +8,6 @@ using Dfe.Complete.Application.Common.Interfaces;
 using Dfe.Complete.Domain.Validators;
 using Microsoft.Extensions.Logging;
 using Dfe.AcademiesApi.Client.Contracts;
-using Dfe.Complete.Application.Constants;
 using Dfe.Complete.Application.Projects.Services;
 
 namespace Dfe.Complete.Application.Projects.Commands.CreateHandoverProject;
@@ -44,7 +43,6 @@ public record CreateHandoverTransferProjectCommand(
 
 public class CreateHandoverTransferProjectCommandHandler(
     IUnitOfWork unitOfWork,
-    ITrustsV4Client trustClient,
     IHandoverProjectService handoverProjectService,
     ILogger<CreateHandoverTransferProjectCommandHandler> logger)
     : IRequestHandler<CreateHandoverTransferProjectCommand, ProjectId>
@@ -55,29 +53,22 @@ public class CreateHandoverTransferProjectCommandHandler(
         {
             await unitOfWork.BeginTransactionAsync();
 
-            // Validate the request
-            await ValidateRequest(request, cancellationToken);
-
-            var projectId = new ProjectId(Guid.NewGuid());
             var urn = request.Urn!.Value;
-            var localAuthorityId = await handoverProjectService.GetLocalAuthorityForUrn(urn, cancellationToken);
-            var region = await handoverProjectService.GetRegionForUrn(urn, cancellationToken);
-            var group = await handoverProjectService.GetGroupForGroupId(request.GroupId, cancellationToken);
+            var incomingTrustUkprn = request.IncomingTrustUkprn!.Value;
+            var outgoingTrustUkprn = request.OutgoingTrustUkprn!.Value;
 
-            if (group != null) handoverProjectService.ValidateGroupId(group, request.IncomingTrustUkprn!.Value);
+            // Validate the request
+            await handoverProjectService.ValidateUrnAndTrustsAsync(urn, incomingTrustUkprn, outgoingTrustUkprn, cancellationToken);
 
-            ProjectGroupId? groupId = null;
-            if (group != null) groupId = group.Id;
-            if (group == null && !string.IsNullOrWhiteSpace(request.GroupId)) groupId = await handoverProjectService.CreateProjectGroup(request.GroupId, request.IncomingTrustUkprn!.Value, cancellationToken);
-
-            var userDto = new UserDto
-            {
-                FirstName = request.CreatedByFirstName,
-                LastName = request.CreatedByLastName,
-                Email = request.CreatedByEmail,
-                Team = region.ToDescription()
-            };
-            var userId = await handoverProjectService.GetOrCreateUserAsync(userDto, cancellationToken);
+            // Prepare common project data
+            var commonData = await handoverProjectService.PrepareCommonProjectDataAsync(
+                urn, 
+                incomingTrustUkprn, 
+                request.GroupId, 
+                request.CreatedByFirstName, 
+                request.CreatedByLastName, 
+                request.CreatedByEmail, 
+                cancellationToken);
 
             // Create transfer task data
             var transferTask = handoverProjectService.CreateTransferTaskAsync(
@@ -87,18 +78,18 @@ public class CreateHandoverTransferProjectCommandHandler(
             );
 
             var parameters = new CreateHandoverTransferProjectParams(
-                projectId,
-                new Urn(urn),
+                commonData.ProjectId,
+                new Urn(commonData.Urn),
                 transferTask.Id.Value,
                 request.ProvisionalTransferDate!.Value,
-                new Ukprn(request.IncomingTrustUkprn!.Value),
-                new Ukprn(request.OutgoingTrustUkprn!.Value),
-                region,
+                new Ukprn(incomingTrustUkprn),
+                new Ukprn(outgoingTrustUkprn),
+                commonData.Region,
                 request.AdvisoryBoardDate!.Value,
                 request.AdvisoryBoardConditions ?? null,
-                groupId,
-                userId,
-                localAuthorityId);
+                commonData.GroupId,
+                commonData.UserId,
+                commonData.LocalAuthorityId);
 
             var project = Project.CreateHandoverTransferProject(parameters);
 
@@ -128,18 +119,5 @@ public class CreateHandoverTransferProjectCommandHandler(
         }
     }
 
-    private async Task ValidateRequest(CreateHandoverTransferProjectCommand request, CancellationToken cancellationToken)
-    {
-        if (request.IncomingTrustUkprn == request.OutgoingTrustUkprn)
-            throw new ValidationException(ValidationConstants.SameTrustValidationMessage);
 
-        // Check if URN already exists in active/inactive transfer projects
-        var existingProject = await handoverProjectService.FindExistingProjectAsync(request.Urn!.Value, cancellationToken);
-
-        if (existingProject != null)
-            throw new ValidationException(string.Format(ValidationConstants.UrnExistsValidationMessage, request.Urn));
-
-        _ = await trustClient.GetTrustByUkprn2Async(request.IncomingTrustUkprn!.Value.ToString(), cancellationToken) ?? throw new ValidationException(string.Format(ValidationConstants.NoTrustFoundValidationMessage, request.IncomingTrustUkprn.Value));
-        _ = await trustClient.GetTrustByUkprn2Async(request.OutgoingTrustUkprn!.Value.ToString(), cancellationToken) ?? throw new ValidationException(string.Format(ValidationConstants.NoTrustFoundValidationMessage, request.OutgoingTrustUkprn.Value));
-    }
 }
