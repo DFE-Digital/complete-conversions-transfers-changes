@@ -20,6 +20,7 @@ using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 using System.ComponentModel.DataAnnotations;
 using Dfe.Complete.Application.KeyContacts.Queries;
+using Dfe.Complete.Utils;
 
 namespace Dfe.Complete.Api.Controllers
 {
@@ -75,6 +76,10 @@ namespace Dfe.Complete.Api.Controllers
             catch (ValidationException ex)
             {
                 return BadRequest(ex.Message);
+            }
+            catch (NotFoundException ex)
+            {
+                return NotFound(ex.Message);
             }
             catch (Exception ex)
             {
