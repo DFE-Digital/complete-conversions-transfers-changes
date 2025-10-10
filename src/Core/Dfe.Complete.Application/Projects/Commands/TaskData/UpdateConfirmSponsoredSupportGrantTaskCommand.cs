@@ -1,7 +1,9 @@
-﻿using Dfe.Complete.Application.Common.Models;
+﻿using System.ComponentModel.DataAnnotations;
+using Dfe.Complete.Application.Common.Models;
 using Dfe.Complete.Application.Notes.Interfaces;
 using Dfe.Complete.Application.Projects.Interfaces;
 using Dfe.Complete.Domain.Enums;
+using Dfe.Complete.Domain.Validators;
 using Dfe.Complete.Domain.ValueObjects;
 using Dfe.Complete.Utils;
 using MediatR;
@@ -10,8 +12,8 @@ using Microsoft.EntityFrameworkCore;
 namespace Dfe.Complete.Application.Projects.Commands.TaskData
 {
     public record UpdateConfirmSponsoredSupportGrantTaskCommand(
-        TaskDataId TaskDataId,
-        ProjectType? ProjectType,
+        [Required] TaskDataId TaskDataId,
+        [Required] [ProjectType] ProjectType? ProjectType,
         bool? NotApplicable,
         string? SponsoredSupportGrantType,
         bool? PaymentAmount,
