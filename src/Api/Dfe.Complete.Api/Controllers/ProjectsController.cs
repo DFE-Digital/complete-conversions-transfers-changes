@@ -1,8 +1,7 @@
 using Asp.Versioning;
 using Dfe.Complete.Application.Common.Models;
-using Dfe.Complete.Application.Contacts.Models;
-using Dfe.Complete.Application.Contacts.Queries;
 using Dfe.Complete.Application.DaoRevoked.Commands;
+using Dfe.Complete.Application.KeyContacts.Models;
 using Dfe.Complete.Application.Notes.Commands;
 using Dfe.Complete.Application.Notes.Queries;
 using Dfe.Complete.Application.Projects.Commands.CreateProject;
@@ -20,6 +19,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 using System.ComponentModel.DataAnnotations;
+using Dfe.Complete.Application.KeyContacts.Queries;
 
 namespace Dfe.Complete.Api.Controllers
 {
