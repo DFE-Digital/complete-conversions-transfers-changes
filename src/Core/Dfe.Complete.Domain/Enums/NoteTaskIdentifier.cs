@@ -83,5 +83,13 @@ public enum NoteTaskIdentifier
     
     [Description("master_funding_agreement")]
     [DisplayDescription("Master funding agreement")]
-    MasterFundingAgreement = 20
+    MasterFundingAgreement = 20,
+
+    [Description("sponsored_support_grant")]
+    [DisplayDescription("Confirm transfer grant funding level")]
+    ConfirmTransferGrantFundingLevel = 21,
+
+    [Description("sponsored_support_grant")]
+    [DisplayDescription("Confirm and process the sponsored support grant")]
+    ConfirmAndProcessTheSponsoredSupportGrant = 22
 }

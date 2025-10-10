@@ -3009,6 +3009,39 @@
         }
       }
     },
+    "/v1/TasksData/TaskData/SponsoredSupportGrant": {
+      "patch": {
+        "tags": [
+          "TasksData"
+        ],
+        "summary": "Confirm the sponsored support grant",
+        "operationId": "TasksData_UpdateSponsoredSupportGrantTask",
+        "requestBody": {
+          "x-name": "request",
+          "description": "The update command.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateConfirmSponsoredSupportGrantTaskCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "204": {
+            "description": "The sponsored support grant task updated successfully."
+          },
+          "400": {
+            "description": "Invalid request data."
+          },
+          "404": {
+            "description": "Project not found."
+          }
+        }
+      }
+    },
     "/v1/Trust/List/All": {
       "get": {
         "tags": [
@@ -5419,7 +5452,9 @@
           "ChurchSupplementalAgreement",
           "CommercialTransferAgreement",
           "MainContact",
-          "MasterFundingAgreement"
+          "MasterFundingAgreement",
+          "ConfirmTransferGrantFundingLevel",
+          "ConfirmAndProcessTheSponsoredSupportGrant"
         ],
         "enum": [
           "Handover",
@@ -5441,7 +5476,9 @@
           "ChurchSupplementalAgreement",
           "CommercialTransferAgreement",
           "MainContact",
-          "MasterFundingAgreement"
+          "MasterFundingAgreement",
+          "ConfirmTransferGrantFundingLevel",
+          "ConfirmAndProcessTheSponsoredSupportGrant"
         ]
       },
       "CreateNoteCommand": {
@@ -7766,6 +7803,47 @@
             "nullable": true
           },
           "signedSecretaryState": {
+            "type": "boolean",
+            "nullable": true
+          }
+        }
+      },
+      "UpdateConfirmSponsoredSupportGrantTaskCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "taskDataId": {
+            "$ref": "#/components/schemas/TaskDataId"
+          },
+          "projectType": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/ProjectType"
+              }
+            ]
+          },
+          "notApplicable": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "sponsoredSupportGrantType": {
+            "type": "string",
+            "nullable": true
+          },
+          "paymentAmount": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "paymentForm": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "sendInformation": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "informTrust": {
             "type": "boolean",
             "nullable": true
           }
