@@ -1,5 +1,7 @@
 
 using System.ComponentModel.DataAnnotations;
+using Dfe.AcademiesApi.Client.Contracts;
+using Dfe.Complete.Application.Constants;
 using Dfe.Complete.Application.ProjectGroups.Interfaces;
 using Dfe.Complete.Application.Projects.Models;
 using Dfe.Complete.Application.Projects.Queries.GetGiasEstablishment;
@@ -19,12 +21,21 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Dfe.Complete.Application.Projects.Services;
 
+public record HandoverProjectCommonData(
+    ProjectId ProjectId,
+    int Urn,
+    Guid LocalAuthorityId,
+    Region Region,
+    ProjectGroupId? GroupId,
+    UserId UserId);
+
 public class HandoverProjectService(
     ISender sender,
     ICompleteRepository<Project> projectRepository,
     IProjectGroupWriteRepository projectGroupWriteRepository,
     ICompleteRepository<ConversionTasksData> conversionTaskRepository,
-    ICompleteRepository<TransferTasksData> transferTaskRepository) : IHandoverProjectService
+    ICompleteRepository<TransferTasksData> transferTaskRepository,
+    ITrustsV4Client trustClient) : IHandoverProjectService
 {
     public async Task<UserId> GetOrCreateUserAsync(UserDto userDto, CancellationToken cancellationToken)
     {
@@ -149,5 +160,59 @@ public class HandoverProjectService(
         };
         await projectGroupWriteRepository.CreateProjectGroupAsync(createdGroup, cancellationToken);
         return id;
+    }
+
+    public async Task ValidateUrnAndTrustsAsync(int urn, int incomingTrustUkprn, int? outgoingTrustUkprn = null, CancellationToken cancellationToken = default)
+    {
+        if (outgoingTrustUkprn.HasValue)
+        {
+            if (incomingTrustUkprn == outgoingTrustUkprn)
+                throw new ValidationException(Constants.ValidationConstants.SameTrustValidationMessage);
+        }
+            
+        // Check if URN already exists in active/inactive projects
+            var existingProject = await FindExistingProjectAsync(urn, cancellationToken);
+        if (existingProject != null)
+            throw new ValidationException(string.Format(Constants.ValidationConstants.UrnExistsValidationMessage, urn));
+
+        // Validate incoming trust exists
+        _ = await trustClient.GetTrustByUkprn2Async(incomingTrustUkprn.ToString(), cancellationToken) 
+            ?? throw new ValidationException(string.Format(Constants.ValidationConstants.NoTrustFoundValidationMessage, incomingTrustUkprn));
+
+        // Validate outgoing trust exists and is different from incoming (for transfers)
+        if (outgoingTrustUkprn.HasValue)
+        {
+            if (incomingTrustUkprn == outgoingTrustUkprn.Value)
+                throw new ValidationException(Constants.ValidationConstants.SameTrustValidationMessage);
+
+            _ = await trustClient.GetTrustByUkprn2Async(outgoingTrustUkprn.Value.ToString(), cancellationToken) 
+                ?? throw new ValidationException(string.Format(Constants.ValidationConstants.NoTrustFoundValidationMessage, outgoingTrustUkprn.Value));
+        }
+    }
+
+    public async Task<HandoverProjectCommonData> PrepareCommonProjectDataAsync(int urn, int incomingTrustUkprn, string? groupId, string createdByFirstName, string createdByLastName, string createdByEmail, CancellationToken cancellationToken)
+    {
+        var projectId = new ProjectId(Guid.NewGuid());
+        var localAuthorityId = await GetLocalAuthorityForUrn(urn, cancellationToken);
+        var region = await GetRegionForUrn(urn, cancellationToken);
+        var group = await GetGroupForGroupId(groupId, cancellationToken);
+
+        if (group != null) ValidateGroupId(group, incomingTrustUkprn);
+
+        ProjectGroupId? projectGroupId = null;
+        if (group != null) projectGroupId = group.Id;
+        if (group == null && !string.IsNullOrWhiteSpace(groupId)) 
+            projectGroupId = await CreateProjectGroup(groupId, incomingTrustUkprn, cancellationToken);
+
+        var userDto = new UserDto
+        {
+            FirstName = createdByFirstName,
+            LastName = createdByLastName,
+            Email = createdByEmail,
+            Team = region.ToDescription()
+        };
+        var userId = await GetOrCreateUserAsync(userDto, cancellationToken);
+
+        return new HandoverProjectCommonData(projectId, urn, localAuthorityId, region, projectGroupId, userId);
     }
 }
