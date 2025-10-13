@@ -169,6 +169,8 @@ jobs:
     steps:
       - name: Report consolidated results to Teams
         run: |
+          npm install axios
+          
           node <<EOF
           const axios = require('axios');
           
