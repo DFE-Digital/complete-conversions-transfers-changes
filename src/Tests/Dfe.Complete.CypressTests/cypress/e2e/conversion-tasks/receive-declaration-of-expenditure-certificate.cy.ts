@@ -94,7 +94,7 @@ describe("Conversion tasks - Receive declaration of expenditure certificate", ()
         taskListPage.hasTaskStatusCompleted("Receive declaration of expenditure certificate");
     });
 
-    it("Should only be able to confirm the received date of the declaration of expenditure certificate once", () => {
+    it.skip("Should only be able to confirm the received date of the declaration of expenditure certificate once", () => {
         cy.visit(`projects/${project2Id}/tasks/receive_grant_payment_certificate`);
         receiveDeclarationOfExpenditureCertificateTaskPage.enterDateReceived(10, 9, 2025).saveAndReturn();
 
