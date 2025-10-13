@@ -28,7 +28,7 @@ public class BaseProjectNotesModel(ISender sender, ILogger logger, string notesN
 
     public bool CanEditNote(UserId noteUserId)
     {
-        if (Project.State == ProjectState.Completed || noteUserId != User?.GetUserId())
+        if (Project.State == ProjectState.Completed || noteUserId != User.GetUserId())
             return false;
         return true;
     }
