@@ -3009,6 +3009,39 @@
         }
       }
     },
+    "/v1/TasksData/TaskData/ConfirmIncomingTrustCeoContact": {
+      "patch": {
+        "tags": [
+          "TasksData"
+        ],
+        "summary": "Confirm the incoming trust ceo contact for the project.",
+        "operationId": "TasksData_UpdateConfirmIncomingTrustCeoContactTask",
+        "requestBody": {
+          "x-name": "request",
+          "description": "The update command.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateIncomingTrustCeoCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "204": {
+            "description": "Confirm the incoming trust ceo contact for the project successfully."
+          },
+          "400": {
+            "description": "Invalid request data."
+          },
+          "404": {
+            "description": "Project not found."
+          }
+        }
+      }
+    },
     "/v1/Trust/List/All": {
       "get": {
         "tags": [
@@ -5420,6 +5453,7 @@
           "CommercialTransferAgreement",
           "MainContact",
           "MasterFundingAgreement",
+          "ConfirmIncomingTrustCeoContact",
           "ConfirmRiskProtectionArrangements",
           "ConfirmRiskProtectionArrangementsPolicy",
           "CheckAccuracyOfHigherNeeds",
@@ -5465,6 +5499,7 @@
           "CommercialTransferAgreement",
           "MainContact",
           "MasterFundingAgreement",
+          "ConfirmIncomingTrustCeoContact",
           "ConfirmRiskProtectionArrangements",
           "ConfirmRiskProtectionArrangementsPolicy",
           "CheckAccuracyOfHigherNeeds",
@@ -7814,6 +7849,18 @@
           "signedSecretaryState": {
             "type": "boolean",
             "nullable": true
+          }
+        }
+      },
+      "UpdateIncomingTrustCeoCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "keyContactId": {
+            "$ref": "#/components/schemas/KeyContactId"
+          },
+          "incomingTrustCeoId": {
+            "$ref": "#/components/schemas/ContactId"
           }
         }
       },

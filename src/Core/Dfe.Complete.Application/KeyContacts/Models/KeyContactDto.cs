@@ -1,6 +1,6 @@
 ﻿using Dfe.Complete.Domain.ValueObjects;
 
-namespace Dfe.Complete.Application.Contacts.Models
+namespace Dfe.Complete.Application.KeyContacts.Models
 {
     public class KeyContactDto
     {
