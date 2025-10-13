@@ -1,0 +1,33 @@
+using Dfe.Complete.Constants;
+using Dfe.Complete.Domain.Enums; 
+using Dfe.Complete.Services.Interfaces;
+using MediatR;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel.DataAnnotations;
+
+namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.ConfirmAcademyRiskProtectionArrangements
+{
+    public class ConversionConfirmAcademyRiskProtectionArrangementsModel(ISender sender, IAuthorizationService authorizationService, ILogger<ConversionConfirmAcademyRiskProtectionArrangementsModel> logger, IErrorService errorService)
+    : BaseProjectTaskModel(sender, authorizationService, logger, NoteTaskIdentifier.ConfirmRiskProtectionArrangements)
+    {
+        [BindProperty]
+        [Required(ErrorMessage = ValidationConstants.NotInTheList)]
+        public RiskProtectionArrangementOption? RpaOption { get; set; }
+        [BindProperty]
+        public string? RpaReason { get; set; }
+        [BindProperty]
+        public Guid? TasksDataId { get; set; }
+        [BindProperty]
+        public ProjectType? Type { get; set; }
+        public override async Task<IActionResult> OnGetAsync()
+        {
+            await base.OnGetAsync();
+            Type = Project.Type;
+            TasksDataId = Project.TasksDataId?.Value;
+            RpaOption = ConversionTaskData.RiskProtectionArrangementOption;
+            RpaReason = ConversionTaskData.RiskProtectionArrangementReason;
+            return Page();
+        } 
+    }
+}

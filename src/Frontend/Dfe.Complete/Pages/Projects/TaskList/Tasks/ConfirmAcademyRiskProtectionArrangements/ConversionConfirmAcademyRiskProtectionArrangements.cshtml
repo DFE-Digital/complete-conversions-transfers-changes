@@ -1,0 +1,55 @@
+﻿@page "/projects/{projectId}/tasks/risk_protection_arrangement"
+@using Dfe.Complete.Domain.Enums
+@inject Dfe.Complete.Services.Interfaces.IErrorService errorService
+@model Dfe.Complete.Pages.Projects.TaskList.Tasks.ConfirmAcademyRiskProtectionArrangements.ConversionConfirmAcademyRiskProtectionArrangementsModel
+@{
+    Layout = "_ProjectTaskLayout";
+    ViewData["Title"] = "Confirm the academy's risk protection arrangements";
+    var rpaReason = nameof(Model.RpaReason);
+}
+@section TaskHeaderHintSection {
+    <div class="govuk-hint">
+        <p>The RPA (risk protection arrangement) is an alternative to commercial insurance. It may save the academy time and money.</p>
+        <p>An academy must join the RPA or have commercially available insurance in place in order to open.</p>
+    </div>
+}
+@section TaskSection {
+    <form method="post">
+        <input type="hidden" asp-for="TasksDataId" />
+        <input type="hidden" asp-for="Type" />
+        <govuk-radios name="RpaOption" asp-for="RpaOption">
+            <govuk-radios-fieldset>
+                <govuk-radios-fieldset-legend is-page-heading="true" class="govuk-fieldset__legend--m">
+                    Is the academy joining the RPA?
+                </govuk-radios-fieldset-legend>
+                <govuk-radios-hint>
+                    <p>Ask the academy what they would like to do about risk protection. The academy will be automatically enrolled in the standard RPA unless they say otherwise.</p>
+                </govuk-radios-hint>
+                <govuk-radios-item data-cy="@RiskProtectionArrangementOption.Standard" value="@RiskProtectionArrangementOption.Standard">Yes, joining standard RPA</govuk-radios-item>
+                <govuk-radios-item data-cy="@RiskProtectionArrangementOption.ChurchOrTrust" value="@RiskProtectionArrangementOption.ChurchOrTrust">Yes, joining church RPA</govuk-radios-item>
+                <govuk-radios-item data-cy="@RiskProtectionArrangementOption.Commercial" value="@RiskProtectionArrangementOption.Commercial">
+                    No, buying commercial insurance
+                    <govuk-radios-item-conditional>
+                        <p class="govuk-body">If they do not join the RPA the academy must buy commercial insurance no later than 11.59pm the day before it opens.</p>
+                        <p>Any commercial insurance policy must begin to cover the academy no later than midnight on the day the academy opens.</p>
+
+
+                        <govuk-textarea data-cy="comercial-reason" asp-for="RpaReason">
+                            <govuk-textarea-label class="govuk-label--s">
+                                Why has the academy chosen commercial insurance?
+                            </govuk-textarea-label>
+                            <govuk-textarea-hint>
+                                <p>Summarise the academy's decision to buy commercial insurance</p>
+                            </govuk-textarea-hint>
+                            @if (errorService.HasErrorForKey(rpaReason))
+                            {
+                                <govuk-textarea-error-message>@errorService.GetErrorMessage(rpaReason)</govuk-textarea-error-message>
+                            }
+                        </govuk-textarea>
+                    </govuk-radios-item-conditional>
+                </govuk-radios-item>
+            </govuk-radios-fieldset>
+        </govuk-radios>
+        @await Html.PartialAsync("_TaskSaveAndReturn", new TaskSaveAndReturnModel(Model.Project, Model.CurrentUserTeam))
+    </form>
+}
