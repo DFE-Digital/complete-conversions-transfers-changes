@@ -419,8 +419,6 @@ namespace Dfe.Complete.Api.Controllers
             await sender.Send(request, cancellationToken);
             return NoContent();
         }
-
-        }
         
         /// <summary>
         /// Confirm the academy risk protection arrangements task updated successfully for either conversion or transfer project.

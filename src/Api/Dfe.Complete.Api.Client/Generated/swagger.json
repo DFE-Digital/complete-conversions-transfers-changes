@@ -7843,6 +7843,18 @@
           }
         }
       },
+      "UpdateIncomingTrustCeoCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "keyContactId": {
+            "$ref": "#/components/schemas/KeyContactId"
+          },
+          "incomingTrustCeoId": {
+            "$ref": "#/components/schemas/ContactId"
+          }
+        }
+      },
       "UpdateConfirmAcademyRiskProtectionArrangementsTaskCommand": {
         "type": "object",
         "additionalProperties": false,
@@ -7873,18 +7885,6 @@
           "rpaReason": {
             "type": "string",
             "nullable": true
-          }
-        }
-      },
-      "UpdateIncomingTrustCeoCommand": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-          "keyContactId": {
-            "$ref": "#/components/schemas/KeyContactId"
-          },
-          "incomingTrustCeoId": {
-            "$ref": "#/components/schemas/ContactId"
           }
         }
       },
