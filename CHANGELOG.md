@@ -19,6 +19,7 @@ Security in case of vulnerabilities.
 ### Added
 - Land registry title plans` task for conversion project.
 - Added `Master Funding Agreement` task for both conversion and transfer projects.
+- Added `Incoming Trust CEO contact` task page
 
 ### Changed
 
