@@ -79,7 +79,13 @@ jobs:
       run:
         working-directory: src/Tests/Dfe.Complete.CypressTests
     outputs:
-      results: ${{ steps.save-results.outputs.results }}
+      results_conversion-tasks: ${{ steps.save-results.outputs.results_conversion-tasks }}
+      results_conversions: ${{ steps.save-results.outputs.results_conversions }}
+      results_project-listings: ${{ steps.save-results.outputs.results_project-listings }}
+      results_transfer-tasks: ${{ steps.save-results.outputs.results_transfer-tasks }}
+      results_transfers: ${{ steps.save-results.outputs.results_transfers }}
+      results_user-capabilities-regional-workers: ${{ steps.save-results.outputs.results_user-capabilities-regional-workers }}
+      results_user-capabilities-support: ${{ steps.save-results.outputs.results_user-capabilities-support }}
     steps:
       - uses: actions/checkout@08eba0b27e820071cde6df949e0beb9ba4906955 # v4
         with:
@@ -155,7 +161,8 @@ jobs:
             success
           });
           
-          console.log(\`::set-output name=results::\${results}\`);
+          const outputName = 'results_' + process.env.TEST_GROUP.replace(/\s+/g, '-');
+          console.log(\`::set-output name=\${outputName}::\${results}\`);
           EOF
         env:
           TEST_GROUP: ${{ matrix.group }}
@@ -175,36 +182,47 @@ jobs:
           const axios = require('axios');
           
           try {
-            // Parse all test results from matrix jobs
-            const jobResults = '${{ needs.cypress-tests.outputs.results }}';
-            const allResults = JSON.stringify(jobResults);
-            console.log("Received results:", allResults);
-          
+            // Get all outputs from the job context
+            const allJobOutputs = ${{ toJSON(needs.cypress-tests.outputs) }};
+            console.log("All job outputs:", JSON.stringify(allJobOutputs));
+            
             // Parse the results from each test group
             const resultsArray = [];
-            const allJobOutputs = ${{ toJSON(needs.cypress-tests.outputs) }};
-          
-            if (allJobOutputs && allJobOutputs.results) {
-              try {
-                const matrixOutputString = allJobOutputs.results;
-          
-                if (matrixOutputString.startsWith('[') && matrixOutputString.endsWith(']')) {
-                  resultsArray.push(...JSON.parse(matrixOutputString));
-                } else {
-                  resultsArray.push(JSON.parse(matrixOutputString));
+            
+            // Extract results for each known group
+            const groups = [
+              'conversion-tasks',
+              'conversions',
+              'project-listings',
+              'transfer-tasks',
+              'transfers',
+              'user-capabilities-regional-workers',
+              'user-capabilities-support'
+            ];
+            
+            // Process each group's results
+            for (const group of groups) {
+              const outputKey = 'results_' + group;
+              if (allJobOutputs[outputKey]) {
+                try {
+                  const result = JSON.parse(allJobOutputs[outputKey]);
+                  resultsArray.push(result);
+                  console.log(\`Parsed results for \${group}:\`, JSON.stringify(result));
+                } catch (e) {
+                  console.error(\`Error parsing results for \${group}:\`, e);
                 }
-              } catch (e) {
-                console.error("Error parsing job outputs:", e);
+              } else {
+                console.log(\`No results found for group \${group}\`);
               }
             }
-          
+            
             let totalGroups = 0;
             let successfulGroups = 0;
             let totalTests = 0;
             let totalPassed = 0;
             let totalFailed = 0;
             let groupRows = [];
-          
+            
             for (const result of resultsArray) {
               if (result) {
                 totalGroups++;
@@ -212,7 +230,7 @@ jobs:
                 totalTests += result.totalTests || 0;
                 totalPassed += result.passedTests || 0;
                 totalFailed += result.failedTests || 0;
-          
+                
                 groupRows.push({
                   type: "TableRow",
                   cells: [
@@ -232,10 +250,10 @@ jobs:
                 });
               }
             }
-          
+            
             const overallSuccess = totalFailed === 0;
             const failedGroups = totalGroups - successfulGroups;
-          
+            
             const webhookUrl = process.env.TEAMS_WEBHOOK_URL;
             const message = {
               type: "message",
@@ -319,7 +337,7 @@ jobs:
                 }
               ]
             };
-          
+            
             axios.post(webhookUrl, message)
               .then(() => console.log("Summary message sent to Teams"))
               .catch(err => { console.error("Error sending summary to Teams", err); process.exit(1); });
