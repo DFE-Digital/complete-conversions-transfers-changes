@@ -21,6 +21,7 @@ Security in case of vulnerabilities.
 - Added `Master Funding Agreement` task for both conversion and transfer projects.
 - Add API end point for editing user
 - Add ability to edit a user
+- Added `Incoming Trust CEO contact` task page
 
 ### Changed
 
@@ -98,6 +99,8 @@ See the [full commit history](https://github.com/DFE-Digital/complete-conversion
 
 ### Changed
 - Group reference number links to the group on "About the project"
+- Allow users to modify `declaration of expenditure certificate date` on the `Receive declaration of expenditure certificate` task for both conversion and transfer project.
+
 
 ### Fixed
 - GroupReferenceNumberAttribute failed when there was no existing group
