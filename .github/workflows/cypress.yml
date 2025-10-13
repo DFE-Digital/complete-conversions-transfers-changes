@@ -109,16 +109,18 @@ jobs:
       - name: Rename raw test results
         if: always()
         run: |
-          mkdir -p cypress/reports/merged/${{ matrix.group }}
-          cp cypress/reports/mocha/*.json cypress/reports/merged/${{ matrix.group }}/
+          mkdir -p cypress/reports/merged
+          for file in cypress/reports/mocha/*.json; do
+            filename=$(basename "$file")
+            cp "$file" "cypress/reports/merged/${{ matrix.group }}-$filename"
+          done
 
       - name: Upload raw test results
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
-          name: raw-report-${{ matrix.group }}
-          path: src/Tests/Dfe.Complete.CypressTests/cypress/reports/merged/${{ matrix.group }}
-
+          name: raw-test-reports
+          path: src/Tests/Dfe.Complete.CypressTests/cypress/reports/merged/*.json
   generate-combined-report:
     name: Generate Combined Report
     needs: cypress-tests
@@ -141,9 +143,8 @@ jobs:
       - name: Download all test results
         uses: actions/download-artifact@v4
         with:
-          pattern: raw-report-*
+          name: raw-test-reports
           path: src/Tests/Dfe.Complete.CypressTests/cypress/reports/mocha
-          merge-multiple: true
 
       - name: List downloaded files
         run: find cypress/reports/mocha -type f -name "*.json" | sort
