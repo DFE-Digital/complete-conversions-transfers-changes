@@ -40,7 +40,6 @@ concurrency:
 env:
   NODE_VERSION: '18'
   BROWSER: 'edge'
-  CYPRESS_DOCKER_IMAGE: 'cypress/browsers:22.15.1@sha256:753c6dd8dc176c2eb9e9a622146d2c260e308e86eb62ce2b3e6f12e7d67d7b13'
   WORKING_DIRECTORY: 'src/Tests/Dfe.Complete.CypressTests'
 
 jobs:
@@ -68,7 +67,7 @@ jobs:
           - group: user-capabilities-support
             spec: cypress/e2e/user-capabilities-support/**/*.cy.ts
     container:
-      image: ${{ env.CYPRESS_DOCKER_IMAGE }}
+      image: cypress/browsers:22.15.1@sha256:753c6dd8dc176c2eb9e9a622146d2c260e308e86eb62ce2b3e6f12e7d67d7b13
     defaults:
       run:
         working-directory: ${{ env.WORKING_DIRECTORY }}
