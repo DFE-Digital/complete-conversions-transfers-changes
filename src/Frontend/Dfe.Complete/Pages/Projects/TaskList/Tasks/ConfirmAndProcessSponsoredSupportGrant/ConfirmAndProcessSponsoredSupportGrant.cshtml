@@ -1,0 +1,16 @@
+﻿@page "/projects/{projectId}/tasks/sponsored_support_grant"
+@model Dfe.Complete.Pages.Projects.TaskList.Tasks.ConfirmAndProcessSponsoredSupportGrant.ConfirmAndProcessSponsoredSupportGrantModel
+@{
+    Layout = "_ProjectTaskLayout";
+    ViewData["Title"] = "Confirm and process the sponsored support grant";
+}
+@section TaskHeaderHintSection {
+    <div class="govuk-hint"> 
+    </div>
+}
+@section TaskSection {
+
+    <form method="post"> 
+        @await Html.PartialAsync("_TaskSaveAndReturn", new TaskSaveAndReturnModel(Model.Project, Model.CurrentUserTeam))
+    </form>
+}
