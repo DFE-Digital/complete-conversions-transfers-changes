@@ -106,13 +106,19 @@ jobs:
           name: screenshots-${{ inputs.environment }}-${{ matrix.group }}
           path: src/Tests/Dfe.Complete.CypressTests/cypress/screenshots
 
-      # Upload raw JSON reports instead of generating HTML reports for each group
+      - name: Rename raw test results
+        if: always()
+        run: |
+          mkdir -p cypress/reports/merged
+          cp cypress/reports/mocha/*.json cypress/reports/merged/${{ matrix.group }}-results.json
+
       - name: Upload raw test results
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
           name: raw-report-${{ matrix.group }}
-          path: src/Tests/Dfe.Complete.CypressTests/cypress/reports/mocha/*.json
+          path: src/Tests/Dfe.Complete.CypressTests/cypress/reports/merged/*.json
+
 
   generate-combined-report:
     name: Generate Combined Report
