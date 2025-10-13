@@ -108,11 +108,11 @@ public enum NoteTaskIdentifier
     [Description("conversion_grant")]
     [DisplayDescription("Process conversion support grant")]
     ProcessConversionSupportGrant = 26,
-    /*
+    
     [Description("sponsored_support_grant")]
     [DisplayDescription("Confirm and process the sponsored support grant")]
     ConfirmAndProcessSponsoredSupportGrant = 27,
-
+    /*
     [Description("confirm_headteacher_contact")]
     [DisplayDescription("Confirm the headteacher’s details")]
     ConfirmHeadTeacherDetails = 28,
