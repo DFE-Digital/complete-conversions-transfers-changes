@@ -5476,7 +5476,10 @@
           "FormM",
           "ClosureOrTransferDeclaration",
           "ConfirmBankDetailsForGeneralAnnualGrantPaymentNeedToChange",
-          "ConfirmIncomingTrustHasCompletedAllActions"
+          "ConfirmIncomingTrustHasCompletedAllActions",
+          "LandConsentLetter",
+          "DeedOfTerminationForMasterFundingAgreement",
+          "DeedOfTerminationForChurchSupplementalAgreement"
         ],
         "enum": [
           "Handover",
@@ -5522,7 +5525,10 @@
           "FormM",
           "ClosureOrTransferDeclaration",
           "ConfirmBankDetailsForGeneralAnnualGrantPaymentNeedToChange",
-          "ConfirmIncomingTrustHasCompletedAllActions"
+          "ConfirmIncomingTrustHasCompletedAllActions",
+          "LandConsentLetter",
+          "DeedOfTerminationForMasterFundingAgreement",
+          "DeedOfTerminationForChurchSupplementalAgreement"
         ]
       },
       "CreateNoteCommand": {

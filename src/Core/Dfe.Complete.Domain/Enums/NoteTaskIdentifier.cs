@@ -179,5 +179,17 @@ public enum NoteTaskIdentifier
 
     [Description("confirm_incoming_trust_has_completed_all_actions")]
     [DisplayDescription("Confirm the incoming trust has completed all actions")]
-    ConfirmIncomingTrustHasCompletedAllActions = 44
+    ConfirmIncomingTrustHasCompletedAllActions = 44,
+
+    [Description("land_consent_letter")]
+    [DisplayDescription("Land consent letter")]
+    LandConsentLetter = 45,
+
+    [Description("deed_of_termination_for_the_master_funding_agreement")]
+    [DisplayDescription("Deed of termination for the master funding agreement")]
+    DeedOfTerminationForMasterFundingAgreement = 46,
+
+    [Description("deed_termination_church_agreement")]
+    [DisplayDescription("Deed of termination for the church supplemental agreement")]
+    DeedOfTerminationForChurchSupplementalAgreement = 47
 }
