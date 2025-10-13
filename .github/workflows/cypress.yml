@@ -156,9 +156,6 @@ jobs:
           path: ${{ env.WORKING_DIRECTORY }}/cypress/reports/mocha
           merge-multiple: true
 
-      - name: Debug downloaded files
-        run: find cypress/reports/mocha -type f -name "*.json" | sort
-
       - name: Generate combined HTML report
         run: |
           mkdir -p mochareports
