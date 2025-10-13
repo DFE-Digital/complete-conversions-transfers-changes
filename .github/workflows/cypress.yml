@@ -164,6 +164,27 @@ jobs:
         run: |
           node <<EOF
           const axios = require('axios');
+          const fs = require('fs');
+          const path = require('path');
+          
+          // Read the combined report JSON to get test statistics
+          let reportStats = { tests: 0, passes: 0, failures: 0 };
+          try {
+            const reportPath = path.join(process.cwd(), 'mochareports', 'report.json');
+            if (fs.existsSync(reportPath)) {
+              const reportData = JSON.parse(fs.readFileSync(reportPath, 'utf8'));
+              if (reportData && reportData.stats) {
+                reportStats = {
+                  tests: reportData.stats.tests || 0,
+                  passes: reportData.stats.passes || 0,
+                  failures: reportData.stats.failures || 0
+                };
+              }
+            }
+          } catch (error) {
+            console.error('Error reading report file:', error);
+          }
+          
           const webhookUrl = process.env.TEAMS_WEBHOOK_URL;
           const message = {
             type: "message",
@@ -201,6 +222,23 @@ jobs:
                           type: "TextBlock",
                           wrap: true,
                           text: "**Environment:** " + process.env.ENVIRONMENT
+                        },
+                        {
+                          type: "FactSet",
+                          facts: [
+                            {
+                              title: "Total Tests:",
+                              value: reportStats.tests.toString()
+                            },
+                            {
+                              title: "Passed:",
+                              value: reportStats.passes.toString()
+                            },
+                            {
+                              title: "Failed:",
+                              value: reportStats.failures.toString()
+                            }
+                          ]
                         },
                         {
                           type: "TextBlock",
