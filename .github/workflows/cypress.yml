@@ -78,14 +78,6 @@ jobs:
     defaults:
       run:
         working-directory: src/Tests/Dfe.Complete.CypressTests
-    outputs:
-      results_conversion-tasks: ${{ steps.save-results.outputs.results_conversion-tasks }}
-      results_conversions: ${{ steps.save-results.outputs.results_conversions }}
-      results_project-listings: ${{ steps.save-results.outputs.results_project-listings }}
-      results_transfer-tasks: ${{ steps.save-results.outputs.results_transfer-tasks }}
-      results_transfers: ${{ steps.save-results.outputs.results_transfers }}
-      results_user-capabilities-regional-workers: ${{ steps.save-results.outputs.results_user-capabilities-regional-workers }}
-      results_user-capabilities-support: ${{ steps.save-results.outputs.results_user-capabilities-support }}
     steps:
       - uses: actions/checkout@08eba0b27e820071cde6df949e0beb9ba4906955 # v4
         with:
@@ -114,238 +106,112 @@ jobs:
           name: screenshots-${{ inputs.environment }}-${{ matrix.group }}
           path: src/Tests/Dfe.Complete.CypressTests/cypress/screenshots
 
-      - name: Generate report
-        if: always()
-        run: |
-          mkdir mochareports
-          npm run generate:html:report
-
-      - name: Upload report
+      # Upload raw JSON reports instead of generating HTML reports for each group
+      - name: Upload raw test results
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
-          name: reports-${{ inputs.environment }}-${{ matrix.group }}
+          name: raw-report-${{ matrix.group }}
+          path: src/Tests/Dfe.Complete.CypressTests/cypress/reports/mocha/*.json
+
+  generate-combined-report:
+    name: Generate Combined Report
+    needs: cypress-tests
+    runs-on: ubuntu-latest
+    if: always()
+    defaults:
+      run:
+        working-directory: src/Tests/Dfe.Complete.CypressTests
+    steps:
+      - uses: actions/checkout@08eba0b27e820071cde6df949e0beb9ba4906955 # v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Install dependencies
+        run: npm ci || npm install
+
+      - name: Download all test results
+        uses: actions/download-artifact@v4
+        with:
+          pattern: raw-report-*
+          path: src/Tests/Dfe.Complete.CypressTests/cypress/reports/mocha
+          merge-multiple: true
+
+      - name: Generate combined HTML report
+        run: |
+          mkdir -p mochareports
+          npm run generate:html:report
+
+      - name: Upload combined report
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: combined-report-${{ inputs.environment }}
           path: src/Tests/Dfe.Complete.CypressTests/mochareports
 
-      - name: Save test results
-        id: save-results
+      - name: Report results to Teams
         if: always()
         run: |
           node <<EOF
-          const fs = require('fs');
-          const path = require('path');
-          
-          let totalTests = 0;
-          let passedTests = 0;
-          let failedTests = 0;
-          let success = true;
-          
-          try {
-            const reportPath = path.join(process.cwd(), 'mochareports', 'mochawesome.json');
-            if (fs.existsSync(reportPath)) {
-              const report = JSON.parse(fs.readFileSync(reportPath, 'utf8'));
-              totalTests = report.stats?.tests || 0;
-              passedTests = report.stats?.passes || 0;
-              failedTests = report.stats?.failures || 0;
-              success = failedTests === 0;
-            }
-          } catch (error) {
-            console.error('Error reading test results:', error);
-          }
-          
-          const results = JSON.stringify({
-            group: process.env.TEST_GROUP,
-            totalTests,
-            passedTests,
-            failedTests,
-            success
-          });
-          
-          const outputName = 'results_' + process.env.TEST_GROUP.replace(/\s+/g, '-');
-          console.log(\`::set-output name=\${outputName}::\${results}\`);
-          EOF
-        env:
-          TEST_GROUP: ${{ matrix.group }}
-
-  report-summary:
-    name: Report Summary to Teams
-    runs-on: ubuntu-latest
-    environment: ${{ inputs.environment }}
-    needs: cypress-tests
-    if: always()
-    steps:
-      - name: Report consolidated results to Teams
-        run: |
-          npm install axios
-          
-          node <<EOF
           const axios = require('axios');
-          
-          try {
-            // Get all outputs from the job context
-            const allJobOutputs = ${{ toJSON(needs.cypress-tests.outputs) }};
-            console.log("All job outputs:", JSON.stringify(allJobOutputs));
-            
-            // Parse the results from each test group
-            const resultsArray = [];
-            
-            // Extract results for each known group
-            const groups = [
-              'conversion-tasks',
-              'conversions',
-              'project-listings',
-              'transfer-tasks',
-              'transfers',
-              'user-capabilities-regional-workers',
-              'user-capabilities-support'
-            ];
-            
-            // Process each group's results
-            for (const group of groups) {
-              const outputKey = 'results_' + group;
-              if (allJobOutputs[outputKey]) {
-                try {
-                  const result = JSON.parse(allJobOutputs[outputKey]);
-                  resultsArray.push(result);
-                  console.log(\`Parsed results for \${group}:\`, JSON.stringify(result));
-                } catch (e) {
-                  console.error(\`Error parsing results for \${group}:\`, e);
-                }
-              } else {
-                console.log(\`No results found for group \${group}\`);
-              }
-            }
-            
-            let totalGroups = 0;
-            let successfulGroups = 0;
-            let totalTests = 0;
-            let totalPassed = 0;
-            let totalFailed = 0;
-            let groupRows = [];
-            
-            for (const result of resultsArray) {
-              if (result) {
-                totalGroups++;
-                if (result.success) successfulGroups++;
-                totalTests += result.totalTests || 0;
-                totalPassed += result.passedTests || 0;
-                totalFailed += result.failedTests || 0;
-                
-                groupRows.push({
-                  type: "TableRow",
-                  cells: [
-                    { type: "TableCell", items: [{ type: "TextBlock", text: result.group || "Unknown", weight: "default" }] },
-                    { type: "TableCell", items: [{ type: "TextBlock", text: String(result.totalTests || "0"), weight: "default" }] },
-                    { type: "TableCell", items: [{ type: "TextBlock", text: String(result.passedTests || "0"), weight: "default" }] },
-                    { type: "TableCell", items: [{ type: "TextBlock", text: String(result.failedTests || "0"), weight: "default" }] },
-                    { 
-                      type: "TableCell", 
-                      items: [{ 
-                        type: "TextBlock", 
-                        text: result.success ? "✅" : "❌", 
-                        weight: "default" 
-                      }] 
+          const webhookUrl = process.env.TEAMS_WEBHOOK_URL;
+          const message = {
+            type: "message",
+            attachments: [
+              {
+                contentType: "application/vnd.microsoft.card.adaptive",
+                contentUrl: null,
+                content: {
+                  "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+                  type: "AdaptiveCard",
+                  version: "1.2",
+                  body: [
+                    {
+                      type: "Container",
+                      style: process.env.GITHUB_JOB_STATUS == 'success' ? "good" : "attention",
+                      items: [
+                        {
+                          type: "TextBlock",
+                          wrap: true,
+                          text: process.env.GITHUB_JOB_STATUS == 'success' ? "**Cypress Test Run Passed** ✅" : "**Cypress Test Run Failed** ❌",
+                          size: "large",
+                          horizontalAlignment: "center"
+                        },
+                        {
+                          type: "TextBlock",
+                          wrap: true,
+                          text: "**Branch:** " + process.env.GITHUB_REF
+                        },
+                        {
+                          type: "TextBlock",
+                          wrap: true,
+                          text: "**Workflow:** " + process.env.GITHUB_WORKFLOW
+                        },
+                        {
+                          type: "TextBlock",
+                          wrap: true,
+                          text: "**Environment:** " + process.env.ENVIRONMENT
+                        },
+                        {
+                          type: "TextBlock",
+                          wrap: true,
+                          text: "**See more information:** [" + process.env.INFORMATION_LINK + "](" + process.env.INFORMATION_LINK + ")"
+                        }
+                      ]
                     }
                   ]
-                });
-              }
-            }
-            
-            const overallSuccess = totalFailed === 0;
-            const failedGroups = totalGroups - successfulGroups;
-            
-            const webhookUrl = process.env.TEAMS_WEBHOOK_URL;
-            const message = {
-              type: "message",
-              attachments: [
-                {
-                  contentType: "application/vnd.microsoft.card.adaptive",
-                  contentUrl: null,
-                  content: {
-                    "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
-                    type: "AdaptiveCard",
-                    version: "1.2",
-                    body: [
-                      {
-                        type: "Container",
-                        style: overallSuccess ? "good" : "attention",
-                        items: [
-                          {
-                            type: "TextBlock",
-                            wrap: true,
-                            text: overallSuccess ? "**Cypress Tests Passed** ✅" : "**Cypress Tests Failed** ❌",
-                            size: "large",
-                            horizontalAlignment: "center"
-                          },
-                          {
-                            type: "TextBlock",
-                            wrap: true,
-                            text: "**Branch:** " + process.env.GITHUB_REF
-                          },
-                          {
-                            type: "TextBlock",
-                            wrap: true,
-                            text: "**Workflow:** " + process.env.GITHUB_WORKFLOW
-                          },
-                          {
-                            type: "TextBlock",
-                            wrap: true,
-                            text: "**Environment:** " + process.env.ENVIRONMENT
-                          },
-                          {
-                            type: "TextBlock",
-                            wrap: true,
-                            text: "**Overall Results:** " + totalGroups + " test groups, " + successfulGroups + " passed, " + failedGroups + " failed"
-                          },
-                          {
-                            type: "TextBlock",
-                            wrap: true,
-                            text: "**Total Tests:** " + totalTests + " (" + totalPassed + " passed, " + totalFailed + " failed)"
-                          },
-                          {
-                            type: "Table",
-                            columns: [
-                              { width: 1 },
-                              { width: 1 },
-                              { width: 1 },
-                              { width: 1 },
-                              { width: 1 }
-                            ],
-                            rows: [
-                              {
-                                type: "TableRow",
-                                cells: [
-                                  { type: "TableCell", items: [{ type: "TextBlock", text: "Test Group", weight: "bolder" }] },
-                                  { type: "TableCell", items: [{ type: "TextBlock", text: "Total", weight: "bolder" }] },
-                                  { type: "TableCell", items: [{ type: "TextBlock", text: "Passed", weight: "bolder" }] },
-                                  { type: "TableCell", items: [{ type: "TextBlock", text: "Failed", weight: "bolder" }] },
-                                  { type: "TableCell", items: [{ type: "TextBlock", text: "Status", weight: "bolder" }] }
-                                ]
-                              },
-                              ...groupRows
-                            ]
-                          },
-                          {
-                            type: "TextBlock",
-                            wrap: true,
-                            text: "**See more information:** [" + process.env.INFORMATION_LINK + "](" + process.env.INFORMATION_LINK + ")"
-                          }
-                        ]
-                      }
-                    ]
-                  }
                 }
-              ]
-            };
-            
-            axios.post(webhookUrl, message)
-              .then(() => console.log("Summary message sent to Teams"))
-              .catch(err => { console.error("Error sending summary to Teams", err); process.exit(1); });
-          } catch (error) {
-            console.error("Error in report summary:", error);
+              }
+            ]
           }
+          axios.post(webhookUrl, message)
+            .then(() => console.log("Message sent to Teams"))
+            .catch(err => { console.error("Error sending to Teams", err); process.exit(1); });
           EOF
         env:
           TEAMS_WEBHOOK_URL: ${{ secrets.TEAMS_WEBHOOK_URL }}
           ENVIRONMENT: ${{ inputs.environment }}
           INFORMATION_LINK: "https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          GITHUB_JOB_STATUS: ${{ job.status }}
