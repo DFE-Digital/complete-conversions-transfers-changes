@@ -31,7 +31,7 @@ namespace Dfe.Complete.Domain.Tests.Enums
         [InlineData(NoteTaskIdentifier.CheckAccuracyOfHigherNeeds, "check_accuracy_of_higher_needs", "Check accuracy of high needs places information")]
         [InlineData(NoteTaskIdentifier.CompleteNotificationOfChange, "complete_notification_of_change", "Complete a notification of changes to funded high needs places form")]
         [InlineData(NoteTaskIdentifier.ProcessConversionSupportGrant, "conversion_grant", "Process conversion support grant")]
-        /*[InlineData(NoteTaskIdentifier.ConfirmAndProcessSponsoredSupportGrant, "sponsored_support_grant", "Confirm and process the sponsored support grant")]
+        [InlineData(NoteTaskIdentifier.ConfirmAndProcessSponsoredSupportGrant, "sponsored_support_grant", "Confirm and process the sponsored support grant")]
         [InlineData(NoteTaskIdentifier.ConfirmHeadTeacherDetails, "confirm_headteacher_contact", "Confirm the headteacher’s details")]
         [InlineData(NoteTaskIdentifier.ConfirmChairOfGovernorsDetails, "confirm_chair_of_governors_contact", "Confirm the chair of governors’ details")]
         [InlineData(NoteTaskIdentifier.TrustModificationOrder, "trust_modification_order", "Trust modification order")]
@@ -48,7 +48,7 @@ namespace Dfe.Complete.Domain.Tests.Enums
         [InlineData(NoteTaskIdentifier.FormM, "form_m", "Form M")]
         [InlineData(NoteTaskIdentifier.ClosureOrTransferDeclaration, "closure_or_transfer_declaration", "Closure or transfer declaration")]
         [InlineData(NoteTaskIdentifier.ConfirmBankDetailsForGeneralAnnualGrantPaymentNeedToChange, "bank_details_changing", "Confirm if the bank details for the general annual grant payment need to change")]
-        [InlineData(NoteTaskIdentifier.ConfirmIncomingTrustHasCompletedAllActions, "confirm_incoming_trust_has_completed_all_actions", "Confirm the incoming trust has completed all actions")]*/
+        [InlineData(NoteTaskIdentifier.ConfirmIncomingTrustHasCompletedAllActions, "confirm_incoming_trust_has_completed_all_actions", "Confirm the incoming trust has completed all actions")]
         public void NoteTaskIdentifier_ShouldHaveCorrectDescription(NoteTaskIdentifier identifier, string expectedDescription, string expectedDisplayExpectation)
         {
             // Act

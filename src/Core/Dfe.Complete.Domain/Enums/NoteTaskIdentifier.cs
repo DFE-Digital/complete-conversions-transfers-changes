@@ -112,7 +112,7 @@ public enum NoteTaskIdentifier
     [Description("sponsored_support_grant")]
     [DisplayDescription("Confirm and process the sponsored support grant")]
     ConfirmAndProcessSponsoredSupportGrant = 27,
-    /*
+    
     [Description("confirm_headteacher_contact")]
     [DisplayDescription("Confirm the headteacher’s details")]
     ConfirmHeadTeacherDetails = 28,
@@ -179,5 +179,5 @@ public enum NoteTaskIdentifier
 
     [Description("confirm_incoming_trust_has_completed_all_actions")]
     [DisplayDescription("Confirm the incoming trust has completed all actions")]
-    ConfirmIncomingTrustHasCompletedAllActions = 44,*/
+    ConfirmIncomingTrustHasCompletedAllActions = 44
 }

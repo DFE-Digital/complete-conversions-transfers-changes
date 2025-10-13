@@ -3419,6 +3419,60 @@ namespace Dfe.Complete.Client.Contracts
         [System.Runtime.Serialization.EnumMember(Value = @"ProcessConversionSupportGrant")]
         ProcessConversionSupportGrant = 25,
 
+        [System.Runtime.Serialization.EnumMember(Value = @"ConfirmAndProcessSponsoredSupportGrant")]
+        ConfirmAndProcessSponsoredSupportGrant = 26,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"ConfirmHeadTeacherDetails")]
+        ConfirmHeadTeacherDetails = 27,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"ConfirmChairOfGovernorsDetails")]
+        ConfirmChairOfGovernorsDetails = 28,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"TrustModificationOrder")]
+        TrustModificationOrder = 29,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"DirectionToTransfer")]
+        DirectionToTransfer = 30,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"OneHundredAndTwentyFiveYearLease")]
+        OneHundredAndTwentyFiveYearLease = 31,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"Subleases")]
+        Subleases = 32,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"TenancyAtWill")]
+        TenancyAtWill = 33,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"ConfirmSchoolHasCompletedAllActions")]
+        ConfirmSchoolHasCompletedAllActions = 34,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"ShareInformationAboutOpening")]
+        ShareInformationAboutOpening = 35,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"ConfirmOutgoingTrustCeoDetails")]
+        ConfirmOutgoingTrustCeoDetails = 36,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"RequestNewUrnAndRecordForAcademy")]
+        RequestNewUrnAndRecordForAcademy = 37,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"ConfirmTransferGrantFundingLevel")]
+        ConfirmTransferGrantFundingLevel = 38,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"CheckAndConfirmAcademyAndTrustFinancialInformation")]
+        CheckAndConfirmAcademyAndTrustFinancialInformation = 39,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"FormM")]
+        FormM = 40,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"ClosureOrTransferDeclaration")]
+        ClosureOrTransferDeclaration = 41,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"ConfirmBankDetailsForGeneralAnnualGrantPaymentNeedToChange")]
+        ConfirmBankDetailsForGeneralAnnualGrantPaymentNeedToChange = 42,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"ConfirmIncomingTrustHasCompletedAllActions")]
+        ConfirmIncomingTrustHasCompletedAllActions = 43,
+
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.2.0.0 (NJsonSchema v11.1.0.0 (Newtonsoft.Json v13.0.0.0))")]
