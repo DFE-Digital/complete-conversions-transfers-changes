@@ -215,9 +215,9 @@ jobs:
                   type: "TableRow",
                   cells: [
                     { type: "TableCell", items: [{ type: "TextBlock", text: result.group || "Unknown", weight: "default" }] },
-                    { type: "TableCell", items: [{ type: "TextBlock", text: result.totalTests || "0", weight: "default" }] },
-                    { type: "TableCell", items: [{ type: "TextBlock", text: result.passedTests || "0", weight: "default" }] },
-                    { type: "TableCell", items: [{ type: "TextBlock", text: result.failedTests || "0", weight: "default" }] },
+                    { type: "TableCell", items: [{ type: "TextBlock", text: String(result.totalTests || "0"), weight: "default" }] },
+                    { type: "TableCell", items: [{ type: "TextBlock", text: String(result.passedTests || "0"), weight: "default" }] },
+                    { type: "TableCell", items: [{ type: "TextBlock", text: String(result.failedTests || "0"), weight: "default" }] },
                     { 
                       type: "TableCell", 
                       items: [{ 
@@ -232,6 +232,7 @@ jobs:
             }
           
             const overallSuccess = totalFailed === 0;
+            const failedGroups = totalGroups - successfulGroups;
           
             const webhookUrl = process.env.TEAMS_WEBHOOK_URL;
             const message = {
@@ -274,12 +275,12 @@ jobs:
                           {
                             type: "TextBlock",
                             wrap: true,
-                            text: `**Overall Results:** ${totalGroups} test groups, ${successfulGroups} passed, ${totalGroups - successfulGroups} failed`
+                            text: "**Overall Results:** " + totalGroups + " test groups, " + successfulGroups + " passed, " + failedGroups + " failed"
                           },
                           {
                             type: "TextBlock",
                             wrap: true,
-                            text: `**Total Tests:** ${totalTests} (${totalPassed} passed, ${totalFailed} failed)`
+                            text: "**Total Tests:** " + totalTests + " (" + totalPassed + " passed, " + totalFailed + " failed)"
                           },
                           {
                             type: "Table",
