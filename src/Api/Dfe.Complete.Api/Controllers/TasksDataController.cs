@@ -1,4 +1,5 @@
 ﻿using Asp.Versioning;
+using Dfe.Complete.Application.KeyContacts.Commands;
 using Dfe.Complete.Application.Projects.Commands.TaskData;
 using Dfe.Complete.Application.Projects.Models;
 using Dfe.Complete.Application.Projects.Queries.GetConversionTasksData;
@@ -228,6 +229,7 @@ namespace Dfe.Complete.Api.Controllers
             await sender.Send(request, cancellationToken);
             return NoContent();
         }
+        
 
         /// <summary>
         /// Confirm the date the academy transferred task updated successfully.
@@ -379,5 +381,44 @@ namespace Dfe.Complete.Api.Controllers
             await sender.Send(request, cancellationToken);
             return NoContent();
         }
+        
+        /// <summary>
+        /// Updates the master funding agreement task Data for conversion or transfer project.
+        /// </summary>
+        /// <param name="request">The update command.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        [Authorize(Policy = "CanReadWriteUpdate")]
+        [HttpPatch]
+        [Route("TaskData/MasterFundingAgreement")]
+        [SwaggerResponse(204, "Conversion or transfer's master funding agreement task updated successfully.")]
+        [SwaggerResponse(400, "Invalid request data.")]
+        [SwaggerResponse(404, "Project/User not found.")]
+        public async Task<IActionResult> UpdateMasterFundingAgreementTaskAsync(
+            [FromBody] UpdateMasterFundingAgreementTaskCommand request,
+            CancellationToken cancellationToken)
+        {
+            await sender.Send(request, cancellationToken);
+            return NoContent();
+        }        
+
+        /// <summary>
+        /// Confirm the incoming trust ceo contact for the project.
+        /// </summary>
+        /// <param name="request">The update command.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        [Authorize(Policy = "CanReadWriteUpdate")]
+        [HttpPatch]
+        [Route("TaskData/ConfirmIncomingTrustCeoContact")]
+        [SwaggerResponse(204, "Confirm the incoming trust ceo contact for the project successfully.")]
+        [SwaggerResponse(400, "Invalid request data.")]
+        [SwaggerResponse(404, "Project not found.")]
+        public async Task<IActionResult> UpdateConfirmIncomingTrustCeoContactTaskAsync(
+            [FromBody] UpdateIncomingTrustCeoCommand request,
+            CancellationToken cancellationToken)
+        {
+            await sender.Send(request, cancellationToken);
+            return NoContent();
+        }
+
     }
 }

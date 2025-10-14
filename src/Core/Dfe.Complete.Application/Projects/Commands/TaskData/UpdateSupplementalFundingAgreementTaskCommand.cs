@@ -1,4 +1,5 @@
-﻿using Dfe.Complete.Application.Common.Models;
+﻿using System.ComponentModel.DataAnnotations;
+using Dfe.Complete.Application.Common.Models;
 using Dfe.Complete.Application.Notes.Interfaces;
 using Dfe.Complete.Application.Projects.Interfaces;
 using Dfe.Complete.Domain.Enums;
@@ -11,7 +12,7 @@ namespace Dfe.Complete.Application.Projects.Commands.TaskData
 {
     public record UpdateSupplementalFundingAgreementTaskCommand(
         TaskDataId TaskDataId,
-        ProjectType? ProjectType,
+        [Required]ProjectType? ProjectType,
         bool? Received,
         bool? Cleared,
         bool? Sent,

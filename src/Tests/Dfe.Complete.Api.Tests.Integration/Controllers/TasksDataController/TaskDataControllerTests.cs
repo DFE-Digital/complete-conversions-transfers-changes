@@ -7,11 +7,12 @@ using Dfe.Complete.Tests.Common.Constants;
 using Dfe.Complete.Tests.Common.Customizations.Models;
 using Dfe.Complete.Utils;
 using GovUK.Dfe.CoreLibs.Testing.AutoFixture.Attributes;
+using GovUK.Dfe.CoreLibs.Testing.AutoFixture.Customizations;
 using GovUK.Dfe.CoreLibs.Testing.Mocks.WebApplicationFactory; 
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 
-namespace Dfe.Complete.Api.Tests.Integration.Controllers.ProjectsController
+namespace Dfe.Complete.Api.Tests.Integration.Controllers.TasksDataController
 {
     public class TaskDataControllerTests
     {
@@ -47,7 +48,7 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers.ProjectsController
         public async Task UpdateHandoverWithDeliveryOfficerTaskDataByProjectIdAsync_ShouldUpdate_ConversionTaskData(
             CustomWebApplicationDbContextFactory<Program> factory,
             ITasksDataClient tasksDataClient,
-            Complete.Client.Contracts.UpdateHandoverWithDeliveryOfficerTaskCommand command,
+            UpdateHandoverWithDeliveryOfficerTaskCommand command,
             IFixture fixture)
         {
             // Arrange
@@ -1063,6 +1064,81 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers.ProjectsController
             Assert.True(existingTaskData.LandQuestionnaireReceived);
             Assert.True(existingTaskData.LandQuestionnaireSigned);
             Assert.False(existingTaskData.LandQuestionnaireSaved);
+        }
+        
+        
+        
+        [Theory]
+        [CustomAutoData(typeof(CustomWebApplicationDbContextFactoryCustomization))]
+        public async Task UpdateMasterFundingAgreementTaskAsync_ShouldUpdate_TransferTaskData(
+            CustomWebApplicationDbContextFactory<Program> factory,
+            ITasksDataClient tasksDataClient,
+            UpdateMasterFundingAgreementTaskCommand command,
+            IFixture fixture)
+        {
+            // Arrange
+            factory.TestClaims = [new Claim(ClaimTypes.Role, ApiRoles.ReadRole), new Claim(ClaimTypes.Role, ApiRoles.UpdateRole), new Claim(ClaimTypes.Role, ApiRoles.WriteRole)];
+
+            var dbContext = factory.GetDbContext<CompleteContext>();
+
+            var taskData = fixture.Create<TransferTasksData>();
+            dbContext.TransferTasksData.Add(taskData);
+
+            await dbContext.SaveChangesAsync();
+            command.TaskDataId = new TaskDataId { Value = taskData.Id.Value };
+            command.ProjectType = ProjectType.Transfer;
+            command.NotApplicable = false;
+            command.Cleared = true;
+            command.Received = false;
+            command.Saved = true;
+            command.Signed = false;
+            command.SignedSecretaryState = true;
+
+            // Act
+            await tasksDataClient.UpdateMasterFundingAgreementTaskAsync(command, default);
+
+            // Assert
+            dbContext.ChangeTracker.Clear();
+            var existingTaskData = await dbContext.TransferTasksData.SingleOrDefaultAsync(x => x.Id == taskData.Id);
+            Assert.NotNull(existingTaskData);
+            Assert.False(existingTaskData.MasterFundingAgreementNotApplicable);
+            Assert.True(existingTaskData.MasterFundingAgreementCleared);
+            Assert.False(existingTaskData.MasterFundingAgreementReceived);
+            Assert.True(existingTaskData.MasterFundingAgreementSaved);
+            Assert.False(existingTaskData.MasterFundingAgreementSigned);
+            Assert.True(existingTaskData.MasterFundingAgreementSignedSecretaryState);
+        }
+
+        [Theory]
+        [CustomAutoData(typeof(CustomWebApplicationDbContextFactoryCustomization), typeof(OmitCircularReferenceCustomization))]
+        public async Task UpdateConfirmIncomingTrustCeoContactTaskAsync_ShouldUpdate_KeyContact(
+        CustomWebApplicationDbContextFactory<Program> factory,
+        ITasksDataClient tasksDataClient,
+        UpdateIncomingTrustCeoCommand command,
+        IFixture fixture)
+        {
+            // Arrange
+            factory.TestClaims = [new Claim(ClaimTypes.Role, ApiRoles.ReadRole), new Claim(ClaimTypes.Role, ApiRoles.WriteRole), new Claim(ClaimTypes.Role, ApiRoles.UpdateRole)];
+
+            var dbContext = factory.GetDbContext<CompleteContext>();
+
+            var keycontact = fixture.Create<KeyContact>();
+            var contact = fixture.Create<Domain.Entities.Contact>();
+            dbContext.KeyContacts.Add(keycontact);
+
+            await dbContext.SaveChangesAsync();
+
+            command.IncomingTrustCeoId = new ContactId { Value = contact.Id.Value };  
+            command.KeyContactId = new KeyContactId { Value = keycontact.Id.Value };
+
+            // Act
+            await tasksDataClient.UpdateConfirmIncomingTrustCeoContactTaskAsync(command, default);
+
+            // Assert
+            dbContext.ChangeTracker.Clear();
+            var existingKeyContactData = await dbContext.KeyContacts.SingleOrDefaultAsync(x => x.Id == keycontact.Id);
+            Assert.NotNull(existingKeyContactData);
+            Assert.Equal(contact.Id.Value, existingKeyContactData.IncomingTrustCeoId?.Value);            
         }
     }
 }
