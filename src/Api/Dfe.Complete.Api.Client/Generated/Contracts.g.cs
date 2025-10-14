@@ -3436,8 +3436,8 @@ namespace Dfe.Complete.Client.Contracts
         [System.Runtime.Serialization.EnumMember(Value = @"ProcessConversionSupportGrant")]
         ProcessConversionSupportGrant = 25,
 
-        [System.Runtime.Serialization.EnumMember(Value = @"ConfirmAndProcessSponsoredSupportGrant")]
-        ConfirmAndProcessSponsoredSupportGrant = 26,
+        [System.Runtime.Serialization.EnumMember(Value = @"ConfirmAndProcessTheSponsoredSupportGrant")]
+        ConfirmAndProcessTheSponsoredSupportGrant = 26,
 
         [System.Runtime.Serialization.EnumMember(Value = @"ConfirmHeadTeacherDetails")]
         ConfirmHeadTeacherDetails = 27,

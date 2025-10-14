@@ -31,7 +31,7 @@ namespace Dfe.Complete.Domain.Tests.Enums
         [InlineData(NoteTaskIdentifier.CheckAccuracyOfHigherNeeds, "check_accuracy_of_higher_needs", "Check accuracy of high needs places information")]
         [InlineData(NoteTaskIdentifier.CompleteNotificationOfChange, "complete_notification_of_change", "Complete a notification of changes to funded high needs places form")]
         [InlineData(NoteTaskIdentifier.ProcessConversionSupportGrant, "conversion_grant", "Process conversion support grant")]
-        [InlineData(NoteTaskIdentifier.ConfirmAndProcessSponsoredSupportGrant, "sponsored_support_grant", "Confirm and process the sponsored support grant")]
+        [InlineData(NoteTaskIdentifier.ConfirmAndProcessTheSponsoredSupportGrant, "sponsored_support_grant", "Confirm and process the sponsored support grant")]
         [InlineData(NoteTaskIdentifier.ConfirmHeadTeacherDetails, "confirm_headteacher_contact", "Confirm the headteacher's details")]
         [InlineData(NoteTaskIdentifier.ConfirmChairOfGovernorsDetails, "confirm_chair_of_governors_contact", "Confirm the chair of governors' details")]
         [InlineData(NoteTaskIdentifier.TrustModificationOrder, "trust_modification_order", "Trust modification order")]
