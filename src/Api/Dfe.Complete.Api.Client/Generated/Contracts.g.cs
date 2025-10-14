@@ -1184,6 +1184,23 @@ namespace Dfe.Complete.Client.Contracts
         /// <exception cref="CompleteApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task UpdateConfirmIncomingTrustCeoContactTaskAsync(UpdateIncomingTrustCeoCommand request, System.Threading.CancellationToken cancellationToken);
 
+        /// <summary>
+        /// Confirm the academy risk protection arrangements task updated successfully for either conversion or transfer project.
+        /// </summary>
+        /// <param name="request">The update command.</param>
+        /// <returns>Confirm the academy risk protection arrangements task updated successfully.</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task UpdateConfirmAcademyRiskProtectionArrangementsTaskAsync(UpdateConfirmAcademyRiskProtectionArrangementsTaskCommand request);
+
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>
+        /// Confirm the academy risk protection arrangements task updated successfully for either conversion or transfer project.
+        /// </summary>
+        /// <param name="request">The update command.</param>
+        /// <returns>Confirm the academy risk protection arrangements task updated successfully.</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task UpdateConfirmAcademyRiskProtectionArrangementsTaskAsync(UpdateConfirmAcademyRiskProtectionArrangementsTaskCommand request, System.Threading.CancellationToken cancellationToken);
+
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "14.2.0.0 (NJsonSchema v11.1.0.0 (Newtonsoft.Json v13.0.0.0))")]
@@ -3420,6 +3437,87 @@ namespace Dfe.Complete.Client.Contracts
 
         [System.Runtime.Serialization.EnumMember(Value = @"ConfirmIncomingTrustCeoContact")]
         ConfirmIncomingTrustCeoContact = 20,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"ConfirmRiskProtectionArrangements")]
+        ConfirmRiskProtectionArrangements = 21,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"ConfirmRiskProtectionArrangementsPolicy")]
+        ConfirmRiskProtectionArrangementsPolicy = 22,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"CheckAccuracyOfHigherNeeds")]
+        CheckAccuracyOfHigherNeeds = 23,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"CompleteNotificationOfChange")]
+        CompleteNotificationOfChange = 24,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"ProcessConversionSupportGrant")]
+        ProcessConversionSupportGrant = 25,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"ConfirmAndProcessTheSponsoredSupportGrant")]
+        ConfirmAndProcessTheSponsoredSupportGrant = 26,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"ConfirmHeadTeacherDetails")]
+        ConfirmHeadTeacherDetails = 27,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"ConfirmChairOfGovernorsDetails")]
+        ConfirmChairOfGovernorsDetails = 28,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"TrustModificationOrder")]
+        TrustModificationOrder = 29,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"DirectionToTransfer")]
+        DirectionToTransfer = 30,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"OneHundredAndTwentyFiveYearLease")]
+        OneHundredAndTwentyFiveYearLease = 31,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"Subleases")]
+        Subleases = 32,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"TenancyAtWill")]
+        TenancyAtWill = 33,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"ConfirmSchoolHasCompletedAllActions")]
+        ConfirmSchoolHasCompletedAllActions = 34,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"ShareInformationAboutOpening")]
+        ShareInformationAboutOpening = 35,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"ConfirmOutgoingTrustCeoDetails")]
+        ConfirmOutgoingTrustCeoDetails = 36,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"RequestNewUrnAndRecordForAcademy")]
+        RequestNewUrnAndRecordForAcademy = 37,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"ConfirmTransferGrantFundingLevel")]
+        ConfirmTransferGrantFundingLevel = 38,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"CheckAndConfirmAcademyAndTrustFinancialInformation")]
+        CheckAndConfirmAcademyAndTrustFinancialInformation = 39,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"FormM")]
+        FormM = 40,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"ClosureOrTransferDeclaration")]
+        ClosureOrTransferDeclaration = 41,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"ConfirmBankDetailsForGeneralAnnualGrantPaymentNeedToChange")]
+        ConfirmBankDetailsForGeneralAnnualGrantPaymentNeedToChange = 42,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"ConfirmIncomingTrustHasCompletedAllActions")]
+        ConfirmIncomingTrustHasCompletedAllActions = 43,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"LandConsentLetter")]
+        LandConsentLetter = 44,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"DeedOfTerminationForMasterFundingAgreement")]
+        DeedOfTerminationForMasterFundingAgreement = 45,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"DeedOfTerminationForChurchSupplementalAgreement")]
+        DeedOfTerminationForChurchSupplementalAgreement = 46,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"AcademyDetails")]
+        AcademyDetails = 47,
 
     }
 
@@ -5848,6 +5946,41 @@ namespace Dfe.Complete.Client.Contracts
         {
 
             return Newtonsoft.Json.JsonConvert.DeserializeObject<UpdateIncomingTrustCeoCommand>(data, new Newtonsoft.Json.JsonSerializerSettings());
+
+        }
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.2.0.0 (NJsonSchema v11.1.0.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class UpdateConfirmAcademyRiskProtectionArrangementsTaskCommand
+    {
+        [Newtonsoft.Json.JsonProperty("taskDataId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public TaskDataId? TaskDataId { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("projectType", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
+        public ProjectType? ProjectType { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("rpaPolicyConfirm", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? RpaPolicyConfirm { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("rpaOption", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
+        public RiskProtectionArrangementOption? RpaOption { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("rpaReason", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string? RpaReason { get; set; } = default!;
+
+        public string ToJson()
+        {
+
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonSerializerSettings());
+
+        }
+        public static UpdateConfirmAcademyRiskProtectionArrangementsTaskCommand FromJson(string data)
+        {
+
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<UpdateConfirmAcademyRiskProtectionArrangementsTaskCommand>(data, new Newtonsoft.Json.JsonSerializerSettings());
 
         }
 
