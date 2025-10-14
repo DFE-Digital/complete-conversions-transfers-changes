@@ -12,7 +12,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.ConfirmHeadTeacherDetailsTask
 {
     public class ConfirmHeadTeachersDetailsTaskModel(ISender sender, IAuthorizationService authorizationService, ILogger<ConfirmHeadTeachersDetailsTaskModel> logger)
-        : BaseProjectTaskModel(sender, authorizationService, logger, NoteTaskIdentifier.ConfirmHeadteacherContact)
+        : BaseProjectTaskModel(sender, authorizationService, logger, NoteTaskIdentifier.ConfirmHeadTeacherDetails)
     {
         [BindProperty]
         public Guid? HeadTeacherContactId { get; set; }      
