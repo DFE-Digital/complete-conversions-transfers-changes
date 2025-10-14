@@ -1,8 +1,8 @@
-﻿@page "/projects/{projectId}/tasks/sponsored_support_grant"
-@model Dfe.Complete.Pages.Projects.TaskList.Tasks.ConfirmAndProcessSponsoredSupportGrant.ConfirmAndProcessSponsoredSupportGrantModel
+﻿@page "/projects/{projectId}/tasks/academy_details"
+@model Dfe.Complete.Pages.Projects.TaskList.Tasks.AcademyDetails.AcademyDetailsModel
 @{
     Layout = "_ProjectTaskLayout";
-    ViewData["Title"] = "Confirm and process the sponsored support grant";
+    ViewData["Title"] = "Confirm the academy name";
 }
 @section TaskHeaderHintSection {
     <div class="govuk-hint"> 
@@ -14,3 +14,5 @@
         @await Html.PartialAsync("_TaskSaveAndReturn", new TaskSaveAndReturnModel(Model.Project, Model.CurrentUserTeam))
     </form>
 }
+
+

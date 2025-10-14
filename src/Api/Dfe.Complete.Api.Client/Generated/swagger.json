@@ -5479,7 +5479,8 @@
           "ConfirmIncomingTrustHasCompletedAllActions",
           "LandConsentLetter",
           "DeedOfTerminationForMasterFundingAgreement",
-          "DeedOfTerminationForChurchSupplementalAgreement"
+          "DeedOfTerminationForChurchSupplementalAgreement",
+          "AcademyDetails"
         ],
         "enum": [
           "Handover",
@@ -5528,7 +5529,8 @@
           "ConfirmIncomingTrustHasCompletedAllActions",
           "LandConsentLetter",
           "DeedOfTerminationForMasterFundingAgreement",
-          "DeedOfTerminationForChurchSupplementalAgreement"
+          "DeedOfTerminationForChurchSupplementalAgreement",
+          "AcademyDetails"
         ]
       },
       "CreateNoteCommand": {

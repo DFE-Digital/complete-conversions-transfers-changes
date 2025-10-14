@@ -86,7 +86,7 @@ public enum NoteTaskIdentifier
     MasterFundingAgreement = 20,
 
     [Description("confirm_incoming_trust_ceo_contact")]
-    [DisplayDescription("Confirm the incoming trust ceo contact")]
+    [DisplayDescription("Confirm the incoming trust CEO's details")]
     ConfirmIncomingTrustCeoContact = 21,
 
     [Description("risk_protection_arrangement")]
@@ -114,11 +114,11 @@ public enum NoteTaskIdentifier
     ConfirmAndProcessSponsoredSupportGrant = 27,
     
     [Description("confirm_headteacher_contact")]
-    [DisplayDescription("Confirm the headteacher’s details")]
+    [DisplayDescription("Confirm the headteacher's details")]
     ConfirmHeadTeacherDetails = 28,
 
     [Description("confirm_chair_of_governors_contact")]
-    [DisplayDescription("Confirm the chair of governors’ details")]
+    [DisplayDescription("Confirm the chair of governors' details")]
     ConfirmChairOfGovernorsDetails = 29,
 
     [Description("trust_modification_order")]
@@ -150,7 +150,7 @@ public enum NoteTaskIdentifier
     ShareInformationAboutOpening = 36,
 
     [Description("confirm_outgoing_trust_ceo_contact")]
-    [DisplayDescription("Confirm the outgoing trust CEO’s details")]
+    [DisplayDescription("Confirm the outgoing trust CEO's details")]
     ConfirmOutgoingTrustCeoDetails = 37,
 
     [Description("request_new_urn_and_record")]
@@ -191,5 +191,9 @@ public enum NoteTaskIdentifier
 
     [Description("deed_termination_church_agreement")]
     [DisplayDescription("Deed of termination for the church supplemental agreement")]
-    DeedOfTerminationForChurchSupplementalAgreement = 47
+    DeedOfTerminationForChurchSupplementalAgreement = 47,
+
+    [Description("academy_details")]
+    [DisplayDescription("Confirm the academy name")]
+    AcademyDetails = 48
 }
