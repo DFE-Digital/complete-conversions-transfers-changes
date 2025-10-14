@@ -19,6 +19,7 @@ Security in case of vulnerabilities.
 ### Added
 - Added `Confirm the academy's risk protection agreements` task for both conversion and transfer projects.
 -Added all task notes identifiers.
+- Added `Confirm Head teachers details` task for both conversion and transfer projects.
 
 ### Changed
 
