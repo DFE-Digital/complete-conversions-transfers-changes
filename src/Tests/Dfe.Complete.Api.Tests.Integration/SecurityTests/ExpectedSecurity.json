@@ -374,6 +374,11 @@
       "Controller": "TasksDataController",
       "Action": "UpdateConfirmIncomingTrustCeoContactTaskAsync",
       "ExpectedSecurity": "Authorize: Policy=CanReadWriteUpdate"
+    },
+    {
+      "Controller": "TasksDataController",
+      "Action": "UpdateConfirmHeadTeacherContactTaskAsync",
+      "ExpectedSecurity": "Authorize: Policy=CanReadWriteUpdate"
     }
   ]
 }
