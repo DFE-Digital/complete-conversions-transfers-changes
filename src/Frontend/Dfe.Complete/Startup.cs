@@ -100,6 +100,7 @@ public class Startup
             options.IdleTimeout = _authenticationExpiration;
             options.Cookie.Name = ".Complete.Session";
             options.Cookie.IsEssential = true;
+            options.Cookie.HttpOnly = true;
         });
         services.AddHttpContextAccessor();
 
