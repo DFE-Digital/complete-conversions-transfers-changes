@@ -1,0 +1,42 @@
+@using Dfe.Complete.Constants
+@using Dfe.Complete.Utils
+@using Dfe.Complete.Services.Interfaces
+@inject IErrorService ErrorService
+
+@model Dfe.Complete.Pages.Projects.ServiceSupport.Users.UserDetailsModel;
+
+<form method="post" novalidate data-cy="create-user-form">
+    <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">User details</legend>
+    <govuk-input input-class="govuk-input--width-10" asp-for="@Model.FirstName" data-cy="first-name-input">
+        <govuk-input-label class="govuk-label--m">First name</govuk-input-label>
+    </govuk-input>
+    <govuk-input input-class="govuk-input--width-10" asp-for="@Model.LastName" data-cy="last-name-input">
+        <govuk-input-label class="govuk-label--m">Last name</govuk-input-label>
+    </govuk-input>
+    <govuk-input input-class="govuk-input--width-20" asp-for="@Model.Email" data-cy="email-input">
+        <govuk-input-label class="govuk-label--m">Email address</govuk-input-label>
+        <govuk-input-hint>@@education.gov.uk email addresses only</govuk-input-hint>
+    </govuk-input>
+    <govuk-radios asp-for="@Model.Team" data-cy="team-radio-group">
+        <govuk-radios-fieldset>
+            <govuk-radios-fieldset-legend is-page-heading="false" class="govuk-fieldset__legend--l">
+                User team
+            </govuk-radios-fieldset-legend>
+            <govuk-radios-hint>
+                All users must belong in one of the following teams. Sub-teams within these are not required.
+            </govuk-radios-hint>
+            @foreach (var team in Model.AvailableTeams)
+            {
+                var description = team.ToDisplayDescription();
+                var selected = Model.Team == team;
+                <govuk-radios-item value="@team" checked="@selected"
+                    data-cy="team-option-@team.ToString().ToLower()">@description</govuk-radios-item>
+            }
+        </govuk-radios-fieldset>
+    </govuk-radios>
+    <div class="govuk-button-group">
+        <button type="submit" formnovalidate="formnovalidate" class="govuk-button" data-module="govuk-button"
+            data-prevent-double-click="true" data-cy="save-and-return-button">Save and return</button>
+        <a class="govuk-link" href="@RouteConstants.ServiceSupportUsers" data-cy="cancel-link">Cancel</a>
+    </div>
+</form>
