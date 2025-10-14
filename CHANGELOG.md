@@ -17,11 +17,6 @@ Security in case of vulnerabilities.
 ## Unreleased
 
 ### Added
-- Land registry title plans` task for conversion project.
-- Added `Master Funding Agreement` task for both conversion and transfer projects.
-- Add API end point for editing user
-- Add ability to edit a user
-- Added `Incoming Trust CEO contact` task page
 
 ### Changed
 
@@ -29,7 +24,29 @@ Security in case of vulnerabilities.
 
 ### Security
 
-See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-10-07.844...main) for everything awaiting release
+See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-10-14.892...main) for everything awaiting release
+
+---
+
+## [1.21.0](https://github.com/DFE-Digital/complete-conversions-transfers-changes/releases/tag/production-2025-10-14.892) - 2025-10-14
+
+### Added
+- Add new prepare to complete end point for adding conversion projects
+- Land registry title plans` task for conversion project.
+- Added `Master Funding Agreement` task for both conversion and transfer projects.
+- Add API end point for editing user
+- Add ability to edit a user
+- Added `Incoming Trust CEO contact` task page
+
+### Changed
+- Allow users to modify `declaration of expenditure certificate date` on the `Receive declaration of expenditure certificate` task for both conversion and transfer project.
+
+### Fixed
+
+### Security
+- Fixed reflected Cross-Site Scripting (XSS) vulnerability on cookies page (150001) - added server-side URL validation to prevent malicious script injection via returnUrl parameter
+
+See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-10-07.844...production-2025-10-14.892) for everything in the release
 
 ---
 
@@ -69,14 +86,10 @@ See the [full commit history](https://github.com/DFE-Digital/complete-conversion
 ### Changed
 
 ### Fixed
-- Add new prepare to complete end point for adding conversion projects
-
 - Fixed broken task note urls.
 - Fixed all project by month query for conversion projects if all conditions met is null
 
 ### Security
-
-- Fixed reflected Cross-Site Scripting (XSS) vulnerability on cookies page (150001) - added server-side URL validation to prevent malicious script injection via returnUrl parameter
 
 See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-09-25.771...production-2025-10-03.811) for everything in the release
 
@@ -99,8 +112,6 @@ See the [full commit history](https://github.com/DFE-Digital/complete-conversion
 
 ### Changed
 - Group reference number links to the group on "About the project"
-- Allow users to modify `declaration of expenditure certificate date` on the `Receive declaration of expenditure certificate` task for both conversion and transfer project.
-
 
 ### Fixed
 - GroupReferenceNumberAttribute failed when there was no existing group
