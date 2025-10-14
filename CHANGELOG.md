@@ -17,6 +17,7 @@ Security in case of vulnerabilities.
 ## Unreleased
 
 ### Added
+- Added `Confirm the academy's risk protection agreements` task for both conversion and transfer projects.
 
 ### Changed
 
