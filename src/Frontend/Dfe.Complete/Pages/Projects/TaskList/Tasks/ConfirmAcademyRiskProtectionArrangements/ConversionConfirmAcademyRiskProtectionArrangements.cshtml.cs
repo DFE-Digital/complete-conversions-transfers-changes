@@ -1,5 +1,8 @@
+using Dfe.Complete.Application.Projects.Commands.TaskData;
 using Dfe.Complete.Constants;
-using Dfe.Complete.Domain.Enums; 
+using Dfe.Complete.Domain.Enums;
+using Dfe.Complete.Domain.ValueObjects;
+using Dfe.Complete.Services.Interfaces;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -7,7 +10,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.ConfirmAcademyRiskProtectionArrangements
 {
-    public class ConversionConfirmAcademyRiskProtectionArrangementsModel(ISender sender, IAuthorizationService authorizationService, ILogger<ConversionConfirmAcademyRiskProtectionArrangementsModel> logger)
+    public class ConversionConfirmAcademyRiskProtectionArrangementsModel(ISender sender, IAuthorizationService authorizationService, ILogger<ConversionConfirmAcademyRiskProtectionArrangementsModel> logger, IErrorService errorService)
     : BaseProjectTaskModel(sender, authorizationService, logger, NoteTaskIdentifier.ConfirmRiskProtectionArrangements)
     {
         [BindProperty]
@@ -27,6 +30,22 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.ConfirmAcademyRiskProtectio
             RpaOption = ConversionTaskData.RiskProtectionArrangementOption;
             RpaReason = ConversionTaskData.RiskProtectionArrangementReason;
             return Page();
-        } 
+        }
+        public async Task<IActionResult> OnPost()
+        {
+            if (RpaOption == RiskProtectionArrangementOption.Commercial && string.IsNullOrWhiteSpace(RpaReason))
+            {
+                ModelState.AddModelError(nameof(RpaReason), ValidationConstants.RequiredSummary);
+            }
+            if (!ModelState.IsValid)
+            {
+                await base.OnGetAsync();
+                errorService.AddErrors(ModelState);
+                return Page();
+            }
+            await Sender.Send(new UpdateConfirmAcademyRiskProtectionArrangementsTaskCommand(new TaskDataId(TasksDataId.GetValueOrDefault())!, Type, null, RpaOption, RpaReason));
+            SetTaskSuccessNotification();
+            return Redirect(string.Format(RouteConstants.ProjectTaskList, ProjectId));
+        }
     }
 }

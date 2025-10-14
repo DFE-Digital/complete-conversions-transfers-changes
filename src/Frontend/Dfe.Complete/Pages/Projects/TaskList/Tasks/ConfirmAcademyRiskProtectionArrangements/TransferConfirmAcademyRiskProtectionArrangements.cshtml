@@ -8,40 +8,41 @@
     var confirmPolicyField = nameof(Model.RpaPolicyConfirm);
 }
 @section TaskHeaderHintSection {
-        <div class="govuk-hint">
-            <p>You must let the RPA (risk protection arrangement) team know if the academy will change its arrangement. Contact them in the first week of the final month before the transfer happens.</p>
-            <p>If there is no change, you do not need to contact the RPA team.</p>
-        </div>
+    <div class="govuk-hint">
+        <p>You must let the RPA (risk protection arrangement) team know if the academy will change its arrangement. Contact them in the first week of the final month before the transfer happens.</p>
+        <p>If there is no change, you do not need to contact the RPA team.</p>
+    </div>
 }
 @section TaskSection {
-        <form method="post">
-            <input type="hidden" asp-for="TasksDataId" />
-            <input type="hidden" asp-for="Type" />
-            <govuk-checkboxes name="options">
-                <govuk-checkboxes-fieldset>
-                    <govuk-checkboxes-fieldset-legend>
-                    </govuk-checkboxes-fieldset-legend>
-                    <govuk-checkboxes-item data-cy="@confirmPolicyField" id="@confirmPolicyField" asp-for="@Model.RpaPolicyConfirm" value="true" name="@confirmPolicyField" checked="@Model.RpaPolicyConfirm">
-                        <b>Confirm if the academy's arrangements will continue or change</b>
-                        <govuk-checkboxes-item-hint>
-                            <p>Ask the outgoing trust if the academy is in an RPA or has commercial insurance. Ask the incoming trust if it wants to continue this arrangement or not.</p>
-                            <govuk-details>
-                                <govuk-details-summary>
-                                    <span class="govuk-details__summary-text">What do to if the academy changes its arrangements</span>
-                                </govuk-details-summary>
-                                <govuk-details-text>
-                                    <p>The academy must be in an RPA or have commercially available insurance. </p>
-                                    <strong>Changing or leaving an RPA</strong>
-                                    <p>You must email the RPA team at <a href="mailto:@(rpaEmail)">@rpaEmail</a> and tell them that the academy is ending its RPA and what it is doing instead. It may join a different type of RPA, or buy insurance.</p>
-                                    <strong>Ending commercial insurance and joining an RPA</strong>
-                                    <p>You must email the RPA team at <a href="mailto:@(rpaEmail)">@rpaEmail</a> and tell them if the academy has chosen to end its existing insurance policy and join an RPA. Include details of whether it will join a standard RPA, a church RPA or trust RPA.</p>
-                                </govuk-details-text>
-                            </govuk-details>
-                        </govuk-checkboxes-item-hint>
-
-                    </govuk-checkboxes-item> 
-                </govuk-checkboxes-fieldset>
-            </govuk-checkboxes>
+    <form method="post">
+        <input type="hidden" asp-for="TasksDataId" />
+        <input type="hidden" asp-for="Type" />
+        <govuk-checkboxes name="options">
+            <govuk-checkboxes-fieldset>
+                <govuk-checkboxes-fieldset-legend>
+                </govuk-checkboxes-fieldset-legend>
+                <govuk-checkboxes-item data-cy="@confirmPolicyField" id="@confirmPolicyField" asp-for="@Model.RpaPolicyConfirm" value="true" name="@confirmPolicyField" checked="@Model.RpaPolicyConfirm">
+                    <b>Confirm if the academy's arrangements will continue or change</b>
+                    <govuk-checkboxes-item-hint>
+                        <p>Ask the outgoing trust if the academy is in an RPA or has commercial insurance. Ask the incoming trust if it wants to continue this arrangement or not.</p>
+                        <govuk-details>
+                            <govuk-details-summary>
+                                <span class="govuk-details__summary-text">What do to if the academy changes its arrangements</span>
+                            </govuk-details-summary>
+                            <govuk-details-text>
+                                <p>The academy must be in an RPA or have commercially available insurance. </p>
+                                <strong>Changing or leaving an RPA</strong>
+                                <p>You must email the RPA team at <a href="mailto:@(rpaEmail)">@rpaEmail</a> and tell them that the academy is ending its RPA and what it is doing instead. It may join a different type of RPA, or buy insurance.</p>
+                                <strong>Ending commercial insurance and joining an RPA</strong>
+                                <p>You must email the RPA team at <a href="mailto:@(rpaEmail)">@rpaEmail</a> and tell them if the academy has chosen to end its existing insurance policy and join an RPA. Include details of whether it will join a standard RPA, a church RPA or trust RPA.</p>
+                            </govuk-details-text>
+                        </govuk-details>
+                    </govuk-checkboxes-item-hint>
+                   
+                </govuk-checkboxes-item> 
+            </govuk-checkboxes-fieldset>
+        </govuk-checkboxes>
         @await Html.PartialAsync("_TaskSaveAndReturn", new TaskSaveAndReturnModel(Model.Project, Model.CurrentUserTeam))
-        </form>
+    </form>
 }
+

@@ -2,8 +2,6 @@ using Dfe.Complete.Application.Projects.Commands.TaskData;
 using Dfe.Complete.Constants;
 using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Domain.ValueObjects;
-using Dfe.Complete.Extensions;
-using Dfe.Complete.Models;
 using Dfe.Complete.Services;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -53,10 +51,10 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.ConfirmDateAcademyTransferr
                 return Page();
             }
 
-            await sender.Send(new UpdateConfirmDateAcademyTransferredTaskCommand(
+            await Sender.Send(new UpdateConfirmDateAcademyTransferredTaskCommand(
                 new TaskDataId(TasksDataId.GetValueOrDefault())!, DateAcademyTransferred));
 
-            TempData.SetNotification(NotificationType.Success, "Success", "Task updated successfully");
+            SetTaskSuccessNotification();
             return Redirect(string.Format(RouteConstants.ProjectTaskList, ProjectId));
 
         }

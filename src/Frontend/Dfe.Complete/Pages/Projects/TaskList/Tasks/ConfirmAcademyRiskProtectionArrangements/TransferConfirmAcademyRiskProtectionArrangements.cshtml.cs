@@ -1,4 +1,7 @@
-using Dfe.Complete.Domain.Enums; 
+using Dfe.Complete.Application.Projects.Commands.TaskData;
+using Dfe.Complete.Constants;
+using Dfe.Complete.Domain.Enums;
+using Dfe.Complete.Domain.ValueObjects;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -10,7 +13,7 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.ConfirmAcademyRiskProtectio
     {
         [BindProperty]
         public bool? RpaPolicyConfirm { get; set; }
-
+         
         [BindProperty]
         public Guid? TasksDataId { get; set; }
         [BindProperty]
@@ -22,6 +25,12 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.ConfirmAcademyRiskProtectio
             TasksDataId = Project.TasksDataId?.Value;
             RpaPolicyConfirm = TransferTaskData.RpaPolicyConfirm;
             return Page();
-        } 
+        }
+        public async Task<IActionResult> OnPost()
+        {
+            await Sender.Send(new UpdateConfirmAcademyRiskProtectionArrangementsTaskCommand(new TaskDataId(TasksDataId.GetValueOrDefault())!, Type, RpaPolicyConfirm, null, null));
+            SetTaskSuccessNotification();
+            return Redirect(string.Format(RouteConstants.ProjectTaskList, ProjectId));
+        }
     }
 }

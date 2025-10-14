@@ -1,6 +1,6 @@
 ﻿@page "/projects/{projectId}/tasks/risk_protection_arrangement"
 @using Dfe.Complete.Domain.Enums
-@inject Dfe.Complete.Services.Interfaces.IErrorService errorService
+@inject Dfe.Complete.Services.Interfaces.IErrorService errorService 
 @model Dfe.Complete.Pages.Projects.TaskList.Tasks.ConfirmAcademyRiskProtectionArrangements.ConversionConfirmAcademyRiskProtectionArrangementsModel
 @{
     Layout = "_ProjectTaskLayout";
@@ -13,14 +13,14 @@
         <p>An academy must join the RPA or have commercially available insurance in place in order to open.</p>
     </div>
 }
-@section TaskSection {
+@section TaskSection {  
     <form method="post">
         <input type="hidden" asp-for="TasksDataId" />
         <input type="hidden" asp-for="Type" />
         <govuk-radios name="RpaOption" asp-for="RpaOption">
             <govuk-radios-fieldset>
                 <govuk-radios-fieldset-legend is-page-heading="true" class="govuk-fieldset__legend--m">
-                    Is the academy joining the RPA?
+                    Is the academy joining the RPA? 
                 </govuk-radios-fieldset-legend>
                 <govuk-radios-hint>
                     <p>Ask the academy what they would like to do about risk protection. The academy will be automatically enrolled in the standard RPA unless they say otherwise.</p>
@@ -49,7 +49,8 @@
                     </govuk-radios-item-conditional>
                 </govuk-radios-item>
             </govuk-radios-fieldset>
-        </govuk-radios>
+        </govuk-radios> 
         @await Html.PartialAsync("_TaskSaveAndReturn", new TaskSaveAndReturnModel(Model.Project, Model.CurrentUserTeam))
     </form>
 }
+
