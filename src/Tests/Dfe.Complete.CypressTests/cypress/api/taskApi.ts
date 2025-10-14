@@ -25,6 +25,13 @@ interface UpdateArticleOfAssociationTaskRequest {
     saved?: boolean;
 }
 
+interface UpdateConfirmTransferHasAuthorityToProceedTaskRequest {
+    taskDataId: TaskDataId;
+    anyInformationChanged?: boolean;
+    baselineSheetApproved?: boolean;
+    confirmToProceed?: boolean;
+}
+
 interface UpdateDeedOfNovationAndVariationTaskRequest {
     taskDataId: TaskDataId;
     received?: boolean;
@@ -115,6 +122,12 @@ class TaskApi extends ApiBase {
 
     public updateArticleOfAssociationTask(requestBody: UpdateArticleOfAssociationTaskRequest) {
         return this.taskDataBaseRequest<void>("PATCH", "ArticleOfAssociation", requestBody, 204);
+    }
+
+    public updateConfirmTransferHasAuthorityToProceedTask(
+        requestBody: UpdateConfirmTransferHasAuthorityToProceedTaskRequest,
+    ) {
+        return this.taskDataBaseRequest<void>("PATCH", "ConfirmTransferHasAuthorityToProceed", requestBody, 204);
     }
 
     public updateReceiveDeclarationOfExpenditureCertificateTask(

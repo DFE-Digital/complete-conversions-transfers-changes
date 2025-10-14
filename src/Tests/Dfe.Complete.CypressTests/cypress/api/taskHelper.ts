@@ -45,6 +45,33 @@ class TaskHelper {
                 return taskApi.updateArticleOfAssociationTask(defaultBody);
         }
     }
+    public updateConfirmTransferHasAuthorityToProceed(taskDataId: string, status: TaskStatus) {
+        const defaultBody = {
+            taskDataId: { value: taskDataId },
+            anyInformationChanged: false,
+            baselineSheetApproved: false,
+            confirmToProceed: false,
+        };
+
+        switch (status) {
+            case "inProgress":
+                return taskApi.updateConfirmTransferHasAuthorityToProceedTask({
+                    ...defaultBody,
+                    anyInformationChanged: true,
+                });
+
+            case "completed":
+                return taskApi.updateConfirmTransferHasAuthorityToProceedTask({
+                    taskDataId: { value: taskDataId },
+                    anyInformationChanged: true,
+                    baselineSheetApproved: true,
+                    confirmToProceed: true,
+                });
+
+            default:
+                return taskApi.updateConfirmTransferHasAuthorityToProceedTask(defaultBody);
+        }
+    }
     public updateDeedOfNovationAndVariation(taskDataId: string, status: TaskStatus) {
         const defaultBody = {
             taskDataId: { value: taskDataId },
