@@ -421,6 +421,25 @@ namespace Dfe.Complete.Api.Controllers
         }
         
         /// <summary>
+        /// Confirm the academy risk protection arrangements task updated successfully for either conversion or transfer project.
+        /// </summary>
+        /// <param name="request">The update command.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        [Authorize(Policy = "CanReadWriteUpdate")]
+        [HttpPatch]
+        [Route("TaskData/ConfirmAcademyRiskProtectionArrangements")]
+        [SwaggerResponse(204, "Confirm the academy risk protection arrangements task updated successfully.")]
+        [SwaggerResponse(400, "Invalid request data.")]
+        [SwaggerResponse(404, "Project not found.")]
+        public async Task<IActionResult> UpdateConfirmAcademyRiskProtectionArrangementsTaskAsync(
+            [FromBody] UpdateConfirmAcademyRiskProtectionArrangementsTaskCommand request,
+            CancellationToken cancellationToken)
+        {
+            await sender.Send(request, cancellationToken);
+            return NoContent();
+        }
+        
+        /// <summary>
         /// Confirm the head teacher contact for the project.
         /// </summary>
         /// <param name="request">The update command.</param>

@@ -70,7 +70,7 @@ namespace Dfe.Complete.Api.Controllers
         [Authorize(Policy = "CanReadWriteUpdate")]
         [HttpPatch]
         [Route("LocalAuthority")]
-        [SwaggerResponse(204, "local authoirty details updated successfully.")]
+        [SwaggerResponse(204, "Local authority details updated successfully.")]
         [SwaggerResponse(400, "Invalid request data.")]
         public async Task<IActionResult> UpdateLocalAuthorityDetailsAsync([FromBody] UpdateLocalAuthorityCommand request, CancellationToken cancellationToken)
         {
