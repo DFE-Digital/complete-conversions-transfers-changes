@@ -12,7 +12,6 @@ const project = ProjectBuilder.createConversionProjectRequest({
     urn: { value: urnPool.conversionTasks.spen },
 });
 let projectId: string;
-let taskId: string;
 const otherUserProject = ProjectBuilder.createConversionFormAMatProjectRequest({
     urn: { value: urnPool.conversionTasks.grylls },
     userAdId: rdoLondonUser.adId,
@@ -25,9 +24,6 @@ describe("Conversion tasks - Confirm all conditions have been met", () => {
         projectRemover.removeProjectIfItExists(otherUserProject.urn.value);
         projectApi.createConversionProject(project).then((createResponse) => {
             projectId = createResponse.value;
-            projectApi.getProject(project.urn.value).then((response) => {
-                taskId = response.body.tasksDataId.value;
-            });
         });
         projectApi.createMatConversionProject(otherUserProject).then((createResponse) => {
             otherUserProjectId = createResponse.value;
