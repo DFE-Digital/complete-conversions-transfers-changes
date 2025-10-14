@@ -1,5 +1,7 @@
-﻿using Dfe.Complete.Application.Contacts.Queries;
+﻿using Dfe.Complete.Application.Contacts.Models;
+using Dfe.Complete.Application.Contacts.Queries;
 using Dfe.Complete.Application.LocalAuthorities.Queries.GetLocalAuthority;
+using Dfe.Complete.Application.Services.PersonsApi;
 using Dfe.Complete.Domain.Constants;
 using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Models.ExternalContact;
@@ -13,8 +15,7 @@ namespace Dfe.Complete.Pages.Projects.ExternalContacts;
 [Authorize(Policy = UserPolicyConstants.CanViewEditDeleteContact)]
 public class ExternalContacts(ISender sender, ILogger<ExternalContacts> logger)
     : ProjectLayoutModel(sender, logger, ExternalContactsNavigation)
-{
-    private readonly ISender _sender = sender;
+{  
 
     public List<ExternalContactModel> EstablishmentContacts { get; set; } = [];
     public List<ExternalContactModel> IncomingTrustContacts { get; set; } = [];
@@ -23,7 +24,7 @@ public class ExternalContacts(ISender sender, ILogger<ExternalContacts> logger)
     public List<ExternalContactModel> SolicitorContacts { get; set; } = [];
     public List<ExternalContactModel> DioceseContacts { get; set; } = [];
     public List<ExternalContactModel> OtherContacts { get; set; } = [];
-    public List<ExternalContactModel> ParliamentaryContacts { get; set; } = [];
+    public ConstituencyMemberContactDto? ParliamentaryContact { get; set; } = null;
     public string LocalAuthorityName { get; set; } = "";
 
     [BindProperty(Name = $"new_transfer_contact_form[contact_type]")]
@@ -39,7 +40,7 @@ public class ExternalContacts(ISender sender, ILogger<ExternalContacts> logger)
 
         var projectQuery = new GetContactsForProjectQuery(Project.Id);
 
-        var projectContacts = await _sender.Send(projectQuery);
+        var projectContacts = await Sender.Send(projectQuery);
 
         if (projectContacts is { IsSuccess: true, Value: not null })
         {
@@ -92,7 +93,7 @@ public class ExternalContacts(ISender sender, ILogger<ExternalContacts> logger)
         if (Establishment.LocalAuthorityCode == null) return Page();
         var laQuery = new GetLocalAuthorityByCodeQuery(Establishment.LocalAuthorityCode);
 
-        var la = await _sender.Send(laQuery);
+        var la = await Sender.Send(laQuery);
 
         if (la is not { IsSuccess: true, Value: not null }) return Page();
 
@@ -100,12 +101,19 @@ public class ExternalContacts(ISender sender, ILogger<ExternalContacts> logger)
 
         var laContactQuery = new GetContactsForLocalAuthorityQuery(la.Value.Id);
 
-        var laContacts = await _sender.Send(laContactQuery);
+        var laContacts = await Sender.Send(laContactQuery);
 
         if (laContacts is { IsSuccess: true, Value: not null })
         {
             LocalAuthorityContacts.AddRange(laContacts.Value.Select(contact =>
                 new ExternalContactModel(contact, false)));
+        }
+
+        if(Establishment.ParliamentaryConstituency != null && !string.IsNullOrWhiteSpace(Establishment.ParliamentaryConstituency.Name))
+        {
+            var getContactyByConstituency = new GetContactByConstituency(Establishment.ParliamentaryConstituency.Name);
+            var result  = await Sender.Send(getContactyByConstituency);
+            this.ParliamentaryContact = result.Value;
         }
 
         return Page();

@@ -25,6 +25,7 @@ using GovUK.Dfe.CoreLibs.Security.Antiforgery;
 using Dfe.Complete.Validators;
 using GovUK.Dfe.CoreLibs.Security.Enums;
 using Dfe.Complete.Application.Mappers;
+using GovUK.Dfe.PersonsApi.Client.Extensions;
 
 namespace Dfe.Complete;
 
@@ -222,7 +223,7 @@ public class Startup
             AcademiesOptions academiesApiOptions = GetTypedConfigurationFor<AcademiesOptions>();
             client.BaseAddress = new Uri(academiesApiOptions.ApiEndpoint);
             client.DefaultRequestHeaders.Add("ApiKey", academiesApiOptions.ApiKey);
-        });
+        });               
     }
 
     private void SetupDataProtection(IServiceCollection services)

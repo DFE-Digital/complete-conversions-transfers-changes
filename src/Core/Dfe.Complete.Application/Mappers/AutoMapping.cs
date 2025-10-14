@@ -4,6 +4,7 @@ using Dfe.Complete.Application.Contacts.Models;
 using Dfe.Complete.Application.DaoRevoked.Models;
 using Dfe.Complete.Application.Projects.Models;
 using Dfe.Complete.Domain.Entities;
+using GovUK.Dfe.PersonsApi.Client.Contracts;
 
 namespace Dfe.Complete.Application.Mappers
 {
@@ -97,6 +98,8 @@ namespace Dfe.Complete.Application.Mappers
             CreateMap<DaoRevocation, DaoRevocationDto>();
             CreateMap<Contact, ContactDto>()
             .ForMember(p => p.PrimaryContact, opt => opt.Ignore());
+
+			CreateMap<MemberOfParliament, ConstituencyMemberContactDto>();
         }
 	}
 }

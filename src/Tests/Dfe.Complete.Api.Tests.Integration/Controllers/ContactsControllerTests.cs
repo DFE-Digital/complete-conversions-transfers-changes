@@ -1,13 +1,30 @@
 ﻿using AutoFixture;
+using Dfe.AcademiesApi.Client.Contracts;
 using Dfe.Complete.Api.Tests.Integration.Customizations;
+using Dfe.Complete.Application.Contacts.Models;
+using Dfe.Complete.Application.Services.AcademiesApi;
+using Dfe.Complete.Client;
 using Dfe.Complete.Client.Contracts;
 using Dfe.Complete.Infrastructure.Database;
 using Dfe.Complete.Tests.Common.Constants;
 using Dfe.Complete.Tests.Common.Customizations.Models;
 using GovUK.Dfe.CoreLibs.Testing.AutoFixture.Attributes;
+using GovUK.Dfe.CoreLibs.Testing.AutoFixture.Customizations;
 using GovUK.Dfe.CoreLibs.Testing.Mocks.WebApplicationFactory;
+using GovUK.Dfe.PersonsApi.Client.Contracts;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
+using Moq;
+using Moq.Protected;
+using Newtonsoft.Json;
+using NSubstitute;
+using System;
+using System.Net;
+using System.Net.Http.Json;
 using System.Security.Claims;
+using System.Text.Json;
 using ContactId = Dfe.Complete.Domain.ValueObjects.ContactId;
 
 namespace Dfe.Complete.Api.Tests.Integration.Controllers;
@@ -164,5 +181,79 @@ public class ContactsControllerTests
         } 
         var otherContact = response.FirstOrDefault(x => x.LocalAuthorityId?.Value == lastLocalAuth.Id.Value);
         Assert.NotNull(otherContact);
+    }
+    
+    [Theory]   
+    [CustomAutoData(typeof(CustomWebApplicationDbContextFactoryCustomization))]
+    public async Task GetParliamentMPContactByConstituencyAsync_WhenNoException_Should_Return_OK(
+        CustomWebApplicationDbContextFactory<Program> factory,        
+        IFixture fixture)
+    {
+        factory.TestClaims = [new Claim(ClaimTypes.Role, ApiRoles.ReadRole)];
+        var dbContext = factory.GetDbContext<CompleteContext>();
+
+        // Arrange
+        var constituencyName = fixture.Create<string>();
+        var constituencyMemberContactDto = fixture.Create<Complete.Client.Contracts.ConstituencyMemberContactDto>();
+        var baseAddressUrl = "https://mock/api/test";
+        var baseAddress = new Uri(baseAddressUrl);
+
+        var response = new HttpResponseMessage(HttpStatusCode.OK);
+        var options = new JsonSerializerOptions { WriteIndented = true };
+        response.Content = new StringContent(System.Text.Json.JsonSerializer.Serialize(constituencyMemberContactDto, options), System.Text.Encoding.UTF8, "application/json");
+
+        Mock<HttpMessageHandler> httpMessageHandlerMock = new();
+
+        httpMessageHandlerMock.Protected()
+          .Setup<Task<HttpResponseMessage>>("SendAsync", ItExpr.IsAny<HttpRequestMessage>(), ItExpr.IsAny<CancellationToken>())
+          .ReturnsAsync(response);
+
+        var httpClient = new HttpClient(httpMessageHandlerMock.Object);
+        httpClient.BaseAddress = baseAddress;
+
+        var contactsClient = new ContactsClient(baseAddressUrl, httpClient);       
+
+        // Act
+        var result = await contactsClient.GetParliamentMPContactByConstituencyAsync(constituencyName);
+
+        // Assert
+        Assert.NotNull(result);
+        Assert.Equal(constituencyMemberContactDto.DisplayNameWithTitle, result.DisplayNameWithTitle);
+        Assert.Equal(constituencyMemberContactDto.Email, result.Email);        
+    }    
+
+    [Theory]
+    [CustomAutoData(typeof(CustomWebApplicationDbContextFactoryCustomization))]
+    public async Task GetParliamentMPContactByConstituencyAsync_WhenThrowsException_Should_ReturnError(
+        CustomWebApplicationDbContextFactory<Program> factory,
+        IFixture fixture)
+    {       
+
+        factory.TestClaims = [new Claim(ClaimTypes.Role, ApiRoles.ReadRole)];
+        var dbContext = factory.GetDbContext<CompleteContext>();
+
+        // Arrange        
+        var constituencyName = fixture.Create<string>();
+        var baseAddressUrl = "https://mock/api/test";
+        var baseAddress = new Uri(baseAddressUrl);
+
+        Mock<HttpMessageHandler> httpMessageHandlerMock = new();
+
+        httpMessageHandlerMock.Protected()
+            .Setup<Task<HttpResponseMessage>>("SendAsync", ItExpr.IsAny<HttpRequestMessage>(), ItExpr.IsAny<CancellationToken>())
+            .ThrowsAsync(new PersonsApiException("An error occurred with the Persons API client", (int)HttpStatusCode.BadRequest, null, null, null));
+
+        var httpClient = new HttpClient(httpMessageHandlerMock.Object);
+        httpClient.BaseAddress = baseAddress;
+
+        var contactsClient = new ContactsClient(baseAddressUrl, httpClient);
+
+        // Act
+        var result = contactsClient.GetParliamentMPContactByConstituencyAsync(constituencyName, default);
+
+        // Assert
+        Assert.IsType<AggregateException>(result.Exception);
+        Assert.Contains("An error occurred with the Persons API client", result.Exception.Message);
+
     }
 }
