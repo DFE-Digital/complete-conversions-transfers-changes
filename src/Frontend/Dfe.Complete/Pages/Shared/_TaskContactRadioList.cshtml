@@ -1,0 +1,30 @@
+﻿@model Dfe.Complete.TagHelpers.ContactRadioListModel
+<govuk-radios name="@Model.PropertyName">
+    <govuk-radios-fieldset>
+        <govuk-radios-fieldset-legend class="govuk-fieldset__legend--l">
+            @Model.Legend
+        </govuk-radios-fieldset-legend>
+        @foreach (var contact in Model.Contacts)
+        {
+            var selected = contact.Id.Value == Model.SelectedContactId;
+            <govuk-radios-item data-cy="@contact.Name"
+                               id="@contact.Id"
+                               value="@contact.Id.Value"
+                               name="@Model.PropertyName"
+                               checked="@selected">
+                <b>@contact.Name</b>
+                <br />
+                <govuk-radios-hint class="govuk-hint" data-cy="@contact.Title">                    
+                    @if (!string.IsNullOrEmpty(contact.Phone))
+                    {
+                        @(contact.Email + ", " + contact.Phone)
+                    }
+                    else
+                    {
+                        @(@contact.Email)
+                    }
+                </govuk-radios-hint>
+            </govuk-radios-item>
+        }
+    </govuk-radios-fieldset>
+</govuk-radios>

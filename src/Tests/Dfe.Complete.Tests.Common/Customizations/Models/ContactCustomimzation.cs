@@ -10,7 +10,7 @@ public class ContactCustomization : ICustomization
 {
     public ProjectId? ProjectId { get; set; }
     public LocalAuthorityId? LocalAuthorityId { get; set; }
-    
+
     public int? Urn { get; set; }
 
     public void Customize(IFixture fixture)
@@ -19,6 +19,7 @@ public class ContactCustomization : ICustomization
             c.FromFactory<Guid>(guid => new ContactId(guid)));
 
         fixture.Customize<Contact>(composer => composer
+                .With(c => c.Id, () => fixture.Create<ContactId>())
                 .With(c => c.Name, fixture.Create<string>())
                 .With(c => c.Title, fixture.Create<string>())
                 .With(c => c.Email, fixture.Create<string>() + "@test.com")

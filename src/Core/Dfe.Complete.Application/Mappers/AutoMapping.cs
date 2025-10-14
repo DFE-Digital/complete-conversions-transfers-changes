@@ -2,6 +2,7 @@
 using Dfe.AcademiesApi.Client.Contracts;
 using Dfe.Complete.Application.Contacts.Models;
 using Dfe.Complete.Application.DaoRevoked.Models;
+using Dfe.Complete.Application.KeyContacts.Models;
 using Dfe.Complete.Application.Projects.Models;
 using Dfe.Complete.Domain.Entities;
 
