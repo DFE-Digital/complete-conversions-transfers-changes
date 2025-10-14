@@ -45,6 +45,40 @@ class TaskHelper {
                 return taskApi.updateArticleOfAssociationTask(defaultBody);
         }
     }
+    public updateConfirmAcademyOpenedDate(taskDataId: string, academyOpenedDate?: string) {
+        const defaultBody = {
+            taskDataId: { value: taskDataId },
+            academyOpenedDate: academyOpenedDate || null,
+        };
+
+        return taskApi.updateConfirmAcademyOpenedDateTask(defaultBody);
+    }
+
+    public updateConfirmDateAcademyTransferred(taskDataId: string, dateAcademyTransferred?: string) {
+        const defaultBody = {
+            taskDataId: { value: taskDataId },
+            dateAcademyTransferred: dateAcademyTransferred || null,
+        };
+
+        return taskApi.updateConfirmDateAcademyTransferredTask(defaultBody);
+    }
+    public updateConfirmAllConditionsMet(projectId: string, status: TaskStatus) {
+        const defaultBody = {
+            projectId: { value: projectId },
+            confirm: false,
+        };
+
+        switch (status) {
+            case "completed":
+                return taskApi.updateConfirmAllConditionsMetTask({
+                    projectId: { value: projectId },
+                    confirm: true,
+                });
+
+            default:
+                return taskApi.updateConfirmAllConditionsMetTask(defaultBody);
+        }
+    }
     public updateConfirmTransferHasAuthorityToProceed(taskDataId: string, status: TaskStatus) {
         const defaultBody = {
             taskDataId: { value: taskDataId },

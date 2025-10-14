@@ -25,6 +25,21 @@ interface UpdateArticleOfAssociationTaskRequest {
     saved?: boolean;
 }
 
+interface UpdateConfirmAcademyOpenedDateTaskRequest {
+    taskDataId: TaskDataId;
+    academyOpenedDate?: string | null;
+}
+
+interface UpdateConfirmAllConditionsMetTaskRequest {
+    projectId: TaskDataId;
+    confirm?: boolean;
+}
+
+interface UpdateConfirmDateAcademyTransferredTaskRequest {
+    taskDataId: TaskDataId;
+    dateAcademyTransferred?: string | null;
+}
+
 interface UpdateConfirmTransferHasAuthorityToProceedTaskRequest {
     taskDataId: TaskDataId;
     anyInformationChanged?: boolean;
@@ -122,6 +137,18 @@ class TaskApi extends ApiBase {
 
     public updateArticleOfAssociationTask(requestBody: UpdateArticleOfAssociationTaskRequest) {
         return this.taskDataBaseRequest<void>("PATCH", "ArticleOfAssociation", requestBody, 204);
+    }
+
+    public updateConfirmAcademyOpenedDateTask(requestBody: UpdateConfirmAcademyOpenedDateTaskRequest) {
+        return this.taskDataBaseRequest<void>("PATCH", "ConfirmAcademyOpenedDate", requestBody, 204);
+    }
+
+    public updateConfirmAllConditionsMetTask(requestBody: UpdateConfirmAllConditionsMetTaskRequest) {
+        return this.taskDataBaseRequest<void>("PATCH", "ConfirmAllConditionsMet", requestBody, 204);
+    }
+
+    public updateConfirmDateAcademyTransferredTask(requestBody: UpdateConfirmDateAcademyTransferredTaskRequest) {
+        return this.taskDataBaseRequest<void>("PATCH", "ConfirmDateAcademyTransferred", requestBody, 204);
     }
 
     public updateConfirmTransferHasAuthorityToProceedTask(

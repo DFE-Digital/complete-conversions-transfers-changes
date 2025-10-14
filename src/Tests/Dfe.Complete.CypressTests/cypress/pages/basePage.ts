@@ -1,5 +1,5 @@
 class BasePage {
-    private readonly bannerClass = "govuk-notification-banner";
+    protected readonly bannerClass = "govuk-notification-banner";
     private readonly linkClass = "govuk-link";
 
     containsHeading(heading: string) {
