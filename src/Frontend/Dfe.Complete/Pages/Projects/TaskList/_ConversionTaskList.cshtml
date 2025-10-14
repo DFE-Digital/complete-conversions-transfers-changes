@@ -64,9 +64,11 @@
                     <li>
                         <a class="govuk-link govuk-link--no-visited-state" href="#after_opening">After opening</a>
                     </li>
-                    <li>
-                        <a class="govuk-link govuk-link--no-visited-state" href="#completing_a_project">Completing a project</a>
-                    </li>
+                    @if (Model.Project.State != ProjectState.DaoRevoked){
+                        <li>
+                            <a class="govuk-link govuk-link--no-visited-state" href="#completing_a_project">Completing a project</a>
+                        </li>
+                    }
                     @if (projectPermissionService.UserCanDaoRevocation(Model.Project, Model.CurrentUserTeam, User)){
                         <li>
                             <a class="govuk-link govuk-link--no-visited-state" href="#revoke_a_directive_academy_order">Revoke a Directive Academy Order</a>
