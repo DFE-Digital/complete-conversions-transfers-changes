@@ -2232,7 +2232,7 @@
         },
         "responses": {
           "204": {
-            "description": "local authoirty details updated successfully."
+            "description": "Local authority details updated successfully."
           },
           "400": {
             "description": "Invalid request data."
@@ -3009,20 +3009,20 @@
         }
       }
     },
-    "/v1/TasksData/TaskData/SponsoredSupportGrant": {
+    "/v1/TasksData/TaskData/ConfirmIncomingTrustCeoContact": {
       "patch": {
         "tags": [
           "TasksData"
         ],
-        "summary": "Confirm the sponsored support grant",
-        "operationId": "TasksData_UpdateSponsoredSupportGrantTask",
+        "summary": "Confirm the incoming trust ceo contact for the project.",
+        "operationId": "TasksData_UpdateConfirmIncomingTrustCeoContactTask",
         "requestBody": {
           "x-name": "request",
           "description": "The update command.",
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/UpdateConfirmSponsoredSupportGrantTaskCommand"
+                "$ref": "#/components/schemas/UpdateIncomingTrustCeoCommand"
               }
             }
           },
@@ -3031,7 +3031,40 @@
         },
         "responses": {
           "204": {
-            "description": "The sponsored support grant task updated successfully."
+            "description": "Confirm the incoming trust ceo contact for the project successfully."
+          },
+          "400": {
+            "description": "Invalid request data."
+          },
+          "404": {
+            "description": "Project not found."
+          }
+        }
+      }
+    },
+    "/v1/TasksData/TaskData/ConfirmAcademyRiskProtectionArrangements": {
+      "patch": {
+        "tags": [
+          "TasksData"
+        ],
+        "summary": "Confirm the academy risk protection arrangements task updated successfully for either conversion or transfer project.",
+        "operationId": "TasksData_UpdateConfirmAcademyRiskProtectionArrangementsTask",
+        "requestBody": {
+          "x-name": "request",
+          "description": "The update command.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateConfirmAcademyRiskProtectionArrangementsTaskCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "204": {
+            "description": "Confirm the academy risk protection arrangements task updated successfully."
           },
           "400": {
             "description": "Invalid request data."
@@ -3123,6 +3156,37 @@
           },
           "400": {
             "description": "Invalid request data."
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Updates a user.",
+        "operationId": "Users_UpdateUser",
+        "requestBody": {
+          "x-name": "request",
+          "description": "The request.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateUserCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "204": {
+            "description": "User updated successfully."
+          },
+          "400": {
+            "description": "Invalid request data."
+          },
+          "404": {
+            "description": "User not found."
           }
         }
       },
@@ -5453,8 +5517,34 @@
           "CommercialTransferAgreement",
           "MainContact",
           "MasterFundingAgreement",
+          "ConfirmIncomingTrustCeoContact",
+          "ConfirmRiskProtectionArrangements",
+          "ConfirmRiskProtectionArrangementsPolicy",
+          "CheckAccuracyOfHigherNeeds",
+          "CompleteNotificationOfChange",
+          "ProcessConversionSupportGrant",
+          "ConfirmAndProcessTheSponsoredSupportGrant",
+          "ConfirmHeadTeacherDetails",
+          "ConfirmChairOfGovernorsDetails",
+          "TrustModificationOrder",
+          "DirectionToTransfer",
+          "OneHundredAndTwentyFiveYearLease",
+          "Subleases",
+          "TenancyAtWill",
+          "ConfirmSchoolHasCompletedAllActions",
+          "ShareInformationAboutOpening",
+          "ConfirmOutgoingTrustCeoDetails",
+          "RequestNewUrnAndRecordForAcademy",
           "ConfirmTransferGrantFundingLevel",
-          "ConfirmAndProcessTheSponsoredSupportGrant"
+          "CheckAndConfirmAcademyAndTrustFinancialInformation",
+          "FormM",
+          "ClosureOrTransferDeclaration",
+          "ConfirmBankDetailsForGeneralAnnualGrantPaymentNeedToChange",
+          "ConfirmIncomingTrustHasCompletedAllActions",
+          "LandConsentLetter",
+          "DeedOfTerminationForMasterFundingAgreement",
+          "DeedOfTerminationForChurchSupplementalAgreement",
+          "AcademyDetails"
         ],
         "enum": [
           "Handover",
@@ -5477,8 +5567,34 @@
           "CommercialTransferAgreement",
           "MainContact",
           "MasterFundingAgreement",
+          "ConfirmIncomingTrustCeoContact",
+          "ConfirmRiskProtectionArrangements",
+          "ConfirmRiskProtectionArrangementsPolicy",
+          "CheckAccuracyOfHigherNeeds",
+          "CompleteNotificationOfChange",
+          "ProcessConversionSupportGrant",
+          "ConfirmAndProcessTheSponsoredSupportGrant",
+          "ConfirmHeadTeacherDetails",
+          "ConfirmChairOfGovernorsDetails",
+          "TrustModificationOrder",
+          "DirectionToTransfer",
+          "OneHundredAndTwentyFiveYearLease",
+          "Subleases",
+          "TenancyAtWill",
+          "ConfirmSchoolHasCompletedAllActions",
+          "ShareInformationAboutOpening",
+          "ConfirmOutgoingTrustCeoDetails",
+          "RequestNewUrnAndRecordForAcademy",
           "ConfirmTransferGrantFundingLevel",
-          "ConfirmAndProcessTheSponsoredSupportGrant"
+          "CheckAndConfirmAcademyAndTrustFinancialInformation",
+          "FormM",
+          "ClosureOrTransferDeclaration",
+          "ConfirmBankDetailsForGeneralAnnualGrantPaymentNeedToChange",
+          "ConfirmIncomingTrustHasCompletedAllActions",
+          "LandConsentLetter",
+          "DeedOfTerminationForMasterFundingAgreement",
+          "DeedOfTerminationForChurchSupplementalAgreement",
+          "AcademyDetails"
         ]
       },
       "CreateNoteCommand": {
@@ -7808,7 +7924,19 @@
           }
         }
       },
-      "UpdateConfirmSponsoredSupportGrantTaskCommand": {
+      "UpdateIncomingTrustCeoCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "keyContactId": {
+            "$ref": "#/components/schemas/KeyContactId"
+          },
+          "incomingTrustCeoId": {
+            "$ref": "#/components/schemas/ContactId"
+          }
+        }
+      },
+      "UpdateConfirmAcademyRiskProtectionArrangementsTaskCommand": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
@@ -7823,28 +7951,20 @@
               }
             ]
           },
-          "notApplicable": {
+          "rpaPolicyConfirm": {
             "type": "boolean",
             "nullable": true
           },
-          "sponsoredSupportGrantType": {
+          "rpaOption": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/RiskProtectionArrangementOption"
+              }
+            ]
+          },
+          "rpaReason": {
             "type": "string",
-            "nullable": true
-          },
-          "paymentAmount": {
-            "type": "boolean",
-            "nullable": true
-          },
-          "paymentForm": {
-            "type": "boolean",
-            "nullable": true
-          },
-          "sendInformation": {
-            "type": "boolean",
-            "nullable": true
-          },
-          "informTrust": {
-            "type": "boolean",
             "nullable": true
           }
         }
@@ -7876,6 +7996,27 @@
         "type": "object",
         "additionalProperties": false,
         "properties": {
+          "firstName": {
+            "type": "string"
+          },
+          "lastName": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "team": {
+            "$ref": "#/components/schemas/ProjectTeam"
+          }
+        }
+      },
+      "UpdateUserCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "$ref": "#/components/schemas/UserId"
+          },
           "firstName": {
             "type": "string"
           },
