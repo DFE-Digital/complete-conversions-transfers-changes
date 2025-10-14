@@ -18,7 +18,9 @@ Security in case of vulnerabilities.
 
 ### Added
 - Added `Confirm the academy's risk protection agreements` task for both conversion and transfer projects.
--Added all task notes identifiers.
+- Added all task notes identifiers.
+- Sponsored support grant task for conversion and transfer project.
+
 
 ### Changed
 
