@@ -19,6 +19,8 @@ Security in case of vulnerabilities.
 ### Added
 - Land registry title plans` task for conversion project.
 - Added `Master Funding Agreement` task for both conversion and transfer projects.
+- Add API end point for editing user
+- Add ability to edit a user
 - Added `Incoming Trust CEO contact` task page
 - Added `Confirm the academy's risk protection agreements` task for both conversion and transfer projects.
 
@@ -93,6 +95,7 @@ See the [full commit history](https://github.com/DFE-Digital/complete-conversion
 - ProjectGroup is created when a project is edited with a new GRN
 - Added Add, Edit and Delete External Contacts for both conversion and transfer projects.
 - Added `Confirm this transfer has authority to proceed` task
+- Added `Confirm the date the academy transferred` task
 - Add service support - view users table
 
 ### Changed
