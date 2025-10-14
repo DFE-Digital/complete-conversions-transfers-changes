@@ -1,6 +1,5 @@
 using Dfe.Complete.Constants;
 using Dfe.Complete.Domain.Enums; 
-using Dfe.Complete.Services.Interfaces;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -8,7 +7,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.ConfirmAcademyRiskProtectionArrangements
 {
-    public class ConversionConfirmAcademyRiskProtectionArrangementsModel(ISender sender, IAuthorizationService authorizationService, ILogger<ConversionConfirmAcademyRiskProtectionArrangementsModel> logger, IErrorService errorService)
+    public class ConversionConfirmAcademyRiskProtectionArrangementsModel(ISender sender, IAuthorizationService authorizationService, ILogger<ConversionConfirmAcademyRiskProtectionArrangementsModel> logger)
     : BaseProjectTaskModel(sender, authorizationService, logger, NoteTaskIdentifier.ConfirmRiskProtectionArrangements)
     {
         [BindProperty]
