@@ -9,13 +9,14 @@ using Dfe.Complete.Utils;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using Dfe.Complete.Domain.Validators;
 
 namespace Dfe.Complete.Application.Users.Commands
 {
     public record CreateUserCommand(
        string FirstName,
        string LastName,
-       string Email,
+       [InternalEmail] string Email,
        ProjectTeam Team) : IRequest<Result<UserId?>>;
 
     internal class CreateUserCommandHandler(

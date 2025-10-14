@@ -147,6 +147,11 @@
     },
     {
       "Controller": "UsersController",
+      "Action": "UpdateUserAsync",
+      "ExpectedSecurity": "Authorize: Policy=CanReadWriteUpdate"
+    },
+    {
+      "Controller": "UsersController",
       "Action": "GetUserWithProjectsAsync",
       "ExpectedSecurity": "Authorize: Policy=CanRead"
     },
@@ -373,6 +378,11 @@
     {
       "Controller": "TasksDataController",
       "Action": "UpdateConfirmIncomingTrustCeoContactTaskAsync",
+      "ExpectedSecurity": "Authorize: Policy=CanReadWriteUpdate"
+    },
+    {
+      "Controller": "TasksDataController",
+      "Action": "UpdateConfirmAcademyRiskProtectionArrangementsTaskAsync",
       "ExpectedSecurity": "Authorize: Policy=CanReadWriteUpdate"
     }
   ]

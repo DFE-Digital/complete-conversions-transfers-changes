@@ -764,7 +764,7 @@ namespace Dfe.Complete.Client.Contracts
         /// Update the local authority details.
         /// </summary>
         /// <param name="request">The request.</param>
-        /// <returns>local authoirty details updated successfully.</returns>
+        /// <returns>Local authority details updated successfully.</returns>
         /// <exception cref="CompleteApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task UpdateLocalAuthorityDetailsAsync(UpdateLocalAuthorityCommand request);
 
@@ -773,7 +773,7 @@ namespace Dfe.Complete.Client.Contracts
         /// Update the local authority details.
         /// </summary>
         /// <param name="request">The request.</param>
-        /// <returns>local authoirty details updated successfully.</returns>
+        /// <returns>Local authority details updated successfully.</returns>
         /// <exception cref="CompleteApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task UpdateLocalAuthorityDetailsAsync(UpdateLocalAuthorityCommand request, System.Threading.CancellationToken cancellationToken);
 
@@ -1184,6 +1184,23 @@ namespace Dfe.Complete.Client.Contracts
         /// <exception cref="CompleteApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task UpdateConfirmIncomingTrustCeoContactTaskAsync(UpdateIncomingTrustCeoCommand request, System.Threading.CancellationToken cancellationToken);
 
+        /// <summary>
+        /// Confirm the academy risk protection arrangements task updated successfully for either conversion or transfer project.
+        /// </summary>
+        /// <param name="request">The update command.</param>
+        /// <returns>Confirm the academy risk protection arrangements task updated successfully.</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task UpdateConfirmAcademyRiskProtectionArrangementsTaskAsync(UpdateConfirmAcademyRiskProtectionArrangementsTaskCommand request);
+
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>
+        /// Confirm the academy risk protection arrangements task updated successfully for either conversion or transfer project.
+        /// </summary>
+        /// <param name="request">The update command.</param>
+        /// <returns>Confirm the academy risk protection arrangements task updated successfully.</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task UpdateConfirmAcademyRiskProtectionArrangementsTaskAsync(UpdateConfirmAcademyRiskProtectionArrangementsTaskCommand request, System.Threading.CancellationToken cancellationToken);
+
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "14.2.0.0 (NJsonSchema v11.1.0.0 (Newtonsoft.Json v13.0.0.0))")]
@@ -1225,6 +1242,23 @@ namespace Dfe.Complete.Client.Contracts
         /// <returns>User created successfully.</returns>
         /// <exception cref="CompleteApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<System.Guid> CreateUserAsync(CreateUserCommand request, System.Threading.CancellationToken cancellationToken);
+
+        /// <summary>
+        /// Updates a user.
+        /// </summary>
+        /// <param name="request">The request.</param>
+        /// <returns>User updated successfully.</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task UpdateUserAsync(UpdateUserCommand request);
+
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>
+        /// Updates a user.
+        /// </summary>
+        /// <param name="request">The request.</param>
+        /// <returns>User updated successfully.</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task UpdateUserAsync(UpdateUserCommand request, System.Threading.CancellationToken cancellationToken);
 
         /// <summary>
         /// Gets a User with their assigned projects
@@ -3403,6 +3437,12 @@ namespace Dfe.Complete.Client.Contracts
 
         [System.Runtime.Serialization.EnumMember(Value = @"ConfirmIncomingTrustCeoContact")]
         ConfirmIncomingTrustCeoContact = 20,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"ConfirmRiskProtectionArrangements")]
+        ConfirmRiskProtectionArrangements = 21,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"ConfirmRiskProtectionArrangementsPolicy")]
+        ConfirmRiskProtectionArrangementsPolicy = 22,
 
     }
 
@@ -5837,6 +5877,41 @@ namespace Dfe.Complete.Client.Contracts
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.2.0.0 (NJsonSchema v11.1.0.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class UpdateConfirmAcademyRiskProtectionArrangementsTaskCommand
+    {
+        [Newtonsoft.Json.JsonProperty("taskDataId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public TaskDataId? TaskDataId { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("projectType", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
+        public ProjectType? ProjectType { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("rpaPolicyConfirm", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? RpaPolicyConfirm { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("rpaOption", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
+        public RiskProtectionArrangementOption? RpaOption { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("rpaReason", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string? RpaReason { get; set; } = default!;
+
+        public string ToJson()
+        {
+
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonSerializerSettings());
+
+        }
+        public static UpdateConfirmAcademyRiskProtectionArrangementsTaskCommand FromJson(string data)
+        {
+
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<UpdateConfirmAcademyRiskProtectionArrangementsTaskCommand>(data, new Newtonsoft.Json.JsonSerializerSettings());
+
+        }
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.2.0.0 (NJsonSchema v11.1.0.0 (Newtonsoft.Json v13.0.0.0))")]
     public partial class ListTrustsWithProjectsResultModel
     {
         [Newtonsoft.Json.JsonProperty("identifier", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
@@ -5895,6 +5970,40 @@ namespace Dfe.Complete.Client.Contracts
         {
 
             return Newtonsoft.Json.JsonConvert.DeserializeObject<CreateUserCommand>(data, new Newtonsoft.Json.JsonSerializerSettings());
+
+        }
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.2.0.0 (NJsonSchema v11.1.0.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class UpdateUserCommand
+    {
+        [Newtonsoft.Json.JsonProperty("id", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public UserId? Id { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("firstName", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string? FirstName { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("lastName", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string? LastName { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("email", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string? Email { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("team", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
+        public ProjectTeam? Team { get; set; } = default!;
+
+        public string ToJson()
+        {
+
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonSerializerSettings());
+
+        }
+        public static UpdateUserCommand FromJson(string data)
+        {
+
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<UpdateUserCommand>(data, new Newtonsoft.Json.JsonSerializerSettings());
 
         }
 
