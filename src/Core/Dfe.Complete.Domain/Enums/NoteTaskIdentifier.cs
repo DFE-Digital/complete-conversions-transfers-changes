@@ -87,5 +87,13 @@ public enum NoteTaskIdentifier
 
     [Description("confirm_incoming_trust_ceo_contact")]
     [DisplayDescription("Confirm the incoming trust ceo contact")]
-    ConfirmIncomingTrustCeoContact = 21
+    ConfirmIncomingTrustCeoContact = 21,
+
+    [Description("risk_protection_arrangement")]
+    [DisplayDescription("Confirm the academy's risk protection arrangements")]
+    ConfirmRiskProtectionArrangements = 22,
+
+    [Description("rpa_policy")]
+    [DisplayDescription("Confirm the academy's risk protection arrangements")]
+    ConfirmRiskProtectionArrangementsPolicy = 23
 }

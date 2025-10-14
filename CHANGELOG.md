@@ -22,6 +22,7 @@ Security in case of vulnerabilities.
 - Add API end point for editing user
 - Add ability to edit a user
 - Added `Incoming Trust CEO contact` task page
+- Added `Confirm the academy's risk protection agreements` task for both conversion and transfer projects.
 
 ### Changed
 
