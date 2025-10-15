@@ -1,13 +1,14 @@
 @inject Microsoft.Extensions.Configuration.IConfiguration _configuration
 
-<div class="dfe-width-container ">
+@* GOV.UK Phase Banner (Beta) *@
+<div class="govuk-width-container">
     <div class="govuk-phase-banner">
         <p class="govuk-phase-banner__content">
             <strong class="govuk-tag govuk-phase-banner__content__tag">
                 beta
             </strong>
             <span class="govuk-phase-banner__text">
-                This is a new service – your <a class="govuk-link" rel="noopener" href="@_configuration["ExternalLinks:GiveFeedbackAboutService"]" target="_blank">feedback (opens in a new tab)</a> will help us to improve it.
+                This is a new service – your <a class="govuk-link" rel="noopener noreferrer" href="@_configuration["ExternalLinks:GiveFeedbackAboutService"]" target="_blank">feedback<span class="govuk-visually-hidden"> (opens in new tab)</span></a> will help us to improve it.
             </span>
         </p>
     </div>
