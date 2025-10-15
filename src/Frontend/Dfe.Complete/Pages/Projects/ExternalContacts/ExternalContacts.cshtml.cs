@@ -7,7 +7,6 @@ using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Extensions;
 using Dfe.Complete.Models.ExternalContact;
 using Dfe.Complete.Pages.Projects.ProjectView;
-using DocumentFormat.OpenXml.Wordprocessing;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -119,12 +118,11 @@ public class ExternalContacts(ISender sender, ILogger<ExternalContacts> logger, 
         if (Establishment.ParliamentaryConstituency != null && !string.IsNullOrWhiteSpace(Establishment.ParliamentaryConstituency.Name))
         {
             var cacheKey = $"GetContactByConstituency-{Establishment.ParliamentaryConstituency.Name}";
-            ConstituencyMemberContactDto? constituencyMember = await _cache.GetOrSetAsync<ConstituencyMemberContactDto>(
+            ConstituencyMemberContactDto? constituencyMember = await _cache.GetOrSetAsync<ConstituencyMemberContactDto?>(
                 cacheKey,
                 async () =>
                 {
-                    var result = await GetContactByConstituency(Establishment.ParliamentaryConstituency.Name);
-                    return result;
+                    return await GetContactByConstituency(Establishment.ParliamentaryConstituency.Name);                    
                 },
                 DefaultCacheOptions
             );
@@ -141,7 +139,7 @@ public class ExternalContacts(ISender sender, ILogger<ExternalContacts> logger, 
     {
         var getContactyByConstituency = new GetContactByConstituency(constituencyName);
         var result = await Sender.Send(getContactyByConstituency);
-        return result?.Value ?? null;
+        return result?.Value;
     }
    
 }
