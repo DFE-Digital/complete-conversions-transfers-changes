@@ -45,6 +45,39 @@ class TaskHelper {
                 return taskApi.updateArticleOfAssociationTask(defaultBody);
         }
     }
+    public updateCommercialTransferAgreement(taskDataId: string, projectType: ProjectType, status: TaskStatus) {
+        const defaultBody = {
+            taskDataId: { value: taskDataId },
+            projectType: projectType,
+            agreed: false,
+            signed: false,
+            questionsReceived: false,
+            questionsChecked: false,
+            saved: false,
+        };
+
+        switch (status) {
+            case "inProgress":
+                return taskApi.updateCommercialTransferAgreementTask({
+                    ...defaultBody,
+                    agreed: true,
+                });
+
+            case "completed":
+                return taskApi.updateCommercialTransferAgreementTask({
+                    taskDataId: { value: taskDataId },
+                    projectType: projectType,
+                    agreed: true,
+                    signed: true,
+                    questionsReceived: true,
+                    questionsChecked: true,
+                    saved: true,
+                });
+
+            default:
+                return taskApi.updateCommercialTransferAgreementTask(defaultBody);
+        }
+    }
     public updateConfirmAcademyOpenedDate(taskDataId: string, academyOpenedDate?: string) {
         const defaultBody = {
             taskDataId: { value: taskDataId },

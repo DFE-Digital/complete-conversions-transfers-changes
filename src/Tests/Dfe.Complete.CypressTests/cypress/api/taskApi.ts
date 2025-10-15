@@ -25,6 +25,16 @@ interface UpdateArticleOfAssociationTaskRequest {
     saved?: boolean;
 }
 
+interface UpdateCommercialTransferAgreementTaskRequest {
+    taskDataId: TaskDataId;
+    projectType: ProjectType;
+    agreed?: boolean;
+    signed?: boolean;
+    questionsReceived?: boolean;
+    questionsChecked?: boolean;
+    saved?: boolean;
+}
+
 interface UpdateConfirmAcademyOpenedDateTaskRequest {
     taskDataId: TaskDataId;
     academyOpenedDate?: string | null;
@@ -154,6 +164,10 @@ class TaskApi extends ApiBase {
 
     public updateArticleOfAssociationTask(requestBody: UpdateArticleOfAssociationTaskRequest) {
         return this.taskDataBaseRequest<void>("PATCH", "ArticleOfAssociation", requestBody, 204);
+    }
+
+    public updateCommercialTransferAgreementTask(requestBody: UpdateCommercialTransferAgreementTaskRequest) {
+        return this.taskDataBaseRequest<void>("PATCH", "CommercialTransferAgreement", requestBody, 204);
     }
 
     public updateConfirmAcademyOpenedDateTask(requestBody: UpdateConfirmAcademyOpenedDateTaskRequest) {
