@@ -19,6 +19,7 @@ Security in case of vulnerabilities.
 ### Added
 
 ### Changed
+- removed checkbox with no corresponding database field
 
 ### Fixed
 - resolve bad field mappings for master funding agreements on conversion projects

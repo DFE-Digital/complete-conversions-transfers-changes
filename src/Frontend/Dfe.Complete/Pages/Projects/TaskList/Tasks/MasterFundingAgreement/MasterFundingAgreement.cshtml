@@ -98,10 +98,14 @@
                     <b>Signed by @(isConversion ? "school or trust" : "incoming trust")</b>
                 </govuk-checkboxes-item>
 
-                <govuk-checkboxes-item id="@(nameof(Model.SavedInTheSchoolsSharepoint))" data-cy="saved" asp-for="@Model.SavedInTheSchoolsSharepoint" value="true" name="@(nameof(Model.SavedInTheSchoolsSharepoint))" checked="@Model.SavedInTheSchoolsSharepoint">
+                @{
+                    if (isConversion)
+                    {   
+                    <govuk-checkboxes-item id="@(nameof(Model.SavedInTheSchoolsSharepoint))" data-cy="saved" asp-for="@Model.SavedInTheSchoolsSharepoint" value="true" name="@(nameof(Model.SavedInTheSchoolsSharepoint))" checked="@Model.SavedInTheSchoolsSharepoint">
                     <b>Saved in the @(isConversion ? "school's SharePoint folder" : "academy and incoming trust SharePoint folders")</b>
                 </govuk-checkboxes-item>
-
+                    }
+                }
             </govuk-checkboxes-fieldset>
         </govuk-checkboxes>
 
