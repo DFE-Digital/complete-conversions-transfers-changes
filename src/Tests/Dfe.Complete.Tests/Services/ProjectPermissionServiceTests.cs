@@ -19,6 +19,27 @@ namespace Dfe.Complete.Tests.Services
         }
 
         [Theory]
+        [InlineData(ProjectState.Active, ProjectTeam.ServiceSupport, true)]
+        [InlineData(ProjectState.DaoRevoked, ProjectTeam.ServiceSupport, false)]
+        public void UserCanComplete_WhenMatchesCondition_ShouldReturnCorrectResult(ProjectState projectState, ProjectTeam projectTeam, bool expectedResult)
+        {
+            // Arrange
+            var userId = new UserId(Guid.NewGuid());
+            var userClaimPrincipal = CreateUserClaimPrincipal(userId);
+            var project = new ProjectDto
+            {
+                State = projectState,
+                AssignedToId = null
+            };
+
+            // Act
+            var result = _service.UserCanComplete(project, projectTeam, userClaimPrincipal);
+
+            // Assert
+            Assert.Equal(expectedResult, result);
+        }
+
+        [Theory]
         [InlineData(ProjectState.Active, ProjectTeam.ServiceSupport, false, true)]
         [InlineData(ProjectState.Completed, ProjectTeam.ServiceSupport, false, true)]
         [InlineData(ProjectState.Completed, ProjectTeam.London, false, false)]
@@ -28,19 +49,20 @@ namespace Dfe.Complete.Tests.Services
         {
             // Arrange
             var userId = new UserId(Guid.NewGuid());
-            var userClaimPrincipal = CreateUserClaimPrincipal(userId); 
-            var project = new ProjectDto 
-            { 
+            var userClaimPrincipal = CreateUserClaimPrincipal(userId);
+            var project = new ProjectDto
+            {
                 State = projectState,
                 AssignedToId = isProjectAssignToUser ? userId : new UserId(Guid.NewGuid())
             };
-             
+
             // Act
             var result = _service.UserCanEdit(project, projectTeam, userClaimPrincipal);
 
             // Assert
             Assert.Equal(expectedResult, result);
         }
+
         [Theory]
         [InlineData(ProjectState.Active, true, ProjectTeam.ServiceSupport, false, true)]
         [InlineData(ProjectState.Completed, true, ProjectTeam.ServiceSupport, false, false)]

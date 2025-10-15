@@ -17,19 +17,33 @@ Security in case of vulnerabilities.
 ## Unreleased
 
 ### Added
-- Added `Confirm the academy's risk protection agreements` task for both conversion and transfer projects.
--Added all task notes identifiers.
-- Adding key contact record on confirming project handover and logging error message if key contact is already been added. 
 
 ### Changed
 
 ### Fixed
 
+### Security
+
+See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-10-15.903...main) for everything awaiting release
+
+---
+
+## [1.22.0](https://github.com/DFE-Digital/complete-conversions-transfers-changes/releases/tag/production-2025-10-15.903) - 2025-10-15
+
+### Added
+- Added `Confirm the academy's risk protection agreements` task for both conversion and transfer projects.
+- Added all task notes identifiers.
+- Adding key contact record on confirming project handover and logging error message if key contact is already been added. 
+
+### Changed
+- Hide "Complete a project" functionality on a project if it's DaO revoked
+
+### Fixed
 - Fixed `full date` issue on the project complete notification. 
 
 ### Security
 
-See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-10-14.892...main) for everything awaiting release
+See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-10-14.892...production-2025-10-15.903) for everything in the release
 
 ---
 
