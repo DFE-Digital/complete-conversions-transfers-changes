@@ -329,6 +329,32 @@ class TaskHelper {
                 return taskApi.updateLandQuestionnaireTask(defaultBody);
         }
     }
+    updateLandRegistryTitlePlans(taskDataId: string, status: TaskStatus) {
+        const defaultBody = {
+            taskDataId: { value: taskDataId },
+            received: false,
+            cleared: false,
+            saved: false,
+        };
+        switch (status) {
+            case "inProgress":
+                return taskApi.updateLandRegistryTitlePlansTask({
+                    ...defaultBody,
+                    received: true,
+                });
+
+            case "completed":
+                return taskApi.updateLandRegistryTitlePlansTask({
+                    taskDataId: { value: taskDataId },
+                    received: true,
+                    cleared: true,
+                    saved: true,
+                });
+
+            default:
+                return taskApi.updateLandRegistryTitlePlansTask(defaultBody);
+        }
+    }
     updateReceiveDeclarationOfExpenditureCertificate(
         taskDataId: string,
         projectType: ProjectType,

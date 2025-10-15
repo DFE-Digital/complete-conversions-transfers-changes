@@ -20,7 +20,7 @@ const otherUserProject = ProjectBuilder.createConversionFormAMatProjectRequest({
 });
 let otherUserProjectId: string;
 
-describe("Conversion tasks - Land questionnaire", () => {
+describe("Conversion tasks - Land registry title plans", () => {
     before(() => {
         projectRemover.removeProjectIfItExists(project.urn.value);
         projectRemover.removeProjectIfItExists(otherUserProject.urn.value);
@@ -38,13 +38,15 @@ describe("Conversion tasks - Land questionnaire", () => {
     beforeEach(() => {
         cy.login();
         cy.acceptCookies();
-        cy.visit(`projects/${projectId}/tasks/land_questionnaire`);
+        cy.visit(`projects/${projectId}/tasks/land_registry`);
     });
 
     it("should expand and collapse guidance details", () => {
         taskPage
-            .clickDropdown("How to clear a land questionnaire")
-            .hasDropdownContent("You must check the school is using the right land questionnaire");
+            .clickDropdown("Help checking the land registry title plans")
+            .hasDropdownContent(
+                "Check you have an official copy of the title plans. An official copy will state that it's from the Land Registry",
+            );
     });
 
     it("should submit the form and persist selections", () => {
@@ -54,12 +56,10 @@ describe("Conversion tasks - Land questionnaire", () => {
             .tick()
             .hasCheckboxLabel("Cleared")
             .tick()
-            .hasCheckboxLabel("Signed by solicitor")
-            .tick()
             .hasCheckboxLabel("Saved in the school's SharePoint folder")
             .tick()
             .saveAndReturn();
-        taskListPage.hasTaskStatusCompleted("Land questionnaire").selectTask("Land questionnaire");
+        taskListPage.hasTaskStatusCompleted("Land registry title plans").selectTask("Land registry title plans");
 
         Logger.log("Unselect all checkboxes and save");
         taskPage
@@ -69,20 +69,15 @@ describe("Conversion tasks - Land questionnaire", () => {
             .hasCheckboxLabel("Cleared")
             .isTicked()
             .untick()
-            .hasCheckboxLabel("Signed by solicitor")
-            .isTicked()
-            .untick()
             .hasCheckboxLabel("Saved in the school's SharePoint folder")
             .isTicked()
             .untick()
             .saveAndReturn();
-        taskListPage.hasTaskStatusNotStarted("Land questionnaire").selectTask("Land questionnaire");
+        taskListPage.hasTaskStatusNotStarted("Land registry title plans").selectTask("Land registry title plans");
         taskPage
             .hasCheckboxLabel("Received")
             .isUnticked()
             .hasCheckboxLabel("Cleared")
-            .isUnticked()
-            .hasCheckboxLabel("Signed by solicitor")
             .isUnticked()
             .hasCheckboxLabel("Saved in the school's SharePoint folder")
             .isUnticked();
@@ -91,21 +86,21 @@ describe("Conversion tasks - Land questionnaire", () => {
     it("should show task status based on the checkboxes are checked", () => {
         cy.visit(`projects/${projectId}/tasks`);
 
-        TaskHelper.updateLandQuestionnaire(taskId, "notStarted");
+        TaskHelper.updateLandRegistryTitlePlans(taskId, "notStarted");
         cy.reload();
-        taskListPage.hasTaskStatusNotStarted("Land questionnaire");
+        taskListPage.hasTaskStatusNotStarted("Land registry title plans");
 
-        TaskHelper.updateLandQuestionnaire(taskId, "inProgress");
+        TaskHelper.updateLandRegistryTitlePlans(taskId, "inProgress");
         cy.reload();
-        taskListPage.hasTaskStatusInProgress("Land questionnaire");
+        taskListPage.hasTaskStatusInProgress("Land registry title plans");
 
-        TaskHelper.updateLandQuestionnaire(taskId, "completed");
+        TaskHelper.updateLandRegistryTitlePlans(taskId, "completed");
         cy.reload();
-        taskListPage.hasTaskStatusCompleted("Land questionnaire");
+        taskListPage.hasTaskStatusCompleted("Land registry title plans");
     });
 
     it("Should NOT see the 'save and return' button for another user's project", () => {
-        cy.visit(`projects/${otherUserProjectId}/tasks/land_questionnaire`);
+        cy.visit(`projects/${otherUserProjectId}/tasks/land_registry`);
         taskPage.noSaveAndReturnExists();
     });
 

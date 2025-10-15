@@ -112,6 +112,13 @@ interface UpdateLandQuestionnaireTaskRequest {
     saved?: boolean;
 }
 
+interface UpdateLandRegistryTitlePlansTaskRequest {
+    taskDataId: TaskDataId;
+    received?: boolean;
+    cleared?: boolean;
+    saved?: boolean;
+}
+
 interface UpdateReceiveDeclarationOfExpenditureCertificateTaskRequest {
     taskDataId: TaskDataId;
     projectType: ProjectType;
@@ -198,6 +205,10 @@ class TaskApi extends ApiBase {
 
     public updateLandQuestionnaireTask(requestBody: UpdateLandQuestionnaireTaskRequest) {
         return this.taskDataBaseRequest<void>("PATCH", "LandQuestionnaire", requestBody, 204);
+    }
+
+    public updateLandRegistryTitlePlansTask(requestBody: UpdateLandRegistryTitlePlansTaskRequest) {
+        return this.taskDataBaseRequest<void>("PATCH", "LandRegistryTitlePlans", requestBody, 204);
     }
 
     public updateReceiveDeclarationOfExpenditureCertificateTask(
