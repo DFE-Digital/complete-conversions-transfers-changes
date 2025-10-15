@@ -13,7 +13,7 @@ using Dfe.Complete.Application.Projects.Services;
 
 namespace Dfe.Complete.Application.Projects.Commands.CreateHandoverProject;
 
-public record CreateHandoverConversionProjectCommand(
+public record CreateHandoverTransferProjectCommand(
     [Required]
     [Urn]
     int? Urn,
@@ -21,30 +21,35 @@ public record CreateHandoverConversionProjectCommand(
     [Ukprn]
     int? IncomingTrustUkprn,
     [Required]
+    [Ukprn]
+    int? OutgoingTrustUkprn,
+    [Required]
     [PastDate (AllowToday = true)]
     DateOnly? AdvisoryBoardDate,
     [Required]
     [FirstOfMonthDate]
-    DateOnly? ProvisionalConversionDate,
+    DateOnly? ProvisionalTransferDate,
     [Required]
     [InternalEmail]
     string CreatedByEmail,
     [Required] string CreatedByFirstName,
     [Required] string CreatedByLastName,
     [Required] int? PrepareId,
-    [Required] bool? DirectiveAcademyOrder,
+    [Required] bool? InadequateOfsted,
+    [Required] bool? FinancialSafeguardingGovernanceIssues,
+    [Required] bool? OutgoingTrustToClose,
     string? AdvisoryBoardConditions,
     [GroupReferenceNumber]
     string? GroupId = null) : IRequest<ProjectId>;
 
-public class CreateHandoverConversionProjectCommandHandler(
+public class CreateHandoverTransferProjectCommandHandler(
     IUnitOfWork unitOfWork,
     ITrustsV4Client trustClient,
     IHandoverProjectService handoverProjectService,
-    ILogger<CreateHandoverConversionProjectCommandHandler> logger)
-    : IRequestHandler<CreateHandoverConversionProjectCommand, ProjectId>
+    ILogger<CreateHandoverTransferProjectCommandHandler> logger)
+    : IRequestHandler<CreateHandoverTransferProjectCommand, ProjectId>
 {
-    public async Task<ProjectId> Handle(CreateHandoverConversionProjectCommand request, CancellationToken cancellationToken)
+    public async Task<ProjectId> Handle(CreateHandoverTransferProjectCommand request, CancellationToken cancellationToken)
     {
         try
         {
@@ -74,28 +79,32 @@ public class CreateHandoverConversionProjectCommandHandler(
             };
             var userId = await handoverProjectService.GetOrCreateUserAsync(userDto, cancellationToken);
 
-            // Create conversion task data
-            var conversionTask = handoverProjectService.CreateConversionTaskAsync();
+            // Create transfer task data
+            var transferTask = handoverProjectService.CreateTransferTaskAsync(
+                request.InadequateOfsted!.Value,
+                request.FinancialSafeguardingGovernanceIssues!.Value,
+                request.OutgoingTrustToClose!.Value
+            );
 
-            var parameters = new CreateHandoverConversionProjectParams(
+            var parameters = new CreateHandoverTransferProjectParams(
                 projectId,
                 new Urn(urn),
-                conversionTask.Id.Value,
-                request.ProvisionalConversionDate!.Value,
+                transferTask.Id.Value,
+                request.ProvisionalTransferDate!.Value,
                 new Ukprn(request.IncomingTrustUkprn!.Value),
+                new Ukprn(request.OutgoingTrustUkprn!.Value),
                 region,
-                request.DirectiveAcademyOrder ?? false,
                 request.AdvisoryBoardDate!.Value,
                 request.AdvisoryBoardConditions ?? null,
                 groupId,
                 userId,
                 localAuthorityId);
 
-            var project = Project.CreateHandoverConversionProject(parameters);
+            var project = Project.CreateHandoverTransferProject(parameters);
 
             project.PrepareId = request.PrepareId!.Value;
 
-            await handoverProjectService.SaveProjectAndTaskAsync(project, conversionTask, cancellationToken);
+            await handoverProjectService.SaveProjectAndTaskAsync(project, transferTask, cancellationToken);
 
             await unitOfWork.CommitAsync();
 
@@ -104,18 +113,23 @@ public class CreateHandoverConversionProjectCommandHandler(
         catch (Exception ex) when (ex is not NotFoundException && ex is not ValidationException)
         {
             await unitOfWork.RollBackAsync();
-            logger.LogError(ex, "Exception while creating handover conversion project for URN: {Urn}", request.Urn);
-            throw new UnknownException($"An error occurred while creating the handover conversion project for URN: {request.Urn}", ex);
+            logger.LogError(ex, "Exception while creating handover transfer project for URN: {Urn}", request.Urn);
+            throw new UnknownException($"An error occurred while creating the handover transfer project for URN: {request.Urn}", ex);
         }
     }
 
-    private async Task ValidateRequest(CreateHandoverConversionProjectCommand request, CancellationToken cancellationToken)
+    private async Task ValidateRequest(CreateHandoverTransferProjectCommand request, CancellationToken cancellationToken)
     {
-        // Check if URN already exists in active/inactive conversion projects
+        if (request.IncomingTrustUkprn == request.OutgoingTrustUkprn)
+            throw new ValidationException(ValidationConstants.SameTrustValidationMessage);
+
+        // Check if URN already exists in active/inactive transfer projects
         var existingProject = await handoverProjectService.FindExistingProjectAsync(request.Urn!.Value, cancellationToken);
 
         if (existingProject != null)
             throw new ValidationException(string.Format(ValidationConstants.UrnExistsValidationMessage, request.Urn));
-        _ = await trustClient.GetTrustByUkprn2Async(request.IncomingTrustUkprn!.Value.ToString(), cancellationToken) ?? throw new ValidationException(ValidationConstants.NoTrustFoundValidationMessage);
+
+        _ = await trustClient.GetTrustByUkprn2Async(request.IncomingTrustUkprn!.Value.ToString(), cancellationToken) ?? throw new ValidationException(string.Format(ValidationConstants.NoTrustFoundValidationMessage, request.IncomingTrustUkprn.Value));
+        _ = await trustClient.GetTrustByUkprn2Async(request.OutgoingTrustUkprn!.Value.ToString(), cancellationToken) ?? throw new ValidationException(string.Format(ValidationConstants.NoTrustFoundValidationMessage, request.OutgoingTrustUkprn.Value));
     }
 }
