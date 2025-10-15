@@ -23,7 +23,7 @@ public class CreateNewProject(ISender sender, ErrorService errorService, ILogger
     public string URN { get; set; }
 
     [BindProperty]
-    [Trn]
+    [Domain.Validators.Trn]
     [Display(Name = "Trust reference number (TRN)")]
     public string? TrustReferenceNumber { get; set; }
 

@@ -161,29 +161,19 @@ public class HandoverProjectService(
         return id;
     }
 
-    public async Task ValidateUrnAndTrustsAsync(int urn, int incomingTrustUkprn, int? outgoingTrustUkprn = null, CancellationToken cancellationToken = default)
+    public async Task ValidateUrnAsync(int urn, CancellationToken cancellationToken = default)
     {
-        if (outgoingTrustUkprn.HasValue && incomingTrustUkprn == outgoingTrustUkprn)
-                throw new ValidationException(Constants.ValidationConstants.SameTrustValidationMessage);
-            
         // Check if URN already exists in active/inactive projects
             var existingProject = await FindExistingProjectAsync(urn, cancellationToken);
         if (existingProject != null)
-            throw new UnprocessableContentException(string.Format(Constants.ValidationConstants.UrnExistsValidationMessage, urn));
+            throw new ValidationException(string.Format(Constants.ValidationConstants.UrnExistsValidationMessage, urn));
+    }
 
-        // Validate incoming trust exists
-        _ = await trustClient.GetTrustByUkprn2Async(incomingTrustUkprn.ToString(), cancellationToken) 
-            ?? throw new UnprocessableContentException(string.Format(Constants.ValidationConstants.NoTrustFoundValidationMessage, incomingTrustUkprn));
-
-        // Validate outgoing trust exists and is different from incoming (for transfers)
-        if (outgoingTrustUkprn.HasValue)
-        {
-            if (incomingTrustUkprn == outgoingTrustUkprn.Value)
-                throw new ValidationException(Constants.ValidationConstants.SameTrustValidationMessage);
-
-            _ = await trustClient.GetTrustByUkprn2Async(outgoingTrustUkprn.Value.ToString(), cancellationToken) 
-                ?? throw new UnprocessableContentException(string.Format(Constants.ValidationConstants.NoTrustFoundValidationMessage, outgoingTrustUkprn.Value));
-        }
+    public async Task ValidateTrustAsync(int trustUkprn, CancellationToken cancellationToken = default)
+    {
+        // Validate trust exists
+        _ = await trustClient.GetTrustByUkprn2Async(trustUkprn.ToString(), cancellationToken) 
+            ?? throw new ValidationException(string.Format(Constants.ValidationConstants.NoTrustFoundValidationMessage, trustUkprn));
     }
 
     public async Task<HandoverProjectCommonData> PrepareCommonProjectDataAsync(int urn, int incomingTrustUkprn, string? groupId, string createdByFirstName, string createdByLastName, string createdByEmail, CancellationToken cancellationToken)

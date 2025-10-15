@@ -58,7 +58,12 @@ public class CreateHandoverTransferProjectCommandHandler(
             var outgoingTrustUkprn = request.OutgoingTrustUkprn!.Value;
 
             // Validate the request
-            await handoverProjectService.ValidateUrnAndTrustsAsync(urn, incomingTrustUkprn, outgoingTrustUkprn, cancellationToken);
+            if (incomingTrustUkprn == outgoingTrustUkprn)
+                throw new ValidationException(Constants.ValidationConstants.SameTrustValidationMessage);
+
+            await handoverProjectService.ValidateUrnAsync(urn, cancellationToken: cancellationToken);
+            await handoverProjectService.ValidateTrustAsync(incomingTrustUkprn, cancellationToken: cancellationToken);
+            await handoverProjectService.ValidateTrustAsync(outgoingTrustUkprn, cancellationToken: cancellationToken);
 
             // Prepare common project data
             var commonData = await handoverProjectService.PrepareCommonProjectDataAsync(
