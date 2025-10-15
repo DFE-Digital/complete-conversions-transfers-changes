@@ -21,6 +21,7 @@ Security in case of vulnerabilities.
 ### Changed
 
 ### Fixed
+- resolve bad field mappings for master funding agreements on conversion projects
 
 ### Security
 

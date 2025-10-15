@@ -65,7 +65,7 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.MasterFundingAgreementTask
                 Cleared = ConversionTaskData.MasterFundingAgreementCleared;
                 SignedBySchoolOrTrust = ConversionTaskData.MasterFundingAgreementSigned;
                 SavedInTheSchoolsSharepoint = ConversionTaskData.MasterFundingAgreementSaved;
-                SavedInSchoolAndTrustSharepoint = ConversionTaskData.MasterFundingAgreementSaved;
+                SavedInSchoolAndTrustSharepoint = ConversionTaskData.MasterFundingAgreementSent;
                 SignedOnBehalfOfSeceratyOfState = ConversionTaskData.MasterFundingAgreementSignedSecretaryState;
             }
             return Page();
@@ -73,10 +73,10 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.MasterFundingAgreementTask
         public async Task<IActionResult> OnPost()
         {
             // Interim Solution until MasterFundingAgreementSent is created for transfers
-            if (SavedInSchoolAndTrustSharepoint.HasValue && SavedInSchoolAndTrustSharepoint.Value)
-            {
-                SavedInTheSchoolsSharepoint = true;
-            }
+            //if (SavedInSchoolAndTrustSharepoint.HasValue && SavedInSchoolAndTrustSharepoint.Value)
+            //{
+            //    SavedInTheSchoolsSharepoint = true;
+            //}
             
             await _sender.Send(new UpdateMasterFundingAgreementTaskCommand(new TaskDataId(TasksDataId.GetValueOrDefault())!, Type, NotApplicable, Received, Cleared, SignedBySchoolOrTrust, SavedInTheSchoolsSharepoint, SavedInSchoolAndTrustSharepoint, SignedOnBehalfOfSeceratyOfState ));
             TempData.SetNotification(NotificationType.Success, "Success", "Task updated successfully");
