@@ -19,6 +19,7 @@ Security in case of vulnerabilities.
 ### Added
 - Added `Confirm the academy's risk protection agreements` task for both conversion and transfer projects.
 -Added all task notes identifiers.
+- Adding key contact record on confirming project handover and logging error message if key contact is already been added. 
 
 ### Changed
 
