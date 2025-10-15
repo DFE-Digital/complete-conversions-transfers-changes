@@ -19,7 +19,6 @@ Security in case of vulnerabilities.
 ### Added
 
 ### Changed
-- Hide "Complete a project" functionality on a project if it's DaO revoked
 
 ### Fixed
 

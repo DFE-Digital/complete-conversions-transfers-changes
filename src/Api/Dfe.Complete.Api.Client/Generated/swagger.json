@@ -2080,7 +2080,7 @@
         "tags": [
           "Projects"
         ],
-        "summary": "Record dao revoation decision for a specific project.",
+        "summary": "Record dao revocation decision for a specific project.",
         "operationId": "Projects_RecordDaoRevocationDecision",
         "requestBody": {
           "x-name": "request",

@@ -20,10 +20,10 @@ namespace Dfe.Complete.Application.DaoRevoked.Commands
         public DateOnly? DecisionDate { get; set; } = null!;
     }
 
-    public class RecordDaoRevocationDecisionCommandHandler(
+    internal class RecordDaoRevocationDecisionCommandHandler(
         IProjectReadRepository projectReadRepository,
         IProjectWriteRepository projectWriteRepository,
-        INoteWriteRepository noteWriteRepository,  
+        INoteWriteRepository noteWriteRepository,
         IDaoRevocationWriteRepository daoRevocationWriteRepository,
         ILogger<RecordDaoRevocationDecisionCommandHandler> logger)
         : IRequestHandler<RecordDaoRevocationDecisionCommand, Result<bool>>
@@ -34,6 +34,12 @@ namespace Dfe.Complete.Application.DaoRevoked.Commands
             {
                 var project = await projectReadRepository.Projects.FirstOrDefaultAsync(u => u.Id == request.ProjectId, cancellationToken)
                     ?? throw new NotFoundException($"Project {request.ProjectId} not found");
+
+                if (project.State == ProjectState.Completed)
+                    return Result<bool>.Failure(
+                        "Cannot raise Directive Academy Order revocation on a completed project",
+                        ErrorType.UnprocessableContent);
+
                 var now = DateTime.UtcNow;
 
                 var daoRevocation = new DaoRevocation

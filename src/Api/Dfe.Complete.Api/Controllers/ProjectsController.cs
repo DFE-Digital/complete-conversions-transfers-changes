@@ -20,6 +20,7 @@ using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 using System.ComponentModel.DataAnnotations;
 using Dfe.Complete.Application.KeyContacts.Queries;
+using Dfe.Complete.Utils;
 
 namespace Dfe.Complete.Api.Controllers
 {
@@ -652,7 +653,7 @@ namespace Dfe.Complete.Api.Controllers
             return NoContent();
         }
         /// <summary>
-        /// Record dao revoation decision for a specific project.
+        /// Record dao revocation decision for a specific project.
         /// </summary>
         /// <param name="request">The update command.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
@@ -665,7 +666,12 @@ namespace Dfe.Complete.Api.Controllers
             [FromBody] RecordDaoRevocationDecisionCommand request,
             CancellationToken cancellationToken)
         {
-            await sender.Send(request, cancellationToken);
+            var res = await sender.Send(request, cancellationToken);
+            if (!res.IsSuccess)
+            {
+                throw res.Exception ?? new UnknownException(res.Error!);
+            }
+            
             return NoContent();
         }
 

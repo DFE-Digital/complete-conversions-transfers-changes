@@ -15,6 +15,7 @@ using GovUK.Dfe.CoreLibs.Testing.AutoFixture.Customizations;
 using GovUK.Dfe.CoreLibs.Testing.Mocks.WebApplicationFactory;
 using GovUK.Dfe.CoreLibs.Testing.Mocks.WireMock;
 using Microsoft.EntityFrameworkCore;
+using System.Net;
 using System.Security.Claims;
 using GiasEstablishment = Dfe.Complete.Domain.Entities.GiasEstablishment;
 using LocalAuthority = Dfe.Complete.Domain.Entities.LocalAuthority;
@@ -1985,6 +1986,75 @@ public partial class ProjectsControllerTests
         var note = decision.ReasonNotes.First();
         Assert.Equal(note.Value, dbNotes.Body);
         Assert.Equal(decision.ProjectId.Value, dbNotes.ProjectId.Value);
+    }
+
+    [Theory]
+    [CustomAutoData(
+       typeof(CustomWebApplicationDbContextFactoryCustomization),
+       typeof(ProjectCustomization))]
+    public async Task RecordDaoRevocationDecisionAsync_ShouldNotUpdateProject_IfCompleted(
+        CustomWebApplicationDbContextFactory<Program> factory,
+        IProjectsClient projectsClient,
+        IFixture fixture)
+    {
+        // Arrange
+        factory.TestClaims = [new Claim(ClaimTypes.Role, ApiRoles.ReadRole), new Claim(ClaimTypes.Role, ApiRoles.UpdateRole), new Claim(ClaimTypes.Role, ApiRoles.WriteRole)];
+
+        var dbContext = factory.GetDbContext<CompleteContext>();
+        var testUser = await dbContext.Users.FirstAsync();
+
+        var establishments = fixture.Customize(new GiasEstablishmentsCustomization()).CreateMany<GiasEstablishment>(1)
+            .ToList();
+
+        await dbContext.GiasEstablishments.AddRangeAsync(establishments);
+
+        var projects = establishments.Select(establishment =>
+        {
+            var project = fixture.Customize(new ProjectCustomization
+            {
+                RegionalDeliveryOfficerId = testUser.Id,
+                CaseworkerId = testUser.Id,
+                AssignedToId = testUser.Id,
+                State = 1
+            })
+                .Create<Project>();
+            project.Urn = establishment.Urn ?? project.Urn;
+            return project;
+        }).ToList();
+
+        var localAuthority = dbContext.LocalAuthorities.AsEnumerable().MinBy(_ => Guid.NewGuid());
+        Assert.NotNull(localAuthority);
+        projects.ForEach(x => x.LocalAuthorityId = localAuthority.Id);
+        var project = projects.First();
+
+        project.State = ProjectState.Completed;
+
+        await dbContext.Projects.AddRangeAsync(projects);
+        await dbContext.SaveChangesAsync();
+
+        var command = new RecordDaoRevocationDecisionCommand()
+        {
+            ProjectId = new ProjectId() { Value = project.Id.Value },
+            DecisionDate = DateOnly.MinValue.ToDateTime(TimeOnly.MinValue),
+            MinisterName = "Minister",
+            UserId = new UserId() { Value = Guid.NewGuid() },
+            ReasonNotes = new Dictionary<DaoRevokedReason, string>  {
+                    {
+                        DaoRevokedReason.SchoolClosedOrClosing, "Closing school"
+                    }
+                }
+        };
+
+        // Act
+        Assert.Equal(ProjectState.Completed, project.State);
+
+        // Act + Assert
+        var exception = await Assert.ThrowsAsync<CompleteApiException>(() => projectsClient.RecordDaoRevocationDecisionAsync(command, default));
+        Assert.Equal(HttpStatusCode.UnprocessableContent, (HttpStatusCode)exception.StatusCode);
+
+        var validationErrors = exception.Response;
+        Assert.NotNull(validationErrors);
+        Assert.Contains("Cannot raise Directive Academy Order revocation on a completed project", validationErrors);
     }
 
     [Theory]
