@@ -286,7 +286,7 @@ describe("View all projects", () => {
             .columnHasValue("Email", cypressUser.email)
             .columnHasValue("Team", "London")
             .goToUserProjects(cypressUser.username);
-        allProjects.containsHeading(`Projects for ${cypressUser.username}`);
+        allProjects.containsHeading(`Projects for ${cypressUser.username}`).goToNextPageUntilFieldIsVisible(schoolName);
         projectTable
             .hasTableHeaders(["School or academy", "URN", "Conversion or transfer date", "Project type"])
             .contains(schoolName)
