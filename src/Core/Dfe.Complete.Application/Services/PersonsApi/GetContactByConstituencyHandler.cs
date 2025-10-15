@@ -10,7 +10,7 @@ namespace Dfe.Complete.Application.Services.PersonsApi;
 public record GetContactByConstituency(string ConstituencyName) : IRequest<Result<ConstituencyMemberContactDto>>;
 
 
-internal class GetContactByConstituencyHandler(IConstituenciesClient constituenciesClient, IMapper mapper, ILogger<GetContactByConstituencyHandler> logger) : IRequestHandler<GetContactByConstituency, Result<ConstituencyMemberContactDto>>
+public class GetContactByConstituencyHandler(IConstituenciesClient constituenciesClient, IMapper mapper, ILogger<GetContactByConstituencyHandler> logger) : IRequestHandler<GetContactByConstituency, Result<ConstituencyMemberContactDto>>
 {
     private readonly IConstituenciesClient _constituenciesClient = constituenciesClient ?? throw new ArgumentNullException(nameof(constituenciesClient));
     private readonly ILogger<GetContactByConstituencyHandler> _logger = logger ?? throw new ArgumentNullException(nameof(logger));
@@ -42,8 +42,9 @@ internal class GetContactByConstituencyHandler(IConstituenciesClient constituenc
         }
         catch (Exception ex) when (ex is not OperationCanceledException)
         {
-            _logger.LogError(ex, "An unexpected error occurred: {Message}", ex.Message);
-            return Result<ConstituencyMemberContactDto>.Failure(ex.Message);
+            var errorMessage = $"An unexpected error occurred. Response: {ex.Message}";
+            _logger.LogError(ex, "An unexpected error occurred. Response: {Message}", ex.Message);
+            return Result<ConstituencyMemberContactDto>.Failure(errorMessage);
         }
     }
 }

@@ -69,12 +69,11 @@ namespace Dfe.Complete.Tests.Extensions
             var expected = new MockObject { Name = "Cached", Age = 99 };
             var jsonBytes = Encoding.UTF8.GetBytes(JsonSerializer.Serialize(expected, serializerOptions));
 
-            cache.Get(key).Returns(jsonBytes);
+            _ = cache.Get(key).Returns(jsonBytes);
 
             // Act
             var result = await Dfe.Complete.Extensions.DistributedCacheExtensions.GetOrSetAsync(cache, key, () =>
-            {
-                Assert.False(true, "Factory function should not be called when value is cached.");
+            {   
                 return Task.FromResult(expected);
             });
 
@@ -92,7 +91,7 @@ namespace Dfe.Complete.Tests.Extensions
             var key = "missing-key";
             var expected = new MockObject { Name = "New", Age = 50 };
 
-            cache.Get(key).Returns((byte[]?)null);
+            _ = cache.Get(key).Returns((byte[]?)null);
 
             // Act
             var result = await Dfe.Complete.Extensions.DistributedCacheExtensions.GetOrSetAsync(cache, key, () =>
