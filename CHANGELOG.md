@@ -39,6 +39,7 @@ See the [full commit history](https://github.com/DFE-Digital/complete-conversion
 - Add API end point for editing user
 - Add ability to edit a user
 - Added `Incoming Trust CEO contact` task page
+- Added `Outgoing Trust CEO contact` task page
 
 ### Changed
 - Allow users to modify `declaration of expenditure certificate date` on the `Receive declaration of expenditure certificate` task for both conversion and transfer project.

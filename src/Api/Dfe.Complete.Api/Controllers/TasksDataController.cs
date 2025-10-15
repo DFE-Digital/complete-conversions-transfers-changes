@@ -438,5 +438,24 @@ namespace Dfe.Complete.Api.Controllers
             await sender.Send(request, cancellationToken);
             return NoContent();
         }
+        
+        /// <summary>
+        /// Confirm the outgoing trust ceo contact for the project.
+        /// </summary>
+        /// <param name="request">The update command.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        [Authorize(Policy = "CanReadWriteUpdate")]
+        [HttpPatch]
+        [Route("TaskData/ConfirmOutgoingTrustCeoContact")]
+        [SwaggerResponse(204, "Confirm the outgoing trust ceo contact for the project successfully.")]
+        [SwaggerResponse(400, "Invalid request data.")]
+        [SwaggerResponse(404, "Project not found.")]
+        public async Task<IActionResult> UpdateConfirmOutgoingTrustCeoContactTaskAsync(
+            [FromBody] UpdateOutgoingTrustCeoCommand request,
+            CancellationToken cancellationToken)
+        {
+            await sender.Send(request, cancellationToken);
+            return NoContent();
+        }
     }
 }
