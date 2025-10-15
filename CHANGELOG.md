@@ -21,6 +21,7 @@ Security in case of vulnerabilities.
 -Added all task notes identifiers.
 
 ### Changed
+- Hide "Complete a project" functionality on a project if it's DaO revoked
 
 ### Fixed
 
