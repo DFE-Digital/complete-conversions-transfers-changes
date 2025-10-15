@@ -1,0 +1,16 @@
+﻿@page "/projects/{projectId}/tasks/bank_details_changing"
+@model Dfe.Complete.Pages.Projects.TaskList.Tasks.ConfirmBankDetailsForGeneralAnnualGrantPaymentNeedToChange.ConfirmBankDetailsForGeneralAnnualGrantPaymentNeedToChangeModel
+@{
+    Layout = "_ProjectTaskLayout";
+    ViewData["Title"] = "Confirm if the bank details for the general annual grant payment need to change";
+}
+@section TaskHeaderHintSection {
+    <div class="govuk-hint"> 
+    </div>
+}
+@section TaskSection {
+
+    <form method="post"> 
+        @await Html.PartialAsync("_TaskSaveAndReturn", new TaskSaveAndReturnModel(Model.Project, Model.CurrentUserTeam))
+    </form>
+}
