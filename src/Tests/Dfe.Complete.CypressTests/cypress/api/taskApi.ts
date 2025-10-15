@@ -47,6 +47,19 @@ interface UpdateConfirmTransferHasAuthorityToProceedTaskRequest {
     confirmToProceed?: boolean;
 }
 
+interface UpdateChurchSupplementalAgreementTaskRequest {
+    taskDataId: TaskDataId;
+    projectType?: ProjectType;
+    notApplicable?: boolean;
+    received?: boolean;
+    cleared?: boolean;
+    signed?: boolean;
+    signedByDiocese?: boolean;
+    saved?: boolean;
+    signedBySecretaryState?: boolean;
+    sentOrSaved?: boolean;
+}
+
 interface UpdateDeedOfNovationAndVariationTaskRequest {
     taskDataId: TaskDataId;
     received?: boolean;
@@ -121,6 +134,10 @@ class TaskApi extends ApiBase {
 
     public updateHandoverWithDeliveryOfficerTask(requestBody: UpdateHandoverWithDeliveryOfficerTaskRequest) {
         return this.taskDataBaseRequest<void>("PATCH", "HandoverDeliveryOfficer", requestBody, 204);
+    }
+
+    public updateChurchSupplementalAgreementTask(requestBody: UpdateChurchSupplementalAgreementTaskRequest) {
+        return this.taskDataBaseRequest<void>("PATCH", "ChurchSupplementalAgreement", requestBody, 204);
     }
 
     public updateDeedOfNovationAndVariationTask(requestBody: UpdateDeedOfNovationAndVariationTaskRequest) {

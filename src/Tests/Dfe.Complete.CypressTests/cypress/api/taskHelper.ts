@@ -106,6 +106,51 @@ class TaskHelper {
                 return taskApi.updateConfirmTransferHasAuthorityToProceedTask(defaultBody);
         }
     }
+    public updateChurchSupplementalAgreement(taskDataId: string, projectType: ProjectType, status: TaskStatus) {
+        const defaultBody = {
+            taskDataId: { value: taskDataId },
+            projectType: projectType,
+            notApplicable: false,
+            received: false,
+            cleared: false,
+            signed: false,
+            signedByDiocese: false,
+            saved: false,
+            signedBySecretaryState: false,
+            sentOrSaved: false,
+        };
+
+        switch (status) {
+            case "notApplicable":
+                return taskApi.updateChurchSupplementalAgreementTask({
+                    ...defaultBody,
+                    notApplicable: true,
+                });
+
+            case "inProgress":
+                return taskApi.updateChurchSupplementalAgreementTask({
+                    ...defaultBody,
+                    received: true,
+                });
+
+            case "completed":
+                return taskApi.updateChurchSupplementalAgreementTask({
+                    taskDataId: { value: taskDataId },
+                    projectType: projectType,
+                    notApplicable: false,
+                    received: true,
+                    cleared: true,
+                    signed: true,
+                    signedByDiocese: true,
+                    saved: true,
+                    signedBySecretaryState: true,
+                    sentOrSaved: true,
+                });
+
+            default:
+                return taskApi.updateChurchSupplementalAgreementTask(defaultBody);
+        }
+    }
     public updateDeedOfNovationAndVariation(taskDataId: string, status: TaskStatus) {
         const defaultBody = {
             taskDataId: { value: taskDataId },
