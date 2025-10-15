@@ -18,6 +18,9 @@ Security in case of vulnerabilities.
 
 ### Added
 - Added `Complete a notification of changes to funded high needs places form` task for conversion projects.
+- Land registry title plans` task for conversion project.
+- Added `Master Funding Agreement` task for both conversion and transfer projects.
+- Added transfer creation end point for prepare to complete
 
 ### Changed
 

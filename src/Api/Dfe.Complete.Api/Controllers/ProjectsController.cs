@@ -56,6 +56,33 @@ namespace Dfe.Complete.Api.Controllers
         }
 
         /// <summary>
+        /// Creates a new transfer project (handover version).
+        /// </summary>
+        /// <param name="request">The request.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        [Authorize(Policy = "CanReadWrite")]
+        [HttpPost]
+        [Route("projects/transfers")]
+        [SwaggerResponse(201, "Project created successfully.", typeof(ProjectId))]
+        [SwaggerResponse(400, "Invalid request data.")]
+        public async Task<IActionResult> CreateHandoverTransferProjectAsync([FromBody] CreateHandoverTransferProjectCommand request, CancellationToken cancellationToken)
+        {
+            try
+            {
+                var result = await sender.Send(request, cancellationToken);
+                return Created("", result);
+            }
+            catch (ValidationException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
+
+        /// <summary>
         /// Creates a new conversion project
         /// </summary>
         /// <param name="request">The request.</param>

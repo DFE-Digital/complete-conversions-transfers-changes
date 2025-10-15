@@ -16,3 +16,17 @@ public record CreateHandoverConversionProjectParams(
     ProjectGroupId? GroupId,
     UserId RegionalDeliveryOfficerId,
     Guid LocalAuthorityId);
+
+public record CreateHandoverTransferProjectParams(
+    ProjectId Id,
+    Urn Urn,
+    Guid TasksDataId,
+    DateOnly SignificantDate,
+    Ukprn IncomingTrustUkprn,
+    Ukprn OutgoingTrustUkprn,
+    Region? Region,
+    DateOnly AdvisoryBoardDate,
+    string? AdvisoryBoardConditions,
+    ProjectGroupId? GroupId,
+    UserId RegionalDeliveryOfficerId,
+    Guid LocalAuthorityId);
