@@ -192,7 +192,7 @@ public class ContactsControllerTests
 
         var response = new HttpResponseMessage(HttpStatusCode.OK);
         
-        response.Content = new StringContent(System.Text.Json.JsonSerializer.Serialize(constituencyMemberContactDto, jsonSerializerOptions), System.Text.Encoding.UTF8, "application/json");
+        response.Content = new StringContent(JsonSerializer.Serialize(constituencyMemberContactDto, jsonSerializerOptions), System.Text.Encoding.UTF8, "application/json");
 
         Mock<HttpMessageHandler> httpMessageHandlerMock = new();
 

@@ -32,7 +32,7 @@ namespace Dfe.Complete.Extensions
             value = default;
             if (val == null) return false;
             value = JsonSerializer.Deserialize<T>(val, serializerOptions);
-            return true;
+            return value is not null;
         }
 
         public static async Task<T?> GetOrSetAsync<T>(this IDistributedCache cache, string key, Func<Task<T>> task, DistributedCacheEntryOptions? options = null)

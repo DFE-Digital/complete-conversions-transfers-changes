@@ -1,5 +1,8 @@
-﻿namespace Dfe.Complete.Configuration
+﻿using System.Diagnostics.CodeAnalysis;
+
+namespace Dfe.Complete.Configuration
 {
+    [ExcludeFromCodeCoverage]
     public class PersonsApiOptions
     {
         public string? BaseUrl { get; set; }
