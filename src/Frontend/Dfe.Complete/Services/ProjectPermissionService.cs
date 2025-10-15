@@ -7,12 +7,19 @@ namespace Dfe.Complete.Services
 {
     public interface IProjectPermissionService
     {
+        bool UserCanComplete(ProjectDto project, ProjectTeam currentUserTeam, ClaimsPrincipal user);
         bool UserCanEdit(ProjectDto project, ProjectTeam currentUserTeam, ClaimsPrincipal user);
         bool UserCanDaoRevocation(ProjectDto project, ProjectTeam currentUserTeam, ClaimsPrincipal user);
     }
 
     public class ProjectPermissionService : IProjectPermissionService
     {
+        public bool UserCanComplete(ProjectDto project, ProjectTeam currentUserTeam, ClaimsPrincipal user)
+        {
+            if (!UserCanEdit(project, currentUserTeam, user)) return false;
+            return project.State != ProjectState.DaoRevoked;
+        }
+
         public bool UserCanEdit(ProjectDto project, ProjectTeam currentUserTeam, ClaimsPrincipal user)
         {
             return currentUserTeam == ProjectTeam.ServiceSupport || (project.State != ProjectState.Completed && project.AssignedToId?.Value == user.GetUserId().Value);

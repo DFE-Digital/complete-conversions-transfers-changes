@@ -1,13 +1,12 @@
 @using Dfe.Complete.Constants
-@using Dfe.Complete.Domain.Enums
 @using Dfe.Complete.Services
 @inject IProjectPermissionService ProjectPermissionService
 
 @{
-    var userCanEdit = ProjectPermissionService.UserCanEdit(Model.Project, Model.CurrentUserTeam, User);
+    var userCanComplete = ProjectPermissionService.UserCanComplete(Model.Project, Model.CurrentUserTeam, User);
 }
 
-@if (userCanEdit && Model.Project.State != ProjectState.DaoRevoked)
+@if (userCanComplete)
 {
     <div class="govuk-grid-row" id="completing_a_project">
         <div class="govuk-grid-row">

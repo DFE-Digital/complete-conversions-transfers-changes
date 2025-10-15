@@ -1,5 +1,4 @@
 ﻿@using Dfe.Complete.Constants
-@using Dfe.Complete.Domain.Enums
 @using Dfe.Complete.TagHelpers
 @model Dfe.Complete.Pages.Projects.TaskList.TaskListModel
 @inject Dfe.Complete.Services.IProjectPermissionService projectPermissionService;
@@ -64,7 +63,7 @@
                     <li>
                         <a class="govuk-link govuk-link--no-visited-state" href="#after_opening">After opening</a>
                     </li>
-                    @if (Model.Project.State != ProjectState.DaoRevoked){
+                    @if (projectPermissionService.UserCanComplete(Model.Project, Model.CurrentUserTeam, User)){
                         <li>
                             <a class="govuk-link govuk-link--no-visited-state" href="#completing_a_project">Completing a project</a>
                         </li>
