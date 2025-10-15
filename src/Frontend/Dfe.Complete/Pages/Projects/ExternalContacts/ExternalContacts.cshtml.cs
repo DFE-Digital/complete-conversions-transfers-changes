@@ -7,6 +7,7 @@ using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Extensions;
 using Dfe.Complete.Models.ExternalContact;
 using Dfe.Complete.Pages.Projects.ProjectView;
+using DocumentFormat.OpenXml.Wordprocessing;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -113,22 +114,34 @@ public class ExternalContacts(ISender sender, ILogger<ExternalContacts> logger, 
         {
             LocalAuthorityContacts.AddRange(laContacts.Value.Select(contact =>
                 new ExternalContactModel(contact, false)));
-        }
+        }       
 
-        if(Establishment.ParliamentaryConstituency != null && !string.IsNullOrWhiteSpace(Establishment.ParliamentaryConstituency.Name))
+        if (Establishment.ParliamentaryConstituency != null && !string.IsNullOrWhiteSpace(Establishment.ParliamentaryConstituency.Name))
         {
-            var cacheKey = $"GetContactByConstituency-{Establishment.ParliamentaryConstituency.Name}";            
-            var constituencyMember = await _cache.GetOrSetAsync(cacheKey, GetContactByConstituency, DefaultCacheOptions);                        
-            this.ParliamentaryContact = constituencyMember;
-        }
+            var cacheKey = $"GetContactByConstituency-{Establishment.ParliamentaryConstituency.Name}";
+            ConstituencyMemberContactDto? constituencyMember = await _cache.GetOrSetAsync<ConstituencyMemberContactDto>(
+                cacheKey,
+                async () =>
+                {
+                    var result = await GetContactByConstituency(Establishment.ParliamentaryConstituency.Name);
+                    return result;
+                },
+                DefaultCacheOptions
+            );
 
+            if (constituencyMember != null)
+            {
+                this.ParliamentaryContact = constituencyMember;
+            }
+        }
         return Page();
     }   
 
-    private async Task<ConstituencyMemberContactDto?> GetContactByConstituency()
-    {   
-        var getContactyByConstituency = new GetContactByConstituency(Establishment.ParliamentaryConstituency.Name);
-        var result =  await Sender.Send(getContactyByConstituency);
-        return result?.Value;
+    private async Task<ConstituencyMemberContactDto?> GetContactByConstituency(string constituencyName)
+    {
+        var getContactyByConstituency = new GetContactByConstituency(constituencyName);
+        var result = await Sender.Send(getContactyByConstituency);
+        return result?.Value ?? null;
     }
+   
 }

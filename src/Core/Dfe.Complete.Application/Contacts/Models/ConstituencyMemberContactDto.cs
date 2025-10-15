@@ -1,7 +1,4 @@
-﻿using Dfe.Complete.Domain.Enums;
-using Dfe.Complete.Domain.ValueObjects;
-
-namespace Dfe.Complete.Application.Contacts.Models
+﻿namespace Dfe.Complete.Application.Contacts.Models
 {
     public record ConstituencyMemberContactDto
     {   

@@ -1,28 +1,17 @@
 ﻿using AutoFixture;
-using Dfe.AcademiesApi.Client.Contracts;
 using Dfe.Complete.Api.Tests.Integration.Customizations;
-using Dfe.Complete.Application.Contacts.Models;
-using Dfe.Complete.Application.Services.AcademiesApi;
 using Dfe.Complete.Client;
 using Dfe.Complete.Client.Contracts;
 using Dfe.Complete.Infrastructure.Database;
 using Dfe.Complete.Tests.Common.Constants;
 using Dfe.Complete.Tests.Common.Customizations.Models;
 using GovUK.Dfe.CoreLibs.Testing.AutoFixture.Attributes;
-using GovUK.Dfe.CoreLibs.Testing.AutoFixture.Customizations;
 using GovUK.Dfe.CoreLibs.Testing.Mocks.WebApplicationFactory;
 using GovUK.Dfe.PersonsApi.Client.Contracts;
-using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 using Moq;
 using Moq.Protected;
-using Newtonsoft.Json;
-using NSubstitute;
-using System;
 using System.Net;
-using System.Net.Http.Json;
 using System.Security.Claims;
 using System.Text.Json;
 using ContactId = Dfe.Complete.Domain.ValueObjects.ContactId;
@@ -31,6 +20,9 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers;
 
 public class ContactsControllerTests
 {
+
+    private readonly JsonSerializerOptions jsonSerializerOptions = new JsonSerializerOptions { WriteIndented = true };
+
     [Theory]
     [CustomAutoData(typeof(CustomWebApplicationDbContextFactoryCustomization))]
     public async Task ListAllContactsForProjectAsync_ShouldReturnCorrectContacts(
@@ -199,8 +191,8 @@ public class ContactsControllerTests
         var baseAddress = new Uri(baseAddressUrl);
 
         var response = new HttpResponseMessage(HttpStatusCode.OK);
-        var options = new JsonSerializerOptions { WriteIndented = true };
-        response.Content = new StringContent(System.Text.Json.JsonSerializer.Serialize(constituencyMemberContactDto, options), System.Text.Encoding.UTF8, "application/json");
+        
+        response.Content = new StringContent(System.Text.Json.JsonSerializer.Serialize(constituencyMemberContactDto, jsonSerializerOptions), System.Text.Encoding.UTF8, "application/json");
 
         Mock<HttpMessageHandler> httpMessageHandlerMock = new();
 
@@ -227,7 +219,7 @@ public class ContactsControllerTests
     public async Task GetParliamentMPContactByConstituencyAsync_WhenThrowsException_Should_ReturnError(
         CustomWebApplicationDbContextFactory<Program> factory,
         IFixture fixture)
-    {       
+    {
 
         factory.TestClaims = [new Claim(ClaimTypes.Role, ApiRoles.ReadRole)];
         var dbContext = factory.GetDbContext<CompleteContext>();
@@ -248,12 +240,10 @@ public class ContactsControllerTests
 
         var contactsClient = new ContactsClient(baseAddressUrl, httpClient);
 
-        // Act
-        var result = contactsClient.GetParliamentMPContactByConstituencyAsync(constituencyName, default);
-
-        // Assert
-        Assert.IsType<AggregateException>(result.Exception);
-        Assert.Contains("An error occurred with the Persons API client", result.Exception.Message);
-
+        // Act & Assert
+        await Assert.ThrowsAsync<PersonsApiException>(async () =>
+        {
+            await contactsClient.GetParliamentMPContactByConstituencyAsync(constituencyName, default);
+        });
     }
 }

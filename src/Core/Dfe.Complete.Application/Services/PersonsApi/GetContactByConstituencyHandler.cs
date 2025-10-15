@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using Dfe.Complete.Application.Common.Models;
 using Dfe.Complete.Application.Contacts.Models;
-using Dfe.Complete.Application.Services.AcademiesApi;
 using GovUK.Dfe.PersonsApi.Client.Contracts;
 using MediatR;
 using Microsoft.Extensions.Logging;
@@ -23,27 +22,27 @@ internal class GetContactByConstituencyHandler(IConstituenciesClient constituenc
 
         try
         {
-            var result = await _constituenciesClient.GetMemberOfParliamentByConstituencyAsync(request.ConstituencyName, cancellationToken)                
+            var result = await _constituenciesClient.GetMemberOfParliamentByConstituencyAsync(request.ConstituencyName, cancellationToken)
                 .ConfigureAwait(false);
 
-            var constituencyMemberContactDto =  mapper.Map<ConstituencyMemberContactDto>(result);
+            var constituencyMemberContactDto = mapper.Map<ConstituencyMemberContactDto>(result);
             return Result<ConstituencyMemberContactDto>.Success(constituencyMemberContactDto);
         }
         catch (PersonsApiException ex)
         {
             var errorMessage = $"An error occurred with the Persons API client. Response: {ex.Message}";
-            _logger.LogError(ex, errorMessage);
+            _logger.LogError(ex, "An error occurred with the Persons API client. Response: {Message}", ex.Message);
             return Result<ConstituencyMemberContactDto>.Failure(errorMessage);
         }
         catch (AggregateException ex)
         {
             var errorMessage = "An error occurred.";
-            _logger.LogError(ex, errorMessage);
+            _logger.LogError(ex, "An error occurred.");
             return Result<ConstituencyMemberContactDto>.Failure(errorMessage);
         }
         catch (Exception ex) when (ex is not OperationCanceledException)
         {
-            _logger.LogError(ex, ex.Message, nameof(EstablishmentsClientHandler));
+            _logger.LogError(ex, "An unexpected error occurred: {Message}", ex.Message);
             return Result<ConstituencyMemberContactDto>.Failure(ex.Message);
         }
     }
