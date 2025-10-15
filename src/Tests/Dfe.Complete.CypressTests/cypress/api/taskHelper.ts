@@ -355,6 +355,49 @@ class TaskHelper {
                 return taskApi.updateLandRegistryTitlePlansTask(defaultBody);
         }
     }
+    updateMasterFundingAgreement(taskDataId: string, projectType: ProjectType, status: TaskStatus) {
+        const defaultBody = {
+            taskDataId: { value: taskDataId },
+            projectType: projectType,
+            notApplicable: false,
+            received: false,
+            cleared: false,
+            signed: false,
+            saved: false,
+            sent: false,
+            signedSecretaryState: false,
+        };
+
+        switch (status) {
+            case "notApplicable":
+                return taskApi.updateMasterFundingAgreementTask({
+                    ...defaultBody,
+                    notApplicable: true,
+                });
+
+            case "inProgress":
+                return taskApi.updateMasterFundingAgreementTask({
+                    ...defaultBody,
+                    received: true,
+                });
+
+            case "completed":
+                return taskApi.updateMasterFundingAgreementTask({
+                    taskDataId: { value: taskDataId },
+                    projectType: projectType,
+                    notApplicable: false,
+                    received: true,
+                    cleared: true,
+                    signed: true,
+                    saved: true,
+                    sent: true,
+                    signedSecretaryState: true,
+                });
+
+            default:
+                return taskApi.updateMasterFundingAgreementTask(defaultBody);
+        }
+    }
     updateReceiveDeclarationOfExpenditureCertificate(
         taskDataId: string,
         projectType: ProjectType,

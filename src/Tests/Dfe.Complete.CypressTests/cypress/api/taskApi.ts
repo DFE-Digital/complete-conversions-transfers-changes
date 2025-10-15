@@ -119,6 +119,18 @@ interface UpdateLandRegistryTitlePlansTaskRequest {
     saved?: boolean;
 }
 
+interface UpdateMasterFundingAgreementTaskRequest {
+    taskDataId: TaskDataId;
+    projectType?: ProjectType;
+    notApplicable?: boolean;
+    received?: boolean;
+    cleared?: boolean;
+    signed?: boolean;
+    saved?: boolean;
+    sent?: boolean;
+    signedSecretaryState?: boolean;
+}
+
 interface UpdateReceiveDeclarationOfExpenditureCertificateTaskRequest {
     taskDataId: TaskDataId;
     projectType: ProjectType;
@@ -209,6 +221,10 @@ class TaskApi extends ApiBase {
 
     public updateLandRegistryTitlePlansTask(requestBody: UpdateLandRegistryTitlePlansTaskRequest) {
         return this.taskDataBaseRequest<void>("PATCH", "LandRegistryTitlePlans", requestBody, 204);
+    }
+
+    public updateMasterFundingAgreementTask(requestBody: UpdateMasterFundingAgreementTaskRequest) {
+        return this.taskDataBaseRequest<void>("PATCH", "MasterFundingAgreement", requestBody, 204);
     }
 
     public updateReceiveDeclarationOfExpenditureCertificateTask(
