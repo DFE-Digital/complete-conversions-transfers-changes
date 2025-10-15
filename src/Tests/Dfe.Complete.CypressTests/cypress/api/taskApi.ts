@@ -104,6 +104,14 @@ interface UpdateExternalStakeholderKickOffTaskRequest {
     userEmail?: string;
 }
 
+interface UpdateLandQuestionnaireTaskRequest {
+    taskDataId: TaskDataId;
+    received?: boolean;
+    cleared?: boolean;
+    signed?: boolean;
+    saved?: boolean;
+}
+
 interface UpdateReceiveDeclarationOfExpenditureCertificateTaskRequest {
     taskDataId: TaskDataId;
     projectType: ProjectType;
@@ -186,6 +194,10 @@ class TaskApi extends ApiBase {
         requestBody: UpdateConfirmTransferHasAuthorityToProceedTaskRequest,
     ) {
         return this.taskDataBaseRequest<void>("PATCH", "ConfirmTransferHasAuthorityToProceed", requestBody, 204);
+    }
+
+    public updateLandQuestionnaireTask(requestBody: UpdateLandQuestionnaireTaskRequest) {
+        return this.taskDataBaseRequest<void>("PATCH", "LandQuestionnaire", requestBody, 204);
     }
 
     public updateReceiveDeclarationOfExpenditureCertificateTask(

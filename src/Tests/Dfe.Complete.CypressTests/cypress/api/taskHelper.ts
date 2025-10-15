@@ -301,6 +301,34 @@ class TaskHelper {
                 return taskApi.updateHandoverWithDeliveryOfficerTask(defaultBody);
         }
     }
+    updateLandQuestionnaire(taskDataId: string, status: TaskStatus) {
+        const defaultBody = {
+            taskDataId: { value: taskDataId },
+            received: false,
+            cleared: false,
+            signed: false,
+            saved: false,
+        };
+        switch (status) {
+            case "inProgress":
+                return taskApi.updateLandQuestionnaireTask({
+                    ...defaultBody,
+                    received: true,
+                });
+
+            case "completed":
+                return taskApi.updateLandQuestionnaireTask({
+                    taskDataId: { value: taskDataId },
+                    received: true,
+                    cleared: true,
+                    signed: true,
+                    saved: true,
+                });
+
+            default:
+                return taskApi.updateLandQuestionnaireTask(defaultBody);
+        }
+    }
     updateReceiveDeclarationOfExpenditureCertificate(
         taskDataId: string,
         projectType: ProjectType,
