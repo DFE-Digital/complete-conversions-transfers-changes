@@ -17,8 +17,6 @@ Security in case of vulnerabilities.
 ## Unreleased
 
 ### Added
-- Land registry title plans` task for conversion project.
-- Added `Master Funding Agreement` task for both conversion and transfer projects.
 - Added transfer creation end point for prepare to complete
 
 - Added `Check and confirm the academy and trust financial information` task for transfer project.
