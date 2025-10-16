@@ -1,4 +1,4 @@
-import taskApi, { ProjectType } from "./taskApi";
+import taskApi, { ProjectType, RPAOption } from "./taskApi";
 import { cypressUser } from "cypress/constants/cypressConstants";
 
 export type TaskStatus = "notStarted" | "notApplicable" | "inProgress" | "completed";
@@ -45,6 +45,7 @@ class TaskHelper {
                 return taskApi.updateArticleOfAssociationTask(defaultBody);
         }
     }
+
     public updateCommercialTransferAgreement(taskDataId: string, projectType: ProjectType, status: TaskStatus) {
         const defaultBody = {
             taskDataId: { value: taskDataId },
@@ -78,6 +79,7 @@ class TaskHelper {
                 return taskApi.updateCommercialTransferAgreementTask(defaultBody);
         }
     }
+
     public updateConfirmAcademyOpenedDate(taskDataId: string, academyOpenedDate?: string) {
         const defaultBody = {
             taskDataId: { value: taskDataId },
@@ -95,6 +97,7 @@ class TaskHelper {
 
         return taskApi.updateConfirmDateAcademyTransferredTask(defaultBody);
     }
+
     public updateConfirmAllConditionsMet(projectId: string, status: TaskStatus) {
         const defaultBody = {
             projectId: { value: projectId },
@@ -112,6 +115,7 @@ class TaskHelper {
                 return taskApi.updateConfirmAllConditionsMetTask(defaultBody);
         }
     }
+
     public updateConfirmTransferHasAuthorityToProceed(taskDataId: string, status: TaskStatus) {
         const defaultBody = {
             taskDataId: { value: taskDataId },
@@ -139,6 +143,7 @@ class TaskHelper {
                 return taskApi.updateConfirmTransferHasAuthorityToProceedTask(defaultBody);
         }
     }
+
     public updateChurchSupplementalAgreement(taskDataId: string, projectType: ProjectType, status: TaskStatus) {
         const defaultBody = {
             taskDataId: { value: taskDataId },
@@ -184,6 +189,7 @@ class TaskHelper {
                 return taskApi.updateChurchSupplementalAgreementTask(defaultBody);
         }
     }
+
     public updateDeedOfNovationAndVariation(taskDataId: string, status: TaskStatus) {
         const defaultBody = {
             taskDataId: { value: taskDataId },
@@ -301,6 +307,7 @@ class TaskHelper {
                 return taskApi.updateHandoverWithDeliveryOfficerTask(defaultBody);
         }
     }
+
     updateLandQuestionnaire(taskDataId: string, status: TaskStatus) {
         const defaultBody = {
             taskDataId: { value: taskDataId },
@@ -329,6 +336,7 @@ class TaskHelper {
                 return taskApi.updateLandQuestionnaireTask(defaultBody);
         }
     }
+
     updateLandRegistryTitlePlans(taskDataId: string, status: TaskStatus) {
         const defaultBody = {
             taskDataId: { value: taskDataId },
@@ -398,6 +406,7 @@ class TaskHelper {
                 return taskApi.updateMasterFundingAgreementTask(defaultBody);
         }
     }
+
     updateReceiveDeclarationOfExpenditureCertificate(
         taskDataId: string,
         projectType: ProjectType,
@@ -440,7 +449,6 @@ class TaskHelper {
                 return taskApi.updateReceiveDeclarationOfExpenditureCertificateTask(defaultBody);
         }
     }
-
     updateRedactAndSendDocuments(taskDataId: string, projectType: ProjectType, status: TaskStatus) {
         const defaultBody = {
             taskDataId: { value: taskDataId },
@@ -472,6 +480,38 @@ class TaskHelper {
 
             default:
                 return taskApi.updateRedactAndSendDocumentsTask(defaultBody);
+        }
+    }
+    updateConfirmAcademyRiskProtectionArrangements(
+        taskDataId: string,
+        projectType: ProjectType,
+        rpaPolicyConfirm?: boolean,
+        rpaOption?: RPAOption,
+    ) {
+        const defaultBody = {
+            taskDataId: { value: taskDataId },
+            projectType: projectType,
+        };
+
+        if (rpaPolicyConfirm) {
+            return taskApi.updateConfirmAcademyRiskProtectionArrangementsTask({
+                ...defaultBody,
+                rpaPolicyConfirm: true,
+            });
+        }
+        if (rpaOption === "Commercial") {
+            return taskApi.updateConfirmAcademyRiskProtectionArrangementsTask({
+                ...defaultBody,
+                rpaOption: "Commercial",
+                rpaReason: "Some reason for commercial RPA",
+            });
+        } else if (rpaOption) {
+            return taskApi.updateConfirmAcademyRiskProtectionArrangementsTask({
+                ...defaultBody,
+                rpaOption: rpaOption,
+            });
+        } else {
+            return taskApi.updateConfirmAcademyRiskProtectionArrangementsTask(defaultBody);
         }
     }
 

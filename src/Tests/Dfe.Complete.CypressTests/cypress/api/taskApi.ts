@@ -150,6 +150,16 @@ interface UpdateRedactAndSendDocumentsTaskRequest {
     sendToSolicitors?: boolean;
 }
 
+export type RPAOption = "Standard" | "ChurchOrTrust" | "Commercial";
+
+interface UpdateConfirmAcademyRiskProtectionArrangementsTaskRequest {
+    taskDataId: TaskDataId;
+    projectType: ProjectType;
+    rpaPolicyConfirm?: boolean;
+    rpaOption?: RPAOption;
+    rpaReason?: string;
+}
+
 interface UpdateSupplementalFundingAgreementTaskRequest {
     taskDataId: TaskDataId;
     projectType?: ProjectType;
@@ -235,6 +245,12 @@ class TaskApi extends ApiBase {
 
     public updateRedactAndSendDocumentsTask(requestBody: UpdateRedactAndSendDocumentsTaskRequest) {
         return this.taskDataBaseRequest<void>("PATCH", "RedactAndSendDocuments", requestBody, 204);
+    }
+
+    public updateConfirmAcademyRiskProtectionArrangementsTask(
+        requestBody: UpdateConfirmAcademyRiskProtectionArrangementsTaskRequest,
+    ) {
+        return this.taskDataBaseRequest<void>("PATCH", "ConfirmAcademyRiskProtectionArrangements", requestBody, 204);
     }
 
     public updateSupplementalFundingAgreementTask(requestBody: UpdateSupplementalFundingAgreementTaskRequest) {

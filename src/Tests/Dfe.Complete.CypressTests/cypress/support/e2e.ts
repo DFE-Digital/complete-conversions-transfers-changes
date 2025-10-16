@@ -74,8 +74,6 @@ declare global {
 
             typeFast(text: string): Chainable<Element>;
 
-            typeText(element: Chainable<Element>, text: string): Chainable<Element>;
-
             shouldHaveText(expectedText: string | number): Chainable<Element>;
 
             revisitCurrentUrl(): Chainable<Element>;

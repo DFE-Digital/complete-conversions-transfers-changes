@@ -39,6 +39,15 @@ class BasePage {
         return this;
     }
 
+    type(text: string, fieldId?: string) {
+        if (fieldId) {
+            cy.getById(fieldId).clear().typeFast(text);
+        } else {
+            cy.get("textarea").first().clear().typeFast(text);
+        }
+        return this;
+    }
+
     hasButton(buttonText: string) {
         cy.getByClass("govuk-button").contains(buttonText).should("be.visible").should("not.be.disabled");
         return this;
