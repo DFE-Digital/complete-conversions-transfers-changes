@@ -57,6 +57,8 @@ describe("Transfer tasks - Master funding agreement", () => {
         taskPage
             .hasCheckboxLabel("Signed by incoming trust")
             .tick()
+            .hasCheckboxLabel("Signed on behalf of Secretary of State")
+            .tick()
             .hasCheckboxLabel("Saved in the academy and incoming trust SharePoint folders")
             .tick()
             .saveAndReturn();
@@ -67,6 +69,9 @@ describe("Transfer tasks - Master funding agreement", () => {
             .hasCheckboxLabel("Signed by incoming trust")
             .isTicked()
             .untick()
+            .hasCheckboxLabel("Signed on behalf of Secretary of State")
+            .isTicked()
+            .untick()
             .hasCheckboxLabel("Saved in the academy and incoming trust SharePoint folders")
             .isTicked()
             .untick()
@@ -74,6 +79,8 @@ describe("Transfer tasks - Master funding agreement", () => {
         taskListPage.hasTaskStatusNotStarted("Master funding agreement").selectTask("Master funding agreement");
         taskPage
             .hasCheckboxLabel("Signed by incoming trust")
+            .isUnticked()
+            .hasCheckboxLabel("Signed on behalf of Secretary of State")
             .isUnticked()
             .hasCheckboxLabel("Saved in the academy and incoming trust SharePoint folders")
             .isUnticked();
