@@ -32,116 +32,14 @@
         }
     </div>
 }
+
 @section TaskSection {
-
-    <form method="post">
-        <input type="hidden" asp-for="TasksDataId"/>
-        <input type="hidden" asp-for="Type"/>
-        <govuk-checkboxes name="options">
-            <govuk-checkboxes-fieldset>
-                <govuk-checkboxes-fieldset-legend>
-                </govuk-checkboxes-fieldset-legend>
-                <govuk-checkboxes-item id="not-applicable" data-cy="not-applicable" asp-for="@Model.NotApplicable" value="true" name="@nameof(Model.NotApplicable)" checked="@Model.NotApplicable">
-                    <b>Not applicable</b>
-                </govuk-checkboxes-item>
-            </govuk-checkboxes-fieldset>
-        </govuk-checkboxes>
-        <div class="govuk-form-group">
-            <h2 class="govuk-heading-l">Check and clear the master funding agreement</h2>
-            <div class="govuk-hint">
-                <p>You can <external-link href="@_configuration["ExternalLinks:AcademyAndFreeSchoolFundingAgreements"]">view the model documents (opens in new tab)</external-link> to check for changes.</p>
-            </div>
-
-            <govuk-details data-module="govuk-details" class="govuk-details">
-                <govuk-details-summary>
-                    <span class="govuk-details__summary-text">Help checking and updating the master funding agreement</span>
-                </govuk-details-summary>
-                <govuk-details-text>
-
-
-                    <p>Changes that personalise the model documents to a school or trust, and remove or add optional clauses, are expected. The wording of clauses should not change.</p>
-                    <p>You'll need to <external-link href="@_configuration["ExternalLinks:ContactPolicyTeam"]">contact the policy team (opens in new tab)</external-link> about changes to clause text.</p>
-
-                    <h3>Changing an old master funding agreement</h3>
-
-                    <p>If the trust uses a master funding agreement from 2018 or earlier, they have two options.</p>
-
-                    <ol> <li>update to a 2020 version of the master funding agreement and update any supplemental funding agreements from 2018 or earlier</li> <li>add a second master funding agreement. This must be a 2020 version</li> </ol>
-
-                    <h4>Update the existing the master funding agreement</h4>
-
-                    <p>DfE's preferred option is to update the existing master funding agreement to a new version, from 2020.</p>
-
-                    <p>Ask the trust if they want to take this approach first. If they do not want to update the existing master funding agreement, they can add a second one.</p>
-
-                    <h4>Add a second master funding agreement</h4>
-
-                    <p>This should only be considered on a case-by-case basis.</p>
-                    <p>The new academy's supplemental funding agreement will relate to that additional master funding agreement. This will allow the rest of the academies in the trust to continue using the existing master funding agreement.</p>
-                    <p>You will need to clear any new and updated documents. These may need a deed of variation.</p>
-
-                </govuk-details-text>
-            </govuk-details>
-        </div>
-        <govuk-checkboxes name="options">
-            <govuk-checkboxes-fieldset>
-                <govuk-checkboxes-fieldset-legend>
-                </govuk-checkboxes-fieldset-legend>
-                <govuk-checkboxes-item id="@(nameof(Model.Received))" data-cy="received" asp-for="@Model.Received" value="true" name="@(nameof(Model.Received))" checked="@Model.Received">
-                    <b>Received</b>
-                </govuk-checkboxes-item>
-                <govuk-checkboxes-item id="@(nameof(Model.Cleared))" data-cy="cleared" asp-for="@Model.Cleared" value="true" name="@(nameof(Model.Cleared))" checked="@Model.Cleared">
-                    <b>Cleared</b>
-                </govuk-checkboxes-item>
-
-                <govuk-checkboxes-item id="@(nameof(Model.SignedBySchoolOrTrust))" data-cy="signed" asp-for="@Model.SignedBySchoolOrTrust" value="true" name="@(nameof(Model.SignedBySchoolOrTrust))" checked="@Model.SignedBySchoolOrTrust">
-                    <b>Signed by @(isConversion ? "school or trust" : "incoming trust")</b>
-                </govuk-checkboxes-item>
-
-                @{
-                    if (isConversion)
-                    {   
-                    <govuk-checkboxes-item id="@(nameof(Model.SavedInTheSchoolsSharepoint))" data-cy="saved" asp-for="@Model.SavedInTheSchoolsSharepoint" value="true" name="@(nameof(Model.SavedInTheSchoolsSharepoint))" checked="@Model.SavedInTheSchoolsSharepoint">
-                    <b>Saved in the @(isConversion ? "school's SharePoint folder" : "academy and incoming trust SharePoint folders")</b>
-                </govuk-checkboxes-item>
-                    }
-                }
-            </govuk-checkboxes-fieldset>
-        </govuk-checkboxes>
-
-
-        <div class="govuk-form-group">
-            <h2 class="govuk-heading-l">Signed by the Secretary of State</h2>
-            <div class="govuk-hint">
-                <p>The master funding agreement does not always need to be signed.</p>
-                <p>A deed of variation is attached to any master funding agreement that needs updating. This is sent to somebody who can sign on behalf of the Secretary of State.</p>
-                <p>That deed of variation will get signed. This acts as approval for the change to the master funding agreement, and the new version of it.</p>
-            </div>
-
-            <govuk-details data-module="govuk-details" class="govuk-details">
-                <govuk-details-summary>
-                    <span class="govuk-details__summary-text">How to sign the master funding agreement</span>
-                </govuk-details-summary>
-                <govuk-details-text>
-                    <p>The Secretary of State, or somebody with the authority to act on their behalf, must sign the master funding agreement or deed of variation.</p>
-                    <p>Each team may have a different process for signing and sealing documents. Follow your team's signing process.</p>
-                    <p>Once you have the signed version of the document, attach the old and updated documents together and save it as a PDF in SharePoint.</p>
-                </govuk-details-text>
-            </govuk-details>
-        </div>
-        <govuk-checkboxes name="options">
-            <govuk-checkboxes-fieldset>
-                <govuk-checkboxes-fieldset-legend>
-                </govuk-checkboxes-fieldset-legend>
-                <govuk-checkboxes-item id="@(nameof(Model.SavedInSchoolAndTrustSharepoint))" data-cy="sent" asp-for="@Model.SavedInSchoolAndTrustSharepoint" value="true" name="@(nameof(Model.SavedInSchoolAndTrustSharepoint))" checked="@Model.SavedInSchoolAndTrustSharepoint">
-                    <b>Saved in school and trust SharePoint folders</b>
-                </govuk-checkboxes-item>
-                <govuk-checkboxes-item id="@(nameof(Model.SignedOnBehalfOfSeceratyOfState))" data-cy="signed-by-secretary-of-state" asp-for="@Model.SignedOnBehalfOfSeceratyOfState" value="true" name="@(nameof(Model.SignedOnBehalfOfSeceratyOfState))" checked="@Model.SignedOnBehalfOfSeceratyOfState">
-                    <b>Signed on behalf of Secretary of State</b>
-                </govuk-checkboxes-item>
-            </govuk-checkboxes-fieldset>
-        </govuk-checkboxes>
-
-        @await Html.PartialAsync("_TaskSaveAndReturn", new TaskSaveAndReturnModel(Model.Project, Model.CurrentUserTeam))
-    </form>
+    @if (isConversion)
+    {
+        @await Html.PartialAsync("_ConversionMasterFundingAgreementForm", Model)
+    }
+    else
+    {
+        @await Html.PartialAsync("_TransferMasterFundingAgreementForm", Model)
+    }
 }
