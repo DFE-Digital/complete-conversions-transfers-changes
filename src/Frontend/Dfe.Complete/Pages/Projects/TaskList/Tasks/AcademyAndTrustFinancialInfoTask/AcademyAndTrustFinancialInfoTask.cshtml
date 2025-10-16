@@ -37,7 +37,7 @@
                 @foreach (var status in financialStatus)
                 {
                     var statusInLowerCase = status.ToLower();
-                    <govuk-radios-item value="@statusInLowerCase" checked="@(Model.AcademySurplusOrDeficit?.ToLower() == statusInLowerCase)">@status</govuk-radios-item>
+                    <govuk-radios-item data-cy="academy-@statusInLowerCase" value="@statusInLowerCase" checked="@(Model.AcademySurplusOrDeficit?.ToLower() == statusInLowerCase)">@status</govuk-radios-item>
                 }
             </govuk-radios-fieldset>
         </govuk-radios>
@@ -52,7 +52,7 @@
                 @foreach (var status in financialStatus)
                 {
                     var statusInLowerCase = status.ToLower();
-                    <govuk-radios-item value="@statusInLowerCase" checked="@(Model.TrustSurplusOrDeficit?.ToLower() == statusInLowerCase)">@status</govuk-radios-item>
+                    <govuk-radios-item data-cy="trust-@statusInLowerCase" value="@statusInLowerCase" checked="@(Model.TrustSurplusOrDeficit?.ToLower() == statusInLowerCase)">@status</govuk-radios-item>
                 }
             </govuk-radios-fieldset>
         </govuk-radios>
