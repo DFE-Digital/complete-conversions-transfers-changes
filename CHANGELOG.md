@@ -17,6 +17,7 @@ Security in case of vulnerabilities.
 ## Unreleased
 
 ### Added
+- Added `Request a new URN and record for the academy` task for transfer projects.
 
 ### Changed
 - removed checkbox with no corresponding database field
