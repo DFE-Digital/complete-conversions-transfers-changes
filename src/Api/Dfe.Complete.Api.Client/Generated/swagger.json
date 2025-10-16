@@ -3075,20 +3075,20 @@
         }
       }
     },
-    "/v1/TasksData/TaskData/RequestNewURNAndRecordForAcademy": {
+    "/v1/TasksData/TaskData/ConfirmHeadTeacherContact": {
       "patch": {
         "tags": [
           "TasksData"
         ],
-        "summary": "Request a new URN and record for the academy task for the project.",
-        "operationId": "TasksData_UpdateRequestNewUrnAndRecordForAcademyTask",
+        "summary": "Confirm the head teacher contact for the project.",
+        "operationId": "TasksData_UpdateConfirmHeadTeacherContactTask",
         "requestBody": {
           "x-name": "request",
           "description": "The update command.",
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/UpdateRequestNewUrnAndRecordForAcademyTaskCommand"
+                "$ref": "#/components/schemas/UpdateHeadTeacherCommand"
               }
             }
           },
@@ -3097,7 +3097,7 @@
         },
         "responses": {
           "204": {
-            "description": "Request a new URN and record for the academy task updated successfully."
+            "description": "Confirm the head teacher contact for the project successfully."
           },
           "400": {
             "description": "Invalid request data."
@@ -8002,28 +8002,15 @@
           }
         }
       },
-      "UpdateRequestNewUrnAndRecordForAcademyTaskCommand": {
+      "UpdateHeadTeacherCommand": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
-          "taskDataId": {
-            "$ref": "#/components/schemas/TaskDataId"
+          "keyContactId": {
+            "$ref": "#/components/schemas/KeyContactId"
           },
-          "notApplicable": {
-            "type": "boolean",
-            "nullable": true
-          },
-          "complete": {
-            "type": "boolean",
-            "nullable": true
-          },
-          "receive": {
-            "type": "boolean",
-            "nullable": true
-          },
-          "give": {
-            "type": "boolean",
-            "nullable": true
+          "headTeacherId": {
+            "$ref": "#/components/schemas/ContactId"
           }
         }
       },

@@ -20,14 +20,24 @@ Security in case of vulnerabilities.
 - Added `Request a new URN and record for the academy` task for transfer projects.
 
 ### Changed
+
+### Fixed
+
+### Security
+
+See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-10-16.912...main) for everything awaiting release
+
+---
+
+## [1.22.1](https://github.com/DFE-Digital/complete-conversions-transfers-changes/releases/tag/production-2025-10-16.912) - 2025-10-16
+
+### Changed
 - removed checkbox with no corresponding database field
 
 ### Fixed
 - resolve bad field mappings for master funding agreements on conversion projects
 
-### Security
-
-See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-10-15.903...main) for everything awaiting release
+See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-10-15.903...production-2025-10-16.912) for everything in the release
 
 ---
 

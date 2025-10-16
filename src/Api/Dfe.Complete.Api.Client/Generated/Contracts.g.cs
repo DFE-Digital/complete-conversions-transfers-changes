@@ -1202,21 +1202,21 @@ namespace Dfe.Complete.Client.Contracts
         System.Threading.Tasks.Task UpdateConfirmAcademyRiskProtectionArrangementsTaskAsync(UpdateConfirmAcademyRiskProtectionArrangementsTaskCommand request, System.Threading.CancellationToken cancellationToken);
 
         /// <summary>
-        /// Request a new URN and record for the academy task for the project.
+        /// Confirm the head teacher contact for the project.
         /// </summary>
         /// <param name="request">The update command.</param>
-        /// <returns>Request a new URN and record for the academy task updated successfully.</returns>
+        /// <returns>Confirm the head teacher contact for the project successfully.</returns>
         /// <exception cref="CompleteApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task UpdateRequestNewUrnAndRecordForAcademyTaskAsync(UpdateRequestNewUrnAndRecordForAcademyTaskCommand request);
+        System.Threading.Tasks.Task UpdateConfirmHeadTeacherContactTaskAsync(UpdateHeadTeacherCommand request);
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>
-        /// Request a new URN and record for the academy task for the project.
+        /// Confirm the head teacher contact for the project.
         /// </summary>
         /// <param name="request">The update command.</param>
-        /// <returns>Request a new URN and record for the academy task updated successfully.</returns>
+        /// <returns>Confirm the head teacher contact for the project successfully.</returns>
         /// <exception cref="CompleteApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task UpdateRequestNewUrnAndRecordForAcademyTaskAsync(UpdateRequestNewUrnAndRecordForAcademyTaskCommand request, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task UpdateConfirmHeadTeacherContactTaskAsync(UpdateHeadTeacherCommand request, System.Threading.CancellationToken cancellationToken);
 
     }
 
@@ -6004,22 +6004,13 @@ namespace Dfe.Complete.Client.Contracts
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.2.0.0 (NJsonSchema v11.1.0.0 (Newtonsoft.Json v13.0.0.0))")]
-    public partial class UpdateRequestNewUrnAndRecordForAcademyTaskCommand
+    public partial class UpdateHeadTeacherCommand
     {
-        [Newtonsoft.Json.JsonProperty("taskDataId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public TaskDataId? TaskDataId { get; set; } = default!;
+        [Newtonsoft.Json.JsonProperty("keyContactId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public KeyContactId? KeyContactId { get; set; } = default!;
 
-        [Newtonsoft.Json.JsonProperty("notApplicable", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public bool? NotApplicable { get; set; } = default!;
-
-        [Newtonsoft.Json.JsonProperty("complete", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public bool? Complete { get; set; } = default!;
-
-        [Newtonsoft.Json.JsonProperty("receive", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public bool? Receive { get; set; } = default!;
-
-        [Newtonsoft.Json.JsonProperty("give", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public bool? Give { get; set; } = default!;
+        [Newtonsoft.Json.JsonProperty("headTeacherId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public ContactId? HeadTeacherId { get; set; } = default!;
 
         public string ToJson()
         {
@@ -6027,10 +6018,10 @@ namespace Dfe.Complete.Client.Contracts
             return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonSerializerSettings());
 
         }
-        public static UpdateRequestNewUrnAndRecordForAcademyTaskCommand FromJson(string data)
+        public static UpdateHeadTeacherCommand FromJson(string data)
         {
 
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<UpdateRequestNewUrnAndRecordForAcademyTaskCommand>(data, new Newtonsoft.Json.JsonSerializerSettings());
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<UpdateHeadTeacherCommand>(data, new Newtonsoft.Json.JsonSerializerSettings());
 
         }
 
