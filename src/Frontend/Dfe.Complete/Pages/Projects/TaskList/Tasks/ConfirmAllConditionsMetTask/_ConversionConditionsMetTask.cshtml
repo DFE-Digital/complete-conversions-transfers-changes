@@ -1,0 +1,29 @@
+﻿@using Dfe.Complete.Domain.Enums
+@model Dfe.Complete.Pages.Projects.TaskList.Tasks.ConfirmAllConditionsMetTask.ConfirmAllConditionsMetTaskModel
+
+<form method="post">
+    <input type="hidden" asp-for="TasksDataId" />
+    <input type="hidden" asp-for="Type" />
+    <govuk-checkboxes name="options">
+        <govuk-checkboxes-fieldset>
+            <govuk-checkboxes-fieldset-legend>
+            </govuk-checkboxes-fieldset-legend>
+            <govuk-checkboxes-item id="@(nameof(Model.Confirm))" asp-for="@Model.Confirm" value="true" name="@(nameof(Model.Confirm))" checked="@Model.Confirm">
+                <b>Confirm all conditions are met</b>
+                <div class="govuk-hint">
+                    <p>This will change the conversion's status on the "By month" project list. SOPU use that list to prepare funding agreement letters.</p>
+                </div>
+                <govuk-details data-module="govuk-details" class="govuk-details">
+                    <govuk-details-summary>
+                        <span class="govuk-details__summary-text">What to do if conditions are not met</span>
+                    </govuk-details-summary>
+                    <govuk-details-text>
+                        <p>You must agree a new conversion date with all stakeholders, then change the conversion date for this project.</p>
+                    </govuk-details-text>
+                </govuk-details>
+            </govuk-checkboxes-item>
+        </govuk-checkboxes-fieldset>
+    </govuk-checkboxes>
+    @await Html.PartialAsync("_TaskSaveAndReturn", new TaskSaveAndReturnModel(Model.Project, Model.CurrentUserTeam))
+</form>
+
