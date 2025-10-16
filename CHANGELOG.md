@@ -17,6 +17,7 @@ Security in case of vulnerabilities.
 ## Unreleased
 
 ### Added
+- Sponsored support grant task for conversion and transfer project.
 
 ### Changed
 
