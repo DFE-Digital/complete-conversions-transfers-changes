@@ -6,6 +6,7 @@
 @{
     Layout = "_ProjectTaskLayout";
     ViewData["Title"] = "Supplemental funding agreement";
+    var isConversion = Model.Type == ProjectType.Conversion;
 }
 @section TaskHeaderHintSection
 {
@@ -54,7 +55,7 @@
                     </govuk-checkboxes-item>
                 }
                 <govuk-checkboxes-item data-cy="saved" id="saved" asp-for="@Model.Saved" value="true" name="saved" checked="@Model.Saved">
-                    <b>Saved in the school's SharePoint folder</b>
+                    <b>Saved in the @(isConversion ? "school's " : "academy") SharePoint folder</b>
                 </govuk-checkboxes-item> 
             </govuk-checkboxes-fieldset> 
         </govuk-checkboxes> 

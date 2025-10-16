@@ -21,7 +21,7 @@ const otherUserProject = ProjectBuilder.createTransferFormAMatProjectRequest({
 });
 let otherUserProjectId: string;
 
-describe("Transfer tasks - Articles of association", () => {
+describe("Conversion tasks - Commercial transfer agreement", () => {
     before(() => {
         projectRemover.removeProjectIfItExists(project.urn.value);
         projectRemover.removeProjectIfItExists(otherUserProject.urn.value);
@@ -39,52 +39,54 @@ describe("Transfer tasks - Articles of association", () => {
     beforeEach(() => {
         cy.login();
         cy.acceptCookies();
-        cy.visit(`projects/${projectId}/tasks/articles_of_association`);
+        cy.visit(`projects/${projectId}/tasks/commercial_transfer_agreement`);
     });
 
     it("should expand and collapse guidance details", () => {
         taskPage
-            .clickDropdown("Partially updating articles of association")
+            .clickDropdown("How to check and assure the commercial transfer agreement")
             .hasDropdownContent(
-                "Trusts do not have to adopt the latest version of the articles entirely. Although this is DfE's preferred option.",
-            )
-            .clickDropdown("Help checking for changes")
-            .hasDropdownContent("Changes that personalise the model documents to an academy or trust");
+                "You can read guidance about how use check and assure the agreement (opens in new tab) on SharePoint.",
+            );
     });
 
     it("should submit the form and persist selections", () => {
-        Logger.log("Select the 'Not applicable' checkbox and save");
-        taskPage.tickNotApplicable().saveAndReturn();
-        taskListPage.hasTaskStatusNotApplicable("Articles of association").selectTask("Articles of association");
+        Logger.log("Select 'Confirm commercial transfer agreement is agreed' and save");
+        taskPage.hasCheckboxLabel("Confirm commercial transfer agreement is agreed").tick().saveAndReturn();
+        taskListPage
+            .hasTaskStatusInProgress("Commercial transfer agreement")
+            .selectTask("Commercial transfer agreement");
 
-        Logger.log("Unselect the 'Not applicable' checkbox and save");
-        taskPage.hasCheckboxLabel("Not applicable").isTicked().untick().saveAndReturn();
-        taskListPage.hasTaskStatusNotStarted("Articles of association").selectTask("Articles of association");
-        taskPage.hasCheckboxLabel("Not applicable").isUnticked();
+        Logger.log("Unselect 'Confirm commercial transfer agreement is agreed' and save");
+        taskPage
+            .hasCheckboxLabel("Confirm commercial transfer agreement is agreed")
+            .isTicked()
+            .untick()
+            .saveAndReturn();
+        taskListPage
+            .hasTaskStatusNotStarted("Commercial transfer agreement")
+            .selectTask("Commercial transfer agreement");
+        taskPage.hasCheckboxLabel("Confirm commercial transfer agreement is agreed").isUnticked();
     });
 
-    it("should show task status based on the checkboxes are checked", () => {
+    it("should show task status based on the checkboxes that are checked", () => {
         cy.visit(`projects/${projectId}/tasks`);
 
-        TaskHelper.updateArticleOfAssociation(taskId, ProjectType.Transfer, "notStarted");
+        TaskHelper.updateCommercialTransferAgreement(taskId, ProjectType.Transfer, "notStarted");
         cy.reload();
-        taskListPage.hasTaskStatusNotStarted("Articles of association");
+        taskListPage.hasTaskStatusNotStarted("Commercial transfer agreement");
 
-        TaskHelper.updateArticleOfAssociation(taskId, ProjectType.Transfer, "notApplicable");
+        TaskHelper.updateCommercialTransferAgreement(taskId, ProjectType.Transfer, "inProgress");
         cy.reload();
-        taskListPage.hasTaskStatusNotApplicable("Articles of association");
+        taskListPage.hasTaskStatusInProgress("Commercial transfer agreement");
 
-        TaskHelper.updateArticleOfAssociation(taskId, ProjectType.Transfer, "inProgress");
+        TaskHelper.updateCommercialTransferAgreement(taskId, ProjectType.Transfer, "completed");
         cy.reload();
-        taskListPage.hasTaskStatusInProgress("Articles of association");
-
-        TaskHelper.updateArticleOfAssociation(taskId, ProjectType.Transfer, "completed");
-        cy.reload();
-        taskListPage.hasTaskStatusCompleted("Articles of association");
+        taskListPage.hasTaskStatusCompleted("Commercial transfer agreement");
     });
 
     it("Should NOT see the 'save and return' button for another user's project", () => {
-        cy.visit(`projects/${otherUserProjectId}/tasks/articles_of_association`);
+        cy.visit(`projects/${otherUserProjectId}/tasks/commercial_transfer_agreement`);
         taskPage.noSaveAndReturnExists();
     });
 

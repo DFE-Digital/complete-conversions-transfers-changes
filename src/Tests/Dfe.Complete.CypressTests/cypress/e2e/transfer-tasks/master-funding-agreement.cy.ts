@@ -2,6 +2,7 @@ import { ProjectBuilder } from "cypress/api/projectBuilder";
 import projectApi from "cypress/api/projectApi";
 import { checkAccessibilityAcrossPages } from "cypress/support/reusableTests";
 import taskListPage from "cypress/pages/projects/tasks/taskListPage";
+import { ProjectType } from "cypress/api/taskApi";
 import projectRemover from "cypress/api/projectRemover";
 import { rdoLondonUser } from "cypress/constants/cypressConstants";
 import taskPage from "cypress/pages/projects/tasks/taskPage";
@@ -20,7 +21,7 @@ const otherUserProject = ProjectBuilder.createTransferFormAMatProjectRequest({
 });
 let otherUserProjectId: string;
 
-describe("Transfers tasks - Deed of novation and variation", () => {
+describe("Transfer tasks - Master funding agreement", () => {
     before(() => {
         projectRemover.removeProjectIfItExists(project.urn.value);
         projectRemover.removeProjectIfItExists(otherUserProject.urn.value);
@@ -38,70 +39,68 @@ describe("Transfers tasks - Deed of novation and variation", () => {
     beforeEach(() => {
         cy.login();
         cy.acceptCookies();
-        cy.visit(`projects/${projectId}/tasks/deed_of_novation_and_variation`);
+        cy.visit(`projects/${projectId}/tasks/master_funding_agreement`);
     });
 
     it("should expand and collapse guidance details", () => {
         taskPage
-            .clickDropdown("Help checking for changes")
-            .hasDropdownContent("Changes that personalise the model documents to an academy or trust are expected.")
-            .clickDropdown("How to sign the deed of novation and variation")
+            .clickDropdown("When to sign a deed of termination")
+            .hasDropdownContent("A deed of termination can only be signed when both the")
+            .clickDropdown("Help checking and updating the master funding agreement")
+            .hasDropdownContent("Changes that personalise the model documents to an academy or trust")
+            .clickDropdown("How to sign the master funding agreement")
             .hasDropdownContent("The Secretary of State, or somebody with the authority to act on their behalf");
     });
 
     it("should submit the form and persist selections", () => {
-        Logger.log("Select 'signed by the secretary of state' checkboxes and save");
+        Logger.log("Select some checkboxes and save");
         taskPage
-            .hasCheckboxLabel("Signed on behalf of Secretary of State")
+            .hasCheckboxLabel("Signed by incoming trust")
             .tick()
-            .hasCheckboxLabel("Saved in the academy SharePoint folder")
+            .hasCheckboxLabel("Saved in the academy and incoming trust SharePoint folders")
             .tick()
             .saveAndReturn();
-        taskListPage
-            .hasTaskStatusInProgress("Deed of novation and variation")
-            .selectTask("Deed of novation and variation");
+        taskListPage.hasTaskStatusInProgress("Master funding agreement").selectTask("Master funding agreement");
 
-        Logger.log("Unselect 'signed by the secretary of state' checkboxes and save");
+        Logger.log("Unselect same checkboxes and save");
         taskPage
-            .hasCheckboxLabel("Signed on behalf of Secretary of State")
+            .hasCheckboxLabel("Signed by incoming trust")
             .isTicked()
             .untick()
-            .hasCheckboxLabel("Saved in the academy SharePoint folder")
+            .hasCheckboxLabel("Saved in the academy and incoming trust SharePoint folders")
             .isTicked()
             .untick()
             .saveAndReturn();
-        taskListPage
-            .hasTaskStatusNotStarted("Deed of novation and variation")
-            .selectTask("Deed of novation and variation");
+        taskListPage.hasTaskStatusNotStarted("Master funding agreement").selectTask("Master funding agreement");
         taskPage
-            .hasCheckboxLabel("Signed on behalf of Secretary of State")
+            .hasCheckboxLabel("Signed by incoming trust")
             .isUnticked()
-            .hasCheckboxLabel("Saved in the academy SharePoint folder")
+            .hasCheckboxLabel("Saved in the academy and incoming trust SharePoint folders")
             .isUnticked();
     });
 
     it("should show task status based on the checkboxes that are checked", () => {
         cy.visit(`projects/${projectId}/tasks`);
 
-        TaskHelper.updateDeedOfNovationAndVariation(taskId, "notStarted");
+        TaskHelper.updateMasterFundingAgreement(taskId, ProjectType.Transfer, "notStarted");
         cy.reload();
-        taskListPage.hasTaskStatusNotStarted("Deed of novation and variation");
+        taskListPage.hasTaskStatusNotStarted("Master funding agreement");
 
-        TaskHelper.updateDeedOfNovationAndVariation(taskId, "inProgress");
+        TaskHelper.updateMasterFundingAgreement(taskId, ProjectType.Transfer, "notApplicable");
         cy.reload();
-        taskListPage.hasTaskStatusInProgress("Deed of novation and variation");
+        taskListPage.hasTaskStatusNotApplicable("Master funding agreement");
 
-        TaskHelper.updateDeedOfNovationAndVariation(taskId, "completed");
+        TaskHelper.updateMasterFundingAgreement(taskId, ProjectType.Transfer, "inProgress");
         cy.reload();
-        taskListPage.hasTaskStatusCompleted("Deed of novation and variation");
-    });
+        taskListPage.hasTaskStatusInProgress("Master funding agreement");
 
-    it("Should NOT see the not applicable option for this task", () => {
-        taskPage.noNotApplicableOptionExists();
+        TaskHelper.updateMasterFundingAgreement(taskId, ProjectType.Transfer, "completed");
+        cy.reload();
+        taskListPage.hasTaskStatusCompleted("Master funding agreement");
     });
 
     it("Should NOT see the 'save and return' button for another user's project", () => {
-        cy.visit(`projects/${otherUserProjectId}/tasks/deed_of_novation_and_variation`);
+        cy.visit(`projects/${otherUserProjectId}/tasks/master_funding_agreement`);
         taskPage.noSaveAndReturnExists();
     });
 

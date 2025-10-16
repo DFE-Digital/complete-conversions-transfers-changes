@@ -5,6 +5,7 @@
 @{
     Layout = "_ProjectTaskLayout";
     ViewData["Title"] = "Deed of variation";
+    var isConversion = Model.Type == ProjectType.Conversion;
 }
 @section TaskHeaderHintSection
 {
@@ -58,7 +59,7 @@
                 }
                 else
                 {
-                    <p>Changes that personalise the model documents to a school or trust, and remove or add optional clauses, are expected. The wording of clauses should not change.</p>
+                    <p>Changes that personalise the model documents to @(isConversion ? "a school" : "an academy") or trust, and remove or add optional clauses, are expected. The wording of clauses should not change.</p>
                 }
                 <p>You'll need to <external-link href="@_configuration["ExternalLinks:ContactPolicyTeam"]">contact the policy team (opens in new tab)</external-link> about changes to clause text.</p>
             </govuk-details-text>

@@ -1,4 +1,6 @@
-class TaskListPage {
+import basePage from "cypress/pages/basePage";
+
+class TaskListPage extends basePage {
     public selectTask(taskName: string) {
         cy.contains(taskName).click();
         return this;
@@ -21,6 +23,19 @@ class TaskListPage {
     public hasTaskStatusInProgress(taskName: string) {
         this.hasTaskStatus(taskName, "IN PROGRESS");
         return this;
+    }
+
+    public hasImportantCompletedBannerWith(description: string, outstandingTasks: string[]) {
+        cy.getByClass(this.bannerClass)
+            .first()
+            .within(() => {
+                cy.get("h2").should("contain.text", "Important");
+                cy.get("p").shouldHaveText(description);
+                for (const task of outstandingTasks) {
+                    cy.get("li").contains(task);
+                }
+                cy.get("li").should("have.length", outstandingTasks.length);
+            });
     }
 
     private hasTaskStatus(taskName: string, status: string) {

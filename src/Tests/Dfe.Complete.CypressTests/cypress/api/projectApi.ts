@@ -94,6 +94,23 @@ class ProjectApi extends ApiBase {
         });
     }
 
+    completeProject(projectId: string) {
+        return this.authenticatedRequest().then((headers) => {
+            return cy
+                .request<boolean>({
+                    method: "PATCH",
+                    url: Cypress.env(EnvApi) + "/v1/Projects/project/Complete",
+                    headers: headers,
+                    body: {
+                        projectId: { value: projectId },
+                    },
+                })
+                .then((response) => {
+                    return response.isOkStatusCode;
+                });
+        });
+    }
+
     private createProjectBase(
         request: ProjectRequest,
         projectType: string,

@@ -7,7 +7,7 @@ import { ProjectBuilder } from "cypress/api/projectBuilder";
 import { cypressUser, rdoLondonUser } from "cypress/constants/cypressConstants";
 import { projectTable } from "cypress/pages/projects/tables/projectTable";
 import yourTeamProjectsTable from "cypress/pages/projects/tables/yourTeamProjectsTable";
-import { currentMonthShort } from "cypress/constants/stringTestConstants";
+import { currentMonthShort, todayFormatted } from "cypress/constants/stringTestConstants";
 import projectDetailsPage from "cypress/pages/projects/projectDetails/projectDetailsPage";
 import { checkAccessibilityAcrossPages } from "cypress/support/reusableTests";
 import { urnPool } from "cypress/constants/testUrns";
@@ -23,6 +23,7 @@ const teammatesLondonRegionProject = ProjectBuilder.createConversionProjectReque
     urn: { value: urnPool.listings.stJohns },
     userAdId: rdoLondonUser.adId,
 });
+let teammatesLondonRegionProjectId: string;
 const teammatesLondonSchoolName = "St John's and St Clement's Church of England Primary School";
 const handedOverProject = ProjectBuilder.createTransferProjectRequest({
     urn: { value: urnPool.listings.cityIslington },
@@ -37,7 +38,9 @@ describe("Regional delivery officer (London) user - View your team projects (pro
         projectRemover.removeProjectIfItExists(teammatesLondonRegionProject.urn.value);
         projectRemover.removeProjectIfItExists(handedOverProject.urn.value);
         projectApi.createConversionProject(myLondonProject);
-        projectApi.createConversionProject(teammatesLondonRegionProject, rdoLondonUser.email);
+        projectApi
+            .createConversionProject(teammatesLondonRegionProject, rdoLondonUser.email)
+            .then((response) => (teammatesLondonRegionProjectId = response.value));
         projectApi.createTransferProject(handedOverProject, rdoLondonUser.email);
     });
 
@@ -162,6 +165,7 @@ describe("Regional delivery officer (London) user - View your team projects (pro
     });
 
     it("Should be able to view my team projects that are completed", () => {
+        projectApi.completeProject(teammatesLondonRegionProjectId);
         yourTeamProjects.filterProjects("Completed").containsHeading("Your team completed projects");
         yourTeamProjectsTable
             // .schoolIsFirstInTable(teammatesLondonSchoolName)
@@ -173,23 +177,21 @@ describe("Regional delivery officer (London) user - View your team projects (pro
                 "Type of project",
                 "Conversion or transfer date",
                 "Project completion date",
-            ]);
-        // not implemented, unable to move project to completed
-        // .withSchool(teammatesLondonSchoolName)
-        // .columnHasValue("URN", `${teammatesLondonRegionProject.urn.value}`)
-        // .columnHasValue("Local authority", "Southwark")
-        // .columnHasValue("Team", team)
-        // .columnHasValue("Type of project", "Conversion")
-        // .columnHasValue("Conversion or transfer date", "Apr 2026")
-        // .columnHasValue("Project completion date", currentMonthShort)
-        // .goTo(teammatesLondonSchoolName);
-        // projectDetailsPage.containsHeading(teammatesLondonSchoolName);
+            ])
+            .withSchool(teammatesLondonSchoolName)
+            .columnHasValue("URN", `${teammatesLondonRegionProject.urn.value}`)
+            .columnHasValue("Local authority", "Southwark")
+            .columnHasValue("Team", team)
+            .columnHasValue("Type of project", "Conversion")
+            .columnHasValue("Conversion or transfer date", "Apr 2026")
+            .columnHasValue("Project completion date", todayFormatted)
+            .goTo(teammatesLondonSchoolName);
+        projectDetailsPage.containsHeading(teammatesLondonSchoolName);
     });
 
     it("Should NOT be able to view unassigned projects", () => {
         yourTeamProjects.unableToViewFilter("Unassigned");
-        // not implemented:
-        // cy.visit("/projects/team/unassigned").notAuthorisedToPerformAction();
+        cy.visit("/projects/team/unassigned").notAuthorisedToPerformAction();
     });
 
     it("Check accessibility across pages", () => {

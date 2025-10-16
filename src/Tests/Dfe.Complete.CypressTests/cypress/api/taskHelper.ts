@@ -45,6 +45,145 @@ class TaskHelper {
                 return taskApi.updateArticleOfAssociationTask(defaultBody);
         }
     }
+    public updateCommercialTransferAgreement(taskDataId: string, projectType: ProjectType, status: TaskStatus) {
+        const defaultBody = {
+            taskDataId: { value: taskDataId },
+            projectType: projectType,
+            agreed: false,
+            signed: false,
+            questionsReceived: false,
+            questionsChecked: false,
+            saved: false,
+        };
+
+        switch (status) {
+            case "inProgress":
+                return taskApi.updateCommercialTransferAgreementTask({
+                    ...defaultBody,
+                    agreed: true,
+                });
+
+            case "completed":
+                return taskApi.updateCommercialTransferAgreementTask({
+                    taskDataId: { value: taskDataId },
+                    projectType: projectType,
+                    agreed: true,
+                    signed: true,
+                    questionsReceived: true,
+                    questionsChecked: true,
+                    saved: true,
+                });
+
+            default:
+                return taskApi.updateCommercialTransferAgreementTask(defaultBody);
+        }
+    }
+    public updateConfirmAcademyOpenedDate(taskDataId: string, academyOpenedDate?: string) {
+        const defaultBody = {
+            taskDataId: { value: taskDataId },
+            academyOpenedDate: academyOpenedDate || null,
+        };
+
+        return taskApi.updateConfirmAcademyOpenedDateTask(defaultBody);
+    }
+
+    public updateConfirmDateAcademyTransferred(taskDataId: string, dateAcademyTransferred?: string) {
+        const defaultBody = {
+            taskDataId: { value: taskDataId },
+            dateAcademyTransferred: dateAcademyTransferred || null,
+        };
+
+        return taskApi.updateConfirmDateAcademyTransferredTask(defaultBody);
+    }
+    public updateConfirmAllConditionsMet(projectId: string, status: TaskStatus) {
+        const defaultBody = {
+            projectId: { value: projectId },
+            confirm: false,
+        };
+
+        switch (status) {
+            case "completed":
+                return taskApi.updateConfirmAllConditionsMetTask({
+                    projectId: { value: projectId },
+                    confirm: true,
+                });
+
+            default:
+                return taskApi.updateConfirmAllConditionsMetTask(defaultBody);
+        }
+    }
+    public updateConfirmTransferHasAuthorityToProceed(taskDataId: string, status: TaskStatus) {
+        const defaultBody = {
+            taskDataId: { value: taskDataId },
+            anyInformationChanged: false,
+            baselineSheetApproved: false,
+            confirmToProceed: false,
+        };
+
+        switch (status) {
+            case "inProgress":
+                return taskApi.updateConfirmTransferHasAuthorityToProceedTask({
+                    ...defaultBody,
+                    anyInformationChanged: true,
+                });
+
+            case "completed":
+                return taskApi.updateConfirmTransferHasAuthorityToProceedTask({
+                    taskDataId: { value: taskDataId },
+                    anyInformationChanged: true,
+                    baselineSheetApproved: true,
+                    confirmToProceed: true,
+                });
+
+            default:
+                return taskApi.updateConfirmTransferHasAuthorityToProceedTask(defaultBody);
+        }
+    }
+    public updateChurchSupplementalAgreement(taskDataId: string, projectType: ProjectType, status: TaskStatus) {
+        const defaultBody = {
+            taskDataId: { value: taskDataId },
+            projectType: projectType,
+            notApplicable: false,
+            received: false,
+            cleared: false,
+            signed: false,
+            signedByDiocese: false,
+            saved: false,
+            signedBySecretaryState: false,
+            sentOrSaved: false,
+        };
+
+        switch (status) {
+            case "notApplicable":
+                return taskApi.updateChurchSupplementalAgreementTask({
+                    ...defaultBody,
+                    notApplicable: true,
+                });
+
+            case "inProgress":
+                return taskApi.updateChurchSupplementalAgreementTask({
+                    ...defaultBody,
+                    received: true,
+                });
+
+            case "completed":
+                return taskApi.updateChurchSupplementalAgreementTask({
+                    taskDataId: { value: taskDataId },
+                    projectType: projectType,
+                    notApplicable: false,
+                    received: true,
+                    cleared: true,
+                    signed: true,
+                    signedByDiocese: true,
+                    saved: true,
+                    signedBySecretaryState: true,
+                    sentOrSaved: true,
+                });
+
+            default:
+                return taskApi.updateChurchSupplementalAgreementTask(defaultBody);
+        }
+    }
     public updateDeedOfNovationAndVariation(taskDataId: string, status: TaskStatus) {
         const defaultBody = {
             taskDataId: { value: taskDataId },
@@ -160,6 +299,103 @@ class TaskHelper {
 
             default:
                 return taskApi.updateHandoverWithDeliveryOfficerTask(defaultBody);
+        }
+    }
+    updateLandQuestionnaire(taskDataId: string, status: TaskStatus) {
+        const defaultBody = {
+            taskDataId: { value: taskDataId },
+            received: false,
+            cleared: false,
+            signed: false,
+            saved: false,
+        };
+        switch (status) {
+            case "inProgress":
+                return taskApi.updateLandQuestionnaireTask({
+                    ...defaultBody,
+                    received: true,
+                });
+
+            case "completed":
+                return taskApi.updateLandQuestionnaireTask({
+                    taskDataId: { value: taskDataId },
+                    received: true,
+                    cleared: true,
+                    signed: true,
+                    saved: true,
+                });
+
+            default:
+                return taskApi.updateLandQuestionnaireTask(defaultBody);
+        }
+    }
+    updateLandRegistryTitlePlans(taskDataId: string, status: TaskStatus) {
+        const defaultBody = {
+            taskDataId: { value: taskDataId },
+            received: false,
+            cleared: false,
+            saved: false,
+        };
+        switch (status) {
+            case "inProgress":
+                return taskApi.updateLandRegistryTitlePlansTask({
+                    ...defaultBody,
+                    received: true,
+                });
+
+            case "completed":
+                return taskApi.updateLandRegistryTitlePlansTask({
+                    taskDataId: { value: taskDataId },
+                    received: true,
+                    cleared: true,
+                    saved: true,
+                });
+
+            default:
+                return taskApi.updateLandRegistryTitlePlansTask(defaultBody);
+        }
+    }
+    updateMasterFundingAgreement(taskDataId: string, projectType: ProjectType, status: TaskStatus) {
+        const defaultBody = {
+            taskDataId: { value: taskDataId },
+            projectType: projectType,
+            notApplicable: false,
+            received: false,
+            cleared: false,
+            signed: false,
+            saved: false,
+            sent: false,
+            signedSecretaryState: false,
+        };
+
+        switch (status) {
+            case "notApplicable":
+                return taskApi.updateMasterFundingAgreementTask({
+                    ...defaultBody,
+                    notApplicable: true,
+                });
+
+            case "inProgress":
+                return taskApi.updateMasterFundingAgreementTask({
+                    ...defaultBody,
+                    received: true,
+                });
+
+            case "completed":
+                return taskApi.updateMasterFundingAgreementTask({
+                    taskDataId: { value: taskDataId },
+                    projectType: projectType,
+                    notApplicable: false,
+                    received: true,
+                    cleared: true,
+                    signed: true,
+                    saved: true,
+                    sent: true,
+                    signedSecretaryState: true,
+                });
+
+            default:
+                return taskApi.updateMasterFundingAgreementTask(defaultBody);
         }
     }
     updateReceiveDeclarationOfExpenditureCertificate(

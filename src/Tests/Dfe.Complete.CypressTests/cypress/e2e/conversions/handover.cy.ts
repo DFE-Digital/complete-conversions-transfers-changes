@@ -23,14 +23,13 @@ const formAMATSchoolName = "Hope Brook CofE Primary School";
 const otherProject = PrepareProjectBuilder.createConversionProjectRequest({ urn: 151114 });
 const otherSchoolName = "Moor Park Primary School";
 
-// skip as prepare endpoint not implemented in dotnet 214917
-describe.skip("Handover process tests for conversion projects", () => {
+describe("Handover process tests for conversion projects", () => {
     before(() => {
         projectRemover.removeProjectIfItExists(project.urn);
-        projectRemover.removeProjectIfItExists(formAMATProject.urn);
+        // projectRemover.removeProjectIfItExists(formAMATProject.urn); // awaiting 214915
         projectRemover.removeProjectIfItExists(otherProject.urn);
         prepareProjectApi.createConversionProject(project);
-        prepareProjectApi.createConversionFormAMatProject(formAMATProject);
+        // prepareProjectApi.createConversionFormAMatProject(formAMATProject); // awaiting 214915
         prepareProjectApi.createConversionProject(otherProject);
     });
 
@@ -60,9 +59,9 @@ describe.skip("Handover process tests for conversion projects", () => {
             .summaryShows("Incoming trust UKPRN")
             .hasValue(dimensionsTrust.ukprn)
             .summaryShows("Advisory board date")
-            .hasValue(significateDateToDisplayDate(project.advisory_board_date))
+            .hasValue(significateDateToDisplayDate(project.advisoryBoardDate))
             .summaryShows("Provisional conversion date")
-            .hasValue(significateDateToDisplayDate(project.provisional_conversion_date))
+            .hasValue(significateDateToDisplayDate(project.provisionalConversionDate))
             .summaryShows("Type of academy order")
             .hasValue("AO (Academy order)")
             .summaryShows("Assigned to in Prepare")
@@ -93,7 +92,8 @@ describe.skip("Handover process tests for conversion projects", () => {
         yourTeamProjects.goToNextPageUntilFieldIsVisible(schoolName);
     });
 
-    it("Should be able to handover a conversion form a MAT project to assign to the user", () => {
+    // awaiting 214915
+    it.skip("Should be able to handover a conversion form a MAT project to assign to the user", () => {
         Logger.log("Add handover details for project");
         projectTable
             .goToNextPageUntilFieldIsVisible(formAMATSchoolName)
@@ -115,9 +115,9 @@ describe.skip("Handover process tests for conversion projects", () => {
             .summaryShows("Trust reference number")
             .hasValue(dimensionsTrust.referenceNumber)
             .summaryShows("Advisory board date")
-            .hasValue(significateDateToDisplayDate(formAMATProject.advisory_board_date))
+            .hasValue(significateDateToDisplayDate(formAMATProject.advisoryBoardDate))
             .summaryShows("Provisional conversion date")
-            .hasValue(significateDateToDisplayDate(formAMATProject.provisional_conversion_date))
+            .hasValue(significateDateToDisplayDate(formAMATProject.provisionalConversionDate))
             .summaryShows("Type of academy order")
             .hasValue("AO (Academy order)")
             .summaryShows("Assigned to in Prepare")

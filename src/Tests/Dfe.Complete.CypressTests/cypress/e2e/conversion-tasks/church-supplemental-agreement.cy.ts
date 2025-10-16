@@ -21,7 +21,7 @@ const otherUserProject = ProjectBuilder.createConversionFormAMatProjectRequest({
 });
 let otherUserProjectId: string;
 
-describe("Conversion tasks - Articles of association", () => {
+describe("Conversion tasks - Church supplemental agreement", () => {
     before(() => {
         projectRemover.removeProjectIfItExists(project.urn.value);
         projectRemover.removeProjectIfItExists(otherUserProject.urn.value);
@@ -39,52 +39,68 @@ describe("Conversion tasks - Articles of association", () => {
     beforeEach(() => {
         cy.login();
         cy.acceptCookies();
-        cy.visit(`projects/${projectId}/tasks/articles_of_association`);
+        cy.visit(`projects/${projectId}/tasks/church_supplemental_agreement`);
     });
 
     it("should expand and collapse guidance details", () => {
         taskPage
-            .clickDropdown("Partially updating articles of association")
-            .hasDropdownContent(
-                "Trusts do not have to adopt the latest version of the articles entirely. Although this is DfE's preferred option.",
-            )
             .clickDropdown("Help checking for changes")
             .hasDropdownContent("Changes that personalise the model documents to a school or trust");
     });
 
     it("should submit the form and persist selections", () => {
-        Logger.log("Select the 'Received' checkbox and save");
-        taskPage.hasCheckboxLabel("Received").tick().saveAndReturn();
-        taskListPage.hasTaskStatusInProgress("Articles of association").selectTask("Articles of association");
+        Logger.log("Select some checkboxes and save");
+        taskPage
+            .hasCheckboxLabel("Signed by school or trust")
+            .tick()
+            .hasCheckboxLabel("Signed by diocese")
+            .tick()
+            .saveAndReturn();
+        taskListPage
+            .hasTaskStatusInProgress("Church supplemental agreement")
+            .selectTask("Church supplemental agreement");
 
-        Logger.log("Unselect the 'Received' checkbox and save");
-        taskPage.hasCheckboxLabel("Received").isTicked().untick().saveAndReturn();
-        taskListPage.hasTaskStatusNotStarted("Articles of association").selectTask("Articles of association");
-        taskPage.hasCheckboxLabel("Received").isUnticked();
+        Logger.log("Unselect same checkboxes and save");
+        taskPage
+            .hasCheckboxLabel("Signed by school or trust")
+            .isTicked()
+            .untick()
+            .hasCheckboxLabel("Signed by diocese")
+            .isTicked()
+            .untick()
+            .saveAndReturn();
+        taskListPage
+            .hasTaskStatusNotStarted("Church supplemental agreement")
+            .selectTask("Church supplemental agreement");
+        taskPage
+            .hasCheckboxLabel("Signed by school or trust")
+            .isUnticked()
+            .hasCheckboxLabel("Signed by diocese")
+            .isUnticked();
     });
 
-    it("should show task status based on the checkboxes are checked", () => {
+    it("should show task status based on the checkboxes that are checked", () => {
         cy.visit(`projects/${projectId}/tasks`);
 
-        TaskHelper.updateArticleOfAssociation(taskId, ProjectType.Conversion, "notStarted");
+        TaskHelper.updateChurchSupplementalAgreement(taskId, ProjectType.Conversion, "notStarted");
         cy.reload();
-        taskListPage.hasTaskStatusNotStarted("Articles of association");
+        taskListPage.hasTaskStatusNotStarted("Church supplemental agreement");
 
-        TaskHelper.updateArticleOfAssociation(taskId, ProjectType.Conversion, "notApplicable");
+        TaskHelper.updateChurchSupplementalAgreement(taskId, ProjectType.Conversion, "notApplicable");
         cy.reload();
-        taskListPage.hasTaskStatusNotApplicable("Articles of association");
+        taskListPage.hasTaskStatusNotApplicable("Church supplemental agreement");
 
-        TaskHelper.updateArticleOfAssociation(taskId, ProjectType.Conversion, "inProgress");
+        TaskHelper.updateChurchSupplementalAgreement(taskId, ProjectType.Conversion, "inProgress");
         cy.reload();
-        taskListPage.hasTaskStatusInProgress("Articles of association");
+        taskListPage.hasTaskStatusInProgress("Church supplemental agreement");
 
-        TaskHelper.updateArticleOfAssociation(taskId, ProjectType.Conversion, "completed");
+        TaskHelper.updateChurchSupplementalAgreement(taskId, ProjectType.Conversion, "completed");
         cy.reload();
-        taskListPage.hasTaskStatusCompleted("Articles of association");
+        taskListPage.hasTaskStatusCompleted("Church supplemental agreement");
     });
 
     it("Should NOT see the 'save and return' button for another user's project", () => {
-        cy.visit(`projects/${otherUserProjectId}/tasks/articles_of_association`);
+        cy.visit(`projects/${otherUserProjectId}/tasks/church_supplemental_agreement`);
         taskPage.noSaveAndReturnExists();
     });
 

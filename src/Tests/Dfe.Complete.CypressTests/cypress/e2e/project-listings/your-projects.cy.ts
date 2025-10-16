@@ -3,7 +3,7 @@ import projectApi from "cypress/api/projectApi";
 import { ProjectBuilder } from "cypress/api/projectBuilder";
 import yourProjects from "cypress/pages/projects/yourProjects";
 import { projectTable } from "cypress/pages/projects/tables/projectTable";
-import { currentMonthShort, dimensionsTrust, macclesfieldTrust } from "cypress/constants/stringTestConstants";
+import { dimensionsTrust, macclesfieldTrust, todayFormatted } from "cypress/constants/stringTestConstants";
 import { cypressUser } from "cypress/constants/cypressConstants";
 import projectDetailsPage from "cypress/pages/projects/projectDetails/projectDetailsPage";
 import { checkAccessibilityAcrossPages } from "cypress/support/reusableTests";
@@ -15,6 +15,7 @@ const conversionProject = ProjectBuilder.createConversionProjectRequest({
 });
 const conversionSchoolName = "Hele's School";
 const transferProject = ProjectBuilder.createTransferProjectRequest({ urn: { value: urnPool.listings.queen } });
+let transferProjectId: string;
 const transferSchoolName = "Queen Elizabeth Grammar School Penrith";
 const conversionFormAMatProject = ProjectBuilder.createConversionFormAMatProjectRequest({
     urn: { value: urnPool.listings.themount },
@@ -32,7 +33,7 @@ describe("View your projects", () => {
         projectRemover.removeProjectIfItExists(conversionFormAMatProject.urn.value);
         projectRemover.removeProjectIfItExists(transferFormAMatProject.urn.value);
         projectApi.createConversionProject(conversionProject);
-        projectApi.createTransferProject(transferProject);
+        projectApi.createTransferProject(transferProject).then((response) => (transferProjectId = response.value));
         projectApi.createMatConversionProject(conversionFormAMatProject);
         projectApi.createMatTransferProject(transferFormAMatProject);
     });
@@ -137,8 +138,8 @@ describe("View your projects", () => {
         projectDetailsPage.containsHeading(conversionSchoolName);
     });
 
-    it.skip("Should be able to view completed transfer project in Your projects -> Completed", () => {
-        // project completion not implemented
+    it("Should be able to view completed transfer project in Your projects -> Completed", () => {
+        projectApi.completeProject(transferProjectId);
         yourProjects.filterProjects("Completed").containsHeading("Completed");
         projectTable
             .hasTableHeaders([
@@ -152,11 +153,11 @@ describe("View your projects", () => {
             ])
             .withSchool(transferSchoolName)
             .columnHasValue("URN", `${transferProject.urn.value}`)
-            .columnHasValue("Local authority", "Westmoreland and Furness")
-            .columnHasValue("Team", "North West")
+            .columnHasValue("Local authority", "Westmorland and Furness")
+            .columnHasValue("Team", "London")
             .columnHasValue("Type of project", "Transfer")
             .columnHasValue("Conversion or transfer date", "Mar 2026")
-            .columnHasValue("Project completion date", currentMonthShort)
+            .columnHasValue("Project completion date", todayFormatted)
             .goTo(transferSchoolName);
         projectDetailsPage.containsHeading(transferSchoolName);
     });

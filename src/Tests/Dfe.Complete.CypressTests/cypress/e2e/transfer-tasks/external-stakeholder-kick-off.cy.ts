@@ -58,20 +58,18 @@ describe("Transfers tasks - External stakeholder kick-off", () => {
         cy.visit(`projects/${projectId}/tasks/stakeholder_kick_off`);
     });
 
-    // bug 236611
-    it.skip("should expand and collapse guidance details", () => {
+    it("should expand and collapse guidance details", () => {
         taskPage
             .hasCheckboxLabel("Send introductory emails")
             .clickDropdown("What to include in introductory emails")
             .hasGuidance("You can choose an email template (opens in new tab) to help you")
             .hasCheckboxLabel("Send invites to the kick-off meeting or call")
             .clickDropdown("How to arrange the kick-off meeting")
-            .hasGuidance("Once the trusts have got back to you with a suitable date and list of attendees")
+            .hasGuidance("Once the trust have got back to you with a suitable date and list of attendees")
             .hasGuidance("Some trusts may prefer to have a one-to-one call with you")
 
             .hasCheckboxLabel("Host the kick-off meeting or call")
-            .clickDropdown("What to talk about in the meeting")
-            .hasGuidance("You can use the transfer checklist (opens in new tab) to guide the conversation");
+            .hasDropdownContent("Make sure all attendees understand what they need to do")
     });
 
     it("should submit the form and persist selections", () => {

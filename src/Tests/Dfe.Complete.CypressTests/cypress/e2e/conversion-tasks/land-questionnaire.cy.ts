@@ -2,7 +2,6 @@ import { ProjectBuilder } from "cypress/api/projectBuilder";
 import projectApi from "cypress/api/projectApi";
 import { checkAccessibilityAcrossPages } from "cypress/support/reusableTests";
 import taskListPage from "cypress/pages/projects/tasks/taskListPage";
-import { ProjectType } from "cypress/api/taskApi";
 import projectRemover from "cypress/api/projectRemover";
 import { rdoLondonUser } from "cypress/constants/cypressConstants";
 import taskPage from "cypress/pages/projects/tasks/taskPage";
@@ -21,7 +20,7 @@ const otherUserProject = ProjectBuilder.createConversionFormAMatProjectRequest({
 });
 let otherUserProjectId: string;
 
-describe("Conversion tasks - Articles of association", () => {
+describe("Conversion tasks - Land questionnaire", () => {
     before(() => {
         projectRemover.removeProjectIfItExists(project.urn.value);
         projectRemover.removeProjectIfItExists(otherUserProject.urn.value);
@@ -39,52 +38,74 @@ describe("Conversion tasks - Articles of association", () => {
     beforeEach(() => {
         cy.login();
         cy.acceptCookies();
-        cy.visit(`projects/${projectId}/tasks/articles_of_association`);
+        cy.visit(`projects/${projectId}/tasks/land_questionnaire`);
     });
 
     it("should expand and collapse guidance details", () => {
         taskPage
-            .clickDropdown("Partially updating articles of association")
-            .hasDropdownContent(
-                "Trusts do not have to adopt the latest version of the articles entirely. Although this is DfE's preferred option.",
-            )
-            .clickDropdown("Help checking for changes")
-            .hasDropdownContent("Changes that personalise the model documents to a school or trust");
+            .clickDropdown("How to clear a land questionnaire")
+            .hasDropdownContent("You must check the school is using the right land questionnaire");
     });
 
     it("should submit the form and persist selections", () => {
-        Logger.log("Select the 'Received' checkbox and save");
-        taskPage.hasCheckboxLabel("Received").tick().saveAndReturn();
-        taskListPage.hasTaskStatusInProgress("Articles of association").selectTask("Articles of association");
+        Logger.log("Select all checkboxes and save");
+        taskPage
+            .hasCheckboxLabel("Received")
+            .tick()
+            .hasCheckboxLabel("Cleared")
+            .tick()
+            .hasCheckboxLabel("Signed by solicitor")
+            .tick()
+            .hasCheckboxLabel("Saved in the school's SharePoint folder")
+            .tick()
+            .saveAndReturn();
+        taskListPage.hasTaskStatusCompleted("Land questionnaire").selectTask("Land questionnaire");
 
-        Logger.log("Unselect the 'Received' checkbox and save");
-        taskPage.hasCheckboxLabel("Received").isTicked().untick().saveAndReturn();
-        taskListPage.hasTaskStatusNotStarted("Articles of association").selectTask("Articles of association");
-        taskPage.hasCheckboxLabel("Received").isUnticked();
+        Logger.log("Unselect all checkboxes and save");
+        taskPage
+            .hasCheckboxLabel("Received")
+            .isTicked()
+            .untick()
+            .hasCheckboxLabel("Cleared")
+            .isTicked()
+            .untick()
+            .hasCheckboxLabel("Signed by solicitor")
+            .isTicked()
+            .untick()
+            .hasCheckboxLabel("Saved in the school's SharePoint folder")
+            .isTicked()
+            .untick()
+            .saveAndReturn();
+        taskListPage.hasTaskStatusNotStarted("Land questionnaire").selectTask("Land questionnaire");
+        taskPage
+            .hasCheckboxLabel("Received")
+            .isUnticked()
+            .hasCheckboxLabel("Cleared")
+            .isUnticked()
+            .hasCheckboxLabel("Signed by solicitor")
+            .isUnticked()
+            .hasCheckboxLabel("Saved in the school's SharePoint folder")
+            .isUnticked();
     });
 
     it("should show task status based on the checkboxes are checked", () => {
         cy.visit(`projects/${projectId}/tasks`);
 
-        TaskHelper.updateArticleOfAssociation(taskId, ProjectType.Conversion, "notStarted");
+        TaskHelper.updateLandQuestionnaire(taskId, "notStarted");
         cy.reload();
-        taskListPage.hasTaskStatusNotStarted("Articles of association");
+        taskListPage.hasTaskStatusNotStarted("Land questionnaire");
 
-        TaskHelper.updateArticleOfAssociation(taskId, ProjectType.Conversion, "notApplicable");
+        TaskHelper.updateLandQuestionnaire(taskId, "inProgress");
         cy.reload();
-        taskListPage.hasTaskStatusNotApplicable("Articles of association");
+        taskListPage.hasTaskStatusInProgress("Land questionnaire");
 
-        TaskHelper.updateArticleOfAssociation(taskId, ProjectType.Conversion, "inProgress");
+        TaskHelper.updateLandQuestionnaire(taskId, "completed");
         cy.reload();
-        taskListPage.hasTaskStatusInProgress("Articles of association");
-
-        TaskHelper.updateArticleOfAssociation(taskId, ProjectType.Conversion, "completed");
-        cy.reload();
-        taskListPage.hasTaskStatusCompleted("Articles of association");
+        taskListPage.hasTaskStatusCompleted("Land questionnaire");
     });
 
     it("Should NOT see the 'save and return' button for another user's project", () => {
-        cy.visit(`projects/${otherUserProjectId}/tasks/articles_of_association`);
+        cy.visit(`projects/${otherUserProjectId}/tasks/land_questionnaire`);
         taskPage.noSaveAndReturnExists();
     });
 
