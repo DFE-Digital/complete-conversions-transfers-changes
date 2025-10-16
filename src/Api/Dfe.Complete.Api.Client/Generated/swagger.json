@@ -3108,6 +3108,39 @@
         }
       }
     },
+    "/v1/TasksData/TaskData/RequestNewURNAndRecordForAcademy": {
+      "patch": {
+        "tags": [
+          "TasksData"
+        ],
+        "summary": "Request a new URN and record for the academy task for the project.",
+        "operationId": "TasksData_UpdateRequestNewUrnAndRecordForAcademyTask",
+        "requestBody": {
+          "x-name": "request",
+          "description": "The update command.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateRequestNewUrnAndRecordForAcademyTaskCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "204": {
+            "description": "Request a new URN and record for the academy task updated successfully."
+          },
+          "400": {
+            "description": "Invalid request data."
+          },
+          "404": {
+            "description": "Project not found."
+          }
+        }
+      }
+    },
     "/v1/Trust/List/All": {
       "get": {
         "tags": [
@@ -8011,6 +8044,31 @@
           },
           "headTeacherId": {
             "$ref": "#/components/schemas/ContactId"
+          }
+        }
+      },
+      "UpdateRequestNewUrnAndRecordForAcademyTaskCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "taskDataId": {
+            "$ref": "#/components/schemas/TaskDataId"
+          },
+          "notApplicable": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "complete": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "receive": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "give": {
+            "type": "boolean",
+            "nullable": true
           }
         }
       },
