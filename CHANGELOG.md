@@ -17,6 +17,7 @@ Security in case of vulnerabilities.
 ## Unreleased
 
 ### Added
+- Added `Complete a notification of changes to funded high needs places form` task for conversion projects.
 
 - Added `Check and confirm the academy and trust financial information` task for transfer project.
 
