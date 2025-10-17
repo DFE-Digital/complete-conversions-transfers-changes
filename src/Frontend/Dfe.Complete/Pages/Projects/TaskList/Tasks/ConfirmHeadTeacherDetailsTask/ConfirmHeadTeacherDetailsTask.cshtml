@@ -1,16 +1,45 @@
 ﻿@page "/projects/{projectId}/tasks/confirm_headteacher_contact"
-@model Dfe.Complete.Pages.Projects.TaskList.Tasks.ConfirmHeadTeacherDetailsTask.ConfirmHeadTeacherDetailsTaskModel
+@using Dfe.Complete.Constants
+@using Dfe.Complete.TagHelpers;
+@inject Microsoft.Extensions.Configuration.IConfiguration _configuration
+@model Dfe.Complete.Pages.Projects.TaskList.Tasks.ConfirmHeadTeacherDetailsTask.ConfirmHeadTeachersDetailsTaskModel
 @{
     Layout = "_ProjectTaskLayout";
-    ViewData["Title"] = "Confirm the headteacher's details";
+    ViewData["Title"] = "Confirm the headteacher’s details";
+    var projectsExternalContactLink = string.Format(RouteConstants.ProjectExternalContacts, Model.ProjectId);
+    var projectsExternalContactAddNewLink = string.Format(RouteConstants.NewProjectExternalContacts, Model.ProjectId);
 }
-@section TaskHeaderHintSection {
-    <div class="govuk-hint"> 
+@section TaskHeaderHintSection
+{
+    <div class="govuk-hint">
+        <p>Check the contact details are correct, <a href="@projectsExternalContactLink" data-cy="external-contacts-link">edit incorrect contact details and add missing contacts</a>. You may need to contact the person who previously worked on the project to verify this.</p>
     </div>
 }
 @section TaskSection {
+    <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">Who is the headteacher?</legend>
+    @if (Model?.Contacts != null && Model.Contacts.Count > 0)
+    {
+        <form method="post" novalidate data-cy="task-update-head-teacher-form">
+            <div class="govuk-hint">
+                <p>Choose the relevant person from the list of contacts. You may need to add a new contact if the person you are looking for is not in the list.</p>
+                <p>Their job title may be slightly different to the role described here. Choose the person whose role most closely matches the headteacher.</p>
+            </div>
 
-    <form method="post"> 
-        @await Html.PartialAsync("_TaskSaveAndReturn", new TaskSaveAndReturnModel(Model.Project, Model.CurrentUserTeam))
-    </form>
+            <input type="hidden" asp-for="KeyContactId" />            
+            @await Html.PartialAsync("_TaskContactRadioList",
+            new ContactRadioListModel(Model.Contacts!, Model.HeadTeacherContactId, "HeadTeacherContactId")
+            {
+                Legend = "Choose a contact"
+            }
+        )
+            @await Html.PartialAsync("_TaskSaveAndReturn", new TaskSaveAndReturnModel(Model.Project, Model.CurrentUserTeam))
+        </form>
+        }
+    else
+    {
+        <govuk-inset-text>
+            No contacts have been added to the project.
+        </govuk-inset-text>       
+        <govuk-button-link href="@projectsExternalContactAddNewLink" data-cy="external-contacts-add-new-button">Add a contact</govuk-button-link>
+    }
 }
