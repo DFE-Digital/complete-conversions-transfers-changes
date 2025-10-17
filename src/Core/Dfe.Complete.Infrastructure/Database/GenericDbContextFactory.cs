@@ -26,8 +26,13 @@ namespace Dfe.Complete.Infrastructure.Database
 
             var services = new ServiceCollection();
 
+            // Allow sensitive data logging in Development environment only, based on configuration
+            bool enableSensitiveDataLogging = false;
+            if (environmentName == "Development")
+                enableSensitiveDataLogging = configuration.GetValue("EnableSensitiveDataLogging", false);
+
             var optionsBuilder = new DbContextOptionsBuilder<TContext>();
-            optionsBuilder.UseCompleteSqlServer(connectionString!, configuration.GetValue("EnableSQLRetryOnFailure", false));
+            optionsBuilder.UseCompleteSqlServer(connectionString!, configuration.GetValue("EnableSQLRetryOnFailure", false), enableSensitiveDataLogging);
 
             services.AddMediatR(cfg =>
             {
