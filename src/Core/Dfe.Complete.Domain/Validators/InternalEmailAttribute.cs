@@ -18,7 +18,7 @@ public sealed class InternalEmailAttribute : ValidationAttribute
 
         var emailValidator = new EmailAddressAttribute();
 
-        if (!link.EndsWith("@education.gov.uk") || !emailValidator.IsValid(value))
+        if (!link.EndsWith("@education.gov.uk", StringComparison.OrdinalIgnoreCase) || !emailValidator.IsValid(value))
             return new ValidationResult(ErrorMessage);
 
         return ValidationResult.Success;
