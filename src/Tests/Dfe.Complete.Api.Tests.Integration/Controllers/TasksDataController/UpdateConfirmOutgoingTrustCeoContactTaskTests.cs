@@ -45,5 +45,34 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers.TasksDataController
             Assert.NotNull(existingKeyContactData);
             Assert.Equal(contact.Id.Value, existingKeyContactData.OutgoingTrustCeoId?.Value);            
         }
+
+        [Theory]
+        [CustomAutoData(typeof(CustomWebApplicationDbContextFactoryCustomization), typeof(OmitCircularReferenceCustomization))]
+        public async Task UpdateConfirmOutgoingTrustCeoContactTaskAsync_ShouldReturnNotFound_WhenKeyContactIdNotFound(
+            CustomWebApplicationDbContextFactory<Program> factory,
+            ITasksDataClient tasksDataClient,
+            UpdateOutgoingTrustCeoCommand command,
+            IFixture fixture)
+        {
+            // Arrange
+            factory.TestClaims = [new Claim(ClaimTypes.Role, ApiRoles.ReadRole), new Claim(ClaimTypes.Role, ApiRoles.WriteRole), new Claim(ClaimTypes.Role, ApiRoles.UpdateRole)];
+
+            var contact = fixture.Create<Domain.Entities.Contact>();
+            var nonExistentKeyContactId = Guid.NewGuid();
+
+            command.OutgoingTrustCeoId = new ContactId { Value = contact.Id.Value };  
+            command.KeyContactId = new KeyContactId { Value = nonExistentKeyContactId };
+
+            var expectedErrorMessage = $"KeyContact with ID {nonExistentKeyContactId} not found";
+
+            // Act & Assert
+            var exception = await Assert.ThrowsAsync<CompleteApiException>(() =>
+                tasksDataClient.UpdateConfirmOutgoingTrustCeoContactTaskAsync(command, default));
+
+            // Assert
+            Assert.NotNull(exception);
+            Assert.Equal(expectedErrorMessage, exception.Response);
+            Assert.Equal(404, exception.StatusCode);
+        }
     }
 }

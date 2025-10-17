@@ -1,4 +1,5 @@
 ﻿using Asp.Versioning;
+using Dfe.Complete.Application.Common.Models;
 using Dfe.Complete.Application.KeyContacts.Commands;
 using Dfe.Complete.Application.Projects.Commands.TaskData;
 using Dfe.Complete.Application.Projects.Models;
@@ -469,12 +470,21 @@ namespace Dfe.Complete.Api.Controllers
         [Route("TaskData/ConfirmOutgoingTrustCeoContact")]
         [SwaggerResponse(204, "Confirm the outgoing trust ceo contact for the project successfully.")]
         [SwaggerResponse(400, "Invalid request data.")]
-        [SwaggerResponse(404, "Project not found.")]
+        [SwaggerResponse(404, "KeyContact not found.")]
+        [SwaggerResponse(500, "Internal server error.")]
         public async Task<IActionResult> UpdateConfirmOutgoingTrustCeoContactTaskAsync(
             [FromBody] UpdateOutgoingTrustCeoCommand request,
             CancellationToken cancellationToken)
         {
-            await sender.Send(request, cancellationToken);
+            var response = await sender.Send(request, cancellationToken);
+
+            if (!response.IsSuccess)
+            {
+                if (response.ErrorType == ErrorType.NotFound)
+                    return NotFound(response.Error);
+                return StatusCode(500, response.Error);
+            }
+
             return NoContent();
         }
     }

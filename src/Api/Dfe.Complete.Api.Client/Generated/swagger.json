@@ -3136,7 +3136,10 @@
             "description": "Invalid request data."
           },
           "404": {
-            "description": "Project not found."
+            "description": "KeyContact not found."
+          },
+          "500": {
+            "description": "Internal server error."
           }
         }
       }

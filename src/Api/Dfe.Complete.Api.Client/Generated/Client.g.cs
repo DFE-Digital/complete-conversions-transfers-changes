@@ -8419,7 +8419,13 @@ namespace Dfe.Complete.Client
                         if (status_ == 404)
                         {
                             string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new CompleteApiException("Project not found.", status_, responseText_, headers_, null);
+                            throw new CompleteApiException("KeyContact not found.", status_, responseText_, headers_, null);
+                        }
+                        else
+                        if (status_ == 500)
+                        {
+                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new CompleteApiException("Internal server error.", status_, responseText_, headers_, null);
                         }
                         else
                         {

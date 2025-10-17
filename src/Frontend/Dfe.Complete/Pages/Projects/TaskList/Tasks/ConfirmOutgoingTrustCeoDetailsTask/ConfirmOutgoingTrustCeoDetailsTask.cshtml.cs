@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.ConfirmOutgoingTrustCeoDetails
 {
-    public class ConfirmOutgoingTrustCeoDetailsModel(ISender sender, IAuthorizationService authorizationService, ILogger<ConfirmOutgoingTrustCeoDetailsModel> logger)
+    public class ConfirmOutgoingTrustCeoDetailsTaskModel(ISender sender, IAuthorizationService authorizationService, ILogger<ConfirmOutgoingTrustCeoDetailsTaskModel> logger)
     : BaseProjectTaskModel(sender, authorizationService, logger, NoteTaskIdentifier.ConfirmOutgoingTrustCeoDetails)
     {
         [BindProperty]
