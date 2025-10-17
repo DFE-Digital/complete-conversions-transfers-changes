@@ -1,6 +1,6 @@
 const axios = require("axios");
-const fs = require("fs");
-const path = require("path");
+const fs = require("node:fs");
+const path = require("node:path");
 
 // used in GitHub Actions to send Cypress test results to Microsoft Teams channel via webhook
 async function sendTeamsNotification() {
@@ -14,7 +14,7 @@ async function sendTeamsNotification() {
         if (fs.existsSync(reportPath)) {
             const reportData = JSON.parse(fs.readFileSync(reportPath, "utf8"));
 
-            if (reportData && reportData.stats) {
+            if (reportData?.stats) {
                 reportStats = {
                     tests: reportData.stats.tests || 0,
                     passes: reportData.stats.passes || 0,
@@ -80,7 +80,7 @@ async function sendTeamsNotification() {
             });
 
             // Add each failed test as a separate text block
-            failedTests.forEach((test, index) => {
+            for (const [index, test] of failedTests.entries()) {
                 // Limit to first 10 failed tests to avoid message size limits
                 if (index < 10) {
                     cardBody.push({
@@ -101,7 +101,7 @@ async function sendTeamsNotification() {
                         isSubtle: true,
                     });
                 }
-            });
+            }
 
             // Add note if there are more failures than displayed
             if (failedTests.length > 10) {
@@ -136,7 +136,7 @@ async function sendTeamsNotification() {
                     contentType: "application/vnd.microsoft.card.adaptive",
                     contentUrl: null,
                     content: {
-                        $schema: "http://adaptivecards.io/schemas/adaptive-card.json",
+                        $schema: "https://adaptivecards.io/schemas/adaptive-card.json",
                         type: "AdaptiveCard",
                         version: "1.2",
                         body: [
@@ -177,16 +177,22 @@ function extractFailedTests(results) {
 
         // Process nested tests
         if (item.tests && Array.isArray(item.tests)) {
-            item.tests.forEach(processTestItem);
+            for (const test of item.tests) {
+                processTestItem(test);
+            }
         }
 
         // Process nested suites
         if (item.suites && Array.isArray(item.suites)) {
-            item.suites.forEach(processTestItem);
+            for (const suite of item.suites) {
+                processTestItem(suite);
+            }
         }
     }
 
-    results.forEach(processTestItem);
+    for (const result of results) {
+        processTestItem(result);
+    }
     return failedTests;
 }
 
