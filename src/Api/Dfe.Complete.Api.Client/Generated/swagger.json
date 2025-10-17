@@ -3075,6 +3075,39 @@
         }
       }
     },
+    "/v1/TasksData/TaskData/ConfirmHeadTeacherContact": {
+      "patch": {
+        "tags": [
+          "TasksData"
+        ],
+        "summary": "Confirm the head teacher contact for the project.",
+        "operationId": "TasksData_UpdateConfirmHeadTeacherContactTask",
+        "requestBody": {
+          "x-name": "request",
+          "description": "The update command.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateHeadTeacherCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "204": {
+            "description": "Confirm the head teacher contact for the project successfully."
+          },
+          "400": {
+            "description": "Invalid request data."
+          },
+          "404": {
+            "description": "Project not found."
+          }
+        }
+      }
+    },
     "/v1/TasksData/TaskData/CheckAccuracyOfHigherNeeds": {
       "patch": {
         "tags": [
@@ -7999,6 +8032,18 @@
           "rpaReason": {
             "type": "string",
             "nullable": true
+          }
+        }
+      },
+      "UpdateHeadTeacherCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "keyContactId": {
+            "$ref": "#/components/schemas/KeyContactId"
+          },
+          "headTeacherId": {
+            "$ref": "#/components/schemas/ContactId"
           }
         }
       },
