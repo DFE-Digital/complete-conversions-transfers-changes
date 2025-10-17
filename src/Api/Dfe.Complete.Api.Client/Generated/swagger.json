@@ -3108,6 +3108,39 @@
         }
       }
     },
+    "/v1/TasksData/TaskData/AcademyAndTrustFinancialInformation": {
+      "patch": {
+        "tags": [
+          "TasksData"
+        ],
+        "summary": "Updating the academy and trust financial information task data for transfer project.",
+        "operationId": "TasksData_UpdateAcademyAndTrustFinancialInformationTask",
+        "requestBody": {
+          "x-name": "request",
+          "description": "The update command.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateAcademyAndTrustFinancialInformationTaskCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "204": {
+            "description": "Updated the academy and trust financial information task successfully."
+          },
+          "400": {
+            "description": "Invalid request data."
+          },
+          "404": {
+            "description": "Project not found."
+          }
+        }
+      }
+    },
     "/v1/Trust/List/All": {
       "get": {
         "tags": [
@@ -8011,6 +8044,27 @@
           },
           "headTeacherId": {
             "$ref": "#/components/schemas/ContactId"
+          }
+        }
+      },
+      "UpdateAcademyAndTrustFinancialInformationTaskCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "taskDataId": {
+            "$ref": "#/components/schemas/TaskDataId"
+          },
+          "notApplicable": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "academySurplusOrDeficit": {
+            "type": "string",
+            "nullable": true
+          },
+          "trustSurplusOrDeficit": {
+            "type": "string",
+            "nullable": true
           }
         }
       },
