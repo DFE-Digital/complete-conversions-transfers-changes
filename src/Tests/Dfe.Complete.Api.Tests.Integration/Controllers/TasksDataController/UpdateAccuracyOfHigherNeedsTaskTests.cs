@@ -27,8 +27,8 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers.TasksDataController
             factory.TestClaims = [new Claim(ClaimTypes.Role, ApiRoles.ReadRole), new Claim(ClaimTypes.Role, ApiRoles.UpdateRole), new Claim(ClaimTypes.Role, ApiRoles.WriteRole)];
 
             var dbContext = factory.GetDbContext<CompleteContext>();
-            var taskData = fixture.Create<TransferTasksData>();
-            dbContext.TransferTasksData.Add(taskData);
+            var taskData = fixture.Create<ConversionTasksData>();
+            dbContext.ConversionTasksData.Add(taskData);
             await dbContext.SaveChangesAsync();
 
             var command = new UpdateAccuracyOfHigherNeedsTaskCommand
