@@ -20,11 +20,11 @@ async function sendTeamsNotification() {
                     passes: reportData.stats.passes || 0,
                     failures: reportData.stats.failures || 0,
                 };
-            }
 
-            // Extract failed tests with their error messages
-            if (reportData && reportData.results) {
-                failedTests = extractFailedTests(reportData.results);
+                // Only extract failed tests if there are actually failures
+                if (reportStats.failures > 0 && reportData.results) {
+                    failedTests = extractFailedTests(reportData.results);
+                }
             }
         } else {
             console.warn("Report file not found at:", reportPath);
