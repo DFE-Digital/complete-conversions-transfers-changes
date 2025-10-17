@@ -61,10 +61,6 @@ describe("Change the transfer date tests", () => {
         cy.acceptCookies();
     });
 
-    it("Should fail for debugging purposes", () => {
-        cy.contains("something that does not exist");
-    })
-
     it("Should be able to change transfer date to an earlier date for your project that has the transfer date confirmed", () => {
         cy.visit(`projects/${confirmedDateProjectId}/tasks`);
 
