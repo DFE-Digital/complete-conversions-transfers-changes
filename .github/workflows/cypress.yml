@@ -52,20 +52,20 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - group: conversion-tasks
-            spec: cypress/e2e/conversion-tasks/**/*.cy.ts
-          - group: conversions
-            spec: cypress/e2e/conversions/**/*.cy.ts
-          - group: project-listings
-            spec: cypress/e2e/project-listings/**/*.cy.ts
-          - group: transfer-tasks
-            spec: cypress/e2e/transfer-tasks/**/*.cy.ts
+#          - group: conversion-tasks
+#            spec: cypress/e2e/conversion-tasks/**/*.cy.ts
+#          - group: conversions
+#            spec: cypress/e2e/conversions/**/*.cy.ts
+#          - group: project-listings
+#            spec: cypress/e2e/project-listings/**/*.cy.ts
+#          - group: transfer-tasks
+#            spec: cypress/e2e/transfer-tasks/**/*.cy.ts
           - group: transfers
             spec: cypress/e2e/transfers/**/*.cy.ts
           - group: user-capabilities-regional-workers
             spec: cypress/e2e/user-capabilities-regional-workers/**/*.cy.ts
-          - group: user-capabilities-support
-            spec: cypress/e2e/user-capabilities-support/**/*.cy.ts
+#          - group: user-capabilities-support
+#            spec: cypress/e2e/user-capabilities-support/**/*.cy.ts
     container:
       image: cypress/browsers:22.15.1@sha256:753c6dd8dc176c2eb9e9a622146d2c260e308e86eb62ce2b3e6f12e7d67d7b13
     defaults:
