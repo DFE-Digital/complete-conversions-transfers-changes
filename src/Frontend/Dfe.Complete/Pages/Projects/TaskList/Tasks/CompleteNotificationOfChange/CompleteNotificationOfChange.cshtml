@@ -1,4 +1,5 @@
 ﻿@page "/projects/{projectId}/tasks/complete_notification_of_change"
+@inject Microsoft.Extensions.Configuration.IConfiguration _configuration
 @model Dfe.Complete.Pages.Projects.TaskList.Tasks.CompleteNotificationOfChange.CompleteNotificationOfChangeModel
 @{
     Layout = "_ProjectTaskLayout";
@@ -6,11 +7,98 @@
 }
 @section TaskHeaderHintSection {
     <div class="govuk-hint">
+        <p>The local authority must complete a notification of changes to funded high needs places form if the section 251 spreadsheet is incorrect.</p>
     </div>
 }
 @section TaskSection {
 
+    <details data-module="govuk-details" class="govuk-details">
+        <summary class="govuk-details__summary">
+            <span class="govuk-details__summary-text">When to use the notification of change document</span>
+        </summary>
+        <div class="govuk-details__text">
+            <p>You will need to use the notification of changes document if the:</p>
+            <ul>
+                <li>school is not on the spreadsheet but has high needs places</li>
+                <li>school is on the spreadsheet but does not have high needs places</li>
+                <li>number of pre-16 high needs places is wrong</li>
+                <li>post-16 and pre-16 high needs places have been counted together</li>
+                <li>post-16 high needs places that need funding are not on the spreadsheet</li>
+            </ul>
+            <p>Pre-16 high needs places are for all pupils up to and including year 11. Post-16 high needs places are for pupils in years 12 and 13.</p>
+            <p>It is critical to make sure this information is accurate so that ESFA are able to fund high needs places at the academy.</p>
+            <p>You will need to work with the school and ESFA after opening to resolve any funding payment issues.</p>
+        </div>
+    </details>
     <form method="post">
+        <input type="hidden" asp-for="TasksDataId"/>
+        
+        <govuk-checkboxes name="options">
+            <govuk-checkboxes-fieldset>
+                <govuk-checkboxes-fieldset-legend>
+                </govuk-checkboxes-fieldset-legend>
+
+                <govuk-checkboxes-item id="@(nameof(Model.NotApplicable))" data-cy="not-applicable" asp-for="@Model.NotApplicable" value="true" name="@nameof(Model.NotApplicable)" checked="@Model.NotApplicable">
+                    <b>Not applicable</b>
+                </govuk-checkboxes-item>
+                <govuk-checkboxes-item id="@(nameof(Model.TellLocalAuthority))" data-cy="tell-local-authority" asp-for="@Model.TellLocalAuthority" value="true" name="@(nameof(Model.TellLocalAuthority))" checked="@Model.TellLocalAuthority">
+                    <b>Tell the local authority to complete the notification of change document</b>
+                    <govuk-checkboxes-hint>
+                        <div class="govuk-hint">
+                            <p>Email the document to your local authority contact. They must complete the notification of change and email it back to you.</p>
+                            <p>They must also include the school in the email they send you.</p>
+                            <div class="guidance">
+                                <details data-module="govuk-details" class="govuk-details">
+                                    <summary class="govuk-details__summary">
+                                        <span class="govuk-details__summary-text">What to do if you do not have the document</span>
+                                    </summary>
+                                    <div class="govuk-details__text">
+                                        <p>Each year the academy openers team send out the notification of change document by email, with guidance on how to use it.</p>
+                                        <p>You can email <a href="mailto:@_configuration["Emails:AcademyOpeners"]">@_configuration["Emails:AcademyOpeners"]</a> to ask for a notification of change document if you do not have one.</p>
+                                    </div>
+                                </details>    
+                            </div>
+                        </div>
+                    </govuk-checkboxes-hint>
+                </govuk-checkboxes-item>
+                <govuk-checkboxes-item id="@(nameof(Model.CheckDocument))" data-cy="check-document" asp-for="@Model.CheckDocument" value="true" name="@(nameof(Model.CheckDocument))" checked="@Model.CheckDocument">
+                    <b>Check the returned notification of change document</b>
+                    <govuk-checkboxes-hint>
+                        <div class="govuk-hint">
+                            <p>Compare the notification of changes document to the section 251 spreadsheet.</p>
+                            <div class="guidance">
+                                <details data-module="govuk-details" class="govuk-details">
+                                    <summary class="govuk-details__summary">
+                                        <span class="govuk-details__summary-text">What to check for</span>
+                                    </summary>
+                                    <div class="govuk-details__text">
+                                        <p>You must make sure that the notification of change document includes:</p> 
+                                        <ul>
+                                            <li>school information that matches what is shown in the project</li> 
+                                            <li>the conversion date</li> 
+                                            <li>high needs places numbers in the correct locations</li> 
+                                            <li>the number "0" in categories where no high needs places are required</li> 
+                                            <li>the signature of the local authority's Chief Finance Officer</li>
+                                        </ul>
+                                    </div>
+                                </details>    
+                            </div>
+                        </div>
+                    </govuk-checkboxes-hint>
+                </govuk-checkboxes-item>
+                <govuk-checkboxes-item id="@(nameof(Model.SendDocument))" data-cy="send-document" asp-for="@Model.SendDocument" value="true" name="@(nameof(Model.SendDocument))" checked="@Model.SendDocument">
+                    <b>Send the completed notification of change to ESFA</b>
+                    <govuk-checkboxes-hint>
+                        <div class="govuk-hint">
+                            <p>Email the completed notification of change document to the ESFA at <a href="mailto:@_configuration["Emails:AcademyOpeners"]">@_configuration["Emails:AcademyOpeners"]</a>.</p>
+                        </div>
+                    </govuk-checkboxes-hint>
+                </govuk-checkboxes-item>
+
+
+            </govuk-checkboxes-fieldset>
+        </govuk-checkboxes>
+
         @await Html.PartialAsync("_TaskSaveAndReturn", new TaskSaveAndReturnModel(Model.Project, Model.CurrentUserTeam))
     </form>
 }

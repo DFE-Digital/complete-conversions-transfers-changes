@@ -3108,6 +3108,39 @@
         }
       }
     },
+    "/v1/TasksData/TaskData/CompleteNotificationOfChange": {
+      "patch": {
+        "tags": [
+          "TasksData"
+        ],
+        "summary": "Complete a notification of changes to funded high needs places form for the project.",
+        "operationId": "TasksData_UpdateCompleteNotificationOfChangeTask",
+        "requestBody": {
+          "x-name": "request",
+          "description": "The update command.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateCompleteNotificationOfChangeTaskCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "204": {
+            "description": "Complete a notification of changes to funded high needs places form for the project successfully."
+          },
+          "400": {
+            "description": "Invalid request data."
+          },
+          "404": {
+            "description": "Project not found."
+          }
+        }
+      }
+    },
     "/v1/Trust/List/All": {
       "get": {
         "tags": [
@@ -8011,6 +8044,31 @@
           },
           "headTeacherId": {
             "$ref": "#/components/schemas/ContactId"
+          }
+        }
+      },
+      "UpdateCompleteNotificationOfChangeTaskCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "taskDataId": {
+            "$ref": "#/components/schemas/TaskDataId"
+          },
+          "notApplicable": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "tellLocalAuthority": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "checkDocument": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "sendDocument": {
+            "type": "boolean",
+            "nullable": true
           }
         }
       },
