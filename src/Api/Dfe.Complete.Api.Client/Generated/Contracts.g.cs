@@ -1219,21 +1219,21 @@ namespace Dfe.Complete.Client.Contracts
         System.Threading.Tasks.Task UpdateConfirmHeadTeacherContactTaskAsync(UpdateHeadTeacherCommand request, System.Threading.CancellationToken cancellationToken);
 
         /// <summary>
-        /// Complete a notification of changes to funded high needs places form for the project.
+        /// Updating the academy and trust financial information task data for transfer project.
         /// </summary>
         /// <param name="request">The update command.</param>
-        /// <returns>Complete a notification of changes to funded high needs places form for the project successfully.</returns>
+        /// <returns>Updated the academy and trust financial information task successfully.</returns>
         /// <exception cref="CompleteApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task UpdateCompleteNotificationOfChangeTaskAsync(UpdateCompleteNotificationOfChangeTaskCommand request);
+        System.Threading.Tasks.Task UpdateAcademyAndTrustFinancialInformationTaskAsync(UpdateAcademyAndTrustFinancialInformationTaskCommand request);
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>
-        /// Complete a notification of changes to funded high needs places form for the project.
+        /// Updating the academy and trust financial information task data for transfer project.
         /// </summary>
         /// <param name="request">The update command.</param>
-        /// <returns>Complete a notification of changes to funded high needs places form for the project successfully.</returns>
+        /// <returns>Updated the academy and trust financial information task successfully.</returns>
         /// <exception cref="CompleteApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task UpdateCompleteNotificationOfChangeTaskAsync(UpdateCompleteNotificationOfChangeTaskCommand request, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task UpdateAcademyAndTrustFinancialInformationTaskAsync(UpdateAcademyAndTrustFinancialInformationTaskCommand request, System.Threading.CancellationToken cancellationToken);
 
     }
 
@@ -6045,7 +6045,7 @@ namespace Dfe.Complete.Client.Contracts
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.2.0.0 (NJsonSchema v11.1.0.0 (Newtonsoft.Json v13.0.0.0))")]
-    public partial class UpdateCompleteNotificationOfChangeTaskCommand
+    public partial class UpdateAcademyAndTrustFinancialInformationTaskCommand
     {
         [Newtonsoft.Json.JsonProperty("taskDataId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public TaskDataId? TaskDataId { get; set; } = default!;
@@ -6053,14 +6053,11 @@ namespace Dfe.Complete.Client.Contracts
         [Newtonsoft.Json.JsonProperty("notApplicable", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public bool? NotApplicable { get; set; } = default!;
 
-        [Newtonsoft.Json.JsonProperty("tellLocalAuthority", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public bool? TellLocalAuthority { get; set; } = default!;
+        [Newtonsoft.Json.JsonProperty("academySurplusOrDeficit", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string? AcademySurplusOrDeficit { get; set; } = default!;
 
-        [Newtonsoft.Json.JsonProperty("checkDocument", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public bool? CheckDocument { get; set; } = default!;
-
-        [Newtonsoft.Json.JsonProperty("sendDocument", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public bool? SendDocument { get; set; } = default!;
+        [Newtonsoft.Json.JsonProperty("trustSurplusOrDeficit", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string? TrustSurplusOrDeficit { get; set; } = default!;
 
         public string ToJson()
         {
@@ -6068,10 +6065,10 @@ namespace Dfe.Complete.Client.Contracts
             return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonSerializerSettings());
 
         }
-        public static UpdateCompleteNotificationOfChangeTaskCommand FromJson(string data)
+        public static UpdateAcademyAndTrustFinancialInformationTaskCommand FromJson(string data)
         {
 
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<UpdateCompleteNotificationOfChangeTaskCommand>(data, new Newtonsoft.Json.JsonSerializerSettings());
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<UpdateAcademyAndTrustFinancialInformationTaskCommand>(data, new Newtonsoft.Json.JsonSerializerSettings());
 
         }
 

@@ -477,5 +477,23 @@ namespace Dfe.Complete.Api.Controllers
             return NoContent();
         }
 
+        /// <summary>
+        /// Updating the academy and trust financial information task data for transfer project.
+        /// </summary>
+        /// <param name="request">The update command.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        [Authorize(Policy = "CanReadWriteUpdate")]
+        [HttpPatch]
+        [Route("TaskData/AcademyAndTrustFinancialInformation")]
+        [SwaggerResponse(204, "Updated the academy and trust financial information task successfully.")]
+        [SwaggerResponse(400, "Invalid request data.")]
+        [SwaggerResponse(404, "Project not found.")]
+        public async Task<IActionResult> UpdateAcademyAndTrustFinancialInformationTaskAsync(
+            [FromBody] UpdateAcademyAndTrustFinancialInformationTaskCommand request,
+            CancellationToken cancellationToken)
+        {
+            await sender.Send(request, cancellationToken);
+            return NoContent();
+        } 
     }
 }

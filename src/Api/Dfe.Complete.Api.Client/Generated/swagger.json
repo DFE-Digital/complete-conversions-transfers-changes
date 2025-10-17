@@ -3108,20 +3108,20 @@
         }
       }
     },
-    "/v1/TasksData/TaskData/CompleteNotificationOfChange": {
+    "/v1/TasksData/TaskData/AcademyAndTrustFinancialInformation": {
       "patch": {
         "tags": [
           "TasksData"
         ],
-        "summary": "Complete a notification of changes to funded high needs places form for the project.",
-        "operationId": "TasksData_UpdateCompleteNotificationOfChangeTask",
+        "summary": "Updating the academy and trust financial information task data for transfer project.",
+        "operationId": "TasksData_UpdateAcademyAndTrustFinancialInformationTask",
         "requestBody": {
           "x-name": "request",
           "description": "The update command.",
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/UpdateCompleteNotificationOfChangeTaskCommand"
+                "$ref": "#/components/schemas/UpdateAcademyAndTrustFinancialInformationTaskCommand"
               }
             }
           },
@@ -3130,7 +3130,7 @@
         },
         "responses": {
           "204": {
-            "description": "Complete a notification of changes to funded high needs places form for the project successfully."
+            "description": "Updated the academy and trust financial information task successfully."
           },
           "400": {
             "description": "Invalid request data."
@@ -8047,7 +8047,7 @@
           }
         }
       },
-      "UpdateCompleteNotificationOfChangeTaskCommand": {
+      "UpdateAcademyAndTrustFinancialInformationTaskCommand": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
@@ -8058,16 +8058,12 @@
             "type": "boolean",
             "nullable": true
           },
-          "tellLocalAuthority": {
-            "type": "boolean",
+          "academySurplusOrDeficit": {
+            "type": "string",
             "nullable": true
           },
-          "checkDocument": {
-            "type": "boolean",
-            "nullable": true
-          },
-          "sendDocument": {
-            "type": "boolean",
+          "trustSurplusOrDeficit": {
+            "type": "string",
             "nullable": true
           }
         }

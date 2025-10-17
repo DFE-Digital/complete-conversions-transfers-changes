@@ -8343,24 +8343,24 @@ namespace Dfe.Complete.Client
         }
 
         /// <summary>
-        /// Complete a notification of changes to funded high needs places form for the project.
+        /// Updating the academy and trust financial information task data for transfer project.
         /// </summary>
         /// <param name="request">The update command.</param>
-        /// <returns>Complete a notification of changes to funded high needs places form for the project successfully.</returns>
+        /// <returns>Updated the academy and trust financial information task successfully.</returns>
         /// <exception cref="CompleteApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task UpdateCompleteNotificationOfChangeTaskAsync(UpdateCompleteNotificationOfChangeTaskCommand request)
+        public virtual System.Threading.Tasks.Task UpdateAcademyAndTrustFinancialInformationTaskAsync(UpdateAcademyAndTrustFinancialInformationTaskCommand request)
         {
-            return UpdateCompleteNotificationOfChangeTaskAsync(request, System.Threading.CancellationToken.None);
+            return UpdateAcademyAndTrustFinancialInformationTaskAsync(request, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>
-        /// Complete a notification of changes to funded high needs places form for the project.
+        /// Updating the academy and trust financial information task data for transfer project.
         /// </summary>
         /// <param name="request">The update command.</param>
-        /// <returns>Complete a notification of changes to funded high needs places form for the project successfully.</returns>
+        /// <returns>Updated the academy and trust financial information task successfully.</returns>
         /// <exception cref="CompleteApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task UpdateCompleteNotificationOfChangeTaskAsync(UpdateCompleteNotificationOfChangeTaskCommand request, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task UpdateAcademyAndTrustFinancialInformationTaskAsync(UpdateAcademyAndTrustFinancialInformationTaskCommand request, System.Threading.CancellationToken cancellationToken)
         {
             if (request == null)
                 throw new System.ArgumentNullException("request");
@@ -8379,8 +8379,8 @@ namespace Dfe.Complete.Client
 
                     var urlBuilder_ = new System.Text.StringBuilder();
                     if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
-                    // Operation Path: "v1/TasksData/TaskData/CompleteNotificationOfChange"
-                    urlBuilder_.Append("v1/TasksData/TaskData/CompleteNotificationOfChange");
+                    // Operation Path: "v1/TasksData/TaskData/AcademyAndTrustFinancialInformation"
+                    urlBuilder_.Append("v1/TasksData/TaskData/AcademyAndTrustFinancialInformation");
 
                     PrepareRequest(client_, request_, urlBuilder_);
 
