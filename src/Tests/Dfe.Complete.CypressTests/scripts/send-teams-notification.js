@@ -239,14 +239,18 @@ function truncateText(text, maxLength) {
 }
 
 // used in GitHub Actions to send Cypress test results to Microsoft Teams channel via webhook
-try {
-    const { reportStats, failedTests } = readReportData();
-    const cardBody = buildCardBody(reportStats, failedTests);
-    const message = createTeamsMessage(cardBody, reportStats.failures > 0);
+async function sendTeamsNotification() {
+    try {
+        const { reportStats, failedTests } = readReportData();
+        const cardBody = buildCardBody(reportStats, failedTests);
+        const message = createTeamsMessage(cardBody, reportStats.failures > 0);
 
-    await axios.post(process.env.TEAMS_WEBHOOK_URL, message);
-    console.log("Message sent to Teams successfully");
-} catch (error) {
-    console.error("Error sending notification to Teams:", error);
-    process.exit(1);
+        await axios.post(process.env.TEAMS_WEBHOOK_URL, message);
+        console.log("Message sent to Teams successfully");
+    } catch (error) {
+        console.error("Error sending notification to Teams:", error);
+        process.exit(1);
+    }
 }
+
+sendTeamsNotification();
