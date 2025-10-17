@@ -253,5 +253,4 @@ async function sendTeamsNotification() {
     }
 }
 
-// NOSONAR - Top-level await requires ES modules which conflicts with our CommonJS setup
-sendTeamsNotification();
+sendTeamsNotification(); //NOSONAR
