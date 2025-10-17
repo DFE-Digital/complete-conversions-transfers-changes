@@ -6215,9 +6215,6 @@
         "type": "object",
         "additionalProperties": false,
         "properties": {
-          "id": {
-            "$ref": "#/components/schemas/LocalAuthorityId"
-          },
           "code": {
             "type": "string"
           },

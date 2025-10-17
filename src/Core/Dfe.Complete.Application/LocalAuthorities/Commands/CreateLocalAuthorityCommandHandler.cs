@@ -10,7 +10,7 @@ using Microsoft.Extensions.Logging;
 
 namespace Dfe.Complete.Application.LocalAuthorities.Commands
 {
-    public record CreateLocalAuthorityCommand(LocalAuthorityId Id,
+    public record CreateLocalAuthorityCommand(
        string Code,
        string Name,
        string Address1,
@@ -35,13 +35,14 @@ namespace Dfe.Complete.Application.LocalAuthorities.Commands
         {
             try
             {
+                var localAuthorityId = new LocalAuthorityId(Guid.NewGuid());
                 await unitOfWork.BeginTransactionAsync();
                 var hasLocalAuthority = await localAuthorityRepository.ExistsAsync(x => x.Code == request.Code, cancellationToken);
                 if (hasLocalAuthority)
                 {
                     throw new AlreadyExistsException(string.Format(ErrorMessagesConstants.AlreadyExistedLocalAuthorityWithCode, request.Code));
                 } 
-                var localAuthority = LocalAuthority.Create(request.Id, request.Name, request.Code, new AddressDetails(request.Address1,
+                var localAuthority = LocalAuthority.Create(localAuthorityId, request.Name, request.Code, new AddressDetails(request.Address1,
                     request.Address2, request.Address3, request.AddressTown, request.AddressCounty,
                     request.AddressPostcode), DateTime.UtcNow);
 

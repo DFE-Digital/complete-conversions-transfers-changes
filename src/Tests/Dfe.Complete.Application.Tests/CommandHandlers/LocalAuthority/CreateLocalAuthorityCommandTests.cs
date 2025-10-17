@@ -5,7 +5,6 @@ using Dfe.Complete.Domain.Interfaces.Repositories;
 using Dfe.Complete.Domain.ValueObjects;
 using Microsoft.Extensions.Logging;
 using Moq;
-using System.Globalization;
 using System.Linq.Expressions;
 
 namespace Dfe.Complete.Application.Tests.CommandHandlers.LocalAuthority
@@ -36,7 +35,7 @@ namespace Dfe.Complete.Application.Tests.CommandHandlers.LocalAuthority
         public async Task Handle_ShouldCreateLocalAuthoritySuccessfully()
         {
             var command = new CreateLocalAuthorityCommand(
-                new LocalAuthorityId(Guid.NewGuid()), "Code", "Name", "Address1", "Address2", "Address3",
+                "Code", "Name", "Address1", "Address2", "Address3",
                 "AddressTown", "AddressCounty", "AddressPostcode", new ContactId(Guid.NewGuid()),
                 "Title", "ContactName", "Email", "Phone");
 
@@ -60,13 +59,14 @@ namespace Dfe.Complete.Application.Tests.CommandHandlers.LocalAuthority
         [Fact]
         public async Task Handle_ShouldReturnFailure_WhenLocalAuthorityAlreadyExists()
         {
+            var localAuthorityId = new LocalAuthorityId(Guid.NewGuid());
             var command = new CreateLocalAuthorityCommand(
-                new LocalAuthorityId(Guid.NewGuid()), "Code", "Name", "Address1", "Address2", "Address3",
+                "Code", "Name", "Address1", "Address2", "Address3",
                 "AddressTown", "AddressCounty", "AddressPostcode", new ContactId(Guid.NewGuid()),
                 "Title", "ContactName", "Email", "Phone");
 
             var existingLocalAuthority = Domain.Entities.LocalAuthority.Create(
-                command.Id, command.Name, command.Code, new AddressDetails(command.Address1, command.Address2, command.Address3,
+                localAuthorityId, command.Name, command.Code, new AddressDetails(command.Address1, command.Address2, command.Address3,
                 command.AddressTown, command.AddressCounty, command.AddressPostcode), DateTime.UtcNow);
 
             _mockLocalAuthorityRepository.Setup(repo => repo.ExistsAsync(It.IsAny<Expression<Func<Domain.Entities.LocalAuthority, bool>>>(), _cancellationToken))
@@ -86,7 +86,7 @@ namespace Dfe.Complete.Application.Tests.CommandHandlers.LocalAuthority
         public async Task Handle_ShouldReturnFailure_WhenExceptionOccurs()
         {
             var command = new CreateLocalAuthorityCommand(
-                new LocalAuthorityId(Guid.NewGuid()), "Code", "Name", "Address1", "Address2", "Address3",
+                "Code", "Name", "Address1", "Address2", "Address3",
                 "AddressTown", "AddressCounty", "AddressPostcode", new ContactId(Guid.NewGuid()),
                 "Title", "ContactName", "Email", "Phone");
 
