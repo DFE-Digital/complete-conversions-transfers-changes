@@ -54,9 +54,6 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.MasterFundingAgreementTask
                 SignedBySchoolOrTrust = TransferTaskData.MasterFundingAgreementSigned;
                 SavedInTheSchoolsSharepoint = TransferTaskData.MasterFundingAgreementSaved;
                 SignedOnBehalfOfSeceratyOfState = TransferTaskData.MasterFundingAgreementSignedSecretaryState;
-                
-                // Interim Solution until MasterFundingAgreementSent is created for transfers
-                SavedInSchoolAndTrustSharepoint = TransferTaskData.MasterFundingAgreementSaved;
             }
             else
             {
@@ -65,19 +62,13 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.MasterFundingAgreementTask
                 Cleared = ConversionTaskData.MasterFundingAgreementCleared;
                 SignedBySchoolOrTrust = ConversionTaskData.MasterFundingAgreementSigned;
                 SavedInTheSchoolsSharepoint = ConversionTaskData.MasterFundingAgreementSaved;
-                SavedInSchoolAndTrustSharepoint = ConversionTaskData.MasterFundingAgreementSaved;
+                SavedInSchoolAndTrustSharepoint = ConversionTaskData.MasterFundingAgreementSent;
                 SignedOnBehalfOfSeceratyOfState = ConversionTaskData.MasterFundingAgreementSignedSecretaryState;
             }
             return Page();
         }
         public async Task<IActionResult> OnPost()
-        {
-            // Interim Solution until MasterFundingAgreementSent is created for transfers
-            if (SavedInSchoolAndTrustSharepoint.HasValue && SavedInSchoolAndTrustSharepoint.Value)
-            {
-                SavedInTheSchoolsSharepoint = true;
-            }
-            
+        {            
             await _sender.Send(new UpdateMasterFundingAgreementTaskCommand(new TaskDataId(TasksDataId.GetValueOrDefault())!, Type, NotApplicable, Received, Cleared, SignedBySchoolOrTrust, SavedInTheSchoolsSharepoint, SavedInSchoolAndTrustSharepoint, SignedOnBehalfOfSeceratyOfState ));
             TempData.SetNotification(NotificationType.Success, "Success", "Task updated successfully");
             return Redirect(string.Format(RouteConstants.ProjectTaskList, ProjectId));
