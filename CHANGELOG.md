@@ -17,6 +17,7 @@ Security in case of vulnerabilities.
 ## Unreleased
 
 ### Added
+- Sponsored support grant task for conversion and transfer project.
 
 - Added `Check and confirm the academy and trust financial information` task for transfer project.
 
