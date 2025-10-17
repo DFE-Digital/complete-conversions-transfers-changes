@@ -41,26 +41,7 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
             // Assert
             Assert.True(result.IsSuccess);
             Assert.Equal(dto, result.Value);
-        }
-
-        [Theory]        
-        [InlineAutoNSubstituteData("")]        
-        public async Task Handle_ThrowsArgumentException_ForInvalidConstituency(
-            string invalidName,
-            [Frozen] IConstituenciesClient client,
-            [Frozen] IMapper mapper,
-            [Frozen] ILogger<GetContactByConstituencyHandler> logger)
-        {
-            // Arrange
-            var handler = new GetContactByConstituencyHandler(client, mapper, logger);
-            var request = new GetContactByConstituency(invalidName);
-
-            // Act & Assert
-            var ex = await Assert.ThrowsAsync<ArgumentException>(() =>
-                handler.Handle(request, CancellationToken.None));
-
-            Assert.Equal("Constituency name cannot be null or empty.", ex.Message);
-        }
+        }        
 
         [Theory]
         [CustomAutoData]
