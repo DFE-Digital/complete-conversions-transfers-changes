@@ -18,6 +18,8 @@ Security in case of vulnerabilities.
 
 ### Added
 
+- Added `Check accuracy of high needs places information` task for conversion project.
+
 ### Changed
 
 ### Fixed

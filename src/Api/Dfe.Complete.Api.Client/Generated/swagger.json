@@ -3075,6 +3075,39 @@
         }
       }
     },
+    "/v1/TasksData/TaskData/CheckAccuracyOfHigherNeeds": {
+      "patch": {
+        "tags": [
+          "TasksData"
+        ],
+        "summary": "Check the accuracy of higher needs for conversion project.",
+        "operationId": "TasksData_UpdateAccuracyOfHigherNeedsTask",
+        "requestBody": {
+          "x-name": "request",
+          "description": "The update command.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateAccuracyOfHigherNeedsTaskCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "204": {
+            "description": "Updates the accuracy of higher needs task updated successfully."
+          },
+          "400": {
+            "description": "Invalid request data."
+          },
+          "404": {
+            "description": "Project not found."
+          }
+        }
+      }
+    },
     "/v1/Trust/List/All": {
       "get": {
         "tags": [
@@ -7965,6 +7998,23 @@
           },
           "rpaReason": {
             "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "UpdateAccuracyOfHigherNeedsTaskCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "taskDataId": {
+            "$ref": "#/components/schemas/TaskDataId"
+          },
+          "confirmNumber": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "confirmPublishedNumber": {
+            "type": "boolean",
             "nullable": true
           }
         }
