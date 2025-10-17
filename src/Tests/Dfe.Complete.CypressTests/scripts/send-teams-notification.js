@@ -1,6 +1,6 @@
-import { post } from "axios";
-import { existsSync, readFileSync } from "fs";
-import { join } from "path";
+const axios = require("axios");
+const fs = require("fs");
+const path = require("path");
 
 // used in GitHub Actions to send Cypress test results to Microsoft Teams channel via webhook
 async function sendTeamsNotification() {
@@ -9,10 +9,10 @@ async function sendTeamsNotification() {
         let reportStats = { tests: 0, passes: 0, failures: 0 };
         let failedTests = [];
 
-        const reportPath = join(process.cwd(), "mochareports", "report.json");
+        const reportPath = path.join(process.cwd(), "mochareports", "report.json");
 
-        if (existsSync(reportPath)) {
-            const reportData = JSON.parse(readFileSync(reportPath, "utf8"));
+        if (fs.existsSync(reportPath)) {
+            const reportData = JSON.parse(fs.readFileSync(reportPath, "utf8"));
 
             if (reportData && reportData.stats) {
                 reportStats = {
@@ -152,7 +152,7 @@ async function sendTeamsNotification() {
         };
 
         // Send the notification
-        await post(process.env.TEAMS_WEBHOOK_URL, message);
+        await axios.post(process.env.TEAMS_WEBHOOK_URL, message);
         console.log("Message sent to Teams successfully");
     } catch (error) {
         console.error("Error sending notification to Teams:", error);
