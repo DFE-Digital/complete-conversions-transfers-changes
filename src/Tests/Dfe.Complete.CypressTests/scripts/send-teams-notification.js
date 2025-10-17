@@ -2,21 +2,6 @@ const axios = require("axios");
 const fs = require("node:fs");
 const path = require("node:path");
 
-// used in GitHub Actions to send Cypress test results to Microsoft Teams channel via webhook
-async function sendTeamsNotification() {
-    try {
-        const { reportStats, failedTests } = readReportData();
-        const cardBody = buildCardBody(reportStats, failedTests);
-        const message = createTeamsMessage(cardBody, reportStats.failures > 0);
-
-        await axios.post(process.env.TEAMS_WEBHOOK_URL, message);
-        console.log("Message sent to Teams successfully");
-    } catch (error) {
-        console.error("Error sending notification to Teams:", error);
-        process.exit(1);
-    }
-}
-
 /**
  * Read and parse the Cypress test report data
  */
@@ -186,9 +171,7 @@ function createTeamsMessage(cardBody, hasFailures) {
     };
 }
 
-/**
- * Recursively extract failed tests from the Cypress report structure
- */
+// Recursively extract failed tests from the Cypress report structure
 function extractFailedTests(results) {
     const failedTests = [];
 
@@ -255,4 +238,15 @@ function truncateText(text, maxLength) {
     return text.substring(0, maxLength) + "...";
 }
 
-sendTeamsNotification();
+// used in GitHub Actions to send Cypress test results to Microsoft Teams channel via webhook
+try {
+    const { reportStats, failedTests } = readReportData();
+    const cardBody = buildCardBody(reportStats, failedTests);
+    const message = createTeamsMessage(cardBody, reportStats.failures > 0);
+
+    await axios.post(process.env.TEAMS_WEBHOOK_URL, message);
+    console.log("Message sent to Teams successfully");
+} catch (error) {
+    console.error("Error sending notification to Teams:", error);
+    process.exit(1);
+}
