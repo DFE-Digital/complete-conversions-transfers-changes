@@ -3075,20 +3075,20 @@
         }
       }
     },
-    "/v1/TasksData/TaskData/SponsoredSupportGrant": {
+    "/v1/TasksData/TaskData/ConfirmHeadTeacherContact": {
       "patch": {
         "tags": [
           "TasksData"
         ],
-        "summary": "Confirm the sponsored support grant",
-        "operationId": "TasksData_UpdateSponsoredSupportGrantTask",
+        "summary": "Confirm the head teacher contact for the project.",
+        "operationId": "TasksData_UpdateConfirmHeadTeacherContactTask",
         "requestBody": {
           "x-name": "request",
           "description": "The update command.",
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/UpdateConfirmSponsoredSupportGrantTaskCommand"
+                "$ref": "#/components/schemas/UpdateHeadTeacherCommand"
               }
             }
           },
@@ -3097,7 +3097,40 @@
         },
         "responses": {
           "204": {
-            "description": "The sponsored support grant task updated successfully."
+            "description": "Confirm the head teacher contact for the project successfully."
+          },
+          "400": {
+            "description": "Invalid request data."
+          },
+          "404": {
+            "description": "Project not found."
+          }
+        }
+      }
+    },
+    "/v1/TasksData/TaskData/AcademyAndTrustFinancialInformation": {
+      "patch": {
+        "tags": [
+          "TasksData"
+        ],
+        "summary": "Updating the academy and trust financial information task data for transfer project.",
+        "operationId": "TasksData_UpdateAcademyAndTrustFinancialInformationTask",
+        "requestBody": {
+          "x-name": "request",
+          "description": "The update command.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateAcademyAndTrustFinancialInformationTaskCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "204": {
+            "description": "Updated the academy and trust financial information task successfully."
           },
           "400": {
             "description": "Invalid request data."
@@ -8002,43 +8035,35 @@
           }
         }
       },
-      "UpdateConfirmSponsoredSupportGrantTaskCommand": {
+      "UpdateHeadTeacherCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "keyContactId": {
+            "$ref": "#/components/schemas/KeyContactId"
+          },
+          "headTeacherId": {
+            "$ref": "#/components/schemas/ContactId"
+          }
+        }
+      },
+      "UpdateAcademyAndTrustFinancialInformationTaskCommand": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
           "taskDataId": {
             "$ref": "#/components/schemas/TaskDataId"
           },
-          "projectType": {
-            "nullable": true,
-            "oneOf": [
-              {
-                "$ref": "#/components/schemas/ProjectType"
-              }
-            ]
-          },
           "notApplicable": {
             "type": "boolean",
             "nullable": true
           },
-          "sponsoredSupportGrantType": {
+          "academySurplusOrDeficit": {
             "type": "string",
             "nullable": true
           },
-          "paymentAmount": {
-            "type": "boolean",
-            "nullable": true
-          },
-          "paymentForm": {
-            "type": "boolean",
-            "nullable": true
-          },
-          "sendInformation": {
-            "type": "boolean",
-            "nullable": true
-          },
-          "informTrust": {
-            "type": "boolean",
+          "trustSurplusOrDeficit": {
+            "type": "string",
             "nullable": true
           }
         }
