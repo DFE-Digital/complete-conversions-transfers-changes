@@ -23,6 +23,7 @@ Security in case of vulnerabilities.
 ### Changed
 
 ### Fixed
+- resolve entity tracking issue on note write repository
 
 ### Security
 
