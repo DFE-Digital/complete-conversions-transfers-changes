@@ -40,10 +40,6 @@ describe.skip("Handover process tests for transfer projects", () => {
         cy.visit(`/projects/all/handover`);
     });
 
-    it("Should fail for debugging purposes", () => {
-        cy.contains("something that does not exist");
-    })
-
     it("Should be able to handover a transfer project to RCS", () => {
         Logger.log("Add handover details for project");
         projectTable.goToNextPageUntilFieldIsVisible(academyName).clickButtonInRow(academyName, "Add handover details");
