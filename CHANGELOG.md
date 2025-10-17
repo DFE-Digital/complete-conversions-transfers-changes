@@ -26,7 +26,23 @@ Security in case of vulnerabilities.
 
 ### Security
 
-See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-10-16.912...main) for everything awaiting release
+See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-10-17.921...main) for everything awaiting release
+
+---
+
+## [1.22.2](https://github.com/DFE-Digital/complete-conversions-transfers-changes/releases/tag/production-2025-10-17.921) - 2025-10-17
+
+### Added
+- Added `Confirm the headteacher's details` task for both conversion and transfer projects.
+
+### Changed
+
+### Fixed
+- make internal email check case insensitive
+
+### Security
+
+See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-10-16.912...production-2025-10-17.921) for everything in the release
 
 ---
 
