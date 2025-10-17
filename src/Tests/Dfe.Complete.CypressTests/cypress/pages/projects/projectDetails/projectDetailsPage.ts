@@ -37,6 +37,11 @@ export class ProjectDetailsPage extends BasePage {
         return this;
     }
 
+    change(key: string) {
+        cy.contains("dt", key).next("dd").next("dd").contains("Change").click();
+        return this;
+    }
+
     // tags
     hasConversionTag() {
         return this.hasTag("Conversion");
@@ -52,6 +57,14 @@ export class ProjectDetailsPage extends BasePage {
 
     hasInAGroupTag() {
         return this.hasTag("In a group");
+    }
+
+    hasProvisionalDateTag() {
+        cy.contains("dt", /^(Conversion|Transfer) date$/).next("dd").contains("provisional");
+    }
+
+    doesntHaveProvisionalDateTag() {
+        cy.contains("dt", /^(Conversion|Transfer) date$/).next("dd").should("not.contain.text", "provisional");
     }
 
     // data

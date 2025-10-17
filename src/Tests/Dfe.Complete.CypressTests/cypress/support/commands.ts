@@ -140,20 +140,6 @@ Cypress.Commands.add("hasAddress", (id: string, line1: string, line2: string, li
     cy.getByTestId(id).find("[data-testid='address-line3']").should("contain.text", line3);
 });
 
-Cypress.Commands.add("isInViewport", { prevSubject: true }, (subject) => {
-    const rect = subject[0].getBoundingClientRect();
-
-    expect(
-        rect.top >= 0 &&
-            rect.left >= 0 &&
-            rect.bottom <= Cypress.config("viewportHeight") &&
-            rect.right <= Cypress.config("viewportWidth"),
-        "Element was not found in the viewport",
-    ).to.be.true;
-
-    return subject;
-});
-
 Cypress.Commands.add("shouldHaveText", { prevSubject: true }, (subject, expectedText) => {
     return cy
         .wrap(subject)

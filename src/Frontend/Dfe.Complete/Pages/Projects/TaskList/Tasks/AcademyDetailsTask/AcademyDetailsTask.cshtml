@@ -1,0 +1,18 @@
+﻿@page "/projects/{projectId}/tasks/academy_details"
+@model Dfe.Complete.Pages.Projects.TaskList.Tasks.AcademyDetailsTask.AcademyDetailsTaskModel
+@{
+    Layout = "_ProjectTaskLayout";
+    ViewData["Title"] = "Confirm the academy name";
+}
+@section TaskHeaderHintSection {
+    <div class="govuk-hint"> 
+    </div>
+}
+@section TaskSection {
+
+    <form method="post"> 
+        @await Html.PartialAsync("_TaskSaveAndReturn", new TaskSaveAndReturnModel(Model.Project, Model.CurrentUserTeam))
+    </form>
+}
+
+

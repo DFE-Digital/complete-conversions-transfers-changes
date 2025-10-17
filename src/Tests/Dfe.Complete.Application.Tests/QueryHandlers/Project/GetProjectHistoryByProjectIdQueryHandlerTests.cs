@@ -1,5 +1,5 @@
 using AutoFixture.Xunit2;
-using DfE.CoreLibs.Testing.AutoFixture.Attributes;
+using GovUK.Dfe.CoreLibs.Testing.AutoFixture.Attributes;
 using Dfe.Complete.Application.Projects.Models;
 using Dfe.Complete.Application.Projects.Queries.GetProject;
 using Dfe.Complete.Domain.Entities;
@@ -7,8 +7,10 @@ using Dfe.Complete.Domain.ValueObjects;
 using NSubstitute;
 using AutoMapper;
 using Dfe.Complete.Application.Projects.Interfaces;
-using DfE.CoreLibs.Testing.AutoFixture.Customizations;
+using GovUK.Dfe.CoreLibs.Testing.AutoFixture.Customizations;
 using MockQueryable;
+using Dfe.Complete.Domain.Enums;
+using Dfe.Complete.Utils;
 
 namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
 {
@@ -33,7 +35,7 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
                     Id = new ProjectId(validGuid),
                     Notes = new List<Note>
                     {
-                        new Note { NotableType = "SignificantDateHistoryReason" }
+                        new Note { NotableType = NotableType.SignificantDateHistoryReason.ToDescription() }
                     },
                 }
             }.AsQueryable().BuildMock();
@@ -69,14 +71,14 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
                     Id = new ProjectId(validGuid),
                     Notes = new List<Note>
                     {
-                        new Note { NotableType = "SignificantDateHistoryReason" }
+                        new Note { NotableType = NotableType.SignificantDateHistoryReason.ToDescription() }
                     },
                     SignificantDateHistories = new List<SignificantDateHistory>
                     {
                         new()
                         {
                             User = null,
-                            Reason = new SignificantDateHistoryReason()
+                            Reasons = new List<SignificantDateHistoryReason>(){ new SignificantDateHistoryReason() }
                         }
                     }
                 }

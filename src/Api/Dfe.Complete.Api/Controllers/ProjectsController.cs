@@ -1,20 +1,25 @@
 using Asp.Versioning;
-using Dfe.Complete.Domain.ValueObjects;
-using MediatR;
-using Microsoft.AspNetCore.Mvc;
-using Swashbuckle.AspNetCore.Annotations;
+using Dfe.Complete.Application.Common.Models;
+using Dfe.Complete.Application.DaoRevoked.Commands;
+using Dfe.Complete.Application.KeyContacts.Models;
+using Dfe.Complete.Application.Notes.Commands;
+using Dfe.Complete.Application.Notes.Queries;
 using Dfe.Complete.Application.Projects.Commands.CreateProject;
+using Dfe.Complete.Application.Projects.Commands.RemoveProject;
+using Dfe.Complete.Application.Projects.Commands.UpdateProject;
+using Dfe.Complete.Application.Projects.Commands.CreateHandoverProject;
+using Dfe.Complete.Application.Projects.Models;
 using Dfe.Complete.Application.Projects.Queries.CountAllProjects;
 using Dfe.Complete.Application.Projects.Queries.GetProject;
 using Dfe.Complete.Application.Projects.Queries.ListAllProjects;
-using Dfe.Complete.Application.Projects.Models;
-using Microsoft.AspNetCore.Authorization;
-using Dfe.Complete.Application.Projects.Commands.RemoveProject;
-using Dfe.Complete.Application.Projects.Commands.UpdateProject;
 using Dfe.Complete.Application.Projects.Queries.SearchProjects;
-using Dfe.Complete.Application.Notes.Queries;
-using Dfe.Complete.Application.Notes.Commands;
-using Dfe.Complete.Application.Common.Models;
+using Dfe.Complete.Domain.ValueObjects;
+using MediatR;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Swashbuckle.AspNetCore.Annotations;
+using System.ComponentModel.DataAnnotations;
+using Dfe.Complete.Application.KeyContacts.Queries;
 
 namespace Dfe.Complete.Api.Controllers
 {
@@ -23,6 +28,33 @@ namespace Dfe.Complete.Api.Controllers
     [Route("v{version:apiVersion}/[controller]")]
     public class ProjectsController(ISender sender) : ControllerBase
     {
+        /// <summary>
+        /// Creates a new conversion project (handover version).
+        /// </summary>
+        /// <param name="request">The request.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        [Authorize(Policy = "CanReadWrite")]
+        [HttpPost]
+        [Route("projects/conversions")]
+        [SwaggerResponse(201, "Project created successfully.", typeof(ProjectId))]
+        [SwaggerResponse(400, "Invalid request data.")]
+        public async Task<IActionResult> CreateHandoverConversionProjectAsync([FromBody] CreateHandoverConversionProjectCommand request, CancellationToken cancellationToken)
+        {
+            try
+            {
+                var result = await sender.Send(request, cancellationToken);
+                return Created("", result);
+            }
+            catch (ValidationException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
+
         /// <summary>
         /// Creates a new conversion project
         /// </summary>
@@ -99,6 +131,10 @@ namespace Dfe.Complete.Api.Controllers
         public async Task<IActionResult> GetProjectAsync([FromQuery] GetProjectByUrnQuery request, CancellationToken cancellationToken)
         {
             var project = await sender.Send(request, cancellationToken);
+
+            if (project?.Value is null)
+                return NotFound();
+
             return Ok(project.Value);
         }
 
@@ -551,7 +587,7 @@ namespace Dfe.Complete.Api.Controllers
         {
             var project = await sender.Send(request, cancellationToken);
             return Ok(project.Value);
-        } 
+        }
         /// <summary>
         /// Gets a Project by Id
         /// </summary>
@@ -566,6 +602,89 @@ namespace Dfe.Complete.Api.Controllers
         {
             var project = await sender.Send(request, cancellationToken);
             return Ok(project.Value);
+        }
+        /// <summary>
+        /// Gets key contacts of a project.
+        /// </summary>
+        /// <param name="request">The request.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        [Authorize(Policy = "CanRead")]
+        [HttpGet]
+        [Route("List/Project/KeyContact")]
+        [SwaggerResponse(200, "KeyContact", typeof(KeyContactDto))]
+        [SwaggerResponse(404, "key contact not found.")]
+        public async Task<IActionResult> GetKeyContactByProjectIdAsync([FromQuery] GetKeyContactsForProjectQuery request, CancellationToken cancellationToken)
+        {
+            var keyContact = await sender.Send(request, cancellationToken);
+            return Ok(keyContact.Value);
+        }
+
+        /// <summary>
+        /// Gets a Project's significant date history
+        /// </summary>
+        /// <param name="request">The request.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        [Authorize(Policy = "CanRead")]
+        [HttpGet("project/SignificantDate")]
+        [SwaggerResponse(200, "Project", typeof(ProjectDto))]
+        [SwaggerResponse(400, "Invalid request data.")]
+        public async Task<IActionResult> GetProjectSignificantDateAsync([FromQuery] GetProjectHistoryByProjectIdQuery request, CancellationToken cancellationToken)
+        {
+            var project = await sender.Send(request, cancellationToken);
+            return Ok(project.Value);
+        }
+
+        /// <summary>
+        /// Updates the Significant date for a specific project.
+        /// </summary>
+        /// <param name="request">The update command.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        [Authorize(Policy = "CanReadWrite")]
+        [HttpPatch("project/SignificantDate")]
+        [SwaggerResponse(204, "Significant Date updated successfully.")]
+        [SwaggerResponse(400, "Invalid request data.")]
+        [SwaggerResponse(404, "Project/User not found.")]
+        public async Task<IActionResult> UpdateSignificantDateAsync(
+            [FromBody] UpdateSignificantDateCommand request,
+            CancellationToken cancellationToken)
+        {
+            await sender.Send(request, cancellationToken);
+            return NoContent();
+        }
+        /// <summary>
+        /// Record dao revoation decision for a specific project.
+        /// </summary>
+        /// <param name="request">The update command.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        [Authorize(Policy = "CanReadWriteUpdate")]
+        [HttpPatch("project/DaoRevocationDecision")]
+        [SwaggerResponse(204, "Record dao revocation successfully.")]
+        [SwaggerResponse(400, "Invalid request data.")]
+        [SwaggerResponse(404, "Project/User not found.")]
+        public async Task<IActionResult> RecordDaoRevocationDecisionAsync(
+            [FromBody] RecordDaoRevocationDecisionCommand request,
+            CancellationToken cancellationToken)
+        {
+            await sender.Send(request, cancellationToken);
+            return NoContent();
+        }
+
+        /// <summary>
+        /// Updates the completion for a specific project.
+        /// </summary>
+        /// <param name="request">The update command.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        [Authorize(Policy = "CanReadWrite")]
+        [HttpPatch("project/Complete")]
+        [SwaggerResponse(204, "Completed project.")]
+        [SwaggerResponse(400, "Invalid request data.")]
+        [SwaggerResponse(404, "Project not found.")]
+        public async Task<IActionResult> UpdateCompleteAsync(
+            [FromBody] UpdateProjectCompletedCommand request,
+            CancellationToken cancellationToken)
+        {
+            await sender.Send(request, cancellationToken);
+            return NoContent();
         }
     }
 }

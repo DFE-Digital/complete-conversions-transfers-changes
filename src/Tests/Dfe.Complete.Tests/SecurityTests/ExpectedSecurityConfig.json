@@ -54,11 +54,11 @@
     },
     {
       "Route": "/Demonstration/TagHelper",
-      "ExpectedSecurity": "Authorize"
+      "ExpectedSecurity": "Authorize: Policy=ActiveUser"
     },
     {
       "Route": "/Diagnostics/Diagnostics",
-      "ExpectedSecurity": "Authorize"
+      "ExpectedSecurity": "Authorize: Policy=ActiveUser"
     },
     {
       "Route": "/Projects/Notes/AddProjectNote",
@@ -66,15 +66,15 @@
     },
     {
       "Route": "/Projects/Notes/DeleteProjectNote",
-      "ExpectedSecurity": "Authorize"
+      "ExpectedSecurity": "Authorize: Policy=ActiveUser"
     },
     {
       "Route": "/Projects/Notes/EditProjectNote",
-      "ExpectedSecurity": "Authorize"
+      "ExpectedSecurity": "Authorize: Policy=ActiveUser"
     },
     {
       "Route": "/Projects/Notes/ViewProjectNotes",
-      "ExpectedSecurity": "Authorize"
+      "ExpectedSecurity": "Authorize: Policy=ActiveUser "
     },
     {
       "Route": "/Projects/Yours/InProgress/YourProjectsInProgress",
@@ -94,7 +94,7 @@
     },
     {
       "Route": "/Search/SearchProjects",
-      "ExpectedSecurity": "Authorize"
+      "ExpectedSecurity": "Authorize: Policy=ActiveUser"
     },
     {
       "Route": "/Account/AccessDenied",
@@ -127,6 +127,18 @@
     {
       "Route": "Projects/ServiceSupport/LocalAuthorities/CreateNewLocalAuthority",
       "ExpectedSecurity": "Authorize: Policy=ManageLocalAuthorities"
+    },
+    {
+      "Route": "Projects/ServiceSupport/Users/ListUsers",
+      "ExpectedSecurity": "Authorize: Policy=CanViewServiceSupport"
+    },
+    {
+      "Route": "Projects/ServiceSupport/Users/CreateUser",
+      "ExpectedSecurity": "Authorize: Policy=CanViewServiceSupport"
+    },
+    {
+      "Route": "Projects/ServiceSupport/Users/EditUser",
+      "ExpectedSecurity": "Authorize: Policy=CanViewServiceSupport"
     },
     {
       "Route": "Projects/List/HandoverProjects/HandoverProjectCheck",

@@ -1,5 +1,8 @@
 ﻿using AutoMapper;
 using Dfe.AcademiesApi.Client.Contracts;
+using Dfe.Complete.Application.Contacts.Models;
+using Dfe.Complete.Application.DaoRevoked.Models;
+using Dfe.Complete.Application.KeyContacts.Models;
 using Dfe.Complete.Application.Projects.Models;
 using Dfe.Complete.Domain.Entities;
 
@@ -10,7 +13,8 @@ namespace Dfe.Complete.Application.Mappers
 		public AutoMapping()
 		{
 			CreateMap<Project, ProjectDto>()
-                .ForMember(p => p.EstablishmentName, opt => opt.Ignore());
+                .ForMember(p => p.EstablishmentName, opt => opt.Ignore())
+                .ForMember(p => p.Contacts, opt => opt.Ignore());
             CreateMap<ProjectGroup, ProjectGroupDto>();
 			CreateMap<User, UserDto>();
 			CreateMap<Note, NoteDto>()
@@ -85,9 +89,15 @@ namespace Dfe.Complete.Application.Mappers
 				.ForMember(dest => dest.ReligiousCharacter, opt => opt.Ignore())
 				.ForMember(dest => dest.Census, opt => opt.Ignore())
 				.ForMember(dest => dest.MisEstablishment, opt => opt.Ignore());
+
 			CreateMap<TransferTasksData, TransferTaskDataDto>();
-			CreateMap<SignificantDateHistory, SignificantDateHistoryDto>();
+            CreateMap<ConversionTasksData, ConversionTaskDataDto>();
+			CreateMap<KeyContact, KeyContactDto>();
+            CreateMap<SignificantDateHistory, SignificantDateHistoryDto>();
 			CreateMap<SignificantDateHistoryReason, SignificantDateHistoryReasonDto>();
-		}
+            CreateMap<DaoRevocation, DaoRevocationDto>();
+            CreateMap<Contact, ContactDto>()
+            .ForMember(p => p.PrimaryContact, opt => opt.Ignore());
+        }
 	}
 }

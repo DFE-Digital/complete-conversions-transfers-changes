@@ -14,8 +14,8 @@ using Asp.Versioning;
 using Asp.Versioning.ApiExplorer;
 using Dfe.Complete.Infrastructure;
 using Dfe.Complete.Infrastructure.Security.Authorization;
-using DfE.CoreLibs.Http.Middlewares.CorrelationId;
-using DfE.CoreLibs.Http.Interfaces;
+using GovUK.Dfe.CoreLibs.Http.Middlewares.CorrelationId;
+using GovUK.Dfe.CoreLibs.Http.Interfaces;
 using Dfe.Complete.Logging.Middleware;
 using Dfe.Complete.Application.Mappers;
 
@@ -38,7 +38,12 @@ namespace Dfe.Complete.Api
             });
 
             builder.Services.AddControllers()
-                .AddJsonOptions(c => { c.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()); });
+                .AddJsonOptions(options =>
+                {
+                    options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+                    options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
+                    options.JsonSerializerOptions.UnmappedMemberHandling = JsonUnmappedMemberHandling.Disallow;
+                });
 
             builder.Services.AddApiVersioning(config =>
             {

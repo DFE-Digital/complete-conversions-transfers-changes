@@ -1,18 +1,15 @@
 ﻿using AutoFixture.Xunit2;
 using AutoMapper;
-using Dfe.Complete.Application.Mappers;
 using Dfe.Complete.Application.Projects.Interfaces;
 using Dfe.Complete.Application.Projects.Models;
 using Dfe.Complete.Application.Projects.Queries.GetProject;
-using Dfe.Complete.Domain.Interfaces.Repositories;
 using Dfe.Complete.Tests.Common.Customizations.Behaviours;
 using Dfe.Complete.Tests.Common.Customizations.Models;
-using DfE.CoreLibs.Testing.AutoFixture.Attributes;
-using DfE.CoreLibs.Testing.AutoFixture.Customizations;
+using GovUK.Dfe.CoreLibs.Testing.AutoFixture.Attributes;
+using GovUK.Dfe.CoreLibs.Testing.AutoFixture.Customizations;
 using MockQueryable;
 using NSubstitute;
 using NSubstitute.ExceptionExtensions;
-using System.Linq.Expressions; 
 
 namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
 {
@@ -25,7 +22,7 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
             [Frozen] IMapper mockMapper,
             GetProjectByIdQueryHandler handler,
             Domain.Entities.Project project,
-             ProjectDto mappedProject)
+            ProjectDto mappedProject)
         {
             // Arrange
             var queryableProjects = new List<Domain.Entities.Project> { project }.AsQueryable().BuildMock();

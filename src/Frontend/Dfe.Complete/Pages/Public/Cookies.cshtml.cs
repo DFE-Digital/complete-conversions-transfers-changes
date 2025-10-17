@@ -10,7 +10,7 @@ namespace Dfe.Complete.Pages.Public
 	// This only disables the global (razor/mvc) antiforgery token validation.
 	// It does not disable the custom antiforgery validation AddCustomAntiForgeryHandling
 	[IgnoreAntiforgeryToken]
-    public class Cookies(IAnalyticsConsentService analyticsConsentService) : PageModel
+	public class Cookies(IAnalyticsConsentService analyticsConsentService) : PageModel
 	{
 		public bool? Consent { get; set; }
 		public bool PreferencesSet { get; set; } = false;
@@ -21,13 +21,8 @@ namespace Dfe.Complete.Pages.Public
 
 		public ActionResult OnGet(bool? consent, string returnUrl)
 		{
-			ReturnPath = string.IsNullOrWhiteSpace(returnUrl) ? GetReturnUrl() : returnUrl;
+			ReturnPath = Url.IsLocalUrl(returnUrl) ? returnUrl : "/";
 
-			if (ReturnPath == "/cookies")
-			{
-				returnUrl = Uri.UnescapeDataString(GetReturnUrl().Replace("/cookies?returnUrl=", ""));
-
-			}
 			Consent = analyticsConsentService.ConsentValue();
 
 			if (consent.HasValue)
@@ -46,7 +41,7 @@ namespace Dfe.Complete.Pages.Public
 
 				if (!string.IsNullOrEmpty(returnUrl))
 				{
-					return Redirect(returnUrl);
+					return Redirect(ReturnPath);
 				}
 
 				return RedirectToPage(Links.Public.CookiePreferences);
@@ -57,7 +52,7 @@ namespace Dfe.Complete.Pages.Public
 
 		public IActionResult OnPost(bool? consent, string returnUrl, [FromForm(Name = "cookies_form[accept_optional_cookies]")] bool? cookiesConsent)
 		{
-			ReturnPath = string.IsNullOrWhiteSpace(returnUrl) ? GetReturnUrl() : returnUrl;
+			ReturnPath = Url.IsLocalUrl(returnUrl) ? returnUrl : "/";
 
 			if (!consent.HasValue)
 			{
@@ -76,19 +71,26 @@ namespace Dfe.Complete.Pages.Public
 				if (cookiesConsent != null)
 				{
 					TempData["IsRubyRequest"] = false;
-					return Redirect($"/cookies?consent={cookiesConsent}&returnUrl={GetReturnUrl()}");
+					return Redirect($"/cookies?consent={cookiesConsent}&returnUrl={ReturnPath}");
 				}
 				else
 				{
-					TempData.Clear();
+					if (TempData["PreferencesSet"] != null)
+					{
+						TempData["PreferencesSet"] = null;
+					}
+
+					if (TempData["IsRubyRequest"] != null)
+					{
+						TempData["IsRubyRequest"] = null;
+					}
 				}
 			}
 
 			return Page();
 		}
 
-		private string GetReturnUrl()
-			=> Request.Headers.Referer.ToString().Replace("https://", string.Empty).Replace(HttpContext.Request.Host.Value, string.Empty);
+
 
 		private void ApplyCookieConsent(bool consent)
 		{

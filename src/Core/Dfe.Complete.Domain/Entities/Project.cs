@@ -130,9 +130,9 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
         bool isDueTo2RI,
         bool? hasAcademyOrderBeenIssued,
         DateOnly advisoryBoardDate,
-        string advisoryBoardConditions,
-        string establishmentSharepointLink,
-        string incomingTrustSharepointLink,
+        string? advisoryBoardConditions,
+        string? establishmentSharepointLink,
+        string? incomingTrustSharepointLink,
         string? outgoingTrustSharepointLink,
         ProjectGroupId? groupId,
         ProjectTeam? team,
@@ -190,9 +190,9 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
         bool isDueTo2RI,
         bool hasAcademyOrderBeenIssued,
         DateOnly advisoryBoardDate,
-        string advisoryBoardConditions,
-        string establishmentSharepointLink,
-        string incomingTrustSharepointLink,
+        string? advisoryBoardConditions,
+        string? establishmentSharepointLink,
+        string? incomingTrustSharepointLink,
         ProjectGroupId? groupId,
         ProjectTeam? team,
         UserId regionalDeliveryOfficerId,
@@ -241,6 +241,48 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
                 UserId = regionalDeliveryOfficerId
             });
         }
+
+        project.AddDomainEvent(new ProjectCreatedEvent(project));
+
+        return project;
+    }
+
+
+    public static Project CreateHandoverConversionProject(CreateHandoverConversionProjectParams parameters)
+    {
+        var now = DateTime.UtcNow;
+
+        var project = new Project(
+            parameters.Id,
+            parameters.Urn,
+            now,
+            now,
+            TaskType.Conversion,
+            ProjectType.Conversion,
+            parameters.TasksDataId,
+            parameters.SignificantDate,
+            true,
+            parameters.IncomingTrustUkprn,
+            null,
+            parameters.Region,
+            false,
+            parameters.HasAcademyOrderBeenIssued,
+            parameters.AdvisoryBoardDate,
+            parameters.AdvisoryBoardConditions,
+            null,
+            null,
+            null,
+            parameters.GroupId,
+            null,
+            parameters.RegionalDeliveryOfficerId,
+            null,
+            null,
+            null,
+            null,
+            parameters.LocalAuthorityId)
+        {
+            State = ProjectState.Inactive
+        };
 
         project.AddDomainEvent(new ProjectCreatedEvent(project));
 
@@ -419,7 +461,7 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
         return project;
     }
 
-    private void AddNote(Note? note)
+    public void AddNote(Note? note)
     {
         if (note != null)
         {
@@ -428,6 +470,7 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
             {
                 Id = new NoteId(Guid.NewGuid()),
                 CreatedAt = note.CreatedAt,
+                UpdatedAt = note.UpdatedAt,
                 Body = note.Body,
                 ProjectId = note.ProjectId,
                 TaskIdentifier = note.TaskIdentifier,
@@ -438,13 +481,22 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
         }
     }
 
+    public void UpdateNote(Note updatedNote)
+    {
+        ArgumentNullException.ThrowIfNull(updatedNote);
+
+        var note = Notes.FirstOrDefault(x => x.Id == updatedNote.Id) ?? throw new NotFoundException($"No note found with Id {updatedNote.Id.Value}");
+
+        note.Body = updatedNote.Body;
+        note.TaskIdentifier = updatedNote.TaskIdentifier;
+        note.UserId = updatedNote.UserId;
+        note.NotableId = updatedNote.NotableId;
+        note.NotableType = updatedNote.NotableType;
+    }
 
     public void RemoveNote(NoteId id)
     {
-        var note = Notes.FirstOrDefault(x => x.Id == id);
-
-        if (note is null) throw new NotFoundException($"No note found with Id {id.Value}");
-
+        var note = Notes.FirstOrDefault(x => x.Id == id) ?? throw new NotFoundException($"No note found with Id {id.Value}");
         Notes.Remove(note);
     }
 
@@ -458,8 +510,43 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
         }
     }
 
+    public void RemoveContact(ContactId id)
+    {
+        var contact = Contacts.FirstOrDefault(x => x.Id == id) ?? throw new NotFoundException($"No contact found with Id {id.Value}");
+        Contacts.Remove(contact);
+    }
+
+    public void RemoveAllContacts()
+    {
+        // Create new id so we don't copy by reference as otherwise the list changes as we delete each contact
+        var contactIds = Contacts.Select(contact => contact.Id).ToList();
+        foreach (var contactId in contactIds)
+        {
+            RemoveContact(contactId);
+        }
+    }
+
     public void AddAcademyUrn(Urn urn)
     {
         AcademyUrn = urn;
+    }
+
+    public void UpdateSignificantDate(DateOnly date)
+    {
+        SignificantDate = date;
+    }
+
+    public void AddSignificantDateHistory(SignificantDateHistory significantDateHistory)
+    {
+        SignificantDateHistories.Add(new SignificantDateHistory
+        {
+            Id = significantDateHistory.Id,
+            CreatedAt = significantDateHistory.CreatedAt,
+            UpdatedAt = significantDateHistory.UpdatedAt,
+            ProjectId = significantDateHistory.ProjectId,
+            UserId = significantDateHistory.UserId,
+            PreviousDate = significantDateHistory.PreviousDate,
+            RevisedDate = significantDateHistory.RevisedDate,
+        });
     }
 }

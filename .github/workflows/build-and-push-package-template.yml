@@ -5,7 +5,8 @@ on:
     branches:
     - release/*
     paths:
-    - 'Dfe.Complete.Api.Client*/**'
+    - '**/Dfe.Complete.Api.Client*/**'
+  workflow_dispatch: {}
 
 env:
   DOTNET_VERSION: '8.0.x'
@@ -17,7 +18,7 @@ jobs:
       packages: write
       contents: write
     steps:
-    - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
+    - uses: actions/checkout@08eba0b27e820071cde6df949e0beb9ba4906955 # v4
       with:
         ref: ${{ github.ref }}
         fetch-depth: 0 # Shallow clones disabled for a better relevancy of SC analysis
@@ -83,7 +84,7 @@ jobs:
       shell: /usr/bin/bash -e {0}
 
     - name: Build, pack and publish
-      working-directory: Dfe.Complete.Api.Client
+      working-directory: src/Api/Dfe.Complete.Api.Client
       run: |
         dotnet build -c Release
         dotnet pack -c Release -p:PackageVersion=${{ env.NEW_VERSION }} --output .

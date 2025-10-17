@@ -1,7 +1,8 @@
 ﻿@page "/projects/{projectId}/external-contacts"
 @using Dfe.Complete.Domain.Enums
+@using Dfe.Complete.Models.ExternalContact
 @using Dfe.Complete.Pages.Projects.ExternalContacts
-@using DfE.CoreLibs.Utilities.Extensions
+@using GovUK.Dfe.CoreLibs.Utilities.Extensions
 @model Dfe.Complete.Pages.Projects.ExternalContacts.ExternalContacts
 
 @{
@@ -10,7 +11,7 @@
 }
 
 <div class="govuk-grid-row">
-  <div class="govuk-grid-column-two-thirds" id="projectInternalContacts">
+  <div class="govuk-grid-column-two-thirds" id="projectExternalContacts">
     <h2 class="govuk-heading-l">External Contacts</h2>
     @if (Model.Project.Type == ProjectType.Conversion)
     {
@@ -23,7 +24,7 @@
         </p>
       </div>
     }
-    <govuk-button-link href="#">Add contact</govuk-button-link>
+    <govuk-button-link href="/projects/@Model.ProjectId/external-contacts/new">Add contact</govuk-button-link>
     @if (Model.EstablishmentContacts.Any())
     {
       <partial

@@ -1,0 +1,85 @@
+﻿@page "/projects/{projectId}/tasks/deed_of_novation_and_variation"
+@inject Microsoft.Extensions.Configuration.IConfiguration _configuration
+@model Dfe.Complete.Pages.Projects.TaskList.Tasks.DeedOfNovationAndVariationTask.DeedOfNovationAndVariationTaskModel
+@{
+    Layout = "_ProjectTaskLayout";
+    ViewData["Title"] = "Deed of novation and variation";
+}
+@section TaskHeaderHintSection
+{
+    <div class="govuk-hint">
+        <p>A deed of novation and variation transfers the liabilites and obligations of the outgoing trust to the incoming trust.</p> 
+        <p>You use this deed to move the supplemental funding agreement to the incoming trust.</p>
+    </div>
+}
+@section TaskSection {
+    <form method="post">
+        <input type="hidden" asp-for="TasksDataId" /> 
+        <h2 class="govuk-heading-l">
+            Check and clear the deed of novation and variation
+        </h2>
+        <div class="govuk-hint">
+            <p>You can <external-link href="@_configuration["ExternalLinks:DeedOfNovationAndVariation"]">find the right deed of novation and variation to use (opens in new tab)</external-link> on SharePoint.</p>
+            <p>Deed of novation and varation model documents are not available on GOV.UK. You may need to send copies to the solicitor or trust for them to complete.</p>
+        </div>
+        <govuk-details>
+            <govuk-details-summary>
+                <span class="govuk-details__summary-text">Help checking for changes</span>
+            </govuk-details-summary>
+            <govuk-details-text>
+                <p class="govuk-body-m">Changes that personalise the model documents to an academy or trust are expected. The wording of clauses should not change.</p>
+                <p class="govuk-body-m">You'll need to <external-link class="govuk-link" href="@_configuration["ExternalLinks:ContactPolicyTeam"]">contact the policy team (opens in new tab)</external-link> about changes to clause text.</p>
+            </govuk-details-text>
+        </govuk-details>
+
+        <govuk-checkboxes name="options">
+            <govuk-checkboxes-fieldset>
+                <govuk-checkboxes-fieldset-legend>
+                </govuk-checkboxes-fieldset-legend>
+                <govuk-checkboxes-item data-cy="received" id="received" asp-for="@Model.Received" value="true" name="received" checked="@Model.Received">
+                    <b>Received</b>
+                </govuk-checkboxes-item>
+                <govuk-checkboxes-item data-cy="cleared" id="cleared" asp-for="@Model.Cleared" value="true" name="cleared" checked="@Model.Cleared">
+                    <b>Cleared</b>
+                </govuk-checkboxes-item>
+                <govuk-checkboxes-item data-cy="signed_outgoing_trust" id="signed_outgoing_trust" asp-for="@Model.SignedOutgoingTrust" value="true" name="signed_outgoing_trust" checked="@Model.SignedOutgoingTrust">
+                    <b>Signed by outgoing trust</b>
+                </govuk-checkboxes-item>
+                <govuk-checkboxes-item data-cy="signed_incoming_trust" id="signed_incoming_trust" asp-for="@Model.SignedIncomingTrust" value="true" name="signed_incoming_trust" checked="@Model.SignedIncomingTrust">
+                    <b>Signed by incoming trust</b>
+                </govuk-checkboxes-item>
+                <govuk-checkboxes-item data-cy="saved" id="saved" asp-for="@Model.Saved" value="true" name="saved" checked="@Model.Saved">
+                    <b>Saved in the academy SharePoint folder</b>
+                </govuk-checkboxes-item>
+            </govuk-checkboxes-fieldset>
+        </govuk-checkboxes>
+        <div>
+            <h2 class="govuk-heading-l">
+                Signed by the Secretary of State
+            </h2>
+            <govuk-details>
+                <govuk-details-summary>
+                    <span class="govuk-details__summary-text">How to sign the deed of novation and variation</span>
+                </govuk-details-summary>
+                <govuk-details-text>
+                    <p>The Secretary of State, or somebody with the authority to act on their behalf, must sign the deed of novation and variation.</p> 
+                    <p>Each team may have a different process for signing and sealing documents. Follow your team's signing process.</p> 
+                    <p>Once you have the signed version of the document, save it as a PDF in SharePoint.</p>
+                </govuk-details-text>
+            </govuk-details>
+            <govuk-checkboxes name="options">
+                <govuk-checkboxes-fieldset>
+                    <govuk-checkboxes-fieldset-legend>
+                    </govuk-checkboxes-fieldset-legend>
+                    <govuk-checkboxes-item id="signed_secretary_state" asp-for="@Model.SignedSecretaryState" value="true" name="signed_secretary_state" checked="@Model.SignedSecretaryState">
+                        <b>Signed on behalf of Secretary of State</b>
+                    </govuk-checkboxes-item>
+                    <govuk-checkboxes-item id="save_after_sign" asp-for="@Model.SaveAfterSign" value="true" name="save_after_sign" checked="@Model.SaveAfterSign">
+                        <b>Saved in the academy SharePoint folder</b>
+                    </govuk-checkboxes-item> 
+                </govuk-checkboxes-fieldset>
+            </govuk-checkboxes>
+        </div>
+        @await Html.PartialAsync("_TaskSaveAndReturn", new TaskSaveAndReturnModel(Model.Project, Model.CurrentUserTeam))
+    </form>
+}

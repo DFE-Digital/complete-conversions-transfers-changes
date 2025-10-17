@@ -1,0 +1,45 @@
+﻿@page "/projects/{projectId}/tasks/master_funding_agreement"
+@using Dfe.Complete.Domain.Enums
+@inject Microsoft.Extensions.Configuration.IConfiguration _configuration
+@model Dfe.Complete.Pages.Projects.TaskList.Tasks.MasterFundingAgreementTask.MasterFundingAgreementTaskModel
+@{
+    Layout = "_ProjectTaskLayout";
+    ViewData["Title"] = "Master funding agreement";
+    var isConversion = Model.Type == ProjectType.Conversion;
+}
+@section TaskHeaderHintSection {
+    <div class="govuk-hint">
+        <p>Master funding agreements from before 2018 should be updated to the newer versions.</p>
+        @{
+            if (!isConversion)
+            {
+                <p>Use a deed of termination to end the master funding agreement for the outgoing trust if it will close after this transfer.</p>
+                
+                <govuk-details data-module="govuk-details" class="govuk-details">
+                    <govuk-details-summary>
+                        <span class="govuk-details__summary-text">When to sign a deed of termination</span>
+                    </govuk-details-summary>
+                    <govuk-details-text>
+                        <p>A deed of termination can only be signed when both the:</p>
+
+                        <ul>
+                            <li>outgoing trust submit their financial accounts</li>
+                            <li>finance reporting team confirm the master funding agreement can be terminated</li>
+                        </ul>
+                    </govuk-details-text>
+                </govuk-details>
+            }
+        }
+    </div>
+}
+
+@section TaskSection {
+    @if (isConversion)
+    {
+        @await Html.PartialAsync("_ConversionMasterFundingAgreementTaskForm", Model)
+    }
+    else
+    {
+        @await Html.PartialAsync("_TransferMasterFundingAgreementTaskForm", Model)
+    }
+}

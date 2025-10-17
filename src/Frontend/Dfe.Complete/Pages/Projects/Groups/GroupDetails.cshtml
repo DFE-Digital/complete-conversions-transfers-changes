@@ -1,0 +1,65 @@
+@page "/groups/{groupId}"
+@model Dfe.Complete.Pages.Projects.Groups.ProjectGroupDetailsModel
+@{
+    ViewData["Title"] = Model.ProjectGroupDetails.TrustName;
+}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+
+        <span class="govuk-caption-xl">
+            Trust reference number: @Model.ProjectGroupDetails.TrustReference
+        </span>
+        <span class="govuk-caption-xl">
+            Group reference number: @Model.ProjectGroupDetails.GroupReference
+        </span>
+        <h1 class="govuk-heading-xl">
+            @Model.ProjectGroupDetails.TrustName
+        </h1>
+
+        <p><strong>Number in group: </strong> @Model.ProjectGroupDetails.ProjectDetails.Count()</p>
+
+    </div>
+</div>
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-full">
+
+        <nav class="moj-sub-navigation" aria-label="Project group sub-navigation">
+            <ul class="moj-sub-navigation__list">
+                <li class="moj-sub-navigation__item">
+                    <a class="moj-sub-navigation__link" aria-current="page" href="/groups/@Model.ProjectGroupDetails.GroupId">Schools or academies in this group</a>
+                </li>
+
+            </ul>
+        </nav>
+
+    </div>
+</div>
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-full">
+        
+        @{
+            foreach (var es in Model.ProjectGroupDetails.ProjectDetails)
+            {
+                <div id="academyDetails" class="govuk-summary-card">
+                    <div class="govuk-summary-card__title-wrapper">
+                        <h2 class="govuk-summary-card__title">
+                            <a class="govuk-link govuk-link--no-visited-state" href="/projects/@es.ProjectId">@es.EstablishmentName</a>
+                        </h2>
+                    </div>
+
+                    <div class="govuk-summary-card__content">
+                        <dl class="govuk-summary-list">
+                            <div class="govuk-summary-list__row govuk-summary-list__row--no-actions"><dt class="govuk-summary-list__key">URN</dt><dd class="govuk-summary-list__value">@es.Urn</dd></div>
+                            <div class="govuk-summary-list__row govuk-summary-list__row--no-actions"><dt class="govuk-summary-list__key">Project type</dt><dd class="govuk-summary-list__value">@es.ProjectType</dd></div>
+                            <div class="govuk-summary-list__row govuk-summary-list__row--no-actions"><dt class="govuk-summary-list__key">Local authority</dt><dd class="govuk-summary-list__value">@es.LocalAuthority</dd></div>
+                            <div class="govuk-summary-list__row govuk-summary-list__row--no-actions"><dt class="govuk-summary-list__key">Region</dt><dd class="govuk-summary-list__value">@es.Region</dd></div>
+                        </dl>
+                    </div>
+                </div>
+            }
+        }
+    </div>
+</div>

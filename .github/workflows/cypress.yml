@@ -23,7 +23,7 @@ on:
         required: true
       CYPRESS_COMPLETEAPI_CLIENTID:
         required: true
-      SLACK_WEBHOOK_URL:
+      TEAMS_WEBHOOK_URL:
         required: true
 
   workflow_dispatch:
@@ -36,27 +36,48 @@ on:
 concurrency:
   group: ${{ github.workflow }}
 
+# Define reusable values as top-level variables
+env:
+  NODE_VERSION: '18'
+  BROWSER: 'edge'
+  WORKING_DIRECTORY: 'src/Tests/Dfe.Complete.CypressTests'
+
 jobs:
+  # Run Cypress tests in parallel across different test groups
   cypress-tests:
     name: Run Cypress Tests
     runs-on: ubuntu-latest
     environment: ${{ inputs.environment }}
     strategy:
+      fail-fast: false
       matrix:
-        browser: [
-          "edge"
-        ]
+        include:
+          - group: conversion-tasks
+            spec: cypress/e2e/conversion-tasks/**/*.cy.ts
+          - group: conversions
+            spec: cypress/e2e/conversions/**/*.cy.ts
+          - group: project-listings
+            spec: cypress/e2e/project-listings/**/*.cy.ts
+          - group: transfer-tasks
+            spec: cypress/e2e/transfer-tasks/**/*.cy.ts
+          - group: transfers
+            spec: cypress/e2e/transfers/**/*.cy.ts
+          - group: user-capabilities-regional-workers
+            spec: cypress/e2e/user-capabilities-regional-workers/**/*.cy.ts
+          - group: user-capabilities-support
+            spec: cypress/e2e/user-capabilities-support/**/*.cy.ts
     container:
       image: cypress/browsers:22.15.1@sha256:753c6dd8dc176c2eb9e9a622146d2c260e308e86eb62ce2b3e6f12e7d67d7b13
     defaults:
       run:
-        working-directory: src/Tests/Dfe.Complete.CypressTests
+        working-directory: ${{ env.WORKING_DIRECTORY }}
     steps:
-      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
+      - name: Checkout code
+        uses: actions/checkout@08eba0b27e820071cde6df949e0beb9ba4906955 # v4
         with:
           ref: ${{ github.ref }}
 
-      - name: Run
+      - name: Run Cypress tests
         uses: cypress-io/github-action@v6
         env:
           CYPRESS_url: ${{ secrets.CYPRESS_URL_ENDPOINT }}
@@ -68,31 +89,185 @@ jobs:
           CYPRESS_clientSecret: ${{ secrets.CYPRESS_CLIENT_SECRET }}
           CYPRESS_completeApiClientId: ${{ secrets.CYPRESS_COMPLETEAPI_CLIENTID }}
         with:
-          browser: ${{ matrix.browser }}
-          working-directory: ./src/Tests/Dfe.Complete.CypressTests
+          browser: ${{ env.BROWSER }}
+          spec: ${{ matrix.spec }}
+          working-directory: ./${{ env.WORKING_DIRECTORY }}
 
-      - name: Upload screenshots
+      - name: Upload screenshots on failure
         if: ${{ failure() }}
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
-          name: screenshots-${{ inputs.environment }}-${{ matrix.browser }}
-          path: src/Tests/Dfe.Complete.CypressTests/cypress/screenshots
+          name: screenshots-${{ inputs.environment }}-${{ matrix.group }}
+          path: ${{ env.WORKING_DIRECTORY }}/cypress/screenshots
+          retention-days: 5
 
-      - name: Generate report
+      - name: Prepare test results
+        id: prepare-results
         if: always()
         run: |
-          mkdir mochareports
-          npm run generate:html:report
+          mkdir -p cypress/reports/merged
+          # Check if test results exist and process them
+          if [ -d "cypress/reports/mocha" ] && [ "$(find cypress/reports/mocha -name '*.json' 2>/dev/null | wc -l)" -gt 0 ]; then
+            for file in cypress/reports/mocha/*.json; do
+              filename=$(basename "$file")
+              cp "$file" "cypress/reports/merged/${{ matrix.group }}-$filename"
+            done
+            echo "Processed test results for ${{ matrix.group }}"
+          else
+            echo "No test results found for ${{ matrix.group }}, creating placeholder"
+            echo '{"stats":{"suites":0,"tests":0,"passes":0,"pending":0,"failures":0,"start":"","end":"","duration":0}}' > "cypress/reports/merged/${{ matrix.group }}-placeholder.json"
+          fi
 
-      - name: Upload report
-        if: always()
+      - name: Upload test results
+        if: always() && steps.prepare-results.outcome == 'success'
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
-          name: reports-${{ inputs.environment }}-${{ matrix.browser }}
-          path: src/Tests/Dfe.Complete.CypressTests/mochareports
+          name: raw-test-reports-${{ matrix.group }}
+          path: ${{ env.WORKING_DIRECTORY }}/cypress/reports/merged/*.json
+          retention-days: 1 # Short retention for raw reports
 
-      - name: Report results
+  # Generate a combined report from all test runs
+  generate-combined-report:
+    name: Generate Combined Report
+    needs: cypress-tests
+    runs-on: ubuntu-latest
+    if: always()
+    defaults:
+      run:
+        working-directory: ${{ env.WORKING_DIRECTORY }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@08eba0b27e820071cde6df949e0beb9ba4906955 # v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+          cache-dependency-path: '${{ env.WORKING_DIRECTORY }}/package-lock.json'
+
+      - name: Install dependencies
+        run: npm ci || npm install
+
+      - name: Download all test results
+        uses: actions/download-artifact@v4
+        with:
+          pattern: raw-test-reports-*
+          path: ${{ env.WORKING_DIRECTORY }}/cypress/reports/mocha
+          merge-multiple: true
+
+      - name: Generate combined HTML report
+        run: |
+          mkdir -p mochareports
+          npm run generate:html:report
+
+      - name: Upload combined report
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: combined-report-${{ inputs.environment }}
+          path: ${{ env.WORKING_DIRECTORY }}/mochareports
+          retention-days: 30 # Longer retention for final report
+
+      - name: Report results to Teams
         if: always()
-        run: npm run cy:notify -- --custom-text="Environment ${{ inputs.environment }}, See more information https://github.com/DFE-Digital/complete-conversions-transfers-changes/actions/runs/${{ github.run_id }}"
+        run: |
+          # Create a Node script to send test results to Teams
+          node <<EOF
+          const axios = require('axios');
+          const fs = require('fs');
+          const path = require('path');
+          
+          async function sendTeamsNotification() {
+            try {
+              // Read the combined report JSON to get test statistics
+              let reportStats = { tests: 0, passes: 0, failures: 0 };
+              const reportPath = path.join(process.cwd(), 'mochareports', 'report.json');
+          
+              if (fs.existsSync(reportPath)) {
+                const reportData = JSON.parse(fs.readFileSync(reportPath, 'utf8'));
+                if (reportData && reportData.stats) {
+                  reportStats = {
+                    tests: reportData.stats.tests || 0,
+                    passes: reportData.stats.passes || 0,
+                    failures: reportData.stats.failures || 0
+                  };
+                }
+              } else {
+                console.warn('Report file not found at:', reportPath);
+              }
+          
+              // Define card style based on test results
+              const hasFailures = reportStats.failures > 0;
+              const style = hasFailures ? "attention" : "good";
+              const statusText = hasFailures ? "**Cypress Test Run Failed** ❌" : "**Cypress Test Run Passed** ✅";
+          
+              // Create Teams message card
+              const message = {
+                type: "message",
+                attachments: [{
+                  contentType: "application/vnd.microsoft.card.adaptive",
+                  contentUrl: null,
+                  content: {
+                    "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+                    type: "AdaptiveCard",
+                    version: "1.2",
+                    body: [{
+                      type: "Container",
+                      style: style,
+                      items: [
+                        {
+                          type: "TextBlock",
+                          wrap: true,
+                          text: statusText,
+                          size: "large",
+                          horizontalAlignment: "center"
+                        },
+                        {
+                          type: "TextBlock",
+                          wrap: true,
+                          text: "**Branch:** " + process.env.GITHUB_REF
+                        },
+                        {
+                          type: "TextBlock",
+                          wrap: true,
+                          text: "**Workflow:** " + process.env.GITHUB_WORKFLOW
+                        },
+                        {
+                          type: "TextBlock",
+                          wrap: true,
+                          text: "**Environment:** " + process.env.ENVIRONMENT
+                        },
+                        {
+                          type: "FactSet",
+                          facts: [
+                            { title: "Total Tests:", value: reportStats.tests.toString() },
+                            { title: "Passed:", value: reportStats.passes.toString() },
+                            { title: "Failed:", value: reportStats.failures.toString() }
+                          ]
+                        },
+                        {
+                          type: "TextBlock",
+                          wrap: true,
+                          text: "**See more information:** [" + process.env.INFORMATION_LINK + "](" + process.env.INFORMATION_LINK + ")"
+                        }
+                      ]
+                    }]
+                  }
+                }]
+              };
+          
+              // Send the notification
+              await axios.post(process.env.TEAMS_WEBHOOK_URL, message);
+              console.log("Message sent to Teams successfully");
+            } catch (error) {
+              console.error("Error sending notification to Teams:", error);
+              process.exit(1);
+            }
+          }
+          
+          sendTeamsNotification();
+          EOF
         env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+          TEAMS_WEBHOOK_URL: ${{ secrets.TEAMS_WEBHOOK_URL }}
+          ENVIRONMENT: ${{ inputs.environment }}
+          INFORMATION_LINK: "https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"

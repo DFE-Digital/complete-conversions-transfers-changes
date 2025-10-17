@@ -57,6 +57,21 @@ namespace Dfe.Complete.Client.Contracts
         /// <exception cref="CompleteApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<Contact>> ListAllContactsForLocalAuthorityAsync(System.Guid? localAuthority_Value, System.Threading.CancellationToken cancellationToken);
 
+        /// <summary>
+        /// Returns a list of Contacts for a specific Project and local authority
+        /// </summary>
+        /// <returns>Contact</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<Contact>> ListAllContactsForProjectAndLocalAuthorityAsync(System.Guid? projectId_Value, System.Guid? localAuthorityId_Value);
+
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>
+        /// Returns a list of Contacts for a specific Project and local authority
+        /// </summary>
+        /// <returns>Contact</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<Contact>> ListAllContactsForProjectAndLocalAuthorityAsync(System.Guid? projectId_Value, System.Guid? localAuthorityId_Value, System.Threading.CancellationToken cancellationToken);
+
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "14.2.0.0 (NJsonSchema v11.1.0.0 (Newtonsoft.Json v13.0.0.0))")]
@@ -100,11 +115,58 @@ namespace Dfe.Complete.Client.Contracts
         /// <exception cref="CompleteApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<ProjectGroupDto> GetProjectGroupByIdAsync(System.Guid? id_Value, System.Threading.CancellationToken cancellationToken);
 
+        /// <summary>
+        /// Gets a list of the projects group and included establishments.
+        /// </summary>
+        /// <returns>Project Groups returned successfully.</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<ListProjectsGroupsModel> GetProjectGroupsAsync(int? page, int? count);
+
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>
+        /// Gets a list of the projects group and included establishments.
+        /// </summary>
+        /// <returns>Project Groups returned successfully.</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<ListProjectsGroupsModel> GetProjectGroupsAsync(int? page, int? count, System.Threading.CancellationToken cancellationToken);
+
+        /// <summary>
+        /// Gets the Project group details by Id.
+        /// </summary>
+        /// <returns>Project Group details returned successfully.</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<ProjectGroupDetails> GetProjectGroupDetailsAsync(System.Guid? projectGroupId_Value);
+
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>
+        /// Gets the Project group details by Id.
+        /// </summary>
+        /// <returns>Project Group details returned successfully.</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<ProjectGroupDetails> GetProjectGroupDetailsAsync(System.Guid? projectGroupId_Value, System.Threading.CancellationToken cancellationToken);
+
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "14.2.0.0 (NJsonSchema v11.1.0.0 (Newtonsoft.Json v13.0.0.0))")]
     public partial interface IProjectsClient
     {
+        /// <summary>
+        /// Creates a new conversion project (handover version).
+        /// </summary>
+        /// <param name="request">The request.</param>
+        /// <returns>Project created successfully.</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<ProjectId> CreateHandoverConversionProjectAsync(CreateHandoverConversionProjectCommand request);
+
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>
+        /// Creates a new conversion project (handover version).
+        /// </summary>
+        /// <param name="request">The request.</param>
+        /// <returns>Project created successfully.</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<ProjectId> CreateHandoverConversionProjectAsync(CreateHandoverConversionProjectCommand request, System.Threading.CancellationToken cancellationToken);
+
         /// <summary>
         /// Creates a new conversion project
         /// </summary>
@@ -558,6 +620,87 @@ namespace Dfe.Complete.Client.Contracts
         /// <exception cref="CompleteApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<ProjectDto> GetProjectByIdAsync(System.Guid? projectId_Value, System.Threading.CancellationToken cancellationToken);
 
+        /// <summary>
+        /// Gets key contacts of a project.
+        /// </summary>
+        /// <returns>KeyContact</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<KeyContactDto> GetKeyContactByProjectIdAsync(System.Guid? projectId_Value);
+
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>
+        /// Gets key contacts of a project.
+        /// </summary>
+        /// <returns>KeyContact</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<KeyContactDto> GetKeyContactByProjectIdAsync(System.Guid? projectId_Value, System.Threading.CancellationToken cancellationToken);
+
+        /// <summary>
+        /// Gets a Project's significant date history
+        /// </summary>
+        /// <returns>Project</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<ProjectDto> GetProjectSignificantDateAsync(string? projectId);
+
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>
+        /// Gets a Project's significant date history
+        /// </summary>
+        /// <returns>Project</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<ProjectDto> GetProjectSignificantDateAsync(string? projectId, System.Threading.CancellationToken cancellationToken);
+
+        /// <summary>
+        /// Updates the Significant date for a specific project.
+        /// </summary>
+        /// <param name="request">The update command.</param>
+        /// <returns>Significant Date updated successfully.</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task UpdateSignificantDateAsync(UpdateSignificantDateCommand request);
+
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>
+        /// Updates the Significant date for a specific project.
+        /// </summary>
+        /// <param name="request">The update command.</param>
+        /// <returns>Significant Date updated successfully.</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task UpdateSignificantDateAsync(UpdateSignificantDateCommand request, System.Threading.CancellationToken cancellationToken);
+
+        /// <summary>
+        /// Record dao revoation decision for a specific project.
+        /// </summary>
+        /// <param name="request">The update command.</param>
+        /// <returns>Record dao revocation successfully.</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task RecordDaoRevocationDecisionAsync(RecordDaoRevocationDecisionCommand request);
+
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>
+        /// Record dao revoation decision for a specific project.
+        /// </summary>
+        /// <param name="request">The update command.</param>
+        /// <returns>Record dao revocation successfully.</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task RecordDaoRevocationDecisionAsync(RecordDaoRevocationDecisionCommand request, System.Threading.CancellationToken cancellationToken);
+
+        /// <summary>
+        /// Updates the completion for a specific project.
+        /// </summary>
+        /// <param name="request">The update command.</param>
+        /// <returns>Completed project.</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task UpdateCompleteAsync(UpdateProjectCompletedCommand request);
+
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>
+        /// Updates the completion for a specific project.
+        /// </summary>
+        /// <param name="request">The update command.</param>
+        /// <returns>Completed project.</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task UpdateCompleteAsync(UpdateProjectCompletedCommand request, System.Threading.CancellationToken cancellationToken);
+
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "14.2.0.0 (NJsonSchema v11.1.0.0 (Newtonsoft.Json v13.0.0.0))")]
@@ -621,7 +764,7 @@ namespace Dfe.Complete.Client.Contracts
         /// Update the local authority details.
         /// </summary>
         /// <param name="request">The request.</param>
-        /// <returns>local authoirty details updated successfully.</returns>
+        /// <returns>Local authority details updated successfully.</returns>
         /// <exception cref="CompleteApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task UpdateLocalAuthorityDetailsAsync(UpdateLocalAuthorityCommand request);
 
@@ -630,7 +773,7 @@ namespace Dfe.Complete.Client.Contracts
         /// Update the local authority details.
         /// </summary>
         /// <param name="request">The request.</param>
-        /// <returns>local authoirty details updated successfully.</returns>
+        /// <returns>Local authority details updated successfully.</returns>
         /// <exception cref="CompleteApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task UpdateLocalAuthorityDetailsAsync(UpdateLocalAuthorityCommand request, System.Threading.CancellationToken cancellationToken);
 
@@ -669,7 +812,7 @@ namespace Dfe.Complete.Client.Contracts
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "14.2.0.0 (NJsonSchema v11.1.0.0 (Newtonsoft.Json v13.0.0.0))")]
-    public partial interface ITransferTasksDataClient
+    public partial interface ITasksDataClient
     {
         /// <summary>
         /// Gets the transfer tasks data by Id.
@@ -685,6 +828,412 @@ namespace Dfe.Complete.Client.Contracts
         /// <returns>Transfer tasks data returned successfully.</returns>
         /// <exception cref="CompleteApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<TransferTaskDataDto> GetTransferTasksDataByIdAsync(System.Guid? id_Value, System.Threading.CancellationToken cancellationToken);
+
+        /// <summary>
+        /// Gets the Conversion tasks data by Id.
+        /// </summary>
+        /// <returns>Conversion tasks data returned successfully.</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<ConversionTaskDataDto> GetConversionTasksDataByIdAsync(System.Guid? id_Value);
+
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>
+        /// Gets the Conversion tasks data by Id.
+        /// </summary>
+        /// <returns>Conversion tasks data returned successfully.</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<ConversionTaskDataDto> GetConversionTasksDataByIdAsync(System.Guid? id_Value, System.Threading.CancellationToken cancellationToken);
+
+        /// <summary>
+        /// Updates the handover with delivery officer for either conversion or transfer tasks data.
+        /// </summary>
+        /// <param name="request">The update task data command.</param>
+        /// <returns>Successfully updated the conversion or trasnfer task data</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task UpdateHandoverWithDeliveryOfficerTaskDataByTaskDataIdAsync(UpdateHandoverWithDeliveryOfficerTaskCommand request);
+
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>
+        /// Updates the handover with delivery officer for either conversion or transfer tasks data.
+        /// </summary>
+        /// <param name="request">The update task data command.</param>
+        /// <returns>Successfully updated the conversion or trasnfer task data</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task UpdateHandoverWithDeliveryOfficerTaskDataByTaskDataIdAsync(UpdateHandoverWithDeliveryOfficerTaskCommand request, System.Threading.CancellationToken cancellationToken);
+
+        /// <summary>
+        /// Updates the article of association task Data for conversion or trasnfer project.
+        /// </summary>
+        /// <param name="request">The update command.</param>
+        /// <returns>Conversion or transfer's article of association task updated successfully.</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task UpdateArticleOfAssociationTaskAsync(UpdateArticleOfAssociationTaskCommand request);
+
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>
+        /// Updates the article of association task Data for conversion or trasnfer project.
+        /// </summary>
+        /// <param name="request">The update command.</param>
+        /// <returns>Conversion or transfer's article of association task updated successfully.</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task UpdateArticleOfAssociationTaskAsync(UpdateArticleOfAssociationTaskCommand request, System.Threading.CancellationToken cancellationToken);
+
+        /// <summary>
+        /// Updates the deed of variation task Data for conversion or trasnfer project.
+        /// </summary>
+        /// <param name="request">The update command.</param>
+        /// <returns>Transfer's deed of variation task updated successfully.</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task UpdateDeedOfNovationAndVariationTaskAsync(UpdateDeedOfNovationAndVariationTaskCommand request);
+
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>
+        /// Updates the deed of variation task Data for conversion or trasnfer project.
+        /// </summary>
+        /// <param name="request">The update command.</param>
+        /// <returns>Transfer's deed of variation task updated successfully.</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task UpdateDeedOfNovationAndVariationTaskAsync(UpdateDeedOfNovationAndVariationTaskCommand request, System.Threading.CancellationToken cancellationToken);
+
+        /// <summary>
+        /// Updates the deed of variation task Data for conversion or trasnfer project.
+        /// </summary>
+        /// <param name="request">The update command.</param>
+        /// <returns>Conversion or transfer's deed of variation task updated successfully.</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task UpdateDeedOfVariationTaskAsync(UpdateDeedOfVariationTaskCommand request);
+
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>
+        /// Updates the deed of variation task Data for conversion or trasnfer project.
+        /// </summary>
+        /// <param name="request">The update command.</param>
+        /// <returns>Conversion or transfer's deed of variation task updated successfully.</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task UpdateDeedOfVariationTaskAsync(UpdateDeedOfVariationTaskCommand request, System.Threading.CancellationToken cancellationToken);
+
+        /// <summary>
+        /// Updates the External stakeholder kickoff Task Data for a specific task data.
+        /// </summary>
+        /// <param name="request">The update command.</param>
+        /// <returns>External stakeholder kickoff task updated successfully.</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task UpdateExternalStakeholderKickOffTaskAsync(UpdateExternalStakeholderKickOffTaskCommand request);
+
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>
+        /// Updates the External stakeholder kickoff Task Data for a specific task data.
+        /// </summary>
+        /// <param name="request">The update command.</param>
+        /// <returns>External stakeholder kickoff task updated successfully.</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task UpdateExternalStakeholderKickOffTaskAsync(UpdateExternalStakeholderKickOffTaskCommand request, System.Threading.CancellationToken cancellationToken);
+
+        /// <summary>
+        /// Updates the supplemental funding agreement task Data for conversion or trasnfer project.
+        /// </summary>
+        /// <param name="request">The update command.</param>
+        /// <returns>Conversion or transfer's supplemental funding agreement task updated successfully.</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task UpdateSupplementalFundingAgreementTaskAsync(UpdateSupplementalFundingAgreementTaskCommand request);
+
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>
+        /// Updates the supplemental funding agreement task Data for conversion or trasnfer project.
+        /// </summary>
+        /// <param name="request">The update command.</param>
+        /// <returns>Conversion or transfer's supplemental funding agreement task updated successfully.</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task UpdateSupplementalFundingAgreementTaskAsync(UpdateSupplementalFundingAgreementTaskCommand request, System.Threading.CancellationToken cancellationToken);
+
+        /// <summary>
+        /// Updates the redact and send documents task Data for conversion or transfer project.
+        /// </summary>
+        /// <param name="request">The update command.</param>
+        /// <returns>Conversion or transfer's redact and send documents task updated successfully.</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task UpdateRedactAndSendDocumentsTaskAsync(UpdateRedactAndSendDocumentsTaskCommand request);
+
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>
+        /// Updates the redact and send documents task Data for conversion or transfer project.
+        /// </summary>
+        /// <param name="request">The update command.</param>
+        /// <returns>Conversion or transfer's redact and send documents task updated successfully.</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task UpdateRedactAndSendDocumentsTaskAsync(UpdateRedactAndSendDocumentsTaskCommand request, System.Threading.CancellationToken cancellationToken);
+
+        /// <summary>
+        /// Updates the confirm proposed capacity of the academy for a specific task data.
+        /// </summary>
+        /// <param name="request">The update command.</param>
+        /// <returns>Confirm proposed capacity of the academy task updated successfully.</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task UpdateConfirmProposedCapacityOfTheAcademyTaskAsync(UpdateConfirmProposedCapacityOfTheAcademyTaskCommand request);
+
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>
+        /// Updates the confirm proposed capacity of the academy for a specific task data.
+        /// </summary>
+        /// <param name="request">The update command.</param>
+        /// <returns>Confirm proposed capacity of the academy task updated successfully.</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task UpdateConfirmProposedCapacityOfTheAcademyTaskAsync(UpdateConfirmProposedCapacityOfTheAcademyTaskCommand request, System.Threading.CancellationToken cancellationToken);
+
+        /// <summary>
+        /// Updates the receive declaration of expenditure certificate task Data for conversion or transfer project.
+        /// </summary>
+        /// <param name="request">The update command.</param>
+        /// <returns>Conversion or transfer's receive declaration of expenditure certificate task updated successfully.</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task UpdateDeclarationOfExpenditureCertificateTaskAsync(UpdateDeclarationOfExpenditureCertificateTaskCommand request);
+
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>
+        /// Updates the receive declaration of expenditure certificate task Data for conversion or transfer project.
+        /// </summary>
+        /// <param name="request">The update command.</param>
+        /// <returns>Conversion or transfer's receive declaration of expenditure certificate task updated successfully.</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task UpdateDeclarationOfExpenditureCertificateTaskAsync(UpdateDeclarationOfExpenditureCertificateTaskCommand request, System.Threading.CancellationToken cancellationToken);
+
+        /// <summary>
+        /// Confirm transfer project has authority to proceed task updated successfully.
+        /// </summary>
+        /// <param name="request">The update command.</param>
+        /// <returns>Confirm transfer project has authority to proceed task updated successfully.</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task UpdateConfirmTransferHasAuthorityToProceedTaskAsync(UpdateConfirmTransferHasAuthorityToProceedTaskCommand request);
+
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>
+        /// Confirm transfer project has authority to proceed task updated successfully.
+        /// </summary>
+        /// <param name="request">The update command.</param>
+        /// <returns>Confirm transfer project has authority to proceed task updated successfully.</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task UpdateConfirmTransferHasAuthorityToProceedTaskAsync(UpdateConfirmTransferHasAuthorityToProceedTaskCommand request, System.Threading.CancellationToken cancellationToken);
+
+        /// <summary>
+        /// Confirm the date the academy transferred task updated successfully.
+        /// </summary>
+        /// <param name="request">The update command.</param>
+        /// <returns>Confirm the date the academy transferred task updated successfully.</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task UpdateConfirmDateAcademyTransferredTaskAsync(UpdateConfirmDateAcademyTransferredTaskCommand request);
+
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>
+        /// Confirm the date the academy transferred task updated successfully.
+        /// </summary>
+        /// <param name="request">The update command.</param>
+        /// <returns>Confirm the date the academy transferred task updated successfully.</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task UpdateConfirmDateAcademyTransferredTaskAsync(UpdateConfirmDateAcademyTransferredTaskCommand request, System.Threading.CancellationToken cancellationToken);
+
+        /// <summary>
+        /// Updates confirmation of meeting all conditions met for a conversion project.
+        /// </summary>
+        /// <param name="request">The update command.</param>
+        /// <returns>Confirms all conditions are met successfully.</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task UpdateConfirmAllConditionsMetTaskAsync(UpdateConfirmAllConditionsMetTaskCommand request);
+
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>
+        /// Updates confirmation of meeting all conditions met for a conversion project.
+        /// </summary>
+        /// <param name="request">The update command.</param>
+        /// <returns>Confirms all conditions are met successfully.</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task UpdateConfirmAllConditionsMetTaskAsync(UpdateConfirmAllConditionsMetTaskCommand request, System.Threading.CancellationToken cancellationToken);
+
+        /// <summary>
+        /// Confirm the date the academy opened for conversion project.
+        /// </summary>
+        /// <param name="request">The update command.</param>
+        /// <returns>Confirm the date the academy opened for conversion project successfully.</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task UpdateConfirmAcademyOpenedDateTaskAsync(UpdateConfirmAcademyOpenedDateTaskCommand request);
+
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>
+        /// Confirm the date the academy opened for conversion project.
+        /// </summary>
+        /// <param name="request">The update command.</param>
+        /// <returns>Confirm the date the academy opened for conversion project successfully.</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task UpdateConfirmAcademyOpenedDateTaskAsync(UpdateConfirmAcademyOpenedDateTaskCommand request, System.Threading.CancellationToken cancellationToken);
+
+        /// <summary>
+        /// Update the church supplemental agreement task Data for conversion or transfer project.
+        /// </summary>
+        /// <param name="request">The update command.</param>
+        /// <returns>Conversion or transfer's church supplemental agreement task updated successfully.</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task UpdateChurchSupplementalAgreementTaskAsync(UpdateChurchSupplementalAgreementTaskCommand request);
+
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>
+        /// Update the church supplemental agreement task Data for conversion or transfer project.
+        /// </summary>
+        /// <param name="request">The update command.</param>
+        /// <returns>Conversion or transfer's church supplemental agreement task updated successfully.</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task UpdateChurchSupplementalAgreementTaskAsync(UpdateChurchSupplementalAgreementTaskCommand request, System.Threading.CancellationToken cancellationToken);
+
+        /// <summary>
+        /// Updates the commercial transfer agreement task Data for conversion or transfer project.
+        /// </summary>
+        /// <param name="request">The update command.</param>
+        /// <returns>Commercial transfer agreement task updated successfully.</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task UpdateCommercialTransferAgreementTaskAsync(UpdateCommercialAgreementTaskCommand request);
+
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>
+        /// Updates the commercial transfer agreement task Data for conversion or transfer project.
+        /// </summary>
+        /// <param name="request">The update command.</param>
+        /// <returns>Commercial transfer agreement task updated successfully.</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task UpdateCommercialTransferAgreementTaskAsync(UpdateCommercialAgreementTaskCommand request, System.Threading.CancellationToken cancellationToken);
+
+        /// <summary>
+        /// Updates the main contact for either conversion or transfer project.
+        /// </summary>
+        /// <param name="request">The update command.</param>
+        /// <returns>Confirms all conditions are met successfully.</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task UpdateMainContactTaskAsync(UpdateMainContactTaskCommand request);
+
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>
+        /// Updates the main contact for either conversion or transfer project.
+        /// </summary>
+        /// <param name="request">The update command.</param>
+        /// <returns>Confirms all conditions are met successfully.</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task UpdateMainContactTaskAsync(UpdateMainContactTaskCommand request, System.Threading.CancellationToken cancellationToken);
+
+        /// <summary>
+        /// Confirm conversion project's land questionnaire task updated successfully.
+        /// </summary>
+        /// <param name="request">The update command.</param>
+        /// <returns>Confirm conversion project's land questionnaire task updated successfully.</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task UpdateLandQuestionnaireTaskAsync(UpdateLandQuestionnaireTaskCommand request);
+
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>
+        /// Confirm conversion project's land questionnaire task updated successfully.
+        /// </summary>
+        /// <param name="request">The update command.</param>
+        /// <returns>Confirm conversion project's land questionnaire task updated successfully.</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task UpdateLandQuestionnaireTaskAsync(UpdateLandQuestionnaireTaskCommand request, System.Threading.CancellationToken cancellationToken);
+
+        /// <summary>
+        /// Updaing the land registry title plans task data for transfer project.
+        /// </summary>
+        /// <param name="request">The update command.</param>
+        /// <returns>The land registry title plans task updated successfully.</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task UpdateLandRegistryTitlePlansTaskAsync(UpdateLandRegistryTitlePlansTaskCommand request);
+
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>
+        /// Updaing the land registry title plans task data for transfer project.
+        /// </summary>
+        /// <param name="request">The update command.</param>
+        /// <returns>The land registry title plans task updated successfully.</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task UpdateLandRegistryTitlePlansTaskAsync(UpdateLandRegistryTitlePlansTaskCommand request, System.Threading.CancellationToken cancellationToken);
+
+        /// <summary>
+        /// Updates the master funding agreement task Data for conversion or transfer project.
+        /// </summary>
+        /// <param name="request">The update command.</param>
+        /// <returns>Conversion or transfer's master funding agreement task updated successfully.</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task UpdateMasterFundingAgreementTaskAsync(UpdateMasterFundingAgreementTaskCommand request);
+
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>
+        /// Updates the master funding agreement task Data for conversion or transfer project.
+        /// </summary>
+        /// <param name="request">The update command.</param>
+        /// <returns>Conversion or transfer's master funding agreement task updated successfully.</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task UpdateMasterFundingAgreementTaskAsync(UpdateMasterFundingAgreementTaskCommand request, System.Threading.CancellationToken cancellationToken);
+
+        /// <summary>
+        /// Confirm the incoming trust ceo contact for the project.
+        /// </summary>
+        /// <param name="request">The update command.</param>
+        /// <returns>Confirm the incoming trust ceo contact for the project successfully.</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task UpdateConfirmIncomingTrustCeoContactTaskAsync(UpdateIncomingTrustCeoCommand request);
+
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>
+        /// Confirm the incoming trust ceo contact for the project.
+        /// </summary>
+        /// <param name="request">The update command.</param>
+        /// <returns>Confirm the incoming trust ceo contact for the project successfully.</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task UpdateConfirmIncomingTrustCeoContactTaskAsync(UpdateIncomingTrustCeoCommand request, System.Threading.CancellationToken cancellationToken);
+
+        /// <summary>
+        /// Confirm the academy risk protection arrangements task updated successfully for either conversion or transfer project.
+        /// </summary>
+        /// <param name="request">The update command.</param>
+        /// <returns>Confirm the academy risk protection arrangements task updated successfully.</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task UpdateConfirmAcademyRiskProtectionArrangementsTaskAsync(UpdateConfirmAcademyRiskProtectionArrangementsTaskCommand request);
+
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>
+        /// Confirm the academy risk protection arrangements task updated successfully for either conversion or transfer project.
+        /// </summary>
+        /// <param name="request">The update command.</param>
+        /// <returns>Confirm the academy risk protection arrangements task updated successfully.</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task UpdateConfirmAcademyRiskProtectionArrangementsTaskAsync(UpdateConfirmAcademyRiskProtectionArrangementsTaskCommand request, System.Threading.CancellationToken cancellationToken);
+
+        /// <summary>
+        /// Confirm the head teacher contact for the project.
+        /// </summary>
+        /// <param name="request">The update command.</param>
+        /// <returns>Confirm the head teacher contact for the project successfully.</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task UpdateConfirmHeadTeacherContactTaskAsync(UpdateHeadTeacherCommand request);
+
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>
+        /// Confirm the head teacher contact for the project.
+        /// </summary>
+        /// <param name="request">The update command.</param>
+        /// <returns>Confirm the head teacher contact for the project successfully.</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task UpdateConfirmHeadTeacherContactTaskAsync(UpdateHeadTeacherCommand request, System.Threading.CancellationToken cancellationToken);
+
+        /// <summary>
+        /// Updating the academy and trust financial information task data for transfer project.
+        /// </summary>
+        /// <param name="request">The update command.</param>
+        /// <returns>Updated the academy and trust financial information task successfully.</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task UpdateAcademyAndTrustFinancialInformationTaskAsync(UpdateAcademyAndTrustFinancialInformationTaskCommand request);
+
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>
+        /// Updating the academy and trust financial information task data for transfer project.
+        /// </summary>
+        /// <param name="request">The update command.</param>
+        /// <returns>Updated the academy and trust financial information task successfully.</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task UpdateAcademyAndTrustFinancialInformationTaskAsync(UpdateAcademyAndTrustFinancialInformationTaskCommand request, System.Threading.CancellationToken cancellationToken);
 
     }
 
@@ -711,6 +1260,40 @@ namespace Dfe.Complete.Client.Contracts
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "14.2.0.0 (NJsonSchema v11.1.0.0 (Newtonsoft.Json v13.0.0.0))")]
     public partial interface IUsersClient
     {
+        /// <summary>
+        /// Creates a new user.
+        /// </summary>
+        /// <param name="request">The request.</param>
+        /// <returns>User created successfully.</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<System.Guid> CreateUserAsync(CreateUserCommand request);
+
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>
+        /// Creates a new user.
+        /// </summary>
+        /// <param name="request">The request.</param>
+        /// <returns>User created successfully.</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<System.Guid> CreateUserAsync(CreateUserCommand request, System.Threading.CancellationToken cancellationToken);
+
+        /// <summary>
+        /// Updates a user.
+        /// </summary>
+        /// <param name="request">The request.</param>
+        /// <returns>User updated successfully.</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task UpdateUserAsync(UpdateUserCommand request);
+
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>
+        /// Updates a user.
+        /// </summary>
+        /// <param name="request">The request.</param>
+        /// <returns>User updated successfully.</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task UpdateUserAsync(UpdateUserCommand request, System.Threading.CancellationToken cancellationToken);
+
         /// <summary>
         /// Gets a User with their assigned projects
         /// </summary>
@@ -778,7 +1361,8 @@ namespace Dfe.Complete.Client.Contracts
         public string? OrganisationName { get; set; } = default!;
 
         [Newtonsoft.Json.JsonProperty("type", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string? Type { get; set; } = default!;
+        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
+        public ContactType? Type { get; set; } = default!;
 
         [Newtonsoft.Json.JsonProperty("localAuthorityId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public LocalAuthorityId? LocalAuthorityId { get; set; } = default!;
@@ -870,6 +1454,21 @@ namespace Dfe.Complete.Client.Contracts
 
         [System.Runtime.Serialization.EnumMember(Value = @"OutgoingTrust")]
         OutgoingTrust = 6,
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.2.0.0 (NJsonSchema v11.1.0.0 (Newtonsoft.Json v13.0.0.0))")]
+    public enum ContactType
+    {
+
+        [System.Runtime.Serialization.EnumMember(Value = @"Project")]
+        Project = 0,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"Establishment")]
+        Establishment = 1,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"DirectorOfChildServices")]
+        DirectorOfChildServices = 2,
 
     }
 
@@ -1693,8 +2292,8 @@ namespace Dfe.Complete.Client.Contracts
         [Newtonsoft.Json.JsonProperty("userId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public UserId? UserId { get; set; } = default!;
 
-        [Newtonsoft.Json.JsonProperty("reason", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public SignificantDateHistoryReason? Reason { get; set; } = default!;
+        [Newtonsoft.Json.JsonProperty("reasons", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.List<SignificantDateHistoryReason>? Reasons { get; set; } = default!;
 
         [Newtonsoft.Json.JsonProperty("user", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public User? User { get; set; } = default!;
@@ -1736,7 +2335,7 @@ namespace Dfe.Complete.Client.Contracts
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.2.0.0 (NJsonSchema v11.1.0.0 (Newtonsoft.Json v13.0.0.0))")]
-    public partial class SignificantDateHistoryReason
+    public partial class SignificantDateHistoryReason : BaseAggregateRoot
     {
         [Newtonsoft.Json.JsonProperty("id", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public SignificantDateHistoryReasonId? Id { get; set; } = default!;
@@ -1817,6 +2416,161 @@ namespace Dfe.Complete.Client.Contracts
         {
 
             return Newtonsoft.Json.JsonConvert.DeserializeObject<ProjectGroupDto>(data, new Newtonsoft.Json.JsonSerializerSettings());
+
+        }
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.2.0.0 (NJsonSchema v11.1.0.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class ListProjectsGroupsModel
+    {
+        [Newtonsoft.Json.JsonProperty("groupId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string? GroupId { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("groupName", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string? GroupName { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("groupIdentifier", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string? GroupIdentifier { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("trustUkprn", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string? TrustUkprn { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("includedEstablishments", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string? IncludedEstablishments { get; set; } = default!;
+
+        public string ToJson()
+        {
+
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonSerializerSettings());
+
+        }
+        public static ListProjectsGroupsModel FromJson(string data)
+        {
+
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<ListProjectsGroupsModel>(data, new Newtonsoft.Json.JsonSerializerSettings());
+
+        }
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.2.0.0 (NJsonSchema v11.1.0.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class ProjectGroupDetails
+    {
+        [Newtonsoft.Json.JsonProperty("groupId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string? GroupId { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("trustName", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string? TrustName { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("trustReference", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string? TrustReference { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("groupReference", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string? GroupReference { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("projectDetails", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.List<ProjectGroupCardDetails>? ProjectDetails { get; set; } = default!;
+
+        public string ToJson()
+        {
+
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonSerializerSettings());
+
+        }
+        public static ProjectGroupDetails FromJson(string data)
+        {
+
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<ProjectGroupDetails>(data, new Newtonsoft.Json.JsonSerializerSettings());
+
+        }
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.2.0.0 (NJsonSchema v11.1.0.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class ProjectGroupCardDetails
+    {
+        [Newtonsoft.Json.JsonProperty("projectId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string? ProjectId { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("establishmentName", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string? EstablishmentName { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("urn", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string? Urn { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("projectType", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string? ProjectType { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("localAuthority", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string? LocalAuthority { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("region", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string? Region { get; set; } = default!;
+
+        public string ToJson()
+        {
+
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonSerializerSettings());
+
+        }
+        public static ProjectGroupCardDetails FromJson(string data)
+        {
+
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<ProjectGroupCardDetails>(data, new Newtonsoft.Json.JsonSerializerSettings());
+
+        }
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.2.0.0 (NJsonSchema v11.1.0.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class CreateHandoverConversionProjectCommand
+    {
+        [Newtonsoft.Json.JsonProperty("urn", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? Urn { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("incomingTrustUkprn", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? IncomingTrustUkprn { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("advisoryBoardDate", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonConverter(typeof(DateFormatConverter))]
+        public System.DateTime? AdvisoryBoardDate { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("provisionalConversionDate", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonConverter(typeof(DateFormatConverter))]
+        public System.DateTime? ProvisionalConversionDate { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("createdByEmail", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string? CreatedByEmail { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("createdByFirstName", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string? CreatedByFirstName { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("createdByLastName", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string? CreatedByLastName { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("prepareId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? PrepareId { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("directiveAcademyOrder", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? DirectiveAcademyOrder { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("advisoryBoardConditions", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string? AdvisoryBoardConditions { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("groupId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string? GroupId { get; set; } = default!;
+
+        public string ToJson()
+        {
+
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonSerializerSettings());
+
+        }
+        public static CreateHandoverConversionProjectCommand FromJson(string data)
+        {
+
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<CreateHandoverConversionProjectCommand>(data, new Newtonsoft.Json.JsonSerializerSettings());
 
         }
 
@@ -2239,6 +2993,9 @@ namespace Dfe.Complete.Client.Contracts
         [Newtonsoft.Json.JsonProperty("establishmentName", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string? EstablishmentName { get; set; } = default!;
 
+        [Newtonsoft.Json.JsonProperty("localAuthorityId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public LocalAuthorityId? LocalAuthorityId { get; set; } = default!;
+
         public string ToJson()
         {
 
@@ -2280,8 +3037,8 @@ namespace Dfe.Complete.Client.Contracts
         [Newtonsoft.Json.JsonProperty("userId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public UserId? UserId { get; set; } = default!;
 
-        [Newtonsoft.Json.JsonProperty("reason", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public SignificantDateHistoryReasonDto? Reason { get; set; } = default!;
+        [Newtonsoft.Json.JsonProperty("reasons", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.List<SignificantDateHistoryReasonDto>? Reasons { get; set; } = default!;
 
         [Newtonsoft.Json.JsonProperty("user", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public User? User { get; set; } = default!;
@@ -2658,14 +3415,143 @@ namespace Dfe.Complete.Client.Contracts
         [System.Runtime.Serialization.EnumMember(Value = @"LandQuestionnaire")]
         LandQuestionnaire = 1,
 
-        [System.Runtime.Serialization.EnumMember(Value = @"LandRegistry")]
-        LandRegistry = 2,
+        [System.Runtime.Serialization.EnumMember(Value = @"LandRegistryTitlePlans")]
+        LandRegistryTitlePlans = 2,
 
         [System.Runtime.Serialization.EnumMember(Value = @"StakeholderKickoff")]
         StakeholderKickoff = 3,
 
         [System.Runtime.Serialization.EnumMember(Value = @"SupplementalFundingAgreement")]
         SupplementalFundingAgreement = 4,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"ArticleOfAssociation")]
+        ArticleOfAssociation = 5,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"DeedOfNovationAndVariation")]
+        DeedOfNovationAndVariation = 6,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"DeedOfVariation")]
+        DeedOfVariation = 7,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"RedactAndSendDocuments")]
+        RedactAndSendDocuments = 8,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"ConfirmProposedCapacityOfTheAcademy")]
+        ConfirmProposedCapacityOfTheAcademy = 9,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"DeclarationOfExpenditureCertificate")]
+        DeclarationOfExpenditureCertificate = 10,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"ConfirmTransferHasAuthorityToProceed")]
+        ConfirmTransferHasAuthorityToProceed = 11,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"ConfirmDateAcademyTransferred")]
+        ConfirmDateAcademyTransferred = 12,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"ConfirmAllConditionsMet")]
+        ConfirmAllConditionsMet = 13,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"ReceiveGrantPaymentCertificate")]
+        ReceiveGrantPaymentCertificate = 14,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"ConfirmAcademyOpenedDate")]
+        ConfirmAcademyOpenedDate = 15,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"ChurchSupplementalAgreement")]
+        ChurchSupplementalAgreement = 16,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"CommercialTransferAgreement")]
+        CommercialTransferAgreement = 17,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"MainContact")]
+        MainContact = 18,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"MasterFundingAgreement")]
+        MasterFundingAgreement = 19,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"ConfirmIncomingTrustCeoContact")]
+        ConfirmIncomingTrustCeoContact = 20,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"ConfirmRiskProtectionArrangements")]
+        ConfirmRiskProtectionArrangements = 21,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"ConfirmRiskProtectionArrangementsPolicy")]
+        ConfirmRiskProtectionArrangementsPolicy = 22,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"CheckAccuracyOfHigherNeeds")]
+        CheckAccuracyOfHigherNeeds = 23,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"CompleteNotificationOfChange")]
+        CompleteNotificationOfChange = 24,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"ProcessConversionSupportGrant")]
+        ProcessConversionSupportGrant = 25,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"ConfirmAndProcessTheSponsoredSupportGrant")]
+        ConfirmAndProcessTheSponsoredSupportGrant = 26,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"ConfirmHeadTeacherDetails")]
+        ConfirmHeadTeacherDetails = 27,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"ConfirmChairOfGovernorsDetails")]
+        ConfirmChairOfGovernorsDetails = 28,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"TrustModificationOrder")]
+        TrustModificationOrder = 29,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"DirectionToTransfer")]
+        DirectionToTransfer = 30,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"OneHundredAndTwentyFiveYearLease")]
+        OneHundredAndTwentyFiveYearLease = 31,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"Subleases")]
+        Subleases = 32,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"TenancyAtWill")]
+        TenancyAtWill = 33,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"ConfirmSchoolHasCompletedAllActions")]
+        ConfirmSchoolHasCompletedAllActions = 34,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"ShareInformationAboutOpening")]
+        ShareInformationAboutOpening = 35,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"ConfirmOutgoingTrustCeoDetails")]
+        ConfirmOutgoingTrustCeoDetails = 36,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"RequestNewUrnAndRecordForAcademy")]
+        RequestNewUrnAndRecordForAcademy = 37,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"ConfirmTransferGrantFundingLevel")]
+        ConfirmTransferGrantFundingLevel = 38,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"CheckAndConfirmAcademyAndTrustFinancialInformation")]
+        CheckAndConfirmAcademyAndTrustFinancialInformation = 39,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"FormM")]
+        FormM = 40,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"ClosureOrTransferDeclaration")]
+        ClosureOrTransferDeclaration = 41,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"ConfirmBankDetailsForGeneralAnnualGrantPaymentNeedToChange")]
+        ConfirmBankDetailsForGeneralAnnualGrantPaymentNeedToChange = 42,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"ConfirmIncomingTrustHasCompletedAllActions")]
+        ConfirmIncomingTrustHasCompletedAllActions = 43,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"LandConsentLetter")]
+        LandConsentLetter = 44,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"DeedOfTerminationForMasterFundingAgreement")]
+        DeedOfTerminationForMasterFundingAgreement = 45,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"DeedOfTerminationForChurchSupplementalAgreement")]
+        DeedOfTerminationForChurchSupplementalAgreement = 46,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"AcademyDetails")]
+        AcademyDetails = 47,
 
     }
 
@@ -3111,6 +3997,248 @@ namespace Dfe.Complete.Client.Contracts
 
         [System.Runtime.Serialization.EnumMember(Value = @"DirectiveAcademyOrder")]
         DirectiveAcademyOrder = 1,
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.2.0.0 (NJsonSchema v11.1.0.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class KeyContactDto
+    {
+        [Newtonsoft.Json.JsonProperty("id", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public KeyContactId? Id { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("headteacherId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public ContactId? HeadteacherId { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("createdAt", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.DateTime? CreatedAt { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("updatedAt", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.DateTime? UpdatedAt { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("chairOfGovernorsId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public ContactId? ChairOfGovernorsId { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("incomingTrustCeoId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public ContactId? IncomingTrustCeoId { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("outgoingTrustCeoId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public ContactId? OutgoingTrustCeoId { get; set; } = default!;
+
+        public string ToJson()
+        {
+
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonSerializerSettings());
+
+        }
+        public static KeyContactDto FromJson(string data)
+        {
+
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<KeyContactDto>(data, new Newtonsoft.Json.JsonSerializerSettings());
+
+        }
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.2.0.0 (NJsonSchema v11.1.0.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class KeyContactId
+    {
+        [Newtonsoft.Json.JsonProperty("value", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Guid? Value { get; set; } = default!;
+
+        public string ToJson()
+        {
+
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonSerializerSettings());
+
+        }
+        public static KeyContactId FromJson(string data)
+        {
+
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<KeyContactId>(data, new Newtonsoft.Json.JsonSerializerSettings());
+
+        }
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.2.0.0 (NJsonSchema v11.1.0.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class UpdateSignificantDateCommand
+    {
+        [Newtonsoft.Json.JsonProperty("projectId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public ProjectId? ProjectId { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("significantDate", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonConverter(typeof(DateFormatConverter))]
+        public System.DateTime? SignificantDate { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("reasonNotes", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.Dictionary<SignificantDateReason, string>? ReasonNotes { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("userId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public UserId? UserId { get; set; } = default!;
+
+        public string ToJson()
+        {
+
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonSerializerSettings());
+
+        }
+        public static UpdateSignificantDateCommand FromJson(string data)
+        {
+
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<UpdateSignificantDateCommand>(data, new Newtonsoft.Json.JsonSerializerSettings());
+
+        }
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.2.0.0 (NJsonSchema v11.1.0.0 (Newtonsoft.Json v13.0.0.0))")]
+    public enum SignificantDateReason
+    {
+
+        [System.Runtime.Serialization.EnumMember(Value = @"AdvisoryBoardConditions")]
+        AdvisoryBoardConditions = 0,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"Buildings")]
+        Buildings = 1,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"CorrectingAnError")]
+        CorrectingAnError = 2,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"Diocese")]
+        Diocese = 3,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"Finance")]
+        Finance = 4,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"Governance")]
+        Governance = 5,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"IncomingTrust")]
+        IncomingTrust = 6,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"Land")]
+        Land = 7,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"LegacyReason")]
+        LegacyReason = 8,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"LegalDocuments")]
+        LegalDocuments = 9,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"LocalAuthority")]
+        LocalAuthority = 10,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"NegativePress")]
+        NegativePress = 11,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"OutgoingTrust")]
+        OutgoingTrust = 12,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"Pensions")]
+        Pensions = 13,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"ProgressingFasterThanExpected")]
+        ProgressingFasterThanExpected = 14,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"School")]
+        School = 15,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"StakeholderKickOff")]
+        StakeholderKickOff = 16,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"Tupe")]
+        Tupe = 17,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"Union")]
+        Union = 18,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"Viability")]
+        Viability = 19,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"VoluntaryDeferral")]
+        VoluntaryDeferral = 20,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"CommercialTransferAgreement")]
+        CommercialTransferAgreement = 21,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"Academy")]
+        Academy = 22,
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.2.0.0 (NJsonSchema v11.1.0.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class RecordDaoRevocationDecisionCommand
+    {
+        [Newtonsoft.Json.JsonProperty("projectId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public ProjectId? ProjectId { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("decisionMakerRole", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string? DecisionMakerRole { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("userId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public UserId? UserId { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("reasonNotes", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Collections.Generic.Dictionary<DaoRevokedReason, string>? ReasonNotes { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("ministerName", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string? MinisterName { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("decisionDate", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonConverter(typeof(DateFormatConverter))]
+        public System.DateTime? DecisionDate { get; set; } = default!;
+
+        public string ToJson()
+        {
+
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonSerializerSettings());
+
+        }
+        public static RecordDaoRevocationDecisionCommand FromJson(string data)
+        {
+
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<RecordDaoRevocationDecisionCommand>(data, new Newtonsoft.Json.JsonSerializerSettings());
+
+        }
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.2.0.0 (NJsonSchema v11.1.0.0 (Newtonsoft.Json v13.0.0.0))")]
+    public enum DaoRevokedReason
+    {
+
+        [System.Runtime.Serialization.EnumMember(Value = @"SchoolRatedGoodOrOutstanding")]
+        SchoolRatedGoodOrOutstanding = 0,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"SafeguardingConcernsAddressed")]
+        SafeguardingConcernsAddressed = 1,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"SchoolClosedOrClosing")]
+        SchoolClosedOrClosing = 2,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"ChangeToGovernmentPolicy")]
+        ChangeToGovernmentPolicy = 3,
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.2.0.0 (NJsonSchema v11.1.0.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class UpdateProjectCompletedCommand
+    {
+        [Newtonsoft.Json.JsonProperty("projectId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public ProjectId? ProjectId { get; set; } = default!;
+
+        public string ToJson()
+        {
+
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonSerializerSettings());
+
+        }
+        public static UpdateProjectCompletedCommand FromJson(string data)
+        {
+
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<UpdateProjectCompletedCommand>(data, new Newtonsoft.Json.JsonSerializerSettings());
+
+        }
 
     }
 
@@ -3744,6 +4872,1209 @@ namespace Dfe.Complete.Client.Contracts
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.2.0.0 (NJsonSchema v11.1.0.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class ConversionTaskDataDto
+    {
+        [Newtonsoft.Json.JsonProperty("id", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public TaskDataId? Id { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("handoverReview", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? HandoverReview { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("handoverNotes", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? HandoverNotes { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("handoverMeeting", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? HandoverMeeting { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("createdAt", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.DateTime? CreatedAt { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("updatedAt", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.DateTime? UpdatedAt { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("stakeholderKickOffIntroductoryEmails", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? StakeholderKickOffIntroductoryEmails { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("stakeholderKickOffLocalAuthorityProforma", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? StakeholderKickOffLocalAuthorityProforma { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("stakeholderKickOffSetupMeeting", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? StakeholderKickOffSetupMeeting { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("stakeholderKickOffMeeting", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? StakeholderKickOffMeeting { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("conversionGrantCheckVendorAccount", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? ConversionGrantCheckVendorAccount { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("conversionGrantPaymentForm", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? ConversionGrantPaymentForm { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("conversionGrantSendInformation", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? ConversionGrantSendInformation { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("conversionGrantSharePaymentDate", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? ConversionGrantSharePaymentDate { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("landQuestionnaireReceived", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? LandQuestionnaireReceived { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("landQuestionnaireCleared", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? LandQuestionnaireCleared { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("landQuestionnaireSigned", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? LandQuestionnaireSigned { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("landQuestionnaireSaved", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? LandQuestionnaireSaved { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("landRegistryReceived", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? LandRegistryReceived { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("landRegistryCleared", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? LandRegistryCleared { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("landRegistrySaved", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? LandRegistrySaved { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("supplementalFundingAgreementReceived", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? SupplementalFundingAgreementReceived { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("supplementalFundingAgreementCleared", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? SupplementalFundingAgreementCleared { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("supplementalFundingAgreementSigned", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? SupplementalFundingAgreementSigned { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("supplementalFundingAgreementSaved", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? SupplementalFundingAgreementSaved { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("supplementalFundingAgreementSent", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? SupplementalFundingAgreementSent { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("supplementalFundingAgreementSignedSecretaryState", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? SupplementalFundingAgreementSignedSecretaryState { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("churchSupplementalAgreementReceived", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? ChurchSupplementalAgreementReceived { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("churchSupplementalAgreementCleared", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? ChurchSupplementalAgreementCleared { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("churchSupplementalAgreementSigned", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? ChurchSupplementalAgreementSigned { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("churchSupplementalAgreementSignedDiocese", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? ChurchSupplementalAgreementSignedDiocese { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("churchSupplementalAgreementSaved", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? ChurchSupplementalAgreementSaved { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("churchSupplementalAgreementSent", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? ChurchSupplementalAgreementSent { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("churchSupplementalAgreementSignedSecretaryState", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? ChurchSupplementalAgreementSignedSecretaryState { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("masterFundingAgreementReceived", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? MasterFundingAgreementReceived { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("masterFundingAgreementCleared", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? MasterFundingAgreementCleared { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("masterFundingAgreementSigned", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? MasterFundingAgreementSigned { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("masterFundingAgreementSaved", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? MasterFundingAgreementSaved { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("masterFundingAgreementSent", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? MasterFundingAgreementSent { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("masterFundingAgreementSignedSecretaryState", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? MasterFundingAgreementSignedSecretaryState { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("articlesOfAssociationReceived", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? ArticlesOfAssociationReceived { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("articlesOfAssociationCleared", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? ArticlesOfAssociationCleared { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("articlesOfAssociationSigned", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? ArticlesOfAssociationSigned { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("articlesOfAssociationSaved", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? ArticlesOfAssociationSaved { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("deedOfVariationReceived", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? DeedOfVariationReceived { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("deedOfVariationCleared", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? DeedOfVariationCleared { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("deedOfVariationSigned", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? DeedOfVariationSigned { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("deedOfVariationSaved", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? DeedOfVariationSaved { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("deedOfVariationSent", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? DeedOfVariationSent { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("deedOfVariationSignedSecretaryState", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? DeedOfVariationSignedSecretaryState { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("trustModificationOrderReceived", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? TrustModificationOrderReceived { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("trustModificationOrderSentLegal", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? TrustModificationOrderSentLegal { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("trustModificationOrderCleared", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? TrustModificationOrderCleared { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("trustModificationOrderSaved", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? TrustModificationOrderSaved { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("directionToTransferReceived", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? DirectionToTransferReceived { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("directionToTransferCleared", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? DirectionToTransferCleared { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("directionToTransferSigned", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? DirectionToTransferSigned { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("directionToTransferSaved", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? DirectionToTransferSaved { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("schoolCompletedEmailed", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? SchoolCompletedEmailed { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("schoolCompletedSaved", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? SchoolCompletedSaved { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("redactAndSendRedact", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? RedactAndSendRedact { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("redactAndSendSaveRedaction", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? RedactAndSendSaveRedaction { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("redactAndSendSendRedaction", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? RedactAndSendSendRedaction { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("updateEsfaUpdate", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? UpdateEsfaUpdate { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("receiveGrantPaymentCertificateSaveCertificate", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? ReceiveGrantPaymentCertificateSaveCertificate { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("oneHundredAndTwentyFiveYearLeaseEmail", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? OneHundredAndTwentyFiveYearLeaseEmail { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("oneHundredAndTwentyFiveYearLeaseReceive", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? OneHundredAndTwentyFiveYearLeaseReceive { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("oneHundredAndTwentyFiveYearLeaseSaveLease", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? OneHundredAndTwentyFiveYearLeaseSaveLease { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("subleasesReceived", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? SubleasesReceived { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("subleasesCleared", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? SubleasesCleared { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("subleasesSigned", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? SubleasesSigned { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("subleasesSaved", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? SubleasesSaved { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("subleasesEmailSigned", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? SubleasesEmailSigned { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("subleasesReceiveSigned", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? SubleasesReceiveSigned { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("subleasesSaveSigned", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? SubleasesSaveSigned { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("tenancyAtWillEmailSigned", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? TenancyAtWillEmailSigned { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("tenancyAtWillReceiveSigned", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? TenancyAtWillReceiveSigned { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("tenancyAtWillSaveSigned", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? TenancyAtWillSaveSigned { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("shareInformationEmail", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? ShareInformationEmail { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("redactAndSendSendSolicitors", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? RedactAndSendSendSolicitors { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("articlesOfAssociationNotApplicable", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? ArticlesOfAssociationNotApplicable { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("churchSupplementalAgreementNotApplicable", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? ChurchSupplementalAgreementNotApplicable { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("deedOfVariationNotApplicable", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? DeedOfVariationNotApplicable { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("directionToTransferNotApplicable", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? DirectionToTransferNotApplicable { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("masterFundingAgreementNotApplicable", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? MasterFundingAgreementNotApplicable { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("oneHundredAndTwentyFiveYearLeaseNotApplicable", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? OneHundredAndTwentyFiveYearLeaseNotApplicable { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("subleasesNotApplicable", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? SubleasesNotApplicable { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("tenancyAtWillNotApplicable", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? TenancyAtWillNotApplicable { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("trustModificationOrderNotApplicable", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? TrustModificationOrderNotApplicable { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("stakeholderKickOffCheckProvisionalConversionDate", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? StakeholderKickOffCheckProvisionalConversionDate { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("conversionGrantNotApplicable", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? ConversionGrantNotApplicable { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("sponsoredSupportGrantPaymentAmount", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? SponsoredSupportGrantPaymentAmount { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("sponsoredSupportGrantPaymentForm", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? SponsoredSupportGrantPaymentForm { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("sponsoredSupportGrantSendInformation", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? SponsoredSupportGrantSendInformation { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("sponsoredSupportGrantInformTrust", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? SponsoredSupportGrantInformTrust { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("sponsoredSupportGrantNotApplicable", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? SponsoredSupportGrantNotApplicable { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("handoverNotApplicable", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? HandoverNotApplicable { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("academyDetailsName", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string? AcademyDetailsName { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("riskProtectionArrangementOption", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
+        public RiskProtectionArrangementOption? RiskProtectionArrangementOption { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("checkAccuracyOfHigherNeedsConfirmNumber", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? CheckAccuracyOfHigherNeedsConfirmNumber { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("checkAccuracyOfHigherNeedsConfirmPublishedNumber", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? CheckAccuracyOfHigherNeedsConfirmPublishedNumber { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("completeNotificationOfChangeNotApplicable", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? CompleteNotificationOfChangeNotApplicable { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("completeNotificationOfChangeTellLocalAuthority", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? CompleteNotificationOfChangeTellLocalAuthority { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("completeNotificationOfChangeCheckDocument", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? CompleteNotificationOfChangeCheckDocument { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("completeNotificationOfChangeSendDocument", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? CompleteNotificationOfChangeSendDocument { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("sponsoredSupportGrantType", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string? SponsoredSupportGrantType { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("proposedCapacityOfTheAcademyNotApplicable", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? ProposedCapacityOfTheAcademyNotApplicable { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("proposedCapacityOfTheAcademyReceptionToSixYears", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string? ProposedCapacityOfTheAcademyReceptionToSixYears { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("proposedCapacityOfTheAcademySevenToElevenYears", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string? ProposedCapacityOfTheAcademySevenToElevenYears { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("proposedCapacityOfTheAcademyTwelveOrAboveYears", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string? ProposedCapacityOfTheAcademyTwelveOrAboveYears { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("receiveGrantPaymentCertificateDateReceived", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonConverter(typeof(DateFormatConverter))]
+        public System.DateTime? ReceiveGrantPaymentCertificateDateReceived { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("receiveGrantPaymentCertificateCheckCertificate", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? ReceiveGrantPaymentCertificateCheckCertificate { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("receiveGrantPaymentCertificateNotApplicable", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? ReceiveGrantPaymentCertificateNotApplicable { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("confirmDateAcademyOpenedDateOpened", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonConverter(typeof(DateFormatConverter))]
+        public System.DateTime? ConfirmDateAcademyOpenedDateOpened { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("riskProtectionArrangementReason", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string? RiskProtectionArrangementReason { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("articlesOfAssociationSent", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? ArticlesOfAssociationSent { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("commercialTransferAgreementAgreed", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? CommercialTransferAgreementAgreed { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("commercialTransferAgreementSigned", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? CommercialTransferAgreementSigned { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("commercialTransferAgreementQuestionsReceived", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? CommercialTransferAgreementQuestionsReceived { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("commercialTransferAgreementQuestionsChecked", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? CommercialTransferAgreementQuestionsChecked { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("commercialTransferAgreementSaved", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? CommercialTransferAgreementSaved { get; set; } = default!;
+
+        public string ToJson()
+        {
+
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonSerializerSettings());
+
+        }
+        public static ConversionTaskDataDto FromJson(string data)
+        {
+
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<ConversionTaskDataDto>(data, new Newtonsoft.Json.JsonSerializerSettings());
+
+        }
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.2.0.0 (NJsonSchema v11.1.0.0 (Newtonsoft.Json v13.0.0.0))")]
+    public enum RiskProtectionArrangementOption
+    {
+
+        [System.Runtime.Serialization.EnumMember(Value = @"Standard")]
+        Standard = 0,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"ChurchOrTrust")]
+        ChurchOrTrust = 1,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"Commercial")]
+        Commercial = 2,
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.2.0.0 (NJsonSchema v11.1.0.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class UpdateHandoverWithDeliveryOfficerTaskCommand
+    {
+        [Newtonsoft.Json.JsonProperty("taskDataId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public TaskDataId? TaskDataId { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("projectType", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
+        public ProjectType? ProjectType { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("notApplicable", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? NotApplicable { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("handoverReview", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? HandoverReview { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("handoverNotes", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? HandoverNotes { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("handoverMeetings", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? HandoverMeetings { get; set; } = default!;
+
+        public string ToJson()
+        {
+
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonSerializerSettings());
+
+        }
+        public static UpdateHandoverWithDeliveryOfficerTaskCommand FromJson(string data)
+        {
+
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<UpdateHandoverWithDeliveryOfficerTaskCommand>(data, new Newtonsoft.Json.JsonSerializerSettings());
+
+        }
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.2.0.0 (NJsonSchema v11.1.0.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class UpdateArticleOfAssociationTaskCommand
+    {
+        [Newtonsoft.Json.JsonProperty("taskDataId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public TaskDataId? TaskDataId { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("projectType", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
+        public ProjectType? ProjectType { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("notApplicable", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? NotApplicable { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("cleared", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? Cleared { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("received", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? Received { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("sent", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? Sent { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("signed", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? Signed { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("saved", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? Saved { get; set; } = default!;
+
+        public string ToJson()
+        {
+
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonSerializerSettings());
+
+        }
+        public static UpdateArticleOfAssociationTaskCommand FromJson(string data)
+        {
+
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<UpdateArticleOfAssociationTaskCommand>(data, new Newtonsoft.Json.JsonSerializerSettings());
+
+        }
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.2.0.0 (NJsonSchema v11.1.0.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class UpdateDeedOfNovationAndVariationTaskCommand
+    {
+        [Newtonsoft.Json.JsonProperty("taskDataId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public TaskDataId? TaskDataId { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("received", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? Received { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("cleared", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? Cleared { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("signedOutgoingTrust", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? SignedOutgoingTrust { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("signedIncomingTrust", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? SignedIncomingTrust { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("saved", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? Saved { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("signedSecretaryState", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? SignedSecretaryState { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("savedAfterSign", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? SavedAfterSign { get; set; } = default!;
+
+        public string ToJson()
+        {
+
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonSerializerSettings());
+
+        }
+        public static UpdateDeedOfNovationAndVariationTaskCommand FromJson(string data)
+        {
+
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<UpdateDeedOfNovationAndVariationTaskCommand>(data, new Newtonsoft.Json.JsonSerializerSettings());
+
+        }
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.2.0.0 (NJsonSchema v11.1.0.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class UpdateDeedOfVariationTaskCommand
+    {
+        [Newtonsoft.Json.JsonProperty("taskDataId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public TaskDataId? TaskDataId { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("projectType", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
+        public ProjectType? ProjectType { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("received", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? Received { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("cleared", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? Cleared { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("sent", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? Sent { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("saved", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? Saved { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("signed", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? Signed { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("signedSecretaryState", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? SignedSecretaryState { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("notApplicable", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? NotApplicable { get; set; } = default!;
+
+        public string ToJson()
+        {
+
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonSerializerSettings());
+
+        }
+        public static UpdateDeedOfVariationTaskCommand FromJson(string data)
+        {
+
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<UpdateDeedOfVariationTaskCommand>(data, new Newtonsoft.Json.JsonSerializerSettings());
+
+        }
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.2.0.0 (NJsonSchema v11.1.0.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class UpdateExternalStakeholderKickOffTaskCommand
+    {
+        [Newtonsoft.Json.JsonProperty("projectId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public ProjectId? ProjectId { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("stakeholderKickOffIntroductoryEmails", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? StakeholderKickOffIntroductoryEmails { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("localAuthorityProforma", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? LocalAuthorityProforma { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("checkProvisionalDate", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? CheckProvisionalDate { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("stakeholderKickOffSetupMeeting", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? StakeholderKickOffSetupMeeting { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("stakeholderKickOffMeeting", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? StakeholderKickOffMeeting { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("significantDate", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonConverter(typeof(DateFormatConverter))]
+        public System.DateTime? SignificantDate { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("userEmail", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string? UserEmail { get; set; } = default!;
+
+        public string ToJson()
+        {
+
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonSerializerSettings());
+
+        }
+        public static UpdateExternalStakeholderKickOffTaskCommand FromJson(string data)
+        {
+
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<UpdateExternalStakeholderKickOffTaskCommand>(data, new Newtonsoft.Json.JsonSerializerSettings());
+
+        }
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.2.0.0 (NJsonSchema v11.1.0.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class UpdateSupplementalFundingAgreementTaskCommand
+    {
+        [Newtonsoft.Json.JsonProperty("taskDataId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public TaskDataId? TaskDataId { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("projectType", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
+        public ProjectType? ProjectType { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("received", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? Received { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("cleared", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? Cleared { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("sent", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? Sent { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("saved", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? Saved { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("signed", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? Signed { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("signedSecretaryState", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? SignedSecretaryState { get; set; } = default!;
+
+        public string ToJson()
+        {
+
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonSerializerSettings());
+
+        }
+        public static UpdateSupplementalFundingAgreementTaskCommand FromJson(string data)
+        {
+
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<UpdateSupplementalFundingAgreementTaskCommand>(data, new Newtonsoft.Json.JsonSerializerSettings());
+
+        }
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.2.0.0 (NJsonSchema v11.1.0.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class UpdateRedactAndSendDocumentsTaskCommand
+    {
+        [Newtonsoft.Json.JsonProperty("taskDataId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public TaskDataId? TaskDataId { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("projectType", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
+        public ProjectType? ProjectType { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("redact", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? Redact { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("saved", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? Saved { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("sendToEsfa", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? SendToEsfa { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("send", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? Send { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("sendToSolicitors", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? SendToSolicitors { get; set; } = default!;
+
+        public string ToJson()
+        {
+
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonSerializerSettings());
+
+        }
+        public static UpdateRedactAndSendDocumentsTaskCommand FromJson(string data)
+        {
+
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<UpdateRedactAndSendDocumentsTaskCommand>(data, new Newtonsoft.Json.JsonSerializerSettings());
+
+        }
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.2.0.0 (NJsonSchema v11.1.0.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class UpdateConfirmProposedCapacityOfTheAcademyTaskCommand
+    {
+        [Newtonsoft.Json.JsonProperty("taskDataId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public TaskDataId? TaskDataId { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("notApplicable", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? NotApplicable { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("receptionToSixYears", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string? ReceptionToSixYears { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("sevenToElevenYears", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string? SevenToElevenYears { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("twelveOrAboveYears", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string? TwelveOrAboveYears { get; set; } = default!;
+
+        public string ToJson()
+        {
+
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonSerializerSettings());
+
+        }
+        public static UpdateConfirmProposedCapacityOfTheAcademyTaskCommand FromJson(string data)
+        {
+
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<UpdateConfirmProposedCapacityOfTheAcademyTaskCommand>(data, new Newtonsoft.Json.JsonSerializerSettings());
+
+        }
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.2.0.0 (NJsonSchema v11.1.0.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class UpdateDeclarationOfExpenditureCertificateTaskCommand
+    {
+        [Newtonsoft.Json.JsonProperty("taskDataId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public TaskDataId? TaskDataId { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("projectType", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
+        public ProjectType? ProjectType { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("dateReceived", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonConverter(typeof(DateFormatConverter))]
+        public System.DateTime? DateReceived { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("notApplicable", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? NotApplicable { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("checkCertificate", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? CheckCertificate { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("saved", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? Saved { get; set; } = default!;
+
+        public string ToJson()
+        {
+
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonSerializerSettings());
+
+        }
+        public static UpdateDeclarationOfExpenditureCertificateTaskCommand FromJson(string data)
+        {
+
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<UpdateDeclarationOfExpenditureCertificateTaskCommand>(data, new Newtonsoft.Json.JsonSerializerSettings());
+
+        }
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.2.0.0 (NJsonSchema v11.1.0.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class UpdateConfirmTransferHasAuthorityToProceedTaskCommand
+    {
+        [Newtonsoft.Json.JsonProperty("taskDataId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public TaskDataId? TaskDataId { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("anyInformationChanged", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? AnyInformationChanged { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("baselineSheetApproved", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? BaselineSheetApproved { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("confirmToProceed", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? ConfirmToProceed { get; set; } = default!;
+
+        public string ToJson()
+        {
+
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonSerializerSettings());
+
+        }
+        public static UpdateConfirmTransferHasAuthorityToProceedTaskCommand FromJson(string data)
+        {
+
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<UpdateConfirmTransferHasAuthorityToProceedTaskCommand>(data, new Newtonsoft.Json.JsonSerializerSettings());
+
+        }
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.2.0.0 (NJsonSchema v11.1.0.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class UpdateConfirmDateAcademyTransferredTaskCommand
+    {
+        [Newtonsoft.Json.JsonProperty("taskDataId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public TaskDataId? TaskDataId { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("dateAcademyTransferred", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonConverter(typeof(DateFormatConverter))]
+        public System.DateTime? DateAcademyTransferred { get; set; } = default!;
+
+        public string ToJson()
+        {
+
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonSerializerSettings());
+
+        }
+        public static UpdateConfirmDateAcademyTransferredTaskCommand FromJson(string data)
+        {
+
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<UpdateConfirmDateAcademyTransferredTaskCommand>(data, new Newtonsoft.Json.JsonSerializerSettings());
+
+        }
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.2.0.0 (NJsonSchema v11.1.0.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class UpdateConfirmAllConditionsMetTaskCommand
+    {
+        [Newtonsoft.Json.JsonProperty("projectId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public ProjectId? ProjectId { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("confirm", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? Confirm { get; set; } = default!;
+
+        public string ToJson()
+        {
+
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonSerializerSettings());
+
+        }
+        public static UpdateConfirmAllConditionsMetTaskCommand FromJson(string data)
+        {
+
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<UpdateConfirmAllConditionsMetTaskCommand>(data, new Newtonsoft.Json.JsonSerializerSettings());
+
+        }
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.2.0.0 (NJsonSchema v11.1.0.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class UpdateConfirmAcademyOpenedDateTaskCommand
+    {
+        [Newtonsoft.Json.JsonProperty("taskDataId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public TaskDataId? TaskDataId { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("academyOpenedDate", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonConverter(typeof(DateFormatConverter))]
+        public System.DateTime? AcademyOpenedDate { get; set; } = default!;
+
+        public string ToJson()
+        {
+
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonSerializerSettings());
+
+        }
+        public static UpdateConfirmAcademyOpenedDateTaskCommand FromJson(string data)
+        {
+
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<UpdateConfirmAcademyOpenedDateTaskCommand>(data, new Newtonsoft.Json.JsonSerializerSettings());
+
+        }
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.2.0.0 (NJsonSchema v11.1.0.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class UpdateChurchSupplementalAgreementTaskCommand
+    {
+        [Newtonsoft.Json.JsonProperty("taskDataId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public TaskDataId? TaskDataId { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("projectType", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
+        public ProjectType? ProjectType { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("notApplicable", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? NotApplicable { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("received", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? Received { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("cleared", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? Cleared { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("signed", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? Signed { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("signedByDiocese", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? SignedByDiocese { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("saved", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? Saved { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("signedBySecretaryState", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? SignedBySecretaryState { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("sentOrSaved", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? SentOrSaved { get; set; } = default!;
+
+        public string ToJson()
+        {
+
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonSerializerSettings());
+
+        }
+        public static UpdateChurchSupplementalAgreementTaskCommand FromJson(string data)
+        {
+
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<UpdateChurchSupplementalAgreementTaskCommand>(data, new Newtonsoft.Json.JsonSerializerSettings());
+
+        }
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.2.0.0 (NJsonSchema v11.1.0.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class UpdateCommercialAgreementTaskCommand
+    {
+        [Newtonsoft.Json.JsonProperty("taskDataId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public TaskDataId? TaskDataId { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("projectType", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
+        public ProjectType? ProjectType { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("agreed", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? Agreed { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("signed", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? Signed { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("questionsReceived", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? QuestionsReceived { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("questionsChecked", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? QuestionsChecked { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("saved", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? Saved { get; set; } = default!;
+
+        public string ToJson()
+        {
+
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonSerializerSettings());
+
+        }
+        public static UpdateCommercialAgreementTaskCommand FromJson(string data)
+        {
+
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<UpdateCommercialAgreementTaskCommand>(data, new Newtonsoft.Json.JsonSerializerSettings());
+
+        }
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.2.0.0 (NJsonSchema v11.1.0.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class UpdateMainContactTaskCommand
+    {
+        [Newtonsoft.Json.JsonProperty("projectId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public ProjectId? ProjectId { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("mainContactId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public ContactId? MainContactId { get; set; } = default!;
+
+        public string ToJson()
+        {
+
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonSerializerSettings());
+
+        }
+        public static UpdateMainContactTaskCommand FromJson(string data)
+        {
+
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<UpdateMainContactTaskCommand>(data, new Newtonsoft.Json.JsonSerializerSettings());
+
+        }
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.2.0.0 (NJsonSchema v11.1.0.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class UpdateLandQuestionnaireTaskCommand
+    {
+        [Newtonsoft.Json.JsonProperty("taskDataId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public TaskDataId? TaskDataId { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("received", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? Received { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("cleared", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? Cleared { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("signed", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? Signed { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("saved", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? Saved { get; set; } = default!;
+
+        public string ToJson()
+        {
+
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonSerializerSettings());
+
+        }
+        public static UpdateLandQuestionnaireTaskCommand FromJson(string data)
+        {
+
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<UpdateLandQuestionnaireTaskCommand>(data, new Newtonsoft.Json.JsonSerializerSettings());
+
+        }
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.2.0.0 (NJsonSchema v11.1.0.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class UpdateLandRegistryTitlePlansTaskCommand
+    {
+        [Newtonsoft.Json.JsonProperty("taskDataId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public TaskDataId? TaskDataId { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("received", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? Received { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("cleared", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? Cleared { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("saved", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? Saved { get; set; } = default!;
+
+        public string ToJson()
+        {
+
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonSerializerSettings());
+
+        }
+        public static UpdateLandRegistryTitlePlansTaskCommand FromJson(string data)
+        {
+
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<UpdateLandRegistryTitlePlansTaskCommand>(data, new Newtonsoft.Json.JsonSerializerSettings());
+
+        }
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.2.0.0 (NJsonSchema v11.1.0.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class UpdateMasterFundingAgreementTaskCommand
+    {
+        [Newtonsoft.Json.JsonProperty("taskDataId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public TaskDataId? TaskDataId { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("projectType", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
+        public ProjectType? ProjectType { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("notApplicable", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? NotApplicable { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("received", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? Received { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("cleared", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? Cleared { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("signed", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? Signed { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("saved", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? Saved { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("sent", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? Sent { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("signedSecretaryState", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? SignedSecretaryState { get; set; } = default!;
+
+        public string ToJson()
+        {
+
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonSerializerSettings());
+
+        }
+        public static UpdateMasterFundingAgreementTaskCommand FromJson(string data)
+        {
+
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<UpdateMasterFundingAgreementTaskCommand>(data, new Newtonsoft.Json.JsonSerializerSettings());
+
+        }
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.2.0.0 (NJsonSchema v11.1.0.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class UpdateIncomingTrustCeoCommand
+    {
+        [Newtonsoft.Json.JsonProperty("keyContactId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public KeyContactId? KeyContactId { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("incomingTrustCeoId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public ContactId? IncomingTrustCeoId { get; set; } = default!;
+
+        public string ToJson()
+        {
+
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonSerializerSettings());
+
+        }
+        public static UpdateIncomingTrustCeoCommand FromJson(string data)
+        {
+
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<UpdateIncomingTrustCeoCommand>(data, new Newtonsoft.Json.JsonSerializerSettings());
+
+        }
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.2.0.0 (NJsonSchema v11.1.0.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class UpdateConfirmAcademyRiskProtectionArrangementsTaskCommand
+    {
+        [Newtonsoft.Json.JsonProperty("taskDataId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public TaskDataId? TaskDataId { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("projectType", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
+        public ProjectType? ProjectType { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("rpaPolicyConfirm", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? RpaPolicyConfirm { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("rpaOption", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
+        public RiskProtectionArrangementOption? RpaOption { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("rpaReason", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string? RpaReason { get; set; } = default!;
+
+        public string ToJson()
+        {
+
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonSerializerSettings());
+
+        }
+        public static UpdateConfirmAcademyRiskProtectionArrangementsTaskCommand FromJson(string data)
+        {
+
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<UpdateConfirmAcademyRiskProtectionArrangementsTaskCommand>(data, new Newtonsoft.Json.JsonSerializerSettings());
+
+        }
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.2.0.0 (NJsonSchema v11.1.0.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class UpdateHeadTeacherCommand
+    {
+        [Newtonsoft.Json.JsonProperty("keyContactId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public KeyContactId? KeyContactId { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("headTeacherId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public ContactId? HeadTeacherId { get; set; } = default!;
+
+        public string ToJson()
+        {
+
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonSerializerSettings());
+
+        }
+        public static UpdateHeadTeacherCommand FromJson(string data)
+        {
+
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<UpdateHeadTeacherCommand>(data, new Newtonsoft.Json.JsonSerializerSettings());
+
+        }
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.2.0.0 (NJsonSchema v11.1.0.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class UpdateAcademyAndTrustFinancialInformationTaskCommand
+    {
+        [Newtonsoft.Json.JsonProperty("taskDataId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public TaskDataId? TaskDataId { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("notApplicable", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? NotApplicable { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("academySurplusOrDeficit", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string? AcademySurplusOrDeficit { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("trustSurplusOrDeficit", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string? TrustSurplusOrDeficit { get; set; } = default!;
+
+        public string ToJson()
+        {
+
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonSerializerSettings());
+
+        }
+        public static UpdateAcademyAndTrustFinancialInformationTaskCommand FromJson(string data)
+        {
+
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<UpdateAcademyAndTrustFinancialInformationTaskCommand>(data, new Newtonsoft.Json.JsonSerializerSettings());
+
+        }
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.2.0.0 (NJsonSchema v11.1.0.0 (Newtonsoft.Json v13.0.0.0))")]
     public partial class ListTrustsWithProjectsResultModel
     {
         [Newtonsoft.Json.JsonProperty("identifier", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
@@ -3771,6 +6102,71 @@ namespace Dfe.Complete.Client.Contracts
         {
 
             return Newtonsoft.Json.JsonConvert.DeserializeObject<ListTrustsWithProjectsResultModel>(data, new Newtonsoft.Json.JsonSerializerSettings());
+
+        }
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.2.0.0 (NJsonSchema v11.1.0.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class CreateUserCommand
+    {
+        [Newtonsoft.Json.JsonProperty("firstName", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string? FirstName { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("lastName", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string? LastName { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("email", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string? Email { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("team", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
+        public ProjectTeam? Team { get; set; } = default!;
+
+        public string ToJson()
+        {
+
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonSerializerSettings());
+
+        }
+        public static CreateUserCommand FromJson(string data)
+        {
+
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<CreateUserCommand>(data, new Newtonsoft.Json.JsonSerializerSettings());
+
+        }
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.2.0.0 (NJsonSchema v11.1.0.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class UpdateUserCommand
+    {
+        [Newtonsoft.Json.JsonProperty("id", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public UserId? Id { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("firstName", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string? FirstName { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("lastName", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string? LastName { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("email", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string? Email { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("team", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
+        public ProjectTeam? Team { get; set; } = default!;
+
+        public string ToJson()
+        {
+
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonSerializerSettings());
+
+        }
+        public static UpdateUserCommand FromJson(string data)
+        {
+
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<UpdateUserCommand>(data, new Newtonsoft.Json.JsonSerializerSettings());
 
         }
 
@@ -3849,6 +6245,9 @@ namespace Dfe.Complete.Client.Contracts
 
         [Newtonsoft.Json.JsonProperty("transferProjectsAssigned", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public int? TransferProjectsAssigned { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("latestSession", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.DateTime? LatestSession { get; set; } = default!;
 
         public string ToJson()
         {

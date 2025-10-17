@@ -1,7 +1,7 @@
 ﻿using AutoFixture;
 using Dfe.Complete.Domain.Entities;
 using Dfe.Complete.Domain.ValueObjects;
-using DfE.CoreLibs.Testing.AutoFixture.Customizations;
+using GovUK.Dfe.CoreLibs.Testing.AutoFixture.Customizations;
 
 namespace Dfe.Complete.Tests.Common.Customizations.Models
 {
@@ -20,7 +20,7 @@ namespace Dfe.Complete.Tests.Common.Customizations.Models
                     .With(x => x.Id, Id ?? fixture.Create<SignificantDateHistoryId>())
                     .With(x => x.ProjectId, ProjectId ?? fixture.Create<ProjectId>())
                     .With(x => x.User, User ?? fixture.Create<User>())
-                    .With(x => x.Reason, fixture.Create<SignificantDateHistoryReason>()));
+                    .With(x => x.Reasons, fixture.Create<ICollection<SignificantDateHistoryReason>>()));
         }
     }
 }

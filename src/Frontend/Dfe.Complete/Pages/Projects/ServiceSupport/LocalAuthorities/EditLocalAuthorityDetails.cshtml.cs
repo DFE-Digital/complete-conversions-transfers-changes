@@ -1,4 +1,3 @@
-using Azure.Core;
 using Dfe.Complete.Application.LocalAuthorities.Commands;
 using Dfe.Complete.Application.LocalAuthorities.Models;
 using Dfe.Complete.Application.LocalAuthorities.Queries;
@@ -6,12 +5,14 @@ using Dfe.Complete.Constants;
 using Dfe.Complete.Domain.Constants;
 using Dfe.Complete.Domain.ValueObjects;
 using Dfe.Complete.Models;
-using Dfe.Complete.Services;
+using Dfe.Complete.Services.Interfaces;
 using Dfe.Complete.Validators;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
+
+using ValidationConstants = Dfe.Complete.Constants.ValidationConstants;
 
 namespace Dfe.Complete.Pages.Projects.ServiceSupport.LocalAuthorities
 {
@@ -89,7 +90,7 @@ namespace Dfe.Complete.Pages.Projects.ServiceSupport.LocalAuthorities
             //get contact id. 
             var contactId = ContactId.HasValue ? new ContactId(ContactId.Value) : new ContactId(Guid.NewGuid());
             var response = await sender.Send(new UpdateLocalAuthorityCommand(new LocalAuthorityId(new Guid(Id)), Code, Address1,
-                Address2, Address3, AddressTown, AddressCounty, AddressPostcode, contactId, Title, ContactName, Email, Phone));
+                Address2, Address3, AddressTown, AddressCounty, AddressPostcode.ToUpper(), contactId, Title, ContactName, Email, Phone));
             if (response.IsSuccess)
             {
                 TempData["HasUpdatedLaDetails"] = true;

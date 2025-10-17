@@ -9,10 +9,10 @@ using Dfe.Complete.Infrastructure.Database;
 using Dfe.Complete.Tests.Common.Constants;
 using Dfe.Complete.Tests.Common.Customizations.Behaviours;
 using Dfe.Complete.Tests.Common.Customizations.Models;
-using DfE.CoreLibs.Testing.AutoFixture.Attributes;
-using DfE.CoreLibs.Testing.AutoFixture.Customizations;
-using DfE.CoreLibs.Testing.Mocks.WebApplicationFactory;
-using DfE.CoreLibs.Testing.Mocks.WireMock;
+using GovUK.Dfe.CoreLibs.Testing.AutoFixture.Attributes;
+using GovUK.Dfe.CoreLibs.Testing.AutoFixture.Customizations;
+using GovUK.Dfe.CoreLibs.Testing.Mocks.WebApplicationFactory;
+using GovUK.Dfe.CoreLibs.Testing.Mocks.WireMock;
 using Contact = Dfe.Complete.Domain.Entities.Contact;
 using ContactCategory = Dfe.Complete.Domain.Enums.ContactCategory;
 using ContactId = Dfe.Complete.Domain.ValueObjects.ContactId;
@@ -157,7 +157,7 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers
             keyContact.HeadteacherId = headteacher.Id;
             keyContact.IncomingTrustCeoId = incomingCeoContact.Id;
             keyContact.ProjectId = project.Id;
-            keyContact.Id = new KeyContactId(Guid.NewGuid());
+            keyContact.Id = new Domain.ValueObjects.KeyContactId(Guid.NewGuid());
             dbContext.KeyContacts.Add(keyContact);
 
             var projectContacts = new List<Contact>
@@ -189,7 +189,7 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers
                 }
             ).Create<SignificantDateHistoryReason>();
             
-            significantDateHistory.Reason = significantDateHistoryReason;
+            significantDateHistory.Reasons = new List<SignificantDateHistoryReason>() { significantDateHistoryReason };
 
             dbContext.SignificantDateHistories.Add(significantDateHistory);
 
@@ -198,8 +198,8 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers
             var trustDto = fixture.Customize(new TrustDtoCustomization {Ukprn = project.IncomingTrustUkprn.Value.ToString()}).Create<TrustDto>();
         
             Assert.NotNull(factory.WireMockServer);
-            
-            factory.WireMockServer.AddGetWithJsonResponse($"/v4/trusts/bulk", new[]{trustDto}, new List<KeyValuePair<string, string>> {new("ukprns", trustDto.Ukprn!)});
+
+            factory.WireMockServer.AddGetWithJsonResponse(TrustClientEndpointConstants.GetByUkprnsAll, new[]{trustDto}, new List<KeyValuePair<string, string>> {new("ukprns", trustDto.Ukprn!)});
 
             // Act
             var results = await csvExportClient.GetConversionCsvByMonthAsync(1, 2025);
@@ -339,7 +339,7 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers
             keyContact.HeadteacherId = headteacher.Id;
             keyContact.IncomingTrustCeoId = incomingCeoContact.Id;
             keyContact.ProjectId = project.Id;
-            keyContact.Id = new KeyContactId(Guid.NewGuid());
+            keyContact.Id = new Domain.ValueObjects.KeyContactId(Guid.NewGuid());
             dbContext.KeyContacts.Add(keyContact);
 
             var projectContacts = new List<Contact>
@@ -363,7 +363,7 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers
                     User = createdBy,
                 }
                 ).Create<SignificantDateHistory>();
-            
+
             var significantDateHistoryReason = fixture.Customize(
                 new SignificantDateHistoryReasonCustomization()
                 {
@@ -371,7 +371,7 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers
                 }
             ).Create<SignificantDateHistoryReason>();
             
-            significantDateHistory.Reason = significantDateHistoryReason;
+            significantDateHistory.Reasons = new List<SignificantDateHistoryReason>() { significantDateHistoryReason };
 
             dbContext.SignificantDateHistories.Add(significantDateHistory);
 
@@ -381,7 +381,7 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers
         
             Assert.NotNull(factory.WireMockServer);
             
-            factory.WireMockServer.AddGetWithJsonResponse($"/v4/trusts/bulk", new[]{trustDto}, new List<KeyValuePair<string, string>> {new("ukprns", trustDto.Ukprn!)});
+            factory.WireMockServer.AddGetWithJsonResponse(TrustClientEndpointConstants.GetByUkprnsAll, new[]{trustDto}, new List<KeyValuePair<string, string>> {new("ukprns", trustDto.Ukprn!)});
 
             // Act
             var results = await csvExportClient.GetConversionCsvByMonthContentsAsync(1, 2025);
@@ -506,7 +506,7 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers
             keyContact.HeadteacherId = null;
             keyContact.IncomingTrustCeoId = null;
             keyContact.ProjectId = project.Id;
-            keyContact.Id = new KeyContactId(Guid.NewGuid());
+            keyContact.Id = new Domain.ValueObjects.KeyContactId(Guid.NewGuid());
             dbContext.KeyContacts.Add(keyContact);
 
             await dbContext.SaveChangesAsync();
@@ -514,8 +514,8 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers
             var trustDto = fixture.Customize(new TrustDtoCustomization(){Ukprn = project.IncomingTrustUkprn.Value.ToString()}).Create<TrustDto>();
 
             Assert.NotNull(factory.WireMockServer);
-            
-            factory.WireMockServer.AddGetWithJsonResponse($"/v4/trusts/bulk", new[]{trustDto}, new List<KeyValuePair<string, string>> {new("ukprns", trustDto.Ukprn!)});
+
+            factory.WireMockServer.AddGetWithJsonResponse(TrustClientEndpointConstants.GetByUkprnsAll, new[]{trustDto}, new List<KeyValuePair<string, string>> {new("ukprns", trustDto.Ukprn!)});
 
             // Act
             var results = await csvExportClient.GetConversionCsvByMonthAsync(1, 2025);

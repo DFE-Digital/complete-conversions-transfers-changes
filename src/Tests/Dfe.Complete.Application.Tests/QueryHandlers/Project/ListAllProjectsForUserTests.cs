@@ -10,8 +10,8 @@ using Dfe.Complete.Application.Users.Queries.GetUser;
 using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Domain.ValueObjects;
 using Dfe.Complete.Tests.Common.Customizations.Models;
-using DfE.CoreLibs.Testing.AutoFixture.Attributes;
-using DfE.CoreLibs.Testing.AutoFixture.Customizations;
+using GovUK.Dfe.CoreLibs.Testing.AutoFixture.Attributes;
+using GovUK.Dfe.CoreLibs.Testing.AutoFixture.Customizations;
 using MediatR;
 using Microsoft.Extensions.Logging;
 using MockQueryable;
@@ -458,5 +458,4 @@ public class ListAllProjectsForUserTests
         Assert.Equal(0, result.Value?.Count);
         mockTrustsClient.Verify(service => service.GetByUkprnsAllAsync(It.IsAny<IEnumerable<string>>(), default), Times.Never);
     }
-
 }

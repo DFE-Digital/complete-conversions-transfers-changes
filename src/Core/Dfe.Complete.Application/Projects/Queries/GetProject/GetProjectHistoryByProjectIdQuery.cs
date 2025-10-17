@@ -3,9 +3,12 @@ using Dfe.Complete.Application.Common.Models;
 using Dfe.Complete.Application.Projects.Models;
 using AutoMapper;
 using Dfe.Complete.Application.Projects.Interfaces;
+using Dfe.Complete.Domain.Entities;
 using Dfe.Complete.Domain.ValueObjects;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using Dfe.Complete.Domain.Enums;
+using Dfe.Complete.Utils;
 
 namespace Dfe.Complete.Application.Projects.Queries.GetProject
 {
@@ -28,7 +31,7 @@ namespace Dfe.Complete.Application.Projects.Queries.GetProject
                     .Include(p => p.SignificantDateHistories)
                         .ThenInclude(ph => ph.User)
                     .Include(p => p.SignificantDateHistories)
-                        .ThenInclude(ph => ph.Reason)
+                        .ThenInclude(ph => ph.Reasons)
                     .FirstOrDefaultAsync(cancellationToken);
 
                 if (result!.SignificantDateHistories.Any(p => p.User == null))
@@ -36,9 +39,12 @@ namespace Dfe.Complete.Application.Projects.Queries.GetProject
                     throw new InvalidOperationException("One or more significant dates do not have an associated user.");
                 }
                 
-                result!.Notes = result.Notes.Where(n => n.NotableType == "SignificantDateHistoryReason").ToList();
+                result!.Notes = result.Notes.Where(n => n.NotableType == NotableType.SignificantDateHistoryReason.ToDescription()).ToList();
 
                 var projectDto = mapper.Map<ProjectDto>(result);
+
+                // Added to prevent circular reference in integration test
+                projectDto.RegionalDeliveryOfficer = new User();
 
                 return Result<ProjectDto>.Success(projectDto);
             }

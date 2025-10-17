@@ -1,107 +1,85 @@
 ﻿@page "/projects/{projectId}/tasks/supplemental_funding_agreement"
 @using Dfe.Complete.Constants
+@using Dfe.Complete.Domain.Enums
+@inject Microsoft.Extensions.Configuration.IConfiguration _configuration
 @model Dfe.Complete.Pages.Projects.TaskList.Tasks.SupplementalFundingAgreementTask.SupplementalFundingAgreementTaskModel
 @{
-  var backlink = string.Format(RouteConstants.ProjectTaskList, Model.ProjectId);
+    Layout = "_ProjectTaskLayout";
+    ViewData["Title"] = "Supplemental funding agreement";
 }
-
-@section BeforeMain {
-  <a href=@backlink class="govuk-back-link">Back</a>
-}
-
-<div class="govuk-grid-row">
-  <div class="govuk-grid-column-two-thirds">
-
-    <h1 class="govuk-heading-xl" data-testid="title">
-      <span class="govuk-caption-l" data-testid="school-name">
-        @Model.Establishment.Name
-      </span>
-      Supplemental funding agreement
-      <span class="govuk-caption-m">
+@section TaskHeaderHintSection
+{
+    <span class="govuk-caption-m">
         Check and clear the supplemental funding agreement
-      </span>
-    </h1>
-
+    </span>
+}
+@section TaskSection { 
     <h2 class="govuk-heading-l">
-      Check and clear the supplemental funding agreement
-      <span class="govuk-caption-m">
-        You can <a href="https://www.gov.uk/government/publications/academy-and-free-school-funding-agreements" target="_blank">view the model documents (opens in new tab)</a> to check for changes.
-      </span>
+        Check and clear the supplemental funding agreement 
     </h2>
+    <div class="govuk-caption-m">
+        <p class="govuk-body">You can <external-link href="@_configuration["ExternalLinks:ViewSupplementalFundingModelDocument"]">view the model documents (opens in new tab)</external-link> to check for changes.</p>
+    </div>
 
-    <details data-module="govuk-details" class="govuk-details">
-      <summary class="govuk-details__summary">
-        <span class="govuk-details__summary-text">Help checking the supplemental funding agreement</span>
-      </summary>
-      <div class="govuk-details__text">
-        <p>Changes that personalise the model documents to a school or trust, and remove or add optional clauses, are expected. The wording of clauses should not change.</p>
-        <p>You'll need to <a href="https://educationgovuk.sharepoint.com/sites/lvewp00030/SitePages/Resources/Request%20for%20advice%20from%20the%20AOPU.aspx" class="govuk-link" target="_blank">contact the policy team (opens in new tab)</a> about changes to clause text.</p>
-        <p>We only accept new supplemental funding agreements that use the 2020 edition of the model documents.</p>
-        <p>Master funding agreements from 2018 onwards are compatible with supplemental funding agreements from 2020 onwards.</p>
-      </div>
-    </details>
+    <govuk-details>
+        <govuk-details-summary>
+            <span class="govuk-details__summary-text">Help checking the supplemental funding agreement</span>
+        </govuk-details-summary>
+        <govuk-details-text>
+            <p>Changes that personalise the model documents to @(Model.Type == ProjectType.Conversion?"a school":"an academy") or trust, and remove or add optional clauses, are expected. The wording of clauses should not change.</p>
+            <p>You'll need to <external-link class="govuk-link" href="@_configuration["ExternalLinks:ContactPolicyTeam"]">contact the policy team (opens in new tab)</external-link> about changes to clause text.</p>
+            <p>We only accept new supplemental funding agreements that use the 2020 edition of the model documents.</p>
+            <p>Master funding agreements from 2018 onwards are compatible with supplemental funding agreements from 2020 onwards.</p>
+        </govuk-details-text>
+    </govuk-details>
 
 
     <form method="post">
-
-      <govuk-checkboxes name="options">
-        <govuk-checkboxes-fieldset>
-          <govuk-checkboxes-fieldset-legend is-page-heading="true" class="govuk-fieldset__legend--l">
-          </govuk-checkboxes-fieldset-legend>
-
-          <govuk-checkboxes-item id="conversion_task_land_registry_task_form_received" asp-for="@Model.Received" value="true" name="received" checked="@Model.Received">
-            <b>Received</b>
-          </govuk-checkboxes-item>
-
-          <govuk-checkboxes-item id="conversion_task_land_registry_task_form_cleared" asp-for="@Model.Cleared" value="true" name="cleared" checked="@Model.Cleared">
-            <b>Cleared</b>
-          </govuk-checkboxes-item>
-
-          <govuk-checkboxes-item id="conversion_task_land_registry_task_form_signed" asp-for="@Model.Signed" value="true" name="signed" checked="@Model.Signed">
-            <b>Signed by school or trust</b>
-          </govuk-checkboxes-item>
-
-          <govuk-checkboxes-item id="conversion_task_land_registry_task_form_saved" asp-for="@Model.Saved" value="true" name="saved" checked="@Model.Saved">
-            <b>Saved in the school's SharePoint folder</b>
-          </govuk-checkboxes-item>
-
-        </govuk-checkboxes-fieldset>
-
-      </govuk-checkboxes>
-
-
-      <h2 class="govuk-heading-l">
-        Signed by the Secretary of State
-        <span class="govuk-caption-m">
-          <p>
-            The Secretary of State, or somebody with the authority to act on their behalf, must sign the supplemental funding agreement.
-          </p>
-
-          <p>
-            Usually this is your team leader or the deputy director.
-          </p>
-        </span>
-      </h2>
-
-      <govuk-checkboxes name="options">
-        <govuk-checkboxes-fieldset>
-          <govuk-checkboxes-fieldset-legend class="govuk-fieldset__legend--m">
-          </govuk-checkboxes-fieldset-legend>
-
-          <govuk-checkboxes-item id="conversion_task_land_registry_task_form_received" asp-for="@Model.Received" value="true" name="sent" checked="@Model.Received">
-            <b>Sent to team leader or deputy director</b>
-          </govuk-checkboxes-item>
-
-          <govuk-checkboxes-item id="conversion_task_land_registry_task_form_signed_secretary_state" asp-for="@Model.SignedSecretaryState" value="true" name="signed-secretary-state" checked="@Model.SignedSecretaryState">
-            <b>Document signed on behalf of the Secretary of State</b>
-          </govuk-checkboxes-item>
-
-        </govuk-checkboxes-fieldset>
-
-      </govuk-checkboxes>
-
-
-      <button type="submit" formnovalidate="formnovalidate" class="govuk-button" data-module="govuk-button" data-prevent-double-click="true">Save and return</button>
-    </form>
-  </div>
-</div>
+        <input type="hidden" asp-for="TasksDataId" />
+        <input type="hidden" asp-for="Type" />
+        <govuk-checkboxes name="options">
+            <govuk-checkboxes-fieldset>
+                <govuk-checkboxes-fieldset-legend>
+                </govuk-checkboxes-fieldset-legend>
+                <govuk-checkboxes-item data-cy="received" id="received" asp-for="@Model.Received" value="true" name="received" checked="@Model.Received">
+                    <b>Received</b>
+                </govuk-checkboxes-item>
+                <govuk-checkboxes-item data-cy="cleared" id="cleared" asp-for="@Model.Cleared" value="true" name="cleared" checked="@Model.Cleared">
+                    <b>Cleared</b>
+                </govuk-checkboxes-item>
+                @if (Model.Project.Type == ProjectType.Conversion)
+                {
+                    <govuk-checkboxes-item data-cy="signed" id="signed" asp-for="@Model.Signed" value="true" name="signed" checked="@Model.Signed">
+                        <b>Signed by school or trust</b>
+                    </govuk-checkboxes-item>
+                }
+                <govuk-checkboxes-item data-cy="saved" id="saved" asp-for="@Model.Saved" value="true" name="saved" checked="@Model.Saved">
+                    <b>Saved in the school's SharePoint folder</b>
+                </govuk-checkboxes-item> 
+            </govuk-checkboxes-fieldset> 
+        </govuk-checkboxes> 
+        @if(Model.Type == ProjectType.Conversion)
+        {
+            <h2 class="govuk-heading-l">
+                Signed by the Secretary of State
+            </h2>
+            <div class="govuk-caption-m">
+                <p>The Secretary of State, or somebody with the authority to act on their behalf, must sign the supplemental funding agreement.</p> 
+                <p>Usually this is your team leader or the deputy director. </p>
+            </div>
+            <govuk-checkboxes name="options">
+                <govuk-checkboxes-fieldset>
+                    <govuk-checkboxes-fieldset-legend>
+                    </govuk-checkboxes-fieldset-legend>
+                    <govuk-checkboxes-item data-cy="sent" id="sent" asp-for="@Model.Sent" value="true" name="sent" checked="@Model.Sent">
+                        <b>Sent to team leader or deputy director</b>
+                    </govuk-checkboxes-item>
+                    <govuk-checkboxes-item data-cy="signed_secretary_state" id="signed_secretary_state" asp-for="@Model.SignedSecretaryState" value="true" name="signed_secretary_state" checked="@Model.SignedSecretaryState">
+                        <b>Document signed on behalf of the Secretary of State</b>
+                    </govuk-checkboxes-item> 
+                </govuk-checkboxes-fieldset> 
+            </govuk-checkboxes>  
+        }
+        @await Html.PartialAsync("_TaskSaveAndReturn", new TaskSaveAndReturnModel(Model.Project, Model.CurrentUserTeam))
+    </form> 
+}

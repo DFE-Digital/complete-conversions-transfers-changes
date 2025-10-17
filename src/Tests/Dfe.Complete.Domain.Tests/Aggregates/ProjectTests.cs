@@ -1,7 +1,10 @@
 using Dfe.Complete.Tests.Common.Customizations.Behaviours;
-using DfE.CoreLibs.Testing.AutoFixture.Attributes;
+using GovUK.Dfe.CoreLibs.Testing.AutoFixture.Attributes;
 using Dfe.Complete.Tests.Common.Customizations.Models;
-using DfE.CoreLibs.Testing.AutoFixture.Customizations;
+using GovUK.Dfe.CoreLibs.Testing.AutoFixture.Customizations;
+using Dfe.Complete.Domain.Entities;
+using Dfe.Complete.Domain.ValueObjects;
+using Dfe.Complete.Utils;
 using Project = Dfe.Complete.Domain.Entities.Project;
 
 namespace Dfe.Complete.Domain.Tests.Aggregates
@@ -442,6 +445,174 @@ namespace Dfe.Complete.Domain.Tests.Aggregates
             Assert.Equal(handoverComment, project.Notes.FirstOrDefault()?.Body);
             Assert.Equal(projectCustomisation.LocalAuthorityId, project.LocalAuthorityId);
 
+        }
+
+
+        [Theory]
+        [CustomAutoData(typeof(ProjectCustomization), typeof(DateOnlyCustomization),
+            typeof(IgnoreVirtualMembersCustomisation))]
+        public void RemoveContact_ShouldRemoveContactFromProject_WhenContactExists(Project projectCustomisation)
+        {
+            // Arrange
+            var contactId = new ContactId(Guid.NewGuid());
+            var contact = new Contact
+            {
+                Id = contactId,
+                ProjectId = projectCustomisation.Id,
+                Name = "Test Contact"
+            };
+            
+            projectCustomisation.Contacts.Add(contact);
+            
+            // Act
+            projectCustomisation.RemoveContact(contactId);
+            
+            // Assert
+            Assert.DoesNotContain(contact, projectCustomisation.Contacts);
+        }
+
+        [Theory]
+        [CustomAutoData(typeof(ProjectCustomization), typeof(DateOnlyCustomization),
+            typeof(IgnoreVirtualMembersCustomisation))]
+        public void RemoveContact_ShouldThrowNotFoundException_WhenContactDoesNotExist(Project projectCustomisation)
+        {
+            // Arrange
+            var nonExistentContactId = new ContactId(Guid.NewGuid());
+            
+            // Act & Assert
+            var exception = Assert.Throws<NotFoundException>(() => 
+                projectCustomisation.RemoveContact(nonExistentContactId));
+            
+            Assert.Contains($"No contact found with Id {nonExistentContactId.Value}", exception.Message);
+        }
+
+        [Theory]
+        [CustomAutoData(typeof(ProjectCustomization), typeof(DateOnlyCustomization),
+            typeof(IgnoreVirtualMembersCustomisation))]
+        public void RemoveAllContacts_ShouldRemoveAllContactsFromProject_WhenContactsExist(Project projectCustomisation)
+        {
+            // Arrange
+            var contact1 = new Contact
+            {
+                Id = new ContactId(Guid.NewGuid()),
+                ProjectId = projectCustomisation.Id,
+                Name = "Contact 1"
+            };
+            
+            var contact2 = new Contact
+            {
+                Id = new ContactId(Guid.NewGuid()),
+                ProjectId = projectCustomisation.Id,
+                Name = "Contact 2"
+            };
+            
+            projectCustomisation.Contacts.Add(contact1);
+            projectCustomisation.Contacts.Add(contact2);
+            
+            // Act
+            projectCustomisation.RemoveAllContacts();
+            
+            // Assert
+            Assert.Empty(projectCustomisation.Contacts);
+        }
+
+        [Theory]
+        [CustomAutoData(typeof(ProjectCustomization), typeof(DateOnlyCustomization),
+            typeof(IgnoreVirtualMembersCustomisation))]
+        public void RemoveAllContacts_ShouldDoNothing_WhenNoContactsExist(Project projectCustomisation)
+        {
+            // Arrange
+            projectCustomisation.Contacts.Clear();
+            
+            // Act
+            projectCustomisation.RemoveAllContacts();
+            
+            // Assert
+            Assert.Empty(projectCustomisation.Contacts);
+        }
+
+
+        [Theory]
+        [CustomAutoData(typeof(ProjectCustomization), typeof(DateOnlyCustomization),
+            typeof(IgnoreVirtualMembersCustomisation))]
+        public void RemoveNote_ShouldRemoveNoteFromProject_WhenNoteExists(Project projectCustomisation)
+        {
+            // Arrange
+            var noteId = new NoteId(Guid.NewGuid());
+            var note = new Note
+            {
+                Id = noteId,
+                ProjectId = projectCustomisation.Id,
+                Body = "Test Note"
+            };
+            
+            projectCustomisation.Notes.Add(note);
+            
+            // Act
+            projectCustomisation.RemoveNote(noteId);
+            
+            // Assert
+            Assert.DoesNotContain(note, projectCustomisation.Notes);
+        }
+
+        [Theory]
+        [CustomAutoData(typeof(ProjectCustomization), typeof(DateOnlyCustomization),
+            typeof(IgnoreVirtualMembersCustomisation))]
+        public void RemoveNote_ShouldThrowNotFoundException_WhenNoteDoesNotExist(Project projectCustomisation)
+        {
+            // Arrange
+            var nonExistentNoteId = new NoteId(Guid.NewGuid());
+            
+            // Act & Assert
+            var exception = Assert.Throws<NotFoundException>(() => 
+                projectCustomisation.RemoveNote(nonExistentNoteId));
+            
+            Assert.Contains($"No note found with Id {nonExistentNoteId.Value}", exception.Message);
+        }
+
+        [Theory]
+        [CustomAutoData(typeof(ProjectCustomization), typeof(DateOnlyCustomization),
+            typeof(IgnoreVirtualMembersCustomisation))]
+        public void RemoveAllNotes_ShouldRemoveAllNotesFromProject_WhenNotesExist(Project projectCustomisation)
+        {
+            // Arrange
+            var note1 = new Note
+            {
+                Id = new NoteId(Guid.NewGuid()),
+                ProjectId = projectCustomisation.Id,
+                Body = "Note 1"
+            };
+            
+            var note2 = new Note
+            {
+                Id = new NoteId(Guid.NewGuid()),
+                ProjectId = projectCustomisation.Id,
+                Body = "Note 2"
+            };
+            
+            projectCustomisation.Notes.Add(note1);
+            projectCustomisation.Notes.Add(note2);
+            
+            // Act
+            projectCustomisation.RemoveAllNotes();
+            
+            // Assert
+            Assert.Empty(projectCustomisation.Notes);
+        }
+
+        [Theory]
+        [CustomAutoData(typeof(ProjectCustomization), typeof(DateOnlyCustomization),
+            typeof(IgnoreVirtualMembersCustomisation))]
+        public void RemoveAllNotes_ShouldDoNothing_WhenNoNotesExist(Project projectCustomisation)
+        {
+            // Arrange
+            projectCustomisation.Notes.Clear();
+            
+            // Act
+            projectCustomisation.RemoveAllNotes();
+            
+            // Assert
+            Assert.Empty(projectCustomisation.Notes);
         }
 
 

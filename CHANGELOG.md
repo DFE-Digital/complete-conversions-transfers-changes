@@ -17,14 +17,281 @@ Security in case of vulnerabilities.
 ## Unreleased
 
 ### Added
-- Added Project Significant History Dates `/projects/{projectId}/date-history`
-- Added `/projects/{projectId}/external-contacts` page
+
+- Added `Check and confirm the academy and trust financial information` task for transfer project.
 
 ### Changed
 
 ### Fixed
 
-See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-08-05.608...main) for everything awaiting release
+### Security
+
+See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-10-17.921...main) for everything awaiting release
+
+---
+
+## [1.22.2](https://github.com/DFE-Digital/complete-conversions-transfers-changes/releases/tag/production-2025-10-17.921) - 2025-10-17
+
+### Added
+- Added `Confirm the headteacher's details` task for both conversion and transfer projects.
+
+### Changed
+
+### Fixed
+- make internal email check case insensitive
+
+### Security
+
+See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-10-16.912...production-2025-10-17.921) for everything in the release
+
+---
+
+## [1.22.1](https://github.com/DFE-Digital/complete-conversions-transfers-changes/releases/tag/production-2025-10-16.912) - 2025-10-16
+
+### Changed
+- removed checkbox with no corresponding database field
+
+### Fixed
+- resolve bad field mappings for master funding agreements on conversion projects
+
+See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-10-15.903...production-2025-10-16.912) for everything in the release
+
+---
+
+## [1.22.0](https://github.com/DFE-Digital/complete-conversions-transfers-changes/releases/tag/production-2025-10-15.903) - 2025-10-15
+
+### Added
+- Added `Confirm the academy's risk protection agreements` task for both conversion and transfer projects.
+- Added all task notes identifiers.
+
+### Changed
+- Hide "Complete a project" functionality on a project if it's DaO revoked
+
+### Fixed
+- Fixed `full date` issue on the project complete notification. 
+
+### Security
+
+See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-10-14.892...production-2025-10-15.903) for everything in the release
+
+---
+
+## [1.21.0](https://github.com/DFE-Digital/complete-conversions-transfers-changes/releases/tag/production-2025-10-14.892) - 2025-10-14
+
+### Added
+- Add new prepare to complete end point for adding conversion projects
+- Land registry title plans` task for conversion project.
+- Added `Master Funding Agreement` task for both conversion and transfer projects.
+- Add API end point for editing user
+- Add ability to edit a user
+- Added `Incoming Trust CEO contact` task page
+
+### Changed
+- Allow users to modify `declaration of expenditure certificate date` on the `Receive declaration of expenditure certificate` task for both conversion and transfer project.
+
+### Fixed
+
+### Security
+- Fixed reflected Cross-Site Scripting (XSS) vulnerability on cookies page (150001) - added server-side URL validation to prevent malicious script injection via returnUrl parameter
+
+See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-10-07.844...production-2025-10-14.892) for everything in the release
+
+---
+
+## [1.20.0](https://github.com/DFE-Digital/complete-conversions-transfers-changes/releases/tag/production-2025-10-07.844) - 2025-10-07
+
+### Added
+- Added `Land Questionnaire` task for conversion project.
+- Added `Main contact` task page
+- Added `Church supplemental agreement` task for both conversion and transfer projects.
+- Added `Commercial Transfer Agreement` task for conversion and transfer projects.
+
+### Changed
+
+### Fixed
+
+### Security
+- patch reverse tabnabbing vulnerability by including noopener norefferer on external links (target="_blank") - 150222 Reverse Tabnabbing
+- add Cross-Origin-Opener-Policy HTTP security header to allow same origin only - 150222 Reverse Tabnabbing
+
+See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-10-03.811...production-2025-10-07.844) for everything in the release
+
+---
+
+## [1.19.0](https://github.com/DFE-Digital/complete-conversions-transfers-changes/releases/tag/production-2025-10-03.811) - 2025-10-03
+
+### Added
+
+- Added `Confirm all condition has been met` task for conversion projects.
+- Added `Dao Revocation` workflow.
+- Configured Cache settings.
+- Added `Confirm the date the academy opened` task.
+- Added `Confirm the date the academy transferred` task
+- Added 'Closing of transfer or conversion project'.
+- Add API end point for creating user
+- Add ability to create a user
+
+### Changed
+
+### Fixed
+- Fixed broken task note urls.
+- Fixed all project by month query for conversion projects if all conditions met is null
+
+### Security
+
+See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-09-25.771...production-2025-10-03.811) for everything in the release
+
+---
+
+## [1.18.0](https://github.com/DFE-Digital/complete-conversions-transfers-changes/releases/tag/production-2025-09-25.771) - 2025-09-25
+
+### Removed
+
+- removed the 'Add Project' in your project button and disabled access to all related subpages 
+
+### Added
+
+- Ability to edit project information for conversions and transfers
+- ProjectGroup is created when a project is edited with a new GRN
+- Added Add, Edit and Delete External Contacts for both conversion and transfer projects.
+- Added `Confirm this transfer has authority to proceed` task
+- Added `Confirm the date the academy transferred` task
+- Add service support - view users table
+
+### Changed
+- Group reference number links to the group on "About the project"
+
+### Fixed
+- GroupReferenceNumberAttribute failed when there was no existing group
+- update "Task - Supplemental funding agreement - transfer - incorrect options"
+- Fixed `External stakeholder kick off` task wording for both conversion and transfer projects. 
+- Fixed Error Summary partial view expect model, pass null wherever not required
+
+See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-09-12.746...production-2025-09-25.771) for everything in the release
+
+---
+
+## [1.17.0](https://github.com/DFE-Digital/complete-conversions-transfers-changes/releases/tag/production-2025-09-12.746) - 2025-09-12
+
+### Added
+
+- Added `Receive declaration of expenditure certificate` task for conversion and transfer projects.
+
+### Fixed
+- update "Give feedback about service" to use correct link
+- update /privacy and /accessibility to Allow Anonymous
+
+See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-09-09.731...production-2025-09-12.746) for everything in the release
+
+---
+
+## [1.16.0](https://github.com/DFE-Digital/complete-conversions-transfers-changes/releases/tag/production-2025-09-09.731) - 2025-09-09
+
+### Added
+- Added `Redact and send document` task for both conversion and transfer projects.
+- Added `Confirm proposed capacity of the academy` task for conversion project.
+- Added `Supplemental Funding Agreement` task data for both conversion and transfer projects.
+
+### Security
+- prevent inactive users from signing in
+
+### Changed
+- Complete project button will hide when users don't have access
+- Sort "Your projects in progress" in ascending date order
+
+### Fixed
+- Complete project post no longer throws antiforgery error
+- Correct wording on handover complete confirmation page
+
+See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-09-03.710...production-2025-09-09.731) for everything in the release
+
+---
+
+## [1.15.0](https://github.com/DFE-Digital/complete-conversions-transfers-changes/releases/tag/production-2025-09-03.710) - 2025-09-03
+
+### Changed
+- Postcode validation now insensitive
+- UK phone number validation to include a wider range
+- Updated the implementation of `StakeholderKickoffTaskModel`
+
+See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-09-01.697...production-2025-09-03.710) for everything in the release
+
+---
+
+## [1.14.1](https://github.com/DFE-Digital/complete-conversions-transfers-changes/releases/tag/production-2025-09-01.697) - 2025-09-01
+
+### Added
+- Enabled `DB retry` logic on failure.
+
+### Fixed
+- hotfix - fetch only active users when attaching claims from database roles
+- Fixed `Signed Secretary state` checkbox data on the `Deed of novation and variation` task page.
+
+See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-09-01.688...production-2025-09-01.697) for everything in the release
+
+---
+
+## [1.14.0](https://github.com/DFE-Digital/complete-conversions-transfers-changes/releases/tag/production-2025-09-01.688) - 2025-09-01
+
+### Added
+- Added `Article of association` task data for both conversion and trasnfer projects.
+- Added 'Deed of novation and variation' task for transfer projects.
+- Added 'Deed of variation' task for both conversion and transfer projects. 
+
+### Changed
+
+### Fixed
+- GetProjectByUrn doesn't return notes
+- Incoming and Outgoing trust information missing from project header
+- HOTFIX: Get user by active directory ID only returns active user
+
+See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-08-26.669...production-2025-09-01.688) for everything in the release
+
+---
+
+## [1.13.1](https://github.com/DFE-Digital/complete-conversions-transfers-changes/releases/tag/production-2025-08-26.669) - 2025-08-26
+
+### Security
+- update "CanViewYourProjects" to depend exclusively on "assign_to_project"
+
+See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-08-20.658...production-2025-08-26.669) for everything in the release
+
+---
+
+## [1.13.0](https://github.com/DFE-Digital/complete-conversions-transfers-changes/releases/tag/production-2025-08-20.658) - 2025-08-20
+
+### Added
+- Added `Conversion` and `Transfer` task list with their statuses.
+- Project groups: new API endpoints
+  - `/v1/ProjectGroup/List` – list project groups (with establishments)
+  - `/v1/ProjectGroup/Details` – project group details by id
+- Frontend routes and pages for project groups
+    - `/groups` – project groups list
+    - `/groups/{groupId}` – project group details
+- Added `Handover with Regional Delivery Officer` task page
+
+### Changed
+
+### Fixed
+- local authority name missing on delete local authority dialog
+- add missing incoming trust details on project page
+
+See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-08-12.625...production-2025-08-20.658) for everything in the release
+
+---
+
+## [1.12.0](https://github.com/DFE-Digital/complete-conversions-transfers-changes/releases/tag/production-2025-08-12.625) - 2025-08-12
+
+### Added
+- Added Project Significant History Dates `/projects/{projectId}/date-history`
+- Added `/projects/{projectId}/external-contacts` page
+- Added `/privacy` page
+
+### Changed
+
+### Fixed
+
+See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-08-05.608...production-2025-08-12.625) for everything in the release
 
 ---
 
@@ -77,6 +344,10 @@ See the [full commit history](https://github.com/DFE-Digital/complete-conversion
 ### Added
 - New route `/projects/all/reports`
 - Add reports landing page under All projects > Reports (`/projects/all/reports`)
+- New route `/projects/{projectId}/date-history`
+- New route `/projects/{projectId}/date-history/new`
+- New route `/projects/{projectId}/date-history/reason`
+- New route `/projects/{projectId}/date-history/reasons/later`
 
 ### Changed  
 - Add a redirect from projects/{id} to projects/{id}/tasks

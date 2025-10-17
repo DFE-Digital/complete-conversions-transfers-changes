@@ -1,12 +1,12 @@
-﻿using System.Linq.Expressions;
-using AutoFixture.Xunit2;
+﻿using AutoFixture.Xunit2;
 using Dfe.Complete.Application.Contacts.Queries;
 using Dfe.Complete.Domain.Entities;
 using Dfe.Complete.Domain.Interfaces.Repositories;
 using Dfe.Complete.Tests.Common.Customizations.Behaviours;
-using DfE.CoreLibs.Testing.AutoFixture.Attributes;
+using GovUK.Dfe.CoreLibs.Testing.AutoFixture.Attributes;
 using NSubstitute;
 using NSubstitute.ExceptionExtensions;
+using System.Linq.Expressions;
 
 namespace Dfe.Complete.Application.Tests.QueryHandlers.Contacts;
 

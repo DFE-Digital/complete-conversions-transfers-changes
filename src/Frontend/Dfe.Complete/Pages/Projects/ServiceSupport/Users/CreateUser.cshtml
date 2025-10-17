@@ -1,0 +1,18 @@
+﻿@page "/service-support/users/new"
+@using Dfe.Complete.Models
+@model Dfe.Complete.Pages.Projects.ServiceSupport.Users.CreateUserModel
+@{
+    Layout = "ServiceSupport/_ServiceSupportLayout";
+    ViewData["Title"] = "Add a new user";
+}
+<div class="govuk-grid-column-two-thirds">   
+    <partial name="_ErrorSummary" model="null"/>
+    <h1 class="govuk-heading-l">
+        Add a new user
+    </h1>
+
+    <p>Users can only sign in to the application when they have a valid DfE Microsoft account.</p>
+    <p>Users require an account in the application to record who works on what and to control what features they can access, which is added here.</p>
+
+    <partial name="UserDetailsForm" model="Model" />
+</div>

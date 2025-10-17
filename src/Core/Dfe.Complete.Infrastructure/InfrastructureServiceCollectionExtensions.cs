@@ -1,10 +1,12 @@
 using Dfe.Complete.Application.Common.Interfaces;
+using Dfe.Complete.Application.Contacts.Interfaces;
 using Dfe.Complete.Application.Notes.Interfaces;
 using Dfe.Complete.Application.Projects.Interfaces;
 using Dfe.Complete.Application.Projects.Interfaces.CsvExport;
+using Dfe.Complete.Application.Users.Interfaces;
 using Dfe.Complete.Domain.Interfaces.Repositories;
-using Dfe.Complete.Infrastructure.Database;
 using Dfe.Complete.Infrastructure.CommandServices;
+using Dfe.Complete.Infrastructure.Database;
 using Dfe.Complete.Infrastructure.QueryServices;
 using Dfe.Complete.Infrastructure.QueryServices.CsvExport;
 using Dfe.Complete.Infrastructure.Repositories;
@@ -12,6 +14,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using StackExchange.Redis;
+using Dfe.Complete.Application.DaoRevoked.Interfaces;
+using Dfe.Complete.Application.ProjectGroups.Interfaces;
+using Dfe.Complete.Application.KeyContacts.Interfaces;
 
 namespace Dfe.Complete.Infrastructure
 {
@@ -38,9 +43,21 @@ namespace Dfe.Complete.Infrastructure
             services.AddScoped<IConversionCsvQueryService, ConversionCsvQueryService>();
             services.AddScoped<INoteWriteRepository, NoteWriteRepository>();
             services.AddScoped<IProjectReadRepository, ProjectReadRepository>();
+            services.AddScoped<IProjectGroupReadRepository, ProjectGroupReadRepository>();
+            services.AddScoped<IProjectGroupWriteRepository, ProjectGroupWriteRepository>();
             services.AddScoped<INoteReadRepository, NoteReadRepository>();
-            services.AddScoped<IReadUserRepository,ReadUserRepository>();
+            services.AddScoped<IUserReadRepository, UserReadRepository>();
+            services.AddScoped<IUserWriteRepository, UserWriteRepository>();
             services.AddScoped<ILocalAuthoritiesQueryService, LocalAuthoritiesQueryService>();
+            services.AddScoped<ITaskDataReadRepository, TaskDataReadRepository>();
+            services.AddScoped<ITaskDataWriteRepository, TaskDataWriteRepository>();
+            services.AddScoped<IKeyContactReadRepository, KeyContactReadRepository>();
+            services.AddScoped<IKeyContactWriteRepository, KeyContactWriteRepository>();
+            services.AddScoped<IContactReadRepository, ContactReadRepository>();
+            services.AddScoped<IContactWriteRepository, ContactWriteRepository>();
+            services.AddScoped<IDaoRevocationWriteRepository, DaoRevocationWriteRepository>();
+            services.AddScoped<IProjectWriteRepository, ProjectWriteRepository>();
+            services.AddScoped<IDaoRevocationReadRepository, DaoRevocationReadRepository>();
 
             // Authentication
             //services.AddCustomAuthorization(config);
@@ -65,7 +82,7 @@ namespace Dfe.Complete.Infrastructure
                 };
 
                 // https://stackexchange.github.io/StackExchange.Redis/ThreadTheft.html
-                ConnectionMultiplexer.SetFeatureFlag("preventthreadtheft", true); 
+                ConnectionMultiplexer.SetFeatureFlag("preventthreadtheft", true);
 
                 services.AddStackExchangeRedisCache(redisCacheConfig =>
                 {

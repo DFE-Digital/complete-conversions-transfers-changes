@@ -1,6 +1,8 @@
-﻿using System.ComponentModel;
+﻿using Dfe.Complete.Utils.Attributes;
+using System;
+using System.ComponentModel;
 using System.Reflection;
-using Dfe.Complete.Utils.Attributes;
+using System.Runtime.Serialization;
 
 namespace Dfe.Complete.Utils;
 
@@ -87,5 +89,33 @@ public static class EnumExtensions
 			return parsed;
 
 		return null;
+	}
+
+	public static TEnum GetEnumFromValue<TEnum>(string value) where TEnum : Enum
+	{
+		if (string.IsNullOrEmpty(value))
+			throw new ArgumentNullException(nameof(value));
+
+		var type = typeof(TEnum);
+		foreach (var field in type.GetFields())
+		{
+			var attribute = Attribute.GetCustomAttribute(field, typeof(EnumMemberAttribute)) as EnumMemberAttribute;
+			if (attribute != null && attribute.Value == value)
+			{
+				object? fieldValue = field.GetValue(null);
+				if (fieldValue is TEnum enumValue)
+				{
+					return enumValue;
+				}
+				throw new ArgumentException($"Field value for '{field.Name}' is null or not of type {typeof(TEnum).Name}.");
+			}
+		}
+
+		throw new ArgumentException($"Unknown value: {value}");
+	}
+
+	public static List<TEnum> ToList<TEnum>() where TEnum : struct, Enum
+	{
+		return [.. Enum.GetValues<TEnum>()];
 	}
 }

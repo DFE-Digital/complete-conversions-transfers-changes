@@ -1,0 +1,117 @@
+﻿@using Dfe.Complete.Utils
+@using Dfe.Complete.Domain.Enums
+@model Dfe.Complete.Models.ExternalContact.OtherExternalContactInputModel
+@inject Dfe.Complete.Services.ErrorService ErrorService 
+
+@{
+    const string fullname = nameof(Model.FullName);
+    const string email = nameof(Model.Email);
+    const string phone = nameof(Model.Phone);
+    const string role = nameof(Model.Role);    
+    const string primaryprojectcontact = nameof(Model.IsPrimaryProjectContact);
+    const string contactType = nameof(Model.SelectedExternalContactType);
+    var selectedContactType = EnumExtensions.FromDescription<ExternalContactType>(Model.SelectedExternalContactType);
+}
+
+<govuk-input name="@fullname" id="@fullname" asp-for="@Model.FullName">
+    <govuk-input-label class="govuk-label--m">Full name</govuk-input-label>
+    @if (ErrorService.HasErrorForKey(@fullname))
+    {
+        <govuk-input-error-message>@(ErrorService.GetErrorMessage(fullname))</govuk-input-error-message>
+    }
+</govuk-input>
+<govuk-input name="@role" id="@role" asp-for="@Model.Role">
+    <govuk-input-label class="govuk-label--m">Role</govuk-input-label>
+    @if (ErrorService.HasErrorForKey(@role))
+    {
+        <govuk-input-error-message>@(ErrorService.GetErrorMessage(role))</govuk-input-error-message>
+    }
+</govuk-input>
+<govuk-input name="@email" id="@email" type="email" asp-for="@Model.Email">
+    <govuk-input-label class="govuk-label--m">Email</govuk-input-label>
+    <govuk-input-hint>This must be the person's work email address, or address at the school, academy or trust their role is relevant to.</govuk-input-hint>
+    @if (ErrorService.HasErrorForKey(@email))
+    {
+        <govuk-input-error-message>@(ErrorService.GetErrorMessage(email))</govuk-input-error-message>
+    }
+</govuk-input>
+<govuk-input name="@phone" id="@phone" input-class="govuk-input--width-10" type="tel" asp-for="@Model.Phone">
+    <govuk-input-label class="govuk-label--m">Phone</govuk-input-label>
+    @if (ErrorService.HasErrorForKey(@phone))
+    {
+        <govuk-input-error-message>@(ErrorService.GetErrorMessage(phone))</govuk-input-error-message>
+    }
+</govuk-input>
+
+<govuk-radios name="@contactType" id="@contactType" asp-for="@Model.SelectedExternalContactType">
+    <govuk-radios-fieldset>
+        <govuk-radios-fieldset-legend class="govuk-fieldset__legend--m">
+            <h2 class="govuk-fieldset__heading">
+                Which organisation is the contact for?
+            </h2>
+        </govuk-radios-fieldset-legend>
+        @foreach (var externalContactType in Model.ContactTypeRadioOptions)
+        {
+            var organisationName = $"organisation-{@externalContactType.ToDescription()}";
+            var displayDescription = string.Empty;
+
+            <govuk-radios-item value="@externalContactType.ToDescription()" checked="@(externalContactType == selectedContactType)">                
+                @if (externalContactType == ExternalContactType.IncomingTrust)
+                {
+                    displayDescription = "Incoming trust";
+                }
+                else if (externalContactType == ExternalContactType.OutgoingTrust)
+                {
+                    displayDescription = "Outgoing trust";
+                }
+                else
+                {
+                    displayDescription = @externalContactType.ToDisplayDescription();
+                }
+                @displayDescription
+                @if (@externalContactType == ExternalContactType.Solicitor)
+                {   
+                    <govuk-radios-item-conditional>
+                        <govuk-input id="@organisationName" name="@organisationName" asp-for="@Model.OrganisationSolicitor">
+                        <govuk-input-label>Enter the organisation this contact is for</govuk-input-label>
+                    </govuk-input>
+                    </govuk-radios-item-conditional>
+                }
+                @if (@externalContactType == ExternalContactType.Diocese)
+                {
+                    <govuk-radios-item-conditional>
+                        <govuk-input id="@organisationName" name="@organisationName" asp-for="@Model.OrganisationDiocese">
+                            <govuk-input-label>Enter the organisation this contact is for</govuk-input-label>
+                        </govuk-input>
+                    </govuk-radios-item-conditional>
+                }
+                @if (@externalContactType == ExternalContactType.Other)
+                {   
+                    <govuk-radios-item-conditional>
+                        <govuk-input id="@organisationName" name="@organisationName" asp-for="@Model.OrganisationOther">
+                            <govuk-input-label>Enter the organisation this contact is for</govuk-input-label>
+                        </govuk-input>
+                    </govuk-radios-item-conditional>
+                }
+            </govuk-radios-item>
+        }
+    </govuk-radios-fieldset>
+</govuk-radios>
+<govuk-radios name="@primaryprojectcontact" id="@(primaryprojectcontact)-fieldset" asp-for="@Model.IsPrimaryProjectContact">
+    <govuk-radios-fieldset>
+        <govuk-radios-fieldset-legend class="govuk-fieldset__legend--m">
+            Is this person the primary project contact for this organisation?
+        </govuk-radios-fieldset-legend>
+
+        <govuk-radios-hint>
+            A primary project contact is the person you most often to get in touch with first if you have any questions about the project.
+        </govuk-radios-hint>
+        @if (ErrorService.HasErrorForKey(@primaryprojectcontact))
+        {
+            <govuk-radios-error-message>@(ErrorService.GetErrorMessage(primaryprojectcontact))</govuk-radios-error-message>
+        }
+        <govuk-radios-item value="true" checked="@(Model.IsPrimaryProjectContact)">Yes</govuk-radios-item>
+        <govuk-radios-item value="false" checked="@(!Model.IsPrimaryProjectContact)">No</govuk-radios-item>
+
+    </govuk-radios-fieldset>
+</govuk-radios>

@@ -1,0 +1,74 @@
+﻿@inject Microsoft.Extensions.Configuration.IConfiguration _configuration 
+@model Dfe.Complete.Pages.Projects.TaskList.Tasks.ChurchSupplementalAgreementTask.ChurchSupplementalAgreementTaskModel
+
+<govuk-checkboxes name="options">
+    <govuk-checkboxes-fieldset>
+        <govuk-checkboxes-fieldset-legend>
+        </govuk-checkboxes-fieldset-legend>
+        <govuk-checkboxes-item id="not-applicable" data-cy="non-applicable" asp-for="@Model.NotApplicable" value="true" name="not-applicable" checked="@Model.NotApplicable">
+            <b>Not applicable</b>
+        </govuk-checkboxes-item>
+    </govuk-checkboxes-fieldset>
+</govuk-checkboxes>
+<div class="govuk-form-group">
+    <h2 class="govuk-heading-l">Check and clear the church supplemental agreement</h2>
+    <div class="govuk-hint">
+        <p>You can <external-link data-cy="church-academies-model-doc-link" href="@_configuration["ExternalLinks:ChurchAcademiesModelDocument"]">view the model documents (opens in new tab)</external-link> to check for changes.</p>
+    </div>
+
+    <govuk-details data-module="govuk-details" class="govuk-details">
+        <govuk-details-summary>
+            <span class="govuk-details__summary-text">Help checking for changes</span>
+        </govuk-details-summary>
+        <govuk-details-text>
+            <p>Changes that personalise the model documents to an academy or trust, and remove or add optional clauses, are expected. The wording of clauses should not change.</p>
+            <p>You'll need to <external-link data-cy="contact-policy-team-link" href="@_configuration["ExternalLinks:ContactPolicyTeam"]">contact the policy team (opens in new tab)</external-link> about changes to clause text.</p>
+        </govuk-details-text>
+    </govuk-details>
+</div>
+<govuk-checkboxes name="options">
+    <govuk-checkboxes-fieldset>
+        <govuk-checkboxes-fieldset-legend>
+        </govuk-checkboxes-fieldset-legend>
+        <govuk-checkboxes-item data-cy="@nameof(Model.Received)" id="@nameof(Model.Received)" asp-for="@Model.Received" value="true" name="@nameof(Model.Received)" checked="@Model.Received">
+            <b>Received</b>
+        </govuk-checkboxes-item>
+        <govuk-checkboxes-item data-cy="@nameof(Model.Cleared)" id="@nameof(Model.Cleared)" asp-for="@Model.Cleared" value="true" name="@nameof(Model.Cleared)" checked="@Model.Cleared">
+            <b>Cleared</b>
+        </govuk-checkboxes-item>
+        <govuk-checkboxes-item data-cy="@nameof(Model.Signed)" id="@nameof(Model.Signed)" asp-for="@Model.Signed" value="true" name="@nameof(Model.Signed)" checked="@Model.Signed">
+            <b>Signed by incoming trust</b>
+        </govuk-checkboxes-item>
+        <govuk-checkboxes-item data-cy="@nameof(Model.SignedByDiocese)" id="@nameof(Model.SignedByDiocese)" asp-for="@Model.SignedByDiocese" value="true" name="@nameof(Model.SignedByDiocese)" checked="@Model.SignedByDiocese">
+            <b>Signed by diocese</b>
+        </govuk-checkboxes-item>
+        <govuk-checkboxes-item data-cy="@nameof(Model.Saved)" id="@nameof(Model.Saved)" asp-for="@Model.Saved" value="true" name="@nameof(Model.Saved)" checked="@Model.Saved">
+            <b>Saved in the academy SharePoint folder</b>
+        </govuk-checkboxes-item>
+    </govuk-checkboxes-fieldset>
+</govuk-checkboxes>
+<div class="govuk-form-group">
+    <h2 class="govuk-heading-l">Signed by the Secretary of State</h2>
+    <govuk-details data-module="govuk-details" class="govuk-details">
+        <govuk-details-summary>
+            <span class="govuk-details__summary-text">How to sign the Church Supplemental Agreement</span>
+        </govuk-details-summary>
+        <govuk-details-text>
+            <p>The Secretary of State, or somebody with the authority to act on their behalf, must sign the church supplemental agreement.</p>
+            <p>Each team may have a different process for signing and sealing documents. Follow your team's signing process.</p>
+            <p>Once you have the signed version of the document, save it as a PDF in SharePoint.</p>
+        </govuk-details-text>
+    </govuk-details>
+</div>
+<govuk-checkboxes name="options">
+    <govuk-checkboxes-fieldset>
+        <govuk-checkboxes-fieldset-legend>
+        </govuk-checkboxes-fieldset-legend>
+        <govuk-checkboxes-item data-cy="@nameof(Model.SignedBySecretaryState)" id="@nameof(Model.SignedBySecretaryState)" asp-for="@Model.SignedBySecretaryState" value="true" name="@nameof(Model.SignedBySecretaryState)" checked="@Model.SignedBySecretaryState">
+            <b>Signed on behalf of Secretary of State</b>
+        </govuk-checkboxes-item>
+        <govuk-checkboxes-item data-cy="@nameof(Model.SentOrSaved)" id="@nameof(Model.SentOrSaved)" asp-for="@Model.SentOrSaved" value="true" name="@nameof(Model.SentOrSaved)" checked="@Model.SentOrSaved">
+            <b>Saved in the academy SharePoint folder</b>
+        </govuk-checkboxes-item>
+    </govuk-checkboxes-fieldset>
+</govuk-checkboxes>

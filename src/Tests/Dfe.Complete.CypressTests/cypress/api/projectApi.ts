@@ -6,10 +6,26 @@ import {
     CreateMatTransferProjectRequest,
     CreateProjectResponse,
     CreateTransferProjectRequest,
+    GetProjectResponse,
     ProjectRequest,
 } from "./apiDomain";
 
 class ProjectApi extends ApiBase {
+    public getProject(urn: number): Cypress.Chainable<Cypress.Response<GetProjectResponse>> {
+        return this.authenticatedRequest().then((headers) => {
+            return cy
+                .request<GetProjectResponse>({
+                    method: "GET",
+                    url: Cypress.env(EnvApi) + "/v1/Projects",
+                    qs: { "urn.Value": urn },
+                    headers: headers,
+                    failOnStatusCode: false,
+                })
+                .then((response) => {
+                    return response;
+                });
+        });
+    }
     public createConversionProject(
         request: CreateConversionProjectRequest,
         username?: string,
@@ -48,6 +64,27 @@ class ProjectApi extends ApiBase {
                     body: {
                         projectId: { value: projectId },
                         urn: { value: academyUrn },
+                    },
+                })
+                .then((response) => {
+                    expect(response.status).to.eq(204);
+                    return response.body;
+                });
+        });
+    }
+
+    updateProjectSignificantDate(projectId: string, significantDate: string, reasonNotes: any, userId: string) {
+        return this.authenticatedRequest().then((headers) => {
+            return cy
+                .request<CreateProjectResponse>({
+                    method: "PATCH",
+                    url: Cypress.env(EnvApi) + "/v1/Projects/Project/SignificantDate",
+                    headers: headers,
+                    body: {
+                        projectId: { value: projectId },
+                        significantDate: significantDate,
+                        reasonNotes: reasonNotes,
+                        userId: { value: userId },
                     },
                 })
                 .then((response) => {

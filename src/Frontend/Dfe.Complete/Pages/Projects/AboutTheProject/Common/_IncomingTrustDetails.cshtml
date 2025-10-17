@@ -15,7 +15,7 @@
                     @if (!String.IsNullOrWhiteSpace(Model.IncomingTrust?.Name))
                     {
                         @Model.IncomingTrust.Name<br />
-                        <a class="govuk-link" href="https://get-information-schools.service.gov.uk/Groups/Search?GroupSearchModel.Text=@Model.Project.IncomingTrustUkprn" target="_blank">View the trust information in GIAS (opens in new tab)</a>
+                        <external-link class="govuk-link" href="https://get-information-schools.service.gov.uk/Groups/Search?GroupSearchModel.Text=@Model.Project.IncomingTrustUkprn">View the trust information in GIAS (opens in new tab)</external-link>
                     }
                     else
                     {
@@ -26,9 +26,11 @@
             <govuk-summary-list-row>
                 <govuk-summary-list-row-key>UKPRN (UK provider reference number)</govuk-summary-list-row-key>
                 <govuk-summary-list-row-value>@Model.Project.IncomingTrustUkprn</govuk-summary-list-row-value>
-                <govuk-summary-list-row-actions>
-                    <govuk-summary-list-row-action href="#" visually-hidden-text="UK provider reference number">Change</govuk-summary-list-row-action>
-                </govuk-summary-list-row-actions>
+                @if(Model.UserHasEditAccess()) {
+                    <govuk-summary-list-row-actions>
+                        <govuk-summary-list-row-action href="@Model.GetChangeLinkUrl("incoming-trust-ukprn")" visually-hidden-text="UK provider reference number">Change</govuk-summary-list-row-action>
+                    </govuk-summary-list-row-actions>
+                }
             </govuk-summary-list-row>
             <govuk-summary-list-row>
                 <govuk-summary-list-row-key>Group ID (identifier)</govuk-summary-list-row-key>
@@ -49,9 +51,20 @@
                     @if (!String.IsNullOrWhiteSpace(Model.IncomingTrust?.CompaniesHouseNumber))
                     {
                         @Model.IncomingTrust?.CompaniesHouseNumber<br />
-                        <a class="govuk-link" href="https://find-and-update.company-information.service.gov.uk/company/@Model.IncomingTrust?.CompaniesHouseNumber" target="_blank">View the Companies House information (opens in new tab)</a>
+                        <external-link class="govuk-link" href="https://find-and-update.company-information.service.gov.uk/company/@Model.IncomingTrust?.CompaniesHouseNumber">View the Companies House information (opens in new tab)</external-link>
                     }
                 </govuk-summary-list-row-value>
+            </govuk-summary-list-row>
+            <govuk-summary-list-row>
+                <govuk-summary-list-row-key>New trust reference number (TRN)</govuk-summary-list-row-key>
+                <govuk-summary-list-row-value>
+                    @Model.Project.NewTrustReferenceNumber
+                </govuk-summary-list-row-value>
+                @if(Model.UserHasEditAccess()) {
+                    <govuk-summary-list-row-actions>
+                        <govuk-summary-list-row-action href="@Model.GetChangeLinkUrl("new_trust_reference_number")" visually-hidden-text="New trust reference number (TRN)">Change</govuk-summary-list-row-action>
+                    </govuk-summary-list-row-actions>
+                }
             </govuk-summary-list-row>
             <govuk-summary-list-row>
                 <govuk-summary-list-row-key>Address</govuk-summary-list-row-key>
@@ -77,11 +90,13 @@
             <govuk-summary-list-row>
                 <govuk-summary-list-row-key>SharePoint folder</govuk-summary-list-row-key>
                 <govuk-summary-list-row-value>
-                    <a class="govuk-link" href="@Model.Project.IncomingTrustSharepointLink" target="_blank">View the trust SharePoint folder (opens in new tab)</a>
+                    <external-link class="govuk-link" href="@Model.Project.IncomingTrustSharepointLink">View the trust SharePoint folder (opens in new tab)</external-link>
                 </govuk-summary-list-row-value>
-                <govuk-summary-list-row-actions>
-                    <govuk-summary-list-row-action href="#" visually-hidden-text="Trust sharePoint folder">Change</govuk-summary-list-row-action>
-                </govuk-summary-list-row-actions>
+                @if(Model.UserHasEditAccess()) {
+                    <govuk-summary-list-row-actions>
+                        <govuk-summary-list-row-action href="@Model.GetChangeLinkUrl("sharepoint-folder-links")" visually-hidden-text="Trust sharePoint folder">Change</govuk-summary-list-row-action>
+                    </govuk-summary-list-row-actions>
+                }
             </govuk-summary-list-row>
         </govuk-summary-list>
     </div>

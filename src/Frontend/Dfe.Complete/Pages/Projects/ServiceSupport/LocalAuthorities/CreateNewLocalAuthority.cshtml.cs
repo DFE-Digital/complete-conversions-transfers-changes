@@ -1,15 +1,16 @@
-using Azure.Core;
 using Dfe.Complete.Application.LocalAuthorities.Commands;
 using Dfe.Complete.Constants;
 using Dfe.Complete.Domain.Constants;
 using Dfe.Complete.Domain.ValueObjects;
 using Dfe.Complete.Models;
-using Dfe.Complete.Services;
+using Dfe.Complete.Services.Interfaces;
 using Dfe.Complete.Validators;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
+
+using ValidationConstants = Dfe.Complete.Constants.ValidationConstants;
 
 namespace Dfe.Complete.Pages.Projects.ServiceSupport.LocalAuthorities
 {
@@ -61,7 +62,7 @@ namespace Dfe.Complete.Pages.Projects.ServiceSupport.LocalAuthorities
             }
             var localAuthorityId = new LocalAuthorityId(Guid.NewGuid());
             var response = await sender.Send(new CreateLocalAuthorityCommand(localAuthorityId, Code, Name, Address1, Address2, Address3,
-                AddressTown, AddressCounty, AddressPostcode, new ContactId(Guid.NewGuid()), Title!, ContactName!, Email, Phone));
+                AddressTown, AddressCounty, AddressPostcode.ToUpper(), new ContactId(Guid.NewGuid()), Title!, ContactName!, Email, Phone));
 
             if (response.IsSuccess)
             {

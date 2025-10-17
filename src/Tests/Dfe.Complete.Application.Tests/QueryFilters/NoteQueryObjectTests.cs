@@ -14,12 +14,12 @@ namespace Dfe.Complete.Application.Tests.QueryFilters
             new Note { Id = GetNoteId(), ProjectId = new ProjectId(Guid.Parse("00000000-0000-0000-0000-000000000001")), TaskIdentifier = NoteTaskIdentifier.Handover.ToDescription() },
             new Note { Id = GetNoteId(), ProjectId = new ProjectId(Guid.Parse("00000000-0000-0000-0000-000000000002")), TaskIdentifier = NoteTaskIdentifier.LandQuestionnaire.ToDescription() },
             new Note { Id = GetNoteId(), ProjectId = new ProjectId(Guid.Parse("00000000-0000-0000-0000-000000000002")), TaskIdentifier = NoteTaskIdentifier.LandQuestionnaire.ToDescription() },
-            new Note { Id = GetNoteId(), ProjectId = new ProjectId(Guid.Parse("00000000-0000-0000-0000-000000000002")), TaskIdentifier = NoteTaskIdentifier.LandRegistry.ToDescription() },
+            new Note { Id = GetNoteId(), ProjectId = new ProjectId(Guid.Parse("00000000-0000-0000-0000-000000000002")), TaskIdentifier = NoteTaskIdentifier.LandRegistryTitlePlans.ToDescription() },
             new Note { Id = GetNoteId(), ProjectId = new ProjectId(Guid.Parse("00000000-0000-0000-0000-000000000002")) },
             new Note { Id = GetNoteId(), ProjectId = new ProjectId(Guid.Parse("00000000-0000-0000-0000-000000000002")) },
             new Note { Id = GetNoteId(), ProjectId = new ProjectId(Guid.Parse("00000000-0000-0000-0000-000000000002")), NotableId = Guid.NewGuid()},
             new Note { Id = GetNoteId(), ProjectId = new ProjectId(Guid.Parse("00000000-0000-0000-0000-000000000002")), NotableType = nameof(Project) },
-            new Note { Id = GetNoteId(), ProjectId = new ProjectId(Guid.Parse("00000000-0000-0000-0000-000000000003")), TaskIdentifier = NoteTaskIdentifier.LandRegistry.ToDescription() }
+            new Note { Id = GetNoteId(), ProjectId = new ProjectId(Guid.Parse("00000000-0000-0000-0000-000000000003")), TaskIdentifier = NoteTaskIdentifier.LandRegistryTitlePlans.ToDescription() }
         }.AsQueryable();
 
         [Fact]

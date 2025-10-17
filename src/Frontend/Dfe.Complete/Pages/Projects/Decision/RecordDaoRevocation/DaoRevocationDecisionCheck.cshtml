@@ -1,0 +1,65 @@
+﻿@page "/projects/{projectId}/dao-revocation/check"
+@model Dfe.Complete.Pages.Projects.Decision.RecordDaoRevocation.DaoRevocationCheckModel
+@using Dfe.Complete.Constants
+@using Dfe.Complete.Domain.Enums
+@using Dfe.Complete.Utils
+@inject Dfe.Complete.Services.ErrorService ErrorService
+@{
+    Layout = "_RecordDaoRevocationLayout";
+    ViewData["Title"] = "Check your answers before recording this decision";
+    var hasError = ErrorService.HasErrors();
+}
+
+@section BodySection {
+    <form method="post">
+        <span class="govuk-caption-xl">Revoke Directive Academy Order</span>
+        <h1 class="govuk-heading-xl">
+            Check your answers before recording this decision
+        </h1>
+        <govuk-summary-list>
+            <govuk-summary-list-row>
+                <govuk-summary-list-row-key>Decision</govuk-summary-list-row-key>
+                <govuk-summary-list-row-value><span class="govuk-tag--red">DAO revoked</span></govuk-summary-list-row-value>
+            </govuk-summary-list-row>
+            <govuk-summary-list-row>
+                <govuk-summary-list-row-key>Reasons</govuk-summary-list-row-key>
+                <govuk-summary-list-row-value>
+                    @foreach (var reason in Model.Decision!.ReasonNotes)
+                    {
+                        <div class="govuk-!-padding-bottom-3">
+                            <h6 class="govuk-heading-xxs">@reason.Key.ToDisplayDescription():</h6>
+                            <div class="govuk-body">
+                               @Html.SimpleFormat(@reason.Value)
+                            </div>
+                        </div> 
+                    }
+                </govuk-summary-list-row-value>
+                <govuk-summary-list-row-actions>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  
+                    <govuk-summary-list-row-action href="@string.Format(RouteConstants.ChangeProjectDaoRevocationReason, Model.ProjectId)">Change</govuk-summary-list-row-action>
+                </govuk-summary-list-row-actions>
+            </govuk-summary-list-row>
+            <govuk-summary-list-row>
+                <govuk-summary-list-row-key>Decision maker's role</govuk-summary-list-row-key>
+                <govuk-summary-list-row-value>Minister</govuk-summary-list-row-value>
+            </govuk-summary-list-row>
+            <govuk-summary-list-row>
+                <govuk-summary-list-row-key>Minister's name</govuk-summary-list-row-key>
+                <govuk-summary-list-row-value>@Model.Decision.MinisterName</govuk-summary-list-row-value>
+                <govuk-summary-list-row-actions>
+                    <govuk-summary-list-row-action href="@string.Format(RouteConstants.ChangeProjectDaoRevocationMinister, Model.ProjectId)">Change</govuk-summary-list-row-action>
+                </govuk-summary-list-row-actions>
+            </govuk-summary-list-row>
+            <govuk-summary-list-row>
+                <govuk-summary-list-row-key>Date of decision</govuk-summary-list-row-key>
+                <govuk-summary-list-row-value>@Model.Decision.DecisionDate.ToDateString()</govuk-summary-list-row-value>
+                <govuk-summary-list-row-actions>
+                    <govuk-summary-list-row-action href="@string.Format(RouteConstants.ChangeProjectDaoRevocationDate, Model.ProjectId)">Change</govuk-summary-list-row-action>
+                </govuk-summary-list-row-actions>
+            </govuk-summary-list-row>
+        </govuk-summary-list>
+        <div class="govuk-button-group">
+            <govuk-button type="submit">Record DAO revocation</govuk-button>
+            <a class="govuk-link" href="@string.Format(RouteConstants.ProjectTaskList, Model.ProjectId)">Cancel</a>
+        </div>
+    </form>
+}

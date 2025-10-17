@@ -5,7 +5,7 @@ using Dfe.Complete.Application.Projects.Models;
 using Dfe.Complete.Domain.Enums;
 using MediatR;
 using Dfe.Complete.Utils;
-using DfE.CoreLibs.Utilities.Constants;
+using GovUK.Dfe.CoreLibs.Utilities.Constants;
 using Microsoft.Extensions.Logging;
 using Microsoft.EntityFrameworkCore;
 
@@ -66,7 +66,7 @@ namespace Dfe.Complete.Application.Projects.Queries.ListAllProjects
 
                         var outgoingTrust = trusts?.FirstOrDefault(t => t.Ukprn! == project.OutgoingTrustUkprn)?.Name;
 
-                        var allConditions = project.AllConditionsMet!.Value ? "Yes" : "Not yet";
+                        var allConditions = (project.AllConditionsMet.HasValue && project.AllConditionsMet.Value) ? "Yes" : "Not yet";
 
                         var confirmedAndOriginalDate = string.IsNullOrEmpty(originalDate) ? confirmedDate : $"{confirmedDate} ({originalDate})";
 

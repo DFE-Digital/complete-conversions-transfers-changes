@@ -10,7 +10,7 @@ using Dfe.Complete.Domain.Constants;
 using Dfe.Complete.Domain.ValueObjects;
 using Dfe.Complete.Extensions;
 using Microsoft.AspNetCore.Authorization;
-using DfE.CoreLibs.Utilities.Extensions;
+using GovUK.Dfe.CoreLibs.Utilities.Extensions;
 
 namespace Dfe.Complete.Pages.Projects.TaskList.Tasks;
 
@@ -26,7 +26,7 @@ public class BaseProjectTaskModel(ISender sender, IAuthorizationService authoriz
         if (Project.State == ProjectState.Completed || noteUserId != User.GetUserId())
             return false;
         return true;
-    }
+    } 
 
     public override async Task<IActionResult> OnGetAsync()
     {
@@ -38,6 +38,9 @@ public class BaseProjectTaskModel(ISender sender, IAuthorizationService authoriz
             throw new InvalidOperationException($"Could not load notes for project {ProjectId}");
 
         Notes = notesResult.Value ?? [];
+
+        await GetProjectTaskDataAsync();
+        await SetCurrentUserTeamAsync();
 
         return Page();
     }
@@ -65,5 +68,10 @@ public class BaseProjectTaskModel(ISender sender, IAuthorizationService authoriz
         }
 
         return Redirect(string.Format(RouteConstants.ProjectAddTaskNote, ProjectId, TaskIdentifier.ToDescription()));
+    }
+
+    internal void SetTaskSuccessNotification()
+    {
+        TempData.SetNotification(NotificationType.Success, "Success", "Task updated successfully");
     }
 }

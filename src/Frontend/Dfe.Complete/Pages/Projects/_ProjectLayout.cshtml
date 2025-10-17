@@ -1,10 +1,12 @@
-@using Dfe.Complete.Pages.Projects.Team;
 @using Dfe.Complete.Constants;
+@using Dfe.Complete.Domain.Constants
 @using Dfe.Complete.Utils;
 @using Dfe.Complete.Domain.Enums
 @using Dfe.Complete.Domain.Extensions
+@using Dfe.Complete.Pages.Projects.DateHistory
 @using GovUk.Frontend.AspNetCore.TagHelpers
 @using Dfe.Complete.Pages.Projects.ProjectView
+@using Dfe.Complete.TagHelpers
 
 @model Dfe.Complete.Pages.Projects.ProjectView.ProjectLayoutModel
 @{
@@ -13,6 +15,25 @@
   string? IsCurrentNav(string tabName) => Model.CurrentNavigationItem == tabName ? "page" : null;
 }
 
+@if (TempData["RecordedDaoRevocation"] != null)
+{
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+            <govuk-notification-banner class="govuk-notification-banner--success">
+                <govuk-notification-banner-title>
+                    Success
+                </govuk-notification-banner-title>
+                <h3 class="govuk-notification-banner__heading" id="dao-revocation">
+                    DAO revocation recorded successfully
+                </h3>
+            </govuk-notification-banner>
+        </div>
+    </div>
+}
+@if (Model.ShowProjectCompletionValidationNotification)
+{
+    @await Html.PartialAsync("Completion/_ValidationNotification")
+}
 <div class="govuk-grid-row">
   <div class="govuk-grid-column-two-thirds">
     <span class="govuk-caption-l">
@@ -23,15 +44,15 @@
       {
         <govuk-tag class="govuk-tag--pink">Form a MAT</govuk-tag>
       }
-
-      @* TODO: Add DAO Revoked *@
-
+      @if(Model.Project.State == ProjectState.DaoRevoked)
+      {
+          <govuk-tag class="govuk-tag govuk-tag--red">DAO REVOKED</govuk-tag>
+      } 
       @if (Model.Project.GroupId is not null)
       {
         <govuk-tag class="govuk-tag--turquoise">In a group</govuk-tag>
-      }
-
-    </span>
+      } 
+    </span> 
     <h1 class="govuk-heading-xl">@Model.Establishment.Name</h1>
   </div>
 </div>
@@ -45,14 +66,13 @@
           Important
         </govuk-notification-banner-title>
         <h3>Project completed</h3>
-        <p>This project was completed on @Model.Project.CompletedAt.ToDateMonthYearString().</p>
+        <p>This project was completed on @Model.Project.CompletedAt.ToDateString().</p>
         <p>Only Service Support team members can make changes to this project.</p>
       </govuk-notification-banner>
     </div>
   </div>
 }
-else if (User.GetUserId() != Model.Project.AssignedToId &&
-!Model.CurrentUserTeam.TeamIsServiceSupport())
+else if (!@Model.UserHasEditAccess())
 {
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
@@ -66,9 +86,20 @@ else if (User.GetUserId() != Model.Project.AssignedToId &&
     </div>
   </div>
 }
-
-@* TODO Add DAO Revoked message *@
-
+ 
+@if(Model.Project.State == ProjectState.DaoRevoked){
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+            <govuk-notification-banner class="govuk-notification-banner">
+                <govuk-notification-banner-title>
+                    Important
+                </govuk-notification-banner-title>
+                <p>This project&lsquo;s Directive Academy Order was revoked on @Model.DaoRevocation.DateOfDecision.ToDateString().</p>
+                <p>Only Service Support team members can make changes to this project.</p>
+            </govuk-notification-banner>
+        </div>
+    </div>
+}
 <div class="govuk-grid-row">
   <div class="govuk-grid-column-three-quarters">
     <dl class="govuk-summary-list dfe-summary-list--project-summary" id="project-summary">
@@ -105,17 +136,14 @@ else if (User.GetUserId() != Model.Project.AssignedToId &&
         @if (Model.Project.Type == ProjectType.Transfer)
         {
           <dd class="govuk-summary-list__value">
-            <a target="_blank" class="govuk-link" href="@Model.Project.EstablishmentSharepointLink">Academy folder (opens
-              in new tab)</a>
+            <external-link class="govuk-link" href="@Model.Project.EstablishmentSharepointLink">Academy folder</external-link>
           </dd>
         }
         @if (Model.Project.Type == ProjectType.Conversion)
         {
           <dd class="govuk-summary-list__value">
-            <a target="_blank" class="govuk-link" href="@Model.Project.EstablishmentSharepointLink">School folder (opens
-              in new tab)</a> &nbsp;|&nbsp;
-            <a target="_blank" class="govuk-link" href="@Model.Project.IncomingTrustSharepointLink">Trust folder (opens in
-              new tab)</a>
+            <external-link class="govuk-link" href="@Model.Project.EstablishmentSharepointLink">School folder</external-link> &nbsp;|&nbsp;
+            <external-link class="govuk-link" href="@Model.Project.IncomingTrustSharepointLink">Trust folder</external-link>
           </dd>
         }
       </div>
@@ -123,6 +151,17 @@ else if (User.GetUserId() != Model.Project.AssignedToId &&
 
   </div>
 </div>
+
+<div class="govuk-button-group">
+  @{
+    if (SigDateHelper.CanEditSignificantDate(Model.Project, User, Model.CurrentUserTeam))
+    {
+      <a data-module="govuk-button" draggable="false" role="button" class="govuk-button govuk-button--secondary" href="@String.Format(RouteConstants.ChangeProjectDateHistory, Model.Project.Id.Value)">Change @(Model.Project.Type == ProjectType.Conversion ? "conversion" : "transfer") date</a>
+    }
+  }
+  <a data-module="govuk-button" draggable="false" role="button" asp-policy="@UserPolicyConstants.CanViewServiceSupport" class="govuk-button govuk-button--warning" href="#">Delete project</a>
+</div>
+
 
 <div class="govuk-grid-row">
   <div class="govuk-grid-column-full">

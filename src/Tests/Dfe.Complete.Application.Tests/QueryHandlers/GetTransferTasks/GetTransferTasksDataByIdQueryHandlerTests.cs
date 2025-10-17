@@ -1,15 +1,15 @@
 ﻿using AutoFixture.Xunit2;
-using DfE.CoreLibs.Testing.AutoFixture.Attributes;
-using Dfe.Complete.Domain.Interfaces.Repositories;
+using GovUK.Dfe.CoreLibs.Testing.AutoFixture.Attributes;
 using NSubstitute;
-using DfE.CoreLibs.Testing.AutoFixture.Customizations;
-using System.Linq.Expressions;
+using GovUK.Dfe.CoreLibs.Testing.AutoFixture.Customizations;
 using Dfe.Complete.Domain.ValueObjects;
 using AutoMapper;
 using Dfe.Complete.Application.Projects.Models;
 using NSubstitute.ExceptionExtensions;
 using Dfe.Complete.Application.Projects.Queries.GetTransferTasksData;
 using Dfe.Complete.Domain.Entities;
+using Dfe.Complete.Application.Projects.Interfaces;
+using MockQueryable;
 
 namespace Dfe.Complete.Application.Tests.QueryHandlers.GetTransferTasks
 {
@@ -18,7 +18,7 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.GetTransferTasks
         [Theory]
         [CustomAutoData(typeof(DateOnlyCustomization))]
         public async Task Handle_ShouldGetATransferTaskDataById_WhenCommandIsValid(
-            [Frozen] ICompleteRepository<TransferTasksData> mockTransferTaskDataRepository,
+            [Frozen] ITaskDataReadRepository mockTransferTaskDataRepository,
             [Frozen] IMapper mockMapper,
             GetTransferTasksDataByIdQueryHandler handler,
             GetTransferTasksDataByIdQuery command
@@ -36,8 +36,8 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.GetTransferTasks
             );
 
             // Arrange
-            mockTransferTaskDataRepository.GetAsync(Arg.Any<Expression<Func<TransferTasksData, bool>>>())
-                .Returns(transferDataTask);
+            mockTransferTaskDataRepository.TransferTaskData
+                .Returns(new List<TransferTasksData> { transferDataTask }.AsQueryable().BuildMock());
 
             mockMapper.Map<TransferTaskDataDto>(transferDataTask).Returns(new TransferTaskDataDto()
             {
@@ -53,34 +53,14 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.GetTransferTasks
             var result = await handler.Handle(command, default);
 
             // Assert
-            await mockTransferTaskDataRepository.Received(1)
-                .GetAsync(Arg.Any<Expression<Func<TransferTasksData, bool>>>());
             Assert.True(result.IsSuccess);
             Assert.True(result.Value?.Id == command.Id);
         }
 
         [Theory]
         [CustomAutoData(typeof(DateOnlyCustomization))]
-        public async Task Handle_ShouldSucceedAndReturnNullWhenUnfoundTransferTaskDataById_WhenCommandIsValid(
-            [Frozen] ICompleteRepository<TransferTasksData> mockTransferTaskDataRepository,
-            GetTransferTasksDataByIdQueryHandler handler,
-            GetTransferTasksDataByIdQuery command
-        )
-        {
-            // Act
-            var result = await handler.Handle(command, default);
-
-            // Assert
-            await mockTransferTaskDataRepository.Received(1)
-                .GetAsync(Arg.Any<Expression<Func<TransferTasksData, bool>>>());
-            Assert.True(result.IsSuccess);
-            Assert.True(result.Value == null);
-        }
-
-        [Theory]
-        [CustomAutoData(typeof(DateOnlyCustomization))]
         public async Task Handle_ShouldFailAndReturnErrorMessage_WhenExceptionIsThrown(
-            [Frozen] ICompleteRepository<TransferTasksData> mockTransferTaskDataRepository,
+            [Frozen] ITaskDataReadRepository mockTransferTaskDataRepository,
             GetTransferTasksDataByIdQueryHandler handler,
             GetTransferTasksDataByIdQuery command
         )
@@ -88,15 +68,12 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.GetTransferTasks
             // Arrange
             var expectedErrorMessage = "Expected Error Message";
 
-            mockTransferTaskDataRepository.GetAsync(Arg.Any<Expression<Func<TransferTasksData, bool>>>())
-                .Throws(new Exception(expectedErrorMessage));
+            mockTransferTaskDataRepository.TransferTaskData.Throws(new Exception(expectedErrorMessage));
 
             // Act
             var result = await handler.Handle(command, default);
 
             // Assert
-            await mockTransferTaskDataRepository.Received(1)
-                .GetAsync(Arg.Any<Expression<Func<TransferTasksData, bool>>>());
             Assert.False(result.IsSuccess);
             Assert.Equal(result.Error, expectedErrorMessage);
         }

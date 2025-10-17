@@ -6,22 +6,15 @@ import {
 } from "./apiDomain";
 import { dimensionsTrust, groupReferenceNumber, macclesfieldTrust } from "cypress/constants/stringTestConstants";
 import { cypressUser } from "cypress/constants/cypressConstants";
+import { getSignificantDateString } from "cypress/support/formatDate";
 
 export class ProjectBuilder {
     public static createConversionProjectRequest(
-        significantDate: Date,
-        urn?: number,
-        userAdId?: string,
+        options: Partial<CreateConversionProjectRequest> = {},
     ): CreateConversionProjectRequest {
-        // force significant date to be first day of the month
-        significantDate.setDate(1);
-        const significantDateFormatted = significantDate.toISOString().split("T")[0];
-        const urnValue = urn ?? 103844;
-        const userAdIdValue = userAdId ?? cypressUser.adId;
-
         return {
-            urn: { value: urnValue },
-            significantDate: significantDateFormatted,
+            urn: { value: 0 }, // specify a valid URN in request options
+            significantDate: getSignificantDateString(1),
             isSignificantDateProvisional: false,
             incomingTrustUkprn: {
                 value: macclesfieldTrust.ukprn,
@@ -35,7 +28,8 @@ export class ProjectBuilder {
             groupReferenceNumber: groupReferenceNumber,
             handingOverToRegionalCaseworkService: false,
             handoverComments: "test 2",
-            userAdId: userAdIdValue,
+            userAdId: cypressUser.adId,
+            ...options,
         };
     }
 
@@ -43,7 +37,7 @@ export class ProjectBuilder {
         options: Partial<CreateTransferProjectRequest> = {},
     ): CreateTransferProjectRequest {
         return {
-            urn: { value: 105601 },
+            urn: { value: 0 }, // specify a valid URN in request options
             outgoingTrustUkprn: { value: macclesfieldTrust.ukprn },
             incomingTrustUkprn: { value: dimensionsTrust.ukprn },
             significantDate: "2026-03-01",
@@ -69,7 +63,7 @@ export class ProjectBuilder {
         options: Partial<CreateMatConversionProjectRequest> = {},
     ): CreateMatConversionProjectRequest {
         return {
-            urn: { value: 147800 },
+            urn: { value: 0 }, // specify a valid URN in request options
             newTrustName: macclesfieldTrust.name,
             newTrustReferenceNumber: macclesfieldTrust.referenceNumber,
             significantDate: "2026-03-01",
@@ -91,7 +85,7 @@ export class ProjectBuilder {
         options: Partial<CreateMatTransferProjectRequest> = {},
     ): CreateMatTransferProjectRequest {
         return {
-            urn: { value: 149460 },
+            urn: { value: 0 }, // specify a valid URN in request options
             newTrustName: dimensionsTrust.name,
             newTrustReferenceNumber: dimensionsTrust.referenceNumber,
             outgoingTrustUkprn: { value: macclesfieldTrust.ukprn },

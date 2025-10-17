@@ -64,5 +64,32 @@ namespace Dfe.Complete.Tests.Constants
             var actual = ErrorMessagesConstants.ExceptionWhileCreatingLocalAuthority.Replace("{Code}", code);
             Assert.Equal(expected, actual);
         }
+
+        [Fact]
+        public void NotFoundUser_ShouldReturnFormattedMessage()
+        {
+            var id = "123";
+            var expected = $"User with Id 123 not found.";
+            var actual = string.Format(ErrorMessagesConstants.NotFoundUser, id);
+            Assert.Equal(expected, actual);
+        }
+
+        [Fact]
+        public void ExceptionWhileCreatingUser_ShouldReturnFormattedMessage()
+        {
+            var email = "user@example.com";
+            var expected = $"Error occurred while creating User with email {email}.";
+            var actual = ErrorMessagesConstants.ExceptionWhileCreatingUser.Replace("{Email}", email);
+            Assert.Equal(expected, actual);
+        }
+
+        [Fact]
+        public void InvalidGuidException_ShouldReturnFormattedMessage()
+        {
+            var guid = "a-1-2-3";
+            var expected = "a-1-2-3 is not a valid GUID.";
+            var actual = string.Format(ErrorMessagesConstants.InvalidGuidException, guid);
+            Assert.Equal(expected, actual);
+        }
     }
 }

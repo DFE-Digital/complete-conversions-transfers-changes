@@ -4,14 +4,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="DfE.CoreLibs.Caching" Version="1.0.7" />
+    <PackageReference Include="GovUK.Dfe.CoreLibs.Caching" Version="1.0.10" />
     <PackageReference Include="FluentValidation" Version="11.11.0" />
     <PackageReference Include="MediatR" Version="12.4.1" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Validators\" />
     <ProjectReference Include="..\Dfe.Complete.Utils\Dfe.Complete.Utils.csproj" />
   </ItemGroup>
 

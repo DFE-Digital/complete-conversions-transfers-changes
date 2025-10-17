@@ -1,8 +1,15 @@
 using Dfe.AcademiesApi.Client.Contracts;
+using Dfe.Complete.Application.DaoRevoked.Models;
+using Dfe.Complete.Application.DaoRevoked.Queries;
+using Dfe.Complete.Application.KeyContacts.Models;
+using Dfe.Complete.Application.KeyContacts.Queries;
 using Dfe.Complete.Application.Projects.Models;
+using Dfe.Complete.Application.Projects.Queries.GetConversionTasksData;
 using Dfe.Complete.Application.Projects.Queries.GetProject;
+using Dfe.Complete.Application.Projects.Queries.GetTransferTasksData;
 using Dfe.Complete.Application.Services.AcademiesApi;
 using Dfe.Complete.Domain.Enums;
+using Dfe.Complete.Domain.Extensions;
 using Dfe.Complete.Domain.ValueObjects;
 using Dfe.Complete.Extensions;
 using Dfe.Complete.Utils;
@@ -17,11 +24,12 @@ public abstract class BaseProjectPageModel(ISender sender, ILogger logger) : Pag
     protected readonly ISender Sender = sender;
     protected ILogger Logger = logger;
 
-
     [BindProperty(SupportsGet = true, Name = "projectId")]
     public string ProjectId { get; set; }
 
     public ProjectDto Project { get; set; }
+
+    public DaoRevocationDto? DaoRevocation { get; set; }
 
     public EstablishmentDto Establishment { get; set; }
 
@@ -30,6 +38,13 @@ public abstract class BaseProjectPageModel(ISender sender, ILogger logger) : Pag
     public TrustDto? OutgoingTrust { get; set; }
 
     public ProjectTeam CurrentUserTeam { get; set; }
+
+    public TransferTaskDataDto TransferTaskData { get; private set; } = null!;
+    public ConversionTaskDataDto ConversionTaskData { get; private set; } = null!;
+    public KeyContactDto KeyContacts { get; private set; } = null!;
+
+    public bool UserHasEditAccess() =>
+        User.GetUserId() == Project.AssignedToId || CurrentUserTeam.TeamIsServiceSupport();
 
     public async Task UpdateCurrentProject()
     {
@@ -64,7 +79,22 @@ public abstract class BaseProjectPageModel(ISender sender, ILogger logger) : Pag
 
         Establishment = establishmentResult.Value;
     }
+    protected async Task SetDaoRevocationIfProjectIsDaoRevoked()
+    {
+        if (Project.State is not ProjectState.DaoRevoked)
+        {
+            return;
+        }
+        var daoRevocationQuery = new GetDaoRevocationByProjectIdQuery(Project.Id);
+        var daoRevocationResult = await Sender.Send(daoRevocationQuery);
 
+        if (!daoRevocationResult.IsSuccess || daoRevocationResult.Value == null)
+        {
+            throw new NotFoundException($"Dao revocation for project {Project.Id.Value} does not exist.");
+        }
+
+        DaoRevocation = daoRevocationResult.Value;
+    }
     protected async Task SetIncomingTrustAsync()
     {
         if (!Project.FormAMat && Project.IncomingTrustUkprn != null)
@@ -117,8 +147,42 @@ public abstract class BaseProjectPageModel(ISender sender, ILogger logger) : Pag
 
         await SetCurrentUserTeamAsync();
 
+        await SetDaoRevocationIfProjectIsDaoRevoked();
+
         return Page();
     }
 
     public string FormatRouteWithProjectId(string route) => string.Format(route, ProjectId);
+
+    protected async Task GetProjectTaskDataAsync()
+    {
+        if (Project.TasksDataId != null)
+        {
+            if (Project.Type == ProjectType.Transfer)
+            {
+                var result = await Sender.Send(new GetTransferTasksDataByIdQuery(Project.TasksDataId));
+                if (result.IsSuccess && result.Value != null)
+                {
+                    TransferTaskData = result.Value;
+                }
+            }
+            if (Project.Type == ProjectType.Conversion)
+            {
+                var result = await Sender.Send(new GetConversionTasksDataByIdQuery(Project.TasksDataId));
+                if (result.IsSuccess && result.Value != null)
+                {
+                    ConversionTaskData = result.Value;
+                }
+            }
+        }
+    }
+    protected async Task GetKeyContactForProjectsAsyc()
+    {
+        var contactsResult = await Sender.Send(new GetKeyContactsForProjectQuery(new ProjectId(Guid.Parse(ProjectId))));
+        if (!contactsResult.IsSuccess)
+        {
+            throw new NotFoundException($"Could not find key contacts for project {ProjectId}");
+        }
+        KeyContacts = contactsResult.Value ?? new();
+    }
 }
