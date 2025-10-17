@@ -239,7 +239,6 @@ function truncateText(text, maxLength) {
 }
 
 // used in GitHub Actions to send Cypress test results to Microsoft Teams channel via webhook
-// eslint-disable-next-line @sonarjs/prefer-top-level-await
 async function sendTeamsNotification() {
     try {
         const { reportStats, failedTests } = readReportData();
@@ -254,4 +253,5 @@ async function sendTeamsNotification() {
     }
 }
 
+// NOSONAR - Top-level await requires ES modules which conflicts with our CommonJS setup
 sendTeamsNotification();
