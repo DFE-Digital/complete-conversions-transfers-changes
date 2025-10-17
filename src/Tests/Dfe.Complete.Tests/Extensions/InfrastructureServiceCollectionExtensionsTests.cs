@@ -33,6 +33,7 @@ public class InfrastructureServiceCollectionExtensionsTests
         // The redis cache should be registered.
         var distributedCache = provider.GetService<IDistributedCache>();
         Assert.NotNull(distributedCache);
+        Assert.Contains("RedisCache", distributedCache.GetType().ToString());
     }
 
     [Fact]
@@ -59,6 +60,7 @@ public class InfrastructureServiceCollectionExtensionsTests
         // When Redis is disabled, IDistributedCache registration might be absent or register another caching provider.
         // Adjust assertion based on your design. Here we simply verify that redis cache is not present.
         var distributedCache = provider.GetService<IDistributedCache>();
-        Assert.Null(distributedCache);
+        Assert.NotNull(distributedCache);
+        Assert.IsType<MemoryDistributedCache>(distributedCache);
     }
 }

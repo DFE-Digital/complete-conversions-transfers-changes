@@ -1,5 +1,7 @@
 ﻿using Asp.Versioning;
+using Dfe.Complete.Application.Contacts.Models;
 using Dfe.Complete.Application.Contacts.Queries;
+using Dfe.Complete.Application.Services.PersonsApi;
 using Dfe.Complete.Domain.Entities;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -57,6 +59,22 @@ public class ContactsController(ISender sender) : ControllerBase
     [SwaggerResponse(200, "Contact", typeof(List<Contact>))]
     [SwaggerResponse(400, "Invalid request data.")]
     public async Task<IActionResult> ListAllContactsForProjectAndLocalAuthorityAsync([FromQuery] GetContactsForProjectAndLocalAuthorityQuery request, CancellationToken cancellationToken)
+    {
+        var contacts = await sender.Send(request, cancellationToken);
+        return Ok(contacts.Value);
+    }
+
+    /// <summary>
+    /// Returns a parliament mp contact by a constituency
+    /// </summary>
+    /// <param name="request">The request.</param>
+    /// <param name="cancellationToken">The cancellation token.</param>
+    [Authorize(Policy = "CanRead")]
+    [HttpGet]
+    [Route("GetParliamentMPContact")]
+    [SwaggerResponse(200, "Contact", typeof(ConstituencyMemberContactDto))]
+    [SwaggerResponse(400, "Invalid request data.")]
+    public async Task<IActionResult> GetParliamentMPContactByConstituencyAsync([FromQuery] GetContactByConstituency request, CancellationToken cancellationToken)
     {
         var contacts = await sender.Send(request, cancellationToken);
         return Ok(contacts.Value);

@@ -72,6 +72,21 @@ namespace Dfe.Complete.Client.Contracts
         /// <exception cref="CompleteApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<Contact>> ListAllContactsForProjectAndLocalAuthorityAsync(System.Guid? projectId_Value, System.Guid? localAuthorityId_Value, System.Threading.CancellationToken cancellationToken);
 
+        /// <summary>
+        /// Returns a parliament mp contact by a constituency
+        /// </summary>
+        /// <returns>Contact</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<ConstituencyMemberContactDto> GetParliamentMPContactByConstituencyAsync(string? constituencyName);
+
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>
+        /// Returns a parliament mp contact by a constituency
+        /// </summary>
+        /// <returns>Contact</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<ConstituencyMemberContactDto> GetParliamentMPContactByConstituencyAsync(string? constituencyName, System.Threading.CancellationToken cancellationToken);
+
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "14.2.0.0 (NJsonSchema v11.1.0.0 (Newtonsoft.Json v13.0.0.0))")]
@@ -2383,6 +2398,30 @@ namespace Dfe.Complete.Client.Contracts
         {
 
             return Newtonsoft.Json.JsonConvert.DeserializeObject<SignificantDateHistoryReasonId>(data, new Newtonsoft.Json.JsonSerializerSettings());
+
+        }
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.2.0.0 (NJsonSchema v11.1.0.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class ConstituencyMemberContactDto
+    {
+        [Newtonsoft.Json.JsonProperty("displayNameWithTitle", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string? DisplayNameWithTitle { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("email", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string? Email { get; set; } = default!;
+
+        public string ToJson()
+        {
+
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonSerializerSettings());
+
+        }
+        public static ConstituencyMemberContactDto FromJson(string data)
+        {
+
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<ConstituencyMemberContactDto>(data, new Newtonsoft.Json.JsonSerializerSettings());
 
         }
 

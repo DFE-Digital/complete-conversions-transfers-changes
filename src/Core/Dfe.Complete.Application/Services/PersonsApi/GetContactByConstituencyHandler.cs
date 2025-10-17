@@ -1,0 +1,48 @@
+﻿using AutoMapper;
+using Dfe.Complete.Application.Common.Models;
+using Dfe.Complete.Application.Contacts.Models;
+using GovUK.Dfe.PersonsApi.Client.Contracts;
+using MediatR;
+using Microsoft.Extensions.Logging;
+using System.ComponentModel.DataAnnotations;
+
+namespace Dfe.Complete.Application.Services.PersonsApi;
+
+public record GetContactByConstituency([Required] string ConstituencyName) : IRequest<Result<ConstituencyMemberContactDto>>;
+
+
+public class GetContactByConstituencyHandler(IConstituenciesClient constituenciesClient, IMapper mapper, ILogger<GetContactByConstituencyHandler> logger) : IRequestHandler<GetContactByConstituency, Result<ConstituencyMemberContactDto>>
+{
+    private readonly IConstituenciesClient _constituenciesClient = constituenciesClient ?? throw new ArgumentNullException(nameof(constituenciesClient));
+    private readonly ILogger<GetContactByConstituencyHandler> _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+
+    public async Task<Result<ConstituencyMemberContactDto>> Handle(GetContactByConstituency request, CancellationToken cancellationToken)
+    {
+        try
+        {
+            var result = await _constituenciesClient.GetMemberOfParliamentByConstituencyAsync(request.ConstituencyName, cancellationToken)
+                .ConfigureAwait(false);
+
+            var constituencyMemberContactDto = mapper.Map<ConstituencyMemberContactDto>(result);
+            return Result<ConstituencyMemberContactDto>.Success(constituencyMemberContactDto);
+        }
+        catch (PersonsApiException ex)
+        {
+            var errorMessage = $"An error occurred with the Persons API client. Response: {ex.Message}";
+            _logger.LogError(ex, "An error occurred with the Persons API client. Response: {Message}", ex.Message);
+            return Result<ConstituencyMemberContactDto>.Failure(errorMessage);
+        }
+        catch (AggregateException ex)
+        {
+            var errorMessage = "An error occurred.";
+            _logger.LogError(ex, "An error occurred.");
+            return Result<ConstituencyMemberContactDto>.Failure(errorMessage);
+        }
+        catch (Exception ex) when (ex is not OperationCanceledException)
+        {
+            var errorMessage = $"An unexpected error occurred. Response: {ex.Message}";
+            _logger.LogError(ex, "An unexpected error occurred. Response: {Message}", ex.Message);
+            return Result<ConstituencyMemberContactDto>.Failure(errorMessage);
+        }
+    }
+}
