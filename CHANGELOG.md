@@ -17,6 +17,7 @@ Security in case of vulnerabilities.
 ## Unreleased
 
 ### Added
+- Added transfer creation end point for prepare to complete
 
 - Added `Check and confirm the academy and trust financial information` task for transfer project.
 
