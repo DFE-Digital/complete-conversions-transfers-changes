@@ -4,10 +4,11 @@ using Dfe.Complete.Application.Contacts.Models;
 using GovUK.Dfe.PersonsApi.Client.Contracts;
 using MediatR;
 using Microsoft.Extensions.Logging;
+using System.ComponentModel.DataAnnotations;
 
 namespace Dfe.Complete.Application.Services.PersonsApi;
 
-public record GetContactByConstituency(string ConstituencyName) : IRequest<Result<ConstituencyMemberContactDto>>;
+public record GetContactByConstituency([Required] string ConstituencyName) : IRequest<Result<ConstituencyMemberContactDto>>;
 
 
 public class GetContactByConstituencyHandler(IConstituenciesClient constituenciesClient, IMapper mapper, ILogger<GetContactByConstituencyHandler> logger) : IRequestHandler<GetContactByConstituency, Result<ConstituencyMemberContactDto>>
@@ -17,9 +18,6 @@ public class GetContactByConstituencyHandler(IConstituenciesClient constituencie
 
     public async Task<Result<ConstituencyMemberContactDto>> Handle(GetContactByConstituency request, CancellationToken cancellationToken)
     {
-        if (string.IsNullOrWhiteSpace(request.ConstituencyName))
-            throw new ArgumentException("Constituency name cannot be null or empty.");
-
         try
         {
             var result = await _constituenciesClient.GetMemberOfParliamentByConstituencyAsync(request.ConstituencyName, cancellationToken)
