@@ -1,0 +1,16 @@
+﻿@page "/projects/{projectId}/confirm_chair_of_governors_contact"
+@model Dfe.Complete.Pages.Projects.TaskList.Tasks.ConfirmChairOfGovernorsDetails.ConfirmChairOfGovernorsDetailsModel
+@{
+    Layout = "_ProjectTaskLayout";
+    ViewData["Title"] = "Confirm the chair of governors' details";
+}
+@section TaskHeaderHintSection {
+    <div class="govuk-hint">
+    </div>
+}
+@section TaskSection {
+
+    <form method="post">
+        @await Html.PartialAsync("_TaskSaveAndReturn", new TaskSaveAndReturnModel(Model.Project, Model.CurrentUserTeam))
+    </form>
+}

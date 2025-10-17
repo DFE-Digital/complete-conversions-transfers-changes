@@ -3,10 +3,10 @@
 @inject IProjectPermissionService ProjectPermissionService
 
 @{
-    var userCanEdit = ProjectPermissionService.UserCanEdit(Model.Project, Model.CurrentUserTeam, User);
+    var userCanComplete = ProjectPermissionService.UserCanComplete(Model.Project, Model.CurrentUserTeam, User);
 }
 
-@if (userCanEdit)
+@if (userCanComplete)
 {
     <div class="govuk-grid-row" id="completing_a_project">
         <div class="govuk-grid-row">

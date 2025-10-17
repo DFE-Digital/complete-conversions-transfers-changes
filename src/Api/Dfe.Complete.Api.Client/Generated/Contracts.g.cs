@@ -764,7 +764,7 @@ namespace Dfe.Complete.Client.Contracts
         /// Update the local authority details.
         /// </summary>
         /// <param name="request">The request.</param>
-        /// <returns>local authoirty details updated successfully.</returns>
+        /// <returns>Local authority details updated successfully.</returns>
         /// <exception cref="CompleteApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task UpdateLocalAuthorityDetailsAsync(UpdateLocalAuthorityCommand request);
 
@@ -773,7 +773,7 @@ namespace Dfe.Complete.Client.Contracts
         /// Update the local authority details.
         /// </summary>
         /// <param name="request">The request.</param>
-        /// <returns>local authoirty details updated successfully.</returns>
+        /// <returns>Local authority details updated successfully.</returns>
         /// <exception cref="CompleteApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task UpdateLocalAuthorityDetailsAsync(UpdateLocalAuthorityCommand request, System.Threading.CancellationToken cancellationToken);
 
@@ -1167,6 +1167,57 @@ namespace Dfe.Complete.Client.Contracts
         /// <exception cref="CompleteApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task UpdateMasterFundingAgreementTaskAsync(UpdateMasterFundingAgreementTaskCommand request, System.Threading.CancellationToken cancellationToken);
 
+        /// <summary>
+        /// Confirm the incoming trust ceo contact for the project.
+        /// </summary>
+        /// <param name="request">The update command.</param>
+        /// <returns>Confirm the incoming trust ceo contact for the project successfully.</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task UpdateConfirmIncomingTrustCeoContactTaskAsync(UpdateIncomingTrustCeoCommand request);
+
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>
+        /// Confirm the incoming trust ceo contact for the project.
+        /// </summary>
+        /// <param name="request">The update command.</param>
+        /// <returns>Confirm the incoming trust ceo contact for the project successfully.</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task UpdateConfirmIncomingTrustCeoContactTaskAsync(UpdateIncomingTrustCeoCommand request, System.Threading.CancellationToken cancellationToken);
+
+        /// <summary>
+        /// Confirm the academy risk protection arrangements task updated successfully for either conversion or transfer project.
+        /// </summary>
+        /// <param name="request">The update command.</param>
+        /// <returns>Confirm the academy risk protection arrangements task updated successfully.</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task UpdateConfirmAcademyRiskProtectionArrangementsTaskAsync(UpdateConfirmAcademyRiskProtectionArrangementsTaskCommand request);
+
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>
+        /// Confirm the academy risk protection arrangements task updated successfully for either conversion or transfer project.
+        /// </summary>
+        /// <param name="request">The update command.</param>
+        /// <returns>Confirm the academy risk protection arrangements task updated successfully.</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task UpdateConfirmAcademyRiskProtectionArrangementsTaskAsync(UpdateConfirmAcademyRiskProtectionArrangementsTaskCommand request, System.Threading.CancellationToken cancellationToken);
+
+        /// <summary>
+        /// Confirm the head teacher contact for the project.
+        /// </summary>
+        /// <param name="request">The update command.</param>
+        /// <returns>Confirm the head teacher contact for the project successfully.</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task UpdateConfirmHeadTeacherContactTaskAsync(UpdateHeadTeacherCommand request);
+
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>
+        /// Confirm the head teacher contact for the project.
+        /// </summary>
+        /// <param name="request">The update command.</param>
+        /// <returns>Confirm the head teacher contact for the project successfully.</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task UpdateConfirmHeadTeacherContactTaskAsync(UpdateHeadTeacherCommand request, System.Threading.CancellationToken cancellationToken);
+
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "14.2.0.0 (NJsonSchema v11.1.0.0 (Newtonsoft.Json v13.0.0.0))")]
@@ -1208,6 +1259,23 @@ namespace Dfe.Complete.Client.Contracts
         /// <returns>User created successfully.</returns>
         /// <exception cref="CompleteApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<System.Guid> CreateUserAsync(CreateUserCommand request, System.Threading.CancellationToken cancellationToken);
+
+        /// <summary>
+        /// Updates a user.
+        /// </summary>
+        /// <param name="request">The request.</param>
+        /// <returns>User updated successfully.</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task UpdateUserAsync(UpdateUserCommand request);
+
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>
+        /// Updates a user.
+        /// </summary>
+        /// <param name="request">The request.</param>
+        /// <returns>User updated successfully.</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task UpdateUserAsync(UpdateUserCommand request, System.Threading.CancellationToken cancellationToken);
 
         /// <summary>
         /// Gets a User with their assigned projects
@@ -3383,6 +3451,90 @@ namespace Dfe.Complete.Client.Contracts
 
         [System.Runtime.Serialization.EnumMember(Value = @"MasterFundingAgreement")]
         MasterFundingAgreement = 19,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"ConfirmIncomingTrustCeoContact")]
+        ConfirmIncomingTrustCeoContact = 20,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"ConfirmRiskProtectionArrangements")]
+        ConfirmRiskProtectionArrangements = 21,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"ConfirmRiskProtectionArrangementsPolicy")]
+        ConfirmRiskProtectionArrangementsPolicy = 22,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"CheckAccuracyOfHigherNeeds")]
+        CheckAccuracyOfHigherNeeds = 23,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"CompleteNotificationOfChange")]
+        CompleteNotificationOfChange = 24,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"ProcessConversionSupportGrant")]
+        ProcessConversionSupportGrant = 25,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"ConfirmAndProcessTheSponsoredSupportGrant")]
+        ConfirmAndProcessTheSponsoredSupportGrant = 26,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"ConfirmHeadTeacherDetails")]
+        ConfirmHeadTeacherDetails = 27,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"ConfirmChairOfGovernorsDetails")]
+        ConfirmChairOfGovernorsDetails = 28,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"TrustModificationOrder")]
+        TrustModificationOrder = 29,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"DirectionToTransfer")]
+        DirectionToTransfer = 30,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"OneHundredAndTwentyFiveYearLease")]
+        OneHundredAndTwentyFiveYearLease = 31,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"Subleases")]
+        Subleases = 32,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"TenancyAtWill")]
+        TenancyAtWill = 33,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"ConfirmSchoolHasCompletedAllActions")]
+        ConfirmSchoolHasCompletedAllActions = 34,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"ShareInformationAboutOpening")]
+        ShareInformationAboutOpening = 35,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"ConfirmOutgoingTrustCeoDetails")]
+        ConfirmOutgoingTrustCeoDetails = 36,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"RequestNewUrnAndRecordForAcademy")]
+        RequestNewUrnAndRecordForAcademy = 37,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"ConfirmTransferGrantFundingLevel")]
+        ConfirmTransferGrantFundingLevel = 38,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"CheckAndConfirmAcademyAndTrustFinancialInformation")]
+        CheckAndConfirmAcademyAndTrustFinancialInformation = 39,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"FormM")]
+        FormM = 40,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"ClosureOrTransferDeclaration")]
+        ClosureOrTransferDeclaration = 41,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"ConfirmBankDetailsForGeneralAnnualGrantPaymentNeedToChange")]
+        ConfirmBankDetailsForGeneralAnnualGrantPaymentNeedToChange = 42,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"ConfirmIncomingTrustHasCompletedAllActions")]
+        ConfirmIncomingTrustHasCompletedAllActions = 43,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"LandConsentLetter")]
+        LandConsentLetter = 44,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"DeedOfTerminationForMasterFundingAgreement")]
+        DeedOfTerminationForMasterFundingAgreement = 45,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"DeedOfTerminationForChurchSupplementalAgreement")]
+        DeedOfTerminationForChurchSupplementalAgreement = 46,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"AcademyDetails")]
+        AcademyDetails = 47,
 
     }
 
@@ -5793,6 +5945,89 @@ namespace Dfe.Complete.Client.Contracts
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.2.0.0 (NJsonSchema v11.1.0.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class UpdateIncomingTrustCeoCommand
+    {
+        [Newtonsoft.Json.JsonProperty("keyContactId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public KeyContactId? KeyContactId { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("incomingTrustCeoId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public ContactId? IncomingTrustCeoId { get; set; } = default!;
+
+        public string ToJson()
+        {
+
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonSerializerSettings());
+
+        }
+        public static UpdateIncomingTrustCeoCommand FromJson(string data)
+        {
+
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<UpdateIncomingTrustCeoCommand>(data, new Newtonsoft.Json.JsonSerializerSettings());
+
+        }
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.2.0.0 (NJsonSchema v11.1.0.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class UpdateConfirmAcademyRiskProtectionArrangementsTaskCommand
+    {
+        [Newtonsoft.Json.JsonProperty("taskDataId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public TaskDataId? TaskDataId { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("projectType", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
+        public ProjectType? ProjectType { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("rpaPolicyConfirm", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? RpaPolicyConfirm { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("rpaOption", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
+        public RiskProtectionArrangementOption? RpaOption { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("rpaReason", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string? RpaReason { get; set; } = default!;
+
+        public string ToJson()
+        {
+
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonSerializerSettings());
+
+        }
+        public static UpdateConfirmAcademyRiskProtectionArrangementsTaskCommand FromJson(string data)
+        {
+
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<UpdateConfirmAcademyRiskProtectionArrangementsTaskCommand>(data, new Newtonsoft.Json.JsonSerializerSettings());
+
+        }
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.2.0.0 (NJsonSchema v11.1.0.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class UpdateHeadTeacherCommand
+    {
+        [Newtonsoft.Json.JsonProperty("keyContactId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public KeyContactId? KeyContactId { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("headTeacherId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public ContactId? HeadTeacherId { get; set; } = default!;
+
+        public string ToJson()
+        {
+
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonSerializerSettings());
+
+        }
+        public static UpdateHeadTeacherCommand FromJson(string data)
+        {
+
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<UpdateHeadTeacherCommand>(data, new Newtonsoft.Json.JsonSerializerSettings());
+
+        }
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.2.0.0 (NJsonSchema v11.1.0.0 (Newtonsoft.Json v13.0.0.0))")]
     public partial class ListTrustsWithProjectsResultModel
     {
         [Newtonsoft.Json.JsonProperty("identifier", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
@@ -5851,6 +6086,40 @@ namespace Dfe.Complete.Client.Contracts
         {
 
             return Newtonsoft.Json.JsonConvert.DeserializeObject<CreateUserCommand>(data, new Newtonsoft.Json.JsonSerializerSettings());
+
+        }
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.2.0.0 (NJsonSchema v11.1.0.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class UpdateUserCommand
+    {
+        [Newtonsoft.Json.JsonProperty("id", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public UserId? Id { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("firstName", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string? FirstName { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("lastName", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string? LastName { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("email", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string? Email { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("team", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
+        public ProjectTeam? Team { get; set; } = default!;
+
+        public string ToJson()
+        {
+
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonSerializerSettings());
+
+        }
+        public static UpdateUserCommand FromJson(string data)
+        {
+
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<UpdateUserCommand>(data, new Newtonsoft.Json.JsonSerializerSettings());
 
         }
 
