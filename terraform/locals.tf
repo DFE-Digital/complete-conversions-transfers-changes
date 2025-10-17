@@ -18,6 +18,7 @@ locals {
   existing_container_app_environment       = var.existing_container_app_environment
   existing_virtual_network                 = var.existing_virtual_network
   existing_resource_group                  = var.existing_resource_group
+  storage_subnet_cidr                      = var.storage_subnet_cidr
   enable_dns_zone                          = var.enable_dns_zone
   dns_zone_domain_name                     = var.dns_zone_domain_name
   dns_ns_records                           = var.dns_ns_records
