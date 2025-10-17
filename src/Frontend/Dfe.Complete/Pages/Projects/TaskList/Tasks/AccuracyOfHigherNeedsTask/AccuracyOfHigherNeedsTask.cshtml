@@ -1,9 +1,10 @@
 ﻿@page "/projects/{projectId}/tasks/check_accuracy_of_higher_needs"
+@using Dfe.Complete.Utils
 @inject Microsoft.Extensions.Configuration.IConfiguration _configuration
 @model Dfe.Complete.Pages.Projects.TaskList.Tasks.AccuracyOfHigherNeedsTask.AccuracyOfHigherNeedsTaskModel
 @{
     Layout = "_ProjectTaskLayout";
-    ViewData["Title"] = "Check accuracy of high needs places information";
+    ViewData["Title"] = @Model.TaskIdentifier.ToDisplayDescription();
     var academyOpenersEmail = _configuration["Emails:AcademyOpeners"];
 }
 @section TaskHeaderHintSection {

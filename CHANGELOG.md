@@ -18,6 +18,7 @@ Security in case of vulnerabilities.
 
 ### Added
 
+- Added `Check and confirm the academy and trust financial information` task for transfer project.
 - Added `Check accuracy of high needs places information` task for conversion project.
 
 ### Changed
