@@ -31,6 +31,7 @@ See the [full commit history](https://github.com/DFE-Digital/complete-conversion
 ## [1.22.2](https://github.com/DFE-Digital/complete-conversions-transfers-changes/releases/tag/production-2025-10-17.921) - 2025-10-17
 
 ### Added
+- Added `Confirm the headteacher's details` task for both conversion and transfer projects.
 
 ### Changed
 
