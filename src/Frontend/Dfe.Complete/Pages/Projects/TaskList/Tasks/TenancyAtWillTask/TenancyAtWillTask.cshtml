@@ -1,0 +1,16 @@
+﻿@page "/projects/{projectId}/tasks/tenancy_at_will"
+@model Dfe.Complete.Pages.Projects.TaskList.Tasks.TenancyAtWillTask.TenancyAtWillTaskModel
+@{
+    Layout = "_ProjectTaskLayout";
+    ViewData["Title"] = "Tenancy at will";
+}
+@section TaskHeaderHintSection {
+    <div class="govuk-hint"> 
+    </div>
+}
+@section TaskSection {
+
+    <form method="post"> 
+        @await Html.PartialAsync("_TaskSaveAndReturn", new TaskSaveAndReturnModel(Model.Project, Model.CurrentUserTeam))
+    </form>
+}
