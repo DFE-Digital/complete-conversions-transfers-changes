@@ -23,6 +23,7 @@ Security in case of vulnerabilities.
 ### Changed
 
 ### Fixed
+- make internal email check case insensitive
 
 ### Security
 

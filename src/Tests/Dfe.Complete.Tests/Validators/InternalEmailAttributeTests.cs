@@ -6,6 +6,7 @@ namespace Dfe.Complete.Tests.Validators;
 public class InternalEmailAttributeTests
 {
     [Theory]
+    [InlineData("nicholas.warms@EDUCATION.GOV.UK",  true)]  // Valid email
     [InlineData("nicholas.warms@education.gov.uk",  true)]  // Valid email
     [InlineData("@education.gov.uk", false)]  // no prefix
     [InlineData("35", false)] // Number above range
@@ -24,7 +25,7 @@ public class InternalEmailAttributeTests
             value,
             validationContext,
             validationResults,
-            new List<ValidationAttribute> { attribute });
+            [attribute]);
 
         // Assert
         Assert.Equal(expectedIsValid, isValid);
