@@ -668,7 +668,7 @@ namespace Dfe.Complete.Client.Contracts
         System.Threading.Tasks.Task UpdateSignificantDateAsync(UpdateSignificantDateCommand request, System.Threading.CancellationToken cancellationToken);
 
         /// <summary>
-        /// Record dao revoation decision for a specific project.
+        /// Record dao revocation decision for a specific project.
         /// </summary>
         /// <param name="request">The update command.</param>
         /// <returns>Record dao revocation successfully.</returns>
@@ -677,7 +677,7 @@ namespace Dfe.Complete.Client.Contracts
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>
-        /// Record dao revoation decision for a specific project.
+        /// Record dao revocation decision for a specific project.
         /// </summary>
         /// <param name="request">The update command.</param>
         /// <returns>Record dao revocation successfully.</returns>

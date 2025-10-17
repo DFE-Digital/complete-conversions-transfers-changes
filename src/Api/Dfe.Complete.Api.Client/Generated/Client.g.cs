@@ -4717,7 +4717,7 @@ namespace Dfe.Complete.Client
         }
 
         /// <summary>
-        /// Record dao revoation decision for a specific project.
+        /// Record dao revocation decision for a specific project.
         /// </summary>
         /// <param name="request">The update command.</param>
         /// <returns>Record dao revocation successfully.</returns>
@@ -4729,7 +4729,7 @@ namespace Dfe.Complete.Client
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>
-        /// Record dao revoation decision for a specific project.
+        /// Record dao revocation decision for a specific project.
         /// </summary>
         /// <param name="request">The update command.</param>
         /// <returns>Record dao revocation successfully.</returns>
