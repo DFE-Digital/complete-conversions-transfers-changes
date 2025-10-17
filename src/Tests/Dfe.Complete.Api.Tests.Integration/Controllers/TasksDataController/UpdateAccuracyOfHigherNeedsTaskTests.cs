@@ -17,7 +17,7 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers.TasksDataController
         [Theory]
         [CustomAutoData(
             typeof(CustomWebApplicationDbContextFactoryCustomization),
-            typeof(TransferTaskDataCustomization))]
+            typeof(ConversionTaskDataCustomization))]
         public async Task UpdateAccuracyOfHigherNeedsTaskAsync_ShouldUpdate_TransferTaskData(
             CustomWebApplicationDbContextFactory<Program> factory,
             ITasksDataClient tasksDataClient,
