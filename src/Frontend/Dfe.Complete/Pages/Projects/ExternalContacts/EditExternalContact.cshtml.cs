@@ -10,7 +10,6 @@ using Dfe.Complete.Extensions;
 using Dfe.Complete.Helpers;
 using Dfe.Complete.Models;
 using Dfe.Complete.Models.ExternalContact;
-using Dfe.Complete.Services;
 using Dfe.Complete.Services.Interfaces;
 using Dfe.Complete.Utils;
 using FluentValidation;

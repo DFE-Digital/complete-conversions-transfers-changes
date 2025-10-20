@@ -1,5 +1,4 @@
 using Dfe.Complete.Constants;
-using Dfe.Complete.Services;
 using Dfe.Complete.Services.Interfaces;
 using GovUK.Dfe.CoreLibs.Caching.Interfaces;
 using MediatR;
