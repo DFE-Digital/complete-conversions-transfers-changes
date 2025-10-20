@@ -161,7 +161,7 @@ public class HandoverProjectService(
         return id;
     }
 
-    public async Task ValidateUrnAsync(int urn, CancellationToken cancellationToken = default)
+    public async Task ValidateUrnAsync(int urn, CancellationToken cancellationToken)
     {
         // Check if URN already exists in active/inactive projects
             var existingProject = await FindExistingProjectAsync(urn, cancellationToken);
@@ -169,7 +169,7 @@ public class HandoverProjectService(
             throw new ValidationException(string.Format(Constants.ValidationConstants.UrnExistsValidationMessage, urn));
     }
 
-    public async Task ValidateTrustAsync(int trustUkprn, CancellationToken cancellationToken = default)
+    public async Task ValidateTrustAsync(int trustUkprn, CancellationToken cancellationToken)
     {
         // Validate trust exists
         _ = await trustClient.GetTrustByUkprn2Async(trustUkprn.ToString(), cancellationToken) 

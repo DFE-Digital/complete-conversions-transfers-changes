@@ -10,7 +10,7 @@ using Dfe.Complete.Application.Projects.Services;
 
 namespace Dfe.Complete.Application.Projects.Commands.CreateHandoverProject;
 
-public record CreateHandoverConversionMATProjectCommand(
+public record CreateHandoverConversionMatProjectCommand(
     [Required]
     [Urn]
     int? Urn,
@@ -30,17 +30,15 @@ public record CreateHandoverConversionMATProjectCommand(
     [Required] string CreatedByLastName,
     [Required] int? PrepareId,
     [Required] bool? DirectiveAcademyOrder,
-    string? AdvisoryBoardConditions,
-    [GroupReferenceNumber]
-    string? GroupId = null) : IRequest<ProjectId>;
+    string? AdvisoryBoardConditions) : IRequest<ProjectId>;
 
-public class CreateHandoverConversionMATProjectCommandHandler(
+public class CreateHandoverConversionMatProjectCommandHandler(
     IUnitOfWork unitOfWork,
     IHandoverProjectService handoverProjectService,
-    ILogger<CreateHandoverConversionMATProjectCommandHandler> logger)
+    ILogger<CreateHandoverConversionMatProjectCommandHandler> logger)
     : IRequestHandler<CreateHandoverConversionMATProjectCommand, ProjectId>
 {
-    public async Task<ProjectId> Handle(CreateHandoverConversionMATProjectCommand request, CancellationToken cancellationToken)
+    public async Task<ProjectId> Handle(CreateHandoverConversionMatProjectCommand request, CancellationToken cancellationToken)
     {
         try
         {
