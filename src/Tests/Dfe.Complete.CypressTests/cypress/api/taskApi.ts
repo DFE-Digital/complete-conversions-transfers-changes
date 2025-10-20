@@ -134,7 +134,7 @@ interface UpdateMasterFundingAgreementTaskRequest {
 interface UpdateReceiveDeclarationOfExpenditureCertificateTaskRequest {
     taskDataId: TaskDataId;
     projectType: ProjectType;
-    dateReceived?: string;
+    dateReceived?: string | null;
     notApplicable?: boolean;
     checkCertificate?: boolean;
     saved?: boolean;

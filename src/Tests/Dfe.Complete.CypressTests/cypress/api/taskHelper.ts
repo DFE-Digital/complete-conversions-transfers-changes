@@ -416,7 +416,7 @@ class TaskHelper {
         const defaultBody = {
             taskDataId: { value: taskDataId },
             projectType: projectType,
-            dateReceived: significantDate || "2025-09-09",
+            dateReceived: significantDate || null,
             notApplicable: false,
             checkCertificate: false,
             saved: false,

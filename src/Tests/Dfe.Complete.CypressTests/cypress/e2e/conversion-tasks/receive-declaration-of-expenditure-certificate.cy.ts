@@ -94,8 +94,7 @@ describe("Conversion tasks - Receive declaration of expenditure certificate", ()
         taskListPage.hasTaskStatusCompleted("Receive declaration of expenditure certificate");
     });
 
-    // awaiting 237199
-    it.skip("Should only be able to confirm the received date of the declaration of expenditure certificate once", () => {
+    it("Should only be able to confirm the received date of the declaration of expenditure certificate once", () => {
         cy.visit(`projects/${project2Id}/tasks/receive_grant_payment_certificate`);
         receiveDeclarationOfExpenditureCertificateTaskPage.enterDateReceived(10, 9, 2025).saveAndReturn();
 
@@ -103,16 +102,14 @@ describe("Conversion tasks - Receive declaration of expenditure certificate", ()
             .hasTaskStatusInProgress("Receive declaration of expenditure certificate")
             .selectTask("Receive declaration of expenditure certificate");
         receiveDeclarationOfExpenditureCertificateTaskPage
-            .contains(`DfE received the declaration of expenditure certificate on 10 September 2025`)
-            .enterDateReceived(101, 1, 2025)
+            .hasDate("10", "9", "2025")
+            .enterDateReceived(11, 1, 2025)
             .saveAndReturn();
 
         taskListPage
             .hasTaskStatusInProgress("Receive declaration of expenditure certificate")
             .selectTask("Receive declaration of expenditure certificate");
-        receiveDeclarationOfExpenditureCertificateTaskPage.contains(
-            `DfE received the declaration of expenditure certificate on 11 January 2025`,
-        );
+        receiveDeclarationOfExpenditureCertificateTaskPage.hasDate("11", "1", "2025");
     });
 
     it("Should NOT see the 'save and return' button for another user's project", () => {
