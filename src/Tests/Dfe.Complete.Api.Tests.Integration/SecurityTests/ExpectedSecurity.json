@@ -394,6 +394,11 @@
       "Controller": "TasksDataController",
       "Action": "UpdateAcademyAndTrustFinancialInformationTaskAsync",
       "ExpectedSecurity": "Authorize: Policy=CanReadWriteUpdate"
+    },
+    {
+      "Controller": "TasksDataController",
+      "Action": "UpdateAcademyDetailsTaskAsync",
+      "ExpectedSecurity": "Authorize: Policy=CanReadWriteUpdate"
     }
   ]
 }
