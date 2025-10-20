@@ -19,6 +19,7 @@ Security in case of vulnerabilities.
 ### Added
 
 - Added `Check and confirm the academy and trust financial information` task for transfer project.
+- Added link for delete project button
 
 ### Changed
 
