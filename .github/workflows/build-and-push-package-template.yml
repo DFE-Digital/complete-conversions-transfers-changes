@@ -1,11 +1,6 @@
 name: Build and Push NuGet Package
 
 on:
-  push:
-    branches:
-    - release/*
-    paths:
-    - '**/Dfe.Complete.Api.Client*/**'
   workflow_dispatch: {}
 
 env:
