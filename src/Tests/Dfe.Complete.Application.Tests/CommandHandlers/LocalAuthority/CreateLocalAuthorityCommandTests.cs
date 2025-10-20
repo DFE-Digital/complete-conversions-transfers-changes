@@ -59,15 +59,10 @@ namespace Dfe.Complete.Application.Tests.CommandHandlers.LocalAuthority
         [Fact]
         public async Task Handle_ShouldReturnFailure_WhenLocalAuthorityAlreadyExists()
         {
-            var localAuthorityId = new LocalAuthorityId(Guid.NewGuid());
             var command = new CreateLocalAuthorityCommand(
                 "Code", "Name", "Address1", "Address2", "Address3",
                 "AddressTown", "AddressCounty", "AddressPostcode", new ContactId(Guid.NewGuid()),
                 "Title", "ContactName", "Email", "Phone");
-
-            var existingLocalAuthority = Domain.Entities.LocalAuthority.Create(
-                localAuthorityId, command.Name, command.Code, new AddressDetails(command.Address1, command.Address2, command.Address3,
-                command.AddressTown, command.AddressCounty, command.AddressPostcode), DateTime.UtcNow);
 
             _mockLocalAuthorityRepository.Setup(repo => repo.ExistsAsync(It.IsAny<Expression<Func<Domain.Entities.LocalAuthority, bool>>>(), _cancellationToken))
               .ReturnsAsync(true); 
