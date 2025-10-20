@@ -90,8 +90,7 @@ public class Startup
         SetupDataProtection(services);
 
         services.AddApplicationInsightsTelemetry(Configuration);
-        services.AddCompleteClientProject(Configuration);
-        services.AddScoped<ErrorService>();
+        services.AddCompleteClientProject(Configuration);        
         services.AddScoped<ICorrelationContext, CorrelationContext>();
 
         services.AddScoped(sp => sp.GetRequiredService<IHttpContextAccessor>()?.HttpContext?.Session ?? throw new InvalidOperationException("Session is not available."));

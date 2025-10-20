@@ -1,15 +1,15 @@
-using System.ComponentModel.DataAnnotations;
 using Dfe.Complete.Constants;
 using Dfe.Complete.Extensions;
 using Dfe.Complete.Models;
 using Dfe.Complete.Pages.Projects.ProjectView;
-using Dfe.Complete.Services;
+using Dfe.Complete.Services.Interfaces;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel.DataAnnotations;
 
 namespace Dfe.Complete.Pages.Projects.DateHistory
 {
-    public class ChangeDateProjectModel(ISender sender, ErrorService errorService, ILogger<ChangeDateProjectModel> logger) : ProjectLayoutModel(sender, logger,ConversionDateHistoryNavigation)
+    public class ChangeDateProjectModel(ISender sender, IErrorService errorService, ILogger<ChangeDateProjectModel> logger) : ProjectLayoutModel(sender, logger,ConversionDateHistoryNavigation)
     {
         [BindProperty]
         [Required(ErrorMessage = "Enter a valid month and year for the revised date, like 9 2024")]
