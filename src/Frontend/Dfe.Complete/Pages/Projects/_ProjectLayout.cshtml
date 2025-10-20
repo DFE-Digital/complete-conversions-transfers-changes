@@ -159,7 +159,7 @@ else if (!@Model.UserHasEditAccess())
       <a data-module="govuk-button" draggable="false" role="button" class="govuk-button govuk-button--secondary" href="@String.Format(RouteConstants.ChangeProjectDateHistory, Model.Project.Id.Value)">Change @(Model.Project.Type == ProjectType.Conversion ? "conversion" : "transfer") date</a>
     }
   }
-  <a data-module="govuk-button" draggable="false" role="button" asp-policy="@UserPolicyConstants.CanViewServiceSupport" class="govuk-button govuk-button--warning" href="#">Delete project</a>
+  <a data-module="govuk-button" draggable="false" role="button" asp-policy="@UserPolicyConstants.CanViewServiceSupport" class="govuk-button govuk-button--warning" href="@String.Format(RouteConstants.ProjectDelete, Model.Project.Id.Value)">Delete project</a>
 </div>
 
 
