@@ -4,7 +4,7 @@ using Dfe.Complete.Application.Projects.Interfaces;
 using Dfe.Complete.Application.Projects.Models;
 using Dfe.Complete.Application.Projects.Queries.QueryFilters;
 using Dfe.Complete.Domain.ValueObjects;
-using Dfe.Complete.Utils;
+using Dfe.Complete.Utils.Exceptions;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;

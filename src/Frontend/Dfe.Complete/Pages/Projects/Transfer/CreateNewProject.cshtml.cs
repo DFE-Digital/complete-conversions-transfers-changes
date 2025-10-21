@@ -8,7 +8,7 @@ using MediatR;
 using Dfe.Complete.Domain.ValueObjects;
 using Microsoft.AspNetCore.Authorization;
 using Dfe.Complete.Extensions;
-using NotFoundException = Dfe.Complete.Utils.NotFoundException;
+using NotFoundException = Dfe.Complete.Utils.Exceptions.NotFoundException;
 using Dfe.Complete.Domain.Constants;
 
 namespace Dfe.Complete.Pages.Projects.Transfer

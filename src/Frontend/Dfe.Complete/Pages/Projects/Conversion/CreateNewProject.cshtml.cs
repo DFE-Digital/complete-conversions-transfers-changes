@@ -8,7 +8,7 @@ using MediatR;
 using Dfe.Complete.Domain.ValueObjects;
 using Microsoft.AspNetCore.Authorization;
 using Dfe.Complete.Extensions;
-using Dfe.Complete.Utils;
+using Dfe.Complete.Utils.Exceptions;
 using Dfe.Complete.Domain.Constants;
 
 namespace Dfe.Complete.Pages.Projects.Conversion

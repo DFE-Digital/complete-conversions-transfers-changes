@@ -20,7 +20,7 @@ using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 using System.ComponentModel.DataAnnotations;
 using Dfe.Complete.Application.KeyContacts.Queries;
-using Dfe.Complete.Utils;
+using Dfe.Complete.Utils.Exceptions;
 
 namespace Dfe.Complete.Api.Controllers
 {

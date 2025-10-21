@@ -177,6 +177,56 @@ public partial class ProjectsControllerTests
     }
 
     [Theory]
+    [CustomAutoData(typeof(CustomWebApplicationDbContextFactoryCustomization),
+        typeof(DateOnlyCustomization),
+        typeof(LocalAuthorityCustomization))]
+    public async Task CreateHandoverConversionProject_Async_UrnAlreadyExists_ShouldFailValidation(
+        CustomWebApplicationDbContextFactory<Program> factory,
+        IProjectsClient projectsClient,
+        IFixture fixture)
+    {
+        factory.TestClaims = [new Claim(ClaimTypes.Role, ApiRoles.WriteRole), new Claim(ClaimTypes.Role, ApiRoles.ReadRole)];
+        var dbContext = factory.GetDbContext<CompleteContext>();
+        var testUser = await dbContext.Users.FirstAsync();
+
+        var createHandoverConversionProjectCommand = GenerateCreateHandoverConversionCommand();
+        var localAuthority = dbContext.LocalAuthorities.AsEnumerable().MinBy(_ => Guid.NewGuid());
+        Assert.NotNull(localAuthority);
+
+        var giasEstablishment = fixture
+            .Customize(new GiasEstablishmentsCustomization()
+            {
+                LocalAuthority = localAuthority,
+                Urn = new Domain.ValueObjects.Urn(createHandoverConversionProjectCommand.Urn!.Value)
+            })
+            .Create<GiasEstablishment>();
+        await dbContext.GiasEstablishments.AddAsync(giasEstablishment);
+
+        var project = fixture.Customize(new ProjectCustomization
+        {
+            RegionalDeliveryOfficerId = testUser.Id,
+            CaseworkerId = testUser.Id,
+            AssignedToId = testUser.Id,
+            LocalAuthorityId = localAuthority.Id,
+            Urn = giasEstablishment.Urn!
+        })
+            .Create<Domain.Entities.Project>();
+
+        await dbContext.Projects.AddAsync(project);
+        await dbContext.SaveChangesAsync();
+
+        var exception = await Assert.ThrowsAsync<CompleteApiException>(async () =>
+            await projectsClient.CreateHandoverConversionProjectAsync(createHandoverConversionProjectCommand));
+
+        Assert.Equal(HttpStatusCode.BadRequest, (HttpStatusCode)exception.StatusCode);
+
+        var validationErrors = exception.Response;
+        Assert.NotNull(validationErrors);
+
+        Assert.Contains($"Trust UKPRN 12129999 is not the same as the group UKPRN for group GRP_88888888", validationErrors);
+    }
+
+    [Theory]
     [CustomAutoData(typeof(DateOnlyCustomization), typeof(CustomWebApplicationDbContextFactoryCustomization))]
     public async Task CreateHandoverConversionProject_WithBadGroupIdentifier_FailsValidation(
         CustomWebApplicationDbContextFactory<Program> factory,

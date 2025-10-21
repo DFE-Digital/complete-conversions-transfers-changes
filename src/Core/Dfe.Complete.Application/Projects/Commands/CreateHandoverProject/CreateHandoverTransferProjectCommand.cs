@@ -2,7 +2,7 @@ using MediatR;
 using Dfe.Complete.Domain.ValueObjects;
 using Dfe.Complete.Domain.Entities;
 using System.ComponentModel.DataAnnotations;
-using Dfe.Complete.Utils;
+using Dfe.Complete.Utils.Exceptions;
 using Dfe.Complete.Application.Common.Interfaces;
 using Dfe.Complete.Domain.Validators;
 using Microsoft.Extensions.Logging;

@@ -46,7 +46,7 @@ public class NewExternalContact(ISender sender, ILogger<NewExternalContact> logg
         if (string.IsNullOrWhiteSpace(pageToRedirectTo))
         {
             var error = $"The selected contact type '{this.SelectedExternalContactType}' is invalid.";
-            var notFoundException = new Utils.NotFoundException(error);
+            var notFoundException = new Utils.Exceptions.NotFoundException(error);
 
             logger.LogError(notFoundException, notFoundException.Message, notFoundException.InnerException);
             throw notFoundException;

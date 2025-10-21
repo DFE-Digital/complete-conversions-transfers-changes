@@ -3,6 +3,7 @@ using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Domain.Events;
 using Dfe.Complete.Domain.ValueObjects;
 using Dfe.Complete.Utils;
+using Dfe.Complete.Utils.Exceptions;
 using System.Runtime.CompilerServices;
 
 [assembly: InternalsVisibleTo("Dfe.Complete.Application.Tests")]

@@ -6,7 +6,7 @@ using Dfe.Complete.Domain.ValueObjects;
 using Dfe.Complete.Extensions;
 using Dfe.Complete.Models;
 using Dfe.Complete.Services;
-using Dfe.Complete.Utils;
+using Dfe.Complete.Utils.Exceptions;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

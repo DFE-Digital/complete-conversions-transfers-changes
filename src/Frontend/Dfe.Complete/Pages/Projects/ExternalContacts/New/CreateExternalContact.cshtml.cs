@@ -141,7 +141,7 @@ public class CreateExternalContact(
 
         if (contactType == default)
         {
-            var notFoundException = new Utils.NotFoundException(invalidContactTypeErrorMessage);
+            var notFoundException = new Utils.Exceptions.NotFoundException(invalidContactTypeErrorMessage);
 
             logger.LogError(notFoundException, notFoundException.Message, notFoundException.InnerException);
             return NotFound();
