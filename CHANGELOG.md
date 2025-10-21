@@ -17,8 +17,7 @@ Security in case of vulnerabilities.
 ## Unreleased
 
 ### Added
-
-- Added `Check and confirm the academy and trust financial information` task for transfer project.
+- added <note-body> NoteBodyTagHelper to preserve formatting in text
 
 ### Changed
 
@@ -26,7 +25,26 @@ Security in case of vulnerabilities.
 
 ### Security
 
-See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-10-17.921...main) for everything awaiting release
+See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-10-20.943...main) for everything awaiting release
+
+---
+
+## [1.22.3](https://github.com/DFE-Digital/complete-conversions-transfers-changes/releases/tag/production-2025-10-20.943) - 2025-10-20
+
+### Added
+
+- Added `Check and confirm the academy and trust financial information` task for transfer project.
+- Added link for delete project button
+
+### Changed
+- note will now respect limited formatting
+
+### Fixed
+- resolve entity tracking issue on note write repository
+
+### Security
+
+See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-10-17.921...production-2025-10-20.943) for everything in the release
 
 ---
 
