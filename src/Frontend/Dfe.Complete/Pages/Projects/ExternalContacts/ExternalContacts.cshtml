@@ -67,11 +67,10 @@
       name="_ExternalContactsSection"
       model="@(new ExternalContactsSectionModel(Model.OtherContacts, "Other"))"/>
     }
-    @if (Model.ParliamentaryContacts.Any())
+    @if (Model.ParliamentaryContact != null)
     {
-    <partial
-      name="_ExternalContactsSection"
-      model="@(new ExternalContactsSectionModel(Model.ParliamentaryContacts, "Parliamentary"))"/>
+    <partial name="_ExternalParliamentContactSection"
+      model="@Model.ParliamentaryContact"/>
     }
   </div>
 </div>
