@@ -43,7 +43,7 @@
             <div id="note-entry-@note.Id">
                 <span class="govuk-caption-m">@note.CreatedAt.ToDateString()</span>
                 <h3 class="govuk-heading-m">@note.UserFullName</h3>
-                <p class="govuk-body-m">@note.Body</p>
+                <note-body>@note.Body</note-body>
                 @if (Model.CanEditNote(note.UserId))
                 {
                     <p class="govuk-body govuk-!-font-size-16">

@@ -17,6 +17,7 @@ Security in case of vulnerabilities.
 ## Unreleased
 
 ### Added
+- added <note-body> NoteBodyTagHelper to preserve formatting in text
 
 ### Changed
 
@@ -37,8 +38,10 @@ See the [full commit history](https://github.com/DFE-Digital/complete-conversion
 - Added  'Confirm the academy name' task for conversion project.
 
 ### Changed
+- note will now respect limited formatting
 
 ### Fixed
+- resolve entity tracking issue on note write repository
 
 ### Security
 
