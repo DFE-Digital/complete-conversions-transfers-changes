@@ -5,6 +5,13 @@ interface TaskDataId {
     value: string;
 }
 
+interface UpdateAcademyAndTrustFinancialInformationTaskRequest {
+    taskDataId: TaskDataId;
+    notApplicable?: boolean;
+    academySurplusOrDeficit?: string | null;
+    trustSurplusOrDeficit?: string | null;
+}
+
 interface UpdateHandoverWithDeliveryOfficerTaskRequest {
     taskDataId: TaskDataId;
     projectType: ProjectType;
@@ -178,6 +185,12 @@ export enum ProjectType {
 
 class TaskApi extends ApiBase {
     private readonly taskDataUrl = `${Cypress.env(EnvApi)}/v1/TasksData/TaskData`;
+
+    public updateAcademyAndTrustFinancialInformationTask(
+        requestBody: UpdateAcademyAndTrustFinancialInformationTaskRequest,
+    ) {
+        return this.taskDataBaseRequest<void>("PATCH", "AcademyAndTrustFinancialInformation", requestBody, 204);
+    }
 
     public updateHandoverWithDeliveryOfficerTask(requestBody: UpdateHandoverWithDeliveryOfficerTaskRequest) {
         return this.taskDataBaseRequest<void>("PATCH", "HandoverDeliveryOfficer", requestBody, 204);

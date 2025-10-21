@@ -4,6 +4,41 @@ import { cypressUser } from "cypress/constants/cypressConstants";
 export type TaskStatus = "notStarted" | "notApplicable" | "inProgress" | "completed";
 
 class TaskHelper {
+    public updateCheckAndConfirmAcademyAndTrustFinancialInformation(
+        taskDataId: string,
+        projectType: ProjectType,
+        status: TaskStatus,
+    ) {
+        const defaultBody = {
+            taskDataId: { value: taskDataId },
+            notApplicable: false,
+        };
+
+        switch (status) {
+            case "notApplicable":
+                return taskApi.updateAcademyAndTrustFinancialInformationTask({
+                    ...defaultBody,
+                    notApplicable: true,
+                });
+
+            case "inProgress":
+                return taskApi.updateAcademyAndTrustFinancialInformationTask({
+                    ...defaultBody,
+                    academySurplusOrDeficit: "Surplus",
+                });
+
+            case "completed":
+                return taskApi.updateAcademyAndTrustFinancialInformationTask({
+                    taskDataId: { value: taskDataId },
+                    academySurplusOrDeficit: "Surplus",
+                    trustSurplusOrDeficit: "Deficit",
+                });
+
+            default:
+                return taskApi.updateAcademyAndTrustFinancialInformationTask(defaultBody);
+        }
+    }
+
     public updateArticleOfAssociation(taskDataId: string, projectType: ProjectType, status: TaskStatus) {
         const defaultBody = {
             taskDataId: { value: taskDataId },
