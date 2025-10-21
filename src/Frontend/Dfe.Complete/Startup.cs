@@ -220,7 +220,7 @@ public class Startup
             AcademiesOptions academiesApiOptions = GetTypedConfigurationFor<AcademiesOptions>();
             client.BaseAddress = new Uri(academiesApiOptions.ApiEndpoint);
             client.DefaultRequestHeaders.Add("ApiKey", academiesApiOptions.ApiKey);
-        });
+        });               
     }
 
     private void SetupDataProtection(IServiceCollection services)

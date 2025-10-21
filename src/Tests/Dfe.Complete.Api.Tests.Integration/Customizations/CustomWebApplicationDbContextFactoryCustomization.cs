@@ -1,5 +1,3 @@
-using System.Net.Http.Headers;
-using System.Security.Claims;
 using AutoFixture;
 using Dfe.AcademiesApi.Client;
 using Dfe.AcademiesApi.Client.Contracts;
@@ -13,10 +11,14 @@ using Dfe.Complete.Infrastructure.Database;
 using Dfe.Complete.Tests.Common.Seeders;
 using GovUK.Dfe.CoreLibs.Testing.Mocks.Authentication;
 using GovUK.Dfe.CoreLibs.Testing.Mocks.WebApplicationFactory;
+using GovUK.Dfe.PersonsApi.Client;
+using GovUK.Dfe.PersonsApi.Client.Contracts;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using System.Net.Http.Headers;
+using System.Security.Claims;
 
 namespace Dfe.Complete.Api.Tests.Integration.Customizations
 {
@@ -61,6 +63,11 @@ namespace Dfe.Complete.Api.Tests.Integration.Customizations
                         {
                             ["AcademiesApiClient:BaseUrl"] = mockServer.Urls[0].TrimEnd('/') + "/",
                         });
+
+                        cfgBuilder.AddInMemoryCollection(new Dictionary<string, string?>
+                        {
+                            ["PersonsApiClient:BaseUrl"] = mockServer.Urls[0].TrimEnd('/') + "/",
+                        });
                     },
                     ExternalWireMockClientRegistration = (services, config, wireHttp) =>
                     {
@@ -95,6 +102,17 @@ namespace Dfe.Complete.Api.Tests.Integration.Customizations
                                 var apiSettings = serviceProvider.GetRequiredService<AcademiesApiClientSettings>();
                                 return new ApiKeyHandler(apiSettings);
                             });
+
+                        services.AddHttpClient<IConstituenciesClient, ConstituenciesClient>(
+                               (httpClient, serviceProvider) =>
+                               {
+                                   var wConfig = serviceProvider.GetRequiredService<IConfiguration>();
+
+                                   httpClient.BaseAddress = new Uri(wConfig["PersonsApiClient:BaseUrl"]!);
+
+                                   return ActivatorUtilities.CreateInstance<ConstituenciesClient>(
+                                       serviceProvider, httpClient, wConfig["PersonsApiClient:BaseUrl"]!);
+                               });                           
                     }
                 };
 
