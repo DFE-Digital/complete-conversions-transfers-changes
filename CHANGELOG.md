@@ -35,8 +35,10 @@ See the [full commit history](https://github.com/DFE-Digital/complete-conversion
 - Added View External Contact - Show MP
 
 ### Changed
+- note will now respect limited formatting
 
 ### Fixed
+- resolve entity tracking issue on note write repository
 
 ### Security
 
@@ -52,10 +54,8 @@ See the [full commit history](https://github.com/DFE-Digital/complete-conversion
 - Added link for delete project button
 
 ### Changed
-- note will now respect limited formatting
 
 ### Fixed
-- resolve entity tracking issue on note write repository
 
 ### Security
 
