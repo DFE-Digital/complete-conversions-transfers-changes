@@ -1,0 +1,29 @@
+﻿@using Dfe.Complete.Application.Contacts.Models
+@model ConstituencyMemberContactDto
+<h3 class="govuk-heading-m">Parliamentary contacts</h3>
+<govuk-summary-card>
+    <govuk-summary-card-title heading-level="3">
+        Member of Parliament
+    </govuk-summary-card-title>   
+    <govuk-summary-list>
+        <govuk-summary-list-row>
+            <govuk-summary-list-row-key>
+                Name
+            </govuk-summary-list-row-key>
+            <govuk-summary-list-row-value>
+                @Model.DisplayNameWithTitle
+            </govuk-summary-list-row-value>
+        </govuk-summary-list-row>       
+        @if (!string.IsNullOrEmpty(Model.Email))
+        {
+            <govuk-summary-list-row>
+                <govuk-summary-list-row-key>
+                    Email
+                </govuk-summary-list-row-key>
+                <govuk-summary-list-row-value>
+                    @Model.Email
+                </govuk-summary-list-row-value>
+            </govuk-summary-list-row>
+        }       
+    </govuk-summary-list>
+</govuk-summary-card>
