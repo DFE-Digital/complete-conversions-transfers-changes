@@ -88,9 +88,10 @@ namespace Dfe.Complete.Application.Mappers
 				.ForMember(dest => dest.HeadteacherPreferredJobTitle, opt => opt.Ignore())
 				.ForMember(dest => dest.ReligiousCharacter, opt => opt.Ignore())
 				.ForMember(dest => dest.Census, opt => opt.Ignore())
-				.ForMember(dest => dest.MisEstablishment, opt => opt.Ignore());
+				.ForMember(dest => dest.MisEstablishment, opt => opt.Ignore())
+				.ForMember(dest => dest.PreviousEstablishment, opt => opt.Ignore());
 
-			CreateMap<TransferTasksData, TransferTaskDataDto>();
+            CreateMap<TransferTasksData, TransferTaskDataDto>();
             CreateMap<ConversionTasksData, ConversionTaskDataDto>();
 			CreateMap<KeyContact, KeyContactDto>();
             CreateMap<SignificantDateHistory, SignificantDateHistoryDto>();
