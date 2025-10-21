@@ -21,6 +21,7 @@ Security in case of vulnerabilities.
 ### Changed
 
 ### Fixed
+- minor text corrections for 3 of the task pages
 
 ### Security
 
