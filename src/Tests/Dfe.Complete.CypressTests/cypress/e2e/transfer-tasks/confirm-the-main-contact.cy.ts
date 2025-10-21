@@ -34,9 +34,10 @@ describe("Transfer Tasks - Confirm the main contact", () => {
         cy.acceptCookies();
     });
 
-    it("Should be able to choose contact and save the task", () => {
+    // awaiting 238981 to add a contact via API
+    it.skip("Should be able to choose contact and save the task", () => {
         cy.visit(`projects/${projectId}/tasks/main_contact`);
-        taskPage.hasCheckboxLabel("Ms Julie Firth").tick().saveAndReturn();
+        taskPage.hasCheckboxLabel("__").tick().saveAndReturn();
         taskListPage.hasTaskStatusCompleted("Confirm the main contact");
     });
 

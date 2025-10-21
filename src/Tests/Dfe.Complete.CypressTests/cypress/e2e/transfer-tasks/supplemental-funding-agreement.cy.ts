@@ -59,7 +59,7 @@ describe("Transfer tasks - Supplemental funding agreement", () => {
             .tick()
             .saveAndReturn();
         taskListPage
-            .hasTaskStatusInProgress("Supplemental funding agreement")
+            .hasTaskStatusCompleted("Supplemental funding agreement")
             .selectTask("Supplemental funding agreement");
 
         Logger.log("Unselect all checkboxes and save");

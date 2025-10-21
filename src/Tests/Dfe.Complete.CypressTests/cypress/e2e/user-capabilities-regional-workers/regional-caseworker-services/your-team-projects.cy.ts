@@ -7,7 +7,7 @@ import yourTeamProjects from "cypress/pages/projects/yourTeamProjects";
 import { regionalCaseworkerTeamLeaderUser, regionalCaseworkerUser } from "cypress/constants/cypressConstants";
 import { projectTable } from "cypress/pages/projects/tables/projectTable";
 import yourTeamProjectsTable from "cypress/pages/projects/tables/yourTeamProjectsTable";
-import { currentMonthShort } from "cypress/constants/stringTestConstants";
+import { currentMonthShort, todayFormatted } from "cypress/constants/stringTestConstants";
 import { urnPool } from "cypress/constants/testUrns";
 import projectDetailsPage from "cypress/pages/projects/projectDetails/projectDetailsPage";
 
@@ -157,7 +157,7 @@ describe("Regional caseworker services user - View your team projects", () => {
             .columnHasValue("Region", "Yorkshire and the Humber")
             .columnHasValue("Type of project", "Conversion")
             .columnHasValue("Conversion or transfer date", "Apr 2026")
-            .columnHasValue("Project completion date", currentMonthShort)
+            .columnHasValue("Project completion date", todayFormatted)
             .goTo(teammatesSchoolName);
         projectDetailsPage.containsHeading(teammatesSchoolName);
     });
