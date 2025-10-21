@@ -2,7 +2,6 @@ import { ProjectBuilder } from "cypress/api/projectBuilder";
 import projectApi from "cypress/api/projectApi";
 import { checkAccessibilityAcrossPages } from "cypress/support/reusableTests";
 import taskListPage from "cypress/pages/projects/tasks/taskListPage";
-import { ProjectType } from "cypress/api/taskApi";
 import projectRemover from "cypress/api/projectRemover";
 import { rdoLondonUser } from "cypress/constants/cypressConstants";
 import taskPage from "cypress/pages/projects/tasks/taskPage";
@@ -10,28 +9,28 @@ import { Logger } from "cypress/common/logger";
 import TaskHelper from "cypress/api/taskHelper";
 import { urnPool } from "cypress/constants/testUrns";
 
-const project = ProjectBuilder.createTransferProjectRequest({
-    urn: { value: urnPool.transferTasks.coquet },
+const project = ProjectBuilder.createConversionProjectRequest({
+    urn: { value: urnPool.conversionTasks.spen },
 });
 let projectId: string;
 let taskId: string;
-const otherUserProject = ProjectBuilder.createTransferFormAMatProjectRequest({
-    urn: { value: urnPool.transferTasks.marden },
+const otherUserProject = ProjectBuilder.createConversionFormAMatProjectRequest({
+    urn: { value: urnPool.conversionTasks.grylls },
     userAdId: rdoLondonUser.adId,
 });
 let otherUserProjectId: string;
 
-describe("Transfer tasks - Supplemental funding agreement", () => {
+describe("Conversion tasks - Land registry title plans", () => {
     before(() => {
         projectRemover.removeProjectIfItExists(project.urn.value);
         projectRemover.removeProjectIfItExists(otherUserProject.urn.value);
-        projectApi.createTransferProject(project).then((createResponse) => {
+        projectApi.createConversionProject(project).then((createResponse) => {
             projectId = createResponse.value;
             projectApi.getProject(project.urn.value).then((response) => {
                 taskId = response.body.tasksDataId.value;
             });
         });
-        projectApi.createMatTransferProject(otherUserProject).then((createResponse) => {
+        projectApi.createMatConversionProject(otherUserProject).then((createResponse) => {
             otherUserProjectId = createResponse.value;
         });
     });
@@ -39,13 +38,15 @@ describe("Transfer tasks - Supplemental funding agreement", () => {
     beforeEach(() => {
         cy.login();
         cy.acceptCookies();
-        cy.visit(`projects/${projectId}/tasks/supplemental_funding_agreement`);
+        cy.visit(`projects/${projectId}/tasks/land_registry`);
     });
 
     it("should expand and collapse guidance details", () => {
         taskPage
-            .clickDropdown("Help checking the supplemental funding agreement")
-            .hasDropdownContent("Changes that personalise the model documents to an academy or trust");
+            .clickDropdown("Help checking the land registry title plans")
+            .hasDropdownContent(
+                "Check you have an official copy of the title plans. An official copy will state that it's from the Land Registry",
+            );
     });
 
     it("should submit the form and persist selections", () => {
@@ -55,12 +56,10 @@ describe("Transfer tasks - Supplemental funding agreement", () => {
             .tick()
             .hasCheckboxLabel("Cleared")
             .tick()
-            .hasCheckboxLabel("Saved in the academy SharePoint folder")
+            .hasCheckboxLabel("Saved in the school's SharePoint folder")
             .tick()
             .saveAndReturn();
-        taskListPage
-            .hasTaskStatusCompleted("Supplemental funding agreement")
-            .selectTask("Supplemental funding agreement");
+        taskListPage.hasTaskStatusCompleted("Land registry title plans").selectTask("Land registry title plans");
 
         Logger.log("Unselect all checkboxes and save");
         taskPage
@@ -70,44 +69,38 @@ describe("Transfer tasks - Supplemental funding agreement", () => {
             .hasCheckboxLabel("Cleared")
             .isTicked()
             .untick()
-            .hasCheckboxLabel("Saved in the academy SharePoint folder")
+            .hasCheckboxLabel("Saved in the school's SharePoint folder")
             .isTicked()
             .untick()
             .saveAndReturn();
-        taskListPage
-            .hasTaskStatusNotStarted("Supplemental funding agreement")
-            .selectTask("Supplemental funding agreement");
+        taskListPage.hasTaskStatusNotStarted("Land registry title plans").selectTask("Land registry title plans");
         taskPage
             .hasCheckboxLabel("Received")
             .isUnticked()
             .hasCheckboxLabel("Cleared")
             .isUnticked()
-            .hasCheckboxLabel("Saved in the academy SharePoint folder")
+            .hasCheckboxLabel("Saved in the school's SharePoint folder")
             .isUnticked();
     });
 
-    it("should show task status based on the checkboxes that are checked", () => {
+    it("should show task status based on the checkboxes are checked", () => {
         cy.visit(`projects/${projectId}/tasks`);
 
-        TaskHelper.updateSupplementalFundingAgreement(taskId, ProjectType.Transfer, "notStarted");
+        TaskHelper.updateLandRegistryTitlePlans(taskId, "notStarted");
         cy.reload();
-        taskListPage.hasTaskStatusNotStarted("Supplemental funding agreement");
+        taskListPage.hasTaskStatusNotStarted("Land registry title plans");
 
-        TaskHelper.updateSupplementalFundingAgreement(taskId, ProjectType.Transfer, "inProgress");
+        TaskHelper.updateLandRegistryTitlePlans(taskId, "inProgress");
         cy.reload();
-        taskListPage.hasTaskStatusInProgress("Supplemental funding agreement");
+        taskListPage.hasTaskStatusInProgress("Land registry title plans");
 
-        TaskHelper.updateSupplementalFundingAgreement(taskId, ProjectType.Transfer, "completed");
+        TaskHelper.updateLandRegistryTitlePlans(taskId, "completed");
         cy.reload();
-        taskListPage.hasTaskStatusCompleted("Supplemental funding agreement");
-    });
-
-    it("Should NOT see the not applicable option for this task", () => {
-        taskPage.noNotApplicableOptionExists();
+        taskListPage.hasTaskStatusCompleted("Land registry title plans");
     });
 
     it("Should NOT see the 'save and return' button for another user's project", () => {
-        cy.visit(`projects/${otherUserProjectId}/tasks/supplemental_funding_agreement`);
+        cy.visit(`projects/${otherUserProjectId}/tasks/land_registry`);
         taskPage.noSaveAndReturnExists();
     });
 

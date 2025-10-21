@@ -21,7 +21,7 @@ const otherUserProject = ProjectBuilder.createTransferFormAMatProjectRequest({
 });
 let otherUserProjectId: string;
 
-describe("Transfer tasks - Supplemental funding agreement", () => {
+describe("Transfer tasks - Church supplemental agreement", () => {
     before(() => {
         projectRemover.removeProjectIfItExists(project.urn.value);
         projectRemover.removeProjectIfItExists(otherUserProject.urn.value);
@@ -39,75 +39,54 @@ describe("Transfer tasks - Supplemental funding agreement", () => {
     beforeEach(() => {
         cy.login();
         cy.acceptCookies();
-        cy.visit(`projects/${projectId}/tasks/supplemental_funding_agreement`);
+        cy.visit(`projects/${projectId}/tasks/church_supplemental_agreement`);
     });
 
     it("should expand and collapse guidance details", () => {
         taskPage
-            .clickDropdown("Help checking the supplemental funding agreement")
-            .hasDropdownContent("Changes that personalise the model documents to an academy or trust");
+            .clickDropdown("Help checking for changes")
+            .hasDropdownContent("Changes that personalise the model documents to an academy or trust")
+            .clickDropdown("How to sign the Church Supplemental Agreement")
+            .hasDropdownContent("The Secretary of State, or somebody with the authority to act on their behalf");
     });
 
     it("should submit the form and persist selections", () => {
-        Logger.log("Select all checkboxes and save");
-        taskPage
-            .hasCheckboxLabel("Received")
-            .tick()
-            .hasCheckboxLabel("Cleared")
-            .tick()
-            .hasCheckboxLabel("Saved in the academy SharePoint folder")
-            .tick()
-            .saveAndReturn();
+        Logger.log("Select 'Not applicable' and save");
+        taskPage.tickNotApplicable().saveAndReturn();
         taskListPage
-            .hasTaskStatusCompleted("Supplemental funding agreement")
-            .selectTask("Supplemental funding agreement");
+            .hasTaskStatusNotApplicable("Church supplemental agreement")
+            .selectTask("Church supplemental agreement");
 
-        Logger.log("Unselect all checkboxes and save");
-        taskPage
-            .hasCheckboxLabel("Received")
-            .isTicked()
-            .untick()
-            .hasCheckboxLabel("Cleared")
-            .isTicked()
-            .untick()
-            .hasCheckboxLabel("Saved in the academy SharePoint folder")
-            .isTicked()
-            .untick()
-            .saveAndReturn();
+        Logger.log("Unselect 'Not applicable' and save");
+        taskPage.hasCheckboxLabel("Not applicable").isTicked().untick().saveAndReturn();
         taskListPage
-            .hasTaskStatusNotStarted("Supplemental funding agreement")
-            .selectTask("Supplemental funding agreement");
-        taskPage
-            .hasCheckboxLabel("Received")
-            .isUnticked()
-            .hasCheckboxLabel("Cleared")
-            .isUnticked()
-            .hasCheckboxLabel("Saved in the academy SharePoint folder")
-            .isUnticked();
+            .hasTaskStatusNotStarted("Church supplemental agreement")
+            .selectTask("Church supplemental agreement");
+        taskPage.hasCheckboxLabel("Not applicable").isUnticked();
     });
 
     it("should show task status based on the checkboxes that are checked", () => {
         cy.visit(`projects/${projectId}/tasks`);
 
-        TaskHelper.updateSupplementalFundingAgreement(taskId, ProjectType.Transfer, "notStarted");
+        TaskHelper.updateChurchSupplementalAgreement(taskId, ProjectType.Transfer, "notStarted");
         cy.reload();
-        taskListPage.hasTaskStatusNotStarted("Supplemental funding agreement");
+        taskListPage.hasTaskStatusNotStarted("Church supplemental agreement");
 
-        TaskHelper.updateSupplementalFundingAgreement(taskId, ProjectType.Transfer, "inProgress");
+        TaskHelper.updateChurchSupplementalAgreement(taskId, ProjectType.Transfer, "notApplicable");
         cy.reload();
-        taskListPage.hasTaskStatusInProgress("Supplemental funding agreement");
+        taskListPage.hasTaskStatusNotApplicable("Church supplemental agreement");
 
-        TaskHelper.updateSupplementalFundingAgreement(taskId, ProjectType.Transfer, "completed");
+        TaskHelper.updateChurchSupplementalAgreement(taskId, ProjectType.Transfer, "inProgress");
         cy.reload();
-        taskListPage.hasTaskStatusCompleted("Supplemental funding agreement");
-    });
+        taskListPage.hasTaskStatusInProgress("Church supplemental agreement");
 
-    it("Should NOT see the not applicable option for this task", () => {
-        taskPage.noNotApplicableOptionExists();
+        TaskHelper.updateChurchSupplementalAgreement(taskId, ProjectType.Transfer, "completed");
+        cy.reload();
+        taskListPage.hasTaskStatusCompleted("Church supplemental agreement");
     });
 
     it("Should NOT see the 'save and return' button for another user's project", () => {
-        cy.visit(`projects/${otherUserProjectId}/tasks/supplemental_funding_agreement`);
+        cy.visit(`projects/${otherUserProjectId}/tasks/church_supplemental_agreement`);
         taskPage.noSaveAndReturnExists();
     });
 

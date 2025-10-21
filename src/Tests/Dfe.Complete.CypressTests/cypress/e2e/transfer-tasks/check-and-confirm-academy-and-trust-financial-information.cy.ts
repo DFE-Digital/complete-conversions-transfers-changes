@@ -21,7 +21,7 @@ const otherUserProject = ProjectBuilder.createTransferFormAMatProjectRequest({
 });
 let otherUserProjectId: string;
 
-describe("Transfer tasks - Articles of association", () => {
+describe("Transfers tasks - Check and confirm academy and trust financial information", () => {
     before(() => {
         projectRemover.removeProjectIfItExists(project.urn.value);
         projectRemover.removeProjectIfItExists(otherUserProject.urn.value);
@@ -39,52 +39,50 @@ describe("Transfer tasks - Articles of association", () => {
     beforeEach(() => {
         cy.login();
         cy.acceptCookies();
-        cy.visit(`projects/${projectId}/tasks/articles_of_association`);
-    });
-
-    it("should expand and collapse guidance details", () => {
-        taskPage
-            .clickDropdown("Partially updating articles of association")
-            .hasDropdownContent(
-                "Trusts do not have to adopt the latest version of the articles entirely. Although this is DfE's preferred option.",
-            )
-            .clickDropdown("Help checking for changes")
-            .hasDropdownContent("Changes that personalise the model documents to an academy or trust");
+        cy.visit(`projects/${projectId}/tasks/check_and_confirm_financial_information`);
     });
 
     it("should submit the form and persist selections", () => {
-        Logger.log("Select the 'Not applicable' checkbox and save");
+        Logger.log("Select 'not applicable' checkbox and save");
         taskPage.tickNotApplicable().saveAndReturn();
-        taskListPage.hasTaskStatusNotApplicable("Articles of association").selectTask("Articles of association");
+        taskListPage
+            .hasTaskStatusNotApplicable("Check and confirm academy and trust financial information")
+            .selectTask("Check and confirm academy and trust financial information");
 
-        Logger.log("Unselect the 'Not applicable' checkbox and save");
+        Logger.log("Unselect 'not applicable' checkbox and save");
         taskPage.hasCheckboxLabel("Not applicable").isTicked().untick().saveAndReturn();
-        taskListPage.hasTaskStatusNotStarted("Articles of association").selectTask("Articles of association");
+        taskListPage
+            .hasTaskStatusNotStarted("Check and confirm academy and trust financial information")
+            .selectTask("Check and confirm academy and trust financial information");
         taskPage.hasCheckboxLabel("Not applicable").isUnticked();
     });
 
-    it("should show task status based on the checkboxes are checked", () => {
+    it("should show task status based on the checkboxes that are checked", () => {
         cy.visit(`projects/${projectId}/tasks`);
 
-        TaskHelper.updateArticleOfAssociation(taskId, ProjectType.Transfer, "notStarted");
+        TaskHelper.updateCheckAndConfirmAcademyAndTrustFinancialInformation(taskId, ProjectType.Transfer, "notStarted");
         cy.reload();
-        taskListPage.hasTaskStatusNotStarted("Articles of association");
+        taskListPage.hasTaskStatusNotStarted("Check and confirm academy and trust financial information");
 
-        TaskHelper.updateArticleOfAssociation(taskId, ProjectType.Transfer, "notApplicable");
+        TaskHelper.updateCheckAndConfirmAcademyAndTrustFinancialInformation(
+            taskId,
+            ProjectType.Transfer,
+            "notApplicable",
+        );
         cy.reload();
-        taskListPage.hasTaskStatusNotApplicable("Articles of association");
+        taskListPage.hasTaskStatusNotApplicable("Check and confirm academy and trust financial information");
 
-        TaskHelper.updateArticleOfAssociation(taskId, ProjectType.Transfer, "inProgress");
+        TaskHelper.updateCheckAndConfirmAcademyAndTrustFinancialInformation(taskId, ProjectType.Transfer, "inProgress");
         cy.reload();
-        taskListPage.hasTaskStatusInProgress("Articles of association");
+        taskListPage.hasTaskStatusInProgress("Check and confirm academy and trust financial information");
 
-        TaskHelper.updateArticleOfAssociation(taskId, ProjectType.Transfer, "completed");
+        TaskHelper.updateCheckAndConfirmAcademyAndTrustFinancialInformation(taskId, ProjectType.Transfer, "completed");
         cy.reload();
-        taskListPage.hasTaskStatusCompleted("Articles of association");
+        taskListPage.hasTaskStatusCompleted("Check and confirm academy and trust financial information");
     });
 
     it("Should NOT see the 'save and return' button for another user's project", () => {
-        cy.visit(`projects/${otherUserProjectId}/tasks/articles_of_association`);
+        cy.visit(`projects/${otherUserProjectId}/tasks/check_and_confirm_financial_information`);
         taskPage.noSaveAndReturnExists();
     });
 

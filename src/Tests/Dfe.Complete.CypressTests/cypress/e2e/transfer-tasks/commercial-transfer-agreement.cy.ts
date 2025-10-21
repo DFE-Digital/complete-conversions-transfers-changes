@@ -21,7 +21,7 @@ const otherUserProject = ProjectBuilder.createTransferFormAMatProjectRequest({
 });
 let otherUserProjectId: string;
 
-describe("Transfer tasks - Supplemental funding agreement", () => {
+describe("Conversion tasks - Commercial transfer agreement", () => {
     before(() => {
         projectRemover.removeProjectIfItExists(project.urn.value);
         projectRemover.removeProjectIfItExists(otherUserProject.urn.value);
@@ -39,75 +39,54 @@ describe("Transfer tasks - Supplemental funding agreement", () => {
     beforeEach(() => {
         cy.login();
         cy.acceptCookies();
-        cy.visit(`projects/${projectId}/tasks/supplemental_funding_agreement`);
+        cy.visit(`projects/${projectId}/tasks/commercial_transfer_agreement`);
     });
 
     it("should expand and collapse guidance details", () => {
         taskPage
-            .clickDropdown("Help checking the supplemental funding agreement")
-            .hasDropdownContent("Changes that personalise the model documents to an academy or trust");
+            .clickDropdown("How to check and assure the commercial transfer agreement")
+            .hasDropdownContent(
+                "You can read guidance about how use check and assure the agreement (opens in new tab) on SharePoint.",
+            );
     });
 
     it("should submit the form and persist selections", () => {
-        Logger.log("Select all checkboxes and save");
-        taskPage
-            .hasCheckboxLabel("Received")
-            .tick()
-            .hasCheckboxLabel("Cleared")
-            .tick()
-            .hasCheckboxLabel("Saved in the academy SharePoint folder")
-            .tick()
-            .saveAndReturn();
+        Logger.log("Select 'Confirm commercial transfer agreement is agreed' and save");
+        taskPage.hasCheckboxLabel("Confirm commercial transfer agreement is agreed").tick().saveAndReturn();
         taskListPage
-            .hasTaskStatusCompleted("Supplemental funding agreement")
-            .selectTask("Supplemental funding agreement");
+            .hasTaskStatusInProgress("Commercial transfer agreement")
+            .selectTask("Commercial transfer agreement");
 
-        Logger.log("Unselect all checkboxes and save");
+        Logger.log("Unselect 'Confirm commercial transfer agreement is agreed' and save");
         taskPage
-            .hasCheckboxLabel("Received")
-            .isTicked()
-            .untick()
-            .hasCheckboxLabel("Cleared")
-            .isTicked()
-            .untick()
-            .hasCheckboxLabel("Saved in the academy SharePoint folder")
+            .hasCheckboxLabel("Confirm commercial transfer agreement is agreed")
             .isTicked()
             .untick()
             .saveAndReturn();
         taskListPage
-            .hasTaskStatusNotStarted("Supplemental funding agreement")
-            .selectTask("Supplemental funding agreement");
-        taskPage
-            .hasCheckboxLabel("Received")
-            .isUnticked()
-            .hasCheckboxLabel("Cleared")
-            .isUnticked()
-            .hasCheckboxLabel("Saved in the academy SharePoint folder")
-            .isUnticked();
+            .hasTaskStatusNotStarted("Commercial transfer agreement")
+            .selectTask("Commercial transfer agreement");
+        taskPage.hasCheckboxLabel("Confirm commercial transfer agreement is agreed").isUnticked();
     });
 
     it("should show task status based on the checkboxes that are checked", () => {
         cy.visit(`projects/${projectId}/tasks`);
 
-        TaskHelper.updateSupplementalFundingAgreement(taskId, ProjectType.Transfer, "notStarted");
+        TaskHelper.updateCommercialTransferAgreement(taskId, ProjectType.Transfer, "notStarted");
         cy.reload();
-        taskListPage.hasTaskStatusNotStarted("Supplemental funding agreement");
+        taskListPage.hasTaskStatusNotStarted("Commercial transfer agreement");
 
-        TaskHelper.updateSupplementalFundingAgreement(taskId, ProjectType.Transfer, "inProgress");
+        TaskHelper.updateCommercialTransferAgreement(taskId, ProjectType.Transfer, "inProgress");
         cy.reload();
-        taskListPage.hasTaskStatusInProgress("Supplemental funding agreement");
+        taskListPage.hasTaskStatusInProgress("Commercial transfer agreement");
 
-        TaskHelper.updateSupplementalFundingAgreement(taskId, ProjectType.Transfer, "completed");
+        TaskHelper.updateCommercialTransferAgreement(taskId, ProjectType.Transfer, "completed");
         cy.reload();
-        taskListPage.hasTaskStatusCompleted("Supplemental funding agreement");
-    });
-
-    it("Should NOT see the not applicable option for this task", () => {
-        taskPage.noNotApplicableOptionExists();
+        taskListPage.hasTaskStatusCompleted("Commercial transfer agreement");
     });
 
     it("Should NOT see the 'save and return' button for another user's project", () => {
-        cy.visit(`projects/${otherUserProjectId}/tasks/supplemental_funding_agreement`);
+        cy.visit(`projects/${otherUserProjectId}/tasks/commercial_transfer_agreement`);
         taskPage.noSaveAndReturnExists();
     });
 
