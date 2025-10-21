@@ -169,7 +169,7 @@ public class HandoverProjectService(
         // Check if URN already exists in active/inactive projects
             var existingProject = await FindExistingProjectAsync(urn, cancellationToken);
         if (existingProject != null)
-            throw new ValidationException(string.Format(Constants.ValidationConstants.UrnExistsValidationMessage, urn));
+            throw new UnprocessableContentException(string.Format(Constants.ValidationConstants.UrnExistsValidationMessage, urn));
 
         // Validate incoming trust exists
         _ = await trustClient.GetTrustByUkprn2Async(incomingTrustUkprn.ToString(), cancellationToken) 
