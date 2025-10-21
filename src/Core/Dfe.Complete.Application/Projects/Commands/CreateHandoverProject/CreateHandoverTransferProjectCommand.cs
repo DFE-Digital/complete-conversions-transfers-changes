@@ -118,6 +118,4 @@ public class CreateHandoverTransferProjectCommandHandler(
             throw new UnknownException($"An error occurred while creating the handover transfer project for URN: {request.Urn}", ex);
         }
     }
-
-
 }
