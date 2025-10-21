@@ -189,111 +189,100 @@ class TaskApi extends ApiBase {
     public updateAcademyAndTrustFinancialInformationTask(
         requestBody: UpdateAcademyAndTrustFinancialInformationTaskRequest,
     ) {
-        return this.taskDataBaseRequest<void>("PATCH", "AcademyAndTrustFinancialInformation", requestBody, 204);
+        return this.taskDataBaseRequest<void>("AcademyAndTrustFinancialInformation", requestBody);
     }
 
     public updateHandoverWithDeliveryOfficerTask(requestBody: UpdateHandoverWithDeliveryOfficerTaskRequest) {
-        return this.taskDataBaseRequest<void>("PATCH", "HandoverDeliveryOfficer", requestBody, 204);
+        return this.taskDataBaseRequest<void>("HandoverDeliveryOfficer", requestBody);
     }
 
     public updateChurchSupplementalAgreementTask(requestBody: UpdateChurchSupplementalAgreementTaskRequest) {
-        return this.taskDataBaseRequest<void>("PATCH", "ChurchSupplementalAgreement", requestBody, 204);
+        return this.taskDataBaseRequest<void>("ChurchSupplementalAgreement", requestBody);
     }
 
     public updateDeedOfNovationAndVariationTask(requestBody: UpdateDeedOfNovationAndVariationTaskRequest) {
-        return this.taskDataBaseRequest<void>("PATCH", "DeedOfNovationAndVariation", requestBody, 204);
+        return this.taskDataBaseRequest<void>("DeedOfNovationAndVariation", requestBody);
     }
 
     public updateDeedOfVariationTask(requestBody: UpdateDeedOfVariationTaskRequest) {
-        return this.taskDataBaseRequest<void>("PATCH", "DeedOfVariation", requestBody, 204);
+        return this.taskDataBaseRequest<void>("DeedOfVariation", requestBody);
     }
 
     public updateExternalStakeholderKickOffTask(requestBody: UpdateExternalStakeholderKickOffTaskRequest) {
-        return this.taskDataBaseRequest<void>("PATCH", "ExternalStakeholderKickOff", requestBody, 204);
+        return this.taskDataBaseRequest<void>("ExternalStakeholderKickOff", requestBody);
     }
 
     public updateArticleOfAssociationTask(requestBody: UpdateArticleOfAssociationTaskRequest) {
-        return this.taskDataBaseRequest<void>("PATCH", "ArticleOfAssociation", requestBody, 204);
+        return this.taskDataBaseRequest<void>("ArticleOfAssociation", requestBody);
     }
 
     public updateCommercialTransferAgreementTask(requestBody: UpdateCommercialTransferAgreementTaskRequest) {
-        return this.taskDataBaseRequest<void>("PATCH", "CommercialTransferAgreement", requestBody, 204);
+        return this.taskDataBaseRequest<void>("CommercialTransferAgreement", requestBody);
     }
 
     public updateConfirmAcademyOpenedDateTask(requestBody: UpdateConfirmAcademyOpenedDateTaskRequest) {
-        return this.taskDataBaseRequest<void>("PATCH", "ConfirmAcademyOpenedDate", requestBody, 204);
+        return this.taskDataBaseRequest<void>("ConfirmAcademyOpenedDate", requestBody);
     }
 
     public updateConfirmAllConditionsMetTask(requestBody: UpdateConfirmAllConditionsMetTaskRequest) {
-        return this.taskDataBaseRequest<void>("PATCH", "ConfirmAllConditionsMet", requestBody, 204);
+        return this.taskDataBaseRequest<void>("ConfirmAllConditionsMet", requestBody);
     }
 
     public updateConfirmDateAcademyTransferredTask(requestBody: UpdateConfirmDateAcademyTransferredTaskRequest) {
-        return this.taskDataBaseRequest<void>("PATCH", "ConfirmDateAcademyTransferred", requestBody, 204);
+        return this.taskDataBaseRequest<void>("ConfirmDateAcademyTransferred", requestBody);
     }
 
     public updateConfirmTransferHasAuthorityToProceedTask(
         requestBody: UpdateConfirmTransferHasAuthorityToProceedTaskRequest,
     ) {
-        return this.taskDataBaseRequest<void>("PATCH", "ConfirmTransferHasAuthorityToProceed", requestBody, 204);
+        return this.taskDataBaseRequest<void>("ConfirmTransferHasAuthorityToProceed", requestBody);
     }
 
     public updateLandQuestionnaireTask(requestBody: UpdateLandQuestionnaireTaskRequest) {
-        return this.taskDataBaseRequest<void>("PATCH", "LandQuestionnaire", requestBody, 204);
+        return this.taskDataBaseRequest<void>("LandQuestionnaire", requestBody);
     }
 
     public updateLandRegistryTitlePlansTask(requestBody: UpdateLandRegistryTitlePlansTaskRequest) {
-        return this.taskDataBaseRequest<void>("PATCH", "LandRegistryTitlePlans", requestBody, 204);
+        return this.taskDataBaseRequest<void>("LandRegistryTitlePlans", requestBody);
     }
 
     public updateMasterFundingAgreementTask(requestBody: UpdateMasterFundingAgreementTaskRequest) {
-        return this.taskDataBaseRequest<void>("PATCH", "MasterFundingAgreement", requestBody, 204);
+        return this.taskDataBaseRequest<void>("MasterFundingAgreement", requestBody);
     }
 
     public updateReceiveDeclarationOfExpenditureCertificateTask(
         requestBody: UpdateReceiveDeclarationOfExpenditureCertificateTaskRequest,
     ) {
-        return this.taskDataBaseRequest<void>("PATCH", "ReceiveDeclarationOfExpenditureCertificate", requestBody, 204);
+        return this.taskDataBaseRequest<void>("ReceiveDeclarationOfExpenditureCertificate", requestBody);
     }
 
     public updateRedactAndSendDocumentsTask(requestBody: UpdateRedactAndSendDocumentsTaskRequest) {
-        return this.taskDataBaseRequest<void>("PATCH", "RedactAndSendDocuments", requestBody, 204);
+        return this.taskDataBaseRequest<void>("RedactAndSendDocuments", requestBody);
     }
 
     public updateConfirmAcademyRiskProtectionArrangementsTask(
         requestBody: UpdateConfirmAcademyRiskProtectionArrangementsTaskRequest,
     ) {
-        return this.taskDataBaseRequest<void>("PATCH", "ConfirmAcademyRiskProtectionArrangements", requestBody, 204);
+        return this.taskDataBaseRequest<void>("ConfirmAcademyRiskProtectionArrangements", requestBody);
     }
 
     public updateSupplementalFundingAgreementTask(requestBody: UpdateSupplementalFundingAgreementTaskRequest) {
-        return this.taskDataBaseRequest<void>("PATCH", "SupplementalFundingAgreement", requestBody, 204);
+        return this.taskDataBaseRequest<void>("SupplementalFundingAgreement", requestBody);
     }
 
-    private taskDataBaseRequest<T>(
-        method: string,
-        task: string,
-        body:
-            | UpdateHandoverWithDeliveryOfficerTaskRequest
-            | UpdateArticleOfAssociationTaskRequest
-            | UpdateDeedOfNovationAndVariationTaskRequest
-            | UpdateDeedOfVariationTaskRequest
-            | UpdateExternalStakeholderKickOffTaskRequest,
-        expectedStatus: number,
-    ) {
+    private taskDataBaseRequest<T>(task: string, body: any) {
         return this.authenticatedRequest().then((headers) => {
             return cy
                 .request<T>({
-                    method,
+                    method: "PATCH",
                     url: `${this.taskDataUrl}/${task}`,
                     headers,
                     body,
                 })
                 .then((response) => {
-                    expect(
-                        response.status,
-                        `Expected ${method} request to return ${expectedStatus} but got ${response.status}`,
-                    ).to.eq(expectedStatus);
+                    expect(response.status, `Expected PATCH request to return 204 but got ${response.status}`).to.eq(
+                        204,
+                    );
                     return response.body;
                 });
         });
