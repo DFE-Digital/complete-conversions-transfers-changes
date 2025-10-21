@@ -81,6 +81,7 @@ See the [full commit history](https://github.com/DFE-Digital/complete-conversion
 ### Added
 - Added `Confirm the academy's risk protection agreements` task for both conversion and transfer projects.
 - Added all task notes identifiers.
+- Added View External Contact - Show MP
 
 ### Changed
 - Hide "Complete a project" functionality on a project if it's DaO revoked
