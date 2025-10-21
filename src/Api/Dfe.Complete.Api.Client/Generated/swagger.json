@@ -129,6 +129,40 @@
         }
       }
     },
+    "/v1/Contacts/GetParliamentMPContact": {
+      "get": {
+        "tags": [
+          "Contacts"
+        ],
+        "summary": "Returns a parliament mp contact by a constituency",
+        "operationId": "Contacts_GetParliamentMPContactByConstituency",
+        "parameters": [
+          {
+            "name": "ConstituencyName",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "x-position": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Contact",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ConstituencyMemberContactDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request data."
+          }
+        }
+      }
+    },
     "/v1/CsvExport": {
       "post": {
         "tags": [
@@ -4544,6 +4578,19 @@
           "value": {
             "type": "string",
             "format": "guid"
+          }
+        }
+      },
+      "ConstituencyMemberContactDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "displayNameWithTitle": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string",
+            "nullable": true
           }
         }
       },
