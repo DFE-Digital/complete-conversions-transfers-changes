@@ -21,6 +21,7 @@ using Swashbuckle.AspNetCore.Annotations;
 using System.ComponentModel.DataAnnotations;
 using Dfe.Complete.Application.KeyContacts.Queries;
 using Dfe.Complete.Utils.Exceptions;
+using Dfe.Complete.Utils;
 
 namespace Dfe.Complete.Api.Controllers
 {
@@ -45,6 +46,10 @@ namespace Dfe.Complete.Api.Controllers
             {
                 var result = await sender.Send(request, cancellationToken);
                 return Created("", result);
+            }
+            catch (UnprocessableContentException ex)
+            {
+                return UnprocessableEntity(ex.Message);
             }
             catch (ValidationException ex)
             {
@@ -72,6 +77,10 @@ namespace Dfe.Complete.Api.Controllers
             {
                 var result = await sender.Send(request, cancellationToken);
                 return Created("", result);
+            }
+            catch (UnprocessableContentException ex)
+            {
+                return UnprocessableEntity(ex.Message);
             }
             catch (ValidationException ex)
             {
