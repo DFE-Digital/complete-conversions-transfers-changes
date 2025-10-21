@@ -1,6 +1,7 @@
 using Dfe.Complete.Application.Notes.Interfaces;
 using Dfe.Complete.Domain.Entities;
 using Dfe.Complete.Infrastructure.Database;
+using Microsoft.EntityFrameworkCore;
 
 namespace Dfe.Complete.Infrastructure.CommandServices;
 
@@ -22,7 +23,10 @@ internal class NoteWriteRepository(CompleteContext context) : INoteWriteReposito
 
     public async Task UpdateNoteAsync(Note note, CancellationToken cancellationToken)
     {
-        _context.Notes.Update(note);
-        await _context.SaveChangesAsync(cancellationToken);
+        await _context.Notes
+            .Where(n => n.Id == note.Id)
+            .ExecuteUpdateAsync(updates => updates
+                .SetProperty(n => n.Body, note.Body),
+                cancellationToken);
     }
 }
