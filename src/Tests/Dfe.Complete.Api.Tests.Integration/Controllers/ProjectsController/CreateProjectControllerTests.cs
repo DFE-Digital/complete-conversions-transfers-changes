@@ -223,7 +223,7 @@ public partial class ProjectsControllerTests
         var validationErrors = exception.Response;
         Assert.NotNull(validationErrors);
 
-        Assert.Contains($"Trust UKPRN 12129999 is not the same as the group UKPRN for group GRP_88888888", validationErrors);
+        Assert.Contains($"URN {giasEstablishment.Urn!.Value} already exists in active/inactive projects", validationErrors);
     }
 
     [Theory]
