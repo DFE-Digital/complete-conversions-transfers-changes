@@ -17,7 +17,6 @@ Security in case of vulnerabilities.
 ## Unreleased
 
 ### Added
-- added <note-body> NoteBodyTagHelper to preserve formatting in text
 
 ### Changed
 
@@ -25,7 +24,25 @@ Security in case of vulnerabilities.
 
 ### Security
 
-See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-10-20.943...main) for everything awaiting release
+See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-10-21.954...main) for everything awaiting release
+
+---
+
+## [1.23.0](https://github.com/DFE-Digital/complete-conversions-transfers-changes/releases/tag/production-2025-10-21.954) - 2025-10-21
+
+### Added
+- added <note-body> NoteBodyTagHelper to preserve formatting in text
+- Added View External Contact - Show MP
+
+### Changed
+- note will now respect limited formatting
+
+### Fixed
+- resolve entity tracking issue on note write repository
+
+### Security
+
+See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-10-20.943...production-2025-10-21.954) for everything in the release
 
 ---
 
@@ -37,10 +54,8 @@ See the [full commit history](https://github.com/DFE-Digital/complete-conversion
 - Added link for delete project button
 
 ### Changed
-- note will now respect limited formatting
 
 ### Fixed
-- resolve entity tracking issue on note write repository
 
 ### Security
 
@@ -81,7 +96,6 @@ See the [full commit history](https://github.com/DFE-Digital/complete-conversion
 ### Added
 - Added `Confirm the academy's risk protection agreements` task for both conversion and transfer projects.
 - Added all task notes identifiers.
-- Added View External Contact - Show MP
 
 ### Changed
 - Hide "Complete a project" functionality on a project if it's DaO revoked
@@ -98,6 +112,7 @@ See the [full commit history](https://github.com/DFE-Digital/complete-conversion
 ## [1.21.0](https://github.com/DFE-Digital/complete-conversions-transfers-changes/releases/tag/production-2025-10-14.892) - 2025-10-14
 
 ### Added
+
 - Add new prepare to complete end point for adding conversion projects
 - Land registry title plans` task for conversion project.
 - Added `Master Funding Agreement` task for both conversion and transfer projects.
