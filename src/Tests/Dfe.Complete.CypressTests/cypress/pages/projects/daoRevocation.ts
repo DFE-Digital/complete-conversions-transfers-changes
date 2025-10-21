@@ -1,6 +1,6 @@
 import { TaskPage } from "cypress/pages/projects/tasks/taskPage";
 
-class daoRevocation extends TaskPage {
+class DaoRevocation extends TaskPage {
     continue() {
         this.clickButton("Continue");
         return this;
@@ -24,6 +24,6 @@ class daoRevocation extends TaskPage {
     }
 }
 
-const daoRevocationPage = new daoRevocation();
+const daoRevocationPage = new DaoRevocation();
 
 export default daoRevocationPage;
