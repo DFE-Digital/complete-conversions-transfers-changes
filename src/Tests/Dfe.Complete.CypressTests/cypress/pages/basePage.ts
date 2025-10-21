@@ -145,7 +145,9 @@ class BasePage {
             .first()
             .within(() => {
                 cy.get("h2").should("contain.text", bannerType);
-                cy.get("h3").shouldHaveText(title);
+                if (title) {
+                    cy.get("h3").shouldHaveText(title);
+                }
                 if (message) {
                     cy.get("p").shouldHaveText(message);
                 }
