@@ -226,6 +226,11 @@
       "ExpectedSecurity": "Authorize: Policy=CanRead"
     },
     {
+      "Controller": "ContactsController",
+      "Action": "GetParliamentMPContactByConstituencyAsync",
+      "ExpectedSecurity": "Authorize: Policy=CanRead"
+    },
+    {
       "Controller": "ProjectsController",
       "Action": "GetProjectByIdAsync",
       "ExpectedSecurity": "Authorize: Policy=CanRead"
