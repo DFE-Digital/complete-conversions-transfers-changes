@@ -5,6 +5,7 @@ using Dfe.Complete.Services;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel;
 
 namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.StakeholderKickoffTask
 {
@@ -27,6 +28,7 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.StakeholderKickoffTask
         public bool? HostMeetingOrCall { get; set; }
 
         [BindProperty(Name = "significant-date")]
+        [DisplayName("The Significant date")]
         public DateOnly? SignificantDate { get; set; }
 
         public override async Task<IActionResult> OnGetAsync()
@@ -57,13 +59,13 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.StakeholderKickoffTask
         public async Task<IActionResult> OnPost()
         {
             await base.OnGetAsync();
-            
+
             if (SignificantDate.HasValue && SignificantDate?.ToDateTime(new TimeOnly()) < DateTime.Today)
             {
                 ModelState.AddModelError(nameof(SignificantDate), "The Significant date must be in the future.");
             }
             
-            if (SignificantDate.HasValue && !ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
                 errorService.AddErrors(ModelState);
                 return Page();
@@ -78,7 +80,7 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.StakeholderKickoffTask
                 SignificantDate,
                 User.Identity!.Name);
             
-            await sender.Send(request);
+            await Sender.Send(request);
             
             SetTaskSuccessNotification();
             
