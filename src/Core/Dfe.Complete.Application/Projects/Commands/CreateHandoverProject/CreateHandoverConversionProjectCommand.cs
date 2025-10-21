@@ -7,6 +7,7 @@ using Dfe.Complete.Application.Common.Interfaces;
 using Dfe.Complete.Domain.Validators;
 using Microsoft.Extensions.Logging;
 using Dfe.Complete.Application.Projects.Services;
+using Dfe.Complete.Utils;
 
 namespace Dfe.Complete.Application.Projects.Commands.CreateHandoverProject;
 
@@ -89,7 +90,7 @@ public class CreateHandoverConversionProjectCommandHandler(
 
             return project.Id;
         }
-        catch (Exception ex) when (ex is not NotFoundException && ex is not ValidationException)
+        catch (Exception ex) when (ex is not UnprocessableContentException && ex is not NotFoundException && ex is not ValidationException)
         {
             await unitOfWork.RollBackAsync();
             logger.LogError(ex, "Exception while creating handover conversion project for URN: {Urn}", request.Urn);

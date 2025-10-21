@@ -173,7 +173,7 @@ public class HandoverProjectService(
 
         // Validate incoming trust exists
         _ = await trustClient.GetTrustByUkprn2Async(incomingTrustUkprn.ToString(), cancellationToken) 
-            ?? throw new ValidationException(string.Format(Constants.ValidationConstants.NoTrustFoundValidationMessage, incomingTrustUkprn));
+            ?? throw new UnprocessableContentException(string.Format(Constants.ValidationConstants.NoTrustFoundValidationMessage, incomingTrustUkprn));
 
         // Validate outgoing trust exists and is different from incoming (for transfers)
         if (outgoingTrustUkprn.HasValue)
@@ -182,7 +182,7 @@ public class HandoverProjectService(
                 throw new ValidationException(Constants.ValidationConstants.SameTrustValidationMessage);
 
             _ = await trustClient.GetTrustByUkprn2Async(outgoingTrustUkprn.Value.ToString(), cancellationToken) 
-                ?? throw new ValidationException(string.Format(Constants.ValidationConstants.NoTrustFoundValidationMessage, outgoingTrustUkprn.Value));
+                ?? throw new UnprocessableContentException(string.Format(Constants.ValidationConstants.NoTrustFoundValidationMessage, outgoingTrustUkprn.Value));
         }
     }
 

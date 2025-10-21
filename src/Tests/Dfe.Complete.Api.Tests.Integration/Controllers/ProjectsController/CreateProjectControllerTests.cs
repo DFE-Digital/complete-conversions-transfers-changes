@@ -218,7 +218,7 @@ public partial class ProjectsControllerTests
         var exception = await Assert.ThrowsAsync<CompleteApiException>(async () =>
             await projectsClient.CreateHandoverConversionProjectAsync(createHandoverConversionProjectCommand));
 
-        Assert.Equal(HttpStatusCode.BadRequest, (HttpStatusCode)exception.StatusCode);
+        Assert.Equal(HttpStatusCode.UnprocessableEntity, (HttpStatusCode)exception.StatusCode);
 
         var validationErrors = exception.Response;
         Assert.NotNull(validationErrors);
