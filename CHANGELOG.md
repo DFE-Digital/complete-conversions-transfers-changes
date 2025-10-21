@@ -21,7 +21,8 @@ Security in case of vulnerabilities.
 ### Changed
 
 ### Fixed
-- minor text corrections for 3 of the task pages
+- minor text corrections for 2 of the task pages
+- minor text correction for confirm dao revocation page
 
 ### Security
 
