@@ -134,21 +134,17 @@ class TaskHelper {
     }
 
     public updateConfirmAllConditionsMet(projectId: string, status: TaskStatus) {
-        const defaultBody = {
+        if (status === "completed") {
+            return taskApi.updateConfirmAllConditionsMetTask({
+                projectId: { value: projectId },
+                confirm: true,
+            });
+        }
+
+        return taskApi.updateConfirmAllConditionsMetTask({
             projectId: { value: projectId },
             confirm: false,
-        };
-
-        switch (status) {
-            case "completed":
-                return taskApi.updateConfirmAllConditionsMetTask({
-                    projectId: { value: projectId },
-                    confirm: true,
-                });
-
-            default:
-                return taskApi.updateConfirmAllConditionsMetTask(defaultBody);
-        }
+        });
     }
 
     public updateConfirmTransferHasAuthorityToProceed(taskDataId: string, status: TaskStatus) {
