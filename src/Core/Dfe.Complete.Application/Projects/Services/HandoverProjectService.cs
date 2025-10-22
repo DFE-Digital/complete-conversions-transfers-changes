@@ -1,7 +1,7 @@
 
 using System.ComponentModel.DataAnnotations;
 using Dfe.AcademiesApi.Client.Contracts;
-using Dfe.Complete.Application.Constants;
+using Dfe.Complete.Utils.Exceptions;
 using Dfe.Complete.Application.ProjectGroups.Interfaces;
 using Dfe.Complete.Application.Projects.Models;
 using Dfe.Complete.Application.Projects.Queries.GetGiasEstablishment;
@@ -86,8 +86,7 @@ public class HandoverProjectService(
     {
         return await new ProjectUrnQuery(new Urn(urn))
             .Apply(new StateQuery([ProjectState.Active, ProjectState.Inactive])
-            .Apply(new TypeQuery(ProjectType.Conversion)
-            .Apply(projectRepository.Query().AsNoTracking())))
+            .Apply(projectRepository.Query().AsNoTracking()))
             .FirstOrDefaultAsync(cancellationToken);
     }
 

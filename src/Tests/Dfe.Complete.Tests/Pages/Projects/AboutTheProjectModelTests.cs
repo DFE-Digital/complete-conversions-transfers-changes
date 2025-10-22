@@ -6,7 +6,7 @@ using Dfe.Complete.Application.Projects.Queries.GetProject;
 using Dfe.Complete.Application.Services.AcademiesApi;
 using Dfe.Complete.Domain.ValueObjects;
 using Dfe.Complete.Pages.Projects.AboutTheProject;
-using Dfe.Complete.Utils;
+using Dfe.Complete.Utils.Exceptions;
 using GovUK.Dfe.CoreLibs.Testing.AutoFixture.Attributes;
 using GovUK.Dfe.CoreLibs.Testing.AutoFixture.Customizations;
 using MediatR;
