@@ -116,7 +116,7 @@ export class ProjectDetailsPage extends BasePage {
             const nextIndex = Number(counter) + 1;
             cy.wrap(nextIndex).as("summaryCounter");
             cy.get("@sectionId").then((id) => {
-                cy.getById(id.toString()).find(".govuk-summary-list__key").eq(nextIndex).shouldHaveText(key);
+                cy.getById(id.toString()).find(".govuk-summary-list__key").eq(nextIndex).scrollIntoView().shouldHaveText(key);
             });
         });
         return this;
