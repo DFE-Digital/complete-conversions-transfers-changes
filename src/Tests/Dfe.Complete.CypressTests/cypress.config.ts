@@ -24,6 +24,11 @@ export default defineConfig({
     },
     e2e: {
         excludeSpecPattern: ["*/**/legacy"],
+        specPattern: [
+            "cypress/e2e/conversions/project-pages/*.cy.ts",
+            "cypress/e2e/conversions/run-second/*.cy.ts",
+            "cypress/e2e/conversions/run-last/*.cy.ts",
+        ],
         // We've imported your old cypress plugins here.
         // You may want to clean this up later by importing these.
         setupNodeEvents(on, config) {
