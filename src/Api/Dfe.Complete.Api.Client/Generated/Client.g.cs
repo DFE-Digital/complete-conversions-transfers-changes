@@ -8637,24 +8637,24 @@ namespace Dfe.Complete.Client
         }
 
         /// <summary>
-        /// Confirm the sponsored support grant
+        /// Updating the academy name task data for conversion project.
         /// </summary>
         /// <param name="request">The update command.</param>
-        /// <returns>The sponsored support grant task updated successfully.</returns>
+        /// <returns>Updated the academy name task successfully.</returns>
         /// <exception cref="CompleteApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task UpdateSponsoredSupportGrantTaskAsync(UpdateConfirmSponsoredSupportGrantTaskCommand request)
+        public virtual System.Threading.Tasks.Task UpdateAcademyDetailsTaskAsync(UpdateConfirmAcademyNameTaskCommand request)
         {
-            return UpdateSponsoredSupportGrantTaskAsync(request, System.Threading.CancellationToken.None);
+            return UpdateAcademyDetailsTaskAsync(request, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>
-        /// Confirm the sponsored support grant
+        /// Updating the academy name task data for conversion project.
         /// </summary>
         /// <param name="request">The update command.</param>
-        /// <returns>The sponsored support grant task updated successfully.</returns>
+        /// <returns>Updated the academy name task successfully.</returns>
         /// <exception cref="CompleteApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task UpdateSponsoredSupportGrantTaskAsync(UpdateConfirmSponsoredSupportGrantTaskCommand request, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task UpdateAcademyDetailsTaskAsync(UpdateConfirmAcademyNameTaskCommand request, System.Threading.CancellationToken cancellationToken)
         {
             if (request == null)
                 throw new System.ArgumentNullException("request");
@@ -8673,8 +8673,8 @@ namespace Dfe.Complete.Client
 
                     var urlBuilder_ = new System.Text.StringBuilder();
                     if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
-                    // Operation Path: "v1/TasksData/TaskData/SponsoredSupportGrant"
-                    urlBuilder_.Append("v1/TasksData/TaskData/SponsoredSupportGrant");
+                    // Operation Path: "v1/TasksData/TaskData/AcademyDetails"
+                    urlBuilder_.Append("v1/TasksData/TaskData/AcademyDetails");
 
                     PrepareRequest(client_, request_, urlBuilder_);
 

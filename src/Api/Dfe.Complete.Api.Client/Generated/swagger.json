@@ -3208,20 +3208,20 @@
         }
       }
     },
-    "/v1/TasksData/TaskData/SponsoredSupportGrant": {
+    "/v1/TasksData/TaskData/AcademyDetails": {
       "patch": {
         "tags": [
           "TasksData"
         ],
-        "summary": "Confirm the sponsored support grant",
-        "operationId": "TasksData_UpdateSponsoredSupportGrantTask",
+        "summary": "Updating the academy name task data for conversion project.",
+        "operationId": "TasksData_UpdateAcademyDetailsTask",
         "requestBody": {
           "x-name": "request",
           "description": "The update command.",
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/UpdateConfirmSponsoredSupportGrantTaskCommand"
+                "$ref": "#/components/schemas/UpdateConfirmAcademyNameTaskCommand"
               }
             }
           },
@@ -3230,7 +3230,7 @@
         },
         "responses": {
           "204": {
-            "description": "The sponsored support grant task updated successfully."
+            "description": "Updated the academy name task successfully."
           },
           "400": {
             "description": "Invalid request data."
@@ -8206,43 +8206,15 @@
           }
         }
       },
-      "UpdateConfirmSponsoredSupportGrantTaskCommand": {
+      "UpdateConfirmAcademyNameTaskCommand": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
           "taskDataId": {
             "$ref": "#/components/schemas/TaskDataId"
           },
-          "projectType": {
-            "nullable": true,
-            "oneOf": [
-              {
-                "$ref": "#/components/schemas/ProjectType"
-              }
-            ]
-          },
-          "notApplicable": {
-            "type": "boolean",
-            "nullable": true
-          },
-          "sponsoredSupportGrantType": {
+          "academyName": {
             "type": "string",
-            "nullable": true
-          },
-          "paymentAmount": {
-            "type": "boolean",
-            "nullable": true
-          },
-          "paymentForm": {
-            "type": "boolean",
-            "nullable": true
-          },
-          "sendInformation": {
-            "type": "boolean",
-            "nullable": true
-          },
-          "informTrust": {
-            "type": "boolean",
             "nullable": true
           }
         }

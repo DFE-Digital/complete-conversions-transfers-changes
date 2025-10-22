@@ -5,14 +5,14 @@ using Dfe.Complete.Constants;
 using Dfe.Complete.Domain.Validators;
 using Dfe.Complete.Extensions;
 using Dfe.Complete.Models;
-using Dfe.Complete.Services;
+using Dfe.Complete.Services.Interfaces;
 using Dfe.Complete.Utils;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Dfe.Complete.Pages.Projects.InternalContacts;
 
-public class EditAssignedUser(ISender sender, ErrorService errorService, ILogger<InternalContacts> logger)
+public class EditAssignedUser(ISender sender, IErrorService errorService, ILogger<InternalContacts> logger)
     : BaseProjectPageModel(sender, logger)
 {
     private readonly ISender _sender = sender;

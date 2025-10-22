@@ -1,6 +1,6 @@
 ﻿@page "/projects/{projectId}/academy-urn"
 @model Dfe.Complete.Pages.Projects.ServiceSupport.ConversionURNs.CreateAcademyUrnModel
-@inject Dfe.Complete.Services.ErrorService ErrorService
+@inject Dfe.Complete.Services.Interfaces.IErrorService ErrorService
 @{
     var establishmentName = Model.Establishment.Name;
     var selectedAcademy = Model.SelectedAcademy;

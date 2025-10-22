@@ -8,7 +8,7 @@ using Dfe.Complete.Extensions;
 using Dfe.Complete.Helpers;
 using Dfe.Complete.Models;
 using Dfe.Complete.Models.ExternalContact;
-using Dfe.Complete.Services;
+using Dfe.Complete.Services.Interfaces;
 using Dfe.Complete.Utils;
 using FluentValidation;
 using MediatR;
@@ -20,12 +20,12 @@ namespace Dfe.Complete.Pages.Projects.ExternalContacts.New;
 [Authorize(Policy = UserPolicyConstants.CanAddContact)]
 public class CreateOtherExternalContact(
     IValidator<OtherExternalContactInputModel> otherExternalContactInputModelValidator,
-    ITrustCache trustCacheService, ErrorService errorService, 
+    ITrustCache trustCacheService, IErrorService errorService, 
     ISender sender, 
     ILogger<CreateOtherExternalContact> logger)
     : ExternalContactAddEditPageModel(trustCacheService, sender)
 {    
-    private readonly ErrorService errorService = errorService;
+    private readonly IErrorService errorService = errorService;
     private readonly ISender sender = sender;
     private readonly ILogger<CreateOtherExternalContact> logger = logger;
     private readonly IValidator<OtherExternalContactInputModel> validator = otherExternalContactInputModelValidator;

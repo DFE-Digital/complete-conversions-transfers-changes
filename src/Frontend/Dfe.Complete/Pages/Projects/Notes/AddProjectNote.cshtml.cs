@@ -1,5 +1,3 @@
-using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
 using Dfe.Complete.Application.Notes.Commands;
 using Dfe.Complete.Constants;
 using Dfe.Complete.Domain.Constants;
@@ -7,17 +5,19 @@ using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Domain.ValueObjects;
 using Dfe.Complete.Extensions;
 using Dfe.Complete.Models;
-using Dfe.Complete.Services;
+using Dfe.Complete.Services.Interfaces;
 using Dfe.Complete.Utils;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 
 namespace Dfe.Complete.Pages.Projects.Notes;
 
 [Authorize(policy: UserPolicyConstants.CanAddNotes)]
-public class AddProjectNoteModel(ISender sender, ErrorService errorService, ILogger<AddProjectNoteModel> logger) : BaseProjectNotesModel(sender, logger, NotesNavigation)
+public class AddProjectNoteModel(ISender sender, IErrorService errorService, ILogger<AddProjectNoteModel> logger) : BaseProjectNotesModel(sender, logger, NotesNavigation)
 {
     [BindProperty(Name = "note-text")]
     [Required]
