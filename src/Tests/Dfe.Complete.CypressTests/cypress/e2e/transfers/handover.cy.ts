@@ -64,9 +64,9 @@ describe.skip("Handover process tests for transfer projects", () => {
             .summaryShows("Outgoing trust UKPRN")
             .hasValue(macclesfieldTrust.ukprn)
             .summaryShows("Advisory board date")
-            .hasValue(significateDateToDisplayDate(project.advisory_board_date))
+            .hasValue(significateDateToDisplayDate(project.advisoryBoardDate))
             .summaryShows("Provisional transfer date")
-            .hasValue(significateDateToDisplayDate(project.provisional_transfer_date))
+            .hasValue(significateDateToDisplayDate(project.provisionalTransferDate))
             .summaryShows("Assigned to in Prepare")
             .hasValue(cypressUser.username)
             .clickButton("Confirm");
@@ -121,9 +121,9 @@ describe.skip("Handover process tests for transfer projects", () => {
             .summaryShows("Outgoing trust UKPRN")
             .hasValue(macclesfieldTrust.ukprn)
             .summaryShows("Advisory board date")
-            .hasValue(significateDateToDisplayDate(formAMATProject.advisory_board_date))
+            .hasValue(significateDateToDisplayDate(formAMATProject.advisoryBoardDate))
             .summaryShows("Provisional transfer date")
-            .hasValue(significateDateToDisplayDate(formAMATProject.provisional_transfer_date))
+            .hasValue(significateDateToDisplayDate(formAMATProject.provisionalTransferDate))
             .summaryShows("Assigned to in Prepare")
             .hasValue(cypressUser.username)
             .clickButton("Confirm");
