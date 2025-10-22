@@ -3,8 +3,6 @@ using Dfe.Complete.Domain.Constants;
 using Dfe.Complete.Domain.ValueObjects;
 using Dfe.Complete.Extensions;
 using Dfe.Complete.Services.Interfaces;
-using Dfe.Complete.Utils;
-using Dfe.Complete.Services;
 using Dfe.Complete.Utils.Exceptions;
 using Dfe.Complete.Validators;
 using MediatR;
