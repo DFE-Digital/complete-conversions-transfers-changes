@@ -8,6 +8,7 @@ using Dfe.Complete.Domain.Validators;
 using Microsoft.Extensions.Logging;
 using Dfe.AcademiesApi.Client.Contracts;
 using Dfe.Complete.Application.Projects.Services;
+using Dfe.Complete.Utils;
 
 namespace Dfe.Complete.Application.Projects.Commands.CreateHandoverProject;
 
@@ -106,11 +107,11 @@ public class CreateHandoverTransferProjectCommandHandler(
             {
                 await unitOfWork.RollBackAsync();
                 logger.LogError(ex, "Exception while creating handover transfer project for URN: {Urn}", request.Urn);
-                throw new NotFoundException(ex.Message, ex);
+                throw new UnprocessableContentException(ex.Message, ex);
             }
             throw new UnknownException(ex.Message);
         }
-        catch (Exception ex) when (ex is not NotFoundException && ex is not ValidationException)
+        catch (Exception ex) when (ex is not UnprocessableContentException && ex is not NotFoundException && ex is not ValidationException)
         {
             await unitOfWork.RollBackAsync();
             logger.LogError(ex, "Exception while creating handover transfer project for URN: {Urn}", request.Urn);
