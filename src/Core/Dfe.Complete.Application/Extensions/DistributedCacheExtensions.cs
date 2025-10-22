@@ -3,7 +3,7 @@ using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
-namespace Dfe.Complete.Extensions
+namespace Dfe.Complete.Application.Extensions
 {
     public static class DistributedCacheExtensions
     {
@@ -35,7 +35,7 @@ namespace Dfe.Complete.Extensions
             return value is not null;
         }
 
-        public static async Task<T?> GetOrSetAsync<T>(this IDistributedCache cache, string key, Func<Task<T>> task, DistributedCacheEntryOptions? options = null)
+        public static async Task<T?> GetOrSetAsync<T>(this IDistributedCache cache, string key, Func<Task<T>> task, DistributedCacheEntryOptions options = null)
         {
             if (options == null)
             {
@@ -52,6 +52,6 @@ namespace Dfe.Complete.Extensions
                 await cache.SetAsync<T>(key, value, options);
             }
             return value;
-        }        
+        }
     }
 }
