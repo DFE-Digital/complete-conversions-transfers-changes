@@ -67,13 +67,15 @@ public class CreateHandoverTransferProjectCommandHandler(
 
             // Prepare common project data
             var commonData = await handoverProjectService.PrepareCommonProjectDataAsync(
-                urn, 
-                incomingTrustUkprn, 
-                request.GroupId, 
-                request.CreatedByFirstName, 
-                request.CreatedByLastName, 
-                request.CreatedByEmail, 
+                urn,
+                request.CreatedByFirstName,
+                request.CreatedByLastName,
+                request.CreatedByEmail,
                 cancellationToken);
+
+            ProjectGroupId? groupId = null;
+            if (!string.IsNullOrWhiteSpace(request.GroupId))
+                groupId = await handoverProjectService.GetOrCreateProjectGroup(request.GroupId!, incomingTrustUkprn, cancellationToken);
 
             // Create transfer task data
             var transferTask = handoverProjectService.CreateTransferTaskAsync(
@@ -92,7 +94,7 @@ public class CreateHandoverTransferProjectCommandHandler(
                 commonData.Region,
                 request.AdvisoryBoardDate!.Value,
                 request.AdvisoryBoardConditions ?? null,
-                commonData.GroupId,
+                groupId,
                 commonData.UserId,
                 commonData.LocalAuthorityId);
 
