@@ -2,7 +2,6 @@ using Dfe.Complete.Application.Projects.Commands.TaskData;
 using Dfe.Complete.Constants;
 using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Domain.ValueObjects;
-using Dfe.Complete.Extensions;
 using Dfe.Complete.Models;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -13,8 +12,6 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.RequestNewUrnAndRecordForAc
     public class RequestNewUrnAndRecordForAcademyTaskModel(ISender sender, IAuthorizationService authorizationService, ILogger<RequestNewUrnAndRecordForAcademyTaskModel> logger)
     : BaseProjectTaskModel(sender, authorizationService, logger, NoteTaskIdentifier.RequestNewUrnAndRecordForAcademy)
     {
-        private readonly ISender _sender = sender;
-        
         [BindProperty]
         public Guid? TasksDataId { get; set; }
 
@@ -46,8 +43,8 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.RequestNewUrnAndRecordForAc
         
         public async Task<IActionResult> OnPost()
         {            
-            await _sender.Send(new UpdateRequestNewUrnAndRecordForAcademyTaskCommand(new TaskDataId(TasksDataId.GetValueOrDefault())!, NotApplicable, Complete, Receive, Give ));
-            TempData.SetNotification(NotificationType.Success, "Success", "Task updated successfully");
+            await Sender.Send(new UpdateRequestNewUrnAndRecordForAcademyTaskCommand(new TaskDataId(TasksDataId.GetValueOrDefault())!, NotApplicable, Complete, Receive, Give ));
+            SetTaskSuccessNotification();
             return Redirect(string.Format(RouteConstants.ProjectTaskList, ProjectId));
         }
     }
