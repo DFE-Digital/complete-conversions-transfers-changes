@@ -6,7 +6,6 @@ using Dfe.Complete.Infrastructure;
 using Dfe.Complete.Infrastructure.Security.Authorization;
 using Dfe.Complete.Logging.Middleware;
 using Dfe.Complete.Security;
-using Dfe.Complete.Services;
 using Dfe.Complete.StartupConfiguration;
 using Dfe.Complete.Validators;
 using GovUk.Frontend.AspNetCore;
@@ -102,8 +101,7 @@ public class Startup
         SetupDataProtection(services);
 
         services.AddApplicationInsightsTelemetry(Configuration);
-        services.AddCompleteClientProject(Configuration);
-        services.AddScoped<ErrorService>();
+        services.AddCompleteClientProject(Configuration);        
         services.AddScoped<ICorrelationContext, CorrelationContext>();
 
         services.AddScoped(sp => sp.GetRequiredService<IHttpContextAccessor>()?.HttpContext?.Session ?? throw new InvalidOperationException("Session is not available."));

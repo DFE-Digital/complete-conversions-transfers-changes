@@ -5,23 +5,22 @@ using Dfe.Complete.Domain.Constants;
 using Dfe.Complete.Domain.ValueObjects;
 using Dfe.Complete.Extensions;
 using Dfe.Complete.Models;
-using Dfe.Complete.Services;
+using Dfe.Complete.Services.Interfaces;
 using Dfe.Complete.Utils;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-
 using ValidationConstants = Dfe.Complete.Constants.ValidationConstants;
 
 namespace Dfe.Complete.Pages.Projects.ExternalContacts
 {
     [Authorize(Policy = UserPolicyConstants.CanViewEditDeleteContact)]
-    public class DeleteExternalContact(ISender sender, ErrorService errorService, ILogger<DeleteExternalContact> logger)
+    public class DeleteExternalContact(ISender sender, IErrorService errorService, ILogger<DeleteExternalContact> logger)
      : PageModel
     {   
         private readonly ISender sender = sender;
-        private readonly ErrorService errorService = errorService;
+        private readonly IErrorService errorService = errorService;
         private readonly ILogger<DeleteExternalContact> logger = logger;
 
         [BindProperty(SupportsGet = true, Name = "projectId")]
