@@ -17,11 +17,14 @@ Security in case of vulnerabilities.
 ## Unreleased
 
 ### Added
+- Added `Complete a notification of changes to funded high needs places form` task for conversion projects.
 - Sponsored support grant task for conversion and transfer project.
 
 ### Changed
 
 ### Fixed
+- minor text corrections for 2 of the task pages
+- minor text correction for confirm dao revocation page
 
 ### Security
 
@@ -97,6 +100,7 @@ See the [full commit history](https://github.com/DFE-Digital/complete-conversion
 ### Added
 - Added `Confirm the academy's risk protection agreements` task for both conversion and transfer projects.
 - Added all task notes identifiers.
+- Adding key contact record on confirming project handover and logging error message if key contact is already been added. 
 
 ### Changed
 - Hide "Complete a project" functionality on a project if it's DaO revoked

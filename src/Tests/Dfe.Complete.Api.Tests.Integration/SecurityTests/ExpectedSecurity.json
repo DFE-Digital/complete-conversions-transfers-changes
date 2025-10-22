@@ -402,6 +402,11 @@
     },
     {
       "Controller": "TasksDataController",
+      "Action": "UpdateCompleteNotificationOfChangeTaskAsync",
+      "ExpectedSecurity": "Authorize: Policy=CanReadWriteUpdate"
+    },
+    {
+      "Controller": "TasksDataController",
       "Action": "UpdateSponsoredSupportGrantTaskAsync",
       "ExpectedSecurity": "Authorize: Policy=CanReadWriteUpdate"
     }
