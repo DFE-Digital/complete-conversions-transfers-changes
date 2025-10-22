@@ -17,10 +17,13 @@ Security in case of vulnerabilities.
 ## Unreleased
 
 ### Added
+- Added `Complete a notification of changes to funded high needs places form` task for conversion projects.
 
 ### Changed
 
 ### Fixed
+- minor text corrections for 2 of the task pages
+- minor text correction for confirm dao revocation page
 
 ### Security
 
