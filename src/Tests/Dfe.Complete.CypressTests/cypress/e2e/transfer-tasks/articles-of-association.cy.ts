@@ -84,7 +84,7 @@ describe("Transfer tasks - Articles of association", () => {
     });
 
     it("Should NOT see the 'save and return' button for another user's project", () => {
-        cy.visit(`projects/${otherUserProjectId}/tasks/handover`);
+        cy.visit(`projects/${otherUserProjectId}/tasks/articles_of_association`);
         taskPage.noSaveAndReturnExists();
     });
 
