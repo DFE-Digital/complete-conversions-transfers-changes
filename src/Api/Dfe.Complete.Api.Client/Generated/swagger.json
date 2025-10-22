@@ -129,6 +129,40 @@
         }
       }
     },
+    "/v1/Contacts/GetParliamentMPContact": {
+      "get": {
+        "tags": [
+          "Contacts"
+        ],
+        "summary": "Returns a parliament mp contact by a constituency",
+        "operationId": "Contacts_GetParliamentMPContactByConstituency",
+        "parameters": [
+          {
+            "name": "ConstituencyName",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "x-position": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Contact",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ConstituencyMemberContactDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request data."
+          }
+        }
+      }
+    },
     "/v1/CsvExport": {
       "post": {
         "tags": [
@@ -3108,20 +3142,20 @@
         }
       }
     },
-    "/v1/TasksData/TaskData/ConfirmOutgoingTrustCeoContact": {
+    "/v1/TasksData/TaskData/CompleteNotificationOfChange": {
       "patch": {
         "tags": [
           "TasksData"
         ],
-        "summary": "Confirm the outgoing trust ceo contact for the project.",
-        "operationId": "TasksData_UpdateConfirmOutgoingTrustCeoContactTask",
+        "summary": "Complete a notification of changes to funded high needs places form for the project.",
+        "operationId": "TasksData_UpdateCompleteNotificationOfChangeTask",
         "requestBody": {
           "x-name": "request",
           "description": "The update command.",
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/UpdateOutgoingTrustCeoCommand"
+                "$ref": "#/components/schemas/UpdateCompleteNotificationOfChangeTaskCommand"
               }
             }
           },
@@ -3130,16 +3164,46 @@
         },
         "responses": {
           "204": {
-            "description": "Confirm the outgoing trust ceo contact for the project successfully."
+            "description": "Complete a notification of changes to funded high needs places form for the project successfully."
           },
           "400": {
             "description": "Invalid request data."
           },
           "404": {
-            "description": "KeyContact not found."
+            "description": "Project not found."
+          }
+        }
+      }
+    },
+    "/v1/TasksData/TaskData/AcademyAndTrustFinancialInformation": {
+      "patch": {
+        "tags": [
+          "TasksData"
+        ],
+        "summary": "Updating the academy and trust financial information task data for transfer project.",
+        "operationId": "TasksData_UpdateAcademyAndTrustFinancialInformationTask",
+        "requestBody": {
+          "x-name": "request",
+          "description": "The update command.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateAcademyAndTrustFinancialInformationTaskCommand"
+              }
+            }
           },
-          "500": {
-            "description": "Internal server error."
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "204": {
+            "description": "Updated the academy and trust financial information task successfully."
+          },
+          "400": {
+            "description": "Invalid request data."
+          },
+          "404": {
+            "description": "Project not found."
           }
         }
       }
@@ -4514,6 +4578,19 @@
           "value": {
             "type": "string",
             "format": "guid"
+          }
+        }
+      },
+      "ConstituencyMemberContactDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "displayNameWithTitle": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string",
+            "nullable": true
           }
         }
       },
@@ -8050,15 +8127,49 @@
           }
         }
       },
-      "UpdateOutgoingTrustCeoCommand": {
+      "UpdateCompleteNotificationOfChangeTaskCommand": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
-          "keyContactId": {
-            "$ref": "#/components/schemas/KeyContactId"
+          "taskDataId": {
+            "$ref": "#/components/schemas/TaskDataId"
           },
-          "outgoingTrustCeoId": {
-            "$ref": "#/components/schemas/ContactId"
+          "notApplicable": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "tellLocalAuthority": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "checkDocument": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "sendDocument": {
+            "type": "boolean",
+            "nullable": true
+          }
+        }
+      },
+      "UpdateAcademyAndTrustFinancialInformationTaskCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "taskDataId": {
+            "$ref": "#/components/schemas/TaskDataId"
+          },
+          "notApplicable": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "academySurplusOrDeficit": {
+            "type": "string",
+            "nullable": true
+          },
+          "trustSurplusOrDeficit": {
+            "type": "string",
+            "nullable": true
           }
         }
       },

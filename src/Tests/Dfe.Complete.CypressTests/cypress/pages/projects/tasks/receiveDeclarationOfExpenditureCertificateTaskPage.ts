@@ -7,6 +7,10 @@ class ReceiveDeclarationOfExpenditureCertificateTaskPage extends TaskPage {
         cy.getById("received-date.Year").typeFast(String(year));
         return this;
     }
+
+    hasDate(day: string, month: string, year: string): this {
+        return super.hasDate(day, month, year, "received-date");
+    }
 }
 
 const receiveDeclarationOfExpenditureCertificateTaskPage = new ReceiveDeclarationOfExpenditureCertificateTaskPage();
