@@ -1,16 +1,16 @@
-﻿using System.ComponentModel.DataAnnotations;
-using Dfe.Complete.Application.Projects.Commands.UpdateProject;
+﻿using Dfe.Complete.Application.Projects.Commands.UpdateProject;
 using Dfe.Complete.Constants;
 using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Extensions;
 using Dfe.Complete.Models;
-using Dfe.Complete.Services;
+using Dfe.Complete.Services.Interfaces;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel.DataAnnotations;
 
 namespace Dfe.Complete.Pages.Projects.InternalContacts;
 
-public class EditAssignedTeam(ISender sender, ErrorService errorService, ILogger<InternalContacts> logger) : BaseProjectPageModel(sender, logger)
+public class EditAssignedTeam(ISender sender, IErrorService errorService, ILogger<InternalContacts> logger) : BaseProjectPageModel(sender, logger)
 {
     [BindProperty]
     [Required]
