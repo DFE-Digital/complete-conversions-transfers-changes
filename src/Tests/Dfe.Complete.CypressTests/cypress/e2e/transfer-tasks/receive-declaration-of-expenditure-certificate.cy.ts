@@ -17,13 +17,13 @@ const project = ProjectBuilder.createTransferProjectRequest({
     isSignificantDateProvisional: true,
 });
 let projectId: string;
-let taskId: string;
 const project2 = ProjectBuilder.createTransferFormAMatProjectRequest({
     significantDate: getSignificantDateString(12),
     isSignificantDateProvisional: true,
     urn: { value: urnPool.transferTasks.marden },
 });
 let project2Id: string;
+let project2TaskId: string;
 const otherUserProject = ProjectBuilder.createTransferFormAMatProjectRequest({
     isSignificantDateProvisional: true,
     userAdId: rdoLondonUser.adId,
@@ -36,14 +36,12 @@ describe("Transfers tasks - Receive declaration of expenditure certificate", () 
         projectRemover.removeProjectIfItExists(project.urn.value);
         projectRemover.removeProjectIfItExists(project2.urn.value);
         projectRemover.removeProjectIfItExists(otherUserProject.urn.value);
-        projectApi.createTransferProject(project).then((createResponse) => {
-            projectId = createResponse.value;
-            projectApi.getProject(project.urn.value).then((response) => {
-                taskId = response.body.tasksDataId.value;
-            });
-        });
+        projectApi.createTransferProject(project).then((createResponse) => (projectId = createResponse.value));
         projectApi.createMatTransferProject(project2).then((createResponse) => {
             project2Id = createResponse.value;
+            projectApi.getProject(project2.urn.value).then((response) => {
+                project2TaskId = response.body.tasksDataId.value;
+            });
         });
         projectApi.createMatTransferProject(otherUserProject).then((createResponse) => {
             otherUserProjectId = createResponse.value;
@@ -70,66 +68,79 @@ describe("Transfers tasks - Receive declaration of expenditure certificate", () 
     });
 
     it("should submit the form and persist selections", () => {
-        Logger.log("Select the 2 checkboxes and save");
-        taskPage
+        Logger.log("Select the 2 checkboxes, set date received and save");
+        receiveDeclarationOfExpenditureCertificateTaskPage
             .hasCheckboxLabel("Check the declaration of expenditure certificate is correct")
             .tick()
             .hasCheckboxLabel("Save the declaration of expenditure certificate in the academy's SharePoint folder")
             .tick()
+            .enterDateReceived(15, 7, 2025)
+            .saveAndReturn();
+        taskListPage
+            .hasTaskStatusCompleted("Receive declaration of expenditure certificate")
+            .selectTask("Receive declaration of expenditure certificate");
+
+        Logger.log("Unselect the 2 checkboxes and save");
+        receiveDeclarationOfExpenditureCertificateTaskPage
+            .hasCheckboxLabel("Check the declaration of expenditure certificate is correct")
+            .isTicked()
+            .untick()
+            .hasCheckboxLabel("Save the declaration of expenditure certificate in the academy's SharePoint folder")
+            .isTicked()
+            .untick()
+            .hasDate("15", "7", "2025")
             .saveAndReturn();
         taskListPage
             .hasTaskStatusInProgress("Receive declaration of expenditure certificate")
             .selectTask("Receive declaration of expenditure certificate");
-
-        Logger.log("Unselect the 2 checkboxes and save");
-        taskPage
-            .hasCheckboxLabel("Check the declaration of expenditure certificate is correct")
-            .isTicked()
-            .untick()
-            .hasCheckboxLabel("Save the declaration of expenditure certificate in the academy's SharePoint folder")
-            .isTicked()
-            .untick()
-            .saveAndReturn();
-        taskListPage
-            .hasTaskStatusNotStarted("Receive declaration of expenditure certificate")
-            .selectTask("Receive declaration of expenditure certificate");
-        taskPage
+        receiveDeclarationOfExpenditureCertificateTaskPage
             .hasCheckboxLabel("Check the declaration of expenditure certificate is correct")
             .isUnticked()
             .hasCheckboxLabel("Save the declaration of expenditure certificate in the academy's SharePoint folder")
             .isUnticked()
+            .hasDate("15", "7", "2025")
             .saveAndReturn();
     });
 
     it("should show task status based on the checkboxes are checked", () => {
-        cy.visit(`projects/${projectId}/tasks`);
+        cy.visit(`projects/${project2Id}/tasks`);
 
+        TaskHelper.updateReceiveDeclarationOfExpenditureCertificate(project2TaskId, ProjectType.Transfer, "notStarted");
         taskListPage.hasTaskStatusNotStarted("Receive declaration of expenditure certificate");
 
-        TaskHelper.updateReceiveDeclarationOfExpenditureCertificate(taskId, ProjectType.Transfer, "notApplicable");
+        TaskHelper.updateReceiveDeclarationOfExpenditureCertificate(
+            project2TaskId,
+            ProjectType.Transfer,
+            "notApplicable",
+        );
         cy.reload();
         taskListPage.hasTaskStatusNotApplicable("Receive declaration of expenditure certificate");
 
-        TaskHelper.updateReceiveDeclarationOfExpenditureCertificate(taskId, ProjectType.Transfer, "inProgress");
+        TaskHelper.updateReceiveDeclarationOfExpenditureCertificate(project2TaskId, ProjectType.Transfer, "inProgress");
         cy.reload();
         taskListPage.hasTaskStatusInProgress("Receive declaration of expenditure certificate");
 
-        TaskHelper.updateReceiveDeclarationOfExpenditureCertificate(taskId, ProjectType.Transfer, "completed");
+        TaskHelper.updateReceiveDeclarationOfExpenditureCertificate(project2TaskId, ProjectType.Transfer, "completed");
         cy.reload();
         taskListPage.hasTaskStatusCompleted("Receive declaration of expenditure certificate");
     });
 
-    // skipped until expected functionality is confirmed
-    it.skip("Should only be able to confirm the received date of the declaration of expenditure certificate once", () => {
+    it("Should be able to update the date received multiple times", () => {
         cy.visit(`projects/${project2Id}/tasks/declaration_of_expenditure_certificate`);
         receiveDeclarationOfExpenditureCertificateTaskPage.enterDateReceived(10, 8, 2025).saveAndReturn();
 
         taskListPage
-            .hasTaskStatusInProgress("Receive declaration of expenditure certificate")
+            .hasTaskStatusCompleted("Receive declaration of expenditure certificate")
             .selectTask("Receive declaration of expenditure certificate");
-        receiveDeclarationOfExpenditureCertificateTaskPage.contains(
-            `DfE received the declaration of expenditure certificate on 10 August 2025`,
-        );
+        receiveDeclarationOfExpenditureCertificateTaskPage
+            .hasDate("10", "8", "2025")
+            .enterDateReceived(11, 4, 2025)
+            .saveAndReturn();
+
+        taskListPage
+            .hasTaskStatusCompleted("Receive declaration of expenditure certificate")
+            .selectTask("Receive declaration of expenditure certificate");
+        receiveDeclarationOfExpenditureCertificateTaskPage.hasDate("11", "4", "2025");
     });
 
     it("Should NOT see the 'save and return' button for another user's project", () => {
