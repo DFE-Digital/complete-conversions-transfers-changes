@@ -12,6 +12,7 @@ namespace Dfe.Complete.Tests.Pages.Projects.ExternalContacts.New
     using Dfe.Complete.Tests.Common.Customizations.Models;
     using Dfe.Complete.Tests.MockData;
     using Dfe.Complete.Utils;    
+    using Dfe.Complete.Utils.Exceptions;
     using GovUK.Dfe.CoreLibs.Testing.AutoFixture.Customizations;    
     using MediatR;    
     using Microsoft.AspNetCore.Mvc;    

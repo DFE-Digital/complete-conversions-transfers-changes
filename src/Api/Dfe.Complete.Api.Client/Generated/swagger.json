@@ -395,6 +395,43 @@
         }
       }
     },
+    "/v1/Projects/projects/transfers": {
+      "post": {
+        "tags": [
+          "Projects"
+        ],
+        "summary": "Creates a new transfer project (handover version).",
+        "operationId": "Projects_CreateHandoverTransferProject",
+        "requestBody": {
+          "x-name": "request",
+          "description": "The request.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateHandoverTransferProjectCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "201": {
+            "description": "Project created successfully.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProjectId"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request data."
+          }
+        }
+      }
+    },
     "/v1/Projects/Create/Conversion": {
       "post": {
         "tags": [
@@ -3208,20 +3245,20 @@
         }
       }
     },
-    "/v1/TasksData/TaskData/RequestNewURNAndRecordForAcademy": {
+    "/v1/TasksData/TaskData/AcademyDetails": {
       "patch": {
         "tags": [
           "TasksData"
         ],
-        "summary": "Request a new URN and record for the academy task for the project.",
-        "operationId": "TasksData_UpdateRequestNewUrnAndRecordForAcademyTask",
+        "summary": "Updating the academy name task data for conversion project.",
+        "operationId": "TasksData_UpdateAcademyDetailsTask",
         "requestBody": {
           "x-name": "request",
           "description": "The update command.",
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/UpdateRequestNewUrnAndRecordForAcademyTaskCommand"
+                "$ref": "#/components/schemas/UpdateConfirmAcademyNameTaskCommand"
               }
             }
           },
@@ -3230,7 +3267,7 @@
         },
         "responses": {
           "204": {
-            "description": "Request a new URN and record for the academy task updated successfully."
+            "description": "Updated the academy name task successfully."
           },
           "400": {
             "description": "Invalid request data."
@@ -4764,6 +4801,71 @@
             "nullable": true
           },
           "directiveAcademyOrder": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "advisoryBoardConditions": {
+            "type": "string",
+            "nullable": true
+          },
+          "groupId": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "CreateHandoverTransferProjectCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "urn": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "incomingTrustUkprn": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "outgoingTrustUkprn": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "advisoryBoardDate": {
+            "type": "string",
+            "format": "date",
+            "nullable": true
+          },
+          "provisionalTransferDate": {
+            "type": "string",
+            "format": "date",
+            "nullable": true
+          },
+          "createdByEmail": {
+            "type": "string"
+          },
+          "createdByFirstName": {
+            "type": "string"
+          },
+          "createdByLastName": {
+            "type": "string"
+          },
+          "prepareId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "inadequateOfsted": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "financialSafeguardingGovernanceIssues": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "outgoingTrustToClose": {
             "type": "boolean",
             "nullable": true
           },
@@ -8206,27 +8308,15 @@
           }
         }
       },
-      "UpdateRequestNewUrnAndRecordForAcademyTaskCommand": {
+      "UpdateConfirmAcademyNameTaskCommand": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
           "taskDataId": {
             "$ref": "#/components/schemas/TaskDataId"
           },
-          "notApplicable": {
-            "type": "boolean",
-            "nullable": true
-          },
-          "complete": {
-            "type": "boolean",
-            "nullable": true
-          },
-          "receive": {
-            "type": "boolean",
-            "nullable": true
-          },
-          "give": {
-            "type": "boolean",
+          "academyName": {
+            "type": "string",
             "nullable": true
           }
         }

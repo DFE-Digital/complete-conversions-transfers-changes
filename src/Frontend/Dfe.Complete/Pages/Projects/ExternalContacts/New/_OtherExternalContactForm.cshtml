@@ -1,7 +1,7 @@
 ﻿@using Dfe.Complete.Utils
 @using Dfe.Complete.Domain.Enums
 @model Dfe.Complete.Models.ExternalContact.OtherExternalContactInputModel
-@inject Dfe.Complete.Services.ErrorService ErrorService 
+@inject Dfe.Complete.Services.Interfaces.IErrorService ErrorService
 
 @{
     const string fullname = nameof(Model.FullName);

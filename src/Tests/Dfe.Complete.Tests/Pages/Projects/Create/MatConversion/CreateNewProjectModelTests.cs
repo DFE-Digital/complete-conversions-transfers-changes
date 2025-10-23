@@ -6,7 +6,7 @@ using Dfe.Complete.Application.Projects.Queries.GetProject;
 using Dfe.Complete.Domain.ValueObjects;
 using Dfe.Complete.Pages.Projects.MatConversion;
 using Dfe.Complete.Services;
-using Dfe.Complete.Utils;
+using Dfe.Complete.Utils.Exceptions;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;

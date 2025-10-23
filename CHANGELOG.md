@@ -18,7 +18,7 @@ Security in case of vulnerabilities.
 
 ### Added
 - Added `Complete a notification of changes to funded high needs places form` task for conversion projects.
-- Added `Request a new URN and record for the academy` task for transfer projects.
+- Added transfer creation end point for prepare to complete
 
 ### Changed
 
@@ -56,6 +56,7 @@ See the [full commit history](https://github.com/DFE-Digital/complete-conversion
 
 - Added `Check and confirm the academy and trust financial information` task for transfer project.
 - Added link for delete project button
+- Added  'Confirm the academy name' task for conversion project.
 
 ### Changed
 

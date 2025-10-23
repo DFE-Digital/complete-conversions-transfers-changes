@@ -7,6 +7,11 @@
     },
     {
       "Controller": "ProjectsController",
+      "Action": "CreateHandoverTransferProjectAsync",
+      "ExpectedSecurity": "Authorize: Policy=CanReadWrite"
+    },
+    {
+      "Controller": "ProjectsController",
       "Action": "CreateConversionProjectAsync",
       "ExpectedSecurity": "Authorize: Policy=CanReadWrite"
     },
@@ -403,6 +408,11 @@
     {
       "Controller": "TasksDataController",
       "Action": "UpdateCompleteNotificationOfChangeTaskAsync",
+      "ExpectedSecurity": "Authorize: Policy=CanReadWriteUpdate"
+    },
+    {
+      "Controller": "TasksDataController",
+      "Action": "UpdateAcademyDetailsTaskAsync",
       "ExpectedSecurity": "Authorize: Policy=CanReadWriteUpdate"
     },
     {

@@ -4,7 +4,7 @@ using Dfe.Complete.Tests.Common.Customizations.Models;
 using GovUK.Dfe.CoreLibs.Testing.AutoFixture.Customizations;
 using Dfe.Complete.Domain.Entities;
 using Dfe.Complete.Domain.ValueObjects;
-using Dfe.Complete.Utils;
+using Dfe.Complete.Utils.Exceptions;
 using Project = Dfe.Complete.Domain.Entities.Project;
 
 namespace Dfe.Complete.Domain.Tests.Aggregates
