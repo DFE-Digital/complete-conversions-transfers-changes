@@ -1,7 +1,5 @@
 ﻿@page "/projects/{projectId}/tasks/sponsored_support_grant"
 @using Dfe.Complete.Domain.Enums
-@using Dfe.Complete.Utils
-@inject Microsoft.Extensions.Configuration.IConfiguration _configuration
 @model Dfe.Complete.Pages.Projects.TaskList.Tasks.ConfirmSponsoredSupportGrantTask.ConfirmTransferGrantFundingLevelTaskModel
 @{
     Layout = "_ProjectTaskLayout";
@@ -42,28 +40,41 @@
                 <p>Others transferring for other reasons may also be able to access this funding. This is judged on a case-by-case basis.</p>
             }
         }
-        
     </div>
 }
 @section TaskSection {
     <details data-module="govuk-details" class="govuk-details">
-        <summary class="govuk-details__summary"><span class="govuk-details__summary-text">How to check grant eligibility</span></summary>
+        <summary class="govuk-details__summary"><span class="govuk-details__summary-text">@(isConversion ? "How to check grant eligibility" : "Grant amounts, eligibility and guidance")</span></summary>
         <div class="govuk-details__text">
-            <p>The fast track grant amounts are:</p> 
+            @{
+                if (!isConversion)
+                {
+                    <p>Each eligible transfer will get £25,000 as a standard level of funding.</p>
+                    <p>This is adjusted if the academy transferring has a budget surplus. The incoming trust must use bugdet surplus to pay for transfer costs before using transfer grant funding.</p>
+                    <p>In some circumstances, they might be entitled to a larger grant. There are 3 levels of funding money that can be added to the transfer grant:</p>
+                    <ul>
+                        <li>fast track</li> 
+                        <li>intermediate</li> 
+                        <li>full sponsored</li>
+                    </ul>
+                    <p>The following amounts all include the £25,000 basic level of transfer grant funding.</p>
+                }
+            }
+            <p>The fast track grant amounts are:</p>
             <ul>
-                <li>£70,000 for primary and special schools</li> 
+                <li>£70,000 for primary and special schools</li>
                 <li>£80,000 for secondary and all-through schools</li>
             </ul>
             <p>In some circumstances, the sponsor might be entitled to a larger grant.</p>
             <p>This would be the intermediate grant, or the full sponsored grant.</p>
-            <p>Intermediate grant amounts are:</p> 
+            <p>Intermediate grant amounts are:</p>
             <ul>
-                <li>£90,000 for primary and special schools</li> 
+                <li>£90,000 for primary and special schools</li>
                 <li>£115,000 for secondary and all-through schools</li>
             </ul>
-            <p>Full sponsored grant amounts are:</p> 
+            <p>Full sponsored grant amounts are:</p>
             <ul>
-                <li>£110,000 for primary and special schools</li> 
+                <li>£110,000 for primary and special schools</li>
                 <li>£150,000 secondary and all-through schools</li>
             </ul>
             <p>All grants include the £25,000 conversion support grant. This is used to fund conversion costs, such as legal expenses. Any amount left after conversion costs have been paid for should be used for school improvements.</p>
@@ -71,150 +82,13 @@
             <p>There is more <a href="https://www.gov.uk/government/publications/sponsored-academies-funding-guidance-for-sponsors" class="govuk-link" target="_blank">guidance on grant eligibility and spending (opens in new tab)</a> on GOV.UK.</p>
         </div>
     </details>
-    <form method="post">
-        <input type="hidden" asp-for="TasksDataId" />
-        <input type="hidden" asp-for="Type" />
-        
-        <govuk-checkboxes name="options">
-            <govuk-checkboxes-fieldset>
-                <govuk-checkboxes-fieldset-legend>
-                </govuk-checkboxes-fieldset-legend>
-                <govuk-checkboxes-item id="not-applicable" asp-for="@Model.NotApplicable" value="true" name="@nameof(Model.NotApplicable)" data-cy="@nameof(Model.NotApplicable)" checked="@Model.NotApplicable">
-                    <b>Not applicable</b>
-                </govuk-checkboxes-item>
-            </govuk-checkboxes-fieldset>
-        </govuk-checkboxes>
-        
-        <div class="govuk-form-group">
-            <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">@(isConversion ? "What level of sponsored grant is the trust claiming for?" : "What level of transfer grant funding is required?")</legend>
-            <div class="govuk-hint">
-                @{
-                    if (isConversion)
-                    {
-                        <p>Confirm if the trust will receive the fast track, intermediate or full sponsored grant.</p>
-                        <p>This can be changed later on if the trust finds they need more money than they originally expected.</p>
-                    }
-                    else
-                    {
-                        <p>Confirm if the incoming trust will receive the standard transfer grant funding amount, or a higher level of fast track, intermediate or full sponsored grant.</p>
-                        <p>This can be changed later on if the trust finds they need more money.</p>
-                    }
-                }
-                
-            </div>
-            <govuk-details data-module="govuk-details" class="govuk-details">
-                <govuk-details-summary>
-                    <span class="govuk-details__summary-text">Changing the grant amount if the trust needs more funding later</span>
-                </govuk-details-summary>
-                <govuk-details-text>
-                    <p>Trusts can discover new information that means they might need more funding than they first thought they would.</p>
-                    <p>When this happens, speak to your regional director. They will need to approve the new grant amount. You may need to write a business case for the additional funding.</p>
-                    <p>When the new funding is agreed and approved, the trust will need to complete a new grant claim form and send it to the grants team.</p>
-                    <p>You can then come back to this task and update the grant type information.</p>
-                </govuk-details-text>
-            </govuk-details>
-        </div>
-        
-        <govuk-radios name="sponsored_support_grant_type" asp-for="@Model.SponsoredSupportGrantType">
-            <govuk-radios-fieldset>
-                <govuk-radios-fieldset-legend class="govuk-fieldset__legend--m">
-                </govuk-radios-fieldset-legend>
-                @{
-                    foreach (var type in Model.SponsoredSupportGrantTypes)
-                    {
-                        <govuk-radios-item data-cy="grant_type_@type.ToDescription()" value="@type.ToDescription()">@type.ToDisplayDescription()</govuk-radios-item>
-                    }
-                }
-            </govuk-radios-fieldset>
-        </govuk-radios>
 
-        @{
-            if (isConversion)
-            {
-                <govuk-checkboxes name="options">
-                    <govuk-checkboxes-fieldset>
-                        <govuk-checkboxes-fieldset-legend>
-                        </govuk-checkboxes-fieldset-legend>
-                        <govuk-checkboxes-item id="@(nameof(Model.PaymentAmount))" data-cy="paymentAmount" asp-for="@Model.PaymentAmount" value="true" name="@(nameof(Model.PaymentAmount))" checked="@Model.PaymentAmount">
-                            <b>Tell the trust how much they are entitled to and how to claim the grant</b>
-                            <govuk-checkboxes-hint>
-                                <div class="guidance">
-                                    <details data-module="govuk-details" class="govuk-details">
-                                        <summary class="govuk-details__summary">
-                                            <span class="govuk-details__summary-text">How to claim different grants</span>
-                                        </summary>
-                                        <div class="govuk-details__text">
-                                            <p>The sponsor can claim for the fast track grant first, then apply for a top-up later through an intermediate or full sponsored grant.</p>
-                                            <p>The trust will need to complete and return the <a href="@_configuration["ExternalLinks:SponsoredGrantClaimForm"]" class="govuk-link" target="_blank">grant claim form (opens in new tab)</a> to claim the fast track grant. Share the form with them.</p>
-                                            <p>There is <a href="@_configuration["ExternalLinks:SponsoredGrantClaimGuidance"]" class="govuk-link" target="_blank">guidance about how to claim different grants (opens in new tab)</a> in SharePoint that explains how a trust can claim the intermediate and full sponsored grants.</p>
-                                        </div>
-                                    </details>    
-                                </div>
-                            </govuk-checkboxes-hint>
-                        </govuk-checkboxes-item>
-                        <govuk-checkboxes-item id="@(nameof(Model.PaymentForm))" data-cy="paymentForm" asp-for="@Model.PaymentForm" value="true" name="@(nameof(Model.PaymentForm))" checked="@Model.PaymentForm">
-                            <b>Receive, check and save the support grant claim form in the school's SharePoint folder</b>
-                            <govuk-checkboxes-hint>
-                                <div class="govuk-hint">
-                                    <p>Check the form is complete and there is no missing information.</p>
-                                </div>
-                            </govuk-checkboxes-hint>
-                        </govuk-checkboxes-item>
-                        <govuk-checkboxes-item id="@(nameof(Model.SendInformation))" data-cy="sendInformation" asp-for="@Model.SendInformation" value="true" name="@(nameof(Model.SendInformation))" checked="@Model.SendInformation">
-                            <b>Send the grant information to the payments team</b>
-                            <govuk-checkboxes-hint>
-                                <div class="govuk-hint">
-                                    <p>Send them the academy order and grant claim form.</p>
-                                    <div class="guidance">
-                                        <details data-module="govuk-details" class="govuk-details">
-                                            <summary class="govuk-details__summary">
-                                                <span class="govuk-details__summary-text">What information to send</span>
-                                            </summary>
-                                            <div class="govuk-details__text">
-                                                <p>You'll find the directive academy order and grant claim form in the school's SharePoint folder.</p>
-                                                <p>You should send the documents to the Grant Payments team by email at <a href="mailto:@_configuration["Emails:GrantPaymentAndRecoveries"]" class="govuk-link" target="_blank">@_configuration["Emails:GrantPaymentAndRecoveries"]</a>.</p>
-                                                <p>The subject line of the email must include the:</p>
-                                                <ul class="govuk-list govuk-list--bullet">
-                                                    <li>region the school is in</li> 
-                                                    <li>sponsored grant level</li> 
-                                                    <li>school's name</li>
-                                                </ul>
-                                                <p>The content of the email must include the:</p>
-                                                <ul class="govuk-list govuk-list--bullet">
-                                                    <li>type of grant, or grants, needed</li> 
-                                                    <li>amount of money the school is eligible for</li> 
-                                                    <li>school name</li> 
-                                                    <li>incoming trust name</li> 
-                                                    <li>confirmed conversion date</li>
-                                                </ul>
-                                                <p>It's helpful to include the school or trust's vendor account number too. The Grant Payments team will need this to be able to send the money.</p>
-                                            </div>
-                                        </details>
-                                    </div>
-                                </div>
-                            </govuk-checkboxes-hint>
-                        </govuk-checkboxes-item>
-                        <govuk-checkboxes-item id="@(nameof(Model.InformTrust))" data-cy="informTrust" asp-for="@Model.InformTrust" value="true" name="@(nameof(Model.InformTrust))" checked="@Model.InformTrust">
-                            <b>Tell the trust the grant is being processed</b>
-                            <govuk-checkboxes-hint>
-                                <div class="guidance">
-                                    <details data-module="govuk-details" class="govuk-details">
-                                        <summary class="govuk-details__summary">
-                                            <span class="govuk-details__summary-text">What to do if the trust do not receive the grant</span>
-                                        </summary>
-                                        <div class="govuk-details__text">
-                                            <p>Email the Grant Payments team at <a href="mailto:@_configuration["Emails:GrantPaymentAndRecoveries"]" class="govuk-link" target="_blank">@_configuration["Emails:GrantPaymentAndRecoveries"]</a> if the trust say they have not got the grant.</p>
-                                            <p>The Grant Payments team will provide an update on the payment progress.</p>
-                                        </div>
-                                    </details>
-                                </div>
-                            </govuk-checkboxes-hint>
-                        </govuk-checkboxes-item>
-                    </govuk-checkboxes-fieldset>
-                </govuk-checkboxes>
-            }
-        }
-
-        @await Html.PartialAsync("_TaskSaveAndReturn", new TaskSaveAndReturnModel(Model.Project, Model.CurrentUserTeam))
-    </form>
+    @if (isConversion)
+    {
+        @await Html.PartialAsync("_ConversionConfirmSponsoredSupportGrantTask", Model)
+    }
+    else
+    {
+        @await Html.PartialAsync("_TransferConfirmSponsoredSupportGrantTask", Model)
+    }
 }
