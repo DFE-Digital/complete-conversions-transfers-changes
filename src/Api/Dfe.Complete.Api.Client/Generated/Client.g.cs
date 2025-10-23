@@ -5439,7 +5439,7 @@ namespace Dfe.Complete.Client
         /// <param name="request">The request.</param>
         /// <returns>Local authority created successfully.</returns>
         /// <exception cref="CompleteApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<System.Guid> CreateLocalAuthorityAsync(CreateLocalAuthorityCommand request)
+        public virtual System.Threading.Tasks.Task<CreateLocalAuthorityDto> CreateLocalAuthorityAsync(CreateLocalAuthorityCommand request)
         {
             return CreateLocalAuthorityAsync(request, System.Threading.CancellationToken.None);
         }
@@ -5451,7 +5451,7 @@ namespace Dfe.Complete.Client
         /// <param name="request">The request.</param>
         /// <returns>Local authority created successfully.</returns>
         /// <exception cref="CompleteApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<System.Guid> CreateLocalAuthorityAsync(CreateLocalAuthorityCommand request, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<CreateLocalAuthorityDto> CreateLocalAuthorityAsync(CreateLocalAuthorityCommand request, System.Threading.CancellationToken cancellationToken)
         {
             if (request == null)
                 throw new System.ArgumentNullException("request");
@@ -5499,7 +5499,7 @@ namespace Dfe.Complete.Client
                         var status_ = (int)response_.StatusCode;
                         if (status_ == 201)
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<System.Guid>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            var objectResponse_ = await ReadObjectResponseAsync<CreateLocalAuthorityDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
                                 throw new CompleteApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);

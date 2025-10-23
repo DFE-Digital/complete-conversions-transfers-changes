@@ -1,5 +1,6 @@
 ﻿using Dfe.Complete.Application.Common.Interfaces;
 using Dfe.Complete.Application.Common.Models;
+using Dfe.Complete.Application.LocalAuthorities.Models;
 using Dfe.Complete.Domain.Constants;
 using Dfe.Complete.Domain.Entities;
 using Dfe.Complete.Domain.Interfaces.Repositories;
@@ -18,24 +19,24 @@ namespace Dfe.Complete.Application.LocalAuthorities.Commands
        string? Address3,
        string? AddressTown,
        string? AddressCounty,
-       string AddressPostcode,
-       ContactId? ContactId,
+       string AddressPostcode, 
        string? Title,
        string? ContactName,
        string? Email,
-       string? Phone) : IRequest<Result<LocalAuthorityId?>>;
+       string? Phone) : IRequest<Result<CreateLocalAuthorityDto?>>;
 
     public class CreateLocalAuthorityCommandHandler(
        IUnitOfWork unitOfWork,
        ICompleteRepository<LocalAuthority> localAuthorityRepository,
        ICompleteRepository<Contact> contactRepository,
-       ILogger<CreateLocalAuthorityCommandHandler> logger) : IRequestHandler<CreateLocalAuthorityCommand, Result<LocalAuthorityId?>>
+       ILogger<CreateLocalAuthorityCommandHandler> logger) : IRequestHandler<CreateLocalAuthorityCommand, Result<CreateLocalAuthorityDto?>>
     {
-        public async Task<Result<LocalAuthorityId?>> Handle(CreateLocalAuthorityCommand request, CancellationToken cancellationToken)
+        public async Task<Result<CreateLocalAuthorityDto?>> Handle(CreateLocalAuthorityCommand request, CancellationToken cancellationToken)
         {
             try
             {
                 var localAuthorityId = new LocalAuthorityId(Guid.NewGuid());
+                ContactId? contactId = null;    
                 await unitOfWork.BeginTransactionAsync();
                 var hasLocalAuthority = await localAuthorityRepository.ExistsAsync(x => x.Code == request.Code, cancellationToken);
                 if (hasLocalAuthority)
@@ -49,19 +50,20 @@ namespace Dfe.Complete.Application.LocalAuthorities.Commands
                 await localAuthorityRepository.AddAsync(localAuthority, cancellationToken);
                 if (!string.IsNullOrWhiteSpace(request.Title) && !string.IsNullOrWhiteSpace(request.ContactName))
                 {
-                    var contact = Contact.Create(request.ContactId!, request.Title, request.ContactName, request.Email, request.Phone, localAuthority.Id, DateTime.Now);
+                    contactId = new ContactId(Guid.NewGuid());
+                    var contact = Contact.Create(contactId, request.Title, request.ContactName, request.Email, request.Phone, localAuthority.Id, DateTime.Now);
                     await contactRepository.AddAsync(contact, cancellationToken);
                 }
                 await unitOfWork.CommitAsync();
 
-                return Result<LocalAuthorityId?>.Success(localAuthority.Id);
+                return Result<CreateLocalAuthorityDto?>.Success(new CreateLocalAuthorityDto(localAuthorityId, contactId));
             }
             catch (Exception ex)
             {
                 await unitOfWork.RollBackAsync();
                 logger.LogError(ex, ErrorMessagesConstants.ExceptionWhileCreatingLocalAuthority, request.Code);
 
-                return Result<LocalAuthorityId?>.Failure(ex.Message);
+                return Result<CreateLocalAuthorityDto?>.Failure(ex.Message);
             }
         }
     }

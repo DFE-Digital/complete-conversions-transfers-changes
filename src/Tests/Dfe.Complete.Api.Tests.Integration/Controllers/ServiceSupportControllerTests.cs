@@ -34,16 +34,15 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers
                 AddressCounty = fixture.Create<string>(),
                 AddressPostcode = fixture.Create<string>(),
                 ContactName = fixture.Create<string>(),
-                Title = fixture.Create<string>(),
-                ContactId = new ContactId { Value = Guid.NewGuid() }
+                Title = fixture.Create<string>()
             };
-            var localAuthorityId = await serviceSupportClient.CreateLocalAuthorityAsync(command, CancellationToken.None);
-
-            var newLocalAuthority = await dbContext.LocalAuthorities.SingleOrDefaultAsync(x => x.Id == new Domain.ValueObjects.LocalAuthorityId(localAuthorityId));
+            var localAuthority = await serviceSupportClient.CreateLocalAuthorityAsync(command, CancellationToken.None);
+            
+            var newLocalAuthority = await dbContext.LocalAuthorities.SingleOrDefaultAsync(x => x.Id == new Domain.ValueObjects.LocalAuthorityId(localAuthority.LocalAuthorityId!.Value!.Value));
 
             Assert.NotNull(newLocalAuthority);
 
-            var newContact = await dbContext.Contacts.SingleOrDefaultAsync(x => x.Id == new Domain.ValueObjects.ContactId(command.ContactId.Value.Value));
+            var newContact = await dbContext.Contacts.SingleOrDefaultAsync(x => x.Id == new Domain.ValueObjects.ContactId(localAuthority.ContactId!.Value!.Value));
 
             Assert.NotNull(newContact);
         }
@@ -69,9 +68,9 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers
                 AddressPostcode = fixture.Create<string>()
             };
 
-            var localAuthorityId = await serviceSupportClient.CreateLocalAuthorityAsync(command, CancellationToken.None);
+            var localAuthority = await serviceSupportClient.CreateLocalAuthorityAsync(command, CancellationToken.None);
 
-            var newLocalAuthority = await dbContext.LocalAuthorities.SingleOrDefaultAsync(x => x.Id == new Domain.ValueObjects.LocalAuthorityId(localAuthorityId));
+            var newLocalAuthority = await dbContext.LocalAuthorities.SingleOrDefaultAsync(x => x.Id == new Domain.ValueObjects.LocalAuthorityId(localAuthority.LocalAuthorityId!.Value!.Value));
 
             Assert.NotNull(newLocalAuthority);
 

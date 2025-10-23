@@ -36,8 +36,7 @@ namespace Dfe.Complete.Application.Tests.CommandHandlers.LocalAuthority
         {
             var command = new CreateLocalAuthorityCommand(
                 "Code", "Name", "Address1", "Address2", "Address3",
-                "AddressTown", "AddressCounty", "AddressPostcode", new ContactId(Guid.NewGuid()),
-                "Title", "ContactName", "Email", "Phone");
+                "AddressTown", "AddressCounty", "AddressPostcode", "Title", "ContactName", "Email", "Phone");
 
             _mockLocalAuthorityRepository.Setup(repo => repo.AddAsync(It.IsAny<Domain.Entities.LocalAuthority>(), _cancellationToken))
                 .Returns(Task.FromResult(It.IsAny<Domain.Entities.LocalAuthority>()));
@@ -61,8 +60,7 @@ namespace Dfe.Complete.Application.Tests.CommandHandlers.LocalAuthority
         {
             var command = new CreateLocalAuthorityCommand(
                 "Code", "Name", "Address1", "Address2", "Address3",
-                "AddressTown", "AddressCounty", "AddressPostcode", new ContactId(Guid.NewGuid()),
-                "Title", "ContactName", "Email", "Phone");
+                "AddressTown", "AddressCounty", "AddressPostcode", "Title", "ContactName", "Email", "Phone");
 
             _mockLocalAuthorityRepository.Setup(repo => repo.ExistsAsync(It.IsAny<Expression<Func<Domain.Entities.LocalAuthority, bool>>>(), _cancellationToken))
               .ReturnsAsync(true); 
@@ -82,8 +80,7 @@ namespace Dfe.Complete.Application.Tests.CommandHandlers.LocalAuthority
         {
             var command = new CreateLocalAuthorityCommand(
                 "Code", "Name", "Address1", "Address2", "Address3",
-                "AddressTown", "AddressCounty", "AddressPostcode", new ContactId(Guid.NewGuid()),
-                "Title", "ContactName", "Email", "Phone");
+                "AddressTown", "AddressCounty", "AddressPostcode", "Title", "ContactName", "Email", "Phone");
 
             _mockLocalAuthorityRepository.Setup(repo => repo.ExistsAsync(It.IsAny<Expression<Func<Domain.Entities.LocalAuthority, bool>>>(), _cancellationToken))
                 .ThrowsAsync(new Exception("Database error"));
