@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Caching.Distributed;
+using Microsoft.Extensions.Options;
 using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -35,7 +36,15 @@ namespace Dfe.Complete.Application.Extensions
             return value is not null;
         }
 
-        public static async Task<T?> GetOrSetAsync<T>(this IDistributedCache cache, string key, Func<Task<T>> task, DistributedCacheEntryOptions options = null)
+        public static async Task<T?> GetOrSetAsync<T>(this IDistributedCache cache, string key, Func<Task<T>> task)
+        {
+            var options = new DistributedCacheEntryOptions()
+               .SetSlidingExpiration(TimeSpan.FromMinutes(20));
+
+            return await GetOrSetAsync<T>(cache, key, task, options);
+        }
+
+        public static async Task<T?> GetOrSetAsync<T>(this IDistributedCache cache, string key, Func<Task<T>> task, DistributedCacheEntryOptions options)
         {
             if (options == null)
             {
