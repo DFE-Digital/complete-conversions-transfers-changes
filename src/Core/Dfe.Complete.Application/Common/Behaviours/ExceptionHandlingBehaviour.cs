@@ -1,7 +1,7 @@
 using System.Diagnostics.CodeAnalysis;
 using MediatR;
 using Microsoft.Extensions.Logging;
-using Dfe.Complete.Utils;
+using Dfe.Complete.Utils.Exceptions;
 
 namespace Dfe.Complete.Application.Common.Behaviours;
 

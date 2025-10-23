@@ -9,6 +9,7 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Dfe.Complete.Domain.Validators;
+using Dfe.Complete.Utils.Exceptions;
 
 namespace Dfe.Complete.Application.Users.Commands
 {
