@@ -26,7 +26,6 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers
             var dbContext = factory.GetDbContext<CompleteContext>();
             var command = new CreateLocalAuthorityCommand()
             {
-                Id = new LocalAuthorityId() { Value = Guid.NewGuid() },
                 Code = fixture.Create<int>().ToString(),
                 Name = fixture.Create<string>(),
                 Address1 = fixture.Create<string>(),
@@ -35,16 +34,15 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers
                 AddressCounty = fixture.Create<string>(),
                 AddressPostcode = fixture.Create<string>(),
                 ContactName = fixture.Create<string>(),
-                Title = fixture.Create<string>(),
-                ContactId = new ContactId { Value = Guid.NewGuid() }
+                Title = fixture.Create<string>()
             };
-            var localAuthorityId = await serviceSupportClient.CreateLocalAuthorityAsync(command, CancellationToken.None);
-
-            var newLocalAuthority = await dbContext.LocalAuthorities.SingleOrDefaultAsync(x => x.Id == new Domain.ValueObjects.LocalAuthorityId(localAuthorityId));
+            var localAuthority = await serviceSupportClient.CreateLocalAuthorityAsync(command, CancellationToken.None);
+            
+            var newLocalAuthority = await dbContext.LocalAuthorities.SingleOrDefaultAsync(x => x.Id == new Domain.ValueObjects.LocalAuthorityId(localAuthority.LocalAuthorityId!.Value!.Value));
 
             Assert.NotNull(newLocalAuthority);
 
-            var newContact = await dbContext.Contacts.SingleOrDefaultAsync(x => x.Id == new Domain.ValueObjects.ContactId(command.ContactId.Value.Value));
+            var newContact = await dbContext.Contacts.SingleOrDefaultAsync(x => x.Id == new Domain.ValueObjects.ContactId(localAuthority.ContactId!.Value!.Value));
 
             Assert.NotNull(newContact);
         }
@@ -61,7 +59,6 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers
             var dbContext = factory.GetDbContext<CompleteContext>();
             var command = new CreateLocalAuthorityCommand()
             {
-                Id = new LocalAuthorityId() { Value = Guid.NewGuid() },
                 Code = fixture.Create<int>().ToString(),
                 Name = fixture.Create<string>(),
                 Address1 = fixture.Create<string>(),
@@ -71,9 +68,9 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers
                 AddressPostcode = fixture.Create<string>()
             };
 
-            var localAuthorityId = await serviceSupportClient.CreateLocalAuthorityAsync(command, CancellationToken.None);
+            var localAuthority = await serviceSupportClient.CreateLocalAuthorityAsync(command, CancellationToken.None);
 
-            var newLocalAuthority = await dbContext.LocalAuthorities.SingleOrDefaultAsync(x => x.Id == new Domain.ValueObjects.LocalAuthorityId(localAuthorityId));
+            var newLocalAuthority = await dbContext.LocalAuthorities.SingleOrDefaultAsync(x => x.Id == new Domain.ValueObjects.LocalAuthorityId(localAuthority.LocalAuthorityId!.Value!.Value));
 
             Assert.NotNull(newLocalAuthority);
 
@@ -103,7 +100,6 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers
             await dbContext.SaveChangesAsync();
             var command = new CreateLocalAuthorityCommand()
             {
-                Id = new LocalAuthorityId() { Value = Guid.NewGuid() },
                 Code = localAuthority.Code,
                 Name = fixture.Create<string>(),
                 Address1 = fixture.Create<string>(),
@@ -115,7 +111,7 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers
              
             await Assert.ThrowsAsync<CompleteApiException>(() => serviceSupportClient.CreateLocalAuthorityAsync(command, CancellationToken.None));
 
-            var newLocalAuthority = await dbContext.LocalAuthorities.SingleOrDefaultAsync(x => x.Id == new Domain.ValueObjects.LocalAuthorityId(command.Id.Value.Value));
+            var newLocalAuthority = await dbContext.LocalAuthorities.SingleOrDefaultAsync(x => x.Code == command.Code && x.Name == command.Name);
 
             Assert.Null(newLocalAuthority);
 
@@ -137,7 +133,6 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers
             var dbContext = factory.GetDbContext<CompleteContext>();
             var command = new CreateLocalAuthorityCommand
             {
-                Id = new LocalAuthorityId() { Value = Guid.NewGuid() },
                 Code = fixture.Create<int>().ToString(),
                 Name = fixture.Create<string>(),
                 Address1 = fixture.Create<string>(),

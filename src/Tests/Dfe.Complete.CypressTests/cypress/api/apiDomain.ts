@@ -142,9 +142,6 @@ export enum Region {
 }
 
 export type CreateLocalAuthorityRequest = {
-    id: {
-        value: string;
-    };
     code: string;
     name: string;
     address1: string;
@@ -153,9 +150,6 @@ export type CreateLocalAuthorityRequest = {
     addressTown: string;
     addressCounty: string;
     addressPostcode: string;
-    contactId: {
-        value: string;
-    };
     title: string;
     contactName: string;
     email: string;
