@@ -2,7 +2,7 @@
 using Dfe.Complete.Application.LocalAuthorities.Models;
 using Dfe.Complete.Application.Projects.Interfaces;
 using Dfe.Complete.Domain.ValueObjects;
-using Dfe.Complete.Utils;
+using Dfe.Complete.Utils.Exceptions;
 using MediatR;
 using Microsoft.Extensions.Logging;
 

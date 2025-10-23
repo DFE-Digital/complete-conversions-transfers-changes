@@ -23,14 +23,13 @@ const formAMATAcademyName = "Two Mile Hill Primary School";
 const otherProject = PrepareProjectBuilder.createTransferProjectRequest({ urn: 151118 });
 const otherAcademyName = "Park View";
 
-// skip as prepare endpoint not implemented in dotnet 214917
-describe.skip("Handover process tests for transfer projects", () => {
+describe("Handover process tests for transfer projects", () => {
     before(() => {
         projectRemover.removeProjectIfItExists(project.urn);
-        projectRemover.removeProjectIfItExists(formAMATProject.urn);
+        // projectRemover.removeProjectIfItExists(formAMATProject.urn); // awaiting 214920
         projectRemover.removeProjectIfItExists(otherProject.urn);
         prepareProjectApi.createTransferProject(project);
-        prepareProjectApi.createTransferFormAMatProject(formAMATProject);
+        // prepareProjectApi.createTransferFormAMatProject(formAMATProject); // awaiting 214920
         prepareProjectApi.createTransferProject(otherProject);
     });
 
@@ -95,7 +94,8 @@ describe.skip("Handover process tests for transfer projects", () => {
         yourTeamProjects.goToNextPageUntilFieldIsVisible(academyName);
     });
 
-    it("Should be able to handover a transfer form a MAT project to assign to the user", () => {
+    // awaiting 214920
+    it.skip("Should be able to handover a transfer form a MAT project to assign to the user", () => {
         Logger.log("Add handover details for project");
         projectTable
             .goToNextPageUntilFieldIsVisible(formAMATAcademyName)

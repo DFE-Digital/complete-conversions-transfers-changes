@@ -63,7 +63,7 @@ export class PrepareProjectBuilder {
             outgoingTrustUkprn: macclesfieldTrust.ukprn,
             outgoingTrustToClose: false,
             prepareId: Math.floor(Math.random() * 99999) + 1,
-            groupId: "",
+            groupId: null,
             incomingTrustUkprn: dimensionsTrust.ukprn,
             ...options,
         };
