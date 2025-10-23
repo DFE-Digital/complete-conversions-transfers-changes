@@ -22,12 +22,12 @@ namespace Dfe.Complete.Api.Controllers
         [Authorize(Policy = "CanReadWrite")]
         [HttpPost]
         [Route("LocalAuthority")]
-        [SwaggerResponse(201, "Local authority created successfully.", typeof(Guid))]
+        [SwaggerResponse(201, "Local authority created successfully.", typeof(CreateLocalAuthorityDto))]
         [SwaggerResponse(400, "Invalid request data.")]
         public async Task<IActionResult> CreateLocalAuthorityAsync([FromBody] CreateLocalAuthorityCommand request, CancellationToken cancellationToken)
         {
-            var localAuthorityId = await sender.Send(request, cancellationToken);
-            return Created("", localAuthorityId.Value!.Value);
+            var localAuthority = await sender.Send(request, cancellationToken);
+            return Created("", localAuthority.Value);
         }
 
         /// <summary>
