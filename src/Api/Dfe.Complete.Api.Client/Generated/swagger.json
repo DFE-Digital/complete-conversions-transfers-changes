@@ -3277,6 +3277,39 @@
         }
       }
     },
+    "/v1/TasksData/TaskData/FormM": {
+      "patch": {
+        "tags": [
+          "TasksData"
+        ],
+        "summary": "Updating the form M task data for transfer project.",
+        "operationId": "TasksData_UpdateFormMTask",
+        "requestBody": {
+          "x-name": "request",
+          "description": "The update command.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateFormMTaskCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "204": {
+            "description": "Updated the form M task successfully."
+          },
+          "400": {
+            "description": "Invalid request data."
+          },
+          "404": {
+            "description": "Project not found."
+          }
+        }
+      }
+    },
     "/v1/Trust/List/All": {
       "get": {
         "tags": [
@@ -8322,6 +8355,39 @@
           },
           "academyName": {
             "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "UpdateFormMTaskCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "taskDataId": {
+            "$ref": "#/components/schemas/TaskDataId"
+          },
+          "notApplicable": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "received": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "receivedTitlePlans": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "cleared": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "signed": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "saved": {
+            "type": "boolean",
             "nullable": true
           }
         }

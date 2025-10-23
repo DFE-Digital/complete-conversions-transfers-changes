@@ -70,7 +70,7 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.MasterFundingAgreementTask
         public async Task<IActionResult> OnPost()
         {            
             await _sender.Send(new UpdateMasterFundingAgreementTaskCommand(new TaskDataId(TasksDataId.GetValueOrDefault())!, Type, NotApplicable, Received, Cleared, SignedBySchoolOrTrust, SavedInTheSchoolsSharepoint, SavedInSchoolAndTrustSharepoint, SignedOnBehalfOfSeceratyOfState ));
-            TempData.SetNotification(NotificationType.Success, "Success", "Task updated successfully");
+            SetTaskSuccessNotification();
             return Redirect(string.Format(RouteConstants.ProjectTaskList, ProjectId));
         }
     }
