@@ -9,6 +9,7 @@ using Dfe.Complete.Domain.Interfaces.Repositories;
 using Dfe.Complete.Domain.ValueObjects;
 using Dfe.Complete.Tests.Common.Customizations.Behaviours;
 using Dfe.Complete.Utils;
+using Dfe.Complete.Utils.Exceptions;
 using NSubstitute;
 using Moq;
 using MediatR;

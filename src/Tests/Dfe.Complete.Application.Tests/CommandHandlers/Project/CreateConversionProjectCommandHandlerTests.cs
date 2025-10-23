@@ -19,6 +19,7 @@ using MediatR;
 using Moq;
 using NSubstitute;
 using System.Linq.Expressions;
+using Dfe.Complete.Utils.Exceptions;
 
 namespace Dfe.Complete.Application.Tests.CommandHandlers.Project;
 

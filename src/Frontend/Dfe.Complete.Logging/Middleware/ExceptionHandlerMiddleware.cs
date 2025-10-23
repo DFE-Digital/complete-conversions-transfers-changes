@@ -1,5 +1,6 @@
 ﻿using Dfe.Complete.Application.Common.Exceptions;
 using Dfe.Complete.Logging.Models;
+using Dfe.Complete.Utils;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -27,6 +28,11 @@ namespace Dfe.Complete.Logging.Middleware
                     await HandleForbiddenResponseAsync(context);
                 }
             }
+            catch (UnprocessableContentException ex)
+            {
+                logger.LogInformation(ex, "Validation error: {Message}", ex.Message);
+                await HandleUnprocessableContentException(context, ex);
+            }
             catch (ValidationException ex)
             {
                 logger.LogError(ex, "Validation error: {Message}", ex.Message);
@@ -37,6 +43,20 @@ namespace Dfe.Complete.Logging.Middleware
                 logger.LogError(ex, "An exception occurred: {Message}. Stack Trace: {StackTrace}", ex.Message, ex.StackTrace);
                 await HandleExceptionAsync(context, ex);
             }
+        }
+
+        // Handle unprocessable content exceptions
+        private static async Task HandleUnprocessableContentException(HttpContext httpContext, Exception ex)
+        {
+            httpContext.Response.StatusCode = StatusCodes.Status422UnprocessableEntity;
+
+            var errorResponse = new ErrorResponse
+            {
+                StatusCode = httpContext.Response.StatusCode,
+                Message = ex.Message
+            };
+
+            await httpContext.Response.WriteAsync(JsonSerializer.Serialize(errorResponse));
         }
 
         // Handle validation exceptions

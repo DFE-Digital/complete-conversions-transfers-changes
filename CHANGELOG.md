@@ -18,6 +18,7 @@ Security in case of vulnerabilities.
 
 ### Added
 - Added `Complete a notification of changes to funded high needs places form` task for conversion projects.
+- Added transfer creation end point for prepare to complete
 
 ### Changed
 
