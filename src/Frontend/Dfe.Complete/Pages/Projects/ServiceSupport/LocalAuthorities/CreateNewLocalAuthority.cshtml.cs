@@ -49,10 +49,6 @@ namespace Dfe.Complete.Pages.Projects.ServiceSupport.LocalAuthorities
         [ValidUkPhoneNumber(ErrorMessage = ValidationConstants.NotRecognisedUKPhone)]
         public string? Phone { get; set; }
 
-        public void OnGet()
-        {
-        }
-
         public async Task<IActionResult> OnPostAsync()
         {
             if (!ModelState.IsValid)
@@ -60,17 +56,17 @@ namespace Dfe.Complete.Pages.Projects.ServiceSupport.LocalAuthorities
                 errorService.AddErrors(ModelState.Keys, ModelState);
                 return Page();
             }
-            var localAuthorityId = new LocalAuthorityId(Guid.NewGuid());
-            var response = await sender.Send(new CreateLocalAuthorityCommand(localAuthorityId, Code, Name, Address1, Address2, Address3,
-                AddressTown, AddressCounty, AddressPostcode.ToUpper(), new ContactId(Guid.NewGuid()), Title!, ContactName!, Email, Phone));
 
-            if (response.IsSuccess)
+            var response = await sender.Send(new CreateLocalAuthorityCommand(Code, Name, Address1, Address2, Address3,
+                AddressTown, AddressCounty, AddressPostcode.ToUpper(), Title!, ContactName!, Email, Phone));
+
+            if (response.IsSuccess && response.Value != null)
             {
                 TempData["HasCreatedLaDetails"] = true;
-                return RedirectToPage(Links.LocalAuthorities.ViewLocalAuthorityDetails.Page, new { Id = localAuthorityId.Value });
+                return RedirectToPage(Links.LocalAuthorities.ViewLocalAuthorityDetails.Page, new { Id = response.Value.LocalAuthorityId.Value });
             }
-            else if(response.Error == string.Format(ErrorMessagesConstants.AlreadyExistedLocalAuthorityWithCode, Code))
-            { 
+            else if (response.Error == string.Format(ErrorMessagesConstants.AlreadyExistedLocalAuthorityWithCode, Code))
+            {
                 errorService.AddError(nameof(Code), ValidationConstants.AlreadyBeenTaken);
                 ModelState.AddModelError(nameof(Code), ValidationConstants.AlreadyBeenTaken);
             }

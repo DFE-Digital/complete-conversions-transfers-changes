@@ -18,15 +18,17 @@ Security in case of vulnerabilities.
 
 ### Added
 - Added `Complete a notification of changes to funded high needs places form` task for conversion projects.
+- Added 'Caching to redis api call'
 - Added transfer creation end point for prepare to complete
+
 
 ### Changed
 
 ### Fixed
 - minor text corrections for 2 of the task pages
 - minor text correction for confirm dao revocation page
-
 - Fixed `Significant date` validation issue of `Stakeholder kick-off` task.
+- Fixed `LocalAuthority` HTTP Post method by removing local authority id.
 
 ### Security
 
