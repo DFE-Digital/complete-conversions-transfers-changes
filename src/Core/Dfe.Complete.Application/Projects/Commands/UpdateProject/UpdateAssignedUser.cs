@@ -1,7 +1,7 @@
 ﻿using Dfe.Complete.Domain.Entities;
 using Dfe.Complete.Domain.Interfaces.Repositories;
 using Dfe.Complete.Domain.ValueObjects;
-using Dfe.Complete.Utils;
+using Dfe.Complete.Utils.Exceptions;
 using MediatR;
 
 namespace Dfe.Complete.Application.Projects.Commands.UpdateProject;
