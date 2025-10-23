@@ -12,6 +12,7 @@ using Dfe.Complete.Models;
 using Dfe.Complete.Models.ExternalContact;
 using Dfe.Complete.Services.Interfaces;
 using Dfe.Complete.Utils;
+using Dfe.Complete.Utils.Exceptions;
 using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
