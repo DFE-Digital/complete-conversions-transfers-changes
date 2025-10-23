@@ -3,7 +3,7 @@ using Dfe.Complete.Application.Common.Models;
 using Dfe.Complete.Application.DaoRevoked.Interfaces;
 using Dfe.Complete.Application.DaoRevoked.Models;
 using Dfe.Complete.Domain.ValueObjects;
-using Dfe.Complete.Utils;
+using Dfe.Complete.Utils.Exceptions;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;

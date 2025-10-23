@@ -3,6 +3,7 @@ using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Domain.Events;
 using Dfe.Complete.Domain.ValueObjects;
 using Dfe.Complete.Utils;
+using Dfe.Complete.Utils.Exceptions;
 using System.Runtime.CompilerServices;
 
 [assembly: InternalsVisibleTo("Dfe.Complete.Application.Tests")]
@@ -358,6 +359,48 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
                 UserId = regionalDeliveryOfficerId
             });
         }
+
+        project.AddDomainEvent(new ProjectCreatedEvent(project));
+
+        return project;
+    }
+
+    public static Project CreateHandoverTransferProject(CreateHandoverTransferProjectParams parameters)
+    {
+        var now = DateTime.UtcNow;
+
+        var project = new Project(
+            parameters.Id,
+            parameters.Urn,
+            now,
+            now,
+            TaskType.Transfer,
+            ProjectType.Transfer,
+            parameters.TasksDataId,
+            parameters.SignificantDate,
+            true,
+            parameters.IncomingTrustUkprn,
+            parameters.OutgoingTrustUkprn,
+            parameters.Region,
+            false,
+            null,
+            parameters.AdvisoryBoardDate,
+            parameters.AdvisoryBoardConditions,
+            null,
+            null,
+            null,
+            parameters.GroupId,
+            null,
+            parameters.RegionalDeliveryOfficerId,
+            null,
+            null,
+            null,
+            null,
+            parameters.LocalAuthorityId)
+        {
+            State = ProjectState.Inactive,
+            TwoRequiresImprovement = null
+        };
 
         project.AddDomainEvent(new ProjectCreatedEvent(project));
 
