@@ -2238,8 +2238,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "string",
-                  "format": "guid"
+                  "$ref": "#/components/schemas/CreateLocalAuthorityDto"
                 }
               }
             }
@@ -6426,13 +6425,27 @@
           }
         }
       },
+      "CreateLocalAuthorityDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "localAuthorityId": {
+            "$ref": "#/components/schemas/LocalAuthorityId"
+          },
+          "contactId": {
+            "nullable": true,
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/ContactId"
+              }
+            ]
+          }
+        }
+      },
       "CreateLocalAuthorityCommand": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
-          "id": {
-            "$ref": "#/components/schemas/LocalAuthorityId"
-          },
           "code": {
             "type": "string"
           },
@@ -6460,14 +6473,6 @@
           },
           "addressPostcode": {
             "type": "string"
-          },
-          "contactId": {
-            "nullable": true,
-            "oneOf": [
-              {
-                "$ref": "#/components/schemas/ContactId"
-              }
-            ]
           },
           "title": {
             "type": "string",
