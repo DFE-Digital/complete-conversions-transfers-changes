@@ -55,6 +55,7 @@ See the [full commit history](https://github.com/DFE-Digital/complete-conversion
 
 - Added `Check and confirm the academy and trust financial information` task for transfer project.
 - Added link for delete project button
+- Added  'Confirm the academy name' task for conversion project.
 
 ### Changed
 

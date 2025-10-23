@@ -3208,20 +3208,20 @@
         }
       }
     },
-    "/v1/TasksData/TaskData/ConfirmOutgoingTrustCeoContact": {
+    "/v1/TasksData/TaskData/AcademyDetails": {
       "patch": {
         "tags": [
           "TasksData"
         ],
-        "summary": "Confirm the outgoing trust ceo contact for the project.",
-        "operationId": "TasksData_UpdateConfirmOutgoingTrustCeoContactTask",
+        "summary": "Updating the academy name task data for conversion project.",
+        "operationId": "TasksData_UpdateAcademyDetailsTask",
         "requestBody": {
           "x-name": "request",
           "description": "The update command.",
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/UpdateOutgoingTrustCeoCommand"
+                "$ref": "#/components/schemas/UpdateConfirmAcademyNameTaskCommand"
               }
             }
           },
@@ -3230,16 +3230,13 @@
         },
         "responses": {
           "204": {
-            "description": "Confirm the outgoing trust ceo contact for the project successfully."
+            "description": "Updated the academy name task successfully."
           },
           "400": {
             "description": "Invalid request data."
           },
           "404": {
-            "description": "KeyContact not found."
-          },
-          "500": {
-            "description": "Internal server error."
+            "description": "Project not found."
           }
         }
       }
@@ -8209,15 +8206,16 @@
           }
         }
       },
-      "UpdateOutgoingTrustCeoCommand": {
+      "UpdateConfirmAcademyNameTaskCommand": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
-          "keyContactId": {
-            "$ref": "#/components/schemas/KeyContactId"
+          "taskDataId": {
+            "$ref": "#/components/schemas/TaskDataId"
           },
-          "outgoingTrustCeoId": {
-            "$ref": "#/components/schemas/ContactId"
+          "academyName": {
+            "type": "string",
+            "nullable": true
           }
         }
       },
