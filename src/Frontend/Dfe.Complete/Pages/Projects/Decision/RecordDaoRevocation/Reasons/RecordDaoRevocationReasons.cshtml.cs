@@ -2,15 +2,14 @@ using Dfe.Complete.Application.DaoRevoked.Commands;
 using Dfe.Complete.Constants;
 using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Domain.ValueObjects;
-using Dfe.Complete.Services;
-using Dfe.Complete.Utils;
+using Dfe.Complete.Services.Interfaces;
 using GovUK.Dfe.CoreLibs.Caching.Interfaces;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Dfe.Complete.Pages.Projects.Decision.RecordDaoRevocation.Reasons
 {
-    public class DaoRevocationReasonsModel(ISender sender, ILogger<DaoRevocationReasonsModel> logger, ErrorService errorService,
+    public class DaoRevocationReasonsModel(ISender sender, ILogger<DaoRevocationReasonsModel> logger, IErrorService errorService,
         ICacheService<IMemoryCacheType> cacheService) : DaoRevocationProjectLayoutModel(sender, logger, cacheService)
     {
         public IFormCollection FormValues { get; set; } = default!;

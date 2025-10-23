@@ -495,6 +495,26 @@ namespace Dfe.Complete.Api.Controllers
             await sender.Send(request, cancellationToken);
             return NoContent();
         }
+
+        /// <summary>
+        /// Updating the academy name task data for conversion project.
+        /// </summary>
+        /// <param name="request">The update command.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        [Authorize(Policy = "CanReadWriteUpdate")]
+        [HttpPatch]
+        [Route("TaskData/AcademyDetails")]
+        [SwaggerResponse(204, "Updated the academy name task successfully.")]
+        [SwaggerResponse(400, "Invalid request data.")]
+        [SwaggerResponse(404, "Project not found.")]
+        public async Task<IActionResult> UpdateAcademyDetailsTaskAsync(
+            [FromBody] UpdateConfirmAcademyNameTaskCommand request,
+            CancellationToken cancellationToken)
+        {
+            await sender.Send(request, cancellationToken);
+            return NoContent();
+        }
+
         /// <summary>
         /// Confirm if the bank details for the general annual grant payment need to change for transfer project.
         /// </summary>

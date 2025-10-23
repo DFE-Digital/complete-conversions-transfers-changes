@@ -1,6 +1,6 @@
 ﻿@using Dfe.Complete.Constants
 @using Dfe.Complete.Domain.Enums
-@inject Dfe.Complete.Services.ErrorService ErrorService
+@inject Dfe.Complete.Services.Interfaces.IErrorService ErrorService
 @model Dfe.Complete.Pages.Projects.List.HandoverProjects.NewHandoverProjectModel
 @{
     const string assignedToRegionalCaseworkerTeamField = nameof(Model.AssignedToRegionalCaseworkerTeam);
