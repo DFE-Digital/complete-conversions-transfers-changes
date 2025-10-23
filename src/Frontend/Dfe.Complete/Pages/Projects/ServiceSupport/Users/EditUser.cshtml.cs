@@ -8,7 +8,9 @@ using Dfe.Complete.Extensions;
 using Dfe.Complete.Models;
 using Dfe.Complete.Services.Interfaces;
 using Dfe.Complete.Utils;
+using Dfe.Complete.Utils.Exceptions;
 using MediatR;
+
 using Microsoft.AspNetCore.Mvc;
 
 using ValidationConstants = Dfe.Complete.Constants.ValidationConstants;

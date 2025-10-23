@@ -5,7 +5,7 @@ using Dfe.Complete.Application.Users.Queries.GetUser;
 using Dfe.Complete.Domain.Constants;
 using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Extensions;
-using Dfe.Complete.Utils;
+using Dfe.Complete.Utils.Exceptions;
 using MediatR;
 using Moq;
 
