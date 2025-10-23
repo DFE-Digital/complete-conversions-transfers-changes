@@ -1,23 +1,23 @@
-using System.Diagnostics.CodeAnalysis;
+using Asp.Versioning;
+using Asp.Versioning.ApiExplorer;
 using Dfe.Complete.Api.Middleware;
 using Dfe.Complete.Api.Swagger;
+using Dfe.Complete.Application.Mappers;
+using Dfe.Complete.Infrastructure;
+using Dfe.Complete.Infrastructure.Security.Authorization;
+using Dfe.Complete.Logging.Middleware;
+using GovUK.Dfe.CoreLibs.Http.Interfaces;
+using GovUK.Dfe.CoreLibs.Http.Middlewares.CorrelationId;
 using Microsoft.ApplicationInsights.Extensibility;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.FeatureManagement;
 using NetEscapades.AspNetCore.SecurityHeaders;
 using Serilog;
 using Swashbuckle.AspNetCore.SwaggerUI;
+using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 using System.Text;
 using System.Text.Json.Serialization;
-using Asp.Versioning;
-using Asp.Versioning.ApiExplorer;
-using Dfe.Complete.Infrastructure;
-using Dfe.Complete.Infrastructure.Security.Authorization;
-using GovUK.Dfe.CoreLibs.Http.Middlewares.CorrelationId;
-using GovUK.Dfe.CoreLibs.Http.Interfaces;
-using Dfe.Complete.Logging.Middleware;
-using Dfe.Complete.Application.Mappers;
 
 namespace Dfe.Complete.Api
 {

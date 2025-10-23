@@ -4,14 +4,14 @@ using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Extensions;
 using Dfe.Complete.Models;
 using Dfe.Complete.Pages.Projects.ProjectView;
-using Dfe.Complete.Services;
+using Dfe.Complete.Services.Interfaces;
 using Dfe.Complete.Utils;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Dfe.Complete.Pages.Projects.DateHistory
 {
-    public class ChangeReasonProjectModel(ISender sender, ErrorService errorService, ILogger<ChangeReasonProjectModel> logger) : ProjectLayoutModel(sender, logger, ConversionDateHistoryNavigation)
+    public class ChangeReasonProjectModel(ISender sender, IErrorService errorService, ILogger<ChangeReasonProjectModel> logger) : ProjectLayoutModel(sender, logger, ConversionDateHistoryNavigation)
     {
         [BindProperty]
         public string SignificantDateString { get; set; }
@@ -80,7 +80,7 @@ namespace Dfe.Complete.Pages.Projects.DateHistory
                 return Page();
             
             var command = new UpdateSignificantDateCommand(Project.Id, DateOnly.Parse(SignificantDateString), ReasonNotes, User.GetUserId());
-            await sender.Send(command);
+            await Sender.Send(command);
             
             return Redirect(FormatRouteWithProjectId(RouteConstants.ChangeProjectDateHistoryConfirm));
         }

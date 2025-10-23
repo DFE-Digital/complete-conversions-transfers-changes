@@ -407,6 +407,11 @@
     },
     {
       "Controller": "TasksDataController",
+      "Action": "UpdateAcademyDetailsTaskAsync",
+      "ExpectedSecurity": "Authorize: Policy=CanReadWriteUpdate"
+    },
+    {
+      "Controller": "TasksDataController",
       "Action": "UpdateAccuracyOfHigherNeedsTaskAsync",
       "ExpectedSecurity": "Authorize: Policy=CanReadWriteUpdate"
     }
