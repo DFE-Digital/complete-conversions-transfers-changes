@@ -7,7 +7,6 @@ interface IdObject {
 }
 
 interface CreateLocalAuthorityRequest {
-    id: IdObject;
     code: string;
     name: string;
     address1: string;
@@ -16,7 +15,6 @@ interface CreateLocalAuthorityRequest {
     addressTown: string;
     addressCounty: string;
     addressPostcode: string;
-    contactId: IdObject;
     title: string;
     contactName: string;
     email: string;
@@ -33,15 +31,20 @@ interface LocalAuthorityItem {
     name: string;
 }
 
+interface CreateLocalAuthorityResponse {
+    localAuthorityId: IdObject;
+    contactId: IdObject;
+}
+
 type ListLocalAuthoritiesResponse = LocalAuthorityItem[];
 
 class LocalAuthorityApi extends ApiBase {
     private readonly localAuthorityUrl = `${Cypress.env(EnvApi)}/v1/ServiceSupport/LocalAuthority`;
 
-    public createLocalAuthority(request: CreateLocalAuthorityRequest): Chainable<string> {
+    public createLocalAuthority(request: CreateLocalAuthorityRequest): Chainable<CreateLocalAuthorityResponse> {
         return this.authenticatedRequest().then((headers) => {
             return cy
-                .request<string>({
+                .request<CreateLocalAuthorityResponse>({
                     method: "POST",
                     url: this.localAuthorityUrl,
                     headers,
