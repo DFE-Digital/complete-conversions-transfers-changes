@@ -11,7 +11,7 @@ using Dfe.Complete.Models;
 using Dfe.Complete.Pages.Pagination;
 using Dfe.Complete.Pages.Projects.AboutTheProject;
 using Dfe.Complete.Tests.Common.Customizations.Models;
-using Dfe.Complete.Utils;
+using Dfe.Complete.Utils.Exceptions;
 using GovUK.Dfe.CoreLibs.Testing.AutoFixture.Attributes;
 using GovUK.Dfe.CoreLibs.Testing.AutoFixture.Customizations;
 using MediatR;

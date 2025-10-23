@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using Dfe.Complete.Application.Notes.Queries.QueryFilters;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
-using Dfe.Complete.Utils;
+using Dfe.Complete.Utils.Exceptions;
 using Microsoft.Extensions.Logging;
 
 namespace Dfe.Complete.Application.Notes.Queries;
