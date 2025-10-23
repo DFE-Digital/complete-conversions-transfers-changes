@@ -514,7 +514,6 @@ namespace Dfe.Complete.Api.Controllers
             await sender.Send(request, cancellationToken);
             return NoContent();
         }
-        } 
         /// <summary>
         /// Check the accuracy of higher needs for conversion project.
         /// </summary>
