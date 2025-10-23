@@ -18,9 +18,6 @@ namespace Dfe.Complete.Pages.Projects.ExternalContacts;
 public class ExternalContacts(ISender sender, ILogger<ExternalContacts> logger, IDistributedCache cache)
     : ProjectLayoutModel(sender, logger, ExternalContactsNavigation)
 {
-    private readonly DistributedCacheEntryOptions DefaultCacheOptions = new DistributedCacheEntryOptions()
-                 .SetAbsoluteExpiration(TimeSpan.FromMinutes(20));                 
-
     private readonly IDistributedCache _cache = cache;
 
     public List<ExternalContactModel> EstablishmentContacts { get; set; } = [];
@@ -37,8 +34,7 @@ public class ExternalContacts(ISender sender, ILogger<ExternalContacts> logger, 
     public string? TransferContactType { get; set; }
     
     [BindProperty(Name = $"new_conversion_contact_form[contact_type]")]
-    public string? ConversionContactType { get; set; }
-    
+    public string? ConversionContactType { get; set; }    
 
     public override async Task<IActionResult> OnGetAsync()
     {
@@ -123,8 +119,7 @@ public class ExternalContacts(ISender sender, ILogger<ExternalContacts> logger, 
                 async () =>
                 {
                     return await GetContactByConstituency(Establishment.ParliamentaryConstituency.Name);                    
-                },
-                DefaultCacheOptions
+                }                
             );
 
             if (constituencyMember != null)

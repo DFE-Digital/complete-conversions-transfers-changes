@@ -1,5 +1,4 @@
 ﻿using Microsoft.Extensions.Caching.Distributed;
-using Microsoft.Extensions.Options;
 using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -15,10 +14,11 @@ namespace Dfe.Complete.Application.Extensions
             AllowTrailingCommas = true,
             DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull
         };
+
         public static Task SetAsync<T>(this IDistributedCache cache, string key, T value)
         {
             return SetAsync(cache, key, value, new DistributedCacheEntryOptions()
-                .SetSlidingExpiration(TimeSpan.FromMinutes(20)));
+                .SetAbsoluteExpiration(TimeSpan.FromMinutes(20)));
         }
 
         public static Task SetAsync<T>(this IDistributedCache cache, string key, T value, DistributedCacheEntryOptions options)
@@ -39,7 +39,7 @@ namespace Dfe.Complete.Application.Extensions
         public static async Task<T?> GetOrSetAsync<T>(this IDistributedCache cache, string key, Func<Task<T>> task)
         {
             var options = new DistributedCacheEntryOptions()
-               .SetSlidingExpiration(TimeSpan.FromMinutes(20));
+               .SetAbsoluteExpiration(TimeSpan.FromMinutes(20));
 
             return await GetOrSetAsync<T>(cache, key, task, options);
         }
@@ -49,7 +49,7 @@ namespace Dfe.Complete.Application.Extensions
             if (options == null)
             {
                 options = new DistributedCacheEntryOptions()
-                .SetSlidingExpiration(TimeSpan.FromMinutes(20));
+                .SetAbsoluteExpiration(TimeSpan.FromMinutes(20));
             }
             if (cache.TryGetValue(key, out T? value) && value is not null)
             {
