@@ -1,7 +1,7 @@
 using Dfe.Complete.Application.Projects.Queries.GetProject;
 using MediatR;
 using System.ComponentModel.DataAnnotations;
-using Dfe.Complete.Utils; 
+using Dfe.Complete.Utils.Exceptions;
 
 namespace Dfe.Complete.Validators;
 

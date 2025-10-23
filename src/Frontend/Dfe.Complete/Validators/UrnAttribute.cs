@@ -5,7 +5,7 @@ using MediatR;
 using System.ComponentModel.DataAnnotations;
 using System.Reflection;
 using Dfe.Complete.Application.Services.AcademiesApi;
-using Dfe.Complete.Utils;
+using Dfe.Complete.Utils.Exceptions;
 
 namespace Dfe.Complete.Validators;
 

@@ -9,7 +9,7 @@ using GovUK.Dfe.CoreLibs.Testing.Mocks.WebApplicationFactory;
 using System.Net;
 using System.Security.Claims; 
 using Microsoft.EntityFrameworkCore;
-using Dfe.Complete.Utils;
+using Dfe.Complete.Utils.Exceptions;
 
 namespace Dfe.Complete.Api.Tests.Integration.Controllers.TasksDataController
 { 
