@@ -3207,6 +3207,39 @@
         }
       }
     },
+    "/v1/TasksData/TaskData/AcademyDetails": {
+      "patch": {
+        "tags": [
+          "TasksData"
+        ],
+        "summary": "Updating the academy name task data for conversion project.",
+        "operationId": "TasksData_UpdateAcademyDetailsTask",
+        "requestBody": {
+          "x-name": "request",
+          "description": "The update command.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateConfirmAcademyNameTaskCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "204": {
+            "description": "Updated the academy name task successfully."
+          },
+          "400": {
+            "description": "Invalid request data."
+          },
+          "404": {
+            "description": "Project not found."
+          }
+        }
+      }
+    },
     "/v1/Trust/List/All": {
       "get": {
         "tags": [
@@ -8173,6 +8206,19 @@
             "nullable": true
           },
           "trustSurplusOrDeficit": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "UpdateConfirmAcademyNameTaskCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "taskDataId": {
+            "$ref": "#/components/schemas/TaskDataId"
+          },
+          "academyName": {
             "type": "string",
             "nullable": true
           }

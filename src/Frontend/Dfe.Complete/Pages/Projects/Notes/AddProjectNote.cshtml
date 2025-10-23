@@ -1,7 +1,7 @@
 ﻿@page "/projects/{projectId}/notes/new"
 @using Dfe.Complete.Constants
 
-@inject Dfe.Complete.Services.ErrorService ErrorService
+@inject Dfe.Complete.Services.Interfaces.IErrorService ErrorService
 @model Dfe.Complete.Pages.Projects.Notes.AddProjectNoteModel
 @{
     ViewData["Title"] = "Complete conversions, tranfers and changes";

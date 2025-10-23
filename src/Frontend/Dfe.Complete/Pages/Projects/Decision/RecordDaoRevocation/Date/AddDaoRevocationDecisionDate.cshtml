@@ -1,7 +1,7 @@
 ﻿@page "/projects/{projectId}/dao-revocation/date"
 @model Dfe.Complete.Pages.Projects.Decision.RecordDaoRevocation.Date.AddDaoRevocationDecisionDateModel
 @using Dfe.Complete.Constants
-@inject Dfe.Complete.Services.ErrorService ErrorService
+@inject Dfe.Complete.Services.Interfaces.IErrorService ErrorService
 @{
     Layout = "_RecordDaoRevocationLayout";
     ViewData["Title"] = "Date of decision";
