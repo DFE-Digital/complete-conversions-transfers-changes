@@ -10,13 +10,12 @@ using Dfe.Complete.Extensions;
 using Dfe.Complete.Helpers;
 using Dfe.Complete.Models;
 using Dfe.Complete.Models.ExternalContact;
-using Dfe.Complete.Services;
+using Dfe.Complete.Services.Interfaces;
 using Dfe.Complete.Utils;
 using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-
 using ValidationConstants = Dfe.Complete.Constants.ValidationConstants;
 
 namespace Dfe.Complete.Pages.Projects.ExternalContacts;
@@ -24,11 +23,11 @@ namespace Dfe.Complete.Pages.Projects.ExternalContacts;
 [Authorize(Policy = UserPolicyConstants.CanViewEditDeleteContact)]
 public class EditExternalContact(
     IValidator<OtherExternalContactInputModel> otherExternalContactInputModelValidator,
-    ITrustCache trustCacheService, ErrorService errorService, 
+    ITrustCache trustCacheService, IErrorService errorService, 
     ISender sender, 
     ILogger<EditExternalContact> logger) : ExternalContactAddEditPageModel(trustCacheService, sender)
 {
-    private readonly ErrorService errorService = errorService;
+    private readonly IErrorService errorService = errorService;
     private readonly ISender sender = sender;
     private readonly ILogger<EditExternalContact> logger = logger;
     private readonly IValidator<OtherExternalContactInputModel> validator = otherExternalContactInputModelValidator;

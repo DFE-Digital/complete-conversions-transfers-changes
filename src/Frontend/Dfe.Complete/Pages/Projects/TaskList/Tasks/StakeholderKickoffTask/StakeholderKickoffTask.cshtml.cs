@@ -1,7 +1,7 @@
 using Dfe.Complete.Application.Projects.Commands.TaskData;
 using Dfe.Complete.Constants;
 using Dfe.Complete.Domain.Enums;
-using Dfe.Complete.Services;
+using Dfe.Complete.Services.Interfaces;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -9,7 +9,7 @@ using System.ComponentModel;
 
 namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.StakeholderKickoffTask
 {
-    public class StakeholderKickoffTaskModel(ISender sender, IAuthorizationService authorizationService, ILogger<StakeholderKickoffTaskModel> logger, ErrorService errorService)
+    public class StakeholderKickoffTaskModel(ISender sender, IAuthorizationService authorizationService, ILogger<StakeholderKickoffTaskModel> logger, IErrorService errorService)
         : BaseProjectTaskModel(sender, authorizationService, logger, NoteTaskIdentifier.StakeholderKickoff)
     {
         [BindProperty(Name = "send-intro-emails")]
