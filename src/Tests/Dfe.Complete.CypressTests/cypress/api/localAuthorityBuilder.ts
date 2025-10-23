@@ -5,7 +5,6 @@ export class LocalAuthorityBuilder {
         options: Partial<CreateLocalAuthorityRequest> = {},
     ): CreateLocalAuthorityRequest {
         return {
-            id: { value: crypto.randomUUID() },
             code: "124",
             name: "Test Local Authority",
             address1: "Test Address Line 1",
@@ -14,7 +13,6 @@ export class LocalAuthorityBuilder {
             addressTown: "Test Town",
             addressCounty: "Test County",
             addressPostcode: "W1A 1AA",
-            contactId: { value: crypto.randomUUID() },
             title: "Test Director",
             contactName: "Test DCS Name",
             email: "test@email.com",

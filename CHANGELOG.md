@@ -29,6 +29,8 @@ Security in case of vulnerabilities.
 - minor text corrections for 2 of the task pages
 - minor text correction for confirm dao revocation page
 
+- Fixed `LocalAuthority` HTTP Post method by removing local authority id.
+
 ### Security
 
 See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-10-21.954...main) for everything awaiting release
