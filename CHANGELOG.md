@@ -33,7 +33,7 @@ Security in case of vulnerabilities.
 - minor text correction for confirm dao revocation page
 - Fixed task notes formatting.
 - Replaced html extension method with note html tag to have consistent approach for all notes/reasoning  formatting.
-
+- Fixed `Significant date` validation issue of `Stakeholder kick-off` task.
 - Fixed `LocalAuthority` HTTP Post method by removing local authority id.
 
 ### Security
