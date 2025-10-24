@@ -68,7 +68,7 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.StakeholderKickoffTask
                 ModelState.AddModelError(nameof(SignificantDate), "The Significant date must be in the future.");
             }
 
-            if (!ModelState.IsActuallyValid())
+            if (ModelState.IsValidState())
             {
                 errorService.AddErrors(ModelState);
                 return Page();

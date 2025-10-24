@@ -24,7 +24,7 @@ namespace Dfe.Complete.Tests.Extensions
             Assert.NotNull(error);
             Assert.Equal("Another error", error.ErrorMessage);
 
-            Assert.False(modelState.IsActuallyValid());
+            Assert.True(modelState.IsValidState());
         }
 
         [Fact]
@@ -41,7 +41,7 @@ namespace Dfe.Complete.Tests.Extensions
             var entry = modelState["SignificantDate"];
             Assert.NotNull(entry); 
             Assert.Empty(entry.Errors);
-            Assert.True(modelState.IsActuallyValid());
+            Assert.False(modelState.IsValidState());
         }
 
         [Fact]
@@ -57,7 +57,7 @@ namespace Dfe.Complete.Tests.Extensions
             // Assert
             var entry = modelState["SignificantDate"];
             Assert.Null(entry); 
-            Assert.False(modelState.IsActuallyValid());
+            Assert.True(modelState.IsValidState());
         }
 
         [Fact]
@@ -76,7 +76,7 @@ namespace Dfe.Complete.Tests.Extensions
             var error = entry.Errors.FirstOrDefault();
             Assert.NotNull(error); 
             Assert.Equal("Some other error", error.ErrorMessage);
-            Assert.False(modelState.IsActuallyValid());
+            Assert.True(modelState.IsValidState());
         }
     }
 }

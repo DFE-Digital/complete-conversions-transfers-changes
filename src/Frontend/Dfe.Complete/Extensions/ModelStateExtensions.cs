@@ -25,9 +25,7 @@ namespace Dfe.Complete.Extensions
             }
         }
 
-        public static bool IsActuallyValid(this ModelStateDictionary modelState)
-        {
-            return modelState.Values.SelectMany(v => v.Errors).LongCount() == 0;
-        }
+        public static bool IsValidState(this ModelStateDictionary modelState)
+            => modelState.Values.SelectMany(v => v.Errors).Any();
     }
 }
