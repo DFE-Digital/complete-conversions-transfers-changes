@@ -3310,20 +3310,20 @@
         }
       }
     },
-    "/v1/TasksData/TaskData/IncomingTrustHasCompleteAllActions": {
+    "/v1/TasksData/TaskData/LandConsentLetter": {
       "patch": {
         "tags": [
           "TasksData"
         ],
-        "summary": "Confirm the incoming trust has completed all actions for transfer project.",
-        "operationId": "TasksData_UpdateConfirmIncomingTrustHasCompleteAllActionsTask",
+        "summary": "Updating the land consent letter task data for transfer project.",
+        "operationId": "TasksData_UpdateLandConsentLetterTask",
         "requestBody": {
           "x-name": "request",
           "description": "The update command.",
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/UpdateConfirmIncomingTrustHasCompleteAllActionsTaskCommand"
+                "$ref": "#/components/schemas/UpdateLandConsentLetterTaskCommand"
               }
             }
           },
@@ -3332,7 +3332,7 @@
         },
         "responses": {
           "204": {
-            "description": "Updated the confirm incoming trust has completed all actions task successfully."
+            "description": "Updated the land consent letter task successfully."
           },
           "400": {
             "description": "Invalid request data."
@@ -8405,14 +8405,26 @@
           }
         }
       },
-      "UpdateConfirmIncomingTrustHasCompleteAllActionsTaskCommand": {
+      "UpdateLandConsentLetterTaskCommand": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
           "taskDataId": {
             "$ref": "#/components/schemas/TaskDataId"
           },
-          "emailed": {
+          "notApplicable": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "drafted": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "signed": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "sent": {
             "type": "boolean",
             "nullable": true
           },

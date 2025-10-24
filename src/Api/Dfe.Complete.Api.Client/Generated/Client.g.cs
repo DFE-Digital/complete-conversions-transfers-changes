@@ -8934,24 +8934,24 @@ namespace Dfe.Complete.Client
         }
 
         /// <summary>
-        /// Confirm the incoming trust has completed all actions for transfer project.
+        /// Updating the land consent letter task data for transfer project.
         /// </summary>
         /// <param name="request">The update command.</param>
-        /// <returns>Updated the confirm incoming trust has completed all actions task successfully.</returns>
+        /// <returns>Updated the land consent letter task successfully.</returns>
         /// <exception cref="CompleteApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task UpdateConfirmIncomingTrustHasCompleteAllActionsTaskAsync(UpdateConfirmIncomingTrustHasCompleteAllActionsTaskCommand request)
+        public virtual System.Threading.Tasks.Task UpdateLandConsentLetterTaskAsync(UpdateLandConsentLetterTaskCommand request)
         {
-            return UpdateConfirmIncomingTrustHasCompleteAllActionsTaskAsync(request, System.Threading.CancellationToken.None);
+            return UpdateLandConsentLetterTaskAsync(request, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>
-        /// Confirm the incoming trust has completed all actions for transfer project.
+        /// Updating the land consent letter task data for transfer project.
         /// </summary>
         /// <param name="request">The update command.</param>
-        /// <returns>Updated the confirm incoming trust has completed all actions task successfully.</returns>
+        /// <returns>Updated the land consent letter task successfully.</returns>
         /// <exception cref="CompleteApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task UpdateConfirmIncomingTrustHasCompleteAllActionsTaskAsync(UpdateConfirmIncomingTrustHasCompleteAllActionsTaskCommand request, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task UpdateLandConsentLetterTaskAsync(UpdateLandConsentLetterTaskCommand request, System.Threading.CancellationToken cancellationToken)
         {
             if (request == null)
                 throw new System.ArgumentNullException("request");
@@ -8970,8 +8970,8 @@ namespace Dfe.Complete.Client
 
                     var urlBuilder_ = new System.Text.StringBuilder();
                     if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
-                    // Operation Path: "v1/TasksData/TaskData/IncomingTrustHasCompleteAllActions"
-                    urlBuilder_.Append("v1/TasksData/TaskData/IncomingTrustHasCompleteAllActions");
+                    // Operation Path: "v1/TasksData/TaskData/LandConsentLetter"
+                    urlBuilder_.Append("v1/TasksData/TaskData/LandConsentLetter");
 
                     PrepareRequest(client_, request_, urlBuilder_);
 
