@@ -60,7 +60,7 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.StakeholderKickoffTask
         public async Task<IActionResult> OnPost()
         {
             await base.OnGetAsync(); 
-            var errorToRemove = "SignificantDate must include a month and year";
+            var errorToRemove = "The Significant date must include a month and year";
             ModelState.RemoveError("significant-date", errorToRemove); 
 
             if (SignificantDate.HasValue && SignificantDate?.ToDateTime(new TimeOnly()) < DateTime.Today)
