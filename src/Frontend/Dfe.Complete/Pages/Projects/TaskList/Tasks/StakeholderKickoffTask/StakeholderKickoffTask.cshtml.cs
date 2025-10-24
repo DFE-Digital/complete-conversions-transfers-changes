@@ -1,6 +1,7 @@
 using Dfe.Complete.Application.Projects.Commands.TaskData;
 using Dfe.Complete.Constants;
 using Dfe.Complete.Domain.Enums;
+using Dfe.Complete.Extensions;
 using Dfe.Complete.Services.Interfaces;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -58,14 +59,16 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.StakeholderKickoffTask
         
         public async Task<IActionResult> OnPost()
         {
-            await base.OnGetAsync();
+            await base.OnGetAsync(); 
+            var errorToRemove = "SignificantDate must include a month and year";
+            ModelState.RemoveError("significant-date", errorToRemove); 
 
             if (SignificantDate.HasValue && SignificantDate?.ToDateTime(new TimeOnly()) < DateTime.Today)
             {
                 ModelState.AddModelError(nameof(SignificantDate), "The Significant date must be in the future.");
             }
-            
-            if (!ModelState.IsValid)
+
+            if (!ModelState.IsActuallyValid())
             {
                 errorService.AddErrors(ModelState);
                 return Page();
@@ -85,6 +88,6 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.StakeholderKickoffTask
             SetTaskSuccessNotification();
             
             return Redirect(string.Format(RouteConstants.ProjectTaskList, ProjectId));
-        }
+        } 
     }
 }

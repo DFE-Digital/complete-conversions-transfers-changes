@@ -149,7 +149,7 @@
 
         @if (!Model.Project.SignificantDateProvisional is false)
         {
-            <govuk-date-input data-cy="significant-date" id="SignificantDate" name-prefix="significant-date" asp-for="@Model.SignificantDate">
+            <govuk-date-input heading data-cy="significant-date" id="SignificantDate" name-prefix="significant-date" asp-for="@Model.SignificantDate">
             <govuk-date-input-fieldset>
                 <govuk-date-input-fieldset-legend class="govuk-fieldset__legend--m">
                     Enter the confirmed @projectTypeString date
