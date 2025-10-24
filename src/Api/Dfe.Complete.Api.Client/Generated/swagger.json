@@ -3277,6 +3277,72 @@
         }
       }
     },
+    "/v1/TasksData/TaskData/ConfirmBankDetails": {
+      "patch": {
+        "tags": [
+          "TasksData"
+        ],
+        "summary": "Confirm if the bank details for the general annual grant payment need to change for transfer project.",
+        "operationId": "TasksData_UpdateConfirmBankDetailsTask",
+        "requestBody": {
+          "x-name": "request",
+          "description": "The update command.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateConfirmBankDetailsTaskCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "204": {
+            "description": "Confirm if the bank details for the general annual grant payment need to change task successfully."
+          },
+          "400": {
+            "description": "Invalid request data."
+          },
+          "404": {
+            "description": "Project not found."
+          }
+        }
+      }
+    },
+    "/v1/TasksData/TaskData/LandConsentLetter": {
+      "patch": {
+        "tags": [
+          "TasksData"
+        ],
+        "summary": "Updating the land consent letter task data for transfer project.",
+        "operationId": "TasksData_UpdateLandConsentLetterTask",
+        "requestBody": {
+          "x-name": "request",
+          "description": "The update command.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateLandConsentLetterTaskCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "204": {
+            "description": "Updated the land consent letter task successfully."
+          },
+          "400": {
+            "description": "Invalid request data."
+          },
+          "404": {
+            "description": "Project not found."
+          }
+        }
+      }
+    },
     "/v1/Trust/List/All": {
       "get": {
         "tags": [
@@ -8322,6 +8388,48 @@
           },
           "academyName": {
             "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "UpdateConfirmBankDetailsTaskCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "taskDataId": {
+            "$ref": "#/components/schemas/TaskDataId"
+          },
+          "bankDetailsChangingYesNo": {
+            "type": "boolean",
+            "nullable": true
+          }
+        }
+      },
+      "UpdateLandConsentLetterTaskCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "taskDataId": {
+            "$ref": "#/components/schemas/TaskDataId"
+          },
+          "notApplicable": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "drafted": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "signed": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "sent": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "saved": {
+            "type": "boolean",
             "nullable": true
           }
         }

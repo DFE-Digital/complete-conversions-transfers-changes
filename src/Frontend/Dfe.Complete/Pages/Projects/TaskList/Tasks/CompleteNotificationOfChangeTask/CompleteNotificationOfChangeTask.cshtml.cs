@@ -2,8 +2,6 @@ using Dfe.Complete.Application.Projects.Commands.TaskData;
 using Dfe.Complete.Constants;
 using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Domain.ValueObjects;
-using Dfe.Complete.Extensions;
-using Dfe.Complete.Models;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc; 
@@ -13,8 +11,6 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.CompleteNotificationOfChang
     public class CompleteNotificationOfChangeTaskModel(ISender sender, IAuthorizationService authorizationService, ILogger<CompleteNotificationOfChangeTaskModel> logger)
     : BaseProjectTaskModel(sender, authorizationService, logger, NoteTaskIdentifier.CompleteNotificationOfChange)
     {
-        private readonly ISender _sender = sender;
-
         [BindProperty]
         public Guid? TasksDataId { get; set; }
         
@@ -43,10 +39,9 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.CompleteNotificationOfChang
         }
         public async Task<IActionResult> OnPost()
         {            
-            await _sender.Send(new UpdateCompleteNotificationOfChangeTaskCommand(new TaskDataId(TasksDataId.GetValueOrDefault())!, NotApplicable, TellLocalAuthority, CheckDocument, SendDocument));
-            TempData.SetNotification(NotificationType.Success, "Success", "Task updated successfully");
+            await Sender.Send(new UpdateCompleteNotificationOfChangeTaskCommand(new TaskDataId(TasksDataId.GetValueOrDefault())!, NotApplicable, TellLocalAuthority, CheckDocument, SendDocument));
+            SetTaskSuccessNotification();
             return Redirect(string.Format(RouteConstants.ProjectTaskList, ProjectId));
-        }
-        
+        } 
     } 
 }
