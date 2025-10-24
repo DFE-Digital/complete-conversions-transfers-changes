@@ -41,7 +41,7 @@ describe("Capabilities and permissions of the regional casework services team le
         projectApi.createTransferProject(unassignedProject);
         projectApi.createMatConversionProject(project).then((response) => (projectId = response.value));
         // Intercept the POST request to edit assigned user endpoint
-        cy.intercept("POST", "/internal-contacts/assigned-user/edit?returnUrl=unassigned").as("editAssignedUser");
+        cy.intercept("POST", "**/internal-contacts/assigned-user/edit?returnUrl=unassigned").as("editAssignedUser");
     });
 
     beforeEach(() => {
