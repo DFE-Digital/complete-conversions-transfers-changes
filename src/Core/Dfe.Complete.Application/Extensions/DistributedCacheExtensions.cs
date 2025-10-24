@@ -3,7 +3,7 @@ using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
-namespace Dfe.Complete.Extensions
+namespace Dfe.Complete.Application.Extensions
 {
     public static class DistributedCacheExtensions
     {
@@ -14,10 +14,11 @@ namespace Dfe.Complete.Extensions
             AllowTrailingCommas = true,
             DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull
         };
+
         public static Task SetAsync<T>(this IDistributedCache cache, string key, T value)
         {
             return SetAsync(cache, key, value, new DistributedCacheEntryOptions()
-                .SetSlidingExpiration(TimeSpan.FromMinutes(20)));
+                .SetAbsoluteExpiration(TimeSpan.FromMinutes(20)));
         }
 
         public static Task SetAsync<T>(this IDistributedCache cache, string key, T value, DistributedCacheEntryOptions options)
@@ -35,12 +36,20 @@ namespace Dfe.Complete.Extensions
             return value is not null;
         }
 
-        public static async Task<T?> GetOrSetAsync<T>(this IDistributedCache cache, string key, Func<Task<T>> task, DistributedCacheEntryOptions? options = null)
+        public static async Task<T?> GetOrSetAsync<T>(this IDistributedCache cache, string key, Func<Task<T>> task)
+        {
+            var options = new DistributedCacheEntryOptions()
+               .SetAbsoluteExpiration(TimeSpan.FromMinutes(20));
+
+            return await GetOrSetAsync<T>(cache, key, task, options);
+        }
+
+        public static async Task<T?> GetOrSetAsync<T>(this IDistributedCache cache, string key, Func<Task<T>> task, DistributedCacheEntryOptions options)
         {
             if (options == null)
             {
                 options = new DistributedCacheEntryOptions()
-                .SetSlidingExpiration(TimeSpan.FromMinutes(20));
+                .SetAbsoluteExpiration(TimeSpan.FromMinutes(20));
             }
             if (cache.TryGetValue(key, out T? value) && value is not null)
             {
@@ -52,6 +61,6 @@ namespace Dfe.Complete.Extensions
                 await cache.SetAsync<T>(key, value, options);
             }
             return value;
-        }        
+        }
     }
 }
