@@ -75,6 +75,17 @@ public class Startup
 
         services.AddControllersWithViews()
            .AddMicrosoftIdentityUI()
+           .AddCookieTempDataProvider(options =>
+           {
+               options.Cookie.Name = ".Complete.TempData";
+               options.Cookie.HttpOnly = true;
+               options.Cookie.IsEssential = true;
+               if (string.IsNullOrEmpty(Configuration["CI"]))
+               {
+                   options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+               }
+               options.Cookie.SameSite = SameSiteMode.Lax;
+           })
            .AddCustomAntiForgeryHandling(opts =>
            {
                opts.CheckerGroups =
@@ -86,6 +97,7 @@ public class Startup
                ];
            });
         services.AddControllers().AddMicrosoftIdentityUI();
+
         SetupDataProtection(services);
 
         services.AddApplicationInsightsTelemetry(Configuration);
@@ -98,6 +110,11 @@ public class Startup
             options.IdleTimeout = _authenticationExpiration;
             options.Cookie.Name = ".Complete.Session";
             options.Cookie.IsEssential = true;
+            options.Cookie.HttpOnly = true;
+            if (string.IsNullOrEmpty(Configuration["CI"]))
+            {
+                options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+            }
         });
         services.AddHttpContextAccessor();
 

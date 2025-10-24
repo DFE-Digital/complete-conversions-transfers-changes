@@ -5,10 +5,12 @@ using GovUK.Dfe.CoreLibs.Security.Cypress;
 using GovUK.Dfe.CoreLibs.Security.Enums;
 using GovUK.Dfe.CoreLibs.Security.Interfaces;
 using Microsoft.AspNetCore.DataProtection;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using System.Reflection;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Dfe.Complete.StartupTests;
 
@@ -111,6 +113,122 @@ public sealed class StartupTests : IDisposable
 
         // Assert
         Assert.Equal(expectedUrl, options.PowerBiReports);
+    }
+
+    [Fact]
+    public void ConfigureServices_TempDataCookie_HasHttpOnlyEnabled()
+    {
+        // Arrange
+        IConfiguration cfg = BuildConfiguration(_tempDpTargetPath, keyVaultKey: string.Empty);
+        var startup = new Startup(cfg);
+        var services = new ServiceCollection();
+
+        // Act
+        startup.ConfigureServices(services);
+        var provider = services.BuildServiceProvider();
+        var options = provider.GetRequiredService<IOptions<CookieTempDataProviderOptions>>().Value;
+
+        // Assert
+        Assert.True(options.Cookie.HttpOnly, "TempData cookie should have HttpOnly enabled to prevent XSS attacks");
+    }
+
+    [Fact]
+    public void ConfigureServices_TempDataCookie_IsMarkedAsEssential()
+    {
+        // Arrange
+        IConfiguration cfg = BuildConfiguration(_tempDpTargetPath, keyVaultKey: string.Empty);
+        var startup = new Startup(cfg);
+        var services = new ServiceCollection();
+
+        // Act
+        startup.ConfigureServices(services);
+        var provider = services.BuildServiceProvider();
+        var options = provider.GetRequiredService<IOptions<CookieTempDataProviderOptions>>().Value;
+
+        // Assert
+        Assert.True(options.Cookie.IsEssential, "TempData cookie should be marked as essential");
+    }
+
+    [Fact]
+    public void ConfigureServices_TempDataCookie_HasCorrectName()
+    {
+        // Arrange
+        IConfiguration cfg = BuildConfiguration(_tempDpTargetPath, keyVaultKey: string.Empty);
+        var startup = new Startup(cfg);
+        var services = new ServiceCollection();
+
+        // Act
+        startup.ConfigureServices(services);
+        var provider = services.BuildServiceProvider();
+        var options = provider.GetRequiredService<IOptions<CookieTempDataProviderOptions>>().Value;
+
+        // Assert
+        Assert.Equal(".Complete.TempData", options.Cookie.Name);
+    }
+
+    [Fact]
+    public void ConfigureServices_TempDataCookie_HasSameSiteLax()
+    {
+        // Arrange
+        IConfiguration cfg = BuildConfiguration(_tempDpTargetPath, keyVaultKey: string.Empty);
+        var startup = new Startup(cfg);
+        var services = new ServiceCollection();
+
+        // Act
+        startup.ConfigureServices(services);
+        var provider = services.BuildServiceProvider();
+        var options = provider.GetRequiredService<IOptions<CookieTempDataProviderOptions>>().Value;
+
+        // Assert
+        Assert.Equal(SameSiteMode.Lax, options.Cookie.SameSite);
+    }
+
+    [Fact]
+    public void ConfigureServices_TempDataCookie_HasSecurePolicyAlways_WhenCINotSet()
+    {
+        // Arrange
+        var dict = new Dictionary<string, string?>
+        {
+            ["DataProtection:DpTargetPath"] = _tempDpTargetPath,
+            ["DataProtection:KeyVaultKey"] = string.Empty,
+            ["ApplicationInsights:EnableBrowserAnalytics"] = "false"
+            // CI key is not set, simulating production environment
+        };
+        IConfiguration cfg = new ConfigurationBuilder().AddInMemoryCollection(dict).Build();
+        var startup = new Startup(cfg);
+        var services = new ServiceCollection();
+
+        // Act
+        startup.ConfigureServices(services);
+        var provider = services.BuildServiceProvider();
+        var options = provider.GetRequiredService<IOptions<CookieTempDataProviderOptions>>().Value;
+
+        // Assert
+        Assert.Equal(CookieSecurePolicy.Always, options.Cookie.SecurePolicy);
+    }
+
+    [Fact]
+    public void ConfigureServices_TempDataCookie_AllowsFlexibleSecurePolicy_WhenCISet()
+    {
+        // Arrange
+        var dict = new Dictionary<string, string?>
+        {
+            ["DataProtection:DpTargetPath"] = _tempDpTargetPath,
+            ["DataProtection:KeyVaultKey"] = string.Empty,
+            ["ApplicationInsights:EnableBrowserAnalytics"] = "false",
+            ["CI"] = "true" // Simulating CI/development environment
+        };
+        IConfiguration cfg = new ConfigurationBuilder().AddInMemoryCollection(dict).Build();
+        var startup = new Startup(cfg);
+        var services = new ServiceCollection();
+
+        // Act
+        startup.ConfigureServices(services);
+        var provider = services.BuildServiceProvider();
+        var options = provider.GetRequiredService<IOptions<CookieTempDataProviderOptions>>().Value;
+
+        // Assert
+        Assert.NotEqual(CookieSecurePolicy.Always, options.Cookie.SecurePolicy);
     }
 
     private static IConfiguration BuildConfiguration(string dpTargetPath, string? keyVaultKey)
