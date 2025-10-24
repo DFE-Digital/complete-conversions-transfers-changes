@@ -1,4 +1,5 @@
-﻿using Dfe.Complete.Application.Common.Models;
+﻿using System.ComponentModel.DataAnnotations;
+using Dfe.Complete.Application.Common.Models;
 using Dfe.Complete.Application.Notes.Interfaces;
 using Dfe.Complete.Application.Projects.Interfaces;
 using Dfe.Complete.Domain.ValueObjects;
@@ -8,7 +9,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Dfe.Complete.Application.Projects.Commands.TaskData
 {
-    public record UpdateConfirmIncomingTrustHasCompleteAllActionsTaskCommand(TaskDataId TaskDataId, 
+    public record UpdateConfirmIncomingTrustHasCompleteAllActionsTaskCommand(
+        [Required] TaskDataId TaskDataId, 
         bool? Emailed,
         bool? Saved
         ) : IRequest<Result<bool>>;
