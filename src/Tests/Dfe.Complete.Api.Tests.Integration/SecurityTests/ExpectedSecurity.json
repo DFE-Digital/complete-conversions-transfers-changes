@@ -419,6 +419,11 @@
       "Controller": "TasksDataController",
       "Action": "UpdateConfirmBankDetailsTaskAsync",
       "ExpectedSecurity": "Authorize: Policy=CanReadWriteUpdate"
-    }
+    },
+    {
+      "Controller": "TasksDataController",
+      "Action": "UpdateDeedOfTerminationMasterFundingAgreementTaskAsync",
+      "ExpectedSecurity": "Authorize: Policy=CanReadWriteUpdate"
+    }    
   ]
 }
