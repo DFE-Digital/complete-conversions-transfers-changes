@@ -20,7 +20,7 @@ Security in case of vulnerabilities.
 - Added `Complete a notification of changes to funded high needs places form` task for conversion projects.
 - Added 'Caching to redis api call'
 - Added transfer creation end point for prepare to complete
-- Added 'Land Consent Letter Task for transfer proejcts'
+- Added 'Land consent letter task for transfer projects'
 
 ### Changed
 
