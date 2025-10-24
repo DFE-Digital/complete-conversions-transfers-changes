@@ -3277,20 +3277,20 @@
         }
       }
     },
-    "/v1/TasksData/TaskData/IncomingTrustHasCompleteAllActions": {
+    "/v1/TasksData/TaskData/ConfirmBankDetails": {
       "patch": {
         "tags": [
           "TasksData"
         ],
-        "summary": "Confirm the incoming trust has completed all actions for transfer project.",
-        "operationId": "TasksData_UpdateConfirmIncomingTrustHasCompleteAllActionsTask",
+        "summary": "Confirm if the bank details for the general annual grant payment need to change for transfer project.",
+        "operationId": "TasksData_UpdateConfirmBankDetailsTask",
         "requestBody": {
           "x-name": "request",
           "description": "The update command.",
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/UpdateConfirmIncomingTrustHasCompleteAllActionsTaskCommand"
+                "$ref": "#/components/schemas/UpdateConfirmBankDetailsTaskCommand"
               }
             }
           },
@@ -3299,7 +3299,7 @@
         },
         "responses": {
           "204": {
-            "description": "Updated the confirm incoming trust has completed all actions task successfully."
+            "description": "Confirm if the bank details for the general annual grant payment need to change task successfully."
           },
           "400": {
             "description": "Invalid request data."
@@ -8359,18 +8359,14 @@
           }
         }
       },
-      "UpdateConfirmIncomingTrustHasCompleteAllActionsTaskCommand": {
+      "UpdateConfirmBankDetailsTaskCommand": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
           "taskDataId": {
             "$ref": "#/components/schemas/TaskDataId"
           },
-          "emailed": {
-            "type": "boolean",
-            "nullable": true
-          },
-          "saved": {
+          "bankDetailsChangingYesNo": {
             "type": "boolean",
             "nullable": true
           }
