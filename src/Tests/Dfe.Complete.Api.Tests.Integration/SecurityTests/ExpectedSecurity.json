@@ -424,8 +424,7 @@
       "Controller": "TasksDataController",
       "Action": "UpdateLandConsentLetterTaskAsync",
       "ExpectedSecurity": "Authorize: Policy=CanReadWriteUpdate"
-    }    
-    },
+    },    
     {
       "Controller": "TasksDataController",
       "Action": "UpdateDeedOfTerminationMasterFundingAgreementTaskAsync",
