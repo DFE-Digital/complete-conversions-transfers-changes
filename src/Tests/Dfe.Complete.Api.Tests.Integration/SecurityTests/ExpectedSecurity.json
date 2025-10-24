@@ -417,6 +417,12 @@
     },
     {
       "Controller": "TasksDataController",
+      "Action": "UpdateConfirmBankDetailsTaskAsync",
+      "ExpectedSecurity": "Authorize: Policy=CanReadWriteUpdate"
+    }
+    },
+    {
+      "Controller": "TasksDataController",
       "Action": "UpdateLandConsentLetterTaskAsync",
       "ExpectedSecurity": "Authorize: Policy=CanReadWriteUpdate"
     }    

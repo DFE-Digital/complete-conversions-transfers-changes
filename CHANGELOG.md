@@ -17,14 +17,18 @@ Security in case of vulnerabilities.
 ## Unreleased
 
 ### Added
+
 - Added `Complete a notification of changes to funded high needs places form` task for conversion projects.
 - Added 'Caching to redis api call'
 - Added transfer creation end point for prepare to complete
+- Added `Confirm if the bank details for the general annual grant payment need to change` task for transfer project.
+
 - Added 'Land consent letter task for transfer projects'
 
 ### Changed
 
 ### Fixed
+
 - minor text corrections for 2 of the task pages
 - minor text correction for confirm dao revocation page
 
