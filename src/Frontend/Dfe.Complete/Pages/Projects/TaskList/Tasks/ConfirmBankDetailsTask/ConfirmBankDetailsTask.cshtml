@@ -1,16 +1,42 @@
 ﻿@page "/projects/{projectId}/tasks/bank_details_changing"
+@using Dfe.Complete.Utils;
+@inject Microsoft.Extensions.Configuration.IConfiguration _configuration
 @model Dfe.Complete.Pages.Projects.TaskList.Tasks.ConfirmBankDetailsTask.ConfirmBankDetailsTaskModel
 @{
     Layout = "_ProjectTaskLayout";
-    ViewData["Title"] = "Confirm if the bank details for the general annual grant payment need to change";
+    ViewData["Title"] = Model.TaskIdentifier.ToDisplayDescription();
 }
 @section TaskHeaderHintSection {
-    <div class="govuk-hint"> 
+    <div class="govuk-hint">
+        <p>Bank details must be updated if the:</p>
+        <ul> 
+            <li>outgoing trust currently receives the general annual grant</li> 
+            <li>incoming trust or academy want to change their bank details</li>
+            <li>neither the incoming trust nor the academy have a vendor account</li>
+        </ul>
     </div>
 }
 @section TaskSection {
 
-    <form method="post"> 
+    <form method="post">
+        <input type="hidden" asp-for="TasksDataId" />
+        <govuk-radios name="@nameof(Model.BankDetailsChangingYesNo)" asp-for="@Model.BankDetailsChangingYesNo">
+            <govuk-radios-fieldset>
+                <govuk-radios-fieldset-legend class="govuk-fieldset__legend--m">
+                    Do the bank details need to be updated?
+                </govuk-radios-fieldset-legend>
+                <govuk-radios-item data-cy="bank-details-changing-yes" value="true" checked="@Model.BankDetailsChangingYesNo">
+                    Yes
+                    <govuk-radios-item-conditional>
+                        <p>Tell the academy or incoming trust to <external-link class="govuk-link" href="@_configuration["ExternalLinks:BankingAndPaymentToDfEInformation"]">complete the Provide information about your banking and payments to DfE form (opens in new tab)</external-link>. Ask them to tell you when they have submitted this form.</p>
+                        <p>This must contain the bank details of the organisation that will receive the general annual grant once the academy transfers to the incoming trust.</p>
+                        <p>If this is not completed the general annual grant might get sent to the outgoing trust.</p>
+                        <p>The organisation receiving the general annual grant payment must have a vendor account. You can <external-link class="govuk-link" href="@_configuration["ExternalLinks:SetupAndMainta"]">check if they have a vendor account (opens in new tab)</external-link> on SharePoint.</p>
+                    </govuk-radios-item-conditional>
+                </govuk-radios-item>
+                <govuk-radios-item data-cy="bank-details-changing-no" value="false" checked="@(!Model.BankDetailsChangingYesNo)">No</govuk-radios-item>     
+            </govuk-radios-fieldset>
+        </govuk-radios>
         @await Html.PartialAsync("_TaskSaveAndReturn", new TaskSaveAndReturnModel(Model.Project, Model.CurrentUserTeam))
     </form>
 }
