@@ -37,8 +37,6 @@ describe("Capabilities and permissions of the regional delivery officer team lea
         projectRemover.removeProjectIfItExists(project.urn.value);
         projectApi.createTransferProject(unassignedProject, rdoTeamLeaderUser.email);
         projectApi.createMatConversionProject(project).then((response) => (projectId = response.value));
-        // Intercept the POST request to edit assigned user endpoint
-        cy.intercept("POST", "**/internal-contacts/assigned-user/edit?returnUrl=unassigned").as("editAssignedUser");
     });
 
     beforeEach(() => {
@@ -100,10 +98,6 @@ describe("Capabilities and permissions of the regional delivery officer team lea
             .assignTo(rdoTeamLeaderUser.username)
             .clickButton("Continue")
             .containsSuccessBannerWithMessage("Project has been assigned successfully");
-
-        // Wait for the edit assigned user POST request to complete
-        cy.wait("@editAssignedUser");
-
         navBar.goToYourProjects();
         yourProjects.goToNextPageUntilFieldIsVisible(unassignedProjectSchoolName);
     });

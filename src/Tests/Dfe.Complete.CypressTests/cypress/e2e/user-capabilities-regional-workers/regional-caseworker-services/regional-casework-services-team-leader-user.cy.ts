@@ -40,8 +40,6 @@ describe("Capabilities and permissions of the regional casework services team le
         projectRemover.removeProjectIfItExists(project.urn.value);
         projectApi.createTransferProject(unassignedProject);
         projectApi.createMatConversionProject(project).then((response) => (projectId = response.value));
-        // Intercept the POST request to edit assigned user endpoint
-        cy.intercept("POST", "**/internal-contacts/assigned-user/edit?returnUrl=unassigned").as("editAssignedUser");
     });
 
     beforeEach(() => {
@@ -115,10 +113,6 @@ describe("Capabilities and permissions of the regional casework services team le
             .assignTo(regionalCaseworkerUser.username)
             .clickButton("Continue")
             .containsSuccessBannerWithMessage("Project has been assigned successfully");
-
-        // Wait for the edit assigned user POST request to complete
-        cy.wait("@editAssignedUser");
-
         navBar.goToYourTeamProjects();
         yourTeamProjects.goToLastPage().goToPreviousPageUntilFieldIsVisible(unassignedProjectSchoolName);
         yourTeamProjectsTable
