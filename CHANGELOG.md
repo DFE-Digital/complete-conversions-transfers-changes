@@ -31,6 +31,8 @@ Security in case of vulnerabilities.
 
 - minor text corrections for 2 of the task pages
 - minor text correction for confirm dao revocation page
+- Fixed task notes formatting.
+- Replaced html extension method with note html tag to have consistent approach for all notes/reasoning  formatting.
 
 - Fixed `LocalAuthority` HTTP Post method by removing local authority id.
 
