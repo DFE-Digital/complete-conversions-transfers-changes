@@ -21,7 +21,7 @@
                 <govuk-checkboxes-fieldset-legend>
                 </govuk-checkboxes-fieldset-legend>
                 
-                <govuk-checkboxes-item id="@(nameof(Model.Emailed))" data-cy="emailed" asp-for="@Model.Emailed" value="true" name="@(nameof(Model.Emailed))" checked="@Model.Emailed">
+                <govuk-checkboxes-item id="@(nameof(Model.Emailed))" data-cy="@nameof(Model.Emailed)" asp-for="@Model.Emailed" value="true" name="@(nameof(Model.Emailed))" checked="@Model.Emailed">
                     <b>Email the primary contact for the incoming trust</b>
                     <govuk-checkboxes-item-hint>
                         <govuk-details data-module="govuk-details" class="govuk-details">
