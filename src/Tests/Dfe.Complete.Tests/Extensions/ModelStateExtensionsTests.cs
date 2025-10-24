@@ -10,8 +10,7 @@ namespace Dfe.Complete.Tests.Extensions
         {
             // Arrange
             var modelState = new ModelStateDictionary();
-
-            // Add multiple errors for the same key
+             
             modelState.AddModelError("SignificantDate", "SignificantDate must include a month and year");
             modelState.AddModelError("SignificantDate", "Another error");
 
@@ -25,7 +24,6 @@ namespace Dfe.Complete.Tests.Extensions
             Assert.NotNull(error);
             Assert.Equal("Another error", error.ErrorMessage);
 
-            // ModelState should still be invalid because there is one remaining error
             Assert.False(modelState.IsActuallyValid());
         }
 
