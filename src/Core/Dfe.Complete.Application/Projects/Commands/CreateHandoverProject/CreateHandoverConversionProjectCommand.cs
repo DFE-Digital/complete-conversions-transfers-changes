@@ -51,17 +51,20 @@ public class CreateHandoverConversionProjectCommandHandler(
             var incomingTrustUkprn = request.IncomingTrustUkprn!.Value;
 
             // Validate the request
-            await handoverProjectService.ValidateUrnAndTrustsAsync(urn, incomingTrustUkprn, cancellationToken: cancellationToken);
+            await handoverProjectService.ValidateUrnAsync(urn, cancellationToken: cancellationToken);
+            await handoverProjectService.ValidateTrustAsync(incomingTrustUkprn, cancellationToken: cancellationToken);
 
             // Prepare common project data
             var commonData = await handoverProjectService.PrepareCommonProjectDataAsync(
-                urn, 
-                incomingTrustUkprn, 
-                request.GroupId, 
-                request.CreatedByFirstName, 
-                request.CreatedByLastName, 
-                request.CreatedByEmail, 
+                urn,
+                request.CreatedByFirstName,
+                request.CreatedByLastName,
+                request.CreatedByEmail,
                 cancellationToken);
+
+            ProjectGroupId? groupId = null;
+            if (!string.IsNullOrWhiteSpace(request.GroupId))
+                groupId = await handoverProjectService.GetOrCreateProjectGroup(request.GroupId!, incomingTrustUkprn, cancellationToken);
 
             // Create conversion task data
             var conversionTask = handoverProjectService.CreateConversionTaskAsync();
@@ -76,7 +79,7 @@ public class CreateHandoverConversionProjectCommandHandler(
                 request.DirectiveAcademyOrder ?? false,
                 request.AdvisoryBoardDate!.Value,
                 request.AdvisoryBoardConditions ?? null,
-                commonData.GroupId,
+                groupId,
                 commonData.UserId,
                 commonData.LocalAuthorityId);
 

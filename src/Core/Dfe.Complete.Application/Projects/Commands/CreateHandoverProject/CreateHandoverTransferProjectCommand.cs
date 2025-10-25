@@ -58,17 +58,24 @@ public class CreateHandoverTransferProjectCommandHandler(
             var outgoingTrustUkprn = request.OutgoingTrustUkprn!.Value;
 
             // Validate the request
-            await handoverProjectService.ValidateUrnAndTrustsAsync(urn, incomingTrustUkprn, outgoingTrustUkprn, cancellationToken);
+            if (incomingTrustUkprn == outgoingTrustUkprn)
+                throw new ValidationException(Constants.ValidationConstants.SameTrustValidationMessage);
+
+            await handoverProjectService.ValidateUrnAsync(urn, cancellationToken: cancellationToken);
+            await handoverProjectService.ValidateTrustAsync(incomingTrustUkprn, cancellationToken: cancellationToken);
+            await handoverProjectService.ValidateTrustAsync(outgoingTrustUkprn, cancellationToken: cancellationToken);
 
             // Prepare common project data
             var commonData = await handoverProjectService.PrepareCommonProjectDataAsync(
-                urn, 
-                incomingTrustUkprn, 
-                request.GroupId, 
-                request.CreatedByFirstName, 
-                request.CreatedByLastName, 
-                request.CreatedByEmail, 
+                urn,
+                request.CreatedByFirstName,
+                request.CreatedByLastName,
+                request.CreatedByEmail,
                 cancellationToken);
+
+            ProjectGroupId? groupId = null;
+            if (!string.IsNullOrWhiteSpace(request.GroupId))
+                groupId = await handoverProjectService.GetOrCreateProjectGroup(request.GroupId!, incomingTrustUkprn, cancellationToken);
 
             // Create transfer task data
             var transferTask = handoverProjectService.CreateTransferTaskAsync(
@@ -87,7 +94,7 @@ public class CreateHandoverTransferProjectCommandHandler(
                 commonData.Region,
                 request.AdvisoryBoardDate!.Value,
                 request.AdvisoryBoardConditions ?? null,
-                commonData.GroupId,
+                groupId,
                 commonData.UserId,
                 commonData.LocalAuthorityId);
 
@@ -118,6 +125,4 @@ public class CreateHandoverTransferProjectCommandHandler(
             throw new UnknownException($"An error occurred while creating the handover transfer project for URN: {request.Urn}", ex);
         }
     }
-
-
 }
