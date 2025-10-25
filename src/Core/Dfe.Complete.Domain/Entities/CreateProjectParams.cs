@@ -17,6 +17,21 @@ public record CreateHandoverConversionProjectParams(
     UserId RegionalDeliveryOfficerId,
     Guid LocalAuthorityId);
 
+public record CreateHandoverConversionMatProjectParams(
+    ProjectId Id,
+    Urn Urn,
+    Guid TasksDataId,
+    DateOnly SignificantDate,
+    Region? Region,
+    bool HasAcademyOrderBeenIssued,
+    DateOnly AdvisoryBoardDate,
+    string? AdvisoryBoardConditions,
+    ProjectGroupId? GroupId,
+    UserId RegionalDeliveryOfficerId,
+    Guid LocalAuthorityId,
+    string NewTrustReferenceNumber,
+    string NewTrustName);
+
 public record CreateHandoverTransferProjectParams(
     ProjectId Id,
     Urn Urn,

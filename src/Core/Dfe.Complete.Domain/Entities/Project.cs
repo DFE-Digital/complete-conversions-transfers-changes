@@ -289,6 +289,47 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
         return project;
     }
 
+    public static Project CreateHandoverConversionMATProject(CreateHandoverConversionMatProjectParams parameters)
+    {
+        var now = DateTime.UtcNow;
+
+        var project = new Project(
+            parameters.Id,
+            parameters.Urn,
+            now,
+            now,
+            TaskType.Conversion,
+            ProjectType.Conversion,
+            parameters.TasksDataId,
+            parameters.SignificantDate,
+            true,
+            null,
+            null,
+            parameters.Region,
+            false,
+            parameters.HasAcademyOrderBeenIssued,
+            parameters.AdvisoryBoardDate,
+            parameters.AdvisoryBoardConditions,
+            null,
+            null,
+            null,
+            parameters.GroupId,
+            null,
+            parameters.RegionalDeliveryOfficerId,
+            null,
+            null,
+            parameters.NewTrustName,
+            parameters.NewTrustReferenceNumber,
+            parameters.LocalAuthorityId)
+        {
+            State = ProjectState.Inactive
+        };
+
+        project.AddDomainEvent(new ProjectCreatedEvent(project));
+
+        return project;
+    }
+
     public static Project CreateTransferProject
     (
         ProjectId id,
