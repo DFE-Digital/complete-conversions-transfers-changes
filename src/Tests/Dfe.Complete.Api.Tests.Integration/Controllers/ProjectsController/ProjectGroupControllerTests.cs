@@ -17,6 +17,87 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers.ProjectsController
     {
         [Theory]
         [CustomAutoData(typeof(CustomWebApplicationDbContextFactoryCustomization))]
+        public async Task CreateProjectGroupAsync_ShouldCreateProjectGroup(
+            CustomWebApplicationDbContextFactory<Program> factory,
+            IProjectGroupClient projectGroupsClient)
+        {
+            factory.TestClaims = [.. new[] { ApiRoles.ReadRole, ApiRoles.WriteRole }.Select(x => new Claim(ClaimTypes.Role, x))];
+
+            var command = new CreateProjectGroupCommand() { GroupReferenceNumber = "GRP_12121212", Ukprn = new Ukprn() { Value = 12121212 } };
+            var projectGroupId = await projectGroupsClient.CreateProjectGroupAsync(command, CancellationToken.None);
+
+            Assert.IsType<Guid>(projectGroupId);
+        }
+
+        [Theory]
+        [CustomAutoData(typeof(CustomWebApplicationDbContextFactoryCustomization))]
+        public async Task CreateProjectGroupAsyncShould_ProjectGroupAlreadyExistsForIdentifier_ShouldNotCreateProjectGroup(
+            CustomWebApplicationDbContextFactory<Program> factory,
+            IProjectGroupClient projectGroupsClient)
+        {
+            factory.TestClaims = new[] { ApiRoles.ReadRole, ApiRoles.WriteRole }
+                .Select(x => new Claim(ClaimTypes.Role, x)).ToList();
+
+            var dbContext = factory.GetDbContext<CompleteContext>();
+
+            var groupReferenceNumber = "GRP_12345678";
+            var existingProjectGroup = new ProjectGroup()
+            {
+                Id = new Domain.ValueObjects.ProjectGroupId(Guid.NewGuid()),
+                GroupIdentifier = groupReferenceNumber,
+                TrustUkprn = new Domain.ValueObjects.Ukprn(11111111),
+                CreatedAt = DateTime.UtcNow,
+                UpdatedAt = DateTime.UtcNow
+            };
+
+            dbContext.ProjectGroups.Add(existingProjectGroup);
+            await dbContext.SaveChangesAsync();
+
+            var command = new CreateProjectGroupCommand() { GroupReferenceNumber = existingProjectGroup.GroupIdentifier!, Ukprn = new Ukprn() { Value = 12222222 } };
+
+            var exception = await Assert.ThrowsAsync<CompleteApiException>(async () =>
+                await projectGroupsClient.CreateProjectGroupAsync(command, CancellationToken.None));
+
+            Assert.Contains($"Project group with identifier '{existingProjectGroup.GroupIdentifier}' already exists", exception.Message);
+        }
+
+        [Theory]
+        [CustomAutoData(
+            typeof(CustomWebApplicationDbContextFactoryCustomization),
+            typeof(UkprnCustomization)
+            )]
+        public async Task CreateProjectGroupAsyncShould_ProjectGroupAlreadyExistsForUkprn_ShouldNotCreateProjectGroup(
+            CustomWebApplicationDbContextFactory<Program> factory,
+            IProjectGroupClient projectGroupsClient,
+            IFixture _fixture)
+        {
+            factory.TestClaims = new[] { ApiRoles.ReadRole, ApiRoles.WriteRole }
+                .Select(x => new Claim(ClaimTypes.Role, x)).ToList();
+
+            var dbContext = factory.GetDbContext<CompleteContext>();
+
+            var existingProjectGroup = new ProjectGroup()
+            {
+                Id = new Domain.ValueObjects.ProjectGroupId(Guid.NewGuid()),
+                GroupIdentifier = "GRP_87654321",
+                TrustUkprn = _fixture.Create<Domain.ValueObjects.Ukprn>(),
+                CreatedAt = DateTime.UtcNow,
+                UpdatedAt = DateTime.UtcNow
+            };
+
+            dbContext.ProjectGroups.Add(existingProjectGroup);
+            await dbContext.SaveChangesAsync();
+
+            var command = new CreateProjectGroupCommand() { GroupReferenceNumber = "GRP_87654322", Ukprn = new Ukprn() { Value = existingProjectGroup.TrustUkprn!.Value } };
+
+            var exception = await Assert.ThrowsAsync<CompleteApiException>(async () =>
+                await projectGroupsClient.CreateProjectGroupAsync(command, CancellationToken.None));
+
+            Assert.Contains($"Project group with UKPRN '{existingProjectGroup.TrustUkprn!.Value}' already exists", exception.Message);
+        }
+
+        [Theory]
+        [CustomAutoData(typeof(CustomWebApplicationDbContextFactoryCustomization))]
         public async Task GetProjectGroupByIdAsync_ShouldReturn_A_ProjectGroup(
             CustomWebApplicationDbContextFactory<Program> factory,
             IProjectGroupClient projectGroupClient,
@@ -43,7 +124,7 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers.ProjectsController
             Assert.NotNull(result);
             Assert.Equal(projectGroup.Id.Value, result.Id!.Value);
         }
-        
+
         [Theory]
         [CustomAutoData(typeof(CustomWebApplicationDbContextFactoryCustomization))]
         public async Task GetProjectGroupByDetailsByIdAsync_ShouldReturn_A_ProjectGroupsDetails(
@@ -70,7 +151,7 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers.ProjectsController
                 .Customize(new TrustDtoCustomization { Ukprn = projectGroup.TrustUkprn!.Value.ToString() })
                 .Create<TrustDto>();
             factory.WireMockServer!.AddGetWithJsonResponse($"/v4/trust/{trustDto.Ukprn}", trustDto);
-            
+
             // Stub establishments bulk lookup (no projects -> empty response)
             factory.WireMockServer!.AddGetWithJsonResponse("/v4/establishments/bulk", Array.Empty<EstablishmentDto>());
 
