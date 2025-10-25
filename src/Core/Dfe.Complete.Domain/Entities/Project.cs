@@ -248,7 +248,6 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
         return project;
     }
 
-
     public static Project CreateHandoverConversionProject(CreateHandoverConversionProjectParams parameters)
     {
         var now = DateTime.UtcNow;
