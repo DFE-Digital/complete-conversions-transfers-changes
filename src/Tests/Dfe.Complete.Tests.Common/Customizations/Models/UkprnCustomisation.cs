@@ -4,11 +4,11 @@ using Dfe.Complete.Tests.Common.Extensions;
 
 namespace Dfe.Complete.Tests.Common.Customizations.Models
 {
-    public class UrnCustomization : ICustomization
+    public class UkprnCustomization : ICustomization
     {
         public void Customize(IFixture fixture)
         {
-            fixture.Register(() => new Urn(fixture.CreateInt(100000, 999999)));
+            fixture.Register(() => new Ukprn(fixture.CreateInt(10000000, 19999999)));
         }
     }
 }

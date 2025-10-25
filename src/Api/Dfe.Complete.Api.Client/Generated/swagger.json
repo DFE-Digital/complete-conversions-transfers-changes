@@ -248,6 +248,42 @@
       }
     },
     "/v1/ProjectGroup": {
+      "post": {
+        "tags": [
+          "ProjectGroup"
+        ],
+        "summary": "Creates a project group.",
+        "operationId": "ProjectGroup_CreateProjectGroup",
+        "requestBody": {
+          "x-name": "request",
+          "description": "The request.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateProjectGroupCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "201": {
+            "description": "Project group created successfully.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "format": "guid"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request data."
+          }
+        }
+      },
       "get": {
         "tags": [
           "ProjectGroup"
@@ -5125,6 +5161,18 @@
           "email": {
             "type": "string",
             "nullable": true
+          }
+        }
+      },
+      "CreateProjectGroupCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "groupReferenceNumber": {
+            "type": "string"
+          },
+          "ukprn": {
+            "$ref": "#/components/schemas/Ukprn"
           }
         }
       },

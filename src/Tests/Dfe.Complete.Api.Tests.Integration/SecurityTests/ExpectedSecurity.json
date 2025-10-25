@@ -197,6 +197,11 @@
     },
     {
       "Controller": "ProjectGroupController",
+      "Action": "CreateProjectGroupAsync",
+      "ExpectedSecurity": "Authorize: Policy=CanReadWrite"
+    },
+    {
+      "Controller": "ProjectGroupController",
       "Action": "GetProjectGroupByIdAsync",
       "ExpectedSecurity": "Authorize: Policy=CanRead"
     },

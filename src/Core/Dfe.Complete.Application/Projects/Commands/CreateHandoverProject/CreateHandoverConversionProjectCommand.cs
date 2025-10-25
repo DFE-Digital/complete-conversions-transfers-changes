@@ -16,7 +16,7 @@ public record CreateHandoverConversionProjectCommand(
     [Urn]
     int? Urn,
     [Required]
-    [Ukprn]
+    [Ukprn (ValueIsInteger = true)]
     int? IncomingTrustUkprn,
     [Required]
     [PastDate (AllowToday = true)]

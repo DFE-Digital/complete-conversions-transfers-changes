@@ -17,10 +17,10 @@ public record CreateHandoverTransferProjectCommand(
     [Urn]
     int? Urn,
     [Required]
-    [Ukprn]
+    [Ukprn (ValueIsInteger = true)]
     int? IncomingTrustUkprn,
     [Required]
-    [Ukprn]
+    [Ukprn (ValueIsInteger = true)]
     int? OutgoingTrustUkprn,
     [Required]
     [PastDate (AllowToday = true)]

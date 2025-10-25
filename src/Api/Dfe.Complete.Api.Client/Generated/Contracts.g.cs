@@ -116,6 +116,23 @@ namespace Dfe.Complete.Client.Contracts
     public partial interface IProjectGroupClient
     {
         /// <summary>
+        /// Creates a project group.
+        /// </summary>
+        /// <param name="request">The request.</param>
+        /// <returns>Project group created successfully.</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<System.Guid> CreateProjectGroupAsync(CreateProjectGroupCommand request);
+
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>
+        /// Creates a project group.
+        /// </summary>
+        /// <param name="request">The request.</param>
+        /// <returns>Project group created successfully.</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<System.Guid> CreateProjectGroupAsync(CreateProjectGroupCommand request, System.Threading.CancellationToken cancellationToken);
+
+        /// <summary>
         /// Gets the Project group by Id.
         /// </summary>
         /// <returns>Project Group returned successfully.</returns>
@@ -2711,6 +2728,30 @@ namespace Dfe.Complete.Client.Contracts
         {
 
             return Newtonsoft.Json.JsonConvert.DeserializeObject<ConstituencyMemberContactDto>(data, new Newtonsoft.Json.JsonSerializerSettings());
+
+        }
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.2.0.0 (NJsonSchema v11.1.0.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class CreateProjectGroupCommand
+    {
+        [Newtonsoft.Json.JsonProperty("groupReferenceNumber", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string? GroupReferenceNumber { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("ukprn", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public Ukprn? Ukprn { get; set; } = default!;
+
+        public string ToJson()
+        {
+
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonSerializerSettings());
+
+        }
+        public static CreateProjectGroupCommand FromJson(string data)
+        {
+
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<CreateProjectGroupCommand>(data, new Newtonsoft.Json.JsonSerializerSettings());
 
         }
 
