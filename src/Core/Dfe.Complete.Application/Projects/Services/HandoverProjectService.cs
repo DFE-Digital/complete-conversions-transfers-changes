@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using Dfe.AcademiesApi.Client.Contracts;
 using Dfe.Complete.Utils.Exceptions;
-using Dfe.Complete.Application.ProjectGroups.Interfaces;
+using Dfe.Complete.Application.ProjectGroups.Commands;
 using Dfe.Complete.Application.Projects.Models;
 using Dfe.Complete.Application.Projects.Queries.GetGiasEstablishment;
 using Dfe.Complete.Application.Projects.Queries.GetLocalAuthority;
@@ -31,7 +31,6 @@ public record HandoverProjectCommonData(
 public class HandoverProjectService(
     ISender sender,
     ICompleteRepository<Project> projectRepository,
-    IProjectGroupWriteRepository projectGroupWriteRepository,
     ICompleteRepository<ConversionTasksData> conversionTaskRepository,
     ICompleteRepository<TransferTasksData> transferTaskRepository,
     ITrustsV4Client trustClient) : IHandoverProjectService
@@ -147,15 +146,11 @@ public class HandoverProjectService(
             return projectGroupRequest.Value.Id;
         }
 
-        var id = new ProjectGroupId(Guid.NewGuid());
-        var createdGroup = new ProjectGroup
-        {
-            Id = id,
-            GroupIdentifier = groupId,
-            TrustUkprn = new Ukprn(incomingTrustUkprn),
-        };
-        await projectGroupWriteRepository.CreateProjectGroupAsync(createdGroup, cancellationToken);
-        return id;
+        var createdGroup = await sender.Send(new CreateProjectGroupCommand(groupId, new Ukprn(incomingTrustUkprn)), cancellationToken);
+        if (!createdGroup.IsSuccess || createdGroup.Value == null)
+            throw new UnknownException($"Could not create project group: {createdGroup.Error}");
+
+        return createdGroup.Value;
     }
 
     public async Task ValidateUrnAsync(int urn, CancellationToken cancellationToken)
