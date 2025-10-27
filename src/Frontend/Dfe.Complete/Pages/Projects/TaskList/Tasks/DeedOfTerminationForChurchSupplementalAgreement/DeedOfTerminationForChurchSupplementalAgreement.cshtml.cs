@@ -18,15 +18,15 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.DeedOfTerminationForChurchS
         public bool? Received { get; set; }
 
         [BindProperty]
-        public bool? Cleared { get; set; }
+        public bool? ClearedPolicy { get; set; }
 
         [BindProperty]
-        public bool? Signed { get; set; }
+        public bool? SignedOutgoingTrust { get; set; }
 
         [BindProperty]
         public bool? SignedByDiocese { get; set; }
 
-        [BindProperty(Name = "saved")]
+        [BindProperty]
         public bool? Saved { get; set; }
 
         [BindProperty]
@@ -43,8 +43,8 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.DeedOfTerminationForChurchS
             TasksDataId = Project.TasksDataId?.Value;
             NotApplicable = TransferTaskData.DeedTerminationChurchAgreementNotApplicable;
             Received = TransferTaskData.DeedTerminationChurchAgreementReceived;
-            Cleared = TransferTaskData.DeedTerminationChurchAgreementCleared;
-            Signed = TransferTaskData.DeedTerminationChurchAgreementSignedOutgoingTrust;
+            ClearedPolicy = TransferTaskData.DeedTerminationChurchAgreementCleared;
+            SignedOutgoingTrust = TransferTaskData.DeedTerminationChurchAgreementSignedOutgoingTrust;
             SignedByDiocese = TransferTaskData.DeedTerminationChurchAgreementSignedDiocese;
             Saved = TransferTaskData.DeedTerminationChurchAgreementSaved;
             SignedBySecretaryState = TransferTaskData.DeedTerminationChurchAgreementSignedSecretaryState;
@@ -55,7 +55,7 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.DeedOfTerminationForChurchS
         public async Task<IActionResult> OnPostAsync()
         {
             await Sender.Send(new UpdateDeedTerminationChurchSupplementalAgreementTaskCommand(new TaskDataId(TasksDataId.GetValueOrDefault())!,
-                NotApplicable, Received, Cleared, Signed, SignedByDiocese, Saved, SignedBySecretaryState, SavedAfterSigningBySecretaryState));
+                NotApplicable, Received, ClearedPolicy, SignedOutgoingTrust, SignedByDiocese, Saved, SignedBySecretaryState, SavedAfterSigningBySecretaryState));
             SetTaskSuccessNotification();
             return Redirect(string.Format(RouteConstants.ProjectTaskList, ProjectId));
         }
