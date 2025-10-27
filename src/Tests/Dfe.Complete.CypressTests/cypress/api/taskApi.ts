@@ -102,6 +102,18 @@ interface UpdateDeedOfNovationAndVariationTaskRequest {
     savedAfterSign?: boolean;
 }
 
+interface UpdateDeedOfTerminationMasterFundingAgreementTaskRequest {
+    taskDataId: TaskDataId;
+    notApplicable?: boolean;
+    received?: boolean;
+    cleared?: boolean;
+    saved?: boolean;
+    signed?: boolean;
+    contactFinancialReportingTeam?: boolean;
+    signedSecretaryState?: boolean;
+    savedAcademySharePointHolder?: boolean;
+}
+
 interface UpdateDeedOfVariationTaskRequest {
     taskDataId: TaskDataId;
     projectType?: ProjectType;
@@ -225,6 +237,12 @@ class TaskApi extends ApiBase {
 
     public updateDeedOfNovationAndVariationTask(requestBody: UpdateDeedOfNovationAndVariationTaskRequest) {
         return this.taskDataBaseRequest<void>("DeedOfNovationAndVariation", requestBody);
+    }
+
+    public updateDeedOfTerminationMasterFundingAgreementTask(
+        requestBody: UpdateDeedOfTerminationMasterFundingAgreementTaskRequest,
+    ) {
+        return this.taskDataBaseRequest<void>("DeedOfTerminationMasterFundingAgreement", requestBody);
     }
 
     public updateDeedOfVariationTask(requestBody: UpdateDeedOfVariationTaskRequest) {

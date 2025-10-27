@@ -318,6 +318,47 @@ class TaskHelper {
                 return taskApi.updateDeedOfNovationAndVariationTask(defaultBody);
         }
     }
+    public updateDeedOfTerminationMasterFundingAgreement(taskDataId: string, status: TaskStatus) {
+        const defaultBody = {
+            taskDataId: { value: taskDataId },
+            notApplicable: false,
+            received: false,
+            cleared: false,
+            saved: false,
+            signed: false,
+            contactFinancialReportingTeam: false,
+            signedSecretaryState: false,
+            savedAcademySharePointHolder: false,
+        };
+
+        switch (status) {
+            case "notApplicable":
+                return taskApi.updateDeedOfTerminationMasterFundingAgreementTask({
+                    ...defaultBody,
+                    notApplicable: true,
+                });
+
+            case "inProgress":
+                return taskApi.updateDeedOfTerminationMasterFundingAgreementTask({
+                    ...defaultBody,
+                    received: true,
+                });
+
+            case "completed":
+                return taskApi.updateDeedOfTerminationMasterFundingAgreementTask({
+                    taskDataId: { value: taskDataId },
+                    received: true,
+                    cleared: true,
+                    saved: true,
+                    signed: true,
+                    contactFinancialReportingTeam: true,
+                    signedSecretaryState: true,
+                    savedAcademySharePointHolder: true,
+                });
+            default:
+                return taskApi.updateDeedOfTerminationMasterFundingAgreementTask(defaultBody);
+        }
+    }
 
     public updateDeedOfVariation(taskDataId: string, projectType: ProjectType, status: TaskStatus) {
         const defaultBody = {
