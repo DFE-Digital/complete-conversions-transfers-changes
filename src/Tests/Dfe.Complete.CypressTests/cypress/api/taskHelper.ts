@@ -400,6 +400,40 @@ class TaskHelper {
                 return taskApi.updateHandoverWithDeliveryOfficerTask(defaultBody);
         }
     }
+    updateLandConsentLetter(taskDataId: string, status: TaskStatus) {
+        const defaultBody = {
+            taskDataId: { value: taskDataId },
+            notApplicable: false,
+            drafted: false,
+            signed: false,
+            sent: false,
+            saved: false,
+        };
+        switch (status) {
+            case "notApplicable":
+                return taskApi.updateLandConsentLetterTask({
+                    ...defaultBody,
+                    notApplicable: true,
+                });
+
+            case "inProgress":
+                return taskApi.updateLandConsentLetterTask({
+                    ...defaultBody,
+                    drafted: true,
+                });
+            case "completed":
+                return taskApi.updateLandConsentLetterTask({
+                    taskDataId: { value: taskDataId },
+                    notApplicable: false,
+                    drafted: true,
+                    signed: true,
+                    sent: true,
+                    saved: true,
+                });
+            default:
+                return taskApi.updateLandConsentLetterTask(defaultBody);
+        }
+    }
 
     updateLandQuestionnaire(taskDataId: string, status: TaskStatus) {
         const defaultBody = {
