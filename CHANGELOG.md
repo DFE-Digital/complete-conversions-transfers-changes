@@ -22,8 +22,8 @@ Security in case of vulnerabilities.
 - Added 'Caching to redis api call'
 - Added transfer creation end point for prepare to complete
 - Added `Confirm if the bank details for the general annual grant payment need to change` task for transfer project.
-
 - Added 'Land consent letter task for transfer projects'
+- Added `Check accuracy of high needs places information` task for conversion project.
 
 ### Changed
 
