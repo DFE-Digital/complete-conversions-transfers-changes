@@ -115,6 +115,42 @@ class TaskHelper {
         }
     }
 
+    public updateCompleteNotificationOfChange(taskDataId: string, status: TaskStatus) {
+        const defaultBody = {
+            taskDataId: { value: taskDataId },
+            notApplicable: false,
+            tellLocalAuthority: false,
+            checkDocument: false,
+            sendDocument: false,
+        };
+
+        switch (status) {
+            case "notApplicable":
+                return taskApi.updateCompleteNotificationOfChangeTask({
+                    ...defaultBody,
+                    notApplicable: true,
+                });
+
+            case "inProgress":
+                return taskApi.updateCompleteNotificationOfChangeTask({
+                    ...defaultBody,
+                    tellLocalAuthority: true,
+                });
+
+            case "completed":
+                return taskApi.updateCompleteNotificationOfChangeTask({
+                    taskDataId: { value: taskDataId },
+                    notApplicable: false,
+                    tellLocalAuthority: true,
+                    checkDocument: true,
+                    sendDocument: true,
+                });
+
+            default:
+                return taskApi.updateCompleteNotificationOfChangeTask(defaultBody);
+        }
+    }
+
     public updateConfirmAcademyOpenedDate(taskDataId: string, academyOpenedDate?: string) {
         const defaultBody = {
             taskDataId: { value: taskDataId },

@@ -42,6 +42,14 @@ interface UpdateCommercialTransferAgreementTaskRequest {
     saved?: boolean;
 }
 
+interface UpdateCompleteNotificationOfChangeTaskRequest {
+    taskDataId: TaskDataId;
+    notApplicable?: boolean;
+    tellLocalAuthority?: boolean;
+    checkDocument?: boolean;
+    sendDocument?: boolean;
+}
+
 interface UpdateConfirmAcademyOpenedDateTaskRequest {
     taskDataId: TaskDataId;
     academyOpenedDate?: string | null;
@@ -218,6 +226,10 @@ class TaskApi extends ApiBase {
 
     public updateCommercialTransferAgreementTask(requestBody: UpdateCommercialTransferAgreementTaskRequest) {
         return this.taskDataBaseRequest<void>("CommercialTransferAgreement", requestBody);
+    }
+
+    public updateCompleteNotificationOfChangeTask(requestBody: UpdateCompleteNotificationOfChangeTaskRequest) {
+        return this.taskDataBaseRequest<void>("CompleteNotificationOfChange", requestBody);
     }
 
     public updateConfirmAcademyOpenedDateTask(requestBody: UpdateConfirmAcademyOpenedDateTaskRequest) {
