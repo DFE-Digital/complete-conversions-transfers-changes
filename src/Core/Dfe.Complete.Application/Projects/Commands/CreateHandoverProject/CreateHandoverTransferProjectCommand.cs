@@ -13,24 +13,12 @@ using Dfe.Complete.Utils;
 namespace Dfe.Complete.Application.Projects.Commands.CreateHandoverProject;
 
 public record CreateHandoverTransferProjectCommand(
-    [Required]
-    [Urn]
-    int? Urn,
-    [Required]
-    [Ukprn (ValueIsInteger = true)]
-    int? IncomingTrustUkprn,
-    [Required]
-    [Ukprn (ValueIsInteger = true)]
-    int? OutgoingTrustUkprn,
-    [Required]
-    [PastDate (AllowToday = true)]
-    DateOnly? AdvisoryBoardDate,
-    [Required]
-    [FirstOfMonthDate]
-    DateOnly? ProvisionalTransferDate,
-    [Required]
-    [InternalEmail]
-    string CreatedByEmail,
+    [Required][Urn] int? Urn,
+    [Required][Ukprn(ValueIsInteger = true)] int? IncomingTrustUkprn,
+    [Required][Ukprn(ValueIsInteger = true)] int? OutgoingTrustUkprn,
+    [Required][PastDate(AllowToday = true)] DateOnly? AdvisoryBoardDate,
+    [Required][FirstOfMonthDate] DateOnly? ProvisionalTransferDate,
+    [Required][InternalEmail] string CreatedByEmail,
     [Required] string CreatedByFirstName,
     [Required] string CreatedByLastName,
     [Required] int? PrepareId,
@@ -38,8 +26,7 @@ public record CreateHandoverTransferProjectCommand(
     [Required] bool? FinancialSafeguardingGovernanceIssues,
     [Required] bool? OutgoingTrustToClose,
     string? AdvisoryBoardConditions,
-    [GroupReferenceNumber]
-    string? GroupId = null) : IRequest<ProjectId>;
+    [GroupReferenceNumber] string? GroupId = null) : IRequest<ProjectId>;
 
 public class CreateHandoverTransferProjectCommandHandler(
     IUnitOfWork unitOfWork,

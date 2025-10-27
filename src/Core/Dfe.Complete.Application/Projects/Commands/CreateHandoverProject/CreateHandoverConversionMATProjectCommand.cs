@@ -7,25 +7,17 @@ using Dfe.Complete.Application.Common.Interfaces;
 using Dfe.Complete.Domain.Validators;
 using Microsoft.Extensions.Logging;
 using Dfe.Complete.Application.Projects.Services;
+using Dfe.Complete.Utils;
 
 namespace Dfe.Complete.Application.Projects.Commands.CreateHandoverProject;
 
 public record CreateHandoverConversionMatProjectCommand(
-    [Required]
-    [Urn]
-    int? Urn,
-    [Required]
-    [Trn]
-    int? NewTrustReferenceNumber,
-    [Required]
-    [PastDate (AllowToday = true)]
-    DateOnly? AdvisoryBoardDate,
-    [Required]
-    [FirstOfMonthDate]
-    DateOnly? ProvisionalConversionDate,
-    [Required]
-    [InternalEmail]
-    string CreatedByEmail,
+    [Required][Urn] int? Urn,
+    [Required][Trn] string? NewTrustReferenceNumber,
+    [Required] string? NewTrustName,
+    [Required][PastDate(AllowToday = true)] DateOnly? AdvisoryBoardDate,
+    [Required][FirstOfMonthDate] DateOnly? ProvisionalConversionDate,
+    [Required][InternalEmail] string CreatedByEmail,
     [Required] string CreatedByFirstName,
     [Required] string CreatedByLastName,
     [Required] int? PrepareId,
@@ -47,16 +39,14 @@ public class CreateHandoverConversionMatProjectCommandHandler(
             var urn = request.Urn!.Value;
 
             // Validate the request
-            await handoverProjectService.ValidateUrnAsync(urn, cancellationToken: cancellationToken);
+            await handoverProjectService.ValidateUrnAsync(urn, cancellationToken);
 
             // Prepare common project data
             var commonData = await handoverProjectService.PrepareCommonProjectDataAsync(
-                urn, 
-                incomingTrustUkprn, 
-                request.GroupId, 
-                request.CreatedByFirstName, 
-                request.CreatedByLastName, 
-                request.CreatedByEmail, 
+                urn,
+                request.CreatedByFirstName,
+                request.CreatedByLastName,
+                request.CreatedByEmail,
                 cancellationToken);
 
             // Create conversion task data
@@ -71,14 +61,13 @@ public class CreateHandoverConversionMatProjectCommandHandler(
                 request.DirectiveAcademyOrder ?? false,
                 request.AdvisoryBoardDate!.Value,
                 request.AdvisoryBoardConditions ?? null,
-                commonData.GroupId,
                 commonData.UserId,
                 commonData.LocalAuthorityId,
-                request.NewTrustReferenceNumber,
-                request.NewTrustReferenceName
+                request.NewTrustReferenceNumber!,
+                request.NewTrustName!
                 );
 
-            var project = Project.CreateHandoverConversionProject(parameters);
+            var project = Project.CreateHandoverConversionMATProject(parameters);
 
             project.PrepareId = request.PrepareId!.Value;
 
@@ -88,7 +77,7 @@ public class CreateHandoverConversionMatProjectCommandHandler(
 
             return project.Id;
         }
-        catch (Exception ex) when (ex is not NotFoundException && ex is not ValidationException)
+        catch (Exception ex) when (ex is not UnprocessableContentException && ex is not NotFoundException && ex is not ValidationException)
         {
             await unitOfWork.RollBackAsync();
             logger.LogError(ex, "Exception while creating handover conversion project for URN: {Urn}", request.Urn);
