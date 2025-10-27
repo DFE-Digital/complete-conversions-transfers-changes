@@ -18,6 +18,8 @@ Security in case of vulnerabilities.
 
 ### Added
 
+- Added `Deed Of Termination For the Church Supplemental Agreement` task for transfer project.
+
 ### Changed
 
 ### Fixed
@@ -40,7 +42,6 @@ See the [full commit history](https://github.com/DFE-Digital/complete-conversion
 - Added 'Land consent letter task for transfer projects'
 - Adding key contact record on confirming project handover and logging error message if key contact is already been added.
 - Added `Check accuracy of high needs places information` task for conversion project.
-- Added `Deed Of Termination For the Church Supplemental Agreement` task for transfer project.
 
 ### Changed
 
