@@ -32,6 +32,12 @@ interface UpdateArticleOfAssociationTaskRequest {
     saved?: boolean;
 }
 
+interface UpdateCheckAccuracyOfHigherNeedsTaskRequest {
+    taskDataId: TaskDataId;
+    confirmNumber?: boolean;
+    confirmPublishedNumber?: boolean;
+}
+
 interface UpdateCommercialTransferAgreementTaskRequest {
     taskDataId: TaskDataId;
     projectType: ProjectType;
@@ -222,6 +228,10 @@ class TaskApi extends ApiBase {
 
     public updateArticleOfAssociationTask(requestBody: UpdateArticleOfAssociationTaskRequest) {
         return this.taskDataBaseRequest<void>("ArticleOfAssociation", requestBody);
+    }
+
+    public updateCheckAccuracyOfHigherNeedsTask(requestBody: UpdateCheckAccuracyOfHigherNeedsTaskRequest) {
+        return this.taskDataBaseRequest<void>("CheckAccuracyOfHigherNeeds", requestBody);
     }
 
     public updateCommercialTransferAgreementTask(requestBody: UpdateCommercialTransferAgreementTaskRequest) {

@@ -81,6 +81,32 @@ class TaskHelper {
         }
     }
 
+    public updateCheckAccuracyOfHigherNeeds(taskDataId: string, status: TaskStatus) {
+        const defaultBody = {
+            taskDataId: { value: taskDataId },
+            confirmNumber: false,
+            confirmPublishedNumber: false,
+        };
+
+        switch (status) {
+            case "inProgress":
+                return taskApi.updateCheckAccuracyOfHigherNeedsTask({
+                    ...defaultBody,
+                    confirmNumber: true,
+                });
+
+            case "completed":
+                return taskApi.updateCheckAccuracyOfHigherNeedsTask({
+                    taskDataId: { value: taskDataId },
+                    confirmNumber: true,
+                    confirmPublishedNumber: true,
+                });
+
+            default:
+                return taskApi.updateCheckAccuracyOfHigherNeedsTask(defaultBody);
+        }
+    }
+
     public updateCommercialTransferAgreement(taskDataId: string, projectType: ProjectType, status: TaskStatus) {
         const defaultBody = {
             taskDataId: { value: taskDataId },
