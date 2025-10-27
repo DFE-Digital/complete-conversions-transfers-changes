@@ -1336,6 +1336,23 @@ namespace Dfe.Complete.Client.Contracts
         System.Threading.Tasks.Task UpdateLandConsentLetterTaskAsync(UpdateLandConsentLetterTaskCommand request, System.Threading.CancellationToken cancellationToken);
 
         /// <summary>
+        /// Check the accuracy of higher needs for conversion project.
+        /// </summary>
+        /// <param name="request">The update command.</param>
+        /// <returns>Updates the accuracy of higher needs task updated successfully.</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task UpdateAccuracyOfHigherNeedsTaskAsync(UpdateAccuracyOfHigherNeedsTaskCommand request);
+
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>
+        /// Check the accuracy of higher needs for conversion project.
+        /// </summary>
+        /// <param name="request">The update command.</param>
+        /// <returns>Updates the accuracy of higher needs task updated successfully.</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task UpdateAccuracyOfHigherNeedsTaskAsync(UpdateAccuracyOfHigherNeedsTaskCommand request, System.Threading.CancellationToken cancellationToken);
+
+        /// <summary>
         /// Updating the deed of termination for the church supplemental agreement task data for transfer project.
         /// </summary>
         /// <param name="request">The update command.</param>
@@ -6407,6 +6424,33 @@ namespace Dfe.Complete.Client.Contracts
         {
 
             return Newtonsoft.Json.JsonConvert.DeserializeObject<UpdateLandConsentLetterTaskCommand>(data, new Newtonsoft.Json.JsonSerializerSettings());
+
+        }
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.2.0.0 (NJsonSchema v11.1.0.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class UpdateAccuracyOfHigherNeedsTaskCommand
+    {
+        [Newtonsoft.Json.JsonProperty("taskDataId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public TaskDataId? TaskDataId { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("confirmNumber", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? ConfirmNumber { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("confirmPublishedNumber", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? ConfirmPublishedNumber { get; set; } = default!;
+
+        public string ToJson()
+        {
+
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonSerializerSettings());
+
+        }
+        public static UpdateAccuracyOfHigherNeedsTaskCommand FromJson(string data)
+        {
+
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<UpdateAccuracyOfHigherNeedsTaskCommand>(data, new Newtonsoft.Json.JsonSerializerSettings());
 
         }
 
