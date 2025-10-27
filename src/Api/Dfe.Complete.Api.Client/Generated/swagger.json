@@ -539,7 +539,8 @@
           "400": {
             "description": "Invalid request data."
           }
-        }
+        },
+        "deprecated": true
       }
     },
     "/v1/Projects/Create/Transfer": {
@@ -576,7 +577,8 @@
           "400": {
             "description": "Invalid request data."
           }
-        }
+        },
+        "deprecated": true
       }
     },
     "/v1/Projects/Create/MatConversion": {
@@ -613,7 +615,8 @@
           "400": {
             "description": "Invalid request data."
           }
-        }
+        },
+        "deprecated": true
       }
     },
     "/v1/Projects/Create/MatTransfer": {
@@ -5649,6 +5652,8 @@
       },
       "CreateMatTransferProjectCommand": {
         "type": "object",
+        "deprecated": true,
+        "x-deprecatedMessage": "Deprecated as in-app project creations are no longer required",
         "additionalProperties": false,
         "properties": {
           "urn": {

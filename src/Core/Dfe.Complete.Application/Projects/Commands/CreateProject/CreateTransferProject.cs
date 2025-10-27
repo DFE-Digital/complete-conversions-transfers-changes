@@ -27,6 +27,7 @@ public record CreateTransferProjectCommand(
     string HandoverComments,
     string? UserAdId) : IRequest<ProjectId>;
 
+[Obsolete("Deprecated as in-app project creations are no longer required")]
 public class CreateTransferProjectCommandHandler(
     ICompleteRepository<Project> projectRepository,
     ICompleteRepository<TransferTasksData> transferTaskRepository,
@@ -39,7 +40,7 @@ public class CreateTransferProjectCommandHandler(
             request.HandingOverToRegionalCaseworkService, request.UserAdId);
         var commonProject = await createProjectCommon.CreateCommonProject(commonProjectCommand,
             cancellationToken);
-            
+
         var tasksDataId = Guid.NewGuid();
         var transferTask = new TransferTasksData(new TaskDataId(tasksDataId), commonProject.CreatedAt, commonProject.CreatedAt, request.IsDueToInedaquateOfstedRating, request.IsDueToIssues, request.OutGoingTrustWillClose);
 
@@ -68,15 +69,15 @@ public class CreateTransferProjectCommandHandler(
             request.AdvisoryBoardConditions,
             request.SignificantDate,
             request.IsSignificantDateProvisional,
-            request.IsDueTo2Ri, 
-            request.HandoverComments, 
+            request.IsDueTo2Ri,
+            request.HandoverComments,
             commonProject.LocalAuthority.LocalAuthorityId.Value
-        ); 
-            
+        );
+
         await transferTaskRepository.AddAsync(transferTask, cancellationToken);
         await projectRepository.AddAsync(project, cancellationToken);
 
         return project.Id;
     }
-        
+
 }

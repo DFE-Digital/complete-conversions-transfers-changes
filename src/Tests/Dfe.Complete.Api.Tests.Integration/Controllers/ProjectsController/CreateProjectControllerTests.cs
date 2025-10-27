@@ -1,4 +1,5 @@
-﻿using System.Net;
+﻿using System.Globalization;
+using System.Net;
 using System.Security.Claims;
 using AutoFixture;
 using Dfe.AcademiesApi.Client.Contracts;
@@ -637,6 +638,7 @@ public partial class ProjectsControllerTests
         Assert.Contains("The ProvisionalTransferDate field is required.", validationErrors);
     }
 
+    #region [Deprecated]
     [Theory]
     [CustomAutoData(typeof(CustomWebApplicationDbContextFactoryCustomization),
         typeof(DateOnlyCustomization),
@@ -855,13 +857,14 @@ public partial class ProjectsControllerTests
 
         Assert.Equal(HttpStatusCode.BadRequest, (HttpStatusCode)exception.StatusCode);
     }
+    #endregion
 
     private static CreateHandoverConversionProjectCommand GenerateCreateHandoverConversionCommand() => new()
     {
         Urn = 121999,
         IncomingTrustUkprn = 12129999,
-        AdvisoryBoardDate = DateTime.Parse("2025-05-02"),
-        ProvisionalConversionDate = DateTime.Parse("2025-05-01"),
+        AdvisoryBoardDate = DateTime.Parse("2025-05-02", CultureInfo.InvariantCulture),
+        ProvisionalConversionDate = DateTime.Parse("2025-05-01", CultureInfo.InvariantCulture),
         CreatedByEmail = "test@education.gov.uk",
         CreatedByFirstName = "Test",
         CreatedByLastName = "User",
@@ -870,13 +873,28 @@ public partial class ProjectsControllerTests
         AdvisoryBoardConditions = "Advisory board conditions"
     };
 
+    private static CreateHandoverConversionMatProjectCommand GenerateCreateHandoverConversionMatCommand() => new()
+    {
+        Urn = 121999,
+        AdvisoryBoardDate = DateTime.Parse("2025-05-02", CultureInfo.InvariantCulture),
+        ProvisionalConversionDate = DateTime.Parse("2025-05-01", CultureInfo.InvariantCulture),
+        CreatedByEmail = "test@education.gov.uk",
+        CreatedByFirstName = "Test",
+        CreatedByLastName = "User",
+        PrepareId = 123,
+        DirectiveAcademyOrder = true,
+        AdvisoryBoardConditions = "Advisory board conditions",
+        NewTrustReferenceNumber = "TR98765",
+        NewTrustName = "New Trust Ltd"
+    };
+
     private static CreateHandoverTransferProjectCommand GenerateCreateHandoverTransferCommand() => new()
     {
         Urn = 121999,
         IncomingTrustUkprn = 12129999,
         OutgoingTrustUkprn = 12120000,
-        AdvisoryBoardDate = DateTime.Parse("2025-05-02"),
-        ProvisionalTransferDate = DateTime.Parse("2025-05-01"),
+        AdvisoryBoardDate = DateTime.Parse("2025-05-02", CultureInfo.InvariantCulture),
+        ProvisionalTransferDate = DateTime.Parse("2025-05-01", CultureInfo.InvariantCulture),
         CreatedByEmail = "test@education.gov.uk",
         CreatedByFirstName = "Test",
         CreatedByLastName = "User",
