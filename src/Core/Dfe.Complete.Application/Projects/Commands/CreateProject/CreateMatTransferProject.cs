@@ -7,6 +7,7 @@ using MediatR;
 
 namespace Dfe.Complete.Application.Projects.Commands.CreateProject;
 
+[Obsolete("Deprecated as in-app project creations are no longer required")]
 public record CreateMatTransferProjectCommand(
     Urn Urn,
     string NewTrustName,

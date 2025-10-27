@@ -23,11 +23,12 @@ namespace Dfe.Complete.Application.Projects.Commands.CreateProject
         string HandoverComments,
         string? UserAdId) : IRequest<ProjectId>;
 
+    [Obsolete("Deprecated as in-app project creations are no longer required")]
     public class CreateConversionProjectCommandHandler(
-        ICompleteRepository<Project> projectRepository,
-        ICompleteRepository<ConversionTasksData> conversionTaskRepository,
-        ICreateProjectCommon createProjectCommon)
-        : IRequestHandler<CreateConversionProjectCommand, ProjectId>
+            ICompleteRepository<Project> projectRepository,
+            ICompleteRepository<ConversionTasksData> conversionTaskRepository,
+            ICreateProjectCommon createProjectCommon)
+            : IRequestHandler<CreateConversionProjectCommand, ProjectId>
     {
         public async Task<ProjectId> Handle(CreateConversionProjectCommand request, CancellationToken cancellationToken)
         {
@@ -35,7 +36,7 @@ namespace Dfe.Complete.Application.Projects.Commands.CreateProject
                 request.HandingOverToRegionalCaseworkService, request.UserAdId);
             var commonProject = await createProjectCommon.CreateCommonProject(commonProjectCommand,
                 cancellationToken);
-            
+
             var conversionTaskId = Guid.NewGuid();
             var conversionTask = new ConversionTasksData(new TaskDataId(conversionTaskId), commonProject.CreatedAt, commonProject.CreatedAt);
 

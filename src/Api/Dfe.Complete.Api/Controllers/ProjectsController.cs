@@ -132,6 +132,7 @@ namespace Dfe.Complete.Api.Controllers
         /// </summary>
         /// <param name="request">The request.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
+        [Obsolete("Deprecated - use CreateHandoverConversionProjectAsync instead")]
         [Authorize(Policy = "CanReadWrite")]
         [HttpPost]
         [Route("Create/Conversion")]
@@ -148,6 +149,7 @@ namespace Dfe.Complete.Api.Controllers
         /// </summary>
         /// <param name="request">The request.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
+        [Obsolete("Deprecated - use CreateHandoverTransferProjectAsync instead")]
         [Authorize(Policy = "CanReadWrite")]
         [HttpPost]
         [Route("Create/Transfer")]
@@ -164,6 +166,7 @@ namespace Dfe.Complete.Api.Controllers
         /// </summary>
         /// <param name="request">The request.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
+        [Obsolete("Deprecated - use CreateHandoverConversionMatProjectAsync instead")]
         [Authorize(Policy = "CanReadWrite")]
         [HttpPost]
         [Route("Create/MatConversion")]

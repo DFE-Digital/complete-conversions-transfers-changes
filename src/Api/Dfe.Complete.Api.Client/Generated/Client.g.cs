@@ -1812,6 +1812,7 @@ namespace Dfe.Complete.Client
         /// <param name="request">The request.</param>
         /// <returns>Project created successfully.</returns>
         /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        [System.Obsolete]
         public virtual System.Threading.Tasks.Task<ProjectId> CreateConversionProjectAsync(CreateConversionProjectCommand request)
         {
             return CreateConversionProjectAsync(request, System.Threading.CancellationToken.None);
@@ -1824,6 +1825,7 @@ namespace Dfe.Complete.Client
         /// <param name="request">The request.</param>
         /// <returns>Project created successfully.</returns>
         /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        [System.Obsolete]
         public virtual async System.Threading.Tasks.Task<ProjectId> CreateConversionProjectAsync(CreateConversionProjectCommand request, System.Threading.CancellationToken cancellationToken)
         {
             if (request == null)
@@ -1911,6 +1913,7 @@ namespace Dfe.Complete.Client
         /// <param name="request">The request.</param>
         /// <returns>Project created successfully.</returns>
         /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        [System.Obsolete]
         public virtual System.Threading.Tasks.Task<ProjectId> CreateTransferProjectAsync(CreateTransferProjectCommand request)
         {
             return CreateTransferProjectAsync(request, System.Threading.CancellationToken.None);
@@ -1923,6 +1926,7 @@ namespace Dfe.Complete.Client
         /// <param name="request">The request.</param>
         /// <returns>Project created successfully.</returns>
         /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        [System.Obsolete]
         public virtual async System.Threading.Tasks.Task<ProjectId> CreateTransferProjectAsync(CreateTransferProjectCommand request, System.Threading.CancellationToken cancellationToken)
         {
             if (request == null)
@@ -2010,6 +2014,7 @@ namespace Dfe.Complete.Client
         /// <param name="request">The request.</param>
         /// <returns>Project created successfully.</returns>
         /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        [System.Obsolete]
         public virtual System.Threading.Tasks.Task<ProjectId> CreateMatConversionProjectAsync(CreateMatConversionProjectCommand request)
         {
             return CreateMatConversionProjectAsync(request, System.Threading.CancellationToken.None);
@@ -2022,6 +2027,7 @@ namespace Dfe.Complete.Client
         /// <param name="request">The request.</param>
         /// <returns>Project created successfully.</returns>
         /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        [System.Obsolete]
         public virtual async System.Threading.Tasks.Task<ProjectId> CreateMatConversionProjectAsync(CreateMatConversionProjectCommand request, System.Threading.CancellationToken cancellationToken)
         {
             if (request == null)
