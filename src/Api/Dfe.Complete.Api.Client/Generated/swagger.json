@@ -8500,6 +8500,23 @@
           }
         }
       },
+      "UpdateAccuracyOfHigherNeedsTaskCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "taskDataId": {
+            "$ref": "#/components/schemas/TaskDataId"
+          },
+          "confirmNumber": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "confirmPublishedNumber": {
+            "type": "boolean",
+            "nullable": true
+          }
+        }
+      },
       "UpdateDeedOfTerminationMasterFundingAgreementTaskCommand": {
         "type": "object",
         "additionalProperties": false,
@@ -8536,23 +8553,6 @@
             "nullable": true
           },
           "notApplicable": {
-            "type": "boolean",
-            "nullable": true
-          }
-        }
-      },
-      "UpdateAccuracyOfHigherNeedsTaskCommand": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-          "taskDataId": {
-            "$ref": "#/components/schemas/TaskDataId"
-          },
-          "confirmNumber": {
-            "type": "boolean",
-            "nullable": true
-          },
-          "confirmPublishedNumber": {
             "type": "boolean",
             "nullable": true
           }
