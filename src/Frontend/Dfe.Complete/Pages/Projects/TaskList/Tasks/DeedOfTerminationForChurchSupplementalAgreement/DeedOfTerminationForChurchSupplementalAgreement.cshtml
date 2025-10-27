@@ -1,16 +1,98 @@
 ﻿@page "/projects/{projectId}/tasks/deed_termination_church_agreement"
 @model Dfe.Complete.Pages.Projects.TaskList.Tasks.DeedOfTerminationForChurchSupplementalAgreement.DeedOfTerminationForChurchSupplementalAgreementModel
+@using Dfe.Complete.Utils
+@inject Microsoft.Extensions.Configuration.IConfiguration _configuration
 @{
     Layout = "_ProjectTaskLayout";
-    ViewData["Title"] = "Deed of termination for the church supplemental agreement";
+    ViewData["Title"] = @Model.TaskIdentifier.ToDisplayDescription();
 }
 @section TaskHeaderHintSection {
-    <div class="govuk-hint"> 
+    <div class="govuk-hint">
+        <p>Use a deed of termination to end an outgoing trust's church supplemental agreement.</p>
+        <p>Once the existing church supplemental agreement has been terminated, you will need to draft a new one for the incoming trust.</p>
+        <govuk-details>
+            <govuk-details-summary>
+                <span class="govuk-details__summary-text">Other ways to deal with a church supplemental agreement</span>
+            </govuk-details-summary>
+            <govuk-details-text>
+                <p>Solicitors may want to transfer a church supplemental agreement to the new trust with a deed of novation and variation instead.</p>
+                <p>This is not advised and is not our preferred option.</p>
+                <p>Only use a deed of novation and variation on a case-by-case basis.</p>
+            </govuk-details-text>
+        </govuk-details>
     </div>
 }
 @section TaskSection {
-
-    <form method="post"> 
+    <form method="post">
+        <input type="hidden" asp-for="TasksDataId" /> 
+        <govuk-checkboxes name="options">
+            <govuk-checkboxes-fieldset>
+                <govuk-checkboxes-fieldset-legend>
+                </govuk-checkboxes-fieldset-legend>
+                <govuk-checkboxes-item id="not-applicable" asp-for="@Model.NotApplicable" value="true" name="@nameof(Model.NotApplicable)" data-cy="@nameof(Model.NotApplicable)" checked="@Model.NotApplicable">
+                    <b>Not applicable</b>
+                </govuk-checkboxes-item>
+            </govuk-checkboxes-fieldset>
+        </govuk-checkboxes> 
+        <govuk-checkboxes name="options">
+            <govuk-checkboxes-fieldset>
+                <govuk-checkboxes-fieldset-legend is-page-heading="false" class="govuk-fieldset__legend--l">
+                    Check and clear the deed of termination 
+                </govuk-checkboxes-fieldset-legend>
+                <govuk-checkboxes-hint>
+                    <govuk-details>
+                        <govuk-details-summary>
+                            <span class="govuk-details__summary-text">Using a deed of termination to transfer a church supplemental agreement</span>
+                        </govuk-details-summary>
+                        <govuk-details-text>
+                            <p>There is no model document for using a deed of termination to transfer a church supplemental agreement.</p>
+                            <p>You must <external-link data-cy="contact-policy-team-link" href="@_configuration["ExternalLinks:ContactPolicyTeam"]">contact the policy team (opens in new tab)</external-link>. if you need to use the deed of termination for transferring a church supplemental agreement.</p>
+                        </govuk-details-text>
+                    </govuk-details>
+                </govuk-checkboxes-hint>
+                <govuk-checkboxes-item data-cy="@nameof(Model.Received)" id="@nameof(Model.Received)" asp-for="@Model.Received" value="true" name="@nameof(Model.Received)" checked="@Model.Received">
+                    <b>Received</b>
+                </govuk-checkboxes-item>
+                <govuk-checkboxes-item data-cy="@nameof(Model.Cleared)" id="@nameof(Model.Cleared)" asp-for="@Model.Cleared" value="true" name="@nameof(Model.Cleared)" checked="@Model.Cleared">
+                    <b>Cleared by policy</b>
+                </govuk-checkboxes-item>
+                <govuk-checkboxes-item data-cy="@nameof(Model.Signed)" id="@nameof(Model.Signed)" asp-for="@Model.Signed" value="true" name="@nameof(Model.Signed)" checked="@Model.Signed">
+                    <b>Signed by outgoing trust</b>
+                </govuk-checkboxes-item>
+                <govuk-checkboxes-item data-cy="@nameof(Model.SignedByDiocese)" id="@nameof(Model.SignedByDiocese)" asp-for="@Model.SignedByDiocese" value="true" name="@nameof(Model.SignedByDiocese)" checked="@Model.SignedByDiocese">
+                    <b>Signed by diocese</b>
+                </govuk-checkboxes-item>
+                <govuk-checkboxes-item data-cy="@nameof(Model.Saved)" id="@nameof(Model.Saved)" asp-for="@Model.Saved" value="true" name="@nameof(Model.Saved)" checked="@Model.Saved">
+                    <b>Saved in the academy and outgoing trust SharePoint folders</b>
+                </govuk-checkboxes-item>
+            </govuk-checkboxes-fieldset>
+        </govuk-checkboxes> 
+        <govuk-checkboxes name="options">
+            <govuk-checkboxes-fieldset>
+                <govuk-checkboxes-fieldset-legend is-page-heading="true" class="govuk-fieldset__legend--l">
+                    Signed by the Secretary of State
+                </govuk-checkboxes-fieldset-legend>
+                <govuk-checkboxes-hint>
+                    <p>This must be signed before the transfer date.</p>
+                    <govuk-details>
+                        <govuk-details-summary>
+                            <span class="govuk-details__summary-text">How to sign the deed of termination</span>
+                        </govuk-details-summary>
+                        <govuk-details-text>
+                            <p>The Secretary of State, or somebody with the authority to act on their behalf, must sign the deed of termination.</p> 
+                            <p>Each team may have a different process for signing and sealing documents. Follow your team's signing process.</p> 
+                            <p>Once you have the signed version of the document, save it as a PDF in SharePoint.</p>
+                        </govuk-details-text>
+                    </govuk-details>
+                </govuk-checkboxes-hint>
+                <govuk-checkboxes-item data-cy="@nameof(Model.SignedBySecretaryState)" id="@nameof(Model.SignedBySecretaryState)" asp-for="@Model.SignedBySecretaryState" value="true" name="@nameof(Model.SignedBySecretaryState)" checked="@Model.SignedBySecretaryState">
+                    <b>Signed on behalf of Secretary of State</b>
+                </govuk-checkboxes-item>
+                <govuk-checkboxes-item data-cy="@nameof(Model.SavedAfterSigningBySecretaryState)" id="@nameof(Model.SavedAfterSigningBySecretaryState)" asp-for="@Model.SavedAfterSigningBySecretaryState" value="true" name="@nameof(Model.SavedAfterSigningBySecretaryState)" checked="@Model.SavedAfterSigningBySecretaryState">
+                    <b>Saved in the academy SharePoint folder</b>
+                </govuk-checkboxes-item>
+            </govuk-checkboxes-fieldset>
+        </govuk-checkboxes>
         @await Html.PartialAsync("_TaskSaveAndReturn", new TaskSaveAndReturnModel(Model.Project, Model.CurrentUserTeam))
     </form>
 }
