@@ -313,7 +313,7 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
             null,
             null,
             null,
-            parameters.GroupId,
+            null,
             null,
             parameters.RegionalDeliveryOfficerId,
             null,

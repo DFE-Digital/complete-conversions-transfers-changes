@@ -18,7 +18,14 @@ Security in case of vulnerabilities.
 
 ### Added
 - Added 'Confirm the incoming trust has completed all actions' task
-
+- Added `Request a new URN and record for the academy` task for transfer projects.
+- Added `Trust modification order task` task for conversion projects.
+- Added `Delete project` functionality.
+- Added `Share the information about the opening' task for conversion project.
+- Added `Subleases` task
+- Added `Tenancy at will` task for conversion project.
+- Added project group creation end point
+- Added MAT Conversion creation end point for prepare to complete 
 
 ### Changed
 
@@ -86,8 +93,6 @@ See the [full commit history](https://github.com/DFE-Digital/complete-conversion
 - Added 'Land consent letter task for transfer projects'
 - Adding key contact record on confirming project handover and logging error message if key contact is already been added.
 - Added `Check accuracy of high needs places information` task for conversion project.
-- Added 'Land consent letter task for transfer projects'
-- Added project group creation end point
 
 ### Fixed
 

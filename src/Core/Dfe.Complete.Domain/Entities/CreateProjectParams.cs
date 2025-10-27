@@ -26,7 +26,6 @@ public record CreateHandoverConversionMatProjectParams(
     bool HasAcademyOrderBeenIssued,
     DateOnly AdvisoryBoardDate,
     string? AdvisoryBoardConditions,
-    ProjectGroupId? GroupId,
     UserId RegionalDeliveryOfficerId,
     Guid LocalAuthorityId,
     string NewTrustReferenceNumber,

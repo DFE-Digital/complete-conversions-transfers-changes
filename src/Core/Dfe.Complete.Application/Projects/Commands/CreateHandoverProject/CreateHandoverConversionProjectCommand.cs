@@ -12,28 +12,17 @@ using Dfe.Complete.Utils;
 namespace Dfe.Complete.Application.Projects.Commands.CreateHandoverProject;
 
 public record CreateHandoverConversionProjectCommand(
-    [Required]
-    [Urn]
-    int? Urn,
-    [Required]
-    [Ukprn (ValueIsInteger = true)]
-    int? IncomingTrustUkprn,
-    [Required]
-    [PastDate (AllowToday = true)]
-    DateOnly? AdvisoryBoardDate,
-    [Required]
-    [FirstOfMonthDate]
-    DateOnly? ProvisionalConversionDate,
-    [Required]
-    [InternalEmail]
-    string CreatedByEmail,
+    [Required][Urn] int? Urn,
+    [Required][Ukprn(ValueIsInteger = true)] int? IncomingTrustUkprn,
+    [Required][PastDate(AllowToday = true)] DateOnly? AdvisoryBoardDate,
+    [Required][FirstOfMonthDate] DateOnly? ProvisionalConversionDate,
+    [Required][InternalEmail] string CreatedByEmail,
     [Required] string CreatedByFirstName,
     [Required] string CreatedByLastName,
     [Required] int? PrepareId,
     [Required] bool? DirectiveAcademyOrder,
     string? AdvisoryBoardConditions,
-    [GroupReferenceNumber]
-    string? GroupId = null) : IRequest<ProjectId>;
+    [GroupReferenceNumber] string? GroupId = null) : IRequest<ProjectId>;
 
 public class CreateHandoverConversionProjectCommandHandler(
     IUnitOfWork unitOfWork,
