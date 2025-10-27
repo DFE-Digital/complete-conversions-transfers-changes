@@ -40,6 +40,7 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.DeedOfTerminationForChurchS
         public override async Task<IActionResult> OnGetAsync()
         {
             await base.OnGetAsync();
+            TasksDataId = Project.TasksDataId?.Value;
             NotApplicable = TransferTaskData.DeedTerminationChurchAgreementNotApplicable;
             Received = TransferTaskData.DeedTerminationChurchAgreementReceived;
             Cleared = TransferTaskData.DeedTerminationChurchAgreementCleared;
