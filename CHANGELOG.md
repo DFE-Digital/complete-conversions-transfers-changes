@@ -42,11 +42,9 @@ See the [full commit history](https://github.com/DFE-Digital/complete-conversion
 - Added `Check accuracy of high needs places information` task for conversion project.
 
 ### Changed
-- note will now respect limited formatting
 
 ### Fixed
 
-- resolve entity tracking issue on note write repository
 - minor text corrections for 2 of the task pages
 - minor text correction for confirm dao revocation page
 - Fixed task notes formatting.
