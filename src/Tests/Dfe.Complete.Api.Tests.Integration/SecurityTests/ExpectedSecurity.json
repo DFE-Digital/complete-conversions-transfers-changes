@@ -419,7 +419,7 @@
       "Controller": "TasksDataController",
       "Action": "UpdateConfirmBankDetailsTaskAsync",
       "ExpectedSecurity": "Authorize: Policy=CanReadWriteUpdate"
-    },    
+    },
     {
       "Controller": "TasksDataController",
       "Action": "UpdateLandConsentLetterTaskAsync",
@@ -433,6 +433,11 @@
     {
       "Controller": "TasksDataController",
       "Action": "UpdateDeedOfTerminationMasterFundingAgreementTaskAsync",
+      "ExpectedSecurity": "Authorize: Policy=CanReadWriteUpdate"
+    },
+    {
+      "Controller": "TasksDataController",
+      "Action": "UpdateDeedTerminationChurchSupplementalAgreementTaskAsync",
       "ExpectedSecurity": "Authorize: Policy=CanReadWriteUpdate"
     },
     {

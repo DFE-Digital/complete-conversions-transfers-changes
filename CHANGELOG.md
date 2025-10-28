@@ -19,6 +19,8 @@ Security in case of vulnerabilities.
 ### Added
 - Added `Check and clear Form M` task for transfer projects.
 
+- Added `Deed Of Termination For the Church Supplemental Agreement` task for transfer project.
+
 ### Changed
 
 ### Fixed
