@@ -3409,20 +3409,20 @@
         }
       }
     },
-    "/v1/TasksData/TaskData/IncomingTrustHasCompleteAllActions": {
+    "/v1/TasksData/TaskData/DeedTerminationChurchSupplementalAgreement": {
       "patch": {
         "tags": [
           "TasksData"
         ],
-        "summary": "Confirm the incoming trust has completed all actions for transfer project.",
-        "operationId": "TasksData_UpdateConfirmIncomingTrustHasCompleteAllActionsTask",
+        "summary": "Updating the deed of termination for the church supplemental agreement task data for transfer project.",
+        "operationId": "TasksData_UpdateDeedTerminationChurchSupplementalAgreementTask",
         "requestBody": {
           "x-name": "request",
           "description": "The update command.",
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/UpdateConfirmIncomingTrustHasCompleteAllActionsTaskCommand"
+                "$ref": "#/components/schemas/UpdateDeedTerminationChurchSupplementalAgreementTaskCommand"
               }
             }
           },
@@ -3431,7 +3431,7 @@
         },
         "responses": {
           "204": {
-            "description": "Updated the confirm incoming trust has completed all actions task successfully."
+            "description": "Updated the deed of termination for the church supplemental church agreement task successfully."
           },
           "400": {
             "description": "Invalid request data."
@@ -8591,18 +8591,42 @@
           }
         }
       },
-      "UpdateConfirmIncomingTrustHasCompleteAllActionsTaskCommand": {
+      "UpdateDeedTerminationChurchSupplementalAgreementTaskCommand": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
           "taskDataId": {
             "$ref": "#/components/schemas/TaskDataId"
           },
-          "emailed": {
+          "notApplicable": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "received": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "cleared": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "signed": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "signedByDiocese": {
             "type": "boolean",
             "nullable": true
           },
           "saved": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "signedBySecretaryState": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "savedAfterSigningBySecretaryState": {
             "type": "boolean",
             "nullable": true
           }

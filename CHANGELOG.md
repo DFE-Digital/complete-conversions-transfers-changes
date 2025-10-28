@@ -19,6 +19,8 @@ Security in case of vulnerabilities.
 ### Added
 - Added `Confirm the incoming trust has completed all actions` task for transfer projects.
 
+- Added `Deed Of Termination For the Church Supplemental Agreement` task for transfer project.
+
 ### Changed
 
 ### Fixed
