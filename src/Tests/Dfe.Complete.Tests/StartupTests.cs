@@ -4,6 +4,7 @@ using GovUK.Dfe.CoreLibs.Security.Antiforgery;
 using GovUK.Dfe.CoreLibs.Security.Cypress;
 using GovUK.Dfe.CoreLibs.Security.Enums;
 using GovUK.Dfe.CoreLibs.Security.Interfaces;
+using Microsoft.AspNetCore.Antiforgery;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
@@ -226,6 +227,88 @@ public sealed class StartupTests : IDisposable
         startup.ConfigureServices(services);
         var provider = services.BuildServiceProvider();
         var options = provider.GetRequiredService<IOptions<CookieTempDataProviderOptions>>().Value;
+
+        // Assert
+        Assert.NotEqual(CookieSecurePolicy.Always, options.Cookie.SecurePolicy);
+    }
+
+    [Fact]
+    public void ConfigureServices_AntiforgeryCookie_HasHttpOnlyEnabled()
+    {
+        // Arrange
+        IConfiguration cfg = BuildConfiguration(_tempDpTargetPath, keyVaultKey: string.Empty);
+        var startup = new Startup(cfg);
+        var services = new ServiceCollection();
+
+        // Act
+        startup.ConfigureServices(services);
+        var provider = services.BuildServiceProvider();
+        var options = provider.GetRequiredService<IOptions<AntiforgeryOptions>>().Value;
+
+        // Assert
+        Assert.True(options.Cookie.HttpOnly, "Antiforgery cookie should have HttpOnly enabled to prevent XSS attacks");
+    }
+    
+    [Fact]
+    public void ConfigureServices_AntiforgeryCookie_HasSameSiteStrict()
+    {
+        // Arrange
+        IConfiguration cfg = BuildConfiguration(_tempDpTargetPath, keyVaultKey: string.Empty);
+        var startup = new Startup(cfg);
+        var services = new ServiceCollection();
+
+        // Act
+        startup.ConfigureServices(services);
+        var provider = services.BuildServiceProvider();
+        var options = provider.GetRequiredService<IOptions<AntiforgeryOptions>>().Value;
+
+        // Assert
+        Assert.Equal(SameSiteMode.Strict, options.Cookie.SameSite);
+    }
+
+    [Fact]
+    public void ConfigureServices_AntiforgeryCookie_HasSecurePolicyAlways_WhenCINotSet()
+    {
+        // Arrange
+        var dict = new Dictionary<string, string?>
+        {
+            ["DataProtection:DpTargetPath"] = _tempDpTargetPath,
+            ["DataProtection:KeyVaultKey"] = string.Empty,
+            ["ApplicationInsights:EnableBrowserAnalytics"] = "false"
+            // CI key is not set, simulating production environment
+        };
+        IConfiguration cfg = new ConfigurationBuilder().AddInMemoryCollection(dict).Build();
+        var startup = new Startup(cfg);
+        var services = new ServiceCollection();
+
+        // Act
+        startup.ConfigureServices(services);
+        var provider = services.BuildServiceProvider();
+        var options = provider.GetRequiredService<IOptions<AntiforgeryOptions>>().Value;
+
+        // Assert
+        Assert.Equal(CookieSecurePolicy.Always, options.Cookie.SecurePolicy);
+    }
+
+    [Fact]
+    public void ConfigureServices_AntiforgeryCookie_AllowsFlexibleSecurePolicy_WhenCISet()
+    {
+        // Arrange
+        var dict = new Dictionary<string, string?>
+        {
+            ["DataProtection:DpTargetPath"] = _tempDpTargetPath,
+            ["DataProtection:KeyVaultKey"] = string.Empty,
+            ["ApplicationInsights:EnableBrowserAnalytics"] = "false",
+            ["CI"] = "true" // Simulating CI/development environment
+        };
+        IConfiguration cfg = new ConfigurationBuilder().AddInMemoryCollection(dict).Build();
+        var startup = new Startup(cfg);
+        var services = new ServiceCollection();
+
+        // Act
+        startup.ConfigureServices(services);
+        var provider = services.BuildServiceProvider();
+        var options = provider.GetRequiredService<IOptions<AntiforgeryOptions>>().Value;
 
         // Assert
         Assert.NotEqual(CookieSecurePolicy.Always, options.Cookie.SecurePolicy);

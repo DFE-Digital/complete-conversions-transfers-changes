@@ -15,6 +15,7 @@ using GovUK.Dfe.CoreLibs.Security.Antiforgery;
 using GovUK.Dfe.CoreLibs.Security.Authorization;
 using GovUK.Dfe.CoreLibs.Security.Cypress;
 using GovUK.Dfe.CoreLibs.Security.Enums;
+using Microsoft.AspNetCore.Antiforgery;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Authorization;
@@ -70,7 +71,6 @@ public class Startup
                 options.HtmlHelperOptions.ClientValidationEnabled = false;
             });
 
-        ConfigureCustomAntiforgery(services);
         SetupApplicationInsights(services);
 
         services.AddControllersWithViews()
@@ -97,6 +97,9 @@ public class Startup
                ];
            });
         services.AddControllers().AddMicrosoftIdentityUI();
+
+        // Configure antiforgery AFTER all services are added to ensure our settings take precedence
+        ConfigureCustomAntiforgery(services);
 
         SetupDataProtection(services);
 
@@ -218,9 +221,18 @@ public class Startup
 
     private void SetupApplicationInsights(IServiceCollection services) => services.Configure<ApplicationInsightsOptions>(Configuration.GetSection("ApplicationInsights"));
 
-    private static void ConfigureCustomAntiforgery(IServiceCollection services)
+    private void ConfigureCustomAntiforgery(IServiceCollection services)
     {
         services.AddCustomRequestCheckerProvider<HasHeaderKeyExistsInRequestValidator>();
+        
+        services.Configure<AntiforgeryOptions>(options =>
+        {
+            options.Cookie.HttpOnly = true;
+            options.Cookie.SecurePolicy = string.IsNullOrEmpty(Configuration["CI"]) 
+                ? CookieSecurePolicy.Always 
+                : CookieSecurePolicy.SameAsRequest;
+            options.Cookie.SameSite = SameSiteMode.Strict;
+        });
     }
 
     private void RegisterClients(IServiceCollection services)
