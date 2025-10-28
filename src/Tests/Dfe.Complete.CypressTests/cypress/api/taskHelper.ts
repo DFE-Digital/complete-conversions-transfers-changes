@@ -81,6 +81,32 @@ class TaskHelper {
         }
     }
 
+    public updateCheckAccuracyOfHigherNeeds(taskDataId: string, status: TaskStatus) {
+        const defaultBody = {
+            taskDataId: { value: taskDataId },
+            confirmNumber: false,
+            confirmPublishedNumber: false,
+        };
+
+        switch (status) {
+            case "inProgress":
+                return taskApi.updateCheckAccuracyOfHigherNeedsTask({
+                    ...defaultBody,
+                    confirmNumber: true,
+                });
+
+            case "completed":
+                return taskApi.updateCheckAccuracyOfHigherNeedsTask({
+                    taskDataId: { value: taskDataId },
+                    confirmNumber: true,
+                    confirmPublishedNumber: true,
+                });
+
+            default:
+                return taskApi.updateCheckAccuracyOfHigherNeedsTask(defaultBody);
+        }
+    }
+
     public updateCommercialTransferAgreement(taskDataId: string, projectType: ProjectType, status: TaskStatus) {
         const defaultBody = {
             taskDataId: { value: taskDataId },
@@ -112,6 +138,42 @@ class TaskHelper {
 
             default:
                 return taskApi.updateCommercialTransferAgreementTask(defaultBody);
+        }
+    }
+
+    public updateCompleteNotificationOfChange(taskDataId: string, status: TaskStatus) {
+        const defaultBody = {
+            taskDataId: { value: taskDataId },
+            notApplicable: false,
+            tellLocalAuthority: false,
+            checkDocument: false,
+            sendDocument: false,
+        };
+
+        switch (status) {
+            case "notApplicable":
+                return taskApi.updateCompleteNotificationOfChangeTask({
+                    ...defaultBody,
+                    notApplicable: true,
+                });
+
+            case "inProgress":
+                return taskApi.updateCompleteNotificationOfChangeTask({
+                    ...defaultBody,
+                    tellLocalAuthority: true,
+                });
+
+            case "completed":
+                return taskApi.updateCompleteNotificationOfChangeTask({
+                    taskDataId: { value: taskDataId },
+                    notApplicable: false,
+                    tellLocalAuthority: true,
+                    checkDocument: true,
+                    sendDocument: true,
+                });
+
+            default:
+                return taskApi.updateCompleteNotificationOfChangeTask(defaultBody);
         }
     }
 
@@ -256,6 +318,47 @@ class TaskHelper {
                 return taskApi.updateDeedOfNovationAndVariationTask(defaultBody);
         }
     }
+    public updateDeedOfTerminationMasterFundingAgreement(taskDataId: string, status: TaskStatus) {
+        const defaultBody = {
+            taskDataId: { value: taskDataId },
+            notApplicable: false,
+            received: false,
+            cleared: false,
+            saved: false,
+            signed: false,
+            contactFinancialReportingTeam: false,
+            signedSecretaryState: false,
+            savedAcademySharePointHolder: false,
+        };
+
+        switch (status) {
+            case "notApplicable":
+                return taskApi.updateDeedOfTerminationMasterFundingAgreementTask({
+                    ...defaultBody,
+                    notApplicable: true,
+                });
+
+            case "inProgress":
+                return taskApi.updateDeedOfTerminationMasterFundingAgreementTask({
+                    ...defaultBody,
+                    received: true,
+                });
+
+            case "completed":
+                return taskApi.updateDeedOfTerminationMasterFundingAgreementTask({
+                    taskDataId: { value: taskDataId },
+                    received: true,
+                    cleared: true,
+                    saved: true,
+                    signed: true,
+                    contactFinancialReportingTeam: true,
+                    signedSecretaryState: true,
+                    savedAcademySharePointHolder: true,
+                });
+            default:
+                return taskApi.updateDeedOfTerminationMasterFundingAgreementTask(defaultBody);
+        }
+    }
 
     public updateDeedOfVariation(taskDataId: string, projectType: ProjectType, status: TaskStatus) {
         const defaultBody = {
@@ -336,6 +439,40 @@ class TaskHelper {
 
             default:
                 return taskApi.updateHandoverWithDeliveryOfficerTask(defaultBody);
+        }
+    }
+    updateLandConsentLetter(taskDataId: string, status: TaskStatus) {
+        const defaultBody = {
+            taskDataId: { value: taskDataId },
+            notApplicable: false,
+            drafted: false,
+            signed: false,
+            sent: false,
+            saved: false,
+        };
+        switch (status) {
+            case "notApplicable":
+                return taskApi.updateLandConsentLetterTask({
+                    ...defaultBody,
+                    notApplicable: true,
+                });
+
+            case "inProgress":
+                return taskApi.updateLandConsentLetterTask({
+                    ...defaultBody,
+                    drafted: true,
+                });
+            case "completed":
+                return taskApi.updateLandConsentLetterTask({
+                    taskDataId: { value: taskDataId },
+                    notApplicable: false,
+                    drafted: true,
+                    signed: true,
+                    sent: true,
+                    saved: true,
+                });
+            default:
+                return taskApi.updateLandConsentLetterTask(defaultBody);
         }
     }
 

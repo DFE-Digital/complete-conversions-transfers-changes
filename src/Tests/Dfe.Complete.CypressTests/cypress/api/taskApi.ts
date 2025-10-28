@@ -32,6 +32,12 @@ interface UpdateArticleOfAssociationTaskRequest {
     saved?: boolean;
 }
 
+interface UpdateCheckAccuracyOfHigherNeedsTaskRequest {
+    taskDataId: TaskDataId;
+    confirmNumber?: boolean;
+    confirmPublishedNumber?: boolean;
+}
+
 interface UpdateCommercialTransferAgreementTaskRequest {
     taskDataId: TaskDataId;
     projectType: ProjectType;
@@ -40,6 +46,14 @@ interface UpdateCommercialTransferAgreementTaskRequest {
     questionsReceived?: boolean;
     questionsChecked?: boolean;
     saved?: boolean;
+}
+
+interface UpdateCompleteNotificationOfChangeTaskRequest {
+    taskDataId: TaskDataId;
+    notApplicable?: boolean;
+    tellLocalAuthority?: boolean;
+    checkDocument?: boolean;
+    sendDocument?: boolean;
 }
 
 interface UpdateConfirmAcademyOpenedDateTaskRequest {
@@ -88,6 +102,18 @@ interface UpdateDeedOfNovationAndVariationTaskRequest {
     savedAfterSign?: boolean;
 }
 
+interface UpdateDeedOfTerminationMasterFundingAgreementTaskRequest {
+    taskDataId: TaskDataId;
+    notApplicable?: boolean;
+    received?: boolean;
+    cleared?: boolean;
+    saved?: boolean;
+    signed?: boolean;
+    contactFinancialReportingTeam?: boolean;
+    signedSecretaryState?: boolean;
+    savedAcademySharePointHolder?: boolean;
+}
+
 interface UpdateDeedOfVariationTaskRequest {
     taskDataId: TaskDataId;
     projectType?: ProjectType;
@@ -109,6 +135,15 @@ interface UpdateExternalStakeholderKickOffTaskRequest {
     stakeholderKickOffMeeting?: boolean;
     significantDate?: string;
     userEmail?: string;
+}
+
+interface UpdateLandConsentLetterTaskRequest {
+    taskDataId: TaskDataId;
+    notApplicable?: boolean;
+    drafted?: boolean;
+    signed?: boolean;
+    sent?: boolean;
+    saved?: boolean;
 }
 
 interface UpdateLandQuestionnaireTaskRequest {
@@ -204,6 +239,12 @@ class TaskApi extends ApiBase {
         return this.taskDataBaseRequest<void>("DeedOfNovationAndVariation", requestBody);
     }
 
+    public updateDeedOfTerminationMasterFundingAgreementTask(
+        requestBody: UpdateDeedOfTerminationMasterFundingAgreementTaskRequest,
+    ) {
+        return this.taskDataBaseRequest<void>("DeedOfTerminationMasterFundingAgreement", requestBody);
+    }
+
     public updateDeedOfVariationTask(requestBody: UpdateDeedOfVariationTaskRequest) {
         return this.taskDataBaseRequest<void>("DeedOfVariation", requestBody);
     }
@@ -216,8 +257,16 @@ class TaskApi extends ApiBase {
         return this.taskDataBaseRequest<void>("ArticleOfAssociation", requestBody);
     }
 
+    public updateCheckAccuracyOfHigherNeedsTask(requestBody: UpdateCheckAccuracyOfHigherNeedsTaskRequest) {
+        return this.taskDataBaseRequest<void>("CheckAccuracyOfHigherNeeds", requestBody);
+    }
+
     public updateCommercialTransferAgreementTask(requestBody: UpdateCommercialTransferAgreementTaskRequest) {
         return this.taskDataBaseRequest<void>("CommercialTransferAgreement", requestBody);
+    }
+
+    public updateCompleteNotificationOfChangeTask(requestBody: UpdateCompleteNotificationOfChangeTaskRequest) {
+        return this.taskDataBaseRequest<void>("CompleteNotificationOfChange", requestBody);
     }
 
     public updateConfirmAcademyOpenedDateTask(requestBody: UpdateConfirmAcademyOpenedDateTaskRequest) {
@@ -236,6 +285,10 @@ class TaskApi extends ApiBase {
         requestBody: UpdateConfirmTransferHasAuthorityToProceedTaskRequest,
     ) {
         return this.taskDataBaseRequest<void>("ConfirmTransferHasAuthorityToProceed", requestBody);
+    }
+
+    public updateLandConsentLetterTask(requestBody: UpdateLandConsentLetterTaskRequest) {
+        return this.taskDataBaseRequest<void>("LandConsentLetter", requestBody);
     }
 
     public updateLandQuestionnaireTask(requestBody: UpdateLandQuestionnaireTaskRequest) {
