@@ -10,7 +10,7 @@ using GovUK.Dfe.CoreLibs.Testing.AutoFixture.Customizations;
 using NSubstitute;
 using System.Linq.Expressions;
 using Dfe.Complete.Domain.ValueObjects;
-using Dfe.Complete.Utils;
+using Dfe.Complete.Utils.Exceptions;
 
 namespace Dfe.Complete.Application.Tests.CommandHandlers.Project;
 

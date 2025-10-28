@@ -1,4 +1,4 @@
-namespace Dfe.Complete.Utils;
+namespace Dfe.Complete.Utils.Exceptions;
 
 public class NotFoundException : Exception
 {
@@ -12,7 +12,7 @@ public class NotFoundException : Exception
         : base(message, innerException)
     {
     }
-    
+
     public NotFoundException(string message, string field)
         : base(message)
     {

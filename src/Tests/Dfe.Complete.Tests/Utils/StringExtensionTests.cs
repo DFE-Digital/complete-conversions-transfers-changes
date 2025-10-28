@@ -1,4 +1,5 @@
 using Dfe.Complete.Utils;
+using Dfe.Complete.Utils.Exceptions;
 
 namespace Dfe.Complete.Tests.Utils
 {

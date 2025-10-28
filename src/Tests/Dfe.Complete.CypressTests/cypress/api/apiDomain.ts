@@ -142,9 +142,6 @@ export enum Region {
 }
 
 export type CreateLocalAuthorityRequest = {
-    id: {
-        value: string;
-    };
     code: string;
     name: string;
     address1: string;
@@ -153,9 +150,6 @@ export type CreateLocalAuthorityRequest = {
     addressTown: string;
     addressCounty: string;
     addressPostcode: string;
-    contactId: {
-        value: string;
-    };
     title: string;
     contactName: string;
     email: string;
@@ -166,66 +160,66 @@ export type CreateLocalAuthorityRequest = {
 
 export type CreateConversionPrepareRequest = {
     urn: number;
-    advisory_board_date: string;
-    advisory_board_conditions: string;
-    provisional_conversion_date: string;
-    directive_academy_order: boolean;
-    created_by_email: string;
-    created_by_first_name: string;
-    created_by_last_name: string;
-    prepare_id: number;
-    group_id: string;
-    incoming_trust_ukprn: number;
+    incomingTrustUkprn: number;
+    advisoryBoardDate: string;
+    provisionalConversionDate: string;
+    createdByEmail: string;
+    createdByFirstName: string;
+    createdByLastName: string;
+    prepareId: number;
+    directiveAcademyOrder: boolean;
+    advisoryBoardConditions: string;
+    groupId: string | null;
 };
 
 export type CreateConversionFormAMatPrepareRequest = {
     urn: number;
-    advisory_board_date: string;
-    advisory_board_conditions: string;
-    provisional_conversion_date: string;
-    directive_academy_order: boolean;
-    created_by_email: string;
-    created_by_first_name: string;
-    created_by_last_name: string;
-    prepare_id: number;
-    group_id: string;
-    new_trust_reference_number: string;
-    new_trust_name: string;
+    advisoryBoardDate: string;
+    advisoryBoardConditions: string;
+    provisionalConversionDate: string;
+    directiveAcademyOrder: boolean;
+    createdByEmail: string;
+    createdByFirstName: string;
+    createdByLastName: string;
+    prepareId: number;
+    groupId: string | null;
+    newTrustReferenceNumber: string;
+    newTrustName: string;
 };
 
 export type CreateTransferPrepareRequest = {
     urn: number;
-    advisory_board_date: string;
-    advisory_board_conditions: string;
-    provisional_transfer_date: string;
-    created_by_email: string;
-    created_by_first_name: string;
-    created_by_last_name: string;
-    inadequate_ofsted: boolean;
-    financial_safeguarding_governance_issues: boolean;
-    outgoing_trust_ukprn: number;
-    outgoing_trust_to_close: boolean;
-    prepare_id: number;
-    group_id: string;
-    incoming_trust_ukprn: number;
+    advisoryBoardDate: string;
+    advisoryBoardConditions: string;
+    provisionalTransferDate: string;
+    createdByEmail: string;
+    createdByFirstName: string;
+    createdByLastName: string;
+    inadequateOfsted: boolean;
+    financialSafeguardingGovernanceIssues: boolean;
+    outgoingTrustUkprn: number;
+    outgoingTrustToClose: boolean;
+    prepareId: number;
+    groupId: string | null;
+    incomingTrustUkprn: number;
 };
 
 export type CreateTransferFormAMatPrepareRequest = {
     urn: number;
-    advisory_board_date: string;
-    advisory_board_conditions: string;
-    provisional_transfer_date: string;
-    created_by_email: string;
-    created_by_first_name: string;
-    created_by_last_name: string;
-    inadequate_ofsted: boolean;
-    financial_safeguarding_governance_issues: boolean;
-    outgoing_trust_ukprn: number;
-    outgoing_trust_to_close: boolean;
-    prepare_id: number;
-    group_id: string;
-    new_trust_reference_number: string;
-    new_trust_name: string;
+    advisoryBoardDate: string;
+    advisoryBoardConditions: string;
+    provisionalTransferDate: string;
+    createdByEmail: string;
+    createdByFirstName: string;
+    createdByLastName: string;
+    inadequateOfsted: boolean;
+    financialSafeguardingGovernanceIssues: boolean;
+    outgoingTrustUkprn: number;
+    outgoingTrustToClose: boolean;
+    prepareId: number;
+    groupId: string | null;
+    newTrustReferenceNumber: string;
+    newTrustName: string;
 };
 
 export type PrepareProjectRequest =

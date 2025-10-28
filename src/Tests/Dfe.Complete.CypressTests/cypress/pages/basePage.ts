@@ -1,5 +1,5 @@
 class BasePage {
-    private readonly bannerClass = "govuk-notification-banner";
+    protected readonly bannerClass = "govuk-notification-banner";
     private readonly linkClass = "govuk-link";
 
     containsHeading(heading: string) {
@@ -35,6 +35,15 @@ class BasePage {
             cy.getByClass("govuk-button").contains(buttonText).click();
         } else {
             cy.getByClass("govuk-button").click();
+        }
+        return this;
+    }
+
+    type(text: string, fieldId?: string) {
+        if (fieldId) {
+            cy.getById(fieldId).clear().typeFast(text);
+        } else {
+            cy.get("textarea").first().clear().typeFast(text);
         }
         return this;
     }
@@ -136,7 +145,9 @@ class BasePage {
             .first()
             .within(() => {
                 cy.get("h2").should("contain.text", bannerType);
-                cy.get("h3").shouldHaveText(title);
+                if (title) {
+                    cy.get("h3").shouldHaveText(title);
+                }
                 if (message) {
                     cy.get("p").shouldHaveText(message);
                 }

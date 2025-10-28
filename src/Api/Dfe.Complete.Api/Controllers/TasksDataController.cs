@@ -457,6 +457,25 @@ namespace Dfe.Complete.Api.Controllers
             await sender.Send(request, cancellationToken);
             return NoContent();
         }
+        
+        /// <summary>
+        /// Complete a notification of changes to funded high needs places form for the project.
+        /// </summary>
+        /// <param name="request">The update command.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        [Authorize(Policy = "CanReadWriteUpdate")]
+        [HttpPatch]
+        [Route("TaskData/CompleteNotificationOfChange")]
+        [SwaggerResponse(204, "Complete a notification of changes to funded high needs places form for the project successfully.")]
+        [SwaggerResponse(400, "Invalid request data.")]
+        [SwaggerResponse(404, "Project not found.")]
+        public async Task<IActionResult> UpdateCompleteNotificationOfChangeTaskAsync(
+            [FromBody] UpdateCompleteNotificationOfChangeTaskCommand request,
+            CancellationToken cancellationToken)
+        {
+            await sender.Send(request, cancellationToken);
+            return NoContent();
+        }
 
         /// <summary>
         /// Updating the academy and trust financial information task data for transfer project.
@@ -475,6 +494,100 @@ namespace Dfe.Complete.Api.Controllers
         {
             await sender.Send(request, cancellationToken);
             return NoContent();
+        }
+
+        /// <summary>
+        /// Updating the academy name task data for conversion project.
+        /// </summary>
+        /// <param name="request">The update command.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        [Authorize(Policy = "CanReadWriteUpdate")]
+        [HttpPatch]
+        [Route("TaskData/AcademyDetails")]
+        [SwaggerResponse(204, "Updated the academy name task successfully.")]
+        [SwaggerResponse(400, "Invalid request data.")]
+        [SwaggerResponse(404, "Project not found.")]
+        public async Task<IActionResult> UpdateAcademyDetailsTaskAsync(
+            [FromBody] UpdateConfirmAcademyNameTaskCommand request,
+            CancellationToken cancellationToken)
+        {
+            await sender.Send(request, cancellationToken);
+            return NoContent();
+        }
+
+        /// <summary>
+        /// Confirm if the bank details for the general annual grant payment need to change for transfer project.
+        /// </summary>
+        /// <param name="request">The update command.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        [Authorize(Policy = "CanReadWriteUpdate")]
+        [HttpPatch]
+        [Route("TaskData/ConfirmBankDetails")]
+        [SwaggerResponse(204, "Confirm if the bank details for the general annual grant payment need to change task successfully.")]
+        [SwaggerResponse(400, "Invalid request data.")]
+        [SwaggerResponse(404, "Project not found.")]
+        public async Task<IActionResult> UpdateConfirmBankDetailsTaskAsync(
+            [FromBody] UpdateConfirmBankDetailsTaskCommand request,
+            CancellationToken cancellationToken)
+        {
+            await sender.Send(request, cancellationToken);
+            return NoContent();
+        }
+
+        /// <summary>
+        /// Updating the land consent letter task data for transfer project.
+        /// </summary>
+        /// <param name="request">The update command.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        [Authorize(Policy = "CanReadWriteUpdate")]
+        [HttpPatch]
+        [Route("TaskData/LandConsentLetter")]
+        [SwaggerResponse(204, "Updated the land consent letter task successfully.")]
+        [SwaggerResponse(400, "Invalid request data.")]
+        [SwaggerResponse(404, "Project not found.")]
+        public async Task<IActionResult> UpdateLandConsentLetterTaskAsync(
+            [FromBody] UpdateLandConsentLetterTaskCommand request,
+            CancellationToken cancellationToken)
+        {
+            await sender.Send(request, cancellationToken);
+            return NoContent();
+        }
+        /// <summary>
+        /// Check the accuracy of higher needs for conversion project.
+        /// </summary>
+        /// <param name="request">The update command.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        [Authorize(Policy = "CanReadWriteUpdate")]
+        [HttpPatch]
+        [Route("TaskData/CheckAccuracyOfHigherNeeds")]
+        [SwaggerResponse(204, "Updates the accuracy of higher needs task updated successfully.")]
+        [SwaggerResponse(400, "Invalid request data.")]
+        [SwaggerResponse(404, "Project not found.")]
+        public async Task<IActionResult> UpdateAccuracyOfHigherNeedsTaskAsync(
+            [FromBody] UpdateAccuracyOfHigherNeedsTaskCommand request,
+            CancellationToken cancellationToken)
+        {
+            await sender.Send(request, cancellationToken);
+            return NoContent();
         } 
+
+        /// <summary>
+        /// Updating deed of termination for the master funding agreement for transfer project.
+        /// </summary>
+        /// <param name="request">The update command.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        [Authorize(Policy = "CanReadWriteUpdate")]
+        [HttpPatch]
+        [Route("TaskData/DeedOfTerminationMasterFundingAgreement")]
+        [SwaggerResponse(204, "Updated deed of termination for the master funding agreement for transfer project task successfully.")]
+        [SwaggerResponse(400, "Invalid request data.")]
+        [SwaggerResponse(404, "Project not found.")]
+        public async Task<IActionResult> UpdateDeedOfTerminationMasterFundingAgreementTaskAsync(
+            [FromBody] UpdateDeedOfTerminationMasterFundingAgreementTaskCommand request,
+            CancellationToken cancellationToken)
+        {
+            await sender.Send(request, cancellationToken);
+            return NoContent();
+        }
     }
 }

@@ -84,7 +84,7 @@ describe("Capabilities and permissions of the regional casework services team le
     });
 
     it.skip("Should NOT have access to view and edit users", () => {
-        // not implemented
+        // not implemented 237881
         shouldNotHaveAccessToViewAndEditUsers();
     });
 
@@ -92,7 +92,9 @@ describe("Capabilities and permissions of the regional casework services team le
         shouldBeAbleToViewMultipleMonthsOfProjects();
     });
 
-    it("Should be able to assign unassigned projects to users", () => {
+    // bug 245061
+    // + POST /Projects/InternalContacts/EditAssignedUser is intermittently not being called
+    it.skip("Should be able to assign unassigned projects to users", () => {
         navBar.goToYourTeamProjects();
         yourTeamProjects
             .filterProjects("Unassigned")

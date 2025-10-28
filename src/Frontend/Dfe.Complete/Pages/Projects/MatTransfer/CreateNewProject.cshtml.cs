@@ -1,20 +1,20 @@
-using System.ComponentModel.DataAnnotations;
 using Dfe.Complete.Application.Projects.Commands.CreateProject;
 using Dfe.Complete.Domain.Constants;
 using Dfe.Complete.Domain.ValueObjects;
 using Dfe.Complete.Extensions;
-using Dfe.Complete.Services;
-using Dfe.Complete.Utils;
+using Dfe.Complete.Services.Interfaces;
+using Dfe.Complete.Utils.Exceptions;
 using Dfe.Complete.Validators;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using System.ComponentModel.DataAnnotations;
 
 namespace Dfe.Complete.Pages.Projects.MatTransfer;
 
 [Authorize(policy: UserPolicyConstants.CanCreateProjects)]
-public class CreateNewProject(ISender sender, ErrorService errorService, ILogger<CreateNewProject> logger) : PageModel
+public class CreateNewProject(ISender sender, IErrorService errorService, ILogger<CreateNewProject> logger) : PageModel
 {
     [BindProperty]
     [Urn]

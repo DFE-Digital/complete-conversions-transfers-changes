@@ -67,16 +67,15 @@ describe("Conversion tasks - External stakeholder kick-off", () => {
             .hasCheckboxLabel("Check the local authority proforma")
             .clickDropdown("What to do if you don't have the local authority proforma")
             .hasGuidance("The person who prepared this project for advisory board")
-            // bug 236611
-            // .hasCheckboxLabel(
-            //     `Check the local authority is able to convert the school by the provisional conversion date: ${significateDateToDisplayDate(
-            //         project.significantDate,
-            //     )}`,
-            // )
-            // .clickDropdown("What to do if the local authority is not able meet the provisional conversion date")
-            // .hasGuidance(
-            //     "Tell the school and trust if the local authority cannot complete the conversion by the provisional date.",
-            // )
+            .hasCheckboxLabel(
+                `Check the local authority is able to convert the school by the provisional conversion date: ${significateDateToDisplayDate(
+                    project.significantDate,
+                )}`,
+            )
+            .clickDropdown("What to do if the local authority is not able to meet the provisional conversion date")
+            .hasGuidance(
+                "Tell the school and trust if the local authority cannot complete the conversion by the provisional date.",
+            )
             .hasCheckboxLabel("Send invites to the kick-off meeting or call")
             .clickDropdown("How to arrange the kick-off meeting")
             .hasGuidance("Once the school have got back to you with a suitable date and list of attendees")

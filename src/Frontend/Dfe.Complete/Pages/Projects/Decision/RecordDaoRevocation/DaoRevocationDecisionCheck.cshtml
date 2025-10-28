@@ -3,7 +3,8 @@
 @using Dfe.Complete.Constants
 @using Dfe.Complete.Domain.Enums
 @using Dfe.Complete.Utils
-@inject Dfe.Complete.Services.ErrorService ErrorService
+@inject Dfe.Complete.Services.Interfaces.IErrorService ErrorService
+
 @{
     Layout = "_RecordDaoRevocationLayout";
     ViewData["Title"] = "Check your answers before recording this decision";
@@ -28,9 +29,7 @@
                     {
                         <div class="govuk-!-padding-bottom-3">
                             <h6 class="govuk-heading-xxs">@reason.Key.ToDisplayDescription():</h6>
-                            <div class="govuk-body">
-                               @Html.SimpleFormat(@reason.Value)
-                            </div>
+                            <note-body>@reason.Value</note-body> 
                         </div> 
                     }
                 </govuk-summary-list-row-value>

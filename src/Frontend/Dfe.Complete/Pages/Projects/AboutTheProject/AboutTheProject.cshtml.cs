@@ -5,7 +5,7 @@ using Dfe.Complete.Application.Projects.Queries.GetTransferTasksData;
 using Dfe.Complete.Constants;
 using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Pages.Projects.ProjectView;
-using Dfe.Complete.Utils;
+using Dfe.Complete.Utils.Exceptions;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;

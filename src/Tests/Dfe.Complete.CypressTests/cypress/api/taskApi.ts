@@ -5,6 +5,13 @@ interface TaskDataId {
     value: string;
 }
 
+interface UpdateAcademyAndTrustFinancialInformationTaskRequest {
+    taskDataId: TaskDataId;
+    notApplicable?: boolean;
+    academySurplusOrDeficit?: string | null;
+    trustSurplusOrDeficit?: string | null;
+}
+
 interface UpdateHandoverWithDeliveryOfficerTaskRequest {
     taskDataId: TaskDataId;
     projectType: ProjectType;
@@ -25,6 +32,65 @@ interface UpdateArticleOfAssociationTaskRequest {
     saved?: boolean;
 }
 
+interface UpdateCheckAccuracyOfHigherNeedsTaskRequest {
+    taskDataId: TaskDataId;
+    confirmNumber?: boolean;
+    confirmPublishedNumber?: boolean;
+}
+
+interface UpdateCommercialTransferAgreementTaskRequest {
+    taskDataId: TaskDataId;
+    projectType: ProjectType;
+    agreed?: boolean;
+    signed?: boolean;
+    questionsReceived?: boolean;
+    questionsChecked?: boolean;
+    saved?: boolean;
+}
+
+interface UpdateCompleteNotificationOfChangeTaskRequest {
+    taskDataId: TaskDataId;
+    notApplicable?: boolean;
+    tellLocalAuthority?: boolean;
+    checkDocument?: boolean;
+    sendDocument?: boolean;
+}
+
+interface UpdateConfirmAcademyOpenedDateTaskRequest {
+    taskDataId: TaskDataId;
+    academyOpenedDate?: string | null;
+}
+
+interface UpdateConfirmAllConditionsMetTaskRequest {
+    projectId: TaskDataId;
+    confirm?: boolean;
+}
+
+interface UpdateConfirmDateAcademyTransferredTaskRequest {
+    taskDataId: TaskDataId;
+    dateAcademyTransferred?: string | null;
+}
+
+interface UpdateConfirmTransferHasAuthorityToProceedTaskRequest {
+    taskDataId: TaskDataId;
+    anyInformationChanged?: boolean;
+    baselineSheetApproved?: boolean;
+    confirmToProceed?: boolean;
+}
+
+interface UpdateChurchSupplementalAgreementTaskRequest {
+    taskDataId: TaskDataId;
+    projectType?: ProjectType;
+    notApplicable?: boolean;
+    received?: boolean;
+    cleared?: boolean;
+    signed?: boolean;
+    signedByDiocese?: boolean;
+    saved?: boolean;
+    signedBySecretaryState?: boolean;
+    sentOrSaved?: boolean;
+}
+
 interface UpdateDeedOfNovationAndVariationTaskRequest {
     taskDataId: TaskDataId;
     received?: boolean;
@@ -34,6 +100,18 @@ interface UpdateDeedOfNovationAndVariationTaskRequest {
     saved?: boolean;
     signedSecretaryState?: boolean;
     savedAfterSign?: boolean;
+}
+
+interface UpdateDeedOfTerminationMasterFundingAgreementTaskRequest {
+    taskDataId: TaskDataId;
+    notApplicable?: boolean;
+    received?: boolean;
+    cleared?: boolean;
+    saved?: boolean;
+    signed?: boolean;
+    contactFinancialReportingTeam?: boolean;
+    signedSecretaryState?: boolean;
+    savedAcademySharePointHolder?: boolean;
 }
 
 interface UpdateDeedOfVariationTaskRequest {
@@ -59,10 +137,46 @@ interface UpdateExternalStakeholderKickOffTaskRequest {
     userEmail?: string;
 }
 
+interface UpdateLandConsentLetterTaskRequest {
+    taskDataId: TaskDataId;
+    notApplicable?: boolean;
+    drafted?: boolean;
+    signed?: boolean;
+    sent?: boolean;
+    saved?: boolean;
+}
+
+interface UpdateLandQuestionnaireTaskRequest {
+    taskDataId: TaskDataId;
+    received?: boolean;
+    cleared?: boolean;
+    signed?: boolean;
+    saved?: boolean;
+}
+
+interface UpdateLandRegistryTitlePlansTaskRequest {
+    taskDataId: TaskDataId;
+    received?: boolean;
+    cleared?: boolean;
+    saved?: boolean;
+}
+
+interface UpdateMasterFundingAgreementTaskRequest {
+    taskDataId: TaskDataId;
+    projectType?: ProjectType;
+    notApplicable?: boolean;
+    received?: boolean;
+    cleared?: boolean;
+    signed?: boolean;
+    saved?: boolean;
+    sent?: boolean;
+    signedSecretaryState?: boolean;
+}
+
 interface UpdateReceiveDeclarationOfExpenditureCertificateTaskRequest {
     taskDataId: TaskDataId;
     projectType: ProjectType;
-    dateReceived?: string;
+    dateReceived?: string | null;
     notApplicable?: boolean;
     checkCertificate?: boolean;
     saved?: boolean;
@@ -76,6 +190,16 @@ interface UpdateRedactAndSendDocumentsTaskRequest {
     sendToEsfa?: boolean;
     send?: boolean;
     sendToSolicitors?: boolean;
+}
+
+export type RPAOption = "Standard" | "ChurchOrTrust" | "Commercial";
+
+interface UpdateConfirmAcademyRiskProtectionArrangementsTaskRequest {
+    taskDataId: TaskDataId;
+    projectType: ProjectType;
+    rpaPolicyConfirm?: boolean;
+    rpaOption?: RPAOption;
+    rpaReason?: string;
 }
 
 interface UpdateSupplementalFundingAgreementTaskRequest {
@@ -97,64 +221,121 @@ export enum ProjectType {
 class TaskApi extends ApiBase {
     private readonly taskDataUrl = `${Cypress.env(EnvApi)}/v1/TasksData/TaskData`;
 
+    public updateAcademyAndTrustFinancialInformationTask(
+        requestBody: UpdateAcademyAndTrustFinancialInformationTaskRequest,
+    ) {
+        return this.taskDataBaseRequest<void>("AcademyAndTrustFinancialInformation", requestBody);
+    }
+
     public updateHandoverWithDeliveryOfficerTask(requestBody: UpdateHandoverWithDeliveryOfficerTaskRequest) {
-        return this.taskDataBaseRequest<void>("PATCH", "HandoverDeliveryOfficer", requestBody, 204);
+        return this.taskDataBaseRequest<void>("HandoverDeliveryOfficer", requestBody);
+    }
+
+    public updateChurchSupplementalAgreementTask(requestBody: UpdateChurchSupplementalAgreementTaskRequest) {
+        return this.taskDataBaseRequest<void>("ChurchSupplementalAgreement", requestBody);
     }
 
     public updateDeedOfNovationAndVariationTask(requestBody: UpdateDeedOfNovationAndVariationTaskRequest) {
-        return this.taskDataBaseRequest<void>("PATCH", "DeedOfNovationAndVariation", requestBody, 204);
+        return this.taskDataBaseRequest<void>("DeedOfNovationAndVariation", requestBody);
+    }
+
+    public updateDeedOfTerminationMasterFundingAgreementTask(
+        requestBody: UpdateDeedOfTerminationMasterFundingAgreementTaskRequest,
+    ) {
+        return this.taskDataBaseRequest<void>("DeedOfTerminationMasterFundingAgreement", requestBody);
     }
 
     public updateDeedOfVariationTask(requestBody: UpdateDeedOfVariationTaskRequest) {
-        return this.taskDataBaseRequest<void>("PATCH", "DeedOfVariation", requestBody, 204);
+        return this.taskDataBaseRequest<void>("DeedOfVariation", requestBody);
     }
 
     public updateExternalStakeholderKickOffTask(requestBody: UpdateExternalStakeholderKickOffTaskRequest) {
-        return this.taskDataBaseRequest<void>("PATCH", "ExternalStakeholderKickOff", requestBody, 204);
+        return this.taskDataBaseRequest<void>("ExternalStakeholderKickOff", requestBody);
     }
 
     public updateArticleOfAssociationTask(requestBody: UpdateArticleOfAssociationTaskRequest) {
-        return this.taskDataBaseRequest<void>("PATCH", "ArticleOfAssociation", requestBody, 204);
+        return this.taskDataBaseRequest<void>("ArticleOfAssociation", requestBody);
+    }
+
+    public updateCheckAccuracyOfHigherNeedsTask(requestBody: UpdateCheckAccuracyOfHigherNeedsTaskRequest) {
+        return this.taskDataBaseRequest<void>("CheckAccuracyOfHigherNeeds", requestBody);
+    }
+
+    public updateCommercialTransferAgreementTask(requestBody: UpdateCommercialTransferAgreementTaskRequest) {
+        return this.taskDataBaseRequest<void>("CommercialTransferAgreement", requestBody);
+    }
+
+    public updateCompleteNotificationOfChangeTask(requestBody: UpdateCompleteNotificationOfChangeTaskRequest) {
+        return this.taskDataBaseRequest<void>("CompleteNotificationOfChange", requestBody);
+    }
+
+    public updateConfirmAcademyOpenedDateTask(requestBody: UpdateConfirmAcademyOpenedDateTaskRequest) {
+        return this.taskDataBaseRequest<void>("ConfirmAcademyOpenedDate", requestBody);
+    }
+
+    public updateConfirmAllConditionsMetTask(requestBody: UpdateConfirmAllConditionsMetTaskRequest) {
+        return this.taskDataBaseRequest<void>("ConfirmAllConditionsMet", requestBody);
+    }
+
+    public updateConfirmDateAcademyTransferredTask(requestBody: UpdateConfirmDateAcademyTransferredTaskRequest) {
+        return this.taskDataBaseRequest<void>("ConfirmDateAcademyTransferred", requestBody);
+    }
+
+    public updateConfirmTransferHasAuthorityToProceedTask(
+        requestBody: UpdateConfirmTransferHasAuthorityToProceedTaskRequest,
+    ) {
+        return this.taskDataBaseRequest<void>("ConfirmTransferHasAuthorityToProceed", requestBody);
+    }
+
+    public updateLandConsentLetterTask(requestBody: UpdateLandConsentLetterTaskRequest) {
+        return this.taskDataBaseRequest<void>("LandConsentLetter", requestBody);
+    }
+
+    public updateLandQuestionnaireTask(requestBody: UpdateLandQuestionnaireTaskRequest) {
+        return this.taskDataBaseRequest<void>("LandQuestionnaire", requestBody);
+    }
+
+    public updateLandRegistryTitlePlansTask(requestBody: UpdateLandRegistryTitlePlansTaskRequest) {
+        return this.taskDataBaseRequest<void>("LandRegistryTitlePlans", requestBody);
+    }
+
+    public updateMasterFundingAgreementTask(requestBody: UpdateMasterFundingAgreementTaskRequest) {
+        return this.taskDataBaseRequest<void>("MasterFundingAgreement", requestBody);
     }
 
     public updateReceiveDeclarationOfExpenditureCertificateTask(
         requestBody: UpdateReceiveDeclarationOfExpenditureCertificateTaskRequest,
     ) {
-        return this.taskDataBaseRequest<void>("PATCH", "ReceiveDeclarationOfExpenditureCertificate", requestBody, 204);
+        return this.taskDataBaseRequest<void>("ReceiveDeclarationOfExpenditureCertificate", requestBody);
     }
 
     public updateRedactAndSendDocumentsTask(requestBody: UpdateRedactAndSendDocumentsTaskRequest) {
-        return this.taskDataBaseRequest<void>("PATCH", "RedactAndSendDocuments", requestBody, 204);
+        return this.taskDataBaseRequest<void>("RedactAndSendDocuments", requestBody);
+    }
+
+    public updateConfirmAcademyRiskProtectionArrangementsTask(
+        requestBody: UpdateConfirmAcademyRiskProtectionArrangementsTaskRequest,
+    ) {
+        return this.taskDataBaseRequest<void>("ConfirmAcademyRiskProtectionArrangements", requestBody);
     }
 
     public updateSupplementalFundingAgreementTask(requestBody: UpdateSupplementalFundingAgreementTaskRequest) {
-        return this.taskDataBaseRequest<void>("PATCH", "SupplementalFundingAgreement", requestBody, 204);
+        return this.taskDataBaseRequest<void>("SupplementalFundingAgreement", requestBody);
     }
 
-    private taskDataBaseRequest<T>(
-        method: string,
-        task: string,
-        body:
-            | UpdateHandoverWithDeliveryOfficerTaskRequest
-            | UpdateArticleOfAssociationTaskRequest
-            | UpdateDeedOfNovationAndVariationTaskRequest
-            | UpdateDeedOfVariationTaskRequest
-            | UpdateExternalStakeholderKickOffTaskRequest,
-        expectedStatus: number,
-    ) {
+    private taskDataBaseRequest<T>(task: string, body: any) {
         return this.authenticatedRequest().then((headers) => {
             return cy
                 .request<T>({
-                    method,
+                    method: "PATCH",
                     url: `${this.taskDataUrl}/${task}`,
                     headers,
                     body,
                 })
                 .then((response) => {
-                    expect(
-                        response.status,
-                        `Expected ${method} request to return ${expectedStatus} but got ${response.status}`,
-                    ).to.eq(expectedStatus);
+                    expect(response.status, `Expected PATCH request to return 204 but got ${response.status}`).to.eq(
+                        204,
+                    );
                     return response.body;
                 });
         });

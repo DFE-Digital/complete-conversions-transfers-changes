@@ -23,10 +23,14 @@ const localAuthority = {
     dcsPhone: "01234567890",
 };
 const localAuthorityToEdit = LocalAuthorityBuilder.createLocalAuthorityRequest({ name: "Test Local Auth to edit" });
+let localAuthorityToEditId: string;
+let localAuthorityToEditContactId: string;
 const localAuthorityToDelete = LocalAuthorityBuilder.createLocalAuthorityRequest({
     name: "Test Local Auth to delete",
     code: "125",
 });
+let localAuthorityToDeleteId: string;
+let localAuthorityToDeleteContactId: string;
 const localAuthorityEdited = {
     name: "Test Local Authority - Edited",
     code: "124-edited",
@@ -42,8 +46,14 @@ const localAuthorityEdited = {
 
 describe("Service support user - Local authorities: ", () => {
     before(() => {
-        localAuthorityApi.createLocalAuthority(localAuthorityToEdit);
-        localAuthorityApi.createLocalAuthority(localAuthorityToDelete);
+        localAuthorityApi.createLocalAuthority(localAuthorityToEdit).then((response) => {
+            localAuthorityToEditId = response.localAuthorityId.value;
+            localAuthorityToEditContactId = response.contactId.value;
+        });
+        localAuthorityApi.createLocalAuthority(localAuthorityToDelete).then((response) => {
+            localAuthorityToDeleteId = response.localAuthorityId.value;
+            localAuthorityToDeleteContactId = response.contactId.value;
+        });
     });
 
     beforeEach(() => {
@@ -53,8 +63,8 @@ describe("Service support user - Local authorities: ", () => {
     });
 
     after(() => {
-        localAuthorityApi.deleteLocalAuthority(localAuthorityToEdit.id.value, localAuthorityToEdit.contactId.value);
-        localAuthorityApi.deleteLocalAuthority(localAuthorityToDelete.id.value, localAuthorityToDelete.contactId.value);
+        localAuthorityApi.deleteLocalAuthority(localAuthorityToEditId, localAuthorityToEditContactId);
+        localAuthorityApi.deleteLocalAuthority(localAuthorityToDeleteId, localAuthorityToDeleteContactId);
         localAuthorityApi.deleteLocalAuthorityByName(localAuthority.name);
     });
 
