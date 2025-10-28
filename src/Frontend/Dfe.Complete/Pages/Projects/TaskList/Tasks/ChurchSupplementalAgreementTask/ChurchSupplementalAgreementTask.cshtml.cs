@@ -70,7 +70,7 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.ChurchSupplementalAgreement
 
         public async Task<IActionResult> OnPost()
         {
-            await sender.Send(new UpdateChurchSupplementalAgreementTaskCommand(new TaskDataId(TasksDataId.GetValueOrDefault())!, Type,
+            await Sender.Send(new UpdateChurchSupplementalAgreementTaskCommand(new TaskDataId(TasksDataId.GetValueOrDefault())!, Type,
                 NotApplicable, Received, Cleared, Signed, SignedByDiocese, Saved, SignedBySecretaryState, SentOrSaved));
             SetTaskSuccessNotification();
             return Redirect(string.Format(RouteConstants.ProjectTaskList, ProjectId));

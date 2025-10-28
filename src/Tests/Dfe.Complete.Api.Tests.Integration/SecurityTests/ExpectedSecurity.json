@@ -436,6 +436,11 @@
       "ExpectedSecurity": "Authorize: Policy=CanReadWriteUpdate"
     },
     {
+      "Controller": "TasksDataController",
+      "Action": "UpdateDeedTerminationChurchSupplementalAgreementTaskAsync",
+      "ExpectedSecurity": "Authorize: Policy=CanReadWriteUpdate"
+    },
+    {
       "Controller": "ProjectsController",
       "Action": "UpdateDeleteProjectStatusAsync",
       "ExpectedSecurity": "Authorize: Policy=CanReadWriteUpdate"
