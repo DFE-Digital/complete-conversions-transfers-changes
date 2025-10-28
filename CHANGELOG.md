@@ -17,6 +17,7 @@ Security in case of vulnerabilities.
 ## Unreleased
 
 ### Added
+- Added `Confirm the incoming trust has completed all actions` task for transfer projects.
 
 ### Changed
 
