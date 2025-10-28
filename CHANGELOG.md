@@ -37,6 +37,8 @@ See the [full commit history](https://github.com/DFE-Digital/complete-conversion
 - Added transfer creation end point for prepare to complete
 - Added `Confirm if the bank details for the general annual grant payment need to change` task for transfer project.
 - Added  'Confirm the academy name' task for conversion project.
+- Added `Deed of termination for the master funding agreement` task for transfer project.
+
 - Added 'Land consent letter task for transfer projects'
 - Adding key contact record on confirming project handover and logging error message if key contact is already been added.
 - Added `Check accuracy of high needs places information` task for conversion project.
