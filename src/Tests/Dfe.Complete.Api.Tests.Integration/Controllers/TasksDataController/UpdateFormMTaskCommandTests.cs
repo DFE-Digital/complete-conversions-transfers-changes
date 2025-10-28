@@ -7,6 +7,7 @@ using Dfe.Complete.Tests.Common.Constants;
 using GovUK.Dfe.CoreLibs.Testing.AutoFixture.Attributes;
 using GovUK.Dfe.CoreLibs.Testing.Mocks.WebApplicationFactory; 
 using System.Security.Claims;
+using Dfe.Complete.Utils.Exceptions;
 using Microsoft.EntityFrameworkCore;
 using UpdateFormMTaskCommand = Dfe.Complete.Client.Contracts.UpdateFormMTaskCommand;
 
@@ -100,6 +101,30 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers.TasksDataController
             Assert.Null(existingTaskData.FormMSaved);
             Assert.Null(existingTaskData.FormMSigned);
             Assert.True(existingTaskData.FormMNotApplicable);
+        }
+        
+        [Theory]
+        [CustomAutoData(typeof(CustomWebApplicationDbContextFactoryCustomization))]
+        public async Task UpdateFormMTaskAsync_ShouldThrowError_WhenTaskDataIdIsNotFound(
+            CustomWebApplicationDbContextFactory<Program> factory,
+            ITasksDataClient tasksDataClient)
+        {
+            // Arrange
+            factory.TestClaims = [new Claim(ClaimTypes.Role, ApiRoles.ReadRole), new Claim(ClaimTypes.Role, ApiRoles.UpdateRole), new Claim(ClaimTypes.Role, ApiRoles.WriteRole)];
+
+            var dbContext = factory.GetDbContext<CompleteContext>();
+
+            await dbContext.SaveChangesAsync();
+
+            var command = new UpdateFormMTaskCommand
+            {
+                TaskDataId = new TaskDataId { Value = Guid.NewGuid() }
+            };
+
+            // Act + Assert
+            var exception = await Assert.ThrowsAsync<NotFoundException>(() => tasksDataClient.UpdateFormMTaskAsync(command, default));
+
+            Assert.Contains($"Transfer task data TaskDataId {{ Value = { command.TaskDataId.Value} }} not found.", exception.Message);
         }
     }
 }
