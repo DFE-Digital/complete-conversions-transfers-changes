@@ -51,11 +51,10 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.ConfirmDateAcademyTransferr
                 return Page();
             }
 
-            await Sender.Send(new UpdateConfirmDateAcademyTransferredTaskCommand(
+            var result = await Sender.Send(new UpdateConfirmDateAcademyTransferredTaskCommand(
                 new TaskDataId(TasksDataId.GetValueOrDefault())!, DateAcademyTransferred));
 
-            SetTaskSuccessNotification();
-            return Redirect(string.Format(RouteConstants.ProjectTaskList, ProjectId));
+            return OnPostProcessResponse(result);
 
         }
     }

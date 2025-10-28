@@ -54,10 +54,9 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.DeedOfTerminationForChurchS
         }
         public async Task<IActionResult> OnPostAsync()
         {
-            await Sender.Send(new UpdateDeedTerminationChurchSupplementalAgreementTaskCommand(new TaskDataId(TasksDataId.GetValueOrDefault())!,
+            var result = await Sender.Send(new UpdateDeedTerminationChurchSupplementalAgreementTaskCommand(new TaskDataId(TasksDataId.GetValueOrDefault())!,
                 NotApplicable, Received, ClearedPolicy, SignedOutgoingTrust, SignedByDiocese, Saved, SignedBySecretaryState, SavedAfterSigningBySecretaryState));
-            SetTaskSuccessNotification();
-            return Redirect(string.Format(RouteConstants.ProjectTaskList, ProjectId));
+            return OnPostProcessResponse(result);
         }
     }
 }

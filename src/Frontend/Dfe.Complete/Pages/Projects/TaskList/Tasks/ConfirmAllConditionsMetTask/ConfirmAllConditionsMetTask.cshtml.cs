@@ -40,12 +40,17 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.ConfirmAllConditionsMetTask
         }
         public async Task<IActionResult> OnPost()
         {
-            await Sender.Send(Type == ProjectType.Conversion 
-                ? new UpdateConfirmAllConditionsMetTaskCommand(new ProjectId(Guid.Parse(ProjectId)), Confirm)
-                : new UpdateConfirmTransferHasAuthorityToProceedTaskCommand(
+            if (Type == ProjectType.Conversion)
+            {
+                var result = await Sender.Send(new UpdateConfirmAllConditionsMetTaskCommand(new ProjectId(Guid.Parse(ProjectId)), Confirm));
+                return OnPostProcessResponse(result);
+            }
+            else
+            {
+                var result = await Sender.Send(new UpdateConfirmTransferHasAuthorityToProceedTaskCommand(
                     new TaskDataId(TasksDataId.GetValueOrDefault())!, AnyInformationChanged, BaselineSheetApproved, Confirm));
-            SetTaskSuccessNotification();
-            return Redirect(string.Format(RouteConstants.ProjectTaskList, ProjectId));
+                return OnPostProcessResponse(result);
+            }
         }
     }
 }

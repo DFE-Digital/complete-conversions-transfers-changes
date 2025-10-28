@@ -59,9 +59,8 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.ArticlesOfAssociationTask
         }
         public async Task<IActionResult> OnPost()
         {
-            await Sender.Send(new UpdateArticleOfAssociationTaskCommand(new TaskDataId(TasksDataId.GetValueOrDefault())!, Type, NotApplicable, Cleared, Received, Sent, Signed, Saved));
-            SetTaskSuccessNotification();
-            return Redirect(string.Format(RouteConstants.ProjectTaskList, ProjectId));
+            var result = await Sender.Send(new UpdateArticleOfAssociationTaskCommand(new TaskDataId(TasksDataId.GetValueOrDefault())!, Type, NotApplicable, Cleared, Received, Sent, Signed, Saved));
+            return OnPostProcessResponse(result);
         }
     }
 }

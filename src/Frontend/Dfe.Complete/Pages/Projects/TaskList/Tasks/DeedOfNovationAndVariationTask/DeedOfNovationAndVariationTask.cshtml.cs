@@ -50,10 +50,9 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.DeedOfNovationAndVariationT
         }
         public async Task<IActionResult> OnPost()
         {
-            await sender.Send(new UpdateDeedOfNovationAndVariationTaskCommand(
+            var result = await sender.Send(new UpdateDeedOfNovationAndVariationTaskCommand(
                 new TaskDataId(TasksDataId.GetValueOrDefault())!, Received, Cleared, SignedOutgoingTrust, SignedIncomingTrust, Saved, SignedSecretaryState, SaveAfterSign));
-            SetTaskSuccessNotification();
-            return Redirect(string.Format(RouteConstants.ProjectTaskList, ProjectId));
+            return OnPostProcessResponse(result);
         }
     }
 }

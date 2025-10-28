@@ -25,9 +25,8 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.ConfirmBankDetailsTask
         }
         public async Task<IActionResult> OnPostAsync()
         {
-            await Sender.Send(new UpdateConfirmBankDetailsTaskCommand(new TaskDataId(TasksDataId.GetValueOrDefault())!, BankDetailsChangingYesNo));
-            SetTaskSuccessNotification();
-            return Redirect(string.Format(RouteConstants.ProjectTaskList, ProjectId));
+            var result = await Sender.Send(new UpdateConfirmBankDetailsTaskCommand(new TaskDataId(TasksDataId.GetValueOrDefault())!, BankDetailsChangingYesNo));
+            return OnPostProcessResponse(result);
         }
     }
 }

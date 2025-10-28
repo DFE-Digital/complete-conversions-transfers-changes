@@ -38,10 +38,9 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.LandQuestionnaireTask
         }
 
         public async Task<IActionResult> OnPost()
-        { 
-            await Sender.Send(new UpdateLandQuestionnaireTaskCommand(new TaskDataId(TasksDataId.GetValueOrDefault())!, Received, Cleared, Signed, Saved));
-            SetTaskSuccessNotification();
-            return Redirect(string.Format(RouteConstants.ProjectTaskList, ProjectId));
+        {
+            var result = await Sender.Send(new UpdateLandQuestionnaireTaskCommand(new TaskDataId(TasksDataId.GetValueOrDefault())!, Received, Cleared, Signed, Saved));
+            return OnPostProcessResponse(result);
         }
     }
 }

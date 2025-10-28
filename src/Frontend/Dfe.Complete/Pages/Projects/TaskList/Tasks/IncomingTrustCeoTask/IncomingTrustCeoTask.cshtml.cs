@@ -38,9 +38,8 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.IncomingTrustCeoTask
         }
         public async Task<IActionResult> OnPost()
         {
-            await Sender.Send(new UpdateIncomingTrustCeoCommand(new KeyContactId(KeyContactId.GetValueOrDefault()), new ContactId(IncomingTrustCeoContactId.GetValueOrDefault())));
-            SetTaskSuccessNotification();
-            return Redirect(string.Format(RouteConstants.ProjectTaskList, ProjectId));
+            var result = await Sender.Send(new UpdateIncomingTrustCeoCommand(new KeyContactId(KeyContactId.GetValueOrDefault()), new ContactId(IncomingTrustCeoContactId.GetValueOrDefault())));
+            return OnPostProcessResponse(result);
         }
     }
 }

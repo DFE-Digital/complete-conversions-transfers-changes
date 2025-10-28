@@ -43,9 +43,8 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.AcademyRiskProtectionArrang
                 errorService.AddErrors(ModelState);
                 return Page();
             }
-            await Sender.Send(new UpdateConfirmAcademyRiskProtectionArrangementsTaskCommand(new TaskDataId(TasksDataId.GetValueOrDefault())!, Type, null, RpaOption, RpaReason));
-            SetTaskSuccessNotification();
-            return Redirect(string.Format(RouteConstants.ProjectTaskList, ProjectId));
+            var result = await Sender.Send(new UpdateConfirmAcademyRiskProtectionArrangementsTaskCommand(new TaskDataId(TasksDataId.GetValueOrDefault())!, Type, null, RpaOption, RpaReason));
+            return OnPostProcessResponse(result);
         }
     }
 }

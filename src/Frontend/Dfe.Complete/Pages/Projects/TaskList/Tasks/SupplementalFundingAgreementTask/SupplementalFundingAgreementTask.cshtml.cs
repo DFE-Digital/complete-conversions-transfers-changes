@@ -57,9 +57,8 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.SupplementalFundingAgreemen
         }
         public async Task<IActionResult> OnPost()
         {
-            await sender.Send(new UpdateSupplementalFundingAgreementTaskCommand(new TaskDataId(TasksDataId.GetValueOrDefault())!, Type, Received, Cleared, Sent, Saved, Signed, SignedSecretaryState));
-            SetTaskSuccessNotification();
-            return Redirect(string.Format(RouteConstants.ProjectTaskList, ProjectId));
+            var result = await sender.Send(new UpdateSupplementalFundingAgreementTaskCommand(new TaskDataId(TasksDataId.GetValueOrDefault())!, Type, Received, Cleared, Sent, Saved, Signed, SignedSecretaryState));
+            return OnPostProcessResponse(result);
         }
     }
 }
