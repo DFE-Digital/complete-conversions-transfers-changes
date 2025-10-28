@@ -3343,20 +3343,20 @@
         }
       }
     },
-    "/v1/TasksData/TaskData/IncomingTrustHasCompleteAllActions": {
+    "/v1/TasksData/TaskData/CheckAccuracyOfHigherNeeds": {
       "patch": {
         "tags": [
           "TasksData"
         ],
-        "summary": "Confirm the incoming trust has completed all actions for transfer project.",
-        "operationId": "TasksData_UpdateConfirmIncomingTrustHasCompleteAllActionsTask",
+        "summary": "Check the accuracy of higher needs for conversion project.",
+        "operationId": "TasksData_UpdateAccuracyOfHigherNeedsTask",
         "requestBody": {
           "x-name": "request",
           "description": "The update command.",
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/UpdateConfirmIncomingTrustHasCompleteAllActionsTaskCommand"
+                "$ref": "#/components/schemas/UpdateAccuracyOfHigherNeedsTaskCommand"
               }
             }
           },
@@ -3365,7 +3365,40 @@
         },
         "responses": {
           "204": {
-            "description": "Updated the confirm incoming trust has completed all actions task successfully."
+            "description": "Updates the accuracy of higher needs task updated successfully."
+          },
+          "400": {
+            "description": "Invalid request data."
+          },
+          "404": {
+            "description": "Project not found."
+          }
+        }
+      }
+    },
+    "/v1/TasksData/TaskData/DeedOfTerminationMasterFundingAgreement": {
+      "patch": {
+        "tags": [
+          "TasksData"
+        ],
+        "summary": "Updating deed of termination for the master funding agreement for transfer project.",
+        "operationId": "TasksData_UpdateDeedOfTerminationMasterFundingAgreementTask",
+        "requestBody": {
+          "x-name": "request",
+          "description": "The update command.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateDeedOfTerminationMasterFundingAgreementTaskCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "204": {
+            "description": "Updated deed of termination for the master funding agreement for transfer project task successfully."
           },
           "400": {
             "description": "Invalid request data."
@@ -8467,18 +8500,59 @@
           }
         }
       },
-      "UpdateConfirmIncomingTrustHasCompleteAllActionsTaskCommand": {
+      "UpdateAccuracyOfHigherNeedsTaskCommand": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
           "taskDataId": {
             "$ref": "#/components/schemas/TaskDataId"
           },
-          "emailed": {
+          "confirmNumber": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "confirmPublishedNumber": {
+            "type": "boolean",
+            "nullable": true
+          }
+        }
+      },
+      "UpdateDeedOfTerminationMasterFundingAgreementTaskCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "taskDataId": {
+            "$ref": "#/components/schemas/TaskDataId"
+          },
+          "received": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "cleared": {
             "type": "boolean",
             "nullable": true
           },
           "saved": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "signed": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "contactFinancialReportingTeam": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "signedSecretaryState": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "savedAcademySharePointHolder": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "notApplicable": {
             "type": "boolean",
             "nullable": true
           }
