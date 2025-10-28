@@ -591,7 +591,7 @@ namespace Dfe.Complete.Api.Controllers
         }        
 
         /// <summary>
-        /// Updating the chair of governors’ task data for either conversion or transfer project.
+        /// Updating the chair of governors’ task data for conversion project.
         /// </summary>
         /// <param name="request">The update command.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
