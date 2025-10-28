@@ -28,9 +28,8 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.AcademyRiskProtectionArrang
         }
         public async Task<IActionResult> OnPost()
         {
-            await Sender.Send(new UpdateConfirmAcademyRiskProtectionArrangementsTaskCommand(new TaskDataId(TasksDataId.GetValueOrDefault())!, Type, RpaPolicyConfirm, null, null));
-            SetTaskSuccessNotification();
-            return Redirect(string.Format(RouteConstants.ProjectTaskList, ProjectId));
+            var result = await Sender.Send(new UpdateConfirmAcademyRiskProtectionArrangementsTaskCommand(new TaskDataId(TasksDataId.GetValueOrDefault())!, Type, RpaPolicyConfirm, null, null));
+            return OnPostProcessResponse(result);
         }
     }
 }

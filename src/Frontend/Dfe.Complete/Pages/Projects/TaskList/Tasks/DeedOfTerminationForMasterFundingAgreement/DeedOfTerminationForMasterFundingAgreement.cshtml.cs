@@ -57,9 +57,8 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.DeedOfTerminationForMasterF
 
         public async Task<IActionResult> OnPost()
         {
-            await Sender.Send(new UpdateDeedOfTerminationMasterFundingAgreementTaskCommand(new Domain.ValueObjects.TaskDataId(TasksDataId.GetValueOrDefault())!, Received, Cleared, Saved, Signed, ContactFinancialReportingTeam, SignedSecretaryState, SavedAcademySharePointHolder, NotApplicable));
-            SetTaskSuccessNotification();
-            return Redirect(string.Format(RouteConstants.ProjectTaskList, ProjectId));
+            var result = await Sender.Send(new UpdateDeedOfTerminationMasterFundingAgreementTaskCommand(new Domain.ValueObjects.TaskDataId(TasksDataId.GetValueOrDefault())!, Received, Cleared, Saved, Signed, ContactFinancialReportingTeam, SignedSecretaryState, SavedAcademySharePointHolder, NotApplicable));
+            return OnPostProcessResponse(result);
         }
     }
 }

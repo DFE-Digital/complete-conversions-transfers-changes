@@ -55,10 +55,9 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.RedactAndSendDocumentsTask
         }
         public async Task<IActionResult> OnPost()
         {
-            await sender.Send(new UpdateRedactAndSendDocumentsTaskCommand(
+            var result = await sender.Send(new UpdateRedactAndSendDocumentsTaskCommand(
                 new TaskDataId(TasksDataId.GetValueOrDefault())!, Type, Redact, Saved, SendToEsfa, Send, SendToSolicitors));
-            SetTaskSuccessNotification();
-            return Redirect(string.Format(RouteConstants.ProjectTaskList, ProjectId));
+            return OnPostProcessResponse(result);
         }
     }
 }

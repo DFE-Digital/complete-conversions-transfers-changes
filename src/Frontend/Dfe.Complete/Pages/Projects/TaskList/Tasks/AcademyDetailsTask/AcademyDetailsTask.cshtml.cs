@@ -23,16 +23,15 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.AcademyDetailsTask
         {
             await base.OnGetAsync();
             TasksDataId = Project.TasksDataId?.Value;
-            AcademyName = ConversionTaskData.AcademyDetailsName;            
+            AcademyName = ConversionTaskData.AcademyDetailsName;
 
             return Page();
         }
 
         public async Task<IActionResult> OnPost()
         {
-            await Sender.Send(new UpdateConfirmAcademyNameTaskCommand(new TaskDataId(TasksDataId.GetValueOrDefault())!, AcademyName));
-            SetTaskSuccessNotification();
-            return Redirect(string.Format(RouteConstants.ProjectTaskList, ProjectId));
+            var result = await Sender.Send(new UpdateConfirmAcademyNameTaskCommand(new TaskDataId(TasksDataId.GetValueOrDefault())!, AcademyName));
+            return OnPostProcessResponse(result);
         }
     }
 }

@@ -34,9 +34,8 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.LandRegistryTitlePlansTask
         }
         public async Task<IActionResult> OnPost()
         {
-            await Sender.Send(new UpdateLandRegistryTitlePlansTaskCommand(new TaskDataId(TasksDataId.GetValueOrDefault())!, Received, Cleared, Saved));
-            SetTaskSuccessNotification();
-            return Redirect(string.Format(RouteConstants.ProjectTaskList, ProjectId));
+            var result = await Sender.Send(new UpdateLandRegistryTitlePlansTaskCommand(new TaskDataId(TasksDataId.GetValueOrDefault())!, Received, Cleared, Saved));
+            return OnPostProcessResponse(result);
         }
     }
 }

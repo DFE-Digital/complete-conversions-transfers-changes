@@ -39,9 +39,8 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.CompleteNotificationOfChang
         }
         public async Task<IActionResult> OnPost()
         {            
-            await Sender.Send(new UpdateCompleteNotificationOfChangeTaskCommand(new TaskDataId(TasksDataId.GetValueOrDefault())!, NotApplicable, TellLocalAuthority, CheckDocument, SendDocument));
-            SetTaskSuccessNotification();
-            return Redirect(string.Format(RouteConstants.ProjectTaskList, ProjectId));
+            var result = await Sender.Send(new UpdateCompleteNotificationOfChangeTaskCommand(new TaskDataId(TasksDataId.GetValueOrDefault())!, NotApplicable, TellLocalAuthority, CheckDocument, SendDocument));
+            return OnPostProcessResponse(result);
         } 
     } 
 }

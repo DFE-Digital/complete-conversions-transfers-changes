@@ -3,7 +3,7 @@ using Dfe.Complete.Constants;
 using Dfe.Complete.Domain.Enums;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc; 
+using Microsoft.AspNetCore.Mvc;
 
 namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.LandConsentLetterTask
 {
@@ -43,9 +43,8 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.LandConsentLetterTask
         }
         public async Task<IActionResult> OnPost()
         {
-            await Sender.Send(new UpdateLandConsentLetterTaskCommand(new Domain.ValueObjects.TaskDataId(TasksDataId.GetValueOrDefault())!, NotApplicable, Drafted, Signed, Sent, Saved));
-            SetTaskSuccessNotification();
-            return Redirect(string.Format(RouteConstants.ProjectTaskList, ProjectId));
+            var result = await Sender.Send(new UpdateLandConsentLetterTaskCommand(new Domain.ValueObjects.TaskDataId(TasksDataId.GetValueOrDefault())!, NotApplicable, Drafted, Signed, Sent, Saved));
+            return OnPostProcessResponse(result);
         }
     }
 }

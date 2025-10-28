@@ -29,10 +29,8 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.MainContactTask
         }
         public async Task<IActionResult> OnPost()
         {
-            await Sender.Send(new UpdateMainContactTaskCommand(new ProjectId(Guid.Parse(ProjectId)), new ContactId(MainContactId!.Value)));
-            SetTaskSuccessNotification();
-            
-            return LocalRedirect(string.Format(RouteConstants.ProjectTaskList, ProjectId));
+            var result = await Sender.Send(new UpdateMainContactTaskCommand(new ProjectId(Guid.Parse(ProjectId)), new ContactId(MainContactId!.Value)));
+            return OnPostProcessResponse(result);
         }
     }
 }

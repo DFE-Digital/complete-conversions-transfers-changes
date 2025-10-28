@@ -28,9 +28,8 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.AccuracyOfHigherNeedsTask
         }
         public async Task<IActionResult> OnPost()
         {
-            await Sender.Send(new UpdateAccuracyOfHigherNeedsTaskCommand(new TaskDataId(TasksDataId.GetValueOrDefault())!, ConfirmNumber, ConfirmPublishedNumber));
-            SetTaskSuccessNotification();
-            return Redirect(string.Format(RouteConstants.ProjectTaskList, ProjectId));
+            var result = await Sender.Send(new UpdateAccuracyOfHigherNeedsTaskCommand(new TaskDataId(TasksDataId.GetValueOrDefault())!, ConfirmNumber, ConfirmPublishedNumber));
+            return OnPostProcessResponse(result);
         }
     }
 }

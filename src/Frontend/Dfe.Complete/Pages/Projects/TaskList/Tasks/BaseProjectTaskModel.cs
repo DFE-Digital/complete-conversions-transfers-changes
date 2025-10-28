@@ -11,6 +11,7 @@ using Dfe.Complete.Domain.ValueObjects;
 using Dfe.Complete.Extensions;
 using Microsoft.AspNetCore.Authorization;
 using GovUK.Dfe.CoreLibs.Utilities.Extensions;
+using Dfe.Complete.Application.Common.Models;
 
 namespace Dfe.Complete.Pages.Projects.TaskList.Tasks;
 
@@ -26,7 +27,7 @@ public class BaseProjectTaskModel(ISender sender, IAuthorizationService authoriz
         if (Project.State == ProjectState.Completed || noteUserId != User.GetUserId())
             return false;
         return true;
-    } 
+    }
 
     public override async Task<IActionResult> OnGetAsync()
     {
@@ -70,8 +71,27 @@ public class BaseProjectTaskModel(ISender sender, IAuthorizationService authoriz
         return Redirect(string.Format(RouteConstants.ProjectAddTaskNote, ProjectId, TaskIdentifier.ToDescription()));
     }
 
+    internal IActionResult OnPostProcessResponse<T>(Result<T> result)
+    {
+        if (result.IsSuccess)
+        {
+            SetTaskSuccessNotification();
+            return Redirect(string.Format(RouteConstants.ProjectTaskList, ProjectId));
+        }
+
+        Logger.LogError("Failed to update \"{TaskDescription}\" task: {Error}", TaskIdentifier.ToDescription(), result.Error);
+        SetTaskErrorNotification();
+        return Page();
+    }
+
     internal void SetTaskSuccessNotification()
     {
         TempData.SetNotification(NotificationType.Success, "Success", "Task updated successfully");
     }
+
+    internal void SetTaskErrorNotification()
+    {
+        TempData.SetNotification(NotificationType.Error, "Error", "An unexpected error occurred while updating the task. Please try again.");
+    }
+
 }

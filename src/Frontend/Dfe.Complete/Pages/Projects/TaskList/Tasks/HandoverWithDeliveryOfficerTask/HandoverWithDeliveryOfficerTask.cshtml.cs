@@ -52,8 +52,7 @@ public class HandoverWithDeliveryOfficerTaskModel(ISender sender, IAuthorization
 
     public async Task<IActionResult> OnPost()
     {
-        await sender.Send(new UpdateHandoverWithDeliveryOfficerTaskCommand(new TaskDataId(TasksDataId.GetValueOrDefault())!, Type, NotApplicable, ReviewProjectInformation, MakeNotes, AttendHandoverMeeting));
-        SetTaskSuccessNotification();
-        return Redirect(string.Format(RouteConstants.ProjectTaskList, ProjectId));
+        var result = await sender.Send(new UpdateHandoverWithDeliveryOfficerTaskCommand(new TaskDataId(TasksDataId.GetValueOrDefault())!, Type, NotApplicable, ReviewProjectInformation, MakeNotes, AttendHandoverMeeting));
+        return OnPostProcessResponse(result);
     }
 }

@@ -78,11 +78,18 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.StakeholderKickoffTask
                 SignificantDate,
                 User.Identity!.Name);
             
-            await Sender.Send(request);
-            
-            SetTaskSuccessNotification();
-            
-            return Redirect(string.Format(RouteConstants.ProjectTaskList, ProjectId));
+            try
+            {
+                await Sender.Send(request);
+                SetTaskSuccessNotification();
+                return Redirect(string.Format(RouteConstants.ProjectTaskList, ProjectId));
+            }
+            catch (Exception ex)
+            {
+                Logger.LogError(ex, "Failed to update External Stakeholder Kick Off task");
+                SetTaskErrorNotification();
+                return Page();
+            }
         }
     }
 }

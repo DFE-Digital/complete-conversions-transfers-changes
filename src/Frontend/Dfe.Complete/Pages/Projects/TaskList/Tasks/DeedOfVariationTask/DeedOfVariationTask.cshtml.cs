@@ -64,9 +64,8 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.DeedOfVariationTask
         }
         public async Task<IActionResult> OnPost()
         {
-            await sender.Send(new UpdateDeedOfVariationTaskCommand(new TaskDataId(TasksDataId.GetValueOrDefault())!, Type, Received, Cleared, Sent, Saved, Signed, SignedSecretaryState, NotApplicable));
-            SetTaskSuccessNotification();
-            return Redirect(string.Format(RouteConstants.ProjectTaskList, ProjectId));
+            var result = await sender.Send(new UpdateDeedOfVariationTaskCommand(new TaskDataId(TasksDataId.GetValueOrDefault())!, Type, Received, Cleared, Sent, Saved, Signed, SignedSecretaryState, NotApplicable));
+            return OnPostProcessResponse(result);
         }
     }
 }

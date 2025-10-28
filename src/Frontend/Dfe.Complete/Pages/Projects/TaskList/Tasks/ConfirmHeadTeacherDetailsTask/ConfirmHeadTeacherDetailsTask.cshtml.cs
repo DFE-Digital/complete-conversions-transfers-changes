@@ -38,9 +38,8 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.ConfirmHeadTeacherDetailsTa
         }
         public async Task<IActionResult> OnPost()
         {
-            await Sender.Send(new UpdateHeadTeacherCommand(new KeyContactId(KeyContactId.GetValueOrDefault()), new ContactId(HeadTeacherContactId.GetValueOrDefault())));
-            SetTaskSuccessNotification();
-            return Redirect(string.Format(RouteConstants.ProjectTaskList, ProjectId));
+            var result = await Sender.Send(new UpdateHeadTeacherCommand(new KeyContactId(KeyContactId.GetValueOrDefault()), new ContactId(HeadTeacherContactId.GetValueOrDefault())));
+            return OnPostProcessResponse(result);
         }
     }
 }

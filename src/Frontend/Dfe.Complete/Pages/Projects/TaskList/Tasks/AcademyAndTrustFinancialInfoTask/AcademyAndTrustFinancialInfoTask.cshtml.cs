@@ -32,9 +32,8 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.AcademyAndTrustFinancialInf
 
         public async Task<IActionResult> OnPost()
         {
-            await Sender.Send(new UpdateAcademyAndTrustFinancialInformationTaskCommand(new TaskDataId(TasksDataId.GetValueOrDefault())!, NotApplicable, AcademySurplusOrDeficit, TrustSurplusOrDeficit));
-            SetTaskSuccessNotification();
-            return Redirect(string.Format(RouteConstants.ProjectTaskList, ProjectId));
+            var result = await Sender.Send(new UpdateAcademyAndTrustFinancialInformationTaskCommand(new TaskDataId(TasksDataId.GetValueOrDefault())!, NotApplicable, AcademySurplusOrDeficit, TrustSurplusOrDeficit));
+            return OnPostProcessResponse(result);
         }
     }
 }
