@@ -19,6 +19,8 @@ Security in case of vulnerabilities.
 ### Added
 
 - Added `Deed Of Termination For the Church Supplemental Agreement` task for transfer project.
+- Added `Request a new URN and record for the academy` task for transfer projects.
+
 
 ### Changed
 
