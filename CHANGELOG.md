@@ -17,6 +17,7 @@ Security in case of vulnerabilities.
 ## Unreleased
 
 ### Added
+- Added `Check and clear Form M` task for transfer projects.
 
 ### Changed
 
