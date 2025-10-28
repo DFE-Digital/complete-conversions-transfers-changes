@@ -23,7 +23,7 @@ public record CreateMatConversionProjectCommand(
     string? HandoverComments,
     string? UserAdId) : IRequest<ProjectId>;
 
-[Obsolete("Deprecated as in-app project creations are no longer required")]
+[Obsolete("Deprecated as in-app project creations are no longer required")] //NOSONAR
 public class CreateMatConversionProjectCommandHandler(
        ICompleteRepository<Project> projectRepository,
        ICompleteRepository<ConversionTasksData> conversionTaskRepository,
