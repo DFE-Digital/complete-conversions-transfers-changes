@@ -9,7 +9,7 @@
 		"copy-webpack-plugin": "11.0.0",
 		"css-loader": "6.11.0",
 		"file-loader": "6.2.0",
-		"mini-css-extract-plugin": "2.9.2",
+		"mini-css-extract-plugin": "2.9.4",
 		"sass": "1.85.1",
 		"sass-loader": "13.3.3",
 		"style-loader": "3.3.4",

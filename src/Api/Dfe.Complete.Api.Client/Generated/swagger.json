@@ -3313,6 +3313,171 @@
         }
       }
     },
+    "/v1/TasksData/TaskData/ConfirmBankDetails": {
+      "patch": {
+        "tags": [
+          "TasksData"
+        ],
+        "summary": "Confirm if the bank details for the general annual grant payment need to change for transfer project.",
+        "operationId": "TasksData_UpdateConfirmBankDetailsTask",
+        "requestBody": {
+          "x-name": "request",
+          "description": "The update command.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateConfirmBankDetailsTaskCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "204": {
+            "description": "Confirm if the bank details for the general annual grant payment need to change task successfully."
+          },
+          "400": {
+            "description": "Invalid request data."
+          },
+          "404": {
+            "description": "Project not found."
+          }
+        }
+      }
+    },
+    "/v1/TasksData/TaskData/LandConsentLetter": {
+      "patch": {
+        "tags": [
+          "TasksData"
+        ],
+        "summary": "Updating the land consent letter task data for transfer project.",
+        "operationId": "TasksData_UpdateLandConsentLetterTask",
+        "requestBody": {
+          "x-name": "request",
+          "description": "The update command.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateLandConsentLetterTaskCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "204": {
+            "description": "Updated the land consent letter task successfully."
+          },
+          "400": {
+            "description": "Invalid request data."
+          },
+          "404": {
+            "description": "Project not found."
+          }
+        }
+      }
+    },
+    "/v1/TasksData/TaskData/CheckAccuracyOfHigherNeeds": {
+      "patch": {
+        "tags": [
+          "TasksData"
+        ],
+        "summary": "Check the accuracy of higher needs for conversion project.",
+        "operationId": "TasksData_UpdateAccuracyOfHigherNeedsTask",
+        "requestBody": {
+          "x-name": "request",
+          "description": "The update command.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateAccuracyOfHigherNeedsTaskCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "204": {
+            "description": "Updates the accuracy of higher needs task updated successfully."
+          },
+          "400": {
+            "description": "Invalid request data."
+          },
+          "404": {
+            "description": "Project not found."
+          }
+        }
+      }
+    },
+    "/v1/TasksData/TaskData/DeedOfTerminationMasterFundingAgreement": {
+      "patch": {
+        "tags": [
+          "TasksData"
+        ],
+        "summary": "Updating deed of termination for the master funding agreement for transfer project.",
+        "operationId": "TasksData_UpdateDeedOfTerminationMasterFundingAgreementTask",
+        "requestBody": {
+          "x-name": "request",
+          "description": "The update command.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateDeedOfTerminationMasterFundingAgreementTaskCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "204": {
+            "description": "Updated deed of termination for the master funding agreement for transfer project task successfully."
+          },
+          "400": {
+            "description": "Invalid request data."
+          },
+          "404": {
+            "description": "Project not found."
+          }
+        }
+      }
+    },
+    "/v1/TasksData/TaskData/DeedTerminationChurchSupplementalAgreement": {
+      "patch": {
+        "tags": [
+          "TasksData"
+        ],
+        "summary": "Updating the deed of termination for the church supplemental agreement task data for transfer project.",
+        "operationId": "TasksData_UpdateDeedTerminationChurchSupplementalAgreementTask",
+        "requestBody": {
+          "x-name": "request",
+          "description": "The update command.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateDeedTerminationChurchSupplementalAgreementTaskCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "204": {
+            "description": "Updated the deed of termination for the church supplemental church agreement task successfully."
+          },
+          "400": {
+            "description": "Invalid request data."
+          },
+          "404": {
+            "description": "Project not found."
+          }
+        }
+      }
+    },
     "/v1/Trust/List/All": {
       "get": {
         "tags": [
@@ -8370,6 +8535,147 @@
           },
           "academyName": {
             "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "UpdateConfirmBankDetailsTaskCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "taskDataId": {
+            "$ref": "#/components/schemas/TaskDataId"
+          },
+          "bankDetailsChangingYesNo": {
+            "type": "boolean",
+            "nullable": true
+          }
+        }
+      },
+      "UpdateLandConsentLetterTaskCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "taskDataId": {
+            "$ref": "#/components/schemas/TaskDataId"
+          },
+          "notApplicable": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "drafted": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "signed": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "sent": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "saved": {
+            "type": "boolean",
+            "nullable": true
+          }
+        }
+      },
+      "UpdateAccuracyOfHigherNeedsTaskCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "taskDataId": {
+            "$ref": "#/components/schemas/TaskDataId"
+          },
+          "confirmNumber": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "confirmPublishedNumber": {
+            "type": "boolean",
+            "nullable": true
+          }
+        }
+      },
+      "UpdateDeedOfTerminationMasterFundingAgreementTaskCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "taskDataId": {
+            "$ref": "#/components/schemas/TaskDataId"
+          },
+          "received": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "cleared": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "saved": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "signed": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "contactFinancialReportingTeam": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "signedSecretaryState": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "savedAcademySharePointHolder": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "notApplicable": {
+            "type": "boolean",
+            "nullable": true
+          }
+        }
+      },
+      "UpdateDeedTerminationChurchSupplementalAgreementTaskCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "taskDataId": {
+            "$ref": "#/components/schemas/TaskDataId"
+          },
+          "notApplicable": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "received": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "cleared": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "signed": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "signedByDiocese": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "saved": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "signedBySecretaryState": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "savedAfterSigningBySecretaryState": {
+            "type": "boolean",
             "nullable": true
           }
         }
