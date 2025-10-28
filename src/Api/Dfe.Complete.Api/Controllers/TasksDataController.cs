@@ -588,8 +588,7 @@ namespace Dfe.Complete.Api.Controllers
         {
             await sender.Send(request, cancellationToken);
             return NoContent();
-        }
-        }
+        }        
 
         /// <summary>
         /// Updating the chair of governors’ task data for either conversion or transfer project.
