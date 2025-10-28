@@ -9231,24 +9231,24 @@ namespace Dfe.Complete.Client
         }
 
         /// <summary>
-        /// Updating the deed of termination for the church supplemental agreement task data for transfer project.
+        /// Updating the chair of governors’ task data for conversion project.
         /// </summary>
         /// <param name="request">The update command.</param>
-        /// <returns>Updated the deed of termination for the church supplemental church agreement task successfully.</returns>
+        /// <returns>Updated the chair of governors’ task successfully.</returns>
         /// <exception cref="CompleteApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task UpdateDeedTerminationChurchSupplementalAgreementTaskAsync(UpdateDeedTerminationChurchSupplementalAgreementTaskCommand request)
+        public virtual System.Threading.Tasks.Task UpdateChairOfGovernorsTaskAsync(UpdateChairOfGovernorsCommand request)
         {
-            return UpdateDeedTerminationChurchSupplementalAgreementTaskAsync(request, System.Threading.CancellationToken.None);
+            return UpdateChairOfGovernorsTaskAsync(request, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>
-        /// Updating the deed of termination for the church supplemental agreement task data for transfer project.
+        /// Updating the chair of governors’ task data for conversion project.
         /// </summary>
         /// <param name="request">The update command.</param>
-        /// <returns>Updated the deed of termination for the church supplemental church agreement task successfully.</returns>
+        /// <returns>Updated the chair of governors’ task successfully.</returns>
         /// <exception cref="CompleteApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task UpdateDeedTerminationChurchSupplementalAgreementTaskAsync(UpdateDeedTerminationChurchSupplementalAgreementTaskCommand request, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task UpdateChairOfGovernorsTaskAsync(UpdateChairOfGovernorsCommand request, System.Threading.CancellationToken cancellationToken)
         {
             if (request == null)
                 throw new System.ArgumentNullException("request");
@@ -9267,8 +9267,8 @@ namespace Dfe.Complete.Client
 
                     var urlBuilder_ = new System.Text.StringBuilder();
                     if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
-                    // Operation Path: "v1/TasksData/TaskData/DeedTerminationChurchSupplementalAgreement"
-                    urlBuilder_.Append("v1/TasksData/TaskData/DeedTerminationChurchSupplementalAgreement");
+                    // Operation Path: "v1/TasksData/TaskData/ConfirmChairOfGovernors"
+                    urlBuilder_.Append("v1/TasksData/TaskData/ConfirmChairOfGovernors");
 
                     PrepareRequest(client_, request_, urlBuilder_);
 
@@ -9330,24 +9330,24 @@ namespace Dfe.Complete.Client
         }
 
         /// <summary>
-        /// Updating the chair of governors’ task data for either conversion or transfer project.
+        /// Updating the deed of termination for the church supplemental agreement task data for transfer project.
         /// </summary>
         /// <param name="request">The update command.</param>
-        /// <returns>Updated the chair of governors’ task successfully.</returns>
+        /// <returns>Updated the deed of termination for the church supplemental church agreement task successfully.</returns>
         /// <exception cref="CompleteApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task UpdateChairOfGovernorsTaskAsync(UpdateChairOfGovernorsCommand request)
+        public virtual System.Threading.Tasks.Task UpdateDeedTerminationChurchSupplementalAgreementTaskAsync(UpdateDeedTerminationChurchSupplementalAgreementTaskCommand request)
         {
-            return UpdateChairOfGovernorsTaskAsync(request, System.Threading.CancellationToken.None);
+            return UpdateDeedTerminationChurchSupplementalAgreementTaskAsync(request, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>
-        /// Updating the chair of governors’ task data for either conversion or transfer project.
+        /// Updating the deed of termination for the church supplemental agreement task data for transfer project.
         /// </summary>
         /// <param name="request">The update command.</param>
-        /// <returns>Updated the chair of governors’ task successfully.</returns>
+        /// <returns>Updated the deed of termination for the church supplemental church agreement task successfully.</returns>
         /// <exception cref="CompleteApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task UpdateChairOfGovernorsTaskAsync(UpdateChairOfGovernorsCommand request, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task UpdateDeedTerminationChurchSupplementalAgreementTaskAsync(UpdateDeedTerminationChurchSupplementalAgreementTaskCommand request, System.Threading.CancellationToken cancellationToken)
         {
             if (request == null)
                 throw new System.ArgumentNullException("request");
@@ -9366,8 +9366,8 @@ namespace Dfe.Complete.Client
 
                     var urlBuilder_ = new System.Text.StringBuilder();
                     if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
-                    // Operation Path: "v1/TasksData/TaskData/ConfirmChairOfGovernors"
-                    urlBuilder_.Append("v1/TasksData/TaskData/ConfirmChairOfGovernors");
+                    // Operation Path: "v1/TasksData/TaskData/DeedTerminationChurchSupplementalAgreement"
+                    urlBuilder_.Append("v1/TasksData/TaskData/DeedTerminationChurchSupplementalAgreement");
 
                     PrepareRequest(client_, request_, urlBuilder_);
 
