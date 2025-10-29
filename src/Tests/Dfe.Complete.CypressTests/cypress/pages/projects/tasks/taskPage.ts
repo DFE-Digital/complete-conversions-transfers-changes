@@ -92,7 +92,7 @@ export class TaskPage extends BasePage {
     }
 
     noSaveAndReturnExists() {
-        return this.buttonDoesNotExist("Save and return");
+        return this.doesntContain("Save and return");
     }
 
     private performLabelContainerAction(action: () => void) {
