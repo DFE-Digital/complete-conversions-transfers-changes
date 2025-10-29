@@ -45,7 +45,7 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.SubleasesTask
             Cleared = ConversionTaskData.SubleasesCleared;
             Signed = ConversionTaskData.SubleasesSigned;
             Saved = ConversionTaskData.SubleasesSaved;
-            Signed = ConversionTaskData.SubleasesEmailSigned;
+            EmailSigned = ConversionTaskData.SubleasesEmailSigned;
             ReceiveSigned = ConversionTaskData.SubleasesReceiveSigned;
             SaveSigned = ConversionTaskData.SubleasesSaveSigned;
             return Page();
