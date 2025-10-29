@@ -5,6 +5,7 @@ import {
     shouldNotBeAbleToAddAProjectNote,
     shouldNotBeAbleToAddAProjectTaskNote,
     shouldNotBeAbleToCreateAProject,
+    shouldNotBeAbleToSoftDeleteAProject,
     shouldNotHaveAccessToViewAndEditUsers,
     shouldNotHaveAccessToViewConversionURNsPage,
     shouldNotHaveAccessToViewHandedOverProjects,
@@ -128,8 +129,8 @@ describe("Capabilities and permissions of the business support user", () => {
         shouldNotBeAbleToAddAProjectTaskNote(projectId);
     });
 
-    it.skip("Should NOT be able to soft delete projects", () => {
-        // not implemented
+    it("Should NOT be able to soft delete projects", () => {
+        shouldNotBeAbleToSoftDeleteAProject(projectId);
     });
 
     it("Should NOT be able to view and edit local authorities", () => {
