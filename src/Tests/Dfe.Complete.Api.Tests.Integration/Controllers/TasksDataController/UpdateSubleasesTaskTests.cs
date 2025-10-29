@@ -18,7 +18,7 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers.TasksDataController
         [CustomAutoData(
             typeof(CustomWebApplicationDbContextFactoryCustomization),
             typeof(ConversionTaskDataCustomization))]
-        public async Task UpdateSubleasesTaskAsync_ShouldUpdate_TransferTaskData(
+        public async Task UpdateSubleasesTaskAsync_ShouldUpdate_ConversionTaskData(
             CustomWebApplicationDbContextFactory<Program> factory,
             ITasksDataClient tasksDataClient,
             IFixture fixture)
