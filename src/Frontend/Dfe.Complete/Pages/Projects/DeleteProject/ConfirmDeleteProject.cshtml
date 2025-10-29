@@ -1,0 +1,24 @@
+﻿@page "/projects/{projectId}/confirm_delete"
+@using Dfe.Complete.Constants
+@model Dfe.Complete.Pages.Projects.DeleteProject.ConfirmDeleteProjectModel
+@{
+    Layout = "_Layout";
+}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        <span class="govuk-caption-l">
+            School URN @Model.Establishment.Urn
+        </span>
+        <h1 class="govuk-heading-xl">Delete @Model.Establishment.Name</h1>
+        <p>You are about to delete this project.</p> 
+        <p>It will no longer appear in the application or in exports, and will not be counted in project statistics.</p>
+        <p>Only delete this project if you are sure you want to proceed.</p>
+        <form method="post" id="delete_project" novalidate>
+            <div class="govuk-button-group">
+                <govuk-button class="govuk-button--warning" data-prevent-double-click="true" type="submit" data-cy="btn-delete-project">Delete project</govuk-button>
+                <a class="govuk-link" data-cy="btn-cancel" href="@String.Format(RouteConstants.Project, Model.ProjectId)">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div> 
