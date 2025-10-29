@@ -3442,6 +3442,39 @@
         }
       }
     },
+    "/v1/TasksData/TaskData/ConfirmChairOfGovernors": {
+      "patch": {
+        "tags": [
+          "TasksData"
+        ],
+        "summary": "Updating the chair of governors’ task data for conversion project.",
+        "operationId": "TasksData_UpdateChairOfGovernorsTask",
+        "requestBody": {
+          "x-name": "request",
+          "description": "The update command.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateChairOfGovernorsCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "204": {
+            "description": "Updated the chair of governors’ task successfully."
+          },
+          "400": {
+            "description": "Invalid request data."
+          },
+          "404": {
+            "description": "Project not found."
+          }
+        }
+      }
+    },
     "/v1/TasksData/TaskData/DeedTerminationChurchSupplementalAgreement": {
       "patch": {
         "tags": [
@@ -8630,6 +8663,18 @@
           "notApplicable": {
             "type": "boolean",
             "nullable": true
+          }
+        }
+      },
+      "UpdateChairOfGovernorsCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "keyContactId": {
+            "$ref": "#/components/schemas/KeyContactId"
+          },
+          "chairOfGovernorsId": {
+            "$ref": "#/components/schemas/ContactId"
           }
         }
       },
