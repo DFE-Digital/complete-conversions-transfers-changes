@@ -2212,6 +2212,39 @@
         }
       }
     },
+    "/v1/Projects/project/Delete": {
+      "patch": {
+        "tags": [
+          "Projects"
+        ],
+        "summary": "Sets the delete status for a specific project.",
+        "operationId": "Projects_UpdateDeleteProjectStatus",
+        "requestBody": {
+          "x-name": "request",
+          "description": "The update command.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateDeleteProjectCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "204": {
+            "description": "Updated the project with delete status"
+          },
+          "400": {
+            "description": "Invalid request data."
+          },
+          "404": {
+            "description": "Project not found."
+          }
+        }
+      }
+    },
     "/v1/ServiceSupport/LocalAuthority": {
       "post": {
         "tags": [
@@ -6582,6 +6615,15 @@
         ]
       },
       "UpdateProjectCompletedCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "projectId": {
+            "$ref": "#/components/schemas/ProjectId"
+          }
+        }
+      },
+      "UpdateDeleteProjectCommand": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
