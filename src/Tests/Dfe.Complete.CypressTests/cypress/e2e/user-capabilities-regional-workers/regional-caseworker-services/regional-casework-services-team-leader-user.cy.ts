@@ -3,6 +3,7 @@ import {
     shouldBeAbleToViewMultipleMonthsOfProjects,
     shouldBeAbleToViewReportsLandingPage,
     shouldNotBeAbleToCreateAProject,
+    shouldNotBeAbleToSoftDeleteAProject,
     shouldNotHaveAccessToViewAndEditUsers,
     shouldNotHaveAccessToViewConversionURNsPage,
     shouldNotHaveAccessToViewHandedOverProjects,
@@ -134,8 +135,8 @@ describe("Capabilities and permissions of the regional casework services team le
         shouldNotBeAbleToCreateAProject();
     });
 
-    it.skip("Should NOT be able to soft delete projects", () => {
-        // not implemented
+    it("Should NOT be able to soft delete projects", () => {
+        shouldNotBeAbleToSoftDeleteAProject(projectId)
     });
 
     it("Should NOT be able to view and edit local authorities", () => {
