@@ -444,7 +444,6 @@
       "Controller": "ProjectsController",
       "Action": "UpdateDeleteProjectStatusAsync",
       "ExpectedSecurity": "Authorize: Policy=CanReadWriteUpdate"
-    } 
     },
     {
       "Controller": "TasksDataController",
