@@ -39,6 +39,15 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.SubleasesTask
         public override async Task<IActionResult> OnGetAsync()
         {
             await base.OnGetAsync();
+            TasksDataId = Project.TasksDataId?.Value;
+            NotApplicable = ConversionTaskData.SubleasesNotApplicable;
+            Received = ConversionTaskData.SubleasesReceived;
+            Cleared = ConversionTaskData.SubleasesCleared;
+            Signed = ConversionTaskData.SubleasesSigned;
+            Saved = ConversionTaskData.SubleasesSaved;
+            Signed = ConversionTaskData.SubleasesEmailSigned;
+            ReceiveSigned = ConversionTaskData.SubleasesReceiveSigned;
+            SaveSigned = ConversionTaskData.SubleasesSaveSigned;
             return Page();
         }
 
