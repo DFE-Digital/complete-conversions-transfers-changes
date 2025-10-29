@@ -2212,6 +2212,39 @@
         }
       }
     },
+    "/v1/Projects/project/Delete": {
+      "patch": {
+        "tags": [
+          "Projects"
+        ],
+        "summary": "Sets the delete status for a specific project.",
+        "operationId": "Projects_UpdateDeleteProjectStatus",
+        "requestBody": {
+          "x-name": "request",
+          "description": "The update command.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateDeleteProjectCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "204": {
+            "description": "Updated the project with delete status"
+          },
+          "400": {
+            "description": "Invalid request data."
+          },
+          "404": {
+            "description": "Project not found."
+          }
+        }
+      }
+    },
     "/v1/ServiceSupport/LocalAuthority": {
       "post": {
         "tags": [
@@ -3399,6 +3432,39 @@
         "responses": {
           "204": {
             "description": "Updated deed of termination for the master funding agreement for transfer project task successfully."
+          },
+          "400": {
+            "description": "Invalid request data."
+          },
+          "404": {
+            "description": "Project not found."
+          }
+        }
+      }
+    },
+    "/v1/TasksData/TaskData/ConfirmChairOfGovernors": {
+      "patch": {
+        "tags": [
+          "TasksData"
+        ],
+        "summary": "Updating the chair of governors’ task data for conversion project.",
+        "operationId": "TasksData_UpdateChairOfGovernorsTask",
+        "requestBody": {
+          "x-name": "request",
+          "description": "The update command.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateChairOfGovernorsCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "204": {
+            "description": "Updated the chair of governors’ task successfully."
           },
           "400": {
             "description": "Invalid request data."
@@ -6623,6 +6689,15 @@
           }
         }
       },
+      "UpdateDeleteProjectCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "projectId": {
+            "$ref": "#/components/schemas/ProjectId"
+          }
+        }
+      },
       "CreateLocalAuthorityDto": {
         "type": "object",
         "additionalProperties": false,
@@ -8621,6 +8696,18 @@
           "notApplicable": {
             "type": "boolean",
             "nullable": true
+          }
+        }
+      },
+      "UpdateChairOfGovernorsCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "keyContactId": {
+            "$ref": "#/components/schemas/KeyContactId"
+          },
+          "chairOfGovernorsId": {
+            "$ref": "#/components/schemas/ContactId"
           }
         }
       },
