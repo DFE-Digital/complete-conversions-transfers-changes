@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System.Net;
 using System.Text.Json;
+using SystemValidationException = System.ComponentModel.DataAnnotations.ValidationException;
 
 namespace Dfe.Complete.Logging.Middleware
 {
@@ -32,6 +33,11 @@ namespace Dfe.Complete.Logging.Middleware
             {
                 logger.LogInformation(ex, "Validation error: {Message}", ex.Message);
                 await HandleUnprocessableContentException(context, ex);
+            }
+            catch (SystemValidationException ex)
+            {
+                logger.LogError(ex, "Validation error: {Message}", ex.Message);
+                await HandleSystemValidationException(context, ex);
             }
             catch (ValidationException ex)
             {
@@ -78,6 +84,19 @@ namespace Dfe.Complete.Logging.Middleware
             {
                 throw ex;
             }
+        }
+
+        private static async Task HandleSystemValidationException(HttpContext httpContext, Exception ex)
+        {
+            httpContext.Response.StatusCode = StatusCodes.Status400BadRequest;
+
+            var errorResponse = new ErrorResponse
+            {
+                StatusCode = httpContext.Response.StatusCode,
+                Message = ex.Message
+            };
+
+            await httpContext.Response.WriteAsync(JsonSerializer.Serialize(errorResponse));
         }
 
         // Handle 401 Unauthorized
