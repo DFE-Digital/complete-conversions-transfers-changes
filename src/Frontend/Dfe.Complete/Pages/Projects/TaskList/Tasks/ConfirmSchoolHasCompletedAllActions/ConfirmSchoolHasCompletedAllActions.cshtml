@@ -1,9 +1,13 @@
 ﻿@page "/projects/{projectId}/tasks/school_completed"
 @inject Microsoft.Extensions.Configuration.IConfiguration _configuration
+@using Dfe.Complete.TagHelpers
+@using Dfe.Complete.Utils
+@using GovUk.Frontend.AspNetCore.TagHelpers
+@using Microsoft.AspNetCore.Mvc.TagHelpers
 @model Dfe.Complete.Pages.Projects.TaskList.Tasks.ConfirmSchoolHasCompletedAllActions.ConfirmSchoolHasCompletedAllActionsModel
 @{
     Layout = "_ProjectTaskLayout";
-    ViewData["Title"] = "Confirm the school has completed all actions";
+    ViewData["Title"] = @Model.TaskIdentifier.ToDisplayDescription();
 }
 @section TaskHeaderHintSection {
     <div class="govuk-hint">
@@ -24,40 +28,38 @@
                 <govuk-checkboxes-item id="@(nameof(Model.Emailed))" data-cy="@(nameof(Model.Emailed))" asp-for="@Model.Emailed" value="true" name="@(nameof(Model.Emailed))" checked="@Model.Emailed">
                     <b>Email the main contact for the conversion</b>
                     <govuk-checkboxes-hint>
-                        <div class="guidance">
-                            <details data-module="govuk-details" class="govuk-details">
-                                <summary class="govuk-details__summary">
-                                    <span class="govuk-details__summary-text">How to structure your email</span>
-                                </summary>
-                                <div class="govuk-details__text">
-                                    <p>You should ask them to check and confirm they've completed all tasks.</p>
-                                    <p>You can <external-link data-cy="main-contact-for-conversion-email-template-link" href="@_configuration["ExternalLinks:MainContactForConversionEmailTemplate"]" class="govuk-link">use the email template</external-link> on pages 19 and 20 in your desk instructions to help structure your email.</p>
-                                </div>
-                            </details>
-                        </div>
+                        <govuk-details>
+                            <govuk-details-summary>
+                                <span class="govuk-details__summary-text">How to structure your email</span>
+                            </govuk-details-summary>
+                            <govuk-details-text>
+                                <p>You should ask them to check and confirm they've completed all tasks.</p>
+                                <p>You can <external-link data-cy="main-contact-for-conversion-email-template-link" href="@_configuration["ExternalLinks:MainContactForConversionEmailTemplate"]" class="govuk-link">use the email template</external-link> on pages 19 and 20 in your desk instructions to help structure your email.</p>
+                            </govuk-details-text>
+                        </govuk-details>
                     </govuk-checkboxes-hint>
                 </govuk-checkboxes-item>
 
                 <govuk-checkboxes-item id="@(nameof(Model.Saved))" data-cy="@(nameof(Model.Saved))" asp-for="@Model.Saved" value="true" name="@(nameof(Model.Saved))" checked="@Model.Saved">
                     <b>Save the responses to the checklist in the school's SharePoint folder</b>
                     <govuk-checkboxes-hint>
-                        <div class="guidance">
-                            <details data-module="govuk-details" class="govuk-details">
-                                <summary class="govuk-details__summary">
-                                    <span class="govuk-details__summary-text">What to do if the school has not completed the tasks</span>
-                                </summary>
-                                <div class="govuk-details__text">
-                                    <p class="govuk-body-m">Depending on the scale of the outstanding tasks, you may need to move the conversion date to the next month or later.</p>
-                                    <p class="govuk-body-m">If the conversion date needs to be moved, you must:</p> 
-                                    <ol class="govuk-list govuk-list--number">
-                                        <li>inform the school of the outstanding tasks</li> 
-                                        <li>agree a new conversion date with all stakeholders</li> 
-                                        <li>email the Academies Operational Practice Unit at <a href="mailto:@_configuration["Emails:AcademiesOperationalPracticeUnit"]" data-cy="academies-operational-practice-unit-email-link"  class="govuk-link" target="_blank">@_configuration["Emails:AcademiesOperationalPracticeUnit"]</a> with the new date</li> 
-                                        <li>change the date in the External stakeholder kick-off task</li> 
-                                        <li>inform the regional delivery officer who started on this project</li>
-                                    </ol>
-                                </div>
-                            </details>    </div>
+
+                        <govuk-details>
+                            <govuk-details-summary>
+                                <span class="govuk-details__summary-text">What to do if the school has not completed the tasks</span>
+                            </govuk-details-summary>
+                            <govuk-details-text>
+                                <p class="govuk-body-m">Depending on the scale of the outstanding tasks, you may need to move the conversion date to the next month or later.</p>
+                                <p class="govuk-body-m">If the conversion date needs to be moved, you must:</p>
+                                <ol class="govuk-list govuk-list--number">
+                                    <li>inform the school of the outstanding tasks</li>
+                                    <li>agree a new conversion date with all stakeholders</li>
+                                    <li>email the Academies Operational Practice Unit at <a href="mailto:@_configuration["Emails:AcademiesOperationalPracticeUnit"]" data-cy="academies-operational-practice-unit-email-link" class="govuk-link" target="_blank">@_configuration["Emails:AcademiesOperationalPracticeUnit"]</a> with the new date</li>
+                                    <li>change the date in the External stakeholder kick-off task</li>
+                                    <li>inform the regional delivery officer who started on this project</li>
+                                </ol>
+                            </govuk-details-text>
+                        </govuk-details>
                     </govuk-checkboxes-hint>
                 </govuk-checkboxes-item>
             </govuk-checkboxes-fieldset>
