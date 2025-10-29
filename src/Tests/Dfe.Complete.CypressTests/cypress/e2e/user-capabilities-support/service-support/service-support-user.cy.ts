@@ -15,13 +15,19 @@ import projectRemover from "cypress/api/projectRemover";
 import projectApi from "cypress/api/projectApi";
 import { ProjectBuilder } from "cypress/api/projectBuilder";
 import { urnPool } from "cypress/constants/testUrns";
+import taskListPage from "cypress/pages/projects/tasks/taskListPage";
 
 const project = ProjectBuilder.createConversionProjectRequest({ urn: { value: urnPool.support.whitcliffe } });
 let projectId: string;
+const projectToDelete = ProjectBuilder.createConversionProjectRequest({ urn: { value: urnPool.support.kinnerley } });
+let projectToDeleteId: string;
+const schoolToDeleteName = "Kinnerley Church of England Controlled Primary School";
 describe("Capabilities and permissions of the service support user", () => {
     before(() => {
         projectRemover.removeProjectIfItExists(project.urn.value);
+        projectRemover.removeProjectIfItExists(projectToDelete.urn.value);
         projectApi.createConversionProject(project).then((response) => (projectId = response.value));
+        projectApi.createConversionProject(projectToDelete).then((response) => (projectToDeleteId = response.value));
     });
     beforeEach(() => {
         cy.login(serviceSupportUser);
@@ -74,8 +80,14 @@ describe("Capabilities and permissions of the service support user", () => {
         // not implemented 187511
     });
 
-    it.skip("Should be able to soft delete a project", () => {
-        // not implemented
+    it("Should be able to soft delete a project", () => {
+        cy.visit(`/projects/${projectToDeleteId}`);
+        taskListPage
+            .clickButton("Delete project")
+            .containsHeading(`Delete ${schoolToDeleteName}`)
+            .clickButton("Delete project")
+            .containsSuccessBannerWithMessage("The project was deleted.");
+        cy.url().should("include", "/projects/all/in-progress/all");
     });
 
     it.skip("Should be able to create users", () => {

@@ -19,10 +19,14 @@ Security in case of vulnerabilities.
 ### Added
 
 - Added `Deed Of Termination For the Church Supplemental Agreement` task for transfer project.
+- Added `Delete project` functionality.
 
 ### Changed
 
 ### Fixed
+
+- Fixed `Significant date` validation issue of `Stakeholder kick-off` task.
+- Fixed `no sequence element` issue on `Stakeholder kick-off` task.
 
 ### Security
 
