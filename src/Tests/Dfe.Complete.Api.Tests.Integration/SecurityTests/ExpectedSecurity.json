@@ -441,6 +441,11 @@
       "ExpectedSecurity": "Authorize: Policy=CanReadWriteUpdate"
     },
     {
+      "Controller": "ProjectsController",
+      "Action": "UpdateDeleteProjectStatusAsync",
+      "ExpectedSecurity": "Authorize: Policy=CanReadWriteUpdate"
+    },
+    {
       "Controller": "TasksDataController",
       "Action": "UpdateSubleasesTaskAsync",
       "ExpectedSecurity": "Authorize: Policy=CanReadWriteUpdate"
