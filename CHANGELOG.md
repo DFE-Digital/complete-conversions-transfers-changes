@@ -27,6 +27,7 @@ Security in case of vulnerabilities.
 ### Fixed
 
 - Fixed `Significant date` validation issue of `Stakeholder kick-off` task.
+- Fixed `no sequence element` issue on `Stakeholder kick-off` task.
 
 ### Security
 

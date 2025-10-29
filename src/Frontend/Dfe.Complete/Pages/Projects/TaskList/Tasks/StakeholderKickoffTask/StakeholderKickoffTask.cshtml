@@ -15,6 +15,7 @@
     var isConversion = Model.Project.Type == ProjectType.Conversion;
     var projectTypeString = isConversion ? "conversion" : "transfer";
     var trustInfoString = isConversion ? "school or trust," : "outgoing trust, the incoming trust";
+    var provisionalTransferDate = Model.Project.SignificantDateHistories?.OrderBy(p => p.CreatedAt).FirstOrDefault()?.PreviousDate ?? Model.Project.SignificantDate;
 }
 @section TaskHeaderHintSection  {
     <div class="govuk-hint"> 
@@ -169,7 +170,7 @@
         {
             <div class="govuk-inset-text">
                 <p>The @projectTypeString date has been confirmed and is currently @Model.Project.SignificantDate.ToDateString()</p>
-                <p>The provisional @projectTypeString date was @Model.Project.SignificantDateHistories?.OrderBy(p => p.CreatedAt).First().PreviousDate.ToDateString().</p>
+                <p>The provisional @projectTypeString date was @provisionalTransferDate.ToDateString().</p>
                 <p>Any further changes to the @projectTypeString date must be recorded on the main project screen.</p>
             </div>
         }
