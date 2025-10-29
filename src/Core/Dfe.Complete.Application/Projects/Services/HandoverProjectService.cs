@@ -165,7 +165,7 @@ public class HandoverProjectService(
     {
         // Validate trust exists
         _ = await trustClient.GetTrustByUkprn2Async(trustUkprn.ToString(), cancellationToken)
-            ?? throw new ValidationException(string.Format(Constants.ValidationConstants.NoTrustFoundValidationMessage, trustUkprn));
+            ?? throw new UnprocessableContentException(string.Format(Constants.ValidationConstants.NoTrustFoundValidationMessage, trustUkprn));
     }
 
     public async Task<HandoverProjectCommonData> PrepareCommonProjectDataAsync(int urn, string createdByFirstName, string createdByLastName, string createdByEmail, CancellationToken cancellationToken)

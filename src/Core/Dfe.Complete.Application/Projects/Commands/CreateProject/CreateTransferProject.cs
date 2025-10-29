@@ -27,7 +27,6 @@ public record CreateTransferProjectCommand(
     string HandoverComments,
     string? UserAdId) : IRequest<ProjectId>;
 
-[Obsolete("Deprecated as in-app project creations are no longer required")]
 public class CreateTransferProjectCommandHandler(
     ICompleteRepository<Project> projectRepository,
     ICompleteRepository<TransferTasksData> transferTaskRepository,

@@ -32,7 +32,6 @@ public record CreateProjectCommonCommand(
     bool HandingOverToRegionalCaseworkService,
     string? UserAdId);
 
-[Obsolete("Deprecated as in-app project creations are no longer required")]
 public class CreateProjectCommon(
     ICompleteRepository<GiasEstablishment> establishmentRepository,
     ISender sender) : ICreateProjectCommon
