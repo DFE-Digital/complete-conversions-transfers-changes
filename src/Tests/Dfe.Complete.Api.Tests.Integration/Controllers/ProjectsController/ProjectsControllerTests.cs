@@ -2,6 +2,7 @@ using AutoFixture;
 using AutoFixture.Xunit2;
 using Dfe.AcademiesApi.Client.Contracts;
 using Dfe.Complete.Api.Tests.Integration.Customizations;
+using Dfe.Complete.Client;
 using Dfe.Complete.Client.Contracts;
 using Dfe.Complete.Domain.Constants;
 using Dfe.Complete.Domain.Entities;
@@ -10,6 +11,7 @@ using Dfe.Complete.Tests.Common.Constants;
 using Dfe.Complete.Tests.Common.Customizations.Behaviours;
 using Dfe.Complete.Tests.Common.Customizations.Models;
 using Dfe.Complete.Utils;
+using Dfe.Complete.Utils.Exceptions;
 using GovUK.Dfe.CoreLibs.Testing.AutoFixture.Attributes;
 using GovUK.Dfe.CoreLibs.Testing.AutoFixture.Customizations;
 using GovUK.Dfe.CoreLibs.Testing.Mocks.WebApplicationFactory;
@@ -2097,5 +2099,120 @@ public partial class ProjectsControllerTests
         var existingProject = await dbContext.Projects.SingleOrDefaultAsync(x => x.Id == project.Id);
         Assert.NotNull(existingProject);
         Assert.Equal(ProjectState.Completed, existingProject.State);
+    }
+    [Theory]
+    [CustomAutoData(
+       typeof(CustomWebApplicationDbContextFactoryCustomization),
+       typeof(ProjectCustomization))]
+    public async Task UpdateDeleteProjectStatusAsync_ShouldSetDeleteStatus_WhenProjectExists(
+        CustomWebApplicationDbContextFactory<Program> factory,
+        IProjectsClient projectsClient,
+        IFixture fixture)
+    {
+        // Arrange
+        factory.TestClaims = [new Claim(ClaimTypes.Role, ApiRoles.ReadRole), new Claim(ClaimTypes.Role, ApiRoles.UpdateRole), new Claim(ClaimTypes.Role, ApiRoles.WriteRole)];
+
+        var dbContext = factory.GetDbContext<CompleteContext>();
+        var testUser = await dbContext.Users.FirstAsync();
+
+        var establishments = fixture.Customize(new GiasEstablishmentsCustomization()).CreateMany<GiasEstablishment>(1)
+            .ToList();
+
+        await dbContext.GiasEstablishments.AddRangeAsync(establishments);
+
+        var projects = establishments.Select(establishment =>
+        {
+            var project = fixture.Customize(new ProjectCustomization
+            {
+                RegionalDeliveryOfficerId = testUser.Id,
+                CaseworkerId = testUser.Id,
+                AssignedToId = testUser.Id,
+                State = 0
+            })
+                .Create<Project>();
+            project.Urn = establishment.Urn ?? project.Urn;
+            return project;
+        }).ToList();
+
+        var localAuthority = dbContext.LocalAuthorities.AsEnumerable().MinBy(_ => Guid.NewGuid());
+        Assert.NotNull(localAuthority);
+        projects.ForEach(x => x.LocalAuthorityId = localAuthority.Id);
+
+        await dbContext.Projects.AddRangeAsync(projects);
+        await dbContext.SaveChangesAsync();
+        var project = projects.First();
+
+        var command = new UpdateDeleteProjectCommand()
+        {
+            ProjectId = new ProjectId() { Value = project.Id.Value }
+        };
+
+        // Act
+        Assert.Equal(ProjectState.Active, project.State);
+        await projectsClient.UpdateDeleteProjectStatusAsync(command);
+
+        // Assert
+        dbContext.ChangeTracker.Clear();
+        var existingProject = await dbContext.Projects.SingleOrDefaultAsync(x => x.Id == project.Id);
+        Assert.NotNull(existingProject);
+        Assert.Equal(ProjectState.Deleted, existingProject.State);
+    }
+    [Theory]
+    [CustomAutoData(
+       typeof(CustomWebApplicationDbContextFactoryCustomization),
+       typeof(ProjectCustomization))]
+    public async Task UpdateDeleteProjectStatusAsync_ShouldNotUpdate_WhenProjectIdNotMatched(
+        CustomWebApplicationDbContextFactory<Program> factory,
+        IProjectsClient projectsClient,
+        IFixture fixture)
+    {
+        // Arrange
+        factory.TestClaims = [new Claim(ClaimTypes.Role, ApiRoles.ReadRole), new Claim(ClaimTypes.Role, ApiRoles.UpdateRole), new Claim(ClaimTypes.Role, ApiRoles.WriteRole)];
+
+        var dbContext = factory.GetDbContext<CompleteContext>();
+        var testUser = await dbContext.Users.FirstAsync();
+
+        var establishments = fixture.Customize(new GiasEstablishmentsCustomization()).CreateMany<GiasEstablishment>(1)
+            .ToList();
+
+        await dbContext.GiasEstablishments.AddRangeAsync(establishments);
+
+        var projects = establishments.Select(establishment =>
+        {
+            var project = fixture.Customize(new ProjectCustomization
+            {
+                RegionalDeliveryOfficerId = testUser.Id,
+                CaseworkerId = testUser.Id,
+                AssignedToId = testUser.Id,
+                State = 0
+            })
+                .Create<Project>();
+            project.Urn = establishment.Urn ?? project.Urn;
+            return project;
+        }).ToList();
+
+        var localAuthority = dbContext.LocalAuthorities.AsEnumerable().MinBy(_ => Guid.NewGuid());
+        Assert.NotNull(localAuthority);
+        projects.ForEach(x => x.LocalAuthorityId = localAuthority.Id); 
+
+        await dbContext.Projects.AddRangeAsync(projects);
+        await dbContext.SaveChangesAsync();
+        var project = projects.First();
+
+        var command = new UpdateDeleteProjectCommand()
+        {
+            ProjectId = new ProjectId() { Value = Guid.NewGuid() }
+        };
+
+        // Act
+        Assert.Equal(ProjectState.Active, project.State); 
+        var exception = await Assert.ThrowsAsync<NotFoundException>(() => projectsClient.UpdateDeleteProjectStatusAsync(command));
+
+        // Assert
+        Assert.Contains($"Project with ProjectId {{ Value = {command.ProjectId.Value} }} is not found.", exception.Message);
+        dbContext.ChangeTracker.Clear();
+        var existingProject = await dbContext.Projects.SingleOrDefaultAsync(x => x.Id == project.Id);
+        Assert.NotNull(existingProject);
+        Assert.Equal(ProjectState.Active, existingProject.State);
     }
 }
