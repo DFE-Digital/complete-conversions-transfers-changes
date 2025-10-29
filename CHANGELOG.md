@@ -19,6 +19,7 @@ Security in case of vulnerabilities.
 ### Added
 
 - Added `Deed Of Termination For the Church Supplemental Agreement` task for transfer project.
+- Added `Tenancy at will` task for conversion project.
 
 ### Changed
 
