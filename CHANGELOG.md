@@ -20,6 +20,7 @@ Security in case of vulnerabilities.
 
 - Added `Deed Of Termination For the Church Supplemental Agreement` task for transfer project.
 - Added `Delete project` functionality.
+- Added `Share the information about the opening' task for conversion project.
 
 ### Changed
 
