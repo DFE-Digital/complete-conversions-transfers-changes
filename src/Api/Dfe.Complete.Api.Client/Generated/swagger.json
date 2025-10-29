@@ -5652,8 +5652,6 @@
       },
       "CreateMatTransferProjectCommand": {
         "type": "object",
-        "deprecated": true,
-        "x-deprecatedMessage": "Deprecated as in-app project creations are no longer required",
         "additionalProperties": false,
         "properties": {
           "urn": {

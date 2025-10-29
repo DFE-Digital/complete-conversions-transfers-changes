@@ -18,10 +18,7 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
-using System.ComponentModel.DataAnnotations;
 using Dfe.Complete.Application.KeyContacts.Queries;
-using Dfe.Complete.Utils.Exceptions;
-using Dfe.Complete.Utils;
 
 namespace Dfe.Complete.Api.Controllers
 {
@@ -42,23 +39,8 @@ namespace Dfe.Complete.Api.Controllers
         [SwaggerResponse(400, "Invalid request data.")]
         public async Task<IActionResult> CreateHandoverConversionProjectAsync([FromBody] CreateHandoverConversionProjectCommand request, CancellationToken cancellationToken)
         {
-            try
-            {
-                var result = await sender.Send(request, cancellationToken);
-                return Created("", result);
-            }
-            catch (UnprocessableContentException ex)
-            {
-                return UnprocessableEntity(ex.Message);
-            }
-            catch (ValidationException ex)
-            {
-                return BadRequest(ex.Message);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, ex.Message);
-            }
+            var result = await sender.Send(request, cancellationToken);
+            return Created("", result);
         }
 
         /// <summary>
@@ -73,23 +55,8 @@ namespace Dfe.Complete.Api.Controllers
         [SwaggerResponse(400, "Invalid request data.")]
         public async Task<IActionResult> CreateHandoverConversionMatProjectAsync([FromBody] CreateHandoverConversionMatProjectCommand request, CancellationToken cancellationToken)
         {
-            try
-            {
-                var result = await sender.Send(request, cancellationToken);
-                return Created("", result);
-            }
-            catch (UnprocessableContentException ex)
-            {
-                return UnprocessableEntity(ex.Message);
-            }
-            catch (ValidationException ex)
-            {
-                return BadRequest(ex.Message);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, ex.Message);
-            }
+            var result = await sender.Send(request, cancellationToken);
+            return Created("", result);
         }
 
         /// <summary>
@@ -104,27 +71,8 @@ namespace Dfe.Complete.Api.Controllers
         [SwaggerResponse(400, "Invalid request data.")]
         public async Task<IActionResult> CreateHandoverTransferProjectAsync([FromBody] CreateHandoverTransferProjectCommand request, CancellationToken cancellationToken)
         {
-            try
-            {
-                var result = await sender.Send(request, cancellationToken);
-                return Created("", result);
-            }
-            catch (UnprocessableContentException ex)
-            {
-                return UnprocessableEntity(ex.Message);
-            }
-            catch (ValidationException ex)
-            {
-                return BadRequest(ex.Message);
-            }
-            catch (NotFoundException ex)
-            {
-                return NotFound(ex.Message);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, ex.Message);
-            }
+            var result = await sender.Send(request, cancellationToken);
+            return Created("", result);
         }
 
         /// <summary>
