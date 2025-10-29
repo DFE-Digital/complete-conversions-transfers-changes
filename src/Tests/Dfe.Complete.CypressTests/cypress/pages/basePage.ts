@@ -53,12 +53,6 @@ class BasePage {
         return this;
     }
 
-    buttonDoesNotExist(buttonText: string) {
-        cy.get(".govuk-button").should("not.contain.text", buttonText);
-        // cy.getByClass("govuk-button").should("not.contain.text", buttonText);
-        return this;
-    }
-
     notAuthorisedToPerformThisActionBanner() {
         this.containsImportantBannerWithMessage("You are not authorised to perform this action.");
         return this;
