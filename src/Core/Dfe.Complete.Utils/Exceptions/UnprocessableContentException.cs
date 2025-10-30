@@ -1,4 +1,4 @@
-namespace Dfe.Complete.Utils;
+namespace Dfe.Complete.Utils.Exceptions;
 
 public class UnprocessableContentException : Exception
 {

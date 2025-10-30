@@ -1,6 +1,6 @@
 ﻿using Dfe.Complete.Application.Common.Exceptions;
 using Dfe.Complete.Logging.Models;
-using Dfe.Complete.Utils;
+using Dfe.Complete.Utils.Exceptions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
