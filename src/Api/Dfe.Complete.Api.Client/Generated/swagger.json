@@ -3541,9 +3541,6 @@
         }
       }
     },
-        }
-      }
-    },
     "/v1/TasksData/TaskData/UpdateShareInformationAboutOpening": {
       "patch": {
         "tags": [
