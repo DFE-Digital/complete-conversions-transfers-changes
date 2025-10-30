@@ -1,13 +1,11 @@
-
-using System.ComponentModel.DataAnnotations;
 using Dfe.AcademiesApi.Client.Contracts;
-using Dfe.Complete.Utils.Exceptions;
 using Dfe.Complete.Application.ProjectGroups.Commands;
 using Dfe.Complete.Application.Projects.Models;
 using Dfe.Complete.Application.Projects.Queries.GetGiasEstablishment;
 using Dfe.Complete.Application.Projects.Queries.GetLocalAuthority;
 using Dfe.Complete.Application.Projects.Queries.GetProject;
 using Dfe.Complete.Application.Projects.Queries.QueryFilters;
+using Dfe.Complete.Application.Services.AcademiesApi;
 using Dfe.Complete.Application.Users.Commands;
 using Dfe.Complete.Application.Users.Queries.GetUser;
 using Dfe.Complete.Domain.Constants;
@@ -16,8 +14,10 @@ using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Domain.Interfaces.Repositories;
 using Dfe.Complete.Domain.ValueObjects;
 using Dfe.Complete.Utils;
+using Dfe.Complete.Utils.Exceptions;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
 
 namespace Dfe.Complete.Application.Projects.Services;
 
@@ -32,8 +32,7 @@ public class HandoverProjectService(
     ISender sender,
     ICompleteRepository<Project> projectRepository,
     ICompleteRepository<ConversionTasksData> conversionTaskRepository,
-    ICompleteRepository<TransferTasksData> transferTaskRepository,
-    ITrustsV4Client trustClient) : IHandoverProjectService
+    ICompleteRepository<TransferTasksData> transferTaskRepository) : IHandoverProjectService
 {
     public async Task<UserId> GetOrCreateUserAsync(UserDto userDto, CancellationToken cancellationToken)
     {
@@ -164,8 +163,12 @@ public class HandoverProjectService(
     public async Task ValidateTrustAsync(int trustUkprn, CancellationToken cancellationToken)
     {
         // Validate trust exists
-        _ = await trustClient.GetTrustByUkprn2Async(trustUkprn.ToString(), cancellationToken)
+        var trustResponse = await sender.Send(new GetTrustByUkprnRequest(trustUkprn.ToString()), cancellationToken)
             ?? throw new UnprocessableContentException(string.Format(Constants.ValidationConstants.NoTrustFoundValidationMessage, trustUkprn));
+
+        if (!trustResponse.IsSuccess || trustResponse.Value == null)
+            throw new UnprocessableContentException(string.Format(Constants.ValidationConstants.NoTrustFoundValidationMessage, trustUkprn.ToString()));
+
     }
 
     public async Task<HandoverProjectCommonData> PrepareCommonProjectDataAsync(int urn, string createdByFirstName, string createdByLastName, string createdByEmail, CancellationToken cancellationToken)
