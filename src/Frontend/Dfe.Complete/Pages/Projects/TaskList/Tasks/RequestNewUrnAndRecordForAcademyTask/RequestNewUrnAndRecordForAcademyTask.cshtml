@@ -1,16 +1,63 @@
 ﻿@page "/projects/{projectId}/tasks/request_new_urn_and_record"
+@inject Microsoft.Extensions.Configuration.IConfiguration _configuration
 @model Dfe.Complete.Pages.Projects.TaskList.Tasks.RequestNewUrnAndRecordForAcademyTask.RequestNewUrnAndRecordForAcademyTaskModel
 @{
     Layout = "_ProjectTaskLayout";
     ViewData["Title"] = "Request a new URN and record for the academy";
 }
 @section TaskHeaderHintSection {
-    <div class="govuk-hint"> 
+    <div class="govuk-hint">
+        <p>A transferring academy may need a new URN and record in Get Information About Schools. You may hear these academies described as "Fresh starts".</p>
+        <p>This happens when an academy is transferring and is currently rated by Ofsted as inadequate, or has been given it at least 2 requires improvement ratings.</p>
+        <p>There is <external-link href="@_configuration["ExternalLinks:TransferringAcademyPolicyGuidance"]">policy guidance for this process (opens in new tab)</external-link>.</p>
     </div>
 }
 @section TaskSection {
 
-    <form method="post"> 
+    <form method="post">
+
+        <input type="hidden" asp-for="TasksDataId"/>
+        <govuk-checkboxes name="options">
+            <govuk-checkboxes-fieldset>
+                <govuk-checkboxes-fieldset-legend>
+                </govuk-checkboxes-fieldset-legend>
+                
+                <govuk-checkboxes-item id="not-applicable" data-cy="not-applicable" asp-for="@Model.NotApplicable" value="true" name="@nameof(Model.NotApplicable)" checked="@Model.NotApplicable">
+                    <b>Not applicable</b>
+                </govuk-checkboxes-item>
+                <govuk-checkboxes-item id="complete" data-cy="complete" asp-for="@Model.Complete" value="true" name="@nameof(Model.Complete)" checked="@Model.Complete">
+                    <b>Complete the Fresh starts, transfers and changes for open academies form</b>
+                    <govuk-checkboxes-hint>
+                        <div class="govuk-hint">
+                            <p>You can <external-link data-cy="request-a-new-urn-fresh-starts-form" href="@_configuration["ExternalLinks:RequestANewURNFreshStartsForm"]">access the form through Microsoft Forms (opens in new tab)</external-link> Choose the "Fresh start" category and provide the information the form asks for.</p>
+                            <div class="guidance">
+                                <details data-module="govuk-details" class="govuk-details">
+                                    <summary class="govuk-details__summary">
+                                        <span class="govuk-details__summary-text">Help with this form</span>
+                                    </summary>
+                                    <div class="govuk-details__text">
+                                        <p>There is <external-link data-cy="request-a-new-urn-fresh-starts-form-guidance" href="@_configuration["ExternalLinks:RequestANewURNFreshStartsFormGuidance"]">guidance in a Microsoft Word document to help you complete the form (opens in new tab)</external-link>. That guidance explains what to include in some of the more complicated form sections.</p>
+                                    </div>
+                                </details>
+                            </div>
+                        </div>
+                    </govuk-checkboxes-hint>
+                </govuk-checkboxes-item>
+                <govuk-checkboxes-item id="receive" data-cy="receive" asp-for="@Model.Receive" value="true" name="@nameof(Model.Receive)" checked="@Model.Receive">
+                    <b>Receive the new record information</b>
+                    <govuk-checkboxes-hint>
+                        <div class="govuk-hint">
+                            <p>The Business Support team will send you the URN and LAESTAB numbers once they have been created.</p>
+                        </div>
+                    </govuk-checkboxes-hint>
+                </govuk-checkboxes-item>
+                <govuk-checkboxes-item id="give" data-cy="give" asp-for="@Model.Give" value="true" name="@nameof(Model.Give)" checked="@Model.Give">
+                    <b>Give the new URN and LAESTAB information to the academy and incoming trust</b>
+                </govuk-checkboxes-item>
+            </govuk-checkboxes-fieldset>
+        </govuk-checkboxes>
+        
+
         @await Html.PartialAsync("_TaskSaveAndReturn", new TaskSaveAndReturnModel(Model.Project, Model.CurrentUserTeam))
     </form>
 }
