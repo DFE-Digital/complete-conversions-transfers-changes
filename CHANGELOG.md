@@ -17,6 +17,8 @@ Security in case of vulnerabilities.
 ## Unreleased
 
 ### Added
+- Added `125 year lease` task for conversion project.
+
 
 ### Changed
 

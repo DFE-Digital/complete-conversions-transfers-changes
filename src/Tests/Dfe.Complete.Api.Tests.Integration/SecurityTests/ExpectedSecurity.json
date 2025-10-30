@@ -449,6 +449,11 @@
       "Controller": "ProjectsController",
       "Action": "UpdateDeleteProjectStatusAsync",
       "ExpectedSecurity": "Authorize: Policy=CanReadWriteUpdate"
-    } 
+    },
+    {
+      "Controller": "ProjectsController",
+      "Action": "UpdateUpdateOneHundredAndTwentyFiveYearLeaseTaskAsync",
+      "ExpectedSecurity": "Authorize: Policy=CanReadWriteUpdate"
+    }
   ]
 }
