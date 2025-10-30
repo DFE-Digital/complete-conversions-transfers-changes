@@ -438,6 +438,11 @@
     {
       "Controller": "TasksDataController",
       "Action": "UpdateDeedTerminationChurchSupplementalAgreementTaskAsync",
+      "ExpectedSecurity": "Authorize: Policy=CanReadWriteUpdate"    
+    },
+    {
+      "Controller": "TasksDataController",
+      "Action": "UpdateChairOfGovernorsTaskAsync",
       "ExpectedSecurity": "Authorize: Policy=CanReadWriteUpdate"
     },
     {
@@ -448,6 +453,12 @@
     {
       "Controller": "TasksDataController",
       "Action": "UpdateConfirmSchoolHasCompletedAllActionsTaskAsync",
+      "ExpectedSecurity": "Authorize: Policy=CanReadWriteUpdate"
+    }
+    },
+    {
+      "Controller": "TasksDataController",
+      "Action": "UpdateRequestNewUrnAndRecordForAcademyTaskAsync",
       "ExpectedSecurity": "Authorize: Policy=CanReadWriteUpdate"
     }
   ]
