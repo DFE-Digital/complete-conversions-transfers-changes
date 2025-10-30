@@ -17,7 +17,7 @@ class BasePage {
         return this;
     }
 
-    doesntContain(text: string) {
+    doesntContain(text: string | RegExp) {
         cy.contains(text).should("not.exist");
         return this;
     }
@@ -50,11 +50,6 @@ class BasePage {
 
     hasButton(buttonText: string) {
         cy.getByClass("govuk-button").contains(buttonText).should("be.visible").should("not.be.disabled");
-        return this;
-    }
-
-    buttonDoesNotExist(buttonText: string) {
-        cy.getByClass("govuk-button").contains(buttonText).should("not.exist");
         return this;
     }
 
