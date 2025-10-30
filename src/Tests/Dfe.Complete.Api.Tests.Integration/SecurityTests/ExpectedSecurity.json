@@ -438,7 +438,7 @@
     {
       "Controller": "TasksDataController",
       "Action": "UpdateDeedTerminationChurchSupplementalAgreementTaskAsync",
-      "ExpectedSecurity": "Authorize: Policy=CanReadWriteUpdate"    
+      "ExpectedSecurity": "Authorize: Policy=CanReadWriteUpdate"
     },
     {
       "Controller": "TasksDataController",
@@ -449,6 +449,11 @@
       "Controller": "ProjectsController",
       "Action": "UpdateDeleteProjectStatusAsync",
       "ExpectedSecurity": "Authorize: Policy=CanReadWriteUpdate"
-    } 
+    },
+    {
+      "Controller": "TasksDataController",
+      "Action": "UpdateTrustModificationOrderTaskAsync",
+      "ExpectedSecurity": "Authorize: Policy=CanReadWriteUpdate"
+    }
   ]
 }
