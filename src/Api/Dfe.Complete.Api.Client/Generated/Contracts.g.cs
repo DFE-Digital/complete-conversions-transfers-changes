@@ -733,6 +733,23 @@ namespace Dfe.Complete.Client.Contracts
         /// <exception cref="CompleteApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task UpdateCompleteAsync(UpdateProjectCompletedCommand request, System.Threading.CancellationToken cancellationToken);
 
+        /// <summary>
+        /// Sets the delete status for a specific project.
+        /// </summary>
+        /// <param name="request">The update command.</param>
+        /// <returns>Updated the project with delete status</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task UpdateDeleteProjectStatusAsync(UpdateDeleteProjectCommand request);
+
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>
+        /// Sets the delete status for a specific project.
+        /// </summary>
+        /// <param name="request">The update command.</param>
+        /// <returns>Updated the project with delete status</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task UpdateDeleteProjectStatusAsync(UpdateDeleteProjectCommand request, System.Threading.CancellationToken cancellationToken);
+
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "14.2.0.0 (NJsonSchema v11.1.0.0 (Newtonsoft.Json v13.0.0.0))")]
@@ -1370,6 +1387,23 @@ namespace Dfe.Complete.Client.Contracts
         System.Threading.Tasks.Task UpdateDeedOfTerminationMasterFundingAgreementTaskAsync(UpdateDeedOfTerminationMasterFundingAgreementTaskCommand request, System.Threading.CancellationToken cancellationToken);
 
         /// <summary>
+        /// Updating the chair of governors’ task data for conversion project.
+        /// </summary>
+        /// <param name="request">The update command.</param>
+        /// <returns>Updated the chair of governors’ task successfully.</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task UpdateChairOfGovernorsTaskAsync(UpdateChairOfGovernorsCommand request);
+
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>
+        /// Updating the chair of governors’ task data for conversion project.
+        /// </summary>
+        /// <param name="request">The update command.</param>
+        /// <returns>Updated the chair of governors’ task successfully.</returns>
+        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task UpdateChairOfGovernorsTaskAsync(UpdateChairOfGovernorsCommand request, System.Threading.CancellationToken cancellationToken);
+
+        /// <summary>
         /// Updating the deed of termination for the church supplemental agreement task data for transfer project.
         /// </summary>
         /// <param name="request">The update command.</param>
@@ -1387,21 +1421,21 @@ namespace Dfe.Complete.Client.Contracts
         System.Threading.Tasks.Task UpdateDeedTerminationChurchSupplementalAgreementTaskAsync(UpdateDeedTerminationChurchSupplementalAgreementTaskCommand request, System.Threading.CancellationToken cancellationToken);
 
         /// <summary>
-        /// Confirm the incoming trust has completed all actions for transfer project.
+        /// Request a new URN and record for the academy task for the project.
         /// </summary>
         /// <param name="request">The update command.</param>
-        /// <returns>Updated the confirm incoming trust has completed all actions task successfully.</returns>
+        /// <returns>Request a new URN and record for the academy task updated successfully.</returns>
         /// <exception cref="CompleteApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task UpdateConfirmIncomingTrustHasCompleteAllActionsTaskAsync(UpdateConfirmIncomingTrustHasCompleteAllActionsTaskCommand request);
+        System.Threading.Tasks.Task UpdateRequestNewUrnAndRecordForAcademyTaskAsync(UpdateRequestNewUrnAndRecordForAcademyTaskCommand request);
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>
-        /// Confirm the incoming trust has completed all actions for transfer project.
+        /// Request a new URN and record for the academy task for the project.
         /// </summary>
         /// <param name="request">The update command.</param>
-        /// <returns>Updated the confirm incoming trust has completed all actions task successfully.</returns>
+        /// <returns>Request a new URN and record for the academy task updated successfully.</returns>
         /// <exception cref="CompleteApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task UpdateConfirmIncomingTrustHasCompleteAllActionsTaskAsync(UpdateConfirmIncomingTrustHasCompleteAllActionsTaskCommand request, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task UpdateRequestNewUrnAndRecordForAcademyTaskAsync(UpdateRequestNewUrnAndRecordForAcademyTaskCommand request, System.Threading.CancellationToken cancellationToken);
 
     }
 
@@ -4497,6 +4531,27 @@ namespace Dfe.Complete.Client.Contracts
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.2.0.0 (NJsonSchema v11.1.0.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class UpdateDeleteProjectCommand
+    {
+        [Newtonsoft.Json.JsonProperty("projectId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public ProjectId? ProjectId { get; set; } = default!;
+
+        public string ToJson()
+        {
+
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonSerializerSettings());
+
+        }
+        public static UpdateDeleteProjectCommand FromJson(string data)
+        {
+
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<UpdateDeleteProjectCommand>(data, new Newtonsoft.Json.JsonSerializerSettings());
+
+        }
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.2.0.0 (NJsonSchema v11.1.0.0 (Newtonsoft.Json v13.0.0.0))")]
     public partial class CreateLocalAuthorityDto
     {
         [Newtonsoft.Json.JsonProperty("localAuthorityId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
@@ -6536,6 +6591,30 @@ namespace Dfe.Complete.Client.Contracts
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.2.0.0 (NJsonSchema v11.1.0.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class UpdateChairOfGovernorsCommand
+    {
+        [Newtonsoft.Json.JsonProperty("keyContactId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public KeyContactId? KeyContactId { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("chairOfGovernorsId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public ContactId? ChairOfGovernorsId { get; set; } = default!;
+
+        public string ToJson()
+        {
+
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonSerializerSettings());
+
+        }
+        public static UpdateChairOfGovernorsCommand FromJson(string data)
+        {
+
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<UpdateChairOfGovernorsCommand>(data, new Newtonsoft.Json.JsonSerializerSettings());
+
+        }
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.2.0.0 (NJsonSchema v11.1.0.0 (Newtonsoft.Json v13.0.0.0))")]
     public partial class UpdateDeedTerminationChurchSupplementalAgreementTaskCommand
     {
         [Newtonsoft.Json.JsonProperty("taskDataId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
@@ -6581,16 +6660,22 @@ namespace Dfe.Complete.Client.Contracts
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.2.0.0 (NJsonSchema v11.1.0.0 (Newtonsoft.Json v13.0.0.0))")]
-    public partial class UpdateConfirmIncomingTrustHasCompleteAllActionsTaskCommand
+    public partial class UpdateRequestNewUrnAndRecordForAcademyTaskCommand
     {
         [Newtonsoft.Json.JsonProperty("taskDataId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public TaskDataId? TaskDataId { get; set; } = default!;
 
-        [Newtonsoft.Json.JsonProperty("emailed", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public bool? Emailed { get; set; } = default!;
+        [Newtonsoft.Json.JsonProperty("notApplicable", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? NotApplicable { get; set; } = default!;
 
-        [Newtonsoft.Json.JsonProperty("saved", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public bool? Saved { get; set; } = default!;
+        [Newtonsoft.Json.JsonProperty("complete", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? Complete { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("receive", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? Receive { get; set; } = default!;
+
+        [Newtonsoft.Json.JsonProperty("give", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public bool? Give { get; set; } = default!;
 
         public string ToJson()
         {
@@ -6598,10 +6683,10 @@ namespace Dfe.Complete.Client.Contracts
             return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonSerializerSettings());
 
         }
-        public static UpdateConfirmIncomingTrustHasCompleteAllActionsTaskCommand FromJson(string data)
+        public static UpdateRequestNewUrnAndRecordForAcademyTaskCommand FromJson(string data)
         {
 
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<UpdateConfirmIncomingTrustHasCompleteAllActionsTaskCommand>(data, new Newtonsoft.Json.JsonSerializerSettings());
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<UpdateRequestNewUrnAndRecordForAcademyTaskCommand>(data, new Newtonsoft.Json.JsonSerializerSettings());
 
         }
 
