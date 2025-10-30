@@ -451,7 +451,7 @@
       "ExpectedSecurity": "Authorize: Policy=CanReadWriteUpdate"
     },
     {
-      "Controller": "ProjectsController",
+      "Controller": "TasksDataController",
       "Action": "UpdateUpdateOneHundredAndTwentyFiveYearLeaseTaskAsync",
       "ExpectedSecurity": "Authorize: Policy=CanReadWriteUpdate"
     }
