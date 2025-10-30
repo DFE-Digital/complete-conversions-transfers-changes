@@ -1,8 +1,6 @@
 ﻿using Dfe.Complete.Application.Common.Models;
 using Dfe.Complete.Application.Notes.Interfaces;
 using Dfe.Complete.Application.Projects.Interfaces;
-using Dfe.Complete.Domain.Enums;
-using Dfe.Complete.Domain.Validators;
 using Dfe.Complete.Domain.ValueObjects;
 using Dfe.Complete.Utils.Exceptions;
 using MediatR;
