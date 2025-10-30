@@ -3,7 +3,6 @@ using Dfe.Complete.Application.Projects.Services;
 using Dfe.Complete.Domain.Entities;
 using Dfe.Complete.Domain.Validators;
 using Dfe.Complete.Domain.ValueObjects;
-using Dfe.Complete.Utils;
 using Dfe.Complete.Utils.Exceptions;
 using MediatR;
 using Microsoft.Extensions.Logging;

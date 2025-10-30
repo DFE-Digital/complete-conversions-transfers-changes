@@ -109,8 +109,7 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers.ProjectsController
             )]
         public async Task CreateProjectGroupAsyncShould_TrustDoesNotExistForUkprn_ShouldNotCreateProjectGroup(
             CustomWebApplicationDbContextFactory<Program> factory,
-            IProjectGroupClient projectGroupsClient,
-            IFixture _fixture)
+            IProjectGroupClient projectGroupsClient)
         {
             factory.TestClaims = new[] { ApiRoles.ReadRole, ApiRoles.WriteRole }
                 .Select(x => new Claim(ClaimTypes.Role, x)).ToList();

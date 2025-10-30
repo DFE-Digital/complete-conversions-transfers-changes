@@ -7,7 +7,6 @@ using Dfe.Complete.Application.Common.Interfaces;
 using Dfe.Complete.Domain.Validators;
 using Microsoft.Extensions.Logging;
 using Dfe.Complete.Application.Projects.Services;
-using Dfe.Complete.Utils;
 
 namespace Dfe.Complete.Application.Projects.Commands.CreateHandoverProject;
 
