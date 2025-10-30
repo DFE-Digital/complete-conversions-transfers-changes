@@ -25,6 +25,7 @@ Security in case of vulnerabilities.
 - Added `Tenancy at will` task for conversion project.
 
 ### Changed
+- Only service support can edit TRN
 
 ### Fixed
 

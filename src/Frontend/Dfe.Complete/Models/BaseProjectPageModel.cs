@@ -46,6 +46,8 @@ public abstract class BaseProjectPageModel(ISender sender, ILogger logger) : Pag
     public bool UserHasEditAccess() =>
         User.GetUserId() == Project.AssignedToId || CurrentUserTeam.TeamIsServiceSupport();
 
+    public bool UserCanEditTrn() => CurrentUserTeam.TeamIsServiceSupport();
+
     public async Task UpdateCurrentProject()
     {
         var success = Guid.TryParse(ProjectId, out var guid);

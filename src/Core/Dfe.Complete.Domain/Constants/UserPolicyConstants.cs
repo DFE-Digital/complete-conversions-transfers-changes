@@ -18,4 +18,5 @@ public static class UserPolicyConstants
     public const string ActiveUser = "ActiveUser";
     public const string CanAddContact = "CanAddContact";
     public const string CanViewEditDeleteContact = "CanViewEditDeleteContact";
+    public const string CanChangeTrn = "CanChangeTrn";
 }
