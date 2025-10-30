@@ -8,7 +8,6 @@ using Dfe.Complete.Domain.Validators;
 using Microsoft.Extensions.Logging;
 using Dfe.AcademiesApi.Client.Contracts;
 using Dfe.Complete.Application.Projects.Services;
-using Dfe.Complete.Utils;
 
 namespace Dfe.Complete.Application.Projects.Commands.CreateHandoverProject;
 

@@ -1,4 +1,3 @@
-using Dfe.AcademiesApi.Client.Contracts;
 using Dfe.Complete.Application.ProjectGroups.Commands;
 using Dfe.Complete.Application.Projects.Models;
 using Dfe.Complete.Application.Projects.Queries.GetGiasEstablishment;
