@@ -53,6 +53,7 @@ See the [full commit history](https://github.com/DFE-Digital/complete-conversion
 - Removed validation for academy transfer date and updated the title for transfer projects.
 
 ### Fixed
+- Resolve issue with `null` project assignee, make email field required
 
 ### Security
 - Secure cookies should contain the HTTPOnly attribute
