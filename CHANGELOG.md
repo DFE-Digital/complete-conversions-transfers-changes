@@ -17,21 +17,37 @@ Security in case of vulnerabilities.
 ## Unreleased
 
 ### Added
-- Added `Request a new URN and record for the academy` task for transfer projects.
-- Added `Trust modification order task` task for conversion projects.
-- Added `Delete project` functionality.
-- Added `Share the information about the opening' task for conversion project.
-- Added `Subleases` task
-- Added `Tenancy at will` task for conversion project.
 
 ### Changed
-Removed validation for academy transfer date and updated the title for transfer projects.
 
 ### Fixed
 
 ### Security
 
-See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-10-29.1020...main) for everything awaiting release
+See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-10-31.1038...main) for everything awaiting release
+
+---
+
+## [1.26.0](https://github.com/DFE-Digital/complete-conversions-transfers-changes/releases/tag/production-2025-10-31.1038) - 2025-10-31
+
+### Added
+- Added `Confirm the chair of governors' details` task for conversion projects.
+- Added `Request a new URN and record for the academy` task for transfer projects.
+- Added `Trust modification order task` task for conversion projects.
+- Added `Share the information about the opening` task for conversion project.
+- Added `Subleases` task
+- Added `Tenancy at will` task for conversion project.
+- Added `Outgoing Trust CEO contact` task page
+
+### Changed
+- Removed validation for academy transfer date and updated the title for transfer projects.
+
+### Fixed
+
+### Security
+- Secure cookies should contain the HTTPOnly attribute
+
+See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-10-29.1020...production-2025-10-31.1038) for everything in the release
 
 ---
 
@@ -41,6 +57,7 @@ See the [full commit history](https://github.com/DFE-Digital/complete-conversion
 
 - Added `Deed of termination for the master funding agreement` task for transfer project.
 - Added `Deed Of Termination For the Church Supplemental Agreement` task for transfer project.
+- Added `Delete project` functionality.
 
 ### Changed
 
@@ -104,7 +121,6 @@ See the [full commit history](https://github.com/DFE-Digital/complete-conversion
 - Added link for delete project button
 
 ### Security
-- Secure cookies should contain the HTTPOnly attribute
 
 See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-10-17.921...production-2025-10-20.943) for everything in the release
 
@@ -160,7 +176,6 @@ See the [full commit history](https://github.com/DFE-Digital/complete-conversion
 - Add API end point for editing user
 - Add ability to edit a user
 - Added `Incoming Trust CEO contact` task page
-- Added `Outgoing Trust CEO contact` task page
 
 ### Changed
 - Allow users to modify `declaration of expenditure certificate date` on the `Receive declaration of expenditure certificate` task for both conversion and transfer project.
