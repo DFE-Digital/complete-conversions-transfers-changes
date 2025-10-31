@@ -1,13 +1,14 @@
 ﻿@page "/projects/{projectId}/tasks/stakeholder_kick_off"
 @using Dfe.Complete.Constants
 @using Dfe.Complete.Domain.Enums
+@using Dfe.Complete.Utils;
 @inject Microsoft.Extensions.Configuration.IConfiguration _configuration
 @model Dfe.Complete.Pages.Projects.TaskList.Tasks.StakeholderKickoffTask.StakeholderKickoffTaskModel
 @inject Dfe.Complete.Services.Interfaces.IErrorService ErrorService
 @{
 
     Layout = "_ProjectTaskLayout";
-    ViewData["Title"] = "External stakeholder kick-off";
+    ViewData["Title"] = Model.TaskIdentifier.ToDisplayDescription();
 
     var backlink = string.Format(RouteConstants.ProjectTaskList, Model.ProjectId);
     const string significantDateField = "significant-date";

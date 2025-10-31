@@ -1,10 +1,11 @@
 ﻿@page "/projects/{projectId}/tasks/articles_of_association"
 @using Dfe.Complete.Domain.Enums
+@using Dfe.Complete.Utils;
 @inject Microsoft.Extensions.Configuration.IConfiguration _configuration
 @model Dfe.Complete.Pages.Projects.TaskList.Tasks.ArticlesOfAssociationTask.ArticlesOfAssociationTaskModel
 @{
   Layout = "_ProjectTaskLayout";
-    ViewData["Title"] = "Articles of association";
+    ViewData["Title"] = Model.TaskIdentifier.ToDisplayDescription();
 }
 @section TaskHeaderHintSection {
     <div class="govuk-hint">

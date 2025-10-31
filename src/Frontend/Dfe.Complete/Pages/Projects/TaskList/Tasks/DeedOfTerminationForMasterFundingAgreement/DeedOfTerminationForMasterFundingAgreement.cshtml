@@ -1,9 +1,10 @@
 ﻿@page "/projects/{projectId}/tasks/deed_of_termination_for_the_master_funding_agreement"
+@using Dfe.Complete.Utils;
 @inject Microsoft.Extensions.Configuration.IConfiguration _configuration
 @model Dfe.Complete.Pages.Projects.TaskList.Tasks.DeedOfTerminationForMasterFundingAgreement.DeedOfTerminationForMasterFundingAgreementModel
 @{
     Layout = "_ProjectTaskLayout";
-    ViewData["Title"] = "Deed of termination for the master funding agreement";
+    ViewData["Title"] = Model.TaskIdentifier.ToDisplayDescription();
 }
 @section TaskHeaderHintSection
 {

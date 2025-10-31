@@ -1,8 +1,9 @@
 ﻿@page "/projects/{projectId}/tasks/request_new_urn_and_record"
+@using Dfe.Complete.Utils;
 @model Dfe.Complete.Pages.Projects.TaskList.Tasks.RequestNewUrnAndRecordForAcademyTask.RequestNewUrnAndRecordForAcademyTaskModel
 @{
     Layout = "_ProjectTaskLayout";
-    ViewData["Title"] = "Request a new URN and record for the academy";
+    ViewData["Title"] = Model.TaskIdentifier.ToDisplayDescription();
 }
 @section TaskHeaderHintSection {
     <div class="govuk-hint"> 

@@ -1,11 +1,12 @@
 ﻿@page "/projects/{projectId}/tasks/supplemental_funding_agreement"
 @using Dfe.Complete.Constants
 @using Dfe.Complete.Domain.Enums
+@using Dfe.Complete.Utils;
 @inject Microsoft.Extensions.Configuration.IConfiguration _configuration
 @model Dfe.Complete.Pages.Projects.TaskList.Tasks.SupplementalFundingAgreementTask.SupplementalFundingAgreementTaskModel
 @{
     Layout = "_ProjectTaskLayout";
-    ViewData["Title"] = "Supplemental funding agreement";
+    ViewData["Title"] = Model.TaskIdentifier.ToDisplayDescription();
     var isConversion = Model.Type == ProjectType.Conversion;
 }
 @section TaskHeaderHintSection
