@@ -23,6 +23,8 @@ Security in case of vulnerabilities.
 - Added `Share the information about the opening' task for conversion project.
 - Added `Subleases` task
 - Added `Tenancy at will` task for conversion project.
+- Added `Direction To Transfer` task for conversion projects.
+
 
 ### Changed
 
