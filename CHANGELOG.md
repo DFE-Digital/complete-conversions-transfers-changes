@@ -38,6 +38,7 @@ See the [full commit history](https://github.com/DFE-Digital/complete-conversion
 - Added `Delete project` functionality.
 - Added `Share the information about the opening' task for conversion project.
 - Added `Subleases` task
+- Added `Tenancy at will` task for conversion project.
 
 ### Changed
 
