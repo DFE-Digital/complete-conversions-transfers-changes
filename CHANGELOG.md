@@ -18,6 +18,7 @@ Security in case of vulnerabilities.
 
 ### Added
 - Added `Request a new URN and record for the academy` task for transfer projects.
+- Added `Sponsored support grant` task for conversion and transfer project.
 
 ### Changed
 
