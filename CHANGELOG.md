@@ -20,6 +20,7 @@ Security in case of vulnerabilities.
 - Added `Request a new URN and record for the academy` task for transfer projects.
 
 ### Changed
+Removed validation for academy transfer date and updated the title for transfer projects.
 
 ### Fixed
 
