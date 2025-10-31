@@ -1,10 +1,11 @@
 ﻿@page "/projects/{projectId}/tasks/proposed_capacity_of_the_academy"
+@using Dfe.Complete.Utils
 @model Dfe.Complete.Pages.Projects.TaskList.Tasks.ConfirmProposedCapacityOfTheAcademyTask.ConfirmProposedCapacityOfTheAcademyTaskModel
 @inject Microsoft.Extensions.Configuration.IConfiguration _configuration
 @inject Dfe.Complete.Services.Interfaces.IErrorService ErrorService
 @{
     Layout = "_ProjectTaskLayout";
-    ViewData["Title"] = "Confirm the proposed capacity of the academy";
+    ViewData["Title"] = Model.TaskIdentifier.ToDisplayDescription();
 }
 @section TaskHeaderHintSection {
     <div class="govuk-hint">

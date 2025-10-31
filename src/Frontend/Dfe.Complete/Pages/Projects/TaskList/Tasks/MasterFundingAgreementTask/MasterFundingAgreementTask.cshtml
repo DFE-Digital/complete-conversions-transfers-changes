@@ -1,10 +1,11 @@
 ﻿@page "/projects/{projectId}/tasks/master_funding_agreement"
 @using Dfe.Complete.Domain.Enums
+@using Dfe.Complete.Utils
 @inject Microsoft.Extensions.Configuration.IConfiguration _configuration
 @model Dfe.Complete.Pages.Projects.TaskList.Tasks.MasterFundingAgreementTask.MasterFundingAgreementTaskModel
 @{
     Layout = "_ProjectTaskLayout";
-    ViewData["Title"] = "Master funding agreement";
+    ViewData["Title"] = Model.TaskIdentifier.ToDisplayDescription();
     var isConversion = Model.Type == ProjectType.Conversion;
 }
 @section TaskHeaderHintSection {

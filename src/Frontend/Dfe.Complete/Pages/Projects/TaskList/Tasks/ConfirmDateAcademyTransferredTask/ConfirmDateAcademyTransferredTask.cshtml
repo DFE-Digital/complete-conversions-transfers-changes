@@ -1,10 +1,10 @@
 ﻿@page "/projects/{projectId}/tasks/confirm_date_academy_transferred"
-
+@using Dfe.Complete.Utils;
 @model Dfe.Complete.Pages.Projects.TaskList.Tasks.ConfirmDateAcademyTransferredTask.ConfirmDateAcademyTransferredTaskModel
 @inject Dfe.Complete.Services.Interfaces.IErrorService ErrorService
 @{
     Layout = "_ProjectTaskLayout";
-    ViewData["Title"] = "Confirm the date the academy transferred";
+    ViewData["Title"] = Model.TaskIdentifier.ToDisplayDescription();
     var dateAcademyTransferred = "date-academy-transferred";
 
 }

@@ -1,9 +1,10 @@
 ﻿@page "/projects/{projectId}/tasks/redact_and_send_documents"
+@using Dfe.Complete.Utils;
 @model Dfe.Complete.Pages.Projects.TaskList.Tasks.RedactAndSendDocumentsTask.RedactAndSendDocumentsTaskModel
 @inject Microsoft.Extensions.Configuration.IConfiguration _configuration
 @{
   Layout = "_ProjectTaskLayout";
-    ViewData["Title"] = "Redact and send documents";
+  ViewData["Title"] = Model.TaskIdentifier.ToDisplayDescription();
 }
 @section TaskHeaderHintSection {
     <div class="govuk-hint">
