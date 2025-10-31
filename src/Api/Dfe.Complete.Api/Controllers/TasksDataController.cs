@@ -156,7 +156,7 @@ namespace Dfe.Complete.Api.Controllers
         {
             await sender.Send(request, cancellationToken);
             return NoContent();
-        } 
+        }
 
         /// <summary>
         /// Updates the redact and send documents task Data for conversion or transfer project.
@@ -229,7 +229,7 @@ namespace Dfe.Complete.Api.Controllers
             await sender.Send(request, cancellationToken);
             return NoContent();
         }
-        
+
 
         /// <summary>
         /// Confirm the date the academy transferred task updated successfully.
@@ -286,7 +286,7 @@ namespace Dfe.Complete.Api.Controllers
             await sender.Send(request, cancellationToken);
             return NoContent();
         }
-        
+
 
         /// <summary>
         /// Update the church supplemental agreement task Data for conversion or transfer project.
@@ -361,7 +361,7 @@ namespace Dfe.Complete.Api.Controllers
         {
             await sender.Send(request, cancellationToken);
             return NoContent();
-        } 
+        }
 
         /// <summary>
         /// Updaing the land registry title plans task data for transfer project.
@@ -381,7 +381,7 @@ namespace Dfe.Complete.Api.Controllers
             await sender.Send(request, cancellationToken);
             return NoContent();
         }
-        
+
         /// <summary>
         /// Updates the master funding agreement task Data for conversion or transfer project.
         /// </summary>
@@ -399,7 +399,7 @@ namespace Dfe.Complete.Api.Controllers
         {
             await sender.Send(request, cancellationToken);
             return NoContent();
-        }        
+        }
 
         /// <summary>
         /// Confirm the incoming trust ceo contact for the project.
@@ -419,7 +419,7 @@ namespace Dfe.Complete.Api.Controllers
             await sender.Send(request, cancellationToken);
             return NoContent();
         }
-        
+
         /// <summary>
         /// Confirm the academy risk protection arrangements task updated successfully for either conversion or transfer project.
         /// </summary>
@@ -438,7 +438,7 @@ namespace Dfe.Complete.Api.Controllers
             await sender.Send(request, cancellationToken);
             return NoContent();
         }
-        
+
         /// <summary>
         /// Confirm the head teacher contact for the project.
         /// </summary>
@@ -457,7 +457,7 @@ namespace Dfe.Complete.Api.Controllers
             await sender.Send(request, cancellationToken);
             return NoContent();
         }
-        
+
         /// <summary>
         /// Complete a notification of changes to funded high needs places form for the project.
         /// </summary>
@@ -569,7 +569,7 @@ namespace Dfe.Complete.Api.Controllers
         {
             await sender.Send(request, cancellationToken);
             return NoContent();
-        } 
+        }
 
         /// <summary>
         /// Updating deed of termination for the master funding agreement for transfer project.
@@ -588,7 +588,7 @@ namespace Dfe.Complete.Api.Controllers
         {
             await sender.Send(request, cancellationToken);
             return NoContent();
-        }        
+        }
 
         /// <summary>
         /// Updating the chair of governors’ task data for conversion project.
@@ -627,7 +627,7 @@ namespace Dfe.Complete.Api.Controllers
             await sender.Send(request, cancellationToken);
             return NoContent();
         }
-        
+
         /// <summary>
         /// Request a new URN and record for the academy task for the project.
         /// </summary>
@@ -649,9 +649,7 @@ namespace Dfe.Complete.Api.Controllers
 
         /// <summary>
         /// Updating share the information about opening task data for transfer project.
-        /// </summary>
-        /// <param name="request">The update command.</param>
-        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <summary>
         [Authorize(Policy = "CanReadWriteUpdate")]
         [HttpPatch]
         [Route("TaskData/UpdateShareInformationAboutOpening")]
@@ -660,6 +658,22 @@ namespace Dfe.Complete.Api.Controllers
         [SwaggerResponse(404, "Project not found.")]
         public async Task<IActionResult> UpdateShareInformationAboutOpeningTaskAsync(
             [FromBody] UpdateShareInformationAboutOpeningTaskCommand request,
+            CancellationToken cancellationToken)
+        {
+            await sender.Send(request, cancellationToken);
+            return NoContent();
+        }
+
+        /// Updating the subleases task data for conversion project.
+        /// </summary>
+        /// <param name="request">The update command.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        [Route("TaskData/Subleases")]
+        [SwaggerResponse(204, "Updated the subleases task successfully.")]
+        [SwaggerResponse(400, "Invalid request data.")]
+        [SwaggerResponse(404, "Project not found.")]
+        public async Task<IActionResult> UpdateSubleasesTaskAsync(
+            [FromBody] UpdateSubleasesTaskCommand request,
             CancellationToken cancellationToken)
         {
             await sender.Send(request, cancellationToken);

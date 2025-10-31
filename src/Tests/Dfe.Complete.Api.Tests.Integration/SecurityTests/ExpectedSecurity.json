@@ -459,6 +459,11 @@
       "Controller": "TasksDataController",
       "Action": "UpdateShareInformationAboutOpeningTaskAsync",
       "ExpectedSecurity": "Authorize: Policy=CanReadWriteUpdate"
+    },
+    {
+      "Controller": "TasksDataController",
+      "Action": "UpdateSubleasesTaskAsync",
+      "ExpectedSecurity": "Authorize: Policy=CanReadWriteUpdate"
     }
   ]
 }
