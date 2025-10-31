@@ -18,6 +18,7 @@ Security in case of vulnerabilities.
 
 ### Added
 - Added `Request a new URN and record for the academy` task for transfer projects.
+- Added `Trust modification order task` task for conversion projects.
 
 ### Changed
 
