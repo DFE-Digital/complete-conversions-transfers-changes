@@ -27,6 +27,7 @@ Security in case of vulnerabilities.
 ### Changed
 
 ### Fixed
+- Resolve issue with `null` project assignee, make email field required
 
 ### Security
 
