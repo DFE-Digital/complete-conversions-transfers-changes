@@ -25,6 +25,7 @@ Security in case of vulnerabilities.
 - Added `Tenancy at will` task for conversion project.
 
 ### Changed
+Removed validation for academy transfer date and updated the title for transfer projects.
 
 ### Fixed
 
