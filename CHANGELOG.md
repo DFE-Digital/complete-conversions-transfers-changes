@@ -19,6 +19,7 @@ Security in case of vulnerabilities.
 ### Added
 
 ### Changed
+- Only service support can edit TRN
 
 ### Fixed
 

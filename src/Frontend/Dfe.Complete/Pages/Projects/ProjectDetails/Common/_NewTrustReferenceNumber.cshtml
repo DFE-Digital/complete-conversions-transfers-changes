@@ -1,11 +1,12 @@
 ﻿@using Dfe.Complete.Constants
+@using Dfe.Complete.Domain.Constants
 @model Dfe.Complete.Pages.Projects.ProjectDetails.BaseProjectDetailsPageModel
 
 @{
     const string trustRefNumber = nameof(Model.NewTrustReferenceNumber);
 }
 
-<div class="govuk-form-group" id="new_trust_reference_number">
+<div class="govuk-form-group" id="new_trust_reference_number" asp-policy="@UserPolicyConstants.CanChangeTrn">
     <govuk-input name="@trustRefNumber" input-class="govuk-input--width-10" asp-for="@Model.NewTrustReferenceNumber">
         <govuk-input-label class="govuk-label--m">Trust reference number (TRN)</govuk-input-label>
     </govuk-input>
