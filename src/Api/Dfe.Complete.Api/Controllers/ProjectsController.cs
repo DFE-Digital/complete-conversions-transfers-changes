@@ -18,10 +18,7 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
-using System.ComponentModel.DataAnnotations;
 using Dfe.Complete.Application.KeyContacts.Queries;
-using Dfe.Complete.Utils.Exceptions;
-using Dfe.Complete.Utils;
 
 namespace Dfe.Complete.Api.Controllers
 {
@@ -42,23 +39,24 @@ namespace Dfe.Complete.Api.Controllers
         [SwaggerResponse(400, "Invalid request data.")]
         public async Task<IActionResult> CreateHandoverConversionProjectAsync([FromBody] CreateHandoverConversionProjectCommand request, CancellationToken cancellationToken)
         {
-            try
-            {
-                var result = await sender.Send(request, cancellationToken);
-                return Created("", result);
-            }
-            catch (UnprocessableContentException ex)
-            {
-                return UnprocessableEntity(ex.Message);
-            }
-            catch (ValidationException ex)
-            {
-                return BadRequest(ex.Message);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, ex.Message);
-            }
+            var result = await sender.Send(request, cancellationToken);
+            return Created("", result);
+        }
+
+        /// <summary>
+        /// Creates a new MAT conversion project (handover version).
+        /// </summary>
+        /// <param name="request">The request.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        [Authorize(Policy = "CanReadWrite")]
+        [HttpPost]
+        [Route("projects/conversions/form-a-mat")]
+        [SwaggerResponse(201, "Project created successfully.", typeof(ProjectId))]
+        [SwaggerResponse(400, "Invalid request data.")]
+        public async Task<IActionResult> CreateHandoverConversionMatProjectAsync([FromBody] CreateHandoverConversionMatProjectCommand request, CancellationToken cancellationToken)
+        {
+            var result = await sender.Send(request, cancellationToken);
+            return Created("", result);
         }
 
         /// <summary>
@@ -73,27 +71,8 @@ namespace Dfe.Complete.Api.Controllers
         [SwaggerResponse(400, "Invalid request data.")]
         public async Task<IActionResult> CreateHandoverTransferProjectAsync([FromBody] CreateHandoverTransferProjectCommand request, CancellationToken cancellationToken)
         {
-            try
-            {
-                var result = await sender.Send(request, cancellationToken);
-                return Created("", result);
-            }
-            catch (UnprocessableContentException ex)
-            {
-                return UnprocessableEntity(ex.Message);
-            }
-            catch (ValidationException ex)
-            {
-                return BadRequest(ex.Message);
-            }
-            catch (NotFoundException ex)
-            {
-                return NotFound(ex.Message);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, ex.Message);
-            }
+            var result = await sender.Send(request, cancellationToken);
+            return Created("", result);
         }
 
         /// <summary>
@@ -101,6 +80,7 @@ namespace Dfe.Complete.Api.Controllers
         /// </summary>
         /// <param name="request">The request.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
+        [Obsolete("Deprecated - use CreateHandoverConversionProjectAsync instead")]
         [Authorize(Policy = "CanReadWrite")]
         [HttpPost]
         [Route("Create/Conversion")]
@@ -117,6 +97,7 @@ namespace Dfe.Complete.Api.Controllers
         /// </summary>
         /// <param name="request">The request.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
+        [Obsolete("Deprecated - use CreateHandoverTransferProjectAsync instead")]
         [Authorize(Policy = "CanReadWrite")]
         [HttpPost]
         [Route("Create/Transfer")]
@@ -133,6 +114,7 @@ namespace Dfe.Complete.Api.Controllers
         /// </summary>
         /// <param name="request">The request.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
+        [Obsolete("Deprecated - use CreateHandoverConversionMatProjectAsync instead")]
         [Authorize(Policy = "CanReadWrite")]
         [HttpPost]
         [Route("Create/MatConversion")]

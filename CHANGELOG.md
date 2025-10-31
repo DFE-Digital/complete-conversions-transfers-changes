@@ -23,12 +23,13 @@ Security in case of vulnerabilities.
 - Added `Share the information about the opening' task for conversion project.
 - Added `Subleases` task
 - Added `Tenancy at will` task for conversion project.
+- Added project group creation end point
+- Added MAT Conversion creation end point for prepare to complete 
 
-### Changed
-
-### Fixed
-
-### Security
+### Deprecated
+- create conversion project end point not in use due to in-app project creations being a workaround 
+- create MAT conversion project end point not in use due to in-app project creations being a workaround 
+- create transfer project end point not in use due to in-app project creations being a workaround 
 
 See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-10-29.1020...main) for everything awaiting release
 
