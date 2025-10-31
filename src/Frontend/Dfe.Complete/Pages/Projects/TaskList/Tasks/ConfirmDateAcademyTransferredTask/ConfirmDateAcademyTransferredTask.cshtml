@@ -1,10 +1,12 @@
 ﻿@page "/projects/{projectId}/tasks/confirm_date_academy_transferred"
+@using Dfe.Complete.Constants;
+@using Dfe.Complete.Utils;
 
 @model Dfe.Complete.Pages.Projects.TaskList.Tasks.ConfirmDateAcademyTransferredTask.ConfirmDateAcademyTransferredTaskModel
 @inject Dfe.Complete.Services.Interfaces.IErrorService ErrorService
 @{
     Layout = "_ProjectTaskLayout";
-    ViewData["Title"] = "Confirm the date the academy transferred";
+    ViewData["Title"] = Model.TaskIdentifier.ToDisplayDescription();
     var dateAcademyTransferred = "date-academy-transferred";
 
 }
@@ -22,15 +24,11 @@
         <govuk-date-input data-cy="date-academy-transferred-input" id="@dateAcademyTransferred" name-prefix="@dateAcademyTransferred" asp-for="@Model.DateAcademyTransferred" class="govuk-form-group">
             <govuk-date-input-fieldset>
                 <govuk-date-input-fieldset-legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
-                    Enter the date the academy transferred
+                    Enter the academy transfer date
                 </govuk-date-input-fieldset-legend>
                 <govuk-date-input-hint>
                     <p>For example, 1 3 2023</p>
-                </govuk-date-input-hint>
-                @if (ErrorService.HasErrorForKey(@dateAcademyTransferred))
-                {
-                    <govuk-date-input-error-message>@ErrorService.GetErrorMessage(@dateAcademyTransferred)</govuk-date-input-error-message>
-                }
+                </govuk-date-input-hint>              
             </govuk-date-input-fieldset>
         </govuk-date-input>
         @await Html.PartialAsync("_TaskSaveAndReturn", new TaskSaveAndReturnModel(Model.Project, Model.CurrentUserTeam))
