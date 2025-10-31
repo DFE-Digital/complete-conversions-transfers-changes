@@ -3,7 +3,7 @@ import {
     shouldBeAbleToViewMultipleMonthsOfProjects,
     shouldBeAbleToViewReportsLandingPage,
     shouldNotBeAbleToSoftDeleteAProject,
-    shouldNotHaveAccessToViewAndEditUsers,
+    shouldNotHaveAccessToViewAddEditUsers,
     shouldNotHaveAccessToViewConversionURNsPage,
     shouldNotHaveAccessToViewLocalAuthorities,
 } from "cypress/support/reusableTests";
@@ -117,9 +117,8 @@ describe("Capabilities and permissions of the regional delivery officer team lea
         shouldNotBeAbleToSoftDeleteAProject(projectId);
     });
 
-    it.skip("Should NOT have access to view and edit users", () => {
-        // not implemented
-        shouldNotHaveAccessToViewAndEditUsers();
+    it("Should NOT have access to view, add or edit users", () => {
+        shouldNotHaveAccessToViewAddEditUsers();
     });
 
     it("Should NOT be able to view and edit local authorities", () => {
