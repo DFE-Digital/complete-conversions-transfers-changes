@@ -3546,9 +3546,11 @@
         "tags": [
           "TasksData"
         ],
+        "summary": "Updating share the information about opening task data for transfer project.",
         "operationId": "TasksData_UpdateShareInformationAboutOpeningTask",
         "requestBody": {
           "x-name": "request",
+          "description": "The update command.",
           "content": {
             "application/json": {
               "schema": {
@@ -3577,9 +3579,11 @@
         "tags": [
           "TasksData"
         ],
+        "summary": "Updating the subleases task data for conversion project.",
         "operationId": "TasksData_UpdateSubleasesTask",
         "requestBody": {
           "x-name": "request",
+          "description": "The update command.",
           "content": {
             "application/json": {
               "schema": {
@@ -3626,6 +3630,39 @@
         "responses": {
           "204": {
             "description": "Updated the tenancy at will task successfully."
+          },
+          "400": {
+            "description": "Invalid request data."
+          },
+          "404": {
+            "description": "Project not found."
+          }
+        }
+      }
+    },
+    "/v1/TasksData/TaskData/TrustModificationOrder": {
+      "post": {
+        "tags": [
+          "TasksData"
+        ],
+        "summary": "Updating the trust modification order task data for conversion project.",
+        "operationId": "TasksData_UpdateTrustModificationOrderTask",
+        "requestBody": {
+          "x-name": "request",
+          "description": "The update command.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateTrustModificationOrderTaskCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "204": {
+            "description": "Updated the trust modification order task successfully."
           },
           "400": {
             "description": "Invalid request data."
@@ -8946,6 +8983,35 @@
             "nullable": true
           },
           "receiveSigned": {
+            "type": "boolean",
+            "nullable": true
+          }
+        }
+      },
+      "UpdateTrustModificationOrderTaskCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "taskDataId": {
+            "$ref": "#/components/schemas/TaskDataId"
+          },
+          "notApplicable": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "received": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "sent": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "cleared": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "saved": {
             "type": "boolean",
             "nullable": true
           }
