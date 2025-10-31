@@ -7,6 +7,7 @@ import { Logger } from "cypress/common/logger";
 import internalContactsPage from "cypress/pages/projects/projectDetails/internalContactsPage";
 import { TestUser } from "cypress/constants/TestUser";
 import notePage from "cypress/pages/projects/projectDetails/notePage";
+import projectDetailsPage from "cypress/pages/projects/projectDetails/projectDetailsPage";
 
 export function shouldNotHaveAccessToViewHandedOverProjects() {
     cy.visit("/projects/all/in-progress/all");
@@ -49,6 +50,15 @@ export function shouldNotBeAbleToCreateAProject() {
     cy.visit("/projects/transfers/new").notAuthorisedToPerformAction();
     cy.visit("/projects/conversions/new_mat").notAuthorisedToPerformAction();
     cy.visit("/projects/transfers/new_mat").notAuthorisedToPerformAction();
+}
+
+export function shouldNotBeAbleToSoftDeleteAProject(projectId: string) {
+    const pages = ["tasks", "information", "notes", "external-contacts", "internal-contacts", "date-history"];
+    for (const page of pages) {
+        cy.visit(`/projects/${projectId}/${page}`);
+        projectDetailsPage.doesntContain(/Delete project/i);
+    }
+    cy.visit(`/projects/${projectId}/confirm_delete`).notAuthorisedToPerformAction();
 }
 
 export function shouldNotBeAbleToAddAProjectNote(projectId: string) {

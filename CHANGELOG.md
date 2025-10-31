@@ -17,23 +17,66 @@ Security in case of vulnerabilities.
 ## Unreleased
 
 ### Added
-- Added `Complete a notification of changes to funded high needs places form` task for conversion projects.
-- Added 'Caching to redis api call'
-- Added transfer creation end point for prepare to complete
-- Sponsored support grant task for conversion and transfer project.
-
+- Added `Request a new URN and record for the academy` task for transfer projects.
 
 ### Changed
 
 ### Fixed
+
+### Security
+
+See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-10-29.1020...main) for everything awaiting release
+
+---
+
+## [1.25.0](https://github.com/DFE-Digital/complete-conversions-transfers-changes/releases/tag/production-2025-10-29.1020) - 2025-10-29
+
+### Added
+
+- Added `Deed of termination for the master funding agreement` task for transfer project.
+- Added `Deed Of Termination For the Church Supplemental Agreement` task for transfer project.
+- Added `Delete project` functionality.
+
+### Changed
+
+### Fixed
+
+- Fixed `Significant date` validation issue of `Stakeholder kick-off` task.
+- Fixed `no sequence element` issue on `Stakeholder kick-off` task.
+
+### Security
+
+See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-10-27.1000...production-2025-10-29.1020) for everything in the release
+
+---
+
+## [1.24.0](https://github.com/DFE-Digital/complete-conversions-transfers-changes/releases/tag/production-2025-10-27.1000) - 2025-10-27
+
+### Added
+
+- Added `Complete a notification of changes to funded high needs places form` task for conversion projects.
+- Added 'Caching to redis api call'
+- Added transfer creation end point for prepare to complete
+- Added `Confirm if the bank details for the general annual grant payment need to change` task for transfer project.
+- Added  'Confirm the academy name' task for conversion project.
+
+- Added 'Land consent letter task for transfer projects'
+- Adding key contact record on confirming project handover and logging error message if key contact is already been added.
+- Added `Check accuracy of high needs places information` task for conversion project.
+
+### Changed
+
+### Fixed
+
 - minor text corrections for 2 of the task pages
 - minor text correction for confirm dao revocation page
-
+- Fixed task notes formatting.
+- Replaced html extension method with note html tag to have consistent approach for all notes/reasoning  formatting.
 - Fixed `LocalAuthority` HTTP Post method by removing local authority id.
 
 ### Security
 
-See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-10-21.954...main) for everything awaiting release
+See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-10-21.954...production-2025-10-27.1000) for everything in the release
 
 ---
 
@@ -61,13 +104,13 @@ See the [full commit history](https://github.com/DFE-Digital/complete-conversion
 
 - Added `Check and confirm the academy and trust financial information` task for transfer project.
 - Added link for delete project button
-- Added  'Confirm the academy name' task for conversion project.
 
 ### Changed
 
 ### Fixed
 
 ### Security
+- Secure cookies should contain the HTTPOnly attribute
 
 See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-10-17.921...production-2025-10-20.943) for everything in the release
 
@@ -106,7 +149,6 @@ See the [full commit history](https://github.com/DFE-Digital/complete-conversion
 ### Added
 - Added `Confirm the academy's risk protection agreements` task for both conversion and transfer projects.
 - Added all task notes identifiers.
-- Adding key contact record on confirming project handover and logging error message if key contact is already been added. 
 
 ### Changed
 - Hide "Complete a project" functionality on a project if it's DaO revoked

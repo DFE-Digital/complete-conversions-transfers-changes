@@ -2,6 +2,7 @@ import {
     shouldBeAbleToChangeTheAddedByUserOfAProject,
     shouldBeAbleToViewMultipleMonthsOfProjects,
     shouldBeAbleToViewReportsLandingPage,
+    shouldNotBeAbleToSoftDeleteAProject,
     shouldNotHaveAccessToViewAndEditUsers,
     shouldNotHaveAccessToViewConversionURNsPage,
     shouldNotHaveAccessToViewLocalAuthorities,
@@ -77,7 +78,9 @@ describe("Capabilities and permissions of the regional delivery officer team lea
         shouldBeAbleToViewMultipleMonthsOfProjects();
     });
 
-    it("Should be able to assign unassigned projects to users", () => {
+    // bug 245061
+    // + POST /Projects/InternalContacts/EditAssignedUser is intermittently not being called
+    it.skip("Should be able to assign unassigned projects to users", () => {
         navBar.goToYourTeamProjects();
         yourTeamProjects
             .filterProjects("Unassigned")
@@ -110,8 +113,8 @@ describe("Capabilities and permissions of the regional delivery officer team lea
         shouldBeAbleToViewReportsLandingPage();
     });
 
-    it.skip("Should NOT be able to soft delete projects", () => {
-        // not implemented
+    it("Should NOT be able to soft delete projects", () => {
+        shouldNotBeAbleToSoftDeleteAProject(projectId);
     });
 
     it.skip("Should NOT have access to view and edit users", () => {

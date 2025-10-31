@@ -2212,6 +2212,39 @@
         }
       }
     },
+    "/v1/Projects/project/Delete": {
+      "patch": {
+        "tags": [
+          "Projects"
+        ],
+        "summary": "Sets the delete status for a specific project.",
+        "operationId": "Projects_UpdateDeleteProjectStatus",
+        "requestBody": {
+          "x-name": "request",
+          "description": "The update command.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateDeleteProjectCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "204": {
+            "description": "Updated the project with delete status"
+          },
+          "400": {
+            "description": "Invalid request data."
+          },
+          "404": {
+            "description": "Project not found."
+          }
+        }
+      }
+    },
     "/v1/ServiceSupport/LocalAuthority": {
       "post": {
         "tags": [
@@ -3277,20 +3310,20 @@
         }
       }
     },
-    "/v1/TasksData/TaskData/SponsoredSupportGrant": {
+    "/v1/TasksData/TaskData/ConfirmBankDetails": {
       "patch": {
         "tags": [
           "TasksData"
         ],
-        "summary": "Confirm the sponsored support grant",
-        "operationId": "TasksData_UpdateSponsoredSupportGrantTask",
+        "summary": "Confirm if the bank details for the general annual grant payment need to change for transfer project.",
+        "operationId": "TasksData_UpdateConfirmBankDetailsTask",
         "requestBody": {
           "x-name": "request",
           "description": "The update command.",
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/UpdateConfirmSponsoredSupportGrantTaskCommand"
+                "$ref": "#/components/schemas/UpdateConfirmBankDetailsTaskCommand"
               }
             }
           },
@@ -3299,7 +3332,205 @@
         },
         "responses": {
           "204": {
-            "description": "The sponsored support grant task updated successfully."
+            "description": "Confirm if the bank details for the general annual grant payment need to change task successfully."
+          },
+          "400": {
+            "description": "Invalid request data."
+          },
+          "404": {
+            "description": "Project not found."
+          }
+        }
+      }
+    },
+    "/v1/TasksData/TaskData/LandConsentLetter": {
+      "patch": {
+        "tags": [
+          "TasksData"
+        ],
+        "summary": "Updating the land consent letter task data for transfer project.",
+        "operationId": "TasksData_UpdateLandConsentLetterTask",
+        "requestBody": {
+          "x-name": "request",
+          "description": "The update command.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateLandConsentLetterTaskCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "204": {
+            "description": "Updated the land consent letter task successfully."
+          },
+          "400": {
+            "description": "Invalid request data."
+          },
+          "404": {
+            "description": "Project not found."
+          }
+        }
+      }
+    },
+    "/v1/TasksData/TaskData/CheckAccuracyOfHigherNeeds": {
+      "patch": {
+        "tags": [
+          "TasksData"
+        ],
+        "summary": "Check the accuracy of higher needs for conversion project.",
+        "operationId": "TasksData_UpdateAccuracyOfHigherNeedsTask",
+        "requestBody": {
+          "x-name": "request",
+          "description": "The update command.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateAccuracyOfHigherNeedsTaskCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "204": {
+            "description": "Updates the accuracy of higher needs task updated successfully."
+          },
+          "400": {
+            "description": "Invalid request data."
+          },
+          "404": {
+            "description": "Project not found."
+          }
+        }
+      }
+    },
+    "/v1/TasksData/TaskData/DeedOfTerminationMasterFundingAgreement": {
+      "patch": {
+        "tags": [
+          "TasksData"
+        ],
+        "summary": "Updating deed of termination for the master funding agreement for transfer project.",
+        "operationId": "TasksData_UpdateDeedOfTerminationMasterFundingAgreementTask",
+        "requestBody": {
+          "x-name": "request",
+          "description": "The update command.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateDeedOfTerminationMasterFundingAgreementTaskCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "204": {
+            "description": "Updated deed of termination for the master funding agreement for transfer project task successfully."
+          },
+          "400": {
+            "description": "Invalid request data."
+          },
+          "404": {
+            "description": "Project not found."
+          }
+        }
+      }
+    },
+    "/v1/TasksData/TaskData/ConfirmChairOfGovernors": {
+      "patch": {
+        "tags": [
+          "TasksData"
+        ],
+        "summary": "Updating the chair of governors’ task data for conversion project.",
+        "operationId": "TasksData_UpdateChairOfGovernorsTask",
+        "requestBody": {
+          "x-name": "request",
+          "description": "The update command.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateChairOfGovernorsCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "204": {
+            "description": "Updated the chair of governors’ task successfully."
+          },
+          "400": {
+            "description": "Invalid request data."
+          },
+          "404": {
+            "description": "Project not found."
+          }
+        }
+      }
+    },
+    "/v1/TasksData/TaskData/DeedTerminationChurchSupplementalAgreement": {
+      "patch": {
+        "tags": [
+          "TasksData"
+        ],
+        "summary": "Updating the deed of termination for the church supplemental agreement task data for transfer project.",
+        "operationId": "TasksData_UpdateDeedTerminationChurchSupplementalAgreementTask",
+        "requestBody": {
+          "x-name": "request",
+          "description": "The update command.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateDeedTerminationChurchSupplementalAgreementTaskCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "204": {
+            "description": "Updated the deed of termination for the church supplemental church agreement task successfully."
+          },
+          "400": {
+            "description": "Invalid request data."
+          },
+          "404": {
+            "description": "Project not found."
+          }
+        }
+      }
+    },
+    "/v1/TasksData/TaskData/RequestNewURNAndRecordForAcademy": {
+      "patch": {
+        "tags": [
+          "TasksData"
+        ],
+        "summary": "Request a new URN and record for the academy task for the project.",
+        "operationId": "TasksData_UpdateRequestNewUrnAndRecordForAcademyTask",
+        "requestBody": {
+          "x-name": "request",
+          "description": "The update command.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateRequestNewUrnAndRecordForAcademyTaskCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "204": {
+            "description": "Request a new URN and record for the academy task updated successfully."
           },
           "400": {
             "description": "Invalid request data."
@@ -6458,6 +6689,15 @@
           }
         }
       },
+      "UpdateDeleteProjectCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "projectId": {
+            "$ref": "#/components/schemas/ProjectId"
+          }
+        }
+      },
       "CreateLocalAuthorityDto": {
         "type": "object",
         "additionalProperties": false,
@@ -8359,42 +8599,179 @@
           }
         }
       },
-      "UpdateConfirmSponsoredSupportGrantTaskCommand": {
+      "UpdateConfirmBankDetailsTaskCommand": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
           "taskDataId": {
             "$ref": "#/components/schemas/TaskDataId"
           },
-          "projectType": {
-            "nullable": true,
-            "oneOf": [
-              {
-                "$ref": "#/components/schemas/ProjectType"
-              }
-            ]
+          "bankDetailsChangingYesNo": {
+            "type": "boolean",
+            "nullable": true
+          }
+        }
+      },
+      "UpdateLandConsentLetterTaskCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "taskDataId": {
+            "$ref": "#/components/schemas/TaskDataId"
           },
           "notApplicable": {
             "type": "boolean",
             "nullable": true
           },
-          "sponsoredSupportGrantType": {
-            "type": "string",
-            "nullable": true
-          },
-          "paymentAmount": {
+          "drafted": {
             "type": "boolean",
             "nullable": true
           },
-          "paymentForm": {
+          "signed": {
             "type": "boolean",
             "nullable": true
           },
-          "sendInformation": {
+          "sent": {
             "type": "boolean",
             "nullable": true
           },
-          "informTrust": {
+          "saved": {
+            "type": "boolean",
+            "nullable": true
+          }
+        }
+      },
+      "UpdateAccuracyOfHigherNeedsTaskCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "taskDataId": {
+            "$ref": "#/components/schemas/TaskDataId"
+          },
+          "confirmNumber": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "confirmPublishedNumber": {
+            "type": "boolean",
+            "nullable": true
+          }
+        }
+      },
+      "UpdateDeedOfTerminationMasterFundingAgreementTaskCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "taskDataId": {
+            "$ref": "#/components/schemas/TaskDataId"
+          },
+          "received": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "cleared": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "saved": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "signed": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "contactFinancialReportingTeam": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "signedSecretaryState": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "savedAcademySharePointHolder": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "notApplicable": {
+            "type": "boolean",
+            "nullable": true
+          }
+        }
+      },
+      "UpdateChairOfGovernorsCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "keyContactId": {
+            "$ref": "#/components/schemas/KeyContactId"
+          },
+          "chairOfGovernorsId": {
+            "$ref": "#/components/schemas/ContactId"
+          }
+        }
+      },
+      "UpdateDeedTerminationChurchSupplementalAgreementTaskCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "taskDataId": {
+            "$ref": "#/components/schemas/TaskDataId"
+          },
+          "notApplicable": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "received": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "cleared": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "signed": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "signedByDiocese": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "saved": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "signedBySecretaryState": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "savedAfterSigningBySecretaryState": {
+            "type": "boolean",
+            "nullable": true
+          }
+        }
+      },
+      "UpdateRequestNewUrnAndRecordForAcademyTaskCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "taskDataId": {
+            "$ref": "#/components/schemas/TaskDataId"
+          },
+          "notApplicable": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "complete": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "receive": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "give": {
             "type": "boolean",
             "nullable": true
           }
