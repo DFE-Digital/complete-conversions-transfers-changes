@@ -17,6 +17,7 @@ Security in case of vulnerabilities.
 ## Unreleased
 
 ### Added
+- Added `Request a new URN and record for the academy` task for transfer projects.
 
 ### Changed
 
@@ -110,6 +111,7 @@ See the [full commit history](https://github.com/DFE-Digital/complete-conversion
 ### Fixed
 
 ### Security
+- Secure cookies should contain the HTTPOnly attribute
 
 See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-10-17.921...production-2025-10-20.943) for everything in the release
 
