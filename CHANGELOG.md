@@ -17,7 +17,23 @@ Security in case of vulnerabilities.
 ## Unreleased
 
 ### Added
+- Added `Request a new URN and record for the academy` task for transfer projects.
 
+### Changed
+
+### Fixed
+
+### Security
+
+See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-10-29.1020...main) for everything awaiting release
+
+---
+
+## [1.25.0](https://github.com/DFE-Digital/complete-conversions-transfers-changes/releases/tag/production-2025-10-29.1020) - 2025-10-29
+
+### Added
+
+- Added `Deed of termination for the master funding agreement` task for transfer project.
 - Added `Deed Of Termination For the Church Supplemental Agreement` task for transfer project.
 - Added `Delete project` functionality.
 - Added `Subleases` task
@@ -31,7 +47,7 @@ Security in case of vulnerabilities.
 
 ### Security
 
-See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-10-27.1000...main) for everything awaiting release
+See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-10-27.1000...production-2025-10-29.1020) for everything in the release
 
 ---
 
@@ -44,7 +60,6 @@ See the [full commit history](https://github.com/DFE-Digital/complete-conversion
 - Added transfer creation end point for prepare to complete
 - Added `Confirm if the bank details for the general annual grant payment need to change` task for transfer project.
 - Added  'Confirm the academy name' task for conversion project.
-- Added `Deed of termination for the master funding agreement` task for transfer project.
 
 - Added 'Land consent letter task for transfer projects'
 - Adding key contact record on confirming project handover and logging error message if key contact is already been added.
@@ -96,6 +111,7 @@ See the [full commit history](https://github.com/DFE-Digital/complete-conversion
 ### Fixed
 
 ### Security
+- Secure cookies should contain the HTTPOnly attribute
 
 See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-10-17.921...production-2025-10-20.943) for everything in the release
 
