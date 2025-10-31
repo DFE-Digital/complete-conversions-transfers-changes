@@ -1,8 +1,9 @@
 ﻿@page "/projects/{projectId}/tasks/land_registry"
+@using Dfe.Complete.Utils;
 @model Dfe.Complete.Pages.Projects.TaskList.Tasks.LandRegistryTitlePlansTask.LandRegistryTitlePlansTaskModel
 @{
     Layout = "_ProjectTaskLayout";
-    ViewData["Title"] = "Land registry title plans";
+    ViewData["Title"] = Model.TaskIdentifier.ToDisplayDescription();
 }
 
 @section TaskHeaderHintSection {

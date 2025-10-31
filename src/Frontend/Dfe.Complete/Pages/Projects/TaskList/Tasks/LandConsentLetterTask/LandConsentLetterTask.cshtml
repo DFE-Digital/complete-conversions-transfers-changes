@@ -1,9 +1,10 @@
 ﻿@page "/projects/{projectId}/tasks/land_consent_letter"
+@using Dfe.Complete.Utils;
 @inject Microsoft.Extensions.Configuration.IConfiguration _configuration
 @model Dfe.Complete.Pages.Projects.TaskList.Tasks.LandConsentLetterTask.LandConsentLetterTaskModel
 @{
     Layout = "_ProjectTaskLayout";
-    ViewData["Title"] = "Land consent letter";
+    ViewData["Title"] = Model.TaskIdentifier.ToDisplayDescription();
 }
 @section TaskHeaderHintSection {
     <div class="govuk-hint">

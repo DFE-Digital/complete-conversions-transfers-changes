@@ -1,8 +1,9 @@
 ﻿@page "/projects/{projectId}/tasks/form_m"
+@using Dfe.Complete.Utils;
 @model Dfe.Complete.Pages.Projects.TaskList.Tasks.FormM.FormMModel
 @{
     Layout = "_ProjectTaskLayout";
-    ViewData["Title"] = "Form M";
+    ViewData["Title"] = Model.TaskIdentifier.ToDisplayDescription();
 }
 @section TaskHeaderHintSection {
     <div class="govuk-hint"> 
