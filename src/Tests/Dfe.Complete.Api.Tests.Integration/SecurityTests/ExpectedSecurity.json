@@ -454,6 +454,11 @@
       "Controller": "TasksDataController",
       "Action": "UpdateRequestNewUrnAndRecordForAcademyTaskAsync",
       "ExpectedSecurity": "Authorize: Policy=CanReadWriteUpdate"
+    },    
+    {
+      "Controller": "TasksDataController",
+      "Action": "UpdateShareInformationAboutOpeningTaskAsync",
+      "ExpectedSecurity": "Authorize: Policy=CanReadWriteUpdate"
     }
   ]
 }

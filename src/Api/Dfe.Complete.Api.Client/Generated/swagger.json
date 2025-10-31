@@ -3541,6 +3541,39 @@
         }
       }
     },
+    "/v1/TasksData/TaskData/UpdateShareInformationAboutOpening": {
+      "patch": {
+        "tags": [
+          "TasksData"
+        ],
+        "summary": "Updating share the information about opening task data for transfer project.",
+        "operationId": "TasksData_UpdateShareInformationAboutOpeningTask",
+        "requestBody": {
+          "x-name": "request",
+          "description": "The update command.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateShareInformationAboutOpeningTaskCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "204": {
+            "description": "Updated share the information about opening task successfully."
+          },
+          "400": {
+            "description": "Invalid request data."
+          },
+          "404": {
+            "description": "Project not found."
+          }
+        }
+      }
+    },
     "/v1/Trust/List/All": {
       "get": {
         "tags": [
@@ -8772,6 +8805,19 @@
             "nullable": true
           },
           "give": {
+            "type": "boolean",
+            "nullable": true
+          }
+        }
+      },
+      "UpdateShareInformationAboutOpeningTaskCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "taskDataId": {
+            "$ref": "#/components/schemas/TaskDataId"
+          },
+          "shareInformationEmail": {
             "type": "boolean",
             "nullable": true
           }
