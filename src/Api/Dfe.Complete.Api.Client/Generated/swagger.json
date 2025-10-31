@@ -3277,6 +3277,42 @@
         }
       }
     },
+    "/v1/TasksData/TaskData/ConfirmOutgoingTrustCeoContact": {
+      "patch": {
+        "tags": [
+          "TasksData"
+        ],
+        "summary": "Confirm the outgoing trust ceo contact for the project.",
+        "operationId": "TasksData_UpdateConfirmOutgoingTrustCeoContactTask",
+        "requestBody": {
+          "x-name": "request",
+          "description": "The update command.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateOutgoingTrustCeoCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "204": {
+            "description": "Confirm the outgoing trust ceo contact for the project successfully."
+          },
+          "400": {
+            "description": "Invalid request data."
+          },
+          "404": {
+            "description": "KeyContact not found."
+          },
+          "500": {
+            "description": "Internal server error."
+          }
+        }
+      }
+    },
     "/v1/TasksData/TaskData/AcademyDetails": {
       "patch": {
         "tags": [
@@ -3575,7 +3611,7 @@
       }
     },
     "/v1/TasksData/TaskData/Subleases": {
-      "post": {
+      "patch": {
         "tags": [
           "TasksData"
         ],
@@ -3641,7 +3677,7 @@
       }
     },
     "/v1/TasksData/TaskData/TrustModificationOrder": {
-      "post": {
+      "patch": {
         "tags": [
           "TasksData"
         ],
@@ -8715,6 +8751,18 @@
           "trustSurplusOrDeficit": {
             "type": "string",
             "nullable": true
+          }
+        }
+      },
+      "UpdateOutgoingTrustCeoCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "keyContactId": {
+            "$ref": "#/components/schemas/KeyContactId"
+          },
+          "outgoingTrustCeoId": {
+            "$ref": "#/components/schemas/ContactId"
           }
         }
       },

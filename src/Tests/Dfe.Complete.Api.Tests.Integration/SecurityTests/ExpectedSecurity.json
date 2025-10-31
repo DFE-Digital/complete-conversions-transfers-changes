@@ -474,6 +474,11 @@
       "Controller": "TasksDataController",
       "Action": "UpdateTenancyAtWillTaskAsync",
       "ExpectedSecurity": "Authorize: Policy=CanReadWriteUpdate"
+    },
+    {
+      "Controller": "TasksDataController",
+      "Action": "UpdateConfirmOutgoingTrustCeoContactTaskAsync",
+      "ExpectedSecurity": "Authorize: Policy=CanReadWriteUpdate"
     }
   ]
 }
