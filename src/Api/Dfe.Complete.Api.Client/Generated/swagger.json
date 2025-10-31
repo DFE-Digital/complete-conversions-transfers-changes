@@ -2212,6 +2212,39 @@
         }
       }
     },
+    "/v1/Projects/project/Delete": {
+      "patch": {
+        "tags": [
+          "Projects"
+        ],
+        "summary": "Sets the delete status for a specific project.",
+        "operationId": "Projects_UpdateDeleteProjectStatus",
+        "requestBody": {
+          "x-name": "request",
+          "description": "The update command.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateDeleteProjectCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "204": {
+            "description": "Updated the project with delete status"
+          },
+          "400": {
+            "description": "Invalid request data."
+          },
+          "404": {
+            "description": "Project not found."
+          }
+        }
+      }
+    },
     "/v1/ServiceSupport/LocalAuthority": {
       "post": {
         "tags": [
@@ -3409,6 +3442,39 @@
         }
       }
     },
+    "/v1/TasksData/TaskData/ConfirmChairOfGovernors": {
+      "patch": {
+        "tags": [
+          "TasksData"
+        ],
+        "summary": "Updating the chair of governors’ task data for conversion project.",
+        "operationId": "TasksData_UpdateChairOfGovernorsTask",
+        "requestBody": {
+          "x-name": "request",
+          "description": "The update command.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateChairOfGovernorsCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "204": {
+            "description": "Updated the chair of governors’ task successfully."
+          },
+          "400": {
+            "description": "Invalid request data."
+          },
+          "404": {
+            "description": "Project not found."
+          }
+        }
+      }
+    },
     "/v1/TasksData/TaskData/DeedTerminationChurchSupplementalAgreement": {
       "patch": {
         "tags": [
@@ -3442,20 +3508,20 @@
         }
       }
     },
-    "/v1/TasksData/TaskData/ClosureOrTransferDeclaration": {
+    "/v1/TasksData/TaskData/RequestNewURNAndRecordForAcademy": {
       "patch": {
         "tags": [
           "TasksData"
         ],
-        "summary": "Check and clear the closure or transfer declaration for transfer project.",
-        "operationId": "TasksData_UpdateClosureOrTransferDeclarationTask",
+        "summary": "Request a new URN and record for the academy task for the project.",
+        "operationId": "TasksData_UpdateRequestNewUrnAndRecordForAcademyTask",
         "requestBody": {
           "x-name": "request",
           "description": "The update command.",
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/UpdateClosureOrTransferDeclarationTaskCommand"
+                "$ref": "#/components/schemas/UpdateRequestNewUrnAndRecordForAcademyTaskCommand"
               }
             }
           },
@@ -3464,7 +3530,7 @@
         },
         "responses": {
           "204": {
-            "description": "Check and clear the closure or transfer declaration task successfully."
+            "description": "Request a new URN and record for the academy task updated successfully."
           },
           "400": {
             "description": "Invalid request data."
@@ -6623,6 +6689,15 @@
           }
         }
       },
+      "UpdateDeleteProjectCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "projectId": {
+            "$ref": "#/components/schemas/ProjectId"
+          }
+        }
+      },
       "CreateLocalAuthorityDto": {
         "type": "object",
         "additionalProperties": false,
@@ -8624,6 +8699,18 @@
           }
         }
       },
+      "UpdateChairOfGovernorsCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "keyContactId": {
+            "$ref": "#/components/schemas/KeyContactId"
+          },
+          "chairOfGovernorsId": {
+            "$ref": "#/components/schemas/ContactId"
+          }
+        }
+      },
       "UpdateDeedTerminationChurchSupplementalAgreementTaskCommand": {
         "type": "object",
         "additionalProperties": false,
@@ -8665,7 +8752,7 @@
           }
         }
       },
-      "UpdateClosureOrTransferDeclarationTaskCommand": {
+      "UpdateRequestNewUrnAndRecordForAcademyTaskCommand": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
@@ -8676,19 +8763,15 @@
             "type": "boolean",
             "nullable": true
           },
-          "received": {
+          "complete": {
             "type": "boolean",
             "nullable": true
           },
-          "cleared": {
+          "receive": {
             "type": "boolean",
             "nullable": true
           },
-          "saved": {
-            "type": "boolean",
-            "nullable": true
-          },
-          "sent": {
+          "give": {
             "type": "boolean",
             "nullable": true
           }

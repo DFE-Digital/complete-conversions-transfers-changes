@@ -29,8 +29,8 @@ describe("Complete conversion projects tests", () => {
             academyOrderId = response.value;
         });
         // Intercept the POST requests to minister and date endpoints
-        cy.intercept('POST', '**/dao-revocation/minister').as('addMinister');
-        cy.intercept('POST', '**/dao-revocation/date').as('addDate');
+        cy.intercept("POST", "**/dao-revocation/minister").as("addMinister");
+        cy.intercept("POST", "**/dao-revocation/date").as("addDate");
     });
 
     beforeEach(() => {
@@ -68,8 +68,8 @@ describe("Complete conversion projects tests", () => {
             .continue();
 
         // Wait for the date POST request to complete
-        cy.wait('@addMinister');
-        cy.wait('@addDate');
+        cy.wait("@addMinister");
+        cy.wait("@addDate");
 
         projectDetailsPage
             .inOrder()
@@ -100,11 +100,11 @@ describe("Complete conversion projects tests", () => {
                 "This project‘s Directive Academy Order was revoked on 15 June 2024.Only Service Support team members can make changes to this project.",
             )
             .doesntContain("Revoke a Directive Academy Order")
-            .buttonDoesNotExist("Record DAO revocation");
+            .doesntContain("Record DAO revocation");
     });
 
     it("should not be able to revoke an academy order project", () => {
         cy.visit(`projects/${academyOrderId}/tasks`);
-        taskListPage.doesntContain("Revoke a Directive Academy Order").buttonDoesNotExist("Record DAO revocation");
+        taskListPage.doesntContain("Revoke a Directive Academy Order").doesntContain("Record DAO revocation");
     });
 });
