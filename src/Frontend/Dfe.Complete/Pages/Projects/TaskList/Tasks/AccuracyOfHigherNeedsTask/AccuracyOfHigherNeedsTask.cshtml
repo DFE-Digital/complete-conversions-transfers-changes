@@ -4,7 +4,7 @@
 @model Dfe.Complete.Pages.Projects.TaskList.Tasks.AccuracyOfHigherNeedsTask.AccuracyOfHigherNeedsTaskModel
 @{
     Layout = "_ProjectTaskLayout";
-    ViewData["Title"] = @Model.TaskIdentifier.ToDisplayDescription();
+    ViewData["Title"] = Model.TaskIdentifier.ToDisplayDescription();
     var academyOpenersEmail = _configuration["Emails:AcademyOpeners"];
 }
 @section TaskHeaderHintSection {

@@ -1,8 +1,9 @@
 ﻿@page "/projects/{projectId}/tasks/direction_to_transfer"
+@using Dfe.Complete.Utils;
 @model Dfe.Complete.Pages.Projects.TaskList.Tasks.DirectionToTransfer.DirectionToTransferModel
 @{
     Layout = "_ProjectTaskLayout";
-    ViewData["Title"] = "Direction to transfer";
+    ViewData["Title"] = Model.TaskIdentifier.ToDisplayDescription();
 }
 @section TaskHeaderHintSection {
     <div class="govuk-hint"> 

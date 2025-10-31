@@ -1,8 +1,9 @@
 ﻿@page "/projects/{projectId}/tasks/academy_details"
+@using Dfe.Complete.Utils
 @model Dfe.Complete.Pages.Projects.TaskList.Tasks.AcademyDetailsTask.AcademyDetailsTaskModel
 @{
     Layout = "_ProjectTaskLayout";
-    ViewData["Title"] = "Confirm the academy name";
+    ViewData["Title"] = Model.TaskIdentifier.ToDisplayDescription();
 
     const string academyName = nameof(Model.AcademyName);
 }

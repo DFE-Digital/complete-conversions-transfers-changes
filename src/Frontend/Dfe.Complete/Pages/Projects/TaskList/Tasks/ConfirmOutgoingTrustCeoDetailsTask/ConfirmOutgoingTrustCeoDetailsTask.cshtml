@@ -1,13 +1,12 @@
-﻿@page "/projects/{projectId}/tasks/confirm_incoming_trust_ceo_contact"
+﻿@page "/projects/{projectId}/tasks/confirm_outgoing_trust_ceo_contact"
 @using Dfe.Complete.Constants
-@using Dfe.Complete.TagHelpers;
-@using Dfe.Complete.Utils;
-@inject Microsoft.Extensions.Configuration.IConfiguration _configuration
-@model Dfe.Complete.Pages.Projects.TaskList.Tasks.IncomingTrustCeoTask.IncomingTrustCeoTaskModel
+@using Dfe.Complete.TagHelpers
+@using GovUk.Frontend.AspNetCore.TagHelpers
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model Dfe.Complete.Pages.Projects.TaskList.Tasks.ConfirmOutgoingTrustCeoDetails.ConfirmOutgoingTrustCeoDetailsTaskModel
 @{
     Layout = "_ProjectTaskLayout";
-    ViewData["Title"] = Model.TaskIdentifier.ToDisplayDescription();
-    var projectsExternalContactLink = string.Format(RouteConstants.ProjectExternalContacts, Model.ProjectId);
+    ViewData["Title"] = "Confirm the outgoing trust CEO’s details";var projectsExternalContactLink = string.Format(RouteConstants.ProjectExternalContacts, Model.ProjectId);
     var projectsExternalContactAddNewLink = string.Format(RouteConstants.NewProjectExternalContacts, Model.ProjectId);
 }
 @section TaskHeaderHintSection
@@ -17,18 +16,18 @@
     </div>
 }
 @section TaskSection {
-    <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">Who is the incoming trust CEO?</legend>
+    <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">Who is the outgoing trust CEO?</legend>
     @if (Model?.Contacts != null && Model.Contacts.Count > 0)
     {
-        <form method="post" novalidate data-cy="task-update-incomingtrust-ceo-form">
+        <form method="post" novalidate data-cy="task-update-outgoingtrust-ceo-form">
             <div class="govuk-hint">
                 <p>Choose the relevant person from the list of contacts. You may need to add a new contact if the person you are looking for is not in the list.</p>
-                <p>Their job title may be slightly different to the role described here. Choose the person whose role most closely matches the incoming trust CEO.</p>
+                <p>Their job title may be slightly different to the role described here. Choose the person whose role most closely matches the outgoing trust CEO.</p>
             </div>
 
             <input type="hidden" asp-for="KeyContactId" />            
             @await Html.PartialAsync("_TaskContactRadioList",
-            new ContactRadioListModel(Model.Contacts!, Model.IncomingTrustCeoContactId, "IncomingTrustCeoContactId")
+            new ContactRadioListModel(Model.Contacts!, Model.OutgoingTrustCeoContactId, "OutgoingTrustCeoContactId")
             {
                 Legend = "Choose a contact"
             }
