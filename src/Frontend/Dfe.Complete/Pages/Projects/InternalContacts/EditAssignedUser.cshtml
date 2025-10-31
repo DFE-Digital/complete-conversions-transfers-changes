@@ -1,5 +1,4 @@
 ﻿@page "/projects/{projectId}/internal-contacts/assigned-user/edit"
-@using Dfe.Complete.Constants
 @model Dfe.Complete.Pages.Projects.InternalContacts.EditAssignedUser
 
 @{
@@ -27,7 +26,7 @@
         <button data-prevent-double-click="true" class="govuk-button" data-module="govuk-button" id="save">
           Continue
         </button>
-        <a id="cancel-link-event" class="govuk-link" href="@(string.Format(RouteConstants.ProjectInternalContacts, Model.ProjectId))">Cancel</a>
+        <a id="cancel-link-event" class="govuk-link" href="@(Model.DetermineReturnRoute())">Cancel</a>
       </div>
     </form>
   </div>

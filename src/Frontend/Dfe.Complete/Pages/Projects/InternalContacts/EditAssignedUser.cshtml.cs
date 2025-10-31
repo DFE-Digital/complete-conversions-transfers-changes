@@ -66,10 +66,7 @@ public class EditAssignedUser(ISender sender, IErrorService errorService, ILogge
                 await _sender.Send(updateRequest);
                 TempData.SetNotification(NotificationType.Success, "Success", "Project has been assigned successfully");
 
-                var returnRoute = ReturnUrl == "unassigned"
-                    ? FormatRouteWithProjectId(RouteConstants.TeamProjectsUnassigned)
-                    : FormatRouteWithProjectId(RouteConstants.ProjectInternalContacts);
-                return Redirect(returnRoute);
+                return Redirect(DetermineReturnRoute());
             }
             catch (NotFoundException notFoundException)
             {
@@ -92,5 +89,14 @@ public class EditAssignedUser(ISender sender, IErrorService errorService, ILogge
         logger.LogError("Email not found or not assignable - {Email}", assignedToUserQuery.Email);
         ModelState.AddModelError("Email", "Email is not assignable");
         return await OnGetAsync();
+    }
+
+    public string DetermineReturnRoute()
+    {
+        var returnRoute = ReturnUrl == "unassigned"
+            ? FormatRouteWithProjectId(RouteConstants.TeamProjectsUnassigned)
+            : FormatRouteWithProjectId(RouteConstants.ProjectInternalContacts);
+
+        return returnRoute;
     }
 }
