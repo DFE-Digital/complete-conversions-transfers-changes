@@ -102,6 +102,18 @@ interface UpdateDeedOfNovationAndVariationTaskRequest {
     savedAfterSign?: boolean;
 }
 
+interface UpdateDeedOfTerminationChurchSupplementalAgreementTaskRequest {
+    taskDataId: TaskDataId;
+    notApplicable?: boolean;
+    received?: boolean;
+    cleared?: boolean;
+    signed?: boolean;
+    signedByDiocese?: boolean;
+    saved?: boolean;
+    signedBySecretaryState?: boolean;
+    savedAfterSigningBySecretaryState?: boolean;
+}
+
 interface UpdateDeedOfTerminationMasterFundingAgreementTaskRequest {
     taskDataId: TaskDataId;
     notApplicable?: boolean;
@@ -237,6 +249,12 @@ class TaskApi extends ApiBase {
 
     public updateDeedOfNovationAndVariationTask(requestBody: UpdateDeedOfNovationAndVariationTaskRequest) {
         return this.taskDataBaseRequest<void>("DeedOfNovationAndVariation", requestBody);
+    }
+
+    public updateDeedOfTerminationChurchSupplementalAgreementTask(
+        requestBody: UpdateDeedOfTerminationChurchSupplementalAgreementTaskRequest,
+    ) {
+        return this.taskDataBaseRequest<void>("DeedTerminationChurchSupplementalAgreement", requestBody);
     }
 
     public updateDeedOfTerminationMasterFundingAgreementTask(

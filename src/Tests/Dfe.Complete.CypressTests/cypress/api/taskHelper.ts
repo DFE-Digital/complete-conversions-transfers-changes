@@ -318,6 +318,49 @@ class TaskHelper {
                 return taskApi.updateDeedOfNovationAndVariationTask(defaultBody);
         }
     }
+    public updateDeedOfTerminationChurchSupplementalAgreement(taskDataId: string, status: TaskStatus) {
+        const defaultBody = {
+            taskDataId: { value: taskDataId },
+            notApplicable: false,
+            received: false,
+            cleared: false,
+            signed: false,
+            signedByDiocese: false,
+            saved: false,
+            signedBySecretaryState: false,
+            savedAfterSigningBySecretaryState: false,
+        };
+
+        switch (status) {
+            case "notApplicable":
+                return taskApi.updateDeedOfTerminationChurchSupplementalAgreementTask({
+                    ...defaultBody,
+                    notApplicable: true,
+                });
+
+            case "inProgress":
+                return taskApi.updateDeedOfTerminationChurchSupplementalAgreementTask({
+                    ...defaultBody,
+                    received: true,
+                });
+
+            case "completed":
+                return taskApi.updateDeedOfTerminationChurchSupplementalAgreementTask({
+                    taskDataId: { value: taskDataId },
+                    notApplicable: false,
+                    received: true,
+                    cleared: true,
+                    signed: true,
+                    signedByDiocese: true,
+                    saved: true,
+                    signedBySecretaryState: true,
+                    savedAfterSigningBySecretaryState: true,
+                });
+            default:
+                return taskApi.updateDeedOfTerminationChurchSupplementalAgreementTask(defaultBody);
+        }
+    }
+
     public updateDeedOfTerminationMasterFundingAgreement(taskDataId: string, status: TaskStatus) {
         const defaultBody = {
             taskDataId: { value: taskDataId },
