@@ -1,9 +1,10 @@
 ﻿@page "/projects/{projectId}/tasks/handover"
 @using Dfe.Complete.Domain.Enums
+@using Dfe.Complete.Utils;
 @model Dfe.Complete.Pages.Projects.TaskList.Tasks.HandoverWithDeliveryOfficerTask.HandoverWithDeliveryOfficerTaskModel
 @{
   Layout = "_ProjectTaskLayout";
-  ViewData["Title"] = "Handover with regional delivery officer";
+    ViewData["Title"] = Model.TaskIdentifier.ToDisplayDescription();
 }
 
 @section TaskSection {
