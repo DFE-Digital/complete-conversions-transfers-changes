@@ -18,6 +18,8 @@ Security in case of vulnerabilities.
 
 ### Added
 - Added `Request a new URN and record for the academy` task for transfer projects.
+- Added `125 year lease` task for conversion project.
+
 
 ### Changed
 
