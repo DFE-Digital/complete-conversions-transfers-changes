@@ -2,6 +2,7 @@
 @using Dfe.Complete.Constants
 @using Dfe.Complete.Domain.Constants
 @using Dfe.Complete.TagHelpers;
+@using Dfe.Complete.Utils;
 @using Microsoft.AspNetCore.Authorization
 @inject Microsoft.Extensions.Configuration.IConfiguration _configuration
 @inject IAuthorizationService Authorization
@@ -9,7 +10,7 @@
 
 @{
     Layout = "_ProjectTaskLayout";
-    ViewData["Title"] = "Confirm the headteacher’s details";
+    ViewData["Title"] = Model.TaskIdentifier.ToDisplayDescription();
     var projectsExternalContactLink = string.Format(RouteConstants.ProjectExternalContacts, Model.ProjectId);
     var projectsExternalContactAddNewLink = string.Format(RouteConstants.NewProjectExternalContacts, Model.ProjectId);
     var canAddContact = await Authorization.AuthorizeAsync(User, policyName: UserPolicyConstants.CanEditAddedByUser);

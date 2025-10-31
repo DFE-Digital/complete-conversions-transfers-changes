@@ -1,16 +1,49 @@
 ﻿@page "/projects/{projectId}/tasks/tenancy_at_will"
 @model Dfe.Complete.Pages.Projects.TaskList.Tasks.TenancyAtWillTask.TenancyAtWillTaskModel
+@inject Microsoft.Extensions.Configuration.IConfiguration _configuration
+@using Dfe.Complete.Utils
 @{
     Layout = "_ProjectTaskLayout";
-    ViewData["Title"] = "Tenancy at will";
+    ViewData["Title"] = @Model.TaskIdentifier.ToDisplayDescription();
 }
 @section TaskHeaderHintSection {
-    <div class="govuk-hint"> 
+    <div class="govuk-hint">
+        <p>A tenancy at will allows a tenant and landlord to agree that the tenant can indefinitely use the land owned by the landlord.</p> 
+        <p>It's very rare that this document is used.</p>
+        <p>It's only likely to be used when a trust and land owner are unable to resolve a land use issue through the usual leases, and the trust are happy to proceed at risk.</p>
     </div>
 }
 @section TaskSection {
-
-    <form method="post"> 
+    <form method="post">
+        <input type="hidden" asp-for="TasksDataId" />
+        <govuk-checkboxes name="options">
+            <govuk-checkboxes-fieldset>
+                <govuk-checkboxes-fieldset-legend>
+                </govuk-checkboxes-fieldset-legend>
+                <govuk-checkboxes-item id="not-applicable" asp-for="@Model.NotApplicable" value="true" name="not-applicable" data-cy="not-applicable" checked="@Model.NotApplicable">
+                    <b>Not applicable</b>
+                </govuk-checkboxes-item>
+            </govuk-checkboxes-fieldset>
+        </govuk-checkboxes>
+        <govuk-checkboxes name="options">
+            <govuk-checkboxes-fieldset>
+                <govuk-checkboxes-fieldset-legend is-page-heading="true" class="govuk-fieldset__legend--l">
+                    Confirm the tenancy at will has been signed
+                </govuk-checkboxes-fieldset-legend>
+                <govuk-checkboxes-hint>
+                    <p>You should <external-link href="@_configuration["ExternalLinks:ContactPolicyTeam"]">contact the policy team for advice</external-link> if a trust's solicitor asks about using a tenancy at will.</p>
+                </govuk-checkboxes-hint>
+                <govuk-checkboxes-item data-cy="@nameof(Model.EmailSigned)" id="@nameof(Model.EmailSigned)" asp-for="@Model.EmailSigned" value="true" name="@nameof(Model.EmailSigned)" checked="@Model.EmailSigned">
+                    <b>Email the school to ask if all relevant parties have agreed and signed the tenancy at will</b>
+                </govuk-checkboxes-item>
+                <govuk-checkboxes-item data-cy="@nameof(Model.ReceiveSigned)" id="@nameof(Model.ReceiveSigned)" asp-for="@Model.ReceiveSigned" value="true" name="@nameof(Model.ReceiveSigned)" checked="@Model.ReceiveSigned">
+                    <b>Receive email from the school confirming all relevant parties have agreed and signed the tenancy at will</b>
+                </govuk-checkboxes-item>
+                <govuk-checkboxes-item data-cy="@nameof(Model.SaveSigned)" id="@nameof(Model.SaveSigned)" asp-for="@Model.SaveSigned" value="true" name="@nameof(Model.SaveSigned)" checked="@Model.SaveSigned">
+                    <b>Save a copy of the confirmation email in the school's SharePoint folder</b>
+                </govuk-checkboxes-item>
+            </govuk-checkboxes-fieldset>
+        </govuk-checkboxes>
         @await Html.PartialAsync("_TaskSaveAndReturn", new TaskSaveAndReturnModel(Model.Project, Model.CurrentUserTeam))
     </form>
 }

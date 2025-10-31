@@ -14,9 +14,13 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+	  <Compile Remove="Pages\Projects\TaskList\Tasks\MasterFundingAgreement\**" />
 	  <Compile Remove="ViewComponents\**" />
-	  <Content Remove="ViewComponents\**" />	  
-	  <EmbeddedResource Remove="ViewComponents\**" />
+	  <Content Remove="Pages\Projects\TaskList\Tasks\MasterFundingAgreement\**" />
+	  <Content Remove="ViewComponents\**" />
+	  <EmbeddedResource Remove="Pages\Projects\TaskList\Tasks\MasterFundingAgreement\**" />	  
+	  <EmbeddedResource Remove="ViewComponents\**" />	  
+	  <None Remove="Pages\Projects\TaskList\Tasks\MasterFundingAgreement\**" />
 	  <None Remove="ViewComponents\**" />
 	  <Compile Remove="Pages\Projects\List\AllProjectsInTrustViewModel.cs" />
 	</ItemGroup>
@@ -29,7 +33,6 @@
 	<ItemGroup>
 	  <AdditionalFiles Include="..\.sonarlint\dfe-digital_a2b-internal\CSharp\SonarLint.xml" Link="SonarLint.xml" />
 	  <AdditionalFiles Include="Pages\Projects\TaskList\Tasks\ConfirmHeadTeacherDetailsTask\ConfirmHeadTeacherDetailsTask.cshtml" />
-	  <AdditionalFiles Include="Pages\Projects\TaskList\Tasks\MasterFundingAgreement\MasterFundingAgreement.cshtml" />
 	</ItemGroup>
 
 	<PropertyGroup Label="custom">
@@ -63,8 +66,8 @@
 	  <PackageReference Include="FluentValidation" Version="12.0.0" />
 	  <PackageReference Include="GovUk.Frontend.AspNetCore" Version="2.2.1" />
       <PackageReference Include="GovUK.Dfe.PersonsApi.Client" Version="0.1.0" />
-	  <PackageReference Include="Microsoft.AspNetCore.DataProtection" Version="9.0.7" />
-	  <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="8.0.18" />
+	  <PackageReference Include="Microsoft.AspNetCore.DataProtection" Version="9.0.10" />
+	  <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="8.0.21" />
 	  <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.23.0" />
 	  <PackageReference Include="Microsoft.Extensions.Logging.ApplicationInsights" Version="2.23.0" />
 	  <PackageReference Include="Microsoft.FeatureManagement.AspNetCore" Version="2.6.1" />

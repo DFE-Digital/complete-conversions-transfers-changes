@@ -2,14 +2,14 @@
 @using Dfe.Complete.Constants
 @using Dfe.Complete.Domain.Constants
 @using Dfe.Complete.TagHelpers;
-@using Microsoft.AspNetCore.Authorization
+@using Dfe.Complete.Utils;
 @inject Microsoft.Extensions.Configuration.IConfiguration _configuration
 @inject IAuthorizationService Authorization
 @model Dfe.Complete.Pages.Projects.TaskList.Tasks.IncomingTrustCeoTask.IncomingTrustCeoTaskModel
 
 @{
     Layout = "_ProjectTaskLayout";
-    ViewData["Title"] = "Confirm the incoming trust CEO's details";
+    ViewData["Title"] = Model.TaskIdentifier.ToDisplayDescription();
     var projectsExternalContactLink = string.Format(RouteConstants.ProjectExternalContacts, Model.ProjectId);
     var projectsExternalContactAddNewLink = string.Format(RouteConstants.NewProjectExternalContacts, Model.ProjectId);
     var canAddContact = await Authorization.AuthorizeAsync(User, policyName: UserPolicyConstants.CanEditAddedByUser);

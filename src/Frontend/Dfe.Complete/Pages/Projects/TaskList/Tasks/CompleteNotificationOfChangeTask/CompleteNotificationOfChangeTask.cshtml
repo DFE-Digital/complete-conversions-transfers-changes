@@ -1,9 +1,10 @@
 ﻿@page "/projects/{projectId}/tasks/complete_notification_of_change"
+@using Dfe.Complete.Utils;
 @inject Microsoft.Extensions.Configuration.IConfiguration _configuration
 @model Dfe.Complete.Pages.Projects.TaskList.Tasks.CompleteNotificationOfChangeTask.CompleteNotificationOfChangeTaskModel
 @{
     Layout = "_ProjectTaskLayout";
-    ViewData["Title"] = "Complete a notification of changes to funded high needs places form";
+    ViewData["Title"] = Model.TaskIdentifier.ToDisplayDescription();
 }
 @section TaskHeaderHintSection {
     <div class="govuk-hint">
