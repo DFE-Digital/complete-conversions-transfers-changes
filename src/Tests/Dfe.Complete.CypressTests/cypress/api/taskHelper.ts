@@ -693,6 +693,40 @@ class TaskHelper {
                 return taskApi.updateRedactAndSendDocumentsTask(defaultBody);
         }
     }
+    updateRequestNewURNAndRecordForAcademy(taskDataId: string, projectType: ProjectType, status: TaskStatus) {
+        const defaultBody = {
+            taskDataId: { value: taskDataId },
+            notApplicable: false,
+            complete: false,
+            receive: false,
+            give: false,
+        };
+        switch (status) {
+            case "notApplicable":
+                return taskApi.updateRequestNewURNAndRecordForAcademyTask({
+                    ...defaultBody,
+                    notApplicable: true,
+                });
+
+            case "inProgress":
+                return taskApi.updateRequestNewURNAndRecordForAcademyTask({
+                    ...defaultBody,
+                    complete: true,
+                });
+
+            case "completed":
+                return taskApi.updateRequestNewURNAndRecordForAcademyTask({
+                    taskDataId: { value: taskDataId },
+                    notApplicable: false,
+                    complete: true,
+                    receive: true,
+                    give: true,
+                });
+
+            default:
+                return taskApi.updateRequestNewURNAndRecordForAcademyTask(defaultBody);
+        }
+    }
     updateConfirmAcademyRiskProtectionArrangements(
         taskDataId: string,
         projectType: ProjectType,
