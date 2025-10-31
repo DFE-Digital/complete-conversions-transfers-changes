@@ -629,6 +629,25 @@ namespace Dfe.Complete.Api.Controllers
         }
         
         /// <summary>
+        /// Request a new URN and record for the academy task for the project.
+        /// </summary>
+        /// <param name="request">The update command.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        [Authorize(Policy = "CanReadWriteUpdate")]
+        [HttpPatch]
+        [Route("TaskData/RequestNewURNAndRecordForAcademy")]
+        [SwaggerResponse(204, "Request a new URN and record for the academy task updated successfully.")]
+        [SwaggerResponse(400, "Invalid request data.")]
+        [SwaggerResponse(404, "Project not found.")]
+        public async Task<IActionResult> UpdateRequestNewUrnAndRecordForAcademyTaskAsync(
+            [FromBody] UpdateRequestNewUrnAndRecordForAcademyTaskCommand request,
+            CancellationToken cancellationToken)
+        {
+            await sender.Send(request, cancellationToken);
+            return NoContent();
+        }
+        
+        /// <summary>
         /// Updating the 125 year lease for conversion project.
         /// </summary>
         /// <param name="request">The update command.</param>

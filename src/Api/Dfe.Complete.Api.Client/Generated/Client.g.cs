@@ -9528,24 +9528,24 @@ namespace Dfe.Complete.Client
         }
 
         /// <summary>
-        /// Updating the 125 year lease for conversion project.
+        /// Request a new URN and record for the academy task for the project.
         /// </summary>
         /// <param name="request">The update command.</param>
-        /// <returns>Updated the 125 year lease task successfully.</returns>
+        /// <returns>Request a new URN and record for the academy task updated successfully.</returns>
         /// <exception cref="CompleteApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task UpdateUpdateOneHundredAndTwentyFiveYearLeaseTaskAsync(UpdateOneHundredAndTwentyFiveYearLeaseTaskCommand request)
+        public virtual System.Threading.Tasks.Task UpdateRequestNewUrnAndRecordForAcademyTaskAsync(UpdateRequestNewUrnAndRecordForAcademyTaskCommand request)
         {
-            return UpdateUpdateOneHundredAndTwentyFiveYearLeaseTaskAsync(request, System.Threading.CancellationToken.None);
+            return UpdateRequestNewUrnAndRecordForAcademyTaskAsync(request, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>
-        /// Updating the 125 year lease for conversion project.
+        /// Request a new URN and record for the academy task for the project.
         /// </summary>
         /// <param name="request">The update command.</param>
-        /// <returns>Updated the 125 year lease task successfully.</returns>
+        /// <returns>Request a new URN and record for the academy task updated successfully.</returns>
         /// <exception cref="CompleteApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task UpdateUpdateOneHundredAndTwentyFiveYearLeaseTaskAsync(UpdateOneHundredAndTwentyFiveYearLeaseTaskCommand request, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task UpdateRequestNewUrnAndRecordForAcademyTaskAsync(UpdateRequestNewUrnAndRecordForAcademyTaskCommand request, System.Threading.CancellationToken cancellationToken)
         {
             if (request == null)
                 throw new System.ArgumentNullException("request");
@@ -9564,8 +9564,8 @@ namespace Dfe.Complete.Client
 
                     var urlBuilder_ = new System.Text.StringBuilder();
                     if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
-                    // Operation Path: "v1/TasksData/TaskData/OneHundredAndTwentyFiveYearLease"
-                    urlBuilder_.Append("v1/TasksData/TaskData/OneHundredAndTwentyFiveYearLease");
+                    // Operation Path: "v1/TasksData/TaskData/RequestNewURNAndRecordForAcademy"
+                    urlBuilder_.Append("v1/TasksData/TaskData/RequestNewURNAndRecordForAcademy");
 
                     PrepareRequest(client_, request_, urlBuilder_);
 
