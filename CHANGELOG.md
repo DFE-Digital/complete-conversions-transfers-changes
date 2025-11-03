@@ -31,6 +31,14 @@ Security in case of vulnerabilities.
 - create conversion project end point not in use due to in-app project creations being a workaround 
 - create MAT conversion project end point not in use due to in-app project creations being a workaround 
 - create transfer project end point not in use due to in-app project creations being a workaround 
+- update user login flow, populating entra ID on user record if missing
+
+### Changed
+- Identify user by entra_user_object_id instead of active_directory_user_id
+
+### Fixed
+
+### Security
 
 See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-10-31.1038...main) for everything awaiting release
 
