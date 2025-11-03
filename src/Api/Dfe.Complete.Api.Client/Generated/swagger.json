@@ -5057,6 +5057,10 @@
                 "type": "string",
                 "nullable": true
               },
+              "entraUserObjectId": {
+                "type": "string",
+                "nullable": true
+              },
               "assignToProject": {
                 "type": "boolean",
                 "nullable": true
