@@ -16,6 +16,9 @@ Security in case of vulnerabilities.
 
 ## Unreleased
 
+### Changed
+- Identify user by entra_user_object_id instead of active_directory_user_id
+
 ### Fixed
 -- Added Debounce to UserAutoComplete
 -- Updated error wording on Confirm the academy's risk protection arrangements for conversiont task
