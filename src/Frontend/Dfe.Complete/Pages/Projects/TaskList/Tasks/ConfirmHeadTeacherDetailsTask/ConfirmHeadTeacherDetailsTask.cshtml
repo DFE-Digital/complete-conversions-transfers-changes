@@ -1,11 +1,12 @@
 ﻿@page "/projects/{projectId}/tasks/confirm_headteacher_contact"
 @using Dfe.Complete.Constants
 @using Dfe.Complete.TagHelpers;
+@using Dfe.Complete.Utils;
 @inject Microsoft.Extensions.Configuration.IConfiguration _configuration
 @model Dfe.Complete.Pages.Projects.TaskList.Tasks.ConfirmHeadTeacherDetailsTask.ConfirmHeadTeachersDetailsTaskModel
 @{
     Layout = "_ProjectTaskLayout";
-    ViewData["Title"] = "Confirm the headteacher’s details";
+    ViewData["Title"] = Model.TaskIdentifier.ToDisplayDescription();
     var projectsExternalContactLink = string.Format(RouteConstants.ProjectExternalContacts, Model.ProjectId);
     var projectsExternalContactAddNewLink = string.Format(RouteConstants.NewProjectExternalContacts, Model.ProjectId);
 }
