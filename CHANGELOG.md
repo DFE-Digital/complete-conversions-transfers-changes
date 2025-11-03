@@ -17,8 +17,6 @@ Security in case of vulnerabilities.
 ## Unreleased
 
 ### Added
-- Added `Request a new URN and record for the academy` task for transfer projects.
-- Added `Sponsored support grant` task for conversion and transfer project.
 
 ### Changed
 
@@ -26,7 +24,31 @@ Security in case of vulnerabilities.
 
 ### Security
 
-See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-10-29.1020...main) for everything awaiting release
+See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-10-31.1038...main) for everything awaiting release
+
+---
+
+## [1.26.0](https://github.com/DFE-Digital/complete-conversions-transfers-changes/releases/tag/production-2025-10-31.1038) - 2025-10-31
+
+### Added
+- Added `Confirm the chair of governors' details` task for conversion projects.
+- Added `Request a new URN and record for the academy` task for transfer projects.
+- Added `Trust modification order task` task for conversion projects.
+- Added `Share the information about the opening` task for conversion project.
+- Added `Subleases` task
+- Added `Tenancy at will` task for conversion project.
+- Added `Outgoing Trust CEO contact` task page
+- Added `Sponsored support grant` task for conversion and transfer project.
+
+### Changed
+- Removed validation for academy transfer date and updated the title for transfer projects.
+
+### Fixed
+
+### Security
+- Secure cookies should contain the HTTPOnly attribute
+
+See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-10-29.1020...production-2025-10-31.1038) for everything in the release
 
 ---
 
@@ -60,12 +82,9 @@ See the [full commit history](https://github.com/DFE-Digital/complete-conversion
 - Added transfer creation end point for prepare to complete
 - Added `Confirm if the bank details for the general annual grant payment need to change` task for transfer project.
 - Added  'Confirm the academy name' task for conversion project.
-
 - Added 'Land consent letter task for transfer projects'
 - Adding key contact record on confirming project handover and logging error message if key contact is already been added.
 - Added `Check accuracy of high needs places information` task for conversion project.
-
-### Changed
 
 ### Fixed
 
@@ -74,8 +93,6 @@ See the [full commit history](https://github.com/DFE-Digital/complete-conversion
 - Fixed task notes formatting.
 - Replaced html extension method with note html tag to have consistent approach for all notes/reasoning  formatting.
 - Fixed `LocalAuthority` HTTP Post method by removing local authority id.
-
-### Security
 
 See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-10-21.954...production-2025-10-27.1000) for everything in the release
 
@@ -93,8 +110,6 @@ See the [full commit history](https://github.com/DFE-Digital/complete-conversion
 ### Fixed
 - resolve entity tracking issue on note write repository
 
-### Security
-
 See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-10-20.943...production-2025-10-21.954) for everything in the release
 
 ---
@@ -106,12 +121,7 @@ See the [full commit history](https://github.com/DFE-Digital/complete-conversion
 - Added `Check and confirm the academy and trust financial information` task for transfer project.
 - Added link for delete project button
 
-### Changed
-
-### Fixed
-
 ### Security
-- Secure cookies should contain the HTTPOnly attribute
 
 See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-10-17.921...production-2025-10-20.943) for everything in the release
 
@@ -122,12 +132,8 @@ See the [full commit history](https://github.com/DFE-Digital/complete-conversion
 ### Added
 - Added `Confirm the headteacher's details` task for both conversion and transfer projects.
 
-### Changed
-
 ### Fixed
 - make internal email check case insensitive
-
-### Security
 
 See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-10-16.912...production-2025-10-17.921) for everything in the release
 
@@ -157,8 +163,6 @@ See the [full commit history](https://github.com/DFE-Digital/complete-conversion
 ### Fixed
 - Fixed `full date` issue on the project complete notification. 
 
-### Security
-
 See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-10-14.892...production-2025-10-15.903) for everything in the release
 
 ---
@@ -177,8 +181,6 @@ See the [full commit history](https://github.com/DFE-Digital/complete-conversion
 ### Changed
 - Allow users to modify `declaration of expenditure certificate date` on the `Receive declaration of expenditure certificate` task for both conversion and transfer project.
 
-### Fixed
-
 ### Security
 - Fixed reflected Cross-Site Scripting (XSS) vulnerability on cookies page (150001) - added server-side URL validation to prevent malicious script injection via returnUrl parameter
 
@@ -194,10 +196,6 @@ See the [full commit history](https://github.com/DFE-Digital/complete-conversion
 - Added `Church supplemental agreement` task for both conversion and transfer projects.
 - Added `Commercial Transfer Agreement` task for conversion and transfer projects.
 
-### Changed
-
-### Fixed
-
 ### Security
 - patch reverse tabnabbing vulnerability by including noopener norefferer on external links (target="_blank") - 150222 Reverse Tabnabbing
 - add Cross-Origin-Opener-Policy HTTP security header to allow same origin only - 150222 Reverse Tabnabbing
@@ -209,7 +207,6 @@ See the [full commit history](https://github.com/DFE-Digital/complete-conversion
 ## [1.19.0](https://github.com/DFE-Digital/complete-conversions-transfers-changes/releases/tag/production-2025-10-03.811) - 2025-10-03
 
 ### Added
-
 - Added `Confirm all condition has been met` task for conversion projects.
 - Added `Dao Revocation` workflow.
 - Configured Cache settings.
@@ -219,13 +216,9 @@ See the [full commit history](https://github.com/DFE-Digital/complete-conversion
 - Add API end point for creating user
 - Add ability to create a user
 
-### Changed
-
 ### Fixed
 - Fixed broken task note urls.
 - Fixed all project by month query for conversion projects if all conditions met is null
-
-### Security
 
 See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-09-25.771...production-2025-10-03.811) for everything in the release
 
@@ -234,11 +227,9 @@ See the [full commit history](https://github.com/DFE-Digital/complete-conversion
 ## [1.18.0](https://github.com/DFE-Digital/complete-conversions-transfers-changes/releases/tag/production-2025-09-25.771) - 2025-09-25
 
 ### Removed
-
 - removed the 'Add Project' in your project button and disabled access to all related subpages 
 
 ### Added
-
 - Ability to edit project information for conversions and transfers
 - ProjectGroup is created when a project is edited with a new GRN
 - Added Add, Edit and Delete External Contacts for both conversion and transfer projects.
@@ -262,7 +253,6 @@ See the [full commit history](https://github.com/DFE-Digital/complete-conversion
 ## [1.17.0](https://github.com/DFE-Digital/complete-conversions-transfers-changes/releases/tag/production-2025-09-12.746) - 2025-09-12
 
 ### Added
-
 - Added `Receive declaration of expenditure certificate` task for conversion and transfer projects.
 
 ### Fixed
@@ -326,8 +316,6 @@ See the [full commit history](https://github.com/DFE-Digital/complete-conversion
 - Added 'Deed of novation and variation' task for transfer projects.
 - Added 'Deed of variation' task for both conversion and transfer projects. 
 
-### Changed
-
 ### Fixed
 - GetProjectByUrn doesn't return notes
 - Incoming and Outgoing trust information missing from project header
@@ -358,8 +346,6 @@ See the [full commit history](https://github.com/DFE-Digital/complete-conversion
     - `/groups/{groupId}` – project group details
 - Added `Handover with Regional Delivery Officer` task page
 
-### Changed
-
 ### Fixed
 - local authority name missing on delete local authority dialog
 - add missing incoming trust details on project page
@@ -374,10 +360,6 @@ See the [full commit history](https://github.com/DFE-Digital/complete-conversion
 - Added Project Significant History Dates `/projects/{projectId}/date-history`
 - Added `/projects/{projectId}/external-contacts` page
 - Added `/privacy` page
-
-### Changed
-
-### Fixed
 
 See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-08-05.608...production-2025-08-12.625) for everything in the release
 
@@ -406,10 +388,6 @@ See the [full commit history](https://github.com/DFE-Digital/complete-conversion
 ---
 
 ## [1.10.2](https://github.com/DFE-Digital/complete-conversions-transfers-changes/releases/tag/production-2025-07-24.577) - 2025-07-24
-
-### Added
-
-### Changed
 
 ### Fixed
 - HOTFIX: antiforgery issue when accepting cookies from Ruby app
@@ -460,10 +438,6 @@ See the [full commit history](https://github.com/DFE-Digital/complete-conversion
 - Add ability to delete note (`/projects/{projectId}/notes/{noteId}/delete`)
 - Attach user ID from DB as custom claim
 
-### Changed  
-
-### Fixed
-
 See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-07-10.519...production-2025-07-14.525) for everything in the release
 
 ---
@@ -478,10 +452,7 @@ See the [full commit history](https://github.com/DFE-Digital/complete-conversion
 - Added `Statistics` page
 - Added Project Significant History Dates `/projects/{projectId}/date-history`
 
-### Changed  
-
 ### Fixed
-
 - Throw exception if redis configs are not present and redis is enabled.
 
 ### Security
