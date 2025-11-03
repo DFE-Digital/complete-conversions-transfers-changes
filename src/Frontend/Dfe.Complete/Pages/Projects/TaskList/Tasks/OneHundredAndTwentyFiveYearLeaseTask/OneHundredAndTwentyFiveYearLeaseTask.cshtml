@@ -1,8 +1,9 @@
 ﻿@page "/projects/{projectId}/tasks/one_hundred_and_twenty_five_year_lease"
+@using Dfe.Complete.Utils;
 @model Dfe.Complete.Pages.Projects.TaskList.Tasks.OneHundredAndTwentyFiveYearLeaseTask.OneHundredAndTwentyFiveYearLeaseTaskModel
 @{
     Layout = "_ProjectTaskLayout";
-    ViewData["Title"] = "125 year lease";
+    ViewData["Title"] = Model.TaskIdentifier.ToDisplayDescription();
 }
 @section TaskHeaderHintSection {
     <div class="govuk-hint"> 

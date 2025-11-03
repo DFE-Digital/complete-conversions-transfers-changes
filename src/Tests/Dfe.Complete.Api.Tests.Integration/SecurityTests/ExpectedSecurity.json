@@ -438,7 +438,7 @@
     {
       "Controller": "TasksDataController",
       "Action": "UpdateDeedTerminationChurchSupplementalAgreementTaskAsync",
-      "ExpectedSecurity": "Authorize: Policy=CanReadWriteUpdate"    
+      "ExpectedSecurity": "Authorize: Policy=CanReadWriteUpdate"
     },
     {
       "Controller": "TasksDataController",
@@ -453,6 +453,31 @@
     {
       "Controller": "TasksDataController",
       "Action": "UpdateRequestNewUrnAndRecordForAcademyTaskAsync",
+      "ExpectedSecurity": "Authorize: Policy=CanReadWriteUpdate"    
+    },
+    {
+      "Controller": "TasksDataController",
+      "Action": "UpdateTrustModificationOrderTaskAsync",
+      "ExpectedSecurity": "Authorize: Policy=CanReadWriteUpdate"
+    },    
+    {
+      "Controller": "TasksDataController",
+      "Action": "UpdateShareInformationAboutOpeningTaskAsync",
+      "ExpectedSecurity": "Authorize: Policy=CanReadWriteUpdate"
+    },
+    {
+      "Controller": "TasksDataController",
+      "Action": "UpdateSubleasesTaskAsync",
+      "ExpectedSecurity": "Authorize: Policy=CanReadWriteUpdate"
+    },
+    {
+      "Controller": "TasksDataController",
+      "Action": "UpdateTenancyAtWillTaskAsync",
+      "ExpectedSecurity": "Authorize: Policy=CanReadWriteUpdate"
+    },
+    {
+      "Controller": "TasksDataController",
+      "Action": "UpdateConfirmOutgoingTrustCeoContactTaskAsync",
       "ExpectedSecurity": "Authorize: Policy=CanReadWriteUpdate"
     },
     {

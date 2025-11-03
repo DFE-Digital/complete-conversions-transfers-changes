@@ -160,5 +160,8 @@
         public const string ProjectsExternalContactAddTypeOther = NewProjectExternalContacts + "/create-other-contact";
         public const string ProjectsExternalContactDelete = ProjectExternalContacts + "/{1}/delete";
         public const string ProjectsExternalContactEdit = ProjectExternalContacts + "/{1}/edit";
+
+        // Error Page
+        public const string ErrorPage = "/error";
     }
 }
