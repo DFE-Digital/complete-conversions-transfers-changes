@@ -1,4 +1,5 @@
-﻿using System.Net;
+﻿using System.Globalization;
+using System.Net;
 using System.Security.Claims;
 using AutoFixture;
 using Dfe.AcademiesApi.Client.Contracts;
@@ -303,6 +304,174 @@ public partial class ProjectsControllerTests
     [CustomAutoData(typeof(CustomWebApplicationDbContextFactoryCustomization),
         typeof(DateOnlyCustomization),
         typeof(LocalAuthorityCustomization))]
+    public async Task CreateHandoverMatConversionProject_Async_ShouldCreateHandoverConversionProjectOnly(
+        CustomWebApplicationDbContextFactory<Program> factory,
+        IProjectsClient projectsClient,
+        IFixture fixture)
+    {
+        factory.TestClaims = [new Claim(ClaimTypes.Role, ApiRoles.WriteRole), new Claim(ClaimTypes.Role, ApiRoles.ReadRole)];
+        var dbContext = factory.GetDbContext<CompleteContext>();
+        var testUser = await dbContext.Users.OrderBy(u => u.CreatedAt).FirstOrDefaultAsync();
+        Assert.NotNull(testUser);
+
+        var createHandoverConversionProjectCommand = GenerateCreateHandoverConversionMatCommand();
+        testUser.Email = createHandoverConversionProjectCommand.CreatedByEmail;
+
+        var localAuthority = dbContext.LocalAuthorities.AsEnumerable().MinBy(_ => Guid.NewGuid());
+        Assert.NotNull(localAuthority);
+
+        dbContext.Users.Update(testUser);
+        var giasEstablishment = fixture
+            .Customize(new GiasEstablishmentsCustomization()
+            {
+                LocalAuthority = localAuthority,
+                Urn = new Domain.ValueObjects.Urn(createHandoverConversionProjectCommand.Urn!.Value)
+            })
+            .Create<GiasEstablishment>();
+        await dbContext.GiasEstablishments.AddAsync(giasEstablishment);
+        await dbContext.SaveChangesAsync();
+
+        var projectCountBefore = await dbContext.Projects.CountAsync();
+        var userCountBefore = await dbContext.Users.CountAsync();
+        var conversionTaskDataCountBefore = await dbContext.ConversionTasksData.CountAsync();
+
+        var result = await projectsClient.CreateHandoverConversionMatProjectAsync(createHandoverConversionProjectCommand);
+
+        Assert.NotNull(result);
+        Assert.IsType<ProjectId>(result);
+        Assert.Equal(projectCountBefore + 1, await dbContext.Projects.CountAsync());
+        Assert.Equal(userCountBefore, await dbContext.Users.CountAsync());
+        Assert.Equal(conversionTaskDataCountBefore + 1, await dbContext.ConversionTasksData.CountAsync());
+
+        var createdProject = await dbContext.Projects.FirstOrDefaultAsync(p => p.Id == new Domain.ValueObjects.ProjectId(result.Value!.Value));
+        Assert.NotNull(createdProject);
+        Assert.Equal("Advisory board conditions", createdProject.AdvisoryBoardConditions);
+    }
+
+    [Theory]
+    [CustomAutoData(typeof(CustomWebApplicationDbContextFactoryCustomization),
+        typeof(DateOnlyCustomization),
+        typeof(LocalAuthorityCustomization))]
+    public async Task CreateHandoverMatConversionProject_Async_ShouldCreateProjectAndUser(
+        CustomWebApplicationDbContextFactory<Program> factory,
+        IProjectsClient projectsClient,
+        IFixture fixture)
+    {
+        factory.TestClaims = [new Claim(ClaimTypes.Role, ApiRoles.WriteRole), new Claim(ClaimTypes.Role, ApiRoles.ReadRole)];
+        var dbContext = factory.GetDbContext<CompleteContext>();
+
+        var createHandoverConversionProjectCommand = GenerateCreateHandoverConversionMatCommand();
+
+        var localAuthority = dbContext.LocalAuthorities.AsEnumerable().MinBy(_ => Guid.NewGuid());
+        Assert.NotNull(localAuthority);
+
+        var giasEstablishment = fixture
+            .Customize(new GiasEstablishmentsCustomization()
+            {
+                LocalAuthority = localAuthority,
+                Urn = new Domain.ValueObjects.Urn(createHandoverConversionProjectCommand.Urn!.Value)
+            })
+            .Create<GiasEstablishment>();
+        await dbContext.GiasEstablishments.AddAsync(giasEstablishment);
+        await dbContext.SaveChangesAsync();
+
+        var projectCountBefore = await dbContext.Projects.CountAsync();
+        var userCountBefore = await dbContext.Users.CountAsync();
+        var conversionTaskDataCountBefore = await dbContext.ConversionTasksData.CountAsync();
+
+        var result = await projectsClient.CreateHandoverConversionMatProjectAsync(createHandoverConversionProjectCommand);
+
+        Assert.NotNull(result);
+        Assert.IsType<ProjectId>(result);
+        Assert.Equal(projectCountBefore + 1, await dbContext.Projects.CountAsync());
+        Assert.Equal(userCountBefore + 1, await dbContext.Users.CountAsync());
+        Assert.Equal(conversionTaskDataCountBefore + 1, await dbContext.ConversionTasksData.CountAsync());
+    }
+
+    [Theory]
+    [CustomAutoData(typeof(CustomWebApplicationDbContextFactoryCustomization),
+        typeof(DateOnlyCustomization),
+        typeof(LocalAuthorityCustomization))]
+    public async Task CreateHandoverMatConversionProject_Async_UrnAlreadyExists_ShouldFailValidation(
+        CustomWebApplicationDbContextFactory<Program> factory,
+        IProjectsClient projectsClient,
+        IFixture fixture)
+    {
+        factory.TestClaims = [new Claim(ClaimTypes.Role, ApiRoles.WriteRole), new Claim(ClaimTypes.Role, ApiRoles.ReadRole)];
+        var dbContext = factory.GetDbContext<CompleteContext>();
+        var testUser = await dbContext.Users.FirstAsync();
+
+        var createHandoverConversionProjectCommand = GenerateCreateHandoverConversionMatCommand();
+        var localAuthority = dbContext.LocalAuthorities.AsEnumerable().MinBy(_ => Guid.NewGuid());
+        Assert.NotNull(localAuthority);
+
+        var giasEstablishment = fixture
+            .Customize(new GiasEstablishmentsCustomization()
+            {
+                LocalAuthority = localAuthority,
+                Urn = new Domain.ValueObjects.Urn(createHandoverConversionProjectCommand.Urn!.Value)
+            })
+            .Create<GiasEstablishment>();
+        await dbContext.GiasEstablishments.AddAsync(giasEstablishment);
+
+        var project = fixture.Customize(new ProjectCustomization
+        {
+            RegionalDeliveryOfficerId = testUser.Id,
+            CaseworkerId = testUser.Id,
+            AssignedToId = testUser.Id,
+            LocalAuthorityId = localAuthority.Id,
+            Urn = giasEstablishment.Urn!
+        })
+            .Create<Domain.Entities.Project>();
+
+        await dbContext.Projects.AddAsync(project);
+        await dbContext.SaveChangesAsync();
+
+        var exception = await Assert.ThrowsAsync<CompleteApiException>(async () =>
+            await projectsClient.CreateHandoverConversionMatProjectAsync(createHandoverConversionProjectCommand));
+
+        Assert.Equal(HttpStatusCode.UnprocessableEntity, (HttpStatusCode)exception.StatusCode);
+
+        var validationErrors = exception.Response;
+        Assert.NotNull(validationErrors);
+
+        Assert.Contains($"URN {giasEstablishment.Urn!.Value} already exists in active/inactive projects", validationErrors);
+    }
+
+    [Theory]
+    [CustomAutoData(typeof(DateOnlyCustomization), typeof(CustomWebApplicationDbContextFactoryCustomization))]
+    public async Task CreateHandoverMatConversionProject_WithEmptyBody_FailsValidation(
+        CustomWebApplicationDbContextFactory<Program> factory,
+        IProjectsClient projectsClient)
+    {
+        factory.TestClaims = [new Claim(ClaimTypes.Role, ApiRoles.WriteRole), new Claim(ClaimTypes.Role, ApiRoles.ReadRole)];
+
+        var createHandoverConversionProjectCommand = new CreateHandoverConversionMatProjectCommand();
+
+        var exception = await Assert.ThrowsAsync<CompleteApiException>(async () =>
+            await projectsClient.CreateHandoverConversionMatProjectAsync(createHandoverConversionProjectCommand));
+
+        Assert.Equal(HttpStatusCode.BadRequest, (HttpStatusCode)exception.StatusCode);
+
+        var validationErrors = exception.Response;
+        Assert.NotNull(validationErrors);
+
+        Assert.Contains("The Urn field is required.", validationErrors);
+        Assert.Contains("The PrepareId field is required.", validationErrors);
+        Assert.Contains("The CreatedByEmail field is required.", validationErrors);
+        Assert.Contains("The AdvisoryBoardDate field is required.", validationErrors);
+        Assert.Contains("The CreatedByLastName field is required.", validationErrors);
+        Assert.Contains("The CreatedByFirstName field is required.", validationErrors);
+        Assert.Contains("The DirectiveAcademyOrder field is required.", validationErrors);
+        Assert.Contains("The ProvisionalConversionDate field is required.", validationErrors);
+        Assert.Contains("The NewTrustReferenceNumber field is required.", validationErrors);
+        Assert.Contains("The NewTrustName field is required.", validationErrors);
+    }
+
+    [Theory]
+    [CustomAutoData(typeof(CustomWebApplicationDbContextFactoryCustomization),
+        typeof(DateOnlyCustomization),
+        typeof(LocalAuthorityCustomization))]
     public async Task CreateHandoverTransferProject_Async_ShouldCreateHandoverTransferProjectOnly(
         CustomWebApplicationDbContextFactory<Program> factory,
         IProjectsClient projectsClient,
@@ -469,6 +638,7 @@ public partial class ProjectsControllerTests
         Assert.Contains("The ProvisionalTransferDate field is required.", validationErrors);
     }
 
+    #region [Deprecated]
     [Theory]
     [CustomAutoData(typeof(CustomWebApplicationDbContextFactoryCustomization),
         typeof(DateOnlyCustomization),
@@ -687,13 +857,14 @@ public partial class ProjectsControllerTests
 
         Assert.Equal(HttpStatusCode.BadRequest, (HttpStatusCode)exception.StatusCode);
     }
+    #endregion
 
     private static CreateHandoverConversionProjectCommand GenerateCreateHandoverConversionCommand() => new()
     {
         Urn = 121999,
         IncomingTrustUkprn = 12129999,
-        AdvisoryBoardDate = DateTime.Parse("2025-05-02"),
-        ProvisionalConversionDate = DateTime.Parse("2025-05-01"),
+        AdvisoryBoardDate = DateTime.Parse("2025-05-02", CultureInfo.InvariantCulture),
+        ProvisionalConversionDate = DateTime.Parse("2025-05-01", CultureInfo.InvariantCulture),
         CreatedByEmail = "test@education.gov.uk",
         CreatedByFirstName = "Test",
         CreatedByLastName = "User",
@@ -702,13 +873,28 @@ public partial class ProjectsControllerTests
         AdvisoryBoardConditions = "Advisory board conditions"
     };
 
+    private static CreateHandoverConversionMatProjectCommand GenerateCreateHandoverConversionMatCommand() => new()
+    {
+        Urn = 121999,
+        AdvisoryBoardDate = DateTime.Parse("2025-05-02", CultureInfo.InvariantCulture),
+        ProvisionalConversionDate = DateTime.Parse("2025-05-01", CultureInfo.InvariantCulture),
+        CreatedByEmail = "test@education.gov.uk",
+        CreatedByFirstName = "Test",
+        CreatedByLastName = "User",
+        PrepareId = 123,
+        DirectiveAcademyOrder = true,
+        AdvisoryBoardConditions = "Advisory board conditions",
+        NewTrustReferenceNumber = "TR98765",
+        NewTrustName = "New Trust Ltd"
+    };
+
     private static CreateHandoverTransferProjectCommand GenerateCreateHandoverTransferCommand() => new()
     {
         Urn = 121999,
         IncomingTrustUkprn = 12129999,
         OutgoingTrustUkprn = 12120000,
-        AdvisoryBoardDate = DateTime.Parse("2025-05-02"),
-        ProvisionalTransferDate = DateTime.Parse("2025-05-01"),
+        AdvisoryBoardDate = DateTime.Parse("2025-05-02", CultureInfo.InvariantCulture),
+        ProvisionalTransferDate = DateTime.Parse("2025-05-01", CultureInfo.InvariantCulture),
         CreatedByEmail = "test@education.gov.uk",
         CreatedByFirstName = "Test",
         CreatedByLastName = "User",
