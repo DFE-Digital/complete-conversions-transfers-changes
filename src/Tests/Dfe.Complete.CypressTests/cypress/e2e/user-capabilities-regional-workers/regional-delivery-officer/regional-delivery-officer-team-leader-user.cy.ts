@@ -78,9 +78,7 @@ describe("Capabilities and permissions of the regional delivery officer team lea
         shouldBeAbleToViewMultipleMonthsOfProjects();
     });
 
-    // bug 245061
-    // + POST /Projects/InternalContacts/EditAssignedUser is intermittently not being called
-    it.skip("Should be able to assign unassigned projects to users", () => {
+    it("Should be able to assign unassigned projects to users", () => {
         navBar.goToYourTeamProjects();
         yourTeamProjects
             .filterProjects("Unassigned")
