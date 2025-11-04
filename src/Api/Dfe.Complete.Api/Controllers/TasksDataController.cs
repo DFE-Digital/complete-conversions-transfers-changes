@@ -770,25 +770,6 @@ namespace Dfe.Complete.Api.Controllers
             await sender.Send(request, cancellationToken);
             return NoContent();
         }
-        
-        /// <summary>
-        /// Updating the 125 year lease for conversion project.
-        /// </summary>
-        /// <param name="request">The update command.</param>
-        /// <param name="cancellationToken">The cancellation token.</param>
-        [Authorize(Policy = "CanReadWriteUpdate")]
-        [HttpPatch]
-        [Route("TaskData/OneHundredAndTwentyFiveYearLease")]
-        [SwaggerResponse(204, "Updated the 125 year lease task successfully.")]
-        [SwaggerResponse(400, "Invalid request data.")]
-        [SwaggerResponse(404, "Project not found.")]
-        public async Task<IActionResult> UpdateUpdateOneHundredAndTwentyFiveYearLeaseTaskAsync(
-            [FromBody] UpdateOneHundredAndTwentyFiveYearLeaseTaskCommand request,
-            CancellationToken cancellationToken)
-        {
-            await sender.Send(request, cancellationToken);
-            return NoContent();
-        }
        
         
         
@@ -805,6 +786,25 @@ namespace Dfe.Complete.Api.Controllers
         [SwaggerResponse(404, "Project not found.")]
         public async Task<IActionResult> UpdateSponsoredSupportGrantTaskAsync(
             [FromBody] UpdateConfirmSponsoredSupportGrantTaskCommand request,
+            CancellationToken cancellationToken)
+        {
+            await sender.Send(request, cancellationToken);
+            return NoContent();
+        }
+        
+        /// <summary>
+        /// Updating the 125 year lease for conversion project.
+        /// </summary>
+        /// <param name="request">The update command.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        [Authorize(Policy = "CanReadWriteUpdate")]
+        [HttpPatch]
+        [Route("TaskData/OneHundredAndTwentyFiveYearLease")]
+        [SwaggerResponse(204, "Updated the 125 year lease task successfully.")]
+        [SwaggerResponse(400, "Invalid request data.")]
+        [SwaggerResponse(404, "Project not found.")]
+        public async Task<IActionResult> UpdateUpdateOneHundredAndTwentyFiveYearLeaseTaskAsync(
+            [FromBody] UpdateOneHundredAndTwentyFiveYearLeaseTaskCommand request,
             CancellationToken cancellationToken)
         {
             await sender.Send(request, cancellationToken);

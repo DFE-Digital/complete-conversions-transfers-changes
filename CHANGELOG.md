@@ -49,7 +49,7 @@ See the [full commit history](https://github.com/DFE-Digital/complete-conversion
 - Added `Tenancy at will` task for conversion project.
 - Added `Outgoing Trust CEO contact` task page
 - Added `125 year lease` task for conversion project.
-
+- Added `Sponsored support grant` task for conversion and transfer project.
 
 ### Changed
 - Removed validation for academy transfer date and updated the title for transfer projects.

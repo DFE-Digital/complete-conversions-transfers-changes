@@ -116,23 +116,6 @@ namespace Dfe.Complete.Client.Contracts
     public partial interface IProjectGroupClient
     {
         /// <summary>
-        /// Creates a project group.
-        /// </summary>
-        /// <param name="request">The request.</param>
-        /// <returns>Project group created successfully.</returns>
-        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<System.Guid> CreateProjectGroupAsync(CreateProjectGroupCommand request);
-
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <summary>
-        /// Creates a project group.
-        /// </summary>
-        /// <param name="request">The request.</param>
-        /// <returns>Project group created successfully.</returns>
-        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<System.Guid> CreateProjectGroupAsync(CreateProjectGroupCommand request, System.Threading.CancellationToken cancellationToken);
-
-        /// <summary>
         /// Gets the Project group by Id.
         /// </summary>
         /// <returns>Project Group returned successfully.</returns>
@@ -200,23 +183,6 @@ namespace Dfe.Complete.Client.Contracts
         System.Threading.Tasks.Task<ProjectId> CreateHandoverConversionProjectAsync(CreateHandoverConversionProjectCommand request, System.Threading.CancellationToken cancellationToken);
 
         /// <summary>
-        /// Creates a new MAT conversion project (handover version).
-        /// </summary>
-        /// <param name="request">The request.</param>
-        /// <returns>Project created successfully.</returns>
-        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<ProjectId> CreateHandoverConversionMatProjectAsync(CreateHandoverConversionMatProjectCommand request);
-
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <summary>
-        /// Creates a new MAT conversion project (handover version).
-        /// </summary>
-        /// <param name="request">The request.</param>
-        /// <returns>Project created successfully.</returns>
-        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<ProjectId> CreateHandoverConversionMatProjectAsync(CreateHandoverConversionMatProjectCommand request, System.Threading.CancellationToken cancellationToken);
-
-        /// <summary>
         /// Creates a new transfer project (handover version).
         /// </summary>
         /// <param name="request">The request.</param>
@@ -239,7 +205,6 @@ namespace Dfe.Complete.Client.Contracts
         /// <param name="request">The request.</param>
         /// <returns>Project created successfully.</returns>
         /// <exception cref="CompleteApiException">A server side error occurred.</exception>
-        [System.Obsolete]
         System.Threading.Tasks.Task<ProjectId> CreateConversionProjectAsync(CreateConversionProjectCommand request);
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -249,7 +214,6 @@ namespace Dfe.Complete.Client.Contracts
         /// <param name="request">The request.</param>
         /// <returns>Project created successfully.</returns>
         /// <exception cref="CompleteApiException">A server side error occurred.</exception>
-        [System.Obsolete]
         System.Threading.Tasks.Task<ProjectId> CreateConversionProjectAsync(CreateConversionProjectCommand request, System.Threading.CancellationToken cancellationToken);
 
         /// <summary>
@@ -258,7 +222,6 @@ namespace Dfe.Complete.Client.Contracts
         /// <param name="request">The request.</param>
         /// <returns>Project created successfully.</returns>
         /// <exception cref="CompleteApiException">A server side error occurred.</exception>
-        [System.Obsolete]
         System.Threading.Tasks.Task<ProjectId> CreateTransferProjectAsync(CreateTransferProjectCommand request);
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -268,7 +231,6 @@ namespace Dfe.Complete.Client.Contracts
         /// <param name="request">The request.</param>
         /// <returns>Project created successfully.</returns>
         /// <exception cref="CompleteApiException">A server side error occurred.</exception>
-        [System.Obsolete]
         System.Threading.Tasks.Task<ProjectId> CreateTransferProjectAsync(CreateTransferProjectCommand request, System.Threading.CancellationToken cancellationToken);
 
         /// <summary>
@@ -277,7 +239,6 @@ namespace Dfe.Complete.Client.Contracts
         /// <param name="request">The request.</param>
         /// <returns>Project created successfully.</returns>
         /// <exception cref="CompleteApiException">A server side error occurred.</exception>
-        [System.Obsolete]
         System.Threading.Tasks.Task<ProjectId> CreateMatConversionProjectAsync(CreateMatConversionProjectCommand request);
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -287,7 +248,6 @@ namespace Dfe.Complete.Client.Contracts
         /// <param name="request">The request.</param>
         /// <returns>Project created successfully.</returns>
         /// <exception cref="CompleteApiException">A server side error occurred.</exception>
-        [System.Obsolete]
         System.Threading.Tasks.Task<ProjectId> CreateMatConversionProjectAsync(CreateMatConversionProjectCommand request, System.Threading.CancellationToken cancellationToken);
 
         /// <summary>
@@ -1580,23 +1540,6 @@ namespace Dfe.Complete.Client.Contracts
         System.Threading.Tasks.Task UpdateTrustModificationOrderTaskAsync(UpdateTrustModificationOrderTaskCommand request, System.Threading.CancellationToken cancellationToken);
 
         /// <summary>
-        /// Updating the 125 year lease for conversion project.
-        /// </summary>
-        /// <param name="request">The update command.</param>
-        /// <returns>Updated the 125 year lease task successfully.</returns>
-        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task UpdateUpdateOneHundredAndTwentyFiveYearLeaseTaskAsync(UpdateOneHundredAndTwentyFiveYearLeaseTaskCommand request);
-
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <summary>
-        /// Updating the 125 year lease for conversion project.
-        /// </summary>
-        /// <param name="request">The update command.</param>
-        /// <returns>Updated the 125 year lease task successfully.</returns>
-        /// <exception cref="CompleteApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task UpdateUpdateOneHundredAndTwentyFiveYearLeaseTaskAsync(UpdateOneHundredAndTwentyFiveYearLeaseTaskCommand request, System.Threading.CancellationToken cancellationToken);
-
-        /// <summary>
         /// Confirm the sponsored support grant
         /// </summary>
         /// <param name="request">The update command.</param>
@@ -2791,30 +2734,6 @@ namespace Dfe.Complete.Client.Contracts
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.2.0.0 (NJsonSchema v11.1.0.0 (Newtonsoft.Json v13.0.0.0))")]
-    public partial class CreateProjectGroupCommand
-    {
-        [Newtonsoft.Json.JsonProperty("groupReferenceNumber", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string? GroupReferenceNumber { get; set; } = default!;
-
-        [Newtonsoft.Json.JsonProperty("ukprn", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public Ukprn? Ukprn { get; set; } = default!;
-
-        public string ToJson()
-        {
-
-            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonSerializerSettings());
-
-        }
-        public static CreateProjectGroupCommand FromJson(string data)
-        {
-
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<CreateProjectGroupCommand>(data, new Newtonsoft.Json.JsonSerializerSettings());
-
-        }
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.2.0.0 (NJsonSchema v11.1.0.0 (Newtonsoft.Json v13.0.0.0))")]
     public partial class ProjectGroupDto
     {
         [Newtonsoft.Json.JsonProperty("id", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
@@ -2997,59 +2916,6 @@ namespace Dfe.Complete.Client.Contracts
         {
 
             return Newtonsoft.Json.JsonConvert.DeserializeObject<CreateHandoverConversionProjectCommand>(data, new Newtonsoft.Json.JsonSerializerSettings());
-
-        }
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.2.0.0 (NJsonSchema v11.1.0.0 (Newtonsoft.Json v13.0.0.0))")]
-    public partial class CreateHandoverConversionMatProjectCommand
-    {
-        [Newtonsoft.Json.JsonProperty("urn", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public int? Urn { get; set; } = default!;
-
-        [Newtonsoft.Json.JsonProperty("newTrustReferenceNumber", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string? NewTrustReferenceNumber { get; set; } = default!;
-
-        [Newtonsoft.Json.JsonProperty("newTrustName", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string? NewTrustName { get; set; } = default!;
-
-        [Newtonsoft.Json.JsonProperty("advisoryBoardDate", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        [Newtonsoft.Json.JsonConverter(typeof(DateFormatConverter))]
-        public System.DateTime? AdvisoryBoardDate { get; set; } = default!;
-
-        [Newtonsoft.Json.JsonProperty("provisionalConversionDate", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        [Newtonsoft.Json.JsonConverter(typeof(DateFormatConverter))]
-        public System.DateTime? ProvisionalConversionDate { get; set; } = default!;
-
-        [Newtonsoft.Json.JsonProperty("createdByEmail", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string? CreatedByEmail { get; set; } = default!;
-
-        [Newtonsoft.Json.JsonProperty("createdByFirstName", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string? CreatedByFirstName { get; set; } = default!;
-
-        [Newtonsoft.Json.JsonProperty("createdByLastName", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string? CreatedByLastName { get; set; } = default!;
-
-        [Newtonsoft.Json.JsonProperty("prepareId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public int? PrepareId { get; set; } = default!;
-
-        [Newtonsoft.Json.JsonProperty("directiveAcademyOrder", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public bool? DirectiveAcademyOrder { get; set; } = default!;
-
-        [Newtonsoft.Json.JsonProperty("advisoryBoardConditions", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string? AdvisoryBoardConditions { get; set; } = default!;
-
-        public string ToJson()
-        {
-
-            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonSerializerSettings());
-
-        }
-        public static CreateHandoverConversionMatProjectCommand FromJson(string data)
-        {
-
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<CreateHandoverConversionMatProjectCommand>(data, new Newtonsoft.Json.JsonSerializerSettings());
 
         }
 
@@ -7129,39 +6995,6 @@ namespace Dfe.Complete.Client.Contracts
         {
 
             return Newtonsoft.Json.JsonConvert.DeserializeObject<UpdateTrustModificationOrderTaskCommand>(data, new Newtonsoft.Json.JsonSerializerSettings());
-
-        }
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.2.0.0 (NJsonSchema v11.1.0.0 (Newtonsoft.Json v13.0.0.0))")]
-    public partial class UpdateOneHundredAndTwentyFiveYearLeaseTaskCommand
-    {
-        [Newtonsoft.Json.JsonProperty("taskDataId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public TaskDataId? TaskDataId { get; set; } = default!;
-
-        [Newtonsoft.Json.JsonProperty("notApplicable", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public bool? NotApplicable { get; set; } = default!;
-
-        [Newtonsoft.Json.JsonProperty("email", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public bool? Email { get; set; } = default!;
-
-        [Newtonsoft.Json.JsonProperty("receive", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public bool? Receive { get; set; } = default!;
-
-        [Newtonsoft.Json.JsonProperty("save", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public bool? Save { get; set; } = default!;
-
-        public string ToJson()
-        {
-
-            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonSerializerSettings());
-
-        }
-        public static UpdateOneHundredAndTwentyFiveYearLeaseTaskCommand FromJson(string data)
-        {
-
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<UpdateOneHundredAndTwentyFiveYearLeaseTaskCommand>(data, new Newtonsoft.Json.JsonSerializerSettings());
 
         }
 
