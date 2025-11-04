@@ -182,7 +182,6 @@ export type CreateConversionFormAMatPrepareRequest = {
     createdByFirstName: string;
     createdByLastName: string;
     prepareId: number;
-    groupId: string | null;
     newTrustReferenceNumber: string;
     newTrustName: string;
 };
