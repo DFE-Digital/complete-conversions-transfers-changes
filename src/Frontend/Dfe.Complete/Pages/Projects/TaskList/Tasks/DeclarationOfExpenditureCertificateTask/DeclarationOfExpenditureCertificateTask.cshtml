@@ -1,11 +1,12 @@
 ﻿@page "/projects/{projectId}/tasks/declaration_of_expenditure_certificate"
-@using Dfe.Complete.Domain.Enums
+@using Dfe.Complete.Domain.Enums;
+@using Dfe.Complete.Utils;
 @inject Microsoft.Extensions.Configuration.IConfiguration _configuration
 @inject Dfe.Complete.Services.Interfaces.IErrorService ErrorService
 @model Dfe.Complete.Pages.Projects.TaskList.Tasks.DeclarationOfExpenditureCertificateTask.DeclarationOfExpenditureCertificateTaskModel
 @{
     Layout = "_ProjectTaskLayout";
-    ViewData["Title"] = "Receive declaration of expenditure certificate";
+    ViewData["Title"] = Model.TaskIdentifier.ToDisplayDescription();
 }
 @section TaskHeaderHintSection
 {

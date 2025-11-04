@@ -48,3 +48,4 @@ export const serviceSupportUser = new TestUser(
     "cypress service-support",
     "TEST-AD-ID-SS",
 );
+export const userToEdit = new TestUser("E9C93E7D-B1F3-4EE5-A5AB-CFF09B099B88", "cypress cypress", ""); // used for users test only
