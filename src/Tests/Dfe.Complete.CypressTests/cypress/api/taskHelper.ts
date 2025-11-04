@@ -795,6 +795,38 @@ class TaskHelper {
         }
     }
 
+    updateTenancyAtWill(taskDataId: string, status: TaskStatus) {
+        const defaultBody = {
+            taskDataId: { value: taskDataId },
+            notApplicable: false,
+            emailSigned: false,
+            saveSigned: false,
+            receiveSigned: false,
+        };
+        switch (status) {
+            case "notApplicable":
+                return taskApi.updateTenancyAtWillTask({
+                    ...defaultBody,
+                    notApplicable: true,
+                });
+
+            case "inProgress":
+                return taskApi.updateTenancyAtWillTask({
+                    ...defaultBody,
+                    emailSigned: true,
+                });
+
+            case "completed":
+                return taskApi.updateTenancyAtWillTask({
+                    taskDataId: { value: taskDataId },
+                    notApplicable: false,
+                    emailSigned: true,
+                    saveSigned: true,
+                    receiveSigned: true,
+                });
+        }
+    }
+
     updateTrustModificationOrder(taskDataId: string, status: TaskStatus) {
         const defaultBody = {
             taskDataId: { value: taskDataId },
@@ -802,8 +834,8 @@ class TaskHelper {
             received: false,
             sent: false,
             cleared: false,
-            saved: false
-        }
+            saved: false,
+        };
         switch (status) {
             case "notApplicable":
                 return taskApi.updateTrustModificationOrderTask({
@@ -824,7 +856,7 @@ class TaskHelper {
                     received: true,
                     sent: true,
                     cleared: true,
-                    saved: true
+                    saved: true,
                 });
 
             default:

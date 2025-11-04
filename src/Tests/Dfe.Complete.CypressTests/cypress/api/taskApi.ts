@@ -233,6 +233,15 @@ interface UpdateSupplementalFundingAgreementTaskRequest {
     signedSecretaryState?: boolean;
 }
 
+interface UpdateTenancyAtWillTaskRequest {
+    taskDataId: TaskDataId;
+    notApplicable?: boolean;
+    emailSigned?: boolean;
+    saveSigned?: boolean;
+    receiveSigned?: boolean;
+
+}
+
 interface UpdateTrustModificationOrderTaskRequest {
     taskDataId: TaskDataId;
     notApplicable?: boolean;
@@ -359,6 +368,10 @@ class TaskApi extends ApiBase {
 
     public updateSupplementalFundingAgreementTask(requestBody: UpdateSupplementalFundingAgreementTaskRequest) {
         return this.taskDataBaseRequest<void>("SupplementalFundingAgreement", requestBody);
+    }
+
+    public updateTenancyAtWillTask(requestBody: UpdateTenancyAtWillTaskRequest) {
+        return this.taskDataBaseRequest<void>("TenancyAtWill", requestBody);
     }
 
     public updateTrustModificationOrderTask(requestBody: UpdateTrustModificationOrderTaskRequest) {
