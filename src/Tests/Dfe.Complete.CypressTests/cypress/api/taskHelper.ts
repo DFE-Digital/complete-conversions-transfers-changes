@@ -760,6 +760,50 @@ class TaskHelper {
         }
     }
 
+    updateSubleases(taskDataId: string, status: TaskStatus) {
+        const defaultBody = {
+            taskDataId: { value: taskDataId },
+            notApplicable: false,
+            received: false,
+            cleared: false,
+            signed: false,
+            saved: false,
+            emailSigned: false,
+            saveSigned: false,
+            receiveSigned: false,
+        };
+
+        switch (status) {
+            case "notApplicable":
+                return taskApi.updateSubleasesTask({
+                    ...defaultBody,
+                    notApplicable: true,
+                });
+
+            case "inProgress":
+                return taskApi.updateSubleasesTask({
+                    ...defaultBody,
+                    cleared: true,
+                });
+
+            case "completed":
+                return taskApi.updateSubleasesTask({
+                    taskDataId: { value: taskDataId },
+                    notApplicable: false,
+                    received: true,
+                    cleared: true,
+                    signed: true,
+                    saved: true,
+                    emailSigned: true,
+                    saveSigned: true,
+                    receiveSigned: true,
+                });
+
+            default:
+                return taskApi.updateSubleasesTask(defaultBody);
+        }
+    }
+
     updateSupplementalFundingAgreement(taskDataId: string, projectType: ProjectType, status: TaskStatus) {
         const defaultBody = {
             taskDataId: { value: taskDataId },

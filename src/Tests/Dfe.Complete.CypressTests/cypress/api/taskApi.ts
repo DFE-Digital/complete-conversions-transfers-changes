@@ -222,6 +222,18 @@ interface UpdateConfirmAcademyRiskProtectionArrangementsTaskRequest {
     rpaReason?: string;
 }
 
+interface UpdateSubleasesTaskRequest {
+    taskDataId: TaskDataId;
+    notApplicable?: boolean;
+    received?: boolean;
+    cleared?: boolean;
+    signed?: boolean;
+    saved?: boolean;
+    emailSigned?: boolean;
+    saveSigned?: boolean;
+    receiveSigned?: boolean;
+}
+
 interface UpdateSupplementalFundingAgreementTaskRequest {
     taskDataId: TaskDataId;
     projectType?: ProjectType;
@@ -239,7 +251,6 @@ interface UpdateTenancyAtWillTaskRequest {
     emailSigned?: boolean;
     saveSigned?: boolean;
     receiveSigned?: boolean;
-
 }
 
 interface UpdateTrustModificationOrderTaskRequest {
@@ -364,6 +375,10 @@ class TaskApi extends ApiBase {
         requestBody: UpdateConfirmAcademyRiskProtectionArrangementsTaskRequest,
     ) {
         return this.taskDataBaseRequest<void>("ConfirmAcademyRiskProtectionArrangements", requestBody);
+    }
+
+    public updateSubleasesTask(requestBody: UpdateSubleasesTaskRequest) {
+        return this.taskDataBaseRequest<void>("Subleases", requestBody);
     }
 
     public updateSupplementalFundingAgreementTask(requestBody: UpdateSupplementalFundingAgreementTaskRequest) {
