@@ -494,6 +494,11 @@
       "Controller": "TasksDataController",
       "Action": "UpdateConfirmIncomingTrustHasCompleteAllActionsTaskAsync",
       "ExpectedSecurity": "Authorize: Policy=CanReadWriteUpdate"
+    },
+    {
+      "Controller": "TasksDataController",
+      "Action": "UpdateUpdateOneHundredAndTwentyFiveYearLeaseTaskAsync",
+      "ExpectedSecurity": "Authorize: Policy=CanReadWriteUpdate"
     }
   ]
 }
