@@ -220,7 +220,7 @@ public partial class CompleteContext : DbContext
                 team => team.ToDescription(), 
                 teamDbValue => teamDbValue.FromDescriptionValue<ProjectTeam>());
         projectConfiguration.Property(e => e.TwoRequiresImprovement)
-            .HasDefaultValue(false)
+            .HasDefaultValue(null)
             .HasColumnName("two_requires_improvement");
         projectConfiguration.Property(e => e.Type)
             .HasMaxLength(4000)

@@ -1,18 +1,19 @@
-using MediatR;
-using Dfe.Complete.Domain.ValueObjects;
-using Dfe.Complete.Domain.Entities;
-using System.ComponentModel.DataAnnotations;
-using Dfe.Complete.Utils.Exceptions;
 using Dfe.Complete.Application.Common.Interfaces;
-using Dfe.Complete.Domain.Validators;
-using Microsoft.Extensions.Logging;
 using Dfe.Complete.Application.Projects.Services;
+using Dfe.Complete.Domain.Entities;
+using Dfe.Complete.Domain.Validators;
+using Dfe.Complete.Domain.ValueObjects;
+using Dfe.Complete.Utils.Exceptions;
+using MediatR;
+using Microsoft.Extensions.Logging;
+using System.ComponentModel.DataAnnotations;
 
 namespace Dfe.Complete.Application.Projects.Commands.CreateHandoverProject;
 
-public record CreateHandoverConversionProjectCommand(
+public record CreateHandoverConversionMatProjectCommand(
     [Required][Urn] int? Urn,
-    [Required][Ukprn(ValueIsInteger = true)] int? IncomingTrustUkprn,
+    [Required][Trn] string? NewTrustReferenceNumber,
+    [Required] string? NewTrustName,
     [Required][PastDate(AllowToday = true)] DateOnly? AdvisoryBoardDate,
     [Required][FirstOfMonthDate] DateOnly? ProvisionalConversionDate,
     [Required][InternalEmail] string CreatedByEmail,
@@ -20,27 +21,24 @@ public record CreateHandoverConversionProjectCommand(
     [Required] string CreatedByLastName,
     [Required] int? PrepareId,
     [Required] bool? DirectiveAcademyOrder,
-    string? AdvisoryBoardConditions,
-    [GroupReferenceNumber] string? GroupId = null) : IRequest<ProjectId>;
+    string? AdvisoryBoardConditions) : IRequest<ProjectId>;
 
-public class CreateHandoverConversionProjectCommandHandler(
+public class CreateHandoverConversionMatProjectCommandHandler(
     IUnitOfWork unitOfWork,
     IHandoverProjectService handoverProjectService,
-    ILogger<CreateHandoverConversionProjectCommandHandler> logger)
-    : IRequestHandler<CreateHandoverConversionProjectCommand, ProjectId>
+    ILogger<CreateHandoverConversionMatProjectCommandHandler> logger)
+    : IRequestHandler<CreateHandoverConversionMatProjectCommand, ProjectId>
 {
-    public async Task<ProjectId> Handle(CreateHandoverConversionProjectCommand request, CancellationToken cancellationToken)
+    public async Task<ProjectId> Handle(CreateHandoverConversionMatProjectCommand request, CancellationToken cancellationToken)
     {
         try
         {
             await unitOfWork.BeginTransactionAsync();
 
             var urn = request.Urn!.Value;
-            var incomingTrustUkprn = request.IncomingTrustUkprn!.Value;
 
             // Validate the request
-            await handoverProjectService.ValidateUrnAsync(urn, cancellationToken: cancellationToken);
-            await handoverProjectService.ValidateTrustAsync(incomingTrustUkprn, cancellationToken: cancellationToken);
+            await handoverProjectService.ValidateUrnAsync(urn, cancellationToken);
 
             // Prepare common project data
             var commonData = await handoverProjectService.PrepareCommonProjectDataAsync(
@@ -50,28 +48,25 @@ public class CreateHandoverConversionProjectCommandHandler(
                 request.CreatedByEmail,
                 cancellationToken);
 
-            ProjectGroupId? groupId = null;
-            if (!string.IsNullOrWhiteSpace(request.GroupId))
-                groupId = await handoverProjectService.GetOrCreateProjectGroup(request.GroupId!, incomingTrustUkprn, cancellationToken);
-
             // Create conversion task data
             var conversionTask = handoverProjectService.CreateConversionTaskAsync();
 
-            var parameters = new CreateHandoverConversionProjectParams(
+            var parameters = new CreateHandoverConversionMatProjectParams(
                 commonData.ProjectId,
                 new Urn(commonData.Urn),
                 conversionTask.Id.Value,
                 request.ProvisionalConversionDate!.Value,
-                new Ukprn(incomingTrustUkprn),
                 commonData.Region,
                 request.DirectiveAcademyOrder ?? false,
                 request.AdvisoryBoardDate!.Value,
                 request.AdvisoryBoardConditions ?? null,
-                groupId,
                 commonData.UserId,
-                commonData.LocalAuthorityId);
+                commonData.LocalAuthorityId,
+                request.NewTrustReferenceNumber!,
+                request.NewTrustName!
+                );
 
-            var project = Project.CreateHandoverConversionProject(parameters);
+            var project = Project.CreateHandoverConversionMATProject(parameters);
 
             project.PrepareId = request.PrepareId!.Value;
 
@@ -88,4 +83,6 @@ public class CreateHandoverConversionProjectCommandHandler(
             throw new UnknownException($"An error occurred while creating the handover conversion project for URN: {request.Urn}", ex);
         }
     }
+
+
 }
