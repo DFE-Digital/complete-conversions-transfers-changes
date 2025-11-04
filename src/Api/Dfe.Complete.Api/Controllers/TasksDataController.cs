@@ -658,6 +658,25 @@ namespace Dfe.Complete.Api.Controllers
         }
 
         /// <summary>
+        /// Confirm the incoming trust has completed all actions for transfer project.
+        /// </summary>
+        /// <param name="request">The update command.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        [Authorize(Policy = "CanReadWriteUpdate")]
+        [HttpPatch]
+        [Route("TaskData/IncomingTrustHasCompleteAllActions")]
+        [SwaggerResponse(204, "Updated the confirm incoming trust has completed all actions task successfully.")]
+        [SwaggerResponse(400, "Invalid request data.")]
+        [SwaggerResponse(404, "Project not found.")]
+        public async Task<IActionResult> UpdateConfirmIncomingTrustHasCompleteAllActionsTaskAsync(
+            [FromBody] UpdateConfirmIncomingTrustHasCompleteAllActionsTaskCommand request,
+            CancellationToken cancellationToken)
+        {
+            await sender.Send(request, cancellationToken);
+            return NoContent();
+        }
+        
+        /// <summary>
         /// Request a new URN and record for the academy task for the project.
         /// </summary>
         /// <param name="request">The update command.</param>
@@ -746,6 +765,25 @@ namespace Dfe.Complete.Api.Controllers
         [SwaggerResponse(404, "Project not found.")]
         public async Task<IActionResult> UpdateTrustModificationOrderTaskAsync(
             [FromBody] UpdateTrustModificationOrderTaskCommand request,
+            CancellationToken cancellationToken)
+        {
+            await sender.Send(request, cancellationToken);
+            return NoContent();
+        }
+        
+        /// <summary>
+        /// Updating the 125 year lease for conversion project.
+        /// </summary>
+        /// <param name="request">The update command.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        [Authorize(Policy = "CanReadWriteUpdate")]
+        [HttpPatch]
+        [Route("TaskData/OneHundredAndTwentyFiveYearLease")]
+        [SwaggerResponse(204, "Updated the 125 year lease task successfully.")]
+        [SwaggerResponse(400, "Invalid request data.")]
+        [SwaggerResponse(404, "Project not found.")]
+        public async Task<IActionResult> UpdateUpdateOneHundredAndTwentyFiveYearLeaseTaskAsync(
+            [FromBody] UpdateOneHundredAndTwentyFiveYearLeaseTaskCommand request,
             CancellationToken cancellationToken)
         {
             await sender.Send(request, cancellationToken);

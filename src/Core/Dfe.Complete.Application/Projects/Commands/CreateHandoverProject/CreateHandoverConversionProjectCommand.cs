@@ -7,33 +7,21 @@ using Dfe.Complete.Application.Common.Interfaces;
 using Dfe.Complete.Domain.Validators;
 using Microsoft.Extensions.Logging;
 using Dfe.Complete.Application.Projects.Services;
-using Dfe.Complete.Utils;
 
 namespace Dfe.Complete.Application.Projects.Commands.CreateHandoverProject;
 
 public record CreateHandoverConversionProjectCommand(
-    [Required]
-    [Urn]
-    int? Urn,
-    [Required]
-    [Ukprn]
-    int? IncomingTrustUkprn,
-    [Required]
-    [PastDate (AllowToday = true)]
-    DateOnly? AdvisoryBoardDate,
-    [Required]
-    [FirstOfMonthDate]
-    DateOnly? ProvisionalConversionDate,
-    [Required]
-    [InternalEmail]
-    string CreatedByEmail,
+    [Required][Urn] int? Urn,
+    [Required][Ukprn(ValueIsInteger = true)] int? IncomingTrustUkprn,
+    [Required][PastDate(AllowToday = true)] DateOnly? AdvisoryBoardDate,
+    [Required][FirstOfMonthDate] DateOnly? ProvisionalConversionDate,
+    [Required][InternalEmail] string CreatedByEmail,
     [Required] string CreatedByFirstName,
     [Required] string CreatedByLastName,
     [Required] int? PrepareId,
     [Required] bool? DirectiveAcademyOrder,
     string? AdvisoryBoardConditions,
-    [GroupReferenceNumber]
-    string? GroupId = null) : IRequest<ProjectId>;
+    [GroupReferenceNumber] string? GroupId = null) : IRequest<ProjectId>;
 
 public class CreateHandoverConversionProjectCommandHandler(
     IUnitOfWork unitOfWork,
@@ -51,17 +39,20 @@ public class CreateHandoverConversionProjectCommandHandler(
             var incomingTrustUkprn = request.IncomingTrustUkprn!.Value;
 
             // Validate the request
-            await handoverProjectService.ValidateUrnAndTrustsAsync(urn, incomingTrustUkprn, cancellationToken: cancellationToken);
+            await handoverProjectService.ValidateUrnAsync(urn, cancellationToken: cancellationToken);
+            await handoverProjectService.ValidateTrustAsync(incomingTrustUkprn, cancellationToken: cancellationToken);
 
             // Prepare common project data
             var commonData = await handoverProjectService.PrepareCommonProjectDataAsync(
-                urn, 
-                incomingTrustUkprn, 
-                request.GroupId, 
-                request.CreatedByFirstName, 
-                request.CreatedByLastName, 
-                request.CreatedByEmail, 
+                urn,
+                request.CreatedByFirstName,
+                request.CreatedByLastName,
+                request.CreatedByEmail,
                 cancellationToken);
+
+            ProjectGroupId? groupId = null;
+            if (!string.IsNullOrWhiteSpace(request.GroupId))
+                groupId = await handoverProjectService.GetOrCreateProjectGroup(request.GroupId!, incomingTrustUkprn, cancellationToken);
 
             // Create conversion task data
             var conversionTask = handoverProjectService.CreateConversionTaskAsync();
@@ -76,7 +67,7 @@ public class CreateHandoverConversionProjectCommandHandler(
                 request.DirectiveAcademyOrder ?? false,
                 request.AdvisoryBoardDate!.Value,
                 request.AdvisoryBoardConditions ?? null,
-                commonData.GroupId,
+                groupId,
                 commonData.UserId,
                 commonData.LocalAuthorityId);
 

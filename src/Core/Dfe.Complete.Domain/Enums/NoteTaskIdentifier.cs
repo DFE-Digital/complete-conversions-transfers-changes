@@ -54,7 +54,7 @@ public enum NoteTaskIdentifier
     ConfirmTransferHasAuthorityToProceed = 12,
 
     [Description("confirm_date_academy_transferred")]
-    [DisplayDescription("Confirm the date the academy transferred")] // task heading 
+    [DisplayDescription("Confirm the academy transfer date")] // task heading 
     ConfirmDateAcademyTransferred = 13,
 
     [Description("conditions_met")]

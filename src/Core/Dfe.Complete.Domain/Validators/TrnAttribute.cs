@@ -1,9 +1,9 @@
 using System.ComponentModel.DataAnnotations;
 using System.Text.RegularExpressions;
 
-namespace Dfe.Complete.Validators;
+namespace Dfe.Complete.Domain.Validators;
 
-[AttributeUsage(AttributeTargets.Property)]
+[AttributeUsage(AttributeTargets.Property | AttributeTargets.Parameter)]
 public partial class TrnAttribute : ValidationAttribute
 {
     [GeneratedRegex("^TR\\d{5}$")]
