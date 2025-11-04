@@ -233,6 +233,14 @@ interface UpdateSupplementalFundingAgreementTaskRequest {
     signedSecretaryState?: boolean;
 }
 
+interface UpdateTrustModificationOrderTaskRequest {
+    taskDataId: TaskDataId;
+    notApplicable?: boolean;
+    received?: boolean;
+    sent?: boolean;
+    cleared?: boolean;
+    saved?: boolean;
+}
 export enum ProjectType {
     Conversion = "Conversion",
     Transfer = "Transfer",
@@ -351,6 +359,10 @@ class TaskApi extends ApiBase {
 
     public updateSupplementalFundingAgreementTask(requestBody: UpdateSupplementalFundingAgreementTaskRequest) {
         return this.taskDataBaseRequest<void>("SupplementalFundingAgreement", requestBody);
+    }
+
+    public updateTrustModificationOrderTask(requestBody: UpdateTrustModificationOrderTaskRequest) {
+        return this.taskDataBaseRequest<void>("TrustModificationOrder", requestBody);
     }
 
     private taskDataBaseRequest<T>(task: string, body: any) {

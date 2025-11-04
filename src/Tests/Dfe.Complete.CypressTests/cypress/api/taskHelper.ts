@@ -795,6 +795,43 @@ class TaskHelper {
         }
     }
 
+    updateTrustModificationOrder(taskDataId: string, status: TaskStatus) {
+        const defaultBody = {
+            taskDataId: { value: taskDataId },
+            notApplicable: false,
+            received: false,
+            sent: false,
+            cleared: false,
+            saved: false
+        }
+        switch (status) {
+            case "notApplicable":
+                return taskApi.updateTrustModificationOrderTask({
+                    ...defaultBody,
+                    notApplicable: true,
+                });
+
+            case "inProgress":
+                return taskApi.updateTrustModificationOrderTask({
+                    ...defaultBody,
+                    received: true,
+                });
+
+            case "completed":
+                return taskApi.updateTrustModificationOrderTask({
+                    taskDataId: { value: taskDataId },
+                    notApplicable: false,
+                    received: true,
+                    sent: true,
+                    cleared: true,
+                    saved: true
+                });
+
+            default:
+                return taskApi.updateTrustModificationOrderTask(defaultBody);
+        }
+    }
+
     // task that also updates significant date on project
     updateExternalStakeholderKickOff(
         projectId: string,
