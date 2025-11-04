@@ -1,10 +1,11 @@
 ﻿@page "/projects/{projectId}/tasks/commercial_transfer_agreement"
 @using Dfe.Complete.Domain.Enums
+@using Dfe.Complete.Utils;
 @inject Microsoft.Extensions.Configuration.IConfiguration _configuration
 @model Dfe.Complete.Pages.Projects.TaskList.Tasks.CommercialTransferAgreementTask.CommercialTransferAgreementTaskModel
 @{
     Layout = "_ProjectTaskLayout";
-    ViewData["Title"] = "Commercial transfer agreement ";
+    ViewData["Title"] = Model.TaskIdentifier.ToDisplayDescription();
     var isProjectTypeTransfer = Model.Project.Type == ProjectType.Transfer;
 }
 @section TaskHeaderHintSection

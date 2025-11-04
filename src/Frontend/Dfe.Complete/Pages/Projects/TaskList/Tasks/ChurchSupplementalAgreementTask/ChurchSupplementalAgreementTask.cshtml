@@ -1,10 +1,11 @@
 ﻿@page "/projects/{projectId}/tasks/church_supplemental_agreement"
 @using Dfe.Complete.Domain.Enums
+@using Dfe.Complete.Utils;
 @inject Microsoft.Extensions.Configuration.IConfiguration _configuration
 @model Dfe.Complete.Pages.Projects.TaskList.Tasks.ChurchSupplementalAgreementTask.ChurchSupplementalAgreementTaskModel
 @{
     Layout = "_ProjectTaskLayout";
-    ViewData["Title"] = "Church supplemental agreement";
+    ViewData["Title"] = Model.TaskIdentifier.ToDisplayDescription();
     var isTransfer = Model.Project.Type == ProjectType.Transfer;
 }
 @section TaskHeaderHintSection

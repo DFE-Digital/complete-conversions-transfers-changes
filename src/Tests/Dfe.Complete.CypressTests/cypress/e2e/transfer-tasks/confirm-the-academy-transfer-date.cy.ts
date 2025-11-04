@@ -18,7 +18,7 @@ const otherUserProject = ProjectBuilder.createTransferFormAMatProjectRequest({
 });
 let otherUserProjectId: string;
 
-describe("Transfer tasks - Confirm the date the academy transferred", () => {
+describe("Transfer tasks - Confirm the academy transfer date", () => {
     before(() => {
         projectRemover.removeProjectIfItExists(project.urn.value);
         projectRemover.removeProjectIfItExists(otherUserProject.urn.value);
@@ -40,8 +40,8 @@ describe("Transfer tasks - Confirm the date the academy transferred", () => {
         Logger.log("Input the date and save");
         taskPage.enterDate("11", "1", "2025", "date-academy-transferred").saveAndReturn();
         taskListPage
-            .hasTaskStatusCompleted("Confirm the date the academy transferred")
-            .selectTask("Confirm the date the academy transferred");
+            .hasTaskStatusCompleted("Confirm the academy transfer date")
+            .selectTask("Confirm the academy transfer date");
 
         Logger.log("Confirm date persists and clear date");
         taskPage
@@ -49,8 +49,8 @@ describe("Transfer tasks - Confirm the date the academy transferred", () => {
             .enterDate("", "", "", "date-academy-transferred")
             .saveAndReturn();
         taskListPage
-            .hasTaskStatusNotStarted("Confirm the date the academy transferred")
-            .selectTask("Confirm the date the academy transferred");
+            .hasTaskStatusNotStarted("Confirm the academy transfer date")
+            .selectTask("Confirm the academy transfer date");
         taskPage.hasDate("", "", "", "date-academy-transferred");
     });
 

@@ -1,10 +1,11 @@
 ﻿@page "/projects/{projectId}/tasks/risk_protection_arrangement"
 @using Dfe.Complete.Domain.Enums
+@using Dfe.Complete.Utils;
 @inject Dfe.Complete.Services.Interfaces.IErrorService errorService 
 @model Dfe.Complete.Pages.Projects.TaskList.Tasks.AcademyRiskProtectionArrangementsTask.ConversionAcademyRiskProtectionArrangementsTaskModel
 @{
     Layout = "_ProjectTaskLayout";
-    ViewData["Title"] = "Confirm the academy's risk protection arrangements";
+    ViewData["Title"] = Model.TaskIdentifier.ToDisplayDescription();
     var rpaReason = nameof(Model.RpaReason);
 }
 @section TaskHeaderHintSection {
