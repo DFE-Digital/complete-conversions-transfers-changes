@@ -1,13 +1,10 @@
-
-using System.ComponentModel.DataAnnotations;
-using Dfe.AcademiesApi.Client.Contracts;
-using Dfe.Complete.Utils.Exceptions;
-using Dfe.Complete.Application.ProjectGroups.Interfaces;
+using Dfe.Complete.Application.ProjectGroups.Commands;
 using Dfe.Complete.Application.Projects.Models;
 using Dfe.Complete.Application.Projects.Queries.GetGiasEstablishment;
 using Dfe.Complete.Application.Projects.Queries.GetLocalAuthority;
 using Dfe.Complete.Application.Projects.Queries.GetProject;
 using Dfe.Complete.Application.Projects.Queries.QueryFilters;
+using Dfe.Complete.Application.Services.AcademiesApi;
 using Dfe.Complete.Application.Users.Commands;
 using Dfe.Complete.Application.Users.Queries.GetUser;
 using Dfe.Complete.Domain.Constants;
@@ -16,8 +13,10 @@ using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Domain.Interfaces.Repositories;
 using Dfe.Complete.Domain.ValueObjects;
 using Dfe.Complete.Utils;
+using Dfe.Complete.Utils.Exceptions;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
 
 namespace Dfe.Complete.Application.Projects.Services;
 
@@ -26,16 +25,13 @@ public record HandoverProjectCommonData(
     int Urn,
     Guid LocalAuthorityId,
     Region Region,
-    ProjectGroupId? GroupId,
     UserId UserId);
 
 public class HandoverProjectService(
     ISender sender,
     ICompleteRepository<Project> projectRepository,
-    IProjectGroupWriteRepository projectGroupWriteRepository,
     ICompleteRepository<ConversionTasksData> conversionTaskRepository,
-    ICompleteRepository<TransferTasksData> transferTaskRepository,
-    ITrustsV4Client trustClient) : IHandoverProjectService
+    ICompleteRepository<TransferTasksData> transferTaskRepository) : IHandoverProjectService
 {
     public async Task<UserId> GetOrCreateUserAsync(UserDto userDto, CancellationToken cancellationToken)
     {
@@ -134,71 +130,51 @@ public class HandoverProjectService(
         return region;
     }
 
-    public async Task<ProjectGroupDto?> GetGroupForGroupId(string? groupId, CancellationToken cancellationToken)
+    public async Task<ProjectGroupId> GetOrCreateProjectGroup(string groupId, int incomingTrustUkprn, CancellationToken cancellationToken)
     {
-        if (string.IsNullOrEmpty(groupId))
-            return null;
-
         var projectGroupRequest = await sender.Send(new GetProjectGroupByGroupReferenceNumberQuery(groupId), cancellationToken);
 
         if (!projectGroupRequest.IsSuccess)
             throw new NotFoundException($"Project Group retrieval failed", nameof(groupId),
                 new Exception(projectGroupRequest.Error));
 
-        return projectGroupRequest.Value;
-    }
-
-    public async Task<ProjectGroupId> CreateProjectGroup(string groupId, int incomingTrustUkprn, CancellationToken cancellationToken)
-    {
-        var id = new ProjectGroupId(Guid.NewGuid());
-        var createdGroup = new ProjectGroup
+        if (projectGroupRequest.Value != null)
         {
-            Id = id,
-            GroupIdentifier = groupId,
-            TrustUkprn = new Ukprn(incomingTrustUkprn),
-        };
-        await projectGroupWriteRepository.CreateProjectGroupAsync(createdGroup, cancellationToken);
-        return id;
+            ValidateGroupId(projectGroupRequest.Value, incomingTrustUkprn);
+            return projectGroupRequest.Value.Id;
+        }
+
+        var createdGroup = await sender.Send(new CreateProjectGroupCommand(groupId, new Ukprn(incomingTrustUkprn)), cancellationToken);
+        if (!createdGroup.IsSuccess || createdGroup.Value == null)
+            throw new UnknownException($"Could not create project group: {createdGroup.Error}");
+
+        return createdGroup.Value;
     }
 
-    public async Task ValidateUrnAndTrustsAsync(int urn, int incomingTrustUkprn, int? outgoingTrustUkprn = null, CancellationToken cancellationToken = default)
+    public async Task ValidateUrnAsync(int urn, CancellationToken cancellationToken)
     {
-        if (outgoingTrustUkprn.HasValue && incomingTrustUkprn == outgoingTrustUkprn)
-                throw new ValidationException(Constants.ValidationConstants.SameTrustValidationMessage);
-            
         // Check if URN already exists in active/inactive projects
-            var existingProject = await FindExistingProjectAsync(urn, cancellationToken);
+        var existingProject = await FindExistingProjectAsync(urn, cancellationToken);
         if (existingProject != null)
             throw new UnprocessableContentException(string.Format(Constants.ValidationConstants.UrnExistsValidationMessage, urn));
-
-        // Validate incoming trust exists
-        _ = await trustClient.GetTrustByUkprn2Async(incomingTrustUkprn.ToString(), cancellationToken) 
-            ?? throw new UnprocessableContentException(string.Format(Constants.ValidationConstants.NoTrustFoundValidationMessage, incomingTrustUkprn));
-
-        // Validate outgoing trust exists and is different from incoming (for transfers)
-        if (outgoingTrustUkprn.HasValue)
-        {
-            if (incomingTrustUkprn == outgoingTrustUkprn.Value)
-                throw new ValidationException(Constants.ValidationConstants.SameTrustValidationMessage);
-
-            _ = await trustClient.GetTrustByUkprn2Async(outgoingTrustUkprn.Value.ToString(), cancellationToken) 
-                ?? throw new UnprocessableContentException(string.Format(Constants.ValidationConstants.NoTrustFoundValidationMessage, outgoingTrustUkprn.Value));
-        }
     }
 
-    public async Task<HandoverProjectCommonData> PrepareCommonProjectDataAsync(int urn, int incomingTrustUkprn, string? groupId, string createdByFirstName, string createdByLastName, string createdByEmail, CancellationToken cancellationToken)
+    public async Task ValidateTrustAsync(int trustUkprn, CancellationToken cancellationToken)
+    {
+        // Validate trust exists
+        var trustResponse = await sender.Send(new GetTrustByUkprnRequest(trustUkprn.ToString()), cancellationToken)
+            ?? throw new UnprocessableContentException(string.Format(Constants.ValidationConstants.NoTrustFoundValidationMessage, trustUkprn));
+
+        if (!trustResponse.IsSuccess || trustResponse.Value == null)
+            throw new UnprocessableContentException(string.Format(Constants.ValidationConstants.NoTrustFoundValidationMessage, trustUkprn.ToString()));
+
+    }
+
+    public async Task<HandoverProjectCommonData> PrepareCommonProjectDataAsync(int urn, string createdByFirstName, string createdByLastName, string createdByEmail, CancellationToken cancellationToken)
     {
         var projectId = new ProjectId(Guid.NewGuid());
         var localAuthorityId = await GetLocalAuthorityForUrn(urn, cancellationToken);
         var region = await GetRegionForUrn(urn, cancellationToken);
-        var group = await GetGroupForGroupId(groupId, cancellationToken);
-
-        if (group != null) ValidateGroupId(group, incomingTrustUkprn);
-
-        ProjectGroupId? projectGroupId = null;
-        if (group != null) projectGroupId = group.Id;
-        if (group == null && !string.IsNullOrWhiteSpace(groupId)) 
-            projectGroupId = await CreateProjectGroup(groupId, incomingTrustUkprn, cancellationToken);
 
         var userDto = new UserDto
         {
@@ -209,6 +185,6 @@ public class HandoverProjectService(
         };
         var userId = await GetOrCreateUserAsync(userDto, cancellationToken);
 
-        return new HandoverProjectCommonData(projectId, urn, localAuthorityId, region, projectGroupId, userId);
+        return new HandoverProjectCommonData(projectId, urn, localAuthorityId, region, userId);
     }
 }
