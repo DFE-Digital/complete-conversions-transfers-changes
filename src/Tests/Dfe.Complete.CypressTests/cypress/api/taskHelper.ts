@@ -484,6 +484,30 @@ class TaskHelper {
                 return taskApi.updateHandoverWithDeliveryOfficerTask(defaultBody);
         }
     }
+    updateIncomingTrustHasCompletedAllActions(taskDataId: string, status: TaskStatus) {
+        const defaultBody = {
+            taskDataId: { value: taskDataId },
+            emailed: false,
+            saved: false,
+        };
+        switch (status) {
+            case "inProgress":
+                return taskApi.updateIncomingTrustHasCompletedAllActionsTask({
+                    ...defaultBody,
+                    emailed: true,
+                });
+
+            case "completed":
+                return taskApi.updateIncomingTrustHasCompletedAllActionsTask({
+                    taskDataId: { value: taskDataId },
+                    emailed: true,
+                    saved: true,
+                });
+
+            default:
+                return taskApi.updateIncomingTrustHasCompletedAllActionsTask(defaultBody);
+        }
+    }
     updateLandConsentLetter(taskDataId: string, status: TaskStatus) {
         const defaultBody = {
             taskDataId: { value: taskDataId },

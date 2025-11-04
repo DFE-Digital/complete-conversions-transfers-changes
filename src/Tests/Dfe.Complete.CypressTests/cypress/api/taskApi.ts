@@ -21,6 +21,12 @@ interface UpdateHandoverWithDeliveryOfficerTaskRequest {
     handoverMeetings?: boolean;
 }
 
+interface UpdateIncomingTrustHasCompletedAllActionsTaskRequest {
+    taskDataId: TaskDataId;
+    emailed?: boolean;
+    saved?: boolean;
+}
+
 interface UpdateArticleOfAssociationTaskRequest {
     taskDataId: TaskDataId;
     projectType: ProjectType;
@@ -285,6 +291,12 @@ class TaskApi extends ApiBase {
 
     public updateHandoverWithDeliveryOfficerTask(requestBody: UpdateHandoverWithDeliveryOfficerTaskRequest) {
         return this.taskDataBaseRequest<void>("HandoverDeliveryOfficer", requestBody);
+    }
+
+    public updateIncomingTrustHasCompletedAllActionsTask(
+        requestBody: UpdateIncomingTrustHasCompletedAllActionsTaskRequest,
+    ) {
+        return this.taskDataBaseRequest<void>("IncomingTrustHasCompleteAllActions", requestBody);
     }
 
     public updateChurchSupplementalAgreementTask(requestBody: UpdateChurchSupplementalAgreementTaskRequest) {
