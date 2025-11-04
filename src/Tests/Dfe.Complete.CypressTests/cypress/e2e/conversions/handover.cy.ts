@@ -26,10 +26,10 @@ const otherSchoolName = "Moor Park Primary School";
 describe("Handover process tests for conversion projects", () => {
     before(() => {
         projectRemover.removeProjectIfItExists(project.urn);
-        // projectRemover.removeProjectIfItExists(formAMATProject.urn); // awaiting 214915
+        projectRemover.removeProjectIfItExists(formAMATProject.urn);
         projectRemover.removeProjectIfItExists(otherProject.urn);
         prepareProjectApi.createConversionProject(project);
-        // prepareProjectApi.createConversionFormAMatProject(formAMATProject); // awaiting 214915
+        prepareProjectApi.createConversionFormAMatProject(formAMATProject);
         prepareProjectApi.createConversionProject(otherProject);
     });
 
@@ -92,8 +92,7 @@ describe("Handover process tests for conversion projects", () => {
         yourTeamProjects.goToNextPageUntilFieldIsVisible(schoolName);
     });
 
-    // awaiting 214915
-    it.skip("Should be able to handover a conversion form a MAT project to assign to the user", () => {
+    it("Should be able to handover a conversion form a MAT project to assign to the user", () => {
         Logger.log("Add handover details for project");
         projectTable
             .goToNextPageUntilFieldIsVisible(formAMATSchoolName)
