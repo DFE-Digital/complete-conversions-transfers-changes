@@ -617,6 +617,40 @@ class TaskHelper {
                 return taskApi.updateMasterFundingAgreementTask(defaultBody);
         }
     }
+    updateOneHundredAndTwentyFiveYearLease(taskDataId: string, status: TaskStatus) {
+        const defaultBody = {
+            taskDataId: { value: taskDataId },
+            notApplicable: false,
+            email: false,
+            receive: false,
+            save: false,
+        };
+        switch (status) {
+            case "notApplicable":
+                return taskApi.updateOneHundredAndTwentyFiveYearLeaseTask({
+                    ...defaultBody,
+                    notApplicable: true,
+                });
+
+            case "inProgress":
+                return taskApi.updateOneHundredAndTwentyFiveYearLeaseTask({
+                    ...defaultBody,
+                    email: true,
+                });
+
+            case "completed":
+                return taskApi.updateOneHundredAndTwentyFiveYearLeaseTask({
+                    taskDataId: { value: taskDataId },
+                    notApplicable: false,
+                    email: true,
+                    receive: true,
+                    save: true,
+                });
+
+            default:
+                return taskApi.updateOneHundredAndTwentyFiveYearLeaseTask(defaultBody);
+        }
+    }
 
     updateReceiveDeclarationOfExpenditureCertificate(
         taskDataId: string,

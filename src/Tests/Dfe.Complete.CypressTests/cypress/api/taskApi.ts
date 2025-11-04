@@ -185,6 +185,14 @@ interface UpdateMasterFundingAgreementTaskRequest {
     signedSecretaryState?: boolean;
 }
 
+interface UpdateOneHundredAndTwentyFiveYearLeaseTaskRequest {
+    taskDataId: TaskDataId;
+    notApplicable?: boolean;
+    email?: boolean;
+    receive?: boolean;
+    save?: boolean;
+}
+
 interface UpdateReceiveDeclarationOfExpenditureCertificateTaskRequest {
     taskDataId: TaskDataId;
     projectType: ProjectType;
@@ -355,6 +363,10 @@ class TaskApi extends ApiBase {
 
     public updateMasterFundingAgreementTask(requestBody: UpdateMasterFundingAgreementTaskRequest) {
         return this.taskDataBaseRequest<void>("MasterFundingAgreement", requestBody);
+    }
+
+    public updateOneHundredAndTwentyFiveYearLeaseTask(requestBody: UpdateOneHundredAndTwentyFiveYearLeaseTaskRequest) {
+        return this.taskDataBaseRequest<void>("OneHundredAndTwentyFiveYearLease", requestBody);
     }
 
     public updateReceiveDeclarationOfExpenditureCertificateTask(
