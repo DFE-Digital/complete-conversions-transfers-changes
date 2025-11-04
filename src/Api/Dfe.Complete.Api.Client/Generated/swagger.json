@@ -3742,6 +3742,39 @@
         }
       }
     },
+    "/v1/TasksData/TaskData/OneHundredAndTwentyFiveYearLease": {
+      "patch": {
+        "tags": [
+          "TasksData"
+        ],
+        "summary": "Updating the 125 year lease for conversion project.",
+        "operationId": "TasksData_UpdateUpdateOneHundredAndTwentyFiveYearLeaseTask",
+        "requestBody": {
+          "x-name": "request",
+          "description": "The update command.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateOneHundredAndTwentyFiveYearLeaseTaskCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "204": {
+            "description": "Updated the 125 year lease task successfully."
+          },
+          "400": {
+            "description": "Invalid request data."
+          },
+          "404": {
+            "description": "Project not found."
+          }
+        }
+      }
+    },
     "/v1/Trust/List/All": {
       "get": {
         "tags": [
@@ -9110,6 +9143,31 @@
             "nullable": true
           },
           "saved": {
+            "type": "boolean",
+            "nullable": true
+          }
+        }
+      },
+      "UpdateOneHundredAndTwentyFiveYearLeaseTaskCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "taskDataId": {
+            "$ref": "#/components/schemas/TaskDataId"
+          },
+          "notApplicable": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "email": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "receive": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "save": {
             "type": "boolean",
             "nullable": true
           }
