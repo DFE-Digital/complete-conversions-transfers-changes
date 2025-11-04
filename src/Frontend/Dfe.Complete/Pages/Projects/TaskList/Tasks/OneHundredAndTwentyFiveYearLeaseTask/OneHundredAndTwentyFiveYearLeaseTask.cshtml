@@ -1,16 +1,51 @@
 ﻿@page "/projects/{projectId}/tasks/one_hundred_and_twenty_five_year_lease"
+@using Dfe.Complete.Utils;
 @model Dfe.Complete.Pages.Projects.TaskList.Tasks.OneHundredAndTwentyFiveYearLeaseTask.OneHundredAndTwentyFiveYearLeaseTaskModel
 @{
     Layout = "_ProjectTaskLayout";
-    ViewData["Title"] = "125 year lease";
+    ViewData["Title"] = Model.TaskIdentifier.ToDisplayDescription();
 }
 @section TaskHeaderHintSection {
-    <div class="govuk-hint"> 
+    <div class="govuk-hint">
+        <p>The 125 year lease is the most common way for land to be transferred between the local authority and the trust.</p>
     </div>
 }
 @section TaskSection {
 
-    <form method="post"> 
+    <form method="post">
+        <input type="hidden" asp-for="TasksDataId"/>
+        <govuk-checkboxes name="options">
+            <govuk-checkboxes-fieldset>
+                <govuk-checkboxes-fieldset-legend>
+                </govuk-checkboxes-fieldset-legend>
+                <govuk-checkboxes-item id="not-applicable" data-cy="not-applicable" asp-for="@Model.NotApplicable" value="true" name="@nameof(Model.NotApplicable)" checked="@Model.NotApplicable">
+                    <b>Not applicable</b>
+                </govuk-checkboxes-item>
+            </govuk-checkboxes-fieldset>
+        </govuk-checkboxes>
+        <div class="govuk-form-group">
+            <h2 class="govuk-heading-l">Confirm the 125 year lease has been signed</h2>
+        </div>
+        <govuk-checkboxes name="options">
+            <govuk-checkboxes-fieldset>
+                <govuk-checkboxes-fieldset-legend>
+                </govuk-checkboxes-fieldset-legend>
+
+                <govuk-checkboxes-item id="@(nameof(Model.Email))" data-cy="@(nameof(Model.Email))" asp-for="@Model.Email" value="true" name="@(nameof(Model.Email))" checked="@Model.Email">
+                    <b>Email the solicitors to ask if all relevant parties have agreed and signed the 125 year lease</b>
+                </govuk-checkboxes-item>
+
+                <govuk-checkboxes-item id="@(nameof(Model.Receive))" data-cy="@(nameof(Model.Receive))" asp-for="@Model.Receive" value="true" name="@(nameof(Model.Receive))" checked="@Model.Receive">
+                    <b>Receive email from the solicitors confirming all relevant parties have agreed and signed the 125 year lease</b>
+                </govuk-checkboxes-item>
+
+                <govuk-checkboxes-item id="@(nameof(Model.Save))" data-cy="@(nameof(Model.Save))" asp-for="@Model.Save" value="true" name="@(nameof(Model.Save))" checked="@Model.Save">
+                    <b>Save a copy of the confirmation email in the school's SharePoint folder</b>
+                </govuk-checkboxes-item>
+
+            </govuk-checkboxes-fieldset>
+        </govuk-checkboxes>
+
         @await Html.PartialAsync("_TaskSaveAndReturn", new TaskSaveAndReturnModel(Model.Project, Model.CurrentUserTeam))
     </form>
 }

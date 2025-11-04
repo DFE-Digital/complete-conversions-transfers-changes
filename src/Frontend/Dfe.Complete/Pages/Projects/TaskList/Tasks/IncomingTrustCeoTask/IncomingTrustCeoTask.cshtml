@@ -1,11 +1,12 @@
 ﻿@page "/projects/{projectId}/tasks/confirm_incoming_trust_ceo_contact"
 @using Dfe.Complete.Constants
 @using Dfe.Complete.TagHelpers;
+@using Dfe.Complete.Utils;
 @inject Microsoft.Extensions.Configuration.IConfiguration _configuration
 @model Dfe.Complete.Pages.Projects.TaskList.Tasks.IncomingTrustCeoTask.IncomingTrustCeoTaskModel
 @{
     Layout = "_ProjectTaskLayout";
-    ViewData["Title"] = "Confirm the incoming trust CEO's details";
+    ViewData["Title"] = Model.TaskIdentifier.ToDisplayDescription();
     var projectsExternalContactLink = string.Format(RouteConstants.ProjectExternalContacts, Model.ProjectId);
     var projectsExternalContactAddNewLink = string.Format(RouteConstants.NewProjectExternalContacts, Model.ProjectId);
 }

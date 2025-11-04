@@ -1,16 +1,63 @@
 ﻿@page "/projects/{projectId}/tasks/confirm_incoming_trust_has_completed_all_actions"
+@using Dfe.Complete.Utils;
 @model Dfe.Complete.Pages.Projects.TaskList.Tasks.IncomingTrustHasCompletedAllActionsTask.IncomingTrustHasCompletedAllActionsTaskModel
 @{
     Layout = "_ProjectTaskLayout";
-    ViewData["Title"] = "Confirm the incoming trust has completed all actions";
+    ViewData["Title"] = Model.TaskIdentifier.ToDisplayDescription();
 }
 @section TaskHeaderHintSection {
-    <div class="govuk-hint"> 
+    <div class="govuk-hint">
+        <p>
+            Contact the incoming trust to check they have completed all their tasks. Save their responses in the academy and incoming trust SharePoint folders.
+        </p>
     </div>
 }
 @section TaskSection {
 
-    <form method="post"> 
+    <form method="post">
+        <input type="hidden" asp-for="TasksDataId" />
+        
+        <govuk-checkboxes name="options">
+            <govuk-checkboxes-fieldset>
+                <govuk-checkboxes-fieldset-legend>
+                </govuk-checkboxes-fieldset-legend>
+                
+                <govuk-checkboxes-item id="@(nameof(Model.Emailed))" data-cy="@nameof(Model.Emailed)" asp-for="@Model.Emailed" value="true" name="@(nameof(Model.Emailed))" checked="@Model.Emailed">
+                    <b>Email the primary contact for the incoming trust</b>
+                    <govuk-checkboxes-item-hint>
+                        <govuk-details data-module="govuk-details" class="govuk-details">
+                            <govuk-details-summary>
+                                <span class="govuk-details__summary-text">How to structure your email</span>
+                            </govuk-details-summary>
+                            <govuk-details-text>
+                                <p>You should ask them to check and confirm they've completed all required tasks.</p>
+                                <p>Some teams have an email template you can use to help structure your email. Contact your line manager if you need a copy of the template.</p>
+                            </govuk-details-text>
+                        </govuk-details>
+                    </govuk-checkboxes-item-hint>
+                </govuk-checkboxes-item>
+                <govuk-checkboxes-item data-cy="@nameof(Model.Saved)" id="@(nameof(Model.Saved))" asp-for="@Model.Saved" value="true" name="@(nameof(Model.Saved))" checked="@Model.Saved">
+                    <b>Save the responses to the checklist in the academy and incoming trust SharePoint folders</b>
+                    <govuk-checkboxes-item-hint>
+                        <govuk-details data-module="govuk-details" class="govuk-details">
+                            <govuk-details-summary>
+                                <span class="govuk-details__summary-text">What to do if the incoming trust has not completed the tasks</span>
+                            </govuk-details-summary>
+                            <govuk-details-text>
+                                <p>Depending on the scale of the outstanding tasks, you may need to move the transfer date to the next month or later.</p>
+                                <p>If the transfer date needs to be moved, you must:</p>
+                                <ol>
+                                    <li>inform the academy and incoming trust of the outstanding tasks</li> 
+                                    <li>agree a new transfer date with all stakeholders</li> 
+                                    <li>enter the new transfer date</li> 
+                                    <li>tell any delivery officers or caseworkers who worked on this project previously about the change of date</li>
+                                </ol>
+                            </govuk-details-text>
+                        </govuk-details>
+                    </govuk-checkboxes-item-hint>
+                </govuk-checkboxes-item>
+            </govuk-checkboxes-fieldset>
+        </govuk-checkboxes>
         @await Html.PartialAsync("_TaskSaveAndReturn", new TaskSaveAndReturnModel(Model.Project, Model.CurrentUserTeam))
     </form>
 }
