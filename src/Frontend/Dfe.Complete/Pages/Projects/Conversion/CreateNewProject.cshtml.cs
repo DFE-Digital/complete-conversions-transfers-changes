@@ -95,7 +95,7 @@ namespace Dfe.Complete.Pages.Projects.Conversion
 
             try
             {
-                var userAdId = User.GetUserAdId();
+                var userAdId = User.GetUserOid();
 
                 var createProjectCommand = new CreateConversionProjectCommand(
                     Urn: new Urn(int.Parse(URN)),

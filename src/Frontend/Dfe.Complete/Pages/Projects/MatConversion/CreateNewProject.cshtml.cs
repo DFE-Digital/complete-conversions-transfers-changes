@@ -89,7 +89,7 @@ public class CreateNewProject(ISender sender, IErrorService errorService, ILogge
 
         try
         {
-            var userAdId = User.GetUserAdId();
+            var userAdId = User.GetUserOid();
 
             var createProjectCommand = new CreateMatConversionProjectCommand(
                 Urn: new Urn(int.Parse(URN)),

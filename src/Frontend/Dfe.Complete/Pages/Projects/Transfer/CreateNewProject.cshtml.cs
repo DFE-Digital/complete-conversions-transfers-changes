@@ -116,7 +116,7 @@ namespace Dfe.Complete.Pages.Projects.Transfer
 
             try
             {
-                var userAdId = User.GetUserAdId();
+                var userAdId = User.GetUserOid();
 
                 var createProjectCommand = new CreateTransferProjectCommand(
                     Urn: new Urn(int.Parse(URN)),
