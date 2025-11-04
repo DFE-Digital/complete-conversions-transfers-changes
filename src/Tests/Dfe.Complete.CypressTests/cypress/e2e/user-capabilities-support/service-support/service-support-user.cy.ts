@@ -90,14 +90,6 @@ describe("Capabilities and permissions of the service support user", () => {
         cy.url().should("include", "/projects/all/in-progress/all");
     });
 
-    it.skip("Should be able to create users", () => {
-        // not implemented 187527
-    });
-
-    it.skip("Should be able to edit users", () => {
-        // not implemented 187527
-    });
-
     it("Should NOT be able to create a project", () => {
         shouldNotBeAbleToCreateAProject();
     });

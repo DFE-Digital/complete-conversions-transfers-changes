@@ -1,9 +1,10 @@
 ﻿@page "/projects/{projectId}/tasks/deed_of_novation_and_variation"
+@using Dfe.Complete.Utils;
 @inject Microsoft.Extensions.Configuration.IConfiguration _configuration
 @model Dfe.Complete.Pages.Projects.TaskList.Tasks.DeedOfNovationAndVariationTask.DeedOfNovationAndVariationTaskModel
 @{
     Layout = "_ProjectTaskLayout";
-    ViewData["Title"] = "Deed of novation and variation";
+    ViewData["Title"] = Model.TaskIdentifier.ToDisplayDescription();
 }
 @section TaskHeaderHintSection
 {

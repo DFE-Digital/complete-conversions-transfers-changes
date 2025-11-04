@@ -1,9 +1,10 @@
 ﻿@page "/projects/{projectId}/tasks/rpa_policy"
+@using Dfe.Complete.Utils;
 @inject Microsoft.Extensions.Configuration.IConfiguration _configuration
 @model Dfe.Complete.Pages.Projects.TaskList.Tasks.AcademyRiskProtectionArrangementsTask.TransferAcademyRiskProtectionArrangementsTaskModel
 @{
     Layout = "_ProjectTaskLayout";
-    ViewData["Title"] = "Confirm the academy's risk protection arrangements";
+    ViewData["Title"] = Model.TaskIdentifier.ToDisplayDescription();
     var rpaEmail = _configuration["Emails:RiskProtectionArrangement"];
     var confirmPolicyField = nameof(Model.RpaPolicyConfirm);
 }

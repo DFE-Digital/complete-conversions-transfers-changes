@@ -3,7 +3,7 @@ import {
     shouldBeAbleToViewMultipleMonthsOfProjects,
     shouldBeAbleToViewReportsLandingPage,
     shouldNotBeAbleToSoftDeleteAProject,
-    shouldNotHaveAccessToViewAndEditUsers,
+    shouldNotHaveAccessToViewAddEditUsers,
     shouldNotHaveAccessToViewConversionURNsPage,
     shouldNotHaveAccessToViewLocalAuthorities,
 } from "cypress/support/reusableTests";
@@ -78,9 +78,7 @@ describe("Capabilities and permissions of the regional delivery officer team lea
         shouldBeAbleToViewMultipleMonthsOfProjects();
     });
 
-    // bug 245061
-    // + POST /Projects/InternalContacts/EditAssignedUser is intermittently not being called
-    it.skip("Should be able to assign unassigned projects to users", () => {
+    it("Should be able to assign unassigned projects to users", () => {
         navBar.goToYourTeamProjects();
         yourTeamProjects
             .filterProjects("Unassigned")
@@ -117,9 +115,8 @@ describe("Capabilities and permissions of the regional delivery officer team lea
         shouldNotBeAbleToSoftDeleteAProject(projectId);
     });
 
-    it.skip("Should NOT have access to view and edit users", () => {
-        // not implemented
-        shouldNotHaveAccessToViewAndEditUsers();
+    it("Should NOT have access to view, add or edit users", () => {
+        shouldNotHaveAccessToViewAddEditUsers();
     });
 
     it("Should NOT be able to view and edit local authorities", () => {

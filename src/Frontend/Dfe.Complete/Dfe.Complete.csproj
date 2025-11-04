@@ -14,9 +14,13 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+	  <Compile Remove="Pages\Projects\TaskList\Tasks\MasterFundingAgreement\**" />
 	  <Compile Remove="ViewComponents\**" />
-	  <Content Remove="ViewComponents\**" />	  
-	  <EmbeddedResource Remove="ViewComponents\**" />
+	  <Content Remove="Pages\Projects\TaskList\Tasks\MasterFundingAgreement\**" />
+	  <Content Remove="ViewComponents\**" />
+	  <EmbeddedResource Remove="Pages\Projects\TaskList\Tasks\MasterFundingAgreement\**" />	  
+	  <EmbeddedResource Remove="ViewComponents\**" />	  
+	  <None Remove="Pages\Projects\TaskList\Tasks\MasterFundingAgreement\**" />
 	  <None Remove="ViewComponents\**" />
 	  <Compile Remove="Pages\Projects\List\AllProjectsInTrustViewModel.cs" />
 	</ItemGroup>
@@ -29,7 +33,6 @@
 	<ItemGroup>
 	  <AdditionalFiles Include="..\.sonarlint\dfe-digital_a2b-internal\CSharp\SonarLint.xml" Link="SonarLint.xml" />
 	  <AdditionalFiles Include="Pages\Projects\TaskList\Tasks\ConfirmHeadTeacherDetailsTask\ConfirmHeadTeacherDetailsTask.cshtml" />
-	  <AdditionalFiles Include="Pages\Projects\TaskList\Tasks\MasterFundingAgreement\MasterFundingAgreement.cshtml" />
 	</ItemGroup>
 
 	<PropertyGroup Label="custom">
