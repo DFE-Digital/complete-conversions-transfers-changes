@@ -25,12 +25,6 @@ export const rdoLondonUser = new TestUser(
     "TEST-AD-ID-RDO",
     UserRoles.rdo,
 );
-export const rdoTeamLeaderUser = new TestUser(
-    "B0DFB912-F806-4FC2-837F-FBE2F1779789",
-    "cypress rdo-team-leader",
-    "TEST-AD-ID-RDO-TL",
-    UserRoles.rdo,
-);
 export const regionalCaseworkerUser = new TestUser(
     "C8371E6E-FD7F-42F7-8E38-F58E7308962E",
     "cypress regional-casework-services",

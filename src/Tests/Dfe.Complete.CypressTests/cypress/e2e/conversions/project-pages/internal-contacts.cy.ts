@@ -6,7 +6,6 @@ import {
     cypressUser,
     dataConsumerUser,
     rdoLondonUser,
-    rdoTeamLeaderUser,
     regionalCaseworkerTeamLeaderUser,
     regionalCaseworkerUser,
     serviceSupportUser,
@@ -22,7 +21,7 @@ const project = ProjectBuilder.createConversionFormAMatProjectRequest({
 });
 let projectId: string;
 const schoolName = "Whitchurch Primary School";
-const assignableUsers = [rdoLondonUser, rdoTeamLeaderUser, regionalCaseworkerUser];
+const assignableUsers = [rdoLondonUser, regionalCaseworkerUser];
 const unassignableUsers = [regionalCaseworkerTeamLeaderUser, dataConsumerUser, businessSupportUser, serviceSupportUser];
 
 describe("Internal contacts page: ", () => {
