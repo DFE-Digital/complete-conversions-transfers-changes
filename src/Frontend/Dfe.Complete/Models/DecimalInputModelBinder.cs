@@ -4,35 +4,35 @@ using System.Globalization;
 
 namespace Dfe.Complete.Models
 {
-	public class DecimalInputModelBinder : IModelBinder
-	{
-		private readonly ILoggerFactory _loggerFactory;
+    public class DecimalInputModelBinder : IModelBinder
+    {
+        private readonly ILoggerFactory _loggerFactory;
 
-		public DecimalInputModelBinder(ILoggerFactory loggerFactory)
-		{
-			_loggerFactory = loggerFactory;
-		}
+        public DecimalInputModelBinder(ILoggerFactory loggerFactory)
+        {
+            _loggerFactory = loggerFactory;
+        }
 
-		public Task BindModelAsync(ModelBindingContext bindingContext)
-		{
-			if (bindingContext == null)
-			{
-				throw new ArgumentNullException(nameof(bindingContext));
-			}
+        public Task BindModelAsync(ModelBindingContext bindingContext)
+        {
+            if (bindingContext == null)
+            {
+                throw new ArgumentNullException(nameof(bindingContext));
+            }
 
-			var modelType = bindingContext.ModelType;
-			if (modelType != typeof(decimal) && modelType != typeof(decimal?))
-			{
-				throw new InvalidOperationException($"Cannot bind {modelType.Name}.");
-			}
+            var modelType = bindingContext.ModelType;
+            if (modelType != typeof(decimal) && modelType != typeof(decimal?))
+            {
+                throw new InvalidOperationException($"Cannot bind {modelType.Name}.");
+            }
 
-			var decimalResult = bindingContext.ValueProvider.GetValue(bindingContext.ModelName);
+            var decimalResult = bindingContext.ValueProvider.GetValue(bindingContext.ModelName);
 
-			if (modelType == typeof(decimal?) && decimalResult.FirstValue == string.Empty)
-			{
-				bindingContext.Result = ModelBindingResult.Success(null);
-				return Task.CompletedTask;
-			}
+            if (modelType == typeof(decimal?) && decimalResult.FirstValue == string.Empty)
+            {
+                bindingContext.Result = ModelBindingResult.Success(null);
+                return Task.CompletedTask;
+            }
 
             if (modelType == typeof(decimal) && decimalResult.FirstValue == string.Empty)
             {
@@ -42,13 +42,13 @@ namespace Dfe.Complete.Models
 
             (new DecimalModelBinder(NumberStyles.Any, _loggerFactory)).BindModelAsync(bindingContext);
 
-			if (bindingContext.ModelState.TryGetValue(bindingContext.ModelName, out var entry) && entry.Errors.Count > 0)
-			{
-				var displayName = bindingContext.ModelMetadata.DisplayName ?? bindingContext.ModelName;
-				entry.Errors.Add($"{displayName} must be a number");
-			}
+            if (bindingContext.ModelState.TryGetValue(bindingContext.ModelName, out var entry) && entry.Errors.Count > 0)
+            {
+                var displayName = bindingContext.ModelMetadata.DisplayName ?? bindingContext.ModelName;
+                entry.Errors.Add($"{displayName} must be a number");
+            }
 
-			return Task.CompletedTask;
-		}
-	}
+            return Task.CompletedTask;
+        }
+    }
 }

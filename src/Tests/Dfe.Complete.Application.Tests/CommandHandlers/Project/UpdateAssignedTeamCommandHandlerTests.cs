@@ -1,5 +1,4 @@
-﻿using System.Linq.Expressions;
-using AutoFixture.Xunit2;
+﻿using AutoFixture.Xunit2;
 using Dfe.Complete.Application.Projects.Commands.UpdateProject;
 using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Domain.Interfaces.Repositories;
@@ -8,6 +7,7 @@ using Dfe.Complete.Tests.Common.Customizations.Behaviours;
 using GovUK.Dfe.CoreLibs.Testing.AutoFixture.Attributes;
 using GovUK.Dfe.CoreLibs.Testing.AutoFixture.Customizations;
 using NSubstitute;
+using System.Linq.Expressions;
 
 namespace Dfe.Complete.Application.Tests.CommandHandlers.Project;
 
@@ -23,8 +23,9 @@ public class UpdateAssignedTeamCommandHandlerTests
     {
         // Arrange
         var now = DateTime.UtcNow;
-        
-        var sourceProject = new Domain.Entities.Project() {
+
+        var sourceProject = new Domain.Entities.Project()
+        {
             Id = command.ProjectId,
             Urn = new Urn(123456),
             CreatedAt = now,

@@ -7,11 +7,11 @@ using GovUK.Dfe.CoreLibs.Security.Interfaces;
 using Microsoft.AspNetCore.Antiforgery;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using System.Reflection;
-using Microsoft.AspNetCore.Mvc;
 
 namespace Dfe.Complete.StartupTests;
 
@@ -248,7 +248,7 @@ public sealed class StartupTests : IDisposable
         // Assert
         Assert.True(options.Cookie.HttpOnly, "Antiforgery cookie should have HttpOnly enabled to prevent XSS attacks");
     }
-    
+
     [Fact]
     public void ConfigureServices_AntiforgeryCookie_HasSameSiteStrict()
     {
@@ -333,7 +333,7 @@ public sealed class StartupTests : IDisposable
         Assert.NotNull(mi);
         mi.Invoke(startup, [services]);
     }
-    
+
     public void Dispose()
     {
         try { Directory.Delete(_tempDpTargetPath, recursive: true); }

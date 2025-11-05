@@ -1,8 +1,8 @@
-﻿using Microsoft.AspNetCore.Http.Extensions;
+﻿using Dfe.Complete.Domain.Enums;
+using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.AspNetCore.Razor.TagHelpers;
-using Dfe.Complete.Domain.Enums;
 
 namespace Dfe.Complete.TagHelpers
 {
@@ -22,7 +22,7 @@ namespace Dfe.Complete.TagHelpers
         {
             output.TagName = "div";
             output.Attributes.SetAttribute("class", "govuk-grid-row");
-            
+
             string notesLink = string.Format(Constants.RouteConstants.ProjectViewNotes, ProjectId);
 
             var aboutProjectLink = string.Format(Constants.RouteConstants.ProjectAbout, ProjectId);

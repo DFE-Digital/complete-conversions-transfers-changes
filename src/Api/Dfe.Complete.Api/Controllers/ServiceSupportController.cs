@@ -89,7 +89,7 @@ namespace Dfe.Complete.Api.Controllers
         [SwaggerResponse(204, "local authority deleted successfully.")]
         [SwaggerResponse(400, "Invalid request data.")]
         public async Task<IActionResult> RemoveLocalAuthorityAsync(DeleteLocalAuthorityCommand request, CancellationToken cancellationToken)
-        {  
+        {
             await sender.Send(request, cancellationToken);
             return NoContent();
         }

@@ -15,10 +15,10 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.IncomingTrustCeoTask
         : BaseProjectTaskModel(sender, authorizationService, logger, NoteTaskIdentifier.ConfirmIncomingTrustCeoContact)
     {
         [BindProperty]
-        public Guid? IncomingTrustCeoContactId { get; set; }      
+        public Guid? IncomingTrustCeoContactId { get; set; }
 
         [BindProperty]
-        public Guid? KeyContactId { get; set; }        
+        public Guid? KeyContactId { get; set; }
 
         public List<ContactDto>? Contacts { get; set; }
 
@@ -33,7 +33,7 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.IncomingTrustCeoTask
             KeyContactId = incomingTrustCeoKeyContactDto?.Value?.Id?.Value;
 
             Contacts = contacts?.Value ?? [];
-                                   
+
             return Page();
         }
         public async Task<IActionResult> OnPost()

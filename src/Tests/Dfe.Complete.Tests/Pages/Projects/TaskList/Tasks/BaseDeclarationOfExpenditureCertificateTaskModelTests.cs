@@ -15,14 +15,14 @@ namespace Dfe.Complete.Tests.Pages.Projects.TaskList.Tasks
 {
     public class BaseDeclarationOfExpenditureCertificateTaskModelTests
     {
-        private static DeclarationOfExpenditureCertificateTaskModel GetModel(Mock<ISender>  sender, Mock<IErrorService> errorService, int days)
-        { 
+        private static DeclarationOfExpenditureCertificateTaskModel GetModel(Mock<ISender> sender, Mock<IErrorService> errorService, int days)
+        {
             var auth = new Mock<IAuthorizationService>();
-            var logger = new Mock<ILogger<DeclarationOfExpenditureCertificateTaskModel>>(); 
+            var logger = new Mock<ILogger<DeclarationOfExpenditureCertificateTaskModel>>();
             var model = new DeclarationOfExpenditureCertificateTaskModel(
             sender.Object, auth.Object, logger.Object, errorService.Object)
             {
-                TaskIdentifier = NoteTaskIdentifier.DeclarationOfExpenditureCertificate, 
+                TaskIdentifier = NoteTaskIdentifier.DeclarationOfExpenditureCertificate,
                 ReceivedDate = DateOnly.FromDateTime(DateTime.Today.AddDays(days)),
                 TasksDataId = Guid.NewGuid(),
                 Type = ProjectType.Conversion,

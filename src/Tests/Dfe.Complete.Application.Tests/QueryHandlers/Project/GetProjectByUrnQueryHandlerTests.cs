@@ -1,15 +1,15 @@
-using GovUK.Dfe.CoreLibs.Testing.AutoFixture.Attributes;
-using NSubstitute;
-using GovUK.Dfe.CoreLibs.Testing.AutoFixture.Customizations;
+using AutoMapper;
+using Dfe.Complete.Application.Projects.Interfaces;
+using Dfe.Complete.Application.Projects.Models;
 using Dfe.Complete.Application.Projects.Queries.GetProject;
+using Dfe.Complete.Domain.Entities;
 using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Domain.ValueObjects;
-using AutoMapper;
-using Dfe.Complete.Application.Projects.Models;
-using NSubstitute.ExceptionExtensions;
-using Dfe.Complete.Application.Projects.Interfaces;
+using GovUK.Dfe.CoreLibs.Testing.AutoFixture.Attributes;
+using GovUK.Dfe.CoreLibs.Testing.AutoFixture.Customizations;
 using MockQueryable;
-using Dfe.Complete.Domain.Entities;
+using NSubstitute;
+using NSubstitute.ExceptionExtensions;
 
 namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
 {
@@ -55,7 +55,7 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
             {
                 Urn = command.Urn,
                 Id = project.Id,
-                RegionalDeliveryOfficer = project.RegionalDeliveryOfficer,
+                RegionalDeliveryOfficer = project.RegionalDeliveryOfficer!,
                 RegionalDeliveryOfficerId = project.RegionalDeliveryOfficerId
             });
 

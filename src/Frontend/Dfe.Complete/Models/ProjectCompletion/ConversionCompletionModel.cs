@@ -3,7 +3,7 @@
 namespace Dfe.Complete.Models.ProjectCompletion;
 
 public class ConversionCompletionModel : CompletionModel
-{   
+{
     private bool AcademyOpenedDateTaskCompleted => ConfirmDateAcademyOpened == TaskListStatus.Completed;
     private bool AllConditionsMetTaskCompleted => ConfirmAllConditionsHaveBeenMet == TaskListStatus.Completed;
 

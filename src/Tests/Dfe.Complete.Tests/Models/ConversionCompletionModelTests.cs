@@ -10,15 +10,15 @@ namespace Dfe.Complete.Tests.Models
         private DateOnly? PreviousMonthDate = DateOnly.FromDateTime(DateTime.Now.AddMonths(months: -1));
 
         public ConversionCompletionModelTests()
-        {   
+        {
             _testClass = new();
         }
 
         [Theory]
         [InlineData(TaskListStatus.InProgress, TaskListStatus.InProgress, true)]
         [InlineData(TaskListStatus.NotStarted, TaskListStatus.NotStarted, true)]
-        [InlineData(TaskListStatus.NotApplicable, TaskListStatus.NotApplicable, true)]        
-        [InlineData(TaskListStatus.Completed, TaskListStatus.Completed, false)]       
+        [InlineData(TaskListStatus.NotApplicable, TaskListStatus.NotApplicable, true)]
+        [InlineData(TaskListStatus.Completed, TaskListStatus.Completed, false)]
         public void Is_InValid_When_TasksConditionNotMet(TaskListStatus academyOpenedDateTaskStatus, TaskListStatus allConditionsMetTaskStatus, bool expected)
         {
             // Arrange            
@@ -33,7 +33,7 @@ namespace Dfe.Complete.Tests.Models
             Assert.Equal(expected, result.Count > 0);
         }
 
-        [Fact]        
+        [Fact]
         public void Is_InValid_When_TasksConditionMet_ConversionDateIsFutureDate()
         {
             // Arrange                        
@@ -73,7 +73,7 @@ namespace Dfe.Complete.Tests.Models
         {
             // Arrange            
             var statusCompleted = TaskListStatus.Completed;
-            
+
             _testClass.IsConversionOrTransferDateProvisional = Provisional;
             _testClass.ConversionOrTransferDate = PreviousMonthDate;
             _testClass.ConfirmDateAcademyOpened = statusCompleted;

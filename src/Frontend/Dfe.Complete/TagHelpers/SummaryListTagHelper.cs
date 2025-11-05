@@ -11,7 +11,7 @@ namespace Dfe.Complete.TagHelpers
         {
             output.TagName = "dl";
 
-            if(NoBorder.HasValue && NoBorder.Value)
+            if (NoBorder.HasValue && NoBorder.Value)
             {
                 output.Attributes.SetAttribute("class", "govuk-summary-list govuk-summary-list--no-border");
                 return;

@@ -86,7 +86,7 @@ namespace Dfe.Complete.Api.Tests.Integration.Customizations
                                 var apiSettings = serviceProvider.GetRequiredService<AcademiesApiClientSettings>();
                                 return new ApiKeyHandler(apiSettings);
                             });
-                        
+
                         services.AddHttpClient<ITrustsV4Client, TrustsV4Client>(
                                 (httpClient, serviceProvider) =>
                                 {
@@ -112,7 +112,7 @@ namespace Dfe.Complete.Api.Tests.Integration.Customizations
 
                                    return ActivatorUtilities.CreateInstance<ConstituenciesClient>(
                                        serviceProvider, httpClient, wConfig["PersonsApiClient:BaseUrl"]!);
-                               });                           
+                               });
                     }
                 };
 

@@ -11,7 +11,7 @@ using Microsoft.Extensions.Logging;
 using System.Collections.ObjectModel;
 
 namespace Dfe.Complete.Application.Projects.Queries.GetProject
-{ 
+{
     public record GetProjectWithEstablishmentByIdQuery(
         ProjectId ProjectId) : IRequest<Result<ProjectWithEstablishmentQueryModel>>;
 
@@ -34,7 +34,7 @@ namespace Dfe.Complete.Application.Projects.Queries.GetProject
                 {
                     project?.IncomingTrustUkprn?.Value.ToString() ?? string.Empty,
                    project?.OutgoingTrustUkprn?.Value.ToString() ?? string.Empty
-                }; 
+                };
 
                 var allTrusts = await GetTrustsByUkprns(allProjectTrustUkPrns, cancellationToken);
 

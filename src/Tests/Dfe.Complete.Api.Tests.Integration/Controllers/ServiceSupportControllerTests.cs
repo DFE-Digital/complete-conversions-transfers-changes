@@ -20,7 +20,7 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers
         IServiceSupportClient serviceSupportClient,
         IFixture fixture)
         {
-            factory.TestClaims = new[] { ApiRoles.ReadRole, ApiRoles.WriteRole}
+            factory.TestClaims = new[] { ApiRoles.ReadRole, ApiRoles.WriteRole }
                 .Select(x => new Claim(ClaimTypes.Role, x)).ToList();
 
             var dbContext = factory.GetDbContext<CompleteContext>();
@@ -37,7 +37,7 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers
                 Title = fixture.Create<string>()
             };
             var localAuthority = await serviceSupportClient.CreateLocalAuthorityAsync(command, CancellationToken.None);
-            
+
             var newLocalAuthority = await dbContext.LocalAuthorities.SingleOrDefaultAsync(x => x.Id == new Domain.ValueObjects.LocalAuthorityId(localAuthority.LocalAuthorityId!.Value!.Value));
 
             Assert.NotNull(newLocalAuthority);
@@ -108,7 +108,7 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers
                 AddressCounty = fixture.Create<string>(),
                 AddressPostcode = fixture.Create<string>()
             };
-             
+
             await Assert.ThrowsAsync<CompleteApiException>(() => serviceSupportClient.CreateLocalAuthorityAsync(command, CancellationToken.None));
 
             var newLocalAuthority = await dbContext.LocalAuthorities.SingleOrDefaultAsync(x => x.Code == command.Code && x.Name == command.Name);
@@ -127,7 +127,7 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers
         IServiceSupportClient serviceSupportClient,
         IFixture fixture)
         {
-            factory.TestClaims = new[] { ApiRoles.ReadRole, ApiRoles.WriteRole}
+            factory.TestClaims = new[] { ApiRoles.ReadRole, ApiRoles.WriteRole }
                 .Select(x => new Claim(ClaimTypes.Role, x)).ToList();
 
             var dbContext = factory.GetDbContext<CompleteContext>();
@@ -148,11 +148,11 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers
                 LocalAuthorityName = command.Name
 
             }).Create<Domain.Entities.LocalAuthority>();
-            await dbContext.LocalAuthorities.AddAsync(localAuthority); 
+            await dbContext.LocalAuthorities.AddAsync(localAuthority);
 
-            await dbContext.SaveChangesAsync();  
+            await dbContext.SaveChangesAsync();
 
-            await Assert.ThrowsAsync<CompleteApiException>(() => serviceSupportClient.CreateLocalAuthorityAsync(command, CancellationToken.None)); 
+            await Assert.ThrowsAsync<CompleteApiException>(() => serviceSupportClient.CreateLocalAuthorityAsync(command, CancellationToken.None));
         }
 
         [Theory]
@@ -163,7 +163,7 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers
            IFixture fixture)
         {
             factory.TestClaims = new[] { ApiRoles.ReadRole, ApiRoles.WriteRole, ApiRoles.UpdateRole }
-                .Select(x => new Claim(ClaimTypes.Role, x)).ToList(); 
+                .Select(x => new Claim(ClaimTypes.Role, x)).ToList();
 
             var dbContext = factory.GetDbContext<CompleteContext>();
 
@@ -226,7 +226,7 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers
                 LocalAuthorityName = fixture.Create<string>()
 
             }).Create<Domain.Entities.LocalAuthority>();
-            await dbContext.LocalAuthorities.AddAsync(localAuthority); 
+            await dbContext.LocalAuthorities.AddAsync(localAuthority);
 
             await dbContext.SaveChangesAsync();
 
@@ -339,7 +339,7 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers
 
             var existinglocalAuthority = await dbContext.LocalAuthorities.SingleOrDefaultAsync(x => x.Id == new Domain.ValueObjects.LocalAuthorityId(command.Id.Value!.Value));
 
-            Assert.NotNull(existinglocalAuthority); 
+            Assert.NotNull(existinglocalAuthority);
             Assert.NotEqual(existinglocalAuthority.Code, anotherLocalAuthority.Code);
         }
 
@@ -363,7 +363,7 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers
             await dbContext.LocalAuthorities.AddAsync(localAuthority);
 
             var contact = Domain.Entities.Contact.Create(new Domain.ValueObjects.ContactId(Guid.NewGuid()),
-                "title", "name", null, null, localAuthority.Id, DateTime.Now); 
+                "title", "name", null, null, localAuthority.Id, DateTime.Now);
             await dbContext.Contacts.AddAsync(contact);
 
             await dbContext.SaveChangesAsync();
@@ -382,7 +382,7 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers
                 ContactId = new ContactId() { Value = contact.Id.Value }
             }, CancellationToken.None);
 
-            var existinglocalAuthority= await dbContext.LocalAuthorities.SingleOrDefaultAsync(x => x.Id == localAuthority.Id);
+            var existinglocalAuthority = await dbContext.LocalAuthorities.SingleOrDefaultAsync(x => x.Id == localAuthority.Id);
 
             Assert.Null(existinglocalAuthority);
 
@@ -441,17 +441,17 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers
 
             }).CreateMany<Domain.Entities.LocalAuthority>(10);
             await dbContext.LocalAuthorities.AddRangeAsync(localAuthorities);
-            
-            await dbContext.SaveChangesAsync(); 
+
+            await dbContext.SaveChangesAsync();
 
             var response = await serviceSupportClient.ListAllLocalAuthoritiesAsync(0, 10, CancellationToken.None);
 
-            Assert.NotNull(response);  
+            Assert.NotNull(response);
             Assert.Equal(10, response.Count);
             foreach (var result in response)
             {
                 var loalAuthority = localAuthorities.FirstOrDefault(x => x.Name == result.Name);
-                Assert.NotNull(loalAuthority); 
+                Assert.NotNull(loalAuthority);
             }
         }
 
@@ -474,15 +474,15 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers
 
             }).Create<Domain.Entities.LocalAuthority>();
             await dbContext.LocalAuthorities.AddAsync(localAuthority);
-           
+
             var contact = Domain.Entities.Contact.Create(new Domain.ValueObjects.ContactId(Guid.NewGuid()),
                 fixture.Create<string>(), fixture.Create<string>(), null, null, localAuthority.Id, DateTime.Now);
             await dbContext.Contacts.AddAsync(contact);
-            
+
             await dbContext.SaveChangesAsync();
 
             var response = await serviceSupportClient.GetLocalAuthorityDetailsAsync(localAuthority.Id.Value, CancellationToken.None);
-             
+
             Assert.NotNull(response);
             Assert.NotNull(response.LocalAuthority);
             Assert.NotNull(response.Contact);

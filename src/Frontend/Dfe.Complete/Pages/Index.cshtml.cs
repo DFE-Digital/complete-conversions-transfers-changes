@@ -6,20 +6,20 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace Dfe.Complete.Pages
 {
-	public class IndexModel : PageModel
-	{
-		public IActionResult OnGet()
-		{
-			ViewData[TabNavigationModel.ViewDataKey] = new TabNavigationModel(TabNavigationModel.YourProjectsTabName);
+    public class IndexModel : PageModel
+    {
+        public IActionResult OnGet()
+        {
+            ViewData[TabNavigationModel.ViewDataKey] = new TabNavigationModel(TabNavigationModel.YourProjectsTabName);
 
-			string route;
+            string route;
 
-			if (User.IsInRole(UserRolesConstants.BusinessSupport) || User.IsInRole(UserRolesConstants.DataConsumers)) route = RouteConstants.ProjectsInProgress;
-			else if (User.IsInRole(UserRolesConstants.ServiceSupport)) route = RouteConstants.ServiceSupportProjectsWithoutAcademyUrn;
-			else if (User.IsInRole(UserRolesConstants.ManageTeam)) route = RouteConstants.TeamProjectsUnassigned;
-			else route = RouteConstants.YourProjectsInProgress;
+            if (User.IsInRole(UserRolesConstants.BusinessSupport) || User.IsInRole(UserRolesConstants.DataConsumers)) route = RouteConstants.ProjectsInProgress;
+            else if (User.IsInRole(UserRolesConstants.ServiceSupport)) route = RouteConstants.ServiceSupportProjectsWithoutAcademyUrn;
+            else if (User.IsInRole(UserRolesConstants.ManageTeam)) route = RouteConstants.TeamProjectsUnassigned;
+            else route = RouteConstants.YourProjectsInProgress;
 
-			return Redirect(route);
-		}
-	}
+            return Redirect(route);
+        }
+    }
 }

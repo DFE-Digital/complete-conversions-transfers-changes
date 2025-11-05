@@ -24,7 +24,7 @@ namespace Dfe.Complete.Application.Services.AcademiesApi
         {
             if (string.IsNullOrWhiteSpace(request.Ukprn))
                 throw new ArgumentException("Ukprn cannot be null or empty.");
-            
+
             try
             {
                 var cacheKey = $"-trust-{request.Ukprn}";

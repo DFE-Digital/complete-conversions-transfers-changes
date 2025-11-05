@@ -73,10 +73,10 @@ public class ListAllProjectsForRegionQueryHandlerTests
 
         mockListAllProjectsForFilterQueryService.ListAllProjects(
             Arg.Is<ProjectFilters>(f =>
-                f.Region ==Region.London
+                f.Region == Region.London
             ))
             .Returns(mock);
-        
+
         var query = new ListAllProjectsForRegionQuery(Region.London, ProjectState.Active, null) { Page = 10 };
 
         var result = await handler.Handle(query, default);

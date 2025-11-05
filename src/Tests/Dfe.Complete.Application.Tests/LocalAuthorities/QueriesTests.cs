@@ -1,10 +1,10 @@
 using Dfe.Complete.Application.LocalAuthorities.Queries.GetLocalAuthority;
 using Dfe.Complete.Domain.Entities;
 using Dfe.Complete.Domain.Interfaces.Repositories;
-using Moq;
 using FluentAssertions;
-using System.Linq.Expressions;
 using Microsoft.Extensions.Logging;
+using Moq;
+using System.Linq.Expressions;
 
 namespace Dfe.Complete.Application.Tests.LocalAuthorities.QueriesTests;
 

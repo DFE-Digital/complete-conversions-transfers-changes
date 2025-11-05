@@ -1,13 +1,13 @@
+using Dfe.Complete.Application.Extensions;
 using Dfe.Complete.Attributes;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Reflection;
-using Dfe.Complete.Application.Extensions;
 
 namespace Dfe.Complete.Pages.Diagnostics
 {
     public class DiagnosticsModel : PageModel
     {
-		private readonly IConfiguration _configuration;
+        private readonly IConfiguration _configuration;
         private readonly IWebHostEnvironment _env;
         public string Env { get; set; }
         public string ReleaseTag { get; set; }

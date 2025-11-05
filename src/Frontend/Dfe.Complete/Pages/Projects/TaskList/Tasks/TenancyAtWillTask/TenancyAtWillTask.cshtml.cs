@@ -29,7 +29,7 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.TenancyAtWillTask
         {
             await base.OnGetAsync();
             TasksDataId = Project.TasksDataId?.Value;
-            NotApplicable = ConversionTaskData.TenancyAtWillNotApplicable; 
+            NotApplicable = ConversionTaskData.TenancyAtWillNotApplicable;
             EmailSigned = ConversionTaskData.TenancyAtWillEmailSigned;
             ReceiveSigned = ConversionTaskData.TenancyAtWillReceiveSigned;
             SaveSigned = ConversionTaskData.TenancyAtWillSaveSigned;

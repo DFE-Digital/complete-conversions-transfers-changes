@@ -30,7 +30,7 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
 
             mockMapper.Map<ContactDto>(Arg.Any<Contact>()).Returns(mappedContact);
 
-            var query = new GetContactByIdQuery(contact.Id); 
+            var query = new GetContactByIdQuery(contact.Id);
 
             // Act
             var result = await handler.Handle(query, CancellationToken.None);

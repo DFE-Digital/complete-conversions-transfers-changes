@@ -1,16 +1,16 @@
-﻿using System.Linq.Expressions;
-using AutoFixture.Xunit2;
-using GovUK.Dfe.CoreLibs.Testing.AutoFixture.Attributes;
-using Dfe.Complete.Domain.Interfaces.Repositories;
-using NSubstitute;
+﻿using AutoFixture.Xunit2;
+using Dfe.Complete.Application.Projects.Commands.UpdateProject;
+using Dfe.Complete.Application.Projects.Models;
 using Dfe.Complete.Domain.Entities;
 using Dfe.Complete.Domain.Enums;
+using Dfe.Complete.Domain.Interfaces.Repositories;
 using Dfe.Complete.Domain.ValueObjects;
 using Dfe.Complete.Utils;
+using GovUK.Dfe.CoreLibs.Testing.AutoFixture.Attributes;
 using GovUK.Dfe.CoreLibs.Testing.AutoFixture.Customizations;
-using Dfe.Complete.Application.Projects.Models;
-using Dfe.Complete.Application.Projects.Commands.UpdateProject;
 using MockQueryable;
+using NSubstitute;
+using System.Linq.Expressions;
 
 namespace Dfe.Complete.Application.Tests.CommandHandlers.Project
 {
@@ -251,9 +251,9 @@ namespace Dfe.Complete.Application.Tests.CommandHandlers.Project
 
             var projectId = new ProjectId(Guid.NewGuid());
 
-            var project = new Domain.Entities.Project 
-            { 
-                Id = projectId, 
+            var project = new Domain.Entities.Project
+            {
+                Id = projectId,
                 CreatedAt = DateTime.UtcNow,
             };
 

@@ -27,9 +27,9 @@ namespace Dfe.Complete.Pages.Projects.Decision.RecordDaoRevocation.Reasons
 
         public async Task<IActionResult> OnPostAsync()
         {
-            PoplateOptions(Reasons); 
-            ValidateReasons(FormValues, Reasons, ReasonNotes, errorService, ModelState); 
-                
+            PoplateOptions(Reasons);
+            ValidateReasons(FormValues, Reasons, ReasonNotes, errorService, ModelState);
+
             if (!ModelState.IsValid)
             {
                 return Page();

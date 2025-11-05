@@ -25,7 +25,7 @@ namespace Dfe.Complete.Tests.Validators
             Assert.IsType<ValidationResult>(result);
             Assert.True(result.ErrorMessage == "The TestDateInThePast date must be in the past.");
         }
-        
+
         [Fact]
         public void DateInThePastAttribute_Validation_ReturnsNull_WhenDateInThePast()
         {
@@ -44,8 +44,8 @@ namespace Dfe.Complete.Tests.Validators
             // Assert
             Assert.Null(result);
         }
-        
-        
+
+
         [Fact]
         public void DateInThePastAttribute_Validation_ReturnsNull_WhenDateNotGiven()
         {
@@ -63,6 +63,6 @@ namespace Dfe.Complete.Tests.Validators
             Assert.Null(result);
         }
 
-        
+
     }
 }

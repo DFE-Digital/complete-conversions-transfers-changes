@@ -146,7 +146,7 @@ namespace Dfe.Complete.Tests.Constants
             Assert.Equal(notesBase + "/new", string.Format(RouteConstants.ProjectAddNote, projectId));
             Assert.Equal($"{notesBase}/{noteId}/edit", string.Format(RouteConstants.ProjectEditNote, projectId, noteId));
         }
-         
+
         [Fact]
         public void ProjectTasksRoutes_ShouldFormatCorrectly()
         {
@@ -228,7 +228,7 @@ namespace Dfe.Complete.Tests.Constants
 
             Assert.Equal(basePath + "/reasons/change", string.Format(RouteConstants.ChangeProjectDaoRevocationReason, projectId));
             Assert.Equal(basePath + "/minister/change", string.Format(RouteConstants.ChangeProjectDaoRevocationMinister, projectId));
-            Assert.Equal(basePath + "/date/change", string.Format(RouteConstants.ChangeProjectDaoRevocationDate, projectId)); 
+            Assert.Equal(basePath + "/date/change", string.Format(RouteConstants.ChangeProjectDaoRevocationDate, projectId));
         }
 
         [Fact]

@@ -11,12 +11,12 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Dfe.Complete.Application.Projects.Commands.TaskData
 {
-    public record UpdateExternalStakeholderKickOffTaskCommand(ProjectId ProjectId, 
-        bool? StakeholderKickOffIntroductoryEmails, 
-        bool? LocalAuthorityProforma, 
-        bool? CheckProvisionalDate, 
-        bool? StakeholderKickOffSetupMeeting, 
-        bool? StakeholderKickOffMeeting, 
+    public record UpdateExternalStakeholderKickOffTaskCommand(ProjectId ProjectId,
+        bool? StakeholderKickOffIntroductoryEmails,
+        bool? LocalAuthorityProforma,
+        bool? CheckProvisionalDate,
+        bool? StakeholderKickOffSetupMeeting,
+        bool? StakeholderKickOffMeeting,
         DateOnly? SignificantDate,
         string? UserEmail) : IRequest;
 
@@ -31,12 +31,12 @@ namespace Dfe.Complete.Application.Projects.Commands.TaskData
         public async Task Handle(UpdateExternalStakeholderKickOffTaskCommand request, CancellationToken cancellationToken)
         {
             var project = await projectRepository.Query().FirstOrDefaultAsync(x => x.Id == request.ProjectId, cancellationToken);
-            
+
             if (project == null)
             {
                 throw new NotFoundException("Project not found");
             }
-            
+
             var user = await userRepository.FindAsync(u => u.Email == request.UserEmail, cancellationToken);
             if (user is null)
             {
@@ -59,15 +59,15 @@ namespace Dfe.Complete.Application.Projects.Commands.TaskData
             else
             {
                 var transferTasksData = await taskDataReadRepository.TransferTaskData.FirstOrDefaultAsync(x => x.Id == project.TasksDataId, cancellationToken);
-            
+
                 transferTasksData!.StakeholderKickOffIntroductoryEmails = request.StakeholderKickOffIntroductoryEmails;
                 transferTasksData!.StakeholderKickOffSetupMeeting = request.StakeholderKickOffSetupMeeting;
                 transferTasksData!.StakeholderKickOffMeeting = request.StakeholderKickOffMeeting;
 
                 await taskDataWriteRepository.UpdateTransferAsync(transferTasksData, now, cancellationToken);
             }
-            
-            
+
+
             if (request.SignificantDate.HasValue)
             {
                 var significantDateHistory = new SignificantDateHistory
@@ -80,7 +80,7 @@ namespace Dfe.Complete.Application.Projects.Commands.TaskData
                     PreviousDate = project.SignificantDate,
                     RevisedDate = request.SignificantDate,
                 };
-            
+
                 var significantDateHistoryReason = new SignificantDateHistoryReason()
                 {
                     Id = new SignificantDateHistoryReasonId(Guid.NewGuid()),
@@ -102,13 +102,13 @@ namespace Dfe.Complete.Application.Projects.Commands.TaskData
                     NotableId = significantDateHistoryReason.Id.Value,
                     NotableType = NotableType.SignificantDateHistoryReason.ToDescription()
                 };
-                
+
                 project.UpdateSignificantDate(request.SignificantDate.Value);
                 project.SignificantDateProvisional = false;
-                
+
                 project.AddSignificantDateHistory(significantDateHistory);
                 await significantDateReasonHistoryRepository.AddAsync(significantDateHistoryReason, cancellationToken);
-                
+
                 project.AddNote(note);
             }
 

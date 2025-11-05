@@ -17,7 +17,7 @@ public class CompleteProjectModel(ISender sender, IProjectService projectService
 
     public async override Task<IActionResult> OnGetAsync()
     {
-        if(TempData.ContainsKey("ShowProjectCompleteConfirmation"))
+        if (TempData.ContainsKey("ShowProjectCompleteConfirmation"))
         {
             TempData.Remove("ShowProjectCompleteConfirmation");
             await UpdateCurrentProject();
@@ -51,8 +51,8 @@ public class CompleteProjectModel(ISender sender, IProjectService projectService
 
         if (Project.Type == ProjectType.Transfer)
             return await CompleteTransferProjectAsync();
-       
-        return await CompleteConversionProjectAsync();       
+
+        return await CompleteConversionProjectAsync();
     }
 
     private async Task<IActionResult> CompleteTransferProjectAsync()
@@ -60,13 +60,13 @@ public class CompleteProjectModel(ISender sender, IProjectService projectService
         var taskList = TransferTaskListViewModel.Create(TransferTaskData, Project, KeyContacts);
 
         if (taskList == null)
-        {   
+        {
             return RedirectToProjectTaskList();
         }
 
         var validationResult = projectService.GetTransferProjectCompletionValidationResult(Project.SignificantDate, Project.SignificantDateProvisional ?? true, taskList);
         return await HandleProjectCompletionAsync(validationResult);
-    }   
+    }
 
     private async Task<IActionResult> CompleteConversionProjectAsync()
     {
@@ -85,7 +85,7 @@ public class CompleteProjectModel(ISender sender, IProjectService projectService
         }
 
         await MarkProjectAsCompletedAsync();
-        return RedirectToProjectCompletePage();        
+        return RedirectToProjectCompletePage();
     }
 
     private async Task MarkProjectAsCompletedAsync()
@@ -107,7 +107,7 @@ public class CompleteProjectModel(ISender sender, IProjectService projectService
         var url = string.Format(RouteConstants.ProjectTaskList, ProjectId);
         return Redirect(url);
     }
-    
+
     private IActionResult RedirectToProjectTaskListWithValidation()
     {
         var url = string.Format(RouteConstants.ProjectTaskList, ProjectId) + "?projectCompletionValidation=true";

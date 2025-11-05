@@ -1,5 +1,4 @@
-﻿using System.Linq.Expressions;
-using AutoFixture;
+﻿using AutoFixture;
 using AutoFixture.Xunit2;
 using Dfe.Complete.Application.Users.Queries.SearchUsers;
 using Dfe.Complete.Domain.Entities;
@@ -11,6 +10,7 @@ using Dfe.Complete.Tests.Common.Customizations.Models;
 using GovUK.Dfe.CoreLibs.Testing.AutoFixture.Attributes;
 using GovUK.Dfe.CoreLibs.Testing.AutoFixture.Customizations;
 using NSubstitute;
+using System.Linq.Expressions;
 
 namespace Dfe.Complete.Application.Tests.QueryHandlers.User;
 
@@ -34,19 +34,19 @@ public class SearchUsersQueryHandlerTests
             Type = ProjectType.Conversion,
             AssignedToId = user.Id
         }).Create<Domain.Entities.Project>();
-        
+
         var transferProject = fixture.Customize(new ProjectCustomization
         {
             Urn = establishment.Urn,
             Type = ProjectType.Transfer,
             AssignedToId = user.Id
         }).Create<Domain.Entities.Project>();
-        
 
-        var projectList = new List<Domain.Entities.Project>{ conversionProject, transferProject };
+
+        var projectList = new List<Domain.Entities.Project> { conversionProject, transferProject };
         user.ProjectAssignedTos = projectList;
-        var userList = new List<Domain.Entities.User>{user};
-        
+        var userList = new List<Domain.Entities.User> { user };
+
         mockUserRepository
             .FetchAsync(Arg.Any<Expression<Func<Domain.Entities.User, bool>>>(), Arg.Any<CancellationToken>())
             .Returns(userList);

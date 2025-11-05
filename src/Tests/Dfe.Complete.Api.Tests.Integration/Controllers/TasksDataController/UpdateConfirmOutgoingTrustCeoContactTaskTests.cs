@@ -5,10 +5,10 @@ using Dfe.Complete.Domain.Entities;
 using Dfe.Complete.Infrastructure.Database;
 using Dfe.Complete.Tests.Common.Constants;
 using GovUK.Dfe.CoreLibs.Testing.AutoFixture.Attributes;
+using GovUK.Dfe.CoreLibs.Testing.AutoFixture.Customizations;
 using GovUK.Dfe.CoreLibs.Testing.Mocks.WebApplicationFactory;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
-using GovUK.Dfe.CoreLibs.Testing.AutoFixture.Customizations;
 
 namespace Dfe.Complete.Api.Tests.Integration.Controllers.TasksDataController
 {
@@ -33,7 +33,7 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers.TasksDataController
 
             await dbContext.SaveChangesAsync();
 
-            command.OutgoingTrustCeoId = new ContactId { Value = contact.Id.Value };  
+            command.OutgoingTrustCeoId = new ContactId { Value = contact.Id.Value };
             command.KeyContactId = new KeyContactId { Value = keycontact.Id.Value };
 
             // Act
@@ -43,7 +43,7 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers.TasksDataController
             dbContext.ChangeTracker.Clear();
             var existingKeyContactData = await dbContext.KeyContacts.SingleOrDefaultAsync(x => x.Id == keycontact.Id);
             Assert.NotNull(existingKeyContactData);
-            Assert.Equal(contact.Id.Value, existingKeyContactData.OutgoingTrustCeoId?.Value);            
+            Assert.Equal(contact.Id.Value, existingKeyContactData.OutgoingTrustCeoId?.Value);
         }
 
         [Theory]
@@ -60,7 +60,7 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers.TasksDataController
             var contact = fixture.Create<Domain.Entities.Contact>();
             var nonExistentKeyContactId = Guid.NewGuid();
 
-            command.OutgoingTrustCeoId = new ContactId { Value = contact.Id.Value };  
+            command.OutgoingTrustCeoId = new ContactId { Value = contact.Id.Value };
             command.KeyContactId = new KeyContactId { Value = nonExistentKeyContactId };
 
             var expectedErrorMessage = $"KeyContact with ID {nonExistentKeyContactId} not found";

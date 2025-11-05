@@ -17,8 +17,8 @@ public class OtherExternalInputValidatorTests
     [InlineData("TestUser", "HeadTeacher", "localauthority", false)]
     [InlineData("TestUser", "HeadTeacher", "solicitor", false)]
     [InlineData("TestUser", "HeadTeacher", "diocese", false)]
-    [InlineData("TestUser", "HeadTeacher", "other", false)]    
-    public void Should_Not_Have_Errors_When_Valid_Input(string fullName, string role, string selectedExternalContactType,  bool isPrimaryContact)
+    [InlineData("TestUser", "HeadTeacher", "other", false)]
+    public void Should_Not_Have_Errors_When_Valid_Input(string fullName, string role, string selectedExternalContactType, bool isPrimaryContact)
     {
         // Arrange       
         var model = new OtherExternalContactInputModel
@@ -45,14 +45,14 @@ public class OtherExternalInputValidatorTests
 
     [Theory]
     [InlineData(null, "HeadTeacher", "schoolacademy", "test@education.gov.uk", true, "FullName")]
-    [InlineData("TestUser", null, "schoolacademy", "test@education.gov.uk", false, "Role")]    
+    [InlineData("TestUser", null, "schoolacademy", "test@education.gov.uk", false, "Role")]
     [InlineData("TestUser", "HeadTeacher", "solicitor", "test@education.gov.uk", true, "IsPrimaryProjectContact")]
     [InlineData("TestUser", "HeadTeacher", "diocese", "test@education.gov.uk", true, "IsPrimaryProjectContact")]
     [InlineData("TestUser", "HeadTeacher", "other", "test@education.gov.uk", true, "IsPrimaryProjectContact")]
     [InlineData("TestUser", "HeadTeacher", "schoolacademy", "test", true, "Email")]
     public void Should_Have_Errors_When_Invalid_Input(string fullName, string role, string selectedExternalContactType, string email, bool isPrimaryContact, string expectedPropertyNameInErrorList)
     {
-       
+
         // Arrange       
         var model = new OtherExternalContactInputModel
         {
