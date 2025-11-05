@@ -1,5 +1,4 @@
 import {
-    shouldBeAbleToChangeTheAddedByUserOfAProject,
     shouldBeAbleToViewMultipleMonthsOfProjects,
     shouldBeAbleToViewReportsLandingPage,
     shouldNotBeAbleToSoftDeleteAProject,
@@ -24,6 +23,8 @@ import { projectTable } from "cypress/pages/projects/tables/projectTable";
 import yourTeamProjectsTable from "cypress/pages/projects/tables/yourTeamProjectsTable";
 import editUserPage from "cypress/pages/projects/editUserPage";
 import { urnPool } from "cypress/constants/testUrns";
+import { Logger } from "cypress/common/logger";
+import internalContactsPage from "cypress/pages/projects/projectDetails/internalContactsPage";
 
 const unassignedProject = ProjectBuilder.createTransferProjectRequest({
     urn: { value: urnPool.regionalWorker.mountjoy },
@@ -120,7 +121,30 @@ describe("Capabilities and permissions of the regional casework services team le
     });
 
     it("Should be able to change the added by user of the project in internal projects", () => {
-        shouldBeAbleToChangeTheAddedByUserOfAProject(project.urn.value, projectId, cypressUser, regionalCaseworkerUser);
+        const currentAssignee = cypressUser;
+        const newAssignee = regionalCaseworkerUser;
+
+        Logger.log("Go to project internal contacts page");
+        cy.visit(`projects/${projectId}/internal-contacts`);
+
+        Logger.log("Check the added by user is displayed and click change");
+        internalContactsPage.row(3).summaryShows("Added by").hasValue(currentAssignee.username).change("Added by");
+
+        Logger.log("Change the added by user");
+        internalContactsPage
+            .containsHeading(`Who added this project?`)
+            .contains(`URN ${project.urn.value}`)
+            .hasLabel("Added by")
+            .assignTo(newAssignee.username)
+            .clickButton("Continue");
+
+        Logger.log("Check the added by user is updated");
+        internalContactsPage
+            .containsSuccessBannerWithMessage("Project has been updated successfully")
+            .row(3)
+            .summaryShows("Added by")
+            .hasValue(newAssignee.username)
+            .hasEmailLink(newAssignee.email);
     });
 
     it("Should be able to view the reports landing page", () => {
