@@ -2,11 +2,12 @@ using Asp.Versioning;
 using Dfe.Complete.Application.Common.Models;
 using Dfe.Complete.Application.DaoRevoked.Commands;
 using Dfe.Complete.Application.KeyContacts.Models;
+using Dfe.Complete.Application.KeyContacts.Queries;
 using Dfe.Complete.Application.Notes.Commands;
 using Dfe.Complete.Application.Notes.Queries;
+using Dfe.Complete.Application.Projects.Commands.CreateHandoverProject;
 using Dfe.Complete.Application.Projects.Commands.RemoveProject;
 using Dfe.Complete.Application.Projects.Commands.UpdateProject;
-using Dfe.Complete.Application.Projects.Commands.CreateHandoverProject;
 using Dfe.Complete.Application.Projects.Models;
 using Dfe.Complete.Application.Projects.Queries.CountAllProjects;
 using Dfe.Complete.Application.Projects.Queries.GetProject;
@@ -17,7 +18,6 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
-using Dfe.Complete.Application.KeyContacts.Queries;
 
 namespace Dfe.Complete.Api.Controllers
 {
@@ -657,6 +657,6 @@ namespace Dfe.Complete.Api.Controllers
         {
             await sender.Send(request, cancellationToken);
             return NoContent();
-        } 
+        }
     }
 }

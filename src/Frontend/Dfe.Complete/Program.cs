@@ -1,5 +1,5 @@
 using Microsoft.ApplicationInsights.Extensibility;
-using Serilog; 
+using Serilog;
 
 namespace Dfe.Complete;
 
@@ -28,8 +28,8 @@ public static class Program
                webBuilder.UseStartup<Startup>();
                webBuilder.UseKestrel(options =>
                 {
-                  options.AddServerHeader = false;
-              });
+                    options.AddServerHeader = false;
+                });
            });
     }
 }

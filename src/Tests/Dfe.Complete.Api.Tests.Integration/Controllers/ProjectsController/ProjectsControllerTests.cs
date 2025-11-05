@@ -2,7 +2,6 @@ using AutoFixture;
 using AutoFixture.Xunit2;
 using Dfe.AcademiesApi.Client.Contracts;
 using Dfe.Complete.Api.Tests.Integration.Customizations;
-using Dfe.Complete.Client;
 using Dfe.Complete.Client.Contracts;
 using Dfe.Complete.Domain.Constants;
 using Dfe.Complete.Domain.Entities;
@@ -2193,7 +2192,7 @@ public partial class ProjectsControllerTests
 
         var localAuthority = dbContext.LocalAuthorities.AsEnumerable().MinBy(_ => Guid.NewGuid());
         Assert.NotNull(localAuthority);
-        projects.ForEach(x => x.LocalAuthorityId = localAuthority.Id); 
+        projects.ForEach(x => x.LocalAuthorityId = localAuthority.Id);
 
         await dbContext.Projects.AddRangeAsync(projects);
         await dbContext.SaveChangesAsync();
@@ -2205,7 +2204,7 @@ public partial class ProjectsControllerTests
         };
 
         // Act
-        Assert.Equal(ProjectState.Active, project.State); 
+        Assert.Equal(ProjectState.Active, project.State);
         var exception = await Assert.ThrowsAsync<NotFoundException>(() => projectsClient.UpdateDeleteProjectStatusAsync(command));
 
         // Assert

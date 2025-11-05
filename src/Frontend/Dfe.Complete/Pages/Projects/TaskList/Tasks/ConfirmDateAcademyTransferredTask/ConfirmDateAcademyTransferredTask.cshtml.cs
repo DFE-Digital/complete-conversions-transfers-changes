@@ -24,7 +24,7 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.ConfirmDateAcademyTransferr
         public Guid? TasksDataId { get; set; }
         public override async Task<IActionResult> OnGetAsync()
         {
-            await base.OnGetAsync(); 
+            await base.OnGetAsync();
             TasksDataId = Project.TasksDataId?.Value;
             DateAcademyTransferred = TransferTaskData.ConfirmDateAcademyTransferredDateTransferred;
 

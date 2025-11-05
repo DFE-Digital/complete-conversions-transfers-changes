@@ -30,7 +30,7 @@ public class UpdateSignificantDateCommandHandler(
         {
             throw new NotFoundException("User not found", "Id");
         }
-        
+
         var now = DateTime.UtcNow;
 
         var newDateHistory = new SignificantDateHistory
@@ -43,10 +43,10 @@ public class UpdateSignificantDateCommandHandler(
             PreviousDate = project.SignificantDate,
             RevisedDate = request.SignificantDate,
         };
-        
+
         List<SignificantDateHistoryReason> significantDateHistoryReasons = new List<SignificantDateHistoryReason>();
         List<Note> notes = new List<Note>();
-        
+
         foreach (var reason in request.ReasonNotes)
         {
             var historyReason = new SignificantDateHistoryReason();
@@ -70,7 +70,7 @@ public class UpdateSignificantDateCommandHandler(
             significantDateHistoryReasons.Add(historyReason);
             notes.Add(note);
         }
-        
+
         project.UpdateSignificantDate(request.SignificantDate);
         project.AddSignificantDateHistory(newDateHistory);
         await significantDateHistoryRepository.AddRangeAsync(significantDateHistoryReasons, cancellationToken);

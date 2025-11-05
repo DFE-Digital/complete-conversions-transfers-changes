@@ -2,7 +2,7 @@
 using Dfe.Complete.Utils;
 
 namespace Dfe.Complete.Domain.Tests.Enums
-{ 
+{
     public class NoteTaskIdentifierTests
     {
         [Theory]
@@ -16,12 +16,12 @@ namespace Dfe.Complete.Domain.Tests.Enums
         [InlineData(NoteTaskIdentifier.DeedOfVariation, "deed_of_variation", "Deed of variation")]
         [InlineData(NoteTaskIdentifier.RedactAndSendDocuments, "redact_and_send_documents", "Redact and send documents")]
         [InlineData(NoteTaskIdentifier.ConfirmProposedCapacityOfTheAcademy, "proposed_capacity_of_the_academy", "Confirm the proposed capacity of the academy")]
-        [InlineData(NoteTaskIdentifier.ConfirmTransferHasAuthorityToProceed, "conditions_met", "Confirm this transfer has authority to proceed")]   
+        [InlineData(NoteTaskIdentifier.ConfirmTransferHasAuthorityToProceed, "conditions_met", "Confirm this transfer has authority to proceed")]
         [InlineData(NoteTaskIdentifier.DeclarationOfExpenditureCertificate, "declaration_of_expenditure_certificate", "Receive declaration of expenditure certificate")]
         [InlineData(NoteTaskIdentifier.ConfirmAllConditionsMet, "conditions_met", "Confirm all conditions have been met")]
         [InlineData(NoteTaskIdentifier.ReceiveGrantPaymentCertificate, "receive_grant_payment_certificate", "Receive declaration of expenditure certificate")]
         [InlineData(NoteTaskIdentifier.ConfirmAcademyOpenedDate, "confirm_date_academy_opened", "Confirm the date the academy opened")]
-        [InlineData(NoteTaskIdentifier.ChurchSupplementalAgreement, "church_supplemental_agreement", "Church supplemental agreement")]        
+        [InlineData(NoteTaskIdentifier.ChurchSupplementalAgreement, "church_supplemental_agreement", "Church supplemental agreement")]
         [InlineData(NoteTaskIdentifier.CommercialTransferAgreement, "commercial_transfer_agreement", "Commercial transfer agreement")]
         [InlineData(NoteTaskIdentifier.MainContact, "main_contact", "Confirm the main contact")]
         [InlineData(NoteTaskIdentifier.MasterFundingAgreement, "master_funding_agreement", "Master funding agreement")]
@@ -59,7 +59,7 @@ namespace Dfe.Complete.Domain.Tests.Enums
             // Assert
             Assert.Equal(expectedDescription, description);
             Assert.Equal(expectedDisplayExpectation, displayDescription);
-        } 
-    } 
+        }
+    }
 }
 

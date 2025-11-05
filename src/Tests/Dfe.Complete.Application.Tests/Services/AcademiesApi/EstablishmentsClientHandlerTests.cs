@@ -11,7 +11,7 @@ namespace Dfe.Complete.Application.Tests.Services.AcademiesApi;
 public class EstablishmentsClientHandlerTests
 {
     private readonly MemoryDistributedCache mockCache = new MemoryDistributedCache(Options.Create(new MemoryDistributedCacheOptions()));
-  
+
     [Fact]
     public async Task Handle_ReturnsSuccess_WhenApiCallSucceeds()
     {
@@ -19,7 +19,7 @@ public class EstablishmentsClientHandlerTests
         var urn = "123456";
         var expectedEstablishment = new EstablishmentDto();
         var mockClient = new Mock<IEstablishmentsV4Client>();
-        var mockLogger = new Mock<ILogger<EstablishmentsClientHandler>>();               
+        var mockLogger = new Mock<ILogger<EstablishmentsClientHandler>>();
 
         mockClient
             .Setup(client => client.GetEstablishmentByUrnAsync(urn, It.IsAny<CancellationToken>()))
@@ -44,7 +44,7 @@ public class EstablishmentsClientHandlerTests
     {
         // Arrange
         var mockClient = new Mock<IEstablishmentsV4Client>();
-        var mockLogger = new Mock<ILogger<EstablishmentsClientHandler>>();        
+        var mockLogger = new Mock<ILogger<EstablishmentsClientHandler>>();
         var handler = new EstablishmentsClientHandler(mockClient.Object, mockLogger.Object, mockCache);
 
         var request = new GetEstablishmentByUrnRequest(urn);
@@ -64,7 +64,7 @@ public class EstablishmentsClientHandlerTests
         var academiesApiException = new AcademiesApiException(exceptionMessage, 500, string.Empty, null, null);
 
         var mockClient = new Mock<IEstablishmentsV4Client>();
-        var mockLogger = new Mock<ILogger<EstablishmentsClientHandler>>();       
+        var mockLogger = new Mock<ILogger<EstablishmentsClientHandler>>();
 
         mockClient
             .Setup(client => client.GetEstablishmentByUrnAsync(urn, It.IsAny<CancellationToken>()))
@@ -89,7 +89,7 @@ public class EstablishmentsClientHandlerTests
         var aggregateException = new AggregateException();
 
         var mockClient = new Mock<IEstablishmentsV4Client>();
-        var mockLogger = new Mock<ILogger<EstablishmentsClientHandler>>();        
+        var mockLogger = new Mock<ILogger<EstablishmentsClientHandler>>();
 
         mockClient
             .Setup(client => client.GetEstablishmentByUrnAsync(urn, It.IsAny<CancellationToken>()))
@@ -116,7 +116,7 @@ public class EstablishmentsClientHandlerTests
         var unhandledException = new Exception(exceptionMessage);
 
         var mockClient = new Mock<IEstablishmentsV4Client>();
-        var mockLogger = new Mock<ILogger<EstablishmentsClientHandler>>();        
+        var mockLogger = new Mock<ILogger<EstablishmentsClientHandler>>();
 
         mockClient
             .Setup(client => client.GetEstablishmentByUrnAsync(urn, It.IsAny<CancellationToken>()))

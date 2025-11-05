@@ -29,7 +29,7 @@ namespace Dfe.Complete.Tests.Models
                 HandoverMeeting = handoverMeeting,
                 HandoverNotApplicable = handoverNotApplicable
             };
-            var project = new ProjectDto(); 
+            var project = new ProjectDto();
             var result = ConversionTaskListViewModel.Create(model, project, null);
             Assert.Equal(taskListStatus, result.HandoverWithRegionalDeliveryOfficer);
         }
@@ -187,7 +187,7 @@ namespace Dfe.Complete.Tests.Models
         [Theory]
         [InlineData(null, null, null, null, null, null, TaskListStatus.NotStarted)]
         [InlineData(false, false, false, false, "", false, TaskListStatus.NotStarted)]
-        [InlineData(true, false, false, false, "", false, TaskListStatus.InProgress)] 
+        [InlineData(true, false, false, false, "", false, TaskListStatus.InProgress)]
         [InlineData(true, true, true, true, "", false, TaskListStatus.InProgress)]
         [InlineData(true, true, true, true, "GrantType", false, TaskListStatus.Completed)]
         [InlineData(false, false, false, false, "", true, TaskListStatus.NotApplicable)]
@@ -535,7 +535,7 @@ namespace Dfe.Complete.Tests.Models
 
             var project = new ProjectDto
             {
-                Id = new ProjectId(Guid.NewGuid()), 
+                Id = new ProjectId(Guid.NewGuid()),
                 MainContactId = string.IsNullOrWhiteSpace(mainContactId) ? null : new ContactId(Guid.Parse(mainContactId))
             };
 

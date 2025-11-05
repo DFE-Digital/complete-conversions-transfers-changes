@@ -1,5 +1,4 @@
-﻿using System.Security.Claims;
-using Dfe.Complete.Application.Common.Models;
+﻿using Dfe.Complete.Application.Common.Models;
 using Dfe.Complete.Application.Projects.Models;
 using Dfe.Complete.Application.Users.Queries.GetUser;
 using Dfe.Complete.Domain.Constants;
@@ -8,6 +7,7 @@ using Dfe.Complete.Extensions;
 using Dfe.Complete.Utils.Exceptions;
 using MediatR;
 using Moq;
+using System.Security.Claims;
 
 namespace Dfe.Complete.Tests.Extensions
 {

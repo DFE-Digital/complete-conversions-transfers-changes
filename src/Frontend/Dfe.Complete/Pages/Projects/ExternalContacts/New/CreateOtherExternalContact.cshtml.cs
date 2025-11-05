@@ -20,18 +20,18 @@ namespace Dfe.Complete.Pages.Projects.ExternalContacts.New;
 [Authorize(Policy = UserPolicyConstants.CanAddContact)]
 public class CreateOtherExternalContact(
     IValidator<OtherExternalContactInputModel> otherExternalContactInputModelValidator,
-    ITrustCache trustCacheService, IErrorService errorService, 
-    ISender sender, 
+    ITrustCache trustCacheService, IErrorService errorService,
+    ISender sender,
     ILogger<CreateOtherExternalContact> logger)
     : ExternalContactAddEditPageModel(trustCacheService, sender)
-{    
+{
     private readonly IErrorService errorService = errorService;
     private readonly ISender sender = sender;
     private readonly ILogger<CreateOtherExternalContact> logger = logger;
     private readonly IValidator<OtherExternalContactInputModel> validator = otherExternalContactInputModelValidator;
 
     public async override Task<IActionResult> OnGetAsync()
-    {   
+    {
         return await this.GetPage();
     }
 
@@ -45,7 +45,7 @@ public class CreateOtherExternalContact(
             AddValidationErrorsToModelState(validationResult);
             errorService.AddErrors(ModelState);
             return await this.GetPage();
-        }      
+        }
         else
         {
             try
@@ -95,5 +95,5 @@ public class CreateOtherExternalContact(
     {
         await base.OnGetAsync();
         return Page();
-    }    
+    }
 }

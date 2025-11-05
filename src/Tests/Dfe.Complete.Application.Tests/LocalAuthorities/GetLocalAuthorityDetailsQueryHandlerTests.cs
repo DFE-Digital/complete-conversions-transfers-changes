@@ -24,9 +24,9 @@ namespace Dfe.Complete.Application.Tests.LocalAuthorities
 
         [Fact]
         public async Task Handle_ShouldReturnLocalAuthorityDetailsSuccessfully()
-        { 
+        {
             var query = new GetLocalAuthorityDetailsQuery(new LocalAuthorityId(Guid.NewGuid()));
-            var localAuthorityDetails = new LocalAuthorityDetailsModel{ Contact = new ContactDetailsModel(), LocalAuthority = new LocalAuthorityDto() };
+            var localAuthorityDetails = new LocalAuthorityDetailsModel { Contact = new ContactDetailsModel(), LocalAuthority = new LocalAuthorityDto() };
 
             _mockLocalAuthoritiesQueryService
                 .Setup(service => service.GetLocalAuthorityDetailsAsync(query.LocalAuthorityId, It.IsAny<CancellationToken>()))
@@ -35,15 +35,15 @@ namespace Dfe.Complete.Application.Tests.LocalAuthorities
             var result = await _handler.Handle(query, CancellationToken.None);
 
             Assert.True(result.IsSuccess);
-            Assert.NotNull(result.Value);   
+            Assert.NotNull(result.Value);
             Assert.NotNull(result.Value.LocalAuthority);
-            Assert.NotNull(localAuthorityDetails.Contact); 
+            Assert.NotNull(localAuthorityDetails.Contact);
         }
 
         [Fact]
         public async Task Handle_ShouldReturnFailure_WhenLocalAuthorityDetailsNotFound()
         {
-            var query = new GetLocalAuthorityDetailsQuery(new LocalAuthorityId(Guid.NewGuid())); 
+            var query = new GetLocalAuthorityDetailsQuery(new LocalAuthorityId(Guid.NewGuid()));
 
             var result = await _handler.Handle(query, CancellationToken.None);
 

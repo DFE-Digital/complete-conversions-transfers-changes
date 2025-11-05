@@ -1,19 +1,18 @@
-﻿using System.Globalization;
-using System.Net;
-using System.Security.Claims;
-using AutoFixture;
+﻿using AutoFixture;
 using Dfe.AcademiesApi.Client.Contracts;
 using Dfe.Complete.Api.Tests.Integration.Customizations;
 using Dfe.Complete.Client.Contracts;
 using Dfe.Complete.Infrastructure.Database;
 using Dfe.Complete.Tests.Common.Constants;
-using Dfe.Complete.Tests.Common.Customizations.Commands;
 using Dfe.Complete.Tests.Common.Customizations.Models;
 using GovUK.Dfe.CoreLibs.Testing.AutoFixture.Attributes;
 using GovUK.Dfe.CoreLibs.Testing.AutoFixture.Customizations;
 using GovUK.Dfe.CoreLibs.Testing.Mocks.WebApplicationFactory;
 using GovUK.Dfe.CoreLibs.Testing.Mocks.WireMock;
 using Microsoft.EntityFrameworkCore;
+using System.Globalization;
+using System.Net;
+using System.Security.Claims;
 using GiasEstablishment = Dfe.Complete.Domain.Entities.GiasEstablishment;
 
 namespace Dfe.Complete.Api.Tests.Integration.Controllers.ProjectsController;

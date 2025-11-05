@@ -3,9 +3,9 @@ using Dfe.Complete.Infrastructure.Gateways;
 using Dfe.Complete.Models.ExternalContact;
 using Dfe.Complete.Services;
 using Dfe.Complete.Services.Interfaces;
+using Dfe.Complete.Services.Project;
 using Dfe.Complete.Validators;
 using FluentValidation;
-using Dfe.Complete.Services.Project;
 
 namespace Dfe.Complete.StartupConfiguration
 {

@@ -10,7 +10,7 @@ namespace Dfe.Complete.Pages.Projects.List.AllProjectsInTrust
     {
         [BindProperty(SupportsGet = true, Name = "ukprn")]
         public string Ukprn { get; set; }
-        
+
         [BindProperty(SupportsGet = true, Name = "reference")]
         public string Reference { get; set; }
 
@@ -20,13 +20,13 @@ namespace Dfe.Complete.Pages.Projects.List.AllProjectsInTrust
         {
             bool isFormAMat = !string.IsNullOrEmpty(Reference);
             string identifier = isFormAMat ? Reference : Ukprn;
-            
+
             var listAllProjectsInTrustQuery = new ListAllProjectsInTrustQuery(identifier, isFormAMat) { Page = PageNumber - 1, Count = PageSize };
 
             var trustResponse = await sender.Send(listAllProjectsInTrustQuery);
 
             Trust = trustResponse.Value;
-            
+
             var path = isFormAMat ? "reference" : "ukprn";
 
             Pagination = new PaginationModel($"/projects/all/trusts/{path}/{identifier}", PageNumber, trustResponse.ItemCount, PageSize);

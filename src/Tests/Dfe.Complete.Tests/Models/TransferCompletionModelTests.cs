@@ -10,9 +10,9 @@ namespace Dfe.Complete.Tests.Models
         private readonly TransferCompletionModel _testClass;
 
         public TransferCompletionModelTests()
-        {   
+        {
             _testClass = new();
-        }       
+        }
 
         [Theory]
         [InlineData(TaskListStatus.InProgress, TaskListStatus.InProgress, TaskListStatus.InProgress, true)]
@@ -53,7 +53,7 @@ namespace Dfe.Complete.Tests.Models
             Assert.NotEmpty(result);
         }
 
-        
+
         [Theory]
         [InlineData(true, true)]
         [InlineData(false, false)]
@@ -73,6 +73,6 @@ namespace Dfe.Complete.Tests.Models
 
             // Assert            
             Assert.Equal(expected, result.Count > 0);
-        }       
+        }
     }
 }

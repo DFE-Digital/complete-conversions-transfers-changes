@@ -39,7 +39,7 @@ namespace Dfe.Complete.Application.Tests.CommandHandlers.LocalAuthority
 
             var localAuthority = Domain.Entities.LocalAuthority.Create(
                 command.Id, "Name", "Code", new AddressDetails("Address1", "Address2", "Address3",
-                "AddressTown", "AddressCounty", "AddressPostcode"), DateTime.UtcNow); 
+                "AddressTown", "AddressCounty", "AddressPostcode"), DateTime.UtcNow);
 
             _mockLocalAuthorityRepository.Setup(repo => repo.FindAsync(It.IsAny<Expression<Func<Domain.Entities.LocalAuthority, bool>>>(), It.IsAny<CancellationToken>()))
                 .ReturnsAsync(localAuthority);
@@ -110,13 +110,13 @@ namespace Dfe.Complete.Application.Tests.CommandHandlers.LocalAuthority
                 command.Id, "Name", "Code", new AddressDetails("Address1", "Address2", "Address3",
                 "AddressTown", "AddressCounty", "AddressPostcode"), DateTime.UtcNow);
             var contact = Domain.Entities.Contact.Create(
-                command.ContactId!, command.Title!, command.ContactName!, command.Email, command.Phone, localAuthority.Id,  DateTime.UtcNow);
+                command.ContactId!, command.Title!, command.ContactName!, command.Email, command.Phone, localAuthority.Id, DateTime.UtcNow);
 
             _mockLocalAuthorityRepository.Setup(repo => repo.FindAsync(It.IsAny<Expression<Func<Domain.Entities.LocalAuthority, bool>>>(), It.IsAny<CancellationToken>()))
                 .ReturnsAsync(localAuthority);
 
             _mockLocalAuthorityRepository.Setup(repo => repo.UpdateAsync(It.IsAny<Domain.Entities.LocalAuthority>(), It.IsAny<CancellationToken>()))
-                           .ReturnsAsync(localAuthority); 
+                           .ReturnsAsync(localAuthority);
 
             _mockContactRepository.Setup(repo => repo.AddAsync(It.IsAny<Domain.Entities.Contact>(), It.IsAny<CancellationToken>()))
                 .ReturnsAsync(contact);
@@ -167,7 +167,7 @@ namespace Dfe.Complete.Application.Tests.CommandHandlers.LocalAuthority
                 .ReturnsAsync(localAuthority);
 
             _mockLocalAuthorityRepository.Setup(repo => repo.ExistsAsync(It.IsAny<Expression<Func<Domain.Entities.LocalAuthority, bool>>>(), It.IsAny<CancellationToken>()))
-               .ReturnsAsync(true); 
+               .ReturnsAsync(true);
 
             _mockUnitOfWork.Setup(uow => uow.CommitAsync()).Returns(Task.CompletedTask);
 

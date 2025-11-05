@@ -1,10 +1,10 @@
-using Dfe.Complete.Tests.Common.Customizations.Behaviours;
-using GovUK.Dfe.CoreLibs.Testing.AutoFixture.Attributes;
-using Dfe.Complete.Tests.Common.Customizations.Models;
-using GovUK.Dfe.CoreLibs.Testing.AutoFixture.Customizations;
 using Dfe.Complete.Domain.Entities;
 using Dfe.Complete.Domain.ValueObjects;
+using Dfe.Complete.Tests.Common.Customizations.Behaviours;
+using Dfe.Complete.Tests.Common.Customizations.Models;
 using Dfe.Complete.Utils.Exceptions;
+using GovUK.Dfe.CoreLibs.Testing.AutoFixture.Attributes;
+using GovUK.Dfe.CoreLibs.Testing.AutoFixture.Customizations;
 using Project = Dfe.Complete.Domain.Entities.Project;
 
 namespace Dfe.Complete.Domain.Tests.Aggregates
@@ -91,7 +91,7 @@ namespace Dfe.Complete.Domain.Tests.Aggregates
                     projCustomisation.AssignedToId,
                     projCustomisation.AssignedAt,
                     projCustomisation.NewTrustName,
-                    projCustomisation.NewTrustReferenceNumber, 
+                    projCustomisation.NewTrustReferenceNumber,
                     projCustomisation.LocalAuthorityId.Value
                 ));
 
@@ -174,7 +174,7 @@ namespace Dfe.Complete.Domain.Tests.Aggregates
                 projectCustomisation.AssignedToId,
                 projectCustomisation.AssignedAt,
                 projectCustomisation.NewTrustName,
-                projectCustomisation.NewTrustReferenceNumber, 
+                projectCustomisation.NewTrustReferenceNumber,
                 projectCustomisation.LocalAuthorityId.Value
             );
 
@@ -244,7 +244,7 @@ namespace Dfe.Complete.Domain.Tests.Aggregates
             Assert.Equal(projCustomisation.GroupId, project.GroupId);
             Assert.Equal(projCustomisation.RegionalDeliveryOfficerId, project.RegionalDeliveryOfficerId);
             Assert.Equal(projCustomisation.LocalAuthorityId, project.LocalAuthorityId);
-            
+
         }
 
         [Theory]
@@ -347,12 +347,12 @@ namespace Dfe.Complete.Domain.Tests.Aggregates
                 ProjectId = projectCustomisation.Id,
                 Name = "Test Contact"
             };
-            
+
             projectCustomisation.Contacts.Add(contact);
-            
+
             // Act
             projectCustomisation.RemoveContact(contactId);
-            
+
             // Assert
             Assert.DoesNotContain(contact, projectCustomisation.Contacts);
         }
@@ -364,11 +364,11 @@ namespace Dfe.Complete.Domain.Tests.Aggregates
         {
             // Arrange
             var nonExistentContactId = new ContactId(Guid.NewGuid());
-            
+
             // Act & Assert
-            var exception = Assert.Throws<NotFoundException>(() => 
+            var exception = Assert.Throws<NotFoundException>(() =>
                 projectCustomisation.RemoveContact(nonExistentContactId));
-            
+
             Assert.Contains($"No contact found with Id {nonExistentContactId.Value}", exception.Message);
         }
 
@@ -384,20 +384,20 @@ namespace Dfe.Complete.Domain.Tests.Aggregates
                 ProjectId = projectCustomisation.Id,
                 Name = "Contact 1"
             };
-            
+
             var contact2 = new Contact
             {
                 Id = new ContactId(Guid.NewGuid()),
                 ProjectId = projectCustomisation.Id,
                 Name = "Contact 2"
             };
-            
+
             projectCustomisation.Contacts.Add(contact1);
             projectCustomisation.Contacts.Add(contact2);
-            
+
             // Act
             projectCustomisation.RemoveAllContacts();
-            
+
             // Assert
             Assert.Empty(projectCustomisation.Contacts);
         }
@@ -409,10 +409,10 @@ namespace Dfe.Complete.Domain.Tests.Aggregates
         {
             // Arrange
             projectCustomisation.Contacts.Clear();
-            
+
             // Act
             projectCustomisation.RemoveAllContacts();
-            
+
             // Assert
             Assert.Empty(projectCustomisation.Contacts);
         }
@@ -431,12 +431,12 @@ namespace Dfe.Complete.Domain.Tests.Aggregates
                 ProjectId = projectCustomisation.Id,
                 Body = "Test Note"
             };
-            
+
             projectCustomisation.Notes.Add(note);
-            
+
             // Act
             projectCustomisation.RemoveNote(noteId);
-            
+
             // Assert
             Assert.DoesNotContain(note, projectCustomisation.Notes);
         }
@@ -448,11 +448,11 @@ namespace Dfe.Complete.Domain.Tests.Aggregates
         {
             // Arrange
             var nonExistentNoteId = new NoteId(Guid.NewGuid());
-            
+
             // Act & Assert
-            var exception = Assert.Throws<NotFoundException>(() => 
+            var exception = Assert.Throws<NotFoundException>(() =>
                 projectCustomisation.RemoveNote(nonExistentNoteId));
-            
+
             Assert.Contains($"No note found with Id {nonExistentNoteId.Value}", exception.Message);
         }
 
@@ -468,20 +468,20 @@ namespace Dfe.Complete.Domain.Tests.Aggregates
                 ProjectId = projectCustomisation.Id,
                 Body = "Note 1"
             };
-            
+
             var note2 = new Note
             {
                 Id = new NoteId(Guid.NewGuid()),
                 ProjectId = projectCustomisation.Id,
                 Body = "Note 2"
             };
-            
+
             projectCustomisation.Notes.Add(note1);
             projectCustomisation.Notes.Add(note2);
-            
+
             // Act
             projectCustomisation.RemoveAllNotes();
-            
+
             // Assert
             Assert.Empty(projectCustomisation.Notes);
         }
@@ -493,10 +493,10 @@ namespace Dfe.Complete.Domain.Tests.Aggregates
         {
             // Arrange
             projectCustomisation.Notes.Clear();
-            
+
             // Act
             projectCustomisation.RemoveAllNotes();
-            
+
             // Assert
             Assert.Empty(projectCustomisation.Notes);
         }

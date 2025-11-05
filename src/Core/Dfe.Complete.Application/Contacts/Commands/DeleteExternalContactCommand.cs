@@ -29,7 +29,7 @@ public class DeleteExternalContactCommandHandler(
     public async Task<Result<bool>> Handle(DeleteExternalContactCommand request, CancellationToken cancellationToken)
     {
         try
-        {   
+        {
             await unitOfWork.BeginTransactionAsync();
 
             var contactEntity = await new ContactIdQuery(request.ContactId)

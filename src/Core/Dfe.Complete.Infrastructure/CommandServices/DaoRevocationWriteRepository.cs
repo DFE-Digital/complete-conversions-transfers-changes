@@ -7,7 +7,7 @@ namespace Dfe.Complete.Infrastructure.CommandServices
     internal class DaoRevocationWriteRepository(CompleteContext context) : IDaoRevocationWriteRepository
     {
         private readonly CompleteContext _context = context;
-         
+
         public async Task CreateDaoRevocationAsync(DaoRevocation daoRevocation, CancellationToken cancellationToken)
         {
             await _context.DaoRevocations.AddAsync(daoRevocation, cancellationToken);

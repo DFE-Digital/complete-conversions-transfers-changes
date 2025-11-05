@@ -1,16 +1,17 @@
-using System.Net.Http.Headers;
-using System.Security.Claims;
 using AutoFixture;
 using GovUK.Dfe.CoreLibs.Testing.Mocks.Authentication;
 using GovUK.Dfe.CoreLibs.Testing.Mocks.WebApplicationFactory;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using System.Net.Http.Headers;
+using System.Security.Claims;
 
 namespace Dfe.Complete.Api.Tests.Integration.Customizations
 {
     public class CustomWebApplicationFactoryCustomization<TProgram> : ICustomization
-        where TProgram : class {
+        where TProgram : class
+    {
 
         public void Customize(IFixture fixture)
         {

@@ -23,23 +23,23 @@ namespace Dfe.Complete.Infrastructure.QueryServices.CsvExport
                            && project.AssignedTo != null
                         join establishment in context.GiasEstablishments on project.Urn equals establishment.Urn
                         join academy in context.GiasEstablishments on project.AcademyUrn equals academy.Urn into academyJoin
-                            from academy in academyJoin.DefaultIfEmpty() 
+                        from academy in academyJoin.DefaultIfEmpty()
                         join localAuthority in context.LocalAuthorities on establishment.LocalAuthorityCode equals localAuthority.Code
                         join taskData in context.ConversionTasksData on project.TasksDataId equals taskData.Id
                         join keyContact in context.KeyContacts on project.Id equals keyContact.ProjectId into keyContactJoin
-                            from keyContact in keyContactJoin.DefaultIfEmpty()
+                        from keyContact in keyContactJoin.DefaultIfEmpty()
                         join headteacher in context.Contacts on keyContact.HeadteacherId equals headteacher.Id into headteacherJoin
-                            from headteacher in headteacherJoin.DefaultIfEmpty()
+                        from headteacher in headteacherJoin.DefaultIfEmpty()
                         join mainContact in context.Contacts on project.MainContactId equals mainContact.Id into mainContactJoin
-                            from mainContact in mainContactJoin.DefaultIfEmpty()
+                        from mainContact in mainContactJoin.DefaultIfEmpty()
                         join laContact in context.Contacts on localAuthority.Id equals laContact.LocalAuthorityId into laContactJoin
-                            from laContact in laContactJoin.DefaultIfEmpty()
+                        from laContact in laContactJoin.DefaultIfEmpty()
                         join incomingTrustContact in context.Contacts on project.IncomingTrustMainContactId equals incomingTrustContact.Id into incomingTrustContactJoin
-                            from incomingTrustContact in incomingTrustContactJoin.DefaultIfEmpty()
+                        from incomingTrustContact in incomingTrustContactJoin.DefaultIfEmpty()
                         join outgoingTrustContact in context.Contacts on project.OutgoingTrustMainContactId equals outgoingTrustContact.Id into outgoingTrustContactJoin
-                            from outgoingTrustContact in outgoingTrustContactJoin.DefaultIfEmpty()
+                        from outgoingTrustContact in outgoingTrustContactJoin.DefaultIfEmpty()
                         join incomingTrustCeo in context.Contacts on keyContact.IncomingTrustCeoId equals incomingTrustCeo.Id into incomingTrustCeoJoin
-                            from incomingTrustCeo in incomingTrustCeoJoin.DefaultIfEmpty()
+                        from incomingTrustCeo in incomingTrustCeoJoin.DefaultIfEmpty()
                         join solicitor in context.Contacts
                             on new { ProjectId = project.Id, Category = (int?)ContactCategory.Solicitor }
                             equals new { ProjectId = solicitor.ProjectId, Category = (int?)solicitor.Category }

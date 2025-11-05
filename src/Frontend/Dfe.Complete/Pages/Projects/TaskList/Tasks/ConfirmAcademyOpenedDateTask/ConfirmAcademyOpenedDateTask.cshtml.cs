@@ -28,7 +28,7 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.ConfirmAcademyOpenedDateTas
         }
         public async Task<IActionResult> OnPost()
         {
-            if(OpenedDate?.ToDateTime(new TimeOnly()) > DateTime.Today)
+            if (OpenedDate?.ToDateTime(new TimeOnly()) > DateTime.Today)
             {
                 ModelState.AddModelError(nameof(OpenedDate), string.Format(ValidationConstants.DateInPast, "Opened academy"));
             }

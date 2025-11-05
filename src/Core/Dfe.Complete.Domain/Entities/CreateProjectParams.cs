@@ -1,5 +1,5 @@
-using Dfe.Complete.Domain.ValueObjects;
 using Dfe.Complete.Domain.Enums;
+using Dfe.Complete.Domain.ValueObjects;
 
 namespace Dfe.Complete.Domain.Entities;
 

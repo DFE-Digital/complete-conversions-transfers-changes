@@ -24,7 +24,7 @@ namespace Dfe.Complete.Application.Projects.Commands.UpdateProject
         {
             var project = await ProjectRepository.Query()
                 .FirstOrDefaultAsync(x => x.Id == request.ProjectId, cancellationToken);
-            
+
             if (project == null)
                 return;
 

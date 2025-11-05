@@ -21,7 +21,7 @@ namespace Dfe.Complete.Pages.Projects.Decision.RecordDaoRevocation.Date
 
             if (decision.ReasonNotes?.Count == 0)
                 return RedirectToDaoRevocationPage();
-             
+
             Date = decision.DecisionDate;
             return ReturnPage(decision);
         }
@@ -32,7 +32,7 @@ namespace Dfe.Complete.Pages.Projects.Decision.RecordDaoRevocation.Date
             {
                 errorService.AddErrors(ModelState);
                 return Page();
-            } 
+            }
 
             var command = await GetCachedDecisionAsync();
 

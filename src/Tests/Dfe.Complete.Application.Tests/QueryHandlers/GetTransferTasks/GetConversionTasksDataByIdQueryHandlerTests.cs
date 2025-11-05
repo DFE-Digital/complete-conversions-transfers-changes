@@ -48,7 +48,7 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.GetTransferTasks
             // Assert
             Assert.True(result.IsSuccess);
             Assert.True(result.Value?.Id == command.Id);
-        } 
+        }
 
         [Theory]
         [CustomAutoData(typeof(DateOnlyCustomization))]

@@ -1,10 +1,10 @@
-using MediatR;
-using Dfe.Complete.Domain.ValueObjects;
-using Dfe.Complete.Domain.Interfaces.Repositories;
-using Dfe.Complete.Domain.Entities;
-using Dfe.Complete.Application.Common.Models;
 using AutoMapper;
 using Dfe.AcademiesApi.Client.Contracts;
+using Dfe.Complete.Application.Common.Models;
+using Dfe.Complete.Domain.Entities;
+using Dfe.Complete.Domain.Interfaces.Repositories;
+using Dfe.Complete.Domain.ValueObjects;
+using MediatR;
 
 namespace Dfe.Complete.Application.Projects.Queries.GetEstablishment
 {

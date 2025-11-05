@@ -19,9 +19,9 @@ namespace Dfe.Complete.Application.Projects.Commands.UpdateProject
             CancellationToken cancellationToken)
         {
             var project = await projectReadRepository.ProjectsNoIncludes
-                    .FirstOrDefaultAsync(x => x.Id == request.ProjectId, cancellationToken) 
+                    .FirstOrDefaultAsync(x => x.Id == request.ProjectId, cancellationToken)
                     ?? throw new NotFoundException($"Project with {request.ProjectId} is not found.", "ProjectId");
-              
+
             project!.UpdatedAt = DateTime.UtcNow;
             project!.State = ProjectState.Deleted;
 

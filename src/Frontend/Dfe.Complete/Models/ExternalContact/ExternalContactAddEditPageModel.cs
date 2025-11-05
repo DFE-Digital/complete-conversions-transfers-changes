@@ -16,7 +16,7 @@ public class ExternalContactAddEditPageModel(ITrustCache trustCacheService, ISen
     public OtherExternalContactInputModel ExternalContactInput { get; set; } = new();
 
     public async virtual Task<IActionResult> OnGetAsync()
-    {   
+    {
         return await this.GetPage();
     }
 
@@ -55,7 +55,7 @@ public class ExternalContactAddEditPageModel(ITrustCache trustCacheService, ISen
             return null;
 
         var trust = await trustCacheService.GetTrustAsync(Project.IncomingTrustUkprn);
-        return trust?.Name?.ToTitleCase();        
+        return trust?.Name?.ToTitleCase();
     }
 
     private async Task<string?> GetOutgoingTrustNameAsync()
@@ -64,7 +64,7 @@ public class ExternalContactAddEditPageModel(ITrustCache trustCacheService, ISen
             return null;
 
         var trust = await trustCacheService.GetTrustAsync(Project.OutgoingTrustUkprn);
-        return trust?.Name?.ToTitleCase();        
+        return trust?.Name?.ToTitleCase();
     }
 
     private async Task<string?> GetLocalAuthorityNameAsync()
@@ -87,10 +87,10 @@ public class ExternalContactAddEditPageModel(ITrustCache trustCacheService, ISen
         );
 
         return laResult.IsSuccess ? laResult.Value?.Name ?? null : null;
-    }   
+    }
 
     private async Task<IActionResult> GetPage()
-    {   
+    {
         await this.GetCurrentProjectAsync();
         if (this.Project == null)
         {
@@ -120,5 +120,5 @@ public class ExternalContactAddEditPageModel(ITrustCache trustCacheService, ISen
         }
 
         this.ExternalContactInput.ContactTypeRadioOptions = contactTypeRadioOptions.ToArray();
-    }   
+    }
 }

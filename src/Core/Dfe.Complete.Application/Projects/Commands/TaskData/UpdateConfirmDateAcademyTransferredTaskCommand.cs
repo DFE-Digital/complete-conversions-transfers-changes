@@ -26,7 +26,7 @@ namespace Dfe.Complete.Application.Projects.Commands.TaskData
 
             tasksData.ConfirmDateAcademyTransferredDateTransferred = request.DateAcademyTransferred;
 
-            await taskDataWriteRepository.UpdateTransferAsync(tasksData, DateTime.UtcNow, cancellationToken); 
+            await taskDataWriteRepository.UpdateTransferAsync(tasksData, DateTime.UtcNow, cancellationToken);
             return Result<bool>.Success(true);
         }
     }

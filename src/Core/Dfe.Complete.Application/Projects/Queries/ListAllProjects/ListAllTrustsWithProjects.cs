@@ -24,7 +24,7 @@ namespace Dfe.Complete.Application.Projects.Queries.ListAllProjects
             {
                 var baseQ = new StateQuery([ProjectState.Active])
                     .Apply(repo.Projects.AsNoTracking());
-                
+
                 var ukprnGroups = await baseQ.GroupBy(p => p.IncomingTrustUkprn)
                     .Where(p => p.Key != null)
                     .Select(g => new
@@ -34,7 +34,7 @@ namespace Dfe.Complete.Application.Projects.Queries.ListAllProjects
                         Transfers = g.Count(p => p.Type == ProjectType.Transfer)
                     })
                     .ToListAsync(cancellationToken);
-                
+
                 var trnGroups = await baseQ.Where(p => p.IncomingTrustUkprn == null && !string.IsNullOrEmpty(
                         p.NewTrustReferenceNumber) && !string.IsNullOrEmpty(p.NewTrustName))
                     .GroupBy(p => new { NewTrustReferenceNumber = p.NewTrustReferenceNumber!, NewTrustName = p.NewTrustName! })

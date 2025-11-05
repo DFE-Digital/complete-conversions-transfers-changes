@@ -51,7 +51,7 @@ namespace Dfe.Complete.Api.Tests.Integration.Controllers.TasksDataController
             Assert.True(existingTaskData.RequestNewUrnAndRecordComplete);
             Assert.True(existingTaskData.RequestNewUrnAndRecordReceive);
             Assert.True(existingTaskData.RequestNewUrnAndRecordGive);
-            
+
         }
 
         [Theory]

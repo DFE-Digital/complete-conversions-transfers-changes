@@ -26,11 +26,11 @@ namespace Dfe.Complete.Application.LocalAuthorities.Commands
                 await unitOfWork.BeginTransactionAsync();
                 var project = await projectRepository.FindAsync(x => x.LocalAuthorityId == request.Id, cancellationToken);
                 if (project != null)
-                { 
+                {
                     throw new DependencyException(ErrorMessagesConstants.CannotDeleteLocalAuthorityAsLinkedToProject);
                 }
 
-                var localAuthority = await localAuthorityRepository.FindAsync(request.Id, cancellationToken) ?? throw new NotFoundException(string.Format(ErrorMessagesConstants.NotFoundLocalAuthority, request.Id)); 
+                var localAuthority = await localAuthorityRepository.FindAsync(request.Id, cancellationToken) ?? throw new NotFoundException(string.Format(ErrorMessagesConstants.NotFoundLocalAuthority, request.Id));
                 await localAuthorityRepository.RemoveAsync(localAuthority, cancellationToken);
 
                 if (request.ContactId != null)
