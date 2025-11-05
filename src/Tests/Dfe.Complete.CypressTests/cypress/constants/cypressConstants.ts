@@ -37,12 +37,6 @@ export const regionalCaseworkerTeamLeaderUser = new TestUser(
     "TEST-AD-ID-RCS-TL",
     UserRoles.rcsTeamLead,
 );
-export const businessSupportUser = new TestUser(
-    "B62A3AC5-2C54-4E85-8A83-DE9199D0BCCE",
-    "cypress business-support",
-    "TEST-AD-ID-BS",
-    UserRoles.dataConsumer, // business support to be removed
-);
 export const dataConsumerUser = new TestUser(
     "9353003F-3359-4684-A696-5A96CDAB43E2",
     "cypress data-consumers",
