@@ -28,10 +28,11 @@ Security in case of vulnerabilities.
 - Added MAT Conversion creation end point for prepare to complete 
 - Added `Check and clear Form M` task for transfer projects.
 
-### Deprecated
-- create conversion project end point not in use due to in-app project creations being a workaround 
-- create MAT conversion project end point not in use due to in-app project creations being a workaround 
-- create transfer project end point not in use due to in-app project creations being a workaround 
+### Removed
+- create conversion project end point deleted due to in-app project creations being a workaround 
+- create MAT conversion project end point deleted due to in-app project creations being a workaround 
+- create transfer project end point deleted due to in-app project creations being a workaround 
+- create MAT transfer project end point deleted due to in-app project creations being a workaround 
 
 See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-10-31.1038...main) for everything awaiting release
 

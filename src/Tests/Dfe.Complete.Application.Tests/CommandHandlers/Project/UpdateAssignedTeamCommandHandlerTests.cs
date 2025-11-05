@@ -24,31 +24,30 @@ public class UpdateAssignedTeamCommandHandlerTests
         // Arrange
         var now = DateTime.UtcNow;
         
-        var sourceProject = Domain.Entities.Project.CreateConversionProject(
-            command.ProjectId,
-            new Urn(123456),
-            now,
-            now,
-            Domain.Enums.TaskType.Conversion,
-            Domain.Enums.ProjectType.Conversion,
-            Guid.NewGuid(),
-            DateOnly.MinValue,
-            true,
-            new Domain.ValueObjects.Ukprn(2),
-            Region.London,
-            true,
-            true,
-            DateOnly.MinValue,
-            "",
-            "",
-            "",
-            null,
-            default,
-            new UserId(Guid.NewGuid()),
-            null,
-            null,
-            null,
-            Guid.NewGuid());
+        var sourceProject = new Domain.Entities.Project() {
+            Id = command.ProjectId,
+            Urn = new Urn(123456),
+            CreatedAt = now,
+            UpdatedAt = now,
+            TasksDataType = TaskType.Conversion,
+            Type = ProjectType.Conversion,
+            TasksDataId = new TaskDataId(Guid.NewGuid()),
+            SignificantDate = DateOnly.MinValue,
+            SignificantDateProvisional = true,
+            IncomingTrustUkprn = new Ukprn(2),
+            Region = Region.London,
+            TwoRequiresImprovement = true,
+            DirectiveAcademyOrder = true,
+            AdvisoryBoardDate = DateOnly.MinValue,
+            AdvisoryBoardConditions = "",
+            EstablishmentSharepointLink = "",
+            IncomingTrustSharepointLink = "",
+            GroupId = null,
+            RegionalDeliveryOfficerId = new UserId(Guid.NewGuid()),
+            AssignedToId = null,
+            AssignedAt = null,
+            LocalAuthorityId = new LocalAuthorityId(Guid.NewGuid())
+        };
 
         mockProjectRepository.FindAsync(Arg.Any<Expression<Func<Domain.Entities.Project, bool>>>()).Returns(sourceProject);
 

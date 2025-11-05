@@ -210,242 +210,128 @@ namespace Dfe.Complete.Domain.Tests.Aggregates
         [Theory]
         [CustomAutoData(typeof(ProjectCustomization), typeof(DateOnlyCustomization),
             typeof(IgnoreVirtualMembersCustomisation))]
-        public void Factory_CreateConversionProject_ShouldCorrectlySetFields(Project projCustomisation)
+        public void Factory_CreateHandoverConversionProject_ShouldCorrectlySetFields(Project projCustomisation)
         {
             // Arrange
-            var handoverComment = "handover comment";
-
-            // Act
-            var project = Project.CreateConversionProject(
+            var parameters = new CreateHandoverConversionProjectParams(
                 projCustomisation.Id,
                 projCustomisation.Urn!,
-                projCustomisation.CreatedAt,
-                projCustomisation.UpdatedAt,
-                projCustomisation.TasksDataType!.Value,
-                projCustomisation.Type!.Value,
                 projCustomisation.TasksDataId!.Value,
                 projCustomisation.SignificantDate!.Value,
-                projCustomisation.SignificantDateProvisional!.Value,
-                projCustomisation.IncomingTrustUkprn, // The factory requires non-null
+                projCustomisation.IncomingTrustUkprn!,
                 projCustomisation.Region,
-                projCustomisation.TwoRequiresImprovement!.Value,
                 projCustomisation.DirectiveAcademyOrder!.Value,
                 projCustomisation.AdvisoryBoardDate!.Value,
                 projCustomisation.AdvisoryBoardConditions!,
-                projCustomisation.EstablishmentSharepointLink!,
-                projCustomisation.IncomingTrustSharepointLink!,
                 projCustomisation.GroupId,
-                projCustomisation.Team!.Value,
                 projCustomisation.RegionalDeliveryOfficerId,
-                projCustomisation.AssignedToId,
-                projCustomisation.AssignedAt,
-                handoverComment, 
                 projCustomisation.LocalAuthorityId.Value
             );
 
+            // Act
+            var project = Project.CreateHandoverConversionProject(parameters);
+
             // Assert
             Assert.Equal(projCustomisation.Urn, project.Urn);
-            Assert.Equal(projCustomisation.CreatedAt, project.CreatedAt);
-            Assert.Equal(projCustomisation.UpdatedAt, project.UpdatedAt);
-            Assert.Equal(projCustomisation.TasksDataType, project.TasksDataType);
-            Assert.Equal(projCustomisation.Type, project.Type);
             Assert.Equal(projCustomisation.TasksDataId, project.TasksDataId);
             Assert.Equal(projCustomisation.SignificantDate, project.SignificantDate);
-            Assert.Equal(projCustomisation.SignificantDateProvisional, project.SignificantDateProvisional);
+            Assert.True(project.SignificantDateProvisional);
             Assert.Equal(projCustomisation.IncomingTrustUkprn, project.IncomingTrustUkprn);
             Assert.Equal(projCustomisation.Region, project.Region);
-            Assert.Equal(projCustomisation.TwoRequiresImprovement, project.TwoRequiresImprovement);
             Assert.Equal(projCustomisation.DirectiveAcademyOrder, project.DirectiveAcademyOrder);
             Assert.Equal(projCustomisation.AdvisoryBoardDate, project.AdvisoryBoardDate);
             Assert.Equal(projCustomisation.AdvisoryBoardConditions, project.AdvisoryBoardConditions);
-            Assert.Equal(projCustomisation.EstablishmentSharepointLink, project.EstablishmentSharepointLink);
-            Assert.Equal(projCustomisation.IncomingTrustSharepointLink, project.IncomingTrustSharepointLink);
-            Assert.Equal(handoverComment, project.Notes.FirstOrDefault()?.Body);
+            Assert.Equal(projCustomisation.GroupId, project.GroupId);
+            Assert.Equal(projCustomisation.RegionalDeliveryOfficerId, project.RegionalDeliveryOfficerId);
             Assert.Equal(projCustomisation.LocalAuthorityId, project.LocalAuthorityId);
             
         }
 
         [Theory]
         [CustomAutoData(typeof(ProjectCustomization), typeof(DateOnlyCustomization), typeof(IgnoreVirtualMembersCustomisation))]
-        public void Factory_CreateMatConversionProject_ShouldCorrectlySetFields(Project projectCustomisation)
+        public void Factory_CreateHandoverConversionMATProject_ShouldCorrectlySetFields(Project projectCustomisation)
         {
             // Arrange
-            var handoverComment = "MAT Conversion handover comment";
-
-            // Act
-            var project = Project.CreateMatConversionProject(
+            var parameters = new CreateHandoverConversionMatProjectParams(
                 projectCustomisation.Id,
-                projectCustomisation.Urn!, 
-                projectCustomisation.CreatedAt,
-                projectCustomisation.UpdatedAt,
-                projectCustomisation.TasksDataType!.Value, 
-                projectCustomisation.Type!.Value,
+                projectCustomisation.Urn!,
                 projectCustomisation.TasksDataId!.Value,
-                projectCustomisation.Region, 
-                projectCustomisation.Team!.Value,
-                projectCustomisation.RegionalDeliveryOfficerId,
-                projectCustomisation.AssignedToId,
-                projectCustomisation.AssignedAt,
-                projectCustomisation.EstablishmentSharepointLink!,
-                projectCustomisation.IncomingTrustSharepointLink!,
+                projectCustomisation.SignificantDate!.Value,
+                projectCustomisation.Region,
+                projectCustomisation.DirectiveAcademyOrder!.Value,
                 projectCustomisation.AdvisoryBoardDate!.Value,
                 projectCustomisation.AdvisoryBoardConditions!,
-                projectCustomisation.SignificantDate!.Value,
-                projectCustomisation.SignificantDateProvisional!.Value,
-                projectCustomisation.TwoRequiresImprovement!.Value,
-                projectCustomisation.NewTrustName!,
+                projectCustomisation.RegionalDeliveryOfficerId,
+                projectCustomisation.LocalAuthorityId.Value,
                 projectCustomisation.NewTrustReferenceNumber!,
-                projectCustomisation.DirectiveAcademyOrder!.Value,
-                handoverComment, projectCustomisation.LocalAuthorityId.Value
+                projectCustomisation.NewTrustName!
             );
+
+            // Act
+            var project = Project.CreateHandoverConversionMATProject(parameters);
 
             // Assert
             Assert.Equal(projectCustomisation.Urn, project.Urn);
-            Assert.Equal(projectCustomisation.CreatedAt, project.CreatedAt);
-            Assert.Equal(projectCustomisation.UpdatedAt, project.UpdatedAt);
-            Assert.Equal(projectCustomisation.TasksDataType, project.TasksDataType);
-            Assert.Equal(projectCustomisation.Type, project.Type);
             Assert.Equal(projectCustomisation.TasksDataId, project.TasksDataId);
+            Assert.Equal(projectCustomisation.SignificantDate, project.SignificantDate);
+            Assert.True(project.SignificantDateProvisional);
             Assert.Equal(projectCustomisation.Region, project.Region);
-            Assert.Equal(projectCustomisation.Team, project.Team);
-            Assert.Equal(projectCustomisation.RegionalDeliveryOfficerId, project.RegionalDeliveryOfficerId);
-            Assert.Equal(projectCustomisation.AssignedToId, project.AssignedToId);
-            Assert.Equal(projectCustomisation.AssignedAt, project.AssignedAt);
-            Assert.Equal(projectCustomisation.EstablishmentSharepointLink, project.EstablishmentSharepointLink);
-            Assert.Equal(projectCustomisation.IncomingTrustSharepointLink, project.IncomingTrustSharepointLink);
+            Assert.Equal(projectCustomisation.DirectiveAcademyOrder, project.DirectiveAcademyOrder);
             Assert.Equal(projectCustomisation.AdvisoryBoardDate, project.AdvisoryBoardDate);
             Assert.Equal(projectCustomisation.AdvisoryBoardConditions, project.AdvisoryBoardConditions);
-            Assert.Equal(projectCustomisation.SignificantDate, project.SignificantDate);
-            Assert.Equal(projectCustomisation.SignificantDateProvisional, project.SignificantDateProvisional);
-            Assert.Equal(projectCustomisation.TwoRequiresImprovement, project.TwoRequiresImprovement);
+            Assert.Equal(projectCustomisation.RegionalDeliveryOfficerId, project.RegionalDeliveryOfficerId);
+            Assert.Equal(projectCustomisation.LocalAuthorityId, project.LocalAuthorityId);
             Assert.Equal(projectCustomisation.NewTrustName, project.NewTrustName);
             Assert.Equal(projectCustomisation.NewTrustReferenceNumber, project.NewTrustReferenceNumber);
-            Assert.Equal(projectCustomisation.DirectiveAcademyOrder, project.DirectiveAcademyOrder);
-
-            Assert.Equal(handoverComment, project.Notes.FirstOrDefault()?.Body);
-            Assert.Equal(projectCustomisation.LocalAuthorityId, project.LocalAuthorityId);
 
         }
 
         [Theory]
         [CustomAutoData(typeof(ProjectCustomization), typeof(DateOnlyCustomization),
         typeof(IgnoreVirtualMembersCustomisation))]
-        public void Factory_CreateTransferProject_ShouldCorrectlySetFields(Project projCustomisation)
+        public void Factory_CreateHandoverTransferProject_ShouldCorrectlySetFields(Project projCustomisation)
         {
             // Arrange
-            var handoverComment = "handover comment";
+            var parameters = new CreateHandoverTransferProjectParams(
+                projCustomisation.Id,
+                projCustomisation.Urn!,
+                projCustomisation.TasksDataId!.Value,
+                projCustomisation.SignificantDate!.Value,
+                projCustomisation.IncomingTrustUkprn!,
+                projCustomisation.OutgoingTrustUkprn!,
+                projCustomisation.Region,
+                projCustomisation.AdvisoryBoardDate!.Value,
+                projCustomisation.AdvisoryBoardConditions,
+                projCustomisation.GroupId,
+                projCustomisation.RegionalDeliveryOfficerId,
+                projCustomisation.LocalAuthorityId.Value
+            );
 
             // Act
-            var project = Project.CreateTransferProject(
-                projCustomisation.Id, 
-                projCustomisation.Urn!,
-                projCustomisation.CreatedAt,
-                projCustomisation.UpdatedAt,
-                projCustomisation.TasksDataType!.Value,
-                projCustomisation.Type!.Value,
-                projCustomisation.TasksDataId!.Value,
-                projCustomisation.Region,
-                projCustomisation.Team!.Value,
-                projCustomisation.RegionalDeliveryOfficerId,
-                projCustomisation.AssignedToId,
-                projCustomisation.AssignedAt,
-                projCustomisation.IncomingTrustUkprn,
-                projCustomisation.OutgoingTrustUkprn,
-                projCustomisation.GroupId,
-                projCustomisation.EstablishmentSharepointLink,
-                projCustomisation.IncomingTrustSharepointLink,
-                projCustomisation.OutgoingTrustSharepointLink,
-                projCustomisation.AdvisoryBoardDate.Value,
-                projCustomisation.AdvisoryBoardConditions,
-                projCustomisation.SignificantDate!.Value,
-                projCustomisation.SignificantDateProvisional!.Value,
-                projCustomisation.TwoRequiresImprovement!.Value,
-                handoverComment, 
-                projCustomisation.LocalAuthorityId.Value
-                );
+            var project = Project.CreateHandoverTransferProject(parameters);
 
             // Assert
             Assert.Equal(projCustomisation.Urn, project.Urn);
-            Assert.Equal(projCustomisation.CreatedAt, project.CreatedAt);
-            Assert.Equal(projCustomisation.UpdatedAt, project.UpdatedAt);
-            Assert.Equal(projCustomisation.TasksDataType, project.TasksDataType);
-            Assert.Equal(projCustomisation.Type, project.Type);
             Assert.Equal(projCustomisation.TasksDataId, project.TasksDataId);
             Assert.Equal(projCustomisation.SignificantDate, project.SignificantDate);
-            Assert.Equal(projCustomisation.SignificantDateProvisional, project.SignificantDateProvisional);
+            Assert.True(project.SignificantDateProvisional);
             Assert.Equal(projCustomisation.IncomingTrustUkprn, project.IncomingTrustUkprn);
+            Assert.Equal(projCustomisation.OutgoingTrustUkprn, project.OutgoingTrustUkprn);
             Assert.Equal(projCustomisation.Region, project.Region);
-            Assert.Equal(projCustomisation.TwoRequiresImprovement, project.TwoRequiresImprovement);
             Assert.Equal(projCustomisation.AdvisoryBoardDate, project.AdvisoryBoardDate);
             Assert.Equal(projCustomisation.AdvisoryBoardConditions, project.AdvisoryBoardConditions);
-            Assert.Equal(projCustomisation.EstablishmentSharepointLink, project.EstablishmentSharepointLink);
-            Assert.Equal(projCustomisation.IncomingTrustSharepointLink, project.IncomingTrustSharepointLink);
-            Assert.Equal(handoverComment, project.Notes.FirstOrDefault()?.Body);
+            Assert.Equal(projCustomisation.GroupId, project.GroupId);
+            Assert.Equal(projCustomisation.RegionalDeliveryOfficerId, project.RegionalDeliveryOfficerId);
             Assert.Equal(projCustomisation.LocalAuthorityId, project.LocalAuthorityId);
         }
 
-        [Theory]
-        [CustomAutoData(typeof(ProjectCustomization), typeof(DateOnlyCustomization), typeof(IgnoreVirtualMembersCustomisation))]
-        public void Factory_CreateMatTransferProject_ShouldCorrectlySetFields(Project projectCustomisation)
-        {
-            // Arrange
-            var handoverComment = "MAT Transfer handover comment";
-
-            // Act
-            var project = Project.CreateMatTransferProject(
-                projectCustomisation.Id,
-                projectCustomisation.Urn!,
-                projectCustomisation.CreatedAt,
-                projectCustomisation.UpdatedAt,
-                projectCustomisation.OutgoingTrustUkprn,
-                projectCustomisation.TasksDataType!.Value,
-                projectCustomisation.Type!.Value,
-                projectCustomisation.TasksDataId!.Value,
-                projectCustomisation.Region,
-                projectCustomisation.Team!.Value,
-                projectCustomisation.RegionalDeliveryOfficerId,
-                projectCustomisation.AssignedToId,
-                projectCustomisation.AssignedAt,
-                projectCustomisation.EstablishmentSharepointLink!,
-                projectCustomisation.IncomingTrustSharepointLink!,
-                projectCustomisation.OutgoingTrustSharepointLink!,
-                projectCustomisation.AdvisoryBoardDate!.Value,
-                projectCustomisation.AdvisoryBoardConditions!,
-                projectCustomisation.SignificantDate!.Value,
-                projectCustomisation.SignificantDateProvisional!.Value,
-                projectCustomisation.TwoRequiresImprovement!.Value,
-                projectCustomisation.NewTrustName!,
-                projectCustomisation.NewTrustReferenceNumber!,
-                handoverComment,
-                projectCustomisation.LocalAuthorityId.Value
-            );
-
-            // Assert
-            Assert.Equal(projectCustomisation.Urn, project.Urn);
-            Assert.Equal(projectCustomisation.CreatedAt, project.CreatedAt);
-            Assert.Equal(projectCustomisation.UpdatedAt, project.UpdatedAt);
-            Assert.Equal(projectCustomisation.TasksDataType, project.TasksDataType);
-            Assert.Equal(projectCustomisation.Type, project.Type);
-            Assert.Equal(projectCustomisation.TasksDataId, project.TasksDataId);
-            Assert.Equal(projectCustomisation.Region, project.Region);
-            Assert.Equal(projectCustomisation.Team, project.Team);
-            Assert.Equal(projectCustomisation.RegionalDeliveryOfficerId, project.RegionalDeliveryOfficerId);
-            Assert.Equal(projectCustomisation.AssignedToId, project.AssignedToId);
-            Assert.Equal(projectCustomisation.AssignedAt, project.AssignedAt);
-            Assert.Equal(projectCustomisation.EstablishmentSharepointLink, project.EstablishmentSharepointLink);
-            Assert.Equal(projectCustomisation.IncomingTrustSharepointLink, project.IncomingTrustSharepointLink);
-            Assert.Equal(projectCustomisation.AdvisoryBoardDate, project.AdvisoryBoardDate);
-            Assert.Equal(projectCustomisation.AdvisoryBoardConditions, project.AdvisoryBoardConditions);
-            Assert.Equal(projectCustomisation.SignificantDate, project.SignificantDate);
-            Assert.Equal(projectCustomisation.SignificantDateProvisional, project.SignificantDateProvisional);
-            Assert.Equal(projectCustomisation.TwoRequiresImprovement, project.TwoRequiresImprovement);
-            Assert.Equal(projectCustomisation.NewTrustName, project.NewTrustName);
-            Assert.Equal(projectCustomisation.NewTrustReferenceNumber, project.NewTrustReferenceNumber);
-
-            Assert.Equal(handoverComment, project.Notes.FirstOrDefault()?.Body);
-            Assert.Equal(projectCustomisation.LocalAuthorityId, project.LocalAuthorityId);
-
-        }
+        // TODO: Add test for CreateHandoverTransferMATProject when the method is implemented
+        // [Theory]
+        // [CustomAutoData(typeof(ProjectCustomization), typeof(DateOnlyCustomization), typeof(IgnoreVirtualMembersCustomisation))]
+        // public void Factory_CreateHandoverTransferMATProject_ShouldCorrectlySetFields(Project projectCustomisation)
+        // {
+        //     // This test will be implemented when CreateHandoverTransferMATProject method is added to Project.cs
+        // }
 
 
         [Theory]

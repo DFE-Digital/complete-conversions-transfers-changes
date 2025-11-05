@@ -17,26 +17,6 @@
     },
     {
       "Controller": "ProjectsController",
-      "Action": "CreateConversionProjectAsync",
-      "ExpectedSecurity": "Authorize: Policy=CanReadWrite"
-    },
-    {
-      "Controller": "ProjectsController",
-      "Action": "CreateTransferProjectAsync",
-      "ExpectedSecurity": "Authorize: Policy=CanReadWrite"
-    },
-    {
-      "Controller": "ProjectsController",
-      "Action": "CreateMatConversionProjectAsync",
-      "ExpectedSecurity": "Authorize: Policy=CanReadWrite"
-    },
-    {
-      "Controller": "ProjectsController",
-      "Action": "CreateMatTransferProjectAsync",
-      "ExpectedSecurity": "Authorize: Policy=CanReadWrite"
-    },
-    {
-      "Controller": "ProjectsController",
       "Action": "GetProjectAsync",
       "ExpectedSecurity": "Authorize: Policy=CanRead"
     },
