@@ -32,7 +32,7 @@ can override this be passing in the TestUser user.
 beforeEach(() => {
     cy.login();
     // OR
-    cy.login(businessSupportUser);
+    cy.login(dataConsumerUser);
 });
 ```
 
