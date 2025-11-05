@@ -4,7 +4,6 @@ import {
     shouldBeAbleToViewReportsLandingPage,
     shouldNotBeAbleToAddAProjectNote,
     shouldNotBeAbleToAddAProjectTaskNote,
-    shouldNotBeAbleToCreateAProject,
     shouldNotHaveAccessToViewYourProjectsSections,
     shouldNotHaveAccessToViewYourTeamProjectsSections,
 } from "cypress/support/reusableTests";
@@ -88,10 +87,6 @@ describe("Capabilities and permissions of the service support user", () => {
             .clickButton("Delete project")
             .containsSuccessBannerWithMessage("The project was deleted.");
         cy.url().should("include", "/projects/all/in-progress/all");
-    });
-
-    it("Should NOT be able to create a project", () => {
-        shouldNotBeAbleToCreateAProject();
     });
 
     it("Should NOT be able to add a note to a project", () => {

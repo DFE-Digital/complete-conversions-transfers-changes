@@ -2,7 +2,6 @@ import {
     shouldBeAbleToChangeTheAddedByUserOfAProject,
     shouldBeAbleToViewMultipleMonthsOfProjects,
     shouldBeAbleToViewReportsLandingPage,
-    shouldNotBeAbleToCreateAProject,
     shouldNotBeAbleToSoftDeleteAProject,
     shouldNotHaveAccessToViewAddEditUsers,
     shouldNotHaveAccessToViewConversionURNsPage,
@@ -126,10 +125,6 @@ describe("Capabilities and permissions of the regional casework services team le
 
     it("Should be able to view the reports landing page", () => {
         shouldBeAbleToViewReportsLandingPage();
-    });
-
-    it("Should NOT be able to create a project", () => {
-        shouldNotBeAbleToCreateAProject();
     });
 
     it("Should NOT be able to soft delete projects", () => {

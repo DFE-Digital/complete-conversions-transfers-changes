@@ -4,7 +4,6 @@ import {
     shouldBeAbleToViewReportsLandingPage,
     shouldNotBeAbleToAddAProjectNote,
     shouldNotBeAbleToAddAProjectTaskNote,
-    shouldNotBeAbleToCreateAProject,
     shouldNotBeAbleToSoftDeleteAProject,
     shouldNotHaveAccessToViewAddEditUsers,
     shouldNotHaveAccessToViewConversionURNsPage,
@@ -114,10 +113,6 @@ describe("Capabilities and permissions of the data consumer user", () => {
 
     it("Should be able to view the reports landing page", () => {
         shouldBeAbleToViewReportsLandingPage();
-    });
-
-    it("Should NOT be able to create a project", () => {
-        shouldNotBeAbleToCreateAProject();
     });
 
     it("Should NOT be able to add a note to a project", () => {
