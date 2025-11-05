@@ -2,8 +2,6 @@ using Dfe.AcademiesApi.Client;
 using Dfe.AcademiesApi.Client.Contracts;
 using Dfe.Complete.Application.Common.Behaviours;
 using Dfe.Complete.Application.Common.Models;
-using Dfe.Complete.Application.Projects.Commands.CreateProject;
-using Dfe.Complete.Application.Projects.Common;
 using Dfe.Complete.Application.Projects.Services;
 using Dfe.Complete.Application.Services.CsvExport;
 using Dfe.Complete.Application.Services.CsvExport.Builders;
@@ -51,7 +49,6 @@ namespace Microsoft.Extensions.DependencyInjection
             services.AddScoped<IRowBuilderFactory<ConversionCsvModel>, RowBuilderFactory<ConversionCsvModel>>();
             services.AddScoped<IRowGenerator<ConversionCsvModel>, ConversionRowGenerator>();
             services.AddScoped<IHeaderGenerator<ConversionCsvModel>, ConversionRowGenerator>();
-            services.AddScoped<ICreateProjectCommon, CreateProjectCommon>();
             services.AddScoped<IHandoverProjectService, HandoverProjectService>();
 
             services.AddBackgroundService();

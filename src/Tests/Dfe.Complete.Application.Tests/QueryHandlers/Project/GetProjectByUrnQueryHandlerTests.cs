@@ -1,4 +1,3 @@
-using AutoFixture.Xunit2;
 using GovUK.Dfe.CoreLibs.Testing.AutoFixture.Attributes;
 using NSubstitute;
 using GovUK.Dfe.CoreLibs.Testing.AutoFixture.Customizations;
@@ -10,60 +9,58 @@ using Dfe.Complete.Application.Projects.Models;
 using NSubstitute.ExceptionExtensions;
 using Dfe.Complete.Application.Projects.Interfaces;
 using MockQueryable;
+using Dfe.Complete.Domain.Entities;
 
 namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
 {
     public class GetProjectByUrnQueryHandlerTests
     {
+        private readonly IProjectReadRepository _mockProjectRepository;
+        private readonly IMapper _mockMapper;
+        private readonly GetProjectByUrnQueryHandler _handler;
+
+        public GetProjectByUrnQueryHandlerTests()
+        {
+            _mockProjectRepository = Substitute.For<IProjectReadRepository>();
+            _mockMapper = Substitute.For<IMapper>();
+            var mockLogger = Substitute.For<Microsoft.Extensions.Logging.ILogger<GetProjectByUrnQueryHandler>>();
+            _handler = new GetProjectByUrnQueryHandler(_mockProjectRepository, _mockMapper, mockLogger);
+        }
         [Theory]
         [CustomAutoData(typeof(DateOnlyCustomization))]
-        public async Task Handle_ShouldGetAProjectByUrn_WhenCommandIsValid(
-            [Frozen] IProjectReadRepository mockProjectRepository,
-            [Frozen] IMapper mockMapper,
-            GetProjectByUrnQueryHandler handler,
-            GetProjectByUrnQuery command
-        )
+        public async Task Handle_ShouldGetAProjectByUrn_WhenCommandIsValid(GetProjectByUrnQuery command)
         {
-            var now = DateTime.UtcNow;
-
-            var project = Domain.Entities.Project.CreateConversionProject(
+            // Arrange
+            var parameters = new CreateHandoverConversionProjectParams(
                 new ProjectId(Guid.NewGuid()),
                 command.Urn,
-                now,
-                now,
-                TaskType.Conversion,
-                ProjectType.Conversion,
                 Guid.NewGuid(),
-                DateOnly.MinValue,
-                true,
+                DateOnly.FromDateTime(DateTime.Today.AddDays(30)),
                 new Ukprn(2),
                 Region.London,
                 true,
-                true,
-                DateOnly.MinValue,
-                "",
-                "",
-                "",
+                DateOnly.FromDateTime(DateTime.Today.AddDays(15)),
+                "Advisory board conditions",
                 null,
-                default,
                 new UserId(Guid.NewGuid()),
-                null,
-                null,
-                null,
-                Guid.NewGuid());
+                Guid.NewGuid()
+            );
 
-            // Arrange
+            var project = Domain.Entities.Project.CreateHandoverConversionProject(parameters);
+
             var queryableProjects = new List<Domain.Entities.Project> { project }.AsQueryable().BuildMock();
-            mockProjectRepository.Projects.Returns(queryableProjects);
+            _mockProjectRepository.Projects.Returns(queryableProjects);
 
-            mockMapper.Map<ProjectDto>(project).Returns(new ProjectDto()
+            _mockMapper.Map<ProjectDto>(project).Returns(new ProjectDto()
             {
-                Urn = command.Urn, Id = project.Id, RegionalDeliveryOfficer = project.RegionalDeliveryOfficer,
+                Urn = command.Urn,
+                Id = project.Id,
+                RegionalDeliveryOfficer = project.RegionalDeliveryOfficer,
                 RegionalDeliveryOfficerId = project.RegionalDeliveryOfficerId
             });
 
             // Act
-            var result = await handler.Handle(command, default);
+            var result = await _handler.Handle(command, default);
 
             // Assert
             Assert.True(result.IsSuccess);
@@ -73,18 +70,14 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
 
         [Theory]
         [CustomAutoData(typeof(DateOnlyCustomization))]
-        public async Task Handle_ShouldSucceedAndReturnNullWhenUnfoundProjectByUrn_WhenCommandIsValid(
-            [Frozen] IProjectReadRepository mockProjectRepository,
-            GetProjectByUrnQueryHandler handler,
-            GetProjectByUrnQuery command
-        )
+        public async Task Handle_ShouldSucceedAndReturnNullWhenUnfoundProjectByUrn_WhenCommandIsValid(GetProjectByUrnQuery command)
         {
             // Arrange
             var noProjects = new List<Domain.Entities.Project> { }.AsQueryable().BuildMock();
-            mockProjectRepository.Projects.Returns(noProjects);
+            _mockProjectRepository.Projects.Returns(noProjects);
 
             // Act
-            var result = await handler.Handle(command, default);
+            var result = await _handler.Handle(command, default);
 
             // Assert
             Assert.True(result.IsSuccess);
@@ -93,19 +86,15 @@ namespace Dfe.Complete.Application.Tests.QueryHandlers.Project
 
         [Theory]
         [CustomAutoData(typeof(DateOnlyCustomization))]
-        public async Task Handle_ShouldFailAndReturnErrorMessage_WhenExceptionIsThrown(
-            [Frozen] IProjectReadRepository mockProjectRepository,
-            GetProjectByUrnQueryHandler handler,
-            GetProjectByUrnQuery command
-        )
+        public async Task Handle_ShouldFailAndReturnErrorMessage_WhenExceptionIsThrown(GetProjectByUrnQuery command)
         {
             // Arrange
             var expectedErrorMessage = "Expected Error Message";
 
-            mockProjectRepository.Projects.Throws(new Exception(expectedErrorMessage));
+            _mockProjectRepository.Projects.Throws(new Exception(expectedErrorMessage));
 
             // Act
-            var result = await handler.Handle(command, default);
+            var result = await _handler.Handle(command, default);
 
             // Assert
             Assert.False(result.IsSuccess);
