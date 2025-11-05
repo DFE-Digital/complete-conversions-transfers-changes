@@ -1,0 +1,17 @@
+@using Dfe.Complete.Domain.Constants
+@using Microsoft.AspNetCore.Authorization
+@using Dfe.Complete.Constants
+@inject IAuthorizationService Authorization
+
+@{
+    var projectsExternalContactLink = string.Format(RouteConstants.ProjectExternalContacts, Model.ProjectId);
+    var canAddContact = await Authorization.AuthorizeAsync(User, policyName: UserPolicyConstants.CanEditAddedByUser);
+}
+@if (canAddContact.Succeeded)
+{
+    <p>Check the contact details are correct, <a href="@projectsExternalContactLink" data-cy="external-contacts-link">edit incorrect contact details and add missing contacts</a>. You may need to contact the person who previously worked on the project to verify this.</p>
+}
+else
+{
+    <p>Check the contact details are correct. You may need to contact the person who previously worked on the project to verify this.</p>
+}
