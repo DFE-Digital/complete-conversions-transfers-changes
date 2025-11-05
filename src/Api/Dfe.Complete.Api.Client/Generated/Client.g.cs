@@ -9936,24 +9936,24 @@ namespace Dfe.Complete.Client
         }
 
         /// <summary>
-        /// Check and clear the closure or transfer declaration for transfer project.
+        /// Updating the form M task data for transfer project.
         /// </summary>
         /// <param name="request">The update command.</param>
-        /// <returns>Check and clear the closure or transfer declaration task successfully.</returns>
+        /// <returns>Updated the form M task successfully.</returns>
         /// <exception cref="CompleteApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task UpdateClosureOrTransferDeclarationTaskAsync(UpdateClosureOrTransferDeclarationTaskCommand request)
+        public virtual System.Threading.Tasks.Task UpdateFormMTaskAsync(UpdateFormMTaskCommand request)
         {
-            return UpdateClosureOrTransferDeclarationTaskAsync(request, System.Threading.CancellationToken.None);
+            return UpdateFormMTaskAsync(request, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>
-        /// Check and clear the closure or transfer declaration for transfer project.
+        /// Updating the form M task data for transfer project.
         /// </summary>
         /// <param name="request">The update command.</param>
-        /// <returns>Check and clear the closure or transfer declaration task successfully.</returns>
+        /// <returns>Updated the form M task successfully.</returns>
         /// <exception cref="CompleteApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task UpdateClosureOrTransferDeclarationTaskAsync(UpdateClosureOrTransferDeclarationTaskCommand request, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task UpdateFormMTaskAsync(UpdateFormMTaskCommand request, System.Threading.CancellationToken cancellationToken)
         {
             if (request == null)
                 throw new System.ArgumentNullException("request");
@@ -9972,8 +9972,8 @@ namespace Dfe.Complete.Client
 
                     var urlBuilder_ = new System.Text.StringBuilder();
                     if (!string.IsNullOrEmpty(_baseUrl)) urlBuilder_.Append(_baseUrl);
-                    // Operation Path: "v1/TasksData/TaskData/ClosureOrTransferDeclaration"
-                    urlBuilder_.Append("v1/TasksData/TaskData/ClosureOrTransferDeclaration");
+                    // Operation Path: "v1/TasksData/TaskData/FormM"
+                    urlBuilder_.Append("v1/TasksData/TaskData/FormM");
 
                     PrepareRequest(client_, request_, urlBuilder_);
 

@@ -3653,20 +3653,20 @@
         }
       }
     },
-    "/v1/TasksData/TaskData/ClosureOrTransferDeclaration": {
+    "/v1/TasksData/TaskData/FormM": {
       "patch": {
         "tags": [
           "TasksData"
         ],
-        "summary": "Check and clear the closure or transfer declaration for transfer project.",
-        "operationId": "TasksData_UpdateClosureOrTransferDeclarationTask",
+        "summary": "Updating the form M task data for transfer project.",
+        "operationId": "TasksData_UpdateFormMTask",
         "requestBody": {
           "x-name": "request",
           "description": "The update command.",
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/UpdateClosureOrTransferDeclarationTaskCommand"
+                "$ref": "#/components/schemas/UpdateFormMTaskCommand"
               }
             }
           },
@@ -3675,7 +3675,7 @@
         },
         "responses": {
           "204": {
-            "description": "Check and clear the closure or transfer declaration task successfully."
+            "description": "Updated the form M task successfully."
           },
           "400": {
             "description": "Invalid request data."
@@ -9187,7 +9187,7 @@
           }
         }
       },
-      "UpdateClosureOrTransferDeclarationTaskCommand": {
+      "UpdateFormMTaskCommand": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
@@ -9202,15 +9202,19 @@
             "type": "boolean",
             "nullable": true
           },
+          "receivedTitlePlans": {
+            "type": "boolean",
+            "nullable": true
+          },
           "cleared": {
             "type": "boolean",
             "nullable": true
           },
-          "saved": {
+          "signed": {
             "type": "boolean",
             "nullable": true
           },
-          "sent": {
+          "saved": {
             "type": "boolean",
             "nullable": true
           }
