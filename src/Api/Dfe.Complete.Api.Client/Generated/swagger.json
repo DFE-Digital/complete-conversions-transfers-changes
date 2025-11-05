@@ -3686,6 +3686,39 @@
         }
       }
     },
+    "/v1/TasksData/TaskData/ClosureOrTransferDeclaration": {
+      "patch": {
+        "tags": [
+          "TasksData"
+        ],
+        "summary": "Check and clear the closure or transfer declaration for transfer project.",
+        "operationId": "TasksData_UpdateClosureOrTransferDeclarationTask",
+        "requestBody": {
+          "x-name": "request",
+          "description": "The update command.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateClosureOrTransferDeclarationTaskCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "204": {
+            "description": "Check and clear the closure or transfer declaration task successfully."
+          },
+          "400": {
+            "description": "Invalid request data."
+          },
+          "404": {
+            "description": "Project not found."
+          }
+        }
+      }
+    },
     "/v1/TasksData/TaskData/RequestNewURNAndRecordForAcademy": {
       "patch": {
         "tags": [
@@ -9215,6 +9248,35 @@
             "nullable": true
           },
           "saved": {
+            "type": "boolean",
+            "nullable": true
+          }
+        }
+      },
+      "UpdateClosureOrTransferDeclarationTaskCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "taskDataId": {
+            "$ref": "#/components/schemas/TaskDataId"
+          },
+          "notApplicable": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "received": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "cleared": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "saved": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "sent": {
             "type": "boolean",
             "nullable": true
           }
