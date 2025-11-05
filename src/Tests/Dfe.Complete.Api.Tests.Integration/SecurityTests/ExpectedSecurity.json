@@ -499,6 +499,11 @@
       "Controller": "TasksDataController",
       "Action": "UpdateUpdateOneHundredAndTwentyFiveYearLeaseTaskAsync",
       "ExpectedSecurity": "Authorize: Policy=CanReadWriteUpdate"
+    },
+    {
+      "Controller": "TasksDataController",
+      "Action": "UpdateFormMTaskAsync",
+      "ExpectedSecurity": "Authorize: Policy=CanReadWriteUpdate"
     }
   ]
 }

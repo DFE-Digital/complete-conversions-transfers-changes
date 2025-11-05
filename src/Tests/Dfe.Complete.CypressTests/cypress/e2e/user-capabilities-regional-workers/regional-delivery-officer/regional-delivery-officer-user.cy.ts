@@ -1,5 +1,5 @@
 import {
-    shouldNotHaveAccessToViewAndEditUsers,
+    shouldNotHaveAccessToViewAddEditUsers,
     shouldNotHaveAccessToViewConversionURNsPage,
     shouldNotHaveAccessToViewLocalAuthorities,
     shouldNotHaveAccessToViewProjectReports,
@@ -68,9 +68,8 @@ describe("Capabilities and permissions of the regional delivery officer user", (
         shouldNotHaveAccessToViewProjectReports();
     });
 
-    it.skip("Should NOT have access to view and edit users", () => {
-        // not implemented
-        shouldNotHaveAccessToViewAndEditUsers();
+    it("Should NOT have access to view, add or edit users", () => {
+        shouldNotHaveAccessToViewAddEditUsers();
     });
 
     it("Should NOT be able to view and edit local authorities", () => {

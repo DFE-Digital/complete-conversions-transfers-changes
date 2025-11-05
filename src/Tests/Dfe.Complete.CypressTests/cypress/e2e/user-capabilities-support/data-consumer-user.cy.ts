@@ -6,7 +6,7 @@ import {
     shouldNotBeAbleToAddAProjectTaskNote,
     shouldNotBeAbleToCreateAProject,
     shouldNotBeAbleToSoftDeleteAProject,
-    shouldNotHaveAccessToViewAndEditUsers,
+    shouldNotHaveAccessToViewAddEditUsers,
     shouldNotHaveAccessToViewConversionURNsPage,
     shouldNotHaveAccessToViewHandedOverProjects,
     shouldNotHaveAccessToViewLocalAuthorities,
@@ -68,9 +68,8 @@ describe("Capabilities and permissions of the data consumer user", () => {
         shouldNotHaveAccessToViewYourTeamProjectsSections();
     });
 
-    it.skip("Should NOT have access to view and edit users", () => {
-        // not implemented
-        shouldNotHaveAccessToViewAndEditUsers();
+    it("Should NOT have access to view, add or edit users", () => {
+        shouldNotHaveAccessToViewAddEditUsers();
     });
 
     it("Should be able to view multiple months of projects within a specified date range", () => {

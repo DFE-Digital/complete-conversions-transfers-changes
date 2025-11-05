@@ -26,6 +26,7 @@ Security in case of vulnerabilities.
 - Added `Tenancy at will` task for conversion project.
 - Added project group creation end point
 - Added MAT Conversion creation end point for prepare to complete 
+- Added `Check and clear Form M` task for transfer projects.
 
 ### Deprecated
 - create conversion project end point not in use due to in-app project creations being a workaround 
