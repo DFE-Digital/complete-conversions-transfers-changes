@@ -8,29 +8,16 @@ using Dfe.Complete.Domain.Validators;
 using Microsoft.Extensions.Logging;
 using Dfe.AcademiesApi.Client.Contracts;
 using Dfe.Complete.Application.Projects.Services;
-using Dfe.Complete.Utils;
 
 namespace Dfe.Complete.Application.Projects.Commands.CreateHandoverProject;
 
 public record CreateHandoverTransferProjectCommand(
-    [Required]
-    [Urn]
-    int? Urn,
-    [Required]
-    [Ukprn]
-    int? IncomingTrustUkprn,
-    [Required]
-    [Ukprn]
-    int? OutgoingTrustUkprn,
-    [Required]
-    [PastDate (AllowToday = true)]
-    DateOnly? AdvisoryBoardDate,
-    [Required]
-    [FirstOfMonthDate]
-    DateOnly? ProvisionalTransferDate,
-    [Required]
-    [InternalEmail]
-    string CreatedByEmail,
+    [Required][Urn] int? Urn,
+    [Required][Ukprn(ValueIsInteger = true)] int? IncomingTrustUkprn,
+    [Required][Ukprn(ValueIsInteger = true)] int? OutgoingTrustUkprn,
+    [Required][PastDate(AllowToday = true)] DateOnly? AdvisoryBoardDate,
+    [Required][FirstOfMonthDate] DateOnly? ProvisionalTransferDate,
+    [Required][InternalEmail] string CreatedByEmail,
     [Required] string CreatedByFirstName,
     [Required] string CreatedByLastName,
     [Required] int? PrepareId,
@@ -38,8 +25,7 @@ public record CreateHandoverTransferProjectCommand(
     [Required] bool? FinancialSafeguardingGovernanceIssues,
     [Required] bool? OutgoingTrustToClose,
     string? AdvisoryBoardConditions,
-    [GroupReferenceNumber]
-    string? GroupId = null) : IRequest<ProjectId>;
+    [GroupReferenceNumber] string? GroupId = null) : IRequest<ProjectId>;
 
 public class CreateHandoverTransferProjectCommandHandler(
     IUnitOfWork unitOfWork,
@@ -58,17 +44,24 @@ public class CreateHandoverTransferProjectCommandHandler(
             var outgoingTrustUkprn = request.OutgoingTrustUkprn!.Value;
 
             // Validate the request
-            await handoverProjectService.ValidateUrnAndTrustsAsync(urn, incomingTrustUkprn, outgoingTrustUkprn, cancellationToken);
+            if (incomingTrustUkprn == outgoingTrustUkprn)
+                throw new ValidationException(Constants.ValidationConstants.SameTrustValidationMessage);
+
+            await handoverProjectService.ValidateUrnAsync(urn, cancellationToken: cancellationToken);
+            await handoverProjectService.ValidateTrustAsync(incomingTrustUkprn, cancellationToken: cancellationToken);
+            await handoverProjectService.ValidateTrustAsync(outgoingTrustUkprn, cancellationToken: cancellationToken);
 
             // Prepare common project data
             var commonData = await handoverProjectService.PrepareCommonProjectDataAsync(
-                urn, 
-                incomingTrustUkprn, 
-                request.GroupId, 
-                request.CreatedByFirstName, 
-                request.CreatedByLastName, 
-                request.CreatedByEmail, 
+                urn,
+                request.CreatedByFirstName,
+                request.CreatedByLastName,
+                request.CreatedByEmail,
                 cancellationToken);
+
+            ProjectGroupId? groupId = null;
+            if (!string.IsNullOrWhiteSpace(request.GroupId))
+                groupId = await handoverProjectService.GetOrCreateProjectGroup(request.GroupId!, incomingTrustUkprn, cancellationToken);
 
             // Create transfer task data
             var transferTask = handoverProjectService.CreateTransferTaskAsync(
@@ -87,7 +80,7 @@ public class CreateHandoverTransferProjectCommandHandler(
                 commonData.Region,
                 request.AdvisoryBoardDate!.Value,
                 request.AdvisoryBoardConditions ?? null,
-                commonData.GroupId,
+                groupId,
                 commonData.UserId,
                 commonData.LocalAuthorityId);
 
@@ -118,6 +111,4 @@ public class CreateHandoverTransferProjectCommandHandler(
             throw new UnknownException($"An error occurred while creating the handover transfer project for URN: {request.Urn}", ex);
         }
     }
-
-
 }

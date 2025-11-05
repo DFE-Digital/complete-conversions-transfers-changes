@@ -248,6 +248,42 @@
       }
     },
     "/v1/ProjectGroup": {
+      "post": {
+        "tags": [
+          "ProjectGroup"
+        ],
+        "summary": "Creates a project group.",
+        "operationId": "ProjectGroup_CreateProjectGroup",
+        "requestBody": {
+          "x-name": "request",
+          "description": "The request.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateProjectGroupCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "201": {
+            "description": "Project group created successfully.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "format": "guid"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request data."
+          }
+        }
+      },
       "get": {
         "tags": [
           "ProjectGroup"
@@ -395,6 +431,43 @@
         }
       }
     },
+    "/v1/Projects/projects/conversions/form-a-mat": {
+      "post": {
+        "tags": [
+          "Projects"
+        ],
+        "summary": "Creates a new MAT conversion project (handover version).",
+        "operationId": "Projects_CreateHandoverConversionMatProject",
+        "requestBody": {
+          "x-name": "request",
+          "description": "The request.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateHandoverConversionMatProjectCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "201": {
+            "description": "Project created successfully.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProjectId"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request data."
+          }
+        }
+      }
+    },
     "/v1/Projects/projects/transfers": {
       "post": {
         "tags": [
@@ -466,7 +539,8 @@
           "400": {
             "description": "Invalid request data."
           }
-        }
+        },
+        "deprecated": true
       }
     },
     "/v1/Projects/Create/Transfer": {
@@ -503,7 +577,8 @@
           "400": {
             "description": "Invalid request data."
           }
-        }
+        },
+        "deprecated": true
       }
     },
     "/v1/Projects/Create/MatConversion": {
@@ -540,7 +615,8 @@
           "400": {
             "description": "Invalid request data."
           }
-        }
+        },
+        "deprecated": true
       }
     },
     "/v1/Projects/Create/MatTransfer": {
@@ -3577,6 +3653,72 @@
         }
       }
     },
+    "/v1/TasksData/TaskData/FormM": {
+      "patch": {
+        "tags": [
+          "TasksData"
+        ],
+        "summary": "Updating the form M task data for transfer project.",
+        "operationId": "TasksData_UpdateFormMTask",
+        "requestBody": {
+          "x-name": "request",
+          "description": "The update command.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateFormMTaskCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "204": {
+            "description": "Updated the form M task successfully."
+          },
+          "400": {
+            "description": "Invalid request data."
+          },
+          "404": {
+            "description": "Project not found."
+          }
+        }
+      }
+    },
+    "/v1/TasksData/TaskData/ClosureOrTransferDeclaration": {
+      "patch": {
+        "tags": [
+          "TasksData"
+        ],
+        "summary": "Check and clear the closure or transfer declaration for transfer project.",
+        "operationId": "TasksData_UpdateClosureOrTransferDeclarationTask",
+        "requestBody": {
+          "x-name": "request",
+          "description": "The update command.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateClosureOrTransferDeclarationTaskCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "204": {
+            "description": "Check and clear the closure or transfer declaration task successfully."
+          },
+          "400": {
+            "description": "Invalid request data."
+          },
+          "404": {
+            "description": "Project not found."
+          }
+        }
+      }
+    },
     "/v1/TasksData/TaskData/RequestNewURNAndRecordForAcademy": {
       "patch": {
         "tags": [
@@ -3732,6 +3874,39 @@
         "responses": {
           "204": {
             "description": "Updated the trust modification order task successfully."
+          },
+          "400": {
+            "description": "Invalid request data."
+          },
+          "404": {
+            "description": "Project not found."
+          }
+        }
+      }
+    },
+    "/v1/TasksData/TaskData/OneHundredAndTwentyFiveYearLease": {
+      "patch": {
+        "tags": [
+          "TasksData"
+        ],
+        "summary": "Updating the 125 year lease for conversion project.",
+        "operationId": "TasksData_UpdateUpdateOneHundredAndTwentyFiveYearLeaseTask",
+        "requestBody": {
+          "x-name": "request",
+          "description": "The update command.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateOneHundredAndTwentyFiveYearLeaseTaskCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "204": {
+            "description": "Updated the 125 year lease task successfully."
           },
           "400": {
             "description": "Invalid request data."
@@ -5128,6 +5303,18 @@
           }
         }
       },
+      "CreateProjectGroupCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "groupReferenceNumber": {
+            "type": "string"
+          },
+          "ukprn": {
+            "$ref": "#/components/schemas/Ukprn"
+          }
+        }
+      },
       "ProjectGroupDto": {
         "type": "object",
         "additionalProperties": false,
@@ -5273,6 +5460,57 @@
             "nullable": true
           },
           "groupId": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "CreateHandoverConversionMatProjectCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "urn": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "newTrustReferenceNumber": {
+            "type": "string",
+            "nullable": true
+          },
+          "newTrustName": {
+            "type": "string",
+            "nullable": true
+          },
+          "advisoryBoardDate": {
+            "type": "string",
+            "format": "date",
+            "nullable": true
+          },
+          "provisionalConversionDate": {
+            "type": "string",
+            "format": "date",
+            "nullable": true
+          },
+          "createdByEmail": {
+            "type": "string"
+          },
+          "createdByFirstName": {
+            "type": "string"
+          },
+          "createdByLastName": {
+            "type": "string"
+          },
+          "prepareId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "directiveAcademyOrder": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "advisoryBoardConditions": {
             "type": "string",
             "nullable": true
           }
@@ -8982,6 +9220,68 @@
           }
         }
       },
+      "UpdateFormMTaskCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "taskDataId": {
+            "$ref": "#/components/schemas/TaskDataId"
+          },
+          "notApplicable": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "received": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "receivedTitlePlans": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "cleared": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "signed": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "saved": {
+            "type": "boolean",
+            "nullable": true
+          }
+        }
+      },
+      "UpdateClosureOrTransferDeclarationTaskCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "taskDataId": {
+            "$ref": "#/components/schemas/TaskDataId"
+          },
+          "notApplicable": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "received": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "cleared": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "saved": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "sent": {
+            "type": "boolean",
+            "nullable": true
+          }
+        }
+      },
       "UpdateRequestNewUrnAndRecordForAcademyTaskCommand": {
         "type": "object",
         "additionalProperties": false,
@@ -9110,6 +9410,31 @@
             "nullable": true
           },
           "saved": {
+            "type": "boolean",
+            "nullable": true
+          }
+        }
+      },
+      "UpdateOneHundredAndTwentyFiveYearLeaseTaskCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "taskDataId": {
+            "$ref": "#/components/schemas/TaskDataId"
+          },
+          "notApplicable": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "email": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "receive": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "save": {
             "type": "boolean",
             "nullable": true
           }

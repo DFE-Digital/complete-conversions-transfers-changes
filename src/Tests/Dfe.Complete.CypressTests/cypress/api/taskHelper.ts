@@ -318,6 +318,49 @@ class TaskHelper {
                 return taskApi.updateDeedOfNovationAndVariationTask(defaultBody);
         }
     }
+    public updateDeedOfTerminationChurchSupplementalAgreement(taskDataId: string, status: TaskStatus) {
+        const defaultBody = {
+            taskDataId: { value: taskDataId },
+            notApplicable: false,
+            received: false,
+            cleared: false,
+            signed: false,
+            signedByDiocese: false,
+            saved: false,
+            signedBySecretaryState: false,
+            savedAfterSigningBySecretaryState: false,
+        };
+
+        switch (status) {
+            case "notApplicable":
+                return taskApi.updateDeedOfTerminationChurchSupplementalAgreementTask({
+                    ...defaultBody,
+                    notApplicable: true,
+                });
+
+            case "inProgress":
+                return taskApi.updateDeedOfTerminationChurchSupplementalAgreementTask({
+                    ...defaultBody,
+                    received: true,
+                });
+
+            case "completed":
+                return taskApi.updateDeedOfTerminationChurchSupplementalAgreementTask({
+                    taskDataId: { value: taskDataId },
+                    notApplicable: false,
+                    received: true,
+                    cleared: true,
+                    signed: true,
+                    signedByDiocese: true,
+                    saved: true,
+                    signedBySecretaryState: true,
+                    savedAfterSigningBySecretaryState: true,
+                });
+            default:
+                return taskApi.updateDeedOfTerminationChurchSupplementalAgreementTask(defaultBody);
+        }
+    }
+
     public updateDeedOfTerminationMasterFundingAgreement(taskDataId: string, status: TaskStatus) {
         const defaultBody = {
             taskDataId: { value: taskDataId },
@@ -439,6 +482,30 @@ class TaskHelper {
 
             default:
                 return taskApi.updateHandoverWithDeliveryOfficerTask(defaultBody);
+        }
+    }
+    updateIncomingTrustHasCompletedAllActions(taskDataId: string, status: TaskStatus) {
+        const defaultBody = {
+            taskDataId: { value: taskDataId },
+            emailed: false,
+            saved: false,
+        };
+        switch (status) {
+            case "inProgress":
+                return taskApi.updateIncomingTrustHasCompletedAllActionsTask({
+                    ...defaultBody,
+                    emailed: true,
+                });
+
+            case "completed":
+                return taskApi.updateIncomingTrustHasCompletedAllActionsTask({
+                    taskDataId: { value: taskDataId },
+                    emailed: true,
+                    saved: true,
+                });
+
+            default:
+                return taskApi.updateIncomingTrustHasCompletedAllActionsTask(defaultBody);
         }
     }
     updateLandConsentLetter(taskDataId: string, status: TaskStatus) {
@@ -574,6 +641,40 @@ class TaskHelper {
                 return taskApi.updateMasterFundingAgreementTask(defaultBody);
         }
     }
+    updateOneHundredAndTwentyFiveYearLease(taskDataId: string, status: TaskStatus) {
+        const defaultBody = {
+            taskDataId: { value: taskDataId },
+            notApplicable: false,
+            email: false,
+            receive: false,
+            save: false,
+        };
+        switch (status) {
+            case "notApplicable":
+                return taskApi.updateOneHundredAndTwentyFiveYearLeaseTask({
+                    ...defaultBody,
+                    notApplicable: true,
+                });
+
+            case "inProgress":
+                return taskApi.updateOneHundredAndTwentyFiveYearLeaseTask({
+                    ...defaultBody,
+                    email: true,
+                });
+
+            case "completed":
+                return taskApi.updateOneHundredAndTwentyFiveYearLeaseTask({
+                    taskDataId: { value: taskDataId },
+                    notApplicable: false,
+                    email: true,
+                    receive: true,
+                    save: true,
+                });
+
+            default:
+                return taskApi.updateOneHundredAndTwentyFiveYearLeaseTask(defaultBody);
+        }
+    }
 
     updateReceiveDeclarationOfExpenditureCertificate(
         taskDataId: string,
@@ -650,6 +751,40 @@ class TaskHelper {
                 return taskApi.updateRedactAndSendDocumentsTask(defaultBody);
         }
     }
+    updateRequestNewURNAndRecordForAcademy(taskDataId: string, projectType: ProjectType, status: TaskStatus) {
+        const defaultBody = {
+            taskDataId: { value: taskDataId },
+            notApplicable: false,
+            complete: false,
+            receive: false,
+            give: false,
+        };
+        switch (status) {
+            case "notApplicable":
+                return taskApi.updateRequestNewURNAndRecordForAcademyTask({
+                    ...defaultBody,
+                    notApplicable: true,
+                });
+
+            case "inProgress":
+                return taskApi.updateRequestNewURNAndRecordForAcademyTask({
+                    ...defaultBody,
+                    complete: true,
+                });
+
+            case "completed":
+                return taskApi.updateRequestNewURNAndRecordForAcademyTask({
+                    taskDataId: { value: taskDataId },
+                    notApplicable: false,
+                    complete: true,
+                    receive: true,
+                    give: true,
+                });
+
+            default:
+                return taskApi.updateRequestNewURNAndRecordForAcademyTask(defaultBody);
+        }
+    }
     updateConfirmAcademyRiskProtectionArrangements(
         taskDataId: string,
         projectType: ProjectType,
@@ -680,6 +815,50 @@ class TaskHelper {
             });
         } else {
             return taskApi.updateConfirmAcademyRiskProtectionArrangementsTask(defaultBody);
+        }
+    }
+
+    updateSubleases(taskDataId: string, status: TaskStatus) {
+        const defaultBody = {
+            taskDataId: { value: taskDataId },
+            notApplicable: false,
+            received: false,
+            cleared: false,
+            signed: false,
+            saved: false,
+            emailSigned: false,
+            saveSigned: false,
+            receiveSigned: false,
+        };
+
+        switch (status) {
+            case "notApplicable":
+                return taskApi.updateSubleasesTask({
+                    ...defaultBody,
+                    notApplicable: true,
+                });
+
+            case "inProgress":
+                return taskApi.updateSubleasesTask({
+                    ...defaultBody,
+                    cleared: true,
+                });
+
+            case "completed":
+                return taskApi.updateSubleasesTask({
+                    taskDataId: { value: taskDataId },
+                    notApplicable: false,
+                    received: true,
+                    cleared: true,
+                    signed: true,
+                    saved: true,
+                    emailSigned: true,
+                    saveSigned: true,
+                    receiveSigned: true,
+                });
+
+            default:
+                return taskApi.updateSubleasesTask(defaultBody);
         }
     }
 
@@ -715,6 +894,75 @@ class TaskHelper {
 
             default:
                 return taskApi.updateSupplementalFundingAgreementTask(defaultBody);
+        }
+    }
+
+    updateTenancyAtWill(taskDataId: string, status: TaskStatus) {
+        const defaultBody = {
+            taskDataId: { value: taskDataId },
+            notApplicable: false,
+            emailSigned: false,
+            saveSigned: false,
+            receiveSigned: false,
+        };
+        switch (status) {
+            case "notApplicable":
+                return taskApi.updateTenancyAtWillTask({
+                    ...defaultBody,
+                    notApplicable: true,
+                });
+
+            case "inProgress":
+                return taskApi.updateTenancyAtWillTask({
+                    ...defaultBody,
+                    emailSigned: true,
+                });
+
+            case "completed":
+                return taskApi.updateTenancyAtWillTask({
+                    taskDataId: { value: taskDataId },
+                    notApplicable: false,
+                    emailSigned: true,
+                    saveSigned: true,
+                    receiveSigned: true,
+                });
+        }
+    }
+
+    updateTrustModificationOrder(taskDataId: string, status: TaskStatus) {
+        const defaultBody = {
+            taskDataId: { value: taskDataId },
+            notApplicable: false,
+            received: false,
+            sent: false,
+            cleared: false,
+            saved: false,
+        };
+        switch (status) {
+            case "notApplicable":
+                return taskApi.updateTrustModificationOrderTask({
+                    ...defaultBody,
+                    notApplicable: true,
+                });
+
+            case "inProgress":
+                return taskApi.updateTrustModificationOrderTask({
+                    ...defaultBody,
+                    received: true,
+                });
+
+            case "completed":
+                return taskApi.updateTrustModificationOrderTask({
+                    taskDataId: { value: taskDataId },
+                    notApplicable: false,
+                    received: true,
+                    sent: true,
+                    cleared: true,
+                    saved: true,
+                });
+
+            default:
+                return taskApi.updateTrustModificationOrderTask(defaultBody);
         }
     }
 

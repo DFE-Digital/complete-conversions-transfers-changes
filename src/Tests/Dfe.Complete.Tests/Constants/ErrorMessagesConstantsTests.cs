@@ -5,6 +5,24 @@ namespace Dfe.Complete.Tests.Constants
     public class ErrorMessagesConstantsTests
     {
         [Fact]
+        public void AlreadyExistsProjectGroupWithIdentifier_ShouldReturnCorrectMessage()
+        {
+            var identifier = "ABC123";
+            var expected = $"Project group with identifier '{identifier}' already exists.";
+            var actual = string.Format(ErrorMessagesConstants.AlreadyExistsProjectGroupWithIdentifier, identifier);
+            Assert.Equal(expected, actual);
+        }
+
+        [Fact]
+        public void AlreadyExistsProjectGroupWithUkprn_ShouldReturnCorrectMessage()
+        {
+            var ukprn = 123456;
+            var expected = $"Project group with UKPRN '{ukprn}' already exists.";
+            var actual = string.Format(ErrorMessagesConstants.AlreadyExistsProjectGroupWithUkprn, ukprn);
+            Assert.Equal(expected, actual);
+        }
+
+        [Fact]
         public void AlreadyExistedLocalAuthorityWithCode_ShouldReturnCorrectMessage()
         {
             var code = "ABC123";
