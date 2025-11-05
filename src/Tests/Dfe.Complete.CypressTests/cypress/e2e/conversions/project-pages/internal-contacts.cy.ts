@@ -20,8 +20,8 @@ const project = ProjectBuilder.createConversionFormAMatProjectRequest({
 });
 let projectId: string;
 const schoolName = "Whitchurch Primary School";
-const assignableUsers = [rdoLondonUser, regionalCaseworkerUser];
-const unassignableUsers = [regionalCaseworkerTeamLeaderUser, dataConsumerUser, serviceSupportUser];
+const assignableUsers = [rdoLondonUser, regionalCaseworkerUser, regionalCaseworkerTeamLeaderUser];
+const unassignableUsers = [dataConsumerUser, serviceSupportUser];
 
 describe("Internal contacts page: ", () => {
     before(() => {
