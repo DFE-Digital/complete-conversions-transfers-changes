@@ -18,8 +18,10 @@ namespace Dfe.Complete.Application.Projects.Queries.ListAllProjects
         {
             try
             {
+                List<ProjectState> projectStatuses = [ ProjectState.Active, ProjectState.Completed, ProjectState.DaoRevoked];
+
                 var projects = await listAllProjectsQueryService.ListAllProjects(
-                    new ProjectFilters(ProjectState.Active, null, NewTrustReferenceNumber: request.ReferenceNumber)
+                    new ProjectFilters(null, null, NewTrustReferenceNumber: request.ReferenceNumber, ProjectStatuses: projectStatuses)
                     )
                     .ToListAsync(cancellationToken);
 
