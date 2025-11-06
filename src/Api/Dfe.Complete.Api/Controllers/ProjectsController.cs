@@ -76,6 +76,22 @@ namespace Dfe.Complete.Api.Controllers
         }
 
         /// <summary>
+        /// Creates a new transfer MAT project (handover version).
+        /// </summary>
+        /// <param name="request">The request.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        [Authorize(Policy = "CanReadWrite")]
+        [HttpPost]
+        [Route("projects/transfers/form-a-mat")]
+        [SwaggerResponse(201, "Project created successfully.", typeof(ProjectId))]
+        [SwaggerResponse(400, "Invalid request data.")]
+        public async Task<IActionResult> CreateHandoverTransferMatProjectAsync([FromBody] CreateHandoverTransferMatProjectCommand request, CancellationToken cancellationToken)
+        {
+            var result = await sender.Send(request, cancellationToken);
+            return Created("", result);
+        }
+
+        /// <summary>
         /// Creates a new conversion project
         /// </summary>
         /// <param name="request">The request.</param>

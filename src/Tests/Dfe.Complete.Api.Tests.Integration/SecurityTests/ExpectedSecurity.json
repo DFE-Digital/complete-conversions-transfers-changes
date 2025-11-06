@@ -17,6 +17,11 @@
     },
     {
       "Controller": "ProjectsController",
+      "Action": "CreateHandoverTransferMatProjectAsync",
+      "ExpectedSecurity": "Authorize: Policy=CanReadWrite"
+    },
+    {
+      "Controller": "ProjectsController",
       "Action": "CreateConversionProjectAsync",
       "ExpectedSecurity": "Authorize: Policy=CanReadWrite"
     },
