@@ -481,6 +481,7 @@ public class Project : BaseAggregateRoot, IEntity<ProjectId>
             parameters.LocalAuthorityId)
         {
             State = ProjectState.Inactive,
+            TwoRequiresImprovement = null
         };
 
         project.AddDomainEvent(new ProjectCreatedEvent(project));
