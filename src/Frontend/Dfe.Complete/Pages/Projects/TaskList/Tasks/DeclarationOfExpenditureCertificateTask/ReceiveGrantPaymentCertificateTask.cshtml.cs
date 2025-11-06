@@ -1,3 +1,4 @@
+using Dfe.Complete.Constants;
 using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Services.Interfaces;
 using MediatR;
@@ -11,6 +12,10 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.DeclarationOfExpenditureCer
         public override async Task<IActionResult> OnGetAsync()
         {
             await base.OnGetAsync();
+
+            if (InvalidTaskRequestByProjectType())
+                return Redirect(RouteConstants.ErrorPage);
+
             Type = Project.Type;
             TasksDataId = Project.TasksDataId?.Value;
 

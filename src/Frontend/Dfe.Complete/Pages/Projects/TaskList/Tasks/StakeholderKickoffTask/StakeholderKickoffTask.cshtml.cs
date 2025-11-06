@@ -34,7 +34,11 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.StakeholderKickoffTask
 
         public override async Task<IActionResult> OnGetAsync()
         {
-            await base.OnGetAsync(); 
+            await base.OnGetAsync();
+
+            if (InvalidTaskRequestByProjectType())
+                return Redirect(RouteConstants.ErrorPage);
+
             var isConversion = Project.Type == ProjectType.Conversion;
 
             if (isConversion)

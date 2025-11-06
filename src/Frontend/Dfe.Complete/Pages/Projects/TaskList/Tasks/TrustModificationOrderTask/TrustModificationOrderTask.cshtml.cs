@@ -32,10 +32,8 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.TrustModificationOrderTask
         {
             await base.OnGetAsync();
 
-            if(Project.TasksDataType != TaskType.Conversion)
-            {
+            if (InvalidTaskRequestByProjectType())
                 return Redirect(RouteConstants.ErrorPage);
-            }
 
             TasksDataId = Project.TasksDataId?.Value;
 

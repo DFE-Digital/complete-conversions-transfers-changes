@@ -1,16 +1,17 @@
-using Dfe.Complete.Constants;
-using Dfe.Complete.Domain.Enums;
-using Dfe.Complete.Models;
-using MediatR;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
 using Dfe.Complete.Application.Notes.Queries;
 using Dfe.Complete.Application.Projects.Models;
+using Dfe.Complete.Constants;
 using Dfe.Complete.Domain.Constants;
+using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Domain.ValueObjects;
 using Dfe.Complete.Extensions;
-using Microsoft.AspNetCore.Authorization;
+using Dfe.Complete.Models;
 using GovUK.Dfe.CoreLibs.Utilities.Extensions;
+using MediatR;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
+using System.Security.Policy;
 
 namespace Dfe.Complete.Pages.Projects.TaskList.Tasks;
 
@@ -20,6 +21,42 @@ public class BaseProjectTaskModel(ISender sender, IAuthorizationService authoriz
     public IReadOnlyList<NoteDto> Notes { get; private set; } = [];
 
     public bool CanAddNotes => Project.State != ProjectState.Deleted && Project.State != ProjectState.Completed && Project.State != ProjectState.DaoRevoked;
+
+    private readonly List<NoteTaskIdentifier> TransferTasksExclusiveNoteIdentifier = [    
+       NoteTaskIdentifier.ConfirmOutgoingTrustCeoDetails,
+       NoteTaskIdentifier.RequestNewUrnAndRecordForAcademy,
+       NoteTaskIdentifier.ConfirmTransferGrantFundingLevel,
+       NoteTaskIdentifier.CheckAndConfirmAcademyAndTrustFinancialInformation,
+       NoteTaskIdentifier.FormM,
+       NoteTaskIdentifier.LandConsentLetter,
+       NoteTaskIdentifier.DeedOfNovationAndVariation,
+       NoteTaskIdentifier.DeedOfTerminationForMasterFundingAgreement,
+       NoteTaskIdentifier.DeedOfTerminationForChurchSupplementalAgreement,
+       NoteTaskIdentifier.ClosureOrTransferDeclaration,
+       NoteTaskIdentifier.ConfirmBankDetailsForGeneralAnnualGrantPaymentNeedToChange,
+       NoteTaskIdentifier.ConfirmIncomingTrustHasCompletedAllActions,       
+       NoteTaskIdentifier.ConfirmDateAcademyTransferred
+    ];
+
+    private readonly List<NoteTaskIdentifier> ConversionTasksExclusiveNoteIdentifier = [    
+       NoteTaskIdentifier.CheckAccuracyOfHigherNeeds,
+       NoteTaskIdentifier.CompleteNotificationOfChange,
+       NoteTaskIdentifier.ProcessConversionSupportGrant,
+       NoteTaskIdentifier.ConfirmAndProcessTheSponsoredSupportGrant,
+       NoteTaskIdentifier.AcademyDetails,
+       NoteTaskIdentifier.ConfirmChairOfGovernorsDetails,
+       NoteTaskIdentifier.ConfirmProposedCapacityOfTheAcademy,
+       NoteTaskIdentifier.LandQuestionnaire,
+       NoteTaskIdentifier.LandRegistryTitlePlans,
+       NoteTaskIdentifier.TrustModificationOrder,
+       NoteTaskIdentifier.DirectionToTransfer,
+       NoteTaskIdentifier.OneHundredAndTwentyFiveYearLease,
+       NoteTaskIdentifier.Subleases,
+       NoteTaskIdentifier.TenancyAtWill,
+       NoteTaskIdentifier.ConfirmSchoolHasCompletedAllActions,       
+       NoteTaskIdentifier.ShareInformationAboutOpening,
+       NoteTaskIdentifier.ConfirmAcademyOpenedDate
+    ];
 
     public bool CanEditNote(UserId noteUserId)
     {
@@ -68,10 +105,35 @@ public class BaseProjectTaskModel(ISender sender, IAuthorizationService authoriz
         }
 
         return Redirect(string.Format(RouteConstants.ProjectAddTaskNote, ProjectId, TaskIdentifier.ToDescription()));
+    }   
+
+    protected bool InvalidTaskRequestByProjectType()
+    {
+        if (Project.Type == ProjectType.Conversion && TaskIdentifierIsTransferTaskExclusive())
+        {
+            return true;
+        }
+
+        if (Project.Type == ProjectType.Transfer && TaskIdentifierIsConversionTaskExclusive())
+        {
+            return true;
+        }
+
+        return false;
     }
 
     internal void SetTaskSuccessNotification()
     {
         TempData.SetNotification(NotificationType.Success, "Success", "Task updated successfully");
+    }
+
+    private bool TaskIdentifierIsTransferTaskExclusive()
+    {
+        return TransferTasksExclusiveNoteIdentifier.Contains(TaskIdentifier);
+    }
+
+    private bool TaskIdentifierIsConversionTaskExclusive()
+    {
+        return ConversionTasksExclusiveNoteIdentifier.Contains(TaskIdentifier);
     }
 }

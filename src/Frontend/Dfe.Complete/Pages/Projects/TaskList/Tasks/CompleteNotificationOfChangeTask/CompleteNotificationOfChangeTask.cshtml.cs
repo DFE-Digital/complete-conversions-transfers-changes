@@ -29,6 +29,10 @@ namespace Dfe.Complete.Pages.Projects.TaskList.Tasks.CompleteNotificationOfChang
         public override async Task<IActionResult> OnGetAsync()
         {
             await base.OnGetAsync();
+
+            if (InvalidTaskRequestByProjectType())
+                return Redirect(RouteConstants.ErrorPage);
+
             TasksDataId = Project.TasksDataId?.Value;
             NotApplicable = ConversionTaskData.CompleteNotificationOfChangeNotApplicable;
             TellLocalAuthority = ConversionTaskData.CompleteNotificationOfChangeTellLocalAuthority;
