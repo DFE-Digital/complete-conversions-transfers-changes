@@ -44,3 +44,17 @@ public record CreateHandoverTransferProjectParams(
     ProjectGroupId? GroupId,
     UserId RegionalDeliveryOfficerId,
     Guid LocalAuthorityId);
+
+public record CreateHandoverTransferMatProjectParams(
+    ProjectId Id,
+    Urn Urn,
+    Guid TasksDataId,
+    DateOnly SignificantDate,
+    Ukprn OutgoingTrustUkprn,
+    Region? Region,
+    DateOnly AdvisoryBoardDate,
+    string? AdvisoryBoardConditions,
+    UserId RegionalDeliveryOfficerId,
+    Guid LocalAuthorityId,
+    string NewTrustReferenceNumber,
+    string NewTrustName);
