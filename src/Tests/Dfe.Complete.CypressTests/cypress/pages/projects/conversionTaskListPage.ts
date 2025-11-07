@@ -46,7 +46,7 @@ class ConversionTaskListPage {
             "Share the information about opening",
         ],
         afterOpening: [
-            "Confirm the date the academy opened",
+            "Confirm the academy open date",
             "Redact and send documents",
             "Receive declaration of expenditure certificate",
         ],
