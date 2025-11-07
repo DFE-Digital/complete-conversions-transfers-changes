@@ -15,7 +15,7 @@ const schoolName = "Hele's School";
 
 describe("Search bar tests", () => {
     before(() => {
-        projectRemover.removeProjectIfItExists(project.urn.value);
+        projectRemover.removeProjectIfItExists(project.urn);
         projectApi.createConversionProject(project);
     });
 

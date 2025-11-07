@@ -26,7 +26,7 @@ const inNineMonthsYear = getYearNumber(9);
 const inNineMonthsDate = getDisplayDateString(9);
 
 const confirmedDateProject = ProjectBuilder.createConversionFormAMatProjectRequest({
-    urn: { value: urnPool.conversion.stChads },
+    urn: urnPool.conversion.stChads
     significantDate: inSixMonthsSignificantDate,
     isSignificantDateProvisional: false,
 });
@@ -34,15 +34,17 @@ let confirmedDateProjectId: string;
 const confirmedDateSchoolName = "St Chad's Catholic Primary School";
 
 const provisionalDateProject = ProjectBuilder.createConversionFormAMatProjectRequest({
-    urn: { value: urnPool.conversion.jessons },
+    urn: urnPool.conversion.jessons,
     isSignificantDateProvisional: true,
 });
 let provisionalDateProjectId: string;
 
 const otherUserProject = ProjectBuilder.createConversionFormAMatProjectRequest({
-    urn: { value: urnPool.conversion.cradley },
+    urn: urnPool.conversion.jessons,
     isSignificantDateProvisional: false,
-    userAdId: rdoLondonUser.adId,
+    createdByEmail: rdoLondonUser.email,
+    createdByFirstName: rdoLondonUser.firstName,
+    createdByLastName: rdoLondonUser.lastName,,
 });
 let otherUserProjectId: string;
 
@@ -50,7 +52,7 @@ describe("Change the conversion date tests", () => {
     before(() => {
         projectRemover.removeProjectIfItExists(confirmedDateProject.urn.value);
         projectRemover.removeProjectIfItExists(provisionalDateProject.urn.value);
-        projectRemover.removeProjectIfItExists(otherUserProject.urn.value);
+        projectRemover.removeProjectIfItExists(otherUserProject.urn);
         projectApi
             .createMatConversionProject(confirmedDateProject)
             .then((response) => (confirmedDateProjectId = response.value));

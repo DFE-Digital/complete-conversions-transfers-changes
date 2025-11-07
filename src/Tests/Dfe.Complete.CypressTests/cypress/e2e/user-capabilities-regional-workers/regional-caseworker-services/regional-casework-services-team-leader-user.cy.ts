@@ -38,7 +38,7 @@ let projectId: string;
 describe("Capabilities and permissions of the regional casework services team leader user", () => {
     before(() => {
         projectRemover.removeProjectIfItExists(unassignedProject.urn.value);
-        projectRemover.removeProjectIfItExists(project.urn.value);
+        projectRemover.removeProjectIfItExists(project.urn);
         projectApi.createTransferProject(unassignedProject);
         projectApi.createMatConversionProject(project).then((response) => (projectId = response.value));
     });

@@ -10,28 +10,28 @@ import { checkAccessibilityAcrossPages } from "cypress/support/reusableTests";
 import { urnPool } from "cypress/constants/testUrns";
 
 const conversionProject = ProjectBuilder.createConversionProjectRequest({
-    significantDate: "2026-04-01",
-    urn: { value: urnPool.listings.heles },
+    provisionalConversionDate: "2026-04-01",
+    urn: urnPool.listings.heles,
 });
 const conversionSchoolName = "Hele's School";
-const transferProject = ProjectBuilder.createTransferProjectRequest({ urn: { value: urnPool.listings.queen } });
+const transferProject = ProjectBuilder.createTransferProjectRequest({ urn: urnPool.listings.queen });
 let transferProjectId: string;
 const transferSchoolName = "Queen Elizabeth Grammar School Penrith";
 const conversionFormAMatProject = ProjectBuilder.createConversionFormAMatProjectRequest({
-    urn: { value: urnPool.listings.themount },
+    urn: urnPool.listings.themount,
 });
 const conversionFormAMatSchoolName = "The Mount School";
 const transferFormAMatProject = ProjectBuilder.createTransferFormAMatProjectRequest({
-    urn: { value: urnPool.listings.myddle },
+    urn: urnPool.listings.myddle,
 });
 const transferFormAMatSchoolName = "Myddle CofE Primary School";
 
 describe("View your projects", () => {
     before(() => {
-        projectRemover.removeProjectIfItExists(conversionProject.urn.value);
-        projectRemover.removeProjectIfItExists(transferProject.urn.value);
-        projectRemover.removeProjectIfItExists(conversionFormAMatProject.urn.value);
-        projectRemover.removeProjectIfItExists(transferFormAMatProject.urn.value);
+        projectRemover.removeProjectIfItExists(conversionProject.urn);
+        projectRemover.removeProjectIfItExists(transferProject.urn);
+        projectRemover.removeProjectIfItExists(conversionFormAMatProject.urn);
+        projectRemover.removeProjectIfItExists(transferFormAMatProject.urn);
         projectApi.createConversionProject(conversionProject);
         projectApi.createTransferProject(transferProject).then((response) => (transferProjectId = response.value));
         projectApi.createMatConversionProject(conversionFormAMatProject);
@@ -58,7 +58,7 @@ describe("View your projects", () => {
                 "Conversion or transfer date",
             ])
             .withSchool(conversionSchoolName)
-            .columnHasValue("URN", `${conversionProject.urn.value}`)
+            .columnHasValue("URN", `${conversionProject.urn}`)
             .columnHasValue("Type of project", "Conversion")
             .columnHasValue("Form a MAT project", "No")
             // .columnHasValue("Incoming trust", trust) // bug 208086
@@ -73,7 +73,7 @@ describe("View your projects", () => {
         yourProjects.goToNextPageUntilFieldIsVisible(transferSchoolName);
         projectTable
             .withSchool(transferSchoolName)
-            .columnHasValue("URN", `${transferProject.urn.value}`)
+            .columnHasValue("URN", `${transferProject.urn}`)
             .columnHasValue("Type of project", "Transfer")
             .columnHasValue("Form a MAT project", "No")
             .columnContainsValue("Incoming trust", dimensionsTrust.name.toUpperCase()) // bug 208086
@@ -88,7 +88,7 @@ describe("View your projects", () => {
         yourProjects.goToNextPageUntilFieldIsVisible(conversionFormAMatSchoolName);
         projectTable
             .withSchool(conversionFormAMatSchoolName)
-            .columnHasValue("URN", `${conversionFormAMatProject.urn.value}`)
+            .columnHasValue("URN", `${conversionFormAMatProject.urn}`)
             .columnHasValue("Type of project", "Conversion")
             .columnHasValue("Form a MAT project", "Yes")
             .columnContainsValue("Incoming trust", macclesfieldTrust.name)
@@ -103,7 +103,7 @@ describe("View your projects", () => {
         yourProjects.goToNextPageUntilFieldIsVisible(transferFormAMatSchoolName);
         projectTable
             .withSchool(transferFormAMatSchoolName)
-            .columnHasValue("URN", `${transferFormAMatProject.urn.value}`)
+            .columnHasValue("URN", `${transferFormAMatProject.urn}`)
             .columnHasValue("Type of project", "Transfer")
             .columnHasValue("Form a MAT project", "Yes")
             .columnContainsValue("Incoming trust", dimensionsTrust.name)
@@ -129,7 +129,7 @@ describe("View your projects", () => {
                 "Assigned to",
             ])
             .withSchool(conversionSchoolName)
-            .columnHasValue("URN", `${conversionProject.urn.value}`)
+            .columnHasValue("URN", `${conversionProject.urn}`)
             .columnHasValue("Conversion or transfer date", "Apr 2026")
             .columnHasValue("Project type", "Conversion")
             .columnHasValue("Form a MAT project", "No")
@@ -152,7 +152,7 @@ describe("View your projects", () => {
                 "Project completion date",
             ])
             .withSchool(transferSchoolName)
-            .columnHasValue("URN", `${transferProject.urn.value}`)
+            .columnHasValue("URN", `${transferProject.urn}`)
             .columnHasValue("Local authority", "Westmorland and Furness")
             .columnHasValue("Team", "London")
             .columnHasValue("Type of project", "Transfer")

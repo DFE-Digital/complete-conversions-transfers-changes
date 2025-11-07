@@ -7,13 +7,13 @@ import daoRevocation from "cypress/pages/projects/daoRevocation";
 import projectDetailsPage from "cypress/pages/projects/projectDetails/projectDetailsPage";
 
 const directiveAcademyOrderProject = ProjectBuilder.createConversionProjectRequest({
-    urn: { value: urnPool.conversion.stChads },
+    urn: urnPool.conversion.stChads
     hasAcademyOrderBeenIssued: true,
 });
 let directiveAcademyOrderId: string;
 
 const academyOrderProject = ProjectBuilder.createConversionFormAMatProjectRequest({
-    urn: { value: urnPool.conversion.jessons },
+    urn: urnPool.conversion.jessons,
     hasAcademyOrderBeenIssued: false,
 });
 let academyOrderId: string;

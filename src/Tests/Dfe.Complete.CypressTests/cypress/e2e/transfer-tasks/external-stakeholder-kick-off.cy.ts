@@ -19,28 +19,30 @@ import validationComponent from "cypress/pages/validationComponent";
 import { urnPool } from "cypress/constants/testUrns";
 
 const project = ProjectBuilder.createTransferProjectRequest({
-    urn: { value: urnPool.transferTasks.coquet },
+    urn: urnPool.transferTasks.coquet,
     isSignificantDateProvisional: true,
 });
 let projectId: string;
 const project2 = ProjectBuilder.createTransferFormAMatProjectRequest({
     significantDate: getSignificantDateString(12),
     isSignificantDateProvisional: true,
-    urn: { value: urnPool.transferTasks.marden },
+    urn: urnPool.transferTasks.marden,
 });
 let project2Id: string;
 const otherUserProject = ProjectBuilder.createTransferFormAMatProjectRequest({
     isSignificantDateProvisional: true,
-    userAdId: rdoLondonUser.adId,
+    createdByEmail: rdoLondonUser.email,
+    createdByFirstName: rdoLondonUser.firstName,
+    createdByLastName: rdoLondonUser.lastName,,
     urn: { value: urnPool.transferTasks.whitley },
 });
 let otherUserProjectId: string;
 
 describe("Transfers tasks - External stakeholder kick-off", () => {
     before(() => {
-        projectRemover.removeProjectIfItExists(project.urn.value);
+        projectRemover.removeProjectIfItExists(project.urn);
         projectRemover.removeProjectIfItExists(project2.urn.value);
-        projectRemover.removeProjectIfItExists(otherUserProject.urn.value);
+        projectRemover.removeProjectIfItExists(otherUserProject.urn);
         projectApi.createTransferProject(project).then((createResponse) => {
             projectId = createResponse.value;
         });

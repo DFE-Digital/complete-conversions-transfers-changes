@@ -7,24 +7,26 @@ import taskPage from "cypress/pages/projects/tasks/taskPage";
 import { checkAccessibilityAcrossPages } from "cypress/support/reusableTests";
 
 const project = ProjectBuilder.createConversionProjectRequest({
-    urn: { value: urnPool.conversionTasks.spen },
+    urn: urnPool.conversionTasks.spen,
 });
 let projectId: string;
 const projectWithoutContact = ProjectBuilder.createConversionProjectRequest({
-    urn: { value: urnPool.conversionTasks.huddersfield },
+    urn: urnPool.conversionTasks.huddersfield,
 });
 let projectWithoutContactId: string;
 const otherUserProject = ProjectBuilder.createConversionFormAMatProjectRequest({
-    urn: { value: urnPool.conversionTasks.grylls },
-    userAdId: rdoLondonUser.adId,
+    urn: urnPool.conversionTasks.grylls,
+    createdByEmail: rdoLondonUser.email,
+    createdByFirstName: rdoLondonUser.firstName,
+    createdByLastName: rdoLondonUser.lastName,,
 });
 let otherUserProjectId: string;
 
 describe("Conversion Tasks - Confirm the headteacher's details", () => {
     before(() => {
-        projectRemover.removeProjectIfItExists(project.urn.value);
+        projectRemover.removeProjectIfItExists(project.urn);
         projectRemover.removeProjectIfItExists(projectWithoutContact.urn.value);
-        projectRemover.removeProjectIfItExists(otherUserProject.urn.value);
+        projectRemover.removeProjectIfItExists(otherUserProject.urn);
         projectApi.createConversionProject(project).then((createResponse) => {
             projectId = createResponse.value;
         });

@@ -7,7 +7,7 @@ import taskPage from "cypress/pages/projects/tasks/taskPage";
 import { checkAccessibilityAcrossPages } from "cypress/support/reusableTests";
 
 const project = ProjectBuilder.createTransferProjectRequest({
-    urn: { value: urnPool.transferTasks.coquet },
+    urn: urnPool.transferTasks.coquet,
 });
 let projectId: string;
 const projectWithoutCEOContact = ProjectBuilder.createTransferProjectRequest({
@@ -15,15 +15,17 @@ const projectWithoutCEOContact = ProjectBuilder.createTransferProjectRequest({
 });
 let projectWithoutCEOContactId: string;
 const otherUserProject = ProjectBuilder.createTransferFormAMatProjectRequest({
-    urn: { value: urnPool.transferTasks.marden },
-    userAdId: rdoLondonUser.adId,
+    urn: urnPool.transferTasks.marden,
+    createdByEmail: rdoLondonUser.email,
+    createdByFirstName: rdoLondonUser.firstName,
+    createdByLastName: rdoLondonUser.lastName,,
 });
 let otherUserProjectId: string;
 
 describe("Transfer Tasks - Confirm the outgoing trust CEO's details", () => {
     before(() => {
-        projectRemover.removeProjectIfItExists(project.urn.value);
-        projectRemover.removeProjectIfItExists(otherUserProject.urn.value);
+        projectRemover.removeProjectIfItExists(project.urn);
+        projectRemover.removeProjectIfItExists(otherUserProject.urn);
         projectApi.createTransferProject(project).then((createResponse) => {
             projectId = createResponse.value;
         });

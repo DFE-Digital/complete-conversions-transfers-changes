@@ -8,19 +8,19 @@ import yourProjects from "cypress/pages/projects/yourProjects";
 import { getSignificantDateString } from "cypress/support/formatDate";
 
 const completableProject = ProjectBuilder.createConversionProjectRequest({
-    urn: { value: urnPool.conversion.stChads },
+    urn: urnPool.conversion.stChads
     isSignificantDateProvisional: true,
 });
 let completableProjectId: string;
 const completableSchoolName = "St Chad's Catholic Primary School";
 
 const someTasksCompletedProject = ProjectBuilder.createConversionFormAMatProjectRequest({
-    urn: { value: urnPool.conversion.cradley },
+    urn: urnPool.conversion.cradley,
 });
 let someTasksCompletedProjectId: string;
 
 const noTasksCompletedProject = ProjectBuilder.createConversionFormAMatProjectRequest({
-    urn: { value: urnPool.conversion.jessons },
+    urn: urnPool.conversion.jessons,
 });
 let noTasksCompletedProjectId: string;
 

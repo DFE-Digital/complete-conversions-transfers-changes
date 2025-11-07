@@ -33,7 +33,7 @@ let projectId: string;
 const schoolName = "Whitcliffe Mount School";
 describe("Capabilities and permissions of the business support user", () => {
     before(() => {
-        projectRemover.removeProjectIfItExists(project.urn.value);
+        projectRemover.removeProjectIfItExists(project.urn);
         projectApi.createConversionProject(project).then((response) => (projectId = response.value));
     });
     beforeEach(() => {

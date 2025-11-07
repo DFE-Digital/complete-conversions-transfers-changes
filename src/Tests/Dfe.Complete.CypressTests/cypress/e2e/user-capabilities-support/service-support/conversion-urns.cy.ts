@@ -33,7 +33,7 @@ const schoolWithAcademyName = "Kinnerley Church of England Controlled Primary Sc
 
 describe("Service support user - Conversion URNs: ", () => {
     before(() => {
-        projectRemover.removeProjectIfItExists(project.urn.value);
+        projectRemover.removeProjectIfItExists(project.urn);
         projectRemover.removeProjectIfItExists(project2.urn.value);
         projectRemover.removeProjectIfItExists(projectWithAcademy.urn.value);
         projectApi.createConversionProject(project);

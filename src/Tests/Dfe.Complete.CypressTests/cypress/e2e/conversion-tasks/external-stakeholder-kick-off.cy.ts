@@ -20,28 +20,30 @@ import validationComponent from "cypress/pages/validationComponent";
 import { urnPool } from "cypress/constants/testUrns";
 
 const project = ProjectBuilder.createConversionProjectRequest({
-    urn: { value: urnPool.conversionTasks.spen },
+    urn: urnPool.conversionTasks.spen,
     isSignificantDateProvisional: true,
 });
 let projectId: string;
 const project2 = ProjectBuilder.createConversionFormAMatProjectRequest({
     significantDate: getSignificantDateString(12),
     isSignificantDateProvisional: true,
-    urn: { value: urnPool.conversionTasks.grylls },
+    urn: urnPool.conversionTasks.grylls,
 });
 let project2Id: string;
 const otherUserProject = ProjectBuilder.createConversionFormAMatProjectRequest({
     isSignificantDateProvisional: true,
-    userAdId: rdoLondonUser.adId,
-    urn: { value: urnPool.conversionTasks.huddersfield },
+    createdByEmail: rdoLondonUser.email,
+    createdByFirstName: rdoLondonUser.firstName,
+    createdByLastName: rdoLondonUser.lastName,,
+    urn: urnPool.conversionTasks.huddersfield,
 });
 let otherUserProjectId: string;
 
 describe("Conversion tasks - External stakeholder kick-off", () => {
     before(() => {
-        projectRemover.removeProjectIfItExists(project.urn.value);
+        projectRemover.removeProjectIfItExists(project.urn);
         projectRemover.removeProjectIfItExists(project2.urn.value);
-        projectRemover.removeProjectIfItExists(otherUserProject.urn.value);
+        projectRemover.removeProjectIfItExists(otherUserProject.urn);
         projectApi.createConversionProject(project).then((createResponse) => {
             projectId = createResponse.value;
         });

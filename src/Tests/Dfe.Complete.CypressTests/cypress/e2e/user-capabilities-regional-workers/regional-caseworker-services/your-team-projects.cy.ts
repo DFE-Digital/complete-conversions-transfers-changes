@@ -12,23 +12,27 @@ import { urnPool } from "cypress/constants/testUrns";
 import projectDetailsPage from "cypress/pages/projects/projectDetails/projectDetailsPage";
 
 const project = ProjectBuilder.createConversionProjectRequest({
-    significantDate: "2026-04-01",
-    urn: { value: urnPool.regionalWorker.morda },
-    userAdId: regionalCaseworkerUser.adId,
+    provisionalConversionDate: "2026-04-01",
+    urn: urnPool.regionalWorker.morda,
+    createdByEmail: regionalCaseworkerUser.email,
+    createdByFirstName: regionalCaseworkerUser.firstName,
+    createdByLastName: regionalCaseworkerUser.lastName,
 });
 const schoolName = "Morda CofE Primary School";
 const teammatesProject = ProjectBuilder.createConversionProjectRequest({
-    significantDate: "2026-04-01",
-    urn: { value: urnPool.regionalWorker.mountjoy },
-    userAdId: regionalCaseworkerTeamLeaderUser.adId,
+    provisionalConversionDate: "2026-04-01",
+    urn: urnPool.regionalWorker.mountjoy,
+    createdByEmail: regionalCaseworkerTeamLeaderUser.email,
+    createdByFirstName: regionalCaseworkerTeamLeaderUser.firstName,
+    createdByLastName: regionalCaseworkerTeamLeaderUser.lastName,
 });
 let teammatesProjectId: string;
 const teammatesSchoolName = "Mountjoy House School";
 
 describe("Regional caseworker services user - View your team projects", () => {
     before(() => {
-        projectRemover.removeProjectIfItExists(project.urn.value);
-        projectRemover.removeProjectIfItExists(teammatesProject.urn.value);
+        projectRemover.removeProjectIfItExists(project.urn);
+        projectRemover.removeProjectIfItExists(teammatesProject.urn);
         projectApi.createConversionProject(project, regionalCaseworkerUser.email);
         projectApi
             .createConversionProject(teammatesProject, regionalCaseworkerTeamLeaderUser.email)
@@ -56,7 +60,7 @@ describe("Regional caseworker services user - View your team projects", () => {
                 "Conversion or transfer date",
             ])
             .withSchool(schoolName)
-            .columnHasValue("URN", `${project.urn.value}`)
+            .columnHasValue("URN", `${project.urn}`)
             .columnHasValue("Local authority", "Shropshire")
             .columnHasValue("Region", "West Midlands")
             .columnHasValue("Assigned to", regionalCaseworkerUser.username)
@@ -83,7 +87,7 @@ describe("Regional caseworker services user - View your team projects", () => {
                 "Conversion or transfer date",
             ])
             .withSchool(teammatesSchoolName)
-            .columnHasValue("URN", `${teammatesProject.urn.value}`)
+            .columnHasValue("URN", `${teammatesProject.urn}`)
             .columnHasValue("Local authority", "Kirklees")
             .columnHasValue("Region", "Yorkshire and the Humber")
             .columnHasValue("Assigned to", regionalCaseworkerTeamLeaderUser.username)
@@ -108,7 +112,7 @@ describe("Regional caseworker services user - View your team projects", () => {
                 "Conversion or transfer date",
             ])
             .withSchool(teammatesSchoolName)
-            .columnHasValue("URN", `${teammatesProject.urn.value}`)
+            .columnHasValue("URN", `${teammatesProject.urn}`)
             .columnHasValue("Created at date", currentMonthShort)
             .columnHasValue("Region", "Yorkshire and the Humber")
             .columnHasValue("Assigned to", regionalCaseworkerTeamLeaderUser.username)
@@ -130,7 +134,7 @@ describe("Regional caseworker services user - View your team projects", () => {
         yourTeamProjectsTable
             .hasTableHeaders(["School or academy", "URN", "Conversion or transfer date", "Project type"])
             .withSchool(teammatesSchoolName)
-            .columnHasValue("URN", `${teammatesProject.urn.value}`)
+            .columnHasValue("URN", `${teammatesProject.urn}`)
             .columnHasValue("Conversion or transfer date", "Apr 2026")
             .columnHasValue("Project type", "Conversion")
             .goTo(teammatesSchoolName);
@@ -152,7 +156,7 @@ describe("Regional caseworker services user - View your team projects", () => {
                 "Project completion date",
             ])
             .withSchool(teammatesSchoolName)
-            .columnHasValue("URN", `${teammatesProject.urn.value}`)
+            .columnHasValue("URN", `${teammatesProject.urn}`)
             .columnHasValue("Local authority", "Kirklees")
             .columnHasValue("Region", "Yorkshire and the Humber")
             .columnHasValue("Type of project", "Conversion")

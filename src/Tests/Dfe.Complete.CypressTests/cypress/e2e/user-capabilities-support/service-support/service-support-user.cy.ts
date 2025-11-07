@@ -24,7 +24,7 @@ let projectToDeleteId: string;
 const schoolToDeleteName = "Kinnerley Church of England Controlled Primary School";
 describe("Capabilities and permissions of the service support user", () => {
     before(() => {
-        projectRemover.removeProjectIfItExists(project.urn.value);
+        projectRemover.removeProjectIfItExists(project.urn);
         projectRemover.removeProjectIfItExists(projectToDelete.urn.value);
         projectApi.createConversionProject(project).then((response) => (projectId = response.value));
         projectApi.createConversionProject(projectToDelete).then((response) => (projectToDeleteId = response.value));
