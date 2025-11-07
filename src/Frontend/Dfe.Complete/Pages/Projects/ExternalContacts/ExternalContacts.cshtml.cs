@@ -3,12 +3,10 @@ using Dfe.Complete.Application.Contacts.Queries;
 using Dfe.Complete.Application.Extensions;
 using Dfe.Complete.Application.LocalAuthorities.Queries.GetLocalAuthority;
 using Dfe.Complete.Application.Services.PersonsApi;
-using Dfe.Complete.Domain.Constants;
 using Dfe.Complete.Domain.Enums;
 using Dfe.Complete.Models.ExternalContact;
 using Dfe.Complete.Pages.Projects.ProjectView;
 using MediatR;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Distributed;
 
