@@ -17,24 +17,35 @@ Security in case of vulnerabilities.
 ## Unreleased
 
 ### Added
-- Added 'Confirm the incoming trust has completed all actions' task
-- Added `Request a new URN and record for the academy` task for transfer projects.
-- Added `Trust modification order task` task for conversion projects.
-- Added `Delete project` functionality.
-- Added `Share the information about the opening' task for conversion project.
-- Added `Subleases` task
-- Added `Tenancy at will` task for conversion project.
-- Added project group creation end point
-- Added MAT Conversion creation end point for prepare to complete 
+- Added MAT Transfer creation end point for prepare to complete 
 - Added `Sponsored support grant` task for conversion and transfer project.
 
+See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-11-06.1066...main) for everything awaiting release
+
+---
+
+## [1.27.0](https://github.com/DFE-Digital/complete-conversions-transfers-changes/releases/tag/production-2025-11-06.1066) - 2025-11-06
+
+### Added
+- Added project group creation end point
+- Added MAT Conversion creation end point for prepare to complete 
+- Added `Check and clear Form M` task for transfer projects.
+- Added `Closure or transfer declraration` task for transfer projects.
+- Added `125 year lease` task for conversion project.
+- Added `Confirm the incoming trust has completed all actions` task for transfer projects.
+
+### Changed
+- Remove buttons and links to external contacts for users without access
 
 ### Deprecated
 - create conversion project end point not in use due to in-app project creations being a workaround 
 - create MAT conversion project end point not in use due to in-app project creations being a workaround 
 - create transfer project end point not in use due to in-app project creations being a workaround 
 
-See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-10-31.1038...main) for everything awaiting release
+### Fixed
+- Fixed assign project return url issue.
+
+See the [full commit history](https://github.com/DFE-Digital/complete-conversions-transfers-changes/compare/production-2025-10-31.1038...production-2025-11-06.1066) for everything in the release
 
 ---
 
@@ -48,8 +59,6 @@ See the [full commit history](https://github.com/DFE-Digital/complete-conversion
 - Added `Subleases` task
 - Added `Tenancy at will` task for conversion project.
 - Added `Outgoing Trust CEO contact` task page
-- Added `125 year lease` task for conversion project.
-- Added `Sponsored support grant` task for conversion and transfer project.
 
 ### Changed
 - Removed validation for academy transfer date and updated the title for transfer projects.

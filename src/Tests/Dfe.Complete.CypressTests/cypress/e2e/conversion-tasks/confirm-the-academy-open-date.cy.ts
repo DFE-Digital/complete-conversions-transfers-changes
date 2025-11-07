@@ -18,7 +18,7 @@ const otherUserProject = ProjectBuilder.createConversionFormAMatProjectRequest({
 });
 let otherUserProjectId: string;
 
-describe("Conversion tasks - confirm the date the academy opened", () => {
+describe("Conversion tasks - Confirm the academy open date", () => {
     before(() => {
         projectRemover.removeProjectIfItExists(project.urn.value);
         projectRemover.removeProjectIfItExists(otherUserProject.urn.value);
@@ -36,18 +36,18 @@ describe("Conversion tasks - confirm the date the academy opened", () => {
         cy.visit(`projects/${projectId}/tasks/confirm_date_academy_opened`);
     });
 
-    it("should submit the form and persist selections", () => {
+    it("should be able to input a valid past or future date", () => {
         Logger.log("Input the date and save");
         taskPage.enterDate("10", "10", "2024", "opened-date").saveAndReturn();
         taskListPage
-            .hasTaskStatusCompleted("Confirm the date the academy opened")
-            .selectTask("Confirm the date the academy opened");
+            .hasTaskStatusCompleted("Confirm the academy open date")
+            .selectTask("Confirm the academy open date");
 
         Logger.log("Confirm date persists and clear date");
         taskPage.hasDate("10", "10", "2024", "opened-date").enterDate("", "", "", "opened-date").saveAndReturn();
         taskListPage
-            .hasTaskStatusNotStarted("Confirm the date the academy opened")
-            .selectTask("Confirm the date the academy opened");
+            .hasTaskStatusNotStarted("Confirm the academy open date")
+            .selectTask("Confirm the academy open date");
         taskPage.hasDate("", "", "", "opened-date");
     });
 

@@ -1,5 +1,8 @@
 ﻿@using Dfe.Complete.Constants
+@using Dfe.Complete.Domain.Enums
 @using Dfe.Complete.TagHelpers
+@using Dfe.Complete.Utils;
+
 @model Dfe.Complete.Pages.Projects.TaskList.TaskListModel
 @inject Dfe.Complete.Services.IProjectPermissionService projectPermissionService;
 @{
@@ -283,7 +286,7 @@
                         <ul class="app-task-list__items">
                             <li class="app-task-list__item">
                                 <span class="app-task-list__task-name">
-                                    <a aria-describedby="confirm-the-date-the-academy-opened-status" class="govuk-link" href="@confirmDateAcademyOpenedLink">Confirm the date the academy opened</a>
+                                    <a aria-describedby="confirm-the-date-the-academy-opened-status" class="govuk-link" href="@confirmDateAcademyOpenedLink">@NoteTaskIdentifier.ConfirmAcademyOpenedDate.ToDisplayDescription()</a>
                                 </span>
                                 <partial name="Shared/_TaskListStatus" model="@Model.ConversionTaskList.ConfirmDateAcademyOpened" />
                             </li>
