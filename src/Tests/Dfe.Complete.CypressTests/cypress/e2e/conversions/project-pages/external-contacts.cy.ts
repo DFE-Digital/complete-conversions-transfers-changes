@@ -10,7 +10,7 @@ import { urnPool } from "cypress/constants/testUrns";
 
 const incomingTrust = macclesfieldTrust;
 const project = ProjectBuilder.createConversionProjectRequest({
-    urn: { value: urnPool.conversion.stChads },
+    urn: urnPool.conversion.stChads
     incomingTrustUkprn: { value: incomingTrust.ukprn },
 });
 let projectId: string;
@@ -91,7 +91,7 @@ const contacts: {
 
 describe("Add external contacts tests:", () => {
     before(() => {
-        projectRemover.removeProjectIfItExists(project.urn.value);
+        projectRemover.removeProjectIfItExists(project.urn);
         projectApi.createConversionProject(project).then((response) => (projectId = response.value));
     });
     beforeEach(() => {

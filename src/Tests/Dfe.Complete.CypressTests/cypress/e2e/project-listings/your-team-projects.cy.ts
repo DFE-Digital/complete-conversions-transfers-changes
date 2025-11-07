@@ -14,29 +14,26 @@ import { urnPool } from "cypress/constants/testUrns";
 
 const team = "London";
 const myLondonProject = ProjectBuilder.createConversionProjectRequest({
-    significantDate: "2026-04-01",
-    urn: { value: urnPool.listings.cityHighgate },
+    provisionalConversionDate: "2026-04-01",
+    urn: urnPool.listings.cityHighgate,
 });
 const myLondonSchoolName = "City of London Academy, Highgate Hill";
 const teammatesLondonRegionProject = ProjectBuilder.createConversionProjectRequest({
-    significantDate: "2026-04-01",
-    urn: { value: urnPool.listings.stJohns },
-    userAdId: rdoLondonUser.adId,
+    provisionalConversionDate: "2026-04-01",
+    urn: urnPool.listings.stJohns,
 });
 let teammatesLondonRegionProjectId: string;
 const teammatesLondonSchoolName = "St John's and St Clement's Church of England Primary School";
 const handedOverProject = ProjectBuilder.createTransferProjectRequest({
-    urn: { value: urnPool.listings.cityIslington },
-    handingOverToRegionalCaseworkService: true,
-    userAdId: rdoLondonUser.adId,
+    urn: urnPool.listings.cityIslington,
 });
 const handedOverSchoolName = "City of London Academy Islington";
 
 describe("Regional delivery officer (London) user - View your team projects (projects with London region)", () => {
     before(() => {
-        projectRemover.removeProjectIfItExists(myLondonProject.urn.value);
-        projectRemover.removeProjectIfItExists(teammatesLondonRegionProject.urn.value);
-        projectRemover.removeProjectIfItExists(handedOverProject.urn.value);
+        projectRemover.removeProjectIfItExists(myLondonProject.urn);
+        projectRemover.removeProjectIfItExists(teammatesLondonRegionProject.urn);
+        projectRemover.removeProjectIfItExists(handedOverProject.urn);
         projectApi.createConversionProject(myLondonProject);
         projectApi
             .createConversionProject(teammatesLondonRegionProject, rdoLondonUser.email)
@@ -67,7 +64,7 @@ describe("Regional delivery officer (London) user - View your team projects (pro
                 "Conversion or transfer date",
             ])
             .withSchool(myLondonSchoolName)
-            .columnHasValue("URN", `${myLondonProject.urn.value}`)
+            .columnHasValue("URN", `${myLondonProject.urn}`)
             .columnHasValue("Local authority", "Islington")
             .columnHasValue("Team", team)
             .columnHasValue("Assigned to", cypressUser.username)
@@ -94,7 +91,7 @@ describe("Regional delivery officer (London) user - View your team projects (pro
                 "Conversion or transfer date",
             ])
             .withSchool(teammatesLondonSchoolName)
-            .columnHasValue("URN", `${teammatesLondonRegionProject.urn.value}`)
+            .columnHasValue("URN", `${teammatesLondonRegionProject.urn}`)
             .columnHasValue("Local authority", "Southwark")
             .columnHasValue("Team", team)
             .columnHasValue("Assigned to", rdoLondonUser.username)
@@ -119,7 +116,7 @@ describe("Regional delivery officer (London) user - View your team projects (pro
                 "Conversion or transfer date",
             ])
             .withSchool(teammatesLondonSchoolName)
-            .columnHasValue("URN", `${teammatesLondonRegionProject.urn.value}`)
+            .columnHasValue("URN", `${teammatesLondonRegionProject.urn}`)
             .columnHasValue("Created at date", currentMonthShort)
             .columnHasValue("Team", team)
             .columnHasValue("Assigned to", rdoLondonUser.username)
@@ -141,7 +138,7 @@ describe("Regional delivery officer (London) user - View your team projects (pro
         yourTeamProjectsTable
             .hasTableHeaders(["School or academy", "URN", "Conversion or transfer date", "Project type"])
             .withSchool(teammatesLondonSchoolName)
-            .columnHasValue("URN", `${teammatesLondonRegionProject.urn.value}`)
+            .columnHasValue("URN", `${teammatesLondonRegionProject.urn}`)
             .columnHasValue("Conversion or transfer date", "Apr 2026")
             .columnHasValue("Project type", "Conversion")
             .goTo(teammatesLondonSchoolName);
@@ -156,7 +153,7 @@ describe("Regional delivery officer (London) user - View your team projects (pro
         yourTeamProjectsTable
             .hasTableHeaders(["School or academy", "URN", "Conversion or transfer date", "Project type", "Assigned to"])
             .withSchool(handedOverSchoolName)
-            .columnHasValue("URN", `${handedOverProject.urn.value}`)
+            .columnHasValue("URN", `${handedOverProject.urn}`)
             .columnHasValue("Conversion or transfer date", "Mar 2026")
             .columnHasValue("Project type", "Transfer")
             .columnContainsValue("Assigned to", "Not yet assigned")
@@ -179,7 +176,7 @@ describe("Regional delivery officer (London) user - View your team projects (pro
                 "Project completion date",
             ])
             .withSchool(teammatesLondonSchoolName)
-            .columnHasValue("URN", `${teammatesLondonRegionProject.urn.value}`)
+            .columnHasValue("URN", `${teammatesLondonRegionProject.urn}`)
             .columnHasValue("Local authority", "Southwark")
             .columnHasValue("Team", team)
             .columnHasValue("Type of project", "Conversion")

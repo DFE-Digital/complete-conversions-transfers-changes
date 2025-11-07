@@ -39,14 +39,16 @@ let provisionalDateProjectId: string;
 const otherUserProject = ProjectBuilder.createTransferProjectRequest({
     urn: { value: urnPool.transfer.prees },
     isSignificantDateProvisional: false,
-    userAdId: rdoLondonUser.adId,
+    createdByEmail: rdoLondonUser.email,
+    createdByFirstName: rdoLondonUser.firstName,
+    createdByLastName: rdoLondonUser.lastName,,
 });
 let otherUserProjectId: string;
 describe("Change the transfer date tests", () => {
     before(() => {
         projectRemover.removeProjectIfItExists(confirmedDateProject.urn.value);
         projectRemover.removeProjectIfItExists(provisionalDateProject.urn.value);
-        projectRemover.removeProjectIfItExists(otherUserProject.urn.value);
+        projectRemover.removeProjectIfItExists(otherUserProject.urn);
         projectApi
             .createTransferProject(confirmedDateProject)
             .then((response) => (confirmedDateProjectId = response.value));

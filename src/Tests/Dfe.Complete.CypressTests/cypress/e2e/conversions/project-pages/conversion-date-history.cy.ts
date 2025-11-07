@@ -18,7 +18,7 @@ const inNineMonthsSignificantDate = getSignificantDateString(9);
 const inNineMonthsDisplayDate = getDisplayDateString(9);
 
 const confirmedDateProject = ProjectBuilder.createConversionFormAMatProjectRequest({
-    urn: { value: urnPool.conversion.batmans },
+    urn: urnPool.conversion.batmans,
     significantDate: inSixMonthsSignificantDate,
     isSignificantDateProvisional: false,
 });

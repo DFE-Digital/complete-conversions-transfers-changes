@@ -9,19 +9,21 @@ import taskListPage from "cypress/pages/projects/tasks/taskListPage";
 import { checkAccessibilityAcrossPages } from "cypress/support/reusableTests";
 
 const project = ProjectBuilder.createTransferProjectRequest({
-    urn: { value: urnPool.transferTasks.coquet },
+    urn: urnPool.transferTasks.coquet,
 });
 let projectId: string;
 const otherUserProject = ProjectBuilder.createTransferFormAMatProjectRequest({
-    urn: { value: urnPool.transferTasks.marden },
-    userAdId: rdoLondonUser.adId,
+    urn: urnPool.transferTasks.marden,
+    createdByEmail: rdoLondonUser.email,
+    createdByFirstName: rdoLondonUser.firstName,
+    createdByLastName: rdoLondonUser.lastName,,
 });
 let otherUserProjectId: string;
 
 describe("Transfer tasks - Confirm if the bank details for the general annual grant payment need to change", () => {
     before(() => {
-        projectRemover.removeProjectIfItExists(project.urn.value);
-        projectRemover.removeProjectIfItExists(otherUserProject.urn.value);
+        projectRemover.removeProjectIfItExists(project.urn);
+        projectRemover.removeProjectIfItExists(otherUserProject.urn);
         projectApi.createTransferProject(project).then((createResponse) => {
             projectId = createResponse.value;
         });

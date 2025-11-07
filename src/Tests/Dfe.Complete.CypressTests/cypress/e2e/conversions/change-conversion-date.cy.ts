@@ -26,31 +26,30 @@ const inNineMonthsYear = getYearNumber(9);
 const inNineMonthsDate = getDisplayDateString(9);
 
 const confirmedDateProject = ProjectBuilder.createConversionFormAMatProjectRequest({
-    urn: { value: urnPool.conversion.stChads },
-    significantDate: inSixMonthsSignificantDate,
-    isSignificantDateProvisional: false,
+    urn: urnPool.conversion.stChads,
+    provisionalConversionDate: inSixMonthsSignificantDate
 });
 let confirmedDateProjectId: string;
 const confirmedDateSchoolName = "St Chad's Catholic Primary School";
 
 const provisionalDateProject = ProjectBuilder.createConversionFormAMatProjectRequest({
-    urn: { value: urnPool.conversion.jessons },
-    isSignificantDateProvisional: true,
+    urn: urnPool.conversion.jessons
 });
 let provisionalDateProjectId: string;
 
 const otherUserProject = ProjectBuilder.createConversionFormAMatProjectRequest({
-    urn: { value: urnPool.conversion.cradley },
-    isSignificantDateProvisional: false,
-    userAdId: rdoLondonUser.adId,
+    urn: urnPool.conversion.jessons,
+    createdByEmail: rdoLondonUser.email,
+    createdByFirstName: rdoLondonUser.firstName,
+    createdByLastName: rdoLondonUser.lastName,
 });
 let otherUserProjectId: string;
 
 describe("Change the conversion date tests", () => {
     before(() => {
-        projectRemover.removeProjectIfItExists(confirmedDateProject.urn.value);
-        projectRemover.removeProjectIfItExists(provisionalDateProject.urn.value);
-        projectRemover.removeProjectIfItExists(otherUserProject.urn.value);
+        projectRemover.removeProjectIfItExists(confirmedDateProject.urn);
+        projectRemover.removeProjectIfItExists(provisionalDateProject.urn);
+        projectRemover.removeProjectIfItExists(otherUserProject.urn);
         projectApi
             .createMatConversionProject(confirmedDateProject)
             .then((response) => (confirmedDateProjectId = response.value));
@@ -164,7 +163,7 @@ describe("Change the conversion date tests", () => {
         projectDetailsPage
             .contains("Conversion date changed")
             .contains(
-                `You have changed the conversion date for ${confirmedDateSchoolName}, URN ${confirmedDateProject.urn.value}.`,
+                `You have changed the conversion date for ${confirmedDateSchoolName}, URN ${confirmedDateProject.urn}.`,
             )
             .containsSubHeading("New conversion date")
             .contains(`The new conversion date is ${inNineMonthsDate}.`);

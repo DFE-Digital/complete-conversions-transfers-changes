@@ -13,7 +13,7 @@ import editConversionProjectPage from "cypress/pages/projects/edit/editConversio
 import { urnPool } from "cypress/constants/testUrns";
 
 const project = ProjectBuilder.createConversionProjectRequest({
-    urn: { value: urnPool.conversion.stChads },
+    urn: urnPool.conversion.stChads
     incomingTrustUkprn: { value: dimensionsTrust.ukprn },
     groupReferenceNumber: dimensionsTrust.groupReferenceNumber,
 });
@@ -32,7 +32,7 @@ const academy = {
 };
 
 const projectFormAMAT = ProjectBuilder.createConversionFormAMatProjectRequest({
-    urn: { value: urnPool.conversion.whitchurch },
+    urn: urnPool.conversion.whitchurch,
 });
 let projectFormAMATId: string;
 const formAMATSchoolName = "Whitchurch Primary School";
@@ -40,8 +40,10 @@ const formAMATLocalAuthority = "Bath and North East Somerset";
 const formAMATRegion = "South West";
 
 const teammatesProject = ProjectBuilder.createConversionFormAMatProjectRequest({
-    urn: { value: urnPool.conversion.stMarks },
-    userAdId: rdoLondonUser.adId,
+    urn: urnPool.conversion.stMarks,
+    createdByEmail: rdoLondonUser.email,
+    createdByFirstName: rdoLondonUser.firstName,
+    createdByLastName: rdoLondonUser.lastName,,
 });
 let teammatesProjectId: string;
 let formAMATChangeLinkPath: string;
@@ -49,7 +51,7 @@ let groupId: string;
 
 describe("About the project page - conversion projects: ", () => {
     before(() => {
-        projectRemover.removeProjectIfItExists(project.urn.value);
+        projectRemover.removeProjectIfItExists(project.urn);
         projectRemover.removeProjectIfItExists(projectFormAMAT.urn.value);
         projectRemover.removeProjectIfItExists(teammatesProject.urn.value);
         projectApi.createConversionProject(project).then((response) => {

@@ -26,7 +26,7 @@ const project = ProjectBuilder.createConversionProjectRequest({
 let projectId: string;
 describe("Capabilities and permissions of the regional casework services user", () => {
     before(() => {
-        projectRemover.removeProjectIfItExists(project.urn.value);
+        projectRemover.removeProjectIfItExists(project.urn);
         projectApi.createConversionProject(project).then((response) => (projectId = response.value));
     });
     beforeEach(() => {

@@ -4,7 +4,7 @@ import projectApi from "cypress/api/projectApi";
 import { urnPool } from "cypress/constants/testUrns";
 
 const project = ProjectBuilder.createConversionFormAMatProjectRequest({
-    urn: { value: urnPool.conversion.whitchurch },
+    urn: urnPool.conversion.whitchurch,
 });
 let projectId: string;
 

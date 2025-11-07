@@ -11,23 +11,25 @@ import TaskHelper from "cypress/api/taskHelper";
 import { urnPool } from "cypress/constants/testUrns";
 
 const project = ProjectBuilder.createTransferProjectRequest({
-    urn: { value: urnPool.transferTasks.coquet },
+    urn: urnPool.transferTasks.coquet,
 });
 let projectId: string;
 let taskId: string;
 const otherUserProject = ProjectBuilder.createTransferFormAMatProjectRequest({
-    urn: { value: urnPool.transferTasks.marden },
-    userAdId: rdoLondonUser.adId,
+    urn: urnPool.transferTasks.marden,
+    createdByEmail: rdoLondonUser.email,
+    createdByFirstName: rdoLondonUser.firstName,
+    createdByLastName: rdoLondonUser.lastName,,
 });
 let otherUserProjectId: string;
 
 describe("Transfer tasks - Supplemental funding agreement", () => {
     before(() => {
-        projectRemover.removeProjectIfItExists(project.urn.value);
-        projectRemover.removeProjectIfItExists(otherUserProject.urn.value);
+        projectRemover.removeProjectIfItExists(project.urn);
+        projectRemover.removeProjectIfItExists(otherUserProject.urn);
         projectApi.createTransferProject(project).then((createResponse) => {
             projectId = createResponse.value;
-            projectApi.getProject(project.urn.value).then((response) => {
+            projectApi.getProject(project.urn).then((response) => {
                 taskId = response.body.tasksDataId.value;
             });
         });

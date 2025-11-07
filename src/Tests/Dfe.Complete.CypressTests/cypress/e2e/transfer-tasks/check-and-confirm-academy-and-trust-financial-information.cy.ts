@@ -4,30 +4,28 @@ import { checkAccessibilityAcrossPages } from "cypress/support/reusableTests";
 import taskListPage from "cypress/pages/projects/tasks/taskListPage";
 import { ProjectType } from "cypress/api/taskApi";
 import projectRemover from "cypress/api/projectRemover";
-import { rdoLondonUser } from "cypress/constants/cypressConstants";
 import taskPage from "cypress/pages/projects/tasks/taskPage";
 import { Logger } from "cypress/common/logger";
 import TaskHelper from "cypress/api/taskHelper";
 import { urnPool } from "cypress/constants/testUrns";
 
 const project = ProjectBuilder.createTransferProjectRequest({
-    urn: { value: urnPool.transferTasks.coquet },
+    urn: urnPool.transferTasks.coquet,
 });
 let projectId: string;
 let taskId: string;
 const otherUserProject = ProjectBuilder.createTransferFormAMatProjectRequest({
-    urn: { value: urnPool.transferTasks.marden },
-    userAdId: rdoLondonUser.adId,
+    urn: urnPool.transferTasks.marden,
 });
 let otherUserProjectId: string;
 
 describe("Transfers tasks - Check and confirm academy and trust financial information", () => {
     before(() => {
-        projectRemover.removeProjectIfItExists(project.urn.value);
-        projectRemover.removeProjectIfItExists(otherUserProject.urn.value);
+        projectRemover.removeProjectIfItExists(project.urn);
+        projectRemover.removeProjectIfItExists(otherUserProject.urn);
         projectApi.createTransferProject(project).then((createResponse) => {
             projectId = createResponse.value;
-            projectApi.getProject(project.urn.value).then((response) => {
+            projectApi.getProject(project.urn).then((response) => {
                 taskId = response.body.tasksDataId.value;
             });
         });

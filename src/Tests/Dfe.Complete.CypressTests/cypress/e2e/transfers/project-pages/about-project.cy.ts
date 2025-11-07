@@ -39,7 +39,7 @@ const formAMATRegion = "South East";
 
 describe("About the project page - transfer projects: ", () => {
     before(() => {
-        projectRemover.removeProjectIfItExists(project.urn.value);
+        projectRemover.removeProjectIfItExists(project.urn);
         projectRemover.removeProjectIfItExists(projectFormAMat.urn.value);
         projectApi.createTransferProject(project).then((response) => {
             projectId = response.value;

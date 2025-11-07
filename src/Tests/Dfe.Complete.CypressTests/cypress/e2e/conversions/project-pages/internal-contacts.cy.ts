@@ -18,7 +18,7 @@ import { checkAccessibilityAcrossPages } from "cypress/support/reusableTests";
 import { urnPool } from "cypress/constants/testUrns";
 
 const project = ProjectBuilder.createConversionFormAMatProjectRequest({
-    urn: { value: urnPool.conversion.whitchurch },
+    urn: urnPool.conversion.whitchurch,
 });
 let projectId: string;
 const schoolName = "Whitchurch Primary School";
@@ -27,7 +27,7 @@ const unassignableUsers = [regionalCaseworkerTeamLeaderUser, dataConsumerUser, b
 
 describe("Internal contacts page: ", () => {
     before(() => {
-        projectRemover.removeProjectIfItExists(project.urn.value);
+        projectRemover.removeProjectIfItExists(project.urn);
         projectApi.createMatConversionProject(project).then((response) => (projectId = response.value));
     });
     beforeEach(() => {

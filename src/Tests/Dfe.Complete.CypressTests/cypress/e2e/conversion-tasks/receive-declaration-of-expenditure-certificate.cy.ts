@@ -13,30 +13,32 @@ import receiveDeclarationOfExpenditureCertificateTaskPage from "cypress/pages/pr
 import { urnPool } from "cypress/constants/testUrns";
 
 const project = ProjectBuilder.createConversionProjectRequest({
-    urn: { value: urnPool.conversionTasks.spen },
+    urn: urnPool.conversionTasks.spen,
 });
 let projectId: string;
 let taskId: string;
 const project2 = ProjectBuilder.createConversionFormAMatProjectRequest({
     significantDate: getSignificantDateString(12),
     isSignificantDateProvisional: true,
-    urn: { value: urnPool.conversionTasks.huddersfield },
+    urn: urnPool.conversionTasks.huddersfield,
 });
 let project2Id: string;
 const otherUserProject = ProjectBuilder.createConversionFormAMatProjectRequest({
-    urn: { value: urnPool.conversionTasks.grylls },
-    userAdId: rdoLondonUser.adId,
+    urn: urnPool.conversionTasks.grylls,
+    createdByEmail: rdoLondonUser.email,
+    createdByFirstName: rdoLondonUser.firstName,
+    createdByLastName: rdoLondonUser.lastName,,
 });
 let otherUserProjectId: string;
 
 describe("Conversion tasks - Receive declaration of expenditure certificate", () => {
     before(() => {
-        projectRemover.removeProjectIfItExists(project.urn.value);
+        projectRemover.removeProjectIfItExists(project.urn);
         projectRemover.removeProjectIfItExists(project2.urn.value);
-        projectRemover.removeProjectIfItExists(otherUserProject.urn.value);
+        projectRemover.removeProjectIfItExists(otherUserProject.urn);
         projectApi.createConversionProject(project).then((createResponse) => {
             projectId = createResponse.value;
-            projectApi.getProject(project.urn.value).then((response) => {
+            projectApi.getProject(project.urn).then((response) => {
                 taskId = response.body.tasksDataId.value;
             });
         });
