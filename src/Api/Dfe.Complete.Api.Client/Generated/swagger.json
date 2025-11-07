@@ -431,7 +431,7 @@
         }
       }
     },
-    "/v1/Projects/Conversions/FormAMat": {
+    "/v1/Projects/MatConversions": {
       "post": {
         "tags": [
           "Projects"
@@ -505,7 +505,7 @@
         }
       }
     },
-    "/v1/Projects/Transfers/FormAMat": {
+    "/v1/Projects/MatTransfers": {
       "post": {
         "tags": [
           "Projects"

@@ -49,7 +49,7 @@ namespace Dfe.Complete.Api.Controllers
         /// <param name="cancellationToken">The cancellation token.</param>
         [Authorize(Policy = "CanReadWrite")]
         [HttpPost]
-        [Route("Conversions/FormAMat")]
+        [Route("MatConversions")]
         [SwaggerResponse(201, "Project created successfully.", typeof(ProjectId))]
         [SwaggerResponse(400, "Invalid request data.")]
         public async Task<IActionResult> CreateConversionMatProjectAsync([FromBody] CreateConversionMatProjectCommand request, CancellationToken cancellationToken)
@@ -81,7 +81,7 @@ namespace Dfe.Complete.Api.Controllers
         /// <param name="cancellationToken">The cancellation token.</param>
         [Authorize(Policy = "CanReadWrite")]
         [HttpPost]
-        [Route("Transfers/FormAMat")]
+        [Route("MatTransfers")]
         [SwaggerResponse(201, "Project created successfully.", typeof(ProjectId))]
         [SwaggerResponse(400, "Invalid request data.")]
         public async Task<IActionResult> CreateTransferMatProjectAsync([FromBody] CreateTransferMatProjectCommand request, CancellationToken cancellationToken)

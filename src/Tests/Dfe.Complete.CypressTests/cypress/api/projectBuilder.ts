@@ -9,101 +9,73 @@ import { cypressUser } from "cypress/constants/cypressConstants";
 import { getSignificantDateString } from "cypress/support/formatDate";
 
 export class ProjectBuilder {
-    public static createConversionProjectRequest(
-        options: Partial<CreateConversionProjectRequest> = {},
-    ): CreateConversionProjectRequest {
+    public static createConversionProjectRequest(): CreateConversionProjectRequest {
         return {
-            urn: { value: 0 }, // specify a valid URN in request options
-            significantDate: getSignificantDateString(1),
-            isSignificantDateProvisional: false,
-            incomingTrustUkprn: {
-                value: macclesfieldTrust.ukprn,
-            },
-            isDueTo2Ri: false,
-            hasAcademyOrderBeenIssued: false,
+            urn: 0, // specify a valid URN in request options
+            incomingTrustUkprn: macclesfieldTrust.ukprn,
+            provisionalConversionDate: "2025-02-18",
             advisoryBoardDate: "2025-02-18",
             advisoryBoardConditions: "test",
-            establishmentSharepointLink: "https://educationgovuk.sharepoint.com",
-            incomingTrustSharepointLink: "https://educationgovuk.sharepoint.com",
-            groupReferenceNumber: groupReferenceNumber,
-            handingOverToRegionalCaseworkService: false,
-            handoverComments: "test 2",
-            userAdId: cypressUser.adId,
-            ...options,
+            groupId: groupReferenceNumber,
+            createdByEmail: cypressUser.email,
+            createdByFirstName: cypressUser.firstName,
+            createdByLastName: cypressUser.lastName,
+            prepareId: 1,
+            directiveAcademyOrder: false,
         };
     }
 
-    public static createTransferProjectRequest(
-        options: Partial<CreateTransferProjectRequest> = {},
-    ): CreateTransferProjectRequest {
+    public static createTransferProjectRequest(): CreateTransferProjectRequest {
         return {
-            urn: { value: 0 }, // specify a valid URN in request options
-            outgoingTrustUkprn: { value: macclesfieldTrust.ukprn },
-            incomingTrustUkprn: { value: dimensionsTrust.ukprn },
-            significantDate: "2026-03-01",
-            isSignificantDateProvisional: false,
-            isDueTo2Ri: false,
-            isDueToInedaquateOfstedRating: false,
-            isDueToIssues: false,
-            outGoingTrustWillClose: false,
-            handingOverToRegionalCaseworkService: false,
+            urn: 0, // specify a valid URN in request options
+            outgoingTrustUkprn: macclesfieldTrust.ukprn,
+            incomingTrustUkprn: dimensionsTrust.ukprn,
+            inadequateOfsted: false,
+            outgoingTrustToClose: false,
             advisoryBoardDate: "2023-05-01",
             advisoryBoardConditions: "test",
-            establishmentSharepointLink: "https://educationgovuk.sharepoint.com/1",
-            incomingTrustSharepointLink: "https://educationgovuk.sharepoint.com/2",
-            outgoingTrustSharepointLink: "https://educationgovuk.sharepoint.com/3",
-            groupReferenceNumber: groupReferenceNumber,
-            handoverComments: "test 2",
-            userAdId: cypressUser.adId,
-            ...options,
+            groupId: groupReferenceNumber,
+            provisionalTransferDate: "2023-05-01",
+            createdByEmail: cypressUser.email,
+            createdByFirstName: cypressUser.firstName,
+            createdByLastName: cypressUser.lastName,
+            prepareId: 1,
+            financialSafeguardingGovernanceIssues: false,
         };
     }
 
-    public static createConversionFormAMatProjectRequest(
-        options: Partial<CreateMatConversionProjectRequest> = {},
-    ): CreateMatConversionProjectRequest {
+    public static createConversionFormAMatProjectRequest(): CreateMatConversionProjectRequest {
         return {
-            urn: { value: 0 }, // specify a valid URN in request options
+            urn: 0, // specify a valid URN in request options
             newTrustName: macclesfieldTrust.name,
             newTrustReferenceNumber: macclesfieldTrust.referenceNumber,
-            significantDate: "2026-03-01",
-            isSignificantDateProvisional: false,
-            isDueTo2Ri: false,
-            hasAcademyOrderBeenIssued: false,
+            directiveAcademyOrder: false,
             advisoryBoardDate: "2023-05-01",
+            provisionalConversionDate: "2023-05-01",
             advisoryBoardConditions: "none.",
-            establishmentSharepointLink: "https://educationgovuk.sharepoint.com/1",
-            incomingTrustSharepointLink: "https://educationgovuk.sharepoint.com/2",
-            handingOverToRegionalCaseworkService: false,
-            handoverComments: "test 2",
-            userAdId: cypressUser.adId,
-            ...options,
+            createdByEmail: cypressUser.email,
+            createdByFirstName: cypressUser.firstName,
+            createdByLastName: cypressUser.lastName,
+            prepareId: 1
         };
     }
 
-    public static createTransferFormAMatProjectRequest(
-        options: Partial<CreateMatTransferProjectRequest> = {},
-    ): CreateMatTransferProjectRequest {
+    public static createTransferFormAMatProjectRequest(): CreateMatTransferProjectRequest {
         return {
-            urn: { value: 0 }, // specify a valid URN in request options
+            urn: 0, // specify a valid URN in request options
             newTrustName: dimensionsTrust.name,
             newTrustReferenceNumber: dimensionsTrust.referenceNumber,
-            outgoingTrustUkprn: { value: macclesfieldTrust.ukprn },
-            significantDate: "2026-03-01",
-            isSignificantDateProvisional: false,
-            isDueTo2Ri: false,
-            isDueToInedaquateOfstedRating: false,
-            isDueToIssues: false,
-            handingOverToRegionalCaseworkService: false,
-            outGoingTrustWillClose: false,
+            outgoingTrustUkprn: macclesfieldTrust.ukprn,
+            provisionalTransferDate: "2026-03-01",
+            inadequateOfsted: false,
+            financialSafeguardingGovernanceIssues: false,
+            outgoingTrustToClose: false,
             advisoryBoardDate: "2023-05-01",
             advisoryBoardConditions: "none.",
-            establishmentSharepointLink: "https://educationgovuk.sharepoint.com/1",
-            incomingTrustSharepointLink: "https://educationgovuk.sharepoint.com/2",
-            outgoingTrustSharepointLink: "https://educationgovuk.sharepoint.com/3",
-            handoverComments: "test 2",
-            userAdId: cypressUser.adId,
-            ...options,
+            createdByEmail: cypressUser.email,
+            createdByFirstName: cypressUser.firstName,
+            createdByLastName: cypressUser.lastName,
+            prepareId: 1
         };
     }
 }
