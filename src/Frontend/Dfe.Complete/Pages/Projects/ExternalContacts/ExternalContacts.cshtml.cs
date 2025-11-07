@@ -14,7 +14,6 @@ using Microsoft.Extensions.Caching.Distributed;
 
 namespace Dfe.Complete.Pages.Projects.ExternalContacts;
 
-[Authorize(Policy = UserPolicyConstants.CanViewEditDeleteContact)]
 public class ExternalContacts(ISender sender, ILogger<ExternalContacts> logger, IDistributedCache cache)
     : ProjectLayoutModel(sender, logger, ExternalContactsNavigation)
 {
