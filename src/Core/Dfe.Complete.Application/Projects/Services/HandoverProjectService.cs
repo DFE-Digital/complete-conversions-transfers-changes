@@ -113,7 +113,7 @@ public class HandoverProjectService(
         if (!localAuthorityIdRequest.IsSuccess
             || localAuthorityIdRequest.Value?.LocalAuthorityId == null
             || localAuthorityIdRequest.Value.LocalAuthorityId == Guid.Empty)
-            throw new NotFoundException(
+            throw new UnprocessableContentException(
                 $"No Local authority could be found via Establishments for School Urn: {urn}.",
                 nameof(urn), innerException: new Exception(localAuthorityIdRequest.Error));
 
@@ -124,8 +124,8 @@ public class HandoverProjectService(
     {
         var establishment = await sender.Send(new GetGiasEstablishmentByUrnQuery(new Urn(urn)), cancellationToken);
         if (!establishment.IsSuccess || establishment.Value == null)
-            throw new NotFoundException($"No establishment could be found for Urn: {urn}.");
-        var region = (establishment.Value.RegionCode?.ToEnumFromChar<Region>()) ?? throw new NotFoundException($"No region could be found for establishment with Urn: {urn}.",
+            throw new UnprocessableContentException($"No establishment could be found for Urn: {urn}.");
+        var region = (establishment.Value.RegionCode?.ToEnumFromChar<Region>()) ?? throw new UnprocessableContentException($"No region could be found for establishment with Urn: {urn}.",
                 nameof(urn));
         return region;
     }

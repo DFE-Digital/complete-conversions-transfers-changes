@@ -129,6 +129,50 @@ public partial class ProjectsControllerTests
     [CustomAutoData(typeof(CustomWebApplicationDbContextFactoryCustomization),
         typeof(DateOnlyCustomization),
         typeof(LocalAuthorityCustomization))]
+    public async Task CreateHandoverConversionProject_Async_NoEstablishmentForUrn_ShouldFailValidation(
+        CustomWebApplicationDbContextFactory<Program> factory,
+        IProjectsClient projectsClient,
+        IFixture fixture)
+    {
+        factory.TestClaims = [new Claim(ClaimTypes.Role, ApiRoles.WriteRole), new Claim(ClaimTypes.Role, ApiRoles.ReadRole)];
+        var dbContext = factory.GetDbContext<CompleteContext>();
+
+        var createHandoverConversionProjectCommand = GenerateCreateHandoverConversionCommand();
+        createHandoverConversionProjectCommand.GroupId = "GRP_99999999";
+
+        Assert.NotNull(factory.WireMockServer);
+        var trustDto = fixture.Customize(new TrustDtoCustomization() { Ukprn = createHandoverConversionProjectCommand.IncomingTrustUkprn.ToString() }).Create<TrustDto>();
+        factory.WireMockServer.AddGetWithJsonResponse(
+            string.Format(TrustClientEndpointConstants.GetTrustByUkprn2Async, createHandoverConversionProjectCommand.IncomingTrustUkprn),
+            trustDto);
+
+        var localAuthority = dbContext.LocalAuthorities.AsEnumerable().MinBy(_ => Guid.NewGuid());
+        Assert.NotNull(localAuthority);
+
+        var giasEstablishment = fixture
+            .Customize(new GiasEstablishmentsCustomization()
+            {
+                LocalAuthority = localAuthority,
+                Urn = new Domain.ValueObjects.Urn(111111)
+            })
+            .Create<GiasEstablishment>();
+        await dbContext.GiasEstablishments.AddAsync(giasEstablishment);
+        await dbContext.SaveChangesAsync();
+
+        var exception = await Assert.ThrowsAsync<CompleteApiException>(async () =>
+            await projectsClient.CreateHandoverConversionProjectAsync(createHandoverConversionProjectCommand));
+
+        Assert.Equal(HttpStatusCode.UnprocessableEntity, (HttpStatusCode)exception.StatusCode);
+
+        var validationErrors = exception.Response;
+        Assert.NotNull(validationErrors);
+        Assert.Contains($"No Local authority could be found via Establishments for School Urn: {createHandoverConversionProjectCommand.Urn!.Value}.", validationErrors);
+    }
+
+    [Theory]
+    [CustomAutoData(typeof(CustomWebApplicationDbContextFactoryCustomization),
+        typeof(DateOnlyCustomization),
+        typeof(LocalAuthorityCustomization))]
     public async Task CreateHandoverConversionProject_Async_GroupUkprnDoesNotMatch_ShouldFailValidation(
         CustomWebApplicationDbContextFactory<Program> factory,
         IProjectsClient projectsClient,
@@ -589,7 +633,6 @@ public partial class ProjectsControllerTests
         IProjectsClient projectsClient)
     {
         factory.TestClaims = [new Claim(ClaimTypes.Role, ApiRoles.WriteRole), new Claim(ClaimTypes.Role, ApiRoles.ReadRole)];
-        var dbContext = factory.GetDbContext<CompleteContext>();
 
         var createHandoverTransferProjectCommand = GenerateCreateHandoverTransferCommand();
         createHandoverTransferProjectCommand.IncomingTrustUkprn = 12345678;
